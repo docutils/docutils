@@ -220,7 +220,8 @@ latex_headings = {
          'some_commands' : [
             '% some commands, that could be overwritten in the style file.\n'
             '\\newcommand{\\rubric}[1]'
-            '{{\\hfill \\color{red}\\bfseries{}#1 \\hfill }}\n',
+            '{{\\hfill \\color{red}\\bfseries{}#1 \\hfill }}\n'
+            '% end of "some commands"\n',
          ]
         }
 
