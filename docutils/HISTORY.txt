@@ -73,6 +73,7 @@ Release 0.3.7 (2004-12-24)
   - Changed role function API: the "text" parameter now takes
     null-escaped interpreted text content.
   - Empty sections and documents are allowed now.
+  - Added check for escaped at-mark to prevent email address recognition.
 
 * docutils/parsers/rst/directives/__init__.py:
 
