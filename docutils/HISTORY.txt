@@ -87,6 +87,8 @@ Changes Since 0.3.5
     exclusive.
   - --footnote-references now overrides
     --trim-footnote-reference-space, if applicable.
+  - The footnote label style now matches the footnote reference style
+    ("brackets" or "superscript").
 
 * docs/ref/docutils.dtd:
 
