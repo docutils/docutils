@@ -6,6 +6,8 @@ import xml.sax
 # turn on this line if you want to disablenamespaces
 ##from xml.sax.handler import feature_namespaces
 
+config_values = {}
+
 
 
 class ConfigHandler(xml.sax.saxutils.DefaultHandler):
