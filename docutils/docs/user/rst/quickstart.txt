@@ -246,13 +246,15 @@ Sections
 __ quickref.html#section-structure
 
 To break longer text up into sections, you use **section headers**.
-These are a single line of text (one or more words) with an underline
-(and optionally an overline) in dashes "``-----``", equals
-"``======``", tildes "``~~~~~~``" or any of the non-alphanumeric
-characters ``= - ` : ' " ~ ^ _ * + # < >`` that you feel comfortable
-with.  The underline/overline must be at least as long as the title
-text.  Be consistent though, since all sections marked with the same
-underline style are deemed to be at the same level::
+These are a single line of text (one or more words) with adornment: an
+underline alone, or an overline and an overline together, in dashes
+"``-----``", equals "``======``", tildes "``~~~~~~``" or any of the
+non-alphanumeric characters ``= - ` : ' " ~ ^ _ * + # < >`` that you
+feel comfortable with.  An underline-only adornment is distinct from
+an overline-and-underline adornment using the same character.  The
+underline/overline must be at least as long as the title text.  Be
+consistent, since all sections marked with the same adornment style
+are deemed to be at the same level::
 
   Chapter 1 Title
   ===============
@@ -298,6 +300,29 @@ Note that section headers are available as link targets, just using
 their name.  To link to the Lists_ heading, I write "``Lists_``".  If
 the heading has a space in it like `text styles`_, we need to quote
 the heading "```text styles`_``".
+
+To indicate the document title, use a unique adornment style at the
+beginning of the document.  To indicate the document subtitle, use
+another unique adornment style immediately after the document title. 
+For example::
+
+    ================
+     Document Title
+    ================
+    ----------
+     Subtitle
+    ----------
+
+    Section Title
+    =============
+
+    ...
+
+Note that "Document Title" and "Section Title" both use equals signs,
+but are distict and unrelated styles.  The text of
+overline-and-underlined titles (but not underlined-only) may be inset
+for aesthetics.
+
 
 Images
 ------

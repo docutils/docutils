@@ -144,12 +144,10 @@ many users will not be willing or able to do.
 How can I indicate the document title?  Subtitle?
 -------------------------------------------------
 
-If there's only one highest-level section title at the beginning of a
-document, it is treated specially, as the document title.  Similarly,
-a lone second-highest-level section title may become the document
-subtitle if it immediately follows the document title.
-
-For example::
+A uniquely-adorned section title at the beginning of a document is
+treated specially, as the document title.  Similarly, a
+uniquely-adorned section title immediately after the document title
+becomes the document subtitle.  For example::
 
     This is the Document Title
     ==========================
