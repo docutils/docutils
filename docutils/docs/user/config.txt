@@ -590,6 +590,13 @@ The PEP/HTML Writer derives from the standard HTML Writer, and shares
 all settings defined in the `[html4css1 writer]`_ section.  The
 "[html4css1 writer]" section is processed before "[pep_html writer]".
 
+_`no_random`
+    Do not use a random banner image.  Mainly used to get predictable
+    results when testing.
+
+    Default: random enabled (None).  Options: ``--no-random``
+    (hidden).
+
 _`pep_home`
     Home URL prefix for PEPs.
 
