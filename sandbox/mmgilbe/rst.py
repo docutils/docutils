@@ -91,7 +91,7 @@ class MoinWriter(html4css1.Writer):
 # TODO: Evaluate if this would be easier to sub class the real moin wiki parser.
 class Parser:
     
-    # allow caching - MMG: This probably should be turned off when testing.
+    # allow caching - This should be turned off when testing.
     caching = 1
     
     def __init__(self, raw, request, **kw):
@@ -122,7 +122,7 @@ class MoinTranslator(html4css1.HTMLTranslator):
         self.request = request
         # We supply our own request.write so that the html is added to the
         # html4css1 body list instead of printed to stdout by the default
-        # MoinTranslator writer. MMG: Confirm this is really what we're doing. 
+        # MoinTranslator writer. TODO: Confirm this is really what we're doing. 
         self.old_write = self.request.write
         self.request.write = self.rst_write
         self.wikiparser = parser
@@ -136,7 +136,7 @@ class MoinTranslator(html4css1.HTMLTranslator):
         self.writer = writer
         # MoinMoin likes to start the initial headers at level 3 and the title
         # gets level 2, so to comply with their style's we do so here also. 
-        # MMG: Could this be fixed by passing this value in settings_overrides?
+        # TODO: Could this be fixed by passing this value in settings_overrides?
         self.initial_header_level = 3
         
     def astext(self):
@@ -145,42 +145,57 @@ class MoinTranslator(html4css1.HTMLTranslator):
     
     def rst_write(self, string):
         if self.strip_paragraph:
-            string = string.replace('<p>', '')
-            string = string.replace('</p>', '')
-            string = string.replace('\n', '')
-            string = re.sub('> ', '>', string)
+            replacements = {'<p>': '', '</p>': '', '\n': '', '> ': '>'}
+            for src, dst in replacements.items():
+                string = string.replace(src, dst)
             # Everything seems to have a space ending the text block. We want to
             # get rid of this
-            if len(string) and string[-1] == ' ':
+            if string and string[-1] == ' ':
                 string = string[:-1]
         self.body.append(string)
         
     def visit_reference(self, node):
         target = None
+        
+        # These are the special link schemes that MoinMoin supports. We let
+        # MoinMoin handle these types.
+        moin_link_schemes = ['wiki:', 'attachment:', 'inline:', 'drawing:']
+        
+        # Do I need to lstrip? TODO: Find this out. Doesn't look like I need to
+        # since I don't when assigning target.
         if 'refuri' in node.attributes:
-            if (node['refuri'].find('wiki:') != -1) or \
-               (node['refuri'].find('attachment:') != -1):
-                target = node['refuri']
+            refuri = node['refuri']
+            if [i for i in moin_link_schemes if refuri.lstrip().startswith(i)]:
+                target = refuri
+            # What is this? TODO: Figure this out and comment
             elif ('name' in node.attributes and 
-                  fully_normalize_name(node['name']) == node['refuri']):
+                  fully_normalize_name(node['name']) == refuri):
                 target = ':%s:' % (node['name'])
-            # The node should have a whitespace normalized name if the
-            # docutlis restructured text parser would normally fully
-            # normalize the name. 
-            elif ':' not in node['refuri']:
-                target = ':%s:' % (node['refuri'])
-            
+            # The node should have a whitespace normalized name if the docutlis 
+            # restructured text parser would normally fully normalize the name. 
+            elif ':' not in refuri:
+                target = ':%s:' % (refuri)
+        
             if target:
                 self.strip_paragraph = 1
-                # Sometimes a newline will creep in to the node's text. This
-                # throws the moinmoin regex so a link will not get processed.
-                node_text = node.astext().replace('\n', ' ')
-                self.wikiparser.raw = '[%s %s]' % (target, 
-                                                   node_text)
-                self.wikiparser.format(self.formatter)
+                
+                # inline is special. We're not doing a link really, we need
+                # moinmoin to actually insert the attachment.
+                if target.startswith('inline:'):
+                    self.wikiparser.raw = target 
+                    self.wikiparser.format(self.formatter)
+                else:
+                    # Sometimes a newline will creep in to the node's text. This
+                    # throws the moinmoin regex so a link will not get processed.
+                    node_text = node.astext().replace('\n', ' ')
+                    self.wikiparser.raw = '[%s %s]' % (target, 
+                                                       node_text)
+                    self.wikiparser.format(self.formatter)
+                    
                 self.strip_paragraph = 0
                 raise docutils.nodes.SkipNode
                 return
+                
         html4css1.HTMLTranslator.visit_reference(self, node)
 
 
@@ -260,4 +275,15 @@ class MoinTranslator(html4css1.HTMLTranslator):
     def depart_warning(self, node):
         self.request.write(self.formatter.highlight(0))
 
-
+    def visit_image(self, node):
+        # We need process inline images with moinmoin. Otherwise let the normal
+        # rst writer do its magic.
+        if node['uri'].lstrip().startswith('inline:'):
+            self.strip_paragraph = 1
+            self.wikiparser.raw = node['uri'] 
+            self.wikiparser.format(self.formatter)
+            self.strip_paragraph = 0
+            raise docutils.nodes.SkipNode
+            return
+        html4css1.HTMLTranslator.visit_image(self, node)
+        
