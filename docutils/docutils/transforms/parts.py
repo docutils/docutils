@@ -45,17 +45,20 @@ class Contents(Transform):
             # section/document top-level? Drag it up until it is?
             while not isinstance(startnode, nodes.Structural):
                 startnode = startnode.parent
-            if not title:
-                title = []
         else:
             startnode = self.document
             if not title:
                 title = nodes.title('', self.language.labels['contents'])
         contents = self.build_contents(startnode)
         if len(contents):
-            topic += title
+            if title:
+                topic['name'] = title.astext()
+                topic += title
+            else:
+                topic['name'] = self.language.labels['contents']
             topic += contents
             self.startnode.parent.replace(self.startnode, topic)
+            self.document.note_implicit_target(topic)
         else:
             self.startnode.parent.remove(self.startnode)
 
