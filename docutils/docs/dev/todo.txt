@@ -421,7 +421,7 @@ Documentation
     Transitions" section of ``alternatives.txt`` elsewhere?  [Not
     yet.])
 
-  - Move `reStructuredText.txt``, ``directives.txt``,
+  - Move ``reStructuredText.txt``, ``directives.txt``,
     ``interpreted.txt``, and ``introduction.txt`` from ``spec/rst/``
     to ``docs/ref/rst/``.  Rename ``interpreted.txt`` to
     ``roles.txt``.  Rename ``reStructuredText.txt`` to
@@ -434,9 +434,10 @@ Documentation
   SourceForge with a `script for modifying the Docutils CVS
   repository`__.  Any other pending repository cleanups should be done
   at the same time.  Script now in CVS:
-  sandbox/davidg/infrastructure/cvs-reorg.sh.
+  `sandbox/davidg/infrastructure/cvs-reorg.sh`__.
 
   __ http://sf.net/docman/display_doc.php?docid=768&group_id=1#repositoryrestructure
+  __ http://docutils.sourceforge.net/sandbox/davidg/infrastructure/cvs-reorg.sh
 
   After doing the cleanup (running the cvs-reorg.sh script):
 
