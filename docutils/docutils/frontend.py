@@ -29,6 +29,16 @@ def store_multiple(option, opt, value, parser, *args, **kwargs):
     for key, value in kwargs.items():
         setattr(parser.values, key, value)
 
+def read_config_file(option, opt, value, parser):
+    """
+    Read a configuration file during option processing.  (Option callback.)
+    """
+    config = ConfigParser()
+    config.read(value)
+    if config.has_section('options'):
+        for entry in config.options('options'):
+            setattr(parser.values, entry, config.get('options', entry))
+
 
 class OptionParser(optik.OptionParser):
 
@@ -126,6 +136,9 @@ class OptionParser(optik.OptionParser):
           '  Default is "en" (English).',
           ['--language', '-l'], {'dest': 'language_code', 'default': 'en',
                                  'metavar': '<name>'}),
+         ('Read this configuration <file>.',
+          ['--config'], {'metavar': '<file>', 'type': 'string',
+                         'action': 'callback', 'callback': read_config_file})
          ("Show this program's version number and exit.",
           ['--version'], {'action': 'version'}),
          ('Show this help message and exit.',
