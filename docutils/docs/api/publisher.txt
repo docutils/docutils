@@ -71,6 +71,9 @@ Encodings
 ---------
 
 The default output encoding of Docutils is UTF-8.  If you have any
-non-ASCII in your text, you may have to do a bit more setup.  Docutils
-may introduce some non-ASCII text if you use symbol-footnotes or
-section numbering.
+non-ASCII in your input text, you may have to do a bit more setup.
+Docutils may introduce some non-ASCII text if you use
+symbol-footnotes_.
+
+.. _symbol-footnotes:
+   ../ref/rst/restructuredtext.html#auto-symbol-footnotes
