@@ -69,6 +69,18 @@ Changes Since 0.3
 * docutils/core.py:
 
   - Catch system messages to stop tracebacks from parsing errors.
+  - Catch exceptions during processing report & exit without
+    tracebacks, except when "--traceback" used.
+
+* docutils/frontend.py:
+
+  - Added "--traceback" & "--no-traceback" options ("traceback"
+    setting).
+
+* docutils/io.py:
+
+  - Catch IOErrors when opening source & destination files, report &
+    exit without tracebacks.
 
 * docutils/utils.py:
 
