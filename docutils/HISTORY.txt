@@ -62,6 +62,7 @@ Changes Since 0.3.5
 
 * docutils/writers/latex2e.py:
 
+  - Added unicode quotes u201C u201D.
   - Added ``\PreloadUnicodePage{n}`` to the header if in LaTeX code
     uses unicode.
   - Added option "font-encoding".
