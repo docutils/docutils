@@ -1,0 +1,53 @@
+Literal Blocks
+--------------
+
+Literal blocks are indented, and indicated with a double-colon ("::")
+at the end of the preceding paragraph (right here ``-->``)::
+
+    if literal_block:
+        text = 'is left as-is'
+        spaces_and_linebreaks = 'are preserved'
+        markup_processing = None
+
+Or some code formatting ::
+
+     typedef
+     
+       mpl::push_back<           // >----------------+
+                                 //                  |
+           mpl::push_back<       // >--------------+ |
+                                 //                | |
+               mpl::push_back<   // >------------+ | |
+                   mpl::vector<> //              | | |
+                 , int           //              | | |
+               >::type           // first step <-+ | |
+             , long              //                | |
+           >::type               // second step <--+ |
+         , double                //                  |
+       >::type                   // third step <-----+
+       
+     vec;
+
+The central makefile construct is called a *rule*, and is described
+with the following syntax:
+
+.. parsed-literal::
+
+   *dependent-target* : *prerequisites*
+           *commands*
+
+
+Special characters
+------------------
+
+lele needed a patch to process the italian ZopeBook, because
+of the tilde ~ and the backquote chars.
+
+1. scaricarlo anche usando un browser web::
+
+     lele:~/zope $ wget http://zope.org/Products/Zope/2.7.0/Zope-2.7.0-linux-x86.tgz
+     --00:49:51--  http://zope.org/Products/Zope/2.7.0/Zope-2.7.0-linux-x86.tgz
+                => `Zope-2.7.0-linux-x86.tgz'
+
+
+this works as long as the document is not italian.
