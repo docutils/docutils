@@ -120,6 +120,14 @@ def check_builtin (option, opt, value):
             #"%s: invalid %s argument %r" % (opt, what, value))
             "option %s: invalid %s value: %r" % (opt, what, value))
 
+def check_choice(option, opt, value):
+    if value in option.choices:
+        return value
+    else:
+        raise OptionValueError(
+            "option %s: invalid choice: %r (choose one of %r)"
+            % (opt, value, option.choices))
+
 
 class Option:
     """
@@ -127,12 +135,16 @@ class Option:
       _short_opts : [string]
       _long_opts : [string]
 
+      option_string : string
+        Set when help output is formatted.
+
       action : string
       type : string
       dest : string
       default : any
       nargs : int
       const : any
+      choices : [string]
       callback : function
       callback_args : (any*)
       callback_kwargs : { string : any }
@@ -148,6 +160,7 @@ class Option:
              'default',
              'nargs',
              'const',
+             'choices',
              'callback',
              'callback_args',
              'callback_kwargs',
@@ -184,7 +197,7 @@ class Option:
 
     # The set of known types for option parsers.  Again, listed here for
     # constructor argument validation.
-    TYPES = ("string", "int", "long", "float", "complex")
+    TYPES = ("string", "int", "long", "float", "complex", "choice")
 
     # Dictionary of argument checking functions, which convert and
     # validate option arguments according to the option type.
@@ -206,6 +219,7 @@ class Option:
                      "long"   : check_builtin,
                      "float"  : check_builtin,
                      "complex"  : check_builtin,
+                     "choice" : check_choice,
                    }
 
 
@@ -300,14 +314,31 @@ class Option:
             # XXX should factor out another class attr here: list of
             # actions that *require* a type
             if self.action in ("store", "append"):
-                # No type given?  "string" is the most sensible default.
-                self.type = "string"
+                if self.choices is not None:
+                    # The "choices" attribute implies "choice" type.
+                    self.type = "choice"
+                else:
+                    # No type given?  "string" is the most sensible default.
+                    self.type = "string"
         else:
             if self.type not in self.TYPES:
                 raise OptionError("invalid option type: %r" % self.type, self)
             if self.action not in self.TYPED_ACTIONS:
                 raise OptionError(
                     "must not supply a type for action %r" % self.action, self)
+
+    def _check_choice(self):
+        if self.type == "choice":
+            if self.choices is None:
+                raise OptionError(
+                    "must supply a list of choices for type 'choice'", self)
+            elif type(self.choices) not in (TupleType, ListType):
+                raise OptionError(
+                    "choices must be a list of strings ('%s' supplied)"
+                    % str(type(self.choices)).split("'")[1], self)
+        elif self.choices is not None:
+            raise OptionError(
+                "must not supply choices for type %r" % self.type, self)
 
     def _check_dest (self):
         if self.action in self.STORE_ACTIONS and self.dest is None:
@@ -365,6 +396,7 @@ class Option:
 
     CHECK_METHODS = [_check_action,
                      _check_type,
+                     _check_choice,
                      _check_dest,
                      _check_const,
                      _check_nargs,
@@ -605,7 +637,7 @@ class OptionContainer:
 
     # -- Feedback methods ----------------------------------------------
 
-    def get_options(self):
+    def get_option_help(self):
         if not self.option_list:
             return ""
         result = []                     # list of strings to "".join() later
@@ -614,7 +646,7 @@ class OptionContainer:
                 result.append(self.format.format_option(option))
         return "".join(result)
 
-    def get_description(self):
+    def get_description_help(self):
         if self.description:
             return self.format.format_description(self.description)
         else:
@@ -623,8 +655,8 @@ class OptionContainer:
     def get_help(self):
         result = ""
         if self.description:
-            result = self.get_description() + "\n"
-        return result + self.get_options()
+            result = self.get_description_help() + "\n"
+        return result + self.get_option_help()
 
 
 class OptionGroup(OptionContainer):
@@ -1044,7 +1076,7 @@ class OptionParser(OptionContainer):
         self.print_usage(sys.stderr)
         sys.exit("%s: error: %s" % (get_prog_name(), msg))
 
-    def get_usage(self):
+    def get_usage_help(self):
         if self.usage:
             return self.format.format_usage(
                 self.usage.replace("%prog", get_prog_name()))
@@ -1061,9 +1093,9 @@ class OptionParser(OptionContainer):
         or not defined.
         """
         if self.usage:
-            print >>file, self.get_usage()
+            print >>file, self.get_usage_help()
 
-    def get_version(self):
+    def get_version_help(self):
         if self.version:
             return self.version.replace("%prog", get_prog_name())
         else:
@@ -1078,14 +1110,15 @@ class OptionParser(OptionContainer):
         name.  Does nothing if self.version is empty or undefined.
         """
         if self.version:
-            print >>file, self.get_version()
+            print >>file, self.get_version_help()
 
-    def get_options(self):
+    def get_option_help(self):
+        self.format.store_option_strings(self)
         result = []
         result.append(self.format.format_heading("Options"))
         self.format.increase_nesting()
         if self.option_list:
-            result.append(OptionContainer.get_options(self))
+            result.append(OptionContainer.get_option_help(self))
             result.append("\n")
         for group in self.option_groups:
             result.append(group.get_help())
@@ -1097,10 +1130,10 @@ class OptionParser(OptionContainer):
     def get_help(self):
         result = []
         if self.usage:
-            result.append(self.get_usage() + "\n")
+            result.append(self.get_usage_help() + "\n")
         if self.description:
-            result.append(self.get_description() + "\n")
-        result.append(self.get_options())
+            result.append(self.get_description_help() + "\n")
+        result.append(self.get_option_help())
         return "".join(result)
 
     def print_help (self, file=None):
@@ -1123,30 +1156,34 @@ class HelpFormat:
 
     Instance attributes:
       indent_increment : int
-        number of columns to indent per nesting level
-      help_indent : int
-        the starting column for option help text
+        The number of columns to indent per nesting level.
+      max_help_position : int
+        The maximum starting column for option help text.
+      help_position : int
+        The calculated starting column for option help text;
+        initially the same as the maximum.
       width : int
-        the overall width (in columns) for output
+        The overall width (in columns) for output.
       current_indent : int
-        in columns, calculated
+        In columns, calculated.
       level : int
-        increased for each additional nesting level
+        Increased for each additional nesting level.
       help_width : int
-        number of columns available for option help text
+        Number of columns available for option help text, calculated.
     """
 
-    def __init__(self, indent_increment, help_indent, width, short_first):
+    def __init__(self, indent_increment, max_help_position, width,
+                 short_first):
         self.indent_increment = indent_increment
-        self.help_indent = help_indent
+        self.help_position = self.max_help_position = max_help_position
         self.width = width
         self.current_indent = 0
         self.level = 0
-        self.help_width = self.width - self.help_indent
+        self.help_width = width - max_help_position
         if short_first:
-            self.format_option_list = self.format_option_list_short_first
+            self.format_option_strings = self.format_option_strings_short_first
         else:
-            self.format_option_list = self.format_option_list_long_first
+            self.format_option_strings = self.format_option_strings_long_first
 
     def increase_nesting(self):
         self.current_indent += self.indent_increment
@@ -1186,11 +1223,11 @@ class HelpFormat:
         #   -fFILENAME, --file=FILENAME
         #           read data from FILENAME
         result = []
-        opts = self.format_option_list(option)
-        opt_width = self.help_indent - self.current_indent - 2
+        opts = option.option_strings
+        opt_width = self.help_position - self.current_indent - 2
         if len(opts) > opt_width:
             opts = "%*s%s\n" % (self.current_indent, "", opts)
-            indent_first = self.help_indent
+            indent_first = self.help_position
         else:                       # start help on same line as opts
             opts = "%*s%-*s  " % (self.current_indent, "", opt_width, opts)
             indent_first = 0
@@ -1198,19 +1235,36 @@ class HelpFormat:
         if option.help:
             help_lines = wrap_text(option.help, self.help_width)
             result.append("%*s%s\n" % (indent_first, "", help_lines[0]))
-            result.extend(["%*s%s\n" % (self.help_indent, "", line)
+            result.extend(["%*s%s\n" % (self.help_position, "", line)
                            for line in help_lines[1:]])
         elif opts[-1] != "\n":
             result.append("\n")
         return "".join(result)
 
-    def format_option_list(self, option):
+    def store_option_strings(self, parser):
+        self.increase_nesting()
+        max_len = 0
+        for opt in parser.option_list:
+            strings = self.format_option_strings(opt)
+            opt.option_strings = strings
+            max_len = max(max_len, len(strings) + self.current_indent)
+        self.increase_nesting()
+        for group in parser.option_groups:
+            for opt in group.option_list:
+                strings = self.format_option_strings(opt)
+                opt.option_strings = strings
+                max_len = max(max_len, len(strings) + self.current_indent)
+        self.decrease_nesting()
+        self.decrease_nesting()
+        self.help_position = min(max_len + 2, self.max_help_position)
+
+    def format_option_strings(self, option):
         """Return a comma-separated list of option strigs & metavariables."""
         raise NotImplementedError(
-            "Virtual method; use format_option_list_short_first or "
-            "format_option_list_long_first instead.")
+            "Virtual method; use format_option_strings_short_first or "
+            "format_option_strings_long_first instead.")
 
-    def format_option_list_short_first(self, option):
+    def format_option_strings_short_first(self, option):
         opts = []                       # list of "-a" or "--foo=FILE" strings
         takes_value = option.takes_value()
         if takes_value:
@@ -1224,7 +1278,7 @@ class HelpFormat:
                 opts.append(opt)
         return ", ".join(opts)
 
-    def format_option_list_long_first(self, option):
+    def format_option_strings_long_first(self, option):
         opts = []                       # list of "-a" or "--foo=FILE" strings
         takes_value = option.takes_value()
         if takes_value:
@@ -1243,9 +1297,9 @@ class Indented(HelpFormat):
 
     """Formats help with indented section bodies."""
 
-    def __init__(self, indent_increment=2, help_indent=24, width=78,
+    def __init__(self, indent_increment=2, max_help_position=24, width=78,
                  short_first=1):
-        HelpFormat.__init__(self, indent_increment, help_indent, width,
+        HelpFormat.__init__(self, indent_increment, max_help_position, width,
                             short_first)
 
     def format_usage(self, usage):
@@ -1259,9 +1313,9 @@ class Titled(HelpFormat):
 
     """Formats help with underlined section headers."""
 
-    def __init__(self, indent_increment=0, help_indent=24, width=78,
+    def __init__(self, indent_increment=0, max_help_position=24, width=78,
                  short_first=None):
-        HelpFormat.__init__(self, indent_increment, help_indent, width,
+        HelpFormat.__init__(self, indent_increment, max_help_position, width,
                             short_first)
 
     def format_usage(self, usage):
