@@ -272,8 +272,8 @@ class Element(Node):
         element = domroot.createElement(self.tagname)
         for attribute, value in self.attributes.items():
             if isinstance(value, ListType):
-                value = ' '.join(value)
-            element.setAttribute(attribute, str(value))
+                value = ' '.join(['%s' % v for v in value])
+            element.setAttribute(attribute, '%s' % value)
         for child in self.children:
             element.appendChild(child._dom_node(domroot))
         return element
@@ -299,10 +299,13 @@ class Element(Node):
             return '<%s...>' % self.tagname
 
     def __str__(self):
+        return unicode(self).encode('raw_unicode_escape')
+
+    def __unicode__(self):
         if self.children:
-            return '%s%s%s' % (self.starttag(),
-                                ''.join([str(c) for c in self.children]),
-                                self.endtag())
+            return u'%s%s%s' % (self.starttag(),
+                                 ''.join([str(c) for c in self.children]),
+                                 self.endtag())
         else:
             return self.emptytag()
 
@@ -312,19 +315,19 @@ class Element(Node):
             if value is None:           # boolean attribute
                 parts.append(name)
             elif isinstance(value, ListType):
-                values = [str(v) for v in value]
+                values = ['%s' % v for v in value]
                 parts.append('%s="%s"' % (name, ' '.join(values)))
             else:
-                parts.append('%s="%s"' % (name, str(value)))
+                parts.append('%s="%s"' % (name, value))
         return '<%s>' % ' '.join(parts)
 
     def endtag(self):
         return '</%s>' % self.tagname
 
     def emptytag(self):
-        return '<%s/>' % ' '.join([self.tagname] +
-                                  ['%s="%s"' % (n, v)
-                                   for n, v in self.attlist()])
+        return u'<%s/>' % ' '.join([self.tagname] +
+                                    ['%s="%s"' % (n, v)
+                                     for n, v in self.attlist()])
 
     def __len__(self):
         return len(self.children)
