@@ -223,13 +223,23 @@ class LaTeXTranslator(nodes.NodeVisitor):
         Encode special characters in `text` & return.
             # $ % & ~ _ ^ \ { }
         Escaping with a backslash does not help with backslashes, ~ and ^.
+
+            < > are only available in math-mode (really ?)
+            $ starts math- mode.
         """
         if self.verbatim:
             return text
+        # first the backslash
         text = text.replace("\\", '{\\textbackslash}')
+        # then dollar
+        text = text.replace("$", '{\\$}')
+        # then all that needs math mode
+        text = text.replace("<", '{$<$}')
+        text = text.replace(">", '{$>$}')
+        # then
         text = text.replace("&", '{\\&}')
         text = text.replace("_", '{\\_}')
-        text = text.replace("^", '{\verb|^|}') # ugly
+        text = text.replace("^", '{\\verb|^|}') # ugly
         text = text.replace("%", '{\\%}')
         text = text.replace("#", '{\\#}')
         text = text.replace("~", '{\\~{ }}')

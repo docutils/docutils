@@ -3,7 +3,7 @@ latex2e BUGS TODOS and other animals
 
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
-Rev. 2002-11-07
+Rev. 2002-11-08
 
 To do
 ~~~~~
