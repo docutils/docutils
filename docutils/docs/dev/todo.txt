@@ -741,22 +741,21 @@ Front-End Tools
 
 - Add a "--relative-paths" option?
 
-    All references to files (stylesheet, source file [in footer], PEP
-    template) are interpreted relative to the current working
-    directory, and adjusted relative to the destination directory.
-    For example::
-    
-        cd /work
-        html.py -s --stylesheet=default.css /src/test.txt /dst/text.html
-    
-    This will interpret the stylesheet as "work/default.css", so the
-    stylesheet link in the HTML (which is in the /dst dir) will read
-    "../work/default.css", and the source link (-s option) will read
-    "../src/test.txt".
-    
-    Perhaps the current behavior should be optional
-    ("--relative-paths" or something).  The default should probably be
-    not to process paths at all, just use them verbatim.
+  All references to files (stylesheet, source file [in footer], PEP
+  template) are interpreted relative to the current working directory,
+  and adjusted relative to the destination directory.  For example::
+  
+      cd /work
+      html.py -s --stylesheet=default.css /src/test.txt /dst/text.html
+  
+  This will interpret the stylesheet as "work/default.css", so the
+  stylesheet link in the HTML (which is in the /dst dir) will read
+  "../work/default.css", and the source link (-s option) will read
+  "../src/test.txt".
+  
+  Perhaps the current behavior should be optional ("--relative-paths"
+  or something).  The default should probably be not to process paths
+  at all, just use them verbatim.
 
 - ``options._destination`` shouldn't have to be set.  It's currently
   needed to calculate relative paths for the stylesheet link.  But the
@@ -850,8 +849,9 @@ Copyrights and Licensing
 The majority of the Docutils project code and documentation has been
 placed in the public domain.  Unless clearly and explicitly indicated
 otherwise, any patches (modifications to existing files) submitted to
-the project for inclusion (via SourceForge trackers, mailing lists, or
-private email) are assumed to be in the public domain as well.
+the project for inclusion (via CVS, SourceForge trackers, mailing
+lists, or private email) are assumed to be in the public domain as
+well.
 
 Any new files contributed to the project should clearly state their
 intentions regarding copyright, in one of the following ways:
