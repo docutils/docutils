@@ -14,7 +14,6 @@ import unittest
 
 import docutils
 import docutils.core
-from __init__ import DocutilsTestSupport
 
 
 class DocutilsXMLTestCase(unittest.TestCase):
@@ -48,13 +47,11 @@ class DocutilsXMLTestCase(unittest.TestCase):
                         else:
                             expected += self.bodynormal
 
-                        s = docutils.SettingsSpec()
-                        s.settings_default_overrides = settings
                         self.assertEqual(docutils.core.publish_string
                                          (source=self.input,
                                           reader_name='standalone',
                                           writer_name='docutils_xml',
-                                          settings_spec=s),
+                                          settings_overrides=settings),
                                          expected)
 
 
