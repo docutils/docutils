@@ -23,17 +23,22 @@ class IO:
     Base class for abstract input/output wrappers.
     """
 
-    source = None
-    destination = None
-
-    def __init__(self, options, source=None, destination=None):
-        """
-        :Parameters:
-            - `options`: a `docutils.optik.Values` object.
-            - `source`: identifies the source of input data.
-            - `destination`: identifies the destination for output data.
-        """
+    def __init__(self, options, source=None, source_path=None,
+                 destination=None, destination_path=None):
         self.options = options
+        """A `docutils.optik.Values` object."""
+
+        self.source = source
+        """The source of input data."""
+
+        self.source_path = source_path
+        """A text reference to the source."""
+
+        self.destination = destination
+        """The destination for output data."""
+
+        self.destination_path = destination_path
+        """A text reference to the destination."""
 
     def __repr__(self):
         return '%s: source=%r, destination=%r' % (self.__class__, self.source,
@@ -61,7 +66,7 @@ class IO:
             try:
                 decoded = unicode(data, enc)
                 return decoded
-            except UnicodeError:
+            except (UnicodeError, LookupError):
                 pass
         raise UnicodeError(
             'Unable to decode input data.  Tried the following encodings: %s.'
@@ -71,32 +76,34 @@ class IO:
 class FileIO(IO):
 
     """
-    IO for single, simple files.
+    IO for single, simple file-like objects.
     """
 
-    def __init__(self, options, source=None, destination=None):
+    def __init__(self, options, source=None, source_path=None,
+                 destination=None, destination_path=None):
         """
         :Parameters:
-            - `source`: one of (a) a file-like object, which is read directly;
-              (b) a path to a file, which is opened and then read; or (c)
-              `None`, which implies `sys.stdin`.
-            - `destination`: one of (a) a file-like object, which is written
-              directly; (b) a path to a file, which is opened and then
-              written; or (c) `None`, which implies `sys.stdout`.
+            - `source`: either a file-like object (which is read directly), or
+              `None` (which implies `sys.stdin` if no `source_path` given).
+            - `source_path`: a path to a file, which is opened and then read.
+            - `destination`: either a file-like object (which is written
+              directly) or `None` (which implies `sys.stdout` if no
+              `destination_path` given).
+            - `destination_path`: a path to a file, which is opened and then
+              written.
         """
-        IO.__init__(self, options)
-        if hasattr(source, 'read'):
-            self.source = source
-        elif source is None:
-            self.source = sys.stdin
-        else:
-            self.source = open(source)
-        if hasattr(destination, 'write'):
-            self.destination = destination
-        elif destination is None:
-            self.destination = sys.stdout
-        else:
-            self.destination = open(destination, 'w')
+        IO.__init__(self, options, source, source_path, destination,
+                    destination_path)
+        if source is None:
+            if source_path:
+                self.source = open(source_path)
+            else:
+                self.source = sys.stdin
+        if destination is None:
+            if destination_path:
+                self.destination = open(destination_path, 'w')
+            else:
+                self.destination = sys.stdout
 
     def read(self, reader):
         """
