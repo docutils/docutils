@@ -21,7 +21,8 @@ Module for convert rst documents to docbook
 class ConvertRstToDoc:
 
     def __init__(self, doc_debug = 0):
-        self.__rst_2_dbk_dir = rst_to_docbook.location.get_location()
+        outer_dir =  rst_to_docbook.location.get_location()
+        self.__rst_2_dbk_dir = os.path.join(outer_dir, '.rst_to_docbook')
         if doc_debug:
             self.__setup_debug()
         else:

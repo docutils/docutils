@@ -1,5 +1,5 @@
 # WARNING TO PAUL: DON'T EDIT THIS FILE use update.py instead.
-import paul.options, sys, os, tempfile
+import sys, os, tempfile
 
 
 
@@ -28,8 +28,10 @@ class XslConvert:
             self.__processor = 'xmllint'
         elif processor == '4suite':
             self.__processor = '4suite'
+        elif processor == 'xalan':
+            self.__processor = 'xalan'
         else:
-            sys.stderr.write('%s not a valid processor choice\n')
+            sys.stderr.write('%s not a valid processor choice\n' % processor)
             sys.exit(1)
     
     def transform(self, file, xsl_file, output, params = {}):
@@ -60,6 +62,8 @@ class XslConvert:
 
         if self.__processor == 'xmllint':
             self.__transform_xmllint(file, xsl_file, output, params)
+        if self.__processor == 'xalan':
+            self.__transform_xalan(file, xsl_file, output, params)
 
         elif self.__processor == '4suite':
             self.__transform_4suite(file, xsl_file, output, params)
@@ -107,6 +111,21 @@ class XslConvert:
         write_obj = utf8_writer(open(output, 'w'))
         write_obj.write(result)
         write_obj.close()
+
+    def __transform_xalan(self, file, xsl_file, output, params):
+        command = 'java org.apache.xalan.xslt.Process \
+        -Ts -in %s -xsl %s -out %s' %  (file, xsl_file, output)
+        
+        param_string = ''
+        keys = params.keys()
+        for key in keys:
+            param_string += ' %s "%s"' % (key, params[key])
+            
+        command += ' -PARAM %s' % param_string
+        print command
+        os.system(command)
+
+
         
 if __name__ == '__main__':
     test_xml_dir = '/home/paul/lib/python/xml_tools_trem/test_files/xml_files'
@@ -122,5 +141,5 @@ if __name__ == '__main__':
     test_xsl = os.path.join(test_xsl_dir, xsl_file)
     test_output = os.path.join(output_dir, output)
 
-    test_obj = XslConvert('4suite')
-    test_obj.transform (test_file, test_xsl, test_output, params = {'test-param': 'changed'})
+    test_obj = XslConvert('xalan')
+    test_obj.transform (test_file, test_xsl, test_output, params = {'test-param': 'changed in xalan'})
