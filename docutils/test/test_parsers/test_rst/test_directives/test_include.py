@@ -185,14 +185,14 @@ A paragraph.
             <title>
                 Inclusion 1
             <paragraph>
-                This file is used by 
+                This file is used by \n\
                 <literal>
                     test_include.py
                 .
-            <transition>
-            <system_message level="3" line="12" source="test data" type="ERROR">
-                <paragraph>
-                    Section may not end with a transition.
+            <pending>
+                .. internal attributes:
+                     .transform: docutils.transforms.structural.Transition
+                     .details:
         <section dupname="inclusion 1" id="id1">
             <title>
                 Inclusion 1
@@ -200,7 +200,7 @@ A paragraph.
                 <paragraph>
                     Duplicate implicit target name: "inclusion 1".
             <paragraph>
-                This file is used by 
+                This file is used by \n\
                 <literal>
                     test_include.py
                 .

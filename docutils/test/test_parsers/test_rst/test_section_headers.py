@@ -250,21 +250,24 @@ Test missing titles; blank line in-between.
 """,
 """\
 <document source="test data">
-    <system_message level="3" line="1" source="test data" type="ERROR">
-        <paragraph>
-            Document or section may not begin with a transition.
-    <transition>
-    <system_message level="3" line="3" source="test data" type="ERROR">
-        <paragraph>
-            At least one body element must separate transitions; adjacent transitions not allowed.
-    <transition>
+    <pending>
+        .. internal attributes:
+             .transform: docutils.transforms.structural.Transition
+             .details:
+    <pending>
+        .. internal attributes:
+             .transform: docutils.transforms.structural.Transition
+             .details:
     <paragraph>
         Test missing titles; blank line in-between.
-    <transition>
-    <transition>
-    <system_message level="3" line="9" source="test data" type="ERROR">
-        <paragraph>
-            Document or section may not end with a transition.
+    <pending>
+        .. internal attributes:
+             .transform: docutils.transforms.structural.Transition
+             .details:
+    <pending>
+        .. internal attributes:
+             .transform: docutils.transforms.structural.Transition
+             .details:
 """],
 ["""\
 ========================
