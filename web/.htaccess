@@ -3,7 +3,7 @@
 # Redirect snapshots to BerliOS.  The target URL may change in the
 # future, so use a temporary redirect (status 302).
 
-RedirectMatch temp /([^#]*-snapshot.tgz) http://docutils.berlios.de/$1
+RedirectMatch temp /([^#]*-snapshot.tgz) ftp://ftp.berlios.de/pub/docutils/$1
 
 # Redirection from old URLs to new URLs after a site reorganization.
 
