@@ -436,7 +436,9 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
          (SUPPRESS_HELP, ['--dump-pseudo-xml'], {'action': 'store_true'}),
          (SUPPRESS_HELP, ['--expose-internal-attribute'],
           {'action': 'append', 'dest': 'expose_internals',
-           'validator': validate_colon_separated_string_list}),))
+           'validator': validate_colon_separated_string_list}),
+         (SUPPRESS_HELP, ['--strict-visitor'], {'action': 'store_true'}),
+         ))
     """Runtime settings and command-line options common to all Docutils front
     ends.  Setting specs specific to individual Docutils components are also
     used (see `populate_from_components()`)."""

@@ -335,6 +335,14 @@ _`source_url`
     Default: compute if source_link (None).  Options: ``--source-url,
     --no-source-link``.
 
+_`strict_visitor`
+    When processing a document tree with the Visitor pattern, ignore
+    unknown node types listed as optional.  For transitional
+    development use.
+
+    Default: disabled (None).  Option: ``--strict-visitor`` (hidden,
+    for development use only).
+
 _`toc_backlinks`
     Enable backlinks from section titles to table of contents entries
     ("entry"), to the top of the TOC ("top"), or disable ("none").
