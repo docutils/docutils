@@ -155,29 +155,18 @@ Also see the `SourceForge Bug Tracker`_.
 
 * Another bug from David Abrahams (run with ``rst2html.py --traceback``)::
 
-      .. [#crtp] See |runtime|
+      |substitution| and again a |substitution|.
 
-      foo [#tag_dispatching]_
+      .. |substitution| replace:: ref__
 
-      .. [#tag_dispatching] See  |runtime|
-
-      .. |runtime| replace:: 7__
-      __ runtime.html
-
-      __ reference/__main.html
+      __ a.html
+      __ b.html
 
   Change the references.Substitutions tranform's priority from 220 to
   680, so it happens after reference resolution?  Then we have to deal
   with multiple IDs.  Perhaps the Substitution transform should remove
   all IDs from definitions after the first substitution reference is
   processed.
-
-* Under Python 2.1, the test suite should skip tests of
-  ``docutils/readers/python/`` but still tries to import it from
-  ``test/test_readers/test_python/test_functions.py``.  This now
-  causes an extra error message about failed import; instead, it
-  should not have been skipped completely (a message about the
-  skipping is printed anyway).
 
 
 ..
