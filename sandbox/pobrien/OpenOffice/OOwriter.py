@@ -9,7 +9,6 @@ __revision__ = "$Revision$"[11:-2]
 # Based on work orginally created by:
 # Author: Aahz
 # Contact: aahz@pythoncraft.com
-# Copyright: This module has been placed in the public domain.
 
 __docformat__ = 'reStructuredText'
 
@@ -25,7 +24,8 @@ import OOtext
 section_styles = [
     '.ch title',
     '.head 1',
-    '.head 2'
+    '.head 2',
+    '.head 3alone',
     ]
 
 
@@ -258,7 +258,7 @@ class Translator(nodes.NodeVisitor):
         self.body.append('</td>')
 
     def visit_docinfo(self, node):
-        pass
+        raise nodes.SkipNode
 
     def depart_docinfo(self, node):
         pass
@@ -435,8 +435,18 @@ class Translator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_image(self, node):
-        name = "Figure: %s\n" % node.attributes['uri']
-        self.body.append(name)
+        name = node.attributes['uri']
+        self.body.append('<draw:image draw:style-name="imageframe"\n')
+        self.body.append('draw:name="%s"\n' % name)
+        self.body.append('text:anchor-type="char"\n')
+        self.body.append('svg:width="1inch"\n')
+        self.body.append('svg:height="1inch"\n')
+        self.body.append('draw:z-index="0"\n')
+        self.body.append('xlink:href="#Pictures/%s"\n' % name)
+        self.body.append('xlink:type="simple"\n') 
+        self.body.append('xlink:show="embed"\n')
+        self.body.append('xlink:actuate="onLoad"/>\n')
+        self.body.append('Figure X.X:\n')
 
     def depart_image(self, node):
         pass
@@ -693,7 +703,7 @@ class Translator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_title(self, node):
-        """Only 3 section levels are supported by this writer."""
+        """Only 4 section levels are supported by this writer."""
         title_tag = self.start_para % section_styles[self.section_level]
         self.body.append(title_tag)
 
@@ -701,7 +711,10 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.end_para)
 
     def visit_topic(self, node):
-        pass
+        if node.has_key('class') and node['class'] == 'contents':
+            raise nodes.SkipNode
+        else:
+            pass
 
     def depart_topic(self, node):
         pass
@@ -723,3 +736,19 @@ class Translator(nodes.NodeVisitor):
         print "Failure is", node.astext()
         raise NotImplementedError('visiting unimplemented node type: %s'
                                   % node.__class__.__name__)
+
+
+"""
+<text:p text:style-name="Standard">
+<draw:image draw:style-name="fr1"
+draw:name="G2: hedgehog2" 
+text:anchor-type="as-char"
+svg:width="3.2465inch" 
+svg:height="1.6681inch" 
+draw:z-index="0"
+xlink:href="#Pictures/100000000000041D0000021D9EBA28D3.png"
+xlink:type="simple" 
+xlink:show="embed"
+xlink:actuate="onLoad"/>
+</text:p>
+"""
