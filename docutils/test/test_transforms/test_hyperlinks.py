@@ -601,21 +601,6 @@ Let's reference it (`explicit target`_) to avoid an irrelevant error.
                 explicit target
             ) to avoid an irrelevant error.
 """],
-# ["""\
-# Title
-# -----
-
-# Duplicate implicit targets.
-
-# Title
-# -----
-
-# indirect_ internal
-
-# .. _indirect: implicit_
-# """,
-# """\
-# """],
 ])
 
 
