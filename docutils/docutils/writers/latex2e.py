@@ -356,6 +356,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.topic_class = ''
         # column specification for tables
         self.colspecs = []
+        # do we have one or more authors
+        self.author_stack = None
         # Flags to encode
         # ---------------
         # verbatim: to tell encode not to encode.
@@ -535,13 +537,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item(node)
 
     def visit_authors(self, node):
-        # ignore. visit_author is called for each one
-        # self.visit_docinfo_item(node, 'author')
-        pass
+        # not used: visit_author is called anyway for each author.
+        if self.use_latex_docinfo:
+            self.author_stack = []
 
     def depart_authors(self, node):
-        # self.depart_docinfo_item(node)
-        pass
+        if self.use_latex_docinfo:
+            self.head.append('\\author{%s}\n' % \
+                ' \\and '.join(self.author_stack) )
+            self.author_stack = None
 
     def visit_block_quote(self, node):
         self.body.append( '\\begin{quote}\n')
@@ -699,7 +703,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 else:
                     self.pdfauthor += self.author_separator + self.attval(node.astext())
             if self.use_latex_docinfo:
-                self.head.append('\\author{%s}\n' % self.attval(node.astext()))
+                if self.author_stack == None:
+                    self.head.append('\\author{%s}\n' % self.attval(node.astext()))
+                else:
+                    self.author_stack.append( self.attval(node.astext()) )
                 raise nodes.SkipNode
         elif name == 'date':
             if self.use_latex_docinfo:

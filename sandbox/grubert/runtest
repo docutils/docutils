@@ -26,7 +26,7 @@ function report() {
   fi
 }
 
-#CMD="../../tools/rst2latex.py --snap-footnote-refs=1"
+BASE_CMD="../../tools/rst2latex.py"
 #CMD="../../tools/rst2latex.py --footnote-references=superscript"
 #CMD="../../tools/rst2latex.py --documentclass=book --hyperlink-color=0"
 
@@ -87,12 +87,14 @@ REFF="$OUTF.ref"
 $CMD $INF > $OUTF
 do_diff $REFF $OUTF 
 
-CMD="../../tools/rst2latex.py --use-latex-docinfo"
-INF=test/docinfo.txt
-OUTF="$INF-use-latex-docinfo.tex"
-REFF="$OUTF.ref"
-$CMD $INF > $OUTF
-do_diff $REFF $OUTF 
+CMD="$BASE_CMD --use-latex-docinfo"
+for F in docinfo docinfo-2 ; do
+  INF=test/$F.txt
+  OUTF="$INF-use-latex-docinfo.tex"
+  REFF="$OUTF.ref"
+  $CMD $INF > $OUTF
+  do_diff $REFF $OUTF 
+done
 
 CMD="../../tools/rst2latex.py"
 # with latex toc
