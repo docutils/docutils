@@ -1,3 +1,5 @@
+.. WARNING TO PAUL: DON'T EDIT THIS FILE
+
 README: |scriptName|
 ^^^^^^^^^^^^^^^^^^^^^
 :Author: Paul Tremblay
