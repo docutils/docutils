@@ -733,13 +733,13 @@ definition.
 
 Each definition list item contains a term, an optional classifier, and
 a definition.  A term is a simple one-line word or phrase.  An
-optional classifier may follow the term on the same line, after " : "
-(space, colon, space).  A definition is a block indented relative to
-the term, and may contain multiple paragraphs and other body elements.
-There may be no blank line between a term and a definition (this
-distinguishes definition lists from `block quotes`_).  Blank lines are
-required before the first and after the last definition list item, but
-are optional in-between.  For example::
+optional classifier may follow the term on the same line, after an
+inline " : " (space, colon, space).  A definition is a block indented
+relative to the term, and may contain multiple paragraphs and other
+body elements.  There may be no blank line between a term line and a
+definition block (this distinguishes definition lists from `block
+quotes`_).  Blank lines are required before the first and after the
+last definition list item, but are optional in-between.  For example::
 
     term 1
         Definition 1.
@@ -751,6 +751,10 @@ are optional in-between.  For example::
 
     term 3 : classifier
         Definition 3.
+
+Inline markup is parsed in the term line before the term/classifier
+delimiter (" : ") is recognized.  The delimiter will only be
+recognized if it appears outside of any inline markup.
 
 A definition list may be used in various ways, including:
 
