@@ -588,6 +588,26 @@ first asterisk, like this::
 Escaping the second asterisk doesn't hurt, but it isn't necessary.
 
 
+How can I make a literal block with *some* formatting?
+------------------------------------------------------
+
+Use the `parsed-literal`_ directive.
+
+.. _parsed-literal: docs/ref/rst/directives.html#parsed-literal
+
+Scenario: a document contains some source code, which calls for a
+literal block to preserve linebreaks and whitespace.  But part of the
+source code should be formatted, for example as emphasis or as a
+hyperlink.  This calls for a *parsed* literal block::
+
+    .. parsed-literal::
+
+       print "Hello world!"  # *tricky* code [1]_
+
+The emphasis (``*tricky*``) and footnote reference (``[1]_``) will be
+parsed.
+
+
 HTML Writer
 ===========
 
