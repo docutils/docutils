@@ -85,6 +85,10 @@ General
 * Add option for file (and URL) access restriction to make Docutils
   usable in Wikis and similar applications.
 
+  2005-03-21: added ``file_insertion_enabled`` & ``raw_enabled``
+  settings.  These partially solve the problem, allowing or disabling
+  **all** file accesses, but not limited access.
+
 * Refactor
 
   - Rename methods & variables according to the `Python coding
