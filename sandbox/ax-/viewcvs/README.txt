@@ -10,7 +10,9 @@ this is a modification of ViewCVS_ that enables rst .txt files in ViewCVS_
 repositories to be viewed as .html ("markup").  this is achieved by adding a new 
 "markup streamer" ``markup_stream_rst()`` to viewcvs.py that basically does the 
 same as docutils_' tools/html.py [DOC]_ [SRC]_.  once installed, any .txt file 
-w/ a link ending w/ view=auto or view=markup will be rendered as html.  
+w/ a link ending w/ view=auto or view=markup will be rendered as html.
+
+do you think this is useful? please `send feedback`_. much appreciated!
 
 
 requirements
@@ -44,6 +46,7 @@ todo
 * error handling (.txt may not be in rst format)
 * review the code (i'm just starting w/ python ...)
 
+.. _send feedback: mailto:axel(at)kollmorgen[dot]net
 .. _ViewCVS: http://viewcvs.sourceforge.net/
 .. _docutils: http://docutils.sourceforge.net/
 .. [DOC] http://docutils.sourceforge.net/docs/tools.html#html-py
