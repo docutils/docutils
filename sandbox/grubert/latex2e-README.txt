@@ -106,6 +106,7 @@ ATTENTION
 Done
 ~~~~
 
+* german (de*) quotes.
 * colspec for tables without heads.
 * multipage table
 * field lists as description inside quote.
