@@ -24,8 +24,8 @@ from docutils import writers, nodes, languages
 
 class Writer(writers.Writer):
 
-    names = ('html', 'html4css1', 'xhtml')
-    """Names this writer answers to."""
+    supported = ('html', 'html4css1', 'xhtml')
+    """Formats this writer supports."""
 
     output = None
     """Final translated form of `document`."""
@@ -41,13 +41,13 @@ class Writer(writers.Writer):
 
 class HTMLTranslator(nodes.NodeVisitor):
 
-    def __init__(self, doctree):
-        nodes.NodeVisitor.__init__(self, doctree)
-        self.language = languages.getlanguage(doctree.languagecode)
+    def __init__(self, document):
+        nodes.NodeVisitor.__init__(self, document)
+        self.language = languages.getlanguage(document.language_code)
         self.head = ['<!DOCTYPE html PUBLIC'
                      ' "-//W3C//DTD HTML 4.01 Transitional//EN"\n'
                      ' "http://www.w3.org/TR/html4/loose.dtd">\n',
-                     '<html lang="%s">\n<head>\n' % doctree.languagecode,
+                     '<html lang="%s">\n<head>\n' % document.language_code,
                      '<link rel="stylesheet" href="default.css"'
                      ' type="text/css" />\n']
         self.body = ['</head>\n<body>\n']
@@ -187,7 +187,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         if node.has_key('refid'):
             href = '#' + node['refid']
         elif node.has_key('refname'):
-            href = '#' + self.doctree.nameids[node['refname']]
+            href = '#' + self.document.nameids[node['refname']]
         self.body.append(self.starttag(node, 'a', '[', href=href,
                                        CLASS='citation-reference'))
 
@@ -417,7 +417,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         if node.has_key('refid'):
             href = '#' + node['refid']
         elif node.has_key('refname'):
-            href = '#' + self.doctree.nameids[node['refname']]
+            href = '#' + self.document.nameids[node['refname']]
         self.body.append(self.starttag(node, 'a', '', href=href,
                                        CLASS='footnote-reference'))
 
@@ -589,7 +589,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         elif node.has_key('refid'):
             href = '#' + node['refid']
         elif node.has_key('refname'):
-            href = '#' + self.doctree.nameids[node['refname']]
+            href = '#' + self.document.nameids[node['refname']]
         self.body.append(self.starttag(node, 'a', '', href=href,
                                        CLASS='reference'))
 
@@ -644,7 +644,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</h2>\n')
 
     def visit_system_message(self, node):
-        if node['level'] < self.doctree.reporter['writer'].warninglevel:
+        if node['level'] < self.document.reporter['writer'].warning_level:
             raise nodes.SkipNode
         self.body.append(self.starttag(node, 'div', CLASS='system-message'))
         self.body.append('<p class="system-message-title">')
