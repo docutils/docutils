@@ -42,7 +42,7 @@ __docformat__ = 'reStructuredText'
 import sys
 import os
 import unittest
-import difflib
+import docutils_difflib
 import inspect
 from pprint import pformat
 from types import UnicodeType
@@ -160,7 +160,7 @@ class CustomTestSuite(unittest.TestSuite):
 
 class CustomTestCase(unittest.TestCase):
 
-    compare = difflib.Differ().compare
+    compare = docutils_difflib.Differ().compare
     """Comparison method shared by all subclasses."""
 
     def __init__(self, method_name, input, expected, id,

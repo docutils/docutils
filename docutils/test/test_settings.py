@@ -12,7 +12,7 @@ Tests of runtime settings.
 
 import sys
 import os
-import difflib
+import docutils_difflib
 import pprint
 import warnings
 import unittest
@@ -62,7 +62,7 @@ class ConfigFileTests(unittest.TestCase):
                   'error_encoding_error_handler': 'strict'},
         }
 
-    compare = difflib.Differ().compare
+    compare = docutils_difflib.Differ().compare
     """Comparison method shared by all tests."""
 
     def setUp(self):
