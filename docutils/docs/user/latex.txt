@@ -354,13 +354,14 @@ Miscellaneous
     ``\appendix``, ``\makeindex``, ``\makeglossary`` and some such 
     for larger documents.
 
-* Hyphens: co-developers should be co--developers ?
-* The indentional problematic error in test.txt is not referring anywhere.
-* Footnotes are not all on the same page (as in tools/test.txt) and do not link back
-  and forth.
+* Hyphens: co-developers should be co--developers?
+* The indentional problematic error in docs/user/rst/demo.txt is not
+  referring anywhere.
+* Footnotes are not all on the same page (as in
+  docs/user/rst/demo.txt) and do not link back and forth.
 * No link to system errors.	
-* Hyperlinks are not hyphenated this leads to bad spacing. see tools/test.txt 
-  2.14 directives directives
+* Hyperlinks are not hyphenated; this leads to bad spacing. See
+  docs/user/rst/demo.txt 2.14 directives.
 * Meta keywords into pdf ?
 * Pagestyle headings does not work, when sections are starred.
 * For additional docinfo items: the field_body is inserted as text, i.e. no
