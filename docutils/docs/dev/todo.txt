@@ -62,6 +62,12 @@ General
     lists & PEP headers.  (The same could apply to "language".)
   - Need a Unicode -> HTML entities codec for HTML writer?
 
+- Distributor/filer object passed to Writer, equivalent passed to
+  Reader, to provide I/O access with a uniform API?  (Names for input
+  object: inputter, sourcer, scanner.)  Simple vs. complex I/O
+  structure: single file or string, vs. directory/package or tree of
+  strings.  Simple string I/O is default?
+
 
 Specification
 -------------
@@ -101,7 +107,7 @@ reStructuredText Parser
   contexts).  XLink/XPointer?  ``.. baseref::``?  See Doc-SIG
   2001-08-10.
 
-- Add character processing?  For example:
+- Add _`character processing`?  For example:
 
   - ``--`` -> em-dash (or ``--`` -> en-dash, and ``---`` -> em-dash).
     (Look for pre-existing conventions.)
@@ -212,7 +218,7 @@ reStructuredText Parser
 Directives
 ``````````
 
-- Allow directives to be added at run-time.
+- Allow directives to be added at run-time?
 
 - Use the language module for directive attribute names?
 
@@ -224,11 +230,11 @@ Directives
     image only in non-HTML writers?)
 
   - _`parts.endnotes`
-  
+
   - _`parts.citations`
-  
+
   - _`parts.topic`
-  
+
   - _`parts.sectnum` (section numbering; add support to .contents;
     could be cmdline option also)
 
@@ -253,20 +259,41 @@ Directives
     time or at substitution time?  Dangerous?  Perhaps limit to canned
     macros; see text.date_ below.
 
-  - @@@ _`body.qa` (directive a.k.a. "faq", "questions"): Questions &
+  - _`body.qa` (directive a.k.a. "faq", "questions"): Questions &
     Answers.  Implement as a generic two-column marked list?  As a
-    standalone (non-directive) construct?  (Is the markup ambiguous?) 
+    standalone (non-directive) construct?  (Is the markup ambiguous?)
     Add support to parts.Contents (optional attribute "qa" done).
 
     New elements would be required.  Perhaps::
 
         <!ELEMENT question_list (question_list_item+)>
         <!ATTLIST question_list
-            numbered  (no | local | global)  #IMPLIED
+            numbering  (none | local | global)
+                                #IMPLIED
             start     NUMBER    #IMPLIED>
         <!ELEMENT question_list_item (question, answer*)>
         <!ELEMENT question %text.model;>
         <!ELEMENT answer (%body.elements;)+>
+
+    Originally I thought of implementing a Q&A list with special
+    syntax::
+
+        Q: What am I?
+
+        A: You are a question-and-answer
+           list.
+
+        Q: What are you?
+
+        A: I am the omniscient "we".
+
+    Where each "Q" and "A" could also be numbered (e.g., "Q1").
+    However, a simple enumerated or bulleted list will do just fine
+    for syntax.  A directive could treat the list specially; e.g. the
+    first paragraph could be treated as a question, the remainder as
+    the answer (multiple answers could be represented by nested
+    lists).  Without special syntax, this directive becomes low
+    priority.
 
   - _`body.columns`: Multi-column table/list, with number of columns
     as argument.
@@ -305,7 +332,7 @@ Directives
 
     Within a "verse" element, should any other constructs be allowed?
     Should lists be recognized?  No; verse blocks are variations on
-    paragraphs, and need not contain arbitrary nested body elements. 
+    paragraphs, and need not contain arbitrary nested body elements.
     However, the equivalent of block quotes (i.e., further indented
     blocks) would be nested verse elements.  These could be "chorus"
     blocks.
@@ -323,9 +350,22 @@ Directives
                 as soon as it comes.
             Love, Ewan.
 
-    Directive name alternatives: verse, addressblock, address,
-    lineblock, lines, multiline, freeform, keeplines, nowrap, haiku,
-    keepbreaks, linebreaks.
+    Another idea for syntax: in an ordinary paragraph, if the first
+    line ends with a backslash (escaping the newline), interpret the
+    entire paragraph as a verse block?  This ties in to the `character
+    processing`_ idea, above.  For example::
+
+        Adding a backslash\
+        And this paragraph becomes
+        An awful haiku
+
+    (And arguably invalid, since in Japanese the word "haiku" contains
+    three syllables.)
+
+    Directive/construct name alternatives: verse, addressblock,
+    address, lineblock, lines, multiline, freeform, keeplines, nowrap,
+    haiku, keepbreaks, linebreaks, obeylines, linewise, textblock,
+    textart, text, linetext.
 
   - _`colorize.python`: Colorize Python code.  Fine for HTML output,
     but what about other formats?  Revert to a literal block?  Do we
@@ -391,39 +431,74 @@ Unimplemented Transforms
 HTML Writer
 -----------
 
-- @@ Allow for style sheet info to be passed in, either as a <LINK>,
+- @@@ Allow for style sheet info to be passed in, either as a <LINK>,
   or as embedded style info.
 
-- @ Construct a templating system, as in ht2html/yaptu, using
+- @@@ Construct a templating system, as in ht2html/yaptu, using
   directives and substitutions for dynamic stuff.
 
 - @@ Improve the granularity of document parts in the HTML writer, so
   that one could just grab the parts needed.
 
-- @@ Return a string instead of writing to a file?  Leave all I/O up
+- @@@ Return a string instead of writing to a file?  Leave all I/O up
   to the client?  Or up to an explicit distributor/filer?
 
-- @@ Add an option to generate "source text" links (i.e., click to see
-  the source text).
+- @@ Add an option to generate a "View source text" link.
 
-- @@ Add an option to generate "generated by Docutils from
-  reStructuredText source" messages, with links.
+- @@ Add an option to generate a "Generated by Docutils [from
+  reStructuredText source?]" message, with links.
+
+- If a list's items contain single paragraphs only, omit the <P> tags?
+  Recursively?  (if item == list whose items are single paragraphs
+  only...)
 
 
-Front-End
----------
+Front-Ends
+----------
 
-- Combine the common code from the existing front-ends into a single
-  library.
+@@ Rather than a single all-purpose program, it is probably preferable
+to have a bunch of small front-ends, each specialized for a specific
+reader (and possibly writer as well).  Each of the front-ends would
+depend on a common code library described below.
+
+- Combine the common code from the existing front-ends into a
+  single library (docutils.frontend? docutils.core.xyz?).
 
   - Use Optik to do modular command-line option processing.
+
+    - Pass around an Optik 'options' object?  Attach it to the
+      document?  What to do when *not* using a front-end (i.e., when
+      docutils is imported by an unrelated client)?
 
   - The core would support all common options (--reader, --writer,
     etc.).
 
   - Each front-end would add their own specific options (HTML:
     --stylesheet, etc.), and perhaps disable common options that don't
-    apply.
+    apply.  (Added/removed dynamically?  Is this possible with Optik?
+    Is it desirable?)
+
+- Command-line option ideas.  Common options:
+
+  --credit        Include a "Generated by Docutils" credit with a
+                  link.
+  --source-link   Include a "(View document source)" link.
+  --verbose       Report all system messages, info-level and higher.
+                  (Same as "--report=info".)
+  --debug         Report debug-level system messages.
+  --report=level  Set verbosity; report system messages at or higher
+                  than level (by name or number: "info" or "1",
+                  warning/2, error/3, severe/4, none/5+).
+  --halt=level    Set the level at or above which system messages are
+                  converted to exceptions, halting execution
+                  immediately.  Levels as in --report.
+  --strict        Same as "--halt=info": halt processing at the
+                  slightest problem.
+
+  Options specific to HTML writer:
+
+  --stylesheet=file
+                  Specify a stylesheet (default: "default.css").
 
 
 Project Policies
@@ -493,8 +568,8 @@ applicable), with particular emphasis as follows:
   cases to the test suite.  Practise test-first programming; it's fun,
   it's addictive, and it works!
 
-- The sandbox_ is the place to put new, untried code.  See `Additions
-  to Docutils`_ below.
+- The sandbox_ directory is the place to put new, untried code.  See
+  `Additions to Docutils`_ and `The Sandbox`_ below.
 
 Please consider subscribing to the appropriate `mailing lists`_.
 
@@ -510,21 +585,15 @@ Additions to Docutils
 `````````````````````
 
 Additions to the project, such as new components, should be developed
-in in the sandbox_ until they're in good shape, usable, and reasonably
-complete.  Adding to the `main source tree`_ implies a commitment to
-the Docutils user community.
+in the sandbox_ directory until they're in good shape, usable, and
+reasonably complete.  Adding to the `main source tree`_ implies a
+commitment to the Docutils user community.
 
 - Why the sandbox?
 
   Developers should be able to try out new components while they're
-  being developed for addition to main source tree.
-
-  The sandbox is a place to play around, to try out and share ideas.
-  It's a part of the CVS repository but it isn't distributed as part
-  of Docutils releases.  Each developer who wants to play in the
-  sandbox should create their own subdirectory (suggested name:
-  SourceForge ID, or given name + family initial).  It's OK to make a
-  mess!  But please, play nice.
+  being developed for addition to main source tree.  See `The
+  Sandbox`_ below.
 
 - "Good shape" means that the component code is clean, readable, and
   free of junk (unused legacy code; by analogy with "junk DNA").
@@ -534,7 +603,7 @@ the Docutils user community.
 
 - "Reasonably complete" means that the code must handle all input.
   Here "handle" means that no input can cause the code to fail (cause
-  an exception, or silently and incorrectly produce nothing). 
+  an exception, or silently and incorrectly produce nothing).
   "Reasonably complete" does not mean "finished" (no work left to be
   done).  For example, a writer must handle every standard element
   from the Docutils document model; for unimplemented elements, it
@@ -548,6 +617,45 @@ work!  If there are any issues with your code, or if you only have
 time for gradual development, you should put it in the sandbox first.
 It's easy to move code over to the main source tree once it's closer
 to completion.
+
+
+The Sandbox
+-----------
+
+The sandbox_ directory is a place to play around, to try out and share
+ideas.  It's a part of the CVS repository but it isn't distributed as
+part of Docutils releases.  Feel free to check in code to the CVS
+sandbox; that way people can try it out but you won't have to worry
+about it working 100% error-free, as is the goal of the `main source
+tree`_.  Each developer who wants to play in the sandbox should create
+their own subdirectory (suggested name: SourceForge ID, or given name
++ family initial).  It's OK to make a mess!  But please, play nice.
+
+In order to minimize the work necessary for others to install and try
+out new, experimental components, the following sandbox directory
+structure is recommended::
+
+    sandbox/
+        userid/
+            component_name/ # A verbose name is best.
+                README.txt  # Please explain requirements,
+                            # purpose/goals, and usage.
+                docs/
+                    ...
+                component.py    # The component is a single module.
+                            # *OR* (but *not* both)
+                component/  # The component is a package.
+                    __init__.py  # Contains the Reader/Writer class.
+                    other1.py    # Other modules and data files used
+                    data.txt     # by this component.
+                    ...
+                test/       # Test suite.
+                    ...
+                tools/      # For front-ends etc.
+                    ...
+                setup.py    # Use Distutils to install the component
+                            # code and tools/ files into the right
+                            # places in Docutils.
 
 
 ..
