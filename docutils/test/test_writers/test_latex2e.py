@@ -30,7 +30,7 @@ latex_head = """\
 \\usepackage{graphicx}
 \\usepackage{color}
 \\usepackage{multirow}
-\\usepackage[colorlinks,linkcolor=blue]{hyperref}
+\\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
 \\usepackage[a4paper,margin=2cm,nohead]{geometry}
 %% generator Docutils: http://docutils.sourceforge.net/
 \\newlength{\\admwidth}
