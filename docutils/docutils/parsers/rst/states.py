@@ -1204,16 +1204,72 @@ class Body(RSTState):
         """Block quote."""
         indented, indent, line_offset, blank_finish = \
               self.state_machine.get_indented()
-        blockquote = self.block_quote(indented, line_offset)
+        blockquote, messages = self.block_quote(indented, line_offset)
         self.parent += blockquote
+        self.parent += messages
         if not blank_finish:
             self.parent += self.unindent_warning('Block quote')
         return context, next_state, []
 
     def block_quote(self, indented, line_offset):
+        blockquote_lines, attribution_lines, attribution_offset = \
+              self.check_attribution(indented, line_offset)
         blockquote = nodes.block_quote()
-        self.nested_parse(indented, line_offset, blockquote)
-        return blockquote
+        self.nested_parse(blockquote_lines, line_offset, blockquote)
+        messages = []
+        if attribution_lines:
+            attribution, messages = self.parse_attribution(attribution_lines,
+                                                           attribution_offset)
+            blockquote += attribution
+        return blockquote, messages
+
+    attribution_pattern = re.compile(r'--(?![-\n]) *(?=[^ \n])')
+
+    def check_attribution(self, indented, line_offset):
+        """
+        Check for an attribution in the last contiguous block of `indented`.
+
+        * First line after last blank line must begin with "--" (etc.).
+        * Every line after that must have consistent indentation.
+
+        Return a 3-tuple: (block quote lines, attribution lines,
+        attribution offset).
+        """
+        blank = None
+        nonblank_seen = None
+        indent = 0
+        for i in range(len(indented) - 1, 0, -1): # don't check first line
+            this_line_blank = not indented[i].strip()
+            if nonblank_seen and this_line_blank:
+                match = self.attribution_pattern.match(indented[i + 1])
+                if match:
+                    blank = i
+                break
+            elif not this_line_blank:
+                nonblank_seen = 1
+        if blank and len(indented) - blank > 2: # multi-line attribution
+            indent = (len(indented[blank + 2])
+                      - len(indented[blank + 2].lstrip()))
+            for j in range(blank + 3, len(indented)):
+                if indent != (len(indented[j])
+                              - len(indented[j].lstrip())): # bad shape
+                    blank = None
+                    break
+        if blank:
+            a_lines = indented[blank + 1:]
+            a_lines.strip_indent(match.end(), end=1)
+            a_lines.strip_indent(indent, start=1)
+            return (indented[:blank], a_lines, line_offset + blank + 1)
+        else:
+            return (indented, None, None)
+
+    def parse_attribution(self, indented, line_offset):
+        text = '\n'.join(indented).rstrip()
+        lineno = self.state_machine.abs_line_number() + line_offset
+        textnodes, messages = self.inline_text(text, lineno)
+        node = nodes.attribution(text, '', *textnodes)
+        node.line = lineno
+        return node, messages
 
     def bullet(self, match, context, next_state):
         """Bullet list item."""
@@ -1432,8 +1488,9 @@ class Body(RSTState):
             self.parent += msg
             indented, indent, line_offset, blank_finish = \
                   self.state_machine.get_first_known_indented(match.end())
-            blockquote = self.block_quote(indented, line_offset)
+            blockquote, messages = self.block_quote(indented, line_offset)
             self.parent += blockquote
+            self.parent += messages
             if not blank_finish:
                 self.parent += self.unindent_warning('Option list')
             return [], next_state, []
@@ -2582,8 +2639,9 @@ class Text(RSTState):
               self.state_machine.get_indented()
         definitionlistitem = nodes.definition_list_item(
             '\n'.join(termline + list(indented)))
-        termlist, messages = self.term(
-              termline, self.state_machine.abs_line_number() - 1)
+        lineno = self.state_machine.abs_line_number() - 1
+        definitionlistitem.line = lineno
+        termlist, messages = self.term(termline, lineno)
         definitionlistitem += termlist
         definition = nodes.definition('', *messages)
         definitionlistitem += definition
