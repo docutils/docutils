@@ -171,8 +171,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                  'http://docutils.sourceforge.net/" />\n')
     stylesheet_link = '<link rel="stylesheet" href="%s" type="text/css" />\n'
     embedded_stylesheet = '<style type="text/css">\n\n%s\n</style>\n'
-    named_tags = {'a': 1, 'applet': 1, 'form': 1, 'frame': 1, 'iframe': 1,
-                  'img': 1, 'map': 1}
+    named_tags = ['a', 'applet', 'form', 'frame', 'iframe', 'img', 'map']
     words_and_spaces = re.compile(r'\S+| +|\n')
 
     def __init__(self, document):
@@ -266,7 +265,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         for att in ('id',):             # node attribute overrides
             if node.has_key(att):
                 atts[att] = node[att]
-        if atts.has_key('id') and self.named_tags.has_key(tagname):
+        if atts.has_key('id') and tagname in self.named_tags:
             atts['name'] = atts['id']   # for compatibility with old browsers
         attlist = atts.items()
         attlist.sort()
