@@ -58,14 +58,14 @@ cd $snapshotdir
 cvs -Q -z3 $root update -rHEAD $project sandbox web
 
 # ensure proper permissions are set
-#find . -type f | xargs chmod ug+rw 2> /dev/null
-#find . -type d | xargs chmod ug+rwx 2> /dev/null
+#find . -type f -exec chmod ug+rw {} \; 2> /dev/null
+#find . -type d -exec chmod ug+rwx {} \; 2> /dev/null
 
 # ensure executable bits are set
 chmod +x $project/*.py
 chmod +x $project/tools/*.py
 chmod +x $project/test/alltests.py
-find $project/test -name 'test_*.py' | xargs chmod +x
+find $project/test -name 'test_*.py' -exec chmod +x {} \;
 
 # create the snapshots
 exclude='--exclude=CVS --exclude=.cvsignore'
@@ -87,8 +87,8 @@ cp -rf sandbox $dest
 cp -rf web/* $dest
 
 # ensure proper permissions are set
-#find . -type f | xargs chmod ug+rw 2> /dev/null
-#find . -type d | xargs chmod ug+rwx 2> /dev/null
+#find . -type f -exec chmod ug+rw {} \; 2> /dev/null
+#find . -type d -exec chmod ug+rwx {} \; 2> /dev/null
 
 cd $dest
 find -name CVS -type d -exec rm -rf {} \;
