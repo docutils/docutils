@@ -52,8 +52,8 @@ class DumbPythonPointFormatter(nodes.NodeVisitor):
             name = node.attributes['name']
         self.slidenum += 1
         self.w('<slide id="Slide%03d" title="%s">\n'
-            '<frame x="160" y="72" width="600" height="432" leftmargin="36"'
-            'rightmargin="0">\n'%(self.slidenum, name))
+               '<frame x="90" y="72" width="600" height="432" leftmargin="12"'
+               'rightmargin="0">\n'%(self.slidenum, name))
     def depart_section(self, node):
         self.w('</frame>\n</slide>\n')
 
@@ -65,7 +65,7 @@ class DumbPythonPointFormatter(nodes.NodeVisitor):
         self.w('</para>\n')
 
     def visit_paragraph(self, node):
-        if not self.suppress_para: self.w('<para>')
+        if not self.suppress_para: self.w('<para style="BodyText">')
     def depart_paragraph(self, node):
         if not self.suppress_para: self.w('</para>\n')
 
@@ -113,13 +113,36 @@ class DumbPythonPointFormatter(nodes.NodeVisitor):
         self.suppress_para = 0
         self.w('</para>\n')
 
+    def visit_field(self, node):
+        self.w('<para>')
+    def depart_field(self, node):
+        self.w('</para>\n')
+
+    def visit_field_body(self, node):
+        self.suppress_para = 1
+        return
+    def depart_field_body(self, node):
+        self.suppress_para = 0
+
+    def visit_field_list(self, node):
+        return
+    def depart_field_list(self, node):
+        return
+
+    def visit_field_name(self, node):
+        self.w('<b>')
+
+    def depart_field_name(self, node):
+        self.w(':')
+        self.w('</b>')
+    
     # Literal Block
     def visit_literal_block(self, node):
-        self.w('<pre>')
+        self.w('<prefmt style="Code">')
         self.suppress_para = 1
     def depart_literal_block(self, node):
         self.suppress_para = 0
-        self.w('</pre>\n')
+        self.w('</prefmt>\n')
 
     # Block Quote
     def visit_block_quote(self, node):
@@ -224,9 +247,9 @@ class DumbPythonPointFormatter(nodes.NodeVisitor):
         pass #raise NotImplementedError, node
 
     def visit_literal(self, node):
-        self.w('<tt>')
+        self.w('<div style="Code">')
     def depart_literal(self, node):
-        self.w('</tt>')
+        self.w('</div>')
 
     def visit_reference(self, node):
         attrs = node.attributes
