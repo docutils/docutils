@@ -412,7 +412,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_citation(self, node):
-        self.body.append(self.starttag(node, 'table', CLASS='citation',
+        self.body.append(self.starttag(node, 'table',
+                                       CLASS='docutils citation',
                                        frame="void", rules="none"))
         self.body.append('<colgroup><col class="label" /><col /></colgroup>\n'
                          '<tbody valign="top">\n'
@@ -516,7 +517,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</dd>\n')
 
     def visit_definition_list(self, node):
-        self.body.append(self.starttag(node, 'dl'))
+        self.body.append(self.starttag(node, 'dl', CLASS='docutils'))
 
     def depart_definition_list(self, node):
         self.body.append('</dl>\n')
@@ -536,7 +537,8 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_docinfo(self, node):
         self.context.append(len(self.body))
-        self.body.append(self.starttag(node, 'table', CLASS='docinfo',
+        self.body.append(self.starttag(node, 'table',
+                                       CLASS='docinfo',
                                        frame="void", rules="none"))
         self.body.append('<col class="docinfo-name" />\n'
                          '<col class="docinfo-content" />\n'
@@ -658,7 +660,8 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_field_list(self, node):
         self.body.append(self.starttag(node, 'table', frame='void',
-                                       rules='none', CLASS='field-list'))
+                                       rules='none',
+                                       CLASS='docutils field-list'))
         self.body.append('<col class="field-name" />\n'
                          '<col class="field-body" />\n'
                          '<tbody valign="top">\n')
@@ -697,7 +700,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_footer(self, node):
         start = self.context.pop()
-        footer = (['<hr class="footer" />\n',
+        footer = (['<hr class="docutils footer" />\n',
                    self.starttag(node, 'div', CLASS='footer')]
                   + self.body[start:] + ['</div>\n'])
         self.footer.extend(footer)
@@ -705,7 +708,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         del self.body[start:]
 
     def visit_footnote(self, node):
-        self.body.append(self.starttag(node, 'table', CLASS='footnote',
+        self.body.append(self.starttag(node, 'table',
+                                       CLASS='docutils footnote',
                                        frame="void", rules="none"))
         self.body.append('<colgroup><col class="label" /><col /></colgroup>\n'
                          '<tbody valign="top">\n'
@@ -882,7 +886,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_literal(self, node):
         """Process text to prevent tokens from wrapping."""
-        self.body.append(self.starttag(node, 'tt', '', CLASS='literal'))
+        self.body.append(self.starttag(node, 'tt', '', CLASS='docutils literal'))
         text = node.astext()
         for token in self.words_and_spaces.findall(text):
             if token.strip():
@@ -954,7 +958,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_option_list(self, node):
         self.body.append(
-              self.starttag(node, 'table', CLASS='option-list',
+              self.starttag(node, 'table', CLASS='docutils option-list',
                             frame="void", rules="none"))
         self.body.append('<col class="option" />\n'
                          '<col class="description" />\n'
@@ -1167,7 +1171,8 @@ class HTMLTranslator(nodes.NodeVisitor):
             a_end = '</a>'
         else:
             a_start = a_end = ''
-        self.body.append('System Message: %s%s/%s%s (<tt>%s</tt>%s)%s</p>\n'
+        self.body.append('System Message: %s%s/%s%s '
+                         '(<tt class="docutils">%s</tt>%s)%s</p>\n'
                          % (a_start, node['type'], node['level'], a_end,
                             self.encode(node['source']), line, backref_text))
 
@@ -1176,7 +1181,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_table(self, node):
         self.body.append(
-            self.starttag(node, 'table', CLASS="table", border="1"))
+            self.starttag(node, 'table', CLASS='docutils', border="1"))
 
     def depart_table(self, node):
         self.body.append('</table>\n')
@@ -1306,7 +1311,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.topic_class = ''
 
     def visit_transition(self, node):
-        self.body.append(self.emptytag(node, 'hr'))
+        self.body.append(self.emptytag(node, 'hr', CLASS='docutils'))
 
     def depart_transition(self, node):
         pass
