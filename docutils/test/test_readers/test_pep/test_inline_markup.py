@@ -105,7 +105,7 @@ For *completeness*, _`let's` ``test`` **other** forms_
         <emphasis>
             completeness
         , \n\
-        <target id="let-s" name="let's">
+        <target ids="let-s" names="let's">
             let's
          \n\
         <literal>
@@ -123,9 +123,9 @@ For *completeness*, _`let's` ``test`` **other** forms_
         <title_reference>
             inline markup
          \n\
-        <footnote_reference auto="*" id="id1">
+        <footnote_reference auto="*" ids="id1">
         .
-    <footnote auto="*" id="id2">
+    <footnote auto="*" ids="id2">
         <paragraph>
             See \n\
             <reference refuri="http://docutils.sf.net/docs/ref/rst/restructuredtext.html">

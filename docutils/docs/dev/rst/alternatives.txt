@@ -1165,7 +1165,7 @@ start of a new "division".  Before implementation, the parsed document
 tree would be::
 
     <document>
-        <section name="document">
+        <section names="document">
             <title>
                 Document
             <paragraph>
@@ -1181,7 +1181,7 @@ There are several possibilities for the implementation:
    try at an implementation looked like this::
 
        <document>
-           <section name="document">
+           <section names="document">
                <title>
                    Document
                <paragraph>
@@ -1199,7 +1199,7 @@ There are several possibilities for the implementation:
    possibility::
 
        <document>
-           <section name="document">
+           <section names="document">
                <title>
                    Document
                <division>
@@ -1220,7 +1220,7 @@ There are several possibilities for the implementation:
 3. Implement them as "transitions", empty elements::
 
        <document>
-           <section name="document">
+           <section names="document">
                <title>
                    Document
                <paragraph>

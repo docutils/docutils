@@ -298,75 +298,75 @@ Term `with *inline ``text **errors : classifier `with *errors ``too
         <definition_list_item>
             <term>
                 Term \n\
-                <problematic id="id2" refid="id1">
+                <problematic ids="id2" refid="id1">
                     `
                 with \n\
-                <problematic id="id4" refid="id3">
+                <problematic ids="id4" refid="id3">
                     *
                 inline \n\
-                <problematic id="id6" refid="id5">
+                <problematic ids="id6" refid="id5">
                     ``
                 text \n\
-                <problematic id="id8" refid="id7">
+                <problematic ids="id8" refid="id7">
                     **
                 errors
             <classifier>
                 classifier \n\
-                <problematic id="id10" refid="id9">
+                <problematic ids="id10" refid="id9">
                     `
                 with \n\
-                <problematic id="id12" refid="id11">
+                <problematic ids="id12" refid="id11">
                     *
                 errors \n\
-                <problematic id="id14" refid="id13">
+                <problematic ids="id14" refid="id13">
                     ``
                 too
             <definition>
-                <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
+                <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
                     <paragraph>
                         Inline interpreted text or phrase reference start-string without end-string.
-                <system_message backrefs="id4" id="id3" level="2" line="1" source="test data" type="WARNING">
+                <system_message backrefs="id4" ids="id3" level="2" line="1" source="test data" type="WARNING">
                     <paragraph>
                         Inline emphasis start-string without end-string.
-                <system_message backrefs="id6" id="id5" level="2" line="1" source="test data" type="WARNING">
+                <system_message backrefs="id6" ids="id5" level="2" line="1" source="test data" type="WARNING">
                     <paragraph>
                         Inline literal start-string without end-string.
-                <system_message backrefs="id8" id="id7" level="2" line="1" source="test data" type="WARNING">
+                <system_message backrefs="id8" ids="id7" level="2" line="1" source="test data" type="WARNING">
                     <paragraph>
                         Inline strong start-string without end-string.
-                <system_message backrefs="id10" id="id9" level="2" line="1" source="test data" type="WARNING">
+                <system_message backrefs="id10" ids="id9" level="2" line="1" source="test data" type="WARNING">
                     <paragraph>
                         Inline interpreted text or phrase reference start-string without end-string.
-                <system_message backrefs="id12" id="id11" level="2" line="1" source="test data" type="WARNING">
+                <system_message backrefs="id12" ids="id11" level="2" line="1" source="test data" type="WARNING">
                     <paragraph>
                         Inline emphasis start-string without end-string.
-                <system_message backrefs="id14" id="id13" level="2" line="1" source="test data" type="WARNING">
+                <system_message backrefs="id14" ids="id13" level="2" line="1" source="test data" type="WARNING">
                     <paragraph>
                         Inline literal start-string without end-string.
                 <paragraph>
                     Definition \n\
-                    <problematic id="id16" refid="id15">
+                    <problematic ids="id16" refid="id15">
                         `
                     with \n\
-                    <problematic id="id18" refid="id17">
+                    <problematic ids="id18" refid="id17">
                         *
                     inline \n\
-                    <problematic id="id20" refid="id19">
+                    <problematic ids="id20" refid="id19">
                         ``
                     text \n\
-                    <problematic id="id22" refid="id21">
+                    <problematic ids="id22" refid="id21">
                         **
                     markup errors.
-                <system_message backrefs="id16" id="id15" level="2" line="2" source="test data" type="WARNING">
+                <system_message backrefs="id16" ids="id15" level="2" line="2" source="test data" type="WARNING">
                     <paragraph>
                         Inline interpreted text or phrase reference start-string without end-string.
-                <system_message backrefs="id18" id="id17" level="2" line="2" source="test data" type="WARNING">
+                <system_message backrefs="id18" ids="id17" level="2" line="2" source="test data" type="WARNING">
                     <paragraph>
                         Inline emphasis start-string without end-string.
-                <system_message backrefs="id20" id="id19" level="2" line="2" source="test data" type="WARNING">
+                <system_message backrefs="id20" ids="id19" level="2" line="2" source="test data" type="WARNING">
                     <paragraph>
                         Inline literal start-string without end-string.
-                <system_message backrefs="id22" id="id21" level="2" line="2" source="test data" type="WARNING">
+                <system_message backrefs="id22" ids="id21" level="2" line="2" source="test data" type="WARNING">
                     <paragraph>
                         Inline strong start-string without end-string.
 """],

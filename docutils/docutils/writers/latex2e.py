@@ -678,7 +678,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body_suffix = ['\n']
         self.section_level = 0
         self.context = []
-        self.topic_class = ''
+        self.topic_classes = []
         # column specification for tables
         self.table_caption = None
         
@@ -946,14 +946,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append( '\\end{quote}\n')
 
     def visit_bullet_list(self, node):
-        if self.topic_class == 'contents':
+        if self.topic_classes == ['contents']:
             if not self.use_latex_toc:
                 self.body.append( '\\begin{list}{}{}\n' )
         else:
             self.body.append( '\\begin{itemize}\n' )
 
     def depart_bullet_list(self, node):
-        if self.topic_class == 'contents':
+        if self.topic_classes == ['contents']:
             if not self.use_latex_toc:
                 self.body.append( '\\end{list}\n' )
         else:
@@ -1001,7 +1001,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.context.append(len(self.body))
         else:
             self.body.append('\\begin{figure}[b]')
-            self.body.append('\\hypertarget{%s}' % node['id'])
+            for id in node['ids']:
+                self.body.append('\\hypertarget{%s}' % id)
 
     def depart_citation(self, node):
         if self._use_latex_citations:
@@ -1395,7 +1396,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('{')
         else:
             self.body.append('\\begin{figure}[b]')
-            self.body.append('\\hypertarget{%s}' % node['id'])
+            for id in node['ids']:
+                self.body.append('\\hypertarget{%s}' % id)
 
     def depart_footnote(self, node):
         if self.use_latex_footnotes:
@@ -1703,7 +1705,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_paragraph(self, node):
         index = node.parent.index(node)
-        if not (self.topic_class == 'contents' or
+        if not (self.topic_classes == ['contents'] or
                 (isinstance(node.parent, nodes.compound) and
                  index > 0 and
                  not isinstance(node.parent[index - 1], nodes.paragraph) and
@@ -1841,8 +1843,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # BUG: why not (refuri or refid or refname) means not footnote ?
         if not (node.has_key('refuri') or node.has_key('refid')
                 or node.has_key('refname')):
-            self.body.append('\\hypertarget{%s}{' % node['id'])
-            self.context.append('}')
+            for id in node['ids']:
+                self.body.append('\\hypertarget{%s}{' % id)
+            self.context.append('}' * len(node['ids']))
         else:
             self.context.append('')
 
@@ -1906,8 +1909,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def bookmark(self, node):
         """Append latex href and pdfbookmarks for titles.
         """
-        if node.parent.hasattr('id'):
-            self.body.append('\\hypertarget{%s}{}\n' % node.parent['id'])
+        if node.parent['ids']:
+            for id in node.parent['ids']:
+                self.body.append('\\hypertarget{%s}{}\n' % id)
             if not self.use_latex_toc:
                 # BUG level depends on style. pdflatex allows level 0 to 3
                 # ToC would be the only on level 0 so i choose to decrement the rest.
@@ -1918,8 +1922,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     l = l-1
                 # pdftex does not like "_" subscripts in titles
                 text = self.encode(node.astext())
-                self.body.append('\\pdfbookmark[%d]{%s}{%s}\n' % \
-                        (l,text,node.parent['id']))
+                for id in node.parent['ids']:
+                    self.body.append('\\pdfbookmark[%d]{%s}{%s}\n' % \
+                                     (l, text, id))
 
     def visit_title(self, node):
         """Only 3 section levels are supported by LaTeX article (AFAIR)."""
@@ -1968,10 +1973,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append(self.context.pop())
 
     def visit_topic(self, node):
-        self.topic_class = node.get('class')
+        self.topic_classes = node['classes']
         if self.use_latex_toc:
             self.body.append('\\tableofcontents\n\n\\bigskip\n')
-            self.topic_class = ''
+            self.topic_classes = []
             raise nodes.SkipNode
 
     def visit_inline(self, node): # titlereference
@@ -1981,7 +1986,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append( '}' )
 
     def depart_topic(self, node):
-        self.topic_class = ''
+        self.topic_classes = []
         self.body.append('\n')
 
     def visit_rubric(self, node):

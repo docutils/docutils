@@ -189,34 +189,34 @@ Also see the `SourceForge Bug Tracker`_.
       > EOF
       <document source="<stdin>">
           <paragraph>
-              ref 
-              <footnote_reference auto="1" id="id1" refid="abc">
+              ref
+              <footnote_reference auto="1" ids="id1" refid="abc">
                   2
-               
-              <footnote_reference auto="1" id="id2" refid="id5">
+
+              <footnote_reference auto="1" ids="id2" refid="id5">
                   3
-               
-              <footnote_reference id="id3" refid="id6">
+
+              <footnote_reference ids="id3" refid="id6">
                   1
-               
-              <footnote_reference auto="1" id="id4" refid="id7">
+
+              <footnote_reference auto="1" ids="id4" refid="id7">
                   5
-          <footnote auto="1" backrefs="id1" id="abc" name="abc">
+          <footnote auto="1" backrefs="id1" ids="abc" names="abc">
               <label>
                   2
               <paragraph>
                   footnote
-          <footnote auto="1" backrefs="id2" id="id5" name="3">
+          <footnote auto="1" backrefs="id2" ids="id5" names="3">
               <label>
                   3
               <paragraph>
                   two
-          <footnote backrefs="id3" id="id6" name="1">
+          <footnote backrefs="id3" ids="id6" names="1">
               <label>
                   1
               <paragraph>
                   one
-          <footnote auto="1" backrefs="id4" id="id7" name="4">
+          <footnote auto="1" backrefs="id4" ids="id7" names="4">
               <label>
                   5
               <paragraph>

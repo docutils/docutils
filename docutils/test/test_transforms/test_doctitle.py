@@ -33,7 +33,7 @@ Title
 Paragraph.
 """,
 """\
-<document id="title" name="title" source="test data">
+<document ids="title" names="title" source="test data">
     <title>
         Title
     <comment xml:space="preserve">
@@ -47,7 +47,7 @@ Title
 Paragraph (no blank line).
 """,
 """\
-<document id="title" name="title" source="test data">
+<document ids="title" names="title" source="test data">
     <title>
         Title
     <paragraph>
@@ -65,7 +65,7 @@ Paragraph.
 <document source="test data">
     <paragraph>
         Paragraph.
-    <section id="title" name="title">
+    <section ids="title" names="title">
         <title>
             Title
         <paragraph>
@@ -81,10 +81,10 @@ Subtitle
 Test title & subtitle.
 """,
 """\
-<document id="title" name="title" source="test data">
+<document ids="title" names="title" source="test data">
     <title>
         Title
-    <subtitle id="subtitle" name="subtitle">
+    <subtitle ids="subtitle" names="subtitle">
         Subtitle
     <paragraph>
         Test title & subtitle.
@@ -96,7 +96,7 @@ Title
 Test short underline.
 """,
 """\
-<document id="title" name="title" source="test data">
+<document ids="title" names="title" source="test data">
     <title>
         Title
     <system_message level="2" line="2" source="test data" type="WARNING">
@@ -118,7 +118,7 @@ The system_message should move after the document title
 (it was before the beginning of the section).
 """,
 """\
-<document id="long-title" name="long title" source="test data">
+<document ids="long-title" names="long title" source="test data">
     <title>
         Long    Title
     <system_message level="2" line="1" source="test data" type="WARNING">
@@ -149,19 +149,19 @@ Title 3
 Paragraph 3.
 """,
 """\
-<document id="title-1" name="title 1" source="test data">
+<document ids="title-1" names="title 1" source="test data">
     <title>
         Title 1
     <comment xml:space="preserve">
         Test multiple second-level titles.
     <paragraph>
         Paragraph 1.
-    <section id="title-2" name="title 2">
+    <section ids="title-2" names="title 2">
         <title>
             Title 2
         <paragraph>
             Paragraph 2.
-    <section id="title-3" name="title 3">
+    <section ids="title-3" names="title 3">
         <title>
             Title 3
         <paragraph>
@@ -178,12 +178,12 @@ This title should be the document title despite the
 substitution_definition.
 """,
 """\
-<document id="title" name="title" source="test data">
+<document ids="title" names="title" source="test data">
     <title>
         Title
-    <substitution_definition name="foo">
+    <substitution_definition names="foo">
         bar
-    <target id="invisible-target" name="invisible target">
+    <target ids="invisible-target" names="invisible target">
     <paragraph>
         This title should be the document title despite the
         substitution_definition.

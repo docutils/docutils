@@ -31,10 +31,10 @@ Unknown reference_.
 <document source="test data">
     <paragraph>
         Unknown \n\
-        <problematic id="id2" refid="id1">
+        <problematic ids="id2" refid="id1">
             reference_
         .
-    <system_message backrefs="id2" id="id1" level="3" line="1" source="test data" type="ERROR">
+    <system_message backrefs="id2" ids="id1" level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Unknown target name: "reference".
 """],
@@ -49,15 +49,15 @@ Duplicate manual footnote labels, with reference ([1]_):
 <document source="test data">
     <paragraph>
         Duplicate manual footnote labels, with reference (
-        <problematic id="id5" refid="id4">
+        <problematic ids="id5" refid="id4">
             [1]_
         ):
-    <footnote dupname="1" id="id2">
+    <footnote dupnames="1" ids="id2">
         <label>
             1
         <paragraph>
             Footnote.
-    <footnote dupname="1" id="id3">
+    <footnote dupnames="1" ids="id3">
         <label>
             1
         <system_message backrefs="id3" level="2" line="5" source="test data" type="WARNING">
@@ -65,7 +65,7 @@ Duplicate manual footnote labels, with reference ([1]_):
                 Duplicate explicit target name: "1".
         <paragraph>
             Footnote.
-    <system_message backrefs="id5" id="id4" level="3" line="1" source="test data" type="ERROR">
+    <system_message backrefs="id5" ids="id4" level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Duplicate target name, cannot be used as a unique reference: "1".
 """],
@@ -93,16 +93,16 @@ Some text.
 """,
 """\
 <document source="test data">
-    <section id="section-1" name="section 1">
+    <section ids="section-1" names="section 1">
         <title>
             Section 1
-        <section id="subsection-1" name="subsection 1">
+        <section ids="subsection-1" names="subsection 1">
             <title>
                 Subsection 1
             <paragraph>
                 Some text.
     <transition>
-    <section id="section-2" name="section 2">
+    <section ids="section-2" names="section 2">
         <title>
             Section 2
         <paragraph>
@@ -123,7 +123,7 @@ Paragraph.
     <paragraph>
         A paragraph.
     <transition>
-    <section id="section-1" name="section 1">
+    <section ids="section-1" names="section 1">
         <title>
             Section 1
         <paragraph>
@@ -197,7 +197,7 @@ Section 2
 <document source="test data">
     <paragraph>
         Sections with transitions at beginning and end.
-    <section id="section-1" name="section 1">
+    <section ids="section-1" names="section 1">
         <title>
             Section 1
         <system_message level="3" line="6" source="test data" type="ERROR">
@@ -207,7 +207,7 @@ Section 2
         <paragraph>
             The next transition is legal:
     <transition>
-    <section id="section-2" name="section 2">
+    <section ids="section-2" names="section 2">
         <title>
             Section 2
         <system_message level="3" line="15" source="test data" type="ERROR">
@@ -290,7 +290,7 @@ Some text.
 """,
 """\
 <document source="test data">
-    <section id="section-1" name="section 1">
+    <section ids="section-1" names="section 1">
         <title>
             Section 1
         <system_message level="3" line="4" source="test data" type="ERROR">
@@ -305,7 +305,7 @@ Some text.
             <paragraph>
                 At least one body element must separate transitions; adjacent transitions are not allowed.
     <transition>
-    <section id="section-2" name="section 2">
+    <section ids="section-2" names="section 2">
         <title>
             Section 2
         <paragraph>

@@ -127,7 +127,7 @@ totest['admonitions'] = [
 """,
 """\
 <document source="test data">
-    <admonition class="admonition-admonition">
+    <admonition classes="admonition-admonition">
         <title>
             Admonition
         <paragraph>
@@ -140,7 +140,7 @@ totest['admonitions'] = [
 """,
 """\
 <document source="test data">
-    <admonition class="admonition-and-by-the-way">
+    <admonition classes="admonition-and-by-the-way">
         <title>
             And, by the way...
         <paragraph>
@@ -154,7 +154,7 @@ totest['admonitions'] = [
 """,
 """\
 <document source="test data">
-    <admonition class="emergency">
+    <admonition classes="emergency">
         <title>
             Admonition
         <paragraph>

@@ -215,7 +215,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         # A heterogenous stack used in conjunction with the tree traversal.
         # Make sure that the pops correspond to the pushes:
         self.context = []
-        self.topic_class = ''
+        self.topic_class = []
         self.colspecs = []
         self.compact_p = 1
         self.compact_simple = None
@@ -256,16 +256,20 @@ class HTMLTranslator(nodes.NodeVisitor):
         are extracted), tag name, and optional attributes.
         """
         tagname = tagname.lower()
+        prefix = []
         atts = {}
         for (name, value) in attributes.items():
             atts[name.lower()] = value
-        for att in ('class',):          # append to node attribute
-            if node.has_key(att) or atts.has_key(att):
-                atts[att] = \
-                      (node.get(att, '') + ' ' + atts.get(att, '')).strip()
-        for att in ('id',):             # node attribute overrides
-            if node.has_key(att):
-                atts[att] = node[att]
+        classes = node.get('classes', [])
+        if atts.has_key('class'):
+            classes.append(atts['class'])
+        if classes:
+            atts['class'] = ' '.join(classes)
+        assert not atts.has_key('id')
+        if node.get('ids'):
+            atts['id'] = node['ids'][0]
+            for id in node['ids'][1:]:
+                prefix.append('<span id="%s"></span>' % id)
         if atts.has_key('id') and tagname in self.named_tags:
             atts['name'] = atts['id']   # for compatibility with old browsers
         attlist = atts.items()
@@ -285,7 +289,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                 except TypeError:       # for Python 2.1 compatibility:
                     uval = unicode(str(value))
                 parts.append('%s="%s"' % (name.lower(), self.attval(uval)))
-        return '<%s%s>%s' % (' '.join(parts), infix, suffix)
+        return ''.join(prefix) + '<%s%s>' % (' '.join(parts), infix) + suffix
 
     def emptytag(self, node, tagname, suffix='\n', **attributes):
         """Construct and return an XML-compatible empty tag."""
@@ -389,7 +393,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.compact_p = None
         self.compact_simple = (self.settings.compact_lists and
                                (self.compact_simple
-                                or self.topic_class == 'contents'
+                                or self.topic_classes == ['contents']
                                 or self.check_simple_list(node)))
         if self.compact_simple and not old_compact_simple:
             atts['class'] = 'simple'
@@ -629,7 +633,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.compact_p = None
         self.compact_simple = (self.settings.compact_lists and
                                (self.compact_simple
-                                or self.topic_class == 'contents'
+                                or self.topic_classes == ['contents']
                                 or self.check_simple_list(node)))
         if self.compact_simple and not old_compact_simple:
             atts['class'] = (atts.get('class', '') + ' simple').strip()
@@ -718,12 +722,13 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def footnote_backrefs(self, node):
         backlinks = []
-        if self.settings.footnote_backlinks and node.hasattr('backrefs'):
-            backrefs = node['backrefs']
+        backrefs = node['backrefs']
+        if self.settings.footnote_backlinks and backrefs:
             if len(backrefs) == 1:
                 self.context.append('')
-                self.context.append('<a class="fn-backref" href="#%s" '
-                                    'name="%s">' % (backrefs[0], node['id']))
+                self.context.append(
+                    '<a class="fn-backref" href="#%s" name="%s">'
+                    % (backrefs[0], node['ids'][0]))
             else:
                 i = 1
                 for backref in backrefs:
@@ -731,10 +736,10 @@ class HTMLTranslator(nodes.NodeVisitor):
                                      % (backref, i))
                     i += 1
                 self.context.append('<em>(%s)</em> ' % ', '.join(backlinks))
-                self.context.append('<a name="%s">' % node['id'])
+                self.context.append('<a name="%s">' % node['ids'][0])
         else:
             self.context.append('')
-            self.context.append('<a name="%s">' % node['id'])
+            self.context.append('<a name="%s">' % node['ids'][0])
         # If the node does not only consist of a label.
         if len(node) > 1:
             # If there are preceding backlinks, we do not set class
@@ -795,7 +800,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_image(self, node):
-        atts = node.attributes.copy()
+        atts = node.non_default_attributes()
         if atts.has_key('class'):
             del atts['class']           # prevent duplication with node attrs
         atts['src'] = atts['uri']
@@ -832,9 +837,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append(self.emptytag(node, 'img', '', **atts))
 
     def image_div_atts(self, image_node):
-        div_atts = {'class': 'image'}
-        if image_node.attributes.has_key('class'):
-            div_atts['class'] += ' ' + image_node.attributes['class']
+        div_atts = {}
+        div_atts['class'] = ' '.join(['image'] + image_node['classes'])
         if image_node.attributes.has_key('align'):
             div_atts['align'] = self.attval(image_node.attributes['align'])
             div_atts['class'] += ' align-%s' % div_atts['align']
@@ -917,7 +921,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('\n</pre>\n')
 
     def visit_meta(self, node):
-        meta = self.emptytag(node, 'meta', **node.attributes)
+        meta = self.emptytag(node, 'meta', **node.non_default_attributes())
         self.add_meta(meta)
 
     def depart_meta(self, node):
@@ -1003,12 +1007,16 @@ class HTMLTranslator(nodes.NodeVisitor):
             isinstance(node.parent, nodes.compound)):
             # Never compact paragraphs in document or compound.
             return 0
-        if ((node.attributes in ({}, {'class': 'first'}, {'class': 'last'},
-                                 {'class': 'first last'})) and
-            (self.compact_simple or
-             self.compact_p and (len(node.parent) == 1 or
-                                 len(node.parent) == 2 and
-                                 isinstance(node.parent[0], nodes.label)))):
+        for key, value in node.attlist():
+            if (node.is_not_default(key) and
+                not (key == 'classes' and value in
+                     ([], ['first'], ['last'], ['first', 'last']))):
+                # Attribute which needs to survive.
+                return 0
+        if (self.compact_simple or
+            self.compact_p and (len(node.parent) == 1 or
+                                len(node.parent) == 2 and
+                                isinstance(node.parent[0], nodes.label))):
             return 1
         return 0
 
@@ -1025,7 +1033,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_problematic(self, node):
         if node.hasattr('refid'):
             self.body.append('<a href="#%s" name="%s">' % (node['refid'],
-                                                           node['id']))
+                                                           node['ids'][0]))
             self.context.append('</a>')
         else:
             self.context.append('')
@@ -1037,12 +1045,11 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_raw(self, node):
         if 'html' in node.get('format', '').split():
-            add_class = node.attributes.get('class') is not None
             t = isinstance(node.parent, nodes.TextElement) and 'span' or 'div'
-            if add_class:
+            if node['classes']:
                 self.body.append(self.starttag(node, t, suffix=''))
             self.body.append(node.astext())
-            if add_class:
+            if node['classes']:
                 self.body.append('</%s>' % t)
         # Keep non-HTML raw text out of output:
         raise nodes.SkipNode
@@ -1162,9 +1169,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('<p class="system-message-title">')
         attr = {}
         backref_text = ''
-        if node.hasattr('id'):
-            attr['name'] = node['id']
-        if node.hasattr('backrefs'):
+        if node['ids']:
+            attr['name'] = node['ids'][0]
+        if len(node['backrefs']):
             backrefs = node['backrefs']
             if len(backrefs) == 1:
                 backref_text = ('; <em><a href="#%s">backlink</a></em>'
@@ -1288,17 +1295,17 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.body.append(
                   self.starttag(node, 'h%s' % h_level, ''))
             atts = {}
-            if node.parent.hasattr('id'):
-                atts['name'] = node.parent['id']
+            if node.parent['ids']:
+                atts['name'] = node.parent['ids'][0]
             if node.hasattr('refid'):
                 atts['class'] = 'toc-backref'
                 atts['href'] = '#' + node['refid']
             self.body.append(self.starttag({}, 'a', '', **atts))
             self.context.append('</a></h%s>\n' % (h_level))
         if check_id:
-            if node.parent.hasattr('id'):
+            if node.parent['ids']:
                 self.body.append(
-                    self.starttag({}, 'a', '', name=node.parent['id']))
+                    self.starttag({}, 'a', '', name=node.parent['ids'][0]))
                 self.context.append('</a>' + close_tag)
             else:
                 self.context.append(close_tag)
@@ -1319,11 +1326,11 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_topic(self, node):
         self.body.append(self.starttag(node, 'div', CLASS='topic'))
-        self.topic_class = node.get('class')
+        self.topic_classes = node['classes']
 
     def depart_topic(self, node):
         self.body.append('</div>\n')
-        self.topic_class = ''
+        self.topic_classes = []
 
     def visit_transition(self, node):
         self.body.append(self.emptytag(node, 'hr', CLASS='docutils'))

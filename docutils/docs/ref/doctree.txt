@@ -264,7 +264,7 @@ following subsections:
   - Real XML::
 
         <document>
-        <section id="a-title" name="a title">
+        <section ids="a-title" names="a title">
         <title>A Title</title>
         <paragraph>A paragraph.</paragraph>
         </section>
@@ -273,7 +273,7 @@ following subsections:
   - Pseudo-XML::
 
         <document>
-            <section id="a-title" name="a title">
+            <section ids="a-title" names="a title">
                 <title>
                     A Title
                 <paragraph>
@@ -359,7 +359,7 @@ reStructuredText_ source::
 
 Complete pseudo-XML_ result after parsing and applying transforms::
 
-    <document id="document-title" name="document title">
+    <document ids="document-title" names="document title">
         <title>
             Document Title
         <docinfo>
@@ -559,7 +559,7 @@ reStructuredText_ source::
 
 Complete pseudo-XML_ result after parsing and applying transforms::
 
-    <document id="document-title" name="document title">
+    <document ids="document-title" names="document title">
         <title>
             Document Title
         <docinfo>
@@ -625,7 +625,7 @@ reStructuredText_ source::
 
 Complete pseudo-XML_ result after parsing and applying transforms::
 
-    <document id="document-title" name="document title">
+    <document ids="document-title" names="document title">
         <title>
             Document Title
         <docinfo>
@@ -1016,7 +1016,7 @@ reStructuredText_ source::
 
 Complete pseudo-XML_ result after parsing and applying transforms::
 
-    <document id="document-title" name="document title">
+    <document ids="document-title" names="document title">
         <title>
             Document Title
         <docinfo>
@@ -1082,7 +1082,7 @@ reStructuredText_ source::
 
 Complete pseudo-XML_ result after parsing and applying transforms::
 
-    <document id="document-title" name="document title">
+    <document ids="document-title" names="document title">
         <title>
             Document Title
         <docinfo>
@@ -1210,7 +1210,7 @@ reStructuredText_ source::
 
 Complete pseudo-XML_ result after parsing and applying transforms::
 
-    <document id="document-title" name="document title">
+    <document ids="document-title" names="document title">
         <title>
             Document Title
         <docinfo>
@@ -1617,7 +1617,7 @@ into a ``docinfo`` element and its children by a transform.  Source::
 
 Complete pseudo-XML_ result after parsing and applying transforms::
 
-    <document id="docinfo-example" name="docinfo example">
+    <document ids="docinfo-example" names="docinfo example">
         <title>
             Docinfo Example
         <docinfo>
@@ -1794,7 +1794,7 @@ reStructuredText_ source::
 Complete pseudo-XML_ result from simple parsing::
 
     <document>
-        <section id="a-title" name="a title">
+        <section ids="a-title" names="a title">
             <title>
                 A Title
             <paragraph>
@@ -1803,7 +1803,7 @@ Complete pseudo-XML_ result from simple parsing::
 After applying transforms, the section title is promoted to become the
 document title::
 
-    <document id="a-title" name="a title">
+    <document ids="a-title" names="a title">
         <title>
             A Title
         <paragraph>
@@ -3221,7 +3221,7 @@ reStructuredText_ source::
 
 Complete pseudo-XML_ result after parsing and applying transforms::
 
-    <document id="document-title" name="document title">
+    <document ids="document-title" names="document title">
         <title>
             Document Title
         <docinfo>
@@ -3371,7 +3371,7 @@ reStructuredText_ source::
 
 Complete pseudo-XML_ result after parsing and applying transforms::
 
-    <document id="document-title" name="document title">
+    <document ids="document-title" names="document title">
         <title>
             Document Title
         <docinfo>
@@ -3479,22 +3479,22 @@ reStructuredText_ source::
 Complete pseudo-XML_ result after parsing::
 
     <document>
-        <section id="title-1" name="title 1">
+        <section ids="title-1" names="title 1">
             <title>
                 Title 1
             <paragraph>
                 Paragraph 1.
-            <section id="title-2" name="title 2">
+            <section ids="title-2" names="title 2">
                 <title>
                     Title 2
                 <paragraph>
                     Paragraph 2.
-        <section id="title-3" name="title 3">
+        <section ids="title-3" names="title 3">
             <title>
                 Title 3
             <paragraph>
                 Paragraph 3.
-            <section id="title-4" name="title 4">
+            <section ids="title-4" names="title 4">
                 <title>
                     Title 4
                 <paragraph>
@@ -3638,7 +3638,7 @@ reStructuredText_ source::
 
 Complete pseudo-XML_ result after parsing and applying transforms::
 
-    <document id="document-title" name="document title">
+    <document ids="document-title" names="document title">
         <title>
             Document Title
         <docinfo>
@@ -3728,10 +3728,10 @@ reStructuredText_ source::
 
 Complete pseudo-XML_ result after parsing and applying transforms::
 
-    <document id="title" name="title">
+    <document ids="title" names="title">
         <title>
             Title
-        <subtitle id="subtitle" name="subtitle">
+        <subtitle ids="subtitle" names="subtitle">
             Subtitle
         <paragraph>
             A paragraph.
@@ -3946,7 +3946,7 @@ reStructuredText_ source::
 
 Pseudo-XML_ fragment from simple parsing::
 
-    <section id="a-title" name="a title">
+    <section ids="a-title" names="a title">
         <title>
             A Title
         <paragraph>
@@ -4170,7 +4170,7 @@ reStructuredText_ source::
 
 Complete pseudo-XML_ result after parsing and applying transforms::
 
-    <document id="document-title" name="document title">
+    <document ids="document-title" names="document title">
         <title>
             Document Title
         <docinfo>

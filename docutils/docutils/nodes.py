@@ -27,6 +27,7 @@ import sys
 import os
 import re
 import xml.dom.minidom
+from copy import deepcopy
 from types import IntType, SliceType, StringType, UnicodeType, \
      TupleType, ListType
 from UserString import UserString
@@ -326,6 +327,10 @@ class Element(Node):
     This is equivalent to ``element.extend([node1, node2])``.
     """
 
+    attr_defaults = {'ids': [], 'classes': [], 'names': [], 'dupnames': []}
+    """Default attributes.  ``attributes`` is initialized with a copy
+    of ``attr_defaults``."""
+
     tagname = None
     """The element generic identifier. If None, it is set as an instance
     attribute to the name of the class."""
@@ -342,7 +347,7 @@ class Element(Node):
 
         self.extend(children)           # maintain parent info
 
-        self.attributes = {}
+        self.attributes = deepcopy(self.attr_defaults)
         """Dictionary of attribute {name: value}."""
 
         for att, value in attributes.items():
@@ -353,7 +358,7 @@ class Element(Node):
 
     def _dom_node(self, domroot):
         element = domroot.createElement(self.tagname)
-        for attribute, value in self.attributes.items():
+        for attribute, value in self.attlist():
             if isinstance(value, ListType):
                 value = ' '.join(['%s' % v for v in value])
             element.setAttribute(attribute, '%s' % value)
@@ -368,16 +373,16 @@ class Element(Node):
             if len(data) > 60:
                 data = data[:56] + ' ...'
                 break
-        if self.hasattr('name'):
+        if self['names']:
             return '<%s "%s": %s>' % (self.__class__.__name__,
-                                      self.attributes['name'], data)
+                                      '; '.join(self['names']), data)
         else:
             return '<%s: %s>' % (self.__class__.__name__, data)
 
     def shortrepr(self):
-        if self.hasattr('name'):
+        if self['names']:
             return '<%s "%s"...>' % (self.__class__.__name__,
-                                      self.attributes['name'])
+                                     '; '.join(self['names']))
         else:
             return '<%s...>' % self.tagname
 
@@ -472,8 +477,15 @@ class Element(Node):
         return self.child_text_separator.join(
               [child.astext() for child in self.children])
 
+    def non_default_attributes(self):
+        atts = {}
+        for key, value in self.attributes.items():
+            if self.is_not_default(key):
+                atts[key] = value
+        return atts
+
     def attlist(self):
-        attlist = self.attributes.items()
+        attlist = self.non_default_attributes().items()
         attlist.sort()
         return attlist
 
@@ -515,6 +527,12 @@ class Element(Node):
 
     def index(self, item):
         return self.children.index(item)
+
+    def is_not_default(self, key):
+        try:
+            return self[key] != self.attr_defaults[key]
+        except KeyError:
+            return 1
 
     def clear(self):
         self.children = []
@@ -579,8 +597,24 @@ class Element(Node):
 
     def set_class(self, name):
         """Add a new name to the "class" attribute."""
-        self.attributes['class'] = (self.attributes.get('class', '') + ' '
-                                    + name.lower()).strip()
+        self['classes'].append(name.lower())
+
+    def note_referenced_by(self, name=None, id=None):
+        """Note that this Element has been referenced by its name
+        `name` or id `id`."""
+        self.referenced = 1
+        # Element.expect_referenced_by_* dictionaries map names or ids
+        # to nodes whose ``referenced`` attribute is set to true as
+        # soon as this node is referenced by the given name or id.
+        # Needed for target propagation.
+        by_name = getattr(self, 'expect_referenced_by_name', {}).get(name)
+        by_id = getattr(self, 'expect_referenced_by_id', {}).get(id)
+        if by_name:
+            assert name is not None
+            by_name.referenced = 1
+        if by_id:
+            assert id is not None
+            by_id.referenced = 1
 
 
 class TextElement(Element):
@@ -630,8 +664,11 @@ class Resolvable:
 
 class BackLinkable:
 
+    attr_defaults = Element.attr_defaults.copy()
+    attr_defaults['backrefs'] = []
+
     def add_backref(self, refid):
-        self.setdefault('backrefs', []).append(refid)
+        self['backrefs'].append(refid)
 
 
 # ====================
@@ -677,9 +714,6 @@ class Referential(Resolvable): pass
 class Targetable(Resolvable):
 
     referenced = 0
-
-    indirect_reference_name = None
-    """Holds the whitespace_normalized_name (contains mixed case) of a target"""
 
 class Labeled:
     """Contains a `label` as its first element."""
@@ -800,21 +834,22 @@ class document(Root, Structural, Element):
         return domroot
 
     def set_id(self, node, msgnode=None):
-        if node.has_key('id'):
-            id = node['id']
+        for id in node['ids']:
             if self.ids.has_key(id) and self.ids[id] is not node:
                 msg = self.reporter.severe('Duplicate ID: "%s".' % id)
                 if msgnode != None:
                     msgnode += msg
-        else:
-            if node.has_key('name'):
-                id = make_id(node['name'])
+        if not node['ids']:
+            for name in node['names']:
+                id = make_id(name)
+                if id and not self.ids.has_key(id):
+                    break
             else:
                 id = ''
-            while not id or self.ids.has_key(id):
-                id = 'id%s' % self.id_start
-                self.id_start += 1
-            node['id'] = id
+                while not id or self.ids.has_key(id):
+                    id = 'id%s' % self.id_start
+                    self.id_start += 1
+            node['ids'].append(id)
         self.ids[id] = node
         return id
 
@@ -849,8 +884,7 @@ class document(Root, Structural, Element):
            both old and new targets are external and refer to identical URIs.
            The new target is invalidated regardless.
         """
-        if node.has_key('name'):
-            name = node['name']
+        for name in node['names']:
             if self.nameids.has_key(name):
                 self.set_duplicate_name_id(node, id, name, msgnode, explicit)
             else:
@@ -868,30 +902,30 @@ class document(Root, Structural, Element):
                     old_node = self.ids[old_id]
                     if node.has_key('refuri'):
                         refuri = node['refuri']
-                        if old_node.has_key('name') \
+                        if old_node['names'] \
                                and old_node.has_key('refuri') \
                                and old_node['refuri'] == refuri:
                             level = 1   # just inform if refuri's identical
                     if level > 1:
-                        dupname(old_node)
+                        dupname(old_node, name)
                         self.nameids[name] = None
                 msg = self.reporter.system_message(
                     level, 'Duplicate explicit target name: "%s".' % name,
                     backrefs=[id], base_node=node)
                 if msgnode != None:
                     msgnode += msg
-                dupname(node)
+                dupname(node, name)
             else:
                 self.nameids[name] = id
                 if old_id is not None:
                     old_node = self.ids[old_id]
-                    dupname(old_node)
+                    dupname(old_node, name)
         else:
             if old_id is not None and not old_explicit:
                 self.nameids[name] = None
                 old_node = self.ids[old_id]
-                dupname(old_node)
-            dupname(node)
+                dupname(old_node, name)
+            dupname(node, name)
         if not explicit or (not old_explicit and old_id is not None):
             msg = self.reporter.info(
                 'Duplicate implicit target name: "%s".' % name,
@@ -925,7 +959,7 @@ class document(Root, Structural, Element):
 
     def note_indirect_target(self, target):
         self.indirect_targets.append(target)
-        if target.has_key('name'):
+        if target['names']:
             self.note_refname(target)
 
     def note_anonymous_target(self, target):
@@ -969,7 +1003,8 @@ class document(Root, Structural, Element):
         self.note_refname(ref)
 
     def note_substitution_def(self, subdef, def_name, msgnode=None):
-        name = subdef['name'] = whitespace_normalize_name(def_name)
+        name = whitespace_normalize_name(def_name)
+        subdef['names'].append(name)
         if self.substitution_defs.has_key(name):
             msg = self.reporter.error(
                   'Duplicate substitution definition name: "%s".' % name,
@@ -977,7 +1012,7 @@ class document(Root, Structural, Element):
             if msgnode != None:
                 msgnode += msg
             oldnode = self.substitution_defs[name]
-            dupname(oldnode)
+            dupname(oldnode, name)
         # keep only the last definition:
         self.substitution_defs[name] = subdef
         # case-insensitive mapping:
@@ -1155,8 +1190,8 @@ class admonition(Admonition, Element): pass
 class comment(Special, Invisible, FixedTextElement): pass
 class substitution_definition(Special, Invisible, TextElement): pass
 class target(Special, Invisible, Inline, TextElement, Targetable): pass
-class footnote(General, Element, Labeled, BackLinkable): pass
-class citation(General, Element, Labeled, BackLinkable): pass
+class footnote(General, BackLinkable, Element, Labeled, Targetable): pass
+class citation(General, BackLinkable, Element, Labeled, Targetable): pass
 class label(Part, TextElement): pass
 class figure(General, Element): pass
 class caption(Part, TextElement): pass
@@ -1170,7 +1205,7 @@ class row(Part, Element): pass
 class entry(Part, Element): pass
 
 
-class system_message(Special, PreBibliographic, Element, BackLinkable):
+class system_message(Special, BackLinkable, PreBibliographic, Element):
 
     def __init__(self, message=None, *children, **attributes):
         if message:
@@ -1610,9 +1645,12 @@ def make_id(string):
 _non_id_chars = re.compile('[^a-z0-9]+')
 _non_id_at_ends = re.compile('^[-0-9]+|-+$')
 
-def dupname(node):
-    node['dupname'] = node['name']
-    del node['name']
+def dupname(node, name):
+    node['dupnames'].append(name)
+    node['names'].remove(name)
+    # Assume that this method is referenced, even though it isn't; we
+    # don't want to throw unnecessary system_messages.
+    node.referenced = 1
 
 def fully_normalize_name(name):
     """Return a case- and whitespace-normalized name."""

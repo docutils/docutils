@@ -50,7 +50,7 @@ class DocTitle(Transform):
        Once parsed, it looks like this::
 
            <document>
-               <section name="top-level title">
+               <section names="top-level title">
                    <title>
                        Top-Level Title
                    <paragraph>
@@ -58,7 +58,7 @@ class DocTitle(Transform):
 
        After running the DocTitle transform, we have::
 
-           <document name="top-level title">
+           <document names="top-level title">
                <title>
                    Top-Level Title
                <paragraph>
@@ -85,10 +85,10 @@ class DocTitle(Transform):
        After parsing and running the Section Promotion transform, the
        result is::
 
-           <document name="top-level title">
+           <document names="top-level title">
                <title>
                    Top-Level Title
-               <subtitle name="second-level title">
+               <subtitle names="second-level title">
                    Second-Level Title
                <paragraph>
                    A paragraph.
@@ -294,7 +294,7 @@ class DocInfo(Transform):
                         raise TransformError
                     title = nodes.title(name, labels[canonical])
                     topics[canonical] = biblioclass(
-                        '', title, CLASS=canonical, *field[1].children)
+                        '', title, classes=[canonical], *field[1].children)
                 else:
                     docinfo.append(biblioclass('', *field[1].children))
             except TransformError:

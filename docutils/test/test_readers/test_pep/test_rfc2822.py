@@ -27,7 +27,7 @@ Date: 2002-04-23
 """,
 """\
 <document source="test data">
-    <field_list class="rfc2822">
+    <field_list classes="rfc2822">
         <field>
             <field_name>
                 Author
@@ -58,7 +58,7 @@ Date: 2002-04-23
 """,
 """\
 <document source="test data">
-    <field_list class="rfc2822">
+    <field_list classes="rfc2822">
         <field>
             <field_name>
                 Author
@@ -104,7 +104,7 @@ Date: 2002-04-23
 """,
 """\
 <document source="test data">
-    <field_list class="rfc2822">
+    <field_list classes="rfc2822">
         <field>
             <field_name>
                 Author
@@ -121,7 +121,7 @@ empty item above, no blank line
 """,
 """\
 <document source="test data">
-    <field_list class="rfc2822">
+    <field_list classes="rfc2822">
         <field>
             <field_name>
                 field
@@ -142,7 +142,7 @@ Date:
 """,
 """\
 <document source="test data">
-    <field_list class="rfc2822">
+    <field_list classes="rfc2822">
         <field>
             <field_name>
                 Author
@@ -173,7 +173,7 @@ Date: 2002-04-23
 """,
 """\
 <document source="test data">
-    <field_list class="rfc2822">
+    <field_list classes="rfc2822">
         <field>
             <field_name>
                 Authors
@@ -208,7 +208,7 @@ Date: 2002-04-23
 """,
 """\
 <document source="test data">
-    <field_list class="rfc2822">
+    <field_list classes="rfc2822">
         <field>
             <field_name>
                 Authors
@@ -240,7 +240,7 @@ Version:
 """,
 """\
 <document source="test data">
-    <field_list class="rfc2822">
+    <field_list classes="rfc2822">
         <field>
             <field_name>
                 Authors
@@ -268,7 +268,7 @@ Version:
 """,
 """\
 <document source="test data">
-    <field_list class="rfc2822">
+    <field_list classes="rfc2822">
         <field>
             <field_name>
                 Authors

@@ -30,10 +30,10 @@ totest['role'] = [
 """\
 <document source="test data">
     <paragraph>
-        <inline class="custom">
+        <inline classes="custom">
             interpreted
          and \n\
-        <inline class="special">
+        <inline classes="special">
             interpreted
 """],
 ["""\
@@ -47,10 +47,10 @@ totest['role'] = [
 """\
 <document source="test data">
     <paragraph>
-        <inline class="custom-class">
+        <inline classes="custom-class">
             interpreted
          and \n\
-        <inline class="special-class">
+        <inline classes="special-class">
             interpreted
 """],
 ["""\
@@ -64,19 +64,19 @@ Now that it's defined, :custom:`interpreted` works.
 <document source="test data">
     <paragraph>
         Must define 
-        <problematic id="id2" refid="id1">
+        <problematic ids="id2" refid="id1">
             :custom:`interpreted`
          before using it.
     <system_message level="1" line="1" source="test data" type="INFO">
         <paragraph>
             No role entry for "custom" in module "docutils.parsers.rst.languages.en".
             Trying "custom" as canonical role name.
-    <system_message backrefs="id2" id="id1" level="3" line="1" source="test data" type="ERROR">
+    <system_message backrefs="id2" ids="id1" level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Unknown interpreted text role "custom".
     <paragraph>
         Now that it's defined, \n\
-        <inline class="custom">
+        <inline classes="custom">
             interpreted
          works.
 """],
@@ -88,7 +88,7 @@ Now that it's defined, :custom:`interpreted` works.
 """\
 <document source="test data">
     <paragraph>
-        <emphasis class="custom">
+        <emphasis classes="custom">
             text
 """],
 ["""\
@@ -99,7 +99,7 @@ Now that it's defined, :custom:`interpreted` works.
 """\
 <document source="test data">
     <paragraph>
-        <emphasis class="custom">
+        <emphasis classes="custom">
             text
 """],
 ["""\
@@ -111,7 +111,7 @@ Now that it's defined, :custom:`interpreted` works.
 """\
 <document source="test data">
     <paragraph>
-        <emphasis class="special">
+        <emphasis classes="special">
             text
 """],
 ["""\
@@ -166,12 +166,12 @@ Testing a :fileref:`role` in a nested parse.
 """,
 """\
 <document source="test data">
-    <section id="test" name="test">
+    <section ids="test" names="test">
         <title>
             Test
         <paragraph>
             Testing a \n\
-            <emphasis class="fileref">
+            <emphasis classes="fileref">
                 role
              in a nested parse.
 """],
@@ -188,7 +188,7 @@ Here's some :html:`<i>raw HTML data</i>`.
 <document source="test data">
     <paragraph>
         Here's some \n\
-        <raw class="html" format="html" xml:space="preserve">
+        <raw classes="html" format="html" xml:space="preserve">
             <i>raw HTML data</i>
         .
 """],
@@ -202,7 +202,7 @@ Here's some itex markup: :itex:`$x^\\infty$`.
 <document source="test data">
     <paragraph>
         Here's some itex markup: \n\
-        <raw class="itex" format="latex html" xml:space="preserve">
+        <raw classes="itex" format="latex html" xml:space="preserve">
             $x^\\infty$
         .
 """],
@@ -213,10 +213,10 @@ Can't use the :raw:`role` directly.
 <document source="test data">
     <paragraph>
         Can't use the \n\
-        <problematic id="id2" refid="id1">
+        <problematic ids="id2" refid="id1">
             :raw:`role`
          directly.
-    <system_message backrefs="id2" id="id1" level="3" line="1" source="test data" type="ERROR">
+    <system_message backrefs="id2" ids="id1" level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             No format (Writer name) is associated with this role: "raw".
             The "raw" role cannot be used directly.

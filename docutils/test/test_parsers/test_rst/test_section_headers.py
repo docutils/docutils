@@ -26,7 +26,7 @@ Paragraph.
 """,
 """\
 <document source="test data">
-    <section id="title" name="title">
+    <section ids="title" names="title">
         <title>
             Title
         <paragraph>
@@ -39,7 +39,7 @@ Paragraph (no blank line).
 """,
 """\
 <document source="test data">
-    <section id="title" name="title">
+    <section ids="title" names="title">
         <title>
             Title
         <paragraph>
@@ -57,7 +57,7 @@ Paragraph.
 <document source="test data">
     <paragraph>
         Paragraph.
-    <section id="title" name="title">
+    <section ids="title" names="title">
         <title>
             Title
         <paragraph>
@@ -110,7 +110,7 @@ Test short underline.
 """,
 """\
 <document source="test data">
-    <section id="title" name="title">
+    <section ids="title" names="title">
         <title>
             Title
         <system_message level="2" line="2" source="test data" type="WARNING">
@@ -131,7 +131,7 @@ Test overline title.
 """,
 """\
 <document source="test data">
-    <section id="title" name="title">
+    <section ids="title" names="title">
         <title>
             Title
         <paragraph>
@@ -146,7 +146,7 @@ Test overline title with inset.
 """,
 """\
 <document source="test data">
-    <section id="title" name="title">
+    <section ids="title" names="title">
         <title>
             Title
         <paragraph>
@@ -205,7 +205,7 @@ Test long title and space normalization.
 """,
 """\
 <document source="test data">
-    <section id="long-title" name="long title">
+    <section ids="long-title" names="long title">
         <title>
             Long    Title
         <system_message level="2" line="1" source="test data" type="WARNING">
@@ -306,22 +306,22 @@ Paragraph 4.
 <document source="test data">
     <comment xml:space="preserve">
         Test return to existing, highest-level section (Title 3).
-    <section id="title-1" name="title 1">
+    <section ids="title-1" names="title 1">
         <title>
             Title 1
         <paragraph>
             Paragraph 1.
-        <section id="title-2" name="title 2">
+        <section ids="title-2" names="title 2">
             <title>
                 Title 2
             <paragraph>
                 Paragraph 2.
-    <section id="title-3" name="title 3">
+    <section ids="title-3" names="title 3">
         <title>
             Title 3
         <paragraph>
             Paragraph 3.
-        <section id="title-4" name="title 4">
+        <section ids="title-4" names="title 4">
             <title>
                 Title 4
             <paragraph>
@@ -354,22 +354,22 @@ Paragraph 4.
 <document source="test data">
     <paragraph>
         Test return to existing, highest-level section (Title 3, with overlines).
-    <section id="title-1" name="title 1">
+    <section ids="title-1" names="title 1">
         <title>
             Title 1
         <paragraph>
             Paragraph 1.
-        <section id="title-2" name="title 2">
+        <section ids="title-2" names="title 2">
             <title>
                 Title 2
             <paragraph>
                 Paragraph 2.
-    <section id="title-3" name="title 3">
+    <section ids="title-3" names="title 3">
         <title>
             Title 3
         <paragraph>
             Paragraph 3.
-        <section id="title-4" name="title 4">
+        <section ids="title-4" names="title 4">
             <title>
                 Title 4
             <paragraph>
@@ -398,22 +398,22 @@ Paragraph 4.
 <document source="test data">
     <paragraph>
         Test return to existing, higher-level section (Title 4).
-    <section id="title-1" name="title 1">
+    <section ids="title-1" names="title 1">
         <title>
             Title 1
         <paragraph>
             Paragraph 1.
-        <section id="title-2" name="title 2">
+        <section ids="title-2" names="title 2">
             <title>
                 Title 2
             <paragraph>
                 Paragraph 2.
-            <section id="title-3" name="title 3">
+            <section ids="title-3" names="title 3">
                 <title>
                     Title 3
                 <paragraph>
                     Paragraph 3.
-        <section id="title-4" name="title 4">
+        <section ids="title-4" names="title 4">
             <title>
                 Title 4
             <paragraph>
@@ -442,17 +442,17 @@ Paragraph 4.
 <document source="test data">
     <paragraph>
         Test bad subsection order (Title 4).
-    <section id="title-1" name="title 1">
+    <section ids="title-1" names="title 1">
         <title>
             Title 1
         <paragraph>
             Paragraph 1.
-        <section id="title-2" name="title 2">
+        <section ids="title-2" names="title 2">
             <title>
                 Title 2
             <paragraph>
                 Paragraph 2.
-    <section id="title-3" name="title 3">
+    <section ids="title-3" names="title 3">
         <title>
             Title 3
         <paragraph>
@@ -493,17 +493,17 @@ Paragraph 4.
 <document source="test data">
     <paragraph>
         Test bad subsection order (Title 4, with overlines).
-    <section id="title-1" name="title 1">
+    <section ids="title-1" names="title 1">
         <title>
             Title 1
         <paragraph>
             Paragraph 1.
-        <section id="title-2" name="title 2">
+        <section ids="title-2" names="title 2">
             <title>
                 Title 2
             <paragraph>
                 Paragraph 2.
-    <section id="title-3" name="title 3">
+    <section ids="title-3" names="title 3">
         <title>
             Title 3
         <paragraph>
@@ -526,7 +526,7 @@ Paragraph.
 """,
 """\
 <document source="test data">
-    <section id="title-containing-inline-markup" name="title containing inline markup">
+    <section ids="title-containing-inline-markup" names="title containing inline markup">
         <title>
             Title containing \n\
             <emphasis>
@@ -545,7 +545,7 @@ Paragraph.
 """,
 """\
 <document source="test data">
-    <section id="numbered-title" name="1. numbered title">
+    <section ids="numbered-title" names="1. numbered title">
         <title>
             1. Numbered Title
         <paragraph>
@@ -571,7 +571,7 @@ Paragraph.
     <system_message level="2" line="3" source="test data" type="WARNING">
         <paragraph>
             Enumerated list ends without a blank line; unexpected unindent.
-    <section id="numbered-title" name="3. numbered title">
+    <section ids="numbered-title" names="3. numbered title">
         <title>
             3. Numbered Title
         <paragraph>
@@ -585,7 +585,7 @@ Short title.
 """,
 """\
 <document source="test data">
-    <section id="abc" name="abc">
+    <section ids="abc" names="abc">
         <title>
             ABC
         <paragraph>
@@ -788,14 +788,14 @@ Paragraph
         <paragraph>
             Possible incomplete section title.
             Treating the overline as ordinary text because it's so short.
-    <section dupname="..." id="id1">
+    <section dupnames="..." ids="id1">
         <title>
             ...
         <system_message level="1" line="4" source="test data" type="INFO">
             <paragraph>
                 Possible incomplete section title.
                 Treating the overline as ordinary text because it's so short.
-        <section dupname="..." id="id2">
+        <section dupnames="..." ids="id2">
             <title>
                 ...
             <system_message backrefs="id2" level="1" line="5" source="test data" type="INFO">
@@ -809,7 +809,7 @@ Paragraph
         <paragraph>
             Possible incomplete section title.
             Treating the overline as ordinary text because it's so short.
-    <section dupname="..." id="id3">
+    <section dupnames="..." ids="id3">
         <title>
             ...
         <system_message backrefs="id3" level="1" line="8" source="test data" type="INFO">
@@ -835,10 +835,10 @@ Ho
     <system_message level="2" line="2" source="test data" type="WARNING">
         <paragraph>
             Explicit markup ends without a blank line; unexpected unindent.
-    <section id="hi" name="hi">
+    <section ids="hi" names="hi">
         <title>
             Hi
-        <section id="yo" name="yo">
+        <section ids="yo" names="yo">
             <title>
                 Yo
             <paragraph>
@@ -850,7 +850,7 @@ Empty Section
 """,
 """\
 <document source="test data">
-    <section id="empty-section" name="empty section">
+    <section ids="empty-section" names="empty section">
         <title>
             Empty Section
 """],
@@ -871,13 +871,13 @@ Without it, the parser ends up in an infinite loop.
 """,
 """\
 <document source="test data">
-    <section id="one" name="one">
+    <section ids="one" names="one">
         <title>
             One
         <paragraph>
             The bubble-up parser strategy conflicts with short titles
             (<= 3 char-long over- & underlines).
-    <section id="two" name="two">
+    <section ids="two" names="two">
         <title>
             Two
         <paragraph>

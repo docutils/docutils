@@ -188,8 +188,7 @@ def replace(name, arguments, options, content, lineno,
             messages = []
             for node in element:
                 if isinstance(node, nodes.system_message):
-                    if node.has_key('backrefs'):
-                        del node['backrefs']
+                    node['backrefs'] = []
                     messages.append(node)
             error = state_machine.reporter.error(
                 'Error in "%s" directive: may contain a single paragraph '
