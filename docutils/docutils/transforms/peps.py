@@ -10,6 +10,8 @@ Transforms for PEP processing.
 
 - `Headers`: Used to transform a PEP's initial RFC-2822 header.  It remains a
   field list, but some entries get processed.
+- `Contents`: Auto-inserts a table of contents.
+- `PEPZero`: Special processing for PEP 0.
 """
 
 __docformat__ = 'reStructuredText'
@@ -52,6 +54,11 @@ class Headers(Transform):
         if pep is None:
             raise DataError('Document does not contain an RFC-2822 "PEP" '
                             'header.')
+        if pep == 0:
+            # Special processing for PEP 0.
+            pending = nodes.pending(PEPZero, 'last reader', {})
+            self.document.insert(1, pending)
+            self.document.note_pending(pending)
         for field in header:
             name = field[0].astext().lower()
             body = field[1]
@@ -73,15 +80,18 @@ class Headers(Transform):
             else:
                 continue
             para = body[0]
-            if name == 'title':
-                title = body.astext()
-                # @@@ Insert a "pending" element here, since we don't really
-                # want a separate document title?
-            elif name in ('author', 'discussions-to'):
+            if name == 'author':
                 for node in para:
                     if isinstance(node, nodes.reference) \
-                          and node.has_key('refuri') \
-                          and node['refuri'][:7] == 'mailto:':
+                           and node.has_key('refuri') \
+                           and node['refuri'].startswith('mailto:'):
+                        replacement = node.astext().replace('@', ' at ')
+                        node.parent.replace(node, nodes.Text(replacement))
+            elif name == 'discussions-to':
+                for node in para:
+                    if isinstance(node, nodes.reference) \
+                           and node.has_key('refuri') \
+                           and node['refuri'].startswith('mailto:'):
                         node['refuri'] += '?subject=PEP%%20%s' % pep
             elif name in ('replaces', 'replaced-by'):
                 newbody = []
@@ -113,3 +123,40 @@ class Contents(Transform):
                                 {'title': None})
         self.document.insert(1, pending)
         self.document.note_pending(pending)
+
+
+class PEPZero(Transform):
+
+    """
+    Special processing for PEP 0.
+    """
+
+    def transform(self):
+        visitor = EmailMasker(self.document)
+        self.document.walk(visitor)
+        self.startnode.parent.remove(self.startnode)
+
+
+class EmailMasker(nodes.SparseNodeVisitor):
+
+    """
+    For all email-address references such as "user@host", mask the address as
+    "user at host" (text) to thwart simple email address harvesters.
+    """
+
+    non_masked_addresses = ('peps@python.org',
+                            'python-list@python.org',
+                            'python-dev@python.org')
+
+    def unknown_visit(self, node):
+        pass
+
+    def visit_reference(self, node):
+        if node.hasattr('refuri') and node['refuri'].startswith('mailto:') \
+               and node['refuri'][8:] not in self.non_masked_addresses:
+            replacement = node.astext().replace('@', ' at ')
+            node.parent.replace(node, nodes.Text(replacement))
+
+    def visit_field_list(self, node):
+        if node.hasattr('class') and node['class'] == 'rfc2822':
+            raise nodes.SkipNode
