@@ -616,8 +616,9 @@ class TokenParser:
         self.goto_line(lineno)
         while self.string != '=':
             self.next()
+        self.stack = None
         while self.type != token.NEWLINE and self.string != ';':
-            if self.string == '=':
+            if self.string == '=' and not self.stack:
                 self.tokens = []
                 self.stack = []
                 self._type = None
