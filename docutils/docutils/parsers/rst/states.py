@@ -114,6 +114,7 @@ from docutils import ApplicationError, DataError
 from docutils.statemachine import StateMachineWS, StateWS
 from docutils.nodes import fully_normalize_name as normalize_name
 from docutils.nodes import whitespace_normalize_name
+from docutils.utils import escape2null, unescape
 from docutils.parsers.rst import directives, languages, tableparser, roles
 from docutils.parsers.rst.languages import en as _fallback_language_module
 
@@ -758,7 +759,6 @@ class Inliner:
                 role = endmatch.group('suffix')[1:-1]
                 position = 'suffix'
             escaped = endmatch.string[:endmatch.start(1)]
-            text = unescape(escaped, 0)
             rawsource = unescape(string[matchstart:textend], 1)
             if rawsource[-1:] == '_':
                 if role:
@@ -769,10 +769,10 @@ class Inliner:
                     prb = self.problematic(text, text, msg)
                     return string[:rolestart], [prb], string[textend:], [msg]
                 return self.phrase_ref(string[:matchstart], string[textend:],
-                                       rawsource, escaped, text)
+                                       rawsource, escaped, unescape(escaped))
             else:
                 rawsource = unescape(string[rolestart:textend], 1)
-                nodelist, messages = self.interpreted(rawsource, text, role,
+                nodelist, messages = self.interpreted(rawsource, escaped, role,
                                                       lineno)
                 return (string[:rolestart], nodelist,
                         string[textend:], messages)
@@ -2917,29 +2917,3 @@ state_classes = (Body, BulletList, DefinitionList, EnumeratedList, FieldList,
                  OptionList, LineBlock, ExtensionOptions, Explicit, Text,
                  Definition, Line, SubstitutionDef, RFC2822Body, RFC2822List)
 """Standard set of State classes used to start `RSTStateMachine`."""
-
-
-def escape2null(text):
-    """Return a string with escape-backslashes converted to nulls."""
-    parts = []
-    start = 0
-    while 1:
-        found = text.find('\\', start)
-        if found == -1:
-            parts.append(text[start:])
-            return ''.join(parts)
-        parts.append(text[start:found])
-        parts.append('\x00' + text[found+1:found+2])
-        start = found + 2               # skip character after escape
-
-def unescape(text, restore_backslashes=0):
-    """
-    Return a string with nulls removed or restored to backslashes.
-    Backslash-escaped spaces are also removed.
-    """
-    if restore_backslashes:
-        return text.replace('\x00', '\\')
-    else:
-        for sep in ['\x00 ', '\x00\n', '\x00']:
-            text = ''.join(text.split(sep))
-        return text
