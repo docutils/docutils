@@ -18,7 +18,7 @@ XML, and TeX.  Support for the following sources has been implemented:
 
 * Standalone files.
 
-* `PEPs (Python Enhancement Proposals)`_ (implemented).
+* `PEPs (Python Enhancement Proposals)`_.
 
 Support for the following sources is planned:
 
@@ -35,6 +35,8 @@ Support for the following sources is planned:
 
 * And others as discovered.
 
+.. _PEPs (Python Enhancement Proposals):
+   http://www.python.org/peps/pep-0012.html
 
 .. contents::
 
