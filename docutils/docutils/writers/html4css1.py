@@ -125,10 +125,10 @@ class HTMLTranslator(nodes.NodeVisitor):
       paragraph is the only child of its parent (footnotes & citations
       are allowed a label first).
 
-    - Regardless of the above, in definitions, table cells, field
-      bodies, option descriptions, and list items, mark the first
-      child with 'class="first"' if it is a paragraph.  The stylesheet
-      sets the top margin to 0 for these paragraphs.
+    - Regardless of the above, in definitions, table cells, field bodies,
+      option descriptions, and list items, mark the first child with
+      'class="first"' and the last child with 'class="last"'.  The stylesheet
+      sets the margins (top & bottom respecively) to 0 for these elements.
 
     The ``no_compact_lists`` setting (``--no-compact-lists`` command-line
     option) disables list whitespace optimization.
