@@ -43,6 +43,7 @@ class ConfigFileTests(unittest.TestCase):
     settings = {
         'old': {'datestamp': '%Y-%m-%d %H:%M UTC',
                 'generator': 1,
+                'no_random': 1,
                 'python_home': 'http://www.python.org',
                 'source_link': 1,
                 'stylesheet': None,
@@ -50,6 +51,7 @@ class ConfigFileTests(unittest.TestCase):
                 'template': fixpath('data/pep-html-template')},
         'one': {'datestamp': '%Y-%m-%d %H:%M UTC',
                 'generator': 1,
+                'no_random': 1,
                 'python_home': 'http://www.python.org',
                 'record_dependencies': utils.DependencyList(),
                 'source_link': 1,

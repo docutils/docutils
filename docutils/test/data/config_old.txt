@@ -11,3 +11,4 @@ stylesheet-path: stylesheets/default.css
 pep-template: pep-html-template
 pep-stylesheet-path: stylesheets/pep.css
 python-home: http://www.python.org
+no-random: 1
