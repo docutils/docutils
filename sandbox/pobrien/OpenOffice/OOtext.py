@@ -344,8 +344,7 @@ New Roman" style:font-size-asian="9pt" style:font-weight-asian="bold"
 fo:orphans="2" fo:widows="2"/></style:style>
 
 <style:style style:name=".figure"
-style:family="paragraph"
-style:list-style-name="WW8Num4">
+style:family="paragraph">
 <style:properties
 fo:margin-top="0inch" fo:margin-bottom="0inch" fo:color="#000000"
 style:font-name="Univers 45 Light" fo:font-size="8pt" fo:language="en"
@@ -408,8 +407,7 @@ fo:margin-left="0inch" fo:margin-right="0inch" fo:text-indent="0inch"
 style:auto-text-indent="false"/></style:style>
 
 <style:style style:name=".table title" 
-style:family="paragraph"
-style:list-style-name="WW8Num16">
+style:family="paragraph">
 <style:properties fo:color="#000000"
 style:font-name="Univers 45 Light" fo:font-size="8pt" fo:language="en"
 fo:country="US" fo:font-weight="bold" style:font-name-asian="Times New
@@ -418,34 +416,10 @@ style:line-height-at-least="0.139inch" fo:text-align="justify"
 style:justify-single-word="false" fo:orphans="0"
 fo:widows="0"/></style:style>
 
-<style:style style:name=".code listing" 
-style:family="paragraph"
-style:next-style-name="Standard"
-style:list-style-name="WW8Num5">
-<style:properties
-style:use-window-font-color="true" style:font-name="Univers 45 Light"
-fo:font-size="10pt" fo:font-weight="bold" style:font-name-asian="Times
-New Roman" style:font-size-asian="10pt" style:font-weight-asian="bold"
-fo:orphans="2" fo:widows="2"/></style:style>
-
 
 <style:style style:name="Page Number" 
 style:family="text"
 style:parent-style-name="WW-Default Paragraph Font"/>
-
-<style:style style:name="Internet link" 
-style:family="text"
-style:parent-style-name="WW-Default Paragraph Font">
-<style:properties
-fo:color="#0000ff" style:text-underline="single"
-style:text-underline-color="font-color"/></style:style>
-
-<style:style style:name="Strong Emphasis" 
-style:family="text"
-style:parent-style-name="WW-Default Paragraph Font">
-<style:properties
-fo:font-weight="bold"
-style:font-weight-asian="bold"/></style:style>
 
 <style:style style:name="WW-Default Paragraph Font" 
 style:family="text"/>
