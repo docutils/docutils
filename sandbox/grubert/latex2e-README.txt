@@ -3,7 +3,7 @@ latex2e BUGS TODOS and other animals
 
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
-Rev. 2002-11-01
+Rev. 2002-11-03
 
 To do
 ~~~~~
@@ -18,8 +18,6 @@ mostly errors when processing tools/test.txt.
 * dedication should be centered, text and title. 
 
 * abstract title should be centered. 
-
-* table of contents entries are itemize items ant therfore have bullets and hyphens, ...
 
 * the indentional problematic error in test.txt is not referring anywhere.
 
