@@ -410,7 +410,7 @@ class Translator(nodes.NodeVisitor):
 
     def visit_field_name(self, node):
         if self.in_docinfo and node.astext() == 'Next':
-            self.part.append('\n///NEXT MONTH///')
+            self.part.append('\n\n///NEXT MONTH///')
             raise nodes.SkipNode
         else:
             raise NotImplementedError, node.astext()
@@ -420,7 +420,7 @@ class Translator(nodes.NodeVisitor):
 
     def visit_figure(self, node):
         self.part = self.foot
-        self.part.append('\n///PIC///\n')
+        self.part.append('\n\n///PIC///\n')
 
     def depart_figure(self, node):
         self.part = self.body
@@ -744,14 +744,12 @@ class Translator(nodes.NodeVisitor):
         self.section_level -= 1
 
     def visit_sidebar(self, node):
-        self.sidebar_class = node.get('class')
         self.part = self.foot
         self.in_sidebar = True
         self.sidebar_start = True
         self.part.append('\n\n///BOXOUT///\n')
 
     def depart_sidebar(self, node):
-        self.sidebar_class = ''
         self.part.append('///END BOX BODY///\n')
         self.in_sidebar = False
         self.part = self.body
@@ -777,12 +775,18 @@ class Translator(nodes.NodeVisitor):
         self.unimplemented_visit(node)
 
     def visit_subtitle(self, node):
-        self.part = self.head
-        self.part.append('\n///DESCRIPTION///\n')
+        if self.in_sidebar:
+            self.part.append('///BOXOUT SUBHEAD///\n')
+        else:
+            self.part = self.head
+            self.part.append('\n///DESCRIPTION///\n')
 
     def depart_subtitle(self, node):
         self.part.append('\n')
-        self.part = self.body
+        if self.in_sidebar:
+            pass
+        else:
+            self.part = self.body
 
     def visit_system_message(self, node):
         raise NotImplementedError, node.astext()
