@@ -446,7 +446,7 @@ pep_home              (PEP/HTML Writer.)  Home URL prefix for PEPs.
                       ``--pep-home``.
 --------------------  ------------------------------------------------
 pep_references        (reStructuredText Parser.)  Recognize and link
-                      to PEP references (like "PEP 258")
+                      to PEP references (like "PEP 258").
 
                       Default: disabled (None); enabled (1) in PEP
                       Reader.  Options: ``--pep-references``.
@@ -490,7 +490,7 @@ report_level          Verbosity threshold at or above which system
                       --verbose, -v, --quiet, -q``.
 --------------------  ------------------------------------------------
 rfc_references        (reStructuredText Parser.)  Recognize and link
-                      to RFC references (like "RFC 822")
+                      to RFC references (like "RFC 822").
 
                       Default: disabled (None); enabled (1) in PEP
                       Reader.  Options: ``--rfc-references``.
@@ -527,6 +527,11 @@ stylesheet-path       (HTML Writer.)  Path to CSS stylesheet [#pwd]_.
                       to the output HTML file.
 
                       Default: None.  Options: ``--stylesheet``.
+--------------------  ------------------------------------------------
+tab_width             (reStructuredText Parser.)  Number of spaces for
+                      hard tab expansion.
+
+                      Default: 8.  Options: ``--tab-width``.
 --------------------  ------------------------------------------------
 toc_backlinks         Enable backlinks from section titles to table of
                       contents entries ("entry"), to the top of the

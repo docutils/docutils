@@ -65,7 +65,10 @@ class Parser(docutils.parsers.Parser):
           {'action': 'store_true'}),
          ('Recognize and link to RFC references (like "RFC 822").',
           ['--rfc-references'],
-          {'action': 'store_true'}),))
+          {'action': 'store_true'}),
+         ('Set number of spaces for tab expansion (default 8).',
+          ['--tab-width'],
+          {'metavar': '<width>', 'type': 'int', 'default': 8}),))
 
     def __init__(self, rfc2822=None, inliner=None):
         if rfc2822:
@@ -84,5 +87,6 @@ class Parser(docutils.parsers.Parser):
               initial_state=self.initial_state,
               debug=debug)
         inputlines = docutils.statemachine.string2lines(
-              inputstring, convert_whitespace=1)
+              inputstring, tab_width=document.options.tab_width,
+              convert_whitespace=1)
         self.statemachine.run(inputlines, document, inliner=self.inliner)
