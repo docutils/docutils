@@ -303,7 +303,7 @@ the heading has a space in it like `text styles`_, we need to quote
 the heading "```text styles`_``".
 
 Document Title / Subtitle
--------------------------
+`````````````````````````
 
 The title of the whole document is a distinct concept from section titles and
 is formatted somewhat differently (e.g. the HTML writer by default shows it as
