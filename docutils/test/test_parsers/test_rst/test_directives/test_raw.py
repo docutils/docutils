@@ -117,6 +117,7 @@ Raw input file is UTF-16-encoded, and is not valid ASCII.
         <paragraph>
             Problem with "raw" directive:
             UnicodeError: Unable to decode input data.  Tried the following encodings: \'ascii\'.
+            (UnicodeDecodeError: 'ascii' codec can't decode byte 0xfe in position 0: ordinal not in range(128))
         <literal_block xml:space="preserve">
             .. raw:: html
                :file: %s

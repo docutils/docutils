@@ -87,6 +87,8 @@ class Input(TransformSpec):
             except:
                 pass
             encodings.append('latin-1')
+        error = None
+        error_details = ''
         for enc in encodings:
             if not enc:
                 continue
@@ -94,11 +96,15 @@ class Input(TransformSpec):
                 decoded = unicode(data, enc, self.error_handler)
                 self.successful_encoding = enc
                 return decoded
-            except (UnicodeError, LookupError):
+            except (UnicodeError, LookupError), error:
                 pass
+        if error is not None:
+            error_details = '\n(%s: %s)' % (error.__class__.__name__, error)
         raise UnicodeError(
-            'Unable to decode input data.  Tried the following encodings: %s.'
-            % ', '.join([repr(enc) for enc in encodings if enc]))
+            'Unable to decode input data.  Tried the following encodings: '
+            '%s.%s'
+            % (', '.join([repr(enc) for enc in encodings if enc]),
+               error_details))
 
 
 class Output(TransformSpec):
