@@ -136,6 +136,21 @@ does not work with T1 encodings one should use::
   \usepackage[scaled=.90]{helvet}
   \usepackage{courier}
 
+Unicode
+-------
+
+The generated LaTeX documents are in latin1 encoding per default, if unicode
+characters are required one must set ``--output-encoding=utf-8`` install
+`LaTeX unicode`_ support from 
+and add::
+
+    \usepackage{ucs}
+    \usepackage[utf8]{inputenc}
+
+to the stylesheet.
+
+.. _LaTeX unicode:: http://www.unruh.de/DniQ/LaTeX/unicode/
+
 Table of figures
 ----------------
 
