@@ -645,8 +645,8 @@ used square brackets for phrase-links.  I changed my mind because:
    for example when quoting Python repr-equivalent syntax that uses
    backquotes.
 
-3. The processing of identifiers (funtion/method/attribute/module/etc.
-   names) into hyperlinks is a useful feature.  PyDoc recognizes
+3. The processing of identifiers (function/method/attribute/module
+   etc. names) into hyperlinks is a useful feature.  PyDoc recognizes
    identifiers heuristically, but it doesn't take much imagination to
    come up with counter-examples where PyDoc's heuristics would result
    in embarassing failure.  I wanted to do it deterministically, and
