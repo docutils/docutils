@@ -1,6 +1,6 @@
-=======================
- Docutils LaTeX Writer
-=======================
+================================
+ Generating LaTeX with Docutils
+================================
 
 :Author: Engelbert Gruber
 :Contact: grubert@users.sourceforge.net
@@ -45,7 +45,7 @@ config documentytion.
 
 
 =====================  ================================================
-Setting/Config Entry   Description
+Configuration Issue    Description
 =====================  ================================================
 papersize              Default: a4paper. Paper geometry can be changed  
                        using ``\geometry{xxx}`` entries.
@@ -94,11 +94,6 @@ rubric style           The header contains the definition of a new
 font selection         see below
 =====================  ================================================
 
-Missing options
----------------
-
-* Selection of LaTeX fontsize.
-* Assumed reST linelength for table width setting.
 
 Font selection
 --------------
@@ -207,7 +202,7 @@ Open to be fixed or open to discussion.
 Tilde in italian
 ----------------
 
-Does not work, or only in verbatim or verb.
+Does not work, or only in verbatim or verb. Could be fixed by using T1.
 
 Tables
 ------
@@ -251,6 +246,9 @@ Notes
 Miscellaneous
 -------------
 
+* Selection of LaTeX fontsize configurable.
+* Assumed reST linelength for table width setting configurable.
+* literal-block indentation configurable.
 * The underscore ``_`` does not work in literal-blocks, has different width.
   I tried
 
@@ -307,4 +305,8 @@ Miscellaneous
     \textbullet         \bullet    gefüllter Kreis auf halber Höhe
     \textperiodcentered \cdot      ·
     \textvisiblespace   (n.v.)     sichtbares Leerzeichen
+* keep literal-blocks together on a page, avoid pagebreaks.
+
+  failed experiments up to now: samepage, minipage, pagebreak 1 to 4 before
+  the block.
 
