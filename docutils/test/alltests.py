@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+#!/bin/sh
+''''exec python -u "$0" #'''
 
 # Author: David Goodger
 # Contact: goodger@users.sourceforge.net
@@ -6,6 +7,7 @@
 # Date: $Date$
 # Copyright: This module has been placed in the public domain.
 
+__doc__ = \
 """
 All modules named 'test_*.py' in the current directory, and recursively in
 subdirectories (packages) called 'test_*', are loaded and test suites within
