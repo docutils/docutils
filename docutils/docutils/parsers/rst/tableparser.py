@@ -132,7 +132,7 @@ class GridTableParser(TableParser):
 
     def setup(self, block):
         self.block = block[:]           # make a copy; it may be modified
-        self.block.disconnect()
+        self.block.disconnect()         # don't propagate changes to parent
         self.bottom = len(block) - 1
         self.right = len(block[0]) - 1
         self.head_body_sep = None
@@ -168,6 +168,7 @@ class GridTableParser(TableParser):
             self.mark_done(top, left, bottom, right)
             cellblock = self.block.get_2D_block(top + 1, left + 1,
                                                 bottom, right)
+            cellblock.disconnect()      # lines in cell can't sync with parent
             self.cells.append((top, left, bottom, right, cellblock))
             corners.extend([(top, right), (bottom, left)])
             corners.sort()
@@ -361,7 +362,7 @@ class SimpleTableParser(TableParser):
 
     def setup(self, block):
         self.block = block[:]           # make a copy; it will be modified
-        self.block.disconnect()
+        self.block.disconnect()         # don't propagate changes to parent
         # Convert top & bottom borders to column span underlines:
         self.block[0] = self.block[0].replace('=', '-')
         self.block[-1] = self.block[-1].replace('=', '-')
@@ -467,6 +468,7 @@ class SimpleTableParser(TableParser):
         for i in range(len(columns)):
             start, end = columns[i]
             cellblock = lines.get_2D_block(0, start, len(lines), end)
+            cellblock.disconnect()      # lines in cell can't sync with parent
             row[i][3] = cellblock
         self.table.append(row)
 
