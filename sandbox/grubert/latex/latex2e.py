@@ -208,6 +208,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.section_level = 0
         self.context = []
         self.topic_class = ''
+        # verbatim: to tell encode not to encode.
+        self.verbatim = 0
+        # insert_newline: to tell encode to add newline.
+        self.insert_newline = 0
+        # mbox_newline: to tell encode to add mbox and newline.
+        self.mbox_newline = 0
 
     def language_label(self, docutil_label):
         return self.language.labels[docutil_label]
@@ -218,6 +224,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # $ % & ~ _ ^ \ { }
         Escaping with a backslash does not help with backslashes, ~ and ^.
         """
+        if self.verbatim:
+            return text
         text = text.replace("\\", '{\\textbackslash}')
         text = text.replace("&", '{\\&}')
         text = text.replace("_", '{\\_}')
@@ -225,6 +233,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         text = text.replace("%", '{\\%}')
         text = text.replace("#", '{\\#}')
         text = text.replace("~", '{\\~{ }}')
+        if self.insert_newline:
+            text = text.replace("\n", '\\\\\n')
+        elif self.mbox_newline:
+            text = text.replace("\n", '}\\\\\n\\mbox{')
         # unicode: not needed as long  as output encoding is latin-1.
         # and not supported as long as output encoding is set to latin-1.
         text = text.replace(u'\u2020', '{$\\dagger$}')
@@ -305,7 +317,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_bullet_list(self, node):
         if not self.latex_toc and self.topic_class == 'contents':
-            #self.body.append( '\\end{flushleft}\n' )
             self.body.append( '\\end{list}\n' )
         else:
             self.body.append( '\\end{itemize}\n' )
@@ -462,6 +473,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     # avoid latexs maketitle generating one for us.
                     self.head.append("\\date{}\n")
             if name == 'address':
+                # self.insert_newline = 1 does not work in tabular
                 # BUG keeping linebreaks in address: 
                 # a) flushleft needs \\ 
                 # b) paragraph with raggedright,
@@ -482,6 +494,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         tail = self.body[size:] + [tail]
         del self.body[size:]
         dest.extend(tail)
+        # for address we did set insert_newline
+        self.insert_newline = 0
 
     def visit_doctest_block(self, node):
         self.body.append( '\\begin{verbatim}' )
@@ -699,10 +713,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('}')
 
     def visit_line_block(self, node):
-        self.visit_literal_block(node)
+        """line-block: 
+        * whitespace (including linebreaks) is significant 
+        * inline markup is supported. 
+        * serif typeface"""
+        self.mbox_newline = 1
+        self.body.append('\\begin{flushleft}\n\\mbox{')
 
     def depart_line_block(self, node):
-        self.depart_literal_block(node)
+        self.body.append('}\n\\end{flushleft}\n')
+        self.mbox_newline = 0
 
     def visit_list_item(self, node):
         self.body.append('\\item ')
@@ -719,15 +739,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_literal_block(self, node):
         self.use_verbatim_for_literal = 1
         if (self.use_verbatim_for_literal):
+            self.verbatim = 1
             self.body.append('\\begin{verbatim}\n')
-            self.body.append(node.astext())
-            self.body.append('\n\\end{verbatim}\n')
-            raise nodes.SkipNode
         else:
             self.body.append('{\\obeylines\\obeyspaces\\ttfamily\n')
 
     def depart_literal_block(self, node):
-        if not self.use_verbatim_for_literal:
+        if self.use_verbatim_for_literal:
+            self.body.append('\n\\end{verbatim}\n')
+            self.verbatim = 0
+        else:
             self.body.append('}\n')
 
     def visit_meta(self, node):
