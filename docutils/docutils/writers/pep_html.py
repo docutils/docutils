@@ -15,7 +15,7 @@ __docformat__ = 'reStructuredText'
 
 import sys
 #import random
-from docutils import nodes, optik
+from docutils import nodes, optik, utils
 from docutils.writers import html4css1
 
 

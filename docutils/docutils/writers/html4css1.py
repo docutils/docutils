@@ -21,7 +21,7 @@ import sys
 import time
 import re
 from types import ListType
-from docutils import writers, nodes, languages
+from docutils import nodes, utils, writers, languages
 
 
 class Writer(writers.Writer):
