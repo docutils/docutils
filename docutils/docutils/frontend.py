@@ -52,6 +52,25 @@ class OptionParser(optik.OptionParser):
          ('Do not include a "(View document source)" link.',
           ['--no-source-link'], {'action': 'store_false',
                                  'dest': 'source_link'}),
+         ('Enable backlinks from section headers to table of contents '
+          'entries.  This is the default.',
+          ['--toc-entry-backlinks'],
+          {'dest': 'toc_backlinks', 'action': 'store_const', 'const': 'entry',
+           'default': 'entry'}),
+         ('Enable backlinks from section headers to the top of the table of '
+          'contents.',
+          ['--toc-top-backlinks'],
+          {'dest': 'toc_backlinks', 'action': 'store_const', 'const': 'top'}),
+         ('Disable backlinks to the table of contents.',
+          ['--no-toc-backlinks'],
+          {'dest': 'toc_backlinks', 'action': 'store_false'}),
+         ('Enable backlinks from footnotes and citations to their '
+          'references.  This is the default.',
+          ['--footnote-backlinks'],
+          {'action': 'store_true', 'default': 1}),
+         ('Disable backlinks from footnotes and citations.',
+          ['--no-footnote-backlinks'],
+          {'dest': 'footnote_backlinks', 'action': 'store_false'}),
          ('Set verbosity threshold; report system messages at or higher than '
           '<level> (by name or number: "info" or "1", warning/2, error/3, '
           'severe/4; also, "none" or "5").  Default is 2 (warning).',
