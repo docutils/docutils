@@ -165,18 +165,29 @@ def directive(directive_name, language_module, document):
     try:
         modulename, functionname = _directive_registry[canonicalname]
     except KeyError:
+        messages.append(document.reporter.error(
+            'Directive "%s" not registered (canonical name "%s").'
+            % (directive_name, canonicalname), line=document.current_line))
         return None, messages
     if _modules.has_key(modulename):
         module = _modules[modulename]
     else:
         try:
             module = __import__(modulename, globals(), locals())
-        except ImportError:
+        except ImportError, detail:
+            messages.append(document.reporter.error(
+                'Error importing directive module "%s" (directive "%s"):\n%s'
+                % (modulename, directive_name, detail),
+                line=document.current_line))
             return None, messages
     try:
         function = getattr(module, functionname)
         _directives[normname] = function
     except AttributeError:
+        messages.append(document.reporter.error(
+            'No function "%s" in module "%s" (directive "%s").'
+            % (functionname, modulename, directive_name),
+            line=document.current_line))
         return None, messages
     return function, messages
 

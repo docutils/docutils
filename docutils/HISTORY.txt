@@ -158,6 +158,7 @@ Changes Since 0.3
 * docutils/parsers/rst/directives/__init__.py:
 
   - Catch unicode value too high error; fixes bug 781766.
+  - Beefed up directive error reporting.
 
 * docutils/parsers/rst/languages/af.py: Added to project; Afrikaans
   mappings by Jannie Hofmeyr.
