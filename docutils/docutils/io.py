@@ -213,7 +213,10 @@ class StringInput(Input):
 
     def read(self, reader):
         """Decode and return the source string."""
-        return self.decode(self.source)
+        if self.options.input_encoding is None:
+            return self.source
+        else:
+            return self.decode(self.source)
 
 
 class StringOutput(Output):
@@ -226,7 +229,10 @@ class StringOutput(Output):
 
     def write(self, data):
         """Encode `data`, store it in `self.destination`, and return it."""
-        self.destination = data.encode(self.options.output_encoding)
+        if self.options.output_encoding is None:
+            self.destination = data
+        else:
+            self.destination = data.encode(self.options.output_encoding)
         return self.destination
 
 
