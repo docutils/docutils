@@ -308,7 +308,7 @@ dormant.
 * Engelbert Gruber has begun `LaTeX Writer`_ and `ReportLabs/PDF
   Writer`_ components.
 
-* Oliver Rutherford has begun a `DocBook Writer`_ component.
+* Oliver Rutherfurd has begun a `DocBook Writer`_ component.
 
 * Simon Budig has a modified ``states.py`` parser module and
   supporting documents for his controversial proposal for `inline
