@@ -259,31 +259,31 @@ Rationale
     the SText idea, addressing all of the problems listed above.
 
 
-Features
+Specification
 
     The specification and user documentaton for reStructuredText is
     quite extensive.  Rather than repeating or summarizing it all
     here, links to the originals are provided.
 
-    Please first take a look at "A ReStructuredText Primer" []_, a
+    Please first take a look at "A ReStructuredText Primer" [13]_, a
     short and gentle introduction.  The "Quick reStructuredText" user
-    reference [18]_ quickly summarizes all of the markup constructs.
+    reference [14]_ quickly summarizes all of the markup constructs.
     For complete and extensive details, the following documents
     contain the full specification itself:
 
-    - An Introduction to reStructuredText [13]_
+    - An Introduction to reStructuredText [15]_
 
-    - reStructuredText Markup Specification [15]_
+    - reStructuredText Markup Specification [16]_
 
     - reStructuredText Directives [17]_
 
-    In addition, "Problems With StructuredText" [14]_ explains many
+    In addition, "Problems With StructuredText" [18]_ explains many
     markup decisions made with regards to StructuredText, and "A
-    Record of reStructuredText Syntax Alternatives" [16]_ records
+    Record of reStructuredText Syntax Alternatives" [19]_ records
     markup decisions made independently.
 
-    A summary of features addressing often-raised docstring markup
-    concerns follows:
+
+Docstring-Significant Features
 
     - A markup escaping mechanism.
 
@@ -396,9 +396,10 @@ Features
       These are mostly used for extension syntax, such as
       "bibliographic field lists" (representing document metadata such
       as author, date, and version) and extension attributes for
-      directives (see below).  They may be used to implement docstring
-      semantics, such as identifying parameters, exceptions raised,
-      etc.; such usage is beyond the scope of this PEP.
+      directives (see below).  They may be used to implement
+      methodologies (docstring semantics), such as identifying
+      parameters, exceptions raised, etc.; such usage is beyond the
+      scope of this PEP.
 
       A modified RFC 2822 syntax is used, with a colon *before* as
       well as *after* the field name.  Field bodies are more versatile
@@ -508,7 +509,7 @@ Questions & Answers
             for over 30 centuries.  Let's not innovate needlessly.
 
         See "Section Structure via Indentation" in "Problems With
-        StructuredText" [14]_ for further elaboration.
+        StructuredText" [18 ]_ for further elaboration.
 
     Q4: Why use reStructuredText for PEPs?  What's wrong with the
         existing standard?
@@ -520,8 +521,8 @@ Questions & Answers
         are less than attractive, and most of the value-added
         potential of HTML is untapped.
 
-        Making reStructuredText the standard markup for PEPs will
-        enable much richer expression, including support for section
+        Making reStructuredText a standard markup for PEPs will enable
+        much richer expression, including support for section
         structure, inline markup, graphics, and tables.  In several
         PEPs there are ASCII graphics diagrams, which are all that
         plaintext documents can support.  Since PEPs are made
@@ -619,7 +620,7 @@ Questions & Answers
     A5: The PEP markup proposal may be removed if it is deemed that
         there is no need for PEP markup, or it could be made into a
         separate PEP.  If accepted, PEP 1, PEP Purpose and Guidelines
-        [19]_, and PEP 9, Sample PEP Template [20]_ will be updated.
+        [20]_, and PEP 9, Sample PEP Template [21]_ will be updated.
 
         It seems natural to adopt a single consistent markup standard
         for all uses of structured plaintext in Python, and to propose
@@ -629,7 +630,7 @@ Questions & Answers
         format to HTML.  How will the new-format PEPs be converted to
         HTML?
 
-    A6: One of the deliverables of the Docutils project [21]_ will be
+    A6: One of the deliverables of the Docutils project [22]_ will be
         a new version of pep2html.py with integrated reStructuredText
         parsing.  The Docutils project will support PEPs with a "PEP
         Reader" component, including all functionality currently in
@@ -669,9 +670,9 @@ Questions & Answers
 
         In a strict sense, the reStructuredText parser is very
         unforgiving (as it should be; "In the face of ambiguity,
-        refuse the temptation to guess" [22]_ applies to parsing
+        refuse the temptation to guess" [23]_ applies to parsing
         markup as well as computer languages).  Here's a design goal
-        from "An Introduction to reStructuredText" [13]_:
+        from "An Introduction to reStructuredText" [15 ]_:
 
             3. Unambiguous.  The rules for markup must not be open for
                interpretation.  For any given input, there should be
@@ -742,39 +743,39 @@ References & Footnotes
 
     [12] http://dev.zope.org/Members/jim/StructuredTextWiki/FrontPage
 
-    [] A ReStructuredText Primer
+    [13] A ReStructuredText Primer
          http://structuredtext.sourceforge.net/docs/quickstart.html
 
-    [18] Quick reStructuredText
+    [14] Quick reStructuredText
          http://structuredtext.sourceforge.net/docs/quickref.html
 
-    [13] An Introduction to reStructuredText
+    [15] An Introduction to reStructuredText
          http://structuredtext.sourceforge.net/spec/introduction.txt
 
-    [14] Problems with StructuredText
-         http://structuredtext.sourceforge.net/spec/problems.txt
-
-    [15] reStructuredText Markup Specification
+    [16] reStructuredText Markup Specification
          http://structuredtext.sourceforge.net/spec/reStructuredText.txt
-
-    [16] A Record of reStructuredText Syntax Alternatives
-         http://structuredtext.sourceforge.net/spec/alternatives.txt
 
     [17] reStructuredText Directives
          http://structuredtext.sourceforge.net/spec/directives.txt
 
-    [19] PEP 1, PEP Guidelines, Warsaw, Hylton
+    [18] Problems with StructuredText
+         http://structuredtext.sourceforge.net/spec/problems.txt
+
+    [19] A Record of reStructuredText Syntax Alternatives
+         http://structuredtext.sourceforge.net/spec/alternatives.txt
+
+    [20] PEP 1, PEP Guidelines, Warsaw, Hylton
          http://www.python.org/peps/pep-0001.html
 
-    [20] PEP 9, Sample PEP Template, Warsaw
+    [21] PEP 9, Sample PEP Template, Warsaw
          http://www.python.org/peps/pep-0009.html
 
-    [21] http://docutils.sourceforge.net/
+    [22] http://docutils.sourceforge.net/
 
-    [22] From "The Zen of Python (by Tim Peters)",
-         http://www.python.org/doc/Humor.html#zen
+    [23] From "The Zen of Python (by Tim Peters)",
+         http://www.python.org/doc/Humor.html#zen (or ``import this``)
 
-    [23] PEP 216, Docstring Format, Zadka
+    [24] PEP 216, Docstring Format, Zadka
          http://www.python.org/peps/pep-0216.html
 
 
@@ -785,7 +786,7 @@ Copyright
 
 Acknowledgements
 
-    Some text is borrowed from PEP 216, Docstring Format [23]_, by
+    Some text is borrowed from PEP 216, Docstring Format [24]_, by
     Moshe Zadka.
 
     Special thanks to all members past & present of the Python Doc-SIG.
