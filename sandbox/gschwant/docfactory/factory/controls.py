@@ -1,7 +1,7 @@
 """
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
-:version: 0.1.3
+:version: 0.1.4
 """
 
 from wxPython.wx     import *
@@ -21,7 +21,7 @@ else:
     face3 = 'Courier'
     pb = 10
     
-class ReSTstc(wxStyledTextCtrl):
+class CustomStyledTextCtrl(wxStyledTextCtrl):
     def __init__(self, parent, ID, log):
         wxStyledTextCtrl.__init__(self, parent, ID)
         self.log = log
@@ -112,3 +112,15 @@ class ReSTstc(wxStyledTextCtrl):
     def Clear(self):
         self.SetText('')
         self.IsModified = false
+
+
+class CustomTreeCtrl(wxTreeCtrl):
+        
+    def OnCompareItems(self, item1, item2):
+        t1 = self.GetItemText(item1)
+        t2 = self.GetItemText(item2)
+        #self.log.WriteText('compare: ' + t1 + ' <> ' + t2 + '\n')
+        if t1 < t2: return -1
+        if t1 == t2: return 0
+        return 1
+

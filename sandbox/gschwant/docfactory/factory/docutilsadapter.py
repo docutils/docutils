@@ -1,14 +1,14 @@
 """
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
-:version: 0.1.3
+:version: 0.1.4
 """
 
 from   docutils.languages.en             import bibliographic_fields
 from   docutils.parsers.rst.languages.en import directives
 from   docutils.core                     import publish
 from   re                                import findall
-import sys
+import os, sys
 from   wxPython.wx                       import wxLogMessage
 
 def get_rest_bibl_fields():
@@ -29,17 +29,14 @@ def get_rest_directives():
         drvs = '%s %s::' % (drvs, value)
     return drvs[1:]
 
-def rest2html(file, htmlfile, stylesheet):
+def rest2html(file, htmlfile, dir):
     # publish reST as HTML and return
     # linenumbers of warnings and errors
     warning_lines = []
     error_lines = []
     sys.stderr = StdCatcher()
-    publish(writer_name='html',
-            argv = ['--stylesheet', stylesheet,
-                    '-g', '--toc-top-backlinks',
-                    '-o', 'ISO-8859-1', file, htmlfile]
-           )
+    os.chdir(dir)    
+    publish(writer_name='html', argv = [file, htmlfile])
     warning_lines = sys.stderr.GetWarnings()
     error_lines = sys.stderr.GetErrors()
     sys.stderr = sys.__stderr__
