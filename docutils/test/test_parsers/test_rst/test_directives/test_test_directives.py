@@ -1,12 +1,12 @@
 #! /usr/bin/env python
 
-"""
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
+"""
 Tests for misc.py test directives.
 """
 
@@ -29,7 +29,7 @@ Paragraph.
 <document source="test data">
     <system_message level="1" line="1" source="test data" type="INFO">
         <paragraph>
-            Directive processed. Type="reStructuredText-test-directive", data="", directive block: None
+            Directive processed. Type="reStructuredText-test-directive", arguments=[], options={}, content: None
     <paragraph>
         Paragraph.
 """],
@@ -42,7 +42,51 @@ Paragraph.
 <document source="test data">
     <system_message level="1" line="1" source="test data" type="INFO">
         <paragraph>
-            Directive processed. Type="reStructuredText-test-directive", data="argument", directive block: None
+            Directive processed. Type="reStructuredText-test-directive", arguments=['argument'], options={}, content: None
+    <paragraph>
+        Paragraph.
+"""],
+["""\
+.. reStructuredText-test-directive:: argument
+   :option: value
+
+Paragraph.
+""",
+"""\
+<document source="test data">
+    <system_message level="1" line="1" source="test data" type="INFO">
+        <paragraph>
+            Directive processed. Type="reStructuredText-test-directive", arguments=['argument'], options={'option': 'value'}, content: None
+    <paragraph>
+        Paragraph.
+"""],
+["""\
+.. reStructuredText-test-directive:: :option: value
+
+Paragraph.
+""",
+"""\
+<document source="test data">
+    <system_message level="1" line="1" source="test data" type="INFO">
+        <paragraph>
+            Directive processed. Type="reStructuredText-test-directive", arguments=[], options={'option': 'value'}, content: None
+    <paragraph>
+        Paragraph.
+"""],
+["""\
+.. reStructuredText-test-directive:: :option:
+
+Paragraph.
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Error in "reStructuredText-test-directive" directive:
+            invalid option value: (option: "option"; value: None)
+            argument required but none supplied.
+        <literal_block xml:space="preserve">
+            .. reStructuredText-test-directive:: :option:
     <paragraph>
         Paragraph.
 """],
@@ -57,9 +101,27 @@ Paragraph.
 <document source="test data">
     <system_message level="1" line="1" source="test data" type="INFO">
         <paragraph>
-            Directive processed. Type="reStructuredText-test-directive", data="", directive block:
+            Directive processed. Type="reStructuredText-test-directive", arguments=[], options={}, content:
         <literal_block xml:space="preserve">
             Directive block contains one paragraph, with a blank line before.
+    <paragraph>
+        Paragraph.
+"""],
+["""\
+.. reStructuredText-test-directive::
+
+
+   Directive block contains one paragraph, with two blank lines before.
+
+Paragraph.
+""",
+"""\
+<document source="test data">
+    <system_message level="1" line="1" source="test data" type="INFO">
+        <paragraph>
+            Directive processed. Type="reStructuredText-test-directive", arguments=[], options={}, content:
+        <literal_block xml:space="preserve">
+            Directive block contains one paragraph, with two blank lines before.
     <paragraph>
         Paragraph.
 """],
@@ -73,9 +135,7 @@ Paragraph.
 <document source="test data">
     <system_message level="1" line="1" source="test data" type="INFO">
         <paragraph>
-            Directive processed. Type="reStructuredText-test-directive", data="", directive block:
-        <literal_block xml:space="preserve">
-            Directive block contains one paragraph, no blank line before.
+            Directive processed. Type="reStructuredText-test-directive", arguments=['Directive block contains one paragraph, no blank line before.'], options={}, content: None
     <paragraph>
         Paragraph.
 """],
@@ -90,14 +150,27 @@ Paragraph.
 <document source="test data">
     <system_message level="1" line="1" source="test data" type="INFO">
         <paragraph>
-            Directive processed. Type="reStructuredText-test-directive", data="", directive block:
-        <literal_block xml:space="preserve">
-            block
+            Directive processed. Type="reStructuredText-test-directive", arguments=['block'], options={}, content: None
     <system_message level="2" line="3" source="test data" type="WARNING">
         <paragraph>
             Explicit markup ends without a blank line; unexpected unindent.
     <paragraph>
         no blank line.
+    <paragraph>
+        Paragraph.
+"""],
+["""\
+.. reStructuredText-test-directive:: argument
+   :option: * value1
+            * value2
+
+Paragraph.
+""",
+"""\
+<document source="test data">
+    <system_message level="1" line="1" source="test data" type="INFO">
+        <paragraph>
+            Directive processed. Type="reStructuredText-test-directive", arguments=['argument'], options={'option': '* value1\\n* value2'}, content: None
     <paragraph>
         Paragraph.
 """],

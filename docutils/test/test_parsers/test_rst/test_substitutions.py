@@ -77,9 +77,34 @@ Here's a series of substitution definitions:
 ["""\
 .. |symbol 1| image:: symbol.png
 
+    Followed by a block quote.
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Error in "image" directive:
+            no content permitted..
+        <literal_block xml:space="preserve">
+            image:: symbol.png
+            \n\
+                Followed by a block quote.
+    <system_message level="2" line="1" source="test data" type="WARNING">
+        <paragraph>
+            Substitution definition "symbol 1" empty or invalid.
+        <literal_block xml:space="preserve">
+            .. |symbol 1| image:: symbol.png
+            \n\
+                Followed by a block quote.
+"""],
+["""\
+.. |symbol 1| image:: symbol.png
+
 Followed by a paragraph.
 
 .. |symbol 2| image:: symbol.png
+
+..
 
     Followed by a block quote.
 """,
@@ -91,6 +116,7 @@ Followed by a paragraph.
         Followed by a paragraph.
     <substitution_definition name="symbol 2">
         <image alt="symbol 2" uri="symbol.png">
+    <comment xml:space="preserve">
     <block_quote>
         <paragraph>
             Followed by a block quote.
