@@ -26,6 +26,7 @@ from docutils.transforms import Transform, TransformError
 class Headers(Transform):
 
     """
+    Process fields in a PEP's initial RFC-2822 header.
     """
 
     pep_cvs_url = ('http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/python/'
