@@ -118,6 +118,7 @@ Specific:
   - Made XHTML-compatible (switched to lowercase element & attribute
     names; empty tag format).
   - Escape double-dashes in comment text.
+  - Improved boilerplate & modularity of output.
 
 * docutils/writers/pseudoxml.py: Renamed from pprint.py.
 

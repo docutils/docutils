@@ -93,6 +93,27 @@ Paragraph.
         Paragraph.
 """],
 ["""\
+.. A comment.
+.. Another.
+no blank line
+
+Paragraph.
+""",
+"""\
+<document>
+    <comment>
+        A comment.
+    <comment>
+        Another.
+    <system_message level="2" type="WARNING">
+        <paragraph>
+            Explicit markup ends without a blank line; unexpected unindent at line 3.
+    <paragraph>
+        no blank line
+    <paragraph>
+        Paragraph.
+"""],
+["""\
 .. A comment::
 
 Paragraph.
