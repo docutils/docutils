@@ -3,11 +3,15 @@ latex2e BUGS TODOS and other animals
 
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
-Rev. 2002-11-11
+Rev. 2002-11-12
 
 To do
 ~~~~~
 mostly errors when processing tools/test.txt.
+
+* table heads and footer for longtable (firstpage lastpage ..)
+
+* me (e.g.) uses textwidth, julien linewidth see what is what ?
 
 * ordered list numbering style is taken from latex a.,b. in source
   gives 1., .. in document.
@@ -87,5 +91,6 @@ mostly errors when processing tools/test.txt.
 Done
 ~~~~
 
+* multipage table
 * field lists as description inside quote.
 * literal blocks are inside a quote environment (means indented).
