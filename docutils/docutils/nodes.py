@@ -1,12 +1,10 @@
-#! /usr/bin/env python
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
 """
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
-
 Docutils document tree element class library.
 
 Classes in CamelCase are abstract base classes or auxiliary classes. The one
@@ -43,7 +41,16 @@ class Node:
     """Abstract base class of nodes in a document tree."""
 
     parent = None
-    """Back-reference to the `Node` containing this `Node`."""
+    """Back-reference to the Node immediately containing this Node."""
+
+    document = None
+    """The `document` node at the root of the tree containing this Node."""
+
+    source = None
+    """Path or description of the input source which generated this Node."""
+
+    line = None
+    """The line number (1-based) of the beginning of this Node in `source`."""
 
     def __nonzero__(self):
         """Node instances are always true."""
@@ -60,6 +67,15 @@ class Node:
     def copy(self):
         """Return a copy of self."""
         raise NotImplementedError
+
+    def setup_child(self, child):
+        child.parent = self
+        if self.document:
+            child.document = self.document
+            if child.source is None:
+                child.source = self.document.current_source
+            if child.line is None:
+                child.line = self.document.current_line
 
     def walk(self, visitor):
         """
@@ -323,12 +339,12 @@ class Element(Node):
         if isinstance(key, UnicodeType) or isinstance(key, StringType):
             self.attributes[str(key)] = item
         elif isinstance(key, IntType):
-            item.parent = self
+            self.setup_child(item)
             self.children[key] = item
         elif isinstance(key, SliceType):
             assert key.step is None, 'cannot handle slice with stride'
             for node in item:
-                node.parent = self
+                self.setup_child(node)
             self.children[key.start:key.stop] = item
         else:
             raise TypeError, ('element index must be an integer, a slice, or '
@@ -355,11 +371,11 @@ class Element(Node):
     def __iadd__(self, other):
         """Append a node or a list of nodes to `self.children`."""
         if isinstance(other, Node):
-            other.parent = self
+            self.setup_child(other)
             self.children.append(other)
         elif other is not None:
             for node in other:
-                node.parent = self
+                self.setup_child(node)
             self.children.extend(other)
         return self
 
@@ -388,17 +404,17 @@ class Element(Node):
     has_key = hasattr
 
     def append(self, item):
-        item.parent = self
+        self.setup_child(item)
         self.children.append(item)
 
     def extend(self, item):
         for node in item:
-            node.parent = self
+            self.setup_child(node)
         self.children.extend(item)
 
     def insert(self, index, item):
         if isinstance(item, Node):
-            item.parent = self
+            self.setup_child(item)
             self.children.insert(index, item)
         elif item is not None:
             self[index:index] = item
@@ -416,7 +432,7 @@ class Element(Node):
         """Replace one child `Node` with another child or children."""
         index = self.index(old)
         if isinstance(new, Node):
-            new.parent = self
+            self.setup_child(new)
             self[index] = new
         elif new is not None:
             self[index:index+1] = new
@@ -508,7 +524,7 @@ class FixedTextElement(TextElement):
 
     def __init__(self, rawsource='', text='', *children, **attributes):
         TextElement.__init__(self, rawsource, text, *children, **attributes)
-        self.attributes['xml:space'] = 1
+        self.attributes['xml:space'] = 'preserve'
 
 
 # ========
@@ -582,6 +598,12 @@ class document(Root, Structural, Element):
 
     def __init__(self, options, reporter, *args, **kwargs):
         Element.__init__(self, *args, **kwargs)
+
+        self.current_source = None
+        """Path to or description of the input source being processed."""
+
+        self.current_line = None
+        """Line number (1-based) of `current_source`."""
 
         self.options = options
         """Command-line or internal option data record."""
@@ -668,6 +690,8 @@ class document(Root, Structural, Element):
 
         self.transform_messages = []
         """System messages generated while applying transforms."""
+
+        self.document = self
 
     def asdom(self, dom=xml.dom.minidom):
         domroot = dom.Document()
@@ -866,6 +890,19 @@ class document(Root, Structural, Element):
 
     def note_transform_message(self, message):
         self.transform_messages.append(message)
+
+    def note_state_machine_change(self, state_machine):
+        self.current_line = state_machine.abs_line_number()
+#         print >>sys.stderr, '\nnodes.document.note_state_machine_change: ' \
+#                   'current_line:', self.current_line
+#         print >>sys.stderr, '    current_state: ',state_machine.current_state
+#         sys.stderr.flush()
+
+    def note_source(self, source):
+        self.current_source = source
+        #print >>sys.stderr, '\nnodes.document.note_source: ' \
+        #          'current_source:', self.current_source
+        #sys.stderr.flush()
 
     def copy(self):
         return self.__class__(self.options, self.reporter,
