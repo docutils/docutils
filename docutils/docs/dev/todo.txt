@@ -626,8 +626,12 @@ Also see the `... Or Not To Do?`__ list.
 
 __ rst/alternatives.html#or-not-to-do
 
-* Add (functional) tests for the "raw" role, its class attribute, and
-  the other roles as well.
+* Add support for inclusion by URL::
+
+      .. include:: 
+         :url: http://etc/inclusion.txt
+
+* Add (functional) tests for untested roles.
 
 * Allow the _`:trim:` option for all directives when they occur in a
   substitution definition, not only the unicode_ directive.
