@@ -133,7 +133,7 @@ General
 
   - Change ``Transform.transform()`` to ``Transform.apply()``?
 
-  ::
+  Updated project model under consideration for PEP 258::
 
                         +--------------------------+
                         |        Docutils:         |
