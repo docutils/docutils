@@ -285,9 +285,8 @@ Possible solutions include
 
   According to Axel Kollmorgen,
 
-      Under Windows, you can use the Microsoft Keyboard Layout Creator
-      (available at
-      http://www.microsoft.com/globaldev/tools/msklc.mspx) to easily
+      Under Windows, you can use the `Microsoft Keyboard Layout Creator
+      <http://www.microsoft.com/globaldev/tools/msklc.mspx>`__ to easily
       map the backtick key to a real backtick (no dead key). took me
       five minutes to load my default (german) keyboard layout, untick
       "Dead Key?" from the backtick key properties ("in all shift
@@ -334,7 +333,7 @@ implied endorsement or recommendation, and in no particular order:
 Please `let us know`_ of any other reStructuredText Wikis.
 
 The example application for the `Web Framework Shootout
-<http://colorstudy.com/docs/shootout.html>` article is a Wiki using
+<http://colorstudy.com/docs/shootout.html>`__ article is a Wiki using
 reStructuredText.
 
 
