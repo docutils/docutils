@@ -77,7 +77,6 @@ paper formats some things are different or not.
 * page numbers
 
 
-
 Problems
 --------
 
