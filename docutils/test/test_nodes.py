@@ -51,6 +51,13 @@ class ElementTests(unittest.TestCase):
         self.assertEquals(dom.toxml(), '<Element attr="1"/>')
         dom.unlink()
         self.assertEquals(element.pformat(), '<Element attr="1">\n')
+        del element['attr']
+        element['mark'] = u'\u2022'
+        self.assertEquals(repr(element), '<Element: >')
+        self.assertEquals(str(element), '<Element mark="\\u2022"/>')
+        dom = element.asdom()
+        self.assertEquals(dom.toxml(), u'<Element mark="\u2022"/>')
+        dom.unlink()
 
     def test_withtext(self):
         element = nodes.Element('text\nmore', nodes.Text('text\nmore'))
