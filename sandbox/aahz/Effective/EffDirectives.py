@@ -70,7 +70,7 @@ def index_directive(name, arguments, options, content, lineno,
         tmp = []
         for level in levels:
             textnodes, messages = state.inline_text(level, lineno)
-            entry_level = index_entry_level(level, *textnodes)
+            entry_level = index_entry_level(level, '', *textnodes)
             tmp.append(entry_level)
             message_set.extend(messages)
         index = index_entry(entry, *tmp)
