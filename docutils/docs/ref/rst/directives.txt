@@ -846,23 +846,27 @@ Unicode Character Codes
 
 :Directive Type: "unicode"
 :Doctree Element: Text
-:Directive Arguments: One or more, required (Unicode character codes
-                      & text).
+:Directive Arguments: One or more, required (Unicode character codes,
+                      optional text, and comments).
 :Directive Options: None.
 :Directive Content: None.
 
 The "unicode" directive converts Unicode character codes (numerical
 values) to characters, and may be used in substitution definitions
 only.  Codes may be decimal numbers, hexadecimal numbers (prefixed by
-``0x``, ``x``, ``\x``, ``u``, or ``\u``), or XML-style numbered
-character entities (e.g. ``&#x1a2b;``).  Codes may be upper- or
-lowercase.  Spaces are ignored, and any other text remains as-is.
+``0x``, ``x``, ``\x``, ``u``, or ``\u``), or XML-style numeric
+character entities (e.g. ``&#x1a2b;``).  Codes are case-insensitive.
+
+Text following " .. " is a comment and is ignored.  Spaces are
+ignored, and any other text remains as-is.
 
 Example::
 
-    "|copy|" is the copyright symbol.
+    Copyright |copy| 2003, |BogusMegaCorp (TM)|.
 
-    .. |copy| unicode:: 0xA9
+    .. |copy| unicode:: 0xA9 .. copyright sign
+    .. |BogusMegaCorp (TM)| unicode:: BogusMegaCorp U+2122
+       .. with trademark sign
 
 
 Class
