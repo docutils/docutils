@@ -274,6 +274,10 @@ class DocInfo(Transform):
                     else:
                         docinfo.append(biblioclass('', *field[1].children))
             except TransformError:
+                if len(field[-1]) == 1 \
+                       and isinstance(field[-1][0], nodes.paragraph):
+                    utils.clean_rcs_keywords(
+                        field[-1][0], self.rcs_keyword_substitutions)
                 docinfo.append(field)
                 continue
         nodelist = []
@@ -285,18 +289,18 @@ class DocInfo(Transform):
         return nodelist
 
     def check_empty_biblio_field(self, field, name):
-        if len(field[1]) < 1:
+        if len(field[-1]) < 1:
             field[-1] += self.document.reporter.warning(
                   'Cannot extract empty bibliographic field "%s".' % name)
             return None
         return 1
 
     def check_compound_biblio_field(self, field, name):
-        if len(field[1]) > 1:
+        if len(field[-1]) > 1:
             field[-1] += self.document.reporter.warning(
                   'Cannot extract compound bibliographic field "%s".' % name)
             return None
-        if not isinstance(field[1][0], nodes.paragraph):
+        if not isinstance(field[-1][0], nodes.paragraph):
             field[-1] += self.document.reporter.warning(
                   'Cannot extract bibliographic field "%s" containing '
                   'anything other than a single paragraph.' % name)
