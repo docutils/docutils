@@ -6,7 +6,7 @@
 :Revision: $Revision$
 :Date: $Date$
 
-reStructuredText_ is plain text that uses simple and intuitive
+reStructuredText_ is plaintext that uses simple and intuitive
 constructs to indicate the structure of a document.  These constructs
 are equally easy to read in raw and processed forms.  This document is
 itself an example of reStructuredText (raw, if you are reading the
@@ -28,8 +28,7 @@ reStructuredText markup by example.  A complete specification is given
 in the `Syntax Details`_ section.
 
 `Literal blocks`_ (in which no markup processing is done) are used for
-examples throughout this document, to illustrate the plain text
-markup.
+examples throughout this document, to illustrate the plaintext markup.
 
 
 .. contents::
@@ -324,7 +323,7 @@ the field names)::
 Escaping Mechanism
 ==================
 
-The character set universally available to plain text documents, 7-bit
+The character set universally available to plaintext documents, 7-bit
 ASCII, is limited.  No matter what characters are used for markup,
 they will already have multiple meanings in written text.  Therefore
 markup characters *will* sometimes appear in text **without being
@@ -1335,7 +1334,7 @@ required between explicit markup blocks and other elements, but are
 optional between explicit markup blocks where unambiguous.
 
 The explicit markup syntax is used for footnotes, citations, hyperlink
-targets, directives, and comments.
+targets, directives, substitution definitions, and comments.
 
 
 Footnotes
@@ -1927,8 +1926,8 @@ Styles [#]_
 
     The style name may be meaningful in the context of some particular
     output format (CSS class name for HTML output, LaTeX style name
-    for LaTeX, etc), or may be ignored for other output formats (often
-    for plain text).
+    for LaTeX, etc), or may be ignored for other output formats (such
+    as plaintext).
 
     .. @@@ This needs to be rethought & rewritten or removed:
 
@@ -2006,8 +2005,20 @@ be processed as a comment element.  No further processing is done on
 the comment block text; a comment contains a single "text blob".
 Depending on the output formatter, comments may be removed from the
 processed output.  The only restriction on comments is that they not
-use the same syntax as directives, footnotes, citations, or hyperlink
-targets.
+use the same syntax as any of the other explicit markup constructs:
+substitution definitions, directives, footnotes, citations, or
+hyperlink targets.  To ensure that none of the other explicit markup
+constructs is recognized, leave the ".." on a line by itself::
+
+    .. This is a comment
+    ..
+       _so: is this!
+    ..
+       [and] this!
+    ..
+       this:: too!
+    ..
+       |even| this:: !
 
 A explicit markup start followed by a blank line and nothing else
 (apart from whitespace) is an "empty comment".  It serves to terminate
