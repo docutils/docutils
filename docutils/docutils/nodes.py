@@ -119,9 +119,8 @@ class Node:
             return
         except SkipDeparture:           # not applicable; ignore
             pass
-        children = self.get_children()
         try:
-            for child in children[:]:
+            for child in self.get_children():
                 child.walk(visitor)
         except SkipSiblings:
             pass
@@ -147,9 +146,8 @@ class Node:
                 return
             except SkipDeparture:
                 call_depart = 0
-            children = self.get_children()
             try:
-                for child in children[:]:
+                for child in self.get_children():
                     child.walkabout(visitor)
             except SkipSiblings:
                 pass
@@ -502,8 +500,8 @@ class Element(Node):
                         for child in self.children])
 
     def get_children(self):
-        """Return this element's children."""
-        return self.children
+        """Return a copy of this element's children as a list."""
+        return list(self.children)
 
     def copy(self):
         return self.__class__(**self.attributes)
