@@ -156,6 +156,25 @@ Now that it's defined, :custom:`interpreted` works.
         <literal_block xml:space="preserve">
             .. role:: 1
 """],
+["""\
+Test
+----
+
+.. role:: fileref(emphasis)
+
+Testing a :fileref:`role` in a nested parse.
+""",
+"""\
+<document source="test data">
+    <section id="test" name="test">
+        <title>
+            Test
+        <paragraph>
+            Testing a \n\
+            <emphasis class="fileref">
+                role
+             in a nested parse.
+"""],
 ]
 
 

@@ -199,6 +199,7 @@ class NestedStateMachine(StateMachineWS):
         self.document = memo.document
         self.attach_observer(self.document.note_source)
         self.reporter = memo.reporter
+        self.language = memo.language
         self.node = node
         results = StateMachineWS.run(self, input_lines, input_offset)
         assert results == [], ('NestedStateMachine.run() results should be '

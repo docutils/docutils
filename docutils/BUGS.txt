@@ -127,20 +127,6 @@ Also see the `SourceForge Bug Tracker`_.
       .. csv-table::
          :file: empty.txt
 
-* Docutils crashes when encountering two consecutive _`roles` if the
-  second role specifies a base role.  For example::
-
-      .. role:: a
-      .. role:: b(literal)
-
-  Another way to reproduce this bug::
-
-      ----
-      Test
-      ----
-
-      .. role:: fileref(emphasis)
-
 * _`Line numbers` in system messages are inconsistent in the parser.
 
   - In text inserted by the "include" directive, errors are often not
