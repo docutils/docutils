@@ -50,6 +50,10 @@ Bugs
   whitespace and punctuation as markup delimiters, which may not be
   applicable in these languages.
 
+- Text like "``--an-option``" can get wrapped badly in HTML browsers,
+  like "``--\nan-option``".  Should inline literals prevent soft
+  linebreaks?  Allow breaks at whitespace or not at all?
+
 
 General
 -------
@@ -341,8 +345,6 @@ Directives
 
   - _`parts.citations`: See `Footnote & Citation Gathering`_.
 
-  - _`parts.topic` (maybe "body.topic")
-
   - _`parts.sectnum` (section numbering; add support to .contents;
     could be cmdline option also)
 
@@ -380,6 +382,8 @@ Directives
   - _`misc.language`: Specify the language of a document.  There is a
     problem similar to the first problem listed for misc.encoding_,
     although to a lesser degree.
+
+  - _`body.topic`
 
   - _`body.qa` (directive a.k.a. "faq", "questions"): Questions &
     Answers.  Implement as a generic two-column marked list?  As a
@@ -490,7 +494,65 @@ Directives
 
   - _`body.example`: Examples; suggested by Simon Hefti.  Semantics as
     per Docbook's "example"; admonition-style, numbered, reference,
-    with a caption/title.  (Maybe "admonitions.example"?)
+    with a caption/title.
+
+  - _`body.index`: Index targets.
+
+    Were I writing a book with an index, I guess I'd need two
+    different kinds of index tags: inline/implicit and
+    out-of-line/explicit.  For example::
+
+        In this `paragraph`:index:, several words are being
+        `marked`:index: inline as implicit `index`:index:
+        entries.
+
+        .. index:: markup
+        .. index:: syntax
+
+        The explicit index directives above would refer to
+        this paragraph.
+
+    The words "paragraph", "marked", and "index" would become index
+    entries pointing at the words in the first paragraph.  The index
+    entries appear verbatim in the text.  (Don't worry about the ugly
+    ":index:" part; if indexing is the only application of interpreted
+    text in your documents, it can be implicit and omitted.)  The two
+    directives provide manual indexing, where the index entry words
+    ("markup" and "syntax") do not appear in the main text.  We could
+    combine the two directives into one::
+
+        .. index:: markup; syntax
+
+    Semicolons instead of commas because commas could *be* part of the
+    index entry, like::
+
+        .. index:: van Rossum, Guido
+
+    Sometimes index entries have multiple levels.  Given::
+
+        .. index:: statement syntax: expression statements
+
+    In a hypothetical index, combined with other entries, it might
+    look like this::
+
+        statement syntax
+            expression statements ..... 56
+            assignment ................ 57
+            simple statements ......... 58
+            compound statements ....... 60
+
+    Inline multi-level index targets could be done too.  Something
+    like::
+
+        When dealing with `expression statements <statement syntax:>`,
+        we must remember ...
+
+    The opposite sense could also be possible::
+
+        When dealing with `index entries <:multi-level>`, there are
+        many permutations to consider.
+
+    Also "see / see also" index entries.
 
   - _`colorize.python`: Colorize Python code.  Fine for HTML output,
     but what about other formats?  Revert to a literal block?  Do we
