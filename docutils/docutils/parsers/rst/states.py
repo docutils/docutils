@@ -21,6 +21,7 @@ the reStructuredText parser.  It defines the following:
     - `FieldList`: Second+ fields.
     - `OptionList`: Second+ option_list_items.
     - `RFC2822List`: Second+ RFC2822-style fields.
+    - `ExtensionOptions`: Parses directive option fields.
     - `Explicit`: Second+ explicit markup constructs.
     - `SubstitutionDef`: For embedded directives in substitution definitions.
     - `Text`: Classifier of second line of a text block.
@@ -1188,8 +1189,7 @@ class Body(RSTState):
         fieldbody = nodes.field_body('\n'.join(indented))
         fieldnode += fieldbody
         if indented:
-            self.nested_parse(indented, input_offset=line_offset,
-                              node=fieldbody)
+            self.parse_field_body(indented, line_offset, fieldbody)
         return fieldnode, blank_finish
 
     def parse_field_marker(self, match):
@@ -1197,6 +1197,9 @@ class Body(RSTState):
         field = match.string[1:]        # strip off leading ':'
         field = field[:field.find(':')] # strip off trailing ':' etc.
         return field
+
+    def parse_field_body(self, indented, offset, node):
+        self.nested_parse(indented, input_offset=offset, node=node)
 
     def option_marker(self, match, context, next_state):
         """Option list item."""
@@ -1660,26 +1663,129 @@ class Body(RSTState):
 
     def directive(self, match, **option_presets):
         type_name = match.group(1)
-        directivefunction = directives.directive(type_name,
-                                                 self.memo.language)
-        data = match.string[match.end():].strip()
-        if directivefunction:
-            return directivefunction(match, type_name, data, self,
-                                     self.state_machine, option_presets)
+        directive_function = directives.directive(type_name,
+                                                  self.memo.language)
+        if directive_function:
+            return self.parse_directive(
+                directive_function, match, type_name, option_presets)
         else:
-            return self.unknown_directive(type_name, data)
+            return self.unknown_directive(type_name)
 
-    def unknown_directive(self, type_name, data):
+    def parse_directive(self, directive_fn, match, type_name, option_presets):
+        """
+        Parse a directive then run its directive function.
+        
+        Parameters:
+
+        - `directive_fn`: The function implementing the directive.  Must have
+          function attributes ``arguments``, ``options``, and ``content``.
+
+        - `match`: A regular expression match object which matched the first
+          line of the directive.
+
+        - `type_name`: The directive name, as used in the source text.
+
+        - `option_presets`: A dictionary of preset options, defaults for the
+          directive options.  Currently, only an "alt" option is passed by
+          substitution definitions (value: the substitution name), which may
+          be used by an embedded image directive.
+  
+        Returns a 2-tuple: list of nodes, and a "blank finish" boolean.
+        """
+        arguments = []
+        options = {}
+        content = []
+        argument_spec = option_spec = content_spec = None
+        if hasattr(directive_fn, 'arguments'):
+            argument_spec = directive_fn.arguments
+            if argument_spec[:2] == (0, 0):
+                argument_spec = None
+        if hasattr(directive_fn, 'options'):
+            option_spec = directive_fn.options
+        if hasattr(directive_fn, 'content'):
+            content_spec = directive_fn.content
         lineno = self.state_machine.abs_line_number()
-        indented, indent, offset, blank_finish = \
-              self.state_machine.get_first_known_indented(0, strip_indent=0)
-        text = '\n'.join(indented)
-        error = self.reporter.error(
-              'Unknown directive type "%s".' % type_name, '',
-              nodes.literal_block(text, text), line=lineno)
-        return [error], blank_finish
+        initial_line_offset = self.state_machine.line_offset
+        indented, indent, line_offset, blank_finish \
+                  = self.state_machine.get_first_known_indented(match.end(),
+                                                                strip_top=0)
+        block_text = '\n'.join(self.state_machine.input_lines[
+            initial_line_offset : self.state_machine.line_offset + 1])
+        if indented and not indented[0].strip():
+            indented.pop(0)
+            line_offset += 1
+        while indented and not indented[-1].strip():
+            indented.pop()
+        if indented and (argument_spec or option_spec):
+            for i in range(len(indented)):
+                if not indented[i].strip():
+                    break
+            else:
+                i += 1
+            arg_block = indented[:i]
+            content = indented[i+1:]
+            content_offset = line_offset + i + 1
+        else:
+            content = indented
+            content_offset = line_offset
+            arg_block = []
+        while content and not content[0].strip():
+            content.pop(0)
+            content_offset += 1
+        try:
+            if option_spec:
+                options, arg_block = self.parse_directive_options(
+                    option_presets, option_spec, arg_block)
+            if argument_spec:
+                arguments = self.parse_directive_arguments(argument_spec,
+                                                           arg_block)
+            if content and not content_spec:
+                raise MarkupError('no content permitted.')
+        except MarkupError, detail:
+            error = self.reporter.error(
+                'Error in "%s" directive:\n%s.' % (type_name, detail), '',
+                nodes.literal_block(block_text, block_text), line=lineno)
+            return [error], blank_finish
+        result = directive_fn(
+            type_name, arguments, options, content, lineno, content_offset,
+            block_text, self, self.state_machine)
+        return result, blank_finish
 
-    def parse_extension_options(self, option_spec, datalines, blank_finish):
+    def parse_directive_options(self, option_presets, option_spec, arg_block):
+        options = option_presets.copy()
+        for i in range(len(arg_block)):
+            if arg_block[i][:1] == ':':
+                opt_block = arg_block[i:]
+                arg_block = arg_block[:i]
+                break
+        else:
+            opt_block = []
+        if opt_block:
+            success, data = self.parse_extension_options(option_spec,
+                                                         opt_block)
+            if success:                 # data is a dict of options
+                options.update(data)
+            else:                       # data is an error string
+                raise MarkupError(data)
+        return options, arg_block
+
+    def parse_directive_arguments(self, argument_spec, arg_block):
+        required, optional, last_whitespace = argument_spec
+        arg_text = '\n'.join(arg_block)
+        arguments = arg_text.split()
+        if len(arguments) < required:
+            raise MarkupError('%s argument(s) required, %s supplied'
+                              % (required, len(arguments)))
+        elif len(arguments) > required + optional:
+            if last_whitespace:
+                arguments = arg_text.split(None, required + optional - 1)
+            else:
+                raise MarkupError(
+                    'maximum %s argument(s) allowed, %s supplied'
+                    % (required + optional, len(arguments)))
+        return arguments
+
+    def parse_extension_options(self, option_spec, datalines):
         """
         Parse `datalines` for a field list containing extension options
         matching `option_spec`.
@@ -1688,28 +1794,39 @@ class Body(RSTState):
             - `option_spec`: a mapping of option name to conversion
               function, which should raise an exception on bad input.
             - `datalines`: a list of input strings.
-            - `blank_finish`:
 
         :Return:
             - Success value, 1 or 0.
             - An option dictionary on success, an error string on failure.
-            - Updated `blank_finish` flag.
         """
         node = nodes.field_list()
         newline_offset, blank_finish = self.nested_list_parse(
-              datalines, 0, node, initial_state='FieldList',
-              blank_finish=blank_finish)
+              datalines, 0, node, initial_state='ExtensionOptions',
+              blank_finish=1)
         if newline_offset != len(datalines): # incomplete parse of block
-            return 0, 'invalid option block', blank_finish
+            return 0, 'invalid option block'
         try:
             options = utils.extract_extension_options(node, option_spec)
         except KeyError, detail:
-            return 0, ('unknown option: "%s"' % detail), blank_finish
+            return 0, ('unknown option: "%s"' % detail)
         except (ValueError, TypeError), detail:
-            return 0, ('invalid option value: %s' % detail), blank_finish
+            return 0, ('invalid option value: %s' % detail)
         except utils.ExtensionOptionError, detail:
-            return 0, ('invalid option data: %s' % detail), blank_finish
-        return 1, options, blank_finish
+            return 0, ('invalid option data: %s' % detail)
+        if blank_finish:
+            return 1, options
+        else:
+            return 0, 'option data incompletely parsed'
+
+    def unknown_directive(self, type_name):
+        lineno = self.state_machine.abs_line_number()
+        indented, indent, offset, blank_finish = \
+              self.state_machine.get_first_known_indented(0, strip_indent=0)
+        text = '\n'.join(indented)
+        error = self.reporter.error(
+              'Unknown directive type "%s".' % type_name, '',
+              nodes.literal_block(text, text), line=lineno)
+        return [error], blank_finish
 
     def comment(self, match):
         if not match.string[match.end():].strip() \
@@ -1968,7 +2085,7 @@ class BulletList(SpecializedBody):
         listitem, blank_finish = self.list_item(match.end())
         self.parent += listitem
         self.blank_finish = blank_finish
-        return [], 'BulletList', []
+        return [], next_state, []
 
 
 class DefinitionList(SpecializedBody):
@@ -1998,7 +2115,7 @@ class EnumeratedList(SpecializedBody):
         self.parent += listitem
         self.blank_finish = blank_finish
         self.lastordinal = ordinal
-        return [], 'EnumeratedList', []
+        return [], next_state, []
 
 
 class FieldList(SpecializedBody):
@@ -2010,7 +2127,7 @@ class FieldList(SpecializedBody):
         field, blank_finish = self.field(match)
         self.parent += field
         self.blank_finish = blank_finish
-        return [], 'FieldList', []
+        return [], next_state, []
 
 
 class OptionList(SpecializedBody):
@@ -2025,7 +2142,7 @@ class OptionList(SpecializedBody):
             self.invalid_input()
         self.parent += option_list_item
         self.blank_finish = blank_finish
-        return [], 'OptionList', []
+        return [], next_state, []
 
 
 class RFC2822List(SpecializedBody, RFC2822Body):
@@ -2043,6 +2160,26 @@ class RFC2822List(SpecializedBody, RFC2822Body):
         return [], 'RFC2822List', []
 
     blank = SpecializedBody.invalid_input
+
+
+class ExtensionOptions(FieldList):
+
+    """
+    Parse field_list fields for extension options.
+
+    No nested parsing is done (including inline markup parsing).
+    """
+
+    def parse_field_body(self, indented, offset, node):
+        """Override `Body.parse_field_body` for simpler parsing."""
+        lines = []
+        for line in indented + ['']:
+            if line.strip():
+                lines.append(line)
+            elif lines:
+                text = '\n'.join(lines)
+                node += nodes.paragraph(text, text)
+                lines = []
 
 
 class Explicit(SpecializedBody):
@@ -2411,8 +2548,8 @@ class Line(SpecializedText):
 
 
 state_classes = (Body, BulletList, DefinitionList, EnumeratedList, FieldList,
-                 OptionList, Explicit, Text, Definition, Line,
-                 SubstitutionDef, RFC2822Body, RFC2822List)
+                 OptionList, ExtensionOptions, Explicit, Text, Definition,
+                 Line, SubstitutionDef, RFC2822Body, RFC2822List)
 """Standard set of State classes used to start `RSTStateMachine`."""
 
 
