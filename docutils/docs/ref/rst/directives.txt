@@ -589,7 +589,7 @@ example::
     .. compound::
 
        The 'rm' command is very dangerous.  If you are logged
-       in as root and enter these commands ::
+       in as root and enter these commands::
 
            cd /
            rm -rf *
@@ -597,8 +597,7 @@ example::
        you will erase the entire contents of your file system.
 
 In the example above, a literal block is "embedded" within a sentence
-that begins in one physical paragraph and ends in another.  A compound
-paragraph
+that begins in one physical paragraph and ends in another.
 
 Compound paragraphs are typically rendered as multiple distinct text
 blocks, with the possibility of variations to emphasize their logical
