@@ -28,11 +28,15 @@ Exports the following:
 """
 __docformat__ = 'reStructuredText'
 
-import package_unittest
-import sys, os, unittest, difflib, inspect, os, sys
+import sys
+import os
+import unittest
+import difflib
+import inspect
 from pprint import pformat
+import package_unittest
 import docutils
-from docutils import statemachine, nodes, urischemes, utils, transforms
+from docutils import frontend, nodes, statemachine, urischemes, utils
 from docutils.transforms import universal
 from docutils.parsers import rst
 from docutils.parsers.rst import states, tableparser, directives, languages
@@ -43,6 +47,14 @@ try:
     import mypdb as pdb
 except:
     import pdb
+
+
+class DevNull:
+
+    """Output sink."""
+
+    def write(self, string):
+        pass
 
 
 class CustomTestSuite(unittest.TestSuite):
@@ -220,6 +232,12 @@ class TransformTestCase(CustomTestCase):
     cases that have nothing to do with the input and output of the transform.
     """
 
+    options = frontend.OptionParser().get_default_values()
+    options.report_level = 1
+    options.halt_level = 5
+    options.debug = package_unittest.debug
+    options.warning_stream = DevNull()
+
     def __init__(self, *args, **kwargs):
         self.transforms = kwargs['transforms']
         """List of transforms to perform for this test case."""
@@ -236,9 +254,7 @@ class TransformTestCase(CustomTestCase):
     def test_transforms(self):
         if self.runInDebugger:
             pdb.set_trace()
-        document = utils.new_document(report_level=1, halt_level=5,
-                                      debug=package_unittest.debug,
-                                      stream=DevNull())
+        document = utils.new_document(self.options)
         self.parser.parse(self.input, document)
         for transformClass in (self.transforms + universal.test_transforms):
             transformClass(document, self).transform()
@@ -251,9 +267,7 @@ class TransformTestCase(CustomTestCase):
         print '\n', self.id
         print '-' * 70
         print self.input
-        document = utils.new_document(report_level=1, halt_level=5,
-                                      debug=package_unittest.debug,
-                                      stream=DevNull())
+        document = utils.new_document(self.options)
         self.parser.parse(self.input, document)
         print '-' * 70
         print document.pformat()
@@ -278,11 +292,15 @@ class ParserTestCase(CustomTestCase):
     parser = rst.Parser()
     """Parser shared by all ParserTestCases."""
 
+    options = frontend.OptionParser().get_default_values()
+    options.report_level = 5
+    options.halt_level = 5
+    options.debug = package_unittest.debug
+
     def test_parser(self):
         if self.runInDebugger:
             pdb.set_trace()
-        document = utils.new_document(report_level=5, halt_level=5,
-                                      debug=package_unittest.debug)
+        document = utils.new_document(self.options)
         self.parser.parse(self.input, document)
         output = document.pformat()
         self.compareOutput(self.input, output, self.expected)
@@ -403,11 +421,3 @@ class TableParserTestCase(CustomTestCase):
             output = '%s: %s' % (details.__class__.__name__, details)
         self.compareOutput(self.input, pformat(output) + '\n',
                            pformat(self.expected) + '\n')
-
-
-class DevNull:
-
-    """Output sink."""
-
-    def write(self, string):
-        pass
