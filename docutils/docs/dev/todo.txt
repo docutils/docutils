@@ -90,7 +90,8 @@ General
 
   .. _Filesystem Hierarchy Standard: http://www.pathname.com/fhs.
 
-* Add object numbering and object references (tables & figures).
+* Add _`object numbering and object references` (tables & figures).
+  These would be the equivalent of DocBook's "formal" elements.
 
   We may need _`persistent sequences`, such as chapter numbers.  See
   `OpenOffice.org XML`_ "fields".  Should the sequences be automatic
@@ -154,6 +155,8 @@ General
     The "figure" and "page" roles could generate appropriate
     boilerplate text.  The position of the role (prefix or suffix)
     could also be utilized.
+
+    See `Interpreted Text`_ below.
 
   .. _OpenOffice.org XML: http://xml.openoffice.org/
 
@@ -518,30 +521,6 @@ __ rst/alternatives.html#or-not-to-do
   exposition in the spec, to make clear what is going on for people
   with head colds.
 
-* @@@ Add interpreted text support code.
-
-  Ideally and eventually, the "interpreted" element will disappear
-  from the Docutils doctree.  In its place will be a customizable set
-  of inline elements including "acronym" and "index_entry", directly
-  created by the parser.
-
-* Alan Jaffray suggested (and I agree) that it would be sensible to:
-
-  - have a directive and/or command-line option to specify a default
-    role for interpreted text
-  - allow the reST processor to take an argument for the default role
-  - issue a warning when processing documents with no default role
-    which contain interpreted text with no explicitly specified role
-
-* Perhaps the default implicit role for interpreted text could be
-  "title", as in, "title of a book".  It'd be a text-only reference,
-  no hyperlink.  Idea from Aahz' 2002-05-09 Doc-SIG post.
-
-* Add a directive establishing a mapping of interpreted text role
-  aliases?  A set of default roles (index, acronym, etc.) could exist,
-  and the directive could assign abbreviations (i, a, etc.) or other
-  alternatives.
-
 * @@ Fix the parser's indentation handling to conform with the
   stricter definition in the spec.  (Explicit markup blocks should be
   strict or forgiving?)
@@ -719,6 +698,9 @@ when used in a document.
 * Implement options on existing directives:
 
   - _`images.image`: "border"?
+
+  - _`images.figure`: "title" and "number", to indicate a formal
+    figure?
 
   - _`parts.sectnum`: "start", "local"?
 
@@ -967,6 +949,95 @@ when used in a document.
     or through an exposed API.  [Suggestion for Optik.]
 
 
+Interpreted Text
+````````````````
+
+Interpreted text is entirely a reStructuredText markup construct, a
+way to get around built-in limitations of the medium.  Some roles are
+intended to introduce new doctree elements, such as "title-reference".
+Others are merely convenience features, like "RFC".
+
+All supported interpreted text roles must be known by the Parser.
+Adding a new role often involves adding a new element to the DTD and
+may require extensive support, therefore such additions should be well
+thought-out.  There should be a limited number of roles.
+
+The only place where no limit is placed on variation is at the start,
+at the Reader/Parser interface.  Transforms are inserted by the Reader
+into the Transformer's queue, where non-standard elements are
+converted.  Once past the Transformer, no variation from the standard
+Docutils doctree is possible.
+
+An example is the Python Source Reader, which will use interpreted
+text extensively.  The default role will be "Python identifier", which
+will be further interpreted by namespace context into <class>,
+<method>, <module>, <attribute>, etc. elements (see
+spec/pysource.dtd), which will be transformed into standard hyperlink
+references, which will be processed by the various Writers.  No Writer
+will need to have any knowledge of the Python-Reader origin of these
+elements.
+
+* @@@ Add interpreted text support code.
+
+  Ideally and eventually, the "interpreted" element will disappear
+  from the Docutils doctree.  In its place will be a customizable set
+  of inline elements including "acronym" and "index_entry", directly
+  created by the parser.
+
+* Add a test for language mappings.
+
+* Alan Jaffray suggested (and I agree) that it would be sensible to:
+
+  - have a directive and/or command-line option to specify a default
+    role for interpreted text
+  - allow the reST processor to take an argument for the default role
+    (this will be subsumed by the above via the runtime settings
+    mechanism)
+  - issue a warning when processing documents with no default role
+    which contain interpreted text with no explicitly specified role
+    (there will always be a default role, so this won't happen)
+
+* Perhaps the default implicit role for interpreted text could be
+  "title", as in, "title of a book".  It'd be a text-only reference,
+  no hyperlink.  Idea from Aahz' 2002-05-09 Doc-SIG post.  (Done)
+
+* Add a directive establishing a mapping of interpreted text role
+  aliases?  A set of default roles (index, acronym, etc.) could exist,
+  and the directive could assign abbreviations (i, a, etc.) or other
+  alternatives.
+
+* Explicitly add inline markup roles (emphasis, strong, literal) to
+  the built-in list of interpreted text roles?  Useful for
+  completeness, and potentially useful if `multiple roles`_ ever
+  become possible.
+
+  .. _multiple roles:
+     rst/alternatives.html#multiple-roles-in-interpreted-text
+
+* Implement roles:
+
+  - "acronym" and "abbreviation": Associate the full text with a short
+    form.  Jason Diamond's description:
+
+        I want to translate ```reST`:acronym:`` into ``<acronym
+        title='reStructuredText'>reST</acronym>``.  The value of the
+        title attribute has to be defined out-of-band since you can't
+        parameterize interpreted text.  Right now I have them in a
+        separate file but I'm experimenting with creating a directive
+        that will use some form of reST syntax to let you define them.
+
+    What to do with an undefined acronym or abbreviation?
+
+  - "annotation": The equivalent of the HTML "title" attribute.  This
+    is secondary information that may "pop up" when the pointer hovers
+    over the main text.  A corresponding directive would be required
+    to associate annotations with the original text (by name, or
+    positionally as in anonymous targets?).
+
+  - "figure", "table", "listing", "chapter", "page", etc: See `object
+    numbering and object references`_ above.
+
+
 Unimplemented Transforms
 ------------------------
 
@@ -1117,6 +1188,10 @@ Front-End Tools
 * Disable common options that don't apply?
 
 * Implement the "sectnum" directive as a command-line option also?
+
+* @@@ Come up with better names for the most-used tools, and install
+  them as scripts.  Alternatively, create a single dynamic_ or
+  unqualified_ front end that can be installed.
 
 
 Project Policies

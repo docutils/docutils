@@ -120,7 +120,7 @@ For *completeness*, _`let's` ``test`` **other** forms_
         <substitution_reference refname="of">
             of
          \n\
-        <interpreted>
+        <title_reference>
             inline markup
          \n\
         <footnote_reference auto="*" id="id1">

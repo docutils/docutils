@@ -24,6 +24,7 @@ include1 = os.path.join(mydir, 'include1.txt')
 include1rel = DocutilsTestSupport.utils.relative_path(None, include1)
 include2 = os.path.join(mydir, 'include2.txt')
 include3 = os.path.join(mydir, 'include3.txt')
+include8 = os.path.join(mydir, 'include8.txt')
 
 totest = {}
 
@@ -94,7 +95,7 @@ The included paragraphs should also be in the block quote.
             Here are some paragraphs
             that can appear at any level.
         <paragraph>
-            This file is used by \n\
+            This file (include2.txt) is used by \n\
             <literal>
                 test_include.py
             .
@@ -220,6 +221,8 @@ In test data
         In includes/include5.txt
     <paragraph>
         In includes/more/include6.txt
+    <paragraph>
+        In includes/sibling/include7.txt
 """ ],
 ["""\
 In test data
@@ -248,6 +251,30 @@ Section
             In includes/include5.txt
         <paragraph>
             In includes/more/include6.txt
+        <paragraph>
+            In includes/sibling/include7.txt
+""" ],
+["""\
+Testing relative includes:
+
+.. include:: %s
+""" % include8,
+"""\
+<document source="test data">
+    <paragraph>
+        Testing relative includes:
+    <paragraph>
+        In include8.txt
+    <paragraph>
+        In ../includes/include9.txt.
+    <paragraph>
+        Here are some paragraphs
+        that can appear at any level.
+    <paragraph>
+        This file (include2.txt) is used by 
+        <literal>
+            test_include.py
+        .
 """ ],
 ]
 

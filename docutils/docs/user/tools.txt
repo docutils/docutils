@@ -352,10 +352,14 @@ config                Path to a configuration file to read (if it
                       Default: None.  Options: ``--config``.
 --------------------  ------------------------------------------------
 datestamp             Include a time/datestamp in the document footer.
-                      Contains a format string for ``time.strftime``.
+                      Contains a format string for Python's
+                      ``time.strftime``.  See the `time module
+                      documentation`__.
 
                       Default: None.  Options: ``--date, -d, --time,
                       -t, --no-datestamp``.
+
+                      __ http://www.python.org/doc/current/lib/module-time.html
 --------------------  ------------------------------------------------
 debug                 Report debug-level system messages.
 
