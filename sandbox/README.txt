@@ -1,10 +1,13 @@
-===================================
- README: The ``sandbox`` Directory
-===================================
+=====================
+ README: The Sandbox
+=====================
 
-The ``sandbox`` directory is for playing around, for trying out ideas.
-The sandbox is not distributed as part of Docutils releases.  Each
-developer who wants to play here should create their own subdirectory
-(given name + family initial).
+The Sandbox_ is a place to play around, to try out and share ideas.
+It's a part of the CVS repository but it isn't distributed as part of
+Docutils releases.  Each developer who wants to play here should
+create their own subdirectory (suggested name: given name + family
+initial).
 
-It's OK to make a mess here!  Play nice.
+It's OK to make a mess here!  But please, play nice.
+
+.. _Sandbox: ./
