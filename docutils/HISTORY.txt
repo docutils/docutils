@@ -11,7 +11,7 @@
 .. contents::
 
 
-Release 0.3.7 (2004-12-23)
+Release 0.3.7 (2004-12-24)
 ==========================
 
 * docutils/frontend.py:
@@ -124,6 +124,12 @@ Release 0.3.7 (2004-12-23)
     elements.
   - "raw" elements are now surrounded by ``span`` or ``div`` tags in
     the output if they have their ``class`` attribute set.
+  - The whole document is now surrounded by a ``<div
+    class="document">`` element.
+  - Body-level images are now wrapped by their own ``<div>`` elements,
+    with image classes copied to the wrapper, and for images which
+    have the ``:align:`` option set, the surrounding ``<div>`` now
+    receives a class attribute (like ``class="align-left"``).
 
 * docutils/writers/latex2e.py:
 

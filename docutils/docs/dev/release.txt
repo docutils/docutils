@@ -120,9 +120,9 @@
           find -name test -type d -prune -o -name \*.css -print0 \
               -o -name \*.html -print0 -o -name \*.txt -print0 \
               | tar -cjvf docutils-docs.tar.bz2 -T - --null
-          scp docutils-docs.tar.bz2 <username>@docutils.sourceforge.net:
+          scp docutils-docs.tar.bz2 <username>@shell.sourceforge.net:
 
-      Now log in to docutils.sourceforge.net and::
+      Now log in to shell.sourceforge.net and::
 
           cd /home/groups/d/do/docutils/htdocs/
           mkdir -m g+rwxs X.Y.Z
