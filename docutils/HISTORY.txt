@@ -53,8 +53,8 @@ Changes Since 0.3.7
 
 * docutils/transforms/references.py:
 
-  - Fixed mislocated internal targets bug, by relocating targets into
-    the next text element.
+  - Fixed mislocated internal targets bug, by relocating targets
+    followed by a section into the title of that section.
   - Fixed duplicate footnote label bug.
 
 * docutils/writers/html4css1.py:
