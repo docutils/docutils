@@ -267,14 +267,21 @@ def fixfile(infile, outfile):
     print >> outfile, '</html>'
 
 
+docutils_options = None
+
 def fix_rst_pep(infile, outfile):
     from docutils import core, io
     pub = core.Publisher()
     pub.set_reader(reader_name='pep', parser_name='restructuredtext',
                    parser=None)
     pub.set_writer(writer_name='pep_html')
-    options = pub.set_options(source=infile.name, destination=outfile.name,
-                              generator=1, datestamp='%Y-%m-%d %H:%M UTC')
+    if docutils_options:
+        options = docutils_options
+        pub.options = options
+    else:
+        options = pub.set_options()
+    options._source = infile.name
+    options._destination = outfile.name
     pub.source = io.FileIO(options, source=infile, source_path=infile.name)
     pub.destination = io.FileIO(options, destination=outfile,
                                 destination_path=outfile.name)
@@ -287,8 +294,8 @@ def check_rst_pep(infile):
     """
     Check if `infile` is a reStructuredText PEP.  Return 1 for yes, 0 for no.
 
-    If the result is indeterminate, return None.  Reset `infile` to the
-    beginning.
+    If the result is indeterminate, return None.  When the check is complete,
+    rewind `infile` to the beginning.
     """
     result = None
     underline_match = underline.match
