@@ -35,6 +35,17 @@ Changes Since 0.3.5
   - Added a mechanism for Visitors to transitionally ignore new node
     classes.
 
+* docutils/utils.py:
+
+  - Moved ``escape2null`` and ``unescape`` functions from
+    docutils/parsers/rst/states.py.
+
+* docutils/parsers/rst/roles.py:
+
+  - Added "raw" role.
+  - Changed role function API: the "text" parameter now takes
+    null-escaped interpreted text content.
+
 * docutils/parsers/rst/states.py:
 
   - Fixed bug where a "role" directive in a nested parse would crash
@@ -45,6 +56,9 @@ Changes Since 0.3.5
     notice that arguments were present.
   - Removed error checking for transitions.
   - Added support for multiple classifiers in definition list items.
+  - Moved ``escape2null`` and ``unescape`` functions to docutils/utils.py.
+  - Changed role function API: the "text" parameter now takes
+    null-escaped interpreted text content.
 
 * docutils/parsers/rst/directives/__init__.py:
 
@@ -130,11 +144,16 @@ Changes Since 0.3.5
   - Marked "line-block" as deprecated.
   - "Class" directive now allows multiple class names.
   - Added "Rationale for Class Attribute Value Conversion".
+  - Added warning about "raw" overuse/abuse.
 
 * docs/ref/rst/restructuredtext.txt:
 
   - Added syntax for line blocks.
   - Definition list items may have multiple classifiers.
+
+* docs/ref/rst/roles.txt:
+
+  - Added "raw" role.
 
 * tools/stylesheets/default.css:
 
