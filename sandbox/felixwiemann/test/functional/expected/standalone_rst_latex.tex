@@ -1,4 +1,4 @@
-\documentclass[10pt,english]{article}
+\documentclass[10pt,a4paper,english]{article}
 \usepackage{babel}
 \usepackage{shortvrb}
 \usepackage[latin1]{inputenc}
@@ -9,8 +9,9 @@
 \usepackage{graphicx}
 \usepackage{color}
 \usepackage{multirow}
+\usepackage{ifthen}
 \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
-\usepackage[a4paper,margin=2cm,nohead]{geometry}
+\usepackage[DIV12]{typearea}
 %% generator Docutils: http://docutils.sourceforge.net/
 \newlength{\admonitionwidth}
 \setlength{\admonitionwidth}{0.9\textwidth}
@@ -258,7 +259,7 @@ cross-references (\href{\#example}{example}), external hyperlinks with embedded 
 (\href{http://www.python.org}{Python web site}), footnote references
 (manually numbered [\hyperlink{id6}{1}], anonymous auto-numbered [\hyperlink{id9}{3}], labeled
 auto-numbered [\hyperlink{label}{2}], or symbolic [\hyperlink{id10}{*}]), citation references
-([\hyperlink{cit2002}{CIT2002}]), substitution references (\includegraphics{../docs/user/rst/images/biohazard.png}), and \hypertarget{inline-hyperlink-targets}{inline
+([\hyperlink{cit2002}{CIT2002}]), substitution references (\includegraphics{../../../docs/user/rst/images/biohazard.png}), and \hypertarget{inline-hyperlink-targets}{inline
 hyperlink targets} (see \href{\#targets}{Targets} below for a reference back to here).
 Character-level inline markup is also possible (although exceedingly
 ugly!) in \emph{re}\texttt{Structured}\emph{Text}.  Problems are indicated by
@@ -722,11 +723,11 @@ document (a document-wide \href{\#table-of-contents}{table of contents}).
 \subsubsection*{2.13.2~~~Images}
 
 An image directive (also clickable -- a hyperlink reference):
-\href{\#directives}{\includegraphics{../docs/user/rst/images/title.png}}
+\href{\#directives}{\includegraphics{../../../docs/user/rst/images/title.png}}
 A figure directive:
 \begin{figure}[htbp]\begin{center}
 
-\includegraphics{../docs/user/rst/images/title.png}
+\includegraphics{../../../docs/user/rst/images/title.png}
 \caption{A figure is an image with a caption and/or a legend:}{\small 
 \begin{longtable}[c]{|p{0.16\locallinewidth}|p{0.56\locallinewidth}|}
 \hline
@@ -947,7 +948,7 @@ I recommend you try \href{http://www.python.org/}{Python, \emph{the} best langua
 \pdfbookmark[1]{2.14~~~Substitution Definitions}{substitution-definitions}
 \subsection*{2.14~~~Substitution Definitions}
 
-An inline image (\includegraphics{../docs/user/rst/images/biohazard.png}) example:
+An inline image (\includegraphics{../../../docs/user/rst/images/biohazard.png}) example:
 
 (Substitution definitions are not visible in the HTML source.)
 
