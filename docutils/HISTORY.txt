@@ -77,6 +77,7 @@ Specific:
   - Added support for configuration files (/etc/docutils.conf,
     ./docutils.conf, ~/.docutils).
   - Added ``Publisher.setup_option_parser()``.
+  - Added default usage message and description.
 
 * docutils/frontend.py: Added to project; support for front-end
   (command-line) scripts.  Option specifications may be augmented by
