@@ -17,6 +17,8 @@ Changes Since 0.3.5
 * docutils/frontend.py:
 
   - Added --input-encoding-error-handler option & setting.
+  - Added command-line and config file support for "overrides" setting
+    parameter.
 
 * docutils/io.py:
 
@@ -54,12 +56,16 @@ Changes Since 0.3.5
 * docutils/writers/html4css1.py:
 
   - HTMLTranslator.encode now converts U+00A0 to "&nbsp;".
+  - "stylesheet" and "stylesheet_path" settings are now mutually
+    exclusive.
 
 * docutils/writers/latex2e.py:
 
   - Added ``\PreloadUnicodePage{n}`` to the header if in LaTeX code
     uses unicode.
   - Added option "font-encoding".
+  - "stylesheet" and "stylesheet_path" settings are now mutually
+    exclusive.
 
 
 Release 0.3.5 (2004-07-29)
