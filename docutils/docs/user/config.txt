@@ -228,6 +228,14 @@ _`expose_internals`
     Default: don't (None).  Options: ``--expose-internal-attribute``
     (hidden, for development use only).
 
+_`field_name_limit`
+
+    The maximum width (in characters) for one-column field names.
+    Longer field names will span the entire row.  0 indicates "no
+    limit".
+
+    Default: 14 characters.  Option: ``--field-name-limit``.
+
 _`file_insertion_enabled`
     Enable or disable directives that insert the contents of external
     files, such as the "include_" & "raw_".  A "warning" system
