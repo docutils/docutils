@@ -937,6 +937,10 @@ when used in a document.
   - _`misc.settings`: Set any Docutils runtime setting from within a
     document?
 
+  - _`misc.charents`: Equivalent to::
+
+        .. include:: {includepath}/charents.txt
+
   - Docutils already has the ability to say "use this content for
     Writer X" (via the "raw" directive), but it doesn't have the
     ability to say "use this content for any Writer other than X".  It
@@ -1733,6 +1737,13 @@ CVS Check-ins
 Instructions for CVS access can be found at
 http://sourceforge.net/cvs/?group_id=38414.  Anyone can access the CVS
 repository anonymously.  Only project developers can make changes.
+
+Unless you really *really* know what you're doing, please limit your
+CVS commands to ``cvs checkout``, ``cvs commit/checkin``, and ``cvs
+add``.  Do **NOT** use ``cvs import`` unless you're absolutely sure
+you know what you're doing.  Even then, grab a copy of the `nightly
+CVS tarball <http://cvs.sf.net/cvstarballs/docutils-cvsroot.tar.gz>`_,
+set it up on your own machine, and experiment *there* first.
 
 The `main source tree`_ ("docutils" CVS module) should always be kept
 in a stable state (usable and as problem-free as possible).  The
