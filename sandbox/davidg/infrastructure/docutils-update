@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/sh
 # $Id$
 #
 # This script is installed as a cron job to automatically update the
@@ -77,9 +77,9 @@ for htmlfile in `find . -name '*.html'` ; do
     txtfile=$dir/$base.txt
     if [ -e $txtfile ] ; then
         if [ $unconditional -eq 1 -o $txtfile -nt $htmlfile ] ; then
-            if [ "${txtfile:0:4}" == "pep-" ] ; then
-                echo $txtfile (PEP)
-                ( cd $dir ; ~/bin/python $lib/tools/pep.py -gst $base.txt $base.html )
+            if [ "${base:0:4}" == "pep-" ] ; then
+                echo "$txtfile (PEP)"
+                ( cd $dir ; ~/bin/python $lib/tools/pep.py -gst --template=../tools/pep-template.html $base.txt $base.html )
             else
                 echo $txtfile
                 ( cd $dir ; ~/bin/python $lib/tools/html.py -gst $base.txt $base.html )
