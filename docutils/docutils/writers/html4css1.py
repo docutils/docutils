@@ -276,12 +276,14 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('\n</pre>\n')
         self.depart_docinfo_item()
 
-    def visit_admonition(self, node, name):
-        self.body.append(self.starttag(node, 'div', CLASS=name))
-        self.body.append('<p class="admonition-title">'
-                         + self.language.labels[name] + '</p>\n')
+    def visit_admonition(self, node, name=''):
+        self.body.append(self.starttag(node, 'div',
+                                        CLASS=(name or 'admonition')))
+        if name:
+            self.body.append('<p class="admonition-title">'
+                             + self.language.labels[name] + '</p>\n')
 
-    def depart_admonition(self):
+    def depart_admonition(self, node=None):
         self.body.append('</div>\n')
 
     def visit_attention(self, node):
@@ -289,6 +291,13 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_attention(self, node):
         self.depart_admonition()
+
+    def visit_attribution(self, node):
+        self.body.append(
+            self.starttag(node, 'p', u'\u2014', CLASS='attribution'))
+
+    def depart_attribution(self, node):
+        self.body.append('</p>\n')
 
     def visit_author(self, node):
         self.visit_docinfo_item(node, 'author')
@@ -910,6 +919,12 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_row(self, node):
         self.body.append('</tr>\n')
 
+    def visit_rubric(self, node):
+        self.body.append(self.starttag(node, 'p', '', CLASS='rubric'))
+
+    def depart_rubric(self, node):
+        self.body.append('</p>\n')
+
     def visit_section(self, node):
         self.section_level += 1
         self.body.append(self.starttag(node, 'div', CLASS='section'))
@@ -1060,24 +1075,19 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_title(self, node):
         """Only 6 section levels are supported by HTML."""
+        check_id = 0
         if isinstance(node.parent, nodes.topic):
             self.body.append(
                   self.starttag(node, 'p', '', CLASS='topic-title'))
-            if node.parent.hasattr('id'):
-                self.body.append(
-                    self.starttag({}, 'a', '', name=node.parent['id']))
-                self.context.append('</a></p>\n')
-            else:
-                self.context.append('</p>\n')
+            check_id = 1
         elif isinstance(node.parent, nodes.sidebar):
             self.body.append(
                   self.starttag(node, 'p', '', CLASS='sidebar-title'))
-            if node.parent.hasattr('id'):
-                self.body.append(
-                    self.starttag({}, 'a', '', name=node.parent['id']))
-                self.context.append('</a></p>\n')
-            else:
-                self.context.append('</p>\n')
+            check_id = 1
+        elif isinstance(node.parent, nodes.admonition):
+            self.body.append(
+                  self.starttag(node, 'p', '', CLASS='admonition-title'))
+            check_id = 1
         elif self.section_level == 0:
             # document title
             self.head.append('<title>%s</title>\n'
@@ -1095,6 +1105,13 @@ class HTMLTranslator(nodes.NodeVisitor):
                 atts['href'] = '#' + node['refid']
             self.body.append(self.starttag({}, 'a', '', **atts))
             self.context.append('</a></h%s>\n' % (self.section_level))
+        if check_id:
+            if node.parent.hasattr('id'):
+                self.body.append(
+                    self.starttag({}, 'a', '', name=node.parent['id']))
+                self.context.append('</a></p>\n')
+            else:
+                self.context.append('</p>\n')
 
     def depart_title(self, node):
         self.body.append(self.context.pop())
