@@ -465,20 +465,23 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # then dollar
         text = text.replace("$", '{\\$}')
-        # then all that needs math mode
         if not ( self.literal_block or self.literal ):
-            text = text.replace("<", '{$<$}')
-            text = text.replace(">", '{$>$}')
+            # the vertical bar: in mathmode |,\vert or \mid
+            #   in textmode \textbar
+            text = text.replace("|", '{\\textbar}')
+            text = text.replace("<", '{\\textless}')
+            text = text.replace(">", '{\\textgreater}')
         # then
         text = text.replace("&", '{\\&}')
         text = text.replace("_", '{\\_}')
         # the ^:
         # * verb|^| does not work in mbox.
         # * mathmode has wedge. hat{~} would also work.
-        text = text.replace("^", '{\\ensuremath{^\\wedge}}')
+        # text = text.replace("^", '{\\ensuremath{^\\wedge}}')
+        text = text.replace("^", '{\\textasciicircum}')
         text = text.replace("%", '{\\%}')
         text = text.replace("#", '{\\#}')
-        text = text.replace("~", '{\\~{ }}')
+        text = text.replace("~", '{\\textasciitilde}')
         if self.literal_block or self.literal:
             # pdflatex does not produce doublequotes for ngerman.
             text = self.babel.double_quotes_in_tt(text)

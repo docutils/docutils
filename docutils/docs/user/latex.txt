@@ -237,7 +237,7 @@ Tables
 Miscellaneous
 -------------
 
-* recongize LaTeX (or even LaTeX) and replace by ```\LaTeX``.
+* recongize LaTeX (or even LaTeX) and replace by ``\LaTeX``.
 * Support embed-stylesheet.
 * the ^-sign is problematic: using mathmode wedge is usually the wrong font.
 * Sidebar handling.
