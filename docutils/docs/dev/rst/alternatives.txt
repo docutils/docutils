@@ -633,8 +633,8 @@ those up with anonymous targets.  Keeping to a simple consistent
 ordering (as with auto-numbered footnotes) seems simplest.
 
 reStructuredText will use the explicit double-underscore syntax for
-anonymous hyperlinks.  An alternative (see `Reworking Explicit
-Markup`_ below) for the somewhat awkward ".. __:" syntax is "__"::
+anonymous hyperlinks.  An alternative (see `Reworking Explicit Markup
+(Round 1)`_ below) for the somewhat awkward ".. __:" syntax is "__"::
 
     An anonymous__ reference.
 
@@ -1134,9 +1134,9 @@ long way to go to add one word!
 Reworking Footnotes
 ===================
 
-As a further wrinkle (see `Reworking Explicit Markup`_ above), in the
-wee hours of 2002-02-28 I posted several ideas for changes to footnote
-syntax:
+As a further wrinkle (see `Reworking Explicit Markup (Round 1)`_
+above), in the wee hours of 2002-02-28 I posted several ideas for
+changes to footnote syntax:
 
     - Change footnote syntax from ``.. [1]`` to ``_[1]``? ...
     - Differentiate (with new DTD elements) author-date "citations"
