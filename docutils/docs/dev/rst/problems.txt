@@ -376,19 +376,22 @@ documentation.  Alternatives:
 
 3. A minimalist alternative is as follows::
 
-       ========  ========  ========
-                 Header 2 & 3 Span
-                 ------------------
-       Header 1  Header 2  Header 3
-       ========  ========  ========
-       Each      line is   a new row.
-       Each row  consists  of one line only.
-       Row       spans     are not possible.
-       The last  column    may spill over to the right.
-       Column spans are possible with an underline joining columns.
-       ----------------------------
-       The span  is        limited to the row above the underline.
-       ========  ========  ========
+       ====  =====  ========  ========  =======  ====  =====  =====
+       Old State    Input     Action             New State    Notes
+       -----------  --------  -----------------  -----------
+       ids   types  new type  sys.msg.  dupname  ids   types
+       ====  =====  ========  ========  =======  ====  =====  =====
+       --    --     explicit  --        --       new   True
+       --    --     implicit  --        --       new   False
+       None  False  explicit  --        --       new   True
+       old   False  explicit  implicit  old      new   True
+       None  True   explicit  explicit  new      None  True
+       old   True   explicit  explicit  new,old  None  True   [1]
+       None  False  implicit  implicit  new      None  False
+       old   False  implicit  implicit  new,old  None  False
+       None  True   implicit  implicit  new      None  True
+       old   True   implicit  implicit  new      old   True
+       ====  =====  ========  ========  =======  ====  =====  =====
 
    The table begins with a top border of equals signs with one or more
    spaces at each column boundary (regardless of spans).  There must
@@ -403,6 +406,23 @@ documentation.  Alternatives:
    with spaces at column boundaries.  The bottom boundary of the table
    consists of '=' underlines.  A blank line is required following a
    table.
+
+   This table sums up the features.  Using all the features in such a
+   small space is not pretty though::
+
+       ========  ========  ========
+                 Header 2 & 3 Span
+                 ------------------
+       Header 1  Header 2  Header 3
+       ========  ========  ========
+       Each      line is   a new row.
+       Each row  consists  of one line only.
+       Row       spans     are not possible.
+       The last  column    may spill over to the right.
+       Column spans are possible with an underline joining columns.
+       ----------------------------
+       The span  is        limited to the row above the underline.
+       ========  ========  ========
 
 4. As a variation of alternative 3, bullet list syntax in the first
    column could be used to indicate row starts.  Multi-line rows are
@@ -447,7 +467,12 @@ documentation.  Alternatives:
    - Cells in the first column *must* contain some text; blank cells
      would lead to a misinterpretation.
 
-Alternative #1 has been adopted by reStructuredText.
+6. Combining alternative 3 and 4, a bullet list in the first column
+   could mean multi-line rows, and no bullet list means single-line
+   rows only.
+
+Alternative #1 has been adopted by reStructuredText.  Alternatives 3-6
+are under consideration.
 
 
 Delimitation of Inline Markup
