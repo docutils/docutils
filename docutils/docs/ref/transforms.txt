@@ -28,6 +28,8 @@ misc.class                      "class" (d/p)                 210
 
 references.Substitutions        standalone (r), pep (r)       220
 
+references.SectionTargets       standalone (r), pep (r)       260
+
 frontmatter.DocTitle            standalone (r)                320
 
 frontmatter.DocInfo             standalone (r)                340

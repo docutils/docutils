@@ -19,6 +19,33 @@ from docutils.transforms import TransformError, Transform
 indices = xrange(sys.maxint)
 
 
+class SectionTargets(Transform):
+
+    default_priority = 260
+
+    def apply(self):
+        for target in self.document.internal_targets:
+            if not (target.attributes.has_key('refid')
+                    or target.attributes.has_key('refuri')
+                    or target.attributes.has_key('refname')):
+                self.relocate(target)
+
+    def relocate(self, target):
+        """
+        Move "target" elements into the next title element if
+        necessary.
+        """
+        assert isinstance(target, nodes.target)
+        # Find next node which is not a target.
+        n = target.next_node(cond=lambda x: not isinstance(x, nodes.target))
+        if isinstance(n, nodes.section):
+            assert isinstance(n[0], nodes.title)
+            target.parent.remove(target)
+            target += n[0].get_children()
+            n[0].clear()
+            n[0] += target
+
+
 class ChainedTargets(Transform):
 
     """
@@ -387,10 +414,6 @@ class InternalTargets(Transform):
     def apply(self):
         for target in self.document.internal_targets:
             self.resolve_reference_ids(target)
-            if not (target.attributes.has_key('refid')
-                    or target.attributes.has_key('refuri')
-                    or target.attributes.has_key('refname')):
-                self.relocate(target)
 
     def resolve_reference_ids(self, target):
         """
@@ -431,51 +454,6 @@ class InternalTargets(Transform):
             ref['refid'] = refid
             ref.resolved = 1
         target.referenced = 1
-
-    def relocate(self, target):
-        """
-        Move "target" elements into the next text element
-        (in tree traversal order).
-        """
-        parent = target.parent
-        child = target
-        while parent:
-            # Check all following siblings:
-            for index in range(parent.index(child) + 1, len(parent)):
-                element = parent[index]
-                visitor = InternalTargetRelocationPointLocator(self.document)
-                try:
-                    element.walk(visitor)
-                except nodes.NodeFound:
-                    target.parent.remove(target)
-                    for child in visitor.found:
-                        target += child
-                    visitor.found.clear()
-                    visitor.found += target
-                    return
-            else:
-                # At end of section or container; try parent's sibling
-                child = parent
-                parent = parent.parent
-        error = self.document.reporter.error(
-            'No element suitable for hosting target, following internal '
-            'target "%s".' % target['name'], line=target.line)
-        target.parent.replace(target, error)
-
-
-class InternalTargetRelocationPointLocator(nodes.GenericNodeVisitor):
-
-    """
-    Find the first text-containing node that can host an internal target.
-    """
-
-    found = None
-
-    def default_visit(self, node):
-        if (isinstance(node, nodes.TextElement)
-            and not isinstance(node, nodes.Special)):
-            self.found = node
-            raise nodes.NodeFound
 
 
 class Footnotes(Transform):
