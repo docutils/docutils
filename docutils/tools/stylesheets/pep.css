@@ -47,8 +47,8 @@ body {
   margin-bottom: 1em ;
   padding: 0px }
 
-code {
-  background-color: #eeeeee }
+col.num {
+  text-align: center }
 
 div.section {
   margin-left: 1em ;
@@ -162,10 +162,6 @@ p.caption {
 p.credits {
   font-style: italic ;
   font-size: smaller }
-
-p.field-name {
-  font-weight: bold ;
-  margin-bottom: 1em }
 
 p.label {
   white-space: nowrap }

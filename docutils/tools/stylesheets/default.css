@@ -15,9 +15,6 @@ a.footnote-reference {
 a.target {
   color: blue }
 
-code {
-  background-color: #eeeeee }
-
 div.abstract {
   margin: 2em 5em }
 
@@ -91,12 +88,10 @@ ol.upperroman {
   list-style: upper-roman }
 
 dd p:first-child {
-  margin-top: 0px;
-}
+  margin-top: 0px }
 
 li p:first-child {
-  margin-top: 0px;
-}
+  margin-top: 0px }
 
 p.caption {
   font-style: italic }

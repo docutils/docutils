@@ -94,12 +94,6 @@ General
   permanently, read by subsequent processing runs, and updated with
   new entries.  ("Persistent ID mapping"?)
 
-- @@@ Implement a PEP reader.  (Reader for RST-PEP format done.
-  Writer support needed.)
-
-  - Implement a specialized PEP/HTML writer?  Or implement a generic
-    `templating system`_, with PEP/HTML as one application?
-
 - Need a Unicode -> HTML entities codec for HTML writer?
 
 - Fix tests to run standalone.  I.e., allow::
@@ -108,7 +102,7 @@ General
       test_inline_markup.py
 
   Raises an exception with path processing on GNU/Linux (but only
-  sometimes?).
+  sometimes???).
 
 - Perhaps the ``Component.supports`` method should deal with
   individual features ("meta" etc.) instead of formats ("html" etc.)?
@@ -126,6 +120,7 @@ Specification
   - Fill in the blanks in API details.
 
   - Specify the nodes.py internal data structure implementation.
+    Or link to doctree.txt?
 
         [Tibs:] Eventually we need to have direct documentation in
         there on how it all hangs together - the DTD is not enough
@@ -324,9 +319,9 @@ Directives
   - _`html.imagemap` (Useful outside of HTML?  If not, replace with
     image only in non-HTML writers?)
 
-  - _`parts.endnotes`
+  - _`parts.endnotes`: See `Footnote & Citation Gathering`_.
 
-  - _`parts.citations`
+  - _`parts.citations`: See `Footnote & Citation Gathering`_.
 
   - _`parts.topic` (maybe "body.topic")
 
@@ -403,12 +398,6 @@ Directives
     the answer (multiple answers could be represented by nested
     lists).  Without special syntax, this directive becomes low
     priority.
-
-  - _`body.columns`: Multi-column table/list.  Number of columns as
-    argument?  Several `alternative syntaxes`__ are proposed that
-    might not need a directive..
-
-    __ rst/problems.html#tables
 
   - @@ _`body.verse`: Paragraphs with linebreaks preserved, *and*
     inline markup support too.  Use cases: verse (poetry, song lyrics,
@@ -515,10 +504,11 @@ Directives
 Unimplemented Transforms
 ------------------------
 
-Footnote Gathering
-``````````````````
+Footnote & Citation Gathering
+`````````````````````````````
 
-Collect and move footnotes to the end of a document.
+Collect and move footnotes & citations to the end of a document.
+(Separate transforms.)
 
 
 Hyperlink Target Gathering
@@ -582,8 +572,8 @@ HTML Writer
   of all list items lack a <p> (perhaps "--compact-all-lists" and
   "--compact-simple-lists")?
 
-  Tried it; not easy.  If you're interested, email me for a copy of
-  the patch.
+  Tried it.  Twice.  Not easy.  If you're interested, email me for a
+  copy of the patches.
 
 - Add more support for <link> elements, especially for navigation
   bars.
@@ -637,7 +627,8 @@ Front-Ends
 - Allow multiple option groups per component (thus enabling component
   subclasses to easily incorporate their superclass' options).
 
-- Parameterize help text & defaults somehow?  Perhaps a callback?
+- Parameterize help text & defaults somehow?  Perhaps a callback?  Or
+  initialize ``cmdline_options`` in ``__init__``?
 
 
 Project Policies
