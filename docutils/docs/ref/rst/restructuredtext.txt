@@ -1254,9 +1254,9 @@ Simple Tables
 Simple tables provide a compact and easy to type but limited
 row-oriented table representation for simple data sets.  Cell contents
 are typically single paragraphs, although arbitrary body elements may
-be represented in most cells.  Simple tables allow multi-line rows and
-column spans, but not row spans.  See `Grid Tables`_ above for a
-complete table representation.
+be represented in most cells.  Simple tables allow multi-line rows (in
+all but the first column) and column spans, but not row spans.  See
+`Grid Tables`_ above for a complete table representation.
 
 Simple tables are described with horizontal borders made up of "=" and
 "-" characters.  The equals sign ("=") is used for top and bottom

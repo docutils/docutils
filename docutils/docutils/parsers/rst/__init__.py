@@ -90,3 +90,4 @@ class Parser(docutils.parsers.Parser):
               inputstring, tab_width=document.settings.tab_width,
               convert_whitespace=1)
         self.statemachine.run(inputlines, document, inliner=self.inliner)
+        self.finish_parse()

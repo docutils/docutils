@@ -60,8 +60,10 @@ class MetaBody(states.SpecializedBody):
         indented, indent, line_offset, blank_finish = \
               self.state_machine.get_first_known_indented(match.end())
         node = self.meta()
-        pending = nodes.pending(components.Filter, 'first writer',
-                                {'writer': 'html', 'nodes': [node]})
+        pending = nodes.pending(components.Filter,
+                                {'component': 'writer',
+                                 'format': 'html',
+                                 'nodes': [node]})
         node['content'] = ' '.join(indented)
         if not indented:
             line = self.state_machine.line

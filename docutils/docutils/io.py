@@ -13,13 +13,16 @@ __docformat__ = 'reStructuredText'
 
 import sys
 import locale
+from docutils import TransformSpec
 
 
-class Input:
+class Input(TransformSpec):
 
     """
     Abstract base class for input wrappers.
     """
+
+    component_type = 'input'
 
     default_source_path = None
 
@@ -84,11 +87,13 @@ class Input:
             % ', '.join([repr(enc) for enc in encodings if enc]))
 
 
-class Output:
+class Output(TransformSpec):
 
     """
     Abstract base class for output wrappers.
     """
+
+    component_type = 'output'
 
     default_destination_path = None
 

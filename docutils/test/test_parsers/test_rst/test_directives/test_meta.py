@@ -30,19 +30,19 @@ totest['meta'] = [
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.components.Filter
-             .stage: 'first writer'
              .details:
+               component: 'writer'
+               format: 'html'
                nodes:
                  <meta content="The reStructuredText plaintext markup language" name="description">
-               writer: 'html'
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.components.Filter
-             .stage: 'first writer'
              .details:
+               component: 'writer'
+               format: 'html'
                nodes:
                  <meta content="plaintext,markup language" name="keywords">
-               writer: 'html'
 """],
 ["""\
 .. meta::
@@ -54,19 +54,19 @@ totest['meta'] = [
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.components.Filter
-             .stage: 'first writer'
              .details:
+               component: 'writer'
+               format: 'html'
                nodes:
                  <meta content="An amusing story" lang="en" name="description">
-               writer: 'html'
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.components.Filter
-             .stage: 'first writer'
              .details:
+               component: 'writer'
+               format: 'html'
                nodes:
                  <meta content="Un histoire amusant" lang="fr" name="description">
-               writer: 'html'
 """],
 ["""\
 .. meta::
@@ -77,11 +77,11 @@ totest['meta'] = [
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.components.Filter
-             .stage: 'first writer'
              .details:
+               component: 'writer'
+               format: 'html'
                nodes:
                  <meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type">
-               writer: 'html'
 """],
 ["""\
 .. meta::
@@ -93,11 +93,11 @@ totest['meta'] = [
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.components.Filter
-             .stage: 'first writer'
              .details:
+               component: 'writer'
+               format: 'html'
                nodes:
                  <meta content="content over multiple lines" name="name">
-               writer: 'html'
 """],
 ["""\
 Paragraph
@@ -112,11 +112,11 @@ Paragraph
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.components.Filter
-             .stage: 'first writer'
              .details:
+               component: 'writer'
+               format: 'html'
                nodes:
                  <meta content="content" name="name">
-               writer: 'html'
 """],
 ["""\
 .. meta::
@@ -165,11 +165,11 @@ Paragraph
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.components.Filter
-             .stage: 'first writer'
              .details:
+               component: 'writer'
+               format: 'html'
                nodes:
                  <meta content="content" name="name">
-               writer: 'html'
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Invalid meta directive.
@@ -190,19 +190,19 @@ Paragraph
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.components.Filter
-             .stage: 'first writer'
              .details:
+               component: 'writer'
+               format: 'html'
                nodes:
                  <meta content="content" name="name">
-               writer: 'html'
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.components.Filter
-             .stage: 'first writer'
              .details:
+               component: 'writer'
+               format: 'html'
                nodes:
                  <meta content="content" name="name">
-               writer: 'html'
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Invalid meta directive.

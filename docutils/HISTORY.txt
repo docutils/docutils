@@ -27,7 +27,8 @@ and related projects:
     Pelletier, Sam Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim,
     Tavis Rudd, Ollie Rutherfurd, Kenichi Sato, Ueli Schlaepfer,
     Gunnar Schwant, tav, Bob Tolbert, Laurence Tratt, Guido van
-    Rossum, Barry Warsaw, Edward Welbourne, Ka-Ping Yee, Moshe Zadka
+    Rossum, Greg Ward, Barry Warsaw, Edward Welbourne, Ka-Ping Yee,
+    Moshe Zadka
 
 Thank you!
 
@@ -67,7 +68,7 @@ Specific:
   - Bumped version to 0.2.1 to reflect changes to I/O classes.
   - Bumped version to 0.2.2 to reflect changes to stylesheet options.
   - Factored ``SettingsSpec`` out of ``Component``; separately useful.
-  - Bumped version to 0.2.3 because of the new ``--embed-stylesheet``
+  - Bumped version to 0.2.3 because of the new "--embed-stylesheet"
     option and its effect on the PEP template & writer.
   - Bumped version to 0.2.4 due to changes to the PEP template &
     stylesheet.
@@ -76,6 +77,7 @@ Specific:
   - Bumped version to 0.2.6 for API changes (renaming).
   - Bumped version to 0.2.7 for new ``docutils.core.publish_*``
     convenience functions.
+  - Added ``Component.component_type`` attribute.
 
 * docutils/core.py:
 
@@ -86,18 +88,22 @@ Specific:
   - Added ``publish_file()`` and ``publish_string()``.
   - Factored ``Publisher.set_source()`` and ``.set_destination()``
     out of ``.set_io``.
+  - Added support for "--dump-pseudo-xml", "--dump-settings", and
+    "--dump-transforms" hidden options.
+  - Added ``Publisher.apply_transforms()`` method.
 
 * docutils/frontend.py:
 
   - Check for & exit on identical source & destination paths.
-  - Fixed bug with absolute paths & ``--config``.
+  - Fixed bug with absolute paths & "--config".
   - Set non-command-line defaults in ``OptionParser.__init__()``:
     ``_source`` & ``_destination``.
   - Distributed ``relative_path_settings`` to components; updated
     ``OptionParser.populate_from_components()`` to combine it all.
   - Require list of keys in ``make_paths_absolute`` (was implicit in
     global ``relative_path_settings``).
-  - Added ``--expose-internal-attribute`` option.
+  - Added "--expose-internal-attribute", "--dump-pseudo-xml",
+    "--dump-settings", and "--dump-transforms" hidden options.
 
 * docutils/io.py:
 
@@ -140,6 +146,7 @@ Specific:
   - Added a "rawsource" attribute to the ``Text`` class, for text
     before backslash-escape resolution.
   - Support for new transform system.
+  - Reworked ``pending`` element.
 
 * docutils/statemachine.py:
 
@@ -171,6 +178,10 @@ Specific:
     system messages.
   - Fixed a bug in ``relative_path()``.
   - Added support for improved diagnostics.
+
+* docutils/parser/__init__.py:
+
+  - Added ``Parser.finish_parse()`` method.
 
 * docutils/parser/rst/__init__.py:
 
@@ -207,6 +218,8 @@ Specific:
 
   - Fixed a bug that was producing unwanted empty rows in "simple"
     tables.
+  - Detect bad column spans in "simple" tables.
+
 
 * docutils/parsers/rst/directives: Updated all directive functions to
   new API.
@@ -242,6 +255,7 @@ Specific:
 
   - Added support for the observer pattern from ``utils.Reporter``, in
     ``Reader.parse`` and ``Reader.transform``.
+  - Removed ``Reader.transform()`` method.
 
 * docutils/readers/pep.py:
 
@@ -252,7 +266,7 @@ Specific:
 
 * docutils/transforms/__init__.py:
 
-  - Added ``Transformer`` class.
+  - Added ``Transformer`` class and completed transform reform.
 
 * docutils/transforms/frontmatter.py:
 
@@ -274,10 +288,16 @@ Specific:
 * docutils/transforms/references.py:
 
   - Added the ``TargetNotes`` generic transform.
+  - Split ``Hyperlinks`` into multiple transforms.
 
 * docutils/transforms/universal.py:
 
-  - Added support for the ``--expose-internal-attributes`` option.
+  - Added support for the "--expose-internal-attributes" option.
+  - Removed ``Pending`` transform classes & data.
+
+* docutils/writers/__init__.py:
+
+  - Removed ``Writer.transform()`` method.
 
 * docutils/writers/docutils-xml.py:
 
@@ -313,6 +333,7 @@ Specific:
   - Added Docutils version to "generator" meta tag.
   - Fixed a bug with images; they must be inline, so wrapped in <p>.
   - Improved layout of <pre> HTML source.
+  - Fixed attribute typo on <colspec>.
 
 * docutils/writers/pep_html.py:
 
@@ -384,6 +405,8 @@ Specific:
 * spec/semantics.txt: Updated with text from a Doc-SIG response to
   Dallas Mahrt.
 
+* spec/transforms.txt: Added to project.
+
 * spec/howto: Added subdirectory, for developer how-to docs.
 
 * spec/howto/rst-directives.txt: Added to project.  Original by Dethe
@@ -430,8 +453,8 @@ Specific:
 
 * tools/buildhtml.py:
 
-  - Added ``--silent`` option.
-  - Fixed bug with absolute paths & ``--config``.
+  - Added "--silent" option.
+  - Fixed bug with absolute paths & "--config".
   - Updated for new I/O classes.
   - Added some exception handling.
   - Separated publishers' setting defaults; prevents interference.
@@ -439,7 +462,7 @@ Specific:
 
 * tools/pep-html-template:
 
-  - Allow for ``--embed-stylesheet``.
+  - Allow for "--embed-stylesheet".
   - Added Docutils version to "generator" meta tag.
   - Updated for new ``publish_string()`` convenience function.
 
@@ -455,7 +478,7 @@ Specific:
 
 * tools/quicktest.py:
 
-  - Added ``-V``/``--version`` option.
+  - Added "-V"/"--version" option.
 
 * tools/stylesheets/default.css: Moved into the stylesheets directory.
 
@@ -470,6 +493,7 @@ Specific:
   - Removed "a.footnote-reference" style; doing it with ``<sup>`` now.
   - Improved field list rendering.
   - Vertical whitespace improvements.
+  - Removed "a.target" style.
 
 * tools/stylesheets/pep.css:
 
