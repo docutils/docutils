@@ -3,24 +3,6 @@
 #
 __version__='1.0'
 
-import os
-# figure where ZReST is installed
-here = None
-if os.environ.has_key('INSTANCE_HOME'):
-    here = os.environ['INSTANCE_HOME']
-    path = os.path.join(here, 'Products', 'ZReST')
-    if not os.path.exists(path):
-        path = os.path.join(here, 'lib', 'python', 'Products', 'ZReST')
-        if not os.path.exists(path):
-            here = None
-if here is None:
-    from __main__ import here
-    path = os.path.join(here, 'Products', 'ZReST')
-    if not os.path.exists(path):
-        path = os.path.join(here, 'lib', 'python', 'Products', 'ZReST')
-        if not os.path.exists(path):
-            raise ValueError, "Can't determine where ZReST is installed"
-
 # product initialisation
 import ZReST
 def initialize(context):
@@ -34,6 +16,9 @@ def initialize(context):
 
 #
 # $Log$
+# Revision 1.2  2002/08/15 04:36:56  richard
+# FTP interface and Reporter message snaffling
+#
 # Revision 1.1  2002/08/14 05:15:37  richard
 # Zope ReStructuredText Product
 #

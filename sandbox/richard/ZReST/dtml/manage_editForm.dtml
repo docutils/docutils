@@ -7,6 +7,12 @@ may also upload the source for this document from a local file. Click
 the <em>browse</em> button to select a local file to upload.
 </p>
 
+<dtml-if warnings>
+<pre class="system-msg">
+&dtml-warnings;
+</pre>
+</dtml-if>
+
 <form action="manage_edit" method="post">
 <table cellpadding="2" cellspacing="0" width="100%" border="0">
 

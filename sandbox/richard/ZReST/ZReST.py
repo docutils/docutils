@@ -7,11 +7,12 @@ This Product stores two texts - a "source" text in ReStructureText format,
 and a HTML "formatted" version of that text.
 
 '''
-from docutils import core, io
+import docutils.core, docutils.io
 
 from Globals import InitializeClass, DTMLFile
 from OFS.SimpleItem import Item
 from OFS.PropertyManager import PropertyManager
+from OFS.History import Historical, html_diff
 from Acquisition import Implicit
 from Persistence import Persistent
 from AccessControl import ClassSecurityInfo
@@ -32,7 +33,13 @@ def manage_addZReST(self, id, title='', file='', REQUEST=None):
     if REQUEST:
         return self.manage_main(self, REQUEST)
 
-class ZReST(Item, PropertyManager, Implicit, Persistent):
+class Warnings:
+    def __init__(self):
+        self.messages = []
+    def write(self, message):
+        self.messages.append(message)
+
+class ZReST(Item, PropertyManager, Historical, Implicit, Persistent):
     '''An instance of this class provides an interface between Zope and
        ReStructuredText for one text.
     '''
@@ -42,13 +49,26 @@ class ZReST(Item, PropertyManager, Implicit, Persistent):
     def __init__(self, id, title):
         self.id = id
         self.title = title
+        self.stylesheet = 'default.css'
+        self.report_level = '2'
         self.source = self.formatted = ''
+
+    # define the properties that define this object
+    _properties = (
+        {'id':'stylesheet', 'type': 'string', 'mode': 'w',
+            'default': 'default.css'},
+        {'id':'report_level', 'type': 'string', 'mode': 'w', 'default': '2'},
+    )
+    property_extensible_schema__ = 0
 
     # define the tabs for the management interface
     manage_options= ( {'label': 'Edit', 'action':'manage_main'},
                       {'label': 'View', 'action':'index_html'},
                       {'label': 'Source', 'action':'source_txt'},
-                    ) + Item.manage_options
+                    ) \
+        + PropertyManager.manage_options \
+        + Historical.manage_options \
+        + Item.manage_options
 
     # access to the source text and formatted text
     security.declareProtected('View', 'index_html')
@@ -128,6 +148,7 @@ class ZReST(Item, PropertyManager, Implicit, Persistent):
             self.source = file
         else:
             self.source = file.read()
+        self.render()
 
         if REQUEST:
             message="Saved changes."
@@ -138,8 +159,8 @@ class ZReST(Item, PropertyManager, Implicit, Persistent):
         ''' Render the source to HTML
         '''
         # format with strings
-        pub = core.Publisher()
-        pub.set_reader('standalone', None, 'restructuredtext')
+        pub = docutils.core.Publisher()
+        pub.set_reader('restructuredtext', None, 'restructuredtext')
         pub.set_writer('html')
 
         # go with the defaults
@@ -148,24 +169,91 @@ class ZReST(Item, PropertyManager, Implicit, Persistent):
         # this is needed, but doesn't seem to do anything
         pub.options._destination = ''
 
+        # use the stylesheet chosen by the user
+        pub.options.stylesheet = self.stylesheet
+
+        # set the reporting level to something sane
+        pub.options.report_level = int(self.report_level)
+
+        # don't break if we get errors
+        pub.options.halt_level = 6
+
+        # remember warnings
+        pub.options.warning_stream = Warnings()
+
         # input
-        pub.source = io.StringInput(pub.options)
+        pub.source = docutils.io.StringInput(pub.options)
         pub.source.source = self.source
 
         # output - not that it's needed
-        pub.destination = io.StringOutput(pub.options)
+        pub.destination = docutils.io.StringOutput(pub.options)
 
         # parse!
         document = pub.reader.read(pub.source, pub.parser, pub.options)
+        self.warnings = ''.join(pub.options.warning_stream.messages)
 
         # do the format
         self.formatted = pub.writer.write(document, pub.destination)
+
+
+    security.declareProtected('Edit ReStructuredText', 'PUT', 'manage_FTPput')
+    def PUT(self, REQUEST, RESPONSE):
+        ''' Handle HTTP PUT requests
+        '''
+        data = REQUEST.get('BODY', '')
+        if data != self.source:
+            if data.startswith('.. '):
+                data = data.splitlines()
+                new = []
+                for i in range(len(data)):
+                    line = data[i]
+                    if not line.startswith('.. '):
+                        break
+                    if line.startswith('.. stylesheet='):
+                        self.stylesheet = line.split('=')[1]
+                    elif line.startswith('.. report_level='):
+                        self.report_level = line.split('=')[1]
+                    else:
+                        pass # ignore
+                data = '\n'.join(new) + '\n'.join(data[i:])
+            self.source = data
+            self.render()
+        RESPONSE.setStatus(204)
+        return RESPONSE        
+
+    manage_FTPput = PUT
+
+    def manage_FTPget(self):
+        ''' Get source for FTP download
+        '''
+        self.REQUEST.RESPONSE.setHeader('Content-Type', 'text/plain')
+        s = [
+            '.. This is a ReStructuredText Document. Initial comment lines '
+                '(".. ") will be stripped.',
+            '.. stylesheet='+self.stylesheet,
+            '.. report_level='+self.report_level
+        ]
+        if self.warnings:
+            s.append('.. ')
+            s.append('.. ' + '\n.. '.join(self.warnings.splitlines()))
+        s.append('.. ')
+        return '\n'.join(s) + '\n' + self.source
 
     def __str__(self):
         ''' Stringfy .. return the source
         '''
         return self.quotedHTML(self.source)
 
+    def PrincipiaSearchSource(self):
+        ''' Support for searching - the document's contents are searched.
+        '''
+        return self.source
+
+    def manage_historyCompare(self, rev1, rev2, REQUEST,
+                              historyComparisonResults=''):
+        return ZReST.inheritedAttribute('manage_historyCompare')(
+            self, rev1, rev2, REQUEST,
+            historyComparisonResults=html_diff(rev1.source, rev2.source))
 
 InitializeClass(ZReST)
 modulesecurity.apply(globals())
@@ -173,6 +261,9 @@ modulesecurity.apply(globals())
 
 #
 # $Log$
+# Revision 1.2  2002/08/15 04:36:56  richard
+# FTP interface and Reporter message snaffling
+#
 # Revision 1.1  2002/08/14 05:15:37  richard
 # Zope ReStructuredText Product
 #
