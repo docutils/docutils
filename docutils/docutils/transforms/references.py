@@ -42,9 +42,7 @@ class SectionTargets(Transform):
         if isinstance(n, nodes.section):
             assert isinstance(n[0], nodes.title)
             target.parent.remove(target)
-            target += n[0].get_children()
-            n[0].clear()
-            n[0] += target
+            n[0].insert(0, target)
 
 
 class ChainedTargets(Transform):

@@ -597,7 +597,7 @@ Let's reference it (`explicit target`_) to avoid an irrelevant error.
     <section id="title" name="title">
         <title>
             <target id="explicit-target" name="explicit target">
-                Title
+            Title
         <paragraph>
             Let's reference it (
             <reference name="explicit target" refid="explicit-target">
