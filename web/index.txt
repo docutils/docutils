@@ -366,6 +366,13 @@ docutils-develop@lists.sourceforge.net.
 * Bill Bumgarner has written a `simple HTML writer`_ that doesn't rely
   on CSS (stylesheets).
 
+* Beni Cherniavsky has written a generic `preprocessing module`_ for
+  roles and/or directives and built preprocessors for TeX math for
+  both LaTeX and HTML output on top of it.
+
+* Beni Cherniavsky maintains a Makefile_ for driving Docutils, hoping
+  to handle everything one might do with docutils.
+  
 .. _ZReST: sandbox/richard/ZReST/
 .. _PySource: sandbox/tibs/pysource/
 .. _pysource_reader: sandbox/davidg/pysource_reader/
@@ -379,7 +386,8 @@ docutils-develop@lists.sourceforge.net.
 .. _OpenOffice.org Writer: sandbox/aahz/OO/
 .. _Wiki: sandbox/ianb/wiki/
 .. _simple HTML writer: sandbox/bbum/DocArticle/
-
+.. _preprocessing module: sandbox/cben/rolehack/
+.. _Makefile: sandbox/cben/make/
 
 Please Contribute!
 ==================
