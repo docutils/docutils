@@ -121,7 +121,7 @@ totest['topics'] = [
             Title
         <system_message level="3" line="3" source="test data" type="ERROR">
             <paragraph>
-                Topics may not be nested within topics or body elements.
+                The "topic" directive may not be used within topics, sidebars, or body elements.
             <literal_block xml:space="preserve">
                 .. topic:: Nested
                 \n\
@@ -142,7 +142,7 @@ totest['topics'] = [
             Title
         <system_message level="3" line="3" source="test data" type="ERROR">
             <paragraph>
-                Topics may not be nested within topics or body elements.
+                The "topic" directive may not be used within topics, sidebars, or body elements.
             <literal_block xml:space="preserve">
                 .. topic:: Nested
                 \n\
@@ -171,7 +171,60 @@ More.
             Title
         <system_message level="3" line="3" source="test data" type="ERROR">
             <paragraph>
-                Topics may not be nested within topics or body elements.
+                The "topic" directive may not be used within topics, sidebars, or body elements.
+            <literal_block xml:space="preserve">
+                .. topic:: Nested
+                \n\
+                   Body.
+        <paragraph>
+            More.
+    <paragraph>
+        More.
+"""],
+["""\
+.. topic:: First
+
+   Body
+
+.. topic:: Second
+
+   Body.
+""",
+"""\
+<document source="test data">
+    <topic>
+        <title>
+            First
+        <paragraph>
+            Body
+    <topic>
+        <title>
+            Second
+        <paragraph>
+            Body.
+"""],
+["""\
+.. sidebar:: Title
+   :subtitle: Outer
+
+   .. topic:: Nested
+
+      Body.
+
+   More.
+
+More.
+""",
+"""\
+<document source="test data">
+    <sidebar>
+        <title>
+            Title
+        <subtitle>
+            Outer
+        <system_message level="3" line="4" source="test data" type="ERROR">
+            <paragraph>
+                The "topic" directive may not be used within topics, sidebars, or body elements.
             <literal_block xml:space="preserve">
                 .. topic:: Nested
                 \n\

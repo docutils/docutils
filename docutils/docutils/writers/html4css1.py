@@ -937,10 +937,16 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.unimplemented_visit(node)
 
     def visit_subtitle(self, node):
-        self.body.append(self.starttag(node, 'h2', '', CLASS='subtitle'))
+        if isinstance(node.parent, nodes.sidebar):
+            self.body.append(self.starttag(node, 'p', '',
+                                           CLASS='sidebar-subtitle'))
+            self.context.append('</p>\n')
+        else:
+            self.body.append(self.starttag(node, 'h2', '', CLASS='subtitle'))
+            self.context.append('</h2>\n')
 
     def depart_subtitle(self, node):
-        self.body.append('</h2>\n')
+        self.body.append(self.context.pop())
 
     def visit_system_message(self, node):
         if node['level'] < self.document.reporter['writer'].report_level:

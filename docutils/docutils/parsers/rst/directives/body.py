@@ -17,10 +17,12 @@ from docutils.parsers.rst import directives
 
 
 def topic(name, arguments, options, content, lineno,
-          content_offset, block_text, state, state_machine):
+          content_offset, block_text, state, state_machine,
+          node_class=nodes.topic):
     if not state_machine.match_titles:
         error = state_machine.reporter.error(
-              'Topics may not be nested within topics or body elements.',
+              'The "%s" directive may not be used within topics, sidebars, '
+              'or body elements.' % name,
               nodes.literal_block(block_text, block_text), line=lineno)
         return [error]
     if not content:
@@ -31,37 +33,26 @@ def topic(name, arguments, options, content, lineno,
         return [warning]
     title_text = arguments[0]
     textnodes, messages = state.inline_text(title_text, lineno)
-    title = nodes.title(title_text, '', *textnodes)
+    titles = [nodes.title(title_text, '', *textnodes)]
+    if options.has_key('subtitle'):
+        textnodes, more_messages = state.inline_text(options['subtitle'],
+                                                     lineno)
+        titles.append(nodes.subtitle(options['subtitle'], '', *textnodes))
+        messages.extend(more_messages)
     text = '\n'.join(content)
-    topic_node = nodes.topic(text, title, *messages)
+    node = node_class(text, *(titles + messages))
     if text:
-        state.nested_parse(content, content_offset, topic_node)
-    return [topic_node]
+        state.nested_parse(content, content_offset, node)
+    return [node]
 
 topic.arguments = (1, 0, 1)
 topic.content = 1
 
 def sidebar(name, arguments, options, content, lineno,
             content_offset, block_text, state, state_machine):
-    if not state_machine.match_titles:
-        error = state_machine.reporter.error(
-              'Sidebars may not be nested within sidebars or body elements.',
-              nodes.literal_block(block_text, block_text), line=lineno)
-        return [error]
-    if not content:
-        warning = state_machine.reporter.warning(
-            'Content block expected for the "%s" directive; none found.'
-            % name, nodes.literal_block(block_text, block_text),
-            line=lineno)
-        return [warning]
-    title_text = arguments[0]
-    textnodes, messages = state.inline_text(title_text, lineno)
-    title = nodes.title(title_text, '', *textnodes)
-    text = '\n'.join(content)
-    sidebar_node = nodes.sidebar(text, title, *messages, **options)
-    if text:
-        state.nested_parse(content, content_offset, sidebar_node)
-    return [sidebar_node]
+    return topic(name, arguments, options, content, lineno,
+                 content_offset, block_text, state, state_machine,
+                 node_class=nodes.sidebar)
 
 sidebar.arguments = (1, 0, 1)
 sidebar.options = {'subtitle': directives.unchanged}
