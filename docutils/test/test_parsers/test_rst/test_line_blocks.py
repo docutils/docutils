@@ -200,6 +200,108 @@ There should be a blank line before this paragraph.
             This block begins and ends with blank lines.
         <line>
 """],
+["""\
+This is not
+| a line block.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        This is not
+        | a line block.
+"""],
+["""\
+|   The first line is indented.
+|     The second line is more indented.
+""",
+"""\
+<document source="test data">
+    <line_block>
+        <line>
+            The first line is indented.
+        <line_block>
+            <line>
+                The second line is more indented.
+"""],
+["""\
+|     The first line is indented.
+|   The second line is less indented.
+""",
+"""\
+<document source="test data">
+    <line_block>
+        <line_block>
+            <line>
+                The first line is indented.
+        <line>
+            The second line is less indented.
+"""],
+["""\
+|This is not
+|a line block
+
+| This is an
+|incomplete line block.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <problematic id="id2" refid="id1">
+            |
+        This is not
+        <problematic id="id4" refid="id3">
+            |
+        a line block
+    <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
+        <paragraph>
+            Inline substitution_reference start-string without end-string.
+    <system_message backrefs="id4" id="id3" level="2" line="1" source="test data" type="WARNING">
+        <paragraph>
+            Inline substitution_reference start-string without end-string.
+    <line_block>
+        <line>
+            This is an
+    <system_message level="2" line="5" source="test data" type="WARNING">
+        <paragraph>
+            Line block ends without a blank line.
+    <paragraph>
+        <problematic id="id6" refid="id5">
+            |
+        incomplete line block.
+    <system_message backrefs="id6" id="id5" level="2" line="5" source="test data" type="WARNING">
+        <paragraph>
+            Inline substitution_reference start-string without end-string.
+"""],
+["""\
+| Inline markup *may not
+| wrap* over several lines.
+""",
+"""\
+<document source="test data">
+    <line_block>
+        <line>
+            Inline markup \n\
+            <problematic id="id2" refid="id1">
+                *
+            may not
+        <line>
+            wrap* over several lines.
+    <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
+        <paragraph>
+            Inline emphasis start-string without end-string.
+"""],
+["""\
+| * Block level markup
+| * is not recognized.
+""",
+"""\
+<document source="test data">
+    <line_block>
+        <line>
+            * Block level markup
+        <line>
+            * is not recognized.
+"""],
 ]
 
 
