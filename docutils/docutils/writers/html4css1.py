@@ -654,6 +654,13 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_legend(self, node):
         self.body.append('</div>\n')
 
+    def visit_line_block(self, node):
+        self.body.append(self.starttag(node, 'pre', suffix='',
+                                       CLASS='line-block'))
+
+    def depart_line_block(self, node):
+        self.body.append('</pre>\n')
+
     def visit_list_item(self, node):
         self.body.append(self.starttag(node, 'li', ''))
         if len(node) and isinstance(node[0], nodes.paragraph):
