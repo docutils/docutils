@@ -10,7 +10,9 @@ Default cascading style sheet for the PEP HTML output of Docutils.
 
 .navigation {
   width: 100% ;
-  background: #99ccff }
+  background: #99ccff ;
+  margin-top: 0px ;
+  margin-bottom: 0px }
 
 .navigation .navicon {
   width: 150px ;
@@ -20,10 +22,16 @@ Default cascading style sheet for the PEP HTML output of Docutils.
   padding-left: 1em ;
   text-align: left }
 
+.navigation td, .navigation th {
+  padding-left: 0em ;
+  padding-right: 0em ;
+  vertical-align: middle }
+
 .rfc2822 {
   margin-top: 0.5em ;
-  margin-left: 1em ;
-  margin-right: 1em }
+  margin-left: 0.5em ;
+  margin-right: 0.5em ;
+  margin-bottom: 0em }
 
 .rfc2822 div.field-body {
   text-align: left }
@@ -42,17 +50,22 @@ a.footnote-reference {
 a.target {
   color: blue }
 
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+  text-decoration: none ;
+  color: black }
+
 body {
   margin: 0px ;
   margin-bottom: 1em ;
   padding: 0px }
 
-col.num {
-  text-align: center }
+td.num {
+  text-align: right }
 
 div.section {
   margin-left: 1em ;
-  margin-right: 1em }
+  margin-right: 1em ;
+  margin-bottom: 1.5em }
 
 div.abstract {
   margin: 2em 5em }
@@ -135,6 +148,9 @@ h6 {
 .section hr {
   width: 75% }
 
+ol, ul {
+  margin-bottom: 1em }
+
 ol.arabic {
   list-style: decimal }
 
@@ -150,10 +166,7 @@ ol.lowerroman {
 ol.upperroman {
   list-style: upper-roman }
 
-dd p:first-child {
-  margin-top: 0px }
-
-li p:first-child {
+dd p:first-child, li p:first-child, td p:first-child, th p:first-child {
   margin-top: 0px }
 
 p.caption {
@@ -195,8 +208,11 @@ span.option-argument {
 span.problematic {
   color: red }
 
-table.citation {
-  margin-bottom: 1em }
+table {
+  margin-top: 0.5em ;
+  margin-bottom: 0.5em }
 
-table.footnote {
-  margin-bottom: 1em }
+td, th {
+  padding-left: 0.5em ;
+  padding-right: 0.5em ;
+  vertical-align: baseline }

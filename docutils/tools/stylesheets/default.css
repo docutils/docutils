@@ -63,6 +63,10 @@ div.system-message p.system-message-title {
 div.topic {
   margin: 2em }
 
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+  text-decoration: none ;
+  color: black }
+
 h1.title {
   text-align: center }
 
@@ -71,6 +75,9 @@ h2.subtitle {
 
 hr {
   width: 75% }
+
+ol.simple, ul.simple {
+  margin-bottom: 1em }
 
 ol.arabic {
   list-style: decimal }
@@ -87,18 +94,19 @@ ol.lowerroman {
 ol.upperroman {
   list-style: upper-roman }
 
-dd p:first-child {
-  margin-top: 0px }
-
-li p:first-child {
-  margin-top: 0px }
-
+/*dd p:first-child, li p:first-child, td p:first-child, th p:first-child {
+  margin-top: 0 ;
+  padding-top: 0 }
+*/
 p.caption {
   font-style: italic }
 
 p.credits {
   font-style: italic ;
   font-size: smaller }
+
+p.first {
+  margin-top: 0 }
 
 p.label {
   white-space: nowrap }
@@ -132,7 +140,8 @@ span.problematic {
   color: red }
 
 table {
-  margin-top: 1em }
+  margin-top: 0.5em ;
+  margin-bottom: 0.5em }
 
 table.citation {
   border-left: solid thin gray ;
@@ -144,6 +153,11 @@ table.docinfo {
 table.footnote {
   border-left: solid thin black ;
   padding-left: 0.5ex }
+
+td, th {
+  padding-left: 0.5em ;
+  padding-right: 0.5em ;
+  vertical-align: baseline }
 
 td.docinfo-name {
   font-weight: bold ;
