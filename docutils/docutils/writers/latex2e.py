@@ -625,9 +625,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # insert_newline: to tell encode to add latex newline.
         self.insert_newline = 0
         # mbox_newline: to tell encode to add mbox and newline.
-        # XXX This is not needed anymore and will be deleted soon,
-        # if nobody complains.
-        self.mbox_newline = 0   
+        self.mbox_newline = 0
 
         # enumeration is done by list environment.
         self._enum_cnt = 0
@@ -1369,10 +1367,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         * inline markup is supported.
         * serif typeface
 
-        mbox would stop LaTeX from wrapping long lines.
         """
         self.body.append('\\begin{flushleft}\n')
         self.insert_none_breaking_blanks = 1
+        # mbox would stop LaTeX from wrapping long lines.
+        # but line_blocks are allowed to wrap.
         self.line_block_without_mbox = 1
         if self.line_block_without_mbox:
             self.insert_newline = 1
@@ -1431,10 +1430,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             self.literal_block = 1
             self.insert_none_breaking_blanks = 1
-            self.body.append('\n{\\ttfamily \\raggedright \\noindent\n')
-            self.mbox_newline = 0
-            if self.mbox_newline:
-                self.body.append('\\mbox{')
+            if self.active_table.is_open():
+                self.body.append('\n{\\ttfamily \\raggedright \\noindent\n')
+            else:    
+                self.body.append('\\begin{ttfamily}')
+                self.body.append('\\begin{flushleft}\n')
             # * obey..: is from julien and never worked for me (grubert).
             #   self.body.append('{\\obeylines\\obeyspaces\\ttfamily\n')
 
@@ -1442,12 +1442,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.verbatim:
             self.body.append('\n\\end{verbatim}\n')
             self.verbatim = 0
-        else:
-            if self.mbox_newline:
-                self.body.append('}')
+        elif self.active_table.is_open():
             self.body.append('\n}\n')
+        else:
+            self.body.append('\n')
+            self.body.append('\\end{flushleft}')
+            self.body.append('\\end{ttfamily}\n')
             self.insert_none_breaking_blanks = 0
-            self.mbox_newline = 0
             # obey end: self.body.append('}\n')
             self.literal_block = 0
 

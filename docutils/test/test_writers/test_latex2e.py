@@ -253,12 +253,12 @@ Inside literal blocks quotes should be left untouched
 (use only two quotes in test code makes life easier for
 the python interpreter running the test):
 \\begin{ttfamily}\\begin{flushleft}
-\\mbox{""}\\\\
-\\mbox{This~is~left~"untouched"~also~*this*.}\\\\
-\\mbox{""}
+""~\\\\
+This~is~left~"untouched"~also~*this*.~\\\\
+""
 \\end{flushleft}\\end{ttfamily}
 \\begin{ttfamily}\\begin{flushleft}
-\\mbox{should~get~"quotes"~and~\\emph{italics}.}
+should~get~"quotes"~and~\\emph{italics}.
 \\end{flushleft}\\end{ttfamily}
 
 Inline \\texttt{literal "quotes"} should be kept.
