@@ -207,9 +207,9 @@ def fixfile(inpath, input_lines, outfile):
                 else:
                     mailtos.append(part)
             v = COMMASPACE.join(mailtos)
-        elif k.lower() in ('replaces', 'replaced-by'):
+        elif k.lower() in ('replaces', 'replaced-by', 'requires'):
             otherpeps = ''
-            for otherpep in v.split():
+            for otherpep in re.split(',?\s+', v):
                 otherpep = int(otherpep)
                 otherpeps += '<a href="pep-%04d.html">%i</a> ' % (otherpep,
                                                                   otherpep)
@@ -219,6 +219,10 @@ def fixfile(inpath, input_lines, outfile):
             date = v or time.strftime('%d-%b-%Y',
                                       time.localtime(os.stat(inpath)[8]))
             v = '<a href="%s">%s</a> ' % (url, cgi.escape(date))
+        elif k.lower() in ('content-type',):
+            url = PEPURL % 9
+            pep_type = v or 'text/plain'
+            v = '<a href="%s">%s</a> ' % (url, cgi.escape(pep_type))
         else:
             v = cgi.escape(v)
         print >> outfile, '  <tr><th>%s:&nbsp;</th><td>%s</td></tr>' \
@@ -318,7 +322,7 @@ def get_pep_type(input_lines):
             # End of the RFC 2822 header (first blank line).
             break
         elif line.startswith('content-type: '):
-            pep_type = line.split()[1]
+            pep_type = line.split()[1] or 'text/plain'
             break
         elif line.startswith('pep: '):
             # Default PEP type, used if no explicit content-type specified:
@@ -334,7 +338,7 @@ def get_input_lines(inpath):
         print >> sys.stderr, 'Error: Skipping missing PEP file:', e.filename
         sys.stderr.flush()
         return None, None
-    lines = infile.readlines()
+    lines = infile.read().splitlines(1) # handles x-platform line endings
     infile.close()
     return lines
 
