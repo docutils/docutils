@@ -523,6 +523,25 @@ See `HTML Anchors: \\<a>`_.
             HTML Anchors: <a>
         .
 """],
+["""\
+Relative URIs' reference text can be omitted:
+
+`<reference>`_
+
+`<anonymous>`__
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Relative URIs' reference text can be omitted:
+    <paragraph>
+        <reference refuri="reference">
+            reference
+        <target id="reference" name="reference" refuri="reference">
+    <paragraph>
+        <reference refuri="anonymous">
+            anonymous
+"""],
 ]
 
 totest['inline_targets'] = [

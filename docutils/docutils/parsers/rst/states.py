@@ -660,10 +660,10 @@ class Inliner:
           embedded_uri=re.compile(
               r"""
               (
-                [ \n]+                  # spaces or beginning of line
+                (?:[ \n]+|^)            # spaces or beginning of line/string
                 <                       # open bracket
                 %(non_whitespace_after)s
-                ([^<>\0]+)              # anything but angle brackets & nulls
+                ([^<>\x00]+)            # anything but angle brackets & nulls
                 %(non_whitespace_before)s
                 >                       # close bracket w/o whitespace before
               )
@@ -862,6 +862,8 @@ class Inliner:
                 target = nodes.target(match.group(1), refuri=uri)
             else:
                 raise ApplicationError('problem with URI: %r' % uri_text)
+            if not text:
+                text = uri
         else:
             target = None
         refname = normalize_name(text)

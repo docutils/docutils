@@ -820,24 +820,8 @@ __ rst/alternatives.html#or-not-to-do
   parse nested inline markup somehow?  See the `collected notes
   <http://docutils.sf.net/spec/rst/alternatives.html#nested-inline-markup>`__.
 
-* Idea from Beni Cherniavsky::
-
-      I'm writing a README document linking to all other interesting
-      files in its directory.  If these were full URLs I could just
-      write them in the text but these are relative links that can't
-      be auto-recognized.  The shortest way to make such links that I
-      found was `file_name <file_name>`_.  Perhaps a shortcut for such
-      usage could be added, e.g.  `<file_name>`_ would take the target
-      as the link name?
-
-  IOW these would be equivalent::
-
-      `<file_name>`_
-      `file_name <file_name>`_
-
-  Another possibility is to drop the backticks.  Should the angle
-  brackets be kept in the output or not?  This syntax could be adopted
-  in addition to the one above::
+* Drop the backticks from embedded URIs?  Should the angle brackets be
+  kept in the output or not? ::
 
       <file_name>_
 
