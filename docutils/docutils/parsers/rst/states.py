@@ -1949,7 +1949,7 @@ class Body(RSTState):
                 raise MarkupError('malformed substitution definition.',
                                   lineno)
         del block[:blockindex]          # strip out the substitution marker
-        block[0] = (block[0] + ' ')[subdefmatch.end()-len(escaped)-1:].strip()
+        block[0] = (block[0].strip() + ' ')[subdefmatch.end()-len(escaped)-1:-1]
         if not block[0]:
             del block[0]
             offset += 1
