@@ -11,6 +11,7 @@ Tests for misc.py "include" directive.
 """
 
 import os.path
+import sys
 from __init__ import DocutilsTestSupport
 
 
@@ -337,6 +338,17 @@ Include file is UTF-16-encoded, and is not valid ASCII.
 #             .. |bad| unicode:: 0xFFFFFFFFF
 # """ % (include10rel, include10rel)],
 ]
+
+# Skip tests whose output contains "UnicodeDecodeError" if we are not
+# using Python 2.3 or higher.
+if sys.version_info < (2, 3):
+    for i in range(len(totest['include'])):
+        if totest['include'][i][1].find('UnicodeDecodeError') != -1:
+            del totest['include'][i]
+            print ("Test totest['include'][%s] skipped; "
+                   "Python 2.3+ required for expected output." % i)
+            # Assume we have only one of these tests.
+            break
 
 
 if __name__ == '__main__':
