@@ -4041,8 +4041,8 @@ immediately adjacent.
 See `Doctree Representation of Transitions`__ in `A Record of
 reStructuredText Syntax Alternatives`__.
 
-__ rst/alternatives.txt#doctree-representation-of-transitions
-__ rst/alternatives.txt
+__ ../dev/rst/alternatives.txt#doctree-representation-of-transitions
+__ ../dev/rst/alternatives.txt
 
 
 Details
