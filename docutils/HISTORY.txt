@@ -25,12 +25,12 @@ and related projects:
     Ibbs, Alan Jaffray, Dmitry Jemerov, Richard Jones, Andreas Jung,
     Garth Kidd, Daniel Larsson, Marc-Andre Lemburg, Julien Letessier,
     Wolfgang Lipp, Edward Loper, Dallas Mahrt, Ken Manheimer, Vasko
-    Miroslav, Skip Montanaro, Paul Moore, Michel Pelletier, Sam
-    Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim, Brett g Porter,
-    Tavis Rudd, Oliver Rutherfurd, Kenichi Sato, Ueli Schlaepfer,
-    Gunnar Schwant, tav, Bob Tolbert, Laurence Tratt, Guido van
-    Rossum, Martin von Loewis, Greg Ward, Barry Warsaw, Edward
-    Welbourne, Ka-Ping Yee, Moshe Zadka
+    Miroslav, Skip Montanaro, Paul Moore, Patrick K. O'Brien, Michel
+    Pelletier, Sam Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim,
+    Brett g Porter, Tavis Rudd, Oliver Rutherfurd, Kenichi Sato, Ueli
+    Schlaepfer, Gunnar Schwant, tav, Bob Tolbert, Laurence Tratt,
+    Guido van Rossum, Martin von Loewis, Greg Ward, Barry Warsaw,
+    Edward Welbourne, Ka-Ping Yee, Moshe Zadka
 
 Thank you!
 
@@ -153,7 +153,6 @@ Specific:
     before backslash-escape resolution.
   - Support for new transform system.
   - Reworked ``pending`` element.
-  - 
 
 * docutils/statemachine.py:
 
@@ -300,7 +299,7 @@ Specific:
   - Moved ``Inliner`` & made it a class attribute of ``Reader`` for
     easy subclassing.
 
-* docutils/readers/python: Python Source Reader ubpackage added to
+* docutils/readers/python: Python Source Reader subpackage added to
   project, including preliminary versions of:
 
   - __init__.py
