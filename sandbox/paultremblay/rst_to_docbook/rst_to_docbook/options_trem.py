@@ -287,7 +287,6 @@ class ParseOptions:
         else:
             just_options = []
             arguments = self.__system_string
-            print arguments
 
         if found_options:
             for item in just_options:
