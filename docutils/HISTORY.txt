@@ -303,7 +303,7 @@ Specific:
     docstrings.
   - Wrote descriptions of all common attributes and parameter
     entities.  Filled in introductory material.
-  - Working through the element descriptions: 29 down, 54 to go.
+  - Working through the element descriptions: 33 down, 50 to go.
 
 * spec/docutils.dtd:
 
