@@ -513,6 +513,108 @@ Invalid phrase reference:
 """],
 ]
 
+totest['embedded_URIs'] = [
+["""\
+`phrase reference <http://example.com>`_
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <reference refuri="http://example.com">
+            phrase reference
+        <target id="phrase-reference" name="phrase reference" refuri="http://example.com">
+"""],
+["""\
+`anonymous reference <http://example.com>`__
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <reference refuri="http://example.com">
+            anonymous reference
+"""],
+["""\
+`embedded URI on next line
+<http://example.com>`__
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <reference refuri="http://example.com">
+            embedded URI on next line
+"""],
+["""\
+`embedded URI across lines <http://example.com/
+long/path>`__
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <reference refuri="http://example.com/long/path">
+            embedded URI across lines
+"""],
+["""\
+`embedded URI with whitespace <http://example.com/
+long/path /and  /whitespace>`__
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <reference refuri="http://example.com/long/path/and/whitespace">
+            embedded URI with whitespace
+"""],
+["""\
+`embedded email address <jdoe@example.com>`__
+
+`embedded email address broken across lines <jdoe
+@example.com>`__
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <reference refuri="mailto:jdoe@example.com">
+            embedded email address
+    <paragraph>
+        <reference refuri="mailto:jdoe@example.com">
+            embedded email address broken across lines
+"""],
+["""\
+`embedded URI with too much whitespace < http://example.com/
+long/path /and  /whitespace >`__
+
+`embedded URI with too much whitespace at end <http://example.com/
+long/path /and  /whitespace >`__
+
+`embedded URI with no preceding whitespace<http://example.com>`__
+
+`escaped URI \\<http://example.com>`__
+
+See `HTML Anchors: \\<a>`_.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <reference anonymous="1">
+            embedded URI with too much whitespace < http://example.com/
+            long/path /and  /whitespace >
+    <paragraph>
+        <reference anonymous="1">
+            embedded URI with too much whitespace at end <http://example.com/
+            long/path /and  /whitespace >
+    <paragraph>
+        <reference anonymous="1">
+            embedded URI with no preceding whitespace<http://example.com>
+    <paragraph>
+        <reference anonymous="1">
+            escaped URI <http://example.com>
+    <paragraph>
+        See \n\
+        <reference refname="html anchors: <a>">
+            HTML Anchors: <a>
+        .
+"""],
+]
+
 totest['inline_targets'] = [
 ["""\
 _`target`
@@ -714,9 +816,17 @@ http://www.standalone.hyperlink.com
 
 http:/one-slash-only.absolute.path
 
+[http://example.com]
+
+(http://example.com)
+
+<http://example.com>
+
 http://[1080:0:0:0:8:800:200C:417A]/IPv6address.html
 
-http://[3ffe:2a00:100:7031::1]
+http://[3ffe:2a00:100:7031::1] (the final "]" is ambiguous in text)
+
+http://[3ffe:2a00:100:7031::1]/
 
 mailto:someone@somewhere.com
 
@@ -737,11 +847,30 @@ ftp://ends.with.a.period.
         <reference refuri="http:/one-slash-only.absolute.path">
             http:/one-slash-only.absolute.path
     <paragraph>
+        [
+        <reference refuri="http://example.com">
+            http://example.com
+        ]
+    <paragraph>
+        (
+        <reference refuri="http://example.com">
+            http://example.com
+        )
+    <paragraph>
+        <
+        <reference refuri="http://example.com">
+            http://example.com
+        >
+    <paragraph>
         <reference refuri="http://[1080:0:0:0:8:800:200C:417A]/IPv6address.html">
             http://[1080:0:0:0:8:800:200C:417A]/IPv6address.html
     <paragraph>
-        <reference refuri="http://[3ffe:2a00:100:7031::1]">
-            http://[3ffe:2a00:100:7031::1]
+        <reference refuri="http://[3ffe:2a00:100:7031::1">
+            http://[3ffe:2a00:100:7031::1
+        ] (the final "]" is ambiguous in text)
+    <paragraph>
+        <reference refuri="http://[3ffe:2a00:100:7031::1]/">
+            http://[3ffe:2a00:100:7031::1]/
     <paragraph>
         <reference refuri="mailto:someone@somewhere.com">
             mailto:someone@somewhere.com

@@ -25,7 +25,8 @@ def suite():
 totest = {}
 
 # Exhaustive listing of hyperlink variations: every combination of
-# target/reference, direct/indirect, internal/external, and named/anonymous.
+# target/reference, direct/indirect, internal/external, and named/anonymous,
+# plus embedded URIs.
 totest['exhaustive_hyperlinks'] = ((ChainedTargets, AnonymousHyperlinks,
                                     IndirectHyperlinks, ExternalTargets,
                                     InternalTargets,), [
@@ -226,6 +227,36 @@ __ ztarget_
     <system_message backrefs="id4" id="id3" level="2" line="11" source="test data" type="WARNING">
         <paragraph>
             Indirect hyperlink target (id="id2") refers to target "ztarget", which does not exist.
+"""],
+["""\
+An `embedded uri <http://direct>`_.
+
+Another reference to the same `embedded URI`_.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        An \n\
+        <reference refuri="http://direct">
+            embedded uri
+        <target id="embedded-uri" name="embedded uri" refuri="http://direct">
+        .
+    <paragraph>
+        Another reference to the same \n\
+        <reference refuri="http://direct">
+            embedded URI
+        .
+"""],
+["""\
+An `anonymous embedded uri <http://direct>`__.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        An \n\
+        <reference refuri="http://direct">
+            anonymous embedded uri
+        .
 """],
 ])
 
