@@ -145,6 +145,8 @@ Changes Since 0.3
   - Added support for quoted (and unindented) literal blocks.
     Driven in part by a bribe from Frank Siebenlist (thanks!).
   - Parser now handles escapes in URIs correctly.
+  - Made embedded-URIs' reference text omittable.  Idea from Beni
+    Cherniavsky.
 
 * docutils/parsers/rst/tableparser.py:
 
