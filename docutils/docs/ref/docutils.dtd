@@ -340,10 +340,10 @@ http://www.oasis-open.org/html/tm9901.htm).
 <!ATTLIST option_string %basic.atts;>
 
 <!--
-`delimiter` contains the string preceding the `option_argument`:
-either the string separating it from the `option` (typically either
-"=" or " ") or the string between option arguments (typically either
-"," or " ").
+`delimiter` contains the text preceding the `option_argument`: either
+the text separating it from the `option_string` (typically either "="
+or " ") or the text between option arguments (typically either "," or
+" ").
 -->
 <!ELEMENT option_argument (#PCDATA)>
 <!ATTLIST option_argument
