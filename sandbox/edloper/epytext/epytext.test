@@ -1,0 +1,26 @@
+This is a
+paragraph.
+
+
+Heading
+=======
+  A new section
+    - A bulleted list
+      1. An enumerated list
+
+  A B{paragraph} I{with} C{various} X{inline} M{formatting}
+
+  Symbols are not supported yet: S{alpha}
+
+  A literal block::
+
+        A /
+         / B
+
+  A doctest block:
+
+    >>> print 1
+    1
+
+  @field: this is a field
+  @field arg: this is another field.
