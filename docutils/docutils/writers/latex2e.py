@@ -1213,12 +1213,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         width = 80
         
         total_width = 0.0
-        # donot make it full linewidth
-        factor = 0.93
         # first see if we get too wide.
         for node in self.colspecs:
-            colwidth = factor * float(node['colwidth']) / width 
+            colwidth = float(node['colwidth']) / width 
             total_width += colwidth
+        # donot make it full linewidth
+        factor = 0.93
         if total_width > 1.0:
             factor /= total_width
             
