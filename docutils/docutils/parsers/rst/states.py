@@ -980,6 +980,9 @@ class Inliner:
         """
         label = match.group('footnotelabel')
         refname = normalize_name(label)
+        string = match.string
+        before = string[:match.start('whole')]
+        remaining = string[match.end('whole'):]
         if match.group('citationlabel'):
             refnode = nodes.citation_reference('[%s]_' % label,
                                                refname=refname)
@@ -1001,10 +1004,9 @@ class Inliner:
             if refname:
                 refnode['refname'] = refname
                 self.document.note_footnote_ref(refnode)
-        string = match.string
-        matchstart = match.start('whole')
-        matchend = match.end('whole')
-        return (string[:matchstart], [refnode], string[matchend:], [])
+            if self.document.settings.trim_footnote_reference_space:
+                before = before.rstrip()
+        return (before, [refnode], remaining, [])
 
     def reference(self, match, lineno, anonymous=None):
         referencename = match.group('refname')
@@ -1768,6 +1770,7 @@ class Body(RSTState):
                               (?P=quote)      # close quote if open quote used
                             )
                             %(non_whitespace_escape_before)s
+                            [ ]?            # optional space
                             :               # end of reference name
                             ([ ]+|$)        # followed by whitespace
                             """ % vars(Inliner), re.VERBOSE),
@@ -2188,6 +2191,7 @@ class Body(RSTState):
            re.compile(r"""
                       \.\.[ ]+          # explicit markup start
                       (%s)              # directive name
+                      [ ]?              # optional space
                       ::                # directive delimiter
                       ([ ]+|$)          # whitespace or end of line
                       """ % Inliner.simplename, re.VERBOSE | re.UNICODE))]
