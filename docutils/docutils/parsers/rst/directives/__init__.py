@@ -127,8 +127,8 @@ def choice(argument, values):
     try:
         value = argument.lower().strip()
     except AttributeError:
-        raise TypeError('must supply an argument; choose from %s',
-                        format_values(values))
+        raise TypeError('must supply an argument; choose from %s'
+                        % format_values(values))
     if value in values:
         return value
     else:
