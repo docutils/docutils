@@ -198,7 +198,8 @@ class LoutTranslator(nodes.NodeVisitor):
 
     def starttag(self, node, tagname, suffix='\n', infix='', **attributes):
         """REMOVEME"""
-        return '<%s>' % tagname
+        return '@CurveBox paint { red } { %s %s }' % (tagname,
+                                                      self.encode(repr(attributes)))
 
     def emptytag(self, node, tagname, suffix='\n', **attributes):
         """REMOVEME"""
@@ -215,32 +216,32 @@ class LoutTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'abbr', ''))
 
     def depart_abbreviation(self, node):
-        self.body.append('<end abbr>')
+        self.body.append('@CurveBox paint { red } { "/" abbr }')
 
     def visit_acronym(self, node):
         # @@@ implementation incomplete ("title" attribute)
         self.body.append(self.starttag(node, 'acronym', ''))
 
     def depart_acronym(self, node):
-        self.body.append('<end acronym>')
+        self.body.append('@CurveBox paint { red } { "/" acronym }')
 
     def visit_address(self, node):
         self.visit_docinfo_item(node, 'address', meta=None)
         self.body.append(self.starttag(node, 'pre', CLASS='address'))
 
     def depart_address(self, node):
-        self.body.append('\n<end pre>\n')
+        self.body.append('\n@CurveBox paint { red } { "/" pre }\n')
         self.depart_docinfo_item()
 
     def visit_admonition(self, node, name=''):
         self.body.append(self.starttag(node, 'div',
                                         CLASS=(name or 'admonition')))
         if name:
-            self.body.append('<p class="admonition-title">'
-                             + self.language.labels[name] + '<end p>\n')
+            self.body.append('@CurveBox paint { red } { p class="admonition-title" }'
+                             + self.language.labels[name] + '@CurveBox paint { red } { "/" p }\n')
 
     def depart_admonition(self, node=None):
-        self.body.append('<end div>\n')
+        self.body.append('@CurveBox paint { red } { "/" div }\n')
 
     def visit_attention(self, node):
         self.visit_admonition(node, 'attention')
@@ -275,7 +276,7 @@ class LoutTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'blockquote'))
 
     def depart_block_quote(self, node):
-        self.body.append('<end blockquote>\n')
+        self.body.append('@CurveBox paint { red } { "/" blockquote }\n')
 
     def check_simple_list(self, node):
         """Check for a simple list that can be rendered compactly."""
@@ -293,13 +294,13 @@ class LoutTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'ul'))
 
     def depart_bullet_list(self, node):
-        self.body.append('<end ul>\n')
+        self.body.append('@CurveBox paint { red } { "/" ul }\n')
 
     def visit_caption(self, node):
         self.body.append(self.starttag(node, 'p', '', CLASS='caption'))
 
     def depart_caption(self, node):
-        self.body.append('<end p>\n')
+        self.body.append('@CurveBox paint { red } { "/" p }\n')
 
     def visit_caution(self, node):
         self.visit_admonition(node, 'caution')
@@ -310,15 +311,15 @@ class LoutTranslator(nodes.NodeVisitor):
     def visit_citation(self, node):
         self.body.append(self.starttag(node, 'table', CLASS='citation',
                                        frame="void", rules="none"))
-        self.body.append('<colgroup><col class="label" .><col .><end colgroup>\n'
-                         '<col .>\n'
-                         '<tbody valign="top">\n'
-                         '<tr>')
+        self.body.append('@CurveBox paint { red } { colgroup }@CurveBox paint { red } { col class="label" "/" }@CurveBox paint { red } { col "/" }@CurveBox paint { red } { "/" colgroup }\n'
+                         '@CurveBox paint { red } { col "/" }\n'
+                         '@CurveBox paint { red } { tbody valign="top" }\n'
+                         '@CurveBox paint { red } { tr }')
         self.footnote_backrefs(node)
 
     def depart_citation(self, node):
-        self.body.append('<end td><end tr>\n'
-                         '<end tbody>\n<end table>\n')
+        self.body.append('@CurveBox paint { red } { "/" td }@CurveBox paint { red } { "/" tr }\n'
+                         '@CurveBox paint { red } { "/" tbody }\n@CurveBox paint { red } { "/" table }\n')
 
     def visit_citation_reference(self, node):
         href = ''
@@ -330,14 +331,14 @@ class LoutTranslator(nodes.NodeVisitor):
                                        CLASS='citation-reference'))
 
     def depart_citation_reference(self, node):
-        self.body.append(']<end a>')
+        self.body.append(']@CurveBox paint { red } { "/" a }')
 
     def visit_classifier(self, node):
-        self.body.append(' <span class="classifier-delimiter">:<end span> ')
+        self.body.append(' @CurveBox paint { red } { span class="classifier-delimiter" }:@CurveBox paint { red } { "/" span } ')
         self.body.append(self.starttag(node, 'span', '', CLASS='classifier'))
 
     def depart_classifier(self, node):
-        self.body.append('<end span>')
+        self.body.append('@CurveBox paint { red } { "/" span }')
 
     def visit_colspec(self, node):
         pass
@@ -383,20 +384,20 @@ class LoutTranslator(nodes.NodeVisitor):
         pass
 
     def visit_definition(self, node):
-        self.body.append('<end dt>\n')
+        self.body.append('@CurveBox paint { red } { "/" dt }\n')
         self.body.append(self.starttag(node, 'dd', ''))
         if len(node):
             node[0].set_class('first')
             node[-1].set_class('last')
 
     def depart_definition(self, node):
-        self.body.append('<end dd>\n')
+        self.body.append('@CurveBox paint { red } { "/" dd }\n')
 
     def visit_definition_list(self, node):
         self.body.append(self.starttag(node, 'dl'))
 
     def depart_definition_list(self, node):
-        self.body.append('<end dl>\n')
+        self.body.append('@CurveBox paint { red } { "/" dl }\n')
 
     def visit_definition_list_item(self, node):
         pass
@@ -411,7 +412,7 @@ class LoutTranslator(nodes.NodeVisitor):
             node[-1].set_class('last')
 
     def depart_description(self, node):
-        self.body.append('<end td>')
+        self.body.append('@CurveBox paint { red } { "/" td }')
 
     def visit_docinfo(self, node):
         pass
@@ -422,7 +423,7 @@ class LoutTranslator(nodes.NodeVisitor):
     def visit_docinfo_item(self, node, name, meta=1):
         raise nodes.SkipNode
         self.body.append(self.starttag(node, 'tr', ''))
-        self.body.append('<th class="docinfo-name">%s:<end th>\n<td>'
+        self.body.append('@CurveBox paint { red } { th class="docinfo-name" }%s:@CurveBox paint { red } { "/" th }\n@CurveBox paint { red } { td }'
                          % self.language.labels[name])
         if len(node):
             if isinstance(node[0], nodes.Element):
@@ -432,13 +433,13 @@ class LoutTranslator(nodes.NodeVisitor):
 
     def depart_docinfo_item(self):
         return
-        self.body.append('<end td><end tr>\n')
+        self.body.append('@CurveBox paint { red } { "/" td }@CurveBox paint { red } { "/" tr }\n')
 
     def visit_doctest_block(self, node):
         self.body.append(self.starttag(node, 'pre', CLASS='doctest-block'))
 
     def depart_doctest_block(self, node):
-        self.body.append('\n<end pre>\n')
+        self.body.append('\n@CurveBox paint { red } { "/" pre }\n')
 
     def visit_document(self, node):
         if self.doctype == 'report':
@@ -511,7 +512,7 @@ class LoutTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'ol', **atts))
 
     def depart_enumerated_list(self, node):
-        self.body.append('<end ol>\n')
+        self.body.append('@CurveBox paint { red } { "/" ol }\n')
 
     def visit_error(self, node):
         self.visit_admonition(node, 'error')
@@ -523,7 +524,7 @@ class LoutTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'tr', '', CLASS='field'))
 
     def depart_field(self, node):
-        self.body.append('<end tr>\n')
+        self.body.append('@CurveBox paint { red } { "/" tr }\n')
 
     def visit_field_body(self, node):
         self.body.append(self.starttag(node, 'td', '', CLASS='field-body'))
@@ -532,17 +533,17 @@ class LoutTranslator(nodes.NodeVisitor):
             node[-1].set_class('last')
 
     def depart_field_body(self, node):
-        self.body.append('<end td>\n')
+        self.body.append('@CurveBox paint { red } { "/" td }\n')
 
     def visit_field_list(self, node):
         self.body.append(self.starttag(node, 'table', frame='void',
                                        rules='none', CLASS='field-list'))
-        self.body.append('<col class="field-name" .>\n'
-                         '<col class="field-body" .>\n'
-                         '<tbody valign="top">\n')
+        self.body.append('@CurveBox paint { red } { col class="field-name" "/" }\n'
+                         '@CurveBox paint { red } { col class="field-body" "/" }\n'
+                         '@CurveBox paint { red } { tbody valign="top" }\n')
 
     def depart_field_list(self, node):
-        self.body.append('<end tbody>\n<end table>\n')
+        self.body.append('@CurveBox paint { red } { "/" tbody }\n@CurveBox paint { red } { "/" table }\n')
 
     def visit_field_name(self, node):
         atts = {}
@@ -552,7 +553,7 @@ class LoutTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'th', '', **atts))
 
     def depart_field_name(self, node):
-        self.body.append(':<end th>')
+        self.body.append(':@CurveBox paint { red } { "/" th }')
 
     def visit_figure(self, node):
         atts = {'class': 'figure'}
@@ -561,24 +562,24 @@ class LoutTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'div', **atts))
 
     def depart_figure(self, node):
-        self.body.append('<end div>\n')
+        self.body.append('@CurveBox paint { red } { "/" div }\n')
 
     def visit_footer(self, node):
         pass
 
     def depart_footer(self, node):
-        footer = (['<hr class="footer" .>\n',
+        footer = (['@CurveBox paint { red } { hr class="footer" "/" }\n',
                    self.starttag(node, 'div', CLASS='footer')]
-                  + self.body[start:] + ['<end div>\n'])
+                  + self.body[start:] + ['@CurveBox paint { red } { "/" div }\n'])
         self.body_suffix[:0] = footer
         del self.body[start:]
 
     def visit_footnote(self, node):
         self.body.append(self.starttag(node, 'table', CLASS='footnote',
                                        frame="void", rules="none"))
-        self.body.append('<colgroup><col class="label" .><col .><end colgroup>\n'
-                         '<tbody valign="top">\n'
-                         '<tr>')
+        self.body.append('@CurveBox paint { red } { colgroup }@CurveBox paint { red } { col class="label" "/" }@CurveBox paint { red } { col "/" }@CurveBox paint { red } { "/" colgroup }\n'
+                         '@CurveBox paint { red } { tbody valign="top" }\n'
+                         '@CurveBox paint { red } { tr }')
         self.footnote_backrefs(node)
 
     def footnote_backrefs(self, node):
@@ -590,13 +591,13 @@ class LoutTranslator(nodes.NodeVisitor):
                 i = 1
                 backlinks = []
                 for backref in backrefs:
-                    backlinks.append('<a class="fn-backref" href="#%s">%s<end a>'
+                    backlinks.append('@CurveBox paint { red } { a class="fn-backref" href="#%s" }%s@CurveBox paint { red } { "/" a }'
                                      % (backref, i))
                     i += 1
 
     def depart_footnote(self, node):
-        self.body.append('<end td><end tr>\n'
-                         '<end tbody>\n<end table>\n')
+        self.body.append('@CurveBox paint { red } { "/" td }@CurveBox paint { red } { "/" tr }\n'
+                         '@CurveBox paint { red } { "/" tbody }\n@CurveBox paint { red } { "/" table }\n')
 
     def visit_footnote_reference(self, node):
         href = ''
@@ -608,7 +609,7 @@ class LoutTranslator(nodes.NodeVisitor):
         if format == 'brackets':
             suffix = '['
         elif format == 'superscript':
-            suffix = '<sup>'
+            suffix = '@CurveBox paint { red } { sup }'
         else:                           # shouldn't happen
             suffix = '???'
             self.content.append('???')
@@ -630,7 +631,7 @@ class LoutTranslator(nodes.NodeVisitor):
     def depart_header(self, node):
         self.body_prefix.append(self.starttag(node, 'div', CLASS='header'))
         self.body_prefix.extend(self.body[start:])
-        self.body_prefix.append('<hr .>\n<end div>\n')
+        self.body_prefix.append('@CurveBox paint { red } { hr "/" }\n@CurveBox paint { red } { "/" div }\n')
         del self.body[start:]
 
     def visit_hint(self, node):
@@ -651,10 +652,10 @@ class LoutTranslator(nodes.NodeVisitor):
             pass
         else:
             if atts.has_key('align'):
-                self.body.append('<p align="%s">' %
+                self.body.append('@CurveBox paint { red } { p align="%s" }' %
                                  (self.attval(atts['align'],)))
             else:
-                self.body.append('<p>')
+                self.body.append('@CurveBox paint { red } { p }')
         self.body.append(self.emptytag(node, 'img', '', **atts))
 
     def depart_image(self, node):
@@ -670,7 +671,7 @@ class LoutTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'span', ''))
 
     def depart_inline(self, node):
-        self.body.append('<end span>')
+        self.body.append('@CurveBox paint { red } { "/" span }')
 
     def visit_label(self, node):
         pass
@@ -682,13 +683,13 @@ class LoutTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'div', CLASS='legend'))
 
     def depart_legend(self, node):
-        self.body.append('<end div>\n')
+        self.body.append('@CurveBox paint { red } { "/" div }\n')
 
     def visit_line_block(self, node):
         self.body.append(self.starttag(node, 'pre', CLASS='line-block'))
 
     def depart_line_block(self, node):
-        self.body.append('\n<end pre>\n')
+        self.body.append('\n@CurveBox paint { red } { "/" pre }\n')
 
     def visit_list_item(self, node):
         self.body.append(self.starttag(node, 'li', ''))
@@ -696,7 +697,7 @@ class LoutTranslator(nodes.NodeVisitor):
             node[0].set_class('first')
 
     def depart_list_item(self, node):
-        self.body.append('<end li>\n')
+        self.body.append('@CurveBox paint { red } { "/" li }\n')
 
     def visit_literal(self, node):
         """Process text to prevent tokens from wrapping."""
@@ -705,7 +706,7 @@ class LoutTranslator(nodes.NodeVisitor):
         for token in self.words_and_spaces.findall(text):
             if token.strip():
                 # Protect text like "--an-option" from bad line wrapping:
-                self.body.append('<span class="pre">%s<end span>'
+                self.body.append('@CurveBox paint { red } { span class="pre" }%s@CurveBox paint { red } { "/" span }'
                                  % self.encode(token))
             elif token in ('\n', ' '):
                 # Allow breaks at whitespace:
@@ -713,7 +714,7 @@ class LoutTranslator(nodes.NodeVisitor):
             else:
                 # Protect runs of multiple spaces; the last space can wrap:
                 self.body.append('&nbsp;' * (len(token) - 1) + ' ')
-        self.body.append('<end tt>')
+        self.body.append('@CurveBox paint { red } { "/" tt }')
         # Content already processed:
         raise nodes.SkipNode
 
@@ -721,7 +722,7 @@ class LoutTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'pre', CLASS='literal-block'))
 
     def depart_literal_block(self, node):
-        self.body.append('\n<end pre>\n')
+        self.body.append('\n@CurveBox paint { red } { "/" pre }\n')
 
     def visit_meta(self, node):
         pass
@@ -746,40 +747,40 @@ class LoutTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'var', ''))
 
     def depart_option_argument(self, node):
-        self.body.append('<end var>')
+        self.body.append('@CurveBox paint { red } { "/" var }')
 
     def visit_option_group(self, node):
         atts = {}
         if len(node.astext()) > 14:
             atts['colspan'] = 2
         self.body.append(self.starttag(node, 'td', **atts))
-        self.body.append('<kbd>')
+        self.body.append('@CurveBox paint { red } { kbd }')
 
     def depart_option_group(self, node):
-        self.body.append('<end kbd><end td>\n')
+        self.body.append('@CurveBox paint { red } { "/" kbd }@CurveBox paint { red } { "/" td }\n')
 
     def visit_option_list(self, node):
         self.body.append(
               self.starttag(node, 'table', CLASS='option-list',
                             frame="void", rules="none"))
-        self.body.append('<col class="option" .>\n'
-                         '<col class="description" .>\n'
-                         '<tbody valign="top">\n')
+        self.body.append('@CurveBox paint { red } { col class="option" "/" }\n'
+                         '@CurveBox paint { red } { col class="description" "/" }\n'
+                         '@CurveBox paint { red } { tbody valign="top" }\n')
 
     def depart_option_list(self, node):
-        self.body.append('<end tbody>\n<end table>\n')
+        self.body.append('@CurveBox paint { red } { "/" tbody }\n@CurveBox paint { red } { "/" table }\n')
 
     def visit_option_list_item(self, node):
         self.body.append(self.starttag(node, 'tr', ''))
 
     def depart_option_list_item(self, node):
-        self.body.append('<end tr>\n')
+        self.body.append('@CurveBox paint { red } { "/" tr }\n')
 
     def visit_option_string(self, node):
         self.body.append(self.starttag(node, 'span', '', CLASS='option'))
 
     def depart_option_string(self, node):
-        self.body.append('<end span>')
+        self.body.append('@CurveBox paint { red } { "/" span }')
 
     def visit_organization(self, node):
         self.visit_docinfo_item(node, 'organization')
@@ -795,12 +796,12 @@ class LoutTranslator(nodes.NodeVisitor):
 
     def visit_problematic(self, node):
         if node.hasattr('refid'):
-            self.body.append('<a href="#%s" name="%s">' % (node['refid'],
+            self.body.append('@CurveBox paint { red } { a href="#%s" name="%s" }' % (node['refid'],
                                                            node['id']))
         self.body.append(self.starttag(node, 'span', '', CLASS='problematic'))
 
     def depart_problematic(self, node):
-        self.body.append('<end span>')
+        self.body.append('@CurveBox paint { red } { "/" span }')
 
     def visit_raw(self, node):
         if node.get('format') == 'lout':
@@ -819,7 +820,7 @@ class LoutTranslator(nodes.NodeVisitor):
                                        CLASS='reference'))
 
     def depart_reference(self, node):
-        self.body.append('<end a>')
+        self.body.append('@CurveBox paint { red } { "/" a }')
 
     def visit_revision(self, node):
         self.visit_docinfo_item(node, 'revision', meta=None)
@@ -831,13 +832,13 @@ class LoutTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'tr', ''))
 
     def depart_row(self, node):
-        self.body.append('<end tr>\n')
+        self.body.append('@CurveBox paint { red } { "/" tr }\n')
 
     def visit_rubric(self, node):
         self.body.append(self.starttag(node, 'p', '', CLASS='rubric'))
 
     def depart_rubric(self, node):
-        self.body.append('<end p>\n')
+        self.body.append('@CurveBox paint { red } { "/" p }\n')
 
     def visit_section(self, node):
         #print 'visit section level', self.section_level, node.__dict__
@@ -961,7 +962,7 @@ class LoutTranslator(nodes.NodeVisitor):
         self.in_sidebar = 1
 
     def depart_sidebar(self, node):
-        self.body.append('<end div>\n')
+        self.body.append('@CurveBox paint { red } { "/" div }\n')
         self.in_sidebar = None
 
     def visit_status(self, node):
@@ -980,7 +981,7 @@ class LoutTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'sub', ''))
 
     def depart_subscript(self, node):
-        self.body.append('<end sub>')
+        self.body.append('@CurveBox paint { red } { "/" sub }')
 
     def visit_substitution_definition(self, node):
         """Internal only."""
@@ -1003,14 +1004,14 @@ class LoutTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'sup', ''))
 
     def depart_superscript(self, node):
-        self.body.append('<end sup>')
+        self.body.append('@CurveBox paint { red } { "/" sup }')
 
     def visit_system_message(self, node):
         if node['level'] < self.document.reporter['writer'].report_level:
             # Level is too low to display:
             raise nodes.SkipNode
         self.body.append(self.starttag(node, 'div', CLASS='system-message'))
-        self.body.append('<p class="system-message-title">')
+        #self.body.append('@CurveBox paint { red } { p class="system-message-title" }')
         attr = {}
         backref_text = ''
         if node.hasattr('id'):
@@ -1018,15 +1019,15 @@ class LoutTranslator(nodes.NodeVisitor):
         if node.hasattr('backrefs'):
             backrefs = node['backrefs']
             if len(backrefs) == 1:
-                backref_text = ('; <em><a href="#%s">backlink<end a><end em>'
+                backref_text = ('; @CurveBox paint { red } { : backlink }'
                                 % backrefs[0])
             else:
                 i = 1
                 backlinks = []
                 for backref in backrefs:
-                    backlinks.append('<a href="#%s">%s<end a>' % (backref, i))
+                    backlinks.append('@CurveBox paint { red } { -> %s %s }' % (backref, i))
                     i += 1
-                backref_text = ('; <em>backlinks: %s<end em>'
+                backref_text = ('; @CurveBox paint { red } { -> %s }'
                                 % ', '.join(backlinks))
         if node.hasattr('line'):
             line = ', line %s' % node['line']
@@ -1034,15 +1035,15 @@ class LoutTranslator(nodes.NodeVisitor):
             line = ''
         if attr:
             a_start = self.starttag({}, 'a', '', **attr)
-            a_end = '<end a>'
+            a_end = '@CurveBox paint { red } { "/" a }'
         else:
             a_start = a_end = ''
-        self.body.append('System Message: %s%s/%s%s (<tt>%s<end tt>%s)%s<end p>\n'
+        self.body.append('System Message: %s%s/%s%s (%s %s)%s\n'
                          % (a_start, node['type'], node['level'], a_end,
                             self.encode(node['source']), line, backref_text))
 
     def depart_system_message(self, node):
-        self.body.append('<end div>\n')
+        self.body.append('@CurveBox paint { red } { "/" div }\n')
 
     def visit_table(self, node):
         self.body.append(
@@ -1051,7 +1052,7 @@ class LoutTranslator(nodes.NodeVisitor):
               self.starttag(node, 'table', CLASS="table", border=None))
 
     def depart_table(self, node):
-        self.body.append('<end table>\n')
+        self.body.append('@CurveBox paint { red } { "/" table }\n')
 
     def visit_target(self, node):
         if not (node.has_key('refuri') or node.has_key('refid')
@@ -1065,7 +1066,7 @@ class LoutTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'tbody', valign='top'))
 
     def depart_tbody(self, node):
-        self.body.append('<end tbody>\n')
+        self.body.append('@CurveBox paint { red } { "/" tbody }\n')
 
     def visit_term(self, node):
         self.body.append(self.starttag(node, 'dt', ''))
@@ -1089,7 +1090,7 @@ class LoutTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'thead', valign='bottom'))
 
     def depart_thead(self, node):
-        self.body.append('<end thead>\n')
+        self.body.append('@CurveBox paint { red } { "/" thead }\n')
 
     def visit_tip(self, node):
         self.visit_admonition(node, 'tip')
@@ -1132,7 +1133,7 @@ class LoutTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'cite', ''))
 
     def depart_title_reference(self, node):
-        self.body.append('<end cite>')
+        self.body.append('@CurveBox paint { red } { "/" cite }')
 
     def visit_topic(self, node):
         self.topic_class = node.get('class')
@@ -1142,7 +1143,7 @@ class LoutTranslator(nodes.NodeVisitor):
 
     def depart_topic(self, node):
         if self.topic_class != 'contents':
-            self.body.append('<end div>\n')
+            self.body.append('@CurveBox paint { red } { "/" div }\n')
         self.topic_class = ''
 
     def visit_transition(self, node):
