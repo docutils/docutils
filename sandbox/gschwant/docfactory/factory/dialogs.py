@@ -1,7 +1,7 @@
 """
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
-:version: 0.2.6
+:version: 0.3
 """
 
 from   wxPython.lib.throbber         import Throbber
@@ -59,7 +59,7 @@ class aboutDlg(wxDialog):
         #text.SetFont(wxFont(20, wxSWISS, wxNORMAL, wxBOLD, false))
 
         text = wxStaticText(self , -1,
-                            '>>> release:           0.2.6',
+                            '>>> release:           0.3',
                             wxPoint(9, 50))
         text = wxStaticText(self, -1,
                             '>>> manufactured by:   gunnar schwant',
@@ -99,156 +99,50 @@ class projectSettingsDlg(wxDialog):
 
         self.project = project
         self.configfile = os.path.join(project.directory, 'docutils.conf')
-        self.config = self.loadconf()
         self.invalid_names = invalid_names
 
-        #--------------------------------------------------
-        # Create a Notebook
-        tID = wxNewId()
-        self.nb = wxNotebook(self, tID, style=wxCLIP_CHILDREN)
-        #EVT_NOTEBOOK_PAGE_CHANGED(self.nb, tID, self.on_notebook_page_changed)
-
-        #--------------------------------------------------
-        # DocFactory Page
-        self.df = wxPanel(self.nb, -1)
-
         # Help Button
-        wxContextHelpButton(self.df, pos = wxPoint(370, 8),
+        wxContextHelpButton(self, pos = wxPoint(370, 8),
                             size = wxSize(23, 23))
 
         # Output Directory
-        wxStaticText(self.df, -1, 'Output-Directory', wxPoint(8, 42))
+        wxStaticText(self, -1, 'Output-Directory', wxPoint(8, 42))
         exitID = wxNewId()
-        self.dirCtrl    = wxTextCtrl(self.df, exitID,
+        self.dirCtrl    = wxTextCtrl(self, exitID,
                                      pos = wxPoint(96, 40),
                                      size = wxSize(240, 21))
         self.dirCtrl.SetHelpText('This is the default ' + \
                                  'directory for output-files.')
         exitID = wxNewId()
-        self.btnSelDir  = wxButton(self.df, exitID, 'Select',
+        self.btnSelDir  = wxButton(self, exitID, 'Select',
                                    pos = wxPoint(344, 40),
                                    size = wxSize(75, 23))
         EVT_BUTTON(self, exitID, self.onBtnSelDir)
 
         # Title
-        wxStaticText(self.df, -1, 'Title', wxPoint(8, 74))
+        wxStaticText(self, -1, 'Title', wxPoint(8, 74))
         exitID = wxNewId()
-        self.nameCtrl = wxTextCtrl(self.df, exitID,
+        self.nameCtrl = wxTextCtrl(self, exitID,
                                    pos = wxPoint(96, 72),
                                    size = wxSize(240, 21),
                                    validator = customValidator(PROJECT_NAME))
         self.nameCtrl.SetHelpText('Enter a title for your project here.')
 
-        #--------------------------------------------------
-        # Docutils Page
-        self.du = wxPanel(self.nb, -1)
-
-        # Help Button
-        wxContextHelpButton(self.du, pos = wxPoint(370, 8),
-                            size = wxSize(23, 23))        
-
-        # Language Code
-        wxStaticText(self.du, -1, 'Language-Code', wxPoint(8, 10))
-        exitID = wxNewId()
-        if not self.config.options['language_code'] in language_codes:
-            language_codes.append(self.config.options['language_code'])
-        language_codes.sort()
-        self.languageCodeCtrl = wxChoice(self.du, exitID, pos = wxPoint(97, 8),
-                                         choices = language_codes)
-        self.languageCodeCtrl.SetStringSelection(self.config.options['language_code'])
-        self.languageCodeCtrl.SetHelpText('Language code of your documents.')
-        EVT_CHOICE(self, exitID, self.onChoiceLanguageCode)
-        
-        # Stylesheet
-        wxStaticText(self.du, -1, 'Stylesheet', wxPoint(8, 42))
-        exitID = wxNewId()
-        self.styCtrl    = wxTextCtrl(self.du, exitID,
-                                     pos = wxPoint(96, 40),
-                                     size = wxSize(240, 21))
-        self.styCtrl.SetHelpText('Path to stylesheet.')
-        exitID = wxNewId()
-        self.btnSelSty  = wxButton(self.du, exitID, 'Select',
-                                   pos = wxPoint(344, 40),
-                                   size = wxSize(75, 23), style = 0)
-        EVT_BUTTON(self, exitID, self.onBtnSelSty)
-
-        # Output Encoding
-        wxStaticText(self.du, -1, 'Output-Encoding', wxPoint(8, 74))
-        exitID = wxNewId()
-        self.outencCtrl    = wxTextCtrl(self.du, exitID,
-                                        self.config.options['output_encoding'],
-                                        pos = wxPoint(96, 72),
-                                        size = wxSize(115, 21))
-        self.outencCtrl.SetHelpText('Encoding of output.')
-
-        # Datestamp
-        wxStaticText(self.du, -1, 'Datestamp', wxPoint(8, 106))
-        exitID = wxNewId()
-        self.datestampCtrl = wxTextCtrl(self.du, exitID,
-                                        pos = wxPoint(96, 104),
-                                        size = wxSize(115, 21))
-        self.datestampCtrl.SetHelpText('Include a time/datestamp in ' + \
-                                       'the document footer. Contains ' + \
-                                       'a format string for time.strftime.')
-
-        # TOC-Backlinks
-        exitID = wxNewId()
-        self.tocliCtrl = wxRadioBox(self.du, exitID, 'TOC-Backlinks',
-                                    wxPoint(224, 79), wxDefaultSize,
-                                    ['entry','top','none'],
-                                    3, wxRA_SPECIFY_COLS)
-        self.tocliCtrl.SetHelpText('Enable backlinks from section ' + \
-                                   'titles to table of contents ' + \
-                                   'entries ("entry"), to the top ' + \
-                                   'of the TOC ("top"), or disable ("none").')
-
-        # Footnote References
-        exitID = wxNewId()
-        self.footrefCtrl = wxRadioBox(self.du, exitID,
-                                      'Footnote References',
-                                      wxPoint(224, 131),
-                                      wxDefaultSize,
-                                      ['superscript','brackets'],
-                                      1, wxRA_SPECIFY_COLS)
-        self.footrefCtrl.SetHelpText('Format for footnote references.')
-
-        # More Options via Checklistbox
-        optionList = ['Compact Lists',
-                      'Embed Stylesheet',
-                      'Footnote-Backlinks',
-                      'Generator',
-                      'Source-Link',
-                      'Use LaTeX-TOC'
-                      ]
-        exitID = wxNewId()
-        self.optionsCtrl = wxCheckListBox(self.du, exitID, wxPoint(50, 136),
-                                          wxSize(161, 90), optionList)
-        self.optionsCtrl.SetHelpText('Set more Docutils-options here.')
 
         #--------------------------------------------------
         # Fill controls with initial values
         self.init_ctrls()
         
         #--------------------------------------------------
-        # Sizing of Notebook
-        self.df.Fit()
-        self.du.Fit()
-        size_of_df = self.df.GetSize()
-        size_of_du = self.du.GetSize()
-        self.nb.SetSize(wxSize(max(size_of_df[0],size_of_du[0])+15,
-                         max(size_of_df[1],size_of_du[1])+15))
-
-        #--------------------------------------------------
-        # Add pages to notebook
-        self.nb.AddPage(self.df, 'DocFactory')
-        self.nb.AddPage(self.du, 'Docutils')
-        self.nb.SetSelection(0)
-
-        #--------------------------------------------------
-        # OK- and Cancel-Buttons
-        size_of_nb = self.nb.GetSize()
-        ok_position = wxPoint((size_of_nb[0]/2)-80,size_of_nb[1]+10)
-        cancel_position = wxPoint((size_of_nb[0]/2)+5,size_of_nb[1]+10)
+        # docutils.conf-, OK- and Cancel-Buttons
+        du_position = wxPoint(50,110)
+        ok_position = wxPoint(260,110)
+        cancel_position = wxPoint(344,110)
+        exitID = wxNewId()
+        self.du         = wxButton(self, exitID, 'Edit docutils.conf',
+                                   pos = du_position,
+                                   size = wxSize(-1, 23))
+        EVT_BUTTON(self, exitID, self.onBtnDocutils)
         exitID = wxNewId()
         self.ok         = wxButton(self, exitID, 'OK',
                                    pos = ok_position,
@@ -274,42 +168,15 @@ class projectSettingsDlg(wxDialog):
             newconfig = os.path.join(directory, 'docutils.conf')
             if newconfig != self.configfile:
                 self.configfile = newconfig
-                self.config = self.loadconf()
                 self.init_ctrls()
         dlg.Destroy()
-
-    def onBtnSelSty(self, event):
-        dir = self.dirCtrl.GetValue()
-        if not os.path.isdir(dir):
-            customMsgBox(self, 'Invalid Output-Directory.', 'wakeup')
-        else:
-            wildcard = 'Stylesheet-Files (*.css, *.tex)|*.css;*.tex|' \
-                       'All files (*.*)|*.*'
-            dlg = wxFileDialog(self, 'Choose a stylesheet',
-                               dir, '', wildcard,
-                               wxOPEN|wxFILE_MUST_EXIST)
-            if dlg.ShowModal() == wxID_OK:
-                stylesheetpath = relative_path(self.configfile,
-                                               dlg.GetPath())
-                self.styCtrl.SetValue(stylesheetpath)
-            dlg.Destroy()
-
-    def onChoiceLanguageCode(self, event):
-        self.config.options['language_code'] = event.GetString()
-        
+      
     def getValues(self):
         return(self.nameCtrl.GetValue(), self.dirCtrl.GetValue())
 
     def onBtnOk(self, event):
-
         dir = self.dirCtrl.GetValue()
         name = self.nameCtrl.GetValue()
-        configfile = os.path.join(dir, 'docutils.conf')
-        cfg = ConfigParser.ConfigParser()
-        if os.path.isfile(configfile):
-            cfg.read(configfile)
-        docfactory_section = 'docfactory_project: %s' % name
-            
         if not os.path.isdir(dir):
             customMsgBox(self, 'Invalid Output-Directory.', 'wakeup')
         elif name == '':
@@ -319,145 +186,18 @@ class projectSettingsDlg(wxDialog):
                          'Invalid Project-Title. Please try another title.',
                          'wakeup')
         else:
-            if self.optionsCtrl.IsChecked(0):
-                self.config.options['compact_lists']      = '1'
-            else:
-                self.config.options['compact_lists']      = ''
-            if self.optionsCtrl.IsChecked(1):
-                self.config.options['embed_stylesheet']   = '1'
-            else:
-                self.config.options['embed_stylesheet']   = ''
-            if self.optionsCtrl.IsChecked(2):
-                self.config.options['footnote_backlinks'] = '1'
-            else:
-                self.config.options['footnote_backlinks'] = ''
-            if self.optionsCtrl.IsChecked(3):
-                self.config.options['generator']          = '1'
-            else:
-                self.config.options['generator']          = ''
-            if self.optionsCtrl.IsChecked(4):
-                self.config.options['source_link']        = '1'
-            else:
-                self.config.options['source_link']        = ''
-            if self.optionsCtrl.IsChecked(5):
-                self.config.options['use_latex_toc']      = '1'
-            else:
-                self.config.options['use_latex_toc']      = ''
+            self.EndModal(event.GetId())
 
-            self.config.options['datestamp'] = self.datestampCtrl.GetValue()
-            self.config.options['stylesheet'] = self.styCtrl.GetValue()
-
-            stylesheetpath=os.path.abspath(os.path.join(dir,self.config.options['stylesheet']))
-            if not os.path.exists(stylesheetpath):
-                styles = stylesheets.stylesheets.keys()
-                styles.sort()
-                dlg = wxSingleChoiceDialog(self,
-                                           'The stylesheet does not exist.' \
-                                           '\nPlease select a style to create it' \
-                                           '\nor press "Cancel" to abort.',
-                                           'Create stylesheet?',
-                                           styles, wxOK|wxCANCEL)
-                dlg.Centre()
-                if dlg.ShowModal() == wxID_OK:
-                    f = open(stylesheetpath, 'wt')
-                    f.write(stylesheets.stylesheets[dlg.GetStringSelection()])
-                    f.close()
-                dlg.Destroy()
-
-            self.config.options['output_encoding'] = self.outencCtrl.GetValue()
-           
-            self.config.options['footnote_references'] = self.footrefCtrl.GetStringSelection()
-            self.config.options['toc_backlinks'] = self.tocliCtrl.GetStringSelection()
-            
-            self.saveconf()
-            self.Show(0)
+    def onBtnDocutils(self, event):
+        if os.path.isdir(self.dirCtrl.GetValue()):
+            dlg = configEditDlg(self, self.configfile)
+            dlg.ShowModal()
+        else:    
+            customMsgBox(self, 'Invalid Output-Directory.', 'wakeup')
 
     def init_ctrls(self):
         self.nameCtrl.SetValue(self.project.name)
         self.dirCtrl.SetValue(self.project.directory)
-        self.styCtrl.SetValue(self.config.options['stylesheet'])
-        if self.config.options['datestamp'] != None:
-            ds = self.config.options['datestamp']
-        else:
-            ds = ''
-        self.datestampCtrl.SetValue(ds)
-        self.outencCtrl.SetValue(self.config.options['output_encoding'])
-        self.tocliCtrl.SetStringSelection(self.config.options['toc_backlinks'])
-        self.footrefCtrl.SetStringSelection(self.config.options['footnote_references'])
-
-        if self.config.options['compact_lists'] == '1':
-            self.optionsCtrl.Check(0, TRUE)
-        else:
-            self.optionsCtrl.Check(0, FALSE)
-
-        if self.config.options['embed_stylesheet'] == '1':
-            self.optionsCtrl.Check(1, TRUE)
-        else:
-            self.optionsCtrl.Check(1, FALSE)
-
-        if self.config.options['footnote_backlinks'] == '1':
-            self.optionsCtrl.Check(2, TRUE)
-        else:
-            self.optionsCtrl.Check(2, FALSE)
-
-        if self.config.options['generator'] == '1':
-            self.optionsCtrl.Check(3, TRUE)
-        else:
-            self.optionsCtrl.Check(3, FALSE)
-                
-        if self.config.options['source_link'] == '1':
-            self.optionsCtrl.Check(4, TRUE)
-        else:
-            self.optionsCtrl.Check(4, FALSE)
-
-        if self.config.options['use_latex_toc'] == '1':
-            self.optionsCtrl.Check(5, TRUE)
-        else:
-            self.optionsCtrl.Check(5, FALSE)
-
-    def loadconf(self):
-        config = Config()
-        if os.path.isfile(self.configfile):
-            cfg = ConfigParser.ConfigParser()
-            cfg.read(self.configfile)
-            for key in config.options.keys():
-                if cfg.has_option('options', key):
-                    config.options[key] = cfg.get('options', key)
-        return config
-
-    def saveconf(self):
-        cfg = ConfigParser.ConfigParser()
-        if os.path.isfile(self.configfile):
-            cfg.read(self.configfile)
-        if not cfg.has_section('options'):
-            cfg.add_section('options')
-        for key in self.config.options.keys():
-            cfg.set('options', key, self.config.options[key])
-        old_section = 'docfactory_project: %s' % self.project.name
-        new_section = 'docfactory_project: %s' % \
-                      self.nameCtrl.GetValue()
-        if old_section != new_section:
-            if cfg.has_section(old_section):
-                cfg.remove_section(old_section)
-        f = open(self.configfile, 'wt')
-        cfg.write(f)
-        f.close()
-
-class Config:
-    def __init__(self):
-        self.options = {}
-        self.options['compact_lists']       = '1'
-        self.options['datestamp']           = ''
-        self.options['embed_stylesheet']    = ''
-        self.options['footnote_backlinks']  = '1'
-        self.options['footnote_references'] = 'superscript'
-        self.options['generator']           = ''
-        self.options['language_code']       = 'en'
-        self.options['output_encoding']     = 'UTF-8'
-        self.options['source_link']         = ''
-        self.options['stylesheet']          = ''
-        self.options['toc_backlinks']       = 'entry'
-        self.options['use_latex_toc']       = '1'
 
 #---------------------------------------------------------------------------
 
@@ -750,6 +490,197 @@ class toolsDlg(wxDialog):
             tool = dlg.get_values()
             self.add_tool(tool[0],tool[1],tool[2])
         dlg.Destroy()
+
+#---------------------------------------------------------------------------
+
+class configEditDlg(wxDialog):
+
+    def __init__(self, parent, configfile):
+        wxDialog.__init__(self, parent, -1, title = 'docutils.conf')
+        try:
+            self.cfg = ConfigParser.ConfigParser()
+            self.cfg.read(configfile)
+        except:
+            customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
+        if self.cfg.sections() == []:
+            self.cfg.add_section('general')
+            self.cfg.set('general','output_encoding','UTF-8')
+            self.cfg.set('general','generator','1') 
+            self.cfg.set('general','source_link','1') 
+            self.cfg.set('general','datestamp','%Y-%m-%d %H:%M UTC') 
+            self.cfg.add_section('html4css1 writer')
+            self.cfg.set('html4css1 writer','stylesheet_path','')
+        self.configfile = configfile
+        self.currentItem = None
+        btn_size = wxSize(75, 23)
+        exitID = wxNewId()
+        self.list = wxListCtrl(self, exitID,
+                               wxDLG_PNT(self, 26, 10),
+                               wxDLG_SZE(self, 230, 120),
+                               wxLC_REPORT|wxSUNKEN_BORDER|wxLC_SINGLE_SEL|wxLC_HRULES|wxLC_VRULES)
+        self.list.InsertColumn(0, "Section")
+        self.list.InsertColumn(1, "Option")
+        self.list.InsertColumn(2, "Value")
+        EVT_LIST_ITEM_SELECTED(self, exitID, self.on_item_selected)
+        self.update()
+        self.ok         = wxButton(self, wxID_OK, 'OK',
+                                   pos = wxDLG_PNT(self, 105, 135),
+                                   size = btn_size)
+        exitID = wxNewId()
+        bmp = images.getPlusBitmap()
+        mask = wxMaskColour(bmp, wxBLUE)
+        bmp.SetMask(mask)
+        b = wxBitmapButton(self, exitID, bmp, wxDLG_PNT(self, 5, 10),
+                           wxSize(23, 23))
+        b.SetToolTipString("Add entry")
+        EVT_BUTTON(self, exitID, self.on_plus_btn)
+        exitID = wxNewId()
+        bmp = images.getPenBitmap()
+        mask = wxMaskColour(bmp, wxBLUE)
+        bmp.SetMask(mask)
+        b = wxBitmapButton(self, exitID, bmp, wxDLG_PNT(self, 5, 26),
+                           wxSize(23, 23))
+        b.SetToolTipString("Edit entry")
+        EVT_BUTTON(self, exitID, self.on_edit_btn)
+        exitID = wxNewId()
+        bmp = images.getMinusBitmap()
+        mask = wxMaskColour(bmp, wxBLUE)
+        bmp.SetMask(mask)
+        b = wxBitmapButton(self, exitID, bmp, wxDLG_PNT(self, 5, 42),
+                           wxSize(23, 23))
+        b.SetToolTipString("Remove entry")
+        EVT_BUTTON(self, exitID, self.on_minus_btn)
+        self.ok.SetDefault()
+        self.Fit()
+
+    def add(self, section, option, value):
+        go_ahead = 1
+        if self.cfg.has_option(section, option):
+            customMsgBox(self, '%s, %s has already been set.\nUse the edit-' \
+                         'button to change its value.' % (section, option), 'wakeup')
+            go_ahead = 0
+        if go_ahead:
+            if not self.cfg.has_section(section):
+                self.cfg.add_section(section)
+            self.cfg.set(section, option, value)
+            self.update()
+    
+    def colourize_list(self):
+        color = ('Green Yellow', 'Medium Goldenrod')
+        for i in range(self.list.GetItemCount()):
+            item = self.list.GetItem(i)
+            item.SetBackgroundColour(color[i%2])
+            self.list.SetItem(item)
+
+    def get_column_text(self, index, col):
+        item = self.list.GetItem(index, col)
+        return item.GetText()
+
+    def update(self):
+        f = open(self.configfile, 'wt')
+        self.cfg.write(f)
+        f.close()
+        self.list.DeleteAllItems()
+        x = 0
+        for section in self.cfg.sections():
+            for option in self.cfg.options(section):
+                key, data = x, [section, option, self.cfg.get(section, option)]
+                self.list.InsertStringItem(x, str(data[0]))
+                self.list.SetStringItem(x, 1, data[1])
+                self.list.SetStringItem(x, 2, data[2])
+                self.list.SetItemData(x, key)
+                x +=1
+        for i in range(3):
+            self.list.SetColumnWidth(i, wxLIST_AUTOSIZE)
+        self.colourize_list()
+
+    def on_edit_btn(self, event):
+        go_ahead = 1
+        if self.currentItem != None:
+            item = self.currentItem
+        else:
+            go_ahead = 0
+            customMsgBox(self, 'Select an item first.', 'wakeup')
+        if go_ahead:
+            select = [self.list.GetItemText(self.currentItem),
+                      self.get_column_text(self.currentItem, 1),
+                      self.get_column_text(self.currentItem, 2)]
+            dlg = editConfigEntryDlg(self, select)
+            dlg.Centre()
+            if dlg.ShowModal() == wxID_OK:
+                section, option, value = dlg.get_values()
+            else:
+                go_ahead = 0
+        if go_ahead:
+            self.cfg.set(section, option, value)
+            self.update()
+
+    def on_item_selected(self, event):
+        self.currentItem = event.m_itemIndex
+
+    def on_minus_btn(self, event):
+        go_ahead = 1
+        if self.currentItem != None:
+            item = self.currentItem
+        else:
+            go_ahead = 0
+            customMsgBox(self, 'Select an item first.', 'wakeup')
+        if go_ahead:
+            section, option = [self.list.GetItemText(self.currentItem),
+                               self.get_column_text(self.currentItem, 1)]
+            self.cfg.remove_option(section, option)
+            self.update()
+
+    def on_plus_btn(self, event):
+        dlg = editConfigEntryDlg(self)
+        dlg.Centre()
+        if dlg.ShowModal() == wxID_OK:
+            new = dlg.get_values()
+            self.add(new[0],new[1],new[2])
+        dlg.Destroy()
+
+#---------------------------------------------------------------------------
+
+class editConfigEntryDlg(wxDialog):
+
+    def __init__(self, parent, entry=['','','']):
+        wxDialog.__init__(self, parent, -1, title = 'docutils.conf setting')
+        wxStaticText(self, -1, 'Section:', wxPoint(18, 13))
+        self.section = wxTextCtrl(self, -1, pos = wxPoint(70, 10),
+                               size = wxSize(310, -1))
+        wxStaticText(self, -1, 'Option:', wxPoint(18, 45))
+        self.option = wxTextCtrl(self, -1, pos = wxPoint(70, 42),
+                                 size = wxSize(310, -1))
+        wxStaticText(self, -1, 'Value:', wxPoint(18, 77))
+        self.value = wxTextCtrl(self, -1, pos = wxPoint(70, 74),
+                                size = wxSize(310, -1))
+        btn_size = wxSize(75, 23)
+        self.ok         = wxButton(self, wxID_OK, 'OK',
+                                   pos = wxPoint(210-90,110),
+                                   size = btn_size)
+        EVT_BUTTON(self, wxID_OK, self.on_btn_ok)
+        self.cancel     = wxButton(self, wxID_CANCEL, 'Cancel',
+                                   pos = wxPoint(210-5,110),
+                                   size = btn_size)
+        self.section.SetValue(entry[0])
+        self.option.SetValue(entry[1])
+        self.value.SetValue(entry[2])
+        self.ok.SetDefault()
+        self.Fit()
+
+    def get_values(self):
+        return self.section.GetValue(), self.option.GetValue(), self.value.GetValue()
+
+    def on_btn_ok(self, event):
+        go_ahead = 1
+        for ctrl in (self.section, self.option):
+            if ctrl.GetValue() == '':
+                go_ahead = 0
+                break
+        if go_ahead:
+            self.EndModal(event.GetId())
+        else:
+            customMsgBox(self, 'At least section and option have to be filled.', 'wakeup')
 
 #---------------------------------------------------------------------------
 

@@ -178,33 +178,19 @@ Setting up a project
 ~~~~~~~~~~~~~~~~~~~~
 
 To setup a project select "Project -> New".  The **Project Settings** 
-dialog will appear.  It consists of two pages: 
+dialog will appear.  Within this dialog you set the *output-directory*
+and a *title* for your project.  The output-directory is the default
+directory for any output-files, that will be created.
 
-**DocFactory-page**
-  On this page you specify an *output-directory* and a *title* for your 
-  project. The output-directory is the default directory for any 
-  output-files be created.
+If you press the "Edit docutils.conf"-button, DocFactory will display
+a dialog, which allows you to edit the docutils.conf-file, which
+resides in the output-directory.  (If there is no such file in the
+output-directory, DocFactory will create one for you.)  Please have a
+closer look at the Docutils documentation on configuration files, if
+you are not familiar with docutils.conf-files. [3]_
 
-**Docutils-page**
-  As part of your project a Docutils configuration file ``docutils.conf``
-  will be created in the output-directory. (If there is already a 
-  ``docutils.conf`` file in the output-directory this one will be used.) 
-  On the Docutils-page of the "Project Settings" dialog you can set 
-  the values of certain configuration file entries (*stylesheet*, 
-  *output-encoding*, *datestamp*, ...).  Please have a closer look at 
-  the Docutils documentation on configuration file entries to learn about 
-  the effect of these settings. [3]_
-
-Press the "OK"-button to finish the setup.  The project appears as part
+Press the "OK"-buttons to finish the setup.  The project appears as part
 of the tree on the left. 
-
-**A note on stylesheets:** You shouldn't worry about the stylesheet.  When 
-you leave the "Project Settings" dialog DocFactory checks if the stylesheet
-is present.  If the stylesheet can not be found a dialog window will pop up 
-and ask you if you want that DocFactory creates a stylesheet for you.  You 
-will be offered two different styles ("Classic" and "Modern").  Select one 
-and press "OK".
-
 
 Adding files to a project
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -375,9 +361,9 @@ feedback is welcome.*
 .. [1] The latest DocFactory-tarball is available at 
        http://docutils.sf.net/docfactory-snapshot.tgz.
  
-.. [2] http://docutils.sourceforge.net/docs/tools.html#configuration-files
+.. [2] http://docutils.sourceforge.net/docs/config.html
 
-.. [3] http://docutils.sourceforge.net/docs/tools.html#configuration-file-entries
+.. [3] http://docutils.sourceforge.net/docs/config.html
 
 .. [4] The storage file has a ``[docfactory_project: <name of project>]`` 
        section for each project. (``<name of project>`` is replaced by the 
