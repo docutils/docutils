@@ -60,7 +60,7 @@ def make_paths_absolute(dictionary, base_path=None):
     for option in relative_path_options:
         if dictionary.has_key(option) and dictionary[option]:
             dictionary[option] = os.path.normpath(
-                os.path.join(base_path, dictionary[option]))
+                os.path.abspath(os.path.join(base_path, dictionary[option])))
 
 
 class OptionParser(optik.OptionParser):
@@ -237,6 +237,9 @@ class OptionParser(optik.OptionParser):
             destination = args.pop(0)
         if args:
             self.error('Maximum 2 arguments allowed.')
+        if source and source == destination:
+            self.error('Do not specify the same file for both source and '
+                       'destination.  It will clobber the source file.')
         return source, destination
 
 
