@@ -446,6 +446,7 @@ class Element(Node):
             for c in childclass:
                 if isinstance(self.children[index], c):
                     match = 1
+                    break
             if not match:
                 return index
         return None
@@ -506,13 +507,15 @@ class Root: pass
 
 class Titular: pass
 
-class Bibliographic: pass
+class PreDecorative:
+    """Category of Node which may occur before Decorative Nodes."""
 
-
-class PreBibliographic:
+class PreBibliographic(PreDecorative):
     """Category of Node which may occur before Bibliographic Nodes."""
-    pass
 
+class Bibliographic(PreDecorative): pass
+
+class Decorative: pass
 
 class Structural: pass
 
@@ -524,11 +527,8 @@ class Sequential(Body): pass
 
 class Admonition(Body): pass
 
-
 class Special(Body):
     """Special internal body elements."""
-    pass
-
 
 class Part: pass
 
@@ -829,6 +829,15 @@ class copyright(Bibliographic, TextElement): pass
 
 
 # =====================
+#  Decorative Elements
+# =====================
+
+class decoration(Decorative, Element): pass
+class header(Decorative, Element): pass
+class footer(Decorative, Element): pass
+
+
+# =====================
 #  Structural Elements
 # =====================
 
@@ -847,8 +856,6 @@ class topic(Structural, Element):
     inside topics or body elements; you can't have a topic inside a table,
     list, block quote, etc.
     """
-
-    pass
 
 
 class transition(Structural, Element): pass
@@ -1054,14 +1061,14 @@ node_class_names = """
     Text
     attention author authors
     block_quote bullet_list
-    caption caution citation citation_reference classifier colspec
-        comment contact copyright
-    danger date definition definition_list definition_list_item
+    caption caution citation citation_reference classifier colspec comment
+        contact copyright
+    danger date decoration definition definition_list definition_list_item
         description docinfo doctest_block document
     emphasis entry enumerated_list error
-    field field_argument field_body field_list field_name figure
+    field field_argument field_body field_list field_name figure footer
         footnote footnote_reference
-    hint
+    header hint
     image important interpreted
     label legend list_item literal literal_block
     note
@@ -1069,8 +1076,8 @@ node_class_names = """
         option_string organization
     paragraph pending problematic
     raw reference revision row
-    section status strong substitution_definition
-        substitution_reference subtitle system_message
+    section status strong substitution_definition substitution_reference
+        subtitle system_message
     table target tbody term tgroup thead tip title topic transition
     version
     warning""".split()
