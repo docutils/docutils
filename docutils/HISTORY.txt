@@ -70,6 +70,7 @@ Changes Since 0.2
 * tools/pep2html.py:
 
   - Made ``argv`` a parameter to ``main()``.
+  - Added support for "Content-Type:" header & arbitrary PEP formats.
 
 
 Release 0.2 (2002-07-31)
