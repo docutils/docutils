@@ -196,7 +196,7 @@ def unicode_directive(name, arguments, options, content, lineno,
     return element.children
 
 unicode_directive.arguments = (1, 0, 1)
-unicode_comment_pattern = re.compile(r'( |\n|^).. ')
+unicode_comment_pattern = re.compile(r'( |\n|^)\.\. ')
 
 def class_directive(name, arguments, options, content, lineno,
                        content_offset, block_text, state, state_machine):
