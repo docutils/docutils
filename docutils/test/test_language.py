@@ -47,6 +47,7 @@ class LanguageTestSuite(CustomTestSuite):
             if match:
                 languages[match.group(1)] = 1
         del languages[reference_language]
+        # maybe test reference language too: directives can fail.
         self.languages = languages.keys()
 
     def generateTests(self):
@@ -106,6 +107,8 @@ class LanguageTestCase(CustomTestCase):
         for d in module.directives.keys():
             try:
                 func, msg = directives.directive(d, module, None)
+                if not func:
+                    failures += "%s (%s)," % (d, "unknown directive")
             except Exception, error:
                 failures += "%s (%s)," % (d, error)
         if failures:
