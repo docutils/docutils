@@ -9,7 +9,7 @@ Rev. 2002-12-18
 To do
 ~~~~~
 
-* pdfbookmark level 4 (and greater) does not work.
+* pdfbookmark level 4 (and greater) does not work (might be settable but OTOH).
 
 * center subsection{Abstract} gives a latex error here.
   ``! LaTeX Error: Something's wrong--perhaps a missing \item.``
@@ -101,7 +101,8 @@ ATTENTION
 Done
 ~~~~
 
-* sue subsubsection for deeper ones.
+* decrement pdfbookmark levels. now 0 to 3.
+* use subsubsection for deeper ones.
 * all spaces in line-blocks are nonbreakable (~). 	
 * newenvironment optionlist for option-lists.
 * append ":" onto definition list terms.
