@@ -10,8 +10,7 @@
 Tests for docutils.transforms.references.Hyperlinks.
 """
 
-import DocutilsTestSupport
-import UnitTestFolder
+from __init__ import DocutilsTestSupport
 from docutils.transforms.references import Hyperlinks
 from docutils.parsers.rst import Parser
 

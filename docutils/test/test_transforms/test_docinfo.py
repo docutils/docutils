@@ -10,8 +10,7 @@
 Tests for docutils.transforms.frontmatter.DocInfo.
 """
 
-import DocutilsTestSupport
-import UnitTestFolder
+from __init__ import DocutilsTestSupport
 from docutils.transforms.frontmatter import DocInfo
 from docutils.parsers.rst import Parser
 

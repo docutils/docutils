@@ -10,8 +10,7 @@
 Tests for docutils.transforms.universal.Messages.
 """
 
-import DocutilsTestSupport
-import UnitTestFolder
+from __init__ import DocutilsTestSupport
 from docutils.transforms.universal import Messages
 from docutils.transforms.references import Substitutions
 from docutils.parsers.rst import Parser
