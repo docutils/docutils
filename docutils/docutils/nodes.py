@@ -939,6 +939,7 @@ class rubric(Titular, TextElement): pass
 # ========================
 
 class docinfo(Bibliographic, Element): pass
+class info(Bibliographic, Element): pass
 class author(Bibliographic, TextElement): pass
 class authors(Bibliographic, Element): pass
 class organization(Bibliographic, TextElement): pass
