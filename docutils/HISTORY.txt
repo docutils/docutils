@@ -91,6 +91,8 @@ Specific:
   - Added support for "--dump-pseudo-xml", "--dump-settings", and
     "--dump-transforms" hidden options.
   - Added ``Publisher.apply_transforms()`` method.
+  - Added ``Publisher.set_components()`` method; support for
+    ``publish_*()`` conveninece functions.
 
 * docutils/frontend.py:
 
