@@ -512,6 +512,31 @@ u"""\
         <paragraph>
             Auto-symbol footnote 12.
 """],
+["""\
+Duplicate manual footnote labels:
+
+.. [1] Footnote.
+
+.. [1] Footnote.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Duplicate manual footnote labels:
+    <footnote dupname="1" id="id1">
+        <label>
+            1
+        <paragraph>
+            Footnote.
+    <footnote dupname="1" id="id2">
+        <label>
+            1
+        <system_message backrefs="id2" level="2" line="5" source="test data" type="WARNING">
+            <paragraph>
+                Duplicate explicit target name: "1".
+        <paragraph>
+            Footnote.
+"""],
 ])
 
 
