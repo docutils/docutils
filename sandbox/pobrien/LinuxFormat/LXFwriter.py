@@ -388,8 +388,8 @@ class Translator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_field(self, node):
-        self.part = self.foot
-        self.part.append('\n///NEXT MONTH///')
+        if self.in_docinfo:
+            self.part = self.foot
 
     def depart_field(self, node):
         self.part = self.body
@@ -408,6 +408,7 @@ class Translator(nodes.NodeVisitor):
 
     def visit_field_name(self, node):
         if self.in_docinfo and node.astext() == 'Next':
+            self.part.append('\n///NEXT MONTH///')
             raise nodes.SkipNode
         else:
             raise NotImplementedError, node.astext()
