@@ -195,6 +195,13 @@ class Node:
                 # Get r.next_node(...), avoiding recursion.
                 node = r
 
+    def tree(self):
+        """Return the tree of this node."""
+        r = [self]
+        for i in self.get_children():
+            r.extend(i.tree())
+        return r
+
 
 class Text(Node, UserString):
 
