@@ -268,6 +268,10 @@ debug                 Report debug-level system messages.
                       Default: don't (None).  Options: ``--debug,
                       --no-debug``.
 --------------------  ------------------------------------------------
+destination           Path to output destination, set from positional
+                      arguments.  Default: stdout (None).  No 
+                      command-line options.
+--------------------  ------------------------------------------------
 dump_internals        Hidden option: At the end of processing, print
                       out all internal attributes of the document
                       (``document.__dict__``).
@@ -346,11 +350,22 @@ report_level          Set verbosity threshold at or above which system
                       Default: warning (2).  Options: ``--report, -r,
                       --verbose``.
 --------------------  ------------------------------------------------
+source                Path to input source, set from positional
+                      arguments.  Default: stdin (None).  No 
+                      command-line options.
+--------------------  ------------------------------------------------
 source_link           Include a "View document source" link in the
-                      document footer.
+                      document footer.  URL will be relative to the
+                      destination.
 
                       Default: don't (None).  Options:
                       ``--source-link, --no-source-link``.
+--------------------  ------------------------------------------------
+source_url            Use the supplied URL for a "View document
+                      source" link.
+
+                      Default: None.  Options: ``--source-uri,
+                      --no-source-link``.
 --------------------  ------------------------------------------------
 stylesheet            HTML-specific.
 
