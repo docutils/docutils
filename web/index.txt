@@ -57,6 +57,17 @@ This project should be considered highly experimental; we're learning
 as we go.  APIs are subject to change at any time.
 
 
+Requirements
+------------
+
+- Python 2.0 or later must already be installed to run the code.
+  Python 2.1 or later is required to run the test suite.  You can get
+  Python from http://www.python.org/.
+
+- Greg Ward's Optik option processing package is required.  You can
+  get Optik from http://optik.sourceforge.net/.
+
+
 Daily Snapshots
 ---------------
 
