@@ -92,10 +92,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         return text
 
     def attval(self, text,
-               transtable=string.maketrans('\n\r\t\v\f', '     ')):
-        """Cleanse, encode, and return attribute value text."""
-        return self.encode(
-            text.encode('utf-8').translate(transtable).decode('utf-8'))
+               whitespace=re.compile('[\n\r\t\v\f]')):
+        """Cleanse, HTML encode, and return attribute value text."""
+        return self.encode(whitespace.sub(' ', text))
 
     def starttag(self, node, tagname, suffix='\n', infix='', **attributes):
         """
