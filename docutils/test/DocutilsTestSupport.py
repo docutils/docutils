@@ -80,6 +80,9 @@ class DevNull:
     def write(self, string):
         pass
 
+    def close(self):
+        pass
+
 
 class CustomTestCase(unittest.TestCase):
     
