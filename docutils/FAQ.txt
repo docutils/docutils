@@ -256,6 +256,10 @@ input file, using whatever encoding suits your application, and tell
 Docutils the input encoding.  Docutils uses Unicode internally, so the
 em-dash character is a real em-dash internally.
 
+Emacs users should refer to the `Emacs Support for reStructuredText
+<tools/editors/emacs/README.html>`_ document.  Tips for other editors
+are welcome.
+
 ReStructuredText has no character entity subsystem; it doesn't know
 anything about XML charents.  To Docutils, "&mdash;" in input text is
 7 discrete characters; no interpretation happens.  When writing HTML,
