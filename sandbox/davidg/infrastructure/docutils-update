@@ -56,7 +56,7 @@ cvs -Q -z3 $root update -rHEAD $project sandbox web
 
 # ensure proper permissions are set
 find . -type f | xargs chmod g+rw 2> /dev/null
-find . -type d | xargs chmod g+rwxs 2> /dev/null
+find . -type d | xargs chmod g+rwx 2> /dev/null
 
 # ensure executable bits are set
 chmod +x $project/*.py
@@ -82,7 +82,7 @@ tar -c $exclude -f - sandbox | ( cd $dest ; tar -xf - )
 
 # ensure proper permissions are set
 find . -type f | xargs chmod g+rw 2> /dev/null
-find . -type d | xargs chmod g+rwxs 2> /dev/null
+find . -type d | xargs chmod g+rwx 2> /dev/null
 
 # update HTML docs
 cd $dest/tools
