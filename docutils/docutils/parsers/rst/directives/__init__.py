@@ -1,39 +1,79 @@
-#! /usr/bin/env python
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
 """
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
-
 This package contains directive implementation modules.
 
 The interface for directive functions is as follows::
 
-    def directivefn(match, type_name, data, state, state_machine,
-                    option_presets):
+    def directive_fn(name, arguments, options, content, lineno,
+                     content_offset, block_text, state, state_machine):
+        code...
 
-Where:
+    # Set function attributes:
+    directive_fn.arguments = ...
+    directive_fn.options = ...
+    direcitve_fn.content = ...
 
-- ``match`` is a regular expression match object which matched the first line
-  of the directive. ``match.group(1)`` gives the directive name.
-- ``type_name`` is the directive type or name.
-- ``data`` contains the remainder of the first line of the directive after the
-  "::".
+Parameters:
+
+- ``name`` is the directive type or name.
+
+- ``arguments`` is a list of positional arguments.
+
+- ``options`` is a dictionary mapping option names to values.
+
+- ``content`` is a list of strings, the directive content.
+
+- ``lineno`` is the line number of the first line of the directive.
+
+- ``content_offset`` is the line offset of the first line of the content from
+  the beginning of the current input.  Used when initiating a nested parse.
+
+- ``block_text`` is a string containing the entire directive.  Include it as
+  the content of a literal block in a system message if there is a problem.
+
 - ``state`` is the state which called the directive function.
+
 - ``state_machine`` is the state machine which controls the state which called
   the directive function.
-- ``option_presets`` is a dictionary of preset options which may be added to
-  the element the directive produces.  Currently, only an "alt" option is
-  passed by substitution definitions (value: the substitution name), which may
-  be used by an embedded image directive.
 
-Directive functions return a tuple of two values:
+Function attributes, interpreted by the directive parser (which calls the
+directive function):
 
-- a list of nodes which will be inserted into the document tree at the point
-  where the directive was encountered (can be an empty list), and
-- a boolean: true iff the directive block finished at a blank line.
+- ``arguments``: A 3-tuple specifying the expected positional arguments, or
+  ``None`` if the directive has no arguments.  The 3 items in the tuple are
+  ``(required, optional, whitespace OK in last argument)``:
+
+  1. The number of required arguments.
+  2. The number of optional arguments.
+  3. A boolean, indicating if the final argument may contain whitespace.
+
+  Arguments are normally single whitespace-separated words.  The final
+  argument may contain whitespace if the third item in the argument spec tuple
+  is 1/True.  If the form of the arguments is more complex, specify only one
+  argument (either required or optional) and indicate that final whitespace is
+  OK; the client code must do any context-sensitive parsing.
+
+- ``options``: A dictionary, mapping known option names to conversion
+  functions such as `int` or `float`.  ``None`` or an empty dict implies no
+  options to parse.
+
+- ``content``: A boolean; true if content is allowed.  Client code must handle
+  the case where content is required but not supplied (an empty content list
+  will be supplied).
+
+Directive functions return a list of nodes which will be inserted into the
+document tree at the point where the directive was encountered (can be an
+empty list).
+
+See `Creating reStructuredText Directives`_ for more information.
+
+.. _Creating reStructuredText Directives:
+   http://docutils.sourceforge.net/spec/howto/rst-directives.html
 """
 
 __docformat__ = 'reStructuredText'
@@ -64,11 +104,13 @@ _directive_registry = {
       'target-notes': ('references', 'target_notes'),
       'meta': ('html', 'meta'),
       #'imagemap': ('html', 'imagemap'),
-      #'raw': ('misc', 'raw'),
+      'raw': ('misc', 'raw'),
+      'include': ('misc', 'include'),
+      'replace': ('misc', 'replace'),
       'restructuredtext-test-directive': ('misc', 'directive_test_function'),}
-"""Mapping of directive name to (module name, function name). The directive
-'name' is canonical & must be lowercase; language-dependent names are defined
-in the language package."""
+"""Mapping of directive name to (module name, function name).  The directive
+name is canonical & must be lowercase.  Language-dependent names are defined
+in the ``language`` subpackage."""
 
 _modules = {}
 """Cache of imported directive modules."""
@@ -111,13 +153,51 @@ def directive(directive_name, language_module):
     return function
 
 def flag(argument):
+    """
+    Check for a valid flag option (no argument) and return ``None``.
+
+    Raise ``ValueError`` if an argument is found.
+    """
     if argument and argument.strip():
         raise ValueError('no argument is allowed; "%s" supplied' % argument)
     else:
         return None
 
 def unchanged(argument):
-    return argument  # unchanged!
+    """
+    Return the argument, unchanged.
+
+    Raise ``ValueError`` if no argument is found.
+    """
+    if argument is None:
+        raise ValueError('argument required but none supplied')
+    else:
+        return argument  # unchanged!
+
+def path(argument):
+    """
+    Return the path argument unwrapped (with newlines removed).
+
+    Raise ``ValueError`` if no argument is found or if the path contains
+    internal whitespace.
+    """
+    if argument is None:
+        raise ValueError('argument required but none supplied')
+    else:
+        path = ''.join([s.strip() for s in argument.splitlines()])
+        if path.find(' ') == -1:
+            return path
+        else:
+            raise ValueError('path contains whitespace')
+
+def nonnegative_int(argument):
+    """
+    Check for a nonnegative integer argument; raise ``ValueError`` if not.
+    """
+    value = int(argument)
+    if value < 0:
+        raise ValueError('negative value; must be positive or zero')
+    return value
 
 def format_values(values):
     return '%s, or "%s"' % (', '.join(['"%s"' % s for s in values[:-1]]),
@@ -127,8 +207,8 @@ def choice(argument, values):
     try:
         value = argument.lower().strip()
     except AttributeError:
-        raise TypeError('must supply an argument; choose from %s'
-                        % format_values(values))
+        raise ValueError('must supply an argument; choose from %s'
+                         % format_values(values))
     if value in values:
         return value
     else:
