@@ -469,7 +469,7 @@ class Inliner:
                 r'\*(?!\*)',            # emphasis but not strong
                 r'``',                  # literal
                 r'_`',                  # inline internal target
-                r'\|']                  # substitution reference
+                r'\|(?!\|)']            # substitution reference
                ),
               ('whole', '', end_string_suffix, # whole constructs
                [# reference name & end-string
