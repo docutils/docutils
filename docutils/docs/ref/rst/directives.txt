@@ -394,16 +394,23 @@ The following options are recognized:
 Line Block
 ==========
 
+.. admonition:: Deprecated
+
+   The "line-block" directive is deprecated.  Use the `line block
+   syntax`_ instead.
+
+   .. _line block syntax: restructuredtext.html#line-blocks
+
 :Directive Type: "line-block"
 :Doctree Element: line_block
 :Directive Arguments: None.
 :Directive Options: Possible.
 :Directive Content: Becomes the body of the line block.
 
-The "line-block" directive constructs an element where whitespace
-(including linebreaks) is significant and inline markup is supported.
-It is equivalent to a `parsed literal block`_ with different
-rendering: typically in an ordinary serif typeface instead of a
+The "line-block" directive constructs an element where line breaks and
+initial indentation is significant and inline markup is supported.  It
+is equivalent to a `parsed literal block`_ with different rendering:
+typically in an ordinary serif typeface instead of a
 typewriter/monospaced face, and not automatically indented.  (Have the
 line-block directive begin a block quote to get an indented line
 block.)  Line blocks are useful for address blocks and verse (poetry,
