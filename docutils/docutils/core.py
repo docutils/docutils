@@ -161,7 +161,7 @@ class Publisher:
 
     def publish(self, argv=None, usage=None, description=None,
                 settings_spec=None, settings_overrides=None,
-                config_section=None, enable_exit=None):
+                config_section=None, enable_exit_status=None):
         """
         Process command line options and arguments (if `self.settings` not
         already set), run `self.reader` and then `self.writer`.  Return
@@ -188,8 +188,9 @@ class Publisher:
             self.report_Exception(error)
             exit = 1
         self.debugging_dumps(document)
-        if enable_exit and document and (document.reporter.max_level
-                                         >= self.settings.exit_level):
+        if (enable_exit_status and document
+            and (document.reporter.max_level 
+                 >= self.settings.exit_status_level)):
             sys.exit(document.reporter.max_level + 10)
         elif exit:
             sys.exit(1)
@@ -270,7 +271,7 @@ def publish_cmdline(reader=None, reader_name='standalone',
                     writer=None, writer_name='pseudoxml',
                     settings=None, settings_spec=None,
                     settings_overrides=None, config_section=None,
-                    enable_exit=1, argv=None,
+                    enable_exit_status=1, argv=None,
                     usage=default_usage, description=default_description):
     """
     Set up & run a `Publisher`.  For command-line front ends.
@@ -293,7 +294,7 @@ def publish_cmdline(reader=None, reader_name='standalone',
       of component settings.
     - `config_section`: Name of configuration file section for application.
       Used only if no `settings` or `settings_spec` specified.
-    - `enable_exit`: Boolean; enable exit status at end of processing?
+    - `enable_exit_status`: Boolean; enable exit status at end of processing?
     - `argv`: Command-line argument list to use instead of ``sys.argv[1:]``.
     - `usage`: Usage string, output if there's a problem parsing the command
       line.
@@ -303,7 +304,8 @@ def publish_cmdline(reader=None, reader_name='standalone',
     pub = Publisher(reader, parser, writer, settings=settings)
     pub.set_components(reader_name, parser_name, writer_name)
     pub.publish(argv, usage, description, settings_spec, settings_overrides,
-                config_section=config_section, enable_exit=enable_exit)
+                config_section=config_section,
+                enable_exit_status=enable_exit_status)
 
 def publish_file(source=None, source_path=None,
                  destination=None, destination_path=None,
@@ -311,7 +313,7 @@ def publish_file(source=None, source_path=None,
                  parser=None, parser_name='restructuredtext',
                  writer=None, writer_name='pseudoxml',
                  settings=None, settings_spec=None, settings_overrides=None,
-                 config_section=None, enable_exit=None):
+                 config_section=None, enable_exit_status=None):
     """
     Set up & run a `Publisher`.  For programmatic use with file-like I/O.
 
@@ -341,7 +343,7 @@ def publish_file(source=None, source_path=None,
       of component settings.
     - `config_section`: Name of configuration file section for application.
       Used only if no `settings` or `settings_spec` specified.
-    - `enable_exit`: Boolean; enable exit status at end of processing?
+    - `enable_exit_status`: Boolean; enable exit status at end of processing?
     """
     pub = Publisher(reader, parser, writer, settings=settings)
     pub.set_components(reader_name, parser_name, writer_name)
@@ -352,7 +354,7 @@ def publish_file(source=None, source_path=None,
         settings._update(settings_overrides, 'loose')
     pub.set_source(source, source_path)
     pub.set_destination(destination, destination_path)
-    pub.publish(enable_exit=enable_exit)
+    pub.publish(enable_exit_status=enable_exit_status)
 
 def publish_string(source, source_path=None, destination_path=None, 
                    reader=None, reader_name='standalone',
@@ -360,7 +362,7 @@ def publish_string(source, source_path=None, destination_path=None,
                    writer=None, writer_name='pseudoxml',
                    settings=None, settings_spec=None,
                    settings_overrides=None, config_section=None,
-                   enable_exit=None):
+                   enable_exit_status=None):
     """
     Set up & run a `Publisher`, and return the string output.
     For programmatic use with string I/O.
@@ -401,7 +403,7 @@ def publish_string(source, source_path=None, destination_path=None,
       of component settings.
     - `config_section`: Name of configuration file section for application.
       Used only if no `settings` or `settings_spec` specified.
-    - `enable_exit`: Boolean; enable exit status at end of processing?
+    - `enable_exit_status`: Boolean; enable exit status at end of processing?
     """
     pub = Publisher(reader, parser, writer, settings=settings,
                     source_class=io.StringInput,
@@ -414,7 +416,7 @@ def publish_string(source, source_path=None, destination_path=None,
         settings._update(settings_overrides, 'loose')
     pub.set_source(source, source_path)
     pub.set_destination(destination_path=destination_path)
-    return pub.publish(enable_exit=enable_exit)
+    return pub.publish(enable_exit_status=enable_exit_status)
 
 def publish_parts(source, source_path=None, destination_path=None, 
                   reader=None, reader_name='standalone',
@@ -422,7 +424,7 @@ def publish_parts(source, source_path=None, destination_path=None,
                   writer=None, writer_name='pseudoxml',
                   settings=None, settings_spec=None,
                   settings_overrides=None, config_section=None,
-                  enable_exit=None):
+                  enable_exit_status=None):
     """
     Set up & run a `Publisher`, and return a dictionary of document parts.
     Dictionary keys are the names of parts, and values are Unicode strings;
@@ -460,7 +462,7 @@ def publish_parts(source, source_path=None, destination_path=None,
       of component settings.
     - `config_section`: Name of configuration file section for application.
       Used only if no `settings` or `settings_spec` specified.
-    - `enable_exit`: Boolean; enable exit status at end of processing?
+    - `enable_exit_status`: Boolean; enable exit status at end of processing?
     """
     pub = Publisher(reader, parser, writer, settings=settings,
                     source_class=io.StringInput,
@@ -473,5 +475,5 @@ def publish_parts(source, source_path=None, destination_path=None,
         settings._update(settings_overrides, 'loose')
     pub.set_source(source, source_path)
     pub.set_destination(destination_path=destination_path)
-    pub.publish(enable_exit=enable_exit)
+    pub.publish(enable_exit_status=enable_exit_status)
     return pub.writer.parts
