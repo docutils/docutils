@@ -31,7 +31,7 @@ while getopts eptu opt
 do
     case $opt in
         e)  root="-d:ext:${USER}@cvs1:/cvsroot/docutils" ;;
-        p)  export PYTHONPATH=$pylib:$lib;;
+        p)  export PYTHONPATH=$pylib:$lib:$lib/extras;;
         t)  trace=1;;
         u)  unconditional=1;;
         \?) exit 2;;
@@ -99,10 +99,13 @@ for htmlfile in `find .. -name '*.html'` ; do
         if [ $unconditional -eq 1 -o $txtfile -nt $htmlfile ] ; then
             if [ "${base:0:4}" == "pep-" ] ; then
                 echo "$txtfile (PEP)"
-                ~/bin/python $lib/tools/pep2html.py $txtfile
+				# pep2html.py fails on SourceForge; can't import cgi
+				# (cgi imports urllib which imports socket which imports 
+				# _socket; libssl.so.2 doesn't exist on SF):
+                ~/bin/python $lib/tools/pep.py --config=$dir/docutils.conf $txtfile $htmlfile
             else
                 echo $txtfile
-                ~/bin/python $lib/tools/html.py --config=$dir/docutils.conf $txtfile $htmlfile
+                ~/bin/python $lib/tools/rst2html.py --config=$dir/docutils.conf $txtfile $htmlfile
             fi
         fi
     fi
