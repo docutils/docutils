@@ -901,9 +901,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
             'span multiple rows *and* columns, sorry.')
         atts = {}
         if node.has_key('morerows'):
+            raise NotImplementedError('multiple rows are not working (yet), sorry.')
             count = node['morerows'] + 1
             self.body.append('\\multirow{%d}*{' % count)
             self.context.append('}')
+            # BUG following rows must have empty cells.
         elif node.has_key('morecols'):
             # the vertical bar before column is missing if it is the first column.
             # the one after always.
@@ -1402,6 +1404,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_row(self, node):
         self.context.pop()  # remove cell counter
         self.body.append(' \\\\ \\hline\n')
+        # BUG if multirow cells \cline{x-y}
 
     def visit_section(self, node):
         self.section_level += 1
