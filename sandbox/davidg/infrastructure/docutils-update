@@ -41,6 +41,9 @@ cvs -Q -z3 export -rHEAD $project
 cvs -Q -z3 export -rHEAD sandbox
 cvs -Q -z3 export -rHEAD web
 
+# remove junk
+find -name .cvsignore | xargs rm
+
 # create the snapshots
 tar -czf $project-snapshot.tgz $project
 tar -czf $project-sandbox-snapshot.tgz sandbox
@@ -79,7 +82,6 @@ for htmlfile in `find . -name '*.html'` ; do
         if [ $unconditional -eq 1 -o $txtfile -nt $htmlfile ] ; then
             if [ "${base:0:4}" == "pep-" ] ; then
                 echo "$txtfile (PEP)"
-                #( cd $dir ; ~/bin/python $lib/tools/pep.py -gst --template=$lib/tools/pep-html-template --python-home=http://www.python.org --no-random $base.txt $base.html )
                 ( cd $dir ; ~/bin/python $lib/tools/pep2html.py $base.txt )
             else
                 echo $txtfile
