@@ -21,6 +21,10 @@ class InputTests(unittest.TestCase):
                                encoding='utf8')
         # Assert BOMs are gone.
         self.assertEquals(input.read(), u' foo  bar')
+        # With unicode input:
+        input = io.StringInput(source=u'\ufeff foo \ufeff bar')
+        # Assert BOMs are still there.
+        self.assertEquals(input.read(), u'\ufeff foo \ufeff bar')
 
 
 if __name__ == '__main__':
