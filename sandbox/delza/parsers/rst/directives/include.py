@@ -22,75 +22,57 @@ from docutils.parsers.rst.directives import parse_directive, DirectiveParseError
 def exists(arg):
   return 1
 
-include_option_spec = {'file': str, 'url': str,}
+include_option_spec = {}
+raw_option_spec = {'file': str, 'url': str,}
 
 def include(match, type_name, data, state, state_machine, options):
     '''
-    Test new directive parsing
+    Include a reST file as part of the content of this reST file
     '''
     try:
         arguments, options, content, blank_finish = parse_directive(match, type_name, data, 
             state, state_machine, options, option_spec=include_option_spec)
     except DirectiveParseError, (error, unparsed):
         return [error], unparsed
-    temp_node = nodes.section('doh!', **options)
-    return temp_node, blank_finish
-      
-raw = include
-    
-
-def old_include(match, type_name, data, state, state_machine, option_pre):
-    '''
-    Include will try to open it's non-attrbibute arg as a file.  Failing that,
-    it will try to open it as a URL.  Finally it will use the argument as a
-    string.  By default, it will process the data it receives as reST, but in
-    the presence of the raw option it will pass data through untouched.  If
-    the raw option is present we also require the format option to guide
-    the writer later, otherwise the format value is not used.
-    '''
-    try:
-        datablock, blocktext, blank_finish = cheapDirective(match, type_name, 
-	  data, state, state_machine, option_pre, include_option_spec)
-    except CheapException, (error, unparsed):
-        return [error], unparsed
-    reference = ''.join([line.strip() for line in datablock])
-    # grab data from file/uri/string
-    f = openAny(reference)
+    f = file(arguments[0])
     text = f.readlines()
-      
-    temp_node = nodes.section(blocktext, **option_pre)
+    temp_node = nodes.section(type_name, **options)
     state.nested_parse(text, 0, node=temp_node, match_titles=1)
     return temp_node.children, blank_finish
-
-raw_option_spec = {'file': str, 'url': str}
-
-def old_raw(match, type_name, data, state, state_machine, option_pre):
-    # initialize default variables
-    option_pre['include'] = 0
-    option_pre['format'] = ''
-    try:
-        datablock, blocktext, blank_finish = cheapDirective(match, type_name, 
-	  data, state, state_machine, option_pre, raw_option_spec)
-    except CheapException, (error, unparsed):
-        return [error], unparsed
       
-    if option_pre['include']:
-        # grab data from file/uri/string
-        f = openAny(option_pre['include'].strip())
-        datablock = f.readlines()
-    raw_node = nodes.raw(blocktext, '\n'.join(datablock), **option_pre)
-    return [raw_node], blank_finish
-
-def replace(match, type_name, data, state, state_machine, option_pre):
+def raw(match, type_name, data, state, state_machine, options):
+    '''
+    Pass through content unchanged
+    
+    Content is included in output based on type argument
+    
+    Content may be included inline (content section of directive) or
+    imported from a file or url.
+    '''
     try:
-        datablock, blocktext, blank_finish = cheapDirective(match, type_name,
-        data, state, state_machine, option_pre, {})
-    except CheapException, (error, unparsed):
+        arguments, options, content, blank_finish = parse_directive(match, type_name, data, 
+            state, state_machine, options, option_spec=raw_option_spec)
+    except DirectiveParseError, (error, unparsed):
         return [error], unparsed
-    text_node = nodes.interpreted(blocktext, '\n'.join(datablock))
+    format = arguments[0]
+    if options.has_key('file'):
+      f = file(options['file'])
+      text = f.readlines()
+    elif options.has_key('url'):
+      f = urlopen(options['url'])
+      text = f.readlines()
+    else:
+      text = content
+    options['format'] = format
+    raw_node = nodes.raw(arguments, '\n'.join(text), **options)
+    return [raw_node], blank_finish
+    
+def replace(match, type_name, data, state, state_machine, options):
+    try:
+        arguments, options, content, blank_finish = parse_directive(match, type_name,
+        data, state, state_machine, options, option_spec={})
+    except DirectiveParseError, (error, unparsed):
+        return [error], unparsed
+    text_node = nodes.interpreted(arguments, '\n'.join(arguments))
     return [text_node], blank_finish
-    
-    
-if __name__ == '__main__':
-  print include
-  print raw
+
