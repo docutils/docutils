@@ -48,9 +48,9 @@ the three implicit ones listed above, and its entries will have
 priority.
 
 
--------------------------------------
-Configuration File Sections & Entries
--------------------------------------
+-------------------------
+Configuration File Syntax
+-------------------------
 
 Configuration files use the standard ConfigParser.py_ Python_ module.
 From its documentation:
@@ -58,17 +58,27 @@ From its documentation:
     The configuration file consists of sections, lead by a "[section]"
     header and followed by "name: value" entries, with continuations
     in the style of `RFC 822`_; "name=value" is also accepted.  Note
-    that leading whitespace is removed from values.  The optional
-    values can contain format strings which refer to other values in
-    the same section, or values in a special DEFAULT section.
-    Additional defaults can be provided upon initialization and
-    retrieval.  Lines beginning with "#" or ";" are ignored and may be
-    used to provide comments.
+    that leading whitespace is removed from values.  ...  Lines
+    beginning with "#" or ";" are ignored and may be used to provide
+    comments.
+
+.. Note:: No format string interpolation is done.
 
 Configuration file entry names correspond to internal runtime
 settings.  Underscores ("_") and hyphens ("-") can be used
 interchangably in entry names; hyphens are automatically converted to
 underscores.
+
+For on/off switch settings (booleans), the following values are
+recognized:
+
+* On: "true", "yes", "on", "1"
+* Off: "false", "no", "off", "0", "" (no value)
+
+
+-------------------------------------
+Configuration File Sections & Entries
+-------------------------------------
 
 Below are the Docutils runtime settings, listed by config file
 section.  Any setting may be specified in any section, but only
@@ -190,7 +200,9 @@ _`exit_level`
 
 _`expose_internals`
     List of internal attribues to expose as external attributes (with
-    "internal:" namespace prefix).
+    "internal:" namespace prefix).  To specify multiple attributes in
+    configuration files, use colons to separate names; on the command
+    line, the option may be used more than once.
 
     Default: don't (None).  Options: ``--expose-internal-attribute``
     (hidden, for development use only).
