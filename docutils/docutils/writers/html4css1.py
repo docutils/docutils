@@ -525,7 +525,8 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_footer(self, node):
         start = self.context.pop()
-        footer = ([self.starttag(node, 'div', CLASS='footer'), '<hr />\n']
+        footer = (['<hr class="footer"/>\n',
+                   self.starttag(node, 'div', CLASS='footer')]
                   + self.body[start:] + ['</div>\n'])
         self.body_suffix[:0] = footer
         del self.body[start:]
