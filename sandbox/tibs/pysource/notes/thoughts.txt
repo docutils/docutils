@@ -4,6 +4,8 @@ Thoughts on pysource
 :Author: Tibs
 :Date:   19 Sep 2002
 
+..
+
     [This is the contents of an email sent from Tibs to me, to tie up
     -- or at least identify -- loose ends.  When Tibs writes "you",
     he's referring to me.  It is published with Tibs' permission.  I
@@ -51,7 +53,7 @@ tree to be done more sensibly.
     [I think I finally understand what Tibs is getting at here.  I
     thought he meant to have a <docstring> node in an otherwise
     standard Docutils doctree, which just contained the raw docstring.
-     Instead, I believe he means that the Python-specific Docutils
+    Instead, I believe he means that the Python-specific Docutils
     doctree elements like <class_section> and
     <module_section> (see pysource.dtd), should each have a <docstring>
     element which contains ``%structure.model;``, instead of the
