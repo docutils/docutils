@@ -101,12 +101,13 @@ class Writer(writers.Writer):
                      'body_pre_docinfo', 'docinfo', 'body', 'fragment',
                      'body_suffix'):
             setattr(self, attr, getattr(visitor, attr))
-        
+
     def assemble_parts(self):
         writers.Writer.assemble_parts(self)
         for part in ('title', 'subtitle', 'docinfo', 'body', 'header',
                      'footer', 'meta', 'stylesheet', 'fragment'):
             self.parts[part] = ''.join(getattr(self.visitor, part))
+
 
 class HTMLTranslator(nodes.NodeVisitor):
 
@@ -152,7 +153,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     """
 
     xml_declaration = '<?xml version="1.0" encoding="%s" ?>\n'
-    doctype = ('<!DOCTYPE html' 
+    doctype = ('<!DOCTYPE html'
                ' PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"'
                ' "http://www.w3.org/TR/xhtml1/DTD/'
                'xhtml1-transitional.dtd">\n')
@@ -866,7 +867,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     def add_meta(self, tag):
         self.meta.append(tag)
         self.head.append(tag)
-        
+
     def visit_note(self, node):
         self.visit_admonition(node, 'note')
 
@@ -1213,7 +1214,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                 self.context.append('</a>' + close_tag)
             else:
                 self.context.append(close_tag)
-                
+
     def depart_title(self, node):
         if self.within_title:
             self.title = self.body[self.within_title:]
