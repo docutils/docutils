@@ -360,7 +360,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # then
         text = text.replace("&", '{\\&}')
         text = text.replace("_", '{\\_}')
-        text = text.replace("^", '{\\verb|^|}') # ugly
+        # the ^:
+        # * verb|^| does not work in mbox.
+        # * mathmode has wedge. hat{~} would also work.
+        text = text.replace("^", '{\\ensuremath{^\\wedge}}')
         text = text.replace("%", '{\\%}')
         text = text.replace("#", '{\\#}')
         text = text.replace("~", '{\\~{ }}')

@@ -9,6 +9,8 @@ Rev. 2003-03-17
 To do
 ~~~~~
 
+* the ^-sign is problematic: using mathmode wedge is usually the wrong font.
+
 * tt fonts might have no bold.
 
 * sidebar handling.
@@ -124,6 +126,7 @@ ATTENTION
 
 Done
 ~~~~
+* FIX: ^ by mathmode wedge (verb|^| did not work in mbox). 
 * admonitions are not so visible as in html (make a border a bigger title, indent
   text) thanks to g.schwant.
 * FIX: protection of braces: formerly literal blocks were verbatim.
