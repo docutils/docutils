@@ -27,13 +27,8 @@ latex_head = """\
 \\usepackage{longtable}
 \\setlength{\\extrarowheight}{2pt}
 \\usepackage{amsmath}
-%Check if we are compiling under latex or pdflatex
-              \\ifx\\pdftexversion\\undefined
-                \\usepackage[dvips]{graphicx}
-              \\else
-                \\usepackage[pdftex]{graphicx}
-              \\fi
-              \\usepackage{color}
+\\usepackage{graphicx}
+\\usepackage{color}
 \\usepackage{multirow}
 \\usepackage{ifthen}
 \\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}

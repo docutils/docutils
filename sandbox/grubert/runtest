@@ -48,6 +48,14 @@ if [ -n "$1" -a ! "$1" == "-" ] ; then
   exit
 fi
 
+INF=test/header.txt
+for GO in "" auto pdftex dvips,300dpi ; do
+    OUTF="$INF-graphicx-option-$GO.tex"
+    REFF="$OUTF.ref"
+    $CMD --graphicx-option=$GO $2 $3 $INF > $OUTF
+    do_diff $REFF $OUTF 
+done
+
 # table-style
 CMD="../../tools/rst2latex.py"
 

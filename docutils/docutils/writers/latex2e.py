@@ -120,11 +120,17 @@ class Writer(writers.Writer):
          ('Table style. "standard" with horizontal and vertical lines, '
           '"booktabs" (LaTeX booktabs style) only horizontal lines '
           'above and below the table and below the header or "nolines".'
-          '(default: "standard"',
+          'default: "standard"',
           ['--table-style'],
           {'choices': ['standard', 'booktabs','nolines'], 'default': 'standard',
            'metavar': '<format>'}),
-          ))
+          ('LaTeX graphicx package option.'
+           'Possible values are "dvips", "pdftex". "auto" includes LaTeX code '
+           'to use "pdftex" if processing with pdf(la)tex and dvips otherwise.'
+           'Default is no option.',
+           ['--graphicx-option'],
+           {'default': ''}),
+          ),)
 
     settings_defaults = {'output_encoding': 'latin-1'}
 
@@ -551,6 +557,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     self.babel.get_language()
 
         self.d_class = DocumentClass(settings.documentclass)
+        # object for a table while proccessing.
+        self.active_table = Table('longtable',settings.table_style)
 
         # HACK.  Should have more sophisticated typearea handling.
         if settings.documentclass.find('scr') == -1:
@@ -561,12 +569,24 @@ class LaTeXTranslator(nodes.NodeVisitor):
             else:
                 self.typearea = ''
 
-        # object for a table while proccessing.
-        self.active_table = Table('longtable',settings.table_style)
         if self.fontenc == 'T1':
             fontenc = '\\usepackage[T1]{fontenc}\n'
         else:
             fontenc = ''
+
+        def graphicx_package():
+            if self.settings.graphicx_option == '':
+                return '\\usepackage{graphicx}\n'
+            if self.settings.graphicx_option.lower() == 'auto':
+                return '\n'.join(('%Check if we are compiling under latex or pdflatex',
+                                '\\ifx\\pdftexversion\\undefined',
+                                '  \\usepackage{graphicx}',
+                                '\\else',
+                                '  \\usepackage[pdftex]{graphicx}',
+                                '\\fi\n'))
+
+            return '\\usepackage[%s]{graphicx}\n' % self.settings.graphicx_option
+                    
 
         self.head_prefix = [
               self.latex_head % (self.d_options,self.settings.documentclass),
@@ -586,13 +606,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
               # extra space between text in tables and the line above them
               '\\setlength{\\extrarowheight}{2pt}\n',
               '\\usepackage{amsmath}\n',   # what fore amsmath.
-              r'''%Check if we are compiling under latex or pdflatex
-              \ifx\pdftexversion\undefined
-                \usepackage[dvips]{graphicx}
-              \else
-                \usepackage[pdftex]{graphicx}
-              \fi
-              ''',
+              graphicx_package(),
               '\\usepackage{color}\n',
               '\\usepackage{multirow}\n',
               '\\usepackage{ifthen}\n',   # before hyperref!
