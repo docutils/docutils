@@ -118,8 +118,7 @@ class MoinTranslator(html4css1.HTMLTranslator):
             string = string.replace('<p>', '')
             string = string.replace('</p>', '')
             string = string.replace('\n', '')
-            if len(string) and string[-1] == ' ':
-                string = string[:-1]
+            string = re.sub('> ', '>', string)
         self.body.append(string)
         
     def visit_section(self, node):
