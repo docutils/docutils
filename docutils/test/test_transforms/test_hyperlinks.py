@@ -112,6 +112,46 @@ indirect_ internal
 Implicit
 --------
 
+`multiply-indirect`_ internal
+
+.. _multiply-indirect: indirect_
+.. _indirect: implicit_
+""",
+"""\
+<document source="test data">
+    <section id="implicit" name="implicit">
+        <title>
+            Implicit
+        <paragraph>
+            <reference refid="implicit">
+                multiply-indirect
+             internal
+        <target id="multiply-indirect" name="multiply-indirect" refid="implicit">
+        <target id="indirect" name="indirect" refid="implicit">
+"""],
+["""\
+circular_ indirect reference
+
+.. _circular: indirect_
+.. _indirect: circular_
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <problematic id="id2" refid="id1">
+            circular_
+         indirect reference
+    <target id="circular" name="circular" refid="circular">
+    <problematic id="id3" refid="id1">
+        .. _indirect: circular_
+    <system_message backrefs="id2 id3" id="id1" level="3" line="3" source="test data" type="ERROR">
+        <paragraph>
+            Indirect hyperlink target "circular" (id="circular") refers to target "indirect", forming a circular reference.
+"""],
+["""\
+Implicit
+--------
+
 Duplicate implicit targets.
 
 Implicit
@@ -139,7 +179,7 @@ indirect_ internal
                 indirect_
              internal
         <target id="indirect" name="indirect" refname="implicit">
-    <system_message backrefs="id3" id="id2" level="2" line="11" source="test data" type="WARNING">
+    <system_message backrefs="id3" id="id2" level="3" line="11" source="test data" type="ERROR">
         <paragraph>
             Indirect hyperlink target "indirect" (id="indirect") refers to target "implicit", which does not exist.
 """],
@@ -224,7 +264,7 @@ __ ztarget_
         <problematic id="id4" refid="id3">
             `indirect internal`__
     <target anonymous="1" id="id2" refname="ztarget">
-    <system_message backrefs="id4" id="id3" level="2" line="11" source="test data" type="WARNING">
+    <system_message backrefs="id4" id="id3" level="3" line="11" source="test data" type="ERROR">
         <paragraph>
             Indirect hyperlink target (id="id2") refers to target "ztarget", which does not exist.
 """],
