@@ -44,21 +44,6 @@ SpewParagraph = 1
 SpewBreak = 2
 
 class HTMLDocArticleTranslator(nodes.NodeVisitor):
-    headerContent = []
-    bodyContent = []
-    metaContent = []
-    context = []
-    spewTextContext = [True]
-    spewParaTag = [SpewParagraph]
-    paraFormat = [(None,None)]
-
-    body_pre_docinfo = []
-    docinfo = []
-    compact_simple = None
-    compact_p = 1
-
-    firstFootnoteVisited = False
-
     named_tags = {'a': 1,
                   'applet': 1,
                   'form': 1,
@@ -72,6 +57,24 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
         self.section_level = 0
+        self.headerContent = []
+        self.bodyContent = []
+        self.metaContent = []
+        self.context = []
+        self.spewTextContext = [True]
+        self.spewParaTag = [SpewParagraph]
+        self.paraFormat = [(None,None)]
+
+        self.body_pre_docinfo = []
+        self.docinfo = []
+        self.compact_simple = None
+        self.compact_p = 1
+
+        self.firstFootnoteVisited = False
+
+        # lcode = settings.language_code
+        lcode = 'en'
+        self.language = languages.get_language(lcode)
 
     def astext(self):
         return ''.join([DocArticleText.contentStart, DocArticleText.headerStart] +
@@ -83,10 +86,10 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
     def encode(self, text):
         """Encode special characters in `text` & return."""
         # @@@ A codec to do these and all other HTML entities would be nice.
-        text = text.replace("&", "&amp;")
-        text = text.replace("<", "&lt;")
-        text = text.replace('"', "&quot;")
-        text = text.replace(">", "&gt;")
+        text = text.replace('&', '&amp;')
+        text = text.replace('<', '&lt;')
+        text = text.replace('"', '&quot;')
+        text = text.replace('>', '&gt;')
         return text
 
     def popAndAppend(self, node):
@@ -106,6 +109,13 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
     def depart_Text(self, node):
         pass
 
+    def visit_admonition(self, node, name):
+        self.bodyContent.append('<hr width="50%" />')
+        self.bodyContent.append('<b>' + self.language.labels[name.lower()] + ':</b><br />\n')
+
+    def depart_admonition(self):
+        self.bodyContent.append('<hr width="50%" />')
+
     def visit_author(self, node):
         self.visit_docinfo_item(node, 'Author')
 
@@ -118,6 +128,12 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
     def depart_attention(self, node):
         self.depart_admonition()
 
+    def visit_block_quote(self, node):
+        self.bodyContent.append(self.starttag(node, 'blockquote'))
+
+    def depart_block_quote(self, node):
+        self.bodyContent.append('</blockquote>\n')
+
     def visit_bullet_list(self, node):
         self.bodyContent.append(self.starttag(node, 'ul'))
         self.spewParaTag.append(SpewNothing)
@@ -125,22 +141,6 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
     def depart_bullet_list(self, node):
         self.bodyContent.append('</ul>\n')
         self.spewParaTag.pop()
-
-    def visit_copyright(self, node):
-        self.visit_docinfo_item(node, 'copyright')
-
-    def depart_copyright(self, node):
-        self.depart_docinfo_item()
-
-    def check_simple_list(self, node):
-        """Check for a simple list that can be rendered compactly."""
-        visitor = SimpleListChecker(self.document)
-        try:
-            node.walk(visitor)
-        except nodes.NodeFound:
-            return None
-        else:
-            return 1
 
     def visit_contact(self, node):
         self.visit_docinfo_item(node, 'Contact')
@@ -162,22 +162,27 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
 
     def visit_docinfo(self, node):
         self.context.append(len(self.bodyContent))
+        self.bodyContent.append(self.starttag(node, 'table'))
+        self.bodyContent.append('<tbody valign="top">\n')
+        self.in_docinfo = 1
 
     def depart_docinfo(self, node):
+        self.bodyContent.append('</tbody>\n</table>\n')
+        self.in_docinfo = None
         start = self.context.pop()
         self.body_pre_docinfo = self.bodyContent[:start]
         self.docinfo = self.bodyContent[start:]
         self.bodyContent = []
 
     def visit_docinfo_item(self, node, name, meta=1):
-        value = self.attval(node.astext())
         if meta:
-            self.headerContent.append('<meta name="%s" content="%s" />\n'%(name.lower(), value))
-        self.bodyContent.append('<b>%s</b>: ' % name)
-        self.context.append('<br />\n')
+            self.headerContent.append('<meta name="%s" content="%s" />\n' %
+                                      (name, self.attval(node.astext())))
+        self.bodyContent.append(self.starttag(node, 'tr', ''))
+        self.bodyContent.append('<th >%s:</th>\n<td>' % self.language.labels[name.lower()])
 
     def depart_docinfo_item(self, node):
-        self.popAndAppend(node)
+        self.bodyContent.append('</td></tr>\n')
 
     def visit_document(self, node):
         pass
@@ -191,11 +196,55 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
     def depart_emphasis(self, node):
         self.bodyContent.append('</i>')
 
+    def visit_field(self, node):
+        self.bodyContent.append(self.starttag(node, 'tr', ''))
+
+    def depart_field(self, node):
+        self.bodyContent.append('</tr>\n')
+
+    def visit_field_body(self, node):
+        self.bodyContent.append(self.starttag(node, 'td', ''))
+        self.spewParaTag.append(SpewBreak)
+
+    def depart_field_body(self, node):
+        self.bodyContent.append('</td>\n')
+        self.spewParaTag.pop()
+
+    def visit_field_list(self, node):
+        self.bodyContent.append(self.starttag(node, 'table'))
+        self.bodyContent.append('<tbody valign="top">\n')
+
+    def depart_field_list(self, node):
+        self.bodyContent.append('</tbody>\n</table>\n')
+
+    def visit_field_name(self, node):
+        atts = {}
+        if len(node.astext()) > 14:
+            atts['colspan'] = 2
+            self.context.append('</tr>\n<tr><td>&nbsp;</td>')
+        else:
+            self.context.append('')
+        self.bodyContent.append(self.starttag(node, 'th', '', **atts))
+
+    def depart_field_name(self, node):
+        self.bodyContent.append(':</th>')
+        self.bodyContent.append(self.context.pop())
+
+    def check_simple_list(self, node):
+        """Check for a simple list that can be rendered compactly."""
+        visitor = SimpleListChecker(self.document)
+        try:
+            node.walk(visitor)
+        except nodes.NodeFound:
+            return None
+        else:
+            return 1
+
     def visit_footnote(self, node):
         if not self.firstFootnoteVisited:
             self.bodyContent.append('<hr />')
             self.firstFootnoteVisited = True
-        self.bodyContent.append(self.starttag(node, 'table', frame="void", rules="none"))
+        self.bodyContent.append(self.starttag(node, 'table'))
         self.bodyContent.append('<tbody valign="top">\n<tr>')
         self.spewParaTag.append(SpewBreak)
         self.footnote_backrefs(node)
@@ -286,6 +335,12 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
     def depart_literal_block(self, node):
         self.bodyContent.append('\n</pre>\n')
 
+    def visit_note(self, node):
+        self.visit_admonition(node, 'note')
+
+    def depart_note(self, node):
+        self.depart_admonition()
+
     def visit_paragraph(self, node):
         if self.spewParaTag[-1] == SpewParagraph:
             self.bodyContent.append(self.starttag(node, 'p', ''))
@@ -345,6 +400,12 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
 
     def depart_strong(self, node):
         self.bodyContent.append('</strong>')
+
+    def visit_subtitle(self, node):
+        self.bodyContent.append(self.starttag(node, 'h3', ''))
+
+    def depart_subtitle(self, node):
+        self.bodyContent.append('</h3>\n')
 
     def visit_target(self, node):
         if not (node.has_key('refuri') or node.has_key('refid') or node.has_key('refname')):
