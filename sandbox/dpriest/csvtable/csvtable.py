@@ -10,7 +10,9 @@ Directive for CSV (comma-separated values) Tables.
 
 """
 
-import csv, os.path
+import csv
+import os.path
+import operator
 from docutils import nodes, statemachine, utils
 from docutils.transforms import references
 from docutils.parsers.rst import directives
@@ -20,7 +22,7 @@ class DocutilsDialect(csv.Dialect):
     delimiter = ','
     quotechar = '"'
     doublequote = True
-    skipinitialspace = False
+    skipinitialspace = True
     lineterminator = '\r\n'
     quoting = csv.QUOTE_MINIMAL
 
@@ -34,7 +36,6 @@ class DocutilsDialect(csv.Dialect):
                 self.lineterminator = '/r'
             elif options['lineend'] == 'lf':
                 self.lineterminator = '/n'
-        self.skipinitialspace = options.has_key('skipspace')
         if options.has_key('escape'):
             self.doublequote = False
             self.escapechar = str(options['escape'])
@@ -112,30 +113,32 @@ def csvtable(name, arguments, options, content, lineno,
             nodes.literal_block(block_text, block_text), line=lineno)
         return [error]
 
-    # populate header: default to single line header unless overridden
+    # populate header from header-option.
     tablehead = []
     # optionable column headers
     if options.has_key('headers'):
-        list = options['headers'].split('" "')
-        rowdata = []
-        for j in list:
-            cell = statemachine.StringList((j.strip('"'),), source=source)  # strip leftover quotes
-            celldata = (0,0,0,cell)
-            rowdata.append(celldata)
-        tablehead = tablehead + [rowdata,]
+        for i in csv.reader(options['headers'].split('\n'), skipinitialspace=True):
+            rowdata = []
+            for j in i:
+                cell = statemachine.StringList((j,), source=source)
+                celldata = (0,0,0,cell)
+                rowdata.append(celldata)
+            tablehead.append(rowdata)
     # if not overridden, use first row as headers
-    if (not options.has_key('headrows')) and (not options.has_key('headers')):
-        options['headrows'] = 1
+    if (not options.has_key('header-rows')) and (not options.has_key('headers')):
+        options['header-rows'] = 1
     else:
-        options['headrows'] = 0
-    for i in range(options['headrows']):
+        options.setdefault('header-rows', '0')
+        options['header-rows'] = int(options['header-rows'])
+    # populate header from header-rows option.
+    for i in range(options['header-rows']):
         row = csvreader.next()
         rowdata = []
         for j in row:
             cell = statemachine.StringList((j,), source=source)
             celldata = (0,0,0,cell)
             rowdata.append(celldata)
-        tablehead = tablehead + [rowdata,]
+        tablehead.append(rowdata)
     # populate tbody
     tablebody = []
     for row in csvreader:
@@ -144,29 +147,24 @@ def csvtable(name, arguments, options, content, lineno,
             j = statemachine.StringList((i,), source=source)
             celldata = (0,0,0,j)
             rowdata.append(celldata)
-        tablebody = tablebody + [rowdata,]
+        tablebody.append(rowdata)
     if tablebody == []:
         error = state_machine.reporter.error(
               '"%s" directive requires table body content.' % name,
               nodes.literal_block(block_text, block_text), line=lineno)
         return [error]
     # calculate column widths
-    maxcols = 0
-    for i in tablehead:
-        if len(i) > maxcols:
-            maxcols = len(i)
-    for i in tablebody:
-        if len(i) > maxcols:
-            maxcols = len(i)
+    maxcols = max(map(len, tablehead + tablebody))
     if options.has_key('widths'):
-        if options['widths'].find(','):
-            tablecolwidths = [options['widths'].replace(' ','').split(','),][0]
+        if ',' in options['widths']:
+            tablecolwidths = options['widths'].replace(' ','').split(',')
         else:
-            tablecolwidths = [options['widths'].split(' '),]
+            tablecolwidths = filter(options['widths'].split(' '))
         if len(tablecolwidths) != maxcols:
             error = state_machine.reporter.error(
               '"%s" widths does not match number of columns in table.' % name,
               nodes.literal_block(block_text, block_text), line=lineno)
+        tablecolwidths = map(int, tablecolwidths)
     else:
         tablecolwidths = [100/maxcols]*maxcols
 
@@ -226,7 +224,7 @@ def nonzero_int_list(argument):
     return argument
 
 csvtable.arguments = (0, 1, 1)
-csvtable.options = {'headrows': directives.nonnegative_int,
+csvtable.options = {'header-rows': directives.nonnegative_int,
                     'headers': directives.unchanged,
                     'widths': nonzero_int_list,
                     'file' : directives.path,
@@ -234,7 +232,6 @@ csvtable.options = {'headrows': directives.nonnegative_int,
                     'delim' : single_char,              # field delim char
                     'quote' : single_char,              # text field quote/unquote char
                     'lineend' : line_end,               # line end char(s)
-                    'skipspace' : directives.flag,      # ignore whitespace after delim?
                     'escape' : single_char,             # char used to escape delim & quote as-needed
                    }
 csvtable.content = 1

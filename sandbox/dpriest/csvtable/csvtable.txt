@@ -10,7 +10,7 @@ CSV Table
 The "csvtable" directive is used to create a table::
 
     .. csvtable:: Frozen Delights!
-       :headers: "Treat" "Quantity" "Description"
+       :headers: "Treat", "Quantity", "Description"
        :widths: 15, 10, 30
 
        "Albatross", 2.99, "On a stick!"
@@ -23,11 +23,11 @@ The following options are recognized:
     Set a "class" attribute value on the table element.  See the
     class_ directive below.
 
-``headrows`` : integer
+``header-rows`` : integer
     The number of rows to use in the table header. Optional:
     defaults to 1 unless ``headers`` is also defined.
 
-``headers`` : "column head" ["column head"...]
+``headers`` : "column head", ["column head", ...]
     Sets column table headers. Optional: if defined, ``headrows``
     defaults to 0 unless explicitly overridden.
 
@@ -51,10 +51,6 @@ The following options are recognized:
     The string used to terminate lines in the CSV file.  Useful only
     for external CSV files.  Optional: defaults to ``crlf``
     (carriage return + linefeed).
-
-``skipspace`` :
-    When defined, whitespace immediately following the delimiter is ignored.
-    Optional: when not defined, whitespace is not ignored.
 
 ``escape`` : [char | tab | space | lf | ff | vt | hex ##]
     A one-character string used to escape the delimiter or quote characters.
