@@ -19,12 +19,14 @@ element generic identifiers in the DTD_.
 .. _DTD: http://docutils.sourceforge.net/spec/docutils.dtd
 """
 
-import sys, os
+__docformat__ = 'reStructuredText'
+
+import sys
+import os
+import re
 import xml.dom.minidom
 from types import IntType, SliceType, StringType, TupleType, ListType
 from UserString import MutableString
-import utils
-import docutils
 
 
 # ==============================
@@ -545,14 +547,14 @@ class Targetable(Resolvable):
 
 class document(Root, Structural, Element):
 
-    def __init__(self, reporter, language_code, *args, **kwargs):
+    def __init__(self, options, reporter, *args, **kwargs):
         Element.__init__(self, *args, **kwargs)
+
+        self.options = options
+        """Command-line or internal option data record."""
 
         self.reporter = reporter
         """System message generator."""
-
-        self.language_code = language_code
-        """ISO 639 2-letter language identifier."""
 
         self.explicit_targets = {}
         """Mapping of target names to explicit target nodes."""
@@ -649,7 +651,7 @@ class document(Root, Structural, Element):
                 msgnode += msg
         else:
             if node.has_key('name'):
-                id = utils.id(node['name'])
+                id = make_id(node['name'])
             else:
                 id = ''
             while not id or self.ids.has_key(id):
@@ -798,7 +800,7 @@ class document(Root, Structural, Element):
         self.pending.append(pending)
 
     def copy(self):
-        return self.__class__(self.reporter, self.language_code,
+        return self.__class__(self.options, self.reporter,
                               **self.attributes)
 
 
@@ -831,6 +833,7 @@ class copyright(Bibliographic, TextElement): pass
 # =====================
 
 class section(Structural, Element): pass
+
 
 class topic(Structural, Element):
 
@@ -1250,3 +1253,46 @@ class SkipDeparture(TreePruningException):
     """
 
     pass
+
+
+def make_id(string):
+    """
+    Convert `string` into an identifier and return it.
+
+    Docutils identifiers will conform to the regular expression
+    ``[a-z][-a-z0-9]*``. For CSS compatibility, identifiers (the "class" and
+    "id" attributes) should have no underscores, colons, or periods. Hyphens
+    may be used.
+
+    - The `HTML 4.01 spec`_ defines identifiers based on SGML tokens:
+
+          ID and NAME tokens must begin with a letter ([A-Za-z]) and may be
+          followed by any number of letters, digits ([0-9]), hyphens ("-"),
+          underscores ("_"), colons (":"), and periods (".").
+
+    - However the `CSS1 spec`_ defines identifiers based on the "name" token,
+      a tighter interpretation ("flex" tokenizer notation; "latin1" and
+      "escape" 8-bit characters have been replaced with entities)::
+
+          unicode     \\[0-9a-f]{1,4}
+          latin1      [&iexcl;-&yuml;]
+          escape      {unicode}|\\[ -~&iexcl;-&yuml;]
+          nmchar      [-a-z0-9]|{latin1}|{escape}
+          name        {nmchar}+
+
+    The CSS1 "nmchar" rule does not include underscores ("_"), colons (":"),
+    or periods ("."), therefore "class" and "id" attributes should not contain
+    these characters. They should be replaced with hyphens ("-"). Combined
+    with HTML's requirements (the first character must be a letter; no
+    "unicode", "latin1", or "escape" characters), this results in the
+    ``[a-z][-a-z0-9]*`` pattern.
+
+    .. _HTML 4.01 spec: http://www.w3.org/TR/html401
+    .. _CSS1 spec: http://www.w3.org/TR/REC-CSS1
+    """
+    id = _non_id_chars.sub('-', ' '.join(string.lower().split()))
+    id = _non_id_at_ends.sub('', id)
+    return str(id)
+
+_non_id_chars = re.compile('[^a-z0-9]+')
+_non_id_at_ends = re.compile('^[-0-9]+|-+$')
