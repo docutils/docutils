@@ -7,10 +7,20 @@
    it to HTML and open index.html with your webbrowser.
 
 DocFactory is a kind of *integrated publishing environment* for
-documentation, tied to **Docutils**.  In fact, the intention of
-DocFactory is to be a GUI for Docutils.  At present it can be used
-to edit a set of one or more **reStructuredText** files simultaneously
+documentation, tied to |Docutils|.  In fact, the intention of
+DocFactory is to be a GUI for |Docutils|.  At present it can be used
+to edit a set of one or more |ReST| files simultaneously
 and publish them as HTML.  Support for other markups and output
 formats is planned for future releases. `Read more...`__
 
 __ ../README.html
+
+.. |Docutils| raw:: html
+
+  <a class="reference" href="http://docutils.sourceforge.net" target="_top">Docutils</a>
+
+.. |ReST| raw:: html
+
+  <a class="reference" href="http://docutils.sourceforge.net/rst.html" target="_top">reStructuredText</a>
+
+

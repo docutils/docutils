@@ -21,13 +21,18 @@ the same languages. However, they vary in individual characters. For
 example, ``ISO-8859-1`` does not support the EURO SIGN (try ``cp1252``
 if you need it). If you face problems your first attempt should be
 to try out Python's different standard encodings which can be found
-at http://www.python.org/dev/doc/devel/lib/node123.html.
+at |www.python.org|.
+
+.. |www.python.org| raw:: html
+
+  <a class="reference" href="http://www.python.org/dev/doc/devel/lib/node123.html" target="_top">http://www.python.org/dev/doc/devel/lib/node123.html</a>
+
 
 Is it possible to run DocFactory on systems without a Python installation?
 ==========================================================================
 
 The Docfactory-tarball contains a script called ``docfactory2exe.py``. If 
-py2exe_ is installed on your machine you can use this script to convert 
+|py2exe| is installed on your machine you can use this script to convert 
 ``docfactory.py`` into a into an executable Windows program, which is able 
 to run without requiring a Python installation.  Copy ``docfactory2exe.py``
 and ``docfactory.ico`` (both part of the tarball) to the directory where 
@@ -39,6 +44,9 @@ and ``docfactory.ico`` (both part of the tarball) to the directory where
 
 This will create a sub-directory ``dist\docfactory``, containing the file
 ``docfactory.exe`` and several other files needed at runtime.  (Visit
-http://py2exe.sourceforge.net for more details.) 
+|py2exe| for more details.) 
 
-.. _py2exe:     http://py2exe.sourceforge.net
+.. |py2exe| raw:: html
+
+  <a class="reference" href="http://py2exe.sourceforge.net" target="_top">py2exe</a>
+

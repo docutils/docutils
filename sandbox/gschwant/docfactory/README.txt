@@ -20,13 +20,13 @@ What is it?
 ===========
 
 DocFactory is a kind of *integrated publishing environment* for
-documentation, tied to Docutils_.  In fact, the intention of
+documentation, tied to |Docutils|.  In fact, the intention of
 DocFactory is to be a GUI for Docutils.  At present it can be used
-to edit a set of one or more reStructuredText_ files simultaneously
+to edit a set of one or more |ReST| files simultaneously
 and publish them as HTML.  Support for other markups and output
 formats is planned for future releases; see `Future Directions`_.
 
-DocFactory was built using Docutils_, Python_ and wxPython_.
+DocFactory was built using |Docutils|, |Python| and |wxPython|.
 *Many thanks to all developers!*
 
 
@@ -37,12 +37,12 @@ DocFactory is distributed as a subpackage of Docutils
 (``docutils.factory``).  In order to run it in a Python-environment
 you'll need the following:
 
-* Python 2.1.1 or later (http://www.python.org).
+* Python 2.1.1 or later (|http://www.python.org|).
 
-* wxPython 2.3.4.2 or later (http://wxpython.org).  Be sure to get the
+* wxPython 2.3.4.2 or later (|http://wxpython.org|).  Be sure to get the
   build matching the version of Python you're using.
 
-* Docutils 0.2.2 or later (http://docutils.sourceforge.net).  Use the
+* Docutils 0.2.2 or later (|http://docutils.sourceforge.net|).  Use the
   CVS snapshot; improvements are being made almost daily.
 
 
@@ -275,7 +275,7 @@ Find & Replace
 ~~~~~~~~~~~~~~
 
 The "Find & Replace"-dialog was introduced with DocFactory release 0.2
-and is special in the sense that it uses `regular expression syntax`_ 
+and is special in the sense that it uses |regular expression syntax| 
 for searching as defined by Python's re-module.  This offers a great deal
 of flexibility in searching.  For example: Searching for ``Fred|Ted`` will
 search the file for appearances of ``Fred`` as well as for appearances
@@ -288,7 +288,7 @@ appearances of ``C:\temp\test.txt`` you will have to search for
 Data storage
 ============
 
-DocFactory uses the Python's ConfigParser_-module to store any information 
+DocFactory uses the Python's |ConfigParser|-module to store any information 
 about projects which has to be saved between runs.  The storage file has
 a ``[docfactory_project: <name of project>]`` section for each project.
 (``<name of project>`` is replaced by the project's name.) Each section
@@ -347,9 +347,39 @@ feedback is welcome.*
 .. Hyperlinks
 
 .. _LICENSE.txt:                 LICENSE.html
-.. _reStructuredText:            http://docutils.sourceforge.net/rst.html
-.. _Python:                      http://www.python.org
-.. _wxPython:                    http://wxpython.org
-.. _Docutils:                    http://docutils.sourceforge.net
-.. _`regular expression syntax`: http://www.python.org/doc/current/lib/re-syntax.html
-.. _ConfigParser:                http://www.python.org/doc/current/lib/module-ConfigParser.html
+
+.. |ReST| raw:: html
+
+   <a class="reference" href="http://docutils.sourceforge.net/rst.html" target="_top">reStructuredText</a>
+ 
+.. |Python| raw:: html
+
+  <a class="reference" href="http://www.python.org" target="_top">Python</a>
+
+.. |http://www.python.org| raw:: html
+
+  <a class="reference" href="http://www.python.org" target="_top">http://www.python.org</a>
+
+.. |wxPython| raw:: html
+
+  <a class="reference" href="http://wxpython.org" target="_top">wxPython</a>
+
+.. |http://wxPython.org| raw:: html
+
+  <a class="reference" href="http://wxpython.org" target="_top">http://wxPython.org</a>
+
+.. |Docutils| raw:: html
+
+  <a class="reference" href="http://docutils.sourceforge.net" target="_top">Docutils</a>
+
+.. |http://docutils.sourceforge.net| raw:: html
+
+  <a class="reference" href="http://docutils.sourceforge.net" target="_top">http://docutils.sourceforge.net</a>
+
+.. |regular expression syntax| raw:: html
+
+  <a class="reference" href="http://www.python.org/doc/current/lib/re-syntax.html" target="_top">regular expression syntax</a>
+
+.. |ConfigParser| raw:: html
+
+  <a class="reference" href="http://www.python.org/doc/current/lib/module-ConfigParser.html" target="_top">ConfigParser</a>
