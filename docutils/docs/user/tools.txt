@@ -395,6 +395,22 @@ debug                 Report debug-level system messages.
                       Default: don't (None).  Options: ``--debug,
                       --no-debug``.
 --------------------  ------------------------------------------------
+docinfo_xform         (Standalone Reader.)  Enable or disable the
+                      bibliographic field list transform
+                      (docutils.transforms.frontmatter.DocInfo).
+
+                      Default: enabled (1).  Options:
+                      ``--no-doc-info``.
+--------------------  ------------------------------------------------
+doctitle_xform        (Standalone Reader.)  Enable or disable the
+                      promotion of a lone top-level section title to
+                      document title (and subsequent section title to
+                      document subtitle promotion;
+                      docutils.transforms.frontmatter.DocTitle).
+
+                      Default: enabled ().  Options:
+                      ``--no-doc-title``.
+--------------------  ------------------------------------------------
 doctype_declaration   (XML Writer.)  Generate XML with a DOCTYPE
                       declaration.
 
@@ -607,8 +623,8 @@ warning_stream        Path to a file for the output of system messages
                       Default: stderr (None).  Options:
                       ``--warnings``.
 --------------------  ------------------------------------------------
-xml_declaration       (XML Writer.)  Generate XML with an XML
-                      declaration.
+xml_declaration       (XML and HTML Writers.)  Generate XML with an
+                      XML declaration.
 
                       .. Caution:: The XML declaration carries text
                          encoding information, without which standard
