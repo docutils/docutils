@@ -617,7 +617,7 @@ file).
 Example::
 
     .. csv-table:: Frozen Delights!
-       :headers: "Treat", "Quantity", "Description"
+       :header: "Treat", "Quantity", "Description"
        :widths: 15, 10, 30
 
        "Albatross", 2.99, "On a stick!"
