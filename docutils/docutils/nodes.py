@@ -1177,7 +1177,7 @@ class pending(Special, Invisible, PreBibliographic, Element):
 
     def copy(self):
         return self.__class__(self.transform, self.details, self.rawsource,
-                              **self.attribuates)
+                              **self.attributes)
 
 
 class raw(Special, Inline, PreBibliographic, FixedTextElement):
