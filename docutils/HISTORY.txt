@@ -169,6 +169,7 @@ Specific:
     changes.
   - Added ``strip_top`` parameter to
     ``StateMachineWS.get_first_known_indented``.
+  - Made ``context`` a parameter to ``StateMachine.run()``.
 
 * docutils/utils.py:
 
