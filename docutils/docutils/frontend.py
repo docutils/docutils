@@ -192,7 +192,8 @@ class Values(optparse.Values):
 
     def __init__(self, *args, **kwargs):
         optparse.Values.__init__(self, *args, **kwargs)
-        if self.record_dependencies is None:
+        if (not hasattr(self, 'record_dependencies')
+            or self.record_dependencies is None):
             # Set up dependency list, in case it is needed.
             self.record_dependencies = docutils.utils.DependencyList()
 
