@@ -15,6 +15,7 @@ __docformat__ = 'reStructuredText'
 
 import sys
 from warnings import warn
+import re
 
 import docutils
 from docutils import nodes, utils, writers, languages
@@ -53,16 +54,20 @@ class OpenOfficeTranslator(nodes.NodeVisitor):
 
     start_para = '\n<text:p text:style-name="%s">\n'
     end_para = '\n</text:p>\n'
-    line_break = '\n<text:line-break/>'
 
     start_charstyle = '<text:span text:style-name="%s">'
     end_charstyle = '</text:span>'
 
+    line_break = '\n<text:line-break/>'
+    re_spaces = re.compile(' +')
+    spaces = '<text:s text:c="%d"/>'
+
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
-        self.settings = settings = document.settings
+        self.options = options = document.options
         self.body = []
         self.section_level = 0
+        self.skip_para_tag = False
 
     def astext(self):
         return ''.join(self.header + self.body + self.footer)
@@ -83,12 +88,12 @@ class OpenOfficeTranslator(nodes.NodeVisitor):
         pass
 
     def visit_admonition(self, node, name):
-        self.body.append(self.starttag(node, 'div', CLASS=name))
-        self.body.append('<p class="admonition-title">'
-                         + self.language.labels[name] + '</p>\n')
+        self.skip_para_tag = True
+        self.body.append(self.start_para % '.CALLOUT')
 
     def depart_admonition(self):
-        self.body.append('</div>\n')
+        self.body.append(self.end_para)
+        self.skip_para_tag = False
 
     def visit_attention(self, node):
         self.visit_admonition(node, 'attention')
@@ -97,10 +102,12 @@ class OpenOfficeTranslator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_block_quote(self, node):
+        self.skip_para_tag = True
         self.body.append(self.start_para % '.quotes')
 
     def depart_block_quote(self, node):
         self.body.append(self.end_para)
+        self.skip_para_tag = False
 
     def visit_bullet_list(self, node):
         self.body.append('<text:unordered-list text:style-name=".bullet">\n')
@@ -183,6 +190,7 @@ class OpenOfficeTranslator(nodes.NodeVisitor):
         self.body.append('</dd>\n')
 
     def visit_definition_list(self, node):
+        print node.astext()
         self.body.append(self.starttag(node, 'dl'))
 
     def depart_definition_list(self, node):
@@ -257,7 +265,7 @@ class OpenOfficeTranslator(nodes.NodeVisitor):
         old_compact_simple = self.compact_simple
         self.context.append((self.compact_simple, self.compact_p))
         self.compact_p = None
-        self.compact_simple = (self.settings.compact_lists and
+        self.compact_simple = (self.options.compact_lists and
                                (self.compact_simple
                                 or self.topic_class == 'contents'
                                 or self.check_simple_list(node)))
@@ -317,40 +325,38 @@ class OpenOfficeTranslator(nodes.NodeVisitor):
         self.body.append(self.context.pop())
 
     def visit_figure(self, node):
-        self.body.append(self.starttag(node, 'div', CLASS='figure'))
+        self.body.append(self.start_para % '.figure')
 
     def depart_figure(self, node):
-        self.body.append('</div>\n')
+        self.body.append(self.end_para)
 
     def visit_footnote(self, node):
-    	warn("footnote not implemented")
         raise nodes.SkipNode
 
     def footnote_backrefs(self, node):
-        if self.settings.footnote_backlinks and node.hasattr('backrefs'):
-            backrefs = node['backrefs']
-            if len(backrefs) == 1:
-                self.context.append('')
-                self.context.append('<a class="fn-backref" href="#%s" '
-                                    'name="%s">' % (backrefs[0], node['id']))
-            else:
-                i = 1
-                backlinks = []
-                for backref in backrefs:
-                    backlinks.append('<a class="fn-backref" href="#%s">%s</a>'
-                                     % (backref, i))
-                    i += 1
-                self.context.append('<em>(%s)</em> ' % ', '.join(backlinks))
-                self.context.append('<a name="%s">' % node['id'])
-        else:
-            self.context.append('')
-            self.context.append('<a name="%s">' % node['id'])
+        warn("footnote backrefs not available")
 
     def depart_footnote(self, node):
-    	pass
+        pass
 
     def visit_footnote_reference(self, node):
-    	warn("footnote_references not implemented")
+        name = node['refid']
+        id = node['id']
+        number = node['auto']
+        for footnote in self.document.autofootnotes:
+            if name == footnote['name']:
+                break
+        self.body.append('<text:footnote text:id="%s">\n' % id)
+        self.body.append('<text:footnote-citation text:string-value="%s"/>\n' % number)
+        self.body.append('<text:footnote-body>\n')
+        self.body.append(self.start_para % '.body')
+        for child in footnote.children:
+            if isinstance(child, nodes.paragraph):
+                self.body.append(child.astext())
+        self.body.append(self.end_para)
+        self.body.append('</text:footnote-body>\n')
+        self.body.append('</text:footnote>')
+        raise nodes.SkipNode
 
     def depart_footnote_reference(self, node):
         pass
@@ -378,12 +384,7 @@ class OpenOfficeTranslator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_image(self, node):
-        atts = node.attributes.copy()
-        atts['src'] = atts['uri']
-        del atts['uri']
-        if not atts.has_key('alt'):
-            atts['alt'] = atts['src']
-        self.body.append(self.emptytag(node, 'img', '', **atts))
+        pass
 
     def depart_image(self, node):
         pass
@@ -411,11 +412,10 @@ class OpenOfficeTranslator(nodes.NodeVisitor):
     def depart_interpreted(self, node):
         self.body.append('</span>')
 
+    # Don't need footnote labels/numbers
     def visit_label(self, node):
-    	warn("label not implemented")
-
-    def depart_label(self, node):
-        pass
+        print "!"
+        raise nodes.SkipNode
 
     def visit_legend(self, node):
         self.body.append(self.starttag(node, 'div', CLASS='legend'))
@@ -445,16 +445,20 @@ class OpenOfficeTranslator(nodes.NodeVisitor):
         self.body.append(self.end_charstyle)
 
     def visit_literal_block(self, node):
-        self.body.append(self.start_para % '.code')
-	lines = node.astext()
-	lines = lines.split('\n')
-	lines = self.line_break.join(lines)
-	self.body.append(lines)
-        self.body.append(self.end_para)
+        lines = self.encode(node.astext())
+        lines = lines.split('\n')
+        for line in lines:
+            self.body.append(self.start_para % '.code')
+            match = self.re_spaces.match(line)
+            if match:
+                numspaces = match.end()
+                line = (self.spaces % numspaces) + line[numspaces:]
+            self.body.append(line)
+            self.body.append(self.end_para)
         raise nodes.SkipNode
 
     def visit_note(self, node):
-        self.visit_admonition(node, 'note')
+        self.visit_admonition(node, '.note')
 
     def depart_note(self, node):
         self.depart_admonition()
@@ -513,10 +517,12 @@ class OpenOfficeTranslator(nodes.NodeVisitor):
         self.body.append('</span>')
 
     def visit_paragraph(self, node):
-        self.body.append(self.start_para % '.body')
+        if not self.skip_para_tag:
+            self.body.append(self.start_para % '.body')
 
     def depart_paragraph(self, node):
-        self.body.append(self.end_para)
+        if not self.skip_para_tag:
+            self.body.append(self.end_para)
 
     def visit_problematic(self, node):
         if node.hasattr('refid'):
@@ -644,6 +650,6 @@ class OpenOfficeTranslator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def unimplemented_visit(self, node):
-	print "Failure processing at line", node.line
+        print "Failure processing at line", node.line
         raise NotImplementedError('visiting unimplemented node type: %s'
                                   % node.__class__.__name__)

@@ -1,4 +1,5 @@
 import sys
+import os
 
 from docutils import nodes
 from docutils.parsers.rst import directives
@@ -28,12 +29,14 @@ index_directive.content = 1
 
 def include_code(name, arguments, options, content, lineno,
         content_offset, block_text, state, state_machine):
-    print >> sys.stderr, state_machine.document.settings._source
-    return []
+    #obj = state_machine.document.attributes
+    #print >> sys.stderr, obj
+    #print >> sys.stderr, dir(obj)
     document = state_machine.document
-    source = document.settings._source
-    if source is not None:
-        if has_attr(
+    dirname = getDocDir(document)
+    fname = os.path.join(dirname, arguments[0])
+    code = open(fname).read()
+    return [nodes.literal_block(code, code)]
 
 include_code.arguments = (0, 1, 0)
 
@@ -41,6 +44,25 @@ include_code.arguments = (0, 1, 0)
 
 def include_output(name, arguments, options, content, lineno,
         content_offset, block_text, state, state_machine):
-    return []
+    document = state_machine.document
+    dirname = getDocDir(document)
+    fname = os.path.join(dirname, arguments[0])
+    cmd = os.environ['PYTHON'] + ' ' + fname
+    f_input, f_output = os.popen4(cmd)
+    output = f_output.read()
+    f_output.close()
+    return [nodes.literal_block(output, output)]
 
 include_output.arguments = (0, 1, 0)
+
+
+def getDocDir(document):
+    source = document.current_source
+    if source is None:
+        return os.getcwd()
+    else:
+        dirname = os.path.dirname(os.path.abspath(source))
+        if dirname is None:
+            return os.getcwd()
+        else:
+            return dirname
