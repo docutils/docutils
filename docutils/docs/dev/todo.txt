@@ -1935,6 +1935,14 @@ Release Procedure
 
 * Run the test suite: ``cd test ; alltests.py``.
 
+* Isolate from outside influence:
+
+  1. Remove the old installation from site-packages (including
+     roman.py, and optparse.py, textwrap.py for pre-2.3
+     installations).
+
+  2. Clear/unset the PYTHONPATH environment variable.
+
 * Create the release tarball:
 
   1. Create a new empty directory and ``cd`` into it.
@@ -1951,12 +1959,9 @@ Release Procedure
 
 * Expand and install the release tarball **in isolation**:
 
-  1. Remove the old installation from site-packages (including
-     roman.py, and optparse.py, textwrap.py for pre-2.3
-     installations).
-  2. Expand the tarball in a new location, not over any existing files.
-  3. Clear/unset the PYTHONPATH environment variable.
-  4. ``python setup.py install``
+  1. Expand the tarball in a new location, not over any existing files.
+
+  2. ``python setup.py install``
 
 * Run the test suite from the expanded archive directory: ``cd test ;
   alltests.py``.
