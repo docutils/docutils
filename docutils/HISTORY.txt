@@ -133,7 +133,8 @@ Specific:
   - Added "Invisible" element category class.
   - Changed ``Node.walk()`` & ``.walkabout()`` to permit more tree
     modification during a traversal.
-  - Added element classes: ``line_block``, ``generated``, ``address``.
+  - Added element classes: ``line_block``, ``generated``, ``address``,
+    ``sidebar``.
   - Added support for lists of nodes to ``Element.insert()``.
   - Fixed parent linking in ``Element.replace()``.
   - Added new abstract superclass ``FixedTextElement``; adds
@@ -253,6 +254,7 @@ Specific:
   - Added support for embedded URIs in hyperlink references.
   - Added backslash-escapes to inline markup end-string suffix.
   - Added support for correct interpreted text processing.
+  - Fixed nested title parsing (topic, sidebar directives).
   - Added special processing of backslash-escaped whitespace (idea
     from David Abrahams).
   - Made substitutions case-sensitive-but-forgiving; moved some code
@@ -276,7 +278,8 @@ Specific:
   - Return ``None`` for missing directives.
 
 * docutils/parsers/rst/directives/body.py: Added to project.  Contains
-  the "topic", "line-block", and "parsed-literal" directives.
+  the "topic", "sidebar", "line-block", and "parsed-literal"
+  directives.
 
 * docutils/parsers/rst/directives/images.py:
 
@@ -422,7 +425,10 @@ Specific:
   - Refined XML prologue.
   - Support for no stylesheet.
   - Removed "interpreted" element support.
-  - Added support for "title_reference" element.
+  - Added support for "title_reference", "sidebar" elements.
+
+* docutils/writers/latex2e.py: LaTeX Writer, added by Engelbert Gruber
+  (from the sandbox).
 
 * docutils/writers/pep_html.py:
 
@@ -442,6 +448,7 @@ Specific:
   - Added a "Getting Help" section.
   - Rearranged the structure.
   - Kept up to date, with new settings, command-line options etc.
+  - Added section for ``rst2latex.py`` (Engelbert Gruber).
 
 * docs/rst/quickstart.txt:
 
@@ -489,6 +496,7 @@ Specific:
     "abbreviation", "acronym".
   - Removed "refuri" attribute from "footnote_reference" and
     "citation_reference".
+  - Added "sidebar" element.
 
 * spec/pep-0256.txt: Converted to reStructuredText & updated.
 
@@ -519,7 +527,7 @@ Specific:
 * spec/rst/directives.txt:
 
   - Added directives: "topic", "sectnum", "target-notes",
-    "line-block", "parsed-literal", "include", "replace".
+    "line-block", "parsed-literal", "include", "replace", "sidebar".
   - Formalized descriptions of directive details.
   - Added an "align" attribute to the "image" & "figure" directives
     (by Adam Chodorowski).
@@ -553,6 +561,7 @@ Specific:
   - Moved test/test_rst/ to test/test_parsers/test_rst/.
   - Moved test/test_pep/ to test/test_readers/test_pep/.
   - Added test/test_readers/test_python/.
+  - Added test/test_writers/ (Engelbert Gruber).
 
 * tools:
 
@@ -590,6 +599,8 @@ Specific:
 * tools/quicktest.py:
 
   - Added "-V"/"--version" option.
+
+* tools/rst2latex.py: LaTeX front end, added by Engelbert Gruber.
 
 * tools/editors: Support code for editors, added to project.  Contains
   ``emacs/restructuredtext.el``.

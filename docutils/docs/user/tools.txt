@@ -190,6 +190,7 @@ Arguments to ``pep2html.py`` may be a list of PEP numbers or .txt
 files.  If no arguments are given, all files of the form
 "``pep-*.txt``" are processed.
 
+
 rst2latex.py
 ------------
 
@@ -197,23 +198,25 @@ rst2latex.py
 :Parser: reStructuredText
 :Writer: LaTeX2e
 
-The ``rst2laetx.py`` front end reads standalone reStructuredText source
-files and produces LaTeX2e output. For example, to process a reStructuredText file
-"``test.txt``" into LaTeX::
+The ``rst2latex.py`` front end reads standalone reStructuredText
+source files and produces LaTeX2e output. For example, to process a
+reStructuredText file "``test.txt``" into LaTeX::
 
     rst2latex.py test.txt test.tex
 
-The output file "``test.tex``" should then be processed with ``latex`` or 
-``pdflatex`` to get a typeset document.
+The output file "``test.tex``" should then be processed with ``latex``
+or ``pdflatex`` to get a typeset document.
 
 Some limitations and difference apply:
 
-- Gif,jpg or png images are not handled, when processed with ``latex``, use 
-  ``pdflatex`` instead.
+- Gif,jpg or png images are not handled, when processed with
+  ``latex``, use ``pdflatex`` instead.
 - Only Latin-1 is tested up to now.
-- The generated file includes a file ``style.tex``, which allows the inclusion
-  of special packages or changes to settings made in the header.
-- Not all constructs e.g. multirow/multicoumn entries in tables are possible.
+- The generated file includes a file ``style.tex``, which allows the
+  inclusion of special packages or changes to settings made in the
+  header.
+- Not all constructs are possible (e.g. multirow/multicoumn entries in
+  tables are not).
 
 
 docutils-xml.py
