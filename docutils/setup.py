@@ -62,6 +62,7 @@ classifiers = [
     'Topic :: Text Processing',
     'Natural Language :: English',      # main/default language, keep first
     'Natural Language :: Afrikaans',
+    'Natural Language :: Esperanto',
     'Natural Language :: French',
     'Natural Language :: German',
     'Natural Language :: Italian',
