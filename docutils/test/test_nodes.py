@@ -108,15 +108,6 @@ class MiscTests(unittest.TestCase):
             normed = nodes.make_id(input)
             self.assertEquals(normed, output)
 
-    def test_has_children(self):
-        self.assert_(not nodes.Text('some text').has_children())
-        self.assert_(not nodes.Node().has_children())
-        e = nodes.TextElement()
-        self.assert_(not e.has_children())
-        e += nodes.Text('some text')
-        self.assert_(e.has_children())
-        self.assert_(not e[0].has_children())
-
     def getlist(self, n, **kwargs):
         r = []
         while n is not None:

@@ -161,10 +161,6 @@ class Node:
                 category='nodes.Node.walkabout')
             visitor.dispatch_departure(self)
 
-    def has_children(self):
-        """Return true if this node has children."""
-        return 0
-
     def next_node(self, descend=1, ascend=1, condition=None):
         """
         Return the next node in tree traversal order for which
@@ -176,7 +172,7 @@ class Node:
         """
         node = self
         while 1:
-            if descend and node.has_children():
+            if descend and node.get_children():
                 r = node[0]
             elif node.parent is not None:
                 # Index of the next sibling.
@@ -564,10 +560,6 @@ class Element(Node):
     def get_children(self):
         """Return this element's children."""
         return self.children
-
-    def has_children(self):
-        """Return true if this node has children."""
-        return len(self.children) > 0
 
     def copy(self):
         return self.__class__(**self.attributes)
