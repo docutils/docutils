@@ -112,15 +112,6 @@ General
 - Perhaps the ``Component.supports`` method should deal with
   individual features ("meta" etc.) instead of formats ("html" etc.)?
 
-- Get the "--source-link" option (or a variation) to produce relative
-  links, like in this case::
-
-      cd tools
-      html.py -s ../spec/rst/problems.txt ../spec/rst/problems.html
-
-  The source link should refer to "problems.txt" (relative to
-  "problems.html"), not "../spec/rst/problems.txt" which it does now.
-
 
 Specification
 -------------

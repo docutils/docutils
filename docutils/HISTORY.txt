@@ -136,6 +136,7 @@ Specific:
   - Changed names of Reporter's thresholds:
     warning_level -> report_level; error_level -> halt_level.
   - Moved ``utils.id()`` to ``nodes.make_id()``.
+  - Added ``relative_uri(source, target)``.
 
 * docutils/languages/de.py: German mappings; added to project.  Thanks
   to Gunnar Schwant for the translations.
