@@ -2540,9 +2540,10 @@ class Text(RSTState):
             indented.trim_end()
         if not indented:
             return self.quoted_literal_block()
-        nodelist = []
         data = '\n'.join(indented)
-        nodelist.append(nodes.literal_block(data, data))
+        literal_block = nodes.literal_block(data, data)
+        literal_block.line = offset + 1
+        nodelist = [literal_block]
         if not blank_finish:
             nodelist.append(self.unindent_warning('Literal block'))
         return nodelist
