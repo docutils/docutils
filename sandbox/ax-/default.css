@@ -13,7 +13,7 @@ body {
 }
 
 code, pre, tt, samp {
-  font: .85em 'Lucida Console', monospace;
+  font: .8em 'Lucida Console', monospace;
 }
 
 h1 { font-size: 2em; }
@@ -28,8 +28,16 @@ a.toc-backref {
   text-decoration: none ;
   color: black }
 
+blockquote.epigraph {
+  margin: 2em 5em ; }
+
 dd {
   margin-bottom: 0.5em }
+
+/* Uncomment (& remove this text!) to get bold-faced definition list terms
+dt {
+  font-weight: bold }
+*/
 
 div.abstract {
   margin: 2em 5em }
