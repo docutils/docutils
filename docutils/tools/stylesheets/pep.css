@@ -219,7 +219,8 @@ table {
 
 td, th {
   padding-left: 0.5em ;
-  padding-right: 0.5em }
+  padding-right: 0.5em ;
+  vertical-align: top }
 
 td > :first-child, th > :first-child {
   margin-top: 0em }
