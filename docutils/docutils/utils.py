@@ -198,94 +198,94 @@ class ConditionSet:
                 self.stream)
 
 
-class ExtensionAttributeError(DataError): pass
-class BadAttributeError(ExtensionAttributeError): pass
-class BadAttributeDataError(ExtensionAttributeError): pass
-class DuplicateAttributeError(ExtensionAttributeError): pass
+class ExtensionOptionError(DataError): pass
+class BadOptionError(ExtensionOptionError): pass
+class BadOptionDataError(ExtensionOptionError): pass
+class DuplicateOptionError(ExtensionOptionError): pass
 
 
-def extract_extension_attributes(field_list, attribute_spec):
+def extract_extension_options(field_list, option_spec):
     """
-    Return a dictionary mapping extension attribute names to converted values.
+    Return a dictionary mapping extension option names to converted values.
 
     :Parameters:
         - `field_list`: A flat field list without field arguments, where each
           field body consists of a single paragraph only.
-        - `attribute_spec`: Dictionary mapping known attribute names to a
+        - `option_spec`: Dictionary mapping known option names to a
           conversion function such as `int` or `float`.
 
     :Exceptions:
-        - `KeyError` for unknown attribute names.
-        - `ValueError` for invalid attribute values (raised by the conversion
+        - `KeyError` for unknown option names.
+        - `ValueError` for invalid option values (raised by the conversion
            function).
-        - `DuplicateAttributeError` for duplicate attributes.
-        - `BadAttributeError` for invalid fields.
-        - `BadAttributeDataError` for invalid attribute data (missing name,
+        - `DuplicateOptionError` for duplicate options.
+        - `BadOptionError` for invalid fields.
+        - `BadOptionDataError` for invalid option data (missing name,
           missing data, bad quotes, etc.).
     """
-    attlist = extract_attributes(field_list)
-    attdict = assemble_attribute_dict(attlist, attribute_spec)
+    attlist = extract_options(field_list)
+    attdict = assemble_option_dict(attlist, option_spec)
     return attdict
 
-def extract_attributes(field_list):
+def extract_options(field_list):
     """
-    Return a list of attribute (name, value) pairs from field names & bodies.
+    Return a list of option (name, value) pairs from field names & bodies.
 
     :Parameter:
         `field_list`: A flat field list without field arguments, where each
         field body consists of a single paragraph only.
 
     :Exceptions:
-        - `BadAttributeError` for invalid fields.
-        - `BadAttributeDataError` for invalid attribute data (missing name,
+        - `BadOptionError` for invalid fields.
+        - `BadOptionDataError` for invalid option data (missing name,
           missing data, bad quotes, etc.).
     """
     attlist = []
     for field in field_list:
         if len(field) != 2:
-            raise BadAttributeError(
-                  'extension attribute field may not contain field arguments')
+            raise BadOptionError(
+                  'extension option field may not contain field arguments')
         name = str(field[0].astext().lower())
         body = field[1]
         if len(body) == 0:
             data = None
         elif len(body) > 1 or not isinstance(body[0], nodes.paragraph) \
               or len(body[0]) != 1 or not isinstance(body[0][0], nodes.Text):
-            raise BadAttributeDataError(
-                  'extension attribute field body may contain\n'
-                  'a single paragraph only (attribute "%s")' % name)
+            raise BadOptionDataError(
+                  'extension option field body may contain\n'
+                  'a single paragraph only (option "%s")' % name)
         else:
             data = body[0][0].astext()
         attlist.append((name, data))
     return attlist
 
-def assemble_attribute_dict(attlist, attspec):
+def assemble_option_dict(attlist, attspec):
     """
-    Return a mapping of attribute names to values.
+    Return a mapping of option names to values.
 
     :Parameters:
         - `attlist`: A list of (name, value) pairs (the output of
-          `extract_attributes()`).
-        - `attspec`: Dictionary mapping known attribute names to a
+          `extract_options()`).
+        - `attspec`: Dictionary mapping known option names to a
           conversion function such as `int` or `float`.
 
     :Exceptions:
-        - `KeyError` for unknown attribute names.
-        - `DuplicateAttributeError` for duplicate attributes.
-        - `ValueError` for invalid attribute values (raised by conversion
+        - `KeyError` for unknown option names.
+        - `DuplicateOptionError` for duplicate options.
+        - `ValueError` for invalid option values (raised by conversion
            function).
     """
-    attributes = {}
+    options = {}
     for name, value in attlist:
         convertor = attspec[name]       # raises KeyError if unknown
-        if attributes.has_key(name):
-            raise DuplicateAttributeError('duplicate attribute "%s"' % name)
+        if options.has_key(name):
+            raise DuplicateOptionError('duplicate option "%s"' % name)
         try:
-            attributes[name] = convertor(value)
+            options[name] = convertor(value)
         except (ValueError, TypeError), detail:
-            raise detail.__class__('(attribute: "%s"; value: %r)\n%s'
+            raise detail.__class__('(option: "%s"; value: %r)\n%s'
                                    % (name, value, detail))
-    return attributes
+    return options
 
 
 class NameValueError(DataError): pass

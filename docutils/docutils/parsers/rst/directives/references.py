@@ -16,7 +16,8 @@ from docutils import nodes
 from docutils.transforms import references
 
 
-def target_notes(match, type_name, data, state, state_machine, attributes):
+def target_notes(match, type_name, data, state, state_machine,
+                 option_presets):
     """Target footnote generation."""
     pending = nodes.pending(references.TargetNotes, 'first reader', {})
     state_machine.document.note_pending(pending)

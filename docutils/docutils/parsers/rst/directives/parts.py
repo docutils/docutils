@@ -33,12 +33,12 @@ def backlinks(arg):
         raise ValueError(
             '"%s" unknown; choose from "top", "entry", or "none"' % arg)
 
-contents_attribute_spec = {'depth': int,
-                           'local': unchanged,
-                           'backlinks': backlinks,
-                           'qa': unchanged}
+contents_option_spec = {'depth': int,
+                        'local': unchanged,
+                        'backlinks': backlinks}
+                        #'qa': unchanged}
 
-def contents(match, type_name, data, state, state_machine, attributes):
+def contents(match, type_name, data, state, state_machine, option_presets):
     """Table of contents."""
     lineno = state_machine.abs_line_number()
     line_offset = state_machine.line_offset
@@ -64,37 +64,37 @@ def contents(match, type_name, data, state, state_machine, attributes):
     pending = nodes.pending(parts.Contents, 'first writer', {'title': title},
                             blocktext)
     if attlines:
-        success, data, blank_finish = state.parse_extension_attributes(
-              contents_attribute_spec, attlines, blank_finish)
-        if success:                     # data is a dict of attributes
+        success, data, blank_finish = state.parse_extension_options(
+              contents_option_spec, attlines, blank_finish)
+        if success:                     # data is a dict of options
             pending.details.update(data)
         else:                           # data is an error string
             error = state_machine.reporter.error(
-                  'Error in "%s" directive attributes at line %s:\n%s.'
+                  'Error in "%s" directive options at line %s:\n%s.'
                   % (match.group(1), lineno, data), '',
                   nodes.literal_block(blocktext, blocktext))
             return [error] + messages, blank_finish
     state_machine.document.note_pending(pending)
     return [pending] + messages, blank_finish
 
-sectnum_attribute_spec = {'depth': int}
+sectnum_option_spec = {'depth': int}
 
-def sectnum(match, type_name, data, state, state_machine, attributes):
+def sectnum(match, type_name, data, state, state_machine, option_presets):
     """Automatic section numbering."""
     lineno = state_machine.abs_line_number()
     line_offset = state_machine.line_offset
     datablock, indent, offset, blank_finish = \
           state_machine.get_first_known_indented(match.end(), until_blank=1)
     pending = nodes.pending(parts.SectNum, 'last reader', {})
-    success, data, blank_finish = state.parse_extension_attributes(
-          sectnum_attribute_spec, datablock, blank_finish)
-    if success:                     # data is a dict of attributes
+    success, data, blank_finish = state.parse_extension_options(
+          sectnum_option_spec, datablock, blank_finish)
+    if success:                     # data is a dict of options
         pending.details.update(data)
     else:                           # data is an error string
         blocktext = '\n'.join(state_machine.input_lines[
             line_offset : line_offset + len(datablock) + 1])
         error = state_machine.reporter.error(
-              'Error in "%s" directive attributes at line %s:\n%s.'
+              'Error in "%s" directive options at line %s:\n%s.'
               % (match.group(1), lineno, data), '',
               nodes.literal_block(blocktext, blocktext))
         return [error], blank_finish

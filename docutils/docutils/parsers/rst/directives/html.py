@@ -18,7 +18,7 @@ from docutils.parsers.rst import states
 from docutils.transforms import components
 
 
-def meta(match, type_name, data, state, state_machine, attributes):
+def meta(match, type_name, data, state, state_machine, option_presets):
     line_offset = state_machine.line_offset
     block, indent, offset, blank_finish = \
           state_machine.get_first_known_indented(match.end(), until_blank=1)
@@ -41,7 +41,7 @@ def meta(match, type_name, data, state, state_machine, attributes):
         node += msg
     return node.get_children(), blank_finish
 
-def imagemap(match, type_name, data, state, state_machine, attributes):
+def imagemap(match, type_name, data, state, state_machine, option_presets):
     return [], 0
 
 

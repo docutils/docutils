@@ -20,12 +20,12 @@ from docutils import nodes, utils
 def unchanged(arg):
     return arg                          # unchanged!
 
-image_attribute_spec = {'alt': unchanged,
-                        'height': int,
-                        'width': int,
-                        'scale': int}
+image_option_spec = {'alt': unchanged,
+                     'height': int,
+                     'width': int,
+                     'scale': int}
 
-def image(match, type_name, data, state, state_machine, attributes):
+def image(match, type_name, data, state, state_machine, option_presets):
     lineno = state_machine.abs_line_number()
     line_offset = state_machine.line_offset
     datablock, indent, offset, blank_finish = \
@@ -52,28 +52,28 @@ def image(match, type_name, data, state, state_machine, attributes):
               nodes.literal_block(blocktext, blocktext))
         return [error], blank_finish
     if attlines:
-        success, data, blank_finish = state.parse_extension_attributes(
-              image_attribute_spec, attlines, blank_finish)
-        if success:                     # data is a dict of attributes
-            attributes.update(data)
+        success, data, blank_finish = state.parse_extension_options(
+              image_option_spec, attlines, blank_finish)
+        if success:                     # data is a dict of options
+            option_presets.update(data)
         else:                           # data is an error string
             error = state_machine.reporter.error(
-                  'Error in "%s" directive attributes at line %s:\n%s.'
+                  'Error in "%s" directive options at line %s:\n%s.'
                   % (match.group(1), lineno, data), '',
                   nodes.literal_block(blocktext, blocktext))
             return [error], blank_finish
-    attributes['uri'] = reference
-    imagenode = nodes.image(blocktext, **attributes)
+    option_presets['uri'] = reference
+    imagenode = nodes.image(blocktext, **option_presets)
     return [imagenode], blank_finish
 
-def figure(match, type_name, data, state, state_machine, attributes):
+def figure(match, type_name, data, state, state_machine, option_presets):
     line_offset = state_machine.line_offset
     (imagenode,), blank_finish = image(match, type_name, data, state,
-                                      state_machine, attributes)
+                                       state_machine, option_presets)
     indented, indent, offset, blank_finish \
           = state_machine.get_first_known_indented(sys.maxint)
-    blocktext = '\n'.join(state_machine.input_lines[line_offset:
-                                                  state_machine.line_offset+1])
+    blocktext = '\n'.join(state_machine.input_lines[
+        line_offset : state_machine.line_offset + 1])
     if isinstance(imagenode, nodes.system_message):
         if indented:
             imagenode[-1] = nodes.literal_block(blocktext, blocktext)
