@@ -35,12 +35,12 @@ DocFactory is distributed as a subpackage of Docutils
 (``docutils.factory``).  In order to run it in a Python-environment
 you'll need the following:
 
-* Python 2.1.1 or later (|http://www.python.org|).
+* Python 2.3.2 or later (|http://www.python.org|).
 
-* wxPython 2.3.4.2 or later (|http://wxpython.org|).  Be sure to get the
+* wxPython 2.4.2.4 or later (|http://wxpython.org|).  Be sure to get the
   build matching the version of Python you're using.
 
-* Docutils 0.2.8 or later (|http://docutils.sourceforge.net|).  Use the
+* Docutils 0.3 or later (|http://docutils.sourceforge.net|).  Use the
   CVS snapshot; improvements are being made almost daily.
 
 
