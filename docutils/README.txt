@@ -185,7 +185,7 @@ After unpacking and installing the Docutils package, the following
 shell commands will generate HTML for all included documentation::
 
     cd docutils/tools
-    buildhtml.py ..
+    buildhtml.py ../
 
 For official releases, the directory may be called "docutils-X.Y",
 where "X.Y" is the release version.  Alternatively::
@@ -210,7 +210,7 @@ extensive inline documentation (in reStructuredText format of course).
 
 Contributions are welcome!
 
-.. _Docutils Front-End Tools: http://docutils.sf.net/docs/tools.html
+.. _Docutils Front-End Tools: docs/tools.html
 
 
 Getting Help
