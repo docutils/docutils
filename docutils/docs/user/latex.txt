@@ -149,7 +149,7 @@ and add::
 
 to the stylesheet.
 
-.. _LaTeX unicode:: http://www.unruh.de/DniQ/LaTeX/unicode/
+.. _LaTeX unicode: http://www.unruh.de/DniQ/LaTeX/unicode/
 
 Table of figures
 ----------------
