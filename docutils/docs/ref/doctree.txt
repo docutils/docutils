@@ -24,9 +24,9 @@ found in internal documentation (docstrings) for the
 implemented in a class library.
 
 The reader is assumed to have some familiarity with XML or SGML, and
-an understanding the data structure meaning of "tree".  For a list of
-introductory articles, see `Introducing the Extensible Markup Language
-(XML)`_.
+an understanding of the data structure meaning of "tree".  For a list
+of introductory articles, see `Introducing the Extensible Markup
+Language (XML)`_.
 
 The reStructuredText_ markup is used for illustrative examples
 throughout this document.  For a gentle introduction, see `A
@@ -186,7 +186,7 @@ Category members: caption_, classifier_, colspec_, definition_,
 definition_list_item_, description_, entry_, field_, field_argument_,
 field_body_, field_name_, label_, legend_, list_item_, option_,
 option_argument_, option_group_, option_list_item_, option_string_,
-row_, tbody_, term_, tgroup_, thead
+row_, tbody_, term_, tgroup_, thead_
 
 
 Inline Elements
@@ -1028,10 +1028,10 @@ system_message_ elements.
 
 `Attribute type`_: ``NMTOKENS``.  Default value: none.
 
-The ``class`` attribute contains one or more names used to classify or
-subclassify an element.  It can be used to carry context forward
-between a Docutils Reader and Writer, when a custom structure is
-reduced to a standardized document tree.  ``class`` is one of the `common
+The ``class`` attribute contains one or more names used to classify an
+element.  It can be used to carry context forward between a Docutils
+Reader and Writer, when a custom structure is reduced to a
+standardized document tree.  ``class`` is one of the `common
 attributes`_, shared by all Docutils elements.
 
 
