@@ -116,11 +116,11 @@ resolve to either an internal or external reference.
 <!ENTITY % additional.body.elements "">
 <!ENTITY % body.elements
   " paragraph | literal_block | doctest_block | line_block | block_quote
-    | table | figure | image | footnote | citation
+    | table | figure | image | footnote | citation | rubric
     | bullet_list | enumerated_list | definition_list | field_list
     | option_list
     | attention | caution | danger | error | hint | important | note
-    | tip | warning
+    | tip | warning | admonition
     | target | substitution_definition | comment | pending
     | system_message | raw
     %additional.body.elements; ">
@@ -130,8 +130,8 @@ resolve to either an internal or external reference.
   " emphasis | strong | literal
     | reference | footnote_reference | citation_reference
     | substitution_reference | title_reference
-    | abbreviation | acronym
-    | problematic | generated
+    | abbreviation | acronym | subscript | superscript
+    | inline | problematic | generated
     | target | image | raw
     %additional.inline.elements; ">
 
@@ -368,8 +368,11 @@ or " ") or the text between option arguments (typically either "," or
     %basic.atts;
     %fixedspace.att;>
 
-<!ELEMENT block_quote (%body.elements;)+>
+<!ELEMENT block_quote ((%body.elements;)+, attribution?)>
 <!ATTLIST block_quote %basic.atts;>
+
+<!ELEMENT attribution %text.model;>
+<!ATTLIST attribution %basic.atts;>
 
 <!ELEMENT doctest_block %text.model;>
 <!ATTLIST doctest_block
@@ -403,6 +406,9 @@ or " ") or the text between option arguments (typically either "," or
 <!ELEMENT warning (%body.elements;)+>
 <!ATTLIST warning %basic.atts;>
 
+<!ELEMENT admonition (title, (%body.elements;)+)>
+<!ATTLIST admonition %basic.atts;>
+
 <!ELEMENT footnote (label?, (%body.elements;)+)>
 <!ATTLIST footnote
     %basic.atts;
@@ -416,6 +422,9 @@ or " ") or the text between option arguments (typically either "," or
 
 <!ELEMENT label (#PCDATA)>
 <!ATTLIST label %basic.atts;>
+
+<!ELEMENT rubric %text.model;>
+<!ATTLIST rubric %basic.atts;>
 
 <!-- Empty except when used as an inline element. -->
 <!ELEMENT target %text.model;>
@@ -542,8 +551,8 @@ following caveats:
 <!ELEMENT subscript %text.model;>
 <!ATTLIST subscript %basic.atts;>
 
-<!ELEMENT phrase %text.model;>
-<!ATTLIST phrase %basic.atts;>
+<!ELEMENT inline %text.model;>
+<!ATTLIST inline %basic.atts;>
 
 <!ELEMENT problematic %text.model;>
 <!ATTLIST problematic
