@@ -53,6 +53,13 @@ README_ file.
 .. _Quick-Start: README.html#quick-start
 
 
+Documentation
+=============
+
+Please see the `Docutils Project Documentation Overview
+<docs/index.html>`_.
+
+
 Feedback
 ========
 
@@ -242,13 +249,6 @@ __ http://news.gmane.org/gmane.text.docutils.user
 __ http://news.gmane.org/gmane.text.docutils.devel
 __ http://news.gmane.org/gmane.text.docutils.cvs
 __ http://news.gmane.org/gmane.comp.python.documentation
-
-
-Documentation
-=============
-
-Please see the `Docutils Project Documentation Overview
-<docs/index.html>`_.
 
 
 The Sandbox
