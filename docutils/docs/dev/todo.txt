@@ -1164,8 +1164,6 @@ when used in a document.
           .. include:: 
              :url: http://www.example.org/inclusion.txt
 
-  - _`misc.raw`: "encoding" option?
-
   - _`misc.class`: @@@ Allow multiple classes (whitespace-separated)
     to be declared.
 
