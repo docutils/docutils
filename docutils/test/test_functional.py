@@ -10,6 +10,7 @@
 
 Read README.txt for details on how this is done."""
 
+import docutils
 import docutils.core
 import os
 import os.path
@@ -44,9 +45,11 @@ class FunctionalTestSuite(DocutilsTestSupport.CustomTestSuite):
             self.addTestCase(
                 FunctionalTestCase, 'test', None, None, id=c, configfile=c)
             
-class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
+class FunctionalTestCase(DocutilsTestSupport.CustomTestCase, docutils.SettingsSpec):
 
     """Test case for one config file."""
+
+    settings_default_overrides = {'_disable_config': 1}
 
     def __init__(self, *args, **kwargs):
         """Set self.configfile, pass arguments to parent __init__."""
@@ -102,7 +105,7 @@ class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
 
         # Get output.  (Automatically written to the output/ directory
         # by publish_file.)
-        output = docutils.core.publish_file(**params)
+        output = docutils.core.publish_file(settings_spec=self, **params)
 
         # Get the expected output *after* writing the actual output.
         self.assert_(os.access(expected_path, os.R_OK),\
