@@ -1012,9 +1012,8 @@ class TransitionCorrection(Exception):
     """
 
 
-_whitespace_conversion_table = string.maketrans('\v\f', '  ')
-
-def string2lines(astring, tab_width=8, convert_whitespace=0):
+def string2lines(astring, tab_width=8, convert_whitespace=0,
+                 whitespace=re.compile('[\v\f]')):
     """
     Return a list of one-line strings with tabs expanded and no newlines.
 
@@ -1028,9 +1027,7 @@ def string2lines(astring, tab_width=8, convert_whitespace=0):
     - `convert_whitespace`: convert form feeds and vertical tabs to spaces?
     """
     if convert_whitespace:
-        encoded = astring.encode('utf-8')
-        converted = encoded.translate(_whitespace_conversion_table)
-        astring = converted.decode('utf-8')
+        astring = whitespace.sub(' ', astring)
     return [s.expandtabs(tab_width) for s in astring.splitlines()]
 
 def extract_indented(lines, until_blank=0, strip_indent=1):
