@@ -1,0 +1,12 @@
+=========================
+ Welcome to DocFactory!
+=========================
+
+DocFactory is a kind of *integrated publishing environment* for
+documentation, tied to **Docutils**.  In fact, the intention of
+DocFactory is to be a GUI for Docutils.  At present it can be used
+to edit a set of one or more **reStructuredText** files simultaneously
+and publish them as HTML.  Support for other markups and output
+formats is planned for future releases. `Read more...`__
+
+__ ../README.html

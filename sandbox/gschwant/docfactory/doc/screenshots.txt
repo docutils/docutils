@@ -1,0 +1,7 @@
+=======================
+DocFactory Screenshots
+=======================
+
+.. image:: pics/screenshot1.jpg
+
+.. image:: pics/screenshot2.jpg
