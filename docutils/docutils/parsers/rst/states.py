@@ -12,6 +12,7 @@ the reStructuredText parser.  It defines the following:
     - `RSTStateMachine`: reStructuredText parser's entry point.
     - `NestedStateMachine`: recursive StateMachine.
     - `RSTState`: reStructuredText State superclass.
+    - `Inliner`: For parsing inline markup.
     - `Body`: Generic classifier of the first line of a block.
     - `SpecializedBody`: Superclass for compound element members.
     - `BulletList`: Second and subsequent bullet_list list_items
@@ -102,13 +103,15 @@ Parsing proceeds as follows:
 __docformat__ = 'reStructuredText'
 
 
-import sys, re, string
-from docutils import nodes, statemachine, utils, roman, urischemes, \
-      ApplicationError, DataError
+import sys
+import re
+import string
+from docutils import nodes, statemachine, utils, roman, urischemes
+from docutils import ApplicationError, DataError
 from docutils.statemachine import StateMachineWS, StateWS
 from docutils.utils import normalize_name
-import directives, languages
-from tableparser import TableParser, TableMarkupError
+from docutils.parsers.rst import directives, languages
+from docutils.parsers.rst.tableparser import TableParser, TableMarkupError
 
 
 class MarkupError(DataError): pass
@@ -141,7 +144,7 @@ class RSTStateMachine(StateMachineWS):
         StateMachine, and return the resulting
         document.
         """
-        self.language = languages.get_language(document.language_code)
+        self.language = languages.get_language(document.options.language_code)
         self.match_titles = match_titles
         if inliner is None:
             inliner = Inliner()
@@ -431,9 +434,9 @@ class Inliner:
 
     openers = '\'"([{<'
     closers = '\'")]}>'
-    start_string_prefix = (r'(?:(?<=^)|(?<=[ \n%s]))'
+    start_string_prefix = (r'(?:(?<=^)|(?<=[-/: \n%s]))'
                            % re.escape(openers))
-    end_string_suffix = (r'(?:(?=$)|(?=[- \n.,:;!?%s]))'
+    end_string_suffix = (r'(?:(?=$)|(?=[-/:.,;!? \n%s]))'
                          % re.escape(closers))
     non_whitespace_before = r'(?<![ \n])'
     non_whitespace_escape_before = r'(?<![ \n\x00])'
