@@ -37,7 +37,8 @@ complete details.
 
    See `Releases & Snapshots`_ below for details.
 
-3. Unpack the tarball and install with the standard ::
+3. Unpack the tarball in a temporary directory (**not** directly in
+   Python's ``site-packages``) and install with the standard ::
 
        python setup.py install
 
@@ -170,9 +171,10 @@ Project Files & Directories
 Installation
 ============
 
-The first step is to expand the ``.tar.gz`` or ``.tgz`` archive.  It
-contains a distutils setup file "setup.py".  OS-specific installation
-instructions follow.
+The first step is to expand the ``.tar.gz`` or ``.tgz`` archive in a
+temporary directory (**not** directly in Python's ``site-packages``).
+It contains a distutils setup file "setup.py".  OS-specific
+installation instructions follow.
 
 
 GNU/Linux, BSDs, Unix, Mac OS X, etc.
