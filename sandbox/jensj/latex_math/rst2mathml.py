@@ -1,3 +1,74 @@
+#!/usr/bin/env python
+
+"""
+A minimal front end to the Docutils Publisher, producing HTML + MathML.
+"""
+
+try:
+    import locale
+    locale.setlocale(locale.LC_ALL, '')
+except:
+    pass
+
+from docutils.parsers.rst.roles import register_canonical_role
+from docutils.nodes import Inline, Text, TextElement
+from docutils.writers.html4css1 import HTMLTranslator
+from docutils.parsers.rst.directives import _directives
+from docutils.core import publish_cmdline, default_description
+
+
+# Define LaTeX math node:
+class latex_math(Inline, Text):
+    tagname = '#latex-math'
+    def __init__(self, rawsource, latex):
+        Text.__init__(self, latex, rawsource)
+
+
+# Register role:
+def latex_math_role(role, rawtext, text, lineno, inliner,
+                    options={}, content=[]):
+    i = rawtext.find('`')
+##    node = nodes.latex_math(rawtext, text.replace('\x00','\\'))
+    node = latex_math(rawtext, rawtext[i+1:-1])
+    return [node], []
+register_canonical_role('latex-math', latex_math_role)
+
+
+# Register directive:
+def latex_math_directive(name, arguments, options, content, lineno,
+                         content_offset, block_text, state, state_machine):
+    node = latex_math(block_text, ''.join(content))
+    return [node]
+latex_math_directive.arguments = None
+latex_math_directive.options = {}
+latex_math_directive.content = 1
+_directives['latex-math'] = latex_math_directive
+
+
+# Add visit/depart methods to HTML-Translator:
+def visit_latex_math(self, node):
+    text = node.astext()
+    inline = isinstance(node.parent, TextElement)
+    mml = mathml(text, inline)
+    self.body.append(mml)
+    if not self.has_mathml_dtd:
+        doctype = ('<!DOCTYPE html'
+                   ' PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN"'
+                   ' "http://www.w3.org/Math/DTD/mathml2/'
+                   'xhtml-math11-f.dtd">\n')
+        if self.settings.xml_declaration:
+            self.head_prefix[1] = doctype
+        else:
+            self.head_prefix[0] = doctype
+        self.has_mathml_dtd = True
+def depart_latex_math(self, node):
+    pass
+HTMLTranslator.visit_latex_math = visit_latex_math
+HTMLTranslator.depart_latex_math = depart_latex_math
+HTMLTranslator.has_mathml_dtd = False
+
+
+# LaTeX to MathML translation stuff:
 class math:
     """Base class for MathML elements."""
     
@@ -198,14 +269,11 @@ special = {'sum': u'\u03A3',
            'hbar': u'\u00D7',
            'uparrow': u'\u00D7',
            'downarrow': u'\u00D7',
+           'nabla': u'\u2207',
            'times': u'\u00D7',
            # Greek letters:
-           'alpha': u'\u03B1',
-           'beta': u'\u03B2',
-           'gamma': u'\u03B3',
-           'delta': u'\u03B4',
-           'epsilon': u'\u03F5',
-           'varepsilon': u'\u03B5',
+           'alpha': u'\u03B1', 'beta': u'\u03B2', 'gamma': u'\u03B3',
+           'delta': u'\u03B4', 'epsilon': u'\u03F5', 'varepsilon': u'\u03B5',
            'zeta': u'\u03B6',
            'eta': u'\u03B7',
            'theta': u'\u03B8',
@@ -248,8 +316,14 @@ special = {'sum': u'\u03A3',
            'rangle': u'\u232A'}
 
 
-functions = ['sin', 'exp', 'cos']
-
+functions = ['arccos', 'arcsin', 'arctan', 'arg', 'cos',  'cosh',
+             'cot',    'coth',   'csc',    'deg', 'det',  'dim',
+             'exp',    'gcd',    'hom',    'inf', 'ker',  'lg',
+             'lim',    'liminf', 'limsup', 'ln',  'log',  'max',
+             'min',    'Pr',     'sec',    'sin', 'sinh', 'sup',
+             'tan',    'tanh',
+             'injlim',  'varinjlim', 'varlimsup',
+             'projlim', 'varliminf', 'varprojlim']
 
 def parse_latex_math(string, inline=True):
     """parse_latex_math(string [,inline]) -> MathML-tree
@@ -463,12 +537,19 @@ def mathml(string, inline):
     """ % (xml, string)
     if inline:
         return xml
-    return xml + '<br/>\n'
+    else:
+        return xml + '<br/>\n'
 
 
-if __name__ == '__main__':
-    import sys
-    tree = parse_latex_math(sys.argv[1], 1)
-    print repr(tree)
-    print tree.xml()
-    print ''.join(tree.xml()).encode('ascii', 'ignore')
+## if __name__ == '__main__':
+##     import sys
+##     tree = parse_latex_math(sys.argv[1], 1)
+##     print repr(tree)
+##     print tree.xml()
+##     print ''.join(tree.xml()).encode('ascii', 'ignore')
+
+
+description = ('Generates (X)HTML documents from standalone reStructuredText '
+               'sources.  ' + default_description)
+
+publish_cmdline(writer_name='html', description=description)
