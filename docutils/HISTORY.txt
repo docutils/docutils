@@ -88,6 +88,9 @@ Changes Since 0.3
   - Added publish_parts convenience function to allow access to individual
     parts of a document
 
+* docutils/examples.py: Added to project; practical examples of
+  Docutils client code, to be used as-is or as models for variations.
+
 * docutils/frontend.py:
 
   - Added "--traceback" & "--no-traceback" options ("traceback"
@@ -274,6 +277,7 @@ Changes Since 0.3
     Contributed by Reggie Dugard at the Docutils sprint at PyCon DC 2004.
   - Added proper support for the "scale" attribute of the "image"
     element.  Contributed by Brent Cook.
+  - Added ``--initial-header-level`` option.
 
 * docutils/writers/latex2e.py:
 

@@ -1641,41 +1641,12 @@ HTML Writer
   a templating system to apply to their reStructuredText documents as
   best serves their interests.
 
-* Add a setting (or another writer) which produces just the contents
-  of the <body> element (_`HTML fragments`).  What about the rest; it
-  should be accessible somehow, especially the docinfo fields.  Part
-  of the ht2html implementation?  Generic component output?
-
-  I think a separate writer which inherits from html4css1.py would be
-  a good start.  An "inline" or body-only HTML writer has to omit some
-  of the information given by the full HTML writer.  Some applications
-  won't need this information, but others will; they'll want to deal
-  with it in different ways.  I envision such a writer returning a set
-  of values: body html, and everything else (metadata).  Perhaps a
-  tuple of this form::
-
-       (body_html, {'title': value,
-                    'subtitle': value,
-                    'docinfo': (tuple of (name, value) pairs),
-                    etc.})
-
-  By having a separate writer, a different return data structure is
-  possible.  We may need to add support to all of docutils to allow
-  for this variant output.  Should the metadata values be simple text
-  strings, or HTML snippets (they may contain markup), or both?  There
-  may be other issues to be worked out.
-
-  There's an example of such need in the recipe at
-  <http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/193890>.
-
 * Add more support for <link> elements, especially for navigation
   bars.
 
 * Make the admonitions more distinctive and varied.
 
 * Make the "class" attributes optional?  Implies no stylesheet?
-
-* Add a setting to customize the header tag levels, i.e. <h1>.
 
 * Base list compaction on the spacing of source list?  Would require
   parser support.  (Idea: fantasai, 16 Dec 2002, doc-sig.)
