@@ -36,6 +36,7 @@ directives = {
       'epigrafe': 'epigraph',
       'evidenzia': 'highlights',
       'pull-quote (translation required)': 'pull-quote',
+      'compound (translation required)': 'compound',
       #'questions': 'questions',
       #'qa': 'questions',
       #'faq': 'questions',

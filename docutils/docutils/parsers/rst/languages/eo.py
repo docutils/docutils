@@ -40,6 +40,7 @@ directives = {
       u'elstara\u0135oj': 'highlights',
       u'ekstera-citajxo': 'pull-quote',
       u'ekstera-cita\u0135o': 'pull-quote',
+      u'compound (translation required)': 'compound',
       #'questions': 'questions',
       #'qa': 'questions',
       #'faq': 'questions',
