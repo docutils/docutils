@@ -1210,17 +1210,19 @@ Class
 
 :Directive Type: "class"
 :Doctree Element: pending
-:Directive Arguments: One, required (class name / attribute value).
+:Directive Arguments: One or more, required (class names / attribute
+                      values).
 :Directive Options: None.
 :Directive Content: None.
 
 The "class" directive sets a "class" attribute value on the first
 immediately following non-comment element [#]_.  For details of the
 "class" attribute, see `its entry`__ in `The Docutils Document Tree`_.
-The "class" attribute value is converted to lowercase and all
-non-alphanumeric characters are converted to hyphens in order to match
-this regular expression: ``[a-z](-?[a-z0-9]+)*``.  See the docstring
-from ``docutils.nodes.make_id`` for the rationale.
+The directive argument consists of one or more space-separated class
+names, which are converted to lowercase and all non-alphanumeric
+characters are converted to hyphens.  (For the rationale, see below.)
+
+__ ../doctree.html#class
 
 Examples::
 
@@ -1228,7 +1230,7 @@ Examples::
 
     This is a "special" paragraph.
 
-    .. class:: exceptional
+    .. class:: exceptional remarkable
 
     An Exceptional Section
     ======================
@@ -1239,7 +1241,7 @@ The text above is parsed and transformed into this doctree fragment::
 
     <paragraph class="special">
         This is a "special" paragraph.
-    <section class="exceptional">
+    <section class="exceptional remarkable">
         <title>
             An Exceptional Section
         <paragraph>
@@ -1258,7 +1260,40 @@ The text above is parsed and transformed into this doctree fragment::
    the block quote text would be interpreted as the "class"
    directive's content, and the parser would complain.
 
-__ ../doctree.html#class
+.. topic:: Rationale for Class Attribute Value Conversion
+
+    Docutils identifiers are converted to conform to the regular
+    expression ``[a-z](-?[a-z0-9]+)*``.  For CSS compatibility,
+    identifiers (the "class" and "id" attributes) should have no
+    underscores, colons, or periods.  Hyphens may be used.
+
+    - The `HTML 4.01 spec`_ defines identifiers based on SGML tokens:
+
+          ID and NAME tokens must begin with a letter ([A-Za-z]) and
+          may be followed by any number of letters, digits ([0-9]),
+          hyphens ("-"), underscores ("_"), colons (":"), and periods
+          (".").
+
+    - However the `CSS1 spec`_ defines identifiers based on the "name"
+      token, a tighter interpretation ("flex" tokenizer notation
+      below; "latin1" and "escape" 8-bit characters have been replaced
+      with entities)::
+
+          unicode     \\[0-9a-f]{1,4}
+          latin1      [&iexcl;-&yuml;]
+          escape      {unicode}|\\[ -~&iexcl;-&yuml;]
+          nmchar      [-a-z0-9]|{latin1}|{escape}
+          name        {nmchar}+
+
+    The CSS1 "nmchar" rule does not include underscores ("_"), colons
+    (":"), or periods ("."), therefore "class" and "id" attributes
+    should not contain these characters.  They should be replaced with
+    hyphens ("-").  Combined with HTML's requirements (the first
+    character must be a letter; no "unicode", "latin1", or "escape"
+    characters), this results in the ``[a-z](-?[a-z0-9]+)*`` pattern.
+
+    .. _HTML 4.01 spec: http://www.w3.org/TR/html401
+    .. _CSS1 spec: http://www.w3.org/TR/REC-CSS1
 
 
 .. _role:
