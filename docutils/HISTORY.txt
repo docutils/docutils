@@ -43,7 +43,7 @@ Changes Since 0.1
 
 * test/package_unittest.py: Renamed from UnitTestFolder.py.
 
-  -  Now supports true packages containing test modules
+  - Now supports true packages containing test modules
     (``__init__.py`` files required); fixes duplicate module name bug.
 
 * spec/pep-0257.txt: Clarified prohibition of signature repetition.
