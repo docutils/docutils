@@ -30,6 +30,9 @@ Changes Since 0.3.7
   - ``image`` element class changed to subclass of Element, not
     TextElement (it's an empty element, and cannot contain text).
 
+* docutils/languages/nl.py: Added to project; Dutch mappings by
+  Martijn Pieters.
+
 * docutils/parsers/rst/states.py:
 
   - Added check for escaped at-mark to prevent email address recognition.
@@ -56,6 +59,9 @@ Changes Since 0.3.7
 
   - Added "list-table" directive.
   - Caught empty CSV table bug.
+
+* docutils/parsers/rst/languages/nl.py: Added to project; Dutch
+  mappings by Martijn Pieters.
 
 * docutils/transforms/references.py:
 

@@ -93,6 +93,7 @@ donations, tasty treats, and related projects:
 * Sam Penrose
 * Tim Peters
 * Pearu Peterson
+* Martijn Pieters
 * Mark Pilgrim
 * Brett g Porter
 * David Priest
