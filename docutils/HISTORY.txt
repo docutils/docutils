@@ -20,15 +20,15 @@ and related projects:
 
     Aahz, David Abrahams, David Ascher, Eric Bellot, Ian Bicking,
     Martin Blais, Fred Bremmer, Simon Budig, Bill Bumgarner, Brett
-    Cannon, Beni Cherniavsky, Adam Chodorowski, Jason Diamond, William
-    Dode, Fred Drake, Dethe Elza, Marcus Ertl, Benja Fallenstein,
-    fantasai, Stefane Fermigier, Jim Fulton, Peter Funk, Jorge
-    Gonzalez, Engelbert Gruber, Simon Hefti, Doug Hellmann, Juergen
-    Hermann, Jannie Hofmeyr, Michael Hudson, Marcelo Huerta San
-    Martin, Ludger Humbert, Jeremy Hylton, Tony Ibbs, Alan Jaffray,
-    Dmitry Jemerov, Richard Jones, Andreas Jung, Garth Kidd, Kirill
-    Lapshin, Nicola Larosa, Daniel Larsson, Marc-Andre Lemburg, Julien
-    Letessier, Wolfgang Lipp, Edward Loper, Dallas Mahrt, Ken
+    Cannon, Beni Cherniavsky, Adam Chodorowski, Artur de Sousa Rocha,
+    Jason Diamond, William Dode, Fred Drake, Dethe Elza, Marcus Ertl,
+    Benja Fallenstein, fantasai, Stefane Fermigier, Jim Fulton, Peter
+    Funk, Jorge Gonzalez, Engelbert Gruber, Simon Hefti, Doug
+    Hellmann, Juergen Hermann, Jannie Hofmeyr, Michael Hudson, Marcelo
+    Huerta San Martin, Ludger Humbert, Jeremy Hylton, Tony Ibbs, Alan
+    Jaffray, Dmitry Jemerov, Richard Jones, Andreas Jung, Garth Kidd,
+    Kirill Lapshin, Nicola Larosa, Daniel Larsson, Marc-Andre Lemburg,
+    Julien Letessier, Wolfgang Lipp, Edward Loper, Dallas Mahrt, Ken
     Manheimer, Bob Marshall, Vasko Miroslav, Skip Montanaro, Paul
     Moore, Nigel W. Moriarty, Mark Nodine, Patrick K. O'Brien, Michel
     Pelletier, Sam Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim,
@@ -123,6 +123,10 @@ Changes Since 0.3
 
   - Renamed ``unchanged()`` directive option conversion function to
     ``unchanged_required``, and added a new ``unchanged``.
+
+* docutils/parsers/rst/directives/__init__.py:
+
+  - Catch unicode value too high error; fixes bug 781766.
 
 * docutils/parsers/rst/languages/af.py: Added to project; Afrikaans
   mappings by Jannie Hofmeyr.
