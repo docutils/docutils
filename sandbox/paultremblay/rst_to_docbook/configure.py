@@ -1,7 +1,7 @@
 # /usr/bin/env python 
 
 import sys, os
-import options_trem
+import rst_to_docbook.options_trem
 
 """
 
@@ -24,7 +24,7 @@ def get_target():
     options_dict = {
         'target':     [1, 't'],
     }
-    options_obj = options_trem.ParseOptions(sys.argv, 
+    options_obj = rst_to_docbook.options_trem.ParseOptions(sys.argv, 
             options_dict)
     opt_dict, args = options_obj.parse_options()
     if opt_dict == 0:

@@ -3,6 +3,7 @@ import sys, os
 import docutils_nest.nested_inline
 import docutils_nest.read_config
 import docutils_nest.options_trem
+import docutils_nest.location
 
 """
 converst an XML file to nested tags
@@ -10,16 +11,11 @@ converst an XML file to nested tags
 
 """
 
-ext_location = '/etc/docutils_nest' #  $configure$
-
-dir_exists = os.path.exists(ext_location)
-
-if not dir_exists:
-    sys.stderr.write('directory for configuration does not exist')
-    sys.exit(1)
 
 class GetOptions:
     def __init__(self, sys_string):
+        outer_dir =  docutils_nest.location.get_location()
+        self.__doc_nest_dir = os.path.join(outer_dir, '.docutils_nest')
         self.__sys_string = sys_string
 
     def get_options(self):
@@ -102,7 +98,7 @@ class NestDocutils:
         self.__output = output
 
     def nest_tags(self):
-        config_file = os.path.join(ext_location, 'configure.xml')
+        config_file = os.path.join(self.__doc_nest_dir, 'configure.xml')
         config_obj = GetConfig(config_file)
         config_values = config_obj.get_config()
         tags_obj = MakeTags(self.__file, self.__output, config_values)
@@ -117,7 +113,7 @@ if __name__ == '__main__':
     # sys.exit(0)
     options_obj = GetOptions(sys.argv)
     file, output = options_obj.get_options()
-    config_file = os.path.join(ext_location, 'configure.xml')
+    config_file = os.path.join(self.__doc_nest_dir, 'configure.xml')
     config_obj = GetConfig(config_file)
     config_values = config_obj.get_config()
     tags_obj = MakeTags(file, output, config_values)
