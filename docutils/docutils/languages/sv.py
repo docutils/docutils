@@ -42,6 +42,7 @@ labels = {
 bibliographic_fields = {
     u'f\u00f6rfattare': nodes.authors,
     u'organisation':    nodes.organization,
+    u'adress':          nodes.address,
     u'kontakt':         nodes.contact,
     u'version':         nodes.version,
     u'revision':        nodes.revision,
