@@ -68,20 +68,26 @@ class DataError(ApplicationError): pass
 
 class OptionSpec:
 
-    """Runtime option specification base class."""
+    """
+    Runtime option specification base class.  
+
+    OptionSpec subclass objects used by `docutils.frontend.OptionParser`.
+    """
 
     cmdline_options = ()
     """Command-line option specification.  Override in subclasses.
-    Used by `docutils.frontend.OptionParser`.
 
     One or more sets of option group title, description, and a list/tuple of
     tuples: ``('help text', [list of option strings], {keyword arguments})``.
     Group title and/or description may be `None`; no group title implies no
     group, just a list of single options."""
 
+    option_default_overrides = None
+    """A dictionary of auxiliary defaults, to override defaults for options
+    defined in other components.  Override in subclasses."""
+    
     relative_path_options = ()
     """Options containing filesystem paths.  Override in subclasses.
-    Used by `docutils.frontend.OptionParser`.
 
     Options listed here are to be interpreted relative to the current working
     directory."""

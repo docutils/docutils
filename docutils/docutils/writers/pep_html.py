@@ -46,6 +46,8 @@ class Writer(html4css1.Writer):
          (optik.SUPPRESS_HELP,
           ['--no-random'], {'action': 'store_true'}),))
 
+    option_default_overrides = {'footnote_references': 'brackets'}
+
     relative_path_options = ('pep_stylesheet_path', 'pep_template')
 
     def __init__(self):
