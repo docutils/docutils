@@ -36,7 +36,7 @@ div.abstract p.topic-title {
   text-align: center }
 
 div.attention, div.caution, div.danger, div.error, div.hint,
-div.important, div.note, div.tip, div.warning {
+div.important, div.note, div.tip, div.warning, div.admonition {
   margin: 2em ;
   border: medium outset ;
   padding: 1em }
@@ -49,7 +49,8 @@ div.warning p.admonition-title {
   font-family: sans-serif }
 
 div.hint p.admonition-title, div.important p.admonition-title,
-div.note p.admonition-title, div.tip p.admonition-title {
+div.note p.admonition-title, div.tip p.admonition-title,
+div.admonition p.admonition-title {
   font-weight: bold ;
   font-family: sans-serif }
 
@@ -74,7 +75,12 @@ div.sidebar {
   padding: 0em 1em ;
   background-color: #ffffee ;
   width: 40% ;
-  float: right }
+  float: right ;
+  clear: right }
+
+div.sidebar p.rubric {
+  font-family: sans-serif ;
+  font-size: medium }
 
 div.system-messages {
   margin: 5em }
@@ -120,6 +126,10 @@ ol.lowerroman {
 ol.upperroman {
   list-style: upper-roman }
 
+p.attribution {
+  text-align: right ;
+  margin-left: 50% }
+
 p.caption {
   font-style: italic }
 
@@ -129,6 +139,12 @@ p.credits {
 
 p.label {
   white-space: nowrap }
+
+p.rubric {
+  font-weight: bold ;
+  font-size: larger ;
+  color: darkred ;
+  text-align: center }
 
 p.sidebar-title {
   font-family: sans-serif ;
