@@ -724,7 +724,10 @@ the HTML data, which is encoded text.  A discussion of text encodings
 is beyond the scope of this FAQ; see one or more of these documents
 for more info:
 
-* Chapters 3 and 4 of `Introduction to i18n
+* `UTF-8 and Unicode FAQ for Unix/Linux
+  <http://www.cl.cam.ac.uk/~mgk25/unicode.html>`_
+
+* Chapters 3 and 4 of `Introduction to i18n [Internationalization]
   <http://www.debian.org/doc/manuals/intro-i18n/>`_
 
 * `Python Unicode Tutorial
@@ -751,12 +754,12 @@ applicable to non-XMLish outputs).
 
 If you're generating document fragments, the "Content-Type" metadata
 (between the HTML ``<head>`` and ``</head>`` tags) must agree with the
-encoding of the rest of the document::
+encoding of the rest of the document.  For UTF-8, it should be::
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
 Also, Docutils normally generates an XML declaration as the first line
-of the output.  It must also match the document encoding::
+of the output.  It must also match the document encoding.  For UTF-8::
 
     <?xml version="1.0" encoding="utf-8" ?>
 
