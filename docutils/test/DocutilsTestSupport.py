@@ -535,3 +535,17 @@ class PythonModuleParserTestCase(CustomTestCase):
         module = moduleparser.parse_module(self.input, 'test data')
         output = str(module)
         self.compare_output(self.input, output, self.expected)
+
+    def test_token_parser_rhs(self): 
+        if self.run_in_debugger:
+            pdb.set_trace()
+        tr = moduleparser.TokenParser(self.input)
+        output = tr.rhs(1)
+        self.compare_output(self.input, output, self.expected)
+
+
+def exception_args(code):
+    try:
+        exec(code)
+    except Exception, detail:
+        return detail.args

@@ -136,11 +136,11 @@ totest['images'] = [
         <paragraph>
             Error in "image" directive:
             invalid option value: (option: "scale"; value: None)
-            object can't be converted to int.
+            %s.
         <literal_block xml:space="preserve">
             .. image:: picture.png
                :scale:
-"""],
+""" % DocutilsTestSupport.exception_args('int(None)')[0]],
 ["""\
 .. image:: picture.png
    :scale 50
