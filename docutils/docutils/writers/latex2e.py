@@ -1446,15 +1446,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.verbatim:
             self.body.append('\n\\end{verbatim}\n')
             self.verbatim = 0
-        elif self.active_table.is_open():
-            self.body.append('\n}\n')
         else:
-            self.body.append('\n')
-            self.body.append('\\end{flushleft}')
-            self.body.append('\\end{ttfamily}\n')
+            if self.active_table.is_open():
+                self.body.append('\n}\n')
+            else:
+                self.body.append('\n')
+                self.body.append('\\end{flushleft}')
+                self.body.append('\\end{ttfamily}\n')
             self.insert_none_breaking_blanks = 0
-            # obey end: self.body.append('}\n')
             self.literal_block = 0
+            # obey end: self.body.append('}\n')
 
     def visit_meta(self, node):
         self.body.append('[visit_meta]\n')
