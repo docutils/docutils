@@ -18,18 +18,25 @@ application domains.  Its parser is a component of Docutils_.
 
 This document defines the goals_ of reStructuredText and provides a
 history_ of the project.  It is written using the reStructuredText
-markup, and therefore serves as an example of its use.  Please also
-see an analysis of the `Problems With StructuredText`_ and the
-`reStructuredText Markup Specification`_ itself at the subproject's
-web page, http://docutils.sourceforge.net/rst.html.
+markup, and therefore serves as an example of its use.  For a gentle
+introduction to using reStructuredText, please read `A
+ReStructuredText Primer`_.  The `Quick reStructuredText`_ user
+reference is also useful.  The `reStructuredText Markup
+Specification`_ is the definitive reference.  There is also an
+analysis of the `Problems With StructuredText`_.
+
+ReStructuredText's web page is
+http://docutils.sourceforge.net/rst.html.
 
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _StructuredText:
     http://dev.zope.org/Members/jim/StructuredTextWiki/FrontPage
 .. _Setext: http://docutils.sourceforge.net/mirror/setext.html
 .. _Docutils: http://docutils.sourceforge.net/
-.. _Problems with StructuredText: problems.html
+.. _A ReStructuredText Primer: ../../docs/rst/quickstart.html
+.. _Quick reStructuredText: ../../docs/rst/quickref.html
 .. _reStructuredText Markup Specification: reStructuredText.html
+.. _Problems with StructuredText: problems.html
 
 
 Goals
