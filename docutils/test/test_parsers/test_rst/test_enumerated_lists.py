@@ -89,20 +89,20 @@ Scrambled:
 <document source="test data">
     <paragraph>
         Scrambled:
-    <system_message level="1" line="3" source="test data" type="INFO">
-        <paragraph>
-            Enumerated list start value not ordinal-1: "3" (ordinal 3)
     <enumerated_list enumtype="arabic" prefix="" start="3" suffix=".">
         <list_item>
             <paragraph>
                 Item three.
-    <system_message level="1" line="5" source="test data" type="INFO">
+    <system_message level="1" line="3" source="test data" type="INFO">
         <paragraph>
-            Enumerated list start value not ordinal-1: "2" (ordinal 2)
+            Enumerated list start value not ordinal-1: "3" (ordinal 3)
     <enumerated_list enumtype="arabic" prefix="" start="2" suffix=".">
         <list_item>
             <paragraph>
                 Item two.
+    <system_message level="1" line="5" source="test data" type="INFO">
+        <paragraph>
+            Enumerated list start value not ordinal-1: "2" (ordinal 2)
     <enumerated_list enumtype="arabic" prefix="" suffix=".">
         <list_item>
             <paragraph>
@@ -151,9 +151,6 @@ And again:
 <document source="test data">
     <paragraph>
         Start with non-ordinal-1:
-    <system_message level="1" line="3" source="test data" type="INFO">
-        <paragraph>
-            Enumerated list start value not ordinal-1: "0" (ordinal 0)
     <enumerated_list enumtype="arabic" prefix="" start="0" suffix=".">
         <list_item>
             <paragraph>
@@ -167,11 +164,11 @@ And again:
         <list_item>
             <paragraph>
                 Item three.
+    <system_message level="1" line="3" source="test data" type="INFO">
+        <paragraph>
+            Enumerated list start value not ordinal-1: "0" (ordinal 0)
     <paragraph>
         And again:
-    <system_message level="1" line="10" source="test data" type="INFO">
-        <paragraph>
-            Enumerated list start value not ordinal-1: "2" (ordinal 2)
     <enumerated_list enumtype="arabic" prefix="" start="2" suffix=".">
         <list_item>
             <paragraph>
@@ -179,6 +176,9 @@ And again:
         <list_item>
             <paragraph>
                 Item three.
+    <system_message level="1" line="10" source="test data" type="INFO">
+        <paragraph>
+            Enumerated list start value not ordinal-1: "2" (ordinal 2)
 """],
 ["""\
 1. Item one: line 1,
@@ -702,13 +702,13 @@ Princeton, NJ.
     <system_message level="2" line="5" source="test data" type="WARNING">
         <paragraph>
             Block quote ends without a blank line; unexpected unindent.
-    <system_message level="1" line="5" source="test data" type="INFO">
-        <paragraph>
-            Enumerated list start value not ordinal-1: "3" (ordinal 3)
     <enumerated_list enumtype="arabic" prefix="" start="3" suffix=".">
         <list_item>
             <paragraph>
                 Item three: paragraph 1, line 1,
+    <system_message level="1" line="5" source="test data" type="INFO">
+        <paragraph>
+            Enumerated list start value not ordinal-1: "3" (ordinal 3)
     <system_message level="2" line="6" source="test data" type="WARNING">
         <paragraph>
             Enumerated list ends without a blank line; unexpected unindent.
