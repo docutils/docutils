@@ -218,8 +218,8 @@ time for gradual development, you should put it in the sandbox first.
 It's easy to move code over to the main source tree once it's closer
 to completion.
 
-.. _Docutils Front-End Tools: ../docs/tools.html
-.. _Docutils Configuration Files: ../docs/config.txt
+.. _Docutils Front-End Tools: ../user/tools.html
+.. _Docutils Configuration Files: ../user/config.html
 
 
 CVS Startup File
