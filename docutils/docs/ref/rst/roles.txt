@@ -30,11 +30,12 @@ implementation details, see `Creating reStructuredText Interpreted
 Text Roles`_.
 
 .. _"role" directive: directives.html#role
-.. _Interpreted Text: reStructuredText.html#interpreted-text
-.. _reStructuredText Markup Specification: reStructuredText.html
+.. _Interpreted Text: restructuredtext.html#interpreted-text
+.. _reStructuredText Markup Specification: restructuredtext.html
 .. _The Docutils Document Tree: ../doctree.html
 .. _Docutils Generic DTD: ../docutils.dtd
-.. _Creating reStructuredText Interpreted Text Roles: ../howto/rst-roles.html
+.. _Creating reStructuredText Interpreted Text Roles:
+   ../../howto/rst-roles.html
 
 
 .. contents::
