@@ -138,7 +138,7 @@ class ConfigEnvVarFileTests(ConfigFileTests):
     def setUp(self):
         ConfigFileTests.setUp(self)
         self.orig_environ = os.environ
-        os.environ = dict(os.environ)
+        os.environ = os.environ.copy()
 
     def files_settings(self, *names):
         files = [self.config_files[name] for name in names]
