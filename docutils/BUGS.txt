@@ -44,7 +44,7 @@ First, make sure it's a new bug:
 
 * If Docutils does not behave the way you expect, look in the
   documentation_ (don't forget the FAQ_!) and `mailing list archives`_
-  for evidence that it should behave the way you expect
+  for evidence that it should behave the way you expect.
 
 If you're not sure, please ask on the
 docutils-users@lists.sourceforge.net [1]_ mailing list first.
@@ -156,8 +156,6 @@ Also see the `SourceForge Bug Tracker`_.
   As a workaround you can escape the first asterisk like this::
 
       http://cvs.sf.net/viewcvs.py/\*checkout*/emu/speech_tools/scripts/tex_to_images.prl?rev=HEAD
-
-* Document title should grow an implicit target.
 
 * David Abrahams pointed out that doubly-indirect substitutions have a
   bug, but only when there's multiple references::
