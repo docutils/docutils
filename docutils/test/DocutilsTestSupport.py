@@ -619,34 +619,6 @@ class PseudoXMLWriterPublishTestCase(WriterPublishTestCase):
     writer_name = 'pseudoxml'
 
 
-class HtmlWriterPublishTestCase(WriterPublishTestCase):
-
-    """
-    Test case for fragment code in HTML writer.
-    """
-
-    writer_name = 'html'
-
-    def __init__(self, *args, **kwargs):
-        self.settings_overrides = kwargs['settings_overrides']
-        """Settings overrides to use for this test case."""
-
-        del kwargs['settings_overrides'] # only wanted here
-        CustomTestCase.__init__(self, *args, **kwargs)
-
-    def test_publish(self):
-        if self.run_in_debugger:
-            pdb.set_trace()
-        output = docutils.core.publish_parts(
-            source=self.input,
-            reader_name='standalone',
-            parser_name='restructuredtext',
-            writer_name=self.writer_name,
-            settings_spec=self,
-            settings_overrides=self.settings_overrides)
-        self.compare_output(self.input, output['fragment'], self.expected)
-
-
 class PublishTestSuite(CustomTestSuite):
 
     TEST_CLASSES = {
@@ -679,10 +651,7 @@ class PublishTestSuite(CustomTestSuite):
                       run_in_debugger=run_in_debugger)
 
 
-class HtmlFragmentTestSuite(CustomTestSuite):
-    def __init__(self):
-        CustomTestSuite.__init__(self)
-        self.test_class = HtmlWriterPublishTestCase
+class HtmlPublishPartsTestSuite(CustomTestSuite):
 
     def generateTests(self, dict, dictname='totest'):
         for name, (settings_overrides, cases) in dict.items():
@@ -695,11 +664,69 @@ class HtmlFragmentTestSuite(CustomTestSuite):
                     else:
                         continue
                 self.addTestCase(
-                      self.test_class, 'test_publish',
+                      HtmlWriterPublishPartsTestCase, 'test_publish',
                       settings_overrides=settings_overrides,
                       input=case[0], expected=case[1],
                       id='%s[%r][%s]' % (dictname, name, casenum),
                       run_in_debugger=run_in_debugger)
+
+
+class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
+
+    """
+    Test case for HTML writer via the publish_parts interface.
+    """
+
+    writer_name = 'html'
+
+    def __init__(self, *args, **kwargs):
+        self.settings_overrides = kwargs['settings_overrides']
+        """Settings overrides to use for this test case."""
+
+        del kwargs['settings_overrides'] # only wanted here
+        CustomTestCase.__init__(self, *args, **kwargs)
+
+    def test_publish(self):
+        if self.run_in_debugger:
+            pdb.set_trace()
+        parts = docutils.core.publish_parts(
+            source=self.input,
+            reader_name='standalone',
+            parser_name='restructuredtext',
+            writer_name=self.writer_name,
+            settings_spec=self,
+            settings_overrides=self.settings_overrides)
+        output = self.format_output(parts)
+        # interpolate standard variables:
+        expected = self.expected % {'version': docutils.__version__}
+        self.compare_output(self.input, output, expected)
+
+    standard_meta_value = """\
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils %s: http://docutils.sourceforge.net/" />
+""" % docutils.__version__
+
+    def format_output(self, parts):
+        """Minimize & standardize the output."""
+        # remove redundant bits:
+        del parts['whole']
+        del parts['body']
+        parts['meta'] = parts['meta'].replace(self.standard_meta_value, '')
+        # remove empty values:
+        for key in parts.keys():
+            if not parts[key]:
+                del parts[key]
+        # standard output format:
+        keys = parts.keys()
+        keys.sort()
+        output = []
+        for key in keys:
+            output.append("%r: '''%s'''"
+                          % (key, parts[key].encode('raw_unicode_escape')))
+            if output[-1].endswith("\n'''"):
+                output[-1] = output[-1][:-4] + "\\n'''"
+        return '{' + ',\n '.join(output) + '}\n'
+
 
 def exception_data(code):
     """
