@@ -133,8 +133,7 @@ parser.  To make a new language module, just copy the ``en.py`` file,
 rename it with the code for your language (see `Language Module
 Names`_ above), and translate the terms as described below.
 
-Each reStructuredText language module contains just one module
-attribute:
+Each reStructuredText language module contains two module attributes:
 
 ``directives``
     This is a mapping from language-dependent directive names to
@@ -180,3 +179,13 @@ testing the parser and other parts of the Docutils system.
 
 .. _CVS: http://sourceforge.net/cvs/?group_id=38414
 .. _latest CVS snapshot: http://docutils.sf.net/docutils-snapshot.tgz
+
+
+Submitting the Language Modules
+===============================
+
+If you do not have CVS write access and want to contribute your
+language modules, feel free to submit them at the `SourceForge patch
+tracker`__.
+
+__ http://sourceforge.net/tracker/?group_id=38414&atid=422032
