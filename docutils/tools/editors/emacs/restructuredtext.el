@@ -1,5 +1,5 @@
-;; Authors: David Goodger <goodger@python.org>;
-;;          Martin Blais
+;; Authors: David Goodger <goodger@python.org>,
+;;          Martin Blais <blais@furius.ca>
 ;; Date: $Date$
 ;; Copyright: This module has been placed in the public domain.
 ;;
@@ -446,6 +446,7 @@ This is useful for filling list item paragraphs."
 		(rest-update-section nextchar init-style curindent))
 	    )))
       )))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
