@@ -1594,14 +1594,14 @@ class Body(RSTState):
             self.parent += msg
         return [], blank_finish
 
-    def directive(self, match, **attributes):
+    def directive(self, match, **option_presets):
         type_name = match.group(1)
         directivefunction = directives.directive(type_name,
                                                  self.memo.language)
         data = match.string[match.end():].strip()
         if directivefunction:
             return directivefunction(match, type_name, data, self,
-                                     self.state_machine, attributes)
+                                     self.state_machine, option_presets)
         else:
             return self.unknown_directive(type_name, data)
 
@@ -1615,21 +1615,20 @@ class Body(RSTState):
               '', nodes.literal_block(text, text))
         return [error], blank_finish
 
-    def parse_extension_attributes(self, attribute_spec, datalines,
-                                   blank_finish):
+    def parse_extension_options(self, option_spec, datalines, blank_finish):
         """
-        Parse `datalines` for a field list containing extension attributes
-        matching `attribute_spec`.
+        Parse `datalines` for a field list containing extension options
+        matching `option_spec`.
 
         :Parameters:
-            - `attribute_spec`: a mapping of attribute name to conversion
+            - `option_spec`: a mapping of option name to conversion
               function, which should raise an exception on bad input.
             - `datalines`: a list of input strings.
             - `blank_finish`:
 
         :Return:
             - Success value, 1 or 0.
-            - An attribute dictionary on success, an error string on failure.
+            - An option dictionary on success, an error string on failure.
             - Updated `blank_finish` flag.
         """
         node = nodes.field_list()
@@ -1637,17 +1636,16 @@ class Body(RSTState):
               datalines, 0, node, initial_state='FieldList',
               blank_finish=blank_finish)
         if newline_offset != len(datalines): # incomplete parse of block
-            return 0, 'invalid attribute block', blank_finish
+            return 0, 'invalid option block', blank_finish
         try:
-            attributes = utils.extract_extension_attributes(node,
-                                                            attribute_spec)
+            options = utils.extract_extension_options(node, option_spec)
         except KeyError, detail:
-            return 0, ('unknown attribute: "%s"' % detail), blank_finish
+            return 0, ('unknown option: "%s"' % detail), blank_finish
         except (ValueError, TypeError), detail:
-            return 0, ('invalid attribute value: %s' % detail), blank_finish
-        except utils.ExtensionAttributeError, detail:
-            return 0, ('invalid attribute data: %s' % detail), blank_finish
-        return 1, attributes, blank_finish
+            return 0, ('invalid option value: %s' % detail), blank_finish
+        except utils.ExtensionOptionError, detail:
+            return 0, ('invalid option data: %s' % detail), blank_finish
+        return 1, options, blank_finish
 
     def comment(self, match):
         if not match.string[match.end():].strip() \
@@ -2007,10 +2005,10 @@ class SubstitutionDef(Body):
 
     def embedded_directive(self, match, context, next_state):
         if self.parent.has_key('alt'):
-            attributes = {'alt': self.parent['alt']}
+            option_presets = {'alt': self.parent['alt']}
         else:
-            attributes = {}
-        nodelist, blank_finish = self.directive(match, **attributes)
+            option_presets = {}
+        nodelist, blank_finish = self.directive(match, **option_presets)
         self.parent += nodelist
         if not self.state_machine.at_eof():
             self.blank_finish = blank_finish

@@ -18,7 +18,7 @@ from docutils import nodes
 
 
 def admonition(node_class, match, type_name, data, state, state_machine,
-               attributes):
+               option_presets):
     indented, indent, line_offset, blank_finish \
           = state_machine.get_first_known_indented(match.end())
     text = '\n'.join(indented)

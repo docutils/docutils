@@ -11,7 +11,8 @@ This package contains directive implementation modules.
 
 The interface for directive functions is as follows::
 
-    def directivefn(match, type_name, data, state, state_machine, attributes)
+    def directivefn(match, type_name, data, state, state_machine,
+                    option_presets):
 
 Where:
 
@@ -23,8 +24,8 @@ Where:
 - ``state`` is the state which called the directive function.
 - ``state_machine`` is the state machine which controls the state which called
   the directive function.
-- ``attributes`` is a dictionary of extra attributes which may be added to the
-  element the directive produces.  Currently, only an "alt" attribute is
+- ``option_presets`` is a dictionary of preset options which may be added to
+  the element the directive produces.  Currently, only an "alt" option is
   passed by substitution definitions (value: the substitution name), which may
   be used by an embedded image directive.
 

@@ -16,11 +16,11 @@ __docformat__ = 'reStructuredText'
 from docutils import nodes
 
 
-def raw(match, type_name, data, state, state_machine, attributes):
+def raw(match, type_name, data, state, state_machine, option_presets):
     return [], 1
 
 def directive_test_function(match, type_name, data, state, state_machine,
-                            attributes):
+                            option_presets):
     try:
         state_machine.next_line()
         indented, indent, offset, blank_finish = state_machine.get_indented()

@@ -17,7 +17,7 @@ import sys
 from docutils import nodes
 
 
-def topic(match, type_name, data, state, state_machine, attributes):
+def topic(match, type_name, data, state, state_machine, option_presets):
     lineno = state_machine.abs_line_number()
     initial_offset = state_machine.line_offset
     indented, indent, line_offset, blank_finish \
@@ -49,7 +49,7 @@ def topic(match, type_name, data, state, state_machine, attributes):
     return [topic_node], blank_finish
 
 
-def line_block(match, type_name, data, state, state_machine, attributes,
+def line_block(match, type_name, data, state, state_machine, option_presets,
                node_class=nodes.line_block):
     lineno = state_machine.abs_line_number()
     indented, indent, line_offset, blank_finish \
@@ -67,6 +67,7 @@ def line_block(match, type_name, data, state, state_machine, attributes,
     return [node] + messages, blank_finish
 
 
-def parsed_literal(match, type_name, data, state, state_machine, attributes):
+def parsed_literal(match, type_name, data, state, state_machine,
+                   option_presets):
     return line_block(match, type_name, data, state, state_machine,
-                      attributes, node_class=nodes.literal_block)
+                      option_presets, node_class=nodes.literal_block)
