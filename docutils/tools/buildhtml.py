@@ -131,6 +131,7 @@ class Builder:
             components=(OptionSpec, pep.Reader, rst.Parser, pep_html.Writer),
             usage=usage, description=description)
         self.option_defaults = option_parser.get_default_values()
+        frontend.make_paths_absolute(self.option_defaults.__dict__)
         config_parser = frontend.ConfigParser()
         config_parser.read_standard_files()
         self.config_settings = config_parser.get_section('options')
