@@ -19,6 +19,41 @@ Many of these items are awaiting champions.  If you see something
 you'd like to tackle, please do!
 
 
+Bugs
+----
+
+- (Fixed, I think.)  When there are duplicate implicit target names
+  (e.g., section headers), a named hyperlink will link to the last of
+  them.  It shouldn't link to any at all, and should report an error.
+
+  - nodes.document.nameids maps names to IDs.  When there is a
+    duplicate, the last one stays.  Idea: have a parallel
+    nodes.document.nametype mapping, name -> boolean (explicit name?).
+    ::
+
+        ====  =====  ========  ========  =======  ====  =====  =====
+        Old State    Input     Action             New State    Notes
+        -----------  --------  -----------------  -----------
+        id    type   new type  sys.msg.  dupname  id    type
+        ====  =====  ========  ========  =======  ====  =====  =====
+        --    --     explicit  --        --       new   True
+        --    --     implicit  --        --       new   False
+        None  False  explicit  --        --       new   True
+        old   False  explicit  implicit  old      new   True
+        None  True   explicit  explicit  new      None  True
+        old   True   explicit  explicit  new,old  None  True   [1]
+        None  False  implicit  implicit  new      None  False
+        old   False  implicit  implicit  new,old  None  False
+        None  True   implicit  implicit  new      None  True
+        old   True   implicit  implicit  new      old   True
+        ====  =====  ========  ========  =======  ====  =====  =====
+
+    (The above is an example of `table syntax alternative 3`__; not
+    implemented yet, but I'm thinking about it.)
+
+    __ rst/problems.html#tables
+
+
 General
 -------
 
@@ -73,8 +108,8 @@ General
   - Try the encoding specified by a command-line option, if any.
 
   - Try the encoding specified by an "encoding" directive, and/or an
-    "encoding" field in field lists & PEP headers, if any.  (The same
-    could apply to "language".)
+    "encoding" field in field lists & PEP headers, if any.  See the
+    misc.encoding_ directive below.
 
   - Try ASCII.
 
@@ -118,23 +153,36 @@ General
 
 - Name ideas: importer/exporter.  Perhaps reader/writer should be
   applied to lower-level tasks?  "PySource Reader" or "PySource
-  Importer"?  "HTML Writer" or "HTML Exporter"?  If we stick with the
-  status quo, what to call the components that do low-level I/O?
+  Importer"?  "HTML Writer" or "HTML Exporter"?  I like the names
+  "Reader" & "Writer" for the high-level classes.  So if we stick with
+  the status quo, what to call the components that do low-level I/O?
 
   - IOReader, IOWriter
-  - StreamReader, StreamWriter
   - DataReader, DataWriter
   - Inputter, Outputter
   - Scanner, Recorder?
   - Lector?, Scribe
-  - Loader, Storer/Recorder (maybe subclasses of Storage)
+  - Loader, Storer/Stower/Recorder
+  - InputStorage, OutputStorage
+  - Input, Output
+  - Source, Destination
+
+  Perhaps subclasses of a single class, a abstraction for
+  file/string/etc. reading & writing.
+
+  - Storage
+  - IO
+
+  Implement as a single module (``docutils/storage.py``)?  Or as a
+  subpackage (``docutils/storage/*.py``)?
 
 - Fix tests to run standalone.  I.e., allow::
 
       cd test/test_rst
       test_inline_markup.py
 
-  Raises an exception with path processing on GNU/Linux.
+  Raises an exception with path processing on GNU/Linux (but only
+  sometimes?).
 
 
 Specification
@@ -164,7 +212,7 @@ reStructuredText Parser
 
 Also see the `... Or Not To Do?`__ list.
 
-__ http://docutils.sf.net/spec/rst/alternatives.html#or-not-to-do
+__ rst/alternatives.html#or-not-to-do
 
 - Add motivation sections for constructs in spec.
 
@@ -214,7 +262,7 @@ __ http://docutils.sf.net/spec/rst/alternatives.html#or-not-to-do
   - issue a warning when processing documents with no default role
     which contain interpreted text with no explicitly specified role
 
-- Perhaps the "default default" role for interpreted text could be
+- Perhaps the default implicit role for interpreted text could be
   "title", as in, "title of a book".  It'd be a text-only reference,
   no hyperlink.  Idea from Aahz' 2002-05-09 Doc-SIG post.
 
@@ -357,6 +405,20 @@ Directives
     time or at substitution time?  Dangerous?  Perhaps limit to canned
     macros; see text.date_ below.
 
+  - _`misc.encoding`: Specify the character encoding of the input
+    data.  But there are problems:
+
+    - When it sees the directive, the parser will already have read
+      the input data, and encoding determination will already have
+      been done.
+
+    - If a file with an "encoding" directive is edited and saved with
+      a different encoding, the directive may cause data corruption.
+
+  - _`misc.language`: Specify the language of a document.  There is a
+    problem similar to the first problem listed for misc.encoding_,
+    although to a lesser degree.
+
   - _`body.qa` (directive a.k.a. "faq", "questions"): Questions &
     Answers.  Implement as a generic two-column marked list?  As a
     standalone (non-directive) construct?  (Is the markup ambiguous?)
@@ -394,20 +456,10 @@ Directives
     priority.
 
   - _`body.columns`: Multi-column table/list.  Number of columns as
-    argument?  Perhaps a variation on `table syntax alternative 2`__,
-    combined with bullet list syntax to indicate rows::
+    argument?  Several `alternative syntaxes`__ are proposed that
+    might not need a directive..
 
-        col 1 col 2
-        ===== =====
-        - 1   Second column of row 1.
-        - 2   Second column of row 2.
-              Second line of paragraph.
-        - 3   Second column of row 3.
-
-              Second paragraph of row 3,
-              column 2
-
-    __ problems.html#tables
+    __ rst/problems.html#tables
 
   - @@ _`body.verse`: Paragraphs with linebreaks preserved, *and*
     inline markup support too.  Use cases: verse (poetry, song lyrics,
@@ -490,7 +542,9 @@ Directives
     use.  Use a factory function "transformFF()" which returns either
     "HTMLTransform()" instance or "GenericTransform" instance?
 
-  - _`text.date`: Datestamp.  For substitutions.
+  - _`text.date`: Datestamp.  For substitutions.  The directive could
+    be followed by a formatting string, using strftime codes.  Default
+    is "%Y-%m-%d" (ISO 8601 date), but time fields can also be used.
 
     - Combined with misc.include_, implement canned macros?  E.g.::
 
@@ -499,6 +553,9 @@ Directives
           Today's date is |date|.
 
       Where "macros" contains ``.. |date| date::``, among others.
+
+  - _`text.time`: Timestamp.  For substitutions.  Shortcut for
+    ``.. date:: %H:%M``.  Date fields can also be used.
 
   - _`pysource.usage`: Extract a usage message from the program,
     either by running it at the command line with a ``--help`` option
@@ -682,6 +739,40 @@ a common option-processing module, as described below.
 Project Policies
 ================
 
+A few quotes sum up the policies of the Docutils project.  The IETF's
+classic credo (by MIT professor Dave Clark) is an ideal we can aspire
+to:
+
+    We reject: kings, presidents, and voting.  We believe in: rough
+    consensus and running code.
+
+As architect, chief cook and bottle-washer, I currently function as
+BDFN (Benevolent Dictator For Now), but I would happily abdicate the
+throne given a suitable candidate.  Any takers?
+
+Eric S. Raymond, anthropologist of the hacker subculture, writes in
+his essay `The Magic Cauldron`_:
+
+    The number of contributors [to] projects is strongly and inversely
+    correlated with the number of hoops each project makes a user go
+    through to contribute.
+
+    .. _The Magic Cauldron:
+    http://www.tuxedo.org/~esr/writings/magic-cauldron/
+
+Therefore, we will endeavour to keep the barrier to entry as low as
+possible.  The policies below should not be thought of as barriers,
+but merely as a codification of experience to date.  These are "best
+practices", not absolutes; exceptions are expected, tolerated, and
+used as a source of improvement.
+
+As for control issues, Emmett Plant (CEO of the Xiph.org Foundation,
+originators of Ogg Vorbis) put it well when he said:
+
+    Open source dictates that you lose a certain amount of control
+    over your codebase, and that's okay with us.
+
+
 Coding Conventions
 ------------------
 
@@ -693,8 +784,8 @@ it probably will be accepted.  But don't be surprised if the
 conventions.
 
 The Docutils project shall follow the generic coding conventions as
-specified in the `Style Guide for Python Code`__ and `Docstring
-Conventions`__ PEPs, with the following clarifications (from most to
+specified in the `Style Guide for Python Code`_ and `Docstring
+Conventions`_ PEPs, with the following clarifications (from most to
 least important):
 
 - 4 spaces per indentation level.  No tabs.  Indent continuation lines
@@ -720,8 +811,9 @@ least important):
 - Use 'single quotes' for string literals, and """triple double
   quotes""" for docstrings.
 
-__ http://www.python.org/peps/pep-0008.html
-__ http://www.python.org/peps/pep-0257.html
+.. _Style Guide for Python Code:
+   http://www.python.org/peps/pep-0008.html
+.. _Docstring Conventions: http://www.python.org/peps/pep-0257.html
 
 
 Copyrights and Licensing
@@ -775,17 +867,28 @@ applicable), with particular emphasis as follows:
   cases to the test suite.  Practise test-first programming; it's fun,
   it's addictive, and it works!
 
-- The `sandbox CVS directory`_ is the place to put new, untried code.
-  See `Additions to Docutils`_ and `The Sandbox`_ below.
+- The `sandbox CVS directory`_ is the place to put new, incomplete or
+  experimental code.  See `Additions to Docutils`_ and `The Sandbox`_
+  below.
 
-Please consider subscribing to the appropriate `mailing lists`_.
+- For bugs or omissions that have an obvious fix and can't possibly
+  mess up anything else, go right ahead and check it in directly.
+
+- For larger changes, use your best judgement.  If you're unsure of
+  the impact, or feel that you require advice or approval, patches or
+  `the sandbox`_ are the way to go.
+
+Docutils will pursue an open and trusting policy for as long as
+possible, and deal with any abberations if (and hopefully not when)
+they happen.  I'd rather see a torrent of loose contributions than
+just a trickle of perfect-as-they-stand changes.  The occasional
+mistake is easy to fix.  That's what CVS is for.
 
 .. _main source tree:
    http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/docutils/docutils/
 .. _Python Check-in Policies: http://www.python.org/dev/tools.html
 .. _sandbox CVS directory:
    http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/docutils/sandbox/
-.. _mailing lists: ../index.html#mailing-lists
 
 
 Additions to Docutils
@@ -826,6 +929,24 @@ It's easy to move code over to the main source tree once it's closer
 to completion.
 
 
+Mailing Lists
+-------------
+
+Developers should subscribe to the mailing lists:
+
+- The `Python Documentation Special Interest Group (Doc-SIG) mailing
+  list`__ for high-level discussions on syntax, strategy, and design
+  (email to Doc-SIG@python.org).
+- Docutils-develop__, for implementation discussions
+  (email to docutils-develop@lists.sourceforge.net).
+- Docutils-checkins__, to monitor CVS checkin messages (automatically
+  generated; normally read-only).
+
+__ http://mail.python.org/mailman/listinfo/doc-sig
+__ http://lists.sourceforge.net/lists/listinfo/docutils-develop
+__ http://lists.sourceforge.net/lists/listinfo/docutils-checkins
+
+
 The Sandbox
 -----------
 
@@ -835,9 +956,9 @@ distributed as part of Docutils releases.  Feel free to check in code
 to the CVS sandbox; that way people can try it out but you won't have
 to worry about it working 100% error-free, as is the goal of the `main
 source tree`_.  Each developer who wants to play in the sandbox should
-create their own subdirectory (suggested name: SourceForge ID, or
-given name + family initial).  It's OK to make a mess!  But please,
-play nice.
+create their own subdirectory (suggested name: SourceForge ID,
+nickname, or given name + family initial).  It's OK to make a mess!
+But please, play nice.
 
 In order to minimize the work necessary for others to install and try
 out new, experimental components, the following sandbox directory

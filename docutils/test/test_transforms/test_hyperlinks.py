@@ -217,9 +217,12 @@ __ ztarget_
     <paragraph>
         Second
     <paragraph>
-        <reference anonymous="1" refid="id1">
-            indirect internal
-    <target anonymous="1" id="id2" refid="id1">
+        <problematic id="id4" refid="id3">
+            `indirect internal`__
+    <target anonymous="1" id="id2" refname="ztarget">
+    <system_message backrefs="id4" id="id3" level="2" type="WARNING">
+        <paragraph>
+            Indirect hyperlink target (id="id2") refers to target "ztarget", which does not exist.
 """],
 ])
 
