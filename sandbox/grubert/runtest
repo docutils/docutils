@@ -66,8 +66,8 @@ for TABSTYLE in "" standard booktabs nolines ; do
   done
 done
 
-# with generated footer
-CMD="../../tools/rst2latex.py -gs"
+# rowspan tables
+CMD="../../tools/rst2latex.py"
 INF=test/tables-multirow.txt
 OUTF="$INF.tex"
 REFF="$OUTF.ref"
