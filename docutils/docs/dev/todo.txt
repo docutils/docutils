@@ -715,7 +715,7 @@ when used in a document.
 
 * Implement options on existing directives:
 
-  - _`images.image`: "border"?
+  - _`images.image`: "border"?  "link"?
 
     Units of measure?  (See docutils-users, 2003-03-02.)
 
@@ -1259,8 +1259,10 @@ Front-End Tools
 * Implement the "sectnum" directive as a command-line option also?
 
 * @@@ Come up with better names for the most-used tools, and install
-  them as scripts.  Alternatively, create a single dynamic_ or
-  unqualified_ front end that can be installed.
+  them as scripts.
+
+* Create a single dynamic_ or unqualified_ front end that can be
+  installed?
 
 
 Project Policies

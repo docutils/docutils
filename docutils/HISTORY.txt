@@ -17,22 +17,23 @@ on the Docutils project, knowingly or not, in terms of encouragement,
 suggestions, criticism, bug reports, code contributions, tasty treats,
 and related projects:
 
-    Aahz, David Abrahams, David Ascher, Fred Bremmer, Ian Bicking,
-    Martin Blais, Simon Budig, Bill Bumgarner, Brett Cannon, Adam
-    Chodorowski, Jason Diamond, Fred Drake, Dethe Elza, Marcus Ertl,
-    Benja Fallenstein, fantasai, Stefane Fermigier, Jim Fulton, Peter
-    Funk, Jorge Gonzalez, Engelbert Gruber, Simon Hefti, Doug
-    Hellmann, Juergen Hermann, Michael Hudson, Jeremy Hylton, Tony
-    Ibbs, Alan Jaffray, Dmitry Jemerov, Richard Jones, Andreas Jung,
-    Garth Kidd, Nicola Larosa, Daniel Larsson, Marc-Andre Lemburg,
-    Julien Letessier, Wolfgang Lipp, Edward Loper, Dallas Mahrt, Ken
-    Manheimer, Vasko Miroslav, Skip Montanaro, Paul Moore, Nigel
-    W. Moriarty, Mark Nodine, Patrick K. O'Brien, Michel Pelletier,
-    Sam Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim, Brett g
-    Porter, David Priest, Tavis Rudd, Oliver Rutherfurd, Kenichi Sato,
-    Ueli Schlaepfer, Gunnar Schwant, Bruce Smith, tav, Bob Tolbert,
-    Laurence Tratt, Guido van Rossum, Martin von Loewis, Greg Ward,
-    Barry Warsaw, Edward Welbourne, Ka-Ping Yee, Moshe Zadka
+    Aahz, David Abrahams, David Ascher, Eric Bellot, Ian Bicking,
+    Martin Blais, Fred Bremmer, Simon Budig, Bill Bumgarner, Brett
+    Cannon, Adam Chodorowski, Jason Diamond, Fred Drake, Dethe Elza,
+    Marcus Ertl, Benja Fallenstein, fantasai, Stefane Fermigier, Jim
+    Fulton, Peter Funk, Jorge Gonzalez, Engelbert Gruber, Simon Hefti,
+    Doug Hellmann, Juergen Hermann, Michael Hudson, Jeremy Hylton,
+    Tony Ibbs, Alan Jaffray, Dmitry Jemerov, Richard Jones, Andreas
+    Jung, Garth Kidd, Nicola Larosa, Daniel Larsson, Marc-Andre
+    Lemburg, Julien Letessier, Wolfgang Lipp, Edward Loper, Dallas
+    Mahrt, Ken Manheimer, Vasko Miroslav, Skip Montanaro, Paul Moore,
+    Nigel W. Moriarty, Mark Nodine, Patrick K. O'Brien, Michel
+    Pelletier, Sam Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim,
+    Brett g Porter, David Priest, Tavis Rudd, Oliver Rutherfurd,
+    Kenichi Sato, Ueli Schlaepfer, Gunnar Schwant, Bruce Smith, tav,
+    Bob Tolbert, Laurence Tratt, Guido van Rossum, Martin von Loewis,
+    Greg Ward, Barry Warsaw, Edward Welbourne, Ka-Ping Yee, Moshe
+    Zadka
 
 Thank you!
 
