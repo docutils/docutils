@@ -193,7 +193,13 @@ reStructuredText construct.
 
 \end{list}
 
-\item {} \href{\#error-handling}{3~~~Error Handling}
+\item {} \href{\#tests-for-the-latex-writer}{3~~~Tests for the LaTeX writer}
+\begin{list}{}{}
+\item {} \href{\#monospaced-non-alphanumeric-characters}{3.1~~~Monospaced non-alphanumeric characters}
+
+\end{list}
+
+\item {} \href{\#error-handling}{4~~~Error Handling}
 
 \end{list}
 
@@ -538,10 +544,10 @@ description.
 Literal blocks are indicated with a double-colon (``::'') at the end of
 the preceding paragraph (over there \texttt{-{}->}).  They can be indented:
 \begin{quote}{\ttfamily \raggedright \noindent
-if~literal{\underline{~}}block:~\\
+if~literal{\_}block:~\\
 ~~~~text~=~'is~left~as-is'~\\
-~~~~spaces{\underline{~}}and{\underline{~}}linebreaks~=~'are~preserved'~\\
-~~~~markup{\underline{~}}processing~=~None
+~~~~spaces{\_}and{\_}linebreaks~=~'are~preserved'~\\
+~~~~markup{\_}processing~=~None
 }\end{quote}
 
 Or they can be quoted without indentation:
@@ -1032,9 +1038,34 @@ True
 
 %___________________________________________________________________________
 
+\hypertarget{tests-for-the-latex-writer}{}
+\pdfbookmark[0]{3~~~Tests for the LaTeX writer}{tests-for-the-latex-writer}
+\section*{3~~~Tests for the LaTeX writer}
+
+
+%___________________________________________________________________________
+
+\hypertarget{monospaced-non-alphanumeric-characters}{}
+\pdfbookmark[1]{3.1~~~Monospaced non-alphanumeric characters}{monospaced-non-alphanumeric-characters}
+\subsection*{3.1~~~Monospaced non-alphanumeric characters}
+
+These are all ASCII characters except a-zA-Z0-9 and space:
+
+\texttt{!!!"{}"{}"{\#}{\#}{\#}{\$}{\$}{\$}{\%}{\%}{\%}{\&}{\&}{\&}'{}'{}'((()))***+++,{},{},-{}-{}-...///:::}
+
+\texttt{;;;<{}<{}<===>{}>{}>???@@@{[}{[}{[}{\textbackslash}{\textbackslash}{\textbackslash}]]]{\textasciicircum}{\textasciicircum}{\textasciicircum}{\_}{\_}{\_}`{}`{}`{\{}{\{}{\{}|||{\}}{\}}{\}}{\textasciitilde}{\textasciitilde}{\textasciitilde}}
+
+\texttt{xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+
+The two lines of non-alphanumeric characters should both have the same
+width as the third line.
+
+
+%___________________________________________________________________________
+
 \hypertarget{error-handling}{}
-\pdfbookmark[0]{3~~~Error Handling}{error-handling}
-\section*{3~~~Error Handling}
+\pdfbookmark[0]{4~~~Error Handling}{error-handling}
+\section*{4~~~Error Handling}
 
 Any errors caught during processing will generate system messages.
 
