@@ -1,2 +1,2 @@
-I plan to add a modult that will a user to use nested inline roles.
+I plan to add a module that will a user to use nested inline roles.
 
