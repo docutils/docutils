@@ -310,7 +310,7 @@
                             <fo:block xsl:use-attribute-sets="unknown_tag-defaults">
                                 <xsl:text> Special Frontmatter: Section </xsl:text>
                                 <xsl:value-of select="@id" />
-                                <xsl:text> (</xsl:text><xsl:value-of select="@name" /><xsl:text>) not implemented; see LCS.XSL page sequencing templates.</xsl:text>
+                                <xsl:text> (</xsl:text><xsl:value-of select="@name" /><xsl:text>) not implemented; see PDF.XSL page sequencing templates.</xsl:text>
                             </fo:block>
                         </fo:flow>
                     </fo:page-sequence>
