@@ -62,7 +62,6 @@ donations, tasty treats, and related projects:
 * Jeremy Hylton
 * Tony Ibbs
 * Alan Jaffray
-* Joe YS Jaw
 * Dmitry Jemerov
 * Richard Jones
 * Andreas Jung
@@ -84,6 +83,7 @@ donations, tasty treats, and related projects:
 * Mark McEahern
 * Vincent McIntyre
 * John F Meinel Jr
+* Vasko Miroslav
 * Skip Montanaro
 * Paul Moore
 * Nigel W. Moriarty
@@ -108,10 +108,8 @@ donations, tasty treats, and related projects:
 * Bill Sconce
 * Frank Siebenlist
 * Bruce Smith
-* Asko Soukka
 * Darek Suchojad
 * Roman Suzi
-* Janet Swisher
 * tav
 * Kent Tenney
 * Bob Tolbert
@@ -119,7 +117,6 @@ donations, tasty treats, and related projects:
 * Laurence Tratt
 * Adrian van den Dries
 * Guido van Rossum
-* Miroslav Vasko
 * Paul Viren
 * Martin von Loewis
 * Greg Ward
