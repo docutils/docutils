@@ -1,0 +1,24 @@
+#!/bin/sh
+
+DOCUTILS=../..
+QWRITER=$DOCUTILS/tools/quicktest.py
+OUT=test.pdf
+TEXT=pdftest_2.txt
+
+PYTHONPATH=.:$DOCUTILS:$PYTHONPATH
+
+if [ -n "$1" -a -e "$1" ] ;  then
+  TEXT=$1
+  shift
+fi
+
+if [ -n "$1" ] ; then
+  echo "-$1-"
+  if [ $1 == "t" ] ; then
+    $QWRITER -p $TEXT |less
+    exit
+  fi
+fi
+
+pdf.py $TEXT $OUT
+
