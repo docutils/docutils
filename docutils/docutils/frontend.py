@@ -17,6 +17,19 @@ import docutils
 from docutils import optik
 
 
+def store_multiple(option, opt, value, parser, *args, **kwargs):
+    """
+    Store multiple values in `parser.values`.  (Option callback.)
+    
+    Store `None` for each attribute named in `args`, and store the value for
+    each key (attribute name) in `kwargs`.
+    """
+    for attribute in args:
+        setattr(parser.values, attribute, None)
+    for key, value in kwargs.items():
+        setattr(parser.values, key, value)
+
+
 class OptionParser(optik.OptionParser):
 
     """
@@ -53,11 +66,15 @@ class OptionParser(optik.OptionParser):
          ('Do not include a datestamp of any kind.',
           ['--no-datestamp'], {'action': 'store_const', 'const': None,
                                'dest': 'datestamp'}),
-         ('Include a "View document source" link.',
+         ('Include a "View document source" link (relative to destination).',
           ['--source-link', '-s'], {'action': 'store_true'}),
+         ('Use the supplied <url> for a "View document source" link; '
+          'implies --source-link.',
+          ['--source-url'], {'metavar': '<url>'}),
          ('Do not include a "View document source" link.',
-          ['--no-source-link'], {'action': 'store_false',
-                                 'dest': 'source_link'}),
+          ['--no-source-link'],
+          {'action': 'callback', 'callback': store_multiple,
+           'callback_args': ('source_link', 'source_url')}),
          ('Enable backlinks from section headers to table of contents '
           'entries.  This is the default.',
           ['--toc-entry-backlinks'],
@@ -158,8 +175,8 @@ class OptionParser(optik.OptionParser):
     def check_values(self, values, args):
         values.report_level = self.check_threshold(values.report_level)
         values.halt_level = self.check_threshold(values.halt_level)
-        source, destination = self.check_args(args)
-        return values, source, destination
+        values.source, values.destination = self.check_args(args)
+        return values
 
     def check_threshold(self, level):
         try:
