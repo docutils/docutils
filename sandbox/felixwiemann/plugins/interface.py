@@ -1,23 +1,28 @@
 """
 Designing the urgently-needed plugin support...
 
-Let's implement an extension for rendering keys.
+This module doesn't work, it's just there for showing the design, from
+a plugin's point of view.  (Kind of test-first.  The required
+interfaces will be implemented in Docutils later.)
 
-This module doesn't work, it's just there for showing the design.
-(Kind of test-first.  The required interfaces will be implemented in
-Docutils later.)
+Let's implement an extension for rendering keys:
 
 reST source:
     :key:`Ctrl+C`
 HTML rendering:
     <html><body><span style="border: 1px solid black;">Ctrl</span>+<span style="border: 1px solid black;">C</span></body></html>
 
+That isn't a particularly challenging task, but it's probably best to
+stick to something simple first.  (Later we could try to make a plugin
+out of a math patch, but that will to require more code.)
+
 Things not (yet) covered here:
 
-* Adding a Component.
+* Adding a Component (this may require a generic frontend).
 * Adding an option.
 * Writing a test case for an extension.
 """
+
 
 class KeyNode(nodes.Inline, nodes.TextElement):
 
@@ -28,29 +33,103 @@ class KeyNode(nodes.Inline, nodes.TextElement):
     def __init__(self, key):
         self += nodes.Text(key, key)
 
-    visitors = {
-        'html4css1': ('<span style="border: 1px solid black;" class="key">',
-                      '</span>'),
-        'latex2e': ('\\fbox{', '}'),
-        }
-    """
-    Simple replacement for visit_/depart_ methods in Visitor
-    classes: A dictionary mapping writer names to visit-departure
-    pairs.  visit and departure are either strings (then they're
-    simply inserted into the data stream; the visitor should know how
-    to do this) or they're functions which are then called like this:
-    function(node, visitor)
 
-    (In this context, 'node' is the equivalent to 'self', basically.)
+def html_visit_keynode(visitor, node):
+    """
+    This is a visit_ method which looks like any normal Visitor
+    method.
+
+    It is referenced from the writer support class below.
+    """
+    if visitor.settings['key_html_tt']:
+        # Now insert a string into the writer's data stream.  There is
+        # visitor.body.append(...) for the HTML visitor, but why not
+        # just return the string?  That's much easier.  The visitor
+        # should know where to put it.
+        return visitor.starttag('tt',
+                                style='border: 1px solid black',
+                                CLASS='key')
+    else:
+        return visitor.starttag('span',
+                                style='border: 1px solid black',
+                                CLASS='key')
+
+def html_depart_keynode(visitor, node):
+    """
+    Now this is the depart method.
+    """
+    if visitor.settings['key_html_tt']:
+        return '</tt>'
+    else:
+        return '</span>'
+
+
+class KeyNodeWriterHandling(docutils.WriterSupport):
+
+    """
+    This class describes writer handling for the KeyNode, i.e. it
+    provides visit_ and depart_ methods.  (By the way, is there any
+    term for visit_/depart_ methods?)
+
+    It is automatically picked up by Docutils as soon as there is a
+    node (a KeyNode in this case) a writer cannot handle.
+    """
+
+    node = 'KeyNode'
+    """
+    The node we are implementing support for.
+
+    It's a string, because it should be possible to provide support
+    for nodes which aren't available (e.g. because they are part of
+    another plugin).
+    """
+
+    handlers = {'html4css1': (html_visit_keynode, html_depart_keynode),
+                'latex2e': ('\\fbox{', '}')}
+    """
+    A dictionary mapping writer names to visit-departure pairs.  visit
+    and departure are either strings (then they're simply inserted
+    into the data stream; the visitor should know how to do this) or
+    they're functions which are then called like this:
+    function(visitor, node)
 
     Note that the keys should be strings, not classes, because the
     writer module might be unavailable (e.g. we might want support
     for the DocBook writer, which isn't included in the standard
     Docutils distribution).
-
-    Maybe the writer (visitor) support should rather be implemented
-    outside the node class?  Any suggestion for an elegant design?
     """
+
+
+class KeyNodeSettings(docutils.SettingExtension):
+
+    """
+    This class adds settings.
+
+    It is automatically picked up by Docutils, because at the time the
+    settings are needed (e.g. when running "rst2html.py --help"), it
+    isn't possible to know which extensions will be loaded and thus
+    which settings will be applicable.
+    """
+
+    component = 'html4css1'
+    """
+    The settings specified in this class belong to the HTML writer
+    component.
+    """
+
+    settings_spec = (('Render key buttons in <tt> tags in HTML.',
+                      ['--key-html-tt'],
+                      {'default': 0, 'action': 'store_true'}),
+                     ('Render key buttons in <span> tags in HTML.',
+                      ['--key-html-span'],
+                      {'dest': 'key_html_tt', 'action': 'store_false'},))
+    """
+    Sequence of settings.
+
+    There is no 'validator' now, but that's actually not needed.
+    Docutils can choose the right validator automatically.
+    """
+
 
 class KeyRole(docutils.parsers.rst.Role):
 
@@ -145,8 +224,14 @@ class KeyExtension(docutils.Extension):
     anywhere.
     """
 
-    names = ['key']
+    ids = ['key', 'keybutton', 'key_button']
     """For ".. require:: key" in reST."""
+
+    name = 'Key Button'
+    """This is the "Key Button" plugin."""
+
+    description = 'Support for visual key buttons.'
+    """A description.  Maybe that's necessary for some help message."""
 
     nodes = [KeyNode]
     """Nodes this extension adds.  Do we need this?"""
