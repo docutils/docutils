@@ -9,17 +9,18 @@
 
 Once the Docutils package is unpacked, you will discover a "``tools``"
 directory containing several front ends for common Docutils
-processing.  Most Docutils front ends combine a specific "Reader"
-(which knows how to interpret a file in context), a "Parser" (which
+processing.  Rather than a single all-purpose program, Docutils has
+many small front ends, each specialized for a specific "Reader" (which
+knows how to interpret a file in context), a "Parser" (which
 understands the syntax of the text), and a "Writer" (which knows how
 to generate a specific data format).  Most front ends have common
 options and the same command-line usage pattern::
 
     toolname [options] [<source> [<destination]]
 
-The sole exception is pep2html.py_.  See html.py_ for concrete
-examples.  Each tool has a "``--help``" option which lists the
-`command-line options`_ and arguments it supports.  Processing can
+The exceptions are buildhtml.py_ and pep2html.py_.  See html.py_ for
+concrete examples.  Each tool has a "``--help``" option which lists
+the `command-line options`_ and arguments it supports.  Processing can
 also be customized with `configuration files`_.
 
 The two arguments, "source" and "destination", are optional.  If only
@@ -29,6 +30,36 @@ input (stdin) is used for the source as well.
 
 
 .. contents::
+
+
+buildhtml.py
+============
+
+:Readers: Standalone, PEP
+:Parser: reStructuredText
+:Writers: HTML, PEP/HTML
+
+Use ``buildhtml.py`` to generate .html from all the .txt files
+(including PEPs) in each <directory> given, and their subdirectories
+too.  (Use the ``--local`` option to skip subdirectories.)
+
+Usage::
+
+    buildhtml.py [options] [<directory> ...]
+
+After unpacking the Docutils package, the following commands will
+build all the HTML documents:
+
+    cd docutils
+    tools/buildhtml.py --config=tools/docutils.conf
+
+The current directory (and all subdirectories) is chosen by default if
+no directory is named.  Incomplete files (such as spec/doctree.txt)
+may generate system messages; use the ``--quiet`` option to suppress
+all warnings.  The ``--config`` option ensures that the correct
+stylesheets, templates, and settings are in place.  Command-line
+options may be used to override config file settings or replace them
+altogether.
 
 
 html.py
@@ -262,8 +293,14 @@ Some knowledge of Python_ is assumed for some attributes.
 Config Entry Name     Description
 ====================  ================================================
 config                Path to a configuration file to read (if it
-                      exists).  Settings may override defaults and
-                      earlier settings.
+                      exists) [#pwd]. Settings may override defaults
+                      and earlier settings.  This is only effective as
+                      a command-line option; setting it in a config
+                      file has no effect.
+
+                      Filesystem path settings contained within the
+                      config file will be interpreted relative to the
+                      config file's location.
 
                       Default: None.  Options: ``--config``.
 --------------------  ------------------------------------------------
@@ -278,13 +315,9 @@ debug                 Report debug-level system messages.
                       Default: don't (None).  Options: ``--debug,
                       --no-debug``.
 --------------------  ------------------------------------------------
-destination           Path to output destination, set from positional
-                      arguments.  Default: stdout (None).  No 
-                      command-line options.
---------------------  ------------------------------------------------
-dump_internals        Hidden option: At the end of processing, print
-                      out all internal attributes of the document
-                      (``document.__dict__``).
+dump_internals        (Hidden option.)  At the end of processing,
+                      print out all internal attributes of the
+                      document (``document.__dict__``).
 
                       Default: don't (None).  Options:
                       ``--dump-internals``.
@@ -309,7 +342,7 @@ halt_level            The threshold at or above which system messages
                       Default: severe (4).  Options: ``--halt,
                       --strict``.
 --------------------  ------------------------------------------------
-indents               XML-specific: Generate XML with indents and
+indents               (XML Writer.)  Generate XML with indents and
                       newlines.
 
                       Default: don't (None).  Options: ``--indents``.
@@ -323,13 +356,13 @@ language_code         `ISO 639`_ 2-letter language code (3-letter
                       Default: English ("en").  Options: ``--language,
                       -l``.
 --------------------  ------------------------------------------------
-newlines              XML-specific: Generate XML with newlines before
+newlines              (XML Writer.)  Generate XML with newlines before
                       and after tags.
 
                       Default: don't (None).  Options: ``--newlines``.
 --------------------  ------------------------------------------------
-no_random             PEP/HTML-specific hidden option: Workaround for
-                      platforms which core-dump on "``import
+no_random             (PEP/HTML Writer; hidden option.)  Workaround
+                      for platforms which core-dump on "``import
                       random``".
 
                       Default: random enabled (None).  Options:
@@ -338,35 +371,39 @@ no_random             PEP/HTML-specific hidden option: Workaround for
 output_encoding       Default: UTF-8.  Options: ``--output-encoding,
                       -o``.
 --------------------  ------------------------------------------------
-pep_home              PEP/HTML-specific: Home URL prefix for PEPs.
+pep_home              (PEP/HTML Writer.)  Home URL prefix for PEPs.
 
                       Default: current directory (".").  Options:
                       ``--pep-home``.
 --------------------  ------------------------------------------------
-pep_stylesheet        PEP/HTML-specific: path to CSS stylesheet.
-                      Overrides HTML stylesheet (``--stylesheet``).
+pep_stylesheet        (PEP/HTML Writer.)  Path to CSS stylesheet
+                      [#pwd].  Overrides HTML stylesheet
+                      (``--stylesheet``).
 
                       Default: None.  Options: ``--pep-stylesheet``.
 --------------------  ------------------------------------------------
-pep_template          PEP/HTML-specific: PEP template file.
+pep_template          (PEP/HTML Writer.)  Path to PEP template file
+                      [#pwd].
 
-                      Default: "pep-html-template".  Options:
-                      ``--pep-template``.
+                      Default: "pep-html-template" (in current
+                      directory).  Options: ``--pep-template``.
 --------------------  ------------------------------------------------
-python_home           PEP/HTML-specific: Python's home URL.
+python_home           (PEP/HTML Writer.)  Python's home URL.
 
                       Default: parent directory ("..").  Options:
                       ``--python-home``.
+--------------------  ------------------------------------------------
+recurse               (``buildhtml.py`` front end.)  Recursively scan
+                      subdirectories.
+
+                      Default: recurse (1).  Options: ``--recurse,
+                      --local``.
 --------------------  ------------------------------------------------
 report_level          Verbosity threshold at or above which system
                       messages are reported.
 
                       Default: warning (2).  Options: ``--report, -r,
                       --verbose``.
---------------------  ------------------------------------------------
-source                Path to input source, set from positional
-                      arguments.  Default: stdin (None).  No 
-                      command-line options.
 --------------------  ------------------------------------------------
 source_link           Include a "View document source" link in the
                       document footer.  URL will be relative to the
@@ -381,7 +418,7 @@ source_url            An explicit URL for a "View document source"
                       Default: compute if source_link (None).
                       Options: ``--source-uri, --no-source-link``.
 --------------------  ------------------------------------------------
-stylesheet            HTML-specific: path to CSS stylesheet.
+stylesheet            (HTML Writer.)  Path to CSS stylesheet [#pwd].
 
                       Default: "default.css".  Options:
                       ``--stylesheet``.
@@ -395,13 +432,31 @@ toc_backlinks         Enable backlinks from section titles to table of
                       --no-toc-backlinks``.
 --------------------  ------------------------------------------------
 warning_stream        Path to a file for the output of system messages
-                      (warnings).
+                      (warnings) [#pwd].
 
                       Default: stderr (None).  Options:
                       ``--warnings``.
+
+For Internal Use Only (setting these in a config file has no effect)
+----------------------------------------------------------------------
+_directories          (``buildhtml.py`` front end.)  List of paths to
+                      source directories, set from positional
+                      arguments.  Default: current working directory
+                      (None).  No command-line options.
+--------------------  ------------------------------------------------
+_destination          Path to output destination, set from positional
+                      arguments.  Default: stdout (None).  No 
+                      command-line options.
+--------------------  ------------------------------------------------
+_source               Path to input source, set from positional
+                      arguments.  Default: stdin (None).  No 
+                      command-line options.
 ====================  ================================================
 
 .. _ISO 639: http://lcweb.loc.gov/standards/iso639-2/englangn.html
+
+.. [#pwd] Path relative to the working directory of the process at
+   launch.
 
 
 ..
