@@ -163,7 +163,7 @@ Paragraph 2.
             <image alt="Title 2" uri="title2.png">
         <paragraph>
             Paragraph 2.
-        <substitution_definition name="title 2">
+        <substitution_definition name="Title 2">
             <image alt="Title 2" uri="title2.png">
 """],                                   # emacs cruft: "
 ["""\

@@ -868,8 +868,8 @@ class document(Root, Structural, Element):
         self.citation_refs.setdefault(ref['refname'], []).append(ref)
         self.note_refname(ref)
 
-    def note_substitution_def(self, subdef, msgnode=None):
-        name = subdef['name']
+    def note_substitution_def(self, subdef, def_name, msgnode=None):
+        name = subdef['name'] = whitespace_normalize_name(def_name)
         if self.substitution_defs.has_key(name):
             msg = self.reporter.error(
                   'Duplicate substitution definition name: "%s".' % name,
@@ -878,12 +878,14 @@ class document(Root, Structural, Element):
                 msgnode += msg
             oldnode = self.substitution_defs[name]
             dupname(oldnode)
-        # keep only the last definition
+        # keep only the last definition:
         self.substitution_defs[name] = subdef
+        # case-insensitive mapping:
+        self.substitution_names[fully_normalize_name(name)] = name
 
-    def note_substitution_ref(self, subref):
-        self.substitution_refs.setdefault(
-              subref['refname'], []).append(subref)
+    def note_substitution_ref(self, subref, refname):
+        name = subref['refname'] = whitespace_normalize_name(refname)
+        self.substitution_refs.setdefault(name, []).append(subref)
 
     def note_pending(self, pending, priority=None):
         self.transformer.add_pending(pending, priority)

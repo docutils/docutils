@@ -668,11 +668,17 @@ class Substitutions(Transform):
 
     def apply(self):
         defs = self.document.substitution_defs
+        normed = self.document.substitution_names
         for refname, refs in self.document.substitution_refs.items():
             for ref in refs:
+                key = None
                 if defs.has_key(refname):
-                    ref.parent.replace(ref, defs[refname].get_children())
+                    key = refname
                 else:
+                    normed_name = refname.lower()
+                    if normed.has_key(normed_name):
+                        key = normed[normed_name]
+                if key is None:
                     msg = self.document.reporter.error(
                           'Undefined substitution referenced: "%s".'
                           % refname, base_node=ref)
@@ -682,6 +688,8 @@ class Substitutions(Transform):
                     prbid = self.document.set_id(prb)
                     msg.add_backref(prbid)
                     ref.parent.replace(ref, prb)
+                else:
+                    ref.parent.replace(ref, defs[key].get_children())
         self.document.substitution_refs = None  # release replaced references
 
 

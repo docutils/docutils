@@ -1893,12 +1893,14 @@ indirectly contain a circular substitution reference.
 
 `Substitution references`_ are replaced in-line by the processed
 contents of the corresponding definition (linked by matching
-substitution text).  Substitution definitions allow the power and
-flexibility of block-level directives_ to be shared by inline text.
-They are a way to include arbitrarily complex inline structures within
-text, while keeping the details out of the flow of text.  They are the
-equivalent of SGML/XML's named entities or programming language
-macros.
+substitution text).  Matches are case-sensitive but forgiving; if no
+exact match is found, a case-insensitive comparison is attempted.
+
+Substitution definitions allow the power and flexibility of
+block-level directives_ to be shared by inline text.  They are a way
+to include arbitrarily complex inline structures within text, while
+keeping the details out of the flow of text.  They are the equivalent
+of SGML/XML's named entities or programming language macros.
 
 Without the substitution mechanism, every time someone wants an
 application-specific new inline structure, they would have to petition
@@ -2270,7 +2272,7 @@ backslash-escaped whitespace::
 
 The backslashes and spaces separating "re", "Structured", and "Text"
 above will disappear from the processed document.
-    
+
 .. CAUTION::
 
    The use of backslash-escapes for character-level inline markup is
@@ -2540,8 +2542,9 @@ a "_" (named) or "__" (anonymous) suffix; the substitution text is
 used for the reference text in the named case.
 
 The processing system replaces substitution references with the
-processed contents of the corresponding `substitution definitions`_.
-Substitution definitions produce inline-compatible elements.
+processed contents of the corresponding `substitution definitions`_
+(which see for the definition of "correspond").  Substitution
+definitions produce inline-compatible elements.
 
 Examples::
 

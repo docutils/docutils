@@ -485,36 +485,6 @@ __ rst/alternatives.html#or-not-to-do
   This may not be just a parser issue though; it may need framework
   support.
 
-* Add _`character processing`?  For example:
-
-  - ``--`` to em-dash (or ``--`` to en-dash, and ``---`` to em-dash).
-    (Look for pre-existing conventions.)
-  - Convert quotes to curly quote entities.  (Essentially impossible
-    for HTML?  Unnecessary for TeX.  An output issue?)
-  - Various forms of ``:-)`` to smiley icons.
-  - ``"\ "`` to &nbsp;.  Problem with line-wrapping though: it could
-    end up escaping the newline.
-  - Escaped newlines to <BR>.
-  - Escaped period or quote or dash as a disappearing catalyst to
-    allow character-level inline markup?
-  - Others?
-
-  How to represent character entities in the text though?  Probably as
-  Unicode.
-
-  Which component is responsible for this, the parser, the reader, or
-  the writer?
-
-* Idea from David Abrahams re character-level inline markup:
-
-      I can think of one way to beautify cases like this: introduce a
-      kind of quotation which removes all spaces in what it surrounds
-      as a postprocessing step. ::
-
-          ''*re* ``Structured`` *Text*''
-
-      This would be analogous to re.VERBOSE, if memory serves.
-
 * Implement the header row separator modification to table.el.  (Wrote
   to Takaaki Ota & the table.el mailing list on 2001-08-12, suggesting
   support for "=====" header rows.  On 2001-08-17 he replied, saying

@@ -936,26 +936,22 @@ class Inliner:
               match, lineno, self.patterns.substitution_ref,
               nodes.substitution_reference)
         if len(inlines) == 1:
-            subrefnode = inlines[0]
-            if isinstance(subrefnode, nodes.substitution_reference):
-                subreftext = subrefnode.astext()
-                refname = normalize_name(subreftext)
-                subrefnode['refname'] = refname
-                self.document.note_substitution_ref(
-                      subrefnode)
+            subref_node = inlines[0]
+            if isinstance(subref_node, nodes.substitution_reference):
+                subref_text = subref_node.astext()
+                self.document.note_substitution_ref(subref_node, subref_text)
                 if endstring[-1:] == '_':
-                    referencenode = nodes.reference(
-                          '|%s%s' % (subreftext, endstring), '')
+                    reference_node = nodes.reference(
+                        '|%s%s' % (subref_text, endstring), '')
                     if endstring[-2:] == '__':
-                        referencenode['anonymous'] = 1
+                        reference_node['anonymous'] = 1
                         self.document.note_anonymous_ref(
-                              referencenode)
+                              reference_node)
                     else:
-                        referencenode['refname'] = refname
-                        self.document.note_refname(
-                              referencenode)
-                    referencenode += subrefnode
-                    inlines = [referencenode]
+                        reference_node['refname'] = normalize_name(subref_text)
+                        self.document.note_refname(reference_node)
+                    reference_node += subref_node
+                    inlines = [reference_node]
         return before, inlines, remaining, sysmessages
 
     def footnote_reference(self, match, lineno):
@@ -1864,34 +1860,31 @@ class Body(RSTState):
         while block and not block[-1].strip():
             block.pop()
         subname = subdefmatch.group('name')
-        name = normalize_name(subname)
-        substitutionnode = nodes.substitution_definition(
-              blocktext, name=name, alt=subname)
-        substitutionnode.line = lineno
+        substitution_node = nodes.substitution_definition(blocktext)
+        substitution_node.line = lineno
+        self.document.note_substitution_def(
+            substitution_node,subname, self.parent)
         if block:
             block[0] = block[0].strip()
             new_abs_offset, blank_finish = self.nested_list_parse(
-                  block, input_offset=offset, node=substitutionnode,
+                  block, input_offset=offset, node=substitution_node,
                   initial_state='SubstitutionDef', blank_finish=blank_finish)
             i = 0
-            for node in substitutionnode[:]:
+            for node in substitution_node[:]:
                 if not (isinstance(node, nodes.Inline) or
                         isinstance(node, nodes.Text)):
-                    self.parent += substitutionnode[i]
-                    del substitutionnode[i]
+                    self.parent += substitution_node[i]
+                    del substitution_node[i]
                 else:
                     i += 1
-            if len(substitutionnode) == 0:
+            if len(substitution_node) == 0:
                 msg = self.reporter.warning(
                       'Substitution definition "%s" empty or invalid.'
                       % subname,
                       nodes.literal_block(blocktext, blocktext), line=lineno)
                 return [msg], blank_finish
             else:
-                del substitutionnode['alt']
-                self.document.note_substitution_def(
-                      substitutionnode, self.parent)
-                return [substitutionnode], blank_finish
+                return [substitution_node], blank_finish
         else:
             msg = self.reporter.warning(
                   'Substitution definition "%s" missing contents.' % subname,
@@ -2453,11 +2446,8 @@ class SubstitutionDef(Body):
     initial_transitions = ['embedded_directive', 'text']
 
     def embedded_directive(self, match, context, next_state):
-        if self.parent.has_key('alt'):
-            option_presets = {'alt': self.parent['alt']}
-        else:
-            option_presets = {}
-        nodelist, blank_finish = self.directive(match, **option_presets)
+        nodelist, blank_finish = self.directive(match,
+                                                alt=self.parent['name'])
         self.parent += nodelist
         if not self.state_machine.at_eof():
             self.blank_finish = blank_finish
