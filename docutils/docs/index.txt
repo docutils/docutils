@@ -185,6 +185,7 @@ Docutils-general:
 * `Docutils Project Policies <dev/policies.html>`__
 * `Docutils Web Site <dev/website.html>`__
 * `Docutils Release Procedure <dev/release.html>`__
+* `The Docutils Repository <dev/repository.html>`__
 * `Docutils Testing <dev/testing.html>`__
 * `Docstring Semantics <dev/semantics.html>`__ (incomplete)
 * `Python Source Reader <dev/pysource.html>`_ (incomplete)
