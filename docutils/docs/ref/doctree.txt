@@ -1146,10 +1146,11 @@ reStructuredText source::
         Big and scary; the "Tyrant King".
 
     Brontosaurus : herbivore
-        Small at one end, big in the middle,
-        and small again at the other end.
+        All brontosauruses are thin at one end,
+        much much thicker in the middle
+        and then thin again at the far end.
 
-        -- Anne Elk, Miss
+        -- Anne Elk (Miss)
 
 Pseudo-XML_ fragment from simple parsing::
 
@@ -1169,8 +1170,9 @@ Pseudo-XML_ fragment from simple parsing::
                 herbivore
             <definition>
                 <paragraph>
-                    Small at one end, big in the middle,
-                    and small again at the other end.
+                    All brontosauruses are thin at one end,
+                    much much thicker in the middle
+                    and then thin again at the far end.
                 <paragraph>
                     -- Anne Elk, Miss
 
