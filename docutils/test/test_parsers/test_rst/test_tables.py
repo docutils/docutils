@@ -10,6 +10,7 @@
 Tests for states.py.
 """
 
+import os
 from __init__ import DocutilsTestSupport
 
 def suite():
@@ -17,9 +18,12 @@ def suite():
     s.generateTests(totest)
     return s
 
+mydir = os.path.dirname(suite.func_code.co_filename)
+include2 = os.path.join(mydir, 'test_directives/include2.txt')
+
 totest = {}
 
-totest['full_tables'] = [
+totest['grid_tables'] = [
 ["""\
 +-------------------------------------+
 | A table with one cell and one line. |
@@ -557,6 +561,38 @@ No blank line after table.
                             with empty cells
                     <entry>
 """],
+[("""\
++------------------------------------------------------------------------------+
+| .. include::                                                                 |
+%s
++------------------------------------------------------------------------------+
+| (The first cell of this table may expand                                     |
+| to accommodate long filesystem paths.)                                       |
++------------------------------------------------------------------------------+
+""") % ('\n'.join(['|    %-70s    |' % include2[part * 70 : (part + 1) * 70]
+                   for part in range(len(include2) / 70 + 1)])),
+"""\
+<document source="test data">
+    <table>
+        <tgroup cols="1">
+            <colspec colwidth="78">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Here are some paragraphs
+                            that can appear at any level.
+                        <paragraph>
+                            This file (include2.txt) is used by
+                            <literal>
+                                test_include.py
+                            .
+                <row>
+                    <entry>
+                        <paragraph>
+                            (The first cell of this table may expand
+                            to accommodate long filesystem paths.)
+"""],
 ]
 
 totest['simple_tables'] = [
@@ -829,7 +865,7 @@ cell 3          cell 4
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Malformed table.
-            Column span alignment problem at line offset 2.
+            Column span alignment problem at line offset 3.
         <literal_block xml:space="preserve">
             ==============  ======
             A bad table     cell 2
@@ -1142,6 +1178,44 @@ A table with  many row separators.
                             2
                     <entry>
                     <entry>
+"""],
+["""\
+=========  =====================================================================
+Inclusion  .. include::
+%s
+Note       The first row of this table may expand
+           to accommodate long filesystem paths.
+=========  =====================================================================
+""" % ('\n'.join(['              %-65s' % include2[part * 65 : (part + 1) * 65]
+                  for part in range(len(include2) / 65 + 1)])),
+"""\
+<document source="test data">
+    <table>
+        <tgroup cols="2">
+            <colspec colwidth="9">
+            <colspec colwidth="69">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Inclusion
+                    <entry>
+                        <paragraph>
+                            Here are some paragraphs
+                            that can appear at any level.
+                        <paragraph>
+                            This file (include2.txt) is used by
+                            <literal>
+                                test_include.py
+                            .
+                <row>
+                    <entry>
+                        <paragraph>
+                            Note
+                    <entry>
+                        <paragraph>
+                            The first row of this table may expand
+                            to accommodate long filesystem paths.
 """],
 ]
 

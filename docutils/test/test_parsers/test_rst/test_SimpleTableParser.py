@@ -27,8 +27,8 @@ A table with  two columns.
 """,
 ([12, 12],
  [],
- [[(0, 0, 1, ['A table with']),
-   (0, 0, 1, ['two columns.'])]])],
+ [[[0, 0, 1, ['A table with']],
+   [0, 0, 1, ['two columns.']]]])],
 ["""\
 ============  ============
 A table with  two columns
@@ -37,10 +37,10 @@ and           two rows.
 """,
 ([12, 12],
  [],
- [[(0, 0, 1, ['A table with']),
-   (0, 0, 1, ['two columns'])],
-  [(0, 0, 2, ['and']),
-   (0, 0, 2, ['two rows.'])]])],
+ [[[0, 0, 1, ['A table with']],
+   [0, 0, 1, ['two columns']]],
+  [[0, 0, 2, ['and']],
+   [0, 0, 2, ['two rows.']]]])],
 ["""\
 ==========  ===========
 A table with four rows,
@@ -52,12 +52,12 @@ contain column spans.
 """,
 ([10, 11],
  [],
- [[(0, 1, 1, ['A table with four rows,'])],
-  [(0, 0, 3, ['and two']),
-   (0, 0, 3, ['columns.'])],
-  [(0, 0, 4, ['First and']),
-   (0, 0, 4, ['last rows'])],
-  [(0, 1, 5, ['contain column spans.'])]])],
+ [[[0, 1, 1, ['A table with four rows,']]],
+  [[0, 0, 3, ['and two']],
+   [0, 0, 3, ['columns.']]],
+  [[0, 0, 4, ['First and']],
+   [0, 0, 4, ['last rows']]],
+  [[0, 1, 5, ['contain column spans.']]]])],
 ["""\
 =======  =====  ======
 A bad table     cell 2
@@ -76,12 +76,12 @@ the second with a span.
 =============================
 """,
 ([11, 16],
- [[(0, 1, 1, ['A table with two header rows,'])],
-  [(0, 0, 3, ['the first']),
-   (0, 0, 3, ['with a span.'])]],
- [[(0, 0, 5, ['Two body']),
-   (0, 0, 5, ['rows,'])],
-  [(0, 1, 6, ['the second with a span.'])]])],
+ [[[0, 1, 1, ['A table with two header rows,']]],
+  [[0, 0, 3, ['the first']],
+   [0, 0, 3, ['with a span.']]]],
+ [[[0, 0, 5, ['Two body']],
+   [0, 0, 5, ['rows,']]],
+  [[0, 1, 6, ['the second with a span.']]]])],
 ["""\
 ============  =============
 A table with  two head/body
@@ -93,6 +93,14 @@ That's bad.
 """,
 'TableMarkupError: Multiple head/body row separators in table '
 '(at line offset 2 and 4); only one allowed.'],
+["""\
+============  ============
+============  ============
+""",
+([12, 12],
+ [],
+ [[[0, 0, 1, []],
+   [0, 0, 1, []]]])],
 ]
 
 
