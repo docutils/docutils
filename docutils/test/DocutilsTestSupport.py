@@ -559,22 +559,28 @@ class PythonModuleParserTestSuite(CustomTestSuite):
                       id='%s[%r][%s]' % (dictname, name, casenum),
                       run_in_debugger=run_in_debugger)
 
-class LatexPublishTestCase(CustomTestCase):
+
+# @@@ These should be generalized to WriterPublishTestCase/Suite or
+# just PublishTestCase/Suite, as per TransformTestCase/Suite.
+class LatexPublishTestCase(CustomTestCase, docutils.SettingsSpec):
 
     """
     Test case for publish.
     """
 
+    settings_default_overrides = {'_disable_config': 1}
+
     def test_publish(self):
         if self.run_in_debugger:
             pdb.set_trace()
-        output = docutils.core.publish_string(source=self.input, source_path=None,
-                 destination_path=None,
-                 reader=None, reader_name='standalone',
-                 parser=None, parser_name='restructuredtext',
-                 writer=None, writer_name='latex',
-                 settings=None, settings_spec=None, settings_overrides=None)
+        output = docutils.core.publish_string(
+              source=self.input,
+              reader_name='standalone',
+              parser_name='restructuredtext',
+              writer_name='latex',
+              settings_spec=self)
         self.compare_output(self.input, output, self.expected)
+
 
 class LatexPublishTestSuite(CustomTestSuite):
 
