@@ -21,6 +21,7 @@ import os
 import os.path
 import sys
 import types
+import warnings
 import ConfigParser as CP
 import codecs
 import docutils
@@ -44,11 +45,7 @@ def read_config_file(option, opt, value, parser):
     """
     Read a configuration file during option processing.  (Option callback.)
     """
-    config_parser = ConfigParser()
-    config_parser.read(value, parser)
-    settings = config_parser.get_section('options')
-    make_paths_absolute(settings, parser.relative_path_settings,
-                        os.path.dirname(value))
+    settings = parser.get_config_file_settings(value)
     parser.values.__dict__.update(settings)
 
 def set_encoding(option, opt, value, parser):
@@ -150,6 +147,13 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
     conflict.  Short options are reserved for common settings, and components
     are restrict to using long options.
     """
+
+    standard_config_files = [
+        '/etc/docutils.conf',               # system-wide
+        './docutils.conf',                  # project-specific
+        os.path.expanduser('~/.docutils')]  # user-specific
+    """Docutils configuration files, using ConfigParser syntax.
+    Later files override earlier ones."""
 
     threshold_choices = 'info 1 warning 2 error 3 severe 4 none 5'.split()
     """Possible inputs for for --report and --halt threshold values."""
@@ -303,6 +307,8 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
 
     relative_path_settings = ('warning_stream',)
 
+    config_section = 'general'
+
     version_template = '%%prog (Docutils %s)' % docutils.__version__
     """Default version message."""
 
@@ -321,15 +327,11 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
             self.version = self.version_template
         # Make an instance copy (it will be modified):
         self.relative_path_settings = list(self.relative_path_settings)
-        self.populate_from_components((self,) + tuple(components))
+        self.components = (self,) + tuple(components)
+        self.populate_from_components(self.components)
         defaults = defaults or {}
         if read_config_files and not self.defaults['_disable_config']:
-            # @@@ Extract this code into a method, which can be called from
-            # the read_config_file callback also.
-            config = ConfigParser()
-            config.read_standard_files(self)
-            config_settings = config.get_section('options')
-            make_paths_absolute(config_settings, self.relative_path_settings)
+            config_settings = self.get_standard_config_settings()
             defaults.update(config_settings)
         # Internal settings with no defaults from settings specifications;
         # initialize manually:
@@ -365,6 +367,31 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
         for component in components:
             if component and component.settings_default_overrides:
                 self.defaults.update(component.settings_default_overrides)
+
+    def get_standard_config_settings(self):
+        settings = {}
+        for filename in self.standard_config_files:
+            settings.update(self.get_config_file_settings(filename))
+        return settings
+
+    def get_config_file_settings(self, config_file):
+        parser = ConfigParser()
+        parser.read(config_file, self)
+        base_path = os.path.dirname(config_file)
+        applied = {}
+        settings = {}
+        for component in self.components:
+            if not component:
+                continue
+            for section in (tuple(component.config_section_dependencies or ())
+                            + (component.config_section,)):
+                if applied.has_key(section):
+                    continue
+                applied[section] = 1
+                settings.update(parser.get_section(section))
+        make_paths_absolute(
+            settings, self.relative_path_settings, base_path)
+        return settings
 
     def check_values(self, values, args):
         if hasattr(values, 'report_level'):
@@ -407,13 +434,6 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
 
 class ConfigParser(CP.ConfigParser):
 
-    standard_config_files = (
-        '/etc/docutils.conf',               # system-wide
-        './docutils.conf',                  # project-specific
-        os.path.expanduser('~/.docutils'))  # user-specific
-    """Docutils configuration files, using ConfigParser syntax (section
-    'options').  Later files override earlier ones."""
-
     validation = {
         'options':
         {'input_encoding': validate_encoding,
@@ -425,15 +445,45 @@ class ConfigParser(CP.ConfigParser):
     `validate_options`.  Validation functions take two parameters: name and
     value.  They return a (possibly modified) value, or raise an exception."""
 
-    def read_standard_files(self, option_parser):
-        self.read(self.standard_config_files, option_parser)
+    old_settings = {
+        'pep_stylesheet': ('pep_html writer', 'stylesheet'),
+        'pep_stylesheet_path': ('pep_html writer', 'stylesheet_path'),
+        'pep_template': ('pep_html writer', 'template')}
+    """{old setting: (new section, new setting)} mapping, used by
+    `handle_old_config`, to convert settings from the old [options] section."""
+
+    old_warning = """
+The "[option]" section is deprecated.  Support for old-format configuration
+files will be removed in a future Docutils release.  Please revise your
+configuration files.  See <http://docutils.sf.net/docs/config.html>.
+"""
 
     def read(self, filenames, option_parser):
         if type(filenames) in types.StringTypes:
             filenames = [filenames]
         for filename in filenames:
             CP.ConfigParser.read(self, filename)
+            if self.has_section('options'):
+                self.handle_old_config(filename)
             self.validate_options(filename, option_parser)
+
+    def handle_old_config(self, filename):
+        warnings.warn_explicit(self.old_warning, ConfigDeprecationWarning,
+                               filename, 0)
+        options = self.get_section('options')
+        if not self.has_section('general'):
+            self.add_section('general')
+        for key, value in options.items():
+            if self.old_settings.has_key(key):
+                section, setting = self.old_settings[key]
+                if not self.has_section(section):
+                    self.add_section(section)
+            else:
+                section = 'general'
+                setting = key
+            if not self.has_option(section, setting):
+                self.set(section, setting, value)
+        self.remove_section('options')
 
     def validate_options(self, filename, option_parser):
         for section in self.validation.keys():
@@ -477,3 +527,7 @@ class ConfigParser(CP.ConfigParser):
             for option in self.options(section):
                 section_dict[option] = self.get(section, option, raw, vars)
         return section_dict
+
+
+class ConfigDeprecationWarning(DeprecationWarning):
+    """Warning for deprecated configuration file features."""
