@@ -593,7 +593,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_option_list(self, node):
         self.body.append(
               self.starttag(node, 'table', CLASS='option-list',
-                            frame="void", rules="none", cellspacing=12))
+                            frame="void", rules="none"))
         self.body.append('<col class="option" />\n'
                          '<col class="description" />\n'
                          '<tbody valign="top">\n')
