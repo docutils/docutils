@@ -748,9 +748,6 @@ __ rst/alternatives.html#or-not-to-do
       1. line one
       3. line two
 
-* Line numbers in system messages are inconsistent in the parser.
-  Fix?
-
 * Generalize the "target-notes" directive into a command-line option
   somehow?  See docutils-develop 2003-02-13.
 
