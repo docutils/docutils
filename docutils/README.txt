@@ -5,7 +5,7 @@
 :Author: David Goodger
 :Contact: goodger@users.sourceforge.net
 :Date: $Date$
-:Website: http://docutils.sourceforge.net/
+:Web-site: http://docutils.sourceforge.net/
 
 Thank you for downloading the Python Docutils project arhive.  As this
 is a work in progress, please check the project website for updated
