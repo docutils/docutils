@@ -1273,8 +1273,8 @@ class NodeVisitor:
 
         Raise an exception unless overridden.
         """
-        raise NotImplementedError('visiting unknown node type: %s'
-                                  % node.__class__.__name__)
+        raise NotImplementedError('%s visiting unknown node type: %s'
+                                  % (self.__class__, node.__class__.__name__))
 
     def unknown_departure(self, node):
         """
@@ -1282,8 +1282,8 @@ class NodeVisitor:
 
         Raise exception unless overridden.
         """
-        raise NotImplementedError('departing unknown node type: %s'
-                                  % node.__class__.__name__)
+        raise NotImplementedError('%s departing unknown node type: %s'
+                                  % (self.__class__, node.__class__.__name__))
 
 
 class SparseNodeVisitor(NodeVisitor):
