@@ -758,9 +758,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 closings = ""
                 openings = ""
             text = text.replace("\n", "%s}\\\\\n\\mbox{%s" % (closings,openings))
-        # lines starting with "[" or "]" give errors.
-        self.encode_re_bracketts = re.compile(r'([\[\]])')
-        text = self.encode_re_bracketts.sub(r'{\1}',text)
+        # lines starting with "[" give errors.
+        text = text.replace('[', '{[}')
         if self.insert_none_breaking_blanks:
             text = text.replace(' ', '~')
         # unicode !!!
