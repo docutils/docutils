@@ -40,10 +40,9 @@ Specification`_ for syntax details.
                   "important", "note", "tip", "warning"
 :DTD Elements: attention, caution, danger, error, hint, important,
                note, tip, warning
-:Directive Block:
-    :Arguments: None.
-    :Options: None.
-    :Content: Interpreted as body elements.
+:Directive Arguments: None.
+:Directive Options: None.
+:Directive Content: Interpreted as body elements.
 
 Admonitions are specially marked "topics" that can appear anywhere an
 ordinary body element can.  They contain arbitrary body elements.
@@ -100,10 +99,9 @@ Image
 
 :Directive Type: "image"
 :DTD Element: image
-:Directive Block:
-    :Arguments: One, required (image URI).
-    :Options: Possible.
-    :Content: None.
+:Directive Arguments: One, required (image URI).
+:Directive Options: Possible.
+:Directive Content: None.
 
 An "image" is a simple picture::
 
@@ -158,11 +156,10 @@ Figure
 
 :Directive Type: "figure"
 :DTD Elements: figure, image, caption, legend
-:Directive Block:
-
-    :Arguments: One, required (image URI).
-    :Options: Possible.
-    :Content: Interpreted as the figure caption and an optional legend.
+:Directive Arguments: One, required (image URI).
+:Directive Options: Possible.
+:Directive Content: Interpreted as the figure caption and an optional
+                    legend.
 
 A "figure" consists of image_ data (including `image options`_), an
 optional caption (a single paragraph), and an optional legend
@@ -202,10 +199,9 @@ Topic
 
 :Directive Type: "topic"
 :DTD Element: topic
-:Directive Block:
-    :Arguments: None.
-    :Options: None.
-    :Content: Interpreted as the topic title and body.
+:Directive Arguments: None.
+:Directive Options: None.
+:Directive Content: Interpreted as the topic title and body.
 
 A topic is like a block quote with a title, or a self-contained
 section with no subsections.  Use the "topic" directive to indicate a
@@ -229,10 +225,9 @@ Line Block
 
 :Directive Type: "line-block"
 :DTD Element: line_block
-:Directive Block: 
-    :Arguments: None.
-    :Options: None.
-    :Content: Becomes the body of the line block.
+:Directive Arguments: None.
+:Directive Options: None.
+:Directive Content: Becomes the body of the line block.
 
 The "line-block" directive constructs an element where whitespace
 (including linebreaks) is significant and inline markup is supported.
@@ -261,10 +256,9 @@ Parsed Literal Block
 
 :Directive Type: "literal-block"
 :DTD Element: literal_block
-:Directive Block: 
-    :Arguments: None.
-    :Options: None.
-    :Content: Becomes the body of the literal block.
+:Directive Arguments: None.
+:Directive Options: None.
+:Directive Content: Becomes the body of the literal block.
 
 Unlike an ordinary literal block, the "parsed-literal" directive
 constructs a literal block where the text is parsed for inline markup.
@@ -278,11 +272,11 @@ Backslash-escapes may be necessary in places.
 For example, all the element names in this content model are links::
 
     .. parsed-literal::
-    
+
         ((title_,
-          subtitle_?)?, 
-         docinfo_?, 
-         decoration_?, 
+          subtitle_?)?,
+         docinfo_?,
+         decoration_?,
          `%structure.model;`_)
 
 
@@ -295,10 +289,9 @@ Table of Contents
 
 :Directive Type: "contents"
 :DTD Elements: pending, topic
-:Directive Block: 
-    :Arguments: One, optional: title.
-    :Options: Possible.
-    :Content: None.
+:Directive Arguments: One, optional: title.
+:Directive Options: Possible.
+:Directive Content: None.
 
 The "contents" directive inserts a table of contents (TOC) in two
 passes: initial parse and transform.  During the initial parse, a
@@ -352,10 +345,9 @@ Automatic Section Numbering
 
 :Directive Type: "sectnum" or "section-autonumbering" (synonyms)
 :DTD Elements: pending, generated
-:Directive Block: 
-    :Arguments: None.
-    :Options: Possible.
-    :Content: None.
+:Directive Arguments: None.
+:Directive Options: Possible.
+:Directive Content: None.
 
 The "sectnum" (or "section-autonumbering") directive automatically
 numbers sections and subsections in a document.  Section numbers are
@@ -387,10 +379,9 @@ Target Footnotes
 
 :Directive Type: "target-notes"
 :DTD Elements: pending, footnote, footnote_reference
-:Directive Block:
-    :Arguments: None.
-    :Options: None.
-    :Content: None.
+:Directive Arguments: None.
+:Directive Options: None.
+:Directive Content: None.
 
 The "target-notes" directive creates a footnote for each external
 target in the text, and corresponding footnote references after each
@@ -406,10 +397,9 @@ Footnotes
 
 :Directive Type: "footnotes"
 :DTD Elements: pending, topic
-:Directive Block: 
-    :Arguments: None?
-    :Options: Possible?
-    :Content: None.
+:Directive Arguments: None?
+:Directive Options: Possible?
+:Directive Content: None.
 
 @@@
 
@@ -421,10 +411,9 @@ Citations
 
 :Directive Type: "citations"
 :DTD Elements: pending, topic
-:Directive Block: 
-    :Arguments: None?
-    :Options: Possible?
-    :Content: None.
+:Directive Arguments: None?
+:Directive Options: Possible?
+:Directive Content: None.
 
 @@@
 
@@ -438,10 +427,9 @@ Meta
 
 :Directive Type: "meta"
 :DTD Element: meta (non-standard)
-:Directive Block: 
-    :Arguments: None.
-    :Options: None.
-    :Content: Must contain a flat field list.
+:Directive Arguments: None.
+:Directive Options: None.
+:Directive Content: Must contain a flat field list.
 
 The "meta" directive is used to specify HTML metadata stored in HTML
 META tags.  "Metadata" is data about data, in this case data about web
@@ -509,10 +497,9 @@ Including an External Fragment
 
 :Directive Type: "include"
 :DTD Elements: depend on data being included
-:Directive Block:
-    :Arguments: One, required (path to include file).
-    :Options: Possible.
-    :Content: None.
+:Directive Arguments: One, required (path to include file).
+:Directive Options: Possible.
+:Directive Content: None.
 
 The "include" directive reads a reStructuredText-formatted text file
 and parses it in the current document's context at the point of the
@@ -534,11 +521,10 @@ Raw Data Pass-Through
 
 :Directive Type: "raw"
 :DTD Element: pending
-:Directive Block: 
-    :Arguments: One, required (output format type).
-    :Options: Possible
-    :Content: Stored verbatim, uninterpreted.  None (empty) if a
-              "file" or "url" option given.
+:Directive Arguments: One, required (output format type).
+:Directive Options: Possible
+:Directive Content: Stored verbatim, uninterpreted.  None (empty) if a
+                    "file" or "url" option given.
 
 The "raw" directive indicates non-reStructuredText data that is to be
 passed untouched to the Writer.  The name of the output format is
@@ -580,10 +566,9 @@ Restructuredtext-Test-Directive
 
 :Directive Type: "restructuredtext-test-directive"
 :DTD Element: system_warning
-:Directive Block: 
-    :Arguments: None.
-    :Options: None.
-    :Content: Interpreted as a literal block.
+:Directive Arguments: None.
+:Directive Options: None.
+:Directive Content: Interpreted as a literal block.
 
 This directive is provided for test purposes only.  (Nobody is
 expected to type in a name *that* long!)  It is converted into a
