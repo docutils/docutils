@@ -108,20 +108,31 @@ This is useful for filling list item paragraphs."
 ;; it, we don't adjust it to the variable setting, we use the whitespace that is
 ;; already there for adjustment.
 
-(defun rest-line-single-char-p ()
+(defun rest-line-single-char-p (&optional accept-special)
   "Predicate return the unique char if the current line is
   composed only of a single repeated non-whitespace
   character. This returns the char even if there is whitespace at
-  the beginning of the line."
+  the beginning of the line.
+
+  If ACCEPT-SPECIAL is specified we do not ignore special sequences
+  which normally we would ignore when doing a search on many lines.
+  For example, normally we have cases to ignore commonly occuring
+  patterns, such as :: or ...;  with the flag do not ignore them."
   (save-excursion
     (back-to-indentation)
     (if (not (looking-at "\n"))
 	(let ((c (thing-at-point 'char)))
-	  (and (looking-at (format "[%s]+\\s-*$" c))
-	       (not (looking-at "::\\s-*$"))
-	       (not (looking-at "\\.\\.\\.\\s-*$"))
-	       (not (looking-at ".\\s-*$")) ;; discard one char line
-	       (string-to-char c))))
+	  (if (and (looking-at (format "[%s]+\\s-*$" c))
+		   (or accept-special
+		       (and
+			;; common patterns
+			(not (looking-at "::\\s-*$"))
+			(not (looking-at "\\.\\.\\.\\s-*$"))
+			;; discard one char line
+			(not (looking-at ".\\s-*$")) 
+			)))
+	      (string-to-char c))
+	  ))
     ))
 
 (defun rest-find-last-section-char ()
@@ -145,7 +156,7 @@ This is useful for filling list item paragraphs."
 	  c)
       (while offlist
 	(forward-line (car offlist))
-	(setq c (rest-line-single-char-p))
+	(setq c (rest-line-single-char-p 1))
 	(if c
 	    (progn (setq offlist nil
 			 rval c))
@@ -235,13 +246,13 @@ This is useful for filling list item paragraphs."
       ;; Remove previous line if it consists only of a single repeated character
       (save-excursion
 	(forward-line -1)
-	(and (rest-line-single-char-p)
+	(and (rest-line-single-char-p 1)
 	     (kill-line 1)))
 
       ;; Remove following line if it consists only of a single repeated character
       (save-excursion
 	(forward-line +1)
-	(and (rest-line-single-char-p)
+	(and (rest-line-single-char-p 1)
 	     (kill-line 1))
 	;; Add a newline if we're at the end of the buffer, for the subsequence
 	;; inserting of the underline
@@ -346,7 +357,7 @@ This is useful for filling list item paragraphs."
 
   ;; check if we're on an underline under a title line, and move the cursor up
   ;; if it is so.
-  (if (and (or (rest-line-single-char-p) 
+  (if (and (or (rest-line-single-char-p 1) 
 	       (looking-at "^\\s-*$"))
 	   (save-excursion
 	     (forward-line -1)
