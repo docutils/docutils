@@ -124,14 +124,14 @@ General
 - Perhaps the ``Component.supports`` method should deal with
   individual features ("meta" etc.) instead of formats ("html" etc.)?
 
-- Transforms need a priority system.  The "first reader" ...  "last
-  writer" system is no longer adequate for pending transforms.  For
-  example, the ``references.TargetNotes`` transform needs to run after
-  ``references.Hyperlinks.resolve_indirect()`` but before
+- @@@ Transforms need a priority system.  The "first reader" ...
+  "last writer" system is no longer adequate for pending transforms.
+  For example, the ``references.TargetNotes`` transform needs to run
+  after ``references.Hyperlinks.resolve_indirect()`` but before
   ``references.Footnotes``.
 
-  - Break up ``references.Hyperlinks`` into multiple smaller
-    transforms.
+- @@@ Break up ``references.Hyperlinks`` into multiple smaller
+  transforms.
 
 
 Documentation

@@ -52,6 +52,7 @@ Changes Since 0.2
   - Split ``IO`` classes into subclasses of ``Input`` and ``Output``.
   - Added automatic closing to ``FileInput`` and ``FileOutput``.
   - Delayed opening of ``FileOutput`` file until ``write()`` called.
+  - ``FileOutput.write()`` now returns the encoded output string.
 
 * docutils/nodes.py:
 
@@ -173,6 +174,8 @@ Changes Since 0.2
   - Removed margin for first child of table cells.
   - Right-aligned field list names.
   - Support for auto-numbered section titles in TOCs.
+  - Increased the size of inline literals (<tt>) in titles.
+  - Restored the light gray background for inline literals.
 
 * tools/pep2html.py:
 
