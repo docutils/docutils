@@ -32,7 +32,7 @@ class Messages(Transform):
     """
 
     def transform(self):
-        unfiltered = self.document.messages.getchildren()
+        unfiltered = self.document.messages.get_children()
         threshold = self.document.reporter['writer'].warning_level
         messages = []
         for msg in unfiltered:
@@ -54,7 +54,7 @@ class TestMessages(Transform):
     """
 
     def transform(self):
-        self.document += self.document.messages.getchildren()
+        self.document += self.document.messages.get_children()
 
 
 class FinalChecks(Transform):

@@ -49,7 +49,7 @@ class Writer(Component):
 
     def write(self, document, destination):
         self.document = document
-        self.language = languages.getlanguage(document.language_code)
+        self.language = languages.get_language(document.language_code)
         self.destination = destination
         self.transform()
         self.translate()
@@ -83,7 +83,7 @@ class Writer(Component):
           (b) a path to a file, which is opened and then written; or
           (c) `None`, which implies `sys.stdout`.
         """
-        output = output.encode('raw-unicode-escape')    # @@@ temporary
+        output = output.encode('utf-8') # @@@ temporary; must not hard-code
         if hasattr(self.destination, 'write'):
             destination.write(output)
         elif self.destination:

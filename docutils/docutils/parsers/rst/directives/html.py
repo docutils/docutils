@@ -39,7 +39,7 @@ def meta(match, type_name, data, state, state_machine, attributes):
         msg = state_machine.reporter.error('Empty meta directive at line %s.'
                                           % state_machine.abs_line_number())
         node += msg
-    return node.getchildren(), blank_finish
+    return node.get_children(), blank_finish
 
 def imagemap(match, type_name, data, state, state_machine, attributes):
     return [], 0
