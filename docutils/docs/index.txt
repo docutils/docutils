@@ -152,6 +152,7 @@ __ peps/pep-0256.html
 __ http://www.python.org/peps/pep-0256.html
 __ peps/pep-0258.html
 __ http://www.python.org/peps/pep-0258.html
+.. _master repository: http://www.python.org/peps/
 
 
 ``dev/``: Development Notes and Plans for Core-Developers
