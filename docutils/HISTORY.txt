@@ -212,6 +212,12 @@ Specific:
   - In ``HTMLTranslator.attval()``, changed whitespace normalizing
     translation table to regexp; restores Python 2.0 compatibility
     with Unicode.
+  - Added the translator class as instance variable to the Writer, to
+    make it easily subclassable.
+  - Modified the ``field_body`` output.
+
+* docutils/writers/pep_html.py: Added to project; HTML Writer for
+  PEPs (subclass of ``html4css1.Writer``).
 
 * docutils/writers/pseudoxml.py: Renamed from pprint.py.
 
@@ -231,6 +237,9 @@ Specific:
 
 * spec/notes.txt: Continual updates.  Added "Project Policies".
 
+* spec/pep-0256.txt:  Updated.  Added "Roadmap to the Doctring PEPs"
+  section.
+
 * spec/pep-0257.txt: Clarified prohibition of signature repetition.
 
 * spec/pep-0258.txt: Updated.  Added text from pysource.txt and
@@ -238,8 +247,10 @@ Specific:
 
 * spec/pep-0287.txt:
 
+  - Renamed to "reStructuredText Docstring Format".
   - Minor edits.
   - Reworked Q&A as an enumerated list.
+  - Converted to reStructuredText format.
 
 * spec/pysource.dtd:
 
@@ -294,7 +305,15 @@ Specific:
 
 * tools/docutils-xml.py: Added to project.
 
-* tools/quicktest.py:  Added the "--attributes" option, hacked a bit.
+* tools/pep.py: Added to project; PEP to HTML front-end.
+
+* tools/pep-template.html: Added to project; template for PEP HTML.
+
+* tools/quicktest.py: Added the "--attributes" option, hacked a bit.
+
+* tools/stylesheets/: Subdirectory added to project.
+
+* tools/stylesheets/pep.css: Added to project; stylesheet for PEPs.
 
 
 Release 0.1 (2002-04-20)

@@ -69,6 +69,26 @@ RFC
             RFC
             2822
 """],
+["""\
+Test PEP-specific implicit references before a URL:
+
+PEP 287 (http://www.python.org/peps/pep-0287.html), RFC 2822.
+""",
+"""\
+<document>
+    <paragraph>
+        Test PEP-specific implicit references before a URL:
+    <paragraph>
+        <reference refuri="pep-0287.html">
+            PEP 287
+         (
+        <reference refuri="http://www.python.org/peps/pep-0287.html">
+            http://www.python.org/peps/pep-0287.html
+        ), \n\
+        <reference refuri="http://www.faqs.org/rfcs/rfc2822.html">
+            RFC 2822
+        .
+"""],
 ]
 
 totest['miscellaneous'] = [

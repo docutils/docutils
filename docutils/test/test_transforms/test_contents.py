@@ -47,7 +47,7 @@ Paragraph 4.
 """,
 """\
 <document>
-    <topic class="contents" id="contents" name="Contents">
+    <topic class="contents" id="contents" name="contents">
         <title>
             Contents
         <bullet_list>
@@ -103,7 +103,7 @@ Paragraph 2.
 """,
 """\
 <document>
-    <topic class="contents" id="table-of-contents" name="Table of Contents">
+    <topic class="contents" id="table-of-contents" name="table of contents">
         <title>
             Table of Contents
         <bullet_list>
@@ -142,7 +142,7 @@ Paragraph 2.
 """,
 """\
 <document>
-    <topic class="contents" id="there-s-an-image-in-title-2" name="There's an image in Title 2">
+    <topic class="contents" id="there-s-an-image-in-title-2" name="there's an image in title 2">
         <title>
             There's an image in Title 2
         <bullet_list>
@@ -166,7 +166,7 @@ Paragraph 2.
             Paragraph 2.
         <substitution_definition name="title 2">
             <image alt="Title 2" uri="title2.png">
-"""],
+"""],                                   # emacs cruft: "
 ["""\
 .. contents::
    :depth: 2
@@ -189,7 +189,7 @@ Paragraph 4.
 """,
 """\
 <document>
-    <topic class="contents" id="contents" name="Contents">
+    <topic class="contents" id="contents" name="contents">
         <title>
             Contents
         <bullet_list>
@@ -253,7 +253,7 @@ Paragraph 4.
     <section id="title-1" name="title 1">
         <title>
             Title 1
-        <topic class="contents" id="contents" name="Contents">
+        <topic class="contents" id="contents" name="contents">
             <bullet_list>
                 <list_item id="id1">
                     <paragraph>
@@ -298,7 +298,7 @@ Paragraph.
 """,
 """\
 <document>
-    <topic class="contents" id="id2" name="Contents">
+    <topic class="contents" id="id2">
         <bullet_list>
             <list_item id="id1">
                 <paragraph>
