@@ -19,6 +19,8 @@ To do
 
 * document errors are also too silent.
 
+* use optionlist for docinfo.
+
 * the title "table of contents" is centered too.
 
 * consider peter funk's hooks for TeXpert:
@@ -99,6 +101,7 @@ ATTENTION
 Done
 ~~~~
 
+* newenvironment optionlist for option-lists.
 * append ":" onto definition list terms.
 * long option-groups use multicolumn.
 * remove borders from option-lists.

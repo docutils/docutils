@@ -196,7 +196,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # maybe should be decided on row count.
     use_longtable = 1
     # description environment for option-list. else tabularx
-    use_description_for_option_list = 0
+    use_optionlist_for_option_list = 1
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
@@ -232,6 +232,17 @@ class LaTeXTranslator(nodes.NodeVisitor):
               self.generator,
               # admonition width and docinfo tablewidth
               '\\newlength{\\admwidth}\n\\addtolength{\\admwidth}{0.9\\textwidth}\n',
+              # optionlist environment
+              '''\\newcommand{\\optionlistlabel}[1]{\\bf #1 \\hfill}
+              \\newenvironment{optionlist}[1]
+              {\\begin{list}{}
+                {\\setlength{\\labelwidth}{#1}
+                 \\setlength{\\rightmargin}{1cm}
+                 \\setlength{\\leftmargin}{\\rightmargin}
+                 \\addtolength{\\leftmargin}{\\labelwidth}
+                 \\addtolength{\\leftmargin}{\\labelsep}
+                 \\renewcommand{\\makelabel}{\\optionlistlabel}}
+              }{\\end{list}}''',
               ## stylesheet is last: so it might be possible to overwrite defaults.
               self.stylesheet % (self.d_stylesheet_path),
                             ]
@@ -485,7 +496,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('%[depart_definition_list_item]\n')
 
     def visit_description(self, node):
-        if self.use_description_for_option_list:
+        if self.use_optionlist_for_option_list:
             self.body.append( ' ' )
         else:    
             self.body.append( ' & ' )
@@ -876,8 +887,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_option_group(self, node):
-        if self.use_description_for_option_list:
-            self.body.append('\\item[')
+        if self.use_optionlist_for_option_list:
+            self.body.append('\\item [')
         else:
             atts = {}
             if len(node.astext()) > 14:
@@ -891,23 +902,23 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_option_group(self, node):
         self.context.pop() # the flag
-        if self.use_description_for_option_list:
-            self.body.append(']')
+        if self.use_optionlist_for_option_list:
+            self.body.append('] ')
         else:
             self.body.append('}')
             self.body.append(self.context.pop())
 
     def visit_option_list(self, node):
-        if self.use_description_for_option_list:
-            self.body.append('\\begin{description}\n')
+        self.body.append('% [option list]\n')
+        if self.use_optionlist_for_option_list:
+            self.body.append('\\begin{optionlist}{3cm}\n')
         else:
-            self.body.append('% option list\n')
             self.body.append('\\begin{center}\n')
             self.body.append('\\begin{tabularx}{.9\\linewidth}{lX}\n')
 
     def depart_option_list(self, node):
-        if self.use_description_for_option_list:
-            self.body.append('\\end{description}\n')
+        if self.use_optionlist_for_option_list:
+            self.body.append('\\end{optionlist}\n')
         else:
             self.body.append('\\end{tabularx}\n')
             self.body.append('\\end{center}\n')
@@ -916,7 +927,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def depart_option_list_item(self, node):
-        if not self.use_description_for_option_list:
+        if not self.use_optionlist_for_option_list:
             self.body.append('\\\\\n')
 
     def visit_option_string(self, node):
