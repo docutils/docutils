@@ -1,13 +1,10 @@
-.. Comments begin with ".. ". Document title (specialized section title) next:
-
 =====================================================
  The reStructuredText_ Cheat Sheet: Syntax Reminders
 =====================================================
+:Info: See <http://docutils.sf.net/rst.html> for introductory docs.
 :Author: David Goodger <goodger@python.org>
 :Date: $Date$
 :Revision: $Revision$
-:Info: Use the `text source <cheatsheet.txt>`_, **not** the HTML.
-       See <http://docutils.sf.net/rst.html> for full info.
 :Description: This is a "docinfo block", or bibliographic field list
 
 Section Structure
@@ -66,7 +63,7 @@ http://docutils.sourceforge.net; named reference, reStructuredText_;
 
 Directive Quick Reference
 =========================
-See <http://docutils.sf.net/spec/rst/directives.html> for full info.
+See <http://docutils.sf.net/docs/ref/rst/directives.html> for full info.
 
 ================  ====================================================
 Directive Name    Description
@@ -100,7 +97,7 @@ role              Create a custom interpreted text role
 
 Interpreted Text Role Quick Reference
 =====================================
-See <http://docutils.sf.net/spec/rst/interpreted.html> for full info.
+See <http://docutils.sf.net/docs/ref/rst/roles.html> for full info.
 
 ================  ====================================================
 Role Name         Description
