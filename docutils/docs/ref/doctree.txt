@@ -1174,7 +1174,7 @@ Pseudo-XML_ fragment from simple parsing::
                     much much thicker in the middle
                     and then thin again at the far end.
                 <paragraph>
-                    -- Anne Elk, Miss
+                    -- Anne Elk (Miss)
 
 See definition_list_ and classifier_ for further examples.
 
