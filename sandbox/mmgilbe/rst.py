@@ -41,6 +41,11 @@ class MoinWriter(html4css1.Writer):
     output = None
     
     def wiki_resolver(self, node):
+        print node.attributes
+        # If the node has an 'id' attribute then it is an implicit hyperlink
+        # that we shouldn't make into a moin link.
+        if 'id' in node.attributes:
+            return 0
         node['refuri'] = node['refname']
         del node['refname']
         return '1'
@@ -79,14 +84,15 @@ class MoinTranslator(html4css1.HTMLTranslator):
 
     def __init__(self, document, formatter, request):
         html4css1.HTMLTranslator.__init__(self, document)
+        from MoinMoin.parser.wiki import Parser
         self.formatter = formatter
         self.request = request
         self.level = 0
         self.oldWrite = self.request.write
         self.request.write = self.faux_write
-    
-    def __del__(self):
-        self.request.write = oldWrite
+        self.wikiparser = Parser('', self.request)
+        self.wikiparser.formatter = self.formatter
+        self.wikiparser.hilite_re = None
         
     def astext(self):
         self.request.write = self.oldWrite
@@ -95,15 +101,6 @@ class MoinTranslator(html4css1.HTMLTranslator):
     def faux_write(self, string):
         self.body.append(string)
 
-    def request(self):
-        pass
-        
-    def visit_document(self, node):
-        pass
-
-    def depart_document(self, node):
-        pass
-        
     def visit_section(self, node):
         self.level += 1
 
@@ -115,6 +112,15 @@ class MoinTranslator(html4css1.HTMLTranslator):
 
     def depart_title(self, node):
         self.request.write(self.formatter.heading(self.level, '', on=0))
+        
+    def visit_reference(self, node):
+        if node['refuri'][:len('wiki:')] == 'wiki:':
+            link = self.wikiparser.interwiki((node['refuri'],
+                                              node.astext()))
+            self.body.append(link)
+            raise docutils.nodes.SkipNode
+        else:
+            html4css1.HTMLTranslator.visit_reference(self, node)
 
     #
     # Text markup
@@ -187,33 +193,7 @@ class MoinTranslator(html4css1.HTMLTranslator):
     def visit_definition_list(self, node):
         self.request.write(self.formatter.definition_list(1))
 
-    def visit_definition_list_item(self, node):
-        pass
-
-    def visit_term(self, node):
-        self.request.write('<dt>')
-
-    def depart_term(self, node):
-        self.request.write('</dt>')
-
-    def visit_definition(self, node):
-        self.request.write('<dd>')
-
-    def depart_definition(self, node):
-        self.request.write('</dd>')
-
     def depart_definition_list(self, node):
-        self.request.write(self.formatter.definition_list(0))
-
-
-    #
-    # Block Quote
-    #
-
-    def visit_block_quote(self, node):
-        self.request.write(self.formatter.definition_list(1))
-
-    def depart_block_quote(self, node):
         self.request.write(self.formatter.definition_list(0))
 
 
@@ -226,15 +206,5 @@ class MoinTranslator(html4css1.HTMLTranslator):
 
     def depart_warning(self, node):
         self.request.write(self.formatter.highlight(0))
-
-
-    #
-    # Misc
-    #
-
-    # def visit_system_message(self, node):
-        # self.request.write(self.formatter.highlight(1))
-        # self.request.write('[%s]' % node.astext())
-        # self.request.write(self.formatter.highlight(0))
 
 
