@@ -17,22 +17,22 @@ See http://optik.sourceforge.net/
 """
 
 # Copyright (c) 2001 Gregory P. Ward.  All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
 # met:
-# 
+#
 #   * Redistributions of source code must retain the above copyright
 #     notice, this list of conditions and the following disclaimer.
-# 
+#
 #   * Redistributions in binary form must reproduce the above copyright
 #     notice, this list of conditions and the following disclaimer in the
 #     documentation and/or other materials provided with the distribution.
-#     
+#
 #   * Neither the name of the author nor the names of its
 #     contributors may be used to endorse or promote products derived from
 #     this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
 # IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 # TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
@@ -608,20 +608,6 @@ class OptionContainer:
     def get_options(self):
         if not self.option_list:
             return ""
-        # The help for each option consists of two parts:
-        #   * the opt strings and metavars
-        #     eg. ("-x", or "-fFILENAME, --file=FILENAME")
-        #   * the user-supplied help string
-        #     eg. ("turn on expert mode", "read data from FILENAME")
-        #
-        # If possible, we write both of these on the same line:
-        #   -x      turn on expert mode
-        #
-        # But if the opt string list is too long, we put the help
-        # string on a second line, indented to the same column it would
-        # start in if it fit on the first line.
-        #   -fFILENAME, --file=FILENAME
-        #           read data from FILENAME
         result = []                     # list of strings to "".join() later
         for option in self.option_list:
             if not option.help is SUPPRESS_HELP:
@@ -1114,7 +1100,6 @@ class OptionParser(OptionContainer):
             result.append(self.get_usage() + "\n")
         if self.description:
             result.append(self.get_description() + "\n")
-        #if self.option_list or self.option_groups:
         result.append(self.get_options())
         return "".join(result)
 
@@ -1134,15 +1119,29 @@ class OptionParser(OptionContainer):
 class HelpFormat:
 
     """
-    "--help" output format; abstract base class (Strategy).
+    "--help" output format; abstract base class (Strategy design pattern).
+
+    Instance attributes:
+      indent_increment : int
+        number of columns to indent per nesting level
+      help_indent : int
+        the starting column for option help text
+      width : int
+        the overall width (in columns) for output
+      current_indent : int
+        in columns, calculated
+      level : int
+        increased for each additional nesting level
+      help_width : int
+        number of columns available for option help text
     """
 
     def __init__(self, indent_increment, help_indent, width, short_first):
-        self.current_indent = 0
-        self.level = 0
         self.indent_increment = indent_increment
         self.help_indent = help_indent
         self.width = width
+        self.current_indent = 0
+        self.level = 0
         self.help_width = self.width - self.help_indent
         if short_first:
             self.format_option_list = self.format_option_list_short_first
@@ -1152,7 +1151,7 @@ class HelpFormat:
     def increase_nesting(self):
         self.current_indent += self.indent_increment
         self.level += 1
-    
+
     def decrease_nesting(self):
         self.current_indent -= self.indent_increment
         assert self.current_indent >= 0, "Indent decreased below 0."
@@ -1172,6 +1171,20 @@ class HelpFormat:
         return "".join(result)
 
     def format_option(self, option):
+        # The help for each option consists of two parts:
+        #   * the opt strings and metavars
+        #     eg. ("-x", or "-fFILENAME, --file=FILENAME")
+        #   * the user-supplied help string
+        #     eg. ("turn on expert mode", "read data from FILENAME")
+        #
+        # If possible, we write both of these on the same line:
+        #   -x      turn on expert mode
+        #
+        # But if the opt string list is too long, we put the help
+        # string on a second line, indented to the same column it would
+        # start in if it fit on the first line.
+        #   -fFILENAME, --file=FILENAME
+        #           read data from FILENAME
         result = []
         opts = self.format_option_list(option)
         opt_width = self.help_indent - self.current_indent - 2
@@ -1228,6 +1241,8 @@ class HelpFormat:
 
 class Indented(HelpFormat):
 
+    """Formats help with indented section bodies."""
+
     def __init__(self, indent_increment=2, help_indent=24, width=78,
                  short_first=1):
         HelpFormat.__init__(self, indent_increment, help_indent, width,
@@ -1241,6 +1256,8 @@ class Indented(HelpFormat):
 
 
 class Titled(HelpFormat):
+
+    """Formats help with underlined section headers."""
 
     def __init__(self, indent_increment=0, help_indent=24, width=78,
                  short_first=None):
@@ -1257,9 +1274,9 @@ class Titled(HelpFormat):
 def _match_abbrev (s, wordmap):
     """_match_abbrev(s : string, wordmap : {string : Option}) -> string
 
-    Returns the string key in 'wordmap' for which 's' is an unambiguous
+    Return the string key in 'wordmap' for which 's' is an unambiguous
     abbreviation.  If 's' is found to be ambiguous or doesn't match any of
-    'words', raises BadOptionError.
+    'words', raise BadOptionError.
     """
     # Is there an exact match?
     if wordmap.has_key(s):
