@@ -34,7 +34,7 @@ class Writer(writers.Writer):
         None,
         (('Specify a stylesheet file.  Default is "default.css".',
           ['--stylesheet'],
-          {'default': 'default.css', 'metavar': '<file>'}),),)
+          {'default': 'default.css', 'metavar': '<file>'}),))
 
     output = None
     """Final translated form of `document`."""
@@ -78,7 +78,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body_prefix = ['</head>\n<body>\n']
         self.body = []
         self.body_suffix = ['</body>\n</html>\n']
-        self.sectionlevel = 0
+        self.section_level = 0
         self.context = []
         self.topic_class = ''
 
@@ -667,11 +667,11 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</tr>\n')
 
     def visit_section(self, node):
-        self.sectionlevel += 1
+        self.section_level += 1
         self.body.append(self.starttag(node, 'div', CLASS='section'))
 
     def depart_section(self, node):
-        self.sectionlevel -= 1
+        self.section_level -= 1
         self.body.append('</div>\n')
 
     def visit_status(self, node):
@@ -787,19 +787,20 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.body.append(
                   self.starttag(node, 'p', '', CLASS='topic-title'))
             self.context.append('</p>\n')
-        elif self.sectionlevel == 0:
+        elif self.section_level == 0:
+            # document title
             self.head.append('<title>%s</title>\n'
                              % self.encode(node.astext()))
             self.body.append(self.starttag(node, 'h1', '', CLASS='title'))
             self.context.append('</h1>\n')
         else:
             self.body.append(
-                  self.starttag(node, 'h%s' % self.sectionlevel, ''))
+                  self.starttag(node, 'h%s' % self.section_level, ''))
             context = ''
             if node.hasattr('refid'):
                 self.body.append('<a href="#%s">' % node['refid'])
                 context = '</a>'
-            self.context.append('%s</h%s>\n' % (context, self.sectionlevel))
+            self.context.append('%s</h%s>\n' % (context, self.section_level))
 
     def depart_title(self, node):
         self.body.append(self.context.pop())
