@@ -19,7 +19,9 @@ __docformat__ = 'reStructuredText'
 
 import os
 import os.path
+import types
 import ConfigParser as CP
+import codecs
 import docutils
 from docutils import optik
 from docutils.optik import Values
@@ -42,11 +44,61 @@ def read_config_file(option, opt, value, parser):
     Read a configuration file during option processing.  (Option callback.)
     """
     config_parser = ConfigParser()
-    config_parser.read(value)
+    config_parser.read(value, parser)
     settings = config_parser.get_section('options')
     make_paths_absolute(settings, parser.relative_path_settings,
                         os.path.dirname(value))
     parser.values.__dict__.update(settings)
+
+def set_encoding(option, opt, value, parser):
+    """
+    Validate & set the encoding specified.  (Option callback.)
+    """
+    try:
+        value = validate_encoding(value, option.default)
+    except LookupError, error:
+        raise optik.OptionValueError('option "%s": %s' % (opt, error))
+    setattr(parser.values, option.dest, value)
+
+def validate_encoding(value, default):
+    try:
+        codecs.lookup(value)
+    except LookupError:
+        raise LookupError('unknown encoding: "%s"' % value)
+    return value
+
+def set_encoding_and_error_handler(option, opt, value, parser):
+    """
+    Validate & set the encoding and error handlers specified.
+    (Option callback.)
+    """
+    try:
+        value = validate_encoding_and_error_handler(value, option.default)
+    except LookupError, error:
+        raise optik.OptionValueError('option "%s": %s' % (opt, error))
+    setattr(parser.values, option.dest, value)
+
+def validate_encoding_and_error_handler(value, default):
+    if ':' in value:
+        encoding, handler = value.split(':')
+    else:
+        encoding = value
+        handler = default.split(':')[1]
+    validate_encoding(encoding, default)
+    try:
+        codecs.lookup_error(handler)
+    except AttributeError:
+        if handler not in ('strict', 'ignore', 'replace'):
+            raise LookupError(
+                'unknown encoding error handler: "%s" (choices: '
+                '"strict", "ignore", or "replace")' % handler)
+    except LookupError:
+        raise LookupError(
+            'unknown encoding error handler: "%s" (choices: '
+            '"strict", "ignore", "replace", "backslashreplace", '
+            '"xmlcharrefreplace", and possibly others; see documentation for '
+            'the Python ``codecs`` module)' % handler)
+    return encoding + ':' + handler
 
 def make_paths_absolute(pathdict, keys, base_path=None):
     """
@@ -80,6 +132,11 @@ class OptionParser(optik.OptionParser, docutils.SettingsSpec):
 
     thresholds = {'info': 1, 'warning': 2, 'error': 3, 'severe': 4, 'none': 5}
     """Lookup table for --report and --halt threshold values."""
+
+    if hasattr(codecs, 'backslashreplace_errors'):
+        default_error_encoding_error_handler = 'backslashreplace'
+    else:
+        default_error_encoding_error_handler = 'replace'
 
     settings_spec = (
         'General Docutils Options',
@@ -154,10 +211,26 @@ class OptionParser(optik.OptionParser, docutils.SettingsSpec):
          ('Send the output of system messages (warnings) to <file>.',
           ['--warnings'], {'dest': 'warning_stream', 'metavar': '<file>'}),
          ('Specify the encoding of input text.  Default is locale-dependent.',
-          ['--input-encoding', '-i'], {'metavar': '<name>'}),
-         ('Specify the encoding for output.  Default is UTF-8.',
+          ['--input-encoding', '-i'],
+          {'action': 'callback', 'callback': set_encoding,
+           'metavar': '<name>', 'type': 'string', 'dest': 'input_encoding'}),
+         ('Specify the text encoding for output.  Default is UTF-8.  '
+          'Optionally also specify the encoding error handler for unencodable '
+          'characters (see "--error-encoding"); default is "strict".',
           ['--output-encoding', '-o'],
-          {'metavar': '<name>', 'default': 'utf-8'}),
+          {'action': 'callback', 'callback': set_encoding_and_error_handler,
+           'metavar': '<name[:handler]>', 'type': 'string',
+           'dest': 'output_encoding', 'default': 'utf-8:strict'}),
+         ('Specify the text encoding for error output.  Default is ASCII.  '
+          'Optionally also specify the encoding error handler for unencodable '
+          'characters, after a colon (":").  Acceptable values are the same '
+          'as for the "error" parameter of Python\'s ``encode`` string '
+          'method.  Default is "%s".' % default_error_encoding_error_handler,
+          ['--error-encoding', '-e'],
+          {'action': 'callback', 'callback': set_encoding_and_error_handler,
+           'metavar': '<name[:handler]>', 'type': 'string',
+           'dest': 'error_encoding',
+           'default': 'ascii:%s' % default_error_encoding_error_handler}),
          ('Specify the language of input text (ISO 639 2-letter identifier).'
           '  Default is "en" (English).',
           ['--language', '-l'], {'dest': 'language_code', 'default': 'en',
@@ -189,12 +262,15 @@ class OptionParser(optik.OptionParser, docutils.SettingsSpec):
     ends.  Setting specs specific to individual Docutils components are also
     used (see `populate_from_components()`)."""
 
+    settings_default_overrides = {'_disable_config': None}
+
     relative_path_settings = ('warning_stream',)
 
     version_template = '%%prog (Docutils %s)' % docutils.__version__
     """Default version message."""
 
-    def __init__(self, components=(), *args, **kwargs):
+    def __init__(self, components=(), defaults=None, read_config_files=None,
+                 *args, **kwargs):
         """
         `components` is a list of Docutils components each containing a
         ``.settings_spec`` attribute.  `defaults` is a mapping of setting
@@ -209,12 +285,19 @@ class OptionParser(optik.OptionParser, docutils.SettingsSpec):
             *args, **kwargs)
         if not self.version:
             self.version = self.version_template
-        # Internal settings with no defaults from settings specifications;
-        # initialize manually:
-        self.set_defaults(_source=None, _destination=None)
         # Make an instance copy (it will be modified):
         self.relative_path_settings = list(self.relative_path_settings)
-        self.populate_from_components(tuple(components) + (self,))
+        self.populate_from_components((self,) + tuple(components))
+        defaults = defaults or {}
+        if read_config_files and not self.defaults['_disable_config']:
+            config = ConfigParser()
+            config.read_standard_files(self)
+            config_settings = config.get_section('options')
+            make_paths_absolute(config_settings, self.relative_path_settings)
+            defaults.update(config_settings)
+        # Internal settings with no defaults from settings specifications;
+        # initialize manually:
+        self.set_defaults(_source=None, _destination=None, **defaults)
 
     def populate_from_components(self, components):
         for component in components:
@@ -281,8 +364,42 @@ class ConfigParser(CP.ConfigParser):
     """Docutils configuration files, using ConfigParser syntax (section
     'options').  Later files override earlier ones."""
 
-    def read_standard_files(self):
-        self.read(self.standard_config_files)
+    validation = {
+        'options': {'input_encoding': validate_encoding,
+                    'output_encoding': validate_encoding_and_error_handler,
+                    'error_encoding': validate_encoding_and_error_handler}}
+    """{section: {option: validation function}} mapping, used by
+    `validate_options`.  Validation functions take two parameters: value and
+    default.  They return a modified value, or raise an exception."""
+
+    def read_standard_files(self, option_parser):
+        self.read(self.standard_config_files, option_parser)
+
+    def read(self, filenames, option_parser):
+        if type(filenames) in types.StringTypes:
+            filenames = [filenames]
+        for filename in filenames:
+            CP.ConfigParser.read(self, filename)
+            self.validate_options(filename, option_parser)
+
+    def validate_options(self, filename, option_parser):
+        for section in self.validation.keys():
+            if not self.has_section(section):
+                continue
+            for option in self.validation[section].keys():
+                if self.has_option(section, option):
+                    value = self.get(section, option)
+                    validator = self.validation[section][option]
+                    default = option_parser.defaults[option]
+                    try:
+                        new_value = validator(value, default)
+                    except Exception, error:
+                        raise ValueError(
+                            'Error in config file "%s", section "[%s]":\n'
+                            '    %s: %s\n        %s = %s'
+                            % (filename, section, error.__class__.__name__,
+                               error, option, value))
+                    self.set(section, option, new_value)
 
     def optionxform(self, optionstr):
         """
