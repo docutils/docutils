@@ -1,7 +1,7 @@
 2002-09
 -------
 
-latex enhanced by julienlatex enhanced by julien.
+latex enhanced by julien.
 
 2002-07
 -------

@@ -1,4 +1,43 @@
 Making a writer
 ===============
 
+General Problems
+----------------
+
+html pages are more like papyrus rolls, if one wants to go more usual
+paper formats some things are different or not.
+* page headings
+* page numbers
+
+
+
+Problems
+--------
+
+In latex2e writer this looks awful to me, but as i understand this ensures
+that e.g. http addresses are not only text.
+
+Maybe this is due to the fact that self.docinfo is used, if one would remove
+it context might be unecessary.
+
+::
+    def visit_docinfo_item (...):
+        ...
+        else:
+            ##self.head.append('\\%s{%s}\n'
+            ##            % (name, self.attval(node.astext())))
+            self.docinfo.append('\\textbf{%s} &\n\t' % name)
+            self.context.append(' \\\\\n')
+            self.context.append(self.docinfo)
+            self.context.append(len(self.body))
+            ##raise nodes.SkipNode
+
+    def depart_docinfo_item(self, node):
+        size = self.context.pop()
+        dest = self.context.pop()
+        tail = self.context.pop()
+        tail = self.body[size:] + [tail]
+        del self.body[size:]
+        dest.extend(tail)
+
 
