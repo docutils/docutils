@@ -748,7 +748,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             text = self.babel.double_quotes_in_tt(text)
         else:
             text = self.babel.quote_quotes(text)
-        if self.insert_newline:
+        if self.insert_newline or self.literal_block:
             # HACK: insert a blank before the newline, to avoid
             # ! LaTeX Error: There's no line here to end.
             text = text.replace("\n", '~\\\\\n')
@@ -760,8 +760,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 closings = ""
                 openings = ""
             text = text.replace("\n", "%s}\\\\\n\\mbox{%s" % (closings,openings))
-        else:
-            text = text.replace("\n", "\\\\\n")
         if self.insert_none_breaking_blanks:
             text = text.replace(' ', '~')
         # unicode !!!
