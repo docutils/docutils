@@ -1590,7 +1590,7 @@ reused, doubled and then tripled, and so on ("**" etc.).
    "xmlcharrefreplace" `output encoding error handler`__ (available in
    Python 2.3 & later).
 
-__ http://docutils.sf.net/docs/config.html#output-encoding-error-handler
+__ ../../user/config.html#output-encoding-error-handler
 
 
 Mixed Manual and Auto-Numbered Footnotes
@@ -2750,7 +2750,7 @@ Markup errors are handled according to the specification in `PEP
 .. _RFC2396: http://www.rfc-editor.org/rfc/rfc2396.txt
 .. _RFC2732: http://www.rfc-editor.org/rfc/rfc2732.txt
 .. _Zope: http://www.zope.com/
-.. _PEP 258: http://docutils.sourceforge.net/docs/peps/pep-0258.txt
+.. _PEP 258: ../../peps/pep-0258.html
 
 
 ..
