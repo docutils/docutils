@@ -610,11 +610,11 @@ Docstring Extraction Rules
 
    b) Immediately following a simple assignment at the top level of a
       module, class definition, or ``__init__`` method definition,
-      after any comments.  See "Attribute Docstrings" below.
+      after any comments.  See `Attribute Docstrings`_ below.
 
    c) Additional string literals found immediately after the
       docstrings in (a) and (b) will be recognized, extracted, and
-      concatenated.  See "Additional Docstrings" below.
+      concatenated.  See `Additional Docstrings`_ below.
 
    d) @@@ 2.2-style "properties" with attribute docstrings?
 
