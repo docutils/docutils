@@ -57,23 +57,33 @@ directives = {
 mapping."""
 
 roles = {
- u'abbreviation (translation required)': 'abbreviation',
- u'acronym (translation required)': 'acronym',
- u'index (translation required)': 'index',
- u'subscript (translation required)': 'subscript',
- u'superscript (translation required)': 'superscript',
- u'title-reference (translation required)': 'title-reference',
- u'pep-reference (translation required)': 'pep-reference',
- u'rfc-reference (translation required)': 'rfc-reference',
- u'emphasis (translation required)': 'emphasis',
- u'strong (translation required)': 'strong',
- u'literal (translation required)': 'literal',
- u'named-reference (translation required)': 'named-reference',
- u'anonymous-reference (translation required)': 'anonymous-reference',
- u'footnote-reference (translation required)': 'footnote-reference',
- u'citation-reference (translation required)': 'citation-reference',
- u'substitution-reference (translation required)': 'substitution-reference',
- u'target (translation required)': 'target',
- u'uri-reference (translation required)': 'uri-reference',}
+ u'\u0430\u043a\u0440\u043e\u043d\u0438\u043c': 'acronym',
+ u'\u0430\u043d\u043e\u043d\u0438\u043c\u043d\u0430\u044f-\u0441\u0441\u044b\u043b\u043a\u0430':
+  'anonymous-reference',
+ u'\u0431\u0443\u043a\u0432\u0430\u043b\u044c\u043d\u043e': 'literal',
+ u'\u0432\u0435\u0440\u0445\u043d\u0438\u0439-\u0438\u043d\u0434\u0435\u043a\u0441':
+  'superscript',
+ u'\u0432\u044b\u0434\u0435\u043b\u0435\u043d\u0438\u0435': 'emphasis',
+ u'\u0438\u043c\u0435\u043d\u043e\u0432\u0430\u043d\u043d\u0430\u044f-\u0441\u0441\u044b\u043b\u043a\u0430':
+  'named-reference',
+ u'\u0438\u043d\u0434\u0435\u043a\u0441': 'index',
+ u'\u043d\u0438\u0436\u043d\u0438\u0439-\u0438\u043d\u0434\u0435\u043a\u0441':
+  'subscript',
+ u'\u0441\u0438\u043b\u044c\u043d\u043e\u0435-\u0432\u044b\u0434\u0435\u043b\u0435\u043d\u0438\u0435':
+  'strong',
+ u'\u0441\u043e\u043a\u0440\u0430\u0449\u0435\u043d\u0438\u0435':
+  'abbreviation',
+ u'\u0441\u0441\u044b\u043b\u043a\u0430-\u0437\u0430\u043c\u0435\u043d\u0430':
+  'substitution-reference',
+ u'\u0441\u0441\u044b\u043b\u043a\u0430-\u043d\u0430-pep': 'pep-reference',
+ u'\u0441\u0441\u044b\u043b\u043a\u0430-\u043d\u0430-rfc': 'rfc-reference',
+ u'\u0441\u0441\u044b\u043b\u043a\u0430-\u043d\u0430-uri': 'uri-reference',
+ u'\u0441\u0441\u044b\u043b\u043a\u0430-\u043d\u0430-\u0437\u0430\u0433\u043b\u0430\u0432\u0438\u0435':
+  'title-reference',
+ u'\u0441\u0441\u044b\u043b\u043a\u0430-\u043d\u0430-\u0441\u043d\u043e\u0441\u043a\u0443':
+  'footnote-reference',
+ u'\u0446\u0438\u0442\u0430\u0442\u043d\u0430\u044f-\u0441\u0441\u044b\u043b\u043a\u0430':
+  'citation-reference',
+ u'\u044f\u043a\u043e\u0440\u044c': 'target'}
 """Mapping of Russian role names to canonical role names for interpreted text.
 """
