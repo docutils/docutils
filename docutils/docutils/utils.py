@@ -412,7 +412,7 @@ def clean_rcs_keywords(paragraph, keyword_substitutions):
 
 def relative_path(source, target):
     """
-    Build and return a path to `target`, relative to `source`.
+    Build and return a path to `target`, relative to `source` (both files).
 
     If there is no common prefix, return the absolute path to `target`.
     """
