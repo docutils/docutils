@@ -248,7 +248,7 @@ __ quickref.html#section-structure
 
 To break longer text up into sections, you use **section headers**.
 These are a single line of text (one or more words) with adornment: an
-underline alone, or an overline and an overline together, in dashes
+underline alone, or an underline and an overline together, in dashes
 "``-----``", equals "``======``", tildes "``~~~~~~``" or any of the
 non-alphanumeric characters ``= - ` : ' " ~ ^ _ * + # < >`` that you
 feel comfortable with.  An underline-only adornment is distinct from
