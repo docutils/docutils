@@ -203,6 +203,10 @@ def parse_module(module_text, filename):
 
 class Node:
 
+    """
+    Base class for module documentation tree nodes.
+    """
+
     def __init__(self, node):
         self.children = []
         """List of child nodes."""
