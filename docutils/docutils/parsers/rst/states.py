@@ -435,7 +435,7 @@ class Inliner:
     non_whitespace_before = r'(?<![ \n])'
     non_whitespace_escape_before = r'(?<![ \n\x00])'
     non_whitespace_after = r'(?![ \n])'
-    simplename = r'[a-zA-Z0-9]([-_.a-zA-Z0-9]*[a-zA-Z0-9])?'
+    simplename = r'(?!_)\w([-.\w]*(?!_)\w)?'
     uric = r"""[-_.!~*'()[\];/:@&=+$,%a-zA-Z0-9]"""
     urilast = r"""[_~/\]a-zA-Z0-9]"""   # no punctuation
     emailc = r"""[-_!~*'{|}/#?^`&=+$%a-zA-Z0-9]"""
@@ -486,7 +486,7 @@ class Inliner:
                   )
                   %(non_whitespace_after)s  # no whitespace after
                 )
-                """ % locals(), re.VERBOSE),
+                """ % locals(), re.VERBOSE | re.UNICODE),
           emphasis=re.compile(non_whitespace_escape_before
                               + r'(\*)' + end_string_suffix),
           strong=re.compile(non_whitespace_escape_before
@@ -502,7 +502,7 @@ class Inliner:
                 )
               )
               %(end_string_suffix)s
-              """ % locals(), re.VERBOSE),
+              """ % locals(), re.VERBOSE | re.UNICODE),
           literal=re.compile(non_whitespace_before + '(``)'
                              + end_string_suffix),
           target=re.compile(non_whitespace_escape_before
@@ -874,6 +874,7 @@ class Body(RSTState):
     pats['enum'] = ('(%(arabic)s|%(loweralpha)s|%(upperalpha)s|%(lowerroman)s'
                     '|%(upperroman)s)' % enum.sequencepats)
     pats['optname'] = '%(alphanum)s%(alphanumplus)s*' % pats
+    # @@@ Loosen up the pattern?  Allow Unicode?
     pats['optarg'] = '%(alpha)s%(alphanumplus)s*' % pats
     pats['option'] = r'(--?|\+|/)%(optname)s([ =]%(optarg)s)?' % pats
 
@@ -1302,7 +1303,7 @@ class Body(RSTState):
                                                     # reference mark
                                )
                                $                  # end of string
-                               """ % vars(Inliner), re.VERBOSE),
+                               """ % vars(Inliner), re.VERBOSE | re.UNICODE),
           substitution=re.compile(r"""
                                   (
                                     (?![ ])          # first char. not space
@@ -1567,13 +1568,13 @@ class Body(RSTState):
                       )
                       \]
                       ([ ]+|$)          # whitespace or end of line
-                      """ % Inliner.simplename, re.VERBOSE)),
+                      """ % Inliner.simplename, re.VERBOSE | re.UNICODE)),
           (citation,
            re.compile(r"""
                       \.\.[ ]+          # explicit markup start
                       \[(%s)\]          # citation label
                       ([ ]+|$)          # whitespace or end of line
-                      """ % Inliner.simplename, re.VERBOSE)),
+                      """ % Inliner.simplename, re.VERBOSE | re.UNICODE)),
           (hyperlink_target,
            re.compile(r"""
                       \.\.[ ]+          # explicit markup start
@@ -1592,7 +1593,7 @@ class Body(RSTState):
                       (%s)              # directive name
                       ::                # directive delimiter
                       ([ ]+|$)          # whitespace or end of line
-                      """ % Inliner.simplename, re.VERBOSE))]
+                      """ % Inliner.simplename, re.VERBOSE | re.UNICODE))]
 
     def explicit_markup(self, match, context, next_state):
         """Footnotes, hyperlink targets, directives, comments."""
@@ -1876,7 +1877,8 @@ class SubstitutionDef(Body):
     """
 
     patterns = {
-          'embedded_directive': r'(%s)::( +|$)' % Inliner.simplename,
+          'embedded_directive': re.compile(r'(%s)::( +|$)'
+                                           % Inliner.simplename, re.UNICODE),
           'text': r''}
     initial_transitions = ['embedded_directive', 'text']
 
