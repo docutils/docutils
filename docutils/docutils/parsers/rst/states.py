@@ -116,6 +116,7 @@ from docutils.nodes import fully_normalize_name as normalize_name
 from docutils.nodes import whitespace_normalize_name
 from docutils.parsers.rst import directives, languages, tableparser, roles
 from docutils.parsers.rst.languages import en as _fallback_language_module
+from docutils.transforms.structural import Transition as TransitionTransform
 
 
 class MarkupError(DataError): pass
@@ -403,16 +404,6 @@ class RSTState(StateWS):
             error = self.reporter.error(
                 'First element of section must be a title.', line=lineno)
             section.insert(0, error)
-        if isinstance(section[1], nodes.transition):
-            error = self.reporter.error(
-                'Section may not begin with a transition.',
-                line=section[1].line)
-            section.insert(1, error)
-        if len(section) > 2 and isinstance(section[-1], nodes.transition):
-            error = self.reporter.error(
-                'Section may not end with a transition.',
-                line=section[-1].line)
-            section += error
 
     def paragraph(self, lines, lineno):
         """
@@ -2748,13 +2739,11 @@ class Line(SpecializedText):
             self.state_correction(context)
         if self.eofcheck:               # ignore EOFError with sections
             lineno = self.state_machine.abs_line_number() - 1
-            transition = nodes.transition(context[0])
+            transition = nodes.pending(TransitionTransform,
+                                       rawsource=context[0])
             transition.line = lineno
+            self.document.note_pending(transition)
             self.parent += transition
-            msg = self.reporter.error(
-                  'Document or section may not end with a transition.',
-                  line=lineno)
-            self.parent += msg
         self.eofcheck = 1
         return []
 
@@ -2764,19 +2753,9 @@ class Line(SpecializedText):
         marker = context[0].strip()
         if len(marker) < 4:
             self.state_correction(context)
-        transition = nodes.transition(marker)
+        transition = nodes.pending(TransitionTransform, rawsource=marker)
         transition.line = lineno
-        if len(self.parent) == 0:
-            msg = self.reporter.error(
-                  'Document or section may not begin with a transition.',
-                  line=lineno)
-            self.parent += msg
-        elif isinstance(self.parent[-1], nodes.transition):
-            msg = self.reporter.error(
-                  'At least one body element must separate transitions; '
-                  'adjacent transitions not allowed.',
-                  line=lineno)
-            self.parent += msg
+        self.document.note_pending(transition)
         self.parent += transition
         return [], 'Body', []
 
