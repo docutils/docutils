@@ -45,25 +45,26 @@ def read_config_file(option, opt, value, parser):
     config_parser = ConfigParser()
     config_parser.read(value)
     settings = config_parser.get_section('options')
-    make_paths_absolute(settings, os.path.dirname(value))
+    make_paths_absolute(settings, parser.relative_path_options,
+                        os.path.dirname(value))
     parser.values.__dict__.update(settings)
 
-relative_path_options = ('warning_stream', 'stylesheet', 'pep_stylesheet',
-                         'pep_template')
-
-def make_paths_absolute(dictionary, base_path=None):
+def make_paths_absolute(pathdict, keys, base_path=None):
     """
     Interpret filesystem path settings relative to the `base_path` given.
+
+    Paths are values in `pathdict` whose keys are in `keys`.  Get `keys` from
+    `OptionParser.relative_path_options`.
     """
     if base_path is None:
         base_path = os.getcwd()
-    for option in relative_path_options:
-        if dictionary.has_key(option) and dictionary[option]:
-            dictionary[option] = os.path.normpath(
-                os.path.abspath(os.path.join(base_path, dictionary[option])))
+    for key in keys:
+        if pathdict.has_key(key) and pathdict[key]:
+            pathdict[key] = os.path.normpath(
+                os.path.abspath(os.path.join(base_path, pathdict[key])))
 
 
-class OptionParser(optik.OptionParser):
+class OptionParser(optik.OptionParser, docutils.OptionSpec):
 
     """
     Parser for command-line and library use.  The `cmdline_options`
@@ -101,9 +102,9 @@ class OptionParser(optik.OptionParser):
                                'dest': 'datestamp'}),
          ('Include a "View document source" link (relative to destination).',
           ['--source-link', '-s'], {'action': 'store_true'}),
-         ('Use the supplied <url> for a "View document source" link; '
-          'implies --source-link.',
-          ['--source-url'], {'metavar': '<url>'}),
+         ('Use the supplied <URL> verbatim for a "View document source" '
+          'link; implies --source-link.',
+          ['--source-url'], {'metavar': '<URL>'}),
          ('Do not include a "View document source" link.',
           ['--no-source-link'],
           {'action': 'callback', 'callback': store_multiple,
@@ -173,14 +174,14 @@ class OptionParser(optik.OptionParser):
          (optik.SUPPRESS_HELP,
           ['--dump-internals'],
           {'action': 'store_true'}),))
-    """Command-line option specifications, common to all Docutils front ends.
-    One or more sets of option group title, description, and a list/tuple of
-    tuples: ``('help text', [list of option strings], {keyword arguments})``.
-    Group title and/or description may be `None`; no group title implies no
-    group, just a list of single options.  Option specs from Docutils
-    components are also used (see `populate_from_components()`)."""
+    """Command-line options common to all Docutils front ends.  Option specs
+    specific to individual Docutils components are also used (see
+    `populate_from_components()`)."""
+
+    relative_path_options = ('warning_stream',)
 
     version_template = '%%prog (Docutils %s)' % docutils.__version__
+    """Default version message."""
 
     def __init__(self, components=(), *args, **kwargs):
         """
@@ -188,28 +189,40 @@ class OptionParser(optik.OptionParser):
         ``.cmdline_options`` attribute.  `defaults` is a mapping of option
         default overrides.
         """
-        optik.OptionParser.__init__(self, help=None, format=optik.Titled(),
-                                    *args, **kwargs)
+        optik.OptionParser.__init__(
+            self, help=None,
+            format=optik.Titled(),
+            # Needed when Optik is updated (replaces above 2 lines):
+            #self, add_help=None,
+            #formatter=optik.TitledHelpFormatter(width=78),
+            *args, **kwargs)
         if not self.version:
             self.version = self.version_template
+        # Internal settings with no defaults from option specifications;
+        # initialize manually:
+        self.set_defaults(_source=None, _destination=None)
+        # Make an instance copy (it will be modified):
+        self.relative_path_options = list(self.relative_path_options)
         self.populate_from_components(tuple(components) + (self,))
 
     def populate_from_components(self, components):
         for component in components:
-            if component is not None:
-                i = 0
-                cmdline_options = component.cmdline_options
-                while i < len(cmdline_options):
-                    title, description, option_spec = cmdline_options[i:i+3]
-                    if title:
-                        group = optik.OptionGroup(self, title, description)
-                        self.add_option_group(group)
-                    else:
-                        group = self        # single options
-                    for (help_text, option_strings, kwargs) in option_spec:
-                        group.add_option(help=help_text, *option_strings,
-                                         **kwargs)
-                    i += 3
+            if component is None:
+                continue
+            i = 0
+            cmdline_options = component.cmdline_options
+            self.relative_path_options.extend(component.relative_path_options)
+            while i < len(cmdline_options):
+                title, description, option_spec = cmdline_options[i:i+3]
+                if title:
+                    group = optik.OptionGroup(self, title, description)
+                    self.add_option_group(group)
+                else:
+                    group = self        # single options
+                for (help_text, option_strings, kwargs) in option_spec:
+                    group.add_option(help=help_text, *option_strings,
+                                     **kwargs)
+                i += 3
 
     def check_values(self, values, args):
         if hasattr(values, 'report_level'):
@@ -217,7 +230,8 @@ class OptionParser(optik.OptionParser):
         if hasattr(values, 'halt_level'):
             values.halt_level = self.check_threshold(values.halt_level)
         values._source, values._destination = self.check_args(args)
-        make_paths_absolute(values.__dict__, os.getcwd())
+        make_paths_absolute(values.__dict__, self.relative_path_options,
+                            os.getcwd())
         return values
 
     def check_threshold(self, level):
