@@ -24,7 +24,7 @@ Project Status
 
 The Docutils project began with the merging of the reStructuredText__
 parser and the `Python Docstring Processing System`__ projects.  The
-merge is under way, and those projects are now winding down.
+merge has been completed, and those projects are now inactive.
 
 __ http://structuredtext.sourceforge.net/
 __ http://docstring.sourceforge.net/
