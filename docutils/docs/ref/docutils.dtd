@@ -493,6 +493,11 @@ following caveats:
 <!ELEMENT strong %text.model;>
 <!ATTLIST strong %basic.atts;>
 
+<!--
+WARNING: The "interpreted" element is a placeholder for testing
+purposes only. Once proper parser support is in place, it will be
+removed.
+-->
 <!ELEMENT interpreted %text.model;>
 <!ATTLIST interpreted
     %basic.atts;
