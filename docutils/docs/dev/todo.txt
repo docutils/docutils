@@ -376,6 +376,14 @@ General
   string or an integer).  Replace with ``node[int]`` and
   ``node.attributes[string]``?
 
+* Add file-specific settings support to config files, like::
+
+      [file index.txt]
+      compact-lists: no
+
+  Is this even possible?  Should the criterion be the name of the
+  input file or the output file?
+
 
 Documentation
 =============
