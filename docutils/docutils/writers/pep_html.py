@@ -13,7 +13,7 @@ __docformat__ = 'reStructuredText'
 
 import sys
 import docutils
-from docutils import nodes, optik, utils
+from docutils import nodes, frontend, utils
 from docutils.writers import html4css1
 
 
@@ -44,7 +44,7 @@ class Writer(html4css1.Writer):
           {'default': '.', 'metavar': '<URL>'}),
          # Workaround for SourceForge's broken Python
          # (``import random`` causes a segfault).
-         (optik.SUPPRESS_HELP,
+         (frontend.SUPPRESS_HELP,
           ['--no-random'], {'action': 'store_true'}),))
 
     settings_default_overrides = {'footnote_references': 'brackets'}

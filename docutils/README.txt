@@ -116,7 +116,7 @@ writing).  Python is available from http://www.python.org/.
 
 .. [#py21] Python 2.1 may be used providing the compiler package is
    installed.  The compiler package can be found in the Tools/
-   directory of Python's source distribution.
+   directory of Python 2.1's source distribution.
 
 
 Project Files & Directories
@@ -124,8 +124,8 @@ Project Files & Directories
 
 * README.txt: You're reading it.
 
-* COPYING.txt: Copyright details for non-public-domain files (most are
-  PD).
+* COPYING.txt: Public Domain Dedication and copyright details for
+  non-public-domain files (most are PD).
 
 * FAQ.txt: Docutils Frequently Asked Questions.
 
@@ -139,12 +139,19 @@ Project Files & Directories
 * docutils: The project source directory, installed as a Python
   package.
 
+* extras: Directory for third-party modules that Docutils depends on.
+  These are only installed if they're not already present.
+
 * docs: The project user documentation directory.  Contains the
   following documents:
 
   - docs/tools.txt: Docutils Front-End Tools
+  - docs/latex.txt: Docutils LaTeX Writer
   - docs/rst/quickstart.txt: A ReStructuredText Primer
   - docs/rst/quickref.html: Quick reStructuredText (HTML only)
+
+* licenses: Directory containing copies of license files for
+  non-public-domain files.
 
 * spec: The project specification directory.  Contains PEPs (Python
   Enhancement Proposals), XML DTDs (document type definitions), and
@@ -168,8 +175,8 @@ contains a distutils setup file "setup.py".  OS-specific installation
 instructions follow.
 
 
-GNU/Linux, BSDs, Unix, MacOS X, etc.
-------------------------------------
+GNU/Linux, BSDs, Unix, Mac OS X, etc.
+-------------------------------------
 
 1. Open a shell.
 
@@ -206,8 +213,8 @@ If your system is set up to run Python when you double-click on .py
 files, you can run install.py to do the same as the above.
 
 
-MacOS 8/9
----------
+Mac OS 8/9
+----------
 
 1. Open the folder containing the expanded archive.
 
