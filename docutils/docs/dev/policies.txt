@@ -144,7 +144,7 @@ applicable), with particular emphasis as follows:
   to be sure that you haven't broken anything.  From a shell::
 
       cd docutils/test
-      alltests.py
+      ./alltests.py
 
   Docutils currently supports Python 2.1 or later, with some things
   only working (and being tested) on 2.3.  Therefore, you should
@@ -167,10 +167,13 @@ applicable), with particular emphasis as follows:
   __ http://www.python.org/peps/pep-0290.html
 
   Note that there are currently some known issues with development
-  versions of Python 2.4-to-be.  There is no need to pass the test
-  suite under it, unless you wish to tackle these issues (ask on the
-  mailing list first)...
-  
+  versions of Python 2.4-to-be (see the thread about `Python 2.4
+  compatibility`_ for details).  There is no need to pass the test
+  suite under it, unless you wish to tackle these issues...
+
+  .. _Python 2.4 compatibility:
+     http://thread.gmane.org/gmane.text.docutils.devel/2071
+    
 * When adding new functionality (or fixing bugs), be sure to add test
   cases to the test suite.  Practise test-first programming; it's fun,
   it's addictive, and it works!
