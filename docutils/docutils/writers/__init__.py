@@ -46,8 +46,12 @@ class Writer(Component):
 
     def __init__(self):
 
+        # Currently only used by HTML writer for output fragments:
         self.parts = {}
-        """Collection of named parts of the document."""
+        """Mapping of document part names to fragments of `self.output`.
+        Values are Unicode strings; encoding is up to the client.  The 'whole'
+        key should contain the entire document output.
+        """
 
     def write(self, document, destination):
         """
@@ -69,28 +73,20 @@ class Writer(Component):
 
     def translate(self):
         """
-        Override to do final document tree translation.
+        Do final translation of `self.document` into `self.output`.
+        Called from `write`.  Override in subclasses.
 
-        This is usually done with a `docutils.nodes.NodeVisitor` subclass, in
+        Usually done with a `docutils.nodes.NodeVisitor` subclass, in
         combination with a call to `docutils.nodes.Node.walk()` or
         `docutils.nodes.Node.walkabout()`.  The ``NodeVisitor`` subclass must
         support all standard elements (listed in
         `docutils.nodes.node_class_names`) and possibly non-standard elements
         used by the current Reader as well.
-
-        The final translated form of `self.document` should be assigned to
-        `self.output`.
         """
         raise NotImplementedError('subclass must override this method')
 
     def assemble_parts(self):
-        """
-        Assemble the `self.parts` dictionary.  Extend in subclasses.
-
-        Dictionary keys are the names of parts, and values are Unicode
-        strings; encoding is up to the client.  The 'whole' key contains the
-        entire document output.
-        """
+        """Assemble the `self.parts` dictionary.  Extend in subclasses."""
         self.parts['whole'] = self.output
 
 
