@@ -29,7 +29,7 @@ class DocutilsDialect(csv.Dialect):
     quotechar = '"'
     doublequote = True
     skipinitialspace = True
-    lineterminator = '\r\n'
+    lineterminator = '\n'
     quoting = csv.QUOTE_MINIMAL
 
     def __init__(self, options):
@@ -37,11 +37,6 @@ class DocutilsDialect(csv.Dialect):
             self.delimiter = str(options['delim'])
         if options.has_key('quote'):
             self.quotechar = str(options['quote'])
-        if options.has_key('lineend'):
-            if options['lineend'] == 'cr':
-                self.lineterminator = '/r'
-            elif options['lineend'] == 'lf':
-                self.lineterminator = '/n'
         if options.has_key('escape'):
             self.doublequote = False
             self.escapechar = str(options['escape'])
@@ -87,14 +82,18 @@ def csvtable(name, arguments, options, content, lineno,
         path = utils.relative_path(None, path)
         source = path
         try:
-            # content is supplied as external file
-            raw_file = open(path, 'rb')
-            csvreader = csv.reader(raw_file, dialect='docutils')
-        except IOError, error:
-            severe = state_machine.reporter.severe(
-                  'Problems with "%s" directive path:\n%s.' % (name, error),
-                  nodes.literal_block(block_text, block_text), line=lineno)
-            return [severe]
+            try:
+                # content is supplied as external file
+                raw_file = open(path, 'rb')
+                csv_data = raw_file.read().splitlines()
+                csvreader = csv.reader(csv_data, dialect='docutils')
+            except IOError, error:
+                severe = state_machine.reporter.severe(
+                      'Problems with "%s" directive path:\n%s.' % (name, error),
+                      nodes.literal_block(block_text, block_text), line=lineno)
+                return [severe]
+        finally:
+            raw_file.close()
     elif options.has_key('url'):
         if not urllib2:
             severe = state_machine.reporter.severe(
@@ -105,8 +104,8 @@ def csvtable(name, arguments, options, content, lineno,
             return [severe]
         try:
             # content is supplied as URL
-            raw_file = urllib2.urlopen(options['url'])
-            csvreader = csv.reader(raw_file, dialect='docutils')
+            csv_data = urllib2.urlopen(options['url']).read().splitlines()
+            csvreader = csv.reader(csv_data, dialect='docutils')
             source = options['url']
         except (urllib2.URLError, IOError, OSError), error:
             severe = state_machine.reporter.severe(
@@ -175,10 +174,6 @@ def csvtable(name, arguments, options, content, lineno,
     else:
         tablecolwidths = [100/maxcols]*maxcols
 
-    # tidy up
-    if options.has_key('file'):
-        raw_file.close()
-
     # convert raw list to DocUtils node tree
     table = (tablecolwidths, tablehead, tablebody)
     tableline = content_offset
@@ -238,7 +233,6 @@ csvtable.options = {'header-rows': directives.nonnegative_int,
                     'class' : directives.class_option,
                     'delim' : single_char,              # field delim char
                     'quote' : single_char,              # text field quote/unquote char
-                    'lineend' : line_end,               # line end char(s)
                     'escape' : single_char,             # char used to escape delim & quote as-needed
                    }
 csvtable.content = 1

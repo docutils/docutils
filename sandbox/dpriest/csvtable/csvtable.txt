@@ -92,13 +92,6 @@ The following options are recognized:
     .. I doubt whitespace would ever be used for quoting.  "char" only
        should be fine.
 
-``lineend`` : "cr" | "lf" | "crlf"
-    The string used to terminate lines in the CSV file.  Useful only
-    for external CSV files.  Defaults to ``crlf`` (carriage return +
-    linefeed).
-
-    .. We should be able to do without this one.
-
 ``keepspace`` : flag
     Treat whitespace immediately following the delimiter as
     significant.  The default is to ignore such whitespace.
