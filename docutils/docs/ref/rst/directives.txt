@@ -17,6 +17,12 @@ Directives have the following syntax::
             |                          |
             +--------------------------+
 
+Directives begin with an explicit markup start (two periods and a
+space), followed by the directive type, two colons, optional directive
+data (on the same line as the directive type) and an optional
+directive block (on subsequent lines).  The directive block is
+indented, aligned with the left edge of the directive type.
+
 
 .. contents::
 
@@ -201,10 +207,13 @@ DTD element: line_block.
 Directive block: directive data and all following indented text become
 the body of the line block.
 
-The "line-block" directive constructs a paragraph-like element where
-leading whitespace and linebreaks are significant and inline markup is
-supported.  This is useful for address blocks and verse (poetry, song
-lyrics).  For example::
+The "line-block" directive constructs an element where whitespace
+(including linebreaks) is significant and inline markup is supported.
+It is equivalent to a `parsed literal block`_ with different
+rendering: typically in an ordinary serif typeface instead of a
+typewriter/monospaced face.  Line blocks are useful for address blocks
+and verse (poetry, song lyrics), where the structure of lines is
+significant.  For example, here's a classic::
 
     "To Ma Own Beloved Lassie: A Poem on her 17th Birthday", by
     Ewan McTeagle (for Lassie O'Shea):
@@ -228,8 +237,13 @@ the body of the literal block.
 
 Unlike an ordinary literal block, the "parsed-literal" directive
 constructs a literal block where the text is parsed for inline markup.
-This is useful for adding hyperlinks to code examples.  For example,
-all the element names in this content model are links::
+It is equivalent to a `line block`_ with different rendering:
+typically in a typewriter/monospaced typeface, like an ordinary
+literal block.  Parsed literal blocks are useful for adding hyperlinks
+to code examples.  However, care must be taken with the text, because
+inline markup is recognized; there is no protection from parsing.
+
+For example, all the element names in this content model are links::
 
     .. parsed-literal::
     
