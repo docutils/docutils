@@ -96,6 +96,17 @@ Paragraph
         <literal_block xml:space="preserve">
             .. class:: 99
 """],
+["""\
+.. class:: one
+.. class:: two
+
+multiple class values may be assigned to one element
+""",
+"""\
+<document source="test data">
+    <paragraph class="one two">
+        multiple class values may be assigned to one element
+"""],
 ])
 
 

@@ -36,6 +36,11 @@ class CallBack(Transform):
 
 class ClassAttribute(Transform):
 
+    """
+    Move the "class" attribute specified in the "pending" node into the
+    immediately following non-comment element.
+    """
+
     default_priority = 210
 
     def apply(self):
@@ -44,14 +49,16 @@ class ClassAttribute(Transform):
         parent = pending.parent
         child = pending
         while parent:
+            # Check for appropriate following siblings:
             for index in range(parent.index(child) + 1, len(parent)):
                 element = parent[index]
-                if isinstance(element, nodes.comment):
+                if isinstance(element, nodes.Invisible):
                     continue
                 element.set_class(class_value)
                 pending.parent.remove(pending)
                 return
             else:
+                # At end of section or container; apply to sibling
                 child = parent
                 parent = parent.parent
         error = self.document.reporter.error(
