@@ -92,6 +92,7 @@ _directive_registry = {
       'tip': ('admonitions', 'tip'),
       'hint': ('admonitions', 'hint'),
       'warning': ('admonitions', 'warning'),
+      'sidebar': ('body', 'sidebar'),
       'topic': ('body', 'topic'),
       'line-block': ('body', 'line_block'),
       'parsed-literal': ('body', 'parsed_literal'),

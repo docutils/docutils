@@ -943,6 +943,20 @@ class footer(Decorative, Element): pass
 class section(Structural, Element): pass
 
 
+class sidebar(Structural, Element):
+
+    """
+    Sidebars are terminal, "leaf" mini-sections, like block quotes with titles,
+    or textual figures. A sidebar is just like a section, except that it has no
+    subsections, and it doesn't have to conform to section placement rules.
+
+    Sidebars are allowed wherever body elements (list, table, etc.) are
+    allowed, but only at the top level of a section or document. Sidebars
+    cannot nest inside sidebars or body elements; you can't have a sidebar
+    inside a table, list, block quote, etc.
+    """
+
+
 class topic(Structural, Element):
 
     """
@@ -1182,8 +1196,8 @@ node_class_names = """
         option_string organization
     paragraph pending problematic
     raw reference revision row
-    section status strong substitution_definition substitution_reference
-        subtitle system_message
+    section sidebar status strong substitution_definition
+        substitution_reference subtitle system_message
     table target tbody term tgroup thead tip title title_reference topic
         transition
     version

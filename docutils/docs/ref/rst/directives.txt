@@ -199,6 +199,34 @@ legend.  To specify a legend without a caption, use an empty comment
  Body Elements
 ---------------
 
+Sidebar
+=======
+
+:Directive Type: "sidebar"
+:DTD Element: sidebar
+:Directive Arguments: One, required (sidebar title).
+:Directive Options: Possible; optional subtitle.
+:Directive Content: Interpreted as the sidebar body.
+
+A sidebar is like a block quote with a title, or a self-contained
+section with no subsections.  Use the "sidebar" directive to indicate a
+self-contained idea that is separate from the flow of the document.
+Sidebars may occur anywhere a section or transition may occur.  Body
+elements (including sidebars) may not contain nested sidebars.
+
+The directive's sole argument is interpreted as the sidebar title,
+which may be followed by an optional subtitle; the next line must be
+blank.  All subsequent lines make up the sidebar body, interpreted as
+body elements.  For example::
+
+    .. sidebar:: Sidebar Title
+       :subtitle: Optional Sidebar Subtitle
+
+       Subsequent indented lines comprise
+       the body of the sidebar, and are
+       interpreted as body elements.
+
+
 Topic
 =====
 

@@ -140,8 +140,8 @@ resolve to either an internal or external reference.
 ================================================================== -->
 
 <!ENTITY % structure.model
-  " ( ( (%body.elements; | topic)+,
-        (transition, (%body.elements; | topic)+ )*,
+  " ( ( (%body.elements; | topic | sidebar)+,
+        (transition, (%body.elements; | topic | sidebar)+ )*,
         (%section.elements;)* )
     | (%section.elements;)+ ) ">
 
@@ -264,6 +264,9 @@ http://www.oasis-open.org/html/tm9901.htm).
 
 <!ELEMENT section (title, %structure.model;)>
 <!ATTLIST section %basic.atts;>
+
+<!ELEMENT sidebar (title, subtitle?, (%body.elements;)+)>
+<!ATTLIST sidebar %basic.atts;>
 
 <!ELEMENT topic (title?, (%body.elements;)+)>
 <!ATTLIST topic %basic.atts;>

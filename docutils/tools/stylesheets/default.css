@@ -61,6 +61,12 @@ div.figure {
 div.footer, div.header {
   font-size: smaller }
 
+div.sidebar {
+  margin: 2em ;
+  border: medium outset ;
+  padding: 1em ;
+  background-color: #eeeeee }
+
 div.system-messages {
   margin: 5em }
 

@@ -22,6 +22,7 @@ directives = {
       u'pozn\xe1mka': 'note',
       u'tip': 'tip',
       u'varovanie': 'warning',
+      u'sidebar (translation required)': 'sidebar',
       u't\xe9ma': 'topic',
       u'blok-riadkov': 'line-block',
       u'parsed-literal': 'parsed-literal',
