@@ -43,6 +43,7 @@ class Writer(html4css1.Writer):
         html4css1.Writer.translate(self)
         options = self.document.options
         template = open(options.template).read()
+        stylesheet = options.stylesheet
         pyhome = options.python_home
         pephome = options.pep_home
         index = self.document.first_child_matching_class(nodes.field_list)
