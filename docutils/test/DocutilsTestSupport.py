@@ -23,8 +23,10 @@ Exports the following:
     - `CustomTestCase`
     - `ParserTestSuite`
     - `ParserTestCase`
-    - `TableParserTestSuite`
-    - `TableParserTestCase`
+    - `GridTableParserTestSuite`
+    - `GridTableParserTestCase`
+    - `SimpleTableParserTestSuite`
+    - `SimpleTableParserTestCase`
 """
 __docformat__ = 'reStructuredText'
 
@@ -68,7 +70,7 @@ class CustomTestSuite(unittest.TestSuite):
     """Identifier for the TestSuite. Prepended to the
     TestCase identifiers to make identification easier."""
 
-    nextTestCaseId = 0
+    next_test_case_id = 0
     """The next identifier to use for non-identified test cases."""
 
     def __init__(self, tests=(), id=None):
@@ -97,8 +99,8 @@ class CustomTestSuite(unittest.TestSuite):
         else:
             self.id = id
 
-    def addTestCase(self, testCaseClass, methodName, input, expected,
-                    id=None, runInDebugger=0, shortDescription=None,
+    def addTestCase(self, test_case_class, method_name, input, expected,
+                    id=None, run_in_debugger=0, short_description=None,
                     **kwargs):
         """
         Create a custom TestCase in the CustomTestSuite.
@@ -106,24 +108,24 @@ class CustomTestSuite(unittest.TestSuite):
 
         Arguments:
 
-        testCaseClass --
-        methodName --
+        test_case_class --
+        method_name --
         input -- input to the parser.
         expected -- expected output from the parser.
         id -- unique test identifier, used by the test framework.
-        runInDebugger -- if true, run this test under the pdb debugger.
-        shortDescription -- override to default test description.
+        run_in_debugger -- if true, run this test under the pdb debugger.
+        short_description -- override to default test description.
         """
         if id is None:                  # generate id if required
-            id = self.nextTestCaseId
-            self.nextTestCaseId += 1
+            id = self.next_test_case_id
+            self.next_test_case_id += 1
         # test identifier will become suiteid.testid
         tcid = '%s: %s' % (self.id, id)
         # generate and add test case
-        tc = testCaseClass(methodName, input, expected, tcid,
-                           runInDebugger=runInDebugger,
-                           shortDescription=shortDescription,
-                           **kwargs)
+        tc = test_case_class(method_name, input, expected, tcid,
+                             run_in_debugger=run_in_debugger,
+                             short_description=short_description,
+                             **kwargs)
         self.addTest(tc)
         return tc
 
@@ -133,26 +135,26 @@ class CustomTestCase(unittest.TestCase):
     compare = difflib.Differ().compare
     """Comparison method shared by all subclasses."""
 
-    def __init__(self, methodName, input, expected, id,
-                 runInDebugger=0, shortDescription=None):
+    def __init__(self, method_name, input, expected, id,
+                 run_in_debugger=0, short_description=None):
         """
         Initialise the CustomTestCase.
 
         Arguments:
 
-        methodName -- name of test method to run.
+        method_name -- name of test method to run.
         input -- input to the parser.
         expected -- expected output from the parser.
         id -- unique test identifier, used by the test framework.
-        runInDebugger -- if true, run this test under the pdb debugger.
-        shortDescription -- override to default test description.
+        run_in_debugger -- if true, run this test under the pdb debugger.
+        short_description -- override to default test description.
         """
         self.id = id
         self.input = input
         self.expected = expected
-        self.runInDebugger = runInDebugger
+        self.run_in_debugger = run_in_debugger
         # Ring your mother.
-        unittest.TestCase.__init__(self, methodName)
+        unittest.TestCase.__init__(self, method_name)
 
     def __str__(self):
         """
@@ -164,7 +166,7 @@ class CustomTestCase(unittest.TestCase):
     def __repr__(self):
         return "<%s %s>" % (self.id, unittest.TestCase.__repr__(self))
 
-    def compareOutput(self, input, output, expected):
+    def compare_output(self, input, output, expected):
         """`input`, `output`, and `expected` should all be strings."""
         try:
             self.assertEquals('\n' + output, '\n' + expected)
@@ -208,10 +210,10 @@ class TransformTestSuite(CustomTestSuite):
         for name, (transforms, cases) in dict.items():
             for casenum in range(len(cases)):
                 case = cases[casenum]
-                runInDebugger = 0
+                run_in_debugger = 0
                 if len(case)==3:
                     if case[2]:
-                        runInDebugger = 1
+                        run_in_debugger = 1
                     else:
                         continue
                 self.addTestCase(
@@ -219,7 +221,7 @@ class TransformTestSuite(CustomTestSuite):
                       transforms=transforms, parser=self.parser,
                       input=case[0], expected=case[1],
                       id='%s[%r][%s]' % (dictname, name, casenum),
-                      runInDebugger=runInDebugger)
+                      run_in_debugger=run_in_debugger)
 
 
 class TransformTestCase(CustomTestCase):
@@ -252,17 +254,17 @@ class TransformTestCase(CustomTestCase):
         return 1
 
     def test_transforms(self):
-        if self.runInDebugger:
+        if self.run_in_debugger:
             pdb.set_trace()
         document = utils.new_document(self.options)
         self.parser.parse(self.input, document)
         for transformClass in (self.transforms + universal.test_transforms):
             transformClass(document, self).transform()
         output = document.pformat()
-        self.compareOutput(self.input, output, self.expected)
+        self.compare_output(self.input, output, self.expected)
 
     def test_transforms_verbosely(self):
-        if self.runInDebugger:
+        if self.run_in_debugger:
             pdb.set_trace()
         print '\n', self.id
         print '-' * 70
@@ -276,7 +278,7 @@ class TransformTestCase(CustomTestCase):
         output = document.pformat()
         print '-' * 70
         print output
-        self.compareOutput(self.input, output, self.expected)
+        self.compare_output(self.input, output, self.expected)
 
 
 class ParserTestCase(CustomTestCase):
@@ -298,12 +300,12 @@ class ParserTestCase(CustomTestCase):
     options.debug = package_unittest.debug
 
     def test_parser(self):
-        if self.runInDebugger:
+        if self.run_in_debugger:
             pdb.set_trace()
         document = utils.new_document(self.options)
         self.parser.parse(self.input, document)
         output = document.pformat()
-        self.compareOutput(self.input, output, self.expected)
+        self.compare_output(self.input, output, self.expected)
 
 
 class ParserTestSuite(CustomTestSuite):
@@ -331,17 +333,17 @@ class ParserTestSuite(CustomTestSuite):
         for name, cases in dict.items():
             for casenum in range(len(cases)):
                 case = cases[casenum]
-                runInDebugger = 0
+                run_in_debugger = 0
                 if len(case)==3:
                     if case[2]:
-                        runInDebugger = 1
+                        run_in_debugger = 1
                     else:
                         continue
                 self.addTestCase(
                       self.test_case_class, 'test_parser',
                       input=case[0], expected=case[1],
                       id='%s[%r][%s]' % (dictname, name, casenum),
-                      runInDebugger=runInDebugger)
+                      run_in_debugger=run_in_debugger)
 
 
 class PEPParserTestCase(ParserTestCase):
@@ -359,22 +361,48 @@ class PEPParserTestSuite(ParserTestSuite):
     test_case_class = PEPParserTestCase
 
 
-class TableParserTestSuite(CustomTestSuite):
+class GridTableParserTestCase(CustomTestCase):
+
+    parser = tableparser.GridTableParser()
+
+    def test_parse_table(self):
+        self.parser.setup(string2lines(self.input))
+        try:
+            self.parser.find_head_body_sep()
+            self.parser.parse_table()
+            output = self.parser.cells
+        except Exception, details:
+            output = '%s: %s' % (details.__class__.__name__, details)
+        self.compare_output(self.input, pformat(output) + '\n',
+                            pformat(self.expected) + '\n')
+
+    def test_parse(self):
+        try:
+            output = self.parser.parse(string2lines(self.input))
+        except Exception, details:
+            output = '%s: %s' % (details.__class__.__name__, details)
+        self.compare_output(self.input, pformat(output) + '\n',
+                            pformat(self.expected) + '\n')
+
+
+class GridTableParserTestSuite(CustomTestSuite):
 
     """
-    A collection of TableParserTestCases.
+    A collection of GridTableParserTestCases.
 
-    A TableParserTestSuite instance manufactures TableParserTestCases,
-    keeps track of them, and provides a shared test fixture (a-la
-    setUp and tearDown).
+    A GridTableParserTestSuite instance manufactures GridTableParserTestCases,
+    keeps track of them, and provides a shared test fixture (a-la setUp and
+    tearDown).
     """
+
+    test_case_class = GridTableParserTestCase
 
     def generateTests(self, dict, dictname='totest'):
         """
         Stock the suite with test cases generated from a test data dictionary.
 
         Each dictionary key (test type name) maps to a list of tests. Each
-        test is a list: an input table, expected output from parsegrid(),
+        test is a list: an input table, expected output from parse_table(),
         expected output from parse(), optional modifier. The optional fourth
         entry, a behavior modifier, can be 0 (temporarily disable this test)
         or 1 (run this test under the pdb debugger). Tests should be
@@ -383,41 +411,57 @@ class TableParserTestSuite(CustomTestSuite):
         for name, cases in dict.items():
             for casenum in range(len(cases)):
                 case = cases[casenum]
-                runInDebugger = 0
+                run_in_debugger = 0
                 if len(case) == 4:
-                    if case[3]:
-                        runInDebugger = 1
+                    if case[-1]:
+                        run_in_debugger = 1
                     else:
                         continue
-                self.addTestCase(TableParserTestCase, 'test_parsegrid',
+                self.addTestCase(self.test_case_class, 'test_parse_table',
                                  input=case[0], expected=case[1],
                                  id='%s[%r][%s]' % (dictname, name, casenum),
-                                 runInDebugger=runInDebugger)
-                self.addTestCase(TableParserTestCase, 'test_parse',
+                                 run_in_debugger=run_in_debugger)
+                self.addTestCase(self.test_case_class, 'test_parse',
                                  input=case[0], expected=case[2],
                                  id='%s[%r][%s]' % (dictname, name, casenum),
-                                 runInDebugger=runInDebugger)
+                                 run_in_debugger=run_in_debugger)
 
 
-class TableParserTestCase(CustomTestCase):
+class SimpleTableParserTestCase(GridTableParserTestCase):
 
-    parser = tableparser.TableParser()
+    parser = tableparser.SimpleTableParser()
 
-    def test_parsegrid(self):
-        self.parser.setup(string2lines(self.input))
-        try:
-            self.parser.findheadbodysep()
-            self.parser.parsegrid()
-            output = self.parser.cells
-        except Exception, details:
-            output = '%s: %s' % (details.__class__.__name__, details)
-        self.compareOutput(self.input, pformat(output) + '\n',
-                           pformat(self.expected) + '\n')
 
-    def test_parse(self):
-        try:
-            output = self.parser.parse(string2lines(self.input))
-        except Exception, details:
-            output = '%s: %s' % (details.__class__.__name__, details)
-        self.compareOutput(self.input, pformat(output) + '\n',
-                           pformat(self.expected) + '\n')
+class SimpleTableParserTestSuite(CustomTestSuite):
+
+    """
+    A collection of SimpleTableParserTestCases.
+    """
+
+    test_case_class = SimpleTableParserTestCase
+
+    def generateTests(self, dict, dictname='totest'):
+        """
+        Stock the suite with test cases generated from a test data dictionary.
+
+        Each dictionary key (test type name) maps to a list of tests. Each
+        test is a list: an input table, expected output from parse(), optional
+        modifier. The optional third entry, a behavior modifier, can be 0
+        (temporarily disable this test) or 1 (run this test under the pdb
+        debugger). Tests should be self-documenting and not require external
+        comments.
+        """
+        for name, cases in dict.items():
+            for casenum in range(len(cases)):
+                case = cases[casenum]
+                run_in_debugger = 0
+                if len(case) == 3:
+                    if case[-1]:
+                        run_in_debugger = 1
+                    else:
+                        continue
+                self.addTestCase(self.test_case_class, 'test_parse',
+                                 input=case[0], expected=case[1],
+                                 id='%s[%r][%s]' % (dictname, name, casenum),
+                                 run_in_debugger=run_in_debugger)
+
