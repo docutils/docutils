@@ -19,6 +19,7 @@ __docformat__ = 'reStructuredText'
 
 import os
 import os.path
+import sys
 import types
 import ConfigParser as CP
 import codecs
@@ -57,14 +58,16 @@ def set_encoding(option, opt, value, parser):
     try:
         value = validate_encoding(value, option.default)
     except LookupError, error:
-        raise optik.OptionValueError('option "%s": %s' % (opt, error))
+        raise (optik.OptionValueError('option "%s": %s' % (opt, error)),
+               None, sys.exc_info[2])
     setattr(parser.values, option.dest, value)
 
 def validate_encoding(value, default):
     try:
         codecs.lookup(value)
     except LookupError:
-        raise LookupError('unknown encoding: "%s"' % value)
+        raise (LookupError('unknown encoding: "%s"' % value),
+               None, sys.exc_info[2])
     return value
 
 def set_encoding_and_error_handler(option, opt, value, parser):
@@ -75,7 +78,8 @@ def set_encoding_and_error_handler(option, opt, value, parser):
     try:
         value = validate_encoding_and_error_handler(value, option.default)
     except LookupError, error:
-        raise optik.OptionValueError('option "%s": %s' % (opt, error))
+        raise (optik.OptionValueError('option "%s": %s' % (opt, error)),
+               None, sys.exc_info[2])
     setattr(parser.values, option.dest, value)
 
 def validate_encoding_and_error_handler(value, default):
@@ -89,15 +93,17 @@ def validate_encoding_and_error_handler(value, default):
         codecs.lookup_error(handler)
     except AttributeError:
         if handler not in ('strict', 'ignore', 'replace'):
-            raise LookupError(
+            raise (LookupError(
                 'unknown encoding error handler: "%s" (choices: '
-                '"strict", "ignore", or "replace")' % handler)
+                '"strict", "ignore", or "replace")' % handler),
+                   None, sys.exc_info[2])
     except LookupError:
-        raise LookupError(
+        raise (LookupError(
             'unknown encoding error handler: "%s" (choices: '
             '"strict", "ignore", "replace", "backslashreplace", '
             '"xmlcharrefreplace", and possibly others; see documentation for '
-            'the Python ``codecs`` module)' % handler)
+            'the Python ``codecs`` module)' % handler),
+               None, sys.exc_info[2])
     return encoding + ':' + handler
 
 def make_paths_absolute(pathdict, keys, base_path=None):
@@ -394,11 +400,11 @@ class ConfigParser(CP.ConfigParser):
                     try:
                         new_value = validator(value, default)
                     except Exception, error:
-                        raise ValueError(
+                        raise (ValueError(
                             'Error in config file "%s", section "[%s]":\n'
                             '    %s: %s\n        %s = %s'
                             % (filename, section, error.__class__.__name__,
-                               error, option, value))
+                               error, option, value)), None, sys.exc_info()[2])
                     self.set(section, option, new_value)
 
     def optionxform(self, optionstr):
