@@ -120,11 +120,10 @@ the most stable (bug-free) as well as the most featureful.
 What is the Docutils project release policy?
 --------------------------------------------
 
-It ought to be "release early & often", but official releases are a
-significant effort and aren't done that often.  We have
-automatically-generated `development snapshots`_ which always contain
-the latest code from CVS.  As the project matures, we may formalize on
-a stable/development-branch scheme, but we're not using anything like
+It's "release early & often".  We also have automatically-generated
+`development snapshots`_ which always contain the latest code from
+CVS.  As the project matures, we may formalize on a
+stable/development-branch scheme, but we're not using anything like
 that yet.
 
 .. _development snapshots:
