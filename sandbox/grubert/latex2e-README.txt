@@ -4,10 +4,17 @@ latex2e BUGS TODOS and other animals
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
 
-Rev. 2003-05-16
+:Author: engelbert gruber
+:Contact: grubert@users.sourceforge.net
+:Date: $Date$
 
 To do
 ~~~~~
+
+* citation references and bibtex: could we learn or use something ?
+
+  e.g. contemplating about persistence storage of references or
+  the like reminds me of latex generating toc,lot,lof files.
 
 * quotes for german: {\glqq} {\grqq} {\glq} {\grq} {\dq}.
 
