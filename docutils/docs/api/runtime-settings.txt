@@ -37,16 +37,22 @@ Next, several _`convenience function parameters` are also significant
 (described in the ``docutils.core.publish_programmatically`` function
 docstring):
 
-* ``settings``, if present, is assumed to be complete and no further
-  runtime settings processing is done.
+* The ``settings`` parameter is a runtime settings
+  (``docutils.frontend.Values``) object which, if present, is assumed
+  to be complete (it must include all runtime settings).  Also, if the
+  ``settings`` parameter is present, no further runtime settings
+  processing is done.  In other words, the other parameters, described
+  below, will have no effect.
 
-* ``settings_spec`` is treated as a fourth component (after the
-  Parser, Reader, and Writer).
+* ``settings_spec``, a `docutils.SettingsSpec` subclass or object, is
+  treated like a fourth component (after the Parser, Reader, and
+  Writer).  In other words, it's the settings specification for the
+  "Application" itself.
 
 * ``settings_overrides`` is a dictionary which will override the
-  defaults of the components.
+  defaults of the components (from their settings specs).
 
-* ``config_section`` sets or overrides an application-specific
+* ``config_section`` specifies the name of an application-specific
   configuration file section.
 
 
@@ -57,7 +63,7 @@ Runtime Settings Processing for Command-Line Tools
 
 Following along with the actual code is recommended.  The
 ``docutils/__init__.py``, ``docutils/core.py``, and
-``docutils.frontend`` modules are described.
+``docutils.frontend.py`` modules are described.
 
 1. A command-line front-end tool imports and calls
    ``docutils.core.publish_cmdline``.  The relevant `convenience
@@ -163,21 +169,22 @@ Following along with the actual code is recommended.  The
 Runtime Settings Processing From Applications
 =============================================
 
-Applications process runtime settings in a significantly different way
-than `command-line tools`_ do.  Instead of calling
-``publish_cmdline``, the application calls one of ``publish_file``,
-``publish_string``, or ``publish_parts``.  These in turn call
-``publish_programmatically``, which implements a generic programmatic
-interface.  Although an application may also call
-``publish_programmatically`` directly, it is not recommended (if it
-does seem to be necessary, please write to the `Docutils-Develop
-mailing list`_).
+Applications process runtime settings in a different way than
+`command-line tools`_ do.  Instead of calling ``publish_cmdline``, the
+application calls one of ``publish_file``, ``publish_string``, or
+``publish_parts``.  These in turn call ``publish_programmatically``,
+which implements a generic programmatic interface.  Although an
+application may also call ``publish_programmatically`` directly, it is
+not recommended (if it does seem to be necessary, please write to the
+`Docutils-Develop mailing list`_).
 
 ``publish_programmatically`` accepts the same `convenience function
 parameters`_ as ``publish_cmdline``.  Where things differ is that
-programmatic use does not
-
-TO BE COMPLETED.
+programmatic use does no command-line processing.  Instead of calling
+``docutils.Publisher.process_command_line`` (as ``publish_cmdline``
+does, via ``docutils.Publisher.publish``),
+``docutils.Publisher.process_programmatic_settings`` is called to set
+up the runtime settings.
 
 .. copy & modify the list from command-line tools?
 
