@@ -1,0 +1,7 @@
+======================
+ DocFactory Download
+======================
+
+* `Latest development snapshot`_
+
+.. _`Latest development snapshot`: http://docutils.sourceforge.net/docfactory-snapshot.tgz
