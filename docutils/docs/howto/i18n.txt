@@ -157,4 +157,4 @@ Use the "alltests.py" script to run all test modules, exhaustively
 testing the parser and other parts of the Docutils system.
 
 .. _CVS: http://sourceforge.net/cvs/?group_id=38414
-.. _Docutils snapshot: http://docutils.sf.net/docutils-snapshot.tgz
+.. _latest CVS snapshot: http://docutils.sf.net/docutils-snapshot.tgz
