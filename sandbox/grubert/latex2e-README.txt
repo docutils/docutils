@@ -4,7 +4,7 @@ latex2e BUGS TODOS and other animals
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
 
-Rev. 2003-03-15
+Rev. 2003-03-17
 
 To do
 ~~~~~
@@ -37,9 +37,6 @@ To do
 
 * center subsection{Abstract} gives a latex error here.
   ``! LaTeX Error: Something's wrong--perhaps a missing \item.``
-
-* admonitions are not so visible as in html (make a border a bigger title, indent
-  text)
 
 * document errors are also too silent.
 
@@ -127,6 +124,8 @@ ATTENTION
 
 Done
 ~~~~
+* admonitions are not so visible as in html (make a border a bigger title, indent
+  text) thanks to g.schwant.
 * FIX: protection of braces: formerly literal blocks were verbatim.
   Now that they are no longer verbatim braces are dangerous.
 * literal_block no longer verbatim to allow inline markup, no longer intended.
