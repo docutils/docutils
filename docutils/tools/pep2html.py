@@ -46,7 +46,8 @@ REQUIRES = {'python': '2.2',
 PROGRAM = sys.argv[0]
 RFCURL = 'http://www.faqs.org/rfcs/rfc%d.html'
 PEPURL = 'pep-%04d.html'
-PEPCVSURL = 'http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/python/python/nondist/peps/pep-%04d.txt'
+PEPCVSURL = ('http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/python/python'
+             '/nondist/peps/pep-%04d.txt')
 PEPDIRRUL = 'http://www.python.org/peps/'
 
 
@@ -139,11 +140,7 @@ def fixfile(inpath, input_lines, outfile):
     header = []
     pep = ""
     title = ""
-    while 1:
-        try:
-            line = infile.next()
-        except StopIteration:
-            break
+    for line in infile:
         if not line.strip():
             break
         if line[0].strip():
@@ -165,19 +162,19 @@ def fixfile(inpath, input_lines, outfile):
         title = "PEP " + pep + " -- " + title
     if title:
         print >> outfile, '  <title>%s</title>' % cgi.escape(title)
-    print >> outfile, '  <link rel="STYLESHEET" href="style.css" type="text/css">'
-    print >> outfile, '</head>'
-    # body
-    print >> outfile, '<body bgcolor="white" marginwidth="0" marginheight="0">'
-    print >> outfile, '<table class="navigation" cellpadding="0" cellspacing="0"'
-    print >> outfile, '       width="100%" border="0">'
-    print >> outfile, '<tr><td class="navicon" width="150" height="35">'
     r = random.choice(range(64))
-    print >> outfile, '<a href="../" title="Python Home Page">'
-    print >> outfile, '<img src="../pics/PyBanner%03d.gif" alt="[Python]"' % r
-    print >> outfile, ' border="0" width="150" height="35" /></a></td>'
-    print >> outfile, '<td class="textlinks" align="left">'
-    print >> outfile, '[<b><a href="../">Python Home</a></b>]'
+    print >> outfile, (
+        '  <link rel="STYLESHEET" href="style.css" type="text/css">\n'
+        '</head>\n'
+        '<body bgcolor="white" marginwidth="0" marginheight="0">\n'
+        '<table class="navigation" cellpadding="0" cellspacing="0"\n'
+        '       width="100%" border="0">\n'
+        '<tr><td class="navicon" width="150" height="35">\n'
+        '<a href="../" title="Python Home Page">\n'
+        '<img src="../pics/PyBanner%03d.gif" alt="[Python]"\n'
+        ' border="0" width="150" height="35" /></a></td>\n'
+        '<td class="textlinks" align="left">\n'
+        '[<b><a href="../">Python Home</a></b>]' % r)
     if basename <> 'pep-0000.txt':
         print >> outfile, '[<b><a href=".">PEP Index</a></b>]'
     if pep:
@@ -227,11 +224,7 @@ def fixfile(inpath, input_lines, outfile):
     print >> outfile, '<hr />'
     print >> outfile, '<div class="content">'
     need_pre = 1
-    while 1:
-        try:
-            line = infile.next()
-        except StopIteration:
-            break
+    for line in infile:
         if line[0] == '\f':
             continue
         if line.strip() == LOCALVARS:
