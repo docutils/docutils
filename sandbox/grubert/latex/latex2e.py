@@ -99,6 +99,25 @@ class Writer(writers.Writer):
         self.body = visitor.body
         self.body_suffix = visitor.body_suffix
 
+"""
+Notes on LaTeX
+--------------
+
+* Put labels inside environments::
+    \chapter[optional]{title}
+    \label{lab} % optional, for cross referencing
+    text for this unit ...
+* unnumbered sections are not written to tableofcontents.
+  a. donot print numbers::
+        \renewcommand{\thesection}{}
+  b. use::
+        \addcontentsline{file}{sec_unit}{entry}
+     file toc,lof lot
+     sec_unit section, subsection , ...
+     entry the line::
+        \numberline text pagenumber
+
+"""    
 
 class LaTeXTranslator(nodes.NodeVisitor):
     # When options are given to the documentclass, latex will pass them
@@ -117,15 +136,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # fonts might go into stylesheet.
     fonts = '\\usepackage{%s}\n'
     stylesheet = '\\input{%s}\n'
-    # content type might be outputenc ?
-    # content_type = '<meta http-equiv="Content-Type" content="text/html; ' \
-    #               'charset=%s">\n'
     # add a generated on day , machine by user using docutils versoin.
     generator = '%% generator Docutils: http://docutils.sourceforge.net/\n'
 
     # use latex tableofcontents or let docutils do it.
     # BUG: not tested.
-    latex_toc = 0
+    latex_toc = 1
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
@@ -138,7 +154,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     _ISO639_TO_BABEL[document.options.language_code]
         self.head_prefix = [
               self.latex_head % (self.d_options,self.d_class),
-              '\\usepackage{babel}\n',
+              '\\usepackage{babel}\n',     # language is in documents options.
+              '\\usepackage{shortvrb}\n',  # allows verb in footnotes.
               self.encoding,
               self.geometry % (self.d_paper, self.d_margins),
               self.fonts % "palatino",
@@ -159,13 +176,19 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.topic_class = ''
 
     def encode(self, text):
-        """Encode special characters in `text` & return."""
-        text = text.replace("\\", '{\\\\}')
+        """
+        Encode special characters in `text` & return.
+            # $ % & ~ _ ^ \ { }
+        Escaping with a backslash does not help with backslashes, ~ and ^.
+        """
+        text = text.replace("\\", '{$\\backslash$}')
         text = text.replace("&", '{\\&}')
         text = text.replace("_", '{\\_}')
-        text = text.replace("^", '{\\^}')
+        text = text.replace("^", '{\verb|^|}')
         text = text.replace("%", '{\\%}')
         text = text.replace("#", '{\\#}')
+        text = text.replace("~", '{\\~{ }}')
+        # unicode: not needed as long  as output encoding is latin-1.
         text = text.replace(u'\u2020', '{$\\dagger$}')
         return text
 
@@ -347,6 +370,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body = self.docinfo + self.body
         # clear docinfo, so field names are no longer appended.
         self.docinfo = None
+        if self.latex_toc:
+            self.body.append('\\tableofcontents\n\n\\bigskip\n')
 
     def visit_docinfo_item(self, node, name):
         # should we stick to latex or docutils.
@@ -356,7 +381,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         
         if name == 'abstract':
             # NOTE tableofcontents before or after ?
-            # eg after: see visit_topic
+            # eg after: depart_docinfo
             # NOTE this limits abstract to text.
             self.body.append('\\begin{abstract}\n')
             self.context.append('\\end{abstract}\n')
@@ -380,6 +405,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             ##self.context.append('')
             ##self.context.append(self.body)
             ##raise nodes.SkipNode
+        # \thanks is a footnote to the title.
 
     def depart_docinfo_item(self, node):
         size = self.context.pop()
@@ -398,6 +424,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_document(self, node):
         self.body_prefix.append('\\begin{document}\n')
         self.body_prefix.append('\\maketitle\n\n')
+        # alternative use titlepage environment.
+        # \begin{titlepage}
 
     def depart_document(self, node):
         self.body_suffix.append('\\end{document}\n')
@@ -894,11 +922,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append(self.context.pop())
 
     def visit_topic(self, node):
-        self.body.append('% [visit_topic]\n')
+        ##self.body.append('% [visit_topic]\n')
         self.topic_class = node.get('class')
         if self.latex_toc:
-            self.body.append('\\tableofcontents\n\n\\bigskip\n')
-            self.body.append('% [depart_topic]\n')
+            ##self.body.append('% [depart_topic]\n')
             self.topic_class = ''
             raise nodes.SkipNode
 
