@@ -92,10 +92,14 @@ _directive_registry = {
       'tip': ('admonitions', 'tip'),
       'hint': ('admonitions', 'hint'),
       'warning': ('admonitions', 'warning'),
+      'admonition': ('admonitions', 'admonition'),
       'sidebar': ('body', 'sidebar'),
       'topic': ('body', 'topic'),
       'line-block': ('body', 'line_block'),
       'parsed-literal': ('body', 'parsed_literal'),
+      'rubric': ('body', 'rubric'),
+      'epigraph': ('body', 'epigraph'),
+      'highlights': ('body', 'highlights'),
       #'questions': ('body', 'question_list'),
       'image': ('images', 'image'),
       'figure': ('images', 'figure'),
@@ -109,6 +113,8 @@ _directive_registry = {
       'raw': ('misc', 'raw'),
       'include': ('misc', 'include'),
       'replace': ('misc', 'replace'),
+      'unicode': ('misc', 'unicode_directive'),
+      'class': ('misc', 'class_directive'),
       'restructuredtext-test-directive': ('misc', 'directive_test_function'),}
 """Mapping of directive name to (module name, function name).  The directive
 name is canonical & must be lowercase.  Language-dependent names are defined
@@ -238,3 +244,8 @@ def choice(argument, values):
     else:
         raise ValueError('"%s" unknown; choose from %s'
                          % (argument, format_values(values)))
+
+def class_option(argument):
+    if argument is None:
+        raise ValueError('argument required but none supplied')
+    return nodes.make_id(argument)
