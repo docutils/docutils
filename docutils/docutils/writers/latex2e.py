@@ -741,8 +741,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         text = text.replace("%", '{\\%}')
         text = text.replace("#", '{\\#}')
         text = text.replace("~", '{\\textasciitilde}')
-        text = text.replace("[", '{}[')
-        text = text.replace("]", '{}]')
         if self.literal_block or self.literal:
             # pdflatex does not produce doublequotes for ngerman.
             text = self.babel.double_quotes_in_tt(text)
@@ -760,11 +758,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 closings = ""
                 openings = ""
             text = text.replace("\n", "%s}\\\\\n\\mbox{%s" % (closings,openings))
-        # HACK: lines starting with "[" or "]" give errors.
-        if not self.__dict__.has_key('encode_re_bracketts'):
-            self.encode_re_bracketts = re.compile(r'([\[\]])')
-        if self.literal_block and not self.mbox_newline:
-            text = self.encode_re_bracketts.sub(r'{\1}',text)
+        # lines starting with "[" or "]" give errors.
+        self.encode_re_bracketts = re.compile(r'([\[\]])')
+        text = self.encode_re_bracketts.sub(r'{\1}',text)
         if self.insert_none_breaking_blanks:
             text = text.replace(' ', '~')
         # unicode !!!
