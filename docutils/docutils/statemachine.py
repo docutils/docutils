@@ -94,11 +94,11 @@ How To Use This Module
        input_string = open('inputfile').read()
        input_lines = statemachine.string2lines(input_string)
 
-6. Run the state machine on the input text and collect the results, a list::
+5. Run the state machine on the input text and collect the results, a list::
 
        results = sm.run(input_lines)
 
-7. Remove any lingering circular references::
+6. Remove any lingering circular references::
 
        sm.unlink()
 """
