@@ -27,6 +27,8 @@ include3 = os.path.join(mydir, 'include3.txt')
 include8 = os.path.join(mydir, 'include8.txt')
 include10 = os.path.join(mydir, 'include10.txt')
 include10rel = DocutilsTestSupport.utils.relative_path(None, include10)
+utf_16_file = os.path.join(mydir, 'utf-16.csv')
+utf_16_file_rel = DocutilsTestSupport.utils.relative_path(None, utf_16_file)
 
 
 totest = {}
@@ -279,9 +281,9 @@ Testing relative includes:
 ["""\
 Encoding:
 
-.. include:: utf-16.csv
+.. include:: %s
    :encoding: utf-16
-""",
+""" % utf_16_file_rel,
 u"""\
 <document source="test data">
     <paragraph>
@@ -292,6 +294,19 @@ u"""\
         "Crunchy Frog", 1.49, "If we took the b\xf6nes out, it wouldn\\u2019t be
         crunchy, now would it?"
         "Gannet Ripple", 1.99, "\xbfOn a \\u03c3\\u03c4\\u03b9\\u03ba?"
+"""],
+["""\
+UTF-16 is no valid ASCII.  BUG?
+
+.. include:: %s
+   :encoding: ascii
+""" % utf_16_file_rel,
+u"""\
+<document source="test data">
+    <paragraph>
+        UTF-16 is no valid ASCII.  BUG?
+    <paragraph>
+        \xfe\xff"Treat","Quantity","Description""Albatr\xb0\xdf",2.99,"\xa1Ona\x03\xc3\x03\xc4\x03\xb9\x03\xba!""CrunchyFrog",1.49,"Ifwetooktheb\xf6nesout,itwouldn \x19tbecrunchy,nowwouldit?""GannetRipple",1.99,"\xbfOna\x03\xc3\x03\xc4\x03\xb9\x03\xba?"
 """],
 # @@@ BUG with errors reported with incorrect "source" & "line":
 # ["""\
