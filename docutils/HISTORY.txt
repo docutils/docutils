@@ -85,6 +85,7 @@ Specific:
   - Fixed parent linking in ``Element.replace()``.
   - Added new abstract superclass ``FixedTextElement``; adds
     "xml:space" attribute.
+  - Added support for "line" attribute of ``system_message`` nodes.
 
 * docutils/utils.py:
 
@@ -97,6 +98,7 @@ Specific:
     to WARNING, and fixed its insertion location.
   - Fixed enumerated list item parsing to allow paragraphs & section
     titles to begin with enumerators.
+  - Converted system messages to use the new "line" attribute.
 
 * docutils/parsers/rst/directives/body.py: Added to project.  Contains
   the "topic", "line-block", and "parsed-literal" directives.
@@ -205,6 +207,7 @@ Specific:
   - Changed ``%structural.elements;`` to ``%section.elements``.
   - Updated attribute types; made more specific.
   - Added "address" bibliographic element.
+  - Added "line" attribute to ``system_message`` element.
 
 * spec/pep-0256.txt: Converted to reStructuredText & updated.
 
