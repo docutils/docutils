@@ -474,6 +474,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.docinfo = None
         # inside literal block: no quote mangling.
         self.literal_block = 0
+        self.literal_block_stack = []
         self.literal = 0
         # true when encoding in math mode
         self.mathmode = 0
@@ -581,7 +582,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # ! LaTeX Error: There's no line here to end.
             text = text.replace("\n", '~\\\\\n')
         elif self.mbox_newline:
-            text = text.replace("\n", '}\\\\\n\\mbox{')
+            if self.literal_block:
+                closings = "}" * len(self.literal_block_stack)
+                openings = "".join(self.literal_block_stack)
+            else:
+                closings = ""
+                openings = ""
+            text = text.replace("\n", "%s}\\\\\n\\mbox{%s" % (closings,openings))
         if self.insert_none_breaking_blanks:
             text = text.replace(' ', '~')
         # unicode !!!
@@ -874,9 +881,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_emphasis(self, node):
         self.body.append('\\emph{')
+        if self.literal_block:
+            self.literal_block_stack.append('\\emph{')
 
     def depart_emphasis(self, node):
         self.body.append('}')
+        if self.literal_block:
+            self.literal_block_stack.pop()
 
     def visit_entry(self, node):
         # cell separation
@@ -1432,9 +1443,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_strong(self, node):
         self.body.append('\\textbf{')
+        if self.literal_block:
+            self.literal_block_stack.append('\\textbf{')
 
     def depart_strong(self, node):
         self.body.append('}')
+        if self.literal_block:
+            self.literal_block_stack.pop()
 
     def visit_substitution_definition(self, node):
         raise nodes.SkipNode
