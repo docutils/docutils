@@ -488,7 +488,7 @@ becomes this document tree fragment::
 
 
 Highlights
-========
+==========
 
 :Directive Type: "highlights"
 :Doctree Element: block_quote
