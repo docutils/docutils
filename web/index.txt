@@ -200,7 +200,7 @@ general discussions (such as reStructuredText syntax or the high-level
 Docutils project model), whereas the Docutils-specific lists are more
 focused on the implementation.
 
-You can also access read-only archives of the mailing lists via Gmane:
+You can also access archives of the mailing lists via Gmane:
 Docutils-users__, Docutils-develop__, Docutils-checkins__ and
 Doc-SIG__.
 
