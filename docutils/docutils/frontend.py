@@ -21,7 +21,8 @@ Also exports the following functions:
 * Setting validators: `validate_encoding`,
   `validate_encoding_error_handler`,
   `validate_encoding_and_error_handler`, `validate_boolean`,
-  `validate_threshold`, `validate_colon_separated_string_list`.
+  `validate_threshold`, `validate_colon_separated_string_list`,
+  `validate_dependency_file`.
 * `make_paths_absolute`.
 """
 
@@ -154,10 +155,10 @@ def validate_url_trailing_slash(
 
 def validate_dependency_file(
     setting, value, option_parser, config_parser=None, config_section=None):
-    if value:
-        return open(value, 'w')
-    else:
-        return None
+    try:
+        return docutils.utils.DependencyList(value)
+    except IOError:
+        return docutils.utils.DependencyList(None)
 
 def make_paths_absolute(pathdict, keys, base_path=None):
     """
@@ -188,6 +189,11 @@ class Values(optparse.Values):
     Updates list attributes by extension rather than by replacement.
     Works in conjunction with the `OptionParser.lists` instance attribute.
     """
+
+    def __init__(self, *args, **kwargs):
+        optparse.Values.__init__(self, *args, **kwargs)
+        # Set up dependency list, in case it is needed.
+        self.record_dependencies = docutils.utils.DependencyList()
 
     def update(self, other_dict, option_parser):
         if isinstance(other_dict, Values):
@@ -409,10 +415,11 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
           '  Default is "en" (English).',
           ['--language', '-l'], {'dest': 'language_code', 'default': 'en',
                                  'metavar': '<name>'}),
-         ('Write dependencies (caused e.g. by the include directive) to '
-          '<file>.  Useful in conjunction with programs like make.',
-          ['--dependency-file'],
-          {'metavar': '<file>', 'validator': validate_dependency_file}),
+         ('Write dependencies (caused e.g. by file inclusions) to '
+          '<file>.  Useful in conjunction with programs like "make".',
+          ['--record-dependencies'],
+          {'dest': 'record_dependencies', 'metavar': '<file>',
+           'validator': validate_dependency_file}),
          ('Read configuration settings from <file>, if it exists.',
           ['--config'], {'metavar': '<file>', 'type': 'string',
                          'action': 'callback', 'callback': read_config_file}),
