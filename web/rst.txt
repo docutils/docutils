@@ -60,9 +60,9 @@ Reference Documentation
 __ docs/ref/rst/introduction.html
 __ docs/ref/rst/introduction.html#goals
 __ docs/ref/rst/introduction.html#history
-__ docs/ref/rst/reStructuredText.html
+__ docs/ref/rst/restructuredtext.html
 __ docs/ref/rst/directives.html
-__ docs/ref/rst/interpreted.html
+__ docs/ref/rst/roles.html
 
 
 Developer Documentation
