@@ -29,8 +29,9 @@ class Writer(html4css1.Writer):
           '--stylesheet.',
           ['--pep-stylesheet'],
           {'metavar': '<URL>'}),
-         ('Specify a PEP stylesheet file.  The path is interpreted relative '
-          'to the output HTML file.  Overrides --pep-stylesheet.',
+         ('Specify a PEP stylesheet file, relative to the current working '
+          'directory.  The path is adjusted relative to the output HTML '
+          'file.  Overrides --pep-stylesheet and --stylesheet-path.',
           ['--pep-stylesheet-path'],
           {'metavar': '<path>'}),
          ('Specify a template file.  Default is "pep-html-template".',
@@ -62,17 +63,7 @@ class Writer(html4css1.Writer):
         # Substitutions dict for template:
         subs = {}
         subs['encoding'] = options.output_encoding
-        if options.pep_stylesheet_path:
-            stylesheet = utils.relative_path(options._destination,
-                                             options.pep_stylesheet_path)
-        elif options.pep_stylesheet:
-            stylesheet = options.pep_stylesheet
-        elif options._stylesheet_path:
-            stylesheet = utils.relative_path(options._destination,
-                                             options.stylesheet_path)
-        else:
-            stylesheet = options.stylesheet
-        subs['stylesheet'] = stylesheet
+        subs['stylesheet'] = ''.join(self.stylesheet)
         pyhome = options.python_home
         subs['pyhome'] = pyhome
         subs['pephome'] = options.pep_home
@@ -101,6 +92,19 @@ class Writer(html4css1.Writer):
 
 
 class HTMLTranslator(html4css1.HTMLTranslator):
+
+    def get_stylesheet_reference(self):
+        options = self.options
+        if options.pep_stylesheet_path:
+            return utils.relative_path(options._destination,
+                                       options.pep_stylesheet_path)
+        elif options.pep_stylesheet:
+            return options.pep_stylesheet
+        elif options._stylesheet_path:
+            return utils.relative_path(options._destination,
+                                       options.stylesheet_path)
+        else:
+            return options.stylesheet
 
     def depart_field_list(self, node):
         html4css1.HTMLTranslator.depart_field_list(self, node)
