@@ -117,6 +117,32 @@ u"""\
     <substitution_definition name="Omega">
         \u03a9
 """],
+["""
+Testing comments and extra text.
+
+Copyright |copy| 2003, |BogusMegaCorp (TM)|.
+
+.. |copy| unicode:: 0xA9 .. copyright sign
+.. |BogusMegaCorp (TM)| unicode:: BogusMegaCorp U+2122
+   .. with trademark sign
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        Testing comments and extra text.
+    <paragraph>
+        Copyright \n\
+        \u00a9
+         2003, \n\
+        BogusMegaCorp
+        \u2122
+        .
+    <substitution_definition name="copy">
+        \u00a9
+    <substitution_definition name="BogusMegaCorp (TM)">
+        BogusMegaCorp
+        \u2122
+"""],
 ])
 
 

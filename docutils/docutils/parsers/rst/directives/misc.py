@@ -158,8 +158,9 @@ def unicode_directive(name, arguments, options, content, lineno,
     r"""
     Convert Unicode character codes (numbers) to characters.  Codes may be
     decimal numbers, hexadecimal numbers (prefixed by ``0x``, ``x``, ``\x``,
-    ``u``, or ``\u``), or XML-style numbered character entities (e.g.
-    ``&#x1a2b;``).
+    ``U+``, ``u``, or ``\u``; e.g. ``U+262E``), or XML-style numeric character
+    entities (e.g. ``&#x262E;``).  Text following ".." is a comment and is
+    ignored.  Spaces are ignored, and any other text remains as-is.
     """
     if not isinstance(state, states.SubstitutionDef):
         error = state_machine.reporter.error(
@@ -167,7 +168,7 @@ def unicode_directive(name, arguments, options, content, lineno,
             'substitution definition.' % (name),
             nodes.literal_block(block_text, block_text), line=lineno)
         return [error]
-    codes = arguments[0].split()
+    codes = arguments[0].split('.. ')[0].split()
     element = nodes.Element()
     for code in codes:
         try:

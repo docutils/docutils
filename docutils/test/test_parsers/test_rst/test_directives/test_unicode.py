@@ -96,6 +96,33 @@ Bad input:
         <literal_block xml:space="preserve">
             .. unicode:: not in a substitution definition
 """],
+["""
+Testing comments and extra text.
+
+Copyright |copy| 2003, |BogusMegaCorp (TM)|.
+
+.. |copy| unicode:: 0xA9 .. copyright sign
+.. |BogusMegaCorp (TM)| unicode:: BogusMegaCorp U+2122
+   .. with trademark sign
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        Testing comments and extra text.
+    <paragraph>
+        Copyright 
+        <substitution_reference refname="copy">
+            copy
+         2003, 
+        <substitution_reference refname="BogusMegaCorp (TM)">
+            BogusMegaCorp (TM)
+        .
+    <substitution_definition name="copy">
+        \u00A9
+    <substitution_definition name="BogusMegaCorp (TM)">
+        BogusMegaCorp
+        \u2122
+"""],
 ]
 
 
