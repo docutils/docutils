@@ -1023,7 +1023,17 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_raw(self, node):
         if 'html' in node.get('format', '').split():
+            add_span = node.attributes.get('class') is not None
+            if add_span:
+                #if not isinstance(node.parent, nodes.TextElement):
+                #    # I'd like to insert a system_message or
+                #    # something like that, because block-level raw
+                #    # elements may not have the class attribute set.
+                #    # What shall we do in this case?
+                self.body.append(self.starttag(node, 'span', suffix=''))
             self.body.append(node.astext())
+            if add_span:
+                self.body.append('</span>')
         # Keep non-HTML raw text out of output:
         raise nodes.SkipNode
 
