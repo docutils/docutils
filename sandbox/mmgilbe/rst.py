@@ -46,6 +46,7 @@ class MoinWriter(html4css1.Writer):
         if 'id' in node.attributes:
             return 0
         node['refuri'] = node['refname']
+        node.wikiprocess = 1
         del node['refname']
         return '1'
     
@@ -124,9 +125,12 @@ class MoinTranslator(html4css1.HTMLTranslator):
                                               node.astext()))
             self.body.append(link)
             raise docutils.nodes.SkipNode
-        elif (node['refuri'].find('/') != -1) and \
-              (node['refuri'].find(':') == -1):
-            print node['refuri']
+        elif ('/' in node['refuri']) and \
+              (not ':' in node['refuri']):
+            self.wikiparser.raw = '[:%s: %s]' % (node['refuri'], node.astext())
+            self.wikiparser.format(self.formatter)
+            raise docutils.nodes.SkipNode
+        elif hasattr(node, 'wikiprocess'):
             self.wikiparser.raw = '[:%s: %s]' % (node['refuri'], node.astext())
             self.wikiparser.format(self.formatter)
             raise docutils.nodes.SkipNode
