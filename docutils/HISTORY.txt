@@ -19,26 +19,26 @@ suggestions, criticism, bug reports, code contributions, tasty treats,
 and related projects:
 
     Aahz, David Abrahams, David Ascher, Heiko Baumann, Eric Bellot,
-    Ian Bicking, Martin Blais, Fred Bremmer, Simon Budig, Bill
-    Bumgarner, Brett Cannon, Beni Cherniavsky, Adam Chodorowski, Artur
-    de Sousa Rocha, Jason Diamond, William Dode, Fred Drake, Dethe
-    Elza, Marcus Ertl, Benja Fallenstein, fantasai, Stefane Fermigier,
-    Jim Fulton, Peter Funk, Dinu C. Gherman, Jorge Gonzalez, Engelbert
-    Gruber, Simon Hefti, Doug Hellmann, Juergen Hermann, Jannie
-    Hofmeyr, Michael Hudson, Marcelo Huerta San Martin, Ludger
-    Humbert, Jeremy Hylton, Tony Ibbs, Alan Jaffray, Dmitry Jemerov,
-    Richard Jones, Andreas Jung, Garth Kidd, Axel Kollmorgen, Kirill
-    Lapshin, Nicola Larosa, Daniel Larsson, Marc-Andre Lemburg, Julien
-    Letessier, Wolfgang Lipp, Edward Loper, Dallas Mahrt, Ken
-    Manheimer, Bob Marshall, Vasko Miroslav, Skip Montanaro, Paul
-    Moore, Nigel W. Moriarty, Mark Nodine, Patrick K. O'Brien, Michel
-    Pelletier, Sam Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim,
-    Brett g Porter, David Priest, Jens Quade, Andy Robinson, Tavis
-    Rudd, Oliver Rutherfurd, Kenichi Sato, Ueli Schlaepfer, Gunnar
-    Schwant, Bruce Smith, Roman Suzi, tav, Kent Tenney, Bob Tolbert,
-    Paul Tremblay, Laurence Tratt, Adrian van den Dries, Guido van
-    Rossum, Paul Viren, Martin von Loewis, Greg Ward, Barry Warsaw,
-    Edward Welbourne, Ka-Ping Yee, Moshe Zadka
+    Ian Bicking, Marek Blaha, Martin Blais, Fred Bremmer, Simon Budig,
+    Bill Bumgarner, Brett Cannon, Beni Cherniavsky, Adam Chodorowski,
+    Artur de Sousa Rocha, Jason Diamond, William Dode, Fred Drake,
+    Dethe Elza, Marcus Ertl, Benja Fallenstein, fantasai, Stefane
+    Fermigier, Jim Fulton, Peter Funk, Dinu C. Gherman, Jorge
+    Gonzalez, Engelbert Gruber, Simon Hefti, Doug Hellmann, Juergen
+    Hermann, Jannie Hofmeyr, Michael Hudson, Marcelo Huerta San
+    Martin, Ludger Humbert, Jeremy Hylton, Tony Ibbs, Alan Jaffray,
+    Dmitry Jemerov, Richard Jones, Andreas Jung, Garth Kidd, Axel
+    Kollmorgen, Kirill Lapshin, Nicola Larosa, Daniel Larsson,
+    Marc-Andre Lemburg, Julien Letessier, Wolfgang Lipp, Edward Loper,
+    Dallas Mahrt, Ken Manheimer, Bob Marshall, Vasko Miroslav, Skip
+    Montanaro, Paul Moore, Nigel W. Moriarty, Mark Nodine, Patrick
+    K. O'Brien, Michel Pelletier, Sam Penrose, Tim Peters, Pearu
+    Peterson, Mark Pilgrim, Brett g Porter, David Priest, Jens Quade,
+    Andy Robinson, Tavis Rudd, Oliver Rutherfurd, Kenichi Sato, Ueli
+    Schlaepfer, Gunnar Schwant, Bruce Smith, Roman Suzi, tav, Kent
+    Tenney, Bob Tolbert, Paul Tremblay, Laurence Tratt, Adrian van den
+    Dries, Guido van Rossum, Paul Viren, Martin von Loewis, Greg Ward,
+    Barry Warsaw, Edward Welbourne, Ka-Ping Yee, Moshe Zadka
 
 Thank you!
 
@@ -118,8 +118,11 @@ Changes Since 0.3
 
   - Added "level" attribute to SystemMessage exceptions.
 
-* docutils/languages/af.py: Added to project; Afrikaans
-  mappings by Jannie Hofmeyr.
+* docutils/languages/af.py: Added to project; Afrikaans mappings by
+  Jannie Hofmeyr.
+
+* docutils/languages/cs.py: Added to project; Czech mappings by Marek
+  Blaha.
 
 * docutils/languages/eo.py: Added to project; Esperanto mappings by
   Marcelo Huerta San Martin.
@@ -154,6 +157,9 @@ Changes Since 0.3
 
 * docutils/parsers/rst/languages/af.py: Added to project; Afrikaans
   mappings by Jannie Hofmeyr.
+
+* docutils/parsers/rst/languages/cs.py: Added to project; Czech
+  mappings by Marek Blaha.
 
 * docutils/parsers/rst/languages/eo.py: Added to project; Esperanto
   mappings by Marcelo Huerta San Martin.
