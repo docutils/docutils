@@ -11,8 +11,13 @@ registry.
 
 The interface for interpreted role functions is as follows::
 
-    def role_fn(name, rawtext, text, lineno, inliner, attributes={}):
+    def role_fn(name, rawtext, text, lineno, inliner,
+                options={}, content=[]):
         code...
+
+    # Set function attributes for customization:
+    role_fn.options = ...
+    role_fn.content = ...
 
 Parameters:
 
@@ -20,7 +25,8 @@ Parameters:
   actually used in the document.
 
 - ``rawtext`` is a string containing the entire interpreted text construct.
-  Include it as a literal block in a system message if there is a problem.
+  Return it as a ``problematic`` node linked to a system message if there is a
+  problem.
 
 - ``text`` is the interpreted text content.
 
@@ -30,8 +36,30 @@ Parameters:
   It defines the following useful attributes: ``reporter``,
   ``problematic``, ``memo``, ``parent``, ``document``.
 
-- ``attributes``: A dictionary of additional attributes for the generated
-  elements, used for customization.
+- ``options``: A dictionary of directive options for customization, to be
+  interpreted by the role function.  Used for additional attributes for the
+  generated elements and other functionality.
+
+- ``content``: A list of strings, the directive content for customization
+  ("role" directive).  To be interpreted by the role function.
+
+Function attributes for customization, interpreted by the "role" directive:
+
+- ``options``: A dictionary, mapping known option names to conversion
+  functions such as `int` or `float`.  ``None`` or an empty dict implies no
+  options to parse.  Several directive option conversion functions are defined
+  in the `directives` module.
+
+  All role functions implicitly support the "class" option, unless disabled
+  with an explicit ``{'class': None}``.
+
+- ``content``: A boolean; true if content is allowed.  Client code must handle
+  the case where content is required but not supplied (an empty content list
+  will be supplied).
+
+Note that unlike directives, the "arguments" function attribute is not
+supported for role customization.  Directive arguments are handled by the
+"role" directive itself.
 
 Interpreted role functions return a tuple of two values:
 
@@ -46,6 +74,7 @@ Interpreted role functions return a tuple of two values:
 __docformat__ = 'reStructuredText'
 
 from docutils import nodes
+from docutils.parsers.rst import directives
 from docutils.parsers.rst.languages import en as _fallback_language_module
 
 DEFAULT_INTERPRETED_ROLE = 'title-reference'
@@ -62,11 +91,12 @@ _roles = {}
 """Mapping of local or language-dependent interpreted text role names to role
 functions."""
 
-def role(role_name, language_module, lineno, inliner):
+def role(role_name, language_module, lineno, reporter):
     """
     Locate and return a role function from its language-dependent name, along
     with a list of system messages.  If the role is not found in the current
-    language, check English.  Return None if the named role cannot be found.
+    language, check English.  Return a 2-tuple: role function (``None`` if the
+    named role cannot be found) and a list of system messages.
     """
     normname = role_name.lower()
     messages = []
@@ -102,7 +132,7 @@ def role(role_name, language_module, lineno, inliner):
 
     # Collect any messages that we generated.
     if msg_text:
-        message = inliner.reporter.info('\n'.join(msg_text), line=lineno)
+        message = reporter.info('\n'.join(msg_text), line=lineno)
         messages.append(message)
 
     # Look the role up in the registry, and return it.
@@ -121,6 +151,7 @@ def register_canonical_role(name, role_fn):
       - `name`: The canonical name of the interpreted role.
       - `role_fn`: The role function.  See the module docstring.
     """
+    set_implicit_options(role_fn)
     _role_registry[name] = role_fn
 
 def register_local_role(name, role_fn):
@@ -131,29 +162,80 @@ def register_local_role(name, role_fn):
       - `name`: The local or language-dependent name of the interpreted role.
       - `role_fn`: The role function.  See the module docstring.
     """
+    set_implicit_options(role_fn)
     _roles[name] = role_fn
+
+def set_implicit_options(role_fn):
+    """
+    Add customization options to role functions, unless explicitly set or
+    disabled.
+    """
+    if not hasattr(role_fn, 'options') or role_fn.options is None:
+        role_fn.options = {'class': directives.class_option}
+    elif not role_fn.options.has_key('class'):
+        role_fn.options['class'] = directives.class_option    
 
 def register_generic_role(canonical_name, node_class):
     """For roles which simply wrap a given `node_class` around the text."""
-    # Dynamically define a role function:
-    def role_fn(role, rawtext, text, lineno, inliner, nc=node_class):
-        return generic_role_helper(nc, role, rawtext, text, lineno, inliner)
-    # Register the role:
-    register_canonical_role(canonical_name, role_fn)
+    role = GenericRole(canonical_name, node_class)
+    register_canonical_role(canonical_name, role)
 
-def generic_role_helper(node_class, role, rawtext, text, lineno, inliner,
-                        attributes={}):
-    # If we wanted to, we could recursively call inliner.nested_parse
-    # to interpret the text contents here (after appropriately
-    # refactoring Inliner.parse).
-    return [node_class(rawtext, text, **attributes)], []
 
-def register_custom_role(local_name, attributes):
-    """For roles defined in a document."""
-    def role_fn(role, rawtext, text, lineno, inliner, atts=attributes):
-        return generic_role_helper(
-            nodes.inline, role, rawtext, text, lineno, inliner, attributes=atts)
-    register_local_role(local_name, role_fn)
+class GenericRole:
+
+    """
+    Generic interpreted text role, where the interpreted text is simply
+    wrapped with the provided node class.
+    """
+
+    def __init__(self, role_name, node_class):
+        self.name = role_name
+        self.node_class = node_class
+
+    def __call__(self, role, rawtext, text, lineno, inliner,
+                 options={}, content=[]):
+        return [self.node_class(rawtext, text, **options)], []
+
+
+class CustomRole:
+
+    """
+    Wrapper for custom interpreted text roles.
+    """
+
+    def __init__(self, role_name, base_role, options={}, content=[]):
+        self.name = role_name
+        self.base_role = base_role
+        self.options = None
+        if hasattr(base_role, 'options'):
+            self.options = base_role.options
+        self.content = None
+        if hasattr(base_role, 'content'):
+            self.content = base_role.content
+        self.supplied_options = options
+        self.supplied_content = content
+
+    def __call__(self, role, rawtext, text, lineno, inliner,
+                 options={}, content=[]):
+        opts = self.supplied_options.copy()
+        opts.update(options)
+        cont = list(self.supplied_content)
+        if cont and content:
+            cont += '\n'
+        cont.extend(content)
+        return self.base_role(role, rawtext, text, lineno, inliner,
+                              options=opts, content=cont)
+
+
+def generic_custom_role(role, rawtext, text, lineno, inliner,
+                        options={}, content=[]):
+    """"""
+    # Once nested inline markup is implemented, this and other methods should
+    # recursively call inliner.nested_parse().
+    return [nodes.inline(rawtext, text, **options)], []
+
+generic_custom_role.options = {'class': directives.class_option}
+
 
 ######################################################################
 # Define and register the standard roles:
@@ -168,7 +250,8 @@ register_generic_role('subscript', nodes.subscript)
 register_generic_role('superscript', nodes.superscript)
 register_generic_role('title-reference', nodes.title_reference)
 
-def pep_reference_role(role, rawtext, text, lineno, inliner):
+def pep_reference_role(role, rawtext, text, lineno, inliner,
+                       options={}, content=[]):
     try:
         pepnum = int(text)
         if pepnum < 0 or pepnum > 9999:
@@ -177,14 +260,16 @@ def pep_reference_role(role, rawtext, text, lineno, inliner):
         msg = inliner.reporter.error(
             'PEP number must be a number from 0 to 9999; "%s" is invalid.'
             % text, line=lineno)
-        prb = inliner.problematic(text, text, msg)
+        prb = inliner.problematic(rawtext, rawtext, msg)
         return [prb], [msg]
     # Base URL mainly used by inliner.pep_reference; so this is correct:
     ref = inliner.pep_url % pepnum
-    return [nodes.reference(rawtext, 'PEP ' + text, refuri=ref)], []
+    return [nodes.reference(rawtext, 'PEP ' + text, refuri=ref, **options)], []
+
 register_canonical_role('pep-reference', pep_reference_role)
 
-def rfc_reference_role(role, rawtext, text, lineno, inliner):
+def rfc_reference_role(role, rawtext, text, lineno, inliner,
+                       options={}, content=[]):
     try:
         rfcnum = int(text)
         if rfcnum <= 0:
@@ -193,18 +278,21 @@ def rfc_reference_role(role, rawtext, text, lineno, inliner):
         msg = inliner.reporter.error(
             'RFC number must be a number greater than or equal to 1; '
             '"%s" is invalid.' % text, line=lineno)
-        prb = inliner.problematic(text, text, msg)
+        prb = inliner.problematic(rawtext, rawtext, msg)
         return [prb], [msg]
     # Base URL mainly used by inliner.rfc_reference, so this is correct:
     ref = inliner.rfc_url % rfcnum
-    return [nodes.reference(rawtext, 'RFC ' + text, refuri=ref)], []
+    node = nodes.reference(rawtext, 'RFC ' + text, refuri=ref, **options)
+    return [node], []
+
 register_canonical_role('rfc-reference', rfc_reference_role)
+
 
 ######################################################################
 # Register roles that are currently unimplemented.
 ######################################################################
 
-def unimplemented_role(role, rawtext, text, lineno, inliner):
+def unimplemented_role(role, rawtext, text, lineno, inliner, attributes={}):
     msg = inliner.reporter.error(
         'Interpreted text role "%s" not implemented.' % role, line=lineno)
     prb = inliner.problematic(rawtext, rawtext, msg)
@@ -218,5 +306,7 @@ register_canonical_role('footnote-reference', unimplemented_role)
 register_canonical_role('citation-reference', unimplemented_role)
 register_canonical_role('substitution-reference', unimplemented_role)
 register_canonical_role('target', unimplemented_role)
-# This one should remain unimplemented, for testing purposes:
-register_canonical_role('restructuredtext-unimplemented-role', unimplemented_role)
+
+# This should remain unimplemented, for testing purposes:
+register_canonical_role('restructuredtext-unimplemented-role',
+                        unimplemented_role)
