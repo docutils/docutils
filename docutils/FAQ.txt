@@ -346,6 +346,11 @@ order:
 
 * `Python Desktop Server <http://pyds.muensterland.org/>`__
 * `PyBloxsom <http://roughingit.subtlehints.net/pyblosxom>`__
+* `rst2ht <http://www.rutherfurd.net/articles/rst-ht2html.html>`__
+* `htmlnav <http://docutils.sourceforge.net/sandbox/gschwant/htmlnav/>`__
+* `restblog <http://docutils.sourceforge.net/sandbox/mly/restblog/>`__
+* `ReSTWeb <http://wingide.com/opensource/restweb>`__
+* `Lino WebMan <http://lino.sourceforge.net/webman.html>`__
 
 Please `let us know`_ of any other reStructuredText Blogs.
 
