@@ -1,0 +1,37 @@
+.. -*- mode: rst; -*-
+
+.. image:: castro.png
+   :align: left
+
+Box Title
+=========
+
+.. .. raw:: html
+.. 
+..    <img src="castro.png" alt="My Face" class="home-image1" />
+..    <h1 class="box-title">Viva Los Boxed Titles!</h1>
+
+This is a trick that shows how to do a kind of slightly fancier heading with an
+image by using a tiny bit of raw HTML and CSS.  There would be a way to minimize
+the few raw HTML directives that this requires:
+
+From <http://docutils.sf.net/spec/notes.html#directives>:
+
+Add a "class" option to many/most directives, to set an arbitrary "class"
+attribute on the enclosing element?  Perhaps "name" as well?
+
+It may be useful to add an option [*] to the HTML writer to restrict the
+document title to <head><title> only, and not include it in the document body.
+As for the "raw" stuff, a combination of the "image" directive's "align" option,
+the yet-to-be-implemented "class" directive, and stylesheet magic may allow such
+effects without resorting to raw HTML.
+
+We continue with a similar trick for the bottom part.
+
+.. raw:: html
+
+  <img SRC="clinton.png" class="home-image2" />
+  <h2 class="box-title">I love boxed titles too!</h2>
+
+Oh yeah!
+
