@@ -527,7 +527,7 @@ If there's only one highest-level section title at the beginning of a
 document, it is treated specially, as the document title.  (Similarly, a
 lone second-highest-level section title may become the document
 subtitle.)  See `How can I indicate the document title?  Subtitle?`_ for
-details.  Rather than use a plain H1 for that, we use ``<h1
+details.  Rather than use a plain H1 for the document title, we use ``<h1
 class="title">`` so that we can use H1 again within the document.  Why
 do we do this?  HTML only has H1-H6, so by making H1 do double duty, we
 effectively reserve these tags to provide 6 levels of heading beyond the
@@ -546,13 +546,15 @@ ordinary ``<h1>`` and ``<h2>``::
     h2.subtitle {
       text-align: center }
 
-If you don't want the top section heading to be interpretted as a title
-at all, disable the `doctitle-xform`_ option (but this will interpret
-you document differently from the standard settings, which might not be
-a good idea).  If you don't like the reuse of the H1 in the HTML output,
-you can tweak the `initial-header-level`_ option - but unless you match
-its value to your specific document, you might end up with invalid HTML
-(e.g. H3 without H2).
+If you don't want the top section heading to be interpretted as a
+title at all, disable the `doctitle_xform`_ setting
+(``--no-doc-title`` option).  This will interpret your document
+differently from the standard settings, which might not be a good
+idea.  If you don't like the reuse of the H1 in the HTML output, you
+can tweak the `initial_header_level`_ setting
+(``--initial-header-level`` option) -- but unless you match its value
+to your specific document, you might end up with invalid HTML (e.g. H3
+without H2).
 
 .. _doctitle-xform: docs/config.html#doctitle-xform
 .. _initial-header-level: docs/config.html#initial-header-level
