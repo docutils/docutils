@@ -7,7 +7,7 @@
 :date:      $Date$
 :version:   0.1.3
 :copyright: Copyright (c) 2002 Dr. Gunnar Schwant (g.schwant@gmx.de).
-            All rights reserved.  See license.txt_ for license details.
+            All rights reserved.  See LICENSE.txt_ for license details.
 
 :abstract: This is a short introduction to **DocFactory**.  Hopefully,
            more documentation will be available soon.
