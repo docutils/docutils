@@ -16,7 +16,7 @@ element classes.
 Classes in lower_case_with_underscores are element classes, matching the XML
 element generic identifiers in the DTD_.
 
-.. _DTD: http://docstring.sourceforge.net/spec/gpdi.dtd
+.. _DTD: http://docutils.sourceforge.net/spec/docutils.dtd
 """
 
 import sys, os
@@ -50,6 +50,10 @@ class Node:
         """Return an indented pseudo-XML representation, for test purposes."""
         raise NotImplementedError
 
+    def copy(self):
+        """Return a copy of self."""
+        raise NotImplementedError
+
     def walk(self, visitor):
         """
         Traverse a tree of `Node` objects, calling ``visit_...`` methods of
@@ -65,16 +69,18 @@ class Node:
         """
         name = 'visit_' + self.__class__.__name__
         method = getattr(visitor, name, visitor.unknown_visit)
-        visitor.doctree.reporter.debug(name, category='nodes.Node.walk')
+        visitor.document.reporter.debug(name, category='nodes.Node.walk')
         try:
             method(self)
-            children = self.getchildren()
-            try:
-                for i in range(len(children)):
-                    children[i].walk(visitor)
-            except SkipSiblings:
-                pass
         except (SkipChildren, SkipNode):
+            return
+        except SkipDeparture:           # not applicable; ignore
+            pass
+        children = self.getchildren()
+        try:
+            for i in range(len(children)):
+                children[i].walk(visitor)
+        except SkipSiblings:
             pass
 
     def walkabout(self, visitor):
@@ -87,11 +93,17 @@ class Node:
         Parameter `visitor`: A `NodeVisitor` object, containing ``visit_...``
         and ``depart_...`` methods for each `Node` subclass encountered.
         """
+        call_depart = 1
         name = 'visit_' + self.__class__.__name__
         method = getattr(visitor, name, visitor.unknown_visit)
-        visitor.doctree.reporter.debug(name, category='nodes.Node.walkabout')
+        visitor.document.reporter.debug(name, category='nodes.Node.walkabout')
         try:
-            method(self)
+            try:
+                method(self)
+            except SkipNode:
+                return
+            except SkipDeparture:
+                call_depart = 0
             children = self.getchildren()
             try:
                 for i in range(len(children)):
@@ -100,12 +112,12 @@ class Node:
                 pass
         except SkipChildren:
             pass
-        except SkipNode:
-            return
-        name = 'depart_' + self.__class__.__name__
-        method = getattr(visitor, name, visitor.unknown_departure)
-        visitor.doctree.reporter.debug(name, category='nodes.Node.walkabout')
-        method(self)
+        if call_depart:
+            name = 'depart_' + self.__class__.__name__
+            method = getattr(visitor, name, visitor.unknown_departure)
+            visitor.document.reporter.debug(
+                  name, category='nodes.Node.walkabout')
+            method(self)
 
 
 class Text(Node, MutableString):
@@ -132,6 +144,9 @@ class Text(Node, MutableString):
 
     def astext(self):
         return self.data
+
+    def copy(self):
+        return self.__class__(self.data)
 
     def pformat(self, indent='    ', level=0):
         result = []
@@ -186,7 +201,7 @@ class Element(Node):
         self.children = []
         """List of child nodes (elements and/or `Text`)."""
 
-        self.extend(children)           # extend self.children w/ attributes
+        self.extend(children)           # maintain parent info
 
         self.attributes = {}
         """Dictionary of attribute {name: value}."""
@@ -425,6 +440,9 @@ class Element(Node):
         """Return this element's children."""
         return self.children
 
+    def copy(self):
+        return self.__class__(**self.attributes)
+
 
 class TextElement(Element):
 
@@ -489,11 +507,11 @@ class Admonition(Body): pass
 
 
 class Special(Body):
-    """Special internal body elements, not true document components."""
+    """Special internal body elements."""
     pass
 
 
-class Component: pass
+class Part: pass
 
 class Inline: pass
 
@@ -513,13 +531,13 @@ class Targetable(Resolvable):
 
 class document(Root, Structural, Element):
 
-    def __init__(self, reporter, languagecode, *args, **kwargs):
+    def __init__(self, reporter, language_code, *args, **kwargs):
         Element.__init__(self, *args, **kwargs)
 
         self.reporter = reporter
         """System message generator."""
 
-        self.languagecode = languagecode
+        self.language_code = language_code
         """ISO 639 2-letter language identifier."""
 
         self.explicit_targets = {}
@@ -763,6 +781,10 @@ class document(Root, Structural, Element):
     def note_pending(self, pending):
         self.pending.append(pending)
 
+    def copy(self):
+        return self.__class__(self.reporter, self.language_code,
+                              **self.attributes)
+
 
 # ================
 #  Title Elements
@@ -820,31 +842,31 @@ class transition(Structural, Element): pass
 class paragraph(General, TextElement): pass
 class bullet_list(Sequential, Element): pass
 class enumerated_list(Sequential, Element): pass
-class list_item(Component, Element): pass
+class list_item(Part, Element): pass
 class definition_list(Sequential, Element): pass
-class definition_list_item(Component, Element): pass
-class term(Component, TextElement): pass
-class classifier(Component, TextElement): pass
-class definition(Component, Element): pass
+class definition_list_item(Part, Element): pass
+class term(Part, TextElement): pass
+class classifier(Part, TextElement): pass
+class definition(Part, Element): pass
 class field_list(Sequential, Element): pass
-class field(Component, Element): pass
-class field_name(Component, TextElement): pass
-class field_argument(Component, TextElement): pass
-class field_body(Component, Element): pass
+class field(Part, Element): pass
+class field_name(Part, TextElement): pass
+class field_argument(Part, TextElement): pass
+class field_body(Part, Element): pass
 
 
-class option(Component, Element):
+class option(Part, Element):
 
     child_text_separator = ''
 
 
-class option_argument(Component, TextElement):
+class option_argument(Part, TextElement):
 
     def astext(self):
         return self.get('delimiter', ' ') + TextElement.astext(self)
 
 
-class option_group(Component, Element):
+class option_group(Part, Element):
 
     child_text_separator = ', '
 
@@ -852,13 +874,13 @@ class option_group(Component, Element):
 class option_list(Sequential, Element): pass
 
 
-class option_list_item(Component, Element):
+class option_list_item(Part, Element):
 
     child_text_separator = '  '
 
 
-class option_string(Component, TextElement): pass
-class description(Component, Element): pass
+class option_string(Part, TextElement): pass
+class description(Part, Element): pass
 class literal_block(General, TextElement): pass
 class block_quote(General, Element): pass
 class doctest_block(General, TextElement): pass
@@ -876,17 +898,17 @@ class substitution_definition(Special, TextElement): pass
 class target(Special, Inline, TextElement, Targetable): pass
 class footnote(General, Element, BackLinkable): pass
 class citation(General, Element, BackLinkable): pass
-class label(Component, TextElement): pass
+class label(Part, TextElement): pass
 class figure(General, Element): pass
-class caption(Component, TextElement): pass
-class legend(Component, Element): pass
+class caption(Part, TextElement): pass
+class legend(Part, Element): pass
 class table(General, Element): pass
-class tgroup(Component, Element): pass
-class colspec(Component, Element): pass
-class thead(Component, Element): pass
-class tbody(Component, Element): pass
-class row(Component, Element): pass
-class entry(Component, Element): pass
+class tgroup(Part, Element): pass
+class colspec(Part, Element): pass
+class thead(Part, Element): pass
+class tbody(Part, Element): pass
+class row(Part, Element): pass
+class entry(Part, Element): pass
 
 
 class system_message(Special, PreBibliographic, Element, BackLinkable):
@@ -956,11 +978,21 @@ class pending(Special, PreBibliographic, Element):
                 internals.append('%7s%s:' % ('', key))
                 internals.extend(['%9s%s' % ('', line)
                                   for line in value.pformat().splitlines()])
+            elif value and type(value) == ListType \
+                  and isinstance(value[0], Node):
+                internals.append('%7s%s:' % ('', key))
+                for v in value:
+                    internals.extend(['%9s%s' % ('', line)
+                                      for line in v.pformat().splitlines()])
             else:
                 internals.append('%7s%s: %r' % ('', key, value))
         return (Element.pformat(self, indent, level)
                 + ''.join([('    %s%s\n' % (indent * level, line))
                            for line in internals]))
+
+    def copy(self):
+        return self.__class__(self.transform, self.stage, self.details,
+                              **self.attributes)
 
 
 class raw(Special, Inline, PreBibliographic, TextElement):
@@ -991,7 +1023,7 @@ class image(General, Inline, TextElement):
     def astext(self):
         return self.get('alt', '')
 
-    
+
 class problematic(Inline, TextElement): pass
 
 
@@ -1043,8 +1075,8 @@ class NodeVisitor:
        1995.
     """
 
-    def __init__(self, doctree):
-        self.doctree = doctree
+    def __init__(self, document):
+        self.document = document
 
     def unknown_visit(self, node):
         """
@@ -1078,12 +1110,12 @@ class GenericNodeVisitor(NodeVisitor):
 
     Unless overridden, each ``visit_...`` method calls `default_visit()`, and
     each ``depart_...`` method (when using `Node.walkabout()`) calls
-    `default_departure()`. `default_visit()` (`default_departure()`) must be
-    overridden in subclasses.
+    `default_departure()`. `default_visit()` (and `default_departure()`) must
+    be overridden in subclasses.
 
-    Define fully generic visitors by overriding `default_visit()`
-    (`default_departure()`) only. Define semi-generic visitors by overriding
-    individual ``visit_...()`` (``depart_...()``) methods also.
+    Define fully generic visitors by overriding `default_visit()` (and
+    `default_departure()`) only. Define semi-generic visitors by overriding
+    individual ``visit_...()`` (and ``depart_...()``) methods also.
 
     `NodeVisitor.unknown_visit()` (`NodeVisitor.unknown_departure()`) should
     be overridden for default behavior.
@@ -1110,3 +1142,28 @@ class VisitorException(Exception): pass
 class SkipChildren(VisitorException): pass
 class SkipSiblings(VisitorException): pass
 class SkipNode(VisitorException): pass
+class SkipDeparture(VisitorException): pass
+
+
+class TreeCopyVisitor(GenericNodeVisitor):
+
+    """
+    Make a complete copy of a tree or branch, including element attributes.
+    """
+
+    def __init__(self, document):
+        GenericNodeVisitor.__init__(self, document)
+        self.parent_stack = [[]]
+
+    def get_tree_copy(self):
+        return self.parent_stack[0][0]
+
+    def default_visit(self, node):
+        """"""
+        newnode = node.copy()
+        self.parent_stack[-1].append(newnode)
+        self.parent_stack.append(newnode)
+
+    def default_departure(self, node):
+        """"""
+        self.parent_stack.pop()
