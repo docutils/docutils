@@ -646,8 +646,6 @@ __ rst/alternatives.html#or-not-to-do
 
 * Add motivation sections for constructs in spec.
 
-* Document title should grow an implicit target.
-
 * Allow very long titles (on two or more lines)?
 
 * And for the sake of completeness, should definition list terms be
@@ -1124,8 +1122,6 @@ when used in a document.
 
   - _`misc.include`:
 
-    - @@@ Allow _`whitespace in paths` (just not at line boundaries).
-
     - "encoding" option?  Take default from runtime settings.  Use
       Input component to read it in?
 
@@ -1168,9 +1164,6 @@ when used in a document.
 
           .. include:: 
              :url: http://www.example.org/inclusion.txt
-
-  - _`misc.class`: @@@ Allow multiple classes (whitespace-separated)
-    to be declared.
 
   - Allow the _`:trim:` option for all directives when they occur in a
     substitution definition, not only the unicode_ directive.
