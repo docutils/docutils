@@ -689,10 +689,15 @@ class HTMLTranslator(nodes.NodeVisitor):
         del atts['uri']
         if not atts.has_key('alt'):
             atts['alt'] = atts['src']
+        if isinstance(node.parent, nodes.TextElement):
+            self.context.append('')
+        else:
+            self.body.append('<p>')
+            self.context.append('</p>\n')
         self.body.append(self.emptytag(node, 'img', '', **atts))
 
     def depart_image(self, node):
-        pass
+        self.body.append(self.context.pop())
 
     def visit_important(self, node):
         self.visit_admonition(node, 'important')
