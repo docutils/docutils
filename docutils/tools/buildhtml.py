@@ -72,7 +72,7 @@ class SettingsSpec(docutils.SettingsSpec):
     config_section = 'buildhtml application'
     config_section_dependencies = ('applications',)
 
-    
+
 class OptionParser(frontend.OptionParser):
 
     """
@@ -186,7 +186,6 @@ class Builder:
         if not self.initial_settings.silent:
             print >>sys.stderr, '/// Processing directory:', directory
             sys.stderr.flush()
-        peps_found = 0
         prune = 0
         for name in names:
             if name.endswith('.txt'):
