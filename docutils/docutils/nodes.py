@@ -59,10 +59,16 @@ class Node:
         Traverse a tree of `Node` objects, calling ``visit_...`` methods of
         `visitor` when entering each node. If there is no
         ``visit_particular_node`` method for a node of type
-        ``particular_node``, the ``unknown_visit`` method is called.
+        ``particular_node``, the ``unknown_visit`` method is called.  (The
+        `walkabout()` method is similar, except it also calls ``depart_...``
+        methods before exiting each node.)
 
-        Doesn't handle arbitrary modification in-place during the traversal.
-        Replacing one element with one element is OK.
+        This tree traversal doesn't handle arbitrary in-place tree
+        modifications.  Replacing one element with one element is OK.
+
+        Within ``visit_...`` methods (and ``depart_...`` methods for
+        `walkabout()`), `TreePruningException` subclasses may be raised
+        (`SkipChildren`, `SkipSiblings`, `SkipNode`, `SkipDeparture`).
 
         Parameter `visitor`: A `NodeVisitor` object, containing a
         ``visit_...`` method for each `Node` subclass encountered.
@@ -85,9 +91,9 @@ class Node:
 
     def walkabout(self, visitor):
         """
-        Perform a tree traversal similarly to `Node.walk()`, except also call
-        ``depart_...`` methods before exiting each node. If there is no
-        ``depart_particular_node`` method for a node of type
+        Perform a tree traversal similarly to `Node.walk()` (which see),
+        except also call ``depart_...`` methods before exiting each node. If
+        there is no ``depart_particular_node`` method for a node of type
         ``particular_node``, the ``unknown_departure`` method is called.
 
         Parameter `visitor`: A `NodeVisitor` object, containing ``visit_...``
@@ -1138,13 +1144,6 @@ class GenericNodeVisitor(NodeVisitor):
     del name
 
 
-class VisitorException(Exception): pass
-class SkipChildren(VisitorException): pass
-class SkipSiblings(VisitorException): pass
-class SkipNode(VisitorException): pass
-class SkipDeparture(VisitorException): pass
-
-
 class TreeCopyVisitor(GenericNodeVisitor):
 
     """
@@ -1159,11 +1158,64 @@ class TreeCopyVisitor(GenericNodeVisitor):
         return self.parent_stack[0][0]
 
     def default_visit(self, node):
-        """"""
+        """Copy the current node, and make it the new acting parent."""
         newnode = node.copy()
         self.parent_stack[-1].append(newnode)
         self.parent_stack.append(newnode)
 
     def default_departure(self, node):
-        """"""
+        """Restore the previous acting parent."""
         self.parent_stack.pop()
+
+
+class TreePruningException(Exception):
+
+    """
+    Base class for `NodeVisitor`-related tree pruning exceptions.
+
+    Raise subclasses from within ``visit_...`` or ``depart_...`` methods
+    called from `Node.walk()` and `Node.walkabout()` tree traversals to prune
+    the tree traversed.
+    """
+
+    pass
+
+
+class SkipChildren(TreePruningException):
+
+    """
+    Do not visit any children of the current node.  The current node's
+    siblings and ``depart_...`` method are not affected.
+    """
+
+    pass
+
+
+class SkipSiblings(TreePruningException):
+
+    """
+    Do not visit any more siblings (to the right) of the current node.  The
+    current node's children and its ``depart_...`` method are not affected.
+    """
+
+    pass
+
+
+class SkipNode(TreePruningException):
+
+    """
+    Do not visit the current node's children, and do not call the current
+    node's ``depart_...`` method.
+    """
+
+    pass
+
+
+class SkipDeparture(TreePruningException):
+
+    """
+    Do not call the current node's ``depart_...`` method.  The current node's
+    children and siblings are not affected.
+    """
+
+    pass
