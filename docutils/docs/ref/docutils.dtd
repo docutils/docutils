@@ -103,7 +103,7 @@ resolve to either an internal or external reference.
 
 <!ENTITY % additional.bibliographic.elements "">
 <!ENTITY % bibliographic.elements
-  " author | authors | organization | contact
+  " author | authors | organization | address | contact
     | version | revision | status | date | copyright
     | field
     %additional.bibliographic.elements; ">
@@ -210,11 +210,16 @@ http://www.oasis-open.org/html/tm9901.htm).
 <!ELEMENT author %text.model;>
 <!ATTLIST author %basic.atts;>
 
-<!ELEMENT authors ((author, organization?, contact?)+)>
+<!ELEMENT authors ((author, organization?, address?, contact?)+)>
 <!ATTLIST authors %basic.atts;>
 
 <!ELEMENT organization %text.model;>
 <!ATTLIST organization %basic.atts;>
+
+<!ELEMENT address %text.model;>
+<!ATTLIST address
+    %basic.atts;
+    %fixedspace.att;>
 
 <!ELEMENT contact %text.model;>
 <!ATTLIST contact %basic.atts;>
