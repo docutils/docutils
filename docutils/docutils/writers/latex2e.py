@@ -754,10 +754,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.literal_block or self.literal:
             # pdflatex does not produce doublequotes for ngerman.
             text = self.babel.double_quotes_in_tt(text)
+            # if fontenc == 'T1': make sure "--" does not become a "-".
+            text = text.replace("--","-{}-").replace("--","-{}-")
         else:
             text = self.babel.quote_quotes(text)
         if self.insert_newline or self.literal_block:
-            # HACK: insert a blank before the newline, to avoid
+            # Insert a blank before the newline, to avoid
             # ! LaTeX Error: There's no line here to end.
             text = text.replace("\n", '~\\\\\n')
         elif self.mbox_newline:
@@ -1435,7 +1437,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\n\\end{flushleft}\n')
 
     def visit_list_item(self, node):
-        # HACK append "{}" in case the next character is "[", which would break
+        # Append "{}" in case the next character is "[", which would break
         # LaTeX's list environment (no numbering and the "[" is not printed).
         self.body.append('\\item {} ')
 
