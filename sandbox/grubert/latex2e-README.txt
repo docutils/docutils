@@ -11,8 +11,6 @@ mostly errors when processing tools/test.txt.
 
 * abstract is not a docinfo entry so latex abstract is never used.
 
-* linebreaking in docinfo adress is missing. html uses a pre, use flushleft ? 
-
 * multiple author entries in docinfo (same thing as in html).
 
 * dedication should be centered, text and title. 
