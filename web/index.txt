@@ -111,7 +111,7 @@ effort, so it isn't done that often.  Please note that the
 `development snapshots`_ above contain the latest versions of project
 files, although they may not be fully tested.
 
-The `latest project release package`_ (Docutils 0.1, 2002-04-20) and
+The `latest project release package`_ (Docutils 0.2, 2002-07-31) and
 past project releases can be downloaded from the `project files
 page`_.
 
@@ -315,7 +315,7 @@ Project Links
 .. _Doc-SIG: http://www.python.org/sigs/doc-sig/
 
 .. _latest project release package:
-   http://prdownloads.sourceforge.net/docutils/docutils-0.1.tar.gz
+   http://prdownloads.sourceforge.net/docutils/docutils-0.2.tar.gz
 
 
 ..
