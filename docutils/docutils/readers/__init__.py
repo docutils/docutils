@@ -14,11 +14,11 @@ __docformat__ = 'reStructuredText'
 
 
 import sys
-from docutils import nodes, utils
+from docutils import nodes, utils, parsers, Component
 from docutils.transforms import universal
 
 
-class Reader:
+class Reader(Component):
 
     """
     Abstract base class for docutils Readers.
@@ -33,7 +33,7 @@ class Reader:
     """Ordered tuple of transform classes (each with a ``transform()`` method).
     Populated by subclasses. `Reader.transform()` instantiates & runs them."""
 
-    def __init__(self, reporter, languagecode):
+    def __init__(self, reporter, parser, parser_name, language_code):
         """
         Initialize the Reader instance.
 
@@ -41,11 +41,18 @@ class Reader:
         Subclasses may use these attributes as they wish.
         """
 
-        self.languagecode = languagecode
+        self.language_code = language_code
         """Default language for new documents."""
 
         self.reporter = reporter
         """A `utils.Reporter` instance shared by all doctrees."""
+
+        self.parser = parser
+        """A `parsers.Parser` instance shared by all doctrees.  May be left
+        unspecified if the document source determines the parser."""
+
+        if parser is None and parser_name:
+            self.set_parser(parser_name)
 
         self.source = None
         """Path to the source of raw input."""
@@ -54,12 +61,15 @@ class Reader:
         """Raw text input; either a single string or, for more complex cases,
         a collection of strings."""
 
-        self.transforms = tuple(self.transforms)
-        """Instance copy of `Reader.transforms`; may be modified by client."""
+    def set_parser(self, parser_name):
+        """Set `self.parser` by name."""
+        parser_class = parsers.get_parser_class(parser_name)
+        self.parser = parser_class()
 
     def read(self, source, parser):
         self.source = source
-        self.parser = parser
+        if not self.parser:
+            self.parser = parser
         self.scan()               # may modify self.parser, depending on input
         self.parse()
         self.transform()
@@ -69,7 +79,7 @@ class Reader:
         """Override to read `self.input` from `self.source`."""
         raise NotImplementedError('subclass must override this method')
 
-    def scanfile(self, source):
+    def scan_file(self, source):
         """
         Scan a single file and return the raw data.
 
@@ -87,7 +97,7 @@ class Reader:
 
     def parse(self):
         """Parse `self.input` into a document tree."""
-        self.document = self.newdocument()
+        self.document = self.new_document()
         self.parser.parse(self.input, self.document)
 
     def transform(self):
@@ -95,24 +105,28 @@ class Reader:
         for xclass in (universal.first_reader_transforms
                        + tuple(self.transforms)
                        + universal.last_reader_transforms):
-            xclass(self.document).transform()
+            xclass(self.document, self).transform()
 
-    def newdocument(self, languagecode=None):
+    def new_document(self, language_code=None):
         """Create and return a new empty document tree (root node)."""
         document = nodes.document(
-              languagecode=(languagecode or self.languagecode),
+              language_code=(language_code or self.language_code),
               reporter=self.reporter)
         document['source'] = self.source
         return document
 
 
-_reader_aliases = {'rtxt': 'standalone',
-                   'restructuredtext': 'standalone'}
+_reader_aliases = {
+      'rst': 'standalone',
+      'rest': 'standalone',
+      'restx': 'standalone',
+      'rtxt': 'standalone',
+      'restructuredtext': 'standalone'}
 
-def get_reader_class(readername):
-    """Return the Reader class from the `readername` module."""
-    readername = readername.lower()
-    if _reader_aliases.has_key(readername):
-        readername = _reader_aliases[readername]
-    module = __import__(readername, globals(), locals())
+def get_reader_class(reader_name):
+    """Return the Reader class from the `reader_name` module."""
+    reader_name = reader_name.lower()
+    if _reader_aliases.has_key(reader_name):
+        reader_name = _reader_aliases[reader_name]
+    module = __import__(reader_name, globals(), locals())
     return module.Reader
