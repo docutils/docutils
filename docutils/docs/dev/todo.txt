@@ -124,6 +124,9 @@ General
 - Perhaps the ``Component.supports`` method should deal with
   individual features ("meta" etc.) instead of formats ("html" etc.)?
 
+- Should transforms have a priority system?  Is the "first reader" ...
+  "last writer" system adequate for pending transforms?
+
 
 Documentation
 -------------
@@ -149,7 +152,7 @@ Implementation Docs
   reader", "last writer", etc.).
 
 - Document the transforms (perhaps in docstrings?): how they're used,
-  what they do.
+  what they do, dependencies & order considerations.
 
 
 Specification
