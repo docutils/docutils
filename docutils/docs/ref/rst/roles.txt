@@ -134,14 +134,12 @@ Implements subscripts.
        H\ :sub:`2`\ O
        E = mc\ :sup:`2`
 
-   See `the reStructuredText spec`__ for further information.
-
    In such cases, readability of the plain text can be greatly
    improved with substitutions::
 
-       The chemical formula for pure water is |H20|.
+       The chemical formula for pure water is |H2O|.
 
-       .. |H20| replace:: H\ :sub:`2`\ O
+       .. |H2O| replace:: H\ :sub:`2`\ O
 
    See `the reStructuredText spec`__ for further information on
    `character-level markup`__ and `the substitution mechanism`__.
