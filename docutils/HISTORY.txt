@@ -81,6 +81,8 @@ Specific:
     docutils/transforms/frontmatter.py
     ``DocInfo.filter_rcs_keywords``).
   - Added underscores to improve many awkward names.
+  - Changed names of Reporter's thresholds:
+    warning_level -> report_level; error_level -> halt_level.
 
 * docutils/parsers/rst/states.py:
 
