@@ -111,7 +111,8 @@ Changes Since 0.3
 * docutils/parsers/rst/states.py:
 
   - Updated ``RSTState.nested_parse`` for "include" in table cells.
-  - Allowed true em-dash character as block quote attribution marker.
+  - Allowed true em-dash character and "---" as block quote
+    attribution marker.
 
 * docutils/parsers/rst/tableparser.py:
 
