@@ -1,0 +1,222 @@
+
+:author: Dave Kuhlman
+:address: dkuhlman@rexx.com \\\\
+    http://www.rexx.com/~dkuhlman
+
+:revision: 1.0a
+:date: July 22, 2003
+
+:copyright: Copyright (c) 2003 Dave Kuhlman.
+    Permission is hereby granted, free of charge, to any person
+    obtaining a copy of this software and associated documentation
+    files (the "Software"), to deal in the Software without
+    restriction, including without limitation the rights to use,
+    copy, modify, merge, publish, distribute, sublicense, and/or
+    sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following
+    conditions: The above copyright notice and this permission
+    notice shall be included in all copies or substantial portions
+    of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT
+    WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+    LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+    PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES
+    OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+    OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+    SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+:abstract: This document describes extract_doc.py which is a
+    program for extracting documentation from Python source code
+    files and producing reStructuredText output.
+
+
+=============================================================
+*extract_doc.py* --- Extract Python Source Code Documentation
+=============================================================
+
+
+Description
+===========
+
+*extract_doc* extracts documentation embedded in Python source
+code files.
+
+Currently, it generates reStructuredText.  An extension that
+generates LaTeX for the Python LaTeX documentation system is
+being investigated.
+
+*extract_doc* is derived from and uses code in *pydoc.py* from the
+Python standard library.
+
+One goal of *extract_doc* is to provide code that is simple enough
+so that the implementation and the output it produces can be
+customized for specific applications or by specific users.
+
+
+Where to Get It
+===============
+
+You can find a distribution file for ``extract_doc`` at:
+
+    http://www.rexx.com/~dkuhlman/extract_doc.zip
+
+
+How to Use extract_doc
+======================
+
+Here is the usage information from `extract_doc`::
+
+    Usage:
+        python extract_doc.py [options] <module_name>
+    Options:
+        -h, --help      Display this help message.
+        -r, --rest      Extract to decorated reST.
+        -l, --latex     Extract to Python LaTeX (module doc type). Not implemented.
+        -p, --pager     Use a pager; else write to stdout.
+        -o, --over      Use over *and* under title adornment, else only under.
+    Example:
+        python extract_doc.py -r mymodule1
+        python extract_doc.py -p -o -r mymodule2
+        
+
+Command line flag descriptions
+------------------------------
+
+-r, --rest    Generate reStructuredText output.
+
+-l, --latex   Generate LaTeX for the Python LaTeX documentation
+              system.  Not yet implemented.
+
+-p, --pager   Use a pager, else write to stdout.  Selects a pager
+              and pushes generated output through the pager.  On
+              my system it selects *less*.
+
+-o, --over    Generate over *and* under title adornment, else
+              generate under title adornment only.
+
+
+
+How to Modify *extract_doc*
+===========================
+
+*extract_doc* contains one important class: ReSTDoc.  It is a
+subclass of class Doc in module pydoc in the Python standard
+library.  As such, it should have followed other sub-classes of
+class Doc closely.  However, it does not.  ReSTDoc is a fairly
+radical re-write of TextDoc.  This re-write had these goals:
+
+- Produce reStructuredText (rather than text or HTML).
+
+- Provide code that is simple, consistent, and clear enough so
+  that others can understand and modify it.
+
+Basically, I want it to produce reStructuredText and to enables
+others to customize the reStructuredText that it produces for
+their individual needs.
+
+The current class ``ReSTDoc`` produces reStructuredText.  You can
+try it for yourself.
+
+Here is a bit of guidance for the second aspect of the goal, i.e.
+modifiability:
+
+- Output is accumulated by calling ``self.push(line)`` for each
+  line of text to be produced.
+
+- There are four functions that produce output.  They are as
+  follows:
+
+  - ``docmodule`` is called for the module.  It is responsible for
+    producing the documentation for a module.
+
+  - ``docclass`` is called for each class.  It is responsible for
+    producing the documentation for a class.
+
+  - ``docroutine`` -- Called for each method (in a class) and each
+    function (at top level in a module).  It is responsible for
+    producing the documentation for a method or a function.
+
+  - ``docother`` -- Called for data members.  It is responsible for
+    producing the documentation for a data member.
+
+- Module ``inspect`` from the Python standard library is used to
+  obtain the internals of an object such as its members, to
+  determine the type of an object (e.g. method or function),
+  format the arguments for a function, etc.
+
+- Function getdoc in module ``pydoc`` is called to get the
+  documentation for an object, for example the documentation for a
+  module, a class, a method, or a function.
+
+- There is a method (emphasize) to emphasize a piece of text.  It
+  adds asterisks around the text.
+
+In order to produce your own customized documentation extraction
+capability, you might want to do the following:
+
+- Copy class ``ReSTDoc``.
+
+- Modify methods ``docmodule``, ``docclass``, ``docroutine``, and
+  ``docother`` in class ``ReSTDoc``.
+
+- copy function ``extract_to_rest``.
+
+- Modify function ``extract_to_rest``:
+
+  - Add your own title, preferatory stuff, etc. Note where method
+    ``genTitle`` is called and where the "Generated by ..."
+    content is added.
+
+  - Add your own end-of-doc content.  Add this after the call to
+    ``formatter.document()``.
+
+
+Related Work
+============
+
+*PySource* -- Python Source Reader
+----------------------------------
+
+This documentation extractor takes a very different approach.  It
+is *not* modelled on pydoc in the Python standard library.  It
+does not use the inspect module from the Python standard library.
+(I grepped for "inspect" in ``sandbox/davidg/pysource_reader``.)
+The documentation says that it:
+
+  "... scans a parsed Python module, and returns an ordered tree
+  containing the names, docstrings (including attribute and
+  additional docstrings), and additional info ..."
+
+The approach followed by ``PySource`` appears more complex than
+that of ``extract_doc, but also more powerful.  I'm going to guess
+that the start-up time for a simple-minded programmer (like me) to
+begin modifying and customizing ``PySource`` for user specific
+needs would be longer than for ``extract_doc``.
+
+I'd appreciate any comments and comparisons that others might
+have.
+
+Credits
+=======
+
+Thanks to the developers of Docutils, in particular, David
+Goodger, project lead.
+
+Thanks to Ka-Ping Yee for *pydoc*.
+
+
+See Also
+========
+
+`Docutils: Python Documentation Utilities`_
+
+.. _`Docutils: Python Documentation Utilities`:
+    http://docutils.sourceforge.net/
+
+`pydoc -- Documentation generator and online help system`_
+
+.. _`pydoc -- Documentation generator and online help system`:
+    http://www.python.org/doc/current/lib/module-pydoc.html
+
+
+
