@@ -157,7 +157,7 @@ warning_
 Simple Body Elements
 --------------------
 
-Simple body elements directly are empty or contain text data.  Those
+Simple body elements are empty or directly contain text data.  Those
 that contain text data may also contain inline elements.  Such
 elements therefore have a "mixed content model".
 

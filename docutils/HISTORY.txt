@@ -19,6 +19,11 @@ Changes Since 0.3.5
   - Directive "sectnum" now accepts "prefix", "suffix", and "start"
     options.  Thanks to Lele Gaifax.
 
+* docutils/transforms/misc.py:
+
+  - Fixed bug when multiple "class" directives are applied to a single
+    element.
+
 * docutils/writers/latex2e.py:
 
   - Add ``\PreloadUnicodePage{n}`` to the header if in LaTeX code

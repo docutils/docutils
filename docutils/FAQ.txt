@@ -325,6 +325,18 @@ Possible solutions include
       Keyboard layout (and setting it as default "when you start your
       computer").
 
+* Use a virtual/screen keyboard or character palette, such as:
+
+  - `Web-based keyboards <http://keyboard.lab.co.il/>`__ (IE only
+    unfortunately).
+  - Windows: `Click-N-Type <http://www.lakefolks.org/cnt/>`__.
+  - Mac OS X: the Character Palette can store a set of favorite
+    characters for easy input.  Open System Preferences,
+    International, Input Menu tab, enable "Show input menu in menu
+    bar", and be sure that Character Palette is enabled in the list.
+
+  Other options are welcome.
+
 If anyone knows of other/better solutions, please `let us know`_.
 
 

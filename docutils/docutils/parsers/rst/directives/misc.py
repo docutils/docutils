@@ -200,7 +200,10 @@ unicode_comment_pattern = re.compile(r'( |\n|^)\.\. ')
 
 def class_directive(name, arguments, options, content, lineno,
                        content_offset, block_text, state, state_machine):
-    """"""
+    """
+    Set a "class" attribute on the next element.
+    A "pending" element is inserted, and a transform does the work later.
+    """
     class_value = nodes.make_id(arguments[0])
     if class_value:
         pending = nodes.pending(misc.ClassAttribute,
