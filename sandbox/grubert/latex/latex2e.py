@@ -74,6 +74,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # add a generated on day , machine by user using docutils versoin.
     generator = '%% generator Docutils: http://docutils.sourceforge.net/\n'
 
+    # use latex tableofcontents or let docutils do it.
+    # BUG: not tested.
+    latex_toc = 0
+
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
         self.options = options = document.options
@@ -101,6 +105,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def encode(self, text):
         """Encode special characters in `text` & return."""
+        text = text.replace("\\", '{\\\\}')
         text = text.replace("&", '{\\&}')
         text = text.replace("_", '{\\_}')
         text = text.replace("^", '{\\^}')
@@ -162,13 +167,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append( '\\end{quote}\n')
 
     def visit_bullet_list(self, node):
-        if self.topic_class == 'contents':
+        if not self.latex_toc and self.topic_class == 'contents':
             self.body.append( '\\begin{itemize}\n' )
         else:
             self.body.append( '\\begin{itemize}\n' )
 
     def depart_bullet_list(self, node):
-        self.body.append( '\\end{itemize}\n' )
+        if not self.latex_toc or not self.topic_class == 'contents':
+            self.body.append( '\\end{itemize}\n' )
 
     def visit_caption(self, node):
         self.body.append( '\\caption{' )
@@ -203,8 +209,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_classifier(self, node):
         self.body.append( '(\\textbf{' )
-        ##self.body.append(' <span class="classifier-delimiter">:</span> ')
-        ##self.body.append(self.starttag(node, 'span', '', CLASS='classifier'))
 
     def depart_classifier(self, node):
         self.body.append( '})\n' )
@@ -212,12 +216,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_colspec(self, node):
         self.body.append('%[visit_colspec]\n')
         self.context[-1] += 1
-        ##atts = {}
-        ## @@@ colwidth attributes don't seem to work well in HTML
-        ##if node.has_key('colwidth'):
-        ##    atts['width'] = str(node['colwidth']) + '*'
-        ##self.body.append(self.emptytag(node, 'col', **atts))
-        ##raise NotImplementedError
 
     def depart_colspec(self, node):
         self.body.append('%[depart_colspec]\n')
@@ -294,14 +292,23 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body = self.docinfo + self.body
 
     def visit_docinfo_item(self, node, name):
+        # should we stick to latex or docutils.
+        # latex article has its own handling of date and author
+        latex_docinfo = 0
+        
         if name == 'abstract':
             # NOTE tableofcontents before or after ?
+            # eg after: see visit_topic
             # NOTE this limits abstract to text.
             self.body.append('\\begin{abstract}\n')
             self.context.append('\\end{abstract}\n')
             self.context.append(self.body)
             self.context.append(len(self.body))
-        elif name == 'author':
+        elif latex_docinfo and name == 'date':
+            # BUG: time portion is not included in date 
+            self.head.append('\\date{%s}\n' % self.attval(node.astext()))
+            raise nodes.SkipNode
+        elif latex_docinfo and name == 'author':
             self.head.append('\\author{%s}\n' % self.attval(node.astext()))
             raise nodes.SkipNode
         else:
@@ -322,7 +329,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         tail = self.body[size:] + [tail]
         del self.body[size:]
         dest.extend(tail)
-        pass
 
     def visit_doctest_block(self, node):
         self.body.append( '\\begin{verbatim}' )
@@ -822,9 +828,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_topic(self, node):
         self.body.append('% [visit_topic]\n')
         self.topic_class = node.get('class')
+        if self.latex_toc:
+            self.body.append('\\tableofcontents\n\n\\bigskip\n')
+            self.body.append('% [depart_topic]\n')
+            self.topic_class = ''
+            raise nodes.SkipNode
 
     def depart_topic(self, node):
-        self.body.append('% [depart_topic]\n')
+        if not self.latex_toc:
+            self.body.append('% [depart_topic]\n')
         self.topic_class = ''
 
     def visit_transition(self, node):
