@@ -1622,6 +1622,105 @@ be left up to the author?  Perhaps if the syntax is *allowed* but its
 use strongly *discouraged*, for aesthetic reasons?  Or would that just
 be hypocritical?  Dilemma.
 
+
+Doctree Representation of Transitions
+=====================================
+
+(Although not reStructuredText-specific, this section fits best in
+this document.)
+
+Having added the "horizontal rule" construct to the `reStructuredText
+Markup Specification`_, a decision had to be made as to how to reflect
+the construct in the implementation of the document tree.  Given this
+source::
+
+    Document
+    ========
+
+    Paragraph 1
+
+    --------
+
+    Paragraph 2
+
+The horizontal rule indicates a "transition" (in prose terms) or the
+start of a new "division".  Before implementation, the parsed document
+tree would be::
+
+    <document>
+        <section name="document">
+            <title>
+                Document
+            <paragraph>
+                Paragraph 1
+            --------               <--- error here
+            <paragraph>
+                Paragraph 2
+
+There are several possibilities for the implementation:
+
+1. Implement horizontal rules as "divisions" or segments.  A
+   "division" is a title-less, non-hierarchical section.  The first
+   try at an implementation looked like this::
+
+       <document>
+           <section name="document">
+               <title>
+                   Document
+               <paragraph>
+                   Paragraph 1
+               <division>
+                   <paragraph>
+                       Paragraph 2
+
+   But the two paragraphs are really at the same level; they shouldn't
+   appear to be at different levels.  There's really an invisible
+   "first division".  The horizontal rule splits the document body
+   into two segments, which should be treated uniformly.
+
+2. Treating "divisions" uniformly brings us to the second
+   possibility::
+
+       <document>
+           <section name="document">
+               <title>
+                   Document
+               <division>
+                   <paragraph>
+                       Paragraph 1
+               <division>
+                   <paragraph>
+                       Paragraph 2
+
+   With this change, documents and sections will directly contain
+   divisions and sections, but not body elements.  Only divisions will
+   directly contain body elements.  Even without a horizontal rule
+   anywhere, the body elements of a document or section would be
+   contained within a division element.  This makes the document tree
+   deeper.  This is similar to the way HTML_ treats document contents:
+   grouped within a ``<body>`` element.
+
+3. Implement them as "transitions", empty elements::
+
+       <document>
+           <section name="document">
+               <title>
+                   Document
+               <paragraph>
+                   Paragraph 1
+               <transition>
+               <paragraph>
+                   Paragraph 2
+
+   A transition would be a "point element", not containing anything,
+   only identifying a point within the document structure.  This keeps
+   the document tree flatter, but the idea of a "point element" like
+   "transition" smells bad.  A transition isn't a thing itself, it's
+   the space between two divisions.  However, transitions are a
+   practical solution.
+
+Solution 3 was chosen for incorporation into the document tree model.
+
 
 ..
    Local Variables:
