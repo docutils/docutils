@@ -22,6 +22,12 @@ try:
 except ImportError:
     urllib2 = None
 
+try:
+    True
+except NameError:                       # Python 2.2 & 2.1 compatibility
+    True = not 0
+    False = not 1
+
 
 class DocutilsDialect(csv.Dialect):
 
@@ -43,22 +49,25 @@ class DocutilsDialect(csv.Dialect):
         csv.Dialect.__init__(self)
 
 
+class HeaderDialect(csv.Dialect):
+
+    delimiter = ','
+    quotechar = '"'
+    escapechar = '\\'
+    doublequote = False
+    skipinitialspace = True
+    lineterminator = '\n'
+    quoting = csv.QUOTE_MINIMAL
+
+
 def csvtable(name, arguments, options, content, lineno,
              content_offset, block_text, state, state_machine):
-
-
     if arguments:
         title_text = arguments[0]
         text_nodes, messages = state.inline_text(title_text, lineno)
         title = nodes.title(title_text, '', *text_nodes)
     else:
         title = None
-
-    # point CSV parser to table content
-    csv.register_dialect('docutils', DocutilsDialect(options))
-    csv.list_dialects()
-
-
     if content:
         if options.has_key('file') or options.has_key('url'):
             error = state_machine.reporter.error(
@@ -66,10 +75,9 @@ def csvtable(name, arguments, options, content, lineno,
                   'have content.' % name,
                   nodes.literal_block(block_text, block_text), line=lineno)
             return [error]
-        else:
-            # content is supplied inline
-            source, offset = content.info(0)
-            csvreader = csv.reader(content, dialect='docutils')
+        # content is supplied inline
+        source, offset = content.info(0)
+        csv_data = content
     elif options.has_key('file'):
         if options.has_key('url'):
             error = state_machine.reporter.error(
@@ -77,23 +85,23 @@ def csvtable(name, arguments, options, content, lineno,
                   'specified for the "%s" directive.' % name,
                   nodes.literal_block(block_text, block_text), line=lineno)
             return [error]
-        source_dir = os.path.dirname(os.path.abspath(state.document.current_source))
+        source_dir = os.path.dirname(
+            os.path.abspath(state.document.current_source))
         path = os.path.normpath(os.path.join(source_dir, options['file']))
         path = utils.relative_path(None, path)
         source = path
         try:
             try:
                 # content is supplied as external file
-                raw_file = open(path, 'rb')
-                csv_data = raw_file.read().splitlines()
-                csvreader = csv.reader(csv_data, dialect='docutils')
+                csv_file = open(path, 'rb')
+                csv_data = csv_file.read().splitlines()
             except IOError, error:
                 severe = state_machine.reporter.severe(
                       'Problems with "%s" directive path:\n%s.' % (name, error),
                       nodes.literal_block(block_text, block_text), line=lineno)
                 return [severe]
         finally:
-            raw_file.close()
+            csv_file.close()
     elif options.has_key('url'):
         if not urllib2:
             severe = state_machine.reporter.severe(
@@ -105,24 +113,25 @@ def csvtable(name, arguments, options, content, lineno,
         try:
             # content is supplied as URL
             csv_data = urllib2.urlopen(options['url']).read().splitlines()
-            csvreader = csv.reader(csv_data, dialect='docutils')
-            source = options['url']
         except (urllib2.URLError, IOError, OSError), error:
             severe = state_machine.reporter.severe(
                   'Problems with "%s" directive URL "%s":\n%s.'
                   % (name, options['url'], error),
                   nodes.literal_block(block_text, block_text), line=lineno)
             return [severe]
+        source = options['url']
     else:
         error = state_machine.reporter.warning(
             'The "%s" directive requires content; none supplied.' % (name),
             nodes.literal_block(block_text, block_text), line=lineno)
         return [error]
+    dialect = DocutilsDialect(options)
+    csv_reader = csv.reader(csv_data, dialect=dialect)
 
     # populate header from header-option.
     tablehead = []
     # optionable column headers
-    if options.has_key('headers'):
+    if options.has_key('header'):
         for i in csv.reader(options['headers'].split('\n'), skipinitialspace=True):
             rowdata = []
             for j in i:
@@ -138,7 +147,7 @@ def csvtable(name, arguments, options, content, lineno,
         options['header-rows'] = int(options['header-rows'])
     # populate header from header-rows option.
     for i in range(options['header-rows']):
-        row = csvreader.next()
+        row = csv_reader.next()
         rowdata = []
         for j in row:
             cell = statemachine.StringList(j.splitlines(), source=source)
@@ -147,7 +156,7 @@ def csvtable(name, arguments, options, content, lineno,
         tablehead.append(rowdata)
     # populate tbody
     tablebody = []
-    for row in csvreader:
+    for row in csv_reader:
         rowdata = []
         for i in row:
             j = statemachine.StringList(i.splitlines(), source=source)
@@ -162,10 +171,7 @@ def csvtable(name, arguments, options, content, lineno,
     # calculate column widths
     maxcols = max(map(len, tablehead + tablebody))
     if options.has_key('widths'):
-        if ',' in options['widths']:
-            tablecolwidths = options['widths'].replace(' ','').split(',')
-        else:
-            tablecolwidths = filter(options['widths'].split(' '))
+        tablecolwidths = options['widths']
         if len(tablecolwidths) != maxcols:
             error = state_machine.reporter.error(
               '"%s" widths does not match number of columns in table.' % name,
@@ -187,54 +193,54 @@ def csvtable(name, arguments, options, content, lineno,
 
     return [table_node]
 
-def single_char(argument):
+def single_char_or_unicode(argument):
     if argument == 'tab' or argument == '\\t':
-        argument = '\t'
+        char = '\t'
     elif argument == 'space':
-        argument = ' '
-    elif argument == 'lf' or argument == '\\n':
-        argument = '\n'
-    elif argument == 'cr' or argument == '\\r':
-        argument = '\r'
-    elif argument == 'ff' or argument == '\\f':
-        argument = '\f'
-    elif argument == 'vt' or argument == '\\v':
-        argument = '\v'
-    elif argument[0:3] == 'hex':
-        argument = chr(int(argument[4:6],16))
-    if len(argument) > 1:
-        raise ValueError('string value; must be a single character')
+        char = ' '
+    else:
+        char = directives.unicode_code(argument)
+    if len(char) > 1:
+        raise ValueError('must be a single character or Unicode code')
     return argument
 
-def line_end(argument):
-    return directives.choice(argument, ('cr', 'lf', 'crlf'))
+def single_char_or_whitespace_or_unicode(argument):
+    if argument == 'tab':
+        char = '\t'
+    elif argument == 'space':
+        char = ' '
+    else:
+        char = directives.unicode_code(argument)
+    if len(char) > 1:
+        raise ValueError('must be a single character or Unicode code')
+    return argument
 
-def nonzero_int(argument):
+def positive_int(argument):
     value = int(argument)
     if value < 1:
         raise ValueError('negative or zero value; must be positive')
     return value
 
-def nonzero_int_list(argument):
-    if argument.find(','):
-        for i in argument.split(','):
-            nonzero_int(i)
+def positive_int_list(argument):
+    if ',' in argument:
+        entries = argument.split(',')
     else:
-        # how utterly bizarre: this doesn't work! .split isn't splitting at all.
-        for i in argument.split():
-            nonzero_int(i)
-    return argument
+        entries = argument.split()
+    return [positive_int(entry) for entry in entries]
 
 csvtable.arguments = (0, 1, 1)
 csvtable.options = {'header-rows': directives.nonnegative_int,
-                    'headers': directives.unchanged,
-                    'widths': nonzero_int_list,
-                    'file' : directives.path,
-                    'class' : directives.class_option,
-                    'delim' : single_char,              # field delim char
-                    'quote' : single_char,              # text field quote/unquote char
-                    'escape' : single_char,             # char used to escape delim & quote as-needed
-                   }
+                    'header': directives.unchanged,
+                    'widths': positive_int_list,
+                    'file': directives.path,
+                    'url': directives.path,
+                    'class': directives.class_option,
+                    # field delimiter char
+                    'delim': single_char_or_whitespace_or_unicode,
+                    # text field quote/unquote char:
+                    'quote': single_char_or_unicode,
+                    # char used to escape delim & quote as-needed:
+                    'escape': single_char_or_unicode,}
 csvtable.content = 1
 
 directives.register_directive('csvtable', csvtable)
