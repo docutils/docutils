@@ -136,15 +136,26 @@ Here are examples of `body elements`_:
       >>> print '(cut and pasted from interactive Python sessions)'
       (cut and pasted from interactive Python sessions)
 
-- Tables_::
+- Two syntaxes for tables_:
 
-      +------------------------+------------+----------+
-      | Header row, column 1   | Header 2   | Header 3 |
-      +========================+============+==========+
-      | body row 1, column 1   | column 2   | column 3 |
-      +------------------------+------------+----------+
-      | body row 2             | Cells may span        |
-      +------------------------+-----------------------+
+  1. `Grid tables`_; complete, but complex and verbose::
+
+         +------------------------+------------+----------+
+         | Header row, column 1   | Header 2   | Header 3 |
+         +========================+============+==========+
+         | body row 1, column 1   | column 2   | column 3 |
+         +------------------------+------------+----------+
+         | body row 2             | Cells may span        |
+         +------------------------+-----------------------+
+
+  2. `Simple tables`_; easy and compact, but limited::
+
+         ====================  ==========  ==========
+         Header row, column 1  Header 2    Header 3
+         ====================  ==========  ==========
+         body row 1, column 1  column 2    column 3
+         body row 2            Cells may span columns
+         ====================  ======================
 
 - `Explicit markup blocks`_ all begin with an explicit block marker,
   two periods and a space:
@@ -1109,17 +1120,38 @@ Tables
 
 DTD elements: table, tgroup, colspec, thead, tbody, row, entry.
 
-Tables are described with a visual outline made up of the characters
+ReStructuredText provides two syntaxes for delineating table cells:
+`Grid Tables`_ and `Simple Tables`_.
+
+As with other body elements, blank lines are required before and after
+tables.  Tables' left edges should align with the left edge of
+preceding text blocks; if indented, the table is considered to be part
+of a block quote.
+
+Once isolated, each table cell is treated as a miniature document; the
+top and bottom cell boundaries act as delimiting blank lines.  Each
+cell contains zero or more body elements.  Cell contents may include
+left and/or right margins, which are removed before processing.
+
+
+Grid Tables
+```````````
+
+Grid tables provide a complete table representation via grid-like
+"ASCII art".  Grid tables allow arbitrary cell contents (body
+elements), and both row and column spans.  However, grid tables can be
+cumbersome to produce, especially for simple data sets.  The `Emacs
+table mode`_ is a tool that allows easy editing of grid tables, in
+Emacs.  See `Simple Tables`_ for a simpler (but limited)
+representation.
+
+Grid tables are described with a visual grid made up of the characters
 "-", "=", "|", and "+".  The hyphen ("-") is used for horizontal lines
 (row separators).  The equals sign ("=") may be used to separate
-optional header rows from the table body.  The vertical bar ("|") is
-used for vertical lines (column separators).  The plus sign ("+") is
-used for intersections of horizontal and vertical lines.
-
-Each table cell is treated as a miniature document; the top and bottom
-cell boundaries act as delimiting blank lines.  Each cell contains
-zero or more body elements.  Cell contents may include left and/or
-right margins, which are removed before processing.  Example::
+optional header rows from the table body (not supported by the `Emacs
+table mode`_).  The vertical bar ("|") is used for vertical lines
+(column separators).  The plus sign ("+") is used for intersections of
+horizontal and vertical lines.  Example::
 
     +------------------------+------------+----------+----------+
     | Header row, column 1   | Header 2   | Header 3 | Header 4 |
@@ -1134,14 +1166,9 @@ right margins, which are removed before processing.  Example::
     | body row 4             |            | - body elements.    |
     +------------------------+------------+---------------------+
 
-As with other body elements, blank lines are required before and after
-tables.  Tables' left edges should align with the left edge of
-preceding text blocks; otherwise, the table is considered to be part
-of a block quote.
-
-Some care must be taken with tables to avoid undesired interactions
-with cell text in rare cases.  For example, the following table
-contains a cell in row 2 spanning from column 2 to column 4::
+Some care must be taken with grid tables to avoid undesired
+interactions with cell text in rare cases.  For example, the following
+table contains a cell in row 2 spanning from column 2 to column 4::
 
     +--------------+----------+-----------+-----------+
     | row 1, col 1 | column 2 | column 3  | column 4  |
@@ -1184,6 +1211,100 @@ Another possibility is to add an extra line to row 2::
     +--------------+----------+-----------+-----------+
     | row 3        |          |           |           |
     +--------------+----------+-----------+-----------+
+
+
+Simple Tables
+`````````````
+
+Simple tables provide a compact and easy to type but limited
+row-oriented table representation for simple data sets.  Cell contents
+are typically single paragraphs, although arbitrary body elements may
+be represented in most cells.  Simple tables allow multi-line rows and
+column spans, but not row spans.  See `Grid Tables`_ above for a
+complete table representation.
+
+Simple tables are described with horizontal borders made up of "=" and
+"-" characters.  The equals sign ("=") is used for top and bottom
+table borders, and to separate optional header rows from the table
+body.  The hyphen ("-") is used to indicate column spans in a single
+row by underlining the joined columns.
+
+A simple table begins with a top border of equals signs with one or
+more spaces at each column boundary (two or more spaces recommended).
+Regardless of spans, the top border *must* fully describe all table
+columns.  There must be at least two columns in the table (to
+differentiate it from section headers).  The last of the optional
+header rows is underlined with '=', again with spaces at column
+boundaries.  There may not be a blank line below the header row
+separator; it would be interpreted as the bottom border of the table.
+The bottom boundary of the table consists of '=' underlines, also with
+spaces at column boundaries.  For example, here is a truth table, a
+three-column table with one header row and four body rows::
+
+    =====  =====  =======
+      A      B    A and B
+    =====  =====  =======
+    False  False  False
+    True   False  False
+    False  True   False
+    True   True   True
+    =====  =====  =======
+
+Underlines of '-' may be used to indicate column spans by "filling in"
+column margins to join adjacent columns.  Column span underlines must
+be complete (they must cover all columns) and align with established
+column boundaries.  Text lines containing column span underlines may
+not contain any other text.  A column span underline applies only to
+one row immediately above it.  For example, here is a table with a
+column span in the header::
+
+    =====  =====  ======
+       Inputs     Output
+    ------------  ------
+      A      B    A or B
+    =====  =====  ======
+    False  False  False
+    True   False  True
+    False  True   True
+    True   True   True
+    =====  =====  ======
+
+Each line of text must contain spaces at column boundaries, except
+where cells have been joined by column spans.  Each line of text
+starts a new row, except when there is a blank cell in the first
+column.  In that case, that line of text is parsed as a continuation
+line.  For this reason, cells in the first column of new rows (*not*
+continuation lines) *must* contain some text; blank cells would lead
+to a misinterpretation.  An empty comment ("..") is sufficient and
+will be omitted from the processed output.  Also, cells in the first
+column are limited to one line of text.
+
+Blank lines are permitted within simple tables.  Their interpretation
+depends on the context.  Blank lines *between* rows are ignored.
+Blank lines *within* multi-line rows may separate paragraphs or other
+body elements within cells.
+
+The rightmost column is unbounded; text may continue past the edge of
+the table (as indicated by the table borders).  However, it is
+recommended that borders be made long enough to contain the entire
+text.
+
+The following example illustrates continuation lines (row 2 consists
+of two lines of text, and four lines for row 3), a blank line
+separating paragraphs (row 3, column 2), and text extending past the
+right edge of the table::
+
+    =====  =====
+    col 1  col 2
+    =====  =====
+    1      Second column of row 1.
+    2      Second column of row 2.
+           Second line of paragraph.
+    3      - Second column of row 3.
+
+           - Second item in bullet
+             list (row 3, column 2).
+    =====  =====
 
 
 Explicit Markup Blocks
