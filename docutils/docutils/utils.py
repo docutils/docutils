@@ -141,70 +141,75 @@ class Reporter:
         for observer in self.observers:
             observer(message)
 
-    def system_message(self, level, comment=None, category='',
-                       *children, **attributes):
+    def system_message(self, level, message, *children, **kwargs):
         """
         Return a system_message object.
 
         Raise an exception or generate a warning if appropriate.
         """
-        msg = nodes.system_message(comment, level=level,
+        attributes = kwargs.copy()
+        category = kwargs.get('category', '')
+        if kwargs.has_key('category'):
+            del attributes['category']
+        if kwargs.has_key('base_node'):
+            source, line = get_source_line(kwargs['base_node'])
+            del attributes['base_node']
+            if source is not None:
+                attributes.setdefault('source', source)
+            if line is not None:
+                attributes.setdefault('line', line)
+        attributes.setdefault('source', self.source)
+        msg = nodes.system_message(message, level=level,
                                    type=self.levels[level],
                                    *children, **attributes)
-        msg['source'] = self.source
         debug, report_level, halt_level, stream = self[category].astuple()
         if level >= report_level or debug and level == 0:
             if category:
-                print >>stream, 'Reporter "%s":' % category, msg.astext()
+                print >>stream, msg.astext(), '[%s]' % category
             else:
-                print >>stream, 'Reporter:', msg.astext()
+                print >>stream, msg.astext()
         if level >= halt_level:
             raise SystemMessage(msg)
         if level > 0 or debug:
             self.notify_observers(msg)
         return msg
 
-    def debug(self, comment=None, category='', *children, **attributes):
+    def debug(self, *args, **kwargs):
         """
         Level-0, "DEBUG": an internal reporting issue. Typically, there is no
         effect on the processing. Level-0 system messages are handled
         separately from the others.
         """
-        return self.system_message(
-              0, comment, category, *children, **attributes)
+        return self.system_message(0, *args, **kwargs)
 
-    def info(self, comment=None, category='', *children, **attributes):
+    def info(self, *args, **kwargs):
         """
         Level-1, "INFO": a minor issue that can be ignored. Typically there is
         no effect on processing, and level-1 system messages are not reported.
         """
-        return self.system_message(
-              1, comment, category, *children, **attributes)
+        return self.system_message(1, *args, **kwargs)
 
-    def warning(self, comment=None, category='', *children, **attributes):
+    def warning(self, *args, **kwargs):
         """
         Level-2, "WARNING": an issue that should be addressed. If ignored,
         there may be unpredictable problems with the output.
         """
-        return self.system_message(
-              2, comment, category, *children, **attributes)
+        return self.system_message(2, *args, **kwargs)
 
-    def error(self, comment=None, category='', *children, **attributes):
+    def error(self, *args, **kwargs):
         """
         Level-3, "ERROR": an error that should be addressed. If ignored, the
         output will contain errors.
         """
-        return self.system_message(
-              3, comment, category, *children, **attributes)
+        return self.system_message(3, *args, **kwargs)
 
-    def severe(self, comment=None, category='', *children, **attributes):
+    def severe(self, *args, **kwargs):
         """
         Level-4, "SEVERE": a severe error that must be addressed. If ignored,
         the output will contain severe errors. Typically level-4 system
         messages are turned into exceptions which halt processing.
         """
-        return self.system_message(
-              4, comment, category, *children, **attributes)
+        return self.system_message(4, *args, **kwargs)
 
 
 class ConditionSet:
@@ -406,3 +411,14 @@ def relative_path(source, target):
     target_parts.reverse()
     parts = ['..'] * (len(source_parts) - 1) + target_parts
     return '/'.join(parts)
+
+def get_source_line(node):
+    """
+    Return the "source" and "line" attributes from the `node` given or from
+    it's closest ancestor.
+    """
+    while node:
+        if node.source or node.line:
+            return node.source, node.line
+        node = node.parent
+    return None, None
