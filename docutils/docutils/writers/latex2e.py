@@ -1418,15 +1418,17 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     # footnote/citation label
     def label_delim(self, node, bracket, superscript):
-        if isinstance(node.parent, nodes.footnote) and \
-               not self.use_latex_footnotes:
+        if isinstance(node.parent, nodes.footnote):
+            if self.use_latex_footnotes:
+                raise nodes.SkipNode
             if self.settings.footnote_references == 'brackets':
                 self.body.append(bracket)
             else:
                 self.body.append(superscript)
-        elif isinstance(node.parent, nodes.citation) and \
-                 not self._use_latex_citations:
-            self.body.append(bracket)
+        else:
+            assert isinstance(node.parent, nodes.citation)
+            if not self._use_latex_citations:
+                self.body.append(bracket)
 
     def visit_label(self, node):
         self.label_delim(node, '[', '$^{')
