@@ -17,7 +17,7 @@ contains a minimum of formatting information. A cascading style sheet
 __docformat__ = 'reStructuredText'
 
 
-import time, string, re
+import sys, time, string, re
 from types import ListType
 from docutils import writers, nodes, languages
 
@@ -48,9 +48,9 @@ class HTMLTranslator(nodes.NodeVisitor):
               'xhtml1-transitional.dtd">\n'
     html_head = '<html lang="%s">\n<head>\n'
     content_type = '<meta http-equiv=Content-Type content="text/html; ' \
-                   'charset=UTF-8">\n',
+                   'charset=UTF-8">\n'
     stylesheet_link = '<link rel="stylesheet" href="default.css"' \
-                      ' type="text/css" />\n']
+                      ' type="text/css" />\n'
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
