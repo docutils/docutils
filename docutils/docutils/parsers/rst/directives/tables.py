@@ -13,7 +13,6 @@ __docformat__ = 'reStructuredText'
 
 import sys
 import os.path
-from types import UnicodeType
 from docutils import nodes, statemachine, utils
 from docutils.utils import SystemMessagePropagation
 from docutils.parsers.rst import directives
@@ -247,18 +246,10 @@ def process_header_option(options, state_machine, lineno):
     return table_head, max_header_cols
 
 def parse_csv_data_into_rows(csv_data, dialect, source, options):
-    isunicode = (csv_data and type(csv_data[0]) == UnicodeType)
-    if isunicode:
-        # Encode unicode in UTF-8, because the csv module doesn't
-        # support unicode strings.
-        csv_data = [item.encode('utf-8') for item in csv_data]
     csv_reader = csv.reader(csv_data, dialect=dialect)
     rows = []
     max_cols = 0
     for row in csv_reader:
-        if isunicode:
-            # Decode UTF-8 back to unicode
-            row = [item.decode('utf-8') for item in row]
         row_data = []
         for cell in row:
             cell_data = (0, 0, 0, statemachine.StringList(cell.splitlines(),
