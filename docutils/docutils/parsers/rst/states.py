@@ -496,6 +496,8 @@ class Inliner:
                                            self.rfc_reference))
 
     def parse(self, text, lineno, memo, parent):
+        # Needs to be refactored for nested inline markup.
+        # Add nested_parse() method?
         """
         Return 2 lists: nodes (text and inline elements), and system_messages.
 
@@ -831,7 +833,8 @@ class Inliner:
             return uri
 
     def interpreted(self, rawsource, text, role, lineno):
-        role_fn, messages = roles.role(role, self.language, lineno, self)
+        role_fn, messages = roles.role(role, self.language, lineno,
+                                       self.reporter)
         if role_fn:
             nodes, messages2 = role_fn(role, rawsource, text, lineno, self)
             return nodes, messages + messages2
@@ -1878,17 +1881,18 @@ class Body(RSTState):
             return [msg], blank_finish
 
     def directive(self, match, **option_presets):
+        """Returns a 2-tuple: list of nodes, and a "blank finish" boolean."""
         type_name = match.group(1)
         directive_function, messages = directives.directive(
             type_name, self.memo.language, self.document)
         self.parent += messages
         if directive_function:
-            return self.parse_directive(
+            return self.run_directive(
                 directive_function, match, type_name, option_presets)
         else:
             return self.unknown_directive(type_name)
 
-    def parse_directive(self, directive_fn, match, type_name, option_presets):
+    def run_directive(self, directive_fn, match, type_name, option_presets):
         """
         Parse a directive then run its directive function.
 
@@ -1910,13 +1914,6 @@ class Body(RSTState):
 
         Returns a 2-tuple: list of nodes, and a "blank finish" boolean.
         """
-        arguments = []
-        options = {}
-        argument_spec = getattr(directive_fn, 'arguments', None)
-        if argument_spec and argument_spec[:2] == (0, 0):
-            argument_spec = None
-        option_spec = getattr(directive_fn, 'options', None)
-        content_spec = getattr(directive_fn, 'content', None)
         lineno = self.state_machine.abs_line_number()
         initial_line_offset = self.state_machine.line_offset
         indented, indent, line_offset, blank_finish \
@@ -1924,6 +1921,30 @@ class Body(RSTState):
                                                                 strip_top=0)
         block_text = '\n'.join(self.state_machine.input_lines[
             initial_line_offset : self.state_machine.line_offset + 1])
+        try:
+            arguments, options, content, content_offset = (
+                self.parse_directive_block(indented, line_offset,
+                                           directive_fn, option_presets))
+        except MarkupError, detail:
+            error = self.reporter.error(
+                'Error in "%s" directive:\n%s.' % (type_name, detail),
+                nodes.literal_block(block_text, block_text), line=lineno)
+            return [error], blank_finish
+        result = directive_fn(type_name, arguments, options, content, lineno,
+                              content_offset, block_text, self,
+                              self.state_machine)
+        return (result,
+                blank_finish or self.state_machine.is_next_line_blank())
+
+    def parse_directive_block(self, indented, line_offset, directive_fn,
+                              option_presets):
+        arguments = []
+        options = {}
+        argument_spec = getattr(directive_fn, 'arguments', None)
+        if argument_spec and argument_spec[:2] == (0, 0):
+            argument_spec = None
+        option_spec = getattr(directive_fn, 'options', None)
+        content_spec = getattr(directive_fn, 'content', None)
         if indented and not indented[0].strip():
             indented.trim_start()
             line_offset += 1
@@ -1945,24 +1966,15 @@ class Body(RSTState):
         while content and not content[0].strip():
             content.trim_start()
             content_offset += 1
-        try:
-            if option_spec:
-                options, arg_block = self.parse_directive_options(
-                    option_presets, option_spec, arg_block)
-            if argument_spec:
-                arguments = self.parse_directive_arguments(argument_spec,
-                                                           arg_block)
-            if content and not content_spec:
-                raise MarkupError('no content permitted')
-        except MarkupError, detail:
-            error = self.reporter.error(
-                'Error in "%s" directive:\n%s.' % (type_name, detail),
-                nodes.literal_block(block_text, block_text), line=lineno)
-            return [error], blank_finish
-        result = directive_fn(
-            type_name, arguments, options, content, lineno, content_offset,
-            block_text, self, self.state_machine)
-        return result, blank_finish or self.state_machine.is_next_line_blank()
+        if option_spec:
+            options, arg_block = self.parse_directive_options(
+                option_presets, option_spec, arg_block)
+        if argument_spec:
+            arguments = self.parse_directive_arguments(
+                argument_spec, arg_block)
+        if content and not content_spec:
+            raise MarkupError('no content permitted')
+        return (arguments, options, content, content_offset)
 
     def parse_directive_options(self, option_presets, option_spec, arg_block):
         options = option_presets.copy()
