@@ -149,39 +149,25 @@ files.
 Project Releases
 ----------------
 
-The `latest project release package`_ (Docutils 0.3.3, 2004-05-09) and
+The `latest project release package`_ (Docutils 0.3.5, 2004-07-29) and
 past project releases can be downloaded from the `project files
 page`_.  This release fixes many bugs, adds some features, and is
 highly recommended over prior versions.
 
-Major changes since Docutils 0.3:
+Major changes since Docutils 0.3.3
 
-* Added docutils.core.publish_parts convenience function to allow
-  access to individual parts of a document; implemented for HTML.
-
-* Added docutils/examples.py: practical examples of Docutils client
-  code, to be used as-is or as models for variations.
-
-* Added suppport for more languages: Afrikaans, Czech, Esperanto,
-  Brazilian Portuguese, and Russian.  These join the existing
-  languages: English, French, German, Italian, Slovak, Spanish, and
-  Swedish.
-
-* Reorganized config file format (multiple sections).  Added support
-  for ``DOCUTILSCONFIG`` environment variable.
-
-* Additions to reStructuredText:
-
-  - Inline markup parsing for field lists' field names.
-  - Support for quoted (and unindented) literal blocks.
-  - Directives: table, role.
+* improved, extended and reorganized documentation_
+* new csv-table_ directive
+* many minor improvements, additions and bug fixes
 
 For a more detailed list of changes, read the `HISTORY of Docutils
-0.3.3`__.
+0.3.5`__.
 
 Thanks to Felix Wiemann for putting together this release!
 
-__ 0.3.3/HISTORY.html
+.. _documentation: docs/index.html
+.. _csv-table: docs/ref/rst/directives.html#csv-table
+.. __: 0.3.5/HISTORY.html
 
 
 .. _mailing list:
@@ -386,7 +372,7 @@ Project Links
 .. _PEPs (Python Enhancement Proposals): http://www.python.org/peps/
 
 .. _latest project release package:
-   http://prdownloads.sourceforge.net/docutils/docutils-0.3.3-alpha.tar.gz
+   http://prdownloads.sourceforge.net/docutils/docutils-0.3.5.tar.gz?download
 
 
 ..
