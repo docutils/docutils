@@ -96,7 +96,7 @@ Following along with the actual code is recommended.  The
 
 6. The ``docutils.frontend.OptionParser`` object's ``__init__`` method
    calls ``self.populate_from_components`` with ``self.components``,
-   which consists of ``self`` pre-pended to the ``components`` tuple it
+   which consists of ``self`` prepended to the ``components`` tuple it
    received.  ``self`` (``docutils.frontend.OptionParser``) defines
    general Docutils settings.
 
