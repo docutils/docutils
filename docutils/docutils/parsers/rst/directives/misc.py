@@ -24,6 +24,11 @@ except ImportError:
 def include(name, arguments, options, content, lineno,
             content_offset, block_text, state, state_machine):
     """Include a reST file as part of the content of this reST file."""
+    if not state.document.settings.file_insertion_enabled:
+        warning = state_machine.reporter.warning(
+              '"%s" directive disabled.' % name,
+              nodes.literal_block(block_text, block_text), line=lineno)
+        return [warning]
     source = state_machine.input_lines.source(
         lineno - state_machine.input_offset - 1)
     source_dir = os.path.dirname(os.path.abspath(source))
@@ -76,6 +81,13 @@ def raw(name, arguments, options, content, lineno,
     Content may be included inline (content section of directive) or
     imported from a file or url.
     """
+    if ( not state.document.settings.raw_enabled
+         or (not state.document.settings.file_insertion_enabled
+             and (options.has_key('file') or options.has_key('url'))) ):
+        warning = state_machine.reporter.warning(
+              '"%s" directive disabled.' % name,
+              nodes.literal_block(block_text, block_text), line=lineno)
+        return [warning]
     attributes = {'format': ' '.join(arguments[0].lower().split())}
     encoding = options.get('encoding', state.document.settings.input_encoding)
     if content:

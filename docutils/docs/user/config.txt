@@ -228,6 +228,17 @@ _`expose_internals`
     Default: don't (None).  Options: ``--expose-internal-attribute``
     (hidden, for development use only).
 
+_`file_insertion_enabled`
+    Enable or disable directives that insert the contents of external
+    files, such as the "include__" & "raw__".  A "warning" system
+    message (including the directive text) is inserted instead.
+
+    Default: enabled (1).  Options: ``--file-insertion-enabled,
+    --no-file-insertion``.
+
+    .. _include: ../ref/rst/directives.html#include
+    .. _raw: ../ref/rst/directives.html#raw
+
 _`footnote_backlinks`
     Enable or disable backlinks from footnotes and citations to their
     references.
@@ -308,6 +319,12 @@ _`output_encoding_error_handler`
 
     Default: "strict".  Options: ``--output-encoding-error-handler,
     --output-encoding, -o``.
+
+_`raw_enabled`
+    Enable or disable the "raw_" directive.  A "warning" system
+    message (including the directive text) is inserted instead.
+
+    Default: enabled (1).  Options: ``--raw-enabled, --no-raw``.
 
 _`report_level`
     Verbosity threshold at or above which system messages are
