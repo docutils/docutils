@@ -103,6 +103,10 @@ Specific:
 
   - Added "--pep-base-url" and "--rfc-base-url" options.
 
+* docutils/parsers/rst/states.py:
+
+  - Made URI recognition more aggressive and intelligent.
+
 * docutils/parsers/rst/directives/__init__.py:
 
   - Added several directive option conversion functions.
