@@ -178,18 +178,20 @@ Register the Directive
 If the directive is a general-use addition to the Docutils core, it
 must be registered with the parser and language mappings added:
 
-1. Register the new directive in
+1. Register the new directive using its canonical name in
    ``docutils/parsers/rst/directives/__init__.py``, in the
    ``_directive_registry`` dictionary.  This allows the
    reStructuredText parser to find and use the directive.
 
-2. Add an entry to ``docutils/parsers/rst/languages/en.py`` for the
-   directive, mapping the English name to the canonical name (both
-   lowercase).  Usually the English name and the canonical name are
-   the same.
+2. Add an entry to the ``directives`` dictionary in
+   ``docutils/parsers/rst/languages/en.py`` for the directive, mapping
+   the English name to the canonical name (both lowercase).  Usually
+   the English name and the canonical name are the same.
 
-3. Please check for and update any other language modules for
-   languages in which you are proficient.
+3. Update all the other language modules as well.  For languages in
+   which you are proficient, please add translations.  For other
+   languages, add the English directive name plus "(translation
+   required)".
 
 If the directive is application-specific, use the
 ``register_directive`` function::

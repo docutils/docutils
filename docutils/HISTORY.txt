@@ -292,6 +292,9 @@ Changes Since 0.3
 * spec/notes.txt: Continual updates.  Added "Setting Up For Docutils
   Development".
 
+* spec/howto/rst-roles.txt: "Creating reStructuredText Interpreted
+  Text Roles", added to project.
+
 * spec/rst/reStructuredText.txt:
 
   - Added description of support for <angle-bracketed> complex option

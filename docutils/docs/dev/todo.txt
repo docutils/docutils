@@ -989,12 +989,20 @@ when used in a document.
 
   - _`misc.role`:
 
-    - Allow other base roles? ::
+    - Base the new role on other roles? ::
 
           .. role:: custom
              :base-role: abbreviation
 
-      This might produce ``<abbreviation class="custom">``.
+      This would make "custom" an alias for "abbreviation".  With a
+      "base-role" option, the "class" would no longer be implied.  It
+      would have to be explicitly specified::
+
+          .. role:: custom
+             :base-role: abbreviation
+             :class: special
+
+      This might produce ``<abbreviation class="special">``.
 
       How do we pass in this "class" attribute (and other overrides)?
       With an argument on role functions (``attributes={}``)?
@@ -1408,11 +1416,6 @@ elements.
   - issue a warning when processing documents with no default role
     which contain interpreted text with no explicitly specified role
     (there will always be a default role, so this won't happen)
-
-* Add a directive establishing a mapping of interpreted text role
-  aliases?  A set of default roles (index, acronym, etc.) could exist,
-  and the directive could assign abbreviations (i, a, etc.) or other
-  alternatives.
 
 * Add explicit interpreted text roles for the rest of the implicit
   inline markup constructs: named-reference, anonymous-reference,
