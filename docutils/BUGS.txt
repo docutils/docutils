@@ -29,9 +29,9 @@ guidelines before reporting it.
 
 First, make sure it's a bug:
 
-* Are you using the latest Docutils code?  If not, the bug may have
-  already been fixed.  Please get the latest code from CVS_ or from
-  the `development snapshot`_ and check again.
+* Are you using the very latest version of Docutils?  The bug may have
+  already been fixed.  Please get the latest version of Docutils from
+  CVS_ or from the `development snapshot`_ and check again.
 
 * If Docutils does not behave the way you expect, look in the
   documentation_ (don't forget the FAQ_!) and `mailing list archives`_
