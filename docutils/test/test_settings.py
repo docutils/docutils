@@ -88,7 +88,7 @@ class ConfigFileTests(unittest.TestCase):
             self.assertEquals(result, expected)
         except AssertionError:
             print >>sys.stderr, '\n%s\n' % (self,)
-            print >>sys.stderr, '+: result\n-: expected'
+            print >>sys.stderr, '-: expected\n+: result'
             print >>sys.stderr, ''.join(self.compare(expected.splitlines(1),
                                                      result.splitlines(1)))
             raise
@@ -124,6 +124,11 @@ class ConfigFileTests(unittest.TestCase):
 
 class ConfigEnvVarFileTests(ConfigFileTests):
 
+    """
+    Repeats the tests of `ConfigFileTests` using the ``DOCUTILSCONFIG``
+    environment variable and the standard Docutils config file mechanism.
+    """
+
     def setUp(self):
         ConfigFileTests.setUp(self)
         self.orig_environ = os.environ
@@ -136,7 +141,7 @@ class ConfigEnvVarFileTests(ConfigFileTests):
 
     def tearDown(self):
         os.environ = self.orig_environ
-    
+
 
 if __name__ == '__main__':
     unittest.main()
