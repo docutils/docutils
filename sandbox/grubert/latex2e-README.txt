@@ -3,11 +3,15 @@ latex2e BUGS TODOS and other animals
 
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
-Rev. 2002-11-05
+Rev. 2002-11-06
 
 To do
 ~~~~~
 mostly errors when processing tools/test.txt.
+
+* tabularx says "donot use any multicolmn which spans any X column.
+  maybe use ltxtable instead of tabularx (Longtable combined with tabularx).
+  but ltxtable disables longtable's multicolumn.
 
 * abstract is not a docinfo entry so latex abstract is never used.
 
