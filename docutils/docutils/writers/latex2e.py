@@ -819,14 +819,26 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.literal_block or self.literal:
             # pdflatex does not produce doublequotes for ngerman.
             text = self.babel.double_quotes_in_tt(text)
-            if self.font_encoding == 'T1' or self.font_encoding == '': 
-                # make sure "--" does not become a "-".
-                # the same for "<<" and ">>".
-                text = text.replace("--","-{}-").replace("--","-{}-")
-                text = text.replace(">>",">{}>").replace(">>",">{}>")
-                text = text.replace("<<","<{}<").replace("<<","<{}<")
-            # replace underline by underlined blank, because this has correct width.
-            text = text.replace("_", '{\\underline{ }}')
+            # Separate compound characters, e.g. ",,," to ",{},{},".
+            # This is usually only necessary when using T1
+            # font-encoding, but in some languages (like russian) T1
+            # is automatically activated, so we can't rely on
+            # font_encoding-guessing.  Thus we separate the characters
+            # unconditionally, even if it is not necessary.  Note that
+            # the separation must be done twice, because otherwise we
+            # would replace "---" by "-{}--".
+            for char in '"\',-<>`' * 2:
+                text = text.replace(char + char, char + '{}' + char)
+            if self.font_encoding == 'OT1':
+                # We're using OT1 font-encoding and have to replace
+                # underscore by underlined blank, because this has
+                # correct width.
+                text = text.replace('_', '{\\underline{ }}')
+                # And the tt-backslash doesn't work in OT1, so we use
+                # a mirrored slash.
+                text = text.replace('\\textbackslash', '\\reflectbox{/}')
+            else:
+                text = text.replace('_', '{\\_}')
         else:
             text = self.babel.quote_quotes(text)
             text = text.replace("_", '{\\_}')
