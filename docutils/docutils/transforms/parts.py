@@ -6,7 +6,7 @@
 :Date: $Date$
 :Copyright: This module has been placed in the public domain.
 
-Transforms related to document components.
+Transforms related to document parts.
 
 - `Contents`: Used to build a table of contents.
 """
@@ -14,7 +14,7 @@ Transforms related to document components.
 __docformat__ = 'reStructuredText'
 
 
-import re
+import re, sys
 from docutils import nodes, utils
 from docutils.transforms import TransformError, Transform
 
@@ -47,7 +47,7 @@ class Contents(Transform):
             if not title:
                 title = []
         else:
-            startnode = self.doctree
+            startnode = self.document
             if not title:
                 title = nodes.title('', self.language.labels['contents'])
         contents = self.build_contents(startnode)
@@ -67,19 +67,51 @@ class Contents(Transform):
             i -= 1
         sections.reverse()
         entries = []
+        depth = self.startnode.details.get('depth', sys.maxint)
         for section in sections:
             title = section[0]
+            entrytext = self.copy_and_filter(title)
             reference = nodes.reference('', '', refid=section['id'],
-                                        *title.getchildren())
+                                        *entrytext)
             entry = nodes.paragraph('', '', reference)
             item = nodes.list_item('', entry)
-            itemid = self.doctree.set_id(item)
+            itemid = self.document.set_id(item)
             title['refid'] = itemid
-            if (not self.startnode.details.has_key('depth')) \
-                  or level < self.startnode.details['depth']:
+            if level < depth:
                 subsects = self.build_contents(section, level)
                 item += subsects
             entries.append(item)
         if entries:
             entries = nodes.bullet_list('', *entries)
         return entries
+
+    def copy_and_filter(self, node):
+        """Return a copy of a title, with references, images, etc. removed."""
+        visitor = ContentsFilter(self.document)
+        node.walkabout(visitor)
+        return visitor.get_entry_text()
+
+
+class ContentsFilter(nodes.TreeCopyVisitor):
+
+    def get_entry_text(self):
+        return self.get_tree_copy().getchildren()
+
+    def visit_citation_reference(self, node):
+        raise nodes.SkipNode
+
+    def visit_footnote_reference(self, node):
+        raise nodes.SkipNode
+
+    def visit_image(self, node):
+        if node.hasattr('alt'):
+            self.parent_stack[-1].append(nodes.Text(node['alt']))
+        raise nodes.SkipNode
+
+    def ignore_node_but_process_children(self, node):
+        raise nodes.SkipDeparture
+
+    visit_interpreted = ignore_node_but_process_children
+    visit_problematic = ignore_node_but_process_children
+    visit_reference = ignore_node_but_process_children
+    visit_target = ignore_node_but_process_children
