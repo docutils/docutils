@@ -14,6 +14,14 @@
 Changes Since 0.3.7
 ===================
 
+* docutils/parsers/rst/states.py:
+
+  - Added check for escaped at-mark to prevent email address recognition.
+
+* docutils/parsers/rst/directives/tables.py:
+
+  - Added "list-table" directive.
+
 * docutils/writers/latex2e.py:
 
   - Improved --use-latex-docinfo so that organization/contact/address
@@ -23,6 +31,7 @@ Changes Since 0.3.7
     even if the document has no title.
   - Made sure that latex doesn't fill in today's date if no date field
     was given.
+
 
 Release 0.3.7 (2004-12-24)
 ==========================
@@ -73,7 +82,6 @@ Release 0.3.7 (2004-12-24)
   - Changed role function API: the "text" parameter now takes
     null-escaped interpreted text content.
   - Empty sections and documents are allowed now.
-  - Added check for escaped at-mark to prevent email address recognition.
 
 * docutils/parsers/rst/directives/__init__.py:
 

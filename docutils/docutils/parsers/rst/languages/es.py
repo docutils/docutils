@@ -50,6 +50,7 @@ directives = {
       u'tabla': 'table',
       u'tabla-vsc': 'csv-table',
       u'tabla-csv': 'csv-table',
+      u'list-table (translation required)': 'list-table',
       u'meta': 'meta',
       #'imagemap': 'imagemap',
       u'imagen': 'image',

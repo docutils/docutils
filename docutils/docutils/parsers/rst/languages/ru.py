@@ -26,6 +26,7 @@ directives = {
  u'compound (translation required)': 'compound',
  u'table (translation required)': 'table',
  u'csv-table (translation required)': 'csv-table',
+ u'list-table (translation required)': 'list-table',
  u'\u0441\u044b\u0440\u043e\u0439': u'raw',
  u'\u0437\u0430\u043c\u0435\u043d\u0430': u'replace',
  u'\u0442\u0435\u0441\u0442\u043e\u0432\u0430\u044f-\u0434\u0438\u0440\u0435\u043a\u0442\u0438\u0432\u0430-restructuredtext':

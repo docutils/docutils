@@ -113,6 +113,7 @@ _directive_registry = {
       #'questions': ('body', 'question_list'),
       'table': ('tables', 'table'),
       'csv-table': ('tables', 'csv_table'),
+      'list-table': ('tables', 'list_table'),
       'image': ('images', 'image'),
       'figure': ('images', 'figure'),
       'contents': ('parts', 'contents'),

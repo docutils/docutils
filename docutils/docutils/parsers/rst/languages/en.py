@@ -41,6 +41,7 @@ directives = {
       #'questions': 'questions',
       'table': 'table',
       'csv-table': 'csv-table',
+      'list-table': 'list-table',
       #'qa': 'questions',
       #'faq': 'questions',
       'meta': 'meta',

@@ -44,7 +44,6 @@ def table(name, arguments, options, content, lineno,
         return [warning]
     title, messages = make_title(arguments, state, lineno)
     node = nodes.Element()          # anonymous container for parsing
-    text = '\n'.join(content)
     state.nested_parse(content, content_offset, node)
     if len(node) != 1 or not isinstance(node[0], nodes.table):
         error = state_machine.reporter.error(
@@ -304,3 +303,105 @@ def extend_short_rows_with_empty_cells(columns, parts):
         for row in part:
             if len(row) < columns:
                 row.extend([(0, 0, 0, [])] * (columns - len(row)))
+
+def list_table(name, arguments, options, content, lineno,
+               content_offset, block_text, state, state_machine):
+    """
+    Implement tables whose data is encoded as a uniform two-level bullet list.
+    For further ideas, see
+    http://docutils.sf.net/docs/dev/rst/alternatives.html#list-driven-tables
+    """ 
+    if not content:
+        error = state_machine.reporter.error(
+            'The "%s" directive is empty; content required.' % name,
+            nodes.literal_block(block_text, block_text), line=lineno)
+        return [error]
+    title, messages = make_title(arguments, state, lineno)
+    node = nodes.Element()          # anonymous container for parsing
+    state.nested_parse(content, content_offset, node)
+    try:
+        num_cols, col_widths = check_list_content(
+            node, name, options, content, lineno, block_text, state_machine)
+        table_data = [[item.children for item in row_list[0]]
+                      for row_list in node[0]]
+        header_rows = options.get('header-rows', 0) # default 0
+        check_table_dimensions(
+            table_data, header_rows, name, lineno, block_text, state_machine)
+    except SystemMessagePropagation, detail:
+        return [detail.args[0]]
+    table_node = build_table_from_list(table_data, col_widths, header_rows)
+    if options.has_key('class'):
+        table_node.set_class(options['class'])
+    if title:
+        table_node.insert(0, title)
+    return [table_node] + messages
+
+list_table.arguments = (0, 1, 1)
+list_table.options = {'header-rows': directives.nonnegative_int,
+                      'widths': directives.positive_int_list,
+                      'class': directives.class_option}
+list_table.content = 1
+
+def check_list_content(node, name, options, content, lineno, block_text,
+                       state_machine):
+    if len(node) != 1 or not isinstance(node[0], nodes.bullet_list):
+        error = state_machine.reporter.error(
+            'Error parsing content block for the "%s" directive: '
+            'exactly one bullet list expected.' % name,
+            nodes.literal_block(block_text, block_text), line=lineno)
+        raise SystemMessagePropagation(error)
+    list_node = node[0]
+    # Check for a uniform two-level bullet list:
+    for item_index in range(len(list_node)):
+        item = list_node[item_index]
+        if len(item) != 1 or not isinstance(item[0], nodes.bullet_list):
+            error = state_machine.reporter.error(
+                'Error parsing content block for the "%s" directive: '
+                'two-level bullet list expected, but row %s does not contain '
+                'a second-level bullet list.' % (name, item_index + 1),
+                nodes.literal_block(block_text, block_text), line=lineno)
+            raise SystemMessagePropagation(error)
+        elif item_index:
+            if len(item[0]) != num_cols:
+                error = state_machine.reporter.error(
+                    'Error parsing content block for the "%s" directive: '
+                    'uniform two-level bullet list expected, but row %s does '
+                    'not contain the same number of items as row 1 (%s vs %s).'
+                    % (name, item_index + 1, len(item[0]), num_cols),
+                    nodes.literal_block(block_text, block_text), line=lineno)
+                raise SystemMessagePropagation(error)
+        else:
+            num_cols = len(item[0])
+    col_widths = get_column_widths(
+        num_cols, name, options, lineno, block_text, state_machine)
+    if len(col_widths) != num_cols:
+        error = state_machine.reporter.error(
+            'Error parsing "widths" option of the "%s" directive: '
+            'number of columns does not match the table data (%s vs %s).'
+            % (name, len(col_widths), num_cols),
+            nodes.literal_block(block_text, block_text), line=lineno)
+        raise SystemMessagePropagation(error)
+    return num_cols, col_widths
+
+def build_table_from_list(table_data, col_widths, header_rows):
+    table = nodes.table()
+    tgroup = nodes.tgroup(cols=len(col_widths))
+    table += tgroup
+    for col_width in col_widths:
+        tgroup += nodes.colspec(colwidth=col_width)
+    rows = []
+    for row in table_data:
+        row_node = nodes.row()
+        for cell in row:
+            entry = nodes.entry()
+            entry += cell
+            row_node += entry
+        rows.append(row_node)
+    if header_rows:
+        thead = nodes.thead()
+        thead.extend(rows[:header_rows])
+        tgroup += thead
+    tbody = nodes.tbody()
+    tbody.extend(rows[header_rows:])
+    tgroup += tbody
+    return table
