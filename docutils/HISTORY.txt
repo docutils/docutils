@@ -122,6 +122,8 @@ Changes Since 0.3.5
     new method ``should_be_compact_paragraph()``.
   - Added class="docutils" to ``dl``, ``hr``, ``table`` and ``tt``
     elements.
+  - "raw" elements are now surrounded by ``span`` or ``div`` tags in
+    the output if they have their ``class`` attribute set.
 
 * docutils/writers/latex2e.py:
 
