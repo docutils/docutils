@@ -79,6 +79,9 @@ class Writer(writers.Writer):
 
     relative_path_settings = ('stylesheet_path',)
 
+    config_section = 'html4css1 writer'
+    config_section_predecessors = ('writers',)
+
     output = None
     """Final translated form of `document`."""
 
@@ -662,7 +665,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_footer(self, node):
         start = self.context.pop()
-        footer = (['<hr class="footer"/>\n',
+        footer = (['<hr class="footer" />\n',
                    self.starttag(node, 'div', CLASS='footer')]
                   + self.body[start:] + ['</div>\n'])
         self.body_suffix[:0] = footer
