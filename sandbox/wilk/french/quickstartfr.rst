@@ -3,18 +3,21 @@ Introduction à ReStructuredText
 
 :Author: Richard Jones
 :Version: $Revision$
-:Traduction: William Dode wilk *at* flibuste.net
+:Traduction: William Dode <wilk *at* flibuste.net>
 
-. contents::
+.. contents::
+
 
 Ce texte contient des liens de la forme "(quickref__)". Ils sont 
 relatifs au manuel de référence utilisateur `Quick reStructuredText`_.
 S'ils ne fonctionnent pas, reférez vous au document `master quick reference`_.
 
---
+
+__ 
 .. _Quick reStructuredText: quickref.html
-.. _master quick reference:
-    http://docutils.sourceforge.net/docs/rst/quickref.html
+.. _master quick reference: 
+   http://docutils.sourceforge.net/docs/rst/quickref.html
+
 
 Structure
 ---------
@@ -64,11 +67,12 @@ avec "``**gras**``".
 Si l'on souhaite qu'un texte apparaisse dans une police à chasse
 fixe "````double guillemet````". 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Note that no further fiddling is done
-inside the double back-quotes -- so asterisks "``*``" etc. are left
-alone.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+.. sidebar:: a traduire
+
+ Note that no further fiddling is done
+ inside the double back-quotes -- so asterisks "``*``" etc. are left
+ alone.
+
 
 Si vous souhaitez utiliser un de ces caractères "spéciaux" dans
 le texte, il n'y a généralement pas de problème -- reStructuredText
@@ -98,7 +102,7 @@ Les listes doivent toujours démarrer un nouveau paragraphe
 Listes **numérotées** (par des nombres, lettres, chiffres romains;
 quickref__)
 
-  __ quickref.html#enumerated-lists
+__ quickref.html#enumerated-lists
 
   En démarrant une ligne avec un numéro ou une lettre suivie d'un
   point ".", une parenthèse droite ")" ou entouré par des parenthèses
@@ -149,7 +153,8 @@ quickref__)
     1) et encore
 
 Listes **à puce** (quickref__)
-  __ quickref.html#bullet-lists
+
+__ quickref.html#bullet-lists
 
   De la même manière que pour les listes numérotées, il faut démarrer
   la première ligne avec une puce - soit "-", "+" ou "*"::
@@ -173,7 +178,8 @@ Listes **à puce** (quickref__)
       - une autre option
 
 Les listes de **définitions** (quickref__)
-  __ quickref.html#definition-lists
+
+__ quickref.html#definition-lists
 
   Comme les deux autres, les listes de définitions consistent en un
   terme et la définition de ce terme. Le format est le suivant::
@@ -200,12 +206,9 @@ Préformatage
 -------------
 (quickref__)
 
-__quickref.html#literal-blocks
+__ quickref.html#literal-blocks
 
-Pour inclure un texte préformatté 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-never-to-be-fiddled-with-text
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Pour inclure un texte préformatté sans traitement
 il suffit de terminer le paragraphe par "``::``". Le texte préformaté est
 terminé lorsqu'une ligne retombe au niveau du décalage précédent. Par exemple::
 
@@ -370,7 +373,7 @@ Le `Docutils project web site`_ comporte d'avantages d'informations.
 
 .. _reStructuredText Markup Specification:
    ../../spec/rst/reStructuredText.html
-.. _post a message: mailto:docutils-users@lists.sourceforge.net
+.. _poster un message: mailto:docutils-users@lists.sourceforge.net
 .. _Docutils-Users mailing list:
    http://lists.sourceforge.net/lists/listinfo/docutils-users
 .. _Docutils project web site: http://docutils.sourceforge.net/
