@@ -1215,13 +1215,13 @@ class Body(RSTState):
         format, sequence, text, ordinal = self.parse_enumerator(match)
         if not self.is_enumerated_list_item(ordinal, sequence, format):
             raise statemachine.TransitionCorrection('text')
+        enumlist = nodes.enumerated_list()
+        self.parent += enumlist
         if ordinal != 1:
             msg = self.reporter.info(
                 'Enumerated list start value not ordinal-1: "%s" (ordinal %s)'
                 % (text, ordinal), line=self.state_machine.abs_line_number())
             self.parent += msg
-        enumlist = nodes.enumerated_list()
-        self.parent += enumlist
         enumlist['enumtype'] = sequence
         if ordinal != 1:
             enumlist['start'] = ordinal

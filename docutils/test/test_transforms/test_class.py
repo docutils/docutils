@@ -107,6 +107,25 @@ multiple class values may be assigned to one element
     <paragraph class="one two">
         multiple class values may be assigned to one element
 """],
+["""\
+.. class:: fancy
+
+2. List starts at 2.
+3. Class should apply to list, not to system message.
+""",
+"""\
+<document source="test data">
+    <enumerated_list class="fancy" enumtype="arabic" prefix="" start="2" suffix=".">
+        <list_item>
+            <paragraph>
+                List starts at 2.
+        <list_item>
+            <paragraph>
+                Class should apply to list, not to system message.
+    <system_message level="1" line="3" source="test data" type="INFO">
+        <paragraph>
+            Enumerated list start value not ordinal-1: "2" (ordinal 2)
+"""],
 ])
 
 
