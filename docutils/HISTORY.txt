@@ -106,8 +106,7 @@ Changes Since 0.3
 
 * docutils/parsers/rst/states.py:
 
-  - Updated ``RSTState.nested_parse`` for "include" in table cells,
-    but not sure of correctness.
+  - Updated ``RSTState.nested_parse`` for "include" in table cells.
 
 * docutils/parsers/rst/tableparser.py:
 
