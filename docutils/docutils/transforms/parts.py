@@ -85,11 +85,11 @@ class Contents(Transform):
             entrytext = self.copy_and_filter(title)
             reference = nodes.reference('', '', refid=section['id'],
                                         *entrytext)
+            ref_id = self.document.set_id(reference)
             entry = nodes.paragraph('', '', reference)
             item = nodes.list_item('', entry)
-            itemid = self.document.set_id(item)
             if self.backlinks == 'entry':
-                title['refid'] = itemid
+                title['refid'] = ref_id
             elif self.backlinks == 'top':
                 title['refid'] = self.toc_id
             if level < depth:
