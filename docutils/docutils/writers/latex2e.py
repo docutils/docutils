@@ -137,7 +137,12 @@ class Writer(writers.Writer):
           'emulation using CM fonts).',
           ['--font-encoding'],
           {'default': ''}),
-         ),)
+         ('Causes \\docutilsclass to be called for every node which has the '
+          'class attribute set.  Default: disabled',
+          ['--call-class-command'],
+          {'default': 0, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+          ),)
 
     settings_defaults = {'output_encoding': 'latin-1'}
 
@@ -504,6 +509,22 @@ class Table:
 
         
 class LaTeXTranslator(nodes.NodeVisitor):
+
+    def dispatch_visit(self, node, method_name):
+        if self.call_class and \
+           isinstance(node, nodes.Element) and \
+           node.hasattr('class'):
+            self.body.append('\\docutilsclass{%s}{' % node.get('class'))
+        return nodes.NodeVisitor.dispatch_visit(self, node, method_name)
+
+    def dispatch_depart(self, node, method_name):
+        r = nodes.NodeVisitor.dispatch_depart(self, node, method_name)
+        if self.call_class and \
+           isinstance(node, nodes.Element) and \
+           node.hasattr('class'):
+            self.body.append('}')
+        return r
+   
     # When options are given to the documentclass, latex will pass them
     # to other packages, as done with babel.
     # Dummy settings might be taken from document settings
@@ -556,6 +577,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.colorlinks = 'false'
         else:
             self.colorlinks = 'true'
+        self.call_class = settings.call_class_command
+        if self.call_class:
+            self.docutilsclass = '\\newcommand{\\docutilsclass}[2]{#2}\n'
+        else:
+            self.docutilsclass = ''
 
         # language: labels, bibliographic_fields, and author_separators.
         # to allow writing labes for specific languages.
@@ -641,6 +667,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
               # of linewidth, this is fixing it.
               '\\newlength{\\locallinewidth}\n',
               # will be set later.
+              self.docutilsclass,
               ]
         self.head_prefix.extend( latex_headings['optionlist_environment'] )
         self.head_prefix.extend( latex_headings['footnote_floats'] )
