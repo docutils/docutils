@@ -1,13 +1,18 @@
 #!/bin/sh
 
+# quick latex writer test runner
+# $Id$
+
 CHECKS=0
 FAILS=0
+FAIL_QUEUE=""
 
 function do_diff() {
   CHECKS=$((CHECKS + 1)) 
   diff -q -s $1 $2
   if test $? -gt 0 ; then
     FAILS=$((FAILS + 1)) 
+    FAIL_QUEUE="$FAIL_QUEUE,$1"
   fi
 }
 
@@ -17,6 +22,7 @@ function report() {
     echo "OK: all $CHECKS tests passed"
   else
     echo "ERROR: $FAILS of $CHECKS failed"
+    echo "Failed tests: $FAIL_QUEUE"
   fi
 }
 
@@ -43,34 +49,6 @@ if [ -n "$1" -a ! "$1" == "-" ] ; then
   report
   exit
 fi
-
-INF=test/french.txt
-OUTF="$INF-fr.tex"
-REFF="$OUTF.ref"
-$CMD -l fr $INF > $OUTF
-do_diff $REFF $OUTF 
-
-INF=test/kasten.txt
-OUTF="$INF-de.tex"
-REFF="$OUTF.ref"
-$CMD -l de $INF > $OUTF
-do_diff $REFF $OUTF 
-
-# with latex toc
-for F in tools manual2 contents-1 ; do
-  INF=test/$F.txt
-  OUTF="$INF-ltoc.tex"
-  REFF="$OUTF.ref"
-  $CMD --use-latex-toc=1 $INF > $OUTF
-  do_diff $REFF $OUTF 
-done
-  
-CMD="../../tools/rst2latex.py -l de"
-INF=test/quotes.txt
-OUTF="$INF-l-de.tex"
-REFF="$OUTF.ref"
-$CMD $INF > $OUTF
-do_diff $REFF $OUTF 
 
 # with generated footer
 CMD="../../tools/rst2latex.py -gs"
@@ -109,6 +87,39 @@ REFF="$OUTF.ref"
 $CMD $INF > $OUTF
 do_diff $REFF $OUTF 
 
+report
+
+exit
+
+# Old and lost test files.
+
+INF=test/french.txt
+OUTF="$INF-fr.tex"
+REFF="$OUTF.ref"
+$CMD -l fr $INF > $OUTF
+do_diff $REFF $OUTF 
+
+INF=test/kasten.txt
+OUTF="$INF-de.tex"
+REFF="$OUTF.ref"
+$CMD -l de $INF > $OUTF
+do_diff $REFF $OUTF 
+
+# with latex toc
+for F in tools manual2 contents-1 ; do
+  INF=test/$F.txt
+  OUTF="$INF-ltoc.tex"
+  REFF="$OUTF.ref"
+  $CMD --use-latex-toc=1 $INF > $OUTF
+  do_diff $REFF $OUTF 
+done
+  
+CMD="../../tools/rst2latex.py -l de"
+INF=test/quotes.txt
+OUTF="$INF-l-de.tex"
+REFF="$OUTF.ref"
+$CMD $INF > $OUTF
+do_diff $REFF $OUTF 
 echo ATTRIBUTION
 CMD="../../tools/rst2latex.py --attribution=none"
 INF=test/attribution.txt
