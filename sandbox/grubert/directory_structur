@@ -1,0 +1,24 @@
+Sandbox directory structure (2002-07-05)
+
+sandbox/
+    userid/
+        component_name/ # A verbose name is best.
+            README.txt  # Please explain requirements,
+                        # purpose/goals, and usage.
+            docs/
+                ...
+            component.py    # The component is a single module.
+                        # *OR* (but *not* both)
+            component/  # The component is a package.
+                __init__.py  # Contains the Reader/Writer class.
+                other1.py    # Other modules and data files used
+                data.txt     # by this component.
+                ...
+            test/       # Test suite.
+                ...
+            tools/      # For front-ends etc.
+                ...
+            setup.py    # Use Distutils to install the component
+                        # code and tools/ files into the right
+                        # places in Docutils.
+
