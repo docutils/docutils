@@ -109,6 +109,15 @@ General
   HTML."  Maybe ``core.publish_string()``; rename ``core.publish`` to
   ``core.publish_file()``?
 
+- @@@@ All system messages should have a "line" attribute, to improve
+  diagnostic output.  So all elements constructed by the parser should
+  have internal "line" ("lineno"/"line_number") attributes.  Is there
+  any way we can get this to happen automagically, without having to
+  add the attribute manually to each object?
+
+- @@ Standalone Reader: Implement an option to turn off the DocTitle
+  transform.
+
 
 Documentation
 -------------
@@ -775,6 +784,11 @@ HTML Writer
 - Add more support for <link> elements, especially for navigation
   bars.
 
+- @@ Add a "don't compact lists" option.
+
+- @@@ Unindent line blocks.  (Authors can indent the directive to get
+  indented line blocks.)
+
 
 Front-End Tools
 ---------------
@@ -822,6 +836,10 @@ Front-End Tools
 - Disable common options that don't apply?
 
 - Implement the "sectnum" directive as a command-line option also?
+
+- @@ Add an option to recognize ``PEP \d+`` text as standalone
+  hyperlinks.  Another for ``RFC[- ]?\d+``.  Then just set defaults in
+  readers/pep.py.
 
 
 Project Policies
