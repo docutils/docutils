@@ -20,6 +20,7 @@ Changes Since 0.3.5
   - Added command-line and config file support for "overrides" setting
     parameter.
   - Added --record-dependencies option & setting.
+  - Added --leave-footnote-reference-space option.
 
 * docutils/io.py:
 
@@ -74,6 +75,8 @@ Changes Since 0.3.5
   - "stylesheet" and "stylesheet_path" settings are now mutually
     exclusive.
   - Added support for the new line_block/line structure.
+  - --footnote-references now overrides
+    --trim-footnote-reference-space, if applicable.
 
 * docutils/writers/latex2e.py:
 
@@ -82,6 +85,8 @@ Changes Since 0.3.5
   - Added option "font-encoding", made package AE the default.
   - "stylesheet" and "stylesheet_path" settings are now mutually
     exclusive.
+  - --footnote-references now overrides
+    --trim-footnote-reference-space, if applicable.
 
 * docs/ref/docutils.dtd:
 
