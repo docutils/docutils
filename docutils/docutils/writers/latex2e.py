@@ -644,6 +644,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         ## stylesheet is last: so it might be possible to overwrite defaults.
         stylesheet = utils.get_stylesheet_reference(settings)
         if stylesheet:
+            settings.record_dependencies.add(stylesheet)
             self.head_prefix.append(self.stylesheet % (stylesheet))
 
         if self.linking: # and maybe check for pdf
