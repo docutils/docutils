@@ -324,9 +324,10 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
           'system messages (at or above <level>) were generated.  Levels as '
           'in --report.  Default is 5 (disabled).  Exit status is the maximum '
           'system message level plus 10 (11 for INFO, etc.).',
-          ['--exit'], {'choices': threshold_choices, 'dest': 'exit_level',
-                       'default': 5, 'metavar': '<level>',
-                       'validator': validate_threshold}),
+          ['--exit-status'], {'choices': threshold_choices,
+                              'dest': 'exit_status_level',
+                              'default': 5, 'metavar': '<level>',
+                              'validator': validate_threshold}),
          ('Report debug-level system messages and generate diagnostic output.',
           ['--debug'], {'action': 'store_true', 'validator': validate_boolean}),
          ('Do not report debug-level system messages or generate diagnostic '
