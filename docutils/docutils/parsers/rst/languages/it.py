@@ -81,6 +81,6 @@ roles = {
       'riferimento-sostituzione': 'substitution-reference',
       'destinazione': 'target',
       'riferimento-uri': 'uri-reference',
-      'raw (translation required)': 'raw',}
+      'grezzo': 'raw',}
 """Mapping of Italian role names to canonical role names for interpreted text.
 """

@@ -80,6 +80,6 @@ roles = {
       u'substitution-reference (translation required)': 'substitution-reference',
       u'target (translation required)': 'target',
       u'uri-reference (translation required)': 'uri-reference',
-      u'raw (translation required)': 'raw',}
+      u'r\u00e5': 'raw',}
 """Mapping of Swedish role names to canonical role names for interpreted text.
 """
