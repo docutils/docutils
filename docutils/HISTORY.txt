@@ -14,6 +14,13 @@
 Changes Since 0.3.7
 ===================
 
+* General:
+
+  - Eliminated and replaced all uses of the old string attributes
+    ``id``, ``name``, ``dupname`` and ``class`` with references to the
+    new list attributes ``ids``, ``names``, ``dupnames`` and
+    ``classes`` throughout the whole source tree.
+
 * docutils/core.py:
 
   - Enabled ``--dump-*`` options when ``--traceback`` specified,
@@ -29,6 +36,10 @@ Changes Since 0.3.7
 
   - ``image`` element class changed to subclass of Element, not
     TextElement (it's an empty element, and cannot contain text).
+  - Added ``attr_defaults`` dictionary for default attribute values.
+  - Added empty list as default value for the following attributes:
+    ``ids``, ``names``, ``dupnames``, ``classes`` for Element nodes,
+    and additionally ``backrefs`` for BackLinkable nodes.
 
 * docutils/languages/nl.py: Added to project; Dutch mappings by
   Martijn Pieters.
@@ -76,9 +87,12 @@ Changes Since 0.3.7
 
 * docutils/transforms/references.py:
 
-  - Fixed mislocated internal targets bug, by relocating targets
-    followed by a section into the title of that section.
+  - Fixed mislocated internal targets bug, by propagating internal
+    targets to the next node, making use of the newly added support
+    for multiple names and IDs.
   - Fixed duplicate footnote label bug.
+  - Replaced ``ChainedTargets`` with more generic ``PropagateTargets``
+    transform.
 
 * docutils/writers/html4css1.py:
 
@@ -86,6 +100,8 @@ Changes Since 0.3.7
     stylesheet references).
   - ``target`` nodes now appear as ``span`` tags (instead of ``a``
     tags).
+  - Added support for multiple IDs per node by creating empty ``span``
+    tags.
 
 * docutils/writers/latex2e.py:
 
