@@ -22,6 +22,7 @@ directives = {
       'note (translation required)': 'note',
       'tip (translation required)': 'tip',
       'warning (translation required)': 'warning',
+      'sidebar (translation required)': 'sidebar',
       'topic (translation required)': 'topic',
       'line-block (translation required)': 'line-block',
       'parsed-literal (translation required)': 'parsed-literal',

@@ -185,6 +185,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.compact_p = 1
         self.compact_simple = None
         self.in_docinfo = None
+        self.in_sidebar = None
 
     def get_stylesheet_reference(self, relative_to=None):
         settings = self.settings
@@ -907,6 +908,14 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_section(self, node):
         self.section_level -= 1
         self.body.append('</div>\n')
+
+    def visit_sidebar(self, node):
+        self.body.append(self.starttag(node, 'div', CLASS='sidebar'))
+        self.in_sidebar = 1
+
+    def depart_sidebar(self, node):
+        self.body.append('</div>\n')
+        self.in_sidebar = None
 
     def visit_status(self, node):
         self.visit_docinfo_item(node, 'status', meta=None)

@@ -21,6 +21,7 @@ directives = {
       u'notera': 'note',
       u'tips': 'tip',
       u'varning': 'warning',
+      u'sidebar (translation required)': 'sidebar',
       u'\u00e4mne': 'topic',
       'line-block (translation required)': 'line-block',
       'parsed-literal (translation required)': 'parsed-literal',

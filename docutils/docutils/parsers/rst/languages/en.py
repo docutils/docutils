@@ -22,6 +22,7 @@ directives = {
       'note': 'note',
       'tip': 'tip',
       'warning': 'warning',
+      'sidebar': 'sidebar',
       'topic': 'topic',
       'line-block': 'line-block',
       'parsed-literal': 'parsed-literal',

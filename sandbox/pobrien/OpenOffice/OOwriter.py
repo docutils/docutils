@@ -36,9 +36,11 @@ class Writer(writers.Writer):
     supported = ('OpenOffice')
     """Formats this writer supports."""
 
+    output = None
+    """Final translated form of `document`."""
+
     def __init__(self):
         writers.Writer.__init__(self)
-        self.output = None
         self.translator_class = Translator
 
     def translate(self):
@@ -78,6 +80,7 @@ class Translator(nodes.NodeVisitor):
         self.newSection = False
 
     def astext(self):
+        """Return the final formatted document as a string."""
         return ''.join(self.header + self.body + self.footer)
 
     def encode(self, text):
@@ -359,6 +362,7 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.context.pop())
 
     def visit_figure(self, node):
+##        self.body.append('\n<text:p text:style-name=".body"/>')
         self.body.append(self.start_para % '.figure')
 
     def depart_figure(self, node):
@@ -439,6 +443,7 @@ class Translator(nodes.NodeVisitor):
             OOtext.pictures.append((name, OOtext.m_tif_format % name))
         else:
             print '*** Image type not recognized ***', repr(name)
+        #self.body.append('<text:line-break/>\n')
         self.body.append('<draw:image draw:style-name="image"\n')
         self.body.append('draw:name="%s"\n' % name)
         self.body.append('text:anchor-type="char"\n')
@@ -512,8 +517,8 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.end_charstyle)
 
     def visit_literal_block(self, node):
-        self.body.append(self.start_para % '.code first')
-        self.body.append(self.end_para)
+##         self.body.append(self.start_para % '.code first')
+##         self.body.append(self.end_para)
         lines = self.encode(node.astext())
         lines = lines.split('\n')
         while lines[-1] == '':
@@ -524,8 +529,8 @@ class Translator(nodes.NodeVisitor):
             line = self.compress_spaces(line)
             self.body.append(line)
             self.body.append(self.end_para)
-        self.body.append(self.start_para % '.code last')
-        self.body.append(self.end_para)
+##         self.body.append(self.start_para % '.code last')
+##         self.body.append(self.end_para)
         raise nodes.SkipNode
 
     def visit_note(self, node):
