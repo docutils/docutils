@@ -164,8 +164,8 @@ Specification
 PEPs (Python Enhancement Proposals)
 -----------------------------------
 
-- `PEP 287: reStructuredText Standard Docstring Format`__ proposes a
-  standard markup syntax.  [`PEP 287`__ in the `master repository`_]
+- `PEP 287: reStructuredText Docstring Format`__ proposes a standard
+  markup syntax.  [`PEP 287`__ in the `master repository`_]
 - `PEP 257: Docstring Conventions`__ addresses docstring style and
   touches on content.  [`PEP 257`__ in the `master repository`_]
 - `PEP 256: Docstring Processing System Framework`__ presents a
