@@ -31,6 +31,7 @@ Exports the following:
     - `SimpleTableParserTestCase`
     - `WriterPublishTestCase`
     - `LatexWriterPublishTestCase`
+    - `PseudoXMLWriterPublishTestCase`
     - `HtmlWriterPublishTestCase`
     - `PublishTestSuite`
     - `HtmlFragmentTestSuite`
