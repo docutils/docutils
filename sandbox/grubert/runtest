@@ -37,7 +37,7 @@ for INF in `ls test/$FM` ; do
   do_diff $REFF $OUTF 
 done
 
-if [ -n "$1" ] ; then
+if [ -n "$1" -a ! "$1" == "-" ] ; then
   report
   exit
 fi
@@ -47,8 +47,6 @@ OUTF="$INF-de.tex"
 REFF="$OUTF.ref"
 $CMD -l de $INF > $OUTF
 do_diff $REFF $OUTF 
-
-exit
 
 INF=test/tools.txt
 OUTF="$INF-ltoc.tex"

@@ -1183,12 +1183,17 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.unimplemented_visit(node)
 
     def visit_subtitle(self, node):
-        self.title = self.title + \
+        if isinstance(node.parent, nodes.sidebar):
+            self.body.append('~\\\\\n\\textbf{')
+            self.context.append('}\n\\smallskip\n')
+        else:
+            self.title = self.title + \
                 '\\\\\n\\large{%s}\n' % self.encode(node.astext()) 
-        raise nodes.SkipNode
+            raise nodes.SkipNode
 
     def depart_subtitle(self, node):
-        pass
+        if isinstance(node.parent, nodes.sidebar):
+            self.body.append(self.context.pop())
 
     def visit_system_message(self, node):
         if node['level'] < self.document.reporter['writer'].report_level:
@@ -1317,6 +1322,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('\\subsection*{~\\hfill ')
             # the closing brace for subsection.
             self.context.append('\\hfill ~}\n')
+        elif isinstance(node.parent, nodes.sidebar):
+            self.body.append('\\textbf{\\large ')
+            self.context.append('}\n\\smallskip\n')
         elif self.section_level == 0:
             # document title
             self.title = self.encode(node.astext())
@@ -1348,8 +1356,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_title(self, node):
         self.body.append(self.context.pop())
+        if isinstance(node.parent, nodes.sidebar):
+            return
         # BUG level depends on style.
-        if node.parent.hasattr('id') and not self.use_latex_toc:
+        elif node.parent.hasattr('id') and not self.use_latex_toc:
             # pdflatex allows level 0 to 3
             # ToC would be the only on level 0 so i choose to decrement the rest.
             # "Table of contents" bookmark to see the ToC. To avoid this
