@@ -1872,7 +1872,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.bookmark(node)
             # BUG: latex chokes on center environment with "perhaps a missing item".
             # so we use hfill.
-            self.body.append('\\subsection*{~\\hfill ')
+            self.body.append('\\subsubsection*{~\\hfill ')
             # the closing brace for subsection.
             self.context.append('\\hfill ~}\n')
         # TODO: for admonition titles before the first section
@@ -1916,6 +1916,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('\\tableofcontents\n\n\\bigskip\n')
             self.topic_class = ''
             raise nodes.SkipNode
+
+    def visit_inline(self, node): # titlereference
+        self.body.append( '\\docutilsrole%s{' % node.get('class'))
+
+    def depart_inline(self, node):
+        self.body.append( '}' )
 
     def depart_topic(self, node):
         self.topic_class = ''
