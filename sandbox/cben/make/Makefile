@@ -1,6 +1,6 @@
 # .. -*- Makefile -*-
 
-# This makefile pertains build documention about ``Makefile.docutils`` only.
+# This makefile only builds documention for ``Makefile.docutils`` (which see).
 
 DOCS = Makefile.docutils.txt README.txt
 ALL = html
