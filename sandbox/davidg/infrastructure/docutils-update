@@ -20,9 +20,6 @@
 # exit on error
 set -e
 
-# be nice
-renice 15 $$ > /dev/null || true
-
 # make all newly created files group writeable
 umask 002
 
