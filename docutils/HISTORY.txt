@@ -74,6 +74,9 @@ Specific:
   - Reworked I/O model for ``docutils.io`` wrappers.
   - Updated ``Publisher.set_options()``; now returns option values
     object.
+  - Added support for configuration files (/etc/docutils.conf,
+    ./docutils.conf, ~/.docutils).
+  - Added ``Publisher.setup_option_parser()``.
 
 * docutils/frontend.py: Added to project; support for front-end
   (command-line) scripts.  Option specifications may be augmented by
@@ -246,6 +249,9 @@ Specific:
 
   - Changed the title to "The Docutils Document Tree".
   - Added "Hyperlink Bookkeeping" section.
+
+* spec/docutils.conf: Added to project.  Not a spec itself, but a
+  configuration file for Docutils processing of the specs.
 
 * spec/docutils.dtd:
 
