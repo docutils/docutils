@@ -17,7 +17,7 @@ tmp=$projdir/tmp/$project
 pylib=$projdir/lib/python
 lib=$pylib/$project
 
-export CVS_RSH=ssh 
+export CVS_RSH=ssh
 export CVSROOT=:pserver:anonymous@cvs1:/cvsroot/$project
 
 trace=0
@@ -27,7 +27,7 @@ while getopts ptu opt
 do
     case $opt in
         p)  export PYTHONPATH=$pylib:$lib;;
-		t)  trace=1;;
+        t)  trace=1;;
         u)  unconditional=1;;
         \?) exit 2;;
     esac
@@ -35,7 +35,7 @@ done
 shift `expr $OPTIND - 1`
 
 if [ $trace -eq 1 ] ; then
-	set -o xtrace
+    set -o xtrace
 fi
 
 # prep the tmp area
