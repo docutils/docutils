@@ -199,6 +199,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.pdfinfo = None
         self.head = []
         self.body_prefix = ['\\raggedbottom\n']
+        # separate title, so we can appen subtitle.
+        self.title = ""
         self.body = []
         self.body_suffix = ['\n']
         self.section_level = 0
@@ -236,7 +238,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             pdfinfo = '\\hypersetup{\n' + ',\n'.join(self.pdfinfo) + '\n}\n'
         else:
             pdfinfo = ''
-        return ''.join(self.head_prefix + self.head + [pdfinfo]
+        title = '\\title{%s}\n' % self.title    
+        return ''.join(self.head_prefix + [title] + self.head + [pdfinfo]
                        + self.body_prefix  + self.body + self.body_suffix)
 
     def visit_Text(self, node):
@@ -708,6 +711,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_meta(self, node):
         self.body.append('[visit_meta]\n')
+        # BUG maybe set keywords for pdf
         ##self.head.append(self.starttag(node, 'meta', **node.attributes))
 
     def depart_meta(self, node):
@@ -847,8 +851,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.unimplemented_visit(node)
 
     def visit_subtitle(self, node):
-        self.head.append('\\subtitle{%s}\n' %
-                self.encode(node.astext()) )
+        self.title = self.title + \
+                '\\\\\n\\large{%s}\n' % self.encode(node.astext()) 
         raise nodes.SkipNode
 
     def depart_subtitle(self, node):
@@ -936,7 +940,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('\\paragraph{')
         elif self.section_level == 0:
             # document title
-            self.head.append('\\title{%s}\n' % self.encode(node.astext()))
+            self.title = self.encode(node.astext())
             if not self.pdfinfo == None:
                 self.pdfinfo.append( 'pdftitle={%s}' % self.encode(node.astext()) )
             raise nodes.SkipNode
