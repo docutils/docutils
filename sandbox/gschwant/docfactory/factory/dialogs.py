@@ -122,7 +122,7 @@ class projectSettingsDlg(wxDialog):
         self.dirCtrl    = wxTextCtrl(self.df, exitID,
                                      pos = wxPoint(96, 40),
                                      size = wxSize(240, 21))
-        self.dirCtrl.SetHelpText('This is the project's default ' + \
+        self.dirCtrl.SetHelpText('This is the default ' + \
                                  'directory for output-files.')
         exitID = wxNewId()
         self.btnSelDir  = wxButton(self.df, exitID, 'Select',
