@@ -73,7 +73,7 @@ class Writer(writers.Writer):
 
     cmdline_options = (
         'LaTeX-Specific Options',
-        None,
+        'The LaTeX "--output-encoding" default is "latin-1".',
         (('Specify documentclass.  Default is "article".',
           ['--documentclass'],
           {'default': 'article', }),
@@ -83,6 +83,8 @@ class Writer(writers.Writer):
           {'choices': ['superscript', 'brackets'], 'default': 'brackets',
            'metavar': '<FORMAT>'}),
           ))
+
+    option_default_overrides = {'output_encoding': 'latin-1'}
 
     output = None
     """Final translated form of `document`."""
@@ -123,7 +125,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     # use latex tableofcontents or let docutils do it.
     # BUG: not tested.
-    latex_toc = 1
+    latex_toc = 0
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
