@@ -419,7 +419,7 @@ Here's the question in full:
         <p>Yeah, imagine me, I'm stuck at H3!</p>
         ...
 
-    What gives? 
+    What gives?
 
 Check the "class" attribute on the H1 tags, and you will see a
 difference.  The first H1 is actually ``<h1 class="title">``; this is
@@ -439,7 +439,15 @@ beyond the single document title.
 HTML is being used for dumb formatting for nothing but final display.
 A stylesheet *is required*, and one is provided:
 tools/stylesheets/default.css.  Of course, you're welcome to roll your
-own.
+own.  The default stylesheet provides rules to format ``<h1
+class="title">`` and ``<h2 class="subtitle">`` differently from
+ordinary ``<h1>`` and ``<h2>``::
+
+    h1.title {
+      text-align: center }
+
+    h2.subtitle {
+      text-align: center }
 
 (Thanks to Mark McEahern for the question and much of the answer.)
 
