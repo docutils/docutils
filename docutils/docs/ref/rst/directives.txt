@@ -148,12 +148,15 @@ The following options are recognized:
 ``scale`` : integer
     The uniform scaling factor of the image, a percentage (but no "%"
     symbol is required or allowed).  "100" means full-size.
-``align`` : keyword 
-    The alignment of the image. Allowed values are "top", "middle" and 
-    "bottom" which control the vertical alignment (relative to the text
-    baseline) in addition to "left", "center" and "right" which control 
-    the horizontal alignment (allowing you to float the image, having the
-    text flow around it).
+``align`` : "top", "middle", "bottom", "left", "center", or "right"
+    The alignment of the image, equivalent to the HTML ``<img>`` tag's
+    "align" attribute.  The values "top", "middle", and "bottom"
+    control an image's vertical alignment (relative to the text
+    baseline); they are only useful for inline images (substitutions).
+    The values "left", "center", and "right" control an image's
+    horizontal alignment, allowing the image to float and have the
+    text flow around it.  The specific behavior depends upon the
+    browser or rendering software used.
 
 
 Figure
