@@ -283,6 +283,8 @@ latex_headings = {
               '}{\\end{list}}\n',
               ],
         'lineblock_environment' : [
+            '\\newlength{\\lineblockindentation}\n'
+            '\\setlength{\\lineblockindentation}{2.5em}\n'
             '\\newenvironment{lineblock}[1]\n'
             '{\\begin{list}{}\n'
             '  {\\setlength{\\partopsep}{\\parskip}\n'
@@ -1522,7 +1524,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_line_block(self, node):
         if isinstance(node.parent, nodes.line_block):
-            self.body.append('\\item[] \n\\begin{lineblock}{1.5em}\n')
+            self.body.append('\\item[] \n'
+                             '\\begin{lineblock}{\\lineblockindentation}\n')
         else:
             self.body.append('\n\\begin{lineblock}{0em}\n')
 
