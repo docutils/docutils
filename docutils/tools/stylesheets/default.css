@@ -52,6 +52,11 @@ div.field-list {
 div.figure {
   margin-left: 2em }
 
+div.footer, div.header {
+  font-size: smaller ;
+  font-style: italic ;
+  text-align: center }
+
 div.system-messages {
   margin: 5em }
 
