@@ -25,7 +25,8 @@ import sys
 import os
 import re
 import xml.dom.minidom
-from types import IntType, SliceType, StringType, TupleType, ListType
+from types import IntType, SliceType, StringType, UnicodeType, \
+     TupleType, ListType
 from UserString import MutableString
 
 
@@ -298,7 +299,7 @@ class Element(Node):
         return len(self.children)
 
     def __getitem__(self, key):
-        if isinstance(key, StringType):
+        if isinstance(key, UnicodeType) or isinstance(key, StringType):
             return self.attributes[key]
         elif isinstance(key, IntType):
             return self.children[key]
@@ -310,8 +311,8 @@ class Element(Node):
                               'an attribute name string')
 
     def __setitem__(self, key, item):
-        if isinstance(key, StringType):
-            self.attributes[key] = item
+        if isinstance(key, UnicodeType) or isinstance(key, StringType):
+            self.attributes[str(key)] = item
         elif isinstance(key, IntType):
             item.parent = self
             self.children[key] = item
@@ -325,7 +326,7 @@ class Element(Node):
                               'an attribute name string')
 
     def __delitem__(self, key):
-        if isinstance(key, StringType):
+        if isinstance(key, UnicodeType) or isinstance(key, StringType):
             del self.attributes[key]
         elif isinstance(key, IntType):
             del self.children[key]

@@ -237,7 +237,7 @@ def extract_attributes(field_list):
         if len(field) != 2:
             raise BadAttributeError(
                   'extension attribute field may not contain field arguments')
-        name = field[0].astext().lower()
+        name = str(field[0].astext().lower())
         body = field[1]
         if len(body) == 0:
             data = None
@@ -275,7 +275,7 @@ def assemble_attribute_dict(attlist, attspec):
         try:
             attributes[name] = convertor(value)
         except (ValueError, TypeError), detail:
-            raise detail.__class__('(attribute "%s", value "%r") %s'
+            raise detail.__class__('(attribute "%s", value "%s") %s'
                                    % (name, value, detail))
     return attributes
 
