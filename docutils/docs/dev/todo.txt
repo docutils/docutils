@@ -977,7 +977,7 @@ references, which will be processed by the various Writers.  No Writer
 will need to have any knowledge of the Python-Reader origin of these
 elements.
 
-* @@@ Add interpreted text support code.
+* Add interpreted text support code. (Done)
 
   Ideally and eventually, the "interpreted" element will disappear
   from the Docutils doctree.  In its place will be a customizable set
@@ -1504,6 +1504,19 @@ Release Checklist
     - docutils/__init__.py
 
   + web: index.txt
+
+* Run the test suite: ``cd test ; alltests.py``.
+
+* Create the release tarball.  (@@@ Expand this.)
+
+* Expand and install the release tarball in isolation (no PYTHONPATH,
+  clear out old installation, etc.).
+
+* Run the test suite from the expanded archive directory: ``cd test ;
+  alltests.py``.
+
+* Run ``cd tools ; buildhtml.py ..`` to confirm that there are no
+  major problems with the docs.
 
 
 ..
