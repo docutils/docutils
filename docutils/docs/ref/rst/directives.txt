@@ -212,6 +212,9 @@ The following attributes are recognized:
     Generate a local table of contents.  Entries will only include
     subsections of the section in which the directive is given.  If no
     explicit title is given, the table of contents will not be titled.
+``backlinks`` : "entry" or "top" or "none"
+    Generate links from section headers back to the table of contents
+    entries, the table of contents itself, or generate no backlinks.
 
 
 Footnotes
