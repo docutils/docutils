@@ -108,7 +108,11 @@ class Parser(docutils.parsers.Parser):
           {'metavar': '<width>', 'type': 'int', 'default': 8}),
          ('Remove spaces before footnote references.',
           ['--trim-footnote-reference-space'],
-          {'action': 'store_true', 'validator': frontend.validate_boolean}),))
+          {'action': 'store_true', 'validator': frontend.validate_boolean}),
+         ('Leave spaces before footnote references.',
+          ['--leave-footnote-reference-space'],
+          {'action': 'store_false', 'dest': 'trim_footnote_reference_space',
+           'validator': frontend.validate_boolean}),))
 
     config_section = 'restructuredtext parser'
     config_section_dependencies = ('parsers',)
