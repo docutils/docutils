@@ -14,16 +14,18 @@ Acknowledgements
 
 I would like to acknowledge the people who have made a direct impact
 on the Docutils project, knowingly or not, in terms of encouragement,
-suggestions, criticism, bug reports, code contributions, and related
-projects:
+suggestions, criticism, bug reports, code contributions, tasty treats,
+and related projects:
 
     David Ascher, Fred Drake, Jim Fulton, Peter Funk, Doug Hellmann,
-    Juergen Hermann, Tony Ibbs, Richard Jones, Garth Kidd, Daniel
-    Larsson, Marc-Andre Lemburg, Wolfgang Lipp, Edward Loper, Ken
-    Manheimer, Paul Moore, Michel Pelletier, Sam Penrose, Tim Peters,
-    Mark Pilgrim, Tavis Rudd, Ueli Schlaepfer, Bob Tolbert, Laurence
-    Tratt, Guido van Rossum, Barry Warsaw, Edward Welbourne, Ka-Ping
-    Yee, Moshe Zadka
+    Juergen Hermann, Tony Ibbs, Alan Jaffray, Richard Jones, Garth
+    Kidd, Daniel Larsson, Marc-Andre Lemburg, Wolfgang Lipp, Edward
+    Loper, Ken Manheimer, Paul Moore, Michel Pelletier, Sam Penrose,
+    Tim Peters, Mark Pilgrim, Tavis Rudd, Ueli Schlaepfer, Bob
+    Tolbert, Laurence Tratt, Guido van Rossum, Barry Warsaw, Edward
+    Welbourne, Ka-Ping Yee, Moshe Zadka
+
+Thank you!
 
 (I'm still waiting for contributions of computer equipment and cold
 hard cash :-).)  Hopefully I haven't forgotten anyone or misspelled
@@ -39,6 +41,11 @@ General:
   "component" will be used to mean "Docutils component", as in Reader,
   Writer, Parser, or Transform.  Portions of documents (Table of
   Contents, sections, etc.)  will be called "document parts".
+
+- Did a grand renaming: a lot of ``verylongnames`` became
+  ``very_long_names``.
+
+Specific:
 
 * docutils/__init__.py:
 
