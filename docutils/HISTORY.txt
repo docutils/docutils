@@ -431,8 +431,9 @@ Specific:
 * docutils/writers/latex2e.py: LaTeX Writer, added by Engelbert Gruber
   (from the sandbox).
 
-  - add french.
+  - Added french.
   - Double quotes in literal blocks (special treatment for de/ngerman).
+  - Added '--hyperlink-color' option ('0' turns off coloring of links).
 
 * docutils/writers/pep_html.py:
 
