@@ -228,24 +228,6 @@ def class_directive(name, arguments, options, content, lineno,
 class_directive.arguments = (1, 0, 0)
 class_directive.content = 1
 
-def directive_test_function(name, arguments, options, content, lineno,
-                            content_offset, block_text, state, state_machine):
-    if content:
-        text = '\n'.join(content)
-        info = state_machine.reporter.info(
-            'Directive processed. Type="%s", arguments=%r, options=%r, '
-            'content:' % (name, arguments, options),
-            nodes.literal_block(text, text), line=lineno)
-    else:
-        info = state_machine.reporter.info(
-            'Directive processed. Type="%s", arguments=%r, options=%r, '
-            'content: None' % (name, arguments, options), line=lineno)
-    return [info]
-
-directive_test_function.arguments = (0, 1, 1)
-directive_test_function.options = {'option': directives.unchanged_required}
-directive_test_function.content = 1
-
 def role(name, arguments, options, content, lineno,
          content_offset, block_text, state, state_machine):
     """Dynamically create and register a custom interpreted text role."""
@@ -264,3 +246,22 @@ def role(name, arguments, options, content, lineno,
 
 role.arguments = (1, 0, 0)
 role.options = {'class': directives.class_option}
+
+def directive_test_function(name, arguments, options, content, lineno,
+                            content_offset, block_text, state, state_machine):
+    """This directive is useful only for testing purposes."""
+    if content:
+        text = '\n'.join(content)
+        info = state_machine.reporter.info(
+            'Directive processed. Type="%s", arguments=%r, options=%r, '
+            'content:' % (name, arguments, options),
+            nodes.literal_block(text, text), line=lineno)
+    else:
+        info = state_machine.reporter.info(
+            'Directive processed. Type="%s", arguments=%r, options=%r, '
+            'content: None' % (name, arguments, options), line=lineno)
+    return [info]
+
+directive_test_function.arguments = (0, 1, 1)
+directive_test_function.options = {'option': directives.unchanged_required}
+directive_test_function.content = 1
