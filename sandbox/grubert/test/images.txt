@@ -17,3 +17,9 @@ center and scale
    :align: center
 
 
+an image with a web target
+
+.. image:: debian.png
+   :target: http://www.debian.org
+
+
