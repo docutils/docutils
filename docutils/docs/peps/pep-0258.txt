@@ -223,13 +223,17 @@ Writers produce the final output (HTML, XML, TeX, etc.).  Writers
 translate the internal document tree structure into the final data
 format, possibly running Writer-specific transforms_ first.
 
+By the time the document gets to the Writer, it should be in final
+form.  The Writer's job is simply (and only) to translate from the
+Docutils doctree structure to the target format.  Some small
+transforms may be required, but they should be local and
+format-specific.
+
 Each writer is a module or package exporting a "Writer" class with a
 "write" method.  The base "Writer" class can be found in the
 ``docutils/writers/__init__.py`` module.
 
 Responsibilities:
-
-- Run transforms over the doctree(s).
 
 - Translate doctree(s) into specific output formats.
 
