@@ -58,12 +58,12 @@ class Decorations(Transform):
         if options.generator or options.datestamp or options.source_link \
                or options.source_url:
             text = []
-            if options.source_link and options.source or options.source_url:
+            if options.source_link and options._source or options.source_url:
                 if options.source_url:
                     source = options.source_url
                 else:
-                    source = utils.relative_uri(options.destination,
-                                                options.source)
+                    source = utils.relative_uri(options._destination,
+                                                options._source)
                 text.extend([
                     nodes.reference('', 'View document source',
                                     refuri=source),

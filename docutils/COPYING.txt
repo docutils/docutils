@@ -9,11 +9,10 @@
 
 Most of the files included in this project are in the public domain,
 and therefore have no license requirement and no restrictions on
-copying or usage.  The two exceptions are:
+copying or usage.  The exceptions are:
 
-- docutils/optik.py & OptionParser.py, copyright Gregory P. Ward,
-  licensed under the BSD license (which can be found in the source
-  code of optik.py).
+- docutils/optik.py, copyright Gregory P. Ward, licensed under the BSD
+  license (which can be found in the module's source code).
 
 - docutils/roman.py, copyright by Mark Pilgrim, licensed under the
   `Python 2.1.1 license`_.
@@ -31,7 +30,7 @@ license are OSI-approved_ and GPL-compatible_.  Although complicated
 by multiple owners and lots of legalese, the Python license basically
 lets you copy, use, modify, and redistribute files as long as you keep
 the copyright attribution intact, note any changes you make, and don't
-use the owner's name in vain.
+use the owner's name in vain.  The BSD license is similar.
 
 .. _Python 2.1.1 license: http://www.python.org/2.1.1/license.html
 .. _Python 2.2 license: http://www.python.org/2.2/license.html

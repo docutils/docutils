@@ -619,11 +619,6 @@ Front-End Tools
 - Parameterize help text & defaults somehow?  Perhaps a callback?  Or
   initialize ``cmdline_options`` in ``__init__``?
 
-- Write a tool (perhaps ``htmldocs.py`` or ``buildhtml.py``) which
-  generates .html from all the .txt files in the project.  It could
-  even be run by setup.py as a final step!  Once PySource is there,
-  it can build .html from .py as well.
-
 
 Project Policies
 ================

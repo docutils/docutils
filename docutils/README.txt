@@ -15,6 +15,30 @@ experimental; APIs are subject to change at any time.
 .. contents::
 
 
+Releases & Snapshots
+====================
+
+Putting together an official "Release" of Docutils is a significant
+effort, so it isn't done that often.  In the meantime, the CVS
+snapshots always contain the latest code and documentation, usually
+updated within an hour of changes being committed to the repository,
+and usually bug-free:
+
+- Snapshot of Docutils code, tests, documentation, and
+  specifications: http://docutils.sf.net/docutils-snapshot.tgz
+
+- Snapshot of the Sandbox (experimental, contributed code):
+  http://docutils.sf.net/docutils-sandbox-snapshot.tgz
+
+- `Snapshot of web files` (the files that generate the web site):
+  http://docutils.sf.net/docutils-web-snapshot.tgz
+
+To keep up to date on the latest developments, download fresh copies
+of the snapshots regularly.  New functionality is being added weekly,
+sometimes daily.  (There's also the CVS repository, and a mailing list
+for CVS messages.  See the web site for details; address above.)
+
+
 Requirements
 ============
 
@@ -130,11 +154,17 @@ not appear.
 Usage
 =====
 
-Start with the html.py and publish.py front-end tools from the
-unpacked "tools" subdirectory.  Both tools take up to two arguments,
-the source path and destination path, with STDIN and STDOUT being the
-defaults.  Use the "--help" option to the front-end tools for details
-on options and arguments.  See ``docs/tools.txt`` for full
+After unpacking the Docutils package, the following commands will
+generate HTML for all included documentation::
+
+    cd docutils    # or "docutils-X.Y" for official releases
+    tools/buildhtml.py --config=tools/docutils.conf
+
+There are many front-end tools in the unpacked "tools" subdirectory.
+Most tools take up to two arguments, the source path and destination
+path, with STDIN and STDOUT being the defaults.  Use the "--help"
+option to the front-end tools for details on options and arguments.
+See `Docutils Front-End Tools`_ (``docs/tools.txt``) for full
 documentation.
 
 The package modules are continually growing and evolving.  The
@@ -142,6 +172,8 @@ The package modules are continually growing and evolving.  The
 extensive inline documentation (in reStructuredText format of course).
 
 Contributions are welcome!
+
+.. _Docutils Front-End Tools: http://docutils.sf.net/docs/tools.html
 
 
 ..

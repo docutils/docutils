@@ -362,6 +362,9 @@ Specific:
     few lines of code.
   - Added ``locale.setlocale()`` calls to front-end tools.
 
+* tools/buildhtml.py: Added to project; batch-generates .html from all
+  the .txt files in directories and subdirectories.
+
 * tools/default.css:
 
   - Added support for ``header`` and ``footer`` elements.
