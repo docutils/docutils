@@ -166,15 +166,25 @@ be overridden by command-line options or configuration files.  The
 "``tools/stylesheets/pep.css``" stylesheet is intended specifically
 for PEP use.
 
-.. XXX the docutils.conf in spec/ was next to the PEPs.  Now it's
-   gone; there is no docutils.conf in docs/peps/.
-
-The "``docutils.conf``" `configuration file`_ in the "``spec``"
+The "``docutils.conf``" `configuration file`_ in the "``tools``"
 directory of Docutils contains a default setup for use in processing
-the PEP files there (``docs/peps/pep-*.txt``) into HTML.  It specifies a
+the PEP files (``docs/peps/pep-*.txt``) into HTML.  It specifies a
 default template (``tools/pep-html-template``) and a default
 stylesheet (``tools/stylesheets/pep.css``).  See Stylesheets_ above
 for more information.
+
+``pep.py`` can be run from the ``tools`` directory or from the
+``docs/peps/`` directory, by adjusting the settings.  These two sets
+of commands are equivalent::
+
+    cd <path-to-docutils>/tools
+    # This will pick up the "docutils.conf" file automatically:
+    pep.py ../docs/peps/pep-0287.txt ../docs/peps/pep-0287.html
+
+    cd <path-to-docutils>/docs/peps
+    # Must tell the tool where to find the config file:
+    ../../tools/pep.py --config ../../tools/docutils.conf \
+        pep-0287.txt pep-0287.html
 
 
 pep2html.py
