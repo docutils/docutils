@@ -16,7 +16,8 @@ import docutils_difflib
 import pprint
 import warnings
 import unittest
-from docutils import frontend
+from types import StringType
+from docutils import frontend, utils
 from docutils.writers import html4css1
 from docutils.writers import pep_html
 
@@ -52,11 +53,13 @@ class ConfigFileTests(unittest.TestCase):
                 'generator': 1,
                 'no_random': 1,
                 'python_home': 'http://www.python.org',
+                'record_dependencies': 'foo',
                 'source_link': 1,
                 'stylesheet': None,
                 'stylesheet_path': fixpath('data/stylesheets/pep.css'),
                 'template': fixpath('data/pep-html-template')},
         'two': {'generator': 0,
+                'record_dependencies': 'bar',
                 'stylesheet': None,
                 'stylesheet_path': fixpath('data/test.css')},
         'list': {'expose_internals': ['a', 'b', 'c', 'd', 'e']},
@@ -87,6 +90,13 @@ class ConfigFileTests(unittest.TestCase):
 
     def compare_output(self, result, expected):
         """`result` and `expected` should both be dicts."""
+        self.assert_(result.has_key('record_dependencies'))
+        if not expected.has_key('record_dependencies'):
+            # Delete it if we don't want to test it.
+            del result['record_dependencies']
+        elif type(expected['record_dependencies']) == StringType:
+            expected['record_dependencies'] = utils.DependencyList(
+                expected['record_dependencies'])
         result = pprint.pformat(result) + '\n'
         expected = pprint.pformat(expected) + '\n'
         try:
