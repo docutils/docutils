@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 """
-:Author: David Goodger
+:Author: David Goodger, Dmitry Jemerov
 :Contact: goodger@users.sourceforge.net
 :Revision: $Revision$
 :Date: $Date$
@@ -75,3 +75,36 @@ def contents(match, type_name, data, state, state_machine, attributes):
             return [error] + messages, blank_finish
     state_machine.document.note_pending(pending)
     return [pending] + messages, blank_finish
+
+sectnum_attribute_spec = {'depth': int}
+
+def sectnum(match, type_name, data, state, state_machine, attributes):
+    """
+    Parse the `.. sectnum::` directive.
+
+    The following attributes are supported:
+
+     - :depth:
+
+    The attributes can be specified in the lines following the directive,
+    or it is possible to specify one attribute in the same line as the
+    directive itself.
+    """
+    lineno = state_machine.abs_line_number()
+    line_offset = state_machine.line_offset
+    datablock, indent, offset, blank_finish = \
+          state_machine.get_first_known_indented(match.end(), until_blank=1)
+
+    pending = nodes.pending(parts.SectNum, 'last reader', {})
+    success, data, blank_finish = state.parse_extension_attributes(
+          sectnum_attribute_spec, datablock, blank_finish)
+    if success:                     # data is a dict of attributes
+        pending.details.update(data)
+    else:                           # data is an error string
+        error = state_machine.reporter.error(
+              'Error in "%s" directive attributes at line %s:\n%s.'
+              % (match.group(1), lineno, data), '')
+        return [error], blank_finish
+
+    state_machine.document.note_pending(pending)
+    return [pending], blank_finish

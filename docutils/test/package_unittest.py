@@ -84,13 +84,21 @@ def loadTestModules(path, name='', packages=None):
     while paths:
         p = paths.pop(0)
         if not p:
-            p = os.getcwd()
+            p = os.curdir
         files = os.listdir(p)
         for filename in files:
             if filename.startswith(name):
                 fullpath = os.path.join(p, filename)
                 if filename.endswith('.py'):
-                    testModules.append(path2mod(fullpath[len(path)+1:]))
+                    # If the path is empty, we get a module name
+                    # starting with ./ . It means that we need to truncate
+                    # two characters from the start in order to get a
+                    # meaningful module name.
+                    if fullpath[0:2] == '.' + os.sep:
+                        fullpath = fullpath[2:]
+                    else:
+                        fullpath = fullpath[len(path)+1:]
+                    testModules.append(path2mod(fullpath))
                 elif packages and os.path.isdir(fullpath) and \
                       os.path.isfile(os.path.join(fullpath, '__init__.py')):
                     paths.append(fullpath)
