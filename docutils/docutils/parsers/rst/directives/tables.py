@@ -13,7 +13,7 @@ __docformat__ = 'reStructuredText'
 
 import sys
 import os.path
-from docutils import nodes, statemachine, utils
+from docutils import io, nodes, statemachine, utils
 from docutils.utils import SystemMessagePropagation
 from docutils.parsers.rst import directives
 
@@ -154,6 +154,7 @@ csv_table.options = {'header-rows': directives.nonnegative_int,
                      'widths': directives.positive_int_list,
                      'file': directives.path,
                      'url': directives.path,
+                     'encoding': directives.encoding,
                      'class': directives.class_option,
                      # field delimiter char
                      'delim': directives.single_char_or_whitespace_or_unicode,
@@ -180,6 +181,7 @@ def get_csv_data(name, options, content, lineno, block_text,
     CSV data can come from the directive content, from an external file, or
     from a URL reference.
     """
+    encoding = options.get('encoding', state.document.settings.input_encoding)
     if content:                         # CSV data is from directive content
         if options.has_key('file') or options.has_key('url'):
             error = state_machine.reporter.error(
@@ -201,11 +203,9 @@ def get_csv_data(name, options, content, lineno, block_text,
         source = os.path.normpath(os.path.join(source_dir, options['file']))
         source = utils.relative_path(None, source)
         try:
-            csv_file = open(source, 'rb')
-            try:
-                csv_data = csv_file.read().splitlines()
-            finally:
-                csv_file.close()
+            csv_file = io.FileInput(source_path=source, encoding=encoding,
+                                    handle_io_errors=None)
+            csv_data = csv_file.read().splitlines()
         except IOError, error:
             severe = state_machine.reporter.severe(
                   'Problems with "%s" directive path:\n%s.' % (name, error),
@@ -221,13 +221,16 @@ def get_csv_data(name, options, content, lineno, block_text,
             raise SystemMessagePropagation(severe)
         source = options['url']
         try:
-            csv_data = urllib2.urlopen(source).read().splitlines()
+            csv_text = urllib2.urlopen(source).read()
         except (urllib2.URLError, IOError, OSError, ValueError), error:
             severe = state_machine.reporter.severe(
                   'Problems with "%s" directive URL "%s":\n%s.'
                   % (name, options['url'], error),
                   nodes.literal_block(block_text, block_text), line=lineno)
             raise SystemMessagePropagation(severe)
+        csv_file = io.StringInput(source=csv_text, source_path=source,
+                                  encoding=encoding)
+        csv_data = csv_file.read().splitlines()
     else:
         error = state_machine.reporter.warning(
             'The "%s" directive requires content; none supplied.' % (name),
@@ -246,14 +249,18 @@ def process_header_option(options, state_machine, lineno):
     return table_head, max_header_cols
 
 def parse_csv_data_into_rows(csv_data, dialect, source, options):
-    csv_reader = csv.reader(csv_data, dialect=dialect)
+    # csv.py doesn't do Unicode; encode temporarily as UTF-8
+    csv_reader = csv.reader([line.encode('utf-8') for line in csv_data],
+                            dialect=dialect)
     rows = []
     max_cols = 0
     for row in csv_reader:
         row_data = []
         for cell in row:
-            cell_data = (0, 0, 0, statemachine.StringList(cell.splitlines(),
-                                                          source=source))
+            # decode UTF-8 back to Unicode
+            cell_text = unicode(cell, 'utf-8')
+            cell_data = (0, 0, 0, statemachine.StringList(
+                cell_text.splitlines(), source=source))
             row_data.append(cell_data)
         rows.append(row_data)
         max_cols = max(max_cols, len(row))
