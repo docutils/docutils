@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 This module extracts the documentation from a module, and converts
 it into a single reST document.
@@ -26,10 +27,18 @@ You can also force a docstring to be ignored by using
 whose documentation will not be extracted, or other times when
 you want to document the function or class separately from its
 docstring.
+
+TODO
+----
+
+* Allow docstrings to override the normal function argument
+  list (e.g., to hide non-public optional arguments).
+* Some sort of table of contents support.
+
 """
 
 
-import os, re
+import os, re, sys
 from docutils.readers.python import moduleparser
 
 class Document:
@@ -160,7 +169,7 @@ class InlineSubstitution:
             if not nameList:
                 return obj
             if not obj.children.has_key(nameList[0]):
-                if currentNode is rootNode:
+                if currentNode is self.rootNode:
                     raise NameError, '%s not found' % '.'.join(name)
                 else:
                     return self._getChild(name, self.rootNode)
@@ -204,6 +213,8 @@ class Function(Document):
 
     def process_parameter(self, param):
         ## @@: handle defaults, *args, etc.
+        if param.name == 'self':
+            return
         if param.children:
             val = ('default', (param.name, param.children[0].text))
         elif isinstance(param, moduleparser.ExcessPositionalArguments):
@@ -258,11 +269,67 @@ class Class(Document):
 def indent(text, amount=4):
     return '\n'.join([(' '*amount) + line for line in text.split('\n')])
 
+def create_documentation(filename, output):
+    if type(output) is type(""):
+        output = open(output, 'w')
+    mod = Module(filename)
+    doc = mod.documentation()
+    if doc.lower().find(':ignore:') == -1:
+        output.write(mod.documentation())
 
-def main(args):
-    mod = Module(args[0])
-    print mod.documentation()
+########################################
+## Command-line interface
+########################################
+
+def main(options, args):
+    for arg in args:
+        if os.path.isdir(arg) and options.recurse:
+            main(options, [os.path.join(arg, f) for f in os.listdir(arg)])
+            continue
+        if options.recurse and not arg.endswith('.py'):
+            continue
+        filename = os.path.splitext(arg)[0] + ".txt"
+        filename = os.path.join(options.output, filename)
+        filename = os.path.normpath(filename)
+        if not options.quiet:
+            sys.stdout.write('%s -> %s ...' % (os.path.normpath(arg),
+                                               filename))
+            sys.stdout.flush()
+        create_documentation(arg, filename)
+        if not options.quiet:
+            sys.stdout.write('done.\n')
+            sys.stdout.flush()
 
 if __name__ == '__main__':
-    import sys
-    main(sys.argv[1:])
+    try:
+        from optparse import OptionParser
+    except ImportError:
+        from optik import OptionParser
+    parser = OptionParser()
+    parser.add_option('-r', '--recurse',
+                      action="store_true",
+                      dest="recurse",
+                      default=0,
+                      help="recurse into subdirectories")
+    parser.add_option('-o', '--output',
+                      dest="output",
+                      help="write documentation to FILE (or directory)",
+                      metavar="FILE")
+    parser.add_option('-q', '--quiet',
+                      dest="quiet",
+                      default=0,
+                      action="store_true",
+                      help="be quiet")
+    (options, args) = parser.parse_args()
+    if len(args) == 1 and options.output \
+           and not os.path.isdir(options.output):
+        if options.output == '-':
+            options.output = sys.stdout
+        create_documentation(args[0], options.output)
+    else:
+        if not options.output:
+            options.output = '.'
+        main(options, args)
+
+            
+        
