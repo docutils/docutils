@@ -30,6 +30,14 @@
    \addtolength{\leftmargin}{\labelsep}
    \renewcommand{\makelabel}{\optionlistlabel}}
 }{\end{list}}
+\newenvironment{lineblock}
+{\begin{list}{}
+  {\setlength{\partopsep}{\parskip}
+   \addtolength{\partopsep}{\baselineskip}
+   \topsep0pt\itemsep0.15\baselineskip\parsep0pt
+   \leftmargin2em}
+ \raggedright}
+{\end{list}}
 % begin: floats for footnotes tweaking.
 \setlength{\floatsep}{0.5em}
 \setlength{\textfloatsep}{\fill}
@@ -572,8 +580,75 @@ Or they can be quoted without indentation:
 \pdfbookmark[1]{2.8~~~Line Blocks}{line-blocks}
 \subsection*{2.8~~~Line Blocks}
 
-(To be inserted from line{\_}blocks.txt once the LaTeX writer has
-implemented it.)
+This section tests line blocks.  Line blocks are body elements which
+consist of lines and other line blocks.  Nested line blocks cause
+indentation.
+
+\begin{lineblock}
+\item[] This is a line block.  It ends with a blank line.
+\item[] 
+\begin{lineblock}
+\item[] New lines begin with a vertical bar (``{\textbar}'').
+\item[] Line breaks and initial indent are significant, and preserved.
+\item[] 
+\begin{lineblock}
+\item[] Continuation lines are also possible.  A long line that is intended
+to wrap should begin with a space in place of the vertical bar.
+\end{lineblock}
+\item[] The left edge of a continuation line need not be aligned with
+the left edge of the text above it.
+\end{lineblock}
+\end{lineblock}
+
+\begin{lineblock}
+\item[] This is a second line block.
+\item[] 
+\item[] Blank lines are permitted internally, but they must begin with a ``{\textbar}''.
+\end{lineblock}
+
+Another line block, surrounded by paragraphs:
+
+\begin{lineblock}
+\item[] And it's no good waiting by the window
+\item[] It's no good waiting for the sun
+\item[] Please believe me, the things you dream of
+\item[] They don't fall in the lap of no-one
+\end{lineblock}
+
+Take it away, Eric the Orchestra Leader!
+\begin{quote}
+
+\begin{lineblock}
+\item[] A one, two, a one two three four
+\item[] 
+\item[] Half a bee, philosophically,
+\item[] 
+\begin{lineblock}
+\item[] must, \emph{ipso facto}, half not be.
+\end{lineblock}
+\item[] But half the bee has got to be,
+\item[] 
+\begin{lineblock}
+\item[] \emph{vis a vis} its entity.  D'you see?
+\item[] 
+\end{lineblock}
+\item[] But can a bee be said to be
+\item[] 
+\begin{lineblock}
+\item[] or not to be an entire bee,
+\item[] 
+\begin{lineblock}
+\item[] when half the bee is not a bee,
+\item[] 
+\begin{lineblock}
+\item[] due to some ancient injury?
+\item[] 
+\end{lineblock}
+\end{lineblock}
+\end{lineblock}
+\item[] Singing...
+\end{lineblock}
+\end{quote}
 
 
 %___________________________________________________________________________
