@@ -249,9 +249,9 @@ class Class(Document):
 
     def documentation(self):
         if self.bases:
-            base = 'class %s(%s):' % (self.name, self.bases)
+            base = 'class `%s(%s)`:' % (self.name, self.bases)
         else:
-            base = 'class %s:' % self.name
+            base = 'class `%s`:' % self.name
         return base + "\n" + indent(Document.documentation(self))
 
 
