@@ -685,13 +685,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.use_verbatim_for_literal = 1
         if (self.use_verbatim_for_literal):
             self.body.append('\\begin{verbatim}\n')
+            self.body.append(node.astext())
+            self.body.append('\n\\end{verbatim}\n')
+            raise nodes.SkipNode
         else:
             self.body.append('{\\obeylines\\obeyspaces\\ttfamily\n')
 
     def depart_literal_block(self, node):
-        if (self.use_verbatim_for_literal):
-            self.body.append('\\end{verbatim}\n')
-        else:
+        if not self.use_verbatim_for_literal:
             self.body.append('}\n')
 
     def visit_meta(self, node):

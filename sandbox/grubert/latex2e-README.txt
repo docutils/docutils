@@ -1,12 +1,16 @@
 latex2e BUGS TODOS and other animals
 ------------------------------------
 
-Rev. 2002-10-01
+Rev. 2002-10-15
 
 To do
 ~~~~~
 
 * check indentation in verbatim is right.
+
+* authors is handled wrong.
+
+* using astext() to get text into verbatim, removes reST markups.
 
 * additional docinfo items: the field_body is inserted as text.
 
