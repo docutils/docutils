@@ -25,7 +25,7 @@ you'd like to tackle, please do!
 Bugs
 ----
 
-- The "contents" directive now automatically names the "topic"
+* The "contents" directive now automatically names the "topic"
   produced (using its title), so that it can be referred to by name.
   However, this naming happens late in the game, after most references
   have been resolved.  So the following indirect target produces a
@@ -40,7 +40,7 @@ Bugs
   Idea: two-pass hyperlink resolution, ignoring errors on the first
   pass?
 
-- The parser doesn't know anything about double-width characters such
+* The parser doesn't know anything about double-width characters such
   as Chinese hanza & Japanese kanji/kana.  Also, it's dependent on
   whitespace and punctuation as markup delimiters, which may not be
   applicable in these languages.
@@ -49,7 +49,7 @@ Bugs
 General
 -------
 
-- Refactor
+* Refactor
 
   - Rename methods & variables according to the `coding conventions`_
     below.
@@ -58,28 +58,28 @@ General
     checked for correctness and refactored.  I'm afraid it's a bit of
     a spaghetti mess now.
 
-- Add validation?  See http://pytrex.sourceforge.net, RELAX NG.
+* Add validation?  See http://pytrex.sourceforge.net, RELAX NG.
 
-- Ask Python-dev for opinions (GvR for a pronouncement) on special
+* Ask Python-dev for opinions (GvR for a pronouncement) on special
   variables (__author__, __version__, etc.): convenience vs. namespace
   pollution.  Ask opinions on whether or not Docutils should recognize
   & use them.
 
-- In reader.get_reader_class (& parser & writer too), should we be
+* In reader.get_reader_class (& parser & writer too), should we be
   importing "standalone" or "docutils.readers.standalone"?  (This would
   avoid importing top-level modules if the module name is not in
   docutils/readers.  Potential nastiness.)
 
-- Perhaps store a name-to-id mapping file?  This could be stored
+* Perhaps store a name-to-id mapping file?  This could be stored
   permanently, read by subsequent processing runs, and updated with
   new entries.  ("Persistent ID mapping"?)
 
-- Need a Unicode to HTML entities codec for HTML writer?
+* Need a Unicode to HTML entities codec for HTML writer?
 
-- Perhaps the ``Component.supports`` method should deal with
+* Perhaps the ``Component.supports`` method should deal with
   individual features ("meta" etc.) instead of formats ("html" etc.)?
 
-- @@@ Transforms need a priority system.  The "first reader" ...
+* @@@ Transforms need a priority system.  The "first reader" ...
   "last writer" system is no longer adequate for pending transforms.
   For example, the ``references.TargetNotes`` transform needs to run
   after ``references.Hyperlinks.resolve_indirect()`` but before
@@ -97,14 +97,14 @@ General
     No, that would require too many imports to construct.  Document
     transform priorities.
 
-- @@@ Break up ``references.Hyperlinks`` into multiple smaller
+* @@@ Break up ``references.Hyperlinks`` into multiple smaller
   transforms.
 
-- Make it easier to say, "Here's a reStructuredText string; give me
+* Make it easier to say, "Here's a reStructuredText string; give me
   HTML."  Maybe ``core.publish_string()``; rename ``core.publish`` to
   ``core.publish_file()``?
 
-- @@@@ All system messages should have a "line" attribute, to improve
+* @@@@ All system messages should have a "line" attribute, to improve
   diagnostic output.  So all elements constructed by the parser should
   have internal "line" ("lineno"/"line_number") attributes.  They'd
   need internal "source" attributes as well (populating the external
@@ -136,7 +136,7 @@ General
     copied over to the node.  Consolidate all assignments (parent,
     document, source, line) into a single method.
 
-- @@@ Change stderr Reporter output to the GNU utilities format::
+* @@@ Change stderr Reporter output to the GNU utilities format::
 
       file:line: message
 
@@ -150,10 +150,10 @@ General
   switched to slashes?  In any case, the ubiquity of the GNU utilities
   probably outweighs any such problem.
 
-- Standalone Reader: Implement an option to turn off the DocTitle
+* Standalone Reader: Implement an option to turn off the DocTitle
   transform?
 
-- Add /usr/etc/docutils.conf to config file list?  System-wide,
+* Add /usr/etc/docutils.conf to config file list?  System-wide,
   whereas /etc/docutils.conf is machine-specific.
   /usr/local/etc/docutils.conf too?  See the `Filesystem Hierarchy
   Standard`_.
@@ -164,34 +164,34 @@ General
 Documentation
 -------------
 
-- User docs.
+* User docs.
 
 
 Implementation Docs
 ```````````````````
 
-- Internal module documentation (docstrings).
+* Internal module documentation (docstrings).
 
-- spec/doctree.txt: DTD element structural relationships, semantics,
+* spec/doctree.txt: DTD element structural relationships, semantics,
   and attributes.
 
-- How a Writer works & how to write one
+* How a Writer works & how to write one
 
-- Howto: Transforms
+* Howto: Transforms
 
-- Howto: Directives
+* Howto: Directives
 
-- Document the ``pending`` elements, how they're generated and when
+* Document the ``pending`` elements, how they're generated and when
   they're triggered ("first reader", "last writer", etc.).
 
-- Document the transforms (perhaps in docstrings?): how they're used,
+* Document the transforms (perhaps in docstrings?): how they're used,
   what they do, dependencies & order considerations.
 
 
 Specification
 `````````````
 
-- Complete PEP 258 Docutils Design Specification.
+* Complete PEP 258 Docutils Design Specification.
 
   - Fill in the blanks in API details.
 
@@ -201,7 +201,7 @@ Specification
         there on how it all hangs together - the DTD is not enough
         (indeed, is it still meant to be correct?  [Yes, it is.]).
 
-- Rework PEP 257, separating style from spec from tools, wrt Docutils?
+* Rework PEP 257, separating style from spec from tools, wrt Docutils?
   See Doc-SIG from 2001-06-19/20.
 
 
@@ -210,15 +210,15 @@ PySource Reader
 
 General:
 
-- Analyze Tony Ibbs' PySource code.
+* Analyze Tony Ibbs' PySource code.
 
-- Analyze Doug Hellmann's HappyDoc project.
+* Analyze Doug Hellmann's HappyDoc project.
 
-- Take the best ideas and integrate them into Docutils 0.3.
+* Take the best ideas and integrate them into Docutils 0.3.
 
 Miscellaneous ideas:
 
-- If we can detect that a comment block begins with ``##``, a la
+* If we can detect that a comment block begins with ``##``, a la
   JavaDoc, it might be useful to indicate interspersed section headers
   & explanatory text in a module.  For example::
 
@@ -239,7 +239,7 @@ Miscellaneous ideas:
 
       # etc.
 
-- HappyDoc's idea of using comment blocks when there's no docstring
+* HappyDoc's idea of using comment blocks when there's no docstring
   may be useful to get around the conflict between `additional
   docstrings`_ and ``from __future__ import`` for module docstrings.
   A module could begin like this::
@@ -260,9 +260,9 @@ Miscellaneous ideas:
 
   .. _additional docstrings: pep-0258.html#additional-docstrings
 
-- Multi-file output should be divisible at arbitrary level.
+* Multi-file output should be divisible at arbitrary level.
 
-- Support all forms of ``import`` statements:
+* Support all forms of ``import`` statements:
 
   - ``import module``: listed as "module"
   - ``import module as alias``: "alias (module)"
@@ -279,22 +279,22 @@ Also see the `... Or Not To Do?`__ list.
 
 __ rst/alternatives.html#or-not-to-do
 
-- Clean up the code; refactor as required.
+* Clean up the code; refactor as required.
 
-- Add motivation sections for constructs in spec.
+* Add motivation sections for constructs in spec.
 
-- Allow very long titles (on two or more lines)?
+* Allow very long titles (on two or more lines)?
 
-- And for the sake of completeness, should definition list terms be
+* And for the sake of completeness, should definition list terms be
   allowed to be very long (two or more lines) also?
 
-- Support generic hyperlink references to targets in other documents?
+* Support generic hyperlink references to targets in other documents?
   Not in an HTML-centric way, though (it's trivial to say
   ``http://www.example.com/doc#name``, and useless in non-HTML
   contexts).  XLink/XPointer?  ``.. baseref::``?  See Doc-SIG
   2001-08-10.
 
-- Add _`character processing`?  For example:
+* Add _`character processing`?  For example:
 
   - ``--`` to em-dash (or ``--`` to en-dash, and ``---`` to em-dash).
     (Look for pre-existing conventions.)
@@ -313,31 +313,31 @@ __ rst/alternatives.html#or-not-to-do
   Which component is responsible for this, the parser, the reader, or
   the writer?
 
-- Implement the header row separator modification to table.el.  (Wrote
+* Implement the header row separator modification to table.el.  (Wrote
   to Takaaki Ota & the table.el mailing list on 2001-08-12, suggesting
   support for "=====" header rows.  On 2001-08-17 he replied, saying
   he'd put it on his to-do list, but "don't hold your breath".)
 
-- Tony says inline markup rule 7 could do with a *little* more
+* Tony says inline markup rule 7 could do with a *little* more
   exposition in the spec, to make clear what is going on for people
   with head colds.
 
-- Alan Jaffray suggested (and I agree) that it would be sensible to:
+* Alan Jaffray suggested (and I agree) that it would be sensible to:
 
   - have a directive to specify a default role for interpreted text
   - allow the reST processor to take an argument for the default role
   - issue a warning when processing documents with no default role
     which contain interpreted text with no explicitly specified role
 
-- Perhaps the default implicit role for interpreted text could be
+* Perhaps the default implicit role for interpreted text could be
   "title", as in, "title of a book".  It'd be a text-only reference,
   no hyperlink.  Idea from Aahz' 2002-05-09 Doc-SIG post.
 
-- @@ Fix the parser's indentation handling to conform with the
+* @@ Fix the parser's indentation handling to conform with the
   stricter definition in the spec.  (Explicit markup blocks should be
   strict or forgiving?)
 
-- @@ Tighten up the spec for indentation of "constructs using complex
+* @@ Tighten up the spec for indentation of "constructs using complex
   markers": field lists and option lists?  Bodies may begin on the
   same line as the marker or on a subsequent line (with blank lines
   optional).  Require that for bodies beginning on the same line as
@@ -367,7 +367,7 @@ __ rst/alternatives.html#or-not-to-do
           the left edge of the first line if it began on the same
           line as the field name.
 
-- Allow for variant styles by interpreting indented lists as if they
+* Allow for variant styles by interpreting indented lists as if they
   weren't indented?  For example, currently the list below will be
   parsed as a list within a block quote::
 
@@ -392,13 +392,13 @@ __ rst/alternatives.html#or-not-to-do
   See the Doc-SIG discussion starting 2001-04-18 with Ed Loper's
   "Structuring: a summary; and an attempt at EBNF", item 4.
 
-- Make the parser modular.  Allow syntax constructs to be added or
+* Make the parser modular.  Allow syntax constructs to be added or
   disabled at run-time.  Or is subclassing enough?
 
-- Continue to report (info, level 1) enumerated lists whose start
+* Continue to report (info, level 1) enumerated lists whose start
   value is not ordinal-1?
 
-- Generalize the "doctest block" construct (which is overly
+* Generalize the "doctest block" construct (which is overly
   Python-centric) to other interactive sessions?  "Doctest block"
   could be renamed to "I/O block" or "interactive block", and each of
   these could also be recognized as such by the parser:
@@ -424,7 +424,7 @@ __ rst/alternatives.html#or-not-to-do
   Tony Ibbs spoke out against this idea (2002-06-14 Doc-SIG thread
   "docutils feedback").
 
-- Generalize the "literal block" construct to allow blocks with a
+* Generalize the "literal block" construct to allow blocks with a
   per-line quoting to avoid indentation?  For example, in this email
   reply quoting the original, the block quoted with "``>``" (and
   prefaced by "``::``") would be treated as a literal block::
@@ -441,7 +441,7 @@ __ rst/alternatives.html#or-not-to-do
   first blank line ends it) where every line begins with the same
   non-alphanumeric non-whitespace character.
 
-- @@@ Decide whether or not to implement Simon Budig's "inline
+* @@@ Decide whether or not to implement Simon Budig's "inline
   external targets" syntax idea, and if so, how?
 
   - As a regular directive affecting its indented text block::
@@ -471,13 +471,13 @@ __ rst/alternatives.html#or-not-to-do
 
   - Or as a full-blown addition to the spec & parser.
 
-- Add support for pragma (syntax-altering) directives.
+* Add support for pragma (syntax-altering) directives.
 
-- Remove leading numbers from section titles for implicit link names?
+* Remove leading numbers from section titles for implicit link names?
   A section titled "3. Conclusion" could then be referred to by
   "``Conclusion_``" (i.e., without the "3.").
 
-- Syntax for the "line-block" directive?  How about a
+* Syntax for the "line-block" directive?  How about a
   literal-block-like prefix, perhaps "``;;``"?  (It is, after all, a
   *semi-literal* literal block, no?)  Example::
 
@@ -509,7 +509,7 @@ __ rst/alternatives.html#or-not-to-do
   (And arguably invalid, since in Japanese the word "haiku" contains
   three syllables.)
 
-- Modify acceptable "simple reference name" syntax to allow for
+* Modify acceptable "simple reference name" syntax to allow for
   ``object.__method__`` without requiring inline literals?  Simple
   reference names currently allow any of "-", "_", and "." internally;
   if we limit this to one at a time, problem solved.  I.e., none of
@@ -520,11 +520,11 @@ __ rst/alternatives.html#or-not-to-do
 Directives
 ``````````
 
-- Allow directives to be added at run-time?
+* Allow directives to be added at run-time?
 
-- Use the language module for directive attribute names?
+* Use the language module for directive attribute names?
 
-- Implement attributes on existing directives:
+* Implement attributes on existing directives:
 
   - _`images.image`: "align", "border"?
 
@@ -567,7 +567,7 @@ Directives
     suppress contents display for sections in a branch from that point
     down.  Or a new directive, like "prune-contents"?
 
-- Implement directives.  Each of the list items below begins with an
+* Implement directives.  Each of the list items below begins with an
   identifier of the form, "module_name.directive_function_name".  The
   directive name itself could be the same as the
   directive_function_name, or it could differ.
@@ -797,9 +797,9 @@ Reference Merging
 When merging two or more subdocuments (such as docstrings),
 conflicting references may need to be resolved.  There may be:
 
-- duplicate reference and/or substitution names that need to be made
+* duplicate reference and/or substitution names that need to be made
   unique; and/or
-- duplicate footnote numbers that need to be renumbered.
+* duplicate footnote numbers that need to be renumbered.
 
 Should this be done before or after reference-resolving transforms
 are applied?  What about references from within one subdocument to
@@ -846,19 +846,19 @@ Index
 HTML Writer
 -----------
 
-- @@ Construct a _`templating system`, as in ht2html/yaptu, using
+* @@ Construct a _`templating system`, as in ht2html/yaptu, using
   directives and substitutions for dynamic stuff.
 
-- Add more support for <link> elements, especially for navigation
+* Add more support for <link> elements, especially for navigation
   bars.
 
-- ``<meta>`` tags should be XML empty tags: ``<meta />``.
+* ``<meta>`` tags should be XML empty tags: ``<meta />``.
 
 
 Front-End Tools
 ---------------
 
-- What about if we don't know which Reader and/or Writer we are
+* What about if we don't know which Reader and/or Writer we are
   going to use?  If the Reader/Writer is specified on the
   command-line?  (Will this ever happen?)
 
@@ -895,12 +895,12 @@ Front-End Tools
   conflicts) to splitting common and component-specific options
   apart.
 
-- Parameterize help text & defaults somehow?  Perhaps a callback?  Or
+* Parameterize help text & defaults somehow?  Perhaps a callback?  Or
   initialize ``cmdline_options`` in ``__init__`` or ``init_options``?
 
-- Disable common options that don't apply?
+* Disable common options that don't apply?
 
-- Implement the "sectnum" directive as a command-line option also?
+* Implement the "sectnum" directive as a command-line option also?
 
 
 Project Policies
@@ -955,19 +955,19 @@ specified in the `Style Guide for Python Code`_ and `Docstring
 Conventions`_ PEPs, with the following clarifications (from most to
 least important):
 
-- 4 spaces per indentation level.  No tabs.  Indent continuation lines
+* 4 spaces per indentation level.  No tabs.  Indent continuation lines
   according to the Emacs python-mode standard.
 
-- No one-liner compound statements (i.e., no ``if x: return``: use two
+* No one-liner compound statements (i.e., no ``if x: return``: use two
   lines & indentation), except for degenerate class or method
   definitions (i.e., ``class X: pass`` is O.K.).
 
-- Lines should be no more than 78 characters long.
+* Lines should be no more than 78 characters long.
 
-- Use "StudlyCaps" for class names (except for element classes in
+* Use "StudlyCaps" for class names (except for element classes in
   docutils.nodes).
 
-- Use "lowercase" or "lowercase_with_underscores" for function,
+* Use "lowercase" or "lowercase_with_underscores" for function,
   method, and variable names.  For short names, maximum two words,
   joined lowercase may be used (e.g. "tagname").  For long names with
   three or more words, or where it's hard to parse the split between
@@ -975,7 +975,7 @@ least important):
   "note_explicit_target", "explicit_target").  If in doubt, use
   underscores.
 
-- Use 'single quotes' for string literals, and """triple double
+* Use 'single quotes' for string literals, and """triple double
   quotes""" for docstrings.
 
 .. _Style Guide for Python Code:
@@ -996,10 +996,10 @@ well.
 Any new files contributed to the project should clearly state their
 intentions regarding copyright, in one of the following ways:
 
-- Public domain (preferred): include the statement "This
+* Public domain (preferred): include the statement "This
   module/document has been placed in the public domain."
 
-- Copyright & open source license: include a copyright notice, along
+* Copyright & open source license: include a copyright notice, along
   with either an embedded license statement, a reference to an
   accompanying license file, or a license URL.
 
@@ -1025,24 +1025,24 @@ in a stable state (usable and as problem-free as possible).  The
 Docutils project shall follow the `Python Check-in Policies`_ (as
 applicable), with particular emphasis as follows:
 
-- Before checking in any changes, run the entire Docutils test suite
+* Before checking in any changes, run the entire Docutils test suite
   to be sure that you haven't broken anything.  From a shell::
 
       cd docutils/test
       alltests.py
 
-- When adding new functionality (or fixing bugs), be sure to add test
+* When adding new functionality (or fixing bugs), be sure to add test
   cases to the test suite.  Practise test-first programming; it's fun,
   it's addictive, and it works!
 
-- The `sandbox CVS directory`_ is the place to put new, incomplete or
+* The `sandbox CVS directory`_ is the place to put new, incomplete or
   experimental code.  See `Additions to Docutils`_ and `The Sandbox`_
   below.
 
-- For bugs or omissions that have an obvious fix and can't possibly
+* For bugs or omissions that have an obvious fix and can't possibly
   mess up anything else, go right ahead and check it in directly.
 
-- For larger changes, use your best judgement.  If you're unsure of
+* For larger changes, use your best judgement.  If you're unsure of
   the impact, or feel that you require advice or approval, patches or
   `the sandbox`_ are the way to go.
 
@@ -1068,19 +1068,19 @@ usable_, and `reasonably complete`_.  Adding to the `main source
 tree`_ or to a `parallel project`_ implies a commitment to the
 Docutils user community.
 
-- Why the sandbox?
+* Why the sandbox?
 
   Developers should be able to try out new components while they're
   being developed for addition to main source tree.  See `The
   Sandbox`_ below.
 
-- _`Good shape` means that the component code is clean, readable, and
+* _`Good shape` means that the component code is clean, readable, and
   free of junk code (unused legacy code; by analogy with "junk DNA").
 
-- _`Usable` means that the code does what it claims to do.  An "XYZ
+* _`Usable` means that the code does what it claims to do.  An "XYZ
   Writer" should produce reasonable XYZ.
 
-- _`Reasonably complete` means that the code must handle all input.
+* _`Reasonably complete` means that the code must handle all input.
   Here "handle" means that no input can cause the code to fail (cause
   an exception, or silently and incorrectly produce nothing).
   "Reasonably complete" does not mean "finished" (no work left to be
@@ -1103,12 +1103,12 @@ Mailing Lists
 
 Developers should subscribe to the mailing lists:
 
-- The `Python Documentation Special Interest Group (Doc-SIG) mailing
+* The `Python Documentation Special Interest Group (Doc-SIG) mailing
   list`__ for high-level discussions on syntax, strategy, and design
   (email to Doc-SIG@python.org).
-- Docutils-develop__, for implementation discussions
+* Docutils-develop__, for implementation discussions
   (email to docutils-develop@lists.sourceforge.net).
-- Docutils-checkins__, to monitor CVS checkin messages (automatically
+* Docutils-checkins__, to monitor CVS checkin messages (automatically
   generated; normally read-only).
 
 __ http://mail.python.org/mailman/listinfo/doc-sig
