@@ -460,6 +460,17 @@ embed_stylesheet      (HTML Writer.)  Embed the stylesheet in the
                       Default: link, don't embed (None).  Options:
                       ``--embed-stylesheet, --link-stylesheet``.
 --------------------  ------------------------------------------------
+error_encoding        The text encoding for error output.  May also
+                      specify the encoding error handler for
+                      unencodable characters, after a colon (":").
+                      Acceptable values are the same as for the
+                      "error" parameter of Python's ``encode`` string
+                      method.
+
+                      Default: "ascii:backslashreplace" for Python 2.3
+                      and later; "ascii:replace" otherwise.  Options:
+                      ``--error-encoding, -e``.
+--------------------  ------------------------------------------------
 expose_internals      List of internal attribues to expose as external
                       attributes (with "internal:" namespace prefix).
 
@@ -518,8 +529,12 @@ no_random             (PEP/HTML Writer.)  Workaround for platforms
                       Default: random enabled (None).  Options:
                       ``--no-random`` (hidden).
 --------------------  ------------------------------------------------
-output_encoding       Default: UTF-8.  Options: ``--output-encoding,
-                      -o``.
+output_encoding       The text encoding for output.  May also specify
+                      the encoding error handler for unencodable
+                      characters (see "error_encoding").
+
+                      Default: "UTF-8:strict".  Options:
+                      ``--output-encoding, -o``.
 --------------------  ------------------------------------------------
 pep_home              (PEP/HTML Writer.)  Home URL prefix for PEPs.
 
@@ -648,6 +663,12 @@ _directories          (``buildhtml.py`` front end.)  List of paths to
                       arguments.
 
                       Default: current working directory (None).  No
+                      command-line options.
+--------------------  ------------------------------------------------
+_disable_config       Prevent standard configuration files from being
+                      read.
+
+                      Default: config files enabled (None).  No
                       command-line options.
 --------------------  ------------------------------------------------
 _destination          Path to output destination, set from positional
