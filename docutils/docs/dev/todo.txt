@@ -56,7 +56,11 @@ General
   permanently, read by subsequent processing runs, and updated with
   new entries.  ("Persistent ID mapping"?)
 
-- @@@ Implement a PEP reader.
+- @@@ Implement a PEP reader.  (Reader for RST-PEP format done.
+  Writer support needed.)
+
+  - Implement a specialized PEP/HTML writer?  Or implement a generic
+    `templating system`_, with PEP/HTML as one application?
 
 - @@ Add support for character set encodings on input & output, Unicode
   internally.
@@ -442,7 +446,7 @@ HTML Writer
 - @@@ Allow for style sheet info to be passed in, either as a <LINK>,
   or as embedded style info.
 
-- @@@ Construct a templating system, as in ht2html/yaptu, using
+- @@@ Construct a _`templating system`, as in ht2html/yaptu, using
   directives and substitutions for dynamic stuff.
 
 - @@ Improve the granularity of document parts in the HTML writer, so
@@ -567,6 +571,33 @@ least important):
 
 __ http://www.python.org/peps/pep-0008.html
 __ http://www.python.org/peps/pep-0257.html
+
+
+Copyrights and Licensing
+------------------------
+
+The majority of the Docutils project code and documentation has been
+written by me (David Goodger), and has been placed in the public
+domain.  Unless clearly and explicitly indicated otherwise, any
+patches (modifications to existing files) submitted to the project for
+inclusion (via SourceForge trackers, mailing lists, or private email)
+are assumed to have been placed in the public domain as well.
+
+Any new files contributed to the project should clearly state their
+intentions regarding copyright, in one of the following ways:
+
+- Public domain (preferred): state "This module has been placed in the
+  public domain."
+
+- Copyright & open source license: include a copyright notice, along
+  with an embedded license statement, a reference to an accompanying
+  license file, or a license URL.
+
+One of the goals of the Docutils project, once complete, is to be
+incorporated into the Python standard library.  At that time copyright
+of the Docutils code will be assumed by or transferred to the Python
+Software Foundation (PSF), and will be released under Python's
+license.
 
 
 CVS Check-ins
