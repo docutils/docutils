@@ -215,7 +215,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         # A heterogenous stack used in conjunction with the tree traversal.
         # Make sure that the pops correspond to the pushes:
         self.context = []
-        self.topic_class = []
+        self.topic_classes = []
         self.colspecs = []
         self.compact_p = 1
         self.compact_simple = None
