@@ -165,7 +165,7 @@ Also see the `SourceForge Bug Tracker`_.
 
   This is tricky.  Substitutions have to propagate back completely.
 
-* .. _subsitutions and references:
+* .. _substitutions and references:
 
   Another bug from David Abrahams (run with ``rst2html.py --traceback``)::
 
