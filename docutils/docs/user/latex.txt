@@ -388,7 +388,7 @@ Miscellaneous
   referring anywhere.
 * Footnotes are not all on the same page (as in
   docs/user/rst/demo.txt) and do not link back and forth.
-* No link to system errors.	
+* No link to system errors.
 * Hyperlinks are not hyphenated; this leads to bad spacing. See
   docs/user/rst/demo.txt 2.14 directives.
 * Meta keywords into pdf ?
