@@ -184,10 +184,10 @@ email mode, where we may be able to rely on less complex structure
 Multiple Roles in Interpreted Text
 ----------------------------------
 
-In reStructuredText, inline markup cannot be nested.  This also
-applies to interpreted text.  In order to simultaneously combine
-multiple roles for a single piece of text, a syntax extension would be
-necessary.  Ideas:
+In reStructuredText, inline markup cannot be nested (yet; `see
+below`__).  This also applies to interpreted text.  In order to
+simultaneously combine multiple roles for a single piece of text, a
+syntax extension would be necessary.  Ideas:
 
 1. Initial idea::
 
@@ -200,6 +200,8 @@ necessary.  Ideas:
 If a document is so complex as to require nested inline markup,
 perhaps another markup system should be considered.  By design,
 reStructuredText does not have the flexibility of XML.
+
+__ `Nested Inline Markup`_
 
 
 Parameterized Interpreted Text
@@ -1874,6 +1876,107 @@ Solution 3 was chosen for incorporation into the document tree model.
 
 .. _HTML: http://www.w3.org/MarkUp/
 
+
+Nested Inline Markup
+====================
+
+These are collected notes on a long-discussed issue.  The original
+mailing list messages should be referred to for details.
+
+* In a 2001-10-31 discussion I wrote:
+
+      Try, for example, `Ed Loper's 2001-03-21 post`_, which details
+      some rules for nested inline markup. I think the complexity is
+      prohibitive for the marginal benefit. (And if you can understand
+      that tree without going mad, you're a better man than I. ;-)
+
+      Inline markup is already fragile. Allowing nested inline markup
+      would only be asking for trouble IMHO. If it proves absolutely
+      necessary, it can be added later. The rules for what can appear
+      inside what must be well thought out first though.
+
+      .. _Ed Loper's 2001-03-21 post:
+         http://mail.python.org/pipermail/doc-sig/2001-March/001487.html
+
+      -- http://mail.python.org/pipermail/doc-sig/2001-October/002354.html
+
+* In a 2001-11-09 Doc-SIG post, I wrote:
+
+      The problem is that in the
+      what-you-see-is-more-or-less-what-you-get markup language that
+      is reStructuredText, the symbols used for inline markup ("*",
+      "**", "`", "``", etc.) may preclude nesting.
+
+  I've rethought this position.  Nested markup is not precluded, just
+  tricky.  People and software parse "double and 'single' quotes" all
+  the time.  Continuing,
+
+      I've thought over how we might implement nested inline
+      markup. The first algorithm ("first identify the outer inline
+      markup as we do now, then recursively scan for nested inline
+      markup") won't work; counterexamples were given in my `last post
+      <http://mail.python.org/pipermail/doc-sig/2001-November/002363.html>`__.
+
+      The second algorithm makes my head hurt::
+
+          while 1:
+              scan for start-string
+              if found:
+                  push on stack
+                  scan for start or end string
+                  if new start string found:
+                      recurse
+                  elif matching end string found:
+                      pop stack
+                  elif non-matching end string found:
+                      if its a markup error:
+                          generate warning
+                      elif the initial start-string was misinterpreted:
+                          # e.g. in this case: ***strong** in emphasis*
+                          restart with the other interpretation
+                          # but it might be several layers back ...
+              ...
+
+      This is similar to how the parser does section title
+      recognition, but sections are much more regular and
+      deterministic.
+
+      Bottom line is, I don't think the benefits are worth the effort,
+      even if it is possible. I'm not going to try to write the code,
+      at least not now. If somebody codes up a consistent, working,
+      general solution, I'll be happy to consider it.
+
+      -- http://mail.python.org/pipermail/doc-sig/2001-November/002388.html
+
+* In a `2003-05-06 Docutils-Users post`__ Paul Tremblay proposed a new
+  syntax to allow for easier nesting.  It eventually evolved into
+  this::
+
+      :role:[inline text]
+
+  The duplication with the existing interpreted text syntax is
+  problematic though.
+
+  __ http://article.gmane.org/gmane.text.docutils.user/317
+
+* Could the parser be extended to parse nested interpreted text? ::
+
+      :emphasis:`Some emphasized text with :strong:`some more
+      emphasized text` in it and **perhaps** :reference:`a link``
+
+* In a `2003-06-18 Docutils-Develop post`__, Mark Nodine reported on
+  his implementation of a form of nested inline markup in his
+  Perl-based parser (unpublished).  He brought up some interesting
+  ideas.  The implementation was flawed, however, by the change in
+  semantics required for backslash escapes.
+
+  __ http://article.gmane.org/gmane.text.docutils.devel/795
+
+It may be possible to accomplish nested inline markup in general with
+a more powerful inline markup parser.  There may be some issues, but
+I'm not averse to the idea of nested inline markup in general.  I just
+don't have the time or inclination to write a new parser now.  Of
+course, a good patch would be welcome!
 
 
 ..
