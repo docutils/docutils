@@ -23,9 +23,9 @@ directives = {
       'notiz': 'note',
       'tip': 'tip',
       'warnung': 'warning',
-      'admonition (translation required)': 'admonition',
-      'sidebar (translation required)': 'sidebar', # kasten ?
-      'topic': 'topic',  # Überbegriff, Thema ?
+      'ermahnung': 'admonition',
+      'kasten': 'sidebar', # seitenkasten ?
+      'thema': 'topic', 
       'line-block': 'line-block',
       'parsed-literal': 'parsed-literal',
       'rubrik': 'rubric',
@@ -42,9 +42,9 @@ directives = {
       'raw': 'raw',         # unbearbeitet
       'include': 'include', # einfügen, "füge ein" would be more like a command.
                             # einfügung would be the noun. 
-      'replace': 'replace', # ersetzen, ersetze
+      'ersetzung': 'replace', # ersetzen, ersetze
       'unicode': 'unicode',
-      'class (translation required)': 'class',
+      'klasse': 'class',    # offer class too ?
       'inhalt': 'contents',
       'sectnum': 'sectnum',
       'section-numbering': 'sectnum',

@@ -42,6 +42,14 @@ if [ -n "$1" ] ; then
   exit
 fi
 
+INF=test/kasten.txt
+OUTF="$INF-de.tex"
+REFF="$OUTF.ref"
+$CMD -l de $INF > $OUTF
+do_diff $REFF $OUTF 
+
+exit
+
 INF=test/tools.txt
 OUTF="$INF-ltoc.tex"
 REFF="$OUTF.ref"
