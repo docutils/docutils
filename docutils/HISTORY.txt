@@ -69,10 +69,10 @@ Changes Since 0.3.5
 * docutils/writers/latex2e.py:
 
   - no newline after depart_term.
-  - Added unicode quotes u201C u201D.
-  - Added ``\PreloadUnicodePage{n}`` to the header if in LaTeX code
-    uses unicode.
-  - Added option "font-encoding".
+  - Added translations for some Unicode quotes.
+  - Added ``\PreloadUnicodePage{n}`` to the header if output encoding
+    is UTF-8.
+  - Added option "font-encoding", made package AE the default.
   - "stylesheet" and "stylesheet_path" settings are now mutually
     exclusive.
 
