@@ -247,6 +247,7 @@ Specific:
     ``nonnegative_int()``, and ``choice()`` directive option helper
     functions.
   - Added warnings for unknown directives.
+  - Return ``None`` for missing directives.
 
 * docutils/parsers/rst/directives/body.py: Added to project.  Contains
   the "topic", "line-block", and "parsed-literal" directives.
@@ -267,6 +268,10 @@ Specific:
 
 * docutils/parsers/rst/directives/references.py: Added to project.
   Contains the "target-notes" directive.
+
+* docutils/parsers/rst/languages/__init__.py:
+
+  - Return ``None`` from get_language() for missing language modules.
 
 * docutils/parsers/rst/languages/de.py: Added to project; German
   mappings by Engelbert Gruber.

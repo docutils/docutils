@@ -45,17 +45,6 @@ Bugs
   whitespace and punctuation as markup delimiters, which may not be
   applicable in these languages.
 
-* From Engelbert Gruber::
-
-      tools/html.py -l de README.txt donotcare.html
-      ...
-        File ".../docutils/parsers/rst/languages/__init__.py", line
-      19, in get_language
-          module = __import__(language_code, globals(), locals())
-      ImportError: No module named de
-
-  Shouldn't cause a traceback; just return ``None``.
-
 
 General
 -------
@@ -1030,6 +1019,8 @@ HTML Writer
   bars.
 
 * Make the admonitions more distinctive and varied.
+
+* Make the "class" attributes optional?  Implies no stylesheet?
 
 
 Front-End Tools

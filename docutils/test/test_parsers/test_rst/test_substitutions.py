@@ -174,7 +174,7 @@ No blank line after.
             Substitution definition "empty" missing contents.
         <literal_block xml:space="preserve">
             .. |empty|
-    <system_message level="2" line="8" source="test data" type="WARNING">
+    <system_message level="1" line="8" source="test data" type="INFO">
         <paragraph>
             No directive entry for "directive" in module "docutils.parsers.rst.languages.en".
             Trying "directive" as canonical directive name.
