@@ -760,13 +760,18 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # chars one should use the LaTeX unicode package.
         latex_equivalents = {
             u'\u00A0' : '~',
-            u'\u00A9' : '{\\copyright}',
             u'\u2013' : '{--}',
             u'\u2014' : '{---}',
+            u'\u2018' : '`',
+            u'\u2019' : '\'',
+            u'\u201A' : ',',
             u'\u201C' : '``',
             u'\u201D' : '\'\'',
+            u'\u201E' : ',,',
             u'\u2020' : '{\\dag}',
             u'\u2021' : '{\\ddag}',
+            u'\u2026' : '{\\dots}',
+            u'\u2122' : '{\\texttrademark}',
             u'\u21d4' : '{$\\Leftrightarrow$}',
                 }
         for uchar in latex_equivalents.keys():
