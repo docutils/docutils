@@ -165,13 +165,13 @@ class LanguageTestCase(CustomTestCase):
         failures = []
         for d in module.roles.values():
             try:
-                method = roles._roles[d]
+                method = roles._role_registry[d]
                 #if not method:
                 #    failures.append('"%s": unknown role' % d)
             except KeyError, error:
                 failures.append('"%s": %s' % (d, error))
         inverted = self._invert(module.roles)
-        canonical = roles._roles.keys()
+        canonical = roles._role_registry.keys()
         canonical.sort()
         canonical.remove('restructuredtext-unimplemented-role')
         for name in canonical:
