@@ -32,6 +32,39 @@ Abstract
     implementation details.
 
 
+Roadmap to the Doctring PEPs
+
+    There are many aspects to docstring processing.  The "Docstring
+    PEPs" have broken up the issues in order to deal with each of them
+    in isolation, or as close as possible.  The individual aspects and
+    associated PEPs are as follows:
+
+    * Docstring syntax.  PEP 287, reStructuredText Docstring Format,
+      proposes a syntax for Python docstrings, PEPs, and other uses.
+
+    * Docstring semantics consist of at least two aspects:
+
+      - Conventions: the high-level structure of docstrings.  Dealt
+        with in PEP 257, Docstring Conventions.
+
+      - Methodology: rules for the informational content of
+        docstrings.  Not addressed.
+
+    * Processing mechanisms.  This PEP outlines the high-level issues
+      and specification of an abstract docstring processing system
+      (DPS).  PEP 258, Docutils Design Specification, is an overview
+      of the design and implementation of one DPS under development.
+
+    * Output styles: developers want the documentation generated from
+      their source code to look good, and there are many different
+      ideas about what that means.  PEP 258 touches on "Stylist
+      Transforms".  This aspect of docstring processing has yet to be
+      fully explored.
+
+    By separating out the issues, we can form consensus more easily
+    (smaller fights ;-), and accept divergence more readily.
+
+
 Rationale
 
     There are standard inline documentation systems for some other
@@ -63,20 +96,22 @@ Rationale
     These systems, each with different goals, have had varying degrees
     of success.  A problem with many of the above systems was
     over-ambition combined with inflexibility.  They provided a
-    self-contained set of components: a docstring extraction system,
-    a markup parser, an internal processing system and one or more
-    output format writers.  Inevitably, one or more aspects of each
-    system had serious shortcomings, and they were not easily extended
-    or modified, preventing them from being adopted as standard tools.
+    self-contained set of components: a docstring extraction system, a
+    markup parser, an internal processing system and one or more
+    output format writers with a fixed style.  Inevitably, one or more
+    aspects of each system had serious shortcomings, and they were not
+    easily extended or modified, preventing them from being adopted as
+    standard tools.
 
     It has become clear (to this author, at least) that the "all or
     nothing" approach cannot succeed, since no monolithic
     self-contained system could possibly be agreed upon by all
     interested parties.  A modular component approach designed for
     extension, where components may be multiply implemented, may be
-    the only chance for success.  By separating out the issues, we can
-    form consensus more easily (smaller fights ;-), and accept
-    divergence more readily.
+    the only chance for success.  Standard inter-component APIs will
+    make the DPS components comprehensible without requiring detailed
+    knowledge of the whole, lowering the barrier for contributions,
+    and ultimately resulting in a rich and varied system.
 
     Each of the components of a docstring processing system should be
     developed independently.  A 'best of breed' system should be
@@ -169,16 +204,19 @@ Specification
 
     3. Docstring processing system implementation.
 
-    4. Input markup specifications: docstring syntax.  PEP 2xx,
-       reStructuredText Standard Docstring Format [15]_, proposes a
-       standard syntax.
+    4. Input markup specifications: docstring syntax.  PEP 287,
+       reStructuredText Docstring Format [15]_, proposes a standard
+       syntax.
 
     5. Input parser implementations.
 
     6. Input context readers ("modes": Python source code, PEP,
        standalone text file, email, etc.) and implementations.
 
-    7. Output formats (HTML, XML, TeX, DocBook, info, etc.) and writer
+    7. Stylists: certain input context readers may have associated
+       stylists which allow for a variety of output document styles.
+
+    8. Output formats (HTML, XML, TeX, DocBook, info, etc.) and writer
        implementations.
 
     Components 1, 2/3, and 4/5 are the subject of individual companion
@@ -227,7 +265,7 @@ References and Footnotes
     [14] PEP 257, Docstring Conventions, Goodger, Van Rossum
          http://www.python.org/peps/pep-0257.html
 
-    [15] PEP 287, reStructuredText Standard Docstring Format, Goodger
+    [15] PEP 287, reStructuredText Docstring Format, Goodger
          http://www.python.org/peps/pep-0287.html
 
     [16] http://www.python.org/sigs/doc-sig/
