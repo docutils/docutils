@@ -54,9 +54,7 @@ class Writer(writers.Writer):
            'validator': frontend.validate_boolean}),
          ('Embed the stylesheet in the output HTML file.  The stylesheet '
           'file must be accessible during processing (--stylesheet-path is '
-          'recommended).  The stylesheet is embedded inside a comment, so it '
-          'must not contain the text "--" (two hyphens).  Default: link the '
-          'stylesheet, do not embed it.',
+          'recommended).  Default: link the stylesheet, do not embed it.',
           ['--embed-stylesheet'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),
          ('Specify the initial header level.  Default is 1 for "<h1>".  '
