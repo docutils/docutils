@@ -1,3 +1,7 @@
+.. Note:: This functionality has been implemented as `embedded URIs
+   <http://docutils.sf.net/spec/rst/reStructuredText.html#embedded-uris>`_.
+
+
 Sample usage of inline targets
 ------------------------------
 
