@@ -28,7 +28,7 @@ goes something like this:
 1. Extract the docstring/namespace [#]_ tree from the module(s) and/or
    package(s).
 
-   .. [#] See `Docstring Extractor`_ above.
+   .. [#] See `Docstring Extractor`_ below.
 
 2. Run the parser on each docstring in turn, producing a forest of
    doctrees (per nodes.py).

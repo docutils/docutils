@@ -383,11 +383,33 @@ a.b = 1
 '''],
 ['''\
 a[b] = 1
-"""This assignment is noted but ignored unless ``a`` is a function."""
+"""Subscript assignments are ignored."""
 ''',
 '''\
 <Module filename="test data">
 '''],
+['''\
+a = foo(b=1)
+''',
+'''\
+<Module filename="test data">
+    <Attribute lineno="1" name="a">
+        <Expression lineno="1">
+            foo(b=1)
+'''],
+# ['''\
+# a = 1
+# 
+# """Because of the blank above, this is a module docstring."""
+# ''',
+# '''\
+# <Module filename="test data">
+#     <Attribute lineno="1" name="a">
+#         <Expression lineno="1">
+#             1
+#     <Docstring lineno="3">
+#         Because of the blank above, this is a module docstring.
+# '''],
 ]
 
 totest['def'] = [
@@ -581,7 +603,7 @@ class C:
 ['''\
 class C:
     def __init__(self):
-        local = foo(a = 1)
+        local = foo(a=1)
 ''',
 '''\
 <Module filename="test data">
@@ -591,7 +613,7 @@ class C:
                 <Parameter lineno="2" name="self">
             <Attribute lineno="3" name="local">
                 <Expression lineno="3">
-                    foo(a = 1)
+                    foo(a=1)
 '''],
 ]
 
@@ -608,6 +630,17 @@ del a
 '''\
 <Module filename="test data">
 '''],
+]
+
+totest['comments'] = [
+# ['''\
+# # Comment
+# ''',
+# '''\
+# <Module filename="test data">
+#     <Comment lineno="1">
+#         # Comment
+# '''],
 ]
 
 # @@@ no comments yet
