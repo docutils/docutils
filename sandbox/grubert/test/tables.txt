@@ -74,3 +74,13 @@ poses problems
  narrow ones need             a little amplification as TeX's      proportional fonts seem to need more
                                                                    horizontal space.
 ============================ ==================================== ===========================================
+
+The text in the right column will *not* have linebreaks where the original one has.
+
++------+------+
+| test | test |
++------+ test |
+| test | test |
++------+------+
+
+
