@@ -18,6 +18,9 @@ a.toc-backref {
   text-decoration: none ;
   color: black }
 
+blockquote.epigraph {
+  margin: 2em 5em ; }
+
 dd {
   margin-bottom: 0.5em }
 
