@@ -58,7 +58,7 @@ Paragraph.
     <system_message level="1" line="1" source="test data" type="INFO">
         <paragraph>
             Directive processed. Type="reStructuredText-test-directive", data="", directive block:
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             Directive block contains one paragraph, with a blank line before.
     <paragraph>
         Paragraph.
@@ -74,7 +74,7 @@ Paragraph.
     <system_message level="1" line="1" source="test data" type="INFO">
         <paragraph>
             Directive processed. Type="reStructuredText-test-directive", data="", directive block:
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             Directive block contains one paragraph, no blank line before.
     <paragraph>
         Paragraph.
@@ -91,7 +91,7 @@ Paragraph.
     <system_message level="1" line="1" source="test data" type="INFO">
         <paragraph>
             Directive processed. Type="reStructuredText-test-directive", data="", directive block:
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             block
     <system_message level="2" line="3" source="test data" type="WARNING">
         <paragraph>

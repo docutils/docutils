@@ -110,7 +110,7 @@ totest['topics'] = [
         <system_message level="3" line="3" source="test data" type="ERROR">
             <paragraph>
                 Topics may not be nested within body elements.
-            <literal_block xml:space="1">
+            <literal_block xml:space="preserve">
                 .. topic:: Nested
                 \n\
                    Body.
@@ -131,7 +131,7 @@ totest['topics'] = [
         <system_message level="3" line="3" source="test data" type="ERROR">
             <paragraph>
                 Topics may not be nested within body elements.
-            <literal_block xml:space="1">
+            <literal_block xml:space="preserve">
                 .. topic:: Nested
                 \n\
                    Body.
@@ -162,7 +162,7 @@ More.
         <system_message level="3" line="3" source="test data" type="ERROR">
             <paragraph>
                 Topics may not be nested within body elements.
-            <literal_block xml:space="1">
+            <literal_block xml:space="preserve">
                 .. topic::
                 \n\
                    Nested

@@ -32,7 +32,7 @@ Paragraph.
 <document source="test data">
     <paragraph>
         Paragraph.
-    <doctest_block xml:space="1">
+    <doctest_block xml:space="preserve">
         >>> print "Doctest block."
         Doctest block.
     <paragraph>
@@ -48,7 +48,7 @@ Paragraph.
 <document source="test data">
     <paragraph>
         Paragraph.
-    <doctest_block xml:space="1">
+    <doctest_block xml:space="preserve">
         >>> print "    Indented output."
             Indented output.
 """],
@@ -63,7 +63,7 @@ Paragraph.
     <paragraph>
         Paragraph.
     <block_quote>
-        <doctest_block xml:space="1">
+        <doctest_block xml:space="preserve">
             >>> print "    Indented block & output."
                 Indented block & output.
 """],

@@ -136,7 +136,7 @@ Paragraph
     <system_message level="1" line="2" source="test data" type="INFO">
         <paragraph>
             No content for meta tag "empty".
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             :empty:
 """],
 ["""\
@@ -148,7 +148,7 @@ Paragraph
     <system_message level="3" line="2" source="test data" type="ERROR">
         <paragraph>
             Invalid meta directive.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. meta::
                not a field list
 """],
@@ -170,7 +170,7 @@ Paragraph
     <system_message level="3" line="3" source="test data" type="ERROR">
         <paragraph>
             Invalid meta directive.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. meta::
                :name: content
                not a field
@@ -184,7 +184,7 @@ Paragraph
     <system_message level="3" line="2" source="test data" type="ERROR">
         <paragraph>
             Error parsing meta tag attribute "notattval": missing "=".
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             :name notattval: content
 """],
 ]

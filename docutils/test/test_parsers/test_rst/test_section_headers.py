@@ -83,7 +83,7 @@ Test unexpected section titles.
         <system_message level="4" line="4" source="test data" type="SEVERE">
             <paragraph>
                 Unexpected section title.
-            <literal_block xml:space="1">
+            <literal_block xml:space="preserve">
                 Title
                 =====
         <paragraph>
@@ -91,12 +91,12 @@ Test unexpected section titles.
         <system_message level="4" line="7" source="test data" type="SEVERE">
             <paragraph>
                 Unexpected section title or transition.
-            <literal_block xml:space="1">
+            <literal_block xml:space="preserve">
                 -----
         <system_message level="4" line="9" source="test data" type="SEVERE">
             <paragraph>
                 Unexpected section title.
-            <literal_block xml:space="1">
+            <literal_block xml:space="preserve">
                 Title
                 -----
         <paragraph>
@@ -116,7 +116,7 @@ Test short underline.
         <system_message level="2" line="2" source="test data" type="WARNING">
             <paragraph>
                 Title underline too short.
-            <literal_block xml:space="1">
+            <literal_block xml:space="preserve">
                 Title
                 ====
         <paragraph>
@@ -161,7 +161,7 @@ Test overline title with inset.
     <system_message level="4" line="1" source="test data" type="SEVERE">
         <paragraph>
             Incomplete section title.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             ========================
              Test Missing Underline
 """],
@@ -175,7 +175,7 @@ Test overline title with inset.
     <system_message level="4" line="1" source="test data" type="SEVERE">
         <paragraph>
             Missing underline for overline.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             ========================
              Test Missing Underline
 """],
@@ -190,7 +190,7 @@ Test missing underline, with paragraph.
     <system_message level="4" line="1" source="test data" type="SEVERE">
         <paragraph>
             Missing underline for overline.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             =======
              Title
     <paragraph>
@@ -211,7 +211,7 @@ Test long title and space normalization.
         <system_message level="2" line="1" source="test data" type="WARNING">
             <paragraph>
                 Title overline too short.
-            <literal_block xml:space="1">
+            <literal_block xml:space="preserve">
                 =======
                  Long    Title
                 =======
@@ -230,7 +230,7 @@ Paragraph.
     <system_message level="4" line="1" source="test data" type="SEVERE">
         <paragraph>
             Title overline & underline mismatch.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             =======
              Title
             -------
@@ -280,7 +280,7 @@ Test missing titles; nothing in-between.
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Invalid section title or transition marker.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             ========================
             ========================
     <paragraph>
@@ -288,7 +288,7 @@ Test missing titles; nothing in-between.
     <system_message level="3" line="6" source="test data" type="ERROR">
         <paragraph>
             Invalid section title or transition marker.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             ========================
             ========================
 """],
@@ -313,7 +313,7 @@ Paragraph 4.
 """,
 """\
 <document source="test data">
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         Test return to existing, highest-level section (Title 3).
     <section id="title-1" name="title 1">
         <title>
@@ -469,7 +469,7 @@ Paragraph 4.
         <system_message level="4" line="15" source="test data" type="SEVERE">
             <paragraph>
                 Title level inconsistent:
-            <literal_block xml:space="1">
+            <literal_block xml:space="preserve">
                 Title 4
                 ```````
         <paragraph>
@@ -520,7 +520,7 @@ Paragraph 4.
         <system_message level="4" line="19" source="test data" type="SEVERE">
             <paragraph>
                 Title level inconsistent:
-            <literal_block xml:space="1">
+            <literal_block xml:space="preserve">
                 ```````
                 Title 4
                 ```````
@@ -819,7 +819,7 @@ Yo
 """,
 """\
 <document source="test data">
-    <comment xml:space="1">
+    <comment xml:space="preserve">
     <system_message level="2" line="2" source="test data" type="WARNING">
         <paragraph>
             Explicit markup ends without a blank line; unexpected unindent.

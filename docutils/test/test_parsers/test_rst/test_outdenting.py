@@ -67,7 +67,7 @@ This paragraph ends the bullet list item before a block quote.
         <list_item>
             <paragraph>
                 bullet
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         Comments swallow up all indented text following.
         \n\
         (Therefore this is not a) block quote.
@@ -78,7 +78,7 @@ This paragraph ends the bullet list item before a block quote.
             <paragraph>
                 If we want a block quote after this bullet list item,
                 we need to use an empty comment:
-    <comment xml:space="1">
+    <comment xml:space="preserve">
     <block_quote>
         <paragraph>
             Block quote.

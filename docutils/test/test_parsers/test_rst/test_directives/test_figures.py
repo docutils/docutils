@@ -36,7 +36,7 @@ totest['figures'] = [
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Image URI contains whitespace.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. figure:: not an image URI
 """],
 ["""\
@@ -63,7 +63,7 @@ totest['figures'] = [
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Figure caption must be a paragraph or empty comment.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. figure:: picture.png
             \n\
                - A picture with an invalid caption.
@@ -78,7 +78,7 @@ totest['figures'] = [
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Image URI contains whitespace.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. figure:: not an image URI
             \n\
                And a caption.

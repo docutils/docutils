@@ -64,7 +64,7 @@ totest['full_tables'] = [
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Malformed table.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             +-----------------------+
             | A malformed table. |
             +-----------------------+
@@ -497,7 +497,7 @@ No blank line after table.
         <paragraph>
             Malformed table.
             Malformed table; parse incomplete.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             +--------------+-------------+
             | A bad table. |             |
             +--------------+             |
@@ -728,7 +728,7 @@ no bottom       border
         <paragraph>
             Malformed table.
             No bottom table border found.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             ==============  ======
             A simple table  with
             no bottom       border
@@ -746,7 +746,7 @@ No blank line after table.
         <paragraph>
             Malformed table.
             No bottom table border found or no blank line after table bottom.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             ==============  ======
             A simple table  cell 2
             cell 3          cell 4
@@ -806,7 +806,7 @@ cell 3          cell 4
         <paragraph>
             Malformed table.
             No bottom table border found or no blank line after table bottom.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             ==============  ======
             A simple table  cell 2
             cell 3          cell 4
@@ -830,7 +830,7 @@ cell 3          cell 4
         <paragraph>
             Malformed table.
             Column span alignment problem at line offset 2.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             ==============  ======
             A bad table     cell 2
             cell 3          cell 4
@@ -848,7 +848,7 @@ cell 3       cell 4
         <paragraph>
             Malformed table.
             Text in column margin at line offset 1.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             ========  =========
             A bad table  cell 2
             cell 3       cell 4
@@ -973,7 +973,7 @@ cell 3          the bottom border below is too long
         <paragraph>
             Malformed table.
             Bottom/header table border does not match top border.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             ==============  ======
             A simple table  this text extends to the right
             cell 3          the bottom border below is too long
