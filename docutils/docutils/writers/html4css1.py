@@ -213,7 +213,6 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.fragment = []
         self.body_suffix = ['</body>\n</html>\n']
         self.section_level = 0
-        print 'settings.initial_header_level:', settings.initial_header_level
         self.initial_header_level = int(settings.initial_header_level)
         self.context = []
         self.topic_class = ''
@@ -1229,7 +1228,6 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.within_title = len(self.body)
         else:
             h_level = self.section_level + self.initial_header_level - 1
-            print h_level
             self.body.append(
                   self.starttag(node, 'h%s' % h_level, ''))
             atts = {}
