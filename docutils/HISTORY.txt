@@ -51,6 +51,10 @@ Changes Since 0.3.5
   - Fixed bug when multiple "class" directives are applied to a single
     element.
 
+* docutils/writers/html4css1.py:
+
+  - HTMLTranslator.encode now converts U+00A0 to "&nbsp;".
+
 * docutils/writers/latex2e.py:
 
   - Added ``\PreloadUnicodePage{n}`` to the header if in LaTeX code
