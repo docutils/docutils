@@ -396,7 +396,7 @@ class PEPParserTestCase(ParserTestCase):
 
     """PEP-specific parser test case."""
 
-    parser = rst.Parser(rfc2822=1, inliner=pep.Inliner())
+    parser = rst.Parser(rfc2822=1, inliner=rst.states.Inliner())
     """Parser shared by all PEPParserTestCases."""
 
     option_parser = frontend.OptionParser(components=(rst.Parser, pep.Reader))
