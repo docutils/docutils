@@ -1,7 +1,7 @@
 """
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
-:version: 0.2.3
+:version: 0.2.4
 """
 
 #----------------------------------------------------------------------

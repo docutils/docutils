@@ -1,7 +1,7 @@
 """
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
-:version: 0.2.3
+:version: 0.2.4
 """
 
 import os, throbimages, time
@@ -10,6 +10,7 @@ from   wxPython.stc          import *
 from   docutilsadapter       import get_rest_bibl_fields
 from   docutilsadapter       import get_rest_directives
 from   dialogs               import customMsgBox
+from   shutil                import copyfile
 
 if wxPlatform == '__WXMSW__':
     faces = { 'times': 'Times New Roman',
@@ -122,18 +123,26 @@ class CustomStyledTextCtrl(wxStyledTextCtrl):
         finally:
             wxEndBusyCursor()
             
-    def SaveFile(self, filename):
+    def SaveFile(self, filename, backup=0):
+        return_value = 1
         try:
             wxBeginBusyCursor()
             try:
+                if backup:
+                    copyfile(filename, '%s.bak' % filename)
                 f = open(filename, 'w')
                 f.write(self.GetText())
                 f.close()
                 self.IsModified = 0
             except:
-                customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
+                return_value = 0
+                customMsgBox(self, 'Error when saving "%s".\n\n%s:\n%s\n%s' \
+                             % (filename, sys.exc_info()[0], sys.exc_info()[1],
+                                sys.exc_info()[2]),
+                             'error')
         finally:
             wxEndBusyCursor()
+        return return_value
 
     def Clear(self):
         self.SetText('')
