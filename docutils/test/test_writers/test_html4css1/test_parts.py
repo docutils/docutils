@@ -68,10 +68,13 @@ reference and the target.</p>\\n'''}
 Title
 +++++
 
+Subtitle
+========
+
 Some stuff
 
-Subtitle
---------
+Section
+-------
 
 Some more stuff
 
@@ -82,14 +85,15 @@ And even more stuff
 """,
 """\
 {'fragment': '''<p>Some stuff</p>
-<div class="section" id="subtitle">
-<h1><a name="subtitle">Subtitle</a></h1>
+<div class="section" id="section">
+<h1><a name="section">Section</a></h1>
 <p>Some more stuff</p>
 <div class="section" id="another-section">
 <h2><a name="another-section">Another Section</a></h2>
 <p>And even more stuff</p>
 </div>
 </div>\\n''',
+ 'subtitle': '''Subtitle''',
  'title': '''Title'''}
 """],
 ["""\
@@ -161,10 +165,13 @@ reference and the target.</p>\\n'''}
 Title
 +++++
 
+Not A Subtitle
+==============
+
 Some stuff
 
-Subtitle
---------
+Section
+-------
 
 Some more stuff
 
@@ -176,13 +183,16 @@ And even more stuff
 """\
 {'fragment': '''<div class="section" id="title">
 <h1><a name="title">Title</a></h1>
+<div class="section" id="not-a-subtitle">
+<h2><a name="not-a-subtitle">Not A Subtitle</a></h2>
 <p>Some stuff</p>
-<div class="section" id="subtitle">
-<h2><a name="subtitle">Subtitle</a></h2>
+<div class="section" id="section">
+<h3><a name="section">Section</a></h3>
 <p>Some more stuff</p>
 <div class="section" id="another-section">
-<h3><a name="another-section">Another Section</a></h3>
+<h4><a name="another-section">Another Section</a></h4>
 <p>And even more stuff</p>
+</div>
 </div>
 </div>
 </div>\\n'''}
