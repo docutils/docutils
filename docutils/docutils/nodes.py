@@ -27,7 +27,6 @@ import sys
 import os
 import re
 import xml.dom.minidom
-from copy import deepcopy
 from types import IntType, SliceType, StringType, UnicodeType, \
      TupleType, ListType
 from UserString import UserString
@@ -327,9 +326,9 @@ class Element(Node):
     This is equivalent to ``element.extend([node1, node2])``.
     """
 
-    attr_defaults = {'ids': [], 'classes': [], 'names': [], 'dupnames': []}
-    """Default attributes.  ``attributes`` is initialized with a copy
-    of ``attr_defaults``."""
+    attr_defaults = {'ids': [], 'classes': [], 'names': [],
+                     'dupnames': [], 'backrefs': []}
+    """Default attributes."""
 
     tagname = None
     """The element generic identifier. If None, it is set as an instance
@@ -347,7 +346,8 @@ class Element(Node):
 
         self.extend(children)           # maintain parent info
 
-        self.attributes = deepcopy(self.attr_defaults)
+        self.attributes = {'ids': [], 'classes': [], 'names': [],
+                           'dupnames': [], 'backrefs': []}
         """Dictionary of attribute {name: value}."""
 
         for att, value in attributes.items():
@@ -663,9 +663,6 @@ class Resolvable:
 
 
 class BackLinkable:
-
-    attr_defaults = Element.attr_defaults.copy()
-    attr_defaults['backrefs'] = []
 
     def add_backref(self, refid):
         self['backrefs'].append(refid)

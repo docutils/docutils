@@ -38,8 +38,7 @@ Changes Since 0.3.7
     TextElement (it's an empty element, and cannot contain text).
   - Added ``attr_defaults`` dictionary for default attribute values.
   - Added empty list as default value for the following attributes:
-    ``ids``, ``names``, ``dupnames``, ``classes`` for Element nodes,
-    and additionally ``backrefs`` for BackLinkable nodes.
+    ``ids``, ``names``, ``dupnames``, ``classes``, and ``backrefs``.
 
 * docutils/languages/nl.py: Added to project; Dutch mappings by
   Martijn Pieters.
