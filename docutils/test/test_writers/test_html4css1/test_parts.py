@@ -29,21 +29,21 @@ totest['Title promotion'] = ({}, [
 Simple String
 """,
 """\
-{'fragment': '''Simple String'''}
+{'fragment': '''<p>Simple String</p>\\n'''}
 """
 ],
 ["""\
 Simple String with *markup*
 """,
 """\
-{'fragment': '''Simple String with <em>markup</em>'''}
+{'fragment': '''<p>Simple String with <em>markup</em></p>\\n'''}
 """
 ],
 ["""\
 Simple String with an even simpler ``inline literal``
 """,
 """\
-{'fragment': '''Simple String with an even simpler <tt class="literal"><span class="pre">inline</span> <span class="pre">literal</span></tt>'''}
+{'fragment': '''<p>Simple String with an even simpler <tt class="literal"><span class="pre">inline</span> <span class="pre">literal</span></tt></p>\\n'''}
 """
 ],
 ["""\
@@ -135,21 +135,21 @@ totest['No title promotion'] = ({'doctitle_xform' : 0}, [
 Simple String
 """,
 """\
-{'fragment': '''Simple String'''}
+{'fragment': '''<p>Simple String</p>\\n'''}
 """
 ],
 ["""\
 Simple String with *markup*
 """,
 """\
-{'fragment': '''Simple String with <em>markup</em>'''}
+{'fragment': '''<p>Simple String with <em>markup</em></p>\\n'''}
 """
 ],
 ["""\
 Simple String with an even simpler ``inline literal``
 """,
 """\
-{'fragment': '''Simple String with an even simpler <tt class="literal"><span class="pre">inline</span> <span class="pre">literal</span></tt>'''}
+{'fragment': '''<p>Simple String with an even simpler <tt class="literal"><span class="pre">inline</span> <span class="pre">literal</span></tt></p>\\n'''}
 """
 ],
 ["""\
