@@ -18,8 +18,8 @@ new reStructuredText PEPs).
 __docformat__ = 'reStructuredText'
 
 
-import locale
 try:
+    import locale
     locale.setlocale(locale.LC_ALL, '')
 except:
     pass

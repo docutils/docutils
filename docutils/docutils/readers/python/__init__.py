@@ -111,8 +111,8 @@ class DocstringFormattingVisitor(nodes.SparseNodeVisitor):
         return self.default_parser
     
 if __name__ == '__main__':
-    import locale
     try:
+        import locale
         locale.setlocale(locale.LC_ALL, '')
     except:
         pass
