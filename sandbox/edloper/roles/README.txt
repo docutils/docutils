@@ -11,12 +11,12 @@ module; `states.py` is a replacement module).
 Defining Roles
 ~~~~~~~~~~~~~~
 Interpreted roles are implemented as functions with the following
-signature:
+signature::
 
     def role_fn(name, rawtext, text, lineno, inliner):
         """
-        Given an interpreted text, return a list of nodes specifying
-        the corresponding output.
+        Given an interpreted text construct, return a tuple of two lists:
+        document tree nodes, and system messages (may be empty).
 
         :Parameters:
           - `name`: The canonical name of the interpreted role.
@@ -49,15 +49,15 @@ Differences from Directive System
 There are some design differences between the roles system and the
 directives system:
 
-  - All roles are registered via register_role(); there is no
-    equivalant to _directive_registry, which contains a centralized
-    list of directives to register.
+- All roles are registered via register_role(); there is no
+  equivalant to _directive_registry, which contains a centralized
+  list of directives to register.
 
-  - Instead, each directive is registered immediately following
-    its definition.
+- Instead, each directive is registered immediately following
+  its definition.
 
-  - All standard roles are registered at import time; there is no
-    mechanism for delaying imports until roles are actually used.
+- All standard roles are registered at import time; there is no
+  mechanism for delaying imports until roles are actually used.
 
 Changes to states.py
 ~~~~~~~~~~~~~~~~~~~~
@@ -73,9 +73,9 @@ Future Work
   existing ones.  Given that roles are implemented as functions,
   this would probably involve creating a wrapper function that:
 
-    - calls the base role_fn function
-    - modifies its output
-    - returns the modified output
+  - calls the base role_fn function
+  - modifies its output
+  - returns the modified output
 
   It seems difficult to do this in a general way, though, since
   role functions are free to return any number of nodes, of any
