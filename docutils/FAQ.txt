@@ -612,19 +612,19 @@ templating systems.  Users can choose a templating system to apply to
 their reStructuredText documents as best serves their interests.
 
 There are many good templating systems for Python (ht2html_, YAPTU_,
-Quixote_'s PTL, Cheetah, etc.; see this `list of other templating
-systems`_), and many more for other languages, each with different
-approaches.  We invite you to try several and find one you like.  If
-you adapt it to use Docutils/reStructuredText, please consider
-contributing the code to Docutils or `let us know`_ and we'll keep a
-list here.
+Quixote_'s PTL, Cheetah_, etc.; see this non-exhaustive list of `some
+other templating systems`_), and many more for other languages, each
+with different approaches.  We invite you to try several and find one
+you like.  If you adapt it to use Docutils/reStructuredText, please
+consider contributing the code to Docutils or `let us know`_ and we'll
+keep a list here.
 
 .. _ht2html: http://ht2html.sourceforge.net/
 .. _YAPTU:
    http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/52305
 .. _Quixote: http://www.mems-exchange.org/software/quixote/
-.. Cheetah: 
-.. _list of other templating systems:
+.. _Cheetah: http://www.cheetahtemplate.org/
+.. _some other templating systems:
    http://webware.sourceforge.net/Papers/Templates/
 
 
