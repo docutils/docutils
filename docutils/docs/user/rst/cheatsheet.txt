@@ -105,7 +105,7 @@ See <http://docutils.sf.net/docs/ref/rst/roles.html> for full info.
 Role Name         Description
 ================  ====================================================
 emphasis          Equivalent to *emphasis*
-literal           Equivalent to ``literal``, except not as literal
+literal           Equivalent to ``literal`` but processes backslash escapes
 PEP               Reference to a numbered Python Enhancement Proposal
 RFC               Reference to a numbered Internet Request For Comments
 strong            Equivalent to **strong**
