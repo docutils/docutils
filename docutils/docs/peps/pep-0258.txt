@@ -141,7 +141,7 @@ Examples:
   Either interpret PEPs' indented sections or convert existing PEPs to
   reStructuredText (or both?).
 
-  The "PEP Reader" is being implemented in module
+  The "PEP Reader" has been implemented in module
   ``docutils.readers.pep``.
 
 - Wiki: Global reference lookups of "wiki links" incorporated into

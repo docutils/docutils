@@ -74,7 +74,6 @@ class Hyperlinks(Transform):
                   'Anonymous hyperlink mismatch: %s references but %s '
                   'targets.' % (len(self.document.anonymous_refs),
                                 len(self.document.anonymous_targets)))
-            self.document.messages += msg
             msgid = self.document.set_id(msg)
             for ref in self.document.anonymous_refs:
                 prb = nodes.problematic(
@@ -187,7 +186,6 @@ class Hyperlinks(Transform):
         msg = self.document.reporter.warning(
               'Indirect hyperlink target %s refers to target "%s", '
               'which does not exist.' % (naming, target['refname']))
-        self.document.messages += msg
         msgid = self.document.set_id(msg)
         for ref in reflist:
             prb = nodes.problematic(
@@ -219,7 +217,6 @@ class Hyperlinks(Transform):
                 msg = self.document.reporter.info(
                       'Indirect hyperlink target "%s" is not referenced.'
                       % name)
-                self.document.messages += msg
                 target.referenced = 1
                 return
             delatt = 'refname'
@@ -233,7 +230,6 @@ class Hyperlinks(Transform):
                 msg = self.document.reporter.info(
                       'Indirect hyperlink target id="%s" is not referenced.'
                       % id)
-                self.document.messages += msg
                 target.referenced = 1
                 return
             delatt = 'refid'
@@ -277,7 +273,6 @@ class Hyperlinks(Transform):
                     msg = self.document.reporter.info(
                           'External hyperlink target "%s" is not referenced.'
                           % name)
-                    self.document.messages += msg
                     target.referenced = 1
                     continue
                 for ref in reflist:
@@ -319,7 +314,6 @@ class Hyperlinks(Transform):
                 msg = self.document.reporter.info(
                       'Internal hyperlink target "%s" is not referenced.'
                       % name)
-                self.document.messages += msg
                 target.referenced = 1
                 continue
             for ref in reflist:
@@ -530,7 +524,6 @@ class Footnotes(Transform):
                       'corresponding footnotes available.'
                       % len(self.autofootnote_labels))
                 msgid = self.document.set_id(msg)
-                self.document.messages += msg
                 for ref in self.document.autofootnote_refs[i:]:
                     if ref.resolved or ref.hasattr('refname'):
                         continue
@@ -569,7 +562,6 @@ class Footnotes(Transform):
                       'Too many symbol footnote references: only %s '
                       'corresponding footnotes available.' % len(labels))
                 msgid = self.set_id(msg)
-                self.document.messages += msg
                 for ref in self.document.symbol_footnote_refs[i:]:
                     if ref.resolved or ref.hasattr('refid'):
                         continue
@@ -652,7 +644,6 @@ class Substitutions(Transform):
                           'Undefined substitution referenced: "%s".'
                           % refname)
                     msgid = self.document.set_id(msg)
-                    self.document.messages += msg
                     prb = nodes.problematic(
                           ref.rawsource, ref.rawsource, refid=msgid)
                     prbid = self.document.set_id(prb)
