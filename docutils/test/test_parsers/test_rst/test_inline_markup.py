@@ -696,6 +696,14 @@ reference|
         <paragraph>
             Inline substitution_reference start-string without end-string.
 """],
+["""\
+| and || and |||
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        | and || and |||
+"""],
 ]
 
 totest['standalone_hyperlink'] = [

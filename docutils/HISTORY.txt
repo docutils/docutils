@@ -108,6 +108,7 @@ Specific:
   - Fixed enumerated list item parsing to allow paragraphs & section
     titles to begin with enumerators.
   - Converted system messages to use the new "line" attribute.
+  - Fixed a substitution reference edge case.
 
 * docutils/parsers/rst/directives/body.py: Added to project.  Contains
   the "topic", "line-block", and "parsed-literal" directives.
@@ -242,6 +243,8 @@ Specific:
     second-line validity checking.
   - Updated directive description.
   - Added a note redirecting newbies to the user docs.
+  - Expanded description of inline markup start-strings in non-markup
+    contexts.
 
 * tools/buildhtml.py:
 
