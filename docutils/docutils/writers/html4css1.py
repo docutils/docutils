@@ -330,6 +330,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         if name:
             self.body.append('<p class="admonition-title first">'
                              + self.language.labels[name] + '</p>\n')
+            node[-1].set_class('last')
+        else:
+            self.set_first_last(node)
 
     def depart_admonition(self, node=None):
         self.body.append('</div>\n')
