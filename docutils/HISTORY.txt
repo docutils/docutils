@@ -358,6 +358,8 @@ Specific:
 
   - Added the ``TargetNotes`` generic transform.
   - Split ``Hyperlinks`` into multiple transforms.
+  - Fixed bug with multiply-indirect references (report: Bruce Smith).
+  - Added check for circular indirect references.
 
 * docutils/transforms/universal.py:
 
