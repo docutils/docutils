@@ -52,6 +52,7 @@ donations, tasty treats, and related projects:
 * Jacob Hallen
 * Simon Hefti
 * Doug Hellmann
+* Marc Herbert
 * Juergen Hermann
 * Jannie Hofmeyr
 * Steve Holden
