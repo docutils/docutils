@@ -486,6 +486,8 @@ Rubric
 :Directive Options: Possible.
 :Directive Content: None.
 
+..
+
      rubric n. 1. a title, heading, or the like, in a manuscript,
      book, statute, etc., written or printed in red or otherwise
      distinguished from the rest of the text. ...
