@@ -1,17 +1,17 @@
 Introduction à ReStructuredText
 ===============================
 
-:Author: Richard Jones
+:Auteur: Richard Jones
 :Version: $Revision$
 :Traduction: William Dode <wilk *at* flibuste.net>
 
 .. contents::
 
 
-Ce texte contient des liens de la forme "(quickref__)". Ils sont 
+Ce texte contient des liens de la forme "(quickref__)".  Ils sont
 relatifs au manuel de référence utilisateur `Quick reStructuredText`_.
-S'ils ne fonctionnent pas, reférez vous au document `master quick reference`_.
-
+S'ils ne fonctionnent pas, reférez vous au document `master quick
+reference`_.
 
 __ 
 .. _Quick reStructuredText: quickref.html
