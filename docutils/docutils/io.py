@@ -68,6 +68,7 @@ class IO:
             encodings.append(locale.getdefaultlocale()[1])
         except:
             pass
+        encodings.append('latin-1')
         for enc in encodings:
             if not enc:
                 continue
