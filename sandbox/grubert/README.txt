@@ -4,13 +4,16 @@
 pdfsamples
 ~~~~~~~~~~
 
-a. reduced tools_test.txt_ multirow and multicol tablecells donot work. 
+1. reduced tools_test.txt_ multirow and multicol tablecells donot work. 
   
-b. docs_tools.txt_.
+2. docs_tools.txt_.
+
+3. specs_pep-0256.txt_.
 
 .. _tools_test.txt: test.pdf
-
+.. _specs_pep-0256.txt: pep-0256.pdf
 .. _docs_tools.txt: tools.pdf
+
 
 2002-09
 -------

@@ -9,6 +9,11 @@ To do
 ~~~~~
 mostly errors when processing tools/test.txt.
 
+* ordered list numbering style is taken from latex a.,b. in source
+  gives 1., .. in document (as in html).
+
+* pep headers come in different ?
+
 * tabularx says "do not use any multicolmn which spans any X column.
   maybe use ltxtable instead of tabularx (Longtable combined with tabularx).
   but ltxtable disables longtable's multicolumn.
