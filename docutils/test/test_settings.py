@@ -59,7 +59,7 @@ class ConfigFileTests(unittest.TestCase):
                 'stylesheet_path': fixpath('data/stylesheets/pep.css'),
                 'template': fixpath('data/pep-html-template')},
         'two': {'generator': 0,
-                'record_dependencies': utils.DependencyList(None, ['x', 'y']),
+                'record_dependencies': utils.DependencyList(),
                 'stylesheet': None,
                 'stylesheet_path': fixpath('data/test.css')},
         'list': {'expose_internals': ['a', 'b', 'c', 'd', 'e']},
