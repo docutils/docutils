@@ -1,6 +1,6 @@
-====================
- README: DocFactory
-====================
+=====================
+ README: DocFactory_
+=====================
 
 :author:    Dr. Gunnar Schwant
 :contact:   g.schwant@gmx.de
@@ -12,6 +12,7 @@
 :abstract: This is a short introduction to **DocFactory**.  Hopefully,
            more documentation will be available soon.
 
+.. _DocFactory: http://docutils.sf.net/sandbox/gschwant/docfactory/
 
 .. contents::
 
@@ -42,9 +43,8 @@ you'll need the following:
 * wxPython 2.3.2.1 or later (http://wxpython.org).  Be sure to get the
   build matching the version of Python you're using.
 
-* The latest Docutils code (http://docutils.sourceforge.net).
-  Although the latest release of Docutils will work fine, improvements
-  are being made almost daily, so the CVS snapshot is your best bet.
+* Docutils 0.2.2 or later (http://docutils.sourceforge.net).  Use the
+  CVS snapshot; improvements are being made almost daily.
 
 
 Installation
@@ -219,9 +219,18 @@ will be implemented as well.  For example:
 * find & replace dialog
 * ...
 
-.. _license.txt:      license.html
+.. _LICENSE.txt:      LICENSE.html
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _Python:           http://www.python.org
 .. _wxPython:         http://wxpython.org
 .. _py2exe:           http://py2exe.sourceforge.net
 .. _Docutils:         http://docutils.sourceforge.net
+
+
+..
+   Local Variables:
+   mode: indented-text
+   indent-tabs-mode: nil
+   sentence-end-double-space: t
+   fill-column: 70
+   End:

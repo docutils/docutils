@@ -15,7 +15,8 @@ System requirements:
 * Python 2.1.1 or later (http://www.python.org).
 * wxPython 2.3.2.1 or later (http://wxpython.org).  Be sure to get the
   build matching the version of Python you're using.
-* The latest Docutils code (http://docutils.sourceforge.net).
+* Docutils 0.2.2 or later (http://docutils.sourceforge.net).  Use the
+  CVS snapshot.
 """
 
 def do_setup():
@@ -23,16 +24,15 @@ def do_setup():
           name = 'DocFactory',
           description = 'wxPython-GUI for Docutils',
           long_description = LONG_DESCRIPTION,
-          url = 'http://docutils.sourceforge.net/docfactory/',
+          url = ('http://docutils.sourceforge.net/sandbox/gschwant/'
+                 'docfactory/'),
           version = '0.1.3',
           author = 'Dr. Gunnar Schwant',
           author_email = 'g.schwant@gmx.de',
           license = 'BSD (see LICENSE.txt)',
           packages = ['docutils.factory'],
           package_dir = {'docutils.factory': 'factory'},
-          scripts = ['docfactory.py'],
-          #data_files = [('share/docutils', [])],
-          )
+          scripts = ['docfactory.py'])
     return dist
 
 
