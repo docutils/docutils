@@ -154,9 +154,9 @@ __ http://www.python.org/peps/pep-0258.html
 
 `PEP 258`_ is an overview of the architecture of Docutils.
 
-* `The Docutils Publisher <api/publisher.txt>`__
-* `Inside A Docutils Command-Line Front-End Tool <api/cmdline-tool.txt>`__
-* `Docutils Runtime Settings <api/runtime-settings.txt>`__
+* `The Docutils Publisher <api/publisher.html>`__
+* `Inside A Docutils Command-Line Front-End Tool <api/cmdline-tool.html>`__
+* `Docutils Runtime Settings <api/runtime-settings.html>`__
 * (`Docutils Transforms <ref/transforms.html>`__ should be moved here)
 
 

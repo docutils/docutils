@@ -56,8 +56,8 @@ Runtime Settings Processing for Command-Line Tools
 ==================================================
 
 1. A command-line front-end tool imports and calls
-   ``docutils.core.publish_cmdline``.  The relevant _`convenience
-   function parameters` are described above.
+   ``docutils.core.publish_cmdline``.  The relevant `convenience
+   function parameters`_ are described above.
 
 2. ``docutils.core.publish_cmdline`` initializes a
    ``docutils.core.Publisher`` object, then calls its ``publish``
