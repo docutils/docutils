@@ -136,6 +136,7 @@ def table(name, arguments, options, content, lineno,
         title = nodes.title(title_text, '', *text_nodes)
     else:
         title = None
+        messages = []
     node = nodes.Element()          # anonymous container for parsing
     text = '\n'.join(content)
     state.nested_parse(content, content_offset, node)
@@ -151,7 +152,7 @@ def table(name, arguments, options, content, lineno,
         table_node.set_class(options['class'])
     if title:
         table_node.insert(0, title)
-    return [table_node]
+    return [table_node] + messages
 
 table.arguments = (0, 1, 1)
 table.options = {'class': directives.class_option}
