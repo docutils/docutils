@@ -208,7 +208,12 @@ and forth seemed to be impossible. Later images were put into figures.
 This results in footnotes images and figures possibly being mixed at page 
 foot.
 
-* use LaTeX footnotes and citations (to be implemented).
+* Use LaTeX footnotes and citations for printing or more complex layout.
+* Footnotes and citations done with figures might excell in hyperlink
+  support.
+
+If ``use-latex-citations`` is used a bibliography is inserted right at
+the end of the document. *This should be customizable*.
 
 Tilde in italian
 ----------------
