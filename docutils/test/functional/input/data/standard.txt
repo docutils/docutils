@@ -420,11 +420,14 @@ Images
 An image directive (also clickable -- a hyperlink reference):
 
 .. image:: ../../../docs/user/rst/images/title.png
+   :class: class1 class2
    :target: directives_
 
 A figure directive:
 
 .. figure:: ../../../docs/user/rst/images/title.png
+   :figclass: figclass1 figclass2
+   :class: class1 class2
    :alt: reStructuredText, the markup syntax
 
    A figure is an image with a caption and/or a legend:
