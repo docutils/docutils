@@ -19,7 +19,7 @@ import sys
 import os
 import re
 import time
-from docutils import nodes, utils
+from docutils import nodes, utils, languages
 from docutils import ApplicationError, DataError
 from docutils.transforms import Transform, TransformError
 from docutils.transforms import parts, references, misc
@@ -137,15 +137,24 @@ class Headers(Transform):
 class Contents(Transform):
 
     """
-    Insert a table of contents transform placeholder into the document after
-    the RFC 2822 header.
+    Insert an empty table of contents topic and a transform placeholder into
+    the document after the RFC 2822 header.
     """
 
     default_priority = 380
 
     def apply(self):
-        pending = nodes.pending(parts.Contents, {'title': None})
-        self.document.insert(1, pending)
+        language = languages.get_language(self.document.settings.language_code)
+        name = language.labels['contents']
+        title = nodes.title('', name)
+        topic = nodes.topic('', title, CLASS='contents')
+        name = nodes.fully_normalize_name(name)
+        if not self.document.has_name(name):
+            topic['name'] = name
+        self.document.note_implicit_target(topic)
+        pending = nodes.pending(parts.Contents)
+        topic += pending
+        self.document.insert(1, topic)
         self.document.note_pending(pending)
 
 
