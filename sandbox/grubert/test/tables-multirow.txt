@@ -1,41 +1,46 @@
 Multirows dont work.
 
+Attention
+---------
+
+* cell spanning in multirow table is missing !
+* blank lines in multirows are not alloed
+
 .. table:: row on left side
 
-   +------+------+
-   | test | test |
-   |      +------+
-   | test | test |
-   +------+------+
-   | belo |      |
-   +------+------+
+   +------+-------+
+   | left | right |
+   | span +-------+
+   |      | single|
+   +------+-------+
+   | belo | b too |
+   +------+-------+
 
 .. table:: row on right side
 
    +------+------+
    | abov | e    |
    +------+------+
-   | test | test |
-   +------+ test |
-   | test | test |
+   | left | right|
+   +------+ right|
+   | left | right|
    +------+------+
 
 .. table:: row in the midle
 
    +------+------+------+
-   | test | test | test |
-   +------+ test +------+
-   | test | test | test |
+   | left | mid  | right|
+   +------+ mid  +------+
+   | left | mid  | right|
    +------+------+------+
 
 .. table:: row left and right
 
-   +------+------+------+
-   | test | test | test |
-   |      +------+ test |
-   | test | test | test |
-   +------+------+------+
+   +------+------+-------+
+   | left | mid  | right |
+   | left +------+ 2     |
+   |      | mid  | right |
+   +------+------+-------+
 
 
-cell spanning in multirow table is missing !
 

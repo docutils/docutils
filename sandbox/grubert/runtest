@@ -68,6 +68,14 @@ done
 
 # with generated footer
 CMD="../../tools/rst2latex.py -gs"
+INF=test/tables-multirow.txt
+OUTF="$INF.tex"
+REFF="$OUTF.ref"
+$CMD $INF > $OUTF
+do_diff $REFF $OUTF 
+
+# with generated footer
+CMD="../../tools/rst2latex.py -gs"
 INF=test/docinfo.txt
 OUTF="$INF-gs.tex"
 REFF="$OUTF.ref"
