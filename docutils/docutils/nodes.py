@@ -782,7 +782,7 @@ class document(Root, Structural, Element):
                         self.nameids[name] = None
                 msg = self.reporter.system_message(
                     level, 'Duplicate explicit target name: "%s".' % name,
-                    backrefs=[id])
+                    backrefs=[id], base_node=node)
                 if msgnode != None:
                     msgnode += msg
                 dupname(node)
@@ -800,7 +800,7 @@ class document(Root, Structural, Element):
         if not explicit or (not old_explicit and old_id is not None):
             msg = self.reporter.info(
                 'Duplicate implicit target name: "%s".' % name,
-                backrefs=[id])
+                backrefs=[id], base_node=node)
             if msgnode != None:
                 msgnode += msg
 
@@ -876,7 +876,8 @@ class document(Root, Structural, Element):
         name = subdef['name']
         if self.substitution_defs.has_key(name):
             msg = self.reporter.error(
-                  'Duplicate substitution definition name: "%s".' % name)
+                  'Duplicate substitution definition name: "%s".' % name,
+                  base_node=subdef)
             if msgnode != None:
                 msgnode += msg
             oldnode = self.substitution_defs[name]
@@ -899,16 +900,9 @@ class document(Root, Structural, Element):
 
     def note_state_machine_change(self, state_machine):
         self.current_line = state_machine.abs_line_number()
-#         print >>sys.stderr, '\nnodes.document.note_state_machine_change: ' \
-#                   'current_line:', self.current_line
-#         print >>sys.stderr, '    current_state: ',state_machine.current_state
-#         sys.stderr.flush()
 
     def note_source(self, source):
         self.current_source = source
-        #print >>sys.stderr, '\nnodes.document.note_source: ' \
-        #          'current_source:', self.current_source
-        #sys.stderr.flush()
 
     def copy(self):
         return self.__class__(self.options, self.reporter,
@@ -1051,20 +1045,20 @@ class entry(Part, Element): pass
 
 class system_message(Special, PreBibliographic, Element, BackLinkable):
 
-    def __init__(self, comment=None, *children, **attributes):
-        if comment:
-            p = paragraph('', comment)
+    def __init__(self, message=None, *children, **attributes):
+        if message:
+            p = paragraph('', message)
             children = (p,) + children
-        Element.__init__(self, '', *children, **attributes)
+        try:
+            Element.__init__(self, '', *children, **attributes)
+        except:
+            print 'system_message: children=%r' % (children,)
+            raise
 
     def astext(self):
-        if self.hasattr('line'):
-            line = ', line %s' % self['line']
-        else:
-            line = ''
-        return '%s/%s (%s%s) %s' % (self['type'], self['level'],
-                                    self['source'], line,
-                                    Element.astext(self))
+        line = self.get('line', '')
+        return '%s:%s: (%s/%s) %s' % (self['source'], line, self['type'],
+                                      self['level'], Element.astext(self))
 
 
 class pending(Special, Invisible, PreBibliographic, Element):
