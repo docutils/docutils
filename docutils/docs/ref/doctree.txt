@@ -3396,7 +3396,7 @@ Complete pseudo-XML_ result after parsing::
 
 
 ``sidebar``
-=========
+===========
 
 Sidebars are like miniature, parallel documents that occur inside
 other documents, providing related or reference material.  A
