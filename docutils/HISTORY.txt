@@ -23,6 +23,7 @@ Changes Since 0.3.5
 
   - Add ``\PreloadUnicodePage{n}`` to the header if in LaTeX code
     uses unicode.
+  - Add option "font-encoding".
 
 Release 0.3.5 (2004-07-29)
 ==========================
