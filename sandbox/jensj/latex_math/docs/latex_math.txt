@@ -52,30 +52,39 @@ The parser does not understand *all* LaTeX-math, but basic
 everyday-math works.  If a command or a special symbol is not desribed
 in this document, then it is probably not implemented.
 
+The following tables are taken from the book "The LaTeX companion"
+(Goossens, Mittelbach, Samarin).
+
+
+Accents
+-------
 
   ============================  ========================
   :m:`\tilde{n}` ``\tilde{n}``  :m:`\hat{H}` ``\hat{H}``
   :m:`\bar{v}` ``\bar{v}``      :m:`\vec{R}` ``\vec{R}``
   ============================  ========================
 
-  *Accents*
 
+Negated binary relations
+------------------------
 
   ================================  ======================
   :m:`\not\in` ``\not\in``          :m:`\not =` ``\not =``
   :m:`\not \equiv` ``\not \equiv``
   ================================  ======================
 
-  *Negated binary relations*
 
+Braces
+------
 
   ============  ============  ============  ==============  ========================
   :m:`(` ``(``  :m:`[` ``[``  :m:`|` ``|``  :m:`\{` ``\{``  :m:`\langle` ``\langle``
   :m:`)` ``)``  :m:`]` ``]``  :m:`|` ``|``  :m:`\}` ``\}``  :m:`\rangle` ``\rangle``
   ============  ============  ============  ==============  ========================
 
-  *Braces*.
-
+  
+LaTeX commands
+--------------
 
   =====================  ==============================  ===============================
   command                example                         result
@@ -88,8 +97,9 @@ in this document, then it is probably not implemented.
   ``\mathbb``            ``\mathbb{A}``                  :m:`\mathbb{A}`
   =====================  ==============================  ===============================
 
-  *LaTeX commands*.
 
+Greek letters 
+-------------
 
   ================================  ================================  ================================  ================================
   :m:`\Delta` ``\Delta``            :m:`\Gamma` ``\Gamma``            :m:`\Lambda` ``\Lambda``          :m:`\Omega` ``\Omega`` 
@@ -105,8 +115,9 @@ in this document, then it is probably not implemented.
   :m:`\zeta` ``\zeta``             
   ================================  ================================  ================================  ================================
 
-  *Greek letters*.
 
+Binary operation symbols
+------------------------
 
   ==========================================  ==========================================  ==========================================
   :m:`\amalg` ``\amalg``                      :m:`\ast` ``\ast``                          :m:`\bigcirc` ``\bigcirc`` 
@@ -122,8 +133,9 @@ in this document, then it is probably not implemented.
   :m:`\wedge` ``\wedge``                      :m:`\wr` ``\wr``                           
   ==========================================  ==========================================  ==========================================
 
-  *Binary operation symbols*.
 
+Relation symbols
+----------------
 
   ================================  ================================  ================================  ================================
   :m:`\Join` ``\Join``              :m:`\approx` ``\approx``          :m:`\asymp` ``\asymp``            :m:`\bowtie` ``\bowtie`` 
@@ -138,9 +150,9 @@ in this document, then it is probably not implemented.
   :m:`\supseteq` ``\supseteq``      :m:`\vdash` ``\vdash``           
   ================================  ================================  ================================  ================================
 
-  *Relation symbols*.
 
-
+Arrow symbols
+-------------
   ================================================  ================================================
   :m:`\Downarrow` ``\Downarrow``                    :m:`\Leftarrow` ``\Leftarrow`` 
   :m:`\Leftrightarrow` ``\Leftrightarrow``          :m:`\Longleftarrow` ``\Longleftarrow`` 
@@ -160,8 +172,9 @@ in this document, then it is probably not implemented.
  
   ================================================  ================================================
 
-  *Arrow symbols*.
 
+Miscellaneous symbols
+---------------------
 
   ==================================  ==================================  ==================================  ==================================
   :m:`\Im` ``\Im``                    :m:`\Re` ``\Re``                    :m:`\aleph` ``\aleph``              :m:`\angle` ``\angle`` 
@@ -174,8 +187,9 @@ in this document, then it is probably not implemented.
   :m:`\wp` ``\wp``                   
   ==================================  ==================================  ==================================  ==================================
 
-  *Miscellaneous symbols*.
 
+Variable-sized symbols
+----------------------
 
   ==============================  ==============================  ==============================  ==============================  ==============================
   :m:`\bigcap` ``\bigcap``        :m:`\bigcup` ``\bigcup``        :m:`\bigodot` ``\bigodot``      :m:`\bigoplus` ``\bigoplus``    :m:`\bigotimes` ``\bigotimes`` 
@@ -183,8 +197,8 @@ in this document, then it is probably not implemented.
   :m:`\oint` ``\oint``            :m:`\prod` ``\prod``            :m:`\sum` ``\sum``             
   ==============================  ==============================  ==============================  ==============================  ==============================
 
-  *Variable-sized symbols*.
-
+Log-like symbols
+----------------
 
   ===============  ===============  ===============  ===============  ===============  ===============
   ``\arccos``      ``\arcsin``      ``\arctan``      ``\arg``         ``\cos``         ``\cosh`` 
@@ -196,7 +210,7 @@ in this document, then it is probably not implemented.
   ``\varliminf``   ``\varprojlim`` 
   ===============  ===============  ===============  ===============  ===============  ===============
 
-  *Log-like symbols*.
+
 
 
 
