@@ -258,11 +258,10 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_address(self, node):
         self.visit_docinfo_item(node, 'address', meta=None)
-        self.body.append(self.starttag(node, 'pre', suffix='',
-                                       CLASS='address'))
+        self.body.append(self.starttag(node, 'pre', CLASS='address'))
 
     def depart_address(self, node):
-        self.body.append('</pre>\n')
+        self.body.append('\n</pre>\n')
         self.depart_docinfo_item()
 
     def visit_admonition(self, node, name):
@@ -485,11 +484,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</td></tr>\n')
 
     def visit_doctest_block(self, node):
-        self.body.append(self.starttag(node, 'pre', suffix='',
-                                       CLASS='doctest-block'))
+        self.body.append(self.starttag(node, 'pre', CLASS='doctest-block'))
 
     def depart_doctest_block(self, node):
-        self.body.append('</pre>\n')
+        self.body.append('\n</pre>\n')
 
     def visit_document(self, node):
         self.body.append(self.starttag(node, 'div', CLASS='document'))
@@ -737,11 +735,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</div>\n')
 
     def visit_line_block(self, node):
-        self.body.append(self.starttag(node, 'pre', suffix='',
-                                       CLASS='line-block'))
+        self.body.append(self.starttag(node, 'pre', CLASS='line-block'))
 
     def depart_line_block(self, node):
-        self.body.append('</pre>\n')
+        self.body.append('\n</pre>\n')
 
     def visit_list_item(self, node):
         self.body.append(self.starttag(node, 'li', ''))
@@ -769,11 +766,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def visit_literal_block(self, node):
-        self.body.append(self.starttag(node, 'pre', suffix='',
-                                       CLASS='literal-block'))
+        self.body.append(self.starttag(node, 'pre', CLASS='literal-block'))
 
     def depart_literal_block(self, node):
-        self.body.append('</pre>\n')
+        self.body.append('\n</pre>\n')
 
     def visit_meta(self, node):
         self.head.append(self.starttag(node, 'meta', **node.attributes))
