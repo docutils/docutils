@@ -166,22 +166,23 @@ Rationale
     4. Implicit markup is aesthetically compatible with the clean and
        minimalist Python syntax.
 
-    Proposed alternatives have included:
+    Many alternative markups have been proposed on the Doc-SIG,
+    including:
 
     - XML [3]_, SGML [4]_, DocBook [5]_, HTML [6]_, XHTML [7]_
 
       XML and SGML are explicit, well-formed meta-languages suitable
       for all kinds of documentation.  XML is a variant of SGML.  They
-      are best used behind the scenes, because they are verbose,
-      difficult to type, and too cluttered to read comfortably as
-      source.  DocBook, HTML, and XHTML are all applications of SGML
-      and/or XML, and all share the same basic syntax and the same
-      shortcomings.
+      are best used behind the scenes, because to untrained eyes they
+      are verbose, difficult to type, and too cluttered to read
+      comfortably as source.  DocBook, HTML, and XHTML are all
+      applications of SGML and/or XML, and all share the same basic
+      syntax and the same shortcomings.
 
     - TeX [8]_
 
-      TeX is similar to XML/SGML in that it's explicit, not very easy
-      to write, and not easy for the uninitiated to read.
+      TeX is similar to XML/SGML in that it's explicit, but not very
+      easy to write, and not easy for the uninitiated to read.
 
     - Perl POD [9]_
 
@@ -197,10 +198,9 @@ Rationale
       Special comments before Java classes and functions serve to
       document the code.  A program to extract these, and turn them
       into HTML documentation is called javadoc, and is part of the
-      standard Java distribution.  However, the only output format
-      that is supported is HTML, and JavaDoc has a very intimate
-      relationship with HTML, using HTML tags for most markup.  Thus
-      it shares the readability problems of HTML.
+      standard Java distribution.  However, JavaDoc has a very
+      intimate relationship with HTML, using HTML tags for most
+      markup.  Thus it shares the readability problems of HTML.
 
     - Setext [11]_, StructuredText [12]_
 
@@ -233,6 +233,10 @@ Rationale
 
       - There has been no mechanism to get around the SText markup
         rules when a markup character is used in a non-markup context.
+
+    (Please note that this is not an exclusive list of all existing
+    markup systems, just a sample of those seriously proposed for
+    docstring use, on the Doc-SIG.)
 
     Proponents of implicit STexts have vigorously opposed proposals
     for explicit markup (XML, HTML, TeX, POD, etc.), and the debates
@@ -678,6 +682,13 @@ Questions & Answers
          modules will be converted.  Some modules may never be
          converted.  A future toolset will have to allow for
          incompleteness.
+
+    Q11: I want to write all my strings in Unicode.  Will anything
+         break?
+
+    A11: The parser will fully support Unicode.  It may not yet, but
+         only because nobody's gotten around to implementing or
+         testing Unicode support.  Contributions are always welcome!
 
 
 References & Footnotes
