@@ -71,13 +71,13 @@ __ http://structuredtext.sourceforge.net/
 __ http://docstring.sourceforge.net/
 
 Docutils currently consists of a reStructuredText_ parser, readers for
-standalone files and PEPs_, and writers for HTML, Docutils-native
-XML, plus pseudo-XML for testing purposes.  A PDF writer has been
-started, and a Python source reader (docstring extraction with
-context) is also under way.  There is a lot of design and
-implementation work to do, which could greatly benefit from a joint
-effort with existing projects.  The project `To Do list`_ is brimming
-over with ideas.
+standalone files and PEPs_, and writers for HTML, LaTeX,
+Docutils-native XML, plus pseudo-XML for testing purposes.  Writers
+for DocBook XML and PDF have been started, and a Python source reader
+(docstring extraction with context) is also under way.  There is a lot
+of design and implementation work to do, which could greatly benefit
+from a joint effort with existing projects.  The project `To Do list`_
+is brimming over with ideas.
 
 This project should be considered highly experimental; we're learning
 as we go.  APIs are subject to change at any time.
@@ -92,8 +92,8 @@ Requirements
   and the test suite.  The latest release is recommended (currently
   2.2.2).  Python is available from http://www.python.org/.
 
-- Docutils uses Greg Ward's Optik_ option processing package.  It is
-  now included in the Docutils distribution.
+- Docutils uses Greg Ward's Optik_/optparse option processing package.
+  It is included in the Docutils distribution.
 
 .. [#] Python 2.1 may be used providing the compiler package is
    installed.  The compiler package can be found in the Tools/
@@ -107,8 +107,10 @@ Development Snapshots
 
 Development snapshots of the project files are available as .tgz
 tarballs.  They are generated automatically from CVS, usually within
-an hour of a change being checked in.  The snapshots should be used
-with caution, as they may contain transient bugs or incompatibilities.
+an hour of a change being checked in.  The snapshots are highly
+recommended over the "official" releases, as they contain the latest
+features and bug fixes.  However, they may contain transient bugs or
+incompatibilities.
 
 - `Snapshot of Docutils code, tests, documentation, and
   specifications`__
@@ -124,7 +126,8 @@ __ http://docutils.sourceforge.net/docfactory-snapshot.tgz
 __ http://docutils.sourceforge.net/docutils-web-snapshot.tgz
 
 `Anonymous CVS access`_ is available.  You can also `browse the CVS
-repository`_ and read the latest README_, HISTORY_, and FAQ_ files.
+repository`_ and read the latest README_, HISTORY_, COPYING_, and FAQ_
+files.
 
 
 Project Releases
@@ -135,7 +138,7 @@ effort, so it isn't done that often.  Please note that the
 `development snapshots`_ above contain the latest versions of project
 files, and are strongly recommended.
 
-The `latest project release package`_ (Docutils 0.2, 2002-07-31) and
+The `latest project release package`_ (Docutils 0.3, 2002-06-24) and
 past project releases can be downloaded from the `project files
 page`_.
 
@@ -414,13 +417,14 @@ Project Links
 .. _To Do list: spec/notes.html#to-do
 .. _README: README.html
 .. _HISTORY: HISTORY.html
+.. _COPYING: COPYING.html
 .. _master repository: http://www.python.org/peps/
 .. _mailto:
 .. _David Goodger: mailto:goodger@users.sourceforge.net
 .. _Doc-SIG: http://www.python.org/sigs/doc-sig/
 
 .. _latest project release package:
-   http://prdownloads.sourceforge.net/docutils/docutils-0.2.tar.gz
+   http://prdownloads.sourceforge.net/docutils/docutils-0.3.tar.gz
 
 
 ..
