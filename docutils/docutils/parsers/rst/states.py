@@ -270,10 +270,10 @@ class RSTState(StateWS):
         state_machine.unlink()
         return state_machine.abs_line_offset(), blank_finish
 
-    def section(self, title, source, style, lineno):
+    def section(self, title, source, style, lineno, messages):
         """Check for a valid subsection and create one if it checks out."""
         if self.check_subsection(source, style, lineno):
-            self.new_subsection(title, lineno)
+            self.new_subsection(title, lineno, messages)
 
     def check_subsection(self, source, style, lineno):
         """
@@ -320,19 +320,20 @@ class RSTState(StateWS):
                                      % lineno, '', literalblock)
         return error
 
-    def new_subsection(self, title, lineno):
+    def new_subsection(self, title, lineno, messages):
         """Append new subsection to document tree. On return, check level."""
         memo = self.memo
         mylevel = memo.section_level
         memo.section_level += 1
         sectionnode = nodes.section()
         self.parent += sectionnode
-        textnodes, messages = self.inline_text(title, lineno)
+        textnodes, title_messages = self.inline_text(title, lineno)
         titlenode = nodes.title(title, '', *textnodes)
         name = normalize_name(titlenode.astext())
         sectionnode['name'] = name
         sectionnode += titlenode
         sectionnode += messages
+        sectionnode += title_messages
         self.document.note_implicit_target(sectionnode, sectionnode)
         offset = self.state_machine.line_offset + 1
         absoffset = self.state_machine.abs_line_offset() + 1
@@ -2035,15 +2036,16 @@ class Text(RSTState):
         title = context[0].rstrip()
         underline = match.string.rstrip()
         source = title + '\n' + underline
+        messages = []
         if len(title) > len(underline):
             blocktext = context[0] + '\n' + self.state_machine.line
-            msg = self.reporter.info(
+            msg = self.reporter.warning(
                   'Title underline too short at line %s.' % lineno, '',
                   nodes.literal_block(blocktext, blocktext))
-            self.parent += msg
+            messages.append(msg)
         style = underline[0]
         context[:] = []
-        self.section(title, source, style, lineno - 1)
+        self.section(title, source, style, lineno - 1, messages)
         return [], next_state, []
 
     def text(self, match, context, next_state):
@@ -2226,14 +2228,15 @@ class Line(SpecializedText):
             self.parent += msg
             return [], 'Body', []
         title = title.rstrip()
+        messages = []
         if len(title) > len(overline):
-            msg = self.reporter.info(
+            msg = self.reporter.warning(
                   'Title overline too short at line %s.'% lineno, '',
                   nodes.literal_block(source, source))
-            self.parent += msg
+            messages.append(msg)
         style = (overline[0], underline[0])
         self.eofcheck = 0               # @@@ not sure this is correct
-        self.section(title.lstrip(), source, style, lineno + 1)
+        self.section(title.lstrip(), source, style, lineno + 1, messages)
         self.eofcheck = 1
         return [], 'Body', []
 
