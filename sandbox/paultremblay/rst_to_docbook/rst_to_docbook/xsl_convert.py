@@ -1,4 +1,8 @@
-import paul.options, sys, os 
+import paul.options, sys, os, tempfile
+
+
+
+
 """
 
 
@@ -15,10 +19,10 @@ class XslConvert:
 
         """
 
+        pass
 
-        self.__write_to = '/home/paul/paultemp/xsl_convert_temp'
 
-    def transform(self, file, xsl_file, output=None, indent_amount = 2):
+    def transform(self, file, xsl_file, output, indent_amount = 2):
         """
         Requires:
 
@@ -39,13 +43,7 @@ class XslConvert:
 
         """
         command = 'xsltproc --param indent-amount %s %s %s > %s' % \
-                (indent_amount, xsl_file, file, self.__write_to)
+                (indent_amount, xsl_file, file, output)
         os.system(command)
-        if output:
-            command = 'cat %s > %s' % (self.__write_to, output)
-        else:
-            command = 'cat %s' % self.__write_to
 
-        os.system(command)
-        os.remove(self.__write_to)
 

@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 
-# If you choose to configure the below by hand, the directory must exist
-# and it must contain a valid configuration file named config_rst_2_doc.xml
-configure_dir = 'bogus'
+# configure rst_2_dbk_dir by hand
+configure_dir = ''
 
 import sys, os, tempfile, codecs
 import docutils_nest.nest_utils
 import docutils_nest.rst_options
-import rst_to_docbook.xsl_convert
+import rst_to_docbook.xsl_convert, rst_to_docbook.location
 
 """
 Module for convert rst documents to docbook
@@ -22,84 +21,72 @@ Module for convert rst documents to docbook
 class ConvertRstToDoc:
 
     def __init__(self, doc_debug = 0):
+        self.__rst_2_dbk_dir = rst_to_docbook.location.get_location()
         if doc_debug:
             self.__setup_debug()
         else:
             self.__debug = 0
             
-        self.__setup_config_dir()
 
-    def __setup_config_dir(self):
-        library_dir = rst_to_docbook.xsl_convert.__file__
-        library_dir = os.path.dirname(library_dir)
-        module_name = os.path.join(library_dir, 'convert_rst_to_docbook.py')
-        no_config = ('sorry, but configuration file does not exist\n'
-                            'script will now quit\n')
-                    
-
-        if not configure_dir:
-            platform = sys.platform
-            index = platform.find('linux')
-            if index > -1:
-                home_dir =  os.path.expanduser("~")
-                rst_docbook_dir = os.path.join(home_dir, '.rst_to_docbook')
-                dir_exists = os.path.isdir(rst_docbook_dir)
-                if not dir_exists:
-                    sys.stderr.write('sorry, but I could not find a '
-                            'a directory in your home directory entitled '
-                            '".rst_to_docbook. Create this directory and '
-                            'make a copy of the configuration file.\n'
-                            'Script will now quit\n'
-                            )
-                    os.system.exit(1)
-                config_file = os.path.join(home_dir, 'config_rst_2_doc.xml')
-                if not os.path.exists(config_file):
-                    sys.stderr.write(no_config)
-                    
-            else:
-                sys.stderr.write('sorry, don\'t know how to find configure file '
-                'for %s.\n' 
-                'Try configuring this file (%s) by hand.\n'
-                
-                
-                % (platform, module_name))
-                sys.exit(1)
-        else:
-            
-            config_file = os.path.join(configure_dir, 'config_rst_2_doc.xml')
-            if not os.path.exists(config_file):
-                sys.stderr.write(no_config)
-                sys.exit(1)
         
     def __setup_debug(self):
-        platform = sys.platform
-        index = platform.find('linux')
-        if index > -1:
-            home_dir =  os.path.expanduser("~")
-            rst_docbook_dir = os.path.join(home_dir, '.rst_to_docbook')
-            dir_exists = os.path.isdir(rst_docbook_dir)
-            if not dir_exists:
-                os.mkdir(rst_docbook_dir)
-            self.__debug = 1
-            self.__debug_dir = rst_docbook_dir
-            return
-        sys.stderr.write('sorry, don\'t know how to make debug directory '
-                'for %s' % platform)
+        self.__debug_dir = os.path.join(self.__rst_2_dbk_dir, 'debug')
+        if not (os.path.isdir(self.__debug_dir)):
+            os.mkdir(self.__debug_dir)
+        list_of_files = os.listdir(self.__debug_dir)
+        sys.stdout.write('Removing files from %s...\n' % self.__debug_dir)
+        for file in list_of_files:
+            file = os.path.join(self.__debug_dir, file)
+            sys.stdout.write('%s\n' % file)
+            os.remove(file)
+        self.__debug = 1
 
 
     def convert_to_docbook(self):
         # get file, output, and the docutils_options
         file, output, docutils_options =  self.__handle_options()
         docutils_nest_file = tempfile.mktemp()
+        main_temp_file = tempfile.mktemp()
         self.__convert_to_nest_utils(   file, 
                                         output = docutils_nest_file, 
                                         docutils_options = docutils_options)
-        self.__copy_file(docutils_nest_file, output)
+        self.__copy_file(docutils_nest_file, main_temp_file)
         if self.__debug:
             new_file = os.path.join(self.__debug_dir, 'converted_to_nest_utils_info')
             self.__copy_file(docutils_nest_file, new_file)
             
         os.remove(docutils_nest_file)
+
+        # convert with first xslt
+        converted_string_file = tempfile.mktemp()
+        self.__string_to_attributes(main_temp_file, converted_string_file)
+        self.__copy_file(converted_string_file, main_temp_file)
+        if self.__debug:
+            new_file = os.path.join(self.__debug_dir, 'converted_string_info')
+            self.__copy_file(converted_string_file, new_file)
+        os.remove(converted_string_file)
+
+        # convert with second xslt
+        converted_arg_file = tempfile.mktemp()
+        self.__convert_args(main_temp_file, converted_arg_file)
+        self.__copy_file(converted_arg_file, main_temp_file)
+        if self.__debug:
+            new_file = os.path.join(self.__debug_dir, 'converted_to_args_info')
+            self.__copy_file(converted_arg_file, new_file)
+        os.remove(converted_arg_file)
+
+        # final convert with xslt
+        docbook_file = tempfile.mktemp()
+        self.__xsl_convert_to_docbook(main_temp_file, docbook_file)
+        self.__copy_file(docbook_file, main_temp_file)
+        if self.__debug:
+            new_file = os.path.join(self.__debug_dir, 'converted_to_docbook_info')
+            self.__copy_file(docbook_file, new_file)
+        os.remove(docbook_file)
+
+        # write to output
+        self.__copy_file(main_temp_file, output)
+        os.remove(main_temp_file)
 
     
     def __handle_options(self):
@@ -129,11 +116,43 @@ class ConvertRstToDoc:
         return file, output, doc_opts
     
     def __convert_to_nest_utils(self, file, output, docutils_options):
+
+        sys.stdout.write('converting to nest-utils.xml ...\n')
         convert_obj = docutils_nest.nest_utils.RstWithInline(file, output, docutils_opts = docutils_options)
         convert_obj.convert()
 
+    def __string_to_attributes(self, file, output):
+        xsl_file = os.path.join(self.__rst_2_dbk_dir, 
+            'xslt_stylesheets', 'reStruct_field_names_tokenize.xsl'
+                )
+        sys.stdout.write('converting string in nest-utils '
+            'with xslt...\n')
+        trans_obj =  rst_to_docbook.xsl_convert.XslConvert()
+        trans_obj.transform(file = file, 
+                            xsl_file = xsl_file, 
+                            output = output)
+    
     def __convert_args(self, file, output):
-        pass
+        xsl_file = os.path.join(self.__rst_2_dbk_dir, 
+            'xslt_stylesheets', 'reStruct_field_names.xsl'
+                )
+        sys.stdout.write('converting args in nest-utils '
+            'with xslt...\n')
+        trans_obj =  rst_to_docbook.xsl_convert.XslConvert()
+        trans_obj.transform(file = file, 
+                            xsl_file = xsl_file, 
+                            output = output)
+    def __xsl_convert_to_docbook(self, file, output):
+        sys.stdout.write('doing final converstion with xslt...\n')
+        xsl_file = os.path.join(self.__rst_2_dbk_dir,
+            'xslt_stylesheets', 'reStruct_to_docbook.xsl'
+                )
+         # reStructure_to_docbook.xsl
+        trans_obj =  rst_to_docbook.xsl_convert.XslConvert()
+        trans_obj.transform(file = file, 
+                            xsl_file = xsl_file, 
+                            output = output)
+        
     def __copy_file(self, file, output):
         (utf8_encode, utf8_decode, utf8_reader, utf8_writer) = codecs.lookup("utf-8")
         write_obj = utf8_writer(open(output, 'w'))
@@ -152,9 +171,12 @@ class ConvertRstToDoc:
 if __name__ == '__main__':
     if len(sys.argv) == 1:
         file = '/home/paul/Documents/in_progress/cvs/sandbox/paultremblay/rst_to_docbook/test_files/test_simple.rst'
+        file = '/home/paul/Documents/in_progress/cvs/sandbox/paultremblay/rst_to_docbook/test_files/reStructure_docbook_example.rst'
+        sys.argv.append('--indents')
         sys.argv.append('--doc_debug')
         sys.argv.append('--output')
         sys.argv.append('output.xml')
         sys.argv.append('%s' % file)
     test_obj = ConvertRstToDoc(doc_debug = 1)
     test_obj.convert_to_docbook()
+    
