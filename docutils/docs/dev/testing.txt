@@ -74,11 +74,9 @@ The Testing Process
 -------------------
 
 When running ``test_functional.py``, all config files in
-``functional/some_test.py`` are processed.
+``functional/tests/`` are processed.
 
-An example of what this means:
-
-Provided ``functional/tests/some_test.py`` reads like this::
+For example, ``functional/tests/some_test.py`` could read like this::
 
     # Source and destination file names.
     test_source = "some_test.txt"
@@ -101,10 +99,8 @@ All other variables are passed as keyword arguments to
 ``docutils.core.publish_file``, so you can set reader, parser,
 writer and anything else you want to configure.
 
-Note that ``settings_overrides`` is already initialized as an empty
-dictionary *before* the execution of the config file.  This is done in
-order to allow subsequent assignments to ``settings_overrides`` in the
-`default configuration file`_ and in the actual configuration file.
+Note that ``settings_overrides`` is already initialized as a
+dictionary *before* the execution of the config file.
 
 Creating New Tests
 ------------------
@@ -115,11 +111,12 @@ In order to create a new test, put the input test file into
 reader, parser and writer.
 
 Now run ``test_functional.py``.  The test will fail, of course,
-because you do not have an expected output yet.
+because you do not have an expected output yet.  However, an output
+file will have been generated in ``functional/output/``.  Check this
+output file for validity and correctness.  Then copy the file to
+``functional/expected/``.
 
-However, an output file will be generated in ``functional/output/``.
-Check this output file for validity and correctness.  Then copy the
-file to ``functional/expected/``.
+If you rerun ``test_functional.py`` now, it should pass.
 
 If you run ``test_functional.py`` later and the actual output doesn't
 match the expected output anymore, the test will fail.
