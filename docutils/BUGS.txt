@@ -1,0 +1,177 @@
+================
+ Docutils_ Bugs
+================
+
+:Author: David Goodger; open to all Docutils developers
+:Contact: goodger@python.org
+:Date: $Date$
+:Revision: $Revision$
+:Copyright: This document has been placed in the public domain.
+
+.. _Docutils: http://docutils.sourceforge.net/
+
+
+Bugs in Docutils?!?  Yes, we do have a few.  Some are old-timers that
+tend to stay in the shadows and don't bother anybody.  Once in a while
+new bugs are born.  From time to time some bugs (new and old) crawl
+out into the light and must be dealt with.  Icky.
+
+This document describes how to report a bug, and lists known bugs.
+
+.. contents::
+
+
+How To Report A Bug
+===================
+
+If you think you've discovered a bug, please read through these
+guidelines before reporting it.
+
+First, make sure it's a bug:
+
+* Are you using the latest Docutils code?  If not, the bug may have
+  already been fixed.  Please get the latest code from CVS_ or from
+  the `development snapshot`_ and check again.
+
+* If Docutils does not behave the way you expect, look in the
+  documentation_ (don't forget the FAQ_!) and `mailing list archives`_
+  for evidence that it should behave the way you expect
+
+If you're not sure, please ask on the
+docutils-users@lists.sourceforge.net mailing list first.
+
+Once you've established that it is a bug in the current codebase,
+please check the list of `known bugs`_ below and the `SourceForge Bug
+Tracker`_ to see if it has already been reported.
+
+If it's a new bug, the most important thing you can do is come up with
+a simple description and a recipe that reproduces the bug.  Try to
+create a minimal document that demonstrates the bug.  The easier you
+make it to understand and track down the bug, the more likely a fix
+will be.
+
+Now you're ready to write the bug report.  Please include:
+
+* A clear description of the bug.  Describe how you expected Docutils
+  to behave, and contrast that with how it actually behaved.  While
+  the bug may seem obvious to you, it may not be so obvious to someone
+  else, so it's best to avoid a guessing game.
+
+* A complete description of the environment in which you reproduced
+  the bug:
+
+  - Your operating system & version.
+  - The version of Python (``python -V``).
+  - The version of Docutils (use the "-V" option to most Docutils
+    front-end tools).
+  - Any private modifications you made to Docutils.
+  - Anything else that could possibly be relevant.  Err on the side
+    of too much information, rather than too little.
+
+* A literal transcript of the *exact* command you ran, and the *exact*
+  output.  Use the "--traceback" option to get a complete picture.
+
+* The exact input and output files.  Better to attach complete files
+  to your bug report than to include just a summary or excerpt.
+
+* If you also want to include speculation as to the cause, and even a
+  patch to fix the bug, that would be great!
+
+The best place to send your bug report is to the `SourceForge Bug
+Tracker`_.  That way, it won't be misplaced or forgotten.  In fact, an
+open bug report on SourceForge is a constant irritant that begs to be
+squashed.
+
+Thank you!
+
+(This section was inspired by the `Subversion project's`__ BUGS__
+file.)
+
+__ http://subversion.tigris.org/
+__ http://svn.collab.net/viewcvs/svn/trunk/BUGS?view=markup
+
+.. _development snapshot: http://docutils.sf.net/#development-snapshot
+.. _documentation: docs/
+.. _FAQ: FAQ.html
+.. _mailing list archives: http://docutils.sf.net/#mailing-lists
+.. _SourceForge Bug Tracker:
+   http://sourceforge.net/tracker/?group_id=38414&atid=422030
+
+
+Known Bugs
+==========
+
+Also see the `SourceForge Bug Tracker`_.
+
+* The parser doesn't know anything about double-width characters such
+  as Chinese hanza & Japanese kanji/kana.  Also, it's dependent on
+  whitespace and punctuation as markup delimiters, which may not be
+  applicable in these languages.
+
+* In text inserted by the "include" directive, errors are often not
+  reported with the correct "source" or "line" numbers.  Perhaps all
+  Reporter calls need "source" and "line" keyword arguments.
+  Elements' .line assignments should be checked.  (Assign to .source
+  too?  Add a set_info method?  To what?)  There's a test in
+  test/test_parsers/test_rst/test_directives/test_include.py.
+
+* Explicit targets are sometimes mis-located.  In particular, placing
+  a target before a section header puts the target at the end of the
+  previous section instead of the start of the next section.  The code
+  in docutils.transforms.misc.ClassAttribute could be used to fix
+  this.  (Reported by David Priest.)
+
+* Upon reviewing RFC 2396, I see that asterisks are valid URL
+  characters, sometimes actually used.  Beni Cherniavsky found one in
+  mid-November and fixed it by modifying the text.  There's a conflict
+  with emphasis, but backslash escapes should overcome that; they
+  don't though.  I consider it a bug in the parser that escaped
+  asterisks in URLs aren't recognized.  Here's the URL that broke::
+
+      http://cvs.sf.net/viewcvs.py/*checkout*/emu/speech_tools/scripts/tex_to_images.prl?rev=HEAD
+
+  We should be able to escape the first asterisk like this::
+
+      http://cvs.sf.net/viewcvs.py/\*checkout*/emu/speech_tools/scripts/tex_to_images.prl?rev=HEAD
+
+* Document title should grow an implicit target.
+
+* David Abrahams pointed out that doubly-indirect substitutions have a
+  bug, but only when there's multiple references::
+
+      |substitute| my coke for gin
+      |substitute| you for my mum
+      at least I'll get my washing done
+
+      .. |substitute| replace:: |replace|
+      .. |replace| replace:: swap
+
+  This is tricky.  Substitutions have to propagate back completely.
+
+* Another bug from David Abrahams (run with ``rst2html.py --traceback``)::
+
+      .. [#crtp] See |runtime|
+
+      foo [#tag_dispatching]_
+
+      .. [#tag_dispatching] See  |runtime|
+
+      .. |runtime| replace:: 7__
+      __ runtime.html
+
+      __ reference/__main.html
+
+  Change the references.Substitutions tranform's priority from 220 to
+  680, so it happens after reference resolution?  Then we have to deal
+  with multiple IDs.  Perhaps the Substitution transform should remove
+  all IDs from definitions after the first substitution reference is
+  processed.
+
+
+..
+   Local Variables:
+   mode: indented-text
+   indent-tabs-mode: nil
+   sentence-end-double-space: t
+   fill-column: 70
+   End:
