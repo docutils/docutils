@@ -27,6 +27,9 @@ from docutils import core, frontend, nodes, utils, writers, languages
 from docutils.core import publish_parts
 from docutils.writers import html4css1
 from docutils.nodes import fully_normalize_name
+from docutils.parsers import rst
+from docutils.parsers.rst import directives, roles, states
+from MoinMoin.Page import Page
 
 def html_escape_unicode(node):
     # Find Python function that does this for me. string.encode('ascii',
@@ -106,8 +109,12 @@ class Parser:
         self.form = request.form
         
     def format(self, formatter):
+        # Create our simple parser
+        parser = MoinDirectives()
+        
         parts =  publish_parts(source = self.raw,
                                writer = MoinWriter(formatter, self.request))
+        
         text = ''
         if parts['title']:
             text += '<h2>' + parts['title'] + '</h2>'
@@ -134,7 +141,7 @@ class MoinTranslator(html4css1.HTMLTranslator):
         self.wikiparser = parser
         self.wikiparser.request = request
         # MoinMoin likes to start the initial headers at level 3 and the title
-        # gets level 2, so to comply with their style's, we do so here also. 
+        # gets level 2, so to comply with their styles, we do here also. 
         # TODO: Could this be fixed by passing this value in settings_overrides?
         self.initial_header_level = 3
         # Temporary place for wiki returned markup. This will be filled when
@@ -162,8 +169,8 @@ class MoinTranslator(html4css1.HTMLTranslator):
             before a call to request.write we will get the old markup as well as
             the newly generated markup. 
             
-            TODO: We could implement this as a list so that it acts as a stack.
-            I don't like having to remember to blank wiki_text.
+            TODO: Could implement this as a list so that it acts as a stack. I
+            don't like having to remember to blank wiki_text.
         """
         self.wiki_text = ''
         self.wikiparser.raw = text
@@ -246,7 +253,12 @@ class MoinTranslator(html4css1.HTMLTranslator):
             # MMG: Fix this line
             if [scheme for scheme in moin_link_schemes if 
                     refuri.lstrip().startswith(scheme)]:
-                target = refuri
+                # For a macro, We want the actuall text from the user in target, 
+                # not the fully normalized version that is contained in refuri.
+                if refuri.startswith('[['):
+                    target = node['name']
+                else:
+                    target = refuri
             # TODO: Figure out the following two elif's and comment
             # appropriately.
             # The node should have a whitespace normalized name if the docutlis 
@@ -258,7 +270,7 @@ class MoinTranslator(html4css1.HTMLTranslator):
             # wiki space.
             elif ':' not in refuri:
                 target = ':%s:' % (refuri)
-                
+            
             if target:
                 if target.startswith('inline:'):
                     self.process_inline(node, 'refuri')
@@ -355,3 +367,30 @@ class MoinTranslator(html4css1.HTMLTranslator):
         self.wiki_text = ''
         self.request.write(self.formatter.number_list(0))
         self.body.append(self.wiki_text)
+
+        
+class MoinDirectives:
+    
+    def __init__(self):
+        directives.register_directive('include', self.include)
+        directives.register_directive('macro', self.macro)
+
+    def include(self, name, arguments, options, content, lineno,
+                content_offset, block_text, state, state_machine):
+        if len(content):
+            page = Page(content[0])
+            text = page.get_raw_body()
+            lines = text.split('\n')
+            lines = lines[1:]
+            state_machine.insert_input(lines, 'MoinDirectives')
+        return
+        
+    include.content = True
+    
+    def macro(self, name, arguments, options, content, lineno,
+                content_offset, block_text, state, state_machine):
+        if len(content):
+            state_machine.insert_input(['`[[%s]]`_' % content[0]], 'MoinDirectives')
+        return
+
+    macro.content = True
