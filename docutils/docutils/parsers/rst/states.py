@@ -2038,6 +2038,9 @@ class Body(RSTState):
         if option_spec:
             options, arg_block = self.parse_directive_options(
                 option_presets, option_spec, arg_block)
+            if arg_block and not argument_spec:
+                raise MarkupError('no arguments permitted; blank line '
+                                  'required before content block')
         if argument_spec:
             arguments = self.parse_directive_arguments(
                 argument_spec, arg_block)
