@@ -51,6 +51,7 @@ Subpackages:
 """
 
 __docformat__ = 'reStructuredText'
+__version__ = '0.1+'
 
 
 class ApplicationError(StandardError): pass
