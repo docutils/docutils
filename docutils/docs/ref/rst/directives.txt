@@ -1009,7 +1009,9 @@ The following option is recognized:
 
 ``class`` : text
     Set a "class" attribute value on the ``inline`` elements produced
-    when the custom interpreted text role is used.  See the class_
+    when the custom interpreted text role is used.  If no directive
+    options are specified, a "class" option with the directive
+    argument (role name) as the value is implied.  See the class_
     directive above.
 
 
