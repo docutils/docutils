@@ -242,20 +242,22 @@ The "line-block" directive constructs an element where whitespace
 (including linebreaks) is significant and inline markup is supported.
 It is equivalent to a `parsed literal block`_ with different
 rendering: typically in an ordinary serif typeface instead of a
-typewriter/monospaced face.  Line blocks are useful for address blocks
-and verse (poetry, song lyrics), where the structure of lines is
-significant.  For example, here's a classic::
+typewriter/monospaced face, and not automatically indented.  (Have the
+line-block directive begin a block quote to get an indented line
+block.)  Line blocks are useful for address blocks and verse (poetry,
+song lyrics), where the structure of lines is significant.  For
+example, here's a classic::
 
     "To Ma Own Beloved Lassie: A Poem on her 17th Birthday", by
     Ewan McTeagle (for Lassie O'Shea):
 
-    .. line-block::
+        .. line-block::
 
-        Lend us a couple of bob till Thursday.
-        I'm absolutely skint.
-        But I'm expecting a postal order and I can pay you back
-            as soon as it comes.
-        Love, Ewan.
+            Lend us a couple of bob till Thursday.
+            I'm absolutely skint.
+            But I'm expecting a postal order and I can pay you back
+                as soon as it comes.
+            Love, Ewan.
 
 
 Parsed Literal Block
