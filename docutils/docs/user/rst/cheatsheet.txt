@@ -85,6 +85,7 @@ rubric            ``.. rubric:: Informal Heading``
 epigraph          Block quote with class="epigraph"
 highlights        Block quote with class="highlights" 
 pull-quote        Block quote with class="pull-quote"
+table             Create a titled table
 contents          Generate a table of contents
 sectnum           Automatically number sections, subsections, etc.
 target-notes      Create an explicit footnote for each external target
