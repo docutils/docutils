@@ -191,9 +191,9 @@ Implements subscripts.
    See `the reStructuredText spec`__ for further information on
    `character-level markup`__ and `the substitution mechanism`__.
 
-   __ ./reStructuredText.html
-   __ ./reStructuredText.html#character-level-inline-markup
-   __ ./reStructuredText.html#substitution-references
+   __ restructuredtext.html
+   __ restructuredtext.html#character-level-inline-markup
+   __ restructuredtext.html#substitution-references
 
 
 ``:superscript:``
