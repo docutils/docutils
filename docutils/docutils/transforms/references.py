@@ -330,7 +330,7 @@ class Hyperlinks(Transform):
             target.referenced = 1
 
 
-class ChainedTargetResolver(nodes.NodeVisitor):
+class ChainedTargetResolver(nodes.SparseNodeVisitor):
 
     """
     Copy reference attributes up the length of a hyperlink target chain.

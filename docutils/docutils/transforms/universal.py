@@ -70,7 +70,7 @@ class FinalChecks(Transform):
         self.document.walk(visitor)
 
 
-class FinalCheckVisitor(nodes.NodeVisitor):
+class FinalCheckVisitor(nodes.SparseNodeVisitor):
 
     def unknown_visit(self, node):
         pass

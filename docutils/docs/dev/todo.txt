@@ -469,14 +469,19 @@ to have a bunch of small front-ends, each specialized for a specific
 reader (and possibly writer as well).  Each of the front-ends would
 depend on a common code library described below.
 
-- Combine the common code from the existing front-ends into a
-  single library (docutils.frontend? docutils.core.xyz?).
+- Combine the common code from the existing front-ends into a single
+  library.
+
+  - docutils.frontend?  docutils.core.xyz?  docutils.utils.options?
+    Part of docutils.core.Publisher/publish()?  (Add a ``cmdline``
+    parameter?  To publish() only?)
 
   - Use Optik to do modular command-line option processing.
 
-    - Pass around an Optik 'options' object?  Attach it to the
+    - Pass around an Optik 'option Values' object?  Attach it to the
       document?  What to do when *not* using a front-end (i.e., when
-      docutils is imported by an unrelated client)?
+      docutils is imported by an unrelated client)?  I.e.,
+      warning_level etc.
 
   - The core would support all common options (--reader, --writer,
     etc.).
@@ -485,6 +490,16 @@ depend on a common code library described below.
     --stylesheet, etc.), and perhaps disable common options that don't
     apply.  (Added/removed dynamically?  Is this possible with Optik?
     Is it desirable?)
+
+  - Build an OptionParser based on the known Reader & Writer?  I.e.,
+    first instantiate the common OptionParser subclass, which can be
+    passed to a standard function in the Reader module which adds its
+    specific options, then on to the Writer module.  Or, store a data
+    structure in each component containing its specific options.
+
+    - What about if we don't know which Reader and/or Writer we are
+      going to use?  If the Reader/Writer is specified on the
+      command-line?  (Will this ever happen?)
 
 - Command-line option ideas.  Common options:
 
@@ -528,7 +543,7 @@ Conventions`__ PEPs, with the following clarifications (from most to
 least important):
 
 - 4 spaces per indentation level.  No tabs.  Indent continuation lines
-  according to the Emacs' python-mode standard.
+  according to the Emacs python-mode standard.
 
 - No one-liner compound statements (i.e., no ``if x: return``: use two
   lines & indentation), except for degenerate class or method
