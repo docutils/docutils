@@ -89,7 +89,7 @@ class Contents(Transform):
             topic += title
         else:
             name = self.language.labels['contents']
-        name = utils.normalize_name(name)
+        name = nodes.fully_normalize_name(name)
         if not self.document.has_name(name):
             topic['name'] = name
         self.document.note_implicit_target(topic)

@@ -111,7 +111,7 @@ from types import TupleType
 from docutils import nodes, statemachine, utils, roman, urischemes
 from docutils import ApplicationError, DataError
 from docutils.statemachine import StateMachineWS, StateWS
-from docutils.utils import normalize_name
+from docutils.nodes import fully_normalize_name as normalize_name
 from docutils.parsers.rst import directives, languages, tableparser
 from docutils.parsers.rst.languages import en as _fallback_language_module
 

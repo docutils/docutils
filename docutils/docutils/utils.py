@@ -368,10 +368,6 @@ def extract_name_value(line):
         attlist.append((attname.lower(), data))
     return attlist
 
-def normalize_name(name):
-    """Return a case- and whitespace-normalized name."""
-    return ' '.join(name.lower().split())
-
 def new_document(source, settings=None):
     """
     Return a new empty document object.
