@@ -1141,6 +1141,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_title(self, node):
         """Only 6 section levels are supported by HTML."""
         check_id = 0
+        close_tag = '</p>\n'
         if isinstance(node.parent, nodes.topic):
             self.body.append(
                   self.starttag(node, 'p', '', CLASS='topic-title'))
@@ -1153,6 +1154,11 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.body.append(
                   self.starttag(node, 'p', '', CLASS='admonition-title'))
             check_id = 1
+        elif isinstance(node.parent, nodes.table):
+            self.body.append(
+                  self.starttag(node, 'caption', ''))
+            check_id = 1
+            close_tag = '</caption>\n'
         elif self.section_level == 0:
             # document title
             self.head.append('<title>%s</title>\n'
@@ -1174,9 +1180,9 @@ class HTMLTranslator(nodes.NodeVisitor):
             if node.parent.hasattr('id'):
                 self.body.append(
                     self.starttag({}, 'a', '', name=node.parent['id']))
-                self.context.append('</a></p>\n')
+                self.context.append('</a>' + close_tag)
             else:
-                self.context.append('</p>\n')
+                self.context.append(close_tag)
 
     def depart_title(self, node):
         self.body.append(self.context.pop())

@@ -37,6 +37,7 @@ directives = {
       u'moto': 'epigraph',
       u'highlights': 'highlights',
       u'pull-quote': 'pull-quote',
+      u'table (translation required)': 'table',
       #'questions': 'questions',
       #'qa': 'questions',
       #'faq': 'questions',

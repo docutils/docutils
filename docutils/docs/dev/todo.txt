@@ -120,7 +120,7 @@ General
         .. figure:: image.png
            :name: image's name
 
-    To name tables, we could use a "table" directive::
+    Same for the "table" directive::
 
         .. table:: optional title here
            :name: table's name
@@ -868,7 +868,12 @@ when used in a document.
   - Add a "name" option to directives, to set an author-supplied
     identifier?
 
-  - _`images.image`: "border"?  "link"?
+  - All directives that produce titled elements should grow implicit
+    reference names based on the titles.
+
+  - @ _`body.table`: Document, add tests.
+
+  - _`images.image`: "border"?
 
     Units of measure?  (See docutils-users, 2003-03-02.)
 

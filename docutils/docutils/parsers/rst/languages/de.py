@@ -37,6 +37,7 @@ directives = {
       'epigraph (translation required)': 'epigraph',
       'highlights (translation required)': 'highlights',
       'pull-quote (translation required)': 'pull-quote', # kasten too ?
+      'table (translation required)': 'table',
       #'questions': 'questions',
       #'qa': 'questions',
       #'faq': 'questions',

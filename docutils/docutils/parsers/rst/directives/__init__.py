@@ -102,6 +102,7 @@ _directive_registry = {
       'epigraph': ('body', 'epigraph'),
       'highlights': ('body', 'highlights'),
       'pull-quote': ('body', 'pull_quote'),
+      'table': ('body', 'table'),
       #'questions': ('body', 'question_list'),
       'image': ('images', 'image'),
       'figure': ('images', 'figure'),
