@@ -21,28 +21,29 @@ and related projects:
     Aahz, David Abrahams, David Ascher, Heiko Baumann, Eric Bellot,
     Ian Bicking, Marek Blaha, Martin Blais, Fred Bremmer, Simon Budig,
     Bill Bumgarner, Brett Cannon, Greg Chapman, Nicolas Chauveau, Beni
-    Cherniavsky, Adam Chodorowski, Laura Creighton, Artur de Sousa
-    Rocha, Jason Diamond, William Dode, Fred Drake, Reggie Dugard,
-    Dethe Elza, Marcus Ertl, Benja Fallenstein, fantasai, Stefane
-    Fermigier, Jim Fulton, Peter Funk, Lele Gaifax, Dinu C. Gherman,
-    Matt Gilbert, Jorge Gonzalez, Engelbert Gruber, Jacob Hallen,
-    Simon Hefti, Doug Hellmann, Juergen Hermann, Jannie Hofmeyr, Steve
-    Holden, Michael Hudson, Marcelo Huerta San Martin, Ludger Humbert,
-    Jeremy Hylton, Tony Ibbs, Alan Jaffray, Dmitry Jemerov, Richard
-    Jones, Andreas Jung, Garth Kidd, Axel Kollmorgen, Jeff Kowalczyk,
-    Dave Kuhlman, Lloyd Kvam, Kirill Lapshin, Nicola Larosa, Daniel
-    Larsson, Marc-Andre Lemburg, Julien Letessier, Wolfgang Lipp,
-    Edward Loper, Dallas Mahrt, Ken Manheimer, Bob Marshall, Mark
-    McEahern, Vincent McIntyre, John F Meinel Jr, Vasko Miroslav, Skip
-    Montanaro, Paul Moore, Nigel W. Moriarty, Mark Nodine, Patrick
-    K. O'Brien, Michel Pelletier, Sam Penrose, Tim Peters, Pearu
-    Peterson, Mark Pilgrim, Brett g Porter, David Priest, Jens Quade,
-    Andy Robinson, Tavis Rudd, Tracy Ruggles, Oliver Rutherfurd,
-    Kenichi Sato, Ueli Schlaepfer, Gunnar Schwant, Bill Sconce, Frank
-    Siebenlist, Bruce Smith, Darek Suchojad, Roman Suzi, tav, Kent
-    Tenney, Bob Tolbert, Paul Tremblay, Laurence Tratt, Adrian van den
-    Dries, Guido van Rossum, Paul Viren, Martin von Loewis, Greg Ward,
-    Barry Warsaw, Edward Welbourne, Ka-Ping Yee, Moshe Zadka
+    Cherniavsky, Adam Chodorowski, Brent Cook, Laura Creighton, Artur
+    de Sousa Rocha, Jason Diamond, William Dode, Fred Drake, Reggie
+    Dugard, Dethe Elza, Marcus Ertl, Benja Fallenstein, fantasai,
+    Stefane Fermigier, Jim Fulton, Peter Funk, Lele Gaifax, Dinu
+    C. Gherman, Matt Gilbert, Jorge Gonzalez, Engelbert Gruber, Jacob
+    Hallen, Simon Hefti, Doug Hellmann, Juergen Hermann, Jannie
+    Hofmeyr, Steve Holden, Michael Hudson, Marcelo Huerta San Martin,
+    Ludger Humbert, Jeremy Hylton, Tony Ibbs, Alan Jaffray, Dmitry
+    Jemerov, Richard Jones, Andreas Jung, Garth Kidd, Axel Kollmorgen,
+    Jeff Kowalczyk, Dave Kuhlman, Lloyd Kvam, Kirill Lapshin, Nicola
+    Larosa, Daniel Larsson, Marc-Andre Lemburg, Julien Letessier,
+    Wolfgang Lipp, Edward Loper, Dallas Mahrt, Ken Manheimer, Bob
+    Marshall, Mark McEahern, Vincent McIntyre, John F Meinel Jr, Vasko
+    Miroslav, Skip Montanaro, Paul Moore, Nigel W. Moriarty, Mark
+    Nodine, Patrick K. O'Brien, Michel Pelletier, Sam Penrose, Tim
+    Peters, Pearu Peterson, Mark Pilgrim, Brett g Porter, David
+    Priest, Jens Quade, Andy Robinson, Tavis Rudd, Tracy Ruggles,
+    Oliver Rutherfurd, Kenichi Sato, Ueli Schlaepfer, Gunnar Schwant,
+    Bill Sconce, Frank Siebenlist, Bruce Smith, Darek Suchojad, Roman
+    Suzi, tav, Kent Tenney, Bob Tolbert, Paul Tremblay, Laurence
+    Tratt, Adrian van den Dries, Guido van Rossum, Paul Viren, Martin
+    von Loewis, Greg Ward, Barry Warsaw, Edward Welbourne, Ka-Ping
+    Yee, Moshe Zadka
 
 Thank you!
 
@@ -252,6 +253,9 @@ Changes Since 0.3
     to Darek Suchojad.
   - Added functionality to keep track of individual parts of a document
     and store them in a dictionary as the "parts" attribute of the writer.
+    Contributed by Reggie Dugard at the Docutils sprint at PyCon DC 2004.
+  - Added proper support for the "scale" attribute of the "image"
+    element.  Contributed by Brent Cook.
 
 * docutils/writers/latex2e.py:
 
