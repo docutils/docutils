@@ -1,13 +1,19 @@
 #!/bin/sh
 
+EXT=tex
 REF_DIR=test
+if [ "$1" = "man" ] ;then
+	REF_DIR=man.test
+	EXT=man
+	shift
+fi
 
 if [ "$1" = "create" ] ; then
   CREATE=1
 fi
 
 TMPF=.diff.tmp
-for F in `ls $REF_DIR/*.txt*.tex` ; do
+for F in `ls $REF_DIR/*.txt*.$EXT` ; do
 	diff -s -u $F.ref $F > $TMPF
 	if test $? -gt 0 ; then
 		less $TMPF
