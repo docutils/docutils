@@ -25,24 +25,26 @@ totest['contents'] = [
 """,
 """\
 <document source="test data">
-    <pending>
-        .. internal attributes:
-             .transform: docutils.transforms.parts.Contents
-             .details:
-               title: None
+    <topic class="contents" id="contents" name="contents">
+        <title>
+            Contents
+        <pending>
+            .. internal attributes:
+                 .transform: docutils.transforms.parts.Contents
+                 .details:
 """],
 ["""\
 .. contents:: Table of Contents
 """,
 """\
 <document source="test data">
-    <pending>
-        .. internal attributes:
-             .transform: docutils.transforms.parts.Contents
-             .details:
-               title:
-                 <title>
-                     Table of Contents
+    <topic class="contents" id="table-of-contents" name="table of contents">
+        <title>
+            Table of Contents
+        <pending>
+            .. internal attributes:
+                 .transform: docutils.transforms.parts.Contents
+                 .details:
 """],
 ["""\
 .. contents::
@@ -50,13 +52,13 @@ totest['contents'] = [
 """,
 """\
 <document source="test data">
-    <pending>
-        .. internal attributes:
-             .transform: docutils.transforms.parts.Contents
-             .details:
-               title:
-                 <title>
-                     Table of Contents
+    <topic class="contents" id="table-of-contents" name="table of contents">
+        <title>
+            Table of Contents
+        <pending>
+            .. internal attributes:
+                 .transform: docutils.transforms.parts.Contents
+                 .details:
 """],
 ["""\
 .. contents:: Table
@@ -65,32 +67,32 @@ totest['contents'] = [
 """,
 """\
 <document source="test data">
-    <pending>
-        .. internal attributes:
-             .transform: docutils.transforms.parts.Contents
-             .details:
-               title:
-                 <title>
-                     Table
-                     of
-                     Contents
+    <topic class="contents" id="table-of-contents" name="table of contents">
+        <title>
+            Table
+            of
+            Contents
+        <pending>
+            .. internal attributes:
+                 .transform: docutils.transforms.parts.Contents
+                 .details:
 """],
 ["""\
 .. contents:: *Table* of ``Contents``
 """,
 """\
 <document source="test data">
-    <pending>
-        .. internal attributes:
-             .transform: docutils.transforms.parts.Contents
-             .details:
-               title:
-                 <title>
-                     <emphasis>
-                         Table
-                      of \n\
-                     <literal>
-                         Contents
+    <topic class="contents" id="table-of-contents" name="table of contents">
+        <title>
+            <emphasis>
+                Table
+             of 
+            <literal>
+                Contents
+        <pending>
+            .. internal attributes:
+                 .transform: docutils.transforms.parts.Contents
+                 .details:
 """],
 ["""\
 .. contents::
@@ -99,13 +101,13 @@ totest['contents'] = [
 """,
 """\
 <document source="test data">
-    <pending>
-        .. internal attributes:
-             .transform: docutils.transforms.parts.Contents
-             .details:
-               depth: 2
-               local: None
-               title: None
+    <topic class="contents" id="contents" name="contents">
+        <pending>
+            .. internal attributes:
+                 .transform: docutils.transforms.parts.Contents
+                 .details:
+                   depth: 2
+                   local: None
 """],
 ["""\
 .. contents::
@@ -130,16 +132,16 @@ totest['contents'] = [
 """,
 """\
 <document source="test data">
-    <pending>
-        .. internal attributes:
-             .transform: docutils.transforms.parts.Contents
-             .details:
-               backlinks: None
-               depth: 2
-               local: None
-               title:
-                 <title>
-                     Table of Contents
+    <topic class="contents" id="table-of-contents" name="table of contents">
+        <title>
+            Table of Contents
+        <pending>
+            .. internal attributes:
+                 .transform: docutils.transforms.parts.Contents
+                 .details:
+                   backlinks: None
+                   depth: 2
+                   local: None
 """],
 ["""\
 .. contents::

@@ -175,6 +175,12 @@ Changes Since 0.3
   - Isolated the import of the ``urllib2`` module; was causing
     problems on SourceForge (``libssl.so.2`` unavailable?).
 
+* docutils/parsers/rst/directives/parts.py:
+
+  - The "contents" directive does more work up-front, creating the
+    "topic" and "title", and leaving the "pending" node for the
+    transform.
+
 * docutils/parsers/rst/languages/af.py: Added to project; Afrikaans
   mappings by Jannie Hofmeyr.
 
@@ -186,6 +192,12 @@ Changes Since 0.3
 
 * docutils/parsers/rst/languages/ru.py: Added to project; Russian
   mappings by Roman Suzi.
+
+* docutils/transforms/parts.py:
+
+  - The "contents" directive does more work up-front, creating the
+    "topic" and "title", and leaving the "pending" node for the
+    transform.
 
 * docutils/transforms/universal.py:
 

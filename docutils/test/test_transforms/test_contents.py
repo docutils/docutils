@@ -291,23 +291,23 @@ Paragraph 4.
 
 Test duplicate name "Contents".
 
-Contents
+Section
 --------
 Paragraph.
 """,
 """\
 <document source="test data">
-    <topic class="contents" id="id1">
+    <topic class="contents" id="contents" name="contents">
         <bullet_list>
             <list_item>
                 <paragraph>
-                    <reference id="id2" refid="contents">
-                        Contents
+                    <reference id="id1" refid="section">
+                        Section
     <paragraph>
         Test duplicate name "Contents".
-    <section id="contents" name="contents">
-        <title refid="id2">
-            Contents
+    <section id="section" name="section">
+        <title refid="id1">
+            Section
         <paragraph>
             Paragraph.
 """],
@@ -315,23 +315,23 @@ Paragraph.
 .. contents::
    :backlinks: top
 
-Contents
+Section
 --------
 Paragraph.
 """,
 """\
 <document source="test data">
-    <topic class="contents" id="id1">
+    <topic class="contents" id="contents" name="contents">
         <title>
             Contents
         <bullet_list>
             <list_item>
                 <paragraph>
-                    <reference id="id2" refid="contents">
-                        Contents
-    <section id="contents" name="contents">
-        <title refid="id1">
-            Contents
+                    <reference id="id1" refid="section">
+                        Section
+    <section id="section" name="section">
+        <title refid="contents">
+            Section
         <paragraph>
             Paragraph.
 """],
@@ -339,23 +339,23 @@ Paragraph.
 .. contents::
    :backlinks: none
 
-Contents
+Section
 --------
 Paragraph.
 """,
 """\
 <document source="test data">
-    <topic class="contents" id="id1">
+    <topic class="contents" id="contents" name="contents">
         <title>
             Contents
         <bullet_list>
             <list_item>
                 <paragraph>
-                    <reference id="id2" refid="contents">
-                        Contents
-    <section id="contents" name="contents">
+                    <reference id="id1" refid="section">
+                        Section
+    <section id="section" name="section">
         <title>
-            Contents
+            Section
         <paragraph>
             Paragraph.
 """],
