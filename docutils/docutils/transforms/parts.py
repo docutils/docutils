@@ -14,7 +14,8 @@ Transforms related to document parts.
 __docformat__ = 'reStructuredText'
 
 
-import re, sys
+import re
+import sys
 from docutils import nodes, utils
 from docutils.transforms import TransformError, Transform
 

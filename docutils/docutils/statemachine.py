@@ -105,7 +105,9 @@ How To Use This Module
 
 __docformat__ = 'restructuredtext'
 
-import sys, re, string
+import sys
+import re
+import string
 
 
 class StateMachine:

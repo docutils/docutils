@@ -48,7 +48,7 @@ __docformat__ = 'reStructuredText'
 
 import docutils.parsers
 import docutils.statemachine
-import states
+from docutils.parsers.rst import states
 
 
 class Parser(docutils.parsers.Parser):

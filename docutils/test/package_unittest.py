@@ -12,7 +12,12 @@ test modules from a directory.  Optionally, test packages are also loaded,
 recursively.
 """
 
-import sys, os, getopt, types, unittest, re
+import sys
+import os
+import getopt
+import types
+import unittest
+import re
 
 
 # So that individual test modules can share a bit of state,
