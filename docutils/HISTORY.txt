@@ -16,11 +16,11 @@ Changes Since 0.3.5
 
 * docutils/frontend.py:
 
-  - Added --input-encoding-error-handler option & setting.
+  - Added options: --input-encoding-error-handler,
+    --record-dependencies, --leave-footnote-reference-space,
+    --strict-visitor.
   - Added command-line and config file support for "overrides" setting
     parameter.
-  - Added --record-dependencies option & setting.
-  - Added --leave-footnote-reference-space option.
 
 * docutils/io.py:
 
@@ -38,6 +38,8 @@ Changes Since 0.3.5
     the parser; the state machine's "language" attribute was not being
     copied over.
   - Added support for line block syntax.
+  - Fixed directive parsing bug: argument-less directives didn't
+    notice that arguments were present.
 
 * docutils/parsers/rst/directives/__init__.py:
 
@@ -93,6 +95,7 @@ Changes Since 0.3.5
 * docs/ref/docutils.dtd:
 
   - Changed structure of the ``line_block`` element; added ``line``.
+  - Added ``compound`` element.
 
 * docs/ref/rst/directives.txt
 
