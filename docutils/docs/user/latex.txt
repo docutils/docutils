@@ -90,6 +90,10 @@ papersize              Default: a4paper. Paper geometry can be changed
                        * landscape, portrait, twoside.
 
                        and a ton of other option setting margins.
+
+                       An example::
+
+                         \geometry{a5paper,landscape}
 ---------------------  ------------------------------------------------
 paragraph indent       By default latex indents the forst line in a
                        paragraph. The following lines set indentation 
