@@ -66,8 +66,40 @@ sidebar.options = {'subtitle': directives.unchanged_required,
 sidebar.content = 1
 
 def line_block(name, arguments, options, content, lineno,
-               content_offset, block_text, state, state_machine,
-               node_class=nodes.line_block):
+               content_offset, block_text, state, state_machine):
+    if not content:
+        warning = state_machine.reporter.warning(
+            'Content block expected for the "%s" directive; none found.'
+            % name, nodes.literal_block(block_text, block_text), line=lineno)
+        return [warning]
+    block = nodes.line_block()
+    node_list = [block]
+    for line_text in content:
+        text_nodes, messages = state.inline_text(line_text.strip(),
+                                                 lineno + content_offset)
+        line = nodes.line(line_text, '', *text_nodes)
+        if line_text.strip():
+            line.indent = len(line_text) - len(line_text.lstrip())
+        block += line
+        node_list.extend(messages)
+        content_offset += 1
+    state.nest_line_block_lines(block)
+    return node_list
+
+line_block.options = {'class': directives.class_option}
+line_block.content = 1
+
+def parsed_literal(name, arguments, options, content, lineno,
+                   content_offset, block_text, state, state_machine):
+    return block(name, arguments, options, content, lineno,
+                 content_offset, block_text, state, state_machine,
+                 node_class=nodes.literal_block)
+
+parsed_literal.options = {'class': directives.class_option}
+parsed_literal.content = 1
+
+def block(name, arguments, options, content, lineno,
+          content_offset, block_text, state, state_machine, node_class):
     if not content:
         warning = state_machine.reporter.warning(
             'Content block expected for the "%s" directive; none found.'
@@ -78,18 +110,6 @@ def line_block(name, arguments, options, content, lineno,
     node = node_class(text, '', *text_nodes, **options)
     node.line = content_offset + 1
     return [node] + messages
-
-line_block.options = {'class': directives.class_option}
-line_block.content = 1
-
-def parsed_literal(name, arguments, options, content, lineno,
-                   content_offset, block_text, state, state_machine):
-    return line_block(name, arguments, options, content, lineno,
-                      content_offset, block_text, state, state_machine,
-                      node_class=nodes.literal_block)
-
-parsed_literal.options = {'class': directives.class_option}
-parsed_literal.content = 1
 
 def rubric(name, arguments, options, content, lineno,
              content_offset, block_text, state, state_machine):
