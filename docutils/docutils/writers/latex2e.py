@@ -750,7 +750,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # HACK: insert a blank before the newline, to avoid
             # ! LaTeX Error: There's no line here to end.
             text = text.replace("\n", '~\\\\\n')
-            # HACK: lines starting with "[" or "]" give errors.
         elif self.mbox_newline:
             if self.literal_block:
                 closings = "}" * len(self.literal_block_stack)
@@ -759,6 +758,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 closings = ""
                 openings = ""
             text = text.replace("\n", "%s}\\\\\n\\mbox{%s" % (closings,openings))
+        # HACK: lines starting with "[" or "]" give errors.
+        if not self.__dict__.has_key('encode_re_bracketts'):
+            self.encode_re_bracketts = re.compile(r'([\[\]])')
+        if self.literal_block and not self.mbox_newline:
+            text = self.encode_re_bracketts.sub(r'{\1}',text)
         if self.insert_none_breaking_blanks:
             text = text.replace(' ', '~')
         # unicode !!!
