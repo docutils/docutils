@@ -533,7 +533,7 @@ class Inliner:
     emailc = r"""[-_!~*'{|}/#?^`&=+$%a-zA-Z0-9\x00]"""
     email_pattern = r"""
           %(emailc)s+(?:\.%(emailc)s+)*   # name
-          @                               # at
+          (?<!\x00)@                      # at
           %(emailc)s+(?:\.%(emailc)s*)*   # host
           %(uri_end)s                     # final URI char
           """
