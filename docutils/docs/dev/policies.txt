@@ -146,6 +146,31 @@ applicable), with particular emphasis as follows:
       cd docutils/test
       alltests.py
 
+  Docutils currently supports Python 2.1 or later, with some things
+  only working (and being tested) on 2.3.  Therefore, you should
+  actually have Pythons 2.1, 2.2 and 2.3 installed and always run the
+  tests on all of them.  (A good way to do that is to always run the
+  test suite through a short script that runs ``alltests.py`` under
+  each version of Python.)  If you can't afford intalling 3 Python
+  versions, the edge cases (2.1 and 2.3) should cover most of it.
+
+  Good resources covering the differences between Python versions:
+
+  * `What's New in Python 2.2`__
+  * `What's New in Python 2.3`__
+  * `What's New in Python 2.4`__
+  * `PEP 290 - Code Migration and Modernization`__
+
+  __ http://www.python.org/doc/2.2.3/whatsnew/whatsnew22.html
+  __ http://www.python.org/doc/2.3.4/whatsnew/whatsnew23.html
+  __ http://www.python.org/dev/doc/devel/whatsnew/whatsnew24.html
+  __ http://www.python.org/peps/pep-0290.html
+
+  Note that there are currently some known issues with development
+  versions of Python 2.4-to-be.  There is no need to pass the test
+  suite under it, unless you wish to tackle these issues (ask on the
+  mailing list first)...
+  
 * When adding new functionality (or fixing bugs), be sure to add test
   cases to the test suite.  Practise test-first programming; it's fun,
   it's addictive, and it works!
