@@ -1,0 +1,84 @@
+=========================================
+ reStructuredText Interpreted Text Roles
+=========================================
+:Author: David Goodger
+:Contact: goodger@users.sourceforge.net
+:Revision: $Revision$
+:Date: $Date$
+
+This document describes the interpreted text roles implemented in the
+reference reStructuredText parser.
+
+Interpreted text uses backquotes (`) around the text.  An explicit
+role marker may optionally appear before or after the text, delimited
+with colons.  For example::
+
+    This is `interpreted text` using the default role.
+
+    This is :title:`interpreted text` using an explicit role.
+
+A default role may be defined by applications of reStructuredText; it
+is used if no explicit ``:role:`` prefix or suffix is given.  The
+"default default role" is `:title-reference:`_.
+
+See the `Interpreted Text`__ section in the `reStructuredText Markup
+Specification`_ for syntax details.
+
+.. _Interpreted Text: ./reStructuredText.html#interpreted-text
+.. _reStructuredText Markup Specification: ./reStructuredText.html
+
+
+.. contents::
+
+
+``:pep-reference:``
+===================
+
+:Aliases: ``:PEP:``
+:DTD Element: reference
+
+The ``:pep-reference:`` role is used to create an HTTP reference to a
+PEP (Python Enhancement Proposal).  The ``:PEP:`` alias is usually
+used.  For example::
+
+    See :PEP:`287` for more information about reStructuredText.
+
+This is equivalent to::
+
+    See `PEP 287`__ for more information about reStructuredText.
+
+    __ http://www.python.org/peps/pep-0287.html
+
+
+``:rfc-reference:``
+===================
+
+:Aliases: ``:RFC:``
+:DTD Element: reference
+
+The ``:rfc-reference:`` role is used to create an HTTP reference to an
+RFC (Internet Request for Comments).  The ``:RFC:`` alias is usually
+used.  For example::
+
+    See :RFC:`2822` for information about email headers.
+
+This is equivalent to::
+
+    See `RFC 2822`__ for information about email headers.
+
+    __ http://www.faqs.org/rfcs/rfc2822.html
+
+
+``:title-reference:``
+=====================
+
+:Aliases: ``:title:``, ``:t:``.
+:DTD Element: title_reference
+
+The ``:title-reference:`` role is used to describe the titles of
+books, periodicals, and other materials.
+
+``:title-reference:`` is the default role in the standard
+reStructuredText parser.  This means that no explicit role is
+required.  Applications of reStructuredText may designate a different
+default role, in which case the explicit role must be used.
