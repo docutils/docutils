@@ -21,6 +21,6 @@ raw:: latex
 texdisplay = template('''\
 raw:: latex
 
-    $$''', '$$\n')
+    \[ ''', ' \]\n')
 
 main({'texmath': texmath, 'texdisplay': texdisplay}, default=texmath)
