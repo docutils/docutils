@@ -14,11 +14,11 @@ __docformat__ = 'reStructuredText'
 
 
 import sys
-from docutils import languages
+from docutils import languages, Component
 from docutils.transforms import universal
 
 
-class Writer:
+class Writer(Component):
 
     """
     Abstract base class for docutils Writers.
@@ -49,7 +49,7 @@ class Writer:
 
     def write(self, document, destination):
         self.document = document
-        self.language = languages.getlanguage(document.languagecode)
+        self.language = languages.getlanguage(document.language_code)
         self.destination = destination
         self.transform()
         self.translate()
@@ -60,7 +60,7 @@ class Writer:
         for xclass in (universal.first_writer_transforms
                        + tuple(self.transforms)
                        + universal.last_writer_transforms):
-            xclass(self.document).transform()
+            xclass(self.document, self).transform()
 
     def translate(self):
         """Override to do final document tree translation."""
@@ -93,12 +93,14 @@ class Writer:
 
 
 _writer_aliases = {
-      'html': 'html4css1',}
+      'html': 'html4css1',
+      'pprint': 'pseudoxml',
+      'pformat': 'pseudoxml',}
 
-def get_writer_class(writername):
-    """Return the Writer class from the `writername` module."""
-    writername = writername.lower()
-    if _writer_aliases.has_key(writername):
-        writername = _writer_aliases[writername]
-    module = __import__(writername, globals(), locals())
+def get_writer_class(writer_name):
+    """Return the Writer class from the `writer_name` module."""
+    writer_name = writer_name.lower()
+    if _writer_aliases.has_key(writer_name):
+        writer_name = _writer_aliases[writer_name]
+    module = __import__(writer_name, globals(), locals())
     return module.Writer

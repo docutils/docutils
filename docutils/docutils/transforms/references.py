@@ -25,22 +25,11 @@ class Hyperlinks(Transform):
     """Resolve the various types of hyperlink targets and references."""
 
     def transform(self):
-        stages = []
-        #stages.append('Beginning of references.Hyperlinks.transform()\n' + self.doctree.pformat())
         self.resolve_chained_targets()
-        #stages.append('After references.Hyperlinks.resolve_chained_targets()\n' + self.doctree.pformat())
         self.resolve_anonymous()
-        #stages.append('After references.Hyperlinks.resolve_anonymous()\n' + self.doctree.pformat())
         self.resolve_indirect()
-        #stages.append('After references.Hyperlinks.resolve_indirect()\n' + self.doctree.pformat())
         self.resolve_external_targets()
-        #stages.append('After references.Hyperlinks.resolve_external_references()\n' + self.doctree.pformat())
         self.resolve_internal_targets()
-        #stages.append('After references.Hyperlinks.resolve_internal_references()\n' + self.doctree.pformat())
-        #import difflib
-        #compare = difflib.Differ().compare
-        #for i in range(len(stages) - 1):
-        #    print ''.join(compare(stages[i].splitlines(1), stages[i+1].splitlines(1)))
 
     def resolve_chained_targets(self):
         """
@@ -48,8 +37,8 @@ class Hyperlinks(Transform):
         target up the chain of contiguous adjacent internal targets, using
         `ChainedTargetResolver`.
         """
-        visitor = ChainedTargetResolver(self.doctree)
-        self.doctree.walk(visitor)
+        visitor = ChainedTargetResolver(self.document)
+        self.document.walk(visitor)
 
     def resolve_anonymous(self):
         """
@@ -74,30 +63,30 @@ class Hyperlinks(Transform):
             <target anonymous="1" id="id1">
             <target anonymous="1" id="id2" refuri="http://external">
         """
-        if len(self.doctree.anonymous_refs) \
-              != len(self.doctree.anonymous_targets):
-            msg = self.doctree.reporter.error(
+        if len(self.document.anonymous_refs) \
+              != len(self.document.anonymous_targets):
+            msg = self.document.reporter.error(
                   'Anonymous hyperlink mismatch: %s references but %s targets.'
-                  % (len(self.doctree.anonymous_refs),
-                     len(self.doctree.anonymous_targets)))
-            self.doctree.messages += msg
-            msgid = self.doctree.set_id(msg)
-            for ref in self.doctree.anonymous_refs:
+                  % (len(self.document.anonymous_refs),
+                     len(self.document.anonymous_targets)))
+            self.document.messages += msg
+            msgid = self.document.set_id(msg)
+            for ref in self.document.anonymous_refs:
                 prb = nodes.problematic(
                       ref.rawsource, ref.rawsource, refid=msgid)
-                prbid = self.doctree.set_id(prb)
+                prbid = self.document.set_id(prb)
                 msg.add_backref(prbid)
                 ref.parent.replace(ref, prb)
             return
-        for i in range(len(self.doctree.anonymous_refs)):
-            ref = self.doctree.anonymous_refs[i]
-            target = self.doctree.anonymous_targets[i]
+        for i in range(len(self.document.anonymous_refs)):
+            ref = self.document.anonymous_refs[i]
+            target = self.document.anonymous_targets[i]
             if target.hasattr('refuri'):
                 ref['refuri'] = target['refuri']
                 ref.resolved = 1
             else:
                 ref['refid'] = target['id']
-                self.doctree.note_refid(ref)
+                self.document.note_refid(ref)
             target.referenced = 1
 
     def resolve_indirect(self):
@@ -150,9 +139,7 @@ class Hyperlinks(Transform):
                <target id="id2" name="indirect internal 2" refid="id1">
                <target id="id3" name="indirect internal" refid="id1">
         """
-        #import mypdb as pdb
-        #pdb.set_trace()
-        for target in self.doctree.indirect_targets:
+        for target in self.document.indirect_targets:
             if not target.resolved:
                 self.resolve_indirect_target(target)
             self.resolve_indirect_references(target)
@@ -160,10 +147,10 @@ class Hyperlinks(Transform):
     def resolve_indirect_target(self, target):
         refname = target['refname']
         reftarget = None
-        if self.doctree.explicit_targets.has_key(refname):
-            reftarget = self.doctree.explicit_targets[refname]
-        elif self.doctree.implicit_targets.has_key(refname):
-            reftarget = self.doctree.implicit_targets[refname]
+        if self.document.explicit_targets.has_key(refname):
+            reftarget = self.document.explicit_targets[refname]
+        elif self.document.implicit_targets.has_key(refname):
+            reftarget = self.document.implicit_targets[refname]
         if not reftarget:
             self.nonexistent_indirect_target(target)
             return
@@ -173,14 +160,14 @@ class Hyperlinks(Transform):
         if reftarget.hasattr('refuri'):
             target['refuri'] = reftarget['refuri']
             if target.hasattr('name'):
-                self.doctree.note_external_target(target)
+                self.document.note_external_target(target)
         elif reftarget.hasattr('refid'):
             target['refid'] = reftarget['refid']
-            self.doctree.note_refid(target)
+            self.document.note_refid(target)
         else:
             try:
                 target['refid'] = reftarget['id']
-                self.doctree.note_refid(target)
+                self.document.note_refid(target)
             except KeyError:
                 self.nonexistent_indirect_target(target)
                 return
@@ -192,19 +179,19 @@ class Hyperlinks(Transform):
         naming = ''
         if target.hasattr('name'):
             naming = '"%s" ' % target['name']
-            reflist = self.doctree.refnames[target['name']]
+            reflist = self.document.refnames[target['name']]
         else:
-            reflist = self.doctree.refnames[target['id']]
+            reflist = self.document.refnames[target['id']]
         naming += '(id="%s")' % target['id']
-        msg = self.doctree.reporter.warning(
+        msg = self.document.reporter.warning(
               'Indirect hyperlink target %s refers to target "%s", '
               'which does not exist.' % (naming, target['refname']))
-        self.doctree.messages += msg
-        msgid = self.doctree.set_id(msg)
+        self.document.messages += msg
+        msgid = self.document.set_id(msg)
         for ref in reflist:
             prb = nodes.problematic(
                   ref.rawsource, ref.rawsource, refid=msgid)
-            prbid = self.doctree.set_id(prb)
+            prbid = self.document.set_id(prb)
             msg.add_backref(prbid)
             ref.parent.replace(ref, prb)
         target.resolved = 1
@@ -213,39 +200,39 @@ class Hyperlinks(Transform):
         if target.hasattr('refid'):
             attname = 'refid'
             call_if_named = 0
-            call_method = self.doctree.note_refid
+            call_method = self.document.note_refid
         elif target.hasattr('refuri'):
             attname = 'refuri'
             call_if_named = 1
-            call_method = self.doctree.note_external_target
+            call_method = self.document.note_external_target
         else:
             return
         attval = target[attname]
         if target.hasattr('name'):
             name = target['name']
             try:
-                reflist = self.doctree.refnames[name]
+                reflist = self.document.refnames[name]
             except KeyError, instance:
                 if target.referenced:
                     return
-                msg = self.doctree.reporter.info(
+                msg = self.document.reporter.info(
                       'Indirect hyperlink target "%s" is not referenced.'
                       % name)
-                self.doctree.messages += msg
+                self.document.messages += msg
                 target.referenced = 1
                 return
             delatt = 'refname'
         else:
             id = target['id']
             try:
-                reflist = self.doctree.refids[id]
+                reflist = self.document.refids[id]
             except KeyError, instance:
                 if target.referenced:
                     return
-                msg = self.doctree.reporter.info(
+                msg = self.document.reporter.info(
                       'Indirect hyperlink target id="%s" is not referenced.'
                       % id)
-                self.doctree.messages += msg
+                self.document.messages += msg
                 target.referenced = 1
                 return
             delatt = 'refid'
@@ -277,19 +264,19 @@ class Hyperlinks(Transform):
                     direct external
             <target id="id1" name="direct external" refuri="http://direct">
         """
-        for target in self.doctree.external_targets:
+        for target in self.document.external_targets:
             if target.hasattr('refuri') and target.hasattr('name'):
                 name = target['name']
                 refuri = target['refuri']
                 try:
-                    reflist = self.doctree.refnames[name]
+                    reflist = self.document.refnames[name]
                 except KeyError, instance:
                     if target.referenced:
                         continue
-                    msg = self.doctree.reporter.info(
+                    msg = self.document.reporter.info(
                           'External hyperlink target "%s" is not referenced.'
                           % name)
-                    self.doctree.messages += msg
+                    self.document.messages += msg
                     target.referenced = 1
                     continue
                 for ref in reflist:
@@ -317,21 +304,21 @@ class Hyperlinks(Transform):
                     direct internal
             <target id="id1" name="direct internal">
         """
-        for target in self.doctree.internal_targets:
+        for target in self.document.internal_targets:
             if target.hasattr('refuri') or target.hasattr('refid') \
                   or not target.hasattr('name'):
                 continue
             name = target['name']
             refid = target['id']
             try:
-                reflist = self.doctree.refnames[name]
+                reflist = self.document.refnames[name]
             except KeyError, instance:
                 if target.referenced:
                     continue
-                msg = self.doctree.reporter.info(
+                msg = self.document.reporter.info(
                       'Internal hyperlink target "%s" is not referenced.'
                       % name)
-                self.doctree.messages += msg
+                self.document.messages += msg
                 target.referenced = 1
                 continue
             for ref in reflist:
@@ -352,7 +339,7 @@ class ChainedTargetResolver(nodes.NodeVisitor):
     "point to" an external or indirect target.  After the transform, all
     chained targets will effectively point to the same place.
 
-    Given the following ``doctree`` as input::
+    Given the following ``document`` as input::
 
         <document>
             <target id="a" name="a">
@@ -365,7 +352,7 @@ class ChainedTargetResolver(nodes.NodeVisitor):
             <target id="id1">
             <target id="f" name="f" refname="d">
 
-    ``ChainedTargetResolver(doctree).walk()`` will transform the above into::
+    ``ChainedTargetResolver(document).walk()`` will transform the above into::
 
         <document>
             <target id="a" name="a" refuri="http://chained.external.targets">
@@ -385,10 +372,10 @@ class ChainedTargetResolver(nodes.NodeVisitor):
     def visit_target(self, node):
         if node.hasattr('refuri'):
             attname = 'refuri'
-            call_if_named = self.doctree.note_external_target
+            call_if_named = self.document.note_external_target
         elif node.hasattr('refname'):
             attname = 'refname'
-            call_if_named = self.doctree.note_indirect_target
+            call_if_named = self.document.note_indirect_target
         elif node.hasattr('refid'):
             attname = 'refid'
             call_if_named = None
@@ -414,7 +401,7 @@ class Footnotes(Transform):
     Assign numbers to autonumbered footnotes, and resolve links to footnotes,
     citations, and their references.
 
-    Given the following ``doctree`` as input::
+    Given the following ``document`` as input::
 
         <document>
             <paragraph>
@@ -491,8 +478,8 @@ class Footnotes(Transform):
 
     def transform(self):
         self.autofootnote_labels = []
-        startnum = self.doctree.autofootnote_start
-        self.doctree.autofootnote_start = self.number_footnotes(startnum)
+        startnum = self.document.autofootnote_start
+        self.document.autofootnote_start = self.number_footnotes(startnum)
         self.number_footnote_references(startnum)
         self.symbolize_footnotes()
         self.resolve_footnotes_and_citations()
@@ -504,58 +491,58 @@ class Footnotes(Transform):
         For labeled autonumbered footnotes, copy the number over to
         corresponding footnote references.
         """
-        for footnote in self.doctree.autofootnotes:
+        for footnote in self.document.autofootnotes:
             while 1:
                 label = str(startnum)
                 startnum += 1
-                if not self.doctree.explicit_targets.has_key(label):
+                if not self.document.explicit_targets.has_key(label):
                     break
             footnote.insert(0, nodes.label('', label))
             if footnote.hasattr('dupname'):
                 continue
             if footnote.hasattr('name'):
                 name = footnote['name']
-                for ref in self.doctree.footnote_refs.get(name, []):
+                for ref in self.document.footnote_refs.get(name, []):
                     ref += nodes.Text(label)
                     ref.delattr('refname')
                     ref['refid'] = footnote['id']
                     footnote.add_backref(ref['id'])
-                    self.doctree.note_refid(ref)
+                    self.document.note_refid(ref)
                     ref.resolved = 1
             else:
                 footnote['name'] = label
-                self.doctree.note_explicit_target(footnote, footnote)
+                self.document.note_explicit_target(footnote, footnote)
                 self.autofootnote_labels.append(label)
         return startnum
 
     def number_footnote_references(self, startnum):
         """Assign numbers to autonumbered footnote references."""
         i = 0
-        for ref in self.doctree.autofootnote_refs:
+        for ref in self.document.autofootnote_refs:
             if ref.resolved or ref.hasattr('refid'):
                 continue
             try:
                 label = self.autofootnote_labels[i]
             except IndexError:
-                msg = self.doctree.reporter.error(
+                msg = self.document.reporter.error(
                       'Too many autonumbered footnote references: only %s '
                       'corresponding footnotes available.'
                       % len(self.autofootnote_labels))
-                msgid = self.doctree.set_id(msg)
-                self.doctree.messages += msg
-                for ref in self.doctree.autofootnote_refs[i:]:
+                msgid = self.document.set_id(msg)
+                self.document.messages += msg
+                for ref in self.document.autofootnote_refs[i:]:
                     if ref.resolved or ref.hasattr('refname'):
                         continue
                     prb = nodes.problematic(
                           ref.rawsource, ref.rawsource, refid=msgid)
-                    prbid = self.doctree.set_id(prb)
+                    prbid = self.document.set_id(prb)
                     msg.add_backref(prbid)
                     ref.parent.replace(ref, prb)
                 break
             ref += nodes.Text(label)
-            footnote = self.doctree.explicit_targets[label]
+            footnote = self.document.explicit_targets[label]
             ref['refid'] = footnote['id']
-            self.doctree.note_refid(ref)
+            self.document.note_refid(ref)
             footnote.add_backref(ref['id'])
             ref.resolved = 1
             i += 1
@@ -563,36 +550,36 @@ class Footnotes(Transform):
     def symbolize_footnotes(self):
         """Add symbols indexes to "[*]"-style footnotes and references."""
         labels = []
-        for footnote in self.doctree.symbol_footnotes:
-            reps, index = divmod(self.doctree.symbol_footnote_start,
+        for footnote in self.document.symbol_footnotes:
+            reps, index = divmod(self.document.symbol_footnote_start,
                                  len(self.symbols))
             labeltext = self.symbols[index] * (reps + 1)
             labels.append(labeltext)
             footnote.insert(0, nodes.label('', labeltext))
-            self.doctree.symbol_footnote_start += 1
-            self.doctree.set_id(footnote)
+            self.document.symbol_footnote_start += 1
+            self.document.set_id(footnote)
         i = 0
-        for ref in self.doctree.symbol_footnote_refs:
+        for ref in self.document.symbol_footnote_refs:
             try:
                 ref += nodes.Text(labels[i])
             except IndexError:
-                msg = self.doctree.reporter.error(
+                msg = self.document.reporter.error(
                       'Too many symbol footnote references: only %s '
                       'corresponding footnotes available.' % len(labels))
                 msgid = self.set_id(msg)
-                self.doctree.messages += msg
-                for ref in self.doctree.symbol_footnote_refs[i:]:
+                self.document.messages += msg
+                for ref in self.document.symbol_footnote_refs[i:]:
                     if ref.resolved or ref.hasattr('refid'):
                         continue
                     prb = nodes.problematic(
                           ref.rawsource, ref.rawsource, refid=msgid)
-                    prbid = self.doctree.set_id(prb)
+                    prbid = self.document.set_id(prb)
                     msg.add_backref(prbid)
                     ref.parent.replace(ref, prb)
                 break
-            footnote = self.doctree.symbol_footnotes[i]
+            footnote = self.document.symbol_footnotes[i]
             ref['refid'] = footnote['id']
-            self.doctree.note_refid(ref)
+            self.document.note_refid(ref)
             footnote.add_backref(ref['id'])
             i += 1
 
@@ -600,15 +587,15 @@ class Footnotes(Transform):
         """
         Link manually-labeled footnotes and citations to/from their references.
         """
-        for footnote in self.doctree.footnotes:
+        for footnote in self.document.footnotes:
             label = footnote['name']
-            if self.doctree.footnote_refs.has_key(label):
-                reflist = self.doctree.footnote_refs[label]
+            if self.document.footnote_refs.has_key(label):
+                reflist = self.document.footnote_refs[label]
                 self.resolve_references(footnote, reflist)
-        for citation in self.doctree.citations:
+        for citation in self.document.citations:
             label = citation['name']
-            if self.doctree.citation_refs.has_key(label):
-                reflist = self.doctree.citation_refs[label]
+            if self.document.citation_refs.has_key(label):
+                reflist = self.document.citation_refs[label]
                 self.resolve_references(citation, reflist)
 
     def resolve_references(self, note, reflist):
@@ -626,7 +613,7 @@ class Footnotes(Transform):
 class Substitutions(Transform):
 
     """
-    Given the following ``doctree`` as input::
+    Given the following ``document`` as input::
 
         <document>
             <paragraph>
@@ -652,19 +639,19 @@ class Substitutions(Transform):
     """
 
     def transform(self):
-        defs = self.doctree.substitution_defs
-        for refname, refs in self.doctree.substitution_refs.items():
+        defs = self.document.substitution_defs
+        for refname, refs in self.document.substitution_refs.items():
             for ref in refs:
                 if defs.has_key(refname):
                     ref.parent.replace(ref, defs[refname].getchildren())
                 else:
-                    msg = self.doctree.reporter.error(
+                    msg = self.document.reporter.error(
                           'Undefined substitution referenced: "%s".' % refname)
-                    msgid = self.doctree.set_id(msg)
-                    self.doctree.messages += msg
+                    msgid = self.document.set_id(msg)
+                    self.document.messages += msg
                     prb = nodes.problematic(
                           ref.rawsource, ref.rawsource, refid=msgid)
-                    prbid = self.doctree.set_id(prb)
+                    prbid = self.document.set_id(prb)
                     msg.add_backref(prbid)
                     ref.parent.replace(ref, prb)
-        self.doctree.substitution_refs = None  # release replaced references
+        self.document.substitution_refs = None  # release replaced references
