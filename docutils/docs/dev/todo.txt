@@ -448,18 +448,38 @@ Directives
 
   - _`parts.citations`: See `Footnote & Citation Gathering`_.
 
-  - _`misc.raw`
+  - _`misc.raw`: See `Raw Data Pass-Through`__ in rst/directives.txt.
+
+    __ http://docutils.sf.net/spec/rst/directives.html
+       #raw-data-pass-through
 
   - _`misc.include`: ``#include`` one file in another.  But how to
-    parse wrt sections, reference names, conflicts?  Parse it in the
-    current document's context (C-preprocessor semantics), or
-    separately and then merge?
+    parse wrt sections, reference names, conflicts?  For now, we'll
+    parse it in the current document's context (C-preprocessor
+    semantics).  Perhaps later, when there's a need, we'll figure out
+    how to provide separate parsing (parse separately and then merge).
 
-    Use C-preprocessor semantics for locating include files?  E.g.,
-    ``.. include:: file.txt`` will read another file into the current
-    one, relative to the current file's directory, and ``.. include::
-    <standard>`` will read a standard include file from
-    ``docutils/include/``.  (Should "quotes" be required around
+    A "raw" flag (attribute with no value) would inform us that the
+    imported data is raw (already in native format, like HTML).
+    Perhaps there should be an attribute value, saying what the native
+    format is.  See misc.raw_.
+
+        .. include:: path/subdocument.txt
+           :raw: (true if set)
+
+    Implementation ideas:  Model the directive parsing on the "images"
+    directive.  A separate, nested parse is probably needed, since
+    it's not a good idea to alter the already-read data.  Use
+    ``state.nested_parse()`` (see directives/admonitions.py), and pass
+    in ``match_titles=1``.  The reporting mechanism will have to be
+    revamped to include the file which is the source of system
+    messages.
+
+    YAGNI for now: Use C-preprocessor semantics for locating include
+    files?  E.g., ``.. include:: file.txt`` will read another file
+    into the current one, relative to the current file's directory,
+    and ``.. include:: <standard>`` will read a standard include file
+    from ``docutils/include/``.  (Should "quotes" be required around
     non-standard include files?)
 
   - _`misc.exec`: Execute Python code & insert the results.  Perhaps
@@ -744,15 +764,15 @@ Front-End Tools
   All references to files (stylesheet, source file [in footer], PEP
   template) are interpreted relative to the current working directory,
   and adjusted relative to the destination directory.  For example::
-  
+
       cd /work
       html.py -s --stylesheet=default.css /src/test.txt /dst/text.html
-  
+
   This will interpret the stylesheet as "work/default.css", so the
   stylesheet link in the HTML (which is in the /dst dir) will read
   "../work/default.css", and the source link (-s option) will read
   "../src/test.txt".
-  
+
   Perhaps the current behavior should be optional ("--relative-paths"
   or something).  The default should probably be not to process paths
   at all, just use them verbatim.
