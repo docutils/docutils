@@ -135,6 +135,8 @@ Changes Since 0.3
   - Added support for <angle-bracketed> complex option arguments
     (option lists).
   - Fixed handling of backslashes in substitution definitions.
+  - Fixed off-by-1 error with extra whitespace after substitution
+    definition directive.
 
 * docutils/parsers/rst/tableparser.py:
 
