@@ -14,10 +14,37 @@
 Changes Since 0.3.5
 ===================
 
+* docutils/frontend.py:
+
+  - Added --input-encoding-error-handler option & setting.
+
+* docutils/io.py:
+
+  - Added support for input encoding error handler.
+
+* docutils/nodes.py:
+
+  - Added dispatch_visit and dispatch_departure methods to
+    NodeVisitor; useful as a hook for Visitors.
+
+* docutils/parsers/rst/directives/__init__.py:
+
+  - Added ``encoding`` directive option conversion function.
+
+* docutils/parsers/rst/directives/misc.py:
+
+  - Added "encoding" option to "include" and "raw" directives.
+
 * docutils/parsers/rst/directives/parts.py:
 
   - Directive "sectnum" now accepts "prefix", "suffix", and "start"
     options.  Thanks to Lele Gaifax.
+
+* docutils/parsers/rst/directives/tables.py:
+
+  - Added "encoding" directive to "csv-table" directive.
+  - Added workaround for lack of Unicode support in csv.py, for
+    non-ASCII CSV input.
 
 * docutils/transforms/misc.py:
 
@@ -26,9 +53,12 @@ Changes Since 0.3.5
 
 * docutils/writers/latex2e.py:
 
-  - Add ``\PreloadUnicodePage{n}`` to the header if in LaTeX code
+  - Added ``\PreloadUnicodePage{n}`` to the header if in LaTeX code
     uses unicode.
-  - Add option "font-encoding".
+  - Added option "font-encoding".
+  - Added "class" attribute support via the --call-class-command
+    option and ``\\docutilsclass`` TeX calls.
+
 
 Release 0.3.5 (2004-07-29)
 ==========================
