@@ -34,10 +34,10 @@ http://docutils.sourceforge.net/rst.html.
     http://dev.zope.org/Members/jim/StructuredTextWiki/FrontPage
 .. _Setext: http://docutils.sourceforge.net/mirror/setext.html
 .. _Docutils: http://docutils.sourceforge.net/
-.. _A ReStructuredText Primer: ../../docs/rst/quickstart.html
-.. _Quick reStructuredText: ../../docs/rst/quickref.html
-.. _reStructuredText Markup Specification: reStructuredText.html
-.. _Problems with StructuredText: problems.html
+.. _A ReStructuredText Primer: ../../user/rst/quickstart.html
+.. _Quick reStructuredText: ../../user/rst/quickref.html
+.. _reStructuredText Markup Specification: restructuredtext.html
+.. _Problems with StructuredText: ../../dev/rst/problems.html
 
 
 Goals
@@ -281,8 +281,8 @@ followed.
    - `PEP 257: Docstring Conventions`__
 
    Current working versions of the PEPs can be found in
-   http://docutils.sourceforge.net/spec/, and official versions can be
-   found in the `master PEP repository`_.
+   http://docutils.sourceforge.net/docs/peps/, and official versions
+   can be found in the `master PEP repository`_.
 
    __ http://mail.python.org/pipermail/doc-sig/2001-June/001855.html
    __ http://mail.python.org/pipermail/doc-sig/2001-June/001856.html
@@ -296,10 +296,9 @@ followed.
 .. _pythondoc: http://starship.python.net/crew/danilo/pythondoc/
 .. _StructuredTextNG:
    http://dev.zope.org/Members/jim/StructuredTextWiki/StructuredTextNG
-.. _project history file: http://docutils.sourceforge.net/HISTORY.html
-.. _PEP 287: http://docutils.sourceforge.net/spec/pep-0287.html
-.. _Docstring Processing System framework:
-   http://docutils.sourceforge.net/spec/pep-0256.html
+.. _project history file: ../../../HISTORY.html
+.. _PEP 287: ../../peps/pep-0287.html
+.. _Docstring Processing System framework: ../../peps/pep-0256.html
 .. _comp.lang.python: news:comp.lang.python
 .. _Python-dev: http://mail.python.org/pipermail/python-dev/
 .. _Docstring Processing System: http://docstring.sourceforge.net/
