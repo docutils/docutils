@@ -86,8 +86,8 @@ highlights        Block quote with class="highlights"
 pull-quote        Block quote with class="pull-quote"
 compound          Compound paragraphs [0.3.6]
 table             Create a titled table [0.3.1]
-csv-table         Create a titled table from CSV data (requires Python 2.3+)
-                  [0.3.4]
+list-table        Create a table from a uniform two-level bullet list [0.3.8] 
+csv-table         Create a table from CSV data (requires Python 2.3+) [0.3.4]
 contents          Generate a table of contents
 sectnum           Automatically number sections, subsections, etc.
 target-notes      Create an explicit footnote for each external target
