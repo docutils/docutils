@@ -270,11 +270,13 @@ character entity interpretation in either case.
 
 If you can't use a Unicode-compatible encoding and must rely on 7-bit
 ASCII, there is a workaround.  Files containing character entity set
-substitution definitions using the "unicode" directive `are
+substitution definitions using the "unicode_" directive `are
 available`_ (tarball_).  Please read the `description and
 instructions`_ for use.  Thanks to David Priest for the original idea.
 Incorporating these files into Docutils is on the `to-do list`_.
 
+.. _unicode:
+   http://docutils.sf.net/docs/ref/rst/directives.html#unicode-character-codes
 .. _are available: http://docutils.sourceforge.net/tmp/charents/
 .. _tarball: http://docutils.sourceforge.net/tmp/charents.tgz
 .. _description and instructions:
