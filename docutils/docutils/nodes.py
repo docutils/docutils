@@ -1258,6 +1258,17 @@ class SkipDeparture(TreePruningException):
     pass
 
 
+class NodeFound(TreePruningException):
+
+    """
+    Raise to indicate that the target of a search has been found.  This
+    exception must be caught by the client; it is not caught by the traversal
+    code.
+    """
+
+    pass
+
+
 def make_id(string):
     """
     Convert `string` into an identifier and return it.
