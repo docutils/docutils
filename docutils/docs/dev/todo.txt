@@ -1,8 +1,11 @@
 =================
  Docutils_ Notes
 =================
+:Author: David Goodger (with input from many)
+:Contact: goodger@users.sourceforge.net
 :Date: $Date$
 :Revision: $Revision$
+
 
 .. _Docutils: http://docutils.sourceforge.net/
 
@@ -22,46 +25,7 @@ you'd like to tackle, please do!
 Bugs
 ----
 
-- The move to I/O classes (io.py) has broken the "view source" links.
-  (Pointed out by Simon Budig.)
-
-  Perhaps add attributes to I/O classes, like ``IO.source_path``?
-  Include logic to skip link creation if ``IO.source_path`` is empty.
-
-- (Fixed, I think.)  When there are duplicate implicit target names
-  (e.g., section headers), a named hyperlink will link to the last of
-  them.  It shouldn't link to any at all, and should report an error.
-
-  - nodes.document.nameids maps names to IDs.  When there is a
-    duplicate, the last one stays.  Idea: have a parallel
-    nodes.document.nametype mapping, name -> boolean (explicit name?).
-    ::
-
-        ====  =====  ========  ========  =======  ====  =====  =====
-        Old State    Input     Action             New State    Notes
-        -----------  --------  -----------------  -----------
-        id    type   new type  sys.msg.  dupname  id    type
-        ====  =====  ========  ========  =======  ====  =====  =====
-        --    --     explicit  --        --       new   True
-        --    --     implicit  --        --       new   False
-        None  False  explicit  --        --       new   True
-        old   False  explicit  implicit  old      new   True
-        None  True   explicit  explicit  new      None  True
-        old   True   explicit  explicit  new,old  None  True   [1]
-        None  False  implicit  implicit  new      None  False
-        old   False  implicit  implicit  new,old  None  False
-        None  True   implicit  implicit  new      None  True
-        old   True   implicit  implicit  new      old   True
-        ====  =====  ========  ========  =======  ====  =====  =====
-
-    (The above is an example of `table syntax alternative 3`__; not
-    implemented yet, but I'm thinking about it.)
-
-    Note 1: Do not clear the name->id map or invalidate the old target
-    if both old and new targets are external and refer to an identical
-    URI.  The new target is invalidated regardless.
-
-    __ rst/problems.html#tables
+None reported.
 
 
 General
@@ -118,147 +82,7 @@ General
   - Implement a specialized PEP/HTML writer?  Or implement a generic
     `templating system`_, with PEP/HTML as one application?
 
-- @@ (Done.)  Add _`support for character set encodings` on input &
-  output, Unicode internally.
-
-  To determine the encoding, use these heuristics in order:
-
-  - Try the encoding specified by a command-line option, if any.
-  
-  - Try the encoding specified by an "encoding" directive, and/or an
-    "encoding" field in field lists & PEP headers, if any.  See the
-    misc.encoding_ directive below.
-
-  - Try the locale's encoding.
-  
-  - Try UTF-8.
-  
-  - Try platform-specific encodings: CP-1252 on Windows, Mac-Roman on
-    MacOS, perhaps Latin-9 (iso-8859-15) otherwise.
-  
-  Some questions:
-  
-  - Does the application have to call
-    ``locale.setlocale(locale.LC_ALL, '')``, and if so, where?  Is it OK
-    to call setlocale from within the decoding function, or should it be
-    left up to the client application?
-    
-  - Should I use the result of ``locale.getlocale()``?  On
-    Win2K/Python2.2.1, I get this::
-  
-        >>> import locale
-        >>> locale.getlocale()
-        (None, None)
-        >>> locale.getdefaultlocale()
-        ('en_US', 'cp1252')
-        
-    Looks good so far.
-    
-        >>> locale.setlocale(locale.LC_ALL, '')
-        'English_United States.1252'
-        >>> locale.getlocale()
-        ['English_United States', '1252']
-    
-    "1252"?  What happened to the "cp"?
-  
-        >>> s='abcd'
-        >>> s.decode('1252')
-        Traceback (most recent call last):
-          File "<stdin>", line 1, in ?
-        LookupError: unknown encoding
-  
-    How can I use ``locale.getlocale()`` when it doesn't return a
-    known encoding?  Or put another way, how can I get a known
-    encoding out of ``locale.getlocale()``?
-  
-  - Does ``locale.getdefaultlocale()[1]`` reliably produce the 
-    platform-specific encoding?
-
-  From Skip Montanaro's `Using Unicode in Python`_ ("Console Input"
-  section)::
-
-    def encode_heuristically(s, enc=None):
-        "try interpreting s using several possible encodings"
-        try:
-            x = unicode(s, "ascii")
-            # if it's ascii, just return the plain string
-            return s
-            # you might want to return a Unicode object instead
-            # return x
-        except UnicodeError:
-            encodings = ["cp1252", "utf-8", "iso-8859-15", "iso-8859-1"]
-            # try any caller-provided encoding first
-            if enc: encodings.insert(0, enc)
-            for enc in encodings:
-                try:
-                    x = unicode(s , enc)
-                except UnicodeError:
-                    pass
-                else:
-                    return x
-            # punt
-            return s
-
-  .. _Using Unicode in Python:
-     http://manatee.mojam.com/~skip/unicode/unicode/
-
-  Windows CP-1252 and MacOS Mac-Roman are full 8-bit encodings, so
-  there's no point trying anything after them; they'll match any byte
-  string.  UTF-8 is almost a full 8-bit encoding; it only uses up to
-  0xFD but 0xFE & 0xFF are likely unused by most texts in other
-  encodings anyhow (a notable exception is UTF-16, in which 0xFEFF is
-  used as a "byte order mark"; but we'll ignore UTF-16 as it's
-  incompatible with ASCII).  UTF-8 does have the advantage of a
-  verifyable encoding scheme, which is unlikely to be achieved by
-  accident in an 8-bit text.  (I assume the UTF-8 codec verifies the
-  encoding.)  So it makes sense to check for UTF-8 before
-  platform-dependent encodings (like CP-1252).
-
-  ISO-8859-15 is an update of ISO-8859-1, and they share the same code
-  space (0x00-0x7F, 0xA0-0xFF), so there's no point in checking for
-  both.  If one succeeds, the other one inevitably will too.
-
-  `Introduction to i18n`_ by Tomohiro KUBOTA is a good reference.
-
-  .. _Introduction to i18n:
-     http://www.debian.org/doc/manuals/intro-i18n/
-
 - Need a Unicode -> HTML entities codec for HTML writer?
-
-- (Done, in io.py.)  Distributor/filer object passed to Writer,
-  equivalent passed to Reader, to provide I/O access with a uniform
-  API?  (Names for input object: inputter, sourcer, scanner.)  Simple
-  vs. complex I/O structure: single file or string,
-  vs. directory/package or tree of strings.  Simple file I/O is
-  default.
-
-- Name ideas: importer/exporter.  Perhaps reader/writer should be
-  applied to lower-level tasks?  "PySource Reader" or "PySource
-  Importer"?  "HTML Writer" or "HTML Exporter"?  I like the names
-  "Reader" & "Writer" for the high-level classes.  So if we stick with
-  the status quo, what to call the components that do low-level I/O?
-
-  - IOReader, IOWriter
-  - DataReader, DataWriter
-  - Inputter, Outputter
-  - Scanner, Recorder?
-  - Lector?, Scribe
-  - Loader, Storer/Stower/Recorder
-  - InputStorage, OutputStorage
-  - Input, Output
-  - Source, Destination
-
-  Perhaps subclasses of a single class, a abstraction for
-  file/string/etc. reading & writing.
-
-  - Storage (thus InputStorage/OutputStorage)
-  - IO (SourceIO/DestIO; InputIO/OutputIO)
-
-  Implement as a single module (``docutils/storage.py``)?  Or as a
-  subpackage (``docutils/storage/*.py``)?  Decision: use a single
-  module for now, possibly switching to a package if it gets too big.
-
-  See `support for character set encodings`_ above.
 
 - Fix tests to run standalone.  I.e., allow::
 
@@ -712,22 +536,8 @@ Index
 HTML Writer
 -----------
 
-- Allow for style sheet info to be passed in.  (Done, with the
-  ``--stylesheet`` command-line option.)
-
 - @@@ Construct a _`templating system`, as in ht2html/yaptu, using
   directives and substitutions for dynamic stuff.
-
-- Improve the granularity of document parts in the HTML writer, so
-  that one could just grab the parts needed.  (Done.)
-
-- @@@ Return a string instead of writing to a file?  Leave all I/O up
-  to the client?  Or up to an explicit distributor/filer?
-
-- Add an option to generate a "View source text" link.  (Done.)
-
-- Add an option to generate a "Generated by Docutils [from
-  reStructuredText source?]" message, with links.  (Done.)
 
 - If a list's items contain single paragraphs only, omit the <P> tags?
   Recursively?  (if item == list whose items are single paragraphs
@@ -736,95 +546,51 @@ HTML Writer
   of all list items lack a <p> (perhaps "--compact-all-lists" and
   "--compact-simple-lists")?
 
+  Tried it; not easy.  If you're interested, email me for a copy of
+  the patch.
+
 
 Front-Ends
 ----------
 
-@@@ Rather than a single all-purpose program, it is probably
-preferable to have a bunch of small front-ends, each specialized for a
-specific reader (and possibly writer as well; each could have a name
-of the form "context2format").  Each of the front-ends would depend on
-a common option-processing module, as described below.
+- Common and component-specific options must not conflict.  Reserve
+  short options for the core, and restrict components to long
+  options?
 
-- Combine the common code from the existing front-ends into a single
-  module, and add option processing.
+- What about if we don't know which Reader and/or Writer we are
+  going to use?  If the Reader/Writer is specified on the
+  command-line?  (Will this ever happen?)
 
-  - Named docutils.frontend.OptionParser.  Supporting parameters have
-    been added to docutils.core.Publisher/publish(): ``argv`` &
-    ``usage``.  (Done.)
+  Perhaps have different types of front ends:
 
-  - Use Optik to do modular command-line option processing.  (Done.)
+  a) _`Fully qualified`: Reader and Writer are hard-coded into the
+     front-end (e.g. ``pep2html [options]``, ``pysource2pdf
+     [options]``).
 
-    - An Optik 'option Values' object is attached to the document.
+  b) _`Partially qualified`: Reader is hard-coded, and the Writer is
+     specified a sub-command (e.g. ``pep2 html [options]``,
+     ``pysource2 pdf [options]``).  The Writer is known before
+     option processing happens, allowing the OptionParser to be
+     built dynamically.
 
-    - The Optik 'option Values' object is used even when *not* using a
-      front-end (i.e., when docutils is imported by an unrelated
-      client).  An artificial argv list can be constructed & passed to
-      publish(), or a default Values object can be created and
-      modified manually::
+  c) _`Unqualified`: Reader and Writer are specified as subcommands
+     (e.g. ``publish pep html [options]``, ``publish pysource pdf
+     [options]``).  A single front-end would be sufficient, but
+     probably only useful for testing purposes.
 
-          pub = Publisher(...)
-          pub.process_command_line(argv=[])
-          pub.options.an_option = "my default value"
-          pub.publish()
+  d) _`Dynamic`: Reader and/or Writer are specified by options, with
+     defaults if unspecified (e.g. ``publish --writer pdf
+     [options]``).  Is this possible?  The option parser would have
+     to be told about new options it needs to handle, on the fly.
+     Component-specific options would have to be specified *after*
+     the component-specifying option.
 
-  - The core supports all common options (--verbose, --date, etc.).
-    (Done.)
-
-  - Each component adds its own specific options (HTML: --stylesheet,
-    etc.).  (Done.)
-
-    - Disables common options that don't apply?
-
-    - Added/removed dynamically (during option processing)?  Is this
-      possible with Optik?  Is it desirable?  (See dynamic_ below.)
-
-    - Perhaps each component could have an ``init_options`` method,
-      which can do surgery on the option list?
-
-  - Common and component-specific options must not conflict.  Reserve
-    short options for the core, and restrict components to long
-    options?
-
-  - Build an OptionParser dynamically based on the known Reader &
-    Writer.  Store a data structure in each component containing its
-    specific options, merge with the common option data, and
-    instantiate an OptionParser.  (Done.)
-
-  - What about if we don't know which Reader and/or Writer we are
-    going to use?  If the Reader/Writer is specified on the
-    command-line?  (Will this ever happen?)
-
-    Perhaps have different types of front ends:
-
-    a) _`Fully qualified`: Reader and Writer are hard-coded into the
-       front-end (e.g. ``pep2html [options]``, ``pysource2pdf
-       [options]``).
-
-    b) _`Partially qualified`: Reader is hard-coded, and the Writer is
-       specified a sub-command (e.g. ``pep2 html [options]``,
-       ``pysource2 pdf [options]``).  The Writer is known before
-       option processing happens, allowing the OptionParser to be
-       built dynamically.
-
-    c) _`Unqualified`: Reader and Writer are specified as subcommands
-       (e.g. ``publish pep html [options]``, ``publish pysource pdf
-       [options]``).  A single front-end would be sufficient, but
-       probably only useful for testing purposes.
-
-    d) _`Dynamic`: Reader and/or Writer are specified by options, with
-       defaults if unspecified (e.g. ``publish --writer pdf
-       [options]``).  Is this possible?  The option parser would have
-       to be told about new options it needs to handle, on the fly.
-       Component-specific options would have to be specified *after*
-       the component-specifying option.
-
-    Allow common options before subcommands, as in CVS?  Or group all
-    options together?  In the case of the `fully qualified`_
-    front-ends, all the options will have to be grouped together
-    anyway, so there's no advantage (we can't use it to avoid
-    conflicts) to splitting common and component-specific options
-    apart.
+  Allow common options before subcommands, as in CVS?  Or group all
+  options together?  In the case of the `fully qualified`_
+  front-ends, all the options will have to be grouped together
+  anyway, so there's no advantage (we can't use it to avoid
+  conflicts) to splitting common and component-specific options
+  apart.
 
 
 Project Policies
