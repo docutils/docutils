@@ -27,7 +27,7 @@ complete details.
 
        http://www.python.org/
 
-   Python 2.2 or later [#py21]_ is required; Python 2.2.2 or later is
+   Python 2.2 or later [1]_ is required; Python 2.2.2 or later is
    recommended.
 
 2. Use the latest Docutils code.  Get the code from CVS or from the
@@ -92,8 +92,8 @@ snapshots always contain the latest code and documentation, usually
 updated within an hour of changes being committed to the repository,
 and usually bug-free:
 
-* Snapshot of Docutils code, front-end tools, tests, documentation,
-  and specifications: http://docutils.sf.net/docutils-snapshot.tgz
+* Snapshot of Docutils code, documentation, front-end tools, and
+  tests: http://docutils.sf.net/docutils-snapshot.tgz
 
 * Snapshot of the Sandbox (experimental, contributed code):
   http://docutils.sf.net/docutils-sandbox-snapshot.tgz
@@ -111,17 +111,19 @@ docs/dev/policies.txt for details.)
 Requirements
 ============
 
-To run the code, Python 2.2 or later [#py21]_ must already be
-installed.  The latest release is recommended (2.2.2 as of this
-writing).  Python is available from http://www.python.org/.
+To run the code, Python 2.2 or later [1]_ must already be installed.
+The latest release is recommended.  Python is available from
+http://www.python.org/.
 
 The `Python Imaging Library`, or PIL, is used for some image
 manipulation operations if it is installed.
 
 Docutils uses Greg Ward's Optik_/optparse option processing package.
-It is included in the Docutils distribution.
+It is included in the Docutils distribution.  Python 2.3 and later
+come with optparse in the standard library; in this case, the Docutils
+copy is not installed.
 
-.. [#py21] Python 2.1 may be used providing the compiler package is
+.. [1] Python 2.1 may be used providing the compiler package is
    installed.  The compiler package can be found in the Tools/
    directory of Python 2.1's source distribution.
 
@@ -305,8 +307,8 @@ depend on the computer running the tests.  The difference between the
 two times represents the time required to set up the tests (import
 modules, create data structures, etc.).
 
-If any of the tests fail, please `open a bug report`_ or `send
-email`_.  Please include all relevant output, information about your
+If any of the tests fail, please `open a bug report`_ or `send email`_
+[2]_.  Please include all relevant output, information about your
 operating system, Python version, and Docutils version.  To see the
 Docutils version, use these commands::
 
@@ -324,7 +326,17 @@ Getting Help
 
 If you have questions or need assistance with Docutils or
 reStructuredText, please `post a message`_ to the `Docutils-Users
-mailing list`_.
+mailing list`_ [2]_.
+
+.. [2] Due to overwhelming amounts of spam, the
+   docutils-users@lists.sourceforge.net mailing list has been set up
+   for subscriber posting only.  Non-subscribers who post to
+   docutils-users will receive a message with "Subject: Your message
+   to Docutils-users awaits moderator approval".  Legitimate messages
+   are accepted and posted as soon as possible (a list administrator
+   must verify the message manually).  If you'd like to subscribe to
+   docutils-users, please visit
+   <http://lists.sourceforge.net/lists/listinfo/docutils-users>.
 
 .. _post a message: mailto:docutils-users@lists.sourceforge.net
 .. _Docutils-Users mailing list:
