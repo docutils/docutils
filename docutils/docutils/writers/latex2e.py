@@ -375,10 +375,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 "iso-8859-2": "latin2",     # east european
                 "iso-8859-3": "latin3",     # esperanto, maltese
                 "iso-8859-4": "latin4",     # north european,scandinavian, baltic
-                "iso-8859-5": "iso88595",   # cyrillic
+                "iso-8859-5": "iso88595",   # cyrillic (ISO)
                 "iso-8859-9": "latin5",     # turkish
                 "iso-8859-15": "latin9",    # latin9, update to latin1.
-                "mac_cyrillic": "maccyr",
+                "mac_cyrillic": "maccyr",   # cyrillic (on Mac)
+                "windows-1251": "cp1251",   # cyrillic (on Windows)
+                "koi8-r": "koi8-r",         # cyrillic (Russian)
+                "koi8-u": "koi8-u",         # cyrillic (Ukrainian)
+                "windows-1250": "cp1250",   # 
+                "windows-1252": "cp1252",   # 
+                "us-ascii": "ascii",        # ASCII (US) 
                 # unmatched encodings
                 #"": "applemac",
                 #"": "ansinew",  # windows 3.1 ansi
