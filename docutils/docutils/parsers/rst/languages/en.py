@@ -37,6 +37,7 @@ directives = {
       'epigraph': 'epigraph',
       'highlights': 'highlights',
       'pull-quote': 'pull-quote',
+      'compound': 'compound',
       #'questions': 'questions',
       'table': 'table',
       'csv-table': 'csv-table',
