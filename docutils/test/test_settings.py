@@ -18,8 +18,8 @@ import warnings
 import unittest
 from types import StringType
 from docutils import frontend, utils
-from docutils.writers import html4css1
-from docutils.writers import pep_html
+from docutils.writers import html4css1, pep_html
+from docutils.parsers import rst
 
 
 warnings.filterwarnings(action='ignore',
@@ -57,11 +57,14 @@ class ConfigFileTests(unittest.TestCase):
                 'source_link': 1,
                 'stylesheet': None,
                 'stylesheet_path': fixpath('data/stylesheets/pep.css'),
-                'template': fixpath('data/pep-html-template')},
-        'two': {'generator': 0,
+                'template': fixpath('data/pep-html-template'),
+                'trim_footnote_reference_space': 1},
+        'two': {'footnote_references': 'superscript',
+                'generator': 0,
                 'record_dependencies': utils.DependencyList(),
                 'stylesheet': None,
-                'stylesheet_path': fixpath('data/test.css')},
+                'stylesheet_path': fixpath('data/test.css'),
+                'trim_footnote_reference_space': None},
         'list': {'expose_internals': ['a', 'b', 'c', 'd', 'e']},
         'list2': {'expose_internals': ['a', 'b', 'c', 'd', 'e', 'f']},
         'error': {'error_encoding': 'ascii',
@@ -73,7 +76,7 @@ class ConfigFileTests(unittest.TestCase):
 
     def setUp(self):
         self.option_parser = frontend.OptionParser(
-            components=(pep_html.Writer,), read_config_files=None)
+            components=(pep_html.Writer, rst.Parser), read_config_files=None)
 
     def files_settings(self, *names):
         settings = frontend.Values()
