@@ -735,6 +735,10 @@ The following options are recognized:
     The number of rows of CSV data to use in the table header.
     Defaults to 0.
 
+``stub-columns`` : integer
+    The number of table columns to use as stubs (row titles, on the
+    left).  Defaults to 0.
+
 ``header`` : CSV data
     Supplemental data for the table header, added independently of and
     before any ``header-rows`` from the main CSV data.  Must use the
@@ -828,6 +832,10 @@ The following options are recognized:
 ``header-rows`` : integer
     The number of rows of list data to use in the table header.
     Defaults to 0.
+
+``stub-columns`` : integer
+    The number of table columns to use as stubs (row titles, on the
+    left).  Defaults to 0.
 
 
 ----------------

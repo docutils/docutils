@@ -130,8 +130,10 @@ def csv_table(name, arguments, options, content, lineno,
             csv_data, DocutilsDialect(options), source, options)
         max_cols = max(max_cols, max_header_cols)
         header_rows = options.get('header-rows', 0) # default 0
+        stub_columns = options.get('stub-columns', 0) # default 0
         check_table_dimensions(
-            rows, header_rows, name, lineno, block_text, state_machine)
+            rows, header_rows, stub_columns, name, lineno,
+            block_text, state_machine)
         table_head.extend(rows[:header_rows])
         table_body = rows[header_rows:]
         col_widths = get_column_widths(
@@ -145,7 +147,7 @@ def csv_table(name, arguments, options, content, lineno,
             nodes.literal_block(block_text, block_text), line=lineno)
         return [error]
     table = (col_widths, table_head, table_body)
-    table_node = state.build_table(table, content_offset)
+    table_node = state.build_table(table, content_offset, stub_columns)
     table_node['classes'] += options.get('class', [])
     if title:
         table_node.insert(0, title)
@@ -153,6 +155,7 @@ def csv_table(name, arguments, options, content, lineno,
 
 csv_table.arguments = (0, 1, 1)
 csv_table.options = {'header-rows': directives.nonnegative_int,
+                     'stub-columns': directives.nonnegative_int,
                      'header': directives.unchanged,
                      'widths': directives.positive_int_list,
                      'file': directives.path,
@@ -274,20 +277,34 @@ def parse_csv_data_into_rows(csv_data, dialect, source, options):
         max_cols = max(max_cols, len(row))
     return rows, max_cols
 
-def check_table_dimensions(rows, header_rows, name, lineno, block_text,
-                           state_machine):
+def check_table_dimensions(rows, header_rows, stub_columns, name, lineno,
+                           block_text, state_machine):
     if len(rows) < header_rows:
         error = state_machine.reporter.error(
             '%s header row(s) specified but only %s row(s) of data supplied '
             '("%s" directive).' % (header_rows, len(rows), name),
             nodes.literal_block(block_text, block_text), line=lineno)
         raise SystemMessagePropagation(error)
-    elif len(rows) == header_rows > 0:
+    if len(rows) == header_rows > 0:
         error = state_machine.reporter.error(
             'Insufficient data supplied (%s row(s)); no data remaining for '
             'table body, required by "%s" directive.' % (len(rows), name),
             nodes.literal_block(block_text, block_text), line=lineno)
         raise SystemMessagePropagation(error)
+    for row in rows:
+        if len(row) < stub_columns:
+            error = state_machine.reporter.error(
+                '%s stub column(s) specified but only %s columns(s) of data '
+                'supplied ("%s" directive).' % (stub_columns, len(row), name),
+                nodes.literal_block(block_text, block_text), line=lineno)
+            raise SystemMessagePropagation(error)
+        if len(row) == stub_columns > 0:
+            error = state_machine.reporter.error(
+                'Insufficient data supplied (%s columns(s)); no data remaining '
+                'for table body, required by "%s" directive.'
+                % (len(row), name),
+                nodes.literal_block(block_text, block_text), line=lineno)
+            raise SystemMessagePropagation(error)
 
 def get_column_widths(max_cols, name, options, lineno, block_text,
                       state_machine):
@@ -335,11 +352,14 @@ def list_table(name, arguments, options, content, lineno,
         table_data = [[item.children for item in row_list[0]]
                       for row_list in node[0]]
         header_rows = options.get('header-rows', 0) # default 0
+        stub_columns = options.get('stub-columns', 0) # default 0
         check_table_dimensions(
-            table_data, header_rows, name, lineno, block_text, state_machine)
+            table_data, header_rows, stub_columns, name, lineno,
+            block_text, state_machine)
     except SystemMessagePropagation, detail:
         return [detail.args[0]]
-    table_node = build_table_from_list(table_data, col_widths, header_rows)
+    table_node = build_table_from_list(table_data, col_widths,
+                                       header_rows, stub_columns)
     table_node['classes'] += options.get('class', [])
     if title:
         table_node.insert(0, title)
@@ -347,6 +367,7 @@ def list_table(name, arguments, options, content, lineno,
 
 list_table.arguments = (0, 1, 1)
 list_table.options = {'header-rows': directives.nonnegative_int,
+                      'stub-columns': directives.nonnegative_int,
                       'widths': directives.positive_int_list,
                       'class': directives.class_option}
 list_table.content = 1
@@ -392,12 +413,16 @@ def check_list_content(node, name, options, content, lineno, block_text,
         raise SystemMessagePropagation(error)
     return num_cols, col_widths
 
-def build_table_from_list(table_data, col_widths, header_rows):
+def build_table_from_list(table_data, col_widths, header_rows, stub_columns):
     table = nodes.table()
     tgroup = nodes.tgroup(cols=len(col_widths))
     table += tgroup
     for col_width in col_widths:
-        tgroup += nodes.colspec(colwidth=col_width)
+        colspec = nodes.colspec(colwidth=col_width)
+        if stub_columns:
+            colspec.attributes['stub'] = 1
+            stub_columns -= 1
+        tgroup += colspec
     rows = []
     for row in table_data:
         row_node = nodes.row()

@@ -116,6 +116,7 @@ else:
 .. csv-table:: inline with integral header
    :widths: 10, 20, 30
    :header-rows: 1
+   :stub-columns: 1
 
    "Treat", "Quantity", "Description"
    "Albatross", 2.99, "On a stick!"
@@ -129,7 +130,7 @@ else:
         <title>
             inline with integral header
         <tgroup cols="3">
-            <colspec colwidth="10">
+            <colspec colwidth="10" stub="1">
             <colspec colwidth="20">
             <colspec colwidth="30">
             <thead>
@@ -815,6 +816,7 @@ totest['list-table'] = [
 .. list-table:: list table with integral header
    :widths: 10 20 30
    :header-rows: 1
+   :stub-columns: 1
 
    * - Treat
      - Quantity
@@ -836,7 +838,7 @@ totest['list-table'] = [
         <title>
             list table with integral header
         <tgroup cols="3">
-            <colspec colwidth="10">
+            <colspec colwidth="10" stub="1">
             <colspec colwidth="20">
             <colspec colwidth="30">
             <thead>
@@ -948,6 +950,44 @@ totest['list-table'] = [
                :widths: 10 20
             \n\
                * - ":widths:" option doesn\'t match columns
+"""],
+["""\
+.. list-table::
+   :stub-columns: 3
+
+   * - column 1
+     - column 2
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            3 stub column(s) specified but only 2 columns(s) of data supplied ("list-table" directive).
+        <literal_block xml:space="preserve">
+            .. list-table::
+               :stub-columns: 3
+            \n\
+               * - column 1
+                 - column 2
+"""],
+["""\
+.. list-table::
+   :stub-columns: 2
+
+   * - column 1
+     - column 2
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Insufficient data supplied (2 columns(s)); no data remaining for table body, required by "list-table" directive.
+        <literal_block xml:space="preserve">
+            .. list-table::
+               :stub-columns: 2
+            \n\
+               * - column 1
+                 - column 2
 """],
 ]
 

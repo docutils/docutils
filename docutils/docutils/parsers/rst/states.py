@@ -1657,13 +1657,17 @@ class Body(RSTState):
                                     line=lineno)
         return [error]
 
-    def build_table(self, tabledata, tableline):
-        colspecs, headrows, bodyrows = tabledata
+    def build_table(self, tabledata, tableline, stub_columns=0):
+        colwidths, headrows, bodyrows = tabledata
         table = nodes.table()
-        tgroup = nodes.tgroup(cols=len(colspecs))
+        tgroup = nodes.tgroup(cols=len(colwidths))
         table += tgroup
-        for colspec in colspecs:
-            tgroup += nodes.colspec(colwidth=colspec)
+        for colwidth in colwidths:
+            colspec = nodes.colspec(colwidth=colwidth)
+            if stub_columns:
+                colspec.attributes['stub'] = 1
+                stub_columns -= 1
+            tgroup += colspec
         if headrows:
             thead = nodes.thead()
             tgroup += thead
