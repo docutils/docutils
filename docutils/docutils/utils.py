@@ -356,15 +356,15 @@ def clean_rcs_keywords(paragraph, keyword_substitutions):
                 textnode.data = pattern.sub(substitution, textnode.data)
                 return
 
-def relative_uri(source, target):
+def relative_path(source, target):
     """
-    Build and return a URI to `target`, relative to `source`.
+    Build and return a path to `target`, relative to `source`.
 
     If there is no common prefix, return the absolute path to `target`.
     """
     source_parts = os.path.abspath(source).split(os.sep)
     target_parts = os.path.abspath(target).split(os.sep)
-    if source_parts[:2] != target_parts[:2]:
+    if source_parts[:1] != target_parts[:1]:
         # Nothing in common between paths.  Return absolute path.
         return '/'.join(target_parts)
     source_parts.reverse()
