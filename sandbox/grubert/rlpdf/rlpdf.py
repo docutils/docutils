@@ -55,17 +55,13 @@ class PDFTranslator(nodes.NodeVisitor):
         nodes.NodeVisitor.__init__(self, doctree)
         self.language = languages.get_language(doctree.language_code)
         self.head = []
-        #self.head = ['<!DOCTYPE HTML PUBLIC'
-        #             ' "-//W3C//DTD HTML 4.01 Transitional//EN"\n'
-        #             ' "http://www.w3.org/TR/html4/loose.dtd">\n',
-        #             '<HTML LANG="%s">\n<HEAD>\n' % doctree.languagecode,
         self.body = []
         self.foot = []
         self.sectionlevel = 0
         self.context = []
         self.topic_class = ''
         self.story = []
-        self.bulletText = '\xb7'
+        self.bulletText = '\xb7'	# maybe move this into stylesheet.
 
     def as_what(self):
         return self.story
@@ -641,103 +637,11 @@ class PDFTranslator(nodes.NodeVisitor):
     def depart_strong(self, node):
         self.body.append('</STRONG>')
 
-    def visit_substitution_definition(self, node):
-        raise nodes.SkipChildren
-
-    def depart_substitution_definition(self, node):
-        pass
-
-    def visit_substitution_reference(self, node):
-        self.unimplemented_visit(node)
-
     def visit_subtitle(self, node):
         self.append_styled(node.astext(),'h2')
 
     def depart_subtitle(self, node):
         pass
-
-    def visit_system_message(self, node):
-        if node['level'] < self.document.reporter['writer'].warning_level:
-            raise nodes.SkipNode
-        self.body.append(self.starttag(node, 'div', CLASS='system-message'))
-        self.body.append('<P CLASS="system-message-title">')
-        if node.hasattr('backrefs'):
-            backrefs = node['backrefs']
-            if len(backrefs) == 1:
-                self.body.append('<A HREF="#%s">%s</A> '
-                                 '(level %s system message)</P>\n'
-                                 % (backrefs[0], node['type'], node['level']))
-            else:
-                i = 1
-                backlinks = []
-                for backref in backrefs:
-                    backlinks.append('<A HREF="#%s">%s</A>' % (backref, i))
-                    i += 1
-                self.body.append('%s (%s; level %s system message)</P>\n'
-                                 % (node['type'], '|'.join(backlinks),
-                                    node['level']))
-        else:
-            self.body.append('%s (level %s system message)</P>\n'
-                             % (node['type'], node['level']))
-
-    def depart_system_message(self, node):
-        self.body.append('</DIV>\n')
-
-    def visit_table(self, node):
-        self.body.append(
-              self.starttag(node, 'table', frame='border', rules='all'))
-
-    def depart_table(self, node):
-        self.body.append('</TABLE>\n')
-
-    def visit_target(self, node):
-        if not (node.has_key('refuri') or node.has_key('refid')
-                or node.has_key('refname')):
-            self.body.append(self.starttag(node, 'a', '', CLASS='target'))
-            self.context.append('</A>')
-        else:
-            self.context.append('')
-
-    def depart_target(self, node):
-        self.body.append(self.context.pop())
-
-    def visit_tbody(self, node):
-        self.body.append(self.context.pop()) # '</COLGROUP>\n' or ''
-        self.body.append(self.starttag(node, 'tbody', valign='top'))
-
-    def depart_tbody(self, node):
-        self.body.append('</TBODY>\n')
-
-    def visit_term(self, node):
-        self.body.append(self.starttag(node, 'dt', ''))
-
-    def depart_term(self, node):
-        """
-        Leave the end tag to `self.visit_definition()`, in case there's a
-        classifier.
-        """
-        pass
-
-    def visit_tgroup(self, node):
-        self.body.append(self.starttag(node, 'colgroup'))
-        self.context.append('</COLGROUP>\n')
-
-    def depart_tgroup(self, node):
-        pass
-
-    def visit_thead(self, node):
-        self.body.append(self.context.pop()) # '</COLGROUP>\n'
-        self.context.append('')
-        self.body.append(self.starttag(node, 'thead', valign='bottom'))
-
-    def depart_thead(self, node):
-        self.body.append('</THEAD>\n')
-
-    def visit_tip(self, node):
-        self.visit_admonition(node, 'tip')
-
-    def depart_tip(self, node):
-        self.depart_admonition()
 
     def visit_title(self, node):
         """Only 6 section levels are supported by HTML."""
@@ -761,32 +665,6 @@ class PDFTranslator(nodes.NodeVisitor):
 
     def depart_title(self, node):
         self.body.append(self.context.pop())
-
-    def visit_topic(self, node):
-        self.body.append(self.starttag(node, 'div', CLASS='topic'))
-        self.topic_class = node.get('class')
-
-    def depart_topic(self, node):
-        self.body.append('</DIV>\n')
-        self.topic_class = ''
-
-    def visit_transition(self, node):
-        self.body.append(self.starttag(node, 'hr'))
-
-    def depart_transition(self, node):
-        pass
-
-    def visit_version(self, node):
-        self.visit_docinfo_item(node, 'version')
-
-    def depart_version(self, node):
-        self.depart_docinfo_item()
-
-    def visit_warning(self, node):
-        self.visit_admonition(node, 'warning')
-
-    def depart_warning(self, node):
-        self.depart_admonition()
 
     def unimplemented_visit(self, node):
         raise NotImplementedError('visiting unimplemented node type: %s'

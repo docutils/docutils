@@ -3,7 +3,7 @@
 DOCUTILS=../..
 QWRITER=$DOCUTILS/tools/quicktest.py
 OUT=test.pdf
-TEXT=pdftest_2.txt
+TEXT=pdftest_3.txt
 
 PYTHONPATH=`pwd`:$DOCUTILS:$PYTHONPATH
 
