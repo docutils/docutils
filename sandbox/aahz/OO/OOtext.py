@@ -20,6 +20,8 @@ styles = '''<?xml version="1.0" encoding="UTF-8"?>
   </style:default-style>
   <style:style style:name="Standard" style:family="paragraph" style:class="text"/>
   <style:style style:name=".body" style:family="paragraph" style:parent-style-name="Standard"/>
+  <style:style style:name=".CALLOUT" style:family="paragraph" style:parent-style-name=".body"/>
+  <style:style style:name=".figure" style:family="paragraph" style:parent-style-name=".body"/>
   <style:style style:name=".quotes" style:family="paragraph" style:parent-style-name=".body"/>
   <style:list-style style:name=".bullet"/>
   <style:style style:name=".ch title" style:family="paragraph" style:parent-style-name=".body">
