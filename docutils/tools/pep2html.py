@@ -462,12 +462,14 @@ def main(argv=None):
     else:
         # do them all
         peptxt = []
+        html = []
         files = glob.glob("pep-*.txt")
         files.sort()
         for file in files:
             peptxt.append(file)
-            make_html(file, verbose=verbose)
-        html = ["pep-*.html"]
+            newfile = make_html(file, verbose=verbose)
+            if newfile:
+                html.append(newfile)
         if browse and not update:
             browse_file("0")
 
