@@ -23,7 +23,6 @@ from docutils import core, frontend, nodes, utils, writers, languages
 from docutils.core import publish_string
 from docutils.writers import html4css1
 
-from MoinMoin.parser.wiki import Parser
 
 def html_escape_unicode(node):
     # Find Python function that does this for me. string.encode('ascii',
@@ -47,7 +46,7 @@ class MoinWriter(html4css1.Writer):
         node['refuri'] = node['refname']
         # The node is being processed by our wiki_resolver so we mark this as a
         # node that should be run through the MoinMoin parser.
-        node.wikiprocess = 1
+        node.do_wiki_process = 1
         del node['refname']
         return '1'
     
@@ -62,6 +61,7 @@ class MoinWriter(html4css1.Writer):
         self.unknown_reference_resolvers = [self.wiki_resolver]
         # We create a new parser to process MoinMoin wiki style links in the 
         # restructured text.
+        from MoinMoin.parser.wiki import Parser
         self.wikiparser = Parser('', self.request)
         self.wikiparser.formatter = self.formatter
         self.wikiparser.hilite_re = None
@@ -139,24 +139,24 @@ class MoinTranslator(html4css1.HTMLTranslator):
             self.strip_paragraph = 1
             # Check for interwiki links
             if node['refuri'][:len('wiki:')] == 'wiki:':
-                link = self.wikiparser.interwiki((node['refuri'], 
+                link = self.wikiparser.interwiki((node['refuri'],
                                                   node.astext()))
                 self.body.append(link)
-            # Check for a subpage (a refuri with a / but no :)
             elif ('/' in node['refuri']) and \
                   (not ':' in node['refuri']):
-                self.wikiparser.raw = '[:%s: %s]' % \
-                                      (node['refuri'], node.astext())
+                # Check for a subpage (a refuri with a / but no :)
+                self.wikiparser.raw = '[:%s: %s]' % (node['refuri'], node.astext())
                 self.wikiparser.format(self.formatter)
-            # This was handled by the wiki_resolver so run it through the
-            # MoinMoin parser.
-            elif hasattr(node, 'wikiprocess'):
-                self.wikiparser.raw = '[:%s: %s]' % \
-                                      (node['refuri'], node.astext())
+            elif hasattr(node, 'do_wiki_process'):
+                # This was handled by the wiki_resolver so run it through the
+                # MoinMoin parser.
+                print '%s is going through the formatter' % (node['refuri'])
+                self.wikiparser.raw = '[:%s: %s]' % (node['refuri'], node.astext())
+                print self.wikiparser.raw
                 self.wikiparser.format(self.formatter)
-            # Not handled by our tests so give it to the html4css1
-            # translator.
             else:
+                # Not handled by our tests so give it to the html4css1
+                # translator.
                 handled = 0
             self.strip_paragraph = 0
             if handled:
