@@ -13,6 +13,8 @@ Miscellaneous utilities for the documentation utilities.
 __docformat__ = 'reStructuredText'
 
 import sys
+import os
+import os.path
 from types import StringType, UnicodeType
 from docutils import ApplicationError, DataError
 from docutils import frontend, nodes
@@ -347,3 +349,24 @@ def clean_rcs_keywords(paragraph, keyword_substitutions):
             if match:
                 textnode.data = pattern.sub(substitution, textnode.data)
                 return
+
+def relative_uri(source, target):
+    """
+    Build and return a URI to `target`, relative to `source`.
+
+    If there is no common prefix, return the absolute path to `target`.
+    """
+    source_parts = os.path.abspath(source).split(os.sep)
+    target_parts = os.path.abspath(target).split(os.sep)
+    if source_parts[:2] != target_parts[:2]:
+        # Nothing in common between paths.  Return absolute path.
+        return '/'.join(target_parts)
+    source_parts.reverse()
+    target_parts.reverse()
+    while source_parts[-1] == target_parts[-1]:
+        # Remove path components in common:
+        source_parts.pop()
+        target_parts.pop()
+    target_parts.reverse()
+    parts = ['..'] * (len(source_parts) - 1) + target_parts
+    return '/'.join(parts)
