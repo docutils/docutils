@@ -58,6 +58,17 @@ Bugs
   docutils-develop 2002-10-30, subject 'problem with the "include"
   directive'.
 
+* From Engelbert Gruber::
+
+      tools/html.py -l de README.txt donotcare.html
+      ...
+        File ".../docutils/parsers/rst/languages/__init__.py", line
+      19, in get_language
+          module = __import__(language_code, globals(), locals())
+      ImportError: No module named de
+
+  Shouldn't cause a traceback; just return ``None``.
+
 
 General
 -------
@@ -288,6 +299,10 @@ General
 
 * Multiple file I/O suggestion from Michael Hudson: use a file-like
   object or something you can iterate over to get file-like objects.
+
+* Language modules: in accented languages it may be useful to have
+  both accented and unaccented entries in the ``bibliographic_fields``
+  mapping for versatility.
 
 
 Documentation
@@ -1003,6 +1018,8 @@ HTML Writer
 
 * Add more support for <link> elements, especially for navigation
   bars.
+
+* Make the admonitions more distinctive and varied.
 
 
 Front-End Tools
