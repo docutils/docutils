@@ -10,4 +10,5 @@ Potentially dangerous features (security holes):
    <script>
        that does something really nasty
    </script>
-
+.. csv-table:: :file: /etc/passwd
+.. csv-table:: :url: file:///etc/passwd

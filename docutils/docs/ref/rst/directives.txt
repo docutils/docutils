@@ -668,7 +668,13 @@ CSV Table
 :Directive Options: Possible.
 :Directive Content: A CSV (comma-separated values) table.
 
-.. Warning::
+.. WARNING::
+
+   The "csv-table" directive's ":file:" and ":url:" options represent
+   a potential security holes.  They can be disabled with the
+   "file_insertion_enabled_" runtime setting.
+
+.. Note::
 
    The "csv-table" directive requires the ``csv.py`` module of the
    Python standard library, which was added in Python 2.3.  It will
@@ -734,8 +740,11 @@ The following options are recognized:
     before any ``header-rows`` from the main CSV data.  Must use the
     same CSV format as the main CSV data.
 
-``file`` | ``url`` : path
-    Path or URL to CSV file.
+``file`` : string (newlines removed)
+    The local filesystem path to a CSV data file.
+
+``url`` : string (whitespace removed)
+    An Internet URL reference to a CSV data file.
 
 ``encoding`` : name of text encoding
     The text encoding of the external CSV data (file or URL).
@@ -1179,10 +1188,10 @@ example::
 
 The following options are recognized:
 
-``file`` : string
+``file`` : string (newlines removed)
     The local filesystem path of a raw data file to be included.
 
-``url`` : string
+``url`` : string (whitespace removed)
     An Internet URL reference to a raw data file to be included.
 
 ``encoding`` : name of text encoding

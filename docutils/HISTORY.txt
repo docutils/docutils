@@ -59,12 +59,14 @@ Changes Since 0.3.7
     errors.
   - Allowed whitespace in "include" & "raw" directive paths.
   - Added support for ``file_insertion_enabled`` & ``raw_enabled``
-    settings in "include" & "raw" directives
+    settings in "include" & "raw" directives.
 
 * docutils/parsers/rst/directives/tables.py:
 
   - Added "list-table" directive.
   - Caught empty CSV table bug.
+  - Added support for the ``file_insertion_enabled`` setting in the
+    "csv-table" directive.
 
 * docutils/parsers/rst/languages/nl.py: Added to project; Dutch
   mappings by Martijn Pieters.
