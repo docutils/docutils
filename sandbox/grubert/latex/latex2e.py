@@ -996,8 +996,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append(self.context.pop())
         # BUG level depends on style.
         if node.parent.hasattr('id'):
+            # pdflatex seamsnot to care about the actual level, so i did 
+            # choose 1 and up. ToC would have 0 and then one has to click
+            # "Table of contents" bookmark to see the ToC. To avoid this
+            # we set all zeroes to one.
+            l = self.section_level
+            if l < 1:
+                l = 1
             self.body.append('\\pdfbookmark[%d]{%s}{%s}\n' % \
-                (self.section_level-1,node.astext(),node.parent['id']))
+                (l,node.astext(),node.parent['id']))
 
     def visit_topic(self, node):
         self.topic_class = node.get('class')
