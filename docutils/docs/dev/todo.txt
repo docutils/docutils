@@ -301,6 +301,9 @@ General
 
   @@@ Remove "settings" parameters before next release.
 
+* Change the "class" attribute of elements (set with
+  Element.set_class) to a list?
+
 
 Documentation
 -------------
@@ -1183,6 +1186,9 @@ HTML Writer
 
 * Base list compaction on the spacing of source list?  Would require
   parser support.  (Idea: fantasai, 16 Dec 2002, doc-sig.)
+
+* Add a tool tip ("title" attribute?) to footnote back-links
+  identifying them as such.  Text in Docutils language module.
 
 
 Front-End Tools
