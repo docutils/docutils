@@ -1027,12 +1027,13 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_raw(self, node):
         if 'html' in node.get('format', '').split():
-            add_span = node.attributes.get('class') is not None
-            if add_span:
-                self.body.append(self.starttag(node, 'span', suffix=''))
+            add_class = node.attributes.get('class') is not None
+            t = isinstance(node.parent, nodes.TextElement) and 'span' or 'div'
+            if add_class:
+                self.body.append(self.starttag(node, t, suffix=''))
             self.body.append(node.astext())
-            if add_span:
-                self.body.append('</span>')
+            if add_class:
+                self.body.append('</%s>' % t)
         # Keep non-HTML raw text out of output:
         raise nodes.SkipNode
 
