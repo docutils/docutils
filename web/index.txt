@@ -181,11 +181,11 @@ whereas the local versions are.
 
 __ spec/pep-0287.html
 __ http://www.python.org/peps/pep-0287.html
-__ spec/pep-0257.txt
+__ spec/pep-0257.html
 __ http://www.python.org/peps/pep-0257.html
-__ spec/pep-0256.txt
+__ spec/pep-0256.html
 __ http://www.python.org/peps/pep-0256.html
-__ spec/pep-0258.txt
+__ spec/pep-0258.html
 __ http://www.python.org/peps/pep-0258.html
 
 
