@@ -296,18 +296,23 @@ u"""\
         "Gannet Ripple", 1.99, "\xbfOn a \\u03c3\\u03c4\\u03b9\\u03ba?"
 """],
 ["""\
-UTF-16 is no valid ASCII.  BUG?
+Include file is UTF-16-encoded, and is not valid ASCII.
 
 .. include:: %s
    :encoding: ascii
 """ % utf_16_file_rel,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
-        UTF-16 is no valid ASCII.  BUG?
-    <paragraph>
-        \xfe\xff"Treat","Quantity","Description""Albatr\xb0\xdf",2.99,"\xa1Ona\x03\xc3\x03\xc4\x03\xb9\x03\xba!""CrunchyFrog",1.49,"Ifwetooktheb\xf6nesout,itwouldn \x19tbecrunchy,nowwouldit?""GannetRipple",1.99,"\xbfOna\x03\xc3\x03\xc4\x03\xb9\x03\xba?"
-"""],
+        Include file is UTF-16-encoded, and is not valid ASCII.
+    <system_message level="4" line="3" source="test data" type="SEVERE">
+        <paragraph>
+            Problem with "include" directive:
+            UnicodeError: Unable to decode input data.  Tried the following encodings: 'ascii'.
+        <literal_block xml:space="preserve">
+            .. include:: %s
+               :encoding: ascii
+""" % utf_16_file_rel],
 # @@@ BUG with errors reported with incorrect "source" & "line":
 # ["""\
 # Testing bad charent includes:

@@ -14,9 +14,19 @@
 Changes Since 0.3.7
 ===================
 
+* docutils/io.py:
+
+  - Fixed ``Input.decode`` method to apply heuristics only if no
+    encoding is explicitly given.
+
 * docutils/parsers/rst/states.py:
 
   - Added check for escaped at-mark to prevent email address recognition.
+
+* docutils/parsers/rst/directives/misc.py:
+
+  - Fixed "include" and "raw" directives to catch text decoding
+    errors.
 
 * docutils/parsers/rst/directives/tables.py:
 
