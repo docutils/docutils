@@ -1,15 +1,17 @@
 """
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
-:version: 0.2.2
+:version: 0.2.3
 """
 
-from   wxPython.lib.throbber import Throbber
-from   wxPython.wx           import *
-from   wxPython.help         import *
-from   docutils.utils        import relative_path
-from   urllib                import quote
-import images, os, ConfigParser, stylesheets, throbimages
+from   wxPython.lib.throbber         import Throbber
+from   wxPython.wx                   import *
+from   wxPython.help                 import *
+from   wxPython.lib.filebrowsebutton import DirBrowseButton
+from   docutils.utils                import relative_path
+from   urllib                        import quote
+from   docutilsadapter               import publishers
+import images, os, string, ConfigParser, stylesheets, throbimages
 
 NAME = 'DocFactory'
 
@@ -133,7 +135,8 @@ class projectSettingsDlg(wxDialog):
         exitID = wxNewId()
         self.nameCtrl = wxTextCtrl(self.df, exitID,
                                    pos = wxPoint(96, 72),
-                                   size = wxSize(240, 21))
+                                   size = wxSize(240, 21),
+                                   validator = customValidator(PROJECT_NAME))
         self.nameCtrl.SetHelpText('Enter a title for your project here.')
 
         #--------------------------------------------------
@@ -202,7 +205,8 @@ class projectSettingsDlg(wxDialog):
                       'Embed Stylesheet',
                       'Footnote-Backlinks',
                       'Generator',
-                      'Source-Link'
+                      'Source-Link',
+                      'Use LaTeX-TOC'
                       ]
         exitID = NewId()
         self.optionsCtrl = wxCheckListBox(self.du, exitID, wxPoint(50, 136),
@@ -277,21 +281,12 @@ class projectSettingsDlg(wxDialog):
             dlg.Destroy()
 
     def getValues(self):
-        return(self.adjust_str(self.nameCtrl.GetValue()), self.dirCtrl.GetValue())
+        return(self.nameCtrl.GetValue(), self.dirCtrl.GetValue())
 
-    def adjust_str(self, str):
-        str = str.lower().replace(' ', '_')
-        for i in range(len(str)):
-            if ord(str[i]) not in (range(ord('0'),ord('9')+1) + \
-                                   range(ord('A'),ord('Z')+1) + \
-                                   range(ord('a'),ord('z')+1)):
-                str = str.replace(str[i], '_')
-        return str
- 
     def onBtnOk(self, event):
 
         dir = self.dirCtrl.GetValue()
-        name = self.adjust_str(self.nameCtrl.GetValue())
+        name = self.nameCtrl.GetValue()
         configfile = os.path.join(dir, 'docutils.conf')
         cfg = ConfigParser.ConfigParser()
         if os.path.isfile(configfile):
@@ -327,6 +322,10 @@ class projectSettingsDlg(wxDialog):
                 self.config.options['source_link']        = '1'
             else:
                 self.config.options['source_link']        = ''
+            if self.optionsCtrl.IsChecked(5):
+                self.config.options['use_latex_toc']      = '1'
+            else:
+                self.config.options['use_latex_toc']      = ''
 
             self.config.options['datestamp'] = self.datestampCtrl.GetValue()
             self.config.options['stylesheet'] = self.styCtrl.GetValue()
@@ -394,6 +393,11 @@ class projectSettingsDlg(wxDialog):
         else:
             self.optionsCtrl.Check(4, FALSE)
 
+        if self.config.options['use_latex_toc'] == '1':
+            self.optionsCtrl.Check(5, TRUE)
+        else:
+            self.optionsCtrl.Check(5, FALSE)
+
     def loadconf(self):
         config = Config()
         if os.path.isfile(self.configfile):
@@ -414,7 +418,7 @@ class projectSettingsDlg(wxDialog):
             cfg.set('options', key, self.config.options[key])
         old_section = 'docfactory_project: %s' % self.project.name
         new_section = 'docfactory_project: %s' % \
-                      self.adjust_str(self.nameCtrl.GetValue())
+                      self.nameCtrl.GetValue()
         if old_section != new_section:
             if cfg.has_section(old_section):
                 cfg.remove_section(old_section)
@@ -435,6 +439,7 @@ class Config:
         self.options['source_link']         = ''
         self.options['stylesheet']          = 'default.css'
         self.options['toc_backlinks']       = 'entry'
+        self.options['use_latex_toc']       = '1'
 
 #---------------------------------------------------------------------------
 
@@ -492,3 +497,336 @@ class hyperlinkDlg(wxDialog):
 
     def GetPath(self):
         return self.pathCtrl.GetValue()
+
+#---------------------------------------------------------------------------
+
+class publishDlg(wxDialog):
+
+    def __init__(self, parent, infile, project=None):
+        wxDialog.__init__(self, parent, -1, title = 'Publish')
+        btn_size = wxSize(75, 23)
+        self.infile = infile
+        self.project = project
+        if self.project != None:
+            self.directory = self.project.directory
+        else:
+            self.directory = os.path.dirname(infile)
+        self.writer = 'HTML'
+        # Writer
+        wxStaticText(self, -1, 'Docutils-Writer:', wxPoint(8, 12))
+        exitID = wxNewId()
+        writers = publishers.keys()
+        writers.sort()
+        self.writerCtrl = wxChoice(self, exitID, (100, 10),
+                                   choices = writers)
+        self.writerCtrl.SetSelection(1)
+        EVT_CHOICE(self, exitID, self.onChoiceWriter)
+
+        # Output-directory
+        wxStaticText(self, -1, 'Output-Directory:', wxPoint(8, 42))
+        exitID = wxNewId()
+        self.outdirCtrl = wxTextCtrl(self, exitID,
+                                     pos = wxPoint(100, 40),
+                                     size = wxSize(240, 21))
+        self.outdirCtrl.SetValue(self.directory)
+        exitID = wxNewId()
+        self.btnSelOutdir = wxButton(self, exitID, 'Select',
+                                     pos = wxPoint(350, 40),
+                                     size = btn_size)
+        EVT_BUTTON(self, exitID, self.onBtnOutdir)
+
+        # Output-file
+        wxStaticText(self, -1, 'Output-File:', wxPoint(8, 72))
+        exitID = wxNewId()
+        self.outfileCtrl = wxTextCtrl(self, exitID,
+                                      pos = wxPoint(100, 70),
+                                      size = wxSize(240, 21))
+        self.outfileCtrl.SetValue(self.default_outfile())
+
+        # OK and Cancel
+        self.ok         = wxButton(self, wxID_OK, 'OK',
+                                   pos = wxPoint(235-80,100),
+                                   size = btn_size)
+        self.cancel     = wxButton(self, wxID_CANCEL, 'Cancel',
+                                   pos = wxPoint(235+5,100),
+                                   size = btn_size)
+        self.ok.SetDefault()
+        self.Fit()
+
+    def onBtnOutdir(self, event):
+        dlg = wxDirDialog(self, 'Select output-directory:',
+                          self.directory)
+        if dlg.ShowModal() == wxID_OK:
+            self.directory = dlg.GetPath()
+            self.outdirCtrl.SetValue(self.directory)
+        dlg.Destroy()
+
+    def onChoiceWriter(self, event):
+        self.writer = event.GetString()
+        self.outfileCtrl.SetValue(self.default_outfile())
+
+    def GetValues(self):
+        return (self.outfileCtrl.GetValue(),
+                self.outdirCtrl.GetValue(),
+                self.writer)
+
+    def default_outfile(self):
+        outfile = self.outfileCtrl.GetValue()
+        if outfile == '':
+            outfile = os.path.splitext(os.path.basename(self.infile))[0] + publishers[self.writer][2]
+        else:
+            outfile = os.path.splitext(os.path.basename(outfile))[0] + publishers[self.writer][2]
+        return outfile
+
+#---------------------------------------------------------------------------
+
+class toolsDlg(wxDialog):
+
+    def __init__(self, parent):
+        wxDialog.__init__(self, parent, -1, title = 'Configure Toolbox')
+        self.tools = parent.tools
+        self.parent = parent
+        self.currentItem = None
+        btn_size = wxSize(75, 23)
+        self.il = wxImageList(16, 16)
+        bmp = images.getToolBitmap()
+        mask = wxMaskColour(bmp, wxBLUE)
+        bmp.SetMask(mask)
+        self.idx1 = self.il.Add(bmp)
+        exitID = wxNewId()
+        self.list = wxListCtrl(self, exitID,
+                               wxDLG_PNT(self, 26, 10),
+                               wxDLG_SZE(self, 400, 120),
+                               wxLC_REPORT|wxSUNKEN_BORDER|wxLC_SINGLE_SEL|wxLC_HRULES|wxLC_VRULES)
+        self.list.InsertColumn(0, "Tool")
+        self.list.InsertColumn(1, "Name")
+        self.list.InsertColumn(2, "Command")
+        self.list.InsertColumn(3, "Initial Directory")
+        self.list.SetImageList(self.il, wxIMAGE_LIST_SMALL)
+        EVT_LIST_ITEM_SELECTED(self, exitID, self.on_item_selected)
+        self.update_list()
+        self.ok         = wxButton(self, wxID_OK, 'OK',
+                                   pos = wxDLG_PNT(self, 195, 135),
+                                   size = btn_size)
+        exitID = wxNewId()
+        bmp = images.getPlusBitmap()
+        mask = wxMaskColour(bmp, wxBLUE)
+        bmp.SetMask(mask)
+        b = wxBitmapButton(self, exitID, bmp, wxDLG_PNT(self, 5, 10),
+                           wxSize(23, 23))
+        b.SetToolTipString("Add tool")
+        EVT_BUTTON(self, exitID, self.on_plus_btn)
+        exitID = wxNewId()
+        bmp = images.getPenBitmap()
+        mask = wxMaskColour(bmp, wxBLUE)
+        bmp.SetMask(mask)
+        b = wxBitmapButton(self, exitID, bmp, wxDLG_PNT(self, 5, 26),
+                           wxSize(23, 23))
+        b.SetToolTipString("Edit tool")
+        EVT_BUTTON(self, exitID, self.on_edit_btn)
+        exitID = wxNewId()
+        bmp = images.getMinusBitmap()
+        mask = wxMaskColour(bmp, wxBLUE)
+        bmp.SetMask(mask)
+        b = wxBitmapButton(self, exitID, bmp, wxDLG_PNT(self, 5, 42),
+                           wxSize(23, 23))
+        b.SetToolTipString("Remove tool")
+        EVT_BUTTON(self, exitID, self.on_minus_btn)
+        self.ok.SetDefault()
+        self.Fit()
+
+    def add_tool(self, name, command, init_dir):
+        key = max(self.tools.keys())+1
+        self.tools[key] =  [0, name, command, init_dir]
+        i = 1
+        for tool in self.tools.values():
+            tool[0] = i
+            i = i+1
+        self.update_list()
+    
+    def colourize_list(self):
+        color = ('yellow', 'light blue')
+        for i in range(self.list.GetItemCount()):
+            item = self.list.GetItem(i)
+            item.SetBackgroundColour(color[i%2])
+            self.list.SetItem(item)
+
+    def get_column_text(self, index, col):
+        item = self.list.GetItem(index, col)
+        return item.GetText()
+
+    def get_tools(self):
+        return self.tools
+
+    def update_list(self):
+        self.list.DeleteAllItems()
+        items = self.tools.items()
+        for x in range(len(items)):
+            key, data = items[x]
+            self.list.InsertImageStringItem(x, str(data[0]), self.idx1)
+            self.list.SetStringItem(x, 1, data[1])
+            self.list.SetStringItem(x, 2, data[2])
+            self.list.SetStringItem(x, 3, data[3])
+            self.list.SetItemData(x, key)
+        for i in range(4):
+            self.list.SetColumnWidth(i, wxLIST_AUTOSIZE)
+        self.colourize_list()
+
+    def on_edit_btn(self, event):
+        go_ahead = 1
+        if self.currentItem != None:
+            item = self.currentItem
+        else:
+            go_ahead = 0
+            customMsgBox(self, 'Select a tool first.', 'wakeup')
+        if go_ahead:
+            selected_tool = [int(self.list.GetItemText(self.currentItem)),
+                             self.get_column_text(self.currentItem, 1),
+                             self.get_column_text(self.currentItem, 2),
+                             self.get_column_text(self.currentItem, 3)]
+            dlg = editToolDlg(self, selected_tool)
+            dlg.Centre()
+            if dlg.ShowModal() == wxID_OK:
+                new_values = dlg.get_values()
+            else:
+                go_ahead = 0
+        if go_ahead:
+            for key in self.tools.keys():
+                if self.tools[key] == selected_tool:
+                    self.tools[key][1] = new_values[0]
+                    self.tools[key][2] = new_values[1]
+                    self.tools[key][3] = new_values[2]
+            self.update_list()
+
+    def on_item_selected(self, event):
+        self.currentItem = event.m_itemIndex
+
+    def on_minus_btn(self, event):
+        go_ahead = 1
+        if self.currentItem != None:
+            item = self.currentItem
+        else:
+            go_ahead = 0
+            customMsgBox(self, 'Select a tool first.', 'wakeup')
+        if go_ahead:
+            selected_tool = [int(self.list.GetItemText(self.currentItem)),
+                             self.get_column_text(self.currentItem, 1),
+                             self.get_column_text(self.currentItem, 2),
+                             self.get_column_text(self.currentItem, 3)]
+            for key in self.tools.keys():
+                if self.tools[key] == selected_tool:
+                    del self.tools[key]
+            i = 1
+            for tool in self.tools.values():
+                tool[0] = i
+                i = i+1
+            self.update_list()
+
+    def on_plus_btn(self, event):
+        dlg = editToolDlg(self)
+        dlg.Centre()
+        if dlg.ShowModal() == wxID_OK:
+            tool = dlg.get_values()
+            self.add_tool(tool[0],tool[1],tool[2])
+        dlg.Destroy()
+
+#---------------------------------------------------------------------------
+
+class editToolDlg(wxDialog):
+
+    def __init__(self, parent, tool=['','','','']):
+        wxDialog.__init__(self, parent, -1, title = 'Tool')
+        wxStaticText(self, -1, 'Name:', wxPoint(28, 13))
+        self.name = wxTextCtrl(self, -1, pos = wxPoint(64, 10),
+                               size = wxSize(322, -1),
+                               validator = customValidator(TOOL_NAME))
+        wxStaticText(self, -1, 'Command:', wxPoint(28, 45))
+        self.command = wxTextCtrl(self, -1, pos = wxPoint(84, 42),
+                                  size = wxSize(302, -1),
+                                  validator = customValidator(NO_SEMICOLON))
+        self.init_dir = DirBrowseButton(self, -1, wxPoint(20,70), wxSize(450,-1),
+                                        labelText= 'Initial Directory:',
+                                        buttonText= 'Browse')
+        btn_size = wxSize(75, 23)
+        self.ok         = wxButton(self, wxID_OK, 'OK',
+                                   pos = wxPoint(230-80,110),
+                                   size = btn_size)
+        EVT_BUTTON(self, wxID_OK, self.on_btn_ok)
+        self.cancel     = wxButton(self, wxID_CANCEL, 'Cancel',
+                                   pos = wxPoint(230+5,110),
+                                   size = btn_size)
+        self.name.SetValue(tool[1])
+        self.command.SetValue(tool[2])
+        self.init_dir.SetValue(tool[3])
+        self.ok.SetDefault()
+        self.Fit()
+
+    def get_values(self):
+        return self.name.GetValue(), self.command.GetValue(), self.init_dir.GetValue()
+
+    def on_btn_ok(self, event):
+        go_ahead = 1
+        for ctrl in (self.name, self.command, self.init_dir):
+            if ctrl.GetValue() == '':
+                go_ahead = 0
+                break
+        if go_ahead:
+            self.EndModal(event.GetId())
+        else:
+            customMsgBox(self, 'All fields have to be filled.', 'wakeup')
+
+#---------------------------------------------------------------------------
+
+PROJECT_NAME = 1
+TOOL_NAME = 2
+NO_SEMICOLON = 3
+PROJECT_CHARS = string.letters + string.digits
+TOOL_CHARS = PROJECT_CHARS + '$[]|<>,.:-_\\/(){} '
+
+class customValidator(wxPyValidator):
+    def __init__(self, flag=None, pyVar=None):
+        wxPyValidator.__init__(self)
+        self.flag = flag
+        EVT_CHAR(self, self.OnChar)
+
+    def Clone(self):
+        return customValidator(self.flag)
+
+    def Validate(self, win):
+        tc = self.GetWindow()
+        val = tc.GetValue()
+        if self.flag == PROJECT_NAME:
+            for x in val:
+                if x not in PROJECT_CHARS:
+                    return false
+
+        elif self.flag == TOOL_NAME:
+            for x in val:
+                if x not in TOOL_CHARS:
+                    return false
+
+        elif self.flag == NO_SEMICOLON:
+            for x in val:
+                if x == ';':
+                    return false
+
+        return true
+
+    def OnChar(self, event):
+        key = event.KeyCode()
+        if key < WXK_SPACE or key == WXK_DELETE or key > 255:
+            event.Skip()
+            return
+        if self.flag == PROJECT_NAME and chr(key) in PROJECT_CHARS:
+            event.Skip()
+            return
+        if self.flag == TOOL_NAME and chr(key) in TOOL_CHARS:
+            event.Skip()
+            return
+        if self.flag == NO_SEMICOLON and chr(key) != ';':
+            event.Skip()
+            return
+        if not wxValidator_IsSilent():
+            wxBell()
+        return
+

@@ -1,18 +1,24 @@
 """
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
-:version: 0.2.2
+:version: 0.2.3
 """
 
 from   docutils.languages.en             import bibliographic_fields
 from   docutils.parsers.rst.languages.en import directives
-from   docutils.core                     import publish_cmdline
+from   docutils.core                     import publish_cmdline, publish_file
 from   docutils                          import __version__
 from   re                                import findall
 import os, sys
 from   wxPython.wx                       import wxLogMessage
 
 docutilsversion = __version__
+
+publishers = { 'HTML': (None, 'html', '.html'),
+               'Docutils-XML': (None, 'xml', '.xml'),
+               'LaTeX': (None, 'latex', '.tex'),
+               'PEP-HTML': ('pep', 'pep_html', '.html'),
+               'Pseudo-XML': (None, None, '.xml') }
 
 def get_rest_bibl_fields():
     # suitable for autocompletion in wxStyledTextCtrl
@@ -32,12 +38,23 @@ def get_rest_directives():
         drvs = '%s %s::' % (drvs, value)
     return drvs[1:]
 
-def rest2html(file, htmlfile, dir):
-    # publish reST as HTML
+def publish_document(writer, infile, outfile, outdir):
     current_dir = os.path.abspath(os.curdir)
     sys.stderr = StdCatcher()
-    os.chdir(dir)    
-    publish_cmdline(writer_name='html', argv = [file, htmlfile])
+    os.chdir(outdir)
+    if publishers[writer][0] != None:
+        publish_file(reader_name=publishers[writer][0],
+                     writer_name=publishers[writer][1],
+                     source_path=infile,
+                     destination_path=os.path.join(outdir,outfile))
+    else:
+        if publishers[writer][1] != None:
+            publish_file(writer_name=publishers[writer][1],
+                         source_path=infile,
+                         destination_path=os.path.join(outdir,outfile))
+        else:
+            publish_file(source_path=infile,
+                         destination_path=os.path.join(outdir,outfile))
     os.chdir(current_dir)
     sys.stderr = sys.__stderr__
     return 1

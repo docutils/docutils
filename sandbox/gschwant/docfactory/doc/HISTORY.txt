@@ -6,6 +6,10 @@
    DocFactory-tarball, please use docutils to convert
    it to HTML and open index.html with your webbrowser.
 
+DocFactory 0.2.3 (2003/03/02)
+  * Support of more writers (XML, PEP, LaTeX)
+  * Toolbox
+
 DocFactory 0.2.2 (2003/02/16)
   * Toolbar
   * New "Insert Hyperlink"-feature
