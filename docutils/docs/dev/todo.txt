@@ -29,6 +29,10 @@ __ http://docutils.sf.net/#please-contribute
 Priorities
 ==========
 
+Always high priority: `FIX BUGS!`__
+
+__ ../../BUGS.html
+
 * Include substitution files for character entities, produced by the
   tools/unicode2rstsubs.py.  As static data, these files could go
   inside the docutils package somewhere.
@@ -41,6 +45,8 @@ Priorities
   Tool"`__ for details.  If you'd like to help, let me know!
 
   __ enthought-plan.html
+
+* `Nested inline markup`_.
 
 
 General
@@ -384,6 +390,14 @@ General
   Is this even possible?  Should the criterion be the name of the
   input file or the output file?
 
+* The "validator" support added to OptionParser is very similar to
+  "traits_" in SciPy_.  Perhaps something could be done with them?
+  (Had I known about traits when I was implementing docutils.frontend,
+  I may have used them instead of rolling my own.)
+
+  .. _traits: http://old.scipy.org/site_content/traits
+  .. _SciPy: http://www.scipy.org/
+
 
 Documentation
 =============
@@ -427,6 +441,8 @@ Developer Docs
 * Give information about unit tests.  Maybe as a howto?
 
 * Document the docutils.nodes APIs.
+
+* Complete the docs/api/publisher.txt docs.
 
 
 How-Tos
