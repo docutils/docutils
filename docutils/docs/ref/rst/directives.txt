@@ -45,6 +45,16 @@ type definition.
  Admonitions
 -------------
 
+.. _attention:
+.. _caution:
+.. _danger:
+.. _error:
+.. _hint:
+.. _important:
+.. _note:
+.. _tip:
+.. _warning:
+
 Specific Admonitions
 ====================
 
@@ -98,6 +108,8 @@ bullet list consisting of two list items::
          following.
        - It includes this bullet list.
 
+
+.. _admonition:
 
 Generic Admonition
 ==================
@@ -401,6 +413,8 @@ The following option is recognized:
     class_ directive below.
 
 
+.. _parsed-literal:
+
 Parsed Literal Block
 ====================
 
@@ -503,7 +517,7 @@ Produces a highlights-class block quote.  See Epigraph_ above.
 Pull-Quote
 ==========
 
-:Directive Type: "pull_quote"
+:Directive Type: "pull-quote"
 :Doctree Element: block_quote
 :Directive Arguments: None.
 :Directive Options: None.
@@ -515,6 +529,8 @@ Produces a pull-quote-class block quote.  See Epigraph_ above.
 ----------------
  Document Parts
 ----------------
+
+.. _contents:
 
 Table of Contents
 =================
@@ -578,6 +594,9 @@ The following options are recognized:
     class_ directive below.
 
 
+.. _sectnum:
+.. _section-autonumbering:
+
 Automatic Section Numbering
 ===========================
 
@@ -611,6 +630,8 @@ The following options are recognized:
 ------------
  References
 ------------
+
+.. _target-notes:
 
 Target Footnotes
 ================
@@ -728,6 +749,8 @@ Non-standard element: imagemap.
  Miscellaneous
 ---------------
 
+.. _include:
+
 Including an External Document Fragment
 =======================================
 
@@ -766,6 +789,8 @@ The following options are recognized:
     The entire included text is inserted into the document as a single
     literal block (useful for program listings).
 
+
+.. _raw:
 
 Raw Data Pass-Through
 =====================
@@ -812,6 +837,8 @@ The following options are recognized:
     An Internet URL reference to a raw data file to be included.
 
 
+.. _replace:
+
 Replacement Text
 ================
 
@@ -840,6 +867,8 @@ the "replace" directive::
     .. |Python| replace:: Python, *the* best language around
     .. _Python: http://www.python.org/
 
+
+.. _unicode:
 
 Unicode Character Codes
 =======================
