@@ -68,7 +68,7 @@ class Writer(writers.Writer):
            'validator': frontend.validate_boolean}),
          ('Mark the first chapter as a preface.  '
           'Optionally, any non-titled text before the first chapter '
-          'is a preface - but then it cannot have sections.'
+          'is a preface - but then it cannot have sections.  '
           '("book" doctype only)',
           ['--has-preface'],
           {'action': 'store_true',
@@ -345,20 +345,24 @@ class LoutTranslator(nodes.NodeVisitor):
         pass
 
     def visit_block_quote(self, node):
-        self.body.append(self.starttag(node, 'blockquote'))
+        self.body.append('\n@QuotedDisplay {\n')
+        self.kill_next_paragraph = True
 
     def depart_block_quote(self, node):
-        self.body.append('\n@CurveBox paint { red } { "/" blockquote }\n')
+        self.body.append('\n}\n')
 
     def visit_bullet_list(self, node):
         if self.topic_class == 'contents':
             # we let Lout generate contents, thank you sir
             raise nodes.SkipNode
-        self.body.append('@BulletList')
+        self.body.append('\n@')
+        if self.kill_next_paragraph:
+            self.kill_next_paragraph = False
+            self.body.append('Raw')
+        self.body.append('BulletList\n')
 
     def depart_bullet_list(self, node):
-        self.body.append('\n@EndList\n')
-        self.kill_next_paragraph = True
+        self.body.append('\n@RawEndList\n')
     
     def visit_caption(self, node):
         self.body.append(self.starttag(node, 'p', '', CLASS='caption'))
@@ -454,11 +458,14 @@ class LoutTranslator(nodes.NodeVisitor):
         self.body.append(' }\n')
 
     def visit_definition_list(self, node):
-        self.body.append('\n@TaggedList\n')
+        self.body.append('\n@')
+        if self.kill_next_paragraph:
+            self.kill_next_paragraph = False
+            self.body.append('Raw')
+        self.body.append('TaggedList\n')
 
     def depart_definition_list(self, node):
-        self.body.append('\n@EndList\n')
-        self.kill_next_paragraph = True
+        self.body.append('\n@RawEndList\n')
 
     def visit_definition_list_item(self, node):
         pass
@@ -599,21 +606,29 @@ class LoutTranslator(nodes.NodeVisitor):
         self.body.append(' }\n')
 
     def visit_enumerated_list(self, node):
-        """
-        The 'start' attribute does not conform to HTML 4.01's strict.dtd, but
-        CSS1 doesn't help. CSS2 isn't widely enough supported yet to be
-        usable.
-        """
-        atts = {}
+        self.body.append('\n@')
+        if self.kill_next_paragraph:
+            self.kill_next_paragraph = False
+            self.body.append('Raw')
+        if node.get('prefix', '') == '(' and node.get('suffix', '') == ')':
+            self.body.append('Paren')
+        if not node.has_key('enumtype'):
+            self.body.append('NumberedList\n')
+        elif node['enumtype'] == 'arabic':
+            self.body.append('NumberedList\n')
+        elif node['enumtype'] == 'loweralpha':
+            self.body.append('AlphaList\n')
+        elif node['enumtype'] == 'upperalpha':
+            self.body.append('UCAlphaList\n')
+        elif node['enumtype'] == 'lowerroman':
+            self.body.append('RomanList\n')
+        elif node['enumtype'] == 'upperroman':
+            self.body.append('UCRomanList\n')
         if node.has_key('start'):
-            atts['start'] = node['start']
-        if node.has_key('enumtype'):
-            atts['class'] = node['enumtype']
-        self.body.append(self.starttag(node, 'ol', **atts))
+            self.body.append('  start { %s }\n' % node['start'])
 
     def depart_enumerated_list(self, node):
-        self.body.append('\n@CurveBox paint { red } { "/" ol }\n')
-        #self.kill_next_paragraph = True
+        self.body.append('\n@RawEndList\n')
 
     def visit_error(self, node):
         self.visit_admonition(node, 'error')
@@ -637,12 +652,15 @@ class LoutTranslator(nodes.NodeVisitor):
         self.body.append(' }\n')
 
     def visit_field_list(self, node):
-        self.body.append('\n@WideTaggedList\n')
+        self.body.append('\n@')
+        if self.kill_next_paragraph:
+            self.kill_next_paragraph = False
+            self.body.append('Raw')
+        self.body.append('WideTaggedList\n')
         return
 
     def depart_field_list(self, node):
-        self.body.append('\n@EndList\n')
-        self.kill_next_paragraph = True
+        self.body.append('\n@RawEndList\n')
 
     def visit_field_name(self, node):
         if len(node.astext()) > 7:
@@ -906,13 +924,13 @@ class LoutTranslator(nodes.NodeVisitor):
 
     def visit_raw(self, node):
         if node.get('format') == 'lout':
-            self.body.append(node.astext())
+            self.body.extend(['\n', node.astext(), '\n'])
         # Keep non-Lout raw text out of output:
         raise nodes.SkipNode
 
     def visit_reference(self, node):
         if node.has_key('refuri'):
-            self.body.append('"%s" @ExternalLink { ' % node['refuri'])
+            self.body.append('{"%s"} @ExternalLink { ' % node['refuri'])
             return
         elif node.has_key('refid'):
             href = node['refid']
@@ -963,7 +981,7 @@ class LoutTranslator(nodes.NodeVisitor):
             if self.section_level == 1:
                 if not (self.chapters or self.parts):
                     # first one
-                    if self.body and not self.preface:
+                    if self.body and not (self.preface or self.introduction):
                         # text before first chapter is always a preface
                         self.body.insert(0, '@Preface\n'
                                          '@Begin\n')
@@ -1009,6 +1027,17 @@ class LoutTranslator(nodes.NodeVisitor):
             extra = ''
             if self.settings.has_parts:
                 level -= 1
+            if level > 1 and (self.body is self.introduction or self.body is self.preface):
+                # prefaces and introductions have no sections (why?)
+                # IMPROVEME: perhaps allow two or three different levels?
+                self.body.extend(['\n@Display @Heading { ',
+                                  '', # title placeholder
+                                  ' }\n'])
+                self.section_title = len(self.body) - 2
+                self.section_commands.append(None)
+                # reset state stuff that may be left over
+                self.kill_next_paragraph = True
+                return
             if level == 1: # chapter
                 if self.body and type(self.body[0]) is type(0): # first real chapter in a part
                     del self.chapters[0] # we don't want it on the output
@@ -1050,6 +1079,8 @@ class LoutTranslator(nodes.NodeVisitor):
                                   ' }\n'])
                 self.section_title = len(self.body) - 2
                 self.section_commands.append(None)
+                self.kill_next_paragraph = True
+                return
         # reset state stuff that may be left over
         self.kill_next_paragraph = False
 
@@ -1099,7 +1130,7 @@ class LoutTranslator(nodes.NodeVisitor):
 
     def visit_subtitle(self, node):
         if isinstance(node.parent, nodes.sidebar):
-            self.body.append('@RawDisplay @I { ')
+            self.body.append('@LLP @RawCentredDisplay @I { ')
         else:
             self.docinfo['subtitle'] = node.astext()
             raise nodes.SkipNode
@@ -1153,11 +1184,14 @@ class LoutTranslator(nodes.NodeVisitor):
         self.body.append('\n@CurveBox paint { red } { "/" div }\n')
 
     def visit_table(self, node):
-        self.body.append('\n@Display @Tbl rule { yes } {\n')
-        #self.starttag(node, 'table', CLASS="table", border=None))
+        self.body.append('\n@Display @Tbl\n')
+        if node.get('class', '') != 'norules':
+            self.body.append(' rule { yes }\n')
+        self.body.append('{\n')
 
     def depart_table(self, node):
         self.body.append('\n}\n')
+        self.kill_next_paragraph = True
 
     def visit_target(self, node):
         if not (node.has_key('refuri') or node.has_key('refid')
@@ -1248,7 +1282,7 @@ class LoutTranslator(nodes.NodeVisitor):
         self.topic_class = ''
 
     def visit_transition(self, node):
-        self.body.append('\n@LP @FullWidthRule\n')
+        self.body.append('\n@LP @FullWidthRule @PP\n')
 
     def depart_transition(self, node):
         pass
