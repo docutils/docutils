@@ -440,6 +440,8 @@ General
   other one to ``None`` as a side effect.  See discussion on
   docutils-develop from 2004-07-03.
 
+* Add support for _`plugins`.
+
 
 Documentation
 =============

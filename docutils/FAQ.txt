@@ -248,7 +248,7 @@ How can I represent esoteric characters (e.g. character entities) in a document?
 --------------------------------------------------------------------------------
 
 For example, say you want an em-dash (XML character entity &mdash;,
-Unicode character ``\u2014``) in your document: use a real em-dash.
+Unicode character U+2014) in your document: use a real em-dash.
 Insert concrete characters (e.g. type a *real* em-dash) into your
 input file, using whatever encoding suits your application, and tell
 Docutils the input encoding.  Docutils uses Unicode internally, so the
