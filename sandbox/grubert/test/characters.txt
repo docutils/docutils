@@ -1,0 +1,35 @@
+Character tests
+===============
+
+LaTeX has some special characters in certain cases, e.g. # is LaTeX's macro
+argument chracter.
+
+Bracketts also have some meaning in macros, but need(ed) no special treatment 
+up to now.
+
+1. [Advanced] test from dave.
+   
+
+   1. The bracketts don't show up. 
+      They are in TeX file, but they're missing in PDF and DVI.
+
+      Probably because in LaTeX ::
+
+        \begin{itemize}
+        \item one is plain.
+        \item [two] two becomes bold.
+        \end{itemize}
+
+   2. Numbering [is] also missing for the "Advanced" test case above, not
+      here in this line.
+
+   3. Simply escaping the []'s with a backslash in the LaTeX file puts
+      "Advanced" centered emphasized on a separate line. But the "1." is
+      displayed then.
+
+   4. Using LaTeX's enumerate environment instead of docutils's custom
+      list environment for the list does not work too.
+
+*Fix* append "{}" to the item command, i.e. ::
+
+  \item {} [Advanced]
