@@ -48,7 +48,7 @@ Benefits
     and software systems; readers are only meant to see the processed
     form, either on paper or via browser software.  ReStructuredText
     is different: it is intended to be easily readable in source form,
-    without prior knowledge of the markup.   ReStructuredText) is
+    without prior knowledge of the markup.   ReStructuredText is
     entirely readable in plaintext format, and many of the markup
     forms match common usage (e.g., ``*emphasis*``), so it reads quite
     naturally.  Yet it is rich enough to produce complex documents,
@@ -67,7 +67,7 @@ Benefits
 
     Tools will become available in the near future, which will allow
     programmers to generate HTML for online help, XML for multiple
-    purposes, and perhaps eventually PDF/DocBook/LaTeX for printed
+    purposes, and eventually PDF/DocBook/LaTeX for printed
     documentation, essentially "for free" from the existing
     docstrings.  The adoption of a standard will, at the very least,
     benefit docstring processing tools by preventing further
@@ -98,7 +98,8 @@ Goals
        docstrings, without feeling hampered by the markup language.
 
     reStructuredText meets and exceeds all of these goals, and sets
-    its own goals as well, even more stringent.  See "Features" below.
+    its own goals as well, even more stringent.  See
+    "Docstring-Significant Features" below.
 
     The goals of this PEP are as follows:
 
@@ -132,9 +133,9 @@ Goals
     be applied:
 
     a) Keep the existing PEP section structure constructs (one-line
-       section headers, indented body text).  Subsections can
-       either be forbidden or supported with underlined headers in
-       the indented body text.
+       section headers, indented body text).  Subsections can either
+       be forbidden, or supported with reStructuredText-style
+       underlined headers in the indented body text.
 
     b) Replace the PEP section structure constructs with the
        reStructuredText syntax.  Section headers will require
@@ -142,11 +143,11 @@ Goals
        and body text need not be indented (except for block
        quotes).
 
-    Support for RFC 2822 headers will be added to the reStructuredText
-    parser for PEPs (unambiguous given a specific context: the first
-    contiguous block of the document).  It may be desired to
-    concretely specify what over/underline styles are allowed for PEP
-    section headers, for uniformity.
+    Support for RFC 2822 headers has been added to the
+    reStructuredText parser for PEPs (unambiguous given a specific
+    context: the first contiguous block of the document).  It may be
+    desired to concretely specify what over/underline styles are
+    allowed for PEP section headers, for uniformity.
 
 
 Rationale
@@ -203,8 +204,8 @@ Rationale
 
     - Perl POD [9]_
 
-      Most Perl modules are documented in a format called POD -- Plain
-      Old Documentation.  This is an easy-to-type, very low level
+      Most Perl modules are documented in a format called POD (Plain
+      Old Documentation).  This is an easy-to-type, very low level
       format with strong integration with the Perl parser.  Many tools
       exist to turn POD documentation into other formats: info, HTML
       and man pages, among others.  However, the POD syntax takes
@@ -250,6 +251,7 @@ Rationale
 
       - There has been no mechanism to get around the SText markup
         rules when a markup character is used in a non-markup context.
+        In other words, no way to escape markup.
 
     Proponents of implicit STexts have vigorously opposed proposals
     for explicit markup (XML, HTML, TeX, POD, etc.), and the debates
@@ -268,8 +270,8 @@ Specification
     Please first take a look at "A ReStructuredText Primer" [13]_, a
     short and gentle introduction.  The "Quick reStructuredText" user
     reference [14]_ quickly summarizes all of the markup constructs.
-    For complete and extensive details, the following documents
-    contain the full specification itself:
+    For complete and extensive details, please refer to the following
+    documents:
 
     - An Introduction to reStructuredText [15]_
 
@@ -458,263 +460,266 @@ Docstring-Significant Features
 
 Questions & Answers
 
-    Q1: Is reStructuredText rich enough?
+    1. Is reStructuredText rich enough?
 
-    A1: Yes, it is for most people.  If it lacks some construct that
-        is required for a specific application, it can be added via
-        the directive mechanism.  If a common construct has been
-        overlooked and a suitably readable syntax can be found, it can
-        be added to the specification and parser.
+       Yes, it is for most people.  If it lacks some construct that is
+       required for a specific application, it can be added via the
+       directive mechanism.  If a useful and common construct has been
+       overlooked and a suitably readable syntax can be found, it can
+       be added to the specification and parser.
 
-    Q2: Is reStructuredText *too* rich?
+    2. Is reStructuredText *too* rich?
 
-    A2: For specific applications or individuals, perhaps.  In
-        general, no.
+       For specific applications or individuals, perhaps.  In general,
+       no.
 
-        Since the very beginning, whenever a markup syntax has been
-        proposed on the Doc-SIG, someone has complained about the lack
-        of support for some construct or other.  The reply was often
-        something like, "These are docstrings we're talking about, and
-        docstrings shouldn't have complex markup."  The problem is
-        that a construct that seems superfluous to one person may be
-        absolutely essential to another.
+       Since the very beginning, whenever a docstring markup syntax
+       has been proposed on the Doc-SIG, someone has complained about
+       the lack of support for some construct or other.  The reply was
+       often something like, "These are docstrings we're talking
+       about, and docstrings shouldn't have complex markup."  The
+       problem is that a construct that seems superfluous to one
+       person may be absolutely essential to another.
 
-        reStructuredText takes the opposite approach: it provides a
-        rich set of implicit markup constructs (plus a generic
-        extension mechanism for explicit markup), allowing for all
-        kinds of documents.  If the set of constructs is too rich for
-        a particular application, the unused constructs can either be
-        removed from the parser (via application-specific overrides)
-        or simply omitted by convention.
+       reStructuredText takes the opposite approach: it provides a
+       rich set of implicit markup constructs (plus a generic
+       extension mechanism for explicit markup), allowing for all
+       kinds of documents.  If the set of constructs is too rich for a
+       particular application, the unused constructs can either be
+       removed from the parser (via application-specific overrides) or
+       simply omitted by convention.
 
-    Q3: Why not use indentation for section structure, like
-        StructuredText does?  Isn't it more "Pythonic"?
+    3. Why not use indentation for section structure, like
+       StructuredText does?  Isn't it more "Pythonic"?
 
-    A3: Guido van Rossum wrote the following in a 2001-06-13 Doc-SIG
-        post:
+       Guido van Rossum wrote the following in a 2001-06-13 Doc-SIG
+       post:
 
-            I still think that using indentation to indicate
-            sectioning is wrong.  If you look at how real books and
-            other print publications are laid out, you'll notice that
-            indentation is used frequently, but mostly at the
-            intra-section level.  Indentation can be used to offset
-            lists, tables, quotations, examples, and the like.  (The
-            argument that docstrings are different because they are
-            input for a text formatter is wrong: the whole point is
-            that they are also readable without processing.)
+           I still think that using indentation to indicate sectioning
+           is wrong.  If you look at how real books and other print
+           publications are laid out, you'll notice that indentation
+           is used frequently, but mostly at the intra-section level.
+           Indentation can be used to offset lists, tables,
+           quotations, examples, and the like.  (The argument that
+           docstrings are different because they are input for a text
+           formatter is wrong: the whole point is that they are also
+           readable without processing.)
 
-            I reject the argument that using indentation is Pythonic:
-            text is not code, and different traditions and conventions
-            hold.  People have been presenting text for readability
-            for over 30 centuries.  Let's not innovate needlessly.
+           I reject the argument that using indentation is Pythonic:
+           text is not code, and different traditions and conventions
+           hold.  People have been presenting text for readability for
+           over 30 centuries.  Let's not innovate needlessly.
 
-        See "Section Structure via Indentation" in "Problems With
-        StructuredText" [18 ]_ for further elaboration.
+       See "Section Structure via Indentation" in "Problems With
+       StructuredText" [18 ]_ for further elaboration.
 
-    Q4: Why use reStructuredText for PEPs?  What's wrong with the
-        existing standard?
+    4. Why use reStructuredText for PEPs?  What's wrong with the
+       existing standard?
 
-    A4: The existing standard for PEPs is very limited in terms of
-        general expressibility, and referencing is especially lacking
-        for such a reference-rich document type.  PEPs are currently
-        converted into HTML, but the results (mostly monospaced text)
-        are less than attractive, and most of the value-added
-        potential of HTML is untapped.
+       The existing standard for PEPs is very limited in terms of
+       general expressibility, and referencing is especially lacking
+       for such a reference-rich document type.  PEPs are currently
+       converted into HTML, but the results (mostly monospaced text)
+       are less than attractive, and most of the value-added potential
+       of HTML (especially inline hyperlinks) is untapped.
 
-        Making reStructuredText a standard markup for PEPs will enable
-        much richer expression, including support for section
-        structure, inline markup, graphics, and tables.  In several
-        PEPs there are ASCII graphics diagrams, which are all that
-        plaintext documents can support.  Since PEPs are made
-        available in HTML form, the ability to include proper diagrams
-        would be immediately useful.
+       Making reStructuredText a standard markup for PEPs will enable
+       much richer expression, including support for section
+       structure, inline markup, graphics, and tables.  In several
+       PEPs there are ASCII graphics diagrams, which are all that
+       plaintext documents can support.  Since PEPs are made available
+       in HTML form, the ability to include proper diagrams would be
+       immediately useful.
 
-        Current PEP practices allow for reference markers in the form
-        "[1]" in the text, and the footnotes/references themselves are
-        listed in a section toward the end of the document.  There is
-        currently no hyperlinking between the reference marker and the
-        footnote/reference itself (it would be possible to add this to
-        pep2html.py, but the "markup" as it stands is ambiguous and
-        mistakes would be inevitable).  A PEP with many references
-        (such as this one ;-) requires a lot of flipping back and
-        forth.  When revising a PEP, often new references are added or
-        unused references deleted.  It is painful to renumber the
-        references, since it has to be done in two places and can have
-        a cascading effect (insert a single new reference 1, and every
-        other reference has to be renumbered; always adding new
-        references to the end is suboptimal).  It is easy for
-        references to go out of sync.
+       Current PEP practices allow for reference markers in the form
+       "[1]" in the text, and the footnotes/references themselves are
+       listed in a section toward the end of the document.  There is
+       currently no hyperlinking between the reference marker and the
+       footnote/reference itself (it would be possible to add this to
+       pep2html.py, but the "markup" as it stands is ambiguous and
+       mistakes would be inevitable).  A PEP with many references
+       (such as this one ;-) requires a lot of flipping back and
+       forth.  When revising a PEP, often new references are added or
+       unused references deleted.  It is painful to renumber the
+       references, since it has to be done in two places and can have
+       a cascading effect (insert a single new reference 1, and every
+       other reference has to be renumbered; always adding new
+       references to the end is suboptimal).  It is easy for
+       references to go out of sync.
 
-        PEPs use references for two purposes: simple URL references
-        and footnotes.  reStructuredText differentiates between the
-        two.  A PEP might contain references like this::
+       PEPs use references for two purposes: simple URL references and
+       footnotes.  reStructuredText differentiates between the two.  A
+       PEP might contain references like this::
 
-            Abstract
+           Abstract
 
-                This PEP proposes adding frungible doodads [1] to the
-                core.  It extends PEP 9876 [2] via the BCA [3]
-                mechanism.
+               This PEP proposes adding frungible doodads [1] to the
+               core.  It extends PEP 9876 [2] via the BCA [3]
+               mechanism.
 
-            References and Footnotes
+           References and Footnotes
 
-                [1] http://www.example.org/
+               [1] http://www.example.org/
 
-                [2] PEP 9876, Let's Hope We Never Get Here
-                    http://www.python.org/peps/pep-9876.html
+               [2] PEP 9876, Let's Hope We Never Get Here
+                   http://www.python.org/peps/pep-9876.html
 
-                [3] "Bogus Complexity Addition"
+               [3] "Bogus Complexity Addition"
 
-        Reference 1 is a simple URL reference.  Reference 2 is a
-        footnote containing text and a URL.  Reference 3 is a footnote
-        containing text only.  Rewritten using reStructuredText, this
-        PEP could look like this::
+       Reference 1 is a simple URL reference.  Reference 2 is a
+       footnote containing text and a URL.  Reference 3 is a footnote
+       containing text only.  Rewritten using reStructuredText, this
+       PEP could look like this::
 
-            Abstract
-            ========
+           Abstract
+           ========
 
-            This PEP proposes adding `frungible doodads`_ to the
-            core.  It extends PEP 9876 [#pep9876]_ via the BCA [#]_
-            mechanism.
+           This PEP proposes adding `frungible doodads`_ to the core.
+           It extends PEP 9876 [#pep9876]_ via the BCA [#]_ mechanism.
 
-            .. _frungible doodads: http://www.example.org/
+           .. _frungible doodads: http://www.example.org/
 
-            .. [#pep9876] `PEP 9876`__, Let's Hope We Never Get Here
+           .. [#pep9876] `PEP 9876`__, Let's Hope We Never Get Here
 
-            __ http://www.python.org/peps/pep-9876.html
+           __ http://www.python.org/peps/pep-9876.html
 
-            .. [#] "Bogus Complexity Addition"
+           .. [#] "Bogus Complexity Addition"
 
-        URLs and footnotes can be defined close to their references if
-        desired, making them easier to read in the source text, and
-        making the PEPs easier to revise.  The "References and
-        Footnotes" section can be auto-generated with a document tree
-        transform.  Footnotes from throughout the PEP would be
-        gathered and displayed under a standard header.  If URL
-        references should likewise be written out explicitly (in
-        citation form), another tree transform could be used.
+       URLs and footnotes can be defined close to their references if
+       desired, making them easier to read in the source text, and
+       making the PEPs easier to revise.  The "References and
+       Footnotes" section can be auto-generated with a document tree
+       transform.  Footnotes from throughout the PEP would be gathered
+       and displayed under a standard header.  If URL references
+       should likewise be written out explicitly (in citation form),
+       another tree transform could be used.
 
-        URL references can be named ("frungible doodads"), and can be
-        referenced from multiple places in the document without
-        additional definitions.  When converted to HTML, references
-        will be replaced with inline hyperlinks (HTML <A> tags).  The
-        two footnotes are automatically numbered, so they will always
-        stay in sync.  The first footnote also contains an internal
-        reference name, "pep9876", so it's easier to see the
-        connection between reference and footnote in the source text.
-        Named footnotes can be referenced multiple times, maintaining
-        consistent numbering.
+       URL references can be named ("frungible doodads"), and can be
+       referenced from multiple places in the document without
+       additional definitions.  When converted to HTML, references
+       will be replaced with inline hyperlinks (HTML <A> tags).  The
+       two footnotes are automatically numbered, so they will always
+       stay in sync.  The first footnote also contains an internal
+       reference name, "pep9876", so it's easier to see the connection
+       between reference and footnote in the source text.  Named
+       footnotes can be referenced multiple times, maintaining
+       consistent numbering.
 
-        The "#pep9876" footnote could also be written in the form of a
-        citation::
+       The "#pep9876" footnote could also be written in the form of a
+       citation::
 
-            It extends PEP 9876 [PEP9876]_ ...
+           It extends PEP 9876 [PEP9876]_ ...
 
-            .. [PEP9876] `PEP 9876`_, Let's Hope We Never Get Here
+           .. [PEP9876] `PEP 9876`_, Let's Hope We Never Get Here
 
-        Footnotes are numbered, whereas citations use text for their
-        references.
+       Footnotes are numbered, whereas citations use text for their
+       references.
 
-    Q5: Wouldn't it be better to keep the docstring and PEP proposals
-        separate?
+    5. Wouldn't it be better to keep the docstring and PEP proposals
+       separate?
 
-    A5: The PEP markup proposal may be removed if it is deemed that
-        there is no need for PEP markup, or it could be made into a
-        separate PEP.  If accepted, PEP 1, PEP Purpose and Guidelines
-        [20]_, and PEP 9, Sample PEP Template [21]_ will be updated.
+       The PEP markup proposal may be removed if it is deemed that
+       there is no need for PEP markup, or it could be made into a
+       separate PEP.  If accepted, PEP 1, PEP Purpose and Guidelines
+       [20]_, and PEP 9, Sample PEP Template [21]_ will be updated.
 
-        It seems natural to adopt a single consistent markup standard
-        for all uses of structured plaintext in Python, and to propose
-        it all in one place.
+       It seems natural to adopt a single consistent markup standard
+       for all uses of structured plaintext in Python, and to propose
+       it all in one place.
 
-    Q6: The existing pep2html.py script converts the existing PEP
-        format to HTML.  How will the new-format PEPs be converted to
-        HTML?
+    6. The existing pep2html.py script converts the existing PEP
+       format to HTML.  How will the new-format PEPs be converted to
+       HTML?
 
-    A6: One of the deliverables of the Docutils project [22]_ will be
-        a new version of pep2html.py with integrated reStructuredText
-        parsing.  The Docutils project will support PEPs with a "PEP
-        Reader" component, including all functionality currently in
-        pep2html.py (auto-recognition of PEP & RFC references).
+       One of the deliverables of the Docutils project [22]_ will be a
+       new version of pep2html.py with integrated reStructuredText
+       parsing.  The Docutils project will support PEPs with a "PEP
+       Reader" component, including all functionality currently in
+       pep2html.py (auto-recognition of PEP & RFC references).
 
-    Q7: Who's going to convert the existing PEPs to reStructuredText?
+    7. Who's going to convert the existing PEPs to reStructuredText?
 
-    A7: PEP authors or volunteers may convert existing PEPs if they
-        like, but there is no requirement to do so.  The
-        reStructuredText-based PEPs will coexist with the old PEP
-        standard.  The pep2html.py mentioned in A6 will process both
-        old and new standards.
+       PEP authors or volunteers may convert existing PEPs if they
+       like, but there is no requirement to do so.  The
+       reStructuredText-based PEPs will coexist with the old PEP
+       standard.  The pep2html.py mentioned in answer 6 will process
+       both old and new standards.
 
-    Q8: Why use reStructuredText for README and other ancillary files?
+    8. Why use reStructuredText for README and other ancillary files?
 
-    A8: The reasoning given for PEPs in A4 above also applies to
-        README and other ancillary files.  By adopting a standard
-        markup, these files can be converted to attractive
-        cross-referenced HTML and put up on python.org.  Developers of
-        Python projects can also take advantage of this facility for
-        their own documentation.
+       The reasoning given for PEPs in answer 4 above also applies to
+       README and other ancillary files.  By adopting a standard
+       markup, these files can be converted to attractive
+       cross-referenced HTML and put up on python.org.  Developers of
+       Python projects can also take advantage of this facility for
+       their own documentation.
 
-    Q9: Won't the superficial similarity to existing markup
-        conventions cause problems, and result in people writing
-        invalid markup (and not noticing, because the plaintext looks
-        natural)?  How forgiving is reStructuredText of "not quite
-        right" markup?
+    9. Won't the superficial similarity to existing markup conventions
+       cause problems, and result in people writing invalid markup
+       (and not noticing, because the plaintext looks natural)?  How
+       forgiving is reStructuredText of "not quite right" markup?
 
-    A9: There will be some mis-steps, as there would be when moving
-        from one programming language to another.  As with any
-        language, proficiency grows with experience.  Luckily,
-        reStructuredText is a very little language indeed.
+       There will be some mis-steps, as there would be when moving
+       from one programming language to another.  As with any
+       language, proficiency grows with experience.  Luckily,
+       reStructuredText is a very little language indeed.
 
-        As with any syntax, there is the possibility of syntax errors.
-        It is expected that a user will run the processing system over
-        their input and check the output for correctness.
+       As with any syntax, there is the possibility of syntax errors.
+       It is expected that a user will run the processing system over
+       their input and check the output for correctness.
 
-        In a strict sense, the reStructuredText parser is very
-        unforgiving (as it should be; "In the face of ambiguity,
-        refuse the temptation to guess" [23]_ applies to parsing
-        markup as well as computer languages).  Here's a design goal
-        from "An Introduction to reStructuredText" [15 ]_:
+       In a strict sense, the reStructuredText parser is very
+       unforgiving (as it should be; "In the face of ambiguity, refuse
+       the temptation to guess" [23]_ applies to parsing markup as
+       well as computer languages).  Here's design goal 3 from "An
+       Introduction to reStructuredText" [15 ]_:
 
-            3. Unambiguous.  The rules for markup must not be open for
-               interpretation.  For any given input, there should be
-               one and only one possible output (including error
-               output).
+           Unambiguous.  The rules for markup must not be open for
+           interpretation.  For any given input, there should be one
+           and only one possible output (including error output).
 
-        While unforgiving, at the same time the parser does try to be
-        helpful by producing useful diagnostic output ("system
-        messages").  The parser reports problems, indicating their
-        level of severity (from least to most: debug, info, warning,
-        error, severe).  The user or the client software can decide on
-        reporting thresholds; they can ignore low-level problems or
-        cause high-level problems to bring processing to an immediate
-        halt.  Problems are reported during the parse as well as
-        included in the output, often with two-way links between the
-        source of the problem and the system message explaining it.
+       While unforgiving, at the same time the parser does try to be
+       helpful by producing useful diagnostic output ("system
+       messages").  The parser reports problems, indicating their
+       level of severity (from least to most: debug, info, warning,
+       error, severe).  The user or the client software can decide on
+       reporting thresholds; they can ignore low-level problems or
+       cause high-level problems to bring processing to an immediate
+       halt.  Problems are reported during the parse as well as
+       included in the output, often with two-way links between the
+       source of the problem and the system message explaining it.
 
-    Q10: Will the docstrings in the Python standard library modules be
-         converted to reStructuredText?
+    10. Will the docstrings in the Python standard library modules be
+        converted to reStructuredText?
 
-    A10: No.  Python's library reference documentation is maintained
-         separately from the source.  Docstrings in the Python
-         standard library should not try to duplicate the library
-         reference documentation.  The current policy for docstrings
-         in the Python standard library is that they should be no more
-         than concise hints.
+        No.  Python's library reference documentation is maintained
+        separately from the source.  Docstrings in the Python standard
+        library should not try to duplicate the library reference
+        documentation.  The current policy for docstrings in the
+        Python standard library is that they should be no more than
+        concise hints, simple and markup-free (although many *do*
+        contain ad-hoc implicit markup).
 
-    Q11: I want to write all my strings in Unicode.  Will anything
-         break?
+    11. I want to write all my strings in Unicode.  Will anything
+        break?
 
-    A11: The parser will fully support Unicode.  It may not yet, but
-         only because nobody's gotten around to implementing or
-         testing Unicode support.  Contributions are always welcome!
+        The parser will fully support Unicode.  It may not yet, but
+        only because nobody's gotten around to implementing or testing
+        Unicode support.  Contributions are always welcome!
 
-    Q12: Why does the community need a new structured text design?
-         What is wrong with existing markup methodologies?
+    12. Why does the community need a new structured text design?
 
-    A12: The existing structured text designs are deficient.
-         @@@
+        The existing structured text designs are deficient, for the
+        reasons given in "Rationale" above.
 
-         For Python docstrings, there is no official standard.
-         @@@
+    13. What is wrong with existing documentation methodologies?
+
+        What existing methodologies?  For Python docstrings, there is
+        **no** official standard markup format, let alone a
+        documentation methodology.  The question of methodology is at
+        a much higher level than syntax (what this PEP addresses),
+        potentially much more controversial and difficult to resolve,
+        and is intentionally left out of this discussion.
 
 
 References & Footnotes
