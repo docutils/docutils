@@ -16,7 +16,7 @@ import images
 from   dialogs              import *
 from   controls             import CustomStyledTextCtrl
 from   controls             import CustomTreeCtrl
-from   docutilsadapter      import rest2html
+from   docutilsadapter      import rest2html, get_errors
 from   docutils.utils       import relative_path
 from   urllib               import quote, unquote
 
@@ -349,16 +349,15 @@ class DocFactoryFrame(wxFrame):
                 dir = os.path.dirname(file)
             wxBeginBusyCursor()
             try:
+                self.log.Clear()
                 t = time.localtime(time.time())
                 st = time.strftime('%d-%b-%Y, %H:%M:%S: ', t)
                 wxLogMessage('%sProcessing %s.' % (st, file))
                 htmlfile = self.htmlfile(file)
-                warning_lines = []
-                error_lines = []
                 try:
-                    warning_lines, error_lines = rest2html(file,
-                                                           htmlfile, dir)
+                    rest2html(file, htmlfile, dir)
                 finally:
+                    warning_lines, error_lines = get_errors(self.log.GetValue())
                     linecount = self.editor.GetLineCount()
                     self.editor.MarkerDeleteAll(0)
                     self.editor.MarkerDeleteAll(1)
