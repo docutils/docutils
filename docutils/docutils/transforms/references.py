@@ -34,7 +34,7 @@ class SectionTargets(Transform):
         """Move "target" elements into the next title element if necessary."""
         assert isinstance(target, nodes.target)
         # Find next node which is not a target.
-        n = target.next_node(condition=self.possible_relocation_target)
+        n = target.next_node(self.possible_relocation_target, ascend=1)
         if isinstance(n, nodes.section):
             assert isinstance(n[0], nodes.title)
             target.parent.remove(target)
