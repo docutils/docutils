@@ -2386,6 +2386,138 @@ Issues:
       +------------------------++------------+----------+
 
 
+Index Entries & Indexes
+=======================
+
+Were I writing a book with an index, I guess I'd need two
+different kinds of index targets: inline/implicit and
+out-of-line/explicit.  For example::
+
+    In this `paragraph`:index:, several words are being
+    `marked`:index: inline as implicit `index`:index:
+    entries.
+
+    .. index:: markup
+    .. index:: syntax
+
+    The explicit index directives above would refer to
+    this paragraph.  It might also make sense to allow multiple
+    entries in an ``index`` directive:
+
+    .. index::
+        markup
+        syntax
+
+The words "paragraph", "marked", and "index" would become index
+entries pointing at the words in the first paragraph.  The index
+entry words appear verbatim in the text.  (Don't worry about the
+ugly ":index:" part; if indexing is the only/main application of
+interpreted text in your documents, it can be implicit and
+omitted.)  The two directives provide manual indexing, where the
+index entry words ("markup" and "syntax") do not appear in the
+main text.  We could combine the two directives into one::
+
+    .. index:: markup; syntax
+
+Semicolons instead of commas because commas could *be* part of the
+index target, like::
+
+    .. index:: van Rossum, Guido
+
+Another reason for index directives is because other inline markup
+wouldn't be possible within inline index targets.
+
+Sometimes index entries have multiple levels.  Given::
+
+    .. index:: statement syntax: expression statements
+
+In a hypothetical index, combined with other entries, it might
+look like this::
+
+    statement syntax
+        expression statements ..... 56
+        assignment ................ 57
+        simple statements ......... 58
+        compound statements ....... 60
+
+Inline multi-level index targets could be done too.  Perhaps
+something like::
+
+    When dealing with `expression statements <statement syntax:>`,
+    we must remember ...
+
+The opposite sense could also be possible::
+
+    When dealing with `index entries <:multi-level>`, there are
+    many permutations to consider.
+
+Also "see / see also" index entries.
+
+Given::
+
+    Here's a paragraph.
+
+    .. index:: paragraph
+
+(The "index" directive above actually targets the *preceding*
+object.)  The directive should produce something like this XML::
+
+    <paragraph>
+    <index_entry text="paragraph"/>
+    Here's a paragraph.
+    </paragraph>
+
+This kind of content model would also allow true inline
+index-entries::
+
+    Here's a `paragraph`:index:.
+
+If the "index" role were the default for the application, it could be
+dropped::
+
+    Here's a `paragraph`.
+
+Both of these would result in this XML::
+
+    <paragraph>
+    Here's a <index_entry>paragraph</index_entry>.
+    </paragraph>
+
+
+from 2002-06-24 docutils-develop posts
+--------------------------------------
+
+    If all of your index entries will appear verbatim in the text,
+    this should be sufficient.  If not (e.g., if you want "Van Rossum,
+    Guido" in the index but "Guido van Rossum" in the text), we'll
+    have to figure out a supplemental mechanism, perhaps using
+    substitutions.
+
+I've thought a bit more on this, and I came up with two possibilities:
+
+1. Using interpreted text, embed the index entry text within the
+   interpreted text::
+
+       ... by `Guido van Rossum [Van Rossum, Guido]` ...
+
+   The problem with this is obvious: the text becomes cluttered and
+   hard to read.  The processed output would drop the text in
+   brackets, which goes against the spirit of interpreted text.
+
+2. Use substitutions::
+
+       ... by |Guido van Rossum| ...
+
+       .. |Guido van Rossum| index:: Van Rossum, Guido
+
+   A problem with this is that each substitution definition must have
+   a unique name.  A subsequent ``.. |Guido van Rossum| index:: BDFL``
+   would be illegal.  Some kind of anonymous substitution definition
+   mechanism would be required, but I think that's going too far.
+
+Both of these alternatives are flawed.  Any other ideas?
+
+
 -------------------
  ... Or Not To Do?
 -------------------
