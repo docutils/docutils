@@ -21,25 +21,28 @@ and related projects:
     Aahz, David Abrahams, David Ascher, Heiko Baumann, Eric Bellot,
     Ian Bicking, Marek Blaha, Martin Blais, Fred Bremmer, Simon Budig,
     Bill Bumgarner, Brett Cannon, Greg Chapman, Nicolas Chauveau, Beni
-    Cherniavsky, Adam Chodorowski, Artur de Sousa Rocha, Jason
-    Diamond, William Dode, Fred Drake, Dethe Elza, Marcus Ertl, Benja
-    Fallenstein, fantasai, Stefane Fermigier, Jim Fulton, Peter Funk,
-    Dinu C. Gherman, Jorge Gonzalez, Engelbert Gruber, Simon Hefti,
-    Doug Hellmann, Juergen Hermann, Jannie Hofmeyr, Michael Hudson,
-    Marcelo Huerta San Martin, Ludger Humbert, Jeremy Hylton, Tony
-    Ibbs, Alan Jaffray, Dmitry Jemerov, Richard Jones, Andreas Jung,
-    Garth Kidd, Axel Kollmorgen, Kirill Lapshin, Nicola Larosa, Daniel
-    Larsson, Marc-Andre Lemburg, Julien Letessier, Wolfgang Lipp,
-    Edward Loper, Dallas Mahrt, Ken Manheimer, Bob Marshall, Vasko
+    Cherniavsky, Adam Chodorowski, Laura Creighton, Artur de Sousa
+    Rocha, Jason Diamond, William Dode, Fred Drake, Reggie Dugard,
+    Dethe Elza, Marcus Ertl, Benja Fallenstein, fantasai, Stefane
+    Fermigier, Jim Fulton, Peter Funk, Dinu C. Gherman, Matt Gilbert,
+    Jorge Gonzalez, Engelbert Gruber, Jacob Hallen, Simon Hefti, Doug
+    Hellmann, Juergen Hermann, Jannie Hofmeyr, Steve Holden, Michael
+    Hudson, Marcelo Huerta San Martin, Ludger Humbert, Jeremy Hylton,
+    Tony Ibbs, Alan Jaffray, Dmitry Jemerov, Richard Jones, Andreas
+    Jung, Garth Kidd, Axel Kollmorgen, Jeff Kowalczyk, Dave Kuhlman,
+    Lloyd Kvam, Kirill Lapshin, Nicola Larosa, Daniel Larsson,
+    Marc-Andre Lemburg, Julien Letessier, Wolfgang Lipp, Edward Loper,
+    Dallas Mahrt, Ken Manheimer, Bob Marshall, Mark McEahern, Vasko
     Miroslav, Skip Montanaro, Paul Moore, Nigel W. Moriarty, Mark
     Nodine, Patrick K. O'Brien, Michel Pelletier, Sam Penrose, Tim
     Peters, Pearu Peterson, Mark Pilgrim, Brett g Porter, David
-    Priest, Jens Quade, Andy Robinson, Tavis Rudd, Oliver Rutherfurd,
-    Kenichi Sato, Ueli Schlaepfer, Gunnar Schwant, Frank Siebenlist,
-    Bruce Smith, Darek Suchojad, Roman Suzi, tav, Kent Tenney, Bob
-    Tolbert, Paul Tremblay, Laurence Tratt, Adrian van den Dries,
-    Guido van Rossum, Paul Viren, Martin von Loewis, Greg Ward, Barry
-    Warsaw, Edward Welbourne, Ka-Ping Yee, Moshe Zadka
+    Priest, Jens Quade, Andy Robinson, Tavis Rudd, Tracy Ruggles,
+    Oliver Rutherfurd, Kenichi Sato, Ueli Schlaepfer, Gunnar Schwant,
+    Bill Sconce, Frank Siebenlist, Bruce Smith, Darek Suchojad, Roman
+    Suzi, tav, Kent Tenney, Bob Tolbert, Paul Tremblay, Laurence
+    Tratt, Adrian van den Dries, Guido van Rossum, Paul Viren, Martin
+    von Loewis, Greg Ward, Barry Warsaw, Edward Welbourne, Ka-Ping
+    Yee, Moshe Zadka
 
 Thank you!
 
@@ -191,7 +194,7 @@ Changes Since 0.3
 
   - The "contents" directive does more work up-front, creating the
     "topic" and "title", and leaving the "pending" node for the
-    transform.
+    transform.  Allows earlier reference resolution; fixes subtle bug.
 
 * docutils/parsers/rst/languages/af.py: Added to project; Afrikaans
   mappings by Jannie Hofmeyr.
@@ -209,7 +212,7 @@ Changes Since 0.3
 
   - The "contents" directive does more work up-front, creating the
     "topic" and "title", and leaving the "pending" node for the
-    transform.
+    transform.  Allows earlier reference resolution; fixes subtle bug.
   - Added support for disabling of section numbering.
     
 * docutils/transforms/references.py:
@@ -274,9 +277,11 @@ Changes Since 0.3
 
 * test/DocutilsTestSupport.py:
 
-  - Added HtmlWriterPublishTestCase and HtmlFragmentTestSuite classes to
-    test the processing of HTML fragments which use the new publish_parts
-    convenience function.
+  - Refactored LaTeX publisher test suite/case class names to make
+    testing other writers easier.
+  - Added HtmlWriterPublishTestCase and HtmlFragmentTestSuite classes
+    to test the processing of HTML fragments which use the new
+    publish_parts convenience function.
 
 * tools/buildhtml.py:
 
