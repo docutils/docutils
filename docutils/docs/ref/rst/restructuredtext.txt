@@ -443,8 +443,9 @@ Specifically, there is no way to indicate a document title and
 subtitle explicitly in reStructuredText.  Instead, a lone top-level
 section title (see Sections_ below) can be treated as the document
 title.  Similarly, a lone second-level section title immediately after
-the "document title" can become the document subtitle.  See the
-`DocTitle transform`_ for details.
+the "document title" can become the document subtitle.  The rest of
+the sections are than lifted up a level or two.  See the `DocTitle
+transform`_ for details.
 
 
 Sections
