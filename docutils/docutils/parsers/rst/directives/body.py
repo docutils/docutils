@@ -6,6 +6,8 @@
 
 """
 Directives for additional body elements.
+
+See `docutils.parsers.rst.directives` for API details.
 """
 
 __docformat__ = 'reStructuredText'
