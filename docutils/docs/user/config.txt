@@ -370,7 +370,7 @@ _`doctitle_xform`
     to document title (and subsequent section title to document
     subtitle promotion; docutils.transforms.frontmatter.DocTitle).
 
-    Default: enabled ().  Options: ``--no-doc-title``.
+    Default: enabled (1).  Options: ``--no-doc-title``.
 
 
 [pep reader]
@@ -463,6 +463,12 @@ footnote_references
     ``--footnote-references``.
 
     __ `footnote_references [latex2e writer]`_
+
+_`initial_header_level`
+    The initial level for header elements.  This does not affect the
+    document title & subtitle; see doctitle_xform_.
+
+    Default: 1 (for "<h1>").  Option: ``--initial-header-level``.
 
 .. _stylesheet [html4css1 writer]:
 
