@@ -1365,9 +1365,9 @@ elements.
   worked out though.  Syntax idea from Jeffrey C. Jacobs.
 
   The example above would implement the "rewrite" role as adding a
-  ``class="rewrite"`` attribute to the interpreted text.  The
-  stylesheet would then pick up on the "class" attribute to do the
-  actual formatting.
+  ``class="rewrite"`` attribute to the interpreted text ("inline"
+  element).  The stylesheet would then pick up on the "class"
+  attribute to do the actual formatting.
 
   The same thing could be done with a directive, albeit a bit more
   verbosely::
@@ -1377,24 +1377,6 @@ elements.
 
   The advantage of the new syntax would be flexibility.  Uses other
   than "class" may present themselves.
-
-  But what's the doctree element?  Shall we introduce an arbitrary
-  <span>-like element?  Put "interpreted" back for such purposes?  I
-  currently like "phrase".  "inline" may be better.  But:
-
-      ...my penny on <span>: I think <span> is inherently evil. More
-      than enough I learned to hate <span> because some HTML pages are
-      full of it and it is a pain to translate them to a useful
-      format.
-
-      I think <span> is an indication that you don't have a concept
-      for what you want to express. <span> is totally unrelated to the
-      *real* structure of the information and introduces more or less
-      a new language. I think this should be prevented.
-
-      -- Stefan Merten
-
-  Lesser of two evils?
 
 * Add new syntax for _`nested inline markup`?  From a proposal by Paul
   Tremblay::
