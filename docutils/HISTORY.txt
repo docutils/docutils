@@ -35,10 +35,11 @@ and related projects:
     K. O'Brien, Michel Pelletier, Sam Penrose, Tim Peters, Pearu
     Peterson, Mark Pilgrim, Brett g Porter, David Priest, Jens Quade,
     Andy Robinson, Tavis Rudd, Oliver Rutherfurd, Kenichi Sato, Ueli
-    Schlaepfer, Gunnar Schwant, Bruce Smith, Roman Suzi, tav, Kent
-    Tenney, Bob Tolbert, Paul Tremblay, Laurence Tratt, Adrian van den
-    Dries, Guido van Rossum, Paul Viren, Martin von Loewis, Greg Ward,
-    Barry Warsaw, Edward Welbourne, Ka-Ping Yee, Moshe Zadka
+    Schlaepfer, Gunnar Schwant, Frank Siebenlist, Bruce Smith, Roman
+    Suzi, tav, Kent Tenney, Bob Tolbert, Paul Tremblay, Laurence
+    Tratt, Adrian van den Dries, Guido van Rossum, Paul Viren, Martin
+    von Loewis, Greg Ward, Barry Warsaw, Edward Welbourne, Ka-Ping
+    Yee, Moshe Zadka
 
 Thank you!
 
@@ -141,6 +142,8 @@ Changes Since 0.3
   - Fixed off-by-1 error with extra whitespace after substitution
     definition directive.
   - Added inline markup parsing to field lists' field names.
+  - Added support for quoted (and unindented) literal blocks.
+    Driven in part by a bribe from Frank Siebenlist (thanks!).
 
 * docutils/parsers/rst/tableparser.py:
 
@@ -192,6 +195,7 @@ Changes Since 0.3
 
   - Added description of support for <angle-bracketed> complex option
     arguments to option lists.
+  - Added subsections for indented and quoted literal blocks.
 
 * test: Continually adding & updating tests.
 
@@ -614,7 +618,7 @@ Specific:
   - Added the ``TargetNotes`` PEP-specific transform.
   - Added ``TargetNotes.cleanup_callback``.
   - Added title check to ``Headers``.
-  
+
 * docutils/transforms/references.py:
 
   - Added the ``TargetNotes`` generic transform.
@@ -685,7 +689,7 @@ Specific:
   - Double quotes in literal blocks (special treatment for de/ngerman).
   - Added '--hyperlink-color' option ('0' turns off coloring of links).
   - Added  "--attribution" option.
-  - Right align attributions. 
+  - Right align attributions.
 
 * docutils/writers/pep_html.py:
 
