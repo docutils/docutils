@@ -2046,7 +2046,7 @@ class ImportName(Name):
 # ----------------------------------------------------------------------
 def test_parse_module(filename):
     print "Reading file %s"%filename
-    return Module(filename,verbose=1)
+    return Module(filename,debug=0)
 
 def test_show_ast(thing):
     print
@@ -2067,8 +2067,8 @@ def test():
         return
     filename = sys.argv[1]
     thing = test_parse_module(filename)
-    #test_show_ast(thing)
-    #test_show_scopes(thing)
+    test_show_ast(thing)
+    test_show_scopes(thing)
 
 if __name__ == "__main__":
     test()

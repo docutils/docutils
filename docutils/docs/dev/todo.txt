@@ -298,7 +298,9 @@ General
   Engelbert Gruber.)
 
 * Should I/O objects be passed simple encoding name strings instead of
-  a full-blown settings object?
+  a full-blown settings object?  Yes.
+  
+  @@@ Remove "settings" parameters before next release.
 
 
 Documentation
