@@ -37,7 +37,7 @@ class Writer(writers.Writer):
           'separated by commas.  Default is "10pt".',
           ['--documentoptions'],
           {'default': '10pt', }),
-         ('Use LaTeX footnotes. '
+         ('Use LaTeX footnotes. LaTeX supports only numbered footnotes (does it?). '
           'Default: no, uses figures.',
           ['--use-latex-footnotes'],
           {'default': 0, 'action': 'store_true',
@@ -750,6 +750,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # HACK: insert a blank before the newline, to avoid
             # ! LaTeX Error: There's no line here to end.
             text = text.replace("\n", '~\\\\\n')
+            # HACK: lines starting with "[" or "]" give errors.
         elif self.mbox_newline:
             if self.literal_block:
                 closings = "}" * len(self.literal_block_stack)
@@ -879,10 +880,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_citation(self, node):
-        self.visit_footnote(node)
+        # TODO maybe use cite bibitems
+        self.body.append('\\begin{figure}[b]')
+        self.body.append('\\hypertarget{%s}' % node['id'])
 
     def depart_citation(self, node):
-        self.depart_footnote(node)
+        self.body.append('\\end{figure}\n')
 
     def visit_title_reference(self, node):
         self.body.append( '\\titlereference{' )
@@ -1237,7 +1240,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             num,text = node.astext().split(None,1)
             num = self.encode(num.strip())
             self.body.append('\\footnotetext['+num+']')
-            self.body.append('{'+self.encode(text)+'}')
+            self.body.append('{'+self.encode(text)+'}\n')
             raise nodes.SkipNode
         else:
             self.body.append('\\begin{figure}[b]')
