@@ -33,7 +33,7 @@ class Writer(writers.Writer):
           ['--documentclass'],
           {'default': 'article', }),
          ('Format for footnote references: one of "superscript" or '
-          '"brackets".  Default is "superscript".',
+          '"brackets".  Default is "brackets".',
           ['--footnote-references'],
           {'choices': ['superscript', 'brackets'], 'default': 'brackets',
            'metavar': '<FORMAT>'}),
