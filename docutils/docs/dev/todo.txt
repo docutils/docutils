@@ -136,6 +136,10 @@ reStructuredText Parser
   - issue a warning when processing documents with no default role
     which contain interpreted text with no explicitly specified role
 
+- Perhaps the "default default" role for interpreted text could be
+  "title", as in, "title of a book".  It'd be a text-only reference,
+  no hyperlink.  Idea from Aahz' 2002-05-09 Doc-SIG post.
+
 - @@ Fix the parser's indentation handling to conform with the
   stricter definition in the spec.  (Explicit markup blocks should be
   strict or forgiving?)
@@ -402,11 +406,20 @@ Project Policies
 Coding Conventions
 ------------------
 
+These are the conventions I use in my own code.  Contributed code will
+not be refused merely because it does not strictly adhere to these
+conditions; as long as it's internally consistent, clean, and correct,
+it probably will be accepted.  But don't be surprised if the
+"offending" code gets fiddled over time to conform to these
+conventions.
+
 The Docutils project shall follow the generic coding conventions as
 specified in the `Style Guide for Python Code`__ and `Docstring
-Conventions`__ PEPs, with the following clarifications:
+Conventions`__ PEPs, with the following clarifications (from most to
+least important):
 
-- 4 spaces per indentation level.  No tabs.
+- 4 spaces per indentation level.  No tabs.  Indent continuation lines
+  according to the Emacs' python-mode standard.
 
 - No one-liner compound statements (i.e., no ``if x: return``: use two
   lines & indentation), except for degenerate class or method
@@ -418,11 +431,12 @@ Conventions`__ PEPs, with the following clarifications:
   docutils.nodes).
 
 - Use "lowercase" or "lowercase_with_underscores" for function,
-  method, and variable names.  For short names, maximum two joined
-  words, use lowercase (e.g. "tagname").  For long names with three or
-  more joined words, or where it's hard to parse the split between two
-  words, use lowercase_with_underscores (e.g., "note_explicit_target",
-  "explicit_target").  If in doubt, use underscores.
+  method, and variable names.  For short names, maximum two words,
+  joined lowercase may be used (e.g. "tagname").  For long names with
+  three or more words, or where it's hard to parse the split between
+  two words, use lowercase_with_underscores (e.g.,
+  "note_explicit_target", "explicit_target").  If in doubt, use
+  underscores.
 
 - Use 'single quotes' for string literals, and """triple double
   quotes""" for docstrings.

@@ -133,6 +133,7 @@ Specific:
 
   - Clarified field list usage.
   - Updated enumerated list description.
+  - Clarified purpose of directives.
 
 * spec/rst/alternatives.txt: Expanded auto-enumerated list idea;
   thanks to Fred Bremmer.
