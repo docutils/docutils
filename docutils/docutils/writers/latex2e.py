@@ -741,6 +741,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         text = text.replace("%", '{\\%}')
         text = text.replace("#", '{\\#}')
         text = text.replace("~", '{\\textasciitilde}')
+        text = text.replace("[", '{}[')
+        text = text.replace("]", '{}]')
         if self.literal_block or self.literal:
             # pdflatex does not produce doublequotes for ngerman.
             text = self.babel.double_quotes_in_tt(text)
