@@ -468,6 +468,14 @@ error_encoding_error_handler
     otherwise.  Options: ``--error-encoding-error-handler,
     --error-encoding, -e``.
 
+exit_level
+    A system message level threshold; non-halting system messages at
+    or above this level will produce a non-zero exit status at normal
+    exit.  Exit status is the maximum system message level plus 10 (11
+    for INFO, etc.).
+
+    Default: disabled (5).  Options: ``--exit``.
+
 expose_internals
     List of internal attribues to expose as external attributes (with
     "internal:" namespace prefix).
