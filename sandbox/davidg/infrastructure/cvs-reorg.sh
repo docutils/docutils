@@ -43,12 +43,12 @@ mkdir -v /cvsroot/docutils/docutils/docs/peps/
 echo
 echo 'Move entire subdirectories...'
 
-mv -v /cvsroot/docutils/docutils/docs/rst \
-      /cvsroot/docutils/docutils/docs/user/rst
+mv -iv /cvsroot/docutils/docutils/docs/rst \
+       /cvsroot/docutils/docutils/docs/user/rst
 
 # for component-developers and core-developers
-mv -v /cvsroot/docutils/docutils/spec/howto \
-      /cvsroot/docutils/docutils/docs/howto
+mv -iv /cvsroot/docutils/docutils/spec/howto \
+       /cvsroot/docutils/docutils/docs/howto
 
 ############################################################
 
@@ -57,48 +57,48 @@ echo 'Move (& rename) individual files...'
 
 # All file names have to end with ",v"; this is the CVS repository!
 
-mv -v /cvsroot/docutils/docutils/docs/config.txt,v \
-      /cvsroot/docutils/docutils/docs/user/
-mv -v /cvsroot/docutils/docutils/docs/latex.txt,v \
-      /cvsroot/docutils/docutils/docs/user/
-mv -v /cvsroot/docutils/docutils/docs/tools.txt,v \
-      /cvsroot/docutils/docutils/docs/user/
+mv -iv /cvsroot/docutils/docutils/docs/config.txt,v \
+       /cvsroot/docutils/docutils/docs/user/
+mv -iv /cvsroot/docutils/docutils/docs/latex.txt,v \
+       /cvsroot/docutils/docutils/docs/user/
+mv -iv /cvsroot/docutils/docutils/docs/tools.txt,v \
+       /cvsroot/docutils/docutils/docs/user/
 
-mv -v /cvsroot/docutils/docutils/spec/pysource.dtd,v \
-      /cvsroot/docutils/docutils/docs/dev/
-mv -v /cvsroot/docutils/docutils/spec/pysource.txt,v \
-      /cvsroot/docutils/docutils/docs/dev/
-mv -v /cvsroot/docutils/docutils/spec/semantics.txt,v \
-      /cvsroot/docutils/docutils/docs/dev/
-mv -v /cvsroot/docutils/docutils/spec/notes.txt,v \
-      /cvsroot/docutils/docutils/docs/dev/todo.txt,v # rename
+mv -iv /cvsroot/docutils/docutils/spec/pysource.dtd,v \
+       /cvsroot/docutils/docutils/docs/dev/
+mv -iv /cvsroot/docutils/docutils/spec/pysource.txt,v \
+       /cvsroot/docutils/docutils/docs/dev/
+mv -iv /cvsroot/docutils/docutils/spec/semantics.txt,v \
+       /cvsroot/docutils/docutils/docs/dev/
+mv -iv /cvsroot/docutils/docutils/spec/notes.txt,v \
+       /cvsroot/docutils/docutils/docs/dev/todo.txt,v # rename
 
-mv -v /cvsroot/docutils/docutils/spec/doctree.txt,v \
-      /cvsroot/docutils/docutils/docs/ref/
-mv -v /cvsroot/docutils/docutils/spec/docutils.dtd,v \
-      /cvsroot/docutils/docutils/docs/ref/
-mv -v /cvsroot/docutils/docutils/spec/soextblx.dtd,v \
-      /cvsroot/docutils/docutils/docs/ref/
+mv -iv /cvsroot/docutils/docutils/spec/doctree.txt,v \
+       /cvsroot/docutils/docutils/docs/ref/
+mv -iv /cvsroot/docutils/docutils/spec/docutils.dtd,v \
+       /cvsroot/docutils/docutils/docs/ref/
+mv -iv /cvsroot/docutils/docutils/spec/soextblx.dtd,v \
+       /cvsroot/docutils/docutils/docs/ref/
 
-mv -v /cvsroot/docutils/docutils/spec/transforms.txt,v \
-      /cvsroot/docutils/docutils/docs/ref/
+mv -iv /cvsroot/docutils/docutils/spec/transforms.txt,v \
+       /cvsroot/docutils/docutils/docs/ref/
 
-mv -v /cvsroot/docutils/docutils/spec/rst/alternatives.txt,v \
-      /cvsroot/docutils/docutils/docs/dev/rst/
-mv -v /cvsroot/docutils/docutils/spec/rst/problems.txt,v \
-      /cvsroot/docutils/docutils/docs/dev/rst/
+mv -iv /cvsroot/docutils/docutils/spec/rst/alternatives.txt,v \
+       /cvsroot/docutils/docutils/docs/dev/rst/
+mv -iv /cvsroot/docutils/docutils/spec/rst/problems.txt,v \
+       /cvsroot/docutils/docutils/docs/dev/rst/
 
-mv -v /cvsroot/docutils/docutils/spec/rst/reStructuredText.txt,v \
-      /cvsroot/docutils/docutils/docs/ref/rst/restructuredtext.txt,v # rename
-mv -v /cvsroot/docutils/docutils/spec/rst/directives.txt,v \
-      /cvsroot/docutils/docutils/docs/ref/rst/
-mv -v /cvsroot/docutils/docutils/spec/rst/interpreted.txt,v \
-      /cvsroot/docutils/docutils/docs/ref/rst/roles.txt,v # rename
-mv -v /cvsroot/docutils/docutils/spec/rst/introduction.txt,v \
-      /cvsroot/docutils/docutils/docs/ref/rst/
+mv -iv /cvsroot/docutils/docutils/spec/rst/reStructuredText.txt,v \
+       /cvsroot/docutils/docutils/docs/ref/rst/restructuredtext.txt,v # rename
+mv -iv /cvsroot/docutils/docutils/spec/rst/directives.txt,v \
+       /cvsroot/docutils/docutils/docs/ref/rst/
+mv -iv /cvsroot/docutils/docutils/spec/rst/interpreted.txt,v \
+       /cvsroot/docutils/docutils/docs/ref/rst/roles.txt,v # rename
+mv -iv /cvsroot/docutils/docutils/spec/rst/introduction.txt,v \
+       /cvsroot/docutils/docutils/docs/ref/rst/
 
-mv -v /cvsroot/docutils/docutils/spec/pep-????.txt,v \
-      /cvsroot/docutils/docutils/docs/peps/
+mv -iv /cvsroot/docutils/docutils/spec/pep-????.txt,v \
+       /cvsroot/docutils/docutils/docs/peps/
 
 ############################################################
 
