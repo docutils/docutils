@@ -14,6 +14,21 @@ originate with StructuredText or Setext, please see `Problems With
 StructuredText`_.  See the `reStructuredText Markup Specification`_
 for full details of the established syntax.
 
+The ideas are divided into sections:
+
+* Implemented_: already done.  The issues and alternatives are
+  recorded here for posterity.
+
+* `Not Implemented`_: these ideas won't be implemented.
+
+* Tabled_: these ideas should be revisited in the future.
+
+* `To Do`_: these ideas should be implemented.  They're just waiting
+  for a champion to resolve issues and get them done.
+
+* `... Or Not To Do?`_: possible but questionable.  These probably
+  won't be implemented, but you never know.
+
 .. _Setext: http://docutils.sourceforge.net/mirror/setext.html
 .. _StructuredText:
    http://dev.zope.org/Members/jim/StructuredTextWiki/FrontPage
