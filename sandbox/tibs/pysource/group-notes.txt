@@ -210,7 +210,7 @@ References
    21 September 2001 04:31, "Re: [Doc-SIG] DPS components".
 
 .. [#style] Hmm - maybe "style" should be "role", to match
-   with the way that a :role:`of something` gets handled...
+   with the way that a ``:role:`of something``` gets handled...
 
 .. [#pydps] Normally to be found at
    http://www.tibsnjoan.co.uk/reST/pydps.tgz,
