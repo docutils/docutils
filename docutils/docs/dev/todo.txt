@@ -414,6 +414,17 @@ Miscellaneous ideas:
 
   .. _additional docstrings: pep-0258.html#additional-docstrings
 
+* HappyDoc uses an initial comment block to set "parser configuration
+  values".  Do the same thing for Docutils, to set runtime settings on
+  a per-module basis?  I.e.::
+
+      # Docutils:setting=value
+
+  Could be used to turn on/off function parameter comment recognition
+  & other marginal features.  Could be used as a general mechanism to
+  augment config files and command-line options (but which takes
+  precedence?).
+
 * Multi-file output should be divisible at arbitrary level.
 
 * Support all forms of ``import`` statements:
@@ -506,6 +517,13 @@ __ rst/alternatives.html#or-not-to-do
 * Tony says inline markup rule 7 could do with a *little* more
   exposition in the spec, to make clear what is going on for people
   with head colds.
+
+* @@@ Add interpreted text support code.
+
+  Ideally and eventually, the "interpreted" element will disappear
+  from the Docutils doctree.  In its place will be a customizable set
+  of inline elements including "acronym" and "index_entry", directly
+  created by the parser.
 
 * Alan Jaffray suggested (and I agree) that it would be sensible to:
 
@@ -1013,6 +1031,15 @@ and added as a special final section, "Docutils System Messages".
 Docutils could be made to generate hyperlinks to all known
 system_messages and add them to the document, perhaps to the end of
 the "Docutils System Messages" section.
+
+
+Filtering System Messages
+`````````````````````````
+
+Currently the Writer is responsible for filtering out system messages
+that are below the current threshold.  Should the filtering be in a
+separate transform?  It would then happen regardless of the writer
+used.  Perhaps some writers don't want system messages filtered?
 
 
 Others
