@@ -1119,7 +1119,7 @@ when used in a document.
 
   - _`misc.include`:
 
-    - @@@ Allow whitespace in paths (just not at line boundaries).
+    - @@@ Allow _`whitespace in paths` (just not at line boundaries).
 
     - "encoding" option?  Take default from runtime settings.  Use
       Input component to read it in?
@@ -1159,15 +1159,15 @@ when used in a document.
       Instead of C-include "<syntax>", perhaps a new "include-sys"
       directive?
 
+    - Add support for inclusion by URL::
+
+          .. include:: 
+             :url: http://www.example.org/inclusion.txt
+
   - _`misc.raw`: "encoding" option?
 
   - _`misc.class`: @@@ Allow multiple classes (whitespace-separated)
     to be declared.
-
-  - _`misc.include`: Add support for inclusion by URL::
-
-        .. include:: 
-           :url: http://www.example.org/inclusion.txt
 
   - Allow the _`:trim:` option for all directives when they occur in a
     substitution definition, not only the unicode_ directive.
@@ -1664,9 +1664,10 @@ HTML Writer
 
 * Test with modern browsers if it's possible to remove the "name"
   attributes, which currently serve only for backwards-compatibility
-  to browsers which aren't XHTML compliant.
+  to browsers which aren't XHTML compliant.  For a starting point, see
+  http://www.python.org/dev/doc/idtest.html.
 
-  If all browsers support the "id" attribute, remove the "name"
+  If enough browsers support the "id" attribute, remove the "name"
   attributes.
 
 * Add more support for <link> elements, especially for navigation
