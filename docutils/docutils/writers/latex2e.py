@@ -1762,6 +1762,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_title(self, node):
         """Only 3 section levels are supported by LaTeX article (AFAIR)."""
 
+        self.body.append(type(node.parent))
         if isinstance(node.parent, nodes.topic):
             # section titles before the table of contents.
             self.bookmark(node)
@@ -1770,7 +1771,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('\\subsection*{~\\hfill ')
             # the closing brace for subsection.
             self.context.append('\\hfill ~}\n')
-        elif isinstance(node.parent, nodes.sidebar):
+        # TODO: for admonition titles before the first section
+        # either specify every possible node or ... ?
+        elif isinstance(node.parent, nodes.sidebar) \
+        or isinstance(node.parent, nodes.admonition):
             self.body.append('\\textbf{\\large ')
             self.context.append('}\n\\smallskip\n')
         elif isinstance(node.parent, nodes.table):
