@@ -1721,6 +1721,8 @@ There are several possibilities for the implementation:
 
 Solution 3 was chosen for incorporation into the document tree model.
 
+.. _HTML: http://www.w3.org/MarkUp/
+
 
 ..
    Local Variables:
