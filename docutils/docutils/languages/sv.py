@@ -40,6 +40,7 @@ labels = {
 """Mapping of node class name to label text."""
 
 bibliographic_fields = {
+    # 'Author' and 'Authors' identical in Swedish; assume the plural:
     u'f\u00f6rfattare': nodes.authors,
     u'organisation':    nodes.organization,
     u'adress':          nodes.address,
