@@ -116,7 +116,7 @@ intervening blank lines.  If there are multiple lines in the link
 block, they are stripped of leading and trailing whitespace and joined
 together.
 
-Optionally, the image link block may end with a flat field list, the
+Optionally, the image link block may contain a flat field list, the
 _`image options`.  For example::
 
     .. image:: picture.jpeg
@@ -162,7 +162,7 @@ Figure
 :Directive Type: "figure"
 :DTD Elements: figure, image, caption, legend
 :Directive Arguments: One, required (image URI).
-:Directive Options: Possible; same as those of the `image`_ directive.
+:Directive Options: Possible.
 :Directive Content: Interpreted as the figure caption and an optional
                     legend.
 
@@ -193,6 +193,27 @@ optional caption (a single paragraph), and an optional legend
 There must be blank lines before the caption paragraph and before the
 legend.  To specify a legend without a caption, use an empty comment
 ("..") in place of the caption.
+
+The "figure" directive supports all of the options of the "image"
+directive (see `image options`_ above).  In addition, the following
+option is recognized:
+
+``figwidth`` : integer or "image"
+    The width of the figure in pixels, to limit the horizontal space
+    used.  A special value of "image" is allowed, in which case the
+    included image's actual width is used (requires PIL_ [#]_).  If the
+    image file is not found or the required software is unavailable,
+    this option is ignored.
+
+    Sets the "width" attribute of the "figure" DTD element.
+
+    This option does not scale the included image; use the "width"
+    `image`_ option for that.
+
+.. [#] `Python Imaging Library`__.
+
+.. _PIL:
+__ http://www.pythonware.com/products/pil/
 
 
 ---------------

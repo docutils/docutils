@@ -722,6 +722,9 @@ when used in a document.
   - _`images.figure`: "title" and "number", to indicate a formal
     figure?
 
+    "figure-width" to constrain the width to actual width of the
+    image.  Would require PIL.
+
   - _`parts.sectnum`: "local"?, "start", "refnum"
 
     A "local" option could enable numbering for sections from a

@@ -15,6 +15,10 @@ import sys
 from docutils import nodes, utils
 from docutils.parsers.rst import directives
 
+try:
+    import Image                        # PIL
+except ImportError:
+    Image = None
 
 align_values = ('top', 'middle', 'bottom', 'left', 'center', 'right')
 
@@ -42,11 +46,24 @@ image.options = {'alt': directives.unchanged,
 
 def figure(name, arguments, options, content, lineno,
            content_offset, block_text, state, state_machine):
+    figwidth = options.setdefault('figwidth')
+    del options['figwidth']
     (image_node,) = image(name, arguments, options, content, lineno,
                          content_offset, block_text, state, state_machine)
     if isinstance(image_node, nodes.system_message):
         return [image_node]
     figure_node = nodes.figure('', image_node)
+    if figwidth == 'image':
+        if Image:
+            # PIL doesn't like Unicode paths:
+            try:
+                i = Image.open(str(image_node['uri']))
+            except (IOError, UnicodeError):
+                pass
+            else:
+                figure_node['width'] = i.size[0]
+    elif figwidth is not None:
+        figure_node['width'] = figwidth
     if content:
         node = nodes.Element()          # anonymous container for parsing
         state.nested_parse(content, content_offset, node)
@@ -65,6 +82,13 @@ def figure(name, arguments, options, content, lineno,
             figure_node += nodes.legend('', *node[1:])
     return [figure_node]
 
+def figwidth_value(argument):
+    if argument.lower() == 'image':
+        return 'image'
+    else:
+        return directives.nonnegative_int(argument)
+
 figure.arguments = (1, 0, 1)
-figure.options = image.options
+figure.options = {'figwidth': figwidth_value}
+figure.options.update(image.options)
 figure.content = 1

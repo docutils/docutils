@@ -606,7 +606,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append(self.context.pop())
 
     def visit_figure(self, node):
-        self.body.append(self.starttag(node, 'div', CLASS='figure'))
+        atts = {'class': 'figure'}
+        if node.get('width'):
+            atts['style'] = 'width: %spx' % node['width']
+        self.body.append(self.starttag(node, 'div', **atts))
 
     def depart_figure(self, node):
         self.body.append('</div>\n')

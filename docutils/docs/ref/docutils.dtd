@@ -436,7 +436,9 @@ or " ") or the text between option arguments (typically either "," or
 <!ATTLIST pending %basic.atts;>
 
 <!ELEMENT figure (image, ((caption, legend?) | legend)) >
-<!ATTLIST figure %basic.atts;>
+<!ATTLIST figure
+    %basic.atts;
+    width     %number;  #IMPLIED>
 
 <!-- Also an inline element. -->
 <!ELEMENT image EMPTY>
