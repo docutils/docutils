@@ -116,6 +116,19 @@ Notes on LaTeX
      sec_unit section, subsection , ...
      entry the line::
         \numberline text pagenumber
+  X. latex does not support multiple tocs in one document.
+     (might be no limitation except for docutils documenttation)
+
+* sectioning::
+    \part
+    \chapter (report style only) 
+    \section
+    \subsection
+    \subsubsection
+    \paragraph
+    \subparagraph
+    \subsubparagraph (milstd and book-form styles only) 
+    \subsubsubparagraph (milstd and book-form styles only)
 
 """    
 
@@ -141,7 +154,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     # use latex tableofcontents or let docutils do it.
     # BUG: not tested.
-    latex_toc = 1
+    latex_toc = 0
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
@@ -157,16 +170,22 @@ class LaTeXTranslator(nodes.NodeVisitor):
               '\\usepackage{babel}\n',     # language is in documents options.
               '\\usepackage{shortvrb}\n',  # allows verb in footnotes.
               self.encoding,
-              self.geometry % (self.d_paper, self.d_margins),
-              self.fonts % "palatino",
               '\\usepackage{graphicx}\n',
               '\\usepackage{color}\n',
               '\\usepackage{multirow}\n',
               self.linking,
               self.stylesheet % "style.tex",
-              # language for hyphenation , usepackage[]{babel}
+              # geometry and fonts might go into style.tex.
+              self.geometry % (self.d_paper, self.d_margins),
+              self.fonts % "palatino",
+              #
               self.generator,
                             ]
+        if self.linking: # and maybe check for pdf
+            self.pdfinfo = [ ]
+            # pdftitle, pdfsubject, pdfauthor, pdfkeywords, pdfcreator, pdfproducer
+        else:
+            self.pdfinfo = None
         self.head = []
         self.body_prefix = ['\\raggedbottom\n']
         self.body = []
@@ -189,6 +208,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         text = text.replace("#", '{\\#}')
         text = text.replace("~", '{\\~{ }}')
         # unicode: not needed as long  as output encoding is latin-1.
+        # and not supported as long as output encoding is set to latin-1.
         text = text.replace(u'\u2020', '{$\\dagger$}')
         return text
 
@@ -198,8 +218,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         return self.encode(whitespace.sub(' ', text))
 
     def astext(self):
-        return ''.join(self.head_prefix + self.head
-                       + self.body_prefix + self.body + self.body_suffix)
+        if self.pdfinfo:
+            pdfinfo = '\\hypersetup{\n' + ',\n'.join(self.pdfinfo) + '\n}\n'
+        else:
+            pdfinfo = ''
+        return ''.join(self.head_prefix + self.head + [pdfinfo]
+                       + self.body_prefix  + self.body + self.body_suffix)
 
     def visit_Text(self, node):
         self.body.append(self.encode(node.astext()))
@@ -394,6 +418,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         ## elif latex_docinfo and name == 'author':
         elif name == 'author':
             self.head.append('\\author{%s}\n' % self.attval(node.astext()))
+            if not self.pdfinfo == None:
+                # BUG only the last one survives
+                self.pdfinfo.append( 'pdfauthor={%s}' % self.attval(node.astext()) )
             raise nodes.SkipNode
         else:
             ##self.head.append('\\%s{%s}\n'
@@ -905,6 +932,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         elif self.section_level == 0:
             # document title
             self.head.append('\\title{%s}\n' % self.encode(node.astext()))
+            if not self.pdfinfo == None:
+                self.pdfinfo.append( 'pdftitle={%s}' % self.encode(node.astext()) )
             raise nodes.SkipNode
         else:
             name = None
@@ -920,6 +949,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_title(self, node):
         self.body.append(self.context.pop())
+        # BUG level depends on style.
+        if node.parent.hasattr('id'):
+            self.body.append('\\pdfbookmark[%d]{%s}{%s}\n' % \
+                (self.section_level-1,node.astext(),node.parent['id']))
 
     def visit_topic(self, node):
         ##self.body.append('% [visit_topic]\n')
