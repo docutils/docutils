@@ -24,7 +24,7 @@ from docutils import nodes, utils, writers, languages
 from DocArticle import DocArticleText
 
 class DocArticleWriter(writers.Writer):
-    supported = ('html')
+    supported = ('html',)
     """Formats this writer supports."""
 
     output = None
@@ -74,6 +74,7 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
         self.spewTextContext = [True]
         self.spewParaTag = [SpewParagraph]
         self.paraFormat = [(None,None)]
+        self.colspecs = []
 
         self.body_pre_docinfo = []
         self.docinfo = []
@@ -112,6 +113,10 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
         """Cleanse, HTML encode, and return attribute value text."""
         return self.encode(whitespace.sub(' ', text))
 
+    def emptytag(self, node, tagname, suffix='\n', **attributes):
+        """Construct and return an XML-compatible empty tag."""
+        return self.starttag(node, tagname, suffix, infix=' /', **attributes)
+
     def visit_Text(self, node):
         if self.spewTextContext[-1]:
             self.bodyContent.append(self.encode(node.astext()))
@@ -119,11 +124,19 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
     def depart_Text(self, node):
         pass
 
+    def visit_address(self, node):
+        self.visit_docinfo_item(node, 'address', meta=None)
+        self.bodyContent.append(self.starttag(node, 'pre'))
+
+    def depart_address(self, node):
+        self.bodyContent.append('\n</pre>\n')
+        self.depart_docinfo_item(node)
+
     def visit_admonition(self, node, name):
         self.bodyContent.append('<hr width="50%" />')
         self.bodyContent.append('<b>' + self.language.labels[name.lower()] + ':</b><br />\n')
 
-    def depart_admonition(self):
+    def depart_admonition(self, node):
         self.bodyContent.append('<hr width="50%" />')
 
     def visit_author(self, node):
@@ -132,17 +145,29 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
     def depart_author(self, node):
         self.depart_docinfo_item(node)
 
+    def visit_authors(self, node):
+        pass
+
+    def depart_authors(self, node):
+        pass
+
     def visit_attention(self, node):
         self.visit_admonition(node, 'attention')
 
     def depart_attention(self, node):
-        self.depart_admonition()
+        self.depart_admonition(node)
 
     def visit_block_quote(self, node):
         self.bodyContent.append(self.starttag(node, 'blockquote'))
 
     def depart_block_quote(self, node):
         self.bodyContent.append('</blockquote>\n')
+
+    def visit_line_block(self, node):
+        self.bodyContent.append(self.starttag(node, 'pre'))
+
+    def depart_line_block(self, node):
+        self.bodyContent.append('\n</pre>\n')
 
     def visit_bullet_list(self, node):
         self.bodyContent.append(self.starttag(node, 'ul'))
@@ -151,6 +176,68 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
     def depart_bullet_list(self, node):
         self.bodyContent.append('</ul>\n')
         self.spewParaTag.pop()
+
+    def visit_caption(self, node):
+        self.bodyContent.append(self.starttag(node, 'p', ''))
+
+    def depart_caption(self, node):
+        self.bodyContent.append('</p>\n')
+
+    def visit_caution(self, node):
+        self.visit_admonition(node, 'caution')
+
+    def depart_caution(self, node):
+        self.depart_admonition(node)
+
+    def visit_citation(self, node):
+        ##! verify col configuration
+        self.bodyContent.append(self.starttag(node, 'table'))
+        self.bodyContent.append('<colgroup><col /><col /></colgroup>\n'
+                         '<col />\n'
+                         '<tbody valign="top">\n'
+                         '<tr>')
+        self.footnote_backrefs(node)
+
+    def depart_citation(self, node):
+        self.bodyContent.append('</td></tr>\n'
+                         '</tbody>\n</table>\n')
+
+    def visit_citation_reference(self, node):
+        href = ''
+        if node.has_key('refid'):
+            href = '#' + node['refid']
+        elif node.has_key('refname'):
+            href = '#' + self.document.nameids[node['refname']]
+        self.bodyContent.append(self.starttag(node, 'a', '[', href=href))
+
+    def depart_citation_reference(self, node):
+        self.bodyContent.append(']</a>')
+
+    def visit_classifier(self, node):
+        pass
+        
+    def depart_classifier(self, node):
+        pass
+
+    def visit_colspec(self, node):
+        self.colspecs.append(node)
+
+    def depart_colspec(self, node):
+        pass
+
+    def write_colspecs(self):
+        ##! verify
+        width = 0
+        for node in self.colspecs:
+            width += node['colwidth']
+        for node in self.colspecs:
+            colwidth = int(node['colwidth'] * 100.0 / width + 0.5)
+            self.bodyContent.append(self.emptytag(node, 'col', width='%i%%' % colwidth))
+        self.colspecs = []
+
+    def visit_comment(self, node, sub=re.compile('-(?=-)').sub):
+        self.bodyContent.append('<!-- %s -->\n' % sub('- ', node.astext()))
+        raise nodes.SkipNode
 
     def visit_contact(self, node):
         self.visit_docinfo_item(node, 'Contact')
@@ -164,11 +251,48 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
     def depart_copyright(self, node):
         self.depart_docinfo_item(node)
 
+    def visit_danger(self, node):
+        self.visit_admonition(node, 'danger')
+
+    def depart_danger(self, node):
+        self.depart_admonition(node)
+
+    def visit_date(self, node):
+        self.visit_docinfo_item(node, 'date')
+
+    def depart_date(self, node):
+        self.depart_docinfo_item(node)
+
     def visit_decoration(self, node):
         pass
 
     def depart_decoration(self, node):
         pass
+
+    def visit_definition(self, node):
+        self.bodyContent.append('</dt>\n')
+        self.bodyContent.append(self.starttag(node, 'dd', ''))
+
+    def depart_definition(self, node):
+        self.bodyContent.append('</dd>\n')
+
+    def visit_definition_list(self, node):
+        self.bodyContent.append(self.starttag(node, 'dl'))
+
+    def depart_definition_list(self, node):
+        self.bodyContent.append('</dl>\n')
+
+    def visit_definition_list_item(self, node):
+        pass
+
+    def depart_definition_list_item(self, node):
+        pass
+
+    def visit_description(self, node):
+        self.bodyContent.append(self.starttag(node, 'td', ''))
+
+    def depart_description(self, node):
+        self.bodyContent.append('</td>')
 
     def visit_docinfo(self, node):
         self.context.append(len(self.bodyContent))
@@ -194,6 +318,12 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
     def depart_docinfo_item(self, node):
         self.bodyContent.append('</td></tr>\n')
 
+    def visit_doctest_block(self, node):
+        self.bodyContent.append(self.starttag(node, 'pre'))
+
+    def depart_doctest_block(self, node):
+        self.bodyContent.append('\n</pre>\n')
+
     def visit_document(self, node):
         pass
 
@@ -206,6 +336,24 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
     def depart_emphasis(self, node):
         self.bodyContent.append('</i>')
 
+    def visit_entry(self, node):
+        if isinstance(node.parent.parent, nodes.thead):
+            tagname = 'th'
+        else:
+            tagname = 'td'
+        atts = {}
+        if node.has_key('morerows'):
+            atts['rowspan'] = node['morerows'] + 1
+        if node.has_key('morecols'):
+            atts['colspan'] = node['morecols'] + 1
+        self.bodyContent.append(self.starttag(node, tagname, '', **atts))
+        self.context.append('</%s>\n' % tagname.lower())
+        if len(node) == 0:              # empty cell
+            self.bodyContent.append('&nbsp;')
+
+    def depart_entry(self, node):
+        self.bodyContent.append(self.context.pop())
+
     def visit_enumerated_list(self, node):
         atts = {}
         if node.has_key('start'):
@@ -216,6 +364,12 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
 
     def depart_enumerated_list(self, node):
         self.bodyContent.append('</ol>\n')
+
+    def visit_error(self, node):
+        self.visit_admonition(node, 'error')
+
+    def depart_error(self, node):
+        self.depart_admonition(node)
 
     def visit_field(self, node):
         self.bodyContent.append(self.starttag(node, 'tr', ''))
@@ -250,6 +404,12 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
     def depart_field_name(self, node):
         self.bodyContent.append(':</th>')
         self.bodyContent.append(self.context.pop())
+
+    def visit_figure(self, node):
+        self.bodyContent.append(self.starttag(node, 'div'))
+
+    def depart_figure(self, node):
+        self.bodyContent.append('</div>\n')
 
     def check_simple_list(self, node):
         """Check for a simple list that can be rendered compactly."""
@@ -320,12 +480,58 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
         self.bodyContent.append(self.context.pop())
         self.bodyContent.append('</b>')
 
+    def visit_generated(self, node):
+        pass
+
+    def depart_generated(self, node):
+        pass
+
+    def visit_hint(self, node):
+        self.visit_admonition(node, 'hint')
+
+    def depart_hint(self, node):
+        self.depart_admonition(node)
+
+    def visit_image(self, node):
+        atts = node.attributes.copy()
+        atts['src'] = atts['uri']
+        del atts['uri']
+        if not atts.has_key('alt'):
+            atts['alt'] = atts['src']
+        if isinstance(node.parent, nodes.TextElement):
+            self.context.append(None)
+        else:
+            self.bodyContent.append('<p>')
+            self.context.append('</p>\n')
+        self.bodyContent.append(self.emptytag(node, 'img', '', **atts))
+
+    depart_image = popAndAppend
+
+    def visit_important(self, node):
+        self.visit_admonition(node, 'important')
+
+    def depart_important(self, node):
+        self.depart_admonition(node)
+
+    def visit_interpreted(self, node):
+        ###! no idea what to do here
+        pass
+
+    def depart_interpreted(self, node):
+        pass
+
     def visit_label(self, node):
         self.bodyContent.append(self.starttag(node, 'td', '<b>[%s' % self.context.pop()))
 
     def depart_label(self, node):
         self.paraFormat.append(('<font size=-1><i>', '</i></font>'))
         self.bodyContent.append('</a>]</b></td><td>%s' % self.context.pop())
+
+    def visit_legend(self, node):
+        self.bodyContent.append(self.starttag(node, 'div'))
+
+    def depart_legend(self, node):
+        self.bodyContent.append('</div>\n')
 
     def visit_list_item(self, node):
         self.bodyContent.append(self.starttag(node, 'li', ''))
@@ -358,11 +564,72 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
     def depart_literal_block(self, node):
         self.bodyContent.append('\n</pre>\n')
 
+    def visit_meta(self, node):
+        self.headerContent.append(self.emptytag(node, 'meta', **node.attributes))
+
+    def depart_meta(self, node):
+        pass
+
     def visit_note(self, node):
         self.visit_admonition(node, 'note')
 
     def depart_note(self, node):
-        self.depart_admonition()
+        self.depart_admonition(node)
+
+    def visit_option(self, node):
+        if self.context[-1]:
+            self.bodyContent.append(', ')
+
+    def depart_option(self, node):
+        self.context[-1] += 1
+
+    def visit_option_argument(self, node):
+        self.bodyContent.append(node.get('delimiter', ' '))
+        self.bodyContent.append(self.starttag(node, 'var', ''))
+
+    def depart_option_argument(self, node):
+        self.bodyContent.append('</var>')
+
+    def visit_option_group(self, node):
+        atts = {}
+        if len(node.astext()) > 14:
+            atts['colspan'] = 2
+            self.context.append('</tr>\n<tr><td>&nbsp;</td>')
+        else:
+            self.context.append('')
+        self.bodyContent.append(self.starttag(node, 'td', **atts))
+        self.bodyContent.append('<kbd>')  ###! What tag is this?
+        self.context.append(0)          # count number of options
+
+    def depart_option_group(self, node):
+        self.context.pop()
+        self.bodyContent.append('</kbd></td>\n')
+        self.bodyContent.append(self.context.pop())
+
+    def visit_option_list(self, node):
+        self.bodyContent.append(self.starttag(node, 'table'))
+        self.bodyContent.append('<tbody valign="top">\n')
+
+    def depart_option_list(self, node):
+        self.bodyContent.append('</tbody>\n</table>\n')
+
+    def visit_option_list_item(self, node):
+        self.bodyContent.append(self.starttag(node, 'tr', ''))
+
+    def depart_option_list_item(self, node):
+        self.bodyContent.append('</tr>\n')
+
+    def visit_option_string(self, node):
+        self.bodyContent.append(self.starttag(node, 'span', ''))
+
+    def depart_option_string(self, node):
+        self.bodyContent.append('</span>')
+
+    def visit_organization(self, node):
+        self.visit_docinfo_item(node, 'organization')
+
+    def depart_organization(self, node):
+        self.depart_docinfo_item(node)
 
     def visit_paragraph(self, node):
         currentSpewParaTag = self.spewParaTag[-1]
@@ -415,6 +682,18 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
 
     depart_reference = popAndAppend
 
+    def visit_revision(self, node):
+        self.visit_docinfo_item(node, 'revision')
+
+    def depart_revision(self, node):
+        self.depart_docinfo_item(node)
+
+    def visit_row(self, node):
+        self.bodyContent.append(self.starttag(node, 'tr', ''))
+
+    def depart_row(self, node):
+        self.bodyContent.append('</tr>\n')
+
     def visit_section(self, node):
         self.section_level += 1
         #hTag = 'h%s'% self.section_level
@@ -424,11 +703,23 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
     def depart_section(self, node):
         self.section_level -= 1
 
+    def visit_status(self, node):
+        self.visit_docinfo_item(node, 'status', meta=None)
+
+    def depart_status(self, node):
+        self.depart_docinfo_item(node)
+
     def visit_strong(self, node):
         self.bodyContent.append('<strong>')
 
     def depart_strong(self, node):
         self.bodyContent.append('</strong>')
+
+    def visit_substitution_definition(self, node):
+        raise nodes.SkipNode # internal
+
+    def visit_substitution_reference(self, node):
+        pass
 
     def visit_subtitle(self, node):
         self.bodyContent.append(self.starttag(node, 'h3', ''))
@@ -436,14 +727,60 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
     def depart_subtitle(self, node):
         self.bodyContent.append('</h3>\n')
 
+    def visit_table(self, node):
+        self.bodyContent.append(self.starttag(node, 'table'))
+
+    def depart_table(self, node):
+        self.bodyContent.append('</table>\n')
+
     def visit_target(self, node):
         if not (node.has_key('refuri') or node.has_key('refid') or node.has_key('refname')):
-            self.bodyContents.append(self.starttag(node, 'a', ''))
+            self.bodyContent.append(self.starttag(node, 'a', ''))
             self.context.append('</a>')
         else:
             self.context.append(None)
 
     depart_target = popAndAppend
+
+    def visit_tbody(self, node):
+        self.write_colspecs()
+        self.bodyContent.append(self.context.pop()) # '</colgroup>\n' or ''
+        self.bodyContent.append(self.starttag(node, 'tbody', valign='top'))
+
+    def depart_tbody(self, node):
+        self.bodyContent.append('</tbody>\n')
+
+    def visit_term(self, node):
+        self.bodyContent.append(self.starttag(node, 'dt', ''))
+
+    def depart_term(self, node):
+        pass
+
+    def visit_tgroup(self, node):
+        ###! verify
+        # Mozilla needs <colgroup>:
+        self.bodyContent.append(self.starttag(node, 'colgroup'))
+        # Appended by thead or tbody:
+        self.context.append('</colgroup>\n')
+
+    def depart_tgroup(self, node):
+        pass
+
+    def visit_thead(self, node):
+        self.write_colspecs()
+        self.bodyContent.append(self.context.pop()) # '</colgroup>\n'
+        # There may or may not be a <thead>; this is for <tbody> to use:
+        self.context.append('')
+        self.bodyContent.append(self.starttag(node, 'thead', valign='bottom'))
+
+    def depart_thead(self, node):
+        self.bodyContent.append('</thead>\n')
+
+    def visit_tip(self, node):
+        self.visit_admonition(node, 'tip')
+
+    def depart_tip(self, node):
+        self.depart_admonition(node)
 
     def visit_title(self, node):
         if isinstance(node.parent, nodes.topic):
@@ -482,7 +819,26 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
     def depart_topic(self, node):
         pass
 
+    def visit_transition(self, node):
+        self.bodyContent.append(self.emptytag(node, 'hr'))
+
+    def depart_transition(self, node):
+        pass
+
+    def visit_version(self, node):
+        self.visit_docinfo_item(node, 'version')
+
+    def depart_version(self, node):
+        self.depart_docinfo_item(node)
+
+    def visit_warning(self, node):
+        self.visit_admonition(node, 'warning')
+
+    def depart_warning(self, node):
+        self.depart_admonition(node)
+
     def unknown_visit(self, node):
+        print 'Node: %s' % node.__class__.__name__
         print "Failure processing at line (%s) of node:\n %s" % (node.line, node.pformat())
         raise NotImplementedError('visiting unknown node type: %s'
                                   % node.__class__.__name__)

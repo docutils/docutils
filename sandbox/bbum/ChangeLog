@@ -1,3 +1,8 @@
+2003-01-05  Bill Bumgarner  <bbum@codefab.com>
+
+    * DocArticle/DocArticle/__init__.py: Can now successfully [I think]
+    process test.txt.  Output is not exactly pretty yet.
+
 2002-12-28  Bill Bumgarner  <bbum@codefab.com>
     * Added support for subtitle, note, and block_quote.  Cleaned up a
       compile of CSS leftovers.
