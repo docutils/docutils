@@ -139,7 +139,18 @@ Notes on LaTeX
     \subsubparagraph (milstd and book-form styles only) 
     \subsubsubparagraph (milstd and book-form styles only)
 
+* documentclass options
 
+  all notitlepage.
+
+  article: 11pt, 12pt, twoside, twocolumn, draft, fleqn, leqno, acm
+  
+  report: 11pt, 12pt, twoside, twocolumn, draft, fleqn, leqno, acm
+  
+  letter: 11pt, 12pt, fleqn, leqno, acm
+  
+  book: 11pt, 12pt, twoside,twocolumn, draft, fleqn, leqno
+  
 """    
 
 class Babel:
