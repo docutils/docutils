@@ -29,21 +29,21 @@ totest['unknown'] = [
    block
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Unknown directive type "reStructuredText-unknown-directive" at line 1.
-        <literal_block>
+        <literal_block xml:space="1">
             .. reStructuredText-unknown-directive::
-    <system_message level="3" type="ERROR">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Unknown directive type "reStructuredText-unknown-directive" at line 3.
-        <literal_block>
+        <literal_block xml:space="1">
             .. reStructuredText-unknown-directive:: argument
-    <system_message level="3" type="ERROR">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Unknown directive type "reStructuredText-unknown-directive" at line 5.
-        <literal_block>
+        <literal_block xml:space="1">
             .. reStructuredText-unknown-directive::
                block
 """],

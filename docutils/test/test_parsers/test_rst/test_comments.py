@@ -26,8 +26,8 @@ totest['comments'] = [
 Paragraph.
 """,
 """\
-<document>
-    <comment>
+<document source="test data">
+    <comment xml:space="1">
         A comment
     <paragraph>
         Paragraph.
@@ -39,8 +39,8 @@ Paragraph.
 Paragraph.
 """,
 """\
-<document>
-    <comment>
+<document source="test data">
+    <comment xml:space="1">
         A comment
         block.
     <paragraph>
@@ -53,8 +53,8 @@ Paragraph.
    explicit markup start.
 """,
 """\
-<document>
-    <comment>
+<document source="test data">
+    <comment xml:space="1">
         A comment consisting of multiple lines
         starting on the line after the
         explicit markup start.
@@ -66,10 +66,10 @@ Paragraph.
 Paragraph.
 """,
 """\
-<document>
-    <comment>
+<document source="test data">
+    <comment xml:space="1">
         A comment.
-    <comment>
+    <comment xml:space="1">
         Another.
     <paragraph>
         Paragraph.
@@ -81,10 +81,10 @@ no blank line
 Paragraph.
 """,
 """\
-<document>
-    <comment>
+<document source="test data">
+    <comment xml:space="1">
         A comment
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Explicit markup ends without a blank line; unexpected unindent at line 2.
     <paragraph>
@@ -100,12 +100,12 @@ no blank line
 Paragraph.
 """,
 """\
-<document>
-    <comment>
+<document source="test data">
+    <comment xml:space="1">
         A comment.
-    <comment>
+    <comment xml:space="1">
         Another.
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Explicit markup ends without a blank line; unexpected unindent at line 3.
     <paragraph>
@@ -119,8 +119,8 @@ Paragraph.
 Paragraph.
 """,
 """\
-<document>
-    <comment>
+<document source="test data">
+    <comment xml:space="1">
         A comment::
     <paragraph>
         Paragraph.
@@ -133,8 +133,8 @@ The extra newline before the comment text prevents
 the parser from recognizing a directive.
 """,
 """\
-<document>
-    <comment>
+<document source="test data">
+    <comment xml:space="1">
         comment::
     <paragraph>
         The extra newline before the comment text prevents
@@ -148,8 +148,8 @@ The extra newline before the comment text prevents
 the parser from recognizing a hyperlink target.
 """,
 """\
-<document>
-    <comment>
+<document source="test data">
+    <comment xml:space="1">
         _comment: http://example.org
     <paragraph>
         The extra newline before the comment text prevents
@@ -163,8 +163,8 @@ The extra newline before the comment text prevents
 the parser from recognizing a citation.
 """,
 """\
-<document>
-    <comment>
+<document source="test data">
+    <comment xml:space="1">
         [comment] Not a citation.
     <paragraph>
         The extra newline before the comment text prevents
@@ -178,8 +178,8 @@ The extra newline before the comment text prevents
 the parser from recognizing a substitution definition.
 """,
 """\
-<document>
-    <comment>
+<document source="test data">
+    <comment xml:space="1">
         |comment| image:: bogus.png
     <paragraph>
         The extra newline before the comment text prevents
@@ -194,11 +194,11 @@ the parser from recognizing a substitution definition.
     A block quote.
 """,
 """\
-<document>
-    <comment>
+<document source="test data">
+    <comment xml:space="1">
         Next is an empty comment, which serves to end this comment and
         prevents the following block quote being swallowed up.
-    <comment>
+    <comment xml:space="1">
     <block_quote>
         <paragraph>
             A block quote.
@@ -213,7 +213,7 @@ term 2
   definition 2
 """,
 """\
-<document>
+<document source="test data">
     <definition_list>
         <definition_list_item>
             <term>
@@ -221,7 +221,7 @@ term 2
             <definition>
                 <paragraph>
                     definition 1
-                <comment>
+                <comment xml:space="1">
                     a comment
         <definition_list_item>
             <term>
@@ -240,7 +240,7 @@ term 2
   definition 2
 """,
 """\
-<document>
+<document source="test data">
     <definition_list>
         <definition_list_item>
             <term>
@@ -248,7 +248,7 @@ term 2
             <definition>
                 <paragraph>
                     definition 1
-    <comment>
+    <comment xml:space="1">
         a comment
     <definition_list>
         <definition_list_item>
@@ -268,14 +268,14 @@ term 2
   bullet paragraph 3
 """,
 """\
-<document>
+<document source="test data">
     <bullet_list bullet="+">
         <list_item>
             <paragraph>
                 bullet paragraph 1
             <paragraph>
                 bullet paragraph 2
-            <comment>
+            <comment xml:space="1">
                 comment between bullet paragraphs 2 and 3
             <paragraph>
                 bullet paragraph 3
@@ -288,12 +288,12 @@ term 2
   bullet paragraph 2
 """,
 """\
-<document>
+<document source="test data">
     <bullet_list bullet="+">
         <list_item>
             <paragraph>
                 bullet paragraph 1
-            <comment>
+            <comment xml:space="1">
                 comment between bullet paragraphs 1 (leader) and 2
             <paragraph>
                 bullet paragraph 2
@@ -304,12 +304,12 @@ term 2
   .. trailing comment
 """,
 """\
-<document>
+<document source="test data">
     <bullet_list bullet="+">
         <list_item>
             <paragraph>
                 bullet
-            <comment>
+            <comment xml:space="1">
                 trailing comment
 """],
 ]

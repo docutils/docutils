@@ -29,10 +29,10 @@ Doctest block.
 Paragraph.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Paragraph.
-    <doctest_block>
+    <doctest_block xml:space="1">
         >>> print "Doctest block."
         Doctest block.
     <paragraph>
@@ -45,10 +45,10 @@ Paragraph.
     Indented output.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Paragraph.
-    <doctest_block>
+    <doctest_block xml:space="1">
         >>> print "    Indented output."
             Indented output.
 """],
@@ -59,11 +59,11 @@ Paragraph.
         Indented block & output.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Paragraph.
     <block_quote>
-        <doctest_block>
+        <doctest_block xml:space="1">
             >>> print "    Indented block & output."
                 Indented block & output.
 """],

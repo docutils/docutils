@@ -34,7 +34,7 @@ generate a "System Messages" section.
 document by the test framework.)
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         This \n\
         <problematic id="id2" refid="id1">
@@ -54,7 +54,7 @@ document by the test framework.)
     <section class="system-messages">
         <title>
             Docutils System Messages
-        <system_message backrefs="id2" id="id1" level="3" type="ERROR">
+        <system_message backrefs="id2" id="id1" level="3" source="test data" type="ERROR">
             <paragraph>
                 Undefined substitution referenced: "unknown substitution".
 """],

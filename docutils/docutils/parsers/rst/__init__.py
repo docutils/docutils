@@ -26,7 +26,7 @@ Usage
 
 3. Create a new empty `docutils.nodes.document` tree::
 
-       document = docutils.utils.new_document()
+       document = docutils.utils.new_document(source)
 
    See `docutils.utils.new_document()` for parameter details.
 

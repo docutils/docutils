@@ -30,7 +30,7 @@ The |biohazard| symbol is deservedly scary-looking.
 .. |biohazard| image:: biohazard.png
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         The \n\
         <image alt="biohazard" uri="biohazard.png">
@@ -42,13 +42,13 @@ The |biohazard| symbol is deservedly scary-looking.
 Here's an |unknown| substitution.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Here's an \n\
         <problematic id="id2" refid="id1">
             |unknown|
          substitution.
-    <system_message backrefs="id2" id="id1" level="3" type="ERROR">
+    <system_message backrefs="id2" id="id1" level="3" source="test data" type="ERROR">
         <paragraph>
             Undefined substitution referenced: "unknown".
 """],

@@ -469,13 +469,14 @@ Directives
         .. include:: path/subdocument.txt
            :raw:
 
-    Implementation ideas:  Model the directive parsing on the "images"
+    Implementation ideas: Model the directive parsing on the "images"
     directive.  A separate, nested parse is probably needed, since
     it's not a good idea to alter the already-read data.  Use
     ``state.nested_parse()`` (see directives/admonitions.py), and pass
-    in ``match_titles=1``.  The reporting mechanism will have to be
-    revamped to include the file which is the source of system
-    messages.
+    in ``match_titles=1``.  The reporting mechanism has been revamped
+    to include the file which is the source of system messages; a new
+    ``utils.Reporter`` object will need to be created for each input
+    source.
 
     YAGNI for now: Use C-preprocessor semantics for locating include
     files?  E.g., ``.. include:: file.txt`` will read another file

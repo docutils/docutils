@@ -25,7 +25,7 @@ term
   definition
 """,
 """\
-<document>
+<document source="test data">
     <definition_list>
         <definition_list_item>
             <term>
@@ -41,7 +41,7 @@ term
 paragraph
 """,
 """\
-<document>
+<document source="test data">
     <definition_list>
         <definition_list_item>
             <term>
@@ -58,7 +58,7 @@ term
 no blank line
 """,
 """\
-<document>
+<document source="test data">
     <definition_list>
         <definition_list_item>
             <term>
@@ -66,7 +66,7 @@ no blank line
             <definition>
                 <paragraph>
                     definition
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Definition list ends without a blank line; unexpected unindent at line 3.
     <paragraph>
@@ -77,13 +77,13 @@ A paragraph::
     A literal block without a blank line first?
 """,
 """\
-<document>
+<document source="test data">
     <definition_list>
         <definition_list_item>
             <term>
                 A paragraph::
             <definition>
-                <system_message level="1" type="INFO">
+                <system_message level="1" source="test data" type="INFO">
                     <paragraph>
                         Blank line missing before literal block? Interpreted as a definition list item. At line 2.
                 <paragraph>
@@ -95,11 +95,11 @@ a term may only be one line long
   this is not a definition
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         this is not a term;
         a term may only be one line long
-    <system_message level="3" type="ERROR">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Unexpected indentation at line 3.
     <block_quote>
@@ -114,7 +114,7 @@ term 2
   definition 2
 """,
 """\
-<document>
+<document source="test data">
     <definition_list>
         <definition_list_item>
             <term>
@@ -136,7 +136,7 @@ term 2
   definition 2
 """,
 """\
-<document>
+<document source="test data">
     <definition_list>
         <definition_list_item>
             <term>
@@ -159,7 +159,7 @@ term 2
 No blank line after the definition list.
 """,
 """\
-<document>
+<document source="test data">
     <definition_list>
         <definition_list_item>
             <term>
@@ -173,7 +173,7 @@ No blank line after the definition list.
             <definition>
                 <paragraph>
                     definition 2
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Definition list ends without a blank line; unexpected unindent at line 5.
     <paragraph>
@@ -195,7 +195,7 @@ term 2
 paragraph
 """,
 """\
-<document>
+<document source="test data">
     <definition_list>
         <definition_list_item>
             <term>
@@ -231,7 +231,7 @@ Term : classifier
     definition list item terms only.
 """,
 """\
-<document>
+<document source="test data">
     <definition_list>
         <definition_list_item>
             <term>
@@ -252,7 +252,7 @@ Term \: not a classifier
     Because the colon is escaped.
 """,
 """\
-<document>
+<document source="test data">
     <definition_list>
         <definition_list_item>
             <term>
@@ -278,7 +278,7 @@ Term `with *inline ``text **errors : classifier `with *errors ``too
     Definition `with *inline ``text **markup errors.
 """,
 """\
-<document>
+<document source="test data">
     <definition_list>
         <definition_list_item>
             <term>
@@ -307,25 +307,25 @@ Term `with *inline ``text **errors : classifier `with *errors ``too
                     ``
                 too
             <definition>
-                <system_message backrefs="id2" id="id1" level="2" type="WARNING">
+                <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
                     <paragraph>
                         Inline interpreted text or phrase reference start-string without end-string at line 1.
-                <system_message backrefs="id4" id="id3" level="2" type="WARNING">
+                <system_message backrefs="id4" id="id3" level="2" source="test data" type="WARNING">
                     <paragraph>
                         Inline emphasis start-string without end-string at line 1.
-                <system_message backrefs="id6" id="id5" level="2" type="WARNING">
+                <system_message backrefs="id6" id="id5" level="2" source="test data" type="WARNING">
                     <paragraph>
                         Inline literal start-string without end-string at line 1.
-                <system_message backrefs="id8" id="id7" level="2" type="WARNING">
+                <system_message backrefs="id8" id="id7" level="2" source="test data" type="WARNING">
                     <paragraph>
                         Inline strong start-string without end-string at line 1.
-                <system_message backrefs="id10" id="id9" level="2" type="WARNING">
+                <system_message backrefs="id10" id="id9" level="2" source="test data" type="WARNING">
                     <paragraph>
                         Inline interpreted text or phrase reference start-string without end-string at line 1.
-                <system_message backrefs="id12" id="id11" level="2" type="WARNING">
+                <system_message backrefs="id12" id="id11" level="2" source="test data" type="WARNING">
                     <paragraph>
                         Inline emphasis start-string without end-string at line 1.
-                <system_message backrefs="id14" id="id13" level="2" type="WARNING">
+                <system_message backrefs="id14" id="id13" level="2" source="test data" type="WARNING">
                     <paragraph>
                         Inline literal start-string without end-string at line 1.
                 <paragraph>
@@ -342,16 +342,16 @@ Term `with *inline ``text **errors : classifier `with *errors ``too
                     <problematic id="id22" refid="id21">
                         **
                     markup errors.
-                <system_message backrefs="id16" id="id15" level="2" type="WARNING">
+                <system_message backrefs="id16" id="id15" level="2" source="test data" type="WARNING">
                     <paragraph>
                         Inline interpreted text or phrase reference start-string without end-string at line 2.
-                <system_message backrefs="id18" id="id17" level="2" type="WARNING">
+                <system_message backrefs="id18" id="id17" level="2" source="test data" type="WARNING">
                     <paragraph>
                         Inline emphasis start-string without end-string at line 2.
-                <system_message backrefs="id20" id="id19" level="2" type="WARNING">
+                <system_message backrefs="id20" id="id19" level="2" source="test data" type="WARNING">
                     <paragraph>
                         Inline literal start-string without end-string at line 2.
-                <system_message backrefs="id22" id="id21" level="2" type="WARNING">
+                <system_message backrefs="id22" id="id21" level="2" source="test data" type="WARNING">
                     <paragraph>
                         Inline strong start-string without end-string at line 2.
 """],

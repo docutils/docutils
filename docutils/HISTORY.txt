@@ -53,15 +53,24 @@ Changes Since 0.2
   - Added automatic closing to ``FileInput`` and ``FileOutput``.
   - Delayed opening of ``FileOutput`` file until ``write()`` called.
   - ``FileOutput.write()`` now returns the encoded output string.
+  - Try to get path/stream name automatically in ``FileInput`` &
+    ``FileOutput``.
 
 * docutils/nodes.py:
 
   - Added "Invisible" element category class.
   - Changed ``Node.walk()`` & ``.walkabout()`` to permit more tree
     modification during a traversal.
-  - Added element classes: ``line_block``, ``generated``.
+  - Added element classes: ``line_block``, ``generated``, ``address``.
   - Added support for lists of nodes to ``Element.insert()``.
   - Fixed parent linking in ``Element.replace()``.
+  - Added new abstract superclass ``FixedTextElement``; adds
+    "xml:space" attribute.
+
+* docutils/utils.py:
+
+  - Added a ``source`` attribute to Reporter instances and
+    ``system_message`` elements.
 
 * docutils/parsers/rst/states.py:
 
@@ -84,6 +93,10 @@ Changes Since 0.2
 
   - Added the ``peps.TargetNotes`` transform to the Reader.
 
+* docutils/transforms/frontmatter.py:
+
+  - Improved support for generic fields.
+
 * docutils/transforms/parts.py:
 
   - Moved the "id" attribute from TOC list items to the references
@@ -105,7 +118,7 @@ Changes Since 0.2
 
   - "name" attributes only on these tags: a, applet, form, frame,
     iframe, img, map.
-  - Add "name" attribute to <a> in section titles for Netscape 4
+  - Added "name" attribute to <a> in section titles for Netscape 4
     support (bug report: Pearu Peterson).
   - Fixed targets (names) on footnote, citation, topic title,
     problematic, and system_message nodes (for Netscape 4).
@@ -117,7 +130,9 @@ Changes Since 0.2
     of text and ``&nbsp;`` for runs of spaces.
   - Improved modularity of output; added ``self.body_pre_docinfo`` and
     ``self.docinfo`` segments.
-  - Added support for "line_block" elements.
+  - Added support for "line_block", "address" elements.
+  - Improved backlinks (footnotes & system_messages).
+  - Improved system_message output.
 
 * docutils/writers/pep_html.py:
 
@@ -161,6 +176,7 @@ Changes Since 0.2
   - Added ``%number;`` attribute type parameter entity.
   - Changed ``%structural.elements;`` to ``%section.elements``.
   - Updated attribute types; made more specific.
+  - Added "address" bibliographic element.
 
 * spec/pep-0256.txt: Converted to reStructuredText & updated.
 

@@ -268,7 +268,7 @@ class TransformTestCase(CustomTestCase):
     def test_transforms(self):
         if self.run_in_debugger:
             pdb.set_trace()
-        document = utils.new_document(self.options)
+        document = utils.new_document('test data', self.options)
         self.parser.parse(self.input, document)
         for transformClass in (self.transforms + universal.test_transforms):
             transformClass(document, self).transform()
@@ -281,7 +281,7 @@ class TransformTestCase(CustomTestCase):
         print '\n', self.id
         print '-' * 70
         print self.input
-        document = utils.new_document(self.options)
+        document = utils.new_document('test data', self.options)
         self.parser.parse(self.input, document)
         print '-' * 70
         print document.pformat()
@@ -314,7 +314,7 @@ class ParserTestCase(CustomTestCase):
     def test_parser(self):
         if self.run_in_debugger:
             pdb.set_trace()
-        document = utils.new_document(self.options)
+        document = utils.new_document('test data', self.options)
         self.parser.parse(self.input, document)
         output = document.pformat()
         self.compare_output(self.input, output, self.expected)

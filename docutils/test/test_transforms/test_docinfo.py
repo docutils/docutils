@@ -38,7 +38,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
 :Parameter i: integer
 """,
 """\
-<document>
+<document source="test data">
     <docinfo>
         <author>
             Me
@@ -61,7 +61,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
             There can only be one abstract.
         <paragraph>
             It is automatically moved to the end of the other bibliographic elements.
-    <comment>
+    <comment xml:space="1">
         Bibliographic element extraction.
 """],
 ["""\
@@ -69,6 +69,8 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
 
 :Abstract: Abstract 1.
 :Author: Me
+:Address: 123 My Street
+          Example, EX
 :Contact: me@my.org
 :Version: 1
 :Abstract: Abstract 2 (should generate a warning).
@@ -76,10 +78,13 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
 :Parameter i: integer
 """,
 """\
-<document>
+<document source="test data">
     <docinfo>
         <author>
             Me
+        <address xml:space="1">
+            123 My Street
+            Example, EX
         <contact>
             <reference refuri="mailto:me@my.org">
                 me@my.org
@@ -91,7 +96,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
             <field_body>
                 <paragraph>
                     Abstract 2 (should generate a warning).
-                <system_message level="2" type="WARNING">
+                <system_message level="2" source="test data" type="WARNING">
                     <paragraph>
                         There can only be one "Abstract" field.
         <date>
@@ -109,7 +114,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
             Abstract
         <paragraph>
             Abstract 1.
-    <comment>
+    <comment xml:space="1">
         Bibliographic element extraction.
 """],
 ["""\
@@ -123,7 +128,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
 .. and not empty either
 """,
 """\
-<document>
+<document source="test data">
     <docinfo>
         <field>
             <field_name>
@@ -133,7 +138,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                     <list_item>
                         <paragraph>
                             must be a paragraph
-                <system_message level="2" type="WARNING">
+                <system_message level="2" source="test data" type="WARNING">
                     <paragraph>
                         Cannot extract bibliographic field "Author" containing anything other than a single paragraph.
         <status>
@@ -149,17 +154,17 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                     But only one
                 <paragraph>
                     paragraph.
-                <system_message level="2" type="WARNING">
+                <system_message level="2" source="test data" type="WARNING">
                     <paragraph>
                         Cannot extract compound bibliographic field "Date".
         <field>
             <field_name>
                 Version
             <field_body>
-                <system_message level="2" type="WARNING">
+                <system_message level="2" source="test data" type="WARNING">
                     <paragraph>
                         Cannot extract empty bibliographic field "Version".
-    <comment>
+    <comment xml:space="1">
         and not empty either
 """],
 ["""\
@@ -176,7 +181,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
           - Third
 """,
 """\
-<document>
+<document source="test data">
     <docinfo>
         <authors>
             <author>
@@ -213,7 +218,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
 :Authors: One, Only;
 """,
 """\
-<document>
+<document source="test data">
     <docinfo>
         <author>
             Only One
@@ -241,13 +246,13 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
       Two
 """,
 """\
-<document>
+<document source="test data">
     <docinfo>
         <field>
             <field_name>
                 Authors
             <field_body>
-                <system_message level="2" type="WARNING">
+                <system_message level="2" source="test data" type="WARNING">
                     <paragraph>
                         Cannot extract empty bibliographic field "Authors".
         <field>
@@ -261,7 +266,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                     <list_item>
                         <paragraph>
                             Two
-                <system_message level="2" type="WARNING">
+                <system_message level="2" source="test data" type="WARNING">
                     <paragraph>
                         Bibliographic field "Authors" incompatible with extraction: it must contain either a single paragraph (with authors separated by one of ";,"), multiple paragraphs (one per author), or a bullet list with one paragraph (one author) per item.
         <field>
@@ -271,7 +276,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                 <bullet_list bullet="-">
                     <list_item>
                     <list_item>
-                <system_message level="2" type="WARNING">
+                <system_message level="2" source="test data" type="WARNING">
                     <paragraph>
                         Bibliographic field "Authors" incompatible with extraction: it must contain either a single paragraph (with authors separated by one of ";,"), multiple paragraphs (one per author), or a bullet list with one paragraph (one author) per item.
         <field>
@@ -284,7 +289,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                             One
                 <paragraph>
                     Two
-                <system_message level="2" type="WARNING">
+                <system_message level="2" source="test data" type="WARNING">
                     <paragraph>
                         Bibliographic field "Authors" incompatible with extraction: it must contain either a single paragraph (with authors separated by one of ";,"), multiple paragraphs (one per author), or a bullet list with one paragraph (one author) per item.
         <field>
@@ -297,7 +302,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                             One
                         <paragraph>
                             Two
-                <system_message level="2" type="WARNING">
+                <system_message level="2" source="test data" type="WARNING">
                     <paragraph>
                         Bibliographic field "Authors" incompatible with extraction: it must contain either a single paragraph (with authors separated by one of ";,"), multiple paragraphs (one per author), or a bullet list with one paragraph (one author) per item.
 """],
@@ -313,13 +318,13 @@ checked in to CVS, so the test's expected output text has to be
 derived (hacked) in parallel in order to stay in sync.
 """,
 """\
-<document>
+<document source="test data">
     <docinfo>
         <status>
             test_docinfo.py
         <date>
             %s
-    <comment>
+    <comment xml:space="1">
         RCS keyword extraction.
     <paragraph>
         RCS keyword 'RCSfile' doesn't change unless the file name changes,

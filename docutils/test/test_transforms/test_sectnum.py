@@ -48,7 +48,7 @@ Title 4
 Paragraph 4.
 """,
 u"""\
-<document>
+<document source="test data">
     <section id="title-1" name="title 1">
         <title auto="1">
             <generated class="sectnum">
@@ -86,7 +86,7 @@ u"""\
 Paragraph 1.
 """,
 u"""\
-<document>
+<document source="test data">
     <section id="bold-title" name="bold title">
         <title auto="1">
             <generated class="sectnum">
@@ -116,7 +116,7 @@ Title 4
 Paragraph 4.
 """,
 u"""\
-<document>
+<document source="test data">
     <section id="title-1" name="title 1">
         <title auto="1">
             <generated class="sectnum">
@@ -165,7 +165,7 @@ Title 4
 Paragraph 4.
 """,
 u"""\
-<document>
+<document source="test data">
     <topic class="contents" id="contents" name="contents">
         <title>
             Contents

@@ -32,7 +32,7 @@ One-liners:
 :Parameter i: integer
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         One-liners:
     <field_list>
@@ -72,7 +72,7 @@ One-liners, no blank lines:
 :Parameter i: integer
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         One-liners, no blank lines:
     <field_list>
@@ -108,13 +108,13 @@ One-liners, no blank lines:
 empty item above, no blank line
 """,
 """\
-<document>
+<document source="test data">
     <field_list>
         <field>
             <field_name>
                 field
             <field_body>
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Field list ends without a blank line; unexpected unindent at line 2.
     <paragraph>
@@ -133,7 +133,7 @@ Field bodies starting on the next line:
   integer
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Field bodies starting on the next line:
     <field_list>
@@ -178,7 +178,7 @@ One-paragraph, multi-liners:
               (integer)
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         One-paragraph, multi-liners:
     <field_list>
@@ -228,7 +228,7 @@ One-paragraph, multi-liners, not lined up:
   (integer)
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         One-paragraph, multi-liners, not lined up:
     <field_list>
@@ -287,7 +287,7 @@ Multiple body elements:
     :Time: 15:07
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Multiple body elements:
     <field_list>
@@ -314,7 +314,7 @@ Multiple body elements:
                     containing multiple elements.
                 <paragraph>
                     Here's a literal block:
-                <literal_block>
+                <literal_block xml:space="1">
                     def f(x):
                         return x**2 + x
                 <paragraph>
@@ -350,7 +350,7 @@ Nested field lists on one line:
            body line 2
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Nested field lists on one line:
     <field_list>
@@ -410,7 +410,7 @@ Nested field lists on one line:
 :Parameter i j k: multiple arguments
 """,
 """\
-<document>
+<document source="test data">
     <field_list>
         <field>
             <field_name>
@@ -443,7 +443,7 @@ Field: marker is missing its open-colon.
 :Field marker is missing its close-colon.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Some edge cases:
     <field_list>
@@ -457,7 +457,7 @@ Field: marker is missing its open-colon.
             <field_body>
                 <paragraph>
                     Me
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Field list ends without a blank line; unexpected unindent at line 5.
     <paragraph>

@@ -30,8 +30,9 @@ class Reader(Component):
     """
 
     transforms = ()
-    """Ordered tuple of transform classes (each with a ``transform()`` method).
-    Populated by subclasses. `Reader.transform()` instantiates & runs them."""
+    """Ordered tuple of transform classes (each with a ``transform()``
+    method).  Populated by subclasses.  `Reader.transform()`
+    instantiates & runs them."""
 
     def __init__(self, parser, parser_name):
         """
@@ -85,9 +86,7 @@ class Reader(Component):
 
     def new_document(self):
         """Create and return a new empty document tree (root node)."""
-        document = utils.new_document(self.options)
-        if self.source.source_path:
-            document['source'] = self.source.source_path
+        document = utils.new_document(self.source.source_path, self.options)
         return document
 
 

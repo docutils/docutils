@@ -24,7 +24,7 @@ totest['figures'] = [
 .. figure:: picture.png
 """,
 """\
-<document>
+<document source="test data">
     <figure>
         <image uri="picture.png">
 """],
@@ -32,11 +32,11 @@ totest['figures'] = [
 .. figure:: not an image URI
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Image URI at line 1 contains whitespace.
-        <literal_block>
+        <literal_block xml:space="1">
             .. figure:: not an image URI
 """],
 ["""\
@@ -45,7 +45,7 @@ totest['figures'] = [
    A picture with a caption.
 """,
 """\
-<document>
+<document source="test data">
     <figure>
         <image uri="picture.png">
         <caption>
@@ -57,13 +57,13 @@ totest['figures'] = [
    - A picture with an invalid caption.
 """,
 """\
-<document>
+<document source="test data">
     <figure>
         <image uri="picture.png">
-    <system_message level="3" type="ERROR">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Figure caption must be a paragraph or empty comment.
-        <literal_block>
+        <literal_block xml:space="1">
             .. figure:: picture.png
             \n\
                - A picture with an invalid caption.
@@ -74,11 +74,11 @@ totest['figures'] = [
    And a caption.
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Image URI at line 1 contains whitespace.
-        <literal_block>
+        <literal_block xml:space="1">
             .. figure:: not an image URI
             \n\
                And a caption.
@@ -91,7 +91,7 @@ totest['figures'] = [
    A picture with a legend but no caption.
 """,
 """\
-<document>
+<document source="test data">
     <figure>
         <image uri="picture.png">
         <legend>
@@ -107,7 +107,7 @@ totest['figures'] = [
    A picture with image attributes and a caption.
 """,
 """\
-<document>
+<document source="test data">
     <figure>
         <image height="100" scale="50" uri="picture.png" width="200">
         <caption>
@@ -123,7 +123,7 @@ totest['figures'] = [
    A picture with image attributes on individual lines, and this caption.
 """,
 """\
-<document>
+<document source="test data">
     <figure>
         <image alt="alternate text" height="100" scale="50" uri="picture.png" width="200">
         <caption>
@@ -136,7 +136,7 @@ This figure lacks a caption. It may still have a
 .. figure:: picture.png
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         This figure lacks a caption. It may still have a
         "Figure 1."-style caption appended in the output.
@@ -159,7 +159,7 @@ This figure lacks a caption. It may still have a
    +-----------------------+-----------------------+
 """,
 """\
-<document>
+<document source="test data">
     <figure>
         <image uri="picture.png">
         <caption>
@@ -207,7 +207,7 @@ This figure lacks a caption. It may still have a
    be a single paragraph.)
 """,
 """\
-<document>
+<document source="test data">
     <figure>
         <image uri="picture.png">
         <legend>
@@ -244,7 +244,7 @@ Testing for line-leaks:
 .. figure:: picture.png
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Testing for line-leaks:
     <figure>

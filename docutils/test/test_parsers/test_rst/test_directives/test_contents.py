@@ -24,7 +24,7 @@ totest['contents'] = [
 .. contents::
 """,
 """\
-<document>
+<document source="test data">
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.parts.Contents
@@ -36,7 +36,7 @@ totest['contents'] = [
 .. contents:: Table of Contents
 """,
 """\
-<document>
+<document source="test data">
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.parts.Contents
@@ -51,7 +51,7 @@ totest['contents'] = [
    Table of Contents
 """,
 """\
-<document>
+<document source="test data">
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.parts.Contents
@@ -67,7 +67,7 @@ totest['contents'] = [
    Contents
 """,
 """\
-<document>
+<document source="test data">
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.parts.Contents
@@ -81,7 +81,7 @@ totest['contents'] = [
 .. contents:: *Table* of ``Contents``
 """,
 """\
-<document>
+<document source="test data">
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.parts.Contents
@@ -101,7 +101,7 @@ totest['contents'] = [
    :local:
 """,
 """\
-<document>
+<document source="test data">
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.parts.Contents
@@ -118,7 +118,7 @@ totest['contents'] = [
    :backlinks: none
 """,
 """\
-<document>
+<document source="test data">
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.parts.Contents
@@ -136,13 +136,13 @@ totest['contents'] = [
    :depth: two
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Error in "contents" directive attributes at line 1:
             invalid attribute value: (attribute: "depth"; value: 'two')
             invalid literal for int(): two.
-        <literal_block>
+        <literal_block xml:space="1">
             .. contents::
                :depth: two
 """],
@@ -151,12 +151,12 @@ totest['contents'] = [
    :width: 2
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Error in "contents" directive attributes at line 1:
             unknown attribute: "width".
-        <literal_block>
+        <literal_block xml:space="1">
             .. contents::
                :width: 2
 """],
@@ -165,13 +165,13 @@ totest['contents'] = [
    :backlinks: no way!
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Error in "contents" directive attributes at line 1:
             invalid attribute value: (attribute: "backlinks"; value: 'no way!')
             "no way!" unknown; choose from "top", "entry", or "none".
-        <literal_block>
+        <literal_block xml:space="1">
             .. contents::
                :backlinks: no way!
 """],
@@ -180,13 +180,13 @@ totest['contents'] = [
    :backlinks:
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Error in "contents" directive attributes at line 1:
             invalid attribute value: (attribute: "backlinks"; value: None)
             must supply an argument; choose from "top", "entry", or "none".
-        <literal_block>
+        <literal_block xml:space="1">
             .. contents::
                :backlinks:
 """],

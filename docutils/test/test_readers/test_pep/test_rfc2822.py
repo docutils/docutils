@@ -26,7 +26,7 @@ Version: 1
 Date: 2002-04-23
 """,
 """\
-<document>
+<document source="test data">
     <field_list class="rfc2822">
         <field>
             <field_name>
@@ -57,7 +57,7 @@ Date: 2002-04-23
 .. Leading blank lines don't affect RFC-2822 header parsing.
 """,
 """\
-<document>
+<document source="test data">
     <field_list class="rfc2822">
         <field>
             <field_name>
@@ -77,7 +77,7 @@ Date: 2002-04-23
             <field_body>
                 <paragraph>
                     2002-04-23
-    <comment>
+    <comment xml:space="1">
         Leading blank lines don't affect RFC-2822 header parsing.
 """],
 ["""\
@@ -88,8 +88,8 @@ Version: 1
 Date: 2002-04-23
 """,
 """\
-<document>
-    <comment>
+<document source="test data">
+    <comment xml:space="1">
         A comment should prevent RFC-2822 header parsing.
     <paragraph>
         Author: Me
@@ -103,7 +103,7 @@ Version: 1
 Date: 2002-04-23
 """,
 """\
-<document>
+<document source="test data">
     <field_list class="rfc2822">
         <field>
             <field_name>
@@ -120,13 +120,13 @@ field:
 empty item above, no blank line
 """,
 """\
-<document>
+<document source="test data">
     <field_list class="rfc2822">
         <field>
             <field_name>
                 field
             <field_body>
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             RFC2822-style field list ends without a blank line; unexpected unindent at line 2.
     <paragraph>
@@ -141,7 +141,7 @@ Date:
   2002-04-23
 """,
 """\
-<document>
+<document source="test data">
     <field_list class="rfc2822">
         <field>
             <field_name>
@@ -172,7 +172,7 @@ Date: 2002-04-23
       (Tuesday)
 """,
 """\
-<document>
+<document source="test data">
     <field_list class="rfc2822">
         <field>
             <field_name>
@@ -207,7 +207,7 @@ Date: 2002-04-23
   (Tuesday)
 """,
 """\
-<document>
+<document source="test data">
     <field_list class="rfc2822">
         <field>
             <field_name>
@@ -239,7 +239,7 @@ Authors: - Me
 Version:
 """,
 """\
-<document>
+<document source="test data">
     <field_list class="rfc2822">
         <field>
             <field_name>

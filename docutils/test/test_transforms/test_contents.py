@@ -46,7 +46,7 @@ Title 4
 Paragraph 4.
 """,
 """\
-<document>
+<document source="test data">
     <topic class="contents" id="contents" name="contents">
         <title>
             Contents
@@ -102,7 +102,7 @@ Title 2
 Paragraph 2.
 """,
 """\
-<document>
+<document source="test data">
     <topic class="contents" id="table-of-contents" name="table of contents">
         <title>
             Table of Contents
@@ -141,7 +141,7 @@ Paragraph 2.
 .. |Title 2| image:: title2.png
 """,
 """\
-<document>
+<document source="test data">
     <topic class="contents" id="there-s-an-image-in-title-2" name="there's an image in title 2">
         <title>
             There's an image in Title 2
@@ -188,7 +188,7 @@ Title 4
 Paragraph 4.
 """,
 """\
-<document>
+<document source="test data">
     <topic class="contents" id="contents" name="contents">
         <title>
             Contents
@@ -249,7 +249,7 @@ Title 4
 Paragraph 4.
 """,
 """\
-<document>
+<document source="test data">
     <section id="title-1" name="title 1">
         <title>
             Title 1
@@ -297,7 +297,7 @@ Contents
 Paragraph.
 """,
 """\
-<document>
+<document source="test data">
     <topic class="contents" id="id1">
         <bullet_list>
             <list_item>
@@ -321,7 +321,7 @@ Contents
 Paragraph.
 """,
 """\
-<document>
+<document source="test data">
     <topic class="contents" id="id1">
         <title>
             Contents
@@ -345,7 +345,7 @@ Contents
 Paragraph.
 """,
 """\
-<document>
+<document source="test data">
     <topic class="contents" id="id1">
         <title>
             Contents
@@ -366,7 +366,7 @@ Paragraph.
 Degenerate case, no table of contents generated.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Degenerate case, no table of contents generated.
 """],

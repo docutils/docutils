@@ -32,7 +32,7 @@ direct_ external
 .. _direct: http://direct
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <reference refuri="http://direct">
             direct
@@ -46,7 +46,7 @@ indirect_ external
 .. _xtarget: http://indirect
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <reference refuri="http://indirect">
             indirect
@@ -60,7 +60,7 @@ indirect_ external
 direct_ internal
 """,
 """\
-<document>
+<document source="test data">
     <target id="direct" name="direct">
     <paragraph>
         <reference refid="direct">
@@ -76,7 +76,7 @@ indirect_ internal
 .. _indirect: indirect2_
 """,
 """\
-<document>
+<document source="test data">
     <target id="ztarget" name="ztarget">
     <paragraph>
         <reference refid="ztarget">
@@ -94,7 +94,7 @@ indirect_ internal
 .. _indirect: implicit_
 """,
 """\
-<document>
+<document source="test data">
     <section id="implicit" name="implicit">
         <title>
             Implicit
@@ -118,7 +118,7 @@ indirect_ internal
 .. _indirect: implicit_
 """,
 """\
-<document>
+<document source="test data">
     <section dupname="implicit" id="implicit">
         <title>
             Implicit
@@ -127,7 +127,7 @@ indirect_ internal
     <section dupname="implicit" id="id1">
         <title>
             Implicit
-        <system_message backrefs="id1" level="1" type="INFO">
+        <system_message backrefs="id1" level="1" source="test data" type="INFO">
             <paragraph>
                 Duplicate implicit target name: "implicit".
         <paragraph>
@@ -135,7 +135,7 @@ indirect_ internal
                 indirect_
              internal
         <target id="indirect" name="indirect" refname="implicit">
-    <system_message backrefs="id3" id="id2" level="2" type="WARNING">
+    <system_message backrefs="id3" id="id2" level="2" source="test data" type="WARNING">
         <paragraph>
             Indirect hyperlink target "indirect" (id="indirect") refers to target "implicit", which does not exist.
 """],
@@ -145,7 +145,7 @@ indirect_ internal
 __ http://direct
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <reference anonymous="1" refuri="http://direct">
             direct external
@@ -158,7 +158,7 @@ __ xtarget_
 .. _xtarget: http://indirect
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <reference anonymous="1" refuri="http://indirect">
             indirect external
@@ -171,7 +171,7 @@ __
 `direct internal`__
 """,
 """\
-<document>
+<document source="test data">
     <target anonymous="1" id="id1">
     <paragraph>
         <reference anonymous="1" refid="id1">
@@ -185,7 +185,7 @@ __
 __ ztarget_
 """,
 """\
-<document>
+<document source="test data">
     <target id="ztarget" name="ztarget">
     <paragraph>
         <reference anonymous="1" refid="ztarget">
@@ -206,11 +206,11 @@ Second
 __ ztarget_
 """,
 """\
-<document>
+<document source="test data">
     <target dupname="ztarget" id="ztarget">
     <paragraph>
         First
-    <system_message backrefs="id1" level="2" type="WARNING">
+    <system_message backrefs="id1" level="2" source="test data" type="WARNING">
         <paragraph>
             Duplicate explicit target name: "ztarget".
     <target dupname="ztarget" id="id1">
@@ -220,7 +220,7 @@ __ ztarget_
         <problematic id="id4" refid="id3">
             `indirect internal`__
     <target anonymous="1" id="id2" refname="ztarget">
-    <system_message backrefs="id4" id="id3" level="2" type="WARNING">
+    <system_message backrefs="id4" id="id3" level="2" source="test data" type="WARNING">
         <paragraph>
             Indirect hyperlink target (id="id2") refers to target "ztarget", which does not exist.
 """],
@@ -235,7 +235,7 @@ This paragraph referenced.
 By this `internal hyperlink`_ referemce.
 """,
 """\
-<document>
+<document source="test data">
     <target id="internal-hyperlink" name="internal hyperlink">
     <paragraph>
         This paragraph referenced.
@@ -257,7 +257,7 @@ as well as by this chained_ reference.
 The results of the transform are not visible at the XML level.
 """,
 """\
-<document>
+<document source="test data">
     <target id="chained" name="chained">
     <target id="internal-hyperlink" name="internal hyperlink">
     <paragraph>
@@ -280,7 +280,7 @@ The results of the transform are not visible at the XML level.
 `External hyperlink`_ reference.
 """,
 """\
-<document>
+<document source="test data">
     <target id="external-hyperlink" name="external hyperlink" refuri="http://uri">
     <paragraph>
         <reference refuri="http://uri">
@@ -292,10 +292,10 @@ The results of the transform are not visible at the XML level.
 .. _indirect target: `external hyperlink`_
 """,
 """\
-<document>
+<document source="test data">
     <target id="external-hyperlink" name="external hyperlink" refuri="http://uri">
     <target id="indirect-target" name="indirect target" refuri="http://uri">
-    <system_message level="1" type="INFO">
+    <system_message level="1" source="test data" type="INFO">
         <paragraph>
             Indirect hyperlink target "indirect target" is not referenced.
 """],
@@ -307,7 +307,7 @@ The results of the transform are not visible at the XML level.
 and a chained_ reference too.
 """,
 """\
-<document>
+<document source="test data">
     <target id="chained" name="chained" refuri="http://uri">
     <target id="external-hyperlink" name="external hyperlink" refuri="http://uri">
     <paragraph>
@@ -326,7 +326,7 @@ and a chained_ reference too.
 `Indirect hyperlink`_ reference.
 """,
 """\
-<document>
+<document source="test data">
     <target id="external-hyperlink" name="external hyperlink" refuri="http://uri">
     <target id="indirect-hyperlink" name="indirect hyperlink" refuri="http://uri">
     <paragraph>
@@ -342,7 +342,7 @@ and a chained_ reference too.
 Chained_ `indirect hyperlink`_ reference.
 """,
 """\
-<document>
+<document source="test data">
     <target id="external-hyperlink" name="external hyperlink" refuri="http://uri">
     <target id="chained" name="chained" refuri="http://uri">
     <target id="indirect-hyperlink" name="indirect hyperlink" refuri="http://uri">
@@ -369,7 +369,7 @@ __
 `internal anonymous hyperlink reference`__.
 """,
 """\
-<document>
+<document source="test data">
     <target anonymous="1" id="id1" refuri="http://full">
     <target anonymous="1" id="id2" refuri="http://simplified">
     <target anonymous="1" id="id3" refuri="http://simplified">
@@ -401,14 +401,14 @@ Duplicate external target_'s (different URIs):
 .. _target: second
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Duplicate external \n\
         <reference refname="target">
             target
         's (different URIs):
     <target dupname="target" id="target" refuri="first">
-    <system_message backrefs="id1" level="2" type="WARNING">
+    <system_message backrefs="id1" level="2" source="test data" type="WARNING">
         <paragraph>
             Duplicate explicit target name: "target".
     <target dupname="target" id="id1" refuri="second">
@@ -419,7 +419,7 @@ Several__ anonymous__ hyperlinks__, but not enough targets.
 __ http://example.org
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <problematic id="id3" refid="id2">
             Several__
@@ -431,7 +431,7 @@ __ http://example.org
             hyperlinks__
         , but not enough targets.
     <target anonymous="1" id="id1" refuri="http://example.org">
-    <system_message backrefs="id3 id4 id5" id="id2" level="3" type="ERROR">
+    <system_message backrefs="id3 id4 id5" id="id2" level="3" source="test data" type="ERROR">
         <paragraph>
             Anonymous hyperlink mismatch: 3 references but 1 targets.
 """],

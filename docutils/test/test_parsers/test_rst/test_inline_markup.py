@@ -24,7 +24,7 @@ totest['emphasis'] = [
 *emphasis*
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <emphasis>
             emphasis
@@ -34,7 +34,7 @@ totest['emphasis'] = [
 across lines*
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <emphasis>
             emphasized sentence
@@ -44,12 +44,12 @@ across lines*
 *emphasis without closing asterisk
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <problematic id="id2" refid="id1">
             *
         emphasis without closing asterisk
-    <system_message backrefs="id2" id="id1" level="2" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
         <paragraph>
             Inline emphasis start-string without end-string at line 1.
 """],
@@ -63,7 +63,7 @@ or *the\\* *stars\\\\\\* *inside*
 what about *this**?
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         '
         <emphasis>
@@ -87,7 +87,7 @@ what about *this**?
         <problematic id="id2" refid="id1">
             *
         args' will trigger a warning and may be problematic)
-    <system_message backrefs="id2" id="id1" level="2" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
         <paragraph>
             Inline emphasis start-string without end-string at line 5.
     <paragraph>
@@ -102,7 +102,7 @@ Emphasized asterisk: *\\**
 Emphasized double asterisk: *\\***
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Emphasized asterisk: \n\
         <emphasis>
@@ -119,7 +119,7 @@ totest['strong'] = [
 **strong**
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <strong>
             strong
@@ -130,7 +130,7 @@ totest['strong'] = [
 (however, '**kwargs' will trigger a warning and may be problematic)
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         (
         <strong>
@@ -141,7 +141,7 @@ totest['strong'] = [
         <problematic id="id2" refid="id1">
             **
         kwargs' will trigger a warning and may be problematic)
-    <system_message backrefs="id2" id="id1" level="2" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
         <paragraph>
             Inline strong start-string without end-string at line 3.
 """],
@@ -151,7 +151,7 @@ Strong asterisk: *****
 Strong double asterisk: ******
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Strong asterisk: \n\
         <strong>
@@ -165,12 +165,12 @@ Strong double asterisk: ******
 **strong without closing asterisks
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <problematic id="id2" refid="id1">
             **
         strong without closing asterisks
-    <system_message backrefs="id2" id="id1" level="2" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
         <paragraph>
             Inline strong start-string without end-string at line 1.
 """],
@@ -181,7 +181,7 @@ totest['literal'] = [
 ``literal``
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <literal>
             literal
@@ -190,7 +190,7 @@ totest['literal'] = [
 ``\\literal``
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <literal>
             \\literal
@@ -199,7 +199,7 @@ totest['literal'] = [
 ``lite\\ral``
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <literal>
             lite\\ral
@@ -208,7 +208,7 @@ totest['literal'] = [
 ``literal\\``
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <literal>
             literal\\
@@ -220,7 +220,7 @@ totest['literal'] = [
 and may be problematic)
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <literal>
             literal ``TeX quotes'' & \\backslash
@@ -231,7 +231,7 @@ and may be problematic)
             ``
         standalone TeX quotes'' will trigger a warning
         and may be problematic)
-    <system_message backrefs="id2" id="id1" level="2" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
         <paragraph>
             Inline literal start-string without end-string at line 3.
 """],
@@ -239,7 +239,7 @@ and may be problematic)
 Find the ```interpreted text``` in this paragraph!
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Find the \n\
         <literal>
@@ -250,12 +250,12 @@ Find the ```interpreted text``` in this paragraph!
 ``literal without closing backquotes
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <problematic id="id2" refid="id1">
             ``
         literal without closing backquotes
-    <system_message backrefs="id2" id="id1" level="2" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
         <paragraph>
             Inline literal start-string without end-string at line 1.
 """],
@@ -266,7 +266,7 @@ totest['interpreted'] = [
 `interpreted`
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <interpreted>
             interpreted
@@ -275,7 +275,7 @@ totest['interpreted'] = [
 :role:`interpreted`
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <interpreted position="prefix" role="role">
             interpreted
@@ -284,7 +284,7 @@ totest['interpreted'] = [
 `interpreted`:role:
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <interpreted position="suffix" role="role">
             interpreted
@@ -293,11 +293,11 @@ totest['interpreted'] = [
 :role:`interpreted`:role:
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <problematic id="id2" refid="id1">
             :role:`interpreted`:role:
-    <system_message backrefs="id2" id="id1" level="2" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
         <paragraph>
             Multiple roles in interpreted text at line 1 (both prefix and suffix present; only one allowed).
 """],
@@ -305,7 +305,7 @@ totest['interpreted'] = [
 :role:`:not-role: interpreted`
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <interpreted position="prefix" role="role">
             :not-role: interpreted
@@ -314,7 +314,7 @@ totest['interpreted'] = [
 :very.long-role_name:`interpreted`
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <interpreted position="prefix" role="very.long-role_name">
             interpreted
@@ -323,7 +323,7 @@ totest['interpreted'] = [
 `interpreted` but not \\`interpreted` [`] or ({[`] or [`]}) or `
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <interpreted>
             interpreted
@@ -333,7 +333,7 @@ totest['interpreted'] = [
 `interpreted`-text `interpreted`: text `interpreted`:text `text`'s interpreted
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <interpreted>
             interpreted
@@ -352,12 +352,12 @@ totest['interpreted'] = [
 `interpreted without closing backquote
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <problematic id="id2" refid="id1">
             `
         interpreted without closing backquote
-    <system_message backrefs="id2" id="id1" level="2" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
         <paragraph>
             Inline interpreted text or phrase reference start-string without end-string at line 1.
 """],
@@ -368,7 +368,7 @@ totest['references'] = [
 ref_
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <reference refname="ref">
             ref
@@ -377,7 +377,7 @@ ref_
 ref__
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <reference anonymous="1">
             ref
@@ -386,7 +386,7 @@ ref__
 ref_, r_, r_e-f_, -ref_, and anonymousref__, but not _ref_
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <reference refname="ref">
             ref
@@ -411,7 +411,7 @@ totest['phrase_references'] = [
 `phrase reference`_
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <reference refname="phrase reference">
             phrase reference
@@ -420,7 +420,7 @@ totest['phrase_references'] = [
 `anonymous reference`__
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <reference anonymous="1">
             anonymous reference
@@ -430,7 +430,7 @@ totest['phrase_references'] = [
 across lines`_
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <reference refname="phrase reference across lines">
             phrase reference
@@ -440,7 +440,7 @@ across lines`_
 `phrase\`_ reference`_
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <reference refname="phrase`_ reference">
             phrase`_ reference
@@ -451,13 +451,13 @@ Invalid phrase reference:
 :role:`phrase reference`_
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Invalid phrase reference:
     <paragraph>
         <problematic id="id2" refid="id1">
             :role:`phrase reference`_
-    <system_message backrefs="id2" id="id1" level="2" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
         <paragraph>
             Mismatch: both interpreted text role prefix and reference suffix at line 3.
 """],
@@ -467,13 +467,13 @@ Invalid phrase reference:
 `phrase reference`:role:_
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Invalid phrase reference:
     <paragraph>
         <problematic id="id2" refid="id1">
             `phrase reference`:role:_
-    <system_message backrefs="id2" id="id1" level="2" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
         <paragraph>
             Mismatch: both interpreted text role suffix and reference suffix at line 3.
 """],
@@ -481,7 +481,7 @@ Invalid phrase reference:
 `phrase reference_ without closing backquote
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <problematic id="id2" refid="id1">
             `
@@ -489,7 +489,7 @@ Invalid phrase reference:
         <reference refname="reference">
             reference
          without closing backquote
-    <system_message backrefs="id2" id="id1" level="2" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
         <paragraph>
             Inline interpreted text or phrase reference start-string without end-string at line 1.
 """],
@@ -497,7 +497,7 @@ Invalid phrase reference:
 `anonymous phrase reference__ without closing backquote
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <problematic id="id2" refid="id1">
             `
@@ -505,7 +505,7 @@ Invalid phrase reference:
         <reference anonymous="1">
             reference
          without closing backquote
-    <system_message backrefs="id2" id="id1" level="2" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
         <paragraph>
             Inline interpreted text or phrase reference start-string without end-string at line 1.
 """],
@@ -521,7 +521,7 @@ another target`, spanning lines.
 _`Here is  a    TaRgeT` with case and spacial difficulties.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <target id="target" name="target">
             target
@@ -545,7 +545,7 @@ But this isn't a _target; targets require backquotes.
 And _`this`_ is just plain confusing.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         But this isn't a _target; targets require backquotes.
     <paragraph>
@@ -553,7 +553,7 @@ And _`this`_ is just plain confusing.
         <problematic id="id2" refid="id1">
             _`
         this`_ is just plain confusing.
-    <system_message backrefs="id2" id="id1" level="2" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
         <paragraph>
             Inline target start-string without end-string at line 3.
 """],
@@ -561,12 +561,12 @@ And _`this`_ is just plain confusing.
 _`inline target without closing backquote
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <problematic id="id2" refid="id1">
             _`
         inline target without closing backquote
-    <system_message backrefs="id2" id="id1" level="2" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
         <paragraph>
             Inline target start-string without end-string at line 1.
 """],
@@ -577,7 +577,7 @@ totest['footnote_reference'] = [
 [1]_
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <footnote_reference id="id1" refname="1">
             1
@@ -586,7 +586,7 @@ totest['footnote_reference'] = [
 [#]_
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <footnote_reference auto="1" id="id1">
 """],
@@ -594,7 +594,7 @@ totest['footnote_reference'] = [
 [#label]_
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <footnote_reference auto="1" id="id1" refname="label">
 """],
@@ -602,7 +602,7 @@ totest['footnote_reference'] = [
 [*]_
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <footnote_reference auto="*" id="id1">
 """],
@@ -613,7 +613,7 @@ totest['citation_reference'] = [
 [citation]_
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <citation_reference id="id1" refname="citation">
             citation
@@ -622,7 +622,7 @@ totest['citation_reference'] = [
 [citation]_ and [cit-ation]_ and [cit.ation]_ and [CIT1]_ but not [CIT 1]_
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <citation_reference id="id1" refname="citation">
             citation
@@ -644,7 +644,7 @@ totest['substitution_references'] = [
 |subref|
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <substitution_reference refname="subref">
             subref
@@ -653,7 +653,7 @@ totest['substitution_references'] = [
 |subref|_ and |subref|__
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <reference refname="subref">
             <substitution_reference refname="subref">
@@ -667,7 +667,7 @@ totest['substitution_references'] = [
 |substitution reference|
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <substitution_reference refname="substitution reference">
             substitution reference
@@ -677,7 +677,7 @@ totest['substitution_references'] = [
 reference|
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <substitution_reference refname="substitution reference">
             substitution
@@ -687,12 +687,12 @@ reference|
 |substitution reference without closing verbar
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <problematic id="id2" refid="id1">
             |
         substitution reference without closing verbar
-    <system_message backrefs="id2" id="id1" level="2" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
         <paragraph>
             Inline substitution_reference start-string without end-string at line 1.
 """],
@@ -719,7 +719,7 @@ ftp://ends.with.a.period.
 (a.question.mark@end?)
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         <reference refuri="http://www.standalone.hyperlink.com">
             http://www.standalone.hyperlink.com
@@ -758,7 +758,7 @@ None of these are standalone hyperlinks (their "schemes"
 are not recognized): signal:noise, a:b.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         None of these are standalone hyperlinks (their "schemes"
         are not recognized): signal:noise, a:b.
@@ -770,7 +770,7 @@ totest['miscellaneous'] = [
 __This__ should be left alone.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         __This__ should be left alone.
 """],

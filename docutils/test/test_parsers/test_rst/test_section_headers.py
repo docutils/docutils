@@ -27,7 +27,7 @@ Title
 Paragraph.
 """,
 """\
-<document>
+<document source="test data">
     <section id="title" name="title">
         <title>
             Title
@@ -40,7 +40,7 @@ Title
 Paragraph (no blank line).
 """,
 """\
-<document>
+<document source="test data">
     <section id="title" name="title">
         <title>
             Title
@@ -56,7 +56,7 @@ Title
 Paragraph.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Paragraph.
     <section id="title" name="title">
@@ -78,27 +78,27 @@ Test unexpected section titles.
     Paragraph.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Test unexpected section titles.
     <block_quote>
-        <system_message level="4" type="SEVERE">
+        <system_message level="4" source="test data" type="SEVERE">
             <paragraph>
                 Unexpected section title at line 4.
-            <literal_block>
+            <literal_block xml:space="1">
                 Title
                 =====
         <paragraph>
             Paragraph.
-        <system_message level="4" type="SEVERE">
+        <system_message level="4" source="test data" type="SEVERE">
             <paragraph>
                 Unexpected section title or transition at line 7.
-            <literal_block>
+            <literal_block xml:space="1">
                 -----
-        <system_message level="4" type="SEVERE">
+        <system_message level="4" source="test data" type="SEVERE">
             <paragraph>
                 Unexpected section title at line 9.
-            <literal_block>
+            <literal_block xml:space="1">
                 Title
                 -----
         <paragraph>
@@ -111,14 +111,14 @@ Title
 Test short underline.
 """,
 """\
-<document>
+<document source="test data">
     <section id="title" name="title">
         <title>
             Title
-        <system_message level="2" type="WARNING">
+        <system_message level="2" source="test data" type="WARNING">
             <paragraph>
                 Title underline too short at line 2.
-            <literal_block>
+            <literal_block xml:space="1">
                 Title
                 ====
         <paragraph>
@@ -132,7 +132,7 @@ Title
 Test overline title.
 """,
 """\
-<document>
+<document source="test data">
     <section id="title" name="title">
         <title>
             Title
@@ -147,7 +147,7 @@ Test overline title.
 Test overline title with inset.
 """,
 """\
-<document>
+<document source="test data">
     <section id="title" name="title">
         <title>
             Title
@@ -159,11 +159,11 @@ Test overline title with inset.
  Test Missing Underline
 """,
 """\
-<document>
-    <system_message level="4" type="SEVERE">
+<document source="test data">
+    <system_message level="4" source="test data" type="SEVERE">
         <paragraph>
             Incomplete section title at line 1.
-        <literal_block>
+        <literal_block xml:space="1">
             ========================
              Test Missing Underline
 """],
@@ -173,11 +173,11 @@ Test overline title with inset.
 
 """,
 """\
-<document>
-    <system_message level="4" type="SEVERE">
+<document source="test data">
+    <system_message level="4" source="test data" type="SEVERE">
         <paragraph>
             Missing underline for overline at line 1.
-        <literal_block>
+        <literal_block xml:space="1">
             ========================
              Test Missing Underline
 """],
@@ -188,11 +188,11 @@ Test overline title with inset.
 Test missing underline, with paragraph.
 """,
 """\
-<document>
-    <system_message level="4" type="SEVERE">
+<document source="test data">
+    <system_message level="4" source="test data" type="SEVERE">
         <paragraph>
             Missing underline for overline at line 1.
-        <literal_block>
+        <literal_block xml:space="1">
             =======
              Title
     <paragraph>
@@ -206,14 +206,14 @@ Test missing underline, with paragraph.
 Test long title and space normalization.
 """,
 """\
-<document>
+<document source="test data">
     <section id="long-title" name="long title">
         <title>
             Long    Title
-        <system_message level="2" type="WARNING">
+        <system_message level="2" source="test data" type="WARNING">
             <paragraph>
                 Title overline too short at line 1.
-            <literal_block>
+            <literal_block xml:space="1">
                 =======
                  Long    Title
                 =======
@@ -228,11 +228,11 @@ Test long title and space normalization.
 Paragraph.
 """,
 """\
-<document>
-    <system_message level="4" type="SEVERE">
+<document source="test data">
+    <system_message level="4" source="test data" type="SEVERE">
         <paragraph>
             Title overline & underline mismatch at line 1.
-        <literal_block>
+        <literal_block xml:space="1">
             =======
              Title
             -------
@@ -251,12 +251,12 @@ Test missing titles; blank line in-between.
 ========================
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Document or section may not begin with a transition (line 1).
     <transition>
-    <system_message level="3" type="ERROR">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             At least one body element must separate transitions; adjacent transitions at line 3.
     <transition>
@@ -264,7 +264,7 @@ Test missing titles; blank line in-between.
         Test missing titles; blank line in-between.
     <transition>
     <transition>
-    <system_message level="3" type="ERROR">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Document or section may not end with a transition (line 9).
 """],
@@ -278,19 +278,19 @@ Test missing titles; nothing in-between.
 ========================
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Invalid section title or transition marker at line 1.
-        <literal_block>
+        <literal_block xml:space="1">
             ========================
             ========================
     <paragraph>
         Test missing titles; nothing in-between.
-    <system_message level="3" type="ERROR">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Invalid section title or transition marker at line 6.
-        <literal_block>
+        <literal_block xml:space="1">
             ========================
             ========================
 """],
@@ -314,8 +314,8 @@ Title 4
 Paragraph 4.
 """,
 """\
-<document>
-    <comment>
+<document source="test data">
+    <comment xml:space="1">
         Test return to existing, highest-level section (Title 3).
     <section id="title-1" name="title 1">
         <title>
@@ -362,7 +362,7 @@ Title 4
 Paragraph 4.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Test return to existing, highest-level section (Title 3, with overlines).
     <section id="title-1" name="title 1">
@@ -406,7 +406,7 @@ Title 4
 Paragraph 4.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Test return to existing, higher-level section (Title 4).
     <section id="title-1" name="title 1">
@@ -450,7 +450,7 @@ Title 4
 Paragraph 4.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Test bad subsection order (Title 4).
     <section id="title-1" name="title 1">
@@ -468,10 +468,10 @@ Paragraph 4.
             Title 3
         <paragraph>
             Paragraph 3.
-        <system_message level="4" type="SEVERE">
+        <system_message level="4" source="test data" type="SEVERE">
             <paragraph>
                 Title level inconsistent at line 15:
-            <literal_block>
+            <literal_block xml:space="1">
                 Title 4
                 ```````
         <paragraph>
@@ -501,7 +501,7 @@ Title 4
 Paragraph 4.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Test bad subsection order (Title 4, with overlines).
     <section id="title-1" name="title 1">
@@ -519,10 +519,10 @@ Paragraph 4.
             Title 3
         <paragraph>
             Paragraph 3.
-        <system_message level="4" type="SEVERE">
+        <system_message level="4" source="test data" type="SEVERE">
             <paragraph>
                 Title level inconsistent at line 19:
-            <literal_block>
+            <literal_block xml:space="1">
                 ```````
                 Title 4
                 ```````
@@ -536,7 +536,7 @@ Title containing *inline* ``markup``
 Paragraph.
 """,
 """\
-<document>
+<document source="test data">
     <section id="title-containing-inline-markup" name="title containing inline markup">
         <title>
             Title containing \n\
@@ -555,7 +555,7 @@ Paragraph.
 Paragraph.
 """,
 """\
-<document>
+<document source="test data">
     <section id="numbered-title" name="1. numbered title">
         <title>
             1. Numbered Title
@@ -571,7 +571,7 @@ Paragraph.
 Paragraph.
 """,
 """\
-<document>
+<document source="test data">
     <enumerated_list enumtype="arabic" prefix="" suffix=".">
         <list_item>
             <paragraph>
@@ -579,7 +579,7 @@ Paragraph.
         <list_item>
             <paragraph>
                 Item 2.
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Enumerated list ends without a blank line; unexpected unindent at line 3.
     <section id="numbered-title" name="3. numbered title">
