@@ -333,6 +333,9 @@ This section contains *some emphaized text*.
 
 It **also has some bold text**.
 
+And ``this is sample text``, or, as it is known in reStructured
+Text, an in-line literal.
+
 """,
 
 # expected output
@@ -344,6 +347,9 @@ latex_head + r"""
 This section contains \emph{some emphaized text}.
 
 It \strong{also has some bold text}.
+
+And \samp{this is sample text}, or, as it is known in reStructured
+Text, an in-line literal.
 
 \end{document}
 """],
