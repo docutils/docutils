@@ -108,14 +108,16 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
-        self.language = languages.get_language(document.options.language_code)
+        options = document.options
+        self.language = languages.get_language(options.language_code)
         self.head_prefix = [
-              self.xml_declaration % document.options.output_encoding,
+              self.xml_declaration % options.output_encoding,
               self.doctype,
-              self.html_head % document.options.language_code,
-              self.content_type % document.options.output_encoding,
+              self.html_head % options.language_code,
+              self.content_type % options.output_encoding,
               self.generator,
-              self.stylesheet_link % document.options.stylesheet]
+              self.stylesheet_link % utils.relative_uri(options.destination,
+                                                        options.stylesheet)]
         self.head = []
         self.body_prefix = ['</head>\n<body>\n']
         self.body = []
