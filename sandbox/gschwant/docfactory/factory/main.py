@@ -3,7 +3,7 @@
 """
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
-:version: 0.2.4
+:version: 0.2.5
 """
 
 import browser, images, re, sys, os, time, ConfigParser
@@ -378,7 +378,11 @@ class DocFactoryFrame(wxFrame):
                 cfg.read(DATA)
                 if cfg.has_section('preferences'):
                     for pref in cfg.options('preferences'):
-                        self.preferences[pref] = cfg.get('preferences', pref)
+                        if pref in ('eol_markers', 'right_edge_indicator', \
+                                    'whitespace', 'backup_files'):
+                            self.preferences[pref] = cfg.getboolean('preferences', pref)
+                        else:
+                            self.preferences[pref] = cfg.get('preferences', pref)
             except:
                 customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
         if not self.preferences.has_key('eol_markers'):
@@ -391,10 +395,6 @@ class DocFactoryFrame(wxFrame):
             self.preferences['fontsize'] = 'normal'
         if not self.preferences.has_key('backup_files'):
             self.preferences['backup_files'] = 0
-        self.preferences['eol_markers'] = int(self.preferences['eol_markers'])
-        self.preferences['right_edge_indicator'] = int(self.preferences['right_edge_indicator'])
-        self.preferences['whitespace'] = int(self.preferences['whitespace'])
-        self.preferences['backup_files'] = int(self.preferences['backup_files'])
 
     def init_toolbar(self):
         self.toolbar = tb = self.CreateToolBar(wxTB_HORIZONTAL|wxTB_FLAT|wxNO_BORDER)
