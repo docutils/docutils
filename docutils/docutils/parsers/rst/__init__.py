@@ -58,6 +58,16 @@ class Parser(docutils.parsers.Parser):
     supported = ('restructuredtext', 'rst', 'rest', 'restx', 'rtxt', 'rstx')
     """Aliases this parser supports."""
 
+    cmdline_options = (
+        'reStructuredText Parser Options',
+        None,
+        (('Recognize and link to PEP references (like "PEP 258").',
+          ['--pep-references'],
+          {'action': 'store_true'}),
+         ('Recognize and link to RFC references (like "RFC 822").',
+          ['--rfc-references'],
+          {'action': 'store_true'}),))
+
     def __init__(self, rfc2822=None, inliner=None):
         if rfc2822:
             self.initial_state = 'RFC2822Body'
