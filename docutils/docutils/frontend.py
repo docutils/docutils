@@ -77,10 +77,10 @@ def validate_encoding_error_handler(setting, value, option_parser,
     try:
         codecs.lookup_error(value)
     except AttributeError:              # prior to Python 2.3
-        if value not in ('strict', 'ignore', 'replace'):
+        if value not in ('strict', 'ignore', 'replace', 'xmlcharrefreplace'):
             raise (LookupError(
                 'unknown encoding error handler: "%s" (choices: '
-                '"strict", "ignore", or "replace")' % value),
+                '"strict", "ignore", "replace", or "xmlcharrefreplace")' % value),
                    None, sys.exc_info()[2])
     except LookupError:
         raise (LookupError(
@@ -364,8 +364,8 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
            'validator': validate_encoding_and_error_handler}),
          ('Specify the error handler for unencodable characters in '
           'the output.  Acceptable values include "strict", "ignore", '
-          '"replace", "backslashreplace" (in Python 2.3+), and '
-          '"xmlcharrefreplace" (in Python 2.3+).  Default is "strict".  '
+          '"replace", "xmlcharrefreplace", and '
+          '"backslashreplace" (in Python 2.3+).  Default is "strict".  '
           'Usually specified as part of --output-encoding.',
           ['--output-encoding-error-handler'],
           {'default': 'strict', 'validator': validate_encoding_error_handler}),

@@ -9,6 +9,8 @@ I/O classes provide a uniform API for low-level input and output.  Subclasses
 will exist for a variety of input/output mechanisms.
 """
 
+from __future__ import nested_scopes
+
 __docformat__ = 'reStructuredText'
 
 import sys
@@ -127,6 +129,16 @@ class Output(TransformSpec):
     def encode(self, data):
         if self.encoding and self.encoding.lower() == 'unicode':
             return data
+        elif (self.error_handler == 'xmlcharrefreplace' and
+              sys.hexversion < 0x02030000):
+            # We are using xmlcharrefreplace on a Python version which
+            # doesn't support it.
+            def enc(x):
+                try:
+                    return x.encode(self.encoding, 'strict')
+                except UnicodeError:
+                    return '&#%s;' % str(ord(x))
+            return ''.join(map(enc, data))
         else:
             return data.encode(self.encoding, self.error_handler)
 
