@@ -336,6 +336,40 @@ order:
 Please `let us know`_ of any other reStructuredText Blogs.
 
 
+Can lists be indented without generating block quotes?
+------------------------------------------------------
+
+Some people like to write lists with indentation, without intending a
+block quote context, like this::
+
+    paragraph
+
+      * list item 1
+      * list item 2
+
+There has been a lot of discussion about this, but there are some
+issues that would need to be resolved before it could be implemented.
+There is a summary of the issues and pointers to the discussions in
+`the to-do list
+<http://docutils.sf.net/spec/notes.html#indented-lists>`__.
+
+
+Could the requirement for blank lines around lists be relaxed?
+--------------------------------------------------------------
+
+Short answer: no.
+
+In reStructuredText, it would be impossible to unambigously mark up
+and parse lists without blank lines before and after.  Deeply nested
+lists may look ugly with so many blank lines, but it's a price we pay
+for unambiguous markup.  Some other plaintext markup systems do not
+require blank lines in nested lists, but they have to compromise
+somehow, either accepting ambiguity or requiring extra complexity.
+For example, `Epytext <http://epydoc.sf.net/epytext.html#list>`__ does
+not require blank lines around lists, but it does require that lists
+be indented and that ambiguous cases be escaped.
+
+
 HTML Writer
 ===========
 
