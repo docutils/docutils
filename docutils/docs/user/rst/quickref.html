@@ -24,7 +24,7 @@
     <p align="right"><em><a href="http://docutils.sourceforge.net/docs/rst/quickref.html"
     >http://docutils.sourceforge.net/docs/rst/quickref.html</a></em>
     <br align="right"><em>Being a cheat-sheet for reStructuredText</em>
-    <br align="right"><em>Updated 2002-10-07</em>
+    <br align="right"><em>Updated 2002-10-08</em>
 
 
     <p>The full details of the markup may be found on the
@@ -56,18 +56,21 @@
     <li><a href="#doctest-blocks">Doctest Blocks</a></li>
     <li><a href="#tables">Tables</a></li>
     <li><a href="#transitions">Transitions</a></li>
+    <li><a href="#explicit-markup">Explicit Markup</a>
+    <ul>
     <li><a href="#footnotes">Footnotes</a></li>
     <li><a href="#citations">Citations</a></li>
-    <li><a href="#hyperlink-targets">Hyperlink Targets</a></li>
+    <li><a href="#hyperlink-targets">Hyperlink Targets</a>
     <ul>
     <li><a href="#external-hyperlink-targets">External Hyperlink Targets</a></li>
     <li><a href="#internal-hyperlink-targets">Internal Hyperlink Targets</a></li>
     <li><a href="#indirect-hyperlink-targets">Indirect Hyperlink Targets</a></li>
     <li><a href="#implicit-hyperlink-targets">Implicit Hyperlink Targets</a></li>
-    </ul>
+    </ul></li>
     <li><a href="#directives">Directives</a></li>
     <li><a href="#substitution-references-and-definitions">Substitution References and Definitions</a></li>
     <li><a href="#comments">Comments</a></li>
+    </ul></li>
     <li><a href="#getting-help">Getting Help</a></li>
     </ul>
 
@@ -75,6 +78,10 @@
         >Inline Markup</a></h2>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#inline-markup">details?</a>)
+
+    <p>Inline markup allows words and phrases within text to have
+    character styles (like italics and boldface) and functionality
+    (like hyperlinks).
 
     <p><table border="1" width="100%" bgcolor="#ffffcc" cellpadding="3">
       <thead>
@@ -87,39 +94,47 @@
     <tr valign="top">
       <td nowrap><samp>*emphasis*</samp>
       <td><em>emphasis</em>
-      <td>&nbsp;
+      <td>Normally rendered as italics.
 
     <tr valign="top">
       <td nowrap><samp>**strong&nbsp;emphasis**</samp>
       <td><strong>strong emphasis</strong>
-      <td>&nbsp;
+      <td>Normally rendered as boldface.
 
     <tr valign="top">
       <td nowrap><samp>`interpreted&nbsp;text`</samp>
-      <td>interpreted text
-      <td>What interpreted text <em>means</em> is domain dependent.
+      <td>(see note at right)
+      <td>The rendering and <em>meaning</em> of interpreted text is
+      domain- or application-dependent.  It can be used for things
+      like index entries or explicit descriptive markup (like program
+      identifiers).
 
     <tr valign="top">
       <td nowrap><samp>``inline&nbsp;literal``</samp>
       <td><code>inline&nbsp;literal</code>
-      <td>Spaces should be preserved, but line breaks will not be.
+      <td>Normally rendered as monospaced text. Spaces should be
+      preserved, but line breaks will not be.
 
     <tr valign="top">
       <td nowrap><samp>reference_</samp>
       <td><a href="#hyperlink-targets">reference</a>
-      <td>A simple, one-word hyperlink reference.  See <a href="#hyperlinks">Hyperlinks</a>.
+      <td>A simple, one-word hyperlink reference.  See <a
+      href="#hyperlinks" >Hyperlinks</a>.
 
     <tr valign="top">
       <td nowrap><samp>`phrase reference`_</samp>
       <td><a href="#hyperlink-targets">phrase reference</a>
-      <td>A hyperlink reference with spaces or punctuation needs to be quoted with backquotes.
-      See <a href="#hyperlink-targets">Hyperlinks</a>.
+      <td>A hyperlink reference with spaces or punctuation needs to be
+      quoted with backquotes.  See <a
+      href="#hyperlink-targets">Hyperlinks</a>.
 
     <tr valign="top">
       <td nowrap><samp>anonymous__</samp>
       <td><a href="#hyperlink-targets">anonymous</a>
-      <td>Both simple and phrase references may be anonymous (two underscores).
-      See <a href="#hyperlink-targets">Hyperlinks</a>.
+      <td>With two underscores instead of one, both simple and phrase
+      references may be anonymous (the reference text is not repeated
+      at the target).  See <a
+      href="#hyperlink-targets">Hyperlinks</a>.
 
     <tr valign="top">
       <td nowrap><samp>_`inline internal target`</samp>
@@ -129,13 +144,15 @@
 
     <tr valign="top">
       <td nowrap><samp>|substitution reference|</samp>
-      <td>(see note)
-      <td>The result is substituted in from the <a href="#substitution-references-and-definitions">substitution definition</a>.
-      It could be text, an image, a hyperlink, or a combination of these and others.
+      <td>(see note at right)
+      <td>The result is substituted in from the <a
+      href="#substitution-references-and-definitions">substitution
+      definition</a>.  It could be text, an image, a hyperlink, or a
+      combination of these and others.
 
     <tr valign="top">
       <td nowrap><samp>footnote reference [1]_</samp>
-      <td>footnote reference <a href="#footnotes">[1]</a>
+      <td>footnote reference <sup><a href="#footnotes">1</a></sup>
       <td>See <a href="#footnotes">Footnotes</a>.
 
     <tr valign="top">
@@ -159,21 +176,23 @@
     (with backslash)</a> or quote them (with double backquotes; i.e.
     use inline literals).
 
-    <p>In detail, the reStructuredText specifications says that in
-      inline markup:
+    <p>In detail, the reStructuredText specification says that in
+      inline markup, the following rules apply to start-strings and
+      end-strings (inline markup delimiters):
+
     <ol>
       <li>The start-string must start a text block or be
-    immediately preceded by whitespace,&nbsp;
-    <samp>' " ( [ {</samp> or&nbsp; <samp>&lt;</samp>.
+    immediately preceded by whitespace or any of&nbsp;
+    <samp>' " ( [ {</samp> or&nbsp;<samp>&lt;</samp>.
       <li>The start-string must be immediately followed by non-whitespace.
       <li>The end-string must be immediately preceded by non-whitespace.
-      <li>The end-string must end a text block or be immediately
-    followed by whitespace,&nbsp;
-    <samp>' " . , : ; ! ? - ) ] }</samp> or&nbsp; <samp>&gt;</samp>.
+      <li>The end-string must end a text block (end of document or
+    followed by a blank line) or be immediately followed by whitespace
+    or any of&nbsp;<samp>' " . , : ; ! ? - ) ] }</samp> or&nbsp;<samp>&gt;</samp>.
       <li>If a start-string is immediately preceded by one of&nbsp;
-    <samp>' " ( [ {</samp> or&nbsp; <samp>&lt;</samp>, it must not be
+    <samp>' " ( [ {</samp> or&nbsp;<samp>&lt;</samp>, it must not be
     immediately followed by the corresponding character from&nbsp;
-    <samp>' " ) ] }</samp> or&nbsp; <samp>&gt;</samp>.
+    <samp>' " ) ] }</samp> or&nbsp;<samp>&gt;</samp>.
       <li>An end-string must be separated by at least one
     character from the start-string.
       <li>An <a href="#escaping">unescaped</a> backslash preceding a start-string or end-string will
@@ -798,8 +817,17 @@ A&nbsp;transition&nbsp;marker&nbsp;is&nbsp;a&nbsp;horizontal&nbsp;line
     gap spanning one or more lines, marking text divisions or
     signaling changes in subject, time, point of view, or emphasis.
 
-    <h2><a href="#contents" name="footnotes" class="backref"
-        >Footnotes</a></h2>
+    <h2><a href="#contents" name="explicit-markup" class="backref"
+        >Explicit Markup</a></h3>
+
+    <p>Explicit markup blocks are used for constructs which float
+    (footnotes), have no direct paper-document representation,
+    (hyperlink targets, comments), or require specialized processing
+    (directives).  They all begin with two periods and whitespace, the
+    "explicit markup start".
+
+    <h3><a href="#contents" name="footnotes" class="backref"
+        >Footnotes</a></h3>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#footnotes">details?</a>)
 
@@ -822,7 +850,7 @@ A&nbsp;transition&nbsp;marker&nbsp;is&nbsp;a&nbsp;horizontal&nbsp;line
           <br><samp>&nbsp;&nbsp;&nbsp;there's&nbsp;no&nbsp;colon&nbsp;after&nbsp;the&nbsp;``]``.</samp>
 
       <td>
-        Footnote references, like <sup><a href="#5">[5]</a></sup>.
+        Footnote references, like <sup><a href="#5">5</a></sup>.
         Note that footnotes may get rearranged, e.g., to the bottom of
         the "page".
 
@@ -891,8 +919,8 @@ A&nbsp;transition&nbsp;marker&nbsp;is&nbsp;a&nbsp;horizontal&nbsp;line
     same relative order. Similarly for auto-symbol footnotes
     ("<samp>[*]_</samp>").
 
-    <h2><a href="#contents" name="citations" class="backref"
-        >Citations</a></h2>
+    <h3><a href="#contents" name="citations" class="backref"
+        >Citations</a></h3>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#citations">details?</a>)
 
@@ -944,13 +972,13 @@ A&nbsp;transition&nbsp;marker&nbsp;is&nbsp;a&nbsp;horizontal&nbsp;line
 
     </table>
 
-    <h2><a href="#contents" name="hyperlink-targets" class="backref"
-        >Hyperlink Targets</a></h2>
+    <h3><a href="#contents" name="hyperlink-targets" class="backref"
+        >Hyperlink Targets</a></h3>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#hyperlink-targets">details?</a>)
 
-    <h3><a href="#contents" name="external-hyperlink-targets" class="backref"
-        >External Hyperlink Targets</a></h3>
+    <h4><a href="#contents" name="external-hyperlink-targets" class="backref"
+        >External Hyperlink Targets</a></h4>
 
     <p><table border="1" width="100%" bgcolor="#ffffcc" cellpadding="3">
       <thead>
@@ -988,8 +1016,8 @@ A&nbsp;transition&nbsp;marker&nbsp;is&nbsp;a&nbsp;horizontal&nbsp;line
       printed documents, where the link needs to be presented explicitly, for
       example as a footnote.
 
-    <h3><a href="#contents" name="internal-hyperlink-targets" class="backref"
-        >Internal Hyperlink Targets</a></h3>
+    <h4><a href="#contents" name="internal-hyperlink-targets" class="backref"
+        >Internal Hyperlink Targets</a></h4>
 
     <p><table border="1" width="100%" bgcolor="#ffffcc" cellpadding="3">
       <thead>
@@ -1024,8 +1052,8 @@ A&nbsp;transition&nbsp;marker&nbsp;is&nbsp;a&nbsp;horizontal&nbsp;line
 
     </table>
 
-    <h3><a href="#contents" name="indirect-hyperlink-targets" class="backref"
-        >Indirect Hyperlink Targets</a></h3>
+    <h4><a href="#contents" name="indirect-hyperlink-targets" class="backref"
+        >Indirect Hyperlink Targets</a></h4>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#indirect-hyperlink-targets">details?</a>)
 
@@ -1058,10 +1086,14 @@ A&nbsp;transition&nbsp;marker&nbsp;is&nbsp;a&nbsp;horizontal&nbsp;line
     (<i>indirectly</i> pointing at the Python website via the
     "<samp>Python_</samp>" reference) and an <b>anonymous hyperlink
     target</b>. In the text, a double-underscore suffix is used to
-    indicate an <b>anonymous hyperlink reference</b>.
+    indicate an <b>anonymous hyperlink reference</b>.  In an anonymous
+    hyperlink target, the reference text is not repeated.  This is
+    useful for references with long text or throw-away references, but
+    the target should be kept close to the reference to prevent them
+    going out of sync.
 
-    <h3><a href="#contents" name="implicit-hyperlink-targets" class="backref"
-        >Implicit Hyperlink Targets</a></h3>
+    <h4><a href="#contents" name="implicit-hyperlink-targets" class="backref"
+        >Implicit Hyperlink Targets</a></h4>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#implicit-hyperlink-targets">details?</a>)
 
@@ -1087,10 +1119,16 @@ A&nbsp;transition&nbsp;marker&nbsp;is&nbsp;a&nbsp;horizontal&nbsp;line
         targets, too</a>.
     </table>
 
-    <h2><a href="#contents" name="directives" class="backref"
-        >Directives</a></h2>
+    <h3><a href="#contents" name="directives" class="backref"
+        >Directives</a></h3>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#directives">details?</a>)
+
+    <p>Directives are a general-purpose extension mechanism, a way of
+    adding support for new constructs without adding new syntax.  For
+    a description of all standard directives, see <a
+    href="../../spec/rst/directives.html" >reStructuredText
+    Directives</a>.
 
     <p><table border="1" width="100%" bgcolor="#ffffcc" cellpadding="3">
       <thead>
@@ -1109,8 +1147,8 @@ A&nbsp;transition&nbsp;marker&nbsp;is&nbsp;a&nbsp;horizontal&nbsp;line
         <p><img src="images/ball1.gif" alt="ball1">
     </table>
 
-    <h2><a href="#contents" name="substitution-references-and-definitions"
-        class="backref" >Substitution References and Definitions</a></h2>
+    <h3><a href="#contents" name="substitution-references-and-definitions"
+        class="backref" >Substitution References and Definitions</a></h3>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#substitution-definitions">details?</a>)
 
@@ -1140,10 +1178,13 @@ dispose&nbsp;of&nbsp;medical&nbsp;waste.</samp>
 
     </table>
 
-    <h2><a href="#contents" name="comments" class="backref"
-        >Comments</a></h2>
+    <h3><a href="#contents" name="comments" class="backref"
+        >Comments</a></h3>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#comments">details?</a>)
+
+    <p>Any text which begins with an explicit markup start but doesn't
+    use the syntax of any of the constructs above, is a comment.
 
     <p><table border="1" width="100%" bgcolor="#ffffcc" cellpadding="3">
       <thead>
@@ -1164,13 +1205,13 @@ dispose&nbsp;of&nbsp;medical&nbsp;waste.</samp>
 
     <tr valign="top">
       <td>
-        <samp>An&nbsp;empty&nbsp;"comment"&nbsp;directive&nbsp;does&nbsp;not</samp>
+        <samp>An&nbsp;empty&nbsp;"comment"&nbsp;does&nbsp;not</samp>
         <br><samp>"consume"&nbsp;following&nbsp;blocks.</samp>
         <p><samp>..</samp>
         <p><samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;So&nbsp;this&nbsp;block&nbsp;is&nbsp;not&nbsp;"lost",</samp>
           <br><samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;despite&nbsp;its&nbsp;indentation.</samp>
       <td>
-        An empty "comment" directive does not
+        An empty "comment" does not
         "consume" following blocks.
         <blockquote>
           So this block is not "lost",
