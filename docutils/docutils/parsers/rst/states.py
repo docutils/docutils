@@ -105,7 +105,7 @@ __docformat__ = 'reStructuredText'
 
 import sys
 import re
-import string
+from types import TupleType
 from docutils import nodes, statemachine, utils, roman, urischemes
 from docutils import ApplicationError, DataError
 from docutils.statemachine import StateMachineWS, StateWS
@@ -377,6 +377,29 @@ class RSTState(StateWS):
                % (node_name, self.state_machine.abs_line_number() + 1)))
 
 
+def build_regexp(definition, compile=1):
+    """
+    Build, compile and return a regular expression based on `definition`.
+
+    :Parameter: `definition`: a 4-tuple (group name, prefix, suffix, parts),
+        where "parts" is a list of regular expressions and/or regular
+        expression definitions to be joined into an or-group.
+    """
+    name, prefix, suffix, parts = definition
+    part_strings = []
+    for part in parts:
+        if type(part) is TupleType:
+            part_strings.append(build_regexp(part, None))
+        else:
+            part_strings.append(part)
+    or_group = '|'.join(part_strings)
+    regexp = '%(prefix)s(?P<%(name)s>%(or_group)s)%(suffix)s' % locals()
+    if compile:
+        return re.compile(regexp, re.UNICODE)
+    else:
+        return regexp
+
+
 class Inliner:
 
     """
@@ -439,54 +462,34 @@ class Inliner:
     uric = r"""[-_.!~*'()[\];/:@&=+$,%a-zA-Z0-9]"""
     urilast = r"""[_~/\]a-zA-Z0-9]"""   # no punctuation
     emailc = r"""[-_!~*'{|}/#?^`&=+$%a-zA-Z0-9]"""
+    parts = ('initial_inline', start_string_prefix, '',
+             [('start', '', non_whitespace_after,  # simple start-strings
+               [r'\*\*',                # strong
+                r'\*(?!\*)',            # emphasis but not strong
+                r'``',                  # literal
+                r'_`',                  # inline internal target
+                r'\|']                  # substitution reference
+               ),
+              ('whole', '', end_string_suffix, # whole constructs
+               [# reference name & end-string
+                r'(?P<refname>%s)(?P<refend>__?)' % simplename,
+                ('footnotelabel', r'\[', r'(?P<fnend>\]_)',
+                 [r'[0-9]+',               # manually numbered
+                  r'\#(%s)?' % simplename, # auto-numbered (w/ label?)
+                  r'\*',                   # auto-symbol
+                  r'(?P<citationlabel>%s)' % simplename] # citation reference
+                 )
+                ]
+               ),
+              ('backquote',             # interpreted text or phrase reference
+               '(?P<role>(:%s:)?)' % simplename, # optional role
+               non_whitespace_after,
+               ['`(?!`)']               # but not literal
+               )
+              ]
+             )
     patterns = Stuff(
-          initial=re.compile(
-                r"""
-                %(start_string_prefix)s
-                (
-                  (?P<start>              # start-strings only:
-                      \*\*                  # strong
-                    |
-                      \*                    # emphasis
-                      (?!\*)                  # but not strong
-                    |
-                      ``                    # literal
-                    |
-                      _`                    # inline hyperlink target
-                    |
-                      \|                    # substitution_reference start
-                  )
-                  %(non_whitespace_after)s
-                |                       # *OR*
-                  (?P<whole>              # whole constructs:
-                      (?P<refname>%(simplename)s)  # reference name
-                      (?P<refend>__?)              # end-string
-                    |
-                      \[                    # footnote_reference or
-                                            # citation_reference start
-                      (?P<footnotelabel>    # label:
-                          [0-9]+              # manually numbered
-                        |                   # *OR*
-                          \#(%(simplename)s)?  # auto-numbered (w/ label?)
-                        |                   # *OR*
-                          \*                  # auto-symbol
-                        |                   # *OR*
-                          (?P<citationlabel>
-                           %(simplename)s)    # citation reference
-                      )
-                      (?P<fnend>\]_)        # end-string
-                  )
-                  %(end_string_suffix)s
-                |                       # *OR*
-                  (?P<role>(:%(simplename)s:)?)  # optional role
-                  (?P<backquote>          # start-string
-                    `                       # interpreted text
-                                            # or phrase reference
-                    (?!`)                   # but not literal
-                  )
-                  %(non_whitespace_after)s  # no whitespace after
-                )
-                """ % locals(), re.VERBOSE | re.UNICODE),
+          initial=build_regexp(parts),
           emphasis=re.compile(non_whitespace_escape_before
                               + r'(\*)' + end_string_suffix),
           strong=re.compile(non_whitespace_escape_before
@@ -679,7 +682,7 @@ class Inliner:
               restore_backslashes=1)
         return before, inlines, remaining, sysmessages
 
-    def inline_target(self, match, lineno):
+    def inline_internal_target(self, match, lineno):
         before, inlines, remaining, sysmessages, endstring = self.inline_obj(
               match, lineno, self.patterns.target, nodes.target)
         if inlines and isinstance(inlines[0], nodes.target):
@@ -817,7 +820,7 @@ class Inliner:
                 '**': strong,
                 '`': interpreted_or_phrase_ref,
                 '``': literal,
-                '_`': inline_target,
+                '_`': inline_internal_target,
                 ']_': footnote_reference,
                 '|': substitution_reference,
                 '_': reference,
