@@ -36,8 +36,9 @@ docutils. ?= docutils.
 
 # The tools / processing stages that are supported and have [at least some]
 # associated variables according to the conventions below:
-$(docutils.)TOOLS += RST2HTML PEPTOOL RST2LATEX MATHHACK IMGMATHHACK	\
-                     HTML_WILD_EXTS LATEX_WILD_EXTS
+$(docutils.)TOOLS += RST2HTML PEPTOOL RST2LATEX RST2PDFLATEX		\
+		     MATHHACK IMGMATHHACK				\
+		     HTML_WILD_EXTS LATEX_WILD_EXTS PDFLATEX_WILD_EXTS
 
 # ``html.py`` is expected to be renamed to ``rst2html.py`` soon.
 $(docutils.)RST2HTML ?= html.py
@@ -46,17 +47,27 @@ $(docutils.)RST2LATEX ?= rst2latex.py
 # supports old PEP format and does extra PEP services.
 $(docutils.)RSTPEP2HTML ?= rep.py
 $(docutils.)PEPTOOL ?= pep2html.py
-# In this makefile I use only PEPTOOL to support the old pep format.  Too bad
-# RSTPEP2HTML
+# In this makefile I use only PEPTOOL (too bad RSTPEP2HTML doesn't support the
+# old pep format, it has a better command-line interface).
 
 # @@@ TODO: Support other tools, e.g. RST2XML.
 
-# You can provide extra options by setting $(docutils.)<toolname>.FLAGS,
-# e.g.::
+# Extra options
+# =============
+
+# You can provide extra docutils options by setting
+# $(docutils.)<toolname>.FLAGS.  $(docutils.)FLAGS gives default flags for all tools.
+$(docutils.)FLAGS ?=
+$(docutils.)RST2HTML.FLAGS += $($(docutils.)FLAGS)
+$(docutils.)RST2LATEX.FLAGS += $($(docutils.)FLAGS)
+$(docutils.)PEPTOOL.FLAGS += $($(docutils.)FLAGS)
+
+# Consider using config files instead of flags for most tasks.
+# Note that you can do something like::
 #
-#    $(docutils.)RST2HTML.FLAGS += -s -g
+#     RST2HTML.FLAGS += --config=$(*D)/docutils.conf
 #
-# Consider using config files instead of this for most tasks.
+# To use per-directory config files; similar tricks allow per-file config...
 
 # Extensions
 # ==========
@@ -81,6 +92,12 @@ $(docutils.)RST2HTML.TRGEXT ?= .html
 $(docutils.)RST2LATEX.SRCEXT ?= $($(docutils.)SRCEXT)
 $(docutils.)RST2LATEX.TRGEXT ?= .tex
 
+# PDFLaTeX might need different processing and extension (in particular
+# because no image format is supported by both it and LaTeX).  This is sort of
+# a hack: pretend we have a separate RST2PDFLATEX tool.
+$(docutils.)RST2PDFLATEX.SRCEXT ?= $($(docutils.)RST2LATEX.SRCEXT)
+$(docutils.)RST2PDFLATEX.TRGEXT ?= .pdftex
+
 # Specific preprocessing/postprocessing support
 # ---------------------------------------------
 
@@ -103,12 +120,12 @@ $(docutils.)RST2LATEX.TRGEXT ?= .tex
 $(docutils.)ENABLE_MATHHACK ?= 0
 
 $(docutils.)MATHHACK.SRCEXT := $($(docutils.)RST2LATEX.SRCEXT)
-$(docutils.)MATHHACK.TRGEXT ?= .mathhack.txt
+$(docutils.)MATHHACK.TRGEXT ?= .txt.mathhack
 
 # In theory, IMGMATHHACK is applicable to all tools.  It's not very useful
 # with anything but RST2HTML, so that's the only one we attach to currently...
 $(docutils.)IMGMATHHACK.SRCEXT := $($(docutils.)RST2HTML.SRCEXT)
-$(docutils.)IMGMATHHACK.TRGEXT ?= .imgmathhack.txt
+$(docutils.)IMGMATHHACK.TRGEXT ?= .txt.imgmathhack
 
 ifeq "$($(docutils.)ENABLE_MATHHACK)" "1"
 $(docutils.)RST2LATEX.SRCEXT := $($(docutils.)MATHHACK.TRGEXT)
@@ -147,9 +164,10 @@ $(docutils.)IMGMATHHACK ?= $($(docutils.)MATHHACK_DIR)imgmathhack.py
 # Docutils currently doesn't support referencing differnt files depending on
 # on the output format (e.g. LaTeX requires eps images but HTML supports
 # everything else).  Here are simple sed scripts, converting ``.*`` to one
-# extension for images and one for links, different for each tool.  Be warned
-# that they are not bullet-proof and could be confused.  Set
-# $(docutils.)ENABLE_WILD_EXTS to 1 if you want to enable them.
+# extension for images and one for links, different for each tool.  **Be
+# warned that the regexps are not bullet-proof and could be confused!**
+
+# Set $(docutils.)ENABLE_WILD_EXTS to 1 if you want to enable them.
 $(docutils.)ENABLE_WILD_EXTS ?= 0
 
 # This is an arbitrary guess, quite probable that you would want to change it.
@@ -157,23 +175,32 @@ $(docutils.)HTML_WILD_EXTS.IMGEXT ?= .png
 # ``.htm`` is also widespread but here we mostly talk about local files
 # produced with docutils.
 $(docutils.)HTML_WILD_EXTS.LINKEXT ?= .html
+
 # LaTeX only undestands Encapsulated PostScript.
 $(docutils.)LATEX_WILD_EXTS.IMGEXT ?= .eps
 # LaTeX is just as well convetible to PS but only PDF supports links, so this
 # is a good guess...
 $(docutils.)LATEX_WILD_EXTS.LINKEXT ?= .pdf
 
+# PDFLaTeX understands common formats like PNG but doesn't understand EPS!
+$(docutils.)PDFLATEX_WILD_EXTS.IMGEXT ?= .png
+# Again, PDFLaTeX supports links.
+$(docutils.)PDFLATEX_WILD_EXTS.LINKEXT ?= .pdf
+
 # Intermediate extensions:
-$(docutils.)HTML_WILD_EXTS.SRCEXT ?= .wild_exts.html
-$(docutils.)LATEX_WILD_EXTS.SRCEXT ?= .wild_exts.tex
+$(docutils.)HTML_WILD_EXTS.SRCEXT ?= .html.wild_exts
+$(docutils.)LATEX_WILD_EXTS.SRCEXT ?= .tex.wild_exts
+$(docutils.)PDFLATEX_WILD_EXTS.SRCEXT ?= .pdftex.wild_exts
 
 # Chain to the tools.
 $(docutils.)HTML_WILD_EXTS.TRGEXT := $($(docutils.)RST2HTML.TRGEXT)
 $(docutils.)LATEX_WILD_EXTS.TRGEXT := $($(docutils.)RST2LATEX.TRGEXT)
+$(docutils.)PDFLATEX_WILD_EXTS.TRGEXT := $($(docutils.)RST2PDFLATEX.TRGEXT)
 
 ifeq "$($(docutils.)ENABLE_WILD_EXTS)" "1"
 $(docutils.)RST2HTML.TRGEXT := $($(docutils.)HTML_WILD_EXTS.SRCEXT)
 $(docutils.)RST2LATEX.TRGEXT := $($(docutils.)LATEX_WILD_EXTS.SRCEXT)
+$(docutils.)RST2PDFLATEX.TRGEXT := $($(docutils.)PDFLATEX_WILD_EXTS.SRCEXT)
 endif
 
 %$($(docutils.)HTML_WILD_EXTS.TRGEXT): %$($(docutils.)HTML_WILD_EXTS.SRCEXT)
@@ -181,6 +208,9 @@ endif
 
 %$($(docutils.)LATEX_WILD_EXTS.TRGEXT): %$($(docutils.)LATEX_WILD_EXTS.SRCEXT)
 	sed -e 's/\(\\includegraphics{[^}]*\)\.\*}/\1$($(docutils.)LATEX_WILD_EXTS.IMGEXT)}/g' -e 's/\(\\href{[^}]*\)\.\*}/\1$($(docutils.)LATEX_WILD_EXTS.LINKEXT)}/g' $< > $@
+
+%$($(docutils.)PDFLATEX_WILD_EXTS.TRGEXT): %$($(docutils.)PDFLATEX_WILD_EXTS.SRCEXT)
+	sed -e 's/\(\\includegraphics{[^}]*\)\.\*}/\1$($(docutils.)PDFLATEX_WILD_EXTS.IMGEXT)}/g' -e 's/\(\\href{[^}]*\)\.\*}/\1$($(docutils.)PDFLATEX_WILD_EXTS.LINKEXT)}/g' $< > $@
 
 
 # Extra dependencies
@@ -218,7 +248,7 @@ $(docutuls.)EXTRA_DEPS += $(wildcard $($(docutils.)CONFIG))
 
 # pep-%.html must be before the %.html rule to get higher priority.
 pep-%$($(docutils.)PEPTOOL.TRGEXT): pep-%$($(docutils.)PEPTOOL.SRCEXT) \
-                                    $($(docutils.)EXTRA_DEPS)
+				    $($(docutils.)EXTRA_DEPS)
 	$($(docutils.)PEPTOOL) $($(docutils.)PEPTOOL.FLAGS) $<
 ifneq "$($(docutils.)PEPTOOL.TRGEXT)" ".html"
 	# $($(docutils.)PEPTOOL) lacks output file name control, work around.
@@ -226,14 +256,14 @@ ifneq "$($(docutils.)PEPTOOL.TRGEXT)" ".html"
 endif
 
 %$($(docutils.)RST2HTML.TRGEXT): %$($(docutils.)RST2HTML.SRCEXT) \
-                                 $($(docutils.)EXTRA_DEPS)
+				 $($(docutils.)EXTRA_DEPS)
 	$($(docutils.)RST2HTML) $($(docutils.)RST2HTML.FLAGS) $< $@
 
 # LaTeX output
 # ============
 
 %$($(docutils.)RST2LATEX.TRGEXT): %$($(docutils.)RST2LATEX.SRCEXT) \
-                                  $($(docutils.)EXTRA_DEPS)
+				  $($(docutils.)EXTRA_DEPS)
 	$($(docutils.)RST2LATEX) $($(docutils.)RST2LATEX.FLAGS) $< $@
 
 # LaTeX processing rules
@@ -244,17 +274,34 @@ endif
 # the rules here, by setting `$(docutils.)ENABLE_LATEX_RULES` to 0.
 $(docutils.)ENABLE_LATEX_RULES ?= 1
 
+# PDFLaTeX does a better job than LaTeX->DVIPDF (e.g. it supports hyperlinks
+# and generates a PDF outline) but you usually can't run the same file through
+# both LaTeX and PDFLaTeX because they don't understand a single common
+# format.  Solution: there is a separate preprocessing stage
+# PDFLATEX_WILD_EXTS.  Set this to 0 to go through DVIPDF.
+$(docutils.)ENABLE_PDFLATEX ?= 1
+
 ifeq "$($(docutils.)ENABLE_LATEX_RULES)" "1"
 LATEX ?= latex
+PDFLATEX ?= pdflatex
 DVIPS ?= dvips
 DVIPDF ?= dvipdf
 
 %.dvi: %.tex
-	$(LATEX) $*
+	cd $(*D); $(LATEX) $(*F)
 
 %.ps: %.dvi
 	$(DVIPS) $< -o $@
 
+ifeq "$($(docutils.)ENABLE_PDFLATEX)" "1"
+%.pdf: %.pdftex
+	cd $(*D); $(PDFLATEX) $(*F).pdftex
+else
 %.pdf: %.dvi
-	$(DVIPDF) $<
+	$(DVIPDF) $< $@
 endif
+endif
+
+# Fallback when you don't provide for different PDFLaTeX processing.
+%$($(docutils.)RST2PDFLATEX.TRGEXT): %$($(docutils.)RST2LATEX.TRGEXT)
+	cp $< $@

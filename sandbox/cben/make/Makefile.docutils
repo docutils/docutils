@@ -49,7 +49,7 @@ ps: $($(docutils.)STEMS:=.ps)
 pdf: $($(docutils.)STEMS:=.pdf)
 
 $(docutils.)CLEAN_EXTS += $(foreach tool,$($(docutils.)TOOLS),$($(docutils.)$(tool).TRGEXT))
-$(docutils.)CLEAN_EXTS += .log .aux .dvi .ps .pdf
+$(docutils.)CLEAN_EXTS += .log .aux .out .dvi .ps .pdf
 
 docutils.mostlyclean:
 	-rm -f $(foreach ext,$($(docutils.)CLEAN_EXTS),$($(docutils.)STEMS:=$(ext)))
