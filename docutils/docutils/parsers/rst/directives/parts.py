@@ -43,9 +43,7 @@ def contents(name, arguments, options, content, lineno,
 
     topic = nodes.topic(classes=['contents'])
 
-    cls = options.get('class')
-    if cls:
-        topic.set_class(cls)
+    topic['classes'] += options.get('class', [])
 
     if title:
         name = title.astext()

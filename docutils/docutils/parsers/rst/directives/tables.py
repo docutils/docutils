@@ -53,8 +53,7 @@ def table(name, arguments, options, content, lineno,
             line=lineno)
         return [error]
     table_node = node[0]
-    if options.has_key('class'):
-        table_node.set_class(options['class'])
+    table_node['classes'] += options.get('class', [])
     if title:
         table_node.insert(0, title)
     return [table_node] + messages
@@ -147,8 +146,7 @@ def csv_table(name, arguments, options, content, lineno,
         return [error]
     table = (col_widths, table_head, table_body)
     table_node = state.build_table(table, content_offset)
-    if options.has_key('class'):
-        table_node.set_class(options['class'])
+    table_node['classes'] += options.get('class', [])
     if title:
         table_node.insert(0, title)
     return [table_node] + messages
@@ -342,8 +340,7 @@ def list_table(name, arguments, options, content, lineno,
     except SystemMessagePropagation, detail:
         return [detail.args[0]]
     table_node = build_table_from_list(table_data, col_widths, header_rows)
-    if options.has_key('class'):
-        table_node.set_class(options['class'])
+    table_node['classes'] += options.get('class', [])
     if title:
         table_node.insert(0, title)
     return [table_node] + messages

@@ -16,6 +16,7 @@ __docformat__ = 'reStructuredText'
 import sys
 from docutils import nodes
 from docutils.parsers.rst import directives
+from docutils.parsers.rst.roles import set_classes
 
               
 def topic(name, arguments, options, content, lineno,
@@ -44,8 +45,7 @@ def topic(name, arguments, options, content, lineno,
         messages.extend(more_messages)
     text = '\n'.join(content)
     node = node_class(text, *(titles + messages))
-    if options.has_key('class'):
-        node.set_class(options['class'])
+    node['classes'] += options.get('class', [])
     if text:
         state.nested_parse(content, content_offset, node)
     return [node]
@@ -72,7 +72,7 @@ def line_block(name, arguments, options, content, lineno,
             'Content block expected for the "%s" directive; none found.'
             % name, nodes.literal_block(block_text, block_text), line=lineno)
         return [warning]
-    block = nodes.line_block()
+    block = nodes.line_block(classes=options.get('class', []))
     node_list = [block]
     for line_text in content:
         text_nodes, messages = state.inline_text(line_text.strip(),
@@ -91,6 +91,7 @@ line_block.content = 1
 
 def parsed_literal(name, arguments, options, content, lineno,
                    content_offset, block_text, state, state_machine):
+    set_classes(options)
     return block(name, arguments, options, content, lineno,
                  content_offset, block_text, state, state_machine,
                  node_class=nodes.literal_block)
@@ -124,7 +125,7 @@ rubric.options = {'class': directives.class_option}
 def epigraph(name, arguments, options, content, lineno,
              content_offset, block_text, state, state_machine):
     block_quote, messages = state.block_quote(content, content_offset)
-    block_quote.set_class('epigraph')
+    block_quote['classes'].append('epigraph')
     return [block_quote] + messages
 
 epigraph.content = 1
@@ -132,7 +133,7 @@ epigraph.content = 1
 def highlights(name, arguments, options, content, lineno,
              content_offset, block_text, state, state_machine):
     block_quote, messages = state.block_quote(content, content_offset)
-    block_quote.set_class('highlights')
+    block_quote['classes'].append('highlights')
     return [block_quote] + messages
 
 highlights.content = 1
@@ -140,7 +141,7 @@ highlights.content = 1
 def pull_quote(name, arguments, options, content, lineno,
              content_offset, block_text, state, state_machine):
     block_quote, messages = state.block_quote(content, content_offset)
-    block_quote.set_class('pull-quote')
+    block_quote['classes'].append('pull-quote')
     return [block_quote] + messages
 
 pull_quote.content = 1
@@ -154,8 +155,7 @@ def compound(name, arguments, options, content, lineno,
             nodes.literal_block(block_text, block_text), line=lineno)
         return [error]
     node = nodes.compound(text)
-    if options.has_key('class'):
-        node.set_class(options['class'])
+    node['classes'] += options.get('class', [])
     state.nested_parse(content, content_offset, node)
     return [node]
 

@@ -41,6 +41,7 @@ Changes Since 0.3.7
   - Added ``attr_defaults`` dictionary for default attribute values.
   - Added empty list as default value for the following attributes:
     ``ids``, ``names``, ``dupnames``, ``classes``, and ``backrefs``.
+  - Removed ``Element.set_class()`` method.
 
 * docutils/languages/nl.py: Added to project; Dutch mappings by
   Martijn Pieters.

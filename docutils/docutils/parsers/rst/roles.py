@@ -307,7 +307,7 @@ def raw_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     node = nodes.raw(rawtext, utils.unescape(text, 1), **options)
     return [node], []
 
-raw_role.options = {'format': directives.class_option}
+raw_role.options = {'format': directives.unchanged}
 
 register_canonical_role('raw', raw_role)
 
@@ -343,5 +343,5 @@ def set_classes(options):
     """
     if options.has_key('class'):
         assert not options.has_key('classes')
-        options['classes'] = options['class'].split()
+        options['classes'] = options['class']
         del options['class']

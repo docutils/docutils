@@ -284,7 +284,7 @@ def nonnegative_int(argument):
 
 def class_option(argument):
     """
-    Convert the argument into an ID-compatible string and return it.
+    Convert the argument into a list of ID-compatible strings and return it.
     (Directive option conversion function.)
 
     Raise ``ValueError`` if no argument is found.
@@ -298,7 +298,7 @@ def class_option(argument):
         if not class_name:
             raise ValueError('cannot make "%s" into a class name' % name)
         class_names.append(class_name)
-    return ' '.join(class_names)
+    return class_names
 
 unicode_pattern = re.compile(
     r'(?:0x|x|\\x|U\+?|\\u)([0-9a-f]+)$|&#x([0-9a-f]+);$', re.IGNORECASE)

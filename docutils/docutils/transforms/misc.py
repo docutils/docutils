@@ -45,7 +45,6 @@ class ClassAttribute(Transform):
 
     def apply(self):
         pending = self.startnode
-        class_value = pending.details['class']
         parent = pending.parent
         child = pending
         while parent:
@@ -55,7 +54,7 @@ class ClassAttribute(Transform):
                 if (isinstance(element, nodes.Invisible) or
                     isinstance(element, nodes.system_message)):
                     continue
-                element.set_class(class_value)
+                element['classes'] += pending.details['class']
                 pending.parent.remove(pending)
                 return
             else:
