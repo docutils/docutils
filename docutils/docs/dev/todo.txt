@@ -842,10 +842,6 @@ __ rst/alternatives.html#or-not-to-do
   A section titled "3. Conclusion" could then be referred to by
   "``Conclusion_``" (i.e., without the "3.").
 
-* Implement auto-enumerated lists?  See `Auto-Enumerated Lists`__.
-
-  __ rst/alternatives.html#auto-enumerated-lists
-
 * Support whitespace in angle-bracketed standalone URLs according to
   Appendix E ("Recommendations for Delimiting URI in Context") of `RFC
   2396`_.
