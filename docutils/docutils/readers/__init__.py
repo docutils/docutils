@@ -1,12 +1,10 @@
-#! /usr/bin/env python
+# Authors: David Goodger; Ueli Schlaepfer
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
 """
-:Authors: David Goodger; Ueli Schlaepfer
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
-
 This package contains Docutils Reader modules.
 """
 
@@ -78,6 +76,7 @@ class Reader(Component):
         document.reporter.attach_observer(document.note_parse_message)
         self.parser.parse(self.input, document)
         document.reporter.detach_observer(document.note_parse_message)
+        document.current_source = document.current_line = None
 
     def transform(self):
         """Run all of the transforms defined for this Reader."""
