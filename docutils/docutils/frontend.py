@@ -88,7 +88,8 @@ class OptionParser(optik.OptionParser):
          ('Show this help message and exit.',
           ['--help', '-h'], {'action': 'help'}),
          # Hidden options, for development use only:
-         (optik.SUPPRESS_HELP, ['--dump-internal-document-attributes'],
+         (optik.SUPPRESS_HELP,
+          ['--dump-internal-document-attributes'],
           {'action': 'store_true'}),))
     """Command-line option specifications, common to all Docutils front-ends.
     Option group title, description, and a list/tuple of tuples: ``('help
@@ -99,7 +100,7 @@ class OptionParser(optik.OptionParser):
 
     version_template = '%%prog (Docutils %s)' % docutils.__version__
 
-    def __init__(self, components=(), defaults={}, *args, **kwargs):
+    def __init__(self, components=(), *args, **kwargs):
         """
         `components` is a list of Docutils components each containing a
         ``.cmdline_options`` attribute.  `defaults` is a mapping of option
@@ -110,7 +111,6 @@ class OptionParser(optik.OptionParser):
         if not self.version:
             self.version = self.version_template
         self.populate_from_components(tuple(components) + (self,))
-        self.set_defaults(**defaults)
 
     def populate_from_components(self, components):
         for component in components:
