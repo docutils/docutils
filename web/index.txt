@@ -216,7 +216,7 @@ Docutils project model), whereas the Docutils-specific lists are more
 focused on the implementation.
 
 You can also access read-only archives of the mailing lists via Gmane:
-Docutils-users__, Docutils-develop__, Docutils-checkings__ and
+Docutils-users__, Docutils-develop__, Docutils-checkins__ and
 Doc-SIG__.
 
 .. _FAQ:
