@@ -91,6 +91,14 @@ rubric style           The header contains the definition of a new
 
                        Default: subsection style italic.
 ---------------------  ------------------------------------------------
+line spacing           Is done with package *setspace*, which gives
+                       singlespace, onehalfspace and doublespace 
+                       commands. To get documentwide double spacing, 
+                       add this to your stylesheet ::
+
+                         \usepackage{setspace} 
+                         \doublespacing
+---------------------  ------------------------------------------------
 font selection         see below
 =====================  ================================================
 
