@@ -124,7 +124,6 @@ Also see the `SourceForge Bug Tracker`_.
   whitespace and punctuation as markup delimiters, which may not be
   applicable in these languages.
 
-
 * Line numbers in system messages are inconsistent in the parser.
 
   - In text inserted by the "include" directive, errors are often not
@@ -137,6 +136,9 @@ Also see the `SourceForge Bug Tracker`_.
   - Some line numbers in elements are not being set properly
     (explicitly), just implicitly/automatically.  See rev. 1.74 of
     docutils/parsers/rst/states.py for an example of how to set.
+
+* Quite a few nodes are getting a "None" source attribute as well.  In
+  particular, see the bodies of definition lists.
 
 * Explicit targets are sometimes mis-located.  In particular, placing
   a target before a section header puts the target at the end of the
