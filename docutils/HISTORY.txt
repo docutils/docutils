@@ -62,6 +62,14 @@ Future Plans
   like to help, let me know!
 
 
+Changes Since 0.3
+=================
+
+* docutils/writers/html4css1.py:
+
+  - Fixed unicode handling of attribute values (bug 760673).
+
+
 Release 0.3 (2003-06-24)
 ========================
 
