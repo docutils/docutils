@@ -709,7 +709,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             enumtype = enum_style[enumtype]
         counter_name = "listcnt%d" % self._enum_cnt;
         self.body.append('\\newcounter{%s}\n' % counter_name)
-        self.body.append('\\begin{list}{\\%s{%s}}\n' % (enumtype,counter_name))
+        self.body.append('\\begin{list}{\\%s{%s}.}\n' % (enumtype,counter_name))
         self.body.append('{\n')
         self.body.append('\\usecounter{%s}\n' % counter_name)
         # set start after usecounter, because it initializes to zero.
