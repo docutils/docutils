@@ -2257,6 +2257,14 @@ Should the lines themselves be ``<span>`` or ``<div>``?  I don't like
 mixing inline and block-level elements.
 
 
+Implementation Plan
+-------------------
+
+We'll leave the old implementation in place (via the "line-block"
+directive only) until all Writers have been updated to support the new
+syntax & implementation.
+
+
 Reworking Explicit Markup (Round 2)
 ===================================
 
