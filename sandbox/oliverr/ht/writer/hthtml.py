@@ -60,7 +60,10 @@ class Writer(writers.Writer):
           {'default': 1, 'action': 'store_true'}),
          ('Disable compact simple bullet and enumerated lists.',
           ['--no-compact-lists'],
-          {'dest': 'compact_lists', 'action': 'store_false'}),))
+          {'dest': 'compact_lists', 'action': 'store_false'}),
+          ('Omit the XML declaration.  Use with caution.',
+          ['--no-xml-declaration'], {'dest': 'xml_declaration', 'default': 1,
+                                     'action': 'store_false'}),))
 
     relative_path_settings = ('stylesheet_path',)
 
