@@ -225,21 +225,21 @@ def class_directive(name, arguments, options, content, lineno,
     Set a "class" attribute on the next element.
     A "pending" element is inserted, and a transform does the work later.
     """
-    class_value = nodes.make_id(arguments[0])
-    if class_value:
-        pending = nodes.pending(misc.ClassAttribute,
-                                {'class': class_value, 'directive': name},
-                                block_text)
-        state_machine.document.note_pending(pending)
-        return [pending]
-    else:
+    try:
+        class_value = directives.class_option(arguments[0])
+    except ValueError:
         error = state_machine.reporter.error(
             'Invalid class attribute value for "%s" directive: "%s".'
             % (name, arguments[0]),
             nodes.literal_block(block_text, block_text), line=lineno)
         return [error]
+    pending = nodes.pending(misc.ClassAttribute,
+                            {'class': class_value, 'directive': name},
+                            block_text)
+    state_machine.document.note_pending(pending)
+    return [pending]
 
-class_directive.arguments = (1, 0, 0)
+class_directive.arguments = (1, 0, 1)
 class_directive.content = 1
 
 role_arg_pat = re.compile(r'(%s)\s*(\(\s*(%s)\s*\)\s*)?$'

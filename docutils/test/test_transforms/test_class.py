@@ -108,6 +108,16 @@ multiple class values may be assigned to one element
         multiple class values may be assigned to one element
 """],
 ["""\
+.. class:: one two
+
+multiple class values may be assigned to one element
+""",
+"""\
+<document source="test data">
+    <paragraph class="one two">
+        multiple class values may be assigned to one element
+"""],
+["""\
 .. class:: fancy
 
 2. List starts at 2.
