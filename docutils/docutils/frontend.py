@@ -56,7 +56,7 @@ def set_encoding(option, opt, value, parser):
     Validate & set the encoding specified.  (Option callback.)
     """
     try:
-        value = validate_encoding(value, option.default)
+        value = validate_encoding(value, parser.defaults[option.dest])
     except LookupError, error:
         raise (optik.OptionValueError('option "%s": %s' % (opt, error)),
                None, sys.exc_info[2])
@@ -76,7 +76,8 @@ def set_encoding_and_error_handler(option, opt, value, parser):
     (Option callback.)
     """
     try:
-        value = validate_encoding_and_error_handler(value, option.default)
+        value = validate_encoding_and_error_handler(
+            value, parser.defaults[option.dest])
     except LookupError, error:
         raise (optik.OptionValueError('option "%s": %s' % (opt, error)),
                None, sys.exc_info[2])
