@@ -1,0 +1,4 @@
+2002-12-27  Bill Bumgarner  <bbum@codefab.com>
+    * Added initial working implementation of DocArticle HTML writer.
+    * 00README.txt: Added basic information.
+
