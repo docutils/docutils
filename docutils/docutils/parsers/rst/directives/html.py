@@ -31,13 +31,13 @@ def meta(match, type_name, data, state, state_machine, option_presets):
             blocktext = '\n'.join(state_machine.input_lines[
                   line_offset : state_machine.line_offset+1])
             msg = state_machine.reporter.error(
-                  'Invalid meta directive at line %s.'
-                  % state_machine.abs_line_number(), '',
-                  nodes.literal_block(blocktext, blocktext))
+                  'Invalid meta directive.', '',
+                  nodes.literal_block(blocktext, blocktext),
+                  line=state_machine.abs_line_number())
             node += msg
     else:
-        msg = state_machine.reporter.error('Empty meta directive at line %s.'
-                                          % state_machine.abs_line_number())
+        msg = state_machine.reporter.error(
+            'Empty meta directive.', line=state_machine.abs_line_number())
         node += msg
     return node.get_children(), blank_finish
 
@@ -68,9 +68,9 @@ class MetaBody(states.SpecializedBody):
         if not indented:
             line = self.state_machine.line
             msg = self.reporter.info(
-                  'No content for meta tag "%s" at line %s.'
-                  % (name, self.state_machine.abs_line_number()),
-                  '', nodes.literal_block(line, line))
+                  'No content for meta tag "%s".' % name, '',
+                  nodes.literal_block(line, line),
+                  line=self.state_machine.abs_line_number())
             return msg, blank_finish
         try:
             attname, val = utils.extract_name_value(name)[0]
@@ -84,9 +84,9 @@ class MetaBody(states.SpecializedBody):
             except utils.NameValueError, detail:
                 line = self.state_machine.line
                 msg = self.reporter.error(
-                      'Error parsing meta tag attribute "%s" at line %s: %s.'
-                      % (arg, self.state_machine.abs_line_number(), detail),
-                      '', nodes.literal_block(line, line))
+                      'Error parsing meta tag attribute "%s": %s.'
+                      % (arg, detail), '', nodes.literal_block(line, line),
+                      line=self.state_machine.abs_line_number())
                 return msg, blank_finish
         self.document.note_pending(pending)
         return pending, blank_finish

@@ -70,9 +70,9 @@ def contents(match, type_name, data, state, state_machine, option_presets):
             pending.details.update(data)
         else:                           # data is an error string
             error = state_machine.reporter.error(
-                  'Error in "%s" directive options at line %s:\n%s.'
-                  % (match.group(1), lineno, data), '',
-                  nodes.literal_block(blocktext, blocktext))
+                  'Error in "%s" directive options:\n%s.'
+                  % (match.group(1), data), '',
+                  nodes.literal_block(blocktext, blocktext), line=lineno)
             return [error] + messages, blank_finish
     state_machine.document.note_pending(pending)
     return [pending] + messages, blank_finish
@@ -94,9 +94,9 @@ def sectnum(match, type_name, data, state, state_machine, option_presets):
         blocktext = '\n'.join(state_machine.input_lines[
             line_offset : line_offset + len(datablock) + 1])
         error = state_machine.reporter.error(
-              'Error in "%s" directive options at line %s:\n%s.'
-              % (match.group(1), lineno, data), '',
-              nodes.literal_block(blocktext, blocktext))
+              'Error in "%s" directive options:\n%s.'
+              % (match.group(1), data), '',
+              nodes.literal_block(blocktext, blocktext), line=lineno)
         return [error], blank_finish
     state_machine.document.note_pending(pending)
     return [pending], blank_finish

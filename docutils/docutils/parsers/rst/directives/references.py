@@ -24,7 +24,7 @@ def target_notes(match, type_name, data, state, state_machine,
     nodelist = [pending]
     if data:
         warning = state_machine.reporter.warning(
-              'The "%s" directive takes no data; "%s" ignored (at line %s).'
-              % (match.group(1), data, state_machine.abs_line_number()))
+              'The "%s" directive takes no data; "%s" ignored.'
+              % (match.group(1), data), line=state_machine.abs_line_number())
         nodelist.append(warning)
     return nodelist, state_machine.is_next_line_blank()

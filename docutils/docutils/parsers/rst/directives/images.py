@@ -41,15 +41,15 @@ def image(match, type_name, data, state, state_machine, option_presets):
         attlines = []
     if not datablock:
         error = state_machine.reporter.error(
-              'Missing image URI argument at line %s.' % lineno, '',
-              nodes.literal_block(blocktext, blocktext))
+              'Missing image URI argument.', '',
+              nodes.literal_block(blocktext, blocktext), line=lineno)
         return [error], blank_finish
     attoffset = line_offset + i
     reference = ''.join([line.strip() for line in datablock])
     if reference.find(' ') != -1:
         error = state_machine.reporter.error(
-              'Image URI at line %s contains whitespace.' % lineno, '',
-              nodes.literal_block(blocktext, blocktext))
+              'Image URI contains whitespace.', '',
+              nodes.literal_block(blocktext, blocktext), line=lineno)
         return [error], blank_finish
     if attlines:
         success, data, blank_finish = state.parse_extension_options(
@@ -58,15 +58,16 @@ def image(match, type_name, data, state, state_machine, option_presets):
             option_presets.update(data)
         else:                           # data is an error string
             error = state_machine.reporter.error(
-                  'Error in "%s" directive options at line %s:\n%s.'
-                  % (match.group(1), lineno, data), '',
-                  nodes.literal_block(blocktext, blocktext))
+                  'Error in "%s" directive options:\n%s.'
+                  % (match.group(1), data), '',
+                  nodes.literal_block(blocktext, blocktext), line=lineno)
             return [error], blank_finish
     option_presets['uri'] = reference
     imagenode = nodes.image(blocktext, **option_presets)
     return [imagenode], blank_finish
 
 def figure(match, type_name, data, state, state_machine, option_presets):
+    lineno = state_machine.abs_line_number()
     line_offset = state_machine.line_offset
     (imagenode,), blank_finish = image(match, type_name, data, state,
                                        state_machine, option_presets)
@@ -90,7 +91,7 @@ def figure(match, type_name, data, state, state_machine, option_presets):
         elif not (isinstance(firstnode, nodes.comment) and len(firstnode) == 0):
             error = state_machine.reporter.error(
                   'Figure caption must be a paragraph or empty comment.', '',
-                  nodes.literal_block(blocktext, blocktext))
+                  nodes.literal_block(blocktext, blocktext), line=lineno)
             return [figurenode, error], blank_finish
         if len(node) > 1:
             figurenode += nodes.legend('', *node[1:])

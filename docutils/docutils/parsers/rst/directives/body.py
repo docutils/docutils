@@ -23,11 +23,11 @@ def topic(match, type_name, data, state, state_machine, option_presets):
     indented, indent, line_offset, blank_finish \
           = state_machine.get_first_known_indented(match.end())
     blocktext = '\n'.join(state_machine.input_lines[
-        initial_offset : line_offset + len(indented)])
+        initial_offset : line_offset + len(indented) - 1])
     if not state_machine.match_titles:
         error = state_machine.reporter.error(
-              'Topics may not be nested within body elements (line %s).'
-              % lineno, '', nodes.literal_block(blocktext, blocktext))
+              'Topics may not be nested within body elements.', '',
+              nodes.literal_block(blocktext, blocktext), line=lineno)
         return [error], blank_finish
     if not indented:
         return [], blank_finish
@@ -37,15 +37,15 @@ def topic(match, type_name, data, state, state_machine, option_presets):
     if indented:
         if indented[0].strip():
             warning = state_machine.reporter.warning(
-                'The second line of a topic block must be blank (line %s).'
-                % (lineno + 1 + line_offset - initial_offset), '')
+                'The second line of a topic block must be blank.',
+                line=lineno + 1 + line_offset - initial_offset)
             messages.append(warning)
         text = '\n'.join(indented)
     else:
         text = ''
     topic_node = nodes.topic(text, title, *messages)
     if text:
-        state.nested_parse(indented, line_offset, topic_node)
+        state.nested_parse(indented, line_offset + 1, topic_node)
     return [topic_node], blank_finish
 
 
@@ -58,8 +58,8 @@ def line_block(match, type_name, data, state, state_machine, option_presets,
         indented.pop()
     if not indented:
         warning = state_machine.reporter.warning(
-            'Text block expected for the "%s" directive after line %s; none '
-            'found.' % (type_name, lineno))
+            'Text block expected for the "%s" directive; none found.'
+            % type_name, line=lineno)
         return [warning], blank_finish
     text = '\n'.join(indented)
     textnodes, messages = state.inline_text(text, lineno)
