@@ -1,4 +1,4 @@
-"""Linux Format writer."""
+"""Template for creating a new writer."""
 
 __author__ = "Patrick K. O'Brien <pobrien@orbtech.com>"
 __cvsid__ = "$Id$"
