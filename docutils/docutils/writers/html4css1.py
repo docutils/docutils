@@ -746,7 +746,6 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'li', ''))
         if len(node):
             node[0].set_class('first')
-            node[-1].set_class('last')
 
     def depart_list_item(self, node):
         self.body.append('</li>\n')
