@@ -114,9 +114,11 @@ class MoinTranslator(html4css1.HTMLTranslator):
         return html4css1.HTMLTranslator.astext(self)
     
     def rst_write(self, string):
+        f = open('/tmp/mlog', 'w')
         if self.strip_paragraph:
             string = string.replace('<p>', '')
             string = string.replace('</p>', '')
+        f.write(string)
         self.body.append(string)
         
     def visit_section(self, node):
@@ -140,8 +142,16 @@ class MoinTranslator(html4css1.HTMLTranslator):
             # Unless the user has explicitly added the type of the uri then we
             # let MoinMoin handle it.
             if ':' not in node['refuri']:
-                self.wikiparser.raw = '[:%s: %s]' % (node['refuri'], 
-                                                     node.astext())
+                # The node should have a whitespace normalized name if the
+                # docutlis restructured text parser would normally fully
+                # normalize the name.
+                if 'name' in node.attributes:
+                    self.wikiparser.raw = '[:%s: %s]' % (node['name'], 
+                                                         node.astext())
+                else:
+                    self.wikiparser.raw = '[:%s: %s]' % (node['refuri'], 
+                                                         node.astext())
+
                 self.wikiparser.format(self.formatter)
                 handled = 1
             self.strip_paragraph = 0
