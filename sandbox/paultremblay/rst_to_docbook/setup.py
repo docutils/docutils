@@ -33,7 +33,7 @@ setup(name="rst_to_docbook",
                         'data/xslt_stylesheets/reStructure_to_docbook.xsl'
                      ]
                     ),
-                    (data_config_location, ['data/configuration_file'])
+                    (data_config_location, ['data/configure'])
     
     ],
     scripts=["scripts/rst2docbook.py"],
