@@ -29,9 +29,9 @@ was using reStructuredText_ for source code documentation, but they
 had some issues.  He asked if I'd be interested in doing some work on
 a customized API documentation tool.  Shortly after PyCon, Janet
 Swisher, Enthought's senior technical writer, contacted me to work out
-details.  Some email, a trip to Austin, and plenty of Texas
-hospitality later, the initial version of this document was the
-result.
+details.  Some email, a trip to Austin in May, and plenty of Texas
+hospitality later, we had a project.  This document will record the
+details, milestones, and evolution of the project.
 
 In a nutshell, Enthought is sponsoring the implementation of an open
 source API documentation tool that meets their needs.  Fortuitously,
@@ -53,9 +53,6 @@ family.  All the corporations, projects, and individuals that make up
 the community will benefit from the end result, which will be great.
 
 All that's left now is to actually do the work!
-
-As details become clear and milestones are reached, I will update this
-document to reflect the evolution of the project.
 
 .. _PyCon 2004: http://pycon.org/dc2004/
 .. _reStructuredText: http://docutils.sf.net/rst.html
