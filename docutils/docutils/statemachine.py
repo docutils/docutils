@@ -161,6 +161,11 @@ class StateMachine:
 
         self.add_states(state_classes)
 
+        self.observers = []
+        """List of bound methods or functions to call whenever the current
+        line changes.  Observers are called with one argument, ``self``.
+        Cleared at the end of `run()`."""
+
     def unlink(self):
         """Remove circular references to objects no longer required."""
         for state in self.states.values():
@@ -249,6 +254,7 @@ class StateMachine:
         except:
             self.error()
             raise
+        self.observers = []
         return results
 
     def get_state(self, next_state=None):
@@ -274,13 +280,16 @@ class StateMachine:
 
     def next_line(self, n=1):
         """Load `self.line` with the `n`'th next line and return it."""
-        self.line_offset += n
         try:
-            self.line = self.input_lines[self.line_offset]
-        except IndexError:
-            self.line = None
-            raise EOFError
-        return self.line
+            try:
+                self.line_offset += n
+                self.line = self.input_lines[self.line_offset]
+            except IndexError:
+                self.line = None
+                raise EOFError
+            return self.line
+        finally:
+            self.notify_observers()
 
     def is_next_line_blank(self):
         """Return 1 if the next line is blank or non-existant."""
@@ -304,17 +313,21 @@ class StateMachine:
             self.line = None
         else:
             self.line = self.input_lines[self.line_offset]
+        self.notify_observers()
         return self.line
 
     def goto_line(self, line_offset):
         """Jump to absolute line offset `line_offset`, load and return it."""
-        self.line_offset = line_offset - self.input_offset
         try:
-            self.line = self.input_lines[self.line_offset]
-        except IndexError:
-            self.line = None
-            raise EOFError
-        return self.line
+            try:
+                self.line_offset = line_offset - self.input_offset
+                self.line = self.input_lines[self.line_offset]
+            except IndexError:
+                self.line = None
+                raise EOFError
+            return self.line
+        finally:
+            self.notify_observers()
 
     def abs_line_offset(self):
         """Return line offset of current line, from beginning of file."""
@@ -429,6 +442,20 @@ class StateMachine:
         print >>sys.stderr, 'input line %s' % (self.abs_line_number())
         print >>sys.stderr, ('module %s, line %s, function %s'
                              % (module, line, function))
+
+    def attach_observer(self, observer):
+        """
+        The `observer` parameter is a function or bound method which takes one
+        argument, ``self`` (this StateMachine object).
+        """
+        self.observers.append(observer)
+
+    def detach_observer(self, observer):
+        self.observers.remove(observer)
+
+    def notify_observers(self):
+        for observer in self.observers:
+            observer(self)
 
 
 class State:
