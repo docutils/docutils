@@ -66,13 +66,9 @@ avec "``**gras**``".
 
 Si l'on souhaite qu'un texte apparaisse dans une police à chasse
 fixe "````doubles apostrophes inversées````". 
-
-.. sidebar:: a traduire
-
- Note that no further fiddling is done
- inside the double back-quotes -- so asterisks "``*``" etc. are left
- alone.
-
+Notez qu'aucune modification supplémentaire n'est apportée entre deux
+doubles apostrophes inversées - les astérisques, comme dans "``*``",
+sont donc conservées en l'état.
 
 Si vous souhaitez utiliser un de ces caractères "spéciaux" dans
 le texte, il n'y a généralement pas de problème -- reStructuredText
