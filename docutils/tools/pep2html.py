@@ -273,7 +273,8 @@ def fix_rst_pep(infile, outfile):
     pub.set_reader(reader_name='pep', parser_name='restructuredtext',
                    parser=None)
     pub.set_writer(writer_name='pep_html')
-    options = pub.set_options(generator=1, datestamp='%Y-%m-%d %H:%M UTC')
+    options = pub.set_options(source=infile.name, destination=outfile.name,
+                              generator=1, datestamp='%Y-%m-%d %H:%M UTC')
     pub.source = io.FileIO(options, source=infile, source_path=infile.name)
     pub.destination = io.FileIO(options, destination=outfile,
                                 destination_path=outfile.name)
