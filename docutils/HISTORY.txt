@@ -82,6 +82,8 @@ Specific:
     extracted debug dumps).
   - Renamed "enable_exit" parameter of convenience functions to
     "enable_exit_status".
+  - Enabled traceback (exception propagation) by default in
+    programmatic convenience functions.
 
 * docutils/frontend.py:
 
