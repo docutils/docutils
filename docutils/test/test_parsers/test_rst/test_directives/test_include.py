@@ -20,7 +20,7 @@ def suite():
     s.generateTests(totest)
     return s
 
-mydir = os.path.dirname(suite.func_code.co_filename)
+mydir = 'test_parsers/test_rst/test_directives/'
 include1 = os.path.join(mydir, 'include1.txt')
 include1rel = DocutilsTestSupport.utils.relative_path(None, include1)
 include2 = os.path.join(mydir, 'include2.txt')
