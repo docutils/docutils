@@ -26,7 +26,7 @@ def do_setup():
           long_description = LONG_DESCRIPTION,
           url = ('http://docutils.sourceforge.net/sandbox/gschwant/'
                  'docfactory/'),
-          version = '0.1.3',
+          version = '0.1.4',
           author = 'Dr. Gunnar Schwant',
           author_email = 'g.schwant@gmx.de',
           license = 'BSD (see LICENSE.txt)',

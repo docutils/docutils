@@ -1,10 +1,10 @@
 """
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
-:version: 0.1.3
+:version: 0.1.4
 """
 
-import sys, os
+import sys, os, webbrowser
 
 from   wxPython.wx          import *
 from   wxPython.html        import *
@@ -86,21 +86,10 @@ class HtmlPanel(wxPanel):
 
     def OnViewInBrowser(self, event):
         htmlfile = self.html.GetOpenedPage()
-        if sys.platform[:3] == 'win':
-            try:
-                from win32api import ShellExecute
-                ShellExecute(0, 'open', htmlfile,
-                             None, '%s' % self.cwd, 1)
-            except:
-                customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
-        else:
-            msg ='''
-Sorry, not implemented on your platform yet.
-
-Please contribute and tell me how to launch your
-standardbrowser with Python ...
-'''
-            customMsgBox(self, msg, 'info')
+        try:
+            webbrowser.open('file:%s' % htmlfile, autoraise=1)
+        except:
+            customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
             
     def OnPrint(self, event):
         self.printer.PrintFile(self.html.GetOpenedPage())
