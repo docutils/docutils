@@ -29,7 +29,7 @@ import re
 import xml.dom.minidom
 from types import IntType, SliceType, StringType, UnicodeType, \
      TupleType, ListType
-from UserString import MutableString
+from UserString import UserString
 
 
 # ==============================
@@ -152,7 +152,7 @@ class Node:
             method(self)
 
 
-class Text(Node, MutableString):
+class Text(Node, UserString):
 
     """
     Instances are terminal nodes (leaves) containing text only; no child
@@ -161,6 +161,12 @@ class Text(Node, MutableString):
     """
 
     tagname = '#text'
+
+    def __init__(self, data, rawsource=''):
+        UserString.__init__(self, data)
+
+        self.rawsource = rawsource
+        """The raw text from which this element was constructed."""
 
     def __repr__(self):
         data = repr(self.data)
