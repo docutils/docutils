@@ -1,12 +1,10 @@
-#! /usr/bin/env python
+# Authors:   David Goodger; Gunnar Schwant
+# Contact:   goodger@users.sourceforge.net
+# Revision:  $Revision$
+# Date:      $Date$
+# Copyright: This module has been placed in the public domain.
 
 """
-:Authors:   David Goodger; Gunnar Schwant
-:Contact:   goodger@users.sourceforge.net
-:Revision:  $Revision$
-:Date:      $Date$
-:Copyright: This module has been placed in the public domain.
-
 German language mappings for language-dependent features of Docutils.
 """
 

@@ -1,12 +1,10 @@
-#! /usr/bin/env python
+# Authors:  David Goodger; Garth Kidd
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
 """
-:Authors:  David Goodger; Garth Kidd
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
-
 Exports the following:
 
 :Modules:
