@@ -1039,7 +1039,7 @@ class Body(RSTState):
                     '|%(upperroman)s)' % enum.sequencepats)
     pats['optname'] = '%(alphanum)s%(alphanumplus)s*' % pats
     # @@@ Loosen up the pattern?  Allow Unicode?
-    pats['optarg'] = '(%(alpha)s%(alphanumplus)s*|<%(alphanum)s[^ <>]+>)' % pats
+    pats['optarg'] = '(%(alpha)s%(alphanumplus)s*|<[^ <>]+>)' % pats
     pats['shortopt'] = r'(-|\+)%(alphanum)s( ?%(optarg)s)?' % pats
     pats['longopt'] = r'(--|/)%(optname)s([ =]%(optarg)s)?' % pats
     pats['option'] = r'(%(shortopt)s|%(longopt)s)' % pats
