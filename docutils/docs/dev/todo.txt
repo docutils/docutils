@@ -345,10 +345,10 @@ Implementation Docs
 
 * Internal module documentation (docstrings).
 
-* spec/doctree.txt: DTD element structural relationships, semantics,
+* ../ref/doctree.txt: DTD element structural relationships, semantics,
   and attributes.  In progress; element descriptions to be completed.
 
-* How-to docs: In spec/howto/.
+* How-to docs: In docs/howto/.
 
   - How a Writer works & how to write one
 
@@ -779,7 +779,7 @@ __ rst/alternatives.html#or-not-to-do
 
 * Add new syntax for _`nested inline markup`?  Or extend the parser to
   parse nested inline markup somehow?  See the `collected notes
-  <http://docutils.sf.net/spec/rst/alternatives.html#nested-inline-markup>`__.
+  <rst/alternatives.html#nested-inline-markup>`__.
 
 * Drop the backticks from embedded URIs with omitted reference text?
   Should the angle brackets be kept in the output or not? ::
