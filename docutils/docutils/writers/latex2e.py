@@ -746,27 +746,29 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def language_label(self, docutil_label):
         return self.language.labels[docutil_label]
 
+    latex_equivalents = {
+        u'\u00A0' : '~',
+        u'\u2013' : '{--}',
+        u'\u2014' : '{---}',
+        u'\u2018' : '`',
+        u'\u2019' : '\'',
+        u'\u201A' : ',',
+        u'\u201C' : '``',
+        u'\u201D' : '\'\'',
+        u'\u201E' : ',,',
+        u'\u2020' : '{\\dag}',
+        u'\u2021' : '{\\ddag}',
+        u'\u2026' : '{\\dots}',
+        u'\u2122' : '{\\texttrademark}',
+        u'\u21d4' : '{$\\Leftrightarrow$}',
+    }
+
     def unicode_to_latex(self,text):
-        # see LaTeX codec http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/252124
-        # Only some special chracters are translated, for documents with many utf-8
-        # chars one should use the LaTeX unicode package.
-        latex_equivalents = {
-            u'\u00A0' : '~',
-            u'\u2013' : '{--}',
-            u'\u2014' : '{---}',
-            u'\u2018' : '`',
-            u'\u2019' : '\'',
-            u'\u201A' : ',',
-            u'\u201C' : '``',
-            u'\u201D' : '\'\'',
-            u'\u201E' : ',,',
-            u'\u2020' : '{\\dag}',
-            u'\u2021' : '{\\ddag}',
-            u'\u2026' : '{\\dots}',
-            u'\u2122' : '{\\texttrademark}',
-            u'\u21d4' : '{$\\Leftrightarrow$}',
-                }
-        for uchar in latex_equivalents.keys():
+        # see LaTeX codec
+        # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/252124
+        # Only some special chracters are translated, for documents with many
+        # utf-8 chars one should use the LaTeX unicode package.
+        for uchar in self.latex_equivalents.keys():
             text = text.replace(uchar,latex_equivalents[uchar])
         return text
 
