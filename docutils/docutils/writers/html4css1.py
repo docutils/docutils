@@ -170,7 +170,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     generator = ('<meta name="generator" content="Docutils %s: '
                  'http://docutils.sourceforge.net/" />\n')
     stylesheet_link = '<link rel="stylesheet" href="%s" type="text/css" />\n'
-    embedded_stylesheet = '<style type="text/css"><!--\n\n%s\n--></style>\n'
+    embedded_stylesheet = '<style type="text/css">\n\n%s\n</style>\n'
     named_tags = {'a': 1, 'applet': 1, 'form': 1, 'frame': 1, 'iframe': 1,
                   'img': 1, 'map': 1}
     words_and_spaces = re.compile(r'\S+| +|\n')
