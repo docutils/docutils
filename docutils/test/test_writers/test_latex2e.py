@@ -192,6 +192,8 @@ in roman numerals.
 """],
 ]
 
+# BUG: need to test for quote replacing if language is de (ngerman).
+
 totest['quote_mangling'] = [
 # input
 ["""\

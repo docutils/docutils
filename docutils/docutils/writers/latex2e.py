@@ -21,51 +21,6 @@ import string
 from types import ListType
 from docutils import writers, nodes, languages
 
-# country code by a.schlock.
-# partly manually converted from iso and babel stuff, dialects and some
-# languages remain missing (austrian, UKEnglish, brazillian etc.)
-_ISO639_TO_BABEL = {
-    'no': 'norsk',     #XXX added by hand ( forget about nynorsk?)
-    'gd': 'scottish',  #XXX added by hand
-    'hu': 'magyar',    #XXX added by hand
-    'pt': 'portuguese',#XXX added by hand
-    'sl': 'slovenian',
-    'af': 'afrikaans',
-    'bg': 'bulgarian',
-    'br': 'breton',
-    'ca': 'catalan',
-    'cs': 'czech',
-    'cy': 'welsh',
-    'da': 'danish',
-
-    'de': 'ngerman',  #XXX rather than german
-    'el': 'greek',
-    'en': 'english',
-    'eo': 'esperanto',
-    'es': 'spanish',
-    'et': 'estonian',
-    'eu': 'basque',
-    'fi': 'finnish',
-    'ga': 'irish',
-    'gl': 'galician',
-    'he': 'hebrew',
-    'hr': 'croatian',
-    'hu': 'hungarian',
-    'is': 'icelandic',
-    'it': 'italian',
-    'la': 'latin',
-    'nl': 'dutch',
-    'pl': 'polish',
-    'pt': 'portuguese',
-    'ro': 'romanian',
-    'ru': 'russian',
-    'sk': 'slovak',
-    'sr': 'serbian',
-    'sv': 'swedish',
-    'tr': 'turkish',
-    'uk': 'ukrainian'
-    }
-
 class Writer(writers.Writer):
 
     supported = ('latex','latex2e')
@@ -183,10 +138,61 @@ Notes on LaTeX
 
 class Babel:
     """Language specifics for LaTeX."""
+    # country code by a.schlock.
+    # partly manually converted from iso and babel stuff, dialects and some
+    _ISO639_TO_BABEL = {
+        'no': 'norsk',     #XXX added by hand ( forget about nynorsk?)
+        'gd': 'scottish',  #XXX added by hand
+        'hu': 'magyar',    #XXX added by hand
+        'pt': 'portuguese',#XXX added by hand
+        'sl': 'slovenian',
+        'af': 'afrikaans',
+        'bg': 'bulgarian',
+        'br': 'breton',
+        'ca': 'catalan',
+        'cs': 'czech',
+        'cy': 'welsh',
+        'da': 'danish',
+        'fr': 'french',
+        # french, francais, canadien, acadian
+        'de': 'ngerman',  #XXX rather than german
+        # ngerman, naustrian, german, germanb, austrian
+        'el': 'greek',
+        'en': 'english',
+        # english, USenglish, american, UKenglish, british, canadian
+        'eo': 'esperanto',
+        'es': 'spanish',
+        'et': 'estonian',
+        'eu': 'basque',
+        'fi': 'finnish',
+        'ga': 'irish',
+        'gl': 'galician',
+        'he': 'hebrew',
+        'hr': 'croatian',
+        'hu': 'hungarian',
+        'is': 'icelandic',
+        'it': 'italian',
+        'la': 'latin',
+        'nl': 'dutch',
+        'pl': 'polish',
+        'pt': 'portuguese',
+        'ro': 'romanian',
+        'ru': 'russian',
+        'sk': 'slovak',
+        'sr': 'serbian',
+        'sv': 'swedish',
+        'tr': 'turkish',
+        'uk': 'ukrainian'
+    }
+
     def __init__(self,lang):
         self.language = lang
+        # pdflatex does not produce double quotes for ngerman in tt.
+        self.double_quote_replacment = None
         if re.search('^de',self.language):
+            # maybe use: {\glqq} {\grqq}.
             self.quotes = ("\"`", "\"'")
+            self.double_quote_replacment = "{\\dq}"
         else:    
             self.quotes = ("``", "''")
         self.quote_index = 0
@@ -204,6 +210,22 @@ class Babel:
             else:
                 t += self.next_quote() + part
         return t
+
+    def double_quotes_in_tt (self,text):
+        if not self.double_quote_replacment:
+            return text
+        return text.replace('"', self.double_quote_replacment)
+
+    def get_language(self):
+        if self._ISO639_TO_BABEL.has_key(self.language):
+            return self._ISO639_TO_BABEL[self.language]
+        else:
+            # support dialects.
+            l = self.language.split("_")[0]
+            if self._ISO639_TO_BABEL.has_key(l):
+                return self._ISO639_TO_BABEL[l]
+        return None
+
 
 latex_headings = {
         'optionlist_environment' : [
@@ -273,9 +295,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.language = languages.get_language(settings.language_code)
         self.babel = Babel(settings.language_code)
         self.author_separator = self.language.author_separators[0]
-        if _ISO639_TO_BABEL.has_key(settings.language_code):
+        if self.babel.get_language():
             self.d_options += ',%s' % \
-                    _ISO639_TO_BABEL[settings.language_code]
+                    self.babel.get_language()
         self.head_prefix = [
               self.latex_head % (self.d_options,self.d_class),
               '\\usepackage{babel}\n',     # language is in documents settings.
@@ -398,10 +420,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         text = text.replace("#", '{\\#}')
         text = text.replace("~", '{\\~{ }}')
         if self.literal_block or self.literal:
-            # a thinspace after every quote.
-            # requested by g.schwant but not yet verified.
-            #text = text.replace('"', '"\\,')
-            pass
+            # pdflatex does not produce doublequotes for ngerman.
+            text = self.babel.double_quotes_in_tt(text)
         else:
             text = self.babel.quote_quotes(text)
         if self.insert_newline:

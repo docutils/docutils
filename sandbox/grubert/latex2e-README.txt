@@ -4,10 +4,12 @@ latex2e BUGS TODOS and other animals
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
 
-Rev. 2003-03-25
+Rev. 2003-04-01
 
 To do
 ~~~~~
+
+* quotes for german: {\glqq} {\grqq} {\glq} {\grq} {\dq}.
 
 * support embed-stylesheet.
 
@@ -127,6 +129,8 @@ ATTENTION
 
 Done
 ~~~~
+* add french to babel support.
+* double quotes by dq inside literal if language is de.
 * no quote mangling in literal blocks.
 * enumertated list with pre- and postfix.
 * support stylesheet and stylesheet-path.
