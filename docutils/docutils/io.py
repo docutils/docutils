@@ -134,7 +134,7 @@ class FileInput(Input):
     """
 
     def __init__(self, source=None, source_path=None,
-                 encoding=None, autoclose=1):
+                 encoding=None, autoclose=1, handle_io_errors=1):
         """
         :Parameters:
             - `source`: either a file-like object (which is read directly), or
@@ -145,11 +145,14 @@ class FileInput(Input):
         """
         Input.__init__(self, source, source_path, encoding)
         self.autoclose = autoclose
+        self.handle_io_errors = handle_io_errors
         if source is None:
             if source_path:
                 try:
                     self.source = open(source_path)
                 except IOError, error:
+                    if not handle_io_errors:
+                        raise
                     print >>sys.stderr, '%s: %s' % (error.__class__.__name__,
                                                     error)
                     print >>sys.stderr, (
@@ -183,7 +186,8 @@ class FileOutput(Output):
     """
 
     def __init__(self, destination=None, destination_path=None,
-                 encoding=None, error_handler='strict', autoclose=1):
+                 encoding=None, error_handler='strict', autoclose=1,
+                 handle_io_errors=1):
         """
         :Parameters:
             - `destination`: either a file-like object (which is written
@@ -198,6 +202,7 @@ class FileOutput(Output):
                         encoding, error_handler)
         self.opened = 1
         self.autoclose = autoclose
+        self.handle_io_errors = handle_io_errors
         if destination is None:
             if destination_path:
                 self.opened = None
@@ -214,6 +219,8 @@ class FileOutput(Output):
         try:
             self.destination = open(self.destination_path, 'w')
         except IOError, error:
+            if not self.handle_io_errors:
+                raise
             print >>sys.stderr, '%s: %s' % (error.__class__.__name__,
                                             error)
             print >>sys.stderr, ('Unable to open destination file for writing '

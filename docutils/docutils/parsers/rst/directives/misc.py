@@ -33,10 +33,12 @@ def include(name, arguments, options, content, lineno,
     path = utils.relative_path(None, path)
     try:
         include_file = io.FileInput(
-            source_path=path, encoding=state.document.settings.input_encoding)
+            source_path=path, encoding=state.document.settings.input_encoding,
+            handle_io_errors=None)
     except IOError, error:
         severe = state_machine.reporter.severe(
-              'Problems with "%s" directive path:\n%s.' % (name, error),
+              'Problems with "%s" directive path:\n%s: %s.'
+              % (name, error.__class__.__name__, error),
               nodes.literal_block(block_text, block_text), line=lineno)
         return [severe]
     include_text = include_file.read()
