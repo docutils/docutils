@@ -51,7 +51,14 @@ Bugs
     (The above is an example of `table syntax alternative 3`__; not
     implemented yet, but I'm thinking about it.)
 
+    Note 1: Do not clear the name->id map or invalidate the old target
+    if both old and new targets are external and refer to an identical
+    URI.  The new target is invalidated regardless.
+
     __ rst/problems.html#tables
+
+- The "::" before the table above should be removed completely from
+  the output.  A single ":" is being left behind.
 
 
 General
