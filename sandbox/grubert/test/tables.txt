@@ -36,3 +36,41 @@ a table without head
    |     |     |
    +-----+-----+
 
+a narrow table
+
+=== ===
+CL1 CL2
+=== ===
+ys  asd
+--- ---
+sda ase
+=== ===
+
+poses problems
+
+=== ===
+ A   B
+=== ===
+ 0   0
+ 1   0
+=== ===
+
+=== === ===
+ A   B  
+=== === ===
+ 0   0   0
+ 1   0   1
+=== === ===
+
+
+============================ ==================================== ===========================================
+ a wide table                    poses other problems                .
+============================ ==================================== ===========================================
+ as reST assumes the          the LaTeX writer assumes             if the actual table is wider
+ the documents being          line length being 80 chars
+ readable before                                                   it must be scaled down
+ processing          
+---------------------------- ------------------------------------ -------------------------------------------
+ narrow ones need             a little amplification as TeX's      proportional fonts seam to need more
+                                                                   horizontal space.
+============================ ==================================== ===========================================
