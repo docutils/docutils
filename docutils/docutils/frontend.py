@@ -87,7 +87,9 @@ def validate_encoding_and_error_handler(value, default):
         encoding, handler = value.split(':')
     else:
         encoding = value
-        handler = default.split(':')[1]
+        # "strict" is a fallback default encoding error handler if none
+        # specified by the default value:
+        handler = (default.split(':') + ['strict'])[1]
     validate_encoding(encoding, default)
     try:
         codecs.lookup_error(handler)
