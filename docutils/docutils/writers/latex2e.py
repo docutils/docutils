@@ -133,6 +133,8 @@ class Writer(writers.Writer):
 
     settings_defaults = {'output_encoding': 'latin-1'}
 
+    relative_path_settings = ('stylesheet_path',)
+
     config_section = 'latex2e writer'
     config_section_dependencies = ('writers',)
 
@@ -640,7 +642,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.head_prefix.extend( latex_headings['footnote_floats'] )
         self.head_prefix.extend( latex_headings['some_commands'] )
         ## stylesheet is last: so it might be possible to overwrite defaults.
-        stylesheet = self.get_stylesheet_reference()
+        stylesheet = utils.get_stylesheet_reference(settings)
         if stylesheet:
             self.head_prefix.append(self.stylesheet % (stylesheet))
 
@@ -701,17 +703,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.literal = 0
         # true when encoding in math mode
         self.mathmode = 0
-
-    def get_stylesheet_reference(self, relative_to=None):
-        settings = self.settings
-        if settings.stylesheet_path:
-            assert not settings.stylesheet, \
-                   'stylesheet and stylesheet_path are mutually exclusive.'
-            if relative_to == None:
-                relative_to = settings._destination
-            return utils.relative_path(relative_to, settings.stylesheet_path)
-        else:
-            return settings.stylesheet
 
     def to_latex_encoding(self,docutils_encoding):
         """
