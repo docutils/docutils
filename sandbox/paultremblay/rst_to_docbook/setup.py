@@ -13,7 +13,7 @@ if not var_file_exists:
 read_obj = open('var_file', 'r')
 lines = read_obj.readlines()
 data_location = lines[0]
-data_xslt_location = os.path.join(data_location, 'xslt_stylesheets')
+data_xslt_location = os.path.join(data_location, 'xslt_stylesheets', '.rst_to_docboook')
 read_obj.close()
 
 
@@ -24,10 +24,19 @@ setup(name="rst_to_docbook",
     author="Paul Tremblay",
     author_email="phthenry@earthlink.net",
     packages=['rst_to_docbook'],
-    data_files = [(data_xslt_location, ["data/xslt_stylesheets/*"])],
+    data_files = [(data_xslt_location, 
+                    [
+                        'data/xslt_stylesheets/reStruct_field_names_tokenize.xsl',
+                        'data/xslt_stylesheets/reStruct_field_names.xsl',
+                        'data/xslt_stylesheets/reStruct_to_docbook.xsl',
+                        'data/xslt_stylesheets/reStructure_to_docbook.xsl'
+                     ]
+                    )
+    
+    ],
     scripts=["scripts/rst2docbook.py"],
     )
 
-os.remove('var_file')
+## os.remove('var_file')
 
 

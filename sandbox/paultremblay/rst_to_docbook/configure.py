@@ -46,8 +46,8 @@ def make_location(target):
     write_obj = open('rst_to_docbook/location.py', 'w')
     write_obj.write(
     """
-    def get_location():
-        return %s
+def get_location():
+    return %s
 
 
     """
