@@ -4,6 +4,9 @@
 # Date: $Date$
 # Copyright: This module has been placed in the public domain.
 
+# Internationalization details are documented in
+# <http://docutils.sf.net/spec/howto/i18n.html>.
+
 """
 This package contains modules for language-dependent features of
 reStructuredText.
