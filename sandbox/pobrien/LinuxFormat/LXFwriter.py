@@ -57,6 +57,8 @@ class Translator(nodes.NodeVisitor):
         self.compact_p = 1
         self.compact_simple = None
         self.in_docinfo = False
+        self.in_sidebar = False
+        self.sidebar_start = False
 
     def astext(self):
         """Return the final formatted document as a string."""
@@ -681,6 +683,9 @@ class Translator(nodes.NodeVisitor):
         self.depart_docinfo_item()
 
     def visit_paragraph(self, node):
+        if self.in_sidebar and self.sidebar_start:
+            self.part.append('///BOX BODY///')
+            self.sidebar_start = False
         lines = node.astext().split('\n')
         line = ' '.join(lines)
         self.part.append('\n%s\n' % line)
@@ -737,6 +742,19 @@ class Translator(nodes.NodeVisitor):
 
     def depart_section(self, node):
         self.section_level -= 1
+
+    def visit_sidebar(self, node):
+        self.sidebar_class = node.get('class')
+        self.part = self.foot
+        self.in_sidebar = True
+        self.sidebar_start = True
+        self.part.append('\n\n///BOXOUT///\n')
+
+    def depart_sidebar(self, node):
+        self.sidebar_class = ''
+        self.part.append('///END BOX BODY///\n')
+        self.in_sidebar = False
+        self.part = self.body
 
     def visit_status(self, node):
         raise NotImplementedError, node.astext()
@@ -887,6 +905,9 @@ class Translator(nodes.NodeVisitor):
                 self.part = self.head
                 self.part.append('\n///STRAP///')
                 raise nodes.SkipNode
+        elif self.in_sidebar:
+            # sidebar title
+            self.part.append('///BOXOUT HEAD///\n')
         elif self.section_level == 0:
             # document title
             self.part = self.head
@@ -896,7 +917,8 @@ class Translator(nodes.NodeVisitor):
 
     def depart_title(self, node):
         self.part.append('\n')
-        self.part = self.body
+        if not self.in_sidebar:
+            self.part = self.body
 
     def visit_title_reference(self, node):
         raise NotImplementedError, node.astext()
