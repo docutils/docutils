@@ -34,9 +34,15 @@ User Docs
 - `A ReStructuredText Primer`__ (HTML file, or `text source`__).
 - `Quick reStructuredText`__ (user reference)
 
+Users who have questions or need assistance with Docutils or
+reStructuredText should `post a message`__ to the `Docutils-Users
+mailing list`__.
+
 __ docs/rst/quickstart.html
 __ docs/rst/quickstart.txt
 __ docs/rst/quickref.html
+__ mailto:docutils-users@lists.sourceforge.net
+__ http://lists.sourceforge.net/lists/listinfo/docutils-users
 
 
 Specification
