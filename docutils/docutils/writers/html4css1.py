@@ -160,11 +160,13 @@ class HTMLTranslator(nodes.NodeVisitor):
         lcode = settings.language_code
         self.language = languages.get_language(lcode)
         self.head_prefix = [
-#              self.xml_declaration % settings.output_encoding,
               self.doctype,
               self.html_head % (lcode, lcode),
               self.content_type % settings.output_encoding,
               self.generator % docutils.__version__]
+        if settings.xml_declaration:
+            self.head_prefix.insert(0, self.xml_declaration
+                                    % settings.output_encoding)
         self.head = []
         if settings.embed_stylesheet:
             stylesheet = self.get_stylesheet_reference(os.getcwd())
@@ -200,12 +202,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             return settings.stylesheet
 
     def astext(self):
-        settings = self.settings
-        output_prefix = []
-        if settings.xml_declaration:
-            output_prefix.append(
-                self.xml_declaration % settings.output_encoding)
-        return ''.join(output_prefix + self.head_prefix + self.head
+        return ''.join(self.head_prefix + self.head
                        + self.stylesheet + self.body_prefix
                        + self.body_pre_docinfo + self.docinfo
                        + self.body + self.body_suffix)
