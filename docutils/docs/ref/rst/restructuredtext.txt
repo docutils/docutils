@@ -1581,6 +1581,26 @@ Directives
 
 DTD elements: depend on the directive.
 
+Directives are an extension mechanism for reStructuredText, a way of
+adding support for new constructs without adding new syntax.
+Directives which have been implemented and registered in the reference
+reStructuredText parser are described in the `reStructuredText
+Directives`_ document.  For example, here's how an image may be
+placed::
+
+    .. image:: mylogo.png
+
+A figure (a graphic with a caption) may placed like this::
+
+    .. figure:: larch.png
+       The larch.
+
+An admonition (note, caution, etc.) contains other body elements::
+
+    .. note:: This is a paragraph
+
+       - Here is a bullet list.
+
 Directives are indicated by an explicit markup start (".. ") followed
 by the directive type, two colons, and whitespace.  Directive types
 are case-insensitive single words (alphanumerics plus internal
@@ -1609,42 +1629,20 @@ interpreted as a directive block.  Simple directives may not require
 any text beyond the directive data (if that), and will not process any
 following indented text.
 
-Directives which have been implemented and registered in the reference
-reStructuredText parser are described in the `reStructuredText
-Directives`_ document.  Below are examples of implemented directives.
-
 Directives are meant for the arbitrary processing of their contents
 (the directive data & text block), which can be transformed into
-something possibly unrelated to the original text.  Directives are
-used as an extension mechanism for reStructuredText, a way of adding
-support for new constructs without adding new syntax.  For example,
-here's how an image may be placed::
+something possibly unrelated to the original text.  It may also be
+possible for directives to be used as pragmas, to modify the behavior
+of the parser, such as to experiment with alternate syntax.  There is
+no parser support for this functionality at present; if a reasonable
+need for pragma directives is found, they may be supported.
 
-    .. image:: mylogo.png
-
-A figure (a graphic with a caption) may placed like this::
-
-    .. figure:: larch.png
-       The larch.
-
-An admonition (note, caution, etc.) contains other body elements::
-
-    .. note:: This is a paragraph
-
-       - Here is a bullet list.
-
-It may also be possible for directives to be used as pragmas, to
-modify the behavior of the parser, such as to experiment with
-alternate syntax.  There is no parser support for this functionality
-at present; if a reasonable need for pragma directives is found, they
-may be supported.
-
-Directives normally do not survive as "directive" elements past the
-parsing stage; they are a *parser construct* only, and have no
-intrinsic meaning outside of reStructuredText.  Instead, the parser
-will transform recognized directives into (possibly specialized)
-document elements.  Unknown directives will trigger level-3 (error)
-system messages.
+Directives do not survive as "directive" elements past the parsing
+stage; they are a *parser construct* only, and have no intrinsic
+meaning outside of reStructuredText.  Instead, the parser will
+transform recognized directives into (possibly specialized) document
+elements.  Unknown directives will trigger level-3 (error) system
+messages.
 
 Syntax diagram::
 
