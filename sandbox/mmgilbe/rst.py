@@ -438,10 +438,9 @@ class MoinDirectives:
         # disable the raw role
         roles._roles['raw'] = None
         
-        # As a quick fix for infinite includes we only allow a fixed number of 
-        # includes per page
-        self.num_includes = 0
-        self.max_includes = 20
+        # As a quick fix to handle recursive includes we limit the times a
+        # document can be included to one.
+        self.included_documents = []
         
     # Handle the include directive rather than letting the default docutils
     # parser handle it. This allows the inclusion of MoinMoin pages instead of
@@ -452,15 +451,12 @@ class MoinDirectives:
         
         _ = self.request.getText
         
-        # Limit the number of documents that can be included
-        if self.num_includes < self.max_includes:
-            self.num_includes += 1
-        else:
-            lines = [_("**Maximum number of allowable included documents exceeded**")]
-            state_machine.insert_input(lines, 'MoinDirectives')
-            return
-        
         if len(content):
+            if content[0] in self.included_documents:
+                lines = [_("**Duplicate included files are not permitted**")]
+                state_machine.insert_input(lines, 'MoinDirectives')
+                return
+            self.included_documents.append(content[0])
             page = Page(page_name = content[0], request = self.request)
             if page.exists():
                 text = page.get_raw_body()
