@@ -786,10 +786,6 @@ __ rst/alternatives.html#or-not-to-do
   A section titled "3. Conclusion" could then be referred to by
   "``Conclusion_``" (i.e., without the "3.").
 
-* `Syntax for line blocks`__ (currently a directive)?
-
-  __ rst/alternatives.html#syntax-for-line-blocks
-
 * Implement auto-enumerated lists?  See `Auto-Enumerated Lists`__.
 
   __ rst/alternatives.html#auto-enumerated-lists
