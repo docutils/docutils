@@ -72,22 +72,22 @@ class HTMLTranslator(nodes.NodeVisitor):
       contain either a single paragraph, a nested simple list, or a
       paragraph followed by a nested simple list.  This means that
       this list can be compact:
-    
+
           - Item 1.
           - Item 2.
-    
+
       But this list cannot be compact:
-    
+
           - Item 1.
-    
+
             This second paragraph forces space between list items.
-    
+
           - Item 2.
-    
+
     - In non-list contexts, omit <p> tags on a paragraph if that
       paragraph is the only child of its parent (footnotes & citations
       are allowed a label first).
-    
+
     - Regardless of the above, in definitions, table cells, field
       bodies, option descriptions, and list items, mark the first
       child with 'class="first"' if it is a paragraph.  The stylesheet
@@ -107,6 +107,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     stylesheet_link = '<link rel="stylesheet" href="%s" type="text/css" />\n'
     named_tags = {'a': 1, 'applet': 1, 'form': 1, 'frame': 1, 'iframe': 1,
                   'img': 1, 'map': 1}
+    words_and_spaces = re.compile(r'\S+| +|\n')
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
@@ -230,6 +231,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</blockquote>\n')
 
     def check_simple_list(self, node):
+        """Check for a simple list that can be rendered compactly."""
         visitor = SimpleListChecker(self.document)
         try:
             node.walk(visitor)
@@ -646,9 +648,16 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_literal(self, node):
         self.body.append(self.starttag(node, 'tt', '', CLASS='literal'))
-
-    def depart_literal(self, node):
+        text = node.astext()
+        for token in self.words_and_spaces.findall(text):
+            if token in ('\n', ' '):
+                self.body.append(token)
+            elif token.strip():
+                self.body.append('<span class="pre">%s</span>' % token)
+            else:
+                self.body.append('&nbsp;' * (len(token) - 1) + ' ')
         self.body.append('</tt>')
+        raise nodes.SkipNode
 
     def visit_literal_block(self, node):
         self.body.append(self.starttag(node, 'pre', suffix='',
@@ -991,13 +1000,27 @@ class SimpleListChecker(nodes.GenericNodeVisitor):
         pass
 
     def visit_list_item(self, node):
-        if len(node) <= 1 or (len(node) == 2 and
-                              isinstance(node[0], nodes.paragraph) and
-                              (isinstance(node[1], nodes.bullet_list) or
-                               isinstance(node[1], nodes.enumerated_list))):
+        children = []
+        for child in node.get_children():
+            if not isinstance(child, nodes.Invisible):
+                children.append(child)
+        if (children and isinstance(children[0], nodes.paragraph)
+            and (isinstance(children[-1], nodes.bullet_list)
+                 or isinstance(children[-1], nodes.enumerated_list))):
+            children.pop()
+        if len(children) <= 1:
             return
         else:
             raise nodes.NodeFound
 
     def visit_paragraph(self, node):
         raise nodes.SkipNode
+
+    def invisible_visit(self, node):
+        """Invisible nodes should be ignored."""
+        pass
+
+    visit_comment = invisible_visit
+    visit_substitution_definition = invisible_visit
+    visit_target = invisible_visit
+    visit_pending = invisible_visit
