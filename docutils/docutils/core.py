@@ -197,6 +197,7 @@ class Publisher:
             self.writer.assemble_parts()
         except Exception, error:
             if self.settings.traceback: # propagate exceptions?
+                self.debugging_dumps(document)                
                 raise
             self.report_Exception(error)
             exit = 1
@@ -210,6 +211,8 @@ class Publisher:
         return output
 
     def debugging_dumps(self, document):
+        if not document:
+            return
         if self.settings.dump_settings:
             print >>sys.stderr, '\n::: Runtime settings:'
             print >>sys.stderr, pprint.pformat(self.settings.__dict__)
