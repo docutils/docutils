@@ -13,6 +13,9 @@
 #   -t    Run the script in trace mode ("set -o xtrace").
 #   -u    Regenerate .html unconditionally.
 
+# exit on error
+set -e
+
 projdir=/home/groups/d/do/docutils
 project=docutils
 dest=$projdir/htdocs
@@ -43,17 +46,17 @@ if [ $trace -eq 1 ] ; then
     set -o xtrace
 fi
 
+# update library area
+cd $lib
+cvs -Q -z3 $root update 2>&1 > /dev/null
+
 # prep the tmp area
 rm -rf $tmp 2>&1 > /dev/null
 mkdir -p $tmp 2>&1 > /dev/null
-cd $tmp
 
 # gather the materials
+cd $tmp
 cvs -Q -z3 $root export -rHEAD $project sandbox web
-
-if [ $? -ne 0 ] ; then
-    exit 1
-fi
 
 # remove junk
 find -name .cvsignore | xargs rm
@@ -84,10 +87,6 @@ cp -ru . $dest
 # destroy the evidence
 cd
 rm -rf $tmp
-
-# update library area
-cd $lib
-cvs -Q $root update 2>&1 > /dev/null
 
 # update HTML docs
 cd $dest/tools
