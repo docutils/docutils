@@ -245,6 +245,7 @@ latex_headings = {
             '% some commands, that could be overwritten in the style file.\n'
             '\\newcommand{\\rubric}[1]'
             '{\\subsection*{~\\hfill {\\it #1} \\hfill ~}}\n'
+            '\\newcommand{\\titlereference}[1]{\\textsl{#1}}\n'
             '% end of "some commands"\n',
          ]
         }
@@ -623,11 +624,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_footnote(node)
 
     def visit_title_reference(self, node):
-        # BUG title-references are what?
-        pass
+        self.body.append( '\\titlereference{' )
 
     def depart_title_reference(self, node):
-        pass
+        self.body.append( '}' )
 
     def visit_citation_reference(self, node):
         href = ''

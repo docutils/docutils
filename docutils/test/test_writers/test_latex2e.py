@@ -61,6 +61,7 @@ latex_head = """\
 % end floats for footnotes
 % some commands, that could be overwritten in the style file.
 \\newcommand{\\rubric}[1]{\\subsection*{~\\hfill {\\it #1} \\hfill ~}}
+\\newcommand{\\titlereference}[1]{\\textsl{#1}}
 % end of "some commands"
 """
 
