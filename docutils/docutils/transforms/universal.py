@@ -188,9 +188,14 @@ class FinalCheckVisitor(nodes.SparseNodeVisitor):
                 if resolver_function(node):
                     break
             else:
-                msg = self.document.reporter.error(
-                      'Unknown target name: "%s".' % (node['refname']),
-                      base_node=node)
+                if self.document.nameids.has_key(refname):
+                    msg = self.document.reporter.error(
+                        'Duplicate target name, cannot be used as a unique '
+                        'reference: "%s".' % (node['refname']), base_node=node)
+                else:
+                    msg = self.document.reporter.error(
+                        'Unknown target name: "%s".' % (node['refname']),
+                        base_node=node)
                 msgid = self.document.set_id(msg)
                 prb = nodes.problematic(
                       node.rawsource, node.rawsource, refid=msgid)

@@ -217,13 +217,11 @@ class IndirectHyperlinks(Transform):
         reftarget_id = self.document.nameids.get(refname)
         if not reftarget_id:
             # Check the unknown_reference_resolvers
-            handled = 0
-            for i in self.document.transformer.unknown_reference_resolvers:
-                print `target`
-                if i(target):
-                    handled = 1
+            for resolver_function in (self.document.transformer
+                                      .unknown_reference_resolvers):
+                if resolver_function(target):
                     break
-            if not handled:
+            else:
                 self.nonexistent_indirect_target(target)
             return
         reftarget = self.document.ids[reftarget_id]
@@ -256,7 +254,11 @@ class IndirectHyperlinks(Transform):
         reftarget.referenced = 1
 
     def nonexistent_indirect_target(self, target):
-        self.indirect_target_error(target, 'which does not exist')
+        if self.document.nameids.has_key(target['refname']):
+            self.indirect_target_error(target, 'which is a duplicate, and '
+                                       'cannot be used as a unique reference')
+        else:
+            self.indirect_target_error(target, 'which does not exist')
 
     def circular_indirect_reference(self, target):
         self.indirect_target_error(target, 'forming a circular reference')
