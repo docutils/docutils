@@ -429,8 +429,9 @@ class HTMLTranslator(nodes.NodeVisitor):
             href = '#' + node['refid']
         elif node.has_key('refname'):
             href = '#' + self.document.nameids[node['refname']]
-        self.body.append(self.starttag(node, 'a', '[', href=href,
-                                       CLASS='citation-reference'))
+        self.body.append(self.starttag(node, 'a', '[',
+                                       CLASS='citation-reference',
+                                       **(href and {'href': href} or {})))
 
     def depart_citation_reference(self, node):
         self.body.append(']</a>')
@@ -758,8 +759,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         else:                           # shouldn't happen
             suffix = '???'
             self.content.append('???')
-        self.body.append(self.starttag(node, 'a', suffix, href=href,
-                                       CLASS='footnote-reference'))
+        self.body.append(self.starttag(node, 'a', suffix,
+                                       CLASS='footnote-reference',
+                                       **(href and {'href': href} or {})))
 
     def depart_footnote_reference(self, node):
         self.body.append(self.context.pop() + '</a>')
@@ -1021,14 +1023,15 @@ class HTMLTranslator(nodes.NodeVisitor):
         else:
             self.body.append('<p>')
             self.context.append('</p>\n')
+        href = ''
         if node.has_key('refuri'):
             href = node['refuri']
         elif node.has_key('refid'):
             href = '#' + node['refid']
         elif node.has_key('refname'):
             href = '#' + self.document.nameids[node['refname']]
-        self.body.append(self.starttag(node, 'a', '', href=href,
-                                       CLASS='reference'))
+        self.body.append(self.starttag(node, 'a', '', CLASS='reference',
+                                       **(href and {'href': href} or {})))
 
     def depart_reference(self, node):
         self.body.append('</a>')
