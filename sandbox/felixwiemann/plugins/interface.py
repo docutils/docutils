@@ -16,7 +16,7 @@ Things not (yet) covered here:
 
 * Adding a Component.
 * Adding an option.
-* Testing.
+* Writing a test case for an extension.
 """
 
 class KeyNode(nodes.Inline, nodes.TextElement):
