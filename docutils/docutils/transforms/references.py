@@ -448,7 +448,10 @@ class InternalTargets(Transform):
                     element.walk(visitor)
                 except nodes.NodeFound:
                     target.parent.remove(target)
-                    visitor.found.insert(0, target)
+                    for child in visitor.found:
+                        target += child
+                    visitor.found.children = []
+                    visitor.found += target
                     return
             else:
                 # At end of section or container; try parent's sibling

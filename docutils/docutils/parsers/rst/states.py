@@ -1857,6 +1857,8 @@ class Body(RSTState):
         else:                       # anonymous target
             if refuri:
                 target['refuri'] = refuri
+            else:
+                self.document.note_internal_target(target)
             target['anonymous'] = 1
             self.document.note_anonymous_target(target)
 
