@@ -1,0 +1,6 @@
+include *.txt
+include *.py
+recursive-include docs *
+recursive-include spec *
+recursive-include test *
+recursive-include tools *

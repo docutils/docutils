@@ -1,0 +1,385 @@
+================
+ Docutils Notes
+================
+:Date: $Date$
+:Revision: $Revision$
+
+.. contents::
+
+To Do
+=====
+
+General
+-------
+
+- Document!
+
+  - Internal module documentation.
+
+  - User docs.
+
+  - Doctree nodes (DTD element) semantics:
+
+    - External (public) attributes (node.attributes).
+    - Internal attributes (node.*).
+    - Linking mechanism.
+
+- Refactor
+
+  - Rename methods & variables according to the `coding conventions`_
+    below.
+
+  - The name->id conversion and hyperlink resolution code needs to be
+    checked for correctness and refactored.  I'm afraid it's a bit of
+    a spaghetti mess now.
+
+- Add validation?  See http://pytrex.sourceforge.net, RELAX NG.
+
+- Ask Python-dev for opinions (GvR for a pronouncement) on special
+  variables (__author__, __version__, etc.): convenience vs. namespace
+  pollution.  Ask opinions on whether or not Docutils should recognize
+  & use them.
+
+- Provide a mechanism to pass options to Readers, Writers, and Parsers
+  through docutils.core.publish/Publisher?  Or create custom
+  Reader/Writer/Parser objects first, and pass *them* to
+  publish/Publisher?
+
+- In reader.get_reader_class (& parser & writer too), should we be
+  importing 'standalone' or 'docutils.readers.standalone'?  (This would
+  avoid importing top-level modules if the module name is not in
+  docutils/readers.  Potential nastiness.)
+
+- Perhaps store a name->id mapping file?  This could be stored
+  permanently, read by subsequent processing runs, and updated with
+  new entries.  ("Persistent ID mapping"?)
+
+- The "Docutils System Messages" section appears even if no actual
+  system messages are there.  They must be below the threshold.  The
+  transform should be fixed.
+
+- TOC transform: use alt-text for inline images.
+
+
+Specification
+-------------
+
+- Complete PEP 258 Docutils Design Specification.
+
+  - Fill in the blanks in API details.
+
+  - Specify the nodes.py internal data structure implementation.
+
+        [Tibs:] Eventually we need to have direct documentation in
+        there on how it all hangs together - the DTD is not enough
+        (indeed, is it still meant to be correct?  [Yes, it is.]).
+
+- Rework PEP 257, separating style from spec from tools, wrt Docutils?
+  See Doc-SIG from 2001-06-19/20.
+
+- Add layout component to framework?  Or part of the formatter?
+
+- Once doctree.txt is fleshed out, how about breaking (most of) it up
+  and putting it into nodes.py as docstrings?
+
+
+reStructuredText Parser
+-----------------------
+
+- Add motivation sections for constructs in spec.
+
+- Allow very long titles (on two or more lines)?
+
+- And for the sake of completeness, should definition list terms be
+  allowed to be very long (two or more lines) also?
+
+- Allow hyperlink references to targets in other documents?  Not in an
+  HTML-centric way, though (it's trivial to say
+  ``http://www.whatever.com/doc#name``, and useless in non-HTML
+  contexts).  XLink/XPointer?  ``.. baseref::``?  See Doc-SIG
+  2001-08-10.
+
+- Add character processing?  For example:
+
+  - ``--`` -> em-dash (or ``--`` -> en-dash, and ``---`` -> em-dash).
+    (Look for pre-existing conventions.)
+  - Convert quotes to curly quote entities.  (Essentially impossible
+    for HTML?  Unnecessary for TeX.  An output issue?)
+  - Various forms of ``:-)`` to smiley icons.
+  - ``"\ "`` -> &nbsp;.
+  - Escaped newlines -> <BR>.
+  - Escaped period or quote as a disappearing catalyst to allow
+    character-level inline markup?
+  - Others?
+
+  How to represent character entities in the text though?  Probably as
+  Unicode.
+
+  Which component is responsible for this, the parser, the reader, or
+  the writer?
+
+- Implement the header row separator modification to table.el.  (Wrote
+  to Takaaki Ota & the table.el mailing list on 2001-08-12, suggesting
+  support for '=====' header rows.  On 2001-08-17 he replied, saying
+  he'd put it on his to-do list, but "don't hold your breath".)
+
+- Tony says inline markup rule 7 could do with a *little* more
+  exposition in the spec, to make clear what is going on for people
+  with head colds.
+
+- Alan Jaffray suggested (and I agree) that it would be sensible to:
+
+  - have a directive to specify a default role for interpreted text
+  - allow the reST processor to take an argument for the default role
+  - issue a warning when processing documents with no default role
+    which contain interpreted text with no explicitly specified role
+
+- Fix the parser's indentation handling to conform with the stricter
+  definition in the spec.  (Explicit markup blocks should be strict or
+  forgiving?)
+
+- Tighten up the spec for indentation of "constructs using complex
+  markers": field lists and option lists?  Bodies may begin on the
+  same line as the marker or on a subsequent line (with blank lines
+  optional).  Require that for bodies beginning on the same line as
+  the marker, all lines be in strict alignment.  Currently, this is
+  acceptable::
+
+      :Field-name-of-medium-length: Field body beginning on the same
+          line as the field name.
+
+  This proposal would make the above example illegal, instead
+  requiring strict alignment.  A field body may either begin on the
+  same line::
+
+      :Field-name-of-medium-length: Field body beginning on the same
+                                    line as the field name.
+
+  Or it may begin on a subsequent line::
+
+      :Field-name-of-medium-length:
+          Field body beginning on a line subsequent to that of the
+          field name.
+
+  This would be especially relevant in degenerate cases like this::
+
+      :Number-of-African-swallows-requried-to-carry-a-coconut:
+          It would be very difficult to align the field body with
+          the left edge of the first line if it began on the same
+          line as the field name.
+
+- Allow syntax constructs to be added or disabled at run-time.
+
+- Make footnotes two-way, GNU-style?  What if there are multiple
+  references to a single footnote?
+
+- Add RFC-2822 header parsing (for PEP, email Readers).
+
+- Change ``.. meta::`` to use a "pending" element, only activated for
+  HTML writers.
+
+- Allow for variant styles by interpreting indented lists as if they
+  weren't indented?  For example, currently the list below will be
+  parsed as a list within a block quote::
+
+      paragraph
+
+        * list item 1
+        * list item 2
+
+  But a lot of people seem to write that way, and HTML browsers make
+  it look as if that's the way it should be.  The parser could check
+  the contents of block quotes, and if they contain only a single
+  list, remove the block quote wrapper.  There would be two problems:
+
+  1. What if we actually *do* want a list inside a block quote?
+
+  2. What if such a list comes immediately after an indented
+     construct, such as a literal block?
+
+  Both could be solved using empty comments (problem 2 already exists
+  for a block quote after a literal block).  But that's a hack.
+
+  See the Doc-SIG discussion starting 2001-04-18 with Ed Loper's
+  "Structuring: a summary; and an attempt at EBNF", item 4.
+
+- Produce a better system message when a list ends abruptly.  Input::
+
+      -1    Option "1"
+      -2
+
+  Produces::
+
+      Reporter: WARNING (2) Unindent without blank line at line 2.
+
+  But it should produce::
+
+      Reporter: WARNING (2) List ends without blank line at line 2.
+
+
+Directives
+``````````
+
+- Allow directives to be added at run-time.
+
+- Use the language module for directive attribute names?
+
+- Add more attributes to the image directive: align, border?
+
+- Implement directives:
+
+  - html.imagemap
+
+  - components.endnotes, .citations, .topic, .sectnum (section
+    numbering; add support to .contents; could be cmdline option also)
+
+  - misc.raw
+
+  - misc.include: ``#include`` one file in another.  But how to
+    parse wrt sections, reference names, conflicts?
+
+  - misc.exec: Execute Python code & insert the results.  Perhaps
+    dangerous?
+
+  - misc.eval: Evaluate an expression & insert the text.  At parse
+    time or at substitution time?
+
+  - block.qa: Questions & Answers.  Implement as a generic two-column
+    marked list?  Or as a standalone construct?
+
+  - block.columns: Multi-column table/list, with number of columns as
+    argument.
+
+  - block.verse: Paragraphs with linebreaks preserved.  A directive
+    would be easy; what about a literal-block-like prefix, perhaps
+    ';;'?  E.g.::
+
+        Take it away, Eric the orchestra leader!  ;;
+
+            Half a bee,
+            Philosophically,
+            Must ipso-facto
+            Half not be.
+            You see?
+
+            ...
+
+  - colorize.python: Colorize Python code.  Fine for HTML output, but
+    what about other formats?  Revert to a literal block?  Do we need
+    some kind of "alternate" mechanism?  Perhaps use a "pending"
+    transform, which could switch its output based on the "format" in
+    use.  Use a factory function "transformFF()" which returns either
+    "HTMLTransform()" instance or "GenericTransform" instance?
+
+  - text.date: Datestamp.  For substitutions.
+
+    - Combined with misc.include, implement canned macros?
+
+
+Unimplemented Transforms
+------------------------
+
+- Footnote Gathering
+
+  Collect and move footnotes to the end of a document.
+
+- Hyperlink Target Gathering
+
+  It probably comes in two phases, because in a Python context we need
+  to *resolve* them on a per-docstring basis [do we? --DG], but if the
+  user is trying to do the callout form of presentation, they would
+  then want to group them all at the end of the document.
+
+- Reference Merging
+
+  When merging two or more subdocuments (such as docstrings),
+  conflicting references may need to be resolved.  There may be:
+
+  - duplicate reference and/or substitution names that need to be made
+    unique; and/or
+  - duplicate footnote numbers that need to be renumbered.
+
+  Should this be done before or after reference-resolving transforms
+  are applied?  What about references from within one subdocument to
+  inside another?
+
+- Document Splitting
+
+  If the processed document is written to multiple files (possibly in
+  a directory tree), it will need to be split up.  References will
+  have to be adjusted.
+
+  (HTML only?)
+
+- Navigation
+
+  If a document is split up, each segment will need navigation links:
+  parent, children (small TOC), previous (preorder), next (preorder).
+
+- Index
+
+
+HTML Writer
+-----------
+
+- Considerations for an HTML Writer [#]_:
+
+  - Boolean attributes.  ``<element boolean>`` is good, ``<element
+    boolean="boolean">`` is bad.  Use a special value in attribute
+    mappings, such as ``None``?
+
+  - Escape double-dashes inside comments.
+
+  - Put the language code into an appropriate element's LANG
+    attribute (<HTML>?).
+
+  - Docutils identifiers (the "class" and "id" attributes) will
+    conform to the regular expression ``[a-z][-a-z0-9]*``.  See
+    ``docutils.utils.id()``.
+
+  .. _HTML 4.01 spec: http://www.w3.org/TR/html401
+  .. _CSS1 spec: http://www.w3.org/TR/REC-CSS1
+  .. [#] Source: `HTML 4.0 in Netscape and Explorer`__.
+  __ http://www.webreference.com/dev/html4nsie/index.html
+
+- Allow for style sheet info to be passed in, either as a <LINK>, or
+  as embedded style info.
+
+- Construct a templating system, as in ht2html/yaptu, using directives
+  and substitutions for dynamic stuff.
+
+- Improve the granularity of document parts in the HTML writer, so
+  that one could just grab the parts needed.
+
+
+Coding Conventions
+==================
+
+This project shall follow the generic coding conventions as specified
+in the `Style Guide for Python Code`__ and `Docstring Conventions`__
+PEPs, with the following clarifications:
+
+- 4 spaces per indentation level.  No tabs.
+- No one-liner compound statements (i.e., no ``if x: return``: use two
+  lines & indentation), except for degenerate class or method
+  definitions (i.e., ``class X: pass`` is O.K.).
+- Lines should be no more than 78 or 79 characters long.
+- "CamelCase" shall be used for class names.
+- Use "lowercase" or "lowercase_with_underscores" for function,
+  method, and variable names.  For short names, maximum two joined
+  words, use lowercase (e.g. 'tagname').  For long names with three or
+  more joined words, or where it's hard to parse the split between two
+  words, use lowercase_with_underscores (e.g., 'note_explicit_target',
+  'explicit_target').
+
+__ http://www.python.org/peps/pep-0008.html
+__ http://www.python.org/peps/pep-0257.html
+
+
+..
+   Local Variables:
+   mode: indented-text
+   indent-tabs-mode: nil
+   sentence-end-double-space: t
+   fill-column: 70
+   End:

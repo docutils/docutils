@@ -1,0 +1,52 @@
+==================
+ Docutils History
+==================
+
+:Author: David Goodger
+:Contact: goodger@users.sourceforge.net
+:Date: $Date$
+:Website: http://docutils.sourceforge.net/
+
+
+Acknowledgements
+================
+
+I would like to acknowledge the people who have made a direct impact
+on the Docutils project, knowingly or not, in terms of encouragement,
+suggestions, criticism, bug reports, code contributions, and related
+projects:
+
+    David Ascher, Fred Drake, Jim Fulton, Peter Funk, Doug Hellmann,
+    Juergen Hermann, Tony Ibbs, Richard Jones, Garth Kidd, Daniel
+    Larsson, Marc-Andre Lemburg, Wolfgang Lipp, Edward Loper, Ken
+    Manheimer, Paul Moore, Michel Pelletier, Sam Penrose, Tim Peters,
+    Mark Pilgrim, Tavis Rudd, Ueli Schlaepfer, Bob Tolbert, Laurence
+    Tratt, Guido van Rossum, Barry Warsaw, Edward Welbourne, Ka-Ping
+    Yee, Moshe Zadka
+
+(I'm still waiting for contributions of computer equipment and cold
+hard cash :-).)  Hopefully I haven't forgotten anyone or misspelled
+any names; apologies (and please let me know!) if I have.
+
+
+Release 0.1 (2002-04-??)
+========================
+
+This is the first release of Docutils, merged from the now inactive
+reStructuredText__ and `Docstring Processing System`__ projects.  For
+the pre-Docutils history, see the `reStructuredText HISTORY.txt`__ and
+the `DPS HISTORY.txt`__ files.
+
+__ http://structuredtext.sourceforge.net/
+__ http://docstring.sourceforge.net/
+__ http://structuredtext.sourceforge.net/HISTORY.txt
+__ http://docstring.sourceforge.net/HISTORY.txt
+
+
+..
+   Local Variables:
+   mode: indented-text
+   indent-tabs-mode: nil
+   sentence-end-double-space: t
+   fill-column: 70
+   End:
