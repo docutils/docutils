@@ -203,6 +203,7 @@ title adornment)."
   (modify-syntax-entry ?> "." rst-mode-syntax-table)
   (modify-syntax-entry ?\\ "\\" rst-mode-syntax-table)
   (modify-syntax-entry ?| "." rst-mode-syntax-table)
+  (modify-syntax-entry ?_ "." rst-mode-syntax-table)
   )
 
 (defvar rst-mode-abbrev-table nil
