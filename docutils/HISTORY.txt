@@ -97,6 +97,8 @@ Specific:
   - Reworked the name/id bookkeeping; to ``document``, removed
     ``explicit_targets`` and ``implicit_targets`` attributes, added
     ``nametypes`` attribute and ``set_name_id_map`` method.
+  - Added ``NodeFound`` exception, for use with ``NodeVisitor``
+    traversals.
 
 * docutils/optik.py: Added to project.  Combined from the Optik
   package, with added option groups and other modifications.  The use
@@ -204,7 +206,10 @@ Specific:
 * docutils/writers/docutils_xml.py: Added to project; trivial writer
   of the Docutils internal doctree in XML.
 
-* spec/doctree.txt: Changed the title to "The Docutils Document Tree".
+* spec/doctree.txt:
+
+  - Changed the title to "The Docutils Document Tree".
+  - Added "Hyperlink Bookkeeping" section.
 
 * spec/docutils.dtd:
 
