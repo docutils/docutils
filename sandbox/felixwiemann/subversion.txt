@@ -57,3 +57,6 @@ http://www.python-hosting.com/freetracFaq
 Red Bean
   Bill said it might be possible to host Docutils there; I'll ask him
   for details if BerliOS turns out to be unusable.
+
+https://gna.org/task/?func=detailitem&item_id=118
+  Not yet implemented, but maybe soon?
