@@ -312,6 +312,10 @@ General
   enabling a section for each Docutils component so that (for example)
   HTML's and LaTeX's stylesheets don't interfere with each other.
 
+* The "docutils.conf" included with Docutils should become complete,
+  with examples of every setting (possibly commented).  It's currently
+  sparse, requiring doc lookups.
+
 
 Documentation
 -------------

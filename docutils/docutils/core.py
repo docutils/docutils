@@ -142,7 +142,8 @@ class Publisher:
             self.settings._destination = destination_path
         self.destination = self.destination_class(
             destination=destination, destination_path=destination_path,
-            encoding=self.settings.output_encoding)
+            encoding=self.settings.output_encoding,
+            error_handler=self.settings.output_encoding_error_handler)
 
     def apply_transforms(self, document):
         document.transformer.populate_from_components(

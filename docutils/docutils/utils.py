@@ -75,7 +75,7 @@ class Reporter:
     """List of names for system message levels, indexed by level."""
 
     def __init__(self, source, report_level, halt_level, stream=None,
-                 debug=0, encoding='ascii:replace'):
+                 debug=0, encoding='ascii', error_handler='replace'):
         """
         Initialize the `ConditionSet` forthe `Reporter`'s default category.
 
@@ -90,8 +90,8 @@ class Reporter:
             - `stream`: Where warning output is sent.  Can be file-like (has a
               ``.write`` method), a string (file name, opened for writing), or
               `None` (implies `sys.stderr`; default).
-            - `encoding`: The encoding and error handler (colon-separated)
-              for stderr output.
+            - `encoding`: The encoding for stderr output.
+            - `error_handler`: The error handler for stderr output encoding.
         """
         self.source = source
         """The path to or description of the source data."""
@@ -101,8 +101,6 @@ class Reporter:
         elif type(stream) in (StringType, UnicodeType):
             raise NotImplementedError('This should open a file for writing.')
 
-        encoding, error_handler = (encoding.split(':') + ['replace'])[:2]
-        
         self.encoding = encoding
         """The character encoding for the stderr output."""
 
@@ -393,7 +391,8 @@ def new_document(source, settings=None):
         settings = frontend.OptionParser().get_default_values()
     reporter = Reporter(source, settings.report_level, settings.halt_level,
                         stream=settings.warning_stream, debug=settings.debug,
-                        encoding=settings.error_encoding)
+                        encoding=settings.error_encoding,
+                        error_handler=settings.error_encoding_error_handler)
     document = nodes.document(settings, reporter, source=source)
     document.note_source(source, -1)
     return document

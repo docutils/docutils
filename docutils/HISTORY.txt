@@ -122,8 +122,11 @@ Specific:
   - Added "--error-encoding" option/setting, "_disable_config"
     internal setting.
   - Added encoding validation; updated "--input-encoding" and
-    "--output-encoding".
+    "--output-encoding"; added "--error-encoding-error-handler" and
+    "--output-encoding-error-handler".
   - Moved config file processing from docutils/core.py.
+  - Updated ``OptionParser.populate_from_components`` to handle new
+    ``SettingsSpec.settings_defaults`` dict.
 
 * docutils/io.py:
 
@@ -507,6 +510,7 @@ Specific:
   - Rearranged the structure.
   - Kept up to date, with new settings, command-line options etc.
   - Added section for ``rst2latex.py`` (Engelbert Gruber).
+  - Converted settings table into a definition list.
 
 * docs/rst/quickstart.txt:
 

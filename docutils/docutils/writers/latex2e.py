@@ -75,7 +75,7 @@ class Writer(writers.Writer):
         ),
     )
 
-    settings_default_overrides = {'output_encoding': 'latin-1:strict'}
+    settings_defaults = {'output_encoding': 'latin-1'}
 
     output = None
     """Final translated form of `document`."""
