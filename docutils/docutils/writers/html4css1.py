@@ -922,7 +922,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             if node.hasattr('refid'):
                 atts['class'] = 'toc-backref'
                 atts['href'] = '#' + node['refid']
-            self.body.append(self.starttag({}, 'a', '', **atts)
+            self.body.append(self.starttag({}, 'a', '', **atts))
             self.context.append('</a></h%s>\n' % (self.section_level))
 
     def depart_title(self, node):
