@@ -36,6 +36,7 @@ import unittest
 import difflib
 import inspect
 from pprint import pformat
+from types import UnicodeType
 import package_unittest
 import docutils
 from docutils import frontend, nodes, statemachine, urischemes, utils
@@ -173,6 +174,12 @@ class CustomTestCase(unittest.TestCase):
 
     def compare_output(self, input, output, expected):
         """`input`, `output`, and `expected` should all be strings."""
+        if type(input) == UnicodeType:
+            input = input.encode('raw_unicode_escape')
+        if type(output) == UnicodeType:
+            output = output.encode('raw_unicode_escape')
+        if type(expected) == UnicodeType:
+            expected = expected.encode('raw_unicode_escape')
         try:
             self.assertEquals('\n' + output, '\n' + expected)
         except AssertionError:
