@@ -235,7 +235,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
               #   but ??
               #
               # extra space between text in tables and the line above them
-              '\\setlength{\\extrarowheight}{2pt}',
+              '\\setlength{\\extrarowheight}{2pt}\n',
               '\\usepackage{amsmath}\n',   # what fore amsmath. 
               '\\usepackage{graphicx}\n',
               '\\usepackage{color}\n',
