@@ -302,10 +302,17 @@ their name.  To link to the Lists_ heading, I write "``Lists_``".  If
 the heading has a space in it like `text styles`_, we need to quote
 the heading "```text styles`_``".
 
-To indicate the document title, use a unique adornment style at the
-beginning of the document.  To indicate the document subtitle, use
-another unique adornment style immediately after the document title. 
-For example::
+Document Title / Subtitle
+-------------------------
+
+The title of the whole document is a distinct concept from section titles and
+is formatted somewhat differently (e.g. the HTML writer by default shows it as
+a centered heading).
+
+To indicate the document title in reStructuredText, use a unique adornment
+style at the beginning of the document.  To indicate the document subtitle,
+use another unique adornment style immediately after the document title.  For
+example::
 
     ================
      Document Title
