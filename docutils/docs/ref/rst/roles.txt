@@ -298,7 +298,7 @@ For example, the following creates an HTML-specific "raw-html" role::
 This role can now be used directly to pass data untouched to the HTML
 Writer.  For example::
 
-    If there just *has* to have a line break here,
+    If there just *has* to be a line break here,
     :raw-html:`<br />`
     it can be accomplished with a "raw"-derived role.
     But the line block syntax should be considered first.
