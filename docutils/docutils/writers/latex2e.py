@@ -126,7 +126,7 @@ class Writer(writers.Writer):
            'metavar': '<format>'}),
           ('LaTeX graphicx package option.'
            'Possible values are "dvips", "pdftex". "auto" includes LaTeX code '
-           'to use "pdftex" if processing with pdf(la)tex and dvips otherwise.'
+           'to use "pdftex" if processing with pdf(la)tex and dvips otherwise. '
            'Default is no option.',
            ['--graphicx-option'],
            {'default': ''}),
