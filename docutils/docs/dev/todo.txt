@@ -73,10 +73,6 @@ General
     - Howto: Directives
 
   - User docs.
-  
-    - How to use the front-end tools (docs/tools.txt).
-
-    - Configuration file syntax & recognized entries.
 
 - Refactor
 
@@ -143,10 +139,18 @@ Specification
 - Rework PEP 257, separating style from spec from tools, wrt Docutils?
   See Doc-SIG from 2001-06-19/20.
 
-- Add layout component to framework?  Or part of the writer?
-
 - Once doctree.txt is fleshed out, how about breaking (most of) it up
   and putting it into nodes.py as docstrings?
+
+
+PySource Reader
+---------------
+
+- Analyze Tony Ibbs' PySource code.
+
+- Analyze Doug Hellman's HappyDoc project.
+
+- Take the best ideas and integrate them into Docutils 0.3.
 
 
 reStructuredText Parser
@@ -586,10 +590,6 @@ HTML Writer
 Front-End Tools
 ---------------
 
-- Common and component-specific options must not conflict.  Reserve
-  short options for the core, and restrict components to long
-  options?
-
 - What about if we don't know which Reader and/or Writer we are
   going to use?  If the Reader/Writer is specified on the
   command-line?  (Will this ever happen?)
@@ -628,9 +628,10 @@ Front-End Tools
 - Parameterize help text & defaults somehow?  Perhaps a callback?  Or
   initialize ``cmdline_options`` in ``__init__``?
 
-- Write a tool (perhaps ``html-all.py`` or ``htmldocs.py``) which
+- Write a tool (perhaps ``htmldocs.py`` or ``buildhtml.py``) which
   generates .html from all the .txt files in the project.  It could
-  even be run by setup.py as a final step!
+  even be run by setup.py as a final step!  Once PySource is there,
+  it can build .html from .py as well.
 
 
 Project Policies
