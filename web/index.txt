@@ -327,12 +327,15 @@ docutils-develop@lists.sourceforge.net.
 * Oliver Rutherfurd has begun a `DocBook Writer`_ component and
   `HT2HTML integration`_ component.
 
-* Gunnar Schwant has begun DocFactory_, a wxPython GUI application for
+* Gunnar Schwant's DocFactory_ is a wxPython GUI application for
   Docutils.
 
 * Aahz has begun an `OpenOffice.org Writer`_.
 
 * Ian Bicking is working on code for a Wiki_.
+
+* Bill Bumgarner has written a `simple HTML writer`_ that doesn't rely
+  on CSS (stylesheets).
 
 .. _ZReST: sandbox/richard/ZReST/
 .. _PySource: sandbox/tibs/pysource/
@@ -341,10 +344,11 @@ docutils-develop@lists.sourceforge.net.
 .. _LaTeX Writer: sandbox/grubert/latex/
 .. _ReportLabs/PDF Writer: sandbox/grubert/rlpdf/
 .. _DocBook Writer: sandbox/oliverr/docbook/
-.. _HT2HTML integration: sandbox/oliverr/ht/README.html
-.. _DocFactory: sandbox/gschwant/docfactory/
+.. _HT2HTML integration: sandbox/oliverr/ht/
+.. _DocFactory: sandbox/gschwant/docfactory/doc/
 .. _OpenOffice.org Writer: sandbox/aahz/OO/
 .. _Wiki: sandbox/ianb/wiki/
+.. _simple HTML writer: sandbox/bbum/DocArticle/
 
 
 Please Contribute!
