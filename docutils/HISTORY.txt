@@ -84,12 +84,17 @@ Specific:
     programmatic convenience functions.
   - Now publish_file and publish_cmdline convenience functions return
     the encoded string results in addition to their regular I/O.
+  - Extracted common code from publish_file, publish_string, and
+    publish_parts, into new publish_programmatically.
+  - In Publisher.publish, disabled ``settings_overrides`` when
+    ``settings`` is supplied; redundant.
 
 * docutils/frontend.py:
 
   - Added help text for "--output-encoding-error-handler" and
     "--error-encoding-error-handler".
   - Renamed "--exit" to "--exit-status".
+  - Simplified default-setting code.
 
 * docutils/parsers/rst/__init__.py:
 
@@ -128,6 +133,8 @@ Specific:
 * docs/dev/release.txt: Added to project (extracted from
   ``docs/dev/todo.txt``, formerly ``spec/notes.txt``).
 
+* docs/dev/testing.txt: Added to project.
+
 * docs/dev/website.txt: Added to project (extracted from
   ``docs/dev/todo.txt``, formerly ``spec/notes.txt``).
 
@@ -140,9 +147,9 @@ Specific:
   directives and roles.  Source text to be used as-is; not meant to be
   converted to HTML.
 
-* Added test/test_functional.py and test/functional/.
+* test/functional/, contents, and test/test_functional.py: Added to
+  project.
 
-* Added docs/dev/testing.txt.
 
 Release 0.3.3 (2004-05-09)
 ==========================
