@@ -109,3 +109,28 @@ def directive(directive_name, language_module):
     except AttributeError:
         return None
     return function
+
+def flag(argument):
+    if argument and argument.strip():
+        raise ValueError('no argument is allowed; "%s" supplied' % argument)
+    else:
+        return None
+
+def unchanged(argument):
+    return argument  # unchanged!
+
+def format_values(values):
+    return '%s, or "%s"' % (', '.join(['"%s"' % s for s in values[:-1]]),
+                            values[-1])
+
+def choice(argument, values):
+    try:
+        value = argument.lower().strip()
+    except AttributeError:
+        raise TypeError('must supply an argument; choose from %s',
+                        format_values(values))
+    if value in values:
+        return value
+    else:
+        raise ValueError('"%s" unknown; choose from %s'
+                         % (argument, format_values(values)))
