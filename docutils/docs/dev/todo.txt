@@ -58,6 +58,23 @@ General
     checked for correctness and refactored.  I'm afraid it's a bit of
     a spaghetti mess now.
 
+* Configuration file handling needs discussion:
+
+  - There should be some error checking on the contents of config
+    files.  How much checking should be done?  How loudly should
+    Docutils complain if it encounters an error/problem?
+
+  - Docutils doesn't complain when it doesn't find a configuration
+    file supplied with the ``--config`` option.  Should it?  (If yes,
+    error or warning?)
+
+  - Is a system-wide configuration file (in ``/etc/docutils.conf``) a
+    good idea?
+
+  - ``~/.docutils`` does not work (because the tilde is only expanded
+    by the shell).  Is a user-specific configuration file really
+    necessary?  Maybe the name (``.docutils``) needs discussion, too.
+
 * Language modules: in accented languages it may be useful to have
   both accented and unaccented entries in the ``bibliographic_fields``
   mapping for versatility.
@@ -428,7 +445,9 @@ Documentation
 User Docs
 ---------
 
-What else is needed?
+* Add a FAQ entry about using Docutils (with reStructuredText) on a
+  server and that it's terribly slow.  See the first paragraphs in
+  <http://article.gmane.org/gmane.text.docutils.user/1584>.
 
 
 Developer Docs
@@ -607,6 +626,9 @@ reStructuredText Parser
 Also see the `... Or Not To Do?`__ list.
 
 __ rst/alternatives.html#or-not-to-do
+
+* Add (functional) tests for the "raw" role, its class attribute, and
+  the other roles as well.
 
 * Allow the _`:trim:` option for all directives when they occur in a
   substitution definition, not only the unicode_ directive.
