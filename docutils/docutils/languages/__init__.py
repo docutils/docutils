@@ -14,7 +14,7 @@ __docformat__ = 'reStructuredText'
 
 _languages = {}
 
-def getlanguage(language_code):
+def get_language(language_code):
     if _languages.has_key(language_code):
         return _languages[language_code]
     module = __import__(language_code, globals(), locals())

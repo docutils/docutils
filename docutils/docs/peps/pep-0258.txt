@@ -542,7 +542,7 @@ Specification
         their language identifier (as defined in `Choice of Docstring
         Format`_ above), converting dashes to underscores.
 
-        - Function "getlanguage(languagecode)", returns matching
+        - Function "get_language(language_code)", returns matching
           language module.  (docutils/languages/__init__.py)
 
         - Module "docutils.languages.en" (English).

@@ -144,7 +144,8 @@ class DocTitle(Transform):
         Return (None, None) if no valid candidate was found.
         """
         document = self.document
-        index = document.findnonclass(nodes.PreBibliographic)
+        index = document.first_child_not_matching_class(
+              nodes.PreBibliographic)
         if index is None or len(document) > (index + 1) or \
               not isinstance(document[index], nodes.section):
             return None, None
@@ -225,12 +226,14 @@ class DocInfo(Transform):
 
     def transform(self):
         document = self.document
-        index = document.findnonclass(nodes.PreBibliographic)
+        index = document.first_child_not_matching_class(
+              nodes.PreBibliographic)
         if index is None:
             return
         candidate = document[index]
         if isinstance(candidate, nodes.field_list):
-            biblioindex = document.findnonclass(nodes.Titular)
+            biblioindex = document.first_child_not_matching_class(
+                  nodes.Titular)
             nodelist, remainder = self.extract_bibliographic(candidate)
             if remainder:
                 document[index] = remainder

@@ -66,9 +66,9 @@ class Hyperlinks(Transform):
         if len(self.document.anonymous_refs) \
               != len(self.document.anonymous_targets):
             msg = self.document.reporter.error(
-                  'Anonymous hyperlink mismatch: %s references but %s targets.'
-                  % (len(self.document.anonymous_refs),
-                     len(self.document.anonymous_targets)))
+                  'Anonymous hyperlink mismatch: %s references but %s '
+                  'targets.' % (len(self.document.anonymous_refs),
+                                len(self.document.anonymous_targets)))
             self.document.messages += msg
             msgid = self.document.set_id(msg)
             for ref in self.document.anonymous_refs:
@@ -101,9 +101,9 @@ class Hyperlinks(Transform):
                <target id="id2" name="indirect external"
                    refname="direct external">
 
-           The "refuri" attribute is migrated back to all indirect targets from
-           the final direct target (i.e. a target not referring to another
-           indirect target)::
+           The "refuri" attribute is migrated back to all indirect targets
+           from the final direct target (i.e. a target not referring to
+           another indirect target)::
 
                <paragraph>
                    <reference refname="indirect external">
@@ -585,7 +585,8 @@ class Footnotes(Transform):
 
     def resolve_footnotes_and_citations(self):
         """
-        Link manually-labeled footnotes and citations to/from their references.
+        Link manually-labeled footnotes and citations to/from their
+        references.
         """
         for footnote in self.document.footnotes:
             label = footnote['name']
@@ -643,10 +644,11 @@ class Substitutions(Transform):
         for refname, refs in self.document.substitution_refs.items():
             for ref in refs:
                 if defs.has_key(refname):
-                    ref.parent.replace(ref, defs[refname].getchildren())
+                    ref.parent.replace(ref, defs[refname].get_children())
                 else:
                     msg = self.document.reporter.error(
-                          'Undefined substitution referenced: "%s".' % refname)
+                          'Undefined substitution referenced: "%s".'
+                          % refname)
                     msgid = self.document.set_id(msg)
                     self.document.messages += msg
                     prb = nodes.problematic(

@@ -95,7 +95,7 @@ class Contents(Transform):
 class ContentsFilter(nodes.TreeCopyVisitor):
 
     def get_entry_text(self):
-        return self.get_tree_copy().getchildren()
+        return self.get_tree_copy().get_children()
 
     def visit_citation_reference(self, node):
         raise nodes.SkipNode
@@ -105,7 +105,7 @@ class ContentsFilter(nodes.TreeCopyVisitor):
 
     def visit_image(self, node):
         if node.hasattr('alt'):
-            self.parent_stack[-1].append(nodes.Text(node['alt']))
+            self.parent.append(nodes.Text(node['alt']))
         raise nodes.SkipNode
 
     def ignore_node_but_process_children(self, node):
