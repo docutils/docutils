@@ -77,7 +77,7 @@ class Publisher:
             defaults=defaults)
         self.options = option_parser.get_default_values()
 
-    def process_command_line(self, argv=None, usage=None):
+    def process_command_line(self, argv=None, usage=None, description=None):
         """
         Pass an empty list to `argv` to avoid reading `sys.argv` (the
         default).
@@ -85,19 +85,20 @@ class Publisher:
         Set components first (`self.set_reader` & `self.set_writer`).
         """
         option_parser = OptionParser(
-            components=(self.reader, self.parser, self.writer), usage=usage)
+            components=(self.reader, self.parser, self.writer),
+            usage=usage, description=description)
         if argv is None:
             argv = sys.argv[1:]
         self.options, self.source, self.destination \
                       = option_parser.parse_args(argv)
 
-    def publish(self, argv=None, usage=None):
+    def publish(self, argv=None, usage=None, description=None):
         """
         Process command line options and arguments, run `self.reader`
         and then `self.writer`.
         """
         if self.options is None:
-            self.process_command_line(argv, usage)
+            self.process_command_line(argv, usage, description)
         document = self.reader.read(self.source, self.parser, self.options)
         self.writer.write(document, self.destination)
 
@@ -105,11 +106,11 @@ class Publisher:
 def publish(reader=None, reader_name='standalone',
             parser=None, parser_name='restructuredtext',
             writer=None, writer_name='pseudoxml',
-            argv=None, usage=None):
+            argv=None, usage=None, description=None):
     """A convenience function; set up & run a `Publisher`."""
     pub = Publisher(reader, parser, writer)
     if reader is None:
         pub.set_reader(reader_name, parser, parser_name)
     if writer is None:
         pub.set_writer(writer_name)
-    pub.publish(argv, usage)
+    pub.publish(argv, usage, description)
