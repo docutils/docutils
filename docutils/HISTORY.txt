@@ -17,14 +17,15 @@ on the Docutils project, knowingly or not, in terms of encouragement,
 suggestions, criticism, bug reports, code contributions, tasty treats,
 and related projects:
 
-    Aahz, David Ascher, Simon Budig, Adam Chodorowski, Fred Drake,
-    Dethe Elza, Jim Fulton, Peter Funk, Engelbert Gruber, Doug
-    Hellmann, Juergen Hermann, Tony Ibbs, Alan Jaffray, Richard Jones,
-    Garth Kidd, Daniel Larsson, Marc-Andre Lemburg, Wolfgang Lipp,
-    Edward Loper, Ken Manheimer, Paul Moore, Michel Pelletier, Sam
-    Penrose, Tim Peters, Mark Pilgrim, Tavis Rudd, Ollie Rutherfurd,
-    Ueli Schlaepfer, tav, Bob Tolbert, Laurence Tratt, Guido van
-    Rossum, Barry Warsaw, Edward Welbourne, Ka-Ping Yee, Moshe Zadka
+    Aahz, David Ascher, Fred Bremmer, Simon Budig, Adam Chodorowski,
+    Fred Drake, Dethe Elza, Jim Fulton, Peter Funk, Engelbert Gruber,
+    Doug Hellmann, Juergen Hermann, Tony Ibbs, Alan Jaffray, Richard
+    Jones, Garth Kidd, Daniel Larsson, Marc-Andre Lemburg, Wolfgang
+    Lipp, Edward Loper, Ken Manheimer, Paul Moore, Michel Pelletier,
+    Sam Penrose, Tim Peters, Mark Pilgrim, Tavis Rudd, Ollie
+    Rutherfurd, Ueli Schlaepfer, tav, Bob Tolbert, Laurence Tratt,
+    Guido van Rossum, Barry Warsaw, Edward Welbourne, Ka-Ping Yee,
+    Moshe Zadka
 
 Thank you!
 
@@ -99,6 +100,7 @@ Specific:
     ``nametypes`` attribute and ``set_name_id_map`` method.
   - Added ``NodeFound`` exception, for use with ``NodeVisitor``
     traversals.
+  - Added ``document.has_name()`` method.
 
 * docutils/optik.py: Added to project.  Combined from the Optik
   package, with added option groups and other modifications.  The use
@@ -150,6 +152,9 @@ Specific:
   - Fixed a bug in ``Inliner.interpreted_or_phrase_ref()``.
   - Allowed non-ASCII in "simple names" (directive names, field names,
     references, etc.).
+  - Converted ``Inliner.patterns.initial`` to be dynamically built
+    from parts with ``build_regexp()`` function.
+  - Changed ``Inliner.inline_target`` to ``.inline_internal_target``.
 
 * docutils/parsers/rst/directives/html.py: Changed the ``meta``
   directive to use a ``pending`` element, used only by HTML writers.
@@ -243,8 +248,10 @@ Specific:
 * spec/pysource.txt: Removed from project.  Moved much of its contents
   to pep-0258.txt.
 
-* spec/rst/alternatives.txt: Expanded auto-enumerated list idea;
-  thanks to Fred Bremmer.
+* spec/rst/alternatives.txt:
+
+  - Expanded auto-enumerated list idea; thanks to Fred Bremmer.
+  - Added "Inline External Targets" section.
 
 * spec/rst/problems.txt:
 
@@ -259,6 +266,7 @@ Specific:
   - Added ``-/:`` characters to inline markup's start string prefix,
     ``/`` to end string suffix.
   - Updated "Authors" bibliographic field behavior.
+  - Changed "inline hyperlink targets" to "inline internal targets".
 
 * test: Made test modules standalone (subdirectories became packages).
 

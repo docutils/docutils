@@ -25,7 +25,20 @@ you'd like to tackle, please do!
 Bugs
 ----
 
-None reported.
+- The "contents" directive now automatically names the "topic"
+  produced (using its title), so that it can be referred to by name.
+  However, this naming happens late in the game, after most references
+  have been resolved.  So the following indirect target produces a
+  warning because the name "contents" is not available when resolved::
+
+      .. contents::
+
+      .. _alternate name for contents: contents_
+
+  Fixing this may be tricky, and isn't a high priority.
+
+  Idea: two-pass hyperlink resolution, ignoring errors on the first
+  pass?
 
 
 General
@@ -94,8 +107,6 @@ General
 
 - Perhaps the ``Component.supports`` method should deal with
   individual features ("meta" etc.) instead of formats ("html" etc.)?
-
-- Add "NullIO" degenerate ``docutils.io.IO`` subclass.
 
 - Add a command-line option & directive attribute to control TOC
   backlinks: no TOC backlinks, backlinks to TOC entries, or backlinks
