@@ -1,9 +1,3 @@
-.. This document is *not* meant to be a model for good
-   reStructuredText usage.  It is full of external hyperlinks, and
-   makes extensive use of anonymous hyperlink syntax, which is not
-   easy to follow from the source text.  Please refer to the processed
-   HTML instead: http://docutils.sourceforge.net/index.html
-
 ===================================
  Docutils: Documentation Utilities
 ===================================
@@ -12,6 +6,12 @@
 ---------------------------------------------------------
 
 :Date: $Date$
+
+.. This document is *not* meant to be a model for good
+   reStructuredText usage.  It is full of external hyperlinks, and
+   makes extensive use of anonymous hyperlink syntax, which is not
+   easy to follow from the source text.  Please refer to the processed
+   HTML instead: http://docutils.sourceforge.net/index.html
 
 The purpose of the Docutils project is to create a set of tools for
 processing plaintext documentation into useful formats, such as HTML,
@@ -219,7 +219,7 @@ general discussions (such as reStructuredText syntax or the high-level
 Docutils project model), whereas the Docutils-specific lists are more
 focused on the implementation.
 
-You can also access archives of the mailing lists via Gmane:
+You can also access the mailing lists via the web (at Gmane):
 Docutils-users__, Docutils-develop__, Docutils-checkins__ and
 Doc-SIG__.
 
