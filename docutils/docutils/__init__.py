@@ -127,13 +127,20 @@ class TransformSpec:
     """Transforms required by this class.  Override in subclasses."""
     
     unknown_reference_resolvers = ()
-    """List of functions to try to resolve unknown references.  Called when
-    FinalCheckVisitor is unable to find a correct target.  The list should
-    contain functions which will try to resolve unknown references, with the
-    following signature::
+    """List of functions to try to resolve unknown references.  Unknown
+    references have a 'refname' attribute which doesn't correspond to any
+    target in the document.  Called when FinalCheckVisitor is unable to find a
+    correct target.  The list should contain functions which will try to
+    resolve unknown references, with the following signature::
 
         def reference_resolver(node):
             '''Returns boolean: true if resolved, false if not.'''
+
+    If the function is able to resolve the reference, it should also remove
+    the 'refname' attribute and mark the node as resolved::
+
+        del node['refname']
+        node.resolved = 1
 
     Each function must have a "priority" attribute which will affect the order
     the unknown_reference_resolvers are run::
