@@ -1416,11 +1416,10 @@ Docutils doctree is possible.
 An example is the Python Source Reader, which will use interpreted
 text extensively.  The default role will be "Python identifier", which
 will be further interpreted by namespace context into <class>,
-<method>, <module>, <attribute>, etc. elements (see
-spec/pysource.dtd), which will be transformed into standard hyperlink
-references, which will be processed by the various Writers.  No Writer
-will need to have any knowledge of the Python-Reader origin of these
-elements.
+<method>, <module>, <attribute>, etc. elements (see pysource.dtd),
+which will be transformed into standard hyperlink references, which
+will be processed by the various Writers.  No Writer will need to have
+any knowledge of the Python-Reader origin of these elements.
 
 * Alan Jaffray suggested (and I agree) that it would be sensible to:
 
@@ -1513,7 +1512,7 @@ elements.
        trigger warnings, similar to the rules of `implicit hyperlink
        targets`__.
 
-       __ rst/reStructuredText.html#implicit-hyperlink-targets
+       __ ../ref/rst/restructuredtext.html#implicit-hyperlink-targets
 
   - "annotation": The equivalent of the HTML "title" attribute.  This
     is secondary information that may "pop up" when the pointer hovers
