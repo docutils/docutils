@@ -44,6 +44,11 @@ import random
 import time
 from email.Utils import parseaddr
 
+try:
+    import docutils
+except ImportError:
+    docutils = None
+
 PROGRAM = sys.argv[0]
 RFCURL = 'http://www.faqs.org/rfcs/rfc%d.html'
 PEPURL = 'pep-%04d.html'
@@ -128,8 +133,9 @@ def linkemail(address, pepno):
             % (parts[0], parts[1], pepno, parts[0], parts[1]))
 
 
-def fixfile(infile, outfile):
-    basename = os.path.basename(infile.name)
+def fixfile(inpath, input_lines, outfile):
+    basename = os.path.basename(inpath)
+    infile = iter(input_lines)
     # convert plain text pep to minimal XHTML markup
     print >> outfile, DTD
     print >> outfile, '<html>'
@@ -139,7 +145,10 @@ def fixfile(infile, outfile):
     pep = ""
     title = ""
     while 1:
-        line = infile.readline()
+        try:
+            line = infile.next()
+        except StopIteration:
+            break
         if not line.strip():
             break
         if line[0].strip():
@@ -202,13 +211,13 @@ def fixfile(infile, outfile):
             otherpeps = ''
             for otherpep in v.split():
                 otherpep = int(otherpep)
-                otherpeps += '<a href="pep-%04d.html">%i</a> ' % (otherpep, 
+                otherpeps += '<a href="pep-%04d.html">%i</a> ' % (otherpep,
                                                                   otherpep)
             v = otherpeps
         elif k.lower() in ('last-modified',):
             url = PEPCVSURL % int(pep)
             date = v or time.strftime('%d-%b-%Y',
-                                      time.localtime(os.stat(infile.name)[8]))
+                                      time.localtime(os.stat(inpath)[8]))
             v = '<a href="%s">%s</a> ' % (url, cgi.escape(date))
         else:
             v = cgi.escape(v)
@@ -220,8 +229,9 @@ def fixfile(infile, outfile):
     print >> outfile, '<div class="content">'
     need_pre = 1
     while 1:
-        line = infile.readline()
-        if not line:
+        try:
+            line = infile.next()
+        except StopIteration:
             break
         if line[0] == '\f':
             continue
@@ -260,7 +270,7 @@ def fixfile(infile, outfile):
                     print >> outfile, re.sub(
                         parts[-1], url, line, 1),
                     continue
-            line = fixpat.sub(lambda x, c=infile.name: fixanchor(c, x), line)
+            line = fixpat.sub(lambda x, c=inpath: fixanchor(c, x), line)
             if need_pre:
                 print >> outfile, '<pre>'
                 need_pre = 0
@@ -273,8 +283,10 @@ def fixfile(infile, outfile):
 
 
 docutils_options = None
+"""Option value object used by Docutils.  Can be set by the client application
+when this module is imported."""
 
-def fix_rst_pep(infile, outfile):
+def fix_rst_pep(inpath, input_lines, outfile):
     from docutils import core, io
     pub = core.Publisher()
     pub.set_reader(reader_name='pep', parser_name='restructuredtext',
@@ -285,48 +297,36 @@ def fix_rst_pep(infile, outfile):
         pub.options = options
     else:
         options = pub.set_options()
-    options._source = infile.name
+    options._source = inpath
     options._destination = outfile.name
-    pub.source = io.FileIO(options, source=infile, source_path=infile.name)
-    pub.destination = io.FileIO(options, destination=outfile,
-                                destination_path=outfile.name)
+    pub.source = io.StringIO(
+        options, source=''.join(input_lines), source_path=inpath)
+    pub.destination = io.FileIO(
+        options, destination=outfile, destination_path=outfile.name)
     pub.publish()
 
 
-underline = re.compile('[!-/:-@[-`{-~]{4,}$')
-
-def check_rst_pep(infile):
+def get_pep_type(input_lines):
     """
-    Check if `infile` is a reStructuredText PEP.  Return 1 for yes, 0 for no.
-
-    If the result is indeterminate, return None.  When the check is complete,
-    rewind `infile` to the beginning.
+    Return the Content-Type of the input.  "text/plain" is the default.
+    Return ``None`` if the input is not a PEP.
     """
-    result = None
-    underline_match = underline.match
-    # Find the end of the RFC 2822 header (first blank line):
-    while 1:
-        line = infile.readline().strip()
+    pep_type = None
+    for line in input_lines:
+        line = line.rstrip().lower()
         if not line:
+            # End of the RFC 2822 header (first blank line).
             break
-    # Determine if the PEP is old-style or new (reStructuredText):
-    while result is None:
-        line = infile.readline()
-        if not line:
+        elif line.startswith('content-type: '):
+            pep_type = line.split()[1]
             break
-        line = line.rstrip()
-        if len(line.lstrip()) < len(line):
-            # Indented section; this is an old-style PEP.
-            result = 0
-        elif underline_match(line):
-            # Matched a section header underline;
-            # this is a reStructuredText PEP.
-            result = 1
-    infile.seek(0)
-    return result
+        elif line.startswith('pep: '):
+            # Default PEP type, used if no explicit content-type specified:
+            pep_type = 'text/plain'
+    return pep_type
 
 
-def open_files(inpath, outpath):
+def get_input_lines(inpath):
     try:
         infile = open(inpath)
     except IOError, e:
@@ -334,14 +334,10 @@ def open_files(inpath, outpath):
         print >> sys.stderr, 'Error: Skipping missing PEP file:', e.filename
         sys.stderr.flush()
         return None, None
-    outfile = open(outpath, "w")
-    return infile, outfile
-
-def close_files(infile, outfile):
+    lines = infile.readlines()
     infile.close()
-    outfile.close()
-    os.chmod(outfile.name, 0664)
-    
+    return lines
+
 
 def find_pep(pep_str):
     """Find the .txt file indicated by a cmd line argument"""
@@ -350,18 +346,35 @@ def find_pep(pep_str):
     num = int(pep_str)
     return "pep-%04d.txt" % num
 
+PEP_TYPE_DISPATCH = {'text/plain': fixfile,
+                     'text/x-rst': fix_rst_pep}
+
 def make_html(inpath, verbose=0):
+    input_lines = get_input_lines(inpath)
+    pep_type = get_pep_type(input_lines)
+    if pep_type is None:
+        print >> sys.stderr, 'Error: Input file %s is not a PEP.' % inpath
+        sys.stdout.flush()
+        return None
+    elif not PEP_TYPE_DISPATCH.has_key(pep_type):
+        print >> sys.stderr, ('Error: Unknown PEP type for input file %s: %s'
+                              % (inpath, pep_type))
+        sys.stdout.flush()
+        return None
+    elif pep_type == 'text/x-rst' and not docutils:
+        print >> sys.stderr, ('Error: Docutils not present for "%s" PEP file '
+                              '%s.  See README.txt for installation.'
+                              % (pep_type, inpath))
+        sys.stdout.flush()
+        return None
     outpath = os.path.splitext(inpath)[0] + ".html"
     if verbose:
-        print inpath, "->", outpath
+        print inpath, "(%s)" % pep_type, "->", outpath
         sys.stdout.flush()
-    infile, outfile = open_files(inpath, outpath)
-    if infile is not None:
-        if check_rst_pep(infile):
-            fix_rst_pep(infile, outfile)
-        else:
-            fixfile(infile, outfile)
-        close_files(infile, outfile)
+    outfile = open(outpath, "w")
+    PEP_TYPE_DISPATCH[pep_type](inpath, input_lines, outfile)
+    outfile.close()
+    os.chmod(outfile.name, 0664)
     return outpath
 
 def push_pep(htmlfiles, txtfiles, username, verbose):
@@ -438,7 +451,8 @@ def main(argv=None):
             file = find_pep(pep)
             peptxt.append(file)
             newfile = make_html(file, verbose=verbose)
-            html.append(newfile)
+            if newfile:
+                html.append(newfile)
             if browse and not update:
                 browse_file(pep)
     else:
