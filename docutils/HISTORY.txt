@@ -19,6 +19,7 @@ Changes Since 0.3.5
   - Added --input-encoding-error-handler option & setting.
   - Added command-line and config file support for "overrides" setting
     parameter.
+  - Added --record-dependencies option & setting.
 
 * docutils/io.py:
 
