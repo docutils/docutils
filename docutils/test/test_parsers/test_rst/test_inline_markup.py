@@ -822,17 +822,50 @@ ftp://ends.with.a.period.
         ?)
 """],
 ["""\
-Valid URL with escaped markup characters:
+Valid URLs with escaped markup characters:
 
 http://example.com/\\*content\\*/whatever
+
+http://example.com/\\*content*/whatever
 """,
 """\
 <document source="test data">
     <paragraph>
-        Valid URL with escaped markup characters:
+        Valid URLs with escaped markup characters:
     <paragraph>
         <reference refuri="http://example.com/*content*/whatever">
             http://example.com/*content*/whatever
+    <paragraph>
+        <reference refuri="http://example.com/*content*/whatever">
+            http://example.com/*content*/whatever
+"""],
+["""\
+Valid URLs may end with punctuation inside "<>":
+
+<http://example.org/ends-with-dot.>
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Valid URLs may end with punctuation inside "<>":
+    <paragraph>
+        <
+        <reference refuri="http://example.org/ends-with-dot.">
+            http://example.org/ends-with-dot.
+        >
+"""],
+["""\
+Valid URLs with interesting endings:
+
+http://example.org/ends-with-pluses++
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Valid URLs with interesting endings:
+    <paragraph>
+        <reference refuri="http://example.org/ends-with-pluses++">
+            http://example.org/ends-with-pluses++
 """],
 ["""\
 None of these are standalone hyperlinks (their "schemes"
