@@ -1,6 +1,7 @@
-# Author: Nicola Larosa
-# Contact: docutils@tekNico.net
+# Author: Nicola Larosa, Lele Gaifax
+# Contact: docutils@tekNico.net, lele@seldati.it
 # Revision: $Revision$
+# Date: $Date$
 # Date: $Date$
 # Copyright: This module has been placed in the public domain.
 
@@ -27,13 +28,13 @@ directives = {
       'nota': 'note',
       'consiglio': 'tip',
       'avvertenza': 'warning',
-      'admonition (translation required)': 'admonition',
-      'sidebar (translation required)': 'sidebar',
+      'ammonizione': 'admonition',
+      'riquadro': 'sidebar',
       'argomento': 'topic',
-      'blocco di linee': 'line-block',
-      'parsed-literal': 'parsed-literal',
-      'rubric (translation required)': 'rubric',
-      'epigraph (translation required)': 'epigraph',
+      'blocco-di-righe': 'line-block',
+      'blocco-interpretato': 'parsed-literal',
+      'rubrica': 'rubric',
+      'epigrafe': 'epigraph',
       'highlights (translation required)': 'highlights',
       'pull-quote (translation required)': 'pull-quote',
       u'table (translation required)': 'table',
@@ -48,11 +49,11 @@ directives = {
       'grezzo': 'raw',
       'sostituisci': 'replace',
       'unicode': 'unicode',
-      'class (translation required)': 'class',
+      'classe': 'class',
       'indice': 'contents',
       'seznum': 'sectnum',
-      'section-numbering': 'sectnum',
-      'target-notes': 'target-notes',
+      'sezioni-autonumerate': 'sectnum',
+      'annota-riferimenti-esterni': 'target-notes',
       #'footnotes': 'footnotes',
       #'citations': 'citations',
       'restructuredtext-test-directive': 'restructuredtext-test-directive'}
@@ -60,23 +61,23 @@ directives = {
 mapping."""
 
 roles = {
-      'abbreviation (translation required)': 'abbreviation',
-      'acronym (translation required)': 'acronym',
-      'index (translation required)': 'index',
-      'subscript (translation required)': 'subscript',
-      'superscript (translation required)': 'superscript',
-      'title-reference (translation required)': 'title-reference',
-      'pep-reference (translation required)': 'pep-reference',
-      'rfc-reference (translation required)': 'rfc-reference',
-      'emphasis (translation required)': 'emphasis',
-      'strong (translation required)': 'strong',
-      'literal (translation required)': 'literal',
-      'named-reference (translation required)': 'named-reference',
-      'anonymous-reference (translation required)': 'anonymous-reference',
-      'footnote-reference (translation required)': 'footnote-reference',
-      'citation-reference (translation required)': 'citation-reference',
-      'substitution-reference (translation required)': 'substitution-reference',
-      'target (translation required)': 'target',
-      'uri-reference (translation required)': 'uri-reference',}
+      'abbreviazione': 'abbreviation',
+      'acronimo': 'acronym',
+      'indice': 'index',
+      'deponente': 'subscript',
+      'esponente': 'superscript',
+      'riferimento-titolo': 'title-reference',
+      'riferimento-pep': 'pep-reference',
+      'riferimento-rfc': 'rfc-reference',
+      'enfasi': 'emphasis',
+      'forte': 'strong',
+      'letterale': 'literal',
+      'riferimento-con-nome': 'named-reference',
+      'riferimento-anonimo': 'anonymous-reference',
+      'riferimento-nota': 'footnote-reference',
+      'riferimento-citazione': 'citation-reference',
+      'riferimento-sostituzione': 'substitution-reference',
+      'destinazione': 'target',
+      'riferimento-uri': 'uri-reference',}
 """Mapping of Italian role names to canonical role names for interpreted text.
 """
