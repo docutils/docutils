@@ -597,7 +597,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('%[depart_field_argument]\n')
 
     def visit_field_body(self, node):
-        self.body.append('%[visit_field_body]\n')
         # BUG by attach as text we loose references.
         if self.docinfo:
             self.docinfo.append('%s \\\\\n' % node.astext())
@@ -605,16 +604,17 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # what happens if not docinfo
 
     def depart_field_body(self, node):
-        self.body.append('%[depart_field_body]\n')
+        self.body.append( '\n' )
 
     def visit_field_list(self, node):
-        self.body.append('%[visit_field_list]\n')
-        ##self.body.append('\\begin{description}\n')
-        pass
+        if not self.docinfo:
+            self.body.append('\\begin{quote}\n')
+            self.body.append('\\begin{description}\n')
 
     def depart_field_list(self, node):
-        ##self.body.append('\\end{description}\n')
-        pass
+        if not self.docinfo:
+            self.body.append('\\end{description}\n')
+            self.body.append('\\end{quote}\n')
 
     def visit_field_name(self, node):
         # BUG this duplicates docinfo_item
@@ -622,11 +622,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.docinfo.append('\\textbf{%s} &\n\t' % node.astext())
             raise nodes.SkipNode
         else:
-            self.body.append('\\textbf{')
+            self.body.append('\\item [')
 
     def depart_field_name(self, node):
         if not self.docinfo:
-            self.body.append(':}')
+            self.body.append(':]')
 
     def visit_figure(self, node):
         self.body.append( '\\begin{figure}\n' )

@@ -12,7 +12,6 @@ mostly errors when processing tools/test.txt.
 * ordered list numbering style is taken from latex a.,b. in source
   gives 1., .. in document.
 
-* field lists as two column table or description ?
 
 * use table columnwidth.
 
@@ -88,4 +87,5 @@ mostly errors when processing tools/test.txt.
 Done
 ~~~~
 
+* field lists as description inside quote.
 * literal blocks are inside a quote environment (means indented).
