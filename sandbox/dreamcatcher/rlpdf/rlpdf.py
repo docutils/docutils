@@ -31,6 +31,7 @@ from reportlab.platypus import *
 from reportlab.platypus.para import Paragraph
 from reportlab.lib import colors
 from reportlab.lib.units import inch
+from StringIO import StringIO
 
 class Writer(writers.Writer):
 
@@ -41,13 +42,14 @@ class Writer(writers.Writer):
         visitor = PDFTranslator(self.document)
         self.document.walkabout(visitor)
         self.story = visitor.as_what()
-        self.output = ''
-        self.record()
+        self.output = self.record()
 
     def record(self):
         from reportlab.platypus import SimpleDocTemplate
-        doc = RLDocTemplate('test.pdf', pagesize=A4)
+        out = StringIO()
+        doc = RLDocTemplate(out, pagesize=A4)
         doc.build(self.story)
+        return out.getvalue()
 
     def lower(self):
         return 'pdf'
@@ -73,8 +75,6 @@ class PDFTranslator(nodes.NodeVisitor):
 
     def encode(self, text):
         """Encode special characters in `text` & return."""
-        if type(text) is not UnicodeType:
-            return unicode(text, 'latin-1')
         #text = text.replace("&", "&amp;")
         #text = text.replace("<", '"')
         #text = text.replace('"', "(quot)")
@@ -83,6 +83,7 @@ class PDFTranslator(nodes.NodeVisitor):
         return text
 
     def append_styled(self, text, in_style='Normal'):
+        style = None
         if self.styleSheet.has_key(in_style):
             style = self.styleSheet[in_style]
         self.story.append(Paragraph(self.encode(text), style, bulletText=None, context=self.styleSheet))
@@ -587,13 +588,7 @@ class PDFTranslator(nodes.NodeVisitor):
         self.context.pop()
 
     def visit_title(self, node):
-        """Only 6 section levels are supported by HTML."""
         atts = {}
-
-        if node.hasattr('refid'):
-            atts['backref'] = node['refid']
-        if node.parent.hasattr('id'):
-            atts['destination'] = node.parent['id']
 
         self.context.append('title')
         if isinstance(node.parent, nodes.topic):
@@ -605,10 +600,11 @@ class PDFTranslator(nodes.NodeVisitor):
 
         if self.context[-1] != 'title':
             self.context.append('</setLink>')
-            self.body.append(self.starttag({}, 'setLink', '', destination=atts['destination']))
-            if atts.has_key('backref'):
+            if node.parent.hasattr('id'):
+                self.body.append(self.starttag({}, 'setLink', '', destination=node.parent['id']))
+            if node.hasattr('refid'):
                 self.context.append('</link>')
-                self.body.append(self.starttag({}, 'link', '', destination=atts['backref']))
+                self.body.append(self.starttag({}, 'link', '', destination=node['refid']))
         else:
             self.context.append('')
 
@@ -642,11 +638,13 @@ class PDFTranslator(nodes.NodeVisitor):
         """Invisible nodes should be ignored."""
         pass
 
+    visit_address = invisible_visit
     visit_comment = invisible_visit
     visit_substitution_definition = invisible_visit
     visit_pending = invisible_visit
     visit_target = invisible_visit
     depart_target = invisible_visit
     depart_comment = invisible_visit
+    depart_address = invisible_visit
     depart_pending = invisible_visit
     depart_substitution_definition = invisible_visit
