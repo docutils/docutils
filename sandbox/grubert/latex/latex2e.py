@@ -177,6 +177,23 @@ class Babel:
         self.quote_index = (self.quote_index+1)%2
         return q
 
+latex_headings = {
+        'footnote_floats' : [
+            '% begin: floats for footnotes tweaking.\n',
+            '\\setlength{\\floatsep}{0.5em}\n',
+            '\\setlength{\\textfloatsep}{\\fill}\n',
+            '\\addtolength{\\textfloatsep}{3em}\n',
+            '\\renewcommand{\\textfraction}{0.5}\n',
+            '\\renewcommand{\\topfraction}{0.5}\n',
+            '\\renewcommand{\\bottomfraction}{0.5}\n',
+            '\\setcounter{totalnumber}{50}\n',
+            '\\setcounter{topnumber}{50}\n',
+            '\\setcounter{bottomnumber}{50}\n',
+            '% end floats for footnotes\n',
+            ]
+        }
+
+
 class LaTeXTranslator(nodes.NodeVisitor):
     # When options are given to the documentclass, latex will pass them
     # to other packages, as done with babel. 
@@ -258,9 +275,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
               '   \\addtolength{\\leftmargin}{\\labelsep}\n'
               '   \\renewcommand{\\makelabel}{\\optionlistlabel}}\n'
               '}{\\end{list}}\n',
-              ## stylesheet is last: so it might be possible to overwrite defaults.
-              self.stylesheet % (self.d_stylesheet_path),
-                            ]
+              ]
+        self.head_prefix.extend( latex_headings['footnote_floats'] )
+        ## stylesheet is last: so it might be possible to overwrite defaults.
+        self.head_prefix.append(
+              self.stylesheet % (self.d_stylesheet_path) )
+
         if self.linking: # and maybe check for pdf
             self.pdfinfo = [ ]
             self.pdfauthor = None
@@ -429,6 +449,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_citation(self, node):
         self.depart_footnote(node)
+
+    def visit_title_reference(self, node):
+        # BUG title-references are what?
+        pass
+
+    def depart_title_reference(self, node):
+        pass
 
     def visit_citation_reference(self, node):
         href = ''

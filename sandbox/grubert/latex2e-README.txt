@@ -4,7 +4,7 @@ latex2e BUGS TODOS and other animals
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
 
-Rev. 2003-01-09
+Rev. 2003-02-17
 
 To do
 ~~~~~
@@ -107,9 +107,6 @@ To do
 
 * additional docinfo items: the field_body is inserted as text.
 
-* footnotes are spread vertically (not with juliens style.tex)
-  so include always.
-
 * for pdflatex package times gives smaller files than paladino.
 
   but setting this automatic might result in including several font packages.
@@ -129,6 +126,8 @@ ATTENTION
 Done
 ~~~~
 
+* footnotes are spread vertically (not with juliens style.tex) include it in python.
+* add handling (do nothing) for title-reference.
 * setlength extrarowheight 2pt too get a little space between text in tables
   and the lines above them.
 * table: multicol rows have no vertical lines.
