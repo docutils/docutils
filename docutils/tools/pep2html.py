@@ -168,7 +168,7 @@ def fixfile(inpath, input_lines, outfile):
         '</head>\n'
         '<body bgcolor="white" marginwidth="0" marginheight="0">\n'
         '<table class="navigation" cellpadding="0" cellspacing="0"\n'
-        '       width="100%" border="0">\n'
+        '       width="100%%" border="0">\n'
         '<tr><td class="navicon" width="150" height="35">\n'
         '<a href="../" title="Python Home Page">\n'
         '<img src="../pics/PyBanner%03d.gif" alt="[Python]"\n'
