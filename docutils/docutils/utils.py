@@ -115,6 +115,9 @@ class Reporter:
         """List of bound methods or functions to call with each system_message
         created."""
 
+        self.max_level = -1
+        """The highest level system message generated so far."""
+
     def set_conditions(self, category, report_level, halt_level,
                        stream=None, debug=0):
         if stream is None:
@@ -181,6 +184,7 @@ class Reporter:
             raise SystemMessage(msg)
         if level > 0 or debug:
             self.notify_observers(msg)
+        self.max_level = max(level, self.max_level)
         return msg
 
     def debug(self, *args, **kwargs):
