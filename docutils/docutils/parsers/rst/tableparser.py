@@ -1,10 +1,10 @@
-"""
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
+"""
 This module defines table parser classes,which parse plaintext-graphic tables
 and produce a well-formed data structure suitable for building a CALS table.
 
@@ -401,16 +401,16 @@ class SimpleTableParser(TableParser):
             offset += 1
             if self.span_pat.match(line):
                 # Column span underline or border; row is complete.
-                self.parse_row(rowlines, line)
+                self.parse_row(rowlines, (line.rstrip(), offset))
                 rowlines = []
             elif line[firststart:firstend].strip():
                 # First column not blank, therefore it's a new row.
                 if rowlines:
                     self.parse_row(rowlines)
-                rowlines = [(line, offset)]
+                rowlines = [(line.rstrip(), offset)]
             else:
                 # Accumulate lines of incomplete row.
-                rowlines.append((line, offset))
+                rowlines.append((line.rstrip(), offset))
 
     def parse_columns(self, line):
         """
@@ -458,10 +458,19 @@ class SimpleTableParser(TableParser):
         adjust for insigificant whitespace.
         """
         if spanline:
-            columns = self.parse_columns(spanline)
+            columns = self.parse_columns(spanline[0])
         else:
             columns = self.columns[:]
-        row = self.init_row(columns, lines[0][1])
+        while lines and not lines[-1][0]:
+            lines.pop()                 # Remove blank trailing lines.
+        if lines:
+            offset = lines[0][1]
+        elif spanline:
+            offset = spanline[1]
+        else:
+            # No new row, just blank lines.
+            return
+        row = self.init_row(columns, offset)
         # "Infinite" value for a dummy last column's beginning, used to
         # check for text overflow:
         columns.append((sys.maxint, None))
