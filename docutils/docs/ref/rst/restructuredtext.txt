@@ -670,6 +670,11 @@ The following enumeration sequences are recognized:
 - uppercase Roman numerals: I, II, III, IV, ..., MMMMCMXCIX (4999).
 - lowercase Roman numerals: i, ii, iii, iv, ..., mmmmcmxcix (4999).
 
+In addition, the auto-enumerator, "#", may be used to automatically
+enumerate a list.  Auto-enumerated lists may begin with explicit
+enumeration, which sets the sequence.  Fully auto-enumerated lists use
+arabic numerals and begin with 1.
+
 The following formatting types are recognized:
 
 - suffixed with a period: "1.", "A.", "a.", "I.", "i.".

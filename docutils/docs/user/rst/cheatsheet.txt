@@ -36,6 +36,7 @@ List Type         Examples
 ================  ============================================================
 Bullet list       * items begin with "-", "+", or "*"
 Enumerated list   1. items use any variation of "1.", "A)", and "(i)"
+                  #. also auto-enumerated
 Definition list   Term is flush-left : optional classifier
                       Definition is indented, no blank line between
 Field list        :field name: field body

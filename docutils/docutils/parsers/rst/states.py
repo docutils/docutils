@@ -1036,7 +1036,7 @@ class Body(RSTState):
     pats['alphanum'] = '[a-zA-Z0-9]'
     pats['alphanumplus'] = '[a-zA-Z0-9_-]'
     pats['enum'] = ('(%(arabic)s|%(loweralpha)s|%(upperalpha)s|%(lowerroman)s'
-                    '|%(upperroman)s)' % enum.sequencepats)
+                    '|%(upperroman)s|#)' % enum.sequencepats)
     pats['optname'] = '%(alphanum)s%(alphanumplus)s*' % pats
     # @@@ Loosen up the pattern?  Allow Unicode?
     pats['optarg'] = '(%(alpha)s%(alphanumplus)s*|<[^<>]+>)' % pats
@@ -1182,7 +1182,10 @@ class Body(RSTState):
             raise statemachine.TransitionCorrection('text')
         enumlist = nodes.enumerated_list()
         self.parent += enumlist
-        enumlist['enumtype'] = sequence
+        if sequence == '#':
+            enumlist['enumtype'] = 'arabic'
+        else:
+            enumlist['enumtype'] = sequence
         enumlist['prefix'] = self.enum.formatinfo[format].prefix
         enumlist['suffix'] = self.enum.formatinfo[format].suffix
         if ordinal != 1:
@@ -1199,7 +1202,9 @@ class Body(RSTState):
               input_offset=self.state_machine.abs_line_offset() + 1,
               node=enumlist, initial_state='EnumeratedList',
               blank_finish=blank_finish,
-              extra_settings={'lastordinal': ordinal, 'format': format})
+              extra_settings={'lastordinal': ordinal,
+                              'format': format,
+                              'auto': sequence == '#'})
         self.goto_line(newline_offset)
         if not blank_finish:
             self.parent += self.unindent_warning('Enumerated list')
@@ -1232,7 +1237,9 @@ class Body(RSTState):
             raise ParserError('enumerator format not matched')
         text = groupdict[format][self.enum.formatinfo[format].start
                                  :self.enum.formatinfo[format].end]
-        if expected_sequence:
+        if text == '#':
+            sequence = '#'
+        elif expected_sequence:
             try:
                 if self.enum.sequenceregexps[expected_sequence].match(text):
                     sequence = expected_sequence
@@ -1249,10 +1256,13 @@ class Body(RSTState):
                     break
             else:                       # shouldn't happen
                 raise ParserError('enumerator sequence not matched')
-        try:
-            ordinal = self.enum.converters[sequence](text)
-        except roman.InvalidRomanNumeralError:
-            ordinal = None
+        if sequence == '#':
+            ordinal = 1
+        else:
+            try:
+                ordinal = self.enum.converters[sequence](text)
+            except roman.InvalidRomanNumeralError:
+                ordinal = None
         return format, sequence, text, ordinal
 
     def is_enumerated_list_item(self, ordinal, sequence, format):
@@ -1260,7 +1270,7 @@ class Body(RSTState):
         Check validity based on the ordinal value and the second line.
 
         Return true iff the ordinal is valid and the second line is blank,
-        indented, or starts with the next enumerator.
+        indented, or starts with the next enumerator or an auto-enumerator.
         """
         if ordinal is None:
             return None
@@ -1273,9 +1283,11 @@ class Body(RSTState):
             self.state_machine.previous_line()
         if not next_line[:1].strip():   # blank or indented
             return 1
-        next_enumerator = self.make_enumerator(ordinal + 1, sequence, format)
+        next_enumerator, auto_enumerator = self.make_enumerator(
+            ordinal + 1, sequence, format)
         try:
-            if next_line.startswith(next_enumerator):
+            if ( next_line.startswith(next_enumerator) or
+                 next_line.startswith(auto_enumerator) ):
                 return 1
         except TypeError:
             pass
@@ -1283,11 +1295,14 @@ class Body(RSTState):
 
     def make_enumerator(self, ordinal, sequence, format):
         """
-        Construct and return an enumerated list item marker.
+        Construct and return the next enumerated list item marker, and an
+        auto-enumerator ("#" instead of the regular enumerator).
 
         Return ``None`` for invalid (out of range) ordinals.
-        """
-        if sequence == 'arabic':
+        """ #"
+        if sequence == '#':
+            enumerator = '#'
+        elif sequence == 'arabic':
             enumerator = str(ordinal)
         else:
             if sequence.endswith('alpha'):
@@ -1310,7 +1325,10 @@ class Body(RSTState):
                 raise ParserError('unknown enumerator sequence: "%s"'
                                   % sequence)
         formatinfo = self.enum.formatinfo[format]
-        return formatinfo.prefix + enumerator + formatinfo.suffix + ' '
+        next_enumerator = (formatinfo.prefix + enumerator + formatinfo.suffix
+                           + ' ')
+        auto_enumerator = formatinfo.prefix + '#' + formatinfo.suffix + ' '
+        return next_enumerator, auto_enumerator
 
     def field_marker(self, match, context, next_state):
         """Field list item."""
@@ -2348,12 +2366,15 @@ class EnumeratedList(SpecializedBody):
         """Enumerated list item."""
         format, sequence, text, ordinal = self.parse_enumerator(
               match, self.parent['enumtype'])
-        if (sequence != self.parent['enumtype'] or
-            format != self.format or
-            ordinal != (self.lastordinal + 1) or
-            not self.is_enumerated_list_item(ordinal, sequence, format)):
+        if ( format != self.format
+             or (sequence != '#' and (sequence != self.parent['enumtype']
+                                      or self.auto
+                                      or ordinal != (self.lastordinal + 1)))
+             or not self.is_enumerated_list_item(ordinal, sequence, format)):
             # different enumeration: new list
             self.invalid_input()
+        if sequence == '#':
+            self.auto = 1
         listitem, blank_finish = self.list_item(match.end())
         self.parent += listitem
         self.blank_finish = blank_finish
