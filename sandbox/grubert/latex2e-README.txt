@@ -4,7 +4,7 @@ latex2e BUGS TODOS and other animals
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
 
-Rev. 2003-03-11
+Rev. 2003-03-15
 
 To do
 ~~~~~
@@ -127,6 +127,8 @@ ATTENTION
 
 Done
 ~~~~
+* FIX: protection of braces: formerly literal blocks were verbatim.
+  Now that they are no longer verbatim braces are dangerous.
 * literal_block no longer verbatim to allow inline markup, no longer intended.
 * Always emit empty date and author entries.
 * FIX: descriptions without docinfo (self.docinfo not initialized).
