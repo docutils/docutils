@@ -1064,7 +1064,7 @@ class pending(Special, Invisible, PreBibliographic, Element):
         internals = [
               '.. internal attributes:',
               '     .transform: %s.%s' % (self.transform.__module__,
-                                                 self.transform.__name__),
+                                          self.transform.__name__),
               '     .stage: %r' % self.stage,
               '     .details:']
         details = self.details.items()
