@@ -586,10 +586,11 @@ What kind of HTML does it produce?
 ----------------------------------
 
 It produces XHTML compatible with the `HTML 4.01`_ and `XHTML 1.0`_
-specifications.  A cascading style sheet ("default.css" by default) is
-required for proper viewing with a modern graphical browser.  Correct
-rendering of the HTML produced depends on the CSS support of the
-browser.
+specifications (within reason; there are some incompatibilities
+between the specs).  A cascading style sheet ("default.css" by
+default) is required for proper viewing with a modern graphical
+browser.  Correct rendering of the HTML produced depends on the CSS
+support of the browser.
 
 .. _HTML 4.01: http://www.w3.org/TR/html4/
 .. _XHTML 1.0: http://www.w3.org/TR/xhtml1/
@@ -707,6 +708,55 @@ markers) is completely governed by the stylesheet, so either the
 browser can't find the stylesheet (try using the "--embed-stylesheet"
 option), or the browser can't understand it (try a recent Firefox,
 Mozilla, Konqueror, Opera, Safari, or even MSIE).
+
+
+There appear to be garbage characters in the HTML.  What's up?
+--------------------------------------------------------------
+
+What you're seeing is most probably not garbage, but the result of a
+mismatch between the actual encoding of the HTML output and the
+encoding your browser is expecting.  Your browser is misinterpreting
+the HTML data, which is encoded text.  A discussion of text encodings
+is beyond the scope of this FAQ; see one or more of these documents
+for more info:
+
+* Chapters 3 and 4 of `Introduction to i18n
+  <http://www.debian.org/doc/manuals/intro-i18n/>`_
+
+* `Python Unicode Tutorial
+  <http://www.reportlab.com/i18n/python_unicode_tutorial.html>`_
+
+* `Python Unicode Objects: Some Observations on Working With Non-ASCII
+  Character Sets <http://effbot.org/zone/unicode-objects.htm>`_
+
+The common case is with the default output encoding (UTF-8), when
+either numbered sections are used (via the "sectnum_" directive) or
+symbol-footnotes.  3 non-breaking spaces are inserted in each numbered
+section title, between the generated number and the title text.  Most
+footnote symbols are not available in ASCII, nor are non-breaking
+spaces.  When encoded with UTF-8 and viewed with ordinary ASCII tools,
+these characters will appear to be multi-character garbage.
+
+You may have an decoding problem in your browser (or editor, etc.).
+The encoding of the output is set to "utf-8", but your browswer isn't
+recognizing that.  You can either try to fix your browser (enable
+"UTF-8 character set", sometimes called "Unicode"), or choose a
+different encoding for the HTML output.  If you're using Python 2.3+,
+try ``--output-encoding=ascii:xmlcharrefreplace`` for HTML (not
+applicable to non-XMLish outputs).
+
+If you're generating document fragments, the "Content-Type" metadata
+(between the HTML ``<head>`` and ``</head>`` tags) must agree with the
+encoding of the rest of the document::
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+Also, Docutils normally generates an XML declaration as the first line
+of the output.  It must also match the document encoding::
+
+    <?xml version="1.0" encoding="utf-8" ?>
+
+.. _sectnum: docs/ref/rst/directives.html#sectnum
 
 
 Python Source Reader
