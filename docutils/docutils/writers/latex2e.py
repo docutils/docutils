@@ -1863,11 +1863,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_term(self, node):
-        self.body.append('\\item[')
+        self.body.append('\\item[{')
 
     def depart_term(self, node):
         # definition list term.
-        self.body.append('] ')
+        self.body.append('}] ')
 
     def visit_tgroup(self, node):
         #self.body.append(self.starttag(node, 'colgroup'))
