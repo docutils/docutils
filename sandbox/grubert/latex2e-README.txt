@@ -3,7 +3,7 @@ latex2e BUGS TODOS and other animals
 
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
-Rev. 2002-11-03
+Rev. 2002-11-05
 
 To do
 ~~~~~
@@ -20,8 +20,6 @@ mostly errors when processing tools/test.txt.
 * abstract title should be centered. 
 
 * the indentional problematic error in test.txt is not referring anywhere.
-
-* literal text does not work proper (blanks are squeezed and markup removed).
 
 * table cells with multirow and multicolumn
 
@@ -54,7 +52,7 @@ mostly errors when processing tools/test.txt.
 * footnotes are different (what is a footnote for a html document, and why does it have
   more than one footer ?)
 
-* line blocks are set by verbtim should verse ?	
+* leading spaces in line-blocks look squeezed 	
 
 * document errors are also too silent.
 
@@ -64,10 +62,6 @@ mostly errors when processing tools/test.txt.
 * pagestyle headings does not work, when sections are starred.
 
 * latex does not hyphenate here. 
-
-* check indentation in verbatim is right.
-
-* using astext() to get text into verbatim, removes reST markups.
 
 * additional docinfo items: the field_body is inserted as text.
 
