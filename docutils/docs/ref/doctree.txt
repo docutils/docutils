@@ -246,7 +246,7 @@ following subsections:
   - Parameter Entities: Lists the parameter entities which directly or
     indirectly include the element.
 
-* Examples: reStructuredText examples are shown along with
+* Examples: reStructuredText_ examples are shown along with
   fragments of the document trees resulting from parsing.
   _`Pseudo-XML` is used for the results of parsing and processing.
   Pseudo-XML is a representation of XML where nesting is indicated by
@@ -291,7 +291,8 @@ line_block_ element: whitespace is significant, especially newlines.
 Details
 -------
 
-:Category: `Bibliographic Elements`_
+:Category:
+    `Bibliographic Elements`_
 
 :Parents:
     The following elements may contain ``address``: docinfo_, authors_
@@ -330,7 +331,7 @@ Content Model
 Examples
 --------
 
-reStructuredText source::
+reStructuredText_ source::
 
     Document Title
     ==============
@@ -367,7 +368,8 @@ The ``author`` element holds the name of the author of the document.
 Details
 -------
 
-:Category: `Bibliographic Elements`_
+:Category:
+    `Bibliographic Elements`_
 
 :Parents:
     The following elements may contain ``author``: docinfo_, authors_
@@ -401,7 +403,7 @@ Content Model
 Examples
 --------
 
-reStructuredText source::
+reStructuredText_ source::
 
     Document Title
     ==============
@@ -431,7 +433,8 @@ documents with multiple authors.
 Details
 -------
 
-:Category: `Bibliographic Elements`_
+:Category:
+    `Bibliographic Elements`_
 
 :Parents:
     Only the docinfo_ element contains ``authors``.
@@ -466,7 +469,7 @@ Content Model
 Examples
 --------
 
-reStructuredText source::
+reStructuredText_ source::
 
     Document Title
     ==============
@@ -511,7 +514,8 @@ uniformly marked with bullets.  Bullets are typically simple dingbats
 Details
 -------
 
-:Category: `Compound Body Elements`_
+:Category:
+    `Compound Body Elements`_
 
 :Parents:
     All elements employing the `%body.elements;`_ or
@@ -539,15 +543,15 @@ Content Model
 
 .. parsed-literal::
 
-    (list_item_+)
+    (list_item_ +)
 
 :Attributes:
     The ``bullet_list`` element contains the `common attributes`_
     (id_, name_, dupname_, source_, and class_), plus bullet_.
 
     ``bullet`` is used to record the style of bullet from the input
-    data.  In reStructuredText, it contains one of "-", "+", or "*".
-    It may be ignored in processing.
+    data.  In documents processed from reStructuredText_, it contains
+    one of "-", "+", or "*".  It may be ignored in processing.
 
 :Parameter Entities:
     The `%body.elements;`_ parameter entity directly includes
@@ -558,7 +562,7 @@ Content Model
 Examples
 --------
 
-reStructuredText source::
+reStructuredText_ source::
 
     - Item 1, paragraph 1.
 
@@ -616,7 +620,8 @@ used to indicate the type of a variable.
 Details
 -------
 
-:Category: `Body Subelements`_ (simple)
+:Category:
+    `Body Subelements`_ (simple)
 
 :Parents:
     Only the definition_list_item_ element contains ``classifier``.
@@ -647,7 +652,7 @@ Content Model
 Examples
 --------
 
-Here is a hypothetical data dictionary.  reStructuredText source::
+Here is a hypothetical data dictionary.  reStructuredText_ source::
 
     name : string
         Customer name.
@@ -698,7 +703,8 @@ is typically used for an email or web address.
 Details
 -------
 
-:Category: `Bibliographic Elements`_
+:Category:
+    `Bibliographic Elements`_
 
 :Parents:
     The following elements may contain ``contact``: docinfo_, authors_
@@ -734,7 +740,7 @@ Content Model
 Examples
 --------
 
-reStructuredText source::
+reStructuredText_ source::
 
     Document Title
     ==============
@@ -764,7 +770,8 @@ The ``copyright`` element contains the document's copyright statement.
 Details
 -------
 
-:Category: `Bibliographic Elements`_
+:Category:
+    `Bibliographic Elements`_
 
 :Parents:
     Only the docinfo_ element contains ``copyright``.
@@ -799,7 +806,7 @@ Content Model
 Examples
 --------
 
-reStructuredText source::
+reStructuredText_ source::
 
     Document Title
     ==============
@@ -835,7 +842,8 @@ last modification of the document.
 Details
 -------
 
-:Category: `Bibliographic Elements`_
+:Category:
+    `Bibliographic Elements`_
 
 :Parents:
     Only the docinfo_ element contains ``date``.
@@ -869,7 +877,7 @@ Content Model
 Examples
 --------
 
-reStructuredText source::
+reStructuredText_ source::
 
     Document Title
     ==============
@@ -902,7 +910,8 @@ footer_ element is implemented, populated with processing information
 Details
 -------
 
-:Category: `Structural Subelements`_
+:Category:
+    `Structural Subelements`_
 
 :Parents:
     Only the document_ element contains ``decoration``.
@@ -936,7 +945,7 @@ empty ``decoration`` elements are ever created.
 Examples
 --------
 
-reStructuredText source::
+reStructuredText_ source::
 
     A paragraph.
 
@@ -963,7 +972,8 @@ to define a term_ in a definition_list_.
 Details
 -------
 
-:Category: `Body Subelements`_ (compound)
+:Category:
+    `Body Subelements`_ (compound)
 
 :Parents:
     Only definition_list_item_ elements contain ``definition``.
@@ -1010,7 +1020,8 @@ describe or classify things, for dialogues, or to itemize subtopics
 Details
 -------
 
-:Category: `Compound Body Elements`_
+:Category:
+    `Compound Body Elements`_
 
 :Parents:
     All elements employing the `%body.elements;`_ or
@@ -1034,7 +1045,7 @@ Content Model
 
 .. parsed-literal::
 
-    (definition_list_item_+)
+    (definition_list_item_ +)
 
 :Attributes:
     The ``definition_list`` element contains only the `common
@@ -1049,7 +1060,7 @@ Content Model
 Examples
 --------
 
-reStructuredText source::
+reStructuredText_ source::
 
     Term
       Definition.
@@ -1090,7 +1101,8 @@ term_/definition_ pair (with optional classifier_).
 Details
 -------
 
-:Category: `Body Subelements`_ (compound)
+:Category:
+    `Body Subelements`_ (compound)
 
 :Parents:
     Only the definition_list_ element contains
@@ -1125,7 +1137,7 @@ Content Model
 Examples
 --------
 
-reStructuredText source::
+reStructuredText_ source::
 
     Tyrannosaurus Rex : carnivore
         Big and scary; the "Tyrant King".
@@ -1167,7 +1179,45 @@ See definition_list_ and classifier_ for further examples.
 ``description``
 ===============
 
-`To be completed`_.
+The ``description`` element contains body elements, describing the
+purpose or effect of a command-line option or group of options.
+
+
+Details
+-------
+
+:Category:
+    `Body Subelements`_
+
+:Parents:
+    Only the option_list_item_ element contains ``description``.
+
+:Children:
+    ``description`` elements may contain `body elements`_.
+
+:Analogues:
+    ``description`` has no direct analogues in common DTDs.
+
+:Processing:
+    See option_list_.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+   (`%body.elements;`_)+
+
+:Attributes:
+    The ``description`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+
+Examples
+--------
+
+See the examples for the option_list_ element.
 
 
 ``docinfo``
@@ -1181,7 +1231,8 @@ front matter of a book, such as the title page and copyright page.
 Details
 -------
 
-:Category: `Structural Subelements`_
+:Category:
+    `Structural Subelements`_
 
 :Parents:
     Only the document_ element contains ``docinfo``.
@@ -1224,7 +1275,7 @@ Content Model
 Examples
 --------
 
-Docinfo is represented in reStructuredText by a field_list_ in a
+Docinfo is represented in reStructuredText_ by a field_list_ in a
 bibliographic context: the first non-comment element of a document_,
 after any document title_/subtitle_.  The field list is transformed
 into a ``docinfo`` element and its children by a transform.  Source::
@@ -1292,7 +1343,8 @@ tree.  It is the starting point for a document.
 Details
 -------
 
-:Category: `Structural Elements`_
+:Category:
+    `Structural Elements`_
 
 :Parents:
     The ``document`` element has no parents.
@@ -1337,7 +1389,7 @@ of a ``document``.
 Examples
 --------
 
-reStructuredText source::
+reStructuredText_ source::
 
     A Title
     =======
@@ -1385,7 +1437,8 @@ uniformly marked with enumerator labels.
 Details
 -------
 
-:Category: `Compound Body Elements`_
+:Category:
+    `Compound Body Elements`_
 
 :Parents:
     All elements employing the `%body.elements;`_ or
@@ -1410,7 +1463,7 @@ Content Model
 
 .. parsed-literal::
 
-    (list_item_+)
+    (list_item_ +)
 
 :Attributes:
     The ``enumerated_list`` element contains the `common attributes`_
@@ -1424,12 +1477,12 @@ Content Model
     MMMMCMXCIX [4999]).
 
     ``prefix`` stores the formatting characters used before the
-    enumerator.  In documents originating from reStructuredText data,
+    enumerator.  In documents originating from reStructuredText_ data,
     it will contain either "" (empty string) or "(" (left
     parenthesis).  It may or may not affect processing.
 
     ``suffix`` stores the formatting characters used after the
-    enumerator.  In documents originating from reStructuredText data,
+    enumerator.  In documents originating from reStructuredText_ data,
     it will contain either "." (period) or ")" (right parenthesis).
     Depending on the capabilities of the output format, this attribute
     may or may not affect processing.
@@ -1447,7 +1500,7 @@ Content Model
 Examples
 --------
 
-reStructuredText source::
+reStructuredText_ source::
 
     1. Item 1.
 
@@ -1496,7 +1549,8 @@ elements.
 Details
 -------
 
-:Category: `Body Subelements`_
+:Category:
+    `Body Subelements`_
 
 :Parents:
     The following elements may contain ``field``: docinfo_,
@@ -1509,7 +1563,8 @@ Details
 :Analogues:
     ``field`` has no direct analogues in common DTDs.
 
-:Processing: See field_list_.
+:Processing:
+    See field_list_.
 
 
 Content Model
@@ -1544,7 +1599,8 @@ a database field's data.
 Details
 -------
 
-:Category: `Body Subelements`_
+:Category:
+    `Body Subelements`_
 
 :Parents:
     Only the field_ element contains ``field_body``.
@@ -1555,7 +1611,8 @@ Details
 :Analogues:
     ``field_body`` has no direct analogues in common DTDs.
 
-:Processing: See field_list_.
+:Processing:
+    See field_list_.
 
 
 Content Model
@@ -1581,7 +1638,7 @@ See the examples for the field_list_ and docinfo_ elements.
 
 The ``field_list`` element contains two-column table-like structures
 resembling database records (label & data pairs).  Field lists are
-often meant for further processing.  In reStructuredText, field lists
+often meant for further processing.  In reStructuredText_, field lists
 are used to represent bibliographic fields (contents of the docinfo_
 element) and directive options.
 
@@ -1589,7 +1646,8 @@ element) and directive options.
 Details
 -------
 
-:Category: `Compound Body Elements`_
+:Category:
+    `Compound Body Elements`_
 
 :Parents:
     All elements employing the `%body.elements;`_ or
@@ -1616,7 +1674,7 @@ Content Model
 
 .. parsed-literal::
 
-   (field_+)
+   (field_ +)
 
 :Attributes:
     The ``field_list`` element contains only the `common attributes`_:
@@ -1631,7 +1689,7 @@ Content Model
 Examples
 --------
 
-reStructuredText source::
+reStructuredText_ source::
 
     :Author: Me
     :Version: 1
@@ -1677,7 +1735,8 @@ to a database field's name.
 Details
 -------
 
-:Category: `Body Subelements`_
+:Category:
+    `Body Subelements`_
 
 :Parents:
     Only the field_ element contains ``field_name``.
@@ -1689,7 +1748,8 @@ Details
 :Analogues:
     ``field_name`` has no direct analogues in common DTDs.
 
-:Processing: See field_list_.
+:Processing:
+    See field_list_.
 
 
 Content Model
@@ -1728,7 +1788,8 @@ processing information (datestamp, a link to Docutils_, etc.).
 Details
 -------
 
-:Category: `Decorative Elements`_
+:Category:
+    `Decorative Elements`_
 
 :Parents:
     Only the decoration_ element contains ``footer``.
@@ -1757,7 +1818,7 @@ Content Model
 Examples
 --------
 
-reStructuredText source::
+reStructuredText_ source::
 
     A paragraph.
 
@@ -1803,7 +1864,8 @@ page.  Docutils does not yet make use of the ``header`` element.
 Details
 -------
 
-:Category: `Decorative Elements`_
+:Category:
+    `Decorative Elements`_
 
 :Parents:
     Only the decoration_ element contains ``header``.
@@ -1887,7 +1949,8 @@ item.
 Details
 -------
 
-:Category: `Body Subelements`_ (compound)
+:Category:
+    `Body Subelements`_ (compound)
 
 :Parents:
     The bullet_list_ and enumerated_list_ elements contain
@@ -1919,7 +1982,7 @@ Content Model
 Examples
 --------
 
-reStructuredText source::
+reStructuredText_ source::
 
     1. Outer list, item 1.
 
@@ -1969,37 +2032,332 @@ See bullet_list_ or enumerated_list_ for further examples.
 ``option``
 ==========
 
-`To be completed`_.
+The ``option`` element groups an option string together with zero or
+more option argument placeholders.  Note that reStructuredText_
+currently supports only one argument per option.
+
+
+Details
+-------
+
+:Category:
+    `Body Subelements`_
+
+:Parents:
+    Only the option_group_ element contains ``option``.
+
+:Children:
+    Each ``option`` element contains one option_string_ and zero or
+    more option_argument_ elements.
+
+:Analogues:
+    ``option`` has no direct analogues in common DTDs.
+
+:Processing:
+    See option_list_.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+   (option_string_, option_argument_ \*)
+
+:Attributes:
+    The ``option`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+
+Examples
+--------
+
+See the examples for the option_list_ element.
 
 
 ``option_argument``
 ===================
 
-`To be completed`_.
+The ``option_argument`` element contains placeholder text for option
+arguments.
+
+
+Details
+-------
+
+:Category:
+    `Body Subelements`_
+
+:Parents:
+    Only the option_ element contains ``option_argument``.
+
+:Children:
+    ``option_argument`` elements contain text data only.
+
+:Analogues:
+    ``option_argument`` has no direct analogues in common DTDs.
+
+:Processing:
+    The value of the "delimiter" attribute is prefixed to the
+    ``option_argument``, separating it from its option_string_ or a
+    preceding ``option_argument``.  The ``option_argument`` text is
+    typically rendered in a monospaced typeface, possibly italicized
+    or otherwise altered to indicate its placeholder nature.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+   (#PCDATA)
+
+:Attributes:
+    The ``option_argument`` element contains the `common attributes`_ (id_,
+    name_, dupname_, source_, and class_), plus delimiter_.
+
+    ``delimiter`` contains the text preceding the ``option_argument``:
+    either the text separating it from the option_string_ (typically
+    either "=" or " ") or the text between option arguments (typically
+    either "," or " ").
+
+
+Examples
+--------
+
+See the examples for the option_list_ element.
 
 
 ``option_group``
 ================
 
-`To be completed`_.
+The ``option_group`` element groups together one or more option_
+elements, all synonyms.
+
+
+Details
+-------
+
+:Category:
+    `Body Subelements`_
+
+:Parents:
+    Only the option_list_item_ element contains ``option_group``.
+
+:Children:
+    ``option_group`` elements contain one or more option_ elements.
+
+    ``option_group`` is an empty element and has no children.
+
+    Each ``option_group`` element contains one _ and
+    one _ element.
+
+:Analogues:
+    ``option_group`` has no direct analogues in common DTDs.
+
+:Processing:
+    Typically option_ elements within an ``option_group`` are joined
+    together in a comma-separated list.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+   (option_group_, description_)
+
+:Attributes:
+    The ``option_group`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+
+Examples
+--------
+
+See the examples for the option_list_ element.
 
 
 ``option_list``
 ===============
 
-`To be completed`_.
+Each ``option_list`` element contains a two-column list of
+command-line options and descriptions, documenting a program's
+options.
+
+
+Details
+-------
+
+:Category:
+    `Compound Body Elements`_
+
+:Parents:
+    All elements employing the `%body.elements;`_ or
+    `%structure.model;`_ parameter entities in their content models
+    may contain ``option_list``.
+
+:Children:
+    ``option_list`` elements contain one or more option_list_item_
+    elements.
+
+:Analogues:
+    ``option_list`` has no direct analogues in common DTDs.  It can be
+    emulated with primitives such as tables.
+
+:Processing:
+    An ``option_list`` is typically rendered as a two-column list,
+    where the first column contains option strings and arguments, and
+    the second column contains descriptions.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+   (option_list_item_ +)
+
+:Attributes:
+    The ``option_list`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+:Parameter Entities:
+    The `%body.elements;`_ parameter entity directly includes
+    ``option_list``.  The `%structure.model;`_ parameter entity
+    indirectly includes ``option_list``.
+
+
+Examples
+--------
+
+reStructuredText_ source::
+
+    -a            command-line option "a"
+    -1 file, --one=file, --two file
+                  Multiple options with arguments.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <option_list>
+        <option_list_item>
+            <option_group>
+                <option>
+                    <option_string>
+                        -a
+            <description>
+                <paragraph>
+                    command-line option "a"
+        <option_list_item>
+            <option_group>
+                <option>
+                    <option_string>
+                        -1
+                    <option_argument delimiter=" ">
+                        file
+                <option>
+                    <option_string>
+                        --one
+                    <option_argument delimiter="=">
+                        file
+                <option>
+                    <option_string>
+                        --two
+                    <option_argument delimiter=" ">
+                        file
+            <description>
+                <paragraph>
+                    Multiple options with arguments.
 
 
 ``option_list_item``
 ====================
 
-`To be completed`_.
+The ``option_list_item`` element is a container for a pair of
+option_group_ and description_ elements.
+
+
+Details
+-------
+
+:Category:
+    `Body Subelements`_
+
+:Parents:
+    Only the option_list_ element contains ``option_list_item``.
+
+:Children:
+    Each ``option_list_item`` element contains one option_group_ and
+    one description_ element.
+
+:Analogues:
+    ``option_list_item`` has no direct analogues in common DTDs.
+
+:Processing:
+    See option_list_.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+   (option_group_, description_)
+
+:Attributes:
+    The ``option_list_item`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+
+Examples
+--------
+
+See the examples for the option_list_ element.
 
 
 ``option_string``
 =================
 
-`To be completed`_.
+The ``option_string`` element contains the text of a command-line
+option.
+
+
+Details
+-------
+
+:Category:
+    `Body Subelements`_
+
+:Parents:
+    Only the option_ element contains ``option_string``.
+
+:Children:
+    ``option_string`` elements contain text data only.
+
+:Analogues:
+    ``option_string`` has no direct analogues in common DTDs.
+
+:Processing:
+    The ``option_string`` text is typically rendered in a monospaced
+    typeface.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+   (#PCDATA)
+
+:Attributes:
+    The ``option_string`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+
+Examples
+--------
+
+See the examples for the option_list_ element.
 
 
 ``organization``
@@ -2012,7 +2370,8 @@ organization, or the organization responsible for the document.
 Details
 -------
 
-:Category: `Bibliographic Elements`_
+:Category:
+    `Bibliographic Elements`_
 
 :Parents:
     Only the docinfo_ element contains ``organization``.
@@ -2048,7 +2407,7 @@ Content Model
 Examples
 --------
 
-reStructuredText source::
+reStructuredText_ source::
 
     Document Title
     ==============
@@ -2078,7 +2437,8 @@ single paragraph, a fundamental building block of documents.
 Details
 -------
 
-:Category: `Simple Body Elements`_
+:Category:
+    `Simple Body Elements`_
 
 :Parents:
     All elements employing the `%body.elements;`_ or
@@ -2114,7 +2474,7 @@ Content Model
 Examples
 --------
 
-reStructuredText source::
+reStructuredText_ source::
 
     A paragraph.
 
@@ -2158,7 +2518,8 @@ It can be used alone or in conjunction with version_.
 Details
 -------
 
-:Category: `Bibliographic Elements`_
+:Category:
+    `Bibliographic Elements`_
 
 :Parents:
     Only the docinfo_ element contains ``revision``.
@@ -2195,7 +2556,7 @@ Content Model
 Examples
 --------
 
-reStructuredText source::
+reStructuredText_ source::
 
     Document Title
     ==============
@@ -2237,7 +2598,8 @@ not after it.
 Details
 -------
 
-:Category: `Structural Elements`_
+:Category:
+    `Structural Elements`_
 
 :Parents:
     The following elements may contain ``section``: document_,
@@ -2276,7 +2638,7 @@ of a ``section``.
 Examples
 --------
 
-reStructuredText source::
+reStructuredText_ source::
 
     Title 1
     =======
@@ -2329,7 +2691,8 @@ such as "Draft", "Final", "Work In Progress", etc.
 Details
 -------
 
-:Category: `Bibliographic Elements`_
+:Category:
+    `Bibliographic Elements`_
 
 :Parents:
     Only the docinfo_ element contains ``status``.
@@ -2363,7 +2726,7 @@ Content Model
 Examples
 --------
 
-reStructuredText source::
+reStructuredText_ source::
 
     Document Title
     ==============
@@ -2410,7 +2773,8 @@ The ``subtitle`` element stores the subtitle of a document_.
 Details
 -------
 
-:Category: `Structural Subelements`_
+:Category:
+    `Structural Subelements`_
 
 :Parents:
     Only the document_ element contains ``subtitle``.
@@ -2442,7 +2806,7 @@ Content Model
 Examples
 --------
 
-reStructuredText source::
+reStructuredText_ source::
 
     =======
      Title
@@ -2503,7 +2867,8 @@ definition_list_.
 Details
 -------
 
-:Category: `Body Subelements`_ (simple)
+:Category:
+    `Body Subelements`_ (simple)
 
 :Parents:
     Only the definition_list_item_ element contains ``term``.
@@ -2566,7 +2931,8 @@ topic_.
 Details
 -------
 
-:Category: `Structural Subelements`_
+:Category:
+    `Structural Subelements`_
 
 :Parents:
     The following elements may contain ``title``: document_, section_,
@@ -2600,7 +2966,7 @@ Content Model
 Examples
 --------
 
-reStructuredText source::
+reStructuredText_ source::
 
     A Title
     =======
@@ -2629,7 +2995,8 @@ a ``table`` or a ``list``, or inside another ``topic``.
 Details
 -------
 
-:Category: `Structural Elements`_
+:Category:
+    `Structural Elements`_
 
 :Parents:
     The following elements may contain ``topic``: document_, section_
@@ -2667,7 +3034,7 @@ Examples
 --------
 
 The `"topic" directive`_ is used to create a ``topic`` element.
-reStructuredText source::
+reStructuredText_ source::
 
     .. topic:: Title
 
@@ -2704,7 +3071,8 @@ __ rst/alternatives.txt
 Details
 -------
 
-:Category: `Structural Subelements`_
+:Category:
+    `Structural Subelements`_
 
 :Parents:
     The following elements may contain ``transition``: document_,
@@ -2745,7 +3113,7 @@ The ``transition`` element has no content; it is a "point element".
 Examples
 --------
 
-reStructuredText source::
+reStructuredText_ source::
 
     Paragraph 1.
 
@@ -2773,7 +3141,8 @@ It can be used alone or in conjunction with revision_.
 Details
 -------
 
-:Category: `Bibliographic Elements`_
+:Category:
+    `Bibliographic Elements`_
 
 :Parents:
     Only the docinfo_ element contains ``version``.
@@ -2810,7 +3179,7 @@ Content Model
 Examples
 --------
 
-reStructuredText source::
+reStructuredText_ source::
 
     Document Title
     ==============
@@ -2935,6 +3304,14 @@ element.  It can be used to carry context forward between a Docutils
 Reader and Writer, when a custom structure is reduced to a
 standardized document tree.  ``class`` is one of the `common
 attributes`_, shared by all Docutils elements.
+
+
+``delimiter``
+=============
+
+`Attribute type`_: ``CDATA``.  Default value: none.
+
+The ``delimiter`` attribute is used in the option_argument_ element.
 
 
 ``dupname``
