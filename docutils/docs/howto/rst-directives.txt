@@ -158,12 +158,35 @@ value ``None``.  Three directive function attributes are recognized:
   - ``path``: Returns the path argument unwrapped (with newlines
     removed).  Raises ``ValueError`` if no argument is found.
 
+  - ``uri``: Returns the URI argument with whitespace removed.  Raises
+    ``ValueError`` if no argument is found.
+
   - ``nonnegative_int``: Checks for a nonnegative integer argument,
     and raises ``ValueError`` if not.
 
   - ``class_option``: Converts the argument into an ID-compatible
     string and returns it.  Raises ``ValueError`` if no argument is
     found.
+
+  - ``unicode_code``: Convert a Unicode character code to a Unicode
+    character.
+
+  - ``single_char_or_unicode``: A single character is returned as-is.
+    Unicode characters codes are converted as in ``unicode_code``.
+
+  - ``single_char_or_whitespace_or_unicode``: As with
+    ``single_char_or_unicode``, but "tab" and "space" are also
+    supported.
+
+  - ``positive_int``: Converts the argument into an integer.  Raises
+    ValueError for negative, zero, or non-integer values.
+
+  - ``positive_int_list``: Converts a space- or comma-separated list
+    of integers into a Python list of integers.  Raises ValueError for
+    non-positive-integer values.
+
+  - ``encoding``: Verfies the encoding argument by lookup.  Raises
+    ValueError for unknown encodings.
 
   A further utility function, ``choice``, is supplied to enable
   options whose argument must be a member of a finite set of possible
@@ -287,7 +310,7 @@ early version of the image directive function::
 
     def image(name, arguments, options, content, lineno,
               content_offset, block_text, state, state_machine):
-        reference = ''.join(arguments[0].split('\n'))
+        reference = directives.uri(arguments[0])
         options['uri'] = reference
         image_node = nodes.image(block_text, **options)
         return [image_node]
@@ -305,7 +328,7 @@ Several things are noteworthy in the code above:
    to contain whitespace (see the argument spec above,
    ``image.arguments = (1, 0, 1)``).  This is to allow for long URLs
    which may span multiple lines.  The first line of the ``image``
-   function joins the URL, discarding any embedded newlines.
+   function joins the URL, discarding any embedded whitespace.
 
 2. The reference is added to the ``options`` dictionary under the
    "uri" key; this becomes an attribute of the ``nodes.image`` element
