@@ -1,19 +1,26 @@
-From: "Axel Kollmorgen" <axel at kollmorgen dot net>
-To: <docutils-users at lists dot sourceforge dot net>; <doc-sig at python dot org>
-Subject: docutils (rst) User Documentation in Microsoft HTML Help (chm) format
-Date: Dienstag, 1. Juli 2003 16:35
+docutils documentation in Microsoft HTML Help (chm) format
+==========================================================
 
-hi all,
+:Author: Axel Kollmorgen
+:Contact: axel(at)kollmorgen[dot]net
+:Date: $Date$
+:Web site: http://docutils.sourceforge.net/sandbox/ax-/chm/
 
-i just converted a big part of the docutils (rst) User Documentation
-(Intro, Primer, Quick rst, spec, FAQ, ...) into chm format. this is
-quite handy (for people who can use chm ;)) - it's all in one place,
-with a single toc, and fully searchable.
+this is the complete docutils_ documentation - all \*.txt files and 
+`docs/rst/quickref.html`_ - in a single, toc'ed, and full-text searchable 
+chm file. the `first version`_ was handmade (and incomplete). the 
+current version uses Ollie Rutherfurd's lovely rst2chm_::
 
-this sandbox contains the chm plus the HTML Help project (.hhp) and toc 
-(.hhc) files.
+  rst2chm.py --title=reStructuredText --default-topic=spec\rst\introduction.html 
+             --no-clean rst.chm
+             spec\rst\*.txt docs\rst\*.txt docs\*.txt *.txt spec\*.txt spec\howto\*.txt
 
-for future versions, i'll try one of the rst-to-docbook converters and
-the docbook chm writer to automatically generate a complete
-documentation. current version doesn't include all documentation and
-doesn't link all toc entries to their subheadings properly.
+and a few manual improvements (inclusion and "sectioning" of 
+`docs/rst/quickref.html`_, some rearrangements of toc entries, and an 
+improved stylesheet) (and is complete). and probably won't see an update 
+any soon.
+
+.. _docutils: http://docutils.sourceforge.net/
+.. _docs/rst/quickref.html: http://docutils.sourceforge.net/docs/rst/quickref.html
+.. _first version: http://mail.python.org/pipermail/doc-sig/2003-July/003033.html
+.. _rst2chm: http://www.rutherfurd.net/software/rst2chm/

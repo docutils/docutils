@@ -1,26 +1,50 @@
-[OPTIONS]
-Compatibility=1.1 or later
-Compiled file=rst.chm
-Contents file=rst.hhc
-Default topic=spec\rst\introduction.html
-Display compile progress=No
-Full-text search=Yes
-Language=0x409 English (United States)
-Title=reStructuredText
-
-
-[FILES]
-docs\rst\quickstart.html
-docs\rst\quickref.html
-spec\rst\reStructuredText.html
-spec\rst\alternatives.html
-spec\rst\directives.html
-spec\rst\interpreted.html
-spec\rst\introduction.html
-spec\rst\problems.html
-docs\tools.html
-docs\latex.html
-FAQ.html
 
 [INFOTYPES]
 
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled File=rst.chm
+Contents File=rst.hhc
+Default Topic=spec\rst\introduction.html
+Display compile progress=Yes
+Full-text search=Yes
+Language=0x0409 English (United States)
+Title=reStructuredText
+Binary TOC=No
+Binary Index=Yes
+Index File=
+Default Window=
+Default Font=Tahoma, 8
+Auto Index=No
+Create CHI file=No
+Error log file=_errorlog.txt
+
+[WINDOWS]
+
+[FILES]
+COPYING.html
+FAQ.html
+HISTORY.html
+README.html
+docs/latex.html
+docs/tools.html
+docs/rst/quickstart.html
+spec/doctree.html
+spec/notes.html
+spec/pep-0256.html
+spec/pep-0257.html
+spec/pep-0258.html
+spec/pep-0287.html
+spec/pysource.html
+spec/semantics.html
+spec/transforms.html
+spec/howto/i18n.html
+spec/howto/rst-directives.html
+spec/rst/alternatives.html
+spec/rst/directives.html
+spec/rst/interpreted.html
+spec/rst/introduction.html
+spec/rst/problems.html
+spec/rst/reStructuredText.html
+
+[MERGE FILES]
