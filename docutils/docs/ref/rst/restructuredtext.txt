@@ -1596,6 +1596,7 @@ For example, here's how an image may be placed::
 A figure (a graphic with a caption) may placed like this::
 
     .. figure:: larch.png
+
        The larch.
 
 An admonition (note, caution, etc.) contains other body elements::
