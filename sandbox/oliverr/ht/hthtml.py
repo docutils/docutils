@@ -88,7 +88,6 @@ class HTTranslator(HTMLTranslator):
         document.settings.base_section = int(document.settings.base_section)
 
         HTMLTranslator.__init__(self, document)
-
         # ht2html likes having a title, so add a default one
         self.headers = {'title': 'None'}
         stylesheet = self.get_stylesheet_reference(os.getcwd())
@@ -101,7 +100,8 @@ class HTTranslator(HTMLTranslator):
         headers = ''.join(['%s: %s\n' % (k,v) \
             for (k,v) in self.headers.items()])
         # kludge! want footer, but not '</body></html>'
-        body = self.docinfo + self.body + self.body_suffix[:-1]
+        body = self.body_pre_docinfo + self.docinfo + self.body + \
+                self.body_suffix[:-1]
 
         return ''.join([headers + '\n'] + body)
 
