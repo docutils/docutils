@@ -59,8 +59,8 @@ body {
   margin-bottom: 1em ;
   padding: 0px }
 
-td.num {
-  text-align: right }
+dd {
+  margin-bottom: 0.5em }
 
 div.section {
   margin-left: 1em ;
@@ -148,7 +148,7 @@ h6 {
 .section hr {
   width: 75% }
 
-ol, ul {
+ol.simple, ul.simple {
   margin-bottom: 1em }
 
 ol.arabic {
@@ -166,15 +166,15 @@ ol.lowerroman {
 ol.upperroman {
   list-style: upper-roman }
 
-dd p:first-child, li p:first-child, td p:first-child, th p:first-child {
-  margin-top: 0px }
-
 p.caption {
   font-style: italic }
 
 p.credits {
   font-style: italic ;
   font-size: smaller }
+
+p.first {
+  margin-top: 0 }
 
 p.label {
   white-space: nowrap }
@@ -211,6 +211,9 @@ span.problematic {
 table {
   margin-top: 0.5em ;
   margin-bottom: 0.5em }
+
+td.num {
+  text-align: right }
 
 td, th {
   padding-left: 0.5em ;
