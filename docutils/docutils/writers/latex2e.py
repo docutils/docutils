@@ -1240,9 +1240,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
             if node.parent.hasattr('id'):
                 self.body.append('\\hypertarget{%s}{}' % node.parent['id'])
             self.body.append('\\begin{center}\n')
-            self.context.append('\\end{center}\n')
+            # BUG: latex chokes: perhaps a missing item.
+            self.context.append('% HACK: latex chokes: -- perhaps a missing item.\n'
+                    '\\begin{list}{ }{'
+                    '\\setlength{\\topsep}{0pt}'
+                    '\\setlength{\\itemsep}{-1cm}}'
+                    '\\item \\item \\end{list}\n'
+                    '\\end{center}\n')
             ## should this be section subsection or 
             self.body.append('\\subsection*{')
+            # the closing brace for subsection.
             self.context.append('}\n')
         elif self.section_level == 0:
             # document title
