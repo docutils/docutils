@@ -14,9 +14,9 @@ Docutils project can be found at http://docutils.sourceforge.net/.
 The latest version of this DTD is available from
 http://docutils.sourceforge.net/spec/docutils.dtd.
 
-The proposed formal public identifier for this DTD is::
+The formal public identifier for this DTD is::
 
-    +//IDN python.org//DTD Docutils Generic//EN//XML
+    +//IDN docutils.sourceforge.net//DTD Docutils Generic//EN//XML
 -->
 
 <!--
