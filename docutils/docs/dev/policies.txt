@@ -146,13 +146,18 @@ applicable), with particular emphasis as follows:
       cd docutils/test
       ./alltests.py
 
-  Docutils currently supports Python 2.1 or later, with some things
-  only working (and being tested) on 2.3.  Therefore, you should
-  actually have Pythons 2.1, 2.2 and 2.3 installed and always run the
-  tests on all of them.  (A good way to do that is to always run the
-  test suite through a short script that runs ``alltests.py`` under
-  each version of Python.)  If you can't afford intalling 3 Python
-  versions, the edge cases (2.1 and 2.3) should cover most of it.
+  Docutils currently supports Python 2.1 [1]_ or later, with some
+  things only working (and being tested) on 2.3.  Therefore, you
+  should actually have Pythons 2.1 [1]_, 2.2 and 2.3 installed and
+  always run the tests on all of them.  (A good way to do that is to
+  always run the test suite through a short script that runs
+  ``alltests.py`` under each version of Python.)  If you can't afford
+  intalling 3 Python versions, the edge cases (2.1 and 2.3) should
+  cover most of it.
+
+  .. [1] Python 2.1 may be used providing the compiler package is
+     installed.  The compiler package can be found in the Tools/
+     directory of Python 2.1's source distribution.
 
   Good resources covering the differences between Python versions:
 
