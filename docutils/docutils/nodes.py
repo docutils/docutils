@@ -692,7 +692,8 @@ class Body: pass
 
 class General(Body): pass
 
-class Sequential(Body): pass
+class Sequential(Body):
+    """List-like elements."""
 
 class Admonition(Body): pass
 
