@@ -91,7 +91,18 @@ class OptionSpec:
     directory."""
 
 
-class Component(OptionSpec):
+class TransformSpec:
+
+    """
+    Runtime transform specification base class.
+
+    TransformSpec subclass objects used by `docutils.transforms.Transformer`.
+    """
+
+    default_transforms = ()
+
+
+class Component(OptionSpec, TransformSpec):
 
     """Base class for Docutils components."""
 

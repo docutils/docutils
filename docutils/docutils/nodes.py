@@ -697,6 +697,9 @@ class document(Root, Structural, Element):
         self.transform_messages = []
         """System messages generated while applying transforms."""
 
+        self.transformer = None
+        """`docutils.transforms.Transformer` object."""
+
         self.document = self
 
     def asdom(self, dom=xml.dom.minidom):

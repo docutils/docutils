@@ -28,13 +28,13 @@ these standard transforms.
 __docformat__ = 'reStructuredText'
 
 
-from docutils import languages, ApplicationError, Component
+from docutils import languages, ApplicationError, TransformSpec
 
 
 class TransformError(ApplicationError): pass
 
 
-class Transform(Component):
+class Transform:
 
     """
     Docutils transform component abstract base class.
@@ -64,3 +64,39 @@ class Transform(Component):
     def transform(self):
         """Override to transform the document tree."""
         raise NotImplementedError('subclass must override this method')
+
+
+class Transformer(TransformSpec):
+
+    """
+    The Transformer class records and applies transforms to documents.
+    """
+
+    def __init__(self):
+        self.transforms = []
+        """Queue of transforms to apply."""
+
+        self.applying = None
+        """Boolean: am I now applying tranforms?"""
+
+    def add_transform(self, transform_class, priority=None):
+        if priority is None:
+            priority = transform_class.priority
+        self.transforms.append((priority, transform_class, None))
+        if self.applying:
+            self.transforms.sort()
+
+    def add_transforms(self, transform_list):
+        for transform_class in transform_list:
+            self.transforms.append((transform_class.priority, transform_class,
+                                    None))
+        if self.applying:
+            self.transforms.sort()
+
+    def add_pending(self, pending, priority=None):
+        transform_class = pending.transform
+        if priority is None:
+            priority = transform_class.priority
+        self.transforms.append((priority, transform_class, pending))
+        if self.applying:
+            self.transforms.sort()
