@@ -189,10 +189,7 @@ A paragraph.
                 <literal>
                     test_include.py
                 .
-            <pending>
-                .. internal attributes:
-                     .transform: docutils.transforms.structural.Transition
-                     .details:
+            <transition>
         <section dupname="inclusion 1" id="id1">
             <title>
                 Inclusion 1
