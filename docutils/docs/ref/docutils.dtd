@@ -265,11 +265,11 @@ http://www.oasis-open.org/html/tm9901.htm).
 <!ELEMENT section (title, %structure.model;)>
 <!ATTLIST section %basic.atts;>
 
-<!ELEMENT sidebar (title, subtitle?, (%body.elements;)+)>
-<!ATTLIST sidebar %basic.atts;>
-
 <!ELEMENT topic (title?, (%body.elements;)+)>
 <!ATTLIST topic %basic.atts;>
+
+<!ELEMENT sidebar (title, subtitle?, (%body.elements;)+)>
+<!ATTLIST sidebar %basic.atts;>
 
 <!ELEMENT transition EMPTY>
 <!ATTLIST transition %basic.atts;>

@@ -943,31 +943,34 @@ class footer(Decorative, Element): pass
 class section(Structural, Element): pass
 
 
-class sidebar(Structural, Element):
-
-    """
-    Sidebars are terminal, "leaf" mini-sections, like block quotes with titles,
-    or textual figures. A sidebar is just like a section, except that it has no
-    subsections, and it doesn't have to conform to section placement rules.
-
-    Sidebars are allowed wherever body elements (list, table, etc.) are
-    allowed, but only at the top level of a section or document. Sidebars
-    cannot nest inside sidebars or body elements; you can't have a sidebar
-    inside a table, list, block quote, etc.
-    """
-
-
 class topic(Structural, Element):
 
     """
     Topics are terminal, "leaf" mini-sections, like block quotes with titles,
-    or textual figures. A topic is just like a section, except that it has no
+    or textual figures.  A topic is just like a section, except that it has no
     subsections, and it doesn't have to conform to section placement rules.
 
     Topics are allowed wherever body elements (list, table, etc.) are allowed,
-    but only at the top level of a section or document. Topics cannot nest
-    inside topics or body elements; you can't have a topic inside a table,
-    list, block quote, etc.
+    but only at the top level of a section or document.  Topics cannot nest
+    inside topics, sidebars, or body elements; you can't have a topic inside a
+    table, list, block quote, etc.
+    """
+
+
+class sidebar(Structural, Element):
+
+    """
+    Sidebars are like miniature, parallel documents that occur inside other
+    documents, providing related or reference material.  A sidebar is
+    typically offset by a border and "floats" to the side of the page; the
+    document's main text may flow around it.  Sidebars can also be likened to
+    super-footnotes; their content is outside of the flow of the document's
+    main text.
+
+    Sidebars are allowed wherever body elements (list, table, etc.) are
+    allowed, but only at the top level of a section or document.  Sidebars
+    cannot nest inside sidebars, topics, or body elements; you can't have a
+    sidebar inside a table, list, block quote, etc.
     """
 
 

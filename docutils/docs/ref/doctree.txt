@@ -102,7 +102,7 @@ directly contain text data.  Structural elements may contain body
 elements or further structural elements.  Structural elements can only
 be child elements of other structural elements.
 
-Category members: document_, section_, topic_
+Category members: document_, section_, topic_, sidebar_
 
 
 Structural Subelements
@@ -3321,7 +3321,7 @@ Details
 
 :Children:
     ``section`` elements begin with a title_, and may contain `body
-    elements`_ and transition_ and topic_ elements.
+    elements`_ as well as transition_, topic_, and sidebar_ elements.
 
 :Analogues:
     ``section`` is analogous to DocBook recursive "section" elements,
@@ -3393,6 +3393,89 @@ Complete pseudo-XML_ result after parsing::
                     Title 4
                 <paragraph>
                     Paragraph 4.
+
+
+``sidebar``
+=========
+
+Sidebars are like miniature, parallel documents that occur inside
+other documents, providing related or reference material.  A
+``sidebar`` is typically offset by a border and "floats" to the side
+of the page; the document's main text may flow around it.  Sidebars
+can also be likened to super-footnotes; their content is outside of
+the flow of the document's main text.
+
+The ``sidebar`` element is a nonrecursive section_-like construct
+which may occur at the top level of a section_ wherever a body element
+(list, table, etc.) is allowed.  In other words, ``sidebar`` elements
+cannot nest inside body elements, so you can't have a ``sidebar``
+inside a ``table`` or a ``list``, or inside another ``sidebar`` (or
+topic_).
+
+
+Details
+-------
+
+:Category:
+    `Structural Elements`_
+
+:Parents:
+    The following elements may contain ``sidebar``: document_,
+    section_
+
+:Children:
+    ``sidebar`` elements begin with a title_ and an optional subtitle_
+    and contain `body elements`_.
+
+:Analogues:
+    ``sidebar`` is analogous to the DocBook "sidebar" element.
+
+:Processing:
+    A ``sidebar`` element should be set off from the rest of the
+    document somehow, typically with a border.  Sidebars typically
+    "float" to the side of the page and the document's main text flows
+    around them.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+    (title_, subtitle_?,
+     (`%body.elements;`_)+)
+
+:Attributes:
+    The ``sidebar`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+:Parameter Entities:
+    The `%structure.model;`_ parameter entity directly includes
+    ``sidebar``.
+
+
+Examples
+--------
+
+The `"sidebar" directive`_ is used to create a ``sidebar`` element.
+reStructuredText_ source::
+
+    .. sidebar:: Title
+       :subtitle: If Desired
+
+       Body.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <sidebar>
+        <title>
+            Title
+        <subtitle>
+            If Desired
+        <paragraph>
+            Body.
+
+.. _"sidebar" directive: rst/directives.html#sidebar
 
 
 ``status``
@@ -3491,7 +3574,7 @@ Details
     `Structural Subelements`_
 
 :Parents:
-    Only the document_ element contains ``subtitle``.
+    The document_ and sidebar_ elements may contain ``subtitle``.
 
 :Children:
     ``subtitle`` elements may contain text data plus `inline
@@ -3694,8 +3777,8 @@ Pseudo-XML_ fragment from simple parsing::
 ``title``
 =========
 
-The ``title`` element stores the title of a document_, section_, or
-topic_.
+The ``title`` element stores the title of a document_, section_,
+topic_, or sidebar_.
 
 
 Details
@@ -3706,7 +3789,7 @@ Details
 
 :Parents:
     The following elements may contain ``title``: document_, section_,
-    topic_
+    topic_, sidebar_
 
 :Children:
     ``title`` elements may contain text data plus `inline elements`_.
@@ -3765,7 +3848,7 @@ The ``topic`` element is a nonrecursive section_-like construct which
 may occur at the top level of a section_ wherever a body element
 (list, table, etc.) is allowed.  In other words, ``topic`` elements
 cannot nest inside body elements, so you can't have a ``topic`` inside
-a ``table`` or a ``list``, or inside another ``topic``.
+a ``table`` or a ``list``, or inside another ``topic`` (or sidebar_).
 
 
 Details
@@ -4412,7 +4495,8 @@ The ``%body.elements;`` parameter entity is directly employed in the
 content models of the following elements: attention_, block_quote_,
 caution_, citation_, danger_, definition_, description_, entry_,
 error_, field_body_, footer_, footnote_, header_, hint_, important_,
-legend_, list_item_, note_, system_message_, tip_, topic_, warning_
+legend_, list_item_, note_, sidebar_, system_message_, tip_, topic_,
+warning_
 
 Via `%structure.model;`_, the ``%body.elements;`` parameter entity is
 indirectly employed in the content models of the document_ and
@@ -4584,17 +4668,17 @@ Entity definition:
 
 .. parsed-literal::
 
-    ( ( (`%body.elements;`_ | topic_)+,
-        (transition_, (`%body.elements;`_ | topic_)+ )*,
+    ( ( (`%body.elements;`_ | topic_ | sidebar_)+,
+        (transition_, (`%body.elements;`_ | topic_ | sidebar_)+ )*,
         (`%section.elements;`_)* )
     | (`%section.elements;`_)+ )
 
 Each document_ or section_ contains either:
 
-- multiple body elements and/or topics, optionally interspersed with
-  transitions (but transitions cannot occur at the beginning or end,
-  nor may there be two transitions in a row), followed by zero or more
-  sections; or
+- multiple body elements, topics, and/or sidebars, optionally
+  interspersed with transitions (but transitions cannot occur at the
+  beginning or end, nor may there be two transitions in a row),
+  followed by zero or more sections; or
 
 - one or more sections (whose contents are recursively the same as this
   model).

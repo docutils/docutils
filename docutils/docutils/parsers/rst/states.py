@@ -2147,7 +2147,8 @@ class Body(RSTState):
               self.state_machine.input_lines[offset:],
               input_offset=self.state_machine.abs_line_offset() + 1,
               node=self.parent, initial_state='Explicit',
-              blank_finish=blank_finish)
+              blank_finish=blank_finish,
+              match_titles=self.state_machine.match_titles)
         self.goto_line(newline_offset)
         if not blank_finish:
             self.parent += self.unindent_warning('Explicit markup')
