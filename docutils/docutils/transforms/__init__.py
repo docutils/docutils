@@ -58,11 +58,12 @@ class Transform:
         apply to the document as a whole, `startnode` is not set (i.e. its
         value is `None`)."""
 
-        self.language = languages.get_language(document.options.language_code)
+        self.language = languages.get_language(
+            document.settings.language_code)
         """Language module local to this document."""
 
-    def transform(self):
-        """Override to transform the document tree."""
+    def apply(self):
+        """Override to apply the transform to the document tree."""
         raise NotImplementedError('subclass must override this method')
 
 
@@ -72,31 +73,59 @@ class Transformer(TransformSpec):
     The Transformer class records and applies transforms to documents.
     """
 
-    def __init__(self):
+    from docutils.transforms import universal
+
+    default_transforms = (universal.Decorations,
+                          universal.FinalChecks,
+                          universal.Messages)
+
+    def __init__(self, document):
         self.transforms = []
         """Queue of transforms to apply."""
 
         self.applying = None
         """Boolean: am I now applying tranforms?"""
 
-    def add_transform(self, transform_class, priority=None):
+        self.document = document
+        """The `nodes.document` object this Transformer is attached to."""
+
+    def add_transform(self, transform_class, priority=None, component=None):
         if priority is None:
             priority = transform_class.priority
-        self.transforms.append((priority, transform_class, None))
+        self.transforms.append((priority, transform_class, None, component))
         if self.applying:
             self.transforms.sort()
 
-    def add_transforms(self, transform_list):
+    def add_transforms(self, transform_list, component=None):
         for transform_class in transform_list:
-            self.transforms.append((transform_class.priority, transform_class,
-                                    None))
+            self.transforms.append(
+                (transform_class.priority, transform_class, None, component))
         if self.applying:
             self.transforms.sort()
 
-    def add_pending(self, pending, priority=None):
+    def add_pending(self, pending, priority=None, component=None):
         transform_class = pending.transform
         if priority is None:
             priority = transform_class.priority
-        self.transforms.append((priority, transform_class, pending))
+        self.transforms.append(
+            (priority, transform_class, pending, component))
         if self.applying:
             self.transforms.sort()
+
+    def populate_from_components(self, components):
+        for component in components:
+            if component is None:
+                continue
+            self.add_transforms(component.default_transforms,
+                                component=component)
+
+    def apply_transforms(self):
+        self.applying = 1
+        self.transforms.sort()
+        while self.transforms:
+            priority, transform_class, pending, component \
+                      = self.transforms.pop(0)
+            transform = transform_class(self.document, component,
+                                        startnode=pending)
+            transform.apply()
+        self.applying = None
