@@ -43,7 +43,7 @@ from optparse import Values, SUPPRESS_HELP
 def store_multiple(option, opt, value, parser, *args, **kwargs):
     """
     Store multiple values in `parser.values`.  (Option callback.)
-    
+
     Store `None` for each attribute named in `args`, and store the value for
     each key (attribute name) in `kwargs`.
     """
@@ -466,11 +466,10 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
         for component in components:
             if component is None:
                 continue
-            i = 0
             settings_spec = component.settings_spec
             self.relative_path_settings.extend(
                 component.relative_path_settings)
-            while i < len(settings_spec):
+            for i in range(0, len(settings_spec), 3):
                 title, description, option_spec = settings_spec[i:i+3]
                 if title:
                     group = optparse.OptionGroup(self, title, description)
@@ -492,7 +491,6 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
                         self.lists[option.dest] = 1
                 if component.settings_defaults:
                     self.defaults.update(component.settings_defaults)
-                i += 3
         for component in components:
             if component and component.settings_default_overrides:
                 self.defaults.update(component.settings_default_overrides)
