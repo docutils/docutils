@@ -1,37 +1,37 @@
 #!/usr/bin/env python
 """Convert PEPs to (X)HTML - courtesy of /F
 
-Usage: %(PROGRAM)s [options] [peps]
+Usage: %(PROGRAM)s [options] [<peps> ...]
 
 Options:
 
-    -u/--user
-        python.org username
+-u, --user
+    python.org username
 
-    -b/--browse
-        After generating the HTML, direct your web browser to view it
-        (using the Python webbrowser module).  If both -i and -b are
-        given, this will browse the on-line HTML; otherwise it will
-        browse the local HTML.  If no pep arguments are given, this
-        will browse PEP 0.
+-b, --browse
+    After generating the HTML, direct your web browser to view it
+    (using the Python webbrowser module).  If both -i and -b are
+    given, this will browse the on-line HTML; otherwise it will
+    browse the local HTML.  If no pep arguments are given, this
+    will browse PEP 0.
 
-    -i/--install
-        After generating the HTML, install it and the plaintext source file
-        (.txt) on python.org.  In that case the user's name is used in the scp
-        and ssh commands, unless "-u username" is given (in which case, it is
-        used instead).  Without -i, -u is ignored.
+-i, --install
+    After generating the HTML, install it and the plaintext source file
+    (.txt) on python.org.  In that case the user's name is used in the scp
+    and ssh commands, unless "-u username" is given (in which case, it is
+    used instead).  Without -i, -u is ignored.
 
-    -l/--local
-        Same as -i/--install, except install on the local machine.  Use this
-        when logged in to the python.org machine (creosote).
+-l, --local
+    Same as -i/--install, except install on the local machine.  Use this
+    when logged in to the python.org machine (creosote).
 
-    -q/--quiet
-        Turn off verbose messages.
+-q, --quiet
+    Turn off verbose messages.
 
-    -h/--help
-        Print this help message and exit.
+-h, --help
+    Print this help message and exit.
 
-The optional argument `peps' is a list of either pep numbers or .txt files.
+The optional arguments ``peps`` are either pep numbers or .txt files.
 """
 
 import sys
@@ -81,9 +81,14 @@ COMMASPACE = ', '
 
 
 def usage(code, msg=''):
-    print >> sys.stderr, __doc__ % globals()
+    """Print usage message and exit.  Uses stderr if code != 0."""
+    if code == 0:
+        out = sys.stdout
+    else:
+        out = sys.stderr
+    print >> out, __doc__ % globals()
     if msg:
-        print >> sys.stderr, msg
+        print >> out, msg
     sys.exit(code)
 
 
