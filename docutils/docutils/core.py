@@ -386,16 +386,13 @@ def publish_parts(source, source_path=None, destination_path=None,
                   settings_overrides=None, config_section=None,
                   enable_exit=None):
     """
-    Set up & run a `Publisher`, and return a dictionary of strings with the
-    names of parts as keys.  For programmatic use with string I/O.
+    Set up & run a `Publisher`, and return a dictionary of document parts.
+    Dictionary keys are the names of parts, and values are Unicode strings;
+    encoding is up to the client.  For programmatic use with string I/O.
 
-    For encoded string output, be sure to set the "output_encoding" setting to
+    For encoded string input, be sure to set the "input_encoding" setting to
     the desired encoding.  Set it to "unicode" for unencoded Unicode string
-    output.  Here's how::
-
-        publish_string(..., settings_overrides={'output_encoding': 'unicode'})
-
-    Similarly for Unicode string input (`source`)::
+    input.  Here's how::
 
         publish_string(..., settings_overrides={'input_encoding': 'unicode'})
 
@@ -429,7 +426,7 @@ def publish_parts(source, source_path=None, destination_path=None,
     """
     pub = Publisher(reader, parser, writer, settings=settings,
                     source_class=io.StringInput,
-                    destination_class=io.StringOutput)
+                    destination_class=io.NullOutput)
     pub.set_components(reader_name, parser_name, writer_name)
     if settings is None:
         settings = pub.get_settings(settings_spec=settings_spec,
