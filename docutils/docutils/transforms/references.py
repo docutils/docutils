@@ -11,13 +11,18 @@ Transforms for resolving references:
 - `Hyperlinks`: Used to resolve hyperlink targets and references.
 - `Footnotes`: Resolve footnote numbering and references.
 - `Substitutions`: Resolve substitutions.
+- `TargetNotes`: Create footnotes for external targets.
 """
 
 __docformat__ = 'reStructuredText'
 
+import sys
 import re
 from docutils import nodes, utils
 from docutils.transforms import TransformError, Transform
+
+
+indices = xrange(sys.maxint)
 
 
 class Hyperlinks(Transform):
@@ -78,9 +83,8 @@ class Hyperlinks(Transform):
                 msg.add_backref(prbid)
                 ref.parent.replace(ref, prb)
             return
-        for i in range(len(self.document.anonymous_refs)):
-            ref = self.document.anonymous_refs[i]
-            target = self.document.anonymous_targets[i]
+        for ref, target in zip(self.document.anonymous_refs,
+                               self.document.anonymous_targets):
             if target.hasattr('refuri'):
                 ref['refuri'] = target['refuri']
                 ref.resolved = 1
@@ -655,3 +659,51 @@ class Substitutions(Transform):
                     msg.add_backref(prbid)
                     ref.parent.replace(ref, prb)
         self.document.substitution_refs = None  # release replaced references
+
+
+class TargetNotes(Transform):
+
+    """
+    Creates a footnote for each external target in the text, and corresponding
+    footnote references after each reference.
+    """
+
+    def transform(self):
+        nodelist = []
+        for target in self.document.external_targets:
+            name = target.get('name')
+            if not name:
+                print >>sys.stderr, 'no name on target: %r' % target
+                continue
+            refs = self.document.refnames.get(name, [])
+            if not refs:
+                continue
+            nodelist.append(self.make_target_footnote(target, refs))
+        if len(self.document.anonymous_targets) \
+               == len(self.document.anonymous_refs):
+            for target, ref in zip(self.document.anonymous_targets,
+                                   self.document.anonymous_refs):
+                if target.hasattr('refuri'):
+                    nodelist.append(self.make_target_footnote(target, [ref]))
+        self.startnode.parent.replace(self.startnode, nodelist)
+        # @@@ what about indirect links to external targets?
+
+    def make_target_footnote(self, target, refs):
+        footnote = nodes.footnote()
+        footnote_id = self.document.set_id(footnote)
+        footnote_name = '_targetnote ' + footnote_id
+        footnote['auto'] = 1
+        footnote['name'] = footnote_name
+        footnote += nodes.reference('', target['refuri'],
+                                    refuri=target['refuri'])
+        self.document.note_autofootnote(footnote)
+        self.document.note_explicit_target(footnote, footnote)
+        for ref in refs:
+            refnode = nodes.footnote_reference(
+                refname=footnote_name, auto=1)
+            self.document.note_autofootnote_ref(refnode)
+            self.document.note_footnote_ref(refnode)
+            index = ref.parent.index(ref) + 1
+            reflist = [nodes.Text(' '), refnode]
+            ref.parent.insert(index, reflist)
+        return footnote
