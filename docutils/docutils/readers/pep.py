@@ -30,6 +30,7 @@ class Reader(standalone.Reader):
     transforms = (references.Substitutions,
                   peps.Headers,
                   peps.Contents,
+                  peps.TargetNotes,
                   references.Footnotes,
                   references.Hyperlinks,)
 
