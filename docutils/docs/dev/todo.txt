@@ -1393,9 +1393,9 @@ when used in a document.
   - _`body.literal`: Literal block, possibly "formal" (see `object
     numbering and object references`_ above).  Possible options:
 
-	- "highlight" a range of lines
+    - "highlight" a range of lines
 
-	- "number" or "line-numbers"
+    - "number" or "line-numbers"
 
     - "styled" could indicate that the directive should check for
       style comments at the end of lines to indicate styling or
@@ -1405,7 +1405,7 @@ when used in a document.
       could interpret style based on cues, like the ">>> " prompt and
       "input()"/"raw_input()" calls.
 
-	See docutils-users 2003-03-03.
+    See docutils-users 2003-03-03.
 
   - _`body.sidebar`: Add to the already implemented directive.  Allow
     internal section structure, with adornment styles independent of

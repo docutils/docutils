@@ -20,6 +20,6 @@ from docutils.core import publish_cmdline, default_description
 
 
 description = ('Generates LaTeX documents from standalone reStructuredText '
-			   'sources.  ' + default_description)
+               'sources.  ' + default_description)
 
 publish_cmdline(writer_name='latex', description=description)
