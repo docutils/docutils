@@ -286,6 +286,40 @@ their name.  To link to the Lists_ heading, I write "``Lists_``".  If
 the heading has a space in it like `text styles`_, we need to quote
 the heading "```text styles`_``".
 
+Images
+------
+
+(quickref__)
+
+__ quickref.html#directives
+
+To include an image in your document, you use the the ``image`` directive__.
+For example::
+
+  .. image:: images/biohazard.png
+
+results in:
+
+.. image:: images/biohazard.png
+
+The ``images/biohazard.png`` part indicates the filname of the image you
+wish to appear
+in the document. There's no restriction placed on the image (format, size
+etc). If the image is to appear in HTML and you wish to supply additional
+information, you may::
+
+  .. image:: images/biohazard.png
+     :height: 100
+     :width: 200
+     :scale: 50
+     :alt: alternate text
+
+See the full image directive documentation__ for more info.
+
+__ ../../spec/rst/directives.html
+__ ../../spec/rst/directives.html#images
+
+
 What Next?
 ----------
 
