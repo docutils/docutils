@@ -338,6 +338,10 @@ General
   with examples of every setting (possibly commented).  It's currently
   sparse, requiring doc lookups.
 
+* Add internationalization to footer boilerplate text (resulting from
+  "--generator", "--source-link", and "--date" etc.), allowing
+  translations.
+
 
 Documentation
 -------------
@@ -929,36 +933,42 @@ when used in a document.
     Add an option to include topics in the TOC?  Another for sidebars?
     See docutils-develop 2003-01-29.
 
-  - _`misc.include`: "encoding" option?  Take default from runtime
-    settings.  Use Input component to read it in?
+  - _`misc.include`:
 
-    Option to select a range of lines?
+    - "encoding" option?  Take default from runtime settings.  Use
+      Input component to read it in?
 
-    Option to label lines?
+    - Option to select a range of lines?
 
-    Default directory for "built-in includes", using the C syntax
-    ``#include <name>``?
+    - Option to label lines?
 
-        Use C-preprocessor semantics for locating include files?
-        E.g., ``.. include:: file.txt`` will read another file into
-        the current one, relative to the current file's directory, and
-        ``.. include:: <standard>`` will read a standard include file
-        from ``docutils/include/``.  (Should "quotes" be required
-        around non-standard include files?)
+    - Default directory for "built-in includes", using the C syntax
+      ``#include <name>``?
 
-        -- http://sf.net/mailarchive/message.php?msg_id=1938401
+          Use C-preprocessor semantics for locating include files?
+          E.g., ``.. include:: file.txt`` will read another file into
+          the current one, relative to the current file's directory,
+          and ``.. include:: <standard>`` will read a standard include
+          file from ``docutils/include/``.  (Should "quotes" be
+          required around non-standard include files?)
 
-    I now think that ``docutils/parsers/rst/include/`` is a better
-    place for these files, since they're reStructuredText-specific.
+          -- http://sf.net/mailarchive/message.php?msg_id=1938401
 
-    Keeping standard data files together with the package code makes
-    sense to me.  It seems much less complex to implement than a
-    separate system data directory, such as ``/usr/share/docutils``.
-    Any reason a system data directory should be used?  How does
-    Distutils handle data files?
+      I now think that ``docutils/parsers/rst/include/`` is a better
+      place for these files, since they're reStructuredText-specific.
 
-    For a specific application, see the discussion of `character
-    entity substitution definition files`_ above.
+      Keeping standard data files together with the package code makes
+      sense to me.  It seems much less complex to implement than a
+      separate system data directory, such as ``/usr/share/docutils``.
+      Any reason a system data directory should be used?  How does
+      Distutils handle data files?
+
+      How about an environment variable, say RSTINCLUDEPATH or
+      RSTPATH?  This could be combined with a setting/option to allow
+      user-defined include directories.
+
+      For a specific application, see the discussion of `character
+      entity substitution definition files`_ above.
 
 * Implement directives.  Each of the list items below begins with an
   identifier of the form, "module_name.directive_function_name".  The
