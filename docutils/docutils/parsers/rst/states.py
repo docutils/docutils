@@ -273,13 +273,10 @@ class RSTState(StateWS):
                           node=node, match_titles=match_titles)
         state_machine.unlink()
         new_offset = state_machine.abs_line_offset()
-        try:
+        # No `block.parent` implies disconnected -- lines aren't in sync:
+        if block.parent:
             # Adjustment for block if modified in nested parse:
             self.state_machine.next_line(len(block) - block_length)
-        except EOFError:
-            # @@@ This accommodates "include" directives in table cells,
-            # but I'm not sure it's the correct solution.
-            pass
         return new_offset
 
     def nested_list_parse(self, block, input_offset, node, initial_state,
