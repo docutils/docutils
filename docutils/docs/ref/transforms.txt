@@ -1,0 +1,113 @@
+=====================
+ Docutils Transforms
+=====================
+
+:Author: David Goodger
+:Contact: goodger@users.sourceforge.net
+:Revision: $Revision$
+:Date: $Date$
+:Copyright: This document has been placed in the public domain.
+
+
+.. contents::
+
+
+For background about transforms and the Transformer object, see `PEP
+258`_.
+
+.. _PEP 258: pep-0258.html#transformer
+
+
+Transforms Listed in Priority Order
+===================================
+
+==============================  ======================  ========
+Transform: module.Class         Added By                Priority
+==============================  ======================  ========
+references.Substitutions        standalone (r)          220
+
+                                pep (r)                 
+
+frontmatter.DocTitle            standalone (r)          320
+
+frontmatter.DocInfo             standalone (r)          340
+
+peps.Headers                    pep (r)                 360
+
+peps.Contents                   pep (r)                 380
+
+references.ChainedTargets       standalone (r)          420
+
+                                pep (r)                 
+
+references.AnonymousHyperlinks  standalone (r)          440
+
+                                pep (r)                 
+
+references.IndirectHyperlinks   standalone (r)          460
+
+                                pep (r)                 
+
+peps.TargetNotes                pep (r)                 520
+
+references.TargetNotes          peps.TargetNotes (t)    0
+
+                                "target-notes" (d)      540
+
+references.Footnotes            standalone (r)          620
+
+                                pep (r)                 
+
+references.ExternalTargets      standalone (r)          640
+
+                                pep (r)                 
+
+references.InternalTargets      standalone (r)          660
+
+                                pep (r)                 
+
+parts.SectNum                   "sectnum" (d)           710
+
+parts.Contents                  "contents" (d)          720
+
+                                peps.Contents (t)       
+
+peps.PEPZero                    pep.Headers (t)         760
+
+components.Filter               "meta" (d)              780
+
+universal.Decorations           all Readers             820
+
+universal.FinalChecks           all Writers             840
+
+universal.Messages              all Writers             860
+
+universal.TestMessages          DocutilsTestSupport     890
+==============================  ======================  ========
+
+Legend:
+
+* (r): Reader
+* (d): Directive
+* (t): Transform
+
+
+Transform Priority Range Categories
+===================================
+
+====  ====  ================================================
+ Priority   Category
+----------  ------------------------------------------------
+From   To
+====  ====  ================================================
+         0  immediate execution (added by another transform)
+----------  ------------------------------------------------
+   1    99  unused
+ 100   199  very early (non-standard)
+ 200   299  very early
+ 300   399  early
+ 400   699  main
+ 700   799  late
+ 800   899  very late
+ 900   999  very late (non-standard)
+====  ====  ================================================
