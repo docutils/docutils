@@ -746,9 +746,10 @@ __ rst/alternatives.html#or-not-to-do
 * Generalize the "target-notes" directive into a command-line option
   somehow?  See docutils-develop 2003-02-13.
 
-* Include (after any necessary cleanup & completion) David Priest's
-  substitution table for character entities; see
-  <http://article.gmane.org/gmane.comp.python.documentation/432>.
+* Include the _`character entity substitution definition files`
+  `temporarily stored here <tmp/charents>`__, perhaps in a
+  ``docutils/parsers/rst/includes/`` directory.  See `misc.include`_
+  below.
 
 * Should ^L (or something else in reST) be defined to mean
   force/suggest page breaks in whatever output we have?
@@ -913,6 +914,30 @@ when used in a document.
     Option to select a range of lines?
 
     Option to label lines?
+
+    Default directory for "built-in includes", using the C syntax
+    ``#include <name>``?
+
+        Use C-preprocessor semantics for locating include files?
+        E.g., ``.. include:: file.txt`` will read another file into
+        the current one, relative to the current file's directory, and
+        ``.. include:: <standard>`` will read a standard include file
+        from ``docutils/include/``.  (Should "quotes" be required
+        around non-standard include files?)
+
+        -- http://sf.net/mailarchive/message.php?msg_id=1938401
+
+    I now think that ``docutils/parsers/rst/include/`` is a better
+    place for these files, since they're reStructuredText-specific.
+
+    Keeping standard data files together with the package code makes
+    sense to me.  It seems much less complex to implement than a
+    separate system data directory, such as ``/usr/share/docutils``.
+    Any reason a system data directory should be used?  How does
+    Distutils handle data files?
+
+    For a specific application, see the discussion of `character
+    entity substitution definition files`_ above.
 
 * Implement directives.  Each of the list items below begins with an
   identifier of the form, "module_name.directive_function_name".  The
