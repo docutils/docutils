@@ -299,7 +299,7 @@ class Element(Node):
             return '<%s...>' % self.tagname
 
     def __str__(self):
-        return unicode(self).encode('raw_unicode_escape')
+        return self.__unicode__().encode('raw_unicode_escape')
 
     def __unicode__(self):
         if self.children:
