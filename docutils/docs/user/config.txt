@@ -244,7 +244,8 @@ _`generator`
 
 _`halt_level`
     The threshold at or above which system messages are converted to
-    exceptions, halting execution immediately.
+    exceptions, halting execution immediately.  If `traceback`_ is
+    set, the exception will propagate; otherwise, Docutils will exit.
 
     Default: severe (4).  Options: ``--halt, --strict``.
 
@@ -323,7 +324,10 @@ _`toc_backlinks`
     --toc-top-backlinks, --no-toc-backlinks``.
 
 _`traceback`
-    Enable Python tracebacks when an error occurs.
+    Enable Python tracebacks when halt-level system messages and other
+    exceptions occur.  Useful for debugging, and essential for issue
+    reports.  Exceptions are allowed to propagate, instead of being
+    caught and reported (in a user-friendly way) by Docutils.
 
     Default: disabled (None).  Options: ``--traceback,
     --no-traceback``.
