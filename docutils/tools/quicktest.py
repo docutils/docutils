@@ -9,7 +9,10 @@
 # Copyright: This module has been placed in the public domain.
 
 import locale
-locale.setlocale(locale.LC_ALL, '')
+try:
+    locale.setlocale(locale.LC_ALL, '')
+except:
+    pass
 
 import sys
 import os

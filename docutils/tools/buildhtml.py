@@ -12,6 +12,12 @@ new reStructuredText PEPs).
 __docformat__ = 'reStructuredText'
 
 
+import locale
+try:
+    locale.setlocale(locale.LC_ALL, '')
+except:
+    pass
+
 import sys
 import os
 import os.path
