@@ -4,7 +4,7 @@ latex2e BUGS TODOS and other animals
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
 
-Rev. 2003-02-24
+Rev. 2003-03-02
 
 To do
 ~~~~~
@@ -126,7 +126,7 @@ ATTENTION
 
 Done
 ~~~~
-
+* FIX: descriptions without docinfo (self.docinfo not initialized).
 * footnotes are spread vertically (not with juliens style.tex) include it in python.
 * add handling (do nothing) for title-reference.
 * setlength extrarowheight 2pt too get a little space between text in tables

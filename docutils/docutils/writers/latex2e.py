@@ -306,6 +306,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.mbox_newline = 0
         # enumeration is done by list environment.
         self._enum_cnt = 0
+        # docinfo. 
+        self.docinfo = None
 
     def language_label(self, docutil_label):
         return self.language.labels[docutil_label]
@@ -737,7 +739,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.docinfo:
             self.docinfo.append('%s \\\\\n' % node.astext())
             raise nodes.SkipNode
-        # what happens if not docinfo
+        # BUG: what happens if not docinfo
 
     def depart_field_body(self, node):
         self.body.append( '\n' )
