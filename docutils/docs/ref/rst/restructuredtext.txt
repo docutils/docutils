@@ -1156,7 +1156,7 @@ Syntax diagram::
 Line Blocks
 -----------
 
-Doctree elements: line_block, line.
+Doctree elements: line_block, line.  New in Docutils 0.3.5.
 
 Line blocks are useful for address blocks, verse (poetry, song
 lyrics), and unadorned lists, where the structure of lines is
