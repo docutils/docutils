@@ -419,11 +419,16 @@ xml_declaration
 [html4css1 writer]
 ``````````````````
 
-_`attribution`
+.. _attribution [html4css1 writer]:
+
+attribution
     Format for block quote attributions: one of "dash" (em-dash
-    prefix), "parentheses"/"parens", or "none".
+    prefix), "parentheses"/"parens", or "none".  Also defined for the
+    `LaTeX Writer`__.
 
     Default: "dash".  Options: ``--attribution``.
+
+    __ `attribution [latex2e writer]`_
 
 _`compact_lists`
     Remove extra vertical whitespace between items of bullet lists and
@@ -442,18 +447,27 @@ _`embed_stylesheet`
     Default: link, don't embed (None).  Options: ``--embed-stylesheet,
     --link-stylesheet``.
 
-_`footnote_references`
+.. _footnote_references [html4css1 writer]:
+
+footnote_references
     Format for footnote references, one of "superscript" or
-    "brackets".
+    "brackets".  Also defined for the `LaTeX Writer`__.
 
     Default: "superscript"; "brackets" in PEP/HTML Writer.  Options:
     ``--footnote-references``.
 
-_`stylesheet`
+    __ `footnote_references [latex2e writer]`_
+
+.. _stylesheet [html4css1 writer]:
+
+stylesheet
     CSS stylesheet URL, used verbatim.  Overridden by
-    "stylesheet_path" URL option (``--stylesheet-path``).
+    "stylesheet_path" URL option (``--stylesheet-path``).  Also
+    defined for the `LaTeX Writer`__.
 
     Default: "default.css".  Options: ``--stylesheet``.
+
+    __ `stylesheet [latex2e writer]`_
 
 _`stylesheet_path`
     Path to CSS stylesheet [#pwd]_.  Overrides "stylesheet" URL option
@@ -545,23 +559,38 @@ _`documentoptions`
 
     Default is "10pt".
 
-stylesheet
-    Specify a stylesheet file. The file will be ``input`` by latex in the
-    document header. If this is set to "" disables generation of input
-    latex command.
+.. _stylesheet [latex2e writer]:
 
-    Default: "no stylesheet".
+stylesheet
+    Specify a stylesheet file. The file will be ``input`` by latex in
+    the document header. If this is set to "" disables generation of
+    input latex command.  Also defined for the `HTML Writer`__.
+
+    Default: no stylesheet ("").
+
+    __ `stylesheet [html4css1 writer]`_
+
+.. _footnote_references [latex2e writer]:
 
 footnote_references
-    Format for footnote references: one of "superscript" or "brackets".
+    Format for footnote references: one of "superscript" or
+    "brackets".  Also defined for the `HTML Writer`__.
 
     Default is "brackets".
 
+    __ `footnote_references [html4css1 writer]`_
+
+.. _attribution [latex2e writer]:
+
 attribution
-    Format for block quote attributions, the same as for the html-writer:
-    one of "dash" (em-dash prefix), "parentheses"/"parens" or "none".
+    Format for block quote attributions, the same as for the
+    html-writer: one of "dash" (em-dash prefix),
+    "parentheses"/"parens" or "none".  Also defined for the `HTML
+    Writer`__.
 
     Default: "dash".
+
+    __ `attribution [html4css1 writer]`_
 
 
 [pseudoxml writer]
@@ -648,3 +677,26 @@ _`_source`
 
 .. [#pwd] Path relative to the working directory of the process at
    launch.
+
+
+------------------------------
+Old-Format Configuration Files
+------------------------------
+
+Formerly, Docutils configuration files contained a single "[options]"
+section only.  This was found to be inflexible, and in August 2003
+Docutils adopted the current component-based configuration file
+sections as described above.  Docutils will still recognize the old
+"[options]" section, but complains with a deprecation warning.
+
+To convert existing config files, the easiest way is to change the
+section title: change "[options]" to "[general]".  Most settings
+haven't changed.  The only ones to watch out for are these:
+
+=====================  =====================================
+Old-Format Setting     New Section & Setting
+=====================  =====================================
+pep_stylesheet         [pep_html writer] stylesheet
+pep_stylesheet_path    [pep_html writer] stylesheet_path
+pep_template           [pep_html writer] template
+=====================  =====================================
