@@ -742,6 +742,14 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
     def depart_section(self, node):
         self.section_level -= 1
 
+    def visit_sidebar(self, node):
+        self.bodyContent.append('<hr width="80%" align="center"/>')
+        self.bodyContent.append('<table border="0" width="80%" align="center"><tbody><tr><td>')
+
+    def depart_sidebar(self, node):
+        self.bodyContent.append('</td></tr></tbody></table>\n')
+        self.bodyContent.append('<hr width="80%" align="center"/>')
+
     def visit_status(self, node):
         self.visit_docinfo_item(node, 'status', meta=None)
 
@@ -851,14 +859,20 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
 
     def depart_title(self, node):
         self.popAndAppend(node)
+
+    def visit_title_reference(self, node):
+        self.bodyContent.append(self.starttag(node, 'cite', ''))
+
+    def depart_title_reference(self, node):
+        self.bodyContent.append('</cite>')
     
     def visit_topic(self, node):
-        if node.attributes['name'] != 'contents':
+        if node.attributes.get('name', None) != 'contents':
             self.spewParaTag.append(SpewNothingThenPara)
             self.bodyContent.append('<table border="1" width="80%" align="center"><tbody><tr><td>')
         
     def depart_topic(self, node):
-        if node.attributes['name'] != 'contents':
+        if node.attributes.get('name', None) != 'contents':
             self.bodyContent.append('</td></tr></tbody></table>\n')
             self.spewParaTag.pop()
 
