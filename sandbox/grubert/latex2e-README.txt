@@ -1,7 +1,10 @@
 latex2e BUGS TODOS and other animals
 ------------------------------------
 
-Rev. 2002-09-28
+Rev. 2002-09-30
+
+To do
+~~~~~
 
 * converting docutils/README.txt::
 
@@ -16,7 +19,10 @@ Rev. 2002-09-28
 * additional docinfo items: the field_body is inserted as text.
 
 * docinfo item names must be translated.  
-  author, date, ...
+  author, date, ... use self.language.labels
+
+  docinfo environment tabular fails on long lines.
+  tabualrx, description, ...
 	
 *	knowing that the latex code will be used for pdf generation would allow
   to set pdf document information.
