@@ -6,11 +6,6 @@
 
 """
 Directive for CSV (comma-separated values) Tables.
-
-Yet to do:
-
-* Add exception handling for malformed CSV.
-* Add a bunch of unit tests to the test suite, focusing on malformed CSV.
 """
 
 import csv
