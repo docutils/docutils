@@ -48,7 +48,7 @@ complete details.
    directory as in step 3.  For example::
 
        cd tools
-       ./rst2html.py test.txt test.html
+       ./rst2html.py ../FAQ.txt ../FAQ.html
 
    See Usage_ below for details.
 
@@ -269,8 +269,8 @@ Alternatively::
     tools/buildhtml.py --config=tools/docutils.conf
 
 Some files may generate system messages (warnings and errors).  The
-``tools/test.txt`` file (under the archive directory) contains 5
-intentional errors.  (They test the error reporting mechanism!)
+``docs/user/rst/demo.txt`` file (under the archive directory) contains
+5 intentional errors.  (They test the error reporting mechanism!)
 
 There are many front-end tools in the unpacked "tools" subdirectory.
 You may want to begin with the "rst2html.py" front-end tool.  Most
