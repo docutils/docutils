@@ -33,6 +33,18 @@ A paragraph::
         A literal block.
 """],
 ["""\
+A paragraph with a space after the colons:: \n\
+
+    A literal block.
+""",
+"""\
+<document>
+    <paragraph>
+        A paragraph with a space after the colons:
+    <literal_block>
+        A literal block.
+"""],
+["""\
 A paragraph::
 
     A literal block.

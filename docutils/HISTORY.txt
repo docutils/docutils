@@ -58,6 +58,7 @@ Changes Since 0.2
   - Added "Invisible" element category class.
   - Changed ``Node.walk()`` & ``.walkabout()`` to permit more tree
     modification during a traversal.
+  - Added "generated" element.
 
 * docutils/parsers/rst/states.py:
 
@@ -67,10 +68,15 @@ Changes Since 0.2
 * docutils/parsers/rst/directives/body.py: Added to project.  Contains
   the "topic" directive.
 
+* docutils/parsers/rst/directives/parts.py:
+
+  - Added the "sectnum" directive; by Dmitry Jemerov.
+
 * docutils/transforms/parts.py:
 
   - Moved the "id" attribute from TOC list items to the references
     (``Contents.build_contents()``).
+  - Added the ``SectNum`` transform; by Dmitry Jemerov.
 
 * docutils/transforms/peps.py:
 
@@ -92,6 +98,8 @@ Changes Since 0.2
     nodes (targets, comments, etc.).
   - Improved inline literals with ``<span class="pre">`` around chunks
     of text and ``&nbsp;`` for runs of spaces.
+  - Improved modularity of output; added ``self.body_pre_docinfo`` and
+    ``self.docinfo`` segments.
 
 * docutils/writers/pep_html.py:
 
@@ -122,6 +130,11 @@ Changes Since 0.2
   - Moved some implementation-specific stuff into ``docutils.nodes``
     docstrings.
 
+* spec/docutils.dtd:
+
+  - Added "generated" inline element.
+  - Added "auto" attribute to "title".
+
 * spec/pep-0256.txt: Converted to reStructuredText & updated.
 
 * spec/pep-0258.txt: Converted to reStructuredText & updated.
@@ -129,6 +142,7 @@ Changes Since 0.2
 * spec/rst/directives.txt:
 
   - Added the "topic" directive.
+  - Added the "sectnum" directive.
 
 * spec/rst/reStructuredText.txt:
 
@@ -145,6 +159,7 @@ Changes Since 0.2
   - Added style for chunks of inline literals.
   - Removed margin for first child of table cells.
   - Right-aligned field list names.
+  - Support for auto-numbered section titles in TOCs.
 
 * tools/pep2html.py:
 

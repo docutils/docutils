@@ -12,7 +12,8 @@ Tests for `docutils.transforms.parts.SectNum` (via
 """
 
 from __init__ import DocutilsTestSupport
-from docutils.transforms.universal import LastReaderPending
+from docutils.transforms.universal import LastReaderPending, \
+     FirstWriterPending
 from docutils.transforms.references import Substitutions
 from docutils.parsers.rst import Parser
 
@@ -25,7 +26,8 @@ def suite():
 
 totest = {}
 
-totest['section_numbers'] = ((Substitutions, LastReaderPending,), [
+totest['section_numbers'] = ((Substitutions, LastReaderPending,
+                              FirstWriterPending), [
 ["""\
 .. sectnum::
 
@@ -45,26 +47,34 @@ Title 4
 -------
 Paragraph 4.
 """,
-"""\
+u"""\
 <document>
-    <section autonum_origtitle="Title 1" autonum_prefix="" id="title-1" name="title 1">
-        <title>
-            1. Title 1
+    <section id="title-1" name="title 1">
+        <title auto="1">
+            <generated class="sectnum">
+                1\u00a0\u00a0\u00a0
+            Title 1
         <paragraph>
             Paragraph 1.
-        <section autonum_origtitle="Title 2" autonum_prefix="1." id="title-2" name="title 2">
-            <title>
-                1.1. Title 2
+        <section id="title-2" name="title 2">
+            <title auto="1">
+                <generated class="sectnum">
+                    1.1\u00a0\u00a0\u00a0
+                Title 2
             <paragraph>
                 Paragraph 2.
-            <section autonum_origtitle="Title 3" autonum_prefix="1.1." id="title-3" name="title 3">
-                <title>
-                    1.1.1. Title 3
+            <section id="title-3" name="title 3">
+                <title auto="1">
+                    <generated class="sectnum">
+                        1.1.1\u00a0\u00a0\u00a0
+                    Title 3
                 <paragraph>
                     Paragraph 3.
-        <section autonum_origtitle="Title 4" autonum_prefix="1." id="title-4" name="title 4">
-            <title>
-                1.2. Title 4
+        <section id="title-4" name="title 4">
+            <title auto="1">
+                <generated class="sectnum">
+                    1.2\u00a0\u00a0\u00a0
+                Title 4
             <paragraph>
                 Paragraph 4.
 """],
@@ -75,11 +85,12 @@ Paragraph 4.
 ==============
 Paragraph 1.
 """,
-"""\
+u"""\
 <document>
-    <section autonum_origtitle="<strong>Bold Title</strong>" autonum_prefix="" id="bold-title" name="bold title">
-        <title>
-            1. \n\
+    <section id="bold-title" name="bold title">
+        <title auto="1">
+            <generated class="sectnum">
+                1\u00a0\u00a0\u00a0
             <strong>
                 Bold Title
         <paragraph>
@@ -104,16 +115,20 @@ Title 4
 -------
 Paragraph 4.
 """,
-"""\
+u"""\
 <document>
-    <section autonum_origtitle="Title 1" autonum_prefix="" id="title-1" name="title 1">
-        <title>
-            1. Title 1
+    <section id="title-1" name="title 1">
+        <title auto="1">
+            <generated class="sectnum">
+                1\u00a0\u00a0\u00a0
+            Title 1
         <paragraph>
             Paragraph 1.
-        <section autonum_origtitle="Title 2" autonum_prefix="1." id="title-2" name="title 2">
-            <title>
-                1.1. Title 2
+        <section id="title-2" name="title 2">
+            <title auto="1">
+                <generated class="sectnum">
+                    1.1\u00a0\u00a0\u00a0
+                Title 2
             <paragraph>
                 Paragraph 2.
             <section id="title-3" name="title 3">
@@ -121,12 +136,91 @@ Paragraph 4.
                     Title 3
                 <paragraph>
                     Paragraph 3.
-        <section autonum_origtitle="Title 4" autonum_prefix="1." id="title-4" name="title 4">
-            <title>
-                1.2. Title 4
+        <section id="title-4" name="title 4">
+            <title auto="1">
+                <generated class="sectnum">
+                    1.2\u00a0\u00a0\u00a0
+                Title 4
             <paragraph>
                 Paragraph 4.
-"""]
+"""],
+["""\
+.. contents::
+.. sectnum:: :depth: 2
+
+Title 1
+=======
+Paragraph 1.
+
+Title 2
+-------
+Paragraph 2.
+
+Title 3
+```````
+Paragraph 3.
+
+Title 4
+-------
+Paragraph 4.
+""",
+u"""\
+<document>
+    <topic class="contents" id="contents" name="contents">
+        <title>
+            Contents
+        <bullet_list class="auto-toc">
+            <list_item>
+                <paragraph>
+                    <reference id="id1" refid="title-1">
+                        <generated class="sectnum">
+                            1\u00a0\u00a0\u00a0
+                        Title 1
+                <bullet_list class="auto-toc">
+                    <list_item>
+                        <paragraph>
+                            <reference id="id2" refid="title-2">
+                                <generated class="sectnum">
+                                    1.1\u00a0\u00a0\u00a0
+                                Title 2
+                        <bullet_list>
+                            <list_item>
+                                <paragraph>
+                                    <reference id="id3" refid="title-3">
+                                        Title 3
+                    <list_item>
+                        <paragraph>
+                            <reference id="id4" refid="title-4">
+                                <generated class="sectnum">
+                                    1.2\u00a0\u00a0\u00a0
+                                Title 4
+    <section id="title-1" name="title 1">
+        <title auto="1" refid="id1">
+            <generated class="sectnum">
+                1\u00a0\u00a0\u00a0
+            Title 1
+        <paragraph>
+            Paragraph 1.
+        <section id="title-2" name="title 2">
+            <title auto="1" refid="id2">
+                <generated class="sectnum">
+                    1.1\u00a0\u00a0\u00a0
+                Title 2
+            <paragraph>
+                Paragraph 2.
+            <section id="title-3" name="title 3">
+                <title refid="id3">
+                    Title 3
+                <paragraph>
+                    Paragraph 3.
+        <section id="title-4" name="title 4">
+            <title auto="1" refid="id4">
+                <generated class="sectnum">
+                    1.2\u00a0\u00a0\u00a0
+                Title 4
+            <paragraph>
+                Paragraph 4.
+"""],
 ])
 
 
