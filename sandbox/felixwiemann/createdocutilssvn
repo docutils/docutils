@@ -43,6 +43,9 @@ rm docutils-cvs-$date/CVSROOT docutils-cvs-$date/sandbox/!(README.txt,v) -rf
 # Launch cvs2svn.
 nice -n 10 cvs2svn -s docutils-svn-$date --fs-type=fsfs docutils-cvs-$date 
 # Set permissions.
-cd docutils-cvs-$date
+cd docutils-svn-$date
 chmod g+u * -R
 find * -type d | xargs chmod g+s
+# Create tarball.
+tar czvf ../docutils-svn-$date.tar.gz *
+cd ..
