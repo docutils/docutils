@@ -132,7 +132,7 @@ u"""\
     <system_message level="3" line="2" source="test data" type="ERROR">
         <paragraph>
             Invalid character code: 0x111111111111111111
-            OverflowError: long int too large to convert to int
+            %s
         <literal_block xml:space="preserve">
             unicode:: 0x111111111111111111
     <system_message level="2" line="2" source="test data" type="WARNING">
@@ -151,7 +151,9 @@ u"""\
             Substitution definition "too big for unicode" empty or invalid.
         <literal_block xml:space="preserve">
             .. |too big for unicode| unicode:: 0x11111111
-""" % DocutilsTestSupport.exception_data('unichr(0x11111111)')[2]],
+""" % (DocutilsTestSupport.exception_data(
+            'unichr(int("111111111111111111", 16))')[2],
+       DocutilsTestSupport.exception_data('unichr(int("11111111", 16))')[2])]
 ]
 
 
