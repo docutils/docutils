@@ -6,6 +6,8 @@ Rev. 2002-10-01
 To do
 ~~~~~
 
+* commandline option -l de did not work.
+
 * check indentation in verbatim is right.
 
 * additional docinfo items: the field_body is inserted as text.

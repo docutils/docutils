@@ -257,10 +257,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item(node)
 
     def visit_authors(self, node):
-        pass
+        self.visit_docinfo_item(node, 'author')
 
     def depart_authors(self, node):
-        pass
+        self.depart_docinfo_item(node)
 
     def visit_block_quote(self, node):
         self.body.append( '\\begin{quote}\n')
@@ -352,19 +352,17 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_date(self, node):
         self.depart_docinfo_item(node)
 
-    def visit_decoration(self, node):
-        pass
+#    def visit_decoration(self, node):
+#        pass
 
-    def depart_decoration(self, node):
-        pass
+#    def depart_decoration(self, node):
+#        pass
 
     def visit_definition(self, node):
-        ##self.body.append('</dt>\n')
-        ##self.body.append(self.starttag(node, 'dd'))
-        pass
+        self.body.append('%[visit_definition]\n')
 
     def depart_definition(self, node):
-        self.body.append('\n')
+        self.body.append('%[depart_definition]\n')
 
     def visit_definition_list(self, node):
         self.body.append( '\\begin{description}\n' )
@@ -373,10 +371,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append( '\\end{description}\n' )
 
     def visit_definition_list_item(self, node):
-        pass
+        self.body.append('%[visit_definition_list_item]\n')
 
     def depart_definition_list_item(self, node):
-        pass
+        self.body.append('%[depart_definition_list_item]\n')
 
     def visit_description(self, node):
         self.body.append( ' & ' )
@@ -680,12 +678,17 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('}')
 
     def visit_literal_block(self, node):
-        self.body.append('{\\obeylines\\obeyspaces\\ttfamily\n')
-        ##self.body.append('\\begin{verbatim}')
+        self.use_verbatim_for_literal = 1
+        if (self.use_verbatim_for_literal):
+            self.body.append('\\begin{verbatim}\n')
+        else:
+            self.body.append('{\\obeylines\\obeyspaces\\ttfamily\n')
 
     def depart_literal_block(self, node):
-        self.body.append('}\n')
-        ##self.body.append('\\end{verbatim}\n')
+        if (self.use_verbatim_for_literal):
+            self.body.append('\\end{verbatim}\n')
+        else:
+            self.body.append('}\n')
 
     def visit_meta(self, node):
         self.body.append('[visit_meta]\n')
@@ -892,8 +895,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_term(self, node):
-        self.body.append('\\item[')
         ##self.body.append(self.starttag(node, 'dt', ''))
+        self.body.append('\\item[')
 
     def depart_term(self, node):
         self.body.append(']\n')
@@ -910,11 +913,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_thead(self, node):
         self.table_preamble()
         self.body.append('%[visit_thead]\n')
-        pass
 
     def depart_thead(self, node):
         self.body.append('%[depart_thead]\n')
-        pass
 
     def visit_tip(self, node):
         self.visit_admonition(node, 'tip')
@@ -993,4 +994,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         raise NotImplementedError('visiting unimplemented node type: %s'
                                   % node.__class__.__name__)
 
+#    def unknown_visit(self, node):
+#    def default_visit(self, node):
+    
 # vim: set ts=4 et ai :
