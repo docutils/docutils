@@ -115,6 +115,10 @@ Changes Since 0.3.5
     --trim-footnote-reference-space, if applicable.
   - Added support for ``compound`` elements.
   - Enabled multiple format names for "raw" directive.
+  - ``<p>`` tags of a paragraph which is the only visible child of the
+    document node are no longer stripped.
+  - Moved paragraph-compacting logic (for stripping ``<p>`` tags) to
+    new method ``should_be_compact_paragraph()``.
 
 * docutils/writers/latex2e.py:
 
