@@ -260,6 +260,30 @@ Version:
                 Version
             <field_body>
 """],
+["""\
+Authors: Me
+
+         Myself and I
+Version:
+""",
+"""\
+<document source="test data">
+    <field_list class="rfc2822">
+        <field>
+            <field_name>
+                Authors
+            <field_body>
+                <paragraph>
+                    Me
+    <block_quote>
+        <paragraph>
+            Myself and I
+    <system_message level="2" line="4" source="test data" type="WARNING">
+        <paragraph>
+            Block quote ends without a blank line; unexpected unindent.
+    <paragraph>
+        Version:
+"""],
 ]
 
 if __name__ == '__main__':

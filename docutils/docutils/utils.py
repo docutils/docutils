@@ -378,7 +378,7 @@ def new_document(source, settings=None):
     reporter = Reporter(source, settings.report_level, settings.halt_level,
                         settings.warning_stream, settings.debug)
     document = nodes.document(settings, reporter, source=source)
-    document.note_source(source)
+    document.note_source(source, -1)
     return document
 
 def clean_rcs_keywords(paragraph, keyword_substitutions):

@@ -304,6 +304,13 @@ General
   both accented and unaccented entries in the ``bibliographic_fields``
   mapping for versatility.
 
+* Add a "--strict-language" option & setting: no English fallback for
+  language-dependent features.
+
+* Add an "--input-language" option & setting?  Specify a different
+  language module for input (bibliographic fields, directives) than
+  for output ("--language").
+
 
 Documentation
 -------------
