@@ -519,21 +519,12 @@ Directives
 
     __ rst/directives.html#raw-data-pass-through
 
-  - _`misc.include`: ``#include`` one file in another.  But how to
-    parse wrt sections, reference names, conflicts?  For now, we'll
-    parse it in the current document's context (C-preprocessor
-    semantics).  Perhaps later, when there's a need, we'll figure out
-    how to provide separate parsing (parse separately and then merge).
-
-    A "raw" flag (attribute with no value) would inform us that the
-    imported data is raw (already in native format, like HTML).
-    Perhaps there should be an attribute value, saying what the native
-    format is.  Instead, perhaps the "raw" directive should take an
-    "include" parameter (explicit attribute or second parameter in its
-    directive data).  See misc.raw_.  Example::
-
-        .. include:: path/subdocument.txt
-           :raw:
+  - _`misc.include`: ``#include`` one file in another.  See `Including
+    an External Fragment`__ in rst/directives.txt.  But how to parse
+    wrt sections, reference names, conflicts?  For now, we'll parse it
+    in the current document's context (C-preprocessor semantics).
+    Perhaps later, when there's a need, we'll figure out how to
+    provide separate parsing (parse separately and then merge).
 
     Implementation ideas: Model the directive parsing on the "images"
     directive.  A separate, nested parse is probably needed, since
@@ -550,6 +541,8 @@ Directives
     and ``.. include:: <standard>`` will read a standard include file
     from ``docutils/include/``.  (Should "quotes" be required around
     non-standard include files?)
+
+    __ rst/directives.html#including-an-external-fragment
 
   - _`misc.exec`: Execute Python code & insert the results.  Perhaps
     dangerous?

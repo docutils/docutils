@@ -38,6 +38,12 @@ any names; apologies (and please let me know!) if I have.
 Changes Since 0.2
 ========================
 
+General:
+
+- Changed "attribute" to "option" for directives/extensions.
+
+Specific:
+
 * docutils/__init__.py:
 
   - Bumped version to 0.2.1 to reflect changes to I/O classes.
@@ -205,13 +211,15 @@ Changes Since 0.2
 * spec/rst/directives.txt:
 
   - Added directives: "topic", "sectnum", "target-notes",
-    "line-block", "parsed-literal".
+    "line-block", "parsed-literal", "include".
+  - Formalized descriptions of directive details.
 
 * spec/rst/reStructuredText.txt:
 
   - Disambiguated comments (just add a newline after the "::").
   - Updated enumerated list description; added a discussion of the
     second-line validity checking.
+  - Updated directive description.
 
 * tools/buildhtml.py:
 
