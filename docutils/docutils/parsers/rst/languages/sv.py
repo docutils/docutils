@@ -32,12 +32,11 @@ directives = {
       # u'bildkarta': 'imagemap',   # FIXME: Translation might be too literal.
       u'bild': 'image',
       u'figur': 'figure',
-      'include (translation required)': 'include',
+      u'inkludera': 'include',   
       u'r\u00e5': 'raw',            # FIXME: Translation might be too literal.
-      'replace (translation required)': 'replace',
+      u'ers\u00e4tt': 'replace', 
       u'inneh\u00e5ll': 'contents',
-      'sectnum (translation required)': 'sectnum',
-      'section-numbering (translation required)': 'sectnum',
+      u'sektionsnumrering': 'sectnum',
       'target-notes (translation required)': 'target-notes',
       # u'fotnoter': 'footnotes',
       # u'citeringar': 'citations',
