@@ -1,0 +1,212 @@
+<!--
+======================================================================
+    Docutils Python Source DTD
+======================================================================
+:Author: David Goodger
+:Contact: goodger@users.sourceforge.net
+:Revision: $Revision$
+:Date: $Date$
+:Copyright: This DTD has been placed in the public domain.
+:Filename: pysource.dtd
+
+This DTD (document type definition) extends the Generic DTD (see
+below).
+
+More information about this DTD and the Docutils project can be found
+at http://docutils.sourceforge.net/.  The latest version of this DTD
+is available from http://docutils.sourceforge.net/spec/pysource.dtd.
+
+The proposed formal public identifier for this DTD is::
+
+    +//IDN python.org//DTD Docutils Python Source//EN//XML
+-->
+
+
+<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Parameter Entity Overrides
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
+
+<!ENTITY % additional.structural.elements
+  " | package_section | module_section | class_section
+    | method_section | function_section | module_attribute_section
+    | class_attribute_section | instance_attribute_section ">
+
+<!ENTITY % additional.inline.elements
+  " | package | module | class | method | function
+    | variable | parameter | type
+    | module_attribute | class_attribute | instance_attribute
+    | exception_class | warning_class ">
+
+
+<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Generic DTD
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This DTD extends the Docutils Generic DTD, available from
+http://docutils.sourceforge.net/spec/docutils.dtd.
+-->
+
+<!ENTITY % docutils PUBLIC
+    "+//IDN python.org//DTD Docutils Generic//EN//XML"
+    "docutils.dtd">
+%docutils;
+
+
+<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Additional Structural Elements
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
+
+<!ELEMENT package_section (package, %structure.model;)>
+<!ATTLIST package_section %basic.atts;>
+
+<!ELEMENT module_section (module, %structure.model;)>
+<!ATTLIST module_section %basic.atts;>
+
+<!ELEMENT class_section
+    (class, inheritance_list?, parameter_list?, %structure.model;)>
+<!ATTLIST class_section %basic.atts;>
+
+<!ELEMENT method_section (method, parameter_list?, %structure.model;)>
+<!ATTLIST method_section %basic.atts;>
+
+<!ELEMENT function_section (function, parameter_list?, %structure.model;)>
+<!ATTLIST function_section %basic.atts;>
+
+<!ELEMENT module_attribute_section
+    (module_attribute, initial_value?, %structure.model;)>
+<!ATTLIST module_attribute_section %basic.atts;>
+
+<!ELEMENT class_attribute_section
+    (class_attribute, initial_value?, %structure.model;)>
+<!ATTLIST class_attribute_section %basic.atts;>
+
+<!ELEMENT instance_attribute_section
+    (instance_attribute, initial_value?, %structure.model;)>
+<!ATTLIST instance_attribute_section %basic.atts;>
+
+<!ELEMENT inheritance_list (class+)>
+<!ATTLIST inheritance_list %basic.atts;>
+
+<!ELEMENT parameter_list 
+    ((parameter_item+, optional_parameters*) | optional_parameters+)>
+<!ATTLIST parameter_list %basic.atts;>
+
+<!ELEMENT parameter_item ((parameter | parameter_tuple), parameter_default?)>
+<!ATTLIST parameter_item %basic.atts;>
+
+<!ELEMENT optional_parameters (parameter_item+, optional_parameters*)>
+<!ATTLIST optional_parameters %basic.atts;>
+
+<!ELEMENT parameter_tuple (parameter | parameter_tuple)+>
+<!ATTLIST parameter_tuple %basic.atts;>
+
+<!ELEMENT parameter_default (#PCDATA)>
+<!ATTLIST parameter_default %basic.atts;>
+
+<!ELEMENT initial_value (#PCDATA)>
+<!ATTLIST initial_value %basic.atts;>
+
+
+<!--
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Additional Inline Elements
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
+
+<!-- Also used as the `package_section` identifier/title. -->
+<!ELEMENT package (#PCDATA)>
+<!ATTLIST package
+    %basic.atts;
+    %link.atts;>
+
+<!-- Also used as the `module_section` identifier/title. -->
+<!ELEMENT module (#PCDATA)>
+<!ATTLIST module
+    %basic.atts;
+    %link.atts;>
+
+<!--
+Also used as the `class_section` identifier/title, and in the
+`inheritance` element.
+-->
+<!ELEMENT class (#PCDATA)>
+<!ATTLIST class
+    %basic.atts;
+    %link.atts;>
+
+<!-- Also used as the `method_section` identifier/title. -->
+<!ELEMENT method (#PCDATA)>
+<!ATTLIST method
+    %basic.atts;
+    %link.atts;>
+
+<!-- Also used as the `function_section` identifier/title. -->
+<!ELEMENT function (#PCDATA)>
+<!ATTLIST function
+    %basic.atts;
+    %link.atts;>
+
+<!--
+Also used as the `module_attribute_section` identifier/title. A module
+attribute is an exported module-level global variable.
+-->
+<!ELEMENT module_attribute (#PCDATA)>
+<!ATTLIST module_attribute
+    %basic.atts;
+    %link.atts;>
+
+<!-- Also used as the `class_attribute_section` identifier/title. -->
+<!ELEMENT class_attribute (#PCDATA)>
+<!ATTLIST class_attribute
+    %basic.atts;
+    %link.atts;>
+
+<!--
+Also used as the `instance_attribute_section` identifier/title.
+-->
+<!ELEMENT instance_attribute (#PCDATA)>
+<!ATTLIST instance_attribute
+    %basic.atts;
+    %link.atts;>
+
+<!ELEMENT variable (#PCDATA)>
+<!ATTLIST variable
+    %basic.atts;
+    %link.atts;>
+
+<!-- Also used in `parameter_list`. -->
+<!ELEMENT parameter (#PCDATA)>
+<!ATTLIST parameter
+    %basic.atts;
+    %link.atts;
+    excess_positional  %yesorno;  #IMPLIED
+    excess_keyword     %yesorno;  #IMPLIED>
+
+<!ELEMENT type (#PCDATA)>
+<!ATTLIST type
+    %basic.atts;
+    %link.atts;>
+
+<!ELEMENT exception_class (#PCDATA)>
+<!ATTLIST exception_class
+    %basic.atts;
+    %link.atts;>
+
+<!ELEMENT warning_class (#PCDATA)>
+<!ATTLIST warning_class
+    %basic.atts;
+    %link.atts;>
+
+
+<!--
+Local Variables:
+mode: sgml
+indent-tabs-mode: nil
+fill-column: 70
+End:
+-->
