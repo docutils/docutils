@@ -28,6 +28,15 @@ XML, and TeX.  Several sources will be supported:
 - `PEPs (Python Enhancement Proposals)`_ (implemented).
 - And others as discovered.
 
+Please consider donating to Docutils:
+
+.. image:: http://images.sourceforge.net/images/project-support.jpg
+   :target: http://sourceforge.net/donate/index.php?group_id=38414
+   :width: 88
+   :height: 32
+   :align: center
+   :alt: Support the Docutils project!
+
 .. contents::
 
 
@@ -373,6 +382,15 @@ administration, tasty snacks, computer equipment, and large sums of
 money.  There's a `To Do list`_ full of interesting ideas awaiting a
 champion.  If you're interested in participating in any way, please
 `contact the project coordinator`__.
+
+Please consider donating to Docutils:
+
+.. image:: http://images.sourceforge.net/images/project-support.jpg
+   :target: http://sourceforge.net/donate/index.php?group_id=38414
+   :width: 88
+   :height: 32
+   :align: center
+   :alt: Support the Docutils project!
 
 __ mailto_
 
