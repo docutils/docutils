@@ -45,19 +45,6 @@ Bugs
   whitespace and punctuation as markup delimiters, which may not be
   applicable in these languages.
 
-* @@@ The "include" directive screws up with multiple adjacent
-  includes of sections.  Also, sections must be self-contained (i.e.,
-  a section can't start in an included file and end in the parent
-  file, because of nested parsing).  (Thanks to Brett g Porter for a
-  bug report that led to this one.)
-
-  Possible solution: Instead of nested parsing, how about replacing
-  the list of strings for the state machine with an iterator which can
-  handle multiple files?  New files could be inserted, and callbacks
-  called (observers notified) when the file changes.  See
-  docutils-develop 2002-10-30, subject 'problem with the "include"
-  directive'.
-
 * From Engelbert Gruber::
 
       tools/html.py -l de README.txt donotcare.html
@@ -309,7 +296,23 @@ General
 
 * Add an "--input-language" option & setting?  Specify a different
   language module for input (bibliographic fields, directives) than
-  for output ("--language").
+  for output.  The "--language" option would set both input & output
+  languages.
+
+* Auto-generate reference tables for language-dependent features?
+  Could be generated from the source modules.  A special command-line
+  option could be added to Docutils front ends to do this.  (Idea from
+  Engelbert Gruber.)
+
+* Add a "test_language.py" module to the test suite.  Engelbert Gruber
+  has started one.  See docutils-develop, 2002-11-05, article
+  "language set testing".
+  
+  Idea: the "test_language.py" module could test all languages when
+  run by "alltests.py", and it could accept a language name argument
+  if run as a script, like this::
+
+      test_language.py de
 
 
 Documentation
@@ -613,10 +616,10 @@ __ rst/alternatives.html#or-not-to-do
   first blank line ends it) where every line begins with the same
   non-alphanumeric non-whitespace character.
 
-* @@@ Decide whether or not to implement Simon Budig's "inline
-  external targets" syntax idea, and if so, how?
+* @@@ Decide whether or not to implement Simon Budig's _`inline
+  external targets` syntax idea, and if so, how?
 
-  - As a regular directive affecting its indented text block::
+  - As a regular directive affecting only its text block (indented)::
 
         .. inline-urls::
 
@@ -642,6 +645,10 @@ __ rst/alternatives.html#or-not-to-do
     explicitly specified as global/pragma.
 
   - Or as a full-blown addition to the spec & parser.
+
+  The full discussion is here__.
+
+  __ rst/alternatives.html#inline-external-targets
 
 * Add support for pragma (syntax-altering) directives.
 

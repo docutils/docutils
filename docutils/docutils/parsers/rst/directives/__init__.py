@@ -131,20 +131,19 @@ def directive(directive_name, language_module, document):
     try:
         canonicalname = language_module.directives[normname]
     except (KeyError, AttributeError):
-        warning = document.reporter.warning(
-            'No directive entry for "%s" in module "%s".'
-            % (directive_name, language_module.__name__),
-            line=document.current_line)
+        msg_text = ('No directive entry for "%s" in module "%s".'
+                    % (directive_name, language_module.__name__))
         try:
-            # Try English as a fallback:
             canonicalname = _fallback_language_module.directives[normname]
-            warning[-1] += nodes.Text(
-                'Using English fallback for directive "%s".' % directive_name)
+            msg_text += ('\nUsing English fallback for directive "%s".'
+                         % directive_name)
         except KeyError:
-            warning[-1] += nodes.Text(
-                'Trying "%s" as canonical directive name.' % directive_name)
+            msg_text += ('\nTrying "%s" as canonical directive name.'
+                         % directive_name)
             # The canonical name should be an English name, but just in case:
             canonicalname = normname
+        warning = document.reporter.warning(
+            msg_text, line=document.current_line)
         messages.append(warning)
     try:
         modulename, functionname = _directive_registry[canonicalname]
