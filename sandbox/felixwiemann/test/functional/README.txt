@@ -55,7 +55,7 @@ Provided ``functional/tests/some_test.py`` reads like this::
     test_source = "some_test.txt"
     test_destination = "some_test.html"
 
-    # Keyword parameters passed to publish_string.
+    # Keyword parameters passed to publish_file.
     reader_name = "standalone"
     parser_name = "rst"
     writer_name = "html"
@@ -69,7 +69,7 @@ arbitrarily.  However, the file names in ``functional/output/`` *must*
 match the file names in ``functional/expected/``.
 
 All other variables are passed as keyword arguments to
-``docutils.core.publish_string``, so you can set reader, parser,
+``docutils.core.publish_file``, so you can set reader, parser,
 writer and anything else you want to configure.
 
 Note that ``settings_overrides`` is already initialized as an empty

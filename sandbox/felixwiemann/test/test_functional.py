@@ -39,7 +39,7 @@ class TestFunctional(unittest.TestCase):
             """Name of current config file to process."""
             
             params = {'settings_overrides': {}}
-            """Keyword parameters for publish_string."""
+            """Keyword parameters for publish_file."""
             # Note that settings_overrides has been initialized to an
             # empty dictionary.
 
@@ -67,16 +67,13 @@ class TestFunctional(unittest.TestCase):
             del params['test_source']
             del params['test_destination']
 
-            # Read the source file into params['source']
-            params['source'] = open(params['source_path']).read()
-
             # Delete private stuff like params['__builtins__'].
             for key in params.keys():
                 if key.startswith('_'):
                     del params[key]
 
             # Get output and write it to the output/ directory.
-            output = docutils.core.publish_string(**params)
+            output = docutils.core.publish_file(**params)
             open(params['destination_path'], 'w').write(output)
 
             # Get the expected output *after* writing the actual output.
