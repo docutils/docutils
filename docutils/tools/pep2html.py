@@ -423,6 +423,8 @@ def check_requirements():
             'Docutils not present for "%(pep_type)s" PEP file %(inpath)s.  '
             'See README.txt for installation.')
     else:
+        docv = [int(part) for part in docutils.__version__.split('.')]
+        reqv = [int(part) for part in REQUIRES['docutils'].split('.')]
         if docutils.__version__ < REQUIRES['docutils']:
             PEP_TYPE_DISPATCH['text/x-rst'] = None
             PEP_TYPE_MESSAGES['text/x-rst'] = (
