@@ -12,6 +12,30 @@ this is a work in progress, please check the project website for
 updated working files.  This project should be considered highly
 experimental; APIs are subject to change at any time.
 
+The purpose of the Docutils project is to create a set of tools for
+processing plaintext documentation into useful formats, such as HTML,
+XML, and TeX.  Support for the following sources has been implemented:
+
+* Standalone files.
+
+* `PEPs (Python Enhancement Proposals)`_ (implemented).
+
+Support for the following sources is planned:
+
+* Inline documentation from Python modules and packages, extracted
+  with namespace context.  **This is the focus of the current
+  development effort.**
+
+* Email (RFC-822 headers, quoted excerpts, signatures, MIME parts).
+
+* Wikis, with global reference lookups of "wiki links".
+
+* Compound documents, such as multiple chapter files merged into a
+  book.
+
+* And others as discovered.
+
+
 .. contents::
 
 
