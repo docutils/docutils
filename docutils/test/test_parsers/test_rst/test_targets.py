@@ -159,6 +159,17 @@ External hyperlink:
     <target id="target" name="target" refuri="http://www.python.org/">
 """],
 ["""\
+.. _email: jdoe@example.com
+
+.. _multi-line email: jdoe
+   @example.com
+""",
+"""\
+<document source="test data">
+    <target id="email" name="email" refuri="mailto:jdoe@example.com">
+    <target id="multi-line-email" name="multi-line email" refuri="mailto:jdoe@example.com">
+"""],
+["""\
 Duplicate external targets (different URIs):
 
 .. _target: first

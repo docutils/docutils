@@ -595,41 +595,10 @@ __ rst/alternatives.html#or-not-to-do
   first blank line ends it) where every line begins with the same
   non-alphanumeric non-whitespace character.
 
-* @@@ Decide whether or not to implement Simon Budig's _`inline
-  external targets` syntax idea, and if so, how?
-
-  - As a regular directive affecting only its text block (indented)::
-
-        .. inline-urls::
-
-           This is an anonymous `reference <http://www.example.org
-           /reference/>`__ of one word ("reference").  Here is a
-           `phrase reference <http://www.example.org
-           /phrase_reference/>`__.
-
-  - As a pragma directive affecting the entire document (from that
-    point on).  Perhaps a variation on the regular directive::
-
-        .. inline-urls:: :global:
-
-        Ordinary paragraphs ...
-
-        This is an anonymous `reference <http://www.example.org
-        /reference/>`__ of one word ("reference").  Here is a
-        `phrase reference <http://www.example.org
-        /phrase_reference/>`__.
-
-    Perhaps "``:pragma:``" instead of "``:global:``"?  This pattern
-    could be useful for other pragma directives: local-scope unless
-    explicitly specified as global/pragma.
-
-  - Or as a full-blown addition to the spec & parser.
-
-  The full discussion is here__.
-
-  __ rst/alternatives.html#inline-external-targets
-
 * Add support for pragma (syntax-altering) directives.
+
+  Some pragma directives could be local-scope unless explicitly
+  specified as global/pragma using ":global:" options.
 
 * Remove leading numbers from section titles for implicit link names?
   A section titled "3. Conclusion" could then be referred to by
