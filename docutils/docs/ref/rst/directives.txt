@@ -22,8 +22,9 @@ space), followed by the directive type and two colons (collectively,
 the "directive marker").  The directive block begins immediately after
 the directive marker, and includes all subsequent indented lines.  The
 directive block is divided into arguments, options (a field list), and
-content.  See the Directives_ section in the `reStructuredText Markup
-Specification`_ for syntax details.
+content (in that order), any of which may appear.  See the Directives_
+section in the `reStructuredText Markup Specification`_ for syntax
+details.
 
 .. _Directives: ./reStructuredText.html#directives
 .. _reStructuredText Markup Specification: ./reStructuredText.html
@@ -199,9 +200,9 @@ Topic
 
 :Directive Type: "topic"
 :DTD Element: topic
-:Directive Arguments: None.
+:Directive Arguments: 1, required (topic title).
 :Directive Options: None.
-:Directive Content: Interpreted as the topic title and body.
+:Directive Content: Interpreted as the topic body.
 
 A topic is like a block quote with a title, or a self-contained
 section with no subsections.  Use the "topic" directive to indicate a
@@ -209,9 +210,9 @@ self-contained idea that is separate from the flow of the document.
 Topics may occur anywhere a section or transition may occur.  Body
 elements (including topics) may not contain nested topics.
 
-The first line of the directive content block is interpreted as the
-topic title; the second line must be blank.  All subsequent lines make
-up the topic body, interpreted as body elements.  For example::
+The directive's sole argument is interpreted as the topic title; the
+next line must be blank.  All subsequent lines make up the topic body,
+interpreted as body elements.  For example::
 
     topic:: Topic Title
 
@@ -331,7 +332,7 @@ The following options are recognized:
 ``depth`` : integer
     The number of section levels that are collected in the table of
     contents.  The default is unlimited depth.
-``local`` : empty
+``local`` : flag (empty)
     Generate a local table of contents.  Entries will only include
     subsections of the section in which the directive is given.  If no
     explicit title is given, the table of contents will not be titled.
@@ -490,10 +491,8 @@ Non-standard element: imagemap.
  Miscellaneous
 ---------------
 
-Including an External Fragment
-==============================
-
-**NOT IMPLEMENTED YET**
+Including an External Document Fragment
+=======================================
 
 :Directive Type: "include"
 :DTD Elements: depend on data being included
@@ -505,11 +504,23 @@ The "include" directive reads a reStructuredText-formatted text file
 and parses it in the current document's context at the point of the
 directive.  For example::
 
+    This first example will be parsed at the document level, and can
+    thus contain any construct, including section headers.
+
     .. include:: inclusion.txt
+
+            This second will be parsed in a block quote context.
+            Therefore it may only contain body elements.  It may not
+            contain section headers.
+
+            .. include:: inclusion.txt
+
+If an included document fragment contains section structure, the title
+adornments must match those of the master document.
 
 The following options are recognized:
 
-``literal`` : empty
+``literal`` : flag (empty)
     The entire included text is inserted into the document as a single
     literal block (useful for program listings).
 
@@ -517,12 +528,10 @@ The following options are recognized:
 Raw Data Pass-Through
 =====================
 
-**NOT IMPLEMENTED YET**
-
 :Directive Type: "raw"
 :DTD Element: pending
 :Directive Arguments: One, required (output format type).
-:Directive Options: Possible
+:Directive Options: Possible.
 :Directive Content: Stored verbatim, uninterpreted.  None (empty) if a
                     "file" or "url" option given.
 
@@ -547,8 +556,9 @@ output stream::
 
        \documentclass[twocolumn]{article}
 
-Raw data can also be read from an external file, specified in an
-option.  In this case, the content block must be empty.  For example::
+Raw data can also be read from an external file, specified in a
+directive option.  In this case, the content block must be empty.  For
+example::
 
     .. raw:: html
        :file: inclusion.html
@@ -556,9 +566,38 @@ option.  In this case, the content block must be empty.  For example::
 The following options are recognized:
 
 ``file`` : string
-    The filesystem path of a raw data file to be included.
+    The local filesystem path of a raw data file to be included.
 ``url`` : string
     An Internet URL reference to a raw data file to be included.
+
+
+Replacement Text
+================
+
+:Directive Type: "replace"
+:DTD Element: pending
+:Directive Arguments: None.
+:Directive Options: None.
+:Directive Content: A single paragraph; may contain inline markup.
+
+The "replace" directive is used to indicate replacement text for a
+substitution reference.  It may be used within substitution
+definitions only.  For example, this directive can be used to expand
+abbreviations::
+
+    .. |reST| replace:: reStructuredText
+
+    Yes, |reST| is a long word, so I can't blame anyone for wanting to
+    abbreviate it.
+
+As reStructuredText doesn't support nested inline markup, the only way
+to create a reference with styled text is to use substitutions with
+the "replace" directive::
+
+    I recommend you try |Python|_.
+
+    .. |Python| replace:: Python, *the* best language around
+    .. _Python: http://www.python.org/
 
 
 Restructuredtext-Test-Directive
