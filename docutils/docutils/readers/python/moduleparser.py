@@ -114,7 +114,7 @@ class AssignmentVisitor(compiler.visitor.ASTVisitor):
         return "'TBD'"
 
 
-class Node:                             # (compiler.ast.Node)
+class Node:
 
     def __init__(self, node):
         self.children = []
