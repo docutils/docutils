@@ -55,9 +55,10 @@ class Decorations(Transform):
         # @@@ Text is hard-coded for now.
         # Should be made dynamic (language-dependent).
         options = self.document.options
-        if options.generator or options.datestamp or options.source_link:
+        if options.generator or options.datestamp or options.source_link \
+               or options.source_url:
             text = []
-            if options.source_link and options.source or options.source_uri:
+            if options.source_link and options.source or options.source_url:
                 if options.source_uri:
                     source = options.source_uri
                 else:
