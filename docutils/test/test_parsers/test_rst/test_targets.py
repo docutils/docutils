@@ -32,6 +32,13 @@ totest['targets'] = [
         (Internal hyperlink target.)
 """],
 ["""\
+.. _optional space before colon :
+""",
+"""\
+<document source="test data">
+    <target id="optional-space-before-colon" name="optional space before colon">
+"""],
+["""\
 External hyperlink targets:
 
 .. _one-liner: http://structuredtext.sourceforge.net

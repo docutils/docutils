@@ -801,10 +801,6 @@ __ rst/alternatives.html#or-not-to-do
 
   Perhaps.  Perhaps not.
 
-* Allow whitespace before the "::" in directives?  Before the ":" in
-  hyperlink targets too?  This would appease some of our
-  French-speaking users.
-
 
 Directives
 ``````````

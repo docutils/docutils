@@ -34,6 +34,19 @@ Paragraph.
         Paragraph.
 """],
 ["""\
+.. reStructuredText-test-directive ::
+
+An optional space before the "::".
+""",
+"""\
+<document source="test data">
+    <system_message level="1" line="1" source="test data" type="INFO">
+        <paragraph>
+            Directive processed. Type="reStructuredText-test-directive", arguments=[], options={}, content: None
+    <paragraph>
+        An optional space before the "::".
+"""],
+["""\
 .. reStructuredText-test-directive:: argument
 
 Paragraph.
