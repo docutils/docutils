@@ -133,31 +133,15 @@ class MoinTranslator(html4css1.HTMLTranslator):
         
     def visit_reference(self, node):
         if 'refuri' in node.attributes:
-            # We unset this if our tests don't handle the node
-            handled = 1
+            # Set this if our test handles the node
+            handled = 0
             # We don't want these pieces wrapped in <p> tags, I think.
             self.strip_paragraph = 1
-            # Check for interwiki links
-            if node['refuri'][:len('wiki:')] == 'wiki:':
-                link = self.wikiparser.interwiki((node['refuri'],
-                                                  node.astext()))
-                self.body.append(link)
-            elif ('/' in node['refuri']) and \
-                  (not ':' in node['refuri']):
-                # Check for a subpage (a refuri with a / but no :)
-                self.wikiparser.raw = '[:%s: %s]' % (node['refuri'], node.astext())
+            if ':' not in node['refuri']:
+                self.wikiparser.raw = '[:%s: %s]' % (node['refuri'], 
+                                                     node.astext())
                 self.wikiparser.format(self.formatter)
-            elif hasattr(node, 'do_wiki_process'):
-                # This was handled by the wiki_resolver so run it through the
-                # MoinMoin parser.
-                print '%s is going through the formatter' % (node['refuri'])
-                self.wikiparser.raw = '[:%s: %s]' % (node['refuri'], node.astext())
-                print self.wikiparser.raw
-                self.wikiparser.format(self.formatter)
-            else:
-                # Not handled by our tests so give it to the html4css1
-                # translator.
-                handled = 0
+                handled = 1
             self.strip_paragraph = 0
             if handled:
                 raise docutils.nodes.SkipNode
