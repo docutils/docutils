@@ -202,11 +202,9 @@ many users will not be willing or able to do.
 Are there any reStructuredText editor extensions?
 -------------------------------------------------
 
-There is `some code under development for Emacs`__.
+See `Editor Support for reStructuredText`__.
 
-Extensions for other editors are welcome.
-
-__ http://docutils.sf.net/tools/editors/emacs/
+__ http://docutils.sf.net/tools/editors/README.html
 
 
 How can I indicate the document title?  Subtitle?
@@ -446,6 +444,50 @@ documents:
 
 * Here is an example of potential `itex math markup
   <http://article.gmane.org/gmane.text.docutils.user/118>`__.
+
+
+Is nested inline markup possible?
+---------------------------------
+
+Not currently, no.  It's on the `to-do list`__ (`details here`__), and
+hopefully will be part of the reStructuredText parser soon.  At that
+time, markup like this will become possible::
+
+    Here is some *emphasized text containing a `hyperlink`_ and
+    ``inline literals``*.
+
+__ http://docutils.sf.net/docs/dev/todo.html#nested-inline-markup
+__ http://docutils.sf.net/docs/dev/rst/alternatives.html#nested-inline-markup
+
+There are workarounds, but they are either convoluted or ugly or both.
+They are not recommended.
+
+* Inline markup can be combined with hyperlinks using `substitution
+  definitions`__ and references__.  For example::
+
+      Here is an |emphasized hyperlink|_.
+
+      .. |emphasized hyperlink| replace:: *emphasized hyperlink*
+      .. _emphasized hyperlink: http://example.org
+
+  It is not possible for just a portion of the replacement text to be
+  a hyperlink; it's the entire replacement text or nothing.
+
+  __ http://docutils.sf.net/docs/ref/rst/restructuredtext.html#substitution-definitions
+  __ http://docutils.sf.net/docs/ref/rst/restructuredtext.html#substitution-references
+
+* The `"raw" directive`__ can be used to insert raw HTML into HTML
+  output::
+
+      Here is some |stuff|.
+
+      .. |stuff| raw:: html
+
+         <em>emphasized text containing a
+         <a href="http://example.org">hyperlink</a> and
+         <span class="pre">inline literals</span></em>
+
+  Raw LaTeX is supported for LaTeX output, etc.
 
 
 HTML Writer
