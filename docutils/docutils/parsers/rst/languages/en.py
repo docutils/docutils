@@ -4,6 +4,11 @@
 # Date: $Date$
 # Copyright: This module has been placed in the public domain.
 
+# New language mappings are welcome.  Before doing a new translation, please
+# read <http://docutils.sf.net/spec/howto/i18n.html>.  Two files must be
+# translated for each language: one in docutils/languages, the other in
+# docutils/parsers/rst/languages.
+
 """
 English-language mappings for language-dependent features of
 reStructuredText.
@@ -13,6 +18,7 @@ __docformat__ = 'reStructuredText'
 
 
 directives = {
+      # language-dependent: fixed
       'attention': 'attention',
       'caution': 'caution',
       'danger': 'danger',
@@ -54,6 +60,7 @@ directives = {
 mapping."""
 
 roles = {
+    # language-dependent: fixed
     'abbreviation': 'abbreviation',
     'ab': 'abbreviation',
     'acronym': 'acronym',
