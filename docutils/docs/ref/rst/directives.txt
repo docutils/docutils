@@ -756,13 +756,15 @@ Including an External Document Fragment
 
 :Directive Type: "include"
 :Doctree Elements: depend on data being included
-:Directive Arguments: One, required (path to include file).
+:Directive Arguments: One, required.
 :Directive Options: Possible.
 :Directive Content: None.
 
 The "include" directive reads a reStructuredText-formatted text file
 and parses it in the current document's context at the point of the
-directive.  For example::
+directive.  The directive argument is the path to the file to be
+included, relative to the document containing the directive.  For
+example::
 
     This first example will be parsed at the document level, and can
     thus contain any construct, including section headers.
