@@ -76,16 +76,17 @@ class Publisher:
 
     def set_options(self, option_spec=None, **defaults):
         """
-        Set default option values (keyword arguments).
+        Set and return default option values (keyword arguments).
 
         Set components first (`self.set_reader` & `self.set_writer`).
         Explicitly setting options disables command line option processing
         from `self.publish()`.
         """
         option_parser = OptionParser(
-            components=(option_spec, self.reader, self.parser, self.writer),
-            defaults=defaults)
+            components=(option_spec, self.reader, self.parser, self.writer))
+        option_parser.set_defaults(**defaults)
         self.options = option_parser.get_default_values()
+        return self.options
 
     def process_command_line(self, argv=None, usage=None, description=None,
                              option_spec=None):
