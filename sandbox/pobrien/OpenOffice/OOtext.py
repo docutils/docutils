@@ -434,21 +434,6 @@ style:horizontal-pos="left"
 style:horizontal-rel="page-content"/>
 </style:style>
 
-<style:style style:name="imageframe"
-style:family="graphics"
-style:parent-style-name="image">
-<style:properties
-style:run-through="foreground"
-style:wrap="none"
-style:vertical-pos="below"
-style:vertical-rel="char"
-style:mirror="none" fo:clip="rect(0inch 0inch 0inch 0inch)"
-draw:luminance="0%" draw:contrast="0%" draw:red="0%" draw:green="0%"
-draw:blue="0%" draw:gamma="1" draw:color-inversion="false"
-draw:transparency="-100%"
-draw:color-mode="standard"/>
-</style:style>
-
 <style:style style:name="Page Number" 
 style:family="text"
 style:parent-style-name="WW-Default Paragraph Font"/>
@@ -467,9 +452,11 @@ style:horizontal-rel="paragraph-content"/></style:style>
 <style:style style:name="Graphics" style:family="graphics">
 <style:properties
 text:anchor-type="paragraph" svg:x="0inch" svg:y="0inch"
-style:wrap="none" style:vertical-pos="top"
-style:vertical-rel="paragraph" style:horizontal-pos="center"
-style:horizontal-rel="paragraph"/></style:style>
+style:wrap="none"
+style:vertical-pos="top"
+style:vertical-rel="char"
+style:horizontal-pos="from-left"
+style:horizontal-rel="paragraph-content"/></style:style>
 
 <style:style style:name="OLE" style:family="graphics">
 <style:properties
@@ -560,11 +547,10 @@ style:type="right"/>
 <style:properties
 style:font-name="AGaramond"/></style:style>
 
-<style:style style:name="fr1" style:family="graphics" style:parent-style-name="Frame">
+<style:style style:name="fr1"
+style:family="graphics"
+style:parent-style-name="Graphics">
 <style:properties
-style:wrap="parallel" style:number-wrapped-paragraphs="1"
-style:vertical-pos="from-top" style:vertical-rel="paragraph-content"
-style:horizontal-pos="right" style:horizontal-rel="paragraph-content"
 fo:background-color="transparent">
 <style:background-image/></style:properties></style:style>
 

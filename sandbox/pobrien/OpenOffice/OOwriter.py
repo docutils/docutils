@@ -443,16 +443,16 @@ class Translator(nodes.NodeVisitor):
             OOtext.pictures.append((name, OOtext.m_tif_format % name))
         else:
             print '*** Image type not recognized ***', repr(name)
-        self.body.append('<draw:image draw:style-name="imageframe"\n')
+        self.body.append('<draw:image draw:style-name="fr1"\n')
         self.body.append('draw:name="%s"\n' % name)
-        self.body.append('text:anchor-type="char"\n')
+        self.body.append('text:anchor-type="paragraph"\n')
         self.body.append('svg:width="1inch"\n')
         self.body.append('svg:height="1inch"\n')
         self.body.append('draw:z-index="0"\n')
         self.body.append('xlink:href="#Pictures/%s"\n' % name)
         self.body.append('xlink:type="simple"\n') 
         self.body.append('xlink:show="embed"\n')
-        self.body.append('xlink:actuate="onLoad"/>\n')
+        self.body.append('xlink:actuate="onLoad"/>')
         self.body.append('Figure X.X\n')
 
     def depart_image(self, node):
