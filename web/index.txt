@@ -110,7 +110,8 @@ Two lists have been set up specifically for the Docutils project:
   read-only).
 
 The Doc-SIG_ has greater exposure and is therefore a better forum for
-general discussions, whereas the Docutils-specific lists are more
+general discussions (such as reStructuredText syntax or the high-level
+Docutils project model), whereas the Docutils-specific lists are more
 focused on the implementation.
 
 __ http://mail.python.org/mailman/listinfo/doc-sig

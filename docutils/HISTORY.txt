@@ -113,6 +113,9 @@ Specific:
 * docutils/transforms/universal.py: Changed ``Messages`` transform to
   properly filter out system messages below the warning threshold.
 
+* docutils/writers/__init__.py: Added "pdf" alias in anticipation of
+  Engelbert Gruber's PDF writer.
+
 * docutils/writers/html4css1.py:
 
   - Made XHTML-compatible (switched to lowercase element & attribute
@@ -121,6 +124,8 @@ Specific:
   - Improved boilerplate & modularity of output.
 
 * docutils/writers/pseudoxml.py: Renamed from pprint.py.
+
+* spec/notes.txt: Continual updates.  Added "Project Policies".
 
 * spec/pep-0257.txt: Clarified prohibition of signature repetition.
 

@@ -90,6 +90,23 @@ A paragraph::
                     A literal block without a blank line first?
 """],
 ["""\
+this is not a term;
+a term may only be one line long
+  this is not a definition
+""",
+"""\
+<document>
+    <paragraph>
+        this is not a term;
+        a term may only be one line long
+    <system_message level="3" type="ERROR">
+        <paragraph>
+            Unexpected indentation at line 3.
+    <block_quote>
+        <paragraph>
+            this is not a definition
+"""],
+["""\
 term 1
   definition 1
 
