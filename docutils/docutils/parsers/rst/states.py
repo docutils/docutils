@@ -141,7 +141,7 @@ class RSTStateMachine(StateMachineWS):
         StateMachine, and return the resulting
         document.
         """
-        self.language = languages.getlanguage(document.language_code)
+        self.language = languages.get_language(document.language_code)
         self.match_titles = match_titles
         if inliner is None:
             inliner = Inliner()
@@ -947,9 +947,9 @@ class Body(RSTState):
               input_offset=self.state_machine.abs_line_offset() + 1,
               node=bulletlist, initial_state='BulletList',
               blank_finish=blank_finish)
+        self.goto_line(newline_offset)
         if not blank_finish:
             self.parent += self.unindent_warning('Bullet list')
-        self.goto_line(newline_offset)
         return [], next_state, []
 
     def list_item(self, indent):
@@ -1000,9 +1000,9 @@ class Body(RSTState):
               node=enumlist, initial_state='EnumeratedList',
               blank_finish=blank_finish,
               extra_settings={'lastordinal': ordinal, 'format': format})
+        self.goto_line(newline_offset)
         if not blank_finish:
             self.parent += self.unindent_warning('Enumerated list')
-        self.goto_line(newline_offset)
         return [], next_state, []
 
     def parse_enumerator(self, match, expected_sequence=None):
@@ -1067,9 +1067,9 @@ class Body(RSTState):
               input_offset=self.state_machine.abs_line_offset() + 1,
               node=fieldlist, initial_state='FieldList',
               blank_finish=blank_finish)
+        self.goto_line(newline_offset)
         if not blank_finish:
             self.parent += self.unindent_warning('Field list')
-        self.goto_line(newline_offset)
         return [], next_state, []
 
     def field(self, match):
@@ -1119,9 +1119,9 @@ class Body(RSTState):
               input_offset=self.state_machine.abs_line_offset() + 1,
               node=optionlist, initial_state='OptionList',
               blank_finish=blank_finish)
+        self.goto_line(newline_offset)
         if not blank_finish:
             self.parent += self.unindent_warning('Option list')
-        self.goto_line(newline_offset)
         return [], next_state, []
 
     def option_list_item(self, match):
@@ -1740,10 +1740,10 @@ class RFC2822Body(Body):
               input_offset=self.state_machine.abs_line_offset() + 1,
               node=fieldlist, initial_state='RFC2822List',
               blank_finish=blank_finish)
+        self.goto_line(newline_offset)
         if not blank_finish:
             self.parent += self.unindent_warning(
                   'RFC2822-style field list')
-        self.goto_line(newline_offset)
         return [], next_state, []
 
     def rfc2822_field(self, match):
@@ -1964,9 +1964,9 @@ class Text(RSTState):
               input_offset=self.state_machine.abs_line_offset() + 1,
               node=definitionlist, initial_state='DefinitionList',
               blank_finish=blank_finish, blank_finish_state='Definition')
+        self.goto_line(newline_offset)
         if not blank_finish:
             self.parent += self.unindent_warning('Definition list')
-        self.goto_line(newline_offset)
         return [], 'Body', []
 
     def underline(self, match, context, next_state):
