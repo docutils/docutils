@@ -153,6 +153,65 @@ Paragraph
     <paragraph>
         Paragraph
 """],
+["""\
+Sections with transitions at beginning and end.
+
+Section 1
+=========
+
+----------
+
+Illegal transitions.
+
+----------
+
+Section 2
+=========
+
+----------
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Sections with transitions at beginning and end.
+    <section id="section-1" name="section 1">
+        <title>
+            Section 1
+        <system_message level="3" line="6" source="test data" type="ERROR">
+            <paragraph>
+                Section may not begin with a transition.
+        <transition>
+        <paragraph>
+            Illegal transitions.
+        <transition>
+        <system_message level="3" line="10" source="test data" type="ERROR">
+            <paragraph>
+                Section may not end with a transition.
+    <section id="section-2" name="section 2">
+        <title>
+            Section 2
+        <system_message level="3" line="15" source="test data" type="ERROR">
+            <paragraph>
+                Section may not begin with a transition.
+        <transition>
+        <system_message level="3" line="15" source="test data" type="ERROR">
+            <paragraph>
+                Document or section may not end with a transition.
+"""],
+["""\
+----------
+
+Document beginning with a transition.
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Document or section may not begin with a transition.
+    <transition>
+    <paragraph>
+        Document beginning with a transition.
+"""],
 ]
 
 

@@ -45,6 +45,19 @@ Bugs
   whitespace and punctuation as markup delimiters, which may not be
   applicable in these languages.
 
+* @@@ The "include" directive screws up with multiple adjacent
+  includes of sections.  Also, sections must be self-contained (i.e.,
+  a section can't start in an included file and end in the parent
+  file, because of nested parsing).  (Thanks to Brett g Porter for a
+  bug report that led to this one.)
+
+  Possible solution: Instead of nested parsing, how about replacing
+  the list of strings for the state machine with an iterator which can
+  handle multiple files?  New files could be inserted, and callbacks
+  called (observers notified) when the file changes.  See
+  docutils-develop 2002-10-30, subject 'problem with the "include"
+  directive'.
+
 
 General
 -------
@@ -65,10 +78,11 @@ General
   pollution.  Ask opinions on whether or not Docutils should recognize
   & use them.
 
-* In reader.get_reader_class (& parser & writer too), should we be
-  importing "standalone" or "docutils.readers.standalone"?  (This would
-  avoid importing top-level modules if the module name is not in
-  docutils/readers.  Potential nastiness.)
+* In ``docutils.readers.get_reader_class`` (& ``parsers`` &
+  ``writers`` too), should we be importing "standalone" or
+  "docutils.readers.standalone"?  (This would avoid importing
+  top-level modules if the module name is not in docutils/readers.
+  Potential nastiness.)
 
 * Perhaps store a _`name-to-id mapping file`?  This could be stored
   permanently, read by subsequent processing runs, and updated with
