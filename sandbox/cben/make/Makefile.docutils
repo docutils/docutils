@@ -1,0 +1,60 @@
+# .. -*- Makefile -*-
+
+# Makefile with typical rules for docutils
+# ****************************************
+
+# This file provides typical rules for processing documents with docutils.
+# It's mainly intended for including in your makefile after setting some
+# variables (at least `DOCS`) but it can function as a standalone makefile
+# too (processing *.txt in this directory).
+
+# GNU Make is required!
+
+# The last version of this files is availiable at
+# http://docutils.sourceforge.net/sandbox/cben/make/Makefile.docutils
+
+# Almost everything is intended to be configurable by setting variables
+# defined in this file and `<Makelib.docutils>`_.  The ``docutils.`` prefix is
+# by default disabled to allow easy configuration on the make command line.
+# Feel free to enable it.
+docutils. ?=
+
+include Makelib.docutils
+# Now we can use variables defined there.
+
+# This gives the documents to process.  You should typically set this.
+$(docutils.)DOCS ?= $(wildcard *$($(docutils.)SRCEXT))
+# The docs without the suffix, making rules shorter.
+$(docutils.)STEMS ?= $($(docutils.)DOCS:$($(docutils.)SRCEXT)=)
+
+docutils.all: html ps pdf
+
+# Targets like ``clean`` weren't directly used.  Rather they don't have
+# commands but have targets like ``docutils.clean`` (that do have commands) as
+# prerequisites.  This allows you to give your commands for them.  You can
+# inhibit these alias dependencies by setting ENABLE_SHORT_TARGETS to 0.
+# There is no ``all`` alias anyway  because it's too probable that you
+# will want to define it yourself to some subset.
+$(docutils.)ENABLE_SHORT_TARGETS ?= 1
+
+ifeq "$($(docutils.)ENABLE_SHORT_TARGETS)" "1"
+mostlyclean: docutils.mostlyclean
+clean: docutils.clean
+endif
+
+html: $($(docutils.)STEMS:=.html)
+tex: $($(docutils.)STEMS:=.tex)
+dvi: $($(docutils.)STEMS:=.dvi)
+ps: $($(docutils.)STEMS:=.ps)
+pdf: $($(docutils.)STEMS:=.pdf)
+
+$(docutils.)CLEAN_EXTS += $(foreach tool,$($(docutils.)TOOLS),$($(docutils.)$(tool).TRGEXT))
+$(docutils.)CLEAN_EXTS += .log .aux .dvi .ps .pdf
+
+docutils.mostlyclean:
+	-rm -f $(foreach ext,$($(docutils.)CLEAN_EXTS),$($(docutils.)STEMS:=$(ext)))
+
+docutils.clean: docutils.mostlyclean
+ifeq "$($(docutils.)ENABLE_MATHHACK)" "1"
+	-rm -rf ./imgmath/
+endif
