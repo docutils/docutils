@@ -899,11 +899,12 @@ class document(Root, Structural, Element):
     def note_transform_message(self, message):
         self.transform_messages.append(message)
 
-    def note_state_machine_change(self, state_machine):
-        self.current_line = state_machine.abs_line_number()
-
-    def note_source(self, source):
+    def note_source(self, source, offset):
         self.current_source = source
+        if offset is None:
+            self.current_line = offset
+        else:
+            self.current_line = offset + 1
 
     def copy(self):
         return self.__class__(self.settings, self.reporter,
