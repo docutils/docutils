@@ -23,9 +23,9 @@ class Input:
 
     default_source_path = None
 
-    def __init__(self, options, source=None, source_path=None):
-        self.options = options
-        """An option values object with "input_encoding" and "output_encoding"
+    def __init__(self, settings, source=None, source_path=None):
+        self.settings = settings
+        """A settings object with "input_encoding" and "output_encoding"
         attributes (typically a `docutils.optik.Values` object)."""
 
         self.source = source
@@ -54,7 +54,7 @@ class Input:
 
             locale.setlocale(locale.LC_ALL, '')
         """
-        encodings = [self.options.input_encoding, 'utf-8']
+        encodings = [self.settings.input_encoding, 'utf-8']
         try:
             encodings.append(locale.nl_langinfo(locale.CODESET))
         except:
@@ -89,9 +89,9 @@ class Output:
 
     default_destination_path = None
 
-    def __init__(self, options, destination=None, destination_path=None):
-        self.options = options
-        """An option values object with "input_encoding" and "output_encoding"
+    def __init__(self, settings, destination=None, destination_path=None):
+        self.settings = settings
+        """A settings object with "input_encoding" and "output_encoding"
         attributes (typically a `docutils.optik.Values` object)."""
 
         self.destination = destination
@@ -117,7 +117,7 @@ class FileInput(Input):
     Input for single, simple file-like objects.
     """
 
-    def __init__(self, options, source=None, source_path=None, autoclose=1):
+    def __init__(self, settings, source=None, source_path=None, autoclose=1):
         """
         :Parameters:
             - `source`: either a file-like object (which is read directly), or
@@ -126,7 +126,7 @@ class FileInput(Input):
             - `autoclose`: close automatically after read (boolean); always
               false if `sys.stdin` is the source.
         """
-        Input.__init__(self, options, source, source_path)
+        Input.__init__(self, settings, source, source_path)
         self.autoclose = autoclose
         if source is None:
             if source_path:
@@ -157,7 +157,7 @@ class FileOutput(Output):
     Output for single, simple file-like objects.
     """
 
-    def __init__(self, options, destination=None, destination_path=None,
+    def __init__(self, settings, destination=None, destination_path=None,
                  autoclose=1):
         """
         :Parameters:
@@ -169,7 +169,7 @@ class FileOutput(Output):
             - `autoclose`: close automatically after write (boolean); always
               false if `sys.stdout` is the destination.
         """
-        Output.__init__(self, options, destination, destination_path)
+        Output.__init__(self, settings, destination, destination_path)
         self.opened = 1
         self.autoclose = autoclose
         if destination is None:
@@ -190,7 +190,7 @@ class FileOutput(Output):
 
     def write(self, data):
         """Encode `data`, write it to a single file, and return it."""
-        output = data.encode(self.options.output_encoding)
+        output = data.encode(self.settings.output_encoding)
         if not self.opened:
             self.open()
         self.destination.write(output)
@@ -213,7 +213,8 @@ class StringInput(Input):
 
     def read(self, reader):
         """Decode and return the source string."""
-        if self.options.input_encoding.lower() == 'unicode':
+        if self.settings.input_encoding \
+               and self.settings.input_encoding.lower() == 'unicode':
             return self.source
         else:
             return self.decode(self.source)
@@ -229,10 +230,11 @@ class StringOutput(Output):
 
     def write(self, data):
         """Encode `data`, store it in `self.destination`, and return it."""
-        if self.options.output_encoding.lower() == 'unicode':
+        if self.settings.output_encoding \
+               and self.settings.output_encoding.lower() == 'unicode':
             self.destination = data
         else:
-            self.destination = data.encode(self.options.output_encoding)
+            self.destination = data.encode(self.settings.output_encoding)
         return self.destination
 
 
