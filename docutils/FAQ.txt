@@ -43,7 +43,7 @@ What is Docutils?
 -----------------
 
 Docutils_ is a system for processing plaintext documentation into
-useful formats, such as HTML, XML, and TeX.  It supports multiple
+useful formats, such as HTML, XML, and LaTeX.  It supports multiple
 types of input, such as standalone files (implemented), inline
 documentation from Python modules and packages (under development),
 `PEPs (Python Enhancement Proposals)`_ (implemented), and others as
