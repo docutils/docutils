@@ -54,6 +54,27 @@ Bugs
   like "``--\nan-option``".  Should inline literals prevent soft
   linebreaks?  Allow breaks at whitespace or not at all?
 
+- @@@ This shouldn't be recognized as a list item::
+
+      A. Einstein was a really
+      smart dude.
+
+  The only problem is, what about this? ::
+
+      A. Einstein was a really smart dude.
+
+  This should definitely be a list::
+
+      A. Einstein was a really smart dude.
+      B. So was Carl Sagan.
+
+  Time to put more smarts into the list item recognition code, or
+  just document it as a corner case and require escapes?  E.g.::
+
+      \A. Einstein was a really smart dude.
+
+  (Bug report by Jeremy Hylton.)
+
 
 General
 -------
@@ -115,6 +136,12 @@ General
 
 - Perhaps the ``Component.supports`` method should deal with
   individual features ("meta" etc.) instead of formats ("html" etc.)?
+
+- @@@ Add references to the user docs: bugs to the SF bug tracker,
+  questions to the mailing lists.
+
+- @@@ Add a transform to remove body-level targets from the doctree,
+  as the first stage of optimization.
 
 
 Specification
@@ -383,7 +410,7 @@ Directives
     problem similar to the first problem listed for misc.encoding_,
     although to a lesser degree.
 
-  - _`body.topic`
+  - @@@ _`body.topic`
 
   - _`body.qa` (directive a.k.a. "faq", "questions"): Questions &
     Answers.  Implement as a generic two-column marked list?  As a
@@ -642,11 +669,14 @@ Index
 HTML Writer
 -----------
 
-- @@@ Construct a _`templating system`, as in ht2html/yaptu, using
+- @@ Construct a _`templating system`, as in ht2html/yaptu, using
   directives and substitutions for dynamic stuff.
 
 - Add more support for <link> elements, especially for navigation
   bars.
+
+- @@@ Add ``<span class="pre">`` around chunks of text in inline
+  literals, and a "whitespace: pre" style to the stylesheet. 
 
 
 Front-End Tools
