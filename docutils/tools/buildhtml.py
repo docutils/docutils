@@ -57,8 +57,14 @@ class SettingsSpec(docutils.SettingsSpec):
           ['--recurse'], {'action': 'store_true', 'default': 1}),
          ('Do not scan subdirectories for files to process.',
           ['--local'], {'dest': 'recurse', 'action': 'store_false'}),
+         ('Do not process files in <directory>.  This option may be used '
+          'more than once to specify multiple directories.',
+          ['--prune'], {'metavar': '<directory>', 'action': 'append'}),
          ('Work silently (no progress messages).  Independent of "--quiet".',
           ['--silent'], {'action': 'store_true'}),))
+
+    config_section = 'buildhtml application'
+    config_section_dependencies = ('applications',)
 
     
 class OptionParser(frontend.OptionParser):
@@ -93,8 +99,8 @@ class Builder:
 
     def __init__(self):
         self.publishers = {
-            '': Struct(components=(SettingsSpec, pep.Reader, rst.Parser,
-                                   pep_html.Writer)),
+            '': Struct(components=(pep.Reader, rst.Parser, pep_html.Writer,
+                                   SettingsSpec)),
             '.txt': Struct(components=(rst.Parser, standalone.Reader,
                                        html4css1.Writer)),
             'PEPs': Struct(components=(rst.Parser, pep.Reader,
@@ -123,12 +129,7 @@ class Builder:
             publisher.setting_defaults = option_parser.get_default_values()
             frontend.make_paths_absolute(publisher.setting_defaults.__dict__,
                                          option_parser.relative_path_settings)
-        config_parser = frontend.ConfigParser()
-        config_parser.read_standard_files(option_parser)
-        self.config_settings = config_parser.get_section('options')
-        frontend.make_paths_absolute(
-            self.config_settings,
-            self.publishers[''].option_parser.relative_path_settings)
+        self.config_settings = option_parser.get_standard_config_settings()
         self.settings_spec = self.publishers[''].option_parser.parse_args(
             values=frontend.Values())   # no defaults; just the cmdline opts
         self.initial_settings = self.get_settings('')
