@@ -55,11 +55,6 @@ Bugs
   test/test_parsers/test_rst/test_directives/test_include.py
   (commented out, because the test fails).
 
-* tools/buildhtml.py needs a mechanism to skip directories
-  (e.g. licenses, test).  Perhaps a ".prune-buildhtml" file?  A
-  command-line option wouldn't work because it would require user
-  action.  Config file setting?
-
 * Explicit targets are sometimes mis-located.  In particular, placing
   a target before a section header puts the target at the end of the
   previous section instead of the start of the next section.  The code
@@ -820,10 +815,18 @@ __ rst/alternatives.html#or-not-to-do
   parse nested inline markup somehow?  See the `collected notes
   <http://docutils.sf.net/spec/rst/alternatives.html#nested-inline-markup>`__.
 
-* Drop the backticks from embedded URIs?  Should the angle brackets be
-  kept in the output or not? ::
+* Drop the backticks from embedded URIs with omitted reference text?
+  Should the angle brackets be kept in the output or not? ::
 
       <file_name>_
+
+  Probably not worth the trouble.
+
+* Add ``^superscript^`` inline markup?  The only common non-markup
+  uses of "^" I can think of are as short hand for "superscript"
+  itself and for describing control characters ("^C to cancel").  The
+  former supports the proposed syntax, and it could be argued that the
+  latter ought to be literal text anyhow (e.g. "``^C`` to cancel").
 
 
 Directives
