@@ -77,7 +77,6 @@ class Parser:
         self.raw = raw
         self.request = request
         self.form = request.form
-        # self._ = request.getText
         
     def format(self, formatter):
         text = publish_string(source = self.raw, 
