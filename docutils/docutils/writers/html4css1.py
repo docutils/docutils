@@ -257,12 +257,12 @@ class HTMLTranslator(nodes.NodeVisitor):
                 # (But the XHTML (XML) spec says the opposite.  <sigh>)
                 parts.append(name.lower())
             elif isinstance(value, ListType):
-                values = [str(v) for v in value]
+                values = [unicode(v) for v in value]
                 parts.append('%s="%s"' % (name.lower(),
                                           self.attval(' '.join(values))))
             else:
                 parts.append('%s="%s"' % (name.lower(),
-                                          self.attval(str(value))))
+                                          self.attval(unicode(value))))
         return '<%s%s>%s' % (' '.join(parts), infix, suffix)
 
     def emptytag(self, node, tagname, suffix='\n', **attributes):
