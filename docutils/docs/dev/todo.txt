@@ -124,7 +124,7 @@ General
       methods.  ``note_line_number`` is called by
       ``StateMachine.notify_observers``.  Whatever reads the source
       calls ``note_source`` (``utils.new_document()``, "include"
-      directive (see misc.include_).
+      directive.
 
   - Add a ``line=None`` parameter to ``nodes.Node``; if unspecified,
     it will get the line number from the observer.  (``source=None``
@@ -739,7 +739,8 @@ Directives
     be followed by a formatting string, using strftime codes.  Default
     is "%Y-%m-%d" (ISO 8601 date), but time fields can also be used.
 
-    - Combined with misc.include_, implement canned macros?  E.g.::
+    - Combined with the "include" directive, implement canned macros?
+      E.g.::
 
           .. include:: <macros>
 
