@@ -65,12 +65,9 @@ question from Tony "Tibs" Ibbs: "What do we want to *call* this
 thing?".  This was shortly after David Goodger first `announced
 reStructuredText`__ on Doc-SIG.
 
-Tibs used the name "Docutils" for his effort
-
-    to document what the Python docutils package should support, with
-    a particular emphasis on documentation strings ("docstrings")
-    
-    (http://homepage.ntlworld.com/tibsnjoan/docutils/STpy.html)
+Tibs used the name "Docutils" for `his effort`__ "to document what the
+Python docutils package should support, with a particular emphasis on
+documentation strings".
 
 Tibs joined the current project (and its predecessors) and has
 graciously donated the name "Docutils".
@@ -82,6 +79,7 @@ Introduction to reStructuredText`_.
 __ http://mail.python.org/pipermail/doc-sig/1999-December/000878.html
 __ http://mail.python.org/pipermail/doc-sig/2000-November/001252.html
 __ http://mail.python.org/pipermail/doc-sig/2000-November/001239.html
+__ http://homepage.ntlworld.com/tibsnjoan/docutils/STpy.html
 
 
 reStructuredText
