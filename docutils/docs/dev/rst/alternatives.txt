@@ -641,8 +641,8 @@ Markup`_ below) for the somewhat awkward ".. __:" syntax is "__"::
     __ http://anonymous
 
 
-Reworking Explicit Markup
-=========================
+Reworking Explicit Markup (Round 1)
+===================================
 
 Alan Jaffray came up with the idea of `anonymous hyperlinks`_, added
 to reStructuredText.  Subsequently it was asserted that hyperlinks
@@ -2255,6 +2255,192 @@ at least for html4css1.py output.
 
 Should the lines themselves be ``<span>`` or ``<div>``?  I don't like
 mixing inline and block-level elements.
+
+
+Reworking Explicit Markup (Round 2)
+===================================
+
+See `Reworking Explicit Markup (Round 1)`_ for an earlier discussion.
+
+In April 2004, a new thread becan on docutils-develop: `Inconsistency
+in RST markup`__.  Several arguments were made; the first argument
+begat later arguments.  Below, the arguments are paraphrased "in
+quotes", with responses.
+
+__ http://thread.gmane.org/gmane.text.docutils.devel/1386
+
+1. References and targets take this form::
+
+       targetname_   
+
+       .. _targetname: stuff
+
+   But footnotes, "which generate links just like targets do", are
+   written as::
+
+       [1]_
+
+       .. [1] stuff
+
+   "Footnotes should be written as"::
+
+       [1]_
+
+       .. _[1]: stuff
+
+   But they're not the same type of animal.  That's not a "footnote
+   target", it's a *footnote*.  Being a target is not a footnote's
+   primary purpose (an arguable point).  It just happens to grow a
+   target automatically, for convenience.  Just as a section title::
+
+       Title
+       =====
+
+   isn't a "title target", it's a *title*, which happens to grow a
+   target automatically.  The consistency is there, it's just deeper
+   than at first glance.
+
+   Also, ".. [1]" was chosen for footnote syntax because it closely
+   resembles one form of actual footnote rendering.  ".. _[1]:" is too
+   verbose; excessive punctuation is required to get the job done.
+
+   For more of the reasoning behind the syntax, see `Problems With
+   StructuredText (Hyperlinks)
+   <http://docutils.sf.net/spec/rst/problems.html#hyperlinks>`__ and
+   `Reworking Footnotes`_.
+
+2. "I expect directives to also look like ``.. this:`` [one colon]
+   because that also closely parallels the link and footnote target
+   markup."
+
+   There are good reasons for the two-colon syntax:
+
+       Two colons are used after the directive type for these reasons:
+
+       - Two colons are distinctive, and unlikely to be used in common
+         text.
+
+       - Two colons avoids clashes with common comment text like::
+
+             .. Danger: modify at your own risk!
+
+       - If an implementation of reStructuredText does not recognize a
+         directive (i.e., the directive-handler is not installed), a
+         level-3 (error) system message is generated, and the entire
+         directive block (including the directive itself) will be
+         included as a literal block.  Thus "::" is a natural choice.
+
+       -- http://docutils.sf.net/spec/rst/reStructuredText.html#directives
+
+   The last reason is not particularly compelling; it's more of a
+   convenient coincidence or mnemonic.
+
+3. "Comments always seemed too easy.  I almost never write comments.
+   I'd have no problem writing '.. comment:' in front of my comments.
+   In fact, it would probably be more readable, as comments *should*
+   be set off strongly, because they are very different from normal
+   text."
+
+   Many people do use comments though, and some applications of
+   reStructuredText require it.  For example, all reStructuredText
+   PEPs (and this document!) have an Emacs stanza at the bottom, in a
+   comment.  Having to write ".. comment::" would be very obtrusive.
+
+   Comments *should* be dirt-easy to do.  It should be easy to
+   "comment out" a block of text.  Comments in programming languages
+   and other markup languages are invariably easy.
+
+   Any author is welcome to preface their comments with "Comment:" or
+   "Do Not Print" or "Note to Editor" or anything they like.  A
+   "comment" directive could easily be implemented.  It might be
+   confused with admonition directives, like "note" and "caution"
+   though.  In unrelated (and unpublished and unfinished) work, adding
+   a "comment" directive as a true document element was considered::
+
+       If structure is necessary, we could use a "comment" directive
+       (to avoid nonsensical DTD changes, the "comment" directive
+       could produce an untitled topic element).
+
+4. "One of the goals of reStructuredText is to be *readable* by people
+   who don't know it.  This construction violates that: it is not at
+   all obvious to the uninitiated that text marked by '..' is a
+   comment.  On the other hand, '.. comment:' would be totally
+   transparent."
+
+   Totally transparent, perhaps, but also very obtrusive.  Another of
+   `reStructuredText's goals`_ is to be unobtrusive, and
+   ".. comment::" would violate that.  The goals of reStructuredText
+   are many, and they conflict.  Determining the right set of goals
+   and finding solutions that best fit is done on a case-by-case
+   basis.  
+
+   Even readability is has two aspects.  Being readable without any
+   prior knowledge is one.  Being as easily read in raw form as in
+   processed form is the other.  ".." may not contribute to the former
+   aspect, but ".. comment::" would certainly detract from the latter.
+
+   .. _author's note:
+   .. _reStructuredText's goals:
+      http://docutils.sf.net/spec/rst/introduction.html#goals
+
+5. "Recently I sent someone an rst document, and they got confused; I
+   had to explain to them that '..' marks comments, *unless* it's a
+   directive, etc..."
+
+   The explanation of directives *is* roundabout, defining comments in
+   terms of not being other things.  That's definitely a wart.
+
+6. "Under the current system, a mistyped directive (with ':' instead
+   of '::') will be silently ignored.  This is an error that could
+   easily go unnoticed."
+
+   A parser option/setting like "--comments-on-stderr" would help.
+
+7. "I'd prefer to see double-dot-space / command / double-colon as the
+   standard Docutils markup-marker.  It's unusual enough to avoid
+   being accidently used.  Everything that starts with a double-dot
+   should end with a double-colon."
+
+   That would increase the punctuation verbosity of some constructs
+   considerably.
+
+8. Edward Loper proposed the following plan for backwards
+   compatibility:
+
+       1. ".. foo" will generate a deprecation warning to stderr, and
+          nothing in the output (no system messages).
+       2. ".. foo: bar" will be treated as a directive foo.  If there
+          is no foo directive, then do the normal error output.
+       3. ".. foo:: bar" will generate a deprecation warning to
+          stderr, and be treated as a directive.  Or leave it valid?
+
+       So some existing documents might start printing deprecation
+       warnings, but the only existing documents that would *break*
+       would be ones that say something like::
+
+           .. warning: this should be a comment
+
+       instead of::
+
+           .. warning:: this should be a comment
+
+       Here, we're trading fairly common a silent error (directive
+       falsely treated as a comment) for a fairly uncommon explicitly
+       flagged error (comment falsely treated as directive).  To make
+       things even easier, we could add a sentence to the
+       unknown-directive error.  Something like "If you intended to
+       create a comment, please use '.. comment:' instead".
+
+On one hand, I understand and sympathize with the points raised.  On
+the other hand, I think the current syntax strikes the right balance
+(but I acknowledge a possible lack of objectivity).  On the gripping
+hand, the comment and directive syntax has become well established, so
+even if it's a wart, it may be a wart we have to live with.
+
+Making any of these changes would cause a lot of breakage or at least
+deprecation warnings.  I'm not sure the benefit is worth the cost.
+
+For now, we'll treat this as an unresolved legacy issue.
 
 
 ..
