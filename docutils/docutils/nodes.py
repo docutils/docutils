@@ -1296,16 +1296,6 @@ class SparseNodeVisitor(NodeVisitor):
     subclasses), subclass `NodeVisitor` instead.
     """
 
-def _nop(self, node):
-    pass
-
-# Save typing with dynamic assignments:
-for _name in node_class_names:
-    setattr(SparseNodeVisitor, "visit_" + _name, _nop)
-    setattr(SparseNodeVisitor, "depart_" + _name, _nop)
-del _name, _nop
-
-
 class GenericNodeVisitor(NodeVisitor):
 
     """
@@ -1338,12 +1328,18 @@ def _call_default_visit(self, node):
 def _call_default_departure(self, node):
     self.default_departure(node)
 
-# Save typing with dynamic assignments:
-for _name in node_class_names:
-    setattr(GenericNodeVisitor, "visit_" + _name, _call_default_visit)
-    setattr(GenericNodeVisitor, "depart_" + _name, _call_default_departure)
-del _name, _call_default_visit, _call_default_departure
+def _nop(self, node):
+    pass
 
+def _add_node_class_names(names):
+    """Save typing with dynamic assignments:"""
+    for _name in names:
+        setattr(GenericNodeVisitor, "visit_" + _name, _call_default_visit)
+        setattr(GenericNodeVisitor, "depart_" + _name, _call_default_departure)
+        setattr(SparseNodeVisitor, 'visit_' + _name, _nop)
+        setattr(SparseNodeVisitor, 'depart' + _name, _nop)
+
+_add_node_class_names(node_class_names)
 
 class TreeCopyVisitor(GenericNodeVisitor):
 
