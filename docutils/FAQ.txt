@@ -649,7 +649,7 @@ Here's the question in full:
 
         Yeah, imagine me, I'm stuck at H3!  No?!?
 
-    When I run it through tools/html.py, I get unexpected results
+    When I run it through tools/rst2html.py, I get unexpected results
     (below).  I was expecting H1, H2, then H3; instead, I get H1, H1,
     H2::
 
