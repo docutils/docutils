@@ -1291,11 +1291,14 @@ class SparseNodeVisitor(NodeVisitor):
     subclasses), subclass `NodeVisitor` instead.
     """
 
-    # Save typing with dynamic definitions.
-    for name in node_class_names:
-        exec """def visit_%s(self, node): pass\n""" % name
-        exec """def depart_%s(self, node): pass\n""" % name
-    del name
+def _nop(self, node):
+    pass
+
+# Save typing with dynamic assignments:
+for _name in node_class_names:
+    setattr(SparseNodeVisitor, "visit_" + _name, _nop)
+    setattr(SparseNodeVisitor, "depart_" + _name, _nop)
+del _name, _nop
 
 
 class GenericNodeVisitor(NodeVisitor):
@@ -1324,13 +1327,17 @@ class GenericNodeVisitor(NodeVisitor):
         """Override for generic, uniform traversals."""
         raise NotImplementedError
 
-    # Save typing with dynamic definitions.
-    for name in node_class_names:
-        exec """def visit_%s(self, node):
-                    self.default_visit(node)\n""" % name
-        exec """def depart_%s(self, node):
-                    self.default_departure(node)\n""" % name
-    del name
+def _call_default_visit(self, node):
+    self.default_visit(node)
+
+def _call_default_departure(self, node):
+    self.default_departure(node)
+
+# Save typing with dynamic assignments:
+for _name in node_class_names:
+    setattr(GenericNodeVisitor, "visit_" + _name, _call_default_visit)
+    setattr(GenericNodeVisitor, "depart_" + _name, _call_default_departure)
+del _name, _call_default_visit, _call_default_departure
 
 
 class TreeCopyVisitor(GenericNodeVisitor):
