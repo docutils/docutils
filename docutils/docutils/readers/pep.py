@@ -13,7 +13,9 @@ Python Enhancement Proposal (PEP) Reader.
 __docformat__ = 'reStructuredText'
 
 
-import sys, os, re
+import sys
+import os
+import re
 from docutils import nodes
 from docutils.readers import standalone
 from docutils.transforms import peps, references
@@ -30,12 +32,11 @@ class Reader(standalone.Reader):
                   references.Footnotes,
                   references.Hyperlinks,)
 
-    def __init__(self, reporter, parser, parser_name, language_code):
+    def __init__(self, parser, parser_name):
         """`parser` should be ``None``."""
         if parser is None:
             parser = rst.Parser(rfc2822=1, inliner=Inliner())
-        standalone.Reader.__init__(
-              self, reporter, parser, '', language_code)
+        standalone.Reader.__init__(self, parser, '')
 
 
 class Inliner(rst.states.Inliner):
