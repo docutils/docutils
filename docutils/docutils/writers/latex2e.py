@@ -742,7 +742,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
             text = text.replace(">", '{\\textgreater}')
         # then
         text = text.replace("&", '{\\&}')
-        text = text.replace("_", '{\\_}')
         # the ^:
         # * verb|^| does not work in mbox.
         # * mathmode has wedge. hat{~} would also work.
@@ -756,8 +755,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
             text = self.babel.double_quotes_in_tt(text)
             # if fontenc == 'T1': make sure "--" does not become a "-".
             text = text.replace("--","-{}-").replace("--","-{}-")
+            # replace underline by underlined blank, because this has correct width.
+            text = text.replace("_", '{\\underline{ }}')
         else:
             text = self.babel.quote_quotes(text)
+            text = text.replace("_", '{\\_}')
         if self.insert_newline or self.literal_block:
             # Insert a blank before the newline, to avoid
             # ! LaTeX Error: There's no line here to end.
