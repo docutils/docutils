@@ -205,7 +205,7 @@ The following options are recognized:
 
 ``scale`` : integer
     The uniform scaling factor of the image, a percentage (but no "%"
-    symbol is required or allowed).  "100" means full-size.  PIL_
+    symbol is required or allowed).  "100" means full-size.  PIL
     [#PIL]_ may be required.
 
 ``align`` : "top", "middle", "bottom", "left", "center", or "right"
@@ -273,7 +273,7 @@ options are recognized:
 ``figwidth`` : integer or "image"
     The width of the figure in pixels, to limit the horizontal space
     used.  A special value of "image" is allowed, in which case the
-    included image's actual width is used (requires PIL_ [#PIL]_).  If
+    included image's actual width is used (requires PIL [#PIL]_).  If
     the image file is not found or the required software is
     unavailable, this option is ignored.
 
@@ -303,7 +303,6 @@ options are recognized:
 
 .. [#PIL] `Python Imaging Library`_.
 
-.. _PIL:
 .. _Python Imaging Library: http://www.pythonware.com/products/pil/
 
 
