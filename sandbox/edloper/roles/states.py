@@ -475,9 +475,6 @@ class Inliner:
     """
     Parse inline markup; call the `parse()` method.
     """
-    default_interpreted_role = 'title-reference'
-    """The role to use when no explicit role is given.
-    Override in subclasses."""
 
     def __init__(self, roles=None):
         """
@@ -834,17 +831,16 @@ class Inliner:
             return uri
 
     def interpreted(self, rawsource, text, role, lineno):
-        if not role:
-            role = roles.DEFAULT_INTERPRETED_ROLE
         role_fn, messages = roles.role(role, self.language, lineno, self)
         if role_fn:
             nodes, messages2 = role_fn(role, rawsource, text, lineno, self)
-            return nodes, messages+messages2
+            return nodes, messages + messages2
         else:
             msg = self.reporter.error(
                 'Unknown interpreted text role "%s".' % role,
                 line=lineno)
-            return [self.problematic(text, text, msg)], messages+[msg]
+            return ([self.problematic(rawsource, rawsource, msg)],
+                    messages + [msg])
 
     def literal(self, match, lineno):
         before, inlines, remaining, sysmessages, endstring = self.inline_obj(
@@ -925,7 +921,7 @@ class Inliner:
         referencename = match.group('refname')
         refname = normalize_name(referencename)
         referencenode = nodes.reference(
-            referencename + match.group('refend'), referencename, 
+            referencename + match.group('refend'), referencename,
             name=whitespace_normalize_name(referencename))
         if anonymous:
             referencenode['anonymous'] = 1
@@ -954,34 +950,6 @@ class Inliner:
                                     refuri=addscheme + unescaped)]
         else:                   # not a valid scheme
             raise MarkupMismatch
-
-    pep_url_local = 'pep-%04d.html'
-    pep_url_absolute = 'http://www.python.org/peps/pep-%04d.html'
-    pep_url = pep_url_absolute
-
-    def pep_reference(self, match, lineno):
-        text = match.group(0)
-        if text.startswith('pep-'):
-            pepnum = int(match.group('pepnum1'))
-        elif text.startswith('PEP'):
-            pepnum = int(match.group('pepnum2'))
-        else:
-            raise MarkupMismatch
-        ref = self.pep_url % pepnum
-        unescaped = unescape(text, 0)
-        return [nodes.reference(unescape(text, 1), unescaped, refuri=ref)]
-
-    rfc_url = 'http://www.faqs.org/rfcs/rfc%d.html'
-
-    def rfc_reference(self, match, lineno):
-        text = match.group(0)
-        if text.startswith('RFC'):
-            rfcnum = int(match.group('rfcnum'))
-            ref = self.rfc_url % rfcnum
-        else:
-            raise MarkupMismatch
-        unescaped = unescape(text, 0)
-        return [nodes.reference(unescape(text, 1), unescaped, refuri=ref)]
 
     def implicit_inline(self, text, lineno):
         """
@@ -1014,6 +982,7 @@ class Inliner:
                 '|': substitution_reference,
                 '_': reference,
                 '__': anonymous_reference}
+
 
 class Body(RSTState):
 
