@@ -7,7 +7,7 @@
 # Copyright: This module has been placed in the public domain.
 
 """
-Tests for html.py meta directives.
+Tests for html meta directives.
 """
 
 from __init__ import DocutilsTestSupport
