@@ -62,6 +62,8 @@ Specific:
   - Renamed ``TreePruningException`` from ``VisitorException``.
   - Added docstrings to ``TreePruningException``, subclasses, and
     ``Nodes.walk()``.
+  - Improved docstrings.
+  - Added ``SparseNodeVisitor``, refined ``NodeVisitor``.
 
 * docutils/statemachine.py:
 
