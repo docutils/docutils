@@ -1109,12 +1109,14 @@ when used in a document.
 
         .. include:: {includepath}/charents.txt
 
-  - Docutils already has the ability to say "use this content for
+  - .. _conditional directives:
+
+    Docutils already has the ability to say "use this content for
     Writer X" (via the "raw" directive), but it doesn't have the
     ability to say "use this content for any Writer other than X".  It
     wouldn't be difficult to add this ability though.
 
-    My first idea would be to add a set of _`conditional directives`.
+    My first idea would be to add a set of conditional directives.
     Let's call them "writer-is" and "writer-is-not" for discussion
     purposes (don't worry about implemention details).  We might
     have::
