@@ -626,19 +626,8 @@ Also see the `... Or Not To Do?`__ list.
 
 __ rst/alternatives.html#or-not-to-do
 
-* Add support for inclusion by URL::
-
-      .. include:: 
-         :url: http://etc/inclusion.txt
-
 * Add (functional) tests for untested roles.
 
-* Allow the _`:trim:` option for all directives when they occur in a
-  substitution definition, not only the unicode_ directive.
-
-  .. _unicode:
-     http://docutils.sf.net/docs/ref/rst/directives.html#unicode-character-codes
-  
 * The parser doesn't know anything about double-width characters such
   as Chinese hanza & Japanese kanji/kana.  Also, it's dependent on
   whitespace and punctuation as markup delimiters, which may not be
@@ -1175,6 +1164,17 @@ when used in a document.
   - _`misc.class`: @@@ Allow multiple classes (whitespace-separated)
     to be declared.
 
+  - _`misc.include`: Add support for inclusion by URL::
+
+        .. include:: 
+           :url: http://www.example.org/inclusion.txt
+
+  - Allow the _`:trim:` option for all directives when they occur in a
+    substitution definition, not only the unicode_ directive.
+
+    .. _unicode:
+       http://docutils.sf.net/docs/ref/rst/directives.html#unicode-character-codes
+  
 * Implement directives.  Each of the list items below begins with an
   identifier of the form, "module_name.directive_function_name".  The
   directive name itself could be the same as the
