@@ -621,7 +621,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 'upperalpha':'Alph', 
                 'lowerroman':'roman',
                 'upperroman':'Roman' };
-        start = -1
+        start = 1
         if node.has_key('start'):
             start = node['start']
         enumtype = "arabic"            
@@ -629,12 +629,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
             enumtype = node['enumtype']
         if enum_style.has_key(enumtype):
             enumtype = enum_style[enumtype]
-        self.body.append('% '+enumtype+':'+str(start)+'\n')
         counter_name = "listcnt%d" % self._enum_cnt;
         self.body.append('\\newcounter{%s}\n' % counter_name)
         self.body.append('\\begin{list}{\\%s{%s}}\n' % (enumtype,counter_name))
         self.body.append('{\n')
         self.body.append('\\usecounter{%s}\n' % counter_name)
+        # set after usecounter.
+        if start>1:
+            self.body.append('\\addtocounter{%s}{%d}\n' % (counter_name,start-1))
         ## set rightmargin equal to leftmargin
         self.body.append('\\setlength{\\rightmargin}{\\leftmargin}\n')
         self.body.append('}\n')

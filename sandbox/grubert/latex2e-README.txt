@@ -32,10 +32,6 @@ To do
 
 * longtable does not work with multirow
 
-* ordered list numbering style is taken from latex a.,b. in source
-  gives 1., .. in document.
-
-
 * table width is always full line width.
   how to make narrower tables.
 
@@ -51,8 +47,7 @@ To do
 
 * table cells with multirow and multicolumn
 
-	
-* lists that donot start at one donot work.
+* bullet lists have no bullets (test.txt)	
 
 * option list: is implemented as a table, but in html more like a description list.
 
@@ -106,6 +101,9 @@ ATTENTION
 Done
 ~~~~
 
+* lists that donot start at one donot work.
+* ordered list numbering style is taken from latex a.,b. in source
+  gives 1., .. in document.
 * enumeration too deep: latex goes up to four.
 * abstract title should be centered. 
 * docinfo table centered and narrower.
