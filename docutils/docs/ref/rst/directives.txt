@@ -505,7 +505,12 @@ Epigraph
 :Directive Options: None.
 :Directive Content: Interpreted as the body of the block quote.
 
-Produces an epigraph-class block quote.  For example, this input::
+An epigraph is an apposite (suitable, apt, or pertinent) short
+inscription, often a quotation or poem, at the beginning of a document
+or section.
+
+The "epigraph" directive produces an "epigraph"-class block quote.
+For example, this input::
 
      .. epigraph::
 
@@ -531,7 +536,11 @@ Highlights
 :Directive Options: None.
 :Directive Content: Interpreted as the body of the block quote.
 
-Produces a highlights-class block quote.  See Epigraph_ above.
+Highlights summarize the main points of a document or section, often
+consisting of a list.
+
+The "highlights" directive produces a "highlights"-class block quote.
+See Epigraph_ above for an analogous example.
 
 
 Pull-Quote
@@ -543,7 +552,12 @@ Pull-Quote
 :Directive Options: None.
 :Directive Content: Interpreted as the body of the block quote.
 
-Produces a pull-quote-class block quote.  See Epigraph_ above.
+A pull-quote is a small selection of text "pulled out and quoted",
+typically in a larger typeface.  Pull-quotes are used to attract
+attention, especially in long articles.
+
+The "pull-quote" directive produces a "pull-quote"-class block quote.
+See Epigraph_ above for an analogous example.
 
 
 --------
@@ -666,6 +680,10 @@ The following options are recognized:
 
 ``file`` | ``url`` : path
     Path or URL to CSV file.
+
+``encoding`` : name of text encoding
+    The text encoding of the external CSV data (file or URL).
+    Defaults to the document's encoding (if specified).
 
 ``delim`` : char | "tab" | "space"
     A one-character string used to separate fields.  Defaults to ``,``
@@ -976,6 +994,10 @@ The following options are recognized:
     The entire included text is inserted into the document as a single
     literal block (useful for program listings).
 
+``encoding`` : name of text encoding
+    The text encoding of the external data file.  Defaults to the
+    document's encoding (if specified).
+
 
 .. _raw:
 
@@ -1020,8 +1042,13 @@ The following options are recognized:
 
 ``file`` : string
     The local filesystem path of a raw data file to be included.
+
 ``url`` : string
     An Internet URL reference to a raw data file to be included.
+
+``encoding`` : name of text encoding
+    The text encoding of the external raw data (file or URL).
+    Defaults to the document's encoding (if specified).
 
 
 .. _replace:
