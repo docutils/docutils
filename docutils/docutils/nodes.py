@@ -502,6 +502,15 @@ class TextElement(Element):
             Element.__init__(self, rawsource, *children, **attributes)
 
 
+class FixedTextElement(TextElement):
+
+    """An element which directly contains preformatted text."""
+
+    def __init__(self, rawsource='', text='', *children, **attributes):
+        TextElement.__init__(self, rawsource, text, *children, **attributes)
+        self.attributes['xml:space'] = 1
+
+
 # ========
 #  Mixins
 # ========
@@ -872,6 +881,7 @@ class docinfo(Bibliographic, Element): pass
 class author(Bibliographic, TextElement): pass
 class authors(Bibliographic, Element): pass
 class organization(Bibliographic, TextElement): pass
+class address(Bibliographic, FixedTextElement): pass
 class contact(Bibliographic, TextElement): pass
 class version(Bibliographic, TextElement): pass
 class revision(Bibliographic, TextElement): pass
@@ -959,9 +969,9 @@ class option_list_item(Part, Element):
 
 class option_string(Part, TextElement): pass
 class description(Part, Element): pass
-class literal_block(General, TextElement): pass
-class doctest_block(General, TextElement): pass
-class line_block(General, TextElement): pass
+class literal_block(General, FixedTextElement): pass
+class doctest_block(General, FixedTextElement): pass
+class line_block(General, FixedTextElement): pass
 class block_quote(General, Element): pass
 class attention(Admonition, Element): pass
 class caution(Admonition, Element): pass
@@ -972,7 +982,7 @@ class note(Admonition, Element): pass
 class tip(Admonition, Element): pass
 class hint(Admonition, Element): pass
 class warning(Admonition, Element): pass
-class comment(Special, Invisible, PreBibliographic, TextElement): pass
+class comment(Special, Invisible, PreBibliographic, FixedTextElement): pass
 class substitution_definition(Special, Invisible, TextElement): pass
 class target(Special, Invisible, Inline, TextElement, Targetable): pass
 class footnote(General, Element, Labeled, BackLinkable): pass
@@ -999,8 +1009,8 @@ class system_message(Special, PreBibliographic, Element, BackLinkable):
         Element.__init__(self, '', *children, **attributes)
 
     def astext(self):
-        return '%s (%s) %s' % (self['type'], self['level'],
-                               Element.astext(self))
+        return '%s/%s (%s) %s' % (self['type'], self['level'], self['source'],
+                                  Element.astext(self))
 
 
 class pending(Special, Invisible, PreBibliographic, Element):
@@ -1081,7 +1091,7 @@ class pending(Special, Invisible, PreBibliographic, Element):
                               **self.attributes)
 
 
-class raw(Special, Inline, PreBibliographic, TextElement):
+class raw(Special, Inline, PreBibliographic, FixedTextElement):
 
     """
     Raw data that is to be passed untouched to the Writer.
@@ -1120,7 +1130,7 @@ class generated(Inline, TextElement): pass
 
 node_class_names = """
     Text
-    attention author authors
+    address attention author authors
     block_quote bullet_list
     caption caution citation citation_reference classifier colspec comment
         contact copyright
