@@ -40,7 +40,7 @@ class Filter(Transform):
     it will be deleted from the output of all other writers.
     """
 
-    def transform(self):
+    def apply(self):
         pending = self.startnode
         component_type = pending.stage.split()[-1] # 'reader' or 'writer'
         component_name = pending.details[component_type]

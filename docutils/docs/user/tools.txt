@@ -321,19 +321,20 @@ options is listed in `Configuration File Entries`_ below.
 Configuration File Entries
 --------------------------
 
-The entry names listed below may be specified in `configuration
-files`_.  Hyphens may be used in place of underscores in entry names.
-Some knowledge of Python_ is assumed for some attributes.
+Names in the first column of the table below are runtime settings.
+Most may be specified in `configuration files`_, where hyphens may be
+used in place of underscores.  Some knowledge of Python_ is assumed
+for some attributes.
 
 ====================  ================================================
-Config Entry Name     Description
+Setting/Config Entry  Description
 ====================  ================================================
-expose_internals      (Hidden option, for development use only.)  List
-                      of internal attribues to expose as external
+expose_internals      List of internal attribues to expose as external
                       attributes (with "internal:" namespace prefix).
 
                       Default: don't (None).  Options:
-                      ``--expose-internal-attribute``.
+                      ``--expose-internal-attribute`` (hidden, for
+                      development use only).
 --------------------  ------------------------------------------------
 compact_lists         (HTML Writer.)  Remove extra vertical whitespace
                       between items of bullet lists and enumerated
@@ -368,13 +369,13 @@ debug                 Report debug-level system messages.
                       Default: don't (None).  Options: ``--debug,
                       --no-debug``.
 --------------------  ------------------------------------------------
-dump_internals        (Hidden option, for development use only.)  At
-                      the end of processing, print out all internal
+dump_internals        At the end of processing, print out all internal
                       attributes of the document
                       (``document.__dict__``).
 
                       Default: don't (None).  Options:
-                      ``--dump-internals``.
+                      ``--dump-internals`` (hidden, for development
+                      use only).
 --------------------  ------------------------------------------------
 embed_stylesheet      (HTML Writer.)  Embed the stylesheet in the
                       output HTML file.  The stylesheet file must be
@@ -430,12 +431,11 @@ newlines              (XML Writer.)  Generate XML with newlines before
 
                       Default: don't (None).  Options: ``--newlines``.
 --------------------  ------------------------------------------------
-no_random             (PEP/HTML Writer; hidden option.)  Workaround
-                      for platforms which core-dump on "``import
-                      random``".
+no_random             (PEP/HTML Writer.)  Workaround for platforms
+                      which core-dump on "``import random``".
 
                       Default: random enabled (None).  Options:
-                      ``--no-random``.
+                      ``--no-random`` (hidden).
 --------------------  ------------------------------------------------
 output_encoding       Default: UTF-8.  Options: ``--output-encoding,
                       -o``.
@@ -552,16 +552,21 @@ warning_stream        Path to a file for the output of system messages
 ----------------------------------------------------------------------
 _directories          (``buildhtml.py`` front end.)  List of paths to
                       source directories, set from positional
-                      arguments.  Default: current working directory
-                      (None).  No command-line options.
+                      arguments.
+
+                      Default: current working directory (None).  No
+                      command-line options.
 --------------------  ------------------------------------------------
 _destination          Path to output destination, set from positional
-                      arguments.  Default: stdout (None).  No
-                      command-line options.
+                      arguments.
+
+                      Default: stdout (None).  No command-line
+                      options.
 --------------------  ------------------------------------------------
 _source               Path to input source, set from positional
-                      arguments.  Default: stdin (None).  No
-                      command-line options.
+                      arguments.
+
+                      Default: stdin (None).  No command-line options.
 ====================  ================================================
 
 .. _ISO 639: http://lcweb.loc.gov/standards/iso639-2/englangn.html

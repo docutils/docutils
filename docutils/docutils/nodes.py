@@ -602,7 +602,7 @@ class Labeled:
 
 class document(Root, Structural, Element):
 
-    def __init__(self, options, reporter, *args, **kwargs):
+    def __init__(self, settings, reporter, *args, **kwargs):
         Element.__init__(self, *args, **kwargs)
 
         self.current_source = None
@@ -611,8 +611,8 @@ class document(Root, Structural, Element):
         self.current_line = None
         """Line number (1-based) of `current_source`."""
 
-        self.options = options
-        """Command-line or internal option data record."""
+        self.settings = settings
+        """Runtime settings data record."""
 
         self.reporter = reporter
         """System message generator."""
@@ -908,7 +908,7 @@ class document(Root, Structural, Element):
         self.current_source = source
 
     def copy(self):
-        return self.__class__(self.options, self.reporter,
+        return self.__class__(self.settings, self.reporter,
                               **self.attributes)
 
 

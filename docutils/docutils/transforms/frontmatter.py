@@ -102,7 +102,7 @@ class DocTitle(Transform):
     after the title(s).
     """
 
-    def transform(self):
+    def apply(self):
         if self.promote_document_title():
             self.promote_document_subtitle()
 
@@ -225,7 +225,7 @@ class DocInfo(Transform):
       expansion text changes only if the file name changes.)
     """
 
-    def transform(self):
+    def apply(self):
         document = self.document
         index = document.first_child_not_matching_class(
               nodes.PreBibliographic)

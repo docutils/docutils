@@ -19,7 +19,7 @@ from docutils.writers import html4css1
 
 class Writer(html4css1.Writer):
 
-    cmdline_options = html4css1.Writer.cmdline_options + (
+    settings_spec = html4css1.Writer.settings_spec + (
         'PEP/HTML-Specific Options',
         'The HTML --footnote-references option is set to "brackets" by '
         'default.',
@@ -47,9 +47,9 @@ class Writer(html4css1.Writer):
          (optik.SUPPRESS_HELP,
           ['--no-random'], {'action': 'store_true'}),))
 
-    option_default_overrides = {'footnote_references': 'brackets'}
+    settings_default_overrides = {'footnote_references': 'brackets'}
 
-    relative_path_options = ('pep_stylesheet_path', 'pep_template')
+    relative_path_settings = ('pep_stylesheet_path', 'pep_template')
 
     def __init__(self):
         html4css1.Writer.__init__(self)
@@ -57,16 +57,16 @@ class Writer(html4css1.Writer):
 
     def translate(self):
         html4css1.Writer.translate(self)
-        options = self.document.options
-        template = open(options.pep_template).read()
+        settings = self.document.settings
+        template = open(settings.pep_template).read()
         # Substitutions dict for template:
         subs = {}
-        subs['encoding'] = options.output_encoding
+        subs['encoding'] = settings.output_encoding
         subs['version'] = docutils.__version__
         subs['stylesheet'] = ''.join(self.stylesheet)
-        pyhome = options.python_home
+        pyhome = settings.python_home
         subs['pyhome'] = pyhome
-        subs['pephome'] = options.pep_home
+        subs['pephome'] = settings.pep_home
         if pyhome == '..':
             subs['pepindex'] = '.'
         else:
@@ -75,7 +75,7 @@ class Writer(html4css1.Writer):
         header = self.document[index]
         pepnum = header[0][1].astext()
         subs['pep'] = pepnum
-        if options.no_random:
+        if settings.no_random:
             subs['banner'] = 0
         else:
             import random
@@ -94,18 +94,18 @@ class Writer(html4css1.Writer):
 class HTMLTranslator(html4css1.HTMLTranslator):
 
     def get_stylesheet_reference(self, relative_to=None):
-        options = self.options
+        settings = self.settings
         if relative_to == None:
-            relative_to = options._destination
-        if options.pep_stylesheet_path:
+            relative_to = settings._destination
+        if settings.pep_stylesheet_path:
             return utils.relative_path(relative_to,
-                                       options.pep_stylesheet_path)
-        elif options.pep_stylesheet:
-            return options.pep_stylesheet
-        elif options._stylesheet_path:
-            return utils.relative_path(relative_to, options.stylesheet_path)
+                                       settings.pep_stylesheet_path)
+        elif settings.pep_stylesheet:
+            return settings.pep_stylesheet
+        elif settings._stylesheet_path:
+            return utils.relative_path(relative_to, settings.stylesheet_path)
         else:
-            return options.stylesheet
+            return settings.stylesheet
 
     def depart_field_list(self, node):
         html4css1.HTMLTranslator.depart_field_list(self, node)

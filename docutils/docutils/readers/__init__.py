@@ -28,7 +28,7 @@ class Reader(Component):
     """
 
     transforms = ()
-    """Ordered tuple of transform classes (each with a ``transform()``
+    """Ordered tuple of transform classes (each with an ``apply()``
     method).  Populated by subclasses.  `Reader.transform()`
     instantiates & runs them."""
 
@@ -59,11 +59,11 @@ class Reader(Component):
         parser_class = parsers.get_parser_class(parser_name)
         self.parser = parser_class()
 
-    def read(self, source, parser, options):
+    def read(self, source, parser, settings):
         self.source = source
         if not self.parser:
             self.parser = parser
-        self.options = options
+        self.settings = settings
         # May modify self.parser, depending on input:
         self.input = self.source.read(self)
         self.parse()
@@ -85,11 +85,11 @@ class Reader(Component):
         for xclass in (universal.first_reader_transforms
                        + tuple(self.transforms)
                        + universal.last_reader_transforms):
-            xclass(self.document, self).transform()
+            xclass(self.document, self).apply()
 
     def new_document(self):
         """Create and return a new empty document tree (root node)."""
-        document = utils.new_document(self.source.source_path, self.options)
+        document = utils.new_document(self.source.source_path, self.settings)
         return document
 
 

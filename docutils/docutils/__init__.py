@@ -55,7 +55,7 @@ Subpackages:
 
 __docformat__ = 'reStructuredText'
 
-__version__ = '0.2.5'
+__version__ = '0.2.6'
 """``major.minor.micro`` version number.  The ``micro`` number is bumped any
 time there's a change in the API incompatible with one of the front ends."""
 
@@ -64,30 +64,34 @@ class ApplicationError(StandardError): pass
 class DataError(ApplicationError): pass
 
 
-class OptionSpec:
+class SettingsSpec:
 
     """
-    Runtime option specification base class.
+    Runtime setting specification base class.
 
-    OptionSpec subclass objects used by `docutils.frontend.OptionParser`.
+    SettingsSpec subclass objects used by `docutils.frontend.OptionParser`.
     """
 
-    cmdline_options = ()
-    """Command-line option specification.  Override in subclasses.
+    settings_spec = ()
+    """Runtime settings specification.  Override in subclasses.
 
-    One or more sets of option group title, description, and a list/tuple of
-    tuples: ``('help text', [list of option strings], {keyword arguments})``.
-    Group title and/or description may be `None`; no group title implies no
-    group, just a list of single options."""
+    Specifies runtime settings and associated command-line options, as used by
+    `docutils.frontend.OptionParser`.  This tuple contains one or more sets of
+    option group title, description, and a list/tuple of tuples: ``('help
+    text', [list of option strings], {keyword arguments})``.  Group title
+    and/or description may be `None`; no group title implies no group, just a
+    list of single options.  Runtime settings names are derived implicitly
+    from long option names ("--a-setting" becomes ``settings.a_setting``) or
+    explicitly from the "destination" keyword argument."""
 
-    option_default_overrides = None
-    """A dictionary of auxiliary defaults, to override defaults for options
+    settings_default_overrides = None
+    """A dictionary of auxiliary defaults, to override defaults for settings
     defined in other components.  Override in subclasses."""
 
-    relative_path_options = ()
-    """Options containing filesystem paths.  Override in subclasses.
+    relative_path_settings = ()
+    """Settings containing filesystem paths.  Override in subclasses.
 
-    Options listed here are to be interpreted relative to the current working
+    Settings listed here are to be interpreted relative to the current working
     directory."""
 
 
@@ -100,9 +104,10 @@ class TransformSpec:
     """
 
     default_transforms = ()
+    """Transforms required by this class.  Override in subclasses."""
 
 
-class Component(OptionSpec, TransformSpec):
+class Component(SettingsSpec, TransformSpec):
 
     """Base class for Docutils components."""
 

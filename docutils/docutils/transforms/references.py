@@ -28,7 +28,7 @@ class Hyperlinks(Transform):
 
     """Resolve the various types of hyperlink targets and references."""
 
-    def transform(self):
+    def apply(self):
         self.resolve_chained_targets()
         self.resolve_anonymous()
         self.resolve_indirect()
@@ -472,7 +472,7 @@ class Footnotes(Transform):
           u'\u2663',                    # club suit &clubs;
           ]
 
-    def transform(self):
+    def apply(self):
         self.autofootnote_labels = []
         startnum = self.document.autofootnote_start
         self.document.autofootnote_start = self.number_footnotes(startnum)
@@ -635,7 +635,7 @@ class Substitutions(Transform):
                 <image alt="biohazard" uri="biohazard.png">
     """
 
-    def transform(self):
+    def apply(self):
         defs = self.document.substitution_defs
         for refname, refs in self.document.substitution_refs.items():
             for ref in refs:
@@ -665,7 +665,7 @@ class TargetNotes(Transform):
         Transform.__init__(self, document, component, startnode)
         self.notes = {}
 
-    def transform(self):
+    def apply(self):
         nodelist = []
         for target in self.document.external_targets:
             name = target.get('name')
