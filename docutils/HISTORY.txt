@@ -15,8 +15,8 @@ Acknowledgements
 
 I would like to acknowledge the people who have made a direct impact
 on the Docutils project, knowingly or not, in terms of encouragement,
-suggestions, criticism, bug reports, code contributions, tasty treats,
-and related projects:
+suggestions, criticism, bug reports, code contributions, cash
+donations, tasty treats, and related projects:
 
     Aahz, David Abrahams, David Ascher, Heiko Baumann, Eric Bellot,
     Ian Bicking, Marek Blaha, Martin Blais, Stephen Boulet, Fred
@@ -44,10 +44,12 @@ and related projects:
     Suzi, tav, Kent Tenney, Bob Tolbert, Paul Tremblay, Laurence
     Tratt, Adrian van den Dries, Guido van Rossum, Paul Viren, Martin
     von Loewis, Greg Ward, Barry Warsaw, Edward Welbourne, Felix
-    Wiemann, Ka-Ping Yee, Moshe Zadka, and the `Python Software
-    Foundation <http://www.python.org/psf/>`__
+    Wiemann, Ka-Ping Yee, Moshe Zadka
 
 Thank you!
+
+Special thanks to `SourceForge <http://sourceforge.net>`__ and the
+`Python Software Foundation <http://www.python.org/psf/>`__.
 
 Hopefully I haven't forgotten anyone or misspelled any names;
 apologies (and please let me know!) if I have.
