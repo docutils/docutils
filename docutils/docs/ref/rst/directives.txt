@@ -1074,6 +1074,13 @@ Including an External Document Fragment
 :Directive Options: Possible.
 :Directive Content: None.
 
+.. WARNING::
+
+   The "include" directive represents a potential security hole.  It
+   can be disabled with the "file_insertion_enabled_" runtime setting.
+
+   .. _file_insertion_enabled: ../../user/config.html#file-insertion-enabled
+
 The "include" directive reads a reStructuredText-formatted text file
 and parses it in the current document's context at the point of the
 directive.  The directive argument is the path to the file to be
@@ -1123,6 +1130,14 @@ Raw Data Pass-Through
                     "file" or "url" option given.
 
 .. WARNING::
+
+   The "raw" directive represents a potential security hole.  It can
+   be disabled with the "raw_enabled_" or "file_insertion_enabled_"
+   runtime settings.
+
+   .. _raw_enabled: ../../user/config.html#raw-enabled
+
+.. Caution::
 
    The "raw" directive is a stop-gap measure allowing the author to
    bypass reStructuredText's markup.  It is a "power-user" feature
