@@ -107,8 +107,8 @@ General
 - @@@@ All system messages should have a "line" attribute, to improve
   diagnostic output.  So all elements constructed by the parser should
   have internal "line" ("lineno"/"line_number") attributes.  They'd
-  also need internal "source" attributes as well (populating the
-  external "source" attribute would clutter up the output).
+  need internal "source" attributes as well (populating the external
+  "source" attribute would clutter up the output).
 
   Is there any way we can get this to happen automagically, without
   having to add the attribute manually to each object?  System
@@ -122,20 +122,21 @@ General
 
     - Document object: add ``note_source``, ``note_line_number``
       methods.  ``note_line_number`` is called by
-      ``StateMachine.notify_observer``.  Whatever reads the source
+      ``StateMachine.notify_observers``.  Whatever reads the source
       calls ``note_source`` (``utils.new_document()``, "include"
       directive (see misc.include_).
 
   - Add a ``line=None`` parameter to ``nodes.Node``; if unspecified,
-    it will get the line number from the observer.
+    it will get the line number from the observer.  (``source=None``
+    too?)
 
   - Perhaps ``Element.append()`` etc. can also set the ``.document``
     attribute of each node added.  The document object could hold the
     current line number and source description, which would also be
-    copied over to the node.  Consolodate all assignments (parent,
+    copied over to the node.  Consolidate all assignments (parent,
     document, source, line) into a single method.
 
-  Change stderr Reporter output to the GNU urilities format::
+- @@@ Change stderr Reporter output to the GNU utilities format::
 
       file:line: message
 
@@ -592,7 +593,9 @@ Directives
     in ``match_titles=1``.  The reporting mechanism has been revamped
     to include the file which is the source of system messages; a new
     ``utils.Reporter`` object will need to be created for each input
-    source.  (Need to notify 
+    source.  (Need to notify ``document.note_source(source)`` upon
+    entering a new source file, and again when returning to the old
+    source file.)
 
     YAGNI for now: Use C-preprocessor semantics for locating include
     files?  E.g., ``.. include:: file.txt`` will read another file
