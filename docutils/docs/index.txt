@@ -145,11 +145,11 @@ __ peps/pep-0256.html
 __ http://www.python.org/peps/pep-0256.html
 __ peps/pep-0257.html
 __ http://www.python.org/peps/pep-0257.html
-__ peps/pep-0287.html
-__ http://www.python.org/peps/pep-0287.html
 .. _PEP 258:
 __ peps/pep-0258.html
 __ http://www.python.org/peps/pep-0258.html
+__ peps/pep-0287.html
+__ http://www.python.org/peps/pep-0287.html
 .. _master repository: http://www.python.org/peps/
 
 
