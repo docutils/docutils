@@ -1,5 +1,5 @@
 =======================
-bbum's DocUtils sandbox
+bbum's Docutils sandbox
 =======================
 
 :Author: Bill Bumgarner
@@ -9,6 +9,6 @@ bbum's DocUtils sandbox
 DocArticle
 ==========
 
-A plain HTML writer for docutils.  Produces non-CSS based HTML that is
+A plain HTML writer for Docutils.  Produces non-CSS based HTML that is
 compliant with the O'Reilly DevCenter's article submission guidelines.
 
