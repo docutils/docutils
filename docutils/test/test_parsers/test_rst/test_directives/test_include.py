@@ -25,6 +25,9 @@ include1rel = DocutilsTestSupport.utils.relative_path(None, include1)
 include2 = os.path.join(mydir, 'include2.txt')
 include3 = os.path.join(mydir, 'include3.txt')
 include8 = os.path.join(mydir, 'include8.txt')
+include9 = os.path.join(mydir, 'include9.txt')
+include9rel = DocutilsTestSupport.utils.relative_path(None, include9)
+
 
 totest = {}
 
@@ -223,7 +226,7 @@ In test data
         In includes/more/include6.txt
     <paragraph>
         In includes/sibling/include7.txt
-""" ],
+"""],
 ["""\
 In test data
 
@@ -253,7 +256,7 @@ Section
             In includes/more/include6.txt
         <paragraph>
             In includes/sibling/include7.txt
-""" ],
+"""],
 ["""\
 Testing relative includes:
 
@@ -275,7 +278,29 @@ Testing relative includes:
         <literal>
             test_include.py
         .
-""" ],
+"""],
+# @@@ BUG with errors reported with incorrect "source" & "line":
+# ["""\
+# Testing bad charent includes:
+#
+# .. include:: %s
+# """ % include9,
+# """\
+# <document source="test data">
+#     <paragraph>
+#         Testing bad charent includes:
+#     <system_message level="3" line="1" source="%s" type="ERROR">
+#         <paragraph>
+#             Invalid character code: 0xFFFFFFFFF
+#             int() literal too large: FFFFFFFFF
+#         <literal_block xml:space="preserve">
+#             unicode:: 0xFFFFFFFFF
+#     <system_message level="2" line="1" source="%s" type="WARNING">
+#         <paragraph>
+#             Substitution definition "bad" empty or invalid.
+#         <literal_block xml:space="preserve">
+#             .. |bad| unicode:: 0xFFFFFFFFF
+# """ % (include9rel, include9rel)],
 ]
 
 
