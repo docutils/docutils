@@ -111,12 +111,14 @@ docinfowidth           The width for the docinfo table.
                          \setlength{\docinfowidth}{0.7\textwidth}
 ---------------------  ------------------------------------------------
 rubric style           The header contains the definition of a new
-                       LaTeX command rubric. The line::
+                       LaTeX command rubric. Inserting::
 
-                         \renewcommand{\rubric}[1]{{\LARGE #1}}
+                         \renewcommand{\rubric}[1]{\subsection*{
+                           ~\hfill {\color{red} #1} \hfill ~}}
 
-                       changes the style of rubric to left aligned,
-                       LARGE text.
+                       sets rubric to subsection style in red.
+
+                       Default: subsection style italic.
 =====================  ================================================
 
 Missing options

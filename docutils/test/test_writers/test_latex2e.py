@@ -59,7 +59,7 @@ latex_head = """\
 \\setcounter{bottomnumber}{50}
 % end floats for footnotes
 % some commands, that could be overwritten in the style file.
-\\newcommand{\\rubric}[1]{{\\hfill \\color{red}\\bfseries{}#1 \\hfill }}
+\\newcommand{\\rubric}[1]{\\subsection*{~\\hfill {\\it #1} \\hfill ~}}
 % end of "some commands"
 \\input{style.tex}
 """
