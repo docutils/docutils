@@ -7,6 +7,7 @@
 # changes.
 #
 # Options:
+#   -f    Do not give feedback.
 #   -p    Run from the project directory.
 #   -t    Run the script in trace mode ("set -o xtrace").
 #   -u    Regenerate .html unconditionally.
@@ -47,10 +48,12 @@ lib=$pylib/$project
 trace=0
 unconditional=0
 verbose=0
+feedback=1
 
-while getopts ptuv opt
+while getopts fptuv opt
 do
     case $opt in
+        f)  feedback=;;
         p)  export PYTHONPATH=$pylib:$lib:$lib/extras;;
         t)  trace=1;;
         u)  unconditional=1;;
@@ -60,7 +63,7 @@ do
 done
 shift `expr $OPTIND - 1`
 
-echo 'Starting docutils-update run...'
+test $feedback && echo 'Starting docutils-update run...'
 
 if [ $trace -eq 1 -o $verbose -eq 1 ] ; then
     set -o xtrace
@@ -123,10 +126,10 @@ for htmlfile in `find .. -name '*.html'` ; do
     if [ -e $txtfile ] ; then
         if [ $unconditional -eq 1 -o $txtfile -nt $htmlfile ] ; then
             if [ "${base:0:4}" == "pep-" ] ; then
-                echo "$txtfile (PEP)"
+                test $feedback && echo "$txtfile (PEP)"
                 python $lib/tools/pep.py --config=$dir/docutils.conf $txtfile $htmlfile
             else
-                echo $txtfile
+                test $feedback && echo $txtfile
                 python $lib/tools/rst2html.py --config=$dir/docutils.conf $txtfile $htmlfile
             fi
         fi
@@ -143,7 +146,7 @@ done
 
 # Acquire lock.
 if ! mkdir $sshdir/lock; then
-    echo Waiting for lock.
+    test $feedback && echo Waiting for lock.
     sleep 60
     if ! mkdir $sshdir/lock; then
         echo
@@ -170,7 +173,7 @@ tar cf $htdocs_new_tarball .
 if ! diff -q $htdocs_tarball $htdocs_new_tarball > /dev/null; then
     # Create patch.
     $bindir/bsdiff $htdocs_tarball $htdocs_new_tarball $htdocs_patchfile
-    echo Patch size: `du -h $htdocs_patchfile | sed 's/\t.*//'`
+    test $feedback && echo Patch size: `du -h $htdocs_patchfile | sed 's/\t.*//'`
     # Upload patch file.
     ssh -i $sshdir/lock/id_dsa \
         -o UserKnownHostsFile=$sshdir/known_hosts \
@@ -194,7 +197,7 @@ fi
 # Tidy up.
 rm -f $htdocs_patchfile
 rm -rf $sshdir/lock
-echo '...docutils-update done.'
+test $feedback && echo '...docutils-update done.'
 
 # Local Variables:
 # indent-tabs-mode: nil
