@@ -15,6 +15,13 @@ a.footnote-reference {
 a.target {
   color: blue }
 
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+  text-decoration: none ;
+  color: black }
+
+dd {
+  margin-bottom: 0.5em }
+
 div.abstract {
   margin: 2em 5em }
 
@@ -62,10 +69,6 @@ div.system-message p.system-message-title {
 
 div.topic {
   margin: 2em }
-
-h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
-  text-decoration: none ;
-  color: black }
 
 h1.title {
   text-align: center }
