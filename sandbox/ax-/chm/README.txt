@@ -20,7 +20,11 @@ and a few manual improvements (inclusion and "sectioning" of
 improved stylesheet) (and is complete). and probably won't see an update 
 any soon.
 
+the chm is also available from http://chm.kollm.org/ [#]_.
+
 .. _docutils: http://docutils.sourceforge.net/
 .. _docs/rst/quickref.html: http://docutils.sourceforge.net/docs/rst/quickref.html
 .. _first version: http://mail.python.org/pipermail/doc-sig/2003-July/003033.html
 .. _rst2chm: http://www.rutherfurd.net/software/rst2chm/
+.. [#] my chm site, incl.  more self-made chm's such as cvs.chm, html401.chm, 
+   PEAR.chm, phpDocumentor.chm, phptal.chm, svn.chm, xhtml1.chm 
