@@ -146,7 +146,7 @@ def process(doc, roles={}, default_role=None, directives={}):
     ids = count()
     def dispatch(match):
         groupname = match.lastgroup
-        content = ' '.join(match.group(groupname).split())
+        content = match.group(groupname)
         kind, name = groupname.split('_', 1)
         if kind == 'argument':          # substitution
             indent = match.group('indent_' + name)
