@@ -207,11 +207,11 @@ Here are examples of `body elements`_:
  Syntax Details
 ----------------
 
-Descriptions below list "DTD elements" (XML "generic identifiers")
-corresponding to syntax constructs.  For details on the hierarchy of
-elements, please see `Docutils Document Tree Structure`_ and the
-`Generic Plaintext Document Interface DTD`_ XML document type
-definition.
+Descriptions below list "doctree elements" (document tree element
+names; XML DTD generic identifiers) corresponding to syntax
+constructs.  For details on the hierarchy of elements, please see
+`Docutils Document Tree Structure`_ and the `Generic Plaintext
+Document Interface DTD`_ XML document type definition.
 
 
 Whitespace
@@ -425,7 +425,7 @@ Document Structure
 Document
 --------
 
-DTD element: document.
+Doctree element: document.
 
 The top-level element of a parsed reStructuredText document is the
 "document" element.  After initial parsing, the document element is a
@@ -448,7 +448,7 @@ the "document title" can become the document subtitle.  See the
 Sections
 --------
 
-DTD elements: section, title.
+Doctree elements: section, title.
 
 Sections are identified through their titles, which are marked up with
 adornment: "underlines" below the title text, or underlines and
@@ -542,7 +542,7 @@ sections.
 Transitions
 -----------
 
-DTD element: transition.
+Doctree element: transition.
 
     Instead of subheads, extra space or a type ornament between
     paragraphs may be used to mark text divisions or to signal
@@ -582,7 +582,7 @@ Body Elements
 Paragraphs
 ----------
 
-DTD element: paragraph.
+Doctree element: paragraph.
 
 Paragraphs consist of blocks of left-aligned text with no markup
 indicating any other body element.  Blank lines separate paragraphs
@@ -605,7 +605,7 @@ Syntax diagram::
 Bullet Lists
 ------------
 
-DTD elements: bullet_list, list_item.
+Doctree elements: bullet_list, list_item.
 
 A text block which begins with a "-", "*", or "+", followed by
 whitespace, is a bullet list item (a.k.a. "unordered" list item).
@@ -654,7 +654,7 @@ Syntax diagram::
 Enumerated Lists
 ----------------
 
-DTD elements: enumerated_list, list_item.
+Doctree elements: enumerated_list, list_item.
 
 Enumerated lists (a.k.a. "ordered" lists) are similar to bullet lists,
 but use enumerators instead of bullets.  An enumerator consists of an
@@ -734,8 +734,8 @@ Example syntax diagram::
 Definition Lists
 ----------------
 
-DTD elements: definition_list, definition_list_item, term, classifier,
-definition.
+Doctree elements: definition_list, definition_list_item, term,
+classifier, definition.
 
 Each definition list item contains a term, an optional classifier, and
 a definition.  A term is a simple one-line word or phrase.  An
@@ -788,7 +788,7 @@ Syntax diagram::
 Field Lists
 -----------
 
-DTD elements: field_list, field, field_name, field_body.
+Doctree elements: field_list, field, field_name, field_body.
 
 Field lists are used as part of an extension syntax, such as options
 for directives_, or database-like records meant for further
@@ -845,7 +845,7 @@ Syntax diagram (simplified)::
 Bibliographic Fields
 ````````````````````
 
-DTD elements: docinfo, author, authors, organization, contact,
+Doctree elements: docinfo, author, authors, organization, contact,
 version, status, date, copyright, field, topic.
 
 When a field list is the first non-comment element in a document
@@ -855,7 +855,7 @@ corresponds to the front matter of a book, such as the title page and
 copyright page.
 
 Certain registered field names (listed below) are recognized and
-transformed to the corresponding DTD elements, most becoming child
+transformed to the corresponding doctree elements, most becoming child
 elements of the "docinfo" element.  No ordering is required of these
 fields, although they may be rearranged to fit the document structure,
 as noted.  Unless otherwise indicated below, each of the bibliographic
@@ -864,8 +864,8 @@ bodies may be checked for `RCS keywords`_ and cleaned up.  Any
 unrecognized fields will remain as generic fields in the docinfo
 element.
 
-The registered bibliographic field names and their corresponding DTD
-elements are as follows:
+The registered bibliographic field names and their corresponding
+doctree elements are as follows:
 
 - Field name "Author": author element.
 - "Authors": authors.
@@ -941,7 +941,7 @@ hold:
 Option Lists
 ------------
 
-DTD elements: option_list, option_list_item, option_group, option,
+Doctree elements: option_list, option_list_item, option_group, option,
 option_string, option_argument, description.
 
 Option lists are two-column lists of command-line options and
@@ -1025,7 +1025,7 @@ Syntax diagram (simplified)::
 Literal Blocks
 --------------
 
-DTD element: literal_block.
+Doctree element: literal_block.
 
 A paragraph consisting of two colons ("::") signifies that all
 following **indented** text blocks comprise a literal block.  No
@@ -1098,7 +1098,7 @@ Syntax diagram::
 Block Quotes
 ------------
 
-DTD element: block_quote.
+Doctree element: block_quote.
 
 A text block that is indented relative to the preceding text, without
 markup indicating it to be a literal block, is a block quote.  All
@@ -1129,7 +1129,7 @@ Syntax diagram::
 Doctest Blocks
 --------------
 
-DTD element: doctest_block.
+Doctree element: doctest_block.
 
 Doctest blocks are interactive Python sessions cut-and-pasted into
 docstrings.  They are meant to illustrate usage by example, and
@@ -1159,7 +1159,7 @@ Indentation is not required for doctest blocks.
 Tables
 ------
 
-DTD elements: table, tgroup, colspec, thead, tbody, row, entry.
+Doctree elements: table, tgroup, colspec, thead, tbody, row, entry.
 
 ReStructuredText provides two syntaxes for delineating table cells:
 `Grid Tables`_ and `Simple Tables`_.
@@ -1377,7 +1377,7 @@ targets, directives, substitution definitions, and comments.
 Footnotes
 `````````
 
-DTD elements: footnote, label.
+Doctree elements: footnote, label.
 
 Each footnote consists of an explicit markup start (".. "), a left
 square bracket, the footnote label, a right square bracket, and
@@ -1562,7 +1562,7 @@ differently from footnotes.  For example::
 Hyperlink Targets
 `````````````````
 
-DTD element: target.
+Doctree element: target.
 
 These are also called _`explicit hyperlink targets`, to differentiate
 them from `implicit hyperlink targets`_ defined below.
@@ -1772,7 +1772,7 @@ require attention to the order of corresponding targets.
 Directives
 ``````````
 
-DTD elements: depend on the directive.
+Doctree elements: depend on the directive.
 
 Directives are an extension mechanism for reStructuredText, a way of
 adding support for new constructs without adding new syntax.  All
@@ -1874,7 +1874,7 @@ Syntax diagram::
 Substitution Definitions
 ````````````````````````
 
-DTD element: substitution_definition.
+Doctree element: substitution_definition.
 
 Substitution definitions are indicated by an explicit markup start
 (".. ") followed by a vertical bar, the substitution text, another
@@ -2070,7 +2070,7 @@ Replacement text
 Comments
 ````````
 
-DTD element: comment.
+Doctree element: comment.
 
 Arbitrary indented text may follow the explicit markup start and will
 be processed as a comment element.  No further processing is done on
@@ -2284,7 +2284,7 @@ above will disappear from the processed document.
 Emphasis
 --------
 
-DTD element: emphasis.
+Doctree element: emphasis.
 
 Start-string = end-string = "*".
 
@@ -2298,7 +2298,7 @@ Emphasized text is typically displayed in italics.
 Strong Emphasis
 ---------------
 
-DTD element: strong.
+Doctree element: strong.
 
 Start-string = end-string = "**".
 
@@ -2312,7 +2312,8 @@ Strongly emphasized text is typically displayed in boldface.
 Interpreted Text
 ----------------
 
-DTD element: depends on the explicit or implicit role and processing.
+Doctree element: depends on the explicit or implicit role and
+processing.
 
 Start-string = end-string = "`".
 
@@ -2350,7 +2351,7 @@ specialized roles.
 Inline Literals
 ---------------
 
-DTD element: literal.
+Doctree element: literal.
 
 Start-string = end-string = "``".
 
@@ -2379,7 +2380,7 @@ Inline literals are useful for short code snippets.  For example::
 Hyperlink References
 --------------------
 
-DTD element: reference.
+Doctree element: reference.
 
 - Named hyperlink references:
 
@@ -2464,7 +2465,7 @@ For example, here is a reference to a title describing a tag::
 Inline Internal Targets
 ------------------------
 
-DTD element: target.
+Doctree element: target.
 
 Start-string = "_`", end-string = "`".
 
@@ -2486,7 +2487,7 @@ reference names.
 Footnote References
 -------------------
 
-DTD element: footnote_reference.
+Doctree element: footnote_reference.
 
 Start-string = "[", end-string = "]_".
 
@@ -2512,7 +2513,7 @@ For example::
 Citation References
 -------------------
 
-DTD element: citation_reference.
+Doctree element: citation_reference.
 
 Start-string = "[", end-string = "]_".
 
@@ -2531,7 +2532,7 @@ See Citations_ for the citation itself.
 Substitution References
 -----------------------
 
-DTD element: substitution_reference, reference.
+Doctree element: substitution_reference, reference.
 
 Start-string = "|", end-string = "|" (optionally followed by "_" or
 "__").
@@ -2559,7 +2560,7 @@ Examples::
 Standalone Hyperlinks
 ---------------------
 
-DTD element: reference.
+Doctree element: reference.
 
 Start-string = end-string = "" (empty string).
 
@@ -2623,7 +2624,7 @@ Punctuation at the end of a URI is not considered part of the URI.
  Error Handling
 ----------------
 
-DTD element: system_message, problematic.
+Doctree element: system_message, problematic.
 
 Markup errors are handled according to the specification in `PEP
 258`_.
