@@ -586,7 +586,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
               # extra space between text in tables and the line above them
               '\\setlength{\\extrarowheight}{2pt}\n',
               '\\usepackage{amsmath}\n',   # what fore amsmath.
-              '\\usepackage{graphicx}\n',
+              r'''%Check if we are compiling under latex or pdflatex
+              \ifx\pdftexversion\undefined
+                \usepackage[dvips]{graphicx}
+              \else
+                \usepackage[pdftex]{graphicx}
+              \fi
+              ''',
               '\\usepackage{color}\n',
               '\\usepackage{multirow}\n',
               '\\usepackage{ifthen}\n',   # before hyperref!
