@@ -417,13 +417,13 @@ either the string separating it from the `option` (typically either
 <!ATTLIST label %basic.atts;>
 
 <!-- Empty except when used as an inline element. -->
-<!ELEMENT target (%text.model;)>
+<!ELEMENT target %text.model;>
 <!ATTLIST target
     %basic.atts;
     %reference.atts;
     %anonymous.att;>
 
-<!ELEMENT substitution_definition (%text.model;)>
+<!ELEMENT substitution_definition %text.model;>
 <!ATTLIST substitution_definition %basic.atts;>
 
 <!ELEMENT comment (#PCDATA)>
@@ -490,13 +490,13 @@ following caveats:
   <literal>, and <image> do not support nesting.
 -->
 
-<!ELEMENT emphasis (%text.model;)>
+<!ELEMENT emphasis %text.model;>
 <!ATTLIST emphasis %basic.atts;>
 
-<!ELEMENT strong (%text.model;)>
+<!ELEMENT strong %text.model;>
 <!ATTLIST strong %basic.atts;>
 
-<!ELEMENT interpreted (%text.model;)>
+<!ELEMENT interpreted %text.model;>
 <!ATTLIST interpreted
     %basic.atts;
     role      NMTOKEN   #IMPLIED
@@ -505,7 +505,7 @@ following caveats:
 <!ELEMENT literal (#PCDATA)>
 <!ATTLIST literal %basic.atts;>
 
-<!ELEMENT reference (%text.model;)>
+<!ELEMENT reference %text.model;>
 <!ATTLIST reference
     %basic.atts;
     %reference.atts;
@@ -522,17 +522,17 @@ following caveats:
     %basic.atts;
     %reference.atts;>
 
-<!ELEMENT substitution_reference (%text.model;)>
+<!ELEMENT substitution_reference %text.model;>
 <!ATTLIST substitution_reference
     %basic.atts;
     %refname.att;>
 
-<!ELEMENT problematic (%text.model;)>
+<!ELEMENT problematic %text.model;>
 <!ATTLIST problematic
     %basic.atts;
     %refid.att;>
 
-<!ELEMENT generated (%text.model;)>
+<!ELEMENT generated %text.model;>
 <!ATTLIST generated %basic.atts;>
 
 <!--
