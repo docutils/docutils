@@ -63,6 +63,10 @@ directive function):
   options to parse.  Several directive option conversion functions are defined
   in this module.
 
+  Option conversion functions take a single parameter, the option argument (a
+  string or ``None``), validate it and/or convert it to the appropriate form.
+  Conversion functions may raise ``ValueError`` and ``TypeError`` exceptions.
+
 - ``content``: A boolean; true if content is allowed.  Client code must handle
   the case where content is required but not supplied (an empty content list
   will be supplied).
@@ -193,12 +197,12 @@ def directive(directive_name, language_module, document):
         return None, messages
     return function, messages
 
-def register_directive(name, directive):
+def register_directive(name, directive_function):
     """
     Register a nonstandard application-defined directive function.
     Language lookups are not needed for such functions.
     """
-    _directives[name] = directive
+    _directives[name] = directive_function
 
 def flag(argument):
     """
