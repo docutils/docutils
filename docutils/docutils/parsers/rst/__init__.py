@@ -56,12 +56,19 @@ class Parser(docutils.parsers.Parser):
 
     """The reStructuredText parser."""
 
+    def __init__(self, rfc2822=None):
+        if rfc2822:
+            self.initialstate = 'RFC2822Body'
+        else:
+            self.initialstate = 'Body'
+
     def parse(self, inputstring, docroot):
         """Parse `inputstring` and populate `docroot`, a document tree."""
         self.setup_parse(inputstring, docroot)
         debug = docroot.reporter[''].debug
         self.statemachine = states.RSTStateMachine(
-              stateclasses=states.stateclasses, initialstate='Body',
+              stateclasses=states.stateclasses,
+              initialstate=self.initialstate,
               debug=debug)
         inputlines = docutils.statemachine.string2lines(
               inputstring, convertwhitespace=1)
