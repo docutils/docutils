@@ -22,8 +22,8 @@ and related projects:
     Richard Jones, Garth Kidd, Daniel Larsson, Marc-Andre Lemburg,
     Wolfgang Lipp, Edward Loper, Ken Manheimer, Paul Moore, Michel
     Pelletier, Sam Penrose, Tim Peters, Mark Pilgrim, Tavis Rudd, Ueli
-    Schlaepfer, Bob Tolbert, Laurence Tratt, Guido van Rossum, Barry
-    Warsaw, Edward Welbourne, Ka-Ping Yee, Moshe Zadka
+    Schlaepfer, tav, Bob Tolbert, Laurence Tratt, Guido van Rossum,
+    Barry Warsaw, Edward Welbourne, Ka-Ping Yee, Moshe Zadka
 
 Thank you!
 
@@ -66,8 +66,9 @@ Specific:
     methods.
 
 * docutils/frontend.py: Added to project; support for front-end
-  scripts.  Option specifications may be augmented by components.
-  Requires Optik (http://optik.sf.net/) for option processing.
+  (command-line) scripts.  Option specifications may be augmented by
+  components.  Requires Optik (http://optik.sf.net/) for option
+  processing.
 
 * docutils/nodes.py:
 
@@ -81,6 +82,8 @@ Specific:
   - Added ``SparseNodeVisitor``, refined ``NodeVisitor``.
   - Moved ``utils.id()`` to ``nodes.make_id()`` to avoid circular
     imports.
+  - Added ``decoration``, ``header``, and ``footer`` node classes, and
+    ``PreDecorative`` mixin.
 
 * docutils/statemachine.py:
 
@@ -139,8 +142,12 @@ Specific:
 * docutils/transforms/components.py: Added to project; transforms
   related to Docutils components.
 
-* docutils/transforms/universal.py: Changed ``Messages`` transform to
-  properly filter out system messages below the warning threshold.
+* docutils/transforms/universal.py:
+
+  - Changed ``Messages`` transform to properly filter out system
+    messages below the warning threshold.
+  - Added ``Decorations`` transform (support for "--generator",
+    "--date", "--time", "--source-link" options).
 
 * docutils/writers/__init__.py: Added "pdf" alias in anticipation of
   Engelbert Gruber's PDF writer.
@@ -153,8 +160,14 @@ Specific:
   - Improved boilerplate & modularity of output.
   - Added a "generator" meta tag to <head>.
   - Added support for the ``--stylesheet`` option.
+  - Added support for ``decoration``, ``header``, and ``footer``
+    elements.
 
 * docutils/writers/pseudoxml.py: Renamed from pprint.py.
+
+* spec/docutils.dtd:
+
+  - Added ``decoration``, ``header``, and ``footer`` elements.
 
 * spec/notes.txt: Continual updates.  Added "Project Policies".
 
@@ -164,6 +177,10 @@ Specific:
 
   - Minor edits.
   - Reworked Q&A as an enumerated list.
+
+* spec/pysource.dtd:
+
+  - Reworked structural elements, incorporating ideas from Tony Ibbs.
 
 * spec/rst/reStructuredText.txt:
 
@@ -195,6 +212,10 @@ Specific:
   command-line processing facilities of ``docutils.frontend`` (exposed
   in ``docutils.core.Publisher``), reducing each to just a few lines
   of code.
+
+* tools/default.css:
+
+  - Added support for ``header`` and ``footer`` elements.
 
 
 Release 0.1 (2002-04-20)
