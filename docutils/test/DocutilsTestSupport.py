@@ -17,18 +17,18 @@ Exports the following:
     - `tableparser` is 'docutils.parsers.rst.tableparser'
 
 :Classes:
-    - `CustomTestSuite`
     - `CustomTestCase`
-    - `TransformTestSuite`
+    - `CustomTestSuite`
     - `TransformTestCase`
-    - `ParserTestSuite`
+    - `TransformTestSuite`
     - `ParserTestCase`
-    - `PEPParserTestSuite`
+    - `ParserTestSuite`
     - `PEPParserTestCase`
-    - `GridTableParserTestSuite`
+    - `PEPParserTestSuite`
     - `GridTableParserTestCase`
-    - `SimpleTableParserTestSuite`
+    - `GridTableParserTestSuite`
     - `SimpleTableParserTestCase`
+    - `SimpleTableParserTestSuite`
     - `WriterPublishTestCase`
     - `LatexWriterPublishTestCase`
     - `PseudoXMLWriterPublishTestCase`
@@ -82,6 +82,14 @@ class DevNull:
 
 
 class CustomTestCase(unittest.TestCase):
+    
+    """
+    Helper class, providing extended functionality over unittest.TestCase.
+
+    This isn't specific to Docutils but of general use when dealing
+    with large amounts of text. In particular, see the compare_output
+    method and the parameter list of __init__.
+    """
 
     compare = docutils_difflib.Differ().compare
     """Comparison method shared by all subclasses."""
@@ -104,6 +112,10 @@ class CustomTestCase(unittest.TestCase):
         self.input = input
         self.expected = expected
         self.run_in_debugger = run_in_debugger
+        
+        # XXX What do we do with short_description?  It isn't used at
+        # all.
+        
         # Ring your mother.
         unittest.TestCase.__init__(self, method_name)
 
@@ -135,15 +147,15 @@ class CustomTestCase(unittest.TestCase):
                                                      output.splitlines(1)))
             raise
 
-    def skip_test(self):
-        print >>sys.stderr, '%s: Test skipped' % self
-
 
 class CustomTestSuite(unittest.TestSuite):
 
     """
-    A collection of custom TestCases.
+    A collection of CustomTestCases.
 
+    Provides test suite ID generation.
+    
+    XXX Any other reason why we need this class?
     """
 
     id = ''
@@ -188,13 +200,13 @@ class CustomTestSuite(unittest.TestSuite):
                     id=None, run_in_debugger=0, short_description=None,
                     **kwargs):
         """
-        Create a custom TestCase in the CustomTestSuite.
+        Create a CustomTestCase in the CustomTestSuite.
         Also return it, just in case.
 
         Arguments:
 
-        test_case_class --
-        method_name --
+        test_case_class -- the CustomTestCase to add
+        method_name -- a string; CustomTestCase.method_name is the test
         input -- input to the parser.
         expected -- expected output from the parser.
         id -- unique test identifier, used by the test framework.
@@ -302,12 +314,13 @@ class TransformTestSuite(CustomTestSuite):
         """
         Stock the suite with test cases generated from a test data dictionary.
 
-        Each dictionary key (test type's name) maps to a list of transform
-        classes and list of tests. Each test is a list: input, expected
-        output, optional modifier. The optional third entry, a behavior
-        modifier, can be 0 (temporarily disable this test) or 1 (run this test
-        under the pdb debugger). Tests should be self-documenting and not
-        require external comments.
+        Each dictionary key (test type's name) maps to a tuple, whose
+        first item is a list of transform classes and whose second
+        item is a list of tests. Each test is a list: input, expected
+        output, optional modifier. The optional third entry, a
+        behavior modifier, can be 0 (temporarily disable this test) or
+        1 (run this test under the pdb debugger). Tests should be
+        self-documenting and not require external comments.
         """
         for name, (transforms, cases) in dict.items():
             for casenum in range(len(cases)):
@@ -604,20 +617,12 @@ class WriterPublishTestCase(CustomTestCase, docutils.SettingsSpec):
 
 
 class LatexWriterPublishTestCase(WriterPublishTestCase):
-
-    """
-    Test case for Latex writer.
-    """
-
+    """Test case for Latex writer."""
     writer_name = 'latex'
 
 
 class PseudoXMLWriterPublishTestCase(WriterPublishTestCase):
-
-    """
-    Test case for pseudo-XML writer.
-    """
-
+    """Test case for pseudo-XML writer."""
     writer_name = 'pseudoxml'
 
 
