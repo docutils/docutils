@@ -55,14 +55,13 @@ __ spec/rst/problems.html
 Testimonials
 ============
 
-The following testimonials were all unsolicited.  Some arose during
-related discussions, others appeared out of the blue.
+The following testimonials are excerpts from unsolicited posts to
+mailing lists and the comp.lang.python newsgroup.  Being excerpts,
+there's often context missing, which sometimes tones down the message.
 
-This being the Internet, there were plenty of people opposed to
-reStructuredText, some vehemently.  Discovering those gems is left as
-an exercise for the reader.
+`Ueli Schlaepfer on Doc-SIG, 2002-03-28`__:
 
-Ueli Schlaepfer on Doc-SIG, 2002-03-28:
+__ http://mail.python.org/pipermail/doc-sig/2002-March/002526.html
 
     I have adopted reST as my tool of choice for producing notes while
     doing lab work (mostly in a matlab environment).  Since then, the
@@ -80,14 +79,21 @@ Ueli Schlaepfer on Doc-SIG, 2002-03-28:
     my python code.  Hey, that's a printable and a browsable version
     *for free*!  Personally, I consider this a large benefit.
 
-Guido van Rossum, enthusiastic but a bit hasty on Python-Dev,
-2002-04-02:
+    ... All essential constructs for everyday use are there, and much
+	more if needed. ...
+
+`Guido van Rossum, enthusiastic about PEP 287 but a bit hasty (see the
+follow-ups) on Python-Dev, 2002-04-02`__:
+
+__ http://mail.python.org/pipermail/python-dev/2002-April/022131.html
 
     Good PEP, David!  What's the next step?  Should the processing
     code be incorporated in the standard library?  Should we start
     converting the standard library docs to reStructuredText?
 
-Timothy Delaney on comp.lang.python, 2002-04-03:
+`Timothy Delaney on comp.lang.python, 2002-04-03`__:
+
+__ http://mail.python.org/pipermail/python-list/2002-April/096013.html
 
     I read through all the reStructuredText docs, comparing the text
     versions to the html versions.  I found the text versions to be
@@ -97,17 +103,21 @@ Timothy Delaney on comp.lang.python, 2002-04-03:
     I particularly like the system of doing hyperlinks...
 
     Definitely +1 from me ... I would really like a standard, clean
-    docstring format. Might make it easier to get my next project done
-    in Python.
+    docstring format.  Might make it easier to get my next project
+    done in Python...
 
-Guido van Rossum on Python-Dev, 2002-04-03:
+`Guido van Rossum on Python-Dev, 2002-04-03`__:
+
+__ http://mail.python.org/pipermail/python-dev/2002-April/022212.html
 
     I think that reStructuredText is a good format for marking up
     docstrings; it's probably as good as it gets given the
     requirements (a fairly elaborate feature set, yet more readable
     "in the raw" than HTML).
 
-Richard Jones on comp.lang.python, 2002-04-03:
+`Richard Jones on comp.lang.python, 2002-04-03`__:
+
+__ http://mail.python.org/pipermail/python-list/2002-April/096117.html
 
     How I see it is that ReST is a middle ground between markup and
     non-.  It has markup, and you can use it to the extreme.  Or you
@@ -125,13 +135,17 @@ Richard Jones on comp.lang.python, 2002-04-03:
     Is pretty clearly to me that the second doesn't *look* like
     markup, even though it is.
 
-Guido van Rossum on Python-Dev, 2002-04-04:
+`Guido van Rossum on Python-Dev, 2002-04-04`__:
+
+__ http://mail.python.org/pipermail/python-dev/2002-April/022247.html
 
     Structured text is really a great idea for certain situations;
     reST is a much better implementation of the idea than any versions
     I've seen before.
 
-Max M on comp.lang.python, 2002-04-05:
+`Max M on comp.lang.python, 2002-04-05`__:
+
+__ http://mail.python.org/pipermail/python-list/2002-April/096656.html
 
     Any programmer can learn the basics in 15 minutes or less.
 
@@ -147,12 +161,17 @@ Max M on comp.lang.python, 2002-04-05:
     I would certainly use it. I also hope that it gets integrated into
     Zope.
 
-David Abrahams on Python-Dev, 2002-04-06:
+`David Abrahams on Python-Dev, 2002-04-06`__:
+
+__ http://mail.python.org/pipermail/python-dev/2002-April/022443.html
 
     Incidentally, I'm really excited about reST. I've been looking for
     a tolerable markup for C++ comments, and reST looks like it might
     fit the bill.
 
+This being the Internet, there were plenty of people opposed to the
+idea of reStructuredText, some vehemently.  Discovering *those* gems
+is left as an exercise for the reader.
 
 .. _Docutils: index.html
 .. _StructuredText:
