@@ -55,9 +55,12 @@ Subpackages:
 
 __docformat__ = 'reStructuredText'
 
-__version__ = '0.2.7'
-"""``major.minor.micro`` version number.  The ``micro`` number is bumped any
-time there's a change in the API incompatible with one of the front ends."""
+__version__ = '0.2.8'
+"""``major.minor.micro`` version number.  The micro number is bumped any time
+there's a change in the API incompatible with one of the front ends.  The
+minor number is bumped whenever there is a project release.  The major number
+will be bumped when the project is complete, and perhaps if there is a major
+change in the design."""
 
 
 class ApplicationError(StandardError): pass
