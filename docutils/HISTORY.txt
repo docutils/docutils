@@ -21,6 +21,7 @@ General:
 
     * ``docs/user/``: introductory/tutorial material for end-users
     * ``docs/dev/``: for core-developers (development notes, plans, etc.)
+    * ``docs/api/``: API reference material for client-developers
     * ``docs/ref/``: reference material for all groups
     * ``docs/howto/``: for component-developers and core-developers
     * ``docs/peps/``: Python Enhancement Proposals
@@ -85,7 +86,8 @@ Specific:
   - Now publish_file and publish_cmdline convenience functions return
     the encoded string results in addition to their regular I/O.
   - Extracted common code from publish_file, publish_string, and
-    publish_parts, into new publish_programmatically.
+    publish_parts, into new publish_programmatically.  Extracted
+    settings code to ``Publisher.process_programmatic_settings``.
   - In Publisher.publish, disabled ``settings_overrides`` when
     ``settings`` is supplied; redundant.
 
@@ -126,6 +128,13 @@ Specific:
 
 * docs/index.txt: "Docutils Project Documentation Overview", added to
   project.
+
+* docs/api/cmdline-tool.txt: "Inside A Docutils Command-Line Front-End
+  Tool", added to project.
+
+* docs/api/publisher.txt: "The Docutils Publisher", added to project.
+
+* docs/api/runtime-settings.txt: "Docutils Runtime Settings", added to project.
 
 * docs/dev/policies.txt: Added to project (extracted from
   ``docs/dev/todo.txt``, formerly ``spec/notes.txt``).
