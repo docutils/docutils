@@ -32,3 +32,13 @@ It introduces a lot of line noise. Changing this in `the
 implementation`_ _<file:/home/simon/ST/docutils/parsers/rst/states.py>
 should be fairly trivial: I'd guess that adjsuting te regex in two places
 would do the trick.
+
+Some real use: Bookmark lists:
+
+- `Cool Modifications`__ __<http://metku.net/>
+- `Cool Image Manipulation`__ __<http://www.gimp.org>
+- `Cool Homepage`__ __<http://www.home.unix-ag.org/simon/>
+- `Cool Comics`__ __<http://www.nichtlustig.de/>
+- `something with a Cool long URL`__ __<http://something.
+  with.a-cool.long.url/plus additional_newlines.and/
+  spaces#and_a/fragment_identifier>

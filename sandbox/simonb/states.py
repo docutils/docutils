@@ -664,7 +664,9 @@ class Inliner:
         refname = normalize_name(text)
         reference = nodes.reference(rawsource, text)
         if inline_target:
-            reference['refuri']=inline_target
+            inline_target = ''.join (inline_target.split ('\n'))
+            if inline_target:   # ugly...
+                reference['refuri'] = inline_target
 
         if anonymous:
             if not inline_target:
@@ -771,8 +773,11 @@ class Inliner:
         referencenode = nodes.reference(match.group('whole'),
                                         referencename)
         inline_target = match.group ('inline_target')
+
         if inline_target:
-            referencenode['refuri']=inline_target
+            inline_target = ''.join (inline_target.split ('\n'))
+            if inline_target:  # ugly...
+                referencenode['refuri']=inline_target
 
         if anonymous:
             if not inline_target:
