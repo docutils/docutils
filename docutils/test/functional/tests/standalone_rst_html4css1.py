@@ -8,5 +8,4 @@ parser_name = "rst"
 writer_name = "html4css1"
 
 # Settings
-settings_overrides['stylesheet'] = ''
 settings_overrides['stylesheet_path'] = "../tools/stylesheets/default.css"
