@@ -50,6 +50,7 @@ directives = {
       'replace': 'replace',
       'unicode': 'unicode',
       'class': 'class',
+      'role': 'role',
       'contents': 'contents',
       'sectnum': 'sectnum',
       'section-numbering': 'sectnum',

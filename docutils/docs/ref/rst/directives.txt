@@ -961,6 +961,58 @@ The text above is parsed and transformed into this doctree fragment::
 __ ../doctree.html#class
 
 
+.. role::
+
+Custom Interpreted Text Roles
+=============================
+
+:Directive Type: "role"
+:Doctree Element: None.
+:Directive Arguments: One, required (role name).
+:Directive Options: Possible.
+:Directive Content: None.
+
+The "role" directive dynamically creates a custom interpreted text
+role and registers it with the parser.  This means that after
+declaring a role like this::
+
+    .. role:: custom
+
+the document may use the "custom" role::
+
+    An example of using :custom:`interpreted text`
+
+This will be parsed into the following document tree fragment::
+
+    <paragraph>
+        An example of using 
+        <inline class="custom">
+            interpreted text
+
+The role must be declared in a document before it can be used.
+
+The ":class:" option can be used to set a "class" attribute that is
+different from the role name.  For example::
+
+    .. role:: custom
+       :class: special
+
+    :custom:`interpreted text`
+
+This is the parsed result::
+
+    <paragraph>
+        <inline class="special">
+            interpreted text
+
+The following option is recognized:
+
+``class`` : text
+    Set a "class" attribute value on the ``inline`` elements produced
+    when the custom interpreted text role is used.  See the class_
+    directive above.
+
+
 Restructuredtext-Test-Directive
 ===============================
 

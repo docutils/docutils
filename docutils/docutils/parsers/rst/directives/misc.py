@@ -12,7 +12,7 @@ import sys
 import os.path
 import re
 from docutils import io, nodes, statemachine, utils
-from docutils.parsers.rst import directives, states
+from docutils.parsers.rst import directives, roles, states
 from docutils.transforms import misc
 
 try:
@@ -220,7 +220,7 @@ def class_directive(name, arguments, options, content, lineno,
         return [pending]
     else:
         error = state_machine.reporter.error(
-            'Invalid class attribute value for "%s" directive: %s'
+            'Invalid class attribute value for "%s" directive: "%s".'
             % (name, arguments[0]),
             nodes.literal_block(block_text, block_text), line=lineno)
         return [error]
@@ -245,3 +245,22 @@ def directive_test_function(name, arguments, options, content, lineno,
 directive_test_function.arguments = (0, 1, 1)
 directive_test_function.options = {'option': directives.unchanged_required}
 directive_test_function.content = 1
+
+def role(name, arguments, options, content, lineno,
+         content_offset, block_text, state, state_machine):
+    """Dynamically create and register a custom interpreted text role."""
+    role_name = arguments[0].lower()
+    if not options.has_key('class'):
+        try:
+            options['class'] = directives.class_option(role_name)
+        except ValueError, detail:
+            error = state_machine.reporter.error(
+                'Invalid argument for "%s" directive:\n%s.'
+                % (name, detail),
+                nodes.literal_block(block_text, block_text), line=lineno)
+            return [error]
+    roles.register_custom_role(role_name, options)
+    return []
+
+role.arguments = (1, 0, 0)
+role.options = {'class': directives.class_option}
