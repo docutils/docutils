@@ -77,6 +77,17 @@ paragraph indent       By default latex indents the forst line in a
 
                          \setlength{\parindent}{0pt}
                          \setlength{\parskip}{6pt plus 2pt minus 1pt}
+---------------------  ------------------------------------------------
+admonitionwidth        The width for admonitions.
+                       Default: 0.9*textwidth, this can be changed 
+                       e.g.::
+
+                         \setlength{\admonitionwidth}{0.7\textwidth}
+---------------------  ------------------------------------------------
+docinfowidth           The width for the docinfo table.
+                       Default: 0.9*textwidth, changed to e.g.::
+
+                         \setlength{\docinfowidth}{0.7\textwidth}
 =====================  ================================================
 
 Missing options
