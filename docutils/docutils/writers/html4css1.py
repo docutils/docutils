@@ -780,7 +780,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('\n</pre>\n')
 
     def visit_meta(self, node):
-        self.head.append(self.starttag(node, 'meta', **node.attributes))
+        self.head.append(self.emptytag(node, 'meta', **node.attributes))
 
     def depart_meta(self, node):
         pass
