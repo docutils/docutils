@@ -525,7 +525,7 @@ class PythonModuleParserTestCase(CustomTestCase):
         output = str(module)
         self.compare_output(self.input, output, self.expected)
 
-    def test_token_parser_rhs(self): 
+    def test_token_parser_rhs(self):
         if self.run_in_debugger:
             pdb.set_trace()
         tr = moduleparser.TokenParser(self.input)
@@ -579,7 +579,7 @@ class WriterPublishTestCase(CustomTestCase, docutils.SettingsSpec):
 
     settings_default_overrides = {'_disable_config': 1}
     writer_name = '' # override in subclasses
-    
+
     def test_publish(self):
         if self.run_in_debugger:
             pdb.set_trace()
@@ -647,7 +647,7 @@ class PublishTestSuite(CustomTestSuite):
 
     def __init__(self, writer_name):
         """
-        `writer_name` is the name of the writer 
+        `writer_name` is the name of the writer
         to use.  It must be a key in `TEST_CLASSES`.
         """
         CustomTestSuite.__init__(self)
