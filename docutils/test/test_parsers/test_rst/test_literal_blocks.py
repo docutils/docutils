@@ -140,6 +140,19 @@ A paragraph:
         A literal block.
 """],
 ["""\
+A paragraph:
+::
+
+    A literal block.
+""",
+"""\
+<document>
+    <paragraph>
+        A paragraph:
+    <literal_block>
+        A literal block.
+"""],
+["""\
 A paragraph::
 
 Not a literal block.

@@ -57,9 +57,6 @@ Bugs
 
     __ rst/problems.html#tables
 
-- The "::" before the table above should be removed completely from
-  the output.  A single ":" is being left behind.
-
 
 General
 -------
@@ -107,26 +104,64 @@ General
   - Implement a specialized PEP/HTML writer?  Or implement a generic
     `templating system`_, with PEP/HTML as one application?
 
-- @@ Add support for character set encodings on input & output, Unicode
-  internally.
+- @@ Add _`support for character set encodings` on input & output,
+  Unicode internally.
 
   To determine the encoding, use these heuristics in order:
 
   - Try the encoding specified by a command-line option, if any.
-
+  
   - Try the encoding specified by an "encoding" directive, and/or an
     "encoding" field in field lists & PEP headers, if any.  See the
     misc.encoding_ directive below.
 
-  - Try ASCII.
-
-  - Try the locale default encoding.
-
+  - Try the locale's encoding.
+  
   - Try UTF-8.
+  
+  - Try platform-specific encodings: CP-1252 on Windows, Mac-Roman on
+    MacOS, perhaps Latin-9 (iso-8859-15) otherwise.
+  
+  Some questions:
+  
+  - Does the application have to call
+    ``locale.setlocale(locale.LC_ALL, '')``, and if so, where?  Is it OK
+    to call setlocale from within the decoding function, or should it be
+    left up to the client application?
+    
+  - Should I use the result of ``locale.getlocale()``?  On
+    Win2K/Python2.2.1, I get this::
+  
+        >>> import locale
+        >>> locale.getlocale()
+        (None, None)
+        >>> locale.getdefaultlocale()
+        ('en_US', 'cp1252')
+        
+    Looks good so far.
+    
+        >>> locale.setlocale(locale.LC_ALL, '')
+        'English_United States.1252'
+        >>> locale.getlocale()
+        ['English_United States', '1252']
+    
+    "1252"?  What happened to the "cp"?
+  
+        >>> s='abcd'
+        >>> s.decode('1252')
+        Traceback (most recent call last):
+          File "<stdin>", line 1, in ?
+        LookupError: unknown encoding
+  
+    How can I use ``locale.getlocale()`` when it doesn't return a
+    known encoding?  Or put another way, how can I get a known
+    encoding out of ``locale.getlocale()``?
+  
+  - Does ``locale.getdefaultlocale()[1]`` reliably produce the 
+    platform-specific encoding?
 
-  - Try Latin-1.
-
-  From Skip Montanaro's "Using Unicode in Python"::
+  From Skip Montanaro's `Using Unicode in Python`_ ("Console Input"
+  section)::
 
     def encode_heuristically(s, enc=None):
         "try interpreting s using several possible encodings"
@@ -149,6 +184,28 @@ General
                     return x
             # punt
             return s
+
+  .. _Using Unicode in Python:
+     http://manatee.mojam.com/~skip/unicode/unicode/
+
+  Windows CP-1252 and MacOS Mac-Roman are full 8-bit encodings, so
+  there's no point trying anything after them; they'll match any byte
+  string.  UTF-8 is almost a full 8-bit encoding; it only uses up to
+  0xFD but 0xFE & 0xFF are likely unused by most texts in other
+  encodings anyhow (a notable exception is UTF-16, in which 0xFEFF is
+  used as a "byte order mark"; but we'll ignore UTF-16 as it's
+  incompatible with ASCII).  UTF-8 does have the advantage of a
+  verifyable encoding scheme, which is unlikely to be achieved by
+  accident in an 8-bit text.  (I assume the UTF-8 codec verifies the
+  encoding.)  So it makes sense to check for UTF-8 before
+  platform-dependent encodings (like CP-1252).
+
+  ISO-8859-15 is an update of ISO-8859-1, and they share the same code
+  space (0x00-0x7F, 0xA0-0xFF), so there's no point in checking for
+  both.  If one succeeds, the other one inevitably will too.
+
+  `Introduction to i18n`_ by Tomohiro KUBOTA is a good reference
+  (http://www.debian.org/doc/manuals/intro-i18n/).
 
 - Need a Unicode -> HTML entities codec for HTML writer?
 
@@ -177,11 +234,14 @@ General
   Perhaps subclasses of a single class, a abstraction for
   file/string/etc. reading & writing.
 
-  - Storage
-  - IO
+  - Storage (thus InputStorage/OutputStorage)
+  - IO (SourceIO/DestIO; InputIO/OutputIO)
 
   Implement as a single module (``docutils/storage.py``)?  Or as a
-  subpackage (``docutils/storage/*.py``)?
+  subpackage (``docutils/storage/*.py``)?  Decision: use a single
+  module for now, possibly switching to a package if it gets too big.
+
+  See `support for character set encodings`_ above.
 
 - Fix tests to run standalone.  I.e., allow::
 
@@ -190,6 +250,9 @@ General
 
   Raises an exception with path processing on GNU/Linux (but only
   sometimes?).
+
+- Perhaps the ``Component.supports`` method should deal with
+  individual features ("meta" etc.) instead of formats ("html" etc.)?
 
 
 Specification
@@ -648,7 +711,10 @@ HTML Writer
 
 - If a list's items contain single paragraphs only, omit the <P> tags?
   Recursively?  (if item == list whose items are single paragraphs
-  only...)
+  only...)  Optional, with "--compact-lists" and "--no-compact-lists"?
+  Should only simple lists be compacted, or should the first paragraph
+  of all list items lack a <p> (perhaps "--compact-all-lists" and
+  "--compact-simple-lists")?
 
 
 Front-Ends
@@ -739,8 +805,6 @@ a common option-processing module, as described below.
     anyway, so there's no advantage (we can't use it to avoid
     conflicts) to splitting common and component-specific options
     apart.
-
-- Implement command-line options.  Common options: --encoding=name.
 
 
 Project Policies

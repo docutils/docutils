@@ -139,7 +139,7 @@ totest['contents'] = [
         <paragraph>
             Error in "contents" directive attributes at line 1:
             invalid attribute value:
-            (attribute "depth", value "'two'") invalid literal for int(): two.
+            (attribute "depth", value "two") invalid literal for int(): two.
         <literal_block>
             .. contents::
                :depth: two

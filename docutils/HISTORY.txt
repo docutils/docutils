@@ -48,6 +48,9 @@ General:
   comma-separated lists of top-level modules.
 - Added support for an option values object which carries default
   settings and overrides (from command-line options and library use).
+- Added internal Unicode support, and support for both input and
+  output encodings.
+- Added support for the ``docutils.io.IO`` class & subclasses.
 
 Specific:
 
@@ -67,11 +70,15 @@ Specific:
     command-line support.
   - Added ``Publisher.process_command_line()`` and ``.set_options()``
     methods.
+  - Reworked I/O model for ``docutils.io`` wrappers.
 
 * docutils/frontend.py: Added to project; support for front-end
   (command-line) scripts.  Option specifications may be augmented by
   components.  Requires Optik (http://optik.sf.net/) for option
   processing.
+
+* docutils/io.py: Added to project; uniform API for a variety of input
+  output mechanisms.
 
 * docutils/nodes.py:
 
@@ -132,6 +139,7 @@ Specific:
   - Added ``-/:`` characters to inline markup's start string prefix,
     ``/`` to end string suffix.
   - Fixed a footnote bug.
+  - Fixed a bug with literal blocks.
 
 * docutils/parsers/rst/directives/html.py: Changed the ``meta``
   directive to use a ``pending`` element, used only by HTML writers.

@@ -204,7 +204,7 @@ totest['images'] = [
         <paragraph>
             Error in "image" directive attributes at line 1:
             invalid attribute value:
-            (attribute "scale", value "'fifty'") invalid literal for int(): fifty.
+            (attribute "scale", value "fifty") invalid literal for int(): fifty.
         <literal_block>
             .. image:: picture.png
                :scale: fifty
