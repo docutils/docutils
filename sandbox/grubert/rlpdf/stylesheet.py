@@ -1,5 +1,5 @@
 #copyright ReportLab Inc. 2000
-#see license.txt for license details
+#see rllicense.txt for license details
 #history http://cvs.sourceforge.net/cgi-bin/cvsweb.cgi/docs/tools/stylesheet.py?cvsroot=reportlab
 #$Header$
 #standard stylesheet for our manuals

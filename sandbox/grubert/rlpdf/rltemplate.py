@@ -1,5 +1,5 @@
 #copyright ReportLab Inc. 2000
-#see license.txt for license details
+#see rllicense.txt for license details
 #history http://cvs.sourceforge.net/cgi-bin/cvsweb.cgi/docs/tools/rltemplate.py?cvsroot=reportlab
 #$Header$
 # doc template for RL manuals.  Currently YAML is hard-coded
