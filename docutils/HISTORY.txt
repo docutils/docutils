@@ -80,11 +80,14 @@ Specific:
   - Added special error handling & advice for UnicodeEncodeError.
   - Refactored Publisher.publish (simplified exception handling &
     extracted debug dumps).
+  - Renamed "enable_exit" parameter of convenience functions to
+    "enable_exit_status".
 
 * docutils/frontend.py:
 
   - Added help text for "--output-encoding-error-handler" and
     "--error-encoding-error-handler".
+  - Renamed "--exit" to "--exit-status".
 
 * docutils/writers/latex2e.py:
 
