@@ -1,0 +1,16 @@
+.home-image1 { float: left; border: 0; padding: 5px; }
+.home-image2 { float: right; border: 0; padding: 5px; }
+
+H1 {
+  background-color: #EEF;
+  border: thin dashed black;
+  padding: 10px;
+  margin: 20px
+}
+
+.box-title {
+  background-color: #EEF;
+  border: thin dashed black;
+  padding: 10px;
+  margin: 20px
+}

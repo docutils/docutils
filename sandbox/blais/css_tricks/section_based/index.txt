@@ -1,0 +1,35 @@
+.. -*- mode: rst; -*-
+
+=========================
+Section-Based CSS Changes
+=========================
+
+Introduction
+------------
+
+In this example, we just want to demonstrate simply that one can customize the
+content style by using CSS with the automatically-generated title classes.
+
+This is a bit of a hack but it can be useful under some circumstances.
+
+Red Section
+-----------
+
+For example, this section contains red items.
+
+* Yes, this should be read.
+* No, you must be ``red``.
+
+
+Green Section
+-------------
+
+* But here we turn green.
+
+
+Blue Section
+------------
+
+* A problem with this approach is that if you change the section title the CSS
+  file has to be changed as well.
+

@@ -1,0 +1,11 @@
+.section#red-section LI {
+    color: red;
+}
+
+.section#green-section LI {
+    color: green;
+}
+
+.section#blue-section LI {
+    color: blue;
+}
