@@ -13,7 +13,7 @@ __docformat__ = 'reStructuredText'
 
 import sys
 from docutils import nodes, utils
-from docutils.parsers.rst import directives
+from docutils.parsers.rst import directives, states
 
 try:
     import Image                        # PIL
@@ -34,8 +34,22 @@ def image(name, arguments, options, content, lineno,
               nodes.literal_block(block_text, block_text), line=lineno)
         return [error]
     options['uri'] = reference
-    image_node = nodes.image(block_text, **options)
-    return [image_node]
+    if options.has_key('target'):
+        block = states.escape2null(options['target']).splitlines()
+        block = [line for line in block]
+        target_type, data = state.parse_target(block, block_text, lineno)
+        if target_type == 'refuri':
+            node_list = nodes.reference(refuri=data)
+        elif target_type == 'refname':
+            node_list = nodes.reference(refname=data)
+            state.document.note_refname(node_list)
+        else:                           # malformed target
+            node_list = [data]          # data is a system message
+        del options['target']
+    else:
+        node_list = []
+    node_list.append(nodes.image(block_text, **options))
+    return node_list
 
 image.arguments = (1, 0, 1)
 image.options = {'alt': directives.unchanged,
@@ -43,6 +57,7 @@ image.options = {'alt': directives.unchanged,
                  'width': directives.nonnegative_int,
                  'scale': directives.nonnegative_int,
                  'align': align,
+                 'target': directives.unchanged_required,
                  'class': directives.class_option}
 
 def figure(name, arguments, options, content, lineno,
