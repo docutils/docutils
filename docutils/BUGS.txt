@@ -149,13 +149,11 @@ Also see the `SourceForge Bug Tracker`_.
 * Upon reviewing RFC 2396, I see that asterisks are valid URL
   characters, sometimes actually used.  Beni Cherniavsky found one in
   mid-November and fixed it by modifying the text.  There's a conflict
-  with emphasis, but backslash escapes should overcome that; they
-  don't though.  I consider it a bug in the parser that escaped
-  asterisks in URLs aren't recognized.  Here's the URL that broke::
+  with emphasis.  Here's the URL that broke::
 
       http://cvs.sf.net/viewcvs.py/*checkout*/emu/speech_tools/scripts/tex_to_images.prl?rev=HEAD
 
-  We should be able to escape the first asterisk like this::
+  As a workaround you can escape the first asterisk like this::
 
       http://cvs.sf.net/viewcvs.py/\*checkout*/emu/speech_tools/scripts/tex_to_images.prl?rev=HEAD
 
@@ -191,10 +189,6 @@ Also see the `SourceForge Bug Tracker`_.
   with multiple IDs.  Perhaps the Substitution transform should remove
   all IDs from definitions after the first substitution reference is
   processed.
-
-* The last segment ("/fc++") gets dropped from this URL::
-
-      http://www.cc.gatech.edu/~yannis/fc++
 
 
 ..
