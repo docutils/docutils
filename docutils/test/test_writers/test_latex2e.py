@@ -203,13 +203,15 @@ Inside literal blocks quotes should be left untouched
 the python interpreter running the test)::
 
     ""
-    This is left "untouched", but *bold*.
+    This is left "untouched" also *this*.
     ""
 
 .. parsed-literal::
 
     should get "quotes" and *italics*.
 
+
+Inline ``literal "quotes"`` should be kept.
 """,
 latex_head + """\
 \\title{}
@@ -228,12 +230,14 @@ Inside literal blocks quotes should be left untouched
 the python interpreter running the test):
 \\begin{ttfamily}\\begin{flushleft}
 \\mbox{""}\\\\
-\\mbox{This~is~left~"untouched",~but~*bold*.}\\\\
+\\mbox{This~is~left~"untouched"~also~*this*.}\\\\
 \\mbox{""}
 \\end{flushleft}\\end{ttfamily}
 \\begin{ttfamily}\\begin{flushleft}
 \\mbox{should~get~"quotes"~and~\\emph{italics}.}
 \\end{flushleft}\\end{ttfamily}
+
+Inline \\texttt{literal "quotes"} should be kept.
 
 \\end{document}
 """],
