@@ -54,7 +54,7 @@ __version__ = "1.3+"
 import sys
 import os
 import types
-from types import TupleType, DictType
+from types import TupleType, DictType, ListType
 from distutils.fancy_getopt import wrap_text
 
 
