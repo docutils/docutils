@@ -5,20 +5,22 @@
 # Copyright: This module has been placed in the public domain.
 
 """
-This module defines a registry for interpreted roles.
+This module defines standard interpreted text role functions, a registry for
+interpreted text roles, and an API for adding to and retrieving from the
+registry.
 
 The interface for interpreted role functions is as follows::
 
-    def role_fn(name, rawtext, text, lineno, inliner):
+    def role_fn(name, rawtext, text, lineno, inliner, attributes={}):
         code...
 
 Parameters:
-    
-- ``name`` is the interpreted role type or name.
 
-- ``rawtext`` is a string containing the entire interpreted text.
-  Include it as the content of a system message if there is a
-  problem.
+- ``name`` is the local name of the interpreted text role, the role name
+  actually used in the document.
+
+- ``rawtext`` is a string containing the entire interpreted text construct.
+  Include it as a literal block in a system message if there is a problem.
 
 - ``text`` is the interpreted text content.
 
@@ -28,18 +30,22 @@ Parameters:
   It defines the following useful attributes: ``reporter``,
   ``problematic``, ``memo``, ``parent``, ``document``.
 
+- ``attributes``: A dictionary of additional attributes for the generated
+  elements, used for customization.
+
 Interpreted role functions return a tuple of two values:
 
 - A list of nodes which will be inserted into the document tree at the
   point where the interpreted role was encountered (can be an empty
   list).
 
-- A list of messages, which will be inserted into the document tree
-  immediately after the end of the current inline block.
+- A list of system messages, which will be inserted into the document tree
+  immediately after the end of the current inline block (can also be empty).
 """
 
 __docformat__ = 'reStructuredText'
 
+import re
 from docutils import nodes
 from docutils.parsers.rst.languages import en as _fallback_language_module
 
@@ -49,34 +55,41 @@ The canonical name of the default interpreted role.  This role is used
 when no role is specified for a piece of interpreted text.
 """
 
+_role_registry = {}
+"""Mapping of canonical role names to role functions.  Language-dependent role
+names are defined in the ``language`` subpackage."""
+
 _roles = {}
-"""
-The interpreted role registry.  This registry map canonical role names
-to role functions.  Language-dependent role names are defined in the
-``language`` subpackage.
-"""
+"""Mapping of local or language-dependent interpreted text role names to role
+functions."""
 
 def role(role_name, language_module, lineno, inliner):
     """
-    Locate and return a role function from its language-dependent
-    name.  If not found in the current language, check English.
-    Return None if the named role cannot be found.
+    Locate and return a role function from its language-dependent name, along
+    with a list of system messages.  If the role is not found in the current
+    language, check English.  Return None if the named role cannot be found.
     """
     normname = role_name.lower()
     messages = []
     msg_text = []
 
-    canonicalname = None
-    try:
-        canonicalname = language_module.roles[normname]
-    except AttributeError, error:
-        msg_text.append('Problem retrieving role entry from language '
-                        'module %r: %s.' % (language_module, error))
-    except KeyError:
-        msg_text.append('No role entry for "%s" in module "%s".'
-                        % (role_name, language_module.__name__))
+    if _roles.has_key(normname):
+        return _roles[normname], messages
 
-    # If we didn't find it, try english as a fallback.
+    if role_name:
+        canonicalname = None
+        try:
+            canonicalname = language_module.roles[normname]
+        except AttributeError, error:
+            msg_text.append('Problem retrieving role entry from language '
+                            'module %r: %s.' % (language_module, error))
+        except KeyError:
+            msg_text.append('No role entry for "%s" in module "%s".'
+                            % (role_name, language_module.__name__))
+    else:
+        canonicalname = DEFAULT_INTERPRETED_ROLE
+
+    # If we didn't find it, try English as a fallback.
     if not canonicalname:
         try:
             canonicalname = _fallback_language_module.roles[normname]
@@ -92,40 +105,60 @@ def role(role_name, language_module, lineno, inliner):
     if msg_text:
         message = inliner.reporter.info('\n'.join(msg_text), line=lineno)
         messages.append(message)
-        
+
     # Look the role up in the registry, and return it.
-    if _roles.has_key(canonicalname):
-        return _roles[canonicalname], messages
+    if _role_registry.has_key(canonicalname):
+        role_fn = _role_registry[canonicalname]
+        register_local_role(normname, role_fn)
+        return role_fn, messages
     else:
         return None, messages # Error message will be generated by caller.
-    
-def register_role(name, role_fn):
+
+def register_canonical_role(name, role_fn):
     """
-    Register an interpreted role.
-    
+    Register an interpreted text role by its canonical name.
+
     :Parameters:
       - `name`: The canonical name of the interpreted role.
-      - `role_fn`: The role function.  See the module docstring for
-        `docutils.parsers.rst.roles` for a description of the
-        signature for `role_fn`.
+      - `role_fn`: The role function.  See the module docstring.
+    """
+    _role_registry[name] = role_fn
+
+def register_local_role(name, role_fn):
+    """
+    Register an interpreted text role by its local or language-dependent name.
+
+    :Parameters:
+      - `name`: The local or language-dependent name of the interpreted role.
+      - `role_fn`: The role function.  See the module docstring.
     """
     _roles[name] = role_fn
 
-######################################################################
-# Create and register the standard roles:
-######################################################################
+def register_generic_role(canonical_name, node_class):
+    """For roles which simply wrap a given `node_class` around the text."""
+    # Dynamically define a role function:
+    def role_fn(role, rawtext, text, lineno, inliner, nc=node_class):
+        return generic_role_helper(nc, role, rawtext, text, lineno, inliner)
+    # Register the role:
+    register_canonical_role(canonical_name, role_fn)
 
-def make_generic_role(node_class, role, rawtext, text, lineno, inliner):
+def generic_role_helper(node_class, role, rawtext, text, lineno, inliner,
+                        attributes={}):
     # If we wanted to, we could recursively call inliner.nested_parse
     # to interpret the text contents here (after appropriately
     # refactoring Inliner.parse).
-    return [node_class(rawtext, text)], []
+    return [node_class(rawtext, text, **attributes)], []
 
-# Helper function:
-def register_generic_role(name, node_class):
-    def role_fn(role, rawtext, text, lineno, inliner, nc=node_class):
-        return make_generic_role(nc, role, rawtext, text, lineno, inliner)
-    register_role(name, role_fn)
+def register_custom_role(local_name, attributes):
+    """For roles defined in a document."""
+    def role_fn(role, rawtext, text, lineno, inliner, atts=attributes):
+        return generic_role_helper(
+            nodes.inline, role, rawtext, text, lineno, inliner, attributes=atts)
+    register_local_role(local_name, role_fn)
+
+######################################################################
+# Define and register the standard roles:
+######################################################################
 
 register_generic_role('abbreviation', nodes.abbreviation)
 register_generic_role('acronym', nodes.acronym)
@@ -136,35 +169,110 @@ register_generic_role('subscript', nodes.subscript)
 register_generic_role('superscript', nodes.superscript)
 register_generic_role('title-reference', nodes.title_reference)
 
-def pep_reference_role(role, rawtext, text, lineno, inliner):
-    try:
-        pepnum = int(text)
-        if pepnum < 0 or pepnum > 9999:
-            raise ValueError
-    except ValueError:
-        msg = inliner.reporter.error(
-            'PEP number must be a number from 0 to 9999; "%s" is invalid.'
-            % text, line=lineno)
-        prb = inliner.problematic(text, text, msg)
-        return [prb], [msg]
-    ref = inliner.pep_url % pepnum # [XX]
-    return [nodes.reference(rawtext, 'PEP ' + text, refuri=ref)], []
-register_role('pep-reference', pep_reference_role)
-    
-def rfc_reference_role(role, rawtext, text, lineno, inliner):
-    try:
-        rfcnum = int(text)
-        if rfcnum <= 0:
-            raise ValueError
-    except ValueError:
-        msg = inliner.reporter.error(
-            'RFC number must be a number greater than or equal to 1; '
-            '"%s" is invalid.' % text, line=lineno)
-        prb = inliner.problematic(text, text, msg)
-        return [prb], [msg]
-    ref = inliner.rfc_url % rfcnum # [XX]
-    return [nodes.reference(rawtext, 'RFC ' + text, refuri=ref)], []
-register_role('rfc-reference', rfc_reference_role)
+class URIReferenceRole:
+    """
+    An Abstract base class for specialized URI reference roles.  A URI
+    reference role is an interpreted text role that creates a single
+    referencenode, whose `label` and `refuri` are based on the
+    contents of the interpreted text.
+
+    Each subclass should override `label` and `uri`, which map the
+    intepreted text into a label and a uri, respectively.  If the
+    subclass needs to check the validity of the interpreted text, then
+    it should also override `verify`, which raises a ValueError if the
+    interpreted text is badly formatted.
+    """
+    def __call__(self, role, rawtext, text, lineno, inliner):
+        try:
+            self.verify(text)
+        except ValueError, e:
+            msg = inliner.reporter.error(str(e), line=lineno)
+            prb = inliner.problematic(text, text, msg)
+            return [prb], [msg]
+        label = self.label(text)
+        uri = self.uri(text)
+        return [nodes.reference(rawtext, label, refuri=uri)], []
+
+    def verify(self, text):
+        """
+        Check that `text` contains valid interpreted text for this uri
+        reference role.  If `text` is invalid, then raise a ValueError
+        whose text describes the problem.  If the text is valid, then
+        return.
+        """
+        return
+
+    def label(self, text):
+        """Return the reference label corresponding to `text`"""
+        raise NotImplementedError
+
+    def uri(self, text):
+        """Return the reference target corresponding to `text`"""
+        raise NotImplementedError
+
+class PEPReferenceRole(URIReferenceRole):
+    """An interpreted text role for referencing PEPs."""
+    def __init__(self, base_url):
+        """
+        :Parameters:
+            - `base_url`: The URL of the directory where PEPs are
+              stored.
+        """
+        if base_url == '' or base_url.endswith('/'):
+            self.pep_url = base_url+'pep-%04d.html'
+        else:
+            self.pep_url = base_url+'/pep-%04d.html'
+
+    _PEP_RE = re.compile(r'\d{1,4}')
+    def verify(self, text):
+        if not self._PEP_RE.match(text):
+            raise ValueError('PEP number must be a number from 0 '+
+                             'to 9999; "%s" is invalid.' % text)
+
+    def label(self, text):
+        return 'PEP %s' % text
+
+    def uri(self, text):
+        return self.pep_url % int(text)
+
+# Define both remote & local versions, to make it easier for the
+# user to swap the other in (with register_canonical_role).  Use
+# the remote version by default.
+pep_reference_role = PEPReferenceRole('http://www.python.org/peps/')
+local_pep_reference_role = PEPReferenceRole('')
+register_canonical_role('pep-reference', pep_reference_role) 
+
+class RFCReferenceRole(URIReferenceRole):
+    """An interpreted text role for referencing RFCs."""
+    def __init__(self, base_url):
+        """
+        :Parameters:
+            - `base_url`: The URL of the directory where RFCs are
+              stored.
+        """
+        if base_url == '' or base_url.endswith('/'):
+            self.rfc_url = base_url+'rfc%d.html'
+        else:
+            self.rfc_url = base_url+'/rfc%d.html'
+
+    _RFC_RE = re.compile(r'[1-9]\d*')
+    def verify(self, text):
+        if not self._RFC_RE.match(text):
+            raise ValueError('RFC number must be a number greater than '
+                             'or equal to 1; "%s" is invalid.' % text)
+
+    def label(self, text):
+        return 'RFC %s' % text
+
+    def uri(self, text):
+        return self.rfc_url % int(text)
+
+# Define both remote & local versions, to make it easier for the
+# user to swap the other in (with register_canonical_role).  Use
+# the remote version by default.
+rfc_reference_role = RFCReferenceRole('http://www.faqs.org/rfcs/')
+local_rfc_reference_role = RFCReferenceRole('')
+register_canonical_role('rfc-reference', rfc_reference_role) 
 
 ######################################################################
 # Register roles that are currently unimplemented.
@@ -172,18 +280,17 @@ register_role('rfc-reference', rfc_reference_role)
 
 def unimplemented_role(role, rawtext, text, lineno, inliner):
     msg = inliner.reporter.error(
-        'Interpreted text role %r not implemented.' % role, line=lineno)
+        'Interpreted text role "%s" not implemented.' % role, line=lineno)
     prb = inliner.problematic(rawtext, rawtext, msg)
     return [prb], [msg]
 
-register_role('index', unimplemented_role)
-register_role('named-reference', unimplemented_role)
-register_role('anonymous-reference', unimplemented_role)
-register_role('uri-reference', unimplemented_role)
-register_role('pep-reference', unimplemented_role)
-register_role('rfc-reference', unimplemented_role)
-register_role('footnote-reference', unimplemented_role)
-register_role('citation-reference', unimplemented_role)
-register_role('substitution-reference', unimplemented_role)
-register_role('target', unimplemented_role)
-register_role('restructuredtext-unimplemented-role', unimplemented_role)
+register_canonical_role('index', unimplemented_role)
+register_canonical_role('named-reference', unimplemented_role)
+register_canonical_role('anonymous-reference', unimplemented_role)
+register_canonical_role('uri-reference', unimplemented_role)
+register_canonical_role('footnote-reference', unimplemented_role)
+register_canonical_role('citation-reference', unimplemented_role)
+register_canonical_role('substitution-reference', unimplemented_role)
+register_canonical_role('target', unimplemented_role)
+# This one should remain unimplemented, for testing purposes:
+register_canonical_role('restructuredtext-unimplemented-role', unimplemented_role)
