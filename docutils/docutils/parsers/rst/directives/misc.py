@@ -21,6 +21,7 @@ def raw(match, type_name, data, state, state_machine, option_presets):
 
 def directive_test_function(match, type_name, data, state, state_machine,
                             option_presets):
+    lineno = state_machine.abs_line_number()
     try:
         state_machine.next_line()
         indented, indent, offset, blank_finish = state_machine.get_indented()
@@ -31,9 +32,10 @@ def directive_test_function(match, type_name, data, state, state_machine,
     if text:
         info = state_machine.reporter.info(
               'Directive processed. Type="%s", data="%s", directive block:'
-              % (type_name, data), '', nodes.literal_block(text, text))
+              % (type_name, data), '', nodes.literal_block(text, text),
+              line=lineno)
     else:
         info = state_machine.reporter.info(
               'Directive processed. Type="%s", data="%s", directive block: '
-              'None' % (type_name, data))
+              'None' % (type_name, data), line=lineno)
     return [info], blank_finish
