@@ -1,0 +1,2 @@
+Just the one file at the moment: advopostwriter.py which subclasses
+writers.html4css1.Writer to format reST like I like my advogato entries.
