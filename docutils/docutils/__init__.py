@@ -77,17 +77,30 @@ class SettingsSpec:
     """Runtime settings specification.  Override in subclasses.
 
     Defines runtime settings and associated command-line options, as used by
-    `docutils.frontend.OptionParser`.  This tuple contains one or more sets of
-    option group title, description, and a list/tuple of tuples: ``('help
-    text', [list of option strings], {keyword arguments})``.  Group title
-    and/or description may be `None`; a group title of `None` implies no
-    group, just a list of single options.  The "keyword arguments" dictionary
-    contains arguments to the OptionParser/OptionGroup ``add_option`` method,
-    with the addition of a "validator" keyword (see the
-    `docutils.frontend.OptionParser.validators` instance attribute).  Runtime
-    settings names are derived implicitly from long option names
-    ("--a-setting" becomes ``settings.a_setting``) or explicitly from the
-    "dest" keyword argument."""
+    `docutils.frontend.OptionParser`.  This is a tuple of:
+
+    - Option group title (string or `None` which implies no group, just a list
+      of single options).
+    
+    - Description (string or `None`).
+    
+    - A sequence of option tuples.  Each consists of:
+
+      - Help text (string)
+      
+      - List of option strings (e.g. ``['-Q', '--quux']``).
+      
+      - Dictionary of keyword arguments.  It contains arguments to the
+        OptionParser/OptionGroup ``add_option`` method, possibly with the
+        addition of a 'validator' keyword (see the
+        `docutils.frontend.OptionParser.validators` instance attribute).  Runtime
+        settings names are derived implicitly from long option names
+        ('--a-setting' becomes ``settings.a_setting``) or explicitly from the
+        'dest' keyword argument.  See optparse docs for more details.
+
+    - More triples of group title, description, options, as many times as
+      needed.  Thus, `settings_spec` tuples can be simply concatenated.
+    """
 
     settings_defaults = None
     """A dictionary of defaults for settings not in `settings_spec` (internal
