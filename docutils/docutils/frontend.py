@@ -344,22 +344,29 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
           {'metavar': '<name>', 'validator': validate_encoding}),
          ('Specify the text encoding for output.  Default is UTF-8.  '
           'Optionally also specify the encoding error handler for unencodable '
-          'characters (see "--error-encoding"); default is "strict".',
+          'characters (see "--output-encoding-error-encoding"); '
+          'default is "strict".',
           ['--output-encoding', '-o'],
           {'metavar': '<name[:handler]>', 'default': 'utf-8',
            'validator': validate_encoding_and_error_handler}),
-         (SUPPRESS_HELP,                # usually handled by --output-encoding
+         ('Specify the encoding error handler for unencodable characters in '
+          'the output.  Acceptable values include "strict", "ignore", '
+          '"replace", "backslashreplace" (in Python 2.3+), and '
+          '"xmlcharrefreplace" (in Python 2.3+).  Default is "strict".  '
+          'Usually specified as part of --output-encoding.',
           ['--output-encoding-error-handler'],
           {'default': 'strict', 'validator': validate_encoding_error_handler}),
          ('Specify the text encoding for error output.  Default is ASCII.  '
           'Optionally also specify the encoding error handler for unencodable '
-          'characters, after a colon (":").  Acceptable values are the same '
-          'as for the "error" parameter of Python\'s ``encode`` string '
-          'method.  Default is "%s".' % default_error_encoding_error_handler,
+          'characters, after a colon (":").  Default is "%s".'
+          % default_error_encoding_error_handler,
           ['--error-encoding', '-e'],
           {'metavar': '<name[:handler]>', 'default': 'ascii',
            'validator': validate_encoding_and_error_handler}),
-         (SUPPRESS_HELP,                # usually handled by --error-encoding
+         ('Specify the encoding error handler for unencodable characters in '
+          'error output.  See --output-encoding-error-handler for acceptable '
+          'values.  Default is "%s".  Usually specified as part of '
+          '--error-encoding.' % default_error_encoding_error_handler,
           ['--error-encoding-error-handler'],
           {'default': default_error_encoding_error_handler,
            'validator': validate_encoding_error_handler}),
