@@ -1790,10 +1790,11 @@ used after the directive type for these reasons:
   a literal block, and a level-3 (error) system message generated.
   Thus "::" is a natural choice.
 
-Any text on the first line after the directive indicator is directive
-data.  The interpretation of directive data is up to the directive
-code.  Directive data may be interpreted as arguments to the
-directive, or simply as the first line of the directive's text block.
+Any text on the first line of the directive, after the directive
+indicator, is directive data.  The interpretation of directive data is
+up to the directive code.  Directive data may be interpreted as
+arguments to the directive, or simply as the first line of the
+directive's text block.
 
 Actions taken in response to directives and the interpretation of text
 in the directive block or subsequent text block(s) are
