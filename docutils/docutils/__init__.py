@@ -87,6 +87,10 @@ class SettingsSpec:
     from long option names ("--a-setting" becomes ``settings.a_setting``) or
     explicitly from the "destination" keyword argument."""
 
+    settings_defaults = None
+    """A dictionary of defaults for internal or inaccessible (by command-line
+    or config file) settings.  Override in subclasses."""
+
     settings_default_overrides = None
     """A dictionary of auxiliary defaults, to override defaults for settings
     defined in other components.  Override in subclasses."""
