@@ -25,8 +25,8 @@ include1rel = DocutilsTestSupport.utils.relative_path(None, include1)
 include2 = os.path.join(mydir, 'include2.txt')
 include3 = os.path.join(mydir, 'include3.txt')
 include8 = os.path.join(mydir, 'include8.txt')
-include9 = os.path.join(mydir, 'include9.txt')
-include9rel = DocutilsTestSupport.utils.relative_path(None, include9)
+include10 = os.path.join(mydir, 'include10.txt')
+include10rel = DocutilsTestSupport.utils.relative_path(None, include10)
 
 
 totest = {}
@@ -284,7 +284,7 @@ Testing relative includes:
 # Testing bad charent includes:
 #
 # .. include:: %s
-# """ % include9,
+# """ % include10,
 # """\
 # <document source="test data">
 #     <paragraph>
@@ -300,7 +300,7 @@ Testing relative includes:
 #             Substitution definition "bad" empty or invalid.
 #         <literal_block xml:space="preserve">
 #             .. |bad| unicode:: 0xFFFFFFFFF
-# """ % (include9rel, include9rel)],
+# """ % (include10rel, include10rel)],
 ]
 
 
