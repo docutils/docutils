@@ -100,6 +100,10 @@ Changes Since 0.3.3
   and roles.  Source text to be used as-is; not meant to be converted
   to HTML.
 
+* spec/rst/directives.txt:
+
+  - Added directive: "table".
+
 
 Release 0.3.3 (2004-05-09)
 ==========================
