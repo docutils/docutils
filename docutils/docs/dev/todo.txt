@@ -332,18 +332,6 @@ General
 
 * Merge doc/latex.txt info into tools.txt and config.txt.
 
-* @@@ Add validation/conversion to SettingsSpec objects?  Entry in the
-  keyword argument dictionary, to be handled by OptionParser?  How to
-  pass it on to ConfigParser?  Or keep the exclusive responsibility in
-  OptionParser?  Problem with the current "validation" attribute of
-  docutils.frontend.ConfigParser is that it separates this information
-  from the rest of the settings_spec.
-
-  Specifically, boolean values like "xml_declaration" ought to accept
-  "0" for false (not just '' empty string as now), and "false", "no",
-  and "off" too.  True values should be any of "1", "true", "yes", and
-  "on".
-
 * Add internationalization to footer boilerplate text (resulting from
   "--generator", "--source-link", and "--date" etc.), allowing
   translations.
@@ -352,6 +340,10 @@ General
   equivalent to ".. include:: file" as the first line of the doc text?
   Especially useful for character entity sets, text transform specs,
   boilerplate, etc.
+
+* @@@ Add an easy way for applications to identify themselves for
+  config file purposes.  Perhaps another keyword argument to the
+  docutils.core.publish_* convenience functions etc.
 
 
 Documentation

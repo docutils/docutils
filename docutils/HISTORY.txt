@@ -92,6 +92,8 @@ Changes Since 0.3
     ``.get_standard_config_settings()``; support for old "[options]"
     section (with deprecation warning) and mapping from old to new
     settings.
+  - Reimplemented setting validation.
+  - Enabled flexible boolean values: yes/no, true/false, on/off.
 
 * docutils/io.py:
 
@@ -167,9 +169,14 @@ Changes Since 0.3
 
   - Moved config file entry descriptions to config.txt.
 
+* test: Continually adding & updating tests.
+
+  - Added test/test_settings.py & test/data/config_*.txt support
+    files.
+
 * tools/buildhtml.py:
 
-  - Began addition of "--prune" option (unfinished).
+  - Added support for the "--prune" option.
 
 * tools/docutils.conf:
 
