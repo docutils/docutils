@@ -13,6 +13,8 @@ PEP HTML Writer.
 __docformat__ = 'reStructuredText'
 
 
+import sys
+import random
 from docutils import nodes
 from docutils.writers import html4css1
 
@@ -25,12 +27,12 @@ class Writer(html4css1.Writer):
         (('Specify a stylesheet file.  Default is "pep.css".',
           ['--stylesheet'],
           {'default': 'pep.css', 'metavar': '<file>'}),
-         ('Specify a template file.  Default is "pep-template.html".',
+         ('Specify a template file.  Default is "pep-html-template".',
           ['--template'],
-          {'default': 'pep-template.html', 'metavar': '<file>'}),
-         ('Python\'s home URL.  Default is "http://www.python.org".',
+          {'default': 'pep-html-template', 'metavar': '<file>'}),
+         ('Python\'s home URL.  Default is ".." (parent directory).',
           ['--python-home'],
-          {'default': 'http://www.python.org', 'metavar': '<URL>'}),
+          {'default': '..', 'metavar': '<URL>'}),
          ('Home URL for this PEP.  Default is "." (current directory).',
           ['--pep-home'],
           {'default': '.', 'metavar': '<URL>'}),))
@@ -46,9 +48,14 @@ class Writer(html4css1.Writer):
         stylesheet = options.stylesheet
         pyhome = options.python_home
         pephome = options.pep_home
+        if pyhome == '..':
+            pepindex = '.'
+        else:
+            pepindex = pyhome + '/peps/'
         index = self.document.first_child_matching_class(nodes.field_list)
         header = self.document[index]
         pep = header[0][1].astext()
+        banner = random.randrange(64)
         try:
             pepnum = '%04i' % int(pep)
         except:
