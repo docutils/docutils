@@ -112,7 +112,7 @@ class Writer(writers.Writer):
           'for compound enumerated lists.  Default is "-".',
           ['--section-enumerator-separator'],
           {'default': '-', 'metavar': '<char>'}),
-         ('When possibile, use verbatim for literal-blocks.'
+         ('When possibile, use verbatim for literal-blocks. '
           'Default is to always use the mbox environment.',
           ['--use-verbatim-when-possible'],
           {'default': 0, 'action': 'store_true',
@@ -124,16 +124,17 @@ class Writer(writers.Writer):
           ['--table-style'],
           {'choices': ['standard', 'booktabs','nolines'], 'default': 'standard',
            'metavar': '<format>'}),
-          ('LaTeX graphicx package option.'
+          ('LaTeX graphicx package option. '
            'Possible values are "dvips", "pdftex". "auto" includes LaTeX code '
            'to use "pdftex" if processing with pdf(la)tex and dvips otherwise. '
            'Default is no option.',
            ['--graphicx-option'],
            {'default': ''}),
           ('LaTeX font encoding.'
-           'Possible values are "T1", "OT1", "" or some other fontenc option.'
+           'Possible values are "T1", "OT1", "" or some other fontenc option. '
            'The font encoding influences available symbols, e.g. "<<" as one '
-           'character. Default is "" which leads to package "ae". ',
+           'character. Default is "" which leads to package "ae" (a T1 '
+           'emulation using CM fonts).',
            ['--font-encoding'],
           {'default': ''}),
           ),)
