@@ -73,8 +73,8 @@ class Component:
     """Names for this component.  Override in subclasses."""
 
     cmdline_options = ()
-    """Command-line option specification.  A list/tuple of tuples:
-    ``('help text', [list of option strings], {keyword arguments})``."""
+    """Command-line option specification.
+    See `docutils.frontend.OptionParser`."""
 
     def supports(self, format):
         """
