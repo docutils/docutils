@@ -4,11 +4,16 @@ __author__ = "Patrick K. O'Brien <pobrien@orbtech.com>"
 __cvsid__ = "$Id$"
 __revision__ = "$Revision$"[11:-2]
 
+import locale
+try:
+    locale.setlocale(locale.LC_ALL, '')
+except:
+    pass
+
 import sys
 import zipfile
-from cStringIO import StringIO
 
-from docutils import core, io
+from docutils import core
 
 import OOdirectives
 import OOtext
@@ -16,12 +21,16 @@ import OOwriter
 
 
 def main():
-    pub = core.Publisher(writer=OOwriter.Writer())
-    pub.set_reader('standalone', None, 'restructuredtext')
-    settings = pub.get_settings()
-    pub.source = io.FileInput(settings, source_path=sys.argv[1])
-    pub.destination = io.StringOutput(settings)
-    content = pub.publish()
+
+##     pub = core.Publisher(writer=OOwriter.Writer())
+##     pub.set_reader('standalone', None, 'restructuredtext')
+##     settings = pub.get_settings()
+##     pub.source = io.FileInput(settings, source_path=sys.argv[1])
+##     pub.destination = io.StringOutput(settings)
+##     content = pub.publish()
+
+    source = file(sys.argv[1]).read()
+    content = core.publish_string(source, writer=OOwriter.Writer())
 
     xml_manifest_list = [
         ('content.xml', content),
@@ -38,7 +47,8 @@ def main():
     for name, format in image_manifest_list:
         image_entries.append(format)
 
-    manifest = OOtext.manifest % ('\n '.join(image_entries), '\n '.join(xml_entries))
+    manifest = OOtext.manifest % ('\n '.join(image_entries),
+                                  '\n '.join(xml_entries))
     xml_manifest_list.append(('META-INF/manifest.xml', manifest))
 
     zip = zipfile.ZipFile(sys.argv[2], "w")
