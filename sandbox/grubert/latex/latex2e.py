@@ -501,7 +501,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.context.append(self.body)
             self.context.append(len(self.body))
         else:
-            self.docinfo.append('\\textbf{%s} &\n\t' % self.language_label(name))
+            self.docinfo.append('\\textbf{%s}: &\n\t' % self.language_label(name))
             if name == 'author':
                 if not self.pdfinfo == None:
                     if not self.pdfauthor:
@@ -645,7 +645,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_field_name(self, node):
         # BUG this duplicates docinfo_item
         if self.docinfo:
-            self.docinfo.append('\\textbf{%s} &\n\t' % node.astext())
+            self.docinfo.append('\\textbf{%s}: &\n\t' % node.astext())
             raise nodes.SkipNode
         else:
             self.body.append('\\item [')
