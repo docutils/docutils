@@ -1880,30 +1880,48 @@ class Body(RSTState):
                 raise MarkupError('malformed hyperlink target.', lineno)
         del block[:blockindex]
         block[0] = (block[0] + ' ')[targetmatch.end()-len(escaped)-1:].strip()
+        target = self.make_target(block, blocktext, lineno,
+                                  targetmatch.group('name'))
+        return [target], blank_finish
+
+    def make_target(self, block, block_text, lineno, target_name):
+        target_type, data = self.parse_target(block, block_text, lineno)
+        if target_type == 'refname':
+            target = nodes.target(block_text, '', refname=data)
+            self.add_target(target_name, '', target, lineno)
+            self.document.note_indirect_target(target)
+            return target
+        elif target_type == 'refuri':
+            target = nodes.target(block_text, '')
+            self.add_target(target_name, data, target, lineno)
+            return target
+        else:
+            return data
+
+    def parse_target(self, block, block_text, lineno):
+        """
+        Determine the type of reference of a target.
+
+        :Return: A 2-tuple, one of:
+
+            - 'refname' and the indirect reference name
+            - 'refuri' and the URI
+            - 'malformed' and a system_message node
+        """
         if block and block[-1].strip()[-1:] == '_': # possible indirect target
             reference = ' '.join([line.strip() for line in block])
             refname = self.is_reference(reference)
             if refname:
-                target = nodes.target(blocktext, '', refname=refname)
-                target.line = lineno
-                self.add_target(targetmatch.group('name'), '', target)
-                self.document.note_indirect_target(target)
-                return [target], blank_finish
-        nodelist = []
+                return 'refname', refname
         reference = ''.join([line.strip() for line in block])
-        if reference.find(' ') != -1:
+        if reference.find(' ') == -1:
+            return 'refuri', unescape(reference)
+        else:
             warning = self.reporter.warning(
                   'Hyperlink target contains whitespace. Perhaps a footnote '
                   'was intended?',
-                  nodes.literal_block(blocktext, blocktext), line=lineno)
-            nodelist.append(warning)
-        else:
-            unescaped = unescape(reference)
-            target = nodes.target(blocktext, '')
-            target.line = lineno
-            self.add_target(targetmatch.group('name'), unescaped, target)
-            nodelist.append(target)
-        return nodelist, blank_finish
+                  nodes.literal_block(block_text, block_text), line=lineno)
+            return 'malformed', warning
 
     def is_reference(self, reference):
         match = self.explicit.patterns.reference.match(
@@ -1912,7 +1930,8 @@ class Body(RSTState):
             return None
         return unescape(match.group('simple') or match.group('phrase'))
 
-    def add_target(self, targetname, refuri, target):
+    def add_target(self, targetname, refuri, target, lineno):
+        target.line = lineno
         if targetname:
             name = normalize_name(unescape(targetname))
             target['name'] = name
@@ -2255,38 +2274,14 @@ class Body(RSTState):
         return [], next_state, []
 
     def anonymous_target(self, match):
+        lineno = self.state_machine.abs_line_number()
         block, indent, offset, blank_finish \
               = self.state_machine.get_first_known_indented(match.end(),
                                                             until_blank=1)
         blocktext = match.string[:match.end()] + '\n'.join(block)
-        if block and block[-1].strip()[-1:] == '_': # possible indirect target
-            reference = escape2null(' '.join([line.strip()
-                                              for line in block]))
-            refname = self.is_reference(reference)
-            if refname:
-                target = nodes.target(blocktext, '', refname=refname,
-                                      anonymous=1)
-                self.document.note_anonymous_target(target)
-                self.document.note_indirect_target(target)
-                return [target], blank_finish
-        nodelist = []
-        reference = escape2null(''.join([line.strip() for line in block]))
-        if reference.find(' ') != -1:
-            lineno = self.state_machine.abs_line_number() - len(block) + 1
-            warning = self.reporter.warning(
-                  'Anonymous hyperlink target contains whitespace. Perhaps a '
-                  'footnote was intended?',
-                  nodes.literal_block(blocktext, blocktext),
-                  line=lineno)
-            nodelist.append(warning)
-        else:
-            target = nodes.target(blocktext, '', anonymous=1)
-            if reference:
-                unescaped = unescape(reference)
-                target['refuri'] = unescaped
-            self.document.note_anonymous_target(target)
-            nodelist.append(target)
-        return nodelist, blank_finish
+        block = [escape2null(line) for line in block]
+        target = self.make_target(block, blocktext, lineno, '')
+        return [target], blank_finish
 
     def line(self, match, context, next_state):
         """Section title overline or transition marker."""
