@@ -54,7 +54,7 @@ elements, and may be structured into sections.  Sections_ are
 indicated through title style (underlines & optional overlines).
 Sections contain body elements and/or subsections.  Some body elements
 contain further elements, such as lists containing list items, which
-in turn may contain paragraphs and other body elemens.  Others, such
+in turn may contain paragraphs and other body elements.  Others, such
 as paragraphs, contain text and `inline markup`_ elements.
 
 Here are examples of `body elements`_:
@@ -325,7 +325,7 @@ the field names)::
     :Hello: This field has a short field name, so aligning the field
             body with the first line is feasible.
 
-    :Number-of-African-swallows-requried-to-carry-a-coconut: It would
+    :Number-of-African-swallows-required-to-carry-a-coconut: It would
         be very difficult to align the field body with the left edge
         of the first line.  It may even be preferable not to begin the
         body on the same line as the marker.
@@ -370,11 +370,11 @@ Reference Names
 ===============
 
 Simple reference names are single words consisting of alphanumerics
-plus internal hypens, underscores, and periods; no whitespace or other
-characters are allowed.  Footnote labels (Footnotes_ & `Footnote
-References`_), citation labels (Citations_ & `Citation References`_),
-`interpreted text`_ roles, and some `hyperlink references`_ use the
-simple reference name syntax.
+plus isolated (no two adjacent) internal hyphens, underscores, and
+periods; no whitespace or other characters are allowed.  Footnote
+labels (Footnotes_ & `Footnote References`_), citation labels
+(Citations_ & `Citation References`_), `interpreted text`_ roles, and
+some `hyperlink references`_ use the simple reference name syntax.
 
 Reference names using punctuation or whose names are phrases (two or
 more space-separated words) are called "phrase-references".
@@ -566,7 +566,7 @@ enforced, nor do differences in transition markers accomplish
 anything.  It is recommended that a single consistent style be used.
 
 The processing system is free to render transitions in output in any
-way it likes.  For example, horizontal rules (``<HR>``) in HTML output
+way it likes.  For example, horizontal rules (``<hr>``) in HTML output
 would be an obvious choice.
 
 
@@ -633,7 +633,7 @@ Here are examples of **incorrectly** formatted bullet lists::
     (Warning)
 
     - The following line appears to be a new sublist, but it is not:
-      - This is a paragraph contination, not a sublist (since there's
+      - This is a paragraph continuation, not a sublist (since there's
         no blank line).  This line is also incorrectly indented.
       - Warnings may be issued by the implementation.
 
@@ -919,7 +919,7 @@ The RCS keyword processing only kicks in when all of these conditions
 hold:
 
 1. The field list is in bibliographic context (first non-comment
-   contstruct in the document, after a document title if there is
+   construct in the document, after a document title if there is
    one).
 
 2. The field name is a recognized bibliographic field name.
@@ -949,7 +949,7 @@ descriptions, documenting a program's options.  For example::
                This is the second.  Blank lines may be omitted between
                options (as above) or left in (as here and below).
 
-    --very-long-option  A VMS-syle option.  Note the adjustment for
+    --very-long-option  A VMS-style option.  Note the adjustment for
                         the required two spaces.
 
     --an-even-longer-option
@@ -1628,7 +1628,7 @@ indirect.
 
    After processing into HTML, the hyperlink might be expressed as::
 
-       See the <A HREF="http://www.python.org">Python</A> home page
+       See the <a href="http://www.python.org">Python</a> home page
        for info.
 
    An external hyperlink's URI may begin on the same line as the
@@ -1805,8 +1805,8 @@ directive code.  There are three logical parts to the directive block:
 Individual directives can employ any combination of these parts.
 Directive arguments can be filesystem paths, URLs, title text, etc.
 Directive options are indicated using `field lists`_; the field names
-and contents are directive-specific.  Argumens and options must form a
-contiguous block beginning on the first or second line of the
+and contents are directive-specific.  Arguments and options must form
+a contiguous block beginning on the first or second line of the
 directive; a blank line indicates the beginning of the directive
 content block.  If either arguments and/or options are employed by the
 directive, a blank line must separate them from the directive content.
@@ -1982,7 +1982,7 @@ Styles [#]_
        Interpreted text is unsuitable for this purpose because the set
        of style names cannot be predefined - it is the domain of the
        content author, not the author of the parser and output
-       formatter - and there is no way to associate a stylename
+       formatter - and there is no way to associate a style name
        argument with an interpreted text style role.  Also, it may be
        desirable to use the same mechanism for styling blocks::
 
@@ -2189,7 +2189,7 @@ markup start-strings:
 - vertical bars: | || etc.
 
 It may be desirable to use inline literals for some of these anyhow,
-especially if they represent code snippets.  It's a judgement call.
+especially if they represent code snippets.  It's a judgment call.
 
 These cases *do* require either literal-quoting or escaping to avoid
 misinterpretation::
@@ -2293,7 +2293,7 @@ references`_, we can add "index entry", "acronym", "class", "red",
 
 A role marker consists of a colon, the role name, and another colon.
 A role name is a single word consisting of alphanumerics plus internal
-hypens, underscores, and periods; no whitespace or other characters
+hyphens, underscores, and periods; no whitespace or other characters
 are allowed.
 
 
@@ -2470,7 +2470,7 @@ as the link's text.  For example::
 
 would be marked up in HTML as::
 
-    See <A HREF="http://www.python.org">http://www.python.org</A> for
+    See <a href="http://www.python.org">http://www.python.org</a> for
     info.
 
 Two forms of URI are recognized:
@@ -2507,7 +2507,7 @@ Two forms of URI are recognized:
    recognize any absolute URI, as defined in RFC2396_ and RFC2732_.
 
 2. Standalone email addresses, which are treated as if they were
-   ablsolute URIs with a "mailto:" scheme.  Example::
+   absolute URIs with a "mailto:" scheme.  Example::
 
        someone@somewhere.com
 
