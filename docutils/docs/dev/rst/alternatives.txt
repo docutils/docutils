@@ -1547,6 +1547,8 @@ A new type of "inline external hyperlink" has been proposed.
    for one-word references; the target URL is included within the
    reference text, forcing a phrase context.
 
+   We'll call this variant "embedded URIs".
+
    Problem: how to refer to a title like "HTML Anchors: <a>" (which
    ends with an HTML/SGML/XML tag)?  We could either require more
    syntax on the target (like ``"`reference text
@@ -1559,6 +1561,24 @@ A new type of "inline external hyperlink" has been proposed.
    named, allowing reuse of targets by name.
 
    I think this is the least objectionable of the syntax alternatives.
+
+Other syntax variations have been proposed (by Brett Cannon and Benja
+Fallenstein)::
+
+    `phrase reference`->http://www.example.com
+
+    `phrase reference`@http://www.example.com
+
+    `phrase reference`__ ->http://www.example.com
+
+    `phrase reference` [-> http://www.example.com]
+
+    `phrase reference`__ [-> http://www.example.com]
+
+    `phrase reference` <http://www.example.com>_
+
+None of these variations are clearly superior to #3 above.  Some have
+problems that exclude their use.
 
 With any kind of inline external target syntax it comes down to the
 conflict between maintainability and plaintext readability.  I don't
@@ -1613,14 +1633,19 @@ reStructuredText for a while, and those *for* the proposal are either
 new to the list ["fantasai", background unknown] or longtime
 StructuredText users [Ken Manheimer].)
 
-As is probably obvious, I'm ambivalent/against the proposed "inline
-external targets".  I value reStructuredText's readability very
-highly, and although the proposed syntax offers convenience, I don't
-know if the convenience is worth the cost in ugliness.  Does the
-proposed syntax compromise readability too much, or should the choice
-be left up to the author?  Perhaps if the syntax is *allowed* but its
-use strongly *discouraged*, for aesthetic reasons?  Or would that just
-be hypocritical?  Dilemma.
+I was initially ambivalent/against the proposed "inline external
+targets".  I value reStructuredText's readability very highly, and
+although the proposed syntax offers convenience, I don't know if the
+convenience is worth the cost in ugliness.  Does the proposed syntax
+compromise readability too much, or should the choice be left up to
+the author?  Perhaps if the syntax is *allowed* but its use strongly
+*discouraged*, for aesthetic/readability reasons?
+
+After a great deal of thought and much input from users, I've decided
+that there are reasonable use cases for this construct.  The
+documentation should strongly caution against its use in most
+situations, recommending independent block-level targets instead.
+Syntax #3 above ("embedded URIs") will be used.
 
 
 Doctree Representation of Transitions
