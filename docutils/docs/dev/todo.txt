@@ -1130,7 +1130,7 @@ when used in a document.
     - Option to label lines?
 
     - Default directory for "built-in includes", using the C syntax
-      ``#include <name>``?
+      ``<name>`` (as in ``#include <name>``)?
 
           Use C-preprocessor semantics for locating include files?
           E.g., ``.. include:: file.txt`` will read another file into
