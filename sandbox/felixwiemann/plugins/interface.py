@@ -9,6 +9,12 @@ Let's implement an extension for rendering keys:
 
 reST source:
     :key:`Ctrl+C`
+Node tree:
+    <KeyNode>
+        Ctrl
+    +
+    <KeyNode>
+        C
 HTML rendering:
     <html><body><span style="border: 1px solid black;">Ctrl</span>+<span style="border: 1px solid black;">C</span></body></html>
 
