@@ -27,6 +27,7 @@ def suite():
 mydir = os.path.dirname(suite.func_code.co_filename)
 utf_16_csv = os.path.join(mydir, 'utf-16.csv')
 utf_16_csv_rel = DocutilsTestSupport.utils.relative_path(None, utf_16_csv)
+empty_txt = os.path.join(mydir, 'empty.txt')
 
 totest = {}
 
@@ -794,6 +795,19 @@ u"""\
                         <paragraph>
                             \u00bfOn a \u03c3\u03c4\u03b9\u03ba?
 """],
+["""\
+.. csv-table:: no CSV data
+   :file: %s
+""" % empty_txt,
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            No table data detected in CSV file.
+        <literal_block xml:space="preserve">
+            .. csv-table:: no CSV data
+               :file: %s
+""" % empty_txt],
 ]
 
 totest['list-table'] = [
