@@ -33,7 +33,7 @@ you really need something, please consider contributing__ to Docutils
 in some way.
 
 Please post any feedback to the appropriate `mailing list`_, or `email
-me`__ directly.
+the project coordinator`__ directly.
 
 __ `Please Contribute!`_
 __ mailto_
@@ -233,7 +233,7 @@ Please help this project succeed by contributing.  We're looking for
 all kinds of contributions: testing, ideas, code, bug reports,
 administration, tasty snacks, computer equipment, and large sums of
 money.  If you're interested in participating in any way, please
-`contact the project administrator`__.
+`contact the project coordinator`__.
 
 __ mailto_
 
@@ -244,7 +244,7 @@ Project Links
 - `Project Summary page`__: `released files`__, `bug reports`__,
   patches__, `mailing lists`__, and news__.
 - `Docutils CVS repository`__
-- Project manager: `David Goodger`_
+- Project coordinator and architect: `David Goodger`_
 - Please direct discussions to the `Python Documentation Special
   Interest Group (Doc-SIG)`__: doc-sig@python.org.
 - Powered by |Python|__

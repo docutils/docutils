@@ -11,6 +11,7 @@ Test module for nodes.py.
 """
 
 import unittest
+from types import ClassType
 from DocutilsTestSupport import nodes, utils
 
 debug = 0
@@ -77,6 +78,18 @@ class ElementTests(unittest.TestCase):
     text
     more
 """)
+
+
+class MiscTests(unittest.TestCase):
+
+    def test_node_class_names(self):
+        node_class_names = []
+        for x in dir(nodes):
+            c = getattr(nodes, x)
+            if type(c) is ClassType and issubclass(c, nodes.Node) \
+                   and len(c.__bases__) > 1:
+                node_class_names.append(x)
+        self.assertEquals(node_class_names, nodes.node_class_names)
 
 
 class TreeCopyVisitorTests(unittest.TestCase):
