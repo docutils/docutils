@@ -452,12 +452,10 @@ matching "overlines" above the title.  An underline/overline is a
 single repeated punctuation character that begins in column 1 and
 forms a line extending at least as far as the right edge of the title
 text.  Specifically, an underline/overline character may be any
-non-alphanumeric printable 7-bit ASCII character [#]_.  An
-underline/overline must be at least 4 characters long (to avoid
-mistaking ellipses ["..."] for overlines).  When an overline is used,
-the length and character used must match the underline.  There may be
-any number of levels of section titles, although some output formats
-may have limits (HTML has 6 levels).
+non-alphanumeric printable 7-bit ASCII character [#]_.  When an
+overline is used, the length and character used must match the
+underline.  There may be any number of levels of section titles,
+although some output formats may have limits (HTML has 6 levels).
 
 .. [#] The following are all valid section title adornment
    characters::
