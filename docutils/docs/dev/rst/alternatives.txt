@@ -2130,7 +2130,9 @@ Implementation Plan
 
 We'll leave the old implementation in place (via the "line-block"
 directive only) until all Writers have been updated to support the new
-syntax & implementation.
+syntax & implementation.  The "line-block" directive can then be
+updated to use the new internal representation, and its documentation
+will be updated to recommend the new syntax.
 
 
 List-Driven Tables
