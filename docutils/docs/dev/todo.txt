@@ -586,9 +586,6 @@ HTML Writer
 - Add more support for <link> elements, especially for navigation
   bars.
 
-- "name" attributes only on these tags: a, applet, form, frame,
-  iframe, img, map.
-
 
 Front-End Tools
 ---------------
