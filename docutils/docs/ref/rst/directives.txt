@@ -1052,14 +1052,33 @@ Unicode Character Codes
 
 The "unicode" directive converts Unicode character codes (numerical
 values) to characters, and may be used in substitution definitions
-only.  Codes may be decimal numbers, hexadecimal numbers (prefixed by
-``0x``, ``x``, ``\x``, ``U+``, ``u``, or ``\u``), or XML-style numeric
-character entities (e.g. ``&#x1a2b;``).  Codes are case-insensitive.
+only.
 
-Text following " .. " is a comment and is ignored.  Spaces are
-ignored, and any other text remains as-is.
+The arguments, separated by spaces, can be:
 
-Example::
+* **character codes** as
+
+  - decimal numbers or
+
+  - hexadecimal numbers, prefixed by ``0x``, ``x``, ``\x``, ``U+``,
+    ``u``, or ``\u`` or as XML-style hexadecimal character entities,
+    e.g. ``&#x1a2b;``
+
+* **text**, which is used as-is.
+
+Text following " .. " is a comment and is ignored.  The spaces between
+the arguments are ignored and thus do not appear in the output.
+Hexadecimal codes are case-insensitive.
+
+For example, the following text::
+
+    Copyright |copy| 2003, |BogusMegaCorp (TM)|.
+
+    .. |copy| unicode:: 0xA9 .. copyright sign
+    .. |BogusMegaCorp (TM)| unicode:: BogusMegaCorp U+2122
+       .. with trademark sign
+
+results in:
 
     Copyright |copy| 2003, |BogusMegaCorp (TM)|.
 
