@@ -9,6 +9,8 @@ Rev. 2002-12-19
 To do
 ~~~~~
 
+* two hlines after table head and on table end ?
+
 * table: multicol rows have now lines.
 
 * should tables without vertical markup be set without borders ?
@@ -44,9 +46,6 @@ To do
 * table heads and footer for longtable (firstpage lastpage ..)
 
 * longtable does not work with multirow
-
-* table width is always full line width.
-  reduce table width to 0.94 of full linewidth for less overfull hbox warnings.
 
 * tablewidth: the real problem is: using the proportion of the rst-table is only
   a little clue but e.g. on description tables usually the left side could be
@@ -119,6 +118,7 @@ ATTENTION
 Done
 ~~~~
 
+* reduce table width to 0.93 of linewidth.
 * decrement pdfbookmark levels. now 0 to 3.
 * use subsubsection for deeper ones.
 * all spaces in line-blocks are nonbreakable (~). 	
