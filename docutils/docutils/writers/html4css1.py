@@ -105,6 +105,8 @@ class HTMLTranslator(nodes.NodeVisitor):
     generator = '<meta name="generator" content="Docutils: ' \
                 'http://docutils.sourceforge.net/">\n'
     stylesheet_link = '<link rel="stylesheet" href="%s" type="text/css" />\n'
+    named_tags = {'a': 1, 'applet': 1, 'form': 1, 'frame': 1, 'iframe': 1,
+                  'img': 1, 'map': 1}
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
@@ -153,6 +155,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         Construct and return a start tag given a node (id & class attributes
         are extracted), tag name, and optional attributes.
         """
+        tagname = tagname.lower()
         atts = {}
         for (name, value) in attributes.items():
             atts[name.lower()] = value
@@ -163,11 +166,11 @@ class HTMLTranslator(nodes.NodeVisitor):
         for att in ('id',):             # node attribute overrides
             if node.has_key(att):
                 atts[att] = node[att]
-        if atts.has_key('id'):
+        if atts.has_key('id') and self.named_tags.has_key(tagname):
             atts['name'] = atts['id']   # for compatibility with old browsers
         attlist = atts.items()
         attlist.sort()
-        parts = [tagname.lower()]
+        parts = [tagname]
         for name, value in attlist:
             if value is None:           # boolean attribute
                 # According to the HTML spec, ``<element boolean>`` is good,
@@ -915,12 +918,12 @@ class HTMLTranslator(nodes.NodeVisitor):
         else:
             self.body.append(
                   self.starttag(node, 'h%s' % self.section_level, ''))
-            context = ''
+            atts = {'name': node.parent['id']}
             if node.hasattr('refid'):
-                self.body.append('<a class="toc-backref" href="#%s">'
-                                 % node['refid'])
-                context = '</a>'
-            self.context.append('%s</h%s>\n' % (context, self.section_level))
+                atts['class'] = 'toc-backref'
+                atts['href'] = '#' + node['refid']
+            self.body.append(self.starttag({}, 'a', '', **atts)
+            self.context.append('</a></h%s>\n' % (self.section_level))
 
     def depart_title(self, node):
         self.body.append(self.context.pop())
