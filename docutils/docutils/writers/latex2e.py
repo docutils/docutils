@@ -196,7 +196,28 @@ class Babel:
         self.quote_index = (self.quote_index+1)%2
         return q
 
+    def quote_quotes(self,text):
+        t = None
+        for part in text.split('"'):
+            if t == None:
+                t = part
+            else:
+                t += self.next_quote() + part
+        return t
+
 latex_headings = {
+        'optionlist_environment' : [
+              '\\newcommand{\\optionlistlabel}[1]{\\bf #1 \\hfill}\n'
+              '\\newenvironment{optionlist}[1]\n'
+              '{\\begin{list}{}\n'
+              '  {\\setlength{\\labelwidth}{#1}\n'
+              '   \\setlength{\\rightmargin}{1cm}\n'
+              '   \\setlength{\\leftmargin}{\\rightmargin}\n'
+              '   \\addtolength{\\leftmargin}{\\labelwidth}\n'
+              '   \\addtolength{\\leftmargin}{\\labelsep}\n'
+              '   \\renewcommand{\\makelabel}{\\optionlistlabel}}\n'
+              '}{\\end{list}}\n',
+              ],
         'footnote_floats' : [
             '% begin: floats for footnotes tweaking.\n',
             '\\setlength{\\floatsep}{0.5em}\n',
@@ -281,18 +302,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
               self.generator,
               # admonition width and docinfo tablewidth
               '\\newlength{\\admwidth}\n\\addtolength{\\admwidth}{0.9\\textwidth}\n',
-              # optionlist environment
-              '\\newcommand{\\optionlistlabel}[1]{\\bf #1 \\hfill}\n'
-              '\\newenvironment{optionlist}[1]\n'
-              '{\\begin{list}{}\n'
-              '  {\\setlength{\\labelwidth}{#1}\n'
-              '   \\setlength{\\rightmargin}{1cm}\n'
-              '   \\setlength{\\leftmargin}{\\rightmargin}\n'
-              '   \\addtolength{\\leftmargin}{\\labelwidth}\n'
-              '   \\addtolength{\\leftmargin}{\\labelsep}\n'
-              '   \\renewcommand{\\makelabel}{\\optionlistlabel}}\n'
-              '}{\\end{list}}\n',
               ]
+        self.head_prefix.extend( latex_headings['optionlist_environment'] )
         self.head_prefix.extend( latex_headings['footnote_floats'] )
         ## stylesheet is last: so it might be possible to overwrite defaults.
         stylesheet = self.get_stylesheet_reference()
@@ -332,6 +343,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self._enum_cnt = 0
         # docinfo. 
         self.docinfo = None
+        # inside literal block: no quote mangling.
+        self.literal_block = 0
 
     def get_stylesheet_reference(self):
         if self.settings.stylesheet_path:
@@ -383,13 +396,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         text = text.replace("%", '{\\%}')
         text = text.replace("#", '{\\#}')
         text = text.replace("~", '{\\~{ }}')
-        t = None
-        for part in text.split('"'):
-            if t == None:
-                t = part
-            else:
-                t += self.babel.next_quote() + part
-        text = t
+        if not self.literal_block:
+            text = self.babel.quote_quotes(text)
         if self.insert_newline:
             text = text.replace("\n", '\\\\\n')
         elif self.mbox_newline:
@@ -717,15 +725,23 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 'loweralpha':'alph',
                 'upperalpha':'Alph', 
                 'lowerroman':'roman',
-                'upperroman':'Roman' };
-        enumtype = "arabic"            
+                'upperroman':'Roman' }
+        enum_suffix = ""
+        if node.has_key('suffix'):
+            enum_suffix = node['suffix']
+        enum_prefix = ""
+        if node.has_key('prefix'):
+            enum_prefix = node['prefix']
+        
+        enum_type = "arabic"
         if node.has_key('enumtype'):
-            enumtype = node['enumtype']
-        if enum_style.has_key(enumtype):
-            enumtype = enum_style[enumtype]
+            enum_type = node['enumtype']
+        if enum_style.has_key(enum_type):
+            enum_type = enum_style[enum_type]
         counter_name = "listcnt%d" % self._enum_cnt;
         self.body.append('\\newcounter{%s}\n' % counter_name)
-        self.body.append('\\begin{list}{\\%s{%s}.}\n' % (enumtype,counter_name))
+        self.body.append('\\begin{list}{%s\\%s{%s}%s}\n' % \
+            (enum_prefix,enum_type,counter_name,enum_suffix))
         self.body.append('{\n')
         self.body.append('\\usecounter{%s}\n' % counter_name)
         # set start after usecounter, because it initializes to zero.
@@ -929,24 +945,20 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # * verbatim: is no possibility, as inline markup does not work.
         # * obey..: is from julien and never worked for me (grubert).
         self.use_for_literal_block = "mbox"
-        if (self.use_for_literal_block == "verbatim"):
-            self.verbatim = 1
-            self.body.append('\\begin{verbatim}\n')
-        elif (self.use_for_literal_block == "mbox"):
+        self.literal_block = 1
+        if (self.use_for_literal_block == "mbox"):
             self.mbox_newline = 1
             self.body.append('\\begin{ttfamily}\\begin{flushleft}\n\\mbox{')
         else:
             self.body.append('{\\obeylines\\obeyspaces\\ttfamily\n')
 
     def depart_literal_block(self, node):
-        if self.use_for_literal_block == "verbatim":
-            self.body.append('\n\\end{verbatim}\n')
-            self.verbatim = 0
-        elif (self.use_for_literal_block == "mbox"):
+        if (self.use_for_literal_block == "mbox"):
             self.body.append('}\n\\end{flushleft}\\end{ttfamily}\n')
             self.mbox_newline = 0
         else:
             self.body.append('}\n')
+        self.literal_block = 0
 
     def visit_meta(self, node):
         self.body.append('[visit_meta]\n')
@@ -1131,7 +1143,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         Return column specification for longtable.
 
         The width is scaled down by 93%. We do it here
-        because the we can use linewidth which should be the local
+        because then we can use linewidth which should be the local
         width.
         """
         width = 0

@@ -62,6 +62,7 @@ latex_head = """\
 totest = {}
 
 totest['table_of_contents'] = [
+# input
 ["""\
 .. contents:: Table of Contents
 
@@ -73,6 +74,7 @@ Title 2
 -------
 Paragraph 2.
 """,
+# expected output
 latex_head + """\
 \\title{Title 1}
 \\author{}
@@ -105,6 +107,136 @@ Paragraph 2.
 \\end{document}
 """],
 
+]
+
+
+totest['enumerated_lists'] = [
+# input
+["""\
+1. Item 1.
+2. Second to the previous item this one will explain
+
+  a) nothing.
+  b) or some other.
+
+3. Third is 
+
+  (I) having pre and postfixes
+  (II) in roman numerals.
+""",
+# expected output
+latex_head + """\
+\\title{}
+\\author{}
+\\date{}
+\\raggedbottom
+\\begin{document}
+\\maketitle
+
+\\newcounter{listcnt1}
+\\begin{list}{\\arabic{listcnt1}.}
+{
+\\usecounter{listcnt1}
+\\setlength{\\rightmargin}{\\leftmargin}
+}
+\\item 
+Item 1.
+
+\\item 
+Second to the previous item this one will explain
+
+\\end{list}
+\\begin{quote}
+\\newcounter{listcnt2}
+\\begin{list}{\\alph{listcnt2})}
+{
+\\usecounter{listcnt2}
+\\setlength{\\rightmargin}{\\leftmargin}
+}
+\\item 
+nothing.
+
+\\item 
+or some other.
+
+\\end{list}
+\\end{quote}
+\\newcounter{listcnt3}
+\\begin{list}{\\arabic{listcnt3}.}
+{
+\\usecounter{listcnt3}
+\\addtocounter{listcnt3}{2}
+\\setlength{\\rightmargin}{\\leftmargin}
+}
+\\item 
+Third is
+
+\\end{list}
+\\begin{quote}
+\\newcounter{listcnt4}
+\\begin{list}{(\\Roman{listcnt4})}
+{
+\\usecounter{listcnt4}
+\\setlength{\\rightmargin}{\\leftmargin}
+}
+\\item 
+having pre and postfixes
+
+\\item 
+in roman numerals.
+
+\\end{list}
+\\end{quote}
+
+\\end{document}
+"""],
+]
+
+totest['quote_mangling'] = [
+# input
+["""\
+Depending on language quotes are converted for latex.
+Expecting "en" here.
+
+Inside literal blocks quotes should be left untouched
+(use only two quotes in test code makes life easier for
+the python interpreter running the test)::
+
+    ""
+    This is left "untouched", but *bold*.
+    ""
+
+.. parsed-literal::
+
+    should get "quotes" and *italics*.
+
+""",
+latex_head + """\
+\\title{}
+\\author{}
+\\date{}
+\\raggedbottom
+\\begin{document}
+\\maketitle
+
+
+Depending on language quotes are converted for latex.
+Expecting ``en'' here.
+
+Inside literal blocks quotes should be left untouched
+(use only two quotes in test code makes life easier for
+the python interpreter running the test):
+\\begin{ttfamily}\\begin{flushleft}
+\\mbox{""}\\\\
+\\mbox{This~is~left~"untouched",~but~*bold*.}\\\\
+\\mbox{""}
+\\end{flushleft}\\end{ttfamily}
+\\begin{ttfamily}\\begin{flushleft}
+\\mbox{should~get~"quotes"~and~\\emph{italics}.}
+\\end{flushleft}\\end{ttfamily}
+
+\\end{document}
+"""],
 ]
 
 if __name__ == '__main__':
