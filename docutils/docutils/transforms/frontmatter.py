@@ -270,7 +270,7 @@ class DocInfo(Transform):
                             raise TransformError
                         title = nodes.title(name, labels[normedname])
                         topics[normedname] = biblioclass(
-                            '', title, CLASS='normedname', *field[1].children)
+                            '', title, CLASS=normedname, *field[1].children)
                     else:
                         docinfo.append(biblioclass('', *field[1].children))
             except TransformError:
