@@ -343,13 +343,13 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
           ['--input-encoding', '-i'],
           {'metavar': '<name>', 'validator': validate_encoding}),
          ('Specify the text encoding for output.  Default is UTF-8.  '
-          'Optionally also specify the encoding error handler for unencodable '
-          'characters (see "--output-encoding-error-encoding"); '
-          'default is "strict".',
+          'Optionally also specify the error handler for unencodable '
+          'characters, after a colon (":"); default is "strict".  (See '
+          '"--output-encoding-error-encoding".)',
           ['--output-encoding', '-o'],
           {'metavar': '<name[:handler]>', 'default': 'utf-8',
            'validator': validate_encoding_and_error_handler}),
-         ('Specify the encoding error handler for unencodable characters in '
+         ('Specify the error handler for unencodable characters in '
           'the output.  Acceptable values include "strict", "ignore", '
           '"replace", "backslashreplace" (in Python 2.3+), and '
           '"xmlcharrefreplace" (in Python 2.3+).  Default is "strict".  '
@@ -357,13 +357,14 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
           ['--output-encoding-error-handler'],
           {'default': 'strict', 'validator': validate_encoding_error_handler}),
          ('Specify the text encoding for error output.  Default is ASCII.  '
-          'Optionally also specify the encoding error handler for unencodable '
-          'characters, after a colon (":").  Default is "%s".'
+          'Optionally also specify the error handler for unencodable '
+          'characters, after a colon (":"); default is "%s".  (See '
+          '"--output-encoding-error-encoding".'
           % default_error_encoding_error_handler,
           ['--error-encoding', '-e'],
           {'metavar': '<name[:handler]>', 'default': 'ascii',
            'validator': validate_encoding_and_error_handler}),
-         ('Specify the encoding error handler for unencodable characters in '
+         ('Specify the error handler for unencodable characters in '
           'error output.  See --output-encoding-error-handler for acceptable '
           'values.  Default is "%s".  Usually specified as part of '
           '--error-encoding.' % default_error_encoding_error_handler,
