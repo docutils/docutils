@@ -23,7 +23,9 @@ def unchanged(arg):
 image_option_spec = {'alt': unchanged,
                      'height': int,
                      'width': int,
-                     'scale': int}
+                     'scale': int,
+					 'align': unchanged}
+
 
 def image(match, type_name, data, state, state_machine, option_presets):
     lineno = state_machine.abs_line_number()
