@@ -44,6 +44,8 @@ peps.TargetNotes                pep (r)                       520
 
 references.TargetNotes          peps.TargetNotes (t/p)        0
 
+misc.CallBack                   peps.TargetNotes (t/p)        1
+
 references.TargetNotes          "target-notes" (d/p)          540
 
 references.Footnotes            standalone (r), pep (r)       620
@@ -68,6 +70,8 @@ universal.FinalChecks           Transformer                   840
 universal.Messages              Transformer                   860
 
 universal.TestMessages          DocutilsTestSupport           890
+
+misc.CallBack                   n/a                           990
 ==============================  ============================  ========
 
 Key:
@@ -86,9 +90,7 @@ Transform Priority Range Categories
 ----------  ------------------------------------------------
 From   To   Category
 ====  ====  ================================================
-         0  immediate execution (added by another transform)
-----------  ------------------------------------------------
-   1    99  unused
+   0    99  immediate execution (added by another transform)
  100   199  very early (non-standard)
  200   299  very early
  300   399  early

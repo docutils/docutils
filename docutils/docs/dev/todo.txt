@@ -401,6 +401,10 @@ Miscellaneous ideas:
 
       from __future__ import division
 
+  Using the JavaDoc convention of a doc-comment block beginning with
+  ``##`` is useful though.  It allows doc-comments and implementation
+  comments.
+
   .. _additional docstrings: pep-0258.html#additional-docstrings
 
 * Multi-file output should be divisible at arbitrary level.

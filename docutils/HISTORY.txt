@@ -17,20 +17,20 @@ on the Docutils project, knowingly or not, in terms of encouragement,
 suggestions, criticism, bug reports, code contributions, tasty treats,
 and related projects:
 
-    Aahz, David Ascher, Fred Bremmer, Ian Bicking, Simon Budig, Brett
-    Cannon, Adam Chodorowski, Fred Drake, Dethe Elza, Benja
-    Fallenstein, fantasai, Stefane Fermigier, Jim Fulton, Peter Funk,
-    Jorge Gonzalez, Engelbert Gruber, Simon Hefti, Doug Hellmann,
-    Juergen Hermann, Michael Hudson, Jeremy Hylton, Tony Ibbs, Alan
-    Jaffray, Dmitry Jemerov, Richard Jones, Andreas Jung, Garth Kidd,
-    Daniel Larsson, Marc-Andre Lemburg, Julien Letessier, Wolfgang
-    Lipp, Edward Loper, Dallas Mahrt, Ken Manheimer, Vasko Miroslav,
-    Skip Montanaro, Paul Moore, Michel Pelletier, Sam Penrose, Tim
-    Peters, Pearu Peterson, Mark Pilgrim, Brett g Porter, Tavis Rudd,
-    Oliver Rutherfurd, Kenichi Sato, Ueli Schlaepfer, Gunnar Schwant,
-    tav, Bob Tolbert, Laurence Tratt, Guido van Rossum, Martin von
-    Loewis, Greg Ward, Barry Warsaw, Edward Welbourne, Ka-Ping Yee,
-    Moshe Zadka
+    Aahz, David Abrahams, David Ascher, Fred Bremmer, Ian Bicking,
+    Simon Budig, Brett Cannon, Adam Chodorowski, Fred Drake, Dethe
+    Elza, Benja Fallenstein, fantasai, Stefane Fermigier, Jim Fulton,
+    Peter Funk, Jorge Gonzalez, Engelbert Gruber, Simon Hefti, Doug
+    Hellmann, Juergen Hermann, Michael Hudson, Jeremy Hylton, Tony
+    Ibbs, Alan Jaffray, Dmitry Jemerov, Richard Jones, Andreas Jung,
+    Garth Kidd, Daniel Larsson, Marc-Andre Lemburg, Julien Letessier,
+    Wolfgang Lipp, Edward Loper, Dallas Mahrt, Ken Manheimer, Vasko
+    Miroslav, Skip Montanaro, Paul Moore, Michel Pelletier, Sam
+    Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim, Brett g Porter,
+    Tavis Rudd, Oliver Rutherfurd, Kenichi Sato, Ueli Schlaepfer,
+    Gunnar Schwant, tav, Bob Tolbert, Laurence Tratt, Guido van
+    Rossum, Martin von Loewis, Greg Ward, Barry Warsaw, Edward
+    Welbourne, Ka-Ping Yee, Moshe Zadka
 
 Thank you!
 
@@ -314,6 +314,9 @@ Specific:
 
   - Improved support for generic fields.
 
+* docutils/transforms/parts.py: Added to project.  Miscellaneous
+  transforms.
+
 * docutils/transforms/parts.py:
 
   - Moved the "id" attribute from TOC list items to the references
@@ -326,7 +329,9 @@ Specific:
     functionality.
   - Linked "Content-Type: text/x-rst" to PEP 12.
   - Added the ``TargetNotes`` PEP-specific transform.
-
+  - Added ``TargetNotes.cleanup_callback``.
+  - Added title check to ``Headers``.
+  
 * docutils/transforms/references.py:
 
   - Added the ``TargetNotes`` generic transform.
