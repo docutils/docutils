@@ -3,7 +3,7 @@
 """
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
-:version: 0.1.3
+:version: 0.1.4
 """
 
 from docutils.factory import main
