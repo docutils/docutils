@@ -283,6 +283,20 @@ Possible solutions include
   other programming/technical characters too; for example, []{}
   etc. are a bit awkward compared to US keyboards.
 
+  According to Axel Kollmorgen,
+
+      Under Windows, you can use the Microsoft Keyboard Layout Creator
+      (available at
+      http://www.microsoft.com/globaldev/tools/msklc.mspx) to easily
+      map the backtick key to a real backtick (no dead key). took me
+      five minutes to load my default (german) keyboard layout, untick
+      "Dead Key?" from the backtick key properties ("in all shift
+      states"), "build dll and setup package", install the generated
+      .msi, and add my custom keyboard layout via Control Panel >
+      Regional and Language Options > Languages > Details > Add
+      Keyboard layout (and setting it as default "when you start your
+      computer").
+
 If anyone knows of other/better solutions, please `let us know`_.
 
 
