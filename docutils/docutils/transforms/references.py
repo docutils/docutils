@@ -691,7 +691,8 @@ class TargetNotes(Transform):
     def make_target_footnote(self, target, refs):
         footnote = nodes.footnote()
         footnote_id = self.document.set_id(footnote)
-        footnote_name = '_targetnote ' + footnote_id
+        # Use a colon; they can't be produced inside names by the parser:
+        footnote_name = 'target_note: ' + footnote_id
         footnote['auto'] = 1
         footnote['name'] = footnote_name
         footnote += nodes.reference('', target['refuri'],
