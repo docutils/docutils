@@ -208,7 +208,7 @@ __ spec/rst/problems.html
 The Sandbox
 ===========
 
-The Sandbox__ is a place to play around, to try out and share ideas. 
+The Sandbox__ is a place to play around, to try out and share ideas.
 It's a part of the CVS repository but it isn't distributed as part of
 Docutils releases (you can get a recent tarball from the `daily
 snapshots`_).  Each developer who wants to play in it should create
@@ -256,7 +256,7 @@ Project Links
   __ `browse the CVS repository`_
 
   __ Doc-SIG_
-  
+
   __ http://www.python.org/
   .. |Python| image:: PyBanner016.png
   .. :border: 0
