@@ -119,6 +119,9 @@ Known Bugs
 
 Also see the `SourceForge Bug Tracker`_.
 
+* According to the specification, the parser needs to allow _`option
+  strings with spaces` when they are surrounded by angle brackets.
+
 * .. _duplicate footnotes:
 
   The following input text causes a crash::
