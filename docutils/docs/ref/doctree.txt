@@ -705,8 +705,8 @@ Pseudo-XML_ fragment from simple parsing::
     <block_quote>
         <paragraph>
             This theory, that is mine, is mine.
-        <paragraph>
-            -- Anne Elk (Miss)
+        <attribution>
+            Anne Elk (Miss)
 
 
 ``bullet_list``
