@@ -6,6 +6,10 @@
       field values actually work).   Lots of cleanup-- reordered a bunch of
       methods that had gotten out of order.  Added limited support for
       Admonitions-- not at all useful yet.
+      (HTMLDocArticleTranslator.visit_enumerated_list): Added support for
+      enumerated lists and modified the paragraph tag rules for all lists.
+      (HTMLDocArticleTranslator.visit_enumerated_list): Added support for
+      non-css based typed enumerated lists.
 
 2002-12-27  Bill Bumgarner  <bbum@codefab.com>
     * DocArticle/DocArticle/__init__.py: Added support for subtitle and
