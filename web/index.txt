@@ -53,6 +53,9 @@ Docutils is currently just a reStructuredText parser with some extras.
 There is a lot of design and implementation work to do, which could
 greatly benefit from a joint effort with existing projects.
 
+This project should be considered highly experimental; we're learning
+as we go.  APIs are subject to change at any time.
+
 
 Daily Snapshots
 ---------------
@@ -274,7 +277,6 @@ Project Links
 .. _master repository:
 .. _peps: http://www.python.org/peps/
 .. _mailto:
-.. _manager:
 .. _David Goodger: mailto:goodger@users.sourceforge.net
 .. _Doc-SIG: http://www.python.org/sigs/doc-sig/
 
