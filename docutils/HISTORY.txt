@@ -14,8 +14,9 @@
 Changes Since 0.3.5
 ===================
 
+* docutils/parsers/rst/directives/parts.py:
 
-(None yet.)
+  - Directive "sectnum" accepts a 'prefix' and a 'start' options
 
 
 Release 0.3.5 (2004-07-29)
