@@ -20,7 +20,14 @@ Unit Tests
 
 Unit tests test single functions or modules (i.e. whitebox testing).
 
-XXX Some details to be written.
+If you are implementing a new feature, be sure to write a test case
+covering its functionality.  It happens very frequently that your
+implementation (or even only a part of it) doesn't work with an older
+(or even newer) Python version, and the only reliable way to detect
+those cases is using tests.
+
+Often, it's easier to write the test first and then implement the
+functionality required to make the test pass.
 
 Setting Up For Testing
 ----------------------
@@ -35,6 +42,54 @@ unittest.py`__ works well.  Download it, place it in the ``test/``
 directory, and enjoy much better output.
 
 __ http://cvs.sf.net/viewcvs.py/*checkout*/python/python/dist/src/Lib/unittest.py?rev=1.7.2.1
+
+Writing New Tests
+-----------------
+
+When writing new tests, it very often helps to see how a similar test
+is implemented.  For example, the files in the
+``test_parsers/test_rst/`` directory all look very similar.  So when
+adding a test, you don't have to reinvent the wheel.
+
+If there is no similar test, you can write a new test from scratch
+using Python's ``unittest`` module.  For an example, please have a
+look at the following imaginary ``test_square.py``::
+
+    #! /usr/bin/env python
+
+    # Author: your name
+    # Contact: your email address
+    # Revision: $Revision$
+    # Date: $Date$
+    # Copyright: This module has been placed in the public domain.
+
+    """
+    Test module for docutils.square.
+    """
+
+    import unittest
+    import docutils.square
+
+
+    class SquareTest(unittest.TestCase):
+
+        def test_square(self):
+            self.assertEqual(docutils.square.square(0), 0)
+            self.assertEqual(docutils.square.square(5), 25)
+            self.assertEqual(docutils.square.square(7), 49)
+
+        def test_square_root(self):
+            self.assertEqual(docutils.square.sqrt(49), 7)
+            self.assertEqual(docutils.square.sqrt(0), 0)
+            self.assertRaises(docutils.square.SquareRootError,
+                              docutils.square.sqrt, 20)
+            
+
+    if __name__ == '__main__':
+        unittest.main()
+
+For more details on how to write tests, please refer to the
+documentation of the ``unittest`` module.
 
 
 .. _functional::
