@@ -1,0 +1,565 @@
+==============================
+ Docutils Configuration Files
+==============================
+
+:Author: David Goodger
+:Contact: goodger@python.org
+:Revision: $Revision$
+:Date: $Date$
+:Copyright: This document has been placed in the public domain.
+
+.. contents::
+
+.. Cross-reference command-line options with configuration file
+   settings?  Make alphabetical indexes of both.
+
+Configuration files are used for persistent customization; they can be
+set once and take effect every time you use a front-end tool.
+Configuration file settings override the built-in defaults, and
+command-line options override all.
+
+By default, Docutils checks the following places for configuration
+files, in the following order:
+
+1. ``/etc/docutils.conf``: This is a system-wide configuration file,
+   applicable to all Docutils processing on the system.
+
+2. ``./docutils.conf``: This is a project-specific configuration file,
+   located in the current directory.  The Docutils front end has to be
+   executed from the directory containing this configuration file for
+   it to take effect (note that this may have nothing to do with the
+   location of the source files).  Settings in the project-specific
+   configuration file will override corresponding settings in the
+   system-wide file.
+
+3. ``~/.docutils``: This is a user-specific configuration file,
+   located in the user's home directory.  Settings in this file will
+   override corresponding settings in both the system-wide and
+   project-specific configuration files.
+
+If more than one configuration file is found, all will be read but
+later entries will override earlier ones.  For example, a "stylesheet"
+entry in a user-specific configuration file will override a
+"stylesheet" entry in the system-wide file.
+
+In addition, a configuration file may be explicitly specified with the
+"--config" command-line option.  This configuration file is read after
+the three implicit ones listed above, and its entries will have
+priority.
+
+
+-------------------------------------
+Configuration File Sections & Entries
+-------------------------------------
+
+Configuration files use the standard ConfigParser.py_ Python_ module.
+From its documentation:
+
+    The configuration file consists of sections, lead by a "[section]"
+    header and followed by "name: value" entries, with continuations
+    in the style of `RFC 822`_; "name=value" is also accepted.  Note
+    that leading whitespace is removed from values.  The optional
+    values can contain format strings which refer to other values in
+    the same section, or values in a special DEFAULT section.
+    Additional defaults can be provided upon initialization and
+    retrieval.  Lines beginning with "#" or ";" are ignored and may be
+    used to provide comments.
+
+Configuration file entry names correspond to internal runtime
+settings.  Underscores ("_") and hyphens ("-") can be used
+interchangably in entry names; hyphens are automatically converted to
+underscores.
+
+Below are the Docutils runtime settings, listed by config file
+section.  Any setting may be specified in any section, but only
+settings from active sections will be used.  Sections correspond to
+Docutils components (module name or alias; section names are always in
+lowercase letters).  Each `Docutils application`_ uses a specific set
+of components; corresponding configuration file sections are applied
+when the application is used.  Configuration sections are applied in
+general-to-specific order, as follows:
+
+1. `[general]`_
+
+2. `[parsers]`_, parser dependencies, and the section specific to the
+   Parser used ("[... parser]").  Currently, only `[restructuredtext
+   parser]`_ is applicable.
+
+3. `[readers]`_, reader dependencies, and the section specific to the
+   Reader used ("[... reader]").  For example, `[pep reader]`_ depends
+   on `[standalone reader]`_.
+
+4. `[writers]`_, writer dependencies, and the section specific to the
+   Writer used ("[... writer]").  For example, `[pep_html writer]`_
+   depends on `[html4css1 writer]`_.
+
+5. `[applications]`_, application dependencies, and the section
+    specific to the Application (front-end tool) in use
+    ("[... application]").
+
+Since any setting may be specified in any section, this ordering
+allows component- or application-specific overrides of earlier
+settings.  For example, there may be Reader-specific overrides of
+general settings; Writer-specific overrides of Parser settings;
+Application-specific overrides of Writer settings; and so on.
+
+If multiple configuration files are applicable, the process is
+completed (all sections are applied in the order given) for each one
+before going on to the next.  For example, a "[pep_html writer]
+stylesheet" setting in an earlier configuration file would be
+overridden by an "[html4css1 writer] stylesheet" setting in a later
+file.
+
+Some knowledge of Python_ is assumed for some attributes.
+
+.. _ConfigParser.py:
+   http://www.python.org/doc/current/lib/module-ConfigParser.html
+.. _Python: http://www.python.org/
+.. _RFC 822: http://www.rfc-editor.org/rfc/rfc822.txt
+.. _Docutils application: tools.html
+
+
+[general]
+=========
+
+Settings in the "[general]" section are always applied.
+
+_`datestamp`
+    Include a time/datestamp in the document footer.  Contains a
+    format string for Python's ``time.strftime``.  See the `time
+    module documentation`__.
+
+    Default: None.  Options: ``--date, -d, --time, -t,
+    --no-datestamp``.
+
+    __ http://www.python.org/doc/current/lib/module-time.html
+
+_`debug`
+    Report debug-level system messages.
+
+    Default: don't (None).  Options: ``--debug, --no-debug``.
+
+_`dump_internals`
+    At the end of processing, write all internal attributes of the
+    document (``document.__dict__``) to stderr.
+
+    Default: don't (None).  Options: ``--dump-internals`` (hidden, for
+    development use only).
+
+_`dump_pseudo_xml`
+    At the end of processing, write the pseudo-XML representation of
+    the document to stderr.
+
+    Default: don't (None).  Options: ``--dump-pseudo-xml`` (hidden,
+    for development use only).
+
+_`dump_settings`
+    At the end of processing, write all Docutils settings to stderr.
+
+    Default: don't (None).  Options: ``--dump-settings`` (hidden, for
+    development use only).
+
+_`dump_transforms`
+    At the end of processing, write a list of all transforms applied
+    to the document to stderr.
+
+    Default: don't (None).  Options: ``--dump-transforms`` (hidden,
+    for development use only).
+
+_`error_encoding`
+    The text encoding for error output.
+
+    Default: "ascii".  Options: ``--error-encoding, -e``.
+
+_`error_encoding_error_handler`
+    The encoding error handler for unencodable characters in error
+    output.  Acceptable values are the same as for the "error"
+    parameter of Python's ``encode`` string method.
+
+    Default: "backslashreplace" for Python 2.3 and later; "replace"
+    otherwise.  Options: ``--error-encoding-error-handler,
+    --error-encoding, -e``.
+
+_`exit_level`
+    A system message level threshold; non-halting system messages at
+    or above this level will produce a non-zero exit status at normal
+    exit.  Exit status is the maximum system message level plus 10 (11
+    for INFO, etc.).
+
+    Default: disabled (5).  Options: ``--exit``.
+
+_`expose_internals`
+    List of internal attribues to expose as external attributes (with
+    "internal:" namespace prefix).
+
+    Default: don't (None).  Options: ``--expose-internal-attribute``
+    (hidden, for development use only).
+
+_`footnote_backlinks`
+    Enable or disable backlinks from footnotes and citations to their
+    references.
+
+    Default: enabled (1).  Options: ``--footnote-backlinks,
+    --no-footnote-backlinks``.
+
+_`generator`
+    Include a "Generated by Docutils" credit and link in the document
+    footer.
+
+    Default: off (None).  Options: ``--generator, -g,
+    --no-generator``.
+
+_`halt_level`
+    The threshold at or above which system messages are converted to
+    exceptions, halting execution immediately.
+
+    Default: severe (4).  Options: ``--halt, --strict``.
+
+_`input_encoding`
+    The text encoding for input.
+
+    Default: auto-detect (None).  Options: ``--input-encoding, -i``.
+
+_`language_code`
+    `ISO 639`_ 2-letter language code (3-letter codes used only if no
+    2-letter code exists).
+
+    Default: English ("en").  Options: ``--language, -l``.
+
+_`output_encoding`
+    The text encoding for output.
+
+    Default: "UTF-8".  Options: ``--output-encoding, -o``.
+
+_`output_encoding_error_handler`
+    The encoding error handler for unencodable characters in output.
+    Acceptable values are the same as for the "error" parameter of
+    Python's ``encode`` string method.
+
+    Default: "strict".  Options: ``--output-encoding-error-handler,
+    --output-encoding, -o``.
+
+_`report_level`
+    Verbosity threshold at or above which system messages are
+    reported.
+
+    Default: warning (2).  Options: ``--report, -r, --verbose, -v,
+    --quiet, -q``.
+
+_`source_link`
+    Include a "View document source" link in the document footer.  URL
+    will be relative to the destination.
+
+    Default: don't (None).  Options: ``--source-link, -s,
+    --no-source-link``.
+
+_`source_url`
+    An explicit URL for a "View document source" link, used verbatim.
+
+    Default: compute if source_link (None).  Options: ``--source-uri,
+    --no-source-link``.
+
+_`toc_backlinks`
+    Enable backlinks from section titles to table of contents entries
+    ("entry"), to the top of the TOC ("top"), or disable ("none").
+
+    Default: "entry".  Options: ``--toc-entry-backlinks,
+    --toc-top-backlinks, --no-toc-backlinks``.
+
+_`traceback`
+    Enable Python tracebacks when an error occurs.
+
+    Default: disabled (None).  Options: ``--traceback,
+    --no-traceback``.
+
+_`warning_stream`
+    Path to a file for the output of system messages (warnings)
+    [#pwd]_.
+
+    Default: stderr (None).  Options: ``--warnings``.
+
+
+[parsers]
+---------
+
+Docutils currently supports only one parser, for reStructuredText.
+
+
+[restructuredtext parser]
+`````````````````````````
+
+_`pep_references`
+    Recognize and link to PEP references (like "PEP 258").
+
+    Default: disabled (None); enabled (1) in PEP Reader.  Options:
+    ``--pep-references``.
+
+_`rfc_references`
+    Recognize and link to RFC references (like "RFC 822").
+
+    Default: disabled (None); enabled (1) in PEP Reader.  Options:
+    ``--rfc-references``.
+
+_`tab_width`
+    Number of spaces for hard tab expansion.
+
+    Default: 8.  Options: ``--tab-width``.
+
+_`trim-footnote-reference-space`
+    Remove spaces before footnote references.
+
+    Default: don't (None).  Options:
+    ``--trim-footnote-reference-space``.
+
+
+[readers]
+---------
+
+
+[standalone reader]
+```````````````````
+
+_`docinfo_xform`
+    Enable or disable the bibliographic field list transform
+    (docutils.transforms.frontmatter.DocInfo).
+
+    Default: enabled (1).  Options: ``--no-doc-info``.
+
+_`doctitle_xform`
+    Enable or disable the promotion of a lone top-level section title
+    to document title (and subsequent section title to document
+    subtitle promotion; docutils.transforms.frontmatter.DocTitle).
+
+    Default: enabled ().  Options: ``--no-doc-title``.
+
+
+[pep reader]
+````````````
+
+The `pep_references`_ and `rfc_references`_ options
+(`[restructuredtext parser]`_) are set on by default.
+
+
+[python reader]
+```````````````
+
+Under construction.
+
+
+[writers]
+---------
+
+[docutils_xml writer]
+`````````````````````
+
+_`doctype_declaration`
+    Generate XML with a DOCTYPE declaration.
+
+    Default: do (1).  Options: ``--no-doctype``.
+
+_`indents`
+    Generate XML with indents and newlines.
+
+    Default: don't (None).  Options: ``--indents``.
+
+_`newlines`
+    Generate XML with newlines before and after tags.
+
+    Default: don't (None).  Options: ``--newlines``.
+
+.. _xml_declaration [docutils_xml writer]:
+
+xml_declaration
+    Generate XML with an XML declaration.  Also defined for the
+    `HTML Writer`__.
+
+    .. Caution:: The XML declaration carries text encoding
+       information, without which standard tools may be unable to read
+       the generated XML.
+
+    Default: do (1).  Options: ``--no-xml-declaration``.
+
+    __ `xml_declaration [html4css1 writer]`_
+
+
+[html4css1 writer]
+``````````````````
+
+_`attribution`
+    Format for block quote attributions: one of "dash" (em-dash
+    prefix), "parentheses"/"parens", or "none".
+
+    Default: "dash".  Options: ``--attribution``.
+
+_`compact_lists`
+    Remove extra vertical whitespace between items of bullet lists and
+    enumerated lists, when list items are "simple" (i.e., all items
+    each contain one paragraph and/or one "simple" sublist only).
+
+    Default: enabled (1).  Options: ``--compact-lists,
+    --no-compact-lists``.
+
+_`embed_stylesheet`
+    Embed the stylesheet in the output HTML file.  The stylesheet file
+    must be accessible during processing.  The stylesheet is embedded
+    inside a comment, so it must not contain the text "``--``" (two
+    hyphens).
+
+    Default: link, don't embed (None).  Options: ``--embed-stylesheet,
+    --link-stylesheet``.
+
+_`footnote_references`
+    Format for footnote references, one of "superscript" or
+    "brackets".
+
+    Default: "superscript"; "brackets" in PEP/HTML Writer.  Options:
+    ``--footnote-references``.
+
+_`stylesheet`
+    CSS stylesheet URL, used verbatim.  Overridden by
+    "stylesheet_path" URL option (``--stylesheet-path``).
+
+    Default: "default.css".  Options: ``--stylesheet``.
+
+_`stylesheet_path`
+    Path to CSS stylesheet [#pwd]_.  Overrides "stylesheet" URL option
+    (``--stylesheet``).  Path is adjusted relative to the output HTML
+    file.
+
+    Default: None.  Options: ``--stylesheet``.
+
+.. _xml_declaration [html4css1 writer]:
+
+xml_declaration
+    Generate XML with an XML declaration.  Also defined for the
+    `Docutils XML Writer`__.
+
+    .. Caution:: The XML declaration carries text encoding
+       information, without which standard tools may be unable to read
+       the generated XML.
+
+    Default: do (1).  Options: ``--no-xml-declaration``.
+
+    __ `xml_declaration [docutils_xml writer]`_
+
+
+[pep_html writer]
+.................
+
+The PEP/HTML Writer derives from the standard HTML Writer, and shares
+all settings defined in the `[html4css1 writer]`_ section.  The
+"[html4css1 writer]" section is processed before "[pep_html writer]".
+
+_`no_random`
+    Workaround for platforms which core-dump on "``import random``".
+
+    Default: random enabled (None).  Options: ``--no-random``
+    (hidden).
+
+_`pep_home`
+    Home URL prefix for PEPs.
+
+    Default: current directory (".").  Options: ``--pep-home``.
+
+_`template`
+    Path to PEP template file [#pwd]_.
+
+    Default: "pep-html-template" (in current directory).  Options:
+    ``--template``.
+
+_`python_home`
+    Python's home URL.
+
+    Default: parent directory ("..").  Options: ``--python-home``.
+
+
+[latex2e writer]
+````````````````
+
+(To be completed.)
+
+
+[pseudoxml writer]
+``````````````````
+
+No settings are defined for this Writer.
+
+
+[applications]
+--------------
+
+[buildhtml application]
+```````````````````````
+
+_`prune`
+    List of directories not to process.  To specify multiple
+    directories in configuration files, use colon-separated paths; on
+    the command line, the option may be used more than once.
+
+    Default: none ([]).  Options: ``--prune``.
+
+_`recurse`
+    Recursively scan subdirectories, or ignore subdirectories.
+
+    Default: recurse (1).  Options: ``--recurse, --local``.
+
+_`silent`
+    Work silently (no progress messages).  Independent of
+    "report_level".
+
+    Default: show progress (None).  Options: ``--silent``.
+
+
+[docfactory application]
+````````````````````````
+
+(To be completed.)
+
+
+Other Settings
+==============
+
+These settings are only effective as command-line options, positional
+arguments, or for internal use; setting them in configuration files
+has no effect.
+
+_`config`
+    Path to a configuration file to read (if it exists) [#pwd]_.
+    Settings may override defaults and earlier settings.  The config
+    file is processed immediately.  Multiple ``--config`` options may
+    be specified; each will be processed in turn.
+
+    Filesystem path settings contained within the config file will be
+    interpreted relative to the config file's location (*not* relative
+    to the current working directory).
+
+    Default: None.  Options: ``--config``.
+
+_`_directories`
+    (``buildhtml.py`` front end.)  List of paths to source
+    directories, set from positional arguments.
+
+    Default: current working directory (None).  No command-line
+    options.
+
+_`_disable_config`
+    Prevent standard configuration files from being read.  For
+    internal use only.
+
+    Default: config files enabled (None).  No command-line options.
+
+_`_destination`
+    Path to output destination, set from positional arguments.
+
+    Default: stdout (None).  No command-line options.
+
+_`_source`
+    Path to input source, set from positional arguments.
+
+    Default: stdin (None).  No command-line options.
+
+
+.. _ISO 639: http://lcweb.loc.gov/standards/iso639-2/englangn.html
+
+.. [#pwd] Path relative to the working directory of the process at
+   launch.
