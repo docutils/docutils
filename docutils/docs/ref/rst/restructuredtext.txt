@@ -2454,12 +2454,13 @@ Markup errors are handled according to the specification in `PEP
 .. _DocTitle transform:
 .. _DocInfo transform:
    http://docutils.sourceforge.net/docutils/transforms/frontmatter.py
-.. _doctest module:
-   http://www.python.org/doc/current/lib/module-doctest.html
 .. _getopt.py:
    http://www.python.org/doc/current/lib/module-getopt.html
 .. _GNU libc getopt_long():
    http://www.gnu.org/manual/glibc-2.2.3/html_node/libc_516.html
+.. _doctest module:
+   http://www.python.org/doc/current/lib/module-doctest.html
+.. _Emacs table mode: http://table.sourceforge.net/
 .. _Index of WWW Addressing Schemes:
    http://www.w3.org/Addressing/schemes.html
 .. _World Wide Web Consortium: http://www.w3.org/
