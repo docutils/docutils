@@ -124,6 +124,20 @@ Implements strong emphasis.  These are equivalent::
 
 Implements subscripts.
 
+.. Tip::
+
+   Whitespace or punctuation is required around interpreted text, but
+   often not desired with subscripts & superscripts.
+   Backslash-escaped whitespace can be used; the whitespace will be
+   removed from the processed document::
+
+       H\ :sub:`2`O
+       E = mc\ :sup:`2`
+
+   See `the reStructuredText spec`__ for further information.
+
+   __ ./reStructuredText.html#character-level-inline-markup
+
 
 ``:superscript:``
 =================
@@ -131,7 +145,7 @@ Implements subscripts.
 :Aliases: ``:sup:``
 :DTD Element: superscript
 
-Implements superscripts.
+Implements superscripts.  See the tip in `:subscript:`_ above.
 
 
 ``:title-reference:``
