@@ -172,13 +172,12 @@ class PEPZeroSpecial(nodes.SparseNodeVisitor):
             raise nodes.SkipNode
 
     def visit_tgroup(self, node):
-        if node['cols'] != 4:
-            raise nodes.SkipNode
+        self.pep_table = node['cols'] == 4
         self.entry = 0
 
     def visit_colspec(self, node):
         self.entry += 1
-        if self.entry == 2:
+        if self.pep_table and self.entry == 2:
             node['class'] = 'num'
 
     def visit_row(self, node):
@@ -186,7 +185,7 @@ class PEPZeroSpecial(nodes.SparseNodeVisitor):
 
     def visit_entry(self, node):
         self.entry += 1
-        if self.entry == 2 and len(node) == 1:
+        if self.pep_table and self.entry == 2 and len(node) == 1:
             p = node[0]
             if isinstance(p, nodes.paragraph) and len(p) == 1:
                 text = p.astext()
