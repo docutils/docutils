@@ -7,7 +7,7 @@ function do_diff() {
   CHECKS=$((CHECKS + 1)) 
   diff -q -s $1 $2
   if test $? -gt 0 ; then
-    FAILS=$((FAIL + 1)) 
+    FAILS=$((FAILS + 1)) 
   fi
 }
 
@@ -35,7 +35,7 @@ fi
 for INF in `ls test/$FM` ; do
   OUTF="$INF.tex"
   REFF="$OUTF.ref"
-  $CMD $INF > $OUTF
+  $CMD $2 $INF > $OUTF
   do_diff $REFF $OUTF 
 done
 
@@ -57,6 +57,12 @@ $CMD -l de $INF > $OUTF
 do_diff $REFF $OUTF 
 
 INF=test/tools.txt
+OUTF="$INF-ltoc.tex"
+REFF="$OUTF.ref"
+$CMD --use-latex-toc 1 $INF > $OUTF
+do_diff $REFF $OUTF 
+
+INF=test/manual2.txt
 OUTF="$INF-ltoc.tex"
 REFF="$OUTF.ref"
 $CMD --use-latex-toc 1 $INF > $OUTF
