@@ -1,11 +1,10 @@
-#! /usr/bin/env python
-"""
-:Authors: David Goodger, Ueli Schlaepfer
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Authors: David Goodger, Ueli Schlaepfer
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
+"""
 Transforms needed by most or all documents:
 
 - `Decorations`: Generate a document's header & footer.
@@ -133,6 +132,9 @@ class FinalChecks(Transform):
     def transform(self):
         visitor = FinalCheckVisitor(self.document)
         self.document.walk(visitor)
+        if self.document.options.expose_internals:
+            visitor = InternalAttributeExposer(self.document)
+            self.document.walk(visitor)
 
 
 class FinalCheckVisitor(nodes.SparseNodeVisitor):
@@ -147,7 +149,8 @@ class FinalCheckVisitor(nodes.SparseNodeVisitor):
         id = self.document.nameids.get(refname)
         if id is None:
             msg = self.document.reporter.error(
-                  'Unknown target name: "%s".' % (node['refname']))
+                  'Unknown target name: "%s".' % (node['refname']),
+                  base_node=node)
             msgid = self.document.set_id(msg)
             prb = nodes.problematic(
                   node.rawsource, node.rawsource, refid=msgid)
@@ -161,6 +164,19 @@ class FinalCheckVisitor(nodes.SparseNodeVisitor):
             node.resolved = 1
 
     visit_footnote_reference = visit_citation_reference = visit_reference
+
+
+class InternalAttributeExposer(nodes.GenericNodeVisitor):
+
+    def __init__(self, document):
+        nodes.GenericNodeVisitor.__init__(self, document)
+        self.internal_attributes = document.options.expose_internals
+
+    def default_visit(self, node):
+        for att in self.internal_attributes:
+            value = getattr(node, att, None)
+            if value is not None:
+                node['internal:' + att] = value
 
 
 class Pending(Transform):
