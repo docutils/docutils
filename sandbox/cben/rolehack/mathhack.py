@@ -8,7 +8,7 @@
     -- David Goodger.
 
 Convert the default and ``texmath`` role to raw latex inline math and the
-``texdisplay`` role to display math.
+``texmath`` directive to display math.
 """
 
 from rolehack import *
@@ -23,4 +23,4 @@ raw:: latex
 
     \[ ''', ' \]\n')
 
-main({'texmath': texmath, 'texdisplay': texdisplay}, default=texmath)
+main({'texmath': texmath}, texmath, {'texmath': texdisplay})
