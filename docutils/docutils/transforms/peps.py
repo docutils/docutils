@@ -186,6 +186,7 @@ class PEPZeroSpecial(nodes.SparseNodeVisitor):
     def visit_entry(self, node):
         self.entry += 1
         if self.pep_table and self.entry == 2 and len(node) == 1:
+            node['class'] = 'num'
             p = node[0]
             if isinstance(p, nodes.paragraph) and len(p) == 1:
                 text = p.astext()
