@@ -10,9 +10,11 @@ __docformat__ = 'reStructuredText'
 
 import sys
 import os.path
+import re
 from urllib2 import urlopen, URLError
 from docutils import io, nodes, statemachine, utils
 from docutils.parsers.rst import directives, states
+from docutils.transforms import misc
 
 
 def include(name, arguments, options, content, lineno,
@@ -150,6 +152,57 @@ def replace(name, arguments, options, content, lineno,
         return [error]
 
 replace.content = 1
+
+def unicode_directive(name, arguments, options, content, lineno,
+                         content_offset, block_text, state, state_machine):
+    r"""
+    Convert Unicode character codes (numbers) to characters.  Codes may be
+    decimal numbers, hexadecimal numbers (prefixed by ``0x``, ``x``, ``\x``,
+    ``u``, or ``\u``), or XML-style numbered character entities (e.g.
+    ``&#x1a2b;``).
+    """
+    if not isinstance(state, states.SubstitutionDef):
+        error = state_machine.reporter.error(
+            'Invalid context: the "%s" directive can only be used within a '
+            'substitution definition.' % (name),
+            nodes.literal_block(block_text, block_text), line=lineno)
+        return [error]
+    codes = arguments[0].split()
+    element = nodes.Element()
+    for code in codes:
+        if code.isdigit():
+            element += nodes.Text(int(code))
+        else:
+            match = unicode_pattern.match(code)
+            if match:
+                element += nodes.Text(unichr(int(match.group(2), 16)))
+            else:
+                element += nodes.Text(code)
+    return element.children
+
+unicode_directive.arguments = (1, 0, 1)
+unicode_pattern = re.compile(r'(0x|x|\x00x|u|\x00u|&#x)([0-9a-f]+);?$',
+                             re.IGNORECASE)
+
+def class_directive(name, arguments, options, content, lineno,
+                       content_offset, block_text, state, state_machine):
+    """"""
+    class_value = nodes.make_id(arguments[0])
+    if class_value:
+        pending = nodes.pending(misc.ClassAttribute,
+                                {'class': class_value, 'directive': name},
+                                block_text)
+        state_machine.document.note_pending(pending)
+        return [pending]
+    else:
+        error = state_machine.reporter.error(
+            'Invalid class attribute value for "%s" directive: %s'
+            % (name, arguments[0]),
+            nodes.literal_block(block_text, block_text), line=lineno)
+        return [error]
+
+class_directive.arguments = (1, 0, 0)
+class_directive.content = 1
 
 def directive_test_function(name, arguments, options, content, lineno,
                             content_offset, block_text, state, state_machine):
