@@ -1284,7 +1284,7 @@ class NodeVisitor:
 
     def dispatch_departure(self, node):
         node_name = node.__class__.__name__
-        method = getattr(self, 'depart_' + method_name, self.unknown_departure)
+        method = getattr(self, 'depart_' + node_name, self.unknown_departure)
         self.document.reporter.debug(
             'calling %s for %s' % (method.__name__, node_name),
             category='nodes.NodeVisitor.dispatch_departure')
