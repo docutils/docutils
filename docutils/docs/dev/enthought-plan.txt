@@ -294,7 +294,7 @@ current Enthought code (from lib/cp/fluids/gassmann.py)::
         ----------
         temperature : sequence
             Temperature in degrees Celsius
-        pressure: sequence
+        pressure : sequence
             Pressure in MPa
         api : sequence
             Stock tank oil API
@@ -327,7 +327,7 @@ Rather than using subsections, field lists (which exist now) can save
         :Parameters:
             temperature : sequence
                 Temperature in degrees Celsius
-            pressure: sequence
+            pressure : sequence
                 Pressure in MPa
             api : sequence
                 Stock tank oil API
@@ -351,7 +351,7 @@ example:
     :Parameters:
         temperature : sequence
             Temperature in degrees Celsius
-        pressure: sequence
+        pressure : sequence
             Pressure in MPa
         api : sequence
             Stock tank oil API
@@ -418,7 +418,7 @@ Combining these ideas, the function definition becomes::
 
         :Parameters:
             temperature : sequence === Temperature in degrees Celsius
-            pressure: sequence === Pressure in MPa
+            pressure : sequence === Pressure in MPa
             api : sequence === Stock tank oil API
             specific_gravity : sequence === Specific gravity of gas at
                 STP, default is .56
