@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!DOCTYPE TEI.2 SYSTEM "/home/paul/Documents/data/dtds/docbookx.dtd">
+<TEI.2><teiHeader><fileDesc><titleStmt><title>
+        Example of reStructure document that can be converted to docbook
+    </title><author>
+            
+            
+                
+                    <first>
+                        
+                        
+                            <p>
+                                Paul
+                            </p>
+                        
+                    </first>
+                    <surname>
+                        
+                        
+                            
+                                Tremblay
+                            
+                        
+                    </surname>
+                    <email>
+                        
+                        
+                            <p>
+                                <ref target="">
+                                    phthenry@earthlink.net
+                                </ref>
+                            </p>
+                        
+                    </email>
+                
+                
+            
+        </author></titleStmt><publicationStmt><distributor>
+                            none
+                        </distributor></publicationStmt><sourceDesc><p>no source--a manuscript</p></sourceDesc></fileDesc></teiHeader><text><body>
+    
+    
+    <!--
+        author: Paul Tremblay Won't work like that
+    -->
+    <!--
+        start body
+    -->
+    <div rend="1" id="using-snippets-of-code" type="using snippets of code">
+        <head>
+            Using snippets of code
+        </head>
+        <p>
+            How to represent a snippet of code:
+        </p>
+        
+            <example program="">
+                
+                
+                    
+                        <title>
+                            
+                            
+                                <p>
+                                    Processing a variable
+                                </p>
+                            
+                        </title>
+                    
+                    <literal_block xml:space="preserve">
+                        if var = 5
+  self.__process(var)
+                    </literal_block>
+                
+            </example>
+        
+        <p>
+            Keep in mind that the docbook should look like:
+        </p>
+        <literal_block xml:space="preserve">
+            &lt;example&gt;
+  &lt;title&gt;A formal example&lt;/title&gt;
+  &lt;programlisting&gt;
+    if var = 5
+    self.__process(var)
+  &lt;/programlisting&gt;
+&lt;/example&gt;
+        </literal_block>
+        <!--
+            end of example
+        -->
+    </div>
+</body></text></TEI.2>
