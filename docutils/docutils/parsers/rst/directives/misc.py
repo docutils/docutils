@@ -11,10 +11,14 @@ __docformat__ = 'reStructuredText'
 import sys
 import os.path
 import re
-from urllib2 import urlopen, URLError
 from docutils import io, nodes, statemachine, utils
 from docutils.parsers.rst import directives, states
 from docutils.transforms import misc
+
+try:
+    import urllib2
+except ImportError:
+    urllib2 = None
 
 
 def include(name, arguments, options, content, lineno,
@@ -97,9 +101,16 @@ def raw(name, arguments, options, content, lineno,
         raw_file.close()
         attributes['source'] = path
     elif options.has_key('url'):
+        if not urllib2:
+            severe = state_machine.reporter.severe(
+                  'Problems with the "%s" directive and its "url" option: '
+                  'unable to access the required functionality (from the '
+                  '"urllib2" module).' % name,
+                  nodes.literal_block(block_text, block_text), line=lineno)
+            return [severe]
         try:
-            raw_file = urlopen(options['url'])
-        except (URLError, IOError, OSError), error:
+            raw_file = urllib2.urlopen(options['url'])
+        except (urllib2.URLError, IOError, OSError), error:
             severe = state_machine.reporter.severe(
                   'Problems with "%s" directive URL "%s":\n%s.'
                   % (name, options['url'], error),
