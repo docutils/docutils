@@ -29,6 +29,8 @@ class Writer(Component):
     Call `write()` to process a document.
     """
 
+    component_type = 'writer'
+
     document = None
     """The document to write."""
 
@@ -38,32 +40,17 @@ class Writer(Component):
     destination = None
     """`docutils.io` IO object; where to write the document."""
 
-    transforms = ()
-    """Ordered list of transform classes (each with an ``apply()`` method).
-    Populated by subclasses. `Writer.transform()` instantiates & runs them."""
-
     def __init__(self):
         """Initialize the Writer instance."""
-
-        self.transforms = list(self.transforms)
-        """Instance copy of `Writer.transforms`; may be modified by client."""
 
     def write(self, document, destination):
         self.document = document
         self.language = languages.get_language(
             document.settings.language_code)
         self.destination = destination
-        self.transform()
         self.translate()
         output = self.destination.write(self.output)
         return output
-
-    def transform(self):
-        """Run all of the transforms defined for this Writer."""
-        for xclass in (universal.first_writer_transforms
-                       + tuple(self.transforms)
-                       + universal.last_writer_transforms):
-            xclass(self.document, self).apply()
 
     def translate(self):
         """
