@@ -84,7 +84,8 @@ _writer_aliases = {
       'html': 'html4css1',
       'pprint': 'pseudoxml',
       'pformat': 'pseudoxml',
-      'pdf': 'rlpdf',}
+      'pdf': 'rlpdf',
+      'xml': 'docutils_xml',}
 
 def get_writer_class(writer_name):
     """Return the Writer class from the `writer_name` module."""
