@@ -363,7 +363,8 @@ def relative_uri(source, target):
         return '/'.join(target_parts)
     source_parts.reverse()
     target_parts.reverse()
-    while source_parts[-1] == target_parts[-1]:
+    while (source_parts and target_parts
+           and source_parts[-1] == target_parts[-1]):
         # Remove path components in common:
         source_parts.pop()
         target_parts.pop()
