@@ -1,7 +1,10 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+
 <html>
   <head>
     <title>Quick reStructuredText</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
 
     <style type="text/css"><!--
       a.backref { text-decoration: none ; color: black }
@@ -17,8 +20,8 @@
 
     <p align="right"><em><a href="http://docutils.sourceforge.net/docs/user/rst/quickref.html"
     >http://docutils.sourceforge.net/docs/user/rst/quickref.html</a></em>
-    <br align="right"><em>Being a cheat-sheet for reStructuredText</em>
-    <br align="right"><em>Updated $Date$</em>
+    <br><em>Being a cheat-sheet for reStructuredText</em>
+    <br><em>Updated $Date$</em>
 
     <blockquote>
       <p>Copyright: This document has been placed in the public domain.
@@ -576,8 +579,8 @@
 <br><samp>Per-line&nbsp;quoting&nbsp;can&nbsp;also&nbsp;be&nbsp;used&nbsp;on</samp>
 <br><samp>unindented&nbsp;literal&nbsp;blocks:</samp>
 <br>
-<br><samp>>&nbsp;Useful&nbsp;for&nbsp;quotes&nbsp;from&nbsp;email&nbsp;and</samp>
-<br><samp>>&nbsp;for&nbsp;Haskell&nbsp;literate&nbsp;programming.<samp>
+<br><samp>&gt;&nbsp;Useful&nbsp;for&nbsp;quotes&nbsp;from&nbsp;email&nbsp;and</samp>
+<br><samp>&gt;&nbsp;for&nbsp;Haskell&nbsp;literate&nbsp;programming.</samp>
 
       <td>
         <p>A paragraph containing only two colons
@@ -614,8 +617,8 @@ This means that something like this is possible:
 unindented literal blocks:
 
         <pre>
-  > Useful for quotes from email and
-  > for Haskell literate programming.</pre>
+  &gt; Useful for quotes from email and
+  &gt; for Haskell literate programming.</pre>
     </table>
 
     <h2><a href="#contents" name="block-quotes" class="backref"
@@ -767,9 +770,9 @@ unindented literal blocks:
         <p>Simple table:</p>
         <table border="1">
           <colgroup>
-            <col colwidth="31%" />
-            <col colwidth="31%" />
-            <col colwidth="38%" />
+            <col width="31%">
+            <col width="31%">
+            <col width="38%">
           </colgroup>
           <thead valign="bottom">
             <tr>
@@ -1125,7 +1128,8 @@ A&nbsp;transition&nbsp;marker&nbsp;is&nbsp;a&nbsp;horizontal&nbsp;line
     hyperlink targets (the title text or footnote/citation label is
     used as the hyperlink name).
 
-    <p><table border="1" width="100%" bgcolor="#ffffcc" cellpadding="3">    <tr align="left" bgcolor="#99CCFF">
+    <p><table border="1" width="100%" bgcolor="#ffffcc" cellpadding="3">
+       <thead><tr align="left" bgcolor="#99CCFF">
       <th width="50%">Plain text
       <th width="50%">Typical result
       </thead>
@@ -1139,7 +1143,7 @@ A&nbsp;transition&nbsp;marker&nbsp;is&nbsp;a&nbsp;horizontal&nbsp;line
         <br><samp>targets,&nbsp;too`_.</samp>
       <td>
         <font size="+2"><strong><a name="title">Titles are targets, too</a></strong></font>
-        <p>Implict references, like <a href="#Title">Titles are
+        <p>Implict references, like <a href="#title">Titles are
         targets, too</a>.
     </table>
 
