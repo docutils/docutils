@@ -1084,6 +1084,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_sidebar(self, node):
         self.body.append(self.starttag(node, 'div', CLASS='sidebar'))
+        self.set_first_last(node)
         self.in_sidebar = 1
 
     def depart_sidebar(self, node):
@@ -1250,7 +1251,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             check_id = 1
         elif isinstance(node.parent, nodes.sidebar):
             self.body.append(
-                  self.starttag(node, 'p', '', CLASS='sidebar-title first'))
+                  self.starttag(node, 'p', '', CLASS='sidebar-title'))
             check_id = 1
         elif isinstance(node.parent, nodes.Admonition):
             self.body.append(
