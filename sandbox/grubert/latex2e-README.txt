@@ -49,8 +49,6 @@ To do
 
 * bullet lists have no bullets (test.txt)	
 
-* option list: is implemented as a table, but in html more like a description list.
-
 * tables have borders, and the border is missing in multicol cells. or empty cells.
 
 * footnotes are not all on the same page (as in tools/test.txt) and do not link back
@@ -100,7 +98,8 @@ ATTENTION
 
 Done
 ~~~~
-
+* long option-groups use multicolumn.
+* remove borders from option-lists.
 * lists that donot start at one donot work.
 * ordered list numbering style is taken from latex a.,b. in source
   gives 1., .. in document.
