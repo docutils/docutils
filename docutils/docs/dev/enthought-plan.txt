@@ -388,7 +388,8 @@ Where the classifier part is optional.  Ideas for improvements:
        term : classifier one : two : three ...
            definition
 
-2. We could allow the definition on the same line as the term.
+2. We could allow the definition on the same line as the term, using
+   some embedded/inline markup:
 
    * "--" could be used, but only in limited and well-known contexts::
 
@@ -411,7 +412,42 @@ Where the classifier part is optional.  Ideas for improvements:
      This syntax has advantages.  Equals signs lend themselves to the
      connotation of "definition".  And whereas one or two equals signs
      are commonly used in program code, three equals signs in a row
-     have no conflicting meanings that I know of.
+     have no conflicting meanings that I know of.  (Update: there
+     *are* uses out there.)
+
+   The problem with this approach is that using inline markup for
+   structure is inherently ambiguous in reStructuredText.  For
+   example, writing *about* definition lists would be difficult::
+
+       ``term === definition`` is an example of a compact definition list item
+
+   The parser checks for structural markup before it does inline
+   markup processing.  But the "===" should be protected by its inline
+   literal context.
+
+3. We could allow the definition on the same line as the term, using
+   structural markup.  A variation on bullet lists would work well::
+
+       : term :: definition
+       : another term :: and a definition that
+         wraps across lines
+
+   Some ambiguity remains::
+
+       : term ``containing :: double colons`` :: definition
+
+   But the likelihood of such cases is negligible, and they can be
+   covered in the documentation.
+
+   Other possibilities for the definition delimiter include::
+
+       : term : classifier -- definition
+       : term : classifier --- definition
+       : term : classifier : : definition
+       : term : classifier === definition
+
+The third idea currently has the best chance of being adopted and
+implemented.
 
 
 Recommendation
@@ -425,13 +461,13 @@ Combining these ideas, the function definition becomes::
         Wang (1992).
 
         :Parameters:
-            temperature : sequence === Temperature in degrees Celsius
-            pressure : sequence === Pressure in MPa
-            api : sequence === Stock tank oil API
-            specific_gravity : sequence === Specific gravity of gas at
-                STP, default is .56
+            : temperature : sequence :: Temperature in degrees Celsius
+            : pressure : sequence :: Pressure in MPa
+            : api : sequence :: Stock tank oil API
+            : specific_gravity : sequence :: Specific gravity of gas at
+              STP, default is .56
         :Returns:
-            max_gor : sequence === Maximum dissolved gas in liters/liter
+            : max_gor : sequence :: Maximum dissolved gas in liters/liter
         :Description: This estimate is based on equations given by
             Mavko, Mukerji, and Dvorkin, (1998, pp. 218-219, or 2003,
             p. 236) obtained originally from Batzle and Wang (1992).
