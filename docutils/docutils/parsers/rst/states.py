@@ -159,6 +159,7 @@ class RSTStateMachine(StateMachineWS):
                            language=self.language,
                            title_styles=[],
                            section_level=0,
+                           section_bubble_up_kludge=0,
                            inliner=inliner)
         self.document = document
         self.attach_observer(document.note_source)
@@ -340,6 +341,8 @@ class RSTState(StateWS):
                 return None
         if level <= mylevel:            # sibling or supersection
             memo.section_level = level   # bubble up to parent section
+            if len(style) == 2:
+                memo.section_bubble_up_kludge = 1
             # back up 2 lines for underline title, 3 for overline title
             self.state_machine.previous_line(len(style) + 1)
             raise EOFError              # let parent section re-evaluate
@@ -2727,7 +2730,9 @@ class Line(SpecializedText):
     def eof(self, context):
         """Transition marker at end of section or document."""
         marker = context[0].strip()
-        if len(marker) < 4:
+        if self.memo.section_bubble_up_kludge:
+            self.memo.section_bubble_up_kludge = 0
+        elif len(marker) < 4:
             self.state_correction(context)
         if self.eofcheck:               # ignore EOFError with sections
             lineno = self.state_machine.abs_line_number() - 1

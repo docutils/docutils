@@ -867,6 +867,36 @@ Empty Section
                 Section empty; must have contents.
 """],
 ["""\
+===
+One
+===
+
+The bubble-up parser strategy conflicts with short titles
+(<= 3 char-long over- & underlines).
+
+===
+Two
+===
+
+The parser currently contains a work-around kludge.
+Without it, the parser ends up in an infinite loop.
+""",
+"""\
+<document source="test data">
+    <section id="one" name="one">
+        <title>
+            One
+        <paragraph>
+            The bubble-up parser strategy conflicts with short titles
+            (<= 3 char-long over- & underlines).
+    <section id="two" name="two">
+        <title>
+            Two
+        <paragraph>
+            The parser currently contains a work-around kludge.
+            Without it, the parser ends up in an infinite loop.
+"""],
+["""\
 """,
 """\
 <document source="test data">
