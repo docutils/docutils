@@ -14,7 +14,7 @@ __docformat__ = 'reStructuredText'
 
 
 import sys
-from docutils import nodes, utils, parsers, Component
+from docutils import utils, parsers, Component
 from docutils.transforms import universal
 
 
@@ -33,19 +33,13 @@ class Reader(Component):
     """Ordered tuple of transform classes (each with a ``transform()`` method).
     Populated by subclasses. `Reader.transform()` instantiates & runs them."""
 
-    def __init__(self, reporter, parser, parser_name, language_code):
+    def __init__(self, parser, parser_name):
         """
         Initialize the Reader instance.
 
         Several instance attributes are defined with dummy initial values.
         Subclasses may use these attributes as they wish.
         """
-
-        self.language_code = language_code
-        """Default language for new documents."""
-
-        self.reporter = reporter
-        """A `utils.Reporter` instance shared by all doctrees."""
 
         self.parser = parser
         """A `parsers.Parser` instance shared by all doctrees.  May be left
@@ -66,10 +60,11 @@ class Reader(Component):
         parser_class = parsers.get_parser_class(parser_name)
         self.parser = parser_class()
 
-    def read(self, source, parser):
+    def read(self, source, parser, options):
         self.source = source
         if not self.parser:
             self.parser = parser
+        self.options = options
         self.scan()               # may modify self.parser, depending on input
         self.parse()
         self.transform()
@@ -107,11 +102,9 @@ class Reader(Component):
                        + universal.last_reader_transforms):
             xclass(self.document, self).transform()
 
-    def new_document(self, language_code=None):
+    def new_document(self):
         """Create and return a new empty document tree (root node)."""
-        document = nodes.document(
-              language_code=(language_code or self.language_code),
-              reporter=self.reporter)
+        document = utils.new_document(self.options)
         document['source'] = self.source
         return document
 

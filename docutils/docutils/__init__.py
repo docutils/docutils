@@ -19,7 +19,9 @@ Modules:
 - core.py: Contains the ``Publisher`` class and ``publish()`` convenience
   function.
 
-- nodes.py: DPS document tree (doctree) node class library.
+- frontend.py: Command-line and common processing for Docutils front-ends.
+
+- nodes.py: Docutils document tree (doctree) node class library.
 
 - roman.py: Conversion to and from Roman numerals. Courtesy of Mark
   Pilgrim (http://diveintopython.org/).
@@ -63,6 +65,10 @@ class Component:
 
     supported = ()
     """Names for this component.  Override in subclasses."""
+
+    cmdline_options = ()
+    """Command-line option specification.  A list/tuple of tuples:
+    ``('help text', [list of option strings], {keyword arguments})``."""
 
     def supports(self, format):
         """
