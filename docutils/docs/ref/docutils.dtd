@@ -129,7 +129,9 @@ resolve to either an internal or external reference.
 <!ENTITY % inline.elements
   " emphasis | strong | interpreted | literal
     | reference | footnote_reference | citation_reference
-    | substitution_reference | problematic | generated 
+    | substitution_reference | title_reference
+    | abbreviation | acronym |
+    | problematic | generated 
     | target | image | raw
     %additional.inline.elements; ">
 
@@ -493,17 +495,6 @@ following caveats:
 <!ELEMENT strong %text.model;>
 <!ATTLIST strong %basic.atts;>
 
-<!--
-WARNING: The "interpreted" element is a placeholder for testing
-purposes only. Once proper parser support is in place, it will be
-removed.
--->
-<!ELEMENT interpreted %text.model;>
-<!ATTLIST interpreted
-    %basic.atts;
-    role      NMTOKEN   #IMPLIED
-    position  (prefix | suffix)  #IMPLIED>
-
 <!ELEMENT literal (#PCDATA)>
 <!ATTLIST literal %basic.atts;>
 
@@ -516,18 +507,29 @@ removed.
 <!ELEMENT footnote_reference (#PCDATA)>
 <!ATTLIST footnote_reference
     %basic.atts;
-    %reference.atts;
+    %refid.att;
+    %refname.att;
     %auto.att;>
 
 <!ELEMENT citation_reference (#PCDATA)>
 <!ATTLIST citation_reference
     %basic.atts;
-    %reference.atts;>
+    %refid.att;
+    %refname.att;>
 
 <!ELEMENT substitution_reference %text.model;>
 <!ATTLIST substitution_reference
     %basic.atts;
     %refname.att;>
+
+<!ELEMENT title_reference %text.model;>
+<!ATTLIST title_reference %basic.atts;>
+
+<!ELEMENT abbreviation %text.model;>
+<!ATTLIST abbreviation %basic.atts;>
+
+<!ELEMENT acronym %text.model;>
+<!ATTLIST acronym %basic.atts;>
 
 <!ELEMENT problematic %text.model;>
 <!ATTLIST problematic
