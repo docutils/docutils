@@ -60,6 +60,12 @@ Bugs
   command-line option wouldn't work because it would require user
   action.  Config file setting?
 
+* Explicit targets are sometimes mis-located.  In particular, placing
+  a target before a section header puts the target at the end of the
+  previous section instead of the start of the next section.  The code
+  in docutils.transforms.misc.ClassAttribute could be used to fix
+  this.  (Reported by David Priest.)
+
 
 General
 -------
@@ -1449,8 +1455,8 @@ elements.
 * Add document-local _`role bindings`, associating directives with
   roles? ::
 
-      ``She wore ribbons in her hair and it lay with streaks of
-      grey``:rewrite:
+      `She wore ribbons in her hair and it lay with streaks of
+      grey`:rewrite:
 
       .. :rewrite: class:: rewrite
 
