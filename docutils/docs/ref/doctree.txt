@@ -1581,7 +1581,7 @@ Details
     complete details, please see `RCS Keywords`_ in the
     `reStructuredText Markup Specification`_.
 
-    .. _RCS Keywords: rst/reStructuredText.html#rcs-keywords
+    .. _RCS Keywords: rst/restructuredtext.html#rcs-keywords
 
 
 Content Model
@@ -4041,8 +4041,8 @@ immediately adjacent.
 See `Doctree Representation of Transitions`__ in `A Record of
 reStructuredText Syntax Alternatives`__.
 
-__ ../dev/rst/alternatives.txt#doctree-representation-of-transitions
-__ ../dev/rst/alternatives.txt
+__ ../dev/rst/alternatives.html#doctree-representation-of-transitions
+__ ../dev/rst/alternatives.html
 
 
 Details
