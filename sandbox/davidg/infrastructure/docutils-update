@@ -180,6 +180,7 @@ if ! diff -q $htdocs_tarball $htdocs_new_tarball > /dev/null; then
         docutilsupdate@shell.sourceforge.net \
         "
         set -e
+        umask 002
         cat > ~/htdocs.patch
         ~/bin/bspatch ~/htdocs.tar ~/htdocs.new.tar ~/htdocs.patch
         cd $remotehtdocs
