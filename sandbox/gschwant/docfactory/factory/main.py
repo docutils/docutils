@@ -8,14 +8,16 @@
 
 import browser, images, re, sys, os, time, ConfigParser
 from   wxPython.wx               import *
-from   wxPython.lib.dialogs      import wxMultipleChoiceDialog
+from   wxPython.lib.dialogs      import wxMultipleChoiceDialog, \
+     wxScrolledMessageDialog
 from   wxPython.lib.imagebrowser import ImageDialog
 from   wxPython.help             import *
 from   dialogs                   import *
 from   controls                  import CustomStyledTextCtrl
 from   controls                  import CustomTreeCtrl
 from   controls                  import CustomStatusBar
-from   docutilsadapter           import publish_document, get_errors, get_rest_bibl_fields
+from   docutilsadapter           import publish_document, get_errors, \
+     get_rest_bibl_fields, publishers, publish_document
 from   docutils.utils            import relative_path
 from   urllib                    import quote
 from   wxPython.lib.buttons      import *
@@ -44,7 +46,7 @@ except:
 
 # need some IDs
 [wxID_WXNEWPROJ, wxID_WXNEWREST, wxID_WXOPENFILE, 
- wxID_WXREMFILE, wxID_WXSAVEFILE, wxID_WXEXITAPP, wxID_WXPUBL,
+ wxID_WXREMFILE, wxID_WXSAVEFILE, wxID_WXEXITAPP, wxID_WXPUBL, wxID_WXPUBLALL,
  wxID_WXPROJSETTINGS, wxID_WXINSERTPATH, wxID_WXINSERTIMAGE,
  wxID_WXINSERTFIGURE, wxID_WXCLOSEFILE, wxID_WXVIEWEOLS, wxID_WXEOLSTOCR,
  wxID_WXEOLSTOLF, wxID_WXEOLSTOCRLF, wxID_WXEOLSTO, wxID_WXVIEWEDGE,
@@ -56,7 +58,7 @@ except:
  wxID_WXINSERTHYPERLINK, wxID_WXBTNPASTE, wxID_WXBTNCOPY, wxID_WXRUNTOOL,
  wxID_WXBTNCUT, wxID_WXBTNREDO, wxID_WXBTNUNDO, wxID_WXBTNSAVE,
  wxID_WXBTNOPEN, wxID_WXBTNNEW, wxID_WXBTNPUBLISH, wxID_WXBTNABOUT,
- wxID_WXFINDREPLACE, wxID_WXBACKUPFILES] = map(lambda init_menubar: wxNewId(), range(52))
+ wxID_WXFINDREPLACE, wxID_WXBACKUPFILES] = map(lambda init_menubar: wxNewId(), range(53))
 
 # Accelerator-Table for key commands
 ACCEL = [(wxACCEL_NORMAL,WXK_F7,wxID_WXPUBL),
@@ -295,6 +297,10 @@ class DocFactoryFrame(wxFrame):
         menu.Append(wxID_WXDELETEPROJ, 'Delete...',
                     'Delete one or more projects')
         EVT_MENU(self, wxID_WXDELETEPROJ, self.on_project_delete)
+        menu.Append(wxID_WXPUBLALL, 'Publish...',
+                    'Publish all txt-files of active project')
+        EVT_MENU(self, wxID_WXPUBLALL, self.on_publish_all)
+        menu.Enable(wxID_WXPUBLALL, 0)
         menu.AppendSeparator()
         menu.Append(wxID_WXPROJSETTINGS, 'Project Settings...',
                     'Edit project settings')
@@ -589,6 +595,7 @@ class DocFactoryFrame(wxFrame):
         if len(self.projects) > 0 and value:
             menu.Enable(wxID_WXDELETEPROJ, value)
         menu.Enable(wxID_WXPROJSETTINGS, value)
+        menu.Enable(wxID_WXPUBLALL, value)
 
     def activateMenuItemsFileSelected(self, value):
         menu = self.mainmenu.GetMenu(self.mainmenu.FindMenu('File'))
@@ -1145,6 +1152,75 @@ class DocFactoryFrame(wxFrame):
             dlg.Destroy()
             if go_ahead:
                 self.publishFile(file, outfile, outdir, writer)
+
+    def on_publish_all(self, event):
+        go_ahead = 1
+        item = self.activeitem
+        file = self.tree.GetItemText(item)
+        if self.editor.IsModified:
+            wxLogMessage('Saving %s.' % file)
+            wxBeginBusyCursor()
+            go_ahead = self.editor.SaveFile(file, self.preferences['backup_files'])
+            wxEndBusyCursor()
+        if go_ahead:
+            writers = publishers.keys()
+            writers.sort()
+            dlg = wxSingleChoiceDialog(self, 'Please select a writer:',
+                                       'Publish "%s"' % self.project.name,
+                                       writers, wxOK|wxCANCEL)
+            dlg.SetSelection(writers.index('HTML'))
+            dlg.Centre()
+            if dlg.ShowModal() == wxID_OK:
+                writer = writers[dlg.GetSelection()]
+            else:
+                go_ahead = 0
+            dlg.Destroy()
+            if go_ahead:
+                self.log.Clear()
+                files_to_publish = []
+                for file in self.project.files:
+                    if os.path.splitext(file)[1] == '.txt':
+                        files_to_publish.append(file)
+                max = len(files_to_publish)
+                dlg = wxProgressDialog('Publishing "%s"' % self.project.name,
+                                       '',
+                                       max,
+                                       self,
+                                       wxPD_CAN_ABORT | wxPD_APP_MODAL)
+                keepGoing = true
+                count = 0
+                error_files = []
+                while keepGoing and count < max:
+                    infile = files_to_publish[count]
+                    outfile = '%s%s' % (os.path.splitext(os.path.split(infile)[1])[0],
+                                        publishers[writer][2])
+                    outdir = self.project.directory
+                    keepGoing = dlg.Update(count, outfile)
+                    t = time.localtime(time.time())
+                    st = time.strftime('%d-%b-%Y, %H:%M:%S', t)
+                    wxLogMessage('\n%s: Publishing %s' % (st, writer))
+                    wxLogMessage('SOURCE: %s' % infile)
+                    outfile_fullpath = os.path.join(outdir, outfile)
+                    wxLogMessage('DESTINATION: %s' % outfile_fullpath)
+                    try:
+                        publish_document(writer, infile, outfile, outdir)
+                    except:
+                        wxLogMessage('ERROR: %s (%s)' % sys.exc_info()[:2])
+                        error_files.append((infile, sys.exc_info()[1]))
+                    count = count + 1
+                dlg.Destroy()
+                if error_files != []:
+                    msg = 'Due to severe errors the following files have ' \
+                          'not been published properly: \n'
+                    for file in error_files:
+                        msg = '%s\n%s\n(%s)\n' % (msg, file[0], file[1])
+                    msg = '%s\nHINT: You should try to publish the files ' \
+                          'in question separately first. If that works, ' \
+                          'you can try to publish all files again.' % msg
+                    dlg = wxScrolledMessageDialog(self, msg, "WARNING!")
+                    dlg.Centre()
+                    dlg.ShowModal()
+                    dlg.Destroy()
 
     def on_find(self, event):
         et = event.GetEventType()
