@@ -30,11 +30,6 @@ def image(name, arguments, options, content, lineno,
           content_offset, block_text, state, state_machine):
     messages = []
     reference = ''.join(arguments[0].split('\n'))
-    if reference.find(' ') != -1:
-        error = state_machine.reporter.error(
-              'Image URI contains whitespace.',
-              nodes.literal_block(block_text, block_text), line=lineno)
-        return [error]
     options['uri'] = reference
     reference_node = None
     if options.has_key('target'):

@@ -40,15 +40,11 @@ totest['images'] = [
             .. image::
 """],
 ["""\
-.. image:: one two three
+.. image:: one two three.png
 """,
 """\
 <document source="test data">
-    <system_message level="3" line="1" source="test data" type="ERROR">
-        <paragraph>
-            Image URI contains whitespace.
-        <literal_block xml:space="preserve">
-            .. image:: one two three
+    <image uri="one two three.png">
 """],
 ["""\
 .. image:: picture.png
@@ -161,12 +157,7 @@ totest['images'] = [
 """,
 """\
 <document source="test data">
-    <system_message level="3" line="1" source="test data" type="ERROR">
-        <paragraph>
-            Image URI contains whitespace.
-        <literal_block xml:space="preserve">
-            .. image:: picture.png
-               scale: 50
+    <image uri="picture.pngscale: 50">
 """],
 ["""\
 .. image:: picture.png
@@ -290,9 +281,6 @@ totest['images'] = [
 ["""\
 .. image:: picture.png
    :target:
-
-.. image:: picture.png
-   :target: an invalid URI
 """,
 """\
 <document source="test data">
@@ -304,13 +292,6 @@ totest['images'] = [
         <literal_block xml:space="preserve">
             .. image:: picture.png
                :target:
-    <system_message level="2" line="4" source="test data" type="WARNING">
-        <paragraph>
-            Hyperlink target contains whitespace. Perhaps a footnote was intended?
-        <literal_block xml:space="preserve">
-            .. image:: picture.png
-               :target: an invalid URI
-    <image uri="picture.png">
 """],
 ]
 

@@ -28,11 +28,6 @@ def include(name, arguments, options, content, lineno,
         lineno - state_machine.input_offset - 1)
     source_dir = os.path.dirname(os.path.abspath(source))
     path = ''.join(arguments[0].splitlines())
-    if path.find(' ') != -1:
-        error = state_machine.reporter.error(
-              '"%s" directive path contains whitespace.' % name,
-              nodes.literal_block(block_text, block_text), line=lineno)
-        return [error]
     path = os.path.normpath(os.path.join(source_dir, path))
     path = utils.relative_path(None, path)
     encoding = options.get('encoding', state.document.settings.input_encoding)
