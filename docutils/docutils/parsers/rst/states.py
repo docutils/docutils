@@ -402,10 +402,6 @@ class Inliner:
         self.parent = parent
         pattern = self.patterns.initial
         dispatch = self.dispatch
-        start = self.groups.initial.start - 1
-        backquote = self.groups.initial.backquote - 1
-        refend = self.groups.initial.refend - 1
-        fnend = self.groups.initial.fnend - 1
         remaining = escape2null(text)
         processed = []
         unprocessed = []
@@ -413,11 +409,11 @@ class Inliner:
         while remaining:
             match = pattern.search(remaining)
             if match:
-                groups = match.groups()
-                before, inlines, remaining, sysmessages = \
-                      dispatch[groups[start] or groups[backquote]
-                               or groups[refend]
-                               or groups[fnend]](self, match, lineno)
+                groupdict = match.groupdict()
+                method = dispatch[groupdict["start"] or groupdict["backquote"]
+                                  or groupdict["refend"] or groupdict["fnend"]]
+                before, inlines, remaining, sysmessages = method(self, match,
+                                                                 lineno)
                 unprocessed.append(before)
                 messages += sysmessages
                 if inlines:
@@ -434,14 +430,12 @@ class Inliner:
 
     openers = '\'"([{<'
     closers = '\'")]}>'
-    start_string_prefix = (r'(?:(?<=^)|(?<=[-/: \n%s]))'
-                           % re.escape(openers))
-    end_string_suffix = (r'(?:(?=$)|(?=[-/:.,;!? \n%s]))'
-                         % re.escape(closers))
+    start_string_prefix = (r'((?<=^)|(?<=[-/: \n%s]))' % re.escape(openers))
+    end_string_suffix = (r'((?=$)|(?=[-/:.,;!? \n%s]))' % re.escape(closers))
     non_whitespace_before = r'(?<![ \n])'
     non_whitespace_escape_before = r'(?<![ \n\x00])'
     non_whitespace_after = r'(?![ \n])'
-    simplename = r'[a-zA-Z0-9](?:[-_.a-zA-Z0-9]*[a-zA-Z0-9])?'
+    simplename = r'[a-zA-Z0-9]([-_.a-zA-Z0-9]*[a-zA-Z0-9])?'
     uric = r"""[-_.!~*'()[\];/:@&=+$,%a-zA-Z0-9]"""
     urilast = r"""[_~/\]a-zA-Z0-9]"""
     emailc = r"""[-_!~*'{|}/#?^`&=+$%a-zA-Z0-9]"""
@@ -450,7 +444,7 @@ class Inliner:
                 r"""
                 %s                      # start-string prefix
                 (
-                  (                       # start-strings only (group 2):
+                  (?P<start>              # start-strings only:
                       \*\*                  # strong
                     |
                       \*                    # emphasis
@@ -464,27 +458,27 @@ class Inliner:
                   )
                   %s                      # no whitespace after
                 |                       # *OR*
-                  (                       # whole constructs (group 3):
-                      (%s)                  # reference name (4)
-                      (__?)                 # end-string (5)
+                  (?P<whole>              # whole constructs:
+                      (?P<refname>%s)       # reference name
+                      (?P<refend>__?)       # end-string
                     |
                       \[                    # footnote_reference or
                                             # citation_reference start
-                      (                     # label (group 6):
+                      (?P<footnotelabel>    # label:
                           [0-9]+              # manually numbered
                         |                   # *OR*
-                          \#(?:%s)?           # auto-numbered (w/ label?)
+                          \#(%s)?           # auto-numbered (w/ label?)
                         |                   # *OR*
                           \*                  # auto-symbol
                         |                   # *OR*
-                          (%s)                # citation reference (group 7)
+                          (?P<citationlabel>%s) # citation reference
                       )
-                      (\]_)                 # end-string (group 8)
+                      (?P<fnend>\]_)        # end-string
                   )
                   %s                      # end-string suffix
                 |                       # *OR*
-                  ((?::%s:)?)             # optional role (group 9)
-                  (                       # start-string (group 10)
+                  (?P<role>(:%s:)?)     # optional role
+                  (?P<backquote>          # start-string
                     `                       # interpreted text
                                             # or phrase reference
                     (?!`)                   # but not literal
@@ -505,9 +499,9 @@ class Inliner:
           strong=re.compile(non_whitespace_escape_before
                             + r'(\*\*)' + end_string_suffix),
           interpreted_or_phrase_ref=re.compile(
-                '%s(`(:%s:|__?)?)%s' % (non_whitespace_escape_before,
-                                        simplename,
-                                        end_string_suffix)),
+              '%s(`(?P<suffix>:%s:|__?)?)%s' % (non_whitespace_escape_before,
+                                                simplename,
+                                                end_string_suffix)),
           literal=re.compile(non_whitespace_before + '(``)'
                              + end_string_suffix),
           target=re.compile(non_whitespace_escape_before
@@ -518,33 +512,33 @@ class Inliner:
           uri=re.compile(
                 r"""
                 %s                      # start-string prefix
-                (
-                  (                       # absolute URI (group 2)
-                    (                       # scheme (http, ftp, mailto)
-                      [a-zA-Z][a-zA-Z0-9.+-]* # (group 3)
+                (?P<whole>
+                  (?P<absolute>           # absolute URI
+                    (?P<scheme>             # scheme (http, ftp, mailto)
+                      [a-zA-Z][a-zA-Z0-9.+-]*
                     )
                     :
-                    (?:
-                      (?:                     # either:
-                        (?://?)?                # hierarchical URI
+                    (
+                      (                       # either:
+                        (//?)?                  # hierarchical URI
                         %s*                     # URI characters
                         %s                      # final URI char
                       )
-                      (?:                     # optional query
+                      (                       # optional query
                         \?%s*                   # URI characters
                         %s                      # final URI char
                       )?
-                      (?:                     # optional fragment
+                      (                       # optional fragment
                         \#%s*                   # URI characters
                         %s                      # final URI char
                       )?
                     )
                   )
                 |                       # *OR*
-                  (                       # email address (group 4)
-                    %s+(?:\.%s+)*           # name
+                  (?P<email>              # email address
+                    %s+(\.%s+)*             # name
                     @                       # at
-                    %s+(?:\.%s*)*           # host
+                    %s+(\.%s*)*             # host
                     %s                      # final URI char
                   )
                 )
@@ -553,11 +547,6 @@ class Inliner:
                        uric, urilast, emailc, emailc, emailc, emailc, urilast,
                        end_string_suffix,),
                 re.VERBOSE))
-    groups = Stuff(initial=Stuff(start=2, whole=3, refname=4, refend=5,
-                                 footnotelabel=6, citationlabel=7,
-                                 fnend=8, role=9, backquote=10),
-                   interpreted_or_phrase_ref=Stuff(suffix=2),
-                   uri=Stuff(whole=1, absolute=2, scheme=3, email=4))
 
     def quoted_start(self, match):
         """Return 1 if inline markup start-string is 'quoted', 0 if not."""
@@ -581,8 +570,8 @@ class Inliner:
     def inline_obj(self, match, lineno, pattern, nodeclass,
                    restore_backslashes=0):
         string = match.string
-        matchstart = match.start(self.groups.initial.start)
-        matchend = match.end(self.groups.initial.start)
+        matchstart = match.start('start')
+        matchend = match.end('start')
         if self.quoted_start(match):
             return (string[:matchend], [], string[matchend:], [], '')
         endmatch = pattern.search(string[matchend:])
@@ -621,13 +610,11 @@ class Inliner:
 
     def interpreted_or_phrase_ref(self, match, lineno):
         pattern = self.patterns.interpreted_or_phrase_ref
-        rolegroup = self.groups.initial.role
-        backquote = self.groups.initial.backquote
         string = match.string
-        matchstart = match.start(backquote)
-        matchend = match.end(backquote)
-        rolestart = match.start(rolegroup)
-        role = match.group(rolegroup)
+        matchstart = match.start('backquote')
+        matchend = match.end('backquote')
+        rolestart = match.start('role')
+        role = match.group('role')
         position = ''
         if role:
             role = role[1:-1]
@@ -680,13 +667,12 @@ class Inliner:
 
     def interpreted(self, before, after, endmatch, role, position, lineno,
                     escaped, rawsource, text):
-        suffix = self.groups.interpreted_or_phrase_ref.suffix
-        if endmatch.group(suffix):
+        if endmatch.group('suffix'):
             if role:
                 msg = self.reporter.warning('Multiple roles in interpreted '
                                             'text at line %s.' % lineno)
                 return (before + rawsource, [], after, [msg])
-            role = endmatch.group(suffix)[1:-1]
+            role = endmatch.group('suffix')[1:-1]
             position = 'suffix'
         if role:
             atts = {'role': role, 'position': position}
@@ -743,9 +729,9 @@ class Inliner:
         Handles `nodes.footnote_reference` and `nodes.citation_reference`
         elements.
         """
-        label = match.group(self.groups.initial.footnotelabel)
+        label = match.group('footnotelabel')
         refname = normalize_name(label)
-        if match.group(self.groups.initial.citationlabel):
+        if match.group('citationlabel'):
             refnode = nodes.citation_reference('[%s]_' % label,
                                                refname=refname)
             refnode += nodes.Text(label)
@@ -767,16 +753,15 @@ class Inliner:
                 refnode['refname'] = refname
                 self.document.note_footnote_ref(refnode)
         string = match.string
-        matchstart = match.start(self.groups.initial.whole)
-        matchend = match.end(self.groups.initial.whole)
+        matchstart = match.start('whole')
+        matchend = match.end('whole')
         return (string[:matchstart], [refnode], string[matchend:], [])
 
     def reference(self, match, lineno, anonymous=None):
-        referencename = match.group(self.groups.initial.refname)
+        referencename = match.group('refname')
         refname = normalize_name(referencename)
-        referencenode = nodes.reference(
-              referencename + match.group(self.groups.initial.refend),
-              referencename)
+        referencenode = nodes.reference(referencename + match.group('refend'),
+                                        referencename)
         if anonymous:
             referencenode['anonymous'] = 1
             self.document.note_anonymous_ref(referencenode)
@@ -784,22 +769,21 @@ class Inliner:
             referencenode['refname'] = refname
             self.document.note_refname(referencenode)
         string = match.string
-        matchstart = match.start(self.groups.initial.whole)
-        matchend = match.end(self.groups.initial.whole)
+        matchstart = match.start('whole')
+        matchend = match.end('whole')
         return (string[:matchstart], [referencenode], string[matchend:], [])
 
     def anonymous_reference(self, match, lineno):
         return self.reference(match, lineno, anonymous=1)
 
     def standalone_uri(self, match, lineno):
-        scheme = self.groups.uri.scheme
-        if not match.group(scheme) or urischemes.schemes.has_key(
-              match.group(scheme).lower()):
-            if match.group(self.groups.uri.email):
+        if not match.group('scheme') or urischemes.schemes.has_key(
+              match.group('scheme').lower()):
+            if match.group('email'):
                 addscheme = 'mailto:'
             else:
                 addscheme = ''
-            text = match.group(self.groups.uri.whole)
+            text = match.group('whole')
             unescaped = unescape(text, 0)
             return [nodes.reference(unescape(text, 1), unescaped,
                                     refuri=addscheme + unescaped)]
@@ -1289,54 +1273,52 @@ class Body(RSTState):
 
     explicit.patterns = Stuff(
           target=re.compile(r"""
-                            (?:
-                              _           # anonymous target
-                            |           # *OR*
-                              (`?)        # optional open quote
-                              (?![ `])    # first char. not space or backquote
-                              (           # reference name
+                            (
+                              _               # anonymous target
+                            |               # *OR*
+                              (?P<quote>`?)   # optional open quote
+                              (?![ `])        # first char. not space or
+                                              # backquote
+                              (?P<name>       # reference name
                                 .+?
                               )
-                              %s          # not whitespace or escape
-                              \1          # close quote if open quote used
+                              %s              # not whitespace or escape
+                              (?P=quote)      # close quote if open quote used
                             )
-                            %s          # not whitespace or escape
-                            :           # end of reference name
-                            (?:[ ]+|$)  # followed by whitespace
+                            %s              # not whitespace or escape
+                            :               # end of reference name
+                            ([ ]+|$)        # followed by whitespace
                             """
                             % (Inliner.non_whitespace_escape_before,
                                Inliner.non_whitespace_escape_before),
                             re.VERBOSE),
           reference=re.compile(r"""
-                               (?:
-                                 (%s)_       # simple reference name
-                               |           # *OR*
-                                 `           # open backquote
-                                 (?![ ])     # not space
-                                 (.+?)       # hyperlink phrase
-                                 %s          # not whitespace or escape
-                                 `_          # close backquote, reference mark
+                               (
+                                 (?P<simple>%s)_    # simple reference name
+                               |                  # *OR*
+                                 `                  # open backquote
+                                 (?![ ])            # not space
+                                 (?P<phrase>.+?)    # hyperlink phrase
+                                 %s                 # not whitespace or escape
+                                 `_                 # close backquote,
+                                                    # reference mark
                                )
-                               $           # end of string
+                               $                  # end of string
                                """ %
                                (Inliner.simplename,
                                 Inliner.non_whitespace_escape_before,),
                                re.VERBOSE),
           substitution=re.compile(r"""
-                                  (?:
-                                    (?![ ])     # first char. not space
-                                    (.+?)       # substitution text
-                                    %s          # not whitespace or escape
-                                    \|          # close delimiter
+                                  (
+                                    (?![ ])          # first char. not space
+                                    (?P<name>.+?)    # substitution text
+                                    %s               # not whitespace or escape
+                                    \|               # close delimiter
                                   )
-                                  (?:[ ]+|$)    # followed by whitespace
+                                  ([ ]+|$)           # followed by whitespace
                                   """ %
                                   Inliner.non_whitespace_escape_before,
                                   re.VERBOSE),)
-    explicit.groups = Stuff(
-          target=Stuff(quote=1, name=2),
-          reference=Stuff(simple=1, phrase=2),
-          substitution=Stuff(name=1))
 
     def footnote(self, match):
         indented, indent, offset, blank_finish = \
@@ -1382,7 +1364,6 @@ class Body(RSTState):
 
     def hyperlink_target(self, match):
         pattern = self.explicit.patterns.target
-        namegroup = self.explicit.groups.target.name
         lineno = self.state_machine.abs_line_number()
         block, indent, offset, blank_finish = \
               self.state_machine.get_first_known_indented(
@@ -1408,7 +1389,7 @@ class Body(RSTState):
             refname = self.is_reference(reference)
             if refname:
                 target = nodes.target(blocktext, '', refname=refname)
-                self.add_target(targetmatch.group(namegroup), '', target)
+                self.add_target(targetmatch.group('name'), '', target)
                 self.document.note_indirect_target(target)
                 return [target], blank_finish
         nodelist = []
@@ -1423,7 +1404,7 @@ class Body(RSTState):
         else:
             unescaped = unescape(reference)
             target = nodes.target(blocktext, '')
-            self.add_target(targetmatch.group(namegroup), unescaped, target)
+            self.add_target(targetmatch.group('name'), unescaped, target)
             nodelist.append(target)
         return nodelist, blank_finish
 
@@ -1431,8 +1412,7 @@ class Body(RSTState):
         match = self.explicit.patterns.reference.match(normalize_name(reference))
         if not match:
             return None
-        return unescape(match.group(self.explicit.groups.reference.simple)
-                        or match.group(self.explicit.groups.reference.phrase))
+        return unescape(match.group('simple') or match.group('phrase'))
 
     def add_target(self, targetname, refuri, target):
         if targetname:
@@ -1475,7 +1455,7 @@ class Body(RSTState):
         if not block[0]:
             del block[0]
             offset += 1
-        subname = subdefmatch.group(self.explicit.groups.substitution.name)
+        subname = subdefmatch.group('name')
         name = normalize_name(subname)
         substitutionnode = nodes.substitution_definition(
               blocktext, name=name, alt=subname)
@@ -1592,13 +1572,13 @@ class Body(RSTState):
                           \*              # auto-symbol footnote
                       )
                       \]
-                      (?:[ ]+|$)        # whitespace or end of line
+                      ([ ]+|$)          # whitespace or end of line
                       """ % Inliner.simplename, re.VERBOSE)),
           (citation,
            re.compile(r"""
                       \.\.[ ]+          # explicit markup start
                       \[(%s)\]          # citation label
-                      (?:[ ]+|$)        # whitespace or end of line
+                      ([ ]+|$)          # whitespace or end of line
                       """ % Inliner.simplename, re.VERBOSE)),
           (hyperlink_target,
            re.compile(r"""
@@ -1617,7 +1597,7 @@ class Body(RSTState):
                       \.\.[ ]+          # explicit markup start
                       (%s)              # directive name
                       ::                # directive delimiter
-                      (?:[ ]+|$)        # whitespace or end of line
+                      ([ ]+|$)          # whitespace or end of line
                       """ % Inliner.simplename, re.VERBOSE))]
 
     def explicit_markup(self, match, context, next_state):
