@@ -90,6 +90,9 @@ Docutils-general:
 * `Quick reStructuredText <user/rst/quickref.html>`__ (user reference)
 * `reStructuredText Cheat Sheet <user/rst/cheatsheet.txt>`__ (text
   only; 1 page for syntax, 1 page directive & role reference)
+* `reStructuredText Test Document <user/rst/demo.html>`_ (a
+  demonstration of most reStructuredText features; you can also have a
+  look at the `text source <user/rst/demo.txt>`__)
 
 
 ``ref/``: Reference Material for All Groups
