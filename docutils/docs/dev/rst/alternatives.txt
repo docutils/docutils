@@ -1356,8 +1356,8 @@ Currently reStructuredText has two hyperlink syntax variations:
 
 * Anonymous hyperlinks (in current reStructuredText)::
 
-      This is a named reference__ of one word ("reference").  Here is
-      a `phrase reference`__.  Phrase references may even cross `line
+      This is an anonymous reference__.  Here is an anonymous
+      `phrase reference`__.  Phrase references may even cross `line
       boundaries`__.
 
       __ http://www.example.org/reference/
@@ -1380,13 +1380,13 @@ syntaxes for hyperlinks:
 
 * First, ``"reference text":URL``::
 
-      This is a named "reference":http://www.example.org/reference/
+      This is a "reference":http://www.example.org/reference/
       of one word ("reference").  Here is a "phrase
       reference":http://www.example.org/phrase_reference/.
 
 * Second, ``"reference text", http://example.com/absolute_URL``::
 
-      This is a named "reference", http://www.example.org/reference/
+      This is a "reference", http://www.example.org/reference/
       of one word ("reference").  Here is a "phrase reference",
       http://www.example.org/phrase_reference/.
 
