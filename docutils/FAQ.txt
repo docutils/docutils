@@ -235,13 +235,13 @@ input file, using whatever encoding suits your application, and tell
 Docutils the input encoding.  Docutils uses Unicode internally, so the
 em-dash character is a real em-dash internally.
 
-Docutils has no character entity subsystem; it doesn't know anything
-about XML charents.  "&mdash;" in input text is 7 discrete characters
-to Docutils; no interpretation happens.  When writing HTML, the "&" is
-converted to "&amp;", so in the output you'd see "&amp;mdash;".
-There's no difference in interpretation for text inside or outside
-inline literals or literal blocks -- no character entity
-interpretation in either case.
+ReStructuredText has no character entity subsystem; it doesn't know
+anything about XML charents.  "&mdash;" in input text is 7 discrete
+characters to Docutils; no interpretation happens.  When writing HTML,
+the "&" is converted to "&amp;", so in the output you'd see
+"&amp;mdash;".  There's no difference in interpretation for text
+inside or outside inline literals or literal blocks -- no character
+entity interpretation in either case.
 
 If you can't use a Unicode-compatible encoding and must rely on 7-bit
 ASCII, there is a workaround, although ugly.  David Priest developed a
