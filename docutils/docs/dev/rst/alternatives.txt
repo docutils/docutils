@@ -52,7 +52,7 @@ Anything wrong with this? ::
     1. First line,
      second line.
 
-Problem?
+Problem? ::
 
     1. First para.
 
