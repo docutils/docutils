@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+# -*- coding: iso-8859-1 -*-
 
 # Author: David Goodger
 # Contact: goodger@python.org
@@ -105,7 +106,7 @@ if csv:
     totest['csv-table'] = [
 ["""\
 .. csv-table:: inline with integral header
-   :widths: 10,20,30
+   :widths: 10, 20, 30
    :header-rows: 1
 
    "Treat", "Quantity", "Description"
@@ -344,6 +345,24 @@ if csv:
                             4
                     <entry>
                     <entry>
+"""],
+[u"""\
+.. csv-table:: non-ASCII characters
+
+   Heiz\xf6lr\xfccksto\xdfabd\xe4mpfung
+""",
+u"""\
+<document source="test data">
+    <table>
+        <title>
+            non-ASCII characters
+        <tgroup cols="1">
+            <colspec colwidth="100">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Heiz\xf6lr\xfccksto\xdfabd\xe4mpfung
 """],
 ["""\
 .. csv-table:: empty
