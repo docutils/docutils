@@ -179,6 +179,11 @@ Changes Since 0.3
 
   - Moved config file entry descriptions to config.txt.
 
+* spec/rst/reStructuredText.txt:
+
+  - Added description of support for <angle-bracketed> complex option
+    arguments to option lists.
+
 * test: Continually adding & updating tests.
 
   - Added test/test_settings.py & test/data/config_*.txt support
