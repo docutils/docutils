@@ -13,6 +13,7 @@ Tests for docutils.transforms.references.Hyperlinks.
 from __init__ import DocutilsTestSupport
 from docutils.transforms.references import ChainedTargets, \
      AnonymousHyperlinks, IndirectHyperlinks, ExternalTargets, InternalTargets
+from docutils.transforms.universal import FinalChecks
 from docutils.parsers.rst import Parser
 
 
@@ -29,7 +30,7 @@ totest = {}
 # plus embedded URIs.
 totest['exhaustive_hyperlinks'] = ((ChainedTargets, AnonymousHyperlinks,
                                     IndirectHyperlinks, ExternalTargets,
-                                    InternalTargets,), [
+                                    InternalTargets, FinalChecks), [
 ["""\
 direct_ external
 
@@ -160,6 +161,8 @@ Implicit
 indirect_ internal
 
 .. _indirect: implicit_
+
+Direct internal reference: Implicit_
 """,
 """\
 <document source="test data">
@@ -179,9 +182,16 @@ indirect_ internal
                 indirect_
              internal
         <target id="indirect" name="indirect" refname="implicit">
+        <paragraph>
+            Direct internal reference: 
+            <problematic id="id5" refid="id4">
+                Implicit_
     <system_message backrefs="id3" id="id2" level="3" line="11" source="test data" type="ERROR">
         <paragraph>
-            Indirect hyperlink target "indirect" (id="indirect") refers to target "implicit", which does not exist.
+            Indirect hyperlink target "indirect" (id="indirect") refers to target "implicit", which is a duplicate, and cannot be used as a unique reference.
+    <system_message backrefs="id5" id="id4" level="3" line="13" source="test data" type="ERROR">
+        <paragraph>
+            Duplicate target name, cannot be used as a unique reference: "implicit".
 """],
 ["""\
 `direct external`__
@@ -266,7 +276,7 @@ __ ztarget_
     <target anonymous="1" id="id2" refname="ztarget">
     <system_message backrefs="id4" id="id3" level="3" line="11" source="test data" type="ERROR">
         <paragraph>
-            Indirect hyperlink target (id="id2") refers to target "ztarget", which does not exist.
+            Indirect hyperlink target (id="id2") refers to target "ztarget", which is a duplicate, and cannot be used as a unique reference.
 """],
 ["""\
 An `embedded uri <http://direct>`_.
@@ -567,6 +577,21 @@ Testing an `indirect reference to the table of contents`_.
                 indirect reference to the table of contents
             .
 """],
+# ["""\
+# Title
+# -----
+
+# Duplicate implicit targets.
+
+# Title
+# -----
+
+# indirect_ internal
+
+# .. _indirect: implicit_
+# """,
+# """\
+# """],
 ])
 
 
