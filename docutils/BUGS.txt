@@ -119,6 +119,14 @@ Known Bugs
 
 Also see the `SourceForge Bug Tracker`_.
 
+* .. _empty csv-table:
+
+  When supplying an empty file for the csv-table directive, Docutils
+  crashes with a zero-division error.  Example::
+
+      .. csv-table::
+         :file: empty.txt
+
 * Docutils crashes when encountering two consecutive _`roles` if the
   second role specifies a base role.  For example::
 
