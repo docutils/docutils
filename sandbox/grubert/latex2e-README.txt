@@ -1,10 +1,18 @@
 latex2e BUGS TODOS and other animals
 ------------------------------------
 
-Rev. 2002-10-17
+Rev. 2002-11-01
 
 To do
 ~~~~~
+
+* table cells with multirow and multicolumn
+
+* enumeration too deep
+
+* author nesting
+
+* meta keywords into pdf ?
 
 * pagestyle headings does not work, when sections are starred.
 
