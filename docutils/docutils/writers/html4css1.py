@@ -797,12 +797,16 @@ class HTMLTranslator(nodes.NodeVisitor):
                     pass
                 else:
                     if not atts.has_key('width'):
-                        atts['width'] = int(im.size[0]
-                                            * (float(atts['scale']) / 100))
+                        atts['width'] = im.size[0]
                     if not atts.has_key('height'):
-                        atts['height'] = int(im.size[1]
-                                             * (float(atts['scale']) / 100))
+                        atts['height'] = im.size[1]
                     del im
+            if atts.has_key('width'):
+                atts['width'] = int(round(atts['width']
+                                          * (float(atts['scale']) / 100)))
+            if atts.has_key('height'):
+                atts['height'] = int(round(atts['height']
+                                           * (float(atts['scale']) / 100)))
             del atts['scale']
         if not atts.has_key('alt'):
             atts['alt'] = atts['src']
