@@ -93,6 +93,17 @@ Specific:
 
   - Added "--pep-base-url" and "--rfc-base-url" options.
 
+* docutils/parsers/rst/directives/__init__.py:
+
+  - Added several directive option conversion functions.
+
+* docutils/parsers/rst/directives/body.py:
+
+  - Moved "table" directive to tables.py.
+
+* docutils/parsers/rst/directives/tables.py: Table-related directives,
+  added to project.
+
 * docutils/writers/latex2e.py:
 
   - Added "--table-style=(standard|booktabs|nolines)"
@@ -120,7 +131,7 @@ Specific:
 
 * docs/ref/rst/directives.txt:
 
-  - Added directive: "table".
+  - Added directives: "table", "csv-table".
 
 * docs/user/rst/cheatsheet.txt: "The reStructuredText Cheat Sheet"
   added to project.  1 page for syntax, and a 1 page reference for
