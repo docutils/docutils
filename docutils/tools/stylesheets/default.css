@@ -144,6 +144,9 @@ span.classifier-delimiter {
 span.interpreted {
   font-family: sans-serif }
 
+span.option {
+  white-space: nowrap }
+
 span.option-argument {
   font-style: italic }
 
