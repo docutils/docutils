@@ -16,18 +16,16 @@ If you have a standard Docutils installation, then you should be
 able to go to the parent directory of the ``docutils`` directory,
 then do the following::
 
-    unzip rstdocpy-1.0a.zip
+    unzip rstdocpy-1.0b.zip
 
 This will create (overlay) the following files::
 
     README_docpy
-    Msgs/Makefile
-    Msgs/docpy_intro.rst
+    Docs/Makefile
+    Docs/pythonlatex_intro.txt
     docutils/docs/rst/docpy.html
-    docutils/docutils/writers/docpy_debug.py
-    docutils/docutils/writers/documenting_python.py
-    docutils/tools/docpy_debug.py
-    docutils/tools/documenting_python.py
+    docutils/docutils/writers/python_latex.py
+    docutils/tools/python_latex.py
 
 In order to use the above files in place, you may have to do
 something like::
