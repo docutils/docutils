@@ -854,6 +854,7 @@ class Inliner:
 
     def phrase_ref(self, before, after, rawsource, escaped, text):
         match = self.patterns.embedded_uri.search(escaped)
+        uri_text = None
         if match:
             text = unescape(escaped[:match.start(0)])
             uri_text = match.group(2)
@@ -868,8 +869,15 @@ class Inliner:
         else:
             target = None
         refname = normalize_name(text)
-        reference = nodes.reference(rawsource, text,
-                                    name=whitespace_normalize_name(text))
+        # Only add origuri attribute if the rawsource does contain an
+        # embedded_uri
+        if uri_text:
+            reference = nodes.reference(rawsource, text,
+                                        name=whitespace_normalize_name(text),
+                                        origuri=uri_text)
+        else:
+            reference = nodes.reference(rawsource, text,
+                                        name=whitespace_normalize_name(text))
         node_list = [reference]
         if rawsource[-2:] == '__':
             if target:

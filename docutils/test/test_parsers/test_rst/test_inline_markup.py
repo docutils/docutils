@@ -430,7 +430,7 @@ totest['embedded_URIs'] = [
 """\
 <document source="test data">
     <paragraph>
-        <reference name="phrase reference" refuri="http://example.com">
+        <reference name="phrase reference" origuri="http://example.com" refuri="http://example.com">
             phrase reference
         <target id="phrase-reference" name="phrase reference" refuri="http://example.com">
 """],
@@ -440,7 +440,7 @@ totest['embedded_URIs'] = [
 """\
 <document source="test data">
     <paragraph>
-        <reference name="anonymous reference" refuri="http://example.com">
+        <reference name="anonymous reference" origuri="http://example.com" refuri="http://example.com">
             anonymous reference
 """],
 ["""\
@@ -450,7 +450,7 @@ totest['embedded_URIs'] = [
 """\
 <document source="test data">
     <paragraph>
-        <reference name="embedded URI on next line" refuri="http://example.com">
+        <reference name="embedded URI on next line" origuri="http://example.com" refuri="http://example.com">
             embedded URI on next line
 """],
 ["""\
@@ -460,7 +460,7 @@ long/path>`__
 """\
 <document source="test data">
     <paragraph>
-        <reference name="embedded URI across lines" refuri="http://example.com/long/path">
+        <reference name="embedded URI across lines" origuri="http://example.com/\nlong/path" refuri="http://example.com/long/path">
             embedded URI across lines
 """],
 ["""\
@@ -470,7 +470,7 @@ long/path /and  /whitespace>`__
 """\
 <document source="test data">
     <paragraph>
-        <reference name="embedded URI with whitespace" refuri="http://example.com/long/path/and/whitespace">
+        <reference name="embedded URI with whitespace" origuri="http://example.com/\nlong/path /and  /whitespace" refuri="http://example.com/long/path/and/whitespace">
             embedded URI with whitespace
 """],
 ["""\
@@ -482,10 +482,10 @@ long/path /and  /whitespace>`__
 """\
 <document source="test data">
     <paragraph>
-        <reference name="embedded email address" refuri="mailto:jdoe@example.com">
+        <reference name="embedded email address" origuri="jdoe@example.com" refuri="mailto:jdoe@example.com">
             embedded email address
     <paragraph>
-        <reference name="embedded email address broken across lines" refuri="mailto:jdoe@example.com">
+        <reference name="embedded email address broken across lines" origuri="jdoe\n@example.com" refuri="mailto:jdoe@example.com">
             embedded email address broken across lines
 """],
 ["""\
@@ -535,11 +535,11 @@ Relative URIs' reference text can be omitted:
     <paragraph>
         Relative URIs' reference text can be omitted:
     <paragraph>
-        <reference name="reference" refuri="reference">
+        <reference name="reference" origuri="reference" refuri="reference">
             reference
         <target id="reference" name="reference" refuri="reference">
     <paragraph>
-        <reference name="anonymous" refuri="anonymous">
+        <reference name="anonymous" origuri="anonymous" refuri="anonymous">
             anonymous
 """],
 ]

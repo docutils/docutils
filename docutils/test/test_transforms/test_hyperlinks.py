@@ -277,7 +277,7 @@ Another reference to the same `embedded URI`_.
 <document source="test data">
     <paragraph>
         An \n\
-        <reference name="embedded uri" refuri="http://direct">
+        <reference name="embedded uri" origuri="http://direct" refuri="http://direct">
             embedded uri
         <target id="embedded-uri" name="embedded uri" refuri="http://direct">
         .
@@ -294,7 +294,7 @@ An `anonymous embedded uri <http://direct>`__.
 <document source="test data">
     <paragraph>
         An \n\
-        <reference name="anonymous embedded uri" refuri="http://direct">
+        <reference name="anonymous embedded uri" origuri="http://direct" refuri="http://direct">
             anonymous embedded uri
         .
 """],
