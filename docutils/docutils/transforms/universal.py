@@ -151,9 +151,10 @@ class TestMessages(Transform):
 class FinalChecks(Transform):
 
     """
-    Perform last-minute checks.
+    Perform last-minute checks and transforms.
 
     - Check for dangling references (incl. footnote & citation).
+    - Check for illegal transitions, move transitions.
     """
 
     default_priority = 840
@@ -209,6 +210,72 @@ class FinalCheckVisitor(nodes.SparseNodeVisitor):
             node.resolved = 1
 
     visit_footnote_reference = visit_citation_reference = visit_reference
+
+    def visit_transition(self, node):
+        """
+        Move transitions at the end of sections up the tree.  Complain
+        on transitions after a title, at the beginning or end of the
+        document, and after another transition.
+
+        For example, transform this::
+
+            <section>
+                ...
+                <transition>
+            <section>
+                ...
+
+        into this::
+
+            <section>
+                ...
+            <transition>
+            <section>
+                ...
+        """
+        index = node.parent.index(node)
+        error = None
+        if (index == 0 or
+            isinstance(node.parent[0], nodes.title) and
+            (index == 1 or
+             isinstance(node.parent[1], nodes.subtitle) and
+             index == 2)):
+            assert (isinstance(node.parent, nodes.document) or
+                    isinstance(node.parent, nodes.section))
+            error = self.document.reporter.error(
+                'Document or section may not begin with a transition.',
+                line=node.line)
+        elif isinstance(node.parent[index - 1], nodes.transition):
+            error = self.document.reporter.error(
+                'At least one body element must separate transitions; '
+                'adjacent transitions are not allowed.', line=node.line)
+        if error:
+            # Insert before node and update index.
+            node.parent.insert(index, error)
+            index += 1
+        assert index < len(node.parent)
+        if index != len(node.parent) - 1:
+            # No need to move the node.
+            return
+        # Node behind which the transition is to be moved.
+        sibling = node
+        # While sibling is the last node of its parent.
+        while index == len(sibling.parent) - 1:
+            sibling = sibling.parent
+            # If sibling is the whole document (i.e. it has no parent).
+            if sibling.parent is None:
+                # Transition at the end of document.  Do not move the
+                # transition up, and place an error behind.
+                error = self.document.reporter.error(
+                    'Document may not end with a transition.',
+                    line=node.line)
+                node.parent.insert(node.parent.index(node) + 1, error)
+                return
+            index = sibling.parent.index(sibling)
+        # Remove the original transition node.
+        node.parent.remove(node)
+        # Insert the transition after the sibling.
+        sibling.parent.insert(index + 1, node)
 
 
 class InternalAttributeExposer(nodes.GenericNodeVisitor):
