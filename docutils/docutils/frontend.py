@@ -18,10 +18,10 @@ Exports the following classes:
 Also exports the following functions:
 
 * Option callbacks: `store_multiple`, `read_config_file`.
-* Setting validators (see `OptionParser.validators`: `validate_encoding`,
-  `validate_encoding_error_handler`, `validate_encoding_and_error_handler`,
-  `validate_boolean`, `validate_threshold`,
-  `validate_colon_separated_string_list`.
+* Setting validators: `validate_encoding`,
+  `validate_encoding_error_handler`,
+  `validate_encoding_and_error_handler`, `validate_boolean`,
+  `validate_threshold`, `validate_colon_separated_string_list`.
 * `make_paths_absolute`.
 """
 
@@ -204,7 +204,7 @@ class Values(optparse.Values):
 
 class Option(optparse.Option):
 
-    ATTRS = optparse.Option.ATTRS + ['overrides']
+    ATTRS = optparse.Option.ATTRS + ['validator', 'overrides']
 
     def process(self, opt, value, values, parser):
         """
@@ -215,18 +215,17 @@ class Option(optparse.Option):
         result = optparse.Option.process(self, opt, value, values, parser)
         setting = self.dest
         if setting:
-            value = getattr(values, setting)
-            validator = parser.validators.get(setting)
-            if validator:
+            if self.validator:
+                value = getattr(values, setting)
                 try:
-                    new_value = validator(setting, value, parser)
+                    new_value = self.validator(setting, value, parser)
                 except Exception, error:
                     raise (optparse.OptionValueError(
                         'Error in option "%s":\n    %s: %s'
                         % (opt, error.__class__.__name__, error)),
                            None, sys.exc_info()[2])
                 setattr(values, setting, new_value)
-            if self.overrides is not None:
+            if self.overrides:
                 setattr(values, self.overrides, None)
         return result
 
@@ -503,16 +502,10 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
                 else:
                     group = self        # single options
                 for (help_text, option_strings, kwargs) in option_spec:
-                    kwargs = kwargs.copy() # to be modified, locally only
-                    if kwargs.has_key('validator'):
-                        validator = kwargs['validator']
-                        del kwargs['validator']
-                    else:
-                        validator = None
                     option = group.add_option(help=help_text, *option_strings,
                                               **kwargs)
-                    if validator:
-                        self.validators[option.dest] = validator
+                    if kwargs.get('validator'):
+                        self.validators[option.dest] = kwargs['validator']
                     if kwargs.get('action') == 'append':
                         self.lists[option.dest] = 1
                 if component.settings_defaults:
