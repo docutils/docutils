@@ -9,7 +9,7 @@ To do
 ~~~~~
 mostly errors when processing tools/test.txt.
 
-* quotes: dgoogder::
+* quotes: dgoodger::
 
     >       99           99
     >         this is bad
@@ -19,15 +19,21 @@ mostly errors when processing tools/test.txt.
     >       66               99
     >         that is the way
 
-  for latex2e ``that is the way''. but in german::
+  for latex2e::
 
-    >           66
-    >     anders
-    >   99
+      ``that is the way''
 
-  use "`andres"'.
+  But in german::
 
-* tabularx says "donot use any multicolmn which spans any X column.
+              66
+        anders
+      99
+
+  use::
+
+      "`andres"'
+
+* tabularx says "do not use any multicolmn which spans any X column.
   maybe use ltxtable instead of tabularx (Longtable combined with tabularx).
   but ltxtable disables longtable's multicolumn.
 
