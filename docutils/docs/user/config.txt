@@ -290,7 +290,7 @@ _`source_link`
 _`source_url`
     An explicit URL for a "View document source" link, used verbatim.
 
-    Default: compute if source_link (None).  Options: ``--source-uri,
+    Default: compute if source_link (None).  Options: ``--source-url,
     --no-source-link``.
 
 _`toc_backlinks`
