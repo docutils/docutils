@@ -836,7 +836,7 @@ output stream::
 
     .. raw:: latex
 
-       \documentclass[twocolumn]{article}
+       \setlength{\parindent}{0pt}
 
 Raw data can also be read from an external file, specified in a
 directive option.  In this case, the content block must be empty.  For
