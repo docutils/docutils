@@ -156,7 +156,7 @@ class FileInput(Input):
                     print >>sys.stderr, '%s: %s' % (error.__class__.__name__,
                                                     error)
                     print >>sys.stderr, (
-                        'Unable to open source file for reading (%s).  Exiting.'
+                        'Unable to open source file for reading (%r).  Exiting.'
                         % source_path)
                     sys.exit(1)
             else:
@@ -224,7 +224,7 @@ class FileOutput(Output):
             print >>sys.stderr, '%s: %s' % (error.__class__.__name__,
                                             error)
             print >>sys.stderr, ('Unable to open destination file for writing '
-                                 '(%s).  Exiting.' % source_path)
+                                 '(%r).  Exiting.' % self.destination_path)
             sys.exit(1)
         self.opened = 1
 
