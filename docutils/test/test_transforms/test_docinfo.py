@@ -305,8 +305,9 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
 ["""\
 .. RCS keyword extraction.
 
-:Status: $RCSfile$
-:Date: $Date$
+:Status: $""" + """RCSfile: test_docinfo.py,v $
+:Date: (some text) $""" + """Date: 2002/10/08 01:34:23 $ (more text)
+:Version: $""" + """Revision: 1.1 $ (still more text)
 
 RCS keyword 'RCSfile' doesn't change unless the file name changes,
 so it's safe. The 'Date' keyword changes every time the file is
@@ -319,7 +320,9 @@ derived (hacked) in parallel in order to stay in sync.
         <status>
             test_docinfo.py
         <date>
-            %s
+            (some text) %s (more text)
+        <version>
+            1.1 (still more text)
     <comment xml:space="preserve">
         RCS keyword extraction.
     <paragraph>
@@ -327,7 +330,7 @@ derived (hacked) in parallel in order to stay in sync.
         so it's safe. The 'Date' keyword changes every time the file is
         checked in to CVS, so the test's expected output text has to be
         derived (hacked) in parallel in order to stay in sync.
-""" % ('$Date$'[7:17].replace('/', '-'),)],
+""" % (('$' 'Date: 2002/10/08 01:34:23 $')[7:17].replace('/', '-'),)],
 ])
 
 

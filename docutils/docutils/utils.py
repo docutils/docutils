@@ -406,7 +406,7 @@ def clean_rcs_keywords(paragraph, keyword_substitutions):
     if len(paragraph) == 1 and isinstance(paragraph[0], nodes.Text):
         textnode = paragraph[0]
         for pattern, substitution in keyword_substitutions:
-            match = pattern.match(textnode.data)
+            match = pattern.search(textnode.data)
             if match:
                 textnode.data = pattern.sub(substitution, textnode.data)
                 return
