@@ -19,7 +19,7 @@ Transforms needed by most or all documents:
 
 __docformat__ = 'reStructuredText'
 
-import re
+import re, sys
 from docutils import nodes, utils
 from docutils.transforms import TransformError, Transform
 
@@ -32,24 +32,29 @@ class Messages(Transform):
     """
 
     def transform(self):
-        # @@@ filter out msgs below threshold?
-        if len(self.doctree.messages) > 0:
+        unfiltered = self.document.messages.getchildren()
+        threshold = self.document.reporter['writer'].warning_level
+        messages = []
+        for msg in unfiltered:
+            if msg['level'] >= threshold:
+                messages.append(msg)
+        if len(messages) > 0:
             section = nodes.section(CLASS='system-messages')
             # @@@ get this from the language module?
             section += nodes.title('', 'Docutils System Messages')
-            section += self.doctree.messages.getchildren()
-            self.doctree.messages[:] = []
-            self.doctree += section
+            section += messages
+            self.document.messages[:] = []
+            self.document += section
 
 
 class TestMessages(Transform):
 
     """
-    Append all system messages to the end of the doctree.
+    Append all system messages to the end of the document.
     """
 
     def transform(self):
-        self.doctree += self.doctree.messages.getchildren()
+        self.document += self.document.messages.getchildren()
 
 
 class FinalChecks(Transform):
@@ -61,8 +66,8 @@ class FinalChecks(Transform):
     """
 
     def transform(self):
-        visitor = FinalCheckVisitor(self.doctree)
-        self.doctree.walk(visitor)
+        visitor = FinalCheckVisitor(self.document)
+        self.document.walk(visitor)
 
 
 class FinalCheckVisitor(nodes.NodeVisitor):
@@ -75,21 +80,21 @@ class FinalCheckVisitor(nodes.NodeVisitor):
             return
         refname = node['refname']
         try:
-            id = self.doctree.nameids[refname]
+            id = self.document.nameids[refname]
         except KeyError:
-            msg = self.doctree.reporter.error(
+            msg = self.document.reporter.error(
                   'Unknown target name: "%s".' % (node['refname']))
-            self.doctree.messages += msg
-            msgid = self.doctree.set_id(msg)
+            self.document.messages += msg
+            msgid = self.document.set_id(msg)
             prb = nodes.problematic(
                   node.rawsource, node.rawsource, refid=msgid)
-            prbid = self.doctree.set_id(prb)
+            prbid = self.document.set_id(prb)
             msg.add_backref(prbid)
             node.parent.replace(node, prb)
             return
         del node['refname']
         node['refid'] = id
-        self.doctree.ids[id].referenced = 1
+        self.document.ids[id].referenced = 1
         node.resolved = 1
 
     visit_footnote_reference = visit_citation_reference = visit_reference
@@ -98,43 +103,47 @@ class FinalCheckVisitor(nodes.NodeVisitor):
 class Pending(Transform):
 
     """
-    Execute pending transforms.
+    Base class for the execution of pending transforms.
+
+    `nodes.pending` element objects each contain a "stage" attribute; the
+    stage of the pending element must match the `stage` of this transform.
     """
 
     stage = None
     """The stage of processing applicable to this transform; match with
-    `nodes.pending.stage`.  Possible values include 'first_reader',
-    'last_reader', 'first_writer', and 'last_writer'.  Override in
-    subclasses."""
+    `nodes.pending.stage`.  Possible values include 'first reader',
+    'last reader', 'first writer', and 'last writer'.  Overriden in
+    subclasses (below)."""
 
     def transform(self):
-        for pending in self.doctree.pending:
+        for pending in self.document.pending:
             if pending.stage == self.stage:
-                pending.transform(self.doctree, pending).transform()
+                pending.transform(self.document, self.component,
+                                  pending).transform()
 
 
 class FirstReaderPending(Pending):
 
-    stage = 'first_reader'
+    stage = 'first reader'
 
 
 class LastReaderPending(Pending):
 
-    stage = 'last_reader'
+    stage = 'last reader'
 
 
 class FirstWriterPending(Pending):
 
-    stage = 'first_writer'
+    stage = 'first writer'
 
 
 class LastWriterPending(Pending):
 
-    stage = 'last_writer'
+    stage = 'last writer'
 
 
 test_transforms = (TestMessages,)
-"""Universal transforms to apply to the raw doctree when testing."""
+"""Universal transforms to apply to the raw document when testing."""
 
 first_reader_transforms = (FirstReaderPending,)
 """Universal transforms to apply before any other Reader transforms."""
