@@ -172,7 +172,7 @@ class StateMachine:
             state.unlink()
         self.states = None
 
-    def run(self, input_lines, input_offset=0):
+    def run(self, input_lines, input_offset=0, context=None):
         """
         Run the state machine on `input_lines`. Return results (a list).
 
@@ -190,6 +190,7 @@ class StateMachine:
         - `input_lines`: a list of strings without newlines.
         - `input_offset`: the line offset of `input_lines` from the beginning
           of the file.
+        - `context`: application-specific storage.
         """
         self.runtime_init()
         self.input_lines = input_lines
@@ -199,7 +200,6 @@ class StateMachine:
         if self.debug:
             print >>sys.stderr, ('\nStateMachine.run: input_lines:\n| %s' %
                                  '\n| '.join(self.input_lines))
-        context = None
         transitions = None
         results = []
         state = self.get_state()
