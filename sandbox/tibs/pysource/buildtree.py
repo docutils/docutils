@@ -167,12 +167,11 @@ class BuildTree:
             if len(self.stack) > 0:
                 raise ValueError,\
                       "Cannot insert 'document' except at root of stack"
-            warninglevel = keywords.get("warninglevel",1)
-            errorlevel = keywords.get("errorlevel",3)
-            # "errorist" is David's term...
-            errorist = docutils.utils.Reporter(warninglevel=warninglevel,
-                                          errorlevel=errorlevel)
-            instance = docutils.nodes.document(errorist,"en")
+            warninglevel = keywords.get("warninglevel",2)
+            errorlevel = keywords.get("errorlevel",4)
+            reporter = docutils.utils.Reporter(warning_level=warninglevel,
+                                          error_level=errorlevel)
+            instance = docutils.nodes.document(reporter,"en")
         else:
             instance = self.make(thing,*args,**keywords)
 

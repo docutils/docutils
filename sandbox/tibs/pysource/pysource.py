@@ -26,10 +26,7 @@ def rest_document(filename):
     """Return an reST document.
     """
 
-    try:
-        from restructuredtext import Parser
-    except ImportError:
-        from docutils.parsers.restructuredtext import Parser
+    from docutils.parsers.rst import Parser
 
     file = open(filename)
     try:
@@ -38,7 +35,7 @@ def rest_document(filename):
         file.close()
 
     parser = Parser()
-    docroot = docutils.utils.newdocument()
+    docroot = docutils.utils.new_document()
     parser.parse(text,docroot)
     return docroot
 
@@ -105,7 +102,7 @@ def main():
         print_usage()
         return
 
-    shortopts = [option[1] for option in options]
+    shortopts = ''.join([option[1] for option in options])
     longopts = [option[0] for option in options]
     try:
         opts, args = getopt.getopt(sys.argv[1:], shortopts, longopts)
