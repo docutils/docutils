@@ -51,8 +51,8 @@ Attributes shared by all elements in this DTD:
 -->
 <!ENTITY % basic.atts
   " id        ID        #IMPLIED
-    name      NMTOKENS  #IMPLIED
-    dupname   NMTOKENS  #IMPLIED
+    name      CDATA     #IMPLIED
+    dupname   CDATA     #IMPLIED
     source    CDATA     #IMPLIED
     class     NMTOKENS  #IMPLIED
     %additional.basic.atts; ">
