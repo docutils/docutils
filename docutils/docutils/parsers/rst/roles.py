@@ -28,7 +28,8 @@ Parameters:
   Return it as a ``problematic`` node linked to a system message if there is a
   problem.
 
-- ``text`` is the interpreted text content.
+- ``text`` is the interpreted text content, with backslash escapes converted
+  to nulls (``\x00``).
 
 - ``lineno`` is the line number where the interpreted text beings.
 
@@ -73,7 +74,7 @@ Interpreted role functions return a tuple of two values:
 
 __docformat__ = 'reStructuredText'
 
-from docutils import nodes
+from docutils import nodes, utils
 from docutils.parsers.rst import directives
 from docutils.parsers.rst.languages import en as _fallback_language_module
 
@@ -194,7 +195,7 @@ class GenericRole:
 
     def __call__(self, role, rawtext, text, lineno, inliner,
                  options={}, content=[]):
-        return [self.node_class(rawtext, text, **options)], []
+        return [self.node_class(rawtext, utils.unescape(text), **options)], []
 
 
 class CustomRole:
@@ -232,7 +233,7 @@ def generic_custom_role(role, rawtext, text, lineno, inliner,
     """"""
     # Once nested inline markup is implemented, this and other methods should
     # recursively call inliner.nested_parse().
-    return [nodes.inline(rawtext, text, **options)], []
+    return [nodes.inline(rawtext, utils.unescape(text), **options)], []
 
 generic_custom_role.options = {'class': directives.class_option}
 
@@ -264,7 +265,8 @@ def pep_reference_role(role, rawtext, text, lineno, inliner,
         return [prb], [msg]
     # Base URL mainly used by inliner.pep_reference; so this is correct:
     ref = inliner.document.settings.pep_base_url + inliner.pep_url % pepnum
-    return [nodes.reference(rawtext, 'PEP ' + text, refuri=ref, **options)], []
+    return [nodes.reference(rawtext, 'PEP ' + utils.unescape(text), refuri=ref,
+                            **options)], []
 
 register_canonical_role('pep-reference', pep_reference_role)
 
@@ -282,10 +284,27 @@ def rfc_reference_role(role, rawtext, text, lineno, inliner,
         return [prb], [msg]
     # Base URL mainly used by inliner.rfc_reference, so this is correct:
     ref = inliner.document.settings.rfc_base_url + inliner.rfc_url % rfcnum
-    node = nodes.reference(rawtext, 'RFC ' + text, refuri=ref, **options)
+    node = nodes.reference(rawtext, 'RFC ' + utils.unescape(text), refuri=ref,
+                           **options)
     return [node], []
 
 register_canonical_role('rfc-reference', rfc_reference_role)
+
+def raw_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
+    if not options.has_key('format'):
+        msg = inliner.reporter.error(
+            'No format (Writer name) is associated with this role: "%s".\n'
+            'The "raw" role cannot be used directly.\n'
+            'Instead, use the "role" directive to create a new role with '
+            'an associated format.' % role, line=lineno)
+        prb = inliner.problematic(rawtext, rawtext, msg)
+        return [prb], [msg]
+    node = nodes.raw(rawtext, utils.unescape(text, 1), **options)
+    return [node], []
+
+raw_role.options = {'format': directives.class_option}
+
+register_canonical_role('raw', raw_role)
 
 
 ######################################################################
