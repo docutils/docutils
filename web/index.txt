@@ -4,6 +4,8 @@
 
 :Date: $Date$
 
+.. contents::
+
 The purpose of the Docutils project is to create a set of tools for
 processing plaintext documentation into useful formats, such as HTML,
 XML, and TeX.  Several sources will be supported:
@@ -23,47 +25,134 @@ XML, and TeX.  Several sources will be supported:
 Project Status
 ==============
 
-The Docutils project will be the result of merging the
-reStructuredText__ parser into the `Python Docstring Processing
-System`__.  The merge is planned but hasn't happened yet.
-
-Docutils is currently just a reStructuredText parser with some extras.
-There is a lot of design and implementation work to do, which could
-greatly benefit from existing projects.  A joint effort would be very
-welcome.
+The Docutils project began with the merging of the reStructuredText__
+parser and the `Python Docstring Processing System`__ projects.  The
+merge is under way, and those projects are now winding down.
 
 __ http://structuredtext.sourceforge.net/
 __ http://docstring.sourceforge.net/
 
+Docutils is currently just a reStructuredText parser with some extras.
+There is a lot of design and implementation work to do, which could
+greatly benefit from a joint effort with existing projects.
 
-.. Specification
-   =============
-   
-   - `PEP 2xx: reStructuredText Standard Docstring Format`__ proposes a
-     standard markup syntax.
-   
-   - `PEP 257: Docstring Conventions`__ addresses docstring style and
-     touches on content.  [`PEP 257`__ in the `master repository`_]
-   
-   - `PEP 256: Docstring Processing System Framework`__ presents a
-     high-level generic processing proposal.  [`PEP 257`__ in the `master
-     repository`_]
-   
-   - `PEP 258: Docutils Design Specification__ documents design issues
-     and implementation details for Docutils (this project), a specific
-     docstring processing system.  [`PEP 257`__ in the `master repository`_]
-   
-   __ peps/pep-02xx.txt
-   .. __ http://www.python.org/peps/pep-02xx.html
-   __ peps/pep-0257.txt
-   __ http://www.python.org/peps/pep-0257.html
-   __ peps/pep-0256.txt
-   __ http://www.python.org/peps/pep-0256.html
-   __ peps/pep-0258.txt
-   __ http://www.python.org/peps/pep-0258.html
-   .. _master repository:
 
-.. _peps: http://www.python.org/peps/
+Daily Snapshots
+---------------
+
+Daily snapshots of the project files are available.  They are
+generated automatically from CVS around midnight in North America's
+Eastern time zone (UTC-0400 from April to October, UTC-0500 from
+October to April).  The snapshots should be used with caution, as they
+may contain transient bugs or incompatibilities.
+
+- `Docutils code, tests, documentation, and specifications`__
+
+  __ http://docutils.sourceforge.net/docutils-snapshot.tgz
+
+- `Docutils Sandbox`__ (experimental, contributed code)
+
+  __ http://docutils.sourceforge.net/docutils-sandbox-snapshot.tgz
+
+- `Docutils web files`__ (the files that generate this web site)
+
+  __ http://docutils.sourceforge.net/docutils-web-snapshot.tgz
+
+
+Project Releases
+----------------
+
+Please note that the `daily snapshots`_ above contain the latest
+versions of project files, although they may not be fully tested.
+
+The `latest project release package`_ (Docutils 0.1) and past project
+releases can be downloaded from the `project files page`_.  `Anonymous
+CVS access`_ is available.  You can also `browse the CVS repository`_
+and read the latest README_ and HISTORY_ files.
+
+
+User Documentation
+==================
+
+The latest working documents may be accessed individually below, or
+from the ``docs`` directory of the `daily snapshots`_ above.  They are
+also distributed with the `latest project release package`_, but these
+may not be completely up to date.
+
+- `A ReStructuredText Primer`__ (HTML file, or `text source`__).
+
+  __ docs/rst/quickstart.html
+  __ docs/rst/quickstart.txt
+
+- `Quick reStructuredText`__ (user reference)
+
+  __ docs/rst/quickref.html
+
+
+Specification
+=============
+
+PEPs (Python Enhancement Proposals)
+-----------------------------------
+
+- `PEP 287: reStructuredText Standard Docstring Format`__ proposes a
+  standard markup syntax.  [`PEP 287`__ in the `master repository`_]
+- `PEP 257: Docstring Conventions`__ addresses docstring style and
+  touches on content.  [`PEP 257`__ in the `master repository`_]
+- `PEP 256: Docstring Processing System Framework`__ presents a
+  high-level generic processing proposal.  [`PEP 257`__ in the `master
+  repository`_]
+- `PEP 258: Docutils Design Specification__ documents design issues
+  and implementation details for Docutils (this project), a specific
+  docstring processing system.  [`PEP 257`__ in the `master
+  repository`_]
+
+__ spec/pep-0287.txt
+__ http://www.python.org/peps/pep-0287.html
+__ spec/pep-0257.txt
+__ http://www.python.org/peps/pep-0257.html
+__ spec/pep-0256.txt
+__ http://www.python.org/peps/pep-0256.html
+__ spec/pep-0258.txt
+__ http://www.python.org/peps/pep-0258.html
+
+Docutils Internals
+------------------
+
+- `Docutils Document Tree Structure`__ (incomplete; source only)
+- Notes__
+- `Python Source Reader`__ (incomplete)
+- `Docstring Semantics`__ (incomplete)
+- `Docutils Generic DTD`__
+- `OASIS XML Exchange Table Model Declaration Module`__
+- `Docutils Python DTD`__ (experimental)
+
+__ spec/doctree.txt
+__ spec/notes.html
+__ spec/pysource.html
+__ spec/semantics.html
+__ spec/docutils.dtd
+__ spec/soextblx.dtd
+__ spec/pysource.dtd
+
+
+reStructuredText
+----------------
+
+Please also see the `reStructuredText home page`__.
+
+- `An Introduction to reStructuredText`__
+- `reStructuredText Markup Specification`__
+- `reStructuredText Directives`__
+- `A Record of reStructuredText Syntax Alternatives`__
+- `Problems With StructuredText`__
+
+__ rst.html
+__ spec/rst/introduction.html
+__ spec/rst/reStructuredText.html
+__ spec/rst/directives.html
+__ spec/rst/alternatives.html
+__ spec/rst/problems.html
 
 
 Contribute!
@@ -75,22 +164,25 @@ administration, tasty snacks, computer equipment, and large sums of
 money.  If you're interested in participating, please `contact the
 project administrator`__.
 
-.. _David Goodger:
-__ mailto:goodger@users.sourceforge.net
+__ `David Goodger`_
 
 
 Project Info
 ============
 
-- `Project Summary page`__
-
-  .. : Bug reports, patches, feature requests, mailing lists, news.
+- `Project Summary page`__: `released files`__, `Bug reports`__,
+  patches__, `mailing lists`__, and news__.
 
   __ http://sourceforge.net/projects/docutils/
-  
+  __ `project files page`_
+  __ http://sourceforge.net/tracker/?group_id=38414&atid=422030
+  __ http://sourceforge.net/tracker/?group_id=38414&atid=422032
+  __ http://sourceforge.net/mail/?group_id=38414
+  __ http://sourceforge.net/news/?group_id=38414
+
 - `Docutils Processing System CVS repository`__
 
-  __ http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/docutils
+  __ `browse the CVS repository`_
 
 - Project administrator: `David Goodger`_
 
@@ -108,7 +200,31 @@ Project Info
 
   __ http://sourceforge.net/
   .. |SourceForge| image::
-	 http://sourceforge.net/sflogo.php?group_id=38414
-	 :width: 88
-	 :height: 31
-	 :alt: SourceForge Logo
+     http://sourceforge.net/sflogo.php?group_id=38414
+     :width: 88
+     :height: 31
+     :alt: SourceForge Logo
+
+
+.. _project files page:
+   http://sourceforge.net/project/showfiles.php?group_id=38414
+.. _Anonymous CVS access: http://sourceforge.net/cvs/?group_id=38414
+.. _browse the CVS repository:
+   http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/docutils/
+.. _README: README.html
+.. _HISTORY: HISTORY.html
+.. _master repository:
+.. _peps: http://www.python.org/peps/
+.. _David Goodger: mailto:goodger@users.sourceforge.net
+
+.. _latest project release package:
+   http://prdownloads.sourceforge.net/docutils/docutils-0.1.tar.gz
+
+
+..
+   Local Variables:
+   mode: indented-text
+   indent-tabs-mode: nil
+   sentence-end-double-space: t
+   fill-column: 70
+   End:
