@@ -56,13 +56,13 @@ def set_encoding(option, opt, value, parser):
     Validate & set the encoding specified.  (Option callback.)
     """
     try:
-        value = validate_encoding(value, parser.defaults[option.dest])
+        value = validate_encoding(option.dest, value)
     except LookupError, error:
         raise (optik.OptionValueError('option "%s": %s' % (opt, error)),
                None, sys.exc_info()[2])
     setattr(parser.values, option.dest, value)
 
-def validate_encoding(value, default):
+def validate_encoding(name, value):
     try:
         codecs.lookup(value)
     except LookupError:
@@ -70,44 +70,59 @@ def validate_encoding(value, default):
                None, sys.exc_info()[2])
     return value
 
-def set_encoding_and_error_handler(option, opt, value, parser):
+def set_encoding_error_handler(option, opt, value, parser):
     """
-    Validate & set the encoding and error handlers specified.
-    (Option callback.)
+    Validate & set the encoding error handler specified.  (Option callback.)
     """
     try:
-        value = validate_encoding_and_error_handler(
-            value, parser.defaults[option.dest])
+        value = validate_encoding_error_handler(option.dest, value)
     except LookupError, error:
         raise (optik.OptionValueError('option "%s": %s' % (opt, error)),
                None, sys.exc_info()[2])
     setattr(parser.values, option.dest, value)
 
-def validate_encoding_and_error_handler(value, default):
-    if ':' in value:
-        encoding, handler = value.split(':')
-    else:
-        encoding = value
-        # "strict" is a fallback default encoding error handler if none
-        # specified by the default value:
-        handler = (default.split(':') + ['strict'])[1]
-    validate_encoding(encoding, default)
+def validate_encoding_error_handler(name, value):
     try:
-        codecs.lookup_error(handler)
-    except AttributeError:
-        if handler not in ('strict', 'ignore', 'replace'):
+        codecs.lookup_error(value)
+    except AttributeError:              # prior to Python 2.3
+        if value not in ('strict', 'ignore', 'replace'):
             raise (LookupError(
                 'unknown encoding error handler: "%s" (choices: '
-                '"strict", "ignore", or "replace")' % handler),
+                '"strict", "ignore", or "replace")' % value),
                    None, sys.exc_info()[2])
     except LookupError:
         raise (LookupError(
             'unknown encoding error handler: "%s" (choices: '
             '"strict", "ignore", "replace", "backslashreplace", '
             '"xmlcharrefreplace", and possibly others; see documentation for '
-            'the Python ``codecs`` module)' % handler),
+            'the Python ``codecs`` module)' % value),
                None, sys.exc_info()[2])
-    return encoding + ':' + handler
+    return value
+
+def set_encoding_and_error_handler(option, opt, value, parser):
+    """
+    Validate & set the encoding and error handler specified.  (Option callback.)
+    """
+    try:
+        value = validate_encoding_and_error_handler(option.dest, value)
+    except LookupError, error:
+        raise (optik.OptionValueError('option "%s": %s' % (opt, error)),
+               None, sys.exc_info()[2])
+    if ':' in value:
+        encoding, handler = value.split(':')
+        setattr(parser.values, option.dest + '_error_handler', handler)
+    else:
+        encoding = value
+    setattr(parser.values, option.dest, encoding)
+
+def validate_encoding_and_error_handler(name, value):
+    if ':' in value:
+        encoding, handler = value.split(':')
+        validate_encoding_error_handler(name + '_error_handler', handler)
+    else:
+        encoding = value
+    validate_encoding(name, encoding)
+    return value
 
 def make_paths_absolute(pathdict, keys, base_path=None):
     """
@@ -229,7 +244,12 @@ class OptionParser(optik.OptionParser, docutils.SettingsSpec):
           ['--output-encoding', '-o'],
           {'action': 'callback', 'callback': set_encoding_and_error_handler,
            'metavar': '<name[:handler]>', 'type': 'string',
-           'dest': 'output_encoding', 'default': 'utf-8:strict'}),
+           'dest': 'output_encoding', 'default': 'utf-8'}),
+         (optik.SUPPRESS_HELP,          # usually handled by --output-encoding
+          ['--output_encoding_error_handler'],
+          {'action': 'callback', 'callback': set_encoding_error_handler,
+           'type': 'string', 'dest': 'output_encoding_error_handler',
+           'default': 'strict'}),
          ('Specify the text encoding for error output.  Default is ASCII.  '
           'Optionally also specify the encoding error handler for unencodable '
           'characters, after a colon (":").  Acceptable values are the same '
@@ -238,8 +258,12 @@ class OptionParser(optik.OptionParser, docutils.SettingsSpec):
           ['--error-encoding', '-e'],
           {'action': 'callback', 'callback': set_encoding_and_error_handler,
            'metavar': '<name[:handler]>', 'type': 'string',
-           'dest': 'error_encoding',
-           'default': 'ascii:%s' % default_error_encoding_error_handler}),
+           'dest': 'error_encoding', 'default': 'ascii'}),
+         (optik.SUPPRESS_HELP,          # usually handled by --error-encoding
+          ['--error_encoding_error_handler'],
+          {'action': 'callback', 'callback': set_encoding_error_handler,
+           'type': 'string', 'dest': 'error_encoding_error_handler',
+           'default': default_error_encoding_error_handler}),
          ('Specify the language of input text (ISO 639 2-letter identifier).'
           '  Default is "en" (English).',
           ['--language', '-l'], {'dest': 'language_code', 'default': 'en',
@@ -271,7 +295,8 @@ class OptionParser(optik.OptionParser, docutils.SettingsSpec):
     ends.  Setting specs specific to individual Docutils components are also
     used (see `populate_from_components()`)."""
 
-    settings_default_overrides = {'_disable_config': None}
+    settings_defaults = {'_disable_config': None}
+    """Defaults for settings that don't have command-line option equivalents."""
 
     relative_path_settings = ('warning_stream',)
 
@@ -309,6 +334,12 @@ class OptionParser(optik.OptionParser, docutils.SettingsSpec):
         self.set_defaults(_source=None, _destination=None, **defaults)
 
     def populate_from_components(self, components):
+        """
+        For each component, first populate from the `SettingsSpec.settings_spec`
+        structure, then from the `SettingsSpec.settings_defaults` dictionary.
+        After all components have been processed, check for and populate from
+        each component's `SettingsSpec.settings_default_overrides` dictionary.
+        """
         for component in components:
             if component is None:
                 continue
@@ -326,6 +357,8 @@ class OptionParser(optik.OptionParser, docutils.SettingsSpec):
                 for (help_text, option_strings, kwargs) in option_spec:
                     group.add_option(help=help_text, *option_strings,
                                      **kwargs)
+                if component.settings_defaults:
+                    self.defaults.update(component.settings_defaults)
                 i += 3
         for component in components:
             if component and component.settings_default_overrides:
@@ -374,12 +407,15 @@ class ConfigParser(CP.ConfigParser):
     'options').  Later files override earlier ones."""
 
     validation = {
-        'options': {'input_encoding': validate_encoding,
-                    'output_encoding': validate_encoding_and_error_handler,
-                    'error_encoding': validate_encoding_and_error_handler}}
+        'options':
+        {'input_encoding': validate_encoding,
+         'output_encoding': validate_encoding,
+         'output_encoding_error_handler': validate_encoding_error_handler,
+         'error_encoding': validate_encoding,
+         'error_encoding_error_handler': validate_encoding_error_handler}}
     """{section: {option: validation function}} mapping, used by
-    `validate_options`.  Validation functions take two parameters: value and
-    default.  They return a modified value, or raise an exception."""
+    `validate_options`.  Validation functions take two parameters: name and
+    value.  They return a (possibly modified) value, or raise an exception."""
 
     def read_standard_files(self, option_parser):
         self.read(self.standard_config_files, option_parser)
@@ -399,9 +435,8 @@ class ConfigParser(CP.ConfigParser):
                 if self.has_option(section, option):
                     value = self.get(section, option)
                     validator = self.validation[section][option]
-                    default = option_parser.defaults[option]
                     try:
-                        new_value = validator(value, default)
+                        new_value = validator(option, value)
                     except Exception, error:
                         raise (ValueError(
                             'Error in config file "%s", section "[%s]":\n'
