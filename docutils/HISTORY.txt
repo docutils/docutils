@@ -116,8 +116,18 @@ Specific:
   - Added support for "--pep-references" and "--rfc-references"
     options; reworked ``Inliner`` code to make customization easier.
 
+* docutils/parsers/rst/directives/__init__.py:
+
+  - Added ``flag()``, ``unchanged()``, and ``choice()`` directive
+    option helper functions.
+
 * docutils/parsers/rst/directives/body.py: Added to project.  Contains
   the "topic", "line-block", and "parsed-literal" directives.
+
+* docutils/parsers/rst/directives/images.py:
+
+  - Added an "align" attribute to the "image" & "figure" directives
+    (by Adam Chodorowski).
 
 * docutils/parsers/rst/directives/parts.py:
 
@@ -245,6 +255,8 @@ Specific:
   - Added directives: "topic", "sectnum", "target-notes",
     "line-block", "parsed-literal", "include".
   - Formalized descriptions of directive details.
+  - Added an "align" attribute to the "image" & "figure" directives
+    (by Adam Chodorowski).
 
 * spec/rst/introduction.txt:
 

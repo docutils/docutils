@@ -14,27 +14,20 @@ __docformat__ = 'reStructuredText'
 
 from docutils import nodes
 from docutils.transforms import parts
+from docutils.parsers.rst import directives
 
 
-def unchanged(arg):
-    return arg                          # unchanged!
+backlinks_values = ('top', 'entry', 'none')
 
 def backlinks(arg):
-    try:
-        value = arg.lower().strip()
-    except AttributeError:
-        raise TypeError('must supply an argument; choose from "top", '
-                        '"entry", or "none"')
+    value = directives.choice(arg, backlinks_values)
     if value == 'none':
         return None
-    elif value == 'top' or arg == 'entry':
-        return value
     else:
-        raise ValueError(
-            '"%s" unknown; choose from "top", "entry", or "none"' % arg)
+        return value
 
 contents_option_spec = {'depth': int,
-                        'local': unchanged,
+                        'local': directives.flag,
                         'backlinks': backlinks}
                         #'qa': unchanged}
 
