@@ -135,7 +135,7 @@ class Contents(Transform):
         if entries:
             contents = nodes.bullet_list('', *entries)
             if auto:
-                contents.set_class('auto-toc')
+                contents['classes'].append('auto-toc')
             return contents
         else:
             return []

@@ -30,10 +30,10 @@ def make_admonition(node_class, name, arguments, options, content, lineno,
         admonition_node += nodes.title(title_text, '', *textnodes)
         admonition_node += messages
         if options.has_key('class'):
-            class_value = options['class']
+            classes = options['class']
         else:
-            class_value = 'admonition-' + nodes.make_id(title_text)
-        admonition_node.set_class(class_value)
+            classes = ['admonition-' + nodes.make_id(title_text)]
+        admonition_node['classes'] += classes
     state.nested_parse(content, content_offset, admonition_node)
     return [admonition_node]
 

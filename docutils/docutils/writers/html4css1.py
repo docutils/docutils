@@ -297,8 +297,8 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def set_first_last(self, node):
         if len(node):
-            node[0].set_class('first')
-            node[-1].set_class('last')
+            node[0]['classes'].append('first')
+            node[-1]['classes'].append('last')
 
     def visit_Text(self, node):
         self.body.append(self.encode(node.astext()))
@@ -474,10 +474,10 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_compound(self, node):
         self.body.append(self.starttag(node, 'div', CLASS='compound'))
         if len(node) > 1:
-            node[0].set_class('compound-first')
-            node[-1].set_class('compound-last')
+            node[0]['classes'].append('compound-first')
+            node[-1]['classes'].append('compound-last')
             for child in node[1:-1]:
-                child.set_class('compound-middle')
+                child['classes'].append('compound-middle')
 
     def depart_compound(self, node):
         self.body.append('</div>\n')
@@ -566,9 +566,9 @@ class HTMLTranslator(nodes.NodeVisitor):
                          % self.language.labels[name])
         if len(node):
             if isinstance(node[0], nodes.Element):
-                node[0].set_class('first')
+                node[0]['classes'].append('first')
             if isinstance(node[-1], nodes.Element):
-                node[-1].set_class('last')
+                node[-1]['classes'].append('last')
 
     def depart_docinfo_item(self):
         self.body.append('</td></tr>\n')
@@ -745,8 +745,8 @@ class HTMLTranslator(nodes.NodeVisitor):
             # If there are preceding backlinks, we do not set class
             # 'first', because we need to retain the top-margin.
             if not backlinks:
-                node[1].set_class('first')
-            node[-1].set_class('last')
+                node[1]['classes'].append('first')
+            node[-1]['classes'].append('last')
 
     def depart_footnote(self, node):
         self.body.append('</td></tr>\n'
@@ -801,8 +801,8 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_image(self, node):
         atts = node.non_default_attributes()
-        if atts.has_key('class'):
-            del atts['class']           # prevent duplication with node attrs
+        if atts.has_key('classes'):
+            del atts['classes']         # prevent duplication with node attrs
         atts['src'] = atts['uri']
         del atts['uri']
         if atts.has_key('scale'):
@@ -889,7 +889,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_list_item(self, node):
         self.body.append(self.starttag(node, 'li', ''))
         if len(node):
-            node[0].set_class('first')
+            node[0]['classes'].append('first')
 
     def depart_list_item(self, node):
         self.body.append('</li>\n')

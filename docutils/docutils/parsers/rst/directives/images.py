@@ -15,6 +15,7 @@ import sys
 from docutils import nodes, utils
 from docutils.parsers.rst import directives, states
 from docutils.nodes import whitespace_normalize_name
+from docutils.parsers.rst.roles import set_classes
 
 try:
     import Image                        # PIL
@@ -45,6 +46,7 @@ def image(name, arguments, options, content, lineno,
         else:                           # malformed target
             messages.append(data)       # data is a system message
         del options['target']
+    set_classes(options)
     image_node = nodes.image(block_text, **options)
     if reference_node:
         reference_node += image_node
@@ -64,7 +66,7 @@ image.options = {'alt': directives.unchanged,
 def figure(name, arguments, options, content, lineno,
            content_offset, block_text, state, state_machine):
     figwidth = options.setdefault('figwidth')
-    figclass = options.setdefault('figclass')
+    figclasses = options.setdefault('figclass')
     del options['figwidth']
     del options['figclass']
     (image_node,) = image(name, arguments, options, content, lineno,
@@ -84,8 +86,8 @@ def figure(name, arguments, options, content, lineno,
                 figure_node['width'] = i.size[0]
     elif figwidth is not None:
         figure_node['width'] = figwidth
-    if figclass:
-        figure_node.set_class(figclass)
+    if figclasses:
+        figure_node['classes'] += figclasses
     if content:
         node = nodes.Element()          # anonymous container for parsing
         state.nested_parse(content, content_offset, node)

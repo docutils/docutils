@@ -595,10 +595,6 @@ class Element(Node):
     def copy(self):
         return self.__class__(**self.attributes)
 
-    def set_class(self, name):
-        """Add a new name to the "class" attribute."""
-        self['classes'].append(name.lower())
-
     def note_referenced_by(self, name=None, id=None):
         """Note that this Element has been referenced by its name
         `name` or id `id`."""
