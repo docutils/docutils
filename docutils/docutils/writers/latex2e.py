@@ -429,7 +429,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # $ % & ~ _ ^ \ { }
         Escaping with a backslash does not help with backslashes, ~ and ^.
 
-            < > are only available in math-mode (really ?)
+            < > are only available in math-mode or tt font. (really ?)
             $ starts math- mode.
         AND quotes:
 
@@ -452,8 +452,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # then dollar
         text = text.replace("$", '{\\$}')
         # then all that needs math mode
-        text = text.replace("<", '{$<$}')
-        text = text.replace(">", '{$>$}')
+        if not ( self.literal_block or self.literal ):
+            text = text.replace("<", '{$<$}')
+            text = text.replace(">", '{$>$}')
         # then
         text = text.replace("&", '{\\&}')
         text = text.replace("_", '{\\_}')
