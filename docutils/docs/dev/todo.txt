@@ -379,7 +379,13 @@ Implementation Docs
 -------------------
 
 * Improve the internal module documentation (docstrings in the code).
-  Specific deficiencies to be listed below.
+  Specific deficiencies listed below.
+
+  - docutils.parsers.rst.states.State.build_table: data structure required
+    (including StringList).
+
+  - docutils.parsers.rst.states: more complete documentation of parser
+    internals.
 
 * docs/ref/doctree.txt: DTD element structural relationships,
   semantics, and attributes.  In progress; element descriptions to be
