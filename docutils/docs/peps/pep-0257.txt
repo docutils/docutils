@@ -113,7 +113,15 @@ Specification
               """function(a, b) -> list"""
 
       This type of docstring is only appropriate for C functions (such
-      as built-ins), where introspection is not possible.
+      as built-ins), where introspection is not possible.  However,
+      the nature of the return value cannot be determined by
+      introspection, so it should be mentioned.  The preferred form
+      for such a docstring would be something like::
+
+          def function(a, b):
+              """Do X and return a list."""
+
+      (Of course "Do X" should be replaced by a useful description!)
 
     Multi-line Docstrings
     ----------------------
