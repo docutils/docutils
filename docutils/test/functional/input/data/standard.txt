@@ -451,6 +451,42 @@ I recommend you try |Python|_.
 
 .. |Python| replace:: Python, *the* best language around
 
+Compound Paragraph
+``````````````````
+
+.. compound::
+   :class: some-class
+
+   Compound 1, paragraph 1.
+
+   Compound 1, paragraph 2.
+
+   * Compound 1, list item one.
+   * Compound 1, list item two.
+
+Another compound statement:
+
+.. compound::
+
+   Compound 2, a literal block::
+
+       Compound 2, literal.
+
+   Compound 2, this is a test.
+
+.. compound::
+
+   Compound 3, only consisting of one paragraph.
+
+.. compound::
+
+   ::
+
+       Compound 4.
+       This one starts with a literal block.
+
+   Compound 4, a paragraph.
+
 Substitution Definitions
 ------------------------
 
