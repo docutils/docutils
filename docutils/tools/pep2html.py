@@ -7,7 +7,7 @@ Usage: %(PROGRAM)s [options] [peps]
 Options:
 
     -u/--user
-        SF username
+        python.org username
 
     -b/--browse
         After generating the HTML, direct your web browser to view it
@@ -18,8 +18,8 @@ Options:
 
     -i/--install
         After generating the HTML, install it and the plain text source file
-        (.txt) SourceForge.  In that case the user's name is used in the scp
-        and ssh commands, unless -u sf_username is given (in which case, it is
+        (.txt) on python.org.  In that case the user's name is used in the scp
+        and ssh commands, unless "-u username" is given (in which case, it is
         used instead).  Without -i, -u is ignored.
 
     -q/--quiet
@@ -178,8 +178,11 @@ def fixfile(inpath, input_lines, outfile):
     if basename <> 'pep-0000.txt':
         print >> outfile, '[<b><a href=".">PEP Index</a></b>]'
     if pep:
-        print >> outfile, '[<b><a href="pep-%04d.txt">PEP Source</a></b>]' \
-              % int(pep)
+        try:
+            print >> outfile, ('[<b><a href="pep-%04d.txt">PEP Source</a>'
+                               '</b>]' % int(pep))
+        except ValueError, error:
+            print >> sys.stderr, '%s: %s' % (error.__class__.__name__, error)
     print >> outfile, '</td></tr></table>'
     print >> outfile, '<div class="header">\n<table border="0">'
     for k, v in header:
@@ -207,10 +210,13 @@ def fixfile(inpath, input_lines, outfile):
                                                                   otherpep)
             v = otherpeps
         elif k.lower() in ('last-modified',):
-            url = PEPCVSURL % int(pep)
             date = v or time.strftime('%d-%b-%Y',
                                       time.localtime(os.stat(inpath)[8]))
-            v = '<a href="%s">%s</a> ' % (url, cgi.escape(date))
+            try:
+                url = PEPCVSURL % int(pep)
+                v = '<a href="%s">%s</a> ' % (url, cgi.escape(date))
+            except ValueError, error:
+                v = date
         elif k.lower() in ('content-type',):
             url = PEPURL % 9
             pep_type = v or 'text/plain'
