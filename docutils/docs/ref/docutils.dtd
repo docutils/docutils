@@ -302,7 +302,8 @@ http://www.oasis-open.org/html/tm9901.htm).
 <!ELEMENT field_argument (#PCDATA)>
 <!ATTLIST field_argument %basic.atts;>
 
-<!ELEMENT field_body (%body.elements;)+>
+<!-- May be empty. -->
+<!ELEMENT field_body (%body.elements;)*>
 <!ATTLIST field_body %basic.atts;>
 
 <!ELEMENT option_list (option_list_item+)>
