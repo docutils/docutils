@@ -7,7 +7,7 @@
 
 
 from reportlab.platypus import PageTemplate, \
-     BaseDocTemplate, Frame, Paragraph
+     BaseDocTemplate, SimpleDocTemplate, Frame, Paragraph
 from reportlab.lib.units import inch, cm
 from reportlab.rl_config import defaultPageSize
 
@@ -92,12 +92,14 @@ class TwoColumnTemplate(PageTemplate):
         canvas.restoreState()
 
 
-class RLDocTemplate(BaseDocTemplate):
+# class RLDocTemplate(BaseDocTemplate):
+class RLDocTemplate(SimpleDocTemplate):
     def afterInit(self):
         self.addPageTemplates(FrontCoverTemplate('Cover', self.pagesize))
         self.addPageTemplates(OneColumnTemplate('Normal', self.pagesize))
         self.addPageTemplates(TwoColumnTemplate('TwoColumn', self.pagesize))
-        
+        self.addPageTemplates(TwoColumnTemplate('Later', self.pagesize))
+
         #just playing
         self.title = "(Document Title Goes Here)"
         self.chapter = "(No chapter yet)"
