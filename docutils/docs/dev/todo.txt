@@ -828,6 +828,26 @@ __ rst/alternatives.html#or-not-to-do
   former supports the proposed syntax, and it could be argued that the
   latter ought to be literal text anyhow (e.g. "``^C`` to cancel").
 
+* Add _`math markup`.  We should try for a general solution, that's
+  applicable to any output format.  Using a standard, such as MathML_,
+  would be best.  TeX (or itex_) would be acceptable as a *front-end*
+  to MathML.  See `the culmination of a relevant discussion
+  <http://article.gmane.org/gmane.text.docutils.user/118>`__.
+
+  Both a directive and an interpreted text role will be necessary (for
+  each markups).  Directive example::
+
+      .. itex::
+         \alpha_t(i) = P(O_1, O_2, \dots O_t, q_t = S_i \lambda)
+
+  The same thing inline::
+
+      The equation in question is :itex:`\alpha_t(i) = P(O_1, O_2,
+      \dots O_t, q_t = S_i \lambda)`.
+
+  .. _MathML: http://www.w3.org/TR/MathML2/
+  .. _itex: http://pear.math.pitt.edu/mathzilla/itex2mmlItex.html
+
 
 Directives
 ``````````
