@@ -167,9 +167,9 @@ td, th {
   padding-right: 0.5em ;
   vertical-align: baseline }
 
-td.docinfo-name {
+th.docinfo-name {
   font-weight: bold ;
   text-align: right }
 
-td.field-name {
+th.field-name {
   font-weight: bold }
