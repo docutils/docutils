@@ -680,6 +680,26 @@ interpreted as a letter of the alphabet, not as a Roman numeral.
 Likewise, lists using letters of the alphabet may not begin with
 "I"/"i", since these are recognized as Roman numeral 1.
 
+The second line of each enumerated list item is checked for validity.
+This is to prevent ordinary paragraphs from being mistakenly
+interpreted as list items, when they happen to begin with text
+identical to enumerators.  For example, this text is parsed as an
+ordinary paragraph::
+
+    A. Einstein was a really
+    smart dude.
+
+However, ambiguity cannot be avoided if the paragraph consists of only
+one line.  This text is parsed as an enumerated list item::
+
+    A. Einstein was a really smart dude.
+
+If a single-line paragraph begins with text identical to an enumerator
+("A.", "1.", "(b)", "I)", etc.), the first character will have to be
+escaped in order to have the line parsed as an ordinary paragraph::
+
+    \A. Einstein was a really smart dude.
+
 Nested enumerated lists must be created with indentation.  For
 example::
 
