@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-Generates a PDF that includes highlighted comments, errors, and suchlike.
-Used only by documentation developers.
+	Generates a PDF that DOES NOT include highlighted comments, errors, and 
+suchlike.
+	Suitable for end-users.
 -->
 <!--
 Set namespace extensions. These are used as [shortname]:[tag] throughout the 
@@ -25,18 +26,18 @@ these XSL files)
  	 xmlns:u="U" 	>
 	 
 <!--
-indent: indent FO output for better human readability (CAUSES SIDE EFFECTS FOR 
-ALL LITERAL TEXT!)
+indent: indent FO output for better human readability (may cause side 
+effects).
 publish-comments: show ReST comments ('..comment').
 publish_filenotes: show ReST file notes ('..file notes').
 publish_problematics: show DocUtils-generated problematic error messages.
 system_messages: show DocUtils-generated system messages.
 -->
-<xsl:output indent="yes" saxon:indent-spaces="8" />
-<xsl:variable name="publish_comments">enabled</xsl:variable>
-<xsl:variable name="publish_filenotes">xenabled</xsl:variable>
-<xsl:variable name="publish_problematics">enabled</xsl:variable>
-<xsl:variable name="system_messages">enabled</xsl:variable><!--
+<xsl:output indent="no" saxon:indent-spaces="0" />
+<xsl:variable name="publish_comments">not-enabled</xsl:variable>
+<xsl:variable name="publish_filenotes">not-enabled</xsl:variable>
+<xsl:variable name="publish_problematics">not-enabled</xsl:variable>
+<xsl:variable name="system_messages">not-enabled</xsl:variable><!--
 All inline-level attribute are named "foo_bar"
 Most block-level attributes are named "foo_bar_block" EXCEPT when the block 
 contains only a text override
@@ -2175,5 +2176,6 @@ template.
 </xsl:template>
 
 </xsl:stylesheet>
+
 
 
