@@ -21,6 +21,50 @@ import string
 from types import ListType
 from docutils import writers, nodes, languages
 
+# country code by a.schlock.
+# partly manually converted from iso and babel stuff, dialects and some
+# languages remain missing (austrian, UKEnglish, brazillian etc.)
+_ISO639_TO_BABEL = {
+    'no': 'norsk',     #XXX added by hand ( forget about nynorsk?)
+    'gd': 'scottish',  #XXX added by hand
+    'hu': 'magyar',    #XXX added by hand
+    'pt': 'portuguese',#XXX added by hand
+    'sl': 'slovenian',
+    'af': 'afrikaans',
+    'bg': 'bulgarian',
+    'br': 'breton',
+    'ca': 'catalan',
+    'cs': 'czech',
+    'cy': 'welsh',
+    'da': 'danish',
+
+    'de': 'ngerman',  #XXX rather than german
+    'el': 'greek',
+    'en': 'english',
+    'eo': 'esperanto',
+    'es': 'spanish',
+    'et': 'estonian',
+    'eu': 'basque',
+    'fi': 'finnish',
+    'ga': 'irish',
+    'gl': 'galician',
+    'he': 'hebrew',
+    'hr': 'croatian',
+    'hu': 'hungarian',
+    'is': 'icelandic',
+    'it': 'italian',
+    'la': 'latin',
+    'nl': 'dutch',
+    'pl': 'polish',
+    'pt': 'portuguese',
+    'ro': 'romanian',
+    'ru': 'russian',
+    'sk': 'slovak',
+    'sr': 'serbian',
+    'sv': 'swedish',
+    'tr': 'turkish',
+    'uk': 'ukrainian'
+    }
 
 class Writer(writers.Writer):
 
@@ -55,7 +99,9 @@ class Writer(writers.Writer):
 
 
 class LaTeXTranslator(nodes.NodeVisitor):
-    # dummy settings might be taken from document options
+    # When options are given to the documentclass, latex will pass them
+    # to other packages, as done with babel. 
+    # Dummy settings might be taken from document options
     d_class = 'article'    # document.options.stylesheet
     d_options = '10pt'  # papersize, fontsize
     d_paper = 'a4paper'
@@ -66,6 +112,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     encoding = '\\usepackage[latin1]{inputenc}\n'
     linking = '\\usepackage[colorlinks]{hyperref}\n'
     geometry = '\\usepackage[%s,margin=%s]{geometry}\n'
+    # fonts might go into stylesheet.
     fonts = '\\usepackage{%s}\n'
     stylesheet = '\\input{%s}\n'
     # content type might be outputenc ?
@@ -76,14 +123,20 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     # use latex tableofcontents or let docutils do it.
     # BUG: not tested.
-    latex_toc = 0
+    latex_toc = 1
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
         self.options = options = document.options
+        # language: labels, bibliographic_fields, and author_separators.
+        # to allow writing labes for specific languages.
         self.language = languages.get_language(document.options.language_code)
+        if _ISO639_TO_BABEL.has_key(document.options.language_code):
+            self.d_options += ',%s' % \
+                    _ISO639_TO_BABEL[document.options.language_code]
         self.head_prefix = [
               self.latex_head % (self.d_options,self.d_class),
+              '\\usepackage{babel}\n',
               self.encoding,
               self.geometry % (self.d_paper, self.d_margins),
               self.fonts % "palatino",
