@@ -1057,10 +1057,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_colspec(self, node):
         pass
 
-    def visit_comment(self, node,
-                      sub=re.compile('\n').sub):
-        """Escape end of line by a ne comment start in comment text."""
-        self.body.append('%% %s \n' % sub('\n% ', node.astext()))
+    def visit_comment(self, node):
+        # Escape end of line by a new comment start in comment text.
+        self.body.append('%% %s \n' % node.astext().replace('\n', '\n% '))
         raise nodes.SkipNode
 
     def visit_contact(self, node):
@@ -1344,7 +1343,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_field_body(self, node):
         # BUG by attach as text we loose references.
         if self.docinfo:
-            self.docinfo.append('%s \\\\\n' % node.astext())
+            self.docinfo.append('%s \\\\\n' % self.encode(node.astext()))
             raise nodes.SkipNode
         # BUG: what happens if not docinfo
 
@@ -1364,7 +1363,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_field_name(self, node):
         # BUG this duplicates docinfo_item
         if self.docinfo:
-            self.docinfo.append('\\textbf{%s}: &\n\t' % node.astext())
+            self.docinfo.append('\\textbf{%s}: &\n\t' % self.encode(node.astext()))
             raise nodes.SkipNode
         else:
             self.body.append('\\item [')
@@ -1939,7 +1938,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.context.append('}\n\\smallskip\n')
         elif isinstance(node.parent, nodes.table):
             # caption must be written after column spec
-            self.active_table.caption = node.astext()
+            self.active_table.caption = self.encode(node.astext())
             raise nodes.SkipNode
         elif self.section_level == 0:
             # document title
