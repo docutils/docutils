@@ -26,7 +26,8 @@ class IO:
     def __init__(self, options, source=None, source_path=None,
                  destination=None, destination_path=None):
         self.options = options
-        """A `docutils.optik.Values` object."""
+        """An option values object with "input_encoding" and "output_encoding"
+        attributes (typically a `docutils.optik.Values` object)."""
 
         self.source = source
         """The source of input data."""
