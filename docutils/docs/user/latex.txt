@@ -118,8 +118,8 @@ Font selection
 --------------
 
 When generating pdf-files from LaTeX, use the pdflatex command, the files
-are a lot smaller if postscript fonts are used. To do so put 
-``\usepackage{times}`` into the stylesheet.
+are a lot smaller if postscript fonts are used. This *was* fixed by putting 
+``\usepackage{times}`` into the stylesheet. 
 
 It is said that the typewriter font in computer modern font, the default
 LaTeX font package, is too heavy compared to the others. There is a package
@@ -128,6 +128,13 @@ or some commands too fix this, which i currently cannot find.
 Some people diagnose a similar unbalance for the postscript fonts, the
 package to fix this is ``\usepackage{pslatex}``.
 pslatex in contrast to the standard LaTeX fonts has a bold typewriter font.
+
+As ``times`` does not use the appropriate mathematical fonts and ``pslatex``
+does not work with T1 encodings one should use::
+
+  \usepackage{mathptmx}
+  \usepackage[scaled=.90]{helvet}
+  \usepackage{courier}
 
 Table of figures
 ----------------
@@ -237,7 +244,11 @@ the end of the document. *This should be customizable*.
 Tilde in italian
 ----------------
 
-Does not work, or only in verbatim or verb. Could be fixed by using T1.
+Does not work, or only in verbatim or verb. Could be fixed by using T1, but
+the hyphen in literal environments is different:
+
+* inline or in verbatim it is lower than it should.
+* in a block with markup two hyphens become one (endashed ?).
 
 Tables
 ------
