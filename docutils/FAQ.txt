@@ -543,6 +543,32 @@ HTML output::
     If the extra whitespace bothers you, |br|\ backslash-escape it.
 
 
+A URL containing asterisks doesn't work.  What to do?
+-----------------------------------------------------
+
+Asterisks are valid URL characters (see :RFC:`2396`), sometimes used
+in URLs.  For example::
+
+    http://cvs.example.org/viewcvs.py/*checkout*/module/file
+
+Unfortunately, the parser thinks the asterisks are indicating
+emphasis.  The slashes serve as delineating punctuation, allowing the
+asterisks to be recognized as markup.  The example above is separated
+by the parser into a truncated URL, an emphasized word, and some
+regular text::
+
+    http://cvs.example.org/viewcvs.py/
+    *checkout*
+    /module/file
+
+To turn off markup recognition, use a backslash to escape at least the
+first asterisk, like this::
+
+    http://cvs.example.org/viewcvs.py/\*checkout*/module/file
+
+Escaping the second asterisk doesn't hurt, but it isn't necessary.
+
+
 HTML Writer
 ===========
 
