@@ -88,11 +88,9 @@ class PDFTranslator(nodes.NodeVisitor):
                 text.replace(text[i],"?")
         return text
 
-    def append_styled(self,text,in_style):
+    def append_styled(self,text,in_style='Normal'):
         if self.styleSheet.has_key(in_style):		
             style = self.styleSheet[in_style]
-        else:
-            style = self.styleSheet['Normal']
         self.story.append(Paragraph(self.encode(text), style, bulletText=None))
 
     def append_normal(self,text):
