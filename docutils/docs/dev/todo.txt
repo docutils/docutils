@@ -367,7 +367,8 @@ General
   Writers now), and thus have associated option/setting specs and
   transforms.
 
-*
+* Multiple file I/O suggestion from Michael Hudson: use a file-like
+  object or something you can iterate over to get file-like objects.
 
 
 Documentation
@@ -1038,7 +1039,8 @@ If the processed document is written to multiple files (possibly in
 a directory tree), it will need to be split up.  References will
 have to be adjusted.
 
-(HTML only?  For now, yes.)
+(HTML only?  Initially, yes.  Eventually, anything should be
+splittable.)
 
 
 Navigation

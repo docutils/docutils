@@ -74,12 +74,18 @@ Specific:
   - Bumped version to 0.2.5 to reflect changes to Reporter output.
   - Added ``TransformSpec`` class for new transform system.
   - Bumped version to 0.2.6 for API changes (renaming).
+  - Bumped version to 0.2.7 for new ``docutils.core.publish_*``
+    convenience functions.
 
 * docutils/core.py:
 
   - Made ``publish()`` a bit more convenient.
   - Generalized ``Publisher.set_io``.
-  - Renamed ``publish()`` to ``publish_cmdline()``.
+  - Renamed ``publish()`` to ``publish_cmdline()``; rearranged its
+    parameters; improved its docstring.
+  - Added ``publish_file()`` and ``publish_string()``.
+  - Factored ``Publisher.set_source()`` and ``.set_destination()``
+    out of ``.set_io``.
 
 * docutils/frontend.py:
 
@@ -102,7 +108,8 @@ Specific:
   - Try to get path/stream name automatically in ``FileInput`` &
     ``FileOutput``.
   - Added defaults for source & destination paths.
-  - Allow for Unicode string I/O with an explicit "unicode" encoding.
+  - Allow for Unicode I/O with an explicit "unicode" encoding.
+  - Added ``Output.encode()``.
 
 * docutils/nodes.py:
 
@@ -194,6 +201,7 @@ Specific:
     ``ExtensionOptions``.
   - Improved definition list term/classifier parsing.
   - Added warnings for unknown directives.
+  - Renamed ``Stuff`` to ``Struct``.
 
 * docutils/parsers/rst/tableparser.py:
 
@@ -304,6 +312,7 @@ Specific:
   - Improved field list rendering.
   - Added Docutils version to "generator" meta tag.
   - Fixed a bug with images; they must be inline, so wrapped in <p>.
+  - Improved layout of <pre> HTML source.
 
 * docutils/writers/pep_html.py:
 
@@ -426,11 +435,13 @@ Specific:
   - Updated for new I/O classes.
   - Added some exception handling.
   - Separated publishers' setting defaults; prevents interference.
+  - Updated for new ``publish_file()`` convenience function.
 
 * tools/pep-html-template:
 
   - Allow for ``--embed-stylesheet``.
   - Added Docutils version to "generator" meta tag.
+  - Updated for new ``publish_string()`` convenience function.
 
 * tools/pep2html.py:
 
