@@ -45,13 +45,7 @@ def include(name, arguments, options, content, lineno,
     else:
         include_lines = statemachine.string2lines(include_text,
                                                   convert_whitespace=1)
-        current_source = state.document.current_source
-        state.document.note_source(path)
-        state.memo.reporter.source = path
-        state.nested_parse(include_lines, 0, node=state_machine.node,
-                           match_titles=state_machine.match_titles)
-        state.document.note_source(current_source)
-        state.memo.reporter.source = current_source
+        state_machine.insert_input(include_lines, path)
         return []
 
 include.arguments = (1, 0, 1)
