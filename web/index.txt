@@ -173,7 +173,7 @@ Major changes since Docutils 0.3.5:
   If you want to write en or em dashes using pure ASCII, please refer
   to the `FAQ entry about non-ASCII characters`__.
 
-  __ FAQ.html#how-can-i-represent-esoteric-characters-e-g-character-entities-in-a-document.
+  __ FAQ.html#how-can-i-represent-esoteric-characters-e-g-character-entities-in-a-document
 
 * A `dependency recorder`_ has been added.
 
