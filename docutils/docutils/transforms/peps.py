@@ -14,8 +14,12 @@ Transforms for PEP processing.
 
 __docformat__ = 'reStructuredText'
 
-import sys, os, re, time
-from docutils import nodes, utils, ApplicationError, DataError
+import sys
+import os
+import re
+import time
+from docutils import nodes, utils
+from docutils import ApplicationError, DataError
 from docutils.transforms import Transform, TransformError
 
 
