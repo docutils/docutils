@@ -51,6 +51,14 @@ latex_head = """\
    \\addtolength{\\leftmargin}{\\labelsep}
    \\renewcommand{\\makelabel}{\\optionlistlabel}}
 }{\\end{list}}
+\\newenvironment{lineblock}
+{\\begin{list}{}
+  {\\setlength{\\partopsep}{\\parskip}
+   \\addtolength{\\partopsep}{\\baselineskip}
+   \\topsep0pt\\itemsep0.15\\baselineskip\\parsep0pt
+   \\leftmargin2em}
+ \\raggedright}
+{\\end{list}}
 % begin: floats for footnotes tweaking.
 \\setlength{\\floatsep}{0.5em}
 \\setlength{\\textfloatsep}{\\fill}
