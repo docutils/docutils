@@ -89,8 +89,7 @@ class Input(TransformSpec):
             if not enc:
                 continue
             try:
-                decoded = unicode(data, enc)
-                return decoded
+                return unicode(data, enc)
             except (UnicodeError, LookupError):
                 pass
         raise UnicodeError(
