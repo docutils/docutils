@@ -1,6 +1,6 @@
-=====================================
- Docutils Frequently Asked Questions
-=====================================
+===========================================
+ Docutils FAQ (Frequently Asked Questions)
+===========================================
 
 :Date: $Date$
 :Web site: http://docutils.sourceforge.net/
@@ -155,13 +155,14 @@ it in another window and compare them side by side.
 
 `A ReStructuredText Primer`_ and the `Quick reStructuredText`_ user
 reference are a good place to start.  The `reStructuredText Markup
-Specification <docs/ref/rst/restructuredtext.html>`_ is a detailed
-technical specification.
+Specification`_ is a detailed technical specification.
 
 .. _A ReStructuredText Primer:
    http://docutils.sourceforge.net/docs/user/rst/quickstart.html
 .. _Quick reStructuredText:
    http://docutils.sourceforge.net/docs/user/rst/quickref.html
+.. _reStructuredText Markup Specification:
+   http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _StructuredText:
    http://dev.zope.org/Members/jim/StructuredTextWiki/FrontPage/
