@@ -34,15 +34,17 @@ class SectionTargets(Transform):
         """Move "target" elements into the next title element if necessary."""
         assert isinstance(target, nodes.target)
         # Find next node which is not a target.
-        n = target.next_node(condition=self.condition)
+        n = target.next_node(condition=self.possible_relocation_target)
         if isinstance(n, nodes.section):
             assert isinstance(n[0], nodes.title)
             target.parent.remove(target)
             n[0].insert(0, target)
 
-    # This function needs a better name (and possibly a docstring), describing
-    # what it does and hopefully why:
-    def condition(self, node):
+    def possible_relocation_target(self, node):
+        """Return true if a preceding target could be relocated into node."""
+        # True if node is not an internal target.  (If it's an
+        # external target, we've just run into a not-yet resolved
+        # chained external target.)
         return (not isinstance(node, nodes.target) or node.has_key('refid')
                 or node.has_key('refuri') or node.has_key('refname'))
 
