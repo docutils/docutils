@@ -313,6 +313,17 @@ than of the character-encoding type.
 .. _character-level inline markup:
    reStructuredText.html#character-level-inline-markup
 
+* Directive idea::
+
+      .. text-replace:: "pattern" "replacement"
+
+  - Support Unicode "U+XXXX" codes.
+  - Support regexps, perhaps with alternative "regexp-replace"
+    directive.
+  - Flags for regexps; ":flags:" option, or individuals.
+  - Specifically, should the default be case-sensistive or
+    -insensitive?
+
 
 Field Lists
 ===========
