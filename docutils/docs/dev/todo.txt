@@ -304,6 +304,10 @@ General
 * Change the "class" attribute of elements (set with
   Element.set_class) to a list?
 
+* Enable feedback of some kind from internal decisions, such as
+  reporting the successful input encoding.  Modify runtime settings?
+  System message?  Simple stderr output?
+
 
 Documentation
 -------------
@@ -330,6 +334,8 @@ Implementation Docs
 
 * Document the transforms (perhaps in docstrings?): how they're used,
   what they do, dependencies & order considerations.
+
+* Document the HTML classes used by html4css1.py.
 
 
 Specification
@@ -550,8 +556,20 @@ __ rst/alternatives.html#or-not-to-do
   Both could be solved using empty comments (problem 2 already exists
   for a block quote after a literal block).  But that's a hack.
 
+  Perhaps a runtime setting, allowing or disabling this convenience,
+  would be appropriate.  But that raises issues too:
+
+      User A, who writes lists indented (and their config file is set
+      up to allow it), sends a file to user B, who doesn't (and their
+      config file disables indented lists).  The result of processing
+      by the two users will be different.
+
+  It may seem minor, but it adds ambiguity to the parser, which is
+  bad.
+
   See the Doc-SIG discussion starting 2001-04-18 with Ed Loper's
-  "Structuring: a summary; and an attempt at EBNF", item 4.
+  "Structuring: a summary; and an attempt at EBNF", item 4.  Also
+  docutils-users, 2003-02-17.
 
 * Make the parser modular.  Allow syntax constructs to be added or
   disabled at run-time.  Or is subclassing enough?
@@ -671,6 +689,18 @@ __ rst/alternatives.html#or-not-to-do
 
   Decimal justification?
 
+* Make enumerated list parsing more strict, so that this would parse
+  as a paragraph with an info message::
+
+      1. line one
+      3. line two
+
+* Line numbers in system messages are inconsistent in the parser.
+  Fix?
+
+* Generalize the "target-notes" directive into a command-line option
+  somehow?  See docutils-develop 2003-02-13.
+
 
 Directives
 ``````````
@@ -686,6 +716,8 @@ when used in a document.
 * Implement options on existing directives:
 
   - _`images.image`: "border"?
+
+    Units of measure?  (See docutils-users, 2003-03-02.)
 
   - _`images.figure`: "title" and "number", to indicate a formal
     figure?
@@ -735,6 +767,9 @@ when used in a document.
     suppress contents display for sections in a branch from that point
     down.  Or a new directive, like "prune-contents"?
 
+    Add an option to include topics in the TOC?  Another for sidebars?
+    See docutils-develop 2003-01-29.
+
   - _`misc.include`: "encoding" option?  Take default from runtime
     settings.  Use Input component to read it in?
 
@@ -783,6 +818,10 @@ when used in a document.
   - _`misc.language`: Specify the language of a document.  There is a
     problem similar to the first problem listed for misc.encoding_,
     although to a lesser degree.
+
+  - _`misc.class`: Specify a "class" attribute value to an element
+    (enclosing? preceding? following?).  See docutils-develop
+    2003-01-29.
 
   - _`body.qa` (directive a.k.a. "faq", "questions"): Questions &
     Answers.  Implement as a generic two-column marked list?  As a
@@ -914,6 +953,16 @@ when used in a document.
         <paragraph>
         Here's a <index_entry>paragraph</index_entry>.
         </paragraph>
+
+  - _`body.literal`: Literal block, possibly "formal" (see `object
+    numbering and object references`_ above).  Possible options:
+
+	- "highlight" a range of lines
+	- "number" or "line-numbers"
+
+	See docutils-users 2003-03-03.
+
+  - _`admonitions.admonition`: Generic, titled admonition.
 
   - _`colorize.python`: Colorize Python code.  Fine for HTML output,
     but what about other formats?  Revert to a literal block?  Do we
