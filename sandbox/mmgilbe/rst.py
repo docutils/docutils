@@ -148,8 +148,23 @@ class MoinTranslator(html4css1.HTMLTranslator):
         # For some reason getting empty strings here which of course overwrites 
         # what we really want (this is called multiple times per MoinMoin 
         # format call, which I don't understand).
-        if text:
-            self.wiki_text = text
+        self.wiki_text += text
+            
+    def process_wiki_text(self, text):
+        """
+            This sequence is repeated numerous times, so its captured as a
+            single call here. Its important that wiki_text is blanked before we
+            make the format call. format will call request.write which we've
+            hooked to capture_wiki_formatting. If wiki_text is not blanked
+            before a call to request.write we will get the old markup as well as
+            the newly generated markup. 
+            
+            TODO: We could implement this as a list so that it acts as a stack.
+            I don't like having to remember to blank wiki_text.
+        """
+        self.wiki_text = ''
+        self.wikiparser.raw = text
+        self.wikiparser.format(self.formatter)
 
     def add_wiki_markup(self):
         """
@@ -158,6 +173,7 @@ class MoinTranslator(html4css1.HTMLTranslator):
             raises SkipNode.
         """
         self.body.append(self.wiki_text)
+        self.wiki_text = ''
         raise docutils.nodes.SkipNode
         
     def astext(self):
@@ -174,8 +190,7 @@ class MoinTranslator(html4css1.HTMLTranslator):
             Otherwise, the html from MoinMoin is inserted into the rest document
             and SkipNode is raised.
         """
-        self.wikiparser.raw = node[uri_string]
-        self.wikiparser.format(self.formatter)
+        self.process_wiki_text(node[uri_string])
         # Only pass the src and alt parts to the writer. The rest writer 
         # inserts its own tags so we don't need the MoinMoin html markup.
         src = re.search('src="([^"]+)"', self.wiki_text)
@@ -191,8 +206,7 @@ class MoinTranslator(html4css1.HTMLTranslator):
             self.add_wiki_markup()
             
     def process_wiki_target(self, target):
-        self.wikiparser.raw = target
-        self.wikiparser.format(self.formatter)
+        self.process_wiki_text(target)
         # MMG: May need a call to fixup_wiki_formatting here but I 
         # don't think so.
         self.add_wiki_markup()
@@ -253,8 +267,7 @@ class MoinTranslator(html4css1.HTMLTranslator):
                     # href, if it exists, and let docutils handle it from there.
                     # If there is no href just add whatever MoinMoin returned.
                     node_text = node.astext().replace('\n', ' ')
-                    self.wikiparser.raw = '[%s %s]' % (target, node_text)
-                    self.wikiparser.format(self.formatter)
+                    self.process_wiki_text('[%s %s]' % (target, node_text))
                     href = re.search('href="([^"]+)"', self.wiki_text)
                     if href:
                         node['refuri'] = href.groups()[0]
@@ -286,9 +299,11 @@ class MoinTranslator(html4css1.HTMLTranslator):
     def create_wiki_functor(self, moin_func):
         moin_callable = getattr(self.formatter, moin_func)
         def visit_func(node):
+            self.wiki_text = ''
             self.request.write(moin_callable(1))
             self.body.append(self.wiki_text)
         def depart_func(node):
+            self.wiki_text = ''
             self.request.write(moin_callable(0))
             self.body.append(self.wiki_text)
         return visit_func, depart_func
@@ -325,10 +340,12 @@ class MoinTranslator(html4css1.HTMLTranslator):
         
     # Enumerated list takes an extra paramter so we handle this differently
     def visit_enumerated_list(self, node):
+        self.wiki_text = ''
         self.request.write(self.formatter.number_list(1, start=node.get('start', None)))
         self.body.append(self.wiki_text)
 
     def depart_enumerated_list(self, node):
+        self.wiki_text = ''
         self.request.write(self.formatter.number_list(0))
         self.body.append(self.wiki_text)
 
