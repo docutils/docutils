@@ -160,12 +160,16 @@ $(docutils.)RST2PDFLATEX.TRGEXT ?= .pdftex
 $(docutils.)ENABLE_MATHHACK ?= 0
 
 $(docutils.)MATHHACK.SRCEXT := $($(docutils.)RST2LATEX.SRCEXT)
-$(docutils.)MATHHACK.TRGEXT ?= $($(docutils.)RST2LATEX.SRCEXT).mathhack
+ifeq "$(origin $(docutils.)MATHHACK.TRGEXT)" "undefined"
+$(docutils.)MATHHACK.TRGEXT := $($(docutils.)RST2LATEX.SRCEXT).mathhack
+endif
 
 # In theory, IMGMATHHACK is applicable to all tools.  It's not very useful
 # with anything but RST2HTML, so that's the only one we attach to currently...
 $(docutils.)IMGMATHHACK.SRCEXT := $($(docutils.)RST2HTML.SRCEXT)
-$(docutils.)IMGMATHHACK.TRGEXT ?= $($(docutils.)RST2HTML.SRCEXT).imgmathhack
+ifeq "$(origin $(docutils.)IMGMATHHACK.TRGEXT)" "undefined"
+$(docutils.)IMGMATHHACK.TRGEXT := $($(docutils.)RST2HTML.SRCEXT).imgmathhack
+endif
 
 ifeq "$($(docutils.)ENABLE_MATHHACK)" "1"
 $(docutils.)RST2LATEX.SRCEXT := $($(docutils.)MATHHACK.TRGEXT)
