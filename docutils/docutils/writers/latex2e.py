@@ -533,6 +533,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
         self.settings = settings = document.settings
+        self.latex_encoding = self.to_latex_encoding(settings.output_encoding)
         self.use_latex_toc = settings.use_latex_toc
         self.use_latex_docinfo = settings.use_latex_docinfo
         self.use_latex_footnotes = settings.use_latex_footnotes
@@ -579,8 +580,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             fontenc_header = '\\usepackage{ae}\n\\usepackage{aeguill}\n'
         else:
             fontenc_header = '\\usepackage[%s]{fontenc}\n' % (self.font_encoding,)
-        input_encoding = self.encoding % self.to_latex_encoding(settings.output_encoding)
-        if self.to_latex_encoding(settings.output_encoding) == 'utf8':
+        input_encoding = self.encoding % self.latex_encoding
+        if self.latex_encoding == 'utf8':
             # preload unicode to avoid ``Please insert PrerenderUnicode`` message,
             # when rendering the first ``\section``.
             input_encoding += '\\PreloadUnicodePage{0}\n'
@@ -864,7 +865,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         text = text.replace('[', '{[}')
         if self.insert_none_breaking_blanks:
             text = text.replace(' ', '~')
-        if self.settings.output_encoding != 'utf-8':
+        if self.latex_encoding != 'utf8':
             text = self.unicode_to_latex(text)
         return text
 
