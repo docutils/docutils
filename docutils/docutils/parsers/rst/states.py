@@ -957,20 +957,8 @@ class Body(RSTState):
     def enumerator(self, match, context, next_state):
         """Enumerated List Item"""
         format, sequence, text, ordinal = self.parse_enumerator(match)
-        if ordinal is None:
-            msg = self.reporter.error(
-                  ('Enumerated list start value invalid at line %s: '
-                   '"%s" (sequence %r)'
-                   % (self.state_machine.abs_line_number(), text, sequence)))
-            self.parent += msg
-            indented, line_offset, blank_finish = \
-                  self.state_machine.get_known_indented(match.end())
-            bq = self.block_quote(indented, line_offset)
-            self.parent += bq
-            if not blank_finish:
-                self.parent += self.unindent_warning(
-                      'Enumerated list')
-            return [], next_state, []
+        if not self.is_enumerated_list_item(ordinal, sequence, format):
+            raise statemachine.TransitionCorrection('text')
         if ordinal != 1:
             msg = self.reporter.info(
                   ('Enumerated list start value not ordinal-1 at line %s: '
@@ -1022,7 +1010,7 @@ class Body(RSTState):
             if groupdict[format]:       # was this the format matched?
                 break                   # yes; keep `format`
         else:                           # shouldn't happen
-            raise ParserError, 'enumerator format not matched'
+            raise ParserError('enumerator format not matched')
         text = groupdict[format][self.enum.formatinfo[format].start
                                  :self.enum.formatinfo[format].end]
         if expected_sequence:
@@ -1030,23 +1018,80 @@ class Body(RSTState):
                 if self.enum.sequenceregexps[expected_sequence].match(text):
                     sequence = expected_sequence
             except KeyError:            # shouldn't happen
-                raise ParserError, 'unknown sequence: %s' % sequence
-        else:
-            if text == 'i':
-                sequence = 'lowerroman'
-            elif text == 'I':
-                sequence = 'upperroman'
+                raise ParserError('unknown enumerator sequence: %s'
+                                  % sequence)
+        elif text == 'i':
+            sequence = 'lowerroman'
+        elif text == 'I':
+            sequence = 'upperroman'
         if not sequence:
             for sequence in self.enum.sequences:
                 if self.enum.sequenceregexps[sequence].match(text):
                     break
             else:                       # shouldn't happen
-                raise ParserError, 'enumerator sequence not matched'
+                raise ParserError('enumerator sequence not matched')
         try:
             ordinal = self.enum.converters[sequence](text)
         except roman.InvalidRomanNumeralError:
             ordinal = None
         return format, sequence, text, ordinal
+
+    def is_enumerated_list_item(self, ordinal, sequence, format):
+        """
+        Check validity based on the ordinal value and the second line.
+
+        Return true iff the ordinal is valid and the second line is blank,
+        indented, or starts with the next enumerator.
+        """
+        if ordinal is None:
+            return None
+        try:
+            next_line = self.state_machine.next_line()
+        except IndexError:              # end of input lines
+            self.state_machine.previous_line()            
+            return 1
+        else:
+            self.state_machine.previous_line()            
+        if not next_line[:1].strip():   # blank or indented
+            return 1
+        next_enumerator = self.make_enumerator(ordinal + 1, sequence, format)
+        try:
+            if next_line.startswith(next_enumerator):
+                return 1
+        except TypeError:
+            pass
+        return None
+
+    def make_enumerator(self, ordinal, sequence, format):
+        """
+        Construct and return an enumerated list item marker.
+
+        Return ``None`` for invalid (out of range) ordinals.
+        """
+        if sequence == 'arabic':
+            enumerator = str(ordinal)
+        else:
+            if sequence.endswith('alpha'):
+                if ordinal > 26:
+                    return None
+                enumerator = chr(ordinal + ord('a') - 1)
+            elif sequence.endswith('roman'):
+                try:
+                    enumerator = roman.toRoman(ordinal)
+                except roman.RomanError:
+                    return None
+            else:                       # shouldn't happen
+                raise ParserError('unknown enumerator sequence: "%s"'
+                                  % sequence)
+            if sequence.startswith('lower'):
+                enumerator = enumerator.lower()
+            elif sequence.startswith('upper'):
+                enumerator = enumerator.upper()
+            else:                       # shouldn't happen
+                raise ParserError('unknown enumerator sequence: "%s"'
+                                  % sequence)
+        formatinfo = self.enum.formatinfo[format]
+        return formatinfo.prefix + enumerator + formatinfo.suffix + ' '
 
     def field_marker(self, match, context, next_state):
         """Field list item."""
@@ -1874,7 +1919,8 @@ class EnumeratedList(SpecializedBody):
               match, self.parent['enumtype'])
         if (sequence != self.parent['enumtype'] or
             format != self.format or
-            ordinal != self.lastordinal + 1):
+            ordinal != (self.lastordinal + 1) or
+            not self.is_enumerated_list_item(ordinal, sequence, format)):
             # different enumeration: new list
             self.invalid_input()
         listitem, blank_finish = self.list_item(match.end())
@@ -1999,11 +2045,7 @@ class Text(RSTState):
 
     def eof(self, context):
         if context:
-            paragraph, literalnext = self.paragraph(
-                  context, self.state_machine.abs_line_number() - 1)
-            self.parent += paragraph
-            if literalnext:
-                self.parent += self.literal_block()
+            self.blank(None, context, None)
         return []
 
     def indent(self, match, context, next_state):
@@ -2163,7 +2205,9 @@ class Definition(SpecializedText):
 
 class Line(SpecializedText):
 
-    """Second line of over- & underlined section title or transition marker."""
+    """
+    Second line of over- & underlined section title or transition marker.
+    """
 
     eofcheck = 1                        # @@@ ???
     """Set to 0 while parsing sections, so that we don't catch the EOF."""
