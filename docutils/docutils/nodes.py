@@ -66,8 +66,11 @@ class Node:
         `walkabout()` method is similar, except it also calls ``depart_...``
         methods before exiting each node.)
 
-        This tree traversal doesn't handle arbitrary in-place tree
-        modifications.  Replacing one element with one element is OK.
+        This tree traversal supports limited in-place tree
+        modifications.  Replacing one node with one or more nodes is
+        OK, as is removing an element.  However, if the node removed
+        or replaced occurs after the current node, the old node will
+        still be traversed, and any new nodes will not.
 
         Within ``visit_...`` methods (and ``depart_...`` methods for
         `walkabout()`), `TreePruningException` subclasses may be raised
@@ -87,8 +90,8 @@ class Node:
             pass
         children = self.get_children()
         try:
-            for i in range(len(children)):
-                children[i].walk(visitor)
+            for child in children[:]:
+                child.walk(visitor)
         except SkipSiblings:
             pass
 
@@ -115,8 +118,8 @@ class Node:
                 call_depart = 0
             children = self.get_children()
             try:
-                for i in range(len(children)):
-                    children[i].walkabout(visitor)
+                for child in children[:]:
+                    child.walkabout(visitor)
             except SkipSiblings:
                 pass
         except SkipChildren:
@@ -538,6 +541,9 @@ class Admonition(Body): pass
 class Special(Body):
     """Special internal body elements."""
 
+class Invisible:
+    """Internal elements that don't appear in output."""
+
 class Part: pass
 
 class Inline: pass
@@ -928,9 +934,9 @@ class note(Admonition, Element): pass
 class tip(Admonition, Element): pass
 class hint(Admonition, Element): pass
 class warning(Admonition, Element): pass
-class comment(Special, PreBibliographic, TextElement): pass
-class substitution_definition(Special, TextElement): pass
-class target(Special, Inline, TextElement, Targetable): pass
+class comment(Special, Invisible, PreBibliographic, TextElement): pass
+class substitution_definition(Special, Invisible, TextElement): pass
+class target(Special, Invisible, Inline, TextElement, Targetable): pass
 class footnote(General, Element, Labeled, BackLinkable): pass
 class citation(General, Element, Labeled, BackLinkable): pass
 class label(Part, TextElement): pass
@@ -959,7 +965,7 @@ class system_message(Special, PreBibliographic, Element, BackLinkable):
                                Element.astext(self))
 
 
-class pending(Special, PreBibliographic, Element):
+class pending(Special, Invisible, PreBibliographic, Element):
 
     """
     The "pending" element is used to encapsulate a pending operation: the
