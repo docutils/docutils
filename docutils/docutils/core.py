@@ -86,7 +86,7 @@ class Publisher:
                             settings_spec=None, **defaults):
         #@@@ Add self.source & self.destination to components in future?
         option_parser = OptionParser(
-            components=(settings_spec, self.parser, self.reader, self.writer),
+            components=(self.parser, self.reader, self.writer, settings_spec),
             defaults=defaults, read_config_files=1,
             usage=usage, description=description)
         return option_parser
@@ -94,8 +94,7 @@ class Publisher:
     def get_settings(self, usage=None, description=None,
                      settings_spec=None, **defaults):
         """
-        Set and return default settings (overrides in `defaults` keyword
-        argument).
+        Set and return default settings (overrides in `defaults` dict).
 
         Set components first (`self.set_reader` & `self.set_writer`).
         Explicitly setting `self.settings` disables command line option
