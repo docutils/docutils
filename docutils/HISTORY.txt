@@ -51,6 +51,8 @@ Changes Since 0.3.7
 
   - Fixed unencoded stylesheet reference bug (characters like "&" in
     stylesheet reference).
+  - ``target`` nodes now appear as ``span`` tags (instead of ``a``
+    tags).
 
 * docutils/writers/latex2e.py:
 
