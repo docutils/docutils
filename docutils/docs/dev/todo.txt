@@ -1419,14 +1419,24 @@ elements.
   element).  The stylesheet would then pick up on the "class"
   attribute to do the actual formatting.  (Allow other base elements?)
 
+  How do we pass in this "class" attribute (and other overrides)?
+  With an argument on role functions (``attributes={}``)?
+
   The same thing could be done with a directive, albeit a bit more
   verbosely::
 
       .. role:: rewrite
          :class: rewrite
 
+  Although as a convenience, the ":class:" option could be implicit::
+
+      .. role:: rewrite
+
   The advantage of the new syntax would be flexibility.  Uses other
-  than "class" may present themselves.
+  than "class" may present themselves.  The disadvantage is
+  complexity: having to implement new syntax for a relatively
+  specialized operation, and having new semantics in existing
+  directives ("class::" would do something different).
 
 * Perhaps a "role" directive can modify existing roles with
   attributes? ::
@@ -1436,6 +1446,10 @@ elements.
 
       To start the reactor, use the :api-ti:`reactor.run` method.  To
       stop it, use :api-ti:`reactor.stop`.
+
+  The problem with this is that it allows arbitrary attributes.  The
+  base role function must support those attributes, either passing
+  them on to the doc tree (DTD support) or processing them internally.
 
 * Implement roles:
 
