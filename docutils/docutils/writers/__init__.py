@@ -30,6 +30,7 @@ class Writer(Component):
     """
 
     component_type = 'writer'
+    config_section = 'writers'
 
     document = None
     """The document to write."""

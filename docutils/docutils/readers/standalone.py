@@ -38,6 +38,9 @@ class Reader(readers.Reader):
           ['--no-doc-info'],
           {'dest': 'docinfo_xform', 'action': 'store_false', 'default': 1}),))
 
+    config_section = 'standalone reader'
+    config_section_dependencies = ('readers',)
+
     default_transforms = (references.Substitutions,
                           frontmatter.DocTitle,
                           frontmatter.DocInfo,

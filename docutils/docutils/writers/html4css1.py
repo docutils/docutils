@@ -80,7 +80,7 @@ class Writer(writers.Writer):
     relative_path_settings = ('stylesheet_path',)
 
     config_section = 'html4css1 writer'
-    config_section_predecessors = ('writers',)
+    config_section_dependencies = ('writers',)
 
     output = None
     """Final translated form of `document`."""

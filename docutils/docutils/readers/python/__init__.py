@@ -16,4 +16,6 @@ import docutils.readers
 
 
 class Reader(docutils.readers.Reader):
-    pass
+
+    config_section = 'python reader'
+    config_section_dependencies = ('readers',)

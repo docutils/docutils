@@ -36,6 +36,9 @@ class Reader(standalone.Reader):
         'reStructuredText parser) are on by default.',
         ())
 
+    config_section = 'pep reader'
+    config_section_dependencies = ('readers', 'standalone reader')
+
     default_transforms = (references.Substitutions,
                           peps.Headers,
                           peps.Contents,
