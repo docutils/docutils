@@ -825,20 +825,29 @@ The registered bibliographic field names and their corresponding DTD
 elements are as follows:
 
 - Field name "Author": author element.
-- "Authors": authors.  May contain either: a single paragraph
-  consisting of a list of authors, separated by ";" or ","; or a
-  bullet list whose elements each contain a single paragraph per
-  author.
+- "Authors": authors.
 - "Organization": organization.
 - "Contact": contact.
 - "Version": version.
 - "Status": status.
 - "Date": date.
 - "Copyright": copyright.
-- "Abstract": topic.  May contain arbitrary body elements.  Only one
-  abstract is allowed.  The abstract becomes a topic element with
-  title "Abstract" (or language equivalent) immediately following the
-  docinfo element.
+- "Abstract": topic.
+
+The "Authors" field may contain either: a single paragraph consisting
+of a list of authors, separated by ";" or ","; or a bullet list whose
+elements each contain a single paragraph per author.  ";" is checked
+first, so "Doe, Jane; Doe, John" will work.  In some languages
+(e.g. Swedish), there is no singular/plural distinction between
+"Author" and "Authors", so only an "Authors" field is provided, and a
+single name is interpreted as an "Author".  If a single name contains
+a comma, end it with a semicolon to disambiguate: ":Authors: Doe,
+Jane;".
+
+The "Abstract" field may contain arbitrary body elements.  Only one
+abstract is allowed.  The abstract becomes a topic element with title
+"Abstract" (or language equivalent) immediately following the docinfo
+element.
 
 This field-name-to-element mapping can be extended, or replaced for
 other languages.  See the `DocInfo transform`_ implementation
