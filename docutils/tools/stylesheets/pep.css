@@ -49,9 +49,6 @@ Default cascading style sheet for the PEP HTML output of Docutils.
   font-weight: bold ;
   margin-bottom: 0em }
 
-a.target {
-  color: blue }
-
 a.toc-backref {
   text-decoration: none ;
   color: black }

@@ -14,9 +14,6 @@ Default cascading style sheet for the HTML output of Docutils.
 .last {
   margin-bottom: 0 }
 
-a.target {
-  color: blue }
-
 a.toc-backref {
   text-decoration: none ;
   color: black }
