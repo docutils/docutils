@@ -1,8 +1,13 @@
 # Author: Bill Bumgarner
 # Contact: bbum@codefab.com
+# Copyright: 2002 - Bill Bumgarner - All Rights Reserved
+# License: The MIT License -- see LICENSE.txt
 
 """
-A writer for DocUtils that spews HTML compliant with O'Reilly's article submission guidelines.
+This is the DocArticle package.
+
+This package provides a writer for DocUtils that spews HTML compliant
+with O'Reilly's Dev Center article submission guidelines.
 """
 
 try:
@@ -117,6 +122,34 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
         """Construct and return an XML-compatible empty tag."""
         return self.starttag(node, tagname, suffix, infix=' /', **attributes)
 
+    def starttag(self, node, tagname, suffix='\n', infix='', **attributes):
+        tagname = tagname.lower()
+        atts = {}
+        for (name, value) in attributes.items():
+            atts[name.lower()] = value
+        for att in ('id',):             # node attribute overrides
+            if node.has_key(att):
+                atts[att] = node[att]
+        if atts.has_key('id') and self.named_tags.has_key(tagname):
+            atts['name'] = atts['id']   # for compatibility with old browsers
+        attlist = atts.items()
+        attlist.sort()
+        parts = [tagname]
+        for name, value in attlist:
+            if value is None:           # boolean attribute
+                # According to the HTML spec, ``<element boolean>`` is good,
+                # ``<element boolean="boolean">`` is bad.
+                # (But the XHTML (XML) spec says the opposite.  <sigh>)
+                parts.append(name.lower())
+            elif isinstance(value, ListType):
+                values = [str(v) for v in value]
+                parts.append('%s="%s"' % (name.lower(),
+                                          self.attval(' '.join(values))))
+            else:
+                parts.append('%s="%s"' % (name.lower(),
+                                          self.attval(str(value))))
+        return '<%s%s>%s' % (' '.join(parts), infix, suffix)
+
     def visit_Text(self, node):
         if self.spewTextContext[-1]:
             self.bodyContent.append(self.encode(node.astext()))
@@ -132,12 +165,18 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
         self.bodyContent.append('\n</pre>\n')
         self.depart_docinfo_item(node)
 
-    def visit_admonition(self, node, name):
-        self.bodyContent.append('<hr width="50%" />')
-        self.bodyContent.append('<b>' + self.language.labels[name.lower()] + ':</b><br />\n')
+    def visit_admonition(self, node, name, admonitionCellAtts={}):
+        baseAdmonitionCellAtts = {"width" : "15%"}
+        baseAdmonitionCellAtts.update(admonitionCellAtts)
+        self.bodyContent.append('<table width="90%" border="1" align="center">\n'
+                                '<tbody><tr><td><table width="100%"><tbody><tr>\n')
+        self.bodyContent.append(self.starttag(node, 'td', **baseAdmonitionCellAtts))
+        self.bodyContent.append(self.language.labels[name.lower()])
+        self.bodyContent.append('</td><td>')
+
 
     def depart_admonition(self, node):
-        self.bodyContent.append('<hr width="50%" />')
+        self.bodyContent.append('</td></tr></tbody></table></td></tr></tbody></table>')
 
     def visit_author(self, node):
         self.visit_docinfo_item(node, 'Author')
@@ -152,7 +191,7 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
         pass
 
     def visit_attention(self, node):
-        self.visit_admonition(node, 'attention')
+        self.visit_admonition(node, 'attention', admonitionCellAtts={"bgcolor":"#ffffcc"})
 
     def depart_attention(self, node):
         self.depart_admonition(node)
@@ -184,7 +223,7 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
         self.bodyContent.append('</p>\n')
 
     def visit_caution(self, node):
-        self.visit_admonition(node, 'caution')
+        self.visit_admonition(node, 'caution', admonitionCellAtts={"bgcolor":"#ffff99"})
 
     def depart_caution(self, node):
         self.depart_admonition(node)
@@ -252,7 +291,7 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item(node)
 
     def visit_danger(self, node):
-        self.visit_admonition(node, 'danger')
+        self.visit_admonition(node, 'danger', admonitionCellAtts={"bgcolor":"#ff6666"})
 
     def depart_danger(self, node):
         self.depart_admonition(node)
@@ -366,7 +405,7 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
         self.bodyContent.append('</ol>\n')
 
     def visit_error(self, node):
-        self.visit_admonition(node, 'error')
+        self.visit_admonition(node, 'error', admonitionCellAtts={"bgcolor":"#ff6666"})
 
     def depart_error(self, node):
         self.depart_admonition(node)
@@ -487,7 +526,7 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
         pass
 
     def visit_hint(self, node):
-        self.visit_admonition(node, 'hint')
+        self.visit_admonition(node, 'hint', admonitionCellAtts={"bgcolor":"#99ff99"})
 
     def depart_hint(self, node):
         self.depart_admonition(node)
@@ -508,7 +547,7 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
     depart_image = popAndAppend
 
     def visit_important(self, node):
-        self.visit_admonition(node, 'important')
+        self.visit_admonition(node, 'important', admonitionCellAtts={"bgcolor":"#ffcccc"})
 
     def depart_important(self, node):
         self.depart_admonition(node)
@@ -783,13 +822,13 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
         self.depart_admonition(node)
 
     def visit_title(self, node):
-        if isinstance(node.parent, nodes.topic):
-            self.bodyContent.append(self.starttag(node, 'p', ''))
+        if isinstance(node.parent, nodes.topic) and (node.parent.attributes.get('name', None) != 'contents'):
+            self.bodyContent.append('<i><center>')
             if node.parent.hasattr('id'):
                 self.bodyContent.append(self.starttag({},'a','',name=node.parent['id']))
-                self.context.append('</a></p>\n')
+                self.context.append('</a></center></i><br />\n')
             else:
-                self.context.append('</p>\n')
+                self.context.append('</center></i><br />\n')
         elif self.section_level == 0:
             self.headerContent.append(DocArticleText.titleStart)
             self.headerContent.append(self.encode(node.astext()))
@@ -814,10 +853,14 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
         self.popAndAppend(node)
     
     def visit_topic(self, node):
-        pass
-
+        if node.attributes['name'] != 'contents':
+            self.spewParaTag.append(SpewNothingThenPara)
+            self.bodyContent.append('<table border="1" width="80%" align="center"><tbody><tr><td>')
+        
     def depart_topic(self, node):
-        pass
+        if node.attributes['name'] != 'contents':
+            self.bodyContent.append('</td></tr></tbody></table>\n')
+            self.spewParaTag.pop()
 
     def visit_transition(self, node):
         self.bodyContent.append(self.emptytag(node, 'hr'))
@@ -832,7 +875,7 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item(node)
 
     def visit_warning(self, node):
-        self.visit_admonition(node, 'warning')
+        self.visit_admonition(node, 'warning', admonitionCellAtts={"bgcolor":"#ffff33"})
 
     def depart_warning(self, node):
         self.depart_admonition(node)
@@ -882,30 +925,3 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
     def depart_system_message(self, node):
         self.bodyContent.append('</div>\n')
 
-    def starttag(self, node, tagname, suffix='\n', infix='', **attributes):
-        tagname = tagname.lower()
-        atts = {}
-        for (name, value) in attributes.items():
-            atts[name.lower()] = value
-        for att in ('id',):             # node attribute overrides
-            if node.has_key(att):
-                atts[att] = node[att]
-        if atts.has_key('id') and self.named_tags.has_key(tagname):
-            atts['name'] = atts['id']   # for compatibility with old browsers
-        attlist = atts.items()
-        attlist.sort()
-        parts = [tagname]
-        for name, value in attlist:
-            if value is None:           # boolean attribute
-                # According to the HTML spec, ``<element boolean>`` is good,
-                # ``<element boolean="boolean">`` is bad.
-                # (But the XHTML (XML) spec says the opposite.  <sigh>)
-                parts.append(name.lower())
-            elif isinstance(value, ListType):
-                values = [str(v) for v in value]
-                parts.append('%s="%s"' % (name.lower(),
-                                          self.attval(' '.join(values))))
-            else:
-                parts.append('%s="%s"' % (name.lower(),
-                                          self.attval(str(value))))
-        return '<%s%s>%s' % (' '.join(parts), infix, suffix)

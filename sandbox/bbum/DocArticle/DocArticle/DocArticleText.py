@@ -1,9 +1,12 @@
 # Author: Bill Bumgarner
-# Contact: <bbum@codefab.com>
-# 
+# Contact: bbum@codefab.com
+# Copyright: 2002 - Bill Bumgarner - All Rights Reserved
+# License: The MIT License -- see LICENSE.txt
 
 """
-Defines various chunks o' static text that are spewed into Articles.  A sort of half-baked library of templates.
+Defines various chunks o' static text that are spewed into Articles.
+
+A sort of half-baked library of templates.  Currently extremely limited in scope.
 """
 
 __docformat__ = 'reStructuredText'

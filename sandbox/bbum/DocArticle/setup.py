@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+# Author: Bill Bumgarner
+# Contact: bbum@codefab.com
+# Copyright: 2002 - Bill Bumgarner - All Rights Reserved
+# License: The MIT License -- see LICENSE.txt
+
 from distutils.core import setup
 
 setup(name = "DocArticle",

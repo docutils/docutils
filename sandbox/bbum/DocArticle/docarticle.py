@@ -2,6 +2,16 @@
 
 # Author: Bill Bumgarner
 # Contact: bbum@codefab.com
+# Copyright: This module has been placed in the public domain.
+
+"""
+docarticle.py
+=============
+
+This module provides a simple command line interface that uses the
+DocArticle HTML writer to produce plain HTML output from
+ReStructuredText source.
+"""
 
 import locale
 try:
@@ -12,7 +22,6 @@ except:
 from docutils.core import publish_cmdline, default_description
 from DocArticle import DocArticleWriter
 
-description = ("Generates O'Reilly article compatible xHTML from ReST "
-               "sources.  " + default_description)
+description = ("Generates plain HTML.  " + default_description)
 
 publish_cmdline(writer=DocArticleWriter(), description=description)
