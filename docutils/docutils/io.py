@@ -186,7 +186,8 @@ class FileOutput(Output):
             - `autoclose`: close automatically after write (boolean); always
               false if `sys.stdout` is the destination.
         """
-        Output.__init__(self, destination, destination_path, encoding)
+        Output.__init__(self, destination, destination_path,
+                        encoding, error_handler)
         self.opened = 1
         self.autoclose = autoclose
         if destination is None:
