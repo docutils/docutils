@@ -57,7 +57,7 @@ Subpackages:
 
 __docformat__ = 'reStructuredText'
 
-__version__ = '0.2.1'
+__version__ = '0.2.2'
 """``major.minor.micro`` version number.  The ``micro`` number is bumped any
 time there's a change in the API incompatible with one of the front ends."""
 
@@ -66,18 +66,33 @@ class ApplicationError(StandardError): pass
 class DataError(ApplicationError): pass
 
 
-class Component:
+class OptionSpec:
 
-    """
-    Base class for Docutils components.
-    """
+    """Runtime option specification base class."""
+
+    cmdline_options = ()
+    """Command-line option specification.  Override in subclasses.
+    Used by `docutils.frontend.OptionParser`.
+
+    One or more sets of option group title, description, and a list/tuple of
+    tuples: ``('help text', [list of option strings], {keyword arguments})``.
+    Group title and/or description may be `None`; no group title implies no
+    group, just a list of single options."""
+
+    relative_path_options = ()
+    """Options containing filesystem paths.  Override in subclasses.
+    Used by `docutils.frontend.OptionParser`.
+
+    Options listed here are to be interpreted relative to the current working
+    directory."""
+
+
+class Component(OptionSpec):
+
+    """Base class for Docutils components."""
 
     supported = ()
     """Names for this component.  Override in subclasses."""
-
-    cmdline_options = ()
-    """Command-line option specification.
-    See `docutils.frontend.OptionParser`."""
 
     def supports(self, format):
         """
