@@ -147,6 +147,19 @@ class projectSettingsDlg(wxDialog):
         wxContextHelpButton(self.du, pos = wxPoint(370, 8),
                             size = wxSize(23, 23))        
 
+        # Language Code
+        wxStaticText(self.du, -1, 'Language-Code', wxPoint(8, 10))
+        exitID = wxNewId()
+        language_codes = ['de', 'en', 'fr', 'it', 'sk', 'sv']
+        if not self.config.options['language_code'] in language_codes:
+            language_codes.append(self.config.options['language_code'])
+        language_codes.sort()
+        self.languageCodeCtrl = wxChoice(self.du, exitID, pos = wxPoint(97, 8),
+                                         choices = language_codes)
+        self.languageCodeCtrl.SetStringSelection(self.config.options['language_code'])
+        self.languageCodeCtrl.SetHelpText('Language code of your documents.')
+        EVT_CHOICE(self, exitID, self.onChoiceLanguageCode)
+        
         # Stylesheet
         wxStaticText(self.du, -1, 'Stylesheet', wxPoint(8, 42))
         exitID = wxNewId()
@@ -280,6 +293,9 @@ class projectSettingsDlg(wxDialog):
                 self.styCtrl.SetValue(stylesheetpath)
             dlg.Destroy()
 
+    def onChoiceLanguageCode(self, event):
+        self.config.options['language_code'] = event.GetString()
+        
     def getValues(self):
         return(self.nameCtrl.GetValue(), self.dirCtrl.GetValue())
 
@@ -348,7 +364,7 @@ class projectSettingsDlg(wxDialog):
                 dlg.Destroy()
 
             self.config.options['output_encoding'] = self.outencCtrl.GetValue()
-            
+           
             self.config.options['footnote_references'] = self.footrefCtrl.GetStringSelection()
             self.config.options['toc_backlinks'] = self.tocliCtrl.GetStringSelection()
             
@@ -435,6 +451,7 @@ class Config:
         self.options['footnote_backlinks']  = '1'
         self.options['footnote_references'] = 'superscript'
         self.options['generator']           = ''
+        self.options['language_code']       = 'en'
         self.options['output_encoding']     = 'UTF-8'
         self.options['source_link']         = ''
         self.options['stylesheet']          = 'default.css'
