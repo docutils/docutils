@@ -94,7 +94,7 @@ class MoinTranslator(html4css1.HTMLTranslator):
         self.formatter = formatter
         self.request = request
         self.level = 0
-        self.oldWrite = self.request.write
+        self.old_write = self.request.write
         self.request.write = self.rst_write
         self.wikiparser = parser
         self.wikiparser.request = request
@@ -102,7 +102,7 @@ class MoinTranslator(html4css1.HTMLTranslator):
         self.strip_paragraph = 0
         
     def astext(self):
-        self.request.write = self.oldWrite
+        self.request.write = self.old_write
         return html4css1.HTMLTranslator.astext(self)
     
     def rst_write(self, string):
