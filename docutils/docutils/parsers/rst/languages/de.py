@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 # Author: Engelbert Gruber
 # Contact: grubert@users.sourceforge.net
 # Revision: $Revision$
