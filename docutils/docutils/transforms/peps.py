@@ -17,7 +17,6 @@ __docformat__ = 'reStructuredText'
 import sys, os, re, time
 from docutils import nodes, utils, ApplicationError, DataError
 from docutils.transforms import Transform, TransformError
-import mypdb as pdb
 
 
 class Headers(Transform):
@@ -40,7 +39,6 @@ class Headers(Transform):
             raise DataError('Document does not begin with an RFC-2822 '
                             'header; it is not a PEP.')
         pep = title = None
-        #pdb.set_trace()
         for field in header:
             if field[0].astext().lower() == 'pep': # should be the first field
                 pep = int(field[1].astext())
@@ -51,7 +49,6 @@ class Headers(Transform):
         for field in header:
             name = field[0].astext().lower()
             body = field[1]
-            print >>sys.stderr, 'name=%s, body=%s' % (name, body.astext()) ; sys.stderr.flush()
             if len(body) > 1:
                 raise DataError('PEP header field body contains multiple '
                                 'elements:\n%s' % field.pformat(level=1))
@@ -72,7 +69,8 @@ class Headers(Transform):
             para = body[0]
             if name == 'title':
                 title = body.astext()
-                # @@@ Insert a "pending" element here, since we don't really want a separate document title?
+                # @@@ Insert a "pending" element here, since we don't really
+                # want a separate document title?
             elif name in ('author', 'discussions-to'):
                 for node in para:
                     if isinstance(node, nodes.reference) \
@@ -89,11 +87,9 @@ class Headers(Transform):
                     newbody.append(space)
                 para[:] = newbody[:-1] # drop trailing space
             elif name == 'last-modified':
-                #pdb.set_trace()
                 utils.clean_rcs_keywords(para, self.rcs_keyword_substitutions)
                 date = para.astext()
                 uri = self.pep_cvs_url % int(pep)
                 para[:] = [nodes.reference('', date, refuri=uri)]
             elif name == 'version' and len(body):
                 utils.clean_rcs_keywords(para, self.rcs_keyword_substitutions)
-            print >>sys.stderr, 'name=%s, body=%s' % (name, body.astext()) ; sys.stderr.flush()
