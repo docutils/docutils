@@ -431,6 +431,9 @@ Specific:
 * docutils/writers/latex2e.py: LaTeX Writer, added by Engelbert Gruber
   (from the sandbox).
 
+  - add french.
+  - Double quotes in literal blocks (special treatment for de/ngerman).
+
 * docutils/writers/pep_html.py:
 
   - Parameterized output encoding in PEP template.
