@@ -7,7 +7,7 @@ if [ "$1" = "create" ] ; then
 fi
 
 TMPF=.diff.tmp
-for F in `ls $REF_DIR/*.txt.tex` ; do
+for F in `ls $REF_DIR/*.txt*.tex` ; do
 	diff -s -u $F.ref $F > $TMPF
 	if test $? -gt 0 ; then
 		less $TMPF

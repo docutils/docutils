@@ -33,6 +33,10 @@ class Writer(writers.Writer):
         (('Specify documentclass.  Default is "article".',
           ['--documentclass'],
           {'default': 'article', }),
+         ('Use LaTeX footnotes. '
+          'Default: no, uses figures.',
+          ['--use-latex-footnotes'],
+          {'default': 0, 'action': 'store_true'}),
          ('Format for footnote references: one of "superscript" or '
           '"brackets".  Default is "brackets".',
           ['--footnote-references'],
@@ -262,6 +266,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         nodes.NodeVisitor.__init__(self, document)
         self.settings = settings = document.settings
         self.use_latex_toc = settings.use_latex_toc
+        self.use_latex_footnotes = settings.use_latex_footnotes
         self.hyperlink_color = settings.hyperlink_color
         if self.hyperlink_color == '0':
             self.hyperlink_color = 'black'
@@ -883,14 +888,28 @@ class LaTeXTranslator(nodes.NodeVisitor):
         del self.body[start:]
 
     def visit_footnote(self, node):
-        notename = node['id']
-        self.body.append('\\begin{figure}[b]')
-        self.body.append('\\hypertarget{%s}' % notename)
+        if self.use_latex_footnotes:
+            num,text = node.astext().split(None,1)
+            num = self.encode(num.strip())
+            self.body.append('\\footnotetext['+num+']')
+            self.body.append('{'+self.encode(text)+'}')
+            raise nodes.SkipNode
+        else:
+            notename = node['id']
+            self.body.append('\\begin{figure}[b]')
+            self.body.append('\\hypertarget{%s}' % notename)
 
     def depart_footnote(self, node):
-        self.body.append('\\end{figure}\n')
+        if self.use_latex_footnotes:
+            self.body.append('}')
+        else:
+            self.body.append('\\end{figure}\n')
 
     def visit_footnote_reference(self, node):
+        if self.use_latex_footnotes:
+            self.body.append("\\footnotemark["+self.encode(node.astext())+"]")
+            raise nodes.SkipNode
+            return
         href = ''
         if node.has_key('refid'):
             href = node['refid']
@@ -908,6 +927,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('%s\\hyperlink{%s}{' % (suffix,href))
 
     def depart_footnote_reference(self, node):
+        if self.use_latex_footnotes:
+            return
         self.body.append('}%s' % self.context.pop())
 
     def visit_generated(self, node):
