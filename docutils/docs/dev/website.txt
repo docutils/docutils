@@ -1,6 +1,7 @@
 ===================
  Docutils Web Site
 ===================
+
 :Author: David Goodger; open to all Docutils developers
 :Contact: goodger@python.org
 :Date: $Date$
@@ -8,20 +9,24 @@
 :Copyright: This document has been placed in the public domain.
 
 The Docutils web site, <http://docutils.sourceforge.net/>, is
-maintained automatically by the docutils-update script, run as an
-hourly cron job (by user "goodger").  The script will process any .txt
-file which is newer than the corresponding .html file in the project's
-web directory on SourceForge (``/home/groups/d/do/docutils/htdocs/``).
-For a new .txt file, just SSH to SourceForge and ::
+maintained by the ``docutils-update`` script.  The script used to run
+as a cron job, but since mid-2004, cron isn't working on
+SourceForge.net, so you will have to run it manually.  It will process
+any .txt file which is newer than the corresponding .html file in the
+project's web directory on SourceForge
+(``/home/groups/d/do/docutils/htdocs/``).  For a new .txt file, just
+SSH to ``<username>@shell.sourceforge.net`` and ::
 
     touch filename.html
     chmod g+w filename.html
     sleep 1
     touch filename.txt
+    /home/groups/d/do/docutils/snapshots/sandbox/davidg/infrastructure/docutils-update -p
 
-The script will take care of the rest within an hour.  Thereafter
+The ``docutils-update`` script will retrieve the most current version
+of the .txt file from CVS and generate the .html file.  Thereafter
 whenever the .txt file is modified (checked in to CVS), the .html will
-be regenerated automatically.
+be regenerated when ``docutils-update`` is run.
 
 After adding directories to CVS, allow the script to run once to
 create the directories in the filesystem before preparing for HTML
