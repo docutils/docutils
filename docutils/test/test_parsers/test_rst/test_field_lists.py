@@ -410,13 +410,56 @@ Nested field lists on one line:
                     multiple arguments
 """],
 ["""\
+:Field *name* `with` **inline** ``markup``: inline markup in
+                                            field name is parsed.
+""",
+"""\
+<document source="test data">
+    <field_list>
+        <field>
+            <field_name>
+                Field \n\
+                <emphasis>
+                    name
+                 \n\
+                <title_reference>
+                    with
+                 \n\
+                <strong>
+                    inline
+                 \n\
+                <literal>
+                    markup
+            <field_body>
+                <paragraph>
+                    inline markup in
+                    field name is parsed.
+"""],
+["""\
+:Field name with *bad inline markup: should generate warning.
+""",
+"""\
+<document source="test data">
+    <field_list>
+        <field>
+            <field_name>
+                Field name with \n\
+                <problematic id="id2" refid="id1">
+                    *
+                bad inline markup
+            <field_body>
+                <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
+                    <paragraph>
+                        Inline emphasis start-string without end-string.
+                <paragraph>
+                    should generate warning.
+"""],
+["""\
 Some edge cases:
 
 :Empty:
 :Author: Me
 No blank line before this paragraph.
-
-:*Field* `with` **inline** ``markup``: inline markup shouldn't be recognized.
 
 : Field: marker must not begin with whitespace.
 
@@ -446,13 +489,6 @@ Field: marker is missing its open-colon.
             Field list ends without a blank line; unexpected unindent.
     <paragraph>
         No blank line before this paragraph.
-    <field_list>
-        <field>
-            <field_name>
-                *Field* `with` **inline** ``markup``
-            <field_body>
-                <paragraph>
-                    inline markup shouldn't be recognized.
     <paragraph>
         : Field: marker must not begin with whitespace.
     <paragraph>

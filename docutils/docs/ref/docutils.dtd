@@ -322,7 +322,7 @@ http://www.oasis-open.org/html/tm9901.htm).
 <!ELEMENT field (field_name, field_body)>
 <!ATTLIST field %basic.atts;>
 
-<!ELEMENT field_name (#PCDATA)>
+<!ELEMENT field_name %text.model;>
 <!ATTLIST field_name %basic.atts;>
 
 <!-- May be empty. -->

@@ -2181,22 +2181,21 @@ Pseudo-XML_ fragment from simple parsing::
 ``field_name``
 ==============
 
-The ``field_name`` element contains text data only.  It is analogous
-to a database field's name.
+The ``field_name`` element contains text; it is analogous to a
+database field's name.
 
 
 Details
 -------
 
 :Category:
-    `Body Subelements`_
+    `Body Subelements`_ (simple)
 
 :Parents:
     Only the field_ element contains ``field_name``.
 
 :Children:
-    ``field_name`` elements have no children.  They may contain text
-    data only.
+    ``field_name`` elements may contain text data plus `inline elements`_.
 
 :Analogues:
     ``field_name`` has no direct analogues in common DTDs.
@@ -2210,7 +2209,7 @@ Content Model
 
 .. parsed-literal::
 
-   (#PCDATA)
+    `%text.model;`_
 
 :Attributes:
     The ``field_name`` element contains only the `common attributes`_:
@@ -4829,10 +4828,10 @@ Entity definition:
 The ``%text.model;`` parameter entity is directly employed in the
 content models of the following elements: abbreviation_, acronym_,
 address_, author_, caption_, classifier_, contact_, copyright_, date_,
-doctest_block_, emphasis_, generated_, line_block_, literal_block_,
-organization_, paragraph_, problematic_, raw_, reference_, revision_,
-status_, strong_, substitution_definition_, substitution_reference_,
-subtitle_, target_, term_, title_, version_
+doctest_block_, emphasis_, field_name_, generated_, line_block_,
+literal_block_, organization_, paragraph_, problematic_, raw_,
+reference_, revision_, status_, strong_, substitution_definition_,
+substitution_reference_, subtitle_, target_, term_, title_, version_
 
 
 
