@@ -198,7 +198,7 @@ class Node:
     def flattened(self):
         """
         Return a flattened representation of the (sub)tree rooted at this
-        node -- a list of nodes in tree traversal order.
+        node -- an iterable of nodes in tree traversal order.
 
         Given the a paragraph node with the following tree::
 
@@ -210,10 +210,13 @@ class Node:
                 <reference name="Baz" refid="baz">
                     Baz
 
-        Then paragraph.tree() is::
+        Then paragraph.flattened() is::
 
             [<paragraph>, <emphasis>, <strong>, <Text>, <Text>,
              <reference>, <Text>]
+
+        You should not rely on the return value to be a list; it could
+        be changed to an iterator later.
         """
         nodelist = [self]
         for node in self.get_children():
