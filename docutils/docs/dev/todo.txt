@@ -111,7 +111,7 @@ General
 
   We need to name the objects:
 
-  - "name" attribute for the "figure" directive? ::
+  - "name" option for the "figure" directive? ::
 
         .. figure:: image.png
            :name: image's name
@@ -128,7 +128,7 @@ General
            False  True
            =====  =====
 
-    This would also allow other attributes to be set, like border
+    This would also allow other options to be set, like border
     styles.  The same technique could be used for other objects.
 
   - The object could also be done this way::
@@ -669,21 +669,21 @@ Directives
 
 * Allow directives to be added at run-time?
 
-* Use the language module for directive attribute names?
+* Use the language module for directive option names?
 
-* Implement attributes on existing directives:
+* Implement options on existing directives:
 
   - _`images.image`: "border"?
 
   - _`parts.sectnum`: "start", "local"?
 
-    A "local" attribute could enable numbering for sections from a
+    A "local" option could enable numbering for sections from a
     certain point down, and sections in the rest of the document are
     not numbered.  For example, a reference section of a manual might
     be numbered, but not the rest.  OTOH, an all-or-nothing approach
     would probably be enough.
 
-    The "start" attribute will specify the sequence set to use at the
+    The "start" option will specify the sequence set to use at the
     same time as the starting value, for the first part of the section
     number (i.e., section, not subsection).  For example::
 
@@ -713,6 +713,9 @@ Directives
   - _`parts.contents`: Add a "suppress" or "prune" option?  It would
     suppress contents display for sections in a branch from that point
     down.  Or a new directive, like "prune-contents"?
+
+  - _`misc.include`: "encoding" option?  Take default from runtime
+    settings.  Use Input component to read it in?
 
 * Implement directives.  Each of the list items below begins with an
   identifier of the form, "module_name.directive_function_name".  The
@@ -763,7 +766,7 @@ Directives
   - _`body.qa` (directive a.k.a. "faq", "questions"): Questions &
     Answers.  Implement as a generic two-column marked list?  As a
     standalone (non-directive) construct?  (Is the markup ambiguous?)
-    Add support to parts.contents (optional attribute "qa" done).
+    Add support to parts.contents.
 
     New elements would be required.  Perhaps::
 
