@@ -46,6 +46,39 @@ Priorities
 * `Nested inline markup`_.
 
 
+Minimum Requirements for Python Standard Library Candidacy
+==========================================================
+
+Below are action items that must be added and issues that must be
+addressed before Docutils can be considered suitable to be proposed
+for inclusion in the Python standard library.
+
+* Support for `document splitting`_.  May require some major code
+  rework.
+
+* Support for subdocuments (see `large documents`_).
+
+* `Object numbering and object references`_.
+
+* `Nested inline markup`_.
+
+* `Python Source Reader`_.
+
+* The HTML writer needs to be rewritten (or a second HTML writer
+  added) to allow for custom classes, and for arbitrary splitting
+  (stack-based?).
+
+* Documentation_ of the architecture.  Other docs too.
+
+* Plugin support.
+
+* A LaTeX writer making use of (La)TeX's power, so that the rendering
+  of the resulting documents is more easily customizable.  (Similar to
+  what you wrote about a new HTML Writer.)
+
+* Suitability for Python module documentation.
+
+
 General
 =======
 
