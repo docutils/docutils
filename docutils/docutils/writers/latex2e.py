@@ -1125,9 +1125,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_document(self, node):
         self.body_prefix.append('\\begin{document}\n')
-        # BUG: \maketitle without title (i.e. --no-doc-title) adds
-        # unnecessary vspace.
-        self.body_prefix.append('\\maketitle\n\n')
+        # titled document?
+        if isinstance(node[0], nodes.title):
+            self.body_prefix.append('\\maketitle\n\n')
         # alternative use titlepage environment.
         # \begin{titlepage}
         self.body.append('\n\\setlength{\\locallinewidth}{\\linewidth}\n')
