@@ -317,6 +317,8 @@ General
   with examples of every setting (possibly commented).  It's currently
   sparse, requiring doc lookups.
 
+* Add front-end support for "-" => stdin/stdout.
+
 
 Documentation
 -------------

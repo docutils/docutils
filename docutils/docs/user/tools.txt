@@ -609,7 +609,7 @@ source_link
     Include a "View document source" link in the document footer.  URL
     will be relative to the destination.
 
-    Default: don't (None).  Options: ``--source-link,
+    Default: don't (None).  Options: ``--source-link, -s,
     --no-source-link``.
 
 source_url
