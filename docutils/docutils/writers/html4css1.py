@@ -211,6 +211,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body_suffix = ['</body>\n</html>\n']
         self.section_level = 0
         self.initial_header_level = int(settings.initial_header_level)
+        # A heterogenous stack used in conjunction with the tree traversal.
+        # Make sure that the pops correspond to the pushes:
         self.context = []
         self.topic_class = ''
         self.colspecs = []
@@ -222,7 +224,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.subtitle = []
         self.header = []
         self.footer = []
-        self.within_title = 0
+        self.in_document_title = 0
 
     def get_stylesheet_reference(self, relative_to=None):
         settings = self.settings
@@ -541,7 +543,6 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</tbody>\n</table>\n')
         self.in_docinfo = None
         start = self.context.pop()
-        self.body_pre_docinfo = self.body[:start]
         self.docinfo = self.body[start:]
         self.body = []
 
@@ -1080,16 +1081,18 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.body.append(self.starttag(node, 'p', '',
                                            CLASS='sidebar-subtitle'))
             self.context.append('</p>\n')
-        else:
+        elif isinstance(node.parent, nodes.document):
             self.body.append(self.starttag(node, 'h2', '', CLASS='subtitle'))
             self.context.append('</h2>\n')
-            self.within_title = len(self.body)
+            self.in_document_title = len(self.body)
 
     def depart_subtitle(self, node):
-        if self.within_title:
-            self.subtitle = self.body[self.within_title:]
-            self.within_title = 0
         self.body.append(self.context.pop())
+        if self.in_document_title:
+            self.subtitle = self.body[self.in_document_title:-1]
+            self.in_document_title = 0
+            self.body_pre_docinfo.extend(self.body)
+            del self.body[:]
 
     def visit_superscript(self, node):
         self.body.append(self.starttag(node, 'sup', ''))
@@ -1226,7 +1229,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                              % self.encode(node.astext()))
             self.body.append(self.starttag(node, 'h1', '', CLASS='title'))
             self.context.append('</h1>\n')
-            self.within_title = len(self.body)
+            self.in_document_title = len(self.body)
         else:
             h_level = self.section_level + self.initial_header_level - 1
             self.body.append(
@@ -1248,10 +1251,12 @@ class HTMLTranslator(nodes.NodeVisitor):
                 self.context.append(close_tag)
 
     def depart_title(self, node):
-        if self.within_title:
-            self.title = self.body[self.within_title:]
-            self.within_title = 0
         self.body.append(self.context.pop())
+        if self.in_document_title:
+            self.title = self.body[self.in_document_title:-1]
+            self.in_document_title = 0
+            self.body_pre_docinfo.extend(self.body)
+            del self.body[:]
 
     def visit_title_reference(self, node):
         self.body.append(self.starttag(node, 'cite', ''))
