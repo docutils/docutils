@@ -249,9 +249,9 @@ Inside literal blocks quotes should be left untouched
 (use only two quotes in test code makes life easier for
 the python interpreter running the test):
 \\begin{quote}{\\ttfamily \\raggedright \\noindent
-""~\\\\
+"{}"~\\\\
 This~is~left~"untouched"~also~*this*.~\\\\
-""
+"{}"
 }\\end{quote}
 \\begin{quote}{\\ttfamily \\raggedright \\noindent
 should~get~"quotes"~and~\\emph{italics}.
