@@ -52,9 +52,12 @@ class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
         """Set self.configfile, pass arguments to parent __init__."""
         self.configfile = kwargs['configfile']
         del kwargs['configfile']
-        self.shortDescription = lambda: ('Functional test for ' +
-                                         self.configfile)
+        self.shortDescription = self.getdesc
         DocutilsTestSupport.CustomTestCase.__init__(self, *args, **kwargs)
+
+    def getdesc(self):
+        """Ugly hack for Python 2.1."""
+        return 'Functional test for ' + self.configfile
 
     def test(self):
 
