@@ -18,7 +18,7 @@ except:
 
 import visit, transform
 
-from docutils.parsers import Parser
+from docutils.parsers.rst import Parser
 class SourceParser(Parser):
     supported = ('pysource',)
     settings_spec = (
@@ -26,8 +26,7 @@ class SourceParser(Parser):
         None,
         (('Be verbose while parsing', ['--verbose-parse'],
           {'action': 'store_true'}),
-        )
-    )
+         )) + Parser.settings_spec
     def parse(self, filename, document):
         if os.path.isdir(filename):
             thing = visit.Package(document.settings, filename)
@@ -47,7 +46,6 @@ class SourceReader(Reader):
         self.source.source.close()
         self.input = self.source.source_path
         self.parse()
-        self.transform()
         return self.document
 
 from docutils.core import publish_cmdline, default_description
