@@ -143,6 +143,15 @@ def validate_colon_separated_string_list(
         value.extend(last.split(':'))
     return value
 
+def validate_url_trailing_slash(
+    setting, value, option_parser, config_parser=None, config_section=None):
+    if not value:
+        return './'
+    elif value.endswith('/'):
+        return value
+    else:
+        return value + '/'
+
 def make_paths_absolute(pathdict, keys, base_path=None):
     """
     Interpret filesystem path settings relative to the `base_path` given.
