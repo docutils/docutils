@@ -131,10 +131,11 @@ class DocTitle(Transform):
         subtitle[:] = subsection[0][:]
         document = self.document
         document[:] = (document[:1]       # document title
-                      + [subtitle]
-                      + document[1:index] # everything that was in the document
-                                         # before the section
-                      + subsection[1:]) # everything that was in the subsection
+                       + [subtitle]
+                       # everything that was before the section:
+                       + document[1:index]
+                       # everything that was in the subsection:
+                       + subsection[1:])
         return 1
 
     def candidate_index(self):
@@ -164,8 +165,9 @@ class DocInfo(Transform):
     Given a field list as the first non-comment element after the
     document title and subtitle (if present), registered bibliographic
     field names are transformed to the corresponding DTD elements,
-    becoming child elements of the "docinfo" element (except for the
-    abstract, which becomes a "topic" element after "docinfo").
+    becoming child elements of the "docinfo" element (except for a
+    dedication and/or an abstract, which become "topic" elements after
+    "docinfo").
 
     For example, given this document fragment after parsing::
 
@@ -234,19 +236,16 @@ class DocInfo(Transform):
         if isinstance(candidate, nodes.field_list):
             biblioindex = document.first_child_not_matching_class(
                   nodes.Titular)
-            nodelist, remainder = self.extract_bibliographic(candidate)
-            if remainder:
-                document[index] = remainder
-            else:
-                del document[index]
+            nodelist = self.transform_bibliographic(candidate)
+            del document[index]         # untransformed field list (candidate)
             document[biblioindex:biblioindex] = nodelist
         return
 
     def extract_bibliographic(self, field_list):
         docinfo = nodes.docinfo()
-        remainder = []
         bibliofields = self.language.bibliographic_fields
-        abstract = None
+        labels = self.language.labels
+        topics = {'dedication': None, 'abstract': None}
         for field in field_list:
             try:
                 name = field[0][0].astext()
@@ -265,29 +264,25 @@ class DocInfo(Transform):
                     if issubclass(biblioclass, nodes.authors):
                         self.extract_authors(field, name, docinfo)
                     elif issubclass(biblioclass, nodes.topic):
-                        if abstract:
+                        if topics[normedname]:
                             field[-1] += self.document.reporter.warning(
-                                  'There can only be one abstract.')
+                                  'There can only be one "%s" field.' % name)
                             raise TransformError
-                        title = nodes.title(
-                              name, self.language.labels['abstract'])
-                        abstract = nodes.topic('', title, CLASS='abstract',
-                                               *field[1].children)
+                        title = nodes.title(name, labels[normedname])
+                        topics[normedname] = biblioclass(
+                            '', title, CLASS='normedname', *field[1].children)
                     else:
                         docinfo.append(biblioclass('', *field[1].children))
             except TransformError:
-                remainder.append(field)
+                docinfo.append(field)
                 continue
         nodelist = []
         if len(docinfo) != 0:
             nodelist.append(docinfo)
-        if abstract:
-            nodelist.append(abstract)
-        if remainder:
-            field_list[:] = remainder
-        else:
-            field_list = None
-        return nodelist, field_list
+        for name in ('dedication', 'abstract'):
+            if topics[name]:
+                nodelist.append(topics[name])
+        return nodelist
 
     def check_empty_biblio_field(self, field, name):
         if len(field[1]) < 1:
@@ -303,9 +298,8 @@ class DocInfo(Transform):
             return None
         if not isinstance(field[1][0], nodes.paragraph):
             field[-1] += self.document.reporter.warning(
-                  'Cannot extract bibliographic field "%s" containing anything '
-                  'other than a single paragraph.'
-                  % name)
+                  'Cannot extract bibliographic field "%s" containing '
+                  'anything other than a single paragraph.' % name)
             return None
         return 1
 
