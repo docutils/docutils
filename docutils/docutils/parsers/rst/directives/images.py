@@ -42,12 +42,15 @@ image.options = {'alt': directives.unchanged,
                  'height': directives.nonnegative_int,
                  'width': directives.nonnegative_int,
                  'scale': directives.nonnegative_int,
-                 'align': align}
+                 'align': align,
+                 'class': directives.class_option}
 
 def figure(name, arguments, options, content, lineno,
            content_offset, block_text, state, state_machine):
     figwidth = options.setdefault('figwidth')
+    figclass = options.setdefault('figclass')
     del options['figwidth']
+    del options['figclass']
     (image_node,) = image(name, arguments, options, content, lineno,
                          content_offset, block_text, state, state_machine)
     if isinstance(image_node, nodes.system_message):
@@ -64,6 +67,8 @@ def figure(name, arguments, options, content, lineno,
                 figure_node['width'] = i.size[0]
     elif figwidth is not None:
         figure_node['width'] = figwidth
+    if figclass:
+        figure_node.set_class(figclass)
     if content:
         node = nodes.Element()          # anonymous container for parsing
         state.nested_parse(content, content_offset, node)
@@ -89,6 +94,7 @@ def figwidth_value(argument):
         return directives.nonnegative_int(argument)
 
 figure.arguments = (1, 0, 1)
-figure.options = {'figwidth': figwidth_value}
+figure.options = {'figwidth': figwidth_value,
+                  'figclass': directives.class_option}
 figure.options.update(image.options)
 figure.content = 1
