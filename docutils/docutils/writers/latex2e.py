@@ -61,8 +61,12 @@ class Writer(writers.Writer):
           'supports only one ToC per document, but docutils does not write '
           'pagenumbers.',
           ['--use-latex-toc'], {'default': 0}),
-        ('Color of any hyperlinks embedded in text (default: "blue", "0" to disable).',
-         ['--hyperlink-color'], {'default': 'blue'}),
+         ('Color of any hyperlinks embedded in text '
+          '(default: "blue", "0" to disable).',
+          ['--hyperlink-color'], {'default': 'blue'}),
+         ('Remove trailing blanks and line ends from the element before a'
+          'footnote_reference (default: off, "1" to enable).',
+          ['--snap-footnote-refs'], {'default': 0}),
         ),
     )
 
@@ -854,6 +858,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.context.append('}')
         else:                           # shouldn't happen
             raise AssertionError('Illegal footnote reference format.')
+        if self.settings.snap_footnote_refs and len(self.body)>0:
+            self.body.append(self.body.pop().rstrip())
         self.body.append('%s\\hyperlink{%s}{' % (suffix,href))
 
     def depart_footnote_reference(self, node):

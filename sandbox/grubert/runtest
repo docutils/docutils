@@ -9,6 +9,7 @@ diff -q -s $REFF $OUTF
 echo --------------------------
 
 CMD="../../tools/rst2latex.py"
+#CMD="../../tools/rst2latex.py --snap-footnote-refs=1"
 #CMD="../../tools/rst2latex.py --footnote-references=superscript"
 #CMD="../../tools/rst2latex.py --documentclass=book --hyperlink-color=0"
 
