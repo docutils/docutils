@@ -337,8 +337,8 @@ _`source_url`
 
 _`strict_visitor`
     When processing a document tree with the Visitor pattern, ignore
-    unknown node types listed as optional.  For transitional
-    development use.
+    raise an error if a writer does not support a nod types listed as
+    optional.  For transitional development use.
 
     Default: disabled (None).  Option: ``--strict-visitor`` (hidden,
     for development use only).
