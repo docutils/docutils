@@ -41,7 +41,6 @@ class dummyIO(StringIO.StringIO):
 
 class dummyUrllib2:
     def urlopen(a):
-        print 'dummyUrllib2'
         return StringIO.StringIO()
     urlopen = staticmethod(urlopen)
 
