@@ -387,7 +387,14 @@ class MoinDirectives:
     def macro(self, name, arguments, options, content, lineno,
                 content_offset, block_text, state, state_machine):
         if len(content):
-            state_machine.insert_input(['`[[%s]]`_' % content[0]], 'MoinDirectives')
+            from docutils.nodes import reference
+            if content[0].startswith('[['):
+                macro = content[0]
+            else:
+                macro = '[[%s]]' % content[0]
+            ref = reference(macro, refuri = macro)
+            ref['name'] = macro
+            return [ref]
         return
 
     macro.content = True
