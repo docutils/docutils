@@ -824,7 +824,7 @@ __ rst/alternatives.html#or-not-to-do
   <http://article.gmane.org/gmane.text.docutils.user/118>`__.
 
   Both a directive and an interpreted text role will be necessary (for
-  each markups).  Directive example::
+  each markup).  Directive example::
 
       .. itex::
          \alpha_t(i) = P(O_1, O_2, \dots O_t, q_t = S_i \lambda)
@@ -1348,10 +1348,13 @@ way to get around built-in limitations of the medium.  Some roles are
 intended to introduce new doctree elements, such as "title-reference".
 Others are merely convenience features, like "RFC".
 
-All supported interpreted text roles must be known by the Parser.
-Adding a new role often involves adding a new element to the DTD and
-may require extensive support, therefore such additions should be well
-thought-out.  There should be a limited number of roles.
+All supported interpreted text roles must already be known to the
+Parser when they are encountered in a document.  Whether pre-defined
+in core/client code, or in the document, doesn't matter; the roles
+just need to have already been declared.  Adding a new role often
+involves adding a new element to the DTD and may require extensive
+support, therefore such additions should be well thought-out.  There
+should be a limited number of roles.
 
 The only place where no limit is placed on variation is at the start,
 at the Reader/Parser interface.  Transforms are inserted by the Reader
@@ -1429,7 +1432,7 @@ elements.
   attributes? ::
 
       .. :api-ti: role:: api
-         :base: twisted.internet
+         :attributes: :base: twisted.internet
 
       To start the reactor, use the :api-ti:`reactor.run` method.  To
       stop it, use :api-ti:`reactor.stop`.
@@ -1680,6 +1683,17 @@ HTML Writer
 * Add an option to restrict the document title to <head><title> only,
   and not include it in the document body.  Subtitle?
 
+* Insert a comment at the top of HTML files that describes how to deal
+  with the broken servers w.r.t. encodings?  Perhaps something like
+  this:
+
+      <!-- 
+      If your browser is showing gibberish, the server may be broken.
+      Try manually setting the character coding to "UTF-8".  In
+      Mozilla/Firefox, do ...  In Internet Explorer, do ...
+      For details, see <URL>.
+      -->
+
 
 Front-End Tools
 ---------------
@@ -1787,8 +1801,7 @@ specified in the `Style Guide for Python Code`_ and `Docstring
 Conventions`_ PEPs, with the following clarifications (from most to
 least important):
 
-* 4 spaces per indentation level.  No tabs.  Indent continuation lines
-  according to the Emacs python-mode standard.
+* 4 spaces per indentation level.  No tabs.
 
 * Use only ASCII, no 8-bit strings.  See `Docutils
   Internationalization`_.
@@ -1855,6 +1868,7 @@ CVS Check-ins
 Instructions for CVS access can be found at
 http://sourceforge.net/cvs/?group_id=38414.  Anyone can access the CVS
 repository anonymously.  Only project developers can make changes.
+See `Setting Up For Docutils Development`_ below for more info.
 
 Unless you really *really* know what you're doing, please limit your
 CVS commands to ``cvs checkout``, ``cvs commit/checkin``, and ``cvs
@@ -1890,7 +1904,7 @@ applicable), with particular emphasis as follows:
   `the sandbox`_ are the way to go.
 
 Docutils will pursue an open and trusting policy for as long as
-possible, and deal with any abberations if (and hopefully not when)
+possible, and deal with any aberrations if (and hopefully not when)
 they happen.  I'd rather see a torrent of loose contributions than
 just a trickle of perfect-as-they-stand changes.  The occasional
 mistake is easy to fix.  That's what CVS is for.
@@ -1939,6 +1953,49 @@ work!  If there are any issues with your code, or if you only have
 time for gradual development, you should put it in the sandbox first.
 It's easy to move code over to the main source tree once it's closer
 to completion.
+
+
+Setting Up For Docutils Development
+```````````````````````````````````
+
+When making changes to the code, good developers always test their
+changes.  That means running the code to check that it produces the
+expected results, and running the test suite too.  The modified
+Docutils code has to be accessible to Python for the tests to have any
+meaning.  There are two ways to keep the Docutils code accessible:
+
+* Before you run anything, every time you make a change, reinstall
+  Docutils::
+
+      python setup.py install
+
+  .. CAUTION::
+
+     This method is **not** recommended for day-to-day development;
+     it's too easy to forget.  Confusion inevitably ensues.
+
+     If you install Docutils this way, Python will always pick up the
+     last-installed copy of the code.  If you ever forget to reinstall
+     the "docutils" package, Python won't see your latest changes.
+
+* Update your ``PYTHONPATH`` environment variable so that Python picks
+  up your local working copy of the code.  This is the recommended
+  method.
+
+  For the bash shell and Docutils checked out from CVS in
+  ``~/projects/docutils/``, add this to your ``~/.profile``::
+
+      PYTHONPATH=$HOME/projects/docutils/docutils
+      PYTHONPATH=$PYTHONPATH:$HOME/projects/docutils/docutils/extras
+      export PYTHONPATH
+
+  The first line points to the directory containing the ``docutils``
+  package.  The second line adds the directory containing the
+  third-party modules Docutils depends on.  The third line exports
+  this environment variable.  You may also wish to add the ``tools``
+  directory to your ``PATH``::
+
+      PATH=$PATH:$HOME/projects/docutils/docutils/tools
 
 
 Mailing Lists

@@ -273,6 +273,9 @@ Changes Since 0.3
 
   - Moved config file entry descriptions to config.txt.
 
+* spec/notes.txt: Continual updates.  Added "Setting Up For Docutils
+  Development".
+
 * spec/rst/reStructuredText.txt:
 
   - Added description of support for <angle-bracketed> complex option
