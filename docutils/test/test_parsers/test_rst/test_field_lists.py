@@ -56,9 +56,7 @@ One-liners:
                     2001-08-11
         <field>
             <field_name>
-                Parameter
-            <field_argument>
-                i
+                Parameter i
             <field_body>
                 <paragraph>
                     integer
@@ -96,9 +94,7 @@ One-liners, no blank lines:
                     2001-08-11
         <field>
             <field_name>
-                Parameter
-            <field_argument>
-                i
+                Parameter i
             <field_body>
                 <paragraph>
                     integer
@@ -157,9 +153,7 @@ Field bodies starting on the next line:
                     2001-08-11
         <field>
             <field_name>
-                Parameter
-            <field_argument>
-                i
+                Parameter i
             <field_body>
                 <paragraph>
                     integer
@@ -206,9 +200,7 @@ One-paragraph, multi-liners:
                     (Saturday)
         <field>
             <field_name>
-                Parameter
-            <field_argument>
-                i
+                Parameter i
             <field_body>
                 <paragraph>
                     counter
@@ -256,9 +248,7 @@ One-paragraph, multi-liners, not lined up:
                     (Saturday)
         <field>
             <field_name>
-                Parameter
-            <field_argument>
-                i
+                Parameter i
             <field_body>
                 <paragraph>
                     counter
@@ -414,13 +404,7 @@ Nested field lists on one line:
     <field_list>
         <field>
             <field_name>
-                Parameter
-            <field_argument>
-                i
-            <field_argument>
-                j
-            <field_argument>
-                k
+                Parameter i j k
             <field_body>
                 <paragraph>
                     multiple arguments
@@ -465,13 +449,7 @@ Field: marker is missing its open-colon.
     <field_list>
         <field>
             <field_name>
-                *Field*
-            <field_argument>
-                `with`
-            <field_argument>
-                **inline**
-            <field_argument>
-                ``markup``
+                *Field* `with` **inline** ``markup``
             <field_body>
                 <paragraph>
                     inline markup shouldn't be recognized.

@@ -275,8 +275,7 @@ class ExtensionOptionTests(unittest.TestCase):
                           utils.extract_extension_options,
                           field_list, self.optionspec)
         field_list[-1] = nodes.field(
-              '', nodes.field_name('', 'cdef'),
-              nodes.field_argument('', 'bad'),
+              '', nodes.field_name('', 'cdef bad'),
               nodes.field_body('', nodes.paragraph('', 'no arguments')))
         self.assertRaises(utils.BadOptionError,
                           utils.extract_extension_options,

@@ -118,6 +118,13 @@ General
 - Standalone Reader: Implement an option to turn off the DocTitle
   transform?
 
+- Add /usr/etc/docutils.conf to config file list?  System-wide,
+  whereas /etc/docutils.conf is machine-specific.
+  /usr/local/etc/docutils.conf too?  See the `Filesystem Hierarchy
+  Standard`_.
+
+  .. _Filesystem Hierarchy Standard: http://www.pathname.com/fhs.
+
 
 Documentation
 -------------

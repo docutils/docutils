@@ -48,9 +48,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
             2001-08-11
         <field>
             <field_name>
-                Parameter
-            <field_argument>
-                i
+                Parameter i
             <field_body>
                 <paragraph>
                     integer
@@ -103,9 +101,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
             2001-08-11
         <field>
             <field_name>
-                Parameter
-            <field_argument>
-                i
+                Parameter i
             <field_body>
                 <paragraph>
                     integer

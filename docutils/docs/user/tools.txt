@@ -271,17 +271,19 @@ files, in the following order:
    located in the current directory.  The Docutils front end has to be
    executed from the directory containing this configuration file for
    it to take effect (note that this may have nothing to do with the
-   location of the source files).  The project-specific configuration
-   file overrides the system-wide file.
+   location of the source files).  Settings in the project-specific
+   configuration file will override corresponding settings in the
+   system-wide file.
 
 3. ``~/.docutils``: This is a user-specific configuration file,
-   located in the user's home directory.  This file overrides both the
-   system-wide and project-specific configuration files.
+   located in the user's home directory.  Settings in this file will
+   override corresponding settings in both the system-wide and
+   project-specific configuration files.
 
 If more than one configuration file is found, all will be read but
 later entries will override earlier ones.  For example, a "stylesheet"
 entry in a user-specific configuration file will override a
-system-wide entry.
+"stylesheet" entry in the system-wide file.
 
 In addition, a configuration file may be explicitly specified with the
 "--config" command-line option.  This configuration file is read after
@@ -300,8 +302,10 @@ From its documentation:
     retrieval.  Lines beginning with "#" or ";" are ignored and may be
     used to provide comments.
 
-Docutils only uses an "[options]" section; all other sections will be
-ignored.
+Docutils currently only uses an "[options]" section; all other
+sections are ignored.
+
+.. Note:: The configuration file format may change in the future.
 
 Configuration entry names correspond to internal option attributes.
 Underscores ("_") and hyphens ("-") can be used interchangably in

@@ -115,6 +115,7 @@ Specific:
   - Fixed a substitution reference edge case.
   - Added support for "--pep-references" and "--rfc-references"
     options; reworked ``Inliner`` code to make customization easier.
+  - Removed field argument parsing.
 
 * docutils/parsers/rst/directives/__init__.py:
 
@@ -218,7 +219,6 @@ Specific:
 
   - Added a "Getting Help" section.
   - Added a style to make section header backlinks more subtle.
-  - Added an admonition against using field lists arbitrarily.
 
 * spec/doctree.txt:
 
@@ -229,7 +229,7 @@ Specific:
     docstrings.
   - Wrote descriptions of all common attributes and parameter
     entities.  Filled in introductory material.
-  - Working through the element descriptions: 29 down, 55 to go.
+  - Working through the element descriptions: 29 down, 54 to go.
 
 * spec/docutils.dtd:
 
@@ -243,6 +243,8 @@ Specific:
   - Updated attribute types; made more specific.
   - Added "address" bibliographic element.
   - Added "line" attribute to ``system_message`` element.
+  - Removed "field_argument" element; "field_name" may contain
+    multiple words and whitespace.
 
 * spec/pep-0256.txt: Converted to reStructuredText & updated.
 
@@ -271,7 +273,7 @@ Specific:
   - Added a note redirecting newbies to the user docs.
   - Expanded description of inline markup start-strings in non-markup
     contexts.
-  - Strengthened the admonition against using field lists arbitrarily.
+  - Removed field arguments and made field lists a generic construct.
 
 * tools/buildhtml.py:
 
