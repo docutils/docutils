@@ -679,9 +679,6 @@ class document(Root, Structural, Element):
         self.citations = []
         """List of citation nodes."""
 
-        self.pending = []
-        """List of pending elements."""
-
         self.autofootnote_start = 1
         """Initial auto-numbered footnote number."""
 
@@ -697,8 +694,9 @@ class document(Root, Structural, Element):
         self.transform_messages = []
         """System messages generated while applying transforms."""
 
-        self.transformer = None
-        """`docutils.transforms.Transformer` object."""
+        import docutils.transforms
+        self.transformer = docutils.transforms.Transformer(self)
+        """Storage for transforms to be applied to this document."""
 
         self.document = self
 
@@ -892,8 +890,8 @@ class document(Root, Structural, Element):
         self.substitution_refs.setdefault(
               subref['refname'], []).append(subref)
 
-    def note_pending(self, pending):
-        self.pending.append(pending)
+    def note_pending(self, pending, priority=None):
+        self.transformer.add_pending(pending, priority)
 
     def note_parse_message(self, message):
         self.parse_messages.append(message)
@@ -1070,8 +1068,9 @@ class pending(Special, Invisible, PreBibliographic, Element):
     The "pending" element is used to encapsulate a pending operation: the
     operation (transform), the point at which to apply it, and any data it
     requires.  Only the pending operation's location within the document is
-    stored in the public document tree; the operation itself and its data are
-    stored in internal instance attributes.
+    stored in the public document tree (by the "pending" object itself); the
+    operation and its data are stored in the "pending" object's internal
+    instance attributes.
 
     For example, say you want a table of contents in your reStructuredText
     document.  The easiest way to specify where to put it is from within the
@@ -1080,24 +1079,18 @@ class pending(Special, Invisible, PreBibliographic, Element):
         .. contents::
 
     But the "contents" directive can't do its work until the entire document
-    has been parsed (and possibly transformed to some extent).  So the
-    directive code leaves a placeholder behind that will trigger the second
-    phase of the its processing, something like this::
+    has been parsed and possibly transformed to some extent.  So the directive
+    code leaves a placeholder behind that will trigger the second phase of the
+    its processing, something like this::
 
         <pending ...public attributes...> + internal attributes
 
-    Use `document.note_pending()` to append the "pending" node to
-    `document.pending`, so that a later stage of processing can easily run all
-    pending transforms.  The processign stage must also be specified (one of
-    "first reader", "last reader", "first writer", or "last writer").
-
-    Pending transforms will be triggered by the transform subclasses of
-    ``docutils.transforms.universal.Pending``.  These transforms are called by
-    ``docutils.readers.Reader.transform()`` and
-    ``docutils.readers.Writer.transform()``.
+    Use `document.note_pending()` so that the
+    `docutils.transforms.Transformer` stage of processing can run all pending
+    transforms.
     """
 
-    def __init__(self, transform, stage, details,
+    def __init__(self, transform, details=None,
                  rawsource='', *children, **attributes):
         Element.__init__(self, rawsource, *children, **attributes)
 
@@ -1105,10 +1098,7 @@ class pending(Special, Invisible, PreBibliographic, Element):
         """The `docutils.transforms.Transform` class implementing the pending
         operation."""
 
-        self.stage = stage
-        """The stage of processing when the function will be called."""
-
-        self.details = details
+        self.details = details or {}
         """Detail data (dictionary) required by the pending operation."""
 
     def pformat(self, indent='    ', level=0):
@@ -1116,7 +1106,6 @@ class pending(Special, Invisible, PreBibliographic, Element):
               '.. internal attributes:',
               '     .transform: %s.%s' % (self.transform.__module__,
                                           self.transform.__name__),
-              '     .stage: %r' % self.stage,
               '     .details:']
         details = self.details.items()
         details.sort()
@@ -1138,8 +1127,8 @@ class pending(Special, Invisible, PreBibliographic, Element):
                            for line in internals]))
 
     def copy(self):
-        return self.__class__(self.transform, self.stage, self.details,
-                              **self.attributes)
+        return self.__class__(self.transform, self.details, self.rawsource,
+                              **self.attribuates)
 
 
 class raw(Special, Inline, PreBibliographic, FixedTextElement):
