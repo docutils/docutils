@@ -1666,8 +1666,6 @@ Pseudo-XML_ fragment from simple parsing::
                 <paragraph>
                     integer
 
-Complete pseudo-XML_ result after parsing and applying transforms::
-
 
 ``field_name``
 ==============
