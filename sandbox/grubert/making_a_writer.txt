@@ -111,4 +111,4 @@ it context might be unecessary.
 Notes on Classes
 ----------------
 
-
+To be completed.
