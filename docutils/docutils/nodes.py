@@ -512,10 +512,11 @@ class TextElement(Element):
     """
     An element which directly contains text.
 
-    Its children are all `Text` or `TextElement` nodes.  You can check whether
-    an element's context is inline simply by checking whether it's immediate
-    parent is a `TextElement`.  This is handy for nodes like `image` that can
-    appear both inline and as standalone body elements.
+    Its children are all `Text` or `TextElement` subclass nodes.  You can
+    check whether an element's context is inline simply by checking whether
+    its immediate parent is a `TextElement` instance (including subclasses).
+    This is handy for nodes like `image` that can appear both inline and as
+    standalone body elements.
     """
 
     child_text_separator = ''
