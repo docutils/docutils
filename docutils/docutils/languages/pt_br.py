@@ -55,7 +55,7 @@ bibliographic_fields = {
       u'copyright': 'copyright',
       u'dedicat\u00F3ria': 'dedication',
       u'resumo': 'abstract'}
-"""English (lowcased) to canonical name mapping for bibliographic fields."""
+"""Brazilian Portuguese (lowcased) to canonical name mapping for bibliographic fields."""
 
 author_separators = [';', ',']
 """List of separator strings for the 'Authors' bibliographic field. Tried in
