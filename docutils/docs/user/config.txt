@@ -204,8 +204,8 @@ _`error_encoding`
     Default: "ascii".  Options: ``--error-encoding, -e``.
 
 _`error_encoding_error_handler`
-    The encoding error handler for unencodable characters in error
-    output.  See output_encoding_error_handler_ for acceptable values.
+    The error handler for unencodable characters in error output.  See
+    output_encoding_error_handler_ for acceptable values.
 
     Default: "backslashreplace" for Python 2.3 and later; "replace"
     otherwise.  Options: ``--error-encoding-error-handler,
@@ -265,7 +265,7 @@ _`output_encoding`
     Default: "UTF-8".  Options: ``--output-encoding, -o``.
 
 _`output_encoding_error_handler`
-    The encoding error handler for unencodable characters in output.
+    The error handler for unencodable characters in the output.
     Acceptable values include:
 
     strict
