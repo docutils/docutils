@@ -248,10 +248,10 @@ Directives
     time or at substitution time?  Dangerous?  Perhaps limit to canned
     macros; see text.date_ below.
 
-  - @@@ _`body.qa`/faq/questions: Questions & Answers.  Implement as a
-    generic two-column marked list?  As a standalone (non-directive)
-    construct?  (Is the markup ambiguous?)  Add support to
-    parts.Contents (optional attribute "qa" done).
+  - @@@ _`body.qa` (directive a.k.a. "faq" "questions"): Questions &
+    Answers.  Implement as a generic two-column marked list?  As a
+    standalone (non-directive) construct?  (Is the markup ambiguous?) 
+    Add support to parts.Contents (optional attribute "qa" done).
 
     New elements would be required.  Perhaps::
 
