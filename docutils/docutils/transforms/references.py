@@ -221,7 +221,14 @@ class IndirectHyperlinks(Transform):
         reftarget = self.document.ids[reftarget_id]
         if isinstance(reftarget, nodes.target) \
               and not reftarget.resolved and reftarget.hasattr('refname'):
+            if hasattr(target, 'multiply_indirect'):
+                #and target.multiply_indirect):
+                #del target.multiply_indirect
+                self.circular_indirect_reference(target)
+                return
+            target.multiply_indirect = 1
             self.resolve_indirect_target(reftarget) # multiply indirect
+            del target.multiply_indirect
         if reftarget.hasattr('refuri'):
             target['refuri'] = reftarget['refuri']
             if target.hasattr('name'):
@@ -241,6 +248,12 @@ class IndirectHyperlinks(Transform):
         reftarget.referenced = 1
 
     def nonexistent_indirect_target(self, target):
+        self.indirect_target_error(target, 'which does not exist')
+
+    def circular_indirect_reference(self, target):
+        self.indirect_target_error(target, 'forming a circular reference')
+
+    def indirect_target_error(self, target, explanation):
         naming = ''
         if target.hasattr('name'):
             naming = '"%s" ' % target['name']
@@ -248,9 +261,9 @@ class IndirectHyperlinks(Transform):
         else:
             reflist = self.document.refids.get(target['id'], [])
         naming += '(id="%s")' % target['id']
-        msg = self.document.reporter.warning(
-              'Indirect hyperlink target %s refers to target "%s", '
-              'which does not exist.' % (naming, target['refname']),
+        msg = self.document.reporter.error(
+              'Indirect hyperlink target %s refers to target "%s", %s.'
+              % (naming, target['refname'], explanation),
               base_node=target)
         msgid = self.document.set_id(msg)
         for ref in reflist:
