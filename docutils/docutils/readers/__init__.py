@@ -78,12 +78,7 @@ class Reader(Component):
         return document
 
 
-_reader_aliases = {
-      'rst': 'standalone',
-      'rest': 'standalone',
-      'restx': 'standalone',
-      'rtxt': 'standalone',
-      'restructuredtext': 'standalone'}
+_reader_aliases = {}
 
 def get_reader_class(reader_name):
     """Return the Reader class from the `reader_name` module."""
