@@ -1,0 +1,114 @@
+==========================================
+ Docutils: Python Documentation Utilities
+==========================================
+
+:Date: $Date$
+
+The purpose of the Docutils project is to create a set of tools for
+processing plaintext documentation into useful formats, such as HTML,
+XML, and TeX.  Several sources will be supported:
+
+- Standalone files.
+
+- Inline documentation from Python modules and packages, extracted
+  with namespace context.
+
+- `Python Enhancement Proposals`__ (PEPs).
+
+  __ peps_
+
+- And others as discovered.
+
+
+Project Status
+==============
+
+The Docutils project will be the result of merging the
+reStructuredText__ parser into the `Python Docstring Processing
+System`__.  The merge is planned but hasn't happened yet.
+
+Docutils is currently just a reStructuredText parser with some extras.
+There is a lot of design and implementation work to do, which could
+greatly benefit from existing projects.  A joint effort would be very
+welcome.
+
+__ http://structuredtext.sourceforge.net/
+__ http://docstring.sourceforge.net/
+
+
+.. Specification
+   =============
+   
+   - `PEP 2xx: reStructuredText Standard Docstring Format`__ proposes a
+     standard markup syntax.
+   
+   - `PEP 257: Docstring Conventions`__ addresses docstring style and
+     touches on content.  [`PEP 257`__ in the `master repository`_]
+   
+   - `PEP 256: Docstring Processing System Framework`__ presents a
+     high-level generic processing proposal.  [`PEP 257`__ in the `master
+     repository`_]
+   
+   - `PEP 258: Docutils Design Specification__ documents design issues
+     and implementation details for Docutils (this project), a specific
+     docstring processing system.  [`PEP 257`__ in the `master repository`_]
+   
+   __ peps/pep-02xx.txt
+   .. __ http://www.python.org/peps/pep-02xx.html
+   __ peps/pep-0257.txt
+   __ http://www.python.org/peps/pep-0257.html
+   __ peps/pep-0256.txt
+   __ http://www.python.org/peps/pep-0256.html
+   __ peps/pep-0258.txt
+   __ http://www.python.org/peps/pep-0258.html
+   .. _master repository:
+
+.. _peps: http://www.python.org/peps/
+
+
+Contribute!
+===========
+
+Please help this project succeed by contributing.  We're looking for
+all kinds of contributions: testing, ideas, code, bug reports,
+administration, tasty snacks, computer equipment, and large sums of
+money.  If you're interested in participating, please `contact the
+project administrator`__.
+
+.. _David Goodger:
+__ mailto:goodger@users.sourceforge.net
+
+
+Project Info
+============
+
+- `Project Summary page`__
+
+  .. : Bug reports, patches, feature requests, mailing lists, news.
+
+  __ http://sourceforge.net/projects/docutils/
+  
+- `Docutils Processing System CVS repository`__
+
+  __ http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/docutils
+
+- Project administrator: `David Goodger`_
+
+- Please direct discussions to the `Python Documentation Special
+  Interest Group (Doc-SIG)`__: doc-sig@python.org.
+
+  __ http://www.python.org/sigs/doc-sig/
+
+- Powered by |Python|__
+
+  __ http://www.python.org/
+  .. |Python| image:: PyBanner016.png
+
+- Hosted by |SourceForge|__
+
+  __ http://sourceforge.net/
+  .. |SourceForge| image::
+	 http://sourceforge.net/sflogo.php?group_id=38414
+	 :width: 88
+	 :height: 31
+	 :alt: SourceForge Logo
