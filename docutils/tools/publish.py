@@ -13,6 +13,8 @@ A minimal front-end to the Docutils Publisher, producing pseudo-XML.
 from docutils.core import publish
 
 
-usage = 'usage:\n  %prog [options] [source [destination]]'
+usage = '%prog [options] [source [destination]]'
+description = ('Generate pseudo-XML from standalone reStructuredText sources '
+               '(for testing purposes).')
 
-publish(usage=usage)
+publish(usage=usage, description=description)

@@ -13,6 +13,8 @@ A minimal front-end to the Docutils Publisher, producing HTML.
 from docutils.core import publish
 
 
-usage = 'usage:\n  %prog [options] [source [destination]]'
+usage = '%prog [options] [source [destination]]'
+description = ('Generate HTML documents from standalone reStructuredText '
+               'sources.')
 
-publish(writer_name='html', usage=usage)
+publish(writer_name='html', usage=usage, description=description)
