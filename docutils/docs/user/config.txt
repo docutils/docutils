@@ -205,8 +205,7 @@ _`error_encoding`
 
 _`error_encoding_error_handler`
     The encoding error handler for unencodable characters in error
-    output.  Acceptable values are the same as for the "error"
-    parameter of Python's ``encode`` string method.
+    output.  See output_encoding_error_handler_ for acceptable values.
 
     Default: "backslashreplace" for Python 2.3 and later; "replace"
     otherwise.  Options: ``--error-encoding-error-handler,
@@ -267,8 +266,25 @@ _`output_encoding`
 
 _`output_encoding_error_handler`
     The encoding error handler for unencodable characters in output.
+    Acceptable values include:
+
+    strict
+        Raise an exception in case of an encoding error.
+    replace
+        Replace malformed data with a suitable replacement marker,
+        such as "?".
+    ignore
+        Ignore malformed data and continue without further notice.
+    xmlcharrefreplace
+        (Python 2.3+)  Replace with the appropriate XML character
+        reference, such as "``&#8224;``".
+    backslashreplace
+        (Python 2.3+)  Replace with backslashed escape sequences, such
+        as "``\u2020``".
+
     Acceptable values are the same as for the "error" parameter of
-    Python's ``encode`` string method.
+    Python's ``encode`` string method; other values may be defined in
+    applications or in future versions of Python.
 
     Default: "strict".  Options: ``--output-encoding-error-handler,
     --output-encoding, -o``.
