@@ -603,7 +603,7 @@ class DocBookTranslator(nodes.NodeVisitor):
     def depart_footnote(self, node):
         # finish footnote and then replace footnote collector
         # with real body list.
-        self.footnotes[node['id']].append('</footnote>\n')
+        self.footnotes[node['id']].append('</footnote>')
         self.body = self._body
         self._body = None
 
@@ -706,7 +706,8 @@ class DocBookTranslator(nodes.NodeVisitor):
         pass
 
     def visit_legend(self, node):
-        # TODO: explain why this is empty....
+        # legend is placed inside the figure's ``blockquote``
+        # so there's nothing special to be done for it
         pass
 
     def depart_legend(self, node):
@@ -807,7 +808,7 @@ class DocBookTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'para', ''))
 
     def depart_paragraph(self, node):
-        self.body.append('</para>\n')
+        self.body.append('</para>')
 
     # TODO: problematic
     visit_problematic = depart_problematic = lambda self, node: None
