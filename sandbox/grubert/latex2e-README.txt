@@ -4,7 +4,7 @@ latex2e BUGS TODOS and other animals
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
 
-Rev. 2003-04-09
+Rev. 2003-05-15
 
 To do
 ~~~~~
@@ -113,6 +113,9 @@ ATTENTION
 
 Done
 ~~~~
+
+* add a LaTeX-nbsp (~) before a LaTeX-newline to avoid "LaTeX-Error no line to end here".
+* line_blocks without use of mbox, to allow markups span over line ends.
 * add french to babel support.
 * double quotes by dq inside literal if language is de.
 * no quote mangling in literal blocks.
