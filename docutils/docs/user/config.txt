@@ -336,9 +336,9 @@ _`source_url`
     --no-source-link``.
 
 _`strict_visitor`
-    When processing a document tree with the Visitor pattern, ignore
-    raise an error if a writer does not support a nod types listed as
-    optional.  For transitional development use.
+    When processing a document tree with the Visitor pattern, raise an
+    error if a writer does not support a node type listed as optional.
+    For transitional development use.
 
     Default: disabled (None).  Option: ``--strict-visitor`` (hidden,
     for development use only).
