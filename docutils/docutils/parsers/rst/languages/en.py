@@ -25,6 +25,8 @@ directives = {
       'tip': 'tip',
       'warning': 'warning',
       'topic': 'topic',
+      'line-block': 'line-block',
+      'parsed-literal': 'parsed-literal',
       #'questions': 'questions',
       #'qa': 'questions',
       #'faq': 'questions',

@@ -193,6 +193,53 @@ example::
         interpreted as body elements.
 
 
+Line Block
+==========
+
+DTD element: line_block.
+
+Directive block: directive data and all following indented text become
+the body of the line block.
+
+The "line-block" directive constructs a paragraph-like element where
+leading whitespace and linebreaks are significant and inline markup is
+supported.  This is useful for address blocks and verse (poetry, song
+lyrics).  For example::
+
+    "To Ma Own Beloved Lassie: A Poem on her 17th Birthday", by
+    Ewan McTeagle (for Lassie O'Shea):
+
+    .. line-block::
+
+        Lend us a couple of bob till Thursday.
+        I'm absolutely skint.
+        But I'm expecting a postal order and I can pay you back
+            as soon as it comes.
+        Love, Ewan.
+
+
+Parsed Literal Block
+====================
+
+DTD element: literal_block.
+
+Directive block: directive data and all following indented text become
+the body of the literal block.
+
+Unlike an ordinary literal block, the "parsed-literal" directive
+constructs a literal block where the text is parsed for inline markup.
+This is useful for adding hyperlinks to code examples.  For example,
+all the element names in this content model are links::
+
+    .. parsed-literal::
+    
+        ((title_,
+          subtitle_?)?, 
+         docinfo_?, 
+         decoration_?, 
+         `%structure.model;`_)
+
+
 ----------------
  Document Parts
 ----------------

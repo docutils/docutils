@@ -12,6 +12,8 @@ Directives for additional body elements.
 
 __docformat__ = 'reStructuredText'
 
+
+import sys
 from docutils import nodes
 
 
@@ -45,3 +47,37 @@ def topic(match, type_name, data, state, state_machine, attributes):
     if text:
         state.nested_parse(indented, line_offset, topic_node)
     return [topic_node], blank_finish
+
+
+def parsed_literal(match, type_name, data, state, state_machine, attributes):
+    lineno = state_machine.abs_line_number()
+    initial_offset = state_machine.line_offset
+    indented, indent, line_offset, blank_finish \
+          = state_machine.get_first_known_indented(match.end())
+    while indented and not indented[-1].strip():
+        indented.pop()
+    blocktext = '\n'.join(state_machine.input_lines[
+        initial_offset : line_offset + len(indented)])
+    if not indented:
+        return [], blank_finish
+    text = '\n'.join(indented)
+    textnodes, messages = state.inline_text(text, lineno)
+    literal = nodes.literal_block(text, '', *textnodes)
+    return [literal] + messages, blank_finish
+
+
+def line_block(match, type_name, data, state, state_machine, attributes):
+    lineno = state_machine.abs_line_number()
+    initial_offset = state_machine.line_offset
+    indented, indent, line_offset, blank_finish \
+          = state_machine.get_first_known_indented(match.end())
+    while indented and not indented[-1].strip():
+        indented.pop()
+    blocktext = '\n'.join(state_machine.input_lines[
+        initial_offset : line_offset + len(indented)])
+    if not indented:
+        return [], blank_finish
+    text = '\n'.join(indented)
+    textnodes, messages = state.inline_text(text, lineno)
+    line_block_node = nodes.line_block(text, '', *textnodes)
+    return [line_block_node] + messages, blank_finish
