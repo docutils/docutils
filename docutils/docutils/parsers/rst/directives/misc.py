@@ -9,20 +9,25 @@
 __docformat__ = 'reStructuredText'
 
 import sys
+import os.path
 from urllib2 import urlopen, URLError
-from docutils import nodes, statemachine
+from docutils import nodes, statemachine, utils
 from docutils.parsers.rst import directives, states
 
 
 def include(name, arguments, options, content, lineno,
             content_offset, block_text, state, state_machine):
     """Include a reST file as part of the content of this reST file."""
+    source_dir = os.path.dirname(
+        os.path.abspath(state.document.current_source))
     path = ''.join(arguments[0].splitlines())
     if path.find(' ') != -1:
         error = state_machine.reporter.error(
               '"%s" directive path contains whitespace.' % name,
               nodes.literal_block(block_text, block_text), line=lineno)
         return [error]
+    path = os.path.normpath(os.path.join(source_dir, path))
+    path = utils.relative_path(None, path)
     try:
         include_file = open(path)
     except IOError, error:
@@ -78,8 +83,12 @@ def raw(name, arguments, options, content, lineno,
                   'specified for the "%s" directive.' % name,
                   nodes.literal_block(block_text, block_text), line=lineno)
             return [error]
+        source_dir = os.path.dirname(
+            os.path.abspath(state.document.current_source))
+        path = os.path.normpath(os.path.join(source_dir, options['file']))
+        path = utils.relative_path(None, path)
         try:
-            raw_file = open(options['file'])
+            raw_file = open(path)
         except IOError, error:
             severe = state_machine.reporter.severe(
                   'Problems with "%s" directive path:\n%s.' % (name, error),
@@ -87,7 +96,7 @@ def raw(name, arguments, options, content, lineno,
             return [severe]
         text = raw_file.read()
         raw_file.close()
-        attributes['source'] = options['file']
+        attributes['source'] = path
     elif options.has_key('url'):
         try:
             raw_file = urlopen(options['url'])
