@@ -1439,6 +1439,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_image(self, node):
         attrs = node.attributes
+        # Add image URI to dependency list, assuming that it's
+        # referring to a local file.
+        self.settings.record_dependencies.add(attrs['uri'])
         pre = []                        # in reverse order
         post = ['\\includegraphics{%s}' % attrs['uri']]
         inline = isinstance(node.parent, nodes.TextElement)
