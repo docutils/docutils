@@ -84,7 +84,7 @@ def loadTestModules(path, name='', packages=None):
     while paths:
         p = paths.pop(0)
         if not p:
-            p = os.curdir
+            p = os.getcwd()
         files = os.listdir(p)
         for filename in files:
             if filename.startswith(name):
