@@ -48,6 +48,7 @@ directives = {
       u'tabelo': 'table',
       u'tabelo-vdk': 'csv-table', # "valoroj disigitaj per komoj"
       u'tabelo-csv': 'csv-table',
+      u'list-table (translation required)': 'list-table',
       u'meta': 'meta',
       #'imagemap': 'imagemap',
       u'bildo': 'image',

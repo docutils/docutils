@@ -41,6 +41,7 @@ directives = {
       #'questions (translation required)': 'questions',
       'table (translation required)': 'table',
       'csv-table (translation required)': 'csv-table',
+      'list-table (translation required)': 'list-table',
       #'qa (translation required)': 'questions',
       #'faq (translation required)': 'questions',
       'meta (translation required)': 'meta',

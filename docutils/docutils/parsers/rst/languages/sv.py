@@ -42,6 +42,7 @@ directives = {
       # u'vanliga-fr\u00e5gor': 'questions',  
       u'table (translation required)': 'table',
       u'csv-table (translation required)': 'csv-table',
+      u'list-table (translation required)': 'list-table',
       u'meta': 'meta',
       # u'bildkarta': 'imagemap',   # FIXME: Translation might be too literal.
       u'bild': 'image',

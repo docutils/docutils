@@ -42,6 +42,7 @@ directives = {
       #'faq': 'questions',
       'table (translation required)': 'table',
       'csv-table (translation required)': 'csv-table',
+      'list-table (translation required)': 'list-table',
       'meta': 'meta',
       #'beeldkaart': 'imagemap',
       'beeld': 'image',

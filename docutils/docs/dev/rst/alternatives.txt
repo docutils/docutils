@@ -2165,7 +2165,9 @@ orientation (by column or by row), the presence of row headers, etc.
 
 Alternatives:
 
-1. Bullet-list-tables might look like this::
+1. (Implemented in Docutils 0.3.8).
+
+   Bullet-list-tables might look like this::
 
        .. list-table::
 

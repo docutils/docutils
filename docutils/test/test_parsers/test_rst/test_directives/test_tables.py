@@ -796,6 +796,147 @@ u"""\
 """],
 ]
 
+totest['list-table'] = [
+["""\
+.. list-table:: list table with integral header
+   :widths: 10 20 30
+   :header-rows: 1
+
+   * - Treat
+     - Quantity
+     - Description
+   * - Albatross
+     - 2.99
+     - On a stick!
+   * - Crunchy Frog
+     - 1.49
+     - If we took the bones out, it wouldn\'t be
+       crunchy, now would it?
+   * - Gannet Ripple
+     - 1.99
+     - On a stick!
+""",
+"""\
+<document source="test data">
+    <table>
+        <title>
+            list table with integral header
+        <tgroup cols="3">
+            <colspec colwidth="10">
+            <colspec colwidth="20">
+            <colspec colwidth="30">
+            <thead>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Treat
+                    <entry>
+                        <paragraph>
+                            Quantity
+                    <entry>
+                        <paragraph>
+                            Description
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Albatross
+                    <entry>
+                        <paragraph>
+                            2.99
+                    <entry>
+                        <paragraph>
+                            On a stick!
+                <row>
+                    <entry>
+                        <paragraph>
+                            Crunchy Frog
+                    <entry>
+                        <paragraph>
+                            1.49
+                    <entry>
+                        <paragraph>
+                            If we took the bones out, it wouldn\'t be
+                            crunchy, now would it?
+                <row>
+                    <entry>
+                        <paragraph>
+                            Gannet Ripple
+                    <entry>
+                        <paragraph>
+                            1.99
+                    <entry>
+                        <paragraph>
+                            On a stick!
+"""],
+["""\
+.. list-table::
+
+   not a bullet list
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Error parsing content block for the "list-table" directive: exactly one bullet list expected.
+        <literal_block xml:space="preserve">
+            .. list-table::
+            \n\
+               not a bullet list
+"""],
+["""\
+.. list-table::
+
+   * not a second-level bullet list
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Error parsing content block for the "list-table" directive: two-level bullet list expected, but row 1 does not contain a second-level bullet list.
+        <literal_block xml:space="preserve">
+            .. list-table::
+            \n\
+               * not a second-level bullet list
+"""],
+["""\
+.. list-table::
+
+   * - columns not uniform
+   * - first row has one,
+     - second row has two
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Error parsing content block for the "list-table" directive: uniform two-level bullet list expected, but row 2 does not contain the same number of items as row 1 (2 vs 1).
+        <literal_block xml:space="preserve">
+            .. list-table::
+            \n\
+               * - columns not uniform
+               * - first row has one,
+                 - second row has two
+"""],
+["""\
+.. list-table::
+   :widths: 10 20
+
+   * - ":widths:" option doesn't match columns
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            "list-table" widths do not match the number of columns in table (1).
+        <literal_block xml:space="preserve">
+            .. list-table::
+               :widths: 10 20
+            \n\
+               * - ":widths:" option doesn\'t match columns
+"""],
+]
+
 
 if __name__ == '__main__':
     import unittest

@@ -39,6 +39,7 @@ directives = {
       u'lainaus': u'pull-quote',
       u'taulukko': u'table',
       u'csv-taulukko': u'csv-table',
+      u'list-table (translation required)': 'list-table',
       u'compound (translation required)': 'compound',
       #u'kysymykset': u'questions',
       u'meta': u'meta',
