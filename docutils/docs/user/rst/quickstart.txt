@@ -70,12 +70,12 @@ inside the double back-quotes -- so asterisks "``*``" etc. are left
 alone.
 
 If you find that you want to use one of the "special" characters in
-text, it will generally be OK -- ReST is pretty smart.  For example,
-this * asterisk is handled just fine.  If you actually want text
-\*surrounded by asterisks* to **not** be italicised, then you need to
-indicate that the asterisk is not special.  You do this by placing a
-backslash just before it, like so "``\*``" (quickref__), or by
-enclosing it in double back-quotes (inline literals), like this::
+text, it will generally be OK -- reStructuredText is pretty smart.
+For example, this * asterisk is handled just fine.  If you actually
+want text \*surrounded by asterisks* to **not** be italicised, then
+you need to indicate that the asterisk is not special.  You do this by
+placing a backslash just before it, like so "``\*``" (quickref__), or
+by enclosing it in double back-quotes (inline literals), like this::
 
     ``\*``
 
@@ -309,11 +309,10 @@ results in:
 
 .. image:: images/biohazard.png
 
-The ``images/biohazard.png`` part indicates the filname of the image you
-wish to appear
-in the document. There's no restriction placed on the image (format, size
-etc). If the image is to appear in HTML and you wish to supply additional
-information, you may::
+The ``images/biohazard.png`` part indicates the filename of the image
+you wish to appear in the document. There's no restriction placed on
+the image (format, size etc).  If the image is to appear in HTML and
+you wish to supply additional information, you may::
 
   .. image:: images/biohazard.png
      :height: 100
