@@ -4,12 +4,15 @@ latex2e BUGS TODOS and other animals
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
 
-Rev. 2003-03-03
+Rev. 2003-03-11
 
 To do
 ~~~~~
 
+* tt fonts might have no bold.
+
 * sidebar handling.
+
 * Maybe add end of line after term in definition list. see
     http://roundup.sf.net/doc-0.5/features.pdf
 
@@ -124,6 +127,7 @@ ATTENTION
 
 Done
 ~~~~
+* literal_block no longer verbatim to allow inline markup, no longer intended.
 * Always emit empty date and author entries.
 * FIX: descriptions without docinfo (self.docinfo not initialized).
 * footnotes are spread vertically (not with juliens style.tex) include it in python.

@@ -893,19 +893,32 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('}')
 
     def visit_literal_block(self, node):
-        self.use_verbatim_for_literal = 1
-        if (self.use_verbatim_for_literal):
+        """
+        .. parsed-literal::
+        """
+        # typically in a typewriter/monospaced typeface.
+        # care must be taken with the text, because inline markup is recognized.
+        # 
+        # possibilities:
+        # * verbatim: is no possibility, as inline markup does not work.
+        # * obey..: is from julien and never worked for me (grubert).
+        self.use_for_literal_block = "mbox"
+        if (self.use_for_literal_block == "verbatim"):
             self.verbatim = 1
-            self.body.append('\\begin{quote}\n')
             self.body.append('\\begin{verbatim}\n')
+        elif (self.use_for_literal_block == "mbox"):
+            self.mbox_newline = 1
+            self.body.append('\\ttfamily{\\begin{flushleft}\n\\mbox{')
         else:
             self.body.append('{\\obeylines\\obeyspaces\\ttfamily\n')
 
     def depart_literal_block(self, node):
-        if self.use_verbatim_for_literal:
+        if self.use_for_literal_block == "verbatim":
             self.body.append('\n\\end{verbatim}\n')
-            self.body.append('\\end{quote}\n')
             self.verbatim = 0
+        elif (self.use_for_literal_block == "mbox"):
+            self.body.append('}\n\\end{flushleft}}\n')
+            self.mbox_newline = 0
         else:
             self.body.append('}\n')
 
