@@ -52,11 +52,23 @@ class Headers(Transform):
                 value = field[1].astext()
                 try:
                     pep = int(value)
+                    cvs_url = self.pep_cvs_url % pep
                 except ValueError:
-                    raise DataError('"PEP" header must contain an integer; '
-                                    '"%s" is an invalid value.' % value)
-                else:
-                    break
+                    pep = value
+                    cvs_url = None
+                    msg = self.document.reporter.warning(
+                        '"PEP" header must contain an integer; "%s" is an '
+                        'invalid value.' % pep, base_node=field)
+                    msgid = self.document.set_id(msg)
+                    prb = nodes.problematic(value, value or '(none)',
+                                            refid=msgid)
+                    prbid = self.document.set_id(prb)
+                    msg.add_backref(prbid)
+                    if len(field[1]):
+                        field[1][0][:] = [prb]
+                    else:
+                        field[1] += nodes.paragraph('', '', prb)
+                break
         if pep is None:
             raise DataError('Document does not contain an RFC-2822 "PEP" '
                             'header.')
@@ -80,9 +92,9 @@ class Headers(Transform):
                 date = time.strftime(
                       '%d-%b-%Y',
                       time.localtime(os.stat(self.document['source'])[8]))
-                body += nodes.paragraph()
-                uri = self.pep_cvs_url % pep
-                body[0][:] = [nodes.reference('', date, refuri=uri)]
+                if cvs_url:
+                    body += nodes.paragraph(
+                        '', '', nodes.reference('', date, refuri=cvs_url))
             else:
                 # empty
                 continue
@@ -106,9 +118,9 @@ class Headers(Transform):
                 para[:] = newbody[:-1] # drop trailing space
             elif name == 'last-modified':
                 utils.clean_rcs_keywords(para, self.rcs_keyword_substitutions)
-                date = para.astext()
-                uri = self.pep_cvs_url % pep
-                para[:] = [nodes.reference('', date, refuri=uri)]
+                if cvs_url:
+                    date = para.astext()
+                    para[:] = [nodes.reference('', date, refuri=cvs_url)]
             elif name == 'content-type':
                 pep_type = para.astext()
                 uri = self.pep_url % 12
