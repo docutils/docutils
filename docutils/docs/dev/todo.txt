@@ -333,8 +333,8 @@ General
 
 * Merge doc/latex.txt info into tools.txt and config.txt.
 
-* Add internationalization to footer boilerplate text (resulting from
-  "--generator", "--source-link", and "--date" etc.), allowing
+* Add internationalization to _`footer boilerplate text` (resulting
+  from "--generator", "--source-link", and "--date" etc.), allowing
   translations.
 
 * Add an "--include file" command-line option (config setting too?),
