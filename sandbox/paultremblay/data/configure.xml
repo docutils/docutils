@@ -1,9 +1,0 @@
-<configure>
-    <start-role string = ':'/>
-    <end-role string = ':'/>
-    <start-group string = '['/>
-    <end-group string = ']'/>
-    <place-of-role place = 'inside'/>
-    <tag-name name = 'inline'/>
-    <warning name = 'problematic'/>
-</configure>
