@@ -43,12 +43,6 @@ div.note p.admonition-title, div.tip p.admonition-title {
   font-weight: bold ;
   font-family: sans-serif }
 
-div.field-body {
-  margin-bottom: 1em }
-
-div.field-list {
-  margin-bottom: -1em }
-
 div.figure {
   margin-left: 2em }
 
@@ -111,14 +105,6 @@ p.credits {
   font-style: italic ;
   font-size: smaller }
 
-p.docinfo-name {
-  font-weight: bold ;
-  text-align: right }
-
-p.field-name {
-  font-weight: bold ;
-  margin-bottom: 1em }
-
 p.label {
   white-space: nowrap }
 
@@ -163,3 +149,10 @@ table.docinfo {
 table.footnote {
   border-left: solid thin black ;
   padding-left: 0.5ex }
+
+td.docinfo-name {
+  font-weight: bold ;
+  text-align: right }
+
+td.field-name {
+  font-weight: bold }
