@@ -1,5 +1,5 @@
-# Author: David Goodger
-# Contact: goodger@users.sourceforge.net
+# Author: Engelbert Gruber
+# Contact: grubert@users.sourceforge.net
 # Revision: $Revision$
 # Date: $Date$
 # Copyright: This module has been placed in the public domain.
