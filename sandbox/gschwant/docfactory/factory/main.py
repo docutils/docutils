@@ -3,7 +3,7 @@
 """
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
-:version: 0.2.6
+:version: 0.3
 """
 
 import browser, images, re, sys, os, time, ConfigParser
@@ -890,8 +890,8 @@ class DocFactoryFrame(wxFrame):
             try:
                 cfg = ConfigParser.ConfigParser()
                 cfg.read(docutils_conf)
-                if cfg.has_option('options', 'language_code'):
-                    language_code = cfg.get('options', 'language_code')
+                if cfg.has_option('general', 'language_code'):
+                    language_code = cfg.get('general', 'language_code')
             except:
                 print '%s:\n%s\n%s' % sys.exc_info()
         self.editor.bibliographic_fields = get_rest_bibl_fields(language_code)        
