@@ -1,0 +1,175 @@
+#!/usr/bin/env python
+# -*- coding: iso-8859-1 -*-
+#******************************************************************************\
+#* $Source$
+#* $Id$
+#*
+#* Copyright (C) 2003, Martin Blais <blais@furius.ca>
+#*
+#* This program is free software; you can redistribute it and/or modify
+#* it under the terms of the GNU General Public License as published by
+#* the Free Software Foundation; either version 2 of the License, or
+#* (at your option) any later version.
+#*
+#* This program is distributed in the hope that it will be useful,
+#* but WITHOUT ANY WARRANTY; without even the implied warranty of
+#* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#* GNU General Public License for more details.
+#*
+#* You should have received a copy of the GNU General Public License
+#* along with this program; if not, write to the Free Software
+#* Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+#*
+#*****************************************************************************/
+
+"""docutils-movesec [<options>] <newchar> <file>
+
+Move docutils section underlines one level up or down.  This program can be used
+to change the level of your sections within a restructured text file.
+
+'newchar' is the character to use for the replacing the bottom-level (or
+top-level if --down) section underlines.
+
+Note: the whitespace characters that appear after the section underlines are
+preserved.
+
+Note2: this might screw up transition markers.
+
+"""
+
+__version__ = "$Revision$"
+__author__ = "Martin Blais <blais@furius.ca>"
+
+#===============================================================================
+# EXTERNAL DECLARATIONS
+#===============================================================================
+
+import sys, re
+
+#===============================================================================
+# LOCAL DECLARATIONS
+#===============================================================================
+
+# regular expression to get lines with no whitespace in front and a single word.
+secre = re.compile('^([^\s]+)\s*$')
+
+#-------------------------------------------------------------------------------
+#
+def getlines( fn ):
+    """Opens the given file and detects the section lines. Return the line
+    numbers."""
+
+    if fn == '-':
+        f = sys.stdin
+    else:
+        try:
+            f = open(fn, 'r')
+        except IOError, e:
+            raise SystemExit("Error: opening file '%s':\n%s" % (fn, str(e)))
+
+    filelines = f.readlines()
+
+    minthres = 3
+    seclines = []
+    lc = -1
+    for l in filelines:
+        lc += 1
+
+        mo = secre.match(l)
+        if not mo:
+            continue
+
+        l = mo.group(1)
+        if len(l) < minthres:
+            continue
+
+        c = l[0]
+        skip = 0
+        for cc in l[1:]:
+            if c != cc:
+                skip = 1
+                break
+        if not skip:
+            seclines.append(lc)
+
+    return seclines, filelines
+
+#-------------------------------------------------------------------------------
+#
+def compute_order( seclines, filelines ):
+    """Compute ordering characters."""
+
+    secorder = []
+    prevord = -1
+    for sl in seclines:
+        l = filelines[sl]
+
+        try:
+            prevord = secorder.index(l[0])
+        except ValueError:
+            if prevord != len(secorder) - 1:
+                raise SystemExit(\
+                    "Error: sections are not consistent at line '%d'" % (sl+1))
+            prevord = len(secorder)
+            secorder.append(l[0])
+
+    return secorder
+
+#===============================================================================
+# MAIN
+#===============================================================================
+
+#-------------------------------------------------------------------------------
+#
+def main():
+    debug = False
+
+    import optparse
+    parser = optparse.OptionParser(__doc__)
+    parser.add_option('-u', '--up', action="store_true", dest="direction",
+                      default=True,
+                      help="specify move sections up (default)")
+    parser.add_option('-d', '--down', action="store_false", dest="direction",
+                      help="specify move sections down")
+    opts, args = parser.parse_args()
+
+    if len(args) != 2:
+        raise SystemExit('Error: please a new character and a single filename.')
+    newchar, fn = args
+
+    seclines, filelines = getlines(fn)
+
+    secorder = compute_order(seclines, filelines)
+
+    # create new output order.
+    if opts.direction: # up
+        neworder = [newchar] + secorder[:-1]
+    else: # down
+        neworder = secorder[1:] + [newchar]
+
+    # compute a mapping of old to new
+    omap = {}
+    for i in xrange(len(secorder)):
+        omap[ secorder[i] ] = neworder[i]
+
+    if debug:
+        for sl in seclines:
+            l = filelines[sl]
+            print secorder.index(l[0]), l,
+        from pprint import pprint
+        print secorder
+        print neworder
+        pprint(omap)
+        
+    # perform replacement of desired line, preserve original whitespace.
+    for sl in seclines:
+        l = filelines[sl]
+        nc = len(l.strip())
+        filelines[sl] = omap[ l[0] ] * nc + l[nc:]
+
+    # output.
+    for l in filelines:
+        sys.stdout.write(l)
+
+if __name__ == '__main__':
+    main()
