@@ -583,10 +583,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             fontenc_header = '\\usepackage[%s]{fontenc}\n' % (self.font_encoding,)
         input_encoding = self.encoding % self.latex_encoding
-        if self.latex_encoding == 'utf8':
-            # preload unicode to avoid ``Please insert PrerenderUnicode`` message,
-            # when rendering the first ``\section``.
-            input_encoding += '\\PreloadUnicodePage{0}\n'
         if self.settings.graphicx_option == '':
             self.graphicx_package = '\\usepackage{graphicx}\n'
         elif self.settings.graphicx_option.lower() == 'auto':
