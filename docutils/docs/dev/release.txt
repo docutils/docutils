@@ -146,7 +146,11 @@
 19. Register
 
     * with PyPI (``python setup.py register``)
-    * with FreshMeat
+    * with FreshMeat (add a `new release`__ for the `Docutils
+      project`__)
+
+    __ http://freshmeat.net/add-release/48702/
+    __ http://freshmeat.net/projects/docutils/
 
 
 ..
