@@ -1,4 +1,10 @@
 """package.py - support for calculating package documentation.
+
+:Author:    Tibs
+:Contact:   tibs@tibsnjoan.co.uk
+:Revision:  $1.0$
+:Date:      $Date$
+:Copyright: This module has been placed in the public domain.
 """
 
 import os

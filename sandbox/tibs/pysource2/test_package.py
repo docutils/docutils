@@ -87,19 +87,19 @@ class PackageTest(unittest.TestCase):
 
         self.assertEqual(actual_result,wanted_result)
 
-    def testFindDocstrings(self):
+    def testMakeDocument(self):
         """
-        Find each docstring, and format it appropriately.
+        Turn our Package tree into a docutils Document.
         """
 
-        # @@@ For the moment, just wrap each docstrings innnards inside
-        # a literal block (which is what we want to do if the module/file
-        # does not indicate that docstrings are in reStructuredText).
         wanted_result = """\
 <document source="Package trivial_package">
     <section id="package-trivial-package" name="package trivial_package">
         <title>
             Package trivial_package
+        <section id="package-trivial-package-sub-package" name="package trivial_package.sub_package">
+            <title>
+                Package trivial_package.sub_package
 """
 
         tree = parse_package("trivial_package")
