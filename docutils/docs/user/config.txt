@@ -521,15 +521,7 @@ _`initial_header_level`
 .. _stylesheet [html4css1 writer]:
 
 stylesheet
-    CSS stylesheet URL, used verbatim.  Overridden by the
-    "stylesheet_path" setting (``--stylesheet-path``).  However, an
-    earlier file's "stylesheet-path" setting can be overriden by a
-    later config file's "stylesheet" by nullifying "stylesheet-path"
-    in the later file::
-
-        stylesheet-path=
-
-    On the command line, use ``--stylesheet-path=''``.
+    CSS stylesheet URL, used verbatim.  Overrides stylesheet_path.
 
     Default: "default.css".  Options: ``--stylesheet``.
 
@@ -637,9 +629,8 @@ _`documentoptions`
 .. _stylesheet [latex2e writer]:
 
 stylesheet
-    Specify a stylesheet file. The file will be ``input`` by latex in
-    the document header. If this is set to "" disables generation of
-    input latex command.  Also defined for the `HTML Writer`__.
+    Specify a stylesheet file. The file will be ``\input`` by latex in
+    the document header.  Also defined for the `HTML Writer`__.
 
     Default: no stylesheet ("").  Option: ``--stylesheet``.
 
@@ -649,8 +640,13 @@ stylesheet
 
 stylesheet_path
     Path to stylesheet [#pwd]_.  Overrides "stylesheet" setting
-    (``--stylesheet``).  XXX LaTeX semantics?  Also defined for the
-    `HTML Writer`__.
+    (``--stylesheet``).
+
+    Please note that you will have to run ``latex`` from the directory
+    containing the output file; otherwise the stylesheet reference
+    will be invalid.
+
+    This setting is also defined for the `HTML Writer`__.
 
     Default: None.  Option: ``--stylesheet-path``.
 
