@@ -1,4 +1,4 @@
-README: |script_name|
+README: |scriptName|
 ^^^^^^^^^^^^^^^^^^^^^
 :Author: Paul Tremblay
 
@@ -10,64 +10,107 @@ README: |script_name|
 
 .. contents::
 
-.. |script_name| replace:: docultils-nest.py
+.. |scriptName| replace:: docultils-nest-xml.py
+
+.. |moduleName| replace:: docutils_nest
 
 ========
 Overview
 ========
 
-The script |script_name| in this module are my own extensions to docutils. They change
-inline markup in an rst document to inline tags, allowing you to use rst to
-create XML documents. For example, you might have the following markup in your
-rst document::
+The script |scriptName| extends the power of docultils by allowing XML authors
+and developers to include nested inline markup in their documents. While
+docutils allows for infinite nesting on the block level, it limits inline
+markup to one level. The script |scriptName| elminates this shortcomming. An
+XML author could write a document in rst format, and then with |scriptName|
+translate it to robust XML, which he could then further transform to docbook
+or any other form of XML he desired. Any type of XML markup is possible using
+|script_name|.  
+
+In addition to allowing for nested markup, |scriptName| allows you to choose
+any type of inline markup you wish. 
+
+Because users of docutils expressed differences as to how they wanted to mark
+inline text, |scriptName| allows you to customize the markup.
+
+Quick Example
+=============
+
+You wantd to include a comment with emphasized text in your final XML
+document. You type::
   
   [:comment: Maybe I should include *The Sun Also Rises?*]
 
-If you process this text with the |script_name|, you get::
+
+You then issue the command: 
+
+|scriptName| --output my_document.rst
+
+The output is::
 
   <inline arg1 = "comment">Maye I should include <emphasis>The Sun Also
   Rises?</emphasis></inline>
-
-The nested_inline module allows you to choose the way you want to markup your
-inline text in the orignal rst document. For example, you could use
-parenthesis rather than brackets, or choose to place your roles outside the
-group delimeters.  Details are below.
 
 
 Installation
 ============
 
-1. Install the PyXml package.
+1. Install python. (http://www.python.org)
 
-2. Run the configuration script to set the path and location of the configuration file.
+2. Install the docutils package. (http://docutils.sourceforge.net/)
+
+3. Install the PyXml package. (http://pyxml.sourceforge.net/)
+
+4. Install the |moduleName|. You will need to have cvs installed on
+your machine. 
+
+  1. Open a shell. Type
+
+    ::
+    
+      cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/docutils login
+    
+    When asked for a password, simpy hit return.
+
+
+  2. Download the |moduleName|. Type
+
+    ::
+
+      cvs -z3
+      -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/docutils co
+      sandbox/paultremblay
+
+    This command will download the directory sandbox/paultremblay to your
+    current directory. Change to the directory /sandbox/paultremblay.
+
+  3. Run the configuration script to set the path and location of the configuration file.
 
    ::
 
      python configure.py target = <desired location of configuration file>
 
    If no target is provided (or you choose not to run the configuration file),
-   the configuration file will be placed in /etc/nest_docutils.
+   the configuration file will be placed in /etc/|moduleName|.
 
 
-3. Install the modules in the usual way:
+  4. Install the modules in the usual way:
 
-   python setup.py build
+    python setup.py build
 
-   python setup.py install
+    python setup.py install
 
 
 Use
 ===
 
-::
-
-  |script_name| --output <outfile> file.rst
+|scriptName| ``--output <outfile> file.rst``
 
 You *must* specify an output option.
 
-In addition,  you can specify any options you would if running docutils-xml.py::
+In addition,  you can specify any options you would if running docutils-xml.py:
 
-    |script_name| --indents --quiet --output otupt.xml file.rst
+|scriptName| --indents --quiet --output otupt.xml file.rst
 
 
 How to markup your document
@@ -101,7 +144,8 @@ script will produce this output::
   <inline arg1 = "math-forumla-containing-closing-bracket">2x</inline><problematic
   description = "solitary closing bracket my produce output you don't want"/>]
 
-In order to overcome this problem, use the following::
+In order to overcome this problem, escape the first closing bracket
+with literal markup::
 
   [:math-forumula-containing-closing-bracket: 2x ``]`` ]
 
@@ -168,10 +212,14 @@ Project Files & Directories
 
 * README.txt: You're reading it.
 
-.. To be filled in later
+*|moduleName|: Contains all the modules for the script to run
 
+*doc: The documentation for the module, including a copy of this
+README.txt.
 
+*scripts: the script |scriptName|.
 
+*test_files: Files to test the script.
 
 
 Getting Help
