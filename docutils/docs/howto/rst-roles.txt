@@ -109,7 +109,7 @@ Note that unlike directives, the "arguments" function attribute is not
 supported for role customization.  Directive arguments are handled by
 the "role" directive itself.
 
-.. _"role" directive: directives.html#role
+.. _"role" directive: ../ref/rst/directives.html#role
 .. _Creating reStructuredText Directives:
    rst-directives.html#specify-directive-arguments-options-and-content
 

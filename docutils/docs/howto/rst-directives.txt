@@ -84,7 +84,7 @@ have no corresponding element; choose the most appropriate elements
 from the existing Docutils elements.  See `The Docutils Document
 Tree`_ and the ``docutils.nodes`` module.
 
-.. _The Docutils Document Tree: ../doctree.html
+.. _The Docutils Document Tree: ../ref/doctree.html
 
 
 Specify Directive Arguments, Options, and Content
