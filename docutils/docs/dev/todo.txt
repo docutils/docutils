@@ -563,6 +563,10 @@ Directives
     "local" concept comes in.  This part of the implementation can be
     left for later.
 
+  - _`parts.contents`: Add a "suppress" or "prune" option?  It would
+    suppress contents display for sections in a branch from that point
+    down.  Or a new directive, like "prune-contents"?
+
 - Implement directives.  Each of the list items below begins with an
   identifier of the form, "module_name.directive_function_name".  The
   directive name itself could be the same as the
