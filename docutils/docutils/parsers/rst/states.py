@@ -1822,7 +1822,7 @@ class Body(RSTState):
             refname = self.is_reference(reference)
             if refname:
                 return 'refname', refname
-        reference = ''.join([line.strip() for line in block])
+        reference = ''.join([''.join(line.split()) for line in block])
         return 'refuri', unescape(reference)
 
     def is_reference(self, reference):

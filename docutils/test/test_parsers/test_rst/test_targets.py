@@ -346,7 +346,7 @@ __ this URI ends with an underscore_
     <paragraph>
         Anonymous external hyperlink target, not indirect:
     <target anonymous="1" id="id1" refuri="uri_">
-    <target anonymous="1" id="id2" refuri="this URI ends with an underscore_">
+    <target anonymous="1" id="id2" refuri="thisURIendswithanunderscore_">
 """],
 ["""\
 Anonymous indirect hyperlink targets:

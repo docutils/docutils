@@ -27,7 +27,7 @@ def include(name, arguments, options, content, lineno,
     source = state_machine.input_lines.source(
         lineno - state_machine.input_offset - 1)
     source_dir = os.path.dirname(os.path.abspath(source))
-    path = ''.join(arguments[0].splitlines())
+    path = directives.path(arguments[0])
     path = os.path.normpath(os.path.join(source_dir, path))
     path = utils.relative_path(None, path)
     encoding = options.get('encoding', state.document.settings.input_encoding)
@@ -156,7 +156,7 @@ def raw(name, arguments, options, content, lineno,
 
 raw.arguments = (1, 0, 1)
 raw.options = {'file': directives.path,
-               'url': directives.path,
+               'url': directives.uri,
                'encoding': directives.encoding}
 raw.content = 1
 

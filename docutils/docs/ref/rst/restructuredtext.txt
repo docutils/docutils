@@ -1782,8 +1782,9 @@ indirect.
    explicit markup start and target name, or it may begin in an
    indented text block immediately following, with no intervening
    blank lines.  If there are multiple lines in the link block, they
-   are stripped of leading and trailing whitespace and concatenated.
-   The following external hyperlink targets are equivalent::
+   are concatenated.  Any whitespace is removed (whitespace is
+   permitted to allow for line wrapping).  The following external
+   hyperlink targets are equivalent::
 
        .. _one-liner: http://docutils.sourceforge.net/rst.html
 
