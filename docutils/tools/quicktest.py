@@ -144,7 +144,7 @@ def posixGetArgs(argv):
             sys.exit()
         elif o in ['-V', '--version']:
             print >>sys.stderr, ('quicktest.py (Docutils %s)'
-                                 % docutils.__version)
+                                 % docutils.__version__)
             sys.exit()
         elif o in ['-r', '--rawxml']:
             outputFormat = 'rawxml'
