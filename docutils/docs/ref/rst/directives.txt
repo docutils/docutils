@@ -443,9 +443,14 @@ constructs a literal block where the text is parsed for inline markup.
 It is equivalent to a `line block`_ with different rendering:
 typically in a typewriter/monospaced typeface, like an ordinary
 literal block.  Parsed literal blocks are useful for adding hyperlinks
-to code examples.  However, care must be taken with the text, because
-inline markup is recognized; there is no protection from parsing.
-Backslash-escapes may be necessary in places.
+to code examples.
+
+However, care must be taken with the text, because inline markup is
+recognized and there is no protection from parsing.  Backslash-escapes
+may be necessary to prevent unintended parsing.  And because the
+markup characters are removed by the parser, care must also be taken
+with vertical alignment.  Parsed "ASCII art" is tricky, and extra
+whitespace may be necessary.
 
 For example, all the element names in this content model are links::
 
