@@ -235,6 +235,18 @@ class Node:
         self.children.extend(node_list)
 
 
+class TextNode(Node):
+
+    def __init__(self, node, text):
+        Node.__init__(self, node)
+        self.text = trim_docstring(text)
+
+    def __str__(self, indent='    ', level=0):
+        prefix = indent * (level + 1)
+        text = '\n'.join([prefix + line for line in self.text.splitlines()])
+        return Node.__str__(self, indent, level) + text + '\n'
+
+
 class Module(Node):
 
     def __init__(self, node, filename):
@@ -245,16 +257,10 @@ class Module(Node):
         return Node.attlist(self, filename=self.filename)
 
 
-class Docstring(Node):
+class Docstring(TextNode): pass
 
-    def __init__(self, node, text):
-        Node.__init__(self, node)
-        self.text = trim_docstring(text)
 
-    def __str__(self, indent='    ', level=0):
-        prefix = indent * (level + 1)
-        text = '\n'.join([prefix + line for line in self.text.splitlines()])
-        return Node.__str__(self, indent, level) + text + '\n'
+class Comment(TextNode): pass
 
 
 class Import(Node):
@@ -303,11 +309,7 @@ class AttributeTuple(Node):
         return Node.attlist(self, names=' '.join(self.names))
 
 
-class Expression(Node):
-
-    def __init__(self, node, text):
-        Node.__init__(self, node)
-        self.text = text
+class Expression(TextNode):
 
     def __str__(self, indent='    ', level=0):
         prefix = indent * (level + 1)
@@ -631,46 +633,40 @@ class TokenParser:
         text = ''.join(self.tokens)
         return text.strip()
 
-    openers = {')': '(', ']': '[', '}': '{'}
+    closers = {')': '(', ']': '[', '}': '{'}
+    openers = {'(': 1, '[': 1, '{': 1}
+    del_ws_prefix = {'.': 1, '=': 1, ')': 1, ']': 1, '}': 1, ':': 1, ',': 1}
+    no_ws_suffix = {'.': 1, '=': 1, '(': 1, '[': 1, '{': 1}
 
     def note_token(self):
-        append = 1
-        append_ws = 1
-        del_ws = 0
-        if self.string == '.':
-            del_ws = 1
-            append_ws = 0
-        elif self.string in ('(', '[', '{'):
-            append_ws = 0
-            if self.string in '([' and (self._type == token.NAME or
-                                        self._string in (')', ']', '}')):
-                del_ws = 1
+        if self.type == tokenize.NL:
+            return
+        del_ws = self.del_ws_prefix.has_key(self.string)
+        append_ws = not self.no_ws_suffix.has_key(self.string)
+        if self.openers.has_key(self.string):
             self.stack.append(self.string)
-        elif self.string in (')', ']', '}'):
-            del_ws = 1
-            assert self.stack[-1] == self.openers[self.string]
+            if (self._type == token.NAME
+                or self.closers.has_key(self._string)):
+                del_ws = 1
+        elif self.closers.has_key(self.string):
+            assert self.stack[-1] == self.closers[self.string]
             self.stack.pop()
-        elif self.string in (':', ','):
-            del_ws = 1
         elif self.string == '`':
             if self._backquote:
                 del_ws = 1
-                assert self.stack[-1] == self.string
+                assert self.stack[-1] == '`'
                 self.stack.pop()
             else:
                 append_ws = 0
-                self.stack.append(self.string)
+                self.stack.append('`')
             self._backquote = not self._backquote
-        elif self.type == tokenize.NL:
-            append = 0
-        if append:
-            if del_ws and self.tokens and self.tokens[-1] == ' ':
-                del self.tokens[-1]
-            self.tokens.append(self.string)
-            self._type = self.type
-            self._string = self.string
-            if append_ws:
-                self.tokens.append(' ')
+        if del_ws and self.tokens and self.tokens[-1] == ' ':
+            del self.tokens[-1]
+        self.tokens.append(self.string)
+        self._type = self.type
+        self._string = self.string
+        if append_ws:
+            self.tokens.append(' ')
 
     def function_parameters(self, lineno):
         """
@@ -742,6 +738,7 @@ class TokenParser:
                 self.note_token()
             self.next()
         return parameters
+
 
 def trim_docstring(text):
     """
