@@ -1,5 +1,14 @@
-#! /bin/sh
+#! /bin/bash
 # $Id$
+#
+# This script is installed as a cron job to automatically update the
+# Docutils web site whenever the CVS files change.  Any .html document
+# with a corresponding .txt file is regenerated whenever the .txt
+# changes.
+#
+# Options:
+#   -p    Run from the project directory.
+#   -u    Regenerate .html unconditionally.
 
 projdir=/home/groups/d/do/docutils
 project=docutils
@@ -68,8 +77,13 @@ for htmlfile in `find . -name '*.html'` ; do
     txtfile=$dir/$base.txt
     if [ -e $txtfile ] ; then
         if [ $unconditional -eq 1 -o $txtfile -nt $htmlfile ] ; then
-            echo $txtfile
-            ( cd $dir ; ~/bin/python $lib/tools/html.py -gst $base.txt $base.html )
+            if [ "${txtfile:0:4}" == "pep-" ] ; then
+                echo $txtfile (PEP)
+                ( cd $dir ; ~/bin/python $lib/tools/pep.py -gst $base.txt $base.html )
+            else
+                echo $txtfile
+                ( cd $dir ; ~/bin/python $lib/tools/html.py -gst $base.txt $base.html )
+            fi
         fi
     fi
 done
