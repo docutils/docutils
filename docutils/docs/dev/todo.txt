@@ -57,8 +57,8 @@ General
 
 * Refactor
 
-  - Rename methods & variables according to the `coding conventions`_
-    below.
+  - Rename methods & variables according to the `Python coding
+    conventions`_ below.
 
   - The name-to-id conversion and hyperlink resolution code needs to be
     checked for correctness and refactored.  I'm afraid it's a bit of
@@ -1161,7 +1161,7 @@ when used in a document.
     Docutils internal doctree (as per nodes.py) instead of HTML, then
     each output format's stylesheet (or equivalent) mechanism could
     take care of the rest.  The pretty-printer code could turn this
-    doctree fragment:
+    doctree fragment::
 
          <literal_block xml:space="preserve">
          print 'This is Python code.'
@@ -1169,18 +1169,18 @@ when used in a document.
              print i
          </literal_block>
 
-    into something like this ("</>" is end-tag shorthand):
+    into something like this ("</>" is end-tag shorthand)::
 
          <literal_block xml:space="preserve" class="python">
          <keyword>print</> <string>'This is Python code.'</>
-         <keyword>for</> <identifier>i</> <keyword>in</>
-    <expression>range(10)</>:
+         <keyword>for</> <identifier>i</> <keyword 
+         >in</> <expression>range(10)</>:
              <keyword>print</> <expression>i</>
          </literal_block>
 
     But I'm leaning toward adding a single new general-purpose
     element, "phrase", equivalent to HTML's <span>.  Here's the
-    example rewritten using the generic "phrase":
+    example rewritten using the generic "phrase"::
 
         <literal_block xml:space="preserve" class="python">
         <phrase class="keyword">print</> <phrase
