@@ -1297,7 +1297,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_footnote(self, node):
         if self.use_latex_footnotes:
-            self.body.append('}')
+            self.body.append('}\n')
         else:
             self.body.append('\\end{figure}\n')
 
