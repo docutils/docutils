@@ -1,6 +1,12 @@
 Doctils DocBook Writer ChangeLog
 ================================
 
+2003-07-21
+----------
+
+* ``title`` element placed before ``{doctype}info`` element.
+
+
 2003-07-19
 ----------
 
@@ -26,8 +32,6 @@ Doctils DocBook Writer ChangeLog
   ``inlinemediaobject``, otherwise as ``mediaobject``.
 
 * Using DocBook 4.2 instead of DocBook 4.
-
-* ``title`` element placed before ``{doctype}info`` element.
 
 .. [#] `rubric` is mapped to `bridgehead`, which seemed to be the best 
    match. However, I've never heard of either of these, so it's just a 
