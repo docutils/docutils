@@ -24,25 +24,25 @@ and related projects:
     Cherniavsky, Adam Chodorowski, Laura Creighton, Artur de Sousa
     Rocha, Jason Diamond, William Dode, Fred Drake, Reggie Dugard,
     Dethe Elza, Marcus Ertl, Benja Fallenstein, fantasai, Stefane
-    Fermigier, Jim Fulton, Peter Funk, Dinu C. Gherman, Matt Gilbert,
-    Jorge Gonzalez, Engelbert Gruber, Jacob Hallen, Simon Hefti, Doug
-    Hellmann, Juergen Hermann, Jannie Hofmeyr, Steve Holden, Michael
-    Hudson, Marcelo Huerta San Martin, Ludger Humbert, Jeremy Hylton,
-    Tony Ibbs, Alan Jaffray, Dmitry Jemerov, Richard Jones, Andreas
-    Jung, Garth Kidd, Axel Kollmorgen, Jeff Kowalczyk, Dave Kuhlman,
-    Lloyd Kvam, Kirill Lapshin, Nicola Larosa, Daniel Larsson,
-    Marc-Andre Lemburg, Julien Letessier, Wolfgang Lipp, Edward Loper,
-    Dallas Mahrt, Ken Manheimer, Bob Marshall, Mark McEahern, Vasko
-    Miroslav, Skip Montanaro, Paul Moore, Nigel W. Moriarty, Mark
-    Nodine, Patrick K. O'Brien, Michel Pelletier, Sam Penrose, Tim
-    Peters, Pearu Peterson, Mark Pilgrim, Brett g Porter, David
-    Priest, Jens Quade, Andy Robinson, Tavis Rudd, Tracy Ruggles,
-    Oliver Rutherfurd, Kenichi Sato, Ueli Schlaepfer, Gunnar Schwant,
-    Bill Sconce, Frank Siebenlist, Bruce Smith, Darek Suchojad, Roman
-    Suzi, tav, Kent Tenney, Bob Tolbert, Paul Tremblay, Laurence
-    Tratt, Adrian van den Dries, Guido van Rossum, Paul Viren, Martin
-    von Loewis, Greg Ward, Barry Warsaw, Edward Welbourne, Ka-Ping
-    Yee, Moshe Zadka
+    Fermigier, Jim Fulton, Peter Funk, Lele Gaifax, Dinu C. Gherman,
+    Matt Gilbert, Jorge Gonzalez, Engelbert Gruber, Jacob Hallen,
+    Simon Hefti, Doug Hellmann, Juergen Hermann, Jannie Hofmeyr, Steve
+    Holden, Michael Hudson, Marcelo Huerta San Martin, Ludger Humbert,
+    Jeremy Hylton, Tony Ibbs, Alan Jaffray, Dmitry Jemerov, Richard
+    Jones, Andreas Jung, Garth Kidd, Axel Kollmorgen, Jeff Kowalczyk,
+    Dave Kuhlman, Lloyd Kvam, Kirill Lapshin, Nicola Larosa, Daniel
+    Larsson, Marc-Andre Lemburg, Julien Letessier, Wolfgang Lipp,
+    Edward Loper, Dallas Mahrt, Ken Manheimer, Bob Marshall, Mark
+    McEahern, Vasko Miroslav, Skip Montanaro, Paul Moore, Nigel
+    W. Moriarty, Mark Nodine, Patrick K. O'Brien, Michel Pelletier,
+    Sam Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim, Brett g
+    Porter, David Priest, Jens Quade, Andy Robinson, Tavis Rudd, Tracy
+    Ruggles, Oliver Rutherfurd, Kenichi Sato, Ueli Schlaepfer, Gunnar
+    Schwant, Bill Sconce, Frank Siebenlist, Bruce Smith, Darek
+    Suchojad, Roman Suzi, tav, Kent Tenney, Bob Tolbert, Paul
+    Tremblay, Laurence Tratt, Adrian van den Dries, Guido van Rossum,
+    Paul Viren, Martin von Loewis, Greg Ward, Barry Warsaw, Edward
+    Welbourne, Ka-Ping Yee, Moshe Zadka
 
 Thank you!
 
@@ -162,6 +162,8 @@ Changes Since 0.3
     through whitespace_normalize_name (no case changes).
   - parse_target no longer returns the refname after going through
     normalize_name. This is now handled in make_target.
+  - Fixed bug relating to role-less interpreted text in non-English
+    contexts.
 
 * docutils/parsers/rst/tableparser.py:
 
