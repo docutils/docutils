@@ -410,8 +410,12 @@ _`tab_width`
 _`trim_footnote_reference_space`
     Remove spaces before footnote references.
 
-    Default: don't (None).  Options:
-    ``--trim-footnote-reference-space``.
+    Default: don't (None); may be overriden by a writer-specific
+    footnote_references__ default though.  Options:
+    ``--trim-footnote-reference-space,
+    --leave-footnote-reference-space``.
+
+__ `footnote_references [latex2e writer]`_
 
 
 [readers]
@@ -519,8 +523,10 @@ footnote_references
     Format for footnote references, one of "superscript" or
     "brackets".  Also defined for the `LaTeX Writer`__.
 
-    Default: "superscript"; "brackets" in PEP/HTML Writer.  Options:
-    ``--footnote-references``.
+    Overrides [#override]_ trim_footnote_reference_space_, if
+    applicable. [#footnote_space]_
+
+    Default: "brackets".  Option: ``--footnote-references``.
 
     __ `footnote_references [latex2e writer]`_
 
@@ -674,7 +680,10 @@ footnote_references
     Format for footnote references: one of "superscript" or
     "brackets".  Also defined for the `HTML Writer`__.
 
-    Default: "brackets".  Option: ``--footnote-references``.
+    Overrides [#override]_ trim_footnote_reference_space_, if
+    applicable. [#footnote_space]_
+
+    Default: "superscript".  Option: ``--footnote-references``.
 
     __ `footnote_references [html4css1 writer]`_
 
@@ -836,6 +845,13 @@ _`_source`
      stylesheets are both unconditionally recorded as dependencies
      when using the LaTeX writer.
    
+.. [#footnote_space] The footnote space is trimmed if the reference
+   style is "superscript", and it is left if the reference style is
+   "brackets".
+
+   The overriding only happens if the parser supports the
+   trim_footnote_reference_space option.
+
 
 ------------------------------
 Old-Format Configuration Files
