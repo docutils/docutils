@@ -86,10 +86,16 @@ def csv_table(name, arguments, options, content, lineno,
                   '"%s" directive requires table body content.' % name,
                   nodes.literal_block(block_text, block_text), line=lineno)
             return [error]
-        col_widths = get_col_widths(options, max_cols, lineno, state_machine)
+        col_widths = get_col_widths(
+            max_cols, name, options, lineno, block_text, state_machine)
         extend_short_rows_with_empty_cells(max_cols, (table_head, table_body))
     except SystemMessagePropagation, detail:
         return [detail.args[0]]
+    except csv.Error, detail:
+        error = state_machine.reporter.error(
+            'Error with CSV data in "%s" directive:\n%s' % (name, detail),
+            nodes.literal_block(block_text, block_text), line=lineno)
+        return [error]
     table = (col_widths, table_head, table_body)
     table_node = state.build_table(table, content_offset)
     if options.has_key('class'):
@@ -131,16 +137,16 @@ def get_csv_data(name, options, content, lineno, block_text,
         source = os.path.normpath(os.path.join(source_dir, options['file']))
         source = utils.relative_path(None, source)
         try:
+            csv_file = open(source, 'rb')
             try:
-                csv_file = open(source, 'rb')
                 csv_data = csv_file.read().splitlines()
-            except IOError, error:
-                severe = state_machine.reporter.severe(
-                      'Problems with "%s" directive path:\n%s.' % (name, error),
-                      nodes.literal_block(block_text, block_text), line=lineno)
-                raise SystemMessagePropagation(severe)
-        finally:
-            csv_file.close()
+            finally:
+                csv_file.close()
+        except IOError, error:
+            severe = state_machine.reporter.severe(
+                  'Problems with "%s" directive path:\n%s.' % (name, error),
+                  nodes.literal_block(block_text, block_text), line=lineno)
+            raise SystemMessagePropagation(severe)
     elif options.has_key('url'):        # CSV data is from a URL
         if not urllib2:
             severe = state_machine.reporter.severe(
@@ -152,7 +158,7 @@ def get_csv_data(name, options, content, lineno, block_text,
         source = options['url']
         try:
             csv_data = urllib2.urlopen(source).read().splitlines()
-        except (urllib2.URLError, IOError, OSError), error:
+        except (urllib2.URLError, IOError, OSError, ValueError), error:
             severe = state_machine.reporter.severe(
                   'Problems with "%s" directive URL "%s":\n%s.'
                   % (name, options['url'], error),
@@ -189,12 +195,13 @@ def parse_csv_data_into_rows(csv_data, dialect, source, options):
         max_cols = max(max_cols, len(row))
     return rows, max_cols
 
-def get_col_widths(options, max_cols, lineno, state_machine):
+def get_col_widths(max_cols, name, options, lineno, block_text,
+                   state_machine):
     if options.has_key('widths'):
         col_widths = options['widths']
         if len(col_widths) != max_cols:
             error = state_machine.reporter.error(
-              '"%s" widths does not match number of columns in table (%s).'
+              '"%s" widths do not match the number of columns in table (%s).'
               % (name, max_cols),
               nodes.literal_block(block_text, block_text), line=lineno)
             raise SystemMessagePropagation(error)
@@ -209,15 +216,11 @@ def extend_short_rows_with_empty_cells(columns, parts):
                 row.extend([(0, 0, 0, [])] * (columns - len(row)))
 
 def single_char_or_unicode(argument):
-    if argument == 'tab' or argument == '\\t':
-        char = '\t'
-    elif argument == 'space':
-        char = ' '
-    else:
-        char = directives.unicode_code(argument)
+    char = directives.unicode_code(argument)
     if len(char) > 1:
-        raise ValueError('must be a single character or Unicode code')
-    return argument
+        raise ValueError('%r invalid; must be a single character or '
+                         'a Unicode code' % char)
+    return char
 
 def single_char_or_whitespace_or_unicode(argument):
     if argument == 'tab':
@@ -225,10 +228,8 @@ def single_char_or_whitespace_or_unicode(argument):
     elif argument == 'space':
         char = ' '
     else:
-        char = directives.unicode_code(argument)
-    if len(char) > 1:
-        raise ValueError('must be a single character or Unicode code')
-    return argument
+        char = single_char_or_unicode(argument)
+    return char
 
 def positive_int(argument):
     value = int(argument)
