@@ -119,11 +119,6 @@ Known Bugs
 
 Also see the `SourceForge Bug Tracker`_.
 
-* The parser doesn't know anything about double-width characters such
-  as Chinese hanza & Japanese kanji/kana.  Also, it's dependent on
-  whitespace and punctuation as markup delimiters, which may not be
-  applicable in these languages.
-
 * Line numbers in system messages are inconsistent in the parser.
 
   - In text inserted by the "include" directive, errors are often not
