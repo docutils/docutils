@@ -302,3 +302,7 @@ latex_head + """\
 \\end{document}
 """],
 ]
+
+if __name__ == '__main__':
+    import unittest
+    unittest.main(defaultTest='suite')
