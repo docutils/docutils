@@ -590,6 +590,19 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
         """Needed to get custom `Values` instances."""
         return Values(self.defaults)
 
+    def get_option_by_dest(self, dest):
+        """
+        Get an option by its dest.
+
+        If you're supplying a dest which is shared by several options,
+        the behavior is undefined.
+        """
+        for group in self.option_groups + [self]:
+            for option in group.option_list:
+                if option.dest == dest:
+                    return option
+        raise KeyError('No option with dest == %r.' % dest)
+
 
 class ConfigParser(CP.ConfigParser):
 
