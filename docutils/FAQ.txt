@@ -173,6 +173,40 @@ Counterexample::
 HTML Writer
 ===========
 
+What is the status of the HTML Writer?
+--------------------------------------
+
+The HTML Writer module, ``docutils/writers/html4css1.py``, is a
+proof-of-concept reference implementation.  While it is a complete
+implementation, some aspects of the HTML it produces may be
+incompatible with older browsers or specialized applications (such as
+web templating).  Alternate implementations are welcome.
+
+
+What kind of HTML does it produce?
+----------------------------------
+
+It produces XHTML compatible with the `HTML 4.01`_ and `XHTML 1.0`_
+specifications.  A cascading style sheet ("default.css" by default) is
+required for proper viewing with a modern graphical browser.  Correct
+rendering of the HTML produced depends on the CSS support of the
+browser.
+
+.. _HTML 4.01: http://www.w3.org/TR/html4/
+.. _XHTML 1.0: http://www.w3.org/TR/xhtml1/
+
+
+What browsers are supported?
+----------------------------
+
+No specific browser is targeted; all modern graphical browsers should
+work.  Some older browsers, text-only browsers, and browsers without
+full CSS support are known to produce inferior results.  Mozilla
+(version 1.0 and up) and MS Internet Explorer (version 5.0 and up) are
+known to give good results.  Reports of experiences with other
+browsers are welcome.
+
+
 Unexpected results from tools/html.py: H1, H1 instead of H1, H2.  Why?
 ----------------------------------------------------------------------
 
@@ -240,3 +274,13 @@ HTML is being used for dumb formatting for nothing but final display.
 A stylesheet *is* required, and you're welcome to roll your own.
 
 (Thanks to Mark McEahern for the question and much of the answer.)
+
+
+Why do enumerated lists only use numbers (no letters or roman numerals)?
+------------------------------------------------------------------------
+
+The rendering of enumerators (the numbers or letters acting as list
+markers) is completely governed by the stylesheet, so either the
+browser can't find the stylesheet (try using the "--embed-stylesheet"
+option), or the browser can't understand it (try a recent Mozilla or
+MSIE).
