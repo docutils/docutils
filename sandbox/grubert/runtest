@@ -92,7 +92,7 @@ for F in toc ; do
   INF=test/$F.txt
   OUTF="$INF-use-latex-toc.tex"
   REFF="$OUTF.ref"
-  $CMD --use-latex-toc=1 $INF > $OUTF
+  $CMD --use-latex-toc $INF > $OUTF
   do_diff $REFF $OUTF 
 done
 
