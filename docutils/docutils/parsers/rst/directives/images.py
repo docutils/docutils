@@ -20,11 +20,31 @@ from docutils import nodes, utils
 def unchanged(arg):
     return arg                          # unchanged!
 
+def format_allowed( allowed ):
+    qouted = map( lambda s: '"%s"' % s, allowed )
+    return ' or '.join( [ ', '.join( qouted[:-1] ), qouted[-1] ] )
+
+def align( argument ):
+    allowed = ( 'top', 'middle', 'bottom', 'left', 'center', 'right' )
+    
+    try:
+        value = argument.lower().strip()
+    except AttributeError:
+        raise TypeError('must supply an argument; choose from %s',
+                         format_allowed( allowed ))
+    
+    if value in allowed:
+        return value
+    else:
+        raise ValueError(
+            '"%s" unknown; choose from %s' % (argument, format_allowed( allowed )) )
+
+
 image_option_spec = {'alt': unchanged,
                      'height': int,
                      'width': int,
                      'scale': int,
-                     'align': unchanged}
+                     'align': align}
 
 def image(match, type_name, data, state, state_machine, option_presets):
     lineno = state_machine.abs_line_number()
