@@ -1,12 +1,12 @@
 """
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
-:version: 0.2.3
+:version: 0.2.4
 """
 
 from   docutils.languages                import en, de, fr, it
 from   docutils.parsers.rst.languages.en import directives
-from   docutils.core                     import publish_cmdline, publish_file
+from   docutils.core                     import publish_file
 from   docutils                          import __version__
 from   re                                import findall
 import os, sys

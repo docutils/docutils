@@ -1,10 +1,10 @@
 """
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
-:version: 0.2.2
+:version: 0.2.4
 """
 
-classic_css = '''
+html_classic = '''
 /*
 :Author: David Goodger
 :Contact: goodger@users.sourceforge.net
@@ -195,7 +195,7 @@ ul.auto-toc {
   list-style-type: none }
 '''
 
-modern_css = classic_css + '''
+html_modern = html_classic + '''
 
 /*
 Additional styles for "modern"-style of DocFactory.
@@ -425,7 +425,7 @@ h1 tt, h2 tt, h3 tt, h4 tt, h5 tt, h6 tt {
   font-size: 10pt }
 '''
 
-classic_tex = '''
+tex_classic = '''
 % donot indent first line.
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{5pt plus 2pt minus 1pt}
@@ -448,6 +448,45 @@ classic_tex = '''
 \pagestyle{plain}
 '''
 
-stylesheets = { 'Classic (CSS)': classic_css,
-                'Classic (TeX)': classic_tex,
-                'Modern (CSS)': modern_css }
+tex_fancyhdr2side = '''
+% geometry
+\geometry{a4paper,twoside,tmargin=1.5cm,
+          headheight=1cm,headsep=0.75cm}
+
+% donot indent first line.
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 2pt minus 1pt}
+
+% sloppy
+% ------
+% Less strict (opposite to default fussy) space size between words. Therefore
+% less hyphenation.
+\sloppy
+
+% fonts
+% -----
+% times for pdf generation, gives smaller pdf files.
+%
+% But in standard postscript fonts: courier and times/helvetica do not fit.
+% Maybe use pslatex.
+\usepackage{times} 
+\\renewcommand{\\familydefault}{\sfdefault}
+
+% pagestyle
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\\addtolength{\headheight}{\\baselineskip}
+\\renewcommand{\sectionmark}[1]{\markboth{#1}{}}
+\\renewcommand{\subsectionmark}[1]{\markright{#1}}
+\\fancyhf{}
+\\fancyhead[LE,RO]{\\bfseries\\textsf{\Large\\thepage}}
+\\fancyhead[LO]{\\textsf{\\footnotesize\\rightmark}}
+\\fancyhead[RE]{\\textsc{\\textsf{\\footnotesize\leftmark}}}
+%\\fancyfoot[LE,RO]{\\bfseries\\textsf{\scriptsize Docutils}}
+\\fancyfoot[RE,LO]{\\textsf{\scriptsize\\today}}
+'''
+
+stylesheets = { 'HTML: Classic': html_classic,
+                'LaTeX: Classic': tex_classic,
+                'HTML: Modern': html_modern,
+                'LaTeX: Fancyheader2side': tex_fancyhdr2side}

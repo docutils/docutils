@@ -3,7 +3,7 @@
 """
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
-:version: 0.2.3
+:version: 0.2.4
 """
 
 import browser, images, re, sys, os, time, ConfigParser
@@ -56,7 +56,7 @@ except:
  wxID_WXINSERTHYPERLINK, wxID_WXBTNPASTE, wxID_WXBTNCOPY, wxID_WXRUNTOOL,
  wxID_WXBTNCUT, wxID_WXBTNREDO, wxID_WXBTNUNDO, wxID_WXBTNSAVE,
  wxID_WXBTNOPEN, wxID_WXBTNNEW, wxID_WXBTNPUBLISH, wxID_WXBTNABOUT,
- wxID_WXFINDREPLACE] = map(lambda init_menubar: wxNewId(), range(51))
+ wxID_WXFINDREPLACE, wxID_WXBACKUPFILES] = map(lambda init_menubar: wxNewId(), range(52))
 
 # Accelerator-Table for key commands
 ACCEL = [(wxACCEL_NORMAL,WXK_F7,wxID_WXPUBL),
@@ -130,6 +130,7 @@ class DocFactoryFrame(wxFrame):
         logoicon.CopyFromBitmap(bmp)
         self.SetIcon(logoicon)
 
+        self.init_preferences()
         self.init_menubar()
         self.init_toolbar()
 
@@ -287,38 +288,6 @@ class DocFactoryFrame(wxFrame):
         menu.Enable(wxID_WXGOTO, 0)
         self.mainmenu.Append (menu, '&Edit')
 
-        # View
-        menu=wxMenu()
-        menu.Append(wxID_WXVIEWEOLS, 'EOL markers',
-                    'Show or hide end-of-line markers', wxITEM_CHECK)
-        EVT_MENU(self, wxID_WXVIEWEOLS, self.on_view_eols)
-        menu.Enable(wxID_WXVIEWEOLS, 0)
-        menu.Append(wxID_WXVIEWEDGE, 'Right edge indicator',
-                    'Toggle display of the right edge indicator (75 characters)',
-                    wxITEM_CHECK)
-        menu.Check(wxID_WXVIEWEDGE, 1)
-        EVT_MENU(self, wxID_WXVIEWEDGE, self.on_view_edge)
-        menu.Enable(wxID_WXVIEWEDGE, 0)        
-        menu.Append(wxID_WXVIEWWS, 'Whitespace',
-                    'Show or hide whitespace', wxITEM_CHECK)
-        EVT_MENU(self, wxID_WXVIEWWS, self.on_view_ws)
-        menu.Enable(wxID_WXVIEWWS, 0)
-        menu.AppendSeparator()
-        submenu=wxMenu()
-        submenu.Append(wxID_WXSMALLFONT,'Small',
-                       'Reduce font', wxITEM_RADIO)
-        EVT_MENU(self, wxID_WXSMALLFONT, self.on_font_small)
-        submenu.Append(wxID_WXNORMALFONT,'Normal',
-                       'Restore font', wxITEM_RADIO)
-        EVT_MENU(self, wxID_WXNORMALFONT, self.on_font_normal)
-        submenu.Append(wxID_WXBIGFONT,'Big',
-                       'Magnify font', wxITEM_RADIO)
-        EVT_MENU(self, wxID_WXBIGFONT, self.on_font_big)
-        submenu.Check(wxID_WXNORMALFONT, 1)
-        menu.AppendMenu(wxID_WXFONTSIZE, 'Fontsize', submenu)
-        menu.Enable(wxID_WXFONTSIZE, 0)
-        self.mainmenu.Append(menu, '&View')
-
         # Project
         menu=wxMenu()
         menu.Append(wxID_WXNEWPROJ, 'New', 'Create a new project')
@@ -337,6 +306,46 @@ class DocFactoryFrame(wxFrame):
 
         self.init_tools()
         
+        # Preferences
+        menu=wxMenu()
+        menu.Append(wxID_WXVIEWEOLS, 'View EOL markers',
+                    'Show or hide end-of-line markers', wxITEM_CHECK)
+        EVT_MENU(self, wxID_WXVIEWEOLS, self.on_view_eols)
+        menu.Check(wxID_WXVIEWEOLS, self.preferences['eol_markers'])
+        menu.Append(wxID_WXVIEWEDGE, 'View right edge indicator',
+                    'Toggle display of the right edge indicator (75 characters)',
+                    wxITEM_CHECK)
+        EVT_MENU(self, wxID_WXVIEWEDGE, self.on_view_edge)
+        menu.Check(wxID_WXVIEWEDGE, self.preferences['right_edge_indicator'])
+        menu.Append(wxID_WXVIEWWS, 'View whitespace',
+                    'Show or hide whitespace', wxITEM_CHECK)
+        EVT_MENU(self, wxID_WXVIEWWS, self.on_view_ws)
+        menu.Check(wxID_WXVIEWWS, self.preferences['whitespace'])
+        menu.AppendSeparator()
+        submenu=wxMenu()
+        submenu.Append(wxID_WXSMALLFONT,'Small',
+                       'Reduce font', wxITEM_RADIO)
+        EVT_MENU(self, wxID_WXSMALLFONT, self.on_font_small)
+        submenu.Append(wxID_WXNORMALFONT,'Normal',
+                       'Restore font', wxITEM_RADIO)
+        EVT_MENU(self, wxID_WXNORMALFONT, self.on_font_normal)
+        submenu.Append(wxID_WXBIGFONT,'Big',
+                       'Magnify font', wxITEM_RADIO)
+        EVT_MENU(self, wxID_WXBIGFONT, self.on_font_big)
+        if self.preferences['fontsize'] == 'small':
+            submenu.Check(wxID_WXSMALLFONT, 1)
+        elif self.preferences['fontsize'] == 'big':
+            submenu.Check(wxID_WXBIGFONT, 1)
+        else:
+            submenu.Check(wxID_WXNORMALFONT, 1)
+        menu.AppendMenu(wxID_WXFONTSIZE, 'Fontsize', submenu)
+        menu.AppendSeparator()
+        menu.Append(wxID_WXBACKUPFILES, 'Backup files',
+                    'Backup files as [filename].bak', wxITEM_CHECK)
+        EVT_MENU(self, wxID_WXBACKUPFILES, self.on_backup_files)
+        menu.Check(wxID_WXBACKUPFILES, self.preferences['backup_files'])
+        self.mainmenu.Append(menu, '&Preferences')
+
         # Toolbox
         menu=wxMenu()
         exitID=wxNewId()
@@ -354,6 +363,32 @@ class DocFactoryFrame(wxFrame):
         self.mainmenu.Append (menu, '&Help')
 
         self.SetMenuBar(self.mainmenu)
+
+    def init_preferences(self):
+        self.preferences = {}
+        if os.path.exists(DATA):
+            try:
+                cfg = ConfigParser.ConfigParser()
+                cfg.read(DATA)
+                if cfg.has_section('preferences'):
+                    for pref in cfg.options('preferences'):
+                        self.preferences[pref] = cfg.get('preferences', pref)
+            except:
+                customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
+        if not self.preferences.has_key('eol_markers'):
+            self.preferences['eol_markers'] = 0
+        if not self.preferences.has_key('right_edge_indicator'):
+            self.preferences['right_edge_indicator'] = 1
+        if not self.preferences.has_key('whitespace'):
+            self.preferences['whitespace'] = 0
+        if not self.preferences.has_key('fontsize'):
+            self.preferences['fontsize'] = 'normal'
+        if not self.preferences.has_key('backup_files'):
+            self.preferences['backup_files'] = 0
+        self.preferences['eol_markers'] = int(self.preferences['eol_markers'])
+        self.preferences['right_edge_indicator'] = int(self.preferences['right_edge_indicator'])
+        self.preferences['whitespace'] = int(self.preferences['whitespace'])
+        self.preferences['backup_files'] = int(self.preferences['backup_files'])
 
     def init_toolbar(self):
         self.toolbar = tb = self.CreateToolBar(wxTB_HORIZONTAL|wxTB_FLAT|wxNO_BORDER)
@@ -531,6 +566,15 @@ class DocFactoryFrame(wxFrame):
         # init editor
         edID = wxNewId()
         self.editor = CustomStyledTextCtrl(self.nb, edID, self.log)
+        self.editor.SetViewEOL(self.preferences['eol_markers'])
+        self.editor.SetEdgeMode(self.preferences['right_edge_indicator'])
+        self.editor.SetViewWhiteSpace(self.preferences['whitespace'])
+        if self.preferences['fontsize'] == 'small':
+            self.editor.SetZoom(-2)
+        elif self.preferences['fontsize'] == 'big':
+            self.editor.SetZoom(2)
+        else:
+            self.editor.SetZoom(0)
         self.editor.Clear()
         self.editor.Enable(0)
         self.nb.AddPage(self.editor, 'Editor')
@@ -566,11 +610,6 @@ class DocFactoryFrame(wxFrame):
         menu.Enable(wxID_WXEOLSTO, value)
         menu.Enable(wxID_WXFINDREPLACE, value)
         menu.Enable(wxID_WXGOTO, value)
-        menu = self.mainmenu.GetMenu(self.mainmenu.FindMenu('View'))
-        menu.Enable(wxID_WXVIEWEOLS, value)
-        menu.Enable(wxID_WXVIEWEDGE, value)
-        menu.Enable(wxID_WXVIEWWS, value)
-        menu.Enable(wxID_WXFONTSIZE, value)
         self.toolbar.EnableTool(wxID_WXBTNSAVE, value)
         self.toolbar.EnableTool(wxID_WXBTNLINK, value)
         self.toolbar.EnableTool(wxID_WXBTNIMAGE, value)
@@ -593,7 +632,7 @@ class DocFactoryFrame(wxFrame):
                 result = dlg.ShowModal()
                 if result == wxID_YES:
                     file = self.tree.GetItemText(self.activeitem)
-                    self.editor.SaveFile(file)
+                    go_ahead = self.editor.SaveFile(file, self.preferences['backup_files'])
                 if result == wxID_CANCEL:
                     go_ahead = 0
                 dlg.Destroy()
@@ -605,7 +644,7 @@ class DocFactoryFrame(wxFrame):
         try:
             self.save_projects()
         except:
-            customMsgBox(self, 'ERROR 2\n%s:\n%s\n%s' % sys.exc_info(), 'error')
+            customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
         self.init_tree()
 
     def htmlfile(self, file, dir):
@@ -742,7 +781,7 @@ class DocFactoryFrame(wxFrame):
             self.save_projects()
             self.projectdirty = 0
         except:
-            customMsgBox(self, 'ERROR 0001\n%s:\n%s\n%s' % sys.exc_info(), 'error')
+            customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
 
     def publishFile(self, infile, outfile, outdir, writer):
         wxBeginBusyCursor()
@@ -798,6 +837,21 @@ class DocFactoryFrame(wxFrame):
         finally:
             wxEndBusyCursor()
 
+    def save_preferences(self):
+        cfg = ConfigParser.ConfigParser()
+        try:
+            cfg.read(DATA)
+            if not cfg.has_section('preferences'):
+                cfg.add_section('preferences')
+            for pref in self.preferences.keys():
+                cfg.set('preferences', pref,
+                        self.preferences[pref])
+            f = open(DATA, 'wt')
+            cfg.write(f)
+            f.close()
+        except:
+            customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
+
     def save_projects(self):
         cfg = ConfigParser.ConfigParser()
         cfg.read(DATA)
@@ -841,6 +895,9 @@ class DocFactoryFrame(wxFrame):
 
     def on_app_exit(self, event):
         self.Close()
+
+    def on_backup_files(self, event):
+        self.preferences['backup_files'] = not self.preferences['backup_files']
 
     def on_btn_image(self, event):
         self.insert_image('image')
@@ -1061,22 +1118,24 @@ class DocFactoryFrame(wxFrame):
         dlg.Destroy()
 
     def on_file_save(self, event):
+        go_ahead = 1
         file = self.tree.GetItemText(self.activeitem)
         wxLogMessage('Saving %s.' % file)
-        self.editor.SaveFile(file)
-        if self.nb.GetPageCount() > 1:
-            self.nb.DeletePage(1)
+        go_ahead = self.editor.SaveFile(file, self.preferences['backup_files'])
+        if go_ahead:
+            if self.nb.GetPageCount() > 1:
+                self.nb.DeletePage(1)
 
     def on_publish(self, event):
+        go_ahead = 1
         item = self.activeitem
         file = self.tree.GetItemText(item)
         if self.editor.IsModified:
-            wxBeginBusyCursor()
             wxLogMessage('Saving %s.' % file)
-            self.editor.SaveFile(file)
+            wxBeginBusyCursor()
+            go_ahead = self.editor.SaveFile(file, self.preferences['backup_files'])
             wxEndBusyCursor()
-        if os.path.exists(file):
-            go_ahead = 1
+        if go_ahead and os.path.exists(file):
             dlg = publishDlg(self, infile=file, project=self.project)
             dlg.Centre()
             if dlg.ShowModal() == wxID_OK:
@@ -1152,13 +1211,19 @@ class DocFactoryFrame(wxFrame):
         dlg.Show(1)
         
     def on_font_small(self, event):
+        self.preferences['fontsize'] = 'small'
         self.editor.SetZoom(-2)
+        self.save_preferences()
 
     def on_font_normal(self, event):
+        self.preferences['fontsize'] = 'normal'
         self.editor.SetZoom(0)
+        self.save_preferences()
 
     def on_font_big(self, event):
+        self.preferences['fontsize'] = 'big'
         self.editor.SetZoom(2)
+        self.save_preferences()
 
     def on_format_paragraph(self, event):
         self.nb.SetSelection(0)
@@ -1498,13 +1563,19 @@ class DocFactoryFrame(wxFrame):
         self.editor.Undo()
 
     def on_view_eols(self, event):
-        self.editor.SetViewEOL(not self.editor.GetViewEOL())
+        self.preferences['eol_markers'] = not self.preferences['eol_markers']
+        self.editor.SetViewEOL(self.preferences['eol_markers'])
+        self.save_preferences()
         
     def on_view_edge(self, event):
-        self.editor.SetEdgeMode(not self.editor.GetEdgeMode())
+        self.preferences['right_edge_indicator'] = not self.preferences['right_edge_indicator']
+        self.editor.SetEdgeMode(self.preferences['right_edge_indicator'])
+        self.save_preferences()
 
     def on_view_ws(self, event):
-        self.editor.SetViewWhiteSpace(not self.editor.GetViewWhiteSpace())
+        self.preferences['whitespace'] = not self.preferences['whitespace'] 
+        self.editor.SetViewWhiteSpace(self.preferences['whitespace'])
+        self.save_preferences()
 
 #---------------------------------------------------------------------------
 
