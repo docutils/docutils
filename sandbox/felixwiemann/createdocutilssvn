@@ -39,7 +39,10 @@ rm docutils-svn-$date -rf
 # Get a copy of the current CVS repository to mess around with.
 cp ../docutils-$date ./docutils-cvs-$date -R
 # Remove unnecessary stuff.
-rm docutils-cvs-$date/CVSROOT docutils-cvs-$date/sandbox/!(README.txt,v) -rf
+cd docutils-cvs-$date/
+# CVSROOT isn't needed, standard.txt is broken.
+rm CVSROOT sandbox/felixwiemann/testing/data/Attic/standard.txt,v -rf
+cd ..
 # Launch cvs2svn.
 nice -n 10 cvs2svn -s docutils-svn-$date --fs-type=fsfs docutils-cvs-$date 
 # Set permissions.
