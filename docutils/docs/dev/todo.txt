@@ -369,23 +369,21 @@ General
 Documentation
 =============
 
-* User docs.  What's needed?
+User Docs
+---------
+
+What else is needed?
 
 
 Implementation Docs
 -------------------
 
-* Internal module documentation (docstrings).
+* Improve the internal module documentation (docstrings in the code).
+  Specific deficiencies to be listed below.
 
 * docs/ref/doctree.txt: DTD element structural relationships,
   semantics, and attributes.  In progress; element descriptions to be
   completed.
-
-* How-to docs: In docs/howto/.
-
-  - How a Writer works & how to write one
-
-  - Transforms
 
 * Document the ``pending`` elements, how they're generated and what
   they do.
@@ -395,9 +393,25 @@ Implementation Docs
 
 * Document the HTML classes used by html4css1.py.
 
+* Write an overview of the Docutils architecture, as an introduction
+  for developers.  What connects to what, why, and how.  Either update
+  PEP 258 (see PEPs_ below) or as a separate doc.
 
-Specification
--------------
+
+How-Tos
+-------
+
+* Creating Docutils Writers
+
+* Creating Docutils Readers
+
+* Creating Docutils Transforms
+
+* Creating Docutils Parsers
+
+
+PEPs
+----
 
 * Complete PEP 258 Docutils Design Specification.
 
