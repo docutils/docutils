@@ -112,6 +112,21 @@ totest['contents'] = [
                title: None
 """],
 ["""\
+.. contents::
+   :local: arg
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Error in "contents" directive options:
+            invalid option value: (option: "local"; value: 'arg')
+            no argument is allowed; "arg" supplied.
+        <literal_block xml:space="1">
+            .. contents::
+               :local: arg
+"""],
+["""\
 .. contents:: Table of Contents
    :local:
    :depth: 2
