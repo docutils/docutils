@@ -35,11 +35,11 @@ and related projects:
     K. O'Brien, Michel Pelletier, Sam Penrose, Tim Peters, Pearu
     Peterson, Mark Pilgrim, Brett g Porter, David Priest, Jens Quade,
     Andy Robinson, Tavis Rudd, Oliver Rutherfurd, Kenichi Sato, Ueli
-    Schlaepfer, Gunnar Schwant, Frank Siebenlist, Bruce Smith, Roman
-    Suzi, tav, Kent Tenney, Bob Tolbert, Paul Tremblay, Laurence
-    Tratt, Adrian van den Dries, Guido van Rossum, Paul Viren, Martin
-    von Loewis, Greg Ward, Barry Warsaw, Edward Welbourne, Ka-Ping
-    Yee, Moshe Zadka
+    Schlaepfer, Gunnar Schwant, Frank Siebenlist, Bruce Smith, Darek
+    Suchojad, Roman Suzi, tav, Kent Tenney, Bob Tolbert, Paul
+    Tremblay, Laurence Tratt, Adrian van den Dries, Guido van Rossum,
+    Paul Viren, Martin von Loewis, Greg Ward, Barry Warsaw, Edward
+    Welbourne, Ka-Ping Yee, Moshe Zadka
 
 Thank you!
 
@@ -199,6 +199,8 @@ Changes Since 0.3
   - Improved table grid/border handling (prompted by report from Bob
     Marshall).
   - Added support for table titles.
+  - Added "<title />" for untitled docs, for XHTML conformance; thanks
+    to Darek Suchojad.
 
 * docutils/writers/latex2e.py:
 
