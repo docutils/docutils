@@ -195,9 +195,10 @@ class Node:
                 # Get r.next_node(...), avoiding recursion.
                 node = r
 
-    def tree(self):
+    def flattened(self):
         """
-        Return the tree of this node.
+        Return a flattened representation of the (sub)tree rooted at this
+        node -- a list of nodes in tree traversal order.
 
         Given the a paragraph node with the following tree::
 
@@ -214,6 +215,10 @@ class Node:
             [<paragraph>, <emphasis>, <strong>, <Text>, <Text>,
              <reference>, <Text>]
         """
+        nodelist = [self]
+        for node in self.get_children():
+            nodelist.extend(node.flattened())
+        return nodelist
         r = [self]
         for i in self.get_children():
             r.extend(i.tree())
