@@ -61,7 +61,7 @@ parts.SectNum                   "sectnum" (d/p)               710
 parts.Contents                  "contents" (d/p),             720
                                 peps.Contents (t/p)
 
-peps.PEPZero                    pep.Headers (t/p)             760
+peps.PEPZero                    peps.Headers (t/p)            760
 
 components.Filter               "meta" (d/p)                  780
 
