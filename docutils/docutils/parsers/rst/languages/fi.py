@@ -82,6 +82,7 @@ roles = {
     u'citation-reference (translation required)': u'citation-reference',
     u'substitution-reference (translation required)': u'substitution-reference',
     u'kohde': u'target',
-    u'uri-reference (translation required)': u'uri-reference'}
+    u'uri-reference (translation required)': u'uri-reference',
+    u'raw (translation required)': 'raw',}
 """Mapping of Finnish role names to canonical role names for interpreted text.
 """

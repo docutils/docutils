@@ -50,16 +50,16 @@ Custom interpreted text roles may be defined in a document with the
 
 .. _class:
 
-The ``class`` option is recognized by the "role" directive for most
-interpreted text roles.  A description__ is provided by `"role"
+A ``class`` option is recognized by the "role" directive for most
+interpreted text roles.  A description__ is provided in the `"role"
 directive`_ documentation.
 
 __ directives.html#role-class
 
 
----------------------------------
- Standard Interpreted Text Roles
----------------------------------
+----------------
+ Standard Roles
+----------------
 
 ``:emphasis:``
 ==============
@@ -251,3 +251,59 @@ must be used to obtain a ``title_reference`` element.
 
 
 .. _pseudo-XML: ../doctree.html#pseudo-xml
+
+
+-------------------
+ Specialized Roles
+-------------------
+
+``raw``
+=======
+
+:Aliases: None
+:DTD Element: raw
+:Customization:
+    :Options: class_, format
+    :Content: None
+
+.. WARNING::
+
+   The "raw" role is a stop-gap measure allowing the author to bypass
+   reStructuredText's markup.  It is a "power-user" feature that
+   should not be overused or abused.  The use of "raw" ties documents
+   to specific output formats and makes them less portable.
+
+   If you often need to use "raw"-derived interpreted text roles or
+   the "raw" directive, that is a sign either of overuse/abuse or that
+   functionality may be missing from reStructuredText.  Please
+   describe your situation in email to
+   docutils-users@lists.sourceforge.net.
+
+The "raw" role indicates non-reStructuredText data that is to be
+passed untouched to the Writer.  It is the inline equivalent of the
+`"raw" directive`_; see its documentation for details on the
+semantics.
+
+.. _"raw" directive: directives.html#raw
+
+The "raw" role cannot be used directly.  The `"role" directive`_ must
+first be used to build custom roles based on the "raw" role.  One or
+more formats (Writer names) must be provided in a "format" option.
+
+For example, the following creates an HTML-specific "html" role::
+
+    .. role:: html(raw)
+       :format: html
+
+This role can now be used directly to pass data untouched to the HTML
+Writer.  For example::
+
+    If there just *has* to have a line break here,
+    :html:`<br />`
+    it can be accomplished with a "raw"-derived role.
+    But the line block syntax should be considered first.
+
+In addition to "class_", the following option is recognized:
+
+``format`` : text
+    One or more space-separated output format names (Writer names).

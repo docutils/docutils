@@ -84,7 +84,7 @@ roles = {
     'rfc': 'rfc-reference',
     u'\u00EAnfase': 'emphasis',
     'forte': 'strong',
-    'literal': 'literal',
+    'literal': 'literal',               # translation required?
     u'refer\u00EAncia-por-nome': 'named-reference',
     u'refer\u00EAncia-an\u00F4nima': 'anonymous-reference',
     u'refer\u00EAncia-a-nota-de-rodap\u00E9': 'footnote-reference',
@@ -93,6 +93,7 @@ roles = {
     'alvo': 'target',
     u'refer\u00EAncia-a-uri': 'uri-reference',
     'uri': 'uri-reference',
-    'url': 'uri-reference',}
+    'url': 'uri-reference',
+    'raw (translation required)': 'raw',}
 """Mapping of Brazilian Portuguese role names to canonical role names
 for interpreted text."""
