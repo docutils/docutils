@@ -405,7 +405,7 @@ def relative_path(source, target):
 
     If there is no common prefix, return the absolute path to `target`.
     """
-    source_parts = os.path.abspath(source or '').split(os.sep)
+    source_parts = os.path.abspath(source or 'dummy_file').split(os.sep)
     target_parts = os.path.abspath(target).split(os.sep)
     # Check first 2 parts because '/dir'.split('/') == ['', 'dir']:
     if source_parts[:2] != target_parts[:2]:
@@ -420,7 +420,7 @@ def relative_path(source, target):
         source_parts.pop()
         target_parts.pop()
     target_parts.reverse()
-    parts = ['..'] * len(source_parts) + target_parts
+    parts = ['..'] * (len(source_parts) - 1) + target_parts
     return '/'.join(parts)
 
 def get_source_line(node):
