@@ -1,6 +1,6 @@
-==================================
- Docutils Document Tree Structure
-==================================
+============================
+ The Docutils Document Tree
+============================
 :Author: David Goodger
 :Contact: goodger@users.sourceforge.net
 :Revision: $Revision$
