@@ -1,0 +1,59 @@
+Testing MathML
+--------------
+
+Inline math: :latex-math:`\sin(x_n^2)`.  And displayed math:
+
+.. latex-math::
+
+   f(\epsilon) = \frac{1}{1 + \exp\left(\frac{\epsilon}{k_\text{B}T}\right)}
+
+.. latex-math::
+
+   N = \frac{\text{number of apples}}{7}
+
+.. latex-math::
+
+   \mathbf{M} = \left(\begin{matrix}a&b\\c&d\end{matrix}\right)
+
+We have :latex-math:`|\mathbf{M}| = ad - bc`.
+
+.. latex-math::
+
+   \int_0^1 x^n dx = \frac{1}{n + 1}
+
+.. latex-math::
+
+   \sum_{n=1}^m n = \frac{m(m+1)}{2}
+
+* tilde: :latex-math:`\tilde{n}`
+* hat: :latex-math:`\hat{H}`
+* bar: :latex-math:`\bar{v}`
+
+Fancy characters: :latex-math:`\mathbb{B}`.
+
+Math split over Two lines:
+
+.. latex-math::
+
+   g(\alpha) = & (1 + \alpha + \alpha^2 + \alpha^3 + \alpha^4\\
+               & + \alpha^5)
+
+.. latex-math::
+
+   f(x) = \left\{
+     \begin{matrix}
+       1 - x, & x < 1 \\
+       0,     & x > 1
+     \end{matrix}\right.
+
+
+ToDo
+----
+
+* Math inside text: ``n - 1 \text{if $n$ is odd}``
+* Spaces ...
+* More functions and special symbols.
+* Remove circular refs.
+* Decimal numbers.
+* ``\mathbb{ABC}`` does not work.  Use ``\mathbb{A}\mathbb{B}\mathbb{C}``.
+
