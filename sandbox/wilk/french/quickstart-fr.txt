@@ -2,7 +2,7 @@ Introduction à ReStructuredText
 ===============================
 
 :Auteur: Richard Jones
-:Version: $Revision$
+:Version: 1.10
 :Traduction: William Dode <wilk *at* flibuste.net>
 
 .. contents::
@@ -65,7 +65,7 @@ des marqueurs pour *italique* avec "``*italique*``" ou **gras**
 avec "``**gras**``".
 
 Si l'on souhaite qu'un texte apparaisse dans une police à chasse
-fixe "````double guillemet````". 
+fixe "````doubles apostrophes inversées````". 
 
 .. sidebar:: a traduire
 
@@ -77,12 +77,12 @@ fixe "````double guillemet````".
 Si vous souhaitez utiliser un de ces caractères "spéciaux" dans
 le texte, il n'y a généralement pas de problème -- reStructuredText
 est assez malin.
-Par example, cet * asterisque est traité correctement. Si vous
+Par exemple, cet asterisque * est traité correctement. Si vous
 souhaitez par contre \*entourer un texte par des astérisques* 
 **sans** qu'il soit en italique, il est nécessaire d'indiquer que
 l'astérique ne doit pas être interprété. Pour cela il suffit de placer
 un anti-slash juste avant lui, comme ça "``\*``" (quickref__), ou
-en l'entourant de deux guillemets (litteral), comme cela ::
+en l'entourant de doubles apostrophes inversées (litteral), comme cela ::
 
   ``\*``
 
@@ -130,7 +130,7 @@ __ quickref.html#enumerated-lists
 
   Le résultat (note: Tous les styles de listes ne sont pas toujours
   supportés par tous les navigateurs, vous ne verrez donc pas forcément
-  les effets compléts):
+  les effets complets):
 
     1. nombres
 
@@ -208,7 +208,7 @@ Préformatage
 
 __ quickref.html#literal-blocks
 
-Pour inclure un texte préformatté sans traitement
+Pour inclure un texte préformaté sans traitement
 il suffit de terminer le paragraphe par "``::``". Le texte préformaté est
 terminé lorsqu'une ligne retombe au niveau du décalage précédent. Par exemple::
 
@@ -217,7 +217,7 @@ terminé lorsqu'une ligne retombe au niveau du décalage précédent. Par exemple::
       Espaces, nouvelles lignes, lignes vides, et toutes sortes de marqueurs
          (comme *ceci* ou \cela) sont préservés dans les bloc préformatés.
 
-   Regardez ici, je suis déscendu d'un niveau.
+   Regardez ici, je suis descendu d'un niveau.
    (mais pas assez)
 
   Fin de l'exemple
@@ -299,7 +299,7 @@ ce document avec le résultat.)
 Notez que les entêtes de section sont utilisable comme cible de liens,
 simplement en utilisant leur nom. Pour créer un lien sur la section Listes_,
 j'écris "``Listes_``". Si le titre comporte des espaces, il est nécessaire
-d'utiliser les guillemets "```Styles de texte`_``".
+d'utiliser les doubles apostrophes inversées "```Styles de texte`_``".
 
 Pour indiquer le titre du document, utilisez un style d'ornement unique
 en début de document. Pour indiquer un sous-titre de document, utilisez
@@ -359,14 +359,14 @@ __ ../../spec/rst/directives.html#images
 Et ensuite ?
 ------------
 
-Cette introduction montre les possibilités courrantes de reStructuredText,
+Cette introduction montre les possibilités les plus courantes de reStructuredText,
 mais il y en a bien d'autres à explorer. Le manuel de référence utilisateur
 'Quick reStructuredText`_ est conseillé maintenant. Pour les détails complets
 consultez `reStructuredText Markup Specification`_ [#]_.
 
 Les utilisateurs ayant besoin d'aide avec Docutils ou reStructuredText peuvent
 `poster un message`_ sur la liste de diffusion `Docutils-Users mailing list`_.
-Le `Docutils project web site`_ comporte d'avantages d'informations.
+Le `Docutils project web site`_ comporte davantage d'informations.
 
 .. [#] Si ce lien relatif ne fonctionne pas, consultez le document principal:
    http://docutils.sourceforge.net/spec/rst/reStructuredText.html.
