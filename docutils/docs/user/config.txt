@@ -504,20 +504,28 @@ _`initial_header_level`
 .. _stylesheet [html4css1 writer]:
 
 stylesheet
-    CSS stylesheet URL, used verbatim.  Overridden by
-    "stylesheet_path" URL option (``--stylesheet-path``).  Also
-    defined for the `LaTeX Writer`__.
+    CSS stylesheet URL, used verbatim.  Overridden by the
+    "stylesheet_path" setting (``--stylesheet-path``).  However, an
+    earlier file's "stylesheet-path" setting can be overriden by a
+    later config file's "stylesheet" by nullifying "stylesheet-path"
+    in the later file::
+
+        stylesheet-path=
+
+    On the command line, use ``--stylesheet-path=''``.
 
     Default: "default.css".  Options: ``--stylesheet``.
+
+    (Setting also defined for the `LaTeX Writer`__.)
 
     __ `stylesheet [latex2e writer]`_
 
 .. _stylesheet_path [html4css1 writer]:
 
 stylesheet_path
-    Path to CSS stylesheet [#pwd]_.  Overrides "stylesheet" URL option
-    (``--stylesheet``).  Path is adjusted relative to the output HTML
-    file.  Also defined for the `LaTeX Writer`__.
+    Path to CSS stylesheet [#pwd]_.  Overrides "stylesheet" URL
+    setting (``--stylesheet``).  Path is adjusted relative to the
+    output HTML file.  Also defined for the `LaTeX Writer`__.
 
     Default: None.  Options: ``--stylesheet-path``.
 
