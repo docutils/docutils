@@ -548,8 +548,9 @@ class ConfigParser(CP.ConfigParser):
 
     old_warning = """
 The "[option]" section is deprecated.  Support for old-format configuration
-files will be removed in a future Docutils release.  Please revise your
-configuration files.  See <http://docutils.sf.net/docs/config.html>.
+files may be removed in a future Docutils release.  Please revise your
+configuration files.  See <http://docutils.sf.net/docs/config.html>, section
+"Old-Format Configuration Files".
 """
 
     def read(self, filenames, option_parser):
