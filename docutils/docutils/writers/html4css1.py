@@ -278,12 +278,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         attlist.sort()
         parts = [tagname]
         for name, value in attlist:
-            if value is None:           # boolean attribute
-                # According to the HTML spec, ``<element boolean>`` is good,
-                # ``<element boolean="boolean">`` is bad.
-                # (But the XHTML (XML) spec says the opposite.  <sigh>)
-                parts.append(name.lower())
-            elif isinstance(value, ListType):
+            # value=None was used for boolean attributes without
+            # value, but this isn't supported by XHTML.
+            assert value is not None
+            if isinstance(value, ListType):
                 values = [unicode(v) for v in value]
                 parts.append('%s="%s"' % (name.lower(),
                                           self.attval(' '.join(values))))
