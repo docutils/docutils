@@ -378,8 +378,8 @@ What else is needed?
 Implementation Docs
 -------------------
 
-* Improve the internal module documentation (docstrings in the code).
-  Specific deficiencies listed below.
+* @@@ Improve the internal module documentation (docstrings in the
+  code).  Specific deficiencies listed below.
 
   - docutils.parsers.rst.states.State.build_table: data structure required
     (including StringList).

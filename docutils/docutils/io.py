@@ -121,6 +121,7 @@ class Output(TransformSpec):
                 % (self.__class__, self.destination, self.destination_path))
 
     def write(self, data):
+        """`data` is a Unicode string, to be encoded by `self.encode`."""
         raise NotImplementedError
 
     def encode(self, data):
@@ -172,7 +173,9 @@ class FileInput(Input):
                 pass
 
     def read(self):
-        """Read and decode a single file and return the data."""
+        """
+        Read and decode a single file and return the data (Unicode string).
+        """
         data = self.source.read()
         if self.autoclose:
             self.close()
