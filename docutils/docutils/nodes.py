@@ -1182,7 +1182,7 @@ class raw(Special, Inline, PreBibliographic, FixedTextElement):
 class emphasis(Inline, TextElement): pass
 class strong(Inline, TextElement): pass
 class literal(Inline, TextElement): pass
-class reference(Inline, Referential, TextElement): pass
+class reference(General, Inline, Referential, TextElement): pass
 class footnote_reference(Inline, Referential, TextElement): pass
 class citation_reference(Inline, Referential, TextElement): pass
 class substitution_reference(Inline, TextElement): pass
