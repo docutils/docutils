@@ -160,8 +160,10 @@ __ http://www.python.org/peps/pep-0258.html
 
 Docutils-general:
 
-* `The Docutils To Do List <dev/todo.html>`__
+* `Docutils To Do List <dev/todo.html>`__
 * `Docutils Project Policies <dev/policies.html>`__
+* `Docutils Web Site <dev/website.html>`__
+* `Docutils Release Procedure <dev/release.html>`__
 * `Docstring Semantics <dev/semantics.html>`__ (incomplete)
 * `Python Source Reader <dev/pysource.html>`_ (incomplete)
 * `Docutils Python DTD <dev/pysource.dtd>`_ (experimental)
