@@ -43,6 +43,11 @@ Changes Since 0.2
   - Moved the "id" attribute from TOC list items to the references
     (``Contents.build_contents()``).
 
+* docutils/transforms/peps.py:
+
+  - Added ``mask_email()`` function, updating to pep2html.py's
+    functionality.
+
 * docutils/writers/html4css1.py:
 
   - "name" attributes only on these tags: a, applet, form, frame,
@@ -52,6 +57,7 @@ Changes Since 0.2
   - Fixed targets (names) on footnote, citation, topic title,
     problematic, and system_message nodes (for Netscape 4).
   - Changed field names from "<td>" to "<th>".
+  - Added "@" to "&#64;" encoding to thwart address harvesters.
 
 * docs/tools.txt:
 
