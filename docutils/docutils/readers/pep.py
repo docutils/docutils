@@ -31,6 +31,7 @@ class Reader(standalone.Reader):
     config_section_dependencies = ('readers', 'standalone reader')
 
     default_transforms = (references.Substitutions,
+                          references.SectionTargets,
                           peps.Headers,
                           peps.Contents,
                           references.ChainedTargets,

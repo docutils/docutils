@@ -43,6 +43,7 @@ class Reader(readers.Reader):
     config_section_dependencies = ('readers',)
 
     default_transforms = (references.Substitutions,
+                          references.SectionTargets,
                           frontmatter.DocTitle,
                           frontmatter.DocInfo,
                           references.ChainedTargets,
