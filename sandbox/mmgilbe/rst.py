@@ -138,6 +138,10 @@ class MoinTranslator(html4css1.HTMLTranslator):
         # gets level 2, so to comply with their style's we do so here also. 
         # TODO: Could this be fixed by passing this value in settings_overrides?
         self.initial_header_level = 3
+        # Temporary place for wiki returned markup. This will be filled when
+        # replacing the default writer with the capture_wiki_formatting
+        # function (see visit_image for an example). 
+        self.wiki_text = ''
         
     def astext(self):
         self.request.write = self.old_write
@@ -145,8 +149,8 @@ class MoinTranslator(html4css1.HTMLTranslator):
     
     def rst_write(self, string):
         if self.strip_paragraph:
-            replacements = {'<p>': '', '</p>': '', '\n': '', '> ': '>'}
-            for src, dst in replacements.items():
+            replacement = {'<p>': '', '</p>': '', '\n': '', '> ': '>'}
+            for src, dst in replacement.items():
                 string = string.replace(src, dst)
             # Everything seems to have a space ending the text block. We want to
             # get rid of this
@@ -274,16 +278,28 @@ class MoinTranslator(html4css1.HTMLTranslator):
 
     def depart_warning(self, node):
         self.request.write(self.formatter.highlight(0))
+        
+    def capture_wiki_formatting(self, text):
+        # For some reason getting empty strings here which overwrite what we
+        # really want (i.e. this is called multiple times per format call).
+        if text:
+            self.wiki_text = text
 
+    #
+    # Images
+    #
+            
     def visit_image(self, node):
         # We need process inline images with moinmoin. Otherwise let the normal
         # rst writer do its magic.
         if node['uri'].lstrip().startswith('inline:'):
-            self.strip_paragraph = 1
-            self.wikiparser.raw = node['uri'] 
+            old_writer, self.request.write = self.request.write, self.capture_wiki_formatting
+            self.wikiparser.raw = node['uri']
             self.wikiparser.format(self.formatter)
-            self.strip_paragraph = 0
-            raise docutils.nodes.SkipNode
-            return
+            self.request.write = old_writer
+            # Only pass the src and alt parts to the writer. The rst writer 
+            # inserts its own tags so we don't need the moinmoin html markup.
+            node['uri'] = re.search('src="([^"]+)"', self.wiki_text).groups()[0]
+            node['alt'] = re.search('alt="([^"]*)"', self.wiki_text).groups()[0]
         html4css1.HTMLTranslator.visit_image(self, node)
         
