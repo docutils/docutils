@@ -98,7 +98,8 @@ Each Docutils language module contains three module attributes:
     components when they encounter document tree elements whose class
     names are the mapping keys.
 
-    The entry values should be translated to the target language.
+    The entry values (*not* the keys) should be translated to the
+    target language.
 
 ``bibliographic_fields``
     This is a mapping of language-dependent field names (converted to
@@ -137,7 +138,9 @@ attribute:
     registered in ``docutils/parsers/rst/directives/__init__.py``, in
     ``_directive_registry``.
 
-    The keys should be translated to the target language.
+    The keys should be translated to the target language.  Synonyms
+    (multiple keys with the same values) are allowed; this is useful
+    for abbreviations.
 
 ``roles``
     This is a mapping language-dependent role names to canonical role
@@ -145,7 +148,9 @@ attribute:
     registered in ``docutils/parsers/rst/states.py``, in
     ``Inliner._interpreted_roles`` (this may change).
 
-    The keys should be translated to the target language.
+    The keys should be translated to the target language.  Synonyms
+    (multiple keys with the same values) are allowed; this is useful
+    for abbreviations.
 
 
 Testing the Language Modules
