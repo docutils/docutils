@@ -63,7 +63,7 @@ do
 done
 shift `expr $OPTIND - 1`
 
-test $feedback && echo 'Starting docutils-update run...'
+test $feedback && echo 'Starting docutils-update run...' || true
 
 if [ $trace -eq 1 -o $verbose -eq 1 ] ; then
     set -o xtrace
@@ -126,10 +126,10 @@ for htmlfile in `find .. -name '*.html'` ; do
     if [ -e $txtfile ] ; then
         if [ $unconditional -eq 1 -o $txtfile -nt $htmlfile ] ; then
             if [ "${base:0:4}" == "pep-" ] ; then
-                test $feedback && echo "$txtfile (PEP)"
+                test $feedback && echo "$txtfile (PEP)" || true
                 python $lib/tools/pep.py --config=$dir/docutils.conf $txtfile $htmlfile
             else
-                test $feedback && echo $txtfile
+                test $feedback && echo $txtfile || true
                 python $lib/tools/rst2html.py --config=$dir/docutils.conf $txtfile $htmlfile
             fi
         fi
@@ -146,7 +146,7 @@ done
 
 # Acquire lock.
 if ! mkdir $sshdir/lock; then
-    test $feedback && echo Waiting for lock.
+    test $feedback && echo Waiting for lock. || true
     sleep 60
     if ! mkdir $sshdir/lock; then
         echo
@@ -173,7 +173,7 @@ tar cf $htdocs_new_tarball .
 if ! diff -q $htdocs_tarball $htdocs_new_tarball > /dev/null; then
     # Create patch.
     $bindir/bsdiff $htdocs_tarball $htdocs_new_tarball $htdocs_patchfile
-    test $feedback && echo Patch size: `du -h $htdocs_patchfile | sed 's/\t.*//'`
+    test $feedback && echo Patch size: `du -h $htdocs_patchfile | sed 's/\t.*//'` || true
     # Upload patch file.
     ssh -i $sshdir/lock/id_dsa \
         -o UserKnownHostsFile=$sshdir/known_hosts \
@@ -197,7 +197,7 @@ fi
 # Tidy up.
 rm -f $htdocs_patchfile
 rm -rf $sshdir/lock
-test $feedback && echo '...docutils-update done.'
+test $feedback && echo '...docutils-update done.' || true
 
 # Local Variables:
 # indent-tabs-mode: nil
