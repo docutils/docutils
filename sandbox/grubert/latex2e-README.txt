@@ -4,15 +4,11 @@ latex2e BUGS TODOS and other animals
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
 
-Rev. 2002-12-19
+Rev. 2002-12-27
 
 To do
 ~~~~~
 
-* switches:
-  --suppress-toc-for-latex: donot write one even if rst says so
-  --use-latex-toc: or find another way to have linenumbers in the toc.
-  
 
 * two hlines after table head and on table end ?
 
@@ -123,6 +119,7 @@ ATTENTION
 Done
 ~~~~
 
+* --use-latex-toc: so we get pagenumbers.
 * reduce table width to 0.93 of linewidth.
 * decrement pdfbookmark levels. now 0 to 3.
 * use subsubsection for deeper ones.
