@@ -203,7 +203,7 @@ __ `David Goodger`_
 Project Links
 =============
 
-- `Project Summary page`__: `released files`__, `Bug reports`__,
+- `Project Summary page`__: `released files`__, `bug reports`__,
   patches__, `mailing lists`__, and news__.
 - `Docutils CVS repository`__
 - Project administrator: `David Goodger`_
