@@ -16,16 +16,13 @@
 Overview
 ========
 
-I have included sevearl pacagest that make docutils more useful.
+The package docutils_nest adds functionality to docutils. XML authors
+and developers might find it useful. Others will not find it useful.
 
-1. nest_line
+As its name implies, docutils_nest allows users to add nested inline
+structure to a rst document.
 
-  This package allows for nested inline tags. See the README in the actual
-  package for more details.
-
-2. That's it, for now. I have also been working on a script that converts
-   rst.xml to plain rst.
-
+See the README.txt in /docutils_nest.
 
 
 
