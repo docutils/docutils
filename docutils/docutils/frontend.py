@@ -346,7 +346,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
           {'metavar': '<name[:handler]>', 'default': 'utf-8',
            'validator': validate_encoding_and_error_handler}),
          (SUPPRESS_HELP,                # usually handled by --output-encoding
-          ['--output_encoding_error_handler'],
+          ['--output-encoding-error-handler'],
           {'default': 'strict', 'validator': validate_encoding_error_handler}),
          ('Specify the text encoding for error output.  Default is ASCII.  '
           'Optionally also specify the encoding error handler for unencodable '
@@ -357,7 +357,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
           {'metavar': '<name[:handler]>', 'default': 'ascii',
            'validator': validate_encoding_and_error_handler}),
          (SUPPRESS_HELP,                # usually handled by --error-encoding
-          ['--error_encoding_error_handler'],
+          ['--error-encoding-error-handler'],
           {'default': default_error_encoding_error_handler,
            'validator': validate_encoding_error_handler}),
          ('Specify the language of input text (ISO 639 2-letter identifier).'
