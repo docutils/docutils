@@ -66,7 +66,7 @@ def parseArgs(argv=sys.argv):
         if len(args) != 0:
             usageExit("No command-line arguments supported yet.")
     except getopt.error, msg:
-        self.usageExit(msg)
+        usageExit(msg)
 
 def loadTestModules(path, name='', packages=None):
     """
