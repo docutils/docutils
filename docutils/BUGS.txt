@@ -124,12 +124,19 @@ Also see the `SourceForge Bug Tracker`_.
   whitespace and punctuation as markup delimiters, which may not be
   applicable in these languages.
 
-* In text inserted by the "include" directive, errors are often not
-  reported with the correct "source" or "line" numbers.  Perhaps all
-  Reporter calls need "source" and "line" keyword arguments.
-  Elements' .line assignments should be checked.  (Assign to .source
-  too?  Add a set_info method?  To what?)  There's a test in
-  test/test_parsers/test_rst/test_directives/test_include.py.
+
+* Line numbers in system messages are inconsistent in the parser.
+
+  - In text inserted by the "include" directive, errors are often not
+    reported with the correct "source" or "line" numbers.  Perhaps all
+    Reporter calls need "source" and "line" keyword arguments.
+    Elements' .line assignments should be checked.  (Assign to .source
+    too?  Add a set_info method?  To what?)  There's a test in
+    test/test_parsers/test_rst/test_directives/test_include.py.
+
+  - Some line numbers in elements are not being set properly
+    (explicitly), just implicitly/automatically.  See rev. 1.74 of
+    docutils/parsers/rst/states.py for an example of how to set.
 
 * Explicit targets are sometimes mis-located.  In particular, placing
   a target before a section header puts the target at the end of the
