@@ -78,10 +78,14 @@ class SettingsSpec:
     `docutils.frontend.OptionParser`.  This tuple contains one or more sets of
     option group title, description, and a list/tuple of tuples: ``('help
     text', [list of option strings], {keyword arguments})``.  Group title
-    and/or description may be `None`; no group title implies no group, just a
-    list of single options.  Runtime settings names are derived implicitly
-    from long option names ("--a-setting" becomes ``settings.a_setting``) or
-    explicitly from the "dest" keyword argument."""
+    and/or description may be `None`; a group title of `None` implies no
+    group, just a list of single options.  The "keyword arguments" dictionary
+    contains arguments to the OptionParser/OptionGroup ``add_option`` method,
+    with the addition of a "validator" keyword (see the
+    `docutils.frontend.OptionParser.validators` instance attribute).  Runtime
+    settings names are derived implicitly from long option names
+    ("--a-setting" becomes ``settings.a_setting``) or explicitly from the
+    "dest" keyword argument."""
 
     settings_defaults = None
     """A dictionary of defaults for internal or inaccessible (by command-line

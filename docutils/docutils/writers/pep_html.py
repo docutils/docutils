@@ -13,7 +13,7 @@ __docformat__ = 'reStructuredText'
 
 import sys
 import docutils
-from docutils import nodes, frontend, utils
+from docutils import frontend, nodes, utils
 from docutils.writers import html4css1
 
 
@@ -35,7 +35,8 @@ class Writer(html4css1.Writer):
          # Workaround for SourceForge's broken Python
          # (``import random`` causes a segfault).
          (frontend.SUPPRESS_HELP,
-          ['--no-random'], {'action': 'store_true'}),))
+          ['--no-random'],
+          {'action': 'store_true', 'validator': frontend.validate_boolean}),))
 
     settings_default_overrides = {'footnote_references': 'brackets'}
 

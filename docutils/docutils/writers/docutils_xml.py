@@ -12,7 +12,7 @@ __docformat__ = 'reStructuredText'
 
 
 import docutils
-from docutils import writers
+from docutils import frontend, writers
 
 
 class Writer(writers.Writer):
@@ -25,15 +25,19 @@ class Writer(writers.Writer):
         'Warning: the --newlines and --indents options may adversely affect '
         'whitespace; use them only for reading convenience.',
         (('Generate XML with newlines before and after tags.',
-          ['--newlines'], {'action': 'store_true'}),
+          ['--newlines'],
+          {'action': 'store_true', 'validator': frontend.validate_boolean}),
          ('Generate XML with indents and newlines.',
-          ['--indents'], {'action': 'store_true'}),
+          ['--indents'],
+          {'action': 'store_true', 'validator': frontend.validate_boolean}),
          ('Omit the XML declaration.  Use with caution.',
-          ['--no-xml-declaration'], {'dest': 'xml_declaration', 'default': 1,
-                                     'action': 'store_false'}),
+          ['--no-xml-declaration'],
+          {'dest': 'xml_declaration', 'default': 1, 'action': 'store_false',
+           'validator': frontend.validate_boolean}),
          ('Omit the DOCTYPE declaration.',
-          ['--no-doctype'], {'dest': 'doctype_declaration', 'default': 1,
-                             'action': 'store_false'}),))
+          ['--no-doctype'],
+          {'dest': 'doctype_declaration', 'default': 1,
+           'action': 'store_false', 'validator': frontend.validate_boolean}),))
 
     config_section = 'docutils_xml writer'
     config_section_dependencies = ('writers',)
