@@ -144,14 +144,6 @@ Also see the `SourceForge Bug Tracker`_.
   For details, see `this posting by Alan G. Isaac
   <http://article.gmane.org/gmane.text.docutils.user/1569>`_.
 
-* .. _empty csv-table:
-
-  When supplying an empty file for the csv-table directive, Docutils
-  crashes with a zero-division error.  Example::
-
-      .. csv-table::
-         :file: empty.txt
-
 * _`Line numbers` in system messages are inconsistent in the parser.
 
   - In text inserted by the "include" directive, errors are often not

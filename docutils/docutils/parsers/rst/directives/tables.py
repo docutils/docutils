@@ -294,8 +294,13 @@ def get_column_widths(max_cols, name, options, lineno, block_text,
               % (name, max_cols),
               nodes.literal_block(block_text, block_text), line=lineno)
             raise SystemMessagePropagation(error)
-    else:
+    elif max_cols:
         col_widths = [100 / max_cols] * max_cols
+    else:
+        error = state_machine.reporter.error(
+            'No table data detected in CSV file.',
+            nodes.literal_block(block_text, block_text), line=lineno)
+        raise SystemMessagePropagation(error)
     return col_widths
 
 def extend_short_rows_with_empty_cells(columns, parts):
