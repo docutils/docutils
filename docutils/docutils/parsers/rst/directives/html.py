@@ -34,7 +34,7 @@ def meta(name, arguments, options, content, lineno,
             'Empty meta directive.',
             nodes.literal_block(block_text, block_text), line=lineno)
         node += error
-    return node.get_children()
+    return node.children
 
 meta.content = 1
 

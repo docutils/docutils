@@ -88,7 +88,7 @@ class DocstringFormattingVisitor(nodes.SparseNodeVisitor):
         node['docformat'] = docformat
         parser = self.get_parser(docformat)
         parser.parse(text, self.document)
-        for child in self.document.get_children():
+        for child in self.document.children:
             node.append(child)
         self.document.current_source = self.document.current_line = None
         del self.document[:]

@@ -185,7 +185,7 @@ def replace(name, arguments, options, content, lineno,
             messages.append(error)
             return messages
         else:
-            return element[0].get_children()
+            return element[0].children
     else:
         error = state_machine.reporter.error(
             'The "%s" directive is empty; content required.' % (name),
@@ -229,7 +229,7 @@ def unicode_directive(name, arguments, options, content, lineno,
                 nodes.literal_block(block_text, block_text), line=lineno)
             return [error]
         element += nodes.Text(decoded)
-    return element.get_children()
+    return element.children
 
 unicode_directive.arguments = (1, 0, 1)
 unicode_directive.options = {'trim': directives.flag,

@@ -92,7 +92,7 @@ def figure(name, arguments, options, content, lineno,
         first_node = node[0]
         if isinstance(first_node, nodes.paragraph):
             caption = nodes.caption(first_node.rawsource, '',
-                                    *first_node.get_children())
+                                    *first_node.children)
             figure_node += caption
         elif not (isinstance(first_node, nodes.comment)
                   and len(first_node) == 0):
