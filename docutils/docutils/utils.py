@@ -237,14 +237,14 @@ class BadOptionDataError(ExtensionOptionError): pass
 class DuplicateOptionError(ExtensionOptionError): pass
 
 
-def extract_extension_options(field_list, option_spec):
+def extract_extension_options(field_list, options_spec):
     """
     Return a dictionary mapping extension option names to converted values.
 
     :Parameters:
         - `field_list`: A flat field list without field arguments, where each
           field body consists of a single paragraph only.
-        - `option_spec`: Dictionary mapping known option names to a
+        - `options_spec`: Dictionary mapping known option names to a
           conversion function such as `int` or `float`.
 
     :Exceptions:
@@ -257,7 +257,7 @@ def extract_extension_options(field_list, option_spec):
           missing data, bad quotes, etc.).
     """
     option_list = extract_options(field_list)
-    option_dict = assemble_option_dict(option_list, option_spec)
+    option_dict = assemble_option_dict(option_list, options_spec)
     return option_dict
 
 def extract_options(field_list):
@@ -292,14 +292,14 @@ def extract_options(field_list):
         option_list.append((name, data))
     return option_list
 
-def assemble_option_dict(option_list, option_spec):
+def assemble_option_dict(option_list, options_spec):
     """
     Return a mapping of option names to values.
 
     :Parameters:
         - `option_list`: A list of (name, value) pairs (the output of
           `extract_options()`).
-        - `option_spec`: Dictionary mapping known option names to a
+        - `options_spec`: Dictionary mapping known option names to a
           conversion function such as `int` or `float`.
 
     :Exceptions:
@@ -310,7 +310,7 @@ def assemble_option_dict(option_list, option_spec):
     """
     options = {}
     for name, value in option_list:
-        convertor = option_spec[name]       # raises KeyError if unknown
+        convertor = options_spec[name]       # raises KeyError if unknown
         if options.has_key(name):
             raise DuplicateOptionError('duplicate option "%s"' % name)
         try:
@@ -372,12 +372,12 @@ def normalize_name(name):
     """Return a case- and whitespace-normalized name."""
     return ' '.join(name.lower().split())
 
-def new_document(source, options=None):
-    if options is None:
-        options = frontend.OptionParser().get_default_values()
-    reporter = Reporter(source, options.report_level, options.halt_level,
-                        options.warning_stream, options.debug)
-    document = nodes.document(options, reporter, source=source)
+def new_document(source, settings=None):
+    if settings is None:
+        settings = frontend.OptionParser().get_default_values()
+    reporter = Reporter(source, settings.report_level, settings.halt_level,
+                        settings.warning_stream, settings.debug)
+    document = nodes.document(settings, reporter, source=source)
     document.note_source(source)
     return document
 
@@ -398,8 +398,10 @@ def relative_path(source, target):
     """
     source_parts = os.path.abspath(source or '').split(os.sep)
     target_parts = os.path.abspath(target).split(os.sep)
-    if source_parts[:1] != target_parts[:1]:
-        # Nothing in common between paths.  Return absolute path.
+    # Check first 2 parts because '/dir'.split('/') == ['', 'dir']:
+    if source_parts[:2] != target_parts[:2]:
+        # Nothing in common between paths.
+        # Return absolute path, using '/' for URLs:
         return '/'.join(target_parts)
     source_parts.reverse()
     target_parts.reverse()
