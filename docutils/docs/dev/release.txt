@@ -102,7 +102,7 @@
     SourceForge.
 
 14. Download the release tarball and verify its integrity by walking
-    through an installation, as outlined above (steps 5, 6, & 7).
+    through an installation, as outlined above (steps 7, 8, & 9).
 
 15. Update the web page:
 
@@ -112,31 +112,38 @@
       of Docutils) in the webroot (i.e. the ``htdocs/`` directory).
       Put all documentation files into it::
 
+          cd docutils-X.Y.Z
+          rm -rf build
           cd tools/
           ./buildhtml.py ..
           cd ..
-          tar -cjvf docutils-docs.tar.bz2 `find -name test -type d -prune -o -name \*.css -print -o -name \*.html -print -o -name \*.txt -print`
-          ssh <username>@shell.sourceforge.net 'cat > docutils-docs.tar.bz2' < docutils-docs.tar.bz2
+          find -name test -type d -prune -o -name \*.css -print0 \
+              -o -name \*.html -print0 -o -name \*.txt -print0 \
+              | tar -cjvf docutils-docs.tar.bz2 -T - --null
+          scp docutils-docs.tar.bz2 <username>@docutils.sourceforge.net:
 
-      Now log in to shell.sourceforge.net and ``tar -xjvf
-      ~/docutils-docs.tar.bz2`` in the newly created ``htdocs/X.Y.Z``
-      directory.
+      Now log in to docutils.sourceforge.net and::
+
+          cd /home/groups/d/do/docutils/htdocs/
+          mkdir -m g+rwxs X.Y.Z
+          cd X.Y.Z
+          tar -xjvf ~/docutils-docs.tar.bz2
 
 16. Bump the version number again (as per step 2) and update the files
     in ``test/functional/expected/``.
 
-17. Announce the end of the checkin freeze on Docutils-develop.
+17. Send announcement email to:
 
-18. Add a SourceForge News item, with title "Docutils X.Y.Z released"
-    and containing the release tarball's download URL.
-
-19. Send announcement email to:
-
+    * docutils-develop@lists.sourceforge.net (also announcing the end
+      of the checkin freeze)
     * docutils-users@lists.sourceforge.net
     * doc-sig@python.org
     * python-announce@python.org
 
-20. Register
+18. Add a SourceForge News item, with title "Docutils X.Y.Z released"
+    and containing the release tarball's download URL.
+
+19. Register
 
     * with PyPI (``python setup.py register``)
     * with FreshMeat

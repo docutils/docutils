@@ -388,6 +388,15 @@ General
   .. _traits: http://old.scipy.org/site_content/traits
   .. _SciPy: http://www.scipy.org/
 
+* tools/buildhtml.py: Extend the --prune option ("prune" config
+  setting) to accept file names (generic path) in addition to
+  directories (e.g. --prune=docs/user/rst/cheatsheet.txt, which should
+  *not* be converted to HTML).
+
+* stylesheet & stylesheet_path settings: either one should set the
+  other one to ``None`` as a side effect.  See discussion on
+  docutils-develop from 2004-07-03.
+
 
 Documentation
 =============
@@ -1714,18 +1723,6 @@ Unimplemented Transforms
 
 HTML Writer
 ===========
-
-* Construct a _`templating system`, as in ht2html/yaptu, using
-  directives and substitutions for dynamic stuff?  Or a specialized
-  writer to generate .ht & links.h files for ht2html?
-
-  This is an overly generic, ambitious, and unnecessary idea.  The two
-  systems, ht2html & yaptu, represent different approaches to
-  templating.  Ht2html stiches bits of HTML together to make unified
-  web pages.  Yaptu is for generic programmable text replacement.
-  Templating should simply be left to other systems.  Users can choose
-  a templating system to apply to their reStructuredText documents as
-  best serves their interests.
 
 * Add more support for <link> elements, especially for navigation
   bars.
