@@ -31,12 +31,16 @@ class Reader(standalone.Reader):
         'reStructuredText parser) are on by default.',
         ())
 
-    transforms = (references.Substitutions,
-                  peps.Headers,
-                  peps.Contents,
-                  peps.TargetNotes,
-                  references.Footnotes,
-                  references.Hyperlinks,)
+    default_transforms = (references.Substitutions,
+                          peps.Headers,
+                          peps.Contents,
+                          references.ChainedTargets,
+                          references.AnonymousHyperlinks,
+                          references.IndirectHyperlinks,
+                          peps.TargetNotes,
+                          references.Footnotes,
+                          references.ExternalTargets,
+                          references.InternalTargets,)
 
     settings_default_overrides = {'pep_references': 1, 'rfc_references': 1}
 

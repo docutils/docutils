@@ -25,8 +25,12 @@ class Reader(readers.Reader):
     document = None
     """A single document tree."""
 
-    transforms = (references.Substitutions,
-                  frontmatter.DocTitle,
-                  frontmatter.DocInfo,
-                  references.Footnotes,
-                  references.Hyperlinks,)
+    default_transforms = (references.Substitutions,
+                          frontmatter.DocTitle,
+                          frontmatter.DocInfo,
+                          references.ChainedTargets,
+                          references.AnonymousHyperlinks,
+                          references.IndirectHyperlinks,
+                          references.Footnotes,
+                          references.ExternalTargets,
+                          references.InternalTargets,)
