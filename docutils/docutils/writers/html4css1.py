@@ -209,6 +209,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                          '<col />\n'
                          '<tbody valign="top">\n'
                          '<tr><td>\n')
+        self.footnote_backrefs(node)
 
     def depart_citation(self, node):
         self.body.append('</td></tr>\n'
@@ -318,13 +319,11 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.head.append('<meta name="%s" content="%s" />\n'
                          % (name, self.attval(node.astext())))
         self.body.append(self.starttag(node, 'tr', ''))
-        self.body.append('<td>\n'
-                         '<p class="docinfo-name">%s:</p>\n'
-                         '</td><td>\n'
-                         '<p>' % self.language.labels[name])
+        self.body.append('<td class="docinfo-name">%s:</td><td>\n'
+                         % self.language.labels[name])
 
     def depart_docinfo_item(self):
-        self.body.append('</p>\n</td></tr>')
+        self.body.append('</td></tr>\n')
 
     def visit_doctest_block(self, node):
         self.body.append(self.starttag(node, 'pre', suffix='',
@@ -406,16 +405,15 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</span>')
 
     def visit_field_body(self, node):
-        self.body.append(':</p>\n</td><td>\n')
-        #self.body.append(self.starttag(node, 'div', CLASS='field-body'))
+        self.body.append(':&nbsp;</td>')
+        self.body.append(self.starttag(node, 'td', '', CLASS='field-body'))
 
     def depart_field_body(self, node):
-        #self.body.append('</div></td>\n')
         self.body.append('</td>\n')
 
     def visit_field_list(self, node):
         self.body.append(self.starttag(node, 'table', frame='void',
-                                       rules='none'))
+                                       rules='none', CLASS='field-list'))
         self.body.append('<col class="field-name" />\n'
                          '<col class="field-body" />\n'
                          '<tbody valign="top">\n')
@@ -424,8 +422,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</tbody>\n</table>\n')
 
     def visit_field_name(self, node):
-        self.body.append('<td>\n')
-        self.body.append(self.starttag(node, 'p', '', CLASS='field-name'))
+        self.body.append(self.starttag(node, 'td', '', CLASS='field-name'))
 
     def depart_field_name(self, node):
         """
@@ -457,6 +454,23 @@ class HTMLTranslator(nodes.NodeVisitor):
                          '<col />\n'
                          '<tbody valign="top">\n'
                          '<tr><td>\n')
+        self.footnote_backrefs(node)
+
+    def footnote_backrefs(self, node):
+        if node.hasattr('backrefs'):
+            backrefs = node['backrefs']
+            if len(backrefs) == 1:
+                self.body.append('<a href="#%s">' % backrefs[0])
+                self.context.append(('</a>', ''))
+            else:
+                i = 1
+                backlinks = []
+                for backref in backrefs:
+                    backlinks.append('<a href="#%s">%s</a>' % (backref, i))
+                    i += 1
+                self.context.append(('', '(%s) ' % ', '.join(backlinks)))
+        else:
+            self.context.append(('', ''))
 
     def depart_footnote(self, node):
         self.body.append('</td></tr>\n'
@@ -519,8 +533,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'p', '[', CLASS='label'))
 
     def depart_label(self, node):
-        self.body.append(']</p>\n'
-                         '</td><td>\n')
+        self.body.append(']%s</p>\n'
+                         '</td><td>%s\n' % self.context.pop())
 
     def visit_legend(self, node):
         self.body.append(self.starttag(node, 'div', CLASS='legend'))
@@ -721,7 +735,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                     backlinks.append('<a href="#%s">%s</a>' % (backref, i))
                     i += 1
                 self.body.append('%s (%s; level %s system message)</p>\n'
-                                 % (node['type'], '|'.join(backlinks),
+                                 % (node['type'], ', '.join(backlinks),
                                     node['level']))
         else:
             self.body.append('%s (level %s system message)</p>\n'
