@@ -441,6 +441,9 @@ class Element(Node):
     def index(self, item):
         return self.children.index(item)
 
+    def clear(self):
+        self.children = []
+
     def replace(self, old, new):
         """Replace one child `Node` with another child or children."""
         index = self.index(old)
