@@ -20,5 +20,5 @@ if [ -n "$1" ] ; then
   fi
 fi
 
-pdf.py $TEXT $OUT
+./tools/pdf.py $TEXT $OUT
 
