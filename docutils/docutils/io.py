@@ -44,7 +44,7 @@ class Input(TransformSpec):
         return '%s: source=%r, source_path=%r' % (self.__class__, self.source,
                                                   self.source_path)
 
-    def read(self, reader):
+    def read(self):
         raise NotImplementedError
 
     def decode(self, data):
@@ -155,7 +155,7 @@ class FileInput(Input):
             except AttributeError:
                 pass
 
-    def read(self, reader):
+    def read(self):
         """Read and decode a single file and return the data."""
         data = self.source.read()
         if self.autoclose:
@@ -226,7 +226,7 @@ class StringInput(Input):
 
     default_source_path = '<string>'
 
-    def read(self, reader):
+    def read(self):
         """Decode and return the source string."""
         return self.decode(self.source)
 
@@ -253,7 +253,7 @@ class NullInput(Input):
 
     default_source_path = 'null input'
 
-    def read(self, reader):
+    def read(self):
         """Return a null string."""
         return u''
 
