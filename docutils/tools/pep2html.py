@@ -285,7 +285,7 @@ docutils_settings = None
 application when this module is imported."""
 
 def fix_rst_pep(inpath, input_lines, outfile):
-    from docutils import core, io
+    from docutils import core
     output = core.publish_string(
         source=''.join(input_lines),
         source_path=inpath,
