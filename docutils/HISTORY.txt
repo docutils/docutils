@@ -34,7 +34,7 @@ hard cash :-).)  Hopefully I haven't forgotten anyone or misspelled
 any names; apologies (and please let me know!) if I have.
 
 
-Changes Since 0.1
+Release 0.2 (2002-07-31)
 ========================
 
 General:

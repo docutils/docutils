@@ -79,7 +79,7 @@ General
   - Rename methods & variables according to the `coding conventions`_
     below.
 
-  - The name->id conversion and hyperlink resolution code needs to be
+  - The name-to-id conversion and hyperlink resolution code needs to be
     checked for correctness and refactored.  I'm afraid it's a bit of
     a spaghetti mess now.
 
@@ -95,11 +95,11 @@ General
   avoid importing top-level modules if the module name is not in
   docutils/readers.  Potential nastiness.)
 
-- Perhaps store a name->id mapping file?  This could be stored
+- Perhaps store a name-to-id mapping file?  This could be stored
   permanently, read by subsequent processing runs, and updated with
   new entries.  ("Persistent ID mapping"?)
 
-- Need a Unicode -> HTML entities codec for HTML writer?
+- Need a Unicode to HTML entities codec for HTML writer?
 
 - Fix tests to run standalone.  I.e., allow::
 
@@ -168,13 +168,13 @@ __ rst/alternatives.html#or-not-to-do
 
 - Add _`character processing`?  For example:
 
-  - ``--`` -> em-dash (or ``--`` -> en-dash, and ``---`` -> em-dash).
+  - ``--`` to em-dash (or ``--`` to en-dash, and ``---`` to em-dash).
     (Look for pre-existing conventions.)
   - Convert quotes to curly quote entities.  (Essentially impossible
     for HTML?  Unnecessary for TeX.  An output issue?)
   - Various forms of ``:-)`` to smiley icons.
-  - ``"\ "`` -> &nbsp;.
-  - Escaped newlines -> <BR>.
+  - ``"\ "`` to &nbsp;.
+  - Escaped newlines to <BR>.
   - Escaped period or quote as a disappearing catalyst to allow
     character-level inline markup?
   - Others?
@@ -297,8 +297,9 @@ __ rst/alternatives.html#or-not-to-do
   "docutils feedback").
 
 - Generalize the "literal block" construct to allow blocks with a
-  per-line quoting to avoid indentation?  For example, an email reply
-  quoting the original::
+  per-line quoting to avoid indentation?  For example, in this email
+  reply quoting the original, the block quoted with "``>``" (and
+  prefaced by "``::``") would be treated as a literal block::
 
       John Doe wrote::
 
@@ -306,9 +307,17 @@ __ rst/alternatives.html#or-not-to-do
       >
       > Why didn't I think of that?
 
+      You just did!  ;-)
+
   The literal block would have to be a continuous text block (the
   first blank line ends it) where every line begins with the same
   non-alphanumeric non-whitespace character.
+
+- Decide whether or not to implement Simon Budig's "inline external
+  targets" syntax idea, and if so, how (pragma directive or full-blown
+  addition to the spec & parser).
+
+- Add support for pragma (syntax-altering) directives.
 
 
 Directives
@@ -593,9 +602,11 @@ Front-End Tools
 
   b) _`Partially qualified`: Reader is hard-coded, and the Writer is
      specified a sub-command (e.g. ``pep2 html [options]``,
-     ``pysource2 pdf [options]``).  The Writer is known before
-     option processing happens, allowing the OptionParser to be
-     built dynamically.
+     ``pysource2 pdf [options]``).  The Writer is known before option
+     processing happens, allowing the OptionParser to be built
+     dynamically.  Alternatively, the Writer could be hard-coded and
+     the Reader specified as a sub-command (e.g. ``htmlfrom pep
+     [options]``).
 
   c) _`Unqualified`: Reader and Writer are specified as subcommands
      (e.g. ``publish pep html [options]``, ``publish pysource pdf
@@ -617,7 +628,9 @@ Front-End Tools
   apart.
 
 - Parameterize help text & defaults somehow?  Perhaps a callback?  Or
-  initialize ``cmdline_options`` in ``__init__``?
+  initialize ``cmdline_options`` in ``__init__`` or ``init_options``?
+
+- Disable common options that don't apply?
 
 
 Project Policies

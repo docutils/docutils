@@ -154,10 +154,16 @@ not appear.
 Usage
 =====
 
-After unpacking the Docutils package, the following commands will
-generate HTML for all included documentation::
+After unpacking the Docutils package, the following shell commands
+will generate HTML for all included documentation::
 
-    cd docutils    # or "docutils-X.Y" for official releases
+    cd docutils/tools
+    buildhtml.py ..
+
+For official releases, the directory may be called "docutils-X.Y",
+where "X.Y" is the release version.  Alternatively::
+
+    cd docutils
     tools/buildhtml.py --config=tools/docutils.conf
 
 There are many front-end tools in the unpacked "tools" subdirectory.

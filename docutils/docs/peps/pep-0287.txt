@@ -55,15 +55,15 @@ to produce complex documents, and extensible so that there are few
 limits.  Of course, to write reStructuredText documents some prior
 knowledge is required.
 
-The reStructuredText parser is available now.  Standalone
-reStructuredText documents and PEPs can be converted to HTML; other
-output format writers will become available over time.  Work is
-progressing on a Python source "Reader" which will implement
-auto-documentation from docstrings.  Authors of existing
-auto-documentation tools are encouraged to integrate the
-reStructuredText parser into their projects, or better yet, to join
-forces to produce a world-class toolset for the Python standard
-library.
+The reStructuredText parser is available now, part of the Docutils_
+project.  Standalone reStructuredText documents and PEPs can be
+converted to HTML; other output format writers are being worked on and
+will become available over time.  Work is progressing on a Python
+source "Reader" which will implement auto-documentation from
+docstrings.  Authors of existing auto-documentation tools are
+encouraged to integrate the reStructuredText parser into their
+projects, or better yet, to join forces to produce a world-class
+toolset for the Python standard library.
 
 Tools will become available in the near future, which will allow
 programmers to generate HTML for online help, XML for multiple
@@ -140,8 +140,9 @@ a) Keep the existing PEP section structure constructs (one-line
 b) Replace the PEP section structure constructs with the
    reStructuredText syntax.  Section headers will require underlines,
    subsections will be supported out of the box, and body text need
-   not be indented (except for block quotes).  This strategy is
-   recommended, and has already been implemented.
+   not be indented (except for block quotes).
+
+Strategy (b) is recommended, and its implementation is complete.
 
 Support for RFC 2822 headers has been added to the reStructuredText
 parser for PEPs (unambiguous given a specific context: the first

@@ -220,6 +220,8 @@ The following attributes are recognized:
 Footnotes
 =========
 
+**NOT IMPLEMENTED YET**
+
 DTD elements: pending, topic.
 
 @@@
@@ -228,6 +230,8 @@ DTD elements: pending, topic.
 Citations
 =========
 
+**NOT IMPLEMENTED YET**
+
 DTD elements: pending, topic.
 
 @@@
@@ -235,6 +239,8 @@ DTD elements: pending, topic.
 
 Topic
 =====
+
+**NOT IMPLEMENTED YET**
 
 DTD element: topic.
 
@@ -303,6 +309,8 @@ HTML equivalent::
 Imagemap
 ========
 
+**NOT IMPLEMENTED YET**
+
 Non-standard element: imagemap.
 
 
@@ -312,6 +320,8 @@ Non-standard element: imagemap.
 
 Raw Data Pass-Through
 =====================
+
+**NOT IMPLEMENTED YET**
 
 DTD element: pending.
 
