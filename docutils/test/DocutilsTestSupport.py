@@ -271,6 +271,7 @@ class TransformTestCase(CustomTestCase):
     settings.halt_level = 5
     settings.debug = package_unittest.debug
     settings.warning_stream = DevNull()
+    unknown_reference_resolvers = ()
 
     def __init__(self, *args, **kwargs):
         self.transforms = kwargs['transforms']
