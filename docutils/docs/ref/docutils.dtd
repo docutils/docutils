@@ -127,11 +127,11 @@ resolve to either an internal or external reference.
 
 <!ENTITY % additional.inline.elements "">
 <!ENTITY % inline.elements
-  " emphasis | strong | interpreted | literal
+  " emphasis | strong | literal
     | reference | footnote_reference | citation_reference
     | substitution_reference | title_reference
-    | abbreviation | acronym |
-    | problematic | generated 
+    | abbreviation | acronym
+    | problematic | generated
     | target | image | raw
     %additional.inline.elements; ">
 

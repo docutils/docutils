@@ -4447,9 +4447,11 @@ Entity definition:
 
 .. parsed-literal::
 
-    emphasis_ | strong_ | interpreted_ | literal_
+    emphasis_ | strong_ | literal_
     | reference_ | footnote_reference_ | citation_reference_
-    | substitution_reference_ | problematic_ | generated_
+    | substitution_reference_ | title_reference_
+    | abbreviation_ | acronym_
+    | problematic_ | generated_
     | target_ | image_ | raw_
     %additional.inline.elements;
 
@@ -4458,11 +4460,12 @@ wrapper DTDs to extend ``%inline.elements;``.
 
 Via `%text.model;`_, the ``%inline.elements;`` parameter entity is
 indirectly employed in the content models of the following elements:
-address_, author_, caption_, classifier_, contact_, copyright_, date_,
-doctest_block_, emphasis_, generated_, interpreted_, line_block_,
-literal_block_, organization_, paragraph_, problematic_, raw_,
-reference_, revision_, status_, strong_, substitution_definition_,
-substitution_reference_, subtitle_, target_, term_, title_, version_
+abbreviation_, acronym_, address_, author_, caption_, classifier_,
+contact_, copyright_, date_, doctest_block_, emphasis_, generated_,
+line_block_, literal_block_, organization_, paragraph_, problematic_,
+raw_, reference_, revision_, status_, strong_,
+substitution_definition_, substitution_reference_, subtitle_, target_,
+term_, title_, version_
 
 
 ``%reference.atts;``
@@ -4613,12 +4616,12 @@ Entity definition:
     (#PCDATA | `%inline.elements;`_)*
 
 The ``%text.model;`` parameter entity is directly employed in the
-content models of the following elements: address_, author_, caption_,
-classifier_, contact_, copyright_, date_, doctest_block_, emphasis_,
-generated_, interpreted_, line_block_, literal_block_, organization_,
-paragraph_, problematic_, raw_, reference_, revision_, status_,
-strong_, substitution_definition_, substitution_reference_, subtitle_,
-target_, term_, title_, version_
+content models of the following elements: abbreviation_, acronym_,
+address_, author_, caption_, classifier_, contact_, copyright_, date_,
+doctest_block_, emphasis_, generated_, line_block_, literal_block_,
+organization_, paragraph_, problematic_, raw_, reference_, revision_,
+status_, strong_, substitution_definition_, substitution_reference_,
+subtitle_, target_, term_, title_, version_
 
 
 
