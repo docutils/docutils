@@ -212,6 +212,10 @@ And even more stuff
 * list
 """,
 """\
+{'fragment': '''<ul class="simple">
+<li>bullet</li>
+<li>list</li>
+</ul>\\n'''}
 """],
 ])
 
