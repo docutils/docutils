@@ -38,7 +38,7 @@ Foo.
 """,
 # output
 """\
-<document id="this-is-the-title" name="this is the title" source="<string>">
+<document ids="this-is-the-title" names="this is the title" source="<string>">
     <title>
         This is the title
     <paragraph>
@@ -46,7 +46,7 @@ Foo.
     <transition>
     <paragraph>
         This is another paragraph.
-    <section id="a-subsection" name="a subsection">
+    <section ids="a-subsection" names="a subsection">
         <title>
             A subsection
         <paragraph>

@@ -84,6 +84,27 @@ class ElementTests(unittest.TestCase):
         element.clear()
         self.assert_(not len(element))
 
+    def test_normal_attributes(self):
+        element = nodes.Element()
+        self.assert_(not element.has_key('foo'))
+        self.assertRaises(KeyError, element.__getitem__, 'foo')
+        element['foo'] = 'sometext'
+        self.assertEquals(element['foo'], 'sometext')
+        del element['foo']
+        self.assertRaises(KeyError, element.__getitem__, 'foo')
+
+    def test_default_attributes(self):
+        element = nodes.Element()
+        self.assertEquals(element['ids'], [])
+        self.assertEquals(element.non_default_attributes(), {})
+        self.assert_(not element.is_not_default('ids'))
+        self.assert_(element['ids'] is not nodes.Element()['ids'])
+        element['ids'].append('someid')
+        self.assertEquals(element['ids'], ['someid'])
+        self.assertEquals(element.non_default_attributes(),
+                          {'ids': ['someid']})
+        self.assert_(element.is_not_default('ids'))
+
 
 class MiscTests(unittest.TestCase):
 
@@ -91,7 +112,7 @@ class MiscTests(unittest.TestCase):
         node_class_names = []
         for x in dir(nodes):
             c = getattr(nodes, x)
-            if type(c) is ClassType and issubclass(c, nodes.Node) \
+            if isinstance(c, ClassType) and issubclass(c, nodes.Node) \
                    and len(c.__bases__) > 1:
                 node_class_names.append(x)
         node_class_names.sort()

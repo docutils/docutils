@@ -444,11 +444,11 @@ Nested field lists on one line:
         <field>
             <field_name>
                 Field name with \n\
-                <problematic id="id2" refid="id1">
+                <problematic ids="id2" refid="id1">
                     *
                 bad inline markup
             <field_body>
-                <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
+                <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
                     <paragraph>
                         Inline emphasis start-string without end-string.
                 <paragraph>

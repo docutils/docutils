@@ -25,7 +25,7 @@ totest['citations'] = [
 """,
 """\
 <document source="test data">
-    <citation id="citation" name="citation">
+    <citation ids="citation" names="citation">
         <label>
             citation
         <paragraph>
@@ -36,7 +36,7 @@ totest['citations'] = [
 """,
 """\
 <document source="test data">
-    <citation id="citation1234" name="citation1234">
+    <citation ids="citation1234" names="citation1234">
         <label>
             citation1234
         <paragraph>
@@ -48,7 +48,7 @@ totest['citations'] = [
 """,
 """\
 <document source="test data">
-    <citation id="citation" name="citation">
+    <citation ids="citation" names="citation">
         <label>
             citation
         <paragraph>
@@ -64,13 +64,13 @@ totest['citations'] = [
 """,
 """\
 <document source="test data">
-    <citation id="citation1" name="citation1">
+    <citation ids="citation1" names="citation1">
         <label>
             citation1
         <paragraph>
             This is a citation
             on multiple lines with more space.
-    <citation id="citation2" name="citation2">
+    <citation ids="citation2" names="citation2">
         <label>
             citation2
         <paragraph>
@@ -84,7 +84,7 @@ totest['citations'] = [
 """,
 """\
 <document source="test data">
-    <citation id="citation" name="citation">
+    <citation ids="citation" names="citation">
         <label>
             citation
         <paragraph>
@@ -98,7 +98,7 @@ That was an empty citation.
 """,
 """\
 <document source="test data">
-    <citation id="citation" name="citation">
+    <citation ids="citation" names="citation">
         <label>
             citation
     <paragraph>
@@ -110,7 +110,7 @@ No blank line.
 """,
 """\
 <document source="test data">
-    <citation id="citation" name="citation">
+    <citation ids="citation" names="citation">
         <label>
             citation
     <system_message level="2" line="2" source="test data" type="WARNING">

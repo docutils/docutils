@@ -45,7 +45,7 @@ totest['table'] = [
 """,
 """\
 <document source="test data">
-    <table class="custom">
+    <table classes="custom">
         <title>
             Truth table for "not"
         <tgroup cols="2">
@@ -87,7 +87,7 @@ totest['table'] = [
     <table>
         <title>
             title with an \n\
-            <problematic id="id2" refid="id1">
+            <problematic ids="id2" refid="id1">
                 *
             error
         <tgroup cols="2">
@@ -101,7 +101,7 @@ totest['table'] = [
                     <entry>
                         <paragraph>
                             table
-    <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline emphasis start-string without end-string.
 """],
@@ -459,7 +459,7 @@ u"""\
     <table>
         <title>
             error in the \n\
-            <problematic id="id2" refid="id1">
+            <problematic ids="id2" refid="id1">
                 *
             title
         <tgroup cols="3">
@@ -477,7 +477,7 @@ u"""\
                     <entry>
                         <paragraph>
                             data
-    <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline emphasis start-string without end-string.
 """],

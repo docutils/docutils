@@ -52,13 +52,13 @@ totest['line_blocks'] = [
     <line_block>
         <line>
             Inline markup \n\
-            <problematic id="id2" refid="id1">
+            <problematic ids="id2" refid="id1">
                 *
             may not span
         <line_block>
             <line>
                 multiple lines* of a line block.
-    <system_message backrefs="id2" id="id1" level="2" line="3" source="test data" type="WARNING">
+    <system_message backrefs="id2" ids="id1" level="2" line="3" source="test data" type="WARNING">
         <paragraph>
             Inline emphasis start-string without end-string.
 """],

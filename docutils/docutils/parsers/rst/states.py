@@ -365,7 +365,7 @@ class RSTState(StateWS):
         textnodes, title_messages = self.inline_text(title, lineno)
         titlenode = nodes.title(title, '', *textnodes)
         name = normalize_name(titlenode.astext())
-        section_node['name'] = name
+        section_node['names'].append(name)
         section_node += titlenode
         section_node += messages
         section_node += title_messages
@@ -787,7 +787,7 @@ class Inliner:
         else:
             if target:
                 reference['refuri'] = uri
-                target['name'] = refname
+                target['names'].append(refname)
                 self.document.note_external_target(target)
                 self.document.note_explicit_target(target, self.parent)
                 node_list.append(target)
@@ -829,7 +829,7 @@ class Inliner:
             assert len(inlines) == 1
             target = inlines[0]
             name = normalize_name(target.astext())
-            target['name'] = name
+            target['names'].append(name)
             self.document.note_explicit_target(target, self.parent)
         return before, inlines, remaining, sysmessages
 
@@ -1751,7 +1751,7 @@ class Body(RSTState):
             name = name[1:]             # autonumber label
             footnote['auto'] = 1
             if name:
-                footnote['name'] = name
+                footnote['names'].append(name)
             self.document.note_autofootnote(footnote)
         elif name == '*':               # auto-symbol
             name = ''
@@ -1759,7 +1759,7 @@ class Body(RSTState):
             self.document.note_symbol_footnote(footnote)
         else:                           # manually numbered
             footnote += nodes.label('', label)
-            footnote['name'] = name
+            footnote['names'].append(name)
             self.document.note_footnote(footnote)
         if name:
             self.document.note_explicit_target(footnote, footnote)
@@ -1778,7 +1778,7 @@ class Body(RSTState):
         citation = nodes.citation('\n'.join(indented))
         citation.line = lineno
         citation += nodes.label('', label)
-        citation['name'] = name
+        citation['names'].append(name)
         self.document.note_citation(citation)
         self.document.note_explicit_target(citation, citation)
         if indented:
@@ -1814,7 +1814,6 @@ class Body(RSTState):
         target_type, data = self.parse_target(block, block_text, lineno)
         if target_type == 'refname':
             target = nodes.target(block_text, '', refname=normalize_name(data))
-            target.indirect_reference_name = data
             self.add_target(target_name, '', target, lineno)
             self.document.note_indirect_target(target)
             return target
@@ -1854,7 +1853,7 @@ class Body(RSTState):
         target.line = lineno
         if targetname:
             name = normalize_name(unescape(targetname))
-            target['name'] = name
+            target['names'].append(name)
             if refuri:
                 uri = self.inliner.adjust_uri(refuri)
                 if uri:
@@ -2259,7 +2258,7 @@ class RFC2822Body(Body):
 
     def rfc2822(self, match, context, next_state):
         """RFC2822-style field list item."""
-        fieldlist = nodes.field_list(CLASS='rfc2822')
+        fieldlist = nodes.field_list(classes=['rfc2822'])
         self.parent += fieldlist
         field, blank_finish = self.rfc2822_field(match)
         fieldlist += field
@@ -2497,7 +2496,7 @@ class SubstitutionDef(Body):
 
     def embedded_directive(self, match, context, next_state):
         nodelist, blank_finish = self.directive(match,
-                                                alt=self.parent['name'])
+                                                alt=self.parent['names'][0])
         self.parent += nodelist
         if not self.state_machine.at_eof():
             self.blank_finish = blank_finish

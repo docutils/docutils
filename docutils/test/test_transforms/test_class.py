@@ -30,7 +30,7 @@ paragraph
 """,
 """\
 <document source="test data">
-    <paragraph class="one">
+    <paragraph classes="one">
         paragraph
 """],
 ["""\
@@ -42,7 +42,7 @@ paragraph
 """\
 <document source="test data">
     <comment xml:space="preserve">
-    <block_quote class="two">
+    <block_quote classes="two">
         <paragraph>
             Block quote
 """],
@@ -58,7 +58,7 @@ Paragraph
     <block_quote>
         <paragraph>
             Block quote
-    <paragraph class="three">
+    <paragraph classes="three">
         Paragraph
 """],
 ["""\
@@ -71,7 +71,7 @@ Paragraph
 """,
 """\
 <document source="test data">
-    <section class="four" id="section-title" name="section title">
+    <section classes="four" ids="section-title" names="section title">
         <title>
             Section Title
         <paragraph>
@@ -104,7 +104,7 @@ multiple class values may be assigned to one element
 """,
 """\
 <document source="test data">
-    <paragraph class="one two">
+    <paragraph classes="one two">
         multiple class values may be assigned to one element
 """],
 ["""\
@@ -114,7 +114,7 @@ multiple class values may be assigned to one element
 """,
 """\
 <document source="test data">
-    <paragraph class="one two">
+    <paragraph classes="one two">
         multiple class values may be assigned to one element
 """],
 ["""\
@@ -125,7 +125,7 @@ multiple class values may be assigned to one element
 """,
 """\
 <document source="test data">
-    <enumerated_list class="fancy" enumtype="arabic" prefix="" start="2" suffix=".">
+    <enumerated_list classes="fancy" enumtype="arabic" prefix="" start="2" suffix=".">
         <list_item>
             <paragraph>
                 List starts at 2.
@@ -156,7 +156,7 @@ A paragraph.
     <system_message level="1" line="1" source="test data" type="INFO">
         <paragraph>
             Enumerated list start value not ordinal-1: "2" (ordinal 2)
-    <paragraph class="fancy">
+    <paragraph classes="fancy">
         A paragraph.
 """],
 ])

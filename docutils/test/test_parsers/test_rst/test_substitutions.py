@@ -29,7 +29,7 @@ Here's an image substitution definition:
 <document source="test data">
     <paragraph>
         Here's an image substitution definition:
-    <substitution_definition name="symbol">
+    <substitution_definition names="symbol">
         <image alt="symbol" uri="symbol.png">
 """],
 ["""\
@@ -42,7 +42,7 @@ Embedded directive starts on the next line:
 <document source="test data">
     <paragraph>
         Embedded directive starts on the next line:
-    <substitution_definition name="symbol">
+    <substitution_definition names="symbol">
         <image alt="symbol" uri="symbol.png">
 """],
 ["""\
@@ -55,7 +55,7 @@ Trailing spaces should not be significant:
 <document source="test data">
     <paragraph>
         Trailing spaces should not be significant:
-    <substitution_definition name="symbol">
+    <substitution_definition names="symbol">
         <image alt="symbol" uri="symbol.png">
 """],
 ["""\
@@ -71,11 +71,11 @@ Here's a series of substitution definitions:
 <document source="test data">
     <paragraph>
         Here's a series of substitution definitions:
-    <substitution_definition name="symbol 1">
+    <substitution_definition names="symbol 1">
         <image alt="symbol 1" uri="symbol1.png">
-    <substitution_definition name="SYMBOL 2">
+    <substitution_definition names="SYMBOL 2">
         <image alt="SYMBOL 2" height="50" uri="symbol2.png" width="100">
-    <substitution_definition name="symbol 3">
+    <substitution_definition names="symbol 3">
         <image alt="symbol 3" uri="symbol3.png">
 """],
 ["""\
@@ -84,7 +84,7 @@ Here's a series of substitution definitions:
 """,
 """\
 <document source="test data">
-    <substitution_definition name="very long substitution text, split across lines">
+    <substitution_definition names="very long substitution text, split across lines">
         <image alt="very long substitution text, split across lines" uri="symbol.png">
 """],
 ["""\
@@ -123,11 +123,11 @@ Followed by a paragraph.
 """,
 """\
 <document source="test data">
-    <substitution_definition name="symbol 1">
+    <substitution_definition names="symbol 1">
         <image alt="symbol 1" uri="symbol.png">
     <paragraph>
         Followed by a paragraph.
-    <substitution_definition name="symbol 2">
+    <substitution_definition names="symbol 2">
         <image alt="symbol 2" uri="symbol.png">
     <comment xml:space="preserve">
     <block_quote>
@@ -144,9 +144,9 @@ u"""\
 <document source="test data">
     <paragraph>
         Substitutions support case differences:
-    <substitution_definition name="eacute">
+    <substitution_definition names="eacute">
         \u00E9
-    <substitution_definition name="Eacute">
+    <substitution_definition names="Eacute">
         \u00C9
 """],
 ["""\
@@ -160,7 +160,7 @@ Raw substitution, backslashes should be preserved:
 <document source="test data">
     <paragraph>
         Raw substitution, backslashes should be preserved:
-    <substitution_definition name="alpha">
+    <substitution_definition names="alpha">
         <raw format="latex" xml:space="preserve">
             $\\\\alpha$
 """],
@@ -174,12 +174,12 @@ Here are some duplicate substitution definitions:
 <document source="test data">
     <paragraph>
         Here are some duplicate substitution definitions:
-    <substitution_definition dupname="symbol">
+    <substitution_definition dupnames="symbol">
         <image alt="symbol" uri="symbol.png">
     <system_message level="3" line="4" source="test data" type="ERROR">
         <paragraph>
             Duplicate substitution definition name: "symbol".
-    <substitution_definition name="symbol">
+    <substitution_definition names="symbol">
         <image alt="symbol" uri="symbol.png">
 """],
 ["""\
@@ -205,7 +205,7 @@ No blank line after.
 <document source="test data">
     <paragraph>
         Here are some bad cases:
-    <substitution_definition name="symbol">
+    <substitution_definition names="symbol">
         <image alt="symbol" uri="symbol.png">
     <system_message level="2" line="4" source="test data" type="WARNING">
         <paragraph>

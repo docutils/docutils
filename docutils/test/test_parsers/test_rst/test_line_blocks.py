@@ -246,16 +246,16 @@ This is not
 """\
 <document source="test data">
     <paragraph>
-        <problematic id="id2" refid="id1">
+        <problematic ids="id2" refid="id1">
             |
         This is not
-        <problematic id="id4" refid="id3">
+        <problematic ids="id4" refid="id3">
             |
         a line block
-    <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline substitution_reference start-string without end-string.
-    <system_message backrefs="id4" id="id3" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="id4" ids="id3" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline substitution_reference start-string without end-string.
     <line_block>
@@ -265,10 +265,10 @@ This is not
         <paragraph>
             Line block ends without a blank line.
     <paragraph>
-        <problematic id="id6" refid="id5">
+        <problematic ids="id6" refid="id5">
             |
         incomplete line block.
-    <system_message backrefs="id6" id="id5" level="2" line="5" source="test data" type="WARNING">
+    <system_message backrefs="id6" ids="id5" level="2" line="5" source="test data" type="WARNING">
         <paragraph>
             Inline substitution_reference start-string without end-string.
 """],
@@ -281,12 +281,12 @@ This is not
     <line_block>
         <line>
             Inline markup \n\
-            <problematic id="id2" refid="id1">
+            <problematic ids="id2" refid="id1">
                 *
             may not
         <line>
             wrap* over several lines.
-    <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline emphasis start-string without end-string.
 """],

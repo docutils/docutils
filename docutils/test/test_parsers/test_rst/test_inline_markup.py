@@ -47,10 +47,10 @@ across lines*
 """\
 <document source="test data">
     <paragraph>
-        <problematic id="id2" refid="id1">
+        <problematic ids="id2" refid="id1">
             *
         emphasis without closing asterisk
-    <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline emphasis start-string without end-string.
 """],
@@ -85,10 +85,10 @@ what about *this**?
             the* *stars\* *inside
     <paragraph>
         (however, '
-        <problematic id="id2" refid="id1">
+        <problematic ids="id2" refid="id1">
             *
         args' will trigger a warning and may be problematic)
-    <system_message backrefs="id2" id="id1" level="2" line="5" source="test data" type="WARNING">
+    <system_message backrefs="id2" ids="id1" level="2" line="5" source="test data" type="WARNING">
         <paragraph>
             Inline emphasis start-string without end-string.
     <paragraph>
@@ -139,10 +139,10 @@ totest['strong'] = [
         ) but not (**) or '(** ' or x**2 or **kwargs or **
     <paragraph>
         (however, '
-        <problematic id="id2" refid="id1">
+        <problematic ids="id2" refid="id1">
             **
         kwargs' will trigger a warning and may be problematic)
-    <system_message backrefs="id2" id="id1" level="2" line="3" source="test data" type="WARNING">
+    <system_message backrefs="id2" ids="id1" level="2" line="3" source="test data" type="WARNING">
         <paragraph>
             Inline strong start-string without end-string.
 """],
@@ -168,10 +168,10 @@ Strong double asterisk: ******
 """\
 <document source="test data">
     <paragraph>
-        <problematic id="id2" refid="id1">
+        <problematic ids="id2" refid="id1">
             **
         strong without closing asterisks
-    <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline strong start-string without end-string.
 """],
@@ -228,11 +228,11 @@ and may be problematic)
          but not "``" or ``
     <paragraph>
         (however, \n\
-        <problematic id="id2" refid="id1">
+        <problematic ids="id2" refid="id1">
             ``
         standalone TeX quotes'' will trigger a warning
         and may be problematic)
-    <system_message backrefs="id2" id="id1" level="2" line="3" source="test data" type="WARNING">
+    <system_message backrefs="id2" ids="id1" level="2" line="3" source="test data" type="WARNING">
         <paragraph>
             Inline literal start-string without end-string.
 """],
@@ -253,10 +253,10 @@ Find the ```interpreted text``` in this paragraph!
 """\
 <document source="test data">
     <paragraph>
-        <problematic id="id2" refid="id1">
+        <problematic ids="id2" refid="id1">
             ``
         literal without closing backquotes
-    <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline literal start-string without end-string.
 """],
@@ -367,9 +367,9 @@ Invalid phrase reference:
     <paragraph>
         Invalid phrase reference:
     <paragraph>
-        <problematic id="id2" refid="id1">
+        <problematic ids="id2" refid="id1">
             :role:`phrase reference`_
-    <system_message backrefs="id2" id="id1" level="2" line="3" source="test data" type="WARNING">
+    <system_message backrefs="id2" ids="id1" level="2" line="3" source="test data" type="WARNING">
         <paragraph>
             Mismatch: both interpreted text role prefix and reference suffix.
 """],
@@ -383,9 +383,9 @@ Invalid phrase reference:
     <paragraph>
         Invalid phrase reference:
     <paragraph>
-        <problematic id="id2" refid="id1">
+        <problematic ids="id2" refid="id1">
             `phrase reference`:role:_
-    <system_message backrefs="id2" id="id1" level="2" line="3" source="test data" type="WARNING">
+    <system_message backrefs="id2" ids="id1" level="2" line="3" source="test data" type="WARNING">
         <paragraph>
             Mismatch: both interpreted text role suffix and reference suffix.
 """],
@@ -395,13 +395,13 @@ Invalid phrase reference:
 """\
 <document source="test data">
     <paragraph>
-        <problematic id="id2" refid="id1">
+        <problematic ids="id2" refid="id1">
             `
         phrase \n\
         <reference name="reference" refname="reference">
             reference
          without closing backquote
-    <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline interpreted text or phrase reference start-string without end-string.
 """],
@@ -411,13 +411,13 @@ Invalid phrase reference:
 """\
 <document source="test data">
     <paragraph>
-        <problematic id="id2" refid="id1">
+        <problematic ids="id2" refid="id1">
             `
         anonymous phrase \n\
         <reference anonymous="1" name="reference">
             reference
          without closing backquote
-    <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline interpreted text or phrase reference start-string without end-string.
 """],
@@ -432,7 +432,7 @@ totest['embedded_URIs'] = [
     <paragraph>
         <reference name="phrase reference" refuri="http://example.com">
             phrase reference
-        <target id="phrase-reference" name="phrase reference" refuri="http://example.com">
+        <target ids="phrase-reference" names="phrase reference" refuri="http://example.com">
 """],
 ["""\
 `anonymous reference <http://example.com>`__
@@ -537,7 +537,7 @@ Relative URIs' reference text can be omitted:
     <paragraph>
         <reference name="reference" refuri="reference">
             reference
-        <target id="reference" name="reference" refuri="reference">
+        <target ids="reference" names="reference" refuri="reference">
     <paragraph>
         <reference name="anonymous" refuri="anonymous">
             anonymous
@@ -556,19 +556,19 @@ _`Here is  a    TaRgeT` with case and spacial difficulties.
 """\
 <document source="test data">
     <paragraph>
-        <target id="target" name="target">
+        <target ids="target" names="target">
             target
     <paragraph>
         Here is \n\
-        <target id="another-target" name="another target">
+        <target ids="another-target" names="another target">
             another target
          in some text. And \n\
-        <target id="yet-another-target" name="yet another target">
+        <target ids="yet-another-target" names="yet another target">
             yet
             another target
         , spanning lines.
     <paragraph>
-        <target id="here-is-a-target" name="here is a target">
+        <target ids="here-is-a-target" names="here is a target">
             Here is  a    TaRgeT
          with case and spacial difficulties.
 """],
@@ -583,10 +583,10 @@ And _`this`_ is just plain confusing.
         But this isn't a _target; targets require backquotes.
     <paragraph>
         And \n\
-        <problematic id="id2" refid="id1">
+        <problematic ids="id2" refid="id1">
             _`
         this`_ is just plain confusing.
-    <system_message backrefs="id2" id="id1" level="2" line="3" source="test data" type="WARNING">
+    <system_message backrefs="id2" ids="id1" level="2" line="3" source="test data" type="WARNING">
         <paragraph>
             Inline target start-string without end-string.
 """],
@@ -596,10 +596,10 @@ _`inline target without closing backquote
 """\
 <document source="test data">
     <paragraph>
-        <problematic id="id2" refid="id1">
+        <problematic ids="id2" refid="id1">
             _`
         inline target without closing backquote
-    <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline target start-string without end-string.
 """],
@@ -612,7 +612,7 @@ totest['footnote_reference'] = [
 """\
 <document source="test data">
     <paragraph>
-        <footnote_reference id="id1" refname="1">
+        <footnote_reference ids="id1" refname="1">
             1
 """],
 ["""\
@@ -621,7 +621,7 @@ totest['footnote_reference'] = [
 """\
 <document source="test data">
     <paragraph>
-        <footnote_reference auto="1" id="id1">
+        <footnote_reference auto="1" ids="id1">
 """],
 ["""\
 [#label]_
@@ -629,7 +629,7 @@ totest['footnote_reference'] = [
 """\
 <document source="test data">
     <paragraph>
-        <footnote_reference auto="1" id="id1" refname="label">
+        <footnote_reference auto="1" ids="id1" refname="label">
 """],
 ["""\
 [*]_
@@ -637,7 +637,7 @@ totest['footnote_reference'] = [
 """\
 <document source="test data">
     <paragraph>
-        <footnote_reference auto="*" id="id1">
+        <footnote_reference auto="*" ids="id1">
 """],
 ]
 
@@ -648,7 +648,7 @@ totest['citation_reference'] = [
 """\
 <document source="test data">
     <paragraph>
-        <citation_reference id="id1" refname="citation">
+        <citation_reference ids="id1" refname="citation">
             citation
 """],
 ["""\
@@ -657,16 +657,16 @@ totest['citation_reference'] = [
 """\
 <document source="test data">
     <paragraph>
-        <citation_reference id="id1" refname="citation">
+        <citation_reference ids="id1" refname="citation">
             citation
          and \n\
-        <citation_reference id="id2" refname="cit-ation">
+        <citation_reference ids="id2" refname="cit-ation">
             cit-ation
          and \n\
-        <citation_reference id="id3" refname="cit.ation">
+        <citation_reference ids="id3" refname="cit.ation">
             cit.ation
          and \n\
-        <citation_reference id="id4" refname="cit1">
+        <citation_reference ids="id4" refname="cit1">
             CIT1
          but not [CIT 1]_
 """],
@@ -722,10 +722,10 @@ reference|
 """\
 <document source="test data">
     <paragraph>
-        <problematic id="id2" refid="id1">
+        <problematic ids="id2" refid="id1">
             |
         substitution reference without closing verbar
-    <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline substitution_reference start-string without end-string.
 """],

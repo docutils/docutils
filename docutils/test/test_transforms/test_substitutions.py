@@ -35,7 +35,7 @@ The |biohazard| symbol is deservedly scary-looking.
         The \n\
         <image alt="biohazard" uri="biohazard.png">
          symbol is deservedly scary-looking.
-    <substitution_definition name="biohazard">
+    <substitution_definition names="biohazard">
         <image alt="biohazard" uri="biohazard.png">
 """],
 ["""\
@@ -45,10 +45,10 @@ Here's an |unknown| substitution.
 <document source="test data">
     <paragraph>
         Here's an \n\
-        <problematic id="id2" refid="id1">
+        <problematic ids="id2" refid="id1">
             |unknown|
          substitution.
-    <system_message backrefs="id2" id="id1" level="3" line="1" source="test data" type="ERROR">
+    <system_message backrefs="id2" ids="id1" level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Undefined substitution referenced: "unknown".
 """],
@@ -64,9 +64,9 @@ u"""\
 <document source="test data">
     <paragraph>
         Substitutions support case differences:
-    <substitution_definition name="eacute">
+    <substitution_definition names="eacute">
         \u00E9
-    <substitution_definition name="Eacute">
+    <substitution_definition names="Eacute">
         \u00C9
     <paragraph>
         \u00C9
@@ -105,16 +105,16 @@ u"""\
         ), and a captial omega (
         \u03a9
         ).
-    <substitution_definition name="mdash">
+    <substitution_definition names="mdash">
         \u2014
-    <substitution_definition name="copy">
+    <substitution_definition names="copy">
         \u00a9
-    <substitution_definition name="nbsp">
+    <substitution_definition names="nbsp">
         \u00a0
-    <substitution_definition name="bne">
+    <substitution_definition names="bne">
         =
         \u20e5
-    <substitution_definition name="Omega">
+    <substitution_definition names="Omega">
         \u03a9
 """],
 ["""
@@ -137,9 +137,9 @@ u"""\
         BogusMegaCorp
         \u2122
         .
-    <substitution_definition name="copy">
+    <substitution_definition names="copy">
         \u00a9
-    <substitution_definition name="BogusMegaCorp (TM)">
+    <substitution_definition names="BogusMegaCorp (TM)">
         BogusMegaCorp
         \u2122
 """],
@@ -161,9 +161,9 @@ u"""\
         Some substitutions
         \u2122
          only need trimming on one side.
-    <substitution_definition ltrim="1" name="---" rtrim="1">
+    <substitution_definition ltrim="1" names="---" rtrim="1">
         \u2014
-    <substitution_definition ltrim="1" name="TM">
+    <substitution_definition ltrim="1" names="TM">
         \u2122
 """],
 ])

@@ -51,16 +51,16 @@ u"""\
         <substitution_reference refname="Omega">
             Omega
         ).
-    <substitution_definition name="mdash">
+    <substitution_definition names="mdash">
         \u2014
-    <substitution_definition name="copy">
+    <substitution_definition names="copy">
         \u00A9
-    <substitution_definition name="nbsp">
+    <substitution_definition names="nbsp">
         \u00A0
-    <substitution_definition name="bne">
+    <substitution_definition names="bne">
         =
         \u20e5
-    <substitution_definition name="Omega">
+    <substitution_definition names="Omega">
         \u03a9
 """],
 ["""
@@ -92,9 +92,9 @@ Bad input:
             Substitution definition "empty too" empty or invalid.
         <literal_block xml:space="preserve">
             .. |empty too| unicode:: .. comment doesn't count as content
-    <substitution_definition name="not hex">
+    <substitution_definition names="not hex">
         0xHEX
-    <substitution_definition name="not all hex">
+    <substitution_definition names="not all hex">
         UABCX
     <system_message level="3" line="8" source="test data" type="ERROR">
         <paragraph>
@@ -123,9 +123,9 @@ u"""\
         <substitution_reference refname="BogusMegaCorp (TM)">
             BogusMegaCorp (TM)
         .
-    <substitution_definition name="copy">
+    <substitution_definition names="copy">
         \u00A9
-    <substitution_definition name="BogusMegaCorp (TM)">
+    <substitution_definition names="BogusMegaCorp (TM)">
         BogusMegaCorp
         \u2122
 """],

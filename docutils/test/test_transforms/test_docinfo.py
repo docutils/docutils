@@ -52,7 +52,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
             <field_body>
                 <paragraph>
                     integer
-    <topic class="abstract">
+    <topic classes="abstract">
         <title>
             Abstract
         <paragraph>
@@ -105,7 +105,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
             <field_body>
                 <paragraph>
                     integer
-    <topic class="abstract">
+    <topic classes="abstract">
         <title>
             Abstract
         <paragraph>
