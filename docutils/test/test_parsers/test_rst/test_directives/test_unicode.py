@@ -67,6 +67,7 @@ u"""\
 Bad input:
 
 .. |empty| unicode::
+.. |empty too| unicode:: .. comment doesn't count as content
 .. |not hex| unicode:: 0xHEX
 .. |not all hex| unicode:: UABCX
 .. unicode:: not in a substitution definition
@@ -86,11 +87,16 @@ Bad input:
             Substitution definition "empty" empty or invalid.
         <literal_block xml:space="preserve">
             .. |empty| unicode::
+    <system_message level="2" line="5" source="test data" type="WARNING">
+        <paragraph>
+            Substitution definition "empty too" empty or invalid.
+        <literal_block xml:space="preserve">
+            .. |empty too| unicode:: .. comment doesn't count as content
     <substitution_definition name="not hex">
         0xHEX
     <substitution_definition name="not all hex">
         UABCX
-    <system_message level="3" line="7" source="test data" type="ERROR">
+    <system_message level="3" line="8" source="test data" type="ERROR">
         <paragraph>
             Invalid context: the "unicode" directive can only be used within a substitution definition.
         <literal_block xml:space="preserve">
