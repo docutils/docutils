@@ -1850,8 +1850,9 @@ Directives
 Doctree elements: depend on the directive.
 
 Directives are an extension mechanism for reStructuredText, a way of
-adding support for new constructs without adding new syntax.  All
-standard directives (those implemented and registered in the reference
+adding support for new constructs without adding new primary syntax
+(directives may support additional syntax locally).  All standard
+directives (those implemented and registered in the reference
 reStructuredText parser) are described in the `reStructuredText
 Directives`_ document, and are always available.  Any other directives
 are domain-specific, and may require special action to make them
@@ -1885,10 +1886,10 @@ these reasons:
       .. Danger: modify at your own risk!
 
 - If an implementation of reStructuredText does not recognize a
-  directive (i.e., the directive-handler is not installed), the entire
-  directive block (including the directive itself) will be treated as
-  a literal block, and a level-3 (error) system message generated.
-  Thus "::" is a natural choice.
+  directive (i.e., the directive-handler is not installed), a level-3
+  (error) system message is generated, and the entire directive block
+  (including the directive itself) will be included as a literal
+  block.  Thus "::" is a natural choice.
 
 The directive block is consists of any text on the first line of the
 directive after the directive marker, and any subsequent indented
