@@ -150,7 +150,8 @@ class TargetNotes(Transform):
 
     """
     Locate the "References" section, insert a placeholder for an external
-    target footnote insertion transform at the end, and run the transform.
+    target footnote insertion transform at the end, and schedule the
+    transform to run immediately.
     """
 
     default_priority = 520

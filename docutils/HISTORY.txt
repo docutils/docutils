@@ -122,7 +122,6 @@ Specific:
   - Added defaults for source & destination paths.
   - Allow for Unicode I/O with an explicit "unicode" encoding.
   - Added ``Output.encode()``.
-  - Removed unnecessary parameter from ``read()`` methods.
 
 * docutils/nodes.py:
 
@@ -413,7 +412,7 @@ Specific:
     docstrings.
   - Wrote descriptions of all common attributes and parameter
     entities.  Filled in introductory material.
-  - Working through the element descriptions: 33 down, 50 to go.
+  - Working through the element descriptions: 40 down, 43 to go.
   - Removed "Representation of Horizontal Rules" to
     spec/rst/alternatives.txt.
 
