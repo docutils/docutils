@@ -43,6 +43,12 @@ __docformat__ = 'reStructuredText'
 from docutils import nodes
 from docutils.parsers.rst.languages import en as _fallback_language_module
 
+DEFAULT_INTERPRETED_ROLE = 'title-reference'
+"""
+The canonical name of the default interpreted role.  This role is used
+when no role is specified for a piece of interpreted text.
+"""
+
 _roles = {}
 """
 The interpreted role registry.  This registry map canonical role names
@@ -106,12 +112,6 @@ def register_role(name, role_fn):
     _roles[name] = role_fn
 
 ######################################################################
-# What's the default interpreted role?
-######################################################################
-
-DEFAULT_INTERPRETED_ROLE = 'title-reference'
-
-######################################################################
 # Create and register the standard roles:
 ######################################################################
 
@@ -121,37 +121,20 @@ def make_generic_role(node_class, role, rawtext, text, lineno, inliner):
     # refactoring Inliner.parse).
     return [node_class(rawtext, text)], []
 
-def abbreviation_role(*args):
-    return make_generic_role(nodes.abbreviation, *args)
-register_role('abbreviation', abbreviation_role)
+# Helper function:
+def register_generic_role(name, node_class):
+    def role_fn(role, rawtext, text, lineno, inliner, nc=node_class):
+        return make_generic_role(nc, role, rawtext, text, lineno, inliner)
+    register_role(name, role_fn)
 
-def acronym_role(*args):
-    return make_generic_role(nodes.acronym, *args)
-register_role('acronym', acronym_role)
-
-def emphasis_role(*args):
-    return make_generic_role(nodes.emphasis, *args)
-register_role('emphasis', emphasis_role)
-
-def literal_role(*args):
-    return make_generic_role(nodes.literal, *args)
-register_role('literal', literal_role)
-
-def strong_role(*args):
-    return make_generic_role(nodes.strong, *args)
-register_role('strong', strong_role)
-
-def subscript_role(*args):
-    return make_generic_role(nodes.subscript, *args)
-register_role('subscript', subscript_role)
-
-def superscript_role(*args):
-    return make_generic_role(nodes.superscript, *args)
-register_role('superscript', superscript_role)
-
-def title_reference_role(*args):
-    return make_generic_role(nodes.title_reference, *args)
-register_role('title-reference', title_reference_role)
+register_generic_role('abbreviation', nodes.abbreviation)
+register_generic_role('acronym', nodes.acronym)
+register_generic_role('emphasis', nodes.emphasis)
+register_generic_role('literal', nodes.literal)
+register_generic_role('strong', nodes.strong)
+register_generic_role('subscript', nodes.subscript)
+register_generic_role('superscript', nodes.superscript)
+register_generic_role('title-reference', nodes.title_reference)
 
 def pep_reference_role(role, rawtext, text, lineno, inliner):
     try:
