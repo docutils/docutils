@@ -266,12 +266,14 @@ document, it is treated specially, as the document title.  (Similarly,
 a lone second-highest-level section title may become the document
 subtitle.)  Rather than use a plain H1 for that, we use ``<h1
 class="title">`` so that we can use H1 again within the document.  Why
-we do this?  HTML only has H1-H6, so by making H1 do double duty, we
-effectively reserve these tags to provide 6 levels of heading beyond
-the single document title.
+do we do this?  HTML only has H1-H6, so by making H1 do double duty,
+we effectively reserve these tags to provide 6 levels of heading
+beyond the single document title.
 
 HTML is being used for dumb formatting for nothing but final display.
-A stylesheet *is* required, and you're welcome to roll your own.
+A stylesheet *is required*, and one is provided:
+tools/stylesheets/default.css.  Of course, you're welcome to roll your
+own.
 
 (Thanks to Mark McEahern for the question and much of the answer.)
 
