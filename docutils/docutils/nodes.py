@@ -69,7 +69,11 @@ class Node:
         return self._dom_node(domroot)
 
     def pformat(self, indent='    ', level=0):
-        """Return an indented pseudo-XML representation, for test purposes."""
+        """
+        Return an indented pseudo-XML representation, for test purposes.
+
+        Override in subclasses.
+        """
         raise NotImplementedError
 
     def copy(self):
