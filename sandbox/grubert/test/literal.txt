@@ -37,6 +37,15 @@ with the following syntax:
            *commands*
 
 
+a literal block with underscores and markup
+
+.. parsed-literal::
+
+       mpl::push_back<           // >----------------+
+                                 //                  |
+           mpl::push_back<       // >--------------+ |
+                                 // <- *end* ------+-+
+
 Special characters
 ------------------
 

@@ -132,6 +132,13 @@ REFF="$OUTF.ref"
 $CMD $INF > $OUTF
 do_diff $REFF $OUTF 
 
+CMD="../../tools/rst2latex.py --use-verbatim-when-possible"
+INF=test/literal.txt
+OUTF="$INF-use-verbatim-when-possible.tex"
+REFF="$OUTF.ref"
+$CMD $INF > $OUTF
+do_diff $REFF $OUTF 
+
 report
 echo "CHECK: toc with latex toc "
 
