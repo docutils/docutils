@@ -140,6 +140,7 @@ Changes Since 0.3
   - Fixed handling of backslashes in substitution definitions.
   - Fixed off-by-1 error with extra whitespace after substitution
     definition directive.
+  - Added inline markup parsing to field lists' field names.
 
 * docutils/parsers/rst/tableparser.py:
 

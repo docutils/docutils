@@ -1494,8 +1494,9 @@ class Body(RSTState):
               self.state_machine.get_first_known_indented(match.end())
         fieldnode = nodes.field()
         fieldnode.line = lineno
-        fieldnode += nodes.field_name(name, name)
-        fieldbody = nodes.field_body('\n'.join(indented))
+        name_nodes, name_messages = self.inline_text(name, lineno)
+        fieldnode += nodes.field_name(name, '', *name_nodes)
+        fieldbody = nodes.field_body('\n'.join(indented), *name_messages)
         fieldnode += fieldbody
         if indented:
             self.parse_field_body(indented, line_offset, fieldbody)
