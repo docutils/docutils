@@ -65,7 +65,7 @@ cvs -Q -z3 $root update -rHEAD $project sandbox web
 chmod +x $project/*.py
 chmod +x $project/tools/*.py
 chmod +x $project/test/alltests.py
-find $project/test -name 'test_*.py' -exec chmod +x {} \;
+find $project/test -name 'test_*.py' -print0 | xargs -0 chmod +x
 
 # create the snapshots
 exclude='--exclude=CVS --exclude=.cvsignore'
@@ -79,20 +79,20 @@ tar -cz $exclude -f $project-web-snapshot.tgz web
 mv -f *snapshot.tgz $dest
 
 # update htdocs
-#( cd $project ; tar -c $exclude -f - . ) | ( cd $dest ; tar -xf - )
-#tar -c $exclude -f - sandbox | ( cd $dest ; tar -xf - )
-#( cd web ; tar -c $exclude -f - . ) | ( cd $dest ; tar -xf - )
-cp -rf $project/* $dest
-cp -rf sandbox $dest
-cp -rf web/* $dest
+( cd $project ; tar -c $exclude -f - . ) | ( cd $dest ; tar -xf - )
+tar -c $exclude -f - sandbox | ( cd $dest ; tar -xf - )
+( cd web ; tar -c $exclude -f - . ) | ( cd $dest ; tar -xf - )
+#cp -rf $project/* $dest
+#cp -rf sandbox $dest
+#cp -rf web/* $dest
 
 # ensure proper permissions are set
 #find . -type f -exec chmod ug+rw {} \; 2> /dev/null
 #find . -type d -exec chmod ug+rwx {} \; 2> /dev/null
 
-cd $dest
-find -name CVS -type d -exec rm -rf {} \;
-find -name .cvsignore -type f -exec rm -f {} \;
+#cd $dest
+#find -name CVS -type d -exec rm -rf {} \; -prune
+#find -name .cvsignore -type f -exec rm -f {} \; -prune
 
 # update HTML docs
 cd $dest/tools
