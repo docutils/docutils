@@ -670,6 +670,13 @@ _`section_enumerator_separator`
 
     Default: "-".  Option: ``--section-enumerator-separator``.
 
+table_style
+    Specify the drawing of separation lines.
+
+    - "standard" lines around and between cells.
+    - "booktabs" a line above and below the table and one after the
+      head.
+    - "nolines".
 
 [pseudoxml writer]
 ``````````````````
