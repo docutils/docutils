@@ -84,9 +84,9 @@ Paragraph.
 <document source="test data">
     <comment xml:space="1">
         A comment
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="2" source="test data" type="WARNING">
         <paragraph>
-            Explicit markup ends without a blank line; unexpected unindent at line 2.
+            Explicit markup ends without a blank line; unexpected unindent.
     <paragraph>
         no blank line
     <paragraph>
@@ -105,9 +105,9 @@ Paragraph.
         A comment.
     <comment xml:space="1">
         Another.
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="3" source="test data" type="WARNING">
         <paragraph>
-            Explicit markup ends without a blank line; unexpected unindent at line 3.
+            Explicit markup ends without a blank line; unexpected unindent.
     <paragraph>
         no blank line
     <paragraph>

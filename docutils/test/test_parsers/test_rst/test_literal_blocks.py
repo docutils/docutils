@@ -100,9 +100,9 @@ one line::
         A paragraph
         on more than
         one line:
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="4" source="test data" type="ERROR">
         <paragraph>
-            Unexpected indentation at line 4.
+            Unexpected indentation.
     <literal_block xml:space="1">
         A literal block
         with no blank line above.
@@ -119,9 +119,9 @@ no blank line
         A paragraph:
     <literal_block xml:space="1">
         A literal block.
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="4" source="test data" type="WARNING">
         <paragraph>
-            Literal block ends without a blank line; unexpected unindent at line 4.
+            Literal block ends without a blank line; unexpected unindent.
     <paragraph>
         no blank line
 """],
@@ -173,9 +173,9 @@ Not a literal block.
 <document source="test data">
     <paragraph>
         A paragraph:
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="2" source="test data" type="WARNING">
         <paragraph>
-            Literal block expected at line 2; none found.
+            Literal block expected; none found.
     <paragraph>
         Not a literal block.
 """],
@@ -204,11 +204,12 @@ EOF, even though a literal block is indicated::
 <document source="test data">
     <paragraph>
         EOF, even though a literal block is indicated:
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="2" source="test data" type="WARNING">
         <paragraph>
-            Literal block expected at line 2; none found.
+            Literal block expected; none found.
 """],
 ]
+
 
 if __name__ == '__main__':
     import unittest

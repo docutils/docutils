@@ -99,9 +99,9 @@ Test short underline.
 <document id="title" name="title" source="test data">
     <title>
         Title
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="2" source="test data" type="WARNING">
         <paragraph>
-            Title underline too short at line 2.
+            Title underline too short.
         <literal_block xml:space="1">
             Title
             ====
@@ -121,9 +121,9 @@ The system_message should move after the document title
 <document id="long-title" name="long title" source="test data">
     <title>
         Long    Title
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="1" source="test data" type="WARNING">
         <paragraph>
-            Title overline too short at line 1.
+            Title overline too short.
         <literal_block xml:space="1">
             =======
              Long    Title
@@ -168,6 +168,7 @@ Paragraph 3.
             Paragraph 3.
 """],
 ])
+
 
 if __name__ == '__main__':
     import unittest

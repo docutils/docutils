@@ -27,7 +27,7 @@ Paragraph.
 """,
 """\
 <document source="test data">
-    <system_message level="1" source="test data" type="INFO">
+    <system_message level="1" line="1" source="test data" type="INFO">
         <paragraph>
             Directive processed. Type="reStructuredText-test-directive", data="", directive block: None
     <paragraph>
@@ -40,7 +40,7 @@ Paragraph.
 """,
 """\
 <document source="test data">
-    <system_message level="1" source="test data" type="INFO">
+    <system_message level="1" line="1" source="test data" type="INFO">
         <paragraph>
             Directive processed. Type="reStructuredText-test-directive", data="argument", directive block: None
     <paragraph>
@@ -55,7 +55,7 @@ Paragraph.
 """,
 """\
 <document source="test data">
-    <system_message level="1" source="test data" type="INFO">
+    <system_message level="1" line="1" source="test data" type="INFO">
         <paragraph>
             Directive processed. Type="reStructuredText-test-directive", data="", directive block:
         <literal_block xml:space="1">
@@ -71,7 +71,7 @@ Paragraph.
 """,
 """\
 <document source="test data">
-    <system_message level="1" source="test data" type="INFO">
+    <system_message level="1" line="1" source="test data" type="INFO">
         <paragraph>
             Directive processed. Type="reStructuredText-test-directive", data="", directive block:
         <literal_block xml:space="1">
@@ -88,14 +88,14 @@ Paragraph.
 """,
 """\
 <document source="test data">
-    <system_message level="1" source="test data" type="INFO">
+    <system_message level="1" line="1" source="test data" type="INFO">
         <paragraph>
             Directive processed. Type="reStructuredText-test-directive", data="", directive block:
         <literal_block xml:space="1">
             block
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="3" source="test data" type="WARNING">
         <paragraph>
-            Explicit markup ends without a blank line; unexpected unindent at line 3.
+            Explicit markup ends without a blank line; unexpected unindent.
     <paragraph>
         no blank line.
     <paragraph>

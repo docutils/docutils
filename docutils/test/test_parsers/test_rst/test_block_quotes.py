@@ -65,9 +65,9 @@ Line 2.
     <paragraph>
         Line 1.
         Line 2.
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="3" source="test data" type="ERROR">
         <paragraph>
-            Unexpected indentation at line 3.
+            Unexpected indentation.
     <block_quote>
         <paragraph>
             Unexpectedly indented.
@@ -87,9 +87,9 @@ no blank line
     <block_quote>
         <paragraph>
             Indented.
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="5" source="test data" type="WARNING">
         <paragraph>
-            Block quote ends without a blank line; unexpected unindent at line 5.
+            Block quote ends without a blank line; unexpected unindent.
     <paragraph>
         no blank line
 """],

@@ -72,9 +72,9 @@ totest['topics'] = [
     <topic>
         <title>
             Title
-        <system_message level="2" source="test data" type="WARNING">
+        <system_message level="2" line="2" source="test data" type="WARNING">
             <paragraph>
-                The second line of a topic block must be blank (line 2).
+                The second line of a topic block must be blank.
         <paragraph>
             Body.
 """],
@@ -89,9 +89,9 @@ totest['topics'] = [
     <topic>
         <title>
             Title
-        <system_message level="2" source="test data" type="WARNING">
+        <system_message level="2" line="4" source="test data" type="WARNING">
             <paragraph>
-                The second line of a topic block must be blank (line 4).
+                The second line of a topic block must be blank.
         <paragraph>
             Body.
 """],
@@ -107,9 +107,9 @@ totest['topics'] = [
     <topic>
         <title>
             Title
-        <system_message level="3" source="test data" type="ERROR">
+        <system_message level="3" line="3" source="test data" type="ERROR">
             <paragraph>
-                Topics may not be nested within body elements (line 2).
+                Topics may not be nested within body elements.
             <literal_block xml:space="1">
                 .. topic:: Nested
                 \n\
@@ -128,18 +128,50 @@ totest['topics'] = [
     <topic>
         <title>
             Title
-        <system_message level="3" source="test data" type="ERROR">
+        <system_message level="3" line="3" source="test data" type="ERROR">
             <paragraph>
-                Topics may not be nested within body elements (line 2).
+                Topics may not be nested within body elements.
             <literal_block xml:space="1">
                 .. topic:: Nested
                 \n\
                    Body.
-        <system_message level="2" source="test data" type="WARNING">
+        <system_message level="2" line="6" source="test data" type="WARNING">
             <paragraph>
-                Explicit markup ends without a blank line; unexpected unindent at line 5.
+                Explicit markup ends without a blank line; unexpected unindent.
         <paragraph>
             More.
+"""],
+["""\
+.. topic:: Title
+
+   .. topic::
+
+      Nested
+
+      Body.
+
+   More.
+
+More.
+""",
+"""\
+<document source="test data">
+    <topic>
+        <title>
+            Title
+        <system_message level="3" line="3" source="test data" type="ERROR">
+            <paragraph>
+                Topics may not be nested within body elements.
+            <literal_block xml:space="1">
+                .. topic::
+                \n\
+                   Nested
+                \n\
+                   Body.
+        <paragraph>
+            More.
+    <paragraph>
+        More.
 """],
 ]
 

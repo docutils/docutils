@@ -32,9 +32,9 @@ totest['images'] = [
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Missing image URI argument at line 1.
+            Missing image URI argument.
         <literal_block xml:space="1">
             .. image::
 """],
@@ -43,9 +43,9 @@ totest['images'] = [
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Image URI at line 1 contains whitespace.
+            Image URI contains whitespace.
         <literal_block xml:space="1">
             .. image:: one two three
 """],
@@ -78,9 +78,9 @@ totest['images'] = [
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Missing image URI argument at line 1.
+            Missing image URI argument.
         <literal_block xml:space="1">
             .. image::
                :height: 100
@@ -115,9 +115,9 @@ totest['images'] = [
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Error in "image" directive options at line 1:
+            Error in "image" directive options:
             invalid option data: extension option field body may contain
             a single paragraph only (option "scale").
         <literal_block xml:space="1">
@@ -130,9 +130,9 @@ totest['images'] = [
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Error in "image" directive options at line 1:
+            Error in "image" directive options:
             invalid option value: (option: "scale"; value: None)
             object can't be converted to int.
         <literal_block xml:space="1">
@@ -145,9 +145,9 @@ totest['images'] = [
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Error in "image" directive options at line 1:
+            Error in "image" directive options:
             invalid option block.
         <literal_block xml:space="1">
             .. image:: picture.png
@@ -159,9 +159,9 @@ totest['images'] = [
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Image URI at line 1 contains whitespace.
+            Image URI contains whitespace.
         <literal_block xml:space="1">
             .. image:: picture.png
                scale: 50
@@ -172,9 +172,9 @@ totest['images'] = [
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Error in "image" directive options at line 1:
+            Error in "image" directive options:
             invalid option block.
         <literal_block xml:space="1">
             .. image:: picture.png
@@ -186,9 +186,9 @@ totest['images'] = [
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Error in "image" directive options at line 1:
+            Error in "image" directive options:
             unknown option: "sale".
         <literal_block xml:space="1">
             .. image:: picture.png
@@ -200,9 +200,9 @@ totest['images'] = [
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Error in "image" directive options at line 1:
+            Error in "image" directive options:
             invalid option value: (option: "scale"; value: 'fifty')
             invalid literal for int(): fifty.
         <literal_block xml:space="1">
@@ -216,9 +216,9 @@ totest['images'] = [
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Error in "image" directive options at line 1:
+            Error in "image" directive options:
             invalid option data: duplicate option "scale".
         <literal_block xml:space="1">
             .. image:: picture.png
