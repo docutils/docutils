@@ -447,14 +447,14 @@ Unimplemented Transforms
 HTML Writer
 -----------
 
-- @@@ Allow for style sheet info to be passed in, either as a <LINK>,
-  or as embedded style info.
+- Allow for style sheet info to be passed in.  (Done, with the
+  ``--stylesheet`` command-line option.)
 
 - @@@ Construct a _`templating system`, as in ht2html/yaptu, using
   directives and substitutions for dynamic stuff.
 
-- @@ Improve the granularity of document parts in the HTML writer, so
-  that one could just grab the parts needed.
+- Improve the granularity of document parts in the HTML writer, so
+  that one could just grab the parts needed.  (Done.)
 
 - @@@ Return a string instead of writing to a file?  Leave all I/O up
   to the client?  Or up to an explicit distributor/filer?
@@ -481,46 +481,43 @@ a common option-processing module, as described below.
 - Combine the common code from the existing front-ends into a single
   module, and add option processing.
 
-  - docutils.frontend?  docutils.core.xyz?  docutils.utils.options?
-    Part of docutils.core.Publisher/publish()?  (Add a ``cmdline``
-    parameter?  To publish() only?)
+  - Named docutils.frontend.OptionParser.  Supporting parameters have
+    been added to docutils.core.Publisher/publish(): ``argv`` &
+    ``usage``.
 
   - Use Optik to do modular command-line option processing.
 
-    - Pass around an Optik 'option Values' object?  Attach it to the
-      document? 
+    - An Optik 'option Values' object is attached to the document.
 
-    - What to do when *not* using a front-end (i.e., when docutils is
-      imported by an unrelated client)?  I.e., report_level etc.  Use
-      the default values of the OptionParser?  Perhaps::
+    - The Optik 'option Values' object is used even when *not* using a
+      front-end (i.e., when docutils is imported by an unrelated
+      client).  An artificial argv list can be constructed & passed to
+      publish(), or a default Values object can be created and
+      modified manually::
 
-          options = optik.option_parser.Values(option_parser.defaults)
-          options.an_option = "my default value"
+          pub = Publisher(...)
+          pub.process_command_line(argv=[])
+          pub.options.an_option = "my default value"
+          pub.publish()
 
-  - The core would support all common options (--reader, --writer,
+  - The core supports all common options (--verbose, --date, etc.).
+
+  - Each component adds its own specific options (HTML: --stylesheet,
     etc.).
 
-  - Each component would add its own specific options (HTML:
-    --stylesheet, etc.), and perhaps disable common options that don't
-    apply.
+    - Disables common options that don't apply?
 
     - Added/removed dynamically (during option processing)?  Is this
-      possible with Optik?  Is it desirable?
+      possible with Optik?  Is it desirable?  (See dynamic_ below.)
 
-    - Parsers too?
-
-  - Common and component-specific options may not conflict.
+  - Common and component-specific options must not conflict.  Reserve
+    short options for the core, and restrict components to long
+    options?
 
   - Build an OptionParser dynamically based on the known Reader &
-    Writer?  Alternatives:
-
-    a) First instantiate the common OptionParser subclass, which can
-       be passed to a standard function in the Reader module which
-       adds its specific options, then on to the Writer module.
-    
-    b) Or, store a data structure in each component containing its
-       specific options, merge with the common option data, and
-       instantiate an OptionParser.
+    Writer.  Store a data structure in each component containing its
+    specific options, merge with the common option data, and
+    instantiate an OptionParser.
 
   - What about if we don't know which Reader and/or Writer we are
     going to use?  If the Reader/Writer is specified on the
@@ -543,40 +540,23 @@ a common option-processing module, as described below.
        [options]``).  A single front-end would be sufficient, but
        probably only useful for testing purposes.
 
+    d) _`Dynamic`: Reader and/or Writer are specified by options, with
+       defaults if unspecified (e.g. ``publish --writer pdf
+       [options]``).  Is this possible?  The option parser would have
+       to be told about new options it needs to handle, on the fly.
+       Component-specific options would have to be specified *after*
+       the component-specifying option.
+
     Allow common options before subcommands, as in CVS?  Or group all
     options together?  In the case of the `fully qualified`_
-    front-ends, options will have to be grouped together anyway, so
-    there's no advantage to splitting common and component-specific
-    options apart.
+    front-ends, all the options will have to be grouped together
+    anyway, so there's no advantage (we can't use it to avoid
+    conflicts) to splitting common and component-specific options
+    apart.
 
-- Command-line option ideas.  Common options:
-
-  --generator     Include a "Generated by Docutils" credit with a
-                  link, at the end of the document.
-  --date          Include a datestamp at the end of the document.
-  --source-link   Include a "(View document source)" link.
-  --verbose       Report all system messages, info-level and higher.
-                  (Same as "--report=info".)
-  --debug         Report debug-level system messages.
-  --report=level  Set verbosity; report system messages at or higher
-                  than ``level`` (by name or number: "info" or "1",
-                  warning/2, error/3, severe/4; also, "none" or 5+).
-                  Default is 2 (warning).
-  --halt=level    Set the ``level`` at or above which system messages
-                  are converted to exceptions, halting execution
-                  immediately.  Levels as in --report.  Default is 4
-                  (severe).
-  --strict        Same as "--halt=info": halt processing at the
-                  slightest problem.
-  --encoding=name  Specify the encoding of input text.  Default is
-                   "utf-8".
-  --language=name  Specify the language of input text.  Default is
-                   "en" (English).
-
-  Options specific to HTML writer:
-
-  --stylesheet=file
-                  Specify a stylesheet.  Default is "default.css".
+- Implement command-line options.  Common options: --generator,
+  --date, --time, --source-link, --warnings, --encoding=name,
+  --language=name.
 
 
 Project Policies

@@ -12,9 +12,16 @@ this is a work in progress, please check the project website for
 updated working files.  This project should be considered highly
 experimental; APIs are subject to change at any time.
 
+
+Requirements
+============
+
 To run the code, Python 2.0 or later must already be installed.
 Python 2.1 or later is required to run the test suite.  You can get
 Python from http://www.python.org/.
+
+Greg Ward's Optik option processing package is required.  You can get
+Optik from http://optik.sourceforge.net/.
 
 
 Project Files & Directories
@@ -30,7 +37,7 @@ Project Files & Directories
 
 * setup.py: Installation script.  See "Installation" below.
 
-* install.py: Quick & dirty installation script.
+* install.py: Quick & dirty installation script.  Just run it.
 
 * docutils: The project source directory, installed as a Python
   package.

@@ -41,9 +41,12 @@ General:
   "component" will be used to mean "Docutils component", as in Reader,
   Writer, Parser, or Transform.  Portions of documents (Table of
   Contents, sections, etc.)  will be called "document parts".
-
 - Did a grand renaming: a lot of ``verylongnames`` became
   ``very_long_names``.
+- Cleaned up imports: no more relative package imports or
+  comma-separated lists of top-level modules.
+- Added support for an option values object which carries default
+  settings and overrides (from command-line options and library use).
 
 Specific:
 
@@ -53,6 +56,18 @@ Specific:
     the package.
   - Added ``Component`` base class for Docutils components; implements
     the ``supports`` method.
+
+* docutils/core.py:
+
+  - Removed many keyword parameters to ``Publisher.__init__()`` and
+    ``publish()``; bundled into an option values object.  Added
+    ``argv`` and ``usage`` parameters for command-line support.
+  - Added ``Publisher.process_command_line()`` and ``.set_options()``
+    methods.
+
+* docutils/frontend.py: Added to project; support for front-end
+  scripts.  Option specifications may be augmented by components.
+  Requires Optik (http://optik.sf.net/) for option processing.
 
 * docutils/nodes.py:
 
@@ -64,6 +79,8 @@ Specific:
     ``Nodes.walk()``.
   - Improved docstrings.
   - Added ``SparseNodeVisitor``, refined ``NodeVisitor``.
+  - Moved ``utils.id()`` to ``nodes.make_id()`` to avoid circular
+    imports.
 
 * docutils/statemachine.py:
 
@@ -83,6 +100,7 @@ Specific:
   - Added underscores to improve many awkward names.
   - Changed names of Reporter's thresholds:
     warning_level -> report_level; error_level -> halt_level.
+  - Moved ``utils.id()`` to ``nodes.make_id()``.
 
 * docutils/parsers/rst/states.py:
 
@@ -94,6 +112,8 @@ Specific:
     (reduces code complexity a lot).  See ``RSTState.runtime_init()``.
   - ``RSTState.parent`` replaces ``RSTState.statemachine.node``.
   - Added ``MarkupMismatch`` exception; for late corrections.
+  - Added ``-/:`` characters to inline markup's start string prefix,
+    ``/`` to end string suffix.
 
 * docutils/parsers/rst/directives/html.py: Changed the ``meta``
   directive to use a ``pending`` element, used only by HTML writers.
@@ -132,6 +152,7 @@ Specific:
   - Escape double-dashes in comment text.
   - Improved boilerplate & modularity of output.
   - Added a "generator" meta tag to <head>.
+  - Added support for the ``--stylesheet`` option.
 
 * docutils/writers/pseudoxml.py: Renamed from pprint.py.
 
@@ -149,6 +170,8 @@ Specific:
   - Clarified field list usage.
   - Updated enumerated list description.
   - Clarified purpose of directives.
+  - Added ``-/:`` characters to inline markup's start string prefix,
+    ``/`` to end string suffix.
 
 * spec/rst/alternatives.txt: Expanded auto-enumerated list idea;
   thanks to Fred Bremmer.
@@ -167,6 +190,11 @@ Specific:
     (``__init__.py`` files required); fixes duplicate module name bug.
 
 * test/test_pep/: Subpackage added to project; PEP testing.
+
+* tools: Updated html.py and publish.py front-ends to use the new
+  command-line processing facilities of ``docutils.frontend`` (exposed
+  in ``docutils.core.Publisher``), reducing each to just a few lines
+  of code.
 
 
 Release 0.1 (2002-04-20)
