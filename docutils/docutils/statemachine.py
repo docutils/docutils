@@ -266,7 +266,8 @@ class StateMachine:
                     transitions = None
                 state = self.get_state(next_state)
         except:
-            self.error()
+            if self.debug:
+                self.error()
             raise
         self.observers = []
         return results
