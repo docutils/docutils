@@ -138,7 +138,7 @@ u"""\
     <system_message level="3" line="2" source="test data" type="ERROR">
         <paragraph>
             Invalid character code: 0x111111111111111111
-            %s
+            ValueError: code too large (%s)
         <literal_block xml:space="preserve">
             unicode:: 0x111111111111111111
     <system_message level="2" line="2" source="test data" type="WARNING">
@@ -158,7 +158,7 @@ u"""\
         <literal_block xml:space="preserve">
             .. |too big for unicode| unicode:: 0x11111111
 """ % (DocutilsTestSupport.exception_data(
-            'unichr(int("111111111111111111", 16))')[2],
+            'unichr(int("111111111111111111", 16))')[0],
        DocutilsTestSupport.exception_data('unichr(int("11111111", 16))')[2])]
 ]
 
