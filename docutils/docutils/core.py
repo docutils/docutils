@@ -152,7 +152,8 @@ class Publisher:
         document.transformer.apply_transforms()
 
     def publish(self, argv=None, usage=None, description=None,
-                settings_spec=None, settings_overrides=None):
+                settings_spec=None, settings_overrides=None,
+                enable_exit=None):
         """
         Process command line options and arguments (if `self.settings` not
         already set), run `self.reader` and then `self.writer`.  Return
@@ -183,6 +184,9 @@ class Publisher:
             print >>sys.stderr, '\n::: Pseudo-XML:'
             print >>sys.stderr, document.pformat().encode(
                 'raw_unicode_escape')
+        if enable_exit and (document.reporter.max_level
+                            >= self.settings.exit_level):
+            sys.exit(document.reporter.max_level + 10)
         return output
 
 
@@ -194,7 +198,7 @@ def publish_cmdline(reader=None, reader_name='standalone',
                     parser=None, parser_name='restructuredtext',
                     writer=None, writer_name='pseudoxml',
                     settings=None, settings_spec=None,
-                    settings_overrides=None, argv=None,
+                    settings_overrides=None, enable_exit=1, argv=None,
                     usage=default_usage, description=default_description):
     """
     Set up & run a `Publisher`.  For command-line front ends.
@@ -215,6 +219,7 @@ def publish_cmdline(reader=None, reader_name='standalone',
       subclass.  Used only if no `settings` specified.
     - `settings_overrides`: A dictionary containing program-specific overrides
       of component settings.
+    - `enable_exit`: Boolean; enable exit status at end of processing?
     - `argv`: Command-line argument list to use instead of ``sys.argv[1:]``.
     - `usage`: Usage string, output if there's a problem parsing the command
       line.
@@ -223,14 +228,16 @@ def publish_cmdline(reader=None, reader_name='standalone',
     """
     pub = Publisher(reader, parser, writer, settings=settings)
     pub.set_components(reader_name, parser_name, writer_name)
-    pub.publish(argv, usage, description, settings_spec, settings_overrides)
+    pub.publish(argv, usage, description, settings_spec, settings_overrides,
+                enable_exit=enable_exit)
 
 def publish_file(source=None, source_path=None,
                  destination=None, destination_path=None,
                  reader=None, reader_name='standalone',
                  parser=None, parser_name='restructuredtext',
                  writer=None, writer_name='pseudoxml',
-                 settings=None, settings_spec=None, settings_overrides=None):
+                 settings=None, settings_spec=None, settings_overrides=None,
+                 enable_exit=None):
     """
     Set up & run a `Publisher`.  For programmatic use with file-like I/O.
 
@@ -258,6 +265,7 @@ def publish_file(source=None, source_path=None,
       subclass.  Used only if no `settings` specified.
     - `settings_overrides`: A dictionary containing program-specific overrides
       of component settings.
+    - `enable_exit`: Boolean; enable exit status at end of processing?
     """
     pub = Publisher(reader, parser, writer, settings=settings)
     pub.set_components(reader_name, parser_name, writer_name)
@@ -267,14 +275,14 @@ def publish_file(source=None, source_path=None,
         settings._update(settings_overrides, 'loose')
     pub.set_source(source, source_path)
     pub.set_destination(destination, destination_path)
-    pub.publish()
+    pub.publish(enable_exit=enable_exit)
 
 def publish_string(source, source_path=None, destination_path=None, 
                    reader=None, reader_name='standalone',
                    parser=None, parser_name='restructuredtext',
                    writer=None, writer_name='pseudoxml',
                    settings=None, settings_spec=None,
-                   settings_overrides=None):
+                   settings_overrides=None, enable_exit=None):
     """
     Set up & run a `Publisher`, and return the string output.
     For programmatic use with string I/O.
@@ -313,6 +321,7 @@ def publish_string(source, source_path=None, destination_path=None,
       subclass.  Used only if no `settings` specified.
     - `settings_overrides`: A dictionary containing program-specific overrides
       of component settings.
+    - `enable_exit`: Boolean; enable exit status at end of processing?
     """
     pub = Publisher(reader, parser, writer, settings=settings,
                     source_class=io.StringInput,
@@ -324,4 +333,4 @@ def publish_string(source, source_path=None, destination_path=None,
         settings._update(settings_overrides, 'loose')
     pub.set_source(source, source_path)
     pub.set_destination(destination_path=destination_path)
-    return pub.publish()
+    return pub.publish(enable_exit=enable_exit)
