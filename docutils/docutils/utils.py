@@ -174,7 +174,8 @@ class Reporter:
 class ConditionSet:
 
     """
-    A set of thresholds, switches, and streams corresponding to one `Reporter`
+    A set of two thresholds (`report_level` & `halt_level`), a switch
+    (`debug`), and an I/O stream (`stream`), corresponding to one `Reporter`
     category.
     """
 
