@@ -180,6 +180,53 @@ Also see the `SourceForge Bug Tracker`_.
   all IDs from definitions after the first substitution reference is
   processed.
 
+* Footnote label "5" should be "4"::
+
+      $ rst2pseudoxml.py <<EOF
+      > ref [#abc]_ [#]_ [1]_ [#4]_
+      > 
+      > .. [#abc] footnote
+      > .. [#] two
+      > .. [1] one
+      > .. [#4] four
+      > EOF
+      <document source="<stdin>">
+          <paragraph>
+              ref 
+              <footnote_reference auto="1" id="id1" refid="abc">
+                  2
+               
+              <footnote_reference auto="1" id="id2" refid="id5">
+                  3
+               
+              <footnote_reference id="id3" refid="id6">
+                  1
+               
+              <footnote_reference auto="1" id="id4" refid="id7">
+                  5
+          <footnote auto="1" backrefs="id1" id="abc" name="abc">
+              <label>
+                  2
+              <paragraph>
+                  footnote
+          <footnote auto="1" backrefs="id2" id="id5" name="3">
+              <label>
+                  3
+              <paragraph>
+                  two
+          <footnote backrefs="id3" id="id6" name="1">
+              <label>
+                  1
+              <paragraph>
+                  one
+          <footnote auto="1" backrefs="id4" id="id7" name="4">
+              <label>
+                  5
+              <paragraph>
+                  four
+
+  Do footnotes 1 & 3 need "name" attributes?
+
 
 ..
    Local Variables:
