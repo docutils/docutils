@@ -67,10 +67,8 @@ reStructuredText`__ on Doc-SIG.
 
 Tibs used the name "Docutils" for `his effort`__ "to document what the
 Python docutils package should support, with a particular emphasis on
-documentation strings".
-
-Tibs joined the current project (and its predecessors) and has
-graciously donated the name "Docutils".
+documentation strings".  Tibs joined the current project (and its
+predecessors) and graciously donated the name.
 
 For more history of reStructuredText and the Docutils project, see `An
 Introduction to reStructuredText`_.
