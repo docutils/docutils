@@ -323,6 +323,22 @@ General
 
 * Change ``document.options`` to ``document.settings``?
 
+* Add functional testing to Docutils: Readers, Writers, front ends.
+
+* Changes to sandbox/davidg/infrastructure/docutils-update?
+
+  - Modify the script to only update the snapshots if files have
+    actually changed in CVS (saving some SourceForge server cycles).
+
+  - Make passing the test suite a prerequisite to snapshot update,
+    but only if the process is completely automatic.
+
+  - Rewrite in Python?
+
+* Publisher: "Ordinary setup" shouldn't requre specific ordering; at
+  the very least, there ought to be error checking higher up in the
+  call chain.  [Aahz]
+
 
 Documentation
 -------------
@@ -435,6 +451,10 @@ Miscellaneous ideas:
   - ``from module import identifier as alias``: "alias (identifier
     from module)"
   - ``from module import *``: "all identifiers (``*``) from module"
+
+* Have links to colorized Python source files from API docs?  And
+  vice-versa: backlinks from the colorized source files to the API
+  docs!
 
 
 reStructuredText Parser
