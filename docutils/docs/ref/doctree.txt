@@ -4033,13 +4033,18 @@ Pseudo-XML_ fragment from simple parsing::
 
 The ``transition`` element is commonly seen in novels and short
 fiction, as a gap spanning one or more lines, with or without a type
-ornament such as a row of asterisks.  Transitions separate other body
-elements, dividing a section into untitled divisions.  A transition
-may not begin or end a document, it may not begin a section, nor may
+ornament such as a row of asterisks.  Transitions separate body
+elements and sections, dividing a section into untitled divisions.  A
+transition may not begin or end a section [#]_ or document, nor may
 two transitions be immediately adjacent.
 
 See `Doctree Representation of Transitions`__ in `A Record of
 reStructuredText Syntax Alternatives`__.
+
+.. [#] In reStructuredText markup, a transition may appear to fall at
+   the end of a section immediately before another section.  A
+   transform recognizes this case and moves the transition so it
+   separates the sections.
 
 __ ../dev/rst/alternatives.html#doctree-representation-of-transitions
 __ ../dev/rst/alternatives.html
@@ -4800,18 +4805,19 @@ Entity definition:
 
     ( ( (`%body.elements;`_ | topic_ | sidebar_)+,
         (transition_, (`%body.elements;`_ | topic_ | sidebar_)+ )*,
-        (`%section.elements;`_)* )
-    | (`%section.elements;`_)+ )
+        ( (`%section.elements;`_), (transition_?, (`%section.elements;`_) )* )? )
+    | ( (`%section.elements;`_), (transition_?, (`%section.elements;`_) )* ) ) ">
 
 Each document_ or section_ contains either:
 
 - multiple body elements, topics, and/or sidebars, optionally
   interspersed with transitions (but transitions cannot occur at the
   beginning or end, nor may there be two transitions in a row),
-  followed by zero or more sections; or
+  followed by zero or more sections optionally interspersed with
+  transitions; or
 
-- one or more sections (whose contents are recursively the same as this
-  model).
+- one or more sections (whose contents are recursively the same as
+  this model) optionally interspersed with transitions.
 
 The `%structure.model;`_ parameter entity is directly employed in the
 content models of the document_ and section_ elements.
