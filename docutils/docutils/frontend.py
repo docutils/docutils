@@ -152,6 +152,13 @@ def validate_url_trailing_slash(
     else:
         return value + '/'
 
+def validate_dependency_file(
+    setting, value, option_parser, config_parser=None, config_section=None):
+    if value:
+        return open(value, 'w')
+    else:
+        return None
+
 def make_paths_absolute(pathdict, keys, base_path=None):
     """
     Interpret filesystem path settings relative to the `base_path` given.
@@ -398,6 +405,10 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
           '  Default is "en" (English).',
           ['--language', '-l'], {'dest': 'language_code', 'default': 'en',
                                  'metavar': '<name>'}),
+         ('Write dependencies (caused e.g. by the include directive) to '
+          '<file>.  Useful in conjunction with programs like make.',
+          ['--dependency-file'],
+          {'metavar': '<file>', 'validator': validate_dependency_file}),
          ('Read configuration settings from <file>, if it exists.',
           ['--config'], {'metavar': '<file>', 'type': 'string',
                          'action': 'callback', 'callback': read_config_file}),

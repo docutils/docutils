@@ -206,7 +206,8 @@ def get_csv_data(name, options, content, lineno, block_text,
             csv_file = io.FileInput(
                 source_path=source, encoding=encoding,
                 error_handler=state.document.settings.input_encoding_error_handler,
-                handle_io_errors=None)
+                handle_io_errors=None,
+                dep_file=state.document.settings.dependency_file)
             csv_data = csv_file.read().splitlines()
         except IOError, error:
             severe = state_machine.reporter.severe(
