@@ -403,7 +403,7 @@ report_level          Verbosity threshold at or above which system
                       messages are reported.
 
                       Default: warning (2).  Options: ``--report, -r,
-                      --verbose``.
+                      --verbose, --quiet, -q``.
 --------------------  ------------------------------------------------
 source_link           Include a "View document source" link in the
                       document footer.  URL will be relative to the
