@@ -298,7 +298,7 @@ General
 
 * Should I/O objects be passed simple encoding name strings instead of
   a full-blown settings object?  Yes.
-  
+
   @@@ Remove "settings" parameters before next release.
 
 
@@ -683,6 +683,22 @@ __ rst/alternatives.html#or-not-to-do
 * Use the vertical spacing of the source text to determine the
   corresponding vertical spacing of the output?
 
+* [From Mark Nodine]  For cells in simple tables that comprise a
+  single line, the justification can be inferred according to the
+  following rules:
+
+  1. If the text begins at the leftmost column of the cell,
+     then left justification, ELSE
+  2. If the text begins at the rightmost column of the cell,
+     then right justification, ELSE
+  3. Center justification.
+
+  The onus is on the author to make the text unambiguous by adding
+  blank columns as necessary.  There should be a parser setting to
+  turn off justification-recognition (normally on would be fine).
+
+  Decimal justification?
+
 
 Directives
 ``````````
@@ -702,7 +718,7 @@ when used in a document.
   - _`images.figure`: "title" and "number", to indicate a formal
     figure?
 
-  - _`parts.sectnum`: "start", "local"?
+  - _`parts.sectnum`: "local"?, "start", "refnum"
 
     A "local" option could enable numbering for sections from a
     certain point down, and sections in the rest of the document are
@@ -736,6 +752,12 @@ when used in a document.
     sequence used (from 1,2,3... to A,B,C...).  This is where the
     "local" concept comes in.  This part of the implementation can be
     left for later.
+
+    A "refnum" option (better name?) would insert reference names
+    (targets) consisting of the reference number.  Then a URL could be
+    of the form ``http://host/document.html#2.5`` (or "2-5"?).  Allow
+    internal references by number?  Issue: altering the section
+    structure of a document could render hyperlinks invalid.
 
   - _`parts.contents`: Add a "suppress" or "prune" option?  It would
     suppress contents display for sections in a branch from that point
@@ -1037,6 +1059,22 @@ elements.
   - "figure", "table", "listing", "chapter", "page", etc: See `object
     numbering and object references`_ above.
 
+  - "term"?: Unfamiliar or specialized terminology.
+
+  - "glossary-term": This would establish a link to a glossary.  It
+    would require an associated "glossary-entry" directive, whose
+    contents could be a definition list::
+
+        .. glossary-entry::
+
+           term1
+               definition1
+           term2
+               definition2
+
+    This would allow entries to be defined anywhere in the document,
+    and collected (via a "glossary" directive perhaps) at one point.
+
 
 Unimplemented Transforms
 ------------------------
@@ -1075,12 +1113,17 @@ inside another?
 Document Splitting
 ``````````````````
 
-If the processed document is written to multiple files (possibly in
-a directory tree), it will need to be split up.  References will
-have to be adjusted.
+If the processed document is written to multiple files (possibly in a
+directory tree), it will need to be split up.  Internal references
+will have to be adjusted.
 
 (HTML only?  Initially, yes.  Eventually, anything should be
 splittable.)
+
+Idea: insert a "split here" attribute into the root element of each
+split-out document, containing the path/filename.  The Output object
+will recognize this attribute and split out the files accordingly.
+Must allow for common headers & footers, prev/next, breadcrumbs, etc.
 
 
 Navigation
