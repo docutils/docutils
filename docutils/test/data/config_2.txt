@@ -7,4 +7,5 @@ generator: no
 
 [html4css1 writer]
 
+footnote-references: superscript
 stylesheet-path: test.css
