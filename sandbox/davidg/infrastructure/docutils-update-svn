@@ -21,6 +21,9 @@
 # exit on error
 set -e
 
+# be nice
+renice 15 $$ > /dev/null
+
 # make all newly created files group writeable
 umask 002
 
@@ -70,7 +73,8 @@ svn up --quiet
 # Ensure proper directory permissions are set.  Use $dest, because
 # $snapshotdir is currently a subdirectory of $dest.  Changing
 # permissions of files is probably not necessary because files can be
-# deleted and re-created.
+# deleted and re-created.  Do not change permissions of aux directory
+# (but change them for all subdirectories).
 #find $dest -type f -print0 | xargs -0 chmod ug+rw 2> /dev/null || true
 find $dest -name aux -o -type d -print0 | xargs -0 chmod ug+rwxs 2> /dev/null || true
 
