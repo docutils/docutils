@@ -9,6 +9,7 @@
 # Options:
 #   -e    Access CVS as current user ("ext" instead of "pserver"; requires
 #         authentication).
+#   -f    Provide feedback at start and end of program run.
 #   -p    Run from the project directory.
 #   -t    Run the script in trace mode ("set -o xtrace").
 #   -u    Regenerate .html unconditionally.
@@ -31,14 +32,16 @@ root=
 export CVS_RSH=ssh
 export CVSROOT=:pserver:anonymous@cvs1:/cvsroot/$project
 
+feedback=0
 trace=0
 unconditional=0
 verbose=0
 
-while getopts eptuv opt
+while getopts efptuv opt
 do
     case $opt in
         e)  root="-d:ext:${USER}@cvs1:/cvsroot/docutils" ;;
+        f)  feedback=1;;
         p)  export PYTHONPATH=$pylib:$lib:$lib/extras;;
         t)  trace=1;;
         u)  unconditional=1;;
@@ -47,6 +50,10 @@ do
     esac
 done
 shift `expr $OPTIND - 1`
+
+if [ $feedback -eq 1 ] ; then
+    echo 'Starting docutils-update run...'
+fi
 
 if [ $trace -eq 1 -o $verbose -eq 1 ] ; then
     set -o xtrace
@@ -122,6 +129,10 @@ for htmlfile in `find .. -name '*.html'` ; do
         fi
     fi
 done
+
+if [ $feedback -eq 1 ] ; then
+    echo '...docutils-update done.'
+fi
 
 # Local Variables:
 # indent-tabs-mode: nil
