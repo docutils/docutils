@@ -96,6 +96,9 @@ Specific:
     and figure content is centered.
   - Rowspan support for tables.
   - Fix: admonition titles before first section.
+  - Replace ``--`` in literal by ``-{}-`` because fontencoding T1 has endash.
+  - Replave ``_`` in literal by an underlined blank, because it has the correct
+    width.
 
 * docs/index.txt: "Docutils Project Documentation Overview", added to
   project.
