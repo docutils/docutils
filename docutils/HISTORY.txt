@@ -52,6 +52,8 @@ Specific:
   - Factored ``OptionSpec`` out of ``Component``; separately useful.
   - Bumped version to 0.2.3 because of the new ``--embed-stylesheet``
     option and its effect on the PEP template & writer.
+  - Bumped version to 0.2.4 due to changes to the PEP template &
+    stylesheet.
 
 * docutils/core.py:
 
@@ -93,6 +95,15 @@ Specific:
     Added ``parse_messages`` and ``transform_messages`` attributes to
     ``document``, removed ``messages``.  Added ``note_parse_message``
     and ``note_transform_message`` methods.
+  - Added support for improved diagnostics:
+
+    - Added "document", "source", and "line" internal attributes to
+      ``Node``, set by ``Node.setup_child()``.
+    - Converted variations on ``node.parent = self`` to
+      ``self.setup_child(node)``.
+    - Added ``document.current_source`` & ``.current_line``
+      attributes, and ``.note_state_machine_change`` &
+      ``.note_source`` observer methods.
 
 * docutils/statemachine.py:
 
@@ -111,6 +122,8 @@ Specific:
   - Changed ``StateMachine.next_line()`` and ``.goto_line()`` to raise
     ``EOFError`` instead of ``IndexError``.
   - Added ``State.no_match`` method.
+  - Added support for the Observer pattern, triggered by input line
+    changes.
 
 * docutils/utils.py:
 
@@ -119,6 +132,7 @@ Specific:
   - Added an observer pattern to ``utils.Reporter`` to keep track of
     system messages.
   - Fixed a bug in ``relative_path()``.
+  - Added support for improved diagnostics.
 
 * docutils/parser/rst/__init__.py:
 
@@ -138,6 +152,7 @@ Specific:
   - Added support for short section title over/underlines.
   - Fixed "simple reference name" regexp to ignore text like
     "object.__method__"; not an anonymous reference.
+  - Added support for improved diagnostics.
 
 * docutils/parsers/rst/tableparser.py:
 
@@ -196,6 +211,10 @@ Specific:
 
   - Added the ``TargetNotes`` generic transform.
 
+* docutils/writers/docutils-xml.py:
+
+  - Added XML and doctype declarations.
+
 * docutils/writers/html4css1.py:
 
   - "name" attributes only on these tags: a, applet, form, frame,
@@ -223,6 +242,7 @@ Specific:
   - Added "--embed-stylesheet" and "--link-stylesheet" options;
     factored out ``HTMLTranslator.get_stylesheet_reference()``.
   - Improved field list rendering.
+  - Added Docutils version to "generator" meta tag.
 
 * docutils/writers/pep_html.py:
 
@@ -233,6 +253,7 @@ Specific:
     working directory.
   - Added an override on the "--footnote-references" option.
   - Factored out ``HTMLTranslator.get_stylesheet_reference()``.
+  - Added Docutils version to "generator" meta tag.
 
 * docs/tools.txt:
 
@@ -280,6 +301,7 @@ Specific:
   - Added "line" attribute to ``system_message`` element.
   - Removed "field_argument" element; "field_name" may contain
     multiple words and whitespace.
+  - Changed public identifier to docutils.sf.net.
 
 * spec/pep-0256.txt: Converted to reStructuredText & updated.
 
@@ -327,6 +349,7 @@ Specific:
 * tools/pep-html-template:
 
   - Allow for ``--embed-stylesheet``.
+  - Added Docutils version to "generator" meta tag.
 
 * tools/pep2html.py:
 

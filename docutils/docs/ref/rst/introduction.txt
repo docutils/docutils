@@ -202,7 +202,7 @@ motivations (the "itches" I aim to "scratch") are as follows:
   a markup language specification and a reference parser
   implementation, but it does not aspire to be the entire system.  I
   don't want reStructuredText or a hypothetical Python documentation
-  processor to die stillborn because of overambition.
+  processor to die stillborn because of over-ambition.
 
 - Most of all, I want to help ease the documentation chore, the bane
   of many a programmer.

@@ -254,7 +254,7 @@ example, here's a classic::
 Parsed Literal Block
 ====================
 
-:Directive Type: "literal-block"
+:Directive Type: "parsed-literal"
 :DTD Element: literal_block
 :Directive Arguments: None.
 :Directive Options: None.
