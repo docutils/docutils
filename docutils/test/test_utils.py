@@ -10,7 +10,9 @@
 Test module for utils.py.
 """
 
-import unittest, StringIO, sys
+import unittest
+import StringIO
+import sys
 from DocutilsTestSupport import utils, nodes
 
 
@@ -302,16 +304,6 @@ class MiscFunctionTests(unittest.TestCase):
     def test_normalize_name(self):
         for input, output in self.names:
             normed = utils.normalize_name(input)
-            self.assertEquals(normed, output)
-
-    ids = [('a', 'a'), ('A', 'a'), ('', ''), ('a b \n c', 'a-b-c'),
-           ('a.b.c', 'a-b-c'), (' - a - b - c - ', 'a-b-c'), (' - ', ''),
-           (u'\u2020\u2066', ''), (u'a \xa7 b \u2020 c', 'a-b-c'),
-           ('1', ''), ('1abc', 'abc')]
-
-    def test_id(self):
-        for input, output in self.ids:
-            normed = utils.id(input)
             self.assertEquals(normed, output)
 
 
