@@ -47,8 +47,10 @@ class HTMLTranslator(nodes.NodeVisitor):
               ' SYSTEM "http://www.w3.org/TR/xhtml1/DTD/' \
               'xhtml1-transitional.dtd">\n'
     html_head = '<html lang="%s">\n<head>\n'
-    content_type = '<meta http-equiv=Content-Type content="text/html; ' \
+    content_type = '<meta http-equiv="Content-Type" content="text/html; ' \
                    'charset=UTF-8">\n'
+    generator = '<meta name="generator" content="Docutils: ' \
+                'http://docutils.sourceforge.net/">\n'
     stylesheet_link = '<link rel="stylesheet" href="default.css"' \
                       ' type="text/css" />\n'
 
@@ -60,6 +62,7 @@ class HTMLTranslator(nodes.NodeVisitor):
               self.doctype,
               self.html_head % document.language_code,
               self.content_type,        # @@@ % output encoding
+              self.generator,
               self.stylesheet_link]     # @@@ % stylesheet
         self.head = []
         self.body_prefix = ['</head>\n<body>\n']
