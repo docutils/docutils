@@ -45,7 +45,7 @@ bibliographic_fields = {
       'autori': 'authors',
       'organizzazione': 'organization',
       'indirizzo': 'address',
-      'contatti': 'contact',
+      'contatto': 'contact',
       'versione': 'version',
       'revisione': 'revision',
       'status': 'status',
