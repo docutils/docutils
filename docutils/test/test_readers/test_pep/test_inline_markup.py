@@ -96,7 +96,7 @@ totest['miscellaneous'] = [
 For *completeness*, _`let's` ``test`` **other** forms_
 |of| `inline markup` [*]_.
 
-.. [*] See http://docutils.sf.net/spec/rst/reStructuredText.html.
+.. [*] See http://docutils.sf.net/docs/ref/rst/restructuredtext.html.
 """,
 """\
 <document source="test data">
@@ -128,8 +128,8 @@ For *completeness*, _`let's` ``test`` **other** forms_
     <footnote auto="*" id="id2">
         <paragraph>
             See \n\
-            <reference refuri="http://docutils.sf.net/spec/rst/reStructuredText.html">
-                http://docutils.sf.net/spec/rst/reStructuredText.html
+            <reference refuri="http://docutils.sf.net/docs/ref/rst/restructuredtext.html">
+                http://docutils.sf.net/docs/ref/rst/restructuredtext.html
             .
 """],
 ]

@@ -74,7 +74,7 @@ empty list).
 See `Creating reStructuredText Directives`_ for more information.
 
 .. _Creating reStructuredText Directives:
-   http://docutils.sourceforge.net/spec/howto/rst-directives.html
+   http://docutils.sourceforge.net/docs/howto/rst-directives.html
 """
 
 __docformat__ = 'reStructuredText'
