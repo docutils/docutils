@@ -48,6 +48,19 @@ __ http://sourceforge.net/tracker/?group_id=38414&atid=422030
   in docutils.transforms.misc.ClassAttribute could be used to fix
   this.  (Reported by David Priest.)
 
+* Upon reviewing RFC 2396, I see that asterisks are valid URL
+  characters, sometimes actually used.  Beni Cherniavsky found one in
+  mid-November and fixed it by modifying the text.  There's a conflict
+  with emphasis, but backslash escapes should overcome that; they
+  don't though.  I consider it a bug in the parser that escaped
+  asterisks in URLs aren't recognized.  Here's the URL that broke::
+
+      http://cvs.sf.net/viewcvs.py/*checkout*/emu/speech_tools/scripts/tex_to_images.prl?rev=HEAD
+
+  We should be able to escape the first asterisk like this::
+
+      http://cvs.sf.net/viewcvs.py/\*checkout*/emu/speech_tools/scripts/tex_to_images.prl?rev=HEAD
+
 
 General
 -------
@@ -327,6 +340,17 @@ General
   equivalent to ".. include:: file" as the first line of the doc text?
   Especially useful for character entity sets, text transform specs,
   boilerplate, etc.
+
+* Parameterize the Reporter object or class?  See the `2004-02-18
+  "rest checking and source path"`__ thread.
+
+  .. _2004-02-18 "rest checking and source path":
+     http://thread.gmane.org/gmane.text.docutils.user/1112
+
+* Add a "disable_transforms" setting?  And a dummy Writer subclass
+  that does nothing when its .write() method is called?  Would allow
+  for easy syntax checking.  See the `2004-02-18 "rest checking and
+  source path"`__ thread.
 
 
 Documentation
@@ -650,36 +674,9 @@ __ rst/alternatives.html#or-not-to-do
   A section titled "3. Conclusion" could then be referred to by
   "``Conclusion_``" (i.e., without the "3.").
 
-* Syntax for the "line-block" directive?  How about a
-  literal-block-like prefix, perhaps "``;;``"?  (It is, after all, a
-  *semi-literal* literal block, no?)  Example::
+* `Syntax for line blocks`__ (currently a directive)?
 
-      Take it away, Eric the Orchestra Leader!  ;;
-
-          A one, two, a one two three four
-
-          Half a bee, philosophically,
-          must, *ipso facto*, half not be.
-          But half the bee has got to be,
-          *vis a vis* its entity.  D'you see?
-
-          But can a bee be said to be
-          or not to be an entire bee,
-          when half the bee is not a bee,
-          due to some ancient injury?
-
-          Singing...
-
-  Another idea: in an ordinary paragraph, if the first line ends with
-  a backslash (escaping the newline), interpret the entire paragraph
-  as a verse block?  For example::
-
-      Add just one backslash\
-      And this paragraph becomes
-      An awful haiku
-
-  (And arguably invalid, since in Japanese the word "haiku" contains
-  three syllables.)
+  __ rst/alternatives.html#syntax-for-line-blocks
 
 * Implement auto-enumerated lists?  See `Auto-Enumerated Lists`__.
 
@@ -855,6 +852,18 @@ __ rst/alternatives.html#or-not-to-do
       The `reference docs <^url>`__ may be handy.
 
       .. _name: ^url
+
+* Allow transitions between sections?  A transition immediately
+  preceding a section title could be interpreted as a sibling of that
+  section.  The context would obviate the need for a special
+  directive.  The document model would have to accommodate the
+  change::
+
+      <!ENTITY % structure.model
+        " ( ( (%body.elements; | topic | sidebar)+,
+              (transition, (%body.elements; | topic | sidebar)+ )*,
+              (transition?, (%section.elements;))* )
+          | (transition?, (%section.elements;))+ ) ">
 
 
 Directives
@@ -1240,6 +1249,17 @@ when used in a document.
   - _`body.sidebar`: Add to the already implemented directive.  Allow
     internal section structure, with adornment styles independent of
     the main document.
+
+  - _`body.list-table`: The idea came from Dylan Jay:
+
+        ... to use a two level bulleted list with something to
+        indicate it should be rendered as a table ...
+
+    It's an interesting idea.  It could be implemented in as a
+    directive which transforms a uniform two-level bullet list into a
+    table.  Using a directive would allow the author to explicitly set
+    the table's orientation (by column or by row), the presence of row
+    headers, etc.
 
   - _`colorize.python`: Colorize Python code.  Fine for HTML output,
     but what about other formats?  Revert to a literal block?  Do we

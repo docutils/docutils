@@ -33,16 +33,16 @@ and related projects:
     Dave Kuhlman, Lloyd Kvam, Kirill Lapshin, Nicola Larosa, Daniel
     Larsson, Marc-Andre Lemburg, Julien Letessier, Wolfgang Lipp,
     Edward Loper, Dallas Mahrt, Ken Manheimer, Bob Marshall, Mark
-    McEahern, Vasko Miroslav, Skip Montanaro, Paul Moore, Nigel
-    W. Moriarty, Mark Nodine, Patrick K. O'Brien, Michel Pelletier,
-    Sam Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim, Brett g
-    Porter, David Priest, Jens Quade, Andy Robinson, Tavis Rudd, Tracy
-    Ruggles, Oliver Rutherfurd, Kenichi Sato, Ueli Schlaepfer, Gunnar
-    Schwant, Bill Sconce, Frank Siebenlist, Bruce Smith, Darek
-    Suchojad, Roman Suzi, tav, Kent Tenney, Bob Tolbert, Paul
-    Tremblay, Laurence Tratt, Adrian van den Dries, Guido van Rossum,
-    Paul Viren, Martin von Loewis, Greg Ward, Barry Warsaw, Edward
-    Welbourne, Ka-Ping Yee, Moshe Zadka
+    McEahern, Vincent McIntyre, Vasko Miroslav, Skip Montanaro, Paul
+    Moore, Nigel W. Moriarty, Mark Nodine, Patrick K. O'Brien, Michel
+    Pelletier, Sam Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim,
+    Brett g Porter, David Priest, Jens Quade, Andy Robinson, Tavis
+    Rudd, Tracy Ruggles, Oliver Rutherfurd, Kenichi Sato, Ueli
+    Schlaepfer, Gunnar Schwant, Bill Sconce, Frank Siebenlist, Bruce
+    Smith, Darek Suchojad, Roman Suzi, tav, Kent Tenney, Bob Tolbert,
+    Paul Tremblay, Laurence Tratt, Adrian van den Dries, Guido van
+    Rossum, Paul Viren, Martin von Loewis, Greg Ward, Barry Warsaw,
+    Edward Welbourne, Ka-Ping Yee, Moshe Zadka
 
 Thank you!
 
