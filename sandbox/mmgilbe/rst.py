@@ -24,6 +24,7 @@ from types import ListType
 import docutils
 from docutils import core, frontend, nodes, utils, writers, languages
 from docutils.core import publish_string
+from docutils.core import publish_parts
 from docutils.writers import html4css1
 from docutils.nodes import fully_normalize_name
 
@@ -86,7 +87,7 @@ class MoinWriter(html4css1.Writer):
         self.output = html_escape_unicode(visitor.astext())
         
 
-# TODO: This would be easier to sub class the real moin wiki parser.
+# TODO: Evaluate if this would be easier to sub class the real moin wiki parser.
 class Parser:
     def __init__(self, raw, request, **kw):
         self.raw = raw
@@ -94,10 +95,15 @@ class Parser:
         self.form = request.form
         
     def format(self, formatter):
-        text = publish_string(source = self.raw, 
-                              writer = MoinWriter(formatter, self.request),
-                              enable_exit = None, 
-                              settings_overrides = {'traceback': 1})
+        parts =  publish_parts(source = self.raw,
+                               writer = MoinWriter(formatter, self.request),
+                               settings_overrides = {'traceback': 1})
+        text = '<h2>' + parts['title'] + '</h2>'
+        # If there is only one subtitle then it is held in parts['subtitle'].
+        # However, if there is more than one subtitle then this is empty and
+        # fragment contains all of the subtitles.
+        text += '<h3>' + parts['subtitle'] + '</h3>'
+        text += parts['fragment']
         self.request.write(html_escape_unicode(text))
         
 
@@ -107,18 +113,26 @@ class MoinTranslator(html4css1.HTMLTranslator):
         html4css1.HTMLTranslator.__init__(self, document)
         self.formatter = formatter
         self.request = request
+        # MMG: Do we need this? Not sure what its doing.
         self.level = 0
         # We supply our own request.write so that the html is added to the
-        # html4css1 body list instead of printed to stdout.
+        # html4css1 body list instead of printed to stdout by the default
+        # MoinTranslator writer. MMG: Confirm this is really what we're doing. 
         self.old_write = self.request.write
         self.request.write = self.rst_write
         self.wikiparser = parser
         self.wikiparser.request = request
         self.wikiparser.request.write = self.rst_write
         # When we use MoinMoin to interpret a MoinMoin refuri we want to strip
-        # the paragraph tags to keep the correct formatting.
+        # the paragraph tags to keep the correct formatting. This is used in
+        # rst_write where by default we don't need to strip anything which is
+        # why it is initialized to 0. 
         self.strip_paragraph = 0
         self.writer = writer
+        # MoinMoin likes to start the initial headers at level 3 and the title
+        # gets level 2, so to comply with their style's we do so here also. 
+        # MMG: Could this be fixed by passing this value in settings_overrides?
+        self.initial_header_level = 3
         
     def astext(self):
         self.request.write = self.old_write
@@ -135,18 +149,6 @@ class MoinTranslator(html4css1.HTMLTranslator):
             if len(string) and string[-1] == ' ':
                 string = string[:-1]
         self.body.append(string)
-        
-    # def visit_section(self, node):
-        # self.level += 1
-    # 
-    # def depart_section(self, node):
-        # self.level -= 1
-# 
-    # def visit_title(self, node):
-        # self.request.write(self.formatter.heading(self.level, '', on=1))
-        # 
-    # def depart_title(self, node):
-        # self.request.write(self.formatter.heading(self.level, '', on=0))
         
     def visit_reference(self, node):
         target = None
@@ -165,8 +167,11 @@ class MoinTranslator(html4css1.HTMLTranslator):
             
             if target:
                 self.strip_paragraph = 1
+                # Sometimes a newline will creep in to the node's text. This
+                # throws the moinmoin regex so a link will not get processed.
+                node_text = node.astext().replace('\n', '')
                 self.wikiparser.raw = '[%s %s]' % (target, 
-                                                   node.astext())
+                                                   node_text)
                 self.wikiparser.format(self.formatter)
                 self.strip_paragraph = 0
                 raise docutils.nodes.SkipNode
@@ -195,7 +200,6 @@ class MoinTranslator(html4css1.HTMLTranslator):
 
     def depart_literal(self, node):
         self.request.write(self.formatter.code(0))
-
 
     #
     # Blocks
