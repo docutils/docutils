@@ -769,7 +769,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # Only some special chracters are translated, for documents with many
         # utf-8 chars one should use the LaTeX unicode package.
         for uchar in self.latex_equivalents.keys():
-            text = text.replace(uchar,latex_equivalents[uchar])
+            text = text.replace(uchar,self.latex_equivalents[uchar])
         return text
 
     def encode(self, text):
