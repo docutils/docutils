@@ -1,12 +1,10 @@
-#! /usr/bin/env python
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
 """
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
-
 This is the Docutils (Python Documentation Utilities) package.
 
 Package Structure
@@ -57,7 +55,7 @@ Subpackages:
 
 __docformat__ = 'reStructuredText'
 
-__version__ = '0.2.3'
+__version__ = '0.2.4'
 """``major.minor.micro`` version number.  The ``micro`` number is bumped any
 time there's a change in the API incompatible with one of the front ends."""
 
