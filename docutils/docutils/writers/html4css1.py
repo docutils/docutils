@@ -59,6 +59,11 @@ class Writer(writers.Writer):
           'stylesheet, do not embed it.',
           ['--embed-stylesheet'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),
+         ('Specify the initial header level.  Default is 1 for "<h1>".  '
+          'Does not affect document title & subtitle (see --no-doc-title).',
+          ['--initial-header-level'],
+          {'choices': '1 2 3 4 5 6'.split(), 'default': '1',
+           'metavar': '<level>'}),
          ('Format for footnote references: one of "superscript" or '
           '"brackets".  Default is "superscript".',
           ['--footnote-references'],
@@ -208,6 +213,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.fragment = []
         self.body_suffix = ['</body>\n</html>\n']
         self.section_level = 0
+        print 'settings.initial_header_level:', settings.initial_header_level
+        self.initial_header_level = int(settings.initial_header_level)
         self.context = []
         self.topic_class = ''
         self.colspecs = []
@@ -1221,8 +1228,10 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.context.append('</h1>\n')
             self.within_title = len(self.body)
         else:
+            h_level = self.section_level + self.initial_header_level - 1
+            print h_level
             self.body.append(
-                  self.starttag(node, 'h%s' % self.section_level, ''))
+                  self.starttag(node, 'h%s' % h_level, ''))
             atts = {}
             if node.parent.hasattr('id'):
                 atts['name'] = node.parent['id']
@@ -1230,7 +1239,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                 atts['class'] = 'toc-backref'
                 atts['href'] = '#' + node['refid']
             self.body.append(self.starttag({}, 'a', '', **atts))
-            self.context.append('</a></h%s>\n' % (self.section_level))
+            self.context.append('</a></h%s>\n' % (h_level))
         if check_id:
             if node.parent.hasattr('id'):
                 self.body.append(
