@@ -121,23 +121,12 @@ Download
 Project Releases
 ----------------
 
-Stable Releases
-```````````````
-
-The `latest project release package`_ (Docutils 0.3, 2003-06-24) and
+The `latest project release package`_ (Docutils 0.3.3, 2004-05-09) and
 past project releases can be downloaded from the `project files
 page`_.
 
-Unstable Releases
-`````````````````
-
-The `latest unstable project release package`_ (Docutils 0.3.3,
-2004-05-09) is **alpha** software.  It works, has more features than
-the latest "stable" release, and many bugs have been fixed, but it may
-contain new bugs.  It may not be suitable for use in a production
-environment and you should be prepared to update soon.  (If you
-discover a bug, please post a short note to the Docutils-users
-`mailing list`_.)
+Although it is still alpha software, it works quite well and is highly
+recommended over prior versions.
 
 Major changes since Docutils 0.3:
 
@@ -491,8 +480,6 @@ Project Links
 .. _Doc-SIG: http://www.python.org/sigs/doc-sig/
 
 .. _latest project release package:
-   http://prdownloads.sourceforge.net/docutils/docutils-0.3.tar.gz
-.. _latest unstable project release package:
    http://prdownloads.sourceforge.net/docutils/docutils-0.3.3-alpha.tar.gz
 
 
