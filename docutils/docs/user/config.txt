@@ -477,9 +477,7 @@ _`compact_lists`
 
 _`embed_stylesheet`
     Embed the stylesheet in the output HTML file.  The stylesheet file
-    must be accessible during processing.  The stylesheet is embedded
-    inside a comment, so it must not contain the text "``--``" (two
-    hyphens).
+    must be accessible during processing.
 
     Default: link, don't embed (None).  Options: ``--embed-stylesheet,
     --link-stylesheet``.
