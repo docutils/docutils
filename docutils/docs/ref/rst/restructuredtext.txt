@@ -1703,8 +1703,8 @@ indirect.
        .. _archive:
        .. _Doc-SIG: http://mail.python.org/pipermail/doc-sig/
 
-    An inline form of internal hyperlink target is available; see
-    `Inline Internal Targets`_.
+   An inline form of internal hyperlink target is available; see
+   `Inline Internal Targets`_.
 
 2. _`External hyperlink targets` have an absolute or relative URI or
    email address in their link blocks.  For example, take the
