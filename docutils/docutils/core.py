@@ -16,7 +16,7 @@ __docformat__ = 'reStructuredText'
 
 import sys
 from docutils import Component
-from docutils import frontend, io, readers, parsers, writers
+from docutils import frontend, io, utils, readers, parsers, writers
 from docutils.frontend import OptionParser, ConfigParser
 
 
@@ -165,9 +165,16 @@ class Publisher:
         elif settings_overrides:
             self.settings._update(settings_overrides, 'loose')
         self.set_io()
-        document = self.reader.read(self.source, self.parser, self.settings)
-        self.apply_transforms(document)
-        output = self.writer.write(document, self.destination)
+        try:
+            document = self.reader.read(self.source, self.parser,
+                                        self.settings)
+            self.apply_transforms(document)
+            output = self.writer.write(document, self.destination)
+        except utils.SystemMessage, error:
+            print >>sys.stderr, ('Exiting due to level-%s (%s) system message.'
+                                 % (error.level,
+                                    utils.Reporter.levels[error.level]))
+            sys.exit(1)
         if self.settings.dump_settings:
             from pprint import pformat
             print >>sys.stderr, '\n::: Runtime settings:'
