@@ -5,7 +5,6 @@
 :author:    Dr. Gunnar Schwant
 :contact:   g.schwant@gmx.de
 :date:      2003/01/11
-:version:   0.2.1
 :copyright: Copyright (c) 2002 Dr. Gunnar Schwant (g.schwant@gmx.de).
             All rights reserved.  See LICENSE.txt_ for license details.
 

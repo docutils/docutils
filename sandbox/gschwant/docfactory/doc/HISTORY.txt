@@ -6,6 +6,11 @@
    DocFactory-tarball, please use docutils to convert
    it to HTML and open index.html with your webbrowser.
 
+DocFactory 0.2.2 (2003/02/16)
+  * Toolbar
+  * New "Insert Hyperlink"-feature
+  * Enhanced "Insert Image"-feature
+
 DocFactory 0.2.1 (2003/01/11)
   * Processing of files which are not part of a project asks 
     for an output-directory.
@@ -33,8 +38,6 @@ DocFactory 0.2 (2003/01/08)
   * Animated "About"-dialog.
   * Added "docfactory2exe.py" for usage with |py2exe|. 
   * Modified data storage. 
-
-  **>>>** see README_ for details
 
 DocFactory 0.1.4 (2002/09/30)
   * Files can be opened without creating a project first.

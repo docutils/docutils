@@ -1,13 +1,14 @@
 """
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
-:version: 0.2.1
+:version: 0.2.2
 """
 
 from   wxPython.lib.throbber import Throbber
 from   wxPython.wx           import *
 from   wxPython.help         import *
 from   docutils.utils        import relative_path
+from   urllib                import quote
 import images, os, ConfigParser, stylesheets, throbimages
 
 NAME = 'DocFactory'
@@ -56,7 +57,7 @@ class aboutDlg(wxDialog):
         #text.SetFont(wxFont(20, wxSWISS, wxNORMAL, wxBOLD, false))
 
         text = wxStaticText(self , -1,
-                            '>>> release:           0.2.1',
+                            '>>> release:           0.2.2',
                             wxPoint(9, 50))
         text = wxStaticText(self, -1,
                             '>>> manufactured by:   gunnar schwant',
@@ -434,3 +435,60 @@ class Config:
         self.options['source_link']         = ''
         self.options['stylesheet']          = 'default.css'
         self.options['toc_backlinks']       = 'entry'
+
+#---------------------------------------------------------------------------
+
+class hyperlinkDlg(wxDialog):
+
+    def __init__(self, parent, directory, project=None):
+        wxDialog.__init__(self, parent, -1, title = 'Hyperlink')
+        btn_size = wxSize(75, 23)
+        self.directory = directory
+        self.project = project
+        wxStaticText(self, -1, 'Path?', wxPoint(8, 12))
+        exitID = wxNewId()
+        self.pathCtrl = wxTextCtrl(self, exitID,
+                                   pos = wxPoint(46, 10),
+                                   size = wxSize(240, 21))
+        exitID = wxNewId()
+        self.btnSelPath = wxButton(self, exitID, 'Select',
+                                   pos = wxPoint(294, 10),
+                                   size = btn_size)
+        EVT_BUTTON(self, exitID, self.onBtnSelPath)
+        self.ok         = wxButton(self, wxID_OK, 'OK',
+                                   pos = wxPoint(185-80,40),
+                                   size = btn_size)
+        self.cancel     = wxButton(self, wxID_CANCEL, 'Cancel',
+                                   pos = wxPoint(185+5,40),
+                                   size = btn_size)
+        self.ok.SetDefault()
+        self.Fit()
+
+    def onBtnSelPath(self, event):
+        go_ahead = 1
+        dlg = wxFileDialog(self, 'Select a file',
+                           self.directory, '', '*.*',
+                           wxOPEN|wxFILE_MUST_EXIST)
+        if dlg.ShowModal() == wxID_OK:
+            path = dlg.GetPath()
+        else:
+            go_ahead = 0
+        dlg.Destroy()
+        if go_ahead:
+            if self.project == None:
+                dlg = wxDirDialog(self, 'Calculate path relative'
+                                  ' to which outputdirectory?',
+                                  self.directory)
+                if dlg.ShowModal() == wxID_OK:
+                    self.directory = dlg.GetPath()
+                else:
+                    go_ahead = 0
+                dlg.Destroy()
+        if go_ahead:
+            self.pathCtrl.SetValue(
+                quote(relative_path('%s%sdummy.html' % (self.directory,
+                                                        os.sep),
+                                    path)))
+
+    def GetPath(self):
+        return self.pathCtrl.GetValue()
