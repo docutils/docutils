@@ -1003,10 +1003,10 @@ class pending(Special, Invisible, PreBibliographic, Element):
 
     """
     The "pending" element is used to encapsulate a pending operation: the
-    operation, the point at which to apply it, and any data it requires.  Only
-    the pending operation's location within the document is stored in the
-    public document tree; the operation itself and its data are stored in
-    internal instance attributes.
+    operation (transform), the point at which to apply it, and any data it
+    requires.  Only the pending operation's location within the document is
+    stored in the public document tree; the operation itself and its data are
+    stored in internal instance attributes.
 
     For example, say you want a table of contents in your reStructuredText
     document.  The easiest way to specify where to put it is from within the
@@ -1021,8 +1021,15 @@ class pending(Special, Invisible, PreBibliographic, Element):
 
         <pending ...public attributes...> + internal attributes
 
-    The "pending" node is also appended to `document.pending`, so that a later
-    stage of processing can easily run all pending transforms.
+    Use `document.note_pending()` to append the "pending" node to
+    `document.pending`, so that a later stage of processing can easily run all
+    pending transforms.  The processign stage must also be specified (one of
+    "first reader", "last reader", "first writer", or "last writer").
+
+    Pending transforms will be triggered by the transform subclasses of
+    ``docutils.transforms.universal.Pending``.  These transforms are called by
+    ``docutils.readers.Reader.transform()`` and
+    ``docutils.readers.Writer.transform()``.
     """
 
     def __init__(self, transform, stage, details,
@@ -1100,6 +1107,7 @@ class image(General, Inline, TextElement):
 
 
 class problematic(Inline, TextElement): pass
+class generated(Inline, TextElement): pass
 
 
 # ========================================
@@ -1117,6 +1125,7 @@ node_class_names = """
     emphasis entry enumerated_list error
     field field_argument field_body field_list field_name figure footer
         footnote footnote_reference
+    generated
     header hint
     image important interpreted
     label legend list_item literal literal_block
