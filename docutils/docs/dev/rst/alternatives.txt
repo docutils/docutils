@@ -2133,6 +2133,257 @@ directive only) until all Writers have been updated to support the new
 syntax & implementation.
 
 
+List-Driven Tables
+==================
+
+The original idea came from Dylan Jay:
+
+    ... to use a two level bulleted list with something to
+    indicate it should be rendered as a table ...
+
+It's an interesting idea.  It could be implemented in as a directive
+which transforms a uniform two-level list into a table.  Using a
+directive would allow the author to explicitly set the table's
+orientation (by column or by row), the presence of row headers, etc.
+
+Alternatives:
+
+1. Bullet-list-tables might look like this::
+
+       .. list-table::
+
+          * - Treat
+            - Quantity
+            - Description
+          * - Albatross!
+            - 299
+            - On a stick!
+          * - Crunchy Frog!
+            - 1499
+            - If we took the bones out, it wouldn't be crunchy,
+              now would it?
+          * - Gannet Ripple!
+            - 199
+            - On a stick!
+
+   This list must be written in two levels.  This wouldn't work::
+
+       .. list-table::
+
+          * Treat
+          * Albatross!
+          * Gannet!
+          * Crunchy Frog!
+
+          * Quantity
+          * 299
+          * 199
+          * 1499
+
+          * Description
+          * On a stick!
+          * On a stick!
+          * If we took the bones out...
+
+   The above is a single list of 12 items.  The blank lines are not
+   significant to the markup.  We'd have to explicitly specify how
+   many columns or rows to use, which isn't a good idea.
+
+2. Beni Cherniavsky suggested a field list alternative.  It could look
+   like this::
+
+       .. field-list-table::
+          :headrows: 1
+
+          - :treat: Treat
+            :quantity: Quantity
+            :descr: Description
+
+          - :treat: Albatross!
+            :quantity: 299
+            :descr: On a stick!
+
+          - :treat: Crunchy Frog!
+            :quantity: 1499
+            :descr: If we took the bones out, it wouldn't be
+                    crunchy, now would it?
+
+   Column order is determined from the order of fields in the first
+   row.  Field order in all other rows is ignored.  As a side-effect,
+   this allows trivial re-arrangement of columns.  By using named
+   fields, it becomes possible to omit fields in some rows without
+   losing track of things, which is important for spans.
+
+3. An alternative to two-level bullet lists would be to use enumerated
+   lists for the table cells::
+
+       .. list-table::
+
+           * 1. Treat
+             2. Quantity
+             3. Description
+           * 1. Albatross!
+             2. 299
+             3. On a stick!
+           * 1. Crunchy Frog!
+             2. 1499
+             3. If we took the bones out, it wouldn't be crunchy,
+                now would it?
+
+   That provides better correspondence between cells in the same
+   column than does bullet-list syntax, but not as good as field list
+   syntax.  I think that were only field-list-tables available, a lot
+   of users would use the equivalent degenerate case::
+
+       .. field-list-table::
+           - :1: Treat
+             :2: Quantity
+             :3: Description
+           ...
+
+4. Another natural variant is to allow a description list with field
+   lists as descriptions::
+
+       .. list-table::
+           :headrows: 1
+
+           Treat
+               :quantity: Quantity
+               :descr: Description
+           Albatross!
+               :quantity: 299
+               :descr: On a stick!
+           Crunchy Frog!
+               :quantity: 1499
+               :descr: If we took the bones out, it wouldn't be
+                       crunchy, now would it?
+
+   This would make the whole first column a header column ("stub").
+   It's limited to a single column and a single paragraph fitting on
+   one source line.  Also it wouldn't allow for empty cells or row
+   spans in the first column.  But these are limitations that we could
+   live with, like those of simple tables.
+
+The List-driven table feature could be done in many ways.  Each user
+will have their preferred usage.  Perhaps a single "list-table"
+directive could handle them all, depending on which options and
+content are present.
+
+Issues:
+
+* How to indicate that there's 1 header row?  Perhaps two lists?  ::
+
+      .. list-table::
+
+         + - Treat
+           - Quantity
+           - Description
+
+         * - Albatross!
+           - 299
+           - On a stick!
+
+  This is probably too subtle though.  Better would be a directive
+  option, like ``:headrows: 1``.  An early suggestion for the header
+  row(s) was to use a directive option::
+
+      .. field-list-table::
+         :header:
+             - :treat: Treat
+               :quantity: Quantity
+               :descr: Description
+         - :treat: Albatross!
+           :quantity: 299
+           :descr: On a stick!
+
+  But the table data is at two levels and looks inconsistent.
+
+  In general, we cannot extract the header row from field lists' field
+  names because field names cannot contain everything one might put in
+  a table cell.  A separate header row also allows shorter field names
+  and doesn't force one to rewrite the whole table when the header
+  text changes.  But for simpler cases, we can offer a ":header:
+  fields" option, which does extract header cells from field names::
+
+      .. field-list-table::
+          :header: fields
+
+          - :Treat: Albatross!
+            :Quantity: 299
+            :Description: On a stick!
+
+* How to indicate the column widths?  A directive option? ::
+
+      .. list-table::
+         :widths: 15 10 35
+
+  Automatic defaults from the text used?
+
+* How to handle row and/or column spans?
+
+  In a field list, column-spans can be indicated by specifying the
+  first and last fields, separated by space-dash-space or ellipsis::
+
+      - :foo - baz: quuux
+      - :foo ... baz: quuux
+
+  Commas were proposed for column spans::
+
+      - :foo, bar: quux
+
+  But non-adjacent columns become problematic.  Should we report an
+  error, or duplicate the value into each span of adjacent columns (as
+  was suggested)?  The latter suggestion is appealing but may be too
+  clever.  Best perhaps to simply specify the two ends.
+
+  It was suggested that comma syntax should be allowed, too, in order
+  to allow the user to avoid trouble when changing the column order.
+  But changing the column order of a table with spans is not trivial;
+  we shouldn't make it easier to mess up.
+
+  One possible syntax for row-spans is to simply treat any row where a
+  field is missing as a row-span from the last row where it appeared.
+  Leaving a field empty would still be possible by writing a field
+  with empty content.  But this is too implicit.
+
+  Another way would be to require an explicit continuation marker
+  (``...``/``-"-``/``"``?) in all but the first row of a spanned
+  field.  Empty comments could work ("..").  If implemented, the same
+  marker could also be supported in simple tables, which lack
+  row-spanning abilities.
+
+  Explicit markup like ":rowspan:" and ":colspan:" was also suggested.
+
+  Sometimes in a table, the first header row contains spans.  It may
+  be necessary to provide a way to specify the column field names
+  independently of data rows.  A directive option would do it.
+
+* We could specify "column-wise" or "row-wise" ordering, with the same
+  markup structure.  For example, with definition data::
+
+      .. list-table::
+         :column-wise:
+
+         Treat
+             - Albatross!
+             - Crunchy Frog!
+         Quantity
+             - 299
+             - 1499
+         Description
+             - On a stick!
+             - If we took the bones out, it wouldn't be
+               crunchy, now would it?               
+
+* A syntax for stubs in ASCII-art tables is easy to imagine::
+
+      +------------------------++------------+----------+
+      | Header row, column 1   || Header 2   | Header 3 |
+      +========================++============+==========+
+      | body row 1, column 1   || column 2   | column 3 |
+      +------------------------++------------+----------+
+
+
 -------------------
  ... Or Not To Do?
 -------------------
