@@ -55,10 +55,26 @@ in this document, then it is probably not implemented.
 
   ============================  ========================
   :m:`\tilde{n}` ``\tilde{n}``  :m:`\hat{H}` ``\hat{H}``
-  :m:`\bar{v}` ``\bar{v}``
+  :m:`\bar{v}` ``\bar{v}``      :m:`\vec{R}` ``\vec{R}``
   ============================  ========================
 
   *Accents*
+
+
+  ================================  ======================
+  :m:`\not\in` ``\not\in``          :m:`\not =` ``\not =``
+  :m:`\not \equiv` ``\not \equiv``
+  ================================  ======================
+
+  *Negated binary relations*
+
+
+  ============  ============  ============  ==============  ========================
+  :m:`(` ``(``  :m:`[` ``[``  :m:`|` ``|``  :m:`\{` ``\{``  :m:`\langle` ``\langle``
+  :m:`)` ``)``  :m:`]` ``]``  :m:`|` ``|``  :m:`\}` ``\}``  :m:`\rangle` ``\rangle``
+  ============  ============  ============  ==============  ========================
+
+  *Braces*.
 
 
   =====================  ==============================  ===============================
@@ -76,30 +92,108 @@ in this document, then it is probably not implemented.
 
 
   ================================  ================================  ================================  ================================
-  :m:`\Delta` ``\Delta``            :m:`\Gamma` ``\Gamma``            :m:`\Lambda` ``\Lambda``          :m:`\Omega` ``\Omega``
-  :m:`\Phi` ``\Phi``                :m:`\Pi` ``\Pi``                  :m:`\Psi` ``\Psi``                :m:`\Sigma` ``\Sigma``
-  :m:`\Theta` ``\Theta``            :m:`\Upsilon` ``\Upsilon``        :m:`\Xi` ``\Xi``                  :m:`\alpha` ``\alpha``
-  :m:`\beta` ``\beta``              :m:`\chi` ``\chi``                :m:`\delta` ``\delta``            :m:`\epsilon` ``\epsilon``
-  :m:`\eta` ``\eta``                :m:`\gamma` ``\gamma``            :m:`\iota` ``\iota``              :m:`\kappa` ``\kappa``
-  :m:`\lambda` ``\lambda``          :m:`\mu` ``\mu``                  :m:`\nu` ``\nu``                  :m:`\omega` ``\omega``
-  :m:`\phi` ``\phi``                :m:`\pi` ``\pi``                  :m:`\psi` ``\psi``                :m:`\rho` ``\rho``
-  :m:`\sigma` ``\sigma``            :m:`\tau` ``\tau``                :m:`\theta` ``\theta``            :m:`\upsilon` ``\upsilon``
-  :m:`\varepsilon` ``\varepsilon``  :m:`\varkappa` ``\varkappa``      :m:`\varphi` ``\varphi``          :m:`\varpi` ``\varpi``
-  :m:`\varrho` ``\varrho``          :m:`\varsigma` ``\varsigma``      :m:`\vartheta` ``\vartheta``      :m:`\xi` ``\xi``
-  :m:`\zeta` ``\zeta``
+  :m:`\Delta` ``\Delta``            :m:`\Gamma` ``\Gamma``            :m:`\Lambda` ``\Lambda``          :m:`\Omega` ``\Omega`` 
+  :m:`\Phi` ``\Phi``                :m:`\Pi` ``\Pi``                  :m:`\Psi` ``\Psi``                :m:`\Sigma` ``\Sigma`` 
+  :m:`\Theta` ``\Theta``            :m:`\Upsilon` ``\Upsilon``        :m:`\Xi` ``\Xi``                  :m:`\alpha` ``\alpha`` 
+  :m:`\beta` ``\beta``              :m:`\chi` ``\chi``                :m:`\delta` ``\delta``            :m:`\epsilon` ``\epsilon`` 
+  :m:`\eta` ``\eta``                :m:`\gamma` ``\gamma``            :m:`\iota` ``\iota``              :m:`\kappa` ``\kappa`` 
+  :m:`\lambda` ``\lambda``          :m:`\mu` ``\mu``                  :m:`\nu` ``\nu``                  :m:`\omega` ``\omega`` 
+  :m:`\phi` ``\phi``                :m:`\pi` ``\pi``                  :m:`\psi` ``\psi``                :m:`\rho` ``\rho`` 
+  :m:`\sigma` ``\sigma``            :m:`\tau` ``\tau``                :m:`\theta` ``\theta``            :m:`\upsilon` ``\upsilon`` 
+  :m:`\varepsilon` ``\varepsilon``  :m:`\varkappa` ``\varkappa``      :m:`\varphi` ``\varphi``          :m:`\varpi` ``\varpi`` 
+  :m:`\varrho` ``\varrho``          :m:`\varsigma` ``\varsigma``      :m:`\vartheta` ``\vartheta``      :m:`\xi` ``\xi`` 
+  :m:`\zeta` ``\zeta``             
   ================================  ================================  ================================  ================================
 
   *Greek letters*.
 
 
+  ==========================================  ==========================================  ==========================================
+  :m:`\amalg` ``\amalg``                      :m:`\ast` ``\ast``                          :m:`\bigcirc` ``\bigcirc`` 
+  :m:`\bigtriangledown` ``\bigtriangledown``  :m:`\bigtriangleup` ``\bigtriangleup``      :m:`\bullet` ``\bullet`` 
+  :m:`\cap` ``\cap``                          :m:`\cdot` ``\cdot``                        :m:`\circ` ``\circ`` 
+  :m:`\cup` ``\cup``                          :m:`\dagger` ``\dagger``                    :m:`\ddagger` ``\ddagger`` 
+  :m:`\diamond` ``\diamond``                  :m:`\div` ``\div``                          :m:`\mp` ``\mp`` 
+  :m:`\odot` ``\odot``                        :m:`\ominus` ``\ominus``                    :m:`\oplus` ``\oplus`` 
+  :m:`\oslash` ``\oslash``                    :m:`\otimes` ``\otimes``                    :m:`\pm` ``\pm`` 
+  :m:`\setminus` ``\setminus``                :m:`\sqcap` ``\sqcap``                      :m:`\sqcup` ``\sqcup`` 
+  :m:`\star` ``\star``                        :m:`\times` ``\times``                      :m:`\triangleleft` ``\triangleleft`` 
+  :m:`\triangleright` ``\triangleright``      :m:`\uplus` ``\uplus``                      :m:`\vee` ``\vee`` 
+  :m:`\wedge` ``\wedge``                      :m:`\wr` ``\wr``                           
+  ==========================================  ==========================================  ==========================================
+
+  *Binary operation symbols*.
+
+
+  ================================  ================================  ================================  ================================
+  :m:`\Join` ``\Join``              :m:`\approx` ``\approx``          :m:`\asymp` ``\asymp``            :m:`\bowtie` ``\bowtie`` 
+  :m:`\cong` ``\cong``              :m:`\dashv` ``\dashv``            :m:`\doteq` ``\doteq``            :m:`\equiv` ``\equiv`` 
+  :m:`\frown` ``\frown``            :m:`\geq` ``\geq``                :m:`\gg` ``\gg``                  :m:`\in` ``\in`` 
+  :m:`\le` ``\le``                  :m:`\leq` ``\leq``                :m:`\ll` ``\ll``                  :m:`\mid` ``\mid`` 
+  :m:`\models` ``\models``          :m:`\neq` ``\neq``                :m:`\ni` ``\ni``                  :m:`\parallel` ``\parallel`` 
+  :m:`\perp` ``\perp``              :m:`\prec` ``\prec``              :m:`\preceq` ``\preceq``          :m:`\propto` ``\propto`` 
+  :m:`\sim` ``\sim``                :m:`\simeq` ``\simeq``            :m:`\smile` ``\smile``            :m:`\sqsubset` ``\sqsubset`` 
+  :m:`\sqsubseteq` ``\sqsubseteq``  :m:`\sqsupset` ``\sqsupset``      :m:`\sqsupseteq` ``\sqsupseteq``  :m:`\subset` ``\subset`` 
+  :m:`\subseteq` ``\subseteq``      :m:`\succ` ``\succ``              :m:`\succeq` ``\succeq``          :m:`\supset` ``\supset`` 
+  :m:`\supseteq` ``\supseteq``      :m:`\vdash` ``\vdash``           
+  ================================  ================================  ================================  ================================
+
+  *Relation symbols*.
+
+
+  ================================================  ================================================
+  :m:`\Downarrow` ``\Downarrow``                    :m:`\Leftarrow` ``\Leftarrow`` 
+  :m:`\Leftrightarrow` ``\Leftrightarrow``          :m:`\Longleftarrow` ``\Longleftarrow`` 
+  :m:`\Longleftrightarrow` ``\Longleftrightarrow``  :m:`\Longrightarrow` ``\Longrightarrow`` 
+  :m:`\Rightarrow` ``\Rightarrow``                  :m:`\Uparrow` ``\Uparrow`` 
+  :m:`\Updownarrow` ``\Updownarrow``                :m:`\downarrow` ``\downarrow`` 
+  :m:`\hookleftarrow` ``\hookleftarrow``            :m:`\hookrightarrow` ``\hookrightarrow`` 
+  :m:`\leftarrow` ``\leftarrow``                    :m:`\leftharpoondown` ``\leftharpoondown`` 
+  :m:`\leftharpoonup` ``\leftharpoonup``            :m:`\leftrightarrow` ``\leftrightarrow`` 
+  :m:`\longleftarrow` ``\longleftarrow``            :m:`\longleftrightarrow` ``\longleftrightarrow`` 
+  :m:`\longmapsto` ``\longmapsto``                  :m:`\longrightarrow` ``\longrightarrow`` 
+  :m:`\mapsto` ``\mapsto``                          :m:`\nearrow` ``\nearrow`` 
+  :m:`\nwarrow` ``\nwarrow``                        :m:`\rightarrow` ``\rightarrow`` 
+  :m:`\rightharpoondown` ``\rightharpoondown``      :m:`\rightharpoonup` ``\rightharpoonup`` 
+  :m:`\searrow` ``\searrow``                        :m:`\swarrow` ``\swarrow`` 
+  :m:`\uparrow` ``\uparrow``                        :m:`\updownarrow` ``\updownarrow`` 
+ 
+  ================================================  ================================================
+
+  *Arrow symbols*.
+
+
+  ==================================  ==================================  ==================================  ==================================
+  :m:`\Im` ``\Im``                    :m:`\Re` ``\Re``                    :m:`\aleph` ``\aleph``              :m:`\angle` ``\angle`` 
+  :m:`\bot` ``\bot``                  :m:`\cdots` ``\cdots``              :m:`\clubsuit` ``\clubsuit``        :m:`\ddots` ``\ddots`` 
+  :m:`\diamondsuit` ``\diamondsuit``  :m:`\ell` ``\ell``                  :m:`\emptyset` ``\emptyset``        :m:`\exists` ``\exists`` 
+  :m:`\flat` ``\flat``                :m:`\forall` ``\forall``            :m:`\hbar` ``\hbar``                :m:`\heartsuit` ``\heartsuit`` 
+  :m:`\imath` ``\imath``              :m:`\infty` ``\infty``              :m:`\nabla` ``\nabla``              :m:`\natural` ``\natural`` 
+  :m:`\neg` ``\neg``                  :m:`\partial` ``\partial``          :m:`\prime` ``\prime``              :m:`\sharp` ``\sharp`` 
+  :m:`\spadesuit` ``\spadesuit``      :m:`\surd` ``\surd``                :m:`\top` ``\top``                  :m:`\vdots` ``\vdots`` 
+  :m:`\wp` ``\wp``                   
+  ==================================  ==================================  ==================================  ==================================
+
+  *Miscellaneous symbols*.
+
+
+  ==============================  ==============================  ==============================  ==============================  ==============================
+  :m:`\bigcap` ``\bigcap``        :m:`\bigcup` ``\bigcup``        :m:`\bigodot` ``\bigodot``      :m:`\bigoplus` ``\bigoplus``    :m:`\bigotimes` ``\bigotimes`` 
+  :m:`\biguplus` ``\biguplus``    :m:`\bigvee` ``\bigvee``        :m:`\bigwedge` ``\bigwedge``    :m:`\coprod` ``\coprod``        :m:`\int` ``\int`` 
+  :m:`\oint` ``\oint``            :m:`\prod` ``\prod``            :m:`\sum` ``\sum``             
+  ==============================  ==============================  ==============================  ==============================  ==============================
+
+  *Variable-sized symbols*.
+
+
   ===============  ===============  ===============  ===============  ===============  ===============
-  ``\arccos``      ``\arcsin``      ``\arctan``      ``\arg``         ``\cos``         ``\cosh``
-  ``\cot``         ``\coth``        ``\csc``         ``\deg``         ``\det``         ``\dim``
-  ``\exp``         ``\gcd``         ``\hom``         ``\inf``         ``\ker``         ``\lg``
-  ``\lim``         ``\liminf``      ``\limsup``      ``\ln``          ``\log``         ``\max``
-  ``\min``         ``\Pr``          ``\sec``         ``\sin``         ``\sinh``        ``\sup``
-  ``\tan``         ``\tanh``        ``\injlim``      ``\varinjlim``   ``\varlimsup``   ``\projlim``
-  ``\varliminf``   ``\varprojlim``
+  ``\arccos``      ``\arcsin``      ``\arctan``      ``\arg``         ``\cos``         ``\cosh`` 
+  ``\cot``         ``\coth``        ``\csc``         ``\deg``         ``\det``         ``\dim`` 
+  ``\exp``         ``\gcd``         ``\hom``         ``\inf``         ``\ker``         ``\lg`` 
+  ``\lim``         ``\liminf``      ``\limsup``      ``\ln``          ``\log``         ``\max`` 
+  ``\min``         ``\Pr``          ``\sec``         ``\sin``         ``\sinh``        ``\sup`` 
+  ``\tan``         ``\tanh``        ``\injlim``      ``\varinjlim``   ``\varlimsup``   ``\projlim`` 
+  ``\varliminf``   ``\varprojlim`` 
   ===============  ===============  ===============  ===============  ===============  ===============
 
   *Log-like symbols*.
@@ -155,8 +249,6 @@ ToDo
 
 * Math inside text: ``n - 1 \text{if $n$ is odd}``.
 * Spaces ...
-* More special symbols.
 * Remove circular refs.
 * Decimal numbers.
 * ``\mathbb{ABC}`` does not work (use ``\mathbb{A}\mathbb{B}\mathbb{C}``).
-* ``\not`` operator is missing.
