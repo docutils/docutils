@@ -43,6 +43,7 @@ function checkin()
     # Parameters: log_message, file, file, file ...
     log_message="$1"
     shift
+    confirm cvs diff "$@"
     confirm cvs ci -m "$log_prefix $log_message" "$@"
 }
 
@@ -68,8 +69,6 @@ function set_ver()
         set -e
     fi
     echo
-    confirm cvs diff $files
-    echo
     checkin "set version number to $2" $files
 }
 
@@ -83,7 +82,7 @@ function usage()
     echo
     echo '* Change version number to new_version.  (stage 1)'
     echo '* CVS-export, test and release Docutils version new_version.  (stage 2)'
-    echo '* Change version number from to cvs_version.  (stage 3)'
+    echo '* Change version number to cvs_version.  (stage 3)'
     echo
     echo 'If stage is supplied (1, 2 or 3), only the specified stage will'
     echo 'be executed.  Otherwise, it defaults to executing all stages.'
@@ -98,15 +97,18 @@ function initialize()
         usage
     fi
     echo 'Initializing...'
-    python_versions="`echo 2.{1,2,3,4}`"
+    python_versions='2.1 2.2 2.3 2.4'
     for py_ver in $python_versions; do
-        echo -n "Checking for Python $ver (python$py_ver)... "
+        echo -n "Checking for Python $py_ver (python$py_ver)... "
         if ! echo 'print "OK"' | python$py_ver; then
             echo "Python $py_ver not found."
             echo Aborting.
             exit 1
         fi
     done
+    echo -n 'Clearing $PYTHONPATH... '
+    export PYTHONPATH=
+    echo 'done'
     echo -n 'Checking whether we are in a working copy... '
     if [ -f HISTORY.txt ]; then
         echo yes
@@ -159,8 +161,11 @@ function test_tarball()
             echo "Press enter to continue."
             read
         done'
+    run cd test
+    echo 'Running the test suite with all Python versions.'
+    echo 'Press enter (or enter anything to skip):'
+    read
     if [ ! "$REPLY" ]; then
-        run cd test
         for py_ver in $python_versions; do
             run python$py_ver -u alltests.py
             run find -name \*.pyc -exec rm {} \;
@@ -200,7 +205,8 @@ function upload_htdocs()
     echo 'Upload the tarball to your home directory on SF.net...'
     confirm scp docutils-docs.tar.bz2 "$username"@shell.sourceforge.net:
     echo
-    echo 'Now unpack the tarball.  Press enter (or enter anything to skip).'
+    echo 'Unpack the tarball on SF.net...'
+    echo 'Press enter (or enter anything to skip).'
     read
     if [ ! "$REPLY" ]; then
         ssh "$username"@shell.sourceforge.net<<-EOF
@@ -248,8 +254,6 @@ function run_stage()
 
 function stage_1()
 {
-    echo 'Reminder: Please be sure to announce a checkin freeze on Docutils-develop.'
-    echo
     confirm cvs up
     echo
     set_ver "$old_ver" "$new_ver"
@@ -265,7 +269,6 @@ function stage_1()
         h = file('HISTORY.txt').read()
         h = re.sub('$old_string\\n=+', '$new_string\\n' + '=' * len('$new_string'), h, count=1)
         file('HISTORY.txt', 'w').write(h)"
-    confirm cvs diff HISTORY.txt
     checkin 'closed "Changes Since ..." section' HISTORY.txt
 }
 
@@ -311,6 +314,11 @@ function stage_2()
         test "$REPLY" || break
     done
     confirm test_tarball 2
+    echo
+    echo 'Registering at PyPI...'
+    run cd $working_area
+    run cd test2
+    confirm ./setup.py register
 }
 
 function stage_3()
@@ -331,8 +339,24 @@ function stage_3()
         h = re.sub('$before', '$add_string\\n' + '=' * len('$add_string') +
                    '\\n\\n\\n$before', h, count=1)
         file('HISTORY.txt', 'w').write(h)"
-    confirm cvs diff HISTORY.txt
     checkin "added empty \"Changes Since $new_ver\" section" HISTORY.txt
+    echo
+    echo 'Please update the web page now (web/index.txt).'
+    echo "Press enter when you're done."
+    read
+    echo 'Press enter to run docutils-update on SF.net (or enter anything to skip):'
+    read
+    if [ ! "$REPLY" ]; then
+        echo 'Running docutils-update on the server...'
+        echo 'This may take some time.'
+        echo
+        echo '$ echo /home/groups/d/do/docutils/snapshots/sandbox/davidg/infrastructure/docutils-update -p | \' #'
+        echo "    ssh $username@shell.sourceforge.net"
+        test "$REPLY" || echo /home/groups/d/do/docutils/snapshots/sandbox/davidg/infrastructure/docutils-update -p | ssh $username@shell.sourceforge.net
+        echo
+        echo 'docutils-update completed.'
+    fi
+    echo 
 }
 
 initialize "$@"
