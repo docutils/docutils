@@ -174,7 +174,7 @@ Test overline title with inset.
 <document source="test data">
     <system_message level="4" line="1" source="test data" type="SEVERE">
         <paragraph>
-            Missing underline for overline.
+            Missing matching underline for section title overline.
         <literal_block xml:space="preserve">
             ========================
              Test Missing Underline
@@ -189,7 +189,7 @@ Test missing underline, with paragraph.
 <document source="test data">
     <system_message level="4" line="1" source="test data" type="SEVERE">
         <paragraph>
-            Missing underline for overline.
+            Missing matching underline for section title overline.
         <literal_block xml:space="preserve">
             =======
              Title
