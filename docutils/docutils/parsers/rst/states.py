@@ -163,7 +163,15 @@ class RSTStateMachine(StateMachineWS):
         self.node = document
         results = StateMachineWS.run(self, input_lines, input_offset)
         assert results == [], 'RSTStateMachine.run() results should be empty!'
+        self.check_document()
         self.node = self.memo = None    # remove unneeded references
+
+    def check_document(self):
+        """Check for illegal structure: empty document."""
+        if len(self.document) == 0:
+            error = self.reporter.error(
+                'Document empty; must have contents.', line=0)
+            self.document += error
 
 
 class NestedStateMachine(StateMachineWS):
@@ -344,26 +352,52 @@ class RSTState(StateWS):
         memo = self.memo
         mylevel = memo.section_level
         memo.section_level += 1
-        sectionnode = nodes.section()
-        self.parent += sectionnode
+        section_node = nodes.section()
+        self.parent += section_node
         textnodes, title_messages = self.inline_text(title, lineno)
         titlenode = nodes.title(title, '', *textnodes)
         name = normalize_name(titlenode.astext())
-        sectionnode['name'] = name
-        sectionnode += titlenode
-        sectionnode += messages
-        sectionnode += title_messages
-        self.document.note_implicit_target(sectionnode, sectionnode)
+        section_node['name'] = name
+        section_node += titlenode
+        section_node += messages
+        section_node += title_messages
+        self.document.note_implicit_target(section_node, section_node)
         offset = self.state_machine.line_offset + 1
         absoffset = self.state_machine.abs_line_offset() + 1
         newabsoffset = self.nested_parse(
               self.state_machine.input_lines[offset:], input_offset=absoffset,
-              node=sectionnode, match_titles=1)
+              node=section_node, match_titles=1)
         self.goto_line(newabsoffset)
+        self.check_section(section_node)
         if memo.section_level <= mylevel: # can't handle next section?
             raise EOFError              # bubble up to supersection
         # reset section_level; next pass will detect it properly
         memo.section_level = mylevel
+
+    def check_section(self, section):
+        """
+        Check for illegal structure: empty section, misplaced transitions.
+        """
+        lineno = section.line
+        if len(section) <= 1:
+            error = self.reporter.error(
+                'Section empty; must have contents.', line=lineno)
+            section += error
+            return
+        if not isinstance(section[0], nodes.title): # shouldn't ever happen
+            error = self.reporter.error(
+                'First element of section must be a title.', line=lineno)
+            section.insert(0, error)
+        if isinstance(section[1], nodes.transition):
+            error = self.reporter.error(
+                'Section may not begin with a transition.',
+                line=section[1].line)
+            section.insert(1, error)
+        if len(section) > 2 and isinstance(section[-1], nodes.transition):
+            error = self.reporter.error(
+                'Section may not end with a transition.',
+                line=section[-1].line)
+            section += error
 
     def paragraph(self, lines, lineno):
         """
@@ -2446,31 +2480,35 @@ class Line(SpecializedText):
         if len(marker) < 4:
             self.state_correction(context)
         if self.eofcheck:               # ignore EOFError with sections
+            lineno = self.state_machine.abs_line_number() - 1
             transition = nodes.transition(context[0])
+            transition.line = lineno
             self.parent += transition
             msg = self.reporter.error(
                   'Document or section may not end with a transition.',
-                  line=self.state_machine.abs_line_number() - 1)
+                  line=lineno)
             self.parent += msg
         self.eofcheck = 1
         return []
 
     def blank(self, match, context, next_state):
         """Transition marker."""
+        lineno = self.state_machine.abs_line_number() - 1
         marker = context[0].strip()
         if len(marker) < 4:
             self.state_correction(context)
         transition = nodes.transition(marker)
+        transition.line = lineno
         if len(self.parent) == 0:
             msg = self.reporter.error(
                   'Document or section may not begin with a transition.',
-                  line=self.state_machine.abs_line_number() - 1)
+                  line=lineno)
             self.parent += msg
         elif isinstance(self.parent[-1], nodes.transition):
             msg = self.reporter.error(
                   'At least one body element must separate transitions; '
                   'adjacent transitions not allowed.',
-                  line=self.state_machine.abs_line_number() - 1)
+                  line=lineno)
             self.parent += msg
         self.parent += transition
         return [], 'Body', []
