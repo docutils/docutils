@@ -352,9 +352,19 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
          ('Disable Python tracebacks when errors occur; report just the error '
           'instead.  This is the default.',
           ['--no-traceback'], {'dest': 'traceback', 'action': 'store_false'}),
-         ('Specify the encoding of input text.  Default is locale-dependent.',
+         ('Specify the encoding of input text.  Default is locale-dependent.  '
+          'Optionally also specify the error handler for undecodable '
+          'characters, after a colon (":"); default is "strict".  (See '
+          '"--intput-encoding-error-handler".)',
           ['--input-encoding', '-i'],
-          {'metavar': '<name>', 'validator': validate_encoding}),
+          {'metavar': '<name[:handler]>',
+           'validator': validate_encoding_and_error_handler}),
+         ('Specify the error handler for undecodable characters in '
+          'the input.  Acceptable values include "strict", "ignore", and '
+          '"replace".  Default is "strict".  '
+          'Usually specified as part of --input-encoding.',
+          ['--input-encoding-error-handler'],
+          {'default': 'strict', 'validator': validate_encoding_error_handler}),
          ('Specify the text encoding for output.  Default is UTF-8.  '
           'Optionally also specify the error handler for unencodable '
           'characters, after a colon (":"); default is "strict".  (See '
