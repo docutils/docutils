@@ -2,12 +2,42 @@
 """
 
 import os
+from docutils.readers.python.moduleparser import Node
 
 class NotAPackageException(Exception):
     pass
 
 class NoSuchDirectoryException(Exception):
     pass
+
+
+class Package(Node):
+    """This class represents a Python package.
+
+    `filename` is the name of the package - i.e., the package name.
+    This may be extended/altered/expanded to include/disambiguate the
+    name of the package, the "full" name of the package (e.g., if it is
+    a sub-package) and the full path of the package, as needs indicate.
+    """
+
+    def __init__(self, filename):
+        """Initialise a Package.
+
+        Note that this does *not* take a "node" argument, since a Package
+        is not actually quite like the Module and other sub-nodes.
+
+        @@@ (Actually, there's a case to say that Node should be able to take
+        a "node" value of None and cope, in which case our life would be
+        easier - I may work on that later on...)
+        """
+        # Hackery - the following two lines copied from Node itself.
+        self.children = []
+        self.lineno = None
+        self.filename = filename
+
+    def attlist(self):
+        return Node.attlist(self, filename=self.filename)
+
 
 def parse_package(package_path):
     """Parse a package for documentation purposes.
@@ -50,16 +80,19 @@ def parse_subpackage(package_path,subpackage,indent=""):
         raise NotAPackageException,\
               "Directory '%s' is not a Python package"%sub_path
 
-    text = '%s<Package filename="%s">\n'%(indent,subpackage)
+    node = Package(subpackage)
+    ###text = '%s<Package filename="%s">\n'%(indent,subpackage)
 
     for file in files:
         if os.path.isdir(os.path.join(sub_path,file)):
             try:
-                text += parse_subpackage(sub_path,file,indent+"  ")
+                ###text += parse_subpackage(sub_path,file,indent+"  ")
+                node.append(parse_subpackage(sub_path,file))
             except NotAPackageException:
                 pass
 
-    return text
+    ###return text
+    return node
 
 if __name__ == "__main__":
     result = parse_package("trivial_package")
