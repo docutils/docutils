@@ -220,7 +220,7 @@ u"""\
 """],
 ["""\
 .. sectnum::
-   :prefix: Arbitrary
+   :prefix: Arbitrary-
 
 Title 1
 =======
@@ -243,28 +243,28 @@ u"""\
     <section id="title-1" name="title 1">
         <title auto="1">
             <generated class="sectnum">
-                Arbitrary.1\u00a0\u00a0\u00a0
+                Arbitrary-1\u00a0\u00a0\u00a0
             Title 1
         <paragraph>
             Paragraph 1.
         <section id="title-2" name="title 2">
             <title auto="1">
                 <generated class="sectnum">
-                    Arbitrary.1.1\u00a0\u00a0\u00a0
+                    Arbitrary-1.1\u00a0\u00a0\u00a0
                 Title 2
             <paragraph>
                 Paragraph 2.
             <section id="title-3" name="title 3">
                 <title auto="1">
                     <generated class="sectnum">
-                        Arbitrary.1.1.1\u00a0\u00a0\u00a0
+                        Arbitrary-1.1.1\u00a0\u00a0\u00a0
                     Title 3
                 <paragraph>
                     Paragraph 3.
         <section id="title-4" name="title 4">
             <title auto="1">
                 <generated class="sectnum">
-                    Arbitrary.1.2\u00a0\u00a0\u00a0
+                    Arbitrary-1.2\u00a0\u00a0\u00a0
                 Title 4
             <paragraph>
                 Paragraph 4.
@@ -322,7 +322,8 @@ u"""\
 """],
 ["""\
 .. sectnum::
-   :prefix: 5.9
+   :prefix: (5.9.
+   :suffix: )
    :start: 3
    
 Title 1
@@ -346,28 +347,28 @@ u"""\
     <section id="title-1" name="title 1">
         <title auto="1">
             <generated class="sectnum">
-                5.9.3\u00a0\u00a0\u00a0
+                (5.9.3)\u00a0\u00a0\u00a0
             Title 1
         <paragraph>
             Paragraph 1.
         <section id="title-2" name="title 2">
             <title auto="1">
                 <generated class="sectnum">
-                    5.9.3.1\u00a0\u00a0\u00a0
+                    (5.9.3.1)\u00a0\u00a0\u00a0
                 Title 2
             <paragraph>
                 Paragraph 2.
             <section id="title-3" name="title 3">
                 <title auto="1">
                     <generated class="sectnum">
-                        5.9.3.1.1\u00a0\u00a0\u00a0
+                        (5.9.3.1.1)\u00a0\u00a0\u00a0
                     Title 3
                 <paragraph>
                     Paragraph 3.
         <section id="title-4" name="title 4">
             <title auto="1">
                 <generated class="sectnum">
-                    5.9.3.2\u00a0\u00a0\u00a0
+                    (5.9.3.2)\u00a0\u00a0\u00a0
                 Title 4
             <paragraph>
                 Paragraph 4.

@@ -80,4 +80,5 @@ def sectnum(name, arguments, options, content, lineno,
 
 sectnum.options = {'depth': int,
                    'start': int,
-                   'prefix': directives.unchanged_required}
+                   'prefix': directives.unchanged_required,
+                   'suffix': directives.unchanged_required}
