@@ -1039,7 +1039,7 @@ class Body(RSTState):
                     '|%(upperroman)s)' % enum.sequencepats)
     pats['optname'] = '%(alphanum)s%(alphanumplus)s*' % pats
     # @@@ Loosen up the pattern?  Allow Unicode?
-    pats['optarg'] = '(%(alpha)s%(alphanumplus)s*|<[^ <>]+>)' % pats
+    pats['optarg'] = '(%(alpha)s%(alphanumplus)s*|<[^<>]+>)' % pats
     pats['shortopt'] = r'(-|\+)%(alphanum)s( ?%(optarg)s)?' % pats
     pats['longopt'] = r'(--|/)%(optname)s([ =]%(optarg)s)?' % pats
     pats['option'] = r'(%(shortopt)s|%(longopt)s)' % pats
@@ -1415,14 +1415,20 @@ class Body(RSTState):
             delimiter = ' '
             firstopt = tokens[0].split('=')
             if len(firstopt) > 1:
+                # "--opt=value" form
                 tokens[:1] = firstopt
                 delimiter = '='
             elif (len(tokens[0]) > 2
                   and ((tokens[0].startswith('-')
                         and not tokens[0].startswith('--'))
                        or tokens[0].startswith('+'))):
+                # "-ovalue" form
                 tokens[:1] = [tokens[0][:2], tokens[0][2:]]
                 delimiter = ''
+            if len(tokens) > 1 and (tokens[1].startswith('<')
+                                    and tokens[-1].endswith('>')):
+                # "-o <value1 value2>" form; join all values into one token
+                tokens[1:] = [' '.join(tokens[1:])]
             if 0 < len(tokens) <= 2:
                 option = nodes.option(optionstring)
                 option += nodes.option_string(tokens[0], tokens[0])
