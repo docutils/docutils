@@ -37,7 +37,8 @@ with the following syntax:
            *commands*
 
 
-parsed literal with markup spanning lines.
+parsed literal with markup spanning lines. should produce valid LaTeX
+code, but the indentation is ragged.
 
 .. parsed-literal::
 
