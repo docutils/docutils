@@ -249,6 +249,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         text = text.replace('"', "&quot;")
         text = text.replace(">", "&gt;")
         text = text.replace("@", "&#64;") # may thwart some address harvesters
+        # Replace the non-breaking space character with the HTML entity:
+        text = text.replace(u'\u00a0', "&nbsp;")
         return text
 
     def attval(self, text,
