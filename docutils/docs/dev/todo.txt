@@ -1398,6 +1398,50 @@ when used in a document.
     the table's orientation (by column or by row), the presence of row
     headers, etc.  How to handle row and/or column spans?
 
+    This is what it might look like::
+
+        .. list-table::
+
+           * - Treat
+             - Quantity
+             - Description
+           * - Albatross!
+             - 299
+             - On a stick!
+           * - Crunchy Frog!
+             - 1499
+             - If we took the bones out, it wouldn't be crunchy,
+               now would it?
+           * - Gannet Ripple!
+             - 199
+             - On a stick!
+
+    Issues:
+    
+    * How to indicate that there's 1 header row?  Perhaps two lists?
+      ::
+
+          .. list-table::
+
+             + - Treat
+               - Quantity
+               - Description
+
+             * - Albatross!
+               - 299
+               - On a stick!
+
+      A directive option (``:headrows: 1``)?
+
+    * How to indicate the column widths?  A directive option? ::
+
+          .. list-table::
+             :widths: 15 10 35
+
+      Automatic defaults from the text used?
+
+    * How to handle row and/or column spans?
+
   - _`colorize.python`: Colorize Python code.  Fine for HTML output,
     but what about other formats?  Revert to a literal block?  Do we
     need some kind of "alternate" mechanism?  Perhaps use a "pending"
