@@ -299,12 +299,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_bullet_list(self, node):
         if not self.latex_toc and self.topic_class == 'contents':
-            self.body.append( '\\begin{itemize}\n' )
+            self.body.append( '\\begin{list}{}{}\n' )
         else:
             self.body.append( '\\begin{itemize}\n' )
 
     def depart_bullet_list(self, node):
-        if not self.latex_toc or not self.topic_class == 'contents':
+        if not self.latex_toc and self.topic_class == 'contents':
+            #self.body.append( '\\end{flushleft}\n' )
+            self.body.append( '\\end{list}\n' )
+        else:
             self.body.append( '\\end{itemize}\n' )
 
     def visit_caption(self, node):
@@ -952,7 +955,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_title(self, node):
         """Only 3 section levels are supported by LaTeX article (AFAIR)."""
         if isinstance(node.parent, nodes.topic):
-            self.body.append('% topic title\n')
             if node.parent.hasattr('id'):
                 self.body.append('\\hypertarget{%s}{}' % node.parent['id'])
             self.body.append('\\paragraph{')
@@ -983,12 +985,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 (self.section_level-1,node.astext(),node.parent['id']))
 
     def visit_topic(self, node):
-        ##self.body.append('% [visit_topic]\n')
         self.topic_class = node.get('class')
         if self.latex_toc:
-            ##self.body.append('% [depart_topic]\n')
             self.topic_class = ''
             raise nodes.SkipNode
+        ##self.body.append('% [visit_topic]\n')
 
     def depart_topic(self, node):
         if not self.latex_toc:
