@@ -7,16 +7,17 @@
 :Date: $Date$
 :Copyright: This module has been placed in the public domain.
 
-A minimal front-end to the Docutils Publisher, producing HTML from PEP
+A minimal front end to the Docutils Publisher, producing HTML from PEP
 (Python Enhancement Proposal) documents.
 """
 
 import locale
 locale.setlocale(locale.LC_ALL, '')
 
-from docutils.core import publish
+from docutils.core import publish, default_description
 
 
-usage = 'usage:\n  %prog [options] [source [destination]]'
+description = ('Generates (X)HTML from reStructuredText-format PEP files.  '
+               + default_description)
 
-publish(reader_name='pep', writer_name='pep_html', usage=usage)
+publish(reader_name='pep', writer_name='pep_html', description=description)

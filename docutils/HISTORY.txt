@@ -265,6 +265,8 @@ Specific:
 * docutils/writers/docutils_xml.py: Added to project; trivial writer
   of the Docutils internal doctree in XML.
 
+* docs/tools.txt: "Docutils Front-End Tools", added to project.
+
 * spec/doctree.txt:
 
   - Changed the title to "The Docutils Document Tree".
@@ -349,11 +351,11 @@ Specific:
 
 * tools:
 
-  - Updated html.py and publish.py front-ends to use the new
+  - Updated html.py and publish.py front-end tools to use the new
     command-line processing facilities of ``docutils.frontend``
     (exposed in ``docutils.core.Publisher``), reducing each to just a
     few lines of code.
-  - Added ``locale.setlocale()`` calls to front-ends.
+  - Added ``locale.setlocale()`` calls to front-end tools.
 
 * tools/default.css:
 
@@ -361,7 +363,7 @@ Specific:
 
 * tools/docutils-xml.py: Added to project.
 
-* tools/pep.py: Added to project; PEP to HTML front-end.
+* tools/pep.py: Added to project; PEP to HTML front-end tool.
 
 * tools/pep-html-template: Added to project.
 

@@ -152,10 +152,12 @@ but these may not be completely up to date.
 
 - `A ReStructuredText Primer`__ (HTML file, or `text source`__)
 - `Quick reStructuredText`__ (user reference)
+- `Docutils Front-End Tools`__
 
 __ docs/rst/quickstart.html
 __ docs/rst/quickstart.txt
 __ docs/rst/quickref.html
+__ docs/tools.html
 
 
 Specification

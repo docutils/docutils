@@ -322,7 +322,7 @@ Specification
         convenience function "publish()".  See `Publisher`_ above.
 
       - Module "docutils.frontend" provides command-line and option
-        processing for Docutils front-ends.
+        processing for Docutils front-end tools.
 
       - Module "docutils.io" provides a uniform API for low-level
         input and output.
