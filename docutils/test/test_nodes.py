@@ -89,6 +89,8 @@ class MiscTests(unittest.TestCase):
             if type(c) is ClassType and issubclass(c, nodes.Node) \
                    and len(c.__bases__) > 1:
                 node_class_names.append(x)
+        node_class_names.sort()
+        nodes.node_class_names.sort()
         self.assertEquals(node_class_names, nodes.node_class_names)
 
     ids = [('a', 'a'), ('A', 'a'), ('', ''), ('a b \n c', 'a-b-c'),
