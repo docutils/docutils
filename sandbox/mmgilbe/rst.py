@@ -137,6 +137,8 @@ class MoinTranslator(html4css1.HTMLTranslator):
             handled = 0
             # We don't want these pieces wrapped in <p> tags, I think.
             self.strip_paragraph = 1
+            # Unless the user has explicitly added the type of the uri then we
+            # let MoinMoin handle it.
             if ':' not in node['refuri']:
                 self.wikiparser.raw = '[:%s: %s]' % (node['refuri'], 
                                                      node.astext())
