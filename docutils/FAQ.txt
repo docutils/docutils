@@ -57,11 +57,11 @@ Docutils is short for "Python Documentation Utilities".  The name
 Utilities architected by Greg Ward, a component of Python's standard
 library.
 
-The earliest know use of the term "docutils" in a Python context was a
-`fleeting reference`__ in a message by Fred Drake on 1999-12-02 in the
-Python Doc-SIG mailing list.  It was suggested `as a project name`__
-on 2000-11-27 on Doc-SIG, again by Fred Drake, in response to a
-question from Tony "Tibs" Ibbs: "What do we want to *call* this
+The earliest known use of the term "docutils" in a Python context was
+a `fleeting reference`__ in a message by Fred Drake on 1999-12-02 in
+the Python Doc-SIG mailing list.  It was suggested `as a project
+name`__ on 2000-11-27 on Doc-SIG, again by Fred Drake, in response to
+a question from Tony "Tibs" Ibbs: "What do we want to *call* this
 thing?".  This was shortly after David Goodger first `announced
 reStructuredText`__ on Doc-SIG.
 
