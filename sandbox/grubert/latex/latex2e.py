@@ -223,13 +223,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
               '\\usepackage{color}\n',
               '\\usepackage{multirow}\n',
               self.linking,
-              self.stylesheet % (self.d_stylesheet_path),
               # geometry and fonts might go into style.tex.
               self.geometry % (self.d_paper, self.d_margins),
               #
               self.generator,
               # admonition width
-              '\\newlength{\\admwidth}\n\\addtolength{\\admwidth}{0.9\\textwidth}\n'
+              '\\newlength{\\admwidth}\n\\addtolength{\\admwidth}{0.9\\textwidth}\n',
+              ## stylesheet is last: so it might be possible to overwrite defaults.
+              self.stylesheet % (self.d_stylesheet_path),
                             ]
         if self.linking: # and maybe check for pdf
             self.pdfinfo = [ ]
