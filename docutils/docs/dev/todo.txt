@@ -2084,6 +2084,30 @@ projects in sync when there are changes made to the core Docutils
 code.
 
 
+Web Site
+========
+
+The Docutils web site, <http://docutils.sourceforge.net/>, is
+maintained automatically by the docutils-update script, run as an
+hourly cron job (by user "goodger").  The script will process any .txt
+file which is newer than the corresponding .html file in the project's
+web directory on SourceForge (``/home/groups/d/do/docutils/htdocs/``).
+For a new .txt file, just SSH to SourceForge and ::
+
+    touch filename.html
+    sleep 1
+    touch filename.txt
+
+The script will take care of the rest within an hour.  Thereafter
+whenever the .txt file is modified (checked in to CVS), the .html will
+be regenerated automatically.
+
+The docutils-update__ script is in CVS as
+``sandbox/davidg/infrastructure/docutils-update``.
+
+__ http://docutils.sf.net/sandbox/davidg/infrastructure/docutils-update
+
+
 Release Procedure
 =================
 
