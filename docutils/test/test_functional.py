@@ -23,10 +23,14 @@ import DocutilsTestSupport
 
 
 # Ugly magic to determine the test directory.
-testroot = os.path.dirname(DocutilsTestSupport.__file__)
+testroot = os.path.dirname(DocutilsTestSupport.__file__) or '.'
 
 datadir = 'functional'
 """The directory to store the data needed for the functional tests."""
+
+
+def join_path(*args):
+    return '/'.join(args) or '.'
 
 
 class FunctionalTestSuite(DocutilsTestSupport.CustomTestSuite):
@@ -38,7 +42,7 @@ class FunctionalTestSuite(DocutilsTestSupport.CustomTestSuite):
         DocutilsTestSupport.CustomTestSuite.__init__(self)
         os.chdir(testroot)
         self.added = 0
-        os.path.walk(os.path.join(datadir, 'tests'), self.walker, None)
+        os.path.walk(join_path(datadir, 'tests'), self.walker, None)
         assert self.added, 'No functional tests found.'
 
     def walker(self, dummy, dirname, names):
@@ -50,7 +54,7 @@ class FunctionalTestSuite(DocutilsTestSupport.CustomTestSuite):
         """
         for name in names:
             if name.endswith('.py') and not name.startswith('_'):
-                config_file_full_path = os.path.join(dirname, name)
+                config_file_full_path = join_path(dirname, name)
                 self.addTestCase(FunctionalTestCase, 'test', None, None,
                                  id=config_file_full_path,
                                  configfile=config_file_full_path)
@@ -80,7 +84,7 @@ class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
         params['settings_overrides'] = {'_disable_config': 1}
         # Read the variables set in the default config file and in
         # the current config file into params:
-        execfile(os.path.join(datadir, 'tests', '_default.py'), params)
+        execfile(join_path(datadir, 'tests', '_default.py'), params)
         execfile(self.configfile, params)
         # Check for required settings:
         assert params.has_key('test_source'),\
@@ -89,14 +93,14 @@ class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
                "No 'test_destination' supplied in " + self.configfile
         # Set source_path and destination_path if not given:
         params.setdefault('source_path',
-                          os.path.join(datadir, 'input',
+                          join_path(datadir, 'input',
                                        params['test_source']))
         # Path for actual output:
         params.setdefault('destination_path',
-                          os.path.join(datadir, 'output',
+                          join_path(datadir, 'output',
                                        params['test_destination']))
         # Path for expected output:
-        expected_path = os.path.join(datadir, 'expected',
+        expected_path = join_path(datadir, 'expected',
                                      params['test_destination'])
         # test_source and test_destination aren't needed any more:
         del params['test_source']
