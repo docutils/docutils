@@ -1472,15 +1472,15 @@ class Body(RSTState):
 
     def field_marker(self, match, context, next_state):
         """Field list item."""
-        fieldlist = nodes.field_list()
-        self.parent += fieldlist
+        field_list = nodes.field_list()
+        self.parent += field_list
         field, blank_finish = self.field(match)
-        fieldlist += field
+        field_list += field
         offset = self.state_machine.line_offset + 1   # next line
         newline_offset, blank_finish = self.nested_list_parse(
               self.state_machine.input_lines[offset:],
               input_offset=self.state_machine.abs_line_offset() + 1,
-              node=fieldlist, initial_state='FieldList',
+              node=field_list, initial_state='FieldList',
               blank_finish=blank_finish)
         self.goto_line(newline_offset)
         if not blank_finish:
@@ -1492,15 +1492,15 @@ class Body(RSTState):
         lineno = self.state_machine.abs_line_number()
         indented, indent, line_offset, blank_finish = \
               self.state_machine.get_first_known_indented(match.end())
-        fieldnode = nodes.field()
-        fieldnode.line = lineno
+        field_node = nodes.field()
+        field_node.line = lineno
         name_nodes, name_messages = self.inline_text(name, lineno)
-        fieldnode += nodes.field_name(name, '', *name_nodes)
-        fieldbody = nodes.field_body('\n'.join(indented), *name_messages)
-        fieldnode += fieldbody
+        field_node += nodes.field_name(name, '', *name_nodes)
+        field_body = nodes.field_body('\n'.join(indented), *name_messages)
+        field_node += field_body
         if indented:
-            self.parse_field_body(indented, line_offset, fieldbody)
-        return fieldnode, blank_finish
+            self.parse_field_body(indented, line_offset, field_body)
+        return field_node, blank_finish
 
     def parse_field_marker(self, match):
         """Extract & return field name from a field marker match."""
