@@ -165,10 +165,10 @@ class Node:
         """Return true if this node has children."""
         return 0
 
-    def next_node(self, descend=1, ascend=1, cond=lambda e: 1):
+    def next_node(self, descend=1, ascend=1, condition=None):
         """
-        Return the next node in tree traversal order for which the
-        condition cond(node) is true.
+        Return the next node in tree traversal order for which
+        ``condition(node)`` is true.
 
         If descend is true, traverse children as well.  If ascend is
         true, go up in the tree if there is no direct next sibling.
@@ -189,7 +189,7 @@ class Node:
                     return None
             else:
                 return None
-            if cond(r):
+            if not condition or condition(r):
                 return r
             else:
                 # Get r.next_node(...), avoiding recursion.
