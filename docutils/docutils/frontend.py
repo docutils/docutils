@@ -553,7 +553,7 @@ configuration files.  See <http://docutils.sf.net/docs/config.html>.
 """
 
     def read(self, filenames, option_parser):
-        if type(filenames) in types.StringTypes:
+        if type(filenames) in (types.StringType, types.UnicodeType):
             filenames = [filenames]
         for filename in filenames:
             CP.ConfigParser.read(self, filename)
