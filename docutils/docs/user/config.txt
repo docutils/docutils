@@ -349,16 +349,27 @@ Docutils currently supports only one parser, for reStructuredText.
 `````````````````````````
 
 _`pep_references`
-    Recognize and link to PEP references (like "PEP 258").
+    Recognize and link to standalone PEP references (like "PEP 258").
 
     Default: disabled (None); enabled (1) in PEP Reader.  Options:
     ``--pep-references``.
 
+_`pep_base_url`
+    Base URL for PEP references.  
+
+    Default: "http://www.python.org/peps/".  Option:
+    ``--pep-base-url``.
+
 _`rfc_references`
-    Recognize and link to RFC references (like "RFC 822").
+    Recognize and link to standalone RFC references (like "RFC 822").
 
     Default: disabled (None); enabled (1) in PEP Reader.  Options:
     ``--rfc-references``.
+
+_`rfc_base_url`
+    Base URL for RFC references.  
+
+    Default: "http://www.faqs.org/rfcs/".  Option: ``--rfc-base-url``.
 
 _`tab_width`
     Number of spaces for hard tab expansion.

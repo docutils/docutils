@@ -954,9 +954,7 @@ class Inliner:
         else:                   # not a valid scheme
             raise MarkupMismatch
 
-    pep_url_local = 'pep-%04d.html'
-    pep_url_absolute = 'http://www.python.org/peps/pep-%04d.html'
-    pep_url = pep_url_absolute
+    pep_url = 'pep-%04d.html'
 
     def pep_reference(self, match, lineno):
         text = match.group(0)
@@ -966,17 +964,17 @@ class Inliner:
             pepnum = int(match.group('pepnum2'))
         else:
             raise MarkupMismatch
-        ref = self.pep_url % pepnum
+        ref = self.document.settings.pep_base_url + self.pep_url % pepnum
         unescaped = unescape(text, 0)
         return [nodes.reference(unescape(text, 1), unescaped, refuri=ref)]
 
-    rfc_url = 'http://www.faqs.org/rfcs/rfc%d.html'
+    rfc_url = 'rfc%d.html'
 
     def rfc_reference(self, match, lineno):
         text = match.group(0)
         if text.startswith('RFC'):
             rfcnum = int(match.group('rfcnum'))
-            ref = self.rfc_url % rfcnum
+            ref = self.document.settings.rfc_base_url + self.rfc_url % rfcnum
         else:
             raise MarkupMismatch
         unescaped = unescape(text, 0)

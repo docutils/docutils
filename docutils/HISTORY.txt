@@ -89,6 +89,10 @@ Specific:
     "--error-encoding-error-handler".
   - Renamed "--exit" to "--exit-status".
 
+* docutils/parsers/rst/__init__.py:
+
+  - Added "--pep-base-url" and "--rfc-base-url" options.
+
 * docutils/writers/latex2e.py:
 
   - Added "--table-style=(standard|booktabs|nolines)"
