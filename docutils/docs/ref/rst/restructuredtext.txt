@@ -1484,10 +1484,17 @@ An explicit markup block is a text block:
 - which ends before an unindented line.
 
 Explicit markup blocks are analogous to bullet list items, with ".."
-as the bullet.  The text immediately after the explicit markup start
-determines the indentation of the block body.  Blank lines are
-required between explicit markup blocks and other elements, but are
-optional between explicit markup blocks where unambiguous.
+as the bullet.  The text on the lines immediately after the explicit
+markup start determines the indentation of the block body.  The
+maximum common indentation is always removed from the second and
+subsequent lines of the block body.  Therefore if the first construct
+fits in one line, and the indentation of the first and second
+constructs should differ, the first construct should not begin on the
+same line as the explicit markup start.
+
+Blank lines are required between explicit markup blocks and other
+elements, but are optional between explicit markup blocks where
+unambiguous.
 
 The explicit markup syntax is used for footnotes, citations, hyperlink
 targets, directives, substitution definitions, and comments.
@@ -1512,13 +1519,16 @@ be:
 
 - a single "*" (denoting `auto-symbol footnotes`_).
 
-If the first body element within a footnote is a simple paragraph, it
-may begin on the same line as the footnote label.  Other elements must
-begin on a new line, consistently indented (by at least 3 spaces) and
-left-aligned.
+The footnote content (body elements) must be consistently indented (by
+at least 3 spaces) and left-aligned.  The first body element within a
+footnote may often begin on the same line as the footnote label.
+However, if the first element fits on one line and the indentation of
+the remaining elements differ, the first element must begin on the
+line after the footnote label.  Otherwise, the difference in
+indentation will not be detected.
 
 Footnotes may occur anywhere in the document, not only at the end.
-Where or how they appear in the processed output depends on the
+Where and how they appear in the processed output depends on the
 processing system.
 
 Here is a manually numbered footnote::
