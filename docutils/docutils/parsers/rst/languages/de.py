@@ -1,5 +1,4 @@
-# -*- coding: iso-8859-1 -*-
-# Author: Engelbert Gruber
+# Authors: Engelbert Gruber; Felix Wiemann
 # Contact: grubert@users.sourceforge.net
 # Revision: $Revision$
 # Date: $Date$
@@ -26,61 +25,60 @@ directives = {
       'hinweis': 'hint',
       'wichtig': 'important',
       'notiz': 'note',
-      'tip': 'tip',
+      'tipp': 'tip',
       'warnung': 'warning',
       'ermahnung': 'admonition',
-      'kasten': 'sidebar', # seitenkasten ?
-      'thema': 'topic', 
-      'line-block': 'line-block',
-      'parsed-literal': 'parsed-literal',
+      'kasten': 'sidebar',
+      'seitenkasten': 'sidebar',
+      'thema': 'topic',
+      'zeilen-block': 'line-block',
+      'parsed-literal (translation required)': 'parsed-literal',
       'rubrik': 'rubric',
-      'epigraph (translation required)': 'epigraph',
+      'epigraph': 'epigraph',
       'highlights (translation required)': 'highlights',
       'pull-quote (translation required)': 'pull-quote', # kasten too ?
-      #'questions': 'questions',
-      #'qa': 'questions',
-      #'faq': 'questions',
-      'table (translation required)': 'table',
-      'csv-table (translation required)': 'csv-table',
+      #'fragen': 'questions',
+      'tabelle': 'table',
+      'csv-tabelle': 'csv-table',
       'meta': 'meta',
       #'imagemap': 'imagemap',
       'bild': 'image',
       'abbildung': 'figure',
-      'raw': 'raw',         # unbearbeitet
-      'include': 'include', # einfügen, "füge ein" would be more like a command.
-                            # einfügung would be the noun. 
-      'ersetzung': 'replace', # ersetzen, ersetze
+      u'unver\xe4ndert': 'raw',
+      u'einf\xfcgen': 'include',
+      'ersetzen': 'replace',
+      'ersetze': 'replace',
       'unicode': 'unicode',
-      'klasse': 'class',    # offer "class" too ?
-      'role (translation required)': 'role',
+      'klasse': 'class',
+      'rolle': 'role',
       'inhalt': 'contents',
-      'sectnum': 'sectnum',
-      'section-numbering': 'sectnum',
-      'target-notes': 'target-notes',
-      #'footnotes': 'footnotes',
-      #'citations': 'citations',
-      'restructuredtext-test-directive': 'restructuredtext-test-directive'}
+      'kapitel-nummerierung': 'sectnum',
+      'abschnitts-nummerierung': 'sectnum',
+      u'linkziel-fu\xdfnoten': 'target-notes',
+      #u'fu\xdfnoten': 'footnotes',
+      #'zitate': 'citations',
+      }
 """German name to registered (in directives/__init__.py) directive name
 mapping."""
 
 roles = {
-      'abbreviation (translation required)': 'abbreviation',
-      'acronym (translation required)': 'acronym',
-      'index (translation required)': 'index',
-      'subscript (translation required)': 'subscript',
-      'superscript (translation required)': 'superscript',
-      'title-reference (translation required)': 'title-reference',
-      'pep-reference (translation required)': 'pep-reference',
-      'rfc-reference (translation required)': 'rfc-reference',
-      'emphasis (translation required)': 'emphasis',
-      'strong (translation required)': 'strong',
+      u'abk\xfcrzung': 'abbreviation',
+      'akronym': 'acronym',
+      'index': 'index',
+      'tiefgestellt': 'subscript',
+      'hochgestellt': 'superscript',
+      'titel-referenz': 'title-reference',
+      'pep-referenz': 'pep-reference',
+      'rfc-referenz': 'rfc-reference',
+      'betonung': 'emphasis',
+      'fett': 'strong',
       'literal (translation required)': 'literal',
-      'named-reference (translation required)': 'named-reference',
-      'anonymous-reference (translation required)': 'anonymous-reference',
-      'footnote-reference (translation required)': 'footnote-reference',
-      'citation-reference (translation required)': 'citation-reference',
-      'substitution-reference (translation required)': 'substitution-reference',
-      'target (translation required)': 'target',
-      'uri-reference (translation required)': 'uri-reference',}
+      'benannte-referenz': 'named-reference',
+      'unbenannte-referenz': 'anonymous-reference',
+      u'fu\xdfnoten-referenz': 'footnote-reference',
+      'zitat-referenz': 'citation-reference',
+      'ersetzungs-referenz': 'substitution-reference',
+      'ziel': 'target',
+      'uri-referenz': 'uri-reference',}
 """Mapping of German role names to canonical role names for interpreted text.
 """
