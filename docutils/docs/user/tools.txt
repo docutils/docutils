@@ -413,6 +413,13 @@ report_level          Verbosity threshold at or above which system
                       Default: warning (2).  Options: ``--report, -r,
                       --verbose, --quiet, -q``.
 --------------------  ------------------------------------------------
+silent                (``buildhtml.py`` front end.)  Work silently (no
+                      progress messages).  Independent of
+                      "report_level".
+
+                      Default: show progress (None).  Options:
+                      ``--silent``.
+--------------------  ------------------------------------------------
 source_link           Include a "View document source" link in the
                       document footer.  URL will be relative to the
                       destination.
@@ -445,7 +452,7 @@ warning_stream        Path to a file for the output of system messages
                       Default: stderr (None).  Options:
                       ``--warnings``.
 
-For Internal Use Only (setting these in a config file has no effect)
+**For Internal Use Only** (setting these in a config file has no effect)
 ----------------------------------------------------------------------
 _directories          (``buildhtml.py`` front end.)  List of paths to
                       source directories, set from positional
