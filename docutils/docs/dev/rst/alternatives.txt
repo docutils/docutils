@@ -265,6 +265,38 @@ desire *not* to use it unless absolutely necessary.  It's a matter of
 finding the right balance.
 
 
+Syntax for Interpreted Text Role Bindings
+-----------------------------------------
+
+The following syntax (idea from Jeffrey C. Jacobs) could be used to
+associate directives with roles.
+
+      .. :rewrite: class:: rewrite
+
+      `She wore ribbons in her hair and it lay with streaks of
+      grey`:rewrite:
+
+The syntax is similar to that of substitution declarations, and the
+directive/role association may resolve implementation issues.  The
+semantics, ramifications, and implementation details would need to be
+worked out.
+
+The example above would implement the "rewrite" role as adding a
+``class="rewrite"`` attribute to the interpreted text ("inline"
+element).  The stylesheet would then pick up on the "class" attribute
+to do the actual formatting.
+
+The advantage of the new syntax would be flexibility.  Uses other than
+"class" may present themselves.  The disadvantage is complexity:
+having to implement new syntax for a relatively specialized operation,
+and having new semantics in existing directives ("class::" would do
+something different).
+
+The `"role" directive`__ has been implemented.
+
+__ http://docutils.sf.net/spec/rst/directives.html#role
+
+
 Character Processing
 --------------------
 
