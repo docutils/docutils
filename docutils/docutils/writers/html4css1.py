@@ -17,6 +17,7 @@ __docformat__ = 'reStructuredText'
 
 
 import sys
+import os
 import time
 import re
 from types import ListType
@@ -159,11 +160,12 @@ class HTMLTranslator(nodes.NodeVisitor):
               self.content_type % options.output_encoding,
               self.generator % docutils.__version__]
         self.head = []
-        stylesheet = self.get_stylesheet_reference()
         if options.embed_stylesheet:
+            stylesheet = self.get_stylesheet_reference(os.getcwd())
             stylesheet_text = open(stylesheet).read()
             self.stylesheet = [self.embedded_stylesheet % stylesheet_text]
         else:
+            stylesheet = self.get_stylesheet_reference()
             self.stylesheet = [self.stylesheet_link % stylesheet]
         self.body_prefix = ['</head>\n<body>\n']
         self.body_pre_docinfo = []
@@ -178,11 +180,12 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.compact_simple = None
         self.in_docinfo = None
 
-    def get_stylesheet_reference(self):
+    def get_stylesheet_reference(self, relative_to=None):
         options = self.options
         if options.stylesheet_path:
-            return utils.relative_path(options._destination,
-                                       options.stylesheet_path)
+            if relative_to == None:
+                relative_to = options._destination
+            return utils.relative_path(relative_to, options.stylesheet_path)
         else:
             return options.stylesheet
 
