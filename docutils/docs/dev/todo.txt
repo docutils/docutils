@@ -837,14 +837,14 @@ __ rst/alternatives.html#or-not-to-do
   also a **bug**).  Assuming these bugs are squashed, I suppose it's a
   useful special case.  It would only be reasonable to apply it to
   "::"-only paragraphs though.  I think the blank line is visually
-  necessary if there's text before the "::":
+  necessary if there's text before the "::"::
 
       The text in this paragraph needs separation
       from the literal block following::
           This doesn't look right.
 
   Another idea.  Would it be worthwhile to allow literal blocks to
-  begin without a newline after the "::"?  Example:
+  begin without a newline after the "::"?  Example::
 
       ::  while True:
               print 'hello world'
