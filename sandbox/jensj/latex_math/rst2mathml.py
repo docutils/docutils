@@ -516,7 +516,7 @@ def handle_keyword(name, node, string):
                     node.append(ovr)
                     node = ovr
                 else:
-                    raise SyntaxError
+                    raise SyntaxError, 'Unknown LaTeX command: ' + name
 
     return node, skip
 
