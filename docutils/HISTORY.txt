@@ -225,9 +225,11 @@ Specific:
 
 * tools/buildhtml.py: Fixed bug with config file handling.
 
-* tools/html.py: Removed from project.
+* tools/html.py: Removed from project (duplicate of rst2html.py).
 
-* tools/pep2html.py: Removed from project.
+* tools/pep2html.py: Removed from project (duplicate of Python's
+  nondist/peps/pep2html.py; Docutils' tools/pep.py can be used for
+  Docutils-related PEPs in docs/peps/).
 
 * tools/rst2pseudoxml.py: Renamed from publish.py.
 
