@@ -1396,7 +1396,7 @@ when used in a document.
     directive which transforms a uniform two-level bullet list into a
     table.  Using a directive would allow the author to explicitly set
     the table's orientation (by column or by row), the presence of row
-    headers, etc.  How to handle row and/or column spans?
+    headers, etc.
 
     This is what it might look like::
 
