@@ -140,8 +140,12 @@ class Writer(writers.Writer):
     output = None
     """Final translated form of `document`."""
 
+    def __init__(self):
+        writers.Writer.__init__(self)
+        self.translator_class = LaTeXTranslator
+
     def translate(self):
-        visitor = LaTeXTranslator(self.document)
+        visitor = self.translator_class(self.document)
         self.document.walkabout(visitor)
         self.output = visitor.astext()
         self.head_prefix = visitor.head_prefix
