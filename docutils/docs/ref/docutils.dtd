@@ -536,6 +536,15 @@ following caveats:
 <!ELEMENT acronym %text.model;>
 <!ATTLIST acronym %basic.atts;>
 
+<!ELEMENT superscript %text.model;>
+<!ATTLIST superscript %basic.atts;>
+
+<!ELEMENT subscript %text.model;>
+<!ATTLIST subscript %basic.atts;>
+
+<!ELEMENT phrase %text.model;>
+<!ATTLIST phrase %basic.atts;>
+
 <!ELEMENT problematic %text.model;>
 <!ATTLIST problematic
     %basic.atts;

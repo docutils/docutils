@@ -67,7 +67,8 @@ div.sidebar {
   padding: 0em 1em ;
   background-color: #ffffee ;
   width: 40% ;
-  float: right }
+  float: right ;
+  clear: right }
 
 div.system-messages {
   margin: 5em }

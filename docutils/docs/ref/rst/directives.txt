@@ -215,12 +215,27 @@ option is recognized:
     Sets the "width" attribute of the "figure" doctree element.
 
     This option does not scale the included image; use the "width"
-    `image`_ option for that.
+    `image`_ option for that. ::
 
-.. [#] `Python Imaging Library`__.
+        +---------------------------+
+        |        figure             |
+        |                           |
+        |<------ figwidth --------->|
+        |                           |
+        |  +---------------------+  |
+        |  |     image           |  |
+        |  |                     |  |
+        |  |<--- width --------->|  |
+        |  +---------------------+  |
+        |                           |
+        |The figure's caption should|
+        |wrap at this width.        |
+        +---------------------------+
+
+.. [#] `Python Imaging Library`_.
 
 .. _PIL:
-__ http://www.pythonware.com/products/pil/
+.. _Python Imaging Library: http://www.pythonware.com/products/pil/
 
 
 ---------------

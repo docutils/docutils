@@ -20,6 +20,7 @@ provide answers; `send email`__ to the `Docutils-Users mailing
 list`__.  Project members should feel free to edit the source text
 file directly.
 
+.. _let us know:
 __ mailto:docutils-users@lists.sourceforge.net
 __ http://lists.sourceforge.net/lists/listinfo/docutils-users
 
@@ -83,6 +84,47 @@ __ http://mail.python.org/pipermail/doc-sig/2000-November/001239.html
 __ http://homepage.ntlworld.com/tibsnjoan/docutils/STpy.html
 
 
+Is there a GUI authoring environment for Docutils?
+--------------------------------------------------
+
+DocFactory_ is under development.  It uses wxPython and looks very
+promising.
+
+.. _DocFactory:
+   http://docutils.sf.net/sandbox/gschwant/docfactory/doc/
+
+
+What is the status of the Docutils project?
+-------------------------------------------
+
+Although useful and relatively stable, Docutils is experimental code,
+with APIs and architecture subject to change.
+
+Our highest priority is to fix bugs as they are reported.  So the
+latest code from CVS (or `development snapshots`_) is almost always
+the most stable (bug-free) as well as the most featureful.
+
+
+What is the Docutils project release policy?
+--------------------------------------------
+
+It ought to be "release early & often", but official releases are a
+significant effort and aren't done that often.  We have
+automatically-generated `development snapshots`_ which always contain
+the latest code from CVS.  As the project matures, we may formalize on
+a stable/development-branch scheme, but we're not using anything like
+that yet.
+
+If anyone would like to volunteer as a release coordinator, please
+`contact the project coordinator`_.
+
+.. _development snapshots:
+   http://docutils.sf.net/#development-snapshots
+
+.. _contact the project coordinator:
+   mailto:goodger@python.org
+
+
 reStructuredText
 ================
 
@@ -96,24 +138,29 @@ and reinterpretation of the StructuredText_ and Setext_ lightweight
 markup systems.
 
 If you are reading this on the web, you can see for yourself.  `The
-source for this FAQ`__ is written in reStructuredText; open it in
-another window and compare them side by side.
+source for this FAQ <FAQ.txt>`_ is written in reStructuredText; open
+it in another window and compare them side by side.
+
+`A ReStructuredText Primer <docs/rst/quickstart.html>`_ and the `Quick
+reStructuredText <docs/rst/quickref.html>`_ user reference are a good
+place to start.  The `reStructuredText Markup Specification
+<spec/rst/reStructuredText.html>`_ is a detailed technical
+specification.
 
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _StructuredText:
    http://dev.zope.org/Members/jim/StructuredTextWiki/FrontPage/
 .. _Setext: mirror/setext.html
-__ FAQ.txt
 
 
 Why is it called "reStructuredText"?
 ------------------------------------
 
 The name came from a combination of "StructuredText", one of
-reStructuredText's predecessors, with "re" (as in the ``re.py``
-regular expression module), "revised", "reworked", and
-"reinterpreted".  For a detailed history of reStructuredText and the
-Docutils project, see `An Introduction to reStructuredText`_.
+reStructuredText's predecessors, with "re": "revised", "reworked", and
+"reinterpreted", and as in the ``re.py`` regular expression module.
+For a detailed history of reStructuredText and the Docutils project,
+see `An Introduction to reStructuredText`_.
 
 
 What's the standard abbreviation for "reStructuredText"?
@@ -141,6 +188,16 @@ require that users alter their OS settings, which is something that
 many users will not be willing or able to do.
 
 
+Are there any reStructuredText editor extensions?
+-------------------------------------------------
+
+There is `some code under development for Emacs`__.
+
+Extensions for other editors are welcome.
+
+__ http://docutils.sf.net/tools/editors/emacs/
+
+
 How can I indicate the document title?  Subtitle?
 -------------------------------------------------
 
@@ -166,6 +223,114 @@ Counterexample::
 
     The "ordinary paragraph" above the section title
     prevents it from becoming the document title.
+
+
+How can I represent esoteric characters (e.g. character entities) in a document?
+--------------------------------------------------------------------------------
+
+For example, say you want an em-dash (XML character entity &mdash;,
+Unicode character ``\u2014``) in your document: use a real em-dash.
+Insert concrete characters (e.g. type a *real* em-dash) into your
+input file, using whatever encoding suits your application, and tell
+Docutils the input encoding.  Docutils uses Unicode internally, so the
+em-dash character is a real em-dash internally.
+
+Docutils has no character entity subsystem; it doesn't know anything
+about XML charents.  "&mdash;" in input text is 7 discrete characters
+to Docutils; no interpretation happens.  When writing HTML, the "&" is
+converted to "&amp;", so in the output you'd see "&amp;mdash;".
+There's no difference in interpretation for text inside or outside
+inline literals or literal blocks -- no character entity
+interpretation in either case.
+
+If you can't use a Unicode-compatible encoding and must rely on 7-bit
+ASCII, there is a workaround, although ugly.  David Priest developed a
+substitution table for character entities; see
+<http://article.gmane.org/gmane.comp.python.documentation/432> and
+David's other March Doc-SIG posts.  Incorporating this into Docutils
+is on the `to-do list <spec/notes.html#to-do>`_.
+
+If you insist on using XML-style charents, you'll have to implement a
+pre-processing system to convert to UTF-8 or something.  That opens a
+can of worms though; you can no longer *write* about charents
+naturally; you'd have to write "&amp;mdash;".
+
+
+How can I generate backticks using a Scandinavian keyboard?
+-----------------------------------------------------------
+
+The use of backticks in reStructuredText is a bit awkward with
+Scandinavian keyboards, where the backtick is a "dead" key.  To get
+one ` character one must press SHIFT-` + SPACE.
+
+Unfortunately, with all the variations out there, there's no way to
+please everyone.  For Scandinavian programmers and technical writers,
+this is not limited to reStructuredText but affects many languages and
+environments.
+
+Possible solutions include
+
+* If you have to input a lot of backticks, simply type one in the
+  normal/awkward way, select it, copy and then paste the rest (CTRL-V
+  is a lot faster than SHIFT-` + SPACE).
+
+* Use keyboard macros.
+
+* Remap the keyboard.  The Scandinavian keyboard layout is awkward for
+  other programming/technical characters too; for example, []{}
+  etc. are a bit awkward compared to US keyboards.
+
+If anyone knows of other/better solutions, please `let us know`_.
+
+
+Are there any tools for HTML/XML-to-reStructuredText?  (Round-tripping)
+-----------------------------------------------------------------------
+
+People have tossed the idea around, but little if any actual work has
+ever been done.  There's no reason why reStructuredText should not be
+round-trippable to/from XML; any technicalities which prevent
+round-tripping would be considered bugs.  Whitespace would not be
+identical, but paragraphs shouldn't suffer.  The tricky parts would be
+the smaller details, like links and IDs and other bookkeeping.
+
+For HTML, true round-tripping may not be possible.  Even adding lots
+of extra "class" attributes may not be enough.  A "simple HTML" to RST
+filter is possible -- for some definition of "simple HTML" -- but HTML
+is used as dumb formatting so much that such a filter may not be
+particularly useful.  No general-purpose filter exists.  An 80/20
+approach should work though: build a tool that does 80% of the work
+automatically, leaving the other 20% for manual tweaks.
+
+
+Are there any Wikis that use reStructuredText syntax?
+-----------------------------------------------------
+
+There are several, with various degrees of completeness.  With no
+implied endorsement or recommendation, and in no particular order:
+
+* `Ian Bicking's experimental code <sandbox/ianb/wiki/WikiPage.py>`__
+* `MoinMoin <http://moin.sf.net>`__ has some support; `here's a sample
+  <http://twistedmatrix.com/users/jh.twistd/moin/moin.cgi/RestSample>`__
+* Zope-based `Zwiki <http://zwiki.org/>`__
+* `StikiWiki <http://mithrandr.moria.org/code/stikiwiki/>`__
+
+Please `let us know`_ of any other reStructuredText Wikis.
+
+The example application for the `Web Framework Shootout
+<http://colorstudy.com/docs/shootout.html>` article is a Wiki using
+reStructuredText.
+
+
+Are there any Weblog (Blog) projects that use reStructuredText syntax?
+----------------------------------------------------------------------
+
+With no implied endorsement or recommendation, and in no particular
+order:
+
+* `Python Desktop Server <http://pyds.muensterland.org/>`__
+* `PyBloxsom <http://roughingit.subtlehints.net/pyblosxom>`__
+
+Please `let us know`_ of any other reStructuredText Blogs.
 
 
 HTML Writer
@@ -284,3 +449,29 @@ markers) is completely governed by the stylesheet, so either the
 browser can't find the stylesheet (try using the "--embed-stylesheet"
 option), or the browser can't understand it (try a recent Mozilla or
 MSIE).
+
+
+Python Source Reader
+====================
+
+Can I use Docutils for Python auto-documentation?
+-------------------------------------------------
+
+Docstring extraction is still under development.  There is most of a
+source code parsing module in docutils/readers/python/moduleparser.py.
+I (David Goodger) haven't worked on it in a while, but I do plan to
+finish it eventually.  Ian Bicking wrote an initial front end for my
+moduleparser module, in sandbox/ianb/extractor/extractor.py.
+
+
+Miscellaneous
+=============
+
+Is the Docutils document model based on any existing XML models?
+----------------------------------------------------------------
+
+Not directly, no.  It borrows bits from DocBook, HTML, and others.  I
+(David Goodger) have designed several document models over the years,
+and have my own biases.  The Docutils document model is designed for
+simplicity and extensibility, and has been influenced by the needs of
+the reStructuredText markup.
