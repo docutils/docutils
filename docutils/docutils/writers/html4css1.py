@@ -1202,8 +1202,8 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_target(self, node):
         if not (node.has_key('refuri') or node.has_key('refid')
                 or node.has_key('refname')):
-            self.body.append(self.starttag(node, 'a', '', CLASS='target'))
-            self.context.append('</a>')
+            self.body.append(self.starttag(node, 'span', '', CLASS='target'))
+            self.context.append('</span>')
         else:
             self.context.append('')
 
