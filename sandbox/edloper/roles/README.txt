@@ -69,11 +69,6 @@ Inliner.interpreted_or_phrase_ref() that calls Inliner.interpreted().
 
 Future Work
 ~~~~~~~~~~~
-- It might be good to add a helper function to make it easier to
-  define generic roles.  E.g.:
-
-    register_generic_role(canonicalname, role_class): ...
-
 - It would be nice to add a directive to create new roles, based on
   existing ones.  Given that roles are implemented as functions,
   this would probably involve creating a wrapper function that:
