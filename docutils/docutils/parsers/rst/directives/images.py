@@ -12,7 +12,7 @@ __docformat__ = 'reStructuredText'
 
 
 import sys
-from docutils import nodes, utils
+from docutils import nodes, utils, io
 from docutils.parsers.rst import directives, states
 from docutils.nodes import whitespace_normalize_name
 
@@ -35,6 +35,14 @@ def image(name, arguments, options, content, lineno,
               'Image URI contains whitespace.',
               nodes.literal_block(block_text, block_text), line=lineno)
         return [error]
+    try:
+        open(reference)
+        # If this didn't cause an exception, the image URI is an
+        # existent file and can be added to the dependency list.
+        io.add_dependency(reference,
+                          state.document.settings.dependency_file)
+    except (IOError, UnicodeError):
+        pass
     options['uri'] = reference
     reference_node = None
     if options.has_key('target'):

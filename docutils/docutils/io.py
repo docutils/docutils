@@ -166,7 +166,7 @@ class FileInput(Input):
 
     def __init__(self, source=None, source_path=None,
                  encoding=None, error_handler='strict',
-                 autoclose=1, handle_io_errors=1):
+                 autoclose=1, handle_io_errors=1, dep_file=None):
         """
         :Parameters:
             - `source`: either a file-like object (which is read directly), or
@@ -183,6 +183,7 @@ class FileInput(Input):
         self.handle_io_errors = handle_io_errors
         if source is None:
             if source_path:
+                add_dependency(source_path, dep_file)
                 try:
                     self.source = open(source_path)
                 except IOError, error:
@@ -335,3 +336,12 @@ class NullOutput(Output):
     def write(self, data):
         """Do nothing ([don't even] send data to the bit bucket)."""
         pass
+
+
+def add_dependency(filename, dep_file):
+    """
+    Add filename (string) to the list of dependencies in dep_file
+    (file object).
+    """
+    if dep_file:
+        print >>dep_file, filename
