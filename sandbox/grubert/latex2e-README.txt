@@ -10,8 +10,6 @@ To do
 
 * enumeration too deep
 
-* author nesting
-
 * meta keywords into pdf ?
 
 * pagestyle headings does not work, when sections are starred.
