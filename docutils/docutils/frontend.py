@@ -167,7 +167,7 @@ class OptionParser(optik.OptionParser, docutils.OptionSpec):
           ['--config'], {'metavar': '<file>', 'type': 'string',
                          'action': 'callback', 'callback': read_config_file}),
          ("Show this program's version number and exit.",
-          ['--version'], {'action': 'version'}),
+          ['--version', '-V'], {'action': 'version'}),
          ('Show this help message and exit.',
           ['--help', '-h'], {'action': 'help'}),
          # Hidden options, for development use only:
