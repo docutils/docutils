@@ -353,7 +353,7 @@ class RSTState(StateWS):
         if data[-2:] == '::':
             if len(data) == 2:
                 return [], 1
-            elif data[-3] == ' ':
+            elif data[-3] in ' \n':
                 text = data[:-3].rstrip()
             else:
                 text = data[:-1]
@@ -445,8 +445,6 @@ class Inliner:
     uric = r"""[-_.!~*'()[\];/:@&=+$,%a-zA-Z0-9]"""
     urilast = r"""[_~/\]a-zA-Z0-9]"""
     emailc = r"""[-_!~*'{|}/#?^`&=+$%a-zA-Z0-9]"""
-    identity = string.maketrans('', '')
-    null2backslash = string.maketrans('\x00', '\\')
     patterns = Stuff(
           initial=re.compile(
                 r"""
@@ -970,8 +968,8 @@ class Body(RSTState):
         if ordinal is None:
             msg = self.reporter.error(
                   ('Enumerated list start value invalid at line %s: '
-                   '%r (sequence %r)' % (self.state_machine.abs_line_number(),
-                                         text, sequence)))
+                   '"%s" (sequence %r)'
+                   % (self.state_machine.abs_line_number(), text, sequence)))
             self.parent += msg
             indented, line_offset, blank_finish = \
                   self.state_machine.get_known_indented(match.end())
@@ -984,8 +982,8 @@ class Body(RSTState):
         if ordinal != 1:
             msg = self.reporter.info(
                   ('Enumerated list start value not ordinal-1 at line %s: '
-                   '%r (ordinal %s)' % (self.state_machine.abs_line_number(),
-                                        text, ordinal)))
+                   '"%s" (ordinal %s)'
+                   % (self.state_machine.abs_line_number(), text, ordinal)))
             self.parent += msg
         enumlist = nodes.enumerated_list()
         self.parent += enumlist
@@ -1167,8 +1165,8 @@ class Body(RSTState):
                 optlist.append(option)
             else:
                 raise MarkupError('wrong numer of option tokens (=%s), '
-                                  'should be 1 or 2: %r' % (len(tokens),
-                                                            optionstring))
+                                  'should be 1 or 2: "%s"' % (len(tokens),
+                                                              optionstring))
         return optlist
 
     def doctest(self, match, context, next_state):
@@ -2221,6 +2219,6 @@ def escape2null(text):
 def unescape(text, restore_backslashes=0):
     """Return a string with nulls removed or restored to backslashes."""
     if restore_backslashes:
-        return text.translate(Inliner.null2backslash)
+        return text.replace('\x00', '\\')
     else:
-        return text.translate(Inliner.identity, '\x00')
+        return ''.join(text.split('\x00'))
