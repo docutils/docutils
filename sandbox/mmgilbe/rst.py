@@ -39,13 +39,19 @@ class MoinWriter(html4css1.Writer):
     config_section_dependencies = ('writers',)
 
     """Final translated form of `document`."""
-    output = 'mmg'
+    output = None
+    
+    def wiki_resolver(self, node):
+        node['refuri'] = node['refname']
+        del node['refname']
+        return '1'
 
     def __init__(self, formatter, request):
         html4css1.Writer.__init__(self)
         self.formatter = formatter
         self.request = request
-
+        self.unknown_reference_resolvers = [self.wiki_resolver]
+        
     def translate(self):
         visitor = MoinTranslator(self.document, self.formatter, self.request)
         self.document.walkabout(visitor)
@@ -82,12 +88,12 @@ class MoinTranslator(html4css1.HTMLTranslator):
     def faux_write(self, string):
         self.body.append(string)
         
-    def visit_Text(self, node):
-        from MoinMoin.parser.wiki import Parser
-        oldWrite = self.request.write
-        self.request.write = self.faux_write
-        wikiparser = Parser(node.astext(), self.request)
-        self.formatter.paragraph = self.faux_paragraph
-        wikiparser.format(self.formatter)
-        self.request.write = oldWrite
-        # self.body.append(self.formatter.text(node.astext()))
+    # def visit_Text(self, node):
+        # from MoinMoin.parser.wiki import Parser
+        # oldWrite = self.request.write
+        # self.request.write = self.faux_write
+        # wikiparser = Parser(node.astext(), self.request)
+        # self.formatter.paragraph = self.faux_paragraph
+        # wikiparser.format(self.formatter)
+        # self.request.write = oldWrite
+        # # self.body.append(self.formatter.text(node.astext()))
