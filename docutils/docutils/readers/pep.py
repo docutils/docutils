@@ -44,7 +44,7 @@ class Reader(standalone.Reader):
 
     settings_default_overrides = {'pep_references': 1, 'rfc_references': 1}
 
-    def __init__(self, parser, parser_name):
+    def __init__(self, parser=None, parser_name=None):
         """`parser` should be ``None``."""
         if parser is None:
             parser = rst.Parser(rfc2822=1, inliner=Inliner())
