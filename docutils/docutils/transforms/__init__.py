@@ -76,7 +76,8 @@ class Transformer(TransformSpec):
 
     default_transforms = (universal.Decorations,
                           universal.FinalChecks,
-                          universal.Messages)
+                          universal.Messages,
+                          universal.FilterMessages)
     """These transforms are applied to all document trees."""
 
     def __init__(self, document):

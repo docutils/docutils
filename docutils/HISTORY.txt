@@ -186,6 +186,11 @@ Changes Since 0.3
 * docutils/parsers/rst/languages/ru.py: Added to project; Russian
   mappings by Roman Suzi.
 
+* docutils/transforms/universal.py:
+
+  - Added FilterMessages transform (removes system messages below the
+    verbosity threshold).
+
 * docutils/writers/html4css1.py:
 
   - Fixed unicode handling of attribute values (bug 760673).
