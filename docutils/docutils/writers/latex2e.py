@@ -287,7 +287,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # pdftitle, pdfsubject, pdfauthor, pdfkeywords, pdfcreator, pdfproducer
         else:
             self.pdfinfo = None
-        self.head = []
+        # NOTE: Latex wants a date and an author, rst puts this into
+        #   docinfo, so normally we donot want latex author/date handling.
+        # latex article has its own handling of date and author, deactivate.
+        self.latex_docinfo = 0
+        self.head = [ ]
+        if not self.latex_docinfo:
+            self.head.extend( [ '\\author{}\n', '\\date{}\n' ] )
         self.body_prefix = ['\\raggedbottom\n']
         # separate title, so we can appen subtitle.
         self.title = ""
@@ -367,9 +373,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
             pdfinfo = '\\hypersetup{\n' + ',\n'.join(self.pdfinfo) + '\n}\n'
         else:
             pdfinfo = ''
-        title = '\\title{%s}\n' % self.title    
-        return ''.join(self.head_prefix + [title] + self.head + [pdfinfo]
-                       + self.body_prefix  + self.body + self.body_suffix)
+        title = '\\title{%s}\n' % self.title
+        return ''.join(self.head_prefix + [title]  
+                        + self.head + [pdfinfo]
+                        + self.body_prefix  + self.body + self.body_suffix)
 
     def visit_Text(self, node):
         self.body.append(self.encode(node.astext()))
@@ -566,9 +573,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_docinfo_item(self, node, name):
         # should we stick to latex or docutils.
-        # latex article has its own handling of date and author.
-        # If we use it we get latexs language handling.
-        latex_docinfo = 0
         
         if name == 'abstract':
             # NOTE tableofcontents before or after ?
@@ -579,26 +583,21 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.context.append(self.body)
             self.context.append(len(self.body))
         else:
-            self.docinfo.append('\\textbf{%s}: &\n\t' % self.language_label(name))
+            if not self.latex_docinfo:
+                self.docinfo.append('\\textbf{%s}: &\n\t' % self.language_label(name))
             if name == 'author':
                 if not self.pdfinfo == None:
                     if not self.pdfauthor:
                         self.pdfauthor = self.attval(node.astext())
                     else:
                         self.pdfauthor += self.author_separator + self.attval(node.astext())
-                if latex_docinfo:
+                if self.latex_docinfo:
                     self.head.append('\\author{%s}\n' % self.attval(node.astext()))
                     raise nodes.SkipNode
-                else:
-                    # avoid latexs maketitle generating one for us.
-                    self.head.append('\\author{}\n')
             elif name == 'date':
-                if latex_docinfo:
+                if self.latex_docinfo:
                     self.head.append('\\date{%s}\n' % self.attval(node.astext()))
                     raise nodes.SkipNode
-                else:
-                    # avoid latexs maketitle generating one for us.
-                    self.head.append("\\date{}\n")
             if name == 'address':
                 self.insert_newline = 1 
                 self.docinfo.append('{\\raggedright\n')
