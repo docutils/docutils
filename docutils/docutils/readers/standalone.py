@@ -25,6 +25,21 @@ class Reader(readers.Reader):
     document = None
     """A single document tree."""
 
+    settings_spec = (
+        'Standalone Reader',
+        'The standalone reader defines a list of transforms.',
+        (
+          ('Disable doctitle transform.  By default the transform is enabled.',
+            ['--no-doc-title'],
+            {'default': 1, 'action': 'store_false' },
+          ),
+          ('Disable docinfo transform.  By default the transform is enabled.',
+            ['--no-doc-info'],
+            {'default': 1, 'action': 'store_false' },
+          ),
+        )
+        )
+ 
     default_transforms = (references.Substitutions,
                           frontmatter.DocTitle,
                           frontmatter.DocInfo,

@@ -105,6 +105,8 @@ class DocTitle(Transform):
     default_priority = 320
 
     def apply(self):
+        if not getattr(self.document.settings,'no_doc_title',1):
+            return
         if self.promote_document_title():
             self.promote_document_subtitle()
 
@@ -246,6 +248,8 @@ class DocInfo(Transform):
     bibliographic fields (field_list)."""
 
     def apply(self):
+        if not getattr(self.document.settings,'no_doc_info',1):
+            return
         document = self.document
         index = document.first_child_not_matching_class(
               nodes.PreBibliographic)
