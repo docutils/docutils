@@ -105,13 +105,13 @@ Notes on LaTeX
 * latex does not support multiple tocs in one document.
   (might be no limitation except for docutils documentation)
 
-* width 
+* width
 
   * linewidth - width of a line in the local environment
   * textwidth - the width of text on the page
 
   Maybe always use linewidth ?
-"""    
+"""
 
 class Babel:
     """Language specifics for LaTeX."""
@@ -170,10 +170,10 @@ class Babel:
             # maybe use: {\glqq} {\grqq}.
             self.quotes = ("\"`", "\"'")
             self.double_quote_replacment = "{\\dq}"
-        else:    
+        else:
             self.quotes = ("``", "''")
         self.quote_index = 0
-        
+
     def next_quote(self):
         q = self.quotes[self.quote_index]
         self.quote_index = (self.quote_index+1)%2
@@ -241,7 +241,7 @@ latex_headings = {
 
 class LaTeXTranslator(nodes.NodeVisitor):
     # When options are given to the documentclass, latex will pass them
-    # to other packages, as done with babel. 
+    # to other packages, as done with babel.
     # Dummy settings might be taken from document settings
 
     d_paper = 'a4paper' # papersize
@@ -280,7 +280,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.colorlinks = 'false'
         else:
             self.colorlinks = 'true'
-            
+
         # language: labels, bibliographic_fields, and author_separators.
         # to allow writing labes for specific languages.
         self.language = languages.get_language(settings.language_code)
@@ -305,7 +305,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
               #
               # extra space between text in tables and the line above them
               '\\setlength{\\extrarowheight}{2pt}\n',
-              '\\usepackage{amsmath}\n',   # what fore amsmath. 
+              '\\usepackage{amsmath}\n',   # what fore amsmath.
               '\\usepackage{graphicx}\n',
               '\\usepackage{color}\n',
               '\\usepackage{multirow}\n',
@@ -316,10 +316,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
               self.generator,
               # latex lengths
               '\\newlength{\\admonitionwidth}\n',
-              '\\setlength{\\admonitionwidth}{0.9\\textwidth}\n' 
+              '\\setlength{\\admonitionwidth}{0.9\\textwidth}\n'
               # width for docinfo tablewidth
               '\\newlength{\\docinfowidth}\n',
-              '\\setlength{\\docinfowidth}{0.9\\textwidth}\n' 
+              '\\setlength{\\docinfowidth}{0.9\\textwidth}\n'
               ]
         self.head_prefix.extend( latex_headings['optionlist_environment'] )
         self.head_prefix.extend( latex_headings['footnote_floats'] )
@@ -365,7 +365,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # enumeration is done by list environment.
         self._enum_cnt = 0
-        # docinfo. 
+        # docinfo.
         self.docinfo = None
         # inside literal block: no quote mangling.
         self.literal_block = 0
@@ -395,9 +395,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 "windows-1251": "cp1251",   # cyrillic (on Windows)
                 "koi8-r": "koi8-r",         # cyrillic (Russian)
                 "koi8-u": "koi8-u",         # cyrillic (Ukrainian)
-                "windows-1250": "cp1250",   # 
-                "windows-1252": "cp1252",   # 
-                "us-ascii": "ascii",        # ASCII (US) 
+                "windows-1250": "cp1250",   #
+                "windows-1252": "cp1252",   #
+                "us-ascii": "ascii",        # ASCII (US)
                 # unmatched encodings
                 #"": "applemac",
                 #"": "ansinew",  # windows 3.1 ansi
@@ -428,7 +428,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             < > are only available in math-mode (really ?)
             $ starts math- mode.
         AND quotes:
-        
+
         """
         if self.verbatim:
             return text
@@ -466,14 +466,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             text = self.babel.quote_quotes(text)
         if self.insert_newline:
-            # HACK: insert a blank before the newline, to avoid 
+            # HACK: insert a blank before the newline, to avoid
             # ! LaTeX Error: There's no line here to end.
             text = text.replace("\n", '~\\\\\n')
         elif self.mbox_newline:
             text = text.replace("\n", '}\\\\\n\\mbox{')
         if self.insert_none_breaking_blanks:
             text = text.replace(' ', '~')
-        # unicode !!! 
+        # unicode !!!
         text = text.replace(u'\u2020', '{$\\dagger$}')
         return text
 
@@ -490,7 +490,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             pdfinfo = ''
         title = '\\title{%s}\n' % self.title
-        return ''.join(self.head_prefix + [title]  
+        return ''.join(self.head_prefix + [title]
                         + self.head + [pdfinfo]
                         + self.body_prefix  + self.body + self.body_suffix)
 
@@ -603,7 +603,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_colspec(self, node):
         if self.use_longtable:
             self.colspecs.append(node)
-        else:    
+        else:
             self.context[-1] += 1
 
     def depart_colspec(self, node):
@@ -667,7 +667,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_description(self, node):
         if self.use_optionlist_for_option_list:
             self.body.append( ' ' )
-        else:    
+        else:
             self.body.append( ' & ' )
 
     def depart_description(self, node):
@@ -704,10 +704,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 raise nodes.SkipNode
         if name == 'address':
             # BUG will fail if latex_docinfo is set.
-            self.insert_newline = 1 
+            self.insert_newline = 1
             self.docinfo.append('{\\raggedright\n')
             self.context.append(' } \\\\\n')
-        else:    
+        else:
             self.context.append(' \\\\\n')
         self.context.append(self.docinfo)
         self.context.append(len(self.body))
@@ -795,7 +795,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         enum_style = {'arabic':'arabic',
                 'loweralpha':'alph',
-                'upperalpha':'Alph', 
+                'upperalpha':'Alph',
                 'lowerroman':'roman',
                 'upperroman':'Roman' }
         enum_suffix = ""
@@ -804,7 +804,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         enum_prefix = ""
         if node.has_key('prefix'):
             enum_prefix = node['prefix']
-        
+
         enum_type = "arabic"
         if node.has_key('enumtype'):
             enum_type = node['enumtype']
@@ -962,11 +962,37 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_image(self, node):
-        atts = node.attributes.copy()
-        href = atts['uri']
-        ##self.body.append('\\begin{center}\n')
-        self.body.append('\n\\includegraphics{%s}\n' % href)
-        ##self.body.append('\\end{center}\n')
+        attrs = node.attributes.copy()
+        pre = []                        # in reverse order
+        post = ['\\includegraphics{%s}' % attrs['uri']]
+        def prepost(pre_append, post_append):
+            pre.append(pre_append)
+            post.append(post_append)
+        inline = isinstance(node.parent, nodes.TextElement)
+        if 'scale' in attrs:
+            # Could also be done with ``scale`` option to
+            # ``\includegraphics``; doing it this way for consistency.
+            prepost('\\scalebox{%f}{' % (attrs['scale'] / 100.0,), '}')
+        if 'align' in attrs:
+            align_prepost = {
+                # By default latex aligns the top of an image.
+                (1, 'top'): ('', ''),
+                (1, 'middle'): ('\\raisebox{-0.5\\height}{', '}'),
+                (1, 'bottom'): ('\\raisebox{-\\height}{', '}'),
+                (0, 'center'): ('{\\hfill', '\\hfill}'),
+                # These 2 don't exactly do the right thing.  The image should
+                # be floated alongside the paragraph.  See
+                # http://www.w3.org/TR/html4/struct/objects.html#adef-align-IMG
+                (0, 'left'): ('{', '\\hfill}'),
+                (0, 'right'): ('{\\hfill', '}'),}
+            try:
+                prepost(*align_prepost[inline, attrs['align']])
+            except KeyError:
+                pass                    # complain here?
+        if not inline:
+            prepost('\n', '\n')
+        pre.reverse()
+        self.body.append(''.join(pre + post))
 
     def depart_image(self, node):
         pass
@@ -999,9 +1025,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('}')
 
     def visit_line_block(self, node):
-        """line-block: 
-        * whitespace (including linebreaks) is significant 
-        * inline markup is supported. 
+        """line-block:
+        * whitespace (including linebreaks) is significant
+        * inline markup is supported.
         * serif typeface
         """
         self.body.append('\\begin{flushleft}\n')
@@ -1042,7 +1068,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         """
         # typically in a typewriter/monospaced typeface.
         # care must be taken with the text, because inline markup is recognized.
-        # 
+        #
         # possibilities:
         # * verbatim: is no possibility, as inline markup does not work.
         # * obey..: is from julien and never worked for me (grubert).
@@ -1105,7 +1131,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             else:
                 self.context.append('')
             self.body.append('\\texttt{')
-        # flag for first option    
+        # flag for first option
         self.context.append(0)
 
     def depart_option_group(self, node):
@@ -1206,7 +1232,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.section_level -= 1
 
     def visit_sidebar(self, node):
-        # BUG:  this is just a hack to make sidebars render something 
+        # BUG:  this is just a hack to make sidebars render something
         self.body.append('\\begin{center}\\begin{sffamily}\n')
         self.body.append('\\fbox{\\colorbox[gray]{0.80}{\\parbox{\\admonitionwidth}{\n')
 
@@ -1254,7 +1280,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.context.append('}\n\\smallskip\n')
         else:
             self.title = self.title + \
-                '\\\\\n\\large{%s}\n' % self.encode(node.astext()) 
+                '\\\\\n\\large{%s}\n' % self.encode(node.astext())
             raise nodes.SkipNode
 
     def depart_subtitle(self, node):
@@ -1276,20 +1302,20 @@ class LaTeXTranslator(nodes.NodeVisitor):
         Assumes reST line length being 80 characters.
         """
         width = 80
-        
+
         total_width = 0.0
         # first see if we get too wide.
         for node in self.colspecs:
-            colwidth = float(node['colwidth']) / width 
+            colwidth = float(node['colwidth']) / width
             total_width += colwidth
         # donot make it full linewidth
         factor = 0.93
         if total_width > 1.0:
             factor /= total_width
-            
+
         latex_table_spec = ""
         for node in self.colspecs:
-            colwidth = factor * float(node['colwidth']) / width 
+            colwidth = factor * float(node['colwidth']) / width
             latex_table_spec += "|p{%.2f\\linewidth}" % colwidth
         self.colspecs = []
         return latex_table_spec+"|"
@@ -1305,7 +1331,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_table(self, node):
         if self.use_longtable:
             self.body.append('\\end{longtable}\n')
-        else:    
+        else:
             self.body.append('\\end{tabularx}\n')
             sentinel = self.context.pop()
             if sentinel != 'table_sentinel':
@@ -1375,12 +1401,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # firsthead, but then we need the header twice.
             #
             # there is a \endfoot and \endlastfoot too.
-            # but we need the number of columns to 
+            # but we need the number of columns to
             # self.body.append('\\multicolumn{%d}{c}{"..."}\n' % number_of_columns)
             # self.body.append('\\hline\n\\endfoot\n')
             # self.body.append('\\hline\n')
             # self.body.append('\\endlastfoot\n')
-            
+
 
     def visit_tip(self, node):
         self.visit_admonition(node, 'tip')
@@ -1414,15 +1440,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('\n\n')
             if node.parent.hasattr('id'):
                 self.body.append('\\hypertarget{%s}{}\n' % node.parent['id'])
-            # section_level 0 is title and handled above.    
+            # section_level 0 is title and handled above.
             # BUG: latex has no deeper sections (actually paragrah is no section either).
             if self.use_latex_toc:
                 section_star = ""
             else:
                 section_star = "*"
-            if (self.section_level<=3):  # 1,2,3    
+            if (self.section_level<=3):  # 1,2,3
                 self.body.append('\\%ssection%s{' % ('sub'*(self.section_level-1),section_star))
-            elif (self.section_level==4):      
+            elif (self.section_level==4):
                 #self.body.append('\\paragraph*{')
                 self.body.append('\\subsubsection%s{' % (section_star))
             else:
@@ -1495,5 +1521,5 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
 #    def unknown_visit(self, node):
 #    def default_visit(self, node):
-    
+
 # vim: set ts=4 et ai :
