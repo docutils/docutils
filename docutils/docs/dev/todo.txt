@@ -342,7 +342,7 @@ General
   boilerplate, etc.
 
 * Parameterize the Reporter object or class?  See the `2004-02-18
-  "rest checking and source path"`__ thread.
+  "rest checking and source path"`_ thread.
 
   .. _2004-02-18 "rest checking and source path":
      http://thread.gmane.org/gmane.text.docutils.user/1112
@@ -350,7 +350,7 @@ General
 * Add a "disable_transforms" setting?  And a dummy Writer subclass
   that does nothing when its .write() method is called?  Would allow
   for easy syntax checking.  See the `2004-02-18 "rest checking and
-  source path"`__ thread.
+  source path"`_ thread.
 
 
 Documentation
