@@ -5,7 +5,7 @@ Inline math: :latex-math:`\sin(x_n^2)`.  And displayed math:
 
 .. latex-math::
 
-   f(\epsilon) = \frac{1}{1 + \exp\left(\frac{\epsilon}{k_\text{B}T}\right)}
+   f(\epsilon) = \frac{1}{1 + \exp\left(\frac{\varepsilon}{k_\text{B}T}\right)}
 
 .. latex-math::
 
@@ -33,7 +33,7 @@ Quantum mechanics:
 
 .. latex-math::
 
-   -\frac{1}{2}\nabla^2 \psi + v \psi = \epsilon \psi
+   -\frac{1}{2}\nabla^2 \psi + v \psi = \varepsilon \psi
 
 Math split over two lines:
 
@@ -49,15 +49,3 @@ Math split over two lines:
        1 - x, & x < 1 \\
        0,     & x > 1
      \end{matrix}\right.
-
-
-ToDo
-----
-
-* Math inside text: ``n - 1 \text{if $n$ is odd}``
-* Spaces ...
-* More functions and special symbols.
-* Remove circular refs.
-* Decimal numbers.
-* ``\mathbb{ABC}`` does not work.  Use ``\mathbb{A}\mathbb{B}\mathbb{C}``.
-
