@@ -257,7 +257,7 @@ Directives
 
   - _`parts.citations`
 
-  - _`parts.topic`
+  - _`parts.topic` (maybe "body.topic")
 
   - _`parts.sectnum` (section numbering; add support to .contents;
     could be cmdline option also)
@@ -286,7 +286,7 @@ Directives
   - _`body.qa` (directive a.k.a. "faq", "questions"): Questions &
     Answers.  Implement as a generic two-column marked list?  As a
     standalone (non-directive) construct?  (Is the markup ambiguous?)
-    Add support to parts.Contents (optional attribute "qa" done).
+    Add support to parts.contents (optional attribute "qa" done).
 
     New elements would be required.  Perhaps::
 
@@ -320,7 +320,8 @@ Directives
     priority.
 
   - _`body.columns`: Multi-column table/list.  Number of columns as
-    argument?  Perhaps a variation on `table syntax alternative 2`__::
+    argument?  Perhaps a variation on `table syntax alternative 2`__,
+    combined with bullet list syntax to indicate rows::
 
         col 1 col 2
         ===== =====
@@ -403,6 +404,10 @@ Directives
     haiku, keepbreaks, linebreaks, obeylines, linewise, textblock,
     textart, text, linetext.  Current favorites: "line_block" for
     element name, "lines" for directive name.
+
+  - _`body.example`: Examples; suggested by Simon Hefti.  Semantics as
+    per Docbook's "example"; admonition-style, numbered, reference,
+    with a caption/title.  (Maybe "admonitions.example"?)
 
   - _`colorize.python`: Colorize Python code.  Fine for HTML output,
     but what about other formats?  Revert to a literal block?  Do we
