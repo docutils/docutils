@@ -2072,6 +2072,25 @@ to completion.
 .. _Docutils Configuration Files: ../docs/config.txt
 
 
+CVS Startup File
+````````````````
+
+In your ~/.cvsrc file, make sure you have a line like this::
+
+    update -dP
+
+This ensures that new directories are created and empty directories
+are pruned (removed) from your working copy.  In addition, these lines
+are useful::
+
+    cvs -q -z3
+    diff -u
+
+``cvs -q`` suppresses many non-essential messages.  ``-z3`` compresses
+data between client and server.  ``diff -u`` creates "unified diffs";
+specify ``diff -c`` if you prefer context diffs.
+
+
 Setting Up For Docutils Development
 ```````````````````````````````````
 
