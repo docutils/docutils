@@ -245,23 +245,23 @@ command line used.""" % (__version__, sys.version.split()[0]))
 
     def report_UnicodeError(self, error):
         print >>sys.stderr, '%s: %s' % (error.__class__.__name__, error)
-        print >>sys.stderr, ("""
+        print >>sys.stderr, """
 The specified output encoding (%s) cannot
 handle all of the output.
 Try setting "--output-encoding-error-handler" to
-""" % (self.settings.output_encoding)),
+
+* "xmlcharrefreplace" (for HTML & XML output);"""
         if sys.hexversion >= 0x02030000:    # Python 2.3
-            print >>sys.stderr, ("""
-* "xmlcharrefreplace" (for HTML & XML output, Python 2.3+);
+            print >>sys.stderr, """\
   the output will contain "%s" and should be usable.
 * "backslashreplace" (for other output formats, Python 2.3+);
-  look for "%s" in the output.
-*""" % (error.object[error.start:error.end].encode('ascii',
-                                                    'xmlcharrefreplace'),
-         error.object[error.start:error.end].encode('ascii',
-                                                    'backslashreplace'))),
+  look for "%s" in the output.""" % (
+    error.object[error.start:error.end].encode('ascii', 'xmlcharrefreplace'),
+    error.object[error.start:error.end].encode('ascii', 'backslashreplace'))
+        else:
+            print >>sys.stderr, '  the output should be usable as-is.'
         print >>sys.stderr, ("""\
-"replace" (Python 2.1 or 2.2); look for "?" in the output.
+* "replace"; look for "?" in the output.
 
 "--output-encoding-error-handler" is currently set to
 "%s".

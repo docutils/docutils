@@ -277,8 +277,8 @@ _`output_encoding_error_handler`
     ignore
         Ignore malformed data and continue without further notice.
     xmlcharrefreplace
-        (Python 2.3+)  Replace with the appropriate XML character
-        reference, such as "``&#8224;``".
+        Replace with the appropriate XML character reference, such as
+        "``&#8224;``".
     backslashreplace
         (Python 2.3+)  Replace with backslashed escape sequences, such
         as "``\u2020``".
