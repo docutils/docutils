@@ -532,14 +532,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append( '\\end{quote}\n')
 
     def visit_bullet_list(self, node):
-        if not self.use_latex_toc and self.topic_class == 'contents':
-            self.body.append( '\\begin{list}{}{}\n' )
+        if self.topic_class == 'contents':
+            if not self.use_latex_toc:
+                self.body.append( '\\begin{list}{}{}\n' )
         else:
             self.body.append( '\\begin{itemize}\n' )
 
     def depart_bullet_list(self, node):
-        if not self.use_latex_toc and self.topic_class == 'contents':
-            self.body.append( '\\end{list}\n' )
+        if self.topic_class == 'contents':
+            if not self.use_latex_toc:
+                self.body.append( '\\end{list}\n' )
         else:
             self.body.append( '\\end{itemize}\n' )
 
@@ -670,8 +672,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body = self.docinfo + self.body
         # clear docinfo, so field names are no longer appended.
         self.docinfo = None
-        if self.use_latex_toc:
-            self.body.append('\\tableofcontents\n\n\\bigskip\n')
 
     def visit_docinfo_item(self, node, name):
         if not self.latex_docinfo:
@@ -1129,10 +1129,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('\n')
 
     def depart_paragraph(self, node):
-        if self.topic_class == 'contents':
-            self.body.append('\n')
-        else:
-            self.body.append('\n')
+        self.body.append('\n')
 
     def visit_problematic(self, node):
         self.body.append('{\\color{red}\\bfseries{}')
@@ -1424,6 +1421,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_topic(self, node):
         self.topic_class = node.get('class')
         if self.use_latex_toc:
+            self.body.append('\\tableofcontents\n\n\\bigskip\n')
             self.topic_class = ''
             raise nodes.SkipNode
 
