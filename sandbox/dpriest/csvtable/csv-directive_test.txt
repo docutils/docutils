@@ -15,10 +15,9 @@ Headline
 
 
 .. csvtable:: SpamSpamSpamSpamRat
-   :header_rowcount: 2
-   :skipinitialspace: yes
-   :col_widths: 24, 10, 10, 12
-   :lineterminator: lf
+   :headrows: 1
+   :skipspace: yes
+   :widths: 24, 10, 10, 12
 
    "Header row, column 1", "Header 2", "Header 3", "Header 4"
    "Body *row* 1, column 1", "Column 2", "Column 3", "Column 4"
