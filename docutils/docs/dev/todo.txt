@@ -388,7 +388,7 @@ __ rst/alternatives.html#or-not-to-do
 
 - Remove leading numbers from section titles for implicit link names?
   A section titled "3. Conclusion" could then be referred to by
-  "Conclusion_" (i.e., without the "3.").
+  "``Conclusion_``" (i.e., without the "3.").
 
 
 Directives
