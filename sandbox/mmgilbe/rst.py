@@ -28,7 +28,7 @@ from docutils.writers import html4css1
 
 def html_escape_unicode(node):
     # Find Python function that does this for me. string.encode('ascii',
-    # 'xmlcharrefreplace')
+    # 'xmlcharrefreplace') only 2.3 and above.
     s = node.replace(u'\xa0', '&#xa0;')
     return s.replace(u'\u2020', '&#x2020;')
 
@@ -72,6 +72,7 @@ class MoinWriter(html4css1.Writer):
         self.output = html_escape_unicode(visitor.astext())
         
 
+# TODO: This would be easier to sub class the real moin wiki parser.
 class Parser:
     def __init__(self, raw, request, **kw):
         self.raw = raw
@@ -94,21 +95,22 @@ class MoinTranslator(html4css1.HTMLTranslator):
         self.request = request
         self.level = 0
         self.oldWrite = self.request.write
-        self.request.write = self.faux_write
+        self.request.write = self.rst_write
         self.wikiparser = parser
         self.wikiparser.request = request
-        self.wikiparser.request.write = self.faux_write
+        self.wikiparser.request.write = self.rst_write
+        self.strip_paragraph = 0
         
     def astext(self):
         self.request.write = self.oldWrite
         return html4css1.HTMLTranslator.astext(self)
     
-    def faux_write(self, string):
+    def rst_write(self, string):
+        if self.strip_paragraph:
+            string = string.replace('<p>', '')
+            string = string.replace('</p>', '')
         self.body.append(string)
         
-    def faux_paragraph(self, string):
-        return ''
-
     def visit_section(self, node):
         self.level += 1
 
@@ -123,11 +125,10 @@ class MoinTranslator(html4css1.HTMLTranslator):
         
     def visit_reference(self, node):
         if 'refuri' in node.attributes:
-            # We unset this if none our tests capture the node
+            # We unset this if none our tests don't handle the node
             handled = 1
             # We don't want these pieces wrapped in <p> tags, I think.
-            old_paragraph = self.wikiparser.formatter.paragraph
-            self.wikiparser.formatter.paragraph = self.faux_paragraph
+            self.strip_paragraph = 1
             if node['refuri'][:len('wiki:')] == 'wiki:':
                 link = self.wikiparser.interwiki((node['refuri'],
                                                   node.astext()))
@@ -141,7 +142,7 @@ class MoinTranslator(html4css1.HTMLTranslator):
                 self.wikiparser.format(self.formatter)
             else:
                 handled = 0
-            self.wikiparser.formatter.paragraph = old_paragraph
+            self.strip_paragraph = 0
             if handled:
                 raise docutils.nodes.SkipNode
                 return
