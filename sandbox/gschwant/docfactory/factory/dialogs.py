@@ -605,6 +605,7 @@ class configEditDlg(wxDialog):
             select = [self.list.GetItemText(self.currentItem),
                       self.get_column_text(self.currentItem, 1),
                       self.get_column_text(self.currentItem, 2)]
+            self.cfg.remove_option(select[0], select[1])
             dlg = editConfigEntryDlg(self, select)
             dlg.Centre()
             if dlg.ShowModal() == wxID_OK:
@@ -612,6 +613,8 @@ class configEditDlg(wxDialog):
             else:
                 go_ahead = 0
         if go_ahead:
+            if not self.cfg.has_section(section):
+                self.cfg.add_section(section)
             self.cfg.set(section, option, value)
             self.update()
 
