@@ -9,9 +9,10 @@ To do
 ~~~~~
 mostly errors when processing tools/test.txt.
 
+* sometimes tables have no thead ? (local test unlaut)
+
 * table heads and footer for longtable (firstpage lastpage ..)
 
-* me (e.g.) uses textwidth, julien linewidth see what is what ?
 
 * ordered list numbering style is taken from latex a.,b. in source
   gives 1., .. in document.
@@ -38,16 +39,10 @@ mostly errors when processing tools/test.txt.
 * table cells with multirow and multicolumn
 
 * enumeration too deep: latex goes up to four.
-  by accident or design latex and html conform on item numbering style.
 	
-
 * lists that donot start at one donot work.
 
-* field list text is not indented.
-
 * option list: is implemented as a table, but in html more like a description list.
-
-* tables might be too wide
 
 * tables have borders, and the border is missing in multicol cells. or empty cells.
 
@@ -85,8 +80,17 @@ mostly errors when processing tools/test.txt.
 
   but setting this automatic might result in including several font packages.
 
-* ATTENTION:
-  put labeling inside environments.
+ATTENTION
+~~~~~~~~~
+* put labeling inside (after the begin) environments.
+* me (e.g.) uses textwidth, julien linewidth see what is what.
+
+  textwidth: is the normal width of the text on a page. It should generally 
+  be changed only in the preamble. 
+
+  linewidth: is the width of lines in the current environment. Normally equal to
+    \textwidth, it may be different within an environment such as list or quote 
+    environments.
 
 Done
 ~~~~
