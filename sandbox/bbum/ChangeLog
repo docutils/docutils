@@ -1,3 +1,7 @@
+2003-02-27  Bill Bumgarner  <bbum@codefab.com>
+    * DocArticle/DocArticle/__init__.py: Added sidebar and title_reference
+    support.
+
 2003-01-07  Bill Bumgarner  <bbum@codefab.com>
     * DocArticle/DocArticle/__init__.py: Improved formatting of admonitions.
     Sort of.  Would like to make them better.  Maybe add little icons, if
