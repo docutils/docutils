@@ -84,7 +84,7 @@ class IO:
 class FileIO(IO):
 
     """
-    IO for single, simple file-like objects.
+    I/O for single, simple file-like objects.
     """
 
     def __init__(self, options, source=None, source_path=None,
@@ -114,16 +114,12 @@ class FileIO(IO):
                 self.destination = sys.stdout
 
     def read(self, reader):
-        """
-        Read and decode a single file and return the data.
-        """
+        """Read and decode a single file and return the data."""
         data = self.source.read()
         return self.decode(data)
 
     def write(self, data):
-        """
-        Encode and write `data` to a single file.
-        """
+        """Encode and write `data` to a single file."""
         output = data.encode(self.options.output_encoding)
         self.destination.write(output)
 
@@ -131,27 +127,29 @@ class FileIO(IO):
 class StringIO(IO):
 
     """
-    Direct string IO.
+    Direct string I/O.
     """
 
-    def __init__(self, options, source=None, destination=None):
-        """
-        :Parameters:
-            - `source`: a string containing input data.
-            - `destination`: not used.
-        """
-        IO.__init__(self, options)
-        self.source = source
-
     def read(self, reader):
-        """
-        Decode and return the source string.
-        """
+        """Decode and return the source string."""
         return self.decode(self.source)
 
     def write(self, data):
-        """
-        Encode and return `data`.
-        """
+        """Encode and return `data`."""
         self.destination = data.encode(self.options.output_encoding)
         return self.destination
+
+
+class NullIO(IO):
+
+    """
+    Degenerate I/O: read & write nothing.
+    """
+
+    def read(self, reader):
+        """Return a null string."""
+        return u''
+
+    def write(self, data):
+        """Do nothing (send data to the bit bucket)."""
+        pass
