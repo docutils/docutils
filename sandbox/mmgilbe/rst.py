@@ -4,6 +4,9 @@
 
     @copyright: 2002 by J�rgen Hermann <jh@web.de>
     @license: GNU GPL, see COPYING for details.
+    
+    REQUIRES cvs version of docutils of at least 03_22_2004
+    .
 """
 
 #############################################################################
