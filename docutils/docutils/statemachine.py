@@ -14,6 +14,8 @@ this module defines the following classes:
 - `StateWS`, a state superclass for use with `StateMachineWS`
 - `SearchStateMachine`, uses `re.search()` instead of `re.match()`
 - `SearchStateMachineWS`, uses `re.search()` instead of `re.match()`
+- `ViewList`, extends standard Python lists.
+- `StringList`, string-specific ViewList.
 
 Exception classes:
 
@@ -31,7 +33,7 @@ Exception classes:
 Functions:
 
 - `string2lines()`: split a multi-line string into a list of one-line strings
-- `extract_indented()`: return indented lines with minimum indentation removed
+
 
 How To Use This Module
 ======================
@@ -136,7 +138,8 @@ class StateMachine:
         """
 
         self.input_lines = None
-        """List of strings (without newlines). Filled by `self.run()`."""
+        """`StringList` of input lines (without newlines).
+        Filled by `self.run()`."""
 
         self.input_offset = 0
         """Offset of `self.input_lines` from the beginning of the file."""
@@ -172,7 +175,8 @@ class StateMachine:
             state.unlink()
         self.states = None
 
-    def run(self, input_lines, input_offset=0, context=None):
+    def run(self, input_lines, input_offset=0, context=None,
+            input_source=None):
         """
         Run the state machine on `input_lines`. Return results (a list).
 
@@ -187,19 +191,24 @@ class StateMachine:
 
         Parameters:
 
-        - `input_lines`: a list of strings without newlines.
+        - `input_lines`: a list of strings without newlines, or `StringList`.
         - `input_offset`: the line offset of `input_lines` from the beginning
           of the file.
         - `context`: application-specific storage.
+        - `input_source`: name or path of source of `input_lines`.
         """
         self.runtime_init()
-        self.input_lines = input_lines
+        if isinstance(input_lines, StringList):
+            self.input_lines = input_lines
+        else:
+            self.input_lines = StringList(input_lines, source=input_source)
         self.input_offset = input_offset
         self.line_offset = -1
         self.current_state = self.initial_state
         if self.debug:
-            print >>sys.stderr, ('\nStateMachine.run: input_lines:\n| %s' %
-                                 '\n| '.join(self.input_lines))
+            print >>sys.stderr, (
+                '\nStateMachine.run: input_lines (line_offset=%s):\n| %s'
+                % (self.line_offset, '\n| '.join(self.input_lines)))
         transitions = None
         results = []
         state = self.get_state()
@@ -213,8 +222,12 @@ class StateMachine:
                     try:
                         self.next_line()
                         if self.debug:
-                            print >>sys.stderr, ('\nStateMachine.run: line:\n'
-                                                 '| %s' % self.line)
+                            source, offset = self.input_lines.info(
+                                self.line_offset)
+                            print >>sys.stderr, (
+                                '\nStateMachine.run: line (source=%r, '
+                                'offset=%r):\n| %s'
+                                % (source, offset, self.line))
                         context, next_state, result = self.check_line(
                             context, state, transitions)
                     except EOFError:
@@ -234,7 +247,7 @@ class StateMachine:
                         print >>sys.stderr, (
                               '\nStateMachine.run: TransitionCorrection to '
                               'state "%s", transition %s.'
-                              % (state.__class__.__name, transitions[0]))
+                              % (state.__class__.__name__, transitions[0]))
                     continue
                 except StateCorrection, exception:
                     self.previous_line() # back up for another try
@@ -337,6 +350,14 @@ class StateMachine:
         """Return line number of current line (counting from 1)."""
         return self.line_offset + self.input_offset + 1
 
+    def insert_input(self, input_lines, source):
+        self.input_lines.insert(self.line_offset + 1, '',
+                                source='internal padding')
+        self.input_lines.insert(self.line_offset + 1, '',
+                                source='internal padding')
+        self.input_lines.insert(self.line_offset + 2,
+                                StringList(input_lines, source))
+
     def get_text_block(self, flush_left=0):
         """
         Return a contiguous block of text.
@@ -345,17 +366,15 @@ class StateMachine:
         indented line is encountered before the text block ends (with a blank
         line).
         """
-        block = []
-        for line in self.input_lines[self.line_offset:]:
-            if not line.strip():
-                break
-            if flush_left and (line[0] == ' '):
-                self.next_line(len(block) - 1) # advance to last line of block
-                raise UnexpectedIndentationError(block,
-                                                 self.abs_line_number() + 1)
-            block.append(line)
-        self.next_line(len(block) - 1)  # advance to last line of block
-        return block
+        try:
+            block = self.input_lines.get_text_block(self.line_offset,
+                                                    flush_left)
+            self.next_line(len(block) - 1)
+            return block
+        except UnexpectedIndentationError, error:
+            block, source, lineno = error
+            self.next_line(len(block) - 1) # advance to last line of block
+            raise
 
     def check_line(self, context, state, transitions=None):
         """
@@ -386,10 +405,6 @@ class StateMachine:
                   % (state.__class__.__name__, transitions))
         for name in transitions:
             pattern, method, next_state = state.transitions[name]
-            if self.debug:
-                print >>sys.stderr, (
-                      '\nStateMachine.check_line: Trying transition "%s" '
-                      'in state "%s".' % (name, state.__class__.__name__))
             match = self.match(pattern)
             if match:
                 if self.debug:
@@ -399,6 +414,10 @@ class StateMachine:
                           % (name, state.__class__.__name__))
                 return method(match, context, next_state)
         else:
+            if self.debug:
+                print >>sys.stderr, (
+                      '\nStateMachine.check_line: No match in state "%s".'
+                      % state.__class__.__name__)
             return state.no_match(context, transitions)
 
     def match(self, pattern):
@@ -445,8 +464,8 @@ class StateMachine:
 
     def attach_observer(self, observer):
         """
-        The `observer` parameter is a function or bound method which takes one
-        argument, ``self`` (this StateMachine object).
+        The `observer` parameter is a function or bound method which takes two
+        arguments, the source and offset of the current line.
         """
         self.observers.append(observer)
 
@@ -455,7 +474,11 @@ class StateMachine:
 
     def notify_observers(self):
         for observer in self.observers:
-            observer(self)
+            try:
+                info = self.input_lines.info(self.line_offset)
+            except IndexError:
+                info = (None, None)
+            observer(*info)
 
 
 class State:
@@ -762,12 +785,12 @@ class StateMachineWS(StateMachine):
             - whether or not it finished with a blank line.
         """
         offset = self.abs_line_offset()
-        indented, indent, blank_finish = extract_indented(
-              self.input_lines[self.line_offset:], until_blank, strip_indent)
+        indented, indent, blank_finish = self.input_lines.get_indented(
+              self.line_offset, until_blank, strip_indent)
         if indented:
             self.next_line(len(indented) - 1) # advance to last indented line
         while indented and not indented[0].strip():
-            indented.pop(0)
+            indented.trim_start()
             offset += 1
         return indented, indent, offset, blank_finish
 
@@ -793,24 +816,12 @@ class StateMachineWS(StateMachine):
             - whether or not it finished with a blank line.
         """
         offset = self.abs_line_offset()
-        indented = [self.line[indent:]]
-        for line in self.input_lines[self.line_offset + 1:]:
-            if line[:indent].strip():
-                blank_finish = not indented[-1].strip() and len(indented) > 1
-                break
-            if until_blank and line.strip():
-                blank_finish = 1
-                break
-            if strip_indent:
-                indented.append(line[indent:])
-            else:
-                indented.append(line)
-        else:
-            blank_finish = 1
-        if indented:
-            self.next_line(len(indented) - 1) # advance to last indented line
+        indented, indent, blank_finish = self.input_lines.get_indented(
+              self.line_offset, until_blank, strip_indent,
+              block_indent=indent)
+        self.next_line(len(indented) - 1) # advance to last indented line
         while indented and not indented[0].strip():
-            indented.pop(0)
+            indented.trim_start()
             offset += 1
         return indented, offset, blank_finish
 
@@ -837,14 +848,13 @@ class StateMachineWS(StateMachine):
             - whether or not it finished with a blank line.
         """
         offset = self.abs_line_offset()
-        indented = [self.line[indent:]]
-        indented[1:], indent, blank_finish = extract_indented(
-              self.input_lines[self.line_offset + 1:], until_blank,
-              strip_indent)
+        indented, indent, blank_finish = self.input_lines.get_indented(
+              self.line_offset, until_blank, strip_indent,
+              first_indent=indent)
         self.next_line(len(indented) - 1) # advance to last indented line
         if strip_top:
             while indented and not indented[0].strip():
-                indented.pop(0)
+                indented.trim_start()
                 offset += 1
         return indented, indent, offset, blank_finish
 
@@ -1023,6 +1033,352 @@ class SearchStateMachineWS(_SearchOverride, StateMachineWS):
     pass
 
 
+class ViewList:
+
+    """
+    List with extended functionality: slices of ViewList objects are child
+    lists, linked to their parents. Changes made to a child list also affect
+    the parent list.  A child list is effectively a "view" (in the SQL sense)
+    of the parent list.  Changes to parent lists, however, do *not* affect
+    active child lists.  If a parent list is changed, any active child lists
+    should be recreated.
+
+    The start and end of the slice can be trimmed using the `trim_start()` and
+    `trim_end()` methods, without affecting the parent list.  The link between
+    child and parent lists can be broken by calling `disconnect()` on the
+    child list.
+
+    Also, ViewList objects keep track of the source & offset of each item. 
+    This information is accessible via the `source()`, `offset()`, and
+    `info()` methods.
+    """
+
+    def __init__(self, initlist=None, source=None, items=None,
+                 parent=None, parent_offset=None):
+        self.data = []
+        """The actual list of data, flattened from various sources."""
+
+        self.items = []
+        """A list of (source, offset) pairs, same length as `self.data`: the
+        source of each line and the offset of each line from the beginning of
+        its source."""
+
+        self.parent = parent
+        """The parent list."""
+
+        self.parent_offset = parent_offset
+        """Offset of this list from the beginning of the parent list."""
+
+        if isinstance(initlist, ViewList):
+            self.data = initlist.data[:]
+            self.items = initlist.items[:]
+        elif initlist is not None:
+            self.data = list(initlist)
+            if items:
+                self.items = items
+            else:
+                self.items = [(source, i) for i in range(len(initlist))]
+        assert len(self.data) == len(self.items), 'data mismatch'
+
+    def __str__(self):
+        return str(self.data)
+
+    def __repr__(self):
+        return '%s(%s, items=%s)' % (self.__class__.__name__,
+                                     self.data, self.items)
+
+    def __lt__(self, other): return self.data <  self.__cast(other)
+    def __le__(self, other): return self.data <= self.__cast(other)
+    def __eq__(self, other): return self.data == self.__cast(other)
+    def __ne__(self, other): return self.data != self.__cast(other)
+    def __gt__(self, other): return self.data >  self.__cast(other)
+    def __ge__(self, other): return self.data >= self.__cast(other)
+    def __cmp__(self, other): return cmp(self.data, self.__cast(other))
+
+    def __cast(self, other):
+        if isinstance(other, ViewList):
+            return other.data
+        else:
+            return other
+
+    def __contains__(self, item): return item in self.data
+    def __len__(self): return len(self.data)
+
+    def __getitem__(self, i):
+        try:
+            return self.data[i]
+        except TypeError:
+            assert i.step is None, 'cannot handle slice with stride'
+            return self.__class__(self.data[i.start:i.stop],
+                                  items=self.items[i.start:i.stop],
+                                  parent=self, parent_offset=i.start)
+
+    def __setitem__(self, i, item):
+        try:
+            self.data[i] = item
+            if self.parent:
+                self.parent[i + self.parent_offset] = item
+        except TypeError:
+            assert i.step is None, 'cannot handle slice with stride'
+            if not isinstance(item, ViewList):
+                raise TypeError('assigning non-ViewList to ViewList slice')
+            self.data[i.start:i.stop] = item.data
+            self.items[i.start:i.stop] = item.items
+            assert len(self.data) == len(self.items), 'data mismatch'
+            if self.parent:
+                self.parent[i.start + self.parent_offset
+                            : i.stop + self.parent_offset] = item
+
+    def __delitem__(self, i):
+        try:
+            del self.data[i]
+            del self.items[i]
+            if self.parent:
+                del self.parent[i + self.parent_offset]
+        except TypeError:
+            assert i.step is None, 'cannot handle slice with stride'
+            del self.data[i.start:i.stop]
+            del self.items[i.start:i.stop]
+            if self.parent:
+                del self.parent[i.start + self.parent_offset
+                                : i.stop + self.parent_offset]
+
+    def __add__(self, other):
+        if isinstance(other, ViewList):
+            return self.__class__(self.data + other.data,
+                                  items=(self.items + other.items))
+        else:
+            raise TypeError('adding non-ViewList to a ViewList')
+
+    def __radd__(self, other):
+        if isinstance(other, ViewList):
+            return self.__class__(other.data + self.data,
+                                  items=(other.items + self.items))
+        else:
+            raise TypeError('adding ViewList to a non-ViewList')
+
+    def __iadd__(self, other):
+        if isinstance(other, ViewList):
+            self.data += other.data
+        else:
+            raise TypeError('argument to += must be a ViewList')
+        return self
+
+    def __mul__(self, n):
+        return self.__class__(self.data * n, items=(self.items * n))
+
+    __rmul__ = __mul__
+
+    def __imul__(self, n):
+        self.data *= n
+        self.items *= n
+        return self
+
+    def extend(self, other):
+        if not isinstance(other, ViewList):
+            raise TypeError('extending a ViewList with a non-ViewList')
+        if self.parent:
+            self.parent.insert(len(self.data) + self.parent_offset, other)
+        self.data.extend(other.data)
+        self.items.extend(other.items)
+
+    def append(self, item, source=None, offset=0):
+        if source is None:
+            self.extend(item)
+        else:
+            if self.parent:
+                self.parent.insert(len(self.data) + self.parent_offset, item,
+                                   source, offset)
+            self.data.append(item)
+            self.items.append((source, offset))
+
+    def insert(self, i, item, source=None, offset=0):
+        if source is None:
+            if not isinstance(item, ViewList):
+                raise TypeError('inserting non-ViewList with no source given')
+            self.data[i:i] = item.data
+            self.items[i:i] = item.items
+            if self.parent:
+                index = (len(self.data) + i) % len(self.data)
+                self.parent.insert(index + self.parent_offset, item)
+        else:
+            self.data.insert(i, item)
+            self.items.insert(i, (source, offset))
+            if self.parent:
+                index = (len(self.data) + i) % len(self.data)
+                self.parent.insert(index + self.parent_offset, item,
+                                   source, offset)
+
+    def pop(self, i=-1):
+        if self.parent:
+            index = (len(self.data) + i) % len(self.data)
+            self.parent.pop(index + self.parent_offset)
+        self.items.pop(i)
+        return self.data.pop(i)
+
+    def trim_start(self, n=1):
+        """
+        Remove items from the start of the list, without touching the parent.
+        """
+        if n > len(self.data):
+            raise IndexError("Size of trim too large; can't trim %s items "
+                             "from a list of size %s." % (n, len(self.data)))
+        elif n < 0:
+            raise IndexError('Trim size must be >= 0.')
+        del self.data[:n]
+        del self.items[:n]
+        if self.parent:
+            self.parent_offset += n
+
+    def trim_end(self, n=1):
+        """
+        Remove items from the end of the list, without touching the parent.
+        """
+        if n > len(self.data):
+            raise IndexError("Size of trim too large; can't trim %s items "
+                             "from a list of size %s." % (n, len(self.data)))
+        elif n < 0:
+            raise IndexError('Trim size must be >= 0.')
+        del self.data[-n:]
+        del self.items[-n:]
+
+    def remove(self, item):
+        index = self.index(item)
+        del self[index]
+
+    def count(self, item): return self.data.count(item)
+    def index(self, item): return self.data.index(item)
+
+    def reverse(self):
+        self.data.reverse()
+        self.items.reverse()
+        self.parent = None
+
+    def sort(self, *args):
+        tmp = zip(self.data, self.items)
+        tmp.sort(*args)
+        self.data = [entry[0] for entry in tmp]
+        self.items = [entry[1] for entry in tmp]
+        self.parent = None
+
+    def info(self, i):
+        """Return source & offset for index `i`."""
+        try:
+            return self.items[i]
+        except IndexError:
+            if i == len(self.data):     # Just past the end
+                return self.items[i - 1][0], None
+            else:
+                raise
+
+    def source(self, i):
+        """Return source for index `i`."""
+        return self.info(i)[0]
+
+    def offset(self, i):
+        """Return offset for index `i`."""
+        return self.info(i)[1]
+
+    def disconnect(self):
+        """Break link between this list and parent list."""
+        self.parent = None
+
+
+class StringList(ViewList):
+
+    """A `ViewList` with string-specific methods."""
+
+    def strip_indent(self, length, start=0, end=sys.maxint):
+        """
+        Strip `length` characters off the beginning of each item, in-place,
+        from index `start` to `end`.  No whitespace-checking is done on the
+        stripped text.  Does not affect slice parent.
+        """
+        self.data[start:end] = [line[length:]
+                                for line in self.data[start:end]]
+
+    def get_text_block(self, start, flush_left=0):
+        """
+        Return a contiguous block of text.
+
+        If `flush_left` is true, raise `UnexpectedIndentationError` if an
+        indented line is encountered before the text block ends (with a blank
+        line).
+        """
+        end = start
+        last = len(self.data)
+        while end < last:
+            line = self.data[end]
+            if not line.strip():
+                break
+            if flush_left and (line[0] == ' '):
+                source, offset = self.info(end)
+                raise UnexpectedIndentationError(self[start:end], source,
+                                                 offset + 1)
+            end += 1
+        return self[start:end]
+
+    def get_indented(self, start=0, until_blank=0, strip_indent=1,
+                     block_indent=None, first_indent=None):
+        """
+        Extract and return a StringList of indented lines of text.
+
+        Collect all lines with indentation, determine the minimum indentation,
+        remove the minimum indentation from all indented lines (unless
+        `strip_indent` is false), and return them. All lines up to but not
+        including the first unindented line will be returned.
+
+        :Parameters:
+          - `start`: The index of the first line to examine.
+          - `until_blank`: Stop collecting at the first blank line if true.
+          - `strip_indent`: Strip common leading indent if true (default).
+          - `block_indent`: The indent of the entire block, if known.
+          - `first_indent`: The indent of the first line, if known.
+
+        :Return:
+          - a StringList of indented lines with mininum indent removed;
+          - the amount of the indent;
+          - a boolean: did the indented block finish with a blank line or EOF?
+        """
+        indent = block_indent           # start with None if unknown
+        end = start
+        if block_indent is not None and first_indent is None:
+            first_indent = block_indent
+        if first_indent is not None:
+            end += 1
+        last = len(self.data)
+        while end < last:
+            line = self.data[end]
+            if line and (line[0] != ' '
+                         or (block_indent is not None
+                             and line[:block_indent].strip())):
+                # Line not indented or insufficiently indented.
+                # Block finished properly iff the last indented line blank:
+                blank_finish = ((end > start)
+                                and not self.data[end - 1].strip())
+                break
+            stripped = line.lstrip()
+            if not stripped:            # blank line
+                if until_blank:
+                    blank_finish = 1
+                    break
+            elif block_indent is None:
+                line_indent = len(line) - len(stripped)
+                if indent is None:
+                    indent = line_indent
+                else:
+                    indent = min(indent, line_indent)
+            end += 1
+        else:
+            blank_finish = 1            # block ends at end of lines
+        block = self[start:end]
+        if first_indent is not None and block:
+            block.data[0] = block.data[0][first_indent:]
+        if indent and strip_indent:
+            block.strip_indent(indent, start=(first_indent is not None))
+        return block, indent or 0, blank_finish
+
+
 class StateMachineError(Exception): pass
 class UnknownStateError(StateMachineError): pass
 class DuplicateStateError(StateMachineError): pass
@@ -1069,54 +1425,6 @@ def string2lines(astring, tab_width=8, convert_whitespace=0,
     if convert_whitespace:
         astring = whitespace.sub(' ', astring)
     return [s.expandtabs(tab_width) for s in astring.splitlines()]
-
-def extract_indented(lines, until_blank=0, strip_indent=1):
-    """
-    Extract and return a list of indented lines of text.
-
-    Collect all lines with indentation, determine the minimum indentation,
-    remove the minimum indentation from all indented lines (unless
-    `strip_indent` is false), and return them. All lines up to but not
-    including the first unindented line will be returned.
-
-    :Parameters:
-        - `lines`: a list of one-line strings without newlines.
-        - `until_blank`: Stop collecting at the first blank line if true (1).
-        - `strip_indent`: Strip common leading indent if true (1, default).
-
-    :Return:
-        - a list of indented lines with mininum indent removed;
-        - the amount of the indent;
-        - whether or not the block finished with a blank line or at the end of
-          `lines`.
-    """
-    source = []
-    indent = None
-    for line in lines:
-        if line and line[0] != ' ':     # line not indented
-            # block finished properly iff the last indented line was blank
-            blank_finish = len(source) and not source[-1].strip()
-            break
-        stripped = line.lstrip()
-        if until_blank and not stripped: # blank line
-            blank_finish = 1
-            break
-        source.append(line)
-        if not stripped:                # blank line
-            continue
-        lineindent = len(line) - len(stripped)
-        if indent is None:
-            indent = lineindent
-        else:
-            indent = min(indent, lineindent)
-    else:
-        blank_finish = 1                 # block ends at end of lines
-    if indent:
-        if strip_indent:
-            source = [s[indent:] for s in source]
-        return source, indent, blank_finish
-    else:
-        return [], 0, blank_finish
 
 def _exception_data():
     """
