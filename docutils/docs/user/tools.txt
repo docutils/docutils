@@ -643,6 +643,13 @@ toc_backlinks
     Default: "entry".  Options: ``--toc-entry-backlinks,
     --toc-top-backlinks, --no-toc-backlinks``.
 
+trim-footnote-reference-space
+    (reStructuredText Parser.)  Remove spaces before footnote
+    references.
+
+    Default: don't (None).  Options:
+    ``--trim-footnote-reference-space``.
+
 warning_stream
     Path to a file for the output of system messages (warnings)
     [#pwd]_.

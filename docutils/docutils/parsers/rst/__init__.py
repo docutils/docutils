@@ -95,7 +95,10 @@ class Parser(docutils.parsers.Parser):
           {'action': 'store_true'}),
          ('Set number of spaces for tab expansion (default 8).',
           ['--tab-width'],
-          {'metavar': '<width>', 'type': 'int', 'default': 8}),))
+          {'metavar': '<width>', 'type': 'int', 'default': 8}),
+         ('Remove spaces before footnote references.',
+          ['--trim-footnote-reference-space'],
+          {'action': 'store_true'}),))
 
     def __init__(self, rfc2822=None, inliner=None):
         if rfc2822:
