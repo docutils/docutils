@@ -1128,8 +1128,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # titled document?
         if isinstance(node[0], nodes.title):
             self.body_prefix.append('\\maketitle\n\n')
-        # alternative use titlepage environment.
-        # \begin{titlepage}
+            # alternative use titlepage environment.
+            # \begin{titlepage}
         self.body.append('\n\\setlength{\\locallinewidth}{\\linewidth}\n')
 
     def depart_document(self, node):
