@@ -11,7 +11,7 @@ LaTeX2e document tree Writer.
 __docformat__ = 'reStructuredText'
 
 # code contributions from several people included, thanks too all.
-# some named: David Abrahams, Julien Letessier, who is missing.
+# some named: David Abrahams, Julien Letessier, Lele Gaifax, who is missing.
 #
 # convention deactivate code by two # e.g. ##.
 
@@ -250,6 +250,33 @@ latex_headings = {
          ]
         }
 
+class DocumentClass:
+    """Details of a LaTeX document class."""
+
+    # BUG: LaTeX has no deeper sections (actually paragrah is no
+    # section either).
+    _class_sections = {
+        'book': ( 'chapter', 'section', 'subsection', 'subsubsection' ),
+        'report': ( 'chapter', 'section', 'subsection', 'subsubsection' ),
+        'article': ( 'section', 'subsection', 'subsubsection' ),
+        }
+    _deepest_section = 'subsubsection'
+
+    def __init__(self, document_class):
+        self.document_class = document_class
+
+    def section(self, level):
+        """ Return the section name at the given level for the specific
+            document class.
+
+            Level is 1,2,3..., as level 0 is the title."""
+
+        sections = self._class_sections[self.document_class]
+        if level <= len(sections):
+            return sections[level-1]
+        else:
+            return self._deepest_section
+
 
 class LaTeXTranslator(nodes.NodeVisitor):
     # When options are given to the documentclass, latex will pass them
@@ -303,6 +330,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.babel.get_language():
             self.d_options += ',%s' % \
                     self.babel.get_language()
+
+        self.d_class = DocumentClass(settings.documentclass)
+
         self.head_prefix = [
               self.latex_head % (self.d_options,self.settings.documentclass),
               '\\usepackage{babel}\n',     # language is in documents settings.
@@ -1512,21 +1542,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('%' + '_' * 75)
             self.body.append('\n\n')
             self.bookmark(node)
-            # section_level 0 is title and handled above.
-            # BUG: latex has no deeper sections (actually paragrah is no section either).
+
             if self.use_latex_toc:
                 section_star = ""
             else:
                 section_star = "*"
-            if (self.section_level<=3):  # 1,2,3
-                self.body.append('\\%ssection%s{' % ('sub'*(self.section_level-1),section_star))
-            elif (self.section_level==4):
-                #self.body.append('\\paragraph*{')
-                self.body.append('\\subsubsection%s{' % (section_star))
-            else:
-                #self.body.append('\\subparagraph*{')
-                self.body.append('\\subsubsection%s{' % (section_star))
-            # BUG: self.body.append( '\\label{%s}\n' % name)
+
+            section_name = self.d_class.section(self.section_level)
+            self.body.append('\\%s%s{' % (section_name, section_star))
+
             self.context.append('}\n')
 
     def depart_title(self, node):
