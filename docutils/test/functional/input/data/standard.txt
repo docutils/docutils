@@ -285,6 +285,10 @@ Footnotes
 .. [#] This footnote is numbered automatically and anonymously using a
    label of "#" only.
 
+   This is the second paragraph.
+
+   And this is the third paragraph.
+
 .. [*] Footnotes may also use symbols, specified with a "*" label.
    Here's a reference to the next footnote: [*]_.
 
