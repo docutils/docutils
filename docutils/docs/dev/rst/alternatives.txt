@@ -1540,8 +1540,7 @@ __ http://thread.gmane.org/gmane.text.docutils.devel/1386
    verbose; excessive punctuation is required to get the job done.
 
    For more of the reasoning behind the syntax, see `Problems With
-   StructuredText (Hyperlinks)
-   <http://docutils.sf.net/spec/rst/problems.html#hyperlinks>`__ and
+   StructuredText (Hyperlinks) <problems.html#hyperlinks>`__ and
    `Reworking Footnotes`_.
 
 2. "I expect directives to also look like ``.. this:`` [one colon]
@@ -1565,7 +1564,8 @@ __ http://thread.gmane.org/gmane.text.docutils.devel/1386
          directive block (including the directive itself) will be
          included as a literal block.  Thus "::" is a natural choice.
 
-       -- http://docutils.sf.net/spec/rst/reStructuredText.html#directives
+       -- `restructuredtext.html#directives
+       <../../ref/rst/restructuredtext.html#directives>`__
 
    The last reason is not particularly compelling; it's more of a
    convenient coincidence or mnemonic.
@@ -1615,8 +1615,7 @@ __ http://thread.gmane.org/gmane.text.docutils.devel/1386
    aspect, but ".. comment::" would certainly detract from the latter.
 
    .. _author's note:
-   .. _reStructuredText's goals:
-      http://docutils.sf.net/spec/rst/introduction.html#goals
+   .. _reStructuredText's goals: ../../ref/rst/introduction.html#goals
 
 5. "Recently I sent someone an rst document, and they got confused; I
    had to explain to them that '..' marks comments, *unless* it's a
@@ -2404,7 +2403,7 @@ something different).
 
 The `"role" directive`__ has been implemented.
 
-__ http://docutils.sf.net/spec/rst/directives.html#role
+__ ../../ref/rst/directives.html#role
 
 
 Character Processing

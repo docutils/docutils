@@ -858,7 +858,8 @@ cleanly readable text.
 .. _README: http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/~checkout~/
    python/python/dist/src/README
 .. _Emacs table mode: http://table.sourceforge.net/
-.. _reStructuredText Markup Specification: reStructuredText.html
+.. _reStructuredText Markup Specification:
+   ../../ref/rst/restructuredtext.html
 
 
 ..
