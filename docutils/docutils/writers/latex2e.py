@@ -339,7 +339,8 @@ class Table:
         self._col_specs = None
         self.caption = None
         self._attrs = {}
-
+    def is_open(self):
+        return self._open
     def used_packages(self):
         if self._table_style == 'booktabs':
             return '\\usepackage{booktabs}\n'
@@ -1430,7 +1431,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             self.literal_block = 1
             self.insert_none_breaking_blanks = 1
-            self.body.append('\\begin{ttfamily}\\begin{flushleft}\n')
+            self.body.append('\\begin{ttfamily}')
+            if self.active_table.is_open():
+                self.body.append('\\raggedright\n')
+            else:    
+                self.body.append('\\begin{flushleft}\n')
             self.mbox_newline = 1
             if self.mbox_newline:
                 self.body.append('\\mbox{')
@@ -1444,7 +1449,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             if self.mbox_newline:
                 self.body.append('}')
-            self.body.append('\n\\end{flushleft}\\end{ttfamily}\n')
+            self.body.append('\n')
+            if not self.active_table.is_open():
+                self.body.append('\\end{flushleft}')
+            self.body.append('\\end{ttfamily}\n')
             self.insert_none_breaking_blanks = 0
             self.mbox_newline = 0
             # obey end: self.body.append('}\n')

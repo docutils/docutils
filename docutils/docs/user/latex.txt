@@ -234,10 +234,16 @@ Tables
 * The contents of a rowspan cell do not influence table height.
   (Maybe if we put a tabular inside ?)
 * Table heads and footer for longtable (firstpage lastpage ..).
-* Tabularx says "do not use any multicolmn which spans any X column.
-  maybe use ltxtable instead of tabularx (Longtable combined with tabularx).
-  but ltxtable disables longtable's multicolumn.
 * Table cells with multirow and multicolumn
+* literal-blocks in table cells: 
+
+  - if verbatim or flushleft have vertical space above and below.
+  - if raggedright we might have firstline indent, depending on
+    the document setting.
+
+Notes
+~~~~~
+
 * table-style booktabs: booktabs.sty 1.00 does not work with longtable.
 
 Miscellaneous
