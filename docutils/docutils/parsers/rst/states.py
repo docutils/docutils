@@ -2695,8 +2695,8 @@ class Text(RSTState):
         definitionlistitem += definition
         if termline[0][-2:] == '::':
             definition += self.reporter.info(
-                  'Blank line missing before literal block? Interpreted as a '
-                  'definition list item.', line=line_offset + 1)
+                  'Blank line missing before literal block (after the "::")? '
+                  'Interpreted as a definition list item.', line=line_offset+1)
         self.nested_parse(indented, input_offset=line_offset, node=definition)
         return definitionlistitem, blank_finish
 

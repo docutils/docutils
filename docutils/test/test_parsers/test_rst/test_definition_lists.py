@@ -85,7 +85,7 @@ A paragraph::
             <definition>
                 <system_message level="1" line="2" source="test data" type="INFO">
                     <paragraph>
-                        Blank line missing before literal block? Interpreted as a definition list item.
+                        Blank line missing before literal block (after the "::")? Interpreted as a definition list item.
                 <paragraph>
                     A literal block without a blank line first?
 """],
