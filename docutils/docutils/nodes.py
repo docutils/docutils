@@ -54,7 +54,9 @@ class Node:
 
     def __nonzero__(self):
         """
-        Node instances are always true, even if they're empty.
+        Node instances are always true, even if they're empty.  A node is more
+        than a simple container.  Its boolean "truth" does not depend on
+        having one or more subnodes in the doctree.
 
         Use `len()` to check node length.  Use `None` to represent a boolean
         false value.
