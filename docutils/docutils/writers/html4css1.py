@@ -19,7 +19,6 @@ __docformat__ = 'reStructuredText'
 
 import sys
 import time
-import string
 import re
 from types import ListType
 from docutils import writers, nodes, languages
@@ -44,6 +43,11 @@ class Writer(writers.Writer):
         visitor = HTMLTranslator(self.document)
         self.document.walkabout(visitor)
         self.output = visitor.astext()
+        self.head_prefix = visitor.head_prefix
+        self.head = visitor.head
+        self.body_prefix = visitor.body_prefix
+        self.body = visitor.body
+        self.body_suffix = visitor.body_suffix
 
 
 class HTMLTranslator(nodes.NodeVisitor):
