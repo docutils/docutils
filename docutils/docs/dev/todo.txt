@@ -462,7 +462,9 @@ Directives
     A "raw" flag (attribute with no value) would inform us that the
     imported data is raw (already in native format, like HTML).
     Perhaps there should be an attribute value, saying what the native
-    format is.  See misc.raw_.  Example::
+    format is.  Instead, perhaps the "raw" directive should take an
+    "include" parameter (explicit attribute or second parameter in its
+    directive data).  See misc.raw_.  Example::
 
         .. include:: path/subdocument.txt
            :raw:
