@@ -16,16 +16,21 @@ import sys
 from docutils.core import publish
 from docutils import utils
 
-reporter = utils.Reporter(2, 4)
+
+reporter = utils.Reporter(1, 4)
 #reporter.setconditions('nodes.Node.walkabout', 2, 4, debug=1)
 
 if len(sys.argv) == 2:
-    publish(writername='html', source=sys.argv[1], reporter=reporter)
+    source = sys.argv[1]
+    destination = None
 elif len(sys.argv) == 3:
-    publish(writername='html', source=sys.argv[1], destination=sys.argv[2],
-            reporter=reporter)
+    source = sys.argv[1]
+    destination = sys.argv[2]
 elif len(sys.argv) > 3:
     print >>sys.stderr, 'Maximum 2 arguments allowed.'
     sys.exit(1)
 else:
-    publish()
+    source = None
+    destination = None
+publish(source=source, destination=destination, reporter=reporter,
+        writer_name='html')

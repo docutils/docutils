@@ -14,14 +14,21 @@ This module takes advantage of the default values defined in `publish()`.
 
 import sys
 from docutils.core import publish
+from docutils import utils
 
+
+reporter = utils.Reporter(1, 4)
 
 if len(sys.argv) == 2:
-    publish(source=sys.argv[1])
+    source = sys.argv[1]
+    destination = None
 elif len(sys.argv) == 3:
-    publish(source=sys.argv[1], destination=sys.argv[2])
+    source = sys.argv[1]
+    destination = sys.argv[2]
 elif len(sys.argv) > 3:
     print >>sys.stderr, 'Maximum 2 arguments allowed.'
     sys.exit(1)
 else:
-    publish()
+    source = None
+    destination = None
+publish(source=source, destination=destination, reporter=reporter)
