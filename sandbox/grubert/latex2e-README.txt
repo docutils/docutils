@@ -4,7 +4,7 @@ latex2e BUGS TODOS and other animals
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
 
-Rev. 2003-03-24
+Rev. 2003-03-25
 
 To do
 ~~~~~
@@ -12,8 +12,6 @@ To do
 * support embed-stylesheet.
 
 * the ^-sign is problematic: using mathmode wedge is usually the wrong font.
-
-* tt fonts might have no bold.
 
 * sidebar handling.
 
@@ -129,6 +127,8 @@ ATTENTION
 
 Done
 ~~~~
+* no quote mangling in literal blocks.
+* enumertated list with pre- and postfix.
 * support stylesheet and stylesheet-path.
 * FIX: QUICK: for latex error on abstract.
 * FIX: ^ by mathmode wedge (verb|^| did not work in mbox). 
