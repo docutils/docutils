@@ -516,7 +516,7 @@ class PythonModuleParserTestCase(CustomTestCase):
     def test_parser(self):
         if self.run_in_debugger:
             pdb.set_trace()
-        module = moduleparser.parse_module(self.input, 'test data')
+        module = moduleparser.parse_module(self.input, 'test data').pformat()
         output = str(module)
         self.compare_output(self.input, output, self.expected)
 

@@ -10,33 +10,39 @@
 """
 
 from docutils import nodes
-from docutils.nodes import Element, TextElement, Structural, Inline, Part
+from docutils.nodes import Element, TextElement, Structural, Inline, Part, \
+     Text
+import types
 
+# This is the parent class of all the other pynode classes:
+class PythonStructural(Structural): pass
 
 # =====================
 #  Structural Elements
 # =====================
 
-class package_section(Structural, Element): pass
-class module_section(Structural, Element): pass
-class class_section(Structural, Element): pass
-class method_section(Structural, Element): pass
-class function_section(Structural, Element): pass
-class module_attribute_section(Structural, Element): pass
-class class_attribute_section(Structural, Element): pass
-class instance_attribute_section(Structural, Element): pass
+class module_section(PythonStructural, Element): pass    
+class class_section(PythonStructural, Element): pass
+class class_base(PythonStructural, Element): pass
+class method_section(PythonStructural, Element): pass
+class attribute(PythonStructural, Element): pass
+class function_section(PythonStructural, Element): pass
+class class_attribute_section(PythonStructural, Element): pass
+class class_attribute(PythonStructural, Element): pass
+class expression_value(PythonStructural, Element): pass
+class attribute(PythonStructural, Element): pass
 
 # Structural Support Elements
 # ---------------------------
 
-class inheritance_list(Part, Element): pass
-class parameter_list(Part, Element): pass
-class parameter_item(Part, Element): pass
-class optional_parameters(Part, Element): pass
-class parameter_tuple(Part, Element): pass
-class parameter_default(Part, TextElement): pass
-class initial_value(Part, TextElement): pass
-class import_item(Part, TextElement): pass
+class parameter_list(PythonStructural, Element): pass
+class parameter_tuple(PythonStructural, Element): pass
+class parameter_default(PythonStructural, TextElement): pass
+class import_group(PythonStructural, TextElement): pass
+class import_from(PythonStructural, TextElement): pass
+class import_name(PythonStructural, TextElement): pass
+class import_alias(PythonStructural, TextElement): pass
+class docstring(PythonStructural, Element): pass
 
 # =================
 #  Inline Elements
@@ -45,34 +51,35 @@ class import_item(Part, TextElement): pass
 # These elements cannot become references until the second
 # pass.  Initially, we'll use "reference" or "name".
 
-class package(Part, Inline, TextElement): pass
-class module(Part, Inline, TextElement): pass
+class object_name(PythonStructural, TextElement): pass
+class parameter_list(PythonStructural, TextElement): pass
+class parameter(PythonStructural, TextElement): pass
+class parameter_default(PythonStructural, TextElement): pass
+class class_attribute(PythonStructural, TextElement): pass
+class attribute_tuple(PythonStructural, TextElement): pass
 
+# =================
+#  Unused Elements
+# =================
 
-class inline_class(Part, Inline, TextElement):
+# These were part of the model, and maybe should be in the future, but
+# aren't now.
+#class package_section(PythonStructural, Element): pass
+#class module_attribute_section(PythonStructural, Element): pass
+#class instance_attribute_section(PythonStructural, Element): pass
+#class module_attribute(PythonStructural, TextElement): pass
+#class instance_attribute(PythonStructural, TextElement): pass
+#class exception_class(PythonStructural, TextElement): pass
+#class warning_class(PythonStructural, TextElement): pass
 
-    tagname = 'class'
-
-
-class method(Part, Inline, TextElement): pass
-class function(Part, Inline, TextElement): pass
-class variable(Inline, TextElement): pass
-class parameter(Part, Inline, TextElement): pass
-class inline_type(Inline, TextElement):
-    tagname = 'type'
-class class_attribute(Part, Inline, TextElement): pass
-class module_attribute(Part, Inline, TextElement): pass
-class instance_attribute(Part, Inline, TextElement): pass
-class exception_class(Inline, TextElement): pass
-class warning_class(Inline, TextElement): pass
 
 # Collect all the classes we've written above
 node_class_names = []
 def build_node_class_names():
     for name, var in globals().items():
-        if type(var) is types.ClassType \
-               and issubclass(var, nodes.Node) \
-               and name.lower() == name:
+        if (type(var) is types.ClassType
+            and issubclass(var, PythonStructural) \
+            and name.lower() == name):
             node_class_names.append(var.tagname or name)
 
 # Register the new node names with GenericNodeVisitor and
