@@ -13,6 +13,7 @@ __docformat__ = 'reStructuredText'
 
 import sys
 import locale
+from types import UnicodeType
 from docutils import TransformSpec
 
 
@@ -67,7 +68,8 @@ class Input(TransformSpec):
 
             locale.setlocale(locale.LC_ALL, '')
         """
-        if self.encoding and self.encoding.lower() == 'unicode':
+        if (self.encoding and self.encoding.lower() == 'unicode'
+            or isinstance(data, UnicodeType)):
             return unicode(data)
         encodings = [self.encoding, 'utf-8']
         try:
