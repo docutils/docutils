@@ -328,11 +328,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'div',
                                         CLASS=(name or 'admonition')))
         if name:
-            self.body.append('<p class="admonition-title first">'
-                             + self.language.labels[name] + '</p>\n')
-            node[-1].set_class('last')
-        else:
-            self.set_first_last(node)
+            node.insert(0, nodes.title(name, self.language.labels[name]))
+        self.set_first_last(node)
 
     def depart_admonition(self, node=None):
         self.body.append('</div>\n')
@@ -1255,9 +1252,9 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.body.append(
                   self.starttag(node, 'p', '', CLASS='sidebar-title first'))
             check_id = 1
-        elif isinstance(node.parent, nodes.admonition):
+        elif isinstance(node.parent, nodes.Admonition):
             self.body.append(
-                  self.starttag(node, 'p', '', CLASS='admonition-title first'))
+                  self.starttag(node, 'p', '', CLASS='admonition-title'))
             check_id = 1
         elif isinstance(node.parent, nodes.table):
             self.body.append(
