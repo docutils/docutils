@@ -20,45 +20,45 @@ __docformat__ = 'reStructuredText'
 directives = {
       # language-dependent: fixed
       u'pozor': 'attention',
-      u'caution': 'caution',       # jak rozlisit caution a warning?
+      u'caution (translation required)': 'caution', # jak rozlisit caution a warning?
       u'nebezpe\u010D\u00ED': 'danger',
       u'chyba': 'error',
       u'rada': 'hint',
       u'd\u016Fle\u017Eit\u00E9': 'important',
       u'pozn\u00E1mka': 'note',
-      u'tip': 'tip',
+      u'tip (translation required)': 'tip',
       u'varov\u00E1n\u00ED': 'warning',
-      u'admonition': 'admonition',
-      u'sidebar': 'sidebar',
+      u'admonition (translation required)': 'admonition',
+      u'sidebar (translation required)': 'sidebar',
       u't\u00E9ma': 'topic',
-      u'line-block': 'line-block',
-      u'parsed-literal': 'parsed-literal',
+      u'line-block (translation required)': 'line-block',
+      u'parsed-literal (translation required)': 'parsed-literal',
       u'odd\u00EDl': 'rubric',
       u'moto': 'epigraph',
-      u'highlights': 'highlights',
-      u'pull-quote': 'pull-quote',
+      u'highlights (translation required)': 'highlights',
+      u'pull-quote (translation required)': 'pull-quote',
       u'compound (translation required)': 'compound',
       #'questions': 'questions',
       #'qa': 'questions',
       #'faq': 'questions',
       u'table (translation required)': 'table',
       u'csv-table (translation required)': 'csv-table',
-      u'meta': 'meta',
+      u'meta (translation required)': 'meta',
       #'imagemap': 'imagemap',
-      u'image': 'image',   # obrazek
-      u'figure': 'figure', # a tady?
-      u'include': 'include',
-      u'raw': 'raw',
-      u'replace': 'replace',
-      u'unicode': 'unicode',
+      u'image (translation required)': 'image',   # obrazek
+      u'figure (translation required)': 'figure', # a tady?
+      u'include (translation required)': 'include',
+      u'raw (translation required)': 'raw',
+      u'replace (translation required)': 'replace',
+      u'unicode (translation required)': 'unicode',
       u't\u0159\u00EDda': 'class',
       u'role (translation required)': 'role',
       u'obsah': 'contents',
-      u'sectnum': 'sectnum',
-      u'section-numbering': 'sectnum',
+      u'sectnum (translation required)': 'sectnum',
+      u'section-numbering (translation required)': 'sectnum',
       #'footnotes': 'footnotes',
       #'citations': 'citations',
-      u'target-notes': 'target-notes',
+      u'target-notes (translation required)': 'target-notes',
       u'restructuredtext-test-directive': 'restructuredtext-test-directive'}
 """Czech name to registered (in directives/__init__.py) directive name
 mapping."""
