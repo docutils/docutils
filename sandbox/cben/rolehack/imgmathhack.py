@@ -3,8 +3,10 @@
 Convert latex math to images.  Treats the default and ``texmath`` roles as
 inline LaTeX math and the ``texmath::`` directive as display latex math.
 
-Mangles include directives, replacing ``.txt`` extension with
-``.imgmathhack.txt`` to help arranging preprocessing of included files.
+If you include a file which also needs mathhack/imgmathhack preprocessing,
+write a name containing ``.mathhack`` in the include directive and it will be
+replaced with ``.imgmathhack`` when preprocessed by this script (of course,
+you should create both preprocessed versions of the file).
 
 .. note::
     This runs external commands and leaves files after itself!  To reduce
@@ -89,9 +91,7 @@ texmath = child.texmath
 texdisplay = child.texdisplay
 
 def mangle_include(text):
-    if text.endswith('.txt'):
-        text = text[:-4] + '.imgmathhack.txt'
-    return 'include:: ' + text
+    return 'include:: ' + text.replace('.mathhack', '.imgmathhack')
 
 main({'texmath': texmath}, texmath,
      {'texmath': texdisplay, 'include': mangle_include})

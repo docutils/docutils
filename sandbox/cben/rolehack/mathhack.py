@@ -26,10 +26,5 @@ raw:: latex
 
     \[ ''', ' \]\n')
 
-def mangle_include(text):
-    if text.endswith('.txt'):
-        text = text[:-4] + '.mathhack.txt'
-    return 'include:: ' + text
-
 main({'texmath': texmath}, texmath,
-     {'texmath': texdisplay, 'include': mangle_include})
+     {'texmath': texdisplay})
