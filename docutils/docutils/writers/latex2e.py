@@ -528,6 +528,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self._use_latex_citations = settings.use_latex_citations
         self.hyperlink_color = settings.hyperlink_color
         self.compound_enumerators = settings.compound_enumerators
+        self.fontenc = ''
         self.section_prefix_for_enumerators = (
             settings.section_prefix_for_enumerators)
         self.section_enumerator_separator = (
@@ -552,12 +553,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # object for a table while proccessing.
         self.active_table = Table('longtable',settings.table_style)
+        if self.fontenc == 'T1':
+            fontenc = '\\usepackage[T1]{fontenc}\n'
+        else:
+            fontenc = ''
 
         self.head_prefix = [
               self.latex_head % (self.d_options,self.settings.documentclass),
-              # T1 should fix ~ in italian documents, but break "--" in ttfamily.
-              #'\\usepackage[T1]{fontenc}\n',
               '\\usepackage{babel}\n',     # language is in documents settings.
+              fontenc,
               '\\usepackage{shortvrb}\n',  # allows verb in footnotes.
               self.encoding % self.to_latex_encoding(settings.output_encoding),
               # * tabularx: for docinfo, automatic width of columns, always on one page.
@@ -753,8 +757,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.literal_block or self.literal:
             # pdflatex does not produce doublequotes for ngerman.
             text = self.babel.double_quotes_in_tt(text)
-            # if fontenc == 'T1': make sure "--" does not become a "-".
-            text = text.replace("--","-{}-").replace("--","-{}-")
+            if self.fontenc == 'T1': 
+                # make sure "--" does not become a "-".
+                # the same for "<<" and ">>".
+                text = text.replace("--","-{}-").replace("--","-{}-")
+                text = text.replace(">>",">{}>").replace(">>",">{}>")
+                text = text.replace("<<","<{}<").replace("<<","<{}<")
             # replace underline by underlined blank, because this has correct width.
             text = text.replace("_", '{\\underline{ }}')
         else:
