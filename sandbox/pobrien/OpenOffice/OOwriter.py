@@ -437,8 +437,12 @@ class Translator(nodes.NodeVisitor):
     def visit_image(self, node):
         name = str(node.attributes['uri'])
         # Add to our list so that rest2oo.py can create the manifest.
-        print 'image:', repr(name)
-        OOtext.pictures.append(name)
+        if name.endswith('.png'):
+            OOtext.pictures.append((name, OOtext.m_png_format % name))
+        elif name.endswith('.tif'):
+            OOtext.pictures.append((name, OOtext.m_tif_format % name))
+        else:
+            print '*** Image type not recognized ***', repr(name)
         self.body.append('<draw:image draw:style-name="imageframe"\n')
         self.body.append('draw:name="%s"\n' % name)
         self.body.append('text:anchor-type="char"\n')

@@ -35,8 +35,8 @@ def main():
     image_manifest_list = OOtext.pictures
 
     image_entries = []
-    for name in image_manifest_list:
-        image_entries.append(OOtext.m_tif_format % name)
+    for name, format in image_manifest_list:
+        image_entries.append(format)
 
     manifest = OOtext.manifest % ('\n '.join(image_entries), '\n '.join(xml_entries))
     xml_manifest_list.append(('META-INF/manifest.xml', manifest))
@@ -45,7 +45,7 @@ def main():
     for docname, contents in xml_manifest_list:
         zinfo = zipfile.ZipInfo(docname)
         zip.writestr(zinfo, contents)
-    for name in image_manifest_list:
+    for name, format in image_manifest_list:
         zip.write(name, 'Pictures/' + name)
     zip.close()
 
