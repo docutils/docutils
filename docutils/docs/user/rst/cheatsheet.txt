@@ -24,6 +24,10 @@ Grid table:
 | >>> print 'Doctest block'      |                                   |
 | Doctest block                  | > Quoted                          |
 +--------------------------------+-----------------------------------+
+| | Line blocks preserve line breaks & indents.                      |
+| |     Useful for addresses, verse, and adornment-free lists; long  |
+|       lines can be wrapped with continuation lines.                |
++--------------------------------------------------------------------+
 
 Simple tables:
 
@@ -39,7 +43,7 @@ Option list       -o  at least 2 spaces between option & description
 ================  ====================================================
 
 ================  ====================================================
-Explicit Markup   Examples (only visible in the `text source <cheatsheet.txt>`_)
+Explicit Markup   Examples (visible in the `text source <cheatsheet.txt>`_)
 ================  ====================================================
 Footnote          .. [1] Manually numbered or [#] auto-numbered
                      (even [#labelled]) or [*] auto-symbol
@@ -75,8 +79,6 @@ image             ``.. image:: picture.png``; many options possible
 figure            Like "image", but with optional caption and legend
 topic             ``.. topic:: Title``; like a mini section
 sidebar           ``.. sidebar:: Title``; like a mini parallel document
-line-block        Line breaks and leading whitespace is significant;
-                  useful for addresses & verse
 parsed-literal    A literal block with parsed inline markup
 rubric            ``.. rubric:: Informal Heading``
 epigraph          Block quote with class="epigraph"

@@ -8,6 +8,8 @@
 
     <style type="text/css"><!--
       a.backref { text-decoration: none ; color: black }
+      div.line-block { display: block }
+      div.line-block div.line-block { margin-left: 1.5em }
     --></style>
 
   </head>
@@ -53,6 +55,7 @@
     <li><a href="#field-lists">Field Lists</a></li>
     <li><a href="#option-lists">Option Lists</a></li>
     <li><a href="#literal-blocks">Literal Blocks</a></li>
+    <li><a href="#line-blocks">Line Blocks</a></li>
     <li><a href="#block-quotes">Block Quotes</a></li>
     <li><a href="#doctest-blocks">Doctest Blocks</a></li>
     <li><a href="#tables">Tables</a></li>
@@ -512,20 +515,20 @@
         <table border="0" width="100%">
           <tbody valign="top">
             <tr>
-              <td width="30%"><p><samp>-a</samp>
-              <td><p>command-line option "a"
+              <td width="30%"><samp>-a</samp>
+              <td>command-line option "a"
             <tr>
-              <td><p><samp>-b <i>file</i></samp>
-              <td><p>options can have arguments and long descriptions
+              <td><samp>-b <i>file</i></samp>
+              <td>options can have arguments and long descriptions
             <tr>
-              <td><p><samp>--long</samp>
-              <td><p>options can be long also
+              <td><samp>--long</samp>
+              <td>options can be long also
             <tr>
-              <td><p><samp>--input=<i>file</i></samp>
-              <td><p>long options can also have arguments
+              <td><samp>--input=<i>file</i></samp>
+              <td>long options can also have arguments
             <tr>
-              <td><p><samp>/V</samp>
-              <td><p>DOS/VMS-style options too
+              <td><samp>/V</samp>
+              <td>DOS/VMS-style options too
         </table>
     </table>
 
@@ -619,6 +622,48 @@ unindented literal blocks:
         <pre>
   &gt; Useful for quotes from email and
   &gt; for Haskell literate programming.</pre>
+    </table>
+
+    <h2><a href="#contents" name="line-blocks" class="backref"
+        >Line Blocks</a></h2>
+
+    <p>(<a href="../../ref/rst/restructuredtext.html#line-blocks">details</a>)
+
+    <p><table border="1" width="100%" bgcolor="#ffffcc" cellpadding="3">
+      <thead>
+    <tr align="left" bgcolor="#99CCFF">
+      <th width="50%">Plain text
+      <th width="50%">Typical result
+      </thead>
+      <tbody>
+    <tr valign="top">
+      <td>
+<samp>|&nbsp;Line&nbsp;blocks&nbsp;are&nbsp;useful&nbsp;for&nbsp;addresses,</samp>
+<br><samp>|&nbsp;verse,&nbsp;and&nbsp;adornment-free&nbsp;lists.</samp>
+<br><samp>|</samp>
+<br><samp>|&nbsp;Each&nbsp;new&nbsp;line&nbsp;begins&nbsp;with&nbsp;a</samp>
+<br><samp>|&nbsp;vertical&nbsp;bar&nbsp;("|").</samp>
+<br><samp>|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Line&nbsp;breaks&nbsp;and&nbsp;initial&nbsp;indents</samp>
+<br><samp>|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;are&nbsp;preserved.</samp>
+<br><samp>|&nbsp;Continuation&nbsp;lines&nbsp;are&nbsp;wrapped</samp>
+<br><samp>&nbsp;&nbsp;portions&nbsp;of&nbsp;long&nbsp;lines;&nbsp;they&nbsp;begin</samp>
+<br><samp>&nbsp;&nbsp;with&nbsp;spaces&nbsp;in&nbsp;place&nbsp;of&nbsp;vertical&nbsp;bars.</samp>
+
+      <td>
+        <div class="line-block">
+          <div class="line">Line blocks are useful for addresses,</div>
+          <div class="line">verse, and adornment-free lists.</div>
+          <div class="line"><br /></div>
+          <div class="line">Each new line begins with a</div>
+          <div class="line">vertical bar ("|").</div>
+          <div class="line-block">
+            <div class="line">Line breaks and initial indents</div>
+            <div class="line">are preserved.</div>
+          </div>
+          <div class="line">Continuation lines are wrapped portions
+            of long lines; they begin
+            with spaces in place of vertical bars.</div>
+        </div>
     </table>
 
     <h2><a href="#contents" name="block-quotes" class="backref"
