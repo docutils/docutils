@@ -8,6 +8,7 @@
 #
 # Options:
 #   -p    Run from the project directory.
+#   -t    Run the script in trace mode ("set -o xtrace").
 #   -u    Regenerate .html unconditionally.
 
 projdir=/home/groups/d/do/docutils
