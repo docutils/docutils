@@ -1,0 +1,20 @@
+Test One
+========
+
+Test new |reST| directive parsing
+
+.. image:: missing.gif
+
+.. include:: two.txt
+
+.. raw:: html
+   :file: two.txt
+   
+.. raw:: html
+
+   <span>This is some plain old raw text.</span>
+   <div>Where am I?</div>
+   
+This should be a paragraph.
+
+.. |reST| replace:: reStructured Text
