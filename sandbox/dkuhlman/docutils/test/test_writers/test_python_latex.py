@@ -80,7 +80,7 @@ totest = {}
 
 totest['section_headers'] = [
 # input
-[rest_head + """
+[rest_head + r"""
 Section #1
 ==========
 
@@ -140,7 +140,7 @@ Content for section {\#}2.
 
 totest['enumerated_lists'] = [
 # input
-[rest_head + """
+[rest_head + r"""
 Enumerated List Test Section
 ============================
 
@@ -182,7 +182,7 @@ This is an item.
 
 totest['itemized_lists'] = [
 # input
-[rest_head + """
+[rest_head + r"""
 Itemized List Test Section
 ==========================
 
@@ -223,7 +223,7 @@ This is an item.
 
 totest['links'] = [
 # input
-[rest_head + """
+[rest_head + r"""
 Section #1
 ==========
 
@@ -297,7 +297,7 @@ internal link \ref{subsection-1-1}.
 
 totest['seealso'] = [
 # input
-[rest_head + """
+[rest_head + r"""
 See Also
 ========
 
@@ -319,6 +319,160 @@ latex_head + r"""
 \end{document}
 """],
 ]
+
+
+# ==============================================================
+
+totest['emphasis'] = [
+# input
+[rest_head + r"""
+Section #1
+==========
+
+This section contains *some emphaized text*.
+
+It **also has some bold text**.
+
+""",
+
+# expected output
+latex_head + r"""
+%___________________________________________________________________________
+
+\section{1   Section {\#}1\label{section-1}}
+
+This section contains \emph{some emphaized text}.
+
+It \strong{also has some bold text}.
+
+\end{document}
+"""],
+]
+
+
+# ==============================================================
+
+totest['blockquote'] = [
+# input
+[rest_head + r"""
+Block Quote Test
+================
+
+This section contains a paragraph which is followed by a block
+quote.  The block quote is a simple paragraph that is indented.
+
+    This is the block quoted paragraph.  It has several sentences.
+    These sentences have empty content because they are only a
+    test.  This is a test.  This is a test.  This is a test.  This
+    is a test.  This is a test.  This is a test.
+
+
+Python Iteractive Session Test
+==============================
+
+This section has a Python interactive session.  It is a test.
+Here is the example session.
+
+>>> import sys
+>>> print sys.version
+2.3 (#1, Jul 31 2003, 15:26:15)
+[GCC 3.2.3 20030415 (Debian prerelease)]
+>>> a = [11,22,33]
+>>> for x in a:
+...   print x
+...
+11
+22
+33
+
+
+Literal Block Test
+==================
+
+This section has a literal block.  In Python LaTeX it will be
+formatted in a verbatim environment::
+
+    def remove_lines(self, inStr, targetList):
+        inLines = inStr.splitlines()
+        outLines = []
+        for line in inLines:
+            remove = False
+            for target in targetList:
+                if line.find(target) > -1:
+                    remove = True
+            if not remove:
+                outLines.append(line)
+        outStr = '\n'.join(outLines)
+        return outStr
+
+""",
+
+# expected output
+latex_head + r"""
+%___________________________________________________________________________
+
+\section{1   Block Quote Test\label{block-quote-test}}
+
+This section contains a paragraph which is followed by a block
+quote.  The block quote is a simple paragraph that is indented.
+\begin{quote}
+
+This is the block quoted paragraph.  It has several sentences.
+These sentences have empty content because they are only a
+test.  This is a test.  This is a test.  This is a test.  This
+is a test.  This is a test.  This is a test.
+\end{quote}
+
+
+%___________________________________________________________________________
+
+\section{2   Python Iteractive Session Test\label{python-iteractive-session-test}}
+
+This section has a Python interactive session.  It is a test.
+Here is the example session.
+\begin{verbatim}
+>>> import sys
+>>> print sys.version
+2.3 (#1, Jul 31 2003, 15:26:15)
+[GCC 3.2.3 20030415 (Debian prerelease)]
+>>> a = [11,22,33]
+>>> for x in a:
+...   print x
+...
+11
+22
+33
+\end{verbatim}
+
+
+%___________________________________________________________________________
+
+\section{3   Literal Block Test\label{literal-block-test}}
+
+This section has a literal block.  In Python LaTeX it will be
+formatted in a verbatim environment:
+
+\begin{verbatim}
+def remove_lines(self, inStr, targetList):
+    inLines = inStr.splitlines()
+    outLines = []
+    for line in inLines:
+        remove = False
+        for target in targetList:
+            if line.find(target) > -1:
+                remove = True
+        if not remove:
+            outLines.append(line)
+    outStr = '\n'.join(outLines)
+    return outStr
+\end{verbatim}
+
+\end{document}
+"""],
+]
+
+
+# ==============================================================
 
 if __name__ == '__main__':
     import unittest
