@@ -51,7 +51,7 @@ import docutils.core
 from docutils import frontend, nodes, statemachine, urischemes, utils
 from docutils.transforms import universal
 from docutils.parsers import rst
-from docutils.parsers.rst import states, tableparser, directives, languages
+from docutils.parsers.rst import states, tableparser, roles, languages
 from docutils.readers import standalone, pep, python
 from docutils.statemachine import StringList, string2lines
 
@@ -333,7 +333,7 @@ class ParserTestCase(CustomTestCase):
     parser = rst.Parser()
     """Parser shared by all ParserTestCases."""
 
-    option_parser = frontend.OptionParser(components=(parser,))
+    option_parser = frontend.OptionParser(components=(rst.Parser,))
     settings = option_parser.get_default_values()
     settings.report_level = 5
     settings.halt_level = 5
@@ -343,6 +343,8 @@ class ParserTestCase(CustomTestCase):
         if self.run_in_debugger:
             pdb.set_trace()
         document = utils.new_document('test data', self.settings)
+        # Remove any additions made by "role" directives:
+        roles._roles = {}
         self.parser.parse(self.input, document)
         output = document.pformat()
         self.compare_output(self.input, output, self.expected)
@@ -393,7 +395,7 @@ class PEPParserTestCase(ParserTestCase):
     parser = rst.Parser(rfc2822=1, inliner=pep.Inliner())
     """Parser shared by all PEPParserTestCases."""
 
-    option_parser = frontend.OptionParser(components=(parser, pep.Reader))
+    option_parser = frontend.OptionParser(components=(rst.Parser, pep.Reader))
     settings = option_parser.get_default_values()
     settings.report_level = 5
     settings.halt_level = 5
