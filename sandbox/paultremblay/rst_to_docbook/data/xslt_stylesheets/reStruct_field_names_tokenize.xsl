@@ -1,4 +1,4 @@
-<!--WARNING TO PAUL: DON'T EDIT THIS FILE USE update.py INSTEAD
+<!--WARNING TO PAUL: DON'T EDIT THIS FILE use update.py instead.
 -->
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"

@@ -1,3 +1,4 @@
+..  WARNING TO PAUL: DON'T EDIT THIS FILE use update.py instead.
 Example of reStructure document that can be converted to docbook
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
