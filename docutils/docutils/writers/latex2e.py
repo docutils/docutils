@@ -403,7 +403,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
               '\\newlength{\\docinfowidth}\n',
               '\\setlength{\\docinfowidth}{0.9\\textwidth}\n'
               # linewidth of current environment, so tables are not wider
-              # than the sidebar: using locallinewidth seams to defer evaluation
+              # than the sidebar: using locallinewidth seems to defer evaluation
               # of linewidth, this is fixing it.
               '\\newlength{\\locallinewidth}\n',
               # will be set later.
