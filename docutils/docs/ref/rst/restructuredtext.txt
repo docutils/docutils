@@ -1676,12 +1676,14 @@ Anonymous Hyperlinks
 
 The `World Wide Web Consortium`_ recommends in its `HTML Techniques
 for Web Content Accessibility Guidelines`_ that authors should
-"clearly identify the target of each link." Hyperlink references
+"clearly identify the target of each link."  Hyperlink references
 should be as verbose as possible, but duplicating a verbose hyperlink
 name in the target is onerous and error-prone.  Anonymous hyperlinks
 are designed to allow convenient verbose hyperlink references, and are
 analogous to `Auto-Numbered Footnotes`_.  They are particularly useful
-in short or one-off documents.
+in short or one-off documents.  However, this feature is easily abused
+and can result in unreadable plaintext and/or unmaintainable
+documents.  Caution is advised.
 
 Anonymous `hyperlink references`_ are specified with two underscores
 instead of one::
@@ -1703,7 +1705,10 @@ to its target.  Instead, the order of anonymous hyperlink references
 and targets within the document is significant: the first anonymous
 reference will link to the first anonymous target.  The number of
 anonymous hyperlink references in a document must match the number of
-anonymous targets.
+anonymous targets.  For readability, it is recommended that targets be
+kept close to references.  Take care when editing text containing
+anonymous references; adding, removing, and rearranging references
+require attention to the order of corresponding targets.
 
 
 Directives
