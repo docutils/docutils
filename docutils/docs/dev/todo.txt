@@ -40,10 +40,15 @@ Bugs
   Idea: two-pass hyperlink resolution, ignoring errors on the first
   pass?
 
-- Section headers must have underlines at least 4 characters long.
+- @@@ Section headers must have underlines at least 4 characters long.
   But when the section title is only 3 characters long, it's natural
   to underline with "===" (I just did).  The parser should produce a
   warning in such cases.
+
+  Or should the parser simply recognize such short underlines?  A
+  zero-tolerance policy might work: over/underlines of 3 or fewer
+  characters which are shorter than the "title" text are not
+  recognized as titles, and should generate an "info" message.
 
 - The parser doesn't know anything about double-width characters such
   as Chinese hanza & Japanese kanji/kana.  Also, it's dependent on
@@ -114,6 +119,20 @@ General
   have internal "line" ("lineno"/"line_number") attributes.  Is there
   any way we can get this to happen automagically, without having to
   add the attribute manually to each object?
+
+  Change stderr Reporter output to the GNU urilities format::
+
+      file:line: message
+
+  or the BSD 4.3 cc format::
+
+      file(line): message
+
+  The GNU utilities format doesn't work well on MacOS 9 & earlier,
+  where directory separators are colons.  "filename.txt:1:" looks like
+  a file or directory path.  Does MacOS X still use colons, or has it
+  switched to slashes?  In any case, the ubiquity of the GNU utilities
+  probably overweighs any such problem.
 
 - Standalone Reader: Implement an option to turn off the DocTitle
   transform?
@@ -565,6 +584,19 @@ Directives
   - _`misc.exec`: Execute Python code & insert the results.  Perhaps
     dangerous?
 
+  - _`misc.system`?: Execute an ``os.system()`` call, and insert the
+    results (possibly as a literal block).  Definitely dangerous!  How
+    to make it safe?  Perhaps such processing  should be left outside
+    of the document, in the user's production system (a makefile or a
+    script or whatever).  Or, the directive could be disabled by
+    default and only enabled with an explicit command-line option or
+    config file setting.  Even then, an interactive prompt may be
+    useful, such as:
+    
+        The file.txt document you are processing contains a "system"
+        directive requesting that the ``sudo rm -rf /`` command be
+        executed.  Allow it to execute?  (y/N)
+
   - _`misc.eval`: Evaluate an expression & insert the text.  At parse
     time or at substitution time?  Dangerous?  Perhaps limit to canned
     macros; see text.date_ below.
@@ -791,6 +823,8 @@ HTML Writer
 - Add more support for <link> elements, especially for navigation
   bars.
 
+- ``<meta>`` tags should be XML empty tags: ``<meta />``.
+
 
 Front-End Tools
 ---------------
@@ -1002,7 +1036,8 @@ Additions to Docutils
 Additions to the project, such as new components, should be developed
 in the `sandbox CVS directory`_ until they're in `good shape`_,
 usable_, and `reasonably complete`_.  Adding to the `main source
-tree`_ implies a commitment to the Docutils user community.
+tree`_ or to a `parallel project`_ implies a commitment to the
+Docutils user community.
 
 - Why the sandbox?
 
@@ -1090,6 +1125,47 @@ structure is recommended::
                 setup.py    # Use Distutils to install the component
                             # code and tools/ files into the right
                             # places in Docutils.
+
+Some sandbox projects are destined to become Docutils components once
+completed.  Others, such as add-ons to Docutils or applications of
+Docutils, graduate to become `parallel projects`_.
+
+
+.. _parallel project:
+
+Parallel Projects
+-----------------
+
+Parallel projects contain useful code that is not central to the
+functioning of Docutils.  Examples are specialized add-ons or
+plug-ins, and applications of Docutils.  They use Docutils, but
+Docutils does not require their presence to function.
+
+An official parallel project will have its own CVS directory beside
+(or parallel to) the main Docutils CVS directory.  It can have its own
+web page in the docutils.sourceforge.net domain, its own file releases
+and downloadable CVS snapshots, and even a mailing list if that proves
+useful. However, an official parallel project has implications: it is
+expected to be maintained and continue to work with changes to the
+core Docutils.
+
+A parallel project requires a project leader, who must commit to
+coordinate and maintain the implementation:
+
+* Answer questions from users and developers.
+* Review suggestions, bug reports, and patches.
+* Monitor changes and ensure the quality of the code and
+  documentation.
+* Coordinate with Docutils to ensure interoperability.
+* Put together official project releases.
+
+Of course, related projects may be created independently of Docutils.
+The advantage of a parallel project is that the SourceForge
+environment and the developer and user communities are already
+established.  Core Docutils developers are available for consultation
+and may contribute to the parallel project.  It's easier to keep the
+projects in sync when there are changes made to the core Docutils
+code.
 
 
 Release Checklist
