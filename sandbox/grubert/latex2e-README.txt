@@ -100,7 +100,7 @@ To do
 * footnotes are not all on the same page (as in tools/test.txt) and do not link back
   and forth.
 
-* no link to system errors.	
+* no link to system errors.
 
 * hyperlinks are not hyphenated this leads to bad spacing. see tools/test.txt 
   2.14 directives directives
@@ -145,7 +145,7 @@ ATTENTION
 
   - LaTeX->PDF 
 
-	I've found that the best way to convert from LaTeX to PDF is to use "pdflatex."
+    I've found that the best way to convert from LaTeX to PDF is to use "pdflatex."
     The first time that you run it, you'll find that the produced PDF file doesn't
     include any of your figures.  To fix this, 
 
