@@ -107,6 +107,8 @@ sometimes daily.  (There's also the CVS repository, and a mailing list
 for CVS messages.  See the web site [address above] or spec/notes.txt
 for details.)
 
+.. XXX What shall we do with the reference to spec/notes.txt?  Remove?
+
 
 Requirements
 ============
@@ -152,25 +154,26 @@ Project Files & Directories
 * extras: Directory for third-party modules that Docutils depends on.
   These are only installed if they're not already present.
 
-* docs: The project user documentation directory.  Contains the
-  following documents:
+* docs: The project documentation directory.  Read ``docs/index.txt``
+  for an overview, which is especially interesting for developers.
 
-  - docs/tools.txt: Docutils Front-End Tools
-  - docs/latex.txt: Docutils LaTeX Writer
-  - docs/rst/quickstart.txt: A ReStructuredText Primer
-  - docs/rst/quickref.html: Quick reStructuredText (HTML only)
+* docs/user: The project user documentation directory.  Contains the
+  following documents, among others:
+
+  - docs/user/tools.txt: Docutils Front-End Tools
+  - docs/user/latex.txt: Docutils LaTeX Writer
+  - docs/user/rst/quickstart.txt: A ReStructuredText Primer
+  - docs/user/rst/quickref.html: Quick reStructuredText (HTML only)
+
+* docs/ref: The project reference directory.
+  ``docs/ref/rst/restructuredtext.txt`` is the reStructuredText
+  reference.
 
 * licenses: Directory containing copies of license files for
   non-public-domain files.
 
-* spec: The project specification directory.  Contains PEPs (Python
-  Enhancement Proposals), XML DTDs (document type definitions), and
-  other documents.  The ``spec/rst`` directory contains the
-  reStructuredText specification.  The ``spec/howto`` directory
-  contains How-To documents for developers.
-
-* tools: Directory for Docutils front-end tools.  See docs/tools.txt
-  for documentation.
+* tools: Directory for Docutils front-end tools.  See
+  ``docs/user/tools.txt`` for documentation.
 
 * test: Unit tests.  Not required to use the software, but very useful
   if you're planning to modify it.  See `Running the Test Suite`_
@@ -273,16 +276,13 @@ You may want to begin with the "rst2html.py" front-end tool.  Most
 tools take up to two arguments, the source path and destination path,
 with STDIN and STDOUT being the defaults.  Use the "--help" option to
 the front-end tools for details on options and arguments.  See
-`Docutils Front-End Tools`_ (``docs/tools.txt``) for full
-documentation.
+Docutils Front-End Tools (``docs/user/tools.txt``) for full documentation.
 
 The package modules are continually growing and evolving.  The
 ``docutils.statemachine`` module is usable independently.  It contains
 extensive inline documentation (in reStructuredText format of course).
 
 Contributions are welcome!
-
-.. _Docutils Front-End Tools: docs/tools.html
 
 
 Running the Test Suite
