@@ -167,6 +167,27 @@ Paragraph 3.
         <paragraph>
             Paragraph 3.
 """],
+["""\
+.. |foo| replace:: bar
+
+.. _invisible target:
+
+Title
+=====
+This title should be the document title despite the
+substitution_definition.
+""",
+"""\
+<document id="title" name="title" source="test data">
+    <title>
+        Title
+    <substitution_definition name="foo">
+        bar
+    <target id="invisible-target" name="invisible target">
+    <paragraph>
+        This title should be the document title despite the
+        substitution_definition.
+"""],
 ])
 
 
