@@ -479,6 +479,19 @@ described above, will parse modules without importing them (as with
 `HappyDoc <http://happydoc.sourceforge.net/>`_, which doesn't support
 reStructuredText).
 
+The advantages of parsing over importing are security and flexibility;
+the disadvantage is complexity/difficulty.
+
+* Security: untrusted code that shouldn't be executed can be parsed;
+  importing a module executes its top-level code.
+* Flexibility: comments and unofficial docstrings (those not supported
+  by Python syntax) can only be processed by parsing.
+* Complexity/difficulty: it's a lot harder to parse and analyze a
+  module than it is to ``import`` and analyze one.
+
+For more details, please see "Docstring Extraction Rules" in `PEP
+258`_, item 3 ("How").
+
 
 Miscellaneous
 =============
