@@ -9,9 +9,10 @@
 
 Simple HyperText Markup Language document tree Writer.
 
-The output uses the HTML 4.01 Transitional DTD (*almost* strict) and
-contains a minimum of formatting information. A cascading style sheet
-"default.css" is required for proper viewing with a browser.
+The output conforms to the HTML 4.01 Transitional DTD and to the Extensible
+HTML version 1.0 Transitional DTD (*almost* strict).  The output contains a
+minimum of formatting information.  A cascading style sheet ("default.css" by
+default) is required for proper viewing with a modern graphical browser.
 """
 
 __docformat__ = 'reStructuredText'
@@ -32,9 +33,16 @@ class Writer(writers.Writer):
     cmdline_options = (
         'HTML-Specific Options',
         None,
-        (('Specify a stylesheet file.  Default is "default.css".',
+        (('Specify a stylesheet URL, used verbatim.  Default is '
+          '"default.css".',
           ['--stylesheet'],
-          {'default': 'default.css', 'metavar': '<file>'}),))
+          {'default': 'default.css', 'metavar': '<URL>'}),
+         ('Specify a stylesheet file.  The path is interpreted relative '
+          'to the output HTML file.  Overrides --stylesheet.',
+          ['--stylesheet-path'],
+          {'metavar': '<file>'}),))
+
+    relative_path_options = ('stylesheet_path',)
 
     output = None
     """Final translated form of `document`."""
@@ -115,14 +123,18 @@ class HTMLTranslator(nodes.NodeVisitor):
         nodes.NodeVisitor.__init__(self, document)
         options = document.options
         self.language = languages.get_language(options.language_code)
+        if options.stylesheet_path:
+            stylesheet = utils.relative_path(options._destination,
+                                             options.stylesheet_path)
+        else:
+            stylesheet = options.stylesheet
         self.head_prefix = [
               self.xml_declaration % options.output_encoding,
               self.doctype,
               self.html_head % options.language_code,
               self.content_type % options.output_encoding,
               self.generator,
-              self.stylesheet_link % utils.relative_path(options._destination,
-                                                         options.stylesheet)]
+              self.stylesheet_link % stylesheet]
         self.head = []
         self.body_prefix = ['</head>\n<body>\n']
         self.body_pre_docinfo = []
@@ -582,7 +594,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                     backlinks.append('<a class="fn-backref" href="#%s">%s</a>'
                                      % (backref, i))
                     i += 1
-                self.context.append('(<em>%s</em>) ' % ', '.join(backlinks))
+                self.context.append('<em>(%s)</em> ' % ', '.join(backlinks))
                 self.context.append('<a name="%s">' % node['id'])
         else:
             self.context.append('')
@@ -875,20 +887,22 @@ class HTMLTranslator(nodes.NodeVisitor):
         if node.hasattr('backrefs'):
             backrefs = node['backrefs']
             if len(backrefs) == 1:
-                attr['href'] = '#' + backrefs[0]
+                backref_text = ('; <em><a href="#%s">backlink</a></em>'
+                                % backrefs[0])
             else:
                 i = 1
                 backlinks = []
                 for backref in backrefs:
                     backlinks.append('<a href="#%s">%s</a>' % (backref, i))
                     i += 1
-                backref_text = '; <em>%s</em>' % ', '.join(backlinks)
+                backref_text = ('; <em>backlinks: %s</em>'
+                                % ', '.join(backlinks))
         if attr:
             a_start = self.starttag({}, 'a', '', **attr)
             a_end = '</a>'
         else:
             a_start = a_end = ''
-        self.body.append('System Message: %s%s/%s%s (<tt>%s</tt>%s)</p>\n'
+        self.body.append('System Message: %s%s/%s%s (<tt>%s</tt>)%s</p>\n'
                          % (a_start, node['type'], node['level'], a_end,
                             node['source'], backref_text))
 
