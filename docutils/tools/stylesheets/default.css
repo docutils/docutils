@@ -24,6 +24,11 @@ blockquote.epigraph {
 dd {
   margin-bottom: 0.5em }
 
+/* Uncomment (& remove this text!) to get bold-faced definition list terms
+dt {
+  font-weight: bold }
+*/
+
 div.abstract {
   margin: 2em 5em }
 
