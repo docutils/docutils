@@ -604,6 +604,30 @@ Let's reference it (`explicit target`_) to avoid an irrelevant error.
                 explicit target
             ) to avoid an irrelevant error.
 """],
+["""\
+target1_ should refer to target2_, not the Title.
+
+.. _target1:
+.. _target2: URI
+
+Title
+=====
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <reference name="target1" refuri="URI">
+            target1
+         should refer to \n\
+        <reference name="target2" refuri="URI">
+            target2
+        , not the Title.
+    <target id="target1" name="target1" refuri="URI">
+    <target id="target2" name="target2" refuri="URI">
+    <section id="title" name="title">
+        <title>
+            Title
+"""],
 ])
 
 
