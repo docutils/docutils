@@ -189,6 +189,14 @@ Field Lists
     The field body may contain one or more body elements, indented
     relative to the field marker.
 
+:credits:
+
+    .. class:: credits
+
+    This paragraph has the `credits` class set.  (This is actually not
+    about credits but just for ensuring that the class attribute
+    doesn't get stripped away.)
+
 Option Lists
 ------------
 

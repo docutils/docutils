@@ -966,10 +966,12 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_paragraph(self, node):
         # Omit <p> tags if this is an only child and optimizable.
-        if (self.compact_simple or
-            self.compact_p and (len(node.parent) == 1 or
-                                len(node.parent) == 2 and
-                                isinstance(node.parent[0], nodes.label))):
+        if ((node.attributes in ({}, {'class': 'first'}, {'class': 'last'},
+                                 {'class': 'first last'})) and
+            (self.compact_simple or
+             self.compact_p and (len(node.parent) == 1 or
+                                 len(node.parent) == 2 and
+                                 isinstance(node.parent[0], nodes.label)))):
             self.context.append('')
         else:
             self.body.append(self.starttag(node, 'p', ''))
