@@ -37,7 +37,7 @@ import ConfigParser as CP
 import codecs
 import docutils
 import optparse
-from optparse import Values, SUPPRESS_HELP
+from optparse import SUPPRESS_HELP
 
 
 def store_multiple(option, opt, value, parser, *args, **kwargs):
