@@ -625,7 +625,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # insert_newline: to tell encode to add latex newline.
         self.insert_newline = 0
         # mbox_newline: to tell encode to add mbox and newline.
-        self.mbox_newline = 0
+        # XXX This is not needed anymore and will be deleted soon,
+        # if nobody complains.
+        self.mbox_newline = 0   
 
         # enumeration is done by list environment.
         self._enum_cnt = 0
@@ -758,6 +760,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 closings = ""
                 openings = ""
             text = text.replace("\n", "%s}\\\\\n\\mbox{%s" % (closings,openings))
+        else:
+            text = text.replace("\n", "\\\\\n")
         if self.insert_none_breaking_blanks:
             text = text.replace(' ', '~')
         # unicode !!!
@@ -1411,8 +1415,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         blocks of text, where the inline markup is not recognized,
         but are also the product of the parsed-literal directive,
         where the markup is respected.
-        
-        mbox stops LaTeX from wrapping long lines.
         """
         # In both cases, we want to use a typewriter/monospaced typeface.
         # For "real" literal-blocks, we can use \verbatim, while for all
@@ -1422,7 +1424,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # siblings the compose this node: if it is composed by a
         # single element, it's surely is either a real one, otherwise
         # it's a parsed-literal that does not contain any markup.
-        # 
+        #
         if (self.settings.use_verbatim_when_possible and (len(node) == 1)
               # in case of a parsed-literal containing just a "**bold**" word:
               and isinstance(node[0], nodes.Text)):
@@ -1431,12 +1433,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             self.literal_block = 1
             self.insert_none_breaking_blanks = 1
-            self.body.append('\\begin{ttfamily}')
-            if self.active_table.is_open():
-                self.body.append('\\raggedright\n')
-            else:    
-                self.body.append('\\begin{flushleft}\n')
-            self.mbox_newline = 1
+            self.body.append('\n{\\ttfamily \\raggedright \\noindent\n')
+            self.mbox_newline = 0
             if self.mbox_newline:
                 self.body.append('\\mbox{')
             # * obey..: is from julien and never worked for me (grubert).
@@ -1449,10 +1447,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             if self.mbox_newline:
                 self.body.append('}')
-            self.body.append('\n')
-            if not self.active_table.is_open():
-                self.body.append('\\end{flushleft}')
-            self.body.append('\\end{ttfamily}\n')
+            self.body.append('\n}\n')
             self.insert_none_breaking_blanks = 0
             self.mbox_newline = 0
             # obey end: self.body.append('}\n')
