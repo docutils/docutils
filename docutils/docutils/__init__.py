@@ -1,5 +1,5 @@
 # Author: David Goodger
-# Contact: goodger@users.sourceforge.net
+# Contact: goodger@python.org
 # Revision: $Revision$
 # Date: $Date$
 # Copyright: This module has been placed in the public domain.
@@ -76,7 +76,7 @@ class SettingsSpec:
     settings_spec = ()
     """Runtime settings specification.  Override in subclasses.
 
-    Specifies runtime settings and associated command-line options, as used by
+    Defines runtime settings and associated command-line options, as used by
     `docutils.frontend.OptionParser`.  This tuple contains one or more sets of
     option group title, description, and a list/tuple of tuples: ``('help
     text', [list of option strings], {keyword arguments})``.  Group title
@@ -90,8 +90,9 @@ class SettingsSpec:
     "dest" keyword argument."""
 
     settings_defaults = None
-    """A dictionary of defaults for internal or inaccessible (by command-line
-    or config file) settings.  Override in subclasses."""
+    """A dictionary of defaults for settings not in `settings_spec` (internal
+    settings, intended to be inaccessible by command-line and config file).
+    Override in subclasses."""
 
     settings_default_overrides = None
     """A dictionary of auxiliary defaults, to override defaults for settings
