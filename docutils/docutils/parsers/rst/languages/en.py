@@ -44,3 +44,33 @@ directives = {
       'restructuredtext-test-directive': 'restructuredtext-test-directive'}
 """English name to registered (in directives/__init__.py) directive name
 mapping."""
+
+roles = {
+    'abbreviation': 'abbreviation',
+    'ab': 'abbreviation',
+    'acronym': 'acronym',
+    'ac': 'acronym',
+    'index': 'index',
+    'i': 'index',
+    'title-reference': 'title-reference',
+    'title': 'title-reference',
+    't': 'title-reference',
+    'pep-reference': 'pep-reference',
+    'pep': 'pep-reference',
+    'rfc-reference': 'rfc-reference',
+    'rfc': 'rfc-reference',
+    'emphasis': 'emphasis',
+    'strong': 'strong',
+    'literal': 'literal',
+    'named-reference': 'named-reference',
+    'anonymous-reference': 'anonymous-reference',
+    'footnote-reference': 'footnote-reference',
+    'citation-reference': 'citation-reference',
+    'substitution-reference': 'substitution-reference',
+    'target': 'target',
+    'uri-reference': 'uri-reference',
+    'uri': 'uri-reference',
+    'url': 'uri-reference',
+    }
+"""Mapping of English role names to canonical role names for interpreted text.
+"""
