@@ -80,6 +80,8 @@ Changes Since 0.3.3
 * docutils/core.py:
 
   - Added special error handling & advice for UnicodeEncodeError.
+  - Refactored Publisher.publish (simplified exception handling &
+    extracted debug dumps).
 
 * docutils/frontend.py:
 
