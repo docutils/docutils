@@ -70,7 +70,9 @@ Future Plans
 Changes Since 0.3.3
 ===================
 
-(None yet.)
+* docutils/__init__.py:
+
+  - 0.3.4: Post-release.
 
 
 Release 0.3.3 (2004-05-09)
@@ -82,6 +84,7 @@ Release 0.3.3 (2004-05-09)
     docs/config.txt.
   - Added unknown_reference_resolvers attribute to TransformSpec.
   - 0.3.2: Interpreted text reorganization.
+  - 0.3.3: Released.
 
 * docutils/core.py:
 
