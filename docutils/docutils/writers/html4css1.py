@@ -704,6 +704,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.footnote_backrefs(node)
 
     def footnote_backrefs(self, node):
+        backlinks = []
         if self.settings.footnote_backlinks and node.hasattr('backrefs'):
             backrefs = node['backrefs']
             if len(backrefs) == 1:
@@ -712,7 +713,6 @@ class HTMLTranslator(nodes.NodeVisitor):
                                     'name="%s">' % (backrefs[0], node['id']))
             else:
                 i = 1
-                backlinks = []
                 for backref in backrefs:
                     backlinks.append('<a class="fn-backref" href="#%s">%s</a>'
                                      % (backref, i))
@@ -722,6 +722,13 @@ class HTMLTranslator(nodes.NodeVisitor):
         else:
             self.context.append('')
             self.context.append('<a name="%s">' % node['id'])
+        # If the node does not only consist of a label.
+        if len(node) > 1:
+            # If there are preceding backlinks, we do not set class
+            # 'first', because we need to retain the top-margin.
+            if not backlinks:
+                node[1].set_class('first')
+            node[-1].set_class('last')
 
     def depart_footnote(self, node):
         self.body.append('</td></tr>\n'
