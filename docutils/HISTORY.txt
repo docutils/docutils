@@ -22,6 +22,8 @@ Changes Since 0.3.7
 * docutils/parsers/rst/states.py:
 
   - Added check for escaped at-mark to prevent email address recognition.
+  - Fixed option lists to allow spaces inside ``<angle-bracketed option
+    arguments>``.
 
 * docutils/parsers/rst/directives/misc.py:
 
