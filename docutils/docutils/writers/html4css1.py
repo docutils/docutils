@@ -838,7 +838,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                     i += 1
                 backref_text = '%s; ' % ', '.join(backlinks)
         if attr:
-            self.body.append(self.starttag({}, 'a', attr, ''))
+            self.body.append(self.starttag({}, 'a', '', attr))
             a_end = '</a>'
         self.body.append('%s%s (%slevel %s system message)</p>\n'
                          % (node['type'], a_end, backref_text,
