@@ -41,23 +41,37 @@ class Writer(writers.Writer):
 
 class HTMLTranslator(nodes.NodeVisitor):
 
+    xml_declaration = '<?xml version="1.0" encoding="UTF-8"?>\n'
+    doctype = '<!DOCTYPE html' \
+              ' PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"' \
+              ' SYSTEM "http://www.w3.org/TR/xhtml1/DTD/' \
+              'xhtml1-transitional.dtd">\n'
+    html_head = '<html lang="%s">\n<head>\n'
+    content_type = '<meta http-equiv=Content-Type content="text/html; ' \
+                   'charset=UTF-8">\n',
+    stylesheet_link = '<link rel="stylesheet" href="default.css"' \
+                      ' type="text/css" />\n']
+
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
-        self.language = languages.getlanguage(document.language_code)
-        self.head = ['<!DOCTYPE html PUBLIC'
-                     ' "-//W3C//DTD HTML 4.01 Transitional//EN"\n'
-                     ' "http://www.w3.org/TR/html4/loose.dtd">\n',
-                     '<html lang="%s">\n<head>\n' % document.language_code,
-                     '<link rel="stylesheet" href="default.css"'
-                     ' type="text/css" />\n']
-        self.body = ['</head>\n<body>\n']
-        self.foot = ['</body>\n</html>\n']
+        self.language = languages.get_language(document.language_code)
+        self.head_prefix = [
+              self.xml_declaration,     # @@@ % output_encoding
+              self.doctype,
+              self.html_head % document.language_code,
+              self.content_type,        # @@@ % output encoding
+              self.stylesheet_link]     # @@@ % stylesheet
+        self.head = []
+        self.body_prefix = ['</head>\n<body>\n']
+        self.body = []
+        self.body_suffix = ['</body>\n</html>\n']
         self.sectionlevel = 0
         self.context = []
         self.topic_class = ''
 
     def astext(self):
-        return ''.join(self.head + self.body + self.foot)
+        return ''.join(self.head_prefix + self.head
+                       + self.body_prefix + self.body + self.body_suffix)
 
     def encode(self, text):
         """Encode special characters in `text` & return."""
@@ -290,7 +304,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_doctest_block(self, node):
         self.body.append(self.starttag(node, 'pre', suffix='',
-            CLASS='doctest-block'))
+                                       CLASS='doctest-block'))
 
     def depart_doctest_block(self, node):
         self.body.append('</pre>\n')
@@ -481,7 +495,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_literal_block(self, node):
         self.body.append(self.starttag(node, 'pre', suffix='',
-            CLASS='literal-block'))
+                                       CLASS='literal-block'))
 
     def depart_literal_block(self, node):
         self.body.append('</pre>\n')
