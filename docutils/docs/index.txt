@@ -14,7 +14,7 @@ are also distributed with the `latest project release package`__, but
 those may not be completely up to date.
 
 __ http://docutils.sourceforge.net/#development-snapshots
-__ http://docutils.sourceforge.net/#latest-project-release-package
+__ http://docutils.sourceforge.net/#project-releases
 
 
 .. contents::
