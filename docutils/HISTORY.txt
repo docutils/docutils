@@ -161,6 +161,10 @@ Specific:
 * test/functional/, contents, and test/test_functional.py: Added to
   project.
 
+* tools/html.py: Removed from project.
+
+* setup.py: Now also installs ``rst2latex.py``.
+
 
 Release 0.3.3 (2004-05-09)
 ==========================
