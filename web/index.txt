@@ -154,7 +154,7 @@ past project releases can be downloaded from the `project files
 page`_.  This release fixes many bugs, adds some features, and is
 highly recommended over prior versions.
 
-Major changes since Docutils 0.3.3
+Major changes since Docutils 0.3.3:
 
 * improved, extended and reorganized documentation_
 * new csv-table_ directive
