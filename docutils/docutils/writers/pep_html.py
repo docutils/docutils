@@ -14,8 +14,8 @@ __docformat__ = 'reStructuredText'
 
 
 import sys
-import random
-from docutils import nodes
+#import random
+from docutils import nodes, optik
 from docutils.writers import html4css1
 
 
@@ -35,7 +35,9 @@ class Writer(html4css1.Writer):
           {'default': '..', 'metavar': '<URL>'}),
          ('Home URL for this PEP.  Default is "." (current directory).',
           ['--pep-home'],
-          {'default': '.', 'metavar': '<URL>'}),))
+          {'default': '.', 'metavar': '<URL>'}),
+         (optik.SUPPRESS_HELP, ['--no-random'],
+          {'action': 'store_true'}),))
 
     def __init__(self):
         html4css1.Writer.__init__(self)
@@ -55,7 +57,11 @@ class Writer(html4css1.Writer):
         index = self.document.first_child_matching_class(nodes.field_list)
         header = self.document[index]
         pep = header[0][1].astext()
-        banner = random.randrange(64)
+        if options.no_random:
+            banner = 0
+        else:
+            import random
+            banner = random.randrange(64)
         try:
             pepnum = '%04i' % int(pep)
         except:
