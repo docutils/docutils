@@ -276,6 +276,23 @@ Testing relative includes:
             test_include.py
         .
 """],
+["""\
+Encoding:
+
+.. include:: utf-16.csv
+   :encoding: utf-16
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        Encoding:
+    <paragraph>
+        "Treat", "Quantity", "Description"
+        "Albatr\xb0\xdf", 2.99, "\xa1On a \\u03c3\\u03c4\\u03b9\\u03ba!"
+        "Crunchy Frog", 1.49, "If we took the b\xf6nes out, it wouldn\\u2019t be
+        crunchy, now would it?"
+        "Gannet Ripple", 1.99, "\xbfOn a \\u03c3\\u03c4\\u03b9\\u03ba?"
+"""],
 # @@@ BUG with errors reported with incorrect "source" & "line":
 # ["""\
 # Testing bad charent includes:
