@@ -53,15 +53,33 @@ in unimplemented.
 Methods
 =======
 
+Empty methods
+-------------
+
+It is legal and does not hint to missing functionality, when a
+method only implements pass, it just means that this calls information
+is not used, the actual content is usually produced between visit_
+and depart_ calls. e.g.::
+
+    def visit_Text(self, node):
+        self.body.append(self.encode(node.astext()))
+
+    def depart_Text(self, node):
+        pass
+
+As long as there is no need for termination depart_Text is ok.
+
 Fallback methods
 ----------------
 
 If derived from NodeVisitor
+
 * unknown_visit, unknown_departure
 
 Deriving from SparseNodeVisitor means everything might pass.
 
 GenericNodeVisitor adds 
+
 * default_visit, default_depart.
 
 unimplemented_visit( self, node) seams to be there for both.
@@ -73,6 +91,7 @@ General Problems
 
 html pages are more like papyrus rolls, if one wants to go more usual
 paper formats some things are different or not.
+
 * page headings
 * page numbers
 

@@ -7,7 +7,18 @@ Rev. 2002-11-12
 
 To do
 ~~~~~
-mostly errors when processing tools/test.txt.
+
+* consider peter funk's hooks for TeXpert:
+  
+  * Define his own document preamble (including the choice to
+    choose his own documentclass.  That would make the ``--documentclass``
+    option superfluous).  I suggest to call this option ``--preamble``
+
+  * Use two additional hooks to put additional stuff just behind the 
+    ``\begin{document}`` and just before the ``\end{document}`` macros.
+    Typical uses would be ``\tableofcontents``, ``\listoffigures`` and
+    ``\appendix``, ``\makeindex``, ``\makeglossary`` and some such 
+    for larger documents.
 
 * sometimes tables have no thead ? (local test unlaut)
 
