@@ -15,9 +15,9 @@ def do_setup():
           license = 'public domain, Python (see COPYING.txt)',
           packages = ['docutils', 'docutils.readers', 'docutils.writers',
                       'docutils.transforms', 'docutils.languages', 
-                      'docutils.parsers', 'docutils.parsers.restructuredtext',
-                      'docutils.parsers.restructuredtext.directives',
-                      'docutils.parsers.restructuredtext.languages'])
+                      'docutils.parsers', 'docutils.parsers.rst',
+                      'docutils.parsers.rst.directives',
+                      'docutils.parsers.rst.languages'])
     return dist
 
 if __name__ == '__main__' :
