@@ -1108,6 +1108,9 @@ least important):
 * 4 spaces per indentation level.  No tabs.  Indent continuation lines
   according to the Emacs python-mode standard.
 
+* Use only ASCII, no 8-bit strings.  See `Docutils
+  Internationalization`_.
+
 * No one-liner compound statements (i.e., no ``if x: return``: use two
   lines & indentation), except for degenerate class or method
   definitions (i.e., ``class X: pass`` is O.K.).
@@ -1131,6 +1134,7 @@ least important):
 .. _Style Guide for Python Code:
    http://www.python.org/peps/pep-0008.html
 .. _Docstring Conventions: http://www.python.org/peps/pep-0257.html
+.. _Docutils Internationalization: howto/i18n.html#python-code
 
 
 Copyrights and Licensing
