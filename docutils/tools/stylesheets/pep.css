@@ -33,10 +33,10 @@ Default cascading style sheet for the PEP HTML output of Docutils.
   margin-right: 0.5em ;
   margin-bottom: 0em }
 
-.rfc2822 div.field-body {
+.rfc2822 td {
   text-align: left }
 
-.rfc2822 th.field-name {
+.rfc2822 th {
   text-align: right ;
   font-family: sans-serif ;
   padding-right: 0.5em ;
