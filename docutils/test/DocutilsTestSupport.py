@@ -58,6 +58,8 @@ from docutils.statemachine import StringList, string2lines
 
 try:
     from docutils.readers.python import moduleparser
+    from tokenize import generate_tokens
+    del generate_tokens
 except ImportError:      # moduleparser depends on modules added in Python 2.2
     moduleparser = None
 
