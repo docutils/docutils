@@ -356,7 +356,64 @@ context.
 ``attention``
 =============
 
-`To be completed`_.
+The ``attention`` element is an admonition, a distinctive and
+self-contained notice.  Also see the other admonition elements
+Docutils offers (in alphabetical order): caution_, danger_, error_,
+hint_, important_, note_, tip_, warning_.
+
+
+Details
+-------
+
+:Category:
+    `Compound Body Elements`_
+
+:Parents:
+    All elements employing the `%body.elements;`_ or
+    `%structure.model;`_ parameter entities in their content models
+    may contain ``attention``.
+
+:Children:
+    ``attention`` elements contain one or more `body elements`_.
+
+:Analogues:
+    ``attention`` has no direct analogues in common DTDs.  It can be
+    emulated with primitives and type effects.
+
+:Processing:
+    Rendered distinctly (inset and/or in a box, etc.), with the
+    generated title "Attention!" (or similar).
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+   (`%body.elements;`_)+
+
+:Attributes:
+    The ``attention`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+:Parameter Entities:
+    The `%body.elements;`_ parameter entity directly includes
+    ``attention``.  The `%structure.model;`_ parameter entity
+    indirectly includes ``attention``.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    .. Attention:: All your base are belong to us.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <attention>
+        <paragraph>
+            All your base are belong to us.
 
 
 ``author``
@@ -500,7 +557,70 @@ context.
 ``block_quote``
 ===============
 
-`To be completed`_.
+The ``block_quote`` element is used for quotations set off from the
+main text (standalone).
+
+
+Details
+-------
+
+:Category:
+    `Compound Body Elements`_
+
+:Parents:
+    All elements employing the `%body.elements;`_ or
+    `%structure.model;`_ parameter entities in their content models
+    may contain ``block_quote``.
+
+:Children:
+    ``block_quote`` elements may contain `body elements`_.
+
+:Analogues:
+    ``block_quote`` is analogous to the "blockquote" element in both
+    HTML and DocBook.
+
+:Processing:
+    ``block_quote`` elements serve to set their contents off from the
+    main text, typically with indentation and/or other decoration.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+   (`%body.elements;`_)+
+
+:Attributes:
+    The ``block_quote`` element contains only the `common
+    attributes`_: id_, name_, dupname_, source_, and class_.
+
+:Parameter Entities:
+    The `%body.elements;`_ parameter entity directly includes
+    ``block_quote``.  The `%structure.model;`_ parameter entity
+    indirectly includes ``block_quote``.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    As a great paleontologist once said,
+
+        This theory, that is mine, is mine.
+
+        -- Anne Elk (Miss)
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <paragraph>
+        As a great paleontologist once said,
+    <block_quote>
+        <paragraph>
+            This theory, that is mine, is mine.
+        <paragraph>
+            -- Anne Elk (Miss)
 
 
 ``bullet_list``
@@ -594,7 +714,63 @@ See list_item_ for another example.
 ``caution``
 ===========
 
-`To be completed`_.
+The ``caution`` element is an admonition, a distinctive and
+self-contained notice.  Also see the other admonition elements
+Docutils offers (in alphabetical order): attention_, danger_, error_,
+hint_, important_, note_, tip_, warning_.
+
+
+Details
+-------
+
+:Category:
+    `Compound Body Elements`_
+
+:Parents:
+    All elements employing the `%body.elements;`_ or
+    `%structure.model;`_ parameter entities in their content models
+    may contain ``caution``.
+
+:Children:
+    ``caution`` elements contain one or more `body elements`_.
+
+:Analogues:
+    ``caution`` is analogous to the DocBook "caution" element.
+
+:Processing:
+    Rendered distinctly (inset and/or in a box, etc.), with the
+    generated title "Caution" (or similar).
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+   (`%body.elements;`_)+
+
+:Attributes:
+    The ``caution`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+:Parameter Entities:
+    The `%body.elements;`_ parameter entity directly includes
+    ``caution``.  The `%structure.model;`_ parameter entity
+    indirectly includes ``caution``.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    .. Caution:: Don't take any wooden nickels.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <caution>
+        <paragraph>
+            Don't take any wooden nickels.
 
 
 ``citation``
@@ -829,7 +1005,64 @@ context.
 ``danger``
 ==========
 
-`To be completed`_.
+The ``danger`` element is an admonition, a distinctive and
+self-contained notice.  Also see the other admonition elements
+Docutils offers (in alphabetical order): attention_, caution_, error_,
+hint_, important_, note_, tip_, warning_.
+
+
+Details
+-------
+
+:Category:
+    `Compound Body Elements`_
+
+:Parents:
+    All elements employing the `%body.elements;`_ or
+    `%structure.model;`_ parameter entities in their content models
+    may contain ``danger``.
+
+:Children:
+    ``danger`` elements contain one or more `body elements`_.
+
+:Analogues:
+    ``danger`` has no direct analogues in common DTDs.  It can be
+    emulated with primitives and type effects.
+
+:Processing:
+    Rendered distinctly (inset and/or in a box, etc.), with the
+    generated title "!DANGER!" (or similar).
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+   (`%body.elements;`_)+
+
+:Attributes:
+    The ``danger`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+:Parameter Entities:
+    The `%body.elements;`_ parameter entity directly includes
+    ``danger``.  The `%structure.model;`_ parameter entity
+    indirectly includes ``danger``.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    .. DANGER:: Mad scientist at work!
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <danger>
+        <paragraph>
+            Mad scientist at work!
 
 
 ``date``
@@ -1328,7 +1561,78 @@ see the individual examples for the various `bibliographic elements`_.
 ``doctest_block``
 =================
 
-`To be completed`_.
+The ``doctest_block`` element is a Python-specific variant of
+literal_block_.  It is a block of text where line breaks and
+whitespace are significant and must be preserved.  ``doctest_block``
+elements are used for interactive Python interpreter sessions, which
+are distinguished by their input prompt: ``>>>``.  They are meant to
+illustrate usage by example, and provide an elegant and powerful
+testing environment via the `doctest module`_ in the Python standard
+library.
+
+.. _doctest module:
+   http://www.python.org/doc/current/lib/module-doctest.html
+
+
+Details
+-------
+
+:Category:
+    `Simple Body Elements`_
+
+:Parents:
+    All elements employing the `%body.elements;`_ or
+    `%structure.model;`_ parameter entities in their content models
+    may contain ``doctest_block``.
+
+:Children:
+    ``doctest_block`` elements may contain text data plus `inline
+    elements`_.
+
+:Analogues:
+    ``doctest_block`` is analogous to the HTML "pre" element and to
+    the DocBook "programlisting" and "screen" elements.
+
+:Processing:
+    As with literal_block_, ``doctest_block`` elements are typically
+    rendered in a monospaced typeface.  It is crucial that all
+    whitespace and line breaks are preserved in the rendered form.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+   `%text.model;`_
+
+:Attributes:
+    The ``doctest_block`` element contains the `common attributes`_
+    (id_, name_, dupname_, source_, and class_), plus `xml:space`_.
+
+:Parameter Entities:
+    The `%body.elements;`_ parameter entity directly includes
+    ``doctest_block``.  The `%structure.model;`_ parameter entity
+    indirectly includes ``doctest_block``.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    This is an ordinary paragraph.
+
+    >>> print 'this is a Doctest block'
+    this is a Doctest block
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <paragraph>
+        This is an ordinary paragraph.
+    <doctest_block xml:space="preserve">
+        >>> print 'this is a Doctest block'
+        this is a Doctest block
 
 
 ``document``
@@ -1536,7 +1840,64 @@ See list_item_ for another example.
 ``error``
 =========
 
-`To be completed`_.
+The ``error`` element is an admonition, a distinctive and
+self-contained notice.  Also see the other admonition elements
+Docutils offers (in alphabetical order): attention_, caution_,
+danger_, hint_, important_, note_, tip_, warning_.
+
+
+Details
+-------
+
+:Category:
+    `Compound Body Elements`_
+
+:Parents:
+    All elements employing the `%body.elements;`_ or
+    `%structure.model;`_ parameter entities in their content models
+    may contain ``error``.
+
+:Children:
+    ``error`` elements contain one or more `body elements`_.
+
+:Analogues:
+    ``error`` has no direct analogues in common DTDs.  It can be
+    emulated with primitives and type effects.
+
+:Processing:
+    Rendered distinctly (inset and/or in a box, etc.), with the
+    generated title "Error" (or similar).
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+   (`%body.elements;`_)+
+
+:Attributes:
+    The ``error`` element contains only the `common attributes`_: id_,
+    name_, dupname_, source_, and class_.
+
+:Parameter Entities:
+    The `%body.elements;`_ parameter entity directly includes
+    ``error``.  The `%structure.model;`_ parameter entity indirectly
+    includes ``error``.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    .. Error:: Does not compute.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <error>
+        <paragraph>
+            Does not compute.
 
 
 ``field``
@@ -1900,7 +2261,64 @@ None.
 ``hint``
 ========
 
-`To be completed`_.
+The ``hint`` element is an admonition, a distinctive and
+self-contained notice.  Also see the other admonition elements
+Docutils offers (in alphabetical order): attention_, caution_,
+danger_, error_, important_, note_, tip_, warning_.
+
+
+Details
+-------
+
+:Category:
+    `Compound Body Elements`_
+
+:Parents:
+    All elements employing the `%body.elements;`_ or
+    `%structure.model;`_ parameter entities in their content models
+    may contain ``hint``.
+
+:Children:
+    ``hint`` elements contain one or more `body elements`_.
+
+:Analogues:
+    ``hint`` has no direct analogues in common DTDs.  It can be
+    emulated with primitives and type effects.
+
+:Processing:
+    Rendered distinctly (inset and/or in a box, etc.), with the
+    generated title "Hint" (or similar).
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+   (`%body.elements;`_)+
+
+:Attributes:
+    The ``hint`` element contains only the `common attributes`_: id_,
+    name_, dupname_, source_, and class_.
+
+:Parameter Entities:
+    The `%body.elements;`_ parameter entity directly includes
+    ``hint``.  The `%structure.model;`_ parameter entity indirectly
+    includes ``hint``.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    .. Hint:: It's bigger than a bread box.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <hint>
+        <paragraph>
+            It's bigger than a bread box.
 
 
 ``image``
@@ -1912,7 +2330,79 @@ None.
 ``important``
 =============
 
-`To be completed`_.
+The ``important`` element is an admonition, a distinctive and
+self-contained notice.  Also see the other admonition elements
+Docutils offers (in alphabetical order): attention_, caution_,
+danger_, error_, hint_, note_, tip_, warning_.
+
+
+Details
+-------
+
+:Category:
+    `Compound Body Elements`_
+
+:Parents:
+    All elements employing the `%body.elements;`_ or
+    `%structure.model;`_ parameter entities in their content models
+    may contain ``important``.
+
+:Children:
+    ``important`` elements contain one or more `body elements`_.
+
+:Analogues:
+    ``important`` is analogous to the DocBook "important" element.
+
+:Processing:
+    Rendered distinctly (inset and/or in a box, etc.), with the
+    generated title "Important" (or similar).
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+   (`%body.elements;`_)+
+
+:Attributes:
+    The ``important`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+:Parameter Entities:
+    The `%body.elements;`_ parameter entity directly includes
+    ``important``.  The `%structure.model;`_ parameter entity
+    indirectly includes ``important``.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    .. Important::
+
+       * Wash behind your ears.
+       * Clean up your room.
+       * Back up your data.
+       * Call your mother.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <important>
+        <bullet_list>
+            <list_item>
+                <paragraph>
+                    Wash behind your ears.
+            <list_item>
+                <paragraph>
+                    Clean up your room.
+            <list_item>
+                <paragraph>
+                    Back up your data.
+            <list_item>
+                <paragraph>
+                    Call your mother.
 
 
 ``interpreted``
@@ -1936,7 +2426,98 @@ None.
 ``line_block``
 ==============
 
-`To be completed`_.
+The ``line_block`` element contains a block of text where line breaks
+and whitespace are significant and must be preserved.  ``line_block``
+elements are commonly used for verse and addresses.  See `line_block`_
+for an alternative useful for program listings and interactive
+computer sessions.
+
+
+Details
+-------
+
+:Category:
+    `Simple Body Elements`_
+
+:Parents:
+    All elements employing the `%body.elements;`_ or
+    `%structure.model;`_ parameter entities in their content models
+    may contain ``line_block``.
+
+:Children:
+    ``line_block`` elements may contain text data plus `inline
+    elements`_.
+
+:Analogues:
+    ``line_block`` is analogous to the DocBook "literallayout" element
+    and to the HTML "pre" element (with modifications to typeface
+    styles).
+
+:Processing:
+    Unline ``literal_block``, ``line_block`` elements are typically
+    rendered in an ordinary text typeface.  It is crucial that all
+    whitespace and line breaks are preserved in the rendered form.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+   `%text.model;`_
+
+:Attributes:
+    The ``line_block`` element contains the `common attributes`_ (id_,
+    name_, dupname_, source_, and class_), plus `xml:space`_.
+
+:Parameter Entities:
+    The `%body.elements;`_ parameter entity directly includes
+    ``line_block``.  The `%structure.model;`_ parameter entity
+    indirectly includes ``line_block``.
+
+
+Examples
+--------
+
+reStructuredText uses a directive to indicate a ``line_block``.
+Example source::
+
+    Take it away, Eric the Orchestra Leader!
+
+    .. line-block::
+
+       A one, two, a one two three four
+
+       Half a bee, philosophically,
+           must, *ipso facto*, half not be.
+       But half the bee has got to be,
+           *vis a vis* its entity.  D'you see?
+
+       But can a bee be said to be
+           or not to be an entire bee,
+               when half the bee is not a bee,
+                   due to some ancient injury?
+
+       Singing...
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <paragraph>
+        Take it away, Eric the Orchestra Leader!
+    <line_block xml:space="preserve">
+        A one, two, a one two three four
+
+        Half a bee, philosophically,
+            must, <emphasis>ipso facto</emphasis>, half not be.
+        But half the bee has got to be,
+            <emphasis>vis a vis</emphasis>its entity.  D'you see?
+
+        But can a bee be said to be
+            or not to be an entire bee,
+                when half the bee is not a bee,
+                    due to some ancient injury?
+
+        Singing...
 
 
 ``list_item``
@@ -2020,14 +2601,140 @@ See bullet_list_ or enumerated_list_ for further examples.
 ``literal_block``
 =================
 
-`To be completed`_.
+The ``literal_block`` element contains a block of text where line
+breaks and whitespace are significant and must be preserved.
+``literal_block`` elements are commonly used for program listings and
+interactive computer sessions.  See `line_block`_ for an alternative
+useful for verse and addresses.
+
+
+Details
+-------
+
+:Category:
+    `Simple Body Elements`_
+
+:Parents:
+    All elements employing the `%body.elements;`_ or
+    `%structure.model;`_ parameter entities in their content models
+    may contain ``literal_block``.
+
+:Children:
+    ``literal_block`` elements may contain text data plus `inline
+    elements`_.
+
+:Analogues:
+    ``literal_block`` is analogous to the HTML "pre" element and to
+    the DocBook "programlisting" and "screen" elements.
+
+:Processing:
+    ``literal_block`` elements are typically rendered in a monospaced
+    typeface.  It is crucial that all whitespace and line breaks are
+    preserved in the rendered form.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+   `%text.model;`_
+
+:Attributes:
+    The ``literal_block`` element contains the `common attributes`_
+    (id_, name_, dupname_, source_, and class_), plus `xml:space`_.
+
+:Parameter Entities:
+    The `%body.elements;`_ parameter entity directly includes
+    ``literal_block``.  The `%structure.model;`_ parameter entity
+    indirectly includes ``literal_block``.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    Here is a literal block::
+
+        if literal_block:
+            text = 'is left as-is'
+            spaces_and_linebreaks = 'are preserved'
+            markup_processing = None
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <paragraph>
+        Here is a literal block:
+    <literal_block xml:space="preserve">
+        if literal_block:
+            text = 'is left as-is'
+            spaces_and_linebreaks = 'are preserved'
+            markup_processing = None
 
 
 ``note``
 ========
 
-`To be completed`_.
+The ``note`` element is an admonition, a distinctive and
+self-contained notice.  Also see the other admonition elements
+Docutils offers (in alphabetical order): attention_, caution_,
+danger_, error_, hint_, important_, tip_, warning_.
 
+
+Details
+-------
+
+:Category:
+    `Compound Body Elements`_
+
+:Parents:
+    All elements employing the `%body.elements;`_ or
+    `%structure.model;`_ parameter entities in their content models
+    may contain ``note``.
+
+:Children:
+    ``note`` elements contain one or more `body elements`_.
+
+:Analogues:
+    ``note`` is analogous to the DocBook "note" element.
+
+:Processing:
+    Rendered distinctly (inset and/or in a box, etc.), with the
+    generated title "Note" (or similar).
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+   (`%body.elements;`_)+
+
+:Attributes:
+    The ``note`` element contains only the `common attributes`_: id_,
+    name_, dupname_, source_, and class_.
+
+:Parameter Entities:
+    The `%body.elements;`_ parameter entity directly includes
+    ``note``.  The `%structure.model;`_ parameter entity indirectly
+    includes ``note``.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    .. Note:: Admonitions can be handy to break up a
+       long boring technical document.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <note>
+        <paragraph>
+            Admonitions can be handy to break up a
+            long boring technical document.
 
 ``option``
 ==========
@@ -2918,7 +3625,63 @@ classifier_ elements.
 ``tip``
 =======
 
-`To be completed`_.
+The ``tip`` element is an admonition, a distinctive and self-contained
+notice.  Also see the other admonition elements Docutils offers (in
+alphabetical order): attention_, caution_, danger_, error_, hint_,
+important_, note_, warning_.
+
+
+Details
+-------
+
+:Category:
+    `Compound Body Elements`_
+
+:Parents:
+    All elements employing the `%body.elements;`_ or
+    `%structure.model;`_ parameter entities in their content models
+    may contain ``tip``.
+
+:Children:
+    ``tip`` elements contain one or more `body elements`_.
+
+:Analogues:
+    ``tip`` is analogous to the DocBook "tip" element.
+
+:Processing:
+    Rendered distinctly (inset and/or in a box, etc.), with the
+    generated title "Tip" (or similar).
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+   (`%body.elements;`_)+
+
+:Attributes:
+    The ``tip`` element contains only the `common attributes`_: id_,
+    name_, dupname_, source_, and class_.
+
+:Parameter Entities:
+    The `%body.elements;`_ parameter entity directly includes ``tip``.
+    The `%structure.model;`_ parameter entity indirectly includes
+    ``tip``.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    .. Tip:: 15% if the service is good.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <tip>
+        <paragraph>
+            15% if the service is good.
 
 
 ``title``
@@ -3202,7 +3965,63 @@ context.
 ``warning``
 ===========
 
-`To be completed`_.
+The ``warning`` element is an admonition, a distinctive and
+self-contained notice.  Also see the other admonition elements
+Docutils offers (in alphabetical order): attention_, caution_,
+danger_, error_, hint_, important_, note_, tip_.
+
+
+Details
+-------
+
+:Category:
+    `Compound Body Elements`_
+
+:Parents:
+    All elements employing the `%body.elements;`_ or
+    `%structure.model;`_ parameter entities in their content models
+    may contain ``warning``.
+
+:Children:
+    ``warning`` elements contain one or more `body elements`_.
+
+:Analogues:
+    ``warning`` is analogous to the DocBook "warning" element.
+
+:Processing:
+    Rendered distinctly (inset and/or in a box, etc.), with the
+    generated title "Warning" (or similar).
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+   (`%body.elements;`_)+
+
+:Attributes:
+    The ``warning`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+:Parameter Entities:
+    The `%body.elements;`_ parameter entity directly includes
+    ``warning``.  The `%structure.model;`_ parameter entity indirectly
+    includes ``warning``.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    .. WARNING:: Reader discretion is strongly advised.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <warning>
+        <paragraph>
+            Reader discretion is strongly advised.
 
 
 ---------------------
