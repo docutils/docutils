@@ -126,6 +126,66 @@ Paragraph.
         Paragraph.
 """],
 ["""\
+..
+   comment::
+
+The extra newline before the comment text prevents
+the parser from recognizing a directive.
+""",
+"""\
+<document>
+    <comment>
+        comment::
+    <paragraph>
+        The extra newline before the comment text prevents
+        the parser from recognizing a directive.
+"""],
+["""\
+..
+   _comment: http://example.org
+
+The extra newline before the comment text prevents
+the parser from recognizing a hyperlink target.
+""",
+"""\
+<document>
+    <comment>
+        _comment: http://example.org
+    <paragraph>
+        The extra newline before the comment text prevents
+        the parser from recognizing a hyperlink target.
+"""],
+["""\
+..
+   [comment] Not a citation.
+
+The extra newline before the comment text prevents
+the parser from recognizing a citation.
+""",
+"""\
+<document>
+    <comment>
+        [comment] Not a citation.
+    <paragraph>
+        The extra newline before the comment text prevents
+        the parser from recognizing a citation.
+"""],
+["""\
+..
+   |comment| image:: bogus.png
+
+The extra newline before the comment text prevents
+the parser from recognizing a substitution definition.
+""",
+"""\
+<document>
+    <comment>
+        |comment| image:: bogus.png
+    <paragraph>
+        The extra newline before the comment text prevents
+        the parser from recognizing a substitution definition.
+"""],
+["""\
 .. Next is an empty comment, which serves to end this comment and
    prevents the following block quote being swallowed up.
 

@@ -72,6 +72,16 @@ Line 3.
         Line 2.
         Line 3.
 """],
+["""\
+A. Einstein was a really
+smart dude.
+""",
+"""\
+<document>
+    <paragraph>
+        A. Einstein was a really
+        smart dude.
+"""],
 ]
 
 if __name__ == '__main__':

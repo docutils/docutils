@@ -38,6 +38,15 @@ any names; apologies (and please let me know!) if I have.
 Changes Since 0.2
 ========================
 
+* docutils/nodes.py:
+
+  - Added "Invisible" element category class.
+  - Changed ``Node.walk()`` & ``.walkabout()`` to permit more tree
+    modification during a traversal.
+
+* docutils/parsers/rst/directives/body.py: Added to project.  Contains
+  the "topic" directive.
+
 * docutils/transforms/parts.py:
 
   - Moved the "id" attribute from TOC list items to the references
@@ -47,6 +56,7 @@ Changes Since 0.2
 
   - Added ``mask_email()`` function, updating to pep2html.py's
     functionality.
+  - Linked "Content-Type: text/x-rst" to PEP 12.
 
 * docutils/writers/html4css1.py:
 
@@ -58,19 +68,45 @@ Changes Since 0.2
     problematic, and system_message nodes (for Netscape 4).
   - Changed field names from "<td>" to "<th>".
   - Added "@" to "&#64;" encoding to thwart address harvesters.
+  - Improved the vertical whitespace optimization; ignore "invisible"
+    nodes (targets, comments, etc.).
+  - Improved inline literals with ``<span class="pre">`` around chunks
+    of text and ``&nbsp;`` for runs of spaces.
 
 * docs/tools.txt:
 
   - Added "silent" setting for ``buildhtml.py``.
 
+* spec/pep-0256.txt: Converted to reStructuredText & updated.
+
+* spec/pep-0258.txt: Converted to reStructuredText & updated.
+
+* spec/rst/directives.txt:
+
+  - Added the "topic" directive.
+
+* spec/rst/reStructuredText.txt:
+
+  - Disambiguated comments (just add a newline after the "::").
+
 * tools/buildhtml.py:
 
   - Added "--silent" option.
+
+* tools/default.css:
+
+  - Added style for chunks of inline literals.
 
 * tools/pep2html.py:
 
   - Made ``argv`` a parameter to ``main()``.
   - Added support for "Content-Type:" header & arbitrary PEP formats.
+  - Linked "Content-Type: text/plain" to PEP 9.
+
+* tools/stylesheets/pep.css:
+
+  - Fixed nested section margins.
+  - Added style for chunks of inline literals.
 
 
 Release 0.2 (2002-07-31)

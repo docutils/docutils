@@ -727,6 +727,20 @@ Questions & Answers
 References & Footnotes
 ======================
 
+.. [#PEP-1] PEP 1, PEP Guidelines, Warsaw, Hylton
+   (http://www.python.org/peps/pep-0001.html)
+
+.. [#PEP-9] PEP 9, Sample PEP Template, Warsaw
+   (http://www.python.org/peps/pep-0009.html)
+
+.. [#Zen] From `The Zen of Python (by Tim Peters)`__ (or just
+   "``import this``" in Python)
+
+__ http://www.python.org/doc/Humor.html#zen
+
+.. [#PEP-216] PEP 216, Docstring Format, Zadka
+   (http://www.python.org/peps/pep-0216.html)
+
 .. _reStructuredText markup: http://docutils.sourceforge.net/spec/rst.html
 
 .. _Doc-SIG: http://www.python.org/sigs/doc-sig/
@@ -774,20 +788,6 @@ References & Footnotes
    http://docutils.sourceforge.net/spec/rst/alternatives.html
 
 .. _Docutils: http://docutils.sourceforge.net/
-
-.. [#PEP-1] PEP 1, PEP Guidelines, Warsaw, Hylton
-   (http://www.python.org/peps/pep-0001.html)
-
-.. [#PEP-9] PEP 9, Sample PEP Template, Warsaw
-   (http://www.python.org/peps/pep-0009.html)
-
-.. [#Zen] From `The Zen of Python (by Tim Peters)`__ (or just
-   "``import this``" in Python)
-
-__ http://www.python.org/doc/Humor.html#zen
-
-.. [#PEP-216] PEP 216, Docstring Format, Zadka
-   (http://www.python.org/peps/pep-0216.html)
 
 
 Copyright
