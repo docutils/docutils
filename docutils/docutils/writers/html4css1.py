@@ -387,6 +387,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                       sub=re.compile('-(?=-)').sub):
         """Escape double-dashes in comment text."""
         self.body.append('<!-- %s -->\n' % sub('- ', node.astext()))
+        # Content already processed:
         raise nodes.SkipNode
 
     def visit_contact(self, node):
@@ -749,6 +750,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</li>\n')
 
     def visit_literal(self, node):
+        """Process text to prevent tokens from wrapping."""
         self.body.append(self.starttag(node, 'tt', '', CLASS='literal'))
         text = node.astext()
         for token in self.words_and_spaces.findall(text):
@@ -763,6 +765,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                 # Protect runs of multiple spaces; the last space can wrap:
                 self.body.append('&nbsp;' * (len(token) - 1) + ' ')
         self.body.append('</tt>')
+        # Content already processed:
         raise nodes.SkipNode
 
     def visit_literal_block(self, node):
@@ -870,8 +873,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append(self.context.pop())
 
     def visit_raw(self, node):
-        if node.has_key('format') and node['format'] == 'html':
+        if node.get('format') == 'html':
             self.body.append(node.astext())
+        # Keep non-HTML raw text out of output:
         raise nodes.SkipNode
 
     def visit_reference(self, node):
@@ -920,6 +924,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</strong>')
 
     def visit_substitution_definition(self, node):
+        """Internal only."""
         raise nodes.SkipNode
 
     def visit_substitution_reference(self, node):
@@ -933,6 +938,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_system_message(self, node):
         if node['level'] < self.document.reporter['writer'].report_level:
+            # Level is too low to display:
             raise nodes.SkipNode
         self.body.append(self.starttag(node, 'div', CLASS='system-message'))
         self.body.append('<p class="system-message-title">')
