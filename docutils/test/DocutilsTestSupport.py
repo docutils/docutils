@@ -81,6 +81,64 @@ class DevNull:
         pass
 
 
+class CustomTestCase(unittest.TestCase):
+
+    compare = docutils_difflib.Differ().compare
+    """Comparison method shared by all subclasses."""
+
+    def __init__(self, method_name, input, expected, id,
+                 run_in_debugger=0, short_description=None):
+        """
+        Initialise the CustomTestCase.
+
+        Arguments:
+
+        method_name -- name of test method to run.
+        input -- input to the parser.
+        expected -- expected output from the parser.
+        id -- unique test identifier, used by the test framework.
+        run_in_debugger -- if true, run this test under the pdb debugger.
+        short_description -- override to default test description.
+        """
+        self.id = id
+        self.input = input
+        self.expected = expected
+        self.run_in_debugger = run_in_debugger
+        # Ring your mother.
+        unittest.TestCase.__init__(self, method_name)
+
+    def __str__(self):
+        """
+        Return string conversion. Overridden to give test id, in addition to
+        method name.
+        """
+        return '%s; %s' % (self.id, unittest.TestCase.__str__(self))
+
+    def __repr__(self):
+        return "<%s %s>" % (self.id, unittest.TestCase.__repr__(self))
+
+    def compare_output(self, input, output, expected):
+        """`input`, `output`, and `expected` should all be strings."""
+        if type(input) == UnicodeType:
+            input = input.encode('raw_unicode_escape')
+        if type(output) == UnicodeType:
+            output = output.encode('raw_unicode_escape')
+        if type(expected) == UnicodeType:
+            expected = expected.encode('raw_unicode_escape')
+        try:
+            self.assertEquals('\n' + output, '\n' + expected)
+        except AssertionError:
+            print >>sys.stderr, '\n%s\ninput:' % (self,)
+            print >>sys.stderr, input
+            print >>sys.stderr, '-: expected\n+: output'
+            print >>sys.stderr, ''.join(self.compare(expected.splitlines(1),
+                                                     output.splitlines(1)))
+            raise
+
+    def skip_test(self):
+        print >>sys.stderr, '%s: Test skipped' % self
+
+
 class CustomTestSuite(unittest.TestSuite):
 
     """
@@ -160,109 +218,6 @@ class CustomTestSuite(unittest.TestSuite):
         pass
 
 
-class CustomTestCase(unittest.TestCase):
-
-    compare = docutils_difflib.Differ().compare
-    """Comparison method shared by all subclasses."""
-
-    def __init__(self, method_name, input, expected, id,
-                 run_in_debugger=0, short_description=None):
-        """
-        Initialise the CustomTestCase.
-
-        Arguments:
-
-        method_name -- name of test method to run.
-        input -- input to the parser.
-        expected -- expected output from the parser.
-        id -- unique test identifier, used by the test framework.
-        run_in_debugger -- if true, run this test under the pdb debugger.
-        short_description -- override to default test description.
-        """
-        self.id = id
-        self.input = input
-        self.expected = expected
-        self.run_in_debugger = run_in_debugger
-        # Ring your mother.
-        unittest.TestCase.__init__(self, method_name)
-
-    def __str__(self):
-        """
-        Return string conversion. Overridden to give test id, in addition to
-        method name.
-        """
-        return '%s; %s' % (self.id, unittest.TestCase.__str__(self))
-
-    def __repr__(self):
-        return "<%s %s>" % (self.id, unittest.TestCase.__repr__(self))
-
-    def compare_output(self, input, output, expected):
-        """`input`, `output`, and `expected` should all be strings."""
-        if type(input) == UnicodeType:
-            input = input.encode('raw_unicode_escape')
-        if type(output) == UnicodeType:
-            output = output.encode('raw_unicode_escape')
-        if type(expected) == UnicodeType:
-            expected = expected.encode('raw_unicode_escape')
-        try:
-            self.assertEquals('\n' + output, '\n' + expected)
-        except AssertionError:
-            print >>sys.stderr, '\n%s\ninput:' % (self,)
-            print >>sys.stderr, input
-            print >>sys.stderr, '-: expected\n+: output'
-            print >>sys.stderr, ''.join(self.compare(expected.splitlines(1),
-                                                     output.splitlines(1)))
-            raise
-
-    def skip_test(self):
-        print >>sys.stderr, '%s: Test skipped' % self
-
-
-class TransformTestSuite(CustomTestSuite):
-
-    """
-    A collection of TransformTestCases.
-
-    A TransformTestSuite instance manufactures TransformTestCases,
-    keeps track of them, and provides a shared test fixture (a-la
-    setUp and tearDown).
-    """
-
-    def __init__(self, parser):
-        self.parser = parser
-        """Parser shared by all test cases."""
-
-        CustomTestSuite.__init__(self)
-
-    def generateTests(self, dict, dictname='totest',
-                      testmethod='test_transforms'):
-        """
-        Stock the suite with test cases generated from a test data dictionary.
-
-        Each dictionary key (test type's name) maps to a list of transform
-        classes and list of tests. Each test is a list: input, expected
-        output, optional modifier. The optional third entry, a behavior
-        modifier, can be 0 (temporarily disable this test) or 1 (run this test
-        under the pdb debugger). Tests should be self-documenting and not
-        require external comments.
-        """
-        for name, (transforms, cases) in dict.items():
-            for casenum in range(len(cases)):
-                case = cases[casenum]
-                run_in_debugger = 0
-                if len(case)==3:
-                    if case[2]:
-                        run_in_debugger = 1
-                    else:
-                        continue
-                self.addTestCase(
-                      TransformTestCase, testmethod,
-                      transforms=transforms, parser=self.parser,
-                      input=case[0], expected=case[1],
-                      id='%s[%r][%s]' % (dictname, name, casenum),
-                      run_in_debugger=run_in_debugger)
-
-
 class TransformTestCase(CustomTestCase):
 
     """
@@ -324,6 +279,51 @@ class TransformTestCase(CustomTestCase):
         print '-' * 70
         print output
         self.compare_output(self.input, output, self.expected)
+
+
+class TransformTestSuite(CustomTestSuite):
+
+    """
+    A collection of TransformTestCases.
+
+    A TransformTestSuite instance manufactures TransformTestCases,
+    keeps track of them, and provides a shared test fixture (a-la
+    setUp and tearDown).
+    """
+
+    def __init__(self, parser):
+        self.parser = parser
+        """Parser shared by all test cases."""
+
+        CustomTestSuite.__init__(self)
+
+    def generateTests(self, dict, dictname='totest',
+                      testmethod='test_transforms'):
+        """
+        Stock the suite with test cases generated from a test data dictionary.
+
+        Each dictionary key (test type's name) maps to a list of transform
+        classes and list of tests. Each test is a list: input, expected
+        output, optional modifier. The optional third entry, a behavior
+        modifier, can be 0 (temporarily disable this test) or 1 (run this test
+        under the pdb debugger). Tests should be self-documenting and not
+        require external comments.
+        """
+        for name, (transforms, cases) in dict.items():
+            for casenum in range(len(cases)):
+                case = cases[casenum]
+                run_in_debugger = 0
+                if len(case)==3:
+                    if case[2]:
+                        run_in_debugger = 1
+                    else:
+                        continue
+                self.addTestCase(
+                      TransformTestCase, testmethod,
+                      transforms=transforms, parser=self.parser,
+                      input=case[0], expected=case[1],
+                      id='%s[%r][%s]' % (dictname, name, casenum),
+                      run_in_debugger=run_in_debugger)
 
 
 class ParserTestCase(CustomTestCase):
