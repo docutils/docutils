@@ -89,6 +89,10 @@ class MoinWriter(html4css1.Writer):
 
 # TODO: Evaluate if this would be easier to sub class the real moin wiki parser.
 class Parser:
+    
+    # allow caching - MMG: This probably should be turned off when testing.
+    caching = 1
+    
     def __init__(self, raw, request, **kw):
         self.raw = raw
         self.request = request
