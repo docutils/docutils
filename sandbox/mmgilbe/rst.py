@@ -151,15 +151,15 @@ class MoinTranslator(html4css1.HTMLTranslator):
     def visit_reference(self, node):
         target = None
         if 'refuri' in node.attributes:
-            if ('name' in node.attributes and 
-                fully_normalize_name(node['name']) == node['refuri']):
-                target = ':%s:' % (node['name'])
-            elif node['refuri'].find('wiki:') != -1:
+            if node['refuri'].find('wiki:') != -1:
                 target = node['refuri']
+            elif ('name' in node.attributes and 
+                  fully_normalize_name(node['name']) == node['refuri']):
+                target = ':%s:' % (node['name'])
             # The node should have a whitespace normalized name if the
             # docutlis restructured text parser would normally fully
             # normalize the name. 
-            else:
+            elif ':' not in node['refuri']:
                 target = ':%s:' % (node['refuri'])
             
             if target:
