@@ -17,6 +17,7 @@ except:
 import sys
 import os
 import getopt
+import docutils
 from docutils.frontend import OptionParser
 from docutils.utils import new_document
 from docutils.parsers.rst import Parser
@@ -46,7 +47,8 @@ options = [('pretty', 'p',
            ('xml', 'x', 'output pretty XML (indented)'),
            ('attributes', '', 'dump document attributes after processing'),
            ('debug', 'd', 'debug mode (lots of output)'),
-           ('help', 'h', 'show help text')]
+           ('version', 'V', 'show Docutils version then exit'),
+           ('help', 'h', 'show help text then exit')]
 """See ``distutils.fancy_getopt.FancyGetopt.__init__`` for a description of
 the data structure: (long option, short option, description)."""
 
@@ -139,6 +141,10 @@ def posixGetArgs(argv):
     for o, a in opts:
         if o in ['-h', '--help']:
             usage()
+            sys.exit()
+        elif o in ['-V', '--version']:
+            print >>sys.stderr, ('quicktest.py (Docutils %s)'
+                                 % docutils.__version)
             sys.exit()
         elif o in ['-r', '--rawxml']:
             outputFormat = 'rawxml'
