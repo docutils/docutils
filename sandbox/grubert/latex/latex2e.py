@@ -216,7 +216,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
               '\\usepackage{tabularx}\n',
               '\\usepackage{longtable}\n',
               # possible other packages.
-              # * enumerate    # allows to specify counter style per environment
               # * fancyhdr
               # * ltxtable is a combination of tabularx and longtable (pagebreaks).
               #   but 
@@ -257,6 +256,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.insert_newline = 0
         # mbox_newline: to tell encode to add mbox and newline.
         self.mbox_newline = 0
+        # enumeration is done by list environment.
+        self._enum_cnt = 0
 
     def language_label(self, docutil_label):
         return self.language.labels[docutil_label]
@@ -613,10 +614,33 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_enumerated_list(self, node):
         # Enumerations can be nested within one another, up to four levels deep.
-        self.body.append('\\begin{enumerate}\n')
+        self._enum_cnt += 1
+
+        enum_style = {'arabic':'arabic',
+                'loweralpha':'alph',
+                'upperalpha':'Alph', 
+                'lowerroman':'roman',
+                'upperroman':'Roman' };
+        start = -1
+        if node.has_key('start'):
+            start = node['start']
+        enumtype = "arabic"            
+        if node.has_key('enumtype'):
+            enumtype = node['enumtype']
+        if enum_style.has_key(enumtype):
+            enumtype = enum_style[enumtype]
+        self.body.append('% '+enumtype+':'+str(start)+'\n')
+        counter_name = "listcnt%d" % self._enum_cnt;
+        self.body.append('\\newcounter{%s}\n' % counter_name)
+        self.body.append('\\begin{list}{\\%s{%s}}\n' % (enumtype,counter_name))
+        self.body.append('{\n')
+        self.body.append('\\usecounter{%s}\n' % counter_name)
+        ## set rightmargin equal to leftmargin
+        self.body.append('\\setlength{\\rightmargin}{\\leftmargin}\n')
+        self.body.append('}\n')
 
     def depart_enumerated_list(self, node):
-        self.body.append('\\end{enumerate}\n')
+        self.body.append('\\end{list}\n')
 
     def visit_error(self, node):
         self.visit_admonition(node, 'error')
