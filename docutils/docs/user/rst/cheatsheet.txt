@@ -111,6 +111,7 @@ emphasis          Equivalent to *emphasis*
 literal           Equivalent to ``literal`` but processes backslash escapes
 PEP               Reference to a numbered Python Enhancement Proposal
 RFC               Reference to a numbered Internet Request For Comments
+raw               For non-reST data; cannot be used directly (see docs) [0.3.6]
 strong            Equivalent to **strong**
 sub               Subscript
 sup               Superscript
