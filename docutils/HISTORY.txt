@@ -23,18 +23,18 @@ and related projects:
     Dethe Elza, Marcus Ertl, Benja Fallenstein, fantasai, Stefane
     Fermigier, Jim Fulton, Peter Funk, Jorge Gonzalez, Engelbert
     Gruber, Simon Hefti, Doug Hellmann, Juergen Hermann, Michael
-    Hudson, Jeremy Hylton, Tony Ibbs, Alan Jaffray, Dmitry Jemerov,
-    Richard Jones, Andreas Jung, Garth Kidd, Nicola Larosa, Daniel
-    Larsson, Marc-Andre Lemburg, Julien Letessier, Wolfgang Lipp,
-    Edward Loper, Dallas Mahrt, Ken Manheimer, Vasko Miroslav, Skip
-    Montanaro, Paul Moore, Nigel W. Moriarty, Mark Nodine, Patrick
-    K. O'Brien, Michel Pelletier, Sam Penrose, Tim Peters, Pearu
-    Peterson, Mark Pilgrim, Brett g Porter, David Priest, Andy
-    Robinson, Tavis Rudd, Oliver Rutherfurd, Kenichi Sato, Ueli
-    Schlaepfer, Gunnar Schwant, Bruce Smith, tav, Bob Tolbert, Paul
-    Tremblay, Laurence Tratt, Guido van Rossum, Martin von Loewis,
-    Greg Ward, Barry Warsaw, Edward Welbourne, Ka-Ping Yee, Moshe
-    Zadka
+    Hudson, Marcelo Huerta San Martin, Jeremy Hylton, Tony Ibbs, Alan
+    Jaffray, Dmitry Jemerov, Richard Jones, Andreas Jung, Garth Kidd,
+    Nicola Larosa, Daniel Larsson, Marc-Andre Lemburg, Julien
+    Letessier, Wolfgang Lipp, Edward Loper, Dallas Mahrt, Ken
+    Manheimer, Vasko Miroslav, Skip Montanaro, Paul Moore, Nigel
+    W. Moriarty, Mark Nodine, Patrick K. O'Brien, Michel Pelletier,
+    Sam Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim, Brett g
+    Porter, David Priest, Andy Robinson, Tavis Rudd, Oliver
+    Rutherfurd, Kenichi Sato, Ueli Schlaepfer, Gunnar Schwant, Bruce
+    Smith, tav, Bob Tolbert, Paul Tremblay, Laurence Tratt, Guido van
+    Rossum, Martin von Loewis, Greg Ward, Barry Warsaw, Edward
+    Welbourne, Ka-Ping Yee, Moshe Zadka
 
 Thank you!
 
@@ -209,6 +209,9 @@ Specific:
 
 * docutils/languages: Fixed bibliographic field language lookups.
 
+* docutils/languages/es.py: Added to project; Spanish mappings by
+  Marcelo Huerta San Martin.
+
 * docutils/languages/fr.py: Added to project; French mappings by
   Stefane Fermigier.
 
@@ -328,8 +331,11 @@ Specific:
 
   - Added interpreted text roles mapping.
 
-* docutils/parsers/rst/languages/fr.py: Placeholder added to project;
-  awaiting translation.
+* docutils/parsers/rst/languages/es.py: Added to project; Spanish
+  mappings by Marcelo Huerta San Martin.
+
+* docutils/parsers/rst/languages/fr.py: Added to project; French
+  mappings by William Dode.
 
 * docutils/parsers/rst/languages/it.py: Added to project; Italian
   mappings by Nicola Larosa.
