@@ -2650,7 +2650,7 @@ Content Model
 
 .. parsed-literal::
 
-    (`%body.elements;`_)+
+    (`%body.elements;`_)*
 
 :Attributes:
     The ``list_item`` element contains only the `common attributes`_:
