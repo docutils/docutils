@@ -59,7 +59,7 @@ def set_encoding(option, opt, value, parser):
         value = validate_encoding(value, parser.defaults[option.dest])
     except LookupError, error:
         raise (optik.OptionValueError('option "%s": %s' % (opt, error)),
-               None, sys.exc_info[2])
+               None, sys.exc_info()[2])
     setattr(parser.values, option.dest, value)
 
 def validate_encoding(value, default):
@@ -67,7 +67,7 @@ def validate_encoding(value, default):
         codecs.lookup(value)
     except LookupError:
         raise (LookupError('unknown encoding: "%s"' % value),
-               None, sys.exc_info[2])
+               None, sys.exc_info()[2])
     return value
 
 def set_encoding_and_error_handler(option, opt, value, parser):
@@ -80,7 +80,7 @@ def set_encoding_and_error_handler(option, opt, value, parser):
             value, parser.defaults[option.dest])
     except LookupError, error:
         raise (optik.OptionValueError('option "%s": %s' % (opt, error)),
-               None, sys.exc_info[2])
+               None, sys.exc_info()[2])
     setattr(parser.values, option.dest, value)
 
 def validate_encoding_and_error_handler(value, default):
@@ -99,14 +99,14 @@ def validate_encoding_and_error_handler(value, default):
             raise (LookupError(
                 'unknown encoding error handler: "%s" (choices: '
                 '"strict", "ignore", or "replace")' % handler),
-                   None, sys.exc_info[2])
+                   None, sys.exc_info()[2])
     except LookupError:
         raise (LookupError(
             'unknown encoding error handler: "%s" (choices: '
             '"strict", "ignore", "replace", "backslashreplace", '
             '"xmlcharrefreplace", and possibly others; see documentation for '
             'the Python ``codecs`` module)' % handler),
-               None, sys.exc_info[2])
+               None, sys.exc_info()[2])
     return encoding + ':' + handler
 
 def make_paths_absolute(pathdict, keys, base_path=None):
