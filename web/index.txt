@@ -136,7 +136,7 @@ The `latest unstable project release package`_ (Docutils 0.3.3,
 the latest "stable" release, and many bugs have been fixed, but it may
 contain new bugs.  It may not be suitable for use in a production
 environment and you should be prepared to update soon.  (If you
-discover a bug, please post a short note to the Docutils-develop
+discover a bug, please post a short note to the Docutils-users
 `mailing list`_.)
 
 Major changes since Docutils 0.3:
