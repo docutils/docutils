@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-1 -*-
 # Author: Marcelo Huerta San Martín
-# Contact: mghsm@uol.com.ar
+# Contact: richieadler@users.sourceforge.net
 # Revision: $Revision$
 # Date: $Date$
 # Copyright: This module has been placed in the public domain.
@@ -46,7 +46,8 @@ directives = {
       #'qa': 'questions',
       #'faq': 'questions',
       u'tabla': 'table',
-      u'csv-table (translation required)': 'csv-table',
+      u'tabla-vsc': 'csv-table',
+      u'tabla-csv': 'csv-table',
       u'meta': 'meta',
       #'imagemap': 'imagemap',
       u'imagen': 'image',
