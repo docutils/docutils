@@ -78,7 +78,10 @@ class Translator(nodes.NodeVisitor):
         self.context = []
         self.inBulletList = False
         self.inEnumList = False
+        self.inTableHead = False
+        self.inTableBody = False
         self.bodyOne = False
+        self.colspecs = []
 
     def astext(self):
         """Return the final formatted document as a string."""
@@ -131,32 +134,14 @@ class Translator(nodes.NodeVisitor):
     def depart_attention(self, node):
         self.depart_admonition()
 
-##     def visit_(self, node):
-##         pass
+##     def visit_block_quote(self, node):
+##         self.skip_para_tag = True
+##         self.body.append(self.start_para % '.quotes')
 
-##     def depart_(self, node):
-##         pass
-
-    def visit_author(self, node):
-        pass
-
-    def depart_author(self, node):
-        pass
-
-    def visit_authors(self, node):
-        pass
-
-    def depart_authors(self, node):
-        pass
-
-    def visit_block_quote(self, node):
-        self.skip_para_tag = True
-        self.body.append(self.start_para % '.quotes')
-
-    def depart_block_quote(self, node):
-        self.body.append(self.end_para)
-        self.skip_para_tag = False
-        self.bodyOne = True
+##     def depart_block_quote(self, node):
+##         self.body.append(self.end_para)
+##         self.skip_para_tag = False
+##         self.bodyOne = True
 
     def visit_bullet_list(self, node):
         self.inBulletList = True
@@ -179,33 +164,33 @@ class Translator(nodes.NodeVisitor):
     def depart_caution(self, node):
         self.depart_admonition()
 
-    def visit_citation(self, node):
-        self.body.append(self.starttag(node, 'table', CLASS='citation',
-                                       frame="void", rules="none"))
-        self.footnote_backrefs(node)
+##     def visit_citation(self, node):
+##         self.body.append(self.starttag(node, 'table', CLASS='citation',
+##                                        frame="void", rules="none"))
+##         self.footnote_backrefs(node)
 
-    def depart_citation(self, node):
-        self.body.append('</td></tr>\n'
-                         '</tbody>\n</table>\n')
+##     def depart_citation(self, node):
+##         self.body.append('</td></tr>\n'
+##                          '</tbody>\n</table>\n')
 
-    def visit_citation_reference(self, node):
-        href = ''
-        if node.has_key('refid'):
-            href = '#' + node['refid']
-        elif node.has_key('refname'):
-            href = '#' + self.document.nameids[node['refname']]
-        self.body.append(self.starttag(node, 'a', '[', href=href,
-                                       CLASS='citation-reference'))
+##     def visit_citation_reference(self, node):
+##         href = ''
+##         if node.has_key('refid'):
+##             href = '#' + node['refid']
+##         elif node.has_key('refname'):
+##             href = '#' + self.document.nameids[node['refname']]
+##         self.body.append(self.starttag(node, 'a', '[', href=href,
+##                                        CLASS='citation-reference'))
 
-    def depart_citation_reference(self, node):
-        self.body.append(']</a>')
+##     def depart_citation_reference(self, node):
+##         self.body.append(']</a>')
 
-    def visit_classifier(self, node):
-        self.body.append(' <span class="classifier-delimiter">:</span> ')
-        self.body.append(self.starttag(node, 'span', '', CLASS='classifier'))
+##     def visit_classifier(self, node):
+##         self.body.append(' <span class="classifier-delimiter">:</span> ')
+##         self.body.append(self.starttag(node, 'span', '', CLASS='classifier'))
 
-    def depart_classifier(self, node):
-        self.body.append('</span>')
+##     def depart_classifier(self, node):
+##         self.body.append('</span>')
 
     def visit_colspec(self, node):
         self.colspecs.append(node)
@@ -218,55 +203,39 @@ class Translator(nodes.NodeVisitor):
         for node in self.colspecs:
             width += node['colwidth']
         for node in self.colspecs:
-            colwidth = int(node['colwidth'] * 100.0 / width + 0.5)
-            self.body.append(self.emptytag(node, 'col',
-                                           colwidth='%i%%' % colwidth))
+            self.body.append('<table:table-column/>')
+
+##             colwidth = int(node['colwidth'] * 100.0 / width + 0.5)
+##             self.body.append(self.emptytag(node, 'col',
+##                                            colwidth='%i%%' % colwidth))
         self.colspecs = []
 
     def visit_comment(self, node):
         raise nodes.SkipNode
 
-    def visit_date(self, node):
-        pass
-
-    def depart_date(self, node):
-        pass
-
     def visit_decoration(self, node):
-        pass
+        raise nodes.SkipNode
 
     def depart_decoration(self, node):
         pass
 
     def visit_definition(self, node):
-        self.body.append('</dt>\n')
-        self.body.append(self.starttag(node, 'dd', ''))
-        if len(node) and isinstance(node[0], nodes.paragraph):
-            node[0].set_class('first')
+        pass
 
     def depart_definition(self, node):
-        self.body.append('</dd>\n')
+        pass
 
     def visit_definition_list(self, node):
-        print node.astext()
-        self.body.append(self.starttag(node, 'dl'))
+        pass
 
     def depart_definition_list(self, node):
-        self.body.append('</dl>\n')
+        pass
 
     def visit_definition_list_item(self, node):
         pass
 
     def depart_definition_list_item(self, node):
         pass
-
-    def visit_description(self, node):
-        self.body.append(self.starttag(node, 'td', ''))
-        if len(node) and isinstance(node[0], nodes.paragraph):
-            node[0].set_class('first')
-
-    def depart_description(self, node):
-        self.body.append('</td>')
 
     def visit_docinfo(self, node):
         raise nodes.SkipNode
@@ -284,30 +253,16 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def visit_emphasis(self, node):
-        self.body.append(self.start_charstyle % 'italic')
+        self.body.append(self.start_charstyle % 'Emphasis')
 
     def depart_emphasis(self, node):
         self.body.append(self.end_charstyle)
 
     def visit_entry(self, node):
-        if isinstance(node.parent.parent, nodes.thead):
-            tagname = 'th'
-        else:
-            tagname = 'td'
-        atts = {}
-        if node.has_key('morerows'):
-            atts['rowspan'] = node['morerows'] + 1
-        if node.has_key('morecols'):
-            atts['colspan'] = node['morecols'] + 1
-        self.body.append(self.starttag(node, tagname, '', **atts))
-        self.context.append('</%s>\n' % tagname.lower())
-        if len(node) == 0:              # empty cell
-            self.body.append('&nbsp;')
-        elif isinstance(node[0], nodes.paragraph):
-            node[0].set_class('first')
+        self.body.append('<table:table-cell table:value-type="string">\n')
 
     def depart_entry(self, node):
-        self.body.append(self.context.pop())
+        self.body.append('</table:table-cell>\n')
 
     def visit_enumerated_list(self, node):
         self.inEnumList = True
@@ -324,49 +279,7 @@ class Translator(nodes.NodeVisitor):
     def depart_error(self, node):
         self.depart_admonition()
 
-    def visit_field(self, node):
-        self.body.append(self.starttag(node, 'tr', '', CLASS='field'))
-
-    def depart_field(self, node):
-        self.body.append('</tr>\n')
-
-    def visit_field_body(self, node):
-        self.body.append(self.starttag(node, 'td', '', CLASS='field-body'))
-        if len(node) and isinstance(node[0], nodes.paragraph):
-            node[0].set_class('first')
-
-    def depart_field_body(self, node):
-        self.body.append('</td>\n')
-
-    def visit_field_list(self, node):
-        self.body.append(self.starttag(node, 'table', frame='void',
-                                       rules='none', CLASS='field-list'))
-        self.body.append('<col class="field-name" />\n'
-                         '<col class="field-body" />\n'
-                         '<tbody valign="top">\n')
-
-    def depart_field_list(self, node):
-        self.body.append('</tbody>\n</table>\n')
-
-    def visit_field_name(self, node):
-        atts = {}
-        if self.in_docinfo:
-            atts['class'] = 'docinfo-name'
-        else:
-            atts['class'] = 'field-name'
-        if len(node.astext()) > 14:
-            atts['colspan'] = 2
-            self.context.append('</tr>\n<tr><td>&nbsp;</td>')
-        else:
-            self.context.append('')
-        self.body.append(self.starttag(node, 'th', '', **atts))
-
-    def depart_field_name(self, node):
-        self.body.append(':</th>')
-        self.body.append(self.context.pop())
-
     def visit_figure(self, node):
-##        self.body.append('\n<text:p text:style-name=".body"/>')
         self.body.append(self.start_para % '.figure')
 
     def depart_figure(self, node):
@@ -389,33 +302,33 @@ class Translator(nodes.NodeVisitor):
     def visit_footnote(self, node):
         raise nodes.SkipNode
 
-    def footnote_backrefs(self, node):
-        warn("footnote backrefs not available")
+##     def footnote_backrefs(self, node):
+##         warn("footnote backrefs not available")
 
     def depart_footnote(self, node):
         pass
 
-    def visit_footnote_reference(self, node):
-        name = node['refid']
-        id = node['id']
-        number = node['auto']
-        for footnote in self.document.autofootnotes:
-            if name == footnote['name']:
-                break
-        self.body.append('<text:footnote text:id="%s">\n' % id)
-        self.body.append('<text:footnote-citation text:string-value="%s"/>\n' % number)
-        self.body.append('<text:footnote-body>\n')
-        self.body.append(self.start_para % '.body')
-        for child in footnote.children:
-            if isinstance(child, nodes.paragraph):
-                self.body.append(child.astext())
-        self.body.append(self.end_para)
-        self.body.append('</text:footnote-body>\n')
-        self.body.append('</text:footnote>')
-        raise nodes.SkipNode
+##     def visit_footnote_reference(self, node):
+##         name = node['refid']
+##         id = node['id']
+##         number = node['auto']
+##         for footnote in self.document.autofootnotes:
+##             if name == footnote['name']:
+##                 break
+##         self.body.append('<text:footnote text:id="%s">\n' % id)
+##         self.body.append('<text:footnote-citation text:string-value="%s"/>\n' % number)
+##         self.body.append('<text:footnote-body>\n')
+##         self.body.append(self.start_para % '.body')
+##         for child in footnote.children:
+##             if isinstance(child, nodes.paragraph):
+##                 self.body.append(child.astext())
+##         self.body.append(self.end_para)
+##         self.body.append('</text:footnote-body>\n')
+##         self.body.append('</text:footnote>')
+##         raise nodes.SkipNode
 
-    def depart_footnote_reference(self, node):
-        pass
+##     def depart_footnote_reference(self, node):
+##         pass
 
     def visit_generated(self, node):
         pass
@@ -423,15 +336,15 @@ class Translator(nodes.NodeVisitor):
     def depart_generated(self, node):
         pass
 
-    def visit_header(self, node):
-        self.context.append(len(self.body))
+##     def visit_header(self, node):
+##         self.context.append(len(self.body))
 
-    def depart_header(self, node):
-        start = self.context.pop()
-        self.body_prefix.append(self.starttag(node, 'div', CLASS='header'))
-        self.body_prefix.extend(self.body[start:])
-        self.body_prefix.append('<hr />\n</div>\n')
-        del self.body[start:]
+##     def depart_header(self, node):
+##         start = self.context.pop()
+##         self.body_prefix.append(self.starttag(node, 'div', CLASS='header'))
+##         self.body_prefix.extend(self.body[start:])
+##         self.body_prefix.append('<hr />\n</div>\n')
+##         del self.body[start:]
 
     def visit_hint(self, node):
         self.visit_admonition(node, 'hint')
@@ -492,38 +405,19 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.end_para)
         raise nodes.SkipNode
 
-    def visit_interpreted(self, node):
-        # @@@ Incomplete, pending a proper implementation on the
-        # Parser/Reader end.
-        #self.body.append(node['role'] + ':')
-        self.body.append(node.astext())
-        raise nodes.SkipNode
-
-    def depart_interpreted(self, node):
-        pass
-
-    # Don't need footnote labels/numbers
-    def visit_label(self, node):
-        print "!"
-        raise nodes.SkipNode
-
-    def visit_legend(self, node):
-        self.body.append(self.starttag(node, 'div', CLASS='legend'))
-
-    def depart_legend(self, node):
-        self.body.append('</div>\n')
-
-    def visit_line_block(self, node):
-        self.body.append(self.start_para % '.quotes')
-        lines = node.astext()
-        lines = lines.split('\n')
-        lines = self.line_break.join(lines)
-        self.body.append(lines)
-        self.body.append(self.end_para)
-        raise nodes.SkipNode
+##     def visit_line_block(self, node):
+##         self.body.append(self.start_para % '.quotes')
+##         lines = node.astext()
+##         lines = lines.split('\n')
+##         lines = self.line_break.join(lines)
+##         self.body.append(lines)
+##         self.body.append(self.end_para)
+##         raise nodes.SkipNode
 
     def visit_list_item(self, node):
         self.body.append('<text:list-item>')
+##         if len(node):
+##             node[0].set_class('first')
 
     def depart_list_item(self, node):
         self.body.append('</text:list-item>\n')
@@ -558,65 +452,16 @@ class Translator(nodes.NodeVisitor):
     def depart_note(self, node):
         self.depart_admonition()
 
-    def visit_option(self, node):
-        if self.context[-1]:
-            self.body.append(', ')
-
-    def depart_option(self, node):
-        self.context[-1] += 1
-
-    def visit_option_argument(self, node):
-        self.body.append(node.get('delimiter', ' '))
-        self.body.append(self.starttag(node, 'var', ''))
-
-    def depart_option_argument(self, node):
-        self.body.append('</var>')
-
-    def visit_option_group(self, node):
-        atts = {}
-        if len(node.astext()) > 14:
-            atts['colspan'] = 2
-            self.context.append('</tr>\n<tr><td>&nbsp;</td>')
-        else:
-            self.context.append('')
-        self.body.append(self.starttag(node, 'td', **atts))
-        self.body.append('<kbd>')
-        self.context.append(0)          # count number of options
-
-    def depart_option_group(self, node):
-        self.context.pop()
-        self.body.append('</kbd></td>\n')
-        self.body.append(self.context.pop())
-
-    def visit_option_list(self, node):
-        self.body.append(
-              self.starttag(node, 'table', CLASS='option-list',
-                            frame="void", rules="none"))
-        self.body.append('<col class="option" />\n'
-                         '<col class="description" />\n'
-                         '<tbody valign="top">\n')
-
-    def depart_option_list(self, node):
-        self.body.append('</tbody>\n</table>\n')
-
-    def visit_option_list_item(self, node):
-        self.body.append(self.starttag(node, 'tr', ''))
-
-    def depart_option_list_item(self, node):
-        self.body.append('</tr>\n')
-
-    def visit_option_string(self, node):
-        self.body.append(self.starttag(node, 'span', '', CLASS='option'))
-
-    def depart_option_string(self, node):
-        self.body.append('</span>')
-
     def visit_paragraph(self, node):
         style = self.para_styles[-1]
         if self.inBulletList:
             style = '.bullet'
         elif self.inEnumList:
             style = '.numlist'
+        elif self.inTableHead:
+            style = '.cell head'
+        elif self.inTableBody:
+            style = '.cell body'
         elif node.astext().startswith('(annotation)'):
             style = '.code NOTATION'
         elif self.bodyOne or node.astext().startswith('#'):
@@ -630,41 +475,17 @@ class Translator(nodes.NodeVisitor):
         if not self.skip_para_tag:
             self.body.append(self.end_para)
 
-    def visit_problematic(self, node):
-        if node.hasattr('refid'):
-            self.body.append('<a href="#%s" name="%s">' % (node['refid'],
-                                                           node['id']))
-            self.context.append('</a>')
-        else:
-            self.context.append('')
-        self.body.append(self.starttag(node, 'span', '', CLASS='problematic'))
-
-    def depart_problematic(self, node):
-        self.body.append('</span>')
-        self.body.append(self.context.pop())
-
-    def visit_raw(self, node):
-        if node.has_key('format') and node['format'] == 'html':
-            self.body.append(node.astext())
-        raise nodes.SkipNode
-
     def visit_reference(self, node):
         pass
 
     def depart_reference(self, node):
         pass
 
-    def visit_revision(self, node):
-        pass
-
-    def depart_revision(self, node):
-        pass
-
     def visit_row(self, node):
-        self.body.append(self.starttag(node, 'tr', ''))
+        self.body.append('<table:table-row>\n')
 
     def depart_row(self, node):
-        self.body.append('</tr>\n')
+        self.body.append('</table:table-row>\n')
 
     def visit_section(self, node):
         self.section_level += 1
@@ -673,67 +494,57 @@ class Translator(nodes.NodeVisitor):
     def depart_section(self, node):
         self.section_level -= 1
 
+## XX Perhaps these should replace admonition:
+
+##     def visit_sidebar(self, node):
+##         self.body.append(self.starttag(node, 'div', CLASS='sidebar'))
+##         self.in_sidebar = 1
+
+##     def depart_sidebar(self, node):
+##         self.body.append('</div>\n')
+##         self.in_sidebar = None
+
     def visit_strong(self, node):
-        self.body.append('<strong>')
+        self.body.append(self.start_charstyle % 'Strong Emphasis')
 
     def depart_strong(self, node):
-        self.body.append('</strong>')
+        self.body.append(self.end_charstyle)
 
     def visit_table(self, node):
-        self.body.append(
-              self.starttag(node, 'table', CLASS="table",
-                            frame='border', rules='all'))
+        self.body.append('<table:table>\n')
 
     def depart_table(self, node):
-        self.body.append('</table>\n')
-
-    def visit_target(self, node):
-        if not (node.has_key('refuri') or node.has_key('refid')
-                or node.has_key('refname')):
-            self.body.append(self.starttag(node, 'a', '', CLASS='target'))
-            self.context.append('</a>')
-        else:
-            self.context.append('')
-
-    def depart_target(self, node):
-        self.body.append(self.context.pop())
+        self.body.append('</table:table>\n')
+        self.bodyOne = True
 
     def visit_tbody(self, node):
         self.write_colspecs()
-        self.body.append(self.context.pop()) # '</colgroup>\n' or ''
-        self.body.append(self.starttag(node, 'tbody', valign='top'))
+        self.inTableBody = True
 
     def depart_tbody(self, node):
-        self.body.append('</tbody>\n')
+        self.inTableBody = False
 
     def visit_term(self, node):
-        self.body.append(self.starttag(node, 'dt', ''))
+        self.bodyOne = True
+        self.visit_paragraph(node)
+        self.body.append(self.start_charstyle % 'Strong Emphasis')
 
     def depart_term(self, node):
-        """
-        Leave the end tag to `self.visit_definition()`, in case there's a
-        classifier.
-        """
-        pass
+        self.body.append(self.end_charstyle)
+        self.depart_paragraph(node)
 
     def visit_tgroup(self, node):
-        # Mozilla needs <colgroup>:
-        self.body.append(self.starttag(node, 'colgroup'))
-        # Appended by thead or tbody:
-        self.context.append('</colgroup>\n')
+        pass
 
     def depart_tgroup(self, node):
         pass
 
     def visit_thead(self, node):
         self.write_colspecs()
-        self.body.append(self.context.pop()) # '</colgroup>\n'
-        # There may or may not be a <thead>; this is for <tbody> to use:
-        self.context.append('')
-        self.body.append(self.starttag(node, 'thead', valign='bottom'))
+        self.inTableHead = True
 
     def depart_thead(self, node):
-        self.body.append('</thead>\n')
+        self.inTableHead = False
 
     def visit_tip(self, node):
         self.visit_admonition(node, 'tip')
@@ -758,6 +569,12 @@ class Translator(nodes.NodeVisitor):
     def depart_topic(self, node):
         pass
 
+    def visit_transition(self, node):
+        self.visit_paragraph(node)
+
+    def depart_transition(self, node):
+        self.depart_paragraph(node)
+
     def visit_warning(self, node):
         self.visit_admonition(node, 'warning')
 
@@ -771,23 +588,12 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def unknown_visit(self, node):
-        print "Failure processing at line", node.line
-        print "Failure is", node.astext()
-        raise NotImplementedError('visiting unimplemented node type: %s'
+        print "=" * 70
+        print "Failure due to unknown node type"
+        print "-" * 70
+        print "Failed node is: %r" % node
+        print "Failed line is:", node.line
+        print "Failed text is:", node.astext()
+        print "=" * 70
+        raise NotImplementedError('unimplemented node type: %s'
                                   % node.__class__.__name__)
-
-
-"""
-<text:p text:style-name="Standard">
-<draw:image draw:style-name="fr1"
-draw:name="G2: hedgehog2" 
-text:anchor-type="as-char"
-svg:width="3.2465inch" 
-svg:height="1.6681inch" 
-draw:z-index="0"
-xlink:href="#Pictures/100000000000041D0000021D9EBA28D3.png"
-xlink:type="simple" 
-xlink:show="embed"
-xlink:actuate="onLoad"/>
-</text:p>
-"""
