@@ -49,3 +49,20 @@ Subpackages:
 """
 
 __docformat__ = 'reStructuredText'
+
+
+class ApplicationError(StandardError): pass
+class DataError(ApplicationError): pass
+
+
+class Component:
+
+    """
+    Base class for Docutils components.
+    """
+
+    names = ()
+    """Names for this component.  Override in subclasses."""
+
+    def supports(self, format):
+        return format in self.supported
