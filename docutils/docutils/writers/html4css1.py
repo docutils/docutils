@@ -39,14 +39,15 @@ class Writer(writers.Writer):
         'HTML-Specific Options',
         None,
         (('Specify a stylesheet URL, used verbatim.  Default is '
-          '"default.css".  Overridden by --stylesheet-path.',
+          '"default.css".  Overrides --stylesheet-path.',
           ['--stylesheet'],
-          {'default': 'default.css', 'metavar': '<URL>'}),
+          {'default': 'default.css', 'metavar': '<URL>',
+           'overrides': 'stylesheet_path'}),
          ('Specify a stylesheet file, relative to the current working '
           'directory.  The path is adjusted relative to the output HTML '
           'file.  Overrides --stylesheet.',
           ['--stylesheet-path'],
-          {'metavar': '<file>'}),
+          {'metavar': '<file>', 'overrides': 'stylesheet'}),
          ('Link to the stylesheet in the output HTML file.  This is the '
           'default.',
           ['--link-stylesheet'],
