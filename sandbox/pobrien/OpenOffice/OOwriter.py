@@ -123,6 +123,7 @@ class Translator(nodes.NodeVisitor):
 
     def depart_admonition(self):
         self.para_styles.pop()
+        self.bodyOne = True
 
     def visit_attention(self, node):
         self.visit_admonition(node, 'attention')
@@ -155,6 +156,7 @@ class Translator(nodes.NodeVisitor):
     def depart_block_quote(self, node):
         self.body.append(self.end_para)
         self.skip_para_tag = False
+        self.bodyOne = True
 
     def visit_bullet_list(self, node):
         self.inBulletList = True
@@ -163,6 +165,7 @@ class Translator(nodes.NodeVisitor):
     def depart_bullet_list(self, node):
         self.body.append('</text:unordered-list>\n')
         self.inBulletList = False
+        self.bodyOne = True
 
     def visit_caption(self, node):
         pass
@@ -313,6 +316,7 @@ class Translator(nodes.NodeVisitor):
     def depart_enumerated_list(self, node):
         self.body.append('</text:ordered-list>\n')
         self.inEnumList = False
+        self.bodyOne = True
 
     def visit_error(self, node):
         self.visit_admonition(node, 'error')
