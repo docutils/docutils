@@ -140,7 +140,7 @@ No blank line after.
         <image alt="symbol" uri="symbol.png">
     <system_message level="2" type="WARNING">
         <paragraph>
-            Unindent without blank line at line 4.
+            Explicit markup ends without a blank line; unexpected unindent at line 4.
     <paragraph>
         No blank line after.
     <system_message level="2" type="WARNING">
@@ -172,7 +172,7 @@ No blank line after.
                And some more, line 2.
     <system_message level="2" type="WARNING">
         <paragraph>
-            Unindent without blank line at line 12.
+            Explicit markup ends without a blank line; unexpected unindent at line 12.
     <block_quote>
         <paragraph>
             With some block quote text, line 1.

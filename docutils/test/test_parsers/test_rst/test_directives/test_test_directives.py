@@ -95,7 +95,7 @@ Paragraph.
             block
     <system_message level="2" type="WARNING">
         <paragraph>
-            Unindent without blank line at line 3.
+            Explicit markup ends without a blank line; unexpected unindent at line 3.
     <paragraph>
         no blank line.
     <paragraph>

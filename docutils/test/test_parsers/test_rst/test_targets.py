@@ -409,7 +409,7 @@ no blank line
     <target id="target1" name="target1" refname="reference">
     <system_message level="2" type="WARNING">
         <paragraph>
-            Unindent without blank line at line 7.
+            Explicit markup ends without a blank line; unexpected unindent at line 7.
     <paragraph>
         no blank line
     <target id="target2" name="target2" refname="reference">
@@ -418,7 +418,7 @@ no blank line
     <target anonymous="1" id="id6" refname="reference">
     <system_message level="2" type="WARNING">
         <paragraph>
-            Unindent without blank line at line 13.
+            Explicit markup ends without a blank line; unexpected unindent at line 13.
     <paragraph>
         no blank line
 """],

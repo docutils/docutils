@@ -126,7 +126,7 @@ Different bullets:
                 item 3
     <system_message level="2" type="WARNING">
         <paragraph>
-            Unindent without blank line at line 8.
+            Bullet list ends without a blank line; unexpected unindent at line 8.
     <bullet_list bullet="-">
         <list_item>
             <paragraph>
@@ -144,7 +144,7 @@ no blank line
                 item
     <system_message level="2" type="WARNING">
         <paragraph>
-            Unindent without blank line at line 2.
+            Bullet list ends without a blank line; unexpected unindent at line 2.
     <paragraph>
         no blank line
 """],
@@ -170,7 +170,7 @@ empty item above, no blank line
         <list_item>
     <system_message level="2" type="WARNING">
         <paragraph>
-            Unindent without blank line at line 2.
+            Bullet list ends without a blank line; unexpected unindent at line 2.
     <paragraph>
         empty item above, no blank line
 """],

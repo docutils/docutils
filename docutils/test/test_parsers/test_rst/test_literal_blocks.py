@@ -109,7 +109,7 @@ no blank line
         A literal block.
     <system_message level="2" type="WARNING">
         <paragraph>
-            Unindent without blank line at line 4.
+            Literal block ends without a blank line; unexpected unindent at line 4.
     <paragraph>
         no blank line
 """],
