@@ -705,13 +705,18 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="Docutils %s: http://docutils.sourceforge.net/" />
 """ % docutils.__version__
+    standard_stylesheet_value = ('<link rel="stylesheet" href="default.css" '
+                                 'type="text/css" />\n')
 
     def format_output(self, parts):
         """Minimize & standardize the output."""
         # remove redundant bits:
         del parts['whole']
         del parts['body']
+        # remove standard bits:
         parts['meta'] = parts['meta'].replace(self.standard_meta_value, '')
+        if parts['stylesheet'] == self.standard_stylesheet_value:
+            del parts['stylesheet']
         # remove empty values:
         for key in parts.keys():
             if not parts[key]:
