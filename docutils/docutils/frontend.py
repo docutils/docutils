@@ -458,19 +458,6 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
         ``.settings_spec`` attribute.  `defaults` is a mapping of setting
         default overrides.
         """
-        self.validators = {}
-        """{setting: validation function} mapping, used by `validate_options`.
-        Validation functions take three or five parameters: setting name,
-        value, an `OptionParser` (``self``), and a `ConfigParser` and config
-        file section if activated from a config file.  They return a (possibly
-        modified) value, or raise an exception.  Populated from the "validator"
-        keyword argument dictionary entries of components' ``settings_spec``
-        attribute."""
-
-        self.overrides = {}
-        """{setting: overridden setting} mapping, used by `validate_options`.
-        The overridden setting is set to `None` when the key setting is
-        encountered."""
 
         self.lists = {}
         """Set of list-type settings."""
@@ -516,12 +503,8 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
                 for (help_text, option_strings, kwargs) in option_spec:
                     option = group.add_option(help=help_text, *option_strings,
                                               **kwargs)
-                    if kwargs.get('validator'):
-                        self.validators[option.dest] = kwargs['validator']
                     if kwargs.get('action') == 'append':
                         self.lists[option.dest] = 1
-                    if kwargs.get('overrides'):
-                        self.overrides[option.dest] = kwargs['overrides']
                 if component.settings_defaults:
                     self.defaults.update(component.settings_defaults)
         for component in components:
@@ -595,7 +578,10 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
         Get an option by its dest.
 
         If you're supplying a dest which is shared by several options,
-        the behavior is undefined.
+        it is undefined which option of those is returned.
+
+        A KeyError is raised if there is no option with the supplied
+        dest.
         """
         for group in self.option_groups + [self]:
             for option in group.option_list:
@@ -654,11 +640,14 @@ section "Old-Format Configuration Files".
         """
         for section in self.sections():
             for setting in self.options(section):
-                validator = option_parser.validators.get(setting)
-                if validator:
+                try:
+                    option = option_parser.get_option_by_dest(setting)
+                except KeyError:
+                    continue
+                if option.validator:
                     value = self.get(section, setting, raw=1)
                     try:
-                        new_value = validator(
+                        new_value = option.validator(
                             setting, value, option_parser,
                             config_parser=self, config_section=section)
                     except Exception, error:
@@ -668,9 +657,8 @@ section "Old-Format Configuration Files".
                             % (filename, section, error.__class__.__name__,
                                error, setting, value)), None, sys.exc_info()[2])
                     self.set(section, setting, new_value)
-                override = option_parser.overrides.get(setting)
-                if override:
-                    self.set(section, override, None)
+                if option.overrides:
+                    self.set(section, option.overrides, None)
 
     def optionxform(self, optionstr):
         """
