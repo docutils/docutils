@@ -165,6 +165,8 @@ Enumerated Lists
 
    iv. iv
 
+#. List items may also be auto-enumerated.
+
 Definition Lists
 ----------------
 

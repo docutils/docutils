@@ -719,6 +719,98 @@ Princeton, NJ.
             <paragraph>
                 Paragraph 2.
 """],
+["""\
+1. Item one.
+
+#. Item two.
+
+#. Item three.
+""",
+"""\
+<document source="test data">
+    <enumerated_list enumtype="arabic" prefix="" suffix=".">
+        <list_item>
+            <paragraph>
+                Item one.
+        <list_item>
+            <paragraph>
+                Item two.
+        <list_item>
+            <paragraph>
+                Item three.
+"""],
+["""\
+a. Item one.
+#. Item two.
+#. Item three.
+""",
+"""\
+<document source="test data">
+    <enumerated_list enumtype="loweralpha" prefix="" suffix=".">
+        <list_item>
+            <paragraph>
+                Item one.
+        <list_item>
+            <paragraph>
+                Item two.
+        <list_item>
+            <paragraph>
+                Item three.
+"""],
+["""\
+i. Item one.
+ii. Item two.
+#. Item three.
+""",
+"""\
+<document source="test data">
+    <enumerated_list enumtype="lowerroman" prefix="" suffix=".">
+        <list_item>
+            <paragraph>
+                Item one.
+        <list_item>
+            <paragraph>
+                Item two.
+        <list_item>
+            <paragraph>
+                Item three.
+"""],
+["""\
+#. Item one.
+#. Item two.
+#. Item three.
+""",
+"""\
+<document source="test data">
+    <enumerated_list enumtype="arabic" prefix="" suffix=".">
+        <list_item>
+            <paragraph>
+                Item one.
+        <list_item>
+            <paragraph>
+                Item two.
+        <list_item>
+            <paragraph>
+                Item three.
+"""],
+["""\
+1. Item one.
+#. Item two.
+3. Item three.
+""",
+"""\
+<document source="test data">
+    <enumerated_list enumtype="arabic" prefix="" suffix=".">
+        <list_item>
+            <paragraph>
+                Item one.
+    <system_message level="2" line="2" source="test data" type="WARNING">
+        <paragraph>
+            Enumerated list ends without a blank line; unexpected unindent.
+    <paragraph>
+        #. Item two.
+        3. Item three.
+"""],
 ]
 
 

@@ -43,6 +43,7 @@ Changes Since 0.3.7
   - Fixed option lists to allow spaces inside ``<angle-bracketed option
     arguments>``.
   - Allowed whitespace in paths and URLs.
+  - Added auto-enumerated list items.
 
 * docutils/parsers/rst/directives/__init__.py:
 
