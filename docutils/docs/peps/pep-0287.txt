@@ -1,4 +1,4 @@
-PEP: 
+PEP: 287
 Title: reStructuredText Standard Docstring Format
 Version: $Revision$
 Last-Modified: $Date$
@@ -6,8 +6,9 @@ Author: goodger@users.sourceforge.net (David Goodger)
 Discussions-To: doc-sig@python.org
 Status: Draft
 Type: Informational
-Created: 2002-03-25
+Created: 25-Mar-2002
 Post-History: 
+Replaces: 216
 
 
 Abstract
@@ -53,8 +54,8 @@ Goals
 
     1. To establish a standard docstring format by attaining
        "accepted" status (Python community consensus; BDFL
-       pronouncement). Once reStructuredText is a Python standard, all
-       effort can be focused on tools instead of arguing for a
+       pronouncement).  Once reStructuredText is a Python standard,
+       all effort can be focused on tools instead of arguing for a
        standard.  Python needs a standard set of documentation tools.
 
     2. To address any related concerns raised by the Python community.
@@ -73,16 +74,17 @@ Goals
        applied:
 
        a) Keep the existing PEP section structure constructs (one-line
-          section headers, indented body text).  Subsections can either
-          be forbidden or supported with underlined headers in the
-          indented body text.
+          section headers, indented body text).  Subsections can
+          either be forbidden or supported with underlined headers in
+          the indented body text.
 
        b) Replace the PEP section structure constructs with the
           reStructuredText syntax.  Section headers will require
-          underlines, subsections will be supported out of the box, and
-          body text need not be indented (except for block quotes).
+          underlines, subsections will be supported out of the box,
+          and body text need not be indented (except for block
+          quotes).
 
-       Support for RFC822 headers will be added to the
+       Support for RFC 2822 headers will be added to the
        reStructuredText parser (unambiguous given a specific context:
        the first contiguous block of a PEP document).  It may be
        desired to concretely specify what over/underline styles are
@@ -342,10 +344,10 @@ Features
       semantics, such as identifying parameters, exceptions raised,
       etc.; such usage is beyond the scope of this PEP.
 
-      A modified RFC822 syntax is used, with a colon *before* as well
-      as *after* the field name.  Field bodies are more versatile as
-      well; they may contain multiple field bodies (even nested field
-      lists).  For example::
+      A modified RFC 2822 syntax is used, with a colon *before* as
+      well as *after* the field name.  Field bodies are more versatile
+      as well; they may contain multiple field bodies (even nested
+      field lists).  For example::
 
           :Date: 2002-03-22
           :Version: 1
@@ -354,13 +356,13 @@ Features
               - Myself
               - I
 
-      Standard RFC822 header syntax cannot be used for this construct
-      because it is ambiguous.  A word followed by a colon at the
-      beginning of a line is common in written text.  However, with
-      the addition of a well-defined context, such as when a field
-      list invariably occurs at the beginning of a document (e.g.,
-      PEPs and email messages), standard RFC822 header syntax can be
-      used.
+      Standard RFC 2822 header syntax cannot be used for this
+      construct because it is ambiguous.  A word followed by a colon
+      at the beginning of a line is common in written text.  However,
+      with the addition of a well-defined context, such as when a
+      field list invariably occurs at the beginning of a document
+      (e.g., PEPs and email messages), standard RFC 2822 header syntax
+      can be used.
 
     - Markup extensibility: directives and substitutions.
 
@@ -407,7 +409,7 @@ Questions & Answers
 
     A: Yes, it is for most people.  If it lacks some construct that is
        require for a specific application, it can be added via the
-       directive mechansism.  If a common construct has been
+       directive mechanism.  If a common construct has been
        overlooked and a suitably readable syntax can be found, it can
        be added to the specification and parser.
 
