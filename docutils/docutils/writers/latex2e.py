@@ -326,6 +326,7 @@ class Table:
         # miscellaneous attributes
         self._attrs = {}
         self._col_width = []
+        self._rowspan = []
 
     def open(self):
         self._open = 1
@@ -393,6 +394,7 @@ class Table:
             colwidth = float(node['colwidth']+1) / width
             total_width += colwidth
         self._col_width = []
+        self._rowspan = []
         # donot make it full linewidth
         factor = 0.93
         if total_width > 1.0:
@@ -402,6 +404,7 @@ class Table:
         for node in self._col_specs:
             colwidth = factor * float(node['colwidth']+1) / width
             self._col_width.append(colwidth+0.005)
+            self._rowspan.append(0)
             latex_table_spec += "%sp{%.2f\\locallinewidth}" % (bar,colwidth+0.005)
         return latex_table_spec+bar
 
@@ -430,11 +433,42 @@ class Table:
     def visit_row(self):
         self._cell_in_row = 0
     def depart_row(self):
+        res = [' \\\\\n']
         self._cell_in_row = None  # remove cell counter
+        for i in range(len(self._rowspan)):
+            if (self._rowspan[i]>0):
+                self._rowspan[i] -= 1
+        
         if self._table_style == 'standard':
-            return [' \\\\\n','\\hline\n']
-        return [' \\\\\n']
+            rowspans = []
+            for i in range(len(self._rowspan)):
+                if (self._rowspan[i]<=0):
+                    rowspans.append(i+1)
+            if len(rowspans)==len(self._rowspan):
+                res.append('\\hline\n')
+            else:
+                cline = ''
+                rowspans.reverse()
+                # TODO merge clines
+                while 1:
+                    try:
+                        c_start = rowspans.pop()
+                    except:
+                        break
+                    cline += '\\cline{%d-%d}\n' % (c_start,c_start)
+                res.append(cline)
+        return res
 
+    def set_rowspan(self,cell,value):
+        try:
+            self._rowspan[cell] = value
+        except:
+            pass
+    def get_rowspan(self,cell):
+        try:
+            return self._rowspan[cell]
+        except:
+            return 0
     def get_entry_number(self):
         return self._cell_in_row
     def visit_entry(self):
@@ -1021,16 +1055,25 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_entry(self, node):
         self.active_table.visit_entry()
         # cell separation
-        if self.active_table.get_entry_number() != 1:
+        if self.active_table.get_entry_number() == 1:
+            # if the firstrow is a multirow, this actually is the second row.
+            # this gets hairy if rowspans follow each other.
+            if self.active_table.get_rowspan(0):
+                self.body.append(' & ')
+                self.active_table.visit_entry() # increment cell count
+        else:
             self.body.append(' & ')
 
         # multi{row,column}
         # IN WORK BUG TODO HACK continues here
+        # multirow in LaTeX simply will enlarge the cell over several rows
+        # (the following n if n is positive, the former if negative).
         if node.has_key('morerows') and node.has_key('morecols'):
             raise NotImplementedError('Cells that '
             'span multiple rows *and* columns are not supported, sorry.')
         if node.has_key('morerows'):
             count = node['morerows'] + 1
+            self.active_table.set_rowspan(self.active_table.get_entry_number()-1,count)
             self.body.append('\\multirow{%d}{%s}{' % \
                     (count,self.active_table.get_column_width()))
             self.context.append('}')
@@ -1059,6 +1102,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_entry(self, node):
         self.body.append(self.context.pop()) # header / not header
         self.body.append(self.context.pop()) # multirow/column
+        # if following row is spanned from above.
+        if self.active_table.get_rowspan(self.active_table.get_entry_number()):
+           self.body.append(' & ')
+           self.active_table.visit_entry() # increment cell count
+
+    def visit_row(self, node):
+        self.active_table.visit_row()
+
+    def depart_row(self, node):
+        self.body.extend(self.active_table.depart_row())
 
     def visit_enumerated_list(self, node):
         # We create our own enumeration list environment.
@@ -1525,13 +1578,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_revision(self, node):
         self.depart_docinfo_item(node)
-
-    def visit_row(self, node):
-        self.active_table.visit_row()
-
-    def depart_row(self, node):
-        self.body.extend(self.active_table.depart_row())
-        # BUG if multirow cells \cline{x-y}
 
     def visit_section(self, node):
         self.section_level += 1

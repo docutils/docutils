@@ -231,8 +231,9 @@ Tables
   - baselineskip/stretch does not help.
 * Should there be two hlines after table head and on table end ?
 * Table: multicol cells are always {l}.
+* The contents of a rowspan cell do not influence table height.
+  (Maybe if we put a tabular inside ?)
 * Table heads and footer for longtable (firstpage lastpage ..).
-* Longtable does not work with multirow
 * Tabularx says "do not use any multicolmn which spans any X column.
   maybe use ltxtable instead of tabularx (Longtable combined with tabularx).
   but ltxtable disables longtable's multicolumn.
