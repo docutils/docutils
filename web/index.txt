@@ -335,6 +335,8 @@ docutils-develop@lists.sourceforge.net.
 * Engelbert Gruber has begun `LaTeX Writer`_ and `ReportLabs/PDF
   Writer`_ components.
 
+* ? has taken over `ReportLabs/PDF Writer`_ components.
+
 * Oliver Rutherfurd has begun a `DocBook Writer`_ component and
   `HT2HTML integration`_ component.
 
@@ -353,7 +355,8 @@ docutils-develop@lists.sourceforge.net.
 .. _pysource_reader: sandbox/davidg/pysource_reader/
 .. _PythonPoint: sandbox/richard/pythonpoint/
 .. _LaTeX Writer: sandbox/grubert/latex/
-.. _ReportLabs/PDF Writer: sandbox/grubert/rlpdf/
+.. _Manpage Writer: sandbox/grubert/man/
+.. _ReportLabs/PDF Writer: sandbox/dreamcatcher/rlpdf/
 .. _DocBook Writer: sandbox/oliverr/docbook/
 .. _HT2HTML integration: sandbox/oliverr/ht/
 .. _DocFactory: sandbox/gschwant/docfactory/doc/
