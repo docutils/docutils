@@ -70,8 +70,6 @@ Changes Since 0.3.5
 
   - no newline after depart_term.
   - Added translations for some Unicode quotes.
-  - Added ``\PreloadUnicodePage{n}`` to the header if output encoding
-    is UTF-8.
   - Added option "font-encoding", made package AE the default.
   - "stylesheet" and "stylesheet_path" settings are now mutually
     exclusive.
