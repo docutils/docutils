@@ -73,6 +73,65 @@ Future Plans
 Changes Since 0.3.3
 ===================
 
+General:
+
+* _`Documentation cleanup/reorganization`.
+
+  - Created new subdirectories of docs/:
+
+    * ``docs/user/``: introductory/tutorial material for end-users
+    * ``docs/dev/``: for core-developers (development notes, plans, etc.)
+    * ``docs/ref/``: reference material for all groups
+    * ``docs/howto/``: for component-developers and core-developers
+    * ``docs/peps/``: Python Enhancement Proposals
+
+  - Moved ``docs/*`` to ``docs/user/``.
+  - Moved ``pysource.dtd``, ``pysource.txt``, ``semantics.txt`` from
+    ``spec/`` to ``docs/dev``.
+  - Moved ``doctree.txt``, ``docutils.dtd``, ``soextblx.dtd``,
+    ``transforms.txt`` from ``spec/`` to ``docs/ref/``.
+  - Moved ``alternatives.txt``, and ``problems.txt`` from
+    ``spec/rst/`` to ``docs/dev/rst/``.
+  - Moved ``reStructuredText.txt``, ``directives.txt``,
+    ``interpreted.txt``, and ``introduction.txt`` from ``spec/rst/``
+    to ``docs/ref/rst/``.  Renamed ``interpreted.txt`` to
+    ``roles.txt``, ``reStructuredText.txt`` to
+    ``restructuredtext.txt``.
+  - Moved ``spec/howto/`` to ``docs/howto``.
+
+  In order to keep the CVS history of moved files, we supplied
+  SourceForge with a `script for modifying the Docutils CVS
+  repository`__.
+
+  __ http://cvs.sourceforge.net/viewcvs.py/*checkout*/docutils/sandbox/davidg/infrastructure/cvs-reorg.sh?content-type=text/plain&rev=1.22
+
+  After doing the cleanup:
+
+  - Added ``docs/index.txt``.
+  - Added a ``.htaccess`` file to the ``web`` module, containing
+    redirects for all old paths to new paths.  They'll preserve
+    fragments (the "#name" part of a URL), and won't clutter up the
+    file system, and will correct the URL in the user's browser.
+
+  Still to do:
+
+  - Move 'Future Plans' from ``HISTORY.txt`` to new 'Priorities'
+    section of ``docs/dev/todo.txt``.
+
+  - Add ``THANKS.txt`` from 'Acknowledgements' in ``HISTORY.txt``.
+
+  - Add ``BUGS.txt``, ``docs/dev/policies.txt``,
+    ``docs/dev/website.txt``, ``docs/dev/release.txt`` from all but
+    the "to do" list in ``docs/dev/todo.txt``.
+
+  - Add 'how to report bugs' to ``BUGS.txt`` (like `Subversion's
+    <http://svn.collab.net/viewcvs/svn/trunk/BUGS?rev=9086&view=markup>`__).
+
+  - Go through all the docs (including under web/) & code and update
+    links.
+
+Specific:
+
 * docutils/__init__.py:
 
   - 0.3.4: Post-release.
@@ -95,14 +154,17 @@ Changes Since 0.3.3
     and figure content is centered.
   - Rowspan support for tables.
 
-* docs/rst/cheatsheet.txt: "The reStructuredText Cheat Sheet" added to
+* docs/index.txt: "Docutils Project Documentation Overview", added to
+  project.
+
+* docs/ref/rst/directives.txt:
+
+  - Added directive: "table".
+
+* docs/user/rst/cheatsheet.txt: "The reStructuredText Cheat Sheet" added to
   project.  1 page for syntax, and a 1 page reference for directives
   and roles.  Source text to be used as-is; not meant to be converted
   to HTML.
-
-* spec/rst/directives.txt:
-
-  - Added directive: "table".
 
 
 Release 0.3.3 (2004-05-09)
