@@ -49,6 +49,7 @@ Changes Since 0.3.5
 * docutils/parsers/rst/directives/__init__.py:
 
   - Added ``encoding`` directive option conversion function.
+  - Allow multiple class names in class_option conversion function.
 
 * docutils/parsers/rst/directives/body.py:
 
@@ -61,6 +62,7 @@ Changes Since 0.3.5
 
   - Added "encoding" option to "include" and "raw" directives.
   - Added "trim", "ltrim", and "rtrim" options to "unicode" directive.
+  - Allow multiple class names in the "class" directive.
 
 * docutils/parsers/rst/directives/parts.py:
 
@@ -126,6 +128,8 @@ Changes Since 0.3.5
 * docs/ref/rst/directives.txt
 
   - Marked "line-block" as deprecated.
+  - "Class" directive now allows multiple class names.
+  - Added "Rationale for Class Attribute Value Conversion".
 
 * docs/ref/rst/restructuredtext.txt:
 
