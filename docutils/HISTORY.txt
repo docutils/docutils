@@ -165,6 +165,7 @@ Specific:
     ``title_reference``, ``abbreviation``, ``acronym``.
   - Made substitutions case-sensitive-but-forgiving; moved some code
     from the parser.
+  - Fixed Unicode bug on element attributes (report: William Dode).
 
 * docutils/statemachine.py:
 
