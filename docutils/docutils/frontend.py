@@ -90,7 +90,6 @@ class OptionParser(optik.OptionParser):
          # Hidden options, for development use only:
          (optik.SUPPRESS_HELP, ['--dump-internal-document-attributes'],
           {'action': 'store_true'}),))
-
     """Command-line option specifications, common to all Docutils front-ends.
     Option group title, description, and a list/tuple of tuples: ``('help
     text', [list of option strings], {keyword arguments})``.  Group title
