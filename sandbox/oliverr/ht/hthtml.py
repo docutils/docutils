@@ -32,7 +32,13 @@ class Writer(writers.Writer):
     settings_spec = (
         '.ht template-Specific Options',
         None,
-        (('Specify a stylesheet URL, used verbatim.  Default is '
+        (('Specify base section (i.e. if 3, a top-level section '
+          'would be written as H3, 2nd level H4, etc...).  Default is 3.',
+          ['--base-section'],
+          {'choices': ['1','2','3','4'], 
+            'default': '3', 
+            'metavar': '<NUMBER>'}),
+         ('Specify a stylesheet URL, used verbatim.  Default is '
           '"default.css".',
           ['--stylesheet'],
           {'default': 'default.css', 'metavar': '<URL>'}),
@@ -79,19 +85,23 @@ class HTTranslator(HTMLTranslator):
         # I don't believe we can embed any style content
         # the header, so always link to the stylesheet.
         document.settings.embed_stylesheet = 0
+        document.settings.base_section = int(document.settings.base_section)
 
         HTMLTranslator.__init__(self, document)
-        self.headers = {}
+
+        # ht2html likes having a title, so add a default one
+        self.headers = {'title': 'None'}
         stylesheet = self.get_stylesheet_reference(os.getcwd())
         if stylesheet:
             self.headers['stylesheet']= stylesheet
+        # using first author found for .ht 'Author' header
         self.has_author = 0
 
     def astext(self):
         headers = ''.join(['%s: %s\n' % (k,v) \
             for (k,v) in self.headers.items()])
-        title = '<h1 class="title">%(title)s</h1>\n' % self.headers
-        body = [title,] + self.docinfo + self.body
+        # kludge! want footer, but not '</body></html>'
+        body = self.docinfo + self.body + self.body_suffix[:-1]
 
         return ''.join([headers + '\n'] + body)
 
@@ -110,12 +120,15 @@ class HTTranslator(HTMLTranslator):
         if isinstance(node.parent, nodes.topic):
             HTMLTranslator.visit_title(self, node)
         elif self.section_level == 0:
+            HTMLTranslator.visit_title(self, node)
             # document title
             title = node.astext()
             self.headers['title'] = self.encode(title)
-            self.context.append('\n')
         else:
+            # offset section level to account for ``base_section``.
+            self.section_level += (self.settings.base_section - 1)
             HTMLTranslator.visit_title(self, node)
+            self.section_level -= (self.settings.base_section - 1)
 
 
 # :indentSize=4:lineSeparator=\n:noTabs=true:tabSize=4:

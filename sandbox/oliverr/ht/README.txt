@@ -9,5 +9,5 @@ consumption by ht2html_.
 Ollie Rutherfurd
 oliver@rutherfurd.net
 
+.. :lineSeparator=\n:noTabs=true:
 
-:lineSeparator=\n:noTabs=true:
