@@ -1216,7 +1216,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append(':]')
 
     def visit_figure(self, node):
-        self.body.append( '\\begin{figure}[h]\\begin{center}\n' )
+        self.body.append( '\\begin{figure}[htbp]\\begin{center}\n' )
 
     def depart_figure(self, node):
         self.body.append( '\\end{center}\\end{figure}\n' )
