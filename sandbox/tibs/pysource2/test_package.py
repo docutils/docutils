@@ -92,15 +92,64 @@ class PackageTest(unittest.TestCase):
         Turn our Package tree into a docutils Document.
         """
 
-        wanted_result = """\
+        # I've split the wanted result string up into substrings so I can
+        # amend it more easily (or so I hope).
+        trivial_package = """\
 <document source="Package trivial_package">
-    <section id="package-trivial-package" name="package trivial_package">
+    <section class="package" id="package-trivial-package" name="package trivial_package">
         <title>
-            Package trivial_package
-        <section id="package-trivial-package-sub-package" name="package trivial_package.sub_package">
+            Package trivial_package\n"""
+
+        # The "xml:space" attribute is by observation, not prediction
+        module_init = """\
+        <section class="module" id="module-trivial-package-init" name="module trivial_package.__init__">
             <title>
-                Package trivial_package.sub_package
-"""
+                Module trivial_package.__init__
+            <literal_block class="docstring" xml:space="preserve">
+                A simple docstring.\n"""
+
+        module_file1 = """\
+        <section class="module" id="module-trivial-package-file1" name="module trivial_package.file1">
+            <title>
+                Module trivial_package.file1
+            <literal_block class="docstring" xml:space="preserve">
+                This is the first example file. It *does* use reStructuredText.
+            <section class="class" id="class-trivial-package-file1-fred" name="class trivial_package.file1.fred">
+                <title>
+                    Class trivial_package.file1.Fred
+                <literal_block class="docstring" xml:space="preserve">
+                    An example class - it announces each instance as it is created.\n"""
+
+        module_file2 = """\
+        <section class="module" id="module-trivial-package-file2" name="module trivial_package.file2">
+            <title>
+                Module trivial_package.file2
+            <literal_block class="docstring" xml:space="preserve">
+                This module is *not* using reStructuredText for its docstrings.\n"""
+
+        non_python_file = """\
+        <section class="file" id="file-trivial-package-not-python" name="file trivial_package.not_python">
+            <title>
+                File trivial_package.not_python
+            <paragraph>
+                File 
+                <literal>
+                    not_python
+                 is not a Python module.\n"""
+
+        sub_package = """\
+        <section class="package" id="package-trivial-package-sub-package" name="package trivial_package.sub_package">
+            <title>
+                Package trivial_package.sub_package\n"""
+
+        sub_module_init = """\
+            <section class="module" id="module-trivial-package-sub-package-init" name="module trivial_package.sub_package.__init__">
+                <title>
+                    Module trivial_package.sub_package.__init__\n"""
+
+        wanted_result = (trivial_package + module_init + module_file1 +
+                         module_file2 + non_python_file + sub_package +
+                         sub_module_init)
 
         tree = parse_package("trivial_package")
 
