@@ -1,0 +1,42 @@
+=====================
+ DocFactory_ History
+=====================
+
+.. _DocFactory: http://docutils.sf.net/sandbox/gschwant/docfactory/
+
+DocFactory 0.2 (2003/01/??)
+  * New editor features:
+
+    - Change EOLs to CR/LF/CRLF
+    - Find & Replace... (using `regular expression syntax`_ as defined
+      by Python's re-module)
+    - Goto line...
+    - Insert image/figure/path
+    - Syntax highlightening for HTML-files
+
+  * New "View"-menu:
+
+    - View EOL markers
+    - View right edge indicator
+    - View whitespace
+    - Set fontsize to small/normal/big
+
+  * Ability to open files from command-line. 
+  * Stylesheet-support of HTML-viewer on Windows platforms. 
+  * Automatic stylesheet-creation.
+  * Animated "About"-dialog.
+  * Added "docfactory2exe.py" for usage with py2exe_. 
+  * Modified data storage. 
+
+  **>>>** see README_ for details
+
+DocFactory 0.1.4 (2002/09/30)
+  * Files can be opened without creating a project first.
+  * The project settings dialog produces a docutils configuration file.
+
+DocFactory 0.1.3 (2002/09/15)
+  * Initial sandbox-release.
+
+.. _py2exe:                      http://py2exe.sourceforge.net
+.. _`regular expression syntax`: http://www.python.org/doc/current/lib/re-syntax.html
+.. _README:                      README.html
