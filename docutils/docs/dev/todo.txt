@@ -26,23 +26,9 @@ you'd like to tackle, please do!
 Bugs
 ----
 
-* The "contents" directive now automatically names the "topic"
-  produced (using its title), so that it can be referred to by name.
-  However, this naming happens late in the game, after most references
-  have been resolved.  So the following indirect target produces a
-  warning because the name "contents" is not available when resolved::
+Also see the `SourceForge Bug Tracker`__.
 
-      .. contents::
-
-      .. _alternate name for contents: contents_
-
-  Fixing this may be tricky, and isn't a high priority.
-
-  Idea: two-pass hyperlink resolution, ignoring errors on the first
-  pass?  Nah, too complicated.
-
-  Perhaps the directive should do a bit more work up-front: create the
-  "topic" and "title", and leave the "pending" node for contents.
+__ http://sourceforge.net/tracker/?group_id=38414&atid=422030
 
 * The parser doesn't know anything about double-width characters such
   as Chinese hanza & Japanese kanji/kana.  Also, it's dependent on

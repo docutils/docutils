@@ -34,6 +34,7 @@ def topic(name, arguments, options, content, lineno,
     title_text = arguments[0]
     textnodes, messages = state.inline_text(title_text, lineno)
     titles = [nodes.title(title_text, '', *textnodes)]
+    # sidebar uses this code
     if options.has_key('subtitle'):
         textnodes, more_messages = state.inline_text(options['subtitle'],
                                                      lineno)
