@@ -181,8 +181,8 @@ not appear.
 Usage
 =====
 
-After unpacking the Docutils package, the following shell commands
-will generate HTML for all included documentation::
+After unpacking and installing the Docutils package, the following
+shell commands will generate HTML for all included documentation::
 
     cd docutils/tools
     buildhtml.py ..
@@ -192,6 +192,10 @@ where "X.Y" is the release version.  Alternatively::
 
     cd docutils
     tools/buildhtml.py --config=tools/docutils.conf
+
+Some files may generate system messages (warnings and errors).  The
+``tools/test.txt`` file contains 5 intentional errors.  (They test the
+error reporting mechanism!)
 
 There are many front-end tools in the unpacked "tools" subdirectory.
 Most tools take up to two arguments, the source path and destination
