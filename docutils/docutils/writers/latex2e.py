@@ -1396,12 +1396,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pre = []                        # in reverse order
         post = ['\\includegraphics{%s}' % attrs['uri']]
         inline = isinstance(node.parent, nodes.TextElement)
-        if 'scale' in attrs:
+        if attrs.has_key('scale'):
             # Could also be done with ``scale`` option to
             # ``\includegraphics``; doing it this way for consistency.
             pre.append('\\scalebox{%f}{' % (attrs['scale'] / 100.0,))
             post.append('}')
-        if 'align' in attrs:
+        if attrs.has_key('align'):
             align_prepost = {
                 # By default latex aligns the top of an image.
                 (1, 'top'): ('', ''),
