@@ -96,15 +96,17 @@ class Writer(writers.Writer):
         visitor = self.translator_class(self.document)
         self.document.walkabout(visitor)
         self.output = visitor.astext()
-        self.head_prefix = visitor.head_prefix
-        self.stylesheet = visitor.stylesheet
-        self.head = visitor.head
-        self.body_prefix = visitor.body_prefix
-        self.body_pre_docinfo = visitor.body_pre_docinfo
-        self.docinfo = visitor.docinfo
-        self.body = visitor.body
-        self.body_suffix = visitor.body_suffix
-
+        self.visitor = visitor
+        for attr in ('head_prefix', 'stylesheet', 'head', 'body_prefix',
+                     'body_pre_docinfo', 'docinfo', 'body', 'fragment',
+                     'body_suffix'):
+            setattr(self, attr, getattr(visitor, attr))
+        
+    def assemble_parts(self):
+        writers.Writer.assemble_parts(self)
+        for part in ('title', 'subtitle', 'docinfo', 'body', 'header',
+                     'footer', 'meta', 'stylesheet', 'fragment'):
+            self.parts[part] = ''.join(getattr(self.visitor, part))
 
 class HTMLTranslator(nodes.NodeVisitor):
 
@@ -171,11 +173,12 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.settings = settings = document.settings
         lcode = settings.language_code
         self.language = languages.get_language(lcode)
+        self.meta = [self.content_type % settings.output_encoding,
+                     self.generator % docutils.__version__]
         self.head_prefix = [
               self.doctype,
-              self.html_head % (lcode, lcode),
-              self.content_type % settings.output_encoding,
-              self.generator % docutils.__version__]
+              self.html_head % (lcode, lcode)]
+        self.head_prefix.extend(self.meta)
         if settings.xml_declaration:
             self.head_prefix.insert(0, self.xml_declaration
                                     % settings.output_encoding)
@@ -197,6 +200,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         # author, date, etc.
         self.docinfo = []
         self.body = []
+        self.fragment = []
         self.body_suffix = ['</body>\n</html>\n']
         self.section_level = 0
         self.context = []
@@ -206,6 +210,11 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.compact_simple = None
         self.in_docinfo = None
         self.in_sidebar = None
+        self.title = []
+        self.subtitle = []
+        self.header = []
+        self.footer = []
+        self.within_title = 0
 
     def get_stylesheet_reference(self, relative_to=None):
         settings = self.settings
@@ -527,8 +536,9 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_docinfo_item(self, node, name, meta=1):
         if meta:
-            self.head.append('<meta name="%s" content="%s" />\n'
-                             % (name, self.attval(node.astext())))
+            meta_tag = '<meta name="%s" content="%s" />\n' \
+                       % (name, self.attval(node.astext()))
+            self.add_meta(meta_tag)
         self.body.append(self.starttag(node, 'tr', ''))
         self.body.append('<th class="docinfo-name">%s:</th>\n<td>'
                          % self.language.labels[name])
@@ -548,13 +558,14 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('\n</pre>\n')
 
     def visit_document(self, node):
-        self.body.append(self.starttag(node, 'div', CLASS='document'))
         # empty or untitled document?
         if not len(node) or not isinstance(node[0], nodes.title):
             # for XHTML conformance, modulo IE6 appeasement:
             self.head.insert(0, '<title></title>\n')
 
     def depart_document(self, node):
+        self.fragment.extend(self.body)
+        self.body.insert(0, self.starttag(node, 'div', CLASS='document'))
         self.body.append('</div>\n')
 
     def visit_emphasis(self, node):
@@ -677,6 +688,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         footer = (['<hr class="footer" />\n',
                    self.starttag(node, 'div', CLASS='footer')]
                   + self.body[start:] + ['</div>\n'])
+        self.footer.extend(footer)
         self.body_suffix[:0] = footer
         del self.body[start:]
 
@@ -745,9 +757,11 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_header(self, node):
         start = self.context.pop()
-        self.body_prefix.append(self.starttag(node, 'div', CLASS='header'))
-        self.body_prefix.extend(self.body[start:])
-        self.body_prefix.append('<hr />\n</div>\n')
+        header = [self.starttag(node, 'div', CLASS='header')]
+        header.extend(self.body[start:])
+        header.append('<hr />\n</div>\n')
+        self.body_prefix.extend(header)
+        self.header = header
         del self.body[start:]
 
     def visit_hint(self, node):
@@ -843,11 +857,16 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('\n</pre>\n')
 
     def visit_meta(self, node):
-        self.head.append(self.emptytag(node, 'meta', **node.attributes))
+        meta = self.emptytag(node, 'meta', **node.attributes)
+        self.add_meta(meta)
 
     def depart_meta(self, node):
         pass
 
+    def add_meta(self, tag):
+        self.meta.append(tag)
+        self.head.append(tag)
+        
     def visit_note(self, node):
         self.visit_admonition(node, 'note')
 
@@ -1032,8 +1051,12 @@ class HTMLTranslator(nodes.NodeVisitor):
         else:
             self.body.append(self.starttag(node, 'h2', '', CLASS='subtitle'))
             self.context.append('</h2>\n')
+            self.within_title = len(self.body)
 
     def depart_subtitle(self, node):
+        if self.within_title:
+            self.subtitle = self.body[self.within_title:]
+            self.within_title = 0
         self.body.append(self.context.pop())
 
     def visit_superscript(self, node):
@@ -1171,6 +1194,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                              % self.encode(node.astext()))
             self.body.append(self.starttag(node, 'h1', '', CLASS='title'))
             self.context.append('</h1>\n')
+            self.within_title = len(self.body)
         else:
             self.body.append(
                   self.starttag(node, 'h%s' % self.section_level, ''))
@@ -1189,8 +1213,11 @@ class HTMLTranslator(nodes.NodeVisitor):
                 self.context.append('</a>' + close_tag)
             else:
                 self.context.append(close_tag)
-
+                
     def depart_title(self, node):
+        if self.within_title:
+            self.title = self.body[self.within_title:]
+            self.within_title = 0
         self.body.append(self.context.pop())
 
     def visit_title_reference(self, node):
