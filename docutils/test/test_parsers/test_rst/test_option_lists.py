@@ -677,7 +677,46 @@ These next ones should be simple paragraphs:
     <paragraph>
         -1 and this one too.
 """],
+["""\
+Complex optargs:
+
+--source-url=<URL>      Use the supplied <URL> verbatim.
+--output-encoding=<name[:handler]>, -o<name[:handler]>
+                        Specify the text encoding for output.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Complex optargs:
+    <option_list>
+        <option_list_item>
+            <option_group>
+                <option>
+                    <option_string>
+                        --source-url
+                    <option_argument delimiter="=">
+                        <URL>
+            <description>
+                <paragraph>
+                    Use the supplied <URL> verbatim.
+        <option_list_item>
+            <option_group>
+                <option>
+                    <option_string>
+                        --output-encoding
+                    <option_argument delimiter="=">
+                        <name[:handler]>
+                <option>
+                    <option_string>
+                        -o
+                    <option_argument delimiter="">
+                        <name[:handler]>
+            <description>
+                <paragraph>
+                    Specify the text encoding for output.
+"""],
 ]
+
 
 if __name__ == '__main__':
     import unittest
