@@ -218,7 +218,7 @@ The directive's sole argument is interpreted as the topic title; the
 next line must be blank.  All subsequent lines make up the topic body,
 interpreted as body elements.  For example::
 
-    topic:: Topic Title
+    .. topic:: Topic Title
 
         Subsequent indented lines comprise
         the body of the topic, and are
