@@ -72,6 +72,16 @@ class Publisher:
         writer_class = writers.get_writer_class(writer_name)
         self.writer = writer_class()
 
+    def set_components(self, reader_name, parser_name, writer_name):
+        if self.reader is None:
+            self.set_reader(reader_name, self.parser, parser_name)
+        if self.parser is None:
+            if self.reader.parser is None:
+                self.reader.set_parser(parser_name)
+            self.parser = self.reader.parser
+        if self.writer is None:
+            self.set_writer(writer_name)
+
     def setup_option_parser(self, usage=None, description=None,
                             settings_spec=None, **defaults):
         #@@@ Add self.source & self.destination to components in future?
@@ -216,10 +226,7 @@ def publish_cmdline(reader=None, reader_name='standalone',
       (along with command-line option descriptions).
     """
     pub = Publisher(reader, parser, writer, settings=settings)
-    if reader is None:
-        pub.set_reader(reader_name, parser, parser_name)
-    if writer is None:
-        pub.set_writer(writer_name)
+    pub.set_components(reader_name, parser_name, writer_name)
     pub.publish(argv, usage, description, settings_spec, settings_overrides)
 
 def publish_file(source=None, source_path=None,
@@ -257,10 +264,7 @@ def publish_file(source=None, source_path=None,
       of component settings.
     """
     pub = Publisher(reader, parser, writer, settings=settings)
-    if reader is None:
-        pub.set_reader(reader_name, parser, parser_name)
-    if writer is None:
-        pub.set_writer(writer_name)
+    pub.set_components(reader_name, parser_name, writer_name)
     if settings is None:
         settings = pub.get_settings(settings_spec=settings_spec)
     if settings_overrides:
@@ -280,14 +284,14 @@ def publish_string(source, source_path=None, destination_path=None,
     For programmatic use with string I/O.
 
     For encoded string output, be sure to set the "output_encoding" setting to
-    the desired encoding.  Set it to "unicode" for Unicode string output.
+    the desired encoding.  Set it to "unicode" for unencoded Unicode string
+    output.
 
     Parameters:
 
-    - `source`: An input string; required.  This can be an encoded 8-big
-      string (in which case the "input_encoding" setting should be set) or a
-      Unicode string (in which case set the "input_encoding" setting to
-      "unicode").
+    - `source`: An input string; required.  This can be an encoded 8-bit
+      string (set the "input_encoding" setting to the correct encoding) or a
+      Unicode string (set the "input_encoding" setting to "unicode").
     - `source_path`: Path to the file or object that produced `source`;
       optional.  Only used for diagnostic output.
     - `destination_path`: Path to the file or object which will receive the
@@ -311,10 +315,7 @@ def publish_string(source, source_path=None, destination_path=None,
     pub = Publisher(reader, parser, writer, settings=settings,
                     source_class=io.StringInput,
                     destination_class=io.StringOutput)
-    if reader is None:
-        pub.set_reader(reader_name, parser, parser_name)
-    if writer is None:
-        pub.set_writer(writer_name)
+    pub.set_components(reader_name, parser_name, writer_name)
     if settings is None:
         settings = pub.get_settings(settings_spec=settings_spec)
     if settings_overrides:
