@@ -10,7 +10,7 @@ LaTeX2e document tree Writer.
 
 __docformat__ = 'reStructuredText'
 
-# code contributions from several people included, thanks too all.
+# code contributions from several people included, thanks to all.
 # some named: David Abrahams, Julien Letessier, Lele Gaifax, and others.
 #
 # convention deactivate code by two # e.g. ##.
@@ -1034,6 +1034,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('%% %s \n' % node.astext().replace('\n', '\n% '))
         raise nodes.SkipNode
 
+    def visit_compound(self, node):
+        pass
+
+    def depart_compound(self, node):
+        pass
+
     def visit_contact(self, node):
         self.visit_docinfo_item(node, 'contact')
 
@@ -1694,7 +1700,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item(node)
 
     def visit_paragraph(self, node):
-        if not self.topic_class == 'contents':
+        if not (self.topic_class == 'contents'
+                or (isinstance(node.parent, nodes.compound)
+                    and node.parent.index(node) > 0)):
             self.body.append('\n')
 
     def depart_paragraph(self, node):

@@ -460,6 +460,12 @@ class HTMLTranslator(nodes.NodeVisitor):
         # Content already processed:
         raise nodes.SkipNode
 
+    def visit_compound(self, node):
+        self.body.append(self.starttag(node, 'div', CLASS='compound'))
+
+    def depart_compound(self, node):
+        self.body.append('</div>\n')
+
     def visit_contact(self, node):
         self.visit_docinfo_item(node, 'contact', meta=None)
 
