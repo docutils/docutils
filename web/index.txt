@@ -10,7 +10,7 @@
 
 :Date: $Date$
 
-.. topic:: *FLASH NEWS!*  DAVID GOODGER NEEDS A JOB!
+.. topic:: *NEWS FLASH!*  DAVID GOODGER NEEDS A JOB!
 
    `The coordinator of the Docutils project, David Goodger, is looking
    for a new job.  Does your company need an experienced Python
