@@ -2657,8 +2657,10 @@ class Text(RSTState):
         self.nested_parse(indented, input_offset=line_offset, node=definition)
         return definitionlistitem, blank_finish
 
+    classifier_delimiter = re.compile(' +: +')
+
     def term(self, lines, lineno):
-        """Return a definition_list's term and optional classifier."""
+        """Return a definition_list's term and optional classifiers."""
         assert len(lines) == 1
         text_nodes, messages = self.inline_text(lines[0], lineno)
         term_node = nodes.term()
@@ -2666,17 +2668,17 @@ class Text(RSTState):
         for i in range(len(text_nodes)):
             node = text_nodes[i]
             if isinstance(node, nodes.Text):
-                parts = node.rawsource.split(' : ', 1)
+                parts = self.classifier_delimiter.split(node.rawsource)
                 if len(parts) == 1:
-                    term_node += node
+                    node_list[-1] += node
                 else:
-                    term_node += nodes.Text(parts[0].rstrip())
-                    classifier_node = nodes.classifier('', parts[1])
-                    classifier_node += text_nodes[i+1:]
-                    node_list.append(classifier_node)
-                    break
+                    
+                    node_list[-1] += nodes.Text(parts[0].rstrip())
+                    for part in parts[1:]:
+                        classifier_node = nodes.classifier('', part)
+                        node_list.append(classifier_node)
             else:
-                term_node += node
+                node_list[-1] += node
         return node_list, messages
 
 
