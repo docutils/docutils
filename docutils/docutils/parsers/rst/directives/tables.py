@@ -327,7 +327,7 @@ def list_table(name, arguments, options, content, lineno,
     try:
         num_cols, col_widths = check_list_content(
             node, name, options, content, lineno, block_text, state_machine)
-        table_data = [[item.children for item in row_list[0]]
+        table_data = [[item.get_children() for item in row_list[0]]
                       for row_list in node[0]]
         header_rows = options.get('header-rows', 0) # default 0
         check_table_dimensions(

@@ -450,7 +450,7 @@ class InternalTargets(Transform):
                     target.parent.remove(target)
                     for child in visitor.found:
                         target += child
-                    visitor.found.children = []
+                    visitor.found.clear()
                     visitor.found += target
                     return
             else:

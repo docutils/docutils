@@ -2621,7 +2621,7 @@ class Text(RSTState):
             state_machine_kwargs={'state_classes': (QuotedLiteralBlock,),
                                   'initial_state': 'QuotedLiteralBlock'})
         self.goto_line(new_abs_offset)
-        return parent_node.children
+        return parent_node.get_children()
 
     def definition_list_item(self, termline):
         indented, indent, line_offset, blank_finish = \
