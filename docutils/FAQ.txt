@@ -679,8 +679,8 @@ Why do enumerated lists only use numbers (no letters or roman numerals)?
 The rendering of enumerators (the numbers or letters acting as list
 markers) is completely governed by the stylesheet, so either the
 browser can't find the stylesheet (try using the "--embed-stylesheet"
-option), or the browser can't understand it (try a recent Mozilla or
-MSIE).
+option), or the browser can't understand it (try a recent Firefox,
+Mozilla, Konqueror, Opera, Safari, or even MSIE).
 
 
 Python Source Reader
