@@ -530,14 +530,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_address(self, node):
         self.depart_docinfo_item(node)
 
-    def visit_admonition(self, node, name):
+    def visit_admonition(self, node, name=''):
         self.body.append('\\begin{center}\\begin{sffamily}\n')
         self.body.append('\\fbox{\\parbox{\\admonitionwidth}{\n')
-        self.body.append('\\textbf{\\large '+ self.language.labels[name] + '}\n');
+        if name:
+            self.body.append('\\textbf{\\large '+ self.language.labels[name] + '}\n');
         self.body.append('\\vspace{2mm}\n')
 
 
-    def depart_admonition(self):
+    def depart_admonition(self, node=None):
         self.body.append('}}\n') # end parbox fbox
         self.body.append('\\end{sffamily}\n\\end{center}\n');
 
