@@ -499,6 +499,18 @@ Highlights
 Produces a highlights-class block quote.  See Epigraph_ above.
 
 
+Pull-Quote
+==========
+
+:Directive Type: "pull_quote"
+:Doctree Element: block_quote
+:Directive Arguments: None.
+:Directive Options: None.
+:Directive Content: Interpreted as the body of the block quote.
+
+Produces a pull-quote-class block quote.  See Epigraph_ above.
+
+
 ----------------
  Document Parts
 ----------------

@@ -100,6 +100,7 @@ _directive_registry = {
       'rubric': ('body', 'rubric'),
       'epigraph': ('body', 'epigraph'),
       'highlights': ('body', 'highlights'),
+      'pull-quote': ('body', 'pull_quote'),
       #'questions': ('body', 'question_list'),
       'image': ('images', 'image'),
       'figure': ('images', 'figure'),

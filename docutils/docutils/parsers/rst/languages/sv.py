@@ -29,6 +29,7 @@ directives = {
       u'mellanrubrik': 'rubric',
       u'epigraph (translation required)': 'epigraph',
       u'highlights (translation required)': 'highlights',
+      u'pull-quote (translation required)': 'pull-quote',
       # u'fr\u00e5gor': 'questions',
       # NOTE: A bit long, but recommended by http://www.nada.kth.se/dataterm/:
       # u'fr\u00e5gor-och-svar': 'questions',

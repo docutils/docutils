@@ -30,6 +30,7 @@ directives = {
       'rubric': 'rubric',
       'epigraph': 'epigraph',
       'highlights': 'highlights',
+      'pull-quote': 'pull-quote',
       #'questions': 'questions',
       #'qa': 'questions',
       #'faq': 'questions',
