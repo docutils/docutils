@@ -138,7 +138,9 @@ reStructuredText construct.
 \begin{list}{}{}
 \item {} \href{\#section-title}{1.1~~~Section Title}
 
-\item {} \href{\#transitions}{1.2~~~Transitions}
+\item {} \href{\#empty-section}{1.2~~~Empty Section}
+
+\item {} \href{\#transitions}{1.3~~~Transitions}
 
 \end{list}
 
@@ -238,9 +240,16 @@ That's it, the text just above this line.
 
 %___________________________________________________________________________
 
+\hypertarget{empty-section}{}
+\pdfbookmark[1]{1.2~~~Empty Section}{empty-section}
+\subsection*{1.2~~~Empty Section}
+
+
+%___________________________________________________________________________
+
 \hypertarget{transitions}{}
-\pdfbookmark[1]{1.2~~~Transitions}{transitions}
-\subsection*{1.2~~~Transitions}
+\pdfbookmark[1]{1.3~~~Transitions}{transitions}
+\subsection*{1.3~~~Transitions}
 
 Here's a transition:
 
@@ -249,7 +258,12 @@ Here's a transition:
 \hspace*{\fill}\hrulefill\hspace*{\fill}
 
 
-It divides the section.
+It divides the section.  Transitions may also occur between sections:
+
+
+%___________________________________________________________________________
+\hspace*{\fill}\hrulefill\hspace*{\fill}
+
 
 
 %___________________________________________________________________________
