@@ -85,7 +85,7 @@ for htmlfile in `find . -name '*.html'` ; do
                 ( cd $dir ; ~/bin/python $lib/tools/pep2html.py $base.txt )
             else
                 echo $txtfile
-                ( cd $dir ; ~/bin/python $lib/tools/html.py -gst $base.txt $base.html )
+                ~/bin/python $lib/tools/html.py -stg $txtfile $htmlfile
             fi
         fi
     fi
