@@ -21,14 +21,12 @@ import DocutilsTestSupport
 class RecordDependenciesTests(unittest.TestCase):
 
     def setUp(self):
-        self.testroot = os.path.dirname(DocutilsTestSupport.__file__) or '.'
-        self.datadir = os.path.join(self.testroot, 'data')
+        os.chdir(os.path.join(DocutilsTestSupport.testroot, 'data'))
 
     def get_record(self, inputfile=None, **settings):
 
-        recordfile = os.path.join(self.datadir, 'record.txt')
-        settings.setdefault('source_path', os.path.join(self.datadir,
-                                                        'dependencies.txt'))
+        recordfile = 'record.txt'
+        settings.setdefault('source_path', 'dependencies.txt')
         settings.setdefault('settings_overrides', {})
         settings['settings_overrides'] = settings['settings_overrides'].copy()
         settings['settings_overrides']['_disable_config'] = 1
@@ -38,8 +36,7 @@ class RecordDependenciesTests(unittest.TestCase):
         docutils.core.publish_file(destination=DocutilsTestSupport.DevNull(),
                                    **settings)
         settings['settings_overrides']['record_dependencies'].close()
-        return [dep.split('/')[-1]
-                for dep in open(recordfile).read().splitlines()]
+        return open(recordfile).read().splitlines()
 
     def test_dependencies(self):
         self.assertEqual(self.get_record(),
@@ -53,8 +50,8 @@ class RecordDependenciesTests(unittest.TestCase):
     def test_csv_dependencies(self):
         try:
             import csv
-            self.assertEqual(self.get_record(source_path=os.path.join(
-                self.datadir, 'csv_dep.txt')), ['csv_data.txt'])
+            self.assertEqual(self.get_record(source_path='csv_dep.txt'),
+                             ['csv_data.txt'])
         except ImportError:
             pass
 
@@ -63,7 +60,7 @@ class RecordDependenciesTests(unittest.TestCase):
         # Parameters to publish_file.
         s = {'settings_overrides': {}}
         so = s['settings_overrides']
-        so['stylesheet_path'] = os.path.join(self.datadir, 'stylesheet.txt')
+        so['stylesheet_path'] = 'stylesheet.txt'
         so['stylesheet'] = None
         s['writer_name'] = 'html'
         self.assert_('stylesheet.txt' not in

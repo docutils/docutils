@@ -22,9 +22,6 @@ import docutils.core
 import DocutilsTestSupport
 
 
-# Ugly magic to determine the test directory.
-testroot = os.path.dirname(DocutilsTestSupport.__file__) or '.'
-
 datadir = 'functional'
 """The directory to store the data needed for the functional tests."""
 
@@ -40,7 +37,7 @@ class FunctionalTestSuite(DocutilsTestSupport.CustomTestSuite):
     def __init__(self):
         """Process all config files in functional/tests/."""
         DocutilsTestSupport.CustomTestSuite.__init__(self)
-        os.chdir(testroot)
+        os.chdir(DocutilsTestSupport.testroot)
         self.added = 0
         os.path.walk(join_path(datadir, 'tests'), self.walker, None)
         assert self.added, 'No functional tests found.'
@@ -76,7 +73,7 @@ class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
 
     def test(self):
         """Process self.configfile."""
-        os.chdir(testroot)
+        os.chdir(DocutilsTestSupport.testroot)
         # Keyword parameters for publish_file:
         params = {}
         # Initialize 'settings_overrides' for test settings scripts,

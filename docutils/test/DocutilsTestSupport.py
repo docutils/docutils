@@ -73,6 +73,9 @@ except:
 StringList.__repr__ = StringList.__str__
 
 
+testroot = os.path.abspath(os.path.dirname(__file__) or os.path.curdir)
+
+
 class DevNull:
 
     """Output sink."""
