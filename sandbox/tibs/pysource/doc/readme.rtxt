@@ -30,9 +30,11 @@ History
 
 Obtaining the package
 ---------------------
-The latest version of 'pysource' may be found in the Docutils sandbox_.
+The latest version of 'pysource' may be found in the Docutils sandbox
+(tarball_ and browsable_).
 
-.. _sandbox: http://docutils.sourceforge.net/???
+.. _tarball: http://docutils.sourceforge.net/docutils-sandbox-snapshot.tgz
+.. _browsable: http://docutils.sourceforge.net/sandbox/tibs/pysource/
 
 I hope to keep a copy of the current "released" version at
 

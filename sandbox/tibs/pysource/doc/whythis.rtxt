@@ -20,7 +20,7 @@ Three existing tools deserve particular consideration:
 pydoc
 -----
 
-pydoc is Ka-Ping Yee's classic application. It is now (as of Python 2.1???)
+pydoc is Ka-Ping Yee's classic application. It is now (as of Python 2.1)
 included in the standard Python library, where it also provides the backbone
 for the "help" command.
 
@@ -32,7 +32,7 @@ sometimes it is simply not possible.
 It provides output as HTML, and also has a rather output mode for use at
 a terminal.
 
-..note:
+.. note:
   I've still to work out how to make pydoc work as a standalone tool
   (i.e., at the terminal prompt) for documenting my own Python code
   - for instance, doing ``pydoc.py pysource/visit.py``, which, at best,
@@ -57,7 +57,7 @@ arena. It is a mature tool, and:
 
   - has documented mechanisms for adding new import and export filters.
 
-  - has sophisticate control over the actual details of export (HTML options,
+  - has sophisticated control over the actual details of export (HTML options,
     single or multiple files, etc.)
 
 I would expect it to add support for reStructuredText in the near future.
@@ -80,7 +80,9 @@ not, for instance, pay attention to docstrings.
 pysource
 --------
 
-    http://docutils.sourceforge.net/, in the Sandbox
+http://docutils.sourceforge.net/sandbox/pysource/ (or from the tarball_).
+
+.. _tarball: http://docutils.sourceforge.net/docutils-sandbox-snapshot.tgz
 
 pysource is intended as a proof-of-concept implementation of the concepts in
 the Docutils PEPs.
