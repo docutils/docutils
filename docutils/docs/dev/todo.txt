@@ -477,17 +477,6 @@ __ rst/alternatives.html#or-not-to-do
   Which component is responsible for this, the parser, the reader, or
   the writer?
 
-* From David Abrahams, 15 Dec 2002 (docutils-users list):
-
-      Would it break anything if you added the backslash to the list
-      of "certain punctuation characters"?  That way, I could write
-      ``list``\s and get exactly the effect I want.
-
-  Interesting idea.  May work.  I'll have to think it through.  There
-  may be adverse side-effects due to the way backslash-escapes are
-  handled internally (they're converted to \x00 null bytes, which I've
-  always thought was a bit of a kludge, but it's worked thus far).
-
 * Implement the header row separator modification to table.el.  (Wrote
   to Takaaki Ota & the table.el mailing list on 2001-08-12, suggesting
   support for "=====" header rows.  On 2001-08-17 he replied, saying
@@ -667,9 +656,16 @@ __ rst/alternatives.html#or-not-to-do
 
   .. _RFC 2396: http://www.rfc-editor.org/rfc/rfc2396.txt
 
+* Use the vertical spacing of the source text to determine the
+  corresponding vertical spacing of the output?
+
 
 Directives
 ``````````
+
+Directives below are often referred to as "module.directive", the
+directive function.  The "module." is not part of the directive name
+when used in a document.
 
 * Allow directives to be added at run-time?
 
@@ -729,7 +725,7 @@ Directives
   - _`html.imagemap` (Useful outside of HTML?  If not, replace with
     image only in non-HTML writers?)
 
-  - _`parts.endnotes`: See `Footnote & Citation Gathering`_.
+  - _`parts.endnotes` (or "footnotes"): See `Footnote & Citation Gathering`_.
 
   - _`parts.citations`: See `Footnote & Citation Gathering`_.
 
