@@ -170,11 +170,14 @@ __ docs/rst/quickref.html
 __ docs/tools.html
 
 
+Developer Documentation
+=======================
+
 Specification
-=============
+-------------
 
 PEPs (Python Enhancement Proposals)
------------------------------------
+```````````````````````````````````
 
 - `PEP 287: reStructuredText Docstring Format`__ proposes a standard
   markup syntax.  [`PEP 287`__ in the `master repository`_]
@@ -202,7 +205,7 @@ __ http://www.python.org/peps/pep-0258.html
 
 
 Docutils Internals
-------------------
+``````````````````
 
 - Notes__ (includes the Docutils `To Do list`_ and `Project
   Policies`__)
@@ -225,7 +228,7 @@ __ spec/soextblx.dtd
 
 
 reStructuredText
-----------------
+````````````````
 
 Please also see the `reStructuredText home page`__.
 
@@ -244,6 +247,14 @@ __ spec/rst/reStructuredText.html
 __ spec/rst/directives.html
 __ spec/rst/alternatives.html
 __ spec/rst/problems.html
+
+
+How-To's
+--------
+
+- `Creating reStructuredText Directives`__
+
+__ spec/howto/rst-directives.html
 
 
 The Sandbox

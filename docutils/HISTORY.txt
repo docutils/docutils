@@ -5,7 +5,7 @@
 :Author: David Goodger
 :Contact: goodger@users.sourceforge.net
 :Date: $Date$
-:Web-site: http://docutils.sourceforge.net/
+:Web site: http://docutils.sourceforge.net/
 
 .. contents::
 
@@ -22,12 +22,12 @@ and related projects:
     Funk, Engelbert Gruber, Simon Hefti, Doug Hellmann, Juergen
     Hermann, Jeremy Hylton, Tony Ibbs, Alan Jaffray, Dmitry Jemerov,
     Richard Jones, Garth Kidd, Daniel Larsson, Marc-Andre Lemburg,
-    Julien Letessier, Wolfgang Lipp, Edward Loper, Ken Manheimer, Skip
-    Montanaro, Paul Moore, Michel Pelletier, Sam Penrose, Tim Peters,
-    Pearu Peterson, Mark Pilgrim, Tavis Rudd, Ollie Rutherfurd,
-    Kenichi Sato, Ueli Schlaepfer, Gunnar Schwant, tav, Bob Tolbert,
-    Laurence Tratt, Guido van Rossum, Barry Warsaw, Edward Welbourne,
-    Ka-Ping Yee, Moshe Zadka
+    Julien Letessier, Wolfgang Lipp, Edward Loper, Dallas Mahrt, Ken
+    Manheimer, Skip Montanaro, Paul Moore, Michel Pelletier, Sam
+    Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim, Tavis Rudd,
+    Ollie Rutherfurd, Kenichi Sato, Ueli Schlaepfer, Gunnar Schwant,
+    tav, Bob Tolbert, Laurence Tratt, Guido van Rossum, Barry Warsaw,
+    Edward Welbourne, Ka-Ping Yee, Moshe Zadka
 
 Thank you!
 
@@ -124,6 +124,8 @@ Specific:
   - Added ``State.no_match`` method.
   - Added support for the Observer pattern, triggered by input line
     changes.
+  - Added ``strip_top`` parameter to
+    ``StateMachineWS.get_first_known_indented``.
 
 * docutils/utils.py:
 
@@ -153,16 +155,27 @@ Specific:
   - Fixed "simple reference name" regexp to ignore text like
     "object.__method__"; not an anonymous reference.
   - Added support for improved diagnostics.
+  - Reworked directive API, based on Dethe Elza's contribution.  Added
+    ``Body.parse_directive()``, ``.parse_directive_options()``,
+    ``.parse_directive_arguments()`` methods.
+  - Added ``ExtensionOptions`` class, to parse directive options
+    without parsing field bodies.  Factored
+    ``Body.parse_field_body()`` out of ``Body.field()``, overridden in
+    ``ExtensionOptions``.
 
 * docutils/parsers/rst/tableparser.py:
 
   - Fixed a bug that was producing unwanted empty rows in "simple"
     tables.
 
+* docutils/parsers/rst/directives: Updated all directive functions to
+  new API.
+
 * docutils/parsers/rst/directives/__init__.py:
 
-  - Added ``flag()``, ``unchanged()``, and ``choice()`` directive
-    option helper functions.
+  - Added ``flag()``, ``unchanged()``, ``path()``,
+    ``nonnegative_int()``, and ``choice()`` directive option helper
+    functions.
 
 * docutils/parsers/rst/directives/body.py: Added to project.  Contains
   the "topic", "line-block", and "parsed-literal" directives.
@@ -171,6 +184,11 @@ Specific:
 
   - Added an "align" attribute to the "image" & "figure" directives
     (by Adam Chodorowski).
+
+* docutils/parsers/rst/directives/misc.py:
+
+  - Added "include", "raw", and "replace" directives, courtesy of
+    Dethe Elza.
 
 * docutils/parsers/rst/directives/parts.py:
 
@@ -309,10 +327,18 @@ Specific:
 
 * spec/pep-0258.txt: Converted to reStructuredText & updated.
 
+* spec/semantics.txt: Updated with text from a Doc-SIG response to
+  Dallas Mahrt.
+
+* spec/howto: Added subdirectory, for developer how-to docs.
+
+* spec/howto/rst-directives.txt: Added to project.  Original by Dethe
+  Elza, edited & extended by David Goodger.
+
 * spec/rst/directives.txt:
 
   - Added directives: "topic", "sectnum", "target-notes",
-    "line-block", "parsed-literal", "include".
+    "line-block", "parsed-literal", "include", "replace".
   - Formalized descriptions of directive details.
   - Added an "align" attribute to the "image" & "figure" directives
     (by Adam Chodorowski).
