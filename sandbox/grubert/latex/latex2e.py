@@ -998,6 +998,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_tbody(self, node):
         # BUG write preamble if not yet done (colspecs not [])
         # for tables without heads.
+        if len(self.colspecs) > 0:
+            self.visit_thead(None)
+            self.depart_thead(None)
         self.body.append('%[visit_tbody]\n')
 
     def depart_tbody(self, node):
@@ -1019,7 +1022,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_thead(self, node):
         # number_of_columns will be zero after get_colspecs.
-        # ! push onto context for depart to pop it.
+        # BUG ! push onto context for depart to pop it.
         number_of_columns = len(self.colspecs)
         self.table_preamble()
         #BUG longtable needs firstpage and lastfooter too.

@@ -20,7 +20,6 @@ To do
     ``\appendix``, ``\makeindex``, ``\makeglossary`` and some such 
     for larger documents.
 
-* sometimes tables have no thead ? (local test unlaut)
 
 * table heads and footer for longtable (firstpage lastpage ..)
 
@@ -29,7 +28,8 @@ To do
   gives 1., .. in document.
 
 
-* use table columnwidth.
+* table width is always full line width.
+  how to make narrower tables.
 
 * pep headers come in different ?
 
@@ -106,6 +106,7 @@ ATTENTION
 Done
 ~~~~
 
+* colspec for tables without heads.
 * multipage table
 * field lists as description inside quote.
 * literal blocks are inside a quote environment (means indented).
