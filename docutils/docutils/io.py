@@ -7,6 +7,8 @@
 :Date: $Date$
 :Copyright: This module has been placed in the public domain.
 
+I/O classes provide a uniform API for low-level input and output.  Subclasses
+will exist for a variety of input/output mechanisms.
 """
 
 __docformat__ = 'reStructuredText'
