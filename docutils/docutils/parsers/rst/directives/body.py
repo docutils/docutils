@@ -49,22 +49,24 @@ def topic(match, type_name, data, state, state_machine, attributes):
     return [topic_node], blank_finish
 
 
-def parsed_literal(match, type_name, data, state, state_machine, attributes,
-                   node_class=nodes.literal_block):
+def line_block(match, type_name, data, state, state_machine, attributes,
+               node_class=nodes.line_block):
     lineno = state_machine.abs_line_number()
-    initial_offset = state_machine.line_offset
     indented, indent, line_offset, blank_finish \
           = state_machine.get_first_known_indented(match.end())
     while indented and not indented[-1].strip():
         indented.pop()
     if not indented:
-        return [], blank_finish
+        warning = state_machine.reporter.warning(
+            'Text block expected for the "%s" directive after line %s; none '
+            'found.' % (type_name, lineno))
+        return [warning], blank_finish
     text = '\n'.join(indented)
     textnodes, messages = state.inline_text(text, lineno)
     node = node_class(text, '', *textnodes)
     return [node] + messages, blank_finish
 
 
-def line_block(match, type_name, data, state, state_machine, attributes):
-    return parsed_literal(match, type_name, data, state, state_machine,
-                          attributes, node_class=nodes.line_block)
+def parsed_literal(match, type_name, data, state, state_machine, attributes):
+    return line_block(match, type_name, data, state, state_machine,
+                      attributes, node_class=nodes.literal_block)
