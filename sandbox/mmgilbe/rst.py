@@ -106,6 +106,9 @@ class MoinTranslator(html4css1.HTMLTranslator):
     
     def faux_write(self, string):
         self.body.append(string)
+        
+    def faux_paragraph(self, string):
+        return ''
 
     def visit_section(self, node):
         self.level += 1
@@ -120,22 +123,30 @@ class MoinTranslator(html4css1.HTMLTranslator):
         self.request.write(self.formatter.heading(self.level, '', on=0))
         
     def visit_reference(self, node):
-        if node['refuri'][:len('wiki:')] == 'wiki:':
-            link = self.wikiparser.interwiki((node['refuri'],
-                                              node.astext()))
-            self.body.append(link)
-            raise docutils.nodes.SkipNode
-        elif ('/' in node['refuri']) and \
-              (not ':' in node['refuri']):
-            self.wikiparser.raw = '[:%s: %s]' % (node['refuri'], node.astext())
-            self.wikiparser.format(self.formatter)
-            raise docutils.nodes.SkipNode
-        elif hasattr(node, 'wikiprocess'):
-            self.wikiparser.raw = '[:%s: %s]' % (node['refuri'], node.astext())
-            self.wikiparser.format(self.formatter)
-            raise docutils.nodes.SkipNode
-        else:
-            html4css1.HTMLTranslator.visit_reference(self, node)
+        if 'refuri' in node.attributes:
+            # We unset this if none our tests capture the node
+            handled = 1
+            # We don't want these pieces wrapped in <p> tags, I think.
+            old_paragraph = self.wikiparser.formatter.paragraph
+            self.wikiparser.formatter.paragraph = self.faux_paragraph
+            if node['refuri'][:len('wiki:')] == 'wiki:':
+                link = self.wikiparser.interwiki((node['refuri'],
+                                                  node.astext()))
+                self.body.append(link)
+            elif ('/' in node['refuri']) and \
+                  (not ':' in node['refuri']):
+                self.wikiparser.raw = '[:%s: %s]' % (node['refuri'], node.astext())
+                self.wikiparser.format(self.formatter)
+            elif hasattr(node, 'wikiprocess'):
+                self.wikiparser.raw = '[:%s: %s]' % (node['refuri'], node.astext())
+                self.wikiparser.format(self.formatter)
+            else:
+                handled = 0
+            self.wikiparser.formatter.paragraph = old_paragraph
+            if handled:
+                raise docutils.nodes.SkipNode
+                return
+        html4css1.HTMLTranslator.visit_reference(self, node)
 
     #
     # Text markup
@@ -163,13 +174,6 @@ class MoinTranslator(html4css1.HTMLTranslator):
     #
     # Blocks
     #
-
-    def visit_paragraph(self, node):
-        #if self.topic_class != 'contents':
-        self.request.write(self.formatter.paragraph(1))
-
-    def depart_paragraph(self, node):
-        self.request.write(self.formatter.paragraph(0))
 
     def visit_literal_block(self, node):
         self.request.write(self.formatter.preformatted(1))
