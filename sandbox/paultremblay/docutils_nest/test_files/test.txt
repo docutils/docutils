@@ -1,0 +1,10 @@
+Simple Doc
+^^^^^^^^^^
+
+:author: Paul Tremblay
+
+Start the body
+
+A paragraph with inline markup. [:comment: I should have read *The Sun Also Rises.*] Another sentence.
+
+A paragraph with deeper nesting inline markup. [:comment: I should have read *The Sun A/home/pusetup.pylso Rises* [:note: note text [:date: 6/01/03]]]
