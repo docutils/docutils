@@ -365,7 +365,7 @@ _`tab_width`
 
     Default: 8.  Options: ``--tab-width``.
 
-_`trim-footnote-reference-space`
+_`trim_footnote_reference_space`
     Remove spaces before footnote references.
 
     Default: don't (None).  Options:

@@ -61,7 +61,7 @@ top level of the Docutils project directory.
                licenses.
 :FAQ.txt_: Docutils Frequently Asked Questions.  If you have a
            question or issue, there's a good chance it's already
-           answered here.  Please take a look.
+           answered here.
 :BUGS.txt_: A list of known bugs, and how to report a bug.
 :HISTORY.txt_: Change history log.
 :THANKS.txt_: Acknowledgements.
