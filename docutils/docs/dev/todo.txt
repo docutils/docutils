@@ -906,7 +906,9 @@ __ rst/alternatives.html#or-not-to-do
 
       :Case Study\: Event Handling: This chapter will be dropped.
 
-* When using superscripted footnotes references, the space looks ugly.
+* _`footnote spaces`:
+
+  When using superscripted footnote references, the space looks ugly.
   We could automatically activate --trim-footnote-reference-space when
   --footnote-references=superscript (or --use-latex-footnotes for the
   LaTeX writer) is supplied.
