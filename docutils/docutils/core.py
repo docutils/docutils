@@ -186,10 +186,10 @@ class Publisher:
                 raise
             self.report_SystemMessage(error)
             exit = 1
-        except UnicodeEncodeError, error:
+        except UnicodeError, error:
             if self.settings.traceback:
                 raise
-            self.report_UnicodeEncodeError(error)
+            self.report_UnicodeError(error)
             exit = 1
         except Exception, error:
             if self.settings.traceback:
@@ -224,7 +224,7 @@ class Publisher:
                              % (error.level,
                                 utils.Reporter.levels[error.level]))
 
-    def report_UnicodeEncodeError(self, error):
+    def report_UnicodeError(self, error):
         print >>sys.stderr, '%s: %s' % (error.__class__.__name__, error)
         print >>sys.stderr, ("""
 The specified output encoding (%s) cannot
