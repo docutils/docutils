@@ -69,7 +69,7 @@ class Inliner(rst.states.Inliner):
             rfcnum = int(match.group('rfcnum'))
             ref = self.rfc_url % rfcnum
         else:
-            raise MarkupMismatch
+            raise rst.states.MarkupMismatch
         unescaped = rst.states.unescape(text, 0)
         return [nodes.reference(rst.states.unescape(text, 1), unescaped,
                                 refuri=ref)]
