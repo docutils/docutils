@@ -113,26 +113,27 @@ Structural subelements are child elements of structural elements, but
 contain no further structure of their own (except for text and inline
 elements).
 
-Category members: title_, subtitle_, transition_
+Category members: title_, subtitle_, docinfo_, decoration_,
+transition_
 
 
 Bibliographic Elements
-----------------------
+``````````````````````
 
 The docinfo_ element is an optional child of document_.  It groups
 bibliographic elements together.
 
-Category members: docinfo_, author_, authors_, contact_, copyright_,
-date_, organization_, revision_, status_, version_
+Category members: author_, authors_, contact_, copyright_, date_,
+organization_, revision_, status_, version_
 
 
 Decorative Elements
--------------------
+```````````````````
 
 The decoration_ element is also an optional child of document_.  It
 groups together elements used to generate page headers and footers.
 
-Category members: decoration_, footer_, header_
+Category members: footer_, header_
 
 
 Body Elements
