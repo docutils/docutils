@@ -946,6 +946,24 @@ __ rst/alternatives.html#or-not-to-do
   after the fact, so order can't be relied upon there.  So they have
   to be two independent settings.
 
+* Enable _`tables inside XML comments`, where "--" ends comments.  I
+  see three implementation possibilities:
+
+  1. Make the table syntax characters into "table" directive options.
+     This is the most flexible but most difficult, and we probably
+     don't need that much flexibility.
+
+  2. Substitute "~" for "-" with a specialized directive option
+     (e.g. ":tildes:").
+
+  3. Make the standard table syntax recognize "~" as well as "-", even
+     without a directive option.  Individual tables would have to be
+     internally consistent.
+
+  Directive options are preferable to configuration settings, because
+  tables are document-specific.  A pragma directive would be another
+  approach, to set the syntax once for a whole document.
+
 
 Directives
 ----------
