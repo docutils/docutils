@@ -92,7 +92,7 @@ class Reporter:
               exceptions will be raised, halting execution.
             - `debug`: Show debug (level=0) system messages?
             - `stream`: Where warning output is sent.  Can be file-like (has a
-              ``.write`` method), a string (file name, opened for writing), 
+              ``.write`` method), a string (file name, opened for writing),
               '' (empty string, for discarding all stream messages) or
               `None` (implies `sys.stderr`; default).
             - `encoding`: The encoding for stderr output.
@@ -100,7 +100,7 @@ class Reporter:
         """
         self.source = source
         """The path to or description of the source data."""
-        
+
         if stream is None:
             stream = sys.stderr
         elif type(stream) in (StringType, UnicodeType):
@@ -476,14 +476,14 @@ def get_source_line(node):
 
 
 class DependencyList:
-    
+
     """
     List of dependencies, with file recording support.
 
     Note that the output file is not automatically closed.  You have
     to explicitly call the close() method.
     """
-    
+
     def __init__(self, output_file=None, dependencies=[]):
         """
         Initialize the dependency list, automatically setting the
@@ -532,7 +532,8 @@ class DependencyList:
         self.file = None
 
     def __repr__(self):
-        data = repr(self.list)
-        if len(data) > 60:
-            data = data[:56] + ' ...'
-        return '<%s: %s>' % (self.__class__.__name__, data)
+        if self.file:
+            output_file = self.file.name
+        else:
+            output_file = None
+        return '%s(%r, %s)' % (self.__class__.__name__, output_file, self.list)
