@@ -333,9 +333,9 @@ class RSTState(StateWS):
             return None
 
     def title_inconsistent(self, sourcetext, lineno):
-        literalblock = nodes.literal_block('', sourcetext)
-        error = self.reporter.severe('Title level inconsistent:', '',
-                                     literalblock, line=lineno)
+        error = self.reporter.severe(
+            'Title level inconsistent:', nodes.literal_block('', sourcetext),
+            line=lineno)
         return error
 
     def new_subsection(self, title, lineno, messages):
@@ -382,6 +382,7 @@ class RSTState(StateWS):
             literalnext = 0
         textnodes, messages = self.inline_text(text, lineno)
         p = nodes.paragraph(data, '', *textnodes)
+        p.line = lineno
         return [p] + messages, literalnext
 
     def inline_text(self, text, lineno):
@@ -1182,9 +1183,11 @@ class Body(RSTState):
 
     def field(self, match):
         name = self.parse_field_marker(match)
+        lineno = self.state_machine.abs_line_number()
         indented, indent, line_offset, blank_finish = \
               self.state_machine.get_first_known_indented(match.end())
         fieldnode = nodes.field()
+        fieldnode.line = lineno
         fieldnode += nodes.field_name(name, name)
         fieldbody = nodes.field_body('\n'.join(indented))
         fieldnode += fieldbody
@@ -1404,8 +1407,7 @@ class Body(RSTState):
         lineno = self.state_machine.abs_line_number() - len(block) + 1
         if detail:
             message += '\n' + detail
-        error = self.reporter.error(message, '',
-                                    nodes.literal_block(data, data),
+        error = self.reporter.error(message, nodes.literal_block(data, data),
                                     line=lineno)
         return [error]
 
@@ -1491,11 +1493,13 @@ class Body(RSTState):
                                   """ % vars(Inliner), re.VERBOSE),)
 
     def footnote(self, match):
+        lineno = self.state_machine.abs_line_number()
         indented, indent, offset, blank_finish = \
               self.state_machine.get_first_known_indented(match.end())
         label = match.group(1)
         name = normalize_name(label)
         footnote = nodes.footnote('\n'.join(indented))
+        footnote.line = lineno
         if name[0] == '#':              # auto-numbered
             name = name[1:]             # autonumber label
             footnote['auto'] = 1
@@ -1513,17 +1517,19 @@ class Body(RSTState):
         if name:
             self.document.note_explicit_target(footnote, footnote)
         else:
-            self.document.set_id(footnote)
+            self.document.set_id(footnote, footnote)
         if indented:
             self.nested_parse(indented, input_offset=offset, node=footnote)
         return [footnote], blank_finish
 
     def citation(self, match):
+        lineno = self.state_machine.abs_line_number()
         indented, indent, offset, blank_finish = \
               self.state_machine.get_first_known_indented(match.end())
         label = match.group(1)
         name = normalize_name(label)
         citation = nodes.citation('\n'.join(indented))
+        citation.line = lineno
         citation += nodes.label('', label)
         citation['name'] = name
         self.document.note_citation(citation)
@@ -1558,6 +1564,7 @@ class Body(RSTState):
             refname = self.is_reference(reference)
             if refname:
                 target = nodes.target(blocktext, '', refname=refname)
+                target.line = lineno
                 self.add_target(targetmatch.group('name'), '', target)
                 self.document.note_indirect_target(target)
                 return [target], blank_finish
@@ -1566,12 +1573,13 @@ class Body(RSTState):
         if reference.find(' ') != -1:
             warning = self.reporter.warning(
                   'Hyperlink target contains whitespace. Perhaps a footnote '
-                  'was intended?', '',
+                  'was intended?',
                   nodes.literal_block(blocktext, blocktext), line=lineno)
             nodelist.append(warning)
         else:
             unescaped = unescape(reference)
             target = nodes.target(blocktext, '')
+            target.line = lineno
             self.add_target(targetmatch.group('name'), unescaped, target)
             nodelist.append(target)
         return nodelist, blank_finish
@@ -1628,6 +1636,7 @@ class Body(RSTState):
         name = normalize_name(subname)
         substitutionnode = nodes.substitution_definition(
               blocktext, name=name, alt=subname)
+        substitutionnode.line = lineno
         if block:
             block[0] = block[0].strip()
             newabsoffset, blank_finish = self.nested_list_parse(
@@ -1646,7 +1655,7 @@ class Body(RSTState):
             if len(substitutionnode) == 0:
                 msg = self.reporter.warning(
                       'Substitution definition "%s" empty or invalid.'
-                      % subname, '',
+                      % subname,
                       nodes.literal_block(blocktext, blocktext), line=lineno)
                 self.parent += msg
             else:
@@ -1657,7 +1666,7 @@ class Body(RSTState):
         else:
             msg = self.reporter.warning(
                   'Substitution definition "%s" missing contents.' % subname,
-                  '', nodes.literal_block(blocktext, blocktext), line=lineno)
+                  nodes.literal_block(blocktext, blocktext), line=lineno)
             self.parent += msg
         return [], blank_finish
 
@@ -1674,7 +1683,7 @@ class Body(RSTState):
     def parse_directive(self, directive_fn, match, type_name, option_presets):
         """
         Parse a directive then run its directive function.
-        
+
         Parameters:
 
         - `directive_fn`: The function implementing the directive.  Must have
@@ -1689,21 +1698,17 @@ class Body(RSTState):
           directive options.  Currently, only an "alt" option is passed by
           substitution definitions (value: the substitution name), which may
           be used by an embedded image directive.
-  
+
         Returns a 2-tuple: list of nodes, and a "blank finish" boolean.
         """
         arguments = []
         options = {}
         content = []
-        argument_spec = option_spec = content_spec = None
-        if hasattr(directive_fn, 'arguments'):
-            argument_spec = directive_fn.arguments
-            if argument_spec[:2] == (0, 0):
-                argument_spec = None
-        if hasattr(directive_fn, 'options'):
-            option_spec = directive_fn.options
-        if hasattr(directive_fn, 'content'):
-            content_spec = directive_fn.content
+        argument_spec = getattr(directive_fn, 'arguments', None)
+        if argument_spec and argument_spec[:2] == (0, 0):
+            argument_spec = None
+        option_spec = getattr(directive_fn, 'options', None)
+        content_spec = getattr(directive_fn, 'content', None)
         lineno = self.state_machine.abs_line_number()
         initial_line_offset = self.state_machine.line_offset
         indented, indent, line_offset, blank_finish \
@@ -1743,7 +1748,7 @@ class Body(RSTState):
                 raise MarkupError('no content permitted.')
         except MarkupError, detail:
             error = self.reporter.error(
-                'Error in "%s" directive:\n%s.' % (type_name, detail), '',
+                'Error in "%s" directive:\n%s.' % (type_name, detail),
                 nodes.literal_block(block_text, block_text), line=lineno)
             return [error], blank_finish
         result = directive_fn(
@@ -1824,7 +1829,7 @@ class Body(RSTState):
               self.state_machine.get_first_known_indented(0, strip_indent=0)
         text = '\n'.join(indented)
         error = self.reporter.error(
-              'Unknown directive type "%s".' % type_name, '',
+              'Unknown directive type "%s".' % type_name,
               nodes.literal_block(text, text), line=lineno)
         return [error], blank_finish
 
@@ -1947,7 +1952,7 @@ class Body(RSTState):
             lineno = self.state_machine.abs_line_number() - len(block) + 1
             warning = self.reporter.warning(
                   'Anonymous hyperlink target contains whitespace. Perhaps a '
-                  'footnote was intended?', '',
+                  'footnote was intended?',
                   nodes.literal_block(blocktext, blocktext),
                   line=lineno)
             nodelist.append(warning)
@@ -1967,14 +1972,14 @@ class Body(RSTState):
         elif len(match.string.strip()) < 4:
             msg = self.reporter.info(
                 'Unexpected possible title overline or transition.\n'
-                "Treating it as ordinary text because it's so short.", '',
+                "Treating it as ordinary text because it's so short.",
                 line=self.state_machine.abs_line_number())
             self.parent += msg
             raise statemachine.TransitionCorrection('text')
         else:
             blocktext = self.state_machine.line
             msg = self.reporter.severe(
-                  'Unexpected section title or transition.', '',
+                  'Unexpected section title or transition.',
                   nodes.literal_block(blocktext, blocktext),
                   line=self.state_machine.abs_line_number())
             self.parent += msg
@@ -2279,8 +2284,8 @@ class Text(RSTState):
         if not self.state_machine.match_titles:
             blocktext = context[0] + '\n' + self.state_machine.line
             msg = self.reporter.severe(
-                  'Unexpected section title.', '',
-                  nodes.literal_block(blocktext, blocktext), line=lineno)
+                'Unexpected section title.',
+                nodes.literal_block(blocktext, blocktext), line=lineno)
             self.parent += msg
             return [], next_state, []
         title = context[0].rstrip()
@@ -2291,14 +2296,14 @@ class Text(RSTState):
             if len(underline) < 4:
                 msg = self.reporter.info(
                     'Possible title underline, too short for the title.\n'
-                    "Treating it as ordinary text because it's so short.", '',
+                    "Treating it as ordinary text because it's so short.",
                     line=lineno)
                 self.parent += msg
                 raise statemachine.TransitionCorrection('text')
             else:
                 blocktext = context[0] + '\n' + self.state_machine.line
                 msg = self.reporter.warning(
-                    'Title underline too short.', '',
+                    'Title underline too short.',
                     nodes.literal_block(blocktext, blocktext), line=lineno)
                 messages.append(msg)
         style = underline[0]
@@ -2483,7 +2488,7 @@ class Line(SpecializedText):
                 self.short_overline(context, blocktext, lineno, 2)
             else:
                 msg = self.reporter.severe(
-                    'Incomplete section title.', '',
+                    'Incomplete section title.',
                     nodes.literal_block(blocktext, blocktext), line=lineno)
                 self.parent += msg
                 return [], 'Body', []
@@ -2496,7 +2501,7 @@ class Line(SpecializedText):
                 self.short_overline(context, blocktext, lineno, 2)
             else:
                 msg = self.reporter.severe(
-                    'Missing underline for overline.', '',
+                    'Missing underline for overline.',
                     nodes.literal_block(source, source), line=lineno)
                 self.parent += msg
                 return [], 'Body', []
@@ -2506,7 +2511,7 @@ class Line(SpecializedText):
                 self.short_overline(context, blocktext, lineno, 2)
             else:
                 msg = self.reporter.severe(
-                      'Title overline & underline mismatch.', '',
+                      'Title overline & underline mismatch.',
                       nodes.literal_block(source, source), line=lineno)
                 self.parent += msg
                 return [], 'Body', []
@@ -2518,7 +2523,7 @@ class Line(SpecializedText):
                 self.short_overline(context, blocktext, lineno, 2)
             else:
                 msg = self.reporter.warning(
-                      'Title overline too short.', '',
+                      'Title overline too short.',
                       nodes.literal_block(source, source), line=lineno)
                 messages.append(msg)
         style = (overline[0], underline[0])
@@ -2536,7 +2541,7 @@ class Line(SpecializedText):
         if len(overline.rstrip()) < 4:
             self.short_overline(context, blocktext, lineno, 1)
         msg = self.reporter.error(
-              'Invalid section title or transition marker.', '',
+              'Invalid section title or transition marker.',
               nodes.literal_block(blocktext, blocktext), line=lineno)
         self.parent += msg
         return [], 'Body', []
@@ -2544,7 +2549,7 @@ class Line(SpecializedText):
     def short_overline(self, context, blocktext, lineno, lines=1):
         msg = self.reporter.info(
             'Possible incomplete section title.\nTreating the overline as '
-            "ordinary text because it's so short.", '', line=lineno)
+            "ordinary text because it's so short.", line=lineno)
         self.parent += msg
         self.state_correction(context, lines)
 
