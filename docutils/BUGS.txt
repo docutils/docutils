@@ -119,7 +119,7 @@ Known Bugs
 
 Also see the `SourceForge Bug Tracker`_.
 
-* Line numbers in system messages are inconsistent in the parser.
+* _`Line numbers` in system messages are inconsistent in the parser.
 
   - In text inserted by the "include" directive, errors are often not
     reported with the correct "source" or "line" numbers.  Perhaps all
@@ -132,17 +132,21 @@ Also see the `SourceForge Bug Tracker`_.
     (explicitly), just implicitly/automatically.  See rev. 1.74 of
     docutils/parsers/rst/states.py for an example of how to set.
 
-* Quite a few nodes are getting a "None" source attribute as well.  In
+* .. _none source:
+
+  Quite a few nodes are getting a "None" source attribute as well.  In
   particular, see the bodies of definition lists.
 
-* Explicit targets are sometimes mis-located.  In particular, placing
+* .. _mislocated targets:
+
+  Explicit targets are sometimes mis-located.  In particular, placing
   a target before a section header puts the target at the end of the
   previous section instead of the start of the next section.  The code
   in docutils.transforms.misc.ClassAttribute could be used to fix
   this.  (Reported by David Priest.)
 
-* David Abrahams pointed out that doubly-indirect substitutions have a
-  bug, but only when there's multiple references::
+* David Abrahams pointed out that _`doubly-indirect substitutions`
+  have a bug, but only when there's multiple references::
 
       |substitute| my coke for gin
       |substitute| you for my mum
@@ -153,7 +157,9 @@ Also see the `SourceForge Bug Tracker`_.
 
   This is tricky.  Substitutions have to propagate back completely.
 
-* Another bug from David Abrahams (run with ``rst2html.py --traceback``)::
+* .. _subsitutions and references:
+
+  Another bug from David Abrahams (run with ``rst2html.py --traceback``)::
 
       |substitution| and again a |substitution|.
 
