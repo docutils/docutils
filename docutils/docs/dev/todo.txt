@@ -94,31 +94,6 @@ Bugs
 General
 -------
 
-- Document!
-
-  - Internal module documentation (docstrings).
-
-  - Implementation docs.
-
-    - spec/doctree.txt: DTD element structural relationships,
-      semantics, and external (public) attributes (node.attributes).
-
-      Should this document be about the code (implementation details),
-      or about the DTD (document tree elements)?  I'm having trouble
-      writing it because it's a bit schizo; doesn't know what it is.
-      Perhaps it should simply document the DTD elements, their
-      semantics, and only refer to the implementation.  Descriptions
-      of the classes, their methods, and internal attributes belong in
-      the implementation docs (docstrings for now).
-
-    - How a Writer works & how to write one
-
-    - Howto: Transforms
-
-    - Howto: Directives
-
-  - User docs.
-
 - Refactor
 
   - Rename methods & variables according to the `coding conventions`_
@@ -146,20 +121,39 @@ General
 
 - Need a Unicode to HTML entities codec for HTML writer?
 
-- Fix tests to run standalone.  I.e., allow::
-
-      cd test/test_rst
-      test_inline_markup.py
-
-  Raises an exception with path processing on GNU/Linux (but only
-  sometimes???).
-
 - Perhaps the ``Component.supports`` method should deal with
   individual features ("meta" etc.) instead of formats ("html" etc.)?
 
 
-Specification
+Documentation
 -------------
+
+- User docs.
+
+
+Implementation Docs
+```````````````````
+
+- Internal module documentation (docstrings).
+
+- spec/doctree.txt: DTD element structural relationships, semantics,
+  and attributes.
+
+- How a Writer works & how to write one
+
+- Howto: Transforms
+
+- Howto: Directives
+
+- Document the ``pending`` elements and when they're triggered ("first
+  reader", "last writer", etc.).
+
+- Document the transforms (perhaps in docstrings?): how they're used,
+  what they do.
+
+
+Specification
+`````````````
 
 - Complete PEP 258 Docutils Design Specification.
 
