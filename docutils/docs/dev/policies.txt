@@ -56,8 +56,7 @@ conventions.
 
 The Docutils project shall follow the generic coding conventions as
 specified in the `Style Guide for Python Code`_ and `Docstring
-Conventions`_ PEPs, with the following clarifications (from most to
-least important):
+Conventions`_ PEPs, with the following clarifications and extensions:
 
 * 4 spaces per indentation level.  No tabs.
 
@@ -80,6 +79,12 @@ least important):
   two words, use lowercase_with_underscores (e.g.,
   "note_explicit_target", "explicit_target").  If in doubt, use
   underscores.
+
+* Avoid functional constructs (lambda, filter, map, etc.).  Use list
+  comprehensions instead.
+
+* Avoid ``from __future__ import`` constructs; we don't want them in
+  production code.
 
 * Use 'single quotes' for string literals, and """triple double
   quotes""" for docstrings.
