@@ -44,11 +44,11 @@ the reStructuredText parser.  It defines the following:
 Parser Overview
 ===============
 
-The reStructuredText parser is implemented as a state machine, examining its
-input one line at a time.  To understand how the parser works, please first
-become familiar with the `docutils.statemachine` module.  In the description
-below, references are made to classes defined in this module; please see the
-individual classes for details.
+The reStructuredText parser is implemented as a recursive state machine,
+examining its input one line at a time.  To understand how the parser works,
+please first become familiar with the `docutils.statemachine` module.  In the
+description below, references are made to classes defined in this module;
+please see the individual classes for details.
 
 Parsing proceeds as follows:
 
@@ -60,26 +60,27 @@ Parsing proceeds as follows:
 2. The method associated with the matched transition pattern is called.
 
    A. Some transition methods are self-contained, appending elements to the
-      document tree ('doctest' parses a doctest block).  The parser's current
-      line index is advanced to the end of the element, and parsing continues
-      with step 1.
+      document tree (`Body.doctest` parses a doctest block).  The parser's
+      current line index is advanced to the end of the element, and parsing
+      continues with step 1.
 
-   B. Others trigger the creation of a nested state machine, whose job is to
-      parse a compound construct ('indent' does a block quote, 'bullet' does a
-      bullet list, 'overline' does a section [first checking for a valid
-      section header]).
+   B. Other transition methods trigger the creation of a nested state machine,
+      whose job is to parse a compound construct ('indent' does a block quote,
+      'bullet' does a bullet list, 'overline' does a section [first checking
+      for a valid section header], etc.).
 
-      - In the case of lists and explicit markup, a new state machine is
-        created and run to parse the first item.
+      - In the case of lists and explicit markup, a one-off state machine is
+        created and run to parse contents of the first item.
 
       - A new state machine is created and its initial state is set to the
         appropriate specialized state (`BulletList` in the case of the
-        'bullet' transition).  This state machine is run to parse the compound
-        element (or series of explicit markup elements), and returns as soon
-        as a non-member element is encountered.  For example, the `BulletList`
-        state machine aborts as soon as it encounters an element which is not
-        a list item of that bullet list.  The optional omission of
-        inter-element blank lines is handled by the nested state machine.
+        'bullet' transition; see `SpecializedBody` for more detail).  This
+        state machine is run to parse the compound element (or series of
+        explicit markup elements), and returns as soon as a non-member element
+        is encountered.  For example, the `BulletList` state machine ends as
+        soon as it encounters an element which is not a list item of that
+        bullet list.  The optional omission of inter-element blank lines is
+        enabled by this nested state machine.
 
       - The current line index is advanced to the end of the elements parsed,
         and parsing continues with step 1.
@@ -110,8 +111,7 @@ from docutils import nodes, statemachine, utils, roman, urischemes
 from docutils import ApplicationError, DataError
 from docutils.statemachine import StateMachineWS, StateWS
 from docutils.utils import normalize_name
-from docutils.parsers.rst import directives, languages
-from docutils.parsers.rst.tableparser import TableParser, TableMarkupError
+from docutils.parsers.rst import directives, languages, tableparser
 
 
 class MarkupError(DataError): pass
@@ -858,10 +858,14 @@ class Body(RSTState):
         enum.sequenceregexps[sequence] = re.compile(
               enum.sequencepats[sequence] + '$')
 
-    table_top_pat = re.compile(r'\+-[-+]+-\+ *$')
-    """Matches the top (& bottom) of a table)."""
+    grid_table_top_pat = re.compile(r'\+-[-+]+-\+ *$')
+    """Matches the top (& bottom) of a full table)."""
 
-    tableparser = TableParser()
+    simple_table_top_pat = re.compile('=+( +=+)+ *$')
+    """Matches the top of a simple table."""
+
+    simple_table_border_pat = re.compile('=+[ =]*$')
+    """Matches the bottom & header bottom of a simple table."""
 
     pats = {}
     """Fragments of patterns used by transitions."""
@@ -888,7 +892,8 @@ class Body(RSTState):
           'field_marker': r':[^: ]([^:]*[^: ])?:( +|$)',
           'option_marker': r'%(option)s(, %(option)s)*(  +| ?$)' % pats,
           'doctest': r'>>>( +|$)',
-          'table_top': table_top_pat,
+          'grid_table_top': grid_table_top_pat,
+          'simple_table_top': simple_table_top_pat,
           'explicit_markup': r'\.\.( +|$)',
           'anonymous': r'__( +|$)',
           'line': r'(%(nonalphanum7bit)s)\1\1\1+ *$' % pats,
@@ -899,7 +904,8 @@ class Body(RSTState):
           'field_marker',
           'option_marker',
           'doctest',
-          'table_top',
+          'grid_table_top',
+          'simple_table_top',
           'explicit_markup',
           'anonymous',
           'line',
@@ -1159,9 +1165,22 @@ class Body(RSTState):
         self.parent += nodes.doctest_block(data, data)
         return [], next_state, []
 
-    def table_top(self, match, context, next_state):
-        """Top border of a table."""
-        nodelist, blank_finish = self.table()
+    def grid_table_top(self, match, context, next_state):
+        """Top border of a full table."""
+        return self.table_top(match, context, next_state,
+                              self.isolate_grid_table,
+                              tableparser.GridTableParser)
+
+    def simple_table_top(self, match, context, next_state):
+        """Top border of a simple table."""
+        return self.table_top(match, context, next_state,
+                              self.isolate_simple_table,
+                              tableparser.SimpleTableParser)
+
+    def table_top(self, match, context, next_state,
+                  isolate_function, parser_class):
+        """Top border of a generic table."""
+        nodelist, blank_finish = self.table(isolate_function, parser_class)
         self.parent += nodelist
         if not blank_finish:
             msg = self.reporter.warning(
@@ -1170,23 +1189,24 @@ class Body(RSTState):
             self.parent += msg
         return [], next_state, []
 
-    def table(self):
+    def table(self, isolate_function, parser_class):
         """Parse a table."""
-        block, messages, blank_finish = self.isolate_table()
+        block, messages, blank_finish = isolate_function()
         if block:
             try:
-                tabledata = self.tableparser.parse(block)
+                parser = parser_class()
+                tabledata = parser.parse(block)
                 tableline = (self.state_machine.abs_line_number() - len(block)
                              + 1)
                 table = self.build_table(tabledata, tableline)
                 nodelist = [table] + messages
-            except TableMarkupError, detail:
+            except tableparser.TableMarkupError, detail:
                 nodelist = self.malformed_table(block, str(detail)) + messages
         else:
             nodelist = messages
         return nodelist, blank_finish
 
-    def isolate_table(self):
+    def isolate_grid_table(self):
         messages = []
         blank_finish = 1
         try:
@@ -1204,11 +1224,11 @@ class Body(RSTState):
                 self.state_machine.previous_line(len(block) - i)
                 del block[i:]
                 break
-        if not self.table_top_pat.match(block[-1]): # find bottom
+        if not self.grid_table_top_pat.match(block[-1]): # find bottom
             blank_finish = 0
             # from second-last to third line of table:
             for i in range(len(block) - 2, 1, -1):
-                if self.table_top_pat.match(block[i]):
+                if self.grid_table_top_pat.match(block[i]):
                     self.state_machine.previous_line(len(block) - i + 1)
                     del block[i+1:]
                     break
@@ -1220,6 +1240,47 @@ class Body(RSTState):
                 messages.extend(self.malformed_table(block))
                 return [], messages, blank_finish
         return block, messages, blank_finish
+
+    def isolate_simple_table(self):
+        start = self.state_machine.line_offset
+        lines = self.state_machine.input_lines
+        limit = len(lines) - 1
+        toplen = len(lines[start].strip())
+        pattern_match = self.simple_table_border_pat.match
+        found = 0
+        found_at = None
+        i = start + 1
+        while i <= limit:
+            line = lines[i]
+            match = pattern_match(line)
+            if match:
+                if len(line.strip()) != toplen:
+                    self.state_machine.next_line(i - start)
+                    messages = self.malformed_table(
+                        lines[start:i+1], 'Bottom/header table border does '
+                        'not match top border.')
+                    return [], messages, i == limit or not lines[i+1].strip()
+                found += 1
+                found_at = i
+                if found == 2 or i == limit or not lines[i+1].strip():
+                    end = i
+                    break
+            i += 1
+        else:                           # reached end of input_lines
+            if found:
+                extra = ' or no blank line after table bottom'
+                self.state_machine.next_line(found_at - start)
+                block = lines[start:found_at+1]
+            else:
+                extra = ''
+                self.state_machine.next_line(i - start - 1)
+                block = lines[start:]
+            messages = self.malformed_table(
+                block, 'No bottom table border found%s.' % extra)
+            return [], messages, not extra
+        self.state_machine.next_line(end - start)
+        block = lines[start:end+1]
+        return block, [], end == limit or not lines[end+1].strip()
 
     def malformed_table(self, block, detail=''):
         data = '\n'.join(block)
@@ -1738,10 +1799,25 @@ class RFC2822Body(Body):
 class SpecializedBody(Body):
 
     """
-    Superclass for second and subsequent compound element members.
+    Superclass for second and subsequent compound element members.  Compound
+    elements are lists and list-like constructs.
 
-    All transition methods are disabled. Override individual methods in
-    subclasses to re-enable.
+    All transition methods are disabled (redefined as `invalid_input`).
+    Override individual methods in subclasses to re-enable.
+
+    For example, once an initial bullet list item, say, is recognized, the
+    `BulletList` subclass takes over, with a "bullet_list" node as its
+    container.  Upon encountering the initial bullet list item, `Body.bullet`
+    calls its ``self.nested_list_parse`` (`RSTState.nested_list_parse`), which
+    starts up a nested parsing session with `BulletList` as the initial state.
+    Only the ``bullet`` transition method is enabled in `BulletList`; as long
+    as only bullet list items are encountered, they are parsed and inserted
+    into the container.  The first construct which is *not* a bullet list item
+    triggers the `invalid_input` method, which ends the nested parse and
+    closes the container.  `BulletList` needs to recognize input that is
+    invalid in the context of a bullet list, which means everything *other
+    than* bullet list items, so it inherits the transition list created in
+    `Body`.
     """
 
     def invalid_input(self, match=None, context=None, next_state=None):
@@ -1755,7 +1831,8 @@ class SpecializedBody(Body):
     field_marker = invalid_input
     option_marker = invalid_input
     doctest = invalid_input
-    table_top = invalid_input
+    grid_table_top = invalid_input
+    simple_table_top = invalid_input
     explicit_markup = invalid_input
     anonymous = invalid_input
     line = invalid_input
