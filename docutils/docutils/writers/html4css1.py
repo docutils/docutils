@@ -783,7 +783,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         start = self.context.pop()
         header = [self.starttag(node, 'div', CLASS='header')]
         header.extend(self.body[start:])
-        header.append('<hr />\n</div>\n')
+        header.append('<hr class="docutils header"/>\n</div>\n')
         self.body_prefix.extend(header)
         self.header = header
         del self.body[start:]
