@@ -395,6 +395,39 @@ General
 Documentation
 -------------
 
+* The documentation is currently messed up.  These are the plans for
+  an overall cleanup:
+
+  - Move 'Acknowledgements' from ``HISTORY.txt`` to ``THANKS.txt``.
+
+  - Move ``docs/*`` to ``docs/user/``.
+
+  - Create ``docs/dev/``.
+
+  - Split up ``spec/notes.txt`` to ``BUGS.txt``,
+    ``docs/dev/todo.txt``, ``docs/dev/policies.txt``,
+    ``docs/dev/website.txt``, ``docs/dev/release.txt``.
+
+  - Move 'Future Plans' from ``HISTORY.txt`` to ``docs/dev/todo.txt``.
+
+  - Move ``spec/rst/introduction.txt`` to ``docs/user/rst/``.
+
+  - Move ``spec/rst/problems.txt`` and ``spec/rst/alternatives.txt``
+    to ``docs/dev/rst/``.
+
+  - Move ``spec/howto/`` to ``docs/dev/howto/``.
+
+  - Move ``spec/`` to ``docs/spec/``.
+
+* After doing the cleanup:
+
+  - Add 'how to report bugs' to ``BUGS.txt``.
+
+  - Add ``docs/index.txt``.
+
+  - Create a 'priority' section in ``docs/dev/todo.txt`` and (maybe)
+    ``BUGS.txt``.
+
 * User docs.  What's needed?
 
 * Add an "examples" directory, beside "tools" and "docs", for
