@@ -1,0 +1,26 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=rst.chm
+Contents file=rst.hhc
+Default topic=spec\rst\introduction.html
+Display compile progress=No
+Full-text search=Yes
+Language=0x409 English (United States)
+Title=reStructuredText
+
+
+[FILES]
+docs\rst\quickstart.html
+docs\rst\quickref.html
+spec\rst\reStructuredText.html
+spec\rst\alternatives.html
+spec\rst\directives.html
+spec\rst\interpreted.html
+spec\rst\introduction.html
+spec\rst\problems.html
+docs\tools.html
+docs\latex.html
+FAQ.html
+
+[INFOTYPES]
+
