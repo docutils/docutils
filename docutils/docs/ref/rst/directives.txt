@@ -513,11 +513,13 @@ directive.  For example::
 
     .. include:: inclusion.txt
 
-            This second will be parsed in a block quote context.
-            Therefore it may only contain body elements.  It may not
-            contain section headers.
+    Back in the main document.
 
-            .. include:: inclusion.txt
+        This second example will be parsed in a block quote context.
+        Therefore it may only contain body elements.  It may not
+        contain section headers.
+
+        .. include:: inclusion.txt
 
 If an included document fragment contains section structure, the title
 adornments must match those of the master document.

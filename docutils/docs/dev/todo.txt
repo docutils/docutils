@@ -993,12 +993,17 @@ HTML Writer
   directives and substitutions for dynamic stuff.  Or a specialized
   writer to generate .ht & links.h files for ht2html?
 
+* Add a setting (or another writer) which produces just the contents
+  of the <body> element.  Part of the ht2html implementation?
+
 * Add more support for <link> elements, especially for navigation
   bars.
 
 * Make the admonitions more distinctive and varied.
 
 * Make the "class" attributes optional?  Implies no stylesheet?
+
+* Add a setting to customize the header tag levels, i.e. <h1>.
 
 
 Front-End Tools
