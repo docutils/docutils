@@ -56,13 +56,14 @@ Options and Content`_).  The role function parameters are as follows:
   called role_fn.  It contains the several attributes useful for error
   reporting and document tree access.
 
-* ``options``: A dictionary of directive options for customization, to
-  be interpreted by the role function.  Used for additional attributes
-  for the generated elements and other functionality.
+* ``options``: A dictionary of directive options for customization
+  (from the `"role" directive`_), to be interpreted by the role
+  function.  Used for additional attributes for the generated elements
+  and other functionality.
 
 * ``content``: A list of strings, the directive content for
-  customization ("role" directive).  To be interpreted by the role
-  function.
+  customization (from the `"role" directive`_).  To be interpreted by
+  the role function.
 
 Role functions return a tuple of two values:
 
@@ -106,6 +107,7 @@ Note that unlike directives, the "arguments" function attribute is not
 supported for role customization.  Directive arguments are handled by
 the "role" directive itself.
 
+.. _"role" directive: directives.html#role
 .. _Creating reStructuredText Directives:
    rst-directives.html#specify-directive-arguments-options-and-content
 
