@@ -56,9 +56,9 @@ from docutils.parsers.rst import states, tableparser, roles, languages
 from docutils.readers import standalone, pep
 from docutils.statemachine import StringList, string2lines
 
-if sys.hexversion >= 0x02020000:    # Python 2.2
+try:
     from docutils.readers.python import moduleparser
-else:
+except ImportError:      # moduleparser depends on modules added in Python 2.2
     moduleparser = None
 
 try:
