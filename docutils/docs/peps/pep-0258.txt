@@ -713,7 +713,12 @@ conditions:
    b) At the top level of a class definition: a class attribute.
 
    c) At the top level of the "``__init__``" method definition of a
-      class: an instance attribute.  (@@@ ``__new__`` methods?)
+      class: an instance attribute.  Instance attributes assigned in
+      other methods are assumed to be implementation details.  (@@@
+      ``__new__`` methods?)
+
+   d) A function attribute assignment at the top level of a module or
+      class definition.
 
    Since each of the above contexts are at the top level (i.e., in the
    outermost suite of a definition), it may be necessary to place
@@ -734,6 +739,11 @@ conditions:
       method's first parameter (the instance parameter) and "attrib"
       is a simple identifier as in 3a.
 
+   c) For context 1d above, the target must be of the form
+      "``name.attrib``", where "``name``" matches an already-defined
+      function or method name and "attrib" is a simple identifier as
+      in 3a.
+
 Blank lines may be used after attribute docstrings to emphasize the
 connection between the assignment and the docstring.
 
@@ -748,8 +758,17 @@ Examples::
         """This is AClass.c's docstring."""
 
         def __init__(self):
+            """Method __init__'s docstring."""
+
             self.i = 'instance attribute'
             """This is self.i's docstring."""
+
+    def f(x):
+        """Function f's docstring."""
+        return x**2
+
+    f.a = 1
+    """Function attribute f.a's docstring."""
 
 
 Additional Docstrings

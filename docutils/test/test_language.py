@@ -91,7 +91,9 @@ class LanguageTestCase(CustomTestCase):
             self.fail('No docutils.languages.%s module.' % self.language)
         missed, unknown = self._xor(self.ref.labels, module.labels)
         if missed or unknown:
-            self.fail('Missed: %s; Unknown: %s' % (str(missed), str(unknown)))
+            self.fail(
+                'Module docutils.languages.%s:\n    Missed: %s; Unknown: %s'
+                % (self.language, str(missed), str(unknown)))
 
     def test_directives(self):
         try:
@@ -120,7 +122,8 @@ class LanguageTestCase(CustomTestCase):
             if not reverse.has_key(name):
                 failures.append('"%s": translation missing' % name)
         if failures:
-            text = '\n    ' + '\n    '.join(failures)
+            text = ('Module docutils.parsers.rst.languages.%s:\n    %s'
+                    % (self.language, '\n    '.join(failures)))
             if type(text) == UnicodeType:
                 text = text.encode('raw_unicode_escape')
             self.fail(text)

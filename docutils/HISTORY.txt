@@ -300,6 +300,12 @@ Specific:
   - Moved ``Inliner`` & made it a class attribute of ``Reader`` for
     easy subclassing.
 
+* docutils/readers/python: Python Source Reader ubpackage added to
+  project, including preliminary versions of:
+
+  - __init__.py
+  - moduleparser.py: Parser for Python modules.
+
 * docutils/transforms/__init__.py:
 
   - Added ``Transformer`` class and completed transform reform.
@@ -416,7 +422,7 @@ Specific:
     docstrings.
   - Wrote descriptions of all common attributes and parameter
     entities.  Filled in introductory material.
-  - Working through the element descriptions: 40 down, 43 to go.
+  - Working through the element descriptions: 53 down, 30 to go.
   - Removed "Representation of Horizontal Rules" to
     spec/rst/alternatives.txt.
 
@@ -438,10 +444,7 @@ Specific:
 
 * spec/pep-0256.txt: Converted to reStructuredText & updated.
 
-* spec/pep-0257.txt:
-
-  - Converted to reStructuredText & updated.
-  - Added "Handling Docstring Indentation" section.
+* spec/pep-0257.txt: Converted to reStructuredText & updated.
 
 * spec/pep-0258.txt: Converted to reStructuredText & updated.
 
@@ -490,6 +493,12 @@ Specific:
   - Clarified term/classifier delimiter & inline markup ambiguity
     (definition lists).
   - Added "Embedded URIs".
+
+* test: Continually adding & updating tests.
+
+  - Moved test/test_rst/ to test/test_parsers/test_rst/.
+  - Moved test/test_pep/ to test/test_readers/test_pep/.
+  - Added test/test_readers/test_python/.
 
 * tools:
 
