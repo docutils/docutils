@@ -608,6 +608,15 @@ Also see the `... Or Not To Do?`__ list.
 
 __ rst/alternatives.html#or-not-to-do
 
+* Allow the _`:trim:` option for all directives when they occur in a
+  substitution definition, not only the unicode_ directive.
+
+  Allow other characters than spaces to be trimmed (e.g. ``:trim: -``
+  for trimming hyphens).
+
+  .. _unicode:
+     http://docutils.sf.net/docs/ref/rst/directives.html#unicode-character-codes
+  
 * The parser doesn't know anything about double-width characters such
   as Chinese hanza & Japanese kanji/kana.  Also, it's dependent on
   whitespace and punctuation as markup delimiters, which may not be
