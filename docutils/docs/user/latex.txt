@@ -161,7 +161,12 @@ characters are required one must set ``--output-encoding=utf-8`` install
     \usepackage{ucs}
     \usepackage[utf8]{inputenc}
 
-to the stylesheet.
+to the stylesheet. If LaTeX issues a Warning about unloaded/known characters
+adding ::
+
+    \PreloadUnicodePage{n}
+
+where *n* is the unicode pagenumber, might help.
 
 .. _LaTeX unicode: http://www.unruh.de/DniQ/latex/unicode/
 
