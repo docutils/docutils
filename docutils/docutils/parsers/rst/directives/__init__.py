@@ -27,6 +27,12 @@ Where:
   element the directive produces. Currently, only an "alt" attribute is passed
   by substitution definitions (value: the substitution name), which may by
   used by an embedded image directive.
+
+Directive functions return a tuple of two values:
+
+- a list of nodes which will be inserted into the document tree at the point
+  where the directive was encountered (can be an empty list), and
+- a boolean: true iff the directive block finished at a blank line.
 """
 
 __docformat__ = 'reStructuredText'
