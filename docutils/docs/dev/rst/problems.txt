@@ -465,7 +465,8 @@ documentation.  Alternatives:
    - Cells in the first column are limited to one line of text.
 
    - Cells in the first column *must* contain some text; blank cells
-     would lead to a misinterpretation.
+     would lead to a misinterpretation.  An empty comment ("..") is
+     sufficient.
 
 6. Combining alternative 3 and 4, a bullet list in the first column
    could mean multi-line rows, and no bullet list means single-line

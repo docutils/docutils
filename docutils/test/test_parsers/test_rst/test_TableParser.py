@@ -13,13 +13,13 @@ Tests for states.py.
 from __init__ import DocutilsTestSupport
 
 def suite():
-    s = DocutilsTestSupport.TableParserTestSuite()
+    s = DocutilsTestSupport.GridTableParserTestSuite()
     s.generateTests(totest)
     return s
 
 totest = {}
 
-totest['tables'] = [
+totest['grid_tables'] = [
 ["""\
 +-------------------------------------+
 | A table with one cell and one line. |
@@ -191,6 +191,7 @@ totest['tables'] = [
 'TableMarkupError: Multiple head/body row separators in table '
 '(at line offset 2 and 4); only one allowed.'],
 ]
+
 
 if __name__ == '__main__':
     import unittest

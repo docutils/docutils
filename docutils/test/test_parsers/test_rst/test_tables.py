@@ -19,7 +19,7 @@ def suite():
 
 totest = {}
 
-totest['tables'] = [
+totest['full_tables'] = [
 ["""\
 +-------------------------------------+
 | A table with one cell and one line. |
@@ -558,6 +558,399 @@ No blank line after table.
                     <entry>
 """],
 ]
+
+totest['simple_tables'] = [
+["""\
+============  ============
+A table with  two columns.
+============  ============
+
+Paragraph.
+""",
+"""\
+<document>
+    <table>
+        <tgroup cols="2">
+            <colspec colwidth="12">
+            <colspec colwidth="12">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            A table with
+                    <entry>
+                        <paragraph>
+                            two columns.
+    <paragraph>
+        Paragraph.
+"""],
+["""\
+============  ============
+A table with  two columns
+and           two rows.
+============  ============
+""",
+"""\
+<document>
+    <table>
+        <tgroup cols="2">
+            <colspec colwidth="12">
+            <colspec colwidth="12">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            A table with
+                    <entry>
+                        <paragraph>
+                            two columns
+                <row>
+                    <entry>
+                        <paragraph>
+                            and
+                    <entry>
+                        <paragraph>
+                            two rows.
+"""],
+["""\
+============  ==============
+A table with  two columns,
+two rows, and a column span.
+============================
+""",
+"""\
+<document>
+    <table>
+        <tgroup cols="2">
+            <colspec colwidth="12">
+            <colspec colwidth="14">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            A table with
+                    <entry>
+                        <paragraph>
+                            two columns,
+                <row>
+                    <entry morecols="1">
+                        <paragraph>
+                            two rows, and a column span.
+"""],
+["""\
+==  ===========  ===========
+1   A table with three rows,
+--  ------------------------
+2   and three    columns.
+3   First and last rows
+    contain column spans.
+
+    This last row is a multi-line row, and overflows to the right.
+==  ========================
+""",
+"""\
+<document>
+    <table>
+        <tgroup cols="3">
+            <colspec colwidth="2">
+            <colspec colwidth="11">
+            <colspec colwidth="49">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            1
+                    <entry morecols="1">
+                        <paragraph>
+                            A table with three rows,
+                <row>
+                    <entry>
+                        <paragraph>
+                            2
+                    <entry>
+                        <paragraph>
+                            and three
+                    <entry>
+                        <paragraph>
+                            columns.
+                <row>
+                    <entry>
+                        <paragraph>
+                            3
+                    <entry morecols="1">
+                        <paragraph>
+                            First and last rows
+                            contain column spans.
+                        <paragraph>
+                            This last row is a multi-line row, and overflows to the right.
+"""],
+["""\
+=======  =========  ========
+A table with three  columns.
+==================  ========
+""",
+"""\
+<document>
+    <table>
+        <tgroup cols="3">
+            <colspec colwidth="7">
+            <colspec colwidth="9">
+            <colspec colwidth="8">
+            <tbody>
+                <row>
+                    <entry morecols="1">
+                        <paragraph>
+                            A table with three
+                    <entry>
+                        <paragraph>
+                            columns.
+"""],
+["""\
+==============  ======
+A simple table  with
+no bottom       border
+""",
+"""\
+<document>
+    <system_message level="3" type="ERROR">
+        <paragraph>
+            Malformed table at line 1; formatting as a literal block.
+            No bottom table border found.
+    <literal_block>
+        ==============  ======
+        A simple table  with
+        no bottom       border
+"""],
+["""\
+==============  ======
+A simple table  cell 2
+cell 3          cell 4
+==============  ======
+No blank line after table.
+""",
+"""\
+<document>
+    <system_message level="3" type="ERROR">
+        <paragraph>
+            Malformed table at line 1; formatting as a literal block.
+            No bottom table border found or no blank line after table bottom.
+    <literal_block>
+        ==============  ======
+        A simple table  cell 2
+        cell 3          cell 4
+        ==============  ======
+    <system_message level="2" type="WARNING">
+        <paragraph>
+            Blank line required after table at line 5.
+    <paragraph>
+        No blank line after table.
+"""],
+["""\
+==============  ======
+A simple table  cell 2
+==============  ======
+cell 3          cell 4
+==============  ======
+No blank line after table.
+""",
+"""\
+<document>
+    <table>
+        <tgroup cols="2">
+            <colspec colwidth="14">
+            <colspec colwidth="6">
+            <thead>
+                <row>
+                    <entry>
+                        <paragraph>
+                            A simple table
+                    <entry>
+                        <paragraph>
+                            cell 2
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            cell 3
+                    <entry>
+                        <paragraph>
+                            cell 4
+    <system_message level="2" type="WARNING">
+        <paragraph>
+            Blank line required after table at line 6.
+    <paragraph>
+        No blank line after table.
+"""],
+["""\
+==============  ======
+A simple table  cell 2
+cell 3          cell 4
+==============  ======
+    Unexpected indent and no blank line after table.
+""",
+"""\
+<document>
+    <system_message level="3" type="ERROR">
+        <paragraph>
+            Malformed table at line 1; formatting as a literal block.
+            No bottom table border found or no blank line after table bottom.
+    <literal_block>
+        ==============  ======
+        A simple table  cell 2
+        cell 3          cell 4
+        ==============  ======
+    <system_message level="2" type="WARNING">
+        <paragraph>
+            Blank line required after table at line 5.
+    <block_quote>
+        <paragraph>
+            Unexpected indent and no blank line after table.
+"""],
+["""\
+==============  ======
+A bad table     cell 2
+cell 3          cell 4
+============  ========
+""",
+"""\
+<document>
+    <system_message level="3" type="ERROR">
+        <paragraph>
+            Malformed table at line 1; formatting as a literal block.
+            Column span alignment problem at line offset 2.
+    <literal_block>
+        ==============  ======
+        A bad table     cell 2
+        cell 3          cell 4
+        ============  ========
+"""],
+["""\
+========  =========
+A bad table  cell 2
+cell 3       cell 4
+========  =========
+""",
+"""\
+<document>
+    <system_message level="3" type="ERROR">
+        <paragraph>
+            Malformed table at line 1; formatting as a literal block.
+            Text in column margin at line offset 1.
+    <literal_block>
+        ========  =========
+        A bad table  cell 2
+        cell 3       cell 4
+        ========  =========
+"""],
+["""\
+==  ============================
+1   This table contains another.
+2   =======  ======  ========
+    A table  within  a table.
+    =======  ======  ========
+
+    The outer table does have to
+    have at least two columns
+    though.
+==  ============================
+""",
+"""\
+<document>
+    <table>
+        <tgroup cols="2">
+            <colspec colwidth="2">
+            <colspec colwidth="28">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            1
+                    <entry>
+                        <paragraph>
+                            This table contains another.
+                <row>
+                    <entry>
+                        <paragraph>
+                            2
+                    <entry>
+                        <table>
+                            <tgroup cols="3">
+                                <colspec colwidth="7">
+                                <colspec colwidth="6">
+                                <colspec colwidth="8">
+                                <tbody>
+                                    <row>
+                                        <entry>
+                                            <paragraph>
+                                                A table
+                                        <entry>
+                                            <paragraph>
+                                                within
+                                        <entry>
+                                            <paragraph>
+                                                a table.
+                        <paragraph>
+                            The outer table does have to
+                            have at least two columns
+                            though.
+"""],
+["""\
+================  ======
+A simple table
+with empty cells
+================  ======
+""",
+"""\
+<document>
+    <table>
+        <tgroup cols="2">
+            <colspec colwidth="16">
+            <colspec colwidth="6">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            A simple table
+                    <entry>
+                <row>
+                    <entry>
+                        <paragraph>
+                            with empty cells
+                    <entry>
+"""],
+["""\
+==============  ========
+   A table        with
+==============  ========
+   centered      cells.
+
+==============  ========
+""",
+"""\
+<document>
+    <table>
+        <tgroup cols="2">
+            <colspec colwidth="14">
+            <colspec colwidth="8">
+            <thead>
+                <row>
+                    <entry>
+                        <paragraph>
+                            A table
+                    <entry>
+                        <paragraph>
+                            with
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            centered
+                    <entry>
+                        <paragraph>
+                            cells.
+"""],
+]
+
 
 if __name__ == '__main__':
     import unittest

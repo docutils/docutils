@@ -101,6 +101,8 @@ Specific:
   - Added ``NodeFound`` exception, for use with ``NodeVisitor``
     traversals.
   - Added ``document.has_name()`` method.
+  - Fixed DOM generation for list-attributes.
+  - Added category class ``Labeled`` (used by footnotes & citations).
 
 * docutils/optik.py: Added to project.  Combined from the Optik
   package, with added option groups and other modifications.  The use
@@ -155,6 +157,14 @@ Specific:
   - Converted ``Inliner.patterns.initial`` to be dynamically built
     from parts with ``build_regexp()`` function.
   - Changed ``Inliner.inline_target`` to ``.inline_internal_target``.
+  - Updated docstrings.
+  - Changed "table" to "grid_table"; added "simple_table" support.
+
+* docutils/parsers/rst/tableparser.py:
+
+  - Changed ``TableParser`` to ``GridTableParser``.
+  - Added ``SimpleTableParser``.
+  - Refactored naming.
 
 * docutils/parsers/rst/directives/html.py: Changed the ``meta``
   directive to use a ``pending`` element, used only by HTML writers.
@@ -214,7 +224,9 @@ Specific:
     with Unicode.
   - Added the translator class as instance variable to the Writer, to
     make it easily subclassable.
-  - Modified the ``field_body`` output.
+  - Improved option list spacing (thanks to Richard Jones).
+  - Modified field list output.
+  - Added backlinks to footnotes & citations.
 
 * docutils/writers/pep_html.py: Added to project; HTML Writer for
   PEPs (subclass of ``html4css1.Writer``).
@@ -278,11 +290,16 @@ Specific:
     ``/`` to end string suffix.
   - Updated "Authors" bibliographic field behavior.
   - Changed "inline hyperlink targets" to "inline internal targets".
+  - Added "simple table" syntax to supplement the existing but
+    newly-renamed "grid tables".
 
 * test: Made test modules standalone (subdirectories became packages).
 
-* test/DocutilsTestSupport.py: Support for PEP extensions to
-  reStructuredText.
+* test/DocutilsTestSupport.py:
+
+  - Added support for PEP extensions to reStructuredText.
+  - Added support for simple tables.
+  - Refactored naming.
 
 * test/package_unittest.py: Renamed from UnitTestFolder.py.
 
@@ -290,6 +307,8 @@ Specific:
     (``__init__.py`` files required); fixes duplicate module name bug.
 
 * test/test_pep/: Subpackage added to project; PEP testing.
+
+* test/test_rst/test_SimpleTableParser.py: Added to project.
 
 * tools:
 
@@ -307,7 +326,7 @@ Specific:
 
 * tools/pep.py: Added to project; PEP to HTML front-end.
 
-* tools/pep-template.html: Added to project; template for PEP HTML.
+* tools/pep-html-template: Added to project.
 
 * tools/quicktest.py: Added the "--attributes" option, hacked a bit.
 
