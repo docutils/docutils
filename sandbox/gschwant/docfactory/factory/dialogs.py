@@ -636,8 +636,11 @@ class toolsDlg(wxDialog):
         self.Fit()
 
     def add_tool(self, name, command, init_dir):
-        key = max(self.tools.keys())+1
-        self.tools[key] =  [0, name, command, init_dir]
+        if self.tools == {}:
+            key = 1
+        else:
+            key = max(self.tools.keys())+1
+        self.tools[key] = [0, name, command, init_dir]
         i = 1
         for tool in self.tools.values():
             tool[0] = i
