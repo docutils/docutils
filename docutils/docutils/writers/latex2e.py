@@ -903,9 +903,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('{'+self.encode(text)+'}')
             raise nodes.SkipNode
         else:
-            notename = node['id']
             self.body.append('\\begin{figure}[b]')
-            self.body.append('\\hypertarget{%s}' % notename)
+            self.body.append('\\hypertarget{%s}' % node['id'])
 
     def depart_footnote(self, node):
         if self.use_latex_footnotes:
@@ -1351,9 +1350,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.body.append('\n\\hline')
 
     def visit_target(self, node):
+        # BUG: why not (refuri or refid or refname) means not footnote ?
         if not (node.has_key('refuri') or node.has_key('refid')
                 or node.has_key('refname')):
-            self.body.append('\\hypertarget{%s}{' % node['name'])
+            self.body.append('\\hypertarget{%s}{' % node['id'])
             self.context.append('}')
         else:
             self.context.append('')
@@ -1474,8 +1474,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
             l = self.section_level
             if l>0:
                 l = l-1
+            # pdftex does not like "_" subscripts in titles
+            text = node.astext().replace("_","\\_")
             self.body.append('\\pdfbookmark[%d]{%s}{%s}\n' % \
-                (l,node.astext(),node.parent['id']))
+                (l,text,node.parent['id']))
 
     def visit_topic(self, node):
         self.topic_class = node.get('class')
