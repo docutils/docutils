@@ -1,0 +1,19 @@
+On finding names
+================
+
+We are not trying for a general solution to the problem of "find the item
+that is being referred to" - we are just trying to provide useful links
+between <interpreted> items in docstrings and those things that they
+might reasonably be expected to be referring to.
+
+Some rules thus occur.
+
+1. We will not show attributes, docstring or not, if they are not
+
+   a. At module level (so a ModuleValue)
+   b. Within a class (so a ClassValue)
+   c. Within a method called __init__ or __new__.
+
+   So discard any attributes that do not match these criteria.
+
+Hmm - is that the only rule? Can it be so simple?

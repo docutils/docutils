@@ -1,0 +1,225 @@
+
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module string</title>
+<style type="text/css"><!--
+TT { font-family: lucidatypewriter, lucida console, courier }
+--></style></head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0>
+<tr bgcolor="#7799ee">
+<td valign=bottom><small>&nbsp;<br></small
+><font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>string</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:///C|/python21/lib/string.py">c:\python21\lib\string.py</a></font></td></tr></table>
+    <p><small><tt>A&nbsp;collection&nbsp;of&nbsp;string&nbsp;operations&nbsp;(most&nbsp;are&nbsp;no&nbsp;longer&nbsp;used&nbsp;in&nbsp;Python&nbsp;1.6).<br>
+&nbsp;<br>
+Warning:&nbsp;most&nbsp;of&nbsp;the&nbsp;code&nbsp;you&nbsp;see&nbsp;here&nbsp;isn't&nbsp;normally&nbsp;used&nbsp;nowadays.&nbsp;&nbsp;With<br>
+Python&nbsp;1.6,&nbsp;many&nbsp;of&nbsp;these&nbsp;functions&nbsp;are&nbsp;implemented&nbsp;as&nbsp;methods&nbsp;on&nbsp;the<br>
+standard&nbsp;string&nbsp;object.&nbsp;They&nbsp;used&nbsp;to&nbsp;be&nbsp;implemented&nbsp;by&nbsp;a&nbsp;built-in&nbsp;module<br>
+called&nbsp;strop,&nbsp;but&nbsp;strop&nbsp;is&nbsp;now&nbsp;obsolete&nbsp;itself.<br>
+&nbsp;<br>
+Public&nbsp;module&nbsp;variables:<br>
+&nbsp;<br>
+whitespace&nbsp;--&nbsp;a&nbsp;string&nbsp;containing&nbsp;all&nbsp;characters&nbsp;considered&nbsp;whitespace<br>
+lowercase&nbsp;--&nbsp;a&nbsp;string&nbsp;containing&nbsp;all&nbsp;characters&nbsp;considered&nbsp;lowercase&nbsp;letters<br>
+uppercase&nbsp;--&nbsp;a&nbsp;string&nbsp;containing&nbsp;all&nbsp;characters&nbsp;considered&nbsp;uppercase&nbsp;letters<br>
+letters&nbsp;--&nbsp;a&nbsp;string&nbsp;containing&nbsp;all&nbsp;characters&nbsp;considered&nbsp;letters<br>
+digits&nbsp;--&nbsp;a&nbsp;string&nbsp;containing&nbsp;all&nbsp;characters&nbsp;considered&nbsp;decimal&nbsp;digits<br>
+hexdigits&nbsp;--&nbsp;a&nbsp;string&nbsp;containing&nbsp;all&nbsp;characters&nbsp;considered&nbsp;hexadecimal&nbsp;digits<br>
+octdigits&nbsp;--&nbsp;a&nbsp;string&nbsp;containing&nbsp;all&nbsp;characters&nbsp;considered&nbsp;octal&nbsp;digits<br>
+punctuation&nbsp;--&nbsp;a&nbsp;string&nbsp;containing&nbsp;all&nbsp;characters&nbsp;considered&nbsp;punctuation<br>
+printable&nbsp;--&nbsp;a&nbsp;string&nbsp;containing&nbsp;all&nbsp;characters&nbsp;considered&nbsp;printable</tt></small></p>
+
+<p><table width="100%" cellspacing=0 cellpadding=2 border=0>
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom><small><small>&nbsp;<br></small></small
+><font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;&nbsp;</td>
+<td width="100%"><dl><dt><a name="-_float"><strong>_float</strong></a> = float(...)<dd><small><tt>float(x)&nbsp;-&gt;&nbsp;floating&nbsp;point&nbsp;number<br>
+&nbsp;<br>
+Convert&nbsp;a&nbsp;string&nbsp;or&nbsp;number&nbsp;to&nbsp;a&nbsp;floating&nbsp;point&nbsp;number,&nbsp;if&nbsp;possible.</tt></small></dl>
+ <dl><dt><a name="-_int"><strong>_int</strong></a> = int(...)<dd><small><tt>int(x[,&nbsp;base])&nbsp;-&gt;&nbsp;integer<br>
+&nbsp;<br>
+Convert&nbsp;a&nbsp;string&nbsp;or&nbsp;number&nbsp;to&nbsp;an&nbsp;integer,&nbsp;if&nbsp;possible.&nbsp;&nbsp;A&nbsp;floating&nbsp;point<br>
+argument&nbsp;will&nbsp;be&nbsp;truncated&nbsp;towards&nbsp;zero&nbsp;(this&nbsp;does&nbsp;not&nbsp;include&nbsp;a&nbsp;string<br>
+representation&nbsp;of&nbsp;a&nbsp;floating&nbsp;point&nbsp;number!)&nbsp;&nbsp;When&nbsp;converting&nbsp;a&nbsp;string,&nbsp;use<br>
+the&nbsp;optional&nbsp;base.&nbsp;&nbsp;It&nbsp;is&nbsp;an&nbsp;error&nbsp;to&nbsp;supply&nbsp;a&nbsp;base&nbsp;when&nbsp;converting&nbsp;a<br>
+non-string.</tt></small></dl>
+ <dl><dt><a name="-_long"><strong>_long</strong></a> = long(...)<dd><small><tt>long(x)&nbsp;-&gt;&nbsp;long&nbsp;integer<br>
+long(x,&nbsp;base)&nbsp;-&gt;&nbsp;long&nbsp;integer<br>
+&nbsp;<br>
+Convert&nbsp;a&nbsp;string&nbsp;or&nbsp;number&nbsp;to&nbsp;a&nbsp;long&nbsp;integer,&nbsp;if&nbsp;possible.&nbsp;&nbsp;A&nbsp;floating<br>
+point&nbsp;argument&nbsp;will&nbsp;be&nbsp;truncated&nbsp;towards&nbsp;zero&nbsp;(this&nbsp;does&nbsp;not&nbsp;include&nbsp;a<br>
+string&nbsp;representation&nbsp;of&nbsp;a&nbsp;floating&nbsp;point&nbsp;number!)&nbsp;&nbsp;When&nbsp;converting&nbsp;a<br>
+string,&nbsp;use&nbsp;the&nbsp;given&nbsp;base.&nbsp;&nbsp;It&nbsp;is&nbsp;an&nbsp;error&nbsp;to&nbsp;supply&nbsp;a&nbsp;base&nbsp;when<br>
+converting&nbsp;a&nbsp;non-string.</tt></small></dl>
+ <dl><dt><a name="-atof"><strong>atof</strong></a>(s)<dd><small><tt><a href="#-atof">atof</a>(s)&nbsp;-&gt;&nbsp;float<br>
+&nbsp;<br>
+Return&nbsp;the&nbsp;floating&nbsp;point&nbsp;number&nbsp;represented&nbsp;by&nbsp;the&nbsp;string&nbsp;s.</tt></small></dl>
+ <dl><dt><a name="-atoi"><strong>atoi</strong></a>(s, base<small><font color="#909090">=10</font></small>)<dd><small><tt><a href="#-atoi">atoi</a>(s&nbsp;[,base])&nbsp;-&gt;&nbsp;int<br>
+&nbsp;<br>
+Return&nbsp;the&nbsp;integer&nbsp;represented&nbsp;by&nbsp;the&nbsp;string&nbsp;s&nbsp;in&nbsp;the&nbsp;given<br>
+base,&nbsp;which&nbsp;defaults&nbsp;to&nbsp;10.&nbsp;&nbsp;The&nbsp;string&nbsp;s&nbsp;must&nbsp;consist&nbsp;of&nbsp;one<br>
+or&nbsp;more&nbsp;digits,&nbsp;possibly&nbsp;preceded&nbsp;by&nbsp;a&nbsp;sign.&nbsp;&nbsp;If&nbsp;base&nbsp;is&nbsp;0,&nbsp;it<br>
+is&nbsp;chosen&nbsp;from&nbsp;the&nbsp;leading&nbsp;characters&nbsp;of&nbsp;s,&nbsp;0&nbsp;for&nbsp;octal,&nbsp;0x&nbsp;or<br>
+0X&nbsp;for&nbsp;hexadecimal.&nbsp;&nbsp;If&nbsp;base&nbsp;is&nbsp;16,&nbsp;a&nbsp;preceding&nbsp;0x&nbsp;or&nbsp;0X&nbsp;is<br>
+accepted.</tt></small></dl>
+ <dl><dt><a name="-atol"><strong>atol</strong></a>(s, base<small><font color="#909090">=10</font></small>)<dd><small><tt><a href="#-atol">atol</a>(s&nbsp;[,base])&nbsp;-&gt;&nbsp;long<br>
+&nbsp;<br>
+Return&nbsp;the&nbsp;long&nbsp;integer&nbsp;represented&nbsp;by&nbsp;the&nbsp;string&nbsp;s&nbsp;in&nbsp;the<br>
+given&nbsp;base,&nbsp;which&nbsp;defaults&nbsp;to&nbsp;10.&nbsp;&nbsp;The&nbsp;string&nbsp;s&nbsp;must&nbsp;consist<br>
+of&nbsp;one&nbsp;or&nbsp;more&nbsp;digits,&nbsp;possibly&nbsp;preceded&nbsp;by&nbsp;a&nbsp;sign.&nbsp;&nbsp;If&nbsp;base<br>
+is&nbsp;0,&nbsp;it&nbsp;is&nbsp;chosen&nbsp;from&nbsp;the&nbsp;leading&nbsp;characters&nbsp;of&nbsp;s,&nbsp;0&nbsp;for<br>
+octal,&nbsp;0x&nbsp;or&nbsp;0X&nbsp;for&nbsp;hexadecimal.&nbsp;&nbsp;If&nbsp;base&nbsp;is&nbsp;16,&nbsp;a&nbsp;preceding<br>
+0x&nbsp;or&nbsp;0X&nbsp;is&nbsp;accepted.&nbsp;&nbsp;A&nbsp;trailing&nbsp;L&nbsp;or&nbsp;l&nbsp;is&nbsp;not&nbsp;accepted,<br>
+unless&nbsp;base&nbsp;is&nbsp;0.</tt></small></dl>
+ <dl><dt><a name="-capitalize"><strong>capitalize</strong></a>(s)<dd><small><tt><a href="#-capitalize">capitalize</a>(s)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;s&nbsp;with&nbsp;only&nbsp;its&nbsp;first&nbsp;character<br>
+capitalized.</tt></small></dl>
+ <dl><dt><a name="-capwords"><strong>capwords</strong></a>(s, sep<small><font color="#909090">=None</font></small>)<dd><small><tt><a href="#-capwords">capwords</a>(s,&nbsp;[sep])&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Split&nbsp;the&nbsp;argument&nbsp;into&nbsp;words&nbsp;using&nbsp;split,&nbsp;capitalize&nbsp;each<br>
+word&nbsp;using&nbsp;capitalize,&nbsp;and&nbsp;join&nbsp;the&nbsp;capitalized&nbsp;words&nbsp;using<br>
+join.&nbsp;Note&nbsp;that&nbsp;this&nbsp;replaces&nbsp;runs&nbsp;of&nbsp;whitespace&nbsp;characters&nbsp;by<br>
+a&nbsp;single&nbsp;space.</tt></small></dl>
+ <dl><dt><a name="-center"><strong>center</strong></a>(s, width)<dd><small><tt><a href="#-center">center</a>(s,&nbsp;width)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;center&nbsp;version&nbsp;of&nbsp;s,&nbsp;in&nbsp;a&nbsp;field&nbsp;of&nbsp;the&nbsp;specified<br>
+width.&nbsp;padded&nbsp;with&nbsp;spaces&nbsp;as&nbsp;needed.&nbsp;&nbsp;The&nbsp;string&nbsp;is&nbsp;never<br>
+truncated.</tt></small></dl>
+ <dl><dt><a name="-count"><strong>count</strong></a>(s, *args)<dd><small><tt><a href="#-count">count</a>(s,&nbsp;sub[,&nbsp;start[,end]])&nbsp;-&gt;&nbsp;int<br>
+&nbsp;<br>
+Return&nbsp;the&nbsp;number&nbsp;of&nbsp;occurrences&nbsp;of&nbsp;substring&nbsp;sub&nbsp;in&nbsp;string<br>
+s[start:end].&nbsp;&nbsp;Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are<br>
+interpreted&nbsp;as&nbsp;in&nbsp;slice&nbsp;notation.</tt></small></dl>
+ <dl><dt><a name="-expandtabs"><strong>expandtabs</strong></a>(s, tabsize<small><font color="#909090">=8</font></small>)<dd><small><tt><a href="#-expandtabs">expandtabs</a>(s&nbsp;[,tabsize])&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;s&nbsp;with&nbsp;all&nbsp;tab&nbsp;characters&nbsp;replaced<br>
+by&nbsp;the&nbsp;appropriate&nbsp;number&nbsp;of&nbsp;spaces,&nbsp;depending&nbsp;on&nbsp;the&nbsp;current<br>
+column,&nbsp;and&nbsp;the&nbsp;tabsize&nbsp;(default&nbsp;8).</tt></small></dl>
+ <dl><dt><a name="-find"><strong>find</strong></a>(s, *args)<dd><small><tt><a href="#-find">find</a>(s,&nbsp;sub&nbsp;[,start&nbsp;[,end]])&nbsp;-&gt;&nbsp;in<br>
+&nbsp;<br>
+Return&nbsp;the&nbsp;lowest&nbsp;index&nbsp;in&nbsp;s&nbsp;where&nbsp;substring&nbsp;sub&nbsp;is&nbsp;found,<br>
+such&nbsp;that&nbsp;sub&nbsp;is&nbsp;contained&nbsp;within&nbsp;s[start,end].&nbsp;&nbsp;Optional<br>
+arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice&nbsp;notation.<br>
+&nbsp;<br>
+Return&nbsp;-1&nbsp;on&nbsp;failure.</tt></small></dl>
+ <dl><dt><a name="-index"><strong>index</strong></a>(s, *args)<dd><small><tt><a href="#-index">index</a>(s,&nbsp;sub&nbsp;[,start&nbsp;[,end]])&nbsp;-&gt;&nbsp;int<br>
+&nbsp;<br>
+Like&nbsp;find&nbsp;but&nbsp;raises&nbsp;ValueError&nbsp;when&nbsp;the&nbsp;substring&nbsp;is&nbsp;not&nbsp;found.</tt></small></dl>
+ <dl><dt><a name="-join"><strong>join</strong></a>(words, sep<small><font color="#909090">=' '</font></small>)<dd><small><tt><a href="#-join">join</a>(list&nbsp;[,sep])&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;string&nbsp;composed&nbsp;of&nbsp;the&nbsp;words&nbsp;in&nbsp;list,&nbsp;with<br>
+intervening&nbsp;occurrences&nbsp;of&nbsp;sep.&nbsp;&nbsp;The&nbsp;default&nbsp;separator&nbsp;is&nbsp;a<br>
+single&nbsp;space.<br>
+&nbsp;<br>
+(joinfields&nbsp;and&nbsp;join&nbsp;are&nbsp;synonymous)</tt></small></dl>
+ <dl><dt><a name="-joinfields"><strong>joinfields</strong></a> = join(words, sep<small><font color="#909090">=' '</font></small>)<dd><small><tt><a href="#-join">join</a>(list&nbsp;[,sep])&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;string&nbsp;composed&nbsp;of&nbsp;the&nbsp;words&nbsp;in&nbsp;list,&nbsp;with<br>
+intervening&nbsp;occurrences&nbsp;of&nbsp;sep.&nbsp;&nbsp;The&nbsp;default&nbsp;separator&nbsp;is&nbsp;a<br>
+single&nbsp;space.<br>
+&nbsp;<br>
+(joinfields&nbsp;and&nbsp;join&nbsp;are&nbsp;synonymous)</tt></small></dl>
+ <dl><dt><a name="-ljust"><strong>ljust</strong></a>(s, width)<dd><small><tt><a href="#-ljust">ljust</a>(s,&nbsp;width)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;left-justified&nbsp;version&nbsp;of&nbsp;s,&nbsp;in&nbsp;a&nbsp;field&nbsp;of&nbsp;the<br>
+specified&nbsp;width,&nbsp;padded&nbsp;with&nbsp;spaces&nbsp;as&nbsp;needed.&nbsp;&nbsp;The&nbsp;string&nbsp;is<br>
+never&nbsp;truncated.</tt></small></dl>
+ <dl><dt><a name="-lower"><strong>lower</strong></a>(s)<dd><small><tt><a href="#-lower">lower</a>(s)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;s&nbsp;converted&nbsp;to&nbsp;lowercase.</tt></small></dl>
+ <dl><dt><a name="-lstrip"><strong>lstrip</strong></a>(s)<dd><small><tt><a href="#-lstrip">lstrip</a>(s)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;s&nbsp;with&nbsp;leading&nbsp;whitespace&nbsp;removed.</tt></small></dl>
+ <dl><dt><a name="-maketrans"><strong>maketrans</strong></a>(...)<dd><small><tt><a href="#-maketrans">maketrans</a>(frm,&nbsp;to)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;translation&nbsp;table&nbsp;(a&nbsp;string&nbsp;of&nbsp;256&nbsp;bytes&nbsp;long)<br>
+suitable&nbsp;for&nbsp;use&nbsp;in&nbsp;string.translate.&nbsp;&nbsp;The&nbsp;strings&nbsp;frm&nbsp;and&nbsp;to<br>
+must&nbsp;be&nbsp;of&nbsp;the&nbsp;same&nbsp;length.</tt></small></dl>
+ <dl><dt><a name="-replace"><strong>replace</strong></a>(s, old, new, maxsplit<small><font color="#909090">=-1</font></small>)<dd><small><tt>replace&nbsp;(str,&nbsp;old,&nbsp;new[,&nbsp;maxsplit])&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;string&nbsp;str&nbsp;with&nbsp;all&nbsp;occurrences&nbsp;of&nbsp;substring<br>
+old&nbsp;replaced&nbsp;by&nbsp;new.&nbsp;If&nbsp;the&nbsp;optional&nbsp;argument&nbsp;maxsplit&nbsp;is<br>
+given,&nbsp;only&nbsp;the&nbsp;first&nbsp;maxsplit&nbsp;occurrences&nbsp;are&nbsp;replaced.</tt></small></dl>
+ <dl><dt><a name="-rfind"><strong>rfind</strong></a>(s, *args)<dd><small><tt><a href="#-rfind">rfind</a>(s,&nbsp;sub&nbsp;[,start&nbsp;[,end]])&nbsp;-&gt;&nbsp;int<br>
+&nbsp;<br>
+Return&nbsp;the&nbsp;highest&nbsp;index&nbsp;in&nbsp;s&nbsp;where&nbsp;substring&nbsp;sub&nbsp;is&nbsp;found,<br>
+such&nbsp;that&nbsp;sub&nbsp;is&nbsp;contained&nbsp;within&nbsp;s[start,end].&nbsp;&nbsp;Optional<br>
+arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice&nbsp;notation.<br>
+&nbsp;<br>
+Return&nbsp;-1&nbsp;on&nbsp;failure.</tt></small></dl>
+ <dl><dt><a name="-rindex"><strong>rindex</strong></a>(s, *args)<dd><small><tt><a href="#-rindex">rindex</a>(s,&nbsp;sub&nbsp;[,start&nbsp;[,end]])&nbsp;-&gt;&nbsp;int<br>
+&nbsp;<br>
+Like&nbsp;rfind&nbsp;but&nbsp;raises&nbsp;ValueError&nbsp;when&nbsp;the&nbsp;substring&nbsp;is&nbsp;not&nbsp;found.</tt></small></dl>
+ <dl><dt><a name="-rjust"><strong>rjust</strong></a>(s, width)<dd><small><tt><a href="#-rjust">rjust</a>(s,&nbsp;width)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;right-justified&nbsp;version&nbsp;of&nbsp;s,&nbsp;in&nbsp;a&nbsp;field&nbsp;of&nbsp;the<br>
+specified&nbsp;width,&nbsp;padded&nbsp;with&nbsp;spaces&nbsp;as&nbsp;needed.&nbsp;&nbsp;The&nbsp;string&nbsp;is<br>
+never&nbsp;truncated.</tt></small></dl>
+ <dl><dt><a name="-rstrip"><strong>rstrip</strong></a>(s)<dd><small><tt><a href="#-rstrip">rstrip</a>(s)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;s&nbsp;with&nbsp;trailing&nbsp;whitespace<br>
+removed.</tt></small></dl>
+ <dl><dt><a name="-split"><strong>split</strong></a>(s, sep<small><font color="#909090">=None</font></small>, maxsplit<small><font color="#909090">=-1</font></small>)<dd><small><tt><a href="#-split">split</a>(s&nbsp;[,sep&nbsp;[,maxsplit]])&nbsp;-&gt;&nbsp;list&nbsp;of&nbsp;strings<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;list&nbsp;of&nbsp;the&nbsp;words&nbsp;in&nbsp;the&nbsp;string&nbsp;s,&nbsp;using&nbsp;sep&nbsp;as&nbsp;the<br>
+delimiter&nbsp;string.&nbsp;&nbsp;If&nbsp;maxsplit&nbsp;is&nbsp;given,&nbsp;splits&nbsp;into&nbsp;at&nbsp;most<br>
+maxsplit&nbsp;words.&nbsp;&nbsp;If&nbsp;sep&nbsp;is&nbsp;not&nbsp;specified,&nbsp;any&nbsp;whitespace&nbsp;string<br>
+is&nbsp;a&nbsp;separator.<br>
+&nbsp;<br>
+(split&nbsp;and&nbsp;splitfields&nbsp;are&nbsp;synonymous)</tt></small></dl>
+ <dl><dt><a name="-splitfields"><strong>splitfields</strong></a> = split(s, sep<small><font color="#909090">=None</font></small>, maxsplit<small><font color="#909090">=-1</font></small>)<dd><small><tt><a href="#-split">split</a>(s&nbsp;[,sep&nbsp;[,maxsplit]])&nbsp;-&gt;&nbsp;list&nbsp;of&nbsp;strings<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;list&nbsp;of&nbsp;the&nbsp;words&nbsp;in&nbsp;the&nbsp;string&nbsp;s,&nbsp;using&nbsp;sep&nbsp;as&nbsp;the<br>
+delimiter&nbsp;string.&nbsp;&nbsp;If&nbsp;maxsplit&nbsp;is&nbsp;given,&nbsp;splits&nbsp;into&nbsp;at&nbsp;most<br>
+maxsplit&nbsp;words.&nbsp;&nbsp;If&nbsp;sep&nbsp;is&nbsp;not&nbsp;specified,&nbsp;any&nbsp;whitespace&nbsp;string<br>
+is&nbsp;a&nbsp;separator.<br>
+&nbsp;<br>
+(split&nbsp;and&nbsp;splitfields&nbsp;are&nbsp;synonymous)</tt></small></dl>
+ <dl><dt><a name="-strip"><strong>strip</strong></a>(s)<dd><small><tt><a href="#-strip">strip</a>(s)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;s&nbsp;with&nbsp;leading&nbsp;and&nbsp;trailing<br>
+whitespace&nbsp;removed.</tt></small></dl>
+ <dl><dt><a name="-swapcase"><strong>swapcase</strong></a>(s)<dd><small><tt><a href="#-swapcase">swapcase</a>(s)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;s&nbsp;with&nbsp;upper&nbsp;case&nbsp;characters<br>
+converted&nbsp;to&nbsp;lowercase&nbsp;and&nbsp;vice&nbsp;versa.</tt></small></dl>
+ <dl><dt><a name="-translate"><strong>translate</strong></a>(s, table, deletions<small><font color="#909090">=''</font></small>)<dd><small><tt><a href="#-translate">translate</a>(s,table&nbsp;[,deletions])&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;s,&nbsp;where&nbsp;all&nbsp;characters&nbsp;occurring<br>
+in&nbsp;the&nbsp;optional&nbsp;argument&nbsp;deletions&nbsp;are&nbsp;removed,&nbsp;and&nbsp;the<br>
+remaining&nbsp;characters&nbsp;have&nbsp;been&nbsp;mapped&nbsp;through&nbsp;the&nbsp;given<br>
+translation&nbsp;table,&nbsp;which&nbsp;must&nbsp;be&nbsp;a&nbsp;string&nbsp;of&nbsp;length&nbsp;256.&nbsp;&nbsp;The<br>
+deletions&nbsp;argument&nbsp;is&nbsp;not&nbsp;allowed&nbsp;for&nbsp;Unicode&nbsp;strings.</tt></small></dl>
+ <dl><dt><a name="-upper"><strong>upper</strong></a>(s)<dd><small><tt><a href="#-upper">upper</a>(s)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;s&nbsp;converted&nbsp;to&nbsp;uppercase.</tt></small></dl>
+ <dl><dt><a name="-zfill"><strong>zfill</strong></a>(x, width)<dd><small><tt><a href="#-zfill">zfill</a>(x,&nbsp;width)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Pad&nbsp;a&nbsp;numeric&nbsp;string&nbsp;x&nbsp;with&nbsp;zeros&nbsp;on&nbsp;the&nbsp;left,&nbsp;to&nbsp;fill&nbsp;a&nbsp;field<br>
+of&nbsp;the&nbsp;specified&nbsp;width.&nbsp;&nbsp;The&nbsp;string&nbsp;x&nbsp;is&nbsp;never&nbsp;truncated.</tt></small></dl>
+</td></tr></table>
+<p><table width="100%" cellspacing=0 cellpadding=2 border=0>
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom><small><small>&nbsp;<br></small></small
+><font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;&nbsp;</td>
+<td width="100%"><strong>_StringType</strong> = &lt;type 'string'&gt;<br>
+<strong>__file__</strong> = r'c:\Python21\Lib\string.pyc'<br>
+<strong>__name__</strong> = 'string'<br>
+<strong>_idmap</strong> = '<font color="#c040c0">\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f</font> !"#$%&amp;<font color="#c040c0">\'</font>()*+,-./...<font color="#c040c0">\xcf\xd0\xd1\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xdb\xdc\xdd\xde\xdf\xe0\xe1\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xeb\xec\xed\xee\xef\xf0\xf1\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xfb\xfc\xfd\xfe\xff</font>'<br>
+<strong>_idmapL</strong> = None<br>
+<strong>digits</strong> = '0123456789'<br>
+<strong>hexdigits</strong> = '0123456789abcdefABCDEF'<br>
+<strong>letters</strong> = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'<br>
+<strong>lowercase</strong> = 'abcdefghijklmnopqrstuvwxyz'<br>
+<strong>octdigits</strong> = '01234567'<br>
+<strong>printable</strong> = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&amp;<font color="#c040c0">\'</font>()*+,-./:;&lt;=&gt;?@[<font color="#c040c0">\\</font>]^_`{|}~ <font color="#c040c0">\t\n\r\x0b\x0c</font>'<br>
+<strong>punctuation</strong> = '!"#$%&amp;<font color="#c040c0">\'</font>()*+,-./:;&lt;=&gt;?@[<font color="#c040c0">\\</font>]^_`{|}~'<br>
+<strong>uppercase</strong> = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'<br>
+<strong>whitespace</strong> = '<font color="#c040c0">\t\n\x0b\x0c\r</font> '</td></tr></table>
+</body></html>

@@ -1,0 +1,7 @@
+Paul Moore's summary of backquoted markup possibilities::
+
+    `xxxxx`_   -  named hyperlink reference (type 2)
+    `xxxxx`__  -  anonymous hyperlink reference (type 2)
+    _`xxxx`    -  inline hyperlink targets
+    `/xxx/`    -  substitution reference
+    `xxxxx`    -  interpreted text

@@ -1,0 +1,120 @@
+Why pysource?
+=============
+
+There is the question of why a new tool is needed to go with Docutils and
+reStructuredText, when there are several existing tools which could have been
+adopted.
+
+Perhaps the main reason is simply as a "proof of concept" - even if pysource
+itself is not adopted as *the* tool for use in documenting Python source files
+(and I certainly would not advocate that it be the only one, as other tools
+present their own particular advantages), it *is* worth doing as a "proof of
+concept" - as an examplar that it is possible to do the job.
+
+Three existing tools deserve particular consideration:
+
+  - pydoc
+  - HappyDoc
+  - PyPaSax
+
+pydoc
+-----
+
+pydoc is Ka-Ping Yee's classic application. It is now (as of Python 2.1???)
+included in the standard Python library, where it also provides the backbone
+for the "help" command.
+
+pydoc uses introspection of "live" objects to determine information - that is,
+it requires that the modules to be documented be imported. This can be a
+limiting factor - sometimes it is not advisable to import a module, and
+sometimes it is simply not possible.
+
+It provides output as HTML, and also has a rather output mode for use at
+a terminal.
+
+..note:
+  I've still to work out how to make pydoc work as a standalone tool
+  (i.e., at the terminal prompt) for documenting my own Python code
+  - for instance, doing ``pydoc.py pysource/visit.py``, which, at best,
+  doesn't seem to see any documentation!
+
+HappyDoc
+--------
+
+    http://happydoc.sourceforge.net/
+
+HappyDoc is a seriously neat tool, and one of the longest standing in the
+arena. It is a mature tool, and:
+
+  - supports several forms of structured text within docstrings - notably
+    plain text, "raw" text, StructuredTextClassic and StructuredTextNG.
+
+  - allows the extraction of documentation from comments as well as from
+    docstrings.
+
+  - supports several forms of output - notably HTML, SGML and XML DocBook,
+    plain text, and Dia files.
+
+  - has documented mechanisms for adding new import and export filters.
+
+  - has sophisticate control over the actual details of export (HTML options,
+    single or multiple files, etc.)
+
+I would expect it to add support for reStructuredText in the near future.
+
+PyPaSax
+-------
+
+    http://www.logilab.org/pypasax/
+
+PyPaSax is a Python module that uses the python parser to generate Sax2 events,
+and thus enables the visualisation of a python document as an XML tree. This is
+used at Logilab for documenting the source code of Narval. Logilab are also
+working on an XSL transformation to generate XMI from the generated XML, which
+should allow interface to UML tools.
+
+This is a very interesting approach to the problem of extracting information
+from Python modules, but it is currently relatively "coarse grained" - it does
+not, for instance, pay attention to docstrings.
+
+pysource
+--------
+
+    http://docutils.sourceforge.net/, in the Sandbox
+
+pysource is intended as a proof-of-concept implementation of the concepts in
+the Docutils PEPs.
+
+It parses Python files using the Compiler module, honouring the __docformat__
+module value to decide whether docstrings are in reStructuredText or plain
+text.
+
+It uses Docutils to organise the information so gained, and the results of
+parsing the Python code are integrated with the parsed docstring text into a
+single Docutils nodes tree.
+
+The initial version of pysource supports the output of XML (which is a native
+ability of Docutils itself), and HTML. Since it is intended that pysource
+integrate closely with Docutils, additional output formats will occur as new
+Writers are added to Docutils itself.
+
+See also
+--------
+pep-0256: Docstring Processing System Framework
+
+  This includes a closer analysis of why pydoc is not directly suitable
+  for the purposes of Docutils.
+
+pep-0257: Docstring conventions
+
+  This describes the high-level structure of docstrings.
+
+pep-0258: Docutils Design Specification
+
+  This includes a description of what a tool such as pysource should
+  actually do - what docstrings to extract and from where, and how to
+  decide what format is used within said docstrings.
+
+pep-0287: reStructuredText Standard Docstring Format
+
+  The PEP for reStructuredText itself.

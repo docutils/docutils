@@ -1,0 +1,61 @@
+The following is taken from the DPS document pysource-reader.txt::
+
+  Interpreted Text
+  ================
+
+  DTD elements: package, module, class, method, function,
+  module_attribute, class_attribute, instance_attribute, variable,
+  parameter, type, exception_class, warning_class.
+
+  In Python docstrings, interpreted text is used to classify and mark up
+  program identifiers, such as the names of variables, functions,
+  classes, and modules.  If the identifier alone is given, its role is
+  inferred implicitly according to the Python namespace lookup rules.
+  For functions and methods (even when dynamically assigned),
+  parentheses ('()') may be included::
+
+      This function uses `another()` to do its work.
+
+  For class, instance and module attributes, dotted identifiers are used
+  when necessary::
+
+      class Keeper(Storer):
+
+          """
+          Extend `Storer`.  Class attribute `instances` keeps track of
+          the number of `Keeper` objects instantiated.
+          """
+
+          instances = 0
+          """How many `Keeper` objects are there?"""
+
+          def __init__(self):
+              """
+              Extend `Storer.__init__()` to keep track of instances.
+
+              Keep count in `self.instances` and data in `self.data`.
+              """
+              Storer.__init__(self)
+              self.instances += 1
+
+              self.data = []
+              """Store data in a list, most recent last."""
+
+          def storedata(self, data):
+              """
+              Extend `Storer.storedata()`; append new `data` to a list
+              (in `self.data`).
+              """
+              self.data = data
+
+  To classify identifiers explicitly, the role is given along with the
+  identifier in either prefix or suffix form::
+
+      Use :method:`Keeper.storedata` to store the object's data in
+      `Keeper.data`:instance_attribute:.
+
+  The role may be one of 'package', 'module', 'class', 'method',
+  'function', 'module_attribute', 'class_attribute',
+  'instance_attribute', 'variable', 'parameter', 'type',
+  'exception_class', 'exception', 'warning_class', or 'warning'.  Other
+  roles may be defined.
