@@ -105,14 +105,15 @@ Font selection
 
 When generating pdf-files from LaTeX, use the pdflatex command, the files
 are a lot smaller if postscript fonts are used. To do so put 
-``\usepackage{times}`` into the styleshee
+``\usepackage{times}`` into the stylesheet.
 
 It is said that the typewriter font in computer modern font, the default
 LaTeX font package, is too heavy compared to the others. There is a package
 or some commands too fix this, which i currently cannot find.
 
 Some people diagnose a similar unbalance for the postscript fonts, the
-package to fix this is ```\usepackage{pslatex}``.
+package to fix this is ``\usepackage{pslatex}``.
+pslatex in contrast to the standard LaTeX fonts has a bold typewriter font.
 
 Table of figures
 ----------------
