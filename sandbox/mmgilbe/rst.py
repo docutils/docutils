@@ -6,7 +6,7 @@
     @license: GNU GPL, see COPYING for details.
     
     REQUIRES docutils 0.3.3 or later
-    .
+    
 """
 
 #############################################################################
