@@ -1074,7 +1074,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\n\\end{flushleft}\n')
 
     def visit_list_item(self, node):
-        self.body.append('\\item ')
+        # HACK append "{}" in case the next character is "[", which would break
+        # LaTeX's list environment (no numbering and the "[" is not printed).
+        self.body.append('\\item {} ')
 
     def depart_list_item(self, node):
         self.body.append('\n')

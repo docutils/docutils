@@ -96,7 +96,7 @@ latex_head + """\
 \\pdfbookmark[0]{Table of Contents}{table-of-contents}
 \\subsection*{~\\hfill Table of Contents\\hfill ~}
 \\begin{list}{}{}
-\\item \\href{\#title-2}{Title 2}
+\\item {} \\href{\#title-2}{Title 2}
 
 \\end{list}
 
@@ -149,10 +149,10 @@ latex_head + """\
 \\usecounter{listcnt1}
 \\setlength{\\rightmargin}{\\leftmargin}
 }
-\\item 
+\\item {} 
 Item 1.
 
-\\item 
+\\item {} 
 Second to the previous item this one will explain
 
 \\end{list}
@@ -163,10 +163,10 @@ Second to the previous item this one will explain
 \\usecounter{listcnt2}
 \\setlength{\\rightmargin}{\\leftmargin}
 }
-\\item 
+\\item {} 
 nothing.
 
-\\item 
+\\item {} 
 or some other.
 
 \\end{list}
@@ -178,7 +178,7 @@ or some other.
 \\addtocounter{listcnt3}{2}
 \\setlength{\\rightmargin}{\\leftmargin}
 }
-\\item 
+\\item {} 
 Third is
 
 \\end{list}
@@ -189,10 +189,10 @@ Third is
 \\usecounter{listcnt4}
 \\setlength{\\rightmargin}{\\leftmargin}
 }
-\\item 
+\\item {} 
 having pre and postfixes
 
-\\item 
+\\item {} 
 in roman numerals.
 
 \\end{list}
