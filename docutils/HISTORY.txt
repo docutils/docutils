@@ -110,6 +110,8 @@ Specific:
 
   - Added ``runtime_init`` method to ``StateMachine`` and ``State``.
   - Added underscores to improve many awkward names.
+  - In ``string2lines()``, changed whitespace normalizing translation
+    table to regexp; restores Python 2.0 compatibility with Unicode.
 
 * docutils/urischemes.py:
 
@@ -188,8 +190,13 @@ Specific:
   - Added support for the ``--stylesheet`` option.
   - Added support for ``decoration``, ``header``, and ``footer``
     elements.
+  - In ``HTMLTranslator.attval()``, changed whitespace normalizing
+    translation table to regexp; restores Python 2.0 compatibility
+    with Unicode.
 
 * docutils/writers/pseudoxml.py: Renamed from pprint.py.
+
+* spec/doctree.txt: Changed the title to "The Docutils Document Tree".
 
 * spec/docutils.dtd:
 
@@ -209,6 +216,9 @@ Specific:
 * spec/pysource.dtd:
 
   - Reworked structural elements, incorporating ideas from Tony Ibbs.
+
+* spec/pysource.txt: Removed from project.  Moved much of its contents
+  to pep-0258.txt.
 
 * spec/rst/alternatives.txt: Expanded auto-enumerated list idea;
   thanks to Fred Bremmer.
