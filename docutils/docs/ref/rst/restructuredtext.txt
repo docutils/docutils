@@ -738,6 +738,14 @@ Field Lists
 DTD elements: field_list, field, field_name, field_argument,
 field_body.
 
+Field lists are most often used as part of an extension syntax, such
+as attributes for directives_, or database-like fields meant for
+further processing.  They are not intended to be an alternative to
+definition lists.  Applications of reStructuredText may recognize
+field names and transform fields or field bodies in certain contexts.
+See `Bibliographic Fields`_ below for one example, or the "image"
+directive in `reStructuredText Directives`_ for another.
+
 Field lists are mappings from field names to field bodies, modeled on
 RFC822_ headers.  A field name is made up of one or more letters,
 numbers, and punctuation, except colons (":") and whitespace.  Field
@@ -771,12 +779,6 @@ field arguments is up to the application.  For example::
 The syntax for field arguments may be extended in the future.  For
 example, quoted phrases may be treated as a single argument, and
 direct support for the "name=value" syntax may be added.
-
-Applications of reStructuredText may recognize field names and
-transform fields or field bodies in certain contexts; they are often
-used as part of an extension syntax.  See `Bibliographic Fields`_
-below for one example, or the "image" directive in `reStructuredText
-Directives`_ for another.
 
 Standard RFC822 headers cannot be used for this construct because they
 are ambiguous.  A word followed by a colon at the beginning of a line
