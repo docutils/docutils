@@ -492,10 +492,9 @@ class DocFactoryFrame(wxFrame):
                 cfg = ConfigParser.ConfigParser()
                 cfg.read(DATA)
                 if cfg.has_section('tools'):
-                    i = 0
-                    for tool in cfg.options('tools'):
-                        i = i+1
-                        self.tools[i]=[i]+cfg.get('tools', tool).split(';')
+                    for i in range(len(cfg.options('tools'))):
+                        self.tools[i+1] = [i+1] \
+                                          + cfg.get('tools', str(i+1)).split(';')
             except:
                 customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
     
