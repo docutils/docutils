@@ -215,18 +215,24 @@ Directives
 
 - Implement directives:
 
-  - html.imagemap (Useful outside of HTML?  If not, replace with image
-    only in non-HTML writers?)
+  - _`html.imagemap` (Useful outside of HTML?  If not, replace with
+    image only in non-HTML writers?)
 
-  - parts.endnotes, .citations, .topic, .sectnum (section numbering;
-    add support to .contents; could be cmdline option also)
+  - _`parts.endnotes`
+  
+  - _`parts.citations`
+  
+  - _`parts.topic`
+  
+  - _`parts.sectnum` (section numbering; add support to .contents;
+    could be cmdline option also)
 
-  - misc.raw
+  - _`misc.raw`
 
-  - misc.include: ``#include`` one file in another.  But how to parse
-    wrt sections, reference names, conflicts?  Parse it in the current
-    document's context (C-preprocessor semantics), or separately and
-    then merge?
+  - _`misc.include`: ``#include`` one file in another.  But how to
+    parse wrt sections, reference names, conflicts?  Parse it in the
+    current document's context (C-preprocessor semantics), or
+    separately and then merge?
 
     Use C-preprocessor semantics for locating include files?  E.g.,
     ``.. include:: file.txt`` will read another file into the current
@@ -235,14 +241,14 @@ Directives
     ``docutils/include/``.  (Should "quotes" be required around
     non-standard include files?)
 
-  - misc.exec: Execute Python code & insert the results.  Perhaps
+  - _`misc.exec`: Execute Python code & insert the results.  Perhaps
     dangerous?
 
-  - misc.eval: Evaluate an expression & insert the text.  At parse
+  - _`misc.eval`: Evaluate an expression & insert the text.  At parse
     time or at substitution time?  Dangerous?  Perhaps limit to canned
     macros; see text.date_ below.
 
-  - @@@ body.qa/faq/questions: Questions & Answers.  Implement as a
+  - @@@ _`body.qa`/faq/questions: Questions & Answers.  Implement as a
     generic two-column marked list?  As a standalone (non-directive)
     construct?  (Is the markup ambiguous?)  Add support to
     parts.Contents (optional attribute "qa" done).
@@ -257,11 +263,12 @@ Directives
         <!ELEMENT question %text.model;>
         <!ELEMENT answer (%body.elements;)+>
 
-  - body.columns: Multi-column table/list, with number of columns as
-    argument.
+  - _`body.columns`: Multi-column table/list, with number of columns
+    as argument.
 
-  - body.verse: Paragraphs with linebreaks preserved, *and* inline
-    markup support too.  A directive would be easy; what about a
+  - _`body.verse`: Paragraphs with linebreaks preserved, *and* inline
+    markup support too.  Use cases: verse (poetry, song lyrics, etc.),
+    address blocks.  A directive would be easy; what about a
     literal-block-like prefix, perhaps ';;'?  (It's a semi-literal
     block, after all.)  Example::
 
@@ -309,16 +316,16 @@ Directives
                 as soon as it comes.
             Love, Ewan.
 
-  - colorize.python: Colorize Python code.  Fine for HTML output, but
-    what about other formats?  Revert to a literal block?  Do we need
-    some kind of "alternate" mechanism?  Perhaps use a "pending"
+  - _`colorize.python`: Colorize Python code.  Fine for HTML output,
+    but what about other formats?  Revert to a literal block?  Do we
+    need some kind of "alternate" mechanism?  Perhaps use a "pending"
     transform, which could switch its output based on the "format" in
     use.  Use a factory function "transformFF()" which returns either
     "HTMLTransform()" instance or "GenericTransform" instance?
 
   - _`text.date`: Datestamp.  For substitutions.
 
-    - Combined with misc.include, implement canned macros?  E.g.::
+    - Combined with misc.include_, implement canned macros?  E.g.::
 
           .. include:: <macros>
 

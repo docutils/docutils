@@ -59,6 +59,9 @@ Specific:
   - Added ``TreeCopyVisitor`` class.
   - Added a ``copy`` method to ``Node`` and subclasses.
   - Added a ``SkipDeparture`` exception for visitors.
+  - Renamed ``TreePruningException`` from ``VisitorException``.
+  - Added docstrings to ``TreePruningException``, subclasses, and
+    ``Nodes.walk()``.
 
 * docutils/statemachine.py:
 
