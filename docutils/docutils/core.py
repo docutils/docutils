@@ -5,11 +5,11 @@
 # Copyright: This module has been placed in the public domain.
 
 """
-Calling the `publish` convenience function (or instantiating a
+Calling the ``publish_*`` convenience functions (or instantiating a
 `Publisher` object) with component names will result in default
 behavior.  For custom behavior (setting component options), create
 custom component objects first, and pass *them* to
-`publish`/`Publisher`.
+``publish_*``/`Publisher`.
 """
 
 __docformat__ = 'reStructuredText'
@@ -115,23 +115,41 @@ class Publisher:
             argv = sys.argv[1:]
         self.settings = option_parser.parse_args(argv)
 
-    def set_io(self):
+    def set_io(self, source_path=None, destination_path=None):
         if self.source is None:
-            self.source = self.source_class(self.settings,
-                                            source_path=self.settings._source)
+            self.set_source(source_path=source_path)
         if self.destination is None:
-            self.destination = self.destination_class(
-                self.settings, destination_path=self.settings._destination)
+            self.set_destination(destination_path=destination_path)
+
+    def set_source(self, source=None, source_path=None):
+        if source_path is None:
+            source_path = self.settings._source
+        else:
+            self.settings._source = source_path
+        self.source = self.source_class(self.settings, source=source,
+                                        source_path=source_path)
+
+    def set_destination(self, destination=None, destination_path=None):
+        if destination_path is None:
+            destination_path = self.settings._destination
+        else:
+            self.settings._destination = destination_path
+        self.destination = self.destination_class(
+            self.settings, destination=destination,
+            destination_path=destination_path)
 
     def publish(self, argv=None, usage=None, description=None,
-                settings_spec=None):
+                settings_spec=None, settings_overrides=None):
         """
         Process command line options and arguments (if `self.settings` not
         already set), run `self.reader` and then `self.writer`.  Return
         `self.writer`'s output.
         """
         if self.settings is None:
-            self.process_command_line(argv, usage, description, settings_spec)
+            self.process_command_line(argv, usage, description, settings_spec,
+                                      **(settings_overrides or {}))
+        elif settings_overrides:
+            self.settings._update(settings_overrides, 'loose')
         self.set_io()
         document = self.reader.read(self.source, self.parser, self.settings)
         output = self.writer.write(document, self.destination)
@@ -148,23 +166,138 @@ default_description = ('Reads from <source> (default is stdin) and writes to '
 def publish_cmdline(reader=None, reader_name='standalone',
                     parser=None, parser_name='restructuredtext',
                     writer=None, writer_name='pseudoxml',
-                    argv=None, usage=default_usage,
-                    description=default_description,
-                    settings_spec=None, settings=None):
-    """Set up & run a `Publisher`.  For command-line front ends."""
+                    settings=None, settings_spec=None,
+                    settings_overrides=None, argv=None,
+                    usage=default_usage, description=default_description):
+    """
+    Set up & run a `Publisher`.  For command-line front ends.
+
+    Parameters:
+
+    - `reader`: A `docutils.readers.Reader` object.
+    - `reader_name`: Name or alias of the Reader class to be instantiated if
+      no `reader` supplied.
+    - `parser`: A `docutils.parsers.Parser` object.
+    - `parser_name`: Name or alias of the Parser class to be instantiated if
+      no `parser` supplied.
+    - `writer`: A `docutils.writers.Writer` object.
+    - `writer_name`: Name or alias of the Writer class to be instantiated if
+      no `writer` supplied.
+    - `settings`: Runtime settings object.
+    - `settings_spec`: Extra settings specification; a `docutils.SettingsSpec`
+      subclass.  Used only if no `settings` specified.
+    - `settings_overrides`: A dictionary containing program-specific overrides
+      of component settings.
+    - `argv`: Command-line argument list to use instead of ``sys.argv[1:]``.
+    - `usage`: Usage string, output if there's a problem parsing the command
+      line.
+    - `description`: Program description, output for the "--help" option
+      (along with command-line option descriptions).
+    """
     pub = Publisher(reader, parser, writer, settings=settings)
     if reader is None:
         pub.set_reader(reader_name, parser, parser_name)
     if writer is None:
         pub.set_writer(writer_name)
-    pub.publish(argv, usage, description, settings_spec)
+    pub.publish(argv, usage, description, settings_spec, settings_overrides)
 
-def publish_file():
+def publish_file(source=None, source_path=None,
+                 destination=None, destination_path=None,
+                 reader=None, reader_name='standalone',
+                 parser=None, parser_name='restructuredtext',
+                 writer=None, writer_name='pseudoxml',
+                 settings=None, settings_spec=None, settings_overrides=None):
     """
     Set up & run a `Publisher`.  For programmatic use with file-like I/O.
-    """
 
-def publish_string():
+    Parameters:
+
+    - `source`: A file-like object (must have "read" and "close" methods).
+    - `source_path`: Path to the input file.  Opened if no `source` supplied.
+      If neither `source` nor `source_path` are supplied, `sys.stdin` is used.
+    - `destination`: A file-like object (must have "write" and "close"
+      methods).
+    - `destination_path`: Path to the input file.  Opened if no `destination`
+      supplied.  If neither `destination` nor `destination_path` are supplied,
+      `sys.stdout` is used.
+    - `reader`: A `docutils.readers.Reader` object.
+    - `reader_name`: Name or alias of the Reader class to be instantiated if
+      no `reader` supplied.
+    - `parser`: A `docutils.parsers.Parser` object.
+    - `parser_name`: Name or alias of the Parser class to be instantiated if
+      no `parser` supplied.
+    - `writer`: A `docutils.writers.Writer` object.
+    - `writer_name`: Name or alias of the Writer class to be instantiated if
+      no `writer` supplied.
+    - `settings`: Runtime settings object.
+    - `settings_spec`: Extra settings specification; a `docutils.SettingsSpec`
+      subclass.  Used only if no `settings` specified.
+    - `settings_overrides`: A dictionary containing program-specific overrides
+      of component settings.
     """
-    Set up & run a `Publisher`.  For programmatic use with string I/O.
+    pub = Publisher(reader, parser, writer, settings=settings)
+    if reader is None:
+        pub.set_reader(reader_name, parser, parser_name)
+    if writer is None:
+        pub.set_writer(writer_name)
+    if settings is None:
+        settings = pub.get_settings(settings_spec=settings_spec)
+    if settings_overrides:
+        settings._update(settings_overrides, 'loose')
+    pub.set_source(source, source_path)
+    pub.set_destination(destination, destination_path)
+    pub.publish()
+
+def publish_string(source, source_path=None, destination_path=None, 
+                   reader=None, reader_name='standalone',
+                   parser=None, parser_name='restructuredtext',
+                   writer=None, writer_name='pseudoxml',
+                   settings=None, settings_spec=None,
+                   settings_overrides=None):
     """
+    Set up & run a `Publisher`, and return the string output.
+    For programmatic use with string I/O.
+
+    For encoded string output, be sure to set the "output_encoding" setting to
+    the desired encoding.  Set it to "unicode" for Unicode string output.
+
+    Parameters:
+
+    - `source`: An input string; required.  This can be an encoded 8-big
+      string (in which case the "input_encoding" setting should be set) or a
+      Unicode string (in which case set the "input_encoding" setting to
+      "unicode").
+    - `source_path`: Path to the file or object that produced `source`;
+      optional.  Only used for diagnostic output.
+    - `destination_path`: Path to the file or object which will receive the
+      output; optional.  Used for determining relative paths (stylesheets,
+      source links, etc.).
+    - `reader`: A `docutils.readers.Reader` object.
+    - `reader_name`: Name or alias of the Reader class to be instantiated if
+      no `reader` supplied.
+    - `parser`: A `docutils.parsers.Parser` object.
+    - `parser_name`: Name or alias of the Parser class to be instantiated if
+      no `parser` supplied.
+    - `writer`: A `docutils.writers.Writer` object.
+    - `writer_name`: Name or alias of the Writer class to be instantiated if
+      no `writer` supplied.
+    - `settings`: Runtime settings object.
+    - `settings_spec`: Extra settings specification; a `docutils.SettingsSpec`
+      subclass.  Used only if no `settings` specified.
+    - `settings_overrides`: A dictionary containing program-specific overrides
+      of component settings.
+    """
+    pub = Publisher(reader, parser, writer, settings=settings,
+                    source_class=io.StringInput,
+                    destination_class=io.StringOutput)
+    if reader is None:
+        pub.set_reader(reader_name, parser, parser_name)
+    if writer is None:
+        pub.set_writer(writer_name)
+    if settings is None:
+        settings = pub.get_settings(settings_spec=settings_spec)
+    if settings_overrides:
+        settings._update(settings_overrides, 'loose')
+    pub.set_source(source, source_path)
+    pub.set_destination(destination_path=destination_path)
+    return pub.publish()
