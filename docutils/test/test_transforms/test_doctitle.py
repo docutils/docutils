@@ -10,8 +10,7 @@
 Tests for docutils.transforms.frontmatter.DocTitle.
 """
 
-import DocutilsTestSupport
-import UnitTestFolder
+from __init__ import DocutilsTestSupport
 from docutils.transforms.frontmatter import DocTitle
 from docutils.parsers.rst import Parser
 

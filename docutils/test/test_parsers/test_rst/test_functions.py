@@ -11,7 +11,8 @@ Tests for states.py.
 """
 
 import unittest
-from DocutilsTestSupport import states
+from __init__ import DocutilsTestSupport
+states = DocutilsTestSupport.states
 
 
 class FuctionTests(unittest.TestCase):

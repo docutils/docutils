@@ -10,8 +10,7 @@
 Tests for docutils.transforms.universal.FinalChecks.
 """
 
-import DocutilsTestSupport
-import UnitTestFolder
+from __init__ import DocutilsTestSupport
 from docutils.transforms.universal import FinalChecks
 from docutils.parsers.rst import Parser
 
