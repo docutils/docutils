@@ -68,11 +68,13 @@ http://docutils.sourceforge.net/spec/docutils.dtd.
 <!ATTLIST module_section %basic.atts;>
 
 <!ELEMENT class_section
-    (class, inheritance_list?, fullname?, subclasses?, %structure.model;)>
+    (class, inheritance_list?, fullname?, subclasses?,
+     %structure.model;)>
 <!ATTLIST class_section %basic.atts;>
 
 <!ELEMENT method_section
-    (method, parameter_list?, fullname?, overrides?, %structure.model;)>
+    (method, parameter_list?, fullname?, overrides?,
+     %structure.model;)>
 <!ATTLIST method_section %basic.atts;>
 
 <!ELEMENT function_section
@@ -109,7 +111,8 @@ http://docutils.sourceforge.net/spec/docutils.dtd.
     ((parameter_item+, optional_parameters*) | optional_parameters+)>
 <!ATTLIST parameter_list %basic.atts;>
 
-<!ELEMENT parameter_item ((parameter | parameter_tuple), parameter_default?)>
+<!ELEMENT parameter_item
+    ((parameter | parameter_tuple), parameter_default?)>
 <!ATTLIST parameter_item %basic.atts;>
 
 <!ELEMENT optional_parameters (parameter_item+, optional_parameters*)>
