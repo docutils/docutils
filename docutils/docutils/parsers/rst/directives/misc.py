@@ -38,7 +38,9 @@ def include(name, arguments, options, content, lineno,
     encoding = options.get('encoding', state.document.settings.input_encoding)
     try:
         include_file = io.FileInput(
-            source_path=path, encoding=encoding, handle_io_errors=None)
+            source_path=path, encoding=encoding,
+            error_handler=state.document.settings.input_encoding_error_handler,
+            handle_io_errors=None)
     except IOError, error:
         severe = state_machine.reporter.severe(
               'Problems with "%s" directive path:\n%s: %s.'
@@ -72,6 +74,7 @@ def raw(name, arguments, options, content, lineno,
     """
     attributes = {'format': arguments[0]}
     encoding = options.get('encoding', state.document.settings.input_encoding)
+    error_handler = state.document.settings.input_encoding_error_handler
     if content:
         if options.has_key('file') or options.has_key('url'):
             error = state_machine.reporter.error(
@@ -92,7 +95,10 @@ def raw(name, arguments, options, content, lineno,
         path = os.path.normpath(os.path.join(source_dir, options['file']))
         path = utils.relative_path(None, path)
         try:
-            raw_file = io.FileInput(source_path=path, encoding=encoding)
+            raw_file = io.FileInput(
+                source_path=path, encoding=encoding,
+                error_handler=state.document.settings.input_encoding_error_handler,
+                handle_io_errors=None)
         except IOError, error:
             severe = state_machine.reporter.severe(
                   'Problems with "%s" directive path:\n%s.' % (name, error),
@@ -117,8 +123,9 @@ def raw(name, arguments, options, content, lineno,
                   % (name, options['url'], error),
                   nodes.literal_block(block_text, block_text), line=lineno)
             return [severe]
-        raw_file = io.StringInput(source=raw_text, source_path=source,
-                                  encoding=encoding)
+        raw_file = io.StringInput(
+            source=raw_text, source_path=source, encoding=encoding,
+            error_handler=state.document.settings.input_encoding_error_handler)
         text = raw_file.read()
         attributes['source'] = source
     else:

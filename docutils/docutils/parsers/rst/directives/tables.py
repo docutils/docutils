@@ -203,8 +203,10 @@ def get_csv_data(name, options, content, lineno, block_text,
         source = os.path.normpath(os.path.join(source_dir, options['file']))
         source = utils.relative_path(None, source)
         try:
-            csv_file = io.FileInput(source_path=source, encoding=encoding,
-                                    handle_io_errors=None)
+            csv_file = io.FileInput(
+                source_path=source, encoding=encoding,
+                error_handler=state.document.settings.input_encoding_error_handler,
+                handle_io_errors=None)
             csv_data = csv_file.read().splitlines()
         except IOError, error:
             severe = state_machine.reporter.severe(
@@ -228,8 +230,9 @@ def get_csv_data(name, options, content, lineno, block_text,
                   % (name, options['url'], error),
                   nodes.literal_block(block_text, block_text), line=lineno)
             raise SystemMessagePropagation(severe)
-        csv_file = io.StringInput(source=csv_text, source_path=source,
-                                  encoding=encoding)
+        csv_file = io.StringInput(
+            source=csv_text, source_path=source, encoding=encoding,
+            error_handler=state.document.settings.input_encoding_error_handler)
         csv_data = csv_file.read().splitlines()
     else:
         error = state_machine.reporter.warning(
