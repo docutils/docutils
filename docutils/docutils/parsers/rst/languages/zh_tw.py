@@ -93,6 +93,7 @@ roles = {
     'target (translation required)': 'target',
     'uri-reference (translation required)': 'uri-reference',
     'uri (translation required)': 'uri-reference',
-    'url (translation required)': 'uri-reference',}
+    'url (translation required)': 'uri-reference',
+    'raw (translation required)': 'raw',}
 """Mapping of Traditional Chinese role names to canonical role names for interpreted text.
 """

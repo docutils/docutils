@@ -92,6 +92,7 @@ roles = {
   'footnote-reference',
  u'\u0446\u0438\u0442\u0430\u0442\u043d\u0430\u044f-\u0441\u0441\u044b\u043b\u043a\u0430':
   'citation-reference',
- u'\u0446\u0435\u043b\u044c': 'target'}
+ u'\u0446\u0435\u043b\u044c': 'target',
+ u'raw (translation required)': 'raw',}
 """Mapping of Russian role names to canonical role names for interpreted text.
 """

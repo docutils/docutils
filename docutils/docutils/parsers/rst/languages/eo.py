@@ -101,6 +101,7 @@ roles = {
     u'celo': 'target',
     u'uri-referenco': 'uri-reference',
     u'uri': 'uri-reference',
-    u'url': 'uri-reference',}
+    u'url': 'uri-reference',
+    u'raw (translation required)': 'raw',}
 """Mapping of Esperanto role names to canonical role names for interpreted text.
 """

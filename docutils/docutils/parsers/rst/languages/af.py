@@ -91,6 +91,7 @@ roles = {
     'teiken': 'target',
     'uri-verwysing': 'uri-reference',
     'uri': 'uri-reference',
-    'url': 'uri-reference',}
+    'url': 'uri-reference',
+    'raw (translation required)': 'raw',}
 """Mapping of Afrikaans role names to canonical role names for interpreted text.
 """

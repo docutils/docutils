@@ -177,6 +177,53 @@ Testing a :fileref:`role` in a nested parse.
 """],
 ]
 
+totest['raw_role'] = [
+["""\
+.. role:: html(raw)
+   :format: html
+
+Here's some :html:`<i>raw HTML data</i>`.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Here's some \n\
+        <raw class="html" format="html" xml:space="preserve">
+            <i>raw HTML data</i>
+        .
+"""],
+["""\
+.. role:: itex(raw)
+   :format: latex html
+
+Here's some itex markup: :itex:`$x^\\infty$`.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Here's some itex markup: \n\
+        <raw class="itex" format="latex html" xml:space="preserve">
+            $x^\\infty$
+        .
+"""],
+["""\
+Can't use the :raw:`role` directly.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Can't use the \n\
+        <problematic id="id2" refid="id1">
+            :raw:`role`
+         directly.
+    <system_message backrefs="id2" id="id1" level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            No format (Writer name) is associated with this role: "raw".
+            The "raw" role cannot be used directly.
+            Instead, use the "role" directive to create a new role with an associated format.
+"""],
+]
+
 
 if __name__ == '__main__':
     import unittest

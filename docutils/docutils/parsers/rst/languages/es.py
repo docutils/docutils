@@ -94,7 +94,7 @@ roles = {
     u'enfasis': 'emphasis',
     u'\u00e9nfasis': 'emphasis',
     u'destacado': 'strong',
-    u'literal': 'literal',
+    u'literal': 'literal',              # translation required?
     u'referencia-con-nombre': 'named-reference',
     u'referencia-anonima': 'anonymous-reference',
     u'referencia-an\u00f3nima': 'anonymous-reference',
@@ -106,6 +106,6 @@ roles = {
     u'referencia-uri': 'uri-reference',
     u'uri': 'uri-reference',
     u'url': 'uri-reference',
-    }
+    u'raw (translation required)': 'raw',}
 """Mapping of Spanish role names to canonical role names for interpreted text.
 """

@@ -80,6 +80,7 @@ roles = {
       u'citation-reference (translation required)': 'citation-reference',
       u'substitution-reference (translation required)': 'substitution-reference',
       u'target (translation required)': 'target',
-      u'uri-reference (translation required)': 'uri-reference',}
+      u'uri-reference (translation required)': 'uri-reference',
+      u'raw (translation required)': 'raw',}
 """Mapping of Slovak role names to canonical role names for interpreted text.
 """
