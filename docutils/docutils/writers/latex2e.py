@@ -283,12 +283,12 @@ latex_headings = {
               '}{\\end{list}}\n',
               ],
         'lineblock_environment' : [
-            '\\newenvironment{lineblock}\n'
+            '\\newenvironment{lineblock}[1]\n'
             '{\\begin{list}{}\n'
             '  {\\setlength{\\partopsep}{\\parskip}\n'
             '   \\addtolength{\\partopsep}{\\baselineskip}\n'
             '   \\topsep0pt\\itemsep0.15\\baselineskip\\parsep0pt\n'
-            '   \\leftmargin2em}\n'
+            '   \\leftmargin#1}\n'
             ' \\raggedright}\n'
             '{\\end{list}}\n'
             ],
@@ -1522,8 +1522,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_line_block(self, node):
         if isinstance(node.parent, nodes.line_block):
-            self.body.append('\\item[] ')
-        self.body.append('\n\\begin{lineblock}\n')
+            self.body.append('\\item[] \n\\begin{lineblock}{1.5em}\n')
+        else:
+            self.body.append('\n\\begin{lineblock}{0em}\n')
 
     def depart_line_block(self, node):
         self.body.append('\\end{lineblock}\n')
