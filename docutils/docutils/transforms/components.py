@@ -27,18 +27,20 @@ class Filter(Transform):
     attribute is 'last writer').  The value is the name of a specific format
     or context of that component (e.g. ``details['writer'] = 'html'``).  If
     the Docutils component which called this transform supports that format or
-    context, the "pending" element is replaced by the nodes in
-    ``details['nodes']``; otherwise, the "pending" element is removed.
+    context, the "pending" element is replaced by the contents of
+    ``details['nodes']`` (a list of nodes); otherwise, the "pending" element
+    is removed.
 
     For example, the reStructuredText "meta" directive creates a "pending"
-    element containing a "meta" element.  Only writers supporting the "html"
-    format will include the "meta" element; it will be deleted from the output
-    of all other writers.
+    element containing a "meta" element (in ``pending.details['nodes']``).
+    Only writers supporting the "html" format will include the "meta" element;
+    it will be deleted from the output of all other writers.
     """
 
     def transform(self):
         pending = self.startnode
-        component_name = pending.details[pending.stage.split()[-1]]
+        component_type = pending.stage.split()[-1] # 'reader' or 'writer'
+        component_name = pending.details[component_type]
         if self.component.supports(component_name):
             pending.parent.replace(pending, pending.details['nodes'])
         else:
