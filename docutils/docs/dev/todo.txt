@@ -45,6 +45,12 @@ Bugs
   whitespace and punctuation as markup delimiters, which may not be
   applicable in these languages.
 
+* Configuration files (~/.docutils or /etc/docutils.conf or
+  test/docutils.conf) affect any test suites that use
+  docutils.core.Publisher (test/test_writers).  For example, setting
+  the default language causes changes in the output.  (Reported by
+  Ludger Humbert.)
+
 
 General
 -------
@@ -58,7 +64,7 @@ General
     checked for correctness and refactored.  I'm afraid it's a bit of
     a spaghetti mess now.
 
-* Add validation?  See http://pytrex.sourceforge.net, RELAX NG.
+* Add validation?  See http://pytrex.sourceforge.net, RELAX NG, pyRXP.
 
 * Ask Python-dev for opinions (GvR for a pronouncement) on special
   variables (__author__, __version__, etc.): convenience vs. namespace
@@ -308,6 +314,58 @@ General
   reporting the successful input encoding.  Modify runtime settings?
   System message?  Simple stderr output?
 
+* Non-ASCII text in system messages cause a traceback.  On 2003-02-10,
+  I replied to Adam Chodorowski:
+
+       It's the diagnostic output that's causing the problem.  There's
+       a markup error on a section title that includes an accented
+       character.  A system message which includes a non-ASCII
+       character is being sent to sys.stderr.  Python believes your
+       sys.stderr can't handle anything other than ASCII, and
+       complains loudly.
+
+       If your sys.stderr *can* handle Latin-1 output, telling Python
+       about it may help.  I'm not sure how to tell Python though --
+       perhaps via the default encoding in site.py?
+
+       I'm not sure how to fix this, if it should be fixed, or even if
+       anything is really broken.  If I'm processing encoded text from
+       an ASCII-only console, what kind of error output *should* I
+       get?  Should Docutils prevent non-ASCII output from being
+       written to sys.stderr?  Whose responsibility is it to set up
+       the stderr environment for encoded output?
+
+       We could write all error output with
+       ``encodings.raw_unicode_escape.StreamWriter(sys.stderr).write()``,
+       but that's kind of drastic.  It means that all systems, even
+       those that are encoding-aware, would get dumbed-down (and not
+       easily deciphered) error output.
+
+  Adam replied:
+
+       The assumption should, IMHO, be that the user's terminal can
+       handle the encoding that the file is in. I mean, the user most
+       likely worked with the file (perhaps a textmode editor, or
+       'less', or 'cat', or...) in the terminal, so it seems a good
+       bet. I would think this is true for 99% of the cases.
+
+       In some other, eg. where you are processing a lot of
+       documentation in different encodings on the same machine
+       (eg. documentation for some software or whatever) the user is
+       also probably more equipped to handle the problems.  In any
+       case, saying that "the error output will be in the same
+       encoding as the input file" would simplify it a lot in this
+       scenario too (you can make sane build scripts)...
+
+  I'm not sure that I agree with this.  Ideas and discussion are welcome.
+
+  Perhaps Docutils should grow an --error-encoding option.  Docutils
+  could use it to tell Python how to encode sys.stderr.
+
+* Perhaps we need to re-evaluate the config file format, possibly
+  enabling a section for each Docutils component so that (for example)
+  HTML's and LaTeX's stylesheets don't interfere with each other.
+
 
 Documentation
 -------------
@@ -354,6 +412,14 @@ Specification
 
 * Rework PEP 257, separating style from spec from tools, wrt Docutils?
   See Doc-SIG from 2001-06-19/20.
+
+
+Web Site
+````````
+
+* Add an "examples" directory, beside "tools" and "docs", for
+  interesting examples of Docutils usage?  Have a top-level README.txt
+  file and a subdirectory for each example.  (Martin Blais)
 
 
 Python Source Reader
@@ -478,7 +544,9 @@ __ rst/alternatives.html#or-not-to-do
   contexts).  XLink/XPointer?  ``.. baseref::``?  See Doc-SIG
   2001-08-10.
 
-* In target URLs, it would be useful to not explicitly specify the
+* .. _adaptable file extensions:
+
+  In target URLs, it would be useful to not explicitly specify the
   file extension.  If we're generating HTML, then ".html" is
   appropriate; if PDF, then ".pdf"; etc.  How about using ".*" to
   indicate "choose the most appropriate filename extension?  For
@@ -486,7 +554,9 @@ __ rst/alternatives.html#or-not-to-do
 
       .. _Another Document: another.*
 
-  Should the choice be from among existing files only?
+  Should the choice be from among existing files only?  Documents
+  only, or objects (images, etc.) also?  (How to differentiate?
+  Element context [within "image"]?)
 
   This may not be just a parser issue though; it may need framework
   support.
@@ -701,6 +771,49 @@ __ rst/alternatives.html#or-not-to-do
 * Generalize the "target-notes" directive into a command-line option
   somehow?  See docutils-develop 2003-02-13.
 
+* Include (after any necessary cleanup & completion) David Priest's
+  substitution table for character entities; see
+  <http://article.gmane.org/gmane.comp.python.documentation/432>.
+
+* Should ^L (or something else in reST) be defined to mean
+  force/suggest page breaks in whatever output we have?
+
+  A "break" or "page-break" directive would be easy to add.  A new
+  doctree element would be required though (perhaps "break").  The
+  final behavior would be up to the Writer.  (":recto:" & ":verso:"
+  options, or ":before: recto/verso" would add flexibility.)
+
+  Currently ^L (Python's "\f") characters are treated as whitespace.
+  They're converted to single spaces, actually, as are vertical tabs
+  (^K, Python's "\v").  It would be possible to recognize form feeds
+  as markup, but it requires some thought and discussion first.  Are
+  there any downsides?  Many editing environments do not allow the
+  insertion of control characters.  Some may react strangely.
+
+  It's common practice to use ^L before Emacs "Local Variables"
+  lists::
+
+      ^L
+      ..
+         Local Variables:
+         mode: indented-text
+         indent-tabs-mode: nil
+         sentence-end-double-space: t
+         fill-column: 70
+         End:
+
+  These are already present in many PEPs and Docutils project
+  documents.  From the Emacs manual (info):
+
+      A "local variables list" goes near the end of the file, in the
+      last page.  (It is often best to put it on a page by itself.)
+
+  It would be unfortunate if this construct caused a final blank page
+  to be generated (for those Writers that recognize the page breaks).
+
+* Could the "break" concept above be extended to inline forms?
+  E.g. "^L" in the middle of a sentence could cause a line break.
+
 
 Directives
 ``````````
@@ -777,6 +890,10 @@ when used in a document.
   - _`misc.include`: "encoding" option?  Take default from runtime
     settings.  Use Input component to read it in?
 
+    Option to select a range of lines?
+
+    Option to label lines?
+
 * Implement directives.  Each of the list items below begins with an
   identifier of the form, "module_name.directive_function_name".  The
   directive name itself could be the same as the
@@ -826,6 +943,67 @@ when used in a document.
   - _`misc.class`: Specify a "class" attribute value to an element
     (enclosing? preceding? following?).  See docutils-develop
     2003-01-29.
+
+    Idea: if the "class" directive has no content, it applies to the
+    enclosing element; useful for structural elements & containers
+    (sections, block quotes, etc.).  With content, it applies to the
+    content; useful for body elements (paragraphs, lists, etc.).
+
+  - _`misc.settings`: Set any Docutils runtime setting from within a
+    document?
+
+  - Docutils already has the ability to say "use this content for
+    Writer X" (via the "raw" directive), but it doesn't have the
+    ability to say "use this content for any Writer other than X".  It
+    wouldn't be difficult to add this ability though.
+
+    My first idea would be to add a set of conditional directives.
+    Let's call them "writer-is" and "writer-is-not" for discussion
+    purposes (don't worry about implemention details).  We might
+    have::
+
+         .. writer-is:: text-only
+
+            ::
+
+                +----------+
+                |   SNMP   |
+                +----------+
+                |   UDP    |
+                +----------+
+                |    IP    |
+                +----------+
+                | Ethernet |
+                +----------+
+
+         .. writer-is:: pdf
+
+            .. figure:: protocol_stack.eps
+
+         .. writer-is-not:: text-only pdf
+
+            .. figure:: protocol_stack.png
+
+    This could be an interface to the Filter transform
+    (docutils.transforms.components.Filter).
+
+    The ideas in `adaptable file extensions`_ above may also be
+    applicable here.
+
+    Here's an example of a directive that could produce multiple
+    outputs (*both* raw troff pass-through *and* a GIF, for example)
+    and allow the Writer to select. ::
+
+        .. eqn::
+
+           .EQ
+           delim %%
+           .EN
+           %sum from i=o to inf c sup i~=~lim from {m -> inf}
+           sum from i=0 to m sup i%
+           .EQ
+           delim off
+           .EN
 
   - _`body.qa` (directive a.k.a. "faq", "questions"): Questions &
     Answers.  Implement as a generic two-column marked list?  As a
@@ -976,6 +1154,57 @@ when used in a document.
     use.  Use a factory function "transformFF()" which returns either
     "HTMLTransform()" instance or "GenericTransform" instance?
 
+    If we take a Python-to-HTML pretty-printer and make it output a
+    Docutils internal doctree (as per nodes.py) instead of HTML, then
+    each output format's stylesheet (or equivalent) mechanism could
+    take care of the rest.  The pretty-printer code could turn this
+    doctree fragment:
+
+         <literal_block xml:space="preserve">
+         print 'This is Python code.'
+         for i in range(10):
+             print i
+         </literal_block>
+
+    into something like this ("</>" is end-tag shorthand):
+
+         <literal_block xml:space="preserve" class="python">
+         <keyword>print</> <string>'This is Python code.'</>
+         <keyword>for</> <identifier>i</> <keyword>in</>
+    <expression>range(10)</>:
+             <keyword>print</> <expression>i</>
+         </literal_block>
+
+    But I'm leaning toward adding a single new general-purpose
+    element, "phrase", equivalent to HTML's <span>.  Here's the
+    example rewritten using the generic "phrase":
+
+        <literal_block xml:space="preserve" class="python">
+        <phrase class="keyword">print</> <phrase
+         class="string">'This is Python code.'</>
+        <phrase class="keyword">for</> <phrase
+         class="identifier">i</> <phrase class="keyword">in</> <phrase
+         class="expression">range(10)</>:
+            <phrase class="keyword">print</> <phrase
+             class="expression">i</>
+        </literal_block>
+
+    It's more verbose but more easily extensible and more appropriate
+    for the case at hand.  It allows us to edit style sheets to add
+    support for new formats, not the Docutils code itself.
+
+    Perhaps a single directive with a format parameter would be
+    better::
+
+        .. colorize:: python
+
+           print 'This is Python code.'
+           for i in range(10):
+               print i
+
+    But directives can have synonyms for convenience.  "format::
+    python" was suggested, but "format" seems too generic.
+
   - _`text.date`: Datestamp.  For substitutions.  The directive could
     be followed by a formatting string, using strftime codes.  Default
     is "%Y-%m-%d" (ISO 8601 date), but time fields can also be used.
@@ -1080,7 +1309,31 @@ elements.
   actual formatting.
 
   But what's the doctree element?  Shall we introduce an arbitrary
-  "span" element?  Put "interpreted" back for such purposes?
+  <span>-like element?  Put "interpreted" back for such purposes?  I
+  currently like "phrase".  But:
+
+      ...my penny on <span>: I think <span> is inherently evil. More
+      than enough I learned to hate <span> because some HTML pages are
+      full of it and it is a pain to translate them to a useful
+      format.
+
+      I think <span> is an indication that you don't have a concept
+      for what you want to express. <span> is totally unrelated to the
+      *real* structure of the information and introduces more or less
+      a new language. I think this should be prevented.
+
+      -- Stefan Merten
+
+  Lesser of two evils?
+
+* Perhaps a "role" directive can modify existing roles with
+  attributes? ::
+
+      .. :api-ti: role:: api
+         :base: twisted.internet
+
+      To start the reactor, use the :api-ti:`reactor.run` method.  To
+      stop it, use :api-ti:`reactor.stop`.
 
 * Implement roles:
 
@@ -1095,6 +1348,8 @@ elements.
         that will use some form of reST syntax to let you define them.
 
     What to do with an undefined acronym or abbreviation?
+
+  - "superscript" and "subscript" (synonyms "sup" and "sub").
 
   - "annotation": The equivalent of the HTML "title" attribute.  This
     is secondary information that may "pop up" when the pointer hovers
@@ -1192,6 +1447,21 @@ Docutils could be made to generate hyperlinks to all known
 system_messages and add them to the document, perhaps to the end of
 the "Docutils System Messages" section.
 
+Fred L. Drake, Jr. wrote:
+
+    I'd like to propose that both parse- and transformation-time
+    messages are included in the "Docutils System Messages" section.
+    If there are no objections, I can make the change.
+
+The advantage of the current way of doing things is that parse-time
+system messages don't require a transform; they're already in the
+document.  This is valuable for testing (unit tests,
+tools/quicktest.py).  So if we do decide to make a change, I think the
+insertion of parse-time system messages ought to remain as-is and the
+Messages transform ought to move all parse-time system messages
+(remove from their originally inserted positions, insert in System
+Messages section).
+
 
 Filtering System Messages
 `````````````````````````
@@ -1220,6 +1490,25 @@ HTML Writer
   somehow, especially the docinfo fields.  Part of the ht2html
   implementation?  Generic component output?
 
+  I think a separate writer which inherits from html4css1.py would be
+  a good start.  An "inline" or body-only HTML writer has to omit some
+  of the information given by the full HTML writer.  Some applications
+  won't need this information, but others will; they'll want to deal
+  with it in different ways.  I envision such a writer returning a set
+  of values: body html, and everything else (metadata).  Perhaps a
+  tuple of this form::
+
+       (body_html, {'title': value,
+                    'subtitle': value,
+                    'docinfo': (tuple of (name, value) pairs),
+                    etc.})
+
+  By having a separate writer, a different return data structure is
+  possible.  We may need to add support to all of docutils to allow
+  for this variant output.  Should the metadata values be simple text
+  strings, or HTML snippets (they may contain markup), or both?  There
+  may be other issues to be worked out.
+
 * Add more support for <link> elements, especially for navigation
   bars.
 
@@ -1234,6 +1523,9 @@ HTML Writer
 
 * Add a tool tip ("title" attribute?) to footnote back-links
   identifying them as such.  Text in Docutils language module.
+
+* Add an option to restrict the document title to <head><title> only,
+  and not include it in the document body.  Subtitle?
 
 
 Front-End Tools
@@ -1327,8 +1619,8 @@ originators of Ogg Vorbis) put it well when he said:
     over your codebase, and that's okay with us.
 
 
-Coding Conventions
-------------------
+Python Coding Conventions
+-------------------------
 
 These are the conventions I use in my own code.  Contributed code will
 not be refused merely because it does not strictly adhere to these
