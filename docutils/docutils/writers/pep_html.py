@@ -23,10 +23,15 @@ class Writer(html4css1.Writer):
     cmdline_options = html4css1.Writer.cmdline_options + (
         'PEP/HTML-Specific Options',
         None,
-        (("Specify a PEP stylesheet file.  Default is --stylesheet's value.  "
-          'If given, --pep-stylesheet overrides --stylesheet.',
+        (('Specify a PEP stylesheet URL, used verbatim.  Default is '
+          '--stylesheet\'s value.  If given, --pep-stylesheet overrides '
+          '--stylesheet.',
           ['--pep-stylesheet'],
-          {'metavar': '<file>'}),
+          {'metavar': '<URL>'}),
+         ('Specify a PEP stylesheet file.  The path is interpreted relative '
+          'to the output HTML file.  Overrides --pep-stylesheet.',
+          ['--pep-stylesheet-path'],
+          {'metavar': '<path>'}),
          ('Specify a template file.  Default is "pep-html-template".',
           ['--pep-template'],
           {'default': 'pep-html-template', 'metavar': '<file>'}),
@@ -41,6 +46,8 @@ class Writer(html4css1.Writer):
          (optik.SUPPRESS_HELP,
           ['--no-random'], {'action': 'store_true'}),))
 
+    relative_path_options = ('pep_stylesheet_path', 'pep_template')
+
     def __init__(self):
         html4css1.Writer.__init__(self)
         self.translator_class = HTMLTranslator
@@ -52,11 +59,17 @@ class Writer(html4css1.Writer):
         # Substitutions dict for template:
         subs = {}
         subs['encoding'] = options.output_encoding
-        stylesheet = options.pep_stylesheet
-        if stylesheet is None:
+        if options.pep_stylesheet_path:
+            stylesheet = utils.relative_path(options._destination,
+                                             options.pep_stylesheet_path)
+        elif options.pep_stylesheet:
+            stylesheet = options.pep_stylesheet
+        elif options._stylesheet_path:
+            stylesheet = utils.relative_path(options._destination,
+                                             options.stylesheet_path)
+        else:
             stylesheet = options.stylesheet
-        subs['stylesheet'] = utils.relative_path(options._destination,
-                                                 stylesheet)
+        subs['stylesheet'] = stylesheet
         pyhome = options.python_home
         subs['pyhome'] = pyhome
         subs['pephome'] = options.pep_home
