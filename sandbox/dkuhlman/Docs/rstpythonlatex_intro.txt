@@ -1,0 +1,215 @@
+
+:author: Dave Kuhlman
+:revision: 1.0a
+:date: July 1, 2003
+
+:copyright: Copyright (c) 2003 Dave Kuhlman 
+    Permission is hereby granted, free of charge, to any person
+    obtaining a copy of this software and associated documentation
+    files (the "Software"), to deal in the Software without
+    restriction, including without limitation the rights to use, copy,
+    modify, merge, publish, distribute, sublicense, and/or sell copies
+    of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions: 
+    The above copyright notice and this permission notice shall be
+    included in all copies or substantial portions of the Software. 
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+    HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+    WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE. 
+
+:abstract: This document describes a Docutils writer for use with
+    Python LaTeX and the Python project's documentation tools.
+
+
+==============================================
+Introduction to the Documenting Python Writer
+==============================================
+
+
+-------------
+What It Does
+-------------
+
+This writer for Docutils generates LaTeX suitable for
+input to the documentation system described in `Documenting
+Python`_
+
+.. _`Documenting Python`: http://www.python.org/dev/doc/devel/doc/doc.html
+
+
+---------------
+Where to Get It
+---------------
+
+This writer is not yet part of the Docutils distribution.  Until
+it is, you can find it at
+`"A Docutils writer for the Documenting Python system"`_.
+
+.. _`"A Docutils writer for the Documenting Python system"`:
+    http://www.rexx.com/~dkuhlman/#docutils_pythonlatex
+
+
+--------------
+How to Use It
+--------------
+
+Conversion has several steps:
+
+1.  Run the writer -- Run *documenting_python.py* in
+    *docutils/tools*, for example::
+
+       $ docutils/tools/python_latex.py --documentclass=howto rstpythonlatex_intro.txt
+
+    There is one option:
+
+
+    --documentclass=class 
+
+        Selects the template type from Doc/templates in the Python
+        source distribution. Possible values are ``howto``,
+        ``manual``, and ``module``. The ``module`` document type is
+        not yet implemented. See the Doc/templates subdirectory in the
+        Python Source code distribution for samples of these document
+        types.  
+
+    .. ("module" too, according to the writer's settings_spec.  Or should
+       "module" be removed from the writer?)
+
+2.  Run the "Documenting Python" document processor.
+
+
+Here is a Makefile that performs these two steps.  It was used to
+convert the document that you are currently reading::
+
+    # Makefile to process a file LaTeX with the Python LaTeX system.
+    #  Optionally processes reStructuredText files.
+
+    #
+    # Change the following to point to your Python source code.
+    #
+    PYTHON_SRC = /w1/Python/Python-2.3b2
+    DOCUTILS_DIR = /w1/Python/DocUtils/docutils
+
+    #
+    # Change the following to point to your Docutils installation.
+    #
+    DOCUTILSTOOLS_DIR = $(DOCUTILS_DIR)/tools
+    TRANSFORMDOCPY = $(DOCUTILSTOOLS_DIR)/python_latex.py \
+    	--documentclass=howto
+
+    #
+    # Change these flags for your purposes.
+    #
+    #HTMLFLAGS= --image-type png --html -s 1 --favicon ../icons/pyfav.gif
+    HTMLFLAGS= --iconserver ../icons --html -s 1 --favicon ../icons/pyfav.gif
+
+    MKHOWTO = $(PYTHON_SRC)/Doc/tools/mkhowto
+
+    PAPER = a4
+
+    #
+    # Change this to the name of your source file (without extension).
+    #
+    #SRC_NAME=zip-ls
+    ifndef SRC_NAME
+    $(error Must define SRC_NAME (no extension), e.g. make SRC_NAME=mysourcefile)
+    endif
+
+    TARGETS = $(SRC_NAME)/$(SRC_NAME).html
+
+    FIGURES = 
+
+    all:	html
+
+    html:	$(TARGETS) $(FIGURES)
+
+    $(SRC_NAME)/$(SRC_NAME).html: $(SRC_NAME).tex
+    	$(MKHOWTO) $(HTMLFLAGS) $(SRC_NAME).tex
+
+    #
+    # Remove or Comment out the following lines if your source file
+    #   is a LaTeX file not a reST file.
+    #
+    $(SRC_NAME).tex: $(SRC_NAME).txt
+    	$(TRANSFORMDOCPY) $(SRC_NAME).txt > $(SRC_NAME).tex
+
+    clean:
+    	rm -f *~ *.aux *.idx *.ilg *.ind *.log *.toc *.bkm *.syn \
+    *.pla *.eps *.pdf *.ps *.lof *.l2h *.tex2 *.dvi
+    	-rm -f $(SRC_NAME).tex
+    	-rm -f $(SRC_NAME)/*
+    	-rmdir $(SRC_NAME)
+    	-rm -f $(SRC_NAME).tex
+
+
+Run this Makefile with the following commands::
+
+    $ make SRC_NAME=rstpythonlatex_intro clean
+    $ make SRC_NAME=rstpythonlatex_intro
+  
+
+
+
+------------------------------
+Special Formatting Constructs
+------------------------------
+
+See the companion document 'Quick reStructuredText for
+"Documenting Python"' for additional mark-up that can be used when
+generating LaTeX for "Documenting Python".  It is included in the
+distribution file for this writer.
+
+The first section of that document has information specific to the
+generation of LaTeX for Documenting Python.
+
+In addition, that document also adds another column to the
+specification tables.  This additional column describes the LaTeX
+commands generated by this writer.
+
+
+-----------------
+Acknowledgements
+-----------------
+
+Thanks to the Docutils project members for Docutils.  In
+particular, thanks to project coordinator David Goodger.
+
+Thanks to Engelbert Gruber for the implementation of the LaTeX
+writer.  That implementation formed the starting point for this
+writer.  He should get much of the credit for this writer also,
+however, any bugs were likely introduced by me.
+
+Thanks to Fred Drake (and many more I'm sure) for the Python
+documentation tools, the Python documentation project, and the
+Python documentation itself.
+
+---------
+See Also
+---------
+
+`The Docutils Home Page`_
+
+.. _`The Docutils Home Page`: http://docutils.sourceforge.net/
+
+
+`The Python home page`_
+
+.. _`The Python home page`: http://www.python.org/ 
+
+
+`The documentation on the Documenting Python system`_
+
+.. _`The documentation on the Documenting Python system`:
+    http://www.python.org/dev/doc/devel/doc/doc.html
+
+`"A Docutils writer for the Documenting Python system"`_
+
+.. _`"A Docutils writer for the Documenting Python system"`:
+    http://www.rexx.com/~dkuhlman/#docutils_pythonlatex
+
+
