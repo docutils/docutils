@@ -87,6 +87,7 @@ Maybe this is due to the fact that self.docinfo is used, if one would remove
 it context might be unecessary.
 
 ::
+
     def visit_docinfo_item (...):
         ...
         else:
