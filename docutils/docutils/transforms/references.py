@@ -671,15 +671,17 @@ class Footnotes(Transform):
         references.
         """
         for footnote in self.document.footnotes:
-            label = footnote['name']
-            if self.document.footnote_refs.has_key(label):
-                reflist = self.document.footnote_refs[label]
-                self.resolve_references(footnote, reflist)
+            if footnote.hasattr('name'):
+                label = footnote['name']
+                if self.document.footnote_refs.has_key(label):
+                    reflist = self.document.footnote_refs[label]
+                    self.resolve_references(footnote, reflist)
         for citation in self.document.citations:
-            label = citation['name']
-            if self.document.citation_refs.has_key(label):
-                reflist = self.document.citation_refs[label]
-                self.resolve_references(citation, reflist)
+            if citation.hasattr('name'):
+                label = citation['name']
+                if self.document.citation_refs.has_key(label):
+                    reflist = self.document.citation_refs[label]
+                    self.resolve_references(citation, reflist)
 
     def resolve_references(self, note, reflist):
         id = note['id']
