@@ -74,7 +74,10 @@ text, it will generally be OK -- ReST is pretty smart.  For example,
 this * asterisk is handled just fine.  If you actually want text
 \*surrounded by asterisks* to **not** be italicised, then you need to
 indicate that the asterisk is not special.  You do this by placing a
-backslash just before it, like so "``\*``" (quickref__).
+backslash just before it, like so "``\*``" (quickref__), or by
+enclosing it in double back-quotes (inline literals), like this::
+
+    ``\*``
 
 __ quickref.html#escaping
 
