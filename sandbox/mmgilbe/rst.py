@@ -159,6 +159,8 @@ class MoinTranslator(html4css1.HTMLTranslator):
                     target = node['name']
                 else:
                     target = node['refuri']
+                # Pass targets with ":" in them verbatim, otherwise wrap the
+                # link to let MoinMoin know we really mean it is a link.
                 if ':' in target:
                     self.wikiparser.raw = '[%s %s]' % (target, 
                                                          node.astext())
