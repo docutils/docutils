@@ -87,7 +87,6 @@ Tables
 Miscellaneous
 -------------
 
-* Doctest blocks is incorrect (python prompt is escaped inside verbatim).
 * Support embed-stylesheet.
 * the ^-sign is problematic: using mathmode wedge is usually the wrong font.
 * Sidebar handling.

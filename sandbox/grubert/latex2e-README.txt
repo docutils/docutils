@@ -33,8 +33,6 @@ To do
 
 * two hlines after table head and on table end ?
 
-* doctest blocks is incorrect (python prompt is escaped inside verbatim).
-
 * table: multicol cells are always {l}.
 
 * pdfbookmark level 4 (and greater) does not work (might be settable but OTOH).
