@@ -1,3 +1,5 @@
+# WARNING TO PAUL: DON'T EDIT THIS FILE
+
 import paul.options, sys, os, tempfile
 
 
