@@ -172,6 +172,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # When options are given to the documentclass, latex will pass them
     # to other packages, as done with babel. 
     # Dummy settings might be taken from document settings
+
+    ## For narrower things (tables, docinfos use admwidth in latex construct).
     d_class = 'article'    # document.settings.stylesheet
     d_options = '10pt'  # papersize, fontsize
     d_paper = 'a4paper'
@@ -227,7 +229,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
               self.geometry % (self.d_paper, self.d_margins),
               #
               self.generator,
-              # admonition width
+              # admonition width and docinfo tablewidth
               '\\newlength{\\admwidth}\n\\addtolength{\\admwidth}{0.9\\textwidth}\n',
               ## stylesheet is last: so it might be possible to overwrite defaults.
               self.stylesheet % (self.d_stylesheet_path),
@@ -488,10 +490,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_docinfo(self, node):
         self.docinfo = []
         self.docinfo.append('%' + '_'*75 + '\n')
-        self.docinfo.append('\\begin{tabularx}{\\linewidth}{lX}\n')
+        self.docinfo.append('\\begin{center}\n')
+        self.docinfo.append('\\begin{tabularx}{\\admwidth}{lX}\n')
 
     def depart_docinfo(self, node):
         self.docinfo.append('\\end{tabularx}\n')
+        self.docinfo.append('\\end{center}\n')
         self.body = self.docinfo + self.body
         # clear docinfo, so field names are no longer appended.
         self.docinfo = None

@@ -3,7 +3,7 @@ latex2e BUGS TODOS and other animals
 
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
-Rev. 2002-11-13
+Rev. 2002-12-09
 
 To do
 ~~~~~
@@ -106,6 +106,7 @@ ATTENTION
 Done
 ~~~~
 
+* docinfo table centered and narrower.
 * bibliographic field names have a ":".
 * german (de*) quotes.
 * colspec for tables without heads.
