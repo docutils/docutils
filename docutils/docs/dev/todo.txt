@@ -51,7 +51,7 @@ General
   - Implementation docs.
 
     - spec/doctree.txt: Doctree nodes (DTD element) semantics:
-  
+
       - External (public) attributes (node.attributes).
       - Internal attributes (node.*).
       - Linking mechanism.
@@ -289,6 +289,19 @@ __ rst/alternatives.html#or-not-to-do
 
   Tony Ibbs spoke out against this idea (2002-06-14 Doc-SIG thread
   "docutils feedback").
+
+- Generalize the "literal block" construct to allow blocks with a
+  per-line quoting to avoid indentation?  For example, an email reply
+  quoting the original::
+
+      John Doe wrote::
+
+      > Great idea!
+      >
+      > Why didn't I think of that?
+
+  Every line of the literal block would have to begin with the same
+  non-alphanumeric non-whitespace character.
 
 
 Directives
