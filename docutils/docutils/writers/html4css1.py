@@ -85,6 +85,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.section_level = 0
         self.context = []
         self.topic_class = ''
+        self.colspecs = []
 
     def astext(self):
         return ''.join(self.head_prefix + self.head
@@ -235,14 +236,20 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</span>')
 
     def visit_colspec(self, node):
-        atts = {}
-        # @@@ colwidth attributes don't seem to work well in HTML
-        #if node.has_key('colwidth'):
-        #    atts['width'] = str(node['colwidth']) + '*'
-        self.body.append(self.emptytag(node, 'col', **atts))
+        self.colspecs.append(node)
 
     def depart_colspec(self, node):
         pass
+
+    def write_colspecs(self):
+        width = 0
+        for node in self.colspecs:
+            width += node['colwidth']
+        for node in self.colspecs:
+            colwidth = int(node['colwidth'] * 100.0 / width + 0.5)
+            self.body.append(self.emptytag(node, 'col',
+                                           colwidth='%i%%' % colwidth))
+        self.colspecs = []
 
     def visit_comment(self, node,
                       sub=re.compile('-(?=-)').sub):
@@ -337,10 +344,6 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_document(self, node):
         self.body.append('</div>\n')
-        #self.body.append(
-        #      '<p class="credits">HTML generated from <code>%s</code> on %s '
-        #      'by <a href="http://docutils.sourceforge.net/">Docutils</a>.'
-        #      '</p>\n' % (node['source'], time.strftime('%Y-%m-%d')))
 
     def visit_emphasis(self, node):
         self.body.append('<em>')
@@ -468,7 +471,8 @@ class HTMLTranslator(nodes.NodeVisitor):
                 for backref in backrefs:
                     backlinks.append('<a href="#%s">%s</a>' % (backref, i))
                     i += 1
-                self.context.append(('', '(%s) ' % ', '.join(backlinks)))
+                self.context.append(('', ('<p>(%s)</p>\n'
+                                          % ', '.join(backlinks))))
         else:
             self.context.append(('', ''))
 
@@ -549,10 +553,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</li>\n')
 
     def visit_literal(self, node):
-        self.body.append('<code>')
+        self.body.append('<tt>')
 
     def depart_literal(self, node):
-        self.body.append('</code>')
+        self.body.append('</tt>')
 
     def visit_literal_block(self, node):
         self.body.append(self.starttag(node, 'pre', suffix='',
@@ -582,11 +586,10 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_option_argument(self, node):
         self.body.append(node.get('delimiter', ' '))
-        self.body.append(self.starttag(node, 'span', '',
-                                       CLASS='option-argument'))
+        self.body.append(self.starttag(node, 'var', ''))
 
     def depart_option_argument(self, node):
-        self.body.append('</span>')
+        self.body.append('</var>')
 
     def visit_option_group(self, node):
         atts = {}
@@ -596,12 +599,12 @@ class HTMLTranslator(nodes.NodeVisitor):
         else:
             self.context.append('')
         self.body.append(self.starttag(node, 'td', **atts))
-        self.body.append('<p><code>')
+        self.body.append('<p><kbd>')
         self.context.append(0)
 
     def depart_option_group(self, node):
         self.context.pop()
-        self.body.append('</code></p>\n</td>')
+        self.body.append('</kbd></p>\n</td>')
         self.body.append(self.context.pop())
 
     def visit_option_list(self, node):
@@ -763,7 +766,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append(self.context.pop())
 
     def visit_tbody(self, node):
-        self.body.append(self.context.pop()) # '</colgroup>\n' or ''
+        self.write_colspecs()
+        #self.body.append(self.context.pop()) # '</colgroup>\n' or ''
         self.body.append(self.starttag(node, 'tbody', valign='top'))
 
     def depart_tbody(self, node):
@@ -780,15 +784,17 @@ class HTMLTranslator(nodes.NodeVisitor):
         pass
 
     def visit_tgroup(self, node):
-        self.body.append(self.starttag(node, 'colgroup'))
-        self.context.append('</colgroup>\n')
+        #self.body.append(self.starttag(node, 'colgroup'))
+        #self.context.append('</colgroup>\n')
+        pass
 
     def depart_tgroup(self, node):
         pass
 
     def visit_thead(self, node):
-        self.body.append(self.context.pop()) # '</colgroup>\n'
-        self.context.append('')
+        self.write_colspecs()
+        #self.body.append(self.context.pop()) # '</colgroup>\n'
+        #self.context.append('')
         self.body.append(self.starttag(node, 'thead', valign='bottom'))
 
     def depart_thead(self, node):
