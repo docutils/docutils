@@ -955,6 +955,13 @@ when used in a document.
   - _`misc.settings`: Set any Docutils runtime setting from within a
     document?
 
+  - _`misc.unicode`: Convert one or more numerical character codes
+    (decimal, or hex if it begins with ``0x`` or ``\u``) to a Unicode
+    character.  Behave like "replace", for character entity
+    substitution definitions, e.g.::
+
+        .. |mdash| unicode:: \u2014
+
   - Docutils already has the ability to say "use this content for
     Writer X" (via the "raw" directive), but it doesn't have the
     ability to say "use this content for any Writer other than X".  It
@@ -1147,6 +1154,10 @@ when used in a document.
 
 	See docutils-users 2003-03-03.
 
+  - _`body.sidebar`: Add to the already implemented directive.  Allow
+    internal section structure, with adornment styles independent of
+    the main document.
+
   - _`admonitions.admonition`: Generic, titled admonition.  Use
     author-supplied title as "class" attribute value?
 
@@ -1294,7 +1305,8 @@ elements.
   .. _multiple roles:
      rst/alternatives.html#multiple-roles-in-interpreted-text
 
-* Add document-local role bindings, associating directives with roles?
+* Add document-local _`role bindings`, associating directives with
+  roles?
 
       ``She wore ribbons in her hair and it lay with streaks of
       grey``:rewrite:
@@ -1311,9 +1323,18 @@ elements.
   stylesheet would then pick up on the "class" attribute to do the
   actual formatting.
 
+  The same thing could be done with a directive, albeit a bit more
+  verbosely::
+
+      .. role:: rewrite
+         :class: rewrite
+
+  The advantage of the new syntax would be flexibility.  Uses other
+  than "class" may present themselves.
+
   But what's the doctree element?  Shall we introduce an arbitrary
   <span>-like element?  Put "interpreted" back for such purposes?  I
-  currently like "phrase".  But:
+  currently like "phrase".  "inline" may be better.  But:
 
       ...my penny on <span>: I think <span> is inherently evil. More
       than enough I learned to hate <span> because some HTML pages are
@@ -1328,6 +1349,12 @@ elements.
       -- Stefan Merten
 
   Lesser of two evils?
+
+* Add new syntax for _`nested inline markup`? ::
+
+      :role:[inline text]
+
+  From a proposal by Paul Tremblay.
 
 * Perhaps a "role" directive can modify existing roles with
   attributes? ::
