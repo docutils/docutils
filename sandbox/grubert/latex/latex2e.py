@@ -195,6 +195,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # table kind: if 0 tabularx (single page), 1 longtable
     # maybe should be decided on row count.
     use_longtable = 1
+    # description environment for option-list. else tabularx
+    use_description_for_option_list = 0
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
@@ -483,7 +485,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('%[depart_definition_list_item]\n')
 
     def visit_description(self, node):
-        self.body.append( ' & ' )
+        if self.use_description_for_option_list:
+            self.body.append( ' ' )
+        else:    
+            self.body.append( ' & ' )
 
     def depart_description(self, node):
         pass
@@ -613,7 +618,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.context[-1] += 1
 
     def visit_enumerated_list(self, node):
-        # Enumerations can be nested within one another, up to four levels deep.
+        # We create our own enumeration list environment.
+        # This allows to set the style and starting value
+        # and unlimited nesting.
         self._enum_cnt += 1
 
         enum_style = {'arabic':'arabic',
@@ -621,9 +628,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 'upperalpha':'Alph', 
                 'lowerroman':'roman',
                 'upperroman':'Roman' };
-        start = 1
-        if node.has_key('start'):
-            start = node['start']
         enumtype = "arabic"            
         if node.has_key('enumtype'):
             enumtype = node['enumtype']
@@ -634,9 +638,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\\begin{list}{\\%s{%s}}\n' % (enumtype,counter_name))
         self.body.append('{\n')
         self.body.append('\\usecounter{%s}\n' % counter_name)
-        # set after usecounter.
-        if start>1:
-            self.body.append('\\addtocounter{%s}{%d}\n' % (counter_name,start-1))
+        # set start after usecounter, because it initializes to zero.
+        if node.has_key('start'):
+            self.body.append('\\addtocounter{%s}{%d}\n' \
+                    % (counter_name,node['start']-1))
         ## set rightmargin equal to leftmargin
         self.body.append('\\setlength{\\rightmargin}{\\leftmargin}\n')
         self.body.append('}\n')
@@ -856,43 +861,63 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_option(self, node):
         if self.context[-1]:
+            # this is not the first option
             self.body.append(', ')
 
     def depart_option(self, node):
+        # flag tha the first option is done.
         self.context[-1] += 1
 
     def visit_option_argument(self, node):
+        """The delimiter betweeen an option and its argument."""
         self.body.append(node.get('delimiter', ' '))
 
     def depart_option_argument(self, node):
         pass
 
     def visit_option_group(self, node):
-        atts = {}
-        self.body.append('\\texttt{')
-        self.context.append('')
+        if self.use_description_for_option_list:
+            self.body.append('\\item[')
+        else:
+            atts = {}
+            if len(node.astext()) > 14:
+                self.body.append('\\multicolumn{2}{l}{')
+                self.context.append('} \\\\\n  ')
+            else:
+                self.context.append('')
+            self.body.append('\\texttt{')
+        # flag for first option    
         self.context.append(0)
 
     def depart_option_group(self, node):
-        self.context.pop()
-        self.body.append('}')
-        self.body.append(self.context.pop())
+        self.context.pop() # the flag
+        if self.use_description_for_option_list:
+            self.body.append(']')
+        else:
+            self.body.append('}')
+            self.body.append(self.context.pop())
 
     def visit_option_list(self, node):
-        self.body.append('% option list\n')
-        self.body.append('\\begin{center}\n')
-        self.body.append('\\begin{tabularx}{.9\\linewidth}{|l|X|}\n')
+        if self.use_description_for_option_list:
+            self.body.append('\\begin{description}\n')
+        else:
+            self.body.append('% option list\n')
+            self.body.append('\\begin{center}\n')
+            self.body.append('\\begin{tabularx}{.9\\linewidth}{lX}\n')
 
     def depart_option_list(self, node):
-        self.body.append('\\hline\n')
-        self.body.append('\\end{tabularx}\n')
-        self.body.append('\\end{center}\n')
+        if self.use_description_for_option_list:
+            self.body.append('\\end{description}\n')
+        else:
+            self.body.append('\\end{tabularx}\n')
+            self.body.append('\\end{center}\n')
 
     def visit_option_list_item(self, node):
-        self.body.append('\\hline\n')
+        pass
 
     def depart_option_list_item(self, node):
-        self.body.append('\\\\\n')
+        if not self.use_description_for_option_list:
+            self.body.append('\\\\\n')
 
     def visit_option_string(self, node):
         ##self.body.append(self.starttag(node, 'span', '', CLASS='option'))
