@@ -66,6 +66,14 @@ Future Plans
 Changes Since 0.3
 =================
 
+* docutils/core.py:
+
+  - Catch system messages to stop tracebacks from parsing errors.
+
+* docutils/utils.py:
+
+  - Added "level" attribute to SystemMessage exceptions.
+
 * docutils/languages/af.py: Added to project; Afrikaans
   mappings by Jannie Hofmeyr.
 
