@@ -182,6 +182,18 @@ Contributions are welcome!
 
 .. _Docutils Front-End Tools: http://docutils.sf.net/docs/tools.html
 
+
+Getting Help
+============
+
+If you have questions or need assistance with Docutils or
+reStructuredText, please `post a message`__ to the `Docutils-Users
+mailing list`__.
+
+.. _post a message: mailto:docutils-users@lists.sourceforge.net
+.. _Docutils-Users mailing list:
+   http://lists.sourceforge.net/lists/listinfo/docutils-users
+
 
 ..
    Local Variables:
