@@ -658,6 +658,7 @@ class PythonLatexPublishTestCase(CustomTestCase, docutils.SettingsSpec):
             for target in targetList:
                 if line.find(target) > -1:
                     remove = True
+                    break
             if not remove:
                 outLines.append(line)
         outStr = '\n'.join(outLines)

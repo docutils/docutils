@@ -35,6 +35,8 @@ DEBUG_FLAG = 1
 
 COMMENT_RE_SUB = re.compile('\n').sub
 PROGRAMOPT_RE = re.compile('(--[_\-a-zA-Z0-9]+)')
+EMAILADDR_RE = re.compile(r'[_\-a-zA-Z0-9.]+@[_\-a-zA-Z0-9.]+')
+WEBADDR_RE = re.compile(r'http://[_\-a-zA-Z0-9./~]+')
 
 TABLE_MODE_NONE = 0
 TABLE_MODE_HEAD = 1
@@ -194,6 +196,23 @@ class DocPyTranslator(nodes.NodeVisitor):
         """Cleanse, encode, and return attribute value text."""
         return self.encode(whitespace.sub(' ', text))
 
+    def replace_email_addr(self, mo):
+        addr = mo.group(0)
+        outtext = '\\ulink{%s}{mailto:%s}' % (addr, addr)
+        return outtext
+
+    def replace_web_addr(self, mo):
+        addr = mo.group(0)
+        outtext = '\\ulink{%s}{%s}' % (addr, addr)
+        return outtext
+
+    def linkify(self, intext):
+        # If it looks like an email address, convert it to a "mailto" URL.
+        text1 = EMAILADDR_RE.sub(self.replace_email_addr, intext)
+        # If it looks like a URL, convert it to a ulink.
+        text2 = WEBADDR_RE.sub(self.replace_web_addr, text1)
+        return text2
+    
     def astext(self):
         title = '\\title{%s}\n' % self.title
         if self.docinfo.has_key('revision'):
@@ -203,8 +222,11 @@ class DocPyTranslator(nodes.NodeVisitor):
         if self.docinfo.has_key('author'):
             self.head.append('\\author{%s}\n' % self.docinfo['author'])
         if self.docinfo.has_key('address'):
+            self.pdebug('%% [(astext) text: %s]\n' % self.docinfo['address'])
             self.head.append('\\authoraddress{%s}\n' % \
-                self.cleanHref(self.docinfo['address']))
+                #self.linkify(self.cleanHref(self.docinfo['address'])))
+                self.cleanHref(self.linkify(
+                    self.docinfo['address'])).replace('\n', '\\\\\n'))
         self.body_prefix.append('\\maketitle\n')
         self.body_prefix.append('\\ifhtml\n')
         self.body_prefix.append('\\chapter*{Front Matter\\label{front}}\n')
