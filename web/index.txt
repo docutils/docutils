@@ -149,25 +149,44 @@ BUGS_ files.
 Project Releases
 ----------------
 
-The `latest project release package`_ (Docutils 0.3.5, 2004-07-29) and
+The `latest project release package`_ (Docutils 0.3.7, 2004-12-24) and
 past project releases can be downloaded from the `project files
-page`_.  This release fixes many bugs, adds some features, and is
-highly recommended over prior versions.
+page`_.
 
-Major changes since Docutils 0.3.3:
+Major changes since Docutils 0.3.5:
 
-* improved, extended and reorganized documentation_
-* new csv-table_ directive
-* many minor improvements, additions and bug fixes
+* A special "`line block`_" syntax useful for addresses, verse, and
+  other cases of significant line breaks has been added (also refer to
+  the `reStructuredText Markup Specification`__).
 
-For a more detailed list of changes, read the `HISTORY of Docutils
-0.3.5`__.
+  .. _line block: docs/user/rst/quickref.html#line-blocks
+  __ docs/ref/rst/restructuredtext.html#line-blocks
 
-Thanks to Felix Wiemann for putting together this release!
+* Empty sections are now allowed.
 
-.. _documentation: docs/index.html
-.. _csv-table: docs/ref/rst/directives.html#csv-table
-.. __: 0.3.5/HISTORY.html
+* A "raw_" role has been added.
+
+  .. _raw: http://docutils.sourceforge.net/docs/ref/rst/roles.html#raw
+
+* The LaTeX writer now escapes consecutive dashes (like "--" or "---")
+  so that they are no longer transformed by LaTeX to en or em dashes.
+  If you want to write en or em dashes using pure ASCII, please refer
+  to the `FAQ entry about non-ASCII characters`__.
+
+  __ FAQ.html#how-can-i-represent-esoteric-characters-e-g-character-entities-in-a-document.
+
+* A `dependency recorder`_ has been added.
+
+  .. _dependency recorder: docs/user/config.html#record-dependencies
+
+* A directive has been added for `compound paragraphs`_.
+
+  .. _compound paragraphs: docs/ref/rst/directives.html#compound-paragraph
+
+* Many other improvements and bug fixes; see the `history file of
+  Docutils 0.3.7`__.
+  
+  __ 0.3.7/HISTORY.html
 
 
 .. _mailing list:
@@ -373,7 +392,7 @@ Project Links
 .. _PEPs (Python Enhancement Proposals): http://www.python.org/peps/
 
 .. _latest project release package:
-   http://prdownloads.sourceforge.net/docutils/docutils-0.3.5.tar.gz?download
+   http://prdownloads.sourceforge.net/docutils/docutils-0.3.7.tar.gz?download
 
 
 ..
