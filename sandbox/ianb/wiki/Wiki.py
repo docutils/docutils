@@ -1,21 +1,5 @@
 """
 The Wiki module primarily exports the `WikiPage` class:
-
-    .. inline: WikiPage
-
-There are also several searching methods:
-
-    .. inline: allPages
-    .. inline: recentPages
-    .. inline: search
-    .. inline: searchTitles
-
-There is one module global to be printed at the top of
-every Wiki page:
-
-    `css`:
-        The HTML to put the proper CSS at the top of the page.  This
-        should be put in the ``<head>`` section of the page.
 """
 
 import os, re, time
@@ -45,10 +29,16 @@ class WikiPage(object):
         `text`:
             The text for the page.  To save new text, simply
             assign to this property.
+        `title`:
+            The title of the page.
+        `name`:
+            The name of the page -- a canonical identifier.
+            Related to the title, but not necessarily the
+            same.
         .. ignore: html
         .. ignore: text
         .. ignore: setText
-        .. inline-all:
+        .. ignore: title
 
     """
 
@@ -166,6 +156,9 @@ class WikiPage(object):
         
     title = property(title)
 
+"""
+Methods for searching the wiki pages:
+"""
 
 def allPages():
     """All pages with content in the system"""
@@ -196,6 +189,15 @@ def _basePath(name):
 
 def _exists(name):
     return os.path.exists(_basePath(name) + ".html")
+
+"""
+There is one module global to be printed at the top of
+every Wiki page:
+
+    `css`:
+        The HTML to put the proper CSS at the top of the page.  This
+        should be put in the ``<head>`` section of the page.
+"""
 
 try:
     f = open('default.css')

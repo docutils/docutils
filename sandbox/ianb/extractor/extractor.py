@@ -4,7 +4,9 @@ This module extracts the documentation from a module, and converts
 it into a single reST document.
 
 Usage:
-    python extractor.py some_module.py > some_module.txt
+    ./extractor.py some_module.py > some_module.txt
+For more:
+    ./extractor.py --help
 
 The document is based on the module's docstring -- no other
 documentation is implicitly included.
@@ -43,15 +45,15 @@ from docutils.readers.python import moduleparser
 
 class Document:
 
-    def __init__(self, node):
+    def __init__(self, node, module):
         self.node = node
-        self.documents = []
+        self.parts = []
         self.children = {}
-        self.children_order = []
+        self.module = module
 
     def add_child(self, child):
         self.children[child.name] = child
-        self.children_order.append(child.name)
+        self.parts.append(child)
 
     def process(self):
         for child in self.node.children:
@@ -59,21 +61,43 @@ class Document:
 
     def process_node(self, node):
         if isinstance(node, moduleparser.Docstring):
-            self.documents.append(node.text)
+            self.parts.append(node.text)
         elif isinstance(node, moduleparser.Class):
-            self.add_child(Class(node))
+            self.add_child(Class(node, self.module))
         elif isinstance(node, moduleparser.Function):
-            self.add_child(Function(node))
+            self.add_child(Function(node, self.module))
 
-    def documentation(self):
-        return '\n'.join(self.documents)
+    def documentation(self, context=None):
+        if context is None:
+            return Document.documentation(self, DocContext())
+        newParts = []
+        for part in self.parts:
+            if type(part) is type(""):
+                doc = self.module.substitute(part, self, context)
+                newParts.append(doc + "\n")
+                continue
+            if part.name.startswith('_') \
+               and not part.name.startswith('__'):
+                continue
+            if context.seen(part):
+                continue
+            doc = part.documentation(context)
+            if doc.lower().find(':ignore:') != -1:
+                continue
+            newParts.append(indent(doc))
+        context.setSeen(self)
+        return '\n'.join(newParts)
 
-    def childStr(self):
-        children = []
-        for child_name in self.children_order:
-            children.append(self.children[child_name])
-        return ''.join([c.documentation() for c in children])
-            
+class DocContext:
+
+    def __init__(self):
+        self.partsSeen = {}
+
+    def seen(self, obj):
+        return self.partsSeen.has_key(obj)
+
+    def setSeen(self, obj):
+        self.partsSeen[obj] = 1
 
 class Module(Document):
 
@@ -84,9 +108,13 @@ class Module(Document):
         self.module_text = text
         self.name = os.path.splitext(os.path.basename(filename))[0]
         node = moduleparser.parse_module(text, filename)
-        Document.__init__(self, node)
+        Document.__init__(self, node, self)
         self.imports = []
+        self.subber = InlineSubstitution(self)
         self.process()
+
+    def substitute(self, s, currentNode=None, context=None):
+        return self.subber.substitute(s, currentNode, context)
 
     def process_node(self, node):
         if isinstance(node, moduleparser.Import):
@@ -94,14 +122,11 @@ class Module(Document):
         else:
             Document.process_node(self, node)
 
-    def documentation(self):
-        doc = '\n\n'.join(self.documents)
-        subber = InlineSubstitution(self)
-        doc = subber.substitute(doc)
+    def documentation(self, context=None):
         return "%s\n%s\n\n%s" % \
                (self.name,
                 "=" * len(self.name),
-                doc)
+                Document.documentation(self, context=None))
             
     def importText(self, im):
         if im[1]:
@@ -109,57 +134,39 @@ class Module(Document):
         else:
             return 'import %s' % im[0]
 
-    def _subString(self, s):
-        return self._inlineRE.sub(self._inlineSubber, s)
-
-    def _inlineSubber(self, match):
-        level = len(match.group(1))
-        name = match.group(2).strip().split('.')
-        return indent(self._subString(self._getChild(name).documentation()), level)
-
-    def _getChild(self, nameList):
-        obj = self
-        while 1:
-            if not nameList:
-                return obj
-            obj = obj.children[nameList[0]]
-            nameList = nameList[1:]
-
 class InlineSubstitution:
 
     def __init__(self, rootNode):
         self.rootNode = rootNode
-        self._seen = {}
 
     _inlineRE = re.compile(r'( *).. +inline: *(.*)')
     _inlineAllRE = re.compile(r'( *).. +inline-all: *')
     _ignoreRE = re.compile(r'( *).. ignore: *(.*)\n?')
 
-    def substitute(self, s, currentNode=None):
+    def substitute(self, s, currentNode=None, context=None):
         if currentNode is None:
             currentNode = self.rootNode
         s = self._ignoreRE.sub(
-            lambda m, currentNode=currentNode: self._ignoreSubber(m, currentNode),
+            lambda m, cur=currentNode, con=context, : self._ignoreSubber(m, cur, con),
             s)
         s = self._inlineRE.sub(
-            lambda m, currentNode=currentNode: self._inlineSubber(m, currentNode),
+            lambda m, cur=currentNode, con=context: self._inlineSubber(m, cur, con),
             s)
         s = self._inlineAllRE.sub(
-            lambda m, currentNode=currentNode: self._inlineAllSubber(m, currentNode),
+            lambda m, cur=currentNode, con=context: self._inlineAllSubber(m, cur, con),
             s)
         return s
 
-    def _inlineSubber(self, match, currentNode):
+    def _inlineSubber(self, match, currentNode, context):
         level = len(match.group(1))
         name = match.group(2).strip().split('.')
         child = self._getChild(name, currentNode)
-        self._seen[child] = 1
-        return indent(self.substitute(child.documentation(), child), level)
+        return indent(self.substitute(child.documentation(context), child), level)
 
-    def _ignoreSubber(self, match, currentNode):
+    def _ignoreSubber(self, match, currentNode, context):
         name = match.group(2).strip().split('.')
         child = self._getChild(name, currentNode)
-        self._seen[child] = 1
+        context.setSeen(child)
         return ''
 
     def _getChild(self, name, currentNode):
@@ -176,7 +183,7 @@ class InlineSubstitution:
             obj = obj.children[nameList[0]]
             nameList = nameList[1:]
 
-    def _inlineAllSubber(self, match, currentNode):
+    def _inlineAllSubber(self, match, currentNode, context):
         level = len(match.group(1))
         children = currentNode.children.keys()
         children.sort()
@@ -185,21 +192,18 @@ class InlineSubstitution:
         for child in children:
             if child.name.startswith('_'):
                 continue
-            if self._seen.has_key(child):
-                continue
-            doc = child.documentation()
+            doc = child.documentation(context)
             if doc.lower().find(':ignore:') != -1:
                 continue
             allDocs.append(self.substitute(doc, child))
-            self._seen[child] = 1
         return indent('\n'.join(allDocs), level)
 
 
 
 class Function(Document):
 
-    def __init__(self, node):
-        Document.__init__(self, node)
+    def __init__(self, node, module):
+        Document.__init__(self, node, module)
         self.name = node.name
         self.parameters = []
         self.process()
@@ -225,11 +229,11 @@ class Function(Document):
             val = ('normal', param.name)
         self.parameters.append(val)
 
-    def documentation(self):
+    def documentation(self, context):
         d = "`%s(%s)`:\n" % (self.name,
                              ', '.join([self.parameterText(p)
                                         for p in self.parameters]))
-        doc = Document.documentation(self)
+        doc = Document.documentation(self, context)
         if not doc:
             doc = "Not documented."
         return d + indent(doc)
@@ -249,8 +253,8 @@ class Function(Document):
 
 class Class(Document):
 
-    def __init__(self, node):
-        Document.__init__(self, node)
+    def __init__(self, node, module):
+        Document.__init__(self, node, module)
         self.bases = []
         self.name = node.name
         for attr, value in node.attlist():
@@ -258,12 +262,12 @@ class Class(Document):
                 self.bases = value
         self.process()
 
-    def documentation(self):
+    def documentation(self, context):
         if self.bases:
             base = 'class `%s(%s)`:' % (self.name, self.bases)
         else:
             base = 'class `%s`:' % self.name
-        return base + "\n" + indent(Document.documentation(self))
+        return base + "\n" + indent(Document.documentation(self, context))
 
 
 def indent(text, amount=4):
