@@ -40,44 +40,49 @@ Users who have questions or need assistance with Docutils or
 reStructuredText should `post a message`__ to the `Docutils-Users
 mailing list`__.
 
-__ docs/rst/quickstart.html
-__ docs/rst/quickstart.txt
-__ docs/rst/quickref.html
-__ docs/rst/cheatsheet.txt
+__ docs/user/rst/quickstart.html
+__ docs/user/rst/quickstart.txt
+__ docs/user/rst/quickref.html
+__ docs/user/rst/cheatsheet.txt
 __ mailto:docutils-users@lists.sourceforge.net
 __ http://lists.sourceforge.net/lists/listinfo/docutils-users
 
 
-Developer Documentation
+Reference Documentation
 =======================
-
-Specification
--------------
 
 - `An Introduction to reStructuredText`__ (includes the Goals__ and
   History__ of reStructuredText)
 - `reStructuredText Markup Specification`__
 - `reStructuredText Directives`__
 - `reStructuredText Interpreted Text Roles`__
+
+__ docs/ref/rst/introduction.html
+__ docs/ref/rst/introduction.html#goals
+__ docs/ref/rst/introduction.html#history
+__ docs/ref/rst/reStructuredText.html
+__ docs/ref/rst/directives.html
+__ docs/ref/rst/interpreted.html
+
+
+Developer Documentation
+=======================
+
 - `A Record of reStructuredText Syntax Alternatives`__
 - `Problems With StructuredText`__
 
-__ spec/rst/introduction.html
-__ spec/rst/introduction.html#goals
-__ spec/rst/introduction.html#history
-__ spec/rst/reStructuredText.html
-__ spec/rst/directives.html
-__ spec/rst/interpreted.html
-__ spec/rst/alternatives.html
-__ spec/rst/problems.html
+__ docs/dev/rst/alternatives.html
+__ docs/dev/rst/problems.html
 
 
 How-To's
 --------
 
 - `Creating reStructuredText Directives`__
+- `Creating reStructuredText Interpreted Text Roles`__
 
-__ spec/howto/rst-directives.html
+__ docs/howto/rst-directives.html
+__ docs/howto/rst-roles.html
 
 
 Testimonials
