@@ -107,8 +107,9 @@ class Node:
         Parameter `visitor`: A `NodeVisitor` object, containing a
         ``visit_...`` method for each `Node` subclass encountered.
         """
-        visitor.document.reporter.debug('visit_' + self.__class__.__name__,
-                                        category='nodes.Node.walk')
+        visitor.document.reporter.debug(
+            'calling dispatch_visit for %s' % self.__class__.__name__,
+            category='nodes.Node.walk')
         try:
             visitor.dispatch_visit(self, self.__class__.__name__)
         except (SkipChildren, SkipNode):
@@ -133,11 +134,12 @@ class Node:
         and ``depart_...`` methods for each `Node` subclass encountered.
         """
         call_depart = 1
-        visitor.document.reporter.debug('visit_' + self.__class__.__name__,
-                                        category='nodes.Node.walkabout')
+        visitor.document.reporter.debug(
+            'calling dispatch_visit for %s' % self.__class__.__name__,
+            category='nodes.Node.walkabout')
         try:
             try:
-                visitor.dispatch_visit(self, self.__class__.__name__)
+                visitor.dispatch_visit(self)
             except SkipNode:
                 return
             except SkipDeparture:
@@ -152,9 +154,9 @@ class Node:
             pass
         if call_depart:
             visitor.document.reporter.debug(
-                'depart_' + self.__class__.__name__,
+                'calling dispatch_departure for %s' % self.__class__.__name__,
                 category='nodes.Node.walkabout')
-            visitor.dispatch_departure(self, self.__class__.__name__)
+            visitor.dispatch_departure(self)
 
 
 class Text(Node, UserString):
@@ -1272,12 +1274,20 @@ class NodeVisitor:
     def __init__(self, document):
         self.document = document
 
-    def dispatch_visit(self, node, method_name):
-        method = getattr(self, 'visit_' + method_name, self.unknown_visit)
+    def dispatch_visit(self, node):
+        node_name = node.__class__.__name__
+        method = getattr(self, 'visit_' + node_name, self.unknown_visit)
+        self.document.reporter.debug(
+            'calling %s for %s' % (method.__name__, node_name),
+            category='nodes.NodeVisitor.dispatch_visit')
         return method(node)
 
-    def dispatch_departure(self, node, method_name):
+    def dispatch_departure(self, node):
+        node_name = node.__class__.__name__
         method = getattr(self, 'depart_' + method_name, self.unknown_departure)
+        self.document.reporter.debug(
+            'calling %s for %s' % (method.__name__, node_name),
+            category='nodes.NodeVisitor.dispatch_departure')
         return method(node)
 
     def unknown_visit(self, node):
