@@ -76,8 +76,6 @@ To do
   2. process the table and try to guess which of the columns is the narrowest 
      (contains only one liner/word) and make this one auto_width (center/left/right?).
 
-* pep headers come in different ?
-
 * tabularx says "do not use any multicolmn which spans any X column.
   maybe use ltxtable instead of tabularx (Longtable combined with tabularx).
   but ltxtable disables longtable's multicolumn.
