@@ -21,8 +21,6 @@ __version__ = "1.4.1+"
 __all__ = ['Option',
            'SUPPRESS_HELP',
            'SUPPRESS_USAGE',
-           'STD_HELP_OPTION',
-           'STD_VERSION_OPTION',
            'Values',
            'OptionContainer',
            'OptionGroup',
@@ -38,6 +36,7 @@ __all__ = ['Option',
 
 __copyright__ = """
 Copyright (c) 2001-2003 Gregory P. Ward.  All rights reserved.
+Copyright (c) 2002-2003 Python Software Foundation.  All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -70,6 +69,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import sys, os
 import types
 import textwrap
+
+# This file was generated from:
+#   Id: option_parser.py,v 1.57 2003/08/27 02:35:41 goodger Exp
+#   Id: option.py,v 1.26 2003/05/08 01:20:36 gward Exp
+#   Id: help.py,v 1.6 2003/08/27 02:35:41 goodger Exp
+#   Id: errors.py,v 1.7 2003/04/21 01:53:28 gward Exp
 
 class OptParseError (Exception):
     def __init__ (self, msg):
@@ -170,7 +175,7 @@ class HelpFormatter:
         indent = " "*self.current_indent
         return textwrap.fill(description, desc_width,
                              initial_indent=indent,
-                             subsequent_indent=indent)
+                             subsequent_indent=indent) + "\n"
 
     def format_option (self, option):
         # The help for each option consists of two parts:
@@ -645,13 +650,6 @@ class Option:
 SUPPRESS_HELP = "SUPPRESS"+"HELP"
 SUPPRESS_USAGE = "SUPPRESS"+"USAGE"
 
-STD_HELP_OPTION = Option("-h", "--help",
-                         action="help",
-                         help="show this help message and exit")
-STD_VERSION_OPTION = Option("--version",
-                            action="version",
-                            help="show program's version number and exit")
-
 
 class Values:
 
@@ -884,11 +882,12 @@ class OptionContainer:
             return ""
 
     def format_help (self, formatter):
+        result = []
         if self.description:
-            desc = self.format_description(formatter) + "\n"
-        else:
-            desc = ""
-        return desc + self.format_option_help(formatter)
+            result.append(self.format_description(formatter))
+        if self.option_list:
+            result.append(self.format_option_help(formatter))
+        return "\n".join(result)
 
 
 class OptionGroup (OptionContainer):
@@ -990,8 +989,8 @@ class OptionParser (OptionContainer):
 
         # Populate the option list; initial sources are the
         # standard_option_list class attribute, the 'option_list'
-        # argument, and the STD_VERSION_OPTION (if 'version' supplied)
-        # and STD_HELP_OPTION globals.
+        # argument, and (if applicable) the _add_version_option() and
+        # _add_help_option() methods.
         self._populate_option_list(option_list,
                                    add_help=add_help_option)
 
@@ -1005,15 +1004,25 @@ class OptionParser (OptionContainer):
         self.option_groups = []
         self._create_option_mappings()
 
+    def _add_help_option (self):
+        self.add_option("-h", "--help",
+                        action="help",
+                        help="show this help message and exit")
+
+    def _add_version_option (self):
+        self.add_option("--version",
+                        action="version",
+                        help="show program's version number and exit")
+
     def _populate_option_list (self, option_list, add_help=1):
         if self.standard_option_list:
             self.add_options(self.standard_option_list)
         if option_list:
             self.add_options(option_list)
         if self.version:
-            self.add_option(STD_VERSION_OPTION)
+            self._add_version_option()
         if add_help:
-            self.add_option(STD_HELP_OPTION)
+            self._add_help_option()
 
     def _init_parsing_state (self):
         # These are set in parse_args() for the convenience of callbacks.
@@ -1290,7 +1299,8 @@ class OptionParser (OptionContainer):
         should either exit or raise an exception.
         """
         self.print_usage(sys.stderr)
-        sys.exit("%s: error: %s" % (self.get_prog_name(), msg))
+        sys.stderr.write("%s: error: %s\n" % (self.get_prog_name(), msg))
+        sys.exit(2)                     # command-line usage error
 
     def get_usage (self):
         if self.usage:
