@@ -242,6 +242,8 @@ class Element(Node):
     def _rooted_dom_node(self, domroot):
         element = domroot.createElement(self.tagname)
         for attribute, value in self.attributes.items():
+            if type(value) is ListType:
+                value = ' '.join(value)
             element.setAttribute(attribute, str(value))
         for child in self.children:
             element.appendChild(child._rooted_dom_node(domroot))
@@ -541,6 +543,9 @@ class Targetable(Resolvable):
 
     referenced = 0
 
+class Labeled:
+    """Contains a `label` as its first element."""
+
 
 # ==============
 #  Root Element
@@ -636,7 +641,7 @@ class document(Root, Structural, Element):
 
     def asdom(self, dom=xml.dom.minidom):
         domroot = dom.Document()
-        domroot.appendChild(Element._rooted_dom_node(self, domroot))
+        domroot.appendChild(self._rooted_dom_node(domroot))
         return domroot
 
     def set_id(self, node, msgnode=None):
@@ -921,8 +926,8 @@ class warning(Admonition, Element): pass
 class comment(Special, PreBibliographic, TextElement): pass
 class substitution_definition(Special, TextElement): pass
 class target(Special, Inline, TextElement, Targetable): pass
-class footnote(General, Element, BackLinkable): pass
-class citation(General, Element, BackLinkable): pass
+class footnote(General, Element, Labeled, BackLinkable): pass
+class citation(General, Element, Labeled, BackLinkable): pass
 class label(Part, TextElement): pass
 class figure(General, Element): pass
 class caption(Part, TextElement): pass
