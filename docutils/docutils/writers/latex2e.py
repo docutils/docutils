@@ -232,8 +232,8 @@ class Babel:
         # pdflatex does not produce double quotes for ngerman in tt.
         self.double_quote_replacment = None
         if re.search('^de',self.language):
-            # maybe use: {\glqq} {\grqq}.
-            self.quotes = ("\"`", "\"'")
+            #self.quotes = ("\"`", "\"'")
+            self.quotes = ('{\\glqq}', '{\\grqq}')
             self.double_quote_replacment = "{\\dq}"
         else:
             self.quotes = ("``", "''")
