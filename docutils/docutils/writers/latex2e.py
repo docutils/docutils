@@ -1224,7 +1224,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # single element, it's surely is either a real one, otherwise
         # it's a parsed-literal that does not contain any markup.
         # 
-        if self.settings.use_verbatim_when_possible and (len(node) == 1):
+        if (self.settings.use_verbatim_when_possible and (len(node) == 1)
+              # in case of a parsed-literal containing just a "**bold**" word:
+              and isinstance(node[0], nodes.Text)):
             self.verbatim = 1
             self.body.append('\\begin{verbatim}\n')
         else:
