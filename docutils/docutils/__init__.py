@@ -21,7 +21,12 @@ Modules:
 
 - frontend.py: Command-line and common processing for Docutils front-ends.
 
+- io.py: Provides a uniform API for low-level input and output.
+
 - nodes.py: Docutils document tree (doctree) node class library.
+
+- optik.py: Option parsing and command-line help; from Greg Ward's
+  http://optik.sf.net/ project, included for convenience.
 
 - roman.py: Conversion to and from Roman numerals. Courtesy of Mark
   Pilgrim (http://diveintopython.org/).
