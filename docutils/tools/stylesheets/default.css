@@ -122,6 +122,11 @@ p.label {
 p.topic-title {
   font-weight: bold }
 
+pre.address {
+  margin-bottom: 0 ;
+  font-family: serif ;
+  font-size: 100% }
+
 pre.line-block {
   margin-left: 2em ;
   font-family: serif ;
