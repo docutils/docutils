@@ -117,6 +117,134 @@ Yes, it is correct, no warning necessary.
         Is this correct? Should it generate a warning?
         Yes, it is correct, no warning necessary.
 """],
+["""\
+Paragraph.
+
+   Block quote.
+
+   -- Attribution
+
+Paragraph.
+
+   Block quote.
+
+   --Attribution
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Paragraph.
+    <block_quote>
+        <paragraph>
+            Block quote.
+        <attribution>
+            Attribution
+    <paragraph>
+        Paragraph.
+    <block_quote>
+        <paragraph>
+            Block quote.
+        <attribution>
+            Attribution
+"""],
+["""\
+Paragraph.
+
+   Block quote.
+
+   -- Attribution line one
+   and line two
+
+Paragraph.
+
+   Block quote.
+
+   -- Attribution line one
+      and line two
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Paragraph.
+    <block_quote>
+        <paragraph>
+            Block quote.
+        <attribution>
+            Attribution line one
+            and line two
+    <paragraph>
+        Paragraph.
+    <block_quote>
+        <paragraph>
+            Block quote.
+        <attribution>
+            Attribution line one
+            and line two
+"""],
+["""\
+Paragraph.
+
+   -- Not an attribution
+
+Paragraph.
+
+   Block quote.
+
+   \-- Not an attribution
+
+Paragraph.
+
+   Block quote.
+
+   --- Not an attribution
+
+Paragraph.
+
+   Block quote.
+
+   -- Not an attribution line one
+      and line two
+          and line three
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Paragraph.
+    <block_quote>
+        <paragraph>
+            -- Not an attribution
+    <paragraph>
+        Paragraph.
+    <block_quote>
+        <paragraph>
+            Block quote.
+        <paragraph>
+            -- Not an attribution
+    <paragraph>
+        Paragraph.
+    <block_quote>
+        <paragraph>
+            Block quote.
+        <paragraph>
+            --- Not an attribution
+    <paragraph>
+        Paragraph.
+    <block_quote>
+        <paragraph>
+            Block quote.
+        <definition_list>
+            <definition_list_item>
+                <term>
+                    -- Not an attribution line one
+                <definition>
+                    <definition_list>
+                        <definition_list_item>
+                            <term>
+                                and line two
+                            <definition>
+                                <paragraph>
+                                    and line three
+"""],
 ]
 
 if __name__ == '__main__':

@@ -137,7 +137,7 @@ Here are examples of `body elements`_:
 
           This theory, that is mine, is mine.
 
-          Anne Elk (Miss)
+          -- Anne Elk (Miss)
 
 - `Doctest blocks`_::
 
@@ -1098,7 +1098,7 @@ Syntax diagram::
 Block Quotes
 ------------
 
-Doctree element: block_quote.
+Doctree element: block_quote, attribution.
 
 A text block that is indented relative to the preceding text, without
 markup indicating it to be a literal block, is a block quote.  All
@@ -1110,6 +1110,11 @@ within the block quote::
         "It is my business to know things.  That is my trade."
 
         -- Sherlock Holmes
+
+If the final block of a block quote begins with "--" (flush left
+within the block quote), it is interpreted as an attribution.  If the
+attribution consists of multiple lines, the left edges of the second
+and subsequent lines must align.
 
 Blank lines are required before and after a block quote, but these
 blank lines are not included as part of the block quote.
@@ -1123,6 +1128,9 @@ Syntax diagram::
        +---------------------------+
        | block quote               |
        | (body elements)+          |
+       |                           |
+       | -- attribution text       |
+       |    (optional)             |
        +---------------------------+
 
 

@@ -473,8 +473,7 @@ documentation.  Alternatives:
    could mean multi-line rows, and no bullet list means single-line
    rows only.
 
-Alternative #1 has been adopted by reStructuredText.  Alternatives 3-6
-are under consideration.
+Alternatives 1 and 5 has been adopted by reStructuredText.
 
 
 Delimitation of Inline Markup
