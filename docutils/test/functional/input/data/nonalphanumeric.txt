@@ -1,6 +1,3 @@
-Tests for the LaTeX writer
-==========================
-
 Monospaced non-alphanumeric characters
 --------------------------------------
 
