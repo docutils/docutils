@@ -20,6 +20,48 @@ __ enthought-rfp.html
 .. sectnum::
 
 
+Introduction
+============
+
+In March 2004 at I met Eric Jones, president and CTO of `Enthought,
+Inc.`_, at `PyCon 2004`_ in Washington DC.  He told me that Enthought
+was using reStructuredText_ for source code documentation, but they
+had some issues.  He asked if I'd be interested in doing some work on
+a customized API documentation tool.  Shortly after PyCon, Janet
+Swisher, Enthought's senior technical writer, contacted me to work out
+details.  Some email, a trip to Austin, and plenty of Texas
+hospitality later, the initial version of this document was the
+result.
+
+In a nutshell, Enthought is sponsoring the implementation of an open
+source API documentation tool that meets their needs.  Fortuitously,
+their needs coincide well with the "Python Source Reader" description
+in `PEP 258`_.  In other words, Enthought is funding some significant
+improvements to Docutils, improvements that were planned but never
+implemented due to time and other constraints.  The implementation
+will take place gradually over several months, on a part-time basis.
+
+This is an ideal example of cooperation between a corporation and an
+open-source project.  The corporation, the project, I personally, and
+the community all benefit.  Enthought, whose commitment to open source
+is also evidenced by their sponsorship of SciPy_, benefits by
+obtaining a useful piece of software, much more quickly than would
+have been possible without their support.  Docutils benefits directly
+from the implementation of one of its core subsystems.  I benefit from
+the funding, which allows me to justify the long hours to my wife and
+family.  All the corporations, projects, and individuals that make up
+the community will benefit from the end result, which will be great.
+
+All that's left now is to actually do the work!
+
+As details become clear and milestones are reached, I will update this
+document to reflect the evolution of the project.
+
+.. _PyCon 2004: http://pycon.org/dc2004/
+.. _reStructuredText: http://docutils.sf.net/rst.html
+.. _SciPy: http://www.scipy.org/
+
+
 Development Plan
 ================
 
