@@ -1396,7 +1396,58 @@ context.
 ``paragraph``
 =============
 
-`To be completed`_.
+The ``paragraph`` element contains the text and inline elements of a
+single paragraph, a fundamental building block of documents.
+
+
+Details
+-------
+
+Category
+    `Body Elements`_
+
+Parents
+    All elements employing the `%body.elements;`_ or
+    `%structure.model;`_ parameter entities in their content models
+    may contain ``paragraph``.
+
+Children
+    ``paragraph`` elements may contain text data plus `inline
+    elements`_.
+
+Analogies
+    ``paragraph`` is analogous to the HTML "p" element and the DocBook
+    "para" elements.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+    `%text.model;`_
+
+Attributes
+    The ``paragraph`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+Parameter Entities
+    The `%body.elements;`_ parameter entity directly includes
+    ``paragraph``.  The `%structure.model;`_ parameter entity
+    indirectly includes ``paragraph``.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    A paragraph.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <paragraph>
+        A paragraph.
 
 
 ``pending``
@@ -1522,11 +1573,11 @@ Parents
 
 Children
     ``section`` elements begin with a title_, and may contain `body
-    elements`_, and transition_ and topic_ elements.
+    elements`_ and transition_ and topic_ elements.
 
 Analogies
-    ``section`` is analogous to HTML "div" elements and to DocBook
-    recursive "section" elements.
+    ``section`` is analogous to DocBook recursive "section" elements,
+    and to HTML "div" elements combined with "h1" etc. title elements.
 
 
 Content Model
@@ -1860,13 +1911,146 @@ Pseudo-XML_ fragment from simple parsing::
 ``topic``
 =========
 
-`To be completed`_.
+The ``topic`` element is a nonrecursive section_-like construct which
+may occur at the top level of a section_ wherever a body element
+(list, table, etc.) is allowed.  In other words, ``topic`` elements
+cannot nest inside body elements, so you can't have a ``topic`` inside
+a ``table`` or a ``list``, or inside another ``topic``.
+
+
+Details
+-------
+
+Category
+    `Structural Elements`_
+
+Parents
+    The following elements may contain ``topic``: document_, section_
+
+Children
+    ``topic`` elements begin with a title_ and may contain `body
+    elements`_.
+
+Analogies
+    ``topic`` is analogous to the DocBook "simplesect" element.
+
+Processing
+    A ``topic`` element should be set off from the rest of the
+    document somehow, such as with indentation or a border.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+    (title_?,
+     (`%body.elements;`_)+)
+
+Attributes
+    The ``topic`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+Parameter Entities
+    The `%structure.model;`_ parameter entity directly includes
+    ``topic``.
+
+
+Examples
+--------
+
+The `"topic" directive`_ is used to create a ``topic`` element.
+reStructuredText source::
+
+    .. topic:: Title
+
+       Body.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <topic>
+        <title>
+            Title
+        <paragraph>
+            Body.
+
+.. _"topic" directive: rst/directives.html#topic
 
 
 ``transition``
 ==============
 
-`To be completed`_.
+The ``transition`` element is commonly seen in novels and short
+fiction, as a gap spanning one or more lines, with or without a type
+ornament such as a row of asterisks.  Transitions separate other body
+elements, dividing a section into untitled divisions.  A transition
+may not begin or end a section or document, nor may two transitions be
+immediately adjacent.
+
+See `Representation of Horizontal Rules`_ below.
+
+
+Details
+-------
+
+Category
+    `Structural Subelements`_
+
+Parents
+    The following elements may contain ``transition``: document_,
+    section_
+
+Children
+    ``transition`` is an empty element and has no children.
+
+Analogies
+    ``transition`` is analogous to the HTML "hr" element.
+
+Processing
+    The ``transition`` element is typically rendered as vertical
+    whitespace (more than that separating paragraphs), with or without
+    a horizontal line or row of asterisks.  In novels, transitions are
+    often represented as a row of three well-spaced asterisks with
+    vertical space above and below.
+
+
+Content Model
+-------------
+
+::
+
+    EMPTY
+
+The ``transition`` element has no content; it is a "point element".
+
+Attributes
+    The ``transition`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+Parameter Entities
+    The `%structure.model;`_ parameter entity directly includes
+    ``transition``.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    Paragraph 1.
+    
+    --------
+    
+    Paragraph 2.
+
+Complete pseudo-XML_ result after parsing::
+
+    <document>
+        <paragraph>
+            Paragraph 1.
+        <transition>
+        <paragraph>
+            Paragraph 2.
 
 
 ``version``
@@ -1997,7 +2181,8 @@ Attribute types:
 `Attribute type`_: ``%yesorno;``.  Default value: none (implies no).
 
 The ``anonymous`` attribute is used for unnamed hyperlinks in the
-target_ and reference_ elements.
+target_ and reference_ elements (via the `%anonymous.att;`_ parameter
+entity).
 
 
 ``auto``
@@ -2005,8 +2190,9 @@ target_ and reference_ elements.
 
 `Attribute type`_: ``CDATA``.  Default value: none.
 
-The ``auto`` attribute is used to indicate an automatically-numbered
-footnote_, footnote_reference_ or title_.
+The ``auto`` attribute is used to indicate automatically-numbered
+footnote_, footnote_reference_ and title_ elements (via the
+`%auto.att;`_ parameter entity).
 
 
 ``backrefs``
@@ -2016,7 +2202,7 @@ footnote_, footnote_reference_ or title_.
 
 The ``backrefs`` attribute contains a space-separated list of id_
 references, used for backlinks from footnote_, citation_, and
-system_message_ elements.
+system_message_ elements (via the `%backrefs.att;`_ parameter entity).
 
 
 ``class``
@@ -2075,7 +2261,8 @@ one of the `common attributes`_, shared by all Docutils elements.
 The ``refid`` attribute contains references to `id`_ attributes in
 other elements.  It is used by the target_, reference_,
 footnote_reference_, citation_reference_, title_ and problematic_
-elements.
+elements (via the `%refid.att;`_ and `%reference.atts;`_ parameter
+entities).
 
 
 ``refname``
@@ -2088,7 +2275,8 @@ The ``refname`` attribute contains an internal reference to the
 ``refname`` indicates an indirect target which may resolve to either
 an internal or external reference.  ``refname`` is used by the
 target_, reference_, footnote_reference_, citation_reference_, and
-substitution_reference_ elements.
+substitution_reference_ elements (via the `%refname.att;`_ and
+`%reference.atts;`_ parameter entities).
 
 
 ``refuri``
@@ -2098,7 +2286,8 @@ substitution_reference_ elements.
 
 The ``refuri`` attribute contains an external reference to a URI/URL.
 It is used by the target_, reference_, footnote_reference_, and
-citation_reference_ elements.
+citation_reference_ elements (via the `%reference.atts;`_ parameter
+entity).
 
 
 ``source``
@@ -2119,10 +2308,11 @@ the `common attributes`_, shared by all Docutils elements.
 
 The ``xml:space`` attribute is a standard XML attribute for
 whitespace-preserving elements.  It is used by the literal_block_,
-line_block_, doctest_block_, comment_, and raw_ elements.  It is a
-fixed attribute, meant to communicate to an XML parser that the
-element contains significant whitespace.  The attribute value should
-not be set in a document instance.
+line_block_, doctest_block_, comment_, and raw_ elements (via the
+`%fixedspace.att;`_ parameter entity).  It is a fixed attribute, meant
+to communicate to an XML parser that the element contains significant
+whitespace.  The attribute value should not be set in a document
+instance.
 
 
 --------------------
@@ -2153,6 +2343,9 @@ Entity definition:
 
     anonymous_ %yesorno; #IMPLIED
 
+The reference_ and target_ elements directly employ the
+``%anonymous.att;`` parameter entity in their attribute lists.
+
 
 ``%auto.att;``
 ==============
@@ -2165,6 +2358,9 @@ Entity definition:
 .. parsed-literal::
 
     auto_     CDATA     #IMPLIED
+
+The footnote_, footnote_reference_, and title_ elements directly
+employ the ``%auto.att;`` parameter entity in their attribute lists.
 
 
 ``%backrefs.att;``
@@ -2179,12 +2375,15 @@ Entity definition:
 
     backrefs_  IDREFS    #IMPLIED
 
+The citation_, footnote_, and system_message_ elements directly employ
+the ``%backrefs.att;`` parameter entity in their attribute lists.
+
 
 ``%basic.atts;``
 ================
 
 The ``%basic.atts;`` parameter entity lists attributes common to all
-elements.  See `Common Attributes`_.
+Docutils elements.  See `Common Attributes`_.
 
 Entity definition:
 
@@ -2219,6 +2418,9 @@ Entity definition:
 The ``%additional.bibliographic.elements;`` parameter entity can be used by
 wrapper DTDs to extend ``%bibliographic.elements;``.
 
+Only the docinfo_ element directly employs the
+``%bibliographic.elements;`` parameter entity in its content model.
+
 
 ``%body.elements;``
 ===================
@@ -2244,6 +2446,16 @@ Entity definition:
 The ``%additional.body.elements;`` parameter entity can be used by
 wrapper DTDs to extend ``%body.elements;``.
 
+The ``%body.elements;`` parameter entity is directly employed in the
+content models of the following elements: attention_, block_quote_,
+caution_, citation_, danger_, definition_, description_, entry_,
+error_, field_body_, footer_, footnote_, header_, hint_, important_,
+legend_, list_item_, note_, system_message_, tip_, topic_, warning_
+
+Via `%structure.model;`_, the ``%body.elements;`` parameter entity is
+indirectly employed in the content models of the document_ and
+section_ elements.
+
 
 ``%fixedspace.att;``
 ====================
@@ -2257,6 +2469,10 @@ Entity definition:
 .. parsed-literal::
 
     `xml:space`_ (default | preserve) #FIXED 'preserve'
+
+The ``%fixedspace.att;`` parameter entity is directly employed in the
+attribute lists of the following elements: address_, comment_,
+doctest_block_, line_block_, literal_block_, raw_
 
 
 ``%inline.elements;``
@@ -2278,6 +2494,14 @@ Entity definition:
 The ``%additional.inline.elements;`` parameter entity can be used by
 wrapper DTDs to extend ``%inline.elements;``.
 
+Via `%text.model;`_, the ``%inline.elements;`` parameter entity is
+indirectly employed in the content models of the following elements:
+address_, author_, caption_, classifier_, contact_, copyright_, date_,
+doctest_block_, emphasis_, generated_, interpreted_, line_block_,
+literal_block_, organization_, paragraph_, problematic_, raw_,
+reference_, revision_, status_, strong_, substitution_definition_,
+substitution_reference_, subtitle_, target_, term_, title_, version_
+
 
 ``%reference.atts;``
 ====================
@@ -2297,6 +2521,10 @@ Entity definition:
 The ``%additional.reference.atts;`` parameter entity can be used by
 wrapper DTDs to extend ``%additional.reference.atts;``.
 
+The citation_reference_, footnote_reference_, reference_, and target_
+elements directly employ the ``%reference.att;`` parameter entity in
+their attribute lists.
+
 
 ``%refid.att;``
 ================
@@ -2309,6 +2537,13 @@ Entity definition:
 .. parsed-literal::
 
     refid_   CDATA     #IMPLIED
+
+The title_ and problematic_ elements directly employ the
+``%refid.att;`` parameter entity in their attribute lists.
+
+Via `%reference.atts;`_, the ``%refid.att;`` parameter entity is
+indirectly employed in the attribute lists of the citation_reference_,
+footnote_reference_, reference_, and target_ elements.
 
 
 ``%refname.att;``
@@ -2326,6 +2561,13 @@ Entity definition:
 
     refname_  NMTOKENS  #IMPLIED
 
+The substitution_reference_ element directly employs the
+``%refname.att;`` parameter entity in its attribute list.
+
+Via `%reference.atts;`_, the ``%refname.att;`` parameter entity is
+indirectly employed in the attribute lists of the citation_reference_,
+footnote_reference_, reference_, and target_ elements.
+
 
 ``%refuri.att;``
 ================
@@ -2338,6 +2580,10 @@ Entity definition:
 .. parsed-literal::
 
     refuri_   CDATA     #IMPLIED
+
+Via `%reference.atts;`_, the ``%refuri.att;`` parameter entity is
+indirectly employed in the attribute lists of the citation_reference_,
+footnote_reference_, reference_, and target_ elements.
 
 
 ``%section.elements;``
@@ -2357,14 +2603,17 @@ Entity definition:
 The ``%additional.section.elements;`` parameter entity can be used
 by wrapper DTDs to extend ``%section.elements;``.
 
+Via `%structure.model;`_, the ``%section.elements;`` parameter entity
+is indirectly employed in the content models of the document_ and
+section_ elements.
+
 
 ``%structure.model;``
 =====================
 
-The ``%structure.model;`` parameter entity is used by document_ and
-section_ elements.  It encapsulates the hierarchical structure of a
-document and of its constituent parts.  See the discussion of the
-`element hierarchy`_ above.
+The ``%structure.model;`` parameter entity encapsulates the
+hierarchical structure of a document and of its constituent parts.
+See the discussion of the `element hierarchy`_ above.
 
 Entity definition:
 
@@ -2385,6 +2634,9 @@ Each document_ or section_ contains either:
 - one or more sections (whose contents are recursively the same as this
   model).
 
+The `%structure.model;`_ parameter entity is directly employed in the
+content models of the document_ and section_ elements.
+
 
 ``%text.model;``
 ================
@@ -2397,6 +2649,14 @@ Entity definition:
 .. parsed-literal::
 
     (#PCDATA | `%inline.elements;`_)*
+
+The ``%text.model;`` parameter entity is directly employed in the
+content models of the following elements: address_, author_, caption_,
+classifier_, contact_, copyright_, date_, doctest_block_, emphasis_,
+generated_, interpreted_, line_block_, literal_block_, organization_,
+paragraph_, problematic_, raw_, reference_, revision_, status_,
+strong_, substitution_definition_, substitution_reference_, subtitle_,
+target_, term_, title_, version_
 
 
 ----------------------
