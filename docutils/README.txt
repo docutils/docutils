@@ -48,7 +48,7 @@ complete details.
    directory as in step 3.  For example::
 
        cd tools
-       rst2html.py test.txt test.html
+       ./rst2html.py test.txt test.html
 
    See Usage_ below for details.
 
@@ -257,7 +257,7 @@ After unpacking and installing the Docutils package, the following
 shell commands will generate HTML for all included documentation::
 
     cd <archive_directory_path>/tools
-    buildhtml.py ../
+    ./buildhtml.py ../
 
 The final directory name of the ``<archive_directory_path>`` is
 "docutils" for snapshots.  For official releases, the directory may be
