@@ -25,7 +25,7 @@ and related projects:
     Marc-Andre Lemburg, Julien Letessier, Wolfgang Lipp, Edward Loper,
     Dallas Mahrt, Ken Manheimer, Skip Montanaro, Paul Moore, Michel
     Pelletier, Sam Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim,
-    Tavis Rudd, Ollie Rutherfurd, Kenichi Sato, Ueli Schlaepfer,
+    Tavis Rudd, Oliver Rutherfurd, Kenichi Sato, Ueli Schlaepfer,
     Gunnar Schwant, tav, Bob Tolbert, Laurence Tratt, Guido van
     Rossum, Greg Ward, Barry Warsaw, Edward Welbourne, Ka-Ping Yee,
     Moshe Zadka

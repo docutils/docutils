@@ -21,84 +21,70 @@ For background about transforms and the Transformer object, see `PEP
 Transforms Listed in Priority Order
 ===================================
 
-==============================  ======================  ========
-Transform: module.Class         Added By                Priority
-==============================  ======================  ========
-references.Substitutions        standalone (r)          220
+==============================  ============================  ========
+Transform: module.Class         Added By                      Priority
+==============================  ============================  ========
+references.Substitutions        standalone (r), pep (r)       220
 
-                                pep (r)                 
+frontmatter.DocTitle            standalone (r)                320
 
-frontmatter.DocTitle            standalone (r)          320
+frontmatter.DocInfo             standalone (r)                340
 
-frontmatter.DocInfo             standalone (r)          340
+peps.Headers                    pep (r)                       360
 
-peps.Headers                    pep (r)                 360
+peps.Contents                   pep (r)                       380
 
-peps.Contents                   pep (r)                 380
+references.ChainedTargets       standalone (r), pep (r)       420
 
-references.ChainedTargets       standalone (r)          420
+references.AnonymousHyperlinks  standalone (r), pep (r)       440
 
-                                pep (r)                 
+references.IndirectHyperlinks   standalone (r), pep (r)       460
 
-references.AnonymousHyperlinks  standalone (r)          440
+peps.TargetNotes                pep (r)                       520
 
-                                pep (r)                 
+references.TargetNotes          peps.TargetNotes (t/p)        0
 
-references.IndirectHyperlinks   standalone (r)          460
+references.TargetNotes          "target-notes" (d/p)          540
 
-                                pep (r)                 
+references.Footnotes            standalone (r), pep (r)       620
 
-peps.TargetNotes                pep (r)                 520
+references.ExternalTargets      standalone (r), pep (r)       640
 
-references.TargetNotes          peps.TargetNotes (t)    0
+references.InternalTargets      standalone (r), pep (r)       660
 
-                                "target-notes" (d)      540
+parts.SectNum                   "sectnum" (d/p)               710
 
-references.Footnotes            standalone (r)          620
+parts.Contents                  "contents" (d/p),             720
+                                peps.Contents (t/p)
 
-                                pep (r)                 
+peps.PEPZero                    pep.Headers (t/p)             760
 
-references.ExternalTargets      standalone (r)          640
+components.Filter               "meta" (d/p)                  780
 
-                                pep (r)                 
+universal.Decorations           Transformer                   820
 
-references.InternalTargets      standalone (r)          660
+universal.FinalChecks           Transformer                   840
 
-                                pep (r)                 
+universal.Messages              Transformer                   860
 
-parts.SectNum                   "sectnum" (d)           710
+universal.TestMessages          DocutilsTestSupport           890
+==============================  ============================  ========
 
-parts.Contents                  "contents" (d)          720
-
-                                peps.Contents (t)       
-
-peps.PEPZero                    pep.Headers (t)         760
-
-components.Filter               "meta" (d)              780
-
-universal.Decorations           all Readers             820
-
-universal.FinalChecks           all Writers             840
-
-universal.Messages              all Writers             860
-
-universal.TestMessages          DocutilsTestSupport     890
-==============================  ======================  ========
-
-Legend:
+Key:
 
 * (r): Reader
 * (d): Directive
 * (t): Transform
+* (/p): Via a "pending" node
 
 
 Transform Priority Range Categories
 ===================================
 
 ====  ====  ================================================
- Priority   Category
+ Priority
 ----------  ------------------------------------------------
-From   To
+From   To   Category
 ====  ====  ================================================
          0  immediate execution (added by another transform)
 ----------  ------------------------------------------------

@@ -313,8 +313,8 @@ code::
         else:
             messages = []
             title = None
-        pending = nodes.pending(parts.Contents, 'first writer', 
-                                {'title': title}, block_text)
+        pending = nodes.pending(parts.Contents, {'title': title},
+                                block_text)
         pending.details.update(options)
         state_machine.document.note_pending(pending)
         return [pending] + messages
@@ -345,8 +345,4 @@ Aspects of note include:
    options, effectively communicating the options forward.  The actual
    table of contents processing is performed by a transform,
    ``docutils.transforms.parts.Contents``, after the rest of the
-   document has been parsed. [#]_
-
-.. [#] Please note that the priority system for transforms, indicated
-   above by ``'first writer'`` in the call to the ``nodes.pending``
-   class, is due for an overhaul.
+   document has been parsed.

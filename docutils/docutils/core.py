@@ -163,11 +163,11 @@ class Publisher:
         output = self.writer.write(document, self.destination)
         if self.settings.dump_settings:
             from pprint import pformat
-            print >>sys.stderr, '\n::: Docutils settings:'
+            print >>sys.stderr, '\n::: Runtime settings:'
             print >>sys.stderr, pformat(self.settings.__dict__)
         if self.settings.dump_internals:
             from pprint import pformat
-            print >>sys.stderr, '\n::: Docutils internals:'
+            print >>sys.stderr, '\n::: Document internals:'
             print >>sys.stderr, pformat(document.__dict__)
         if self.settings.dump_transforms:
             from pprint import pformat
