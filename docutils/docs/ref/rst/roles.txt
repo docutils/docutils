@@ -193,7 +193,8 @@ processing::
 ``:title-reference:`` is the default interpreted text role in the
 standard reStructuredText parser.  This means that no explicit role is
 required.  Applications of reStructuredText may designate a different
-default role, in which case the explicit role must be used.
+default role, in which case the explicit ``:title-reference:`` role
+must be used to obtain a ``title_reference`` element.
 
 
 .. _pseudo-XML: ../doctree.html#pseudo-xml
