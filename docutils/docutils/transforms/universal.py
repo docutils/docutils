@@ -57,10 +57,15 @@ class Decorations(Transform):
         options = self.document.options
         if options.generator or options.datestamp or options.source_link:
             text = []
-            if options.source_link and self.document.hasattr('source'):
+            if options.source_link and options.source or options.source_uri:
+                if options.source_uri:
+                    source = options.source_uri
+                else:
+                    source = utils.relative_uri(options.destination,
+                                                options.source)
                 text.extend([
                     nodes.reference('', 'View document source',
-                                    refuri=self.document['source']),
+                                    refuri=source),
                     nodes.Text('. ')])
             if options.datestamp:
                 datestamp = time.strftime(options.datestamp, time.gmtime())
