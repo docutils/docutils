@@ -459,7 +459,7 @@ Field: marker is missing its open-colon.
                     Me
     <system_message level="2" type="WARNING">
         <paragraph>
-            Field list ends without a blank line; unexpected unindent at line 4.
+            Field list ends without a blank line; unexpected unindent at line 5.
     <paragraph>
         No blank line before this paragraph.
     <field_list>

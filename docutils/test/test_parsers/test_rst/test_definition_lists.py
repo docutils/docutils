@@ -136,6 +136,34 @@ term 2
 """],
 ["""\
 term 1
+  definition 1 (no blank line below)
+term 2
+  definition 2
+No blank line after the definition list.
+""",
+"""\
+<document>
+    <definition_list>
+        <definition_list_item>
+            <term>
+                term 1
+            <definition>
+                <paragraph>
+                    definition 1 (no blank line below)
+        <definition_list_item>
+            <term>
+                term 2
+            <definition>
+                <paragraph>
+                    definition 2
+    <system_message level="2" type="WARNING">
+        <paragraph>
+            Definition list ends without a blank line; unexpected unindent at line 5.
+    <paragraph>
+        No blank line after the definition list.
+"""],
+["""\
+term 1
   definition 1
 
   term 1a

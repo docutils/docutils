@@ -57,6 +57,7 @@ General
 - @@ Add support for character set encodings on input & output, Unicode
   internally.
 
+  - Default UTF-8 on both input & output, overrideable.
   - Use an "encoding" directive, and/or an "encoding" field in field
     lists & PEP headers.  (The same could apply to "language".)
   - Need a Unicode -> HTML entities codec for HTML writer?
@@ -135,11 +136,11 @@ reStructuredText Parser
   - issue a warning when processing documents with no default role
     which contain interpreted text with no explicitly specified role
 
-- Fix the parser's indentation handling to conform with the stricter
-  definition in the spec.  (Explicit markup blocks should be strict or
-  forgiving?)
+- @@ Fix the parser's indentation handling to conform with the
+  stricter definition in the spec.  (Explicit markup blocks should be
+  strict or forgiving?)
 
-- Tighten up the spec for indentation of "constructs using complex
+- @@ Tighten up the spec for indentation of "constructs using complex
   markers": field lists and option lists?  Bodies may begin on the
   same line as the marker or on a subsequent line (with blank lines
   optional).  Require that for bodies beginning on the same line as
@@ -266,9 +267,9 @@ Directives
   - _`body.columns`: Multi-column table/list, with number of columns
     as argument.
 
-  - _`body.verse`: Paragraphs with linebreaks preserved, *and* inline
-    markup support too.  Use cases: verse (poetry, song lyrics, etc.),
-    address blocks.  A directive would be easy; what about a
+  - @@ _`body.verse`: Paragraphs with linebreaks preserved, *and*
+    inline markup support too.  Use cases: verse (poetry, song lyrics,
+    etc.), address blocks.  A directive would be easy; what about a
     literal-block-like prefix, perhaps "``;;``"?  (It is, after all, a
     *semi-literal* literal block, no?)  Example::
 

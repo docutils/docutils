@@ -96,8 +96,8 @@ class TreeCopyVisitorTests(unittest.TestCase):
     def compare_trees(self, one, two):
         self.assertEquals(one.__class__, two.__class__)
         self.assertNotEquals(id(one), id(two))
-        children1 = one.getchildren()
-        children2 = two.getchildren()
+        children1 = one.get_children()
+        children2 = two.get_children()
         self.assertEquals(len(children1), len(children2))
         for i in range(len(children1)):
             self.compare_trees(children1[i], children2[i])
