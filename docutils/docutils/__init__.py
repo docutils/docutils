@@ -111,6 +111,9 @@ class Component(SettingsSpec, TransformSpec):
 
     """Base class for Docutils components."""
 
+    component_type = None
+    """Override in subclasses."""
+
     supported = ()
     """Names for this component.  Override in subclasses."""
 
@@ -118,8 +121,7 @@ class Component(SettingsSpec, TransformSpec):
         """
         Is `format` supported by this component?
 
-        To be used by transforms to ask the component (Reader or Writer)
-        controlling the transform if that component supports a certain input
-        context or output format.
+        To be used by transforms to ask the dependent component if it supports
+        a certain input context or output format.
         """
         return format in self.supported
