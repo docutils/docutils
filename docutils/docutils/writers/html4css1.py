@@ -22,6 +22,10 @@ import os.path
 import time
 import re
 from types import ListType
+try:
+    import Image                        # check for the Python Imaging Library
+except ImportError:
+    Image = None
 import docutils
 from docutils import frontend, nodes, utils, writers, languages
 
@@ -780,6 +784,23 @@ class HTMLTranslator(nodes.NodeVisitor):
             del atts['class']           # prevent duplication with node attrs
         atts['src'] = atts['uri']
         del atts['uri']
+        if atts.has_key('scale'):
+            if Image and not (atts.has_key('width')
+                              and atts.has_key('height')):
+                try:
+                    im = Image.open(str(atts['src']))
+                except (IOError, # Source image can't be found or opened
+                        UnicodeError):  # PIL doesn't like Unicode paths.
+                    pass
+                else:
+                    if not atts.has_key('width'):
+                        atts['width'] = int(im.size[0]
+                                            * (float(atts['scale']) / 100))
+                    if not atts.has_key('height'):
+                        atts['height'] = int(im.size[1]
+                                             * (float(atts['scale']) / 100))
+                    del im
+            del atts['scale']
         if not atts.has_key('alt'):
             atts['alt'] = atts['src']
         if isinstance(node.parent, nodes.TextElement):
