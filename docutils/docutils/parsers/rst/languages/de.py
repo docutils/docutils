@@ -37,7 +37,8 @@ directives = {
       'epigraph': 'epigraph',
       'highlights (translation required)': 'highlights',
       'pull-quote (translation required)': 'pull-quote', # kasten too ?
-      'compound (translation required)': 'compound',
+      'zusammengesetzt': 'compound',
+      'verbund': 'compound',
       #'fragen': 'questions',
       'tabelle': 'table',
       'csv-tabelle': 'csv-table',
