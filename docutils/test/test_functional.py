@@ -112,7 +112,9 @@ class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
         # Get the expected output *after* writing the actual output.
         self.assert_(os.access(expected_path, os.R_OK),\
                      'Cannot find expected output at\n' + expected_path)
-        expected = open(expected_path).read()
+        f = open(expected_path, 'rU')
+        expected = f.read()
+        f.close()
         diff = ('The expected and actual output differs.\n'
                 'Please compare the expected and actual output files:\n'
                 '  diff %s %s\n'
