@@ -77,7 +77,7 @@ class Translator(nodes.NodeVisitor):
         self.context = []
         self.inBulletList = False
         self.inEnumList = False
-        self.newSection = False
+        self.bodyOne = False
 
     def astext(self):
         """Return the final formatted document as a string."""
@@ -367,6 +367,7 @@ class Translator(nodes.NodeVisitor):
 
     def depart_figure(self, node):
         self.body.append(self.end_para)
+        self.bodyOne = True
 
     def visit_footnote(self, node):
         raise nodes.SkipNode
@@ -517,8 +518,8 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.end_charstyle)
 
     def visit_literal_block(self, node):
-##         self.body.append(self.start_para % '.code first')
-##         self.body.append(self.end_para)
+        self.body.append(self.start_para % '.code first')
+        self.body.append(self.end_para)
         lines = self.encode(node.astext())
         lines = lines.split('\n')
         while lines[-1] == '':
@@ -529,8 +530,9 @@ class Translator(nodes.NodeVisitor):
             line = self.compress_spaces(line)
             self.body.append(line)
             self.body.append(self.end_para)
-##         self.body.append(self.start_para % '.code last')
-##         self.body.append(self.end_para)
+        self.body.append(self.start_para % '.code last')
+        self.body.append(self.end_para)
+        self.bodyOne = True
         raise nodes.SkipNode
 
     def visit_note(self, node):
@@ -598,9 +600,11 @@ class Translator(nodes.NodeVisitor):
             style = '.bullet'
         elif self.inEnumList:
             style = '.numlist'
-        elif self.newSection:
+        elif node.astext().startswith('(annotation)'):
+            style = '.code NOTATION'
+        elif self.bodyOne or node.astext().startswith('#'):
             style = '.body1'
-            self.newSection = False
+            self.bodyOne = False
         if not self.skip_para_tag:
             self.body.append(self.start_para % style)
 
@@ -646,7 +650,7 @@ class Translator(nodes.NodeVisitor):
 
     def visit_section(self, node):
         self.section_level += 1
-        self.newSection = True
+        self.bodyOne = True
 
     def depart_section(self, node):
         self.section_level -= 1
