@@ -80,6 +80,8 @@ Changes Since 0.3
   - Reordered components for OptionParser; application comes last.
   - Added "config_section" parameter to several methods and functions,
     allowing front ends to easily specify their config file sections.
+  - Added publish_parts convenience function to allow access to individual
+    parts of a document
 
 * docutils/frontend.py:
 
@@ -207,6 +209,11 @@ Changes Since 0.3
     to FinalCheckVisitor for application-specific handling of 
     unresolvable references.
   
+* docutils/writers/__init__.py:
+
+  - Added assemble_parts method to the Writer class to allow for
+    access to a documents individual parts.
+
 * docutils/writers/html4css1.py:
 
   - Fixed unicode handling of attribute values (bug 760673).
@@ -217,6 +224,8 @@ Changes Since 0.3
   - Added support for table titles.
   - Added "<title />" for untitled docs, for XHTML conformance; thanks
     to Darek Suchojad.
+  - Added functionality to keep track of individual parts of a document
+    and store them in a dictionary as the "parts" attribute of the writer.
 
 * docutils/writers/latex2e.py:
 
@@ -240,6 +249,13 @@ Changes Since 0.3
 
   - Added test/test_settings.py & test/data/config_*.txt support
     files.
+  - Added test/test_writers/test_htmlfragment.py.
+
+* test/DocutilsTestSupport.py:
+
+  - Added HtmlWriterPublishTestCase and HtmlFragmentTestSuite classes to
+    test the processing of HTML fragments which use the new publish_parts
+    convenience function.
 
 * tools/buildhtml.py:
 
