@@ -386,11 +386,11 @@ class FunctionVisitor(DocstringVisitor):
         special = []
         argnames = list(node.argnames)
         if node.kwargs:
-            special.append(make_parameter(argnames[-1], excess_keyword=True))
+            special.append(make_parameter(argnames[-1], excess_keyword=1))
             argnames.pop()
         if node.varargs:
             special.append(make_parameter(argnames[-1],
-                                          excess_positional=True))
+                                          excess_positional=1))
             argnames.pop()
         defaults = list(node.defaults)
         defaults = [None] * (len(argnames) - len(defaults)) + defaults
@@ -689,7 +689,11 @@ def make_attribute(name, lineno):
     n.append(make_object_name(name))
     return n
 
-def make_parameter(name, excess_keyword=False, excess_positional=False):
+def make_parameter(name, excess_keyword=0, excess_positional=0):
+    """
+    excess_keyword and excess_positional must be either 1 or 0, and
+    not both of them can be 1.
+    """
     n = pynodes.parameter()
     n.append(make_object_name(name))
     assert not excess_keyword or not excess_positional
