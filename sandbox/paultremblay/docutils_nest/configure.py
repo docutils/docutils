@@ -1,18 +1,19 @@
+
 # /usr/bin/env python 
 
 import sys, os
-import options_trem
+import docutils_nest.options_trem
 
 """
 
-The configuration script gets the target from the command line. It changest the setup.py and the actual scrilpt so that they have the right target.
+The configuration script gets the target from the command line. It creates a file with the configuration variable, and a short script for the rest of script to be able to read and locate he configuration files.
 
 """
 
 def configure():
     target = get_target()
-    change_setup(target)
-    change_script(target)
+    make_var_file(target)
+    make_location(target)
 
 def get_target():
     """
@@ -21,6 +22,64 @@ def get_target():
     /etc/nest_docutis
 
     """
+    options_dict = {
+        'target':     [1, 't'],
+    }
+    options_obj = docutils_nest.options_trem.ParseOptions(sys.argv, 
+            options_dict)
+    opt_dict, args = options_obj.parse_options()
+    if opt_dict == 0:
+        sys.stderr.write('invalid way to run configure:\n'
+                'python configure.py --target <directory of choice>'
+                )
+        sys.exit(1)
+    target = opt_dict.get('target')
+    if not target:
+        target = default_target()
+    return target
+
+def default_target():
+    sys.stdout.write('using default /etc for configuration directory\n')
+    return '/etc'
+    
+def make_var_file(target):
+    write_obj = open('var_file', 'w')
+    # write_obj.write('[global]\n')
+    write_obj.write(target)
+    write_obj.close()
+
+def make_location(target):
+    write_obj = open('docutils_nest/location.py', 'w')
+    write_obj.write(
+    """
+def get_location():
+    return '%s'
+
+
+    """
+    % target)
+
+
+if __name__ == '__main__':
+    configure()
+
+
+
+
+
+"""
+# /usr/bin/env python 
+
+import sys, os
+import options_trem
+
+
+def configure():
+    target = get_target()
+    change_setup(target)
+    change_script(target)
+
+def get_target():
     options_dict = {
         'target':     [1, 't'],
     }
@@ -36,11 +95,6 @@ def get_target():
     return target
 
 def change_setup(target):
-    """
-
-    Chage the setup.py file to reflect the target
-
-    """
     read_obj = open('setup.py', 'r')
     write_obj = open('temp', 'w')
     line = 1
@@ -65,11 +119,6 @@ def change_setup(target):
 
 def change_script(target):
 
-    """
-
-    Changet the script to reflect the right target
-
-    """
     read_obj = open('docutils_nest/nest_docutils.py', 'r')
     write_obj = open('temp', 'w')
     line = 1
@@ -94,3 +143,4 @@ def change_script(target):
 
 if __name__ == '__main__':
     configure()
+"""
