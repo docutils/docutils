@@ -1,0 +1,17 @@
+#!/bin/sh
+
+CMD="py22 ./latex.py"
+
+if [ -z "$1" ] ; then
+  FM="*.txt"
+else
+  FM=$1
+fi
+
+for INF in `ls test/$FM` ; do
+  OUTF="$INF.tex"
+  REFF="$OUTF.ref"
+  $CMD $INF > $OUTF
+  diff -q -s $REFF $OUTF 
+  echo --------------------------
+done
