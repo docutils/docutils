@@ -96,7 +96,7 @@ latex_head + """\
 \\pdfbookmark[0]{Table of Contents}{table-of-contents}
 \\subsection*{~\\hfill Table of Contents\\hfill ~}
 \\begin{list}{}{}
-\\item \\href{#title-2}{Title 2}
+\\item \\href{\#title-2}{Title 2}
 
 \\end{list}
 
