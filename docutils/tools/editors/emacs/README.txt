@@ -25,7 +25,7 @@ here are some useful resources for Emacs users in the Unicode world:
 
       (setq mac-command-key-is-meta t) ;; nil for option key
 
-  Other useful resources are here:
-  <http://members.shaw.ca/akochoi-emacs/stories/faq.html>.
+  Other useful resources are in `Andrew Choi's Emacs 21 for Mac OS X
+  FAQ <http://members.shaw.ca/akochoi-emacs/stories/faq.html>`__.
 
 .. _reStructuredText: http://docutils.sf.net/rst.html
