@@ -75,11 +75,14 @@ class ElementTests(unittest.TestCase):
                           '<Element attr="1">text\nmore</Element>')
         dom.unlink()
         self.assertEquals(element.pformat(),
-"""\
-<Element attr="1">
-    text
-    more
-""")
+                          '<Element attr="1">\n    text\n    more\n')
+
+    def test_clear(self):
+        element = nodes.Element()
+        element += nodes.Element()
+        self.assert_(len(element))
+        element.clear()
+        self.assert_(not len(element))
 
 
 class MiscTests(unittest.TestCase):
