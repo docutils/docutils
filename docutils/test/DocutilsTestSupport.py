@@ -36,6 +36,7 @@ from docutils import statemachine, nodes, urischemes, utils, transforms
 from docutils.transforms import universal
 from docutils.parsers import rst
 from docutils.parsers.rst import states, tableparser, directives, languages
+from docutils.readers import pep
 from docutils.statemachine import string2lines
 
 try:
@@ -229,15 +230,19 @@ class TransformTestCase(CustomTestCase):
         del kwargs['transforms'], kwargs['parser'] # only wanted here
         CustomTestCase.__init__(self, *args, **kwargs)
 
+    def supports(self, format):
+        return 1
+
     def test_transforms(self):
         if self.runInDebugger:
             pdb.set_trace()
-        doctree = utils.newdocument(warninglevel=5, errorlevel=5,
-                                    debug=package_unittest.debug)
-        self.parser.parse(self.input, doctree)
+        document = utils.new_document(warning_level=1, error_level=5,
+                                      debug=package_unittest.debug,
+                                      stream=DevNull())
+        self.parser.parse(self.input, document)
         for transformClass in (self.transforms + universal.test_transforms):
-            transformClass(doctree).transform()
-        output = doctree.pformat()
+            transformClass(document, self).transform()
+        output = document.pformat()
         self.compareOutput(self.input, output, self.expected)
 
     def test_transforms_verbosely(self):
@@ -246,14 +251,15 @@ class TransformTestCase(CustomTestCase):
         print '\n', self.id
         print '-' * 70
         print self.input
-        doctree = utils.newdocument(warninglevel=5, errorlevel=5,
-                                    debug=package_unittest.debug)
-        self.parser.parse(self.input, doctree)
+        document = utils.new_document(warning_level=1, error_level=5,
+                                      debug=package_unittest.debug,
+                                      stream=DevNull())
+        self.parser.parse(self.input, document)
         print '-' * 70
-        print doctree.pformat()
+        print document.pformat()
         for transformClass in self.transforms:
-            transformClass(doctree).transform()
-        output = doctree.pformat()
+            transformClass(document).transform()
+        output = document.pformat()
         print '-' * 70
         print output
         self.compareOutput(self.input, output, self.expected)
@@ -275,8 +281,8 @@ class ParserTestCase(CustomTestCase):
     def test_parser(self):
         if self.runInDebugger:
             pdb.set_trace()
-        document = utils.newdocument(warninglevel=5, errorlevel=5,
-                                     debug=package_unittest.debug)
+        document = utils.new_document(warning_level=5, error_level=5,
+                                      debug=package_unittest.debug)
         self.parser.parse(self.input, document)
         output = document.pformat()
         self.compareOutput(self.input, output, self.expected)
@@ -320,19 +326,19 @@ class ParserTestSuite(CustomTestSuite):
                       runInDebugger=runInDebugger)
 
 
-class RFC2822ParserTestCase(ParserTestCase):
+class PEPParserTestCase(ParserTestCase):
 
-    """RFC2822-specific parser test case."""
+    """PEP-specific parser test case."""
 
-    parser = rst.Parser(rfc2822=1)
-    """Parser shared by all RFC2822ParserTestCases."""
+    parser = rst.Parser(rfc2822=1, inliner=pep.Inliner())
+    """Parser shared by all PEPParserTestCases."""
 
 
-class RFC2822ParserTestSuite(ParserTestSuite):
+class PEPParserTestSuite(ParserTestSuite):
 
-    """A collection of RFC2822ParserTestCases."""
+    """A collection of PEPParserTestCases."""
 
-    test_case_class = RFC2822ParserTestCase
+    test_case_class = PEPParserTestCase
 
 
 class TableParserTestSuite(CustomTestSuite):
@@ -397,3 +403,11 @@ class TableParserTestCase(CustomTestCase):
             output = '%s: %s' % (details.__class__.__name__, details)
         self.compareOutput(self.input, pformat(output) + '\n',
                            pformat(self.expected) + '\n')
+
+
+class DevNull:
+
+    """Output sink."""
+
+    def write(self, string):
+        pass
