@@ -51,7 +51,9 @@ Bugs
 
 * In text inserted by the "include" directive, errors are often not
   reported with the correct "source" or "line" numbers.  Perhaps all
-  Reporter calls need a "base_node" parameter.
+  Reporter calls need a "base_node" parameter.  There's a test in
+  test/test_parsers/test_rst/test_directives/test_include.py
+  (commented out, because the test fails).
 
 
 General
