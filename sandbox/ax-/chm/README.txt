@@ -6,18 +6,12 @@ docutils documentation in Microsoft HTML Help (chm) format
 :Date: $Date$
 :Web site: http://docutils.sourceforge.net/sandbox/ax-/chm/
 
-this is the complete docutils_ documentation - all \*.txt files and 
-`docs/rst/quickref.html`_ - in a single, toc'ed, and full-text searchable 
-chm file. the `first version`_ was handmade (and incomplete). the 
-current version uses Ollie Rutherfurd's lovely rst2chm_::
-
-  rst2chm.py --title=reStructuredText --default-topic=docs\rst\quickref.html 
-             --no-clean --stylesheet=tools\stylesheets\default.css rst.chm
-             docs\rst\*.txt spec\rst\*.txt docs\*.txt *.txt spec\*.txt spec\howto\*.txt
-
-and a few manual improvements (inclusion and "sectioning" of 
-`docs/rst/quickref.html`_, some rearrangements of toc entries, and 
-improved stylesheets) (and is complete).
+this is the complete docutils_ documentation - all \*.txt files and
+`docs/user/rst/quickref.html`_ - in a single, toc'ed, and full-text searchable
+chm file. the `first version`_ was handmade (and incomplete). the current
+version uses Ollie Rutherfurd's lovely rst2chm_ and a few manual improvements
+(inclusion and "sectioning" of `docs/rst/quickref.html`_, some rearrangements of
+toc entries, and improved stylesheets) (and is complete).
 
 the chm is also available from http://chm.kollm.org/ [#]_.
 
