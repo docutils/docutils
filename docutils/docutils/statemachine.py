@@ -107,7 +107,6 @@ __docformat__ = 'restructuredtext'
 
 import sys
 import re
-import string
 
 
 class StateMachine:
