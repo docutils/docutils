@@ -73,6 +73,7 @@ class MoinWriter(html4css1.Writer):
                                  self.request,
                                  self.wikiparser)
         self.document.walkabout(visitor)
+        self.visitor = visitor
         self.output = html_escape_unicode(visitor.astext())
         
 
@@ -119,6 +120,10 @@ class MoinTranslator(html4css1.HTMLTranslator):
             string = string.replace('</p>', '')
             string = string.replace('\n', '')
             string = re.sub('> ', '>', string)
+            # Everything seems to have a space ending the text block. We want to
+            # get rid of this
+            if len(string) and string[-1] == ' ':
+                string = string[:-1]
         self.body.append(string)
         
     def visit_section(self, node):
@@ -144,14 +149,20 @@ class MoinTranslator(html4css1.HTMLTranslator):
             if ':' not in node['refuri']:
                 # The node should have a whitespace normalized name if the
                 # docutlis restructured text parser would normally fully
-                # normalize the name.
-                if 'name' in node.attributes:
-                    self.wikiparser.raw = '[:%s: %s]' % (node['name'], 
-                                                         node.astext())
+                # normalize the name. Also need to make sure we should be using
+                # the name attribute instead of the refuri if the refuri really
+                # is just the name fully normalized. We check by seeing if they
+                # are the same string taking away any case modifications.
+                # if 'name' in node.attributes and \
+                # node['name'].lower() == node['refuri'].lower():
+                if 'origuri' in node.attributes and len(node['origuri']):
+                    target = node['origuri']
+                elif 'name' in node.attributes:
+                    target = node['name']
                 else:
-                    self.wikiparser.raw = '[:%s: %s]' % (node['refuri'], 
-                                                         node.astext())
-
+                    target = node['refuri']
+                self.wikiparser.raw = '[:%s: %s]' % (target, 
+                                                     node.astext())
                 self.wikiparser.format(self.formatter)
                 handled = 1
             self.strip_paragraph = 0
