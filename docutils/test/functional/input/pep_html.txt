@@ -1,7 +1,7 @@
 PEP: 100
 Title: Test PEP
-Version: $Revision$
-Last-Modified: $Date$
+Version: 42
+Last-Modified: A long time ago.
 Author: John Doe <john@example.org>
 Discussions-To: <devnull@example.org>
 Status: Draft
