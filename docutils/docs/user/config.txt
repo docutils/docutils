@@ -36,23 +36,25 @@ files, in the following order:
    located in the user's home directory.  Settings in this file will
    override corresponding settings in both the system-wide and
    project-specific configuration files.
-   
+
 If more than one configuration file is found, all will be read but
 later entries will override earlier ones.  For example, a "stylesheet"
 entry in a user-specific configuration file will override a
 "stylesheet" entry in the system-wide file.
 
-You can replace the default 3 pathes with the environment variable
-``DOCUTILSCONFIG``.  It should a colon-separated (semicolon-separated
-on windows) sequence of files to search instead (leave it empty to
-search no files at all).  Tilde-expansion is performed; relative
-pathes are relative to current working directory; empty-string path
-items are ignored.
+The default implicit config file paths can be overridden by the
+``DOCUTILSCONFIG`` environment variable.  ``DOCUTILSCONFIG`` should
+contain a colon-separated (semicolon-separated on Windows) sequence of
+config file paths to search for; leave it empty to disable implicit
+config files altogether.  Tilde-expansion is performed on paths.
+Paths are interpreted relative to the current working directory.
+Empty path items are ignored.
 
 In addition, a configuration file may be explicitly specified with the
 "--config" command-line option.  This configuration file is read after
-the three implicit ones listed above (or the ones defined by
-``DOCUTILSCONFIG``), and its entries will have priority.
+the three implicit ones listed above (or the ones defined by the
+``DOCUTILSCONFIG`` environment variable), and its entries will have
+priority.
 
 
 -------------------------
