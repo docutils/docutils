@@ -45,7 +45,16 @@ class Writer(writers.Writer):
           '"brackets".  Default is "superscript".',
           ['--footnote-references'],
           {'choices': ['superscript', 'brackets'], 'default': 'superscript',
-           'metavar': '<FORMAT>'}),))
+           'metavar': '<FORMAT>'}),
+         ('Remove extra vertical whitespace between items of bullet lists '
+          'and enumerated lists, when list items are "simple" (i.e., all '
+          'items each contain one paragraph and/or one "simple" sublist '
+          'only).  Default: enabled.',
+          ['--compact-lists'],
+          {'default': 1, 'action': 'store_true'}),
+         ('Disable compact simple bullet and enumerated lists.',
+          ['--no-compact-lists'],
+          {'dest': 'compact_lists', 'action': 'store_false'}),))
 
     relative_path_options = ('stylesheet_path',)
 
@@ -126,7 +135,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
-        options = document.options
+        self.options = options = document.options
         self.language = languages.get_language(options.language_code)
         if options.stylesheet_path:
             stylesheet = utils.relative_path(options._destination,
@@ -276,9 +285,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         old_compact_simple = self.compact_simple
         self.context.append((self.compact_simple, self.compact_p))
         self.compact_p = None
-        self.compact_simple = (self.compact_simple
-                               or self.topic_class == 'contents'
-                               or self.check_simple_list(node))
+        self.compact_simple = (self.options.compact_lists and
+                               (self.compact_simple
+                                or self.topic_class == 'contents'
+                                or self.check_simple_list(node)))
         if self.compact_simple and not old_compact_simple:
             atts['class'] = 'simple'
         self.body.append(self.starttag(node, 'ul', **atts))
@@ -495,9 +505,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         old_compact_simple = self.compact_simple
         self.context.append((self.compact_simple, self.compact_p))
         self.compact_p = None
-        self.compact_simple = (self.compact_simple
-                               or self.topic_class == 'contents'
-                               or self.check_simple_list(node))
+        self.compact_simple = (self.options.compact_lists and
+                               (self.compact_simple
+                                or self.topic_class == 'contents'
+                                or self.check_simple_list(node)))
         if self.compact_simple and not old_compact_simple:
             atts['class'] = (atts.get('class', '') + ' simple').strip()
         self.body.append(self.starttag(node, 'ol', **atts))
@@ -585,8 +596,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.footnote_backrefs(node)
 
     def footnote_backrefs(self, node):
-        if self.document.options.footnote_backlinks \
-               and node.hasattr('backrefs'):
+        if self.options.footnote_backlinks and node.hasattr('backrefs'):
             backrefs = node['backrefs']
             if len(backrefs) == 1:
                 self.context.append('')
@@ -615,7 +625,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             href = '#' + node['refid']
         elif node.has_key('refname'):
             href = '#' + self.document.nameids[node['refname']]
-        format = self.document.options.footnote_references
+        format = self.options.footnote_references
         if format == 'brackets':
             suffix = '['
             self.context.append(']')
