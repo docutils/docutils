@@ -181,7 +181,7 @@ if ! diff -q $htdocs_tarball $htdocs_new_tarball > /dev/null; then
         cat > ~/htdocs.patch
         ~/bin/bspatch ~/htdocs.tar ~/htdocs.new.tar ~/htdocs.patch
         cd $remotehtdocs
-        tar xf ~/htdocs.new.tar
+        tar xmf ~/htdocs.new.tar
         rm -f ~/htdocs.tar
         mv ~/htdocs.new.tar ~/htdocs.tar
         rm -f ~/htdocs.patch
