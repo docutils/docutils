@@ -1625,17 +1625,24 @@ indirect.
     An inline form of internal hyperlink target is available; see
     `Inline Internal Targets`_.
 
-2. _`External hyperlink targets` have an absolute or relative URI in
-   their link blocks.  For example, take the following input::
+2. _`External hyperlink targets` have an absolute or relative URI or
+   email address in their link blocks.  For example, take the
+   following input::
 
        See the Python_ home page for info.
 
-       .. _Python: http://www.python.org
+       `Write to me`_ with your questions.
 
-   After processing into HTML, the hyperlink might be expressed as::
+       .. _Python: http://www.python.org
+       .. _Write to me: jdoe@example.com
+
+   After processing into HTML, the hyperlinks might be expressed as::
 
        See the <a href="http://www.python.org">Python</a> home page
        for info.
+
+       <a href="mailto:jdoe@example.com">Write to me</a> with your
+       questions.
 
    An external hyperlink's URI may begin on the same line as the
    explicit markup start and target name, or it may begin in an
@@ -1660,6 +1667,9 @@ indirect.
        This link_ refers to a file called ``underscore_``.
 
        .. _link: underscore\_
+
+   It is possible (although not generally recommended) to include URIs
+   directly within hyperlink references.  See `Embedded URIs`_ below.
 
 3. _`Indirect hyperlink targets` have a hyperlink reference in their
    link blocks.  In the following example, target "one" indirectly
@@ -2365,6 +2375,56 @@ in the document.  See `Hyperlink Targets`_ for a full description).
 `Anonymous hyperlinks`_ (which see) do not use reference names to
 match references to targets, but otherwise behave similarly to named
 hyperlinks.
+
+
+Embedded URIs
+`````````````
+
+A hyperlink reference may directly embed a target URI inline, within
+angle brackets ("<...>") as follows::
+
+    See the `Python home page <http://www.python.org>`_ for info.
+
+This is exactly equivalent to::
+
+    See the `Python home page`_ for info.
+
+    .. _Python home page: http://www.python.org
+
+The bracketed URI must be preceded by whitespace and be the last text
+before the end string.  With a single trailing underscore, the
+reference is named and the same target URI may be referred to again.
+
+With two trailing underscores, the reference and target are both
+anonymous, and the target cannot be referred to again.  These are
+"one-off" hyperlinks.  For example::
+
+    `RFC 2396 <http://www.rfc-editor.org/rfc/rfc2396.txt>`__ and `RFC
+    2732 <http://www.rfc-editor.org/rfc/rfc2732.txt>`__ together
+    define the syntax of URIs.
+
+Equivalent to::
+
+    `RFC 2396`__ and `RFC 2732`__ together define the syntax of URIs.
+
+    __ http://www.rfc-editor.org/rfc/rfc2396.txt
+    __ http://www.rfc-editor.org/rfc/rfc2732.txt
+
+If reference text happens to end with angle-bracketed text that is
+*not* a URI, the open-angle-bracket needs to be backslash-escaped.
+For example, here is a reference to a title describing a tag::
+
+    See `HTML Element: \<a>`_ below.
+
+.. Caution::
+
+   This construct offers easy authoring and maintenance of hyperlinks
+   at the expense of general readability.  Inline URIs, especially
+   long ones, inevitably interrupt the natural flow of text.  For
+   documents meant to be read in source form, the use of independent
+   block-level `hyperlink targets`_ is **strongly** recommended.  The
+   embedded URI construct is most suited to documents intended *only*
+   to be read in processed form.
 
 
 Inline Internal Targets
