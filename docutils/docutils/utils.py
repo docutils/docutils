@@ -450,6 +450,19 @@ def relative_path(source, target):
     parts = ['..'] * (len(source_parts) - 1) + target_parts
     return '/'.join(parts)
 
+def get_stylesheet_reference(settings, relative_to=None):
+    """
+    Retrieve a stylesheet reference from the settings object.
+    """
+    if settings.stylesheet_path:
+        assert not settings.stylesheet, \
+               'stylesheet and stylesheet_path are mutually exclusive.'
+        if relative_to == None:
+            relative_to = settings._destination
+        return relative_path(relative_to, settings.stylesheet_path)
+    else:
+        return settings.stylesheet
+
 def get_source_line(node):
     """
     Return the "source" and "line" attributes from the `node` given or from
@@ -464,13 +477,32 @@ def get_source_line(node):
 
 class DependencyList:
     
+    """
+    List of dependencies, with file recording support.
+    """
+    
     def __init__(self, output_file=None, dependencies=[]):
-        self.list = []
+        """
+        Initialize the dependency list, automatically setting the
+        output file to `output_file` (see `set_output()`) and adding
+        all supplied dependencies.
+        """
         self.set_output(output_file)
         for i in dependencies:
             self.add(i)
 
     def set_output(self, output_file):
+        """
+        Set the output file and clear the list of already added
+        dependencies.
+
+        `output_file` must be a string.  The specified file is
+        immediately overwritten.
+
+        If output_file is '-', the output will be written to stdout.
+        If it is None, no file output is done when calling add().
+        """
+        self.list = []
         if output_file == '-':
             self.file = sys.stdout
         elif output_file:
@@ -479,6 +511,11 @@ class DependencyList:
             self.file = None
 
     def add(self, filename):
+        """
+        If the dependency `filename` has not already been added,
+        append it to self.list and print it to self.file if self.file
+        is not None.
+        """
         if not filename in self.list:
             self.list.append(filename)
             if self.file is not None:
