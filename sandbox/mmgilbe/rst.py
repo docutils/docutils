@@ -99,13 +99,15 @@ class Parser:
         
     def format(self, formatter):
         parts =  publish_parts(source = self.raw,
-                               writer = MoinWriter(formatter, self.request),
-                               settings_overrides = {'traceback': 1})
-        text = '<h2>' + parts['title'] + '</h2>'
+                               writer = MoinWriter(formatter, self.request))
+        text = ''
+        if parts['title']:
+            text += '<h2>' + parts['title'] + '</h2>'
         # If there is only one subtitle then it is held in parts['subtitle'].
         # However, if there is more than one subtitle then this is empty and
         # fragment contains all of the subtitles.
-        text += '<h3>' + parts['subtitle'] + '</h3>'
+        if parts['subtitle']:
+            text += '<h3>' + parts['subtitle'] + '</h3>'
         text += parts['fragment']
         self.request.write(html_escape_unicode(text))
         
@@ -116,8 +118,6 @@ class MoinTranslator(html4css1.HTMLTranslator):
         html4css1.HTMLTranslator.__init__(self, document)
         self.formatter = formatter
         self.request = request
-        # MMG: Do we need this? Not sure what its doing.
-        self.level = 0
         # We supply our own request.write so that the html is added to the
         # html4css1 body list instead of printed to stdout by the default
         # MoinTranslator writer. MMG: Confirm this is really what we're doing. 
@@ -172,7 +172,7 @@ class MoinTranslator(html4css1.HTMLTranslator):
                 self.strip_paragraph = 1
                 # Sometimes a newline will creep in to the node's text. This
                 # throws the moinmoin regex so a link will not get processed.
-                node_text = node.astext().replace('\n', '')
+                node_text = node.astext().replace('\n', ' ')
                 self.wikiparser.raw = '[%s %s]' % (target, 
                                                    node_text)
                 self.wikiparser.format(self.formatter)
