@@ -18,6 +18,7 @@ __docformat__ = 'reStructuredText'
 
 import sys
 import os
+import os.path
 import time
 import re
 from types import ListType
@@ -174,7 +175,8 @@ class HTMLTranslator(nodes.NodeVisitor):
                                     % settings.output_encoding)
         self.head = []
         if settings.embed_stylesheet:
-            stylesheet = self.get_stylesheet_reference(os.getcwd())
+            stylesheet = self.get_stylesheet_reference(
+                os.path.join(os.getcwd(), 'dummy'))
             stylesheet_text = open(stylesheet).read()
             self.stylesheet = [self.embedded_stylesheet % stylesheet_text]
         else:
