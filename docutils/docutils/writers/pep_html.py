@@ -22,7 +22,8 @@ class Writer(html4css1.Writer):
 
     cmdline_options = html4css1.Writer.cmdline_options + (
         'PEP/HTML-Specific Options',
-        None,
+        'The HTML --footnote-references option is set to "brackets" by '
+        'default.',
         (('Specify a PEP stylesheet URL, used verbatim.  Default is '
           '--stylesheet\'s value.  If given, --pep-stylesheet overrides '
           '--stylesheet.',

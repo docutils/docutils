@@ -77,7 +77,7 @@ class Publisher:
     def setup_option_parser(self, usage=None, description=None,
                             option_spec=None, **defaults):
         option_parser = OptionParser(
-            components=(option_spec, self.reader, self.parser, self.writer),
+            components=(option_spec, self.parser, self.reader, self.writer),
             usage=usage, description=description)
         config = ConfigParser()
         config.read_standard_files()

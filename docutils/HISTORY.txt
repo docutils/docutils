@@ -101,6 +101,10 @@ Specific:
     system messages.
   - Fixed a bug in ``relative_path()``.
 
+* docutils/parser/rst/__init__.py:
+
+  - Added the "--pep-references" and "--rfc-references" options.
+
 * docutils/parsers/rst/states.py:
 
   - Changed "title under/overline too short" system messages from INFO
@@ -109,6 +113,8 @@ Specific:
     titles to begin with enumerators.
   - Converted system messages to use the new "line" attribute.
   - Fixed a substitution reference edge case.
+  - Added support for "--pep-references" and "--rfc-references"
+    options; reworked ``Inliner`` code to make customization easier.
 
 * docutils/parsers/rst/directives/body.py: Added to project.  Contains
   the "topic", "line-block", and "parsed-literal" directives.
@@ -128,6 +134,8 @@ Specific:
 * docutils/readers/pep.py:
 
   - Added the ``peps.TargetNotes`` transform to the Reader.
+  - Removed PEP & RFC reference detection code; moved to
+    parsers/rst/states.py as options (enabled here by default).
 
 * docutils/transforms/frontmatter.py:
 
@@ -173,6 +181,7 @@ Specific:
     verbatim.  Added "--stylesheet-path", interpreted w.r.t. the
     working directory.
   - Added "--footnote-references" option (superscript or brackets).
+  - Added "--compact-lists" and "--no-compact-lists" options.
 
 * docutils/writers/pep_html.py:
 
@@ -199,6 +208,7 @@ Specific:
 
   - Added a "Getting Help" section.
   - Added a style to make section header backlinks more subtle.
+  - Added an admonition against using field lists arbitrarily.
 
 * spec/doctree.txt:
 
@@ -236,6 +246,10 @@ Specific:
     "line-block", "parsed-literal", "include".
   - Formalized descriptions of directive details.
 
+* spec/rst/introduction.txt:
+
+  - Added pointers to material for new users.
+
 * spec/rst/reStructuredText.txt:
 
   - Disambiguated comments (just add a newline after the "::").
@@ -245,6 +259,7 @@ Specific:
   - Added a note redirecting newbies to the user docs.
   - Expanded description of inline markup start-strings in non-markup
     contexts.
+  - Strengthened the admonition against using field lists arbitrarily.
 
 * tools/buildhtml.py:
 
