@@ -7,23 +7,30 @@
 :Copyright: This module has been placed in the public domain.
 """
 
+__docformat__ = 'reStructuredText'
+
 import os
 from docutils.utils import new_document
 import docutils.nodes as nodes
 from package import Package, NotPython
 from docutils.readers.python.moduleparser import Module, Class, Docstring
 
-def make_document(tree):
+def make_document(tree,settings=None):
     """Return a docutils Document tree constructed from this Python tree.
 
     The tree given must be either a Package or Module tree.
     """
 
-    # @@@ Assumes a Package at the head of the tree
-    # (I can't fix that until I've got a test case to prove I need it,
-    # but I *suspect* that I just need to call make_module_section!)
-    document = new_document("Package %s"%tree.filename)
-    section = make_package_section(tree)
+    # @@@ Can it ever be anything other than a package or module?
+    # I'd assert not - the module is the basic "smallest unit".
+    # Should we test that?
+    if isinstance(tree,Package):
+        document = new_document("Package %s"%tree.filename,settings)
+        section = make_package_section(tree)
+    else:
+        document = new_document("Module %s"%os.path.splitext(tree.filename)[0],
+                                settings)
+        section = make_module_section(tree)
     document.append(section)
     return document
 
@@ -67,7 +74,7 @@ def make_package_section(tree,parent_name=None):
             section.append(subsection)
     for child in tree.children:
         if isinstance(child,NotPython):
-            subsection = make_file_section(child,tree_name)
+            subsection = make_not_python_section(child,tree_name)
             section.append(subsection)
     for child in tree.children:
         if isinstance(child,Package):
@@ -104,14 +111,13 @@ def make_module_section(tree,parent_name=None):
 
     return section
 
-def make_file_section(tree,parent_name=None):
+def make_not_python_section(tree,parent_name=None):
     """Return a docutils tree constructed from this NotPython (file) sub-tree
     """
-    file_name = os.path.splitext(tree.filename)[0]
     if parent_name:
-        tree_name = "%s.%s"%(parent_name,file_name)
+        tree_name = "%s.%s"%(parent_name,tree.filename)
     else:
-        tree_name = file_name
+        tree_name = tree.filename
     title = "File %s"%(tree_name)
 
     # @@@ Same considerations on id/name as above
@@ -120,7 +126,7 @@ def make_file_section(tree,parent_name=None):
     title = nodes.title(text=title)
     section.append(title)
     paragraph = nodes.paragraph(text="File ")
-    paragraph.append(nodes.literal(text=file_name))
+    paragraph.append(nodes.literal(text=tree.filename))
     paragraph.append(nodes.Text(" is not a Python module."))
     section.append(paragraph)
     return section

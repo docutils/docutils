@@ -13,10 +13,18 @@ mechanisms used for the Docutils self-tests.
 :Copyright: This module has been placed in the public domain.
 """
 
+__docformat__ = 'reStructuredText'
+
 import unittest
 
 from package import parse_package, NotAPackageException
 from transform import make_document
+
+# The following is to ensure that there are .pyc files in the package
+# - this is important for testing, since the Python compiler gets quite
+# unhappy if given a non-text file to play with (it doesn't like null bytes),
+# so we need to do something about that...
+import trivial_package
 
 class PackageTest(unittest.TestCase):
 
@@ -169,4 +177,3 @@ class PackageTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
