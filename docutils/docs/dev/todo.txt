@@ -120,9 +120,9 @@ General
   top-level modules if the module name is not in docutils/readers.
   Potential nastiness.)
 
-* Perhaps store a _`name-to-id mapping file`?  This could be stored
-  permanently, read by subsequent processing runs, and updated with
-  new entries.  ("Persistent ID mapping"?)
+* @@@ Perhaps store a _`name-to-id mapping file`?  This could be
+  stored permanently, read by subsequent processing runs, and updated
+  with new entries.  ("Persistent ID mapping"?)
 
 * Need a Unicode to HTML entities codec for HTML writer?  No, the
   "xmlcharrefreplace" output encoding error handler is sufficient.
@@ -963,6 +963,24 @@ __ rst/alternatives.html#or-not-to-do
 
 * Add an option to add URI schemes at runtime.
 
+* _`Segmented lists`::
+
+      : segment : segment : segment
+      : segment : segment : very long 
+        segment
+      : segment : segment : segment
+
+  The initial colon (":") can be thought of as a type of bullet
+
+  We could even have segment titles::
+
+      :: title  : title   : title
+      : segment : segment : segment
+      : segment : segment : segment
+
+  This would correspond well to DocBook's SegmentedList.  Output could
+  be tabular or "name: value" pairs, as described in DocBook's docs.
+
 
 Directives
 ``````````
@@ -1365,7 +1383,7 @@ when used in a document.
     directive which transforms a uniform two-level bullet list into a
     table.  Using a directive would allow the author to explicitly set
     the table's orientation (by column or by row), the presence of row
-    headers, etc.
+    headers, etc.  How to handle row and/or column spans?
 
   - _`colorize.python`: Colorize Python code.  Fine for HTML output,
     but what about other formats?  Revert to a literal block?  Do we

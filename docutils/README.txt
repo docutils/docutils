@@ -115,9 +115,18 @@ To run the code, Python 2.2 or later [#py21]_ must already be
 installed.  The latest release is recommended (2.2.2 as of this
 writing).  Python is available from http://www.python.org/.
 
+The `Python Imaging Library`, or PIL, is used for some image
+manipulation operations if it is installed.
+
+Docutils uses Greg Ward's Optik_/optparse option processing package.
+It is included in the Docutils distribution.
+
 .. [#py21] Python 2.1 may be used providing the compiler package is
    installed.  The compiler package can be found in the Tools/
    directory of Python 2.1's source distribution.
+
+.. _Python Imaging Library: http://www.pythonware.com/products/pil/
+.. _Optik: http://optik.sourceforge.net/
 
 
 Project Files & Directories
