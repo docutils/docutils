@@ -7,6 +7,12 @@
 :Revision: $Revision$
 :Date: $Date$
 
+.. contents::
+
+
+Introduction
+============
+
 Once the Docutils package is unpacked, you will discover a "``tools``"
 directory containing several front ends for common Docutils
 processing.  Rather than a single all-purpose program, Docutils has
@@ -29,11 +35,25 @@ used for the destination.  If no arguments are specified, the standard
 input (stdin) is used for the source as well.
 
 
-.. contents::
+Getting Help
+------------
 
+Users who have questions or need assistance with Docutils or
+reStructuredText should `post a message`_ to the `Docutils-Users
+mailing list`_.  The `Docutils project web site`_ has more
+information.
+
+.. _post a message: mailto:docutils-users@lists.sourceforge.net
+.. _Docutils-Users mailing list:
+   http://lists.sourceforge.net/lists/listinfo/docutils-users
+.. _Docutils project web site: http://docutils.sourceforge.net/
+
+
+The Tools
+=========
 
 buildhtml.py
-============
+------------
 
 :Readers: Standalone, PEP
 :Parser: reStructuredText
@@ -69,7 +89,7 @@ override config file settings or replace them altogether.
 
 
 html.py
-=======
+-------
 
 :Reader: Standalone
 :Parser: reStructuredText
@@ -95,7 +115,7 @@ of processing, and links to the Docutils projects, add some options::
 
 
 Stylesheets
------------
+```````````
 
 ``html.py`` inserts into the generated HTML a link to a cascading
 stylesheet, defaulting to "``default.css``" (override with a
@@ -123,7 +143,7 @@ incremental experimentation.
 
 
 pep.py
-======
+------
 
 :Reader: PEP
 :Parser: reStructuredText
@@ -146,7 +166,7 @@ for more information.
 
 
 pep2html.py
-===========
+-----------
 
 :Reader: PEP
 :Parser: reStructuredText
@@ -167,7 +187,7 @@ files.  If no arguments are given, all files of the form
 
 
 docutils-xml.py
-===============
+---------------
 
 :Reader: Standalone
 :Parser: reStructuredText
@@ -179,7 +199,7 @@ processors into arbitrary final forms.
 
 
 publish.py
-==========
+----------
 
 :Reader: Standalone
 :Parser: reStructuredText
@@ -193,7 +213,7 @@ attributes for any leftover "pending" elements are also given.
 
 
 quicktest.py
-============
+------------
 
 :Reader: N/A
 :Parser: reStructuredText
