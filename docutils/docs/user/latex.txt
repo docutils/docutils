@@ -176,6 +176,16 @@ numbers one has to add following lines to the stylesheet ::
   \renewcommand{\numberline}[1]{}
 
 
+images
+------
+
+Images are included in LaTeX by the graphicx package. The supported
+image formats depend on the used driver (dvi, dvips, pdftex, ...).
+
+pdf-image inclusion in pdf files fails, specify ``--graphicx-option=pdftex``
+or ``--graphicx-option=auto``.
+
+
 Commands directly to LaTeX
 ==========================
 
