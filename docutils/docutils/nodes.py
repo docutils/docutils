@@ -301,11 +301,11 @@ class Element(Node):
 
         element['att'] = 'value'
 
-    There are two special attributes: 'id' and 'name'.  Both are
-    unique, and names serve as human interfaces to IDs.  Names are
-    case- and whitespace-normalized (see the fully_normalize_name()
-    function), and IDs conform to the regular expression
-    ``[a-z](-?[a-z0-9]+)*`` (see the make_id() function).
+    There are two special attributes: 'ids' and 'names'.  Both are
+    lists of unique identifiers, and names serve as human interfaces
+    to IDs.  Names are case- and whitespace-normalized (see the
+    fully_normalize_name() function), and IDs conform to the regular
+    expression ``[a-z](-?[a-z0-9]+)*`` (see the make_id() function).
 
     Elements also emulate lists for child nodes (element nodes and/or text
     nodes), indexing by integer.  To get the first child node, use::
