@@ -422,8 +422,9 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_definition(self, node):
         self.body.append('</dt>\n')
         self.body.append(self.starttag(node, 'dd', ''))
-        if len(node) and isinstance(node[0], nodes.paragraph):
+        if len(node):
             node[0].set_class('first')
+            node[-1].set_class('last')
 
     def depart_definition(self, node):
         self.body.append('</dd>\n')
@@ -442,8 +443,9 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_description(self, node):
         self.body.append(self.starttag(node, 'td', ''))
-        if len(node) and isinstance(node[0], nodes.paragraph):
+        if len(node):
             node[0].set_class('first')
+            node[-1].set_class('last')
 
     def depart_description(self, node):
         self.body.append('</td>')
@@ -472,6 +474,11 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'tr', ''))
         self.body.append('<th class="docinfo-name">%s:</th>\n<td>'
                          % self.language.labels[name])
+        if len(node):
+            if isinstance(node[0], nodes.Element):
+                node[0].set_class('first')
+            if isinstance(node[0], nodes.Element):
+                node[-1].set_class('last')
 
     def depart_docinfo_item(self):
         self.body.append('</td></tr>\n')
@@ -509,8 +516,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.context.append('</%s>\n' % tagname.lower())
         if len(node) == 0:              # empty cell
             self.body.append('&nbsp;')
-        elif isinstance(node[0], nodes.paragraph):
+        else:
             node[0].set_class('first')
+            node[-1].set_class('last')
 
     def depart_entry(self, node):
         self.body.append(self.context.pop())
@@ -557,8 +565,9 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_field_body(self, node):
         self.body.append(self.starttag(node, 'td', '', CLASS='field-body'))
-        if len(node) and isinstance(node[0], nodes.paragraph):
+        if len(node):
             node[0].set_class('first')
+            node[-1].set_class('last')
 
     def depart_field_body(self, node):
         self.body.append('</td>\n')
@@ -735,8 +744,9 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_list_item(self, node):
         self.body.append(self.starttag(node, 'li', ''))
-        if len(node) and isinstance(node[0], nodes.paragraph):
+        if len(node):
             node[0].set_class('first')
+            node[-1].set_class('last')
 
     def depart_list_item(self, node):
         self.body.append('</li>\n')
