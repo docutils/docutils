@@ -147,6 +147,23 @@ Paragraph.
         <attribution>
             Attribution
 """],
+[u"""\
+Paragraph.
+
+   Block quote.
+
+   \u2014 Attribution
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Paragraph.
+    <block_quote>
+        <paragraph>
+            Block quote.
+        <attribution>
+            Attribution
+"""],
 ["""\
 Paragraph.
 

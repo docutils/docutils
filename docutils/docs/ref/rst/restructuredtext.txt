@@ -1112,10 +1112,10 @@ within the block quote::
 
         -- Sherlock Holmes
 
-If the final block of a block quote begins with "--" (flush left
-within the block quote), it is interpreted as an attribution.  If the
-attribution consists of multiple lines, the left edges of the second
-and subsequent lines must align.
+If the final block of a block quote begins with "--" or a true em-dash
+(flush left within the block quote), it is interpreted as an
+attribution.  If the attribution consists of multiple lines, the left
+edges of the second and subsequent lines must align.
 
 Blank lines are required before and after a block quote, but these
 blank lines are not included as part of the block quote.
