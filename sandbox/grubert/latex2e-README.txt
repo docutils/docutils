@@ -123,49 +123,36 @@ ATTENTION
     \textwidth, it may be different within an environment such as list or quote 
     environments.
 
-Done
-~~~~
+* from http://netra.wustl.edu/links/LaTeX/LaTeX.html
 
-* HACK --snap-footnote-refs=1 to strip trailing blanks from item preceeding a footnote-ref.
-* add a LaTeX-nbsp (~) before a LaTeX-newline to avoid "LaTeX-Error no line to end here".
-* line_blocks without use of mbox, to allow markups span over line ends.
-* add french to babel support.
-* double quotes by dq inside literal if language is de.
-* no quote mangling in literal blocks.
-* enumertated list with pre- and postfix.
-* support stylesheet and stylesheet-path.
-* FIX: QUICK: for latex error on abstract.
-* FIX: ^ by mathmode wedge (verb|^| did not work in mbox). 
-* admonitions are not so visible as in html (make a border a bigger title, indent
-  text) thanks to g.schwant.
-* FIX: protection of braces: formerly literal blocks were verbatim.
-  Now that they are no longer verbatim braces are dangerous.
-* literal_block no longer verbatim to allow inline markup, no longer intended.
-* Always emit empty date and author entries.
-* FIX: descriptions without docinfo (self.docinfo not initialized).
-* footnotes are spread vertically (not with juliens style.tex) include it in python.
-* add handling (do nothing) for title-reference.
-* setlength extrarowheight 2pt too get a little space between text in tables
-  and the lines above them.
-* table: multicol rows have no vertical lines.
-* --use-latex-toc: so we get pagenumbers.
-* reduce table width to 0.93 of linewidth.
-* decrement pdfbookmark levels. now 0 to 3.
-* use subsubsection for deeper ones.
-* all spaces in line-blocks are nonbreakable (~). 	
-* newenvironment optionlist for option-lists.
-* append ":" onto definition list terms.
-* long option-groups use multicolumn.
-* remove borders from option-lists.
-* lists that donot start at one donot work.
-* ordered list numbering style is taken from latex a.,b. in source
-  gives 1., .. in document.
-* enumeration too deep: latex goes up to four.
-* abstract title should be centered. 
-* docinfo table centered and narrower.
-* bibliographic field names have a ":".
-* german (de*) quotes.
-* colspec for tables without heads.
-* multipage table
-* field lists as description inside quote.
-* literal blocks are inside a quote environment (means indented).
+  - Aligning Images 
+
+    By default, images align according to their "reference point," which is never 
+    what you want it to be. Put a minipage around an image to make it align 
+    properly (according to its center)::
+
+      \usepackage{graphicx}
+      \begin{minipage}{2in}
+        \includegraphics[width=2in,angle=-90]{foo}
+      \end{minpage}
+
+  - 2-Column Images 
+
+    When in 2-column mode (using either \twocolumn or the multicols environment 
+    (package multicol)), use \begin{figure*} and \begin{table*} to create figures
+    and tables that span the entire width of the page. \begin{figure} and 
+    \begin{table} span only one column.
+
+  - LaTeX->PDF 
+
+	I've found that the best way to convert from LaTeX to PDF is to use "pdflatex."
+    The first time that you run it, you'll find that the produced PDF file doesn't
+    include any of your figures.  To fix this, 
+
+    1. Use "epstopdf" to convert all of your EPS images to PDF 
+    2. Make sure that you are using the "graphicx" package for including images.
+    3. Remove any .eps or .ps extensions from filenames in your LaTeX file 
+
+    When you run LaTeX, graphicx will use the dvips driver to incorporate EPS 
+    files. When you run pdflatex, it will pick up the pdftex driver and incorporate
+    the PDF files.
