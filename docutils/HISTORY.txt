@@ -70,6 +70,7 @@ Changes Since 0.3
 
   - 0.3.1: Reorganized config file format (multiple sections); see
     docs/config.txt.
+  - Added unknown_reference_resolvers attribute to TransformSpec.
 
 * docutils/core.py:
 
@@ -190,7 +191,10 @@ Changes Since 0.3
 
   - Added FilterMessages transform (removes system messages below the
     verbosity threshold).
-
+  - Added hook (via docutils.TransformSpec.unknown_reference_resolvers)
+    to FinalCheckVisitor for application-specific handling of 
+    unresolvable references.
+  
 * docutils/writers/html4css1.py:
 
   - Fixed unicode handling of attribute values (bug 760673).
