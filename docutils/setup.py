@@ -41,7 +41,8 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                  'docutils.parsers.rst.languages',
                  'docutils.readers', 'docutils.readers.python',
                  'docutils.transforms',
-                 'docutils.writers',],}
+                 'docutils.writers',],
+    'scripts' : ['tools/rst2html.py',],}
 """Distutils setup parameters."""
 
 classifiers = [

@@ -199,6 +199,15 @@ Changes Since 0.3
 
   - Updated for configuration file reorganization.
 
+* tools/rst2html.py:
+
+  - copied from tools/html.py
+
+* setup.py:
+
+  - added a 'scripts' section to configuration
+  - added 'tools/rst2html.py' to the scripts section
+
 
 Release 0.3 (2003-06-24)
 ========================
