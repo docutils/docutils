@@ -305,7 +305,7 @@ General
   with examples of every setting (many/most commented out).  It's
   currently sparse, requiring doc lookups.
 
-* Merge doc/latex.txt info into tools.txt and config.txt.
+* Merge docs/user/latex.txt info into tools.txt and config.txt.
 
 * Add internationalization to _`footer boilerplate text` (resulting
   from "--generator", "--source-link", and "--date" etc.), allowing
