@@ -19,6 +19,7 @@ function report() {
     echo "ERROR: $FAILS of $CHECKS failed"
   fi
 }
+
 #CMD="../../tools/rst2latex.py --snap-footnote-refs=1"
 #CMD="../../tools/rst2latex.py --footnote-references=superscript"
 #CMD="../../tools/rst2latex.py --documentclass=book --hyperlink-color=0"
@@ -42,6 +43,12 @@ if [ -n "$1" -a ! "$1" == "-" ] ; then
   report
   exit
 fi
+
+INF=test/french.txt
+OUTF="$INF-fr.tex"
+REFF="$OUTF.ref"
+$CMD -l fr $INF > $OUTF
+do_diff $REFF $OUTF 
 
 INF=test/kasten.txt
 OUTF="$INF-de.tex"
