@@ -136,7 +136,7 @@ class OptionParser(optik.OptionParser):
           '"--report=info".)',
           ['--verbose', '-v'], {'action': 'store_const', 'const': 'info',
                                 'dest': 'report_level'}),
-         ('Don't report any system messages.  (Same as "--report=none".)',
+         ('Do not report any system messages.  (Same as "--report=none".)',
           ['--quiet', '-q'], {'action': 'store_const', 'const': 'none',
                               'dest': 'report_level'}),
          ('Set the threshold (<level>) at or above which system messages are '
