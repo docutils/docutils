@@ -1543,7 +1543,9 @@ A new type of "inline external hyperlink" has been proposed.
 
    Advantages and disadvantages are similar to those in (2).
    Readability is still an issue, but the syntax is a bit less
-   heavyweight (reduced line noise).
+   heavyweight (reduced line noise).  Backquotes are required, even
+   for one-word references; the target URL is included within the
+   reference text, forcing a phrase context.
 
    Problem: how to refer to a title like "HTML Anchors: <a>" (which
    ends with an HTML/SGML/XML tag)?  We could either require more

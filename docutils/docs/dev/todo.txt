@@ -111,10 +111,6 @@ General
 - Perhaps the ``Component.supports`` method should deal with
   individual features ("meta" etc.) instead of formats ("html" etc.)?
 
-- Add a command-line option & directive attribute to control TOC
-  backlinks: no TOC backlinks, backlinks to TOC entries, or backlinks
-  to TOC itself only.
-
 
 Specification
 -------------
@@ -627,9 +623,6 @@ Front-Ends
   anyway, so there's no advantage (we can't use it to avoid
   conflicts) to splitting common and component-specific options
   apart.
-
-- Allow multiple option groups per component (thus enabling component
-  subclasses to easily incorporate their superclass' options).
 
 - Parameterize help text & defaults somehow?  Perhaps a callback?  Or
   initialize ``cmdline_options`` in ``__init__``?

@@ -23,9 +23,9 @@ and related projects:
     Jaffray, Richard Jones, Garth Kidd, Daniel Larsson, Marc-Andre
     Lemburg, Wolfgang Lipp, Edward Loper, Ken Manheimer, Paul Moore,
     Michel Pelletier, Sam Penrose, Tim Peters, Mark Pilgrim, Tavis
-    Rudd, Ollie Rutherfurd, Ueli Schlaepfer, tav, Bob Tolbert,
-    Laurence Tratt, Guido van Rossum, Barry Warsaw, Edward Welbourne,
-    Ka-Ping Yee, Moshe Zadka
+    Rudd, Ollie Rutherfurd, Ueli Schlaepfer, Gunnar Schwant, tav, Bob
+    Tolbert, Laurence Tratt, Guido van Rossum, Barry Warsaw, Edward
+    Welbourne, Ka-Ping Yee, Moshe Zadka
 
 Thank you!
 
@@ -113,7 +113,7 @@ Specific:
 * docutils/optik.py: Added to project.  Combined from the Optik
   package, with added option groups and other modifications.  The use
   of this module is probably only temporary.
-  
+
 * docutils/OptionParser.py: Added to project.  Combined from the Optik
   package, with no modifications.  This module will probably
   eventually take over from optik.py.  Not used at present.
@@ -139,6 +139,12 @@ Specific:
   - Changed names of Reporter's thresholds:
     warning_level -> report_level; error_level -> halt_level.
   - Moved ``utils.id()`` to ``nodes.make_id()``.
+
+* docutils/languages/de.py: German mappings; added to project.  Thanks
+  to Gunnar Schwant for the translations.
+
+* docutils/languages/sv.py: Swedish mappings; added to project by Adam
+  Chodorowski.
 
 * docutils/parsers/rst/states.py:
 
@@ -181,6 +187,11 @@ Specific:
 * docutils/parsers/rst/directives/parts.py: Renamed from
   components.py.
 
+  - Added "backlinks" attribute to "contents" directive.
+
+* docutils/parsers/rst/languages/sv.py: Swedish mappings; added to
+  project by Adam Chodorowski.
+
 * docutils/readers/__init__.py: Gave Readers more control over
   choosing and instantiating Parsers.
 
@@ -203,6 +214,7 @@ Specific:
   - Added filter for `Contents`, to use alt-text for inline images,
     and to remove inline markup that doesn't make sense in the ToC.
   - Added "name" attribute to TOC topic depending on its title.
+  - Added support for optional TOC backlinks.
 
 * docutils/transforms/references.py: Fixed indirect target resolution
   in ``Hyperlinks`` transform.
@@ -241,6 +253,9 @@ Specific:
     "<span>" changed to "<var>".
   - Inline literals: "<code>" changed to "<tt>".
   - Many changes to optimize vertical space: compact simple lists etc.
+  - Add a command-line options & directive attributes to control TOC
+    and footnote/citation backlinks.
+  - Added support for optional footnote/citation backlinks.
 
 * docutils/writers/pep_html.py: Added to project; HTML Writer for
   PEPs (subclass of ``html4css1.Writer``).
@@ -293,6 +308,10 @@ Specific:
   - Expanded auto-enumerated list idea; thanks to Fred Bremmer.
   - Added "Inline External Targets" section.
 
+* spec/rst/directives.txt:
+
+  - Added "backlinks" attribute to "contents" directive.
+
 * spec/rst/problems.txt:
 
   - Updated the Enumerated List Markup discussion.
@@ -309,6 +328,7 @@ Specific:
   - Changed "inline hyperlink targets" to "inline internal targets".
   - Added "simple table" syntax to supplement the existing but
     newly-renamed "grid tables".
+  - Added cautions for anonymous hyperlink use.
 
 * test: Made test modules standalone (subdirectories became packages).
 
