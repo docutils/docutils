@@ -55,6 +55,10 @@ docstring):
 Runtime Settings Processing for Command-Line Tools
 ==================================================
 
+Following allong with the actual code is recommended.  The
+``docutils/__init__.py``, ``docutils/core.py``, and
+``docutils.frontend`` modules are described.
+
 1. A command-line front-end tool imports and calls
    ``docutils.core.publish_cmdline``.  The relevant `convenience
    function parameters`_ are described above.
@@ -67,7 +71,7 @@ Runtime Settings Processing for Command-Line Tools
    its ``settings`` attribute to see if it's defined.  If it is, no
    further runtime settings processing is done.
 
-   If no ``settings`` is defined, ``self.process_command_line`` is
+   If ``settings`` is not defined, ``self.process_command_line`` is
    called with the following relevant arguments:
 
    * ``settings_spec``
@@ -81,9 +85,10 @@ Runtime Settings Processing for Command-Line Tools
 5. ``self.setup_option_parser`` checks its ``config_section``
    parameter; if defined, it adds that config file section to
    ``settings_spec`` (or to a new, empty ``docutils.SettingsSpec``
-   object), replacing anything defined earlier.  Then it instantiates
-   a new ``docutils.frontend.OptionParser`` object, passing the
-   following relevant arguments:
+   object), replacing anything defined earlier.  (See `Docutils
+   Configuration Files`_ for details.)  Then it instantiates a new
+   ``docutils.frontend.OptionParser`` object, passing the following
+   relevant arguments:
 
    * ``components``: A tuple of ``docutils.SettingsSpec`` objects,
      ``(self.parser, self.reader, self.writer, settings_spec)``
