@@ -13,7 +13,7 @@ Introduction
 This document describes a LaTeX-math plug-in for reStructuredText.
 The html-writer will generate a combination of html and MathML.
 
-.. note::
+.. warning::
 
    This document contains MathML.  Your browser may not be able to
    display it correctly!
@@ -52,8 +52,8 @@ The parser does not understand *all* LaTeX-math, but basic
 everyday-math works.  If a command or a special symbol is not desribed
 in this document, then it is probably not implemented.
 
-The following tables are taken from the book "The LaTeX companion"
-(Goossens, Mittelbach, Samarin).
+The following tables are adapted from the first edition of
+"The LaTeX Companion" (Goossens, Mittelbach, Samarin).
 
 
 Accents
@@ -94,7 +94,7 @@ LaTeX commands
   ``\text``              ``k_{\text{B}}T``               :m:`k_{\text{B}}T`
   ``\left``, ``\right``  ``\left(\frac{1}{2}\right)^n``  :m:`\left(\frac{1}{2}\right)^n`
   ``\mathbf``            ``\mathbf{r}^2=x^2+y^2+z^2``    :m:`\mathbf{r}^2=x^2+y^2+z^2`
-  ``\mathbb``            ``\mathbb{A}``                  :m:`\mathbb{A}`
+  ``\mathbb``            ``\mathbb{C}``                  :m:`\mathbb{C}`
   =====================  ==============================  ===============================
 
 
@@ -138,16 +138,16 @@ Relation symbols
 ----------------
 
   ================================  ================================  ================================  ================================
-  :m:`\Join` ``\Join``              :m:`\approx` ``\approx``          :m:`\asymp` ``\asymp``            :m:`\bowtie` ``\bowtie`` 
-  :m:`\cong` ``\cong``              :m:`\dashv` ``\dashv``            :m:`\doteq` ``\doteq``            :m:`\equiv` ``\equiv`` 
-  :m:`\frown` ``\frown``            :m:`\geq` ``\geq``                :m:`\gg` ``\gg``                  :m:`\in` ``\in`` 
-  :m:`\le` ``\le``                  :m:`\leq` ``\leq``                :m:`\ll` ``\ll``                  :m:`\mid` ``\mid`` 
-  :m:`\models` ``\models``          :m:`\neq` ``\neq``                :m:`\ni` ``\ni``                  :m:`\parallel` ``\parallel`` 
-  :m:`\perp` ``\perp``              :m:`\prec` ``\prec``              :m:`\preceq` ``\preceq``          :m:`\propto` ``\propto`` 
-  :m:`\sim` ``\sim``                :m:`\simeq` ``\simeq``            :m:`\smile` ``\smile``            :m:`\sqsubset` ``\sqsubset`` 
-  :m:`\sqsubseteq` ``\sqsubseteq``  :m:`\sqsupset` ``\sqsupset``      :m:`\sqsupseteq` ``\sqsupseteq``  :m:`\subset` ``\subset`` 
-  :m:`\subseteq` ``\subseteq``      :m:`\succ` ``\succ``              :m:`\succeq` ``\succeq``          :m:`\supset` ``\supset`` 
-  :m:`\supseteq` ``\supseteq``      :m:`\vdash` ``\vdash``           
+  :m:`\Join` ``\Join``              :m:`\approx` ``\approx``          :m:`\asymp` ``\asymp``            :m:`\bowtie` ``\bowtie``
+  :m:`\cong` ``\cong``              :m:`\dashv` ``\dashv``            :m:`\doteq` ``\doteq``            :m:`\equiv` ``\equiv``
+  :m:`\frown` ``\frown``            :m:`\ge` ``\ge``                  :m:`\geq` ``\geq``                :m:`\gg` ``\gg``
+  :m:`\in` ``\in``                  :m:`\le` ``\le``                  :m:`\leq` ``\leq``                :m:`\ll` ``\ll``
+  :m:`\mid` ``\mid``                :m:`\models` ``\models``          :m:`\neq` ``\neq``                :m:`\ni` ``\ni``
+  :m:`\parallel` ``\parallel``      :m:`\perp` ``\perp``              :m:`\prec` ``\prec``              :m:`\precsim` ``\precsim``
+  :m:`\propto` ``\propto``          :m:`\sim` ``\sim``                :m:`\simeq` ``\simeq``            :m:`\smile` ``\smile``
+  :m:`\sqsubset` ``\sqsubset``      :m:`\sqsubseteq` ``\sqsubseteq``  :m:`\sqsupset` ``\sqsupset``      :m:`\sqsupseteq` ``\sqsupseteq``
+  :m:`\subset` ``\subset``          :m:`\subseteq` ``\subseteq``      :m:`\succ` ``\succ``              :m:`\succsim` ``\succsim``
+  :m:`\supset` ``\supset``          :m:`\supseteq` ``\supseteq``      :m:`\vdash` ``\vdash``
   ================================  ================================  ================================  ================================
 
 
