@@ -1366,7 +1366,7 @@ class SimpleListChecker(nodes.GenericNodeVisitor):
 
     def visit_list_item(self, node):
         children = []
-        for child in node.get_children():
+        for child in node.children:
             if not isinstance(child, nodes.Invisible):
                 children.append(child)
         if (children and isinstance(children[0], nodes.paragraph)

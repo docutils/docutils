@@ -119,7 +119,7 @@ class Node:
             return
         except SkipDeparture:           # not applicable; ignore
             pass
-        children = self.get_children()
+        children = self.children
         try:
             for child in children[:]:
                 child.walk(visitor)
@@ -147,7 +147,7 @@ class Node:
                 return
             except SkipDeparture:
                 call_depart = 0
-            children = self.get_children()
+            children = self.children
             try:
                 for child in children[:]:
                     child.walkabout(visitor)
@@ -172,7 +172,7 @@ class Node:
         """
         node = self
         while 1:
-            if descend and node.get_children():
+            if descend and node.children:
                 r = node[0]
             elif node.parent is not None:
                 # Index of the next sibling.
@@ -215,7 +215,7 @@ class Node:
         be changed to an iterator later.
         """
         nodelist = [self]
-        for node in self.get_children():
+        for node in self.children:
             nodelist.extend(node.flattened())
         return nodelist
 
@@ -229,6 +229,9 @@ class Text(Node, UserString):
     """
 
     tagname = '#text'
+
+    children = []
+    """Text nodes have no children."""
 
     def __init__(self, data, rawsource=''):
         UserString.__init__(self, data)
@@ -266,10 +269,6 @@ class Text(Node, UserString):
         for line in self.data.splitlines():
             result.append(indent + line + '\n')
         return ''.join(result)
-
-    def get_children(self):
-        """Text nodes have no children. Return []."""
-        return []
 
 
 class Element(Node):
@@ -556,10 +555,6 @@ class Element(Node):
         return ''.join(['%s%s\n' % (indent * level, self.starttag())] +
                        [child.pformat(indent, level+1)
                         for child in self.children])
-
-    def get_children(self):
-        """Return this element's children."""
-        return self.children
 
     def copy(self):
         return self.__class__(**self.attributes)

@@ -749,7 +749,7 @@ class Substitutions(Transform):
                              and isinstance(parent[index + 1], nodes.Text)):
                             parent.replace(parent[index + 1],
                                            parent[index + 1].lstrip())
-                    parent.replace(ref, subdef.get_children())
+                    parent.replace(ref, subdef.children)
         self.document.substitution_refs = None  # release replaced references
 
 

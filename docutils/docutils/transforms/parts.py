@@ -151,7 +151,7 @@ class Contents(Transform):
 class ContentsFilter(nodes.TreeCopyVisitor):
 
     def get_entry_text(self):
-        return self.get_tree_copy().get_children()
+        return self.get_tree_copy().children
 
     def visit_citation_reference(self, node):
         raise nodes.SkipNode
