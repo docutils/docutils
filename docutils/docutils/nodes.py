@@ -396,10 +396,12 @@ class Element(Node):
             node.parent = self
         self.children.extend(item)
 
-    def insert(self, i, item):
-        assert isinstance(item, Node)
-        item.parent = self
-        self.children.insert(i, item)
+    def insert(self, index, item):
+        if isinstance(item, Node):
+            item.parent = self
+            self.children.insert(index, item)
+        elif item is not None:
+            self[index:index] = item
 
     def pop(self, i=-1):
         return self.children.pop(i)
@@ -414,6 +416,7 @@ class Element(Node):
         """Replace one child `Node` with another child or children."""
         index = self.index(old)
         if isinstance(new, Node):
+            new.parent = self
             self[index] = new
         elif new is not None:
             self[index:index+1] = new
