@@ -411,6 +411,8 @@ Developer Docs
   for developers.  What connects to what, why, and how.  Either update
   PEP 258 (see PEPs_ below) or as a separate doc.
 
+* Give information about unit tests.  Maybe as a howto?
+
 
 How-Tos
 -------
