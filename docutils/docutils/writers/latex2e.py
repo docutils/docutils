@@ -573,7 +573,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
             fontenc = '\\usepackage[T1]{fontenc}\n'
         else:
             fontenc = ''
-
+        input_encoding = self.encoding % self.to_latex_encoding(settings.output_encoding)
+        if self.to_latex_encoding(settings.output_encoding) == 'utf8':
+            # preload unicode to avoid ``Please insert PrerenderUnicode`` message,
+            # when rendering the first ``\section``.
+            input_encoding += '\\PreloadUnicodePage{0}\n'
         if self.settings.graphicx_option == '':
             self.graphicx_package = '\\usepackage{graphicx}\n'
         elif self.settings.graphicx_option.lower() == 'auto':
@@ -593,7 +597,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
               '\\usepackage{babel}\n',     # language is in documents settings.
               fontenc,
               '\\usepackage{shortvrb}\n',  # allows verb in footnotes.
-              self.encoding % self.to_latex_encoding(settings.output_encoding),
+              input_encoding,
               # * tabularx: for docinfo, automatic width of columns, always on one page.
               '\\usepackage{tabularx}\n',
               '\\usepackage{longtable}\n',

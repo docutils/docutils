@@ -19,6 +19,10 @@ Changes Since 0.3.5
   - Directive "sectnum" now accepts "prefix", "suffix", and "start"
     options.  Thanks to Lele Gaifax.
 
+* docutils/writers/latex2e.py:
+
+  - Add ``\PreloadUnicodePage{n}`` to the header if in LaTeX code
+    uses unicode.
 
 Release 0.3.5 (2004-07-29)
 ==========================
