@@ -6,8 +6,8 @@ typically you would include it in your makefiles, e.g.::
     
     include Makefile.docutils
 
-For quick jobs ``make 'DOCS=foo.txt bar.txt'`` or just ``make`` (taking all
-*.txt files) will also work.
+For quick jobs ``make DOCS=foo.txt\ bar.txt`` or just ``make`` (taking all
+``*.txt`` files) will also work.
     
 This makefile is very flexible and can be configured by setting many
 variables.  It also supports pre/postprocessing, currently with
