@@ -463,7 +463,8 @@ There are workarounds, but they are either convoluted or ugly or both.
 They are not recommended.
 
 * Inline markup can be combined with hyperlinks using `substitution
-  definitions`__ and references__.  For example::
+  definitions`__ and references__ with the `"replace" directive`__.
+  For example::
 
       Here is an |emphasized hyperlink|_.
 
@@ -475,6 +476,7 @@ They are not recommended.
 
   __ http://docutils.sf.net/docs/ref/rst/restructuredtext.html#substitution-definitions
   __ http://docutils.sf.net/docs/ref/rst/restructuredtext.html#substitution-references
+  __ http://docutils.sf.net/docs/ref/rst/directives.html#replace
 
 * The `"raw" directive`__ can be used to insert raw HTML into HTML
   output::
@@ -488,6 +490,8 @@ They are not recommended.
          <span class="pre">inline literals</span></em>
 
   Raw LaTeX is supported for LaTeX output, etc.
+
+  __ http://docutils.sf.net/docs/ref/rst/directives.html#raw
 
 
 HTML Writer
