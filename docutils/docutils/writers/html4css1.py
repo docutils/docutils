@@ -50,6 +50,8 @@ class Writer(writers.Writer):
         self.head_prefix = visitor.head_prefix
         self.head = visitor.head
         self.body_prefix = visitor.body_prefix
+        self.body_pre_docinfo = visitor.body_pre_docinfo
+        self.docinfo = visitor.docinfo
         self.body = visitor.body
         self.body_suffix = visitor.body_suffix
 
@@ -123,6 +125,8 @@ class HTMLTranslator(nodes.NodeVisitor):
                                                         options.stylesheet)]
         self.head = []
         self.body_prefix = ['</head>\n<body>\n']
+        self.body_pre_docinfo = []
+        self.docinfo = []
         self.body = []
         self.body_suffix = ['</body>\n</html>\n']
         self.section_level = 0
@@ -134,8 +138,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.in_docinfo = None
 
     def astext(self):
-        return ''.join(self.head_prefix + self.head
-                       + self.body_prefix + self.body + self.body_suffix)
+        return ''.join(self.head_prefix + self.head + self.body_prefix
+                       + self.body_pre_docinfo + self.docinfo + self.body
+                       + self.body_suffix)
 
     def encode(self, text):
         """Encode special characters in `text` & return."""
@@ -382,6 +387,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</td>')
 
     def visit_docinfo(self, node):
+        self.context.append(len(self.body))
         self.body.append(self.starttag(node, 'table', CLASS='docinfo',
                                        frame="void", rules="none"))
         self.body.append('<col class="docinfo-name" />\n'
@@ -392,6 +398,10 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_docinfo(self, node):
         self.body.append('</tbody>\n</table>\n')
         self.in_docinfo = None
+        start = self.context.pop()
+        self.body_pre_docinfo = self.body[:start]
+        self.docinfo = self.body[start:]
+        self.body = []
 
     def visit_docinfo_item(self, node, name):
         self.head.append('<meta name="%s" content="%s" />\n'
@@ -583,6 +593,12 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_footnote_reference(self, node):
         self.body.append('</a>')
+
+    def visit_generated(self, node):
+        pass
+
+    def depart_generated(self, node):
+        pass
 
     def visit_header(self, node):
         self.context.append(len(self.body))
@@ -900,8 +916,8 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_tgroup(self, node):
         # Mozilla needs <colgroup>:
         self.body.append(self.starttag(node, 'colgroup'))
+        # Appended by thead or tbody:
         self.context.append('</colgroup>\n')
-        pass
 
     def depart_tgroup(self, node):
         pass
