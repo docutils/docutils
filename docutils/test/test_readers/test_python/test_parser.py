@@ -24,22 +24,22 @@ totest['module'] = [
 ['''\
 ''',
 '''\
-<Module filename="test data">
+<module_section filename="test data">
 '''],
 ['''\
 """docstring"""
 ''',
 '''\
-<Module filename="test data">
-    <Docstring>
+<module_section filename="test data">
+    <docstring>
         docstring
 '''],
 ['''\
 u"""Unicode docstring"""
 ''',
 '''\
-<Module filename="test data">
-    <Docstring>
+<module_section filename="test data">
+    <docstring>
         Unicode docstring
 '''],
 ['''\
@@ -47,10 +47,10 @@ u"""Unicode docstring"""
 """additional docstring"""
 ''',
 '''\
-<Module filename="test data">
-    <Docstring>
+<module_section filename="test data">
+    <docstring>
         docstring
-    <Docstring lineno="2">
+    <docstring lineno="2">
         additional docstring
 '''],
 ['''\
@@ -59,10 +59,10 @@ u"""Unicode docstring"""
 """additional docstring"""
 ''',
 '''\
-<Module filename="test data">
-    <Docstring>
+<module_section filename="test data">
+    <docstring>
         docstring
-    <Docstring lineno="3">
+    <docstring lineno="3">
         additional docstring
 '''],
 ['''\
@@ -71,8 +71,8 @@ u"""Unicode docstring"""
 """not an additional docstring"""
 ''',
 '''\
-<Module filename="test data">
-    <Docstring>
+<module_section filename="test data">
+    <docstring>
         docstring
 '''],
 ]
@@ -82,42 +82,51 @@ totest['import'] = [
 import module
 ''',
 '''\
-<Module filename="test data">
-    <Import lineno="1">
-        module
+<module_section filename="test data">
+    <import_group lineno="1">
+        <import_name>
+            module
 '''],
 ['''\
 import module as local
 ''',
 '''\
-<Module filename="test data">
-    <Import lineno="1">
-        module as local
+<module_section filename="test data">
+    <import_group lineno="1">
+        <import_name>
+            module
+            <import_alias>
+                local
 '''],
 ['''\
 import module.name
 ''',
 '''\
-<Module filename="test data">
-    <Import lineno="1">
-        module.name
+<module_section filename="test data">
+    <import_group lineno="1">
+        <import_name>
+            module.name
 '''],
 ['''\
 import module.name as local
 ''',
 '''\
-<Module filename="test data">
-    <Import lineno="1">
-        module.name as local
+<module_section filename="test data">
+    <import_group lineno="1">
+        <import_name>
+            module.name
+            <import_alias>
+                local
 '''],
 ['''\
 import module
 """not documentable"""
 ''',
 '''\
-<Module filename="test data">
-    <Import lineno="1">
-        module
+<module_section filename="test data">
+    <import_group lineno="1">
+        <import_name>
+            module
 '''],
 ]
 
@@ -126,58 +135,86 @@ totest['from'] = [
 from module import name
 ''',
 '''\
-<Module filename="test data">
-    <Import from="module" lineno="1">
-        name
+<module_section filename="test data">
+    <import_group lineno="1">
+        <import_from>
+            module
+        <import_name>
+            name
 '''],
 ['''\
 from module import name as local
 ''',
 '''\
-<Module filename="test data">
-    <Import from="module" lineno="1">
-        name as local
+<module_section filename="test data">
+    <import_group lineno="1">
+        <import_from>
+            module
+        <import_name>
+            name
+            <import_alias>
+                local
 '''],
 ['''\
 from module import name1, name2 as local2
 ''',
 '''\
-<Module filename="test data">
-    <Import from="module" lineno="1">
-        name1
-        name2 as local2
+<module_section filename="test data">
+    <import_group lineno="1">
+        <import_from>
+            module
+        <import_name>
+            name1
+        <import_name>
+            name2
+            <import_alias>
+                local2
 '''],
 ['''\
 from module.sub import name
 ''',
 '''\
-<Module filename="test data">
-    <Import from="module.sub" lineno="1">
-        name
+<module_section filename="test data">
+    <import_group lineno="1">
+        <import_from>
+            module.sub
+        <import_name>
+            name
 '''],
 ['''\
 from module.sub import name as local
 ''',
 '''\
-<Module filename="test data">
-    <Import from="module.sub" lineno="1">
-        name as local
+<module_section filename="test data">
+    <import_group lineno="1">
+        <import_from>
+            module.sub
+        <import_name>
+            name
+            <import_alias>
+                local
 '''],
 ['''\
 from module import *
 ''',
 '''\
-<Module filename="test data">
-    <Import from="module" lineno="1">
-        *
+<module_section filename="test data">
+    <import_group lineno="1">
+        <import_from>
+            module
+        <import_name>
+            *
 '''],
 ['''\
 from __future__ import division
 ''',
 '''\
-<Module filename="test data">
-    <Import from="__future__" lineno="1">
-        division
+<module_section filename="test data">
+    <import_group lineno="1">
+        <import_from>
+            __future__
+        <import_name>
+            division
 '''],
 ]
 
@@ -186,52 +223,62 @@ totest['assign'] = [
 a = 1
 ''',
 '''\
-<Module filename="test data">
-    <Attribute lineno="1" name="a">
-        <Expression lineno="1">
+<module_section filename="test data">
+    <attribute lineno="1">
+        <object_name>
+            a
+        <expression_value>
             1
 '''],
 ['''a = 1''',
 '''\
-<Module filename="test data">
-    <Attribute lineno="1" name="a">
-        <Expression lineno="1">
+<module_section filename="test data">
+    <attribute lineno="1">
+        <object_name>
+            a
+        <expression_value>
             1
 '''],
 ['''\
 a = 1
-"""a's docstring"""
+"""a docstring"""
 ''', #"
 '''\
-<Module filename="test data">
-    <Attribute lineno="1" name="a">
-        <Expression lineno="1">
+<module_section filename="test data">
+    <attribute lineno="1">
+        <object_name>
+            a
+        <expression_value>
             1
-        <Docstring lineno="2">
-            a's docstring
-'''], #'
+        <docstring lineno="2">
+            a docstring
+'''],
 ['''\
 a = 1
-"""a's docstring"""
+"""a docstring"""
 """additional docstring"""
 ''', #"
 '''\
-<Module filename="test data">
-    <Attribute lineno="1" name="a">
-        <Expression lineno="1">
+<module_section filename="test data">
+    <attribute lineno="1">
+        <object_name>
+            a
+        <expression_value>
             1
-        <Docstring lineno="2">
-            a's docstring
-        <Docstring lineno="3">
+        <docstring lineno="2">
+            a docstring
+        <docstring lineno="3">
             additional docstring
 '''], #'
 ['''\
 a = 1 + 2 * 3 / 4 ** 5
 ''',
 '''\
-<Module filename="test data">
-    <Attribute lineno="1" name="a">
-        <Expression lineno="1">
+<module_section filename="test data">
+    <attribute lineno="1">
+        <object_name>
+            a
+        <expression_value>
             1 + 2 * 3 / 4 ** 5
 '''],
 ['''\
@@ -239,36 +286,44 @@ a = 1 \\
     + 2
 ''',
 '''\
-<Module filename="test data">
-    <Attribute lineno="1" name="a">
-        <Expression lineno="1">
+<module_section filename="test data">
+    <attribute lineno="1">
+        <object_name>
+            a
+        <expression_value>
             1 + 2
 '''],
 ['''\
 a = not 1 and 2 or 3
 ''',
 '''\
-<Module filename="test data">
-    <Attribute lineno="1" name="a">
-        <Expression lineno="1">
+<module_section filename="test data">
+    <attribute lineno="1">
+        <object_name>
+            a
+        <expression_value>
             not 1 and 2 or 3
 '''],
 ['''\
 a = ~ 1 & 2 | 3 ^ 4
 ''',
 '''\
-<Module filename="test data">
-    <Attribute lineno="1" name="a">
-        <Expression lineno="1">
+<module_section filename="test data">
+    <attribute lineno="1">
+        <object_name>
+            a
+        <expression_value>
             ~ 1 & 2 | 3 ^ 4
 '''],
 ['''\
 a = `1 & 2`
 ''',
 '''\
-<Module filename="test data">
-    <Attribute lineno="1" name="a">
-        <Expression lineno="1">
+<module_section filename="test data">
+    <attribute lineno="1">
+        <object_name>
+            a
+        <expression_value>
             `1 & 2`
 '''],
 ['''\
@@ -276,9 +331,11 @@ very_long_name = \\
     x
 ''',
 '''\
-<Module filename="test data">
-    <Attribute lineno="1" name="very_long_name">
-        <Expression lineno="1">
+<module_section filename="test data">
+    <attribute lineno="1">
+        <object_name>
+            very_long_name
+        <expression_value>
             x
 '''],
 ['''\
@@ -286,9 +343,11 @@ very_long_name \\
     = x
 ''',
 '''\
-<Module filename="test data">
-    <Attribute lineno="1" name="very_long_name">
-        <Expression lineno="2">
+<module_section filename="test data">
+    <attribute lineno="1">
+        <object_name>
+            very_long_name
+        <expression_value>
             x
 '''],
 ['''\
@@ -297,12 +356,16 @@ very_long_name = \\
     x
 ''',
 '''\
-<Module filename="test data">
-    <Attribute lineno="1" name="very_long_name">
-        <Expression lineno="1">
+<module_section filename="test data">
+    <attribute lineno="1">
+        <object_name>
+            very_long_name
+        <expression_value>
             x
-    <Attribute lineno="2" name="another_long_name">
-        <Expression lineno="1">
+    <attribute lineno="2">
+        <object_name>
+            another_long_name
+        <expression_value>
             x
 '''],
 ['''\
@@ -317,16 +380,24 @@ second line
     third"""
 ''',
 '''\
-<Module filename="test data">
-    <Attribute lineno="1" name="a">
-        <Expression lineno="1">
+<module_section filename="test data">
+    <attribute lineno="1">
+        <object_name>
+            a
+        <expression_value>
             (1 + 2)
-    <Attribute lineno="3" name="b">
-        <Expression lineno="3">
+    <attribute lineno="3">
+        <object_name>
+            b
+        <expression_value>
             a.b[1 + fn(x, y, z, {'key': (1 + 2 + 3)})][4]
-    <Attribute lineno="7" name="c">
-        <Expression lineno="7">
-            """first line\\nsecond line\\n    third"""
+    <attribute lineno="7">
+        <object_name>
+            c
+        <expression_value>
+            """first line
+            second line
+                third"""
 '''],
 ['''\
 a, b, c = range(3)
@@ -336,21 +407,59 @@ g, h, i = j = a, b, c
 k.a, k.b.c, k.d.e.f = a, b, c
 ''',
 '''\
-<Module filename="test data">
-    <AttributeTuple lineno="1" names="a b c">
-        <Expression lineno="1">
+<module_section filename="test data">
+    <attribute_tuple lineno="1">
+        <attribute lineno="1">
+            <object_name>
+                a
+        <attribute lineno="1">
+            <object_name>
+                b
+        <attribute lineno="1">
+            <object_name>
+                c
+        <expression_value>
             range(3)
-    <AttributeTuple lineno="2" names="d e f">
-        <Expression lineno="3">
+    <attribute_tuple lineno="2">
+        <attribute lineno="2">
+            <object_name>
+                d
+        <attribute lineno="2">
+            <object_name>
+                e
+        <attribute lineno="3">
+            <object_name>
+                f
+        <expression_value>
             a, b, c
-    <AttributeTuple lineno="4" names="g h i">
-        <Expression lineno="4">
+    <attribute_tuple lineno="4">
+        <attribute lineno="4">
+            <object_name>
+                g
+        <attribute lineno="4">
+            <object_name>
+                h
+        <attribute lineno="4">
+            <object_name>
+                i
+        <expression_value>
             a, b, c
-    <Attribute lineno="4" name="j">
-        <Expression lineno="4">
+    <attribute lineno="4">
+        <object_name>
+            j
+        <expression_value>
             a, b, c
-    <AttributeTuple lineno="5" names="k.a k.b.c k.d.e.f">
-        <Expression lineno="5">
+    <attribute_tuple lineno="5">
+        <attribute lineno="5">
+            <object_name>
+                k.a
+        <attribute lineno="5">
+            <object_name>
+                k.b.c
+        <attribute lineno="5">
+            <object_name>
+                k.d.e.f
+        <expression_value>
             a, b, c
 '''],
 ['''\
@@ -358,15 +467,21 @@ a = 1 ; b = 2
 print ; c = 3
 ''',
 '''\
-<Module filename="test data">
-    <Attribute lineno="1" name="a">
-        <Expression lineno="1">
+<module_section filename="test data">
+    <attribute lineno="1">
+        <object_name>
+            a
+        <expression_value>
             1
-    <Attribute lineno="1" name="b">
-        <Expression lineno="1">
+    <attribute lineno="1">
+        <object_name>
+            b
+        <expression_value>
             2
-    <Attribute lineno="2" name="c">
-        <Expression lineno="2">
+    <attribute lineno="2">
+        <object_name>
+            c
+        <expression_value>
             3
 '''],
 ['''\
@@ -374,11 +489,13 @@ a.b = 1
 """This assignment is noted but ignored unless ``a`` is a function."""
 ''',
 '''\
-<Module filename="test data">
-    <Attribute lineno="1" name="a.b">
-        <Expression lineno="1">
+<module_section filename="test data">
+    <attribute lineno="1">
+        <object_name>
+            a.b
+        <expression_value>
             1
-        <Docstring lineno="2">
+        <docstring lineno="2">
             This assignment is noted but ignored unless ``a`` is a function.
 '''],
 ['''\
@@ -386,15 +503,17 @@ a[b] = 1
 """Subscript assignments are ignored."""
 ''',
 '''\
-<Module filename="test data">
+<module_section filename="test data">
 '''],
 ['''\
 a = foo(b=1)
 ''',
 '''\
-<Module filename="test data">
-    <Attribute lineno="1" name="a">
-        <Expression lineno="1">
+<module_section filename="test data">
+    <attribute lineno="1">
+        <object_name>
+            a
+        <expression_value>
             foo(b=1)
 '''],
 # ['''\
@@ -403,11 +522,13 @@ a = foo(b=1)
 # """Because of the blank above, this is a module docstring."""
 # ''',
 # '''\
-# <Module filename="test data">
-#     <Attribute lineno="1" name="a">
-#         <Expression lineno="1">
+# <module_section filename="test data">
+#     <attribute lineno="1">
+#         <object_name>
+#             a
+#         <expression_value>
 #             1
-#     <Docstring lineno="3">
+#     <docstring lineno="3">
 #         Because of the blank above, this is a module docstring.
 # '''],
 ]
@@ -415,17 +536,19 @@ a = foo(b=1)
 totest['def'] = [
 ['''\
 def f():
-    """Function f's docstring"""
+    """Function f docstring"""
     """Additional docstring"""
     local = 1
     """Not a docstring, since ``local`` is local."""
 ''', # "
 '''\
-<Module filename="test data">
-    <Function lineno="1" name="f">
-        <Docstring lineno="1">
-            Function f's docstring
-        <Docstring lineno="3">
+<module_section filename="test data">
+    <function_section lineno="1">
+        <object_name>
+            f
+        <docstring lineno="1">
+            Function f docstring
+        <docstring lineno="3">
             Additional docstring
 '''], # '
 ['''\
@@ -433,25 +556,37 @@ def f(a, b):
     local = 1
 ''',
 '''\
-<Module filename="test data">
-    <Function lineno="1" name="f">
-        <ParameterList lineno="1">
-            <Parameter lineno="1" name="a">
-            <Parameter lineno="1" name="b">
+<module_section filename="test data">
+    <function_section lineno="1">
+        <object_name>
+            f
+        <parameter_list>
+            <parameter>
+                <object_name>
+                    a
+            <parameter>
+                <object_name>
+                    b
 '''],
 ['''\
 def f(a=None, b=1):
     local = 1
 ''',
 '''\
-<Module filename="test data">
-    <Function lineno="1" name="f">
-        <ParameterList lineno="1">
-            <Parameter lineno="1" name="a">
-                <Default lineno="1">
+<module_section filename="test data">
+    <function_section lineno="1">
+        <object_name>
+            f
+        <parameter_list>
+            <parameter>
+                <object_name>
+                    a
+                <parameter_default>
                     None
-            <Parameter lineno="1" name="b">
-                <Default lineno="1">
+            <parameter>
+                <object_name>
+                    b
+                <parameter_default>
                     1
 '''],
 ['''\
@@ -460,15 +595,30 @@ def f(a, (b, c, d)=range(3),
     local = 1
 ''',
 '''\
-<Module filename="test data">
-    <Function lineno="1" name="f">
-        <ParameterList lineno="1">
-            <Parameter lineno="1" name="a">
-            <ParameterTuple lineno="1" names="(b, c, d)">
-                <Default lineno="1">
+<module_section filename="test data">
+    <function_section lineno="1">
+        <object_name>
+            f
+        <parameter_list>
+            <parameter>
+                <object_name>
+                    a
+            <parameter_tuple>
+                <parameter>
+                    <object_name>
+                        b
+                <parameter>
+                    <object_name>
+                        c
+                <parameter>
+                    <object_name>
+                        d
+                <parameter_default>
                     range(3)
-            <Parameter lineno="1" name="e">
-                <Default lineno="1">
+            <parameter>
+                <object_name>
+                    e
+                <parameter_default>
                     None
 '''],
 ['''\
@@ -476,52 +626,74 @@ def f(*args):
     local = 1
 ''',
 '''\
-<Module filename="test data">
-    <Function lineno="1" name="f">
-        <ParameterList lineno="1">
-            <ExcessPositionalArguments lineno="1" name="args">
+<module_section filename="test data">
+    <function_section lineno="1">
+        <object_name>
+            f
+        <parameter_list>
+            <parameter excess_positional="1">
+                <object_name>
+                    args
 '''],
 ['''\
 def f(**kwargs):
     local = 1
 ''',
 '''\
-<Module filename="test data">
-    <Function lineno="1" name="f">
-        <ParameterList lineno="1">
-            <ExcessKeywordArguments lineno="1" name="kwargs">
+<module_section filename="test data">
+    <function_section lineno="1">
+        <object_name>
+            f
+        <parameter_list>
+            <parameter excess_keyword="1">
+                <object_name>
+                    kwargs
 '''],
 ['''\
 def f(a, b=None, *args, **kwargs):
     local = 1
 ''',
 '''\
-<Module filename="test data">
-    <Function lineno="1" name="f">
-        <ParameterList lineno="1">
-            <Parameter lineno="1" name="a">
-            <Parameter lineno="1" name="b">
-                <Default lineno="1">
+<module_section filename="test data">
+    <function_section lineno="1">
+        <object_name>
+            f
+        <parameter_list>
+            <parameter>
+                <object_name>
+                    a
+            <parameter>
+                <object_name>
+                    b
+                <parameter_default>
                     None
-            <ExcessPositionalArguments lineno="1" name="args">
-            <ExcessKeywordArguments lineno="1" name="kwargs">
+            <parameter excess_positional="1">
+                <object_name>
+                    args
+            <parameter excess_keyword="1">
+                <object_name>
+                    kwargs
 '''],
 ['''\
 def f():
     pass
 f.attrib = 1
-"""f.attrib's docstring"""
+"""f.attrib docstring"""
 ''', # "
-# @@@ When should the Attribute move inside the Function?
+# @@@ When should the attribute move inside the Function?
 '''\
-<Module filename="test data">
-    <Function lineno="1" name="f">
-    <Attribute lineno="3" name="f.attrib">
-        <Expression lineno="3">
+<module_section filename="test data">
+    <function_section lineno="1">
+        <object_name>
+            f
+    <attribute lineno="3">
+        <object_name>
+            f.attrib
+        <expression_value>
             1
-        <Docstring lineno="4">
-            f.attrib's docstring
-'''], # '
+        <docstring lineno="4">
+            f.attrib docstring
+'''], 
 ['''\
 def f():
     def g():
@@ -530,21 +702,25 @@ def f():
     local = 1
 ''',
 '''\
-<Module filename="test data">
-    <Function lineno="1" name="f">
+<module_section filename="test data">
+    <function_section lineno="1">
+        <object_name>
+            f
 '''],
 ]
 
 totest['class'] = [
 ['''\
 class C:
-    """class C's docstring"""
+    """class C docstring"""
 ''',
 '''\
-<Module filename="test data">
-    <Class lineno="1" name="C">
-        <Docstring lineno="1">
-            class C's docstring
+<module_section filename="test data">
+    <class_section lineno="1">
+        <object_name>
+            C
+        <docstring lineno="1">
+            class C docstring
 '''],
 ['''\
 class C(Super):
@@ -554,9 +730,22 @@ class D(SuperD, package.module.SuperD):
     pass
 ''',
 '''\
-<Module filename="test data">
-    <Class bases="Super" lineno="1" name="C">
-    <Class bases="SuperD package.module.SuperD" lineno="4" name="D">
+<module_section filename="test data">
+    <class_section lineno="1">
+        <object_name>
+            C
+        <class_base>
+            <object_name>
+                Super
+    <class_section lineno="4">
+        <object_name>
+            D
+        <class_base>
+            <object_name>
+                SuperD
+        <class_base>
+            <object_name>
+                package.module.SuperD
 '''],
 ['''\
 class C:
@@ -565,8 +754,10 @@ class C:
     """Not a docstring"""
 ''',
 '''\
-<Module filename="test data">
-    <Class lineno="1" name="C">
+<module_section filename="test data">
+    <class_section lineno="1">
+        <object_name>
+            C
 '''],
 ['''\
 class C:
@@ -575,11 +766,17 @@ class C:
         local = 1
 ''',
 '''\
-<Module filename="test data">
-    <Class lineno="1" name="C">
-        <Method lineno="2" name="f">
-            <ParameterList lineno="2">
-                <Parameter lineno="2" name="self">
+<module_section filename="test data">
+    <class_section lineno="1">
+        <object_name>
+            C
+        <method_section lineno="2">
+            <object_name>
+                f
+            <parameter_list>
+                <parameter>
+                    <object_name>
+                        self
 '''],
 ['''\
 class C:
@@ -588,16 +785,26 @@ class C:
         local = 1
 ''',
 '''\
-<Module filename="test data">
-    <Class lineno="1" name="C">
-        <Method lineno="2" name="__init__">
-            <ParameterList lineno="2">
-                <Parameter lineno="2" name="self">
-            <Attribute lineno="3" name="self.local">
-                <Expression lineno="3">
+<module_section filename="test data">
+    <class_section lineno="1">
+        <object_name>
+            C
+        <method_section lineno="2">
+            <object_name>
+                __init__
+            <parameter_list>
+                <parameter>
+                    <object_name>
+                        self
+            <attribute lineno="3">
+                <object_name>
+                    self.local
+                <expression_value>
                     1
-            <Attribute lineno="4" name="local">
-                <Expression lineno="4">
+            <attribute lineno="4">
+                <object_name>
+                    local
+                <expression_value>
                     1
 '''],
 ['''\
@@ -606,13 +813,21 @@ class C:
         local = foo(a=1)
 ''',
 '''\
-<Module filename="test data">
-    <Class lineno="1" name="C">
-        <Method lineno="2" name="__init__">
-            <ParameterList lineno="2">
-                <Parameter lineno="2" name="self">
-            <Attribute lineno="3" name="local">
-                <Expression lineno="3">
+<module_section filename="test data">
+    <class_section lineno="1">
+        <object_name>
+            C
+        <method_section lineno="2">
+            <object_name>
+                __init__
+            <parameter_list>
+                <parameter>
+                    <object_name>
+                        self
+            <attribute lineno="3">
+                <object_name>
+                    local
+                <expression_value>
                     foo(a=1)
 '''],
 ]
@@ -622,13 +837,13 @@ totest['ignore'] = [
 1 + 2
 ''',
 '''\
-<Module filename="test data">
+<module_section filename="test data">
 '''],
 ['''\
 del a
 ''',
 '''\
-<Module filename="test data">
+<module_section filename="test data">
 '''],
 ]
 
@@ -637,13 +852,13 @@ totest['comments'] = [
 # # Comment
 # ''',
 # '''\
-# <Module filename="test data">
+# <module_section filename="test data">
 #     <Comment lineno="1">
 #         # Comment
 # '''],
 ]
 
-# @@@ no comments yet
+# @@@ we don't parse comments yet
 totest['everything'] = [
 ['''\
 # comment
@@ -659,77 +874,106 @@ a = 1
 
 class C(Super):
 
-    """C's docstring"""
+    """C docstring"""
 
     class_attribute = 1
-    """class_attribute's docstring"""
+    """class_attribute docstring"""
 
     def __init__(self, text=None):
-        """__init__'s docstring"""
+        """__init__ docstring"""
 
         self.instance_attribute = (text * 7
                                    + ' whaddyaknow')
-        """instance_attribute's docstring"""
+        """instance_attribute docstring"""
 
 
 def f(x,                            # parameter x
       y=a*5,                        # parameter y
       *args):                       # parameter args
-    """f's docstring"""
+    """f docstring"""
     return [x + item for item in args]
 
 f.function_attribute = 1
-"""f.function_attribute's docstring"""
+"""f.function_attribute docstring"""
 ''',
 '''\
-<Module filename="test data">
-    <Docstring>
+<module_section filename="test data">
+    <docstring>
         Docstring
-    <Docstring lineno="5">
+    <docstring lineno="5">
         Additional docstring
-    <Attribute lineno="7" name="__docformat__">
-        <Expression lineno="7">
+    <attribute lineno="7">
+        <object_name>
+            __docformat__
+        <expression_value>
             'reStructuredText'
-    <Attribute lineno="9" name="a">
-        <Expression lineno="9">
+    <attribute lineno="9">
+        <object_name>
+            a
+        <expression_value>
             1
-        <Docstring lineno="10">
+        <docstring lineno="10">
             Attribute docstring
-    <Class bases="Super" lineno="12" name="C">
-        <Docstring lineno="12">
-            C's docstring
-        <Attribute lineno="16" name="class_attribute">
-            <Expression lineno="16">
+    <class_section lineno="12">
+        <object_name>
+            C
+        <class_base>
+            <object_name>
+                Super
+        <docstring lineno="12">
+            C docstring
+        <attribute lineno="16">
+            <object_name>
+                class_attribute
+            <expression_value>
                 1
-            <Docstring lineno="17">
-                class_attribute's docstring
-        <Method lineno="19" name="__init__">
-            <Docstring lineno="19">
-                __init__'s docstring
-            <ParameterList lineno="19">
-                <Parameter lineno="19" name="self">
-                <Parameter lineno="19" name="text">
-                    <Default lineno="19">
+            <docstring lineno="17">
+                class_attribute docstring
+        <method_section lineno="19">
+            <object_name>
+                __init__
+            <docstring lineno="19">
+                __init__ docstring
+            <parameter_list>
+                <parameter>
+                    <object_name>
+                        self
+                <parameter>
+                    <object_name>
+                        text
+                    <parameter_default>
                         None
-            <Attribute lineno="22" name="self.instance_attribute">
-                <Expression lineno="22">
+            <attribute lineno="22">
+                <object_name>
+                    self.instance_attribute
+                <expression_value>
                     (text * 7 + ' whaddyaknow')
-                <Docstring lineno="24">
-                    instance_attribute's docstring
-    <Function lineno="27" name="f">
-        <Docstring lineno="27">
-            f's docstring
-        <ParameterList lineno="27">
-            <Parameter lineno="27" name="x">
-            <Parameter lineno="27" name="y">
-                <Default lineno="27">
+                <docstring lineno="24">
+                    instance_attribute docstring
+    <function_section lineno="27">
+        <object_name>
+            f
+        <docstring lineno="27">
+            f docstring
+        <parameter_list>
+            <parameter>
+                <object_name>
+                    x
+            <parameter>
+                <object_name>
+                    y
+                <parameter_default>
                     a * 5
-            <ExcessPositionalArguments lineno="27" name="args">
-    <Attribute lineno="33" name="f.function_attribute">
-        <Expression lineno="33">
+            <parameter excess_positional="1">
+                <object_name>
+                    args
+    <attribute lineno="33">
+        <object_name>
+            f.function_attribute
+        <expression_value>
             1
-        <Docstring lineno="34">
-            f.function_attribute's docstring
+        <docstring lineno="34">
+            f.function_attribute docstring
 '''],
 ]
 
