@@ -447,7 +447,10 @@ or " ") or the text between option arguments (typically either "," or
     %anonymous.att;>
 
 <!ELEMENT substitution_definition %text.model;>
-<!ATTLIST substitution_definition %basic.atts;>
+<!ATTLIST substitution_definition
+    %basic.atts;
+    ltrim     %yesorno; #IMPLIED
+    rtrim     %yesorno; #IMPLIED>
 
 <!ELEMENT comment (#PCDATA)>
 <!ATTLIST comment
