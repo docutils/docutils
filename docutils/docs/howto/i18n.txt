@@ -136,7 +136,6 @@ attribute:
     The keys should be translated to the target language.
 
 ``roles``
-
     This is a mapping language-dependent role names to canonical role
     names for interpreted text.  The canonical directive names are
     registered in ``docutils/parsers/rst/states.py``, in
