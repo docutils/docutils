@@ -128,6 +128,12 @@ class Node:
 
 class Text(Node, MutableString):
 
+    """
+    Instances are terminal nodes (leaves) containing text only; no child
+    nodes or attributes.  Initialize by passing a string to the constructor.
+    Access the text itself with the `astext` method.
+    """
+
     tagname = '#text'
 
     def __repr__(self):
@@ -171,26 +177,30 @@ class Element(Node):
     """
     `Element` is the superclass to all specific elements.
 
-    Elements contain attributes and child nodes. Elements emulate dictionaries
-    for attributes, indexing by attribute name (a string). To set the
-    attribute 'att' to 'value', do::
+    Elements contain attributes and child nodes.  Elements emulate
+    dictionaries for attributes, indexing by attribute name (a string).  To
+    set the attribute 'att' to 'value', do::
 
         element['att'] = 'value'
 
     Elements also emulate lists for child nodes (element nodes and/or text
-    nodes), indexing by integer. To get the first child node, use::
+    nodes), indexing by integer.  To get the first child node, use::
 
         element[0]
 
-    Elements may be constructed using the ``+=`` operator. To add one new
+    Elements may be constructed using the ``+=`` operator.  To add one new
     child node to element, do::
 
         element += node
+
+    This is equivalent to ``element.append(node)``.
 
     To add a list of multiple child nodes at once, use the same ``+=``
     operator::
 
         element += [node1, node2]
+
+    This is equivalent to ``element.extend([node1, node2])``.
     """
 
     tagname = None
@@ -523,9 +533,6 @@ class Part: pass
 class Inline: pass
 
 class Referential(Resolvable): pass
-    #refnode = None
-    #"""Resolved reference to a node."""
-
 
 class Targetable(Resolvable):
 
@@ -662,7 +669,8 @@ class document(Root, Structural, Element):
         if self.explicit_targets.has_key(name) \
               or self.implicit_targets.has_key(name):
             msg = self.reporter.info(
-                  'Duplicate implicit target name: "%s".' % name, backrefs=[id])
+                  'Duplicate implicit target name: "%s".' % name,
+                  backrefs=[id])
             msgnode += msg
             self.clear_target_names(name, self.implicit_targets)
             del target['name']
@@ -695,7 +703,8 @@ class document(Root, Structural, Element):
                 target['dupname'] = name
         elif self.implicit_targets.has_key(name):
             msg = self.reporter.info(
-                  'Duplicate implicit target name: "%s".' % name, backrefs=[id])
+                  'Duplicate implicit target name: "%s".' % name,
+                  backrefs=[id])
             msgnode += msg
             self.clear_target_names(name, self.implicit_targets)
         self.explicit_targets[name] = target
@@ -1072,10 +1081,19 @@ class NodeVisitor:
     tree traversals.
 
     Each node class has corresponding methods, doing nothing by default;
-    override individual methods for specific and useful behaviour. The
+    override individual methods for specific and useful behaviour.  The
     "``visit_`` + node class name" method is called by `Node.walk()` upon
-    entering a node. `Node.walkabout()` also calls the "``depart_`` + node
+    entering a node.  `Node.walkabout()` also calls the "``depart_`` + node
     class name" method before exiting a node.
+
+    This is a base class for visitors whose ``visit_...`` & ``depart_...``
+    methods should be implemented for *all* node types encountered (such as
+    for `docutils.writers.Writer` subclasses).  Unimplemented methods will
+    raise exceptions.
+
+    For sparse traversals, where only certain node types are of interest,
+    subclass `SparseNodeVisitor` instead.  When (mostly or entirely) uniform
+    processing is desired, subclass `GenericNodeVisitor`.
 
     .. [GoF95] Gamma, Helm, Johnson, Vlissides. *Design Patterns: Elements of
        Reusable Object-Oriented Software*. Addison-Wesley, Reading, MA, USA,
@@ -1102,6 +1120,16 @@ class NodeVisitor:
         """
         raise NotImplementedError('departing unknown node type: %s'
                                   % node.__class__.__name__)
+
+
+class SparseNodeVisitor(NodeVisitor):
+
+    """
+    Base class for sparse traversals, where only certain node types are of
+    interest.  When ``visit_...`` & ``depart_...`` methods should be
+    implemented for *all* node types (such as for `docutils.writers.Writer`
+    subclasses), subclass `NodeVisitor` instead.
+    """
 
     # Save typing with dynamic definitions.
     for name in node_class_names:
