@@ -14,6 +14,7 @@ __docformat__ = 'reStructuredText'
 
 
 import sys
+import docutils
 from docutils import languages, Component
 from docutils.transforms import universal
 
@@ -24,6 +25,8 @@ class Writer(Component):
     Abstract base class for docutils Writers.
 
     Each writer module or package must export a subclass also called 'Writer'.
+    Each writer must support all standard node types listed in
+    `docutils.nodes.node_class_names`.
 
     Call `write()` to process a document.
     """
@@ -63,7 +66,16 @@ class Writer(Component):
             xclass(self.document, self).transform()
 
     def translate(self):
-        """Override to do final document tree translation."""
+        """
+        Override to do final document tree translation.
+
+        This is usually done with a `docutils.nodes.NodeVisitor` subclass, in
+        combination with a call to `docutils.nodes.Node.walk()` or
+        `docutils.nodes.Node.walkabout()`.  The ``NodeVisitor`` subclass must
+        support all standard elements (listed in
+        `docutils.nodes.node_class_names`) and possibly non-standard elements
+        used by the current Reader as well.
+        """
         raise NotImplementedError('subclass must override this method')
 
     def record(self):
