@@ -339,6 +339,39 @@ the~empty~line~gets~tested~too~\\\\
 """],
 ]
 
+totest['raw'] = [
+["""\
+.. raw:: latex
+
+   \\noindent
+
+A paragraph.
+
+.. |sub| raw:: latex
+
+   (some raw text)
+
+Foo |sub|
+same paragraph.
+""",
+latex_head + """\
+\\title{}
+\\author{}
+\\date{}
+\\raggedbottom
+\\begin{document}
+
+\\setlength{\\locallinewidth}{\\linewidth}
+\\noindent
+A paragraph.
+
+Foo (some raw text)
+same paragraph.
+
+\\end{document}
+"""],
+]
+
 if __name__ == '__main__':
     import unittest
     unittest.main(defaultTest='suite')

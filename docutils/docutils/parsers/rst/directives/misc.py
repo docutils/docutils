@@ -82,7 +82,7 @@ def raw(name, arguments, options, content, lineno,
                   'have content.' % name,
                   nodes.literal_block(block_text, block_text), line=lineno)
             return [error]
-        text = '\n'.join(content) + '\n'
+        text = '\n'.join(content)
     elif options.has_key('file'):
         if options.has_key('url'):
             error = state_machine.reporter.error(
