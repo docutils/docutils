@@ -6,14 +6,35 @@
 :Revision: $Revision$
 :Date: $Date$
 
-This document describes the internal data structure representing
-document trees in Docutils.  The data structure is defined by the
-hierarchy of classes in the ``docutils.nodes`` module.  It is also
-formally described by the `Docutils Generic DTD`_ XML document type
-definition, docutils.dtd_, which is the definitive source for element
-hierarchy details.
+This document describes the XML data structure of Docutils documents,
+the relationships and semantics of elements.  The Docutils document
+structure is formally defined by the `Docutils Generic DTD`_ XML
+document type definition, docutils.dtd_, which is the definitive
+source for details of element structural relationships.
 
-Below is a simplified diagram of the hierarchy of element types in the
+The data structure is implemented by the class library in the
+``docutils.nodes`` module.  This document does not discuss
+implementation details; they can be found in documentation for the
+``docutils.nodes`` module (docstrings).
+
+The reader is assumed to have some familiarity with XML or SGML, and
+an understanding the data structure meaning of "tree".  For a list of
+introductory articles, see `Introducing the Extensible Markup Language
+(XML)`_.
+
+.. _Docutils Generic DTD:
+.. _docutils.dtd: http://docutils.sourceforge.net/spec/docutils.dtd
+.. _Introducing the Extensible Markup Language (XML):
+   http://xml.coverpages.org/xmlIntro.html
+
+.. contents::
+
+
+-------------------
+ Element Hierarchy
+-------------------
+
+Below is a simplified diagram of the hierarchy of elements in the
 Docutils document tree structure.  An element may contain any other
 elements immediately below it in the diagram.  Text in square brackets
 are notes.  Element types in parentheses indicate recursive or
@@ -36,94 +57,97 @@ contain further body elements, etc. ::
   | markup) |
   +---------+
 
+The Docutils document model uses a simple, recursive model for section
+structure.  A document_ node may contain body elements and section_
+elements.  Sections in turn may contain body elements and sections.
+The level (depth) of a section element is determined from its physical
+nesting level; unlike other document models (``<h1>`` in HTML_,
+``<sect1>`` in DocBook_, ``<div1>`` in XMLSpec_) the level is not
+incorporated into the element name.
 
--------------------
- Element Hierarchy
--------------------
+The Docutils document model uses strict element content models.  Every
+element has a unique structure and semantics, but elements may be
+classified into general categories:
 
-A class hierarchy has been implemented in nodes.py.  The position of
-each node (the level at which it can occur) is significant and is
-represented by abstract base classes (Root, Structural, Body, Inline,
-etc.).  Certain transformations will be easier because we can use
-``isinstance(node, base_class)`` to determine the position of the node
-in the hierarchy.
+* _`Structural elements` (document_, section_, and topic_) may only
+  contain child elements; they do not directly contain text data.
+  Child elements of structural elements may be body elements or other
+  structural elements.  Structural elements can only be child elements
+  of other structural elements.
 
-The elements making up Docutils document trees can be categorized into
-the following groups:
+* _`Body elements` are contained within structural elements and
+  compound body elements.  There are two subcategories of body
+  elements:
 
-- _`Root element`: document_
+  - _`Compound body elements` (like table_ and bullet_list_) contain
+    local substructure and further body elements.  They do not
+    directly contain text data.
 
-- _`Title elements`: title_, subtitle_
+  - _`Simple body elements` (like paragraph_ and literal_block)
+    directly contain text data, and may also contain inline elements.
+    Some simple body elements have a "mixed content model".
 
-- _`Bibliographic elements`: docinfo_, author_, authors_,
-  organization_, contact_, version_, revision_, status_, date_,
-  copyright_
+* _`Inline elements` (like emphasis_ and reference_) directly contain
+  text data, and may also contain inline elements.  Inline elements
+  are contained within simple body elements.  Inline elements have a
+  "mixed content model".
 
-- _`Structural elements`: document_, section_, topic_, transition_
+Only elements which are meant to directly contain text data have a
+mixed content model, where text data and elements may be intermixed.
+This is unlike the HTML_ document model, where paragraphs and text
+data may occur at the same level.
 
-- _`Body elements`:
-
-  - _`General body elements`: paragraph_, literal_block_,
-    block_quote_, doctest_block_, table_, figure_, image_, footnote_
-
-  - _`Lists`: bullet_list_, enumerated_list_, definition_list_,
-    field_list_, option_list_
-
-  - _`Admonitions`: note_, tip_, warning_, error_, caution_, danger_,
-    important_
-
-  - _`Special body elements`: target_, substitution_definition_,
-    comment_, system_warning_
-
-- _`Inline elements`: emphasis_, strong_, interpreted_, literal_,
-  reference_, target_, footnote_reference_, substitution_reference_,
-  image_, problematic_
-
-
-``Node``
-========
-
-
-``Text``
-========
-
-
-``Element``
-===========
-
-
-``TextElement``
-===============
+.. _HTML: http://www.w3.org/MarkUp/
+.. _DocBook: http://docbook.org/tdg/en/html/docbook.html
+.. _XMLSpec: http://www.w3.org/XML/1998/06/xmlspec-report.htm
 
 
 -------------------
  Element Reference
 -------------------
 
+Each element in the document tree model is described in its own
+section below.  Each section contains the following subsections:
+
+* Description: The semantics of the element.
+
+  - Parents: A list of elements which may contain the element.
+
+  - Children: A list of elements which may occur within the element.
+
+  - Analogies: Describes analogous elements in well-known document
+    models such as HTML_ or DocBook_.  Lists similarities and
+    differences.
+
+  - Processing Expectations: Lists formatting or rendering
+    expectations for the element.
+
+* Content Model: the content model of the element from the `Docutils
+  DTD`_.
+
+  - Attributes: Describes the possible values and semantics of each
+    attribute.  Common attributes are described via references.
+
+  - Parameter Entities: Lists the parameter entities in which the
+    element described appears.
+
+* Example: Where possible, a reStructuredText example is shown along
+  with a fragment of the document tree resulting from parsing.  
+
+
 ``document``
 ============
-description
+
+The ``document`` element is the root (topmost) element of the Docutils
+document tree.  ``document`` is the direct or indirect ancestor of
+every other element in the tree.
 
 contents
 
-External attributes
--------------------
+Attributes
+----------
+
 `Common external attributes`_.
-
-
-Internal attributes
--------------------
-- `Common internal attributes`_.
-- ``explicittargets``
-- ``implicittargets``
-- ``externaltargets``
-- ``indirecttargets``
-- ``refnames``
-- ``anonymoustargets``
-- ``anonymousrefs``
-- ``autofootnotes``
-- ``autofootnoterefs``
-- ``reporter``
 
 
 ---------------------
@@ -188,13 +212,6 @@ The ``source`` attribute
 The ``xml:space`` attribute
 
 
-Internal Attributes
-===================
-
-All element objects share the following _`common internal attributes`:
-rawsource_, children_, attributes_, tagname_.
-
-
 ------------------------
  DTD Parameter Entities
 ------------------------
@@ -234,40 +251,6 @@ The ``%text.model;`` parameter entity
  Appendix: Miscellaneous Topics
 --------------------------------
 
-Hyperlink Bookkeeping
-=====================
-
-``document.nameids`` maps names to IDs, while ``document.nametypes``
-maps names to booleans representing hyperlink type (True==explicit,
-False==implicit).  The ``document.set_name_id_map()`` method updates
-the mappings.
-
-The following state transition table shows how ``nameids`` ("ids") and
-``nametypes`` ("types") change with new input (a call to
-``document.set_name_id_map()``), and what actions are performed:
-
-====  =====  ========  ========  =======  ====  =====  =====
- Old State    Input          Action        New State   Notes
------------  --------  -----------------  -----------  -----
-ids   types  new type  sys.msg.  dupname  ids   types
-====  =====  ========  ========  =======  ====  =====  =====
---    --     explicit  --        --       new   True
---    --     implicit  --        --       new   False
-None  False  explicit  --        --       new   True
-old   False  explicit  implicit  old      new   True
-None  True   explicit  explicit  new      None  True
-old   True   explicit  explicit  new,old  None  True   [#]_
-None  False  implicit  implicit  new      None  False
-old   False  implicit  implicit  new,old  None  False
-None  True   implicit  implicit  new      None  True
-old   True   implicit  implicit  new      old   True
-====  =====  ========  ========  =======  ====  =====  =====
-
-.. [#] Do not clear the name->id map or invalidate the old target if
-   both old and new targets are external and refer to identical URIs.
-   The new target is invalidated regardless.
-
-
 Representation of Horizontal Rules
 ==================================
 
@@ -278,11 +261,11 @@ the implementation of the document tree.  Given this source::
     Document
     ========
 
-    Paragraph
+    Paragraph 1
 
     --------
 
-    Paragraph
+    Paragraph 2
 
 The horizontal rule indicates a "transition" (in prose terms) or the
 start of a new "division".  Before implementation, the parsed document
@@ -293,13 +276,12 @@ tree would be::
             <title>
                 Document
             <paragraph>
-                Paragraph
+                Paragraph 1
             --------               <--- error here
             <paragraph>
-                Paragraph
+                Paragraph 2
 
-There are several possibilities for the implementation.  Solution 3
-was chosen.
+There are several possibilities for the implementation:
 
 1. Implement horizontal rules as "divisions" or segments.  A
    "division" is a title-less, non-hierarchical section.  The first
@@ -310,10 +292,10 @@ was chosen.
                <title>
                    Document
                <paragraph>
-                   Paragraph
+                   Paragraph 1
                <division>
                    <paragraph>
-                       Paragraph
+                       Paragraph 2
 
    But the two paragraphs are really at the same level; they shouldn't
    appear to be at different levels.  There's really an invisible
@@ -329,18 +311,18 @@ was chosen.
                    Document
                <division>
                    <paragraph>
-                       Paragraph
+                       Paragraph 1
                <division>
                    <paragraph>
-                       Paragraph
+                       Paragraph 2
 
    With this change, documents and sections will directly contain
    divisions and sections, but not body elements.  Only divisions will
    directly contain body elements.  Even without a horizontal rule
    anywhere, the body elements of a document or section would be
    contained within a division element.  This makes the document tree
-   deeper.  This is similar to the way HTML treats document contents:
-   grouped within a <BODY> element.
+   deeper.  This is similar to the way HTML_ treats document contents:
+   grouped within a ``<body>`` element.
 
 3. Implement them as "transitions", empty elements::
 
@@ -349,23 +331,20 @@ was chosen.
                <title>
                    Document
                <paragraph>
-                   Paragraph
+                   Paragraph 1
                <transition>
                <paragraph>
-                   Paragraph
+                   Paragraph 2
 
    A transition would be a "point element", not containing anything,
    only identifying a point within the document structure.  This keeps
    the document tree flatter, but the idea of a "point element" like
    "transition" smells bad.  A transition isn't a thing itself, it's
-   the space between two divisions.
+   the space between two divisions.  However, transitions are a
+   practical solution.
 
-   This solution has been chosen for incorporation into the document
-   tree.
+Solution 3 was chosen for incorporation into the document tree model.
 
-
-.. _Docutils Generic DTD:
-.. _docutils.dtd: http://docutils.sourceforge.net/spec/docutils.dtd
 .. _reStructuredText:
     http://docutils.sourceforge.net/spec/rst/reStructuredText.html
 
