@@ -378,7 +378,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 "iso-8859-5": "iso88595",   # cyrillic
                 "iso-8859-9": "latin5",     # turkish
                 "iso-8859-15": "latin9",    # latin9, update to latin1.
-                "mac_cyrillic": "maycyr",
+                "mac_cyrillic": "maccyr",
                 # unmatched encodings
                 #"": "applemac",
                 #"": "ansinew",  # windows 3.1 ansi
