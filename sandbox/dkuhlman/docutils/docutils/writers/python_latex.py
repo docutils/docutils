@@ -719,13 +719,19 @@ class DocPyTranslator(nodes.NodeVisitor):
             self.body.append(node.astext())
         raise nodes.SkipNode
 
+##     def cleanHref(self, href):
+##         hrefArray = list(urlparse.urlsplit(href))
+##         hrefArray[2] = urllib.quote(hrefArray[2]).replace('%', '\\%{}')
+##         hrefArray[3] = urllib.quote(hrefArray[3]).replace('%', '\\%{}')
+##         href = urlparse.urlunsplit(hrefArray)
+##         href = href.replace('#', '\\#{}')
+##         return href
+
     def cleanHref(self, href):
-        hrefArray = list(urlparse.urlsplit(href))
-        hrefArray[2] = urllib.quote(hrefArray[2]).replace('%', '\\%{}')
-        hrefArray[3] = urllib.quote(hrefArray[3]).replace('%', '\\%{}')
-        href = urlparse.urlunsplit(hrefArray)
+        href = href.replace('~', '\\~{}')
+        href = href.replace('#', '\\#{}')
         return href
-    
+
     def visit_reference(self, node):
         if node.has_key('refuri'):
             self.href = node['refuri']
@@ -954,14 +960,24 @@ class DocPyTranslator(nodes.NodeVisitor):
                 self.body.append('\n\n')
                 self.body.append('%' + '_' * 75)
                 self.body.append('\n\n')
+##                 if (self.section_level == 1):
+##                     self.body.append('\\chapter{')
+##                 elif (self.section_level == 2):      
+##                     self.body.append('\\section{')
+##                 elif (self.section_level == 3):
+##                     self.body.append('\\subsection{')
+##                 else:
+##                     self.body.append('\\subsubsection{')
                 if (self.section_level == 1):
-                    self.body.append('\\chapter{')
-                elif (self.section_level == 2):      
                     self.body.append('\\section{')
-                elif (self.section_level == 3):
+                elif (self.section_level == 2):      
                     self.body.append('\\subsection{')
-                else:
+                elif (self.section_level == 3):
                     self.body.append('\\subsubsection{')
+                elif (self.section_level == 4):
+                    self.body.append('\\paragraph{')
+                else:
+                    self.body.append('\\subparagraph{')
 
     def depart_title(self, node):
         if self.section_level > 0:
