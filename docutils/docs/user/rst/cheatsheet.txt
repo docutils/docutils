@@ -39,13 +39,12 @@ Option list       -o  at least 2 spaces between option & description
 ================  ====================================================
 
 ================  ====================================================
-Explicit Markup   Examples (only visible in the `text source`_)
+Explicit Markup   Examples (only visible in the `text source <cheatsheet.txt>`_)
 ================  ====================================================
 Footnote          .. [1] Manually numbered or [#] auto-numbered
                      (even [#labelled]) or [*] auto-symbol
 Citation          .. [CIT2002] A citation.
 Hyperlink Target  .. _reStructuredText: http://docutils.sf.net/rst.html
-                  .. _text source: cheatsheet.txt
                   .. _indirect target: reStructuredText_
                   .. _internal target:
 Anonymous Target  __ http://docutils.sf.net/docs/ref/rst/restructuredtext.html
