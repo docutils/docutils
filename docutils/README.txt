@@ -104,10 +104,8 @@ and usually bug-free:
 To keep up to date on the latest developments, download fresh copies
 of the snapshots regularly.  New functionality is being added weekly,
 sometimes daily.  (There's also the CVS repository, and a mailing list
-for CVS messages.  See the web site [address above] or spec/notes.txt
-for details.)
-
-.. XXX What shall we do with the reference to spec/notes.txt?  Remove?
+for CVS messages.  See the web site [address above] or
+docs/dev/policies.txt for details.)
 
 
 Requirements
