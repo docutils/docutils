@@ -302,6 +302,40 @@ latex_head + """\
 """],
 ]
 
+# In "\\\n[" the "[" needs to be protected (otherwise it will be seen as an option to "\\").
+totest['brackett_protection'] = [
+# input
+["""\
+::
+
+  something before to get a end of line.
+  [
+
+  the empty line gets tested too
+  ]
+""",
+latex_head + """\
+\\title{}
+\\author{}
+\\date{}
+\\raggedbottom
+\\begin{document}
+\\maketitle
+
+
+\\setlength{\\locallinewidth}{\\linewidth}
+\\begin{ttfamily}\\begin{flushleft}
+something~before~to~get~a~end~of~line.~\\\\
+{[}~\\\\
+~\\\\
+the~empty~line~gets~tested~too~\\\\
+]
+\\end{flushleft}\\end{ttfamily}
+
+\\end{document}
+"""],
+]
+
 if __name__ == '__main__':
     import unittest
     unittest.main(defaultTest='suite')
