@@ -1363,6 +1363,7 @@ class SparseNodeVisitor(NodeVisitor):
     subclasses), subclass `NodeVisitor` instead.
     """
 
+
 class GenericNodeVisitor(NodeVisitor):
 
     """
@@ -1407,6 +1408,7 @@ def _add_node_class_names(names):
         setattr(SparseNodeVisitor, 'depart' + _name, _nop)
 
 _add_node_class_names(node_class_names)
+
 
 class TreeCopyVisitor(GenericNodeVisitor):
 
