@@ -650,12 +650,15 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'tt', '', CLASS='literal'))
         text = node.astext()
         for token in self.words_and_spaces.findall(text):
-            if token in ('\n', ' '):
-                self.body.append(token)
-            elif token.strip():
+            if token.strip():
+                # Protect text like "--an-option" from bad line wrapping:
                 self.body.append('<span class="pre">%s</span>'
                                  % self.encode(token))
+            elif token in ('\n', ' '):
+                # Allow breaks at whitespace:
+                self.body.append(token)
             else:
+                # Protect runs of multiple spaces; the last space can wrap:
                 self.body.append('&nbsp;' * (len(token) - 1) + ' ')
         self.body.append('</tt>')
         raise nodes.SkipNode
