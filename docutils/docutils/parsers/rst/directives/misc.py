@@ -35,10 +35,10 @@ def include(name, arguments, options, content, lineno,
         return [error]
     path = os.path.normpath(os.path.join(source_dir, path))
     path = utils.relative_path(None, path)
+    encoding = options.get('encoding', state.document.settings.input_encoding)
     try:
         include_file = io.FileInput(
-            source_path=path, encoding=state.document.settings.input_encoding,
-            handle_io_errors=None)
+            source_path=path, encoding=encoding, handle_io_errors=None)
     except IOError, error:
         severe = state_machine.reporter.severe(
               'Problems with "%s" directive path:\n%s: %s.'
@@ -71,6 +71,7 @@ def raw(name, arguments, options, content, lineno,
     imported from a file or url.
     """
     attributes = {'format': arguments[0]}
+    encoding = options.get('encoding', state.document.settings.input_encoding)
     if content:
         if options.has_key('file') or options.has_key('url'):
             error = state_machine.reporter.error(
@@ -91,14 +92,13 @@ def raw(name, arguments, options, content, lineno,
         path = os.path.normpath(os.path.join(source_dir, options['file']))
         path = utils.relative_path(None, path)
         try:
-            raw_file = open(path)
+            raw_file = io.FileInput(source_path=path, encoding=encoding)
         except IOError, error:
             severe = state_machine.reporter.severe(
                   'Problems with "%s" directive path:\n%s.' % (name, error),
                   nodes.literal_block(block_text, block_text), line=lineno)
             return [severe]
         text = raw_file.read()
-        raw_file.close()
         attributes['source'] = path
     elif options.has_key('url'):
         if not urllib2:
@@ -108,17 +108,19 @@ def raw(name, arguments, options, content, lineno,
                   '"urllib2" module).' % name,
                   nodes.literal_block(block_text, block_text), line=lineno)
             return [severe]
+        source = options['url']
         try:
-            raw_file = urllib2.urlopen(options['url'])
+            raw_text = urllib2.urlopen(source).read()
         except (urllib2.URLError, IOError, OSError), error:
             severe = state_machine.reporter.severe(
                   'Problems with "%s" directive URL "%s":\n%s.'
                   % (name, options['url'], error),
                   nodes.literal_block(block_text, block_text), line=lineno)
             return [severe]
+        raw_file = io.StringInput(source=raw_text, source_path=source,
+                                  encoding=encoding)
         text = raw_file.read()
-        raw_file.close()
-        attributes['source'] = options['file']
+        attributes['source'] = source
     else:
         error = state_machine.reporter.warning(
             'The "%s" directive requires content; none supplied.' % (name),
