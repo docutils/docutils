@@ -43,7 +43,9 @@ class OptionSpec:
           'the default.',
           ['--recurse'], {'action': 'store_true', 'default': 1}),
          ('Do not scan subdirectories for files to process.',
-          ['--local'], {'dest': 'recurse', 'action': 'store_false'}),))
+          ['--local'], {'dest': 'recurse', 'action': 'store_false'}),
+         ('Work silently (no progress messages).  Independent of "--quiet".',
+          ['--silent'], {'action': 'store_true'}),))
 
     
 class OptionParser(frontend.OptionParser):
@@ -83,9 +85,10 @@ class Builder:
             os.path.walk(directory, self.visit, recurse)
 
     def visit(self, recurse, directory, names):
-        print >>sys.stderr, '/// Processing directory:', directory
-        sys.stderr.flush()
         options = self.get_options(directory)
+        if not options.silent:
+            print >>sys.stderr, '/// Processing directory:', directory
+            sys.stderr.flush()
         peps_found = 0
         for name in names:
             if name.endswith('.txt'):
@@ -102,8 +105,9 @@ class Builder:
         options._source = os.path.normpath(os.path.join(directory, name))
         options._destination = options._source[:-4]+'.html'
         self.pub.options = options
-        print >>sys.stderr, '    ::: Processing .txt:', name
-        sys.stderr.flush()
+        if not options.silent:
+            print >>sys.stderr, '    ::: Processing .txt:', name
+            sys.stderr.flush()
         self.pub.source = io.FileIO(options, source_path=options._source)
         self.pub.destination = io.FileIO(
             options, destination_path=options._destination)
@@ -112,10 +116,14 @@ class Builder:
     def process_peps(self, options, directory):
         old_directory = os.getcwd()
         os.chdir(directory)
-        print >>sys.stderr, '    ::: Processing PEPs:'
-        sys.stderr.flush()
+        if options.silent:
+            argv = ['-q']
+        else:
+            print >>sys.stderr, '    ::: Processing PEPs:'
+            sys.stderr.flush()
+            argv = []
         pep2html.docutils_options = options
-        pep2html.main()
+        pep2html.main(argv)
         os.chdir(old_directory)
 
     def process_command_line(self):
@@ -129,8 +137,6 @@ class Builder:
         frontend.make_paths_absolute(self.config_settings)
         self.cmdline_options = option_parser.parse_args(
             values=frontend.Values())   # no defaults
-        # Clear out the command-line options so pep2html doesn't see them:
-        del sys.argv[1:]
 
     def get_options(self, directory=None):
         """
