@@ -55,6 +55,11 @@ class IO:
         """
         Decode a string, `data`, heuristically.
         Raise UnicodeError if unsuccessful.
+
+        The client application should call ``locale.setlocale`` at the
+        beginning of processing::
+
+            locale.setlocale(locale.LC_ALL, '')
         """
         encodings = [self.options.input_encoding, 'utf-8']
         try:
