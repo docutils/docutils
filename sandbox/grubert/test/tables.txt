@@ -71,6 +71,6 @@ poses problems
  readable before                                                   it must be scaled down
  processing          
 ---------------------------- ------------------------------------ -------------------------------------------
- narrow ones need             a little amplification as TeX's      proportional fonts seam to need more
+ narrow ones need             a little amplification as TeX's      proportional fonts seem to need more
                                                                    horizontal space.
 ============================ ==================================== ===========================================
