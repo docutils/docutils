@@ -456,6 +456,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_colspec(self, node):
         self.colspecs.append(node)
+        node.parent.stubs.append(node.attributes.get('stub'))
 
     def depart_colspec(self, node):
         pass
@@ -603,15 +604,18 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</em>')
 
     def visit_entry(self, node):
-        if isinstance(node.parent.parent, nodes.thead):
+        if ( isinstance(node.parent.parent, nodes.thead)
+             or node.parent.parent.parent.stubs[node.parent.column]):
             tagname = 'th'
         else:
             tagname = 'td'
+        node.parent.column += 1
         atts = {}
         if node.has_key('morerows'):
             atts['rowspan'] = node['morerows'] + 1
         if node.has_key('morecols'):
             atts['colspan'] = node['morecols'] + 1
+            node.parent.column += node['morecols']
         self.body.append(self.starttag(node, tagname, '', **atts))
         self.context.append('</%s>\n' % tagname.lower())
         if len(node) == 0:              # empty cell
@@ -1092,6 +1096,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_row(self, node):
         self.body.append(self.starttag(node, 'tr', ''))
+        node.column = 0
 
     def depart_row(self, node):
         self.body.append('</tr>\n')
@@ -1249,6 +1254,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'colgroup'))
         # Appended by thead or tbody:
         self.context.append('</colgroup>\n')
+        node.stubs = []
 
     def depart_tgroup(self, node):
         pass

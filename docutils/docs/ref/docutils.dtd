@@ -166,7 +166,9 @@ http://www.oasis-open.org/html/tm9901.htm).
 <!ENTITY % tbl.tgroup.att       " %basic.atts; ">
 <!ENTITY % tbl.thead.att        " %basic.atts; ">
 <!ENTITY % tbl.tbody.att        " %basic.atts; ">
-<!ENTITY % tbl.colspec.att      " %basic.atts; ">
+<!ENTITY % tbl.colspec.att
+  " %basic.atts;
+    stub      %yesorno; #IMPLIED ">
 <!ENTITY % tbl.row.att          " %basic.atts; ">
 <!ENTITY % tbl.entry.mdl        " (%body.elements;)* ">
 <!ENTITY % tbl.entry.att

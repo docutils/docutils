@@ -59,6 +59,7 @@ Changes Since 0.3.7
   - Added auto-enumerated list items.
   - Fixed bug that assumed ``.. _`` and ``.. |`` were invariably
     followed by text.
+  - Added support for table stub columns.
 
 * docutils/parsers/rst/directives/__init__.py:
 
@@ -85,6 +86,8 @@ Changes Since 0.3.7
   - Caught empty CSV table bug.
   - Added support for the ``file_insertion_enabled`` setting in the
     "csv-table" directive.
+  - Added ``stub-columns`` option to "csv-table" and "list-table"
+    directives.
 
 * docutils/parsers/rst/languages/nl.py: Added to project; Dutch
   mappings by Martijn Pieters.
@@ -106,6 +109,8 @@ Changes Since 0.3.7
     tags).
   - Added support for multiple IDs per node by creating empty ``span``
     tags.
+  - Added the ``field_name_limit`` setting & support.
+  - Added support for table stub columns.
 
 * docutils/writers/latex2e.py:
 
@@ -116,6 +121,11 @@ Changes Since 0.3.7
     even if the document has no title.
   - Made sure that latex doesn't fill in today's date if no date field
     was given.
+
+* docs/ref/docutils.dtd:
+
+  - Added ``stub`` attribute to ``colspec`` element via the
+    ``tbl.colspec.att`` parameter entity.
 
 
 Release 0.3.7 (2004-12-24)
