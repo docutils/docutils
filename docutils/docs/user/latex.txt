@@ -52,6 +52,12 @@ Setting/Config Entry   Description
                        *Note:* LaTeX will number the sections, which
                        might be a bug in this case.
 ---------------------  ------------------------------------------------
+--use-latex-footnotes  Use LaTeX-footnotes not a figure simulation.
+                       This might give no Hyperrefs on /to footnotes,
+                       but should be able to handle more.
+
+                       By default this is off.
+---------------------  ------------------------------------------------
 --hyperlink-color      Color of any hyperlinks embedded in text 
                        (default: "blue", "0" to disable).
 ---------------------  ------------------------------------------------
