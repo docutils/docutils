@@ -52,6 +52,30 @@ Here's an |unknown| substitution.
         <paragraph>
             Undefined substitution referenced: "unknown".
 """],
+[u"""\
+Substitutions support case differences:
+
+.. |eacute| replace:: \u00E9
+.. |Eacute| replace:: \u00C9
+
+|Eacute|\\t\\ |eacute|, and even |EACUTE|.
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        Substitutions support case differences:
+    <substitution_definition name="eacute">
+        \u00E9
+    <substitution_definition name="Eacute">
+        \u00C9
+    <paragraph>
+        \u00C9
+        t
+        \u00E9
+        , and even \n\
+        \u00C9
+        .
+"""],
 ])
 
 

@@ -234,6 +234,44 @@ requiring this functionality may be better off using XML or another
 markup system.
 
 
+Character Processing
+--------------------
+
+Several people have suggested adding some form of character processing
+to reStructuredText:
+
+* Some sort of automated replacement of ASCII sequences:
+
+  - ``--`` to em-dash (or ``--`` to en-dash, and ``---`` to em-dash).
+  - Convert quotes to curly quote entities.  (Essentially impossible
+    for HTML?  Unnecessary for TeX.)
+  - Various forms of ``:-)`` to smiley icons.
+  - ``"\ "`` to &nbsp;.  Problem with line-wrapping though: it could
+    end up escaping the newline.
+  - Escaped newlines to <BR>.
+  - Escaped period or quote or dash as a disappearing catalyst to
+    allow character-level inline markup?
+
+* XML-style character entities, such as "&copy;" for the copyright
+  symbol.
+
+Docutils has no need of a character entity subsystem.  Supporting
+Unicode and text encodings, character entities should be directly
+represented in the text: a copyright symbol should be represented by
+the copyright symbol character.  If this is not possible in an
+authoring environment, a pre-processing stage can be added, or a table
+of substitution definitions can be devised.
+
+To allow for `character-level inline markup`_, a limited form of
+character processing has been added to the spec and parser: escaped
+whitespace characters are removed from the processed document.  Any
+further character processing will be of this functional type, rather
+than of the character-encoding type.
+
+.. _character-level inline markup:
+   reStructuredText.html#character-level-inline-markup
+
+
 Field Lists
 ===========
 
@@ -1394,15 +1432,15 @@ Currently reStructuredText has two hyperlink syntax variations:
       .. _phrase reference: http://www.example.org/phrase_reference/
       .. _line boundaries: http://www.example.org/line_boundaries/
 
-  + Advantages: 
+  + Advantages:
 
     - The plaintext is readable.
     - Each target may be reused multiple times (e.g., just write
       ``"reference_"`` again).
     - No syncronized ordering of references and targets is necessary.
-  
+
   + Disadvantages:
-  
+
     - The reference text must be repeated as target names; could lead
       to mistakes.
     - The target URLs may be located far from the references, and hard
@@ -1418,13 +1456,13 @@ Currently reStructuredText has two hyperlink syntax variations:
       __ http://www.example.org/phrase_reference/
       __ http://www.example.org/line_boundaries/
 
-  + Advantages: 
+  + Advantages:
 
     - The plaintext is readable.
     - The reference text does not have to be repeated.
-  
+
   + Disadvantages:
-  
+
     - References and targets must be kept in sync.
     - Targets cannot be reused.
     - The target URLs may be located far from the references.
@@ -1446,7 +1484,7 @@ syntaxes for hyperlinks:
 
 Both syntaxes share advantages and disadvantages:
 
-+ Advantages: 
++ Advantages:
 
   - The target is specified immediately adjacent to the reference.
 
@@ -1472,18 +1510,18 @@ A new type of "inline external hyperlink" has been proposed.
        these examples, (single-underscore), named?  If so, `anonymous
        references`__(http://www.example.org/anonymous/) using two
        underscores would probably be preferable.
- 
+
    __ http://mail.python.org/pipermail/doc-sig/2002-June/002648.html
 
    The syntax, advantages, and disadvantages are similar to those of
    StructuredText.
 
-   + Advantages: 
-   
+   + Advantages:
+
      - The target is specified immediately adjacent to the reference.
-   
+
    + Disadvantages:
-   
+
      - Poor plaintext readability.
      - Targets cannot be reused (unless named, but the semantics are
        unclear).
@@ -1492,7 +1530,7 @@ A new type of "inline external hyperlink" has been proposed.
 
      - The ``"`ref`_(URL)"`` syntax forces the last word of the
        reference text to be joined to the URL, making a potentially
-       very long word that can't be wrapped (URLs can be very long). 
+       very long word that can't be wrapped (URLs can be very long).
        The reference and the URL should be separate.  This is a
        symptom of the following point:
 
@@ -1525,11 +1563,11 @@ A new type of "inline external hyperlink" has been proposed.
    The syntax builds on that of the existing "inline internal
    targets": ``an _`inline internal target`.``
 
-   + Advantages: 
+   + Advantages:
 
      - The target is specified immediately adjacent to the reference,
        improving maintainability:
-  
+
        - References and targets are easily kept in sync.
        - The reference text does not have to be repeated.
 
@@ -1541,7 +1579,7 @@ A new type of "inline external hyperlink" has been proposed.
        brackets [#]_.
 
    + Disadvantages:
-  
+
      - Poor plaintext readability.
      - Lots of "line noise".
      - Targets cannot be reused (unless named; see below).
@@ -1574,13 +1612,13 @@ A new type of "inline external hyperlink" has been proposed.
           characters are excluded [from URIs] because they are often
           used as the delimiters around URI in text documents and
           protocol fields.
-   
+
           Using <> angle brackets around each URI is especially
           recommended as a delimiting style for URI that contain
           whitespace.
-   
+
       From RFC 822 (email headers):
-   
+
           Angle brackets ("<" and ">") are generally used to indicate
           the presence of a one machine-usable reference (e.g.,
           delimiting mailboxes), possibly including source-routing to

@@ -80,7 +80,7 @@ I recommend you try |Python|_.
 """,
 """\
 <document source="test data">
-    <substitution_definition name="python">
+    <substitution_definition name="Python">
         Python, 
         <emphasis>
             the
@@ -89,7 +89,7 @@ I recommend you try |Python|_.
     <paragraph>
         I recommend you try 
         <reference refname="python">
-            <substitution_reference refname="python">
+            <substitution_reference refname="Python">
                 Python
         .
 """],

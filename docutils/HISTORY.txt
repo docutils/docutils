@@ -29,8 +29,8 @@ and related projects:
     Manheimer, Vasko Miroslav, Skip Montanaro, Paul Moore, Nigel
     W. Moriarty, Mark Nodine, Patrick K. O'Brien, Michel Pelletier,
     Sam Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim, Brett g
-    Porter, Tavis Rudd, Oliver Rutherfurd, Kenichi Sato, Ueli
-    Schlaepfer, Gunnar Schwant, Bruce Smith, tav, Bob Tolbert,
+    Porter, David Priest, Tavis Rudd, Oliver Rutherfurd, Kenichi Sato,
+    Ueli Schlaepfer, Gunnar Schwant, Bruce Smith, tav, Bob Tolbert,
     Laurence Tratt, Guido van Rossum, Martin von Loewis, Greg Ward,
     Barry Warsaw, Edward Welbourne, Ka-Ping Yee, Moshe Zadka
 
@@ -160,6 +160,8 @@ Specific:
   - Fixed XML DOM bug (SF #660611).
   - Removed the ``interpeted`` element class and added
     ``title_reference``, ``abbreviation``, ``acronym``.
+  - Made substitutions case-sensitive-but-forgiving; moved some code
+    from the parser.
 
 * docutils/statemachine.py:
 
@@ -197,6 +199,7 @@ Specific:
     system messages.
   - Fixed bugs in ``relative_path()``.
   - Added support for improved diagnostics.
+  - Moved ``normalize_name()`` to nodes.py (``fully_normalize_name``).
 
 * docutils/languages: Fixed bibliographic field language lookups.
 
@@ -252,6 +255,8 @@ Specific:
   - Added support for correct interpreted text processing.
   - Added special processing of backslash-escaped whitespace (idea
     from David Abrahams).
+  - Made substitutions case-sensitive-but-forgiving; moved some code
+    to ``docutils.nodes``.
 
 * docutils/parsers/rst/tableparser.py:
 
@@ -367,6 +372,7 @@ Specific:
   - Split ``Hyperlinks`` into multiple transforms.
   - Fixed bug with multiply-indirect references (report: Bruce Smith).
   - Added check for circular indirect references.
+  - Made substitutions case-sensitive-but-forgiving.
 
 * docutils/transforms/universal.py:
 
