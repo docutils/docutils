@@ -538,6 +538,22 @@ LaTeX, the following paragraphs should all be first-line indented:
 
    Compound 5, block 3 (a paragraph).
 
+.. compound::
+
+   Compound 7, with a table inside:
+
+   +--------------------+--------------------+--------------------+
+   | Left cell, first   | Middle cell,       | Right cell.        |
+   | paragraph.         | consisting of      |                    |
+   |                    | exactly one        | Paragraph 2.       |
+   | Left cell, second  | paragraph.         |                    |
+   | paragraph.         |                    | Paragraph 3.       |
+   +--------------------+--------------------+--------------------+
+
+   Compound 7, a paragraph after the table.
+
+   Compound 7, another paragraph.
+
 Substitution Definitions
 ------------------------
 
