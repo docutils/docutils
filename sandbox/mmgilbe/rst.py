@@ -41,7 +41,6 @@ class MoinWriter(html4css1.Writer):
     output = None
     
     def wiki_resolver(self, node):
-        print node.attributes
         # If the node has an 'id' attribute then it is an implicit hyperlink
         # that we shouldn't make into a moin link.
         if 'id' in node.attributes:
@@ -54,13 +53,20 @@ class MoinWriter(html4css1.Writer):
     
     def __init__(self, formatter, request):
         html4css1.Writer.__init__(self)
+        from MoinMoin.parser.wiki import Parser
         self.formatter = formatter
         self.request = request
         self.unknown_reference_resolvers = [self.wiki_resolver]
+        self.wikiparser = Parser('', self.request)
+        self.wikiparser.formatter = self.formatter
+        self.wikiparser.hilite_re = None
         
         
     def translate(self):
-        visitor = MoinTranslator(self.document, self.formatter, self.request)
+        visitor = MoinTranslator(self.document, 
+                                 self.formatter, 
+                                 self.request,
+                                 self.wikiparser)
         self.document.walkabout(visitor)
         self.output = mastext(visitor.astext())
         
@@ -82,17 +88,16 @@ class Parser:
 
 class MoinTranslator(html4css1.HTMLTranslator):
 
-    def __init__(self, document, formatter, request):
+    def __init__(self, document, formatter, request, parser):
         html4css1.HTMLTranslator.__init__(self, document)
-        from MoinMoin.parser.wiki import Parser
         self.formatter = formatter
         self.request = request
         self.level = 0
         self.oldWrite = self.request.write
         self.request.write = self.faux_write
-        self.wikiparser = Parser('', self.request)
-        self.wikiparser.formatter = self.formatter
-        self.wikiparser.hilite_re = None
+        self.wikiparser = parser
+        self.wikiparser.request = request
+        self.wikiparser.request.write = self.faux_write
         
     def astext(self):
         self.request.write = self.oldWrite
@@ -118,6 +123,12 @@ class MoinTranslator(html4css1.HTMLTranslator):
             link = self.wikiparser.interwiki((node['refuri'],
                                               node.astext()))
             self.body.append(link)
+            raise docutils.nodes.SkipNode
+        elif (node['refuri'].find('/') != -1) and \
+              (node['refuri'].find(':') == -1):
+            print node['refuri']
+            self.wikiparser.raw = '[:%s: %s]' % (node['refuri'], node.astext())
+            self.wikiparser.format(self.formatter)
             raise docutils.nodes.SkipNode
         else:
             html4css1.HTMLTranslator.visit_reference(self, node)
