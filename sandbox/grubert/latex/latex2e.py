@@ -142,6 +142,21 @@ Notes on LaTeX
 
 """    
 
+class Babel:
+    """Language specifics for LaTeX."""
+    def __init__(self,lang):
+        self.language = lang
+        if re.search('^de',self.language):
+            self.quotes = ("\"`", "\"'")
+        else:    
+            self.quotes = ("``", "''")
+        self.quote_index = 0
+        
+    def next_quote(self):
+        q = self.quotes[self.quote_index]
+        self.quote_index = (self.quote_index+1)%2
+        return q
+
 class LaTeXTranslator(nodes.NodeVisitor):
     # When options are given to the documentclass, latex will pass them
     # to other packages, as done with babel. 
@@ -174,6 +189,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # language: labels, bibliographic_fields, and author_separators.
         # to allow writing labes for specific languages.
         self.language = languages.get_language(settings.language_code)
+        self.babel = Babel(settings.language_code)
         self.author_separator = self.language.author_separators[0]
         if _ISO639_TO_BABEL.has_key(settings.language_code):
             self.d_options += ',%s' % \
@@ -227,8 +243,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.insert_newline = 0
         # mbox_newline: to tell encode to add mbox and newline.
         self.mbox_newline = 0
-        # current quote index: we have quote start, quote end
-        self.quote_index = 0
 
     def language_label(self, docutil_label):
         return self.language.labels[docutil_label]
@@ -260,15 +274,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         text = text.replace("%", '{\\%}')
         text = text.replace("#", '{\\#}')
         text = text.replace("~", '{\\~{ }}')
-        # quotes BUG de needs other qoutes.
-        q = ("``", "''"); # q_de = ("\"`", "\"'")
         t = None
         for part in text.split('"'):
             if t == None:
                 t = part
             else:
-                t += q[self.quote_index] + part
-                self.quote_index = (self.quote_index + 1) % 2
+                t += self.babel.next_quote() + part
         text = t
         if self.insert_newline:
             text = text.replace("\n", '\\\\\n')
