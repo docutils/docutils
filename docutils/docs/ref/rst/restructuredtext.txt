@@ -2651,8 +2651,8 @@ Two forms of URI are recognized:
    The scheme is the name of the protocol, such as "http", "ftp",
    "mailto", or "telnet".  The scheme consists of an initial letter,
    followed by letters, numbers, and/or "+", "-", ".".  Recognition is
-   limited to known schemes, per the W3C's `Index of WWW Addressing
-   Schemes`_.
+   limited to known schemes, per the `Official IANA Registry of URI
+   Schemes`_ and the W3C's `Retired Index of WWW Addressing Schemes`_.
 
    The scheme-specific part of the resource identifier may be either
    hierarchical or opaque:
@@ -2719,7 +2719,9 @@ Markup errors are handled according to the specification in `PEP
 .. _doctest module:
    http://www.python.org/doc/current/lib/module-doctest.html
 .. _Emacs table mode: http://table.sourceforge.net/
-.. _Index of WWW Addressing Schemes:
+.. _Official IANA Registry of URI Schemes:
+   http://www.iana.org/assignments/uri-schemes
+.. _Retired Index of WWW Addressing Schemes:
    http://www.w3.org/Addressing/schemes.html
 .. _World Wide Web Consortium: http://www.w3.org/
 .. _HTML Techniques for Web Content Accessibility Guidelines:
