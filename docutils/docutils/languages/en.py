@@ -26,6 +26,7 @@ labels = {
       'status': 'Status',
       'date': 'Date',
       'copyright': 'Copyright',
+      'dedication': 'Dedication',
       'abstract': 'Abstract',
       'attention': 'Attention!',
       'caution': 'Caution!',
@@ -49,6 +50,7 @@ bibliographic_fields = {
       'status': nodes.status,
       'date': nodes.date,
       'copyright': nodes.copyright,
+      'dedication': nodes.topic,
       'abstract': nodes.topic}
 """Field name (lowcased) to node class name mapping for bibliographic fields
 (field_list)."""
