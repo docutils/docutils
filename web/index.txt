@@ -18,7 +18,8 @@
    On 2004-06-02 (Wednesday), we reorganized the project
    documentation.  URL redirection is in place, but if there are any
    broken links or other issues, please notify the `docutils-users
-   mailing list <mailto:docutils-users@lists.sourceforge.net>`__.
+   mailing list <mailto:docutils-users@lists.sourceforge.net>`__
+   [#docutils-users]_.
 
 The purpose of the Docutils project is to create a set of tools for
 processing plaintext documentation into useful formats, such as HTML,
@@ -99,9 +100,9 @@ any time.
 Requirements
 ============
 
-- Python 2.2 or later [#]_ must already be installed to run the code
-  and the test suite.  The latest release is recommended.  Python is
-  available from http://www.python.org/.
+- Python 2.2 or later [#py21]_ must already be installed to run the
+  code and the test suite.  The latest release is recommended.  Python
+  is available from http://www.python.org/.
 
 - Docutils uses Greg Ward's Optik_/optparse option processing package.
   It is included in the Docutils distribution.
@@ -109,7 +110,7 @@ Requirements
 - The `Python Imaging Library`, or PIL, is used for some image
   manipulation operations if it is installed.
 
-.. [#] Python 2.1 may be used providing the compiler package is
+.. [#py21] Python 2.1 may be used providing the compiler package is
    installed.  The compiler package can be found in the Tools/
    directory of Python's source distribution.
 
@@ -194,7 +195,7 @@ Mailing Lists
 Users who have questions or need assistance with Docutils or
 reStructuredText should first check the `Docutils FAQ`_.  If the
 question or problem is not answered there, please `post a message`__
-to the `Docutils-users mailing list`__.
+to the `Docutils-users mailing list`__ [#docutils-users]_.
 
 Developers can keep up to date and help out by joining the mailing
 lists.
@@ -219,6 +220,16 @@ focused on the implementation.
 You can also access read-only archives of the mailing lists via Gmane:
 Docutils-users__, Docutils-develop__, Docutils-checkins__ and
 Doc-SIG__.
+
+.. [#docutils-users] Due to overwhelming amounts of spam, the
+   docutils-users@lists.sourceforge.net mailing list has been set up
+   for subscriber posting only.  Non-subscribers who post to
+   docutils-users will receive a message with "Subject: Your message
+   to Docutils-users awaits moderator approval".  Legitimate messages
+   are accepted and posted as soon as possible (a list administrator
+   must verify the message manually).  If you'd like to subscribe to
+   docutils-users, please visit
+   <http://lists.sourceforge.net/lists/listinfo/docutils-users>.
 
 .. _FAQ:
 .. _Docutils FAQ: FAQ.html
