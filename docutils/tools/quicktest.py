@@ -157,7 +157,7 @@ def posixGetArgs(argv):
             outputFormat = 'pretty'
         elif o in ['-t', '--test']:
             outputFormat = 'test'
-        elif o == '--attributes':
+        elif o in ['--attributes', '-A']:
             optargs['attributes'] = 1
         elif o in ['-d', '--debug']:
             optargs['debug'] = 1
