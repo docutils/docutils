@@ -48,7 +48,7 @@ complete details.
    directory as in step 3.  For example::
 
        cd tools
-       html.py test.txt test.html
+       rst2html.py test.txt test.html
 
    See Usage_ below for details.
 
@@ -260,11 +260,12 @@ Some files may generate system messages (warnings and errors).  The
 intentional errors.  (They test the error reporting mechanism!)
 
 There are many front-end tools in the unpacked "tools" subdirectory.
-You may want to begin with the "html.py" front-end tool.  Most tools
-take up to two arguments, the source path and destination path, with
-STDIN and STDOUT being the defaults.  Use the "--help" option to the
-front-end tools for details on options and arguments.  See `Docutils
-Front-End Tools`_ (``docs/tools.txt``) for full documentation.
+You may want to begin with the "rst2html.py" front-end tool.  Most
+tools take up to two arguments, the source path and destination path,
+with STDIN and STDOUT being the defaults.  Use the "--help" option to
+the front-end tools for details on options and arguments.  See
+`Docutils Front-End Tools`_ (``docs/tools.txt``) for full
+documentation.
 
 The package modules are continually growing and evolving.  The
 ``docutils.statemachine`` module is usable independently.  It contains
