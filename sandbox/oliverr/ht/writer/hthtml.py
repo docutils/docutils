@@ -21,7 +21,7 @@ __docformat__ = 'reStructuredText'
 import os
 from docutils import nodes
 from docutils import writers
-from docutils.writers.html4css1 import HTMLTranslator
+from docutils.writers.html4css1 import HTMLTranslator, utils
 
 
 class Writer(writers.Writer):
@@ -38,6 +38,11 @@ class Writer(writers.Writer):
           {'choices': ['1','2','3','4'], 
             'default': '3', 
             'metavar': '<NUMBER>'}),
+         ('Specify the initial header level.  Default is 1 for "<h1>".  '
+          'Does not affect document title & subtitle (see --no-doc-title).',
+          ['--initial-header-level'],
+          {'choices': '1 2 3 4 5 6'.split(), 'default': '1',
+           'metavar': '<level>'}),
          ('Specify a stylesheet URL, used verbatim.  Default is '
           '"default.css".',
           ['--stylesheet'],
@@ -93,7 +98,8 @@ class HTTranslator(HTMLTranslator):
         HTMLTranslator.__init__(self, document)
         # ht2html likes having a title, so add a default one
         self.headers = {'title': 'None'}
-        stylesheet = self.get_stylesheet_reference(os.getcwd())
+        stylesheet = utils.get_stylesheet_reference(document.settings,
+                os.path.join(os.getcwd(),'dummy'))
         if stylesheet:
             self.headers['stylesheet']= stylesheet
         # using first author found for .ht 'Author' header
