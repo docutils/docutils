@@ -98,6 +98,17 @@ line spacing           Is done with package *setspace*, which gives
 
                          \usepackage{setspace} 
                          \doublespacing
+
+                       Another way ::
+
+                         \renewcommand{\baselinestretch}{2}
+
+                       And yet another, add ``doublesp`` to the
+                       documentoptions and put ::
+
+                         \setstretch{1.7}
+
+                       or for bigger linespacing.
 ---------------------  ------------------------------------------------
 font selection         see below
 =====================  ================================================
