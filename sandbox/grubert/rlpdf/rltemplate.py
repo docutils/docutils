@@ -98,7 +98,7 @@ class RLDocTemplate(SimpleDocTemplate):
         self.addPageTemplates(FrontCoverTemplate('Cover', self.pagesize))
         self.addPageTemplates(OneColumnTemplate('Normal', self.pagesize))
         self.addPageTemplates(TwoColumnTemplate('TwoColumn', self.pagesize))
-        self.addPageTemplates(TwoColumnTemplate('Later', self.pagesize))
+        self.addPageTemplates(OneColumnTemplate('Cover', self.pagesize))
 
         #just playing
         self.title = "(Document Title Goes Here)"
