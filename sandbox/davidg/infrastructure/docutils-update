@@ -8,14 +8,14 @@ tmp=$projdir/tmp/$project
 pylib=$projdir/lib/python
 lib=$pylib/$project
 
-export PYTHONPATH=$pylib:$lib
 export CVSROOT=:pserver:anonymous@cvs.$project.sourceforge.net:/cvsroot/$project
 
 unconditional=0
 
-while getopts u opt
+while getopts pu opt
 do
     case $opt in
+        p)  export PYTHONPATH=$pylib:$lib;;
         u)  unconditional=1;;
         \?) exit 2;;
     esac
