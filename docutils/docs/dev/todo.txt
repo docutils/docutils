@@ -102,6 +102,9 @@ General
       for the ``default_transforms`` class attribute and an
       ``add_transforms()`` method.
 
+    - The ``Transformer`` class could host all universal transforms in
+      its ``default_transforms`` attribute.
+
     - How to handle ``pending`` elements?  Perhaps a
       ``Transformer.add_pending(pending, priority=None)`` method?
       Just call it from ``nodes.document.note_pending()``.  Need to
@@ -109,7 +112,20 @@ General
 
     - Who creates a ``Transformer`` object?  Attach it to the
       ``document`` object?  Needs to be accessible when instantiating
-      other components?  Or when "runtime initializing" them.
+      other components?  Or when "runtime initializing" them?
+
+      a) ``core.Publisher`` creates a ``Transformer`` object,
+         initializes it from components (reader, parser, writer,
+         source, destination), and attaches it to ``document`` (via
+         ``options``]?).
+
+      b) ``document`` is given a ``Transformer`` object
+         (``document.transformer``) in ``utils.new_document``.
+         ``Publisher`` populates ``document.transformer`` from
+         components after the ``self.reader.read`` call returns (be
+         sure to use ``self.reader.parser``, not ``self.parser``).
+         ``document.transformer.apply_all`` is called before
+         ``self.writer.write``.
 
     - Should components initialize the ``Transformer`` object (add
       ``self.add_transforms()`` calls to components' ``__init__``), or
@@ -140,12 +156,12 @@ General
                         | docutils.core.Publisher, |
                         | docutils.core.publish()  |
                         +--------------------------+
-                         /            |           \
-                        /             |            \
-               1,3,5   /        6     |             \ 7
-              +--------+       +-------------+      +--------+
-              | READER | ====> | TRANSFORMER | ===> | WRITER |
-              +--------+       +-------------+      +--------+
+                         /           |            \
+                        /            |             \
+               1,3,5   /       6     |              \ 7
+              +--------+      +-------------+       +--------+
+              | READER | ---> | TRANSFORMER | ====> | WRITER |
+              +--------+      +-------------+       +--------+
                /     \\                                 |
               /       \\                                |
         2    /      4  \\                            8  |
@@ -172,7 +188,7 @@ General
 
 * Add object numbering and object references (tables & figures).
 
-  We'll need _`persistent sequences`, such as chapter numbers.  See
+  We may need _`persistent sequences`, such as chapter numbers.  See
   `OpenOffice.org XML`_ "fields".  Should the sequences be automatic
   or manual (user-specifyable)?
 
@@ -354,6 +370,8 @@ General
   subclasses of ``docutils.Component``, as are Readers, Parsers, and
   Writers now), and thus have associated option/setting specs and
   transforms.
+
+* ``docutils.Component``
 
 
 Documentation

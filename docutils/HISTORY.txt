@@ -57,10 +57,12 @@ Specific:
   - Bumped version to 0.2.4 due to changes to the PEP template &
     stylesheet.
   - Bumped version to 0.2.5 to reflect changes to Reporter output.
+  - Added ``TransformSpec`` class for new transform system.
 
 * docutils/core.py:
 
   - Made ``publish()`` a bit more convenient.
+  - Generalized ``Publisher.set_io``.
 
 * docutils/frontend.py:
 
@@ -113,6 +115,7 @@ Specific:
 
   - Added a "rawsource" attribute to the ``Text`` class, for text
     before backslash-escape resolution.
+  - Support for new transform system.
 
 * docutils/statemachine.py:
 
@@ -173,6 +176,7 @@ Specific:
     ``Body.parse_field_body()`` out of ``Body.field()``, overridden in
     ``ExtensionOptions``.
   - Improved definition list term/classifier parsing.
+  - Added warnings for unknown directives.
 
 * docutils/parsers/rst/tableparser.py:
 
@@ -187,6 +191,7 @@ Specific:
   - Added ``flag()``, ``unchanged()``, ``path()``,
     ``nonnegative_int()``, and ``choice()`` directive option helper
     functions.
+  - Added warnings for unknown directives.
 
 * docutils/parsers/rst/directives/body.py: Added to project.  Contains
   the "topic", "line-block", and "parsed-literal" directives.
@@ -218,6 +223,11 @@ Specific:
   - Added the ``peps.TargetNotes`` transform to the Reader.
   - Removed PEP & RFC reference detection code; moved to
     parsers/rst/states.py as options (enabled here by default).
+  - Added support for pre-acceptance PEPs (no PEP number yet).
+
+* docutils/transforms/__init__.py:
+
+  - Added ``Transformer`` class.
 
 * docutils/transforms/frontmatter.py:
 
@@ -351,6 +361,9 @@ Specific:
 * spec/howto/rst-directives.txt: Added to project.  Original by Dethe
   Elza, edited & extended by David Goodger.
 
+* spec/howto/i18n.txt: Docutils Internationalization.  Added to
+  project.
+
 * spec/rst/directives.txt:
 
   - Added directives: "topic", "sectnum", "target-notes",
@@ -421,6 +434,7 @@ Specific:
   - Added style for "address" elements.
   - Removed "a.footnote-reference" style; doing it with ``<sup>`` now.
   - Improved field list rendering.
+  - Vertical whitespace improvements.
 
 * tools/stylesheets/pep.css:
 

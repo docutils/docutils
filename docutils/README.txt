@@ -83,6 +83,8 @@ Project Files & Directories
 * COPYING.txt: Copyright details for non-public-domain files (most are
   PD).
 
+* FAQ.txt: Docutils Frequently Asked Questions.
+
 * HISTORY.txt: Release notes for the current and previous project
   releases.
 
