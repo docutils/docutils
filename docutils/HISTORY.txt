@@ -292,7 +292,12 @@ Changes Since 0.3
     ``--section-prefix-for-enumerators``, and
     ``--section-enumerator-separator``.  By John F Meinel Jr (SF patch
     934322).
-
+  - Added option ``--use-verbatim-when-possible``, to avoid
+    problematic characters (eg, '~' in italian) in literal blocks.
+  - It's now possible to use four section levels in the `book` and
+    `report` LaTeX classes.  The default `article` class still has
+    three levels limit.
+    
 * docs/config.txt: "Docutils Configuration Files", added to project.
   Moved config file entry descriptions from tools.txt.
 
