@@ -1,12 +1,10 @@
-#! /usr/bin/env python
+# Author: David Goodger, Dmitry Jemerov
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
 """
-:Author: David Goodger, Dmitry Jemerov
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
-
 Directives for document parts.
 """
 
@@ -26,70 +24,33 @@ def backlinks(arg):
     else:
         return value
 
-contents_option_spec = {'depth': int,
-                        'local': directives.flag,
-                        'backlinks': backlinks}
-                        #'qa': unchanged}
-
-def contents(match, type_name, data, state, state_machine, option_presets):
+def contents(name, arguments, options, content, lineno,
+             content_offset, block_text, state, state_machine):
     """Table of contents."""
-    lineno = state_machine.abs_line_number()
-    line_offset = state_machine.line_offset
-    datablock, indent, offset, blank_finish = \
-          state_machine.get_first_known_indented(match.end(), until_blank=1)
-    blocktext = '\n'.join(state_machine.input_lines[
-          line_offset : line_offset + len(datablock) + 1])
-    for i in range(len(datablock)):
-        if datablock[i][:1] == ':':
-            attlines = datablock[i:]
-            datablock = datablock[:i]
-            break
-    else:
-        attlines = []
-        i = 0
-    titletext = ' '.join([line.strip() for line in datablock])
-    if titletext:
-        textnodes, messages = state.inline_text(titletext, lineno)
-        title = nodes.title(titletext, '', *textnodes)
+    if arguments:
+        title_text = arguments[0]
+        text_nodes, messages = state.inline_text(title_text, lineno)
+        title = nodes.title(title_text, '', *text_nodes)
     else:
         messages = []
         title = None
     pending = nodes.pending(parts.Contents, 'first writer', {'title': title},
-                            blocktext)
-    if attlines:
-        success, data, blank_finish = state.parse_extension_options(
-              contents_option_spec, attlines, blank_finish)
-        if success:                     # data is a dict of options
-            pending.details.update(data)
-        else:                           # data is an error string
-            error = state_machine.reporter.error(
-                  'Error in "%s" directive options:\n%s.'
-                  % (match.group(1), data), '',
-                  nodes.literal_block(blocktext, blocktext), line=lineno)
-            return [error] + messages, blank_finish
+                            block_text)
+    pending.details.update(options)
     state_machine.document.note_pending(pending)
-    return [pending] + messages, blank_finish
+    return [pending] + messages
 
-sectnum_option_spec = {'depth': int}
+contents.arguments = (0, 1, 1)
+contents.options = {'depth': directives.nonnegative_int,
+                    'local': directives.flag,
+                    'backlinks': backlinks}
 
-def sectnum(match, type_name, data, state, state_machine, option_presets):
+def sectnum(name, arguments, options, content, lineno,
+            content_offset, block_text, state, state_machine):
     """Automatic section numbering."""
-    lineno = state_machine.abs_line_number()
-    line_offset = state_machine.line_offset
-    datablock, indent, offset, blank_finish = \
-          state_machine.get_first_known_indented(match.end(), until_blank=1)
     pending = nodes.pending(parts.SectNum, 'last reader', {})
-    success, data, blank_finish = state.parse_extension_options(
-          sectnum_option_spec, datablock, blank_finish)
-    if success:                     # data is a dict of options
-        pending.details.update(data)
-    else:                           # data is an error string
-        blocktext = '\n'.join(state_machine.input_lines[
-            line_offset : line_offset + len(datablock) + 1])
-        error = state_machine.reporter.error(
-              'Error in "%s" directive options:\n%s.'
-              % (match.group(1), data), '',
-              nodes.literal_block(blocktext, blocktext), line=lineno)
-        return [error], blank_finish
+    pending.details.update(options)
     state_machine.document.note_pending(pending)
-    return [pending], blank_finish
+    return [pending]
+
+sectnum.options = {'depth': int}
