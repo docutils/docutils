@@ -344,14 +344,16 @@ Specification
   See Doc-SIG from 2001-06-19/20.
 
 
-PySource Reader
----------------
+Python Source Reader
+--------------------
 
 General:
 
 * Analyze Tony Ibbs' PySource code.
 
 * Analyze Doug Hellmann's HappyDoc project.
+
+* Investigate how POD handles literate programming.
 
 * Take the best ideas and integrate them into Docutils 0.3.
 
@@ -377,6 +379,15 @@ Miscellaneous ideas:
       class MyException(Exception): pass
 
       # etc.
+
+* Should standalone strings also become (module/class) docstrings?
+  Under what conditions?  We want to prevent arbitrary strings from
+  becomming docstrings of prior attribute assignments etc.  Assume
+  that there must be no blank lines between attributes and attribute
+  docstrings?  (Use lineno of NEWLINE token.)
+
+  Triple-quotes are sometimes used for multi-line comments (such as
+  commenting out blocks of code).  How to reconcile?
 
 * HappyDoc's idea of using comment blocks when there's no docstring
   may be useful to get around the conflict between `additional
@@ -477,6 +488,16 @@ __ rst/alternatives.html#or-not-to-do
   Which component is responsible for this, the parser, the reader, or
   the writer?
 
+* Idea from David Abrahams re character-level inline markup:
+
+      I can think of one way to beautify cases like this: introduce a
+      kind of quotation which removes all spaces in what it surrounds
+      as a postprocessing step. ::
+
+          ''*re* ``Structured`` *Text*''
+
+      This would be analogous to re.VERBOSE, if memory serves.
+
 * Implement the header row separator modification to table.el.  (Wrote
   to Takaaki Ota & the table.el mailing list on 2001-08-12, suggesting
   support for "=====" header rows.  On 2001-08-17 he replied, saying
@@ -488,7 +509,8 @@ __ rst/alternatives.html#or-not-to-do
 
 * Alan Jaffray suggested (and I agree) that it would be sensible to:
 
-  - have a directive to specify a default role for interpreted text
+  - have a directive and/or command-line option to specify a default
+    role for interpreted text
   - allow the reST processor to take an argument for the default role
   - issue a warning when processing documents with no default role
     which contain interpreted text with no explicitly specified role
@@ -496,6 +518,11 @@ __ rst/alternatives.html#or-not-to-do
 * Perhaps the default implicit role for interpreted text could be
   "title", as in, "title of a book".  It'd be a text-only reference,
   no hyperlink.  Idea from Aahz' 2002-05-09 Doc-SIG post.
+
+* Add a directive establishing a mapping of interpreted text role
+  aliases?  A set of default roles (index, acronym, etc.) could exist,
+  and the directive could assign abbreviations (i, a, etc.) or other
+  alternatives.
 
 * @@ Fix the parser's indentation handling to conform with the
   stricter definition in the spec.  (Explicit markup blocks should be
