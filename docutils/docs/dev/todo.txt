@@ -49,6 +49,9 @@ Priorities
 General
 =======
 
+* Add option for file (and URL) access restriction to make Docutils
+  usable in Wikis and similar applications.
+
 * Refactor
 
   - Rename methods & variables according to the `Python coding
