@@ -119,6 +119,17 @@ Known Bugs
 
 Also see the `SourceForge Bug Tracker`_.
 
+* ``utils.relative_path()`` sometimes returns absolute paths on
+  Windows (like ``C:/test/foo.css``) where it could have chosen a
+  relative path.
+
+  Furthermore, absolute pathnames are inserted verbatim, like
+  ``href="C:/test/foo.css"`` instead of
+  ``href="file:///C:/test/foo.css"``.
+
+  For details, see `this posting by Alan G. Isaac
+  <http://article.gmane.org/gmane.text.docutils.user/1569>`_.
+
 * .. _empty csv-table:
 
   When supplying an empty file for the csv-table directive, Docutils
