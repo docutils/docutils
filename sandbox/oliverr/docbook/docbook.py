@@ -859,6 +859,12 @@ class DocBookTranslator(nodes.NodeVisitor):
         else:
             self.body.append('</section>\n')
 
+    def visit_sidebar(self, node):
+        self.body.append(self.starttag(node, 'sidebar'))
+
+    def depart_sidebar(self, node):
+        self.body.append('</sidebar>\n')
+
     # author is handled in ``visit_docinfo()``
     def visit_status(self, node):
         raise nodes.SkipNode
@@ -974,5 +980,5 @@ class DocBookTranslator(nodes.NodeVisitor):
         raise NotImplementedError('visiting unimplemented node type: %s'
                 % node.__class__.__name__)
 
-# :collapseFolds=1:folding=indent:indentSize=4:
+# :collapseFolds=0:folding=sidekick:indentSize=4:
 # :lineSeparator=\n:noTabs=true:tabSize=4:
