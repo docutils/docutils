@@ -228,6 +228,12 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
          ('Same as "--halt=info": halt processing at the slightest problem.',
           ['--strict'], {'action': 'store_const', 'const': 'info',
                          'dest': 'halt_level'}),
+         ('Enable a non-zero exit status for normal exit if non-halting '
+          'system messages (at or above <level>) were generated.  Levels as '
+          'in --report.  Default is 5 (disabled).  Exit status is the maximum '
+          'system message level plus 10 (11 for INFO, etc.).',
+          ['--exit'], {'choices': threshold_choices, 'dest': 'exit_level',
+                       'default': 5, 'metavar': '<level>'}),
          ('Report debug-level system messages.',
           ['--debug'], {'action': 'store_true'}),
          ('Do not report debug-level system messages.',
@@ -357,6 +363,8 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
             values.report_level = self.check_threshold(values.report_level)
         if hasattr(values, 'halt_level'):
             values.halt_level = self.check_threshold(values.halt_level)
+        if hasattr(values, 'exit_level'):
+            values.exit_level = self.check_threshold(values.exit_level)
         values._source, values._destination = self.check_args(args)
         make_paths_absolute(values.__dict__, self.relative_path_settings,
                             os.getcwd())
