@@ -20,6 +20,7 @@ import sys
 import time
 import re
 from types import ListType
+import docutils
 from docutils import nodes, utils, writers, languages
 
 
@@ -138,9 +139,9 @@ class HTMLTranslator(nodes.NodeVisitor):
               'xhtml1-transitional.dtd">\n'
     html_head = '<html lang="%s">\n<head>\n'
     content_type = '<meta http-equiv="Content-Type" content="text/html; ' \
-                   'charset=%s">\n'
-    generator = '<meta name="generator" content="Docutils: ' \
-                'http://docutils.sourceforge.net/">\n'
+                   'charset=%s" />\n'
+    generator = '<meta name="generator" content="Docutils %s: ' \
+                'http://docutils.sourceforge.net/" />\n'
     stylesheet_link = '<link rel="stylesheet" href="%s" type="text/css" />\n'
     embedded_stylesheet = '<style type="text/css"><!--\n\n%s\n--></style>\n'
     named_tags = {'a': 1, 'applet': 1, 'form': 1, 'frame': 1, 'iframe': 1,
@@ -156,7 +157,7 @@ class HTMLTranslator(nodes.NodeVisitor):
               self.doctype,
               self.html_head % options.language_code,
               self.content_type % options.output_encoding,
-              self.generator]
+              self.generator % docutils.__version__]
         self.head = []
         stylesheet = self.get_stylesheet_reference()
         if options.embed_stylesheet:
