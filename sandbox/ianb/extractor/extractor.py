@@ -305,10 +305,7 @@ def main(options, args):
             sys.stdout.flush()
 
 if __name__ == '__main__':
-    try:
-        from optparse import OptionParser
-    except ImportError:
-        from optik import OptionParser
+    from optparse import OptionParser
     parser = OptionParser()
     parser.add_option('-r', '--recurse',
                       action="store_true",
