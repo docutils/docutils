@@ -17,14 +17,13 @@ import sys
 import locale
 
 
-class IO:
+class Input:
 
     """
-    Base class for abstract input/output wrappers.
+    Abstract base class for input wrappers.
     """
 
-    def __init__(self, options, source=None, source_path=None,
-                 destination=None, destination_path=None):
+    def __init__(self, options, source=None, source_path=None):
         self.options = options
         """An option values object with "input_encoding" and "output_encoding"
         attributes (typically a `docutils.optik.Values` object)."""
@@ -35,20 +34,11 @@ class IO:
         self.source_path = source_path
         """A text reference to the source."""
 
-        self.destination = destination
-        """The destination for output data."""
-
-        self.destination_path = destination_path
-        """A text reference to the destination."""
-
     def __repr__(self):
-        return '%s: source=%r, destination=%r' % (self.__class__, self.source,
-                                                  self.destination)
+        return '%s: source=%r, source_path=%r' % (self.__class__, self.source,
+                                                  self.source_path)
 
     def read(self, reader):
-        raise NotImplementedError
-
-    def write(self, data):
         raise NotImplementedError
 
     def decode(self, data):
@@ -88,58 +78,128 @@ class IO:
             % ', '.join([repr(enc) for enc in encodings if enc]))
 
 
-class FileIO(IO):
+class Output:
 
     """
-    I/O for single, simple file-like objects.
+    Abstract base class for output wrappers.
     """
 
-    def __init__(self, options, source=None, source_path=None,
-                 destination=None, destination_path=None):
+    def __init__(self, options, destination=None, destination_path=None):
+        self.options = options
+        """An option values object with "input_encoding" and "output_encoding"
+        attributes (typically a `docutils.optik.Values` object)."""
+
+        self.destination = destination
+        """The destination for output data."""
+
+        self.destination_path = destination_path
+        """A text reference to the destination."""
+
+    def __repr__(self):
+        return ('%s: destination=%r, destination_path=%r'
+                % (self.__class__, self.destination, self.destination_path))
+
+    def write(self, data):
+        raise NotImplementedError
+
+
+class FileInput(Input):
+
+    """
+    Input for single, simple file-like objects.
+    """
+
+    def __init__(self, options, source=None, source_path=None, autoclose=1):
         """
         :Parameters:
             - `source`: either a file-like object (which is read directly), or
               `None` (which implies `sys.stdin` if no `source_path` given).
             - `source_path`: a path to a file, which is opened and then read.
-            - `destination`: either a file-like object (which is written
-              directly) or `None` (which implies `sys.stdout` if no
-              `destination_path` given).
-            - `destination_path`: a path to a file, which is opened and then
-              written.
+            - `autoclose`: close automatically after read (boolean); always
+              false if `sys.stdin` is the source.
         """
-        IO.__init__(self, options, source, source_path, destination,
-                    destination_path)
+        Input.__init__(self, options, source, source_path)
+        self.autoclose = autoclose
         if source is None:
             if source_path:
                 self.source = open(source_path)
             else:
                 self.source = sys.stdin
-        if destination is None:
-            if destination_path:
-                self.destination = open(destination_path, 'w')
-            else:
-                self.destination = sys.stdout
+                self.autoclose = None
 
     def read(self, reader):
         """Read and decode a single file and return the data."""
         data = self.source.read()
+        if self.autoclose:
+            self.close()
         return self.decode(data)
+
+    def close(self):
+        self.source.close()
+
+
+class FileOutput(Output):
+
+    """
+    Output for single, simple file-like objects.
+    """
+
+    def __init__(self, options, destination=None, destination_path=None,
+                 autoclose=1):
+        """
+        :Parameters:
+            - `destination`: either a file-like object (which is written
+              directly) or `None` (which implies `sys.stdout` if no
+              `destination_path` given).
+            - `destination_path`: a path to a file, which is opened and then
+              written.
+            - `autoclose`: close automatically after write (boolean); always
+              false if `sys.stdout` is the destination.
+        """
+        Output.__init__(self, options, destination, destination_path)
+        self.opened = 1
+        self.autoclose = autoclose
+        if destination is None:
+            if destination_path:
+                self.opened = None
+            else:
+                self.destination = sys.stdout
+                self.autoclose = None
+
+    def open(self):
+        self.destination = open(self.destination_path, 'w')
+        self.opened = 1
 
     def write(self, data):
         """Encode and write `data` to a single file."""
         output = data.encode(self.options.output_encoding)
+        if not self.opened:
+            self.open()
         self.destination.write(output)
+        if self.autoclose:
+            self.close()
+
+    def close(self):
+        self.destination.close()
+        self.opened = None
 
 
-class StringIO(IO):
+class StringInput(Input):
 
     """
-    Direct string I/O.
+    Direct string input.
     """
 
     def read(self, reader):
         """Decode and return the source string."""
         return self.decode(self.source)
+
+
+class StringOutput(Output):
+
+    """
+    Direct string output.
+    """
 
     def write(self, data):
         """Encode and return `data`."""
@@ -147,16 +207,23 @@ class StringIO(IO):
         return self.destination
 
 
-class NullIO(IO):
+class NullInput(Input):
 
     """
-    Degenerate I/O: read & write nothing.
+    Degenerate input: read nothing.
     """
 
     def read(self, reader):
         """Return a null string."""
         return u''
 
+
+class NullOutput(Output):
+
+    """
+    Degenerate output: write nothing.
+    """
+
     def write(self, data):
-        """Do nothing (send data to the bit bucket)."""
+        """Do nothing ([don't even] send data to the bit bucket)."""
         pass
