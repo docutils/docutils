@@ -719,7 +719,7 @@ Questions & Answers
 
 References & Footnotes
 
-    [1] http://structuredtext.sourceforge.net/
+    [1] http://docutils.sourceforge.net/spec/rst.html
 
     [2] http://www.python.org/sigs/doc-sig/
 
@@ -744,25 +744,25 @@ References & Footnotes
     [12] http://dev.zope.org/Members/jim/StructuredTextWiki/FrontPage
 
     [13] A ReStructuredText Primer
-         http://structuredtext.sourceforge.net/docs/quickstart.html
+         http://docutils.sourceforge.net/docs/rst/quickstart.html
 
     [14] Quick reStructuredText
-         http://structuredtext.sourceforge.net/docs/quickref.html
+         http://docutils.sourceforge.net/docs/rst/quickref.html
 
     [15] An Introduction to reStructuredText
-         http://structuredtext.sourceforge.net/spec/introduction.txt
+         http://docutils.sourceforge.net/spec/rst/introduction.html
 
     [16] reStructuredText Markup Specification
-         http://structuredtext.sourceforge.net/spec/reStructuredText.txt
+         http://docutils.sourceforge.net/spec/rst/reStructuredText.html
 
     [17] reStructuredText Directives
-         http://structuredtext.sourceforge.net/spec/directives.txt
+         http://docutils.sourceforge.net/spec/rst/directives.html
 
     [18] Problems with StructuredText
-         http://structuredtext.sourceforge.net/spec/problems.txt
+         http://docutils.sourceforge.net/spec/rst/problems.html
 
     [19] A Record of reStructuredText Syntax Alternatives
-         http://structuredtext.sourceforge.net/spec/alternatives.txt
+         http://docutils.sourceforge.net/spec/rst/alternatives.html
 
     [20] PEP 1, PEP Guidelines, Warsaw, Hylton
          http://www.python.org/peps/pep-0001.html
@@ -789,7 +789,8 @@ Acknowledgements
     Some text is borrowed from PEP 216, Docstring Format [24]_, by
     Moshe Zadka.
 
-    Special thanks to all members past & present of the Python Doc-SIG.
+    Special thanks to all members past & present of the Python
+    Doc-SIG.
 
 
 
