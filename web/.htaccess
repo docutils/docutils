@@ -1,6 +1,11 @@
-# This file is intended to provide seamless redirection from old URLs
-# to new URLs after a site reorganization.
 # Do not edit arbitrarily.  Check with docutils-develop@lists.sf.net first.
+
+# Redirect snapshots to BerliOS.  The target URL may change in the
+# future, so use a temporary redirect (status 302).
+
+RedirectMatch temp /([^#]*-snapshot.tgz) http://docutils.berlios.de/$1
+
+# Redirection from old URLs to new URLs after a site reorganization.
 
 Redirect permanent /docs/config.html http://docutils.sourceforge.net/docs/user/config.html
 Redirect permanent /docs/config.txt  http://docutils.sourceforge.net/docs/user/config.txt
