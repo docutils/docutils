@@ -122,6 +122,11 @@ p.label {
 p.topic-title {
   font-weight: bold }
 
+pre.line-block {
+  margin-left: 2em ;
+  font-family: serif ;
+  font-size: 100% }
+
 pre.literal-block, pre.doctest-block {
   margin-left: 2em ;
   margin-right: 2em ;
@@ -182,7 +187,7 @@ th.field-name {
   text-align: right }
 
 h1 tt, h2 tt, h3 tt, h4 tt, h5 tt, h6 tt {
-  font-size: larger }
+  font-size: 100% }
 
 tt {
   background-color: #eeeeee }
