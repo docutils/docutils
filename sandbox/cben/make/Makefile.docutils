@@ -294,6 +294,8 @@ $(docutils.)PEPTOOL.FLAGS += $($(docutils.)FLAGS)
 
 # When docutils config files change, it usually affects docutils' so it should
 # be rebuilt.  So we add them as dependencies.
+# 
+# .. note:: Deletion of a config file will *not* cause a rebuild.
 
 # Figure out the default config files from the environment:
 DOCUTILSCONFIG ?= /etc/docutils.conf:./docutils.conf:$(HOME)/.docutils
