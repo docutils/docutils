@@ -369,12 +369,33 @@ debug                 Report debug-level system messages.
                       Default: don't (None).  Options: ``--debug,
                       --no-debug``.
 --------------------  ------------------------------------------------
-dump_internals        At the end of processing, print out all internal
+dump_internals        At the end of processing, write all internal
                       attributes of the document
-                      (``document.__dict__``).
+                      (``document.__dict__``) to stderr.
 
                       Default: don't (None).  Options:
                       ``--dump-internals`` (hidden, for development
+                      use only).
+--------------------  ------------------------------------------------
+dump_pseudo_xml       At the end of processing, write the pseudo-XML
+                      representation of the document to stderr.
+
+                      Default: don't (None).  Options:
+                      ``--dump-pseudo-xml`` (hidden, for development
+                      use only).
+--------------------  ------------------------------------------------
+dump_settings         At the end of processing, write all Docutils
+                      settings to stderr.
+
+                      Default: don't (None).  Options:
+                      ``--dump-settings`` (hidden, for development use
+                      only).
+--------------------  ------------------------------------------------
+dump_transforms       At the end of processing, write a list of all
+                      transforms applied to the document to stderr.
+
+                      Default: don't (None).  Options:
+                      ``--dump-transforms`` (hidden, for development
                       use only).
 --------------------  ------------------------------------------------
 embed_stylesheet      (HTML Writer.)  Embed the stylesheet in the
