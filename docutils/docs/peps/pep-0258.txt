@@ -16,7 +16,13 @@ Abstract
     This PEP documents design issues and implementation details for
     Docutils, a Python Docstring Processing System (DPS).  The
     rationale and high-level concepts of a DPS are documented in PEP
-    256, "Docstring Processing System Framework" [1].
+    256, "Docstring Processing System Framework" [1].  Also see PEP
+    256 for a "Roadmap to the Doctring PEPs".
+
+    Docutils is being designed modularly so that any of its components
+    can be replaced easily.  In addition, Docutils is not limited to
+    the processing of Python docstrings; it processes standalone
+    documents as well, in several contexts.
 
     No changes to the core Python language are required by this PEP.
     Its deliverables consist of a package for the standard library and
@@ -48,14 +54,14 @@ Specification
         | I/O |   | PARSER |...| reader      |    | writer     |   | I/O |
         +-----+   +--------+   | transforms  |    | transforms |   +-----+
                                |             |    |            |
-                               | - docinfo   |    | - styling  |
-                               | - titles    |    | - writer-  |
-                               | - linking   |    |   specific |
-                               | - lookups   |    | - etc.     |
-                               | - reader-   |    +------------+
-                               |   specific  |
-                               | - parser-   |
-                               |   specific  |
+                               | - docinfo   |    | - system   |
+                               | - titles    |    |   messages |
+                               | - linking   |    | - final    |
+                               | - lookups   |    |   checks   |
+                               | - reader-   |    | - writer-  |
+                               |   specific  |    |   specific |
+                               | - parser-   |    | - etc.     |
+                               |   specific  |    +------------+
                                | - layout    |
                                |   (stylist) |
                                | - etc.      |
@@ -494,10 +500,12 @@ Specification
     Python Source Reader
     ====================
 
-    The Python Source Reader ("PySource") is a major and non-trivial
-    Docutils component, currently under experimental development in
-    the Docutils sandbox.  High-level design issues are presented
-    here.
+    The Python Source Reader ("PySource") is the Docutils component
+    that reads Python source files, extracts docstrings in context,
+    then parses, links, and assembles the docstrings into a cohesive
+    whole.  It is a major and non-trivial component, currently under
+    experimental development in the Docutils sandbox.  High-level
+    design issues are presented here.
 
 
     Processing Model
