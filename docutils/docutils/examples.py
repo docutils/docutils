@@ -58,6 +58,6 @@ def html_fragment(input_string, destination_path=None,
         input_string=input_string, destination_path=destination_path,
         input_encoding=input_encoding, doctitle=doctitle)
     fragment = parts['fragment']
-    if output_endocing != 'unicode':
+    if output_encoding != 'unicode':
         fragment = fragment.encode(output_encoding)
     return fragment
