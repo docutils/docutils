@@ -78,6 +78,7 @@ See `Creating reStructuredText Directives`_ for more information.
 
 __docformat__ = 'reStructuredText'
 
+from docutils import nodes
 from docutils.parsers.rst.languages import en as _fallback_language_module
 
 
@@ -118,39 +119,50 @@ _modules = {}
 _directives = {}
 """Cache of imported directive functions."""
 
-def directive(directive_name, language_module):
+def directive(directive_name, language_module, document):
     """
     Locate and return a directive function from its language-dependent name.
     If not found in the current language, check English.
     """
     normname = directive_name.lower()
+    messages = []
     if _directives.has_key(normname):
-        return _directives[normname]
+        return _directives[normname], messages
     try:
         canonicalname = language_module.directives[normname]
     except (KeyError, AttributeError):
+        warning = document.reporter.warning(
+            'No directive entry for "%s" in module "%s".'
+            % (directive_name, language_module.__name__),
+            line=document.current_line)
         try:
             # Try English as a fallback:
             canonicalname = _fallback_language_module.directives[normname]
+            warning[-1] += nodes.Text(
+                'Using English fallback for directive "%s".' % directive_name)
         except KeyError:
+            warning[-1] += nodes.Text(
+                'Trying "%s" as canonical directive name.' % directive_name)
             # The canonical name should be an English name, but just in case:
             canonicalname = normname
+        messages.append(warning)
     try:
         modulename, functionname = _directive_registry[canonicalname]
     except KeyError:
-        return None
+        return None, messages
     if _modules.has_key(modulename):
         module = _modules[modulename]
     else:
         try:
             module = __import__(modulename, globals(), locals())
         except ImportError:
-            return None
+            return None, messages
     try:
         function = getattr(module, functionname)
+        _directives[normname] = function
     except AttributeError:
-        return None
-    return function
+        return None, messages
+    return function, messages
 
 def flag(argument):
     """
