@@ -90,8 +90,8 @@ Tree`_ and the ``docutils.nodes`` module.
 Specify Directive Arguments, Options, and Content
 =================================================
 
-Function attributes are interpreted by the directive parser (the
-``docutils.parsers.rst.states.Body.parse_directive()`` method).  If
+Function attributes are interpreted by the directive parser (from the
+``docutils.parsers.rst.states.Body.run_directive()`` method).  If
 unspecified, directive function attributes are assumed to have the
 value ``None``.  Three directive function attributes are recognized:
 
@@ -168,7 +168,7 @@ value ``None``.  Three directive function attributes are recognized:
   functions must handle the case where content is required but not
   present in the input text (an empty content list will be supplied).
 
-The final step of the ``parse_directive()`` method is to call the
+The final step of the ``run_directive()`` method is to call the
 directive function itself.
 
 

@@ -30,17 +30,23 @@ Define the Role Function
 The role function creates and returns inline elements (nodes) and does
 any additional processing required.  Its signature is as follows::
 
-    def role_fn(name, rawtext, text, lineno, inliner, attributes={}):
+    def role_fn(name, rawtext, text, lineno, inliner,
+                options={}, content=[]):
         code...
 
-The role function parameters are as follows:
+    # Set function attributes for customization:
+    role_fn.options = ...
+    role_fn.content = ...
+
+Function attributes are described below (see `Specify Role Function
+Options and Content`_).  The role function parameters are as follows:
 
 * ``name``: The local name of the interpreted role, the role name
   actually used in the document.
 
 * ``rawtext``: A string containing the enitre interpreted text input,
-  including the role and markup.  This should be included as a literal
-  block in a system message if a problem is encountered.
+  including the role and markup.  Return it as a ``problematic`` node
+  linked to a system message if a problem is encountered.
 
 * ``text``: The interpreted text content.
 
@@ -50,8 +56,13 @@ The role function parameters are as follows:
   called role_fn.  It contains the several attributes useful for error
   reporting and document tree access.
 
-* ``attributes``: A dictionary of additional attributes for the
-  generated elements, used for customization.
+* ``options``: A dictionary of directive options for customization, to
+  be interpreted by the role function.  Used for additional attributes
+  for the generated elements and other functionality.
+
+* ``content``: A list of strings, the directive content for
+  customization ("role" directive).  To be interpreted by the role
+  function.
 
 Role functions return a tuple of two values:
 
@@ -61,6 +72,42 @@ Role functions return a tuple of two values:
 
 * A list of system messages, which will be inserted into the document tree
   immediately after the end of the current block (can also be empty).
+
+
+Specify Role Function Options and Content
+=========================================
+
+Function attributes are for customization, and are interpreted by the
+`"role" directive`_.  If unspecified, role function attributes are
+assumed to have the value ``None``.  Two function attributes are
+recognized:
+
+- ``options``: The option specification.  All role functions
+  implicitly support the "class" option, unless disabled with an
+  explicit ``{'class': None}``.
+
+  An option specification must be defined detailing the options
+  available to the "role" directive.  An option spec is a mapping of
+  option name to conversion function; conversion functions are applied
+  to each option value to check validity and convert them to the
+  expected type.  Python's built-in conversion functions are often
+  usable for this, such as ``int``, ``float``, and ``bool`` (included
+  in Python from version 2.2.1).  Other useful conversion functions
+  are included in the ``docutils.parsers.rst.directives`` package.
+  For further details, see `Creating reStructuredText Directives`_.
+
+- ``content``: A boolean; true if "role" directive content is allowed.
+  Role functions must handle the case where content is required but
+  not supplied (an empty content list will be supplied).
+
+  As of this writing, no roles accept directive content.
+
+Note that unlike directives, the "arguments" function attribute is not
+supported for role customization.  Directive arguments are handled by
+the "role" directive itself.
+
+.. _Creating reStructuredText Directives:
+   rst-directives.html#specify-directive-arguments-options-and-content
 
 
 Register the Role
@@ -133,7 +180,41 @@ This is equivalent to::
 
     __ http://www.faqs.org/rfcs/rfc2822.html
 
-As the implementation of this role is likely to be changed soon, a
-description here will follow.
+Here is the implementation of the role::
+
+    def rfc_reference_role(role, rawtext, text, lineno, inliner,
+                           options={}, content=[]):
+        try:
+            rfcnum = int(text)
+            if rfcnum <= 0:
+                raise ValueError
+        except ValueError:
+            msg = inliner.reporter.error(
+                'RFC number must be a number greater than or equal to 1; '
+                '"%s" is invalid.' % text, line=lineno)
+            prb = inliner.problematic(rawtext, rawtext, msg)
+            return [prb], [msg]
+        # Base URL mainly used by inliner.rfc_reference, so this is correct:
+        ref = inliner.rfc_url % rfcnum
+        node = nodes.reference(rawtext, 'RFC ' + text, refuri=ref, **options)
+        return [node], []
+
+    register_canonical_role('rfc-reference', rfc_reference_role)
+
+Noteworthy in the code above are:
+
+1. The interpreted text itself should contain the RFC number.  The
+   ``try`` clause verifies by converting it to an integer.  If the
+   conversion fails, the ``except`` clause is executed: a system
+   message is generated, the entire interpreted text construct (in
+   ``rawtext``) is wrapped in a ``problematic`` node (linked to the
+   system message), and the two are returned.
+
+2. The RFC reference itself is constructed from a stock URI, set as
+   the "refuri" attribute of a "reference" element.
+
+3. The ``options`` function parameter, a dictionary, may contain a
+   "class" customization attribute; it is passed through to the
+   "reference" element node constructor.
 
 .. _RFCs: http://foldoc.doc.ic.ac.uk/foldoc/foldoc.cgi?query=rfc&action=Search&sourceid=Mozilla-search

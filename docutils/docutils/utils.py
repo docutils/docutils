@@ -324,7 +324,9 @@ def assemble_option_dict(option_list, options_spec):
     """
     options = {}
     for name, value in option_list:
-        convertor = options_spec[name]       # raises KeyError if unknown
+        convertor = options_spec[name]  # raises KeyError if unknown
+        if convertor is None:
+            raise KeyError(name)        # or if explicitly disabled
         if options.has_key(name):
             raise DuplicateOptionError('duplicate option "%s"' % name)
         try:
