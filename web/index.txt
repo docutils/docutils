@@ -259,6 +259,7 @@ Please also see the `reStructuredText home page`__.
   History__ of reStructuredText)
 - `reStructuredText Markup Specification`__
 - `reStructuredText Directives`__
+- `reStructuredText Interpreted Text Roles`__
 - `A Record of reStructuredText Syntax Alternatives`__
 - `Problems With StructuredText`__
 
@@ -268,6 +269,7 @@ __ spec/rst/introduction.html#goals
 __ spec/rst/introduction.html#history
 __ spec/rst/reStructuredText.html
 __ spec/rst/directives.html
+__ spec/rst/interpreted.html
 __ spec/rst/alternatives.html
 __ spec/rst/problems.html
 
@@ -325,11 +327,6 @@ docutils-develop@lists.sourceforge.net.
 * Oliver Rutherfurd has begun a `DocBook Writer`_ component and
   `HT2HTML integration`_ component.
 
-* Simon Budig has a modified ``states.py`` parser module and
-  supporting documents for his controversial proposal for `inline
-  external targets`_.  Also see the `summary of the issues`__ which is
-  more up to date.
-
 * Gunnar Schwant has begun DocFactory_, a wxPython GUI application for
   Docutils.
 
@@ -345,9 +342,7 @@ docutils-develop@lists.sourceforge.net.
 .. _ReportLabs/PDF Writer: sandbox/grubert/rlpdf/
 .. _DocBook Writer: sandbox/oliverr/docbook/
 .. _HT2HTML integration: sandbox/oliverr/ht/README.html
-.. _inline external targets: sandbox/simonb/
-__ spec/rst/alternatives.html#inline-external-targets
-.. _DocFactory: sandbox/gschwant/docfactory/README.html
+.. _DocFactory: sandbox/gschwant/docfactory/
 .. _OpenOffice.org Writer: sandbox/aahz/OO/
 .. _Wiki: sandbox/ianb/wiki/
 
