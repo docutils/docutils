@@ -49,9 +49,9 @@ function do_backup() {
     if ! test "$LOCALREVNUM" -le "$REMOTEREVNUM"; then
         echo
         echo "ERROR: Local revision number ($LOCALREVNUM) greater"
-        echo "       than remote revision number ("$REMOTEREVNUM")."
+        echo "       than remote revision number ($REMOTEREVNUM)."
         echo "Wrong backup directory or changed repository?"
-        exit 1
+        exit 2
     fi
     if test "$LOCALREVNUM" -eq "$REMOTEREVNUM"; then
         echo "No backup needed; at revision $LOCALREVNUM."
