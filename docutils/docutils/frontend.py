@@ -476,15 +476,14 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
         """Return list of config files, from environment or standard."""
         try:
             config_files = os.environ['DOCUTILSCONFIG']
-            return [f for f in config_files.split(os.pathsep) if f != '']
         except KeyError:
-            return self.standard_config_files
+            config_files = self.standard_config_files
+        return [os.path.expanduser(f)
+                for f in config_files.split(os.pathsep) if f.strip()]
 
     def get_standard_config_settings(self):
-        config_files = map(os.path.expanduser,
-                           self.get_standard_config_files())
         settings = {}
-        for filename in config_files:
+        for filename in self.get_standard_config_files():
             settings.update(self.get_config_file_settings(filename))
         return settings
 
