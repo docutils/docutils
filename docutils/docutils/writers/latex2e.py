@@ -1228,18 +1228,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # section titles before the table of contents.
             if node.parent.hasattr('id'):
                 self.body.append('\\hypertarget{%s}{}' % node.parent['id'])
-            self.body.append('\\begin{center}\n')
-            # BUG: latex chokes: perhaps a missing item.
-            self.context.append('% HACK: latex chokes: -- perhaps a missing item.\n'
-                    '\\begin{list}{ }{'
-                    '\\setlength{\\topsep}{0pt}'
-                    '\\setlength{\\itemsep}{-1cm}}'
-                    '\\item \\item \\end{list}\n'
-                    '\\end{center}\n')
-            ## should this be section subsection or 
-            self.body.append('\\subsection*{')
+            # BUG: latex chokes on center environment with "perhaps a missing item".
+            # so we use hfill.
+            self.body.append('\\subsection*{~\\hfill ')
             # the closing brace for subsection.
-            self.context.append('}\n')
+            self.context.append('\\hfill ~}\n')
         elif self.section_level == 0:
             # document title
             self.title = self.encode(node.astext())
@@ -1271,8 +1264,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_title(self, node):
         self.body.append(self.context.pop())
-        if isinstance(node.parent, nodes.topic):
-            self.body.append(self.context.pop())
         # BUG level depends on style.
         if node.parent.hasattr('id') and not self.use_latex_toc:
             # pdflatex allows level 0 to 3
