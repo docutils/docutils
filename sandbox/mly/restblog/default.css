@@ -1,0 +1,43 @@
+body {color: #600; background-color: #fed;
+      margin-left:  10%; margin-right: 10%;
+      text-align: left;
+      font-family: Verdana, Arial, sans-serif}
+/*p { text-indent: 2em; margin-top: 0; margin-bottom: 0; }*/
+.title, .subtitle {text-align: center}
+h1, h2, h3, h4, h5, h5 {font-family: Times, Times-New, Serif;}
+pre.address {font-family: Verdana, Arial, sans-serif}
+table{margin-top: 1em; margin-bottom: 1em}
+table.table {text-align: center}
+table.field-list{margin-top: 0.3em; margin-bottom: 0.3em}
+.topic-title {margin-top: 1em}
+tr {text-align: left}
+th {text-align: left}
+td {text-align: left}
+dt {font-weight: bold; margin-top: 0.5em; margin-bottom: 0.2em}
+dd p {margin-top: 0em}
+dl, ol, ul {margin-top: 0.3em}
+blockquote.last {margin-top: 0em}
+.literal-block {color: #006; background-color: #def; 
+                font-family: courier, monospace}
+.literal {color: #006 ; font-family: courier, monospace}
+.literal-block {margin-left:  10%; margin-right: 10%;
+                padding: 1ex}
+div.document {
+    float:left;
+    width:70%;
+    background:#ffe;
+    border:2px solid #630;
+    margin:5px; 
+    padding:10px;
+}
+
+hr.footer { float:left; width:0%; height:0%}
+
+div.footer {
+    float:right;
+    width:20%;
+    background:#cfc;
+    border:2px solid #630;
+    margin:5px; 
+    padding:10px;
+}

@@ -1,4 +1,4 @@
-DOCUTILTOOLPATH = /home/mly/palanga/python/docutils/tools/
+DOCUTILTOOLPATH = /home/mly/palanga/python/docutils/docutils/tools/
 HTML = $(DOCUTILTOOLPATH)html.py
 MAIN_INDEX = ./main_index.py
 DATE_INDEX = ./date_index.py
