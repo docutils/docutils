@@ -987,6 +987,33 @@ when used in a document.
       For a specific application, see the discussion of `character
       entity substitution definition files`_ above.
 
+  - _`misc.role`:
+
+    - Allow other base roles? ::
+
+          .. role:: custom
+             :base-role: abbreviation
+
+      This might produce ``<abbreviation class="custom">``.
+
+      How do we pass in this "class" attribute (and other overrides)?
+      With an argument on role functions (``attributes={}``)?
+
+    - Perhaps the "role" directive can modify existing roles with
+      attributes? ::
+
+          .. role:: api
+             :base-role: named-reference
+             :attributes: :base: twisted.internet
+
+          To start the reactor, use the :api-ti:`reactor.run` method.
+          To stop it, use :api-ti:`reactor.stop`.
+
+      The problem with this is that it allows arbitrary attributes.
+      The base role function must support those attributes, either
+      passing them on to the doc tree (DTD support) or processing them
+      internally.
+
 * Implement directives.  Each of the list items below begins with an
   identifier of the form, "module_name.directive_function_name".  The
   directive name itself could be the same as the
@@ -1400,56 +1427,6 @@ elements.
       .. |nested inline markup| emphasis::
 
          nested ``inline`` markup
-
-* Add document-local _`role bindings`, associating directives with
-  roles? ::
-
-      `She wore ribbons in her hair and it lay with streaks of
-      grey`:rewrite:
-
-      .. :rewrite: class:: rewrite
-
-  The syntax is similar to that of substitution declarations, and the
-  directive/role association may resolve implementation issues.  The
-  semantics, ramifications, and implementation details do need to be
-  worked out though.  Syntax idea from Jeffrey C. Jacobs.
-
-  The example above would implement the "rewrite" role as adding a
-  ``class="rewrite"`` attribute to the interpreted text ("inline"
-  element).  The stylesheet would then pick up on the "class"
-  attribute to do the actual formatting.  (Allow other base elements?)
-
-  How do we pass in this "class" attribute (and other overrides)?
-  With an argument on role functions (``attributes={}``)?
-
-  The same thing could be done with a directive, albeit a bit more
-  verbosely::
-
-      .. role:: rewrite
-         :class: rewrite
-
-  Although as a convenience, the ":class:" option could be implicit::
-
-      .. role:: rewrite
-
-  The advantage of the new syntax would be flexibility.  Uses other
-  than "class" may present themselves.  The disadvantage is
-  complexity: having to implement new syntax for a relatively
-  specialized operation, and having new semantics in existing
-  directives ("class::" would do something different).
-
-* Perhaps a "role" directive can modify existing roles with
-  attributes? ::
-
-      .. :api-ti: role:: api
-         :attributes: :base: twisted.internet
-
-      To start the reactor, use the :api-ti:`reactor.run` method.  To
-      stop it, use :api-ti:`reactor.stop`.
-
-  The problem with this is that it allows arbitrary attributes.  The
-  base role function must support those attributes, either passing
-  them on to the doc tree (DTD support) or processing them internally.
 
 * Implement roles:
 
