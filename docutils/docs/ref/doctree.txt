@@ -9,6 +9,7 @@ A Guide to the Docutils DTD
 :Contact: goodger@users.sourceforge.net
 :Revision: $Revision$
 :Date: $Date$
+:Copyright: This document has been placed in the public domain.
 
 
 .. contents:: :depth: 1
@@ -39,14 +40,12 @@ ReStructuredText Primer`_.  For complete technical details, see the
 .. _Docutils: http://docutils.sourceforge.net/
 .. _Docutils Generic DTD:
 .. _Docutils DTD:
-.. _docutils.dtd: http://docutils.sourceforge.net/spec/docutils.dtd
+.. _docutils.dtd: docutils.dtd
 .. _Introducing the Extensible Markup Language (XML):
    http://xml.coverpages.org/xmlIntro.html
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
-.. _A ReStructuredText Primer:
-   http://docutils.sourceforge.net/docs/rst/quickstart.html
-.. _reStructuredText Markup Specification:
-   http://docutils.sourceforge.net/spec/rst/reStructuredText.html
+.. _A ReStructuredText Primer: ../docs/rst/quickstart.html
+.. _reStructuredText Markup Specification: rst/reStructuredText.html
 
 
 -------------------
@@ -123,8 +122,8 @@ Bibliographic Elements
 The docinfo_ element is an optional child of document_.  It groups
 bibliographic elements together.
 
-Category members: author_, authors_, contact_, copyright_, date_,
-field_, organization_, revision_, status_, version_
+Category members: address_, author_, authors_, contact_, copyright_,
+date_, field_, organization_, revision_, status_, version_
 
 
 Decorative Elements
@@ -247,8 +246,8 @@ following subsections:
   - Attributes: Describes (or refers to descriptions of) the possible
     values and semantics of each attribute.
 
-  - Parameter Entities: Lists the parameter entities which include the
-    element described.
+  - Parameter Entities: Lists the parameter entities which directly or
+    indirectly include the element.
 
 * Examples: reStructuredText examples are shown along with
   fragments of the document trees resulting from parsing.
@@ -283,6 +282,80 @@ completed`".  Please help complete this document by contributing to
 its writing.
 
 
+``address``
+===========
+
+The ``address`` element holds the surface mailing address information
+for the author (individual or group) of the document, or a third-party
+contact address.  Its structure is identical to that of the
+line_block_ element: whitespace is significant, especially newlines.
+
+
+Details
+-------
+
+Category
+    `Bibliographic Elements`_
+
+Parents
+    The following elements may contain ``address``: docinfo_, authors_
+
+Children
+    ``address`` elements contain text data plus `inline elements`_.
+
+Analogies
+    ``address`` is analogous to the DocBook "address" element.
+
+Processing
+    As with the line_block_ element, newlines and other whitespace is
+    significant and must be preserved.  However, a monospaced typeface
+    need not be used.
+
+    See also docinfo_.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+    `%text.model;`_
+
+Attributes
+    The ``address`` element contains the `common attributes`_ (id_,
+    name_, dupname_, source_, and class_), plus `xml:space`_.
+
+Parameter Entities
+    The `%bibliographic.elements;`_ parameter entity directly includes
+    ``address``.
+   
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    Document Title
+    ==============
+
+    :Address: 123 Example Ave.
+              Example, EX
+
+Complete pseudo-XML_ result after parsing and applying transforms::
+
+    <document id="document-title" name="document title">
+        <title>
+            Document Title
+        <docinfo>
+            <address>
+                123 Example Ave.
+                Example, EX
+
+See docinfo_ for a more complete example, including processing
+context.
+
+
 ``attention``
 =============
 
@@ -292,13 +365,139 @@ its writing.
 ``author``
 ==========
 
-`To be completed`_.
+The ``author`` element holds the name of the author of the document.
+
+
+Details
+-------
+
+Category
+    `Bibliographic Elements`_
+
+Parents
+    The following elements may contain ``author``: docinfo_, authors_
+
+Children
+    ``author`` elements may contain text data plus `inline elements`_.
+
+Analogies
+    ``author`` is analogous to the DocBook "author" element.
+
+Processing
+    See docinfo_.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+    `%text.model;`_
+
+Attributes
+    The ``author`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+Parameter Entities
+    The `%bibliographic.elements;`_ parameter entity directly includes
+    ``author``.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    Document Title
+    ==============
+
+    :Author: J. Random Hacker
+
+Complete pseudo-XML_ result after parsing and applying transforms::
+
+    <document id="document-title" name="document title">
+        <title>
+            Document Title
+        <docinfo>
+            <author>
+                J. Random Hacker
+
+See docinfo_ for a more complete example, including processing
+context.
 
 
 ``authors``
 ===========
 
-`To be completed`_.
+The ``authors`` element is a container for author information for
+documents with multiple authors.
+
+
+Details
+-------
+
+Category
+    `Bibliographic Elements`_
+
+Parents
+    Only the docinfo_ element contains ``authors``.
+
+Children
+    ``authors`` elements may contain the following elements: author_,
+    organization_, address_, contact_
+
+Analogies
+    ``authors`` is analogous to the DocBook "authors" element.
+
+Processing
+    See docinfo_.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+    ((author_, organization_?, address_?, contact_?)+)
+
+Attributes
+    The ``authors`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+Parameter Entities
+    The `%bibliographic.elements;`_ parameter entity directly includes
+    ``authors``.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    Document Title
+    ==============
+
+    :Authors: J. Random Hacker; Jane Doe
+
+Complete pseudo-XML_ result after parsing and applying transforms::
+
+    <document id="document-title" name="document title">
+        <title>
+            Document Title
+        <docinfo>
+            <authors>
+                <author>
+                    J. Random Hacker
+                <author>
+                    Jane Doe
+
+In reStructuredText, multiple author's names are separated with
+semicolons (";") or commas (","); semicolons take precedence.  There
+is currently no way to represent the author's organization, address,
+or contact in a reStructuredText "Authors" field.
+
+See docinfo_ for a more complete example, including processing
+context.
 
 
 ``block_quote``
@@ -358,13 +557,135 @@ its writing.
 ``contact``
 ===========
 
-`To be completed`_.
+The ``contact`` element holds contact information for the author
+(individual or group) of the document, or a third-party contact.  It
+is typically used for an email or web address.
+
+
+Details
+-------
+
+Category
+    `Bibliographic Elements`_
+
+Parents
+    The following elements may contain ``contact``: docinfo_, authors_
+
+Children
+    ``contact`` elements may contain text data plus `inline
+    elements`_.
+
+Analogies
+    ``contact`` is analogous to the DocBook "email" element.  The HTML
+    "address" element serves a similar purpose.
+
+Processing
+    See docinfo_.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+    `%text.model;`_
+
+Attributes
+    The ``contact`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+Parameter Entities
+    The `%bibliographic.elements;`_ parameter entity directly includes
+    ``contact``.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    Document Title
+    ==============
+
+    :Contact: jrh@example.com
+
+Complete pseudo-XML_ result after parsing and applying transforms::
+
+    <document id="document-title" name="document title">
+        <title>
+            Document Title
+        <docinfo>
+            <contact>
+                <reference refuri="mailto:jrh@example.com">
+                    jrh@example.com
+
+See docinfo_ for a more complete example, including processing
+context.
 
 
 ``copyright``
 =============
 
-`To be completed`_.
+The ``copyright`` element contains the document's copyright statement.
+
+
+Details
+-------
+
+Category
+    `Bibliographic Elements`_
+
+Parents
+    Only the docinfo_ element contains ``copyright``.
+
+Children
+    ``copyright`` elements may contain text data plus `inline
+    elements`_.
+
+Analogies
+    ``copyright`` is analogous to the DocBook "copyright" element.
+
+Processing
+    See docinfo_.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+    `%text.model;`_
+
+Attributes
+    The ``copyright`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+Parameter Entities
+    The `%bibliographic.elements;`_ parameter entity directly includes
+    ``copyright``.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    Document Title
+    ==============
+
+    :Copyright: This document has been placed in the public domain.
+
+Complete pseudo-XML_ result after parsing and applying transforms::
+
+    <document id="document-title" name="document title">
+        <title>
+            Document Title
+        <docinfo>
+            <copyright>
+                This document has been placed in the public domain.
+
+See docinfo_ for a more complete example, including processing
+context.
 
 
 ``danger``
@@ -376,13 +697,131 @@ its writing.
 ``date``
 ========
 
-`To be completed`_.
+The ``date`` element contains the date of publication, release, or
+last modification of the document.
+
+
+Details
+-------
+
+Category
+    `Bibliographic Elements`_
+
+Parents
+    Only the docinfo_ element contains ``date``.
+
+Children
+    ``date`` elements may contain text data plus `inline elements`_.
+
+Analogies
+    ``date`` is analogous to the DocBook "date" element.
+
+Processing
+    Often used with the RCS/CVS keyword "Date".  See docinfo_.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+    `%text.model;`_
+
+Attributes
+    The ``date`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+Parameter Entities
+    The `%bibliographic.elements;`_ parameter entity directly includes
+    ``date``.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    Document Title
+    ==============
+
+    :Date: 2002-08-20
+
+Complete pseudo-XML_ result after parsing and applying transforms::
+
+    <document id="document-title" name="document title">
+        <title>
+            Document Title
+        <docinfo>
+            <date>
+                2002-08-20
+
+See docinfo_ for a more complete example, including processing
+context.
 
 
 ``decoration``
 ==============
 
-`To be completed`_.
+The ``decoration`` element is a container for header_ and footer_
+elements and potential future extensions.  These elements are used for
+page navigation, notes, time/datestamp, etc.  Currently only the
+footer_ element is implemented, populated with processing information
+(datestamp, a link to Docutils_, etc.).
+
+
+Details
+-------
+
+Category
+    `Structural Subelements`_
+
+Parents
+    Only the document_ element contains ``decoration``.
+
+Children
+    ``decoration`` elements may contain `decorative elements`_.
+
+Analogies
+    There are no direct analogies to ``decoration`` in HTML or DocBook.
+    Equivalents are typically constructed from primitives and/or
+    generated by the processing system.
+
+Processing
+    See the individual `decorative elements`_.
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+    (header_?, footer_?)
+
+Although the content model doesn't specifically require contents, no
+empty ``decoration`` elements are ever created.
+
+Attributes
+    The ``decoration`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    A paragraph.
+
+Complete pseudo-XML_ result after parsing and applying transforms,
+assuming that the datestamp command-line option or configuration
+setting has been supplied::
+
+    <document>
+        <decoration>
+            <footer>
+                <paragraph>
+                    Generated on: 2002-08-20.
+        <paragraph>
+            A paragraph.
 
 
 ``definition``
@@ -412,7 +851,106 @@ its writing.
 ``docinfo``
 ===========
 
-`To be completed`_.
+The ``docinfo`` element is a container for document bibliographic
+data, or meta-data (data about the document).  It corresponds to the
+front matter of a book, such as the title page and copyright page.
+
+
+Details
+-------
+
+Category
+    `Structural Subelements`_
+
+Parents
+    Only the document_ element contains ``docinfo``.
+
+Children
+    ``docinfo`` elements contain `bibliographic elements`_.
+
+Analogies
+    ``docinfo`` is analogous to DocBook "info" elements ("bookinfo"
+    etc.).  There are no directly analogous HTML elements; the "meta"
+    element carries some of the same information, albeit invisibly.
+
+Processing
+    The ``docinfo`` element may be rendered as a two-column table or
+    in other styles.  It may even be invisible or omitted from the
+    processed output.  Meta-data may be extracted from ``docinfo``
+    children; for example, HTML ``<meta>`` tags may be constructed.
+
+    When Docutils_ transforms a reStructuredText_ field_list_ into a
+    ``docinfo`` element (see the examples below), RCS/CVS keywords are
+    normally stripped from simple (one paragraph) field bodies.  For
+    complete details, please see `RCS Keywords`_ in the
+    `reStructuredText Markup Specification`_.
+
+    .. _RCS Keywords: rst/reStructuredText.html#rcs-keywords
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+    (`%bibliographic.elements;`_)+
+
+Attributes
+    The ``docinfo`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+
+Examples
+--------
+
+Docinfo is represented in reStructuredText by a field_list_ in a
+bibliographic context: the first non-comment element of a document_,
+after any document title_/subtitle_.  The field list is transformed
+into a ``docinfo`` element and its children by a transform.  Source::
+
+    Docinfo Example
+    ===============
+
+    :Author: J. Random Hacker
+    :Contact: jrh@example.com
+    :Date: 2002-08-18
+    :Status: Work In Progress
+    :Version: 1
+    :Filename: $RCSfile$
+    :Copyright: This document has been placed in the public domain.
+
+Complete pseudo-XML_ result after parsing and applying transforms::
+
+    <document id="docinfo-example" name="docinfo example">
+        <title>
+            Docinfo Example
+        <docinfo>
+            <author>
+                J. Random Hacker
+            <contact>
+                <reference refuri="mailto:jrh@example.com">
+                    jrh@example.com
+            <date>
+                2002-08-18
+            <status>
+                Work In Progress
+            <version>
+                1
+            <field>
+                <field_name>
+                    Filename
+                <field_body>
+                    <paragraph>
+                        doctree.txt
+            <copyright>
+                This document has been placed in the public domain.
+
+Note that "Filename" is a non-standard ``docinfo`` field, so becomes a
+generic ``field`` element.  Also note that the "RCSfile" keyword
+syntax has been stripped from the "Filename" data.
+
+See field_list_ for an example in a non-bibliographic context.  Also
+see the individual examples for the various `bibliographic elements`_.
 
 
 ``doctest_block``
@@ -444,8 +982,8 @@ Children
     `structural elements`_, and `body elements`_.
 
 Analogies
-    ``document`` is analogous to the HTML "html" element and several
-    DocBook elements such as "book".
+    ``document`` is analogous to the HTML "html" element and to
+    several DocBook elements such as "book".
 
 
 Content Model
@@ -467,6 +1005,9 @@ title_, and similarly for a lone second-level (sub)section's title to
 become the document subtitle_.  The "docinfo_" may be transformed from
 an initial field_list_, and "decoration_" is usually constructed
 programmatically.
+
+See the `%structure.model;`_ parameter entity for details of the body
+of a ``document``.
 
 Attributes
     The ``document`` element contains only the `common attributes`_:
@@ -565,7 +1106,60 @@ document title::
 ``footer``
 ==========
 
-`To be completed`_.
+The ``footer`` element is a container element whose contents are meant
+to appear at the bottom of a web page, or repeated at the bottom of
+every printed page.  Currently the ``footer`` element may contain
+processing information (datestamp, a link to Docutils_, etc.).
+
+
+Details
+-------
+
+Category
+    `Decorative Elements`_
+
+Parents
+    Only the decoration_ element contains ``footer``.
+
+Children
+    ``footer`` elements may contain `body elements`_.
+
+Analogies
+    There are no direct analogies to ``footer`` in HTML or DocBook.
+    Equivalents are typically constructed from primitives and/or
+    generated by the processing system.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+    (`%body.elements;`_)+
+
+Attributes
+    The ``footer`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    A paragraph.
+
+Complete pseudo-XML_ result after parsing and applying transforms,
+assuming that the datestamp command-line option or configuration
+setting has been supplied::
+
+    <document>
+        <decoration>
+            <footer>
+                <paragraph>
+                    Generated on: 2002-08-20.
+        <paragraph>
+            A paragraph.
 
 
 ``footnote``
@@ -589,7 +1183,45 @@ document title::
 ``header``
 ==========
 
-`To be completed`_.
+The ``header`` element is a container element whose contents are meant
+to appear at the top of a web page, or at the top of every printed
+page.  Docutils does not yet make use of the ``header`` element.
+
+
+Details
+-------
+
+Category
+    `Decorative Elements`_
+
+Parents
+    Only the decoration_ element contains ``header``.
+
+Children
+    ``header`` elements may contain `body elements`_.
+
+Analogies
+    There are no direct analogies to ``header`` in HTML or DocBook.
+    Equivalents are typically constructed from primitives and/or
+    generated by the processing system.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+    (`%body.elements;`_)+
+
+Attributes
+    The ``header`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+
+Examples
+--------
+
+None.
 
 
 ``hint``
@@ -697,7 +1329,68 @@ document title::
 ``organization``
 ================
 
-`To be completed`_.
+The ``organization`` element contains the name of document author's
+organization, or the organization responsible for the document.
+
+
+Details
+-------
+
+Category
+    `Bibliographic Elements`_
+
+Parents
+    Only the docinfo_ element contains ``organization``.
+
+Children
+    ``organization`` elements may contain text data plus `inline
+    elements`_.
+
+Analogies
+    ``organization`` is analogous to the DocBook "orgname",
+    "corpname", or "publishername" elements.
+
+Processing
+    See docinfo_.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+    `%text.model;`_
+
+Attributes
+    The ``organization`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+Parameter Entities
+    The `%bibliographic.elements;`_ parameter entity directly includes
+    ``organization``.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    Document Title
+    ==============
+
+    :Organization: Humankind
+
+Complete pseudo-XML_ result after parsing and applying transforms::
+
+    <document id="document-title" name="document title">
+        <title>
+            Document Title
+        <docinfo>
+            <organization>
+                Humankind
+
+See docinfo_ for a more complete example, including processing
+context.
 
 
 ``paragraph``
@@ -733,7 +1426,72 @@ document title::
 ``revision``
 ============
 
-`To be completed`_.
+The ``revision`` element contains the revision number of the document.
+It can be used alone or in conjunction with version_.
+
+
+Details
+-------
+
+Category
+    `Bibliographic Elements`_
+
+Parents
+    Only the docinfo_ element contains ``revision``.
+
+Children
+    ``revision`` elements may contain text data plus `inline
+    elements`_.
+
+Analogies
+    ``revision`` is analogous to but simpler than the DocBook
+    "revision" element.  It closely matches the DocBook "revnumber"
+    element, but in a simpler context.
+
+Processing
+    Often used with the RCS/CVS keyword "Revision".  See docinfo_.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+    `%text.model;`_
+
+Attributes
+    The ``revision`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+Parameter Entities
+    The `%bibliographic.elements;`_ parameter entity directly includes
+    ``revision``.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    Document Title
+    ==============
+
+    :Version: 1
+    :Revision: b
+
+Complete pseudo-XML_ result after parsing and applying transforms::
+
+    <document id="document-title" name="document title">
+        <title>
+            Document Title
+        <docinfo>
+            <version>
+                1
+            <revision>
+                b
+
+See docinfo_ for a more complete example, including processing
+context.
 
 
 ``row``
@@ -745,13 +1503,162 @@ document title::
 ``section``
 ===========
 
-`To be completed`_.
+The ``section`` element is the main unit of hierarchy for Docutils
+documents.  Docutils ``section`` elements are a recursive structure; a
+``section`` may contain other ``section`` elements, without limit.
+Paragraphs and other body elements may occur before a ``section``, but
+not after it.
+
+
+Details
+-------
+
+Category
+    `Structural Elements`_
+
+Parents
+    The following elements may contain ``section``: document_,
+    section_
+
+Children
+    ``section`` elements begin with a title_, and may contain `body
+    elements`_, and transition_ and topic_ elements.
+
+Analogies
+    ``section`` is analogous to HTML "div" elements and to DocBook
+    recursive "section" elements.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+    (title_,
+     `%structure.model;`_)
+
+See the `%structure.model;`_ parameter entity for details of the body
+of a ``section``.
+
+Attributes
+    The ``section`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+Parameter Entities
+    The `%section.elements;`_ parameter entity directly includes
+    ``section``.  The `%structure.model;`_ parameter entity indirectly
+    includes ``section``.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    Title 1
+    =======
+    Paragraph 1.
+    
+    Title 2
+    -------
+    Paragraph 2.
+    
+    Title 3
+    =======
+    Paragraph 3.
+    
+    Title 4
+    -------
+    Paragraph 4.
+
+Complete pseudo-XML_ result after parsing::
+
+    <document>
+        <section id="title-1" name="title 1">
+            <title>
+                Title 1
+            <paragraph>
+                Paragraph 1.
+            <section id="title-2" name="title 2">
+                <title>
+                    Title 2
+                <paragraph>
+                    Paragraph 2.
+        <section id="title-3" name="title 3">
+            <title>
+                Title 3
+            <paragraph>
+                Paragraph 3.
+            <section id="title-4" name="title 4">
+                <title>
+                    Title 4
+                <paragraph>
+                    Paragraph 4.
 
 
 ``status``
 ==========
 
-`To be completed`_.
+The ``status`` element contains a status statement for the document,
+such as "Draft", "Final", "Work In Progress", etc.
+
+
+Details
+-------
+
+Category
+    `Bibliographic Elements`_
+
+Parents
+    Only the docinfo_ element contains ``status``.
+
+Children
+    ``status`` elements may contain text data plus `inline elements`_.
+
+Analogies
+    ``status`` is analogous to the DocBook "status" element.
+
+Processing
+    See docinfo_.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+    `%text.model;`_
+
+Attributes
+    The ``status`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+Parameter Entities
+    The `%bibliographic.elements;`_ parameter entity directly includes
+    ``status``.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    Document Title
+    ==============
+
+    :Status: Work In Progress
+
+Complete pseudo-XML_ result after parsing and applying transforms::
+
+    <document id="document-title" name="document title">
+        <title>
+            Document Title
+        <docinfo>
+            <status>
+                Work In Progress
+
+See docinfo_ for a more complete example, including processing
+context.
 
 
 ``strong``
@@ -785,7 +1692,7 @@ Category
     `Structural Subelements`_
 
 Parents
-    The following elements may contain ``subtitle``: document_
+    Only the document_ element contains ``subtitle``.
 
 Children
     ``subtitle`` elements may contain text data plus `inline
@@ -793,7 +1700,7 @@ Children
 
 Analogies
     ``subtitle`` is analogous to HTML header elements ("h2" etc.) and
-    the DocBook "subtitle" element.
+    to the DocBook "subtitle" element.
 
 Processing
     A document's subtitle is usually rendered smaller than its title_.
@@ -911,7 +1818,7 @@ Children
 
 Analogies
     ``title`` is analogous to HTML "title" and header ("h1" etc.)
-    elements, and DocBook "title" elements.
+    elements, and to the DocBook "title" element.
 
 
 Content Model
@@ -965,7 +1872,69 @@ Pseudo-XML_ fragment from simple parsing::
 ``version``
 ===========
 
-`To be completed`_.
+The ``version`` element contains the version number of the document.
+It can be used alone or in conjunction with revision_.
+
+
+Details
+-------
+
+Category
+    `Bibliographic Elements`_
+
+Parents
+    Only the docinfo_ element contains ``version``.
+
+Children
+    ``version`` elements may contain text data plus `inline
+    elements`_.
+
+Analogies
+    ``version`` may be considered analogous to the DocBook "revision",
+    "revnumber", or "biblioid" elements.
+
+Processing
+    Sometimes used with the RCS/CVS keyword "Revision".  See docinfo_
+    and revision_.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+    `%text.model;`_
+
+Attributes
+    The ``version`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+Parameter Entities
+    The `%bibliographic.elements;`_ parameter entity directly includes
+    ``version``.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    Document Title
+    ==============
+
+    :Version: 1.1
+
+Complete pseudo-XML_ result after parsing and applying transforms::
+
+    <document id="document-title" name="document title">
+        <title>
+            Document Title
+        <docinfo>
+            <version>
+                1.1
+
+See docinfo_ for a more complete example, including processing
+context.
 
 
 ``warning``
@@ -1242,7 +2211,7 @@ Entity definition:
 
 .. parsed-literal::
 
-    author_ | authors_ | organization_ | contact_
+    author_ | authors_ | organization_ | contact_ | address_
     | version_ | revision_ | status_ | date_ | copyright_
     | field_
     %additional.bibliographic.elements;
@@ -1255,7 +2224,8 @@ wrapper DTDs to extend ``%bibliographic.elements;``.
 ===================
 
 The ``%body.elements;`` parameter entity contains an OR-list of all
-`body elements`_.
+`body elements`_.  ``%body.elements;`` is itself contained within the
+`%structure.model;`_ parameter entity.
 
 Entity definition:
 
@@ -1373,8 +2343,9 @@ Entity definition:
 ``%section.elements;``
 ======================
 
-The ``%section.elements;`` parameter entity  contains an OR-list of
-all section_-equivalent elements.
+The ``%section.elements;`` parameter entity contains an OR-list of all
+section_-equivalent elements.  ``%section.elements;`` is itself
+contained within the `%structure.model;`_ parameter entity.
 
 Entity definition:
 
@@ -1391,8 +2362,8 @@ by wrapper DTDs to extend ``%section.elements;``.
 =====================
 
 The ``%structure.model;`` parameter entity is used by document_ and
-section_ elements.  It encapsulates the section structure of a
-document and of parts of that document.  See the discussion of the
+section_ elements.  It encapsulates the hierarchical structure of a
+document and of its constituent parts.  See the discussion of the
 `element hierarchy`_ above.
 
 Entity definition:
