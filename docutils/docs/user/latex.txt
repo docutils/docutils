@@ -237,6 +237,7 @@ Tables
   maybe use ltxtable instead of tabularx (Longtable combined with tabularx).
   but ltxtable disables longtable's multicolumn.
 * Table cells with multirow and multicolumn
+* table-style booktabs: booktabs.sty 1.00 does not work with longtable.
 
 Miscellaneous
 -------------
@@ -244,8 +245,9 @@ Miscellaneous
 * The underscore ``_`` does not work in literal-blocks, has different width.
   I tried
 
-  - Escape it ``{\_}`` to narrow
   - Underline a blank ``\underline{ }`` to low, as in windows-xp.
+    And elsewhere use this.
+  - Escape it ``{\_}`` to narrow
   - Subscript a hyphen ``$_{\tt-}$`` too wide and thin
   - ``$_{-}$`` the same.
 
@@ -284,7 +286,7 @@ Miscellaneous
 * For additional docinfo items: the field_body is inserted as text, i.e. no
   markup is done.
 * Multiple author entries in docinfo (same thing as in html).
-* pslatex has not textbackslash ind bold ?
+* pslatex has not textbackslash in bold ?
 * make use (but test against pslatex) ::
 
     \textbackslash      \backslash \
