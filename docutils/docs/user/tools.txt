@@ -236,27 +236,27 @@ Some limitations and difference apply:
 - Not all constructs are possible, see `Generating LaTeX with Docutils`_.
 
 
-docutils-xml.py
----------------
+rst2xml.py
+----------
 
 :Reader: Standalone
 :Parser: reStructuredText
 :Writer: XML (Docutils native)
 
-The ``docutils-xml.py`` front end produces Docutils-native XML output.
+The ``rst2xml.py`` front end produces Docutils-native XML output.
 This can be transformed with standard XML tools such as XSLT
 processors into arbitrary final forms.
 
 
-publish.py
-----------
+rst2pseudoxml.py
+----------------
 
 :Reader: Standalone
 :Parser: reStructuredText
 :Writer: Pseudo-XML
 
-``publish.py`` is used for debugging the Docutils "Reader to Transform
-to Writer" pipeline.  It produces a compact pretty-printed
+``rst2pseudoxml.py`` is used for debugging the Docutils "Reader to
+Transform to Writer" pipeline.  It produces a compact pretty-printed
 "pseudo-XML", where nesting is indicated by indentation (no end-tags).
 External attributes for all elements are output, and internal
 attributes for any leftover "pending" elements are also given.

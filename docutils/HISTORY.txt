@@ -165,6 +165,10 @@ Specific:
 
 * setup.py: Now also installs ``rst2latex.py``.
 
+* tools/rst2pseudoxml.py: Renamed from publish.py.
+
+* tools/rst2xml.py: Renamed from docutils-xml.py.
+
 
 Release 0.3.3 (2004-05-09)
 ==========================
