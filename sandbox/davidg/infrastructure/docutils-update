@@ -7,6 +7,8 @@
 # changes.
 #
 # Options:
+#   -e    Access CVS as current user ("ext" instead of "pserver"; requires
+#         authentication).
 #   -p    Run from the project directory.
 #   -t    Run the script in trace mode ("set -o xtrace").
 #   -u    Regenerate .html unconditionally.
@@ -17,6 +19,7 @@ dest=$projdir/htdocs
 tmp=$projdir/tmp/$project
 pylib=$projdir/lib/python
 lib=$pylib/$project
+root=
 
 export CVS_RSH=ssh
 export CVSROOT=:pserver:anonymous@cvs1:/cvsroot/$project
@@ -24,9 +27,10 @@ export CVSROOT=:pserver:anonymous@cvs1:/cvsroot/$project
 trace=0
 unconditional=0
 
-while getopts ptu opt
+while getopts eptu opt
 do
     case $opt in
+        e)  root="-d:ext:${USER}@cvs1:/cvsroot/docutils" ;;
         p)  export PYTHONPATH=$pylib:$lib;;
         t)  trace=1;;
         u)  unconditional=1;;
@@ -45,9 +49,11 @@ mkdir -p $tmp 2>&1 > /dev/null
 cd $tmp
 
 # gather the materials
-cvs -Q -z3 export -rHEAD $project
-cvs -Q -z3 export -rHEAD sandbox
-cvs -Q -z3 export -rHEAD web
+cvs -Q -z3 $root export -rHEAD $project sandbox web
+
+if [ $? -ne 0 ] ; then
+	exit 1
+fi
 
 # remove junk
 find -name .cvsignore | xargs rm
@@ -81,7 +87,7 @@ rm -rf $tmp
 
 # update library area
 cd $lib
-cvs -Q update 2>&1 > /dev/null
+cvs -Q $root update 2>&1 > /dev/null
 
 # update HTML docs
 cd $dest/tools
