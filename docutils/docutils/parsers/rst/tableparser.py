@@ -19,9 +19,10 @@ __docformat__ = 'reStructuredText'
 
 
 import re
+from docutils import DataError
 
 
-class TableMarkupError(Exception): pass
+class TableMarkupError(DataError): pass
 
 
 class TableParser:
