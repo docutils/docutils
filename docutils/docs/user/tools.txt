@@ -1,0 +1,698 @@
+==========================
+
+ Docutils Front-End Tools
+
+==========================
+
+
+
+:Author: David Goodger
+
+:Contact: goodger@users.sourceforge.net
+
+:Revision: $Revision$
+
+:Date: $Date$
+
+
+
+Once the Docutils package is unpacked, you will discover a "``tools``"
+
+directory containing several front ends for common Docutils
+
+processing.  Most front ends combine a Docutils "Reader" (which knows
+
+how to interpret a file in context) with a "Writer" (which knows how
+
+to generate a specific data format)
+
+
+
+Each tool has a "``--help``" option which lists the `command-line
+
+options`_ and arguments it supports.  Processing can also be
+
+customized with `configuration files`_.
+
+
+
+
+
+.. contents::
+
+
+
+
+
+html.py
+
+=======
+
+
+
+:Reader: Standalone
+
+:Parser: reStructuredText
+
+:Writer: HTML
+
+
+
+The ``html.py`` front end reads standalone reStructuredText source
+
+files and produces HTML 4 (XHTML 1) output.  It inserts a link to a
+
+cascading stylesheet (``.css`` file), ``default.css`` unless specified
+
+by a "--stylesheet" command-line option or in a configuration file.
+
+The ``tools/default.css`` stylesheet is provided for basic use.
+
+
+
+
+
+pep.py
+
+======
+
+
+
+:Reader: PEP
+
+:Parser: reStructuredText
+
+:Writer: PEP/HTML
+
+
+
+``pep.py`` reads a new-style PEP (marked up with reStructuredText) and
+
+produces HTML.  It requires a template file and a stylesheet.  By
+
+default, it makes use of a ``pep-html-template`` file and a
+
+``default.css`` stylesheet in the current directory, but these can be
+
+overridden by command-line options or configuration files.  The
+
+``tools/stylesheets/pep.css`` stylesheet is intended specifically for
+
+PEP use.
+
+
+
+The ``docutils.conf`` `configuration file`_ in the "``spec``"
+
+directory of Docutils contains a default setup for use in processing
+
+the PEP files there (``spec/pep-*.txt``) into HTML.  It specifies
+
+defaults of ``tools/pep-html-template`` and
+
+``tools/stylesheets/pep.css``.
+
+
+
+
+
+pep2html.py
+
+===========
+
+
+
+:Reader: PEP
+
+:Parser: reStructuredText
+
+:Writer: PEP/HTML
+
+
+
+``pep2html.py`` is a modified version of the original script by
+
+Fredrik Lundh, with support for Docutils added.  It reads the
+
+beginning of a PEP text file to determine the format (old-style
+
+indented or new-style reStructuredText) and processes accordingly.
+
+Since it does not use the Docutils front end mechanism (the common
+
+command-line options are not supported), it must be configured using
+
+`configuration files`_.
+
+
+
+
+
+docutils-xml.py
+
+===============
+
+
+
+:Reader: Standalone
+
+:Parser: reStructuredText
+
+:Writer: XML (Docutils native)
+
+
+
+The ``docutils-xml.py`` front end produces Docutils-native XML output.
+
+This can be transformed with standard XML tools such as XSLT
+
+processors into arbitrary final forms.
+
+
+
+
+
+publish.py
+
+==========
+
+
+
+:Reader: Standalone
+
+:Parser: reStructuredText
+
+:Writer: Pseudo-XML
+
+
+
+``publish.py`` is used for debugging the Docutils Reader -> Transform
+
+-> Writer pipeline.  It produces a compact pretty-printed
+
+"pseudo-XML", where nesting is indicated by indentation (no end-tags).
+
+External attributes for all elements are output, and internal
+
+attributes for any leftover "pending" elements are also given.
+
+
+
+
+
+quicktest.py
+
+============
+
+
+
+:Reader: N/A
+
+:Parser: reStructuredText
+
+:Writer: N/A
+
+
+
+The ``quicktest.py`` tool is used for testing the reStructuredText
+
+parser.  It does not use the Docutils Reader/Writer mechanism.
+
+Rather, it does its own I/O and calls the parser directly.  No
+
+transforms are applied to the parsed document.  Various forms output
+
+are possible:
+
+
+
+- Pretty-printed pseudo-XML
+
+- Test data (Python list of input and pseudo-XML output strings;
+
+  useful for creating new test cases)
+
+- Pretty-printed native XML
+
+- Raw native XML (with or without a stylesheet reference)
+
+
+
+
+
+Customization
+
+=============
+
+
+
+Command-Line Options
+
+--------------------
+
+
+
+Each front-end tool supports command-line options for one-off
+
+customization.  For persistent customization, use `configuration
+
+files`_.
+
+
+
+Use the "--help" option on each of the front ends to list the
+
+command-line options it supports.  Command-line options and their
+
+corresponding configuration file entry names are listed in
+
+`Configuration File Entries`_ below.
+
+
+
+
+
+.. _configuration file:
+
+
+
+Configuration Files
+
+-------------------
+
+
+
+Configuration files are used for persistent customization; they can be
+
+set once and take effect every time you use a front-end tool.
+
+
+
+By default, Docutils checks three places for configuration files, in
+
+the following order:
+
+
+
+1. ``/etc/docutils.conf``: This is a system-wide configuration file,
+
+   applicable to all Docutils processing on the system.
+
+
+
+2. ``./docutils.conf``: This is a project-specific configuration file,
+
+   located in the current directory.  The Docutils front end has to be
+
+   executed from the directory containing this configuration file for
+
+   it to take effect.  The project-specific configuration file
+
+   overrides the system-wide file.
+
+
+
+3. ``~/.docutils``: This is a user-specific configuration file,
+
+   located in the user's home directory.  This file overrides both the
+
+   system-wide and project-specific configuration files.
+
+
+
+If more than one configuration file is found, all will be read but
+
+later entries will override earlier ones.  For example, a "stylesheet"
+
+entry in a user-specific configuration file will override a
+
+system-wide entry.
+
+
+
+Configuration files use the standard ConfigParser.py_ Python_ module.
+
+From its documentation:
+
+
+
+    The configuration file consists of sections, lead by a "[section]"
+
+    header and followed by "name: value" entries, with continuations
+
+    in the style of `RFC 822`_; "name=value" is also accepted.  Note
+
+    that leading whitespace is removed from values.  The optional
+
+    values can contain format strings which refer to other values in
+
+    the same section, or values in a special DEFAULT section.
+
+    Additional defaults can be provided upon initialization and
+
+    retrieval.  Lines beginning with "#" or ";" are ignored and may be
+
+    used to provide comments.
+
+
+
+Docutils only uses an "[options]" section; all other sections will be
+
+ignored.
+
+
+
+Configuration entry names correspond to internal option attributes.
+
+Underscores ("_") and hyphens ("-") can be used interchangably in
+
+entry names.  The correspondence between entry names and command-line
+
+options is listed in `Configuration File Entries`_ below.
+
+
+
+.. _ConfigParser.py:
+
+   http://www.python.org/doc/current/lib/module-ConfigParser.html
+
+.. _Python: http://www.python.org/
+
+.. _RFC 822: http://www.rfc-editor.org/rfc/rfc822.txt
+
+
+
+
+
+Configuration File Entries
+
+--------------------------
+
+
+
+The entry names listed below may be specified in `configuration
+
+files`_ (hyphens may be used in place of underscores).  Some knowledge
+
+of Python_ is assumed for some attributes.
+
+
+
+====================  ================================================
+
+Entry Name            Description and Command-Line Options
+
+====================  ================================================
+
+datestamp             Include a time/datestamp in the document footer.
+
+                      Contains a format string for ``time.strftime``.
+
+
+
+                      Default: None.
+
+
+
+                      ``--date, -d, --time, -t, --no-datestamp``
+
+
+
+debug                 Report debug-level system messages.
+
+
+
+                      Default: don't (None).
+
+
+
+                      ``--debug, --no-debug``
+
+
+
+dump_internals        Hidden option: At the end of processing, print
+
+                      out all internal attributes of the document
+
+                      (``document.__dict__``).
+
+
+
+                      Default: don't (None).
+
+
+
+                      ``--dump-internals``
+
+
+
+footnote_backlinks    Enable or disable backlinks from footnotes and
+
+                      citations to their references.
+
+
+
+                      Default: enabled (1).
+
+
+
+                      ``--footnote-backlinks, --no-footnote-backlinks``
+
+
+
+generator             Include a "Generated by Docutils" credit and
+
+                      link in the document footer.
+
+
+
+                      Default: off (None).
+
+
+
+                      ``--generator, -g, --no-generator``
+
+
+
+halt_level            Set the threshold at or above which system
+
+                      messages are converted to exceptions, halting
+
+                      execution immediately.
+
+
+
+                      Default: severe (4).
+
+
+
+                      ``--halt, --strict``
+
+
+
+indents               XML-specific: Generate XML with indents and
+
+                      newlines.
+
+
+
+                      Default: None.
+
+
+
+                      ``--indents``
+
+
+
+input_encoding        Default: auto-detect (None).
+
+
+
+                      ``--input-encoding, -i``
+
+
+
+language_code         Default: English ("en").
+
+
+
+                      ``--language, -l``
+
+
+
+newlines              XML-specific: Generate XML with newlines before
+
+                      and after tags.
+
+
+
+                      Default: None.
+
+
+
+                      ``--newlines``
+
+
+
+no_random             PEP/HTML-specific hidden option: Workaround for
+
+                      platforms which core-dump on "``import
+
+                      random``".
+
+
+
+                      Default: random enabled (None).
+
+
+
+                      ``--no-random``
+
+
+
+output_encoding       Default: UTF-8.
+
+
+
+                      ``--output-encoding, -o``
+
+
+
+pep_home              PEP/HTML-specific: Home URL prefix for PEPs.
+
+
+
+                      Default: current directory (".").
+
+
+
+                      ``--pep-home``
+
+
+
+pep_stylesheet        PEP/HTML-specific: Overrides HTML stylesheet.
+
+
+
+                      Default: None.
+
+
+
+                      ``--pep-stylesheet``
+
+
+
+pep_template          PEP/HTML-specific: PEP template file.
+
+
+
+                      Default: "pep-html-template".
+
+
+
+                      ``--pep-template``
+
+
+
+python_home           PEP/HTML-specific: Python's home URL.
+
+
+
+                      Default: parent directory ("..").
+
+
+
+                      ``--python-home``
+
+
+
+report_level          Set verbosity threshold at or above which system
+
+                      messages are reported.
+
+
+
+                      Default: warning (2).
+
+
+
+                      ``--report, -r, --verbose``
+
+
+
+source_link           Include a "View document source" link in the
+
+                      document footer.
+
+
+
+                      Default: don't (None).
+
+
+
+                      ``--source-link, --no-source-link``
+
+
+
+stylesheet            HTML-specific.
+
+
+
+                      Default: "default.css".
+
+
+
+                      ``--stylesheet``
+
+
+
+toc_backlinks         Enable backlinks from section titles to table of
+
+                      contents entries ("entry"), to the top of the
+
+                      TOC ("top"), or disable ("none").
+
+
+
+                      Default: "entry".
+
+
+
+                      ``--toc-entry-backlinks, --toc-top-backlinks,
+
+                      --no-toc-backlinks``
+
+
+
+warning_stream        Send the output of system messages (warnings) to
+
+                      a file.
+
+
+
+                      Default: stderr (None).
+
+
+
+                      ``--warnings``
+
+====================  ================================================
+
+
+
+
+
+..
+
+   Local Variables:
+
+   mode: indented-text
+
+   indent-tabs-mode: nil
+
+   sentence-end-double-space: t
+
+   fill-column: 70
+
+   End:
+
