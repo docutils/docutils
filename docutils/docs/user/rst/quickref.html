@@ -3,6 +3,10 @@
   <head>
     <title>Quick reStructuredText</title>
 
+    <style type="text/css"><!--
+      a.backref { text-decoration: none ; color: black }
+    --></style>
+
   </head>
 
   <body>
@@ -20,10 +24,10 @@
     <p align="right"><em><a href="http://docutils.sourceforge.net/docs/rst/quickref.html"
     >http://docutils.sourceforge.net/docs/rst/quickref.html</a></em>
 	<br align="right"><em>Being a cheat-sheet for reStructuredText</em>
-	<br align="right"><em>Version 0.9 of 2002-07-23</em>
+	<br align="right"><em>Version 0.10 of 2002-08-07</em>
 
 
-    <p>The full details may be found on the
+    <p>The full details of the markup may be found on the
       <a href="http://docutils.sourceforge.net/rst.html">reStructuredText</a>
       page. This document is just intended as a reminder.
 
@@ -64,9 +68,11 @@
     <li><a href="#directives">Directives</a></li>
     <li><a href="#substitution-references-and-definitions">Substitution References and Definitions</a></li>
 	<li><a href="#comments">Comments</a></li>
+	<li><a href="#getting-help">Getting Help</a></li>
     </ul>
 
-    <h2><a href="#contents" name="inline-markup">Inline Markup</a></h2>
+    <h2><a href="#contents" name="inline-markup" class="backref"
+        >Inline Markup</a></h2>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#inline-markup">details?</a>)
 
@@ -180,7 +186,8 @@
       markup delimiter characters, but that doesn't count because
       nothing is processed).
 
-    <h2><a href="#contents" name="escaping">Escaping with Bashslashes</a></h2>
+    <h2><a href="#contents" name="escaping" class="backref"
+        >Escaping with Bashslashes</a></h2>
 
     <p>(<a
     href="../../spec/rst/reStructuredText.html#backslashes">details?</a>)
@@ -228,7 +235,8 @@
 	  <td><em>escape</em> with ""
     </table>
 
-    <h2><a href="#contents" name="section-structure">Section Structure</a></h2>
+    <h2><a href="#contents" name="section-structure" class="backref"
+        >Section Structure</a></h2>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#sections">details?</a>)
 
@@ -261,7 +269,8 @@
 	      are "<samp>= - ` : ' " ~ ^ _ * + # &lt; &gt;</samp>".
     </table>
 
-    <h2><a href="#contents" name="paragraphs">Paragraphs</a></h2>
+    <h2><a href="#contents" name="paragraphs" class="backref"
+        >Paragraphs</a></h2>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#paragraphs">details?</a>)
 
@@ -288,7 +297,8 @@
 
     </table>
 
-    <h2><a href="#contents" name="bullet-lists">Bullet Lists</a></h2>
+    <h2><a href="#contents" name="bullet-lists" class="backref"
+        >Bullet Lists</a></h2>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#bullet-lists">details?</a>)
 
@@ -325,7 +335,8 @@
 	      item and after the last, but is optional between items.
     </table>
 
-    <h2><a href="#contents" name="enumerated-lists">Enumerated Lists</a></h2>
+    <h2><a href="#contents" name="enumerated-lists" class="backref"
+        >Enumerated Lists</a></h2>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#enumerated-lists">details?</a>)
 
@@ -360,7 +371,8 @@
 	    </ol>
     </table>
 
-    <h2><a href="#contents" name="definition-lists">Definition Lists</a></h2>
+    <h2><a href="#contents" name="definition-lists" class="backref"
+        >Definition Lists</a></h2>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#definition-lists">details?</a>)
 
@@ -400,7 +412,8 @@
 	    </dl>
     </table>
 
-    <h2><a href="#contents" name="field-lists">Field Lists</a></h2>
+    <h2><a href="#contents" name="field-lists" class="backref"
+        >Field Lists</a></h2>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#field-lists">details?</a>)
 
@@ -433,7 +446,8 @@
 	    </table>
     </table>
 
-    <h2><a href="#contents" name="option-lists">Option Lists</a></h2>
+    <h2><a href="#contents" name="option-lists" class="backref"
+        >Option Lists</a></h2>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#option-lists">details?</a>)
 
@@ -480,7 +494,8 @@
     <p>There must be at least two spaces between the option and the
     description.
 
-    <h2><a href="#contents" name="literal-blocks">Literal Blocks</a></h2>
+    <h2><a href="#contents" name="literal-blocks" class="backref"
+        >Literal Blocks</a></h2>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#literal-blocks">details?</a>)
 
@@ -558,7 +573,8 @@ This means that something like:
         <p>is possible.
     </table>
 
-    <h2><a href="#contents" name="block-quotes">Block Quotes</a></h2>
+    <h2><a href="#contents" name="block-quotes" class="backref"
+        >Block Quotes</a></h2>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#block-quotes">details?</a>)
 
@@ -586,7 +602,8 @@ This means that something like:
 	    </blockquote>
     </table>
 
-    <h2><a href="#contents" name="doctest-blocks">Doctest Blocks</a></h2>
+    <h2><a href="#contents" name="doctest-blocks" class="backref"
+        >Doctest Blocks</a></h2>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#doctest-blocks">details?</a>)
 
@@ -621,7 +638,8 @@ This means that something like:
     interactive Python session, then executes all such sessions to
     verify they still work exactly as shown." (From the doctest docs.)
 
-    <h2><a href="#contents" name="tables">Tables</a></h2>
+    <h2><a href="#contents" name="tables" class="backref"
+        >Tables</a></h2>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#tables">details?</a>)
 
@@ -729,7 +747,8 @@ This means that something like:
 
     </table>
 
-    <h2><a href="#contents" name="transitions">Transitions</a></h2>
+    <h2><a href="#contents" name="transitions" class="backref"
+        >Transitions</a></h2>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#transitions">details?</a>)
 
@@ -769,7 +788,8 @@ A&nbsp;transition&nbsp;marker&nbsp;is&nbsp;a&nbsp;horizontal&nbsp;line
     gap spanning one or more lines, marking text divisions or
     signaling changes in subject, time, point of view, or emphasis.
 
-    <h2><a href="#contents" name="footnotes">Footnotes</a></h2>
+    <h2><a href="#contents" name="footnotes" class="backref"
+        >Footnotes</a></h2>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#footnotes">details?</a>)
 
@@ -861,7 +881,8 @@ A&nbsp;transition&nbsp;marker&nbsp;is&nbsp;a&nbsp;horizontal&nbsp;line
     same relative order. Similarly for auto-symbol footnotes
     ("<samp>[*]_</samp>").
 
-    <h2><a href="#contents" name="citations">Citations</a></h2>
+    <h2><a href="#contents" name="citations" class="backref"
+        >Citations</a></h2>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#citations">details?</a>)
 
@@ -913,11 +934,13 @@ A&nbsp;transition&nbsp;marker&nbsp;is&nbsp;a&nbsp;horizontal&nbsp;line
 
     </table>
 
-    <h2><a href="#contents" name="hyperlink-targets">Hyperlink Targets</a></h2>
+    <h2><a href="#contents" name="hyperlink-targets" class="backref"
+        >Hyperlink Targets</a></h2>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#hyperlink-targets">details?</a>)
 
-    <h3><a href="#contents" name="external-hyperlink-targets">External Hyperlink Targets</a></h3>
+    <h3><a href="#contents" name="external-hyperlink-targets" class="backref"
+        >External Hyperlink Targets</a></h3>
 
     <p><table border="1" width="100%" bgcolor="#ffffcc" cellpadding="3">
       <thead>
@@ -955,7 +978,8 @@ A&nbsp;transition&nbsp;marker&nbsp;is&nbsp;a&nbsp;horizontal&nbsp;line
       printed documents, where the link needs to be presented explicitly, for
       example as a footnote.
 
-    <h3><a href="#contents" name="internal-hyperlink-targets">Internal Hyperlink Targets</a></h3>
+    <h3><a href="#contents" name="internal-hyperlink-targets" class="backref"
+        >Internal Hyperlink Targets</a></h3>
 
     <p><table border="1" width="100%" bgcolor="#ffffcc" cellpadding="3">
       <thead>
@@ -990,7 +1014,8 @@ A&nbsp;transition&nbsp;marker&nbsp;is&nbsp;a&nbsp;horizontal&nbsp;line
 
     </table>
 
-    <h3><a href="#contents" name="indirect-hyperlink-targets">Indirect Hyperlink Targets</a></h3>
+    <h3><a href="#contents" name="indirect-hyperlink-targets" class="backref"
+        >Indirect Hyperlink Targets</a></h3>
 
 	<p>(<a href="../../spec/rst/reStructuredText.html#indirect-hyperlink-targets">details?</a>)
 
@@ -1025,7 +1050,8 @@ A&nbsp;transition&nbsp;marker&nbsp;is&nbsp;a&nbsp;horizontal&nbsp;line
     target</b>. In the text, a double-underscore suffix is used to
     indicate an <b>anonymous hyperlink reference</b>.
 
-    <h3><a href="#contents" name="implicit-hyperlink-targets">Implicit Hyperlink Targets</a></h3>
+    <h3><a href="#contents" name="implicit-hyperlink-targets" class="backref"
+        >Implicit Hyperlink Targets</a></h3>
 
 	<p>(<a href="../../spec/rst/reStructuredText.html#implicit-hyperlink-targets">details?</a>)
 
@@ -1051,7 +1077,8 @@ A&nbsp;transition&nbsp;marker&nbsp;is&nbsp;a&nbsp;horizontal&nbsp;line
 		targets, too</a>.
     </table>
 
-    <h2><a href="#contents" name="directives">Directives</a></h2>
+    <h2><a href="#contents" name="directives" class="backref"
+        >Directives</a></h2>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#directives">details?</a>)
 
@@ -1072,7 +1099,8 @@ A&nbsp;transition&nbsp;marker&nbsp;is&nbsp;a&nbsp;horizontal&nbsp;line
 	    <p><img src="images/ball1.gif" alt="ball1">
     </table>
 
-    <h2><a href="#contents" name="substitution-references-and-definitions">Substitution References and Definitions</a></h2>
+    <h2><a href="#contents" name="substitution-references-and-definitions"
+        class="backref" >Substitution References and Definitions</a></h2>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#substitution-definitions">details?</a>)
 
@@ -1102,7 +1130,8 @@ dispose&nbsp;of&nbsp;medical&nbsp;waste.</samp>
 
     </table>
 
-	<h2><a href="#contents" name="comments">Comments</a></h2>
+	<h2><a href="#contents" name="comments" class="backref"
+        >Comments</a></h2>
 
     <p>(<a href="../../spec/rst/reStructuredText.html#comments">details?</a>)
 
@@ -1138,6 +1167,18 @@ dispose&nbsp;of&nbsp;medical&nbsp;waste.</samp>
 	      despite its indentation.
 	    </blockquote>
     </table>
+
+	<h2><a href="#contents" name="getting-help" class="backref"
+        >Getting Help</a></h2>
+
+    <p>Users who have questions or need assistance with Docutils or
+    reStructuredText should <a
+    href="mailto:docutils-users@lists.sourceforge.net" >post a
+    message</a> to the <a
+    href="http://lists.sourceforge.net/lists/listinfo/docutils-users"
+    >Docutils-Users mailing list</a>.  The <a
+    href="http://docutils.sourceforge.net/" >Docutils project web
+    site</a> has more information.
 
     <p><hr>
     <address>
