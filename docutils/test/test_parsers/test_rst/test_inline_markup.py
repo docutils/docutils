@@ -150,6 +150,19 @@ Strong double asterisk: ******
         <strong>
             **
 """],
+["""\
+**strong without closing asterisks
+""",
+"""\
+<document>
+    <paragraph>
+        <problematic id="id2" refid="id1">
+            **
+        strong without closing asterisks
+    <system_message backrefs="id2" id="id1" level="2" type="WARNING">
+        <paragraph>
+            Inline strong start-string without end-string at line 1.
+"""],
 ]
 
 totest['literal'] = [
@@ -221,6 +234,19 @@ Find the ```interpreted text``` in this paragraph!
         <literal>
             `interpreted text`
          in this paragraph!
+"""],
+["""\
+``literal without closing backquotes
+""",
+"""\
+<document>
+    <paragraph>
+        <problematic id="id2" refid="id1">
+            ``
+        literal without closing backquotes
+    <system_message backrefs="id2" id="id1" level="2" type="WARNING">
+        <paragraph>
+            Inline literal start-string without end-string at line 1.
 """],
 ]
 
@@ -298,6 +324,19 @@ totest['interpreted'] = [
         <interpreted>
             text
         's interpreted
+"""],
+["""\
+`interpreted without closing backquote
+""",
+"""\
+<document>
+    <paragraph>
+        <problematic id="id2" refid="id1">
+            `
+        interpreted without closing backquote
+    <system_message backrefs="id2" id="id1" level="2" type="WARNING">
+        <paragraph>
+            Inline interpreted text or phrase reference start-string without end-string at line 1.
 """],
 ]
 
@@ -412,6 +451,38 @@ Invalid phrase reference:
             phrase reference
         :role:_
 """],
+["""\
+`phrase reference_ without closing backquote
+""",
+"""\
+<document>
+    <paragraph>
+        <problematic id="id2" refid="id1">
+            `
+        phrase \n\
+        <reference refname="reference">
+            reference
+         without closing backquote
+    <system_message backrefs="id2" id="id1" level="2" type="WARNING">
+        <paragraph>
+            Inline interpreted text or phrase reference start-string without end-string at line 1.
+"""],
+["""\
+`anonymous phrase reference__ without closing backquote
+""",
+"""\
+<document>
+    <paragraph>
+        <problematic id="id2" refid="id1">
+            `
+        anonymous phrase \n\
+        <reference anonymous="1">
+            reference
+         without closing backquote
+    <system_message backrefs="id2" id="id1" level="2" type="WARNING">
+        <paragraph>
+            Inline interpreted text or phrase reference start-string without end-string at line 1.
+"""],
 ]
 
 totest['inline_targets'] = [
@@ -459,6 +530,19 @@ And _`this`_ is just plain confusing.
     <system_message backrefs="id2" id="id1" level="2" type="WARNING">
         <paragraph>
             Inline target start-string without end-string at line 3.
+"""],
+["""\
+_`inline target without closing backquote
+""",
+"""\
+<document>
+    <paragraph>
+        <problematic id="id2" refid="id1">
+            _`
+        inline target without closing backquote
+    <system_message backrefs="id2" id="id1" level="2" type="WARNING">
+        <paragraph>
+            Inline target start-string without end-string at line 1.
 """],
 ]
 
@@ -572,6 +656,19 @@ reference|
         <substitution_reference refname="substitution reference">
             substitution
             reference
+"""],
+["""\
+|substitution reference without closing verbar
+""",
+"""\
+<document>
+    <paragraph>
+        <problematic id="id2" refid="id1">
+            |
+        substitution reference without closing verbar
+    <system_message backrefs="id2" id="id1" level="2" type="WARNING">
+        <paragraph>
+            Inline substitution_reference start-string without end-string at line 1.
 """],
 ]
 
