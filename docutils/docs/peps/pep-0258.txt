@@ -533,15 +533,16 @@ system messages:
 
 * Level-2, "WARNING": an issue that should be addressed.  If ignored,
   there may be minor problems with the output.  Typically level-2
-  system messages are reported but do not halt processing
+  system messages are reported but do not halt processing.
 
 * Level-3, "ERROR": a major issue that should be addressed.  If
   ignored, the output will contain unpredictable errors.  Typically
-  level-3 system messages are reported but do not halt processing
+  level-3 system messages are reported but do not halt processing.
 
 * Level-4, "SEVERE": a critical error that must be addressed.
   Typically level-4 system messages are turned into exceptions which
-  halt processing.  If ignored, the output will contain severe errors.
+  do halt processing.  If ignored, the output will contain severe
+  errors.
 
 Although the initial message levels were devised independently, they
 have a strong correspondence to `VMS error condition severity
