@@ -84,6 +84,7 @@ roles = {
       'ersetzungs-referenz': 'substitution-reference',
       'ziel': 'target',
       'uri-referenz': 'uri-reference',
-      'raw (translation required)': 'raw',}
+      u'unver\xe4ndert': 'raw',
+      u'roh': 'raw',}
 """Mapping of German role names to canonical role names for interpreted text.
 """

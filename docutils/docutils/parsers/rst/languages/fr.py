@@ -89,6 +89,6 @@ roles = {
       u'substitution-r\u00E9f\u00E9rence': 'substitution-reference',
       u'lien': 'target',
       u'uri-r\u00E9f\u00E9rence': 'uri-reference',
-      u'raw (translation required)': 'raw',}
+      u'brut': 'raw',}
 """Mapping of French role names to canonical role names for interpreted text.
 """
