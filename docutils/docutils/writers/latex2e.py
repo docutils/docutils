@@ -237,7 +237,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     d_margins = '2cm'
 
     latex_head = '\\documentclass[%s]{%s}\n'
-    encoding = '\\usepackage[latin1]{inputenc}\n'
+    encoding = '\\usepackage[%s]{inputenc}\n'
     linking = '\\usepackage[colorlinks=%s,linkcolor=%s,urlcolor=%s]{hyperref}\n'
     geometry = '\\usepackage[%s,margin=%s,nohead]{geometry}\n'
     stylesheet = '\\input{%s}\n'
@@ -281,7 +281,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
               self.latex_head % (self.d_options,self.settings.documentclass),
               '\\usepackage{babel}\n',     # language is in documents settings.
               '\\usepackage{shortvrb}\n',  # allows verb in footnotes.
-              self.encoding,
+              self.encoding % self.to_latex_encoding(settings.output_encoding),
               # * tabularx: for docinfo, automatic width of columns, always on one page.
               '\\usepackage{tabularx}\n',
               '\\usepackage{longtable}\n',
@@ -363,6 +363,39 @@ class LaTeXTranslator(nodes.NodeVisitor):
             return self.settings.stylesheet_path
         else:
             return self.settings.stylesheet
+
+    def to_latex_encoding(self,docutils_encoding):
+        """
+        Translate docutils encoding name into latex's.
+
+        Default fallback method is remove "-" and "_" chars from docutils_encoding.
+
+        """
+        tr = {  "iso-8859-1": "latin1",     # west european
+                "iso-8859-2": "latin2",     # east european
+                "iso-8859-3": "latin3",     # esperanto, maltese
+                "iso-8859-4": "latin4",     # north european,scandinavian, baltic
+                "iso-8859-5": "iso88595",   # cyrillic
+                "iso-8859-9": "latin5",     # turkish
+                "iso-8859-15": "latin9",    # latin9, update to latin1.
+                "mac_cyrillic": "maycyr",
+                # unmatched encodings
+                #"": "applemac",
+                #"": "ansinew",  # windows 3.1 ansi
+                #"": "ascii",    # ASCII encoding for the range 32--127.
+                #"": "cp437",    # dos latine us
+                #"": "cp850",    # dos latin 1
+                #"": "cp852",    # dos latin 2
+                #"": "decmulti",
+                #"": "latin10",
+                #"iso-8859-6": ""   # arabic
+                #"iso-8859-7": ""   # greek
+                #"iso-8859-8": ""   # hebrew
+                #"iso-8859-10": ""   # latin6, more complete iso-8859-4
+             }
+        if tr.has_key(docutils_encoding.lower()):
+            return tr[docutils_encoding.lower()]
+        return docutils_encoding.translate(string.maketrans("",""),"_-").lower()
 
     def language_label(self, docutil_label):
         return self.language.labels[docutil_label]

@@ -30,6 +30,7 @@ else
   FM=$1
 fi
 
+
 for INF in `ls test/$FM` ; do
   OUTF="$INF.tex"
   REFF="$OUTF.ref"
@@ -111,6 +112,12 @@ INF=test/attribution.txt
 OUTF="$INF-parens-attribution.tex"
 REFF="$OUTF.ref"
 $CMD $INF > $OUTF
+do_diff $REFF $OUTF 
+
+INF=test/iso-8859-15.txt
+OUTF="$INF-enc.tex"
+REFF="$OUTF.ref"
+$CMD --input-encoding=iso-8859-15 --output-encoding=iso-8859-15 $INF > $OUTF
 do_diff $REFF $OUTF 
 
 report
