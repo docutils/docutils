@@ -1048,6 +1048,8 @@ when used in a document.
       For a specific application, see the discussion of `character
       entity substitution definition files`_ above.
 
+  - _`misc.raw`: "encoding" option?
+
   - _`misc.class`: @@@ Allow multiple classes (whitespace-separated)
     to be declared.
 
