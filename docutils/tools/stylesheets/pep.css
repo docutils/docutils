@@ -220,13 +220,17 @@ table {
   margin-top: 0.5em ;
   margin-bottom: 0.5em }
 
-td.num {
-  text-align: right }
-
 td, th {
   padding-left: 0.5em ;
   padding-right: 0.5em ;
   vertical-align: baseline }
 
+td > :first-child, th > :first-child {
+  margin-top: 0em }
+
+td.num {
+  text-align: right }
+
 th.field-name {
-  font-weight: bold }
+  font-weight: bold ;
+  text-align: right }
