@@ -1505,7 +1505,7 @@ def _add_node_class_names(names):
         setattr(GenericNodeVisitor, "visit_" + _name, _call_default_visit)
         setattr(GenericNodeVisitor, "depart_" + _name, _call_default_departure)
         setattr(SparseNodeVisitor, 'visit_' + _name, _nop)
-        setattr(SparseNodeVisitor, 'depart' + _name, _nop)
+        setattr(SparseNodeVisitor, 'depart_' + _name, _nop)
 
 _add_node_class_names(node_class_names)
 
