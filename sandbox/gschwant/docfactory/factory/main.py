@@ -3,7 +3,7 @@
 """
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
-:version: 0.2.1
+:version: 0.2.2
 """
 
 import browser, images, re, sys, os, time
@@ -17,7 +17,9 @@ from   controls                  import CustomTreeCtrl
 from   controls                  import CustomStatusBar
 from   docutilsadapter           import rest2html, get_errors
 from   docutils.utils            import relative_path
-from   urllib                    import quote, unquote
+from   urllib                    import quote
+from   wxPython.lib.buttons      import *
+
 
 #-------------------------------------------------------------------------
 # global variables
@@ -49,8 +51,12 @@ except:
  wxID_WXCUTSELECTION, wxID_WXCOPYSELECTION, wxID_WXPASTESELECTION,
  wxID_WXUNDO, wxID_WXREDO, wxID_WXGOTO, wxID_WXSELECTALL, wxID_WXVIEWWS,
  wxID_WXDELETEPROJ, wxID_WXFONTSIZE, wxID_WXSMALLFONT, wxID_WXNORMALFONT,
- wxID_WXBIGFONT, wxID_WXINSERT,
- wxID_WXFINDREPLACE] = map(lambda init_menubar: wxNewId(), range(33))
+ wxID_WXBIGFONT, wxID_WXINSERT, wxID_WXBTNBOLD, wxID_WXBTNITALIC,
+ wxID_WXBTNLITERAL, wxID_WXBTNLINK, wxID_WXBTNIMAGE,
+ wxID_WXINSERTHYPERLINK, wxID_WXBTNPASTE, wxID_WXBTNCOPY,
+ wxID_WXBTNCUT, wxID_WXBTNREDO, wxID_WXBTNUNDO, wxID_WXBTNSAVE,
+ wxID_WXBTNOPEN, wxID_WXBTNNEW, wxID_WXBTNABOUT,
+ wxID_WXFINDREPLACE] = map(lambda init_menubar: wxNewId(), range(48))
 
 # Accelerator-Table for key commands
 ACCEL = [(wxACCEL_NORMAL,WXK_F7,wxID_WXPUBLRESTHTML),
@@ -89,8 +95,8 @@ class CustomLog(wxPyLog):
 
     def DoLogString(self, message, timeStamp):
         if self.logTime:
-            message = time.strftime("%X", time.localtime(timeStamp)) + \
-                      ": " + message
+            message = time.strftime('%X', time.localtime(timeStamp)) + \
+                      ': ' + message
         self.tc.AppendText(message + '\n')
 
 #-------------------------------------------------------------------------
@@ -99,9 +105,10 @@ class DocFactoryFrame(wxFrame):
     def __init__(self, projects=[], initial_file=None):
         wxFrame.__init__(
             self, NULL, -1, NAME, wxDefaultPosition, (800, 600),
-            style=wxDEFAULT_FRAME_STYLE|wxNO_FULL_REPAINT_ON_RESIZE)
+            style=wxDEFAULT_FRAME_STYLE)
         self.Centre()
         self.projects = projects
+        self.formats = {}
         self.files = []
         self.project = None
         self.editor = None
@@ -117,6 +124,7 @@ class DocFactoryFrame(wxFrame):
         self.SetIcon(logoicon)
 
         self.init_menubar()
+        self.init_toolbar()
 
         self.SetAcceleratorTable(wxAcceleratorTable(ACCEL))
 
@@ -126,9 +134,7 @@ class DocFactoryFrame(wxFrame):
 
         # Set up a log
         self.log = wxTextCtrl(splitter2, -1,
-                              style = wxTE_MULTILINE|wxTE_READONLY|wxHSCROLL)#|wxTE_RICH2)
-        #self.log.SetDefaultStyle(wxTextAttr("BLUE"))
-
+                              style = wxTE_MULTILINE|wxTE_READONLY|wxHSCROLL)
 
         # Set the wxWindows log target to be this textctrl
         wxLog_SetActiveTarget(CustomLog(self.log))
@@ -180,10 +186,6 @@ class DocFactoryFrame(wxFrame):
         self.projectdirty = 0
 
         EVT_CLOSE(self, self.on_close_window)
-
-    # --------------------------------------------------------------------
-    # handlers
-    # --------------------------------------------------------------------
 
     def init_menubar(self):
         self.mainmenu = wxMenuBar()
@@ -239,6 +241,8 @@ class DocFactoryFrame(wxFrame):
         submenu.Append(wxID_WXINSERTFIGURE, 'Figure',
                        'Insert a figure')
         EVT_MENU(self, wxID_WXINSERTFIGURE, self.on_insert_figure)
+        submenu.Append(wxID_WXINSERTHYPERLINK, 'Hyperlink', 'Insert a hyperlink')
+        EVT_MENU(self, wxID_WXINSERTHYPERLINK, self.on_btn_hyperlink)
         submenu.Append(wxID_WXINSERTIMAGE, 'Image', 'Insert an image')
         EVT_MENU(self, wxID_WXINSERTIMAGE, self.on_insert_image)
         submenu.Append(wxID_WXINSERTPATH, 'Path', 'Insert a path')
@@ -336,31 +340,158 @@ class DocFactoryFrame(wxFrame):
 
         self.SetMenuBar(self.mainmenu)
 
-    def load_initial_file(self, file):
-        if os.path.exists(file):
-            try:
-                self.files.append(file)
-                dir = ''
-                parent = self.root
-                self.open_file_in_editor(file)
-                last = self.tree.AppendItem(parent, file, self.im2)
+    def init_toolbar(self):
+        self.toolbar = tb = self.CreateToolBar(wxTB_HORIZONTAL|wxTB_FLAT|wxNO_BORDER)
+        bmp = images.getNewBitmap()
+        mask = wxMaskColour(bmp, wxBLUE)
+        bmp.SetMask(mask)
+        tb.AddLabelTool(wxID_WXBTNNEW, 'New', bmp, shortHelp='New',
+                        longHelp='Create a new file')
+        EVT_TOOL(tb, wxID_WXBTNNEW, self.on_file_new)
+        bmp = images.getOpenBitmap()
+        mask = wxMaskColour(bmp, wxWHITE)
+        bmp.SetMask(mask)
+        tb.AddLabelTool(wxID_WXBTNOPEN, 'Open', bmp, shortHelp='Open',
+                        longHelp='Open an existing file')
+        EVT_TOOL(tb, wxID_WXBTNOPEN, self.on_file_open)
+        bmp = images.getSaveBitmap()
+        mask = wxMaskColour(bmp, wxWHITE)
+        bmp.SetMask(mask)
+        tb.AddLabelTool(wxID_WXBTNSAVE, 'Save', bmp, shortHelp='Save',
+                        longHelp='Save the active file')
+        EVT_TOOL(tb, wxID_WXBTNSAVE, self.on_file_save)
+        tb.EnableTool(wxID_WXBTNSAVE, 0)
+        tb.AddSeparator()
+        bmp = images.getCutBitmap()
+        mask = wxMaskColour(bmp, wxWHITE)
+        bmp.SetMask(mask)
+        tb.AddLabelTool(wxID_WXBTNCUT, 'Cut', bmp, shortHelp='Cut',
+                        longHelp='Cut the selection and put it on the Clipboard')
+        EVT_TOOL(tb, wxID_WXBTNCUT, self.on_cut)
+        tb.EnableTool(wxID_WXBTNCUT, 0)
+        bmp = images.getCopyBitmap()
+        mask = wxMaskColour(bmp, wxBLUE)
+        bmp.SetMask(mask)
+        tb.AddLabelTool(wxID_WXBTNCOPY, 'Copy', bmp, shortHelp='Copy',
+                        longHelp='Copy the selection and put it on the Clipboard')
+        EVT_TOOL(tb, wxID_WXBTNCOPY, self.on_copy)
+        tb.EnableTool(wxID_WXBTNCOPY, 0)
+        bmp = images.getPasteBitmap()
+        mask = wxMaskColour(bmp, wxBLUE)
+        bmp.SetMask(mask)
+        tb.AddLabelTool(wxID_WXBTNPASTE, 'Paste', bmp, shortHelp='Paste',
+                        longHelp='Insert Clipboard contents')
+        EVT_TOOL(tb, wxID_WXBTNPASTE, self.on_paste)
+        tb.EnableTool(wxID_WXBTNPASTE, 0)
+        tb.AddSeparator()
+        bmp = images.getUndoBitmap()
+        mask = wxMaskColour(bmp, wxWHITE)
+        bmp.SetMask(mask)
+        tb.AddLabelTool(wxID_WXBTNUNDO, 'Undo', bmp, shortHelp='Undo',
+                        longHelp='Undo the last action')
+        EVT_TOOL(tb, wxID_WXBTNUNDO, self.on_undo)
+        tb.EnableTool(wxID_WXBTNUNDO, 0)
+        bmp = images.getRedoBitmap()
+        mask = wxMaskColour(bmp, wxWHITE)
+        bmp.SetMask(mask)
+        tb.AddLabelTool(wxID_WXBTNREDO, 'Redo', bmp, shortHelp='Redo',
+                        longHelp='Redo the previously undone action')
+        EVT_TOOL(tb, wxID_WXBTNREDO, self.on_redo)
+        tb.EnableTool(wxID_WXBTNREDO, 0)
+        tb.AddSeparator()
+        bmp = images.getLinkBitmap()
+        mask = wxMaskColour(bmp, wxBLUE)
+        bmp.SetMask(mask)
+        tb.AddLabelTool(wxID_WXBTNLINK, 'Link', bmp, shortHelp='Hyperlink', longHelp='Hyperlink')
+        EVT_TOOL(tb, wxID_WXBTNLINK, self.on_btn_hyperlink)
+        tb.EnableTool(wxID_WXBTNLINK, 0)
+        bmp = images.getImageBitmap()
+        mask = wxMaskColour(bmp, wxBLUE)
+        bmp.SetMask(mask)
+        tb.AddLabelTool(wxID_WXBTNIMAGE, 'Image', bmp, shortHelp='Image', longHelp='Image')
+        EVT_TOOL(tb, wxID_WXBTNIMAGE, self.on_btn_image)
+        tb.EnableTool(wxID_WXBTNIMAGE, 0)
+        tb.AddSeparator()
+        bmp = images.getBoldBitmap()
+        mask = wxMaskColour(bmp, wxWHITE)
+        bmp.SetMask(mask)
+        tb.AddLabelTool(wxID_WXBTNBOLD, 'Bold', bmp, shortHelp='Bold', longHelp='Bold')
+        EVT_TOOL(tb, wxID_WXBTNBOLD, self.on_format_word)
+        tb.EnableTool(wxID_WXBTNBOLD, 0)
+        bmp = images.getItalicBitmap()
+        mask = wxMaskColour(bmp, wxWHITE)
+        bmp.SetMask(mask)
+        tb.AddLabelTool(wxID_WXBTNITALIC, 'Italic', bmp, shortHelp='Italic', longHelp='Italic')
+        EVT_TOOL(tb, wxID_WXBTNITALIC, self.on_format_word)
+        tb.EnableTool(wxID_WXBTNITALIC, 0)
+        bmp = images.getPreBitmap()
+        mask = wxMaskColour(bmp, wxWHITE)
+        bmp.SetMask(mask)
+        tb.AddLabelTool(wxID_WXBTNLITERAL, 'literal', bmp, shortHelp='Literal', longHelp='Literal')
+        EVT_TOOL(tb, wxID_WXBTNLITERAL, self.on_format_word)
+        tb.EnableTool(wxID_WXBTNLITERAL, 0)
+        if wxPlatform != '__WXMAC__':
+            tb.AddSeparator()
+            self.formats = {'Title'     : '=', 'Subtitle'  : '-',
+                            'Heading 1' : '=', 'Heading 2' : '-',
+                            'Heading 3' : '~', 'Heading 4' : '`'}
+            formats = self.formats.keys()
+            formats.sort()
+            exitID=wxNewId()
+            self.combobox_format = wxComboBox(tb, exitID, '',
+                                              choices = formats,
+                                              style=wxCB_DROPDOWN|wxCB_READONLY)
+            tb.AddControl(self.combobox_format)
+            EVT_COMBOBOX(tb, exitID, self.on_format_paragraph)
+        tb.AddSeparator()
+        bmp = images.getAboutBitmap()
+        mask = wxMaskColour(bmp, wxWHITE)
+        bmp.SetMask(mask)
+        tb.AddLabelTool(wxID_WXBTNABOUT, 'About', bmp, shortHelp='About',
+                        longHelp='Display program information')
+        EVT_TOOL(tb, wxID_WXBTNABOUT, self.on_help_about)
+        tb.Realize()
+    
+    def init_tree(self):
+        self.tree.DeleteAllItems()
+        self.root = self.tree.AddRoot('Workspace', self.im0)
+        self.tree.SetPyData(self.root, None)
+        for proj in self.projects:
+            child = self.tree.AppendItem(self.root, proj.name, self.im1)
+            self.tree.SetPyData(child, None)
+            for file in proj.files:
+                last = self.tree.AppendItem(child, file, self.im2)
                 self.tree.SetPyData(last, None)
-                self.tree.SetItemBold(self.activeitem, 0)
-                self.tree.SetItemTextColour(self.activeitem, wxBLACK)
-                self.activeitem = last
-                self.tree.SetItemBold(self.activeitem, 1)
-                self.tree.SetItemTextColour(self.activeitem, wxBLUE)
-                self.tree.EnsureVisible(self.activeitem)
-                self.tree.SelectItem(self.activeitem)
-                parent = self.tree.GetItemParent(self.activeitem)
-                self.tree.SetItemBold(parent, 1)
-                self.tree.SetItemTextColour(parent, wxBLUE)
-            except:
-                customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
-        else:
-            customMsgBox(self, 'Can not find %s.' % file, 'error')
+        self.tree.SortChildren(self.root)
+        for file in self.files:
+            last = self.tree.AppendItem(self.root, file, self.im2)
+            self.tree.SetPyData(last, None)
+        self.project = None
+        self.activateMenuItemsProjectOpen(0)
+        self.activateMenuItemsFileSelected(0)
+        self.activeitem = self.root
+        self.tree.SelectItem(self.activeitem)
+        self.tree.Expand(self.activeitem)
+        if self.editor != None:
+            self.nb.SetPageText(0, 'Editor')
+            self.editor.Clear()
+            self.editor.Enable(0)
+            self.activateMenuItemsFileSelected(0)
+            if self.nb.GetPageCount() > 1:
+                self.nb.DeletePage(1)
+        
+    def InitEditorPage(self):
+        # init editor
+        edID = wxNewId()
+        self.editor = CustomStyledTextCtrl(self.nb, edID, self.log)
+        self.editor.Clear()
+        self.editor.Enable(0)
+        self.nb.AddPage(self.editor, 'Editor')
+        self.nb.SetSelection(0)
 
-            
+    # --------------------------------------------------------------------
+    # handlers
+    # --------------------------------------------------------------------
 
     def activateMenuItemsProjectOpen(self, value):
         menu = self.mainmenu.GetMenu(4)
@@ -394,6 +525,32 @@ class DocFactoryFrame(wxFrame):
         menu.Enable(wxID_WXFONTSIZE, value)
         menu = self.mainmenu.GetMenu(self.mainmenu.FindMenu('Process'))
         menu.Enable(wxID_WXPUBLRESTHTML, value)
+        self.toolbar.EnableTool(wxID_WXBTNSAVE, value)
+        self.toolbar.EnableTool(wxID_WXBTNLINK, value)
+        self.toolbar.EnableTool(wxID_WXBTNIMAGE, value)
+        self.toolbar.EnableTool(wxID_WXBTNBOLD, value)
+        self.toolbar.EnableTool(wxID_WXBTNITALIC, value)
+        self.toolbar.EnableTool(wxID_WXBTNLITERAL, value)
+        self.toolbar.EnableTool(wxID_WXBTNPASTE, value)
+        self.toolbar.EnableTool(wxID_WXBTNCOPY, value)
+        self.toolbar.EnableTool(wxID_WXBTNCUT, value)
+        self.toolbar.EnableTool(wxID_WXBTNREDO, value)
+        self.toolbar.EnableTool(wxID_WXBTNUNDO, value)
+
+    def CheckEditorChanges(self):
+        go_ahead = 1
+        if self.editor != None:
+            if self.editor.IsModified:
+                dlg=wxMessageDialog(self, 'Save changes?', NAME,
+                                    wxYES_NO | wxCANCEL | wxICON_QUESTION)
+                result = dlg.ShowModal()
+                if result == wxID_YES:
+                    file = self.tree.GetItemText(self.activeitem)
+                    self.editor.SaveFile(file)
+                if result == wxID_CANCEL:
+                    go_ahead = 0
+                dlg.Destroy()
+        return go_ahead
 
     def delete_project(self, project):
         if project in self.projects:
@@ -404,66 +561,140 @@ class DocFactoryFrame(wxFrame):
             customMsgBox(self, 'ERROR 2\n%s:\n%s\n%s' % sys.exc_info(), 'error')
         self.init_tree()
 
-    def init_tree(self):
-        self.tree.DeleteAllItems()
-        self.root = self.tree.AddRoot('Workspace', self.im0)
-        self.tree.SetPyData(self.root, None)
-        for proj in self.projects:
-            child = self.tree.AppendItem(self.root, proj.name, self.im1)
-            self.tree.SetPyData(child, None)
-            for file in proj.files:
-                last = self.tree.AppendItem(child, file, self.im2)
+    def htmlfile(self, file, dir):
+        htmlfile = os.path.join(dir,
+                                os.path.splitext(os.path.basename(file))[0] \
+                                + '.html')
+        return htmlfile
+
+    def insert_hyperlink(self):
+        item = self.activeitem
+        itemimage = self.tree.GetItemImage(item)
+        file = self.tree.GetItemText(item)
+        if self.project != None:
+            dir = self.project.directory
+        else:
+            dir = os.path.dirname(file)
+        go_ahead = 1
+        dlg = hyperlinkDlg(self, directory=dir, project=self.project)
+        dlg.Centre()
+        if dlg.ShowModal() == wxID_OK:
+            target = dlg.GetPath()
+        else:
+            go_ahead = 0
+        dlg.Destroy()
+        if go_ahead:
+            selection = self.editor.GetSelectedText()
+            curpos = self.editor.GetCurrentPos()
+            if selection != '':
+                self.editor.BeginUndoAction()
+                selection = '`%s`' % selection
+                self.editor.ReplaceSelection(selection + '_')
+                endpos = self.editor.GetTextLength()
+                self.editor.GotoPos(endpos)
+                text = '\n\n.. _%s: %s' % (selection, target)
+                self.editor.ReplaceSelection(text)
+                self.editor.GotoPos(curpos + 3)
+                self.editor.EndUndoAction()
+            else:
+                text = '\n\n.. _``: %s\n' % target
+                self.editor.ReplaceSelection(text)
+                self.editor.GotoPos(curpos + 7)
+
+    def insert_image(self, directive):
+        item = self.activeitem
+        itemimage = self.tree.GetItemImage(item)
+        file = self.tree.GetItemText(item)
+        if self.imagedir == None:
+            if self.project != None:
+                dir = self.project.directory
+            else:
+                dir = os.path.dirname(file)
+        else:
+            dir = self.imagedir
+        dlg = ImageDialog(self, dir)
+        dlg.Centre()
+        go_ahead = 1
+        if dlg.ShowModal() == wxID_OK:
+            target = dlg.GetFile()
+            self.imagedir = os.path.dirname(target)
+        else:
+            go_ahead = 0
+        dlg.Destroy()
+        if go_ahead:
+            if self.project != None:
+                dir = self.project.directory
+            else:
+                dir = os.path.dirname(file)
+                dlg = wxDirDialog(self, 'Calculate path relative'
+                                  ' to which outputdirectory?', dir)
+                if dlg.ShowModal() == wxID_OK:
+                    dir = dlg.GetPath()
+                else:
+                    go_ahead = 0
+                dlg.Destroy()
+        if go_ahead:
+            selection = self.editor.GetSelectedText()
+            if selection != '' and directive == 'image':
+                self.editor.BeginUndoAction()
+                curpos = self.editor.GetCurrentPos()
+                selection = '|%s|' % selection
+                self.editor.ReplaceSelection(selection)
+                endpos = self.editor.GetTextLength()
+                self.editor.GotoPos(endpos)
+                text = '\n\n.. %s %s:: %s' % (selection, directive,
+                                              quote(relative_path(self.htmlfile(file,dir),
+                                                                  target)))
+                self.editor.ReplaceSelection(text)
+                self.editor.GotoPos(curpos + 2)
+                self.editor.EndUndoAction()
+            else:
+                text = '\n\n.. %s:: %s\n\n' % (directive,
+                                               quote(relative_path(self.htmlfile(file,dir),
+                                                                   target)))
+                self.editor.ReplaceSelection(text)
+
+    def load_initial_file(self, file):
+        if os.path.exists(file):
+            try:
+                self.files.append(file)
+                dir = ''
+                parent = self.root
+                self.open_file_in_editor(file)
+                last = self.tree.AppendItem(parent, file, self.im2)
                 self.tree.SetPyData(last, None)
-        self.tree.SortChildren(self.root)
-        for file in self.files:
-            last = self.tree.AppendItem(self.root, file, self.im2)
-            self.tree.SetPyData(last, None)
-        self.project = None
-        self.activateMenuItemsProjectOpen(0)
-        self.activateMenuItemsFileSelected(0)
-        self.activeitem = self.root
-        self.tree.SelectItem(self.activeitem)
-        self.tree.Expand(self.activeitem)
-        if self.editor != None:
-            self.nb.SetPageText(0, 'Editor')
-            self.editor.Clear()
-            self.editor.Enable(0)
-            self.activateMenuItemsFileSelected(0)
-            if self.nb.GetPageCount() > 1:
-                self.nb.DeletePage(1)
-        
+                self.tree.SetItemBold(self.activeitem, 0)
+                self.tree.SetItemTextColour(self.activeitem, wxBLACK)
+                self.activeitem = last
+                self.tree.SetItemBold(self.activeitem, 1)
+                self.tree.SetItemTextColour(self.activeitem, wxBLUE)
+                self.tree.EnsureVisible(self.activeitem)
+                self.tree.SelectItem(self.activeitem)
+                parent = self.tree.GetItemParent(self.activeitem)
+                self.tree.SetItemBold(parent, 1)
+                self.tree.SetItemTextColour(parent, wxBLUE)
+            except:
+                customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
+        else:
+            customMsgBox(self, 'Can not find %s.' % file, 'error')
+
+    def open_file_in_editor(self, file):
+        if self.nb.GetPageCount() > 1:
+            self.nb.DeletePage(1)
+        self.nb.SetSelection(0)
+        self.editor.LoadFile(file)
+        self.nb.SetPageText(0, 'Editor: %s' %
+                            os.path.basename(file))
+        self.editor.Enable(1)
+        self.activateMenuItemsFileSelected(1)
+        self.editor.IsModified = 0
+
     def project_save(self):
         try:
             self.save_projects()
             self.projectdirty = 0
         except:
             customMsgBox(self, 'ERROR 0001\n%s:\n%s\n%s' % sys.exc_info(), 'error')
-
-    def save_projects(self):
-        cfg = ConfigParser.ConfigParser()
-        for project in self.projects:
-            section = 'docfactory_project: %s' % project.name
-            if not cfg.has_section(section):
-                cfg.add_section(section)
-            cfg.set(section, 'outputdirectory', project.directory)
-            files = ''
-            for file in project.files:
-                files = '%s;%s' % (files, file)
-            if len(files) > 1:
-                files = files[1:]
-            cfg.set(section, 'files', files)
-        f = open(DATA, 'wt')
-        cfg.write(f)
-        f.close()
-
-    def InitEditorPage(self):
-        # init editor
-        edID = wxNewId()
-        self.editor = CustomStyledTextCtrl(self.nb, edID, self.log)
-        self.editor.Clear()
-        self.editor.Enable(0)
-        self.nb.AddPage(self.editor, 'Editor')
-        self.nb.SetSelection(0)
 
     def publishFileAsHTML(self, file):
         if os.path.exists(file):
@@ -530,79 +761,53 @@ class DocFactoryFrame(wxFrame):
                 finally:
                     wxEndBusyCursor()
 
-    def htmlfile(self, file, dir):
-        htmlfile = os.path.join(dir,
-                                os.path.splitext(os.path.basename(file))[0] \
-                                + '.html')
-        return htmlfile
-
-    def insert_image(self, directive):
-        item = self.activeitem
-        itemimage = self.tree.GetItemImage(item)
-        file = self.tree.GetItemText(item)
-        if self.imagedir == None:
-            if self.project != None:
-                dir = self.project.directory
-            else:
-                dir = os.path.dirname(file)
-        else:
-            dir = self.imagedir
-        dlg = ImageDialog(self, dir)
-        dlg.Centre()
-        go_ahead = 1
-        if dlg.ShowModal() == wxID_OK:
-            target = dlg.GetFile()
-            self.imagedir = os.path.dirname(target)
-        else:
-            go_ahead = 0
-        dlg.Destroy()
-        if go_ahead:
-            if self.project != None:
-                dir = self.project.directory
-            else:
-                dir = os.path.dirname(file)
-                dlg = wxDirDialog(self, 'Calculate path relative'
-                                  ' to which outputdirectory?', dir)
-                if dlg.ShowModal() == wxID_OK:
-                    dir = dlg.GetPath()
-                else:
-                    go_ahead = 0
-                dlg.Destroy()
-        if go_ahead:
-            text = '\n\n.. %s:: %s\n\n' % (directive,
-                                           quote(relative_path(self.htmlfile(file,dir),
-                                                               target)))
-            self.editor.ReplaceSelection(text)
-
-    def CheckEditorChanges(self):
-        go_ahead = 1
-        if self.editor != None:
-            if self.editor.IsModified:
-                dlg=wxMessageDialog(self, 'Save changes?', NAME,
-                                    wxYES_NO | wxCANCEL | wxICON_QUESTION)
-                result = dlg.ShowModal()
-                if result == wxID_YES:
-                    file = self.tree.GetItemText(self.activeitem)
-                    self.editor.SaveFile(file)
-                if result == wxID_CANCEL:
-                    go_ahead = 0
-                dlg.Destroy()
-        return go_ahead
-
-    def open_file_in_editor(self, file):
-        if self.nb.GetPageCount() > 1:
-            self.nb.DeletePage(1)
-        self.nb.SetSelection(0)
-        self.editor.LoadFile(file)
-        self.nb.SetPageText(0, 'Editor: %s' %
-                            os.path.basename(file))
-        self.editor.Enable(1)
-        self.activateMenuItemsFileSelected(1)
-        self.editor.IsModified = 0
+    def save_projects(self):
+        cfg = ConfigParser.ConfigParser()
+        for project in self.projects:
+            section = 'docfactory_project: %s' % project.name
+            if not cfg.has_section(section):
+                cfg.add_section(section)
+            cfg.set(section, 'outputdirectory', project.directory)
+            files = ''
+            for file in project.files:
+                files = '%s;%s' % (files, file)
+            if len(files) > 1:
+                files = files[1:]
+            cfg.set(section, 'files', files)
+        f = open(DATA, 'wt')
+        cfg.write(f)
+        f.close()
 
     # --------------------------------------------------------------------
     # event handlers
     # --------------------------------------------------------------------
+
+    def on_app_exit(self, event):
+        self.Close()
+
+    def on_btn_image(self, event):
+        self.insert_image('image')
+
+    def on_close_window(self, event):
+        go_ahead = 1
+        if self.projectdirty:
+            dlg=wxMessageDialog(self, 'Save project?', NAME,
+                                wxYES_NO | wxCANCEL | wxICON_QUESTION)
+            result = dlg.ShowModal()
+            if result == wxID_YES:
+                self.project_save()
+            if result == wxID_CANCEL:
+                go_ahead = 0
+            dlg.Destroy()
+
+        if go_ahead and self.CheckEditorChanges():
+            self.Destroy()
+
+    def on_copy(self, event):
+        self.editor.Copy()
+
+    def on_cut(self, event):
+        self.editor.Cut()
 
     def on_eols_to_cr(self, event):
         wxBeginBusyCursor()
@@ -618,161 +823,6 @@ class DocFactoryFrame(wxFrame):
         wxBeginBusyCursor()
         self.editor.ConvertEOLs(0)
         wxEndBusyCursor()
-
-    def on_find(self, event):
-        et = event.GetEventType()
-        if et == wxEVT_COMMAND_FIND_REPLACE or et == wxEVT_COMMAND_FIND_REPLACE_ALL:
-            replacetxt = event.GetReplaceString()
-        self.sb.SetStatusText('', 0)
-        findtxt = event.GetFindString()
-        length = len(findtxt)
-        lastpos = self.editor.GetTextLength()
-        flags = event.GetFlags()
-        if flags in (1, 3, 5, 7):
-            if flags == 7:
-                # whole word / match case
-                regexp = re.compile(r'\b%s\b' % findtxt)
-            elif flags == 5:
-                # no whole word / match case
-                regexp = re.compile(r'%s' % findtxt)
-            elif flags == 3:
-                # whole word / no match case
-                regexp = re.compile(r'\b%s\b' % findtxt, re.IGNORECASE)
-            else:
-                # no whole word / no match case
-                regexp = re.compile(findtxt, re.IGNORECASE)
-        else:
-            regexp = None
-            print 'Unknown combination of flags.'
-        if regexp != None:
-            if et == wxEVT_COMMAND_FIND_REPLACE_ALL:
-                wxBeginBusyCursor()
-                self.editor.BeginUndoAction()
-                origtxt = self.editor.GetText()
-                if regexp.search(origtxt) != None:
-                    self.editor.SetText(regexp.sub(replacetxt, origtxt))
-                    self.sb.SetStatusText('Replaced.', 0)
-                else:
-                    self.sb.SetStatusText('No match found.', 0)
-                self.editor.EndUndoAction()
-                wxEndBusyCursor()
-            else:
-                currpos = self.editor.GetCurrentPos()
-                if et == wxEVT_COMMAND_FIND_REPLACE and currpos != 0:
-                    self.editor.ReplaceSelection(replacetxt)
-                    currpos = self.editor.GetCurrentPos()
-                    lastpos = self.editor.GetTextLength()
-                origtxt = self.editor.GetTextRange(currpos, lastpos)
-                position = len(regexp.split(origtxt)[0])
-                startpos = currpos + position
-                if  startpos < lastpos:
-                    self.editor.GotoPos(startpos + len(regexp.findall(origtxt)[0]))
-                    self.editor.SetAnchor(startpos)
-                else:
-                    self.sb.SetStatusText('Can not find "%s". Next search will '
-                                          'start from beginning.' % findtxt, 0)
-                    self.editor.GotoPos(0)
-
-    def on_find_close(self, event):
-        event.GetDialog().Destroy()
-
-    def on_findreplace_show(self, event):
-        data = wxFindReplaceData()
-        dlg = wxFindReplaceDialog(self, data, "Find & Replace",
-                                  wxFR_REPLACEDIALOG)
-        dlg.data = data
-        dlg.Show(1)
-        
-    def on_project_delete(self, event):
-        available_projects = []
-        for project in self.projects:
-            available_projects.append(project.name)
-        if available_projects != []:
-            available_projects.sort()
-            dlg = wxMultipleChoiceDialog(self, 'Select the projects which you want to' \
-                                         '\ndelete or press "Cancel" to abort.',
-                                         'Delete Projects',
-                                         available_projects)
-            dlg.Centre()
-            if dlg.ShowModal() == wxID_OK:
-                selection = dlg.GetValueString()
-                for project_name in selection:
-                    for project in self.projects:
-                        if project.name == project_name:
-                            self.delete_project(project)
-            dlg.Destroy()
-        else:
-            customMsgBox(self, 'Sorry, I don\'t remember any projects.',
-                         'info')
-
-    def on_project_new(self, event):
-        go_ahead = 1
-
-        other_project_names = []
-        for project in self.projects:
-            other_project_names.append(project.name)
-
-        if self.CheckEditorChanges():
-            project = DocProject()
-            dlg = projectSettingsDlg(self, project, other_project_names)
-            dlg.Centre()
-            if dlg.ShowModal() == wxID_CANCEL:
-                go_ahead = 0
-            else:
-                self.project = project
-                self.project.name, self.project.directory = dlg.getValues()
-            dlg.Destroy()
-
-        if go_ahead:
-            try:
-                self.projects.append(self.project)
-                self.save_projects()
-                self.init_tree()
-            except:
-                customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
-
-    def on_project_settings(self, event):
-        go_ahead = 1
-
-        other_project_names = []
-        for project in self.projects:
-            if project.name != self.project.name:
-                other_project_names.append(project.name)
-
-        dlg = projectSettingsDlg(self, self.project, other_project_names)
-        dlg.Centre()
-        if dlg.ShowModal() == wxID_CANCEL:
-            go_ahead = 0
-        else:
-            name, directory = dlg.getValues()
-        dlg.Destroy()
-
-        if go_ahead:
-            sort_tree_new = 0
-            if self.project.name != name:
-                self.projectdirty = 1
-                sort_tree_new = 1
-                for project in self.projects:
-                    if project.name == self.project.name:
-                        project.name = name
-                self.project.name = name
-            if self.project.directory != directory:
-                self.project.directory = directory
-                self.projectdirty = 1
-
-        if self.projectdirty:
-            self.project_save()
-            if sort_tree_new:
-                self.init_tree()
-
-    def on_app_exit(self, event):
-        self.Close()
-
-    def on_cut(self, event):
-        self.editor.Cut()
-
-    def on_copy(self, event):
-        self.editor.Copy()
 
     def on_file_close(self, event):
         if self.CheckEditorChanges():
@@ -807,8 +857,8 @@ class DocFactoryFrame(wxFrame):
                 dir = ''
                 parent = self.root
 
-            wildcard = "Text (*.txt)|*.txt|" \
-                       "All files (*.*)|*.*"
+            wildcard = 'Text (*.txt)|*.txt|' \
+                       'All files (*.*)|*.*'
 
             dlg = wxFileDialog (self, 'Open file',
                                 dir, '', wildcard,
@@ -949,6 +999,116 @@ class DocFactoryFrame(wxFrame):
             wxEndBusyCursor()
         self.publishFileAsHTML(file)
 
+    def on_find(self, event):
+        et = event.GetEventType()
+        if et == wxEVT_COMMAND_FIND_REPLACE or et == wxEVT_COMMAND_FIND_REPLACE_ALL:
+            replacetxt = event.GetReplaceString()
+        self.sb.SetStatusText('', 0)
+        findtxt = event.GetFindString()
+        length = len(findtxt)
+        lastpos = self.editor.GetTextLength()
+        flags = event.GetFlags()
+        if flags in (1, 3, 5, 7):
+            if flags == 7:
+                # whole word / match case
+                regexp = re.compile(r'\b%s\b' % findtxt)
+            elif flags == 5:
+                # no whole word / match case
+                regexp = re.compile(r'%s' % findtxt)
+            elif flags == 3:
+                # whole word / no match case
+                regexp = re.compile(r'\b%s\b' % findtxt, re.IGNORECASE)
+            else:
+                # no whole word / no match case
+                regexp = re.compile(findtxt, re.IGNORECASE)
+        else:
+            regexp = None
+            print 'Unknown combination of flags.'
+        if regexp != None:
+            if et == wxEVT_COMMAND_FIND_REPLACE_ALL:
+                wxBeginBusyCursor()
+                self.editor.BeginUndoAction()
+                origtxt = self.editor.GetText()
+                if regexp.search(origtxt) != None:
+                    self.editor.SetText(regexp.sub(replacetxt, origtxt))
+                    self.sb.SetStatusText('Replaced.', 0)
+                else:
+                    self.sb.SetStatusText('No match found.', 0)
+                self.editor.EndUndoAction()
+                wxEndBusyCursor()
+            else:
+                currpos = self.editor.GetCurrentPos()
+                if et == wxEVT_COMMAND_FIND_REPLACE and currpos != 0:
+                    self.editor.ReplaceSelection(replacetxt)
+                    currpos = self.editor.GetCurrentPos()
+                    lastpos = self.editor.GetTextLength()
+                origtxt = self.editor.GetTextRange(currpos, lastpos)
+                position = len(regexp.split(origtxt)[0])
+                startpos = currpos + position
+                if  startpos < lastpos:
+                    self.editor.GotoPos(startpos + len(regexp.findall(origtxt)[0]))
+                    self.editor.SetAnchor(startpos)
+                else:
+                    self.sb.SetStatusText('Can not find "%s". Next search will '
+                                          'start from beginning.' % findtxt, 0)
+                    self.editor.GotoPos(0)
+
+    def on_find_close(self, event):
+        event.GetDialog().Destroy()
+
+    def on_findreplace_show(self, event):
+        data = wxFindReplaceData()
+        dlg = wxFindReplaceDialog(self, data, 'Find & Replace',
+                                  wxFR_REPLACEDIALOG)
+        dlg.data = data
+        dlg.Show(1)
+        
+    def on_font_small(self, event):
+        self.editor.SetZoom(-2)
+
+    def on_font_normal(self, event):
+        self.editor.SetZoom(0)
+
+    def on_font_big(self, event):
+        self.editor.SetZoom(2)
+
+    def on_format_paragraph(self, event):
+        self.nb.SetSelection(0)
+        line_no = self.editor.GetCurrentLine()
+        self.editor.GotoLine(line_no)
+        startpos = self.editor.GetCurrentPos()
+        line = self.editor.GetLine(line_no)
+        endpos = startpos + len(line)
+        self.editor.SetSelection(startpos, endpos)
+        format = event.GetString()
+        if format in ['Title','Subtitle']:
+            overline = (len(line)-1)*self.formats[format]+'\n'
+        else:
+            overline = ''
+        underline = (len(line)-1)*self.formats[format]+'\n'
+        line_below = self.editor.GetLine(line_no+1)
+        if line != underline and line_below != underline:
+            self.editor.ReplaceSelection('\n%s%s%s\n' % (overline,
+                                                         line.strip(' '),
+                                                         underline))
+        self.editor.GotoPos(startpos)
+
+    def on_format_word(self, event):
+        self.nb.SetSelection(0)
+        selection = self.editor.GetSelectedText()
+        if selection != '':
+            if event.GetId() == wxID_WXBTNBOLD:
+                symbol = '**'
+            elif event.GetId() == wxID_WXBTNITALIC:
+                symbol = '*'
+            elif event.GetId() == wxID_WXBTNLITERAL:
+                symbol = '``'
+            else:
+                symbol = ''
+            selection = selection.replace('*','').replace('`','').strip()
+            selection = '%s%s%s' % (symbol,selection,symbol)
+            self.editor.ReplaceSelection(selection)
+
     def on_goto(self, event):
         values = []
         for i in range(self.editor.GetLineCount()+1)[1:]:
@@ -959,9 +1119,24 @@ class DocFactoryFrame(wxFrame):
             self.editor.GotoLine(int(dlg.GetStringSelection())-1)
         dlg.Destroy()
 
+    def on_help_about(self, event):
+        """
+        Event handler for menu
+        option *Help -> About*.
+        """
+        dlg = aboutDlg(self)
+        try:
+            dlg.Centre()
+            dlg.ShowModal()
+        finally:
+            dlg.Destroy()
+
     def on_insert_figure(self, event):
         self.insert_image('figure')
 
+    def on_btn_hyperlink(self, event):
+        self.insert_hyperlink()
+        
     def on_insert_image(self, event):
         self.insert_image('image')
 
@@ -973,7 +1148,7 @@ class DocFactoryFrame(wxFrame):
             dir = self.project.directory
         else:
             dir = os.path.dirname(file)
-        dlg = wxFileDialog (self, "Choose file",
+        dlg = wxFileDialog (self, 'Choose file',
                             dir, '', '*.*',
                             wxOPEN|wxFILE_MUST_EXIST)
         go_ahead = 1
@@ -998,24 +1173,94 @@ class DocFactoryFrame(wxFrame):
                 quote(relative_path(self.htmlfile(file,dir), target)))
         dlg.Destroy()
 
-    def on_help_about(self, event):
-        """
-        Event handler for menu
-        option *Help -> About*.
-        """
-        dlg = aboutDlg(self)
-        try:
-            dlg.Centre()
-            dlg.ShowModal()
-        finally:
-            dlg.Destroy()
-
     def on_notebook_page_changed(self, event):
         event.Skip()
 
     def on_paste(self, event):
         self.editor.Paste()
         
+    def on_project_delete(self, event):
+        available_projects = []
+        for project in self.projects:
+            available_projects.append(project.name)
+        if available_projects != []:
+            available_projects.sort()
+            dlg = wxMultipleChoiceDialog(self, 'Select the projects which you want to' \
+                                         '\ndelete or press "Cancel" to abort.',
+                                         'Delete Projects',
+                                         available_projects)
+            dlg.Centre()
+            if dlg.ShowModal() == wxID_OK:
+                selection = dlg.GetValueString()
+                for project_name in selection:
+                    for project in self.projects:
+                        if project.name == project_name:
+                            self.delete_project(project)
+            dlg.Destroy()
+        else:
+            customMsgBox(self, 'Sorry, I don\'t remember any projects.',
+                         'info')
+
+    def on_project_new(self, event):
+        go_ahead = 1
+
+        other_project_names = []
+        for project in self.projects:
+            other_project_names.append(project.name)
+
+        if self.CheckEditorChanges():
+            project = DocProject()
+            dlg = projectSettingsDlg(self, project, other_project_names)
+            dlg.Centre()
+            if dlg.ShowModal() == wxID_CANCEL:
+                go_ahead = 0
+            else:
+                self.project = project
+                self.project.name, self.project.directory = dlg.getValues()
+            dlg.Destroy()
+
+        if go_ahead:
+            try:
+                self.projects.append(self.project)
+                self.save_projects()
+                self.init_tree()
+            except:
+                customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
+
+    def on_project_settings(self, event):
+        go_ahead = 1
+
+        other_project_names = []
+        for project in self.projects:
+            if project.name != self.project.name:
+                other_project_names.append(project.name)
+
+        dlg = projectSettingsDlg(self, self.project, other_project_names)
+        dlg.Centre()
+        if dlg.ShowModal() == wxID_CANCEL:
+            go_ahead = 0
+        else:
+            name, directory = dlg.getValues()
+        dlg.Destroy()
+
+        if go_ahead:
+            sort_tree_new = 0
+            if self.project.name != name:
+                self.projectdirty = 1
+                sort_tree_new = 1
+                for project in self.projects:
+                    if project.name == self.project.name:
+                        project.name = name
+                self.project.name = name
+            if self.project.directory != directory:
+                self.project.directory = directory
+                self.projectdirty = 1
+
+        if self.projectdirty:
+            self.project_save()
+            if sort_tree_new:
+                self.init_tree()
+
     def on_redo(self, event):
         self.editor.Redo()
 
@@ -1107,21 +1352,6 @@ class DocFactoryFrame(wxFrame):
                 self.activateMenuItemsProjectOpen(0)
                 self.activateMenuItemsFileSelected(0)
 
-    def on_close_window(self, event):
-        go_ahead = 1
-        if self.projectdirty:
-            dlg=wxMessageDialog(self, 'Save project?', NAME,
-                                wxYES_NO | wxCANCEL | wxICON_QUESTION)
-            result = dlg.ShowModal()
-            if result == wxID_YES:
-                self.project_save()
-            if result == wxID_CANCEL:
-                go_ahead = 0
-            dlg.Destroy()
-
-        if go_ahead and self.CheckEditorChanges():
-            self.Destroy()
-
     def on_undo(self, event):
         self.editor.Undo()
 
@@ -1133,15 +1363,6 @@ class DocFactoryFrame(wxFrame):
 
     def on_view_ws(self, event):
         self.editor.SetViewWhiteSpace(not self.editor.GetViewWhiteSpace())
-
-    def on_font_small(self, event):
-        self.editor.SetZoom(-2)
-
-    def on_font_normal(self, event):
-        self.editor.SetZoom(0)
-
-    def on_font_big(self, event):
-        self.editor.SetZoom(2)
 
 #---------------------------------------------------------------------------
 

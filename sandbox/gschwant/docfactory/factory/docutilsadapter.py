@@ -1,7 +1,7 @@
 """
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
-:version: 0.2
+:version: 0.2.2
 """
 
 from   docutils.languages.en             import bibliographic_fields
