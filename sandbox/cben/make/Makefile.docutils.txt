@@ -182,16 +182,16 @@ not a good idea in PEPs anyway.  Won't be a big problem to add if needed...
 sandbox/cben/rolehack math preprocessing hacks
 ..............................................
 
-This makefile provides rules that support preprocessing by mathhack.py and
-imgmathhack.py.  Set `ENABLE_MATHHACK` to 1 to run them before rst2html.py
-and rst2latex.py.
+This makefile provides rules that support preprocessing by
+`<../rolehack/mathhack.py>`_ and `<../rolehack/imgmathhack.py>`_.  Set
+`ENABLE_MATHHACK` to 1 to run them before rst2html.py and rst2latex.py.
 
 ::
 
 	$(docutils.)ENABLE_MATHHACK ?= 0
 	
 	$(docutils.)MATHHACK.SRCEXT := $($(docutils.)RST2LATEX.SRCEXT)
-	$(docutils.)MATHHACK.TRGEXT ?= .txt.mathhack
+	$(docutils.)MATHHACK.TRGEXT ?= $($(docutils.)RST2LATEX.SRCEXT).mathhack
 	
 
 In theory, IMGMATHHACK is applicable to all tools.  It's not very useful
@@ -200,7 +200,7 @@ with anything but RST2HTML, so that's the only one we attach to currently...
 ::
 
 	$(docutils.)IMGMATHHACK.SRCEXT := $($(docutils.)RST2HTML.SRCEXT)
-	$(docutils.)IMGMATHHACK.TRGEXT ?= .txt.imgmathhack
+	$(docutils.)IMGMATHHACK.TRGEXT ?= $($(docutils.)RST2HTML.SRCEXT).imgmathhack
 	
 	ifeq "$($(docutils.)ENABLE_MATHHACK)" "1"
 	$(docutils.)RST2LATEX.SRCEXT := $($(docutils.)MATHHACK.TRGEXT)
