@@ -183,9 +183,10 @@ def unicode_directive(name, arguments, options, content, lineno,
                     element += nodes.Text(unichr(int(value, 16)))
                 else:
                     element += nodes.Text(code)
-        except ValueError, err:
+        except (ValueError, OverflowError), err:
             error = state_machine.reporter.error(
-                'Invalid character code: %s\n%s' % (code, err),
+                'Invalid character code: %s\n%s: %s'
+                % (code, err.__class__.__name__, err),
                 nodes.literal_block(block_text, block_text), line=lineno)
             return [error]
     return element.children
