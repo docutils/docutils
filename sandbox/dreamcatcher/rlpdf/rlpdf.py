@@ -35,11 +35,27 @@ from StringIO import StringIO
 
 class Writer(writers.Writer):
 
+    supported = ('pdf','rlpdf')
+    """Formats this writer supports."""
+
+    settings_spec = (
+        'PDF-Specific Options',
+        None,
+        (('Format for footnote references: one of "superscript" or '
+          '"brackets".  Default is "superscript".',
+          ['--footnote-references'],
+          {'choices': ['superscript', 'brackets'], 'default': 'superscript',
+           'metavar': '<FORMAT>'}),))
+
     output = None
     """Final translated form of `document`."""
 
+    def __init__(self):
+        writers.Writer.__init__(self)
+        self.translator_class = PDFTranslator
+
     def translate(self):
-        visitor = PDFTranslator(self.document)
+        visitor = self.translator_class(self.document)
         self.document.walkabout(visitor)
         self.story = visitor.as_what()
         self.output = self.record()
@@ -47,7 +63,7 @@ class Writer(writers.Writer):
     def record(self):
         from reportlab.platypus import SimpleDocTemplate
         out = StringIO()
-        doc = RLDocTemplate(out, pagesize=A4)
+        doc = SimpleDocTemplate(out, pagesize=A4)
         doc.build(self.story)
         return out.getvalue()
 
@@ -57,6 +73,7 @@ class Writer(writers.Writer):
 class PDFTranslator(nodes.NodeVisitor):
 
     def __init__(self, doctree):
+        self.settings = settings = doctree.settings
         self.styleSheet = getStyleSheet()
         nodes.NodeVisitor.__init__(self, doctree)
         self.language = languages.get_language(doctree.settings.language_code)
@@ -75,6 +92,8 @@ class PDFTranslator(nodes.NodeVisitor):
 
     def encode(self, text):
         """Encode special characters in `text` & return."""
+        if type(text) is UnicodeType:
+            text = text.encode('utf-8')
         #text = text.replace("&", "&amp;")
         #text = text.replace("<", '"')
         #text = text.replace('"', "(quot)")
@@ -83,9 +102,7 @@ class PDFTranslator(nodes.NodeVisitor):
         return text
 
     def append_styled(self, text, in_style='Normal'):
-        style = None
-        if self.styleSheet.has_key(in_style):
-            style = self.styleSheet[in_style]
+        style = self.styleSheet[in_style]
         self.story.append(Paragraph(self.encode(text), style, bulletText=None, context=self.styleSheet))
 
     def append_normal(self, text):
@@ -120,15 +137,11 @@ class PDFTranslator(nodes.NodeVisitor):
 
     def visit_Text(self, node):
         if 'literal_block' in self.context: return
-        if 'field_list' in self.context: return
-        if 'docinfo_item' in self.context: return
         self.context.append('#text')
         self.body.append(node.astext())
 
     def depart_Text(self, node):
         if 'literal_block' in self.context: return
-        if 'field_list' in self.context: return
-        if 'docinfo_item' in self.context: return
         self.context.pop()
 
     def visit_admonition(self, node, name):
@@ -156,7 +169,6 @@ class PDFTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item()
 
     def visit_system_message(self, node):
-        #print repr(node)
         pass
 
     def depart_system_message(self, node):
@@ -346,23 +358,26 @@ class PDFTranslator(nodes.NodeVisitor):
     def depart_field_argument(self, node):
         pass
 
-    def visit_field_body(self, node):
-        pass
-
-    def depart_field_body(self, node):
-        pass
-
     def visit_field_list(self, node):
-        self.context.append('field_list')
+        self.visit_definition_list(node)
 
     def depart_field_list(self, node):
-        self.context.pop()
+        self.depart_definition_list(node)
+        if not self.context and self.body:
+            self.append_normal('\n'.join(self.body))
+            self.body = []
 
     def visit_field_name(self, node):
-        pass
+        self.visit_term(node)
 
     def depart_field_name(self, node):
-        pass
+        self.depart_term(node)
+
+    def visit_field_body(self, node):
+        self.visit_definition(node)
+
+    def depart_field_body(self, node):
+        self.depart_definition(node)
 
     def visit_figure(self, node):
         pass
@@ -371,23 +386,71 @@ class PDFTranslator(nodes.NodeVisitor):
         pass
 
     def visit_footnote(self, node):
-        pass
+        self.context.append('footnotes')
+        self.footnote_backrefs(node)
+
+    def footnote_backrefs(self, node):
+        if self.settings.footnote_backlinks and node.hasattr('backrefs'):
+            backrefs = node['backrefs']
+            if len(backrefs) == 1:
+                self.context.append("%s%s" % (self.starttag({}, 'setLink', '', destination=node['id']), \
+                                    '</setLink>'))
+                self.context.append("%s%s" % (self.starttag({}, 'link', '', destination=backrefs[0]), \
+                                    '</link>'))
+            else:
+                i = 1
+                backlinks = []
+                for backref in backrefs:
+                    backlinks.append("%s%s%s" % (self.starttag({}, 'link', '', destination=backref),
+                                                 i,
+                                                 '</link>'))
+                    i += 1
+                self.context.append('<i>(%s)</i> ' % ', '.join(backlinks))
+                self.context.append("%s%s" % (self.starttag({}, 'setLink', '', destination=node['id']), \
+                                 '</setLink>'))
+        else:
+            self.context.append("%s%s" % (self.starttag({}, 'setLink', '', destination=node['id']), \
+                                '</setLink>'))
+            self.context.append('')
+
+    def footnote_backrefs_depart(self, node):
+        if not self.context and self.body:
+            self.append_normal('\n'.join(self.body))
+            self.body = []
 
     def depart_footnote(self, node):
-        pass
+        self.context.pop()
+        self.footnote_backrefs_depart(node)
 
     def visit_footnote_reference(self, node):
-        self.context.append('fn_ref')
+        # for backrefs
+        if self.settings.footnote_backlinks and node.has_key('id'):
+            self.body.append(self.starttag(node, 'setLink', '', destination=node['id']))
+            self.context.append('</setLink>')
+        else:
+            self.context.append('')
+
         href = ''
         if node.has_key('refid'):
             href = node['refid']
         elif node.has_key('refname'):
-            href = self.doctree.nameids[node['refname']]
-        self.body.append(self.starttag(node, 'a', '', href=href))
+            href = self.document.nameids[node['refname']]
+        format = self.settings.footnote_references
+        if format == 'brackets':
+            suffix = '['
+            self.context.append(']')
+        elif format == 'superscript':
+            suffix = '<super>'
+            self.context.append('</super>')
+        else:                           # shouldn't happen
+            suffix = '???'
+            self.content.append('???')
+        self.body.append(self.starttag(node, 'link', suffix, destination=href))
 
     def depart_footnote_reference(self, node):
-        self.context.pop()
-        self.body.append('</a>')
+        self.body.append(self.context.pop())
+        self.body.append('</link>')
+        self.body.append(self.context.pop())
 
     def visit_hint(self, node):
         self.visit_admonition(node, 'hint')
@@ -417,7 +480,9 @@ class PDFTranslator(nodes.NodeVisitor):
         pass
 
     def depart_label(self, node):
-        pass
+        if 'footnotes' in self.context:
+            self.body.append(self.context.pop())
+            self.body.append(self.context.pop())
 
     def visit_legend(self, node):
         pass
@@ -520,6 +585,22 @@ class PDFTranslator(nodes.NodeVisitor):
             self.body.append(node.astext())
         raise nodes.SkipNode
 
+    def visit_target(self, node):
+        if not (node.has_key('refuri') or node.has_key('refid')
+                or node.has_key('refname')):
+            href = ''
+            if node.has_key('id'):
+                href = node['id']
+            elif node.has_key('name'):
+                href = node['name']
+            self.body.append(self.starttag(node, 'setLink', '', destination=href))
+            self.context.append('</setLink>')
+        else:
+            self.context.append('')
+
+    def depart_target(self, node):
+        self.body.append(self.context.pop())
+
     def visit_reference(self, node):
         self.context.append('a')
         if node.has_key('refuri'):
@@ -579,7 +660,6 @@ class PDFTranslator(nodes.NodeVisitor):
     def visit_subtitle(self, node):
         self.context.append('subtitle')
         self.context.append('subtitle')
-        self.append_styled(node.astext(), 'subtitle')
 
     def depart_subtitle(self, node):
         style = self.context.pop()
@@ -592,15 +672,16 @@ class PDFTranslator(nodes.NodeVisitor):
 
         self.context.append('title')
         if isinstance(node.parent, nodes.topic):
-            self.context.append('topic-title')
+            self.context.append('')
+            self.topic_class = 'topic-title'
         elif self.sectionlevel == 0:
             self.context.append('title')
         else:
             self.context.append("h%s" % self.sectionlevel)
 
         if self.context[-1] != 'title':
-            self.context.append('</setLink>')
             if node.parent.hasattr('id'):
+                self.context.append('</setLink>')
                 self.body.append(self.starttag({}, 'setLink', '', destination=node.parent['id']))
             if node.hasattr('refid'):
                 self.context.append('</link>')
@@ -614,8 +695,9 @@ class PDFTranslator(nodes.NodeVisitor):
         if node.parent.hasattr('id'):
             self.body.append(self.context.pop())
         style = self.context.pop()
-        self.append_styled(''.join(self.body), style)
-        self.body = []
+        if not 'topic' in self.context:
+            self.append_styled(''.join(self.body), style)
+            self.body = []
         self.context.pop()
 
     def unimplemented_visit(self, node):
@@ -624,9 +706,17 @@ class PDFTranslator(nodes.NodeVisitor):
 
     def visit_topic(self, node):
         self.context.append('topic')
+        if node.hasattr('id'):
+            self.context.append('</setLink>')
+            self.body.append(self.starttag({}, 'setLink', '', destination=node['id']))
 
     def depart_topic(self, node):
+        if node.hasattr('id'):
+            self.body.append(self.context.pop())
         self.context.pop()
+        if not self.context and self.body:
+            self.append_styled(''.join(self.body), self.topic_class)
+            self.body = []
 
     def visit_generated(self, node):
         pass
@@ -638,13 +728,33 @@ class PDFTranslator(nodes.NodeVisitor):
         """Invisible nodes should be ignored."""
         pass
 
+    def visit_comment(self, node):
+        raise nodes.SkipNode
+
+    visit_line_block = invisible_visit
+    visit_sidebar = invisible_visit
+    visit_warning = invisible_visit
+    visit_tip = invisible_visit
+    visit_tbody = invisible_visit
+    visit_thead = invisible_visit
+    visit_tgroup = invisible_visit
+    visit_table = invisible_visit
+    visit_title_reference = invisible_visit
+    visit_transition = invisible_visit
     visit_address = invisible_visit
-    visit_comment = invisible_visit
     visit_substitution_definition = invisible_visit
     visit_pending = invisible_visit
-    visit_target = invisible_visit
-    depart_target = invisible_visit
     depart_comment = invisible_visit
     depart_address = invisible_visit
     depart_pending = invisible_visit
     depart_substitution_definition = invisible_visit
+    depart_transition = invisible_visit
+    depart_title_reference = invisible_visit
+    depart_table = invisible_visit
+    depart_tgroup = invisible_visit
+    depart_thead = invisible_visit
+    depart_tbody = invisible_visit
+    depart_tip = invisible_visit
+    depart_warning = invisible_visit
+    depart_sidebar = invisible_visit
+    depart_line_block = invisible_visit

@@ -1,7 +1,13 @@
+2003-05-03  Sidnei da Silva  <sidnei@x3ng.com>
+
+	* rlpdf/rlpdf.py: Added some options to the Writer. Added
+	footnotes, backrefs, topic. Works with docutils/tools/test.txt,
+	but the output needs work on the stylesheet.
+
 2003-05-02  Sidnei da Silva  <sidnei@x3ng.com>
 
 	* rlpdf/rlpdf.py (Writer.translate): use StringIO as output for
 	Reportlab and set the output to the writer output.
 	(PDFTranslator.visit_title): Fix weird logic. node.parent['id']
-	didnt always existed.
+	didn't always existed.
 
