@@ -70,20 +70,23 @@ class Input(TransformSpec):
         if (self.encoding and self.encoding.lower() == 'unicode'
             or isinstance(data, UnicodeType)):
             return data
-        encodings = [self.encoding, 'utf-8']
-        try:
-            encodings.append(locale.nl_langinfo(locale.CODESET))
-        except:
-            pass
-        try:
-            encodings.append(locale.getlocale()[1])
-        except:
-            pass
-        try:
-            encodings.append(locale.getdefaultlocale()[1])
-        except:
-            pass
-        encodings.append('latin-1')
+        encodings = [self.encoding]
+        if not self.encoding:
+            # Apply heuristics only if no encoding is explicitly given.
+            encodings.append('utf-8')
+            try:
+                encodings.append(locale.nl_langinfo(locale.CODESET))
+            except:
+                pass
+            try:
+                encodings.append(locale.getlocale()[1])
+            except:
+                pass
+            try:
+                encodings.append(locale.getdefaultlocale()[1])
+            except:
+                pass
+            encodings.append('latin-1')
         for enc in encodings:
             if not enc:
                 continue
