@@ -1,5 +1,4 @@
 BACKUPDIR=~/remote-backup/docutils
-USERNAME=felixwiemann
 HOST=svn.berlios.de
 REMOTEDIR=/svnroot/repos/docutils
 do_backup

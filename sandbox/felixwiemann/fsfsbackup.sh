@@ -12,7 +12,6 @@ function do_backup() {
     # If any of the tests fails, the script terminates silently.
     echo "Checking that all necessary variables are set."
     test -n "$BACKUPDIR"
-    test -n "$USERNAME"
     test -n "$HOST"
     test -n "$REMOTEDIR"
     if test ! -d "$BACKUPDIR"; then
@@ -41,7 +40,7 @@ function do_backup() {
         exit 2
     fi
     echo "Getting remote 'current' file."
-    ssh "$USERNAME@$HOST" "cat '$REMOTEDIR/db/current'" > current.new
+    ssh "$HOST" "cat '$REMOTEDIR/db/current'" > current.new
     echo "Getting remote current revision number."
     REMOTEREVNUM="`cat current.new | sed 's/ .*//'`"
     echo "Checking that we got a response from the server."
@@ -62,7 +61,7 @@ function do_backup() {
     fi
     LOCALREVNUM="$[$LOCALREVNUM+1]"
     echo "Backing up from revision $LOCALREVNUM to revision $REMOTEREVNUM."
-    ssh "$USERNAME@$HOST" "
+    ssh "$HOST" "
         set -e;
         cd $REMOTEDIR/db/;
         nice -n 10 tar cf - \`seq -f revs/%g $LOCALREVNUM $REMOTEREVNUM\` \`seq -f revprops/%g $LOCALREVNUM $REMOTEREVNUM\` | nice -n 10 bzip2 -c" \

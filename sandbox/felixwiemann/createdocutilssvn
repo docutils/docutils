@@ -56,7 +56,7 @@ cd ..
 echo
 echo 'To upload, type:'
 echo
-echo "bar -if docutils-svn-$date.tar.bz2 | ssh felixwiemann@svn.berlios.de \\"
+echo "bar -if docutils-svn-$date.tar.bz2 | ssh svn.berlios.de \\"
 echo "    'cd /svnroot/repos/docutils/; rm -rf *;"
 echo "     cat > docutils-svn-$date.tar.bz2;"
 echo "     nice tar xpjf docutils-svn-$date.tar.bz2'"
