@@ -1095,6 +1095,12 @@ when used in a document.
   - All directives that produce titled elements should grow implicit
     reference names based on the titles.
 
+  - Allow the _`:trim:` option for all directives when they occur in a
+    substitution definition, not only the unicode_ directive.
+
+    .. _unicode:
+       http://docutils.sf.net/docs/ref/rst/directives.html#unicode-character-codes
+
   - _`images.image`: "border"?
 
     _`Units of measure`?  (See `docutils-users, 2003-03-02
@@ -1155,6 +1161,10 @@ when used in a document.
     Add an option to include topics in the TOC?  Another for sidebars?
     See docutils-develop 2003-01-29.
 
+  - _`parts.header` & _`parts.footer`: Add "header" and "footer"
+    directives to specify document-specific contents for header and
+    footer?
+
   - _`misc.include`:
 
     - "encoding" option?  Take default from runtime settings.  Use
@@ -1200,11 +1210,15 @@ when used in a document.
           .. include:: 
              :url: http://www.example.org/inclusion.txt
 
-  - Allow the _`:trim:` option for all directives when they occur in a
-    substitution definition, not only the unicode_ directive.
+  - _`misc.raw`: add a "destination" option to the "raw" directive? ::
 
-    .. _unicode:
-       http://docutils.sf.net/docs/ref/rst/directives.html#unicode-character-codes
+        .. raw:: html
+           :destination: head
+
+           <link ...>
+
+    It needs thought & discussion though, to come up with a consistent
+    set of destination labels and consistent behavior.
   
 * Implement directives.  Each of the list items below begins with an
   identifier of the form, "module_name.directive_function_name".  The
