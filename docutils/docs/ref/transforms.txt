@@ -15,7 +15,7 @@
 For background about transforms and the Transformer object, see `PEP
 258`_.
 
-.. _PEP 258: pep-0258.html#transformer
+.. _PEP 258: ../peps/pep-0258.html#transformer
 
 
 Transforms Listed in Priority Order

@@ -950,7 +950,7 @@ stylist code will lower the barrier considerably.
 .. [#PEP-216] PEP 216, Docstring Format, Zadka
    (http://www.python.org/peps/pep-0216.html)
 
-.. _docutils.dtd: http://docutils.sourceforge.net/spec/docutils.dtd
+.. _docutils.dtd: http://docutils.sourceforge.net/docs/ref/docutils.dtd
 
 .. _soextbl.dtd: http://docutils.sourceforge.net/spec/soextblx.dtd
 
