@@ -29,16 +29,24 @@ Changes Since 0.3.5
 
   - Added dispatch_visit and dispatch_departure methods to
     NodeVisitor; useful as a hook for Visitors.
+  - Changed structure of ``line_block``; added ``line``.
 
 * docutils/parsers/rst/states.py:
 
   - Fixed bug where a "role" directive in a nested parse would crash
     the parser; the state machine's "language" attribute was not being
     copied over.
+  - Added support for line block syntax.
 
 * docutils/parsers/rst/directives/__init__.py:
 
   - Added ``encoding`` directive option conversion function.
+
+* docutils/parsers/rst/directives/body.py:
+
+  - Converted the line-block directive to use the new structure.
+  - Extracted the old line-block functionality to the ``block``
+    function (still used).
 
 * docutils/parsers/rst/directives/misc.py:
 
@@ -65,6 +73,7 @@ Changes Since 0.3.5
   - HTMLTranslator.encode now converts U+00A0 to "&nbsp;".
   - "stylesheet" and "stylesheet_path" settings are now mutually
     exclusive.
+  - Added support for the new line_block/line structure.
 
 * docutils/writers/latex2e.py:
 
@@ -73,6 +82,22 @@ Changes Since 0.3.5
   - Added option "font-encoding", made package AE the default.
   - "stylesheet" and "stylesheet_path" settings are now mutually
     exclusive.
+
+* docs/ref/docutils.dtd:
+
+  - Changed structure of the ``line_block`` element; added ``line``.
+
+* docs/ref/rst/directives.txt
+
+  - Marked "line-block" as deprecated.
+
+* docs/ref/rst/restructuredtext.txt:
+
+  - Added syntax for line blocks.
+
+* tools/stylesheets/default.css:
+
+  - Added support for the new line_block structure.
 
 
 Release 0.3.5 (2004-07-29)
