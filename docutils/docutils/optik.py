@@ -53,8 +53,7 @@ __version__ = "1.3+"
 
 import sys
 import os
-import types
-from types import TupleType, DictType, ListType
+from types import TupleType, ListType, DictType, StringType
 from distutils.fancy_getopt import wrap_text
 
 
@@ -583,7 +582,7 @@ class OptionContainer:
         """add_option(Option)
            add_option(opt_str, ..., kwarg=val, ...)
         """
-        if type(args[0]) is types.StringType:
+        if type(args[0]) is StringType:
             option = self.option_class(*args, **kwargs)
         elif len(args) == 1 and not kwargs:
             option = args[0]
@@ -685,6 +684,8 @@ class Values:
             for (attr, val) in defaults.items():
                 setattr(self, attr, val)
 
+    def __repr__(self):
+        return "%s(%r)" % (self.__class__, self.__dict__)
 
     def _update_careful (self, dict):
         """
