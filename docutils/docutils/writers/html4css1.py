@@ -1,12 +1,10 @@
-#! /usr/bin/env python
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
 """
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
-
 Simple HyperText Markup Language document tree Writer.
 
 The output conforms to the HTML 4.01 Transitional DTD and to the Extensible
@@ -468,7 +466,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.head.append('<meta name="%s" content="%s" />\n'
                              % (name, self.attval(node.astext())))
         self.body.append(self.starttag(node, 'tr', ''))
-        self.body.append('<th class="docinfo-name">%s:&nbsp;</th>\n<td>'
+        self.body.append('<th class="docinfo-name">%s:</th>\n<td>'
                          % self.language.labels[name])
 
     def depart_docinfo_item(self):
@@ -572,14 +570,21 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</tbody>\n</table>\n')
 
     def visit_field_name(self, node):
+        atts = {}
         if self.in_docinfo:
-            class_name = 'docinfo-name'
+            atts['class'] = 'docinfo-name'
         else:
-            class_name = 'field-name'
-        self.body.append(self.starttag(node, 'th', '', CLASS=class_name))
+            atts['class'] = 'field-name'
+        if len(node.astext()) > 14:
+            atts['colspan'] = 2
+            self.context.append('</tr>\n<tr><td>&nbsp;</td>')
+        else:
+            self.context.append('')
+        self.body.append(self.starttag(node, 'th', '', **atts))
 
     def depart_field_name(self, node):
-        self.body.append(':&nbsp;</th>')
+        self.body.append(':</th>')
+        self.body.append(self.context.pop())
 
     def visit_figure(self, node):
         self.body.append(self.starttag(node, 'div', CLASS='figure'))
