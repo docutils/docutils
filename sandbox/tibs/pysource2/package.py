@@ -2,7 +2,7 @@
 
 :Author:    Tibs
 :Contact:   tibs@tibsnjoan.co.uk
-:Revision:  $1.0$
+:Revision:  $Revision$
 :Date:      $Date$
 :Copyright: This module has been placed in the public domain.
 """
