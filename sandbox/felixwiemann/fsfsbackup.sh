@@ -46,10 +46,18 @@ function do_backup() {
     REMOTEREVNUM="`cat current.new | sed 's/ .*//'`"
     echo "Checking that we got a response from the server."
     test -n "$REMOTEREVNUM"
-    if test "$LOCALREVNUM" == "$REMOTEREVNUM"; then
+    if ! test "$LOCALREVNUM" -le "$REMOTEREVNUM"; then
+        echo
+        echo "ERROR: Local revision number ($LOCALREVNUM) greater"
+        echo "       than remote revision number ("$REMOTEREVNUM")."
+        echo "Wrong backup directory or changed repository?"
+        exit 1
+    fi
+    if test "$LOCALREVNUM" -eq "$REMOTEREVNUM"; then
         echo "No backup needed; at revision $LOCALREVNUM."
         echo "Removing 'current.new'."
         rm current.new
+        echo "Done."
         exit 0
     fi
     LOCALREVNUM="$[$LOCALREVNUM+1]"
