@@ -1,5 +1,5 @@
 ===========================================
- Docutils Frequently Asked Questions (FAQ)
+ Docutils FAQ (Frequently Asked Questions)
 ===========================================
 
 :Date: $Date$
