@@ -474,12 +474,14 @@ For example, the following input would be passed untouched by an HTML
 Writer::
 
     .. raw:: html
+
        <hr width=50 size=10>
 
 A LaTeX Writer could insert the following raw content into its
 output stream::
 
     .. raw:: latex
+
        \documentclass[twocolumn]{article}
 
 
