@@ -133,7 +133,7 @@ General
 
   - Change ``Transform.transform()`` to ``Transform.apply()``?
 
-  Updated project model under consideration for PEP 258::
+  Updated project dataflow model under consideration for PEP 258::
 
                         +--------------------------+
                         |        Docutils:         |
@@ -148,10 +148,10 @@ General
               +--------+       +-------------+      +--------+
                /     \\                                 |
               /       \\                                |
-          2  /      4  \\                             8 |
-         +-----+   +--------+                        +-----+
-         | I/O |   | PARSER |                        | I/O |
-         +-----+   +--------+                        +-----+
+        2    /      4  \\                            8  |
+       +-------+   +--------+                       +--------+
+       | INPUT |   | PARSER |                       | OUTPUT |
+       +-------+   +--------+                       +--------+
 
 * @@@ Break up ``references.Hyperlinks`` into multiple smaller
   transforms.
@@ -321,7 +321,7 @@ General
       As I said earlier in chapter :chapter:`objects`, the
       reference count gets increased every time a binding is made.
 
-* Change ``document.options`` to ``document.settings``?
+* Change all occurrences of "options" to "settings"?
 
 * Add functional testing to Docutils: Readers, Writers, front ends.
 
@@ -338,6 +338,22 @@ General
 * Publisher: "Ordinary setup" shouldn't requre specific ordering; at
   the very least, there ought to be error checking higher up in the
   call chain.  [Aahz]
+
+  ``Publisher.set_options`` requires that all components be set up
+  before it's called.  Perhaps the I/O *objects* shouldn't be set, but
+  I/O *classes*.  Then  options are set up (``.set_options``), and
+  ``Publisher.set_io`` (or equivalent code) is called with source &
+  destination paths, creating the I/O objects.
+
+  Perhaps I/O objects shouldn't be instantiated until required.  For
+  split output, the Writer may be called multiple times, once for each
+  doctree, and each doctree should have a separate Output object (with
+  a different path).  Is the "Builder" pattern applicable here?
+
+* Perhaps I/O objects should become full-fledged components (i.e.
+  subclasses of ``docutils.Component``, as are Readers, Parsers, and
+  Writers now), and thus have associated option/setting specs and
+  transforms.
 
 
 Documentation
