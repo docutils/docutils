@@ -61,6 +61,8 @@ __ http://sourceforge.net/tracker/?group_id=38414&atid=422030
 
       http://cvs.sf.net/viewcvs.py/\*checkout*/emu/speech_tools/scripts/tex_to_images.prl?rev=HEAD
 
+* Document title should grow an implicit target.
+
 
 General
 -------
@@ -1569,10 +1571,11 @@ will have to be adjusted.
 (HTML only?  Initially, yes.  Eventually, anything should be
 splittable.)
 
-Idea: insert a "split here" attribute into the root element of each
+Idea: insert a "destination" attribute into the root element of each
 split-out document, containing the path/filename.  The Output object
-will recognize this attribute and split out the files accordingly.
-Must allow for common headers & footers, prev/next, breadcrumbs, etc.
+or Writer will recognize this attribute and split out the files
+accordingly.  Must allow for common headers & footers, prev/next,
+breadcrumbs, etc.
 
 
 Navigation
