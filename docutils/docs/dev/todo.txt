@@ -106,9 +106,34 @@ General
 
 - @@@@ All system messages should have a "line" attribute, to improve
   diagnostic output.  So all elements constructed by the parser should
-  have internal "line" ("lineno"/"line_number") attributes.  Is there
-  any way we can get this to happen automagically, without having to
-  add the attribute manually to each object?
+  have internal "line" ("lineno"/"line_number") attributes.  They'd
+  also need internal "source" attributes as well (populating the
+  external "source" attribute would clutter up the output).
+
+  Is there any way we can get this to happen automagically, without
+  having to add the attribute manually to each object?  System
+  messages get their "source" attribute from the Reporter object (new
+  one for each source).
+
+  - Add an observer subject interface to StateMachine, called whenever
+    next_line, previous_line, or goto_line is called?
+
+  - Who to notify?  Publisher?  Document object?  Singleton?
+
+    - Document object: add ``note_source``, ``note_line_number``
+      methods.  ``note_line_number`` is called by
+      ``StateMachine.notify_observer``.  Whatever reads the source
+      calls ``note_source`` (``utils.new_document()``, "include"
+      directive (see misc.include_).
+
+  - Add a ``line=None`` parameter to ``nodes.Node``; if unspecified,
+    it will get the line number from the observer.
+
+  - Perhaps ``Element.append()`` etc. can also set the ``.document``
+    attribute of each node added.  The document object could hold the
+    current line number and source description, which would also be
+    copied over to the node.  Consolodate all assignments (parent,
+    document, source, line) into a single method.
 
   Change stderr Reporter output to the GNU urilities format::
 
@@ -122,7 +147,7 @@ General
   where directory separators are colons.  "filename.txt:1:" looks like
   a file or directory path.  Does MacOS X still use colons, or has it
   switched to slashes?  In any case, the ubiquity of the GNU utilities
-  probably overweighs any such problem.
+  probably outweighs any such problem.
 
 - Standalone Reader: Implement an option to turn off the DocTitle
   transform?
@@ -483,6 +508,13 @@ __ rst/alternatives.html#or-not-to-do
   (And arguably invalid, since in Japanese the word "haiku" contains
   three syllables.)
 
+- Modify acceptable "simple reference name" syntax to allow for
+  ``object.__method__`` without requiring inline literals?  Simple
+  reference names currently allow any of "-", "_", and "." internally;
+  if we limit this to one at a time, problem solved.  I.e., none of
+  these would be recognized as simple names: "one..two", "one-.two",
+  "one._two", "one__two".
+
 
 Directives
 ``````````
@@ -560,7 +592,7 @@ Directives
     in ``match_titles=1``.  The reporting mechanism has been revamped
     to include the file which is the source of system messages; a new
     ``utils.Reporter`` object will need to be created for each input
-    source.
+    source.  (Need to notify 
 
     YAGNI for now: Use C-preprocessor semantics for locating include
     files?  E.g., ``.. include:: file.txt`` will read another file
