@@ -81,7 +81,7 @@ mv -f *snapshot.tgz $dest
 # update htdocs
 cp -ruf $project/* $dest
 cp -ruf sandbox $dest
-cp -ruf web/* $dest
+cp -ruf web/* web/.[^.]* $dest
 
 # remove CVS crud
 cd $dest
