@@ -76,6 +76,7 @@ Changes Since 0.3.5
 
   - Fixed bug when multiple "class" directives are applied to a single
     element.
+  - Enabled multiple format names for "raw" directive.
 
 * docutils/transforms/references.py:
 
@@ -96,6 +97,7 @@ Changes Since 0.3.5
   - --footnote-references now overrides
     --trim-footnote-reference-space, if applicable.
   - Added support for ``compound`` elements.
+  - Enabled multiple format names for "raw" directive.
 
 * docutils/writers/latex2e.py:
 
@@ -109,6 +111,7 @@ Changes Since 0.3.5
   - The footnote label style now matches the footnote reference style
     ("brackets" or "superscript").
   - Added support for ``compound`` elements.
+  - Enabled multiple format names for "raw" directive.
 
 * docs/ref/docutils.dtd:
 
@@ -116,6 +119,7 @@ Changes Since 0.3.5
   - Added ``compound`` element.
   - Added "ltrim" and "rtrim" attributes to
     ``substitution_definition`` element.
+  - Enabled multiple format names for ``raw`` element.
 
 * docs/ref/rst/directives.txt
 

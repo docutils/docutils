@@ -500,7 +500,7 @@ Table elements: table, tgroup, colspec, thead, tbody, row, entry.
 <!ATTLIST raw
     %basic.atts;
     %fixedspace.att;
-    format    NMTOKEN   #IMPLIED>
+    format    NMTOKENS  #IMPLIED>
 
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

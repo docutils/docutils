@@ -73,7 +73,7 @@ def raw(name, arguments, options, content, lineno,
     Content may be included inline (content section of directive) or
     imported from a file or url.
     """
-    attributes = {'format': arguments[0]}
+    attributes = {'format': ' '.join(arguments[0].lower().split())}
     encoding = options.get('encoding', state.document.settings.input_encoding)
     if content:
         if options.has_key('file') or options.has_key('url'):
@@ -82,7 +82,7 @@ def raw(name, arguments, options, content, lineno,
                   'have content.' % name,
                   nodes.literal_block(block_text, block_text), line=lineno)
             return [error]
-        text = '\n'.join(content)
+        text = '\n'.join(content) + '\n'
     elif options.has_key('file'):
         if options.has_key('url'):
             error = state_machine.reporter.error(
