@@ -132,8 +132,11 @@ value ``None``.  Three directive function attributes are recognized:
     argument (raises ``ValueError`` if found), returns ``None`` for
     valid flag options.
 
-  - ``unchanged``: Returns the argument, unchanged.  Raises
-    ``ValueError`` if no argument is found.
+  - ``unchanged_required``: Returns the text argument, unchanged.
+    Raises ``ValueError`` if no argument is found.
+
+  - ``unchanged``: Returns the text argument, unchanged.  Returns an
+    empty string ("") if no argument is found.
 
   - ``path``: Returns the path argument unwrapped (with newlines
     removed).  Raises ``ValueError`` if no argument is found or if the
@@ -141,6 +144,10 @@ value ``None``.  Three directive function attributes are recognized:
 
   - ``nonnegative_int``: Checks for a nonnegative integer argument,
     and raises ``ValueError`` if not.
+
+  - ``class_option``: Converts the argument into an ID-compatible
+    string and returns it.  Raises ``ValueError`` if no argument is
+    found.
 
   A further utility function, ``choice``, is supplied to enable
   options whose argument must be a member of a finite set of possible

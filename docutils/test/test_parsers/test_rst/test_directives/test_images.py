@@ -241,6 +241,18 @@ totest['images'] = [
                :scale: 50
                :scale: 50
 """],
+["""\
+.. image:: picture.png
+   :alt:
+
+(Empty "alt" option.)
+""",
+"""\
+<document source="test data">
+    <image alt="" uri="picture.png">
+    <paragraph>
+        (Empty "alt" option.)
+"""],
 ]
 
 

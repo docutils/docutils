@@ -58,7 +58,7 @@ def sidebar(name, arguments, options, content, lineno,
                  node_class=nodes.sidebar)
 
 sidebar.arguments = (1, 0, 1)
-sidebar.options = {'subtitle': directives.unchanged,
+sidebar.options = {'subtitle': directives.unchanged_required,
                    'class': directives.class_option}
 sidebar.content = 1
 
