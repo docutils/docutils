@@ -294,9 +294,9 @@ class DocInfo(Transform):
                         raise TransformError
                     title = nodes.title(name, labels[canonical])
                     topics[canonical] = biblioclass(
-                        '', title, CLASS=canonical, *field[1].children)
+                        '', title, CLASS=canonical, *field[1].get_children())
                 else:
-                    docinfo.append(biblioclass('', *field[1].children))
+                    docinfo.append(biblioclass('', *field[1].get_children()))
             except TransformError:
                 if len(field[-1]) == 1 \
                        and isinstance(field[-1][0], nodes.paragraph):
@@ -386,7 +386,7 @@ class DocInfo(Transform):
         for item in field[1][0]:
             if len(item) != 1 or not isinstance(item[0], nodes.paragraph):
                 raise TransformError
-            authors.append(item[0].children)
+            authors.append(item[0].get_children())
         if not authors:
             raise TransformError
         return authors
@@ -395,5 +395,5 @@ class DocInfo(Transform):
         for item in field[1]:
             if not isinstance(item, nodes.paragraph):
                 raise TransformError
-        authors = [item.children for item in field[1]]
+        authors = [item.get_children() for item in field[1]]
         return authors
