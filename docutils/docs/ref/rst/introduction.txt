@@ -294,7 +294,6 @@ followed.
 .. _comp.lang.python: news:comp.lang.python
 .. _Python-dev: http://mail.python.org/pipermail/python-dev/
 .. _Docstring Processing System: http://docstring.sourceforge.net/
-.. _Docutils: http://docutils.sourceforge.net/
 .. _master PEP repository: http://www.python.org/peps/
 
 
