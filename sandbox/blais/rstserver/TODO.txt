@@ -1,0 +1,27 @@
+====
+TODO
+====
+
+:Author: Martin Blais <blais@iro.umontreal.ca>
+
+
+Devel version
+-------------
+
+- add title
+- style.css
+- remove .txt in indexes
+- read index.txt if present, concat info
+- read titles instead of using filenames (parse by hand)
+- filter directories (e.g. cvs)
+- use appropriate style.css
+- remove second header page
+- use HTMLout to produce html?
+- what if a file disappears?
+- don't output errors from docutils
+- add instructions on how to create a config file
+- how to setup web server, etc.
+- clean up file and functions
+- fix major problem with images and links within subdirectories
+- add %(home) to the default config parser environment
+- add redirect "Please wait... regenerating file."
