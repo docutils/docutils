@@ -773,11 +773,11 @@ DTD elements: field_list, field, field_name, field_argument,
 field_body.
 
 Field lists are most often used as part of an extension syntax, such
-as attributes for directives_, or database-like records meant for
-further processing.  They are not intended to be an alternative to
-definition lists.  Applications of reStructuredText may recognize
-field names and transform fields or field bodies in certain contexts.
-See `Bibliographic Fields`_ below for one example, or the "image"
+as options for directives_, or database-like records meant for further
+processing.  They are not intended to be an alternative to definition
+lists.  Applications of reStructuredText may recognize field names and
+transform fields or field bodies in certain contexts.  See
+`Bibliographic Fields`_ below for one example, or the "image"
 directive in `reStructuredText Directives`_ for another.
 
 Field lists are mappings from field names to field bodies, modeled on
@@ -1305,9 +1305,9 @@ column.  In that case, that line of text is parsed as a continuation
 line.  For this reason, cells in the first column of new rows (*not*
 continuation lines) *must* contain some text; blank cells would lead
 to a misinterpretation.  An empty comment ("..") is sufficient and
-will be omitted from the processed output.  Also, this mechanism
-limits cells in the first column to only one line of text.  Use `grid
-tables`_ if this limitation is unacceptable.
+will be omitted from the processed output (see Comments_ below).
+Also, this mechanism limits cells in the first column to only one line
+of text.  Use `grid tables`_ if this limitation is unacceptable.
 
 Underlines of '-' may also be used to visually separate rows, even if
 there are no column spans.  This is especially useful in long tables,
@@ -1775,10 +1775,11 @@ An admonition (note, caution, etc.) contains other body elements::
        - Here is a bullet list.
 
 Directives are indicated by an explicit markup start (".. ") followed
-by the directive type, two colons, and whitespace.  Directive types
-are case-insensitive single words (alphanumerics plus internal
-hyphens, underscores, and periods; no whitespace).  Two colons are
-used after the directive type for these reasons:
+by the directive type, two colons, and whitespace (together called the
+"directive marker").  Directive types are case-insensitive single
+words (alphanumerics plus internal hyphens, underscores, and periods;
+no whitespace).  Two colons are used after the directive type for
+these reasons:
 
 - To avoid clashes with common comment text like::
 
@@ -1790,41 +1791,60 @@ used after the directive type for these reasons:
   a literal block, and a level-3 (error) system message generated.
   Thus "::" is a natural choice.
 
-Any text on the first line of the directive, after the directive
-indicator, is directive data.  The interpretation of directive data is
-up to the directive code.  Directive data may be interpreted as
-arguments to the directive, or simply as the first line of the
-directive's text block.
+The directive block is consists of any text on the first line of the
+directive after the directive marker, and any subsequent indented
+text.  The interpretation of the directive block is up to the
+directive code.  There are three logical parts to the directive block:
+
+1. Directive arguments.
+2. Directive options.
+3. Directive content.
+
+Individual directives can employ any combination of these parts.
+Directive arguments can be filesystem paths, URLs, title text, etc.
+Directive options are indicated using `field lists`_; the field names
+and contents are directive-specific.  Argumens and options must form a
+contiguous block beginning on the first or second line of the
+directive; a blank line indicates the beginning of the directive
+content block.  If either arguments and/or options are employed by the
+directive, a blank line must separate them from the directive content.
+The "figure" directive employs all three parts::
+
+    .. figure:: larch.png
+       :scale: 50
+
+       The larch.
+
+Simple directives may not require any content.  If a directive that
+does not employ a content block is followed by indented text anyway,
+it is an error.  If a block quote should immediately follow a
+directive, use an empty comment in-between (see Comments_ below).
 
 Actions taken in response to directives and the interpretation of text
-in the directive block or subsequent text block(s) are
-directive-dependent.  Indented text following a directive may be
-interpreted as a directive block.  Simple directives may not require
-any text beyond the directive data (if that), and will not process any
-following indented text.
+in the directive content block or subsequent text block(s) are
+directive-dependent.  See `reStructuredText Directives`_ for details.
 
-Directives are meant for the arbitrary processing of their contents
-(the directive data & text block), which can be transformed into
-something possibly unrelated to the original text.  It may also be
-possible for directives to be used as pragmas, to modify the behavior
-of the parser, such as to experiment with alternate syntax.  There is
-no parser support for this functionality at present; if a reasonable
-need for pragma directives is found, they may be supported.
+Directives are meant for the arbitrary processing of their contents,
+which can be transformed into something possibly unrelated to the
+original text.  It may also be possible for directives to be used as
+pragmas, to modify the behavior of the parser, such as to experiment
+with alternate syntax.  There is no parser support for this
+functionality at present; if a reasonable need for pragma directives
+is found, they may be supported.
 
-Directives do not survive as "directive" elements past the parsing
-stage; they are a *parser construct* only, and have no intrinsic
-meaning outside of reStructuredText.  Instead, the parser will
-transform recognized directives into (possibly specialized) document
-elements.  Unknown directives will trigger level-3 (error) system
-messages.
+Directives do not generate "directive" elements; they are a *parser
+construct* only, and have no intrinsic meaning outside of
+reStructuredText.  Instead, the parser will transform recognized
+directives into (possibly specialized) document elements.  Unknown
+directives will trigger level-3 (error) system messages.
 
 Syntax diagram::
 
-    +-------+--------------------------+
-    | ".. " | directive type "::" data |
-    +-------+ directive block          |
-            |                          |
-            +--------------------------+
+    +-------+-------------------------------+
+    | ".. " | directive type "::" directive |
+    +-------+ block                         |
+            |                               |
+            +-------------------------------+
 
 
 Substitution Definitions
