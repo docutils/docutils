@@ -28,7 +28,7 @@ Exports the following:
 """
 __docformat__ = 'reStructuredText'
 
-import UnitTestFolder
+import package_unittest
 import sys, os, unittest, difflib, inspect, os, sys
 from pprint import pformat
 import docutils
@@ -148,6 +148,9 @@ class CustomTestCase(unittest.TestCase):
         """
         return '%s; %s' % (self.id, unittest.TestCase.__str__(self))
 
+    def __repr__(self):
+        return "<%s %s>" % (self.id, unittest.TestCase.__repr__(self))
+
     def compareOutput(self, input, output, expected):
         """`input`, `output`, and `expected` should all be strings."""
         try:
@@ -230,7 +233,7 @@ class TransformTestCase(CustomTestCase):
         if self.runInDebugger:
             pdb.set_trace()
         doctree = utils.newdocument(warninglevel=5, errorlevel=5,
-                                    debug=UnitTestFolder.debug)
+                                    debug=package_unittest.debug)
         self.parser.parse(self.input, doctree)
         for transformClass in (self.transforms + universal.test_transforms):
             transformClass(doctree).transform()
@@ -244,7 +247,7 @@ class TransformTestCase(CustomTestCase):
         print '-' * 70
         print self.input
         doctree = utils.newdocument(warninglevel=5, errorlevel=5,
-                                    debug=UnitTestFolder.debug)
+                                    debug=package_unittest.debug)
         self.parser.parse(self.input, doctree)
         print '-' * 70
         print doctree.pformat()
@@ -253,6 +256,29 @@ class TransformTestCase(CustomTestCase):
         output = doctree.pformat()
         print '-' * 70
         print output
+        self.compareOutput(self.input, output, self.expected)
+
+
+class ParserTestCase(CustomTestCase):
+
+    """
+    Output checker for the parser.
+
+    Should probably be called ParserOutputChecker, but I can deal with
+    that later when/if someone comes up with a category of parser test
+    cases that have nothing to do with the input and output of the parser.
+    """
+
+    parser = rst.Parser()
+    """Parser shared by all ParserTestCases."""
+
+    def test_parser(self):
+        if self.runInDebugger:
+            pdb.set_trace()
+        document = utils.newdocument(warninglevel=5, errorlevel=5,
+                                     debug=package_unittest.debug)
+        self.parser.parse(self.input, document)
+        output = document.pformat()
         self.compareOutput(self.input, output, self.expected)
 
 
@@ -265,6 +291,8 @@ class ParserTestSuite(CustomTestSuite):
     keeps track of them, and provides a shared test fixture (a-la
     setUp and tearDown).
     """
+
+    test_case_class = ParserTestCase
 
     def generateTests(self, dict, dictname='totest'):
         """
@@ -286,33 +314,25 @@ class ParserTestSuite(CustomTestSuite):
                     else:
                         continue
                 self.addTestCase(
-                      ParserTestCase, 'test_parser',
+                      self.test_case_class, 'test_parser',
                       input=case[0], expected=case[1],
                       id='%s[%r][%s]' % (dictname, name, casenum),
                       runInDebugger=runInDebugger)
 
 
-class ParserTestCase(CustomTestCase):
+class RFC2822ParserTestCase(ParserTestCase):
 
-    """
-    Output checker for the parser.
+    """RFC2822-specific parser test case."""
 
-    Should probably be called ParserOutputChecker, but I can deal with
-    that later when/if someone comes up with a category of parser test
-    cases that have nothing to do with the input and output of the parser.
-    """
+    parser = rst.Parser(rfc2822=1)
+    """Parser shared by all RFC2822ParserTestCases."""
 
-    parser = rst.Parser()
-    """Parser shared by all ParserTestCases."""
 
-    def test_parser(self):
-        if self.runInDebugger:
-            pdb.set_trace()
-        document = utils.newdocument(warninglevel=5, errorlevel=5,
-                                     debug=UnitTestFolder.debug)
-        self.parser.parse(self.input, document)
-        output = document.pformat()
-        self.compareOutput(self.input, output, self.expected)
+class RFC2822ParserTestSuite(ParserTestSuite):
+
+    """A collection of RFC2822ParserTestCases."""
+
+    test_case_class = RFC2822ParserTestCase
 
 
 class TableParserTestSuite(CustomTestSuite):
