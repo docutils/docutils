@@ -100,6 +100,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         text = text.replace("\\", '{\\\\}')
         text = text.replace("&", '{\\&}')
         text = text.replace("_", '{\\_}')
+        text = text.replace("#", '{\\#}')
+        text = text.replace("$", '{\\$}')
+        text = text.replace("^", '{\\^}')
         return text
 
     def attval(self, text,
@@ -200,16 +203,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         elif node.has_key('refname'):
             href = '#' + self.document.nameids[node['refname']]
         self.body.append( ' [' )
-        #href = ''
-        #if node.has_key('refid'):
-        #    href = '#' + node['refid']
-        #elif node.has_key('refname'):
-        #    href = '#' + self.document.nameids[node['refname']]
         #self.body.append(self.starttag(node, 'a', '[', href=href,
         #                               CLASS='citation-reference'))
 
     def depart_citation_reference(self, node):
-        #self.body.append(']</a>')
         self.body.append( '] ' )
 
     def visit_classifier(self, node):
@@ -473,28 +470,17 @@ class LaTeXTranslator(nodes.NodeVisitor):
         del self.body[start:]
 
     def visit_footnote(self, node):
-        self.body.append(self.starttag(node, 'table', CLASS='footnote',
-                                       frame="void", rules="none"))
-        self.body.append('<col class="label" />\n'
-                         '<col />\n'
-                         '<tbody valign="top">\n'
-                         '<tr><td>\n')
+        self.body.append('\\footnote{')
 
     def depart_footnote(self, node):
-        self.body.append('</td></tr>\n'
-                         '</tbody>\n</table>\n')
+        self.body.append('}')
 
     def visit_footnote_reference(self, node):
-        href = ''
-        if node.has_key('refid'):
-            href = '#' + node['refid']
-        elif node.has_key('refname'):
-            href = '#' + self.document.nameids[node['refname']]
-        self.body.append(self.starttag(node, 'a', '', href=href,
-                                       CLASS='footnote-reference'))
+        pass
 
     def depart_footnote_reference(self, node):
-        self.body.append('</a>')
+        pass
+        # self.body.append('}')
 
     def visit_header(self, node):
         self.context.append(len(self.body))
@@ -575,15 +561,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
         #self.body.append('</code>')
 
     def visit_literal_block(self, node):
+        # BUG verbatim does not work because astext does encode.
+        # BUG obeyspaces seams to not care about starting spaces.
         self.body.append('{\\obeylines\\obeyspaces\\ttfamily\n')
         #self.body.append('\\begin{verbatim}')
-        #self.body.append(self.starttag(node, 'pre', suffix='',
-        #                               CLASS='literal-block'))
 
     def depart_literal_block(self, node):
         self.body.append('}\n')
         #self.body.append('\\end{verbatim}\n')
-        #self.body.append('</pre>\n')
 
     def visit_meta(self, node):
         self.body.append('[visit_meta]\n')
@@ -693,6 +678,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             href = '#' + node['refid']
         elif node.has_key('refname'):
             href = '#' + self.document.nameids[node['refname']]
+        href = href.replace('#','_')
         #self.body.append('[visit_reference]')
         self.body.append('\\href{%s}{' % href)
         #self.body.append(self.starttag(node, 'a', '', href=href,
