@@ -27,7 +27,7 @@ Paragraph.
 """,
 """\
 <document source="test data">
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         A comment
     <paragraph>
         Paragraph.
@@ -40,7 +40,7 @@ Paragraph.
 """,
 """\
 <document source="test data">
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         A comment
         block.
     <paragraph>
@@ -54,7 +54,7 @@ Paragraph.
 """,
 """\
 <document source="test data">
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         A comment consisting of multiple lines
         starting on the line after the
         explicit markup start.
@@ -67,9 +67,9 @@ Paragraph.
 """,
 """\
 <document source="test data">
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         A comment.
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         Another.
     <paragraph>
         Paragraph.
@@ -82,7 +82,7 @@ Paragraph.
 """,
 """\
 <document source="test data">
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         A comment
     <system_message level="2" line="2" source="test data" type="WARNING">
         <paragraph>
@@ -101,9 +101,9 @@ Paragraph.
 """,
 """\
 <document source="test data">
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         A comment.
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         Another.
     <system_message level="2" line="3" source="test data" type="WARNING">
         <paragraph>
@@ -120,7 +120,7 @@ Paragraph.
 """,
 """\
 <document source="test data">
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         A comment::
     <paragraph>
         Paragraph.
@@ -134,7 +134,7 @@ the parser from recognizing a directive.
 """,
 """\
 <document source="test data">
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         comment::
     <paragraph>
         The extra newline before the comment text prevents
@@ -149,7 +149,7 @@ the parser from recognizing a hyperlink target.
 """,
 """\
 <document source="test data">
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         _comment: http://example.org
     <paragraph>
         The extra newline before the comment text prevents
@@ -164,7 +164,7 @@ the parser from recognizing a citation.
 """,
 """\
 <document source="test data">
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         [comment] Not a citation.
     <paragraph>
         The extra newline before the comment text prevents
@@ -179,7 +179,7 @@ the parser from recognizing a substitution definition.
 """,
 """\
 <document source="test data">
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         |comment| image:: bogus.png
     <paragraph>
         The extra newline before the comment text prevents
@@ -195,10 +195,10 @@ the parser from recognizing a substitution definition.
 """,
 """\
 <document source="test data">
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         Next is an empty comment, which serves to end this comment and
         prevents the following block quote being swallowed up.
-    <comment xml:space="1">
+    <comment xml:space="preserve">
     <block_quote>
         <paragraph>
             A block quote.
@@ -221,7 +221,7 @@ term 2
             <definition>
                 <paragraph>
                     definition 1
-                <comment xml:space="1">
+                <comment xml:space="preserve">
                     a comment
         <definition_list_item>
             <term>
@@ -248,7 +248,7 @@ term 2
             <definition>
                 <paragraph>
                     definition 1
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         a comment
     <definition_list>
         <definition_list_item>
@@ -275,7 +275,7 @@ term 2
                 bullet paragraph 1
             <paragraph>
                 bullet paragraph 2
-            <comment xml:space="1">
+            <comment xml:space="preserve">
                 comment between bullet paragraphs 2 and 3
             <paragraph>
                 bullet paragraph 3
@@ -293,7 +293,7 @@ term 2
         <list_item>
             <paragraph>
                 bullet paragraph 1
-            <comment xml:space="1">
+            <comment xml:space="preserve">
                 comment between bullet paragraphs 1 (leader) and 2
             <paragraph>
                 bullet paragraph 2
@@ -309,7 +309,7 @@ term 2
         <list_item>
             <paragraph>
                 bullet
-            <comment xml:space="1">
+            <comment xml:space="preserve">
                 trailing comment
 """],
 ]

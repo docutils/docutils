@@ -126,9 +126,9 @@ No blank line.
 """,
 """\
 <document source="test data">
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         [citation label with spaces] this isn't a citation
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         [*citationlabelwithmarkup*] this isn't a citation
 """],
 ]

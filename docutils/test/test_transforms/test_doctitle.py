@@ -36,7 +36,7 @@ Paragraph.
 <document id="title" name="title" source="test data">
     <title>
         Title
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         test title promotion
     <paragraph>
         Paragraph.
@@ -102,7 +102,7 @@ Test short underline.
     <system_message level="2" line="2" source="test data" type="WARNING">
         <paragraph>
             Title underline too short.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             Title
             ====
     <paragraph>
@@ -124,7 +124,7 @@ The system_message should move after the document title
     <system_message level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Title overline too short.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             =======
              Long    Title
             =======
@@ -152,7 +152,7 @@ Paragraph 3.
 <document id="title-1" name="title 1" source="test data">
     <title>
         Title 1
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         Test multiple second-level titles.
     <paragraph>
         Paragraph 1.

@@ -146,27 +146,27 @@ No blank line after.
     <system_message level="2" line="6" source="test data" type="WARNING">
         <paragraph>
             Substitution definition "empty" missing contents.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. |empty|
     <system_message level="3" line="8" source="test data" type="ERROR">
         <paragraph>
             Unknown directive type "directive".
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             directive:: symbol.png
     <system_message level="2" line="8" source="test data" type="WARNING">
         <paragraph>
             Substitution definition "unknown" empty or invalid.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. |unknown| directive:: symbol.png
     <system_message level="2" line="10" source="test data" type="WARNING">
         <paragraph>
             Substitution definition "invalid 1" empty or invalid.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. |invalid 1| there's no directive here
     <system_message level="2" line="11" source="test data" type="WARNING">
         <paragraph>
             Substitution definition "invalid 2" empty or invalid.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. |invalid 2| there's no directive here
                With some block quote text, line 1.
                And some more, line 2.
@@ -180,9 +180,9 @@ No blank line after.
     <system_message level="2" line="15" source="test data" type="WARNING">
         <paragraph>
             Substitution definition "invalid 3" empty or invalid.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. |invalid 3| there's no directive here
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         | bad name | bad data
 """],
 ]

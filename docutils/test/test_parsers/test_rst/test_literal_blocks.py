@@ -29,7 +29,7 @@ A paragraph::
 <document source="test data">
     <paragraph>
         A paragraph:
-    <literal_block xml:space="1">
+    <literal_block xml:space="preserve">
         A literal block.
 """],
 ["""\
@@ -41,7 +41,7 @@ A paragraph with a space after the colons:: \n\
 <document source="test data">
     <paragraph>
         A paragraph with a space after the colons:
-    <literal_block xml:space="1">
+    <literal_block xml:space="preserve">
         A literal block.
 """],
 ["""\
@@ -61,11 +61,11 @@ A final paragraph.
 <document source="test data">
     <paragraph>
         A paragraph:
-    <literal_block xml:space="1">
+    <literal_block xml:space="preserve">
         A literal block.
     <paragraph>
         Another paragraph:
-    <literal_block xml:space="1">
+    <literal_block xml:space="preserve">
         Another literal block.
         With two blank lines following.
     <paragraph>
@@ -84,7 +84,7 @@ one line::
         A paragraph
         on more than
         one line:
-    <literal_block xml:space="1">
+    <literal_block xml:space="preserve">
         A literal block.
 """],
 ["""\
@@ -103,7 +103,7 @@ one line::
     <system_message level="3" line="4" source="test data" type="ERROR">
         <paragraph>
             Unexpected indentation.
-    <literal_block xml:space="1">
+    <literal_block xml:space="preserve">
         A literal block
         with no blank line above.
 """],
@@ -117,7 +117,7 @@ no blank line
 <document source="test data">
     <paragraph>
         A paragraph:
-    <literal_block xml:space="1">
+    <literal_block xml:space="preserve">
         A literal block.
     <system_message level="2" line="4" source="test data" type="WARNING">
         <paragraph>
@@ -134,7 +134,7 @@ A paragraph: ::
 <document source="test data">
     <paragraph>
         A paragraph:
-    <literal_block xml:space="1">
+    <literal_block xml:space="preserve">
         A literal block.
 """],
 ["""\
@@ -148,7 +148,7 @@ A paragraph:
 <document source="test data">
     <paragraph>
         A paragraph:
-    <literal_block xml:space="1">
+    <literal_block xml:space="preserve">
         A literal block.
 """],
 ["""\
@@ -165,7 +165,7 @@ A paragraph:
             Treating it as ordinary text because it's so short.
     <paragraph>
         A paragraph:
-    <literal_block xml:space="1">
+    <literal_block xml:space="preserve">
         A literal block.
 """],
 ["""\
@@ -179,7 +179,7 @@ A paragraph:
 <document source="test data">
     <paragraph>
         A paragraph:
-    <literal_block xml:space="1">
+    <literal_block xml:space="preserve">
         A literal block.
 """],
 ["""\
@@ -209,7 +209,7 @@ A paragraph::
 <document source="test data">
     <paragraph>
         A paragraph:
-    <literal_block xml:space="1">
+    <literal_block xml:space="preserve">
           A wonky literal block.
         Literal line 2.
         \n\

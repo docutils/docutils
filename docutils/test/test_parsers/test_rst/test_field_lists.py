@@ -304,7 +304,7 @@ Multiple body elements:
                     containing multiple elements.
                 <paragraph>
                     Here's a literal block:
-                <literal_block xml:space="1">
+                <literal_block xml:space="preserve">
                     def f(x):
                         return x**2 + x
                 <paragraph>

@@ -35,7 +35,7 @@ totest['images'] = [
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Missing image URI argument.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. image::
 """],
 ["""\
@@ -46,7 +46,7 @@ totest['images'] = [
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Image URI contains whitespace.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. image:: one two three
 """],
 ["""\
@@ -81,7 +81,7 @@ totest['images'] = [
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Missing image URI argument.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. image::
                :height: 100
                :width: 200
@@ -120,7 +120,7 @@ totest['images'] = [
             Error in "image" directive options:
             invalid option data: extension option field body may contain
             a single paragraph only (option "scale").
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. image:: picture.png
                :scale: - 50
 """],
@@ -135,7 +135,7 @@ totest['images'] = [
             Error in "image" directive options:
             invalid option value: (option: "scale"; value: None)
             object can't be converted to int.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. image:: picture.png
                :scale:
 """],
@@ -149,7 +149,7 @@ totest['images'] = [
         <paragraph>
             Error in "image" directive options:
             invalid option block.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. image:: picture.png
                :scale 50
 """],
@@ -162,7 +162,7 @@ totest['images'] = [
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Image URI contains whitespace.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. image:: picture.png
                scale: 50
 """],
@@ -176,7 +176,7 @@ totest['images'] = [
         <paragraph>
             Error in "image" directive options:
             invalid option block.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. image:: picture.png
                :: 50
 """],
@@ -190,7 +190,7 @@ totest['images'] = [
         <paragraph>
             Error in "image" directive options:
             unknown option: "sale".
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. image:: picture.png
                :sale: 50
 """],
@@ -204,7 +204,7 @@ totest['images'] = [
         <paragraph>
             Error in "image" directive options:
             invalid option data: extension option field name may not contain multiple words.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. image:: picture.png
                :scale is: 50
 """],
@@ -219,7 +219,7 @@ totest['images'] = [
             Error in "image" directive options:
             invalid option value: (option: "scale"; value: 'fifty')
             invalid literal for int(): fifty.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. image:: picture.png
                :scale: fifty
 """],
@@ -234,7 +234,7 @@ totest['images'] = [
         <paragraph>
             Error in "image" directive options:
             invalid option data: duplicate option "scale".
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. image:: picture.png
                :scale: 50
                :scale: 50

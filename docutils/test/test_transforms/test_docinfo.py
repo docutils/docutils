@@ -59,7 +59,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
             There can only be one abstract.
         <paragraph>
             It is automatically moved to the end of the other bibliographic elements.
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         Bibliographic element extraction.
 """],
 ["""\
@@ -80,7 +80,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
     <docinfo>
         <author>
             Me
-        <address xml:space="1">
+        <address xml:space="preserve">
             123 My Street
             Example, EX
         <contact>
@@ -110,7 +110,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
             Abstract
         <paragraph>
             Abstract 1.
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         Bibliographic element extraction.
 """],
 ["""\
@@ -160,7 +160,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                 <system_message level="2" source="test data" type="WARNING">
                     <paragraph>
                         Cannot extract empty bibliographic field "Version".
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         and not empty either
 """],
 ["""\
@@ -320,7 +320,7 @@ derived (hacked) in parallel in order to stay in sync.
             test_docinfo.py
         <date>
             %s
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         RCS keyword extraction.
     <paragraph>
         RCS keyword 'RCSfile' doesn't change unless the file name changes,

@@ -77,7 +77,7 @@ Date: 2002-04-23
             <field_body>
                 <paragraph>
                     2002-04-23
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         Leading blank lines don't affect RFC-2822 header parsing.
 """],
 ["""\
@@ -89,7 +89,7 @@ Date: 2002-04-23
 """,
 """\
 <document source="test data">
-    <comment xml:space="1">
+    <comment xml:space="preserve">
         A comment should prevent RFC-2822 header parsing.
     <paragraph>
         Author: Me

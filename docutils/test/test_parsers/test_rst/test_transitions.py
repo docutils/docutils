@@ -132,7 +132,7 @@ Test unexpected transition markers.
         <system_message level="4" line="5" source="test data" type="SEVERE">
             <paragraph>
                 Unexpected section title or transition.
-            <literal_block xml:space="1">
+            <literal_block xml:space="preserve">
                 --------
         <paragraph>
             Paragraph.

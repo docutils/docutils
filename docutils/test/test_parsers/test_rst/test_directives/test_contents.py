@@ -122,7 +122,7 @@ totest['contents'] = [
             Error in "contents" directive options:
             invalid option value: (option: "local"; value: 'arg')
             no argument is allowed; "arg" supplied.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. contents::
                :local: arg
 """],
@@ -157,7 +157,7 @@ totest['contents'] = [
             Error in "contents" directive options:
             invalid option value: (option: "depth"; value: 'two')
             invalid literal for int(): two.
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. contents::
                :depth: two
 """],
@@ -171,7 +171,7 @@ totest['contents'] = [
         <paragraph>
             Error in "contents" directive options:
             unknown option: "width".
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. contents::
                :width: 2
 """],
@@ -186,7 +186,7 @@ totest['contents'] = [
             Error in "contents" directive options:
             invalid option value: (option: "backlinks"; value: 'no way!')
             "no way!" unknown; choose from "top", "entry", or "none".
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. contents::
                :backlinks: no way!
 """],
@@ -201,7 +201,7 @@ totest['contents'] = [
             Error in "contents" directive options:
             invalid option value: (option: "backlinks"; value: None)
             must supply an argument; choose from "top", "entry", or "none".
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. contents::
                :backlinks:
 """],

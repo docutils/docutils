@@ -33,17 +33,17 @@ totest['unknown'] = [
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Unknown directive type "reStructuredText-unknown-directive".
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. reStructuredText-unknown-directive::
     <system_message level="3" line="3" source="test data" type="ERROR">
         <paragraph>
             Unknown directive type "reStructuredText-unknown-directive".
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. reStructuredText-unknown-directive:: argument
     <system_message level="3" line="5" source="test data" type="ERROR">
         <paragraph>
             Unknown directive type "reStructuredText-unknown-directive".
-        <literal_block xml:space="1">
+        <literal_block xml:space="preserve">
             .. reStructuredText-unknown-directive::
                block
 """],
