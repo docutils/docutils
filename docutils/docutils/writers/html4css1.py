@@ -121,8 +121,8 @@ class HTMLTranslator(nodes.NodeVisitor):
               self.html_head % options.language_code,
               self.content_type % options.output_encoding,
               self.generator,
-              self.stylesheet_link % utils.relative_uri(options._destination,
-                                                        options.stylesheet)]
+              self.stylesheet_link % utils.relative_path(options._destination,
+                                                         options.stylesheet)]
         self.head = []
         self.body_prefix = ['</head>\n<body>\n']
         self.body_pre_docinfo = []
@@ -206,7 +206,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_address(self, node):
         self.visit_docinfo_item(node, 'address', meta=None)
         self.body.append(self.starttag(node, 'pre', suffix='',
-                                       CLASS='line-block'))
+                                       CLASS='address'))
 
     def depart_address(self, node):
         self.body.append('</pre>\n')
