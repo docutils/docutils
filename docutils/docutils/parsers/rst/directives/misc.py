@@ -170,19 +170,26 @@ def unicode_directive(name, arguments, options, content, lineno,
     codes = arguments[0].split()
     element = nodes.Element()
     for code in codes:
-        if code.isdigit():
-            element += nodes.Text(int(code))
-        else:
-            match = unicode_pattern.match(code)
-            if match:
-                element += nodes.Text(unichr(int(match.group(2), 16)))
+        try:
+            if code.isdigit():
+                element += nodes.Text(unichr(int(code)))
             else:
-                element += nodes.Text(code)
+                match = unicode_pattern.match(code)
+                if match:
+                    value = match.group(1) or match.group(2)
+                    element += nodes.Text(unichr(int(value, 16)))
+                else:
+                    element += nodes.Text(code)
+        except ValueError, err:
+            error = state_machine.reporter.error(
+                'Invalid character code: %s\n%s' % (code, err),
+                nodes.literal_block(block_text, block_text), line=lineno)
+            return [error]
     return element.children
 
 unicode_directive.arguments = (1, 0, 1)
-unicode_pattern = re.compile(r'(0x|x|\x00x|u|\x00u|&#x)([0-9a-f]+);?$',
-                             re.IGNORECASE)
+unicode_pattern = re.compile(
+    r'(?:0x|x|\x00x|U\+?|\x00u)([0-9a-f]+)$|&#x([0-9a-f]+);$', re.IGNORECASE)
 
 def class_directive(name, arguments, options, content, lineno,
                        content_offset, block_text, state, state_machine):
