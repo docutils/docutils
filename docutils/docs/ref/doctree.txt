@@ -4806,18 +4806,14 @@ Entity definition:
     ( ( (`%body.elements;`_ | topic_ | sidebar_)+,
         (transition_, (`%body.elements;`_ | topic_ | sidebar_)+ )*,
         ( (`%section.elements;`_), (transition_?, (`%section.elements;`_) )* )? )
-    | ( (`%section.elements;`_), (transition_?, (`%section.elements;`_) )* ) ) ">
+    | ( (`%section.elements;`_), (transition_?, (`%section.elements;`_) )* ) )? ">
 
-Each document_ or section_ contains either:
-
-- multiple body elements, topics, and/or sidebars, optionally
-  interspersed with transitions (but transitions cannot occur at the
-  beginning or end, nor may there be two transitions in a row),
-  followed by zero or more sections optionally interspersed with
-  transitions; or
-
-- one or more sections (whose contents are recursively the same as
-  this model) optionally interspersed with transitions.
+Each document_ or section_ contains zero or more body elements,
+topics, and/or sidebars, optionally interspersed with transitions (but
+transitions cannot occur at the beginning or end, nor may there be two
+transitions in a row), followed by zero or more sections (whose
+contents are recursively the same as this model) optionally
+interspersed with transitions.
 
 The `%structure.model;`_ parameter entity is directly employed in the
 content models of the document_ and section_ elements.

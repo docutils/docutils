@@ -853,9 +853,6 @@ Empty Section
     <section id="empty-section" name="empty section">
         <title>
             Empty Section
-        <system_message level="3" line="2" source="test data" type="ERROR">
-            <paragraph>
-                Section empty; must have contents.
 """],
 ["""\
 ===
@@ -891,9 +888,6 @@ Without it, the parser ends up in an infinite loop.
 """,
 """\
 <document source="test data">
-    <system_message level="3" line="0" source="test data" type="ERROR">
-        <paragraph>
-            Document empty; must have contents.
 """],
 ]
 
