@@ -91,12 +91,7 @@ class HTMLTranslator(html4css1.HTMLTranslator):
         settings = self.settings
         if relative_to == None:
             relative_to = settings._destination
-        if settings.pep_stylesheet_path:
-            return utils.relative_path(relative_to,
-                                       settings.pep_stylesheet_path)
-        elif settings.pep_stylesheet:
-            return settings.pep_stylesheet
-        elif settings.stylesheet_path:
+        if settings.stylesheet_path:
             return utils.relative_path(relative_to, settings.stylesheet_path)
         else:
             return settings.stylesheet
