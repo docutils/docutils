@@ -68,10 +68,47 @@ General
 - @@ Add support for character set encodings on input & output, Unicode
   internally.
 
-  - Default UTF-8 on both input & output, overrideable.
-  - Use an "encoding" directive, and/or an "encoding" field in field
-    lists & PEP headers.  (The same could apply to "language".)
-  - Need a Unicode -> HTML entities codec for HTML writer?
+  To determine the encoding, use these heuristics in order:
+
+  - Try the encoding specified by a command-line option, if any.
+
+  - Try the encoding specified by an "encoding" directive, and/or an
+    "encoding" field in field lists & PEP headers, if any.  (The same
+    could apply to "language".)
+
+  - Try ASCII.
+
+  - Try the locale default encoding.
+
+  - Try UTF-8.
+
+  - Try Latin-1.
+
+  From Skip Montanaro's "Using Unicode in Python"::
+
+    def encode_heuristically(s, enc=None):
+        "try interpreting s using several possible encodings"
+        try:
+            x = unicode(s, "ascii")
+            # if it's ascii, just return the plain string
+            return s
+            # you might want to return a Unicode object instead
+            # return x
+        except UnicodeError:
+            encodings = ["cp1252", "utf-8", "iso-8859-15", "iso-8859-1"]
+            # try any caller-provided encoding first
+            if enc: encodings.insert(0, enc)
+            for enc in encodings:
+                try:
+                    x = unicode(s , enc)
+                except UnicodeError:
+                    pass
+                else:
+                    return x
+            # punt
+            return s
+
+- Need a Unicode -> HTML entities codec for HTML writer?
 
 - Distributor/filer object passed to Writer, equivalent passed to
   Reader, to provide I/O access with a uniform API?  (Names for input
@@ -83,6 +120,14 @@ General
   applied to lower-level tasks?  "PySource Reader" or "PySource
   Importer"?  "HTML Writer" or "HTML Exporter"?  If we stick with the
   status quo, what to call the components that do low-level I/O?
+
+  - IOReader, IOWriter
+  - StreamReader, StreamWriter
+  - DataReader, DataWriter
+  - Inputter, Outputter
+  - Scanner, Recorder?
+  - Lector?, Scribe
+  - Loader, Storer/Recorder (maybe subclasses of Storage)
 
 - Fix tests to run standalone.  I.e., allow::
 
