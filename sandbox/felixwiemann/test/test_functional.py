@@ -8,7 +8,13 @@
 
 """Perform the tests with the data in the functional/ directory.
 
-Read the README.txt files for details on how this is done."""
+Read the README.txt files for details on how this is done.
+
+TODO:
+One test per file, not one test for all files.
+Use publish_file?
+Add an option to copy files from output/ to expected/?
+"""
 
 import docutils.core
 import os
@@ -27,7 +33,7 @@ class TestFunctional(unittest.TestCase):
         This is a helper function for os.path.walk.  A config file is
         a Python file (*.py) which sets several veriables."""
         
-        for i in filter(lambda x: x.endswith('.py') and not x == 'default.py',
+        for i in filter(lambda x: x.endswith('.py') and not x.startswith('_'),
                         names):
             configfile = os.path.join(dirname, i)
             """Name of current config file to process."""
@@ -39,7 +45,7 @@ class TestFunctional(unittest.TestCase):
 
             # Read the variables set in the default config file and in
             # the current config file into params.
-            execfile(os.path.join(datadir, 'tests', 'default.py'), params)
+            execfile(os.path.join(datadir, 'tests', '_default.py'), params)
             execfile(configfile, params)
             
             assert params.has_key('test_source'),\
@@ -77,13 +83,19 @@ class TestFunctional(unittest.TestCase):
             self.assert_(os.access(expected_path, os.R_OK),\
                          'Cannot find expected output at\n' + expected_path)
             expected = open(expected_path).read()
-            self.assertEqual(output, expected,
-                             'Functional test failed:\n\n' +
-                             ''.join(difflib.unified_diff(
-                expected.splitlines(1),
-                output.splitlines(1),
-                expected_path,
-                params['destination_path'])))
+            # Generate diff if unified_diff available.
+            if hasattr(difflib, 'unified_diff'):
+                diff = ('Functional test failed:\n\n' +
+                        ''.join(difflib.unified_diff(
+                    expected.splitlines(1),
+                    output.splitlines(1),
+                    expected_path,
+                    params['destination_path'])))
+            else:
+                diff = ('Functional test failed. '
+                        'Please compare the following files:\n%s\n%s\n' %
+                        (expected_path, params['destination_path']))
+            self.assertEqual(output, expected, diff)
 
     def test_functional(self):
         """Process all config files in functional/tests/."""
