@@ -12,6 +12,7 @@ LaTeX2e document tree Writer.
 
 __docformat__ = 'reStructuredText'
 
+# convention deactivate code by two # e.g. ##.
 
 import sys
 import time
@@ -130,7 +131,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item(node)
 
     def visit_admonition(self, node, name):
-        #self.body.append(self.starttag(node, 'div', CLASS=name))
         self.body.append('\\paragraph{'
                          + self.language.labels[name] + '}\n{')
 
@@ -203,8 +203,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_classifier(self, node):
         self.body.append( '(\\textbf{' )
-        #self.body.append(' <span class="classifier-delimiter">:</span> ')
-        #self.body.append(self.starttag(node, 'span', '', CLASS='classifier'))
+        ##self.body.append(' <span class="classifier-delimiter">:</span> ')
+        ##self.body.append(self.starttag(node, 'span', '', CLASS='classifier'))
 
     def depart_classifier(self, node):
         self.body.append( '})\n' )
@@ -212,17 +212,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_colspec(self, node):
         self.body.append('%[visit_colspec]\n')
         self.context[-1] += 1
-        #atts = {}
-        # @@@ colwidth attributes don't seem to work well in HTML
-        #if node.has_key('colwidth'):
-        #    atts['width'] = str(node['colwidth']) + '*'
-        #self.body.append(self.emptytag(node, 'col', **atts))
-        #raise NotImplementedError
-        pass
+        ##atts = {}
+        ## @@@ colwidth attributes don't seem to work well in HTML
+        ##if node.has_key('colwidth'):
+        ##    atts['width'] = str(node['colwidth']) + '*'
+        ##self.body.append(self.emptytag(node, 'col', **atts))
+        ##raise NotImplementedError
 
     def depart_colspec(self, node):
         self.body.append('%[depart_colspec]\n')
-        pass
 
     def visit_comment(self, node,
                       sub=re.compile('\n').sub):
@@ -261,21 +259,18 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_definition(self, node):
-        #self.body.append('</dt>\n')
-        #self.body.append(self.starttag(node, 'dd'))
+        ##self.body.append('</dt>\n')
+        ##self.body.append(self.starttag(node, 'dd'))
         pass
 
     def depart_definition(self, node):
         self.body.append('\n')
-        #self.body.append('</dd>\n')
 
     def visit_definition_list(self, node):
         self.body.append( '\\begin{description}\n' )
-        #self.body.append(self.starttag(node, 'dl'))
 
     def depart_definition_list(self, node):
         self.body.append( '\\end{description}\n' )
-        #self.body.append('</dl>\n')
 
     def visit_definition_list_item(self, node):
         pass
@@ -285,11 +280,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_description(self, node):
         self.body.append( ' & ' )
-        #self.body.append('<td>\n')
 
     def depart_description(self, node):
-        #self.body.append( '' )
-        #self.body.append('</td>')
         pass
 
     def visit_docinfo(self, node):
@@ -313,15 +305,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.head.append('\\author{%s}\n' % self.attval(node.astext()))
             raise nodes.SkipNode
         else:
-            #self.head.append('\\%s{%s}\n'
-            #            % (name, self.attval(node.astext())))
+            ##self.head.append('\\%s{%s}\n'
+            ##            % (name, self.attval(node.astext())))
             self.docinfo.append('\\textbf{:%s:} &\n\t' % name)
             self.context.append(' \\\\\n')
             self.context.append(self.docinfo)
             self.context.append(len(self.body))
-            #self.context.append('')
-            #self.context.append(self.body)
-            #raise nodes.SkipNode
+            ##self.context.append('')
+            ##self.context.append(self.body)
+            ##raise nodes.SkipNode
 
     def depart_docinfo_item(self, node):
         size = self.context.pop()
@@ -334,12 +326,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_doctest_block(self, node):
         self.body.append( '\\begin{verbatim}' )
-        #self.body.append(self.starttag(node, 'pre', suffix='',
-        #                              CLASS='doctest-block'))
 
     def depart_doctest_block(self, node):
         self.body.append( '\\end{verbatim}\n' )
-        #self.body.append('</pre>\n')
 
     def visit_document(self, node):
         self.body_prefix.append('\\begin{document}\n')
@@ -388,24 +377,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.context[-1] += 1
 
     def visit_enumerated_list(self, node):
-        #"""
-        #The 'start' attribute does not conform to HTML 4.01's strict.dtd, but
-        #CSS1 doesn't help. CSS2 isn't widely enough supported yet to be
-        #usable.
-        #"""
-        #atts = {}
-        #if node.has_key('start'):
-        #   atts['start'] = node['start']
-        #if node.has_key('enumtype'):
-        #   atts['class'] = node['enumtype']
-        # @@@ To do: prefix, suffix. How? Change prefix/suffix to a
-        # single "format" attribute? Use CSS2?
-        #self.body.append(self.starttag(node, 'ol', **atts))
         self.body.append('\\begin{enumerate}\n')
 
     def depart_enumerated_list(self, node):
         self.body.append('\\end{enumerate}\n')
-        #self.body.append('</ol>\n')
 
     def visit_error(self, node):
         self.visit_admonition(node, 'error')
@@ -414,36 +389,35 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_field(self, node):
-        #self.body.append('%[visit_field]\n')
+        ##self.body.append('%[visit_field]\n')
         pass
 
     def depart_field(self, node):
         self.body.append('\n')
-        #self.body.append('%[depart_field]\n')
-        pass
+        ##self.body.append('%[depart_field]\n')
 
     def visit_field_argument(self, node):
-        #self.body.append('%[visit_field_argument]\n')
+        ##self.body.append('%[visit_field_argument]\n')
         pass
 
     def depart_field_argument(self, node):
-        #self.body.append('%[depart_field_argument]\n')
+        ##self.body.append('%[depart_field_argument]\n')
         pass
 
     def visit_field_body(self, node):
-        #self.body.append('%[visit_field_body]\n')
+        ##self.body.append('%[visit_field_body]\n')
         pass
 
     def depart_field_body(self, node):
-        #self.body.append('%[depart_field_body]\n')
+        ##self.body.append('%[depart_field_body]\n')
         pass
 
     def visit_field_list(self, node):
-        #self.body.append('\\begin{description}\n')
+        ##self.body.append('\\begin{description}\n')
         pass
 
     def depart_field_list(self, node):
-        #self.body.append('\\end{description}\n')
+        ##self.body.append('\\end{description}\n')
         pass
 
     def visit_field_name(self, node):
@@ -509,10 +483,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_header(self, node):
         start = self.context.pop()
         self.body_prefix.append('\n\\verb|begin_header|\n')
-        #self.body_prefix.append(self.starttag(node, 'div', CLASS='header'))
+        ##self.body_prefix.append(self.starttag(node, 'div', CLASS='header'))
         self.body_prefix.extend(self.body[start:])
         self.body_prefix.append('\n\\verb|end_header|\n')
-#       self.body_prefix.append('<hr />\n</div>\n')
+        ##self.body_prefix.append('<hr />\n</div>\n')
         del self.body[start:]
 
     def visit_hint(self, node):
@@ -524,9 +498,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_image(self, node):
         atts = node.attributes.copy()
         href = atts['uri']
-        #self.body.append('\\begin{center}\n')
+        ##self.body.append('\\begin{center}\n')
         self.body.append('\\includegraphics{%s}\n' % href)
-        #self.body.append('\\end{center}\n')
+        ##self.body.append('\\end{center}\n')
 
     def depart_image(self, node):
         pass
@@ -540,30 +514,23 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_interpreted(self, node):
         # @@@ Incomplete, pending a proper implementation on the
         # Parser/Reader end.
-        #self.body.append('<span class="interpreted">')
         self.visit_literal(node)
 
     def depart_interpreted(self, node):
-        #self.body.append('</span>')
         self.depart_literal(node)
 
     def visit_label(self, node):
         # footnote label
         self.body.append('[')
-        #self.body.append(self.starttag(node, 'p', '[', CLASS='label'))
 
     def depart_label(self, node):
         self.body.append(']')
-        #self.body.append(']</p>\n'
-        #                '</td><td>\n')
 
     def visit_legend(self, node):
         self.body.append('{\\small ')
-        #self.body.append(self.starttag(node, 'div', CLASS='legend'))
 
     def depart_legend(self, node):
         self.body.append('}')
-        #self.body.append('</div>\n')
 
     def visit_line_block(self, node):
         self.visit_literal_block(node)
@@ -573,30 +540,23 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_list_item(self, node):
         self.body.append('\\item ')
-        #self.body.append(self.starttag(node, 'li'))
 
     def depart_list_item(self, node):
         self.body.append('\n')
-        #self.body.append('</li>\n')
 
     def visit_literal(self, node):
         self.body.append('\\texttt{')
-        #self.body.append('<code>')
 
     def depart_literal(self, node):
         self.body.append('}')
-        #self.body.append('</code>')
 
     def visit_literal_block(self, node):
         self.body.append('{\\obeylines\\obeyspaces\\ttfamily\n')
-        #self.body.append('\\begin{verbatim}')
-        #self.body.append(self.starttag(node, 'pre', suffix='',
-        #                              CLASS='literal-block'))
+        ##self.body.append('\\begin{verbatim}')
 
     def depart_literal_block(self, node):
         self.body.append('}\n')
-        #self.body.append('\\end{verbatim}\n')
-        #self.body.append('</pre>\n')
+        ##self.body.append('\\end{verbatim}\n')
 
     def visit_meta(self, node):
         self.body.append('[visit_meta]\n')
@@ -651,11 +611,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\\\\\n')
 
     def visit_option_string(self, node):
-        #self.body.append(self.starttag(node, 'span', '', CLASS='option'))
+        ##self.body.append(self.starttag(node, 'span', '', CLASS='option'))
         pass
 
     def depart_option_string(self, node):
-        #self.body.append('</span>')
+        ##self.body.append('</span>')
         pass
 
     def visit_organization(self, node):
@@ -675,17 +635,17 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('\n')
 
     def visit_problematic(self, node):
-        #if node.hasattr('refid'):
-        #   self.body.append('<a href="#%s">' % node['refid'])
-        #   self.context.append('</a>')
-        #else:
-        #   self.context.append('')
-        #self.body.append(self.starttag(node, 'span', '', CLASS='problematic'))
+        ##if node.hasattr('refid'):
+        ##   self.body.append('<a href="#%s">' % node['refid'])
+        ##   self.context.append('</a>')
+        ##else:
+        ##   self.context.append('')
+        ##self.body.append(self.starttag(node, 'span', '', CLASS='problematic'))
         self.body.append('{\\color{red}\\bfseries{}')
 
     def depart_problematic(self, node):
-        #self.body.append('</span>')
-        #self.body.append(self.context.pop())
+        ##self.body.append('</span>')
+        ##self.body.append(self.context.pop())
         self.body.append('}')
 
     def visit_raw(self, node):
@@ -701,16 +661,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
             href = '#' + node['refid']
         elif node.has_key('refname'):
             href = '#' + self.document.nameids[node['refname']]
-        #self.body.append('[visit_reference]')
+        ##self.body.append('[visit_reference]')
         self.body.append('\\href{%s}{' % href)
-        #self.body.append(self.starttag(node, 'a', '', href=href,
-        #                               CLASS='reference'))
-        pass
 
     def depart_reference(self, node):
         self.body.append('}')
-        #self.body.append('[depart_reference]')
-        pass
+        ##self.body.append('[depart_reference]')
 
     def visit_revision(self, node):
         self.visit_docinfo_item(node, 'revision')
@@ -719,12 +675,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item(node)
 
     def visit_row(self, node):
-        #self.body.append(self.starttag(node, 'tr', ''))
+        ##self.body.append(self.starttag(node, 'tr', ''))
         self.context.append(0)
         pass
 
     def depart_row(self, node):
-        #self.body.append('</tr>\n')
         self.context.pop()  # remove cell counter
         self.body.append(' \\\\ \\hline\n')
 
@@ -788,8 +743,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_target(self, node):
         if not (node.has_key('refuri') or node.has_key('refid')
                 or node.has_key('refname')):
-            #self.body.append(self.starttag(node, 'a', '', CLASS='target'))
-            #self.body.append(str(node))
+            ##self.body.append(self.starttag(node, 'a', '', CLASS='target'))
+            ##self.body.append(str(node))
             self.body.append('\\hypertarget{%s}{' % node['name'])
             self.context.append('}')
         else:
@@ -809,7 +764,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_term(self, node):
         self.body.append('\\item[')
-        #self.body.append(self.starttag(node, 'dt', ''))
+        ##self.body.append(self.starttag(node, 'dt', ''))
 
     def depart_term(self, node):
         self.body.append(']\n')
@@ -866,12 +821,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_topic(self, node):
         self.body.append('% [visit_topic]\n')
-        #self.body.append(self.starttag(node, 'div', CLASS='topic'))
         self.topic_class = node.get('class')
 
     def depart_topic(self, node):
         self.body.append('% [depart_topic]\n')
-        #self.body.append('</div>\n')
         self.topic_class = ''
 
     def visit_transition(self, node):
@@ -879,7 +832,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('%' + '_' * 75)
         self.body.append('\n\\hspace*{\\fill}\\hrulefill\\hspace*{\\fill}')
         self.body.append('\n\n')
-        #self.body.append(self.emptytag(node, 'hr'))
 
     def depart_transition(self, node):
         #self.body.append('[depart_transition]')
