@@ -73,8 +73,8 @@ cd $lib
 cvs -Q update 2>&1 > /dev/null
 
 # update HTML docs
-cd $dest
-for htmlfile in `find . -name '*.html'` ; do
+cd $dest/tools
+for htmlfile in `find .. -name '*.html'` ; do
     dir=`dirname $htmlfile`
     base=`basename $htmlfile .html`
     txtfile=$dir/$base.txt
@@ -82,10 +82,10 @@ for htmlfile in `find . -name '*.html'` ; do
         if [ $unconditional -eq 1 -o $txtfile -nt $htmlfile ] ; then
             if [ "${base:0:4}" == "pep-" ] ; then
                 echo "$txtfile (PEP)"
-                ( cd $dir ; ~/bin/python $lib/tools/pep2html.py $base.txt )
+                ~/bin/python $lib/tools/pep2html.py $txtfile
             else
                 echo $txtfile
-                ~/bin/python $lib/tools/html.py -stg $txtfile $htmlfile
+                ~/bin/python $lib/tools/html.py --config=$dir/docutils.conf $txtfile $htmlfile
             fi
         fi
     fi
