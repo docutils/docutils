@@ -22,6 +22,12 @@ class OptionParser(optik.OptionParser):
     Parser for command-line and library use.  The `cmdline_options` specification here and in other Docutils components are merged
     """
 
+    threshold_choices = 'info 1 warning 2 error 3 severe 4 none 5'.split()
+    """Possible inputs for for --report and --halt threshold values."""
+
+    thresholds = {'info': 1, 'warning': 2, 'error': 3, 'severe': 4, 'none': 5}
+    """Lookup table for --report and --halt threshold values."""
+
     cmdline_options = (
         'General Docutils Options',
         None,
@@ -47,9 +53,9 @@ class OptionParser(optik.OptionParser):
                                  'dest': 'source_link'}),
          ('Set verbosity threshold; report system messages at or higher than '
           '<level> (by name or number: "info" or "1", warning/2, error/3, '
-          'severe/4; also, "none" or 5+).  Default is 2 (warning).',
-          ['--report', '-r'], {'dest': 'report_level', 'default': 2,
-                               'metavar': '<level>'}),
+          'severe/4; also, "none" or "5").  Default is 2 (warning).',
+          ['--report', '-r'], {'choices': threshold_choices, 'default': 2,
+                               'dest': 'report_level', 'metavar': '<level>'}),
          ('Report all system messages, info-level and higher.  (Same as '
           '"--report=info".)',
           ['--verbose', '-v'], {'action': 'store_const', 'const': 'info',
@@ -57,8 +63,8 @@ class OptionParser(optik.OptionParser):
          ('Set the threshold (<level>) at or above which system messages are '
           'converted to exceptions, halting execution immediately.  Levels '
           'as in --report.  Default is 4 (severe).',
-          ['--halt'], {'dest': 'halt_level', 'default': 4,
-                       'metavar': '<level>'}),
+          ['--halt'], {'choices': threshold_choices, 'dest': 'halt_level',
+                       'default': 4, 'metavar': '<level>'}),
          ('Same as "--halt=info": halt processing at the slightest problem.',
           ['--strict'], {'action': 'store_const', 'const': 'info',
                          'dest': 'halt_level'}),
@@ -91,9 +97,6 @@ class OptionParser(optik.OptionParser):
     and/or description may be `None`; no group title implies no group, just a
     list of single options.  Option specs from Docutils components are also
     used (see `populate_from_components()`)."""
-
-    thresholds = {'info': 1, 'warning': 2, 'error': 3, 'severe': 4, 'none': 5}
-    """Lookup table for --report and --halt threshold values."""
 
     version_template = '%%prog (Docutils %s)' % docutils.__version__
 
