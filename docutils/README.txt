@@ -187,8 +187,8 @@ Getting Help
 ============
 
 If you have questions or need assistance with Docutils or
-reStructuredText, please `post a message`__ to the `Docutils-Users
-mailing list`__.
+reStructuredText, please `post a message`_ to the `Docutils-Users
+mailing list`_.
 
 .. _post a message: mailto:docutils-users@lists.sourceforge.net
 .. _Docutils-Users mailing list:
