@@ -237,24 +237,26 @@ Docutils the input encoding.  Docutils uses Unicode internally, so the
 em-dash character is a real em-dash internally.
 
 ReStructuredText has no character entity subsystem; it doesn't know
-anything about XML charents.  "&mdash;" in input text is 7 discrete
-characters to Docutils; no interpretation happens.  When writing HTML,
-the "&" is converted to "&amp;", so in the output you'd see
+anything about XML charents.  To Docutils, "&mdash;" in input text is
+7 discrete characters; no interpretation happens.  When writing HTML,
+the "&" is converted to "&amp;", so in the raw output you'd see
 "&amp;mdash;".  There's no difference in interpretation for text
-inside or outside inline literals or literal blocks -- no character
-entity interpretation in either case.
+inside or outside inline literals or literal blocks -- there's no
+character entity interpretation in either case.
 
 If you can't use a Unicode-compatible encoding and must rely on 7-bit
-ASCII, there is a workaround, although ugly.  David Priest developed a
-substitution table for character entities; see
-<http://article.gmane.org/gmane.comp.python.documentation/432> and
-David's other March Doc-SIG posts.  Incorporating this into Docutils
-is on the `to-do list <spec/notes.html#to-do>`_.
+ASCII, there is a workaround.  Files containing character entity set
+substitution definitions using the "unicode" directive `are available
+<tmp/charents/>`__ (`tarball <tmp/charents.tgz>`__).  A description
+and instructions for use `are here <tmp/charents/README.html>`__.
+Thanks to David Priest for the original idea.  Incorporating these
+files into Docutils is on the `to-do list <spec/notes.html#to-do>`_.
 
 If you insist on using XML-style charents, you'll have to implement a
-pre-processing system to convert to UTF-8 or something.  That opens a
-can of worms though; you can no longer *write* about charents
-naturally; you'd have to write "&amp;mdash;".
+pre-processing system to convert to UTF-8 or something.  That
+introduces complications though; you can no longer *write* about
+charents naturally; instead of writing "&mdash;" you'd have to write
+"&amp;mdash;".
 
 
 How can I generate backticks using a Scandinavian keyboard?
