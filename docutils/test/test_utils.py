@@ -231,24 +231,24 @@ class NameValueTests(unittest.TestCase):
                                    ('att4', 'val4')])
 
 
-class ExtensionAttributeTests(unittest.TestCase):
+class ExtensionOptionTests(unittest.TestCase):
 
-    attributespec = {'a': int, 'bbb': float, 'cdef': (lambda x: x),
-                     'empty': (lambda x: x)}
+    optionspec = {'a': int, 'bbb': float, 'cdef': (lambda x: x),
+                  'empty': (lambda x: x)}
 
-    def test_assemble_attribute_dict(self):
+    def test_assemble_option_dict(self):
         input = utils.extract_name_value('a=1 bbb=2.0 cdef=hol%s' % chr(224))
         self.assertEquals(
-              utils.assemble_attribute_dict(input, self.attributespec),
+              utils.assemble_option_dict(input, self.optionspec),
               {'a': 1, 'bbb': 2.0, 'cdef': ('hol%s' % chr(224))})
         input = utils.extract_name_value('a=1 b=2.0 c=hol%s' % chr(224))
-        self.assertRaises(KeyError, utils.assemble_attribute_dict,
-                          input, self.attributespec)
+        self.assertRaises(KeyError, utils.assemble_option_dict,
+                          input, self.optionspec)
         input = utils.extract_name_value('a=1 bbb=two cdef=hol%s' % chr(224))
-        self.assertRaises(ValueError, utils.assemble_attribute_dict,
-                          input, self.attributespec)
+        self.assertRaises(ValueError, utils.assemble_option_dict,
+                          input, self.optionspec)
 
-    def test_extract_extension_attributes(self):
+    def test_extract_extension_options(self):
         field_list = nodes.field_list()
         field_list += nodes.field(
               '', nodes.field_name('', 'a'),
@@ -262,37 +262,36 @@ class ExtensionAttributeTests(unittest.TestCase):
         field_list += nodes.field(
               '', nodes.field_name('', 'empty'), nodes.field_body())
         self.assertEquals(
-              utils.extract_extension_attributes(field_list,
-                                                 self.attributespec),
+              utils.extract_extension_options(field_list, self.optionspec),
               {'a': 1, 'bbb': 2.0, 'cdef': ('hol%s' % chr(224)),
                'empty': None})
-        self.assertRaises(KeyError, utils.extract_extension_attributes,
+        self.assertRaises(KeyError, utils.extract_extension_options,
                           field_list, {})
         field_list += nodes.field(
               '', nodes.field_name('', 'cdef'),
               nodes.field_body('', nodes.paragraph('', 'one'),
                                nodes.paragraph('', 'two')))
-        self.assertRaises(utils.BadAttributeDataError,
-                          utils.extract_extension_attributes,
-                          field_list, self.attributespec)
+        self.assertRaises(utils.BadOptionDataError,
+                          utils.extract_extension_options,
+                          field_list, self.optionspec)
         field_list[-1] = nodes.field(
               '', nodes.field_name('', 'cdef'),
               nodes.field_argument('', 'bad'),
               nodes.field_body('', nodes.paragraph('', 'no arguments')))
-        self.assertRaises(utils.BadAttributeError,
-                          utils.extract_extension_attributes,
-                          field_list, self.attributespec)
+        self.assertRaises(utils.BadOptionError,
+                          utils.extract_extension_options,
+                          field_list, self.optionspec)
         field_list[-1] = nodes.field(
               '', nodes.field_name('', 'cdef'),
               nodes.field_body('', nodes.paragraph('', 'duplicate')))
-        self.assertRaises(utils.DuplicateAttributeError,
-                          utils.extract_extension_attributes,
-                          field_list, self.attributespec)
+        self.assertRaises(utils.DuplicateOptionError,
+                          utils.extract_extension_options,
+                          field_list, self.optionspec)
         field_list[-2] = nodes.field(
               '', nodes.field_name('', 'unkown'),
               nodes.field_body('', nodes.paragraph('', 'unknown')))
-        self.assertRaises(KeyError, utils.extract_extension_attributes,
-                          field_list, self.attributespec)
+        self.assertRaises(KeyError, utils.extract_extension_options,
+                          field_list, self.optionspec)
 
 
 class MiscFunctionTests(unittest.TestCase):

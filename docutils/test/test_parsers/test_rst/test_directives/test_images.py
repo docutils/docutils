@@ -117,9 +117,9 @@ totest['images'] = [
 <document source="test data">
     <system_message level="3" source="test data" type="ERROR">
         <paragraph>
-            Error in "image" directive attributes at line 1:
-            invalid attribute data: extension attribute field body may contain
-            a single paragraph only (attribute "scale").
+            Error in "image" directive options at line 1:
+            invalid option data: extension option field body may contain
+            a single paragraph only (option "scale").
         <literal_block xml:space="1">
             .. image:: picture.png
                :scale: - 50
@@ -132,8 +132,8 @@ totest['images'] = [
 <document source="test data">
     <system_message level="3" source="test data" type="ERROR">
         <paragraph>
-            Error in "image" directive attributes at line 1:
-            invalid attribute value: (attribute: "scale"; value: None)
+            Error in "image" directive options at line 1:
+            invalid option value: (option: "scale"; value: None)
             object can't be converted to int.
         <literal_block xml:space="1">
             .. image:: picture.png
@@ -147,8 +147,8 @@ totest['images'] = [
 <document source="test data">
     <system_message level="3" source="test data" type="ERROR">
         <paragraph>
-            Error in "image" directive attributes at line 1:
-            invalid attribute block.
+            Error in "image" directive options at line 1:
+            invalid option block.
         <literal_block xml:space="1">
             .. image:: picture.png
                :scale 50
@@ -174,8 +174,8 @@ totest['images'] = [
 <document source="test data">
     <system_message level="3" source="test data" type="ERROR">
         <paragraph>
-            Error in "image" directive attributes at line 1:
-            invalid attribute block.
+            Error in "image" directive options at line 1:
+            invalid option block.
         <literal_block xml:space="1">
             .. image:: picture.png
                :: 50
@@ -188,8 +188,8 @@ totest['images'] = [
 <document source="test data">
     <system_message level="3" source="test data" type="ERROR">
         <paragraph>
-            Error in "image" directive attributes at line 1:
-            unknown attribute: "sale".
+            Error in "image" directive options at line 1:
+            unknown option: "sale".
         <literal_block xml:space="1">
             .. image:: picture.png
                :sale: 50
@@ -202,8 +202,8 @@ totest['images'] = [
 <document source="test data">
     <system_message level="3" source="test data" type="ERROR">
         <paragraph>
-            Error in "image" directive attributes at line 1:
-            invalid attribute value: (attribute: "scale"; value: 'fifty')
+            Error in "image" directive options at line 1:
+            invalid option value: (option: "scale"; value: 'fifty')
             invalid literal for int(): fifty.
         <literal_block xml:space="1">
             .. image:: picture.png
@@ -218,8 +218,8 @@ totest['images'] = [
 <document source="test data">
     <system_message level="3" source="test data" type="ERROR">
         <paragraph>
-            Error in "image" directive attributes at line 1:
-            invalid attribute data: duplicate attribute "scale".
+            Error in "image" directive options at line 1:
+            invalid option data: duplicate option "scale".
         <literal_block xml:space="1">
             .. image:: picture.png
                :scale: 50

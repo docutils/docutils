@@ -104,14 +104,14 @@ totest['figures'] = [
    :width: 200
    :scale: 50
 
-   A picture with image attributes and a caption.
+   A picture with image options and a caption.
 """,
 """\
 <document source="test data">
     <figure>
         <image height="100" scale="50" uri="picture.png" width="200">
         <caption>
-            A picture with image attributes and a caption.
+            A picture with image options and a caption.
 """],
 ["""\
 .. Figure:: picture.png
@@ -120,14 +120,14 @@ totest['figures'] = [
    :width: 200
    :scale: 50
 
-   A picture with image attributes on individual lines, and this caption.
+   A picture with image options on individual lines, and this caption.
 """,
 """\
 <document source="test data">
     <figure>
         <image alt="alternate text" height="100" scale="50" uri="picture.png" width="200">
         <caption>
-            A picture with image attributes on individual lines, and this caption.
+            A picture with image options on individual lines, and this caption.
 """],
 ["""\
 This figure lacks a caption. It may still have a
