@@ -66,38 +66,59 @@ Exceptions
 
 The exceptions to the `Public Domain Dedication`_ above are:
 
-* docutils/optik.py, copyright by Gregory P. Ward, released under a
+* extras/optparse.py, copyright by Gregory P. Ward, released under a
   BSD-style license (which can be found in the module's source code).
 
-* docutils/roman.py, copyright by Mark Pilgrim, released under the
-  `Python 2.1.1 license`_.
+* extras/textwrap.py, copyright by Gregory P. Ward and the Python
+  Software Foundation, released under the `Python 2.3 license`_
+  (`local copy`__).
+
+  __ licenses/python-2-3.txt
+
+* extras/roman.py, copyright by Mark Pilgrim, released under the
+  `Python 2.1.1 license`_ (`local copy`__).
+
+  __ licenses/python-2-1-1.txt
 
 * test/difflib.py, copyright by the Python Software Foundation,
-  released under the `Python 2.2 license`_.  This file is included for
-  compatibility with Python versions less than 2.2; if you have Python
-  2.2 or higher, difflib.py is not needed and may be removed.  (It's
-  only used to report test failures anyhow; it isn't installed
-  anywhere.  The included file is a pre-generator version of the
-  difflib.py module included in Python 2.2.)
+  released under the `Python 2.2 license`_ (`local copy`__).  This
+  file is included for compatibility with Python versions less than
+  2.2; if you have Python 2.2 or higher, difflib.py is not needed and
+  may be removed.  (It's only used to report test failures anyhow; it
+  isn't installed anywhere.  The included file is a pre-generator
+  version of the difflib.py module included in Python 2.2.)
+
+  __ licenses/python-2-2.txt
 
 * tools/pep2html.py, copyright by the Python Software Foundation,
-  released under the `Python 2.2 license`_.
+  released under the `Python 2.2 license`_ (`local copy`__).
+
+  __ licenses/python-2-2.txt
 
 * tools/editors/emacs/rst-html.el, copyright by Martin Blais, released
-  under the `GNU General Public License`_.
+  under the `GNU General Public License`_ (`local copy`__).
+
+  __ licenses/gpl.txt
 
 * tools/editors/emacs/rst-mode.el, copyright by Stefan Merten,
-  released under the `GNU General Public License`_.
+  released under the `GNU General Public License`_ (`local copy`__).
 
-(Disclaimer: I am not a lawyer.)  Both the BSD license and the Python
-license are OSI-approved_ and GPL-compatible_.  Although complicated
+  __ licenses/gpl.txt
+
+(Disclaimer: I am not a lawyer.)  The BSD license and the Python
+licenses are OSI-approved_ and GPL-compatible_.  Although complicated
 by multiple owners and lots of legalese, the Python license basically
 lets you copy, use, modify, and redistribute files as long as you keep
 the copyright attribution intact, note any changes you make, and don't
 use the owner's name in vain.  The BSD license is similar.
 
+Plaintext versions of all the linked-to licenses are provided in the
+licenses_ directory.
+
+.. _licenses: licenses/
 .. _Python 2.1.1 license: http://www.python.org/2.1.1/license.html
 .. _Python 2.2 license: http://www.python.org/2.2/license.html
+.. _Python 2.3 license: http://www.python.org/2.3/license.html
 .. _GNU General Public License: http://www.gnu.org/copyleft/gpl.html
 .. _OSI-approved: http://opensource.org/licenses/
 .. _GPL-compatible: http://www.gnu.org/philosophy/license-list.html

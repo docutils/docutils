@@ -23,12 +23,6 @@ Modules:
 
 - nodes.py: Docutils document tree (doctree) node class library.
 
-- optik.py: Option parsing and command-line help; from Greg Ward's
-  http://optik.sf.net/ project, included for convenience.
-
-- roman.py: Conversion to and from Roman numerals. Courtesy of Mark
-  Pilgrim (http://diveintopython.org/).
-
 - statemachine.py: A finite state machine specialized for
   regular-expression-based text filters.
 
@@ -55,7 +49,7 @@ Subpackages:
 
 __docformat__ = 'reStructuredText'
 
-__version__ = '0.2.9'
+__version__ = '0.2.10'
 """``major.minor.micro`` version number.  The micro number is bumped any time
 there's a change in the API incompatible with one of the front ends.  The
 minor number is bumped whenever there is a project release.  The major number
@@ -85,7 +79,7 @@ class SettingsSpec:
     and/or description may be `None`; no group title implies no group, just a
     list of single options.  Runtime settings names are derived implicitly
     from long option names ("--a-setting" becomes ``settings.a_setting``) or
-    explicitly from the "destination" keyword argument."""
+    explicitly from the "dest" keyword argument."""
 
     settings_defaults = None
     """A dictionary of defaults for internal or inaccessible (by command-line

@@ -24,8 +24,8 @@ import types
 import ConfigParser as CP
 import codecs
 import docutils
-from docutils import optik
-from docutils.optik import Values
+import optparse
+from optparse import Values, SUPPRESS_HELP
 
 
 def store_multiple(option, opt, value, parser, *args, **kwargs):
@@ -58,7 +58,7 @@ def set_encoding(option, opt, value, parser):
     try:
         value = validate_encoding(option.dest, value)
     except LookupError, error:
-        raise (optik.OptionValueError('option "%s": %s' % (opt, error)),
+        raise (optparse.OptionValueError('option "%s": %s' % (opt, error)),
                None, sys.exc_info()[2])
     setattr(parser.values, option.dest, value)
 
@@ -77,7 +77,7 @@ def set_encoding_error_handler(option, opt, value, parser):
     try:
         value = validate_encoding_error_handler(option.dest, value)
     except LookupError, error:
-        raise (optik.OptionValueError('option "%s": %s' % (opt, error)),
+        raise (optparse.OptionValueError('option "%s": %s' % (opt, error)),
                None, sys.exc_info()[2])
     setattr(parser.values, option.dest, value)
 
@@ -106,7 +106,7 @@ def set_encoding_and_error_handler(option, opt, value, parser):
     try:
         value = validate_encoding_and_error_handler(option.dest, value)
     except LookupError, error:
-        raise (optik.OptionValueError('option "%s": %s' % (opt, error)),
+        raise (optparse.OptionValueError('option "%s": %s' % (opt, error)),
                None, sys.exc_info()[2])
     if ':' in value:
         encoding, handler = value.split(':')
@@ -139,7 +139,7 @@ def make_paths_absolute(pathdict, keys, base_path=None):
                 os.path.abspath(os.path.join(base_path, pathdict[key])))
 
 
-class OptionParser(optik.OptionParser, docutils.SettingsSpec):
+class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
 
     """
     Parser for command-line and library use.  The `settings_spec`
@@ -245,7 +245,7 @@ class OptionParser(optik.OptionParser, docutils.SettingsSpec):
           {'action': 'callback', 'callback': set_encoding_and_error_handler,
            'metavar': '<name[:handler]>', 'type': 'string',
            'dest': 'output_encoding', 'default': 'utf-8'}),
-         (optik.SUPPRESS_HELP,          # usually handled by --output-encoding
+         (SUPPRESS_HELP,                # usually handled by --output-encoding
           ['--output_encoding_error_handler'],
           {'action': 'callback', 'callback': set_encoding_error_handler,
            'type': 'string', 'dest': 'output_encoding_error_handler',
@@ -259,7 +259,7 @@ class OptionParser(optik.OptionParser, docutils.SettingsSpec):
           {'action': 'callback', 'callback': set_encoding_and_error_handler,
            'metavar': '<name[:handler]>', 'type': 'string',
            'dest': 'error_encoding', 'default': 'ascii'}),
-         (optik.SUPPRESS_HELP,          # usually handled by --error-encoding
+         (SUPPRESS_HELP,                # usually handled by --error-encoding
           ['--error_encoding_error_handler'],
           {'action': 'callback', 'callback': set_encoding_error_handler,
            'type': 'string', 'dest': 'error_encoding_error_handler',
@@ -276,20 +276,11 @@ class OptionParser(optik.OptionParser, docutils.SettingsSpec):
          ('Show this help message and exit.',
           ['--help', '-h'], {'action': 'help'}),
          # Hidden options, for development use only:
-         (optik.SUPPRESS_HELP,
-          ['--dump-settings'],
-          {'action': 'store_true'}),
-         (optik.SUPPRESS_HELP,
-          ['--dump-internals'],
-          {'action': 'store_true'}),
-         (optik.SUPPRESS_HELP,
-          ['--dump-transforms'],
-          {'action': 'store_true'}),
-         (optik.SUPPRESS_HELP,
-          ['--dump-pseudo-xml'],
-          {'action': 'store_true'}),
-         (optik.SUPPRESS_HELP,
-          ['--expose-internal-attribute'],
+         (SUPPRESS_HELP, ['--dump-settings'], {'action': 'store_true'}),
+         (SUPPRESS_HELP, ['--dump-internals'], {'action': 'store_true'}),
+         (SUPPRESS_HELP, ['--dump-transforms'], {'action': 'store_true'}),
+         (SUPPRESS_HELP, ['--dump-pseudo-xml'], {'action': 'store_true'}),
+         (SUPPRESS_HELP, ['--expose-internal-attribute'],
           {'action': 'append', 'dest': 'expose_internals'}),))
     """Runtime settings and command-line options common to all Docutils front
     ends.  Setting specs specific to individual Docutils components are also
@@ -310,12 +301,9 @@ class OptionParser(optik.OptionParser, docutils.SettingsSpec):
         ``.settings_spec`` attribute.  `defaults` is a mapping of setting
         default overrides.
         """
-        optik.OptionParser.__init__(
-            self, help=None,
-            format=optik.Titled(),
-            # Needed when Optik is updated (replaces above 2 lines):
-            #self, add_help=None,
-            #formatter=optik.TitledHelpFormatter(width=78),
+        optparse.OptionParser.__init__(
+            self, add_help_option=None,
+            formatter=optparse.TitledHelpFormatter(width=78),
             *args, **kwargs)
         if not self.version:
             self.version = self.version_template
@@ -350,7 +338,7 @@ class OptionParser(optik.OptionParser, docutils.SettingsSpec):
             while i < len(settings_spec):
                 title, description, option_spec = settings_spec[i:i+3]
                 if title:
-                    group = optik.OptionGroup(self, title, description)
+                    group = optparse.OptionGroup(self, title, description)
                     self.add_option_group(group)
                 else:
                     group = self        # single options
@@ -387,8 +375,12 @@ class OptionParser(optik.OptionParser, docutils.SettingsSpec):
         source = destination = None
         if args:
             source = args.pop(0)
+            if source == '-':           # means stdin
+                source = None
         if args:
             destination = args.pop(0)
+            if destination == '-':      # means stdout
+                destination = None
         if args:
             self.error('Maximum 2 arguments allowed.')
         if source and source == destination:

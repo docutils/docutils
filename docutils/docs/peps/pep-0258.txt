@@ -366,13 +366,6 @@ Docutils Package Structure
     element class library plus tree-traversal Visitor pattern base
     classes.  See `Document Tree`_ below.
 
-  - Module "docutils.optik" provides option parsing and command-line
-    help; from Greg Ward's http://optik.sf.net/ project, included for
-    convenience.
-
-  - Module "docutils.roman" contains Roman numeral conversion
-    routines.
-
   - Module "docutils.statemachine" contains a finite state machine
     specialized for regular-expression-based text filters and parsers.
     The reStructuredText parser implementation is based on this
@@ -455,10 +448,20 @@ Docutils Package Structure
     - Function "get_language(language_code)", returns matching
       language module.  (``docutils/languages/__init__.py``)
 
-    - Modules: en.py (English), de.py (German), fr.py (French), sk.py
-      (Slovak), sv.py (Swedish).
+    - Modules: en.py (English), de.py (German), fr.py (French), it.py
+      (Italian), sk.py (Slovak), sv.py (Swedish).
 
     - Other languages to be added.
+
+* Third-party modules: "extras" directory.  These modules are
+  installed only if they're not already present in the Python
+  installation.
+
+  - ``extras/optparse.py`` and ``extras/textwrap.py`` provide
+    option parsing and command-line help; from Greg Ward's
+    http://optik.sf.net/ project, included for convenience.
+
+  - ``extras/roman.py`` contains Roman numeral conversion routines.
 
 
 Front-End Tools

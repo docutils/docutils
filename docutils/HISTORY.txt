@@ -44,6 +44,17 @@ hard cash :-).)  Hopefully I haven't forgotten anyone or misspelled
 any names; apologies (and please let me know!) if I have.
 
 
+Future Plans
+============
+
+* The config file layout will be completely overhauled for the 0.4
+  release.
+
+* A Python Source Reader component (Python auto-documentation) will be
+  added as soon as there's enough time, effort, and will.  If you'd
+  like to help, let me know!
+
+
 Changes Since 0.2
 ========================
 
@@ -70,6 +81,11 @@ Specific:
 
 * FAQ.txt: Frequently asked questions, added to project.
 
+* setup.py:
+
+  - Updated with PyPI Trove classifiers.
+  - Conditional installation of third-party modules.
+
 * docutils/__init__.py:
 
   - Bumped version to 0.2.1 to reflect changes to I/O classes.
@@ -88,6 +104,9 @@ Specific:
   - Bumped version to 0.2.8 because of the internal parser switch from
     plain lists to the docutils.statemachine.StringList objects.
   - Bumped version to 0.2.9 because of the frontend.py API changes.
+  - Bumped version to 0.2.10 due to changes to the project layout
+    (third-party modules removed from the "docutils" package), and
+    signature changes in ``io.Input``/``io.Output``.
 
 * docutils/core.py:
 
@@ -128,6 +147,7 @@ Specific:
   - Moved config file processing from docutils/core.py.
   - Updated ``OptionParser.populate_from_components`` to handle new
     ``SettingsSpec.settings_defaults`` dict.
+  - Added support for "-" => stdin/stdout.
 
 * docutils/io.py:
 
@@ -140,7 +160,7 @@ Specific:
   - Added defaults for source & destination paths.
   - Allow for Unicode I/O with an explicit "unicode" encoding.
   - Added ``Output.encode()``.
-  - Deprecated reliance on runtime settings; pass encoding directly.
+  - Removed dependency on runtime settings; pass encoding directly.
   - Recognize Unicode strings in ``Input.decode()``.
   - Added support for output encoding error handlers.
 
@@ -181,6 +201,13 @@ Specific:
   - Made substitutions case-sensitive-but-forgiving; moved some code
     from the parser.
   - Fixed Unicode bug on element attributes (report: William Dode).
+
+* docutils/optik.py: Removed from project; replaced with
+  extras/optparse.py and extras/textwrap.py.  These will be installed
+  only if they're not already present in the Python installation.
+
+* docutils/roman.py: Moved to extras/roman.py; this will be installed
+  only if it's not already present in the Python installation.
 
 * docutils/statemachine.py:
 
@@ -528,6 +555,10 @@ Specific:
   - Added a style to make section title backlinks more subtle.
   - Added mention of minimum section title underline lengths.
   - Removed the 4-character minimum for section title underlines.
+
+* extras: Directory added to project; contains third-party modules
+  that Docutils depends on.  These are only installed if they're not
+  already present.
 
 * spec/doctree.txt:
 
