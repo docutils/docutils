@@ -21,9 +21,9 @@
 :Contact: goodger@users.sourceforge.net
 :Authors: Me; Myself; I
 :organization: humankind
-:date: $Date$
+:date: Now, or yesterday.  Or maybe even *before* yesterday.
 :status: This is a "work in progress"
-:revision: $Revision$
+:revision: is managed by a version control system.
 :version: 1
 :copyright: This document has been placed in the public domain. You
             may do with it as you wish. You may copy, modify,
