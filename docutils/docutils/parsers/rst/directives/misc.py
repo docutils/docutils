@@ -1,14 +1,10 @@
-#! /usr/bin/env python
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
-"""
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
-
-Miscellaneous directives.
-"""
+"""Miscellaneous directives."""
 
 __docformat__ = 'reStructuredText'
 
@@ -26,7 +22,7 @@ def directive_test_function(match, type_name, data, state, state_machine,
         state_machine.next_line()
         indented, indent, offset, blank_finish = state_machine.get_indented()
         text = '\n'.join(indented)
-    except IndexError:
+    except EOFError:
         text = ''
         blank_finish = 1
     if text:

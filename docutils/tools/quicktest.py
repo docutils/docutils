@@ -1,14 +1,12 @@
 #!/usr/bin/env python
 
-"""
-:Author: Garth Kidd
-:Contact: garth@deadlybloodyserious.com
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
-"""
+# Author: Garth Kidd
+# Contact: garth@deadlybloodyserious.com
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
 import locale
 locale.setlocale(locale.LC_ALL, '')
@@ -46,8 +44,8 @@ options = [('pretty', 'p',
            ('attributes', '', 'dump document attributes after processing'),
            ('debug', 'd', 'debug mode (lots of output)'),
            ('help', 'h', 'show help text')]
-"""See distutils.fancy_getopt.FancyGetopt.__init__ for a description of the
-data structure: (long option, short option, description)."""
+"""See ``distutils.fancy_getopt.FancyGetopt.__init__`` for a description of
+the data structure: (long option, short option, description)."""
 
 def usage():
     print usage_header
@@ -186,7 +184,7 @@ Use the next dialog to build a command line:
 def main():
     # process cmdline arguments:
     inputFile, outputFile, outputFormat, optargs = getArgs()
-    options = OptionParser().get_default_values()
+    options = OptionParser(components=(Parser,)).get_default_values()
     options.debug = optargs['debug']
     parser = Parser()
     input = inputFile.read()

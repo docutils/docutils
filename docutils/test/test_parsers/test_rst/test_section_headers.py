@@ -1,14 +1,12 @@
 #! /usr/bin/env python
 
-"""
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
-Tests for states.py.
-"""
+"""Tests for states.py."""
 
 from __init__ import DocutilsTestSupport
 
@@ -587,6 +585,228 @@ Paragraph.
             3. Numbered Title
         <paragraph>
             Paragraph.
+"""],
+["""\
+ABC
+===
+
+Short title.
+""",
+"""\
+<document source="test data">
+    <section id="abc" name="abc">
+        <title>
+            ABC
+        <paragraph>
+            Short title.
+"""],
+["""\
+ABC
+==
+
+Underline too short.
+""",
+"""\
+<document source="test data">
+    <system_message level="1" line="2" source="test data" type="INFO">
+        <paragraph>
+            Possible title underline, too short for the title.
+            Treating it as ordinary text because it's so short.
+    <paragraph>
+        ABC
+        ==
+    <paragraph>
+        Underline too short.
+"""],
+["""\
+==
+ABC
+==
+
+Over & underline too short.
+""",
+"""\
+<document source="test data">
+    <system_message level="1" line="1" source="test data" type="INFO">
+        <paragraph>
+            Possible incomplete section title.
+            Treating the overline as ordinary text because it's so short.
+    <paragraph>
+        ==
+        ABC
+        ==
+    <paragraph>
+        Over & underline too short.
+"""],
+["""\
+==
+ABC
+
+Overline too short, no underline.
+""",
+"""\
+<document source="test data">
+    <system_message level="1" line="1" source="test data" type="INFO">
+        <paragraph>
+            Possible incomplete section title.
+            Treating the overline as ordinary text because it's so short.
+    <paragraph>
+        ==
+        ABC
+    <paragraph>
+        Overline too short, no underline.
+"""],
+["""\
+==
+ABC
+""",
+"""\
+<document source="test data">
+    <system_message level="1" line="1" source="test data" type="INFO">
+        <paragraph>
+            Possible incomplete section title.
+            Treating the overline as ordinary text because it's so short.
+    <paragraph>
+        ==
+        ABC
+"""],
+["""\
+==
+  Not a title: a definition list item.
+""",
+"""\
+<document source="test data">
+    <system_message level="1" line="1" source="test data" type="INFO">
+        <paragraph>
+            Possible incomplete section title.
+            Treating the overline as ordinary text because it's so short.
+    <definition_list>
+        <definition_list_item>
+            <term>
+                ==
+            <definition>
+                <paragraph>
+                    Not a title: a definition list item.
+"""],
+["""\
+==
+  Not a title: a definition list item.
+--
+  Another definition list item.  It's in a different list,
+  but that's an acceptable limitation given that this will
+  probably never happen in real life.
+
+  The next line will trigger a warning:
+==
+""",
+"""\
+<document source="test data">
+    <system_message level="1" line="1" source="test data" type="INFO">
+        <paragraph>
+            Possible incomplete section title.
+            Treating the overline as ordinary text because it's so short.
+    <definition_list>
+        <definition_list_item>
+            <term>
+                ==
+            <definition>
+                <paragraph>
+                    Not a title: a definition list item.
+    <system_message level="2" line="3" source="test data" type="WARNING">
+        <paragraph>
+            Definition list ends without a blank line; unexpected unindent.
+    <system_message level="1" line="3" source="test data" type="INFO">
+        <paragraph>
+            Possible incomplete section title.
+            Treating the overline as ordinary text because it's so short.
+    <definition_list>
+        <definition_list_item>
+            <term>
+                --
+            <definition>
+                <paragraph>
+                    Another definition list item.  It's in a different list,
+                    but that's an acceptable limitation given that this will
+                    probably never happen in real life.
+                <paragraph>
+                    The next line will trigger a warning:
+    <system_message level="2" line="9" source="test data" type="WARNING">
+        <paragraph>
+            Definition list ends without a blank line; unexpected unindent.
+    <paragraph>
+        ==
+"""],
+["""\
+Paragraph
+
+    ==
+    ABC
+    ==
+
+    Over & underline too short.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Paragraph
+    <block_quote>
+        <system_message level="1" line="3" source="test data" type="INFO">
+            <paragraph>
+                Unexpected possible title overline or transition.
+                Treating it as ordinary text because it's so short.
+        <paragraph>
+            ==
+            ABC
+            ==
+        <paragraph>
+            Over & underline too short.
+"""],
+["""\
+...
+...
+
+...
+---
+
+...
+...
+...
+""",
+"""\
+<document source="test data">
+    <system_message level="1" line="1" source="test data" type="INFO">
+        <paragraph>
+            Possible incomplete section title.
+            Treating the overline as ordinary text because it's so short.
+    <section dupname="..." id="id1">
+        <title>
+            ...
+        <system_message level="1" line="4" source="test data" type="INFO">
+            <paragraph>
+                Possible incomplete section title.
+                Treating the overline as ordinary text because it's so short.
+        <section dupname="..." id="id2">
+            <title>
+                ...
+            <system_message backrefs="id2" level="1" source="test data" type="INFO">
+                <paragraph>
+                    Duplicate implicit target name: "...".
+            <system_message level="1" line="7" source="test data" type="INFO">
+                <paragraph>
+                    Possible incomplete section title.
+                    Treating the overline as ordinary text because it's so short.
+    <system_message level="1" line="7" source="test data" type="INFO">
+        <paragraph>
+            Possible incomplete section title.
+            Treating the overline as ordinary text because it's so short.
+    <section dupname="..." id="id3">
+        <title>
+            ...
+        <system_message backrefs="id3" level="1" source="test data" type="INFO">
+            <paragraph>
+                Duplicate implicit target name: "...".
+        <paragraph>
+            ...
 """],
 ]
 

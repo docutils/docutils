@@ -1,12 +1,12 @@
 #! /usr/bin/env python
 
-"""
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
+"""
 Tests for states.py.
 """
 
@@ -978,6 +978,90 @@ cell 3          the bottom border below is too long
             A simple table  this text extends to the right
             cell 3          the bottom border below is too long
             ==============  ========
+"""],
+["""\
+============  =================
+A table with  row separators.
+------------  -----------------
+
+Blank line    before.
+------------  -----------------
+
+Blank lines   before and after.
+
+------------  -----------------
+Blank line    after.
+
+============  =================
+""",
+"""\
+<document source="test data">
+    <table>
+        <tgroup cols="2">
+            <colspec colwidth="12">
+            <colspec colwidth="17">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            A table with
+                    <entry>
+                        <paragraph>
+                            row separators.
+                <row>
+                    <entry>
+                        <paragraph>
+                            Blank line
+                    <entry>
+                        <paragraph>
+                            before.
+                <row>
+                    <entry>
+                        <paragraph>
+                            Blank lines
+                    <entry>
+                        <paragraph>
+                            before and after.
+                <row>
+                    <entry>
+                        <paragraph>
+                            Blank line
+                    <entry>
+                        <paragraph>
+                            after.
+"""],
+["""\
+============  ====================
+A table with  many row separators.
+------------  --------------------
+------------  --------------------
+
+------------  --------------------
+============  ====================
+""",
+"""\
+<document source="test data">
+    <table>
+        <tgroup cols="2">
+            <colspec colwidth="12">
+            <colspec colwidth="20">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            A table with
+                    <entry>
+                        <paragraph>
+                            many row separators.
+                <row>
+                    <entry>
+                    <entry>
+                <row>
+                    <entry>
+                    <entry>
+                <row>
+                    <entry>
+                    <entry>
 """],
 ]
 
