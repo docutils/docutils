@@ -426,8 +426,6 @@ Documentation
 
   - Move ``transforms.txt`` from ``spec/`` to ``docs/lib/``.
 
-  - PEPs in ``spec/``?  Move to ``docs/ref/`` or ``docs/dev/``?
-
   - Move ``alternatives.txt``, ``introduction.txt``, and
     ``problems.txt`` from ``spec/rst/`` to ``docs/dev/rst/``.
     (Move "Doctree Representation of Transitions" section of
