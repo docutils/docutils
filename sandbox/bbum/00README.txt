@@ -1,12 +1,14 @@
-DocArticle
-==========
+=======================
+bbum's DocUtils sandbox
+=======================
 
 :Author: Bill Bumgarner
 :Contact: bbum@codefab.com
+:Copyright:  See individual modules for copyright & license information
 
-DocArticle is an HTML writer for docutils that produces HTML
-documents that are compatible with O'Reilly's DevCenter article
-submission guidelines.  Coincidentally, this results in relatively nicely
-formatted HTML documetns that do not contain any CSS markup.
+DocArticle
+==========
 
+A plain HTML writer for docutils.  Produces non-CSS based HTML that is
+compliant with the O'Reilly DevCenter's article submission guidelines.
 

@@ -1,5 +1,13 @@
-2003-01-05  Bill Bumgarner  <bbum@codefab.com>
+2003-01-07  Bill Bumgarner  <bbum@codefab.com>
+    * DocArticle/DocArticle/__init__.py: Improved formatting of admonitions.
+    Sort of.  Would like to make them better.  Maybe add little icons, if
+    icons are enabled (need to fix settings). 
+    * DocArticle/DocArticle/__init__.py: Improved formatting of
+    abstract/dedication block.  Now in 'box' w/abstract/dedication centered
+    at top.  Should all be in italics, but that'll hose the body formatting
+    of the contained text.
 
+2003-01-05  Bill Bumgarner  <bbum@codefab.com>
     * DocArticle/DocArticle/__init__.py: Can now successfully [I think]
     process test.txt.  Output is not exactly pretty yet.
 
