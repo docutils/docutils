@@ -44,9 +44,6 @@ class MoinWriter(html4css1.Writer):
         if 'id' in node.attributes:
             return 0
         node['refuri'] = node['refname']
-        # The node is being processed by our wiki_resolver so we mark this as a
-        # node that should be run through the MoinMoin parser.
-        node.do_wiki_process = 1
         del node['refname']
         return '1'
     
