@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="%(encoding)s"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" SYSTEM "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=%(encoding)s">
   <meta name="generator" content="Docutils: http://docutils.sourceforge.net/">
   <title>PEP %(pep)s -- %(title)s</title>
   <link rel="stylesheet" href="%(stylesheet)s" type="text/css" />
