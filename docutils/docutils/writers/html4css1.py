@@ -88,6 +88,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.colspecs = []
         self.compact_p = 1
         self.compact_simple = None
+        self.in_docinfo = None
 
     def astext(self):
         return ''.join(self.head_prefix + self.head
@@ -340,15 +341,17 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('<col class="docinfo-name" />\n'
                          '<col class="docinfo-content" />\n'
                          '<tbody valign="top">\n')
+        self.in_docinfo = 1
 
     def depart_docinfo(self, node):
         self.body.append('</tbody>\n</table>\n')
+        self.in_docinfo = None
 
     def visit_docinfo_item(self, node, name):
         self.head.append('<meta name="%s" content="%s" />\n'
                          % (name, self.attval(node.astext())))
         self.body.append(self.starttag(node, 'tr', ''))
-        self.body.append('<td class="docinfo-name">%s:</td><td>\n'
+        self.body.append('<td class="docinfo-name">%s:&nbsp;</td><td>\n'
                          % self.language.labels[name])
 
     def depart_docinfo_item(self):
@@ -427,7 +430,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_field(self, node):
-        self.body.append(self.starttag(node, 'tr', CLASS='field'))
+        self.body.append(self.starttag(node, 'tr', '', CLASS='field'))
 
     def depart_field(self, node):
         self.body.append('</tr>\n')
@@ -460,7 +463,11 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</tbody>\n</table>\n')
 
     def visit_field_name(self, node):
-        self.body.append(self.starttag(node, 'td', '', CLASS='field-name'))
+        if self.in_docinfo:
+            class_name = 'docinfo-name'
+        else:
+            class_name = 'field-name'
+        self.body.append(self.starttag(node, 'td', '', CLASS=class_name))
 
     def depart_field_name(self, node):
         """
