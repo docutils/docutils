@@ -619,6 +619,10 @@ class document(Root, Structural, Element):
         self.substitution_defs = {}
         """Mapping of substitution names to substitution_definition nodes."""
 
+        self.substitution_names = {}
+        """Mapping of case-normalized substitution names to case-sensitive
+        names."""
+
         self.refnames = {}
         """Mapping of names to lists of referencing nodes."""
 
@@ -1442,3 +1446,11 @@ _non_id_at_ends = re.compile('^[-0-9]+|-+$')
 def dupname(node):
     node['dupname'] = node['name']
     del node['name']
+
+def fully_normalize_name(name):
+    """Return a case- and whitespace-normalized name."""
+    return ' '.join(name.lower().split())
+
+def whitespace_normalize_name(name):
+    """Return a whitespace-normalized name."""
+    return ' '.join(name.split())

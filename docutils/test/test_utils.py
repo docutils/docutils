@@ -293,17 +293,5 @@ class ExtensionOptionTests(unittest.TestCase):
                           field_list, self.optionspec)
 
 
-class MiscFunctionTests(unittest.TestCase):
-
-    names = [('a', 'a'), ('A', 'a'), ('A a A', 'a a a'),
-             ('A  a  A  a', 'a a a a'),
-             ('  AaA\n\r\naAa\tAaA\t\t', 'aaa aaa aaa')]
-
-    def test_normalize_name(self):
-        for input, output in self.names:
-            normed = utils.normalize_name(input)
-            self.assertEquals(normed, output)
-
-
 if __name__ == '__main__':
     unittest.main()

@@ -130,5 +130,17 @@ class TreeCopyVisitorTests(unittest.TestCase):
         self.compare_trees(self.document, newtree)
 
 
+class MiscFunctionTests(unittest.TestCase):
+
+    names = [('a', 'a'), ('A', 'a'), ('A a A', 'a a a'),
+             ('A  a  A  a', 'a a a a'),
+             ('  AaA\n\r\naAa\tAaA\t\t', 'aaa aaa aaa')]
+
+    def test_normalize_name(self):
+        for input, output in self.names:
+            normed = nodes.fully_normalize_name(input)
+            self.assertEquals(normed, output)
+
+
 if __name__ == '__main__':
     unittest.main()
