@@ -9,10 +9,13 @@ Default cascading style sheet for the HTML output of Docutils.
 */
 
 .first {
-  margin-top: 0 }
+  margin-top: 0 ! important }
 
 .last {
-  margin-bottom: 0 }
+  margin-bottom: 0 ! important }
+
+.hidden {
+  display: none }
 
 a.toc-backref {
   text-decoration: none ;
@@ -69,6 +72,16 @@ div.figure {
 
 div.footer, div.header {
   font-size: smaller }
+
+div.line-block {
+  display: block ;
+  margin-top: 1em ;
+  margin-bottom: 1em }
+
+div.line-block div.line-block {
+  margin-top: 0 ;
+  margin-bottom: 0 ;
+  margin-left: 1.5em }
 
 div.sidebar {
   margin-left: 1em ;
