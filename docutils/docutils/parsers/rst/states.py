@@ -2820,8 +2820,13 @@ def escape2null(text):
         start = found + 2               # skip character after escape
 
 def unescape(text, restore_backslashes=0):
-    """Return a string with nulls removed or restored to backslashes."""
+    """
+    Return a string with nulls removed or restored to backslashes.
+    Backslash-escaped spaces are also removed.
+    """
     if restore_backslashes:
         return text.replace('\x00', '\\')
     else:
-        return ''.join(text.split('\x00'))
+        for sep in ['\x00 ', '\x00\n', '\x00']:
+            text = ''.join(text.split(sep))
+        return text

@@ -248,6 +248,8 @@ Specific:
   - Added support for embedded URIs in hyperlink references.
   - Added backslash-escapes to inline markup end-string suffix.
   - Added support for correct interpreted text processing.
+  - Added special processing of backslash-escaped whitespace (idea
+    from David Abrahams).
 
 * docutils/parsers/rst/tableparser.py:
 
@@ -535,6 +537,7 @@ Specific:
     (definition lists).
   - Added "Embedded URIs".
   - Updated "Interpreted Text" section.
+  - Added "Character-Level Inline Markup" section.
 
 * test: Continually adding & updating tests.
 

@@ -823,6 +823,26 @@ __This__ should be left alone.
     <paragraph>
         __This__ should be left alone.
 """],
+[r"""
+Character-level m\ *a*\ **r**\ ``k``\ `u`:title:\p
+with backslash-escaped whitespace, including new\
+lines.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Character-level m
+        <emphasis>
+            a
+        <strong>
+            r
+        <literal>
+            k
+        <title_reference>
+            u
+        p
+        with backslash-escaped whitespace, including newlines.
+"""],
 ]
 
 
