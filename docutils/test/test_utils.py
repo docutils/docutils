@@ -33,7 +33,7 @@ class ReporterTests(unittest.TestCase):
         debug output
 """)
         self.assertEquals(self.stream.getvalue(),
-                          'Reporter: DEBUG/0 (test data) debug output\n')
+                          'test data:: (DEBUG/0) debug output\n')
 
     def test_level1(self):
         sw = self.reporter.system_message(1, 'a little reminder')
@@ -52,7 +52,7 @@ class ReporterTests(unittest.TestCase):
         a warning
 """)
         self.assertEquals(self.stream.getvalue(),
-                          'Reporter: WARNING/2 (test data) a warning\n')
+                          'test data:: (WARNING/2) a warning\n')
 
     def test_level3(self):
         sw = self.reporter.system_message(3, 'an error')
@@ -62,12 +62,12 @@ class ReporterTests(unittest.TestCase):
         an error
 """)
         self.assertEquals(self.stream.getvalue(),
-                          'Reporter: ERROR/3 (test data) an error\n')
+                          'test data:: (ERROR/3) an error\n')
 
     def test_level4(self):
         self.assertRaises(utils.SystemMessage, self.reporter.system_message, 4,
                           'a severe error, raises an exception')
-        self.assertEquals(self.stream.getvalue(), 'Reporter: SEVERE/4 (test data) '
+        self.assertEquals(self.stream.getvalue(), 'test data:: (SEVERE/4) '
                           'a severe error, raises an exception\n')
 
 
@@ -163,7 +163,7 @@ class ReporterCategoryTests(unittest.TestCase):
         self.assertEquals(self.stream.getvalue(), '')
         sw = self.reporter.debug('debug output')
         self.assertEquals(self.stream.getvalue(),
-                          'Reporter: DEBUG/0 (test data) debug output\n')
+                          'test data:: (DEBUG/0) debug output\n')
 
     def test_info(self):
         sw = self.reporter.info('some info')
@@ -171,39 +171,39 @@ class ReporterCategoryTests(unittest.TestCase):
         sw = self.reporter.info('some info', category='lemon.curry')
         self.assertEquals(
               self.stream.getvalue(),
-              'Reporter "lemon.curry": INFO/1 (test data) some info\n')
+              'test data:: (INFO/1) some info [lemon.curry]\n')
 
     def test_warning(self):
         sw = self.reporter.warning('a warning')
         self.assertEquals(self.stream.getvalue(),
-                          'Reporter: WARNING/2 (test data) a warning\n')
+                          'test data:: (WARNING/2) a warning\n')
         sw = self.reporter.warning('a warning', category='lemon.curry')
         self.assertEquals(self.stream.getvalue(), """\
-Reporter: WARNING/2 (test data) a warning
-Reporter "lemon.curry": WARNING/2 (test data) a warning
+test data:: (WARNING/2) a warning
+test data:: (WARNING/2) a warning [lemon.curry]
 """)
 
     def test_error(self):
         sw = self.reporter.error('an error')
         self.assertEquals(self.stream.getvalue(),
-                          'Reporter: ERROR/3 (test data) an error\n')
+                          'test data:: (ERROR/3) an error\n')
         self.assertRaises(utils.SystemMessage, self.reporter.error,
                           'an error', category='lemon.curry')
         self.assertEquals(self.stream.getvalue(), """\
-Reporter: ERROR/3 (test data) an error
-Reporter "lemon.curry": ERROR/3 (test data) an error
+test data:: (ERROR/3) an error
+test data:: (ERROR/3) an error [lemon.curry]
 """)
 
     def test_severe(self):
         self.assertRaises(utils.SystemMessage, self.reporter.severe,
                           'a severe error')
         self.assertEquals(self.stream.getvalue(),
-                          'Reporter: SEVERE/4 (test data) a severe error\n')
+                          'test data:: (SEVERE/4) a severe error\n')
         self.assertRaises(utils.SystemMessage, self.reporter.severe,
                           'a severe error', category='lemon.curry')
         self.assertEquals(self.stream.getvalue(), """\
-Reporter: SEVERE/4 (test data) a severe error
-Reporter "lemon.curry": SEVERE/4 (test data) a severe error
+test data:: (SEVERE/4) a severe error
+test data:: (SEVERE/4) a severe error [lemon.curry]
 """)
 
 

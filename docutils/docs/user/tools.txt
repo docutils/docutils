@@ -328,6 +328,13 @@ Some knowledge of Python_ is assumed for some attributes.
 ====================  ================================================
 Config Entry Name     Description
 ====================  ================================================
+expose_internals      (Hidden option, for development use only.)  List
+                      of internal attribues to expose as external
+                      attributes (with "internal:" namespace prefix).
+
+                      Default: don't (None).  Options:
+                      ``--expose-internal-attribute``.
+--------------------  ------------------------------------------------
 compact_lists         (HTML Writer.)  Remove extra vertical whitespace
                       between items of bullet lists and enumerated
                       lists, when list items are "simple" (i.e., all
@@ -361,9 +368,10 @@ debug                 Report debug-level system messages.
                       Default: don't (None).  Options: ``--debug,
                       --no-debug``.
 --------------------  ------------------------------------------------
-dump_internals        (Hidden option.)  At the end of processing,
-                      print out all internal attributes of the
-                      document (``document.__dict__``).
+dump_internals        (Hidden option, for development use only.)  At
+                      the end of processing, print out all internal
+                      attributes of the document
+                      (``document.__dict__``).
 
                       Default: don't (None).  Options:
                       ``--dump-internals``.

@@ -1,12 +1,12 @@
 #! /usr/bin/env python
 
-"""
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
+"""
 Tests for docutils.transforms.references.Footnotes.
 """
 
@@ -218,12 +218,12 @@ Mixed anonymous and labelled auto-numbered footnotes:
     <footnote auto="1" dupname="five" id="id9">
         <label>
             6
-        <system_message backrefs="id9" level="2" source="test data" type="WARNING">
+        <system_message backrefs="id9" level="2" line="12" source="test data" type="WARNING">
             <paragraph>
                 Duplicate explicit target name: "five".
         <paragraph>
             Auto-numbered footnote 5 again (duplicate).
-    <system_message backrefs="id11" id="id10" level="3" source="test data" type="ERROR">
+    <system_message backrefs="id11" id="id10" level="3" line="3" source="test data" type="ERROR">
         <paragraph>
             Too many autonumbered footnote references: only 2 corresponding footnotes available.
 """],
@@ -367,12 +367,12 @@ and labelled auto-numbered footnotes:
     <footnote auto="1" dupname="five" id="id13">
         <label>
             7
-        <system_message backrefs="id13" level="2" source="test data" type="WARNING">
+        <system_message backrefs="id13" level="2" line="15" source="test data" type="WARNING">
             <paragraph>
                 Duplicate explicit target name: "five".
         <paragraph>
             Auto-numbered footnote 5 again (duplicate).
-    <system_message backrefs="id15" id="id14" level="3" source="test data" type="ERROR">
+    <system_message backrefs="id15" id="id14" level="3" line="4" source="test data" type="ERROR">
         <paragraph>
             Too many autonumbered footnote references: only 2 corresponding footnotes available.
 """],

@@ -1,12 +1,12 @@
 #! /usr/bin/env python
 
-"""
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
+"""
 Tests for docutils.transforms.references.Hyperlinks.
 """
 
@@ -127,7 +127,7 @@ indirect_ internal
     <section dupname="implicit" id="id1">
         <title>
             Implicit
-        <system_message backrefs="id1" level="1" source="test data" type="INFO">
+        <system_message backrefs="id1" level="1" line="7" source="test data" type="INFO">
             <paragraph>
                 Duplicate implicit target name: "implicit".
         <paragraph>
@@ -135,7 +135,7 @@ indirect_ internal
                 indirect_
              internal
         <target id="indirect" name="indirect" refname="implicit">
-    <system_message backrefs="id3" id="id2" level="2" source="test data" type="WARNING">
+    <system_message backrefs="id3" id="id2" level="2" line="11" source="test data" type="WARNING">
         <paragraph>
             Indirect hyperlink target "indirect" (id="indirect") refers to target "implicit", which does not exist.
 """],
@@ -210,7 +210,7 @@ __ ztarget_
     <target dupname="ztarget" id="ztarget">
     <paragraph>
         First
-    <system_message backrefs="id1" level="2" source="test data" type="WARNING">
+    <system_message backrefs="id1" level="2" line="5" source="test data" type="WARNING">
         <paragraph>
             Duplicate explicit target name: "ztarget".
     <target dupname="ztarget" id="id1">
@@ -220,7 +220,7 @@ __ ztarget_
         <problematic id="id4" refid="id3">
             `indirect internal`__
     <target anonymous="1" id="id2" refname="ztarget">
-    <system_message backrefs="id4" id="id3" level="2" source="test data" type="WARNING">
+    <system_message backrefs="id4" id="id3" level="2" line="11" source="test data" type="WARNING">
         <paragraph>
             Indirect hyperlink target (id="id2") refers to target "ztarget", which does not exist.
 """],
@@ -295,7 +295,7 @@ The results of the transform are not visible at the XML level.
 <document source="test data">
     <target id="external-hyperlink" name="external hyperlink" refuri="http://uri">
     <target id="indirect-target" name="indirect target" refuri="http://uri">
-    <system_message level="1" source="test data" type="INFO">
+    <system_message level="1" line="2" source="test data" type="INFO">
         <paragraph>
             Indirect hyperlink target "indirect target" is not referenced.
 """],
@@ -408,7 +408,7 @@ Duplicate external target_'s (different URIs):
             target
         's (different URIs):
     <target dupname="target" id="target" refuri="first">
-    <system_message backrefs="id1" level="2" source="test data" type="WARNING">
+    <system_message backrefs="id1" level="2" line="5" source="test data" type="WARNING">
         <paragraph>
             Duplicate explicit target name: "target".
     <target dupname="target" id="id1" refuri="second">
@@ -434,6 +434,7 @@ __ http://example.org
     <system_message backrefs="id3 id4 id5" id="id2" level="3" source="test data" type="ERROR">
         <paragraph>
             Anonymous hyperlink mismatch: 3 references but 1 targets.
+            See "backrefs" attribute for IDs.
 """],
 ])
 

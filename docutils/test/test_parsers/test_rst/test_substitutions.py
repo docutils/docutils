@@ -133,7 +133,7 @@ Here are some duplicate substitution definitions:
         Here are some duplicate substitution definitions:
     <substitution_definition dupname="symbol">
         <image alt="symbol" uri="symbol.png">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="4" source="test data" type="ERROR">
         <paragraph>
             Duplicate substitution definition name: "symbol".
     <substitution_definition name="symbol">

@@ -1,11 +1,10 @@
-#! /usr/bin/env python
-"""
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
+"""
 Transforms for PEP processing.
 
 - `Headers`: Used to transform a PEP's initial RFC-2822 header.  It remains a

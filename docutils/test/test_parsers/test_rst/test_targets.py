@@ -170,7 +170,7 @@ Duplicate external targets (different URIs):
     <paragraph>
         Duplicate external targets (different URIs):
     <target dupname="target" id="target" refuri="first">
-    <system_message backrefs="id1" level="2" source="test data" type="WARNING">
+    <system_message backrefs="id1" level="2" line="5" source="test data" type="WARNING">
         <paragraph>
             Duplicate explicit target name: "target".
     <target dupname="target" id="id1" refuri="second">
@@ -187,7 +187,7 @@ Duplicate external targets (same URIs):
     <paragraph>
         Duplicate external targets (same URIs):
     <target id="target" name="target" refuri="first">
-    <system_message backrefs="id1" level="1" source="test data" type="INFO">
+    <system_message backrefs="id1" level="1" line="5" source="test data" type="INFO">
         <paragraph>
             Duplicate explicit target name: "target".
     <target dupname="target" id="id1" refuri="first">
@@ -217,7 +217,7 @@ Paragraph.
     <section dupname="title" id="id1">
         <title>
             Title
-        <system_message backrefs="id1" level="1" source="test data" type="INFO">
+        <system_message backrefs="id1" level="1" line="9" source="test data" type="INFO">
             <paragraph>
                 Duplicate implicit target name: "title".
         <paragraph>
@@ -240,7 +240,7 @@ Paragraph.
     <section dupname="title" id="title">
         <title>
             Title
-        <system_message backrefs="id1" level="1" source="test data" type="INFO">
+        <system_message backrefs="id1" level="1" line="6" source="test data" type="INFO">
             <paragraph>
                 Duplicate implicit target name: "title".
         <target id="id1" name="title">
@@ -269,13 +269,13 @@ Third.
     <target dupname="title" id="title">
     <paragraph>
         First.
-    <system_message backrefs="id1" level="2" source="test data" type="WARNING">
+    <system_message backrefs="id1" level="2" line="7" source="test data" type="WARNING">
         <paragraph>
             Duplicate explicit target name: "title".
     <target dupname="title" id="id1">
     <paragraph>
         Second.
-    <system_message backrefs="id2" level="2" source="test data" type="WARNING">
+    <system_message backrefs="id2" level="2" line="11" source="test data" type="WARNING">
         <paragraph>
             Duplicate explicit target name: "title".
     <target dupname="title" id="id2">
@@ -312,24 +312,24 @@ Explicit internal target.
         <citation dupname="target" id="id1">
             <label>
                 target
-            <system_message backrefs="id1" level="1" source="test data" type="INFO">
+            <system_message backrefs="id1" level="1" line="8" source="test data" type="INFO">
                 <paragraph>
                     Duplicate implicit target name: "target".
             <paragraph>
                 Citation target.
         <footnote auto="1" dupname="target" id="id2">
-            <system_message backrefs="id2" level="2" source="test data" type="WARNING">
+            <system_message backrefs="id2" level="2" line="10" source="test data" type="WARNING">
                 <paragraph>
                     Duplicate explicit target name: "target".
             <paragraph>
                 Autonumber-labeled footnote target.
-        <system_message backrefs="id3" level="2" source="test data" type="WARNING">
+        <system_message backrefs="id3" level="2" line="12" source="test data" type="WARNING">
             <paragraph>
                 Duplicate explicit target name: "target".
         <target dupname="target" id="id3">
         <paragraph>
             Explicit internal target.
-        <system_message backrefs="id4" level="2" source="test data" type="WARNING">
+        <system_message backrefs="id4" level="2" line="16" source="test data" type="WARNING">
             <paragraph>
                 Duplicate explicit target name: "target".
         <target dupname="target" id="id4" refuri="Explicit_external_target">

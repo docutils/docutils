@@ -89,13 +89,25 @@ General
 
   - A queue, with entries ``(priority, transform, pending=None)``.
   - Transform classes can have ``priority`` class attributes.
+    Each transform could have a unique priority.  Use a look-up table?
+    No, that would require too many imports to construct.
   - Priorities can be numeric.  Integers (0..100?  0..999?
     0..9999?)?  Floats (would be easier to squeeze in new ones)?
   - Priorities can be strings.  Numeric (000..999?  0000..9999?)?
     Alphanumeric (a..z?  1, 1a, 1b, ...?)?
-  - Each transform would have a unique priority.  Use a look-up table?
-    No, that would require too many imports to construct.  Document
-    transform priorities.
+  - Document transform priorities.
+  - Add a ``Transformer`` class to register and execute transforms.
+    Perhaps ``Transformer.add_transform(transform, priority=None)``,
+    where ``priority`` can be used to override the transform class'
+    ``default_priority`` class attribute (used if ``None``).
+  - Perhaps a ``Transformer.add_transforms(transform_list)`` method
+    for quick population.  ``docutils.Component`` could be the host
+    for the "transforms" class attribute and an ``add_transforms()``.
+    A ``self.add_transforms()`` call could be added to component
+    initialization routines.
+  - How to handle ``pending`` elements?  Perhaps a
+    ``Transformer.add_transform(transform, priority=None)`` method?
+    Just call it from ``nodes.document.note_pending()``.
 
 * @@@ Break up ``references.Hyperlinks`` into multiple smaller
   transforms.

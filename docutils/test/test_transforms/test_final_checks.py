@@ -1,12 +1,12 @@
 #! /usr/bin/env python
 
-"""
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
+"""
 Tests for docutils.transforms.universal.FinalChecks.
 """
 
@@ -34,7 +34,7 @@ Unknown reference_.
         <problematic id="id2" refid="id1">
             reference_
         .
-    <system_message backrefs="id2" id="id1" level="3" source="test data" type="ERROR">
+    <system_message backrefs="id2" id="id1" level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Unknown target name: "reference".
 """],

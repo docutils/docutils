@@ -1,11 +1,10 @@
-#! /usr/bin/env python
-"""
-:Authors: David Goodger, Ueli Schlaepfer, Dmitry Jemerov
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Authors: David Goodger, Ueli Schlaepfer, Dmitry Jemerov
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
+"""
 Transforms related to document parts.
 
 - `Contents`: Used to build a table of contents.

@@ -788,7 +788,7 @@ Paragraph
         <section dupname="..." id="id2">
             <title>
                 ...
-            <system_message backrefs="id2" level="1" source="test data" type="INFO">
+            <system_message backrefs="id2" level="1" line="5" source="test data" type="INFO">
                 <paragraph>
                     Duplicate implicit target name: "...".
             <system_message level="1" line="7" source="test data" type="INFO">
@@ -802,7 +802,7 @@ Paragraph
     <section dupname="..." id="id3">
         <title>
             ...
-        <system_message backrefs="id3" level="1" source="test data" type="INFO">
+        <system_message backrefs="id3" level="1" line="8" source="test data" type="INFO">
             <paragraph>
                 Duplicate implicit target name: "...".
         <paragraph>
