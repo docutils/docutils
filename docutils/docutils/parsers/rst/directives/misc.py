@@ -48,7 +48,14 @@ def include(name, arguments, options, content, lineno,
               % (name, error.__class__.__name__, error),
               nodes.literal_block(block_text, block_text), line=lineno)
         return [severe]
-    include_text = include_file.read()
+    try:
+        include_text = include_file.read()
+    except UnicodeError, error:
+        severe = state_machine.reporter.severe(
+              'Problem with "%s" directive:\n%s: %s'
+              % (name, error.__class__.__name__, error),
+              nodes.literal_block(block_text, block_text), line=lineno)
+        return [severe]
     if options.has_key('literal'):
         literal_block = nodes.literal_block(include_text, include_text,
                                             source=path)
@@ -106,7 +113,14 @@ def raw(name, arguments, options, content, lineno,
                   'Problems with "%s" directive path:\n%s.' % (name, error),
                   nodes.literal_block(block_text, block_text), line=lineno)
             return [severe]
-        text = raw_file.read()
+        try:
+            text = raw_file.read()
+        except UnicodeError, error:
+            severe = state_machine.reporter.severe(
+                  'Problem with "%s" directive:\n%s: %s'
+                  % (name, error.__class__.__name__, error),
+                  nodes.literal_block(block_text, block_text), line=lineno)
+            return [severe]
         attributes['source'] = path
     elif options.has_key('url'):
         if not urllib2:
@@ -128,7 +142,14 @@ def raw(name, arguments, options, content, lineno,
         raw_file = io.StringInput(
             source=raw_text, source_path=source, encoding=encoding,
             error_handler=state.document.settings.input_encoding_error_handler)
-        text = raw_file.read()
+        try:
+            text = raw_file.read()
+        except UnicodeError, error:
+            severe = state_machine.reporter.severe(
+                  'Problem with "%s" directive:\n%s: %s'
+                  % (name, error.__class__.__name__, error),
+                  nodes.literal_block(block_text, block_text), line=lineno)
+            return [severe]
         attributes['source'] = source
     else:
         error = state_machine.reporter.warning(
