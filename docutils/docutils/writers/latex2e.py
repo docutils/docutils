@@ -693,9 +693,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_doctest_block(self, node):
         self.body.append( '\\begin{verbatim}' )
+        self.verbatim = 1
 
     def depart_doctest_block(self, node):
         self.body.append( '\\end{verbatim}\n' )
+        self.verbatim = 0
 
     def visit_document(self, node):
         self.body_prefix.append('\\begin{document}\n')
