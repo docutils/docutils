@@ -25,26 +25,30 @@ class Filter(Transform):
     Include or exclude elements which depend on a specific Docutils component.
 
     For use with `nodes.pending` elements.  A "pending" element's dictionary
-    attribute ``details`` must contain a key matching the dependency component
-    type (e.g. ``details['writer']`` for a "pending" element whose ``stage``
-    attribute is 'last writer').  The value is the name of a specific format
-    or context of that component (e.g. ``details['writer'] = 'html'``).  If
-    the Docutils component which called this transform supports that format or
-    context, the "pending" element is replaced by the contents of
+    attribute ``details`` must contain the keys "component" and "format".  The
+    value of ``details['component']`` must match the type name of the
+    component the elements depend on (e.g. "writer").  The value of
+    ``details['format']`` is the name of a specific format or context of that
+    component (e.g. "html").  If the matching Docutils component supports that
+    format or context, the "pending" element is replaced by the contents of
     ``details['nodes']`` (a list of nodes); otherwise, the "pending" element
     is removed.
 
     For example, the reStructuredText "meta" directive creates a "pending"
     element containing a "meta" element (in ``pending.details['nodes']``).
-    Only writers supporting the "html" format will include the "meta" element;
-    it will be deleted from the output of all other writers.
+    Only writers (``pending.details['component'] == 'writer'``) supporting the
+    "html" format (``pending.details['format'] == 'html'``) will include the
+    "meta" element; it will be deleted from the output of all other writers.
     """
+
+    default_priority = 780
 
     def apply(self):
         pending = self.startnode
-        component_type = pending.stage.split()[-1] # 'reader' or 'writer'
-        component_name = pending.details[component_type]
-        if self.component.supports(component_name):
+        component_type = pending.details['component'] # 'reader' or 'writer'
+        format = pending.details['format']
+        component = self.document.transformer.components[component_type]
+        if component.supports(format):
             pending.parent.replace(pending, pending.details['nodes'])
         else:
             pending.parent.remove(pending)

@@ -273,12 +273,13 @@ class TransformTestCase(CustomTestCase):
         if self.run_in_debugger:
             pdb.set_trace()
         document = utils.new_document('test data', self.settings)
-        document.reporter.attach_observer(document.note_parse_message)
         self.parser.parse(self.input, document)
-        document.reporter.detach_observer(document.note_parse_message)
-        document.reporter.attach_observer(document.note_transform_message)
-        for transformClass in (self.transforms + universal.test_transforms):
-            transformClass(document, self).apply()
+        # Don't do a ``populate_from_components()`` because that would
+        # enable the Transformer's default transforms.
+        document.transformer.add_transforms(self.transforms)
+        document.transformer.add_transform(universal.TestMessages)
+        document.transformer.components['writer'] = self
+        document.transformer.apply_transforms()
         output = document.pformat()
         self.compare_output(self.input, output, self.expected)
 

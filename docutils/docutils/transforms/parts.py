@@ -6,9 +6,6 @@
 
 """
 Transforms related to document parts.
-
-- `Contents`: Used to build a table of contents.
-- `SectNum`: Used to automatically number the section titles.
 """
 
 __docformat__ = 'reStructuredText'
@@ -23,13 +20,16 @@ from docutils.transforms import TransformError, Transform
 class SectNum(Transform):
 
     """
-    This transform automatically assigns numbers to the titles of
-    document sections.  It is possible to limit the maximum section
-    level for which the numbers are added.  For those sections that
-    are auto-numbered, the "autonum" attribute is set, informing the
-    contents table generator that a different form of the TOC should
-    be used.
+    Automatically assigns numbers to the titles of document sections.
+
+    It is possible to limit the maximum section level for which the numbers
+    are added.  For those sections that are auto-numbered, the "autonum"
+    attribute is set, informing the contents table generator that a different
+    form of the TOC should be used.
     """
+
+    default_priority = 710
+    """Should be applied before `Contents`."""
 
     def apply(self):
         self.maxdepth = self.startnode.details.get('depth', sys.maxint)
@@ -68,6 +68,8 @@ class Contents(Transform):
     options and provides the location for the generated table of contents (the
     startnode is replaced by the table of contents "topic").
     """
+
+    default_priority = 720
 
     def apply(self):
         topic = nodes.topic(CLASS='contents')
