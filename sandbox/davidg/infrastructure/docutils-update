@@ -74,15 +74,15 @@ tar -czf $project-web-snapshot.tgz web
 ( cd sandbox/gschwant ; tar -czf ../../docfactory-snapshot.tgz docfactory )
 
 # plant the snapshots
-mv *snapshot.tgz $dest
+mv -f *snapshot.tgz $dest
 
 # update htdocs
 cd $project
-cp -ru . $dest
+cp -ruf . $dest
 cd ..
-cp -ru sandbox $dest
+cp -ruf sandbox $dest
 cd web
-cp -ru . $dest
+cp -ruf . $dest
 
 # destroy the evidence
 cd
