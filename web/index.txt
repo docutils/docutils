@@ -19,7 +19,7 @@
    documentation.  URL redirection is in place, but if there are any
    broken links or other issues, please notify the `docutils-users
    mailing list <mailto:docutils-users@lists.sourceforge.net>`__.
-      
+
 The purpose of the Docutils project is to create a set of tools for
 processing plaintext documentation into useful formats, such as HTML,
 XML, and TeX.  Includes reStructuredText_, the easy to read, easy to
@@ -235,124 +235,11 @@ __ http://news.gmane.org/gmane.text.docutils.cvs
 __ http://news.gmane.org/gmane.comp.python.documentation
 
 
-User Documentation
-==================
+Documentation
+=============
 
-The latest working documents may be accessed individually below, or
-from the ``docs`` directory of the `development snapshots`_ above. 
-They are also distributed with the `latest project release package`_,
-but those may not be completely up to date.
-
-- `A ReStructuredText Primer`__ (HTML file, or `text source`__)
-- `Quick reStructuredText`__ (user reference)
-- `reStructuredText Cheat Sheet`__ (text only; 1 page for syntax, 1
-  page directive & role reference)
-- `Docutils Front-End Tools`__
-- `Docutils Configuration Files`__
-
-Also see the `Docutils FAQ`_.
-
-__ docs/rst/quickstart.html
-__ docs/rst/quickstart.txt
-__ docs/rst/quickref.html
-__ docs/rst/cheatsheet.txt
-__ docs/tools.html
-__ docs/config.html
-
-
-Developer Documentation
-=======================
-
-Specification
--------------
-
-PEPs (Python Enhancement Proposals)
-```````````````````````````````````
-
-- `PEP 287: reStructuredText Docstring Format`__ proposes a standard
-  markup syntax.  [`PEP 287`__ in the `master repository`_]
-- `PEP 257: Docstring Conventions`__ addresses docstring style and
-  touches on content.  [`PEP 257`__ in the `master repository`_]
-- `PEP 256: Docstring Processing System Framework`__ presents a
-  high-level generic processing proposal.  [`PEP 256`__ in the `master
-  repository`_]
-- `PEP 258: Docutils Design Specification`__ documents design issues
-  and implementation details for Docutils (this project), a specific
-  docstring processing system.  [`PEP 258`__ in the `master
-  repository`_]
-
-Please note that PEPs in the `master repository`_ may not be current,
-whereas the local versions are.
-
-__ spec/pep-0287.html
-__ http://www.python.org/peps/pep-0287.html
-__ spec/pep-0257.html
-__ http://www.python.org/peps/pep-0257.html
-__ spec/pep-0256.html
-__ http://www.python.org/peps/pep-0256.html
-__ spec/pep-0258.html
-__ http://www.python.org/peps/pep-0258.html
-
-
-Docutils Internals
-``````````````````
-
-- Notes__ (includes the Docutils `To Do list`_ and `Project
-  Policies`__)
-- `The Docutils Document Tree`__ (incomplete)
-- `Docutils Transforms`__
-- `Docstring Semantics`__ (incomplete)
-- `Docutils Generic DTD`__
-- `OASIS XML Exchange Table Model Declaration Module`__ (CALS tables
-  DTD module)
-- `Python Source Reader`_ (incomplete)
-- `Docutils Python DTD`_ (experimental)
-
-__ spec/notes.html
-__ spec/notes.html#project-policies
-__ spec/doctree.html
-__ spec/transforms.html
-__ spec/semantics.html
-__ spec/docutils.dtd
-__ spec/soextblx.dtd
-.. _Python Source Reader: spec/pysource.html
-.. _Docutils Python DTD: spec/pysource.dtd
-
-
-reStructuredText
-````````````````
-
-Please also see the `reStructuredText home page`__.
-
-- `An Introduction to reStructuredText`__ (includes the Goals__ and
-  History__ of reStructuredText)
-- `reStructuredText Markup Specification`__
-- `reStructuredText Directives`__
-- `reStructuredText Interpreted Text Roles`__
-- `A Record of reStructuredText Syntax Alternatives`__
-- `Problems With StructuredText`__
-
-__ rst.html
-__ spec/rst/introduction.html
-__ spec/rst/introduction.html#goals
-__ spec/rst/introduction.html#history
-__ spec/rst/reStructuredText.html
-__ spec/rst/directives.html
-__ spec/rst/interpreted.html
-__ spec/rst/alternatives.html
-__ spec/rst/problems.html
-
-
-How-To's
---------
-
-- `Docutils Internationalization`__
-- `Creating reStructuredText Directives`__
-- `Creating reStructuredText Interpreted Text Roles`__
-
-__ spec/howto/i18n.html
-__ spec/howto/rst-directives.html
-__ spec/howto/rst-roles.html
+Please see the `Docutils Project Documentation Overview
+<docs/index.html>`_.
 
 
 The Sandbox
@@ -384,10 +271,10 @@ docutils-develop@lists.sourceforge.net.
 * ZReST_, by Richard Jones, is a "ReStructuredText Document for Zope"
   application that is complete and ready to install.
 
-* PySource_, by Tony Ibbs, is an experimental Python source Reader. 
+* PySource_, by Tony Ibbs, is an experimental Python source Reader.
   In some form, it will soon become part of core Docutils.  There is
   some related code in David Goodger's sandbox (pysource_reader_) and
-  a `Python Source Reader`_ document.
+  a `Python Source Reader <docs/dev/pysource.html>`__ document.
 
 * Docutils interface to PythonPoint_, also by Richard Jones, produces
   PDF presentations using ReportLabs.
@@ -415,7 +302,7 @@ docutils-develop@lists.sourceforge.net.
 
 * Beni Cherniavsky maintains a Makefile_ for driving Docutils, hoping
   to handle everything one might do with docutils.
-  
+
 .. _ZReST: sandbox/richard/ZReST/
 .. _PySource: sandbox/tibs/pysource/
 .. _pysource_reader: sandbox/davidg/pysource_reader/
@@ -431,6 +318,7 @@ docutils-develop@lists.sourceforge.net.
 .. _simple HTML writer: sandbox/bbum/DocArticle/
 .. _preprocessing module: sandbox/cben/rolehack/
 .. _Makefile: sandbox/cben/make/
+
 
 Please Contribute!
 ==================
@@ -490,7 +378,6 @@ Project Links
 .. _README: README.html
 .. _HISTORY: HISTORY.html
 .. _COPYING: COPYING.html
-.. _master repository: http://www.python.org/peps/
 .. _mailto:
 .. _David Goodger: mailto:goodger@users.sourceforge.net
 .. _Doc-SIG: http://www.python.org/sigs/doc-sig/
