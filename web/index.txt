@@ -49,9 +49,14 @@ merge has been completed, and those projects are now inactive.
 __ http://structuredtext.sourceforge.net/
 __ http://docstring.sourceforge.net/
 
-Docutils is currently just a reStructuredText parser with some extras.
-There is a lot of design and implementation work to do, which could
-greatly benefit from a joint effort with existing projects.
+Docutils currently consists of a reStructuredText_ parser, a
+standalone file reader, and an HTML writer, plus a pseudo-XML writer
+for testing purposes.  A PEP_ reader & processing system is being
+developed, a PDF writer has been started, and a Python source reader
+(docstring extraction with context) is also under way.  There is a lot
+of design and implementation work to do, which could greatly benefit
+from a joint effort with existing projects.  The project `To Do list`_
+is brimming over with ideas.
 
 This project should be considered highly experimental; we're learning
 as we go.  APIs are subject to change at any time.
@@ -292,6 +297,7 @@ Project Links
 .. _README: README.html
 .. _HISTORY: HISTORY.html
 .. _master repository:
+.. _pep:
 .. _peps: http://www.python.org/peps/
 .. _mailto:
 .. _David Goodger: mailto:goodger@users.sourceforge.net
