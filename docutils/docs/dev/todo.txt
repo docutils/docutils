@@ -1976,8 +1976,8 @@ Additions to Docutils
 
 Additions to the project, such as new components, should be developed
 in the `sandbox CVS directory`_ until they're in `good shape`_,
-usable_, and `reasonably complete`_.  Adding to the `main source
-tree`_ or to a `parallel project`_ implies a commitment to the
+usable_, documented_, and `reasonably complete`_.  Adding to the `main
+source tree`_ or to a `parallel project`_ implies a commitment to the
 Docutils user community.
 
 * Why the sandbox?
@@ -1991,6 +1991,12 @@ Docutils user community.
 
 * _`Usable` means that the code does what it claims to do.  An "XYZ
   Writer" should produce reasonable XYZ.
+
+* _`Documented`: The more the better.  The modules/files must be at
+  least minimally documented internally.  `Docutils Front-End Tools`_
+  should have a new section for any front-end tool that is added.
+  `Docutils Configuration Files`_ should be modified with any
+  settings/options defined.
 
 * _`Reasonably complete` means that the code must handle all input.
   Here "handle" means that no input can cause the code to fail (cause
@@ -2008,6 +2014,9 @@ work!  If there are any issues with your code, or if you only have
 time for gradual development, you should put it in the sandbox first.
 It's easy to move code over to the main source tree once it's closer
 to completion.
+
+.. _Docutils Front-End Tools: ../docs/tools.html
+.. _Docutils Configuration Files: ../docs/config.txt
 
 
 Setting Up For Docutils Development
