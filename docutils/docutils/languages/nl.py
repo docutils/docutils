@@ -30,7 +30,7 @@ labels = {
       'dedication': 'Toewijding',
       'abstract': 'Samenvatting',
       'attention': 'Attentie!',
-      'caution': 'Waarschuwing!',
+      'caution': 'Let op!',
       'danger': '!GEVAAR!',
       'error': 'Fout',
       'hint': 'Hint',

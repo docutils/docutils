@@ -20,7 +20,7 @@ __docformat__ = 'reStructuredText'
 directives = {
       # language-dependent: fixed
       'attentie': 'attention',
-      'waarschuwing': 'caution',
+      'let-op': 'caution',
       'gevaar': 'danger',
       'fout': 'error',
       'hint': 'hint',
@@ -31,7 +31,7 @@ directives = {
       'aanmaning': 'admonition',
       'katern': 'sidebar',
       'onderwerp': 'topic',
-      'lijn-blok': 'lijn-blok',
+      'lijn-blok': 'line-block',
       'letterlijk-ontleed': 'parsed-literal',
       'rubriek': 'rubric',
       'opschrift': 'epigraph',
@@ -42,6 +42,7 @@ directives = {
       #'vragen': 'questions',
       'tabel': 'table',
       'csv-tabel': 'csv-table',
+      'lijst-tabel': 'list-table',
       #'veelgestelde-vragen': 'questions',
       'meta': 'meta',
       #'imagemap': 'imagemap',
@@ -49,7 +50,6 @@ directives = {
       'figuur': 'figure',
       'opnemen': 'include',
       'onbewerkt': 'raw',
-      'letterlijk': 'raw',
       'vervang': 'replace',
       'vervanging': 'replace',
       'unicode': 'unicode',
@@ -99,7 +99,6 @@ roles = {
     'uri-referentie': 'uri-reference',
     'uri': 'uri-reference',
     'url': 'uri-reference',
-    'letterlijk': 'raw',
     'onbewerkt': 'raw',}
 """Mapping of Dutch role names to canonical role names for interpreted text.
 """
