@@ -274,7 +274,10 @@ class TransformTestCase(CustomTestCase):
         if self.run_in_debugger:
             pdb.set_trace()
         document = utils.new_document('test data', self.options)
+        document.reporter.attach_observer(document.note_parse_message)
         self.parser.parse(self.input, document)
+        document.reporter.detach_observer(document.note_parse_message)
+        document.reporter.attach_observer(document.note_transform_message)
         for transformClass in (self.transforms + universal.test_transforms):
             transformClass(document, self).transform()
         output = document.pformat()

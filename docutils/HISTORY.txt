@@ -86,11 +86,19 @@ Specific:
   - Added new abstract superclass ``FixedTextElement``; adds
     "xml:space" attribute.
   - Added support for "line" attribute of ``system_message`` nodes.
+  - Added support for the observer pattern from ``utils.Reporter``.
+    Added ``parse_messages`` and ``transform_messages`` attributes to
+    ``document``, removed ``messages``.  Added ``note_parse_message``
+    and ``note_transform_message`` methods.
+
 
 * docutils/utils.py:
 
   - Added a ``source`` attribute to Reporter instances and
     ``system_message`` elements.
+  - Added an observer pattern to ``utils.Reporter`` to keep track of
+    system messages.
+  - Fixed a bug in ``relative_path()``.
 
 * docutils/parsers/rst/states.py:
 
@@ -109,6 +117,11 @@ Specific:
 
 * docutils/parsers/rst/directives/references.py: Added to project.
   Contains the "target-notes" directive.
+
+* docutils/readers/__init__.py:
+
+  - Added support for the observer pattern from ``utils.Reporter``, in
+    ``Reader.parse`` and ``Reader.transform``.
 
 * docutils/readers/pep.py:
 
