@@ -72,6 +72,7 @@ class Translator(nodes.NodeVisitor):
         self.body = []
         self.section_level = 0
         self.skip_para_tag = False
+        self.para_styles = ['.body']
         self.compact_p = 1
         self.compact_simple = None
         self.context = []
@@ -117,12 +118,11 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def visit_admonition(self, node, name):
-        self.skip_para_tag = True
-        self.body.append(self.start_para % '.CALLOUT')
+        self.skip_para_tag = False
+        self.para_styles.append('.CALLOUT')
 
     def depart_admonition(self):
-        self.body.append(self.end_para)
-        self.skip_para_tag = False
+        self.para_styles.pop()
 
     def visit_attention(self, node):
         self.visit_admonition(node, 'attention')
@@ -536,7 +536,7 @@ class Translator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def visit_note(self, node):
-        self.visit_admonition(node, '.note')
+        self.visit_admonition(node, 'note')
 
     def depart_note(self, node):
         self.depart_admonition()
@@ -595,7 +595,7 @@ class Translator(nodes.NodeVisitor):
         self.body.append('</span>')
 
     def visit_paragraph(self, node):
-        style = '.body'
+        style = self.para_styles[-1]
         if self.inBulletList:
             style = '.bullet'
         elif self.inEnumList:
@@ -603,8 +603,9 @@ class Translator(nodes.NodeVisitor):
         elif node.astext().startswith('(annotation)'):
             style = '.code NOTATION'
         elif self.bodyOne or node.astext().startswith('#'):
-            style = '.body1'
-            self.bodyOne = False
+            if style == '.body':
+                style = '.body1'
+                self.bodyOne = False
         if not self.skip_para_tag:
             self.body.append(self.start_para % style)
 
