@@ -16,9 +16,6 @@ from docutils import nodes, utils
 from docutils.transforms import TransformError, Transform
 
 
-indices = xrange(sys.maxint)
-
-
 class SectionTargets(Transform):
 
     default_priority = 260
