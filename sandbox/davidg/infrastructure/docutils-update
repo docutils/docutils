@@ -54,6 +54,10 @@ cvs -Q -z3 $root update 2>&1 > /dev/null
 cd $snapshotdir
 cvs -Q -z3 $root update -rHEAD $project sandbox web
 
+# ensure proper permissions are set
+find . -type f | xargs chmod g+rw 2> /dev/null
+find . -type d | xargs chmod g+rwxs 2> /dev/null
+
 # ensure executable bits are set
 chmod +x $project/*.py
 chmod +x $project/tools/*.py
@@ -72,14 +76,13 @@ tar -cz $exclude -f $project-web-snapshot.tgz web
 mv -f *snapshot.tgz $dest
 
 # update htdocs
-cd $project
-cp -ruf . $dest
-cd ..
-cp -ruf sandbox $dest
-cd web
-cp -ruf . $dest
+( cd $project ; tar -c $exclude -f - . ) | ( cd $dest ; tar -xf - )
+tar -c $exclude -f - sandbox | ( cd $dest ; tar -xf - )
+( cd web ; tar -c $exclude -f - . ) | ( cd $dest ; tar -xf - )
 
-cd
+# ensure proper permissions are set
+find . -type f | xargs chmod g+rw 2> /dev/null
+find . -type d | xargs chmod g+rwxs 2> /dev/null
 
 # update HTML docs
 cd $dest/tools
