@@ -95,6 +95,12 @@ General
 - Perhaps the ``Component.supports`` method should deal with
   individual features ("meta" etc.) instead of formats ("html" etc.)?
 
+- Add "NullIO" degenerate ``docutils.io.IO`` subclass.
+
+- Add a command-line option & directive attribute to control TOC
+  backlinks: no TOC backlinks, backlinks to TOC entries, or backlinks
+  to TOC itself only.
+
 
 Specification
 -------------
@@ -548,6 +554,12 @@ HTML Writer
 
   Tried it; not easy.  If you're interested, email me for a copy of
   the patch.
+
+- Add more support for <link> elements, especially for navigation
+  bars.
+
+- "name" attributes only on these tags: a, applet, form, frame,
+  iframe, img, map.
 
 
 Front-Ends

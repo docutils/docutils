@@ -17,14 +17,14 @@ on the Docutils project, knowingly or not, in terms of encouragement,
 suggestions, criticism, bug reports, code contributions, tasty treats,
 and related projects:
 
-    Aahz, David Ascher, Simon Budig, Fred Drake, Dethe Elza, Jim
-    Fulton, Peter Funk, Engelbert Gruber, Doug Hellmann, Juergen
-    Hermann, Tony Ibbs, Alan Jaffray, Richard Jones, Garth Kidd,
-    Daniel Larsson, Marc-Andre Lemburg, Wolfgang Lipp, Edward Loper,
-    Ken Manheimer, Paul Moore, Michel Pelletier, Sam Penrose, Tim
-    Peters, Mark Pilgrim, Tavis Rudd, Ollie Rutherfurd, Ueli
-    Schlaepfer, tav, Bob Tolbert, Laurence Tratt, Guido van Rossum,
-    Barry Warsaw, Edward Welbourne, Ka-Ping Yee, Moshe Zadka
+    Aahz, David Ascher, Simon Budig, Adam Chodorowski, Fred Drake,
+    Dethe Elza, Jim Fulton, Peter Funk, Engelbert Gruber, Doug
+    Hellmann, Juergen Hermann, Tony Ibbs, Alan Jaffray, Richard Jones,
+    Garth Kidd, Daniel Larsson, Marc-Andre Lemburg, Wolfgang Lipp,
+    Edward Loper, Ken Manheimer, Paul Moore, Michel Pelletier, Sam
+    Penrose, Tim Peters, Mark Pilgrim, Tavis Rudd, Ollie Rutherfurd,
+    Ueli Schlaepfer, tav, Bob Tolbert, Laurence Tratt, Guido van
+    Rossum, Barry Warsaw, Edward Welbourne, Ka-Ping Yee, Moshe Zadka
 
 Thank you!
 
@@ -148,6 +148,8 @@ Specific:
     names, removed ``Inliner.groups`` and ``Body.explicit.groups``.
   - Converted regexps from ``'%s' % var`` to ``'%(var)s' % locals()``.
   - Fixed a bug in ``Inliner.interpreted_or_phrase_ref()``.
+  - Allow non-ASCII in "simple names" (directive names, field names,
+    references, etc.).
 
 * docutils/parsers/rst/directives/html.py: Changed the ``meta``
   directive to use a ``pending`` element, used only by HTML writers.
@@ -165,6 +167,10 @@ Specific:
 
 * docutils/transforms/components.py: Added to project; transforms
   related to Docutils components.
+
+* docutils/transforms/frontmatter.py: In ``DocInfo.extract_authors``,
+  check for a single "author" in an "authors" group, and convert it to
+  a single "author" element.
 
 * docutils/transforms/peps.py: Added to project; PEP-specific.
 

@@ -212,6 +212,18 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                 Third
 """],
 ["""\
+:Authors: Only One
+:Authors: One, Only;
+""",
+"""\
+<document>
+    <docinfo>
+        <author>
+            Only One
+        <author>
+            One, Only
+"""],
+["""\
 :Authors:
 
 :Authors: 1. One
