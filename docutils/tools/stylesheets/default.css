@@ -1,9 +1,9 @@
 /*
 :Author: David Goodger
 :Contact: goodger@users.sourceforge.net
-:date: $Date$
-:version: $Revision$
-:copyright: This stylesheet has been placed in the public domain.
+:Date: $Date$
+:Version: $Revision$
+:Copyright: This stylesheet has been placed in the public domain.
 
 Default cascading style sheet for the HTML output of Docutils.
 */
@@ -27,11 +27,11 @@ a.toc-backref {
 blockquote.epigraph {
   margin: 2em 5em ; }
 
-dd {
+dl.docutils dd {
   margin-bottom: 0.5em }
 
 /* Uncomment (& remove this text!) to get bold-faced definition list terms
-dt {
+dl.docutils dt {
   font-weight: bold }
 */
 
@@ -128,7 +128,7 @@ h1.title {
 h2.subtitle {
   text-align: center }
 
-hr {
+hr.docutils {
   width: 75% }
 
 ol.simple, ul.simple {
@@ -219,20 +219,21 @@ span.pre {
 span.problematic {
   color: red }
 
-table {
-  margin-top: 0.5em ;
-  margin-bottom: 0.5em }
-
 table.citation {
   border-left: solid thin gray }
 
 table.docinfo {
   margin: 2em 4em }
 
+table.docutils {
+  margin-top: 0.5em ;
+  margin-bottom: 0.5em }
+
 table.footnote {
   border-left: solid thin black }
 
-td, th {
+table.docutils td, table.docutils th,
+table.docinfo td, table.docinfo th {
   padding-left: 0.5em ;
   padding-right: 0.5em ;
   vertical-align: top }
@@ -242,10 +243,11 @@ th.docinfo-name, th.field-name {
   text-align: left ;
   white-space: nowrap }
 
-h1 tt, h2 tt, h3 tt, h4 tt, h5 tt, h6 tt {
+h1 tt.docutils, h2 tt.docutils, h3 tt.docutils,
+h4 tt.docutils, h5 tt.docutils, h6 tt.docutils {
   font-size: 100% }
 
-tt {
+tt.docutils {
   background-color: #eeeeee }
 
 ul.auto-toc {
