@@ -465,6 +465,8 @@ Specific:
   - Added french.
   - Double quotes in literal blocks (special treatment for de/ngerman).
   - Added '--hyperlink-color' option ('0' turns off coloring of links).
+  - Added  "--attribution" option.
+  - Right align attributions. 
 
 * docutils/writers/pep_html.py:
 

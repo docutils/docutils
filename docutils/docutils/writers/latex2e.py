@@ -36,7 +36,12 @@ class Writer(writers.Writer):
           '"brackets".  Default is "brackets".',
           ['--footnote-references'],
           {'choices': ['superscript', 'brackets'], 'default': 'brackets',
-           'metavar': '<FORMAT>'}),
+           'metavar': '<format>'}),
+         ('Format for block quote attributions: one of "dash" (em-dash '
+          'prefix), "parentheses"/"parens", or "none".  Default is "dash".',
+          ['--attribution'],
+          {'choices': ['dash', 'parentheses', 'parens', 'none'],
+           'default': 'dash', 'metavar': '<format>'}),
          ('Specify a stylesheet file. The file will be "input" by latex '
           'in the document header. Default is "style.tex". '
           'If this is set to "" disables input.'
@@ -1144,12 +1149,20 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\\end{sffamily}\n\\end{center}\n');
 
 
+    attribution_formats = {'dash': ('---', ''),
+                           'parentheses': ('(', ')'),
+                           'parens': ('(', ')'),
+                           'none': ('', '')}
+
     def visit_attribution(self, node):
-        # latex: mdash is "---"
-        self.body.append('\n--- ')
+        prefix, suffix = self.attribution_formats[self.settings.attribution]
+        self.body.append('\n\\begin{flushright}\n')
+        self.body.append(prefix)
+        self.context.append(suffix)
 
     def depart_attribution(self, node):
-        self.body.append('\n')
+        self.body.append(self.context.pop() + '\n')
+        self.body.append('\\end{flushright}\n')
 
     def visit_status(self, node):
         self.visit_docinfo_item(node, 'status')

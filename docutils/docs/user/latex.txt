@@ -64,6 +64,12 @@ Setting/Config Entry   Description
 --footnote-references  Format for footnote references: one of 
                        "superscript" or "brackets".  
                        Default is "brackets".
+---------------------  ------------------------------------------------
+--attribution          Format for block quote attributions: one of 
+                       "dash" (em-dash prefix), "parentheses"/"parens",
+                       or "none".
+
+                       Default: "dash".  Options: ``--attribution``.
 =====================  ================================================
 
 

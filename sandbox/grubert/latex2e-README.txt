@@ -20,8 +20,6 @@ To do
 
 * literal block is indented in html (test.txt).
 
-* attribution (Anne ELk) is right aligned in html.
-
 * doctest block is indented in html.
 
 * footnotes donot link back in latex.
@@ -63,7 +61,7 @@ To do
 
 * center subsection{Abstract} gives a latex error here.
   ``! LaTeX Error: Something's wrong--perhaps a missing \item.``
-  Committed a HACK: centerinh by hfill
+  Committed a HACK: centering by hfill
 
 * document errors are also too silent.
 
@@ -99,8 +97,6 @@ To do
 
 * table cells with multirow and multicolumn
 
-* bullet lists have no bullets (test.txt)	
-
 * tables have borders, and the border is missing in empty cells.
 
 * footnotes are not all on the same page (as in tools/test.txt) and do not link back
@@ -115,13 +111,7 @@ To do
 
 * pagestyle headings does not work, when sections are starred.
 
-* latex does not hyphenate here. 
-
 * additional docinfo items: the field_body is inserted as text.
-
-* for pdflatex package times gives smaller files than paladino.
-
-  but setting this automatic might result in including several font packages.
 
 ATTENTION
 ~~~~~~~~~
@@ -139,7 +129,6 @@ Done
 ~~~~
 
 * HACK --snap-footnote-refs=1 to strip trailing blanks from item preceeding a footnote-ref.
-
 * add a LaTeX-nbsp (~) before a LaTeX-newline to avoid "LaTeX-Error no line to end here".
 * line_blocks without use of mbox, to allow markups span over line ends.
 * add french to babel support.
