@@ -333,10 +333,10 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
                                'validator': validate_threshold}),
          ('Report all system messages, info-level and higher.  (Same as '
           '"--report=info".)',
-          ['--verbose', '-v'], {'action': 'store_const', 'const': 'info',
+          ['--verbose', '-v'], {'action': 'store_const', 'const': 1,
                                 'dest': 'report_level'}),
          ('Do not report any system messages.  (Same as "--report=none".)',
-          ['--quiet', '-q'], {'action': 'store_const', 'const': 'none',
+          ['--quiet', '-q'], {'action': 'store_const', 'const': 5,
                               'dest': 'report_level'}),
          ('Set the threshold (<level>) at or above which system messages are '
           'converted to exceptions, halting execution immediately by '
