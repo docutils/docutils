@@ -21,8 +21,9 @@ en.directives['include-code'] = 'include-code'
 en.directives['include-output'] = 'include-output'
 
 
-class index_entry(nodes.General, nodes.Element): pass
+#class index_entry(nodes.General, nodes.Element): pass
 class index_entry(nodes.Inline, nodes.TextElement): pass
+
 
 def index_directive(name, arguments, options, content, lineno,
         content_offset, block_text, state, state_machine):
@@ -34,7 +35,6 @@ def index_directive(name, arguments, options, content, lineno,
     return [index_entry(entries,entries)]
 
 index_directive.content = 1
-
 
 
 def include_code(name, arguments, options, content, lineno,
@@ -49,7 +49,6 @@ def include_code(name, arguments, options, content, lineno,
     return [nodes.literal_block(code, code)]
 
 include_code.arguments = (0, 1, 0)
-
 
 
 def include_output(name, arguments, options, content, lineno,
