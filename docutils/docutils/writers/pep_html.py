@@ -53,6 +53,7 @@ class Writer(html4css1.Writer):
         stylesheet = options.pep_stylesheet
         if stylesheet is None:
             stylesheet = options.stylesheet
+        stylesheet = utils.relative_uri(options.destination, stylesheet)
         pyhome = options.python_home
         pephome = options.pep_home
         if pyhome == '..':
