@@ -2,24 +2,18 @@
 """
     MoinMoin - ReStructured Text Parser
 
-    @copyright: 2004 by Matthew Gilbert <gilbert@voxmea.net>
+    @copyright: 2004 by Matthew Gilbert <gilbert AT voxmea DOT net>
+        and by Alexander Schremmer <alex AT alexanderweb DOT de>
     @license: GNU GPL, see COPYING for details.
     
     REQUIRES docutils 0.3.3 or later
-    
 """
 
 #############################################################################
 ### ReStructured Text Parser
 #############################################################################
 
-
-import sys
-import os
-import os.path
-import time
 import re
-from types import ListType
 import new
 
 import docutils
@@ -30,6 +24,8 @@ from docutils.nodes import fully_normalize_name
 from docutils.parsers import rst
 from docutils.parsers.rst import directives, roles, states
 from MoinMoin.Page import Page
+
+Dependencies = [] # this parser just depends on the raw text
 
 def html_escape_unicode(node):
     # Find Python function that does this for me. string.encode('ascii',
@@ -44,12 +40,12 @@ class MoinWriter(html4css1.Writer):
     config_section = 'MoinMoin writer'
     config_section_dependencies = ('writers',)
 
-    """Final translated form of `document`."""
+    #"""Final translated form of `document`."""
     output = None
     
     def wiki_resolver(self, node):
         """
-            Normally an unknown reference would be an error in an rest document.
+            Normally an unknown reference would be an error in an reST document.
             However, this is how new documents are created in the wiki. This
             passes on unknown references to eventually be handled by the
             MoinMoin formatter.
@@ -79,7 +75,7 @@ class MoinWriter(html4css1.Writer):
         # run when a target isn't found
         self.unknown_reference_resolvers = [self.wiki_resolver]
         # We create a new parser to process MoinMoin wiki style links in the 
-        # restructured text.
+        # reST.
         from MoinMoin.parser.wiki import Parser
         self.wikiparser = Parser('', self.request)
         self.wikiparser.formatter = self.formatter
@@ -196,12 +192,12 @@ class MoinTranslator(html4css1.HTMLTranslator):
             visit_reference or from visit_image. The uri_string changes
             depending on the caller. The uri is passed to MoinMoin to handle the
             inline link. If it is an image, the src line is extracted and passed
-            to the html4css1 writer to allow the rest image attributes.
-            Otherwise, the html from MoinMoin is inserted into the rest document
+            to the html4css1 writer to allow the reST image attributes.
+            Otherwise, the html from MoinMoin is inserted into the reST document
             and SkipNode is raised.
         """
         self.process_wiki_text(node[uri_string])
-        # Only pass the src and alt parts to the writer. The rest writer 
+        # Only pass the src and alt parts to the writer. The reST writer 
         # inserts its own tags so we don't need the MoinMoin html markup.
         src = re.search('src="([^"]+)"', self.wiki_text)
         if src:
@@ -262,7 +258,7 @@ class MoinTranslator(html4css1.HTMLTranslator):
             # TODO: Figure out the following two elif's and comment
             # appropriately.
             # The node should have a whitespace normalized name if the docutlis 
-            # restructured text parser would normally fully normalize the name.
+            # reStructuredText parser would normally fully normalize the name.
             elif ('name' in node.attributes and 
                   fully_normalize_name(node['name']) == refuri):
                 target = ':%s:' % (node['name'])
@@ -285,7 +281,8 @@ class MoinTranslator(html4css1.HTMLTranslator):
                     self.process_wiki_text('[%s %s]' % (target, node_text))
                     href = re.search('href="([^"]+)"', self.wiki_text)
                     if href:
-                        node['refuri'] = href.groups()[0]
+                        # dirty hack in order to undo the HTML entity quoting
+                        node['refuri'] = href.groups()[0].replace("&amp;", "&")
                     else:
                         self.wiki_text = self.fixup_wiki_formatting(self.wiki_text)
                         self.add_wiki_markup()
@@ -306,7 +303,7 @@ class MoinTranslator(html4css1.HTMLTranslator):
         if ':' in uri:
             prefix = uri.split(':',1)[0]
         # if prefix isn't URL, try to display in page
-        if not prefix.lower() in ('file','http','https',):
+        if not prefix.lower() in ('file', 'http', 'https', 'ftp'):
             # no prefix given, so fake "inline:"
             if not prefix:
                 node['uri'] = 'inline:' + uri
@@ -328,7 +325,7 @@ class MoinTranslator(html4css1.HTMLTranslator):
     def setup_wiki_handlers(self):
         """
             Have the MoinMoin formatter handle markup when it makes sense. These
-            are portions of the document that do not contain rest specific
+            are portions of the document that do not contain reST specific
             markup. This allows these portions of the document to look
             consistent with other wiki pages.
             
