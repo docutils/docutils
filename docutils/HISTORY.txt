@@ -283,6 +283,9 @@ Changes Since 0.3
   - Added proper support for the "scale" attribute of the "image"
     element.  Contributed by Brent Cook.
   - Added ``--initial-header-level`` option.
+  - Fixed bug: the body_pre_docinfo segment depended on there being a
+    docinfo; if no docinfo, the document title was incorporated into
+    the body segment.  Adversely affected the publish_parts interface.
 
 * docutils/writers/latex2e.py:
 
