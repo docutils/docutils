@@ -1,12 +1,12 @@
 #! /usr/bin/env python
 
-"""
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
+"""
 Tests for states.py.
 """
 
@@ -272,6 +272,21 @@ Term \: not a classifier
             <definition>
                 <paragraph>
                     Because the colon is escaped.
+"""],
+["""\
+``Term : not a classifier``
+    Because the ' : ' is inside an inline literal.
+""",
+"""\
+<document source="test data">
+    <definition_list>
+        <definition_list_item>
+            <term>
+                <literal>
+                    Term : not a classifier
+            <definition>
+                <paragraph>
+                    Because the ' : ' is inside an inline literal.
 """],
 ["""\
 Term `with *inline ``text **errors : classifier `with *errors ``too

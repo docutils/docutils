@@ -5,20 +5,20 @@
 :Author: David Goodger
 :Contact: goodger@users.sourceforge.net
 :Date: $Date$
-:Web-site: http://docutils.sourceforge.net/
+:Web site: http://docutils.sourceforge.net/
 
 Most of the files included in this project are in the public domain,
 and therefore have no license requirement and no restrictions on
 copying or usage.  The exceptions are:
 
-- docutils/optik.py, copyright Gregory P. Ward, licensed under the BSD
-  license (which can be found in the module's source code).
+- docutils/optik.py, copyright Gregory P. Ward, released under a
+  BSD-style license (which can be found in the module's source code).
 
-- docutils/roman.py, copyright by Mark Pilgrim, licensed under the
+- docutils/roman.py, copyright by Mark Pilgrim, released under the
   `Python 2.1.1 license`_.
 
 - test/difflib.py, copyright by the Python Software Foundation,
-  licensed under the `Python 2.2 license`_.  This file is included for
+  released under the `Python 2.2 license`_.  This file is included for
   compatibility with Python versions less than 2.2; if you have Python
   2.2 or higher, difflib.py is not needed and may be removed.  (It's
   only used to report test failures anyhow; it isn't installed

@@ -105,6 +105,9 @@ Specific:
       attributes, and ``.note_state_machine_change`` &
       ``.note_source`` observer methods.
 
+  - Added a "rawsource" attribute to the ``Text`` class, for text
+    before backslash-escape resolution.
+
 * docutils/statemachine.py:
 
   - Factored out ``State.add_initial_transitions()`` so it can be
@@ -162,6 +165,7 @@ Specific:
     without parsing field bodies.  Factored
     ``Body.parse_field_body()`` out of ``Body.field()``, overridden in
     ``ExtensionOptions``.
+  - Improved definition list term/classifier parsing.
 
 * docutils/parsers/rst/tableparser.py:
 
@@ -358,6 +362,8 @@ Specific:
     contexts.
   - Removed field arguments and made field lists a generic construct.
   - Removed the 4-character minimum for section title underlines.
+  - Clarified term/classifier delimiter & inline markup ambiguity
+    (definition lists).
 
 * tools:
 
@@ -386,6 +392,10 @@ Specific:
   - Updated for new I/O classes.
   - Added ``check_requirements()`` & ``pep_type_error()``.
   - Added some exception handling.
+
+* tools/quicktest.py:
+
+  - Added ``-V``/``--version`` option.
 
 * tools/stylesheets/default.css: Moved into the stylesheets directory.
 
