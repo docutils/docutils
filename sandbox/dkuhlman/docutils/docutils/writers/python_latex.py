@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 """
-:Author: Engelbert Gruber
-:Contact: grubert@users.sourceforge.net
+:Author: Dave Kuhlman
+:Contact: dkuhlman@rexx.com
 :Revision: $Revision$
 :Date: $Date$
 :Copyright: This module has been placed in the public domain.
@@ -193,6 +193,9 @@ class DocPyTranslator(nodes.NodeVisitor):
             self.head.append('\\date{%s}\n' % self.docinfo['date'])
         if self.docinfo.has_key('author'):
             self.head.append('\\author{%s}\n' % self.docinfo['author'])
+        if self.docinfo.has_key('address'):
+            self.head.append('\\authoraddress{%s}\n' % \
+                self.cleanHref(self.docinfo['address']))
         self.body_prefix.append('\\maketitle\n')
         self.body_prefix.append('\\ifhtml\n')
         self.body_prefix.append('\\chapter*{Front Matter\label{front}}\n')
@@ -221,6 +224,7 @@ class DocPyTranslator(nodes.NodeVisitor):
 
     def visit_address(self, node):
         self.visit_docinfo_item(node, 'address')
+        raise nodes.SkipNode
 
     def depart_address(self, node):
         self.depart_docinfo_item(node)
@@ -719,14 +723,6 @@ class DocPyTranslator(nodes.NodeVisitor):
             self.body.append(node.astext())
         raise nodes.SkipNode
 
-##     def cleanHref(self, href):
-##         hrefArray = list(urlparse.urlsplit(href))
-##         hrefArray[2] = urllib.quote(hrefArray[2]).replace('%', '\\%{}')
-##         hrefArray[3] = urllib.quote(hrefArray[3]).replace('%', '\\%{}')
-##         href = urlparse.urlunsplit(hrefArray)
-##         href = href.replace('#', '\\#{}')
-##         return href
-
     def cleanHref(self, href):
         href = href.replace('~', '\\~{}')
         href = href.replace('#', '\\#{}')
@@ -938,6 +934,11 @@ class DocPyTranslator(nodes.NodeVisitor):
     def depart_tip(self, node):
         self.depart_admonition()
 
+    def string_to_label(self, text):
+        text = text.replace(' ', '-')
+        text = text.replace('_', '-')
+        return text
+
     def visit_title(self, node):
         #self.pdebug('%% [(visit_title) section_level: %d  node: "%s"]\n' % \
         #    (self.section_level, node.astext().lower()))
@@ -954,34 +955,27 @@ class DocPyTranslator(nodes.NodeVisitor):
             if self.section_level == 0:
                 # It's the document title before any section.
                 self.title = self.encode(node.astext())
-                raise nodes.SkipNode
             else:
                 # It's a title for a section in-side the document.
                 self.body.append('\n\n')
                 self.body.append('%' + '_' * 75)
                 self.body.append('\n\n')
-##                 if (self.section_level == 1):
-##                     self.body.append('\\chapter{')
-##                 elif (self.section_level == 2):      
-##                     self.body.append('\\section{')
-##                 elif (self.section_level == 3):
-##                     self.body.append('\\subsection{')
-##                 else:
-##                     self.body.append('\\subsubsection{')
+                s1 = self.encode(node.astext())
+                s2 = self.string_to_label(node.astext())
                 if (self.section_level == 1):
-                    self.body.append('\\section{')
+                    self.body.append('\\section{%s\label{%s}}\n' % (s1, s2))
                 elif (self.section_level == 2):      
-                    self.body.append('\\subsection{')
+                    self.body.append('\\subsection{%s\label{%s}}\n' % (s1, s2))
                 elif (self.section_level == 3):
-                    self.body.append('\\subsubsection{')
+                    self.body.append('\\subsubsection{%s\label{%s}}\n' % (s1, s2))
                 elif (self.section_level == 4):
-                    self.body.append('\\paragraph{')
+                    self.body.append('\\paragraph{%s\label{%s}}\n' % (s1, s2))
                 else:
-                    self.body.append('\\subparagraph{')
-
+                    self.body.append('\\subparagraph{%s\label{%s}}\n' % (s1, s2))
+            raise nodes.SkipNode
+        
     def depart_title(self, node):
-        if self.section_level > 0:
-            self.body.append('}\n')
+        pass
 
     def visit_topic(self, node):
         topic_class = node.get('class')
