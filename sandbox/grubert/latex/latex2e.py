@@ -151,6 +151,12 @@ Notes on LaTeX
   
   book: 11pt, 12pt, twoside,twocolumn, draft, fleqn, leqno
   
+* width 
+
+  * linewidth - width of a line in the local environment
+  * textwidth - the width of text on the page
+
+  Maybe always use linewidth ?
 """    
 
 class Babel:
@@ -918,6 +924,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('\\begin{optionlist}{3cm}\n')
         else:
             self.body.append('\\begin{center}\n')
+            # BUG: use admwidth or make it relative to textwidth ?
             self.body.append('\\begin{tabularx}{.9\\linewidth}{lX}\n')
 
     def depart_option_list(self, node):
@@ -1040,13 +1047,17 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def get_colspecs(self):
         """
         Return column specification for longtable.
+
+        The width is scaled down by 93%. We do it here
+        because the we can use linewidth which should be the local
+        width.
         """
         width = 0
         for node in self.colspecs:
             width += node['colwidth']
         s = ""
         for node in self.colspecs:
-            colwidth = float(node['colwidth']) / width 
+            colwidth = 0.93 * float(node['colwidth']) / width 
             s += "|p{%.2f\\linewidth}" % colwidth
         self.colspecs = []
         return s+"|"
