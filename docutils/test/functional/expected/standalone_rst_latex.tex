@@ -30,6 +30,8 @@
    \addtolength{\leftmargin}{\labelsep}
    \renewcommand{\makelabel}{\optionlistlabel}}
 }{\end{list}}
+\newlength{\lineblockindentation}
+\setlength{\lineblockindentation}{2.5em}
 \newenvironment{lineblock}[1]
 {\begin{list}{}
   {\setlength{\partopsep}{\parskip}
@@ -587,11 +589,11 @@ indentation.
 \begin{lineblock}{0em}
 \item[] This is a line block.  It ends with a blank line.
 \item[] 
-\begin{lineblock}{1.5em}
+\begin{lineblock}{\lineblockindentation}
 \item[] New lines begin with a vertical bar (``{\textbar}'').
 \item[] Line breaks and initial indent are significant, and preserved.
 \item[] 
-\begin{lineblock}{1.5em}
+\begin{lineblock}{\lineblockindentation}
 \item[] Continuation lines are also possible.  A long line that is intended
 to wrap should begin with a space in place of the vertical bar.
 \end{lineblock}
@@ -623,24 +625,24 @@ Take it away, Eric the Orchestra Leader!
 \item[] 
 \item[] Half a bee, philosophically,
 \item[] 
-\begin{lineblock}{1.5em}
+\begin{lineblock}{\lineblockindentation}
 \item[] must, \emph{ipso facto}, half not be.
 \end{lineblock}
 \item[] But half the bee has got to be,
 \item[] 
-\begin{lineblock}{1.5em}
+\begin{lineblock}{\lineblockindentation}
 \item[] \emph{vis a vis} its entity.  D'you see?
 \item[] 
 \end{lineblock}
 \item[] But can a bee be said to be
 \item[] 
-\begin{lineblock}{1.5em}
+\begin{lineblock}{\lineblockindentation}
 \item[] or not to be an entire bee,
 \item[] 
-\begin{lineblock}{1.5em}
+\begin{lineblock}{\lineblockindentation}
 \item[] when half the bee is not a bee,
 \item[] 
-\begin{lineblock}{1.5em}
+\begin{lineblock}{\lineblockindentation}
 \item[] due to some ancient injury?
 \item[] 
 \end{lineblock}

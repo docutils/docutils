@@ -51,6 +51,8 @@ latex_head = """\
    \\addtolength{\\leftmargin}{\\labelsep}
    \\renewcommand{\\makelabel}{\\optionlistlabel}}
 }{\\end{list}}
+\\newlength{\\lineblockindentation}
+\\setlength{\\lineblockindentation}{2.5em}
 \\newenvironment{lineblock}[1]
 {\\begin{list}{}
   {\\setlength{\\partopsep}{\\parskip}
