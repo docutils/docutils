@@ -296,7 +296,13 @@ of substitution definitions can be devised.
 A "unicode" directive has been implemented to allow direct
 specification of esoteric characters.  In combination with the
 substitution construct, "include" files defining common sets of
-character entities can be defined and used.
+character entities can be defined and used.  `A set of character
+entity set definition files have been defined`__ (`tarball`__).
+There's also `a description and instructions for use`__.
+
+__ http://docutils.sf.net/tmp/charents/
+__ http://docutils.sf.net/tmp/charents.tgz
+__ http://docutils.sf.net/tmp/charents/README.html
 
 To allow for `character-level inline markup`_, a limited form of
 character processing has been added to the spec and parser: escaped
