@@ -89,14 +89,11 @@ class Builder:
     def __init__(self):
         self.publishers = {
             '': Struct(components=(SettingsSpec, pep.Reader, rst.Parser,
-                                   pep_html.Writer),
-                       setup=None),
+                                   pep_html.Writer)),
             '.txt': Struct(components=(rst.Parser, standalone.Reader,
-                                       html4css1.Writer),
-                           setup=self.setup_html_publisher),
+                                       html4css1.Writer)),
             'PEPs': Struct(components=(rst.Parser, pep.Reader,
-                                       pep_html.Writer),
-                           setup=None)}
+                                       pep_html.Writer))}
         """Publisher-specific settings.  Key '' is for the front-end script
         itself.  ``self.publishers[''].components`` must contain a superset of
         all components used by individual publishers."""
@@ -121,8 +118,6 @@ class Builder:
             publisher.setting_defaults = option_parser.get_default_values()
             frontend.make_paths_absolute(publisher.setting_defaults.__dict__,
                                          option_parser.relative_path_settings)
-            if publisher.setup:
-                publisher.setup()
         config_parser = frontend.ConfigParser()
         config_parser.read_standard_files()
         self.config_settings = config_parser.get_section('options')
@@ -155,13 +150,6 @@ class Builder:
         settings.__dict__.update(self.settings_spec.__dict__)
         return settings
 
-    def setup_html_publisher(self):
-        pub = core.Publisher()
-        pub.set_reader(reader_name='standalone',
-                       parser_name='restructuredtext', parser=None)
-        pub.set_writer(writer_name='html')
-        self.html_publisher = pub
-
     def run(self, directory=None, recurse=1):
         recurse = recurse and self.initial_settings.recurse
         if directory:
@@ -193,16 +181,16 @@ class Builder:
         settings = self.get_settings('.txt', directory)
         settings._source = os.path.normpath(os.path.join(directory, name))
         settings._destination = settings._source[:-4]+'.html'
-        pub = self.html_publisher
-        pub.settings = settings
         if not self.initial_settings.silent:
             print >>sys.stderr, '    ::: Processing .txt:', name
             sys.stderr.flush()
-        pub.source = io.FileInput(settings, source_path=settings._source)
-        pub.destination = io.FileOutput(
-            settings, destination_path=settings._destination)
         try:
-            pub.publish()
+            core.publish_file(source_path=settings._source,
+                              destination_path=settings._destination,
+                              reader_name='standalone',
+                              parser_name='restructuredtext',
+                              writer_name='html',
+                              settings=settings)
         except ApplicationError, error:
             print >>sys.stderr, ('        Error (%s): %s'
                                  % (error.__class__.__name__, error))
