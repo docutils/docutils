@@ -289,7 +289,7 @@ latex_head + """\
 
 \\setlength{\\locallinewidth}{\\linewidth}
 
-\\begin{longtable}[c]{|p{0.06\locallinewidth}|p{0.06\locallinewidth}|}
+\\begin{longtable}[c]{|p{0.07\locallinewidth}|p{0.07\locallinewidth}|}
 \\caption{Foo}\\\\
 \\hline
 \\endhead

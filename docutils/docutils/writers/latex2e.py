@@ -1448,13 +1448,20 @@ class LaTeXTranslator(nodes.NodeVisitor):
         Return column specification for longtable.
 
         Assumes reST line length being 80 characters.
+        Table width is hairy.
+
+        === ===
+        ABC DEF
+        === ===
+
+        usually gets to narrow, therefore we add 1 (fiddlefactor).
         """
         width = 80
 
         total_width = 0.0
         # first see if we get too wide.
         for node in self.colspecs:
-            colwidth = float(node['colwidth']) / width
+            colwidth = float(node['colwidth']+1) / width
             total_width += colwidth
         # donot make it full linewidth
         factor = 0.93
@@ -1463,8 +1470,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         latex_table_spec = ""
         for node in self.colspecs:
-            colwidth = factor * float(node['colwidth']) / width
-            latex_table_spec += "|p{%.2f\\locallinewidth}" % colwidth
+            colwidth = factor * float(node['colwidth']+1) / width
+            latex_table_spec += "|p{%.2f\\locallinewidth}" % (colwidth+0.005)
         self.colspecs = []
         return latex_table_spec+"|"
 
