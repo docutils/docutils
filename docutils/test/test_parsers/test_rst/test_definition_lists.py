@@ -370,6 +370,24 @@ Term `with *inline ``text **errors : classifier `with *errors ``too
                     <paragraph>
                         Inline strong start-string without end-string.
 """],
+["""\
+Term : classifier one  :  classifier two
+    Definition
+""",
+"""\
+<document source="test data">
+    <definition_list>
+        <definition_list_item>
+            <term>
+                Term
+            <classifier>
+                classifier one
+            <classifier>
+                classifier two
+            <definition>
+                <paragraph>
+                    Definition
+"""],
 ]
 
 if __name__ == '__main__':
