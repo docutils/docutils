@@ -26,7 +26,7 @@ import test_parser
 def name_tokens(tokens):
     for i in range(len(tokens)):
         tup = tokens[i]
-        tokens[i] = (tok_name[tup[0]],) + tup
+        tokens[i] = (tok_name[tup[0]], tup)
 
 if len(sys.argv) > 1:
     key, caseno = sys.argv[1:]
