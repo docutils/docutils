@@ -516,7 +516,7 @@ class DocFactoryFrame(wxFrame):
                         # init html-viewer page
                         if wxPlatform == '__WXMSW__':
                             htmlprv = browser.IEHtmlPanel(self.nb, self, self.log,
-                                                          htmlfile)
+                                                          'file://%s' % quote(htmlfile))
                         else:
                             htmlprv = browser.HtmlPanel(self.nb, self, self.log,
                                                         htmlfile)
