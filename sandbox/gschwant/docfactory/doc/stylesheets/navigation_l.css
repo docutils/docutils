@@ -1,21 +1,38 @@
 @import url(df.css);
 
 a {
-  font-weight: bold ;
-  color: #8f8f8f ;
+  color: black ;
   font-size: 8pt }
 
 a:hover {
-  color: black ;
-  background-color: white }
-
-a:active {
-  color: black ;
-  background-color: white }
+  background-color: #00009F }
 
 body {
-  padding-top: 1.9cm }
+  background-color: white ;
+  font-size: 8pt ;
+  padding-top: 0.6cm ;
+  margin-top: 0cm ;
+  margin-left: 0cm ;
+  margin-right: 0cm ;
+  margin-bottom: 1.0cm }
 
-p {
-  margin: 0em 0em ;
-  padding-bottom: 0.1cm }
+table {
+  margin-top: 0cm ;
+  width: 100% ;
+  border-width: 0pt ;
+  border-style: thin }
+
+td {
+  background-color: #6FC7FB ;
+  font-size: 8pt ;
+  width: 100% ;
+  border-width: 0pt ;
+  border-style: thin }
+
+td.section {
+  background-color: #00009F ;
+  font-weight: bold ;
+  color: white }
+
+td.empty {
+  background-color: white }
