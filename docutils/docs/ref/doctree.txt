@@ -217,7 +217,8 @@ Each element in the DTD (document type definition) is described in its
 own section below.  Each section contains the following subsections
 and items:
 
-* Description: The semantics of the element.
+* The initial text contains a description of the semantics of the
+  element, plus:
 
   - Parents: A list of elements which may contain the element.
 
@@ -409,9 +410,6 @@ its writing.
 
 ``document``
 ============
-
-Description
------------
 
 Element category: `structural elements`_.
 
@@ -760,9 +758,6 @@ document title::
 ``subtitle``
 ============
 
-Description
------------
-
 Element category: `structural subelements`_.
 
 The ``subtitle`` element stores the subtitle of a document_.
@@ -874,9 +869,6 @@ attributes are stored in the ``subtitle`` element.
 
 ``title``
 =========
-
-Description
------------
 
 Element category: `structural subelements`_.
 
