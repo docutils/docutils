@@ -397,16 +397,19 @@ def browse_remote(pep):
     webbrowser.open(url)
 
 
-def main():
+def main(argv=None):
     # defaults
     update = 0
     username = ''
     verbose = 1
     browse = 0
 
+    if argv is None:
+        argv = sys.argv[1:]
+
     try:
         opts, args = getopt.getopt(
-            sys.argv[1:], 'bihqu:',
+            argv, 'bihqu:',
             ['browse', 'install', 'help', 'quiet', 'user='])
     except getopt.error, msg:
         usage(1, msg)
