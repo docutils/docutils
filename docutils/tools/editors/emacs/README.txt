@@ -19,16 +19,18 @@ here are some useful resources for Emacs users in the Unicode world:
   to your .emacs file.
 
   - To get direct keyboard input of non-ASCII characters (like
-    "option-e e" resulting in "é" [eacute]), use one of these lines::
+    "option-e e" resulting in "é" [eacute]), first enable the option
+    key by setting the command key as your meta key::
+
+        (setq mac-command-key-is-meta t) ;; nil for option key
+
+    Next, use one of these lines::
 
         (set-keyboard-coding-system 'mac-roman)
         (setq mac-keyboard-text-encoding kTextEncodingISOLatin1)
 
     I prefer the first line, because it enables non-Latin-1 characters
-    as well.  For these to work, you must use the command key as your
-    meta key::
-
-        (setq mac-command-key-is-meta t) ;; nil for option key
+    as well (em-dash, curly quotes, etc.).
 
   - To enable the display of all characters in the Mac-Roman charset,
     first create a fontset listing the fonts to use for each range of
