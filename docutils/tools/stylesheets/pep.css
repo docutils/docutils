@@ -219,8 +219,7 @@ table {
 
 td, th {
   padding-left: 0.5em ;
-  padding-right: 0.5em ;
-  vertical-align: baseline }
+  padding-right: 0.5em }
 
 td > :first-child, th > :first-child {
   margin-top: 0em }
@@ -230,7 +229,8 @@ td.num {
 
 th.field-name {
   font-weight: bold ;
-  text-align: right }
+  text-align: left ;
+  white-space: nowrap }
 
 h1 tt, h2 tt, h3 tt, h4 tt, h5 tt, h6 tt {
   font-size: 100% }
