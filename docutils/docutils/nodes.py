@@ -21,6 +21,8 @@ hierarchy.
 .. _DTD: http://docutils.sourceforge.net/docs/ref/docutils.dtd
 """
 
+from __future__ import generators
+
 __docformat__ = 'reStructuredText'
 
 import sys
@@ -161,64 +163,82 @@ class Node:
                 category='nodes.Node.walkabout')
             visitor.dispatch_departure(self)
 
-    def next_node(self, descend=1, ascend=1, condition=None):
+    def traverse(self, condition=None,
+                 include_self=1, descend=1, siblings=0, ascend=0):
+        # condition is the first parameter to allow the same parameter
+        # list for next_node (for which it's convenient to have
+        # condition as first parameter).
         """
-        Return the next node in tree traversal order for which
-        ``condition(node)`` is true.
+        Return an iterator containing
+    
+        * self (if include_self is true)
+        * all descendants in tree traversal order (if descend is true)
+        * all siblings (if siblings is true) and their descendants (if
+          also descend is true)
+        * the siblings of the parent (if ascend is true) and their
+          descendants (if also descend is true), and so on
 
-        If descend is true, traverse children as well.  If ascend is
-        true, go up in the tree if there is no direct next sibling.
-        Return None if there is no next node.
-        """
-        node = self
-        while 1:
-            if descend and node.children:
-                r = node[0]
-            elif node.parent is not None:
-                # Index of the next sibling.
-                index = node.parent.index(node) + 1
-                if index < len(node.parent):
-                    r = node.parent[index]
-                elif ascend:
-                    r = node.parent.next_node(descend=0, ascend=1)
-                else:
-                    return None
-            else:
-                return None
-            if not condition or condition(r):
-                return r
-            else:
-                # Get r.next_node(...), avoiding recursion.
-                node = r
+        If ascend is true, assume siblings to be true as well.
 
-    def flattened(self):
-        """
-        Return a flattened representation of the (sub)tree rooted at this
-        node -- an iterable of nodes in tree traversal order.
-
-        Given the a paragraph node with the following tree::
+        For example, given the following tree::
 
             <paragraph>
-                <emphasis>
-                    <strong>
+                <emphasis>      <--- emphasis.traverse() and
+                    <strong>    <--- strong.traverse() are called.
                         Foo
                     Bar
                 <reference name="Baz" refid="baz">
                     Baz
 
-        Then paragraph.flattened() is::
+        Then list(emphasis.traverse()) equals ::
 
-            [<paragraph>, <emphasis>, <strong>, <Text>, <Text>,
-             <reference>, <Text>]
+            [<emphasis>, <strong>, <#text: Foo>, <#text: Bar>]
 
-        You should not rely on the return value to be a list; it could
-        be changed to an iterator later.
+        and list(strong.traverse(ascend=1)) equals ::
+
+            [<strong>, <#text: Foo>, <#text: Bar>, <reference>, <#text: Baz>]
         """
-        nodelist = [self]
-        for node in self.children:
-            nodelist.extend(node.flattened())
-        return nodelist
+        if ascend:
+            siblings=1
+        if include_self and (condition is None or condition(self)):
+            yield self
+        if descend and len(self.children):
+            for child in self:
+                for n in child.traverse(
+                    include_self=1, descend=1, siblings=0, ascend=0,
+                    condition=condition):
+                    yield n
+        if siblings or ascend:
+            node = self
+            while node.parent:
+                index = node.parent.index(node)
+                for sibling in node.parent[index+1:]:
+                    for n in sibling.traverse(include_self=1, descend=descend,
+                                              siblings=0, ascend=0,
+                                              condition=condition):
+                        yield n
+                if not ascend:
+                    break
+                else:
+                    node = node.parent
 
+
+    def next_node(self, condition=None,
+                  include_self=0, descend=1, siblings=0, ascend=0):
+        """
+        Return the first node in the iterator returned by traverse(),
+        or None if the iterator is empty.
+
+        Parameter list is the same as of traverse.  Note that
+        include_self defaults to 0, though.
+        """
+        iterator = self.traverse(condition=condition,
+                                 include_self=include_self, descend=descend,
+                                 siblings=siblings, ascend=ascend)
+        try:
+            return iterator.next()
+        except StopIteration:
+            return None
 
 class Text(Node, UserString):
 

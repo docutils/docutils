@@ -108,15 +108,7 @@ class MiscTests(unittest.TestCase):
             normed = nodes.make_id(input)
             self.assertEquals(normed, output)
 
-    def getlist(self, n, **kwargs):
-        r = []
-        while n is not None:
-            n = n.next_node(**kwargs)
-            r.append(n)
-        return r[:-1]
-
-    def test_next_node(self):
-        getlist = self.getlist
+    def test_traverse(self):
         e = nodes.Element()
         e += nodes.Element()
         e[0] += nodes.Element()
@@ -124,35 +116,57 @@ class MiscTests(unittest.TestCase):
         e[0][1] += nodes.Text('some text')
         e += nodes.Element()
         e += nodes.Element()
-        self.assertEquals(getlist(e),
+        self.assertEquals(list(e.traverse()),
+                          [e, e[0], e[0][0], e[0][1], e[0][1][0], e[1], e[2]])
+        self.assertEquals(list(e.traverse(include_self=0)),
                           [e[0], e[0][0], e[0][1], e[0][1][0], e[1], e[2]])
-        self.assertEquals(getlist(e, descend=0), [])
-        self.assertEquals(getlist(e[0], descend=0), [e[1], e[2]])
-        self.assertEquals(getlist(e[0][0], descend=0), [e[0][1], e[1], e[2]])
-        self.assertEquals(getlist(e, ascend=0),
-                          [e[0], e[0][0], e[0][1], e[0][1][0]])
-        self.assertEquals(getlist(e[0][0], descend=0, ascend=0), [e[0][1]])
+        self.assertEquals(list(e.traverse(descend=0)),
+                          [e])
+        self.assertEquals(list(e[0].traverse(descend=0, ascend=1)),
+                          [e[0], e[1], e[2]])
+        self.assertEquals(list(e[0][0].traverse(descend=0, ascend=1)),
+                          [e[0][0], e[0][1], e[1], e[2]])
+        self.assertEquals(list(e[0][0].traverse(descend=0, siblings=1)),
+                          [e[0][0], e[0][1]])
         self.testlist = e[0:2]
-        self.assertEquals(getlist(e, condition=self.not_in_testlist),
-                          [e[0][0], e[0][1], e[0][1][0], e[2]])
+        self.assertEquals(list(e.traverse(condition=self.not_in_testlist)),
+                          [e, e[0][0], e[0][1], e[0][1][0], e[2]])
+        # Return siblings despite siblings=0 because ascend is true.
+        self.assertEquals(list(e[1].traverse(ascend=1, siblings=0)),
+                          [e[1], e[2]])
+        self.assertEquals(list(e[0].traverse()),
+                          [e[0], e[0][0], e[0][1], e[0][1][0]])
+        self.testlist = [e[0][0], e[0][1]]
+        self.assertEquals(list(e[0].traverse(condition=self.not_in_testlist)),
+                               [e[0], e[0][1][0]])
+        self.testlist.append(e[0][1][0])
+        self.assertEquals(list(e[0].traverse(condition=self.not_in_testlist)),
+                               [e[0]])
+
+    def test_next_node(self):
+        e = nodes.Element()
+        e += nodes.Element()
+        e[0] += nodes.Element()
+        e[0] += nodes.TextElement()
+        e[0][1] += nodes.Text('some text')
+        e += nodes.Element()
+        e += nodes.Element()
+        self.testlist = [e[0], e[0][1], e[1]]
+        compare = [(e, e[0][0]),
+                   (e[0], e[0][0]),
+                   (e[0][0], e[0][1][0]),
+                   (e[0][1], e[0][1][0]),
+                   (e[0][1][0], e[2]),
+                   (e[1], e[2]),
+                   (e[2], None)]
+        for node, next_node in compare:
+            self.assertEquals(node.next_node(self.not_in_testlist, ascend=1),
+                              next_node)
+        self.assertEquals(e[0][0].next_node(ascend=1), e[0][1])
+        self.assertEquals(e[2].next_node(), None)
 
     def not_in_testlist(self, x):
         return x not in self.testlist
-
-    def test_flattened(self):
-        e = nodes.Element()
-        e += nodes.Element()
-        e[0] += nodes.Element()
-        e[0] += nodes.TextElement()
-        e[0][1] += nodes.Text('some text')
-        e += nodes.Element()
-        e += nodes.Element()
-        self.assertEquals(e.flattened(),
-                          [e, e[0], e[0][0], e[0][1], e[0][1][0], e[1], e[2]])
-        self.assertEquals(e[0].flattened(),
-                          [e[0], e[0][0], e[0][1], e[0][1][0]])
-        self.assertEquals(e[1].flattened(), [e[1]])
-        self.assertEquals(e[0][1][0].flattened(), [e[0][1][0]])
 
 
 class TreeCopyVisitorTests(unittest.TestCase):
