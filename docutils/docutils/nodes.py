@@ -248,8 +248,8 @@ class Text(Node, UserString):
 
     tagname = '#text'
 
-    children = []
-    """Text nodes have no children."""
+    children = ()
+    """Text nodes have no children, and cannot have children."""
 
     def __init__(self, data, rawsource=''):
         UserString.__init__(self, data)
