@@ -879,7 +879,7 @@ stylist code will lower the barrier considerably.
 .. _soextbl.dtd: http://docutils.sourceforge.net/spec/soextblx.dtd
 
 .. _The Docutils Document Tree:
-   http://docutils.sourceforge.net/spec/doctree.txt
+   http://docutils.sourceforge.net/spec/doctree.html
 
 .. _VMS error condition severity levels:
    http://www.openvms.compaq.com:8000/73final/5841/841pro_027.html

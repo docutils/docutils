@@ -147,6 +147,9 @@ Changes Since 0.2
     about the element class library.
   - Moved some implementation-specific stuff into ``docutils.nodes``
     docstrings.
+  - Lots of progress.  Wrote descriptions of all common attributes and
+    parameter entities.  Filled in introductory material.  Started on
+    element descriptions (3 down, 80 to go).
 
 * spec/docutils.dtd:
 
@@ -155,6 +158,9 @@ Changes Since 0.2
   - Added "auto" attribute to "title".
   - Changed content models of "literal_block" and "doctest_block" to
     ``%text.model``.
+  - Added ``%number;`` attribute type parameter entity.
+  - Changed ``%structural.elements;`` to ``%section.elements``.
+  - Updated attribute types; made more specific.
 
 * spec/pep-0256.txt: Converted to reStructuredText & updated.
 

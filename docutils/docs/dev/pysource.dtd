@@ -21,14 +21,13 @@ The proposed formal public identifier for this DTD is::
     +//IDN python.org//DTD Docutils Python Source//EN//XML
 -->
 
-
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Parameter Entity Overrides
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -->
 
-<!ENTITY % additional.structural.elements
+<!ENTITY % additional.section.elements
   " | package_section | module_section | class_section
     | method_section | function_section | module_attribute_section
     | class_attribute_section | instance_attribute_section ">
@@ -38,7 +37,6 @@ The proposed formal public identifier for this DTD is::
     | variable | parameter | type
     | module_attribute | class_attribute | instance_attribute
     | exception_class | warning_class ">
-
 
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -54,10 +52,9 @@ http://docutils.sourceforge.net/spec/docutils.dtd.
     "docutils.dtd">
 %docutils;
 
-
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    Additional Structural Elements
+    Additional Section Elements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -->
 
@@ -126,7 +123,6 @@ http://docutils.sourceforge.net/spec/docutils.dtd.
 
 <!ELEMENT initial_value (#PCDATA)>
 <!ATTLIST initial_value %basic.atts;>
-
 
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -217,7 +213,6 @@ Also used as the `instance_attribute_section` identifier/title.
 <!ATTLIST warning_class
     %basic.atts;
     %reference.atts;>
-
 
 <!--
 Local Variables:
