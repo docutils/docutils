@@ -88,7 +88,7 @@ Introduction to reStructuredText`_.
 Please note that the name is "Docutils", not "DocUtils" or "Doc-Utils"
 or any other variation.
 
-.. _An Introduction to reStructuredText: ref/rst/introduction.html
+.. _An Introduction to reStructuredText: docs/ref/rst/introduction.html
 __ http://mail.python.org/pipermail/doc-sig/1999-December/000878.html
 __ http://mail.python.org/pipermail/doc-sig/2000-November/001252.html
 __ http://mail.python.org/pipermail/doc-sig/2000-November/001239.html
@@ -372,7 +372,7 @@ With no implied endorsement or recommendation, and in no particular
 order:
 
 * `Python Desktop Server <http://pyds.muensterland.org/>`__
-* `PyBloxsom <http://roughingit.subtlehints.net/pyblosxom>`__
+* `PyBloxsom <http://roughingit.subtlehints.net/pyblosxom/>`__
 * `rst2ht <http://www.rutherfurd.net/articles/rst-ht2html.html>`__
 * `htmlnav <http://docutils.sourceforge.net/sandbox/gschwant/htmlnav/>`__
 * `restblog <http://docutils.sourceforge.net/sandbox/mly/restblog/>`__
