@@ -59,22 +59,14 @@ class Writer(writers.Writer):
            'default': 'dash', 'metavar': '<format>'}),
          ('Specify a stylesheet file. The file will be "input" by latex in '
           'the document header.  Default is no stylesheet ("").  '
-          'Overridden by --stylesheet-path.',
+          'Overrides --stylesheet-path.',
           ['--stylesheet'],
-          {'default': '', 'metavar': '<file>'}),
+          {'default': '', 'metavar': '<file>',
+           'overrides': 'stylesheet_path'}),
          ('Specify a stylesheet file, relative to the current working '
           'directory.  Overrides --stylesheet.',
           ['--stylesheet-path'],
-          {'metavar': '<file>'}),
-         ('Link to the stylesheet in the output LaTeX file.  This is the '
-          'default.',
-          ['--link-stylesheet'],
-          {'dest': 'embed_stylesheet', 'action': 'store_false',
-           'validator': frontend.validate_boolean}),
-         ('Embed the stylesheet in the output LaTeX file.  The stylesheet '
-          'file must be accessible during processing (--stylesheet-path is '
-          'recommended).',
-          ['--embed-stylesheet'], {'action': 'store_true'}),
+          {'metavar': '<file>', 'overrides': 'stylesheet'}),
          ('Table of contents by docutils (default) or latex. Latex (writer) '
           'supports only one ToC per document, but docutils does not write '
           'pagenumbers.',
