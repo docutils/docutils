@@ -935,7 +935,7 @@ class OptionParser(OptionContainer):
         # [arg0, ..., arg(i-1)] (any options and their arguments will have
         # been removed from largs).
         #
-        # _process_arg() will usually consume 1 or more arguments.
+        # The while loop will usually consume 1 or more arguments per pass.
         # If it consumes 1 (eg. arg is an option that takes no arguments),
         # then after _process_arg() is done the situation is:
         #
