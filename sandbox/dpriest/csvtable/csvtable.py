@@ -17,8 +17,14 @@ from docutils import nodes, statemachine, utils
 from docutils.transforms import references
 from docutils.parsers.rst import directives
 
+try:
+    import urllib2
+except ImportError:
+    urllib2 = None
+
 
 class DocutilsDialect(csv.Dialect):
+
     delimiter = ','
     quotechar = '"'
     doublequote = True
@@ -40,6 +46,7 @@ class DocutilsDialect(csv.Dialect):
             self.doublequote = False
             self.escapechar = str(options['escape'])
         csv.Dialect.__init__(self)
+
 
 def csvtable(name, arguments, options, content, lineno,
              content_offset, block_text, state, state_machine):
@@ -135,7 +142,7 @@ def csvtable(name, arguments, options, content, lineno,
         row = csvreader.next()
         rowdata = []
         for j in row:
-            cell = statemachine.StringList((j,), source=source)
+            cell = statemachine.StringList(j.splitlines(), source=source)
             celldata = (0,0,0,cell)
             rowdata.append(celldata)
         tablehead.append(rowdata)
@@ -144,7 +151,7 @@ def csvtable(name, arguments, options, content, lineno,
     for row in csvreader:
         rowdata = []
         for i in row:
-            j = statemachine.StringList((i,), source=source)
+            j = statemachine.StringList(i.splitlines(), source=source)
             celldata = (0,0,0,j)
             rowdata.append(celldata)
         tablebody.append(rowdata)
