@@ -75,7 +75,7 @@ class Reporter:
     """List of names for system message levels, indexed by level."""
 
     def __init__(self, source, report_level, halt_level, stream=None,
-                 debug=0):
+                 debug=0, encoding='ascii:replace'):
         """
         Initialize the `ConditionSet` forthe `Reporter`'s default category.
 
@@ -90,6 +90,8 @@ class Reporter:
             - `stream`: Where warning output is sent.  Can be file-like (has a
               ``.write`` method), a string (file name, opened for writing), or
               `None` (implies `sys.stderr`; default).
+            - `encoding`: The encoding and error handler (colon-separated)
+              for stderr output.
         """
         self.source = source
         """The path to or description of the source data."""
@@ -98,6 +100,14 @@ class Reporter:
             stream = sys.stderr
         elif type(stream) in (StringType, UnicodeType):
             raise NotImplementedError('This should open a file for writing.')
+
+        encoding, error_handler = (encoding.split(':') + ['replace'])[:2]
+        
+        self.encoding = encoding
+        """The character encoding for the stderr output."""
+
+        self.error_handler = error_handler
+        """The character encoding error handler."""
 
         self.categories = {'': ConditionSet(debug, report_level, halt_level,
                                             stream)}
@@ -164,10 +174,11 @@ class Reporter:
                                    *children, **attributes)
         debug, report_level, halt_level, stream = self[category].astuple()
         if level >= report_level or debug and level == 0:
+            msgtext = msg.astext().encode(self.encoding, self.error_handler)
             if category:
-                print >>stream, msg.astext(), '[%s]' % category
+                print >>stream, msgtext, '[%s]' % category
             else:
-                print >>stream, msg.astext()
+                print >>stream, msgtext
         if level >= halt_level:
             raise SystemMessage(msg)
         if level > 0 or debug:
@@ -381,7 +392,8 @@ def new_document(source, settings=None):
     if settings is None:
         settings = frontend.OptionParser().get_default_values()
     reporter = Reporter(source, settings.report_level, settings.halt_level,
-                        settings.warning_stream, settings.debug)
+                        stream=settings.warning_stream, debug=settings.debug,
+                        encoding=settings.error_encoding)
     document = nodes.document(settings, reporter, source=source)
     document.note_source(source, -1)
     return document
@@ -422,7 +434,7 @@ def relative_path(source, target):
 def get_source_line(node):
     """
     Return the "source" and "line" attributes from the `node` given or from
-    it's closest ancestor.
+    its closest ancestor.
     """
     while node:
         if node.source or node.line:
