@@ -653,7 +653,8 @@ class HTMLTranslator(nodes.NodeVisitor):
             if token in ('\n', ' '):
                 self.body.append(token)
             elif token.strip():
-                self.body.append('<span class="pre">%s</span>' % token)
+                self.body.append('<span class="pre">%s</span>'
+                                 % self.encode(token))
             else:
                 self.body.append('&nbsp;' * (len(token) - 1) + ' ')
         self.body.append('</tt>')
