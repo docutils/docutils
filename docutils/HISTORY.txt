@@ -33,10 +33,10 @@ and related projects:
     K. O'Brien, Michel Pelletier, Sam Penrose, Tim Peters, Pearu
     Peterson, Mark Pilgrim, Brett g Porter, David Priest, Jens Quade,
     Andy Robinson, Tavis Rudd, Oliver Rutherfurd, Kenichi Sato, Ueli
-    Schlaepfer, Gunnar Schwant, Bruce Smith, tav, Bob Tolbert, Paul
-    Tremblay, Laurence Tratt, Guido van Rossum, Martin von Loewis,
-    Greg Ward, Barry Warsaw, Edward Welbourne, Ka-Ping Yee, Moshe
-    Zadka
+    Schlaepfer, Gunnar Schwant, Bruce Smith, Roman Suzi, tav, Bob
+    Tolbert, Paul Tremblay, Laurence Tratt, Guido van Rossum, Martin
+    von Loewis, Greg Ward, Barry Warsaw, Edward Welbourne, Ka-Ping
+    Yee, Moshe Zadka
 
 Thank you!
 
