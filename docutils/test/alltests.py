@@ -34,6 +34,11 @@ class Tee:
         self.stream.write(string)
         self.file.write(string)
 
+    def flush(self):
+        self.stream.flush()
+        self.file.flush()
+
+
 # must redirect stderr *before* first import of unittest
 sys.stdout = sys.stderr = Tee('alltests.out')
 
