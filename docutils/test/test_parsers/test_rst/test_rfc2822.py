@@ -1,0 +1,260 @@
+#! /usr/bin/env python
+
+"""
+:Author: David Goodger
+:Contact: goodger@users.sourceforge.net
+:Revision: $Revision$
+:Date: $Date$
+:Copyright: This module has been placed in the public domain.
+
+Tests for states.py.
+"""
+
+from __init__ import DocutilsTestSupport
+
+def suite():
+    s = DocutilsTestSupport.RFC2822ParserTestSuite()
+    s.generateTests(totest)
+    return s
+
+totest = {}
+
+totest['rfc2822'] = [
+["""\
+Author: Me
+Version: 1
+Date: 2002-04-23
+""",
+"""\
+<document>
+    <field_list>
+        <field>
+            <field_name>
+                Author
+            <field_body>
+                <paragraph>
+                    Me
+        <field>
+            <field_name>
+                Version
+            <field_body>
+                <paragraph>
+                    1
+        <field>
+            <field_name>
+                Date
+            <field_body>
+                <paragraph>
+                    2002-04-23
+"""],
+["""\
+Author: Me
+Version: 1
+Date: 2002-04-23
+
+Leading blank lines don't affect RFC-2822 header parsing.
+""",
+"""\
+<document>
+    <field_list>
+        <field>
+            <field_name>
+                Author
+            <field_body>
+                <paragraph>
+                    Me
+        <field>
+            <field_name>
+                Version
+            <field_body>
+                <paragraph>
+                    1
+        <field>
+            <field_name>
+                Date
+            <field_body>
+                <paragraph>
+                    2002-04-23
+    <paragraph>
+        Leading blank lines don't affect RFC-2822 header parsing.
+"""],
+["""\
+.. A comment should prevent RFC-2822 header parsing.
+
+Author: Me
+Version: 1
+Date: 2002-04-23
+""",
+"""\
+<document>
+    <comment>
+        A comment should prevent RFC-2822 header parsing.
+    <paragraph>
+        Author: Me
+        Version: 1
+        Date: 2002-04-23
+"""],
+["""\
+Author: Me
+
+Version: 1
+Date: 2002-04-23
+""",
+"""\
+<document>
+    <field_list>
+        <field>
+            <field_name>
+                Author
+            <field_body>
+                <paragraph>
+                    Me
+    <paragraph>
+        Version: 1
+        Date: 2002-04-23
+"""],
+["""\
+field:
+empty item above, no blank line
+""",
+"""\
+<document>
+    <field_list>
+        <field>
+            <field_name>
+                field
+            <field_body>
+    <system_message level="2" type="WARNING">
+        <paragraph>
+            RFC2822-style field list ends without a blank line; unexpected unindent at line 2.
+    <paragraph>
+        empty item above, no blank line
+"""],
+["""\
+Author:
+  Me
+Version:
+  1
+Date:
+  2002-04-23
+""",
+"""\
+<document>
+    <field_list>
+        <field>
+            <field_name>
+                Author
+            <field_body>
+                <paragraph>
+                    Me
+        <field>
+            <field_name>
+                Version
+            <field_body>
+                <paragraph>
+                    1
+        <field>
+            <field_name>
+                Date
+            <field_body>
+                <paragraph>
+                    2002-04-23
+"""],
+["""\
+Authors: Me,
+         Myself,
+         and I
+Version: 1
+         or so
+Date: 2002-04-23
+      (Tuesday)
+""",
+"""\
+<document>
+    <field_list>
+        <field>
+            <field_name>
+                Authors
+            <field_body>
+                <paragraph>
+                    Me,
+                    Myself,
+                    and I
+        <field>
+            <field_name>
+                Version
+            <field_body>
+                <paragraph>
+                    1
+                    or so
+        <field>
+            <field_name>
+                Date
+            <field_body>
+                <paragraph>
+                    2002-04-23
+                    (Tuesday)
+"""],
+["""\
+Authors: Me,
+  Myself,
+  and I
+Version: 1
+  or so
+Date: 2002-04-23
+  (Tuesday)
+""",
+"""\
+<document>
+    <field_list>
+        <field>
+            <field_name>
+                Authors
+            <field_body>
+                <paragraph>
+                    Me,
+                    Myself,
+                    and I
+        <field>
+            <field_name>
+                Version
+            <field_body>
+                <paragraph>
+                    1
+                    or so
+        <field>
+            <field_name>
+                Date
+            <field_body>
+                <paragraph>
+                    2002-04-23
+                    (Tuesday)
+"""],
+["""\
+Authors: - Me
+         - Myself
+         - I
+""",
+"""\
+<document>
+    <field_list>
+        <field>
+            <field_name>
+                Authors
+            <field_body>
+                <bullet_list bullet="-">
+                    <list_item>
+                        <paragraph>
+                            Me
+                    <list_item>
+                        <paragraph>
+                            Myself
+                    <list_item>
+                        <paragraph>
+                            I
+"""],
+]
+
+if __name__ == '__main__':
+    import unittest
+    unittest.main(defaultTest='suite')
