@@ -12,10 +12,10 @@
 .. contents::
 
 
-This document describes the internationalization (hereafter "i18n":
-"i" + 18 letters + "n") facilities of the Docutils_ project.
-`Introduction to i18n`_ by Tomohiro KUBOTA is a good general
-reference.
+This document describes the internationalization facilities of the
+Docutils_ project.  `Introduction to i18n`_ by Tomohiro KUBOTA is a
+good general reference.  "Internationalization" is often abbreviated
+as "i18n": "i" + 18 letters + "n".
 
 .. Note::
 
@@ -81,7 +81,12 @@ Docutils Language Module
 ========================
 
 Modules in ``docutils/languages`` contain language mappings for
-markup-independent language-specific features of Docutils:
+markup-independent language-specific features of Docutils.  To make a
+new language module, just copy the ``en.py`` file, rename it with the
+code for your language (see `Language Module Names`_ above), and
+translate the terms as described below.
+
+Each Docutils language module contains three module attributes:
 
 ``labels``
     This is a mapping of node class names to language-dependent
@@ -89,10 +94,14 @@ markup-independent language-specific features of Docutils:
     components when they encounter document tree elements whose class
     names are the mapping keys.
 
+    The entry values should be translated to the target language.
+
 ``bibliographic_fields``
     This is a mapping of language-dependent field names (converted to
     lower case) to node classes (in ``docutils.nodes``).  It is used
     when parsing bibliographic fields.
+
+    The keys should be translated to the target language.
 
 ``author_separators``
     This is a list of strings used to parse the 'Authors'
@@ -102,16 +111,50 @@ markup-independent language-specific features of Docutils:
     defines them as ``[';', ',']``; semi-colons can be used to
     separate names like "Arthur Pewtie, Esq.".
 
+    Most languages won't have to "translate" this list.
+
 
 reStructuredText Language Module
 ================================
 
 Modules in ``docutils/parsers/rst/languages`` contain language
 mappings for language-specific features of the reStructuredText
-parser:
+parser.  To make a new language module, just copy the ``en.py`` file,
+rename it with the code for your language (see `Language Module
+Names`_ above), and translate the terms as described below.
+
+Each reStructuredText language module contains just one module
+attribute:
 
 ``directives``
     This is a mapping from language-dependent directive names to
     canonical directive names.  The canonical directive names are
     registered in ``docutils/parsers/rst/directives/__init__.py``, in
     ``_directive_registry``.
+
+    The keys should be translated to the target language.
+
+
+Testing the Language Modules
+============================
+
+Whenever a new language module is added or an existing one modified,
+the unit tests should be run.  The test modules can be found in the
+docutils/test directory from CVS_ or from the `latest CVS snapshot`_.
+
+The ``test_language.py`` module can be run as a script.  With no
+arguments, it will test all language modules.  With one or more
+language codes, it will test just those languages.  For example::
+
+    $ python test_language.py en
+    ..
+    ----------------------------------------
+    Ran 2 tests in 0.095s
+
+    OK
+
+Use the "alltests.py" script to run all test modules, exhaustively
+testing the parser and other parts of the Docutils system.
+
+.. _CVS: http://sourceforge.net/cvs/?group_id=38414
+.. _Docutils snapshot: http://docutils.sf.net/docutils-snapshot.tgz
