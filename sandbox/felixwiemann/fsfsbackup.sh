@@ -14,8 +14,7 @@ set -e
 
 trap "echo; echo Exiting with error." 0 1 2 3 15
 
-printfeedback=1
-test "$1" == -f && printfeedback=
+test "$1" == -f && printfeedback= || printfeedback=1
 
 function feedback() {
     test "$printfeedback" && echo "$@" || true
@@ -74,8 +73,7 @@ function do_backup() {
     fi
     LOCALREVNUM="$[$LOCALREVNUM+1]"
     feedback "Backing up from revision $LOCALREVNUM to revision $REMOTEREVNUM."
-    verbose=
-    test "$1" != -f && verbose=-v
+    test "$printfeedback" && verbose=-v || verbose=
     ssh "$HOST" "
         set -e;
         cd $REMOTEDIR/db/;
