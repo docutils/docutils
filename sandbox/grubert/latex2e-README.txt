@@ -51,7 +51,6 @@ To do
 
 * table cells with multirow and multicolumn
 
-* enumeration too deep: latex goes up to four.
 	
 * lists that donot start at one donot work.
 
@@ -107,6 +106,7 @@ ATTENTION
 Done
 ~~~~
 
+* enumeration too deep: latex goes up to four.
 * abstract title should be centered. 
 * docinfo table centered and narrower.
 * bibliographic field names have a ":".
