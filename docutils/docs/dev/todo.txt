@@ -465,8 +465,6 @@ Documentation
 
 * User docs.  What's needed?
 
-  - reST cheat sheet -- max. 2 pages.
-
 
 Implementation Docs
 ```````````````````
