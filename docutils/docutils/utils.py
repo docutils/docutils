@@ -203,7 +203,8 @@ class Reporter:
         effect on the processing. Level-0 system messages are handled
         separately from the others.
         """
-        return self.system_message(0, *args, **kwargs)
+        if self.categories[''].debug:
+            return self.system_message(0, *args, **kwargs)
 
     def info(self, *args, **kwargs):
         """

@@ -82,11 +82,8 @@ class QuietReporterTests(unittest.TestCase):
 
     def test_debug(self):
         sw = self.reporter.debug('a debug message')
-        self.assertEquals(sw.pformat(), """\
-<system_message level="0" source="test data" type="DEBUG">
-    <paragraph>
-        a debug message
-""")
+        # None because debug is disabled.
+        self.assertEquals(sw, None)
         self.assertEquals(self.stream.getvalue(), '')
 
     def test_info(self):
