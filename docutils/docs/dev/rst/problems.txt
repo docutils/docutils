@@ -213,26 +213,35 @@ People will write enumerated lists in all different ways.  It is folly
 to try to come up with the "perfect" format for an enumerated list,
 and limit the docstring parser's recognition to that one format only.
 
-Rather, the parser should recognize a variety of enumerator styles,
-marking each block as a potential enumerated list item (PELI), and
-interpret the enumerators of adjacent PELIs to decide whether they
-make up a consistent enumerated list.
-
-If a PELI is labeled with a "1.", and is immediately followed by a
-PELI labeled with a "2.", we've got an enumerated list.  Or "(A)"
-followed by "(B)".  Or "i)" followed by "ii)", etc.  The chances of
-accidentally recognizing two adjacent and consistently labeled PELIs,
-are acceptably small.
-
-For an enumerated list to be recognized, the following must be true:
-
-- the list must consist of multiple adjacent list items (2 or more)
-- the enumerators must all have the same format
-- the enumerators must be sequential
-
+Rather, the parser should recognize a variety of enumerator styles.
 It is also recommended that the enumerator of the first list item be
 ordinal-1 ('1', 'A', 'a', 'I', or 'i'), as output formats may not be
 able to begin a list at an arbitrary enumeration.
+
+An initial idea was to require two or more consistent enumerated list
+items in a row.  This idea proved impractical and was dropped.  In
+practice, the presence of a proper enumerator is enough to reliably
+recognize an enumerated list item; any ambiguities are reported by the
+parser.  Here's the original idea for posterity:
+
+    The parser should recognize a variety of enumerator styles, mark
+    each block as a potential enumerated list item (PELI), and
+    interpret the enumerators of adjacent PELIs to decide whether they
+    make up a consistent enumerated list.
+
+    If a PELI is labeled with a "1.", and is immediately followed by a
+    PELI labeled with a "2.", we've got an enumerated list.  Or "(A)"
+    followed by "(B)".  Or "i)" followed by "ii)", etc.  The chances
+    of accidentally recognizing two adjacent and consistently labeled
+    PELIs, are acceptably small.
+
+    For an enumerated list to be recognized, the following must be
+    true:
+
+    - the list must consist of multiple adjacent list items (2 or
+      more)
+    - the enumerators must all have the same format
+    - the enumerators must be sequential
 
 
 Definition List Markup

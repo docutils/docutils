@@ -299,7 +299,7 @@ Specification
 
     Most Readers will have to be told what parser to use.  So far (see
     the list of examples below), only the Python Source Reader
-    (PySource) will be able to determine the syntax on its own.
+    (PySource) will be able to determine the parser on its own.
 
     Responsibilities:
 

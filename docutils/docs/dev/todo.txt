@@ -33,6 +33,9 @@ General
     checked for correctness and refactored.  I'm afraid it's a bit of
     a spaghetti mess now.
 
+  - Change application error exceptions to use "StandardError" as
+    their base class instead of "Exception".
+
 - Add validation?  See http://pytrex.sourceforge.net, RELAX NG.
 
 - Ask Python-dev for opinions (GvR for a pronouncement) on special
@@ -63,7 +66,7 @@ General
 - Implement a PEP reader.
 
 - Add support for character set encodings on input & output, Unicode
-  internally.
+  internally.  Need a Unicode -> HTML entities codec for HTML writer?
 
 
 Specification
@@ -181,7 +184,9 @@ reStructuredText Parser
 - Add RFC-2822 header parsing (for PEP, email Readers).
 
 - Change ``.. meta::`` to use a "pending" element, only activated for
-  HTML writers.
+  HTML writers (done).  Add reader/writer/parser attributes to pending
+  elements (done).  Figure out a way for transforms to know what
+  reader/writer is in control (@@@ in docutils.transforms.components).
 
 - Allow for variant styles by interpreting indented lists as if they
   weren't indented?  For example, currently the list below will be
@@ -209,7 +214,7 @@ reStructuredText Parser
   "Structuring: a summary; and an attempt at EBNF", item 4.
 
 - Make the parser modular.  Be able to turn on/off constructs, add
-  them at run time.
+  them at run time.  Or is subclassing enough?
 
 
 Directives
@@ -348,6 +353,8 @@ HTML Writer
 
 - Return a string instead of writing to a file?  Leave all I/O up to
   the client?
+
+- Use lowercase element & attribute names for XHTML compatibility?
 
 
 Coding Conventions
