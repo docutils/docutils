@@ -4,7 +4,6 @@ recursive-include docutils *
 recursive-include docs *
 recursive-include extras *
 recursive-include licenses *
-recursive-include spec *
 recursive-include test *
 recursive-include tools *
 recursive-exclude * .cvsignore *.pyc *~
