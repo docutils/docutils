@@ -74,7 +74,6 @@ class TestFunctional(unittest.TestCase):
 
             # Get output and write it to the output/ directory.
             output = docutils.core.publish_file(**params)
-            open(params['destination_path'], 'w').write(output)
 
             # Get the expected output *after* writing the actual output.
             self.assert_(os.access(expected_path, os.R_OK),\
