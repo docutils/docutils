@@ -18,6 +18,7 @@ labels = {
     'author':       u'F\u00f6rfattare',
     'authors':      u'F\u00f6rfattare',
     'organization': u'Organisation',
+    'address':      u'Address', # BUG no swedish spoken here.
     'contact':      u'Kontakt',
     'version':      u'Version',
     'revision':     u'Revision',
