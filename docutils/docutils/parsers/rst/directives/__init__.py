@@ -272,7 +272,6 @@ def nonnegative_int(argument):
         raise ValueError('negative value; must be positive or zero')
     return value
 
-
 def class_option(argument):
     """
     Convert the argument into an ID-compatible string and return it.
@@ -282,10 +281,14 @@ def class_option(argument):
     """
     if argument is None:
         raise ValueError('argument required but none supplied')
-    class_name = nodes.make_id(argument)
-    if not class_name:
-        raise ValueError('cannot make "%s" into a class name' % argument)
-    return class_name
+    names = argument.split()
+    class_names = []
+    for name in names:
+        class_name = nodes.make_id(name)
+        if not class_name:
+            raise ValueError('cannot make "%s" into a class name' % name)
+        class_names.append(class_name)
+    return ' '.join(class_names)
 
 unicode_pattern = re.compile(
     r'(?:0x|x|\\x|U\+?|\\u)([0-9a-f]+)$|&#x([0-9a-f]+);$', re.IGNORECASE)
@@ -310,7 +313,6 @@ def unicode_code(code):
                 return code
     except OverflowError, detail:
         raise ValueError('code too large (%s)' % detail)
-
 
 def single_char_or_unicode(argument):
     char = unicode_code(argument)
