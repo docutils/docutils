@@ -64,6 +64,9 @@ Section Title
 
 That's it, the text just above this line.
 
+Empty Section
+-------------
+
 Transitions
 -----------
 
@@ -71,7 +74,9 @@ Here's a transition:
 
 ---------
 
-It divides the section.
+It divides the section.  Transitions may also occur between sections:
+
+---------
 
 Body Elements
 =============
