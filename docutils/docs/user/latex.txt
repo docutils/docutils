@@ -101,14 +101,14 @@ line spacing           Is done with package *setspace*, which gives
 
                        Another way ::
 
-                         \renewcommand{\baselinestretch}{2}
+                         \linespread{1.55}
 
                        And yet another, add ``doublesp`` to the
-                       documentoptions and put ::
+                       documentoptions and e.g. ::
 
                          \setstretch{1.7}
 
-                       or for bigger linespacing.
+                       for bigger linespacing.
 ---------------------  ------------------------------------------------
 font selection         see below
 =====================  ================================================
