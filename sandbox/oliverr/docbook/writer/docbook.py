@@ -40,6 +40,10 @@ class Writer(writers.Writer):
         )
     )
 
+
+    """DocBook does it's own section numbering"""
+    settings_default_overrides = {'enable_section_numbering': 0}
+
     output = None
     """Final translated form of `document`."""
 
@@ -78,13 +82,10 @@ class DocBookTranslator(nodes.NodeVisitor):
         self.footnote_map = {}
         self.docinfo = []
         self.title = ''
+        self.subtitle = ''
 
     def astext(self):
-        title = ''
-        if self.title:
-            title = '<title>' + self.title + '</title>'
         return ''.join(self.doc_header
-                    + [title]
                     + self.docinfo
                     + self.body
                     + self.doc_footer)
@@ -202,10 +203,15 @@ class DocBookTranslator(nodes.NodeVisitor):
         self.body.append('</note>\n')
 
     def visit_attribution(self, node):
+        # attribution must precede blockquote content
+        if isinstance(node.parent, nodes.block_quote):
+            raise nodes.SkipNode
         self.body.append(self.starttag(node, 'attribution', ''))
 
     def depart_attribution(self, node):
-        self.body.append('</attribution>\n')
+        # attribution must precede blockquote content
+        if not isinstance(node.parent, nodes.block_quote):
+            self.body.append('</attribution>\n')
 
     # author is handled in ``visit_docinfo()``
     def visit_author(self, node):
@@ -217,6 +223,8 @@ class DocBookTranslator(nodes.NodeVisitor):
 
     def visit_block_quote(self, node):
         self.body.append(self.starttag(node, 'blockquote'))
+        if isinstance(node[-1], nodes.attribution):
+            self.body.append('<attribution>%s</attribution>\n' % node[-1].astext())
 
     def depart_block_quote(self, node):
         self.body.append('</blockquote>\n')
@@ -389,6 +397,10 @@ class DocBookTranslator(nodes.NodeVisitor):
         orgname = ''
         releaseinfo = ''
         revision,version = '',''
+ 
+        docinfo.append('<title>%s</title>\n' % self.title)
+        if self.subtitle:
+            docinfo.append('<subtitle>%s</subtitle>\n' % self.subtitle)
 
         for n in node:
             if isinstance(n, nodes.address):
@@ -468,7 +480,7 @@ class DocBookTranslator(nodes.NodeVisitor):
         if address:
             docinfo.append('<address xml:space="preserve">' + 
                 address + '</address>\n')
-            
+
         if len(docinfo) > 1:
             docinfo.append('</%sinfo>\n' % self.doctype)
 
@@ -653,6 +665,8 @@ class DocBookTranslator(nodes.NodeVisitor):
     def visit_image(self, node):
         if isinstance(node.parent, nodes.paragraph):
             element = 'inlinemediaobject'
+        elif isinstance(node.parent, nodes.reference):
+            element = 'inlinemediaobject'
         else:
             element = 'mediaobject'
         atts = node.attributes.copy()
@@ -774,13 +788,6 @@ class DocBookTranslator(nodes.NodeVisitor):
         self.body.append('<tgroup cols="2">\n')
         self.body.append('<colspec colname="option_col"/>\n')
         self.body.append('<colspec colname="description_col"/>\n')
-        self.body.append('<thead>\n')
-        self.body.append('<row>\n')
-        # XXX shouldn't hardcode column titles
-        self.body.append('<entry align="center">Option</entry>\n')
-        self.body.append('<entry align="center">Description</entry>\n')
-        self.body.append('</row>\n')
-        self.body.append('</thead>\n')
         self.body.append('<tbody>\n')
 
     def depart_option_list(self, node):
@@ -829,10 +836,18 @@ class DocBookTranslator(nodes.NodeVisitor):
         elif node.has_key('refname'):
             atts['linkend'] = self.document.nameids[node['refname']]
             self.context.append('link')
+        # if parent is a section, 
+        # wrap link in a para
+        if isinstance(node.parent, nodes.section):
+            self.body.append('<para>')
         self.body.append(self.starttag(node, self.context[-1], '', **atts))
 
     def depart_reference(self, node):
         self.body.append('</%s>' % (self.context.pop(),))
+        # if parent is a section, 
+        # wrap link in a para
+        if isinstance(node.parent, nodes.section):
+            self.body.append('</para>')
 
     # revision is handled in ``visit_docinfo()``
     def visit_revision(self, node):
@@ -867,6 +882,12 @@ class DocBookTranslator(nodes.NodeVisitor):
 
     def visit_sidebar(self, node):
         self.body.append(self.starttag(node, 'sidebar'))
+        if isinstance(node[0], nodes.title):
+            self.body.append('<sidebarinfo>\n')
+            self.body.append('<title>%s</title>\n' % node[0].astext())
+            if isinstance(node[1], nodes.subtitle):
+                self.body.append('<subtitle>%s</subtitle>\n' % node[1].astext())
+            self.body.append('</sidebarinfo>\n')
 
     def depart_sidebar(self, node):
         self.body.append('</sidebar>\n')
@@ -894,15 +915,25 @@ class DocBookTranslator(nodes.NodeVisitor):
         self.unimplemented_visit(node)
 
     def visit_subtitle(self, node):
-        # sidebar subtitle needs to go into a sidebarinfo element
-        if isinstance(node.parent, nodes.sidebar):
-                self.body.append('<sidebarinfo>')
-        self.body.append(self.starttag(node, 'subtitle', ''))
+        # document title needs to go into
+        # <type>info/subtitle, so save it for
+        # when we do visit_docinfo
+        if isinstance(node.parent, nodes.document):
+            self.subtitle = node.astext()
+            raise nodes.SkipNode
+        else:
+            # sidebar subtitle needs to go into a sidebarinfo element
+            #if isinstance(node.parent, nodes.sidebar):
+            #    self.body.append('<sidebarinfo>')
+            if isinstance(node.parent, nodes.sidebar):
+                raise nodes.SkipNode
+            self.body.append(self.starttag(node, 'subtitle', ''))
 
     def depart_subtitle(self, node):
-        self.body.append('</subtitle>\n')
-        if isinstance(node.parent, nodes.sidebar):
-            self.body.append('</sidebarinfo>\n')
+        if not isinstance(node.parent, nodes.document):
+            self.body.append('</subtitle>\n')
+        #if isinstance(node.parent, nodes.sidebar):
+        #    self.body.append('</sidebarinfo>\n')
 
     def visit_superscript(self, node):
         self.body.append(self.starttag(node, 'superscript', ''))
@@ -923,7 +954,26 @@ class DocBookTranslator(nodes.NodeVisitor):
 
     # don't think anything is needed for targets
     def visit_target(self, node):
-        pass
+        # XXX this would like to be a transform!
+        # XXX comment this mess!
+        handled = 0
+        siblings = node.parent.children
+        for i in range(len(siblings)):
+            if siblings[i] is node:
+                if i+1 < len(siblings):
+                    next = siblings[i+1]
+                    if isinstance(next,nodes.Text):
+                        pass
+                    elif not next.attributes.has_key('id'):
+                        next['id'] = node['id']
+                        handled = 1
+        if not handled:
+            if not node.parent.attributes.has_key('id'):
+                node.parent.attributes['id'] = node['id']
+                handled = 1
+        # might need to do more...
+        # (if not handled, update the referrer to refer to the parent's id)
+
     def depart_target(self, node):
         pass
 
@@ -963,18 +1013,20 @@ class DocBookTranslator(nodes.NodeVisitor):
         self.body.append('</tip>\n')
 
     def visit_title(self, node):
-        # document title needs to go before docinfo
-        # but docinfo is visited first, so we're catching
-        # the document title so it can be placed in front
-        # of docinfo in ``astext()``.
+        # document title needs to go inside
+        # <type>info/title
         if isinstance(node.parent, nodes.document):
             self.title = node.astext()
+            raise nodes.SkipNode
+        elif isinstance(node.parent, nodes.sidebar):
+            # sidebar title and subtitle are collected in visit_sidebar
             raise nodes.SkipNode
         else:
             self.body.append(self.starttag(node, 'title', ''))
 
     def depart_title(self, node):
-        self.body.append('</title>\n')
+        if not isinstance(node.parent, nodes.document):
+            self.body.append('</title>\n')
 
     def visit_title_reference(self, node):
         self.body.append('<citetitle>')
@@ -990,8 +1042,15 @@ class DocBookTranslator(nodes.NodeVisitor):
             self.body.append(self.starttag(node, 'abstract'))
             self.context.append('abstract')
         elif node.get('class') == 'dedication':
-            self.body.append(self.starttag(node, 'dedication'))
-            self.context.append('dedication')
+            # docbook only supports dedication in a book,
+            # so we're faking it for article & chapter
+            if self.doctype == 'book':
+                self.body.append(self.starttag(node, 'dedication'))
+                self.context.append('dedication')
+            else:
+                self.body.append(self.starttag(node, 'section'))
+                self.context.append('section')
+
         # generic "topic" element treated as a section
         elif node.get('class','') == '':
             self.body.append(self.starttag(node, 'section'))

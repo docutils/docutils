@@ -1,6 +1,11 @@
 Doctils DocBook Writer ChangeLog
 ================================
 
+2004-03-22
+----------
+
+* general tidying & bugfixes
+
 2003-07-21
 ----------
 
