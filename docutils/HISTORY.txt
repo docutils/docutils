@@ -56,6 +56,8 @@ Changes Since 0.3.7
     arguments>``.
   - Allowed whitespace in paths and URLs.
   - Added auto-enumerated list items.
+  - Fixed bug that assumed ``.. _`` and ``.. |`` were invariably
+    followed by text.
 
 * docutils/parsers/rst/directives/__init__.py:
 
