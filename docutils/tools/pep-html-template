@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=%(encoding)s">
-  <meta name="generator" content="Docutils: http://docutils.sourceforge.net/">
+  <meta name="generator" content="Docutils %(version)s: http://docutils.sourceforge.net/">
   <title>PEP %(pep)s -- %(title)s</title>
   %(stylesheet)s</head>
 <body bgcolor="white" marginwidth="0" marginheight="0">

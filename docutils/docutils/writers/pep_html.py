@@ -1,12 +1,10 @@
-#! /usr/bin/env python
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
 """
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
-
 PEP HTML Writer.
 """
 
@@ -14,6 +12,7 @@ __docformat__ = 'reStructuredText'
 
 
 import sys
+import docutils
 from docutils import nodes, optik, utils
 from docutils.writers import html4css1
 
@@ -63,6 +62,7 @@ class Writer(html4css1.Writer):
         # Substitutions dict for template:
         subs = {}
         subs['encoding'] = options.output_encoding
+        subs['version'] = docutils.__version__
         subs['stylesheet'] = ''.join(self.stylesheet)
         pyhome = options.python_home
         subs['pyhome'] = pyhome
