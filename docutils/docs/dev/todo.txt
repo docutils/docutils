@@ -45,6 +45,10 @@ Bugs
   whitespace and punctuation as markup delimiters, which may not be
   applicable in these languages.
 
+* In docutils.transforms.peps.TargetNotes, an empty References section
+  is generated even if there are no references.  Reported by David
+  Ascher.
+
 
 General
 -------
@@ -292,6 +296,9 @@ General
   Could be generated from the source modules.  A special command-line
   option could be added to Docutils front ends to do this.  (Idea from
   Engelbert Gruber.)
+
+* Should I/O objects be passed simple encoding name strings instead of
+  a full-blown settings object?
 
 
 Documentation
