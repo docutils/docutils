@@ -36,3 +36,12 @@ conventions which are understood by the Docutils.
 - Frederic Giacometti's "iPhrase Python documentation conventions" is
   an attachment to his Doc-SIG post of 2001-05-30
   (http://mail.python.org/pipermail/doc-sig/2001-May/001840.html).
+
+
+..
+   Local Variables:
+   mode: indented-text
+   indent-tabs-mode: nil
+   sentence-end-double-space: t
+   fill-column: 70
+   End:
