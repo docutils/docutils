@@ -1,49 +1,105 @@
 #!/bin/sh
+# CVS reorganization script for Docutils (docutils.sf.net).
+# By Felix Wiemann and David Goodger
+# Part of the plan described in
+# <http://docutils.sf.net/spec/notes.html#documentation-cleanup>.
 
-cd /cvsroot/docutils/docutils/
+# Paths should be absolute (implied by
+# http://sf.net/docman/display_doc.php?docid=768&group_id=1#repositoryrestructure).
 
-set -e  # Exit on error.
+# Exit on error.
+set -e
 
-# Ensure that we really are in the docutils module.
-test -d ./docs -a -d ./spec
 
-alias 'md=mkdir -v'
-alias 'mv=mv -v'
+# Remove module & files added by mistake
+########################################
 
-md docs/user/  # introductory/tutorial material for end-users
-md docs/dev/   # for core-developers
-md docs/ref/   # reference material for all groups
-md docs/lib/   # API reference material for library-user/developers
-md docs/peps/  # Python Enhancement Proposals
-md docs/dev/rst/
-md docs/ref/rst/
+rm -r /cvsroot/docutils/module					# duplicate of docutils module
+rm -r /cvsroot/docutils/docutils/docutils/Attic	# duplicates of CVSROOT files
 
-mv docs/config.txt,v docs/user/
-mv docs/latex.txt,v docs/user/
-mv docs/tools.txt,v docs/user/
 
-mv docs/rst/ docs/user/
+# Create new empty directory structure
+######################################
 
-mv spec/howto/ docs/howto/  # for component-developers and core-developers
+# introductory/tutorial material for end-users
+mkdir -v /cvsroot/docutils/docutils/docs/user/
 
-mv spec/pysource.dtd,v docs/dev/
-mv spec/pysource.txt,v docs/dev/
-mv spec/semantics.txt,v docs/dev/
+# for core-developers
+mkdir -v /cvsroot/docutils/docutils/docs/dev/
+mkdir -v /cvsroot/docutils/docutils/docs/dev/rst/
 
-mv spec/doctree.txt,v docs/ref/
-mv spec/docutils.dtd,v docs/ref/
-mv spec/soextblx.dtd,v docs/ref/
+# reference material for all groups
+mkdir -v /cvsroot/docutils/docutils/docs/ref/   
+mkdir -v /cvsroot/docutils/docutils/docs/ref/rst/
 
-mv spec/transforms.txt,v docs/lib/
+# Python Enhancement Proposals
+mkdir -v /cvsroot/docutils/docutils/docs/peps/  
 
-mv spec/rst/alternatives.txt,v docs/dev/rst/
-mv spec/rst/introduction.txt,v docs/dev/rst/
-mv spec/rst/problems.txt,v docs/dev/rst/
 
-mv spec/rst/reStructuredText.txt,v docs/ref/rst/
-mv spec/rst/directives.txt,v docs/ref/rst/
-mv spec/rst/interpreted.txt,v docs/ref/rst/roles.txt
+# Move entire subdirectories
+############################
 
-mv spec/pep-????.txt,v docs/peps/
+mv -v /cvsroot/docutils/docutils/docs/rst \
+      /cvsroot/docutils/docutils/docs/user/rst
+
+# for component-developers and core-developers
+mv -v /cvsroot/docutils/docutils/spec/howto \
+      /cvsroot/docutils/docutils/docs/howto
+
+
+# Move (& rename) individual files
+##################################
+
+# All file names have to end with ",v"; this is the CVS repository!
+
+mv -v /cvsroot/docutils/docutils/docs/config.txt,v \
+      /cvsroot/docutils/docutils/docs/user/
+mv -v /cvsroot/docutils/docutils/docs/latex.txt,v \
+      /cvsroot/docutils/docutils/docs/user/
+mv -v /cvsroot/docutils/docutils/docs/tools.txt,v \
+      /cvsroot/docutils/docutils/docs/user/
+
+mv -v /cvsroot/docutils/docutils/spec/pysource.dtd,v \
+      /cvsroot/docutils/docutils/docs/dev/
+mv -v /cvsroot/docutils/docutils/spec/pysource.txt,v \
+      /cvsroot/docutils/docutils/docs/dev/
+mv -v /cvsroot/docutils/docutils/spec/semantics.txt,v \
+      /cvsroot/docutils/docutils/docs/dev/
+mv -v /cvsroot/docutils/docutils/spec/notes.txt,v \
+      /cvsroot/docutils/docutils/docs/dev/todo.txt,v # rename
+
+mv -v /cvsroot/docutils/docutils/spec/doctree.txt,v \
+      /cvsroot/docutils/docutils/docs/ref/
+mv -v /cvsroot/docutils/docutils/spec/docutils.dtd,v \
+      /cvsroot/docutils/docutils/docs/ref/
+mv -v /cvsroot/docutils/docutils/spec/soextblx.dtd,v \
+      /cvsroot/docutils/docutils/docs/ref/
+
+mv -v /cvsroot/docutils/docutils/spec/transforms.txt,v \
+      /cvsroot/docutils/docutils/docs/lib/
+
+mv -v /cvsroot/docutils/docutils/spec/rst/alternatives.txt,v \
+      /cvsroot/docutils/docutils/docs/dev/rst/
+mv -v /cvsroot/docutils/docutils/spec/rst/problems.txt,v \
+      /cvsroot/docutils/docutils/docs/dev/rst/
+
+mv -v /cvsroot/docutils/docutils/spec/rst/reStructuredText.txt,v \
+      /cvsroot/docutils/docutils/docs/ref/rst/restructuredtext.txt,v # rename
+mv -v /cvsroot/docutils/docutils/spec/rst/directives.txt,v \
+      /cvsroot/docutils/docutils/docs/ref/rst/
+mv -v /cvsroot/docutils/docutils/spec/rst/interpreted.txt,v \
+      /cvsroot/docutils/docutils/docs/ref/rst/roles.txt,v # rename
+mv -v /cvsroot/docutils/docutils/spec/rst/introduction.txt,v \
+      /cvsroot/docutils/docutils/docs/ref/rst/
+
+mv -v /cvsroot/docutils/docutils/spec/pep-????.txt,v \
+      /cvsroot/docutils/docutils/docs/peps/
+
+
+# Remove old, unused, empty directories
+#######################################
+
+rmdir /cvsroot/docutils/docutils/spec/rst
+rmdir /cvsroot/docutils/docutils/spec
 
 echo Finished.
