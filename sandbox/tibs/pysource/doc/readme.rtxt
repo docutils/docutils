@@ -2,12 +2,13 @@ pysource
 ========
 
 :Author: Tibs (tibs@tibsnjoan.co.uk)
-:Date: 2002-04-24
+:Date: $Date$
+:Revision: $Revision$
 :Version: 0.1
 
 Ahem
 ----
-This file needs updating - unless this noteice has disappeared, treat the
+This file needs updating - unless this notice has disappeared, treat the
 rest of the file as out-of-date...
 
 History
@@ -15,8 +16,7 @@ History
 2002-04:
 
 * Name changed from 'pydps' to 'pysource' (in line with a suggestion
-  made a while back on the Doc-SIG - I *think* by David Goodger, although
-  I don't remember exactly).
+  made a while back on the Doc-SIG by David Goodger).
 
   It's not that that's a great name, just that it's better than 'pydps'
   (especially now that 'dps' has become 'docutils'), and the rather more
@@ -55,8 +55,9 @@ As a subsidiary capability, it can read a restructuredtext file and produce
 HTML from that.
 
 There are obviously other tools which perform similar tasks - see the
-accompanying file other-tools.rtxt for some comparisons, and an explanation
-of why I think it is worth developing this tool independently.
+accompanying file whythis.rtxt for some comparisons, and an
+explanation of why I think it is worth developing this tool
+independently.
 
 
 *** TO HERE ***
@@ -67,30 +68,30 @@ The command ``python pysource/pysource.py --help`` gives the following
 information::
 
   """The command line interface to docutil's Python documentation extractor.
-  
+
   Usage: ``pysource.py <switches> <inpath> [<outfile>]``
-  
+
       <inpath> is the path to a package or module.
-  
+
       <outfile> is the path to the output file. If it's not given, then
       output will be written to a file with the same name as the input
       file, but defaulting to the current directory, and with extension
       derived from the type of output:
-  
+
       - show   -> ``.show``
       - ast    -> ``.ast``
       - xml    -> ``.xml``
       - html   -> ``.html``
       - pretty -> ``.pretty``
-  
+
       (unless --stdout is requested). The default is --html.
-  
+
       Note that progress messages (and ``verb`` information) are written
       to ``sys.stderr``.
   """
-  
+
       <switches> are:
-  
+
         -v, --verbose   Report on progress in more detail
         -q, --quiet     Suppress normal progress messages
         -t, --text      The input file is a plain (text) reST file
