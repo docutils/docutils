@@ -30,7 +30,7 @@ Unknown reference_.
 """\
 <document>
     <paragraph>
-        Unknown 
+        Unknown \n\
         <problematic id="id2" refid="id1">
             reference_
         .

@@ -7,7 +7,7 @@
 :Date: $Date$
 :Copyright: This module has been placed in the public domain.
 
-Tests for components.py contents directives.
+Tests for parts.py contents directive.
 """
 
 from __init__ import DocutilsTestSupport
@@ -27,8 +27,8 @@ totest['contents'] = [
 <document>
     <pending>
         .. internal attributes:
-             .transform: docutils.transforms.components.Contents
-             .stage: 'last_reader'
+             .transform: docutils.transforms.parts.Contents
+             .stage: 'last reader'
              .details:
                title: None
 """],
@@ -39,8 +39,8 @@ totest['contents'] = [
 <document>
     <pending>
         .. internal attributes:
-             .transform: docutils.transforms.components.Contents
-             .stage: 'last_reader'
+             .transform: docutils.transforms.parts.Contents
+             .stage: 'last reader'
              .details:
                title:
                  <title>
@@ -54,8 +54,8 @@ totest['contents'] = [
 <document>
     <pending>
         .. internal attributes:
-             .transform: docutils.transforms.components.Contents
-             .stage: 'last_reader'
+             .transform: docutils.transforms.parts.Contents
+             .stage: 'last reader'
              .details:
                title:
                  <title>
@@ -70,8 +70,8 @@ totest['contents'] = [
 <document>
     <pending>
         .. internal attributes:
-             .transform: docutils.transforms.components.Contents
-             .stage: 'last_reader'
+             .transform: docutils.transforms.parts.Contents
+             .stage: 'last reader'
              .details:
                title:
                  <title>
@@ -84,14 +84,14 @@ totest['contents'] = [
 <document>
     <pending>
         .. internal attributes:
-             .transform: docutils.transforms.components.Contents
-             .stage: 'last_reader'
+             .transform: docutils.transforms.parts.Contents
+             .stage: 'last reader'
              .details:
                title:
                  <title>
                      <emphasis>
                          Table
-                      of 
+                      of \n\
                      <literal>
                          Contents
 """],
@@ -104,8 +104,8 @@ totest['contents'] = [
 <document>
     <pending>
         .. internal attributes:
-             .transform: docutils.transforms.components.Contents
-             .stage: 'last_reader'
+             .transform: docutils.transforms.parts.Contents
+             .stage: 'last reader'
              .details:
                depth: 2
                local: None
@@ -120,8 +120,8 @@ totest['contents'] = [
 <document>
     <pending>
         .. internal attributes:
-             .transform: docutils.transforms.components.Contents
-             .stage: 'last_reader'
+             .transform: docutils.transforms.parts.Contents
+             .stage: 'last reader'
              .details:
                depth: 2
                local: None

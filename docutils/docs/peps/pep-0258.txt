@@ -282,6 +282,11 @@ Specification
     method passes its input to its Reader, then passes the resulting
     document tree through its Writer to its destination.
 
+    Calling the "publish" function (or instantiating a "Publisher"
+    object) with component names will result in default behavior.  For
+    custom behavior (setting component options), create custom
+    component objects first, and pass *them* to publish/Publisher.
+
 
     Readers
     -------
@@ -441,7 +446,8 @@ Specification
         require anything other than monolithic output.  Perhaps merge
         the HTML "distributor" into "writer" variants?
 
-        Perhaps translator/writer instead of writer/distributor?
+        Perhaps translator/writer instead of writer/distributor?  Or
+        "filer" instead of "distributor"?
 
     Responsibilities:
 
@@ -487,7 +493,7 @@ Specification
 
       - Package "docutils.parsers": markup parsers_.
 
-        - Function "get_parser_class(parsername)" returns a parser
+        - Function "get_parser_class(parser_name)" returns a parser
           module by name.  Class "Parser" is the base class of
           specific parsers.  (docutils/parsers/__init__.py)
 
@@ -497,7 +503,7 @@ Specification
 
       - Package "docutils.readers": context-aware input readers.
 
-        - Function "get_reader_class(readername)" returns a reader
+        - Function "get_reader_class(reader_name)" returns a reader
           module by name or alias.  Class "Reader" is the base class
           of specific readers.  (docutils/readers/__init__.py)
 
@@ -509,11 +515,11 @@ Specification
 
       - Package "docutils.writers": output format writers.
 
-        - Function "get_writer_class(writername)" returns a writer
+        - Function "get_writer_class(writer_name)" returns a writer
           module by name.  Class "Writer" is the base class of
           specific writers.  (docutils/writers/__init__.py)
 
-        - Module "docutils.writers.pprint" is a simple internal
+        - Module "docutils.writers.pseudoxml" is a simple internal
           document tree writer; it writes indented pseudo-XML.
 
         - Module "docutils.writers.html4css1" is a simple HyperText

@@ -31,7 +31,7 @@ the ``Substitutions`` transform. The ``Messages`` transform will
 generate a "System Messages" section.
 
 (A second copy of the system message is tacked on to the end of the
-doctree by the test framework.)
+document by the test framework.)
 """,
 """\
 <document>
@@ -50,7 +50,7 @@ doctree by the test framework.)
         generate a "System Messages" section.
     <paragraph>
         (A second copy of the system message is tacked on to the end of the
-        doctree by the test framework.)
+        document by the test framework.)
     <section class="system-messages">
         <title>
             Docutils System Messages

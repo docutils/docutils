@@ -27,8 +27,22 @@ totest['meta'] = [
 """,
 """\
 <document>
-    <meta content="The reStructuredText plaintext markup language" name="description">
-    <meta content="plaintext,markup language" name="keywords">
+    <pending>
+        .. internal attributes:
+             .transform: docutils.transforms.components.Filter
+             .stage: 'first writer'
+             .details:
+               nodes:
+                 <meta content="The reStructuredText plaintext markup language" name="description">
+               writer: 'html'
+    <pending>
+        .. internal attributes:
+             .transform: docutils.transforms.components.Filter
+             .stage: 'first writer'
+             .details:
+               nodes:
+                 <meta content="plaintext,markup language" name="keywords">
+               writer: 'html'
 """],
 ["""\
 .. meta::
@@ -37,8 +51,22 @@ totest['meta'] = [
 """,
 """\
 <document>
-    <meta content="An amusing story" lang="en" name="description">
-    <meta content="Un histoire amusant" lang="fr" name="description">
+    <pending>
+        .. internal attributes:
+             .transform: docutils.transforms.components.Filter
+             .stage: 'first writer'
+             .details:
+               nodes:
+                 <meta content="An amusing story" lang="en" name="description">
+               writer: 'html'
+    <pending>
+        .. internal attributes:
+             .transform: docutils.transforms.components.Filter
+             .stage: 'first writer'
+             .details:
+               nodes:
+                 <meta content="Un histoire amusant" lang="fr" name="description">
+               writer: 'html'
 """],
 ["""\
 .. meta::
@@ -46,7 +74,14 @@ totest['meta'] = [
 """,
 """\
 <document>
-    <meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type">
+    <pending>
+        .. internal attributes:
+             .transform: docutils.transforms.components.Filter
+             .stage: 'first writer'
+             .details:
+               nodes:
+                 <meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type">
+               writer: 'html'
 """],
 ["""\
 .. meta::
@@ -55,7 +90,14 @@ totest['meta'] = [
 """,
 """\
 <document>
-    <meta content="content over multiple lines" name="name">
+    <pending>
+        .. internal attributes:
+             .transform: docutils.transforms.components.Filter
+             .stage: 'first writer'
+             .details:
+               nodes:
+                 <meta content="content over multiple lines" name="name">
+               writer: 'html'
 """],
 ["""\
 Paragraph
@@ -67,7 +109,14 @@ Paragraph
 <document>
     <paragraph>
         Paragraph
-    <meta content="content" name="name">
+    <pending>
+        .. internal attributes:
+             .transform: docutils.transforms.components.Filter
+             .stage: 'first writer'
+             .details:
+               nodes:
+                 <meta content="content" name="name">
+               writer: 'html'
 """],
 ["""\
 .. meta::
@@ -86,10 +135,9 @@ Paragraph
 <document>
     <system_message level="1" type="INFO">
         <paragraph>
-            No content for meta tag "empty".
+            No content for meta tag "empty" at line 2.
         <literal_block>
             :empty:
-    <meta content="" name="empty">
 """],
 ["""\
 .. meta::
@@ -111,7 +159,14 @@ Paragraph
 """,
 """\
 <document>
-    <meta content="content" name="name">
+    <pending>
+        .. internal attributes:
+             .transform: docutils.transforms.components.Filter
+             .stage: 'first writer'
+             .details:
+               nodes:
+                 <meta content="content" name="name">
+               writer: 'html'
     <system_message level="3" type="ERROR">
         <paragraph>
             Invalid meta directive at line 3.
@@ -128,10 +183,9 @@ Paragraph
 <document>
     <system_message level="3" type="ERROR">
         <paragraph>
-            Error parsing meta tag attribute "notattval": missing "="
+            Error parsing meta tag attribute "notattval" at line 2: missing "=".
         <literal_block>
             :name notattval: content
-    <meta content="content" name="name">
 """],
 ]
 

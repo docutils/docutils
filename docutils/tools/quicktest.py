@@ -174,7 +174,7 @@ def main():
     inputFile, outputFormat, optargs = getArgs() # process cmdline arguments
     parser = Parser()
     input = inputFile.read()
-    document = docutils.utils.newdocument(debug=optargs['debug'])
+    document = docutils.utils.new_document(debug=optargs['debug'])
     parser.parse(input, document)
     output = format(outputFormat, input, document, optargs)
     print output,

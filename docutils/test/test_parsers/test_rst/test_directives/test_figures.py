@@ -80,7 +80,7 @@ totest['figures'] = [
             Image URI at line 1 contains whitespace.
         <literal_block>
             .. figure:: not an image URI
-            
+            \n\
                And a caption.
 """],
 ["""\
