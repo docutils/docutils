@@ -74,6 +74,7 @@ class Publisher:
 
     def setup_option_parser(self, usage=None, description=None,
                             settings_spec=None, **defaults):
+        #@@@ Add self.source & self.destination to components in future?
         option_parser = OptionParser(
             components=(settings_spec, self.parser, self.reader, self.writer),
             usage=usage, description=description)
@@ -138,6 +139,12 @@ class Publisher:
             self.settings, destination=destination,
             destination_path=destination_path)
 
+    def apply_transforms(self, document):
+        document.transformer.populate_from_components(
+            (self.source, self.reader, self.reader.parser, self.writer,
+             self.destination))
+        document.transformer.apply_transforms()
+
     def publish(self, argv=None, usage=None, description=None,
                 settings_spec=None, settings_overrides=None):
         """
@@ -152,10 +159,24 @@ class Publisher:
             self.settings._update(settings_overrides, 'loose')
         self.set_io()
         document = self.reader.read(self.source, self.parser, self.settings)
+        self.apply_transforms(document)
         output = self.writer.write(document, self.destination)
+        if self.settings.dump_settings:
+            from pprint import pformat
+            print >>sys.stderr, '\n::: Docutils settings:'
+            print >>sys.stderr, pformat(self.settings.__dict__)
         if self.settings.dump_internals:
             from pprint import pformat
+            print >>sys.stderr, '\n::: Docutils internals:'
             print >>sys.stderr, pformat(document.__dict__)
+        if self.settings.dump_transforms:
+            from pprint import pformat
+            print >>sys.stderr, '\n::: Transforms applied:'
+            print >>sys.stderr, pformat(document.transformer.applied)
+        if self.settings.dump_pseudo_xml:
+            print >>sys.stderr, '\n::: Pseudo-XML:'
+            print >>sys.stderr, document.pformat().encode(
+                'raw_unicode_escape')
         return output
 
 
