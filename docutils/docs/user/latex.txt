@@ -148,7 +148,7 @@ characters are required one must set ``--output-encoding=utf-8`` install
 
 to the stylesheet.
 
-.. _LaTeX unicode: http://www.unruh.de/DniQ/LaTeX/unicode/
+.. _LaTeX unicode: http://www.unruh.de/DniQ/latex/unicode/
 
 Table of figures
 ----------------
