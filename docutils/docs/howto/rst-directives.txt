@@ -18,9 +18,18 @@ The syntax of directives is detailed in the `reStructuredText Markup
 Specification`_, and standard directives are described in
 `reStructuredText Directives`_.
 
+Directives are a reStructuredText markup/parser concept.  There is no
+"directive" element, no single element that corresponds exactly to the
+concept of directives.  Instead, choose the most appropriate elements
+from the existing Docutils elements.  Directives build structures
+using the existing building blocks.  See `The Docutils Document Tree`_
+and the ``docutils.nodes`` module for more about the building blocks
+of Docutils documents.
+
 .. _reStructuredText Markup Specification:
    ../ref/rst/restructuredtext.html#directives
 .. _reStructuredText Directives: ../ref/rst/directives.html
+.. _The Docutils Document Tree: ../ref/doctree.html
 
 
 .. contents:: Table of Contents
@@ -93,13 +102,6 @@ context, typically using code like this::
             'within a substitution definition.' % (name),
             nodes.literal_block(block_text, block_text), line=lineno)
         return [error]
-
-There is no single element that corresponds exactly to directives.
-Instead, choose the most appropriate elements from the existing
-Docutils elements.  See `The Docutils Document Tree`_ and the
-``docutils.nodes`` module.
-
-.. _The Docutils Document Tree: ../ref/doctree.html
 
 
 Specify Directive Arguments, Options, and Content
