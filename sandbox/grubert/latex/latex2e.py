@@ -126,7 +126,7 @@ Notes on LaTeX
      entry the line::
         \numberline text pagenumber
   X. latex does not support multiple tocs in one document.
-     (might be no limitation except for docutils documenttation)
+     (might be no limitation except for docutils documentation)
 
 * sectioning::
     \part
@@ -138,6 +138,7 @@ Notes on LaTeX
     \subparagraph
     \subsubparagraph (milstd and book-form styles only) 
     \subsubsubparagraph (milstd and book-form styles only)
+
 
 """    
 
@@ -163,6 +164,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # use latex tableofcontents or let docutils do it.
     # BUG: not tested.
     latex_toc = 0
+    # table kind: if 0 tabularx (single page), 1 longtable
+    # maybe should be decided on row count.
+    use_longtable = 1
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
@@ -179,7 +183,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
               '\\usepackage{babel}\n',     # language is in documents settings.
               '\\usepackage{shortvrb}\n',  # allows verb in footnotes.
               self.encoding,
-              '\\usepackage{tabularx}\n',  # for docinfo, ...
+              # * tabularx: for docinfo, automatic width of columns, always on one page.
+              '\\usepackage{tabularx}\n',
+              '\\usepackage{longtable}\n',
+              # possible other packages.
+              # * enumerate    # allows to specify counter style per environment
+              # * fancyhdr
+              # * ltxtable is a combination of tabularx and longtable (pagebreaks).
+              #   but 
               '\\usepackage{amsmath}\n',   # what fore amsmath. 
               '\\usepackage{graphicx}\n',
               '\\usepackage{color}\n',
@@ -208,6 +219,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.section_level = 0
         self.context = []
         self.topic_class = ''
+        # column specification for tables
+        self.colspecs = []
         # verbatim: to tell encode not to encode.
         self.verbatim = 0
         # insert_newline: to tell encode to add newline.
@@ -380,11 +393,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append( '})\n' )
 
     def visit_colspec(self, node):
-        self.body.append('%[visit_colspec]\n')
-        self.context[-1] += 1
+        if self.use_longtable:
+            self.colspecs.append(node)
+        else:    
+            self.context[-1] += 1
 
     def depart_colspec(self, node):
-        self.body.append('%[depart_colspec]\n')
+        pass
 
     def visit_comment(self, node,
                       sub=re.compile('\n').sub):
@@ -929,22 +944,42 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_system_message(self, node):
         self.body.append('\n')
 
+    def get_colspecs(self):
+        width = 0
+        for node in self.colspecs:
+            width += node['colwidth']
+        s = ""
+        for node in self.colspecs:
+            colwidth = float(node['colwidth']) / width 
+            s += "|p{%.2f\\linewidth}" % colwidth
+        self.colspecs = []
+        return s+"|"
+
     def visit_table(self, node):
-        self.body.append('\n\\begin{tabularx}{\\linewidth}')
-        self.context.append('table_sentinel') # sentinel
-        self.context.append(0) # column counter
+        if self.use_longtable:
+            self.body.append('\n\\begin{longtable}[c]')
+        else:
+            self.body.append('\n\\begin{tabularx}{\\linewidth}')
+            self.context.append('table_sentinel') # sentinel
+            self.context.append(0) # column counter
 
     def depart_table(self, node):
-        self.body.append('\\end{tabularx}\n')
-        sentinel = self.context.pop()
-        if sentinel != 'table_sentinel':
-            print 'context:', self.context + [sentinel]
-            raise AssertionError
+        if self.use_longtable:
+            self.body.append('\\end{longtable}\n')
+        else:    
+            self.body.append('\\end{tabularx}\n')
+            sentinel = self.context.pop()
+            if sentinel != 'table_sentinel':
+                print 'context:', self.context + [sentinel]
+                raise AssertionError
 
     def table_preamble(self):
-        if self.context[-1] != 'table_sentinel':
-            self.body.append('{%s}' % ('|X' * self.context.pop() + '|'))
-            self.body.append('\n\\hline')
+        if self.use_longtable:
+            self.body.append('{%s}\n' % self.get_colspecs())
+        else:
+            if self.context[-1] != 'table_sentinel':
+                self.body.append('{%s}' % ('|X' * self.context.pop() + '|'))
+                self.body.append('\n\\hline')
 
     def visit_target(self, node):
         if not (node.has_key('refuri') or node.has_key('refid')
@@ -958,20 +993,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append(self.context.pop())
 
     def visit_tbody(self, node):
-        self.table_preamble()
         self.body.append('%[visit_tbody]\n')
-        pass
 
     def depart_tbody(self, node):
         self.body.append('%[depart_tbody]\n')
-        pass
 
     def visit_term(self, node):
         self.body.append('\\item[')
 
     def depart_term(self, node):
         self.body.append(']\n')
-        pass
 
     def visit_tgroup(self, node):
         #self.body.append(self.starttag(node, 'colgroup'))
@@ -983,6 +1014,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_thead(self, node):
         self.table_preamble()
+        #BUG longtable needs firstpage and lastfooter too.
         self.body.append('%[visit_thead]\n')
 
     def depart_thead(self, node):
