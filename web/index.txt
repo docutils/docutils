@@ -15,7 +15,7 @@
 
 The purpose of the Docutils project is to create a set of tools for
 processing plaintext documentation into useful formats, such as HTML,
-XML, and TeX.  Includes reStructuredText_, the easy to read, easy to
+XML, and LaTeX.  Includes reStructuredText_, the easy to read, easy to
 use, what-you-see-is-what-you-get plaintext markup language.  Several
 sources are or will be supported:
 
