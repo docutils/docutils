@@ -1,0 +1,4 @@
+
+* Trim down the PNGs (with PIL?)
+* Better handling of errors in the ABC (but abcm2ps seems really dodgy on
+  this point)
