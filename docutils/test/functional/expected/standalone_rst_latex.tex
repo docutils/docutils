@@ -1,5 +1,6 @@
 \documentclass[10pt,a4paper,english]{article}
 \usepackage{babel}
+\usepackage{ae}
 \usepackage{shortvrb}
 \usepackage[latin1]{inputenc}
 \usepackage{tabularx}
@@ -274,13 +275,13 @@ and explicit roles for \emph{standard} \textbf{inline}
 % DO NOT RE-WRAP THE FOLLOWING PARAGRAPH! 
 
 Let's test wrapping and whitespace significance in inline literals:
-\texttt{This is an example of --inline-literal --text, --including some--
-strangely--hyphenated-words.  Adjust-the-width-of-your-browser-window
-to see how the text is wrapped.  -- ---- --------  Now note    the
+\texttt{This is an example of -{}-inline-literal -{}-text, -{}-including some-{}-
+strangely-{}-hyphenated-words.  Adjust-the-width-of-your-browser-window
+to see how the text is wrapped.  -{}- -{}-{}-{}- -{}-{}-{}-{}-{}-{}-{}-  Now note    the
 spacing    between the    words of    this sentence    (words
 should    be grouped    in pairs).}
 
-If the \texttt{--pep-references} option was supplied, there should be a
+If the \texttt{-{}-pep-references} option was supplied, there should be a
 live link to PEP 258 here.
 
 
@@ -535,7 +536,7 @@ description.
 \subsection*{2.7~~~Literal Blocks}
 
 Literal blocks are indicated with a double-colon (``::'') at the end of
-the preceding paragraph (over there \texttt{-->}).  They can be indented:
+the preceding paragraph (over there \texttt{-{}->}).  They can be indented:
 \begin{quote}{\ttfamily \raggedright \noindent
 if~literal{\underline{~}}block:~\\
 ~~~~text~=~'is~left~as-is'~\\
@@ -545,7 +546,7 @@ if~literal{\underline{~}}block:~\\
 
 Or they can be quoted without indentation:
 \begin{quote}{\ttfamily \raggedright \noindent
->>~Great~idea!~\\
+>{}>~Great~idea!~\\
 >~\\
 >~Why~didn't~I~think~of~that?
 }\end{quote}

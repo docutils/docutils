@@ -21,6 +21,7 @@ def suite():
 latex_head = """\
 \\documentclass[10pt,a4paper,english]{article}
 \\usepackage{babel}
+\\usepackage{ae}
 \\usepackage{shortvrb}
 \\usepackage[latin1]{inputenc}
 \\usepackage{tabularx}

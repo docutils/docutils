@@ -136,6 +136,9 @@ does not work with T1 encodings one should use::
   \usepackage[scaled=.90]{helvet}
   \usepackage{courier}
 
+*font encoding* can be selected with option "font-encoding". Default
+uses package "ae" for old style font encoding use "OT1". 
+
 Hyphenation
 -----------
 

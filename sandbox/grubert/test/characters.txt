@@ -58,3 +58,19 @@ hash # in section title
 
 with pdflatex.
 
+fontencodings
+-------------
+
+In T1 literal text double hyphens and angle bracketts need help
+to remain two characters::
+
+  << -- >>
+
+non literal "<< -- >>".
+
+
+  
+
+  
+
+  

@@ -130,6 +130,12 @@ class Writer(writers.Writer):
            'Default is no option.',
            ['--graphicx-option'],
            {'default': ''}),
+          ('LaTeX font encoding.'
+           'Possible values are "T1", "OT1", "" or some other fontenc option.'
+           'The font encoding influences available symbols, e.g. "<<" as one '
+           'character. Default is "" which leads to package "ae". ',
+           ['--font-encoding'],
+          {'default': ''}),
           ),)
 
     settings_defaults = {'output_encoding': 'latin-1'}
@@ -539,7 +545,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self._use_latex_citations = settings.use_latex_citations
         self.hyperlink_color = settings.hyperlink_color
         self.compound_enumerators = settings.compound_enumerators
-        self.fontenc = ''
+        self.font_encoding = settings.font_encoding
         self.section_prefix_for_enumerators = (
             settings.section_prefix_for_enumerators)
         self.section_enumerator_separator = (
@@ -573,10 +579,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
             else:
                 self.typearea = ''
 
-        if self.fontenc == 'T1':
-            fontenc = '\\usepackage[T1]{fontenc}\n'
+        if self.font_encoding == 'OT1':
+            fontenc_header = ''
+        elif self.font_encoding == '':
+            fontenc_header = '\\usepackage{ae}\n'
         else:
-            fontenc = ''
+            fontenc_header = '\\usepackage[%s]{fontenc}\n' % (self.font_encoding,)
         input_encoding = self.encoding % self.to_latex_encoding(settings.output_encoding)
         if self.to_latex_encoding(settings.output_encoding) == 'utf8':
             # preload unicode to avoid ``Please insert PrerenderUnicode`` message,
@@ -599,7 +607,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.head_prefix = [
               self.latex_head % (self.d_options,self.settings.documentclass),
               '\\usepackage{babel}\n',     # language is in documents settings.
-              fontenc,
+              fontenc_header,
               '\\usepackage{shortvrb}\n',  # allows verb in footnotes.
               input_encoding,
               # * tabularx: for docinfo, automatic width of columns, always on one page.
@@ -811,7 +819,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.literal_block or self.literal:
             # pdflatex does not produce doublequotes for ngerman.
             text = self.babel.double_quotes_in_tt(text)
-            if self.fontenc == 'T1': 
+            if self.font_encoding == 'T1' or self.font_encoding == '': 
                 # make sure "--" does not become a "-".
                 # the same for "<<" and ">>".
                 text = text.replace("--","-{}-").replace("--","-{}-")
