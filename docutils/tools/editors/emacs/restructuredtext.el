@@ -1,4 +1,5 @@
-;; Author: David Goodger <goodger@python.org>
+;; Authors: David Goodger <goodger@python.org>;
+;;          Martin Blais
 ;; Date: $Date$
 ;; Copyright: This module has been placed in the public domain.
 ;;
@@ -124,3 +125,25 @@ behaviour is performed."
 	     (beginning-of-line)
 	     (point))) )
     (if newpoint (goto-char newpoint)) ))
+
+(defun join-paragraph ()
+  ;; by David Goodger
+  "Join lines in current paragraph into one line, removing end-of-lines."
+  (interactive)
+  (save-excursion
+    (backward-paragraph 1)
+    (forward-char 1)
+    (let ((start (point)))	; remember where we are
+      (forward-paragraph 1)	; go to the end of the paragraph
+      (beginning-of-line 0)	; go to the beginning of the previous line
+      (while (< start (point))	; as long as we haven't passed where we started
+	(delete-indentation)	; join this line to the line before
+	(beginning-of-line)))))	; and go back to the beginning of the line
+
+(defun force-fill-paragraph ()
+  ;; by David Goodger
+  "Fill paragraph at point, first joining the paragraph's lines into one.
+This is useful for filling list item paragraphs."
+  (interactive)
+  (join-paragraph)
+  (fill-paragraph nil))
