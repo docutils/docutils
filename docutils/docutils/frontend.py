@@ -175,6 +175,8 @@ class Values(optparse.Values):
     """
 
     def update(self, other_dict, option_parser):
+        if isinstance(other_dict, Values):
+            other_dict = other_dict.__dict__
         other_dict = other_dict.copy()
         for setting in option_parser.lists:
             if (hasattr(self, setting) and other_dict.has_key(setting)):
@@ -426,7 +428,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
                 config_settings = self.get_standard_config_settings()
             except ValueError, error:
                 self.error(error)
-            defaults.update(config_settings)
+            defaults.update(config_settings.__dict__)
         # Internal settings with no defaults from settings specifications;
         # initialize manually:
         self.set_defaults(_source=None, _destination=None, **defaults)
@@ -481,9 +483,9 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
         return [os.path.expanduser(f) for f in config_files if f.strip()]
 
     def get_standard_config_settings(self):
-        settings = {}
+        settings = Values()
         for filename in self.get_standard_config_files():
-            settings.update(self.get_config_file_settings(filename))
+            settings.update(self.get_config_file_settings(filename), self)
         return settings
 
     def get_config_file_settings(self, config_file):

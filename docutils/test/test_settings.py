@@ -36,6 +36,7 @@ class ConfigFileTests(unittest.TestCase):
                     'one': fixpath('data/config_1.txt'),
                     'two': fixpath('data/config_2.txt'),
                     'list': fixpath('data/config_list.txt'),
+                    'list2': fixpath('data/config_list_2.txt'),
                     'error': fixpath('data/config_error_handler.txt')}
 
     settings = {
@@ -56,6 +57,7 @@ class ConfigFileTests(unittest.TestCase):
         'two': {'generator': 0,
                 'stylesheet_path': fixpath('data/test.css')},
         'list': {'expose_internals': ['a', 'b', 'c', 'd', 'e']},
+        'list2': {'expose_internals': ['a', 'b', 'c', 'd', 'e', 'f']},
         'error': {'error_encoding': 'ascii',
                   'error_encoding_error_handler': 'strict'},
         }
@@ -68,11 +70,11 @@ class ConfigFileTests(unittest.TestCase):
             components=(pep_html.Writer,), read_config_files=None)
 
     def files_settings(self, *names):
-        settings = {}
+        settings = frontend.Values()
         for name in names:
             settings.update(self.option_parser.get_config_file_settings(
-                self.config_files[name]))
-        return settings
+                self.config_files[name]), self.option_parser)
+        return settings.__dict__
 
     def expected_settings(self, *names):
         expected = {}
@@ -117,6 +119,10 @@ class ConfigFileTests(unittest.TestCase):
         self.compare_output(self.files_settings('list'),
                             self.expected_settings('list'))
 
+    def test_list2(self):
+        self.compare_output(self.files_settings('list', 'list2'),
+                            self.expected_settings('list2'))
+
     def test_error_handler(self):
         self.compare_output(self.files_settings('error'),
                             self.expected_settings('error'))
@@ -137,7 +143,8 @@ class ConfigEnvVarFileTests(ConfigFileTests):
     def files_settings(self, *names):
         files = [self.config_files[name] for name in names]
         os.environ['DOCUTILSCONFIG'] = os.pathsep.join(files)
-        return self.option_parser.get_standard_config_settings()
+        settings = self.option_parser.get_standard_config_settings()
+        return settings.__dict__
 
     def tearDown(self):
         os.environ = self.orig_environ
