@@ -4,9 +4,9 @@
    easy to follow from the source text.  Please refer to the processed
    HTML instead: http://docutils.sourceforge.net/index.html
 
-==========================================
- Docutils: Python Documentation Utilities
-==========================================
+===================================
+ Docutils: Documentation Utilities
+===================================
 
 :Date: $Date$
 
@@ -20,7 +20,9 @@
       
 The purpose of the Docutils project is to create a set of tools for
 processing plaintext documentation into useful formats, such as HTML,
-XML, and TeX.  Several sources will be supported:
+XML, and TeX.  Includes reStructuredText_, the easy to read, easy to
+use, what-you-see-is-what-you-get plaintext markup language.  Several
+sources are or will be supported:
 
 - Standalone files (implemented).
 - Inline documentation from Python modules and packages, extracted
