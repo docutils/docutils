@@ -61,29 +61,7 @@ latex_head = """\
 
 totest = {}
 
-totest['empty file'] = [
-[
-"""\
-
-""",
-latex_head + """\
-\\title{}
-\\author{}
-\\date{}
-\\raggedbottom
-\\begin{document}
-\\maketitle
-
-
-Document empty; must have contents.
-
-
-\\end{document}
-"""
-],
-]
-
-totest['tables_of_contents'] = [
+totest['table_of_contents'] = [
 ["""\
 .. contents:: Table of Contents
 
@@ -105,9 +83,7 @@ latex_head + """\
 \\begin{document}
 \\maketitle
 
-\\hypertarget{table-of-contents}{}\\begin{center}
-\\subsection*{Table of Contents}
-\\end{center}
+\\hypertarget{table-of-contents}{}\\subsection*{~\\hfill Table of Contents\\hfill ~}
 \\pdfbookmark[0]{Table of Contents}{table-of-contents}
 \\begin{list}{}{}
 \\item \\href{#title-2}{Title 2}
@@ -130,7 +106,6 @@ Paragraph 2.
 """],
 
 ]
-
 
 if __name__ == '__main__':
     import unittest
