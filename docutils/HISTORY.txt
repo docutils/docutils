@@ -119,6 +119,8 @@ Changes Since 0.3.5
     document node are no longer stripped.
   - Moved paragraph-compacting logic (for stripping ``<p>`` tags) to
     new method ``should_be_compact_paragraph()``.
+  - Added class="docutils" to ``dl``, ``hr``, ``table`` and ``tt``
+    elements.
 
 * docutils/writers/latex2e.py:
 
@@ -162,6 +164,7 @@ Changes Since 0.3.5
 * tools/stylesheets/default.css:
 
   - Added support for the new line_block structure.
+  - Added "docutils" class to ``dl``, ``hr``, ``table`` and ``tt``.
 
 
 Release 0.3.5 (2004-07-29)
