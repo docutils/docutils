@@ -40,6 +40,7 @@ directives = {
       u'\xe8as\x9d-\xe8\xedslovanie': 'sectnum',
       u'cie\xbeov\xe9-pozn\xe1mky': 'target-notes',
       #u'footnotes': 'footnotes',
-      #u'citations': 'citations',}
+      #u'citations': 'citations',
+      }
 """Slovak name to registered (in directives/__init__.py) directive name
 mapping."""
