@@ -34,7 +34,7 @@ class Writer(writers.Writer):
         'HTML-Specific Options',
         None,
         (('Specify a stylesheet URL, used verbatim.  Default is '
-          '"default.css".',
+          '"default.css".  Overridden by --stylesheet-path.',
           ['--stylesheet'],
           {'default': 'default.css', 'metavar': '<URL>'}),
          ('Specify a stylesheet file, relative to the current working '
