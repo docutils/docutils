@@ -475,9 +475,6 @@ class Inliner:
     """
     Parse inline markup; call the `parse()` method.
     """
-    default_interpreted_role = 'title-reference'
-    """The role to use when no explicit role is given.
-    Override in subclasses."""
 
     def __init__(self, roles=None):
         """
@@ -834,8 +831,6 @@ class Inliner:
             return uri
 
     def interpreted(self, rawsource, text, role, lineno):
-        if not role:
-            role = roles.DEFAULT_INTERPRETED_ROLE
         role_fn, messages = roles.role(role, self.language, lineno, self)
         if role_fn:
             nodes, messages2 = role_fn(role, rawsource, text, lineno, self)
@@ -926,7 +921,7 @@ class Inliner:
         referencename = match.group('refname')
         refname = normalize_name(referencename)
         referencenode = nodes.reference(
-            referencename + match.group('refend'), referencename, 
+            referencename + match.group('refend'), referencename,
             name=whitespace_normalize_name(referencename))
         if anonymous:
             referencenode['anonymous'] = 1
@@ -1015,6 +1010,7 @@ class Inliner:
                 '|': substitution_reference,
                 '_': reference,
                 '__': anonymous_reference}
+
 
 class Body(RSTState):
 
