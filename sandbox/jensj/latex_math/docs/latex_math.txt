@@ -5,6 +5,7 @@ Using LaTeX syntax for mathematics
 .. role:: m(latex-math)
 .. contents::
 
+.. |latex| replace:: L\ :sup:`A`\ T\ :sub:`E`\ X
 
 
 Introduction
@@ -224,23 +225,23 @@ allignments::
 
   .. latex-math::
 
-     a & = & (x + y)^2 \\
-       & = & x^2 + 2xy + y^2
+     a & = (x + y)^2 \\
+       & = x^2 + 2xy + y^2
 
 The result is:
 
 .. latex-math::
 
-   a & = & (x + y)^2 \\
-     & = & x^2 + 2xy + y^2
+   a & = (x + y)^2 \\
+     & = x^2 + 2xy + y^2
 
 The LaTeX writer will put displayed equations inside a ``split``
 environment inside an ``equation*`` environment::
 
   \begin{equation*}
     \begin{split}
-      a & = & (x + y)^2 \\
-        & = & x^2 + 2xy + y^2
+      a & = (x + y)^2 \\
+        & = x^2 + 2xy + y^2
     \end{split}
   \end{equation*}
 
