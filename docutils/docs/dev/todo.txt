@@ -181,10 +181,10 @@ General
 
   .. _OpenOffice.org XML: http://xml.openoffice.org/
 
-* Think about large documents made up of multiple subdocument files.
-  Issues: continuity (`persistent sequences`_ above), cross-references
-  (`name-to-id mapping file`_ above and `targets in other documents`_
-  below).
+* Think about _`large documents` made up of multiple subdocument
+  files.  Issues: continuity (`persistent sequences`_ above),
+  cross-references (`name-to-id mapping file`_ above and `targets in
+  other documents`_ below).
 
   When writing a book, the author probably wants to split it up into
   files, perhaps one per chapter (but perhaps even more detailed).
