@@ -529,7 +529,7 @@ blocks`__, like this::
       as soon as it comes.
     | Love, Ewan.
 
-__ http://docutils.sf.net/docs/ref/rst/alternatives.html#syntax-for-line-blocks
+__ http://docutils.sf.net/docs/dev/rst/alternatives.html#syntax-for-line-blocks
 
 Here's a workaround for manually inserting explicit line breaks in
 HTML output::
