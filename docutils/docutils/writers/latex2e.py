@@ -593,41 +593,30 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('\\tableofcontents\n\n\\bigskip\n')
 
     def visit_docinfo_item(self, node, name):
-        # should we stick to latex or docutils.
-        
-        if name == 'abstract':
-            # NOTE tableofcontents before or after ?
-            # eg after: depart_docinfo
-            # NOTE this limits abstract to text.
-            self.body.append('\\begin{abstract}\n')
-            self.context.append('\\end{abstract}\n')
-            self.context.append(self.body)
-            self.context.append(len(self.body))
-        else:
-            if not self.latex_docinfo:
-                self.docinfo.append('\\textbf{%s}: &\n\t' % self.language_label(name))
-            if name == 'author':
-                if not self.pdfinfo == None:
-                    if not self.pdfauthor:
-                        self.pdfauthor = self.attval(node.astext())
-                    else:
-                        self.pdfauthor += self.author_separator + self.attval(node.astext())
-                if self.latex_docinfo:
-                    self.head.append('\\author{%s}\n' % self.attval(node.astext()))
-                    raise nodes.SkipNode
-            elif name == 'date':
-                if self.latex_docinfo:
-                    self.head.append('\\date{%s}\n' % self.attval(node.astext()))
-                    raise nodes.SkipNode
-            if name == 'address':
-                self.insert_newline = 1 
-                self.docinfo.append('{\\raggedright\n')
-                self.context.append(' } \\\\\n')
-            else:    
-                self.context.append(' \\\\\n')
-            self.context.append(self.docinfo)
-            self.context.append(len(self.body))
-        # \thanks is a footnote to the title.
+        if not self.latex_docinfo:
+            self.docinfo.append('\\textbf{%s}: &\n\t' % self.language_label(name))
+        if name == 'author':
+            if not self.pdfinfo == None:
+                if not self.pdfauthor:
+                    self.pdfauthor = self.attval(node.astext())
+                else:
+                    self.pdfauthor += self.author_separator + self.attval(node.astext())
+            if self.latex_docinfo:
+                self.head.append('\\author{%s}\n' % self.attval(node.astext()))
+                raise nodes.SkipNode
+        elif name == 'date':
+            if self.latex_docinfo:
+                self.head.append('\\date{%s}\n' % self.attval(node.astext()))
+                raise nodes.SkipNode
+        if name == 'address':
+            # BUG will fail if latex_docinfo is set.
+            self.insert_newline = 1 
+            self.docinfo.append('{\\raggedright\n')
+            self.context.append(' } \\\\\n')
+        else:    
+            self.context.append(' \\\\\n')
+        self.context.append(self.docinfo)
+        self.context.append(len(self.body))
 
     def depart_docinfo_item(self, node):
         size = self.context.pop()
