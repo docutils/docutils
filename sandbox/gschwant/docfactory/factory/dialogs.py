@@ -1,13 +1,14 @@
 """
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
-:version: 0.1.4
+:version: 0.2
 """
 
-from   wxPython.wx    import *
-from   wxPython.help  import *
-from   docutils.utils import relative_path
-import images, os, ConfigParser
+from   wxPython.lib.throbber import Throbber
+from   wxPython.wx           import *
+from   wxPython.help         import *
+from   docutils.utils        import relative_path
+import images, os, ConfigParser, stylesheets, throbimages
 
 NAME = 'DocFactory'
 
@@ -33,45 +34,57 @@ class aboutDlg(wxDialog):
 
     def __init__(self, parent):
         wxDialog.__init__(self, parent, -1, title='About')
-        self.SetBackgroundColour(wxColour(0, 0, 120))
-        self.SetForegroundColour(wxColour(135, 138, 255))
+        self.SetBackgroundColour(wxColour(0, 0, 0))
+        self.SetForegroundColour(wxColour(0, 255, 0))
         self.SetFont(wxFont(10, wxMODERN, wxNORMAL, wxNORMAL, false))
 
         bmp = images.getLogoBigBitmap()
         mask = wxMaskColour(bmp, wxWHITE)
         bmp.SetMask(mask)
-        wxStaticBitmap(self, -1, bmp, wxPoint(9, 8))
+        wxStaticBitmap(self, -1, bmp, wxPoint(42, 8))
+        wxStaticBitmap(self, -1, bmp, wxPoint(274, 8))
 
-        text = wxStaticText(self, -1, 'DocFactory 0.1.4', wxPoint(50, 8))
-        text.SetFont(wxFont(20, wxSWISS, wxNORMAL, wxBOLD, false))
+        # throbber
+        pics = [throbimages.catalog[i].getBitmap()
+                for i in throbimages.index
+               ]
+
+        Throbber(self, -1, pics, pos=wxPoint(74, 11),
+                 size=(200, 25), frameDelay = 0.065, reverse=true).Start()        
+
+        #text = wxStaticText(self, -1, 'DocFactory 0.2', wxPoint(50, 8))
+        #text.SetFont(wxFont(20, wxSWISS, wxNORMAL, wxBOLD, false))
 
         text = wxStaticText(self , -1,
-                            '>>> manufactured by:   dr. gunnar schwant',
+                            '>>> release:           0.2',
                             wxPoint(9, 50))
         text = wxStaticText(self, -1,
-                            '>>> mailto:            g.schwant@gmx.de',
+                            '>>> manufactured by:   gunnar schwant',
                             wxPoint(9, 65))
         text = wxStaticText(self, -1,
-                            '>>> Python version:    2.1.1',
+                            '>>> mailto:            g.schwant@gmx.de',
                             wxPoint(9, 80))
         text = wxStaticText(self, -1,
-                            '>>> wxPython version:  2.3.2.1',
+                            '>>> Python version:    2.1.1 (or later)',
                             wxPoint(9, 95))
         text = wxStaticText(self, -1,
-                            '>>> Docutils version:  0.2',
+                            '>>> wxPython version:  2.3.4.2',
                             wxPoint(9, 110))
         text = wxStaticText(self, -1,
-                            '>>> special thanks to: guido van rossum,',
+                            '>>> Docutils version:  0.2.2 (or later)',
                             wxPoint(9, 125))
         text = wxStaticText(self, -1,
-                            '...                    robin dunn',
+                            '>>> special thanks to: guido van rossum,',
                             wxPoint(9, 140))
         text = wxStaticText(self, -1,
-                            '...                    and david goodger',
+                            '...                    robin dunn',
                             wxPoint(9, 155))
         text = wxStaticText(self, -1,
-                            '>>> visit http://docutils.sourceforge.net',
+                            '...                    and david goodger',
                             wxPoint(9, 170))
+        text = wxStaticText(self, -1,
+                            '>>> visit http://docutils.sourceforge.net',
+                            wxPoint(9, 185))
         self.Fit()
 
 #---------------------------------------------------------------------------
@@ -318,6 +331,24 @@ class projectSettingsDlg(wxDialog):
 
             self.config.options['datestamp'] = self.datestampCtrl.GetValue()
             self.config.options['stylesheet'] = self.styCtrl.GetValue()
+
+            stylesheetpath=os.path.abspath(os.path.join(dir,self.config.options['stylesheet']))
+            if not os.path.exists(stylesheetpath):
+                styles = stylesheets.stylesheets.keys()
+                styles.sort()
+                dlg = wxSingleChoiceDialog(self,
+                                           'The stylesheet does not exist.' \
+                                           '\nPlease select a style to create it' \
+                                           '\nor press "Cancel" to abort.',
+                                           'Create stylesheet?',
+                                           styles, wxOK|wxCANCEL)
+                dlg.Centre()
+                if dlg.ShowModal() == wxID_OK:
+                    f = open(stylesheetpath, 'wt')
+                    f.write(stylesheets.stylesheets[dlg.GetStringSelection()])
+                    f.close()
+                dlg.Destroy()
+
             self.config.options['output_encoding'] = self.outencCtrl.GetValue()
             
             self.config.options['footnote_references'] = self.footrefCtrl.GetStringSelection()

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# $Id$
 
 from distutils.core import setup
 
@@ -13,7 +12,7 @@ environment.
 System requirements:
 
 * Python 2.1.1 or later (http://www.python.org).
-* wxPython 2.3.2.1 or later (http://wxpython.org).  Be sure to get the
+* wxPython 2.3.4.2 or later (http://wxpython.org).  Be sure to get the
   build matching the version of Python you're using.
 * Docutils 0.2.2 or later (http://docutils.sourceforge.net).  Use the
   CVS snapshot.
@@ -26,7 +25,7 @@ def do_setup():
           long_description = LONG_DESCRIPTION,
           url = ('http://docutils.sourceforge.net/sandbox/gschwant/'
                  'docfactory/'),
-          version = '0.1.4',
+          version = '0.2',
           author = 'Dr. Gunnar Schwant',
           author_email = 'g.schwant@gmx.de',
           license = 'BSD (see LICENSE.txt)',

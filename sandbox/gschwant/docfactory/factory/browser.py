@@ -1,7 +1,7 @@
 """
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
-:version: 0.1.4
+:version: 0.2
 """
 
 import sys, os, webbrowser
@@ -10,6 +10,9 @@ from   wxPython.wx          import *
 from   wxPython.html        import *
 from   wxPython.lib.dialogs import wxScrolledMessageDialog
 from   dialogs              import customMsgBox
+
+if wxPlatform == '__WXMSW__':
+    from wxPython.iewin import *
 
 class HtmlWindow(wxHtmlWindow):
     def __init__(self, parent, id, log):
@@ -50,12 +53,12 @@ class HtmlPanel(wxPanel):
         subbox.Add(btn, 1, wxGROW | wxALL, 2)
 
         exitID=wxNewId()
-        btn = wxButton(self, exitID, "Back")
+        btn = wxButton(self, exitID, "<<<")
         EVT_BUTTON(self, exitID, self.OnBack)
         subbox.Add(btn, 1, wxGROW | wxALL, 2)
 
         exitID=wxNewId()
-        btn = wxButton(self, exitID, "Forward")
+        btn = wxButton(self, exitID, ">>>")
         EVT_BUTTON(self, exitID, self.OnForward)
         subbox.Add(btn, 1, wxGROW | wxALL, 2)
 
@@ -94,3 +97,102 @@ class HtmlPanel(wxPanel):
     def OnPrint(self, event):
         self.printer.PrintFile(self.html.GetOpenedPage())
 
+class IEHtmlPanel(wxPanel):
+
+    def __init__(self, parent, frame, log, htmlfile=None):
+        wxPanel.__init__(self, parent, -1)
+        self.log = log
+        if htmlfile != None:
+            self.current = htmlfile
+        else:
+            self.current = "about:blank"
+        self.frame = frame
+        if frame:
+            self.titleBase = frame.GetTitle()
+
+        sizer = wxBoxSizer(wxVERTICAL)
+        btnSizer = wxBoxSizer(wxHORIZONTAL)
+
+        self.ie = wxIEHtmlWin(self, -1, style = wxNO_FULL_REPAINT_ON_RESIZE)
+
+        btn = wxButton(self, wxNewId(), '<<<', style=wxBU_EXACTFIT)
+        EVT_BUTTON(self, btn.GetId(), self.OnPrevPageButton)
+        btnSizer.Add(btn, 0, wxEXPAND|wxALL, 2)
+
+        btn = wxButton(self, wxNewId(), '>>>', style=wxBU_EXACTFIT)
+        EVT_BUTTON(self, btn.GetId(), self.OnNextPageButton)
+        btnSizer.Add(btn, 0, wxEXPAND|wxALL, 2)
+
+        btn = wxButton(self, wxNewId(), 'Stop', style=wxBU_EXACTFIT)
+        EVT_BUTTON(self, btn.GetId(), self.OnStopButton)
+        btnSizer.Add(btn, 0, wxEXPAND|wxALL, 2)
+
+        btn = wxButton(self, wxNewId(), 'Refresh', style=wxBU_EXACTFIT)
+        EVT_BUTTON(self, btn.GetId(), self.OnRefreshPageButton)
+        btnSizer.Add(btn, 0, wxEXPAND|wxALL, 2)
+
+        txt = wxStaticText(self, -1, 'Location:')
+        btnSizer.Add(txt, 0, wxCENTER|wxALL, 2)
+
+        self.location = wxComboBox(self, wxNewId(), '', style=wxCB_DROPDOWN|wxPROCESS_ENTER)
+        EVT_COMBOBOX(self, self.location.GetId(), self.OnLocationSelect)
+        EVT_KEY_UP(self.location, self.OnLocationKey)
+        EVT_CHAR(self.location, self.IgnoreReturn)
+        btnSizer.Add(self.location, 1, wxEXPAND|wxALL, 2)
+
+        sizer.Add(btnSizer, 0, wxEXPAND)
+        sizer.Add(self.ie, 1, wxEXPAND)
+
+        self.ie.Navigate(self.current)
+        self.location.Append(self.current)
+
+        self.SetSizer(sizer)
+        self.SetAutoLayout(true)
+        EVT_SIZE(self, self.OnSize)
+
+        # Hook up the event handlers for the IE window
+        EVT_MSHTML_NEWWINDOW2(self, -1, self.OnNewWindow2)
+        EVT_MSHTML_DOCUMENTCOMPLETE(self, -1, self.OnDocumentComplete)
+        EVT_MSHTML_STATUSTEXTCHANGE(self, -1, self.OnStatusTextChange)
+
+    def OnSize(self, evt):
+        self.Layout()
+
+    def OnLocationSelect(self, evt):
+        url = self.location.GetStringSelection()
+        self.ie.Navigate(url)
+
+    def OnLocationKey(self, evt):
+        if evt.KeyCode() == WXK_RETURN:
+            URL = self.location.GetValue()
+            self.location.Append(URL)
+            self.ie.Navigate(URL)
+        else:
+            evt.Skip()
+
+    def IgnoreReturn(self, evt):
+        if evt.GetKeyCode() != WXK_RETURN:
+            evt.Skip()
+
+    def OnPrevPageButton(self, event):
+        self.ie.GoBack()
+
+    def OnNextPageButton(self, event):
+        self.ie.GoForward()
+
+    def OnStopButton(self, evt):
+        self.ie.Stop()
+
+    def OnRefreshPageButton(self, evt):
+        self.ie.Refresh(wxIEHTML_REFRESH_COMPLETELY)
+
+    def OnNewWindow2(self, evt):
+        evt.Veto() # don't allow it
+
+    def OnDocumentComplete(self, evt):
+        self.current = evt.GetText1()
+        self.location.SetValue(self.current)
+
+    def OnStatusTextChange(self, evt):
+        if self.frame:
+            self.frame.SetStatusText(evt.GetText1())
