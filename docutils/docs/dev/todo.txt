@@ -1,8 +1,10 @@
-================
- Docutils Notes
-================
+=================
+ Docutils_ Notes
+=================
 :Date: $Date$
 :Revision: $Revision$
+
+.. _Docutils: http://docutils.sourceforge.net/
 
 .. contents::
 
@@ -10,7 +12,9 @@ To Do
 =====
 
 Priority items are marked with "@" symbols.  The more @s, the higher
-the priority.
+the priority.  Items in question form (containing "?") are ideas which
+require more thought and debate; they are potential to-do's.
+
 
 General
 -------
@@ -93,6 +97,10 @@ Specification
 
 reStructuredText Parser
 -----------------------
+
+Also see the `... Or Not To Do?`__ list.
+
+__ http://docutils.sf.net/spec/rst/alternatives.html#or-not-to-do
 
 - Add motivation sections for constructs in spec.
 
@@ -355,7 +363,7 @@ Directives
     entire paragraph as a verse block?  This ties in to the `character
     processing`_ idea, above.  For example::
 
-        Adding a backslash\
+        Add just one backslash\
         And this paragraph becomes
         An awful haiku
 
@@ -568,15 +576,15 @@ applicable), with particular emphasis as follows:
   cases to the test suite.  Practise test-first programming; it's fun,
   it's addictive, and it works!
 
-- The sandbox_ directory is the place to put new, untried code.  See
-  `Additions to Docutils`_ and `The Sandbox`_ below.
+- The `sandbox CVS directory`_ is the place to put new, untried code.
+  See `Additions to Docutils`_ and `The Sandbox`_ below.
 
 Please consider subscribing to the appropriate `mailing lists`_.
 
 .. _main source tree:
    http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/docutils/docutils/
 .. _Python Check-in Policies: http://www.python.org/dev/tools.html
-.. _sandbox:
+.. sandbox CVS directory:
    http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/docutils/sandbox/
 .. _mailing lists: ../index.html#mailing-lists
 
@@ -585,9 +593,9 @@ Additions to Docutils
 `````````````````````
 
 Additions to the project, such as new components, should be developed
-in the sandbox_ directory until they're in good shape, usable, and
-reasonably complete.  Adding to the `main source tree`_ implies a
-commitment to the Docutils user community.
+in the `sandbox CVS directory`_ until they're in `good shape`_,
+usable_, and `reasonably complete`_.  Adding to the `main source
+tree`_ implies a commitment to the Docutils user community.
 
 - Why the sandbox?
 
@@ -595,13 +603,13 @@ commitment to the Docutils user community.
   being developed for addition to main source tree.  See `The
   Sandbox`_ below.
 
-- "Good shape" means that the component code is clean, readable, and
-  free of junk (unused legacy code; by analogy with "junk DNA").
+- _`Good shape` means that the component code is clean, readable, and
+  free of junk code (unused legacy code; by analogy with "junk DNA").
 
-- "Usable" means that the code does what it claims to do.  An "XYZ
+- _`Usable` means that the code does what it claims to do.  An "XYZ
   Writer" should produce reasonable XYZ.
 
-- "Reasonably complete" means that the code must handle all input.
+- _`Reasonably complete` means that the code must handle all input.
   Here "handle" means that no input can cause the code to fail (cause
   an exception, or silently and incorrectly produce nothing).
   "Reasonably complete" does not mean "finished" (no work left to be

@@ -2,15 +2,19 @@
  Setext Documents Mirror
 =========================
 
-Here are `local copies of some Setext documents`__.
+Here are `local copies of some Setext documents`__, made available to
+document the prehistory of the Docutils_ project (and especially the
+reStructuredText_ markup).
 
 __
 .. _Setext mirror: setext/
+.. _Docutils: ../
+.. _reStructuredText: ../rst.html
 
-The original Setext (structure-enhanced text) source was
-http://www.bsdi.com/setext/, but it seems to have disappeared from the
-Web.  The files in the "`Setext mirror`_" are all the files relating
-to Setext that I have (including `a tarball of the lot`__).
+The source for the original Setext (structure-enhanced text) documents
+was http://www.bsdi.com/setext/, but it seems to have disappeared from
+the Web.  The files in the "`Setext mirror`_" are all the files
+relating to Setext that I have (including `a tarball of the lot`__).
 
 __ setext/setext.tgz
 
