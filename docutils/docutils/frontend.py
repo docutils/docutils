@@ -311,8 +311,9 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
           ['--quiet', '-q'], {'action': 'store_const', 'const': 'none',
                               'dest': 'report_level'}),
          ('Set the threshold (<level>) at or above which system messages are '
-          'converted to exceptions, halting execution immediately.  Levels '
-          'as in --report.  Default is 4 (severe).',
+          'converted to exceptions, halting execution immediately by '
+          'exiting (or propagating the exception if --traceback set).  '
+          'Levels as in --report.  Default is 4 (severe).',
           ['--halt'], {'choices': threshold_choices, 'dest': 'halt_level',
                        'default': 4, 'metavar': '<level>',
                        'validator': validate_threshold}),
@@ -333,7 +334,9 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
           ['--no-debug'], {'action': 'store_false', 'dest': 'debug'}),
          ('Send the output of system messages (warnings) to <file>.',
           ['--warnings'], {'dest': 'warning_stream', 'metavar': '<file>'}),
-         ('Enable Python tracebacks when an error occurs.',
+         ('Enable Python tracebacks when halt-level system messages and '
+          'other exceptions occur.  Useful for debugging, and essential for '
+          'issue reports.',
           ['--traceback'], {'action': 'store_true', 'default': None,
                             'validator': validate_boolean}),
          ('Disable Python tracebacks when errors occur; report just the error '
