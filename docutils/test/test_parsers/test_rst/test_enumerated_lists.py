@@ -655,7 +655,31 @@ Nested enumerated lists:
             <paragraph>
                 Item 3.
 """],
+["""\
+A. Einstein was a great influence on
+B. Physicist, who was a colleague of
+C. Chemist.  They all worked in
+Princeton, NJ.
+""",
+# @@@ I think this is the correct result, but I'm not certain:
+"""\
+<document>
+    <enumerated_list enumtype="upperalpha" prefix="" suffix=".">
+        <list_item>
+            <paragraph>
+                Einstein was a great influence on
+        <list_item>
+            <paragraph>
+                Physicist, who was a colleague of
+    <system_message level="2" type="WARNING">
+        <paragraph>
+            Enumerated list ends without a blank line; unexpected unindent at line 3.
+    <paragraph>
+        C. Chemist.  They all worked in
+        Princeton, NJ.
+"""],
 ]
+
 
 if __name__ == '__main__':
     import unittest
