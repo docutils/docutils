@@ -9,11 +9,11 @@ Default cascading style sheet for the HTML output of Docutils.
 */
 
 body {
-  font: 80% Tahoma, Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font: 85% Tahoma, Verdana, Geneva, Arial, Helvetica, sans-serif;
 }
 
 code, pre, tt, samp {
-  font: .8em 'Lucida Console', monospace;
+  font: .85em 'Lucida Console', monospace;
 }
 
 h1 { font-size: 2em; }
