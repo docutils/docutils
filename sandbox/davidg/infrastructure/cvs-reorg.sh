@@ -10,16 +10,19 @@
 # Exit on error.
 set -e
 
+############################################################
 
-# Remove module & files added by mistake
-########################################
+echo
+echo 'Remove module & files added by mistake...'
 
 rm -rfv /cvsroot/docutils/modulename     # duplicate of sandbox module
 rm -rfv /cvsroot/docutils/docutils/Attic # duplicates of CVSROOT files
+rm -rfv /cvsroot/docutils/docutils/CVSROOT # another duplicate
 
+############################################################
 
-# Create new empty directory structure
-######################################
+echo
+echo 'Create new empty directory structure...'
 
 # introductory/tutorial material for end-users
 mkdir -v /cvsroot/docutils/docutils/docs/user/
@@ -35,9 +38,10 @@ mkdir -v /cvsroot/docutils/docutils/docs/ref/rst/
 # Python Enhancement Proposals
 mkdir -v /cvsroot/docutils/docutils/docs/peps/  
 
+############################################################
 
-# Move entire subdirectories
-############################
+echo
+echo 'Move entire subdirectories...'
 
 mv -v /cvsroot/docutils/docutils/docs/rst \
       /cvsroot/docutils/docutils/docs/user/rst
@@ -46,9 +50,10 @@ mv -v /cvsroot/docutils/docutils/docs/rst \
 mv -v /cvsroot/docutils/docutils/spec/howto \
       /cvsroot/docutils/docutils/docs/howto
 
+############################################################
 
-# Move (& rename) individual files
-##################################
+echo
+echo 'Move (& rename) individual files...'
 
 # All file names have to end with ",v"; this is the CVS repository!
 
@@ -95,12 +100,19 @@ mv -v /cvsroot/docutils/docutils/spec/rst/introduction.txt,v \
 mv -v /cvsroot/docutils/docutils/spec/pep-????.txt,v \
       /cvsroot/docutils/docutils/docs/peps/
 
+############################################################
 
-# Remove old, unused, empty directories
-#######################################
+echo
+echo 'Remove old, unused, empty directories...'
 
+# nothing interesting in here
 rm -rfv /cvsroot/docutils/docutils/spec/Attic
+
+# empty
 rmdir -v /cvsroot/docutils/docutils/spec/rst
 rmdir -v /cvsroot/docutils/docutils/spec
 
+############################################################
+
+echo
 echo Finished.
