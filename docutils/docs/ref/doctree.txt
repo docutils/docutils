@@ -185,8 +185,7 @@ always occur within specific parent elements, never at the body
 element level (beside paragraphs, etc.).
 
 Category members (simple): caption_, classifier_, colspec_,
-field_argument_, field_name_, label_, option_argument_,
-option_string_, term_
+field_name_, label_, option_argument_, option_string_, term_
 
 Category members (compound): definition_, definition_list_item_,
 description_, entry_, field_, field_body_, legend_, list_item_,
@@ -1506,12 +1505,6 @@ See list_item_ for another example.
 
 ``field``
 =========
-
-`To be completed`_.
-
-
-``field_argument``
-==================
 
 `To be completed`_.
 

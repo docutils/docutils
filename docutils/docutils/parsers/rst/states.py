@@ -1163,13 +1163,11 @@ class Body(RSTState):
         return [], next_state, []
 
     def field(self, match):
-        name, args = self.parse_field_marker(match)
+        name = self.parse_field_marker(match)
         indented, indent, line_offset, blank_finish = \
               self.state_machine.get_first_known_indented(match.end())
         fieldnode = nodes.field()
         fieldnode += nodes.field_name(name, name)
-        for arg in args:
-            fieldnode += nodes.field_argument(arg, arg)
         fieldbody = nodes.field_body('\n'.join(indented))
         fieldnode += fieldbody
         if indented:
@@ -1178,11 +1176,10 @@ class Body(RSTState):
         return fieldnode, blank_finish
 
     def parse_field_marker(self, match):
-        """Extract & return name & argument list from a field marker match."""
+        """Extract & return field name from a field marker match."""
         field = match.string[1:]        # strip off leading ':'
         field = field[:field.find(':')] # strip off trailing ':' etc.
-        tokens = field.split()
-        return tokens[0], tokens[1:]    # first == name, others == args
+        return field
 
     def option_marker(self, match, context, next_state):
         """Option list item."""

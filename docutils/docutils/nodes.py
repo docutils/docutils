@@ -946,7 +946,6 @@ class definition(Part, Element): pass
 class field_list(Sequential, Element): pass
 class field(Part, Element): pass
 class field_name(Part, TextElement): pass
-class field_argument(Part, TextElement): pass
 class field_body(Part, Element): pass
 
 
@@ -1149,7 +1148,7 @@ node_class_names = """
     danger date decoration definition definition_list definition_list_item
         description docinfo doctest_block document
     emphasis entry enumerated_list error
-    field field_argument field_body field_list field_name figure footer
+    field field_body field_list field_name figure footer
         footnote footnote_reference
     generated
     header hint

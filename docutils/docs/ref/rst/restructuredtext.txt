@@ -102,8 +102,8 @@ Here are examples of `body elements`_:
                 database records.  They are often part of an extension
                 syntax.
 
-         :how: The field marker is a colon, the field name, optional
-               field arguments, and a colon.
+         :how: The field marker is a colon, the field name, and a
+               colon.
 
                The field body may contain one or more body elements,
                indented relative to the field marker.
@@ -780,30 +780,26 @@ Syntax diagram::
 Field Lists
 -----------
 
-DTD elements: field_list, field, field_name, field_argument,
-field_body.
+DTD elements: field_list, field, field_name, field_body.
 
 Field lists are used as part of an extension syntax, such as options
 for directives_, or database-like records meant for further
-processing.  They are not intended to be an alternative to definition
-lists or tables.  Applications of reStructuredText may recognize field
-names and transform fields or field bodies in certain contexts.  Field
-lists should only be used when and where application code specifically
-expects them; they should *not* be used as arbitrary constructs in
-documents.  See `Bibliographic Fields`_ below for one example, or the
-"image" directive in `reStructuredText Directives`_ for another.
+processing.  They may also be used for two-column table-like
+structures resembling database records (label & data pairs).
+Applications of reStructuredText may recognize field names and
+transform fields or field bodies in certain contexts.  For examples,
+see `Bibliographic Fields`_ below, or the "image" and "meta"
+directives in `reStructuredText Directives`_.
 
 Field lists are mappings from field names to field bodies, modeled on
 RFC822_ headers.  A field name is made up of one or more letters,
-numbers, and punctuation, except colons (":") and whitespace.  Field
-names are case-insensitive.  There may be additional data separated
-from the field name, called field arguments.  The field name and
-optional field argument(s), along with a single colon prefix and
-suffix, together form the field marker.  The field marker is followed
-by whitespace and the field body.  The field body may contain multiple
-body elements, indented relative to the field marker.  The first line
-after the field name marker determines the indentation of the field
-body.  For example::
+numbers, whitespace, and punctuation, except colons (":").  Field
+names are case-insensitive.  The field name, along with a single colon
+prefix and suffix, together form the field marker.  The field marker
+is followed by whitespace and the field body.  The field body may
+contain multiple body elements, indented relative to the field marker.
+The first line after the field name marker determines the indentation
+of the field body.  For example::
 
     :Date: 2001-08-16
     :Version: 1
@@ -816,16 +812,11 @@ body.  For example::
        field name marker, and they must line up with each other.
     :Parameter i: integer
 
-Field arguments are separated from the field name and each other by
-whitespace, and may not contain colons (":").  The interpretation of
-field arguments is up to the application.  For example::
-
-    :name1 word number=1:
-        Both "word" and "number=1" are single words.
-
-The syntax for field arguments may be extended in the future.  For
-example, quoted phrases may be treated as a single argument, and
-direct support for the "name=value" syntax may be added.
+The interpretation of individual words in a multi-word field name is
+up to the application.  The application may specify a syntax for the
+field name.  For example, second and subsequent words may be treated
+as "arguments", quoted phrases may be treated as a single argument,
+and direct support for the "name=value" syntax may be added.
 
 Standard RFC822_ headers cannot be used for this construct because
 they are ambiguous.  A word followed by a colon at the beginning of a
@@ -836,9 +827,9 @@ used.
 
 Syntax diagram (simplified)::
 
-    +------------------------------+------------+
-    | ":" name (" " argument)* ":" | field body |
-    +-------+----------------------+            |
+    +--------------------+----------------------+
+    | ":" field name ":" | field body           |
+    +-------+------------+                      |
             | (body elements)+                  |
             +-----------------------------------+
 

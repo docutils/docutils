@@ -314,15 +314,11 @@ http://www.oasis-open.org/html/tm9901.htm).
 <!ELEMENT field_list (field+)>
 <!ATTLIST field_list %basic.atts;>
 
-<!ELEMENT field (field_name, field_argument*, field_body)>
+<!ELEMENT field (field_name, field_body)>
 <!ATTLIST field %basic.atts;>
 
 <!ELEMENT field_name (#PCDATA)>
 <!ATTLIST field_name %basic.atts;>
-
-<!-- Support for Javadoc-style tags with arguments. -->
-<!ELEMENT field_argument (#PCDATA)>
-<!ATTLIST field_argument %basic.atts;>
 
 <!-- May be empty. -->
 <!ELEMENT field_body (%body.elements;)*>
