@@ -1,0 +1,19 @@
+Testing image attributes
+------------------------
+
+the unscaled image
+
+.. image:: biohazard.png
+
+scaled 200
+
+.. image:: biohazard.png
+   :scale: 200
+
+center and scale
+
+.. image:: biohazard.png
+   :scale: 200
+   :align: center
+
+

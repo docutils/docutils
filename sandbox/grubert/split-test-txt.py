@@ -33,7 +33,7 @@ class Output:
 	def next_file(self):
 		self.close()
 		self._file_cnt += 1
-		self._file = open("%s/%s-%02d.txt"
+		self._file = open("%s/%s-%02d.txt.new"
 					%(self._test_dir,self._test_file,self._file_cnt),"w")
 	def write_line(self,str):
 		self._file.write(str+"\n")
