@@ -53,7 +53,7 @@ from docutils import frontend, nodes, statemachine, urischemes, utils
 from docutils.transforms import universal
 from docutils.parsers import rst
 from docutils.parsers.rst import states, tableparser, roles, languages
-from docutils.readers import standalone, pep, python
+from docutils.readers import standalone, pep
 from docutils.statemachine import StringList, string2lines
 
 try:
