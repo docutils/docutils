@@ -1,0 +1,63 @@
+.. This is a simple reStructuredText file that represents what I would
+.. like the output of transforming my test Python code to be
+
+=======================
+Package trivial_package
+=======================
+
+Module trivial_package.__init__
+===============================
+
+    .. class:: docstring
+
+    A simple docstring.
+
+Module trivial_package.file1
+============================
+
+    .. class:: docstring
+
+    This is the first example file. It *does* use reStructuredText.
+
+    Attributes:
+
+    * __docformat__ = "reST" (line 5)
+
+    Import: os (line 7)
+
+Class trivial_package.file1.Fred
+--------------------------------
+
+:line: 9
+
+    .. class:: docstring
+
+    An example class - it announces each instance as it is created.
+
+
+Method trivial_package.file1.Fred.__init__
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:line: 13
+:parameters: self
+
+
+Module trivial_package.file2
+============================
+
+    .. class:: docstring
+
+    This module is *not* using reStructuredText for its docstrings.
+
+File trivial_package.not_python
+===============================
+
+(Not a Python module)
+
+Package trivial_package.sub_package
+===================================
+
+Module trivial_package.sub_package.__init__
+-------------------------------------------
+
+(No documentation)

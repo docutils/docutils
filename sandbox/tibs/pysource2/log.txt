@@ -1,0 +1,113 @@
+=============================
+Writing and testing pysource2
+=============================
+
+:Author: Tibs
+:Contact: tibs@tibsnjoan.co.uk
+:Revision: $Revision$
+:Date: $Date$
+:Copyright: This document has been placed in the public domain.
+
+pysource2 is my attempt to rewrite the original pysource. pysource
+itself was a proof-of-concept module to find docstrings withing Python
+source files and present them as (by default) HTML documentation, as
+described by the Docutils project. Since it was written before the
+Docutils codebase became stabilised around its current Reader/Writer
+patterns, it doesn't really mesh well with the current approaches. Also,
+lots of the code is fairly grotty anyway, and could do with a rewrite on
+principle - not least because it is not well tested.
+
+So, pysource2 is both that rewrite, and also an attempt on my part to
+learn how to do test driven development.
+
+Setting the path
+================
+
+I want to take my docutils stuff directly from the source directories,
+so that I work with the latest CVS code, and don't have to keep installing
+things. Thus I need to set the Python path to point to the source
+directories::
+
+    export PYTHONPATH=${PYTHONPATH}:${HOME}/docutils
+
+Since I'm using Python 2.2.3, I also need the modules in the "extras"
+directory::
+
+    export PYTHONPATH=${PYTHONPATH}:${HOME}/docutils/extras
+
+If I want access to the testing stuff, I also need the "test"
+directory::
+
+    export PYTHONPATH=${PYTHONPATH}:${HOME}/docutils/test
+
+
+NB: Relies upon the code in docutils/docutils/readers/python/moduleparser.py
+
+Log
+===
+The "obvious" place to start is with packages - the previous pysource
+never did quite get them right (for a start, it wouldn't cope with
+sub-packages). Also, having a utility to report on packages, then on
+modules, and gradually on to finer levels of detail, seems like giving
+something useful as soon as possible.
+
+It looked over-complex to adopt the docutils test framework itself,
+initially, especially since I am new both to unit testing *and* to test
+driven development. So I am being less ambitious, and working with
+"pure" unit tests - I reckon I'll learn more that way.
+
+So, the first pass gives me package.py and test_package.py.
+
+My first impressions of (such a little bit of) development is that TDD
+does indeed give one the feeling of reassurance I'd expected from my
+half-TDD efforts in Java at LSL.
+
+Initially, I was looking to detect a request for a package that didn't
+exist, or wasn't a directory file, explicitly, with dedicated
+exceptions. This felt rather over-complex, and indeed refactoring those
+tests out and just catching a (non-explicit) OSError in the tests works
+well enough - in reality, a user is not going to ask to parse a package
+that is not already known to be an existant directory (heck, the "user"
+is probably a program that's just figured out if the thing whose
+documentation is wanted is a file or a directory), and if they do then
+OSError makes sense since it is what one would normally get.
+
+
+Questions
+=========
+
+* Should we attempt to parse files that don't end in ".py"?
+
+  What about ".pyw"?
+
+  What about Python files on Unix which have had their extension removed and
+  been made executable?
+
+* Should there be an option to produce a document for a directory of Python
+  files that is not a package - e.g., a directory of useful scripts put
+  together just to be on the UNIX path, or Python's own library.
+
+
+TODO
+====
+
+ * Add a method to Module to indicate if it has an Attribute called
+   __docformat__, and if so, what its value is.
+
+ * That requires understanding how the testing for the moduleparser is
+   organised and works, so I can add an appropriate test.
+
+ * At which stage, should I incorporate Package (and NotPython) therein?
+
+ * Write a simple transform (first learn how!) to parse any Docstring
+   contents in a module with __docformat__ equal to one of the reStructuredText
+   indicators.
+
+ * Write another transform to turn the Pythonic doctree into a standard one.
+
+ * At which point, we'll have something useful, albeit not very powerful,
+   so provide an appropriate command line interface for (at least) HTML output.
+
+ * Work out how to do attribute references, etc., in *this* context (I have
+   no idea if the mechanisms from the original pysource will be any use).
+
