@@ -200,6 +200,8 @@ No blank line after.
 .. |invalid 3| there's no directive here
 
 .. | bad name | bad data
+
+.. |
 """,
 """\
 <document source="test data">
@@ -253,6 +255,8 @@ No blank line after.
             .. |invalid 3| there's no directive here
     <comment xml:space="preserve">
         | bad name | bad data
+    <comment xml:space="preserve">
+        |
 """],
 ]
 
