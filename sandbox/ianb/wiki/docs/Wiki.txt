@@ -1,0 +1,54 @@
+Wiki
+====
+
+The Wiki module primarily exports the `WikiPage` class:
+
+    class `WikiPage(object)`:
+        WikiPage is a class to represent one page in a WikiWikiWeb [#]_.
+        The page may or may not yet exist -- that is, it may not yet
+        have content.
+        
+        .. [#] http://c2.com/cgi-bin/wiki
+        
+        It has the following properties and methods:
+        
+            `html`:
+                A read-only property giving the HTML for the page.
+                If the page does not yet have content the text
+                ``"This page has not yet been created"`` is returned.
+            `text`:
+                The text for the page.  To save new text, simply
+                assign to this property.
+            `title`:
+                The title of the page.
+            `name`:
+                The name of the page -- a canonical identifier.
+                Related to the title, but not necessarily the
+                same.
+            `exists()`:
+                Does this page have content yet?
+            `modifiedDate()`:
+                Date modified (integer timestamp)
+            `modifiedDateText()`:
+                Text representation of modified date
+            `preview(text)`:
+                Returns an HTML preview of the text
+
+There are also several searching methods:
+
+    `allPages()`:
+        All pages with content in the system
+    `recentPages()`:
+        All pages, sorted by date modified, most recent first
+    `search(text)`:
+        Search titles and bodies of pages for ``text``, returning list
+        of pages
+    `searchTitles(text)`:
+        Search page titles for ``text``, returning list of pages
+
+There is one module global to be printed at the top of
+every Wiki page:
+
+    `css`:
+        The HTML to put the proper CSS at the top of the page.  This
+        should be put in the ``<head>`` section of the page.
