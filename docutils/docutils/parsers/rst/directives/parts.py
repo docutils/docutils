@@ -91,9 +91,12 @@ def sectnum(match, type_name, data, state, state_machine, attributes):
     if success:                     # data is a dict of attributes
         pending.details.update(data)
     else:                           # data is an error string
+        blocktext = '\n'.join(state_machine.input_lines[
+            line_offset : line_offset + len(datablock) + 1])
         error = state_machine.reporter.error(
               'Error in "%s" directive attributes at line %s:\n%s.'
-              % (match.group(1), lineno, data), '')
+              % (match.group(1), lineno, data), '',
+              nodes.literal_block(blocktext, blocktext))
         return [error], blank_finish
     state_machine.document.note_pending(pending)
     return [pending], blank_finish
