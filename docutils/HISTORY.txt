@@ -438,7 +438,10 @@ Specific:
 
 * spec/pep-0256.txt: Converted to reStructuredText & updated.
 
-* spec/pep-0257.txt: Converted to reStructuredText & updated.
+* spec/pep-0257.txt:
+
+  - Converted to reStructuredText & updated.
+  - Added "Handling Docstring Indentation" section.
 
 * spec/pep-0258.txt: Converted to reStructuredText & updated.
 
