@@ -4,10 +4,14 @@ latex2e BUGS TODOS and other animals
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
 
-Rev. 2002-12-18
+Rev. 2002-12-19
 
 To do
 ~~~~~
+
+* table: multicol rows have now lines.
+
+* should tables without vertical markup be set without borders ?
 
 * pdfbookmark level 4 (and greater) does not work (might be settable but OTOH).
 
@@ -42,7 +46,17 @@ To do
 * longtable does not work with multirow
 
 * table width is always full line width.
-  how to make narrower tables.
+  reduce table width to 0.94 of full linewidth for less overfull hbox warnings.
+
+* tablewidth: the real problem is: using the proportion of the rst-table is only
+  a little clue but e.g. on description tables usually the left side could be
+	made narrower
+	1. rough guessing: the rst file has 80 columns, latex gives me 100 so make it 
+	   narrowe to have the same proportion respectively to the page.
+		 means: table_width = sum(colwidth)
+		   table_width_for_latex = table_width / 80
+	2. process the table and try to guess which of the columns is the narrowest 
+	   (contains only one liner/word) and make this one auto_width (center/left/right?).
 
 * pep headers come in different ?
 
