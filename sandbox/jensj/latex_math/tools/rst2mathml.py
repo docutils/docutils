@@ -272,9 +272,14 @@ over = {'tilde': '~',
         'bar': '_',
         'vec': u'\u20D7'}
 
+Greek = {
+    # Upper case greek letters:
+    'Phi': u'\u03a6', 'Xi': u'\u039e', 'Sigma': u'\u03a3', 'Psi': u'\u03a8', 'Delta': u'\u0394', 'Theta': u'\u0398', 'Upsilon': u'\u03d2', 'Pi': u'\u03a0', 'Omega': u'\u03a9', 'Gamma': u'\u0393', 'Lambda': u'\u039b'}
+greek = {
+    # Lower case greek letters:
+    'tau': u'\u03c4', 'phi': u'\u03d5', 'xi': u'\u03be', 'iota': u'\u03b9', 'epsilon': u'\u03f5', 'varrho': u'\u03f1', 'varsigma': u'\u03c2', 'beta': u'\u03b2', 'psi': u'\u03c8', 'rho': u'\u03c1', 'delta': u'\u03b4', 'alpha': u'\u03b1', 'zeta': u'\u03b6', 'omega': u'\u03c9', 'varepsilon': u'\u03b5', 'kappa': u'\u03ba', 'vartheta': u'\u03d1', 'chi': u'\u03c7', 'upsilon': u'\u03c5', 'sigma': u'\u03c3', 'varphi': u'\u03c6', 'varpi': u'\u03d6', 'mu': u'\u03bc', 'eta': u'\u03b7', 'theta': u'\u03b8', 'pi': u'\u03c0', 'varkappa': u'\u03f0', 'nu': u'\u03bd', 'gamma': u'\u03b3', 'lambda': u'\u03bb'}
+
 special = {
-    # Greek letters:
-    'tau': u'\u03c4', 'phi': u'\u03d5', 'xi': u'\u03be', 'iota': u'\u03b9', 'epsilon': u'\u03f5', 'varrho': u'\u03f1', 'Delta': u'\u0394', 'Omega': u'\u03a9', 'Upsilon': u'\u03d2', 'varsigma': u'\u03c2', 'beta': u'\u03b2', 'psi': u'\u03c8', 'Psi': u'\u03a8', 'rho': u'\u03c1', 'delta': u'\u03b4', 'alpha': u'\u03b1', 'zeta': u'\u03b6', 'Pi': u'\u03a0', 'omega': u'\u03c9', 'Gamma': u'\u0393', 'Lambda': u'\u039b', 'varepsilon': u'\u03b5', 'Phi': u'\u03a6', 'Xi': u'\u039e', 'kappa': u'\u03ba', 'vartheta': u'\u03d1', 'Sigma': u'\u03a3', 'varkappa': u'\u03f0', 'upsilon': u'\u03c5', 'varphi': u'\u03c6', 'varpi': u'\u03d6', 'mu': u'\u03bc', 'eta': u'\u03b7', 'chi': u'\u03c7', 'Theta': u'\u0398', 'theta': u'\u03b8', 'pi': u'\u03c0', 'sigma': u'\u03c3', 'nu': u'\u03bd', 'gamma': u'\u03b3', 'lambda': u'\u03bb',
     # Binary operation symbols:
     'wedge': u'\u2227', 'diamond': u'\u22c4', 'star': u'\u22c6', 'amalg': u'\u2a3f', 'ast': u'\u2217', 'odot': u'\u2299', 'triangleleft': u'\u25c1', 'bigtriangleup': u'\u25b3', 'ominus': u'\u2296', 'ddagger': u'\u2021', 'wr': u'\u2240', 'otimes': u'\u2297', 'sqcup': u'\u2294', 'oplus': u'\u2295', 'bigcirc': u'\u25cb', 'oslash': u'\u2298', 'sqcap': u'\u2293', 'bullet': u'\u2219', 'cup': u'\u222a', 'cdot': u'\u22c5', 'cap': u'\u2229', 'bigtriangledown': u'\u25bd', 'times': u'\xd7', 'setminus': u'\u2216', 'circ': u'\u2218', 'vee': u'\u2228', 'uplus': u'\u228e', 'mp': u'\u2213', 'dagger': u'\u2020', 'triangleright': u'\u25b7', 'div': u'\xf7', 'pm': u'\xb1',
     # Relation symbols:
@@ -491,21 +496,22 @@ def handle_keyword(name, node, string):
             raise SyntaxError, 'Expected something like "\mathbb{A}"!'
         node = node.append(mi(mathbb[string[1]]))
         skip += 3
+    elif name in greek:
+        node = node.append(mi(greek[name]))
+    elif name in Greek:
+        node = node.append(mo(Greek[name]))
+    elif name in special:
+        node = node.append(mo(special[name]))
+    elif name in functions:
+        node = node.append(mo(name))
     else:
-        code = special.get(name)
-        if code is not None:
-            node = node.append(mi(code))
+        chr = over.get(name)
+        if chr is not None:
+            ovr = mover(mo(chr))
+            node.append(ovr)
+            node = ovr
         else:
-            if name in functions:
-                node = node.append(mo(name))
-            else:
-                chr = over.get(name)
-                if chr is not None:
-                    ovr = mover(mo(chr))
-                    node.append(ovr)
-                    node = ovr
-                else:
-                    raise SyntaxError, 'Unknown LaTeX command: ' + name
+            raise SyntaxError, 'Unknown LaTeX command: ' + name
 
     return node, skip
 
