@@ -8,10 +8,6 @@
 Default cascading style sheet for the HTML output of Docutils.
 */
 
-a.footnote-reference {
-  font-size: smaller ;
-  vertical-align: super }
-
 a.target {
   color: blue }
 
