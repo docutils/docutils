@@ -460,11 +460,24 @@ Python Source Reader
 Can I use Docutils for Python auto-documentation?
 -------------------------------------------------
 
-Docstring extraction is still under development.  There is most of a
-source code parsing module in docutils/readers/python/moduleparser.py.
-I (David Goodger) haven't worked on it in a while, but I do plan to
-finish it eventually.  Ian Bicking wrote an initial front end for my
-moduleparser module, in sandbox/ianb/extractor/extractor.py.
+Yes and no.
+
+Docstring extraction functionality from within Docutils is still under
+development.  There is most of a source code parsing module in
+docutils/readers/python/moduleparser.py.  I (David Goodger) haven't
+worked on it in a while, but I do plan to finish it eventually.  Ian
+Bicking wrote an initial front end for my moduleparser module, in
+sandbox/ianb/extractor/extractor.py.  There has also been some recent
+activity in sandbox/tibs/pysource2/.
+
+Version 2.0 of Ed Loper's `Epydoc <http://epydoc.sourceforge.net/>`_
+supports reStructuredText-format docstrings for HTML output.  Docutils
+0.3 or newer is required.  Development of a Docutils-specific
+auto-documentation tool will continue.  Epydoc works by importing
+Python modules to be documented, whereas the Docutils-specific tool,
+described above, will parse modules without importing them (as with
+`HappyDoc <http://happydoc.sourceforge.net/>`_, which doesn't support
+reStructuredText).
 
 
 Miscellaneous
