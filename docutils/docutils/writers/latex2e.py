@@ -1706,7 +1706,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('}')
 
     def visit_raw(self, node):
-        if node.has_key('format') and node['format'].lower() == 'latex':
+        if 'latex' in node.get('format', '').split():
             self.body.append(node.astext())
         raise nodes.SkipNode
 

@@ -1012,7 +1012,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append(self.context.pop())
 
     def visit_raw(self, node):
-        if node.get('format') == 'html':
+        if 'html' in node.get('format', '').split():
             self.body.append(node.astext())
         # Keep non-HTML raw text out of output:
         raise nodes.SkipNode

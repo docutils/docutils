@@ -1062,16 +1062,16 @@ Raw Data Pass-Through
 
 :Directive Type: "raw"
 :Doctree Element: raw
-:Directive Arguments: One, required (output format type).
+:Directive Arguments: One or more, required (output format types).
 :Directive Options: Possible.
 :Directive Content: Stored verbatim, uninterpreted.  None (empty) if a
                     "file" or "url" option given.
 
 The "raw" directive indicates non-reStructuredText data that is to be
-passed untouched to the Writer.  The name of the output format is
-given in the first argument.  The interpretation of the raw data is up
-to the Writer.  A Writer may ignore any raw output not matching its
-format.
+passed untouched to the Writer.  The names of the output formats are
+given in the directive arguments.  The interpretation of the raw data
+is up to the Writer.  A Writer may ignore any raw output not matching
+its format.
 
 For example, the following input would be passed untouched by an HTML
 Writer::
