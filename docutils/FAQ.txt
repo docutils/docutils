@@ -127,14 +127,8 @@ the latest code from CVS.  As the project matures, we may formalize on
 a stable/development-branch scheme, but we're not using anything like
 that yet.
 
-If anyone would like to volunteer as a release coordinator, please
-`contact the project coordinator`_.
-
 .. _development snapshots:
    http://docutils.sourceforge.net/#development-snapshots
-
-.. _contact the project coordinator:
-   mailto:goodger@python.org
 
 
 reStructuredText
