@@ -55,7 +55,7 @@ class Reporter:
     is compared to the thresholds stored in the category, and a warning or
     error is generated as appropriate.  Debug messages are produced iff the
     stored debug switch is on.  Message output is sent to the stored warning
-    stream.
+    stream if not set to ''.
 
     The default category is '' (empty string).  By convention, Writers should
     retrieve reporting conditions from the 'writer' category (which, unless
@@ -92,7 +92,8 @@ class Reporter:
               exceptions will be raised, halting execution.
             - `debug`: Show debug (level=0) system messages?
             - `stream`: Where warning output is sent.  Can be file-like (has a
-              ``.write`` method), a string (file name, opened for writing), or
+              ``.write`` method), a string (file name, opened for writing), 
+              '' (empty string, for discarding all stream messages) or
               `None` (implies `sys.stderr`; default).
             - `encoding`: The encoding for stderr output.
             - `error_handler`: The error handler for stderr output encoding.
@@ -103,7 +104,12 @@ class Reporter:
         if stream is None:
             stream = sys.stderr
         elif type(stream) in (StringType, UnicodeType):
-            raise NotImplementedError('This should open a file for writing.')
+            # Leave stream untouched if it's ''.
+            if stream != '':
+                if type(stream) == StringType:
+                    stream = open(stream, 'w')
+                elif type(stream) == UnicodeType:
+                    stream = open(stream.encode(), 'w')
 
         self.encoding = encoding
         """The character encoding for the stderr output."""
@@ -178,7 +184,7 @@ class Reporter:
                                    type=self.levels[level],
                                    *children, **attributes)
         debug, report_level, halt_level, stream = self[category].astuple()
-        if level >= report_level or debug and level == 0:
+        if (level >= report_level or debug and level == 0) and stream:
             msgtext = msg.astext().encode(self.encoding, self.error_handler)
             if category:
                 print >>stream, msgtext, '[%s]' % category
