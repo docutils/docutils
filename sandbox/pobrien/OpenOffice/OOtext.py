@@ -11,12 +11,16 @@ manifest = '''<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE manifest:manifest PUBLIC "-//OpenOffice.org//DTD Manifest 1.0//EN" "Manifest.dtd">
 <manifest:manifest xmlns:manifest="http://openoffice.org/2001/manifest">
 <manifest:file-entry manifest:media-type="application/vnd.sun.xml.writer" manifest:full-path="/"/>
-<manifest:file-entry manifest:media-type="" manifest:full-path="Pictures/"/>
+%s
 %s
 </manifest:manifest>
 '''
 
-manifest_format = '<manifest:file-entry manifest:media-type="text/xml" manifest:full-path="%s"/>'
+m_xml_format = '<manifest:file-entry manifest:media-type="text/xml" manifest:full-path="%s"/>'
+
+m_tif_format = '<manifest:file-entry manifest:media-type="image/tif" manifest:full-path="Pictures/%s"/>'
+
+m_png_format = '<manifest:file-entry manifest:media-type="image/png" manifest:full-path="Pictures/%s"/>'
 
 content_header = '''<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE office:document-content PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "office.dtd">
@@ -416,6 +420,30 @@ style:line-height-at-least="0.139inch" fo:text-align="justify"
 style:justify-single-word="false" fo:orphans="0"
 fo:widows="0"/></style:style>
 
+<style:style style:name="image" 
+style:family="graphics">
+<style:properties
+svg:x="0inch" 
+svg:y="0inch" 
+style:vertical-pos="below"
+style:horizontal-pos="left"
+style:horizontal-rel="page-content"/>
+</style:style>
+
+<style:style style:name="imageframe"
+style:family="graphics"
+style:parent-style-name="image">
+<style:properties
+style:run-through="foreground"
+style:wrap="none"
+style:vertical-pos="below"
+style:vertical-rel="char"
+style:mirror="none" fo:clip="rect(0inch 0inch 0inch 0inch)"
+draw:luminance="0%" draw:contrast="0%" draw:red="0%" draw:green="0%"
+draw:blue="0%" draw:gamma="1" draw:color-inversion="false"
+draw:transparency="-100%"
+draw:color-mode="standard"/>
+</style:style>
 
 <style:style style:name="Page Number" 
 style:family="text"
@@ -445,7 +473,6 @@ text:anchor-type="paragraph" svg:x="0inch" svg:y="0inch"
 style:wrap="none" style:vertical-pos="top"
 style:vertical-rel="paragraph" style:horizontal-pos="center"
 style:horizontal-rel="paragraph"/></style:style>
-
 
 <text:footnotes-configuration
 style:num-format="1" text:start-value="0"
