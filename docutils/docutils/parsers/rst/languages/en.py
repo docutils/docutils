@@ -36,6 +36,7 @@ directives = {
       'contents': 'contents',
       'sectnum': 'sectnum',
       'section-numbering': 'sectnum',
+      'target-notes': 'target-notes',
       #'footnotes': 'footnotes',
       #'citations': 'citations',
       'restructuredtext-test-directive': 'restructuredtext-test-directive'}

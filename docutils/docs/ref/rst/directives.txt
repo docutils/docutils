@@ -282,6 +282,24 @@ The following attributes are recognized:
     The default is unlimited depth.
 
 
+------------
+ References
+------------
+
+Target Footnotes
+================
+
+DTD elements: pending, footnote, footnote_reference.
+
+Directive block: unused; directive data must be empty.
+
+The "target-notes" directive creates a footnote for each external
+target in the text, and corresponding footnote references after each
+reference.  For every explicit target (of the form, ``.. _target name:
+URL``) in the text, a footnote will be generated containing the
+visible URL as content.
+
+
 Footnotes
 =========
 
