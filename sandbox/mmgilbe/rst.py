@@ -27,7 +27,6 @@ from docutils.core import publish_string
 from docutils.writers import html4css1
 
 def mastext(node):
-    # return node..astext()
     # Find Python function that does this for me. string.encode('ascii',
     # 'xmlcharrefreplace')
     s = node.replace(u'\xa0', '&#xa0;')
