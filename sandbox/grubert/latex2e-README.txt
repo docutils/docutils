@@ -4,7 +4,7 @@ latex2e BUGS TODOS and other animals
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
 
-Rev. 2003-05-15
+Rev. 2003-05-16
 
 To do
 ~~~~~
@@ -113,6 +113,8 @@ ATTENTION
 
 Done
 ~~~~
+
+* HACK --snap-footnote-refs=1 to strip trailing blanks from item preceeding a footnote-ref.
 
 * add a LaTeX-nbsp (~) before a LaTeX-newline to avoid "LaTeX-Error no line to end here".
 * line_blocks without use of mbox, to allow markups span over line ends.
