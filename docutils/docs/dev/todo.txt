@@ -324,22 +324,15 @@ General
   reporting the successful input encoding.  Modify runtime settings?
   System message?  Simple stderr output?
 
-* @@@ Re-evaluate the config file format, enabling a section for each
-  Docutils component so that (for example) HTML's and LaTeX's
-  stylesheets don't interfere with each other.
-
-  Details: <http://article.gmane.org/gmane.text.docutils.devel/876>.
-
-* Rationalize Writer settings (HTML/LaTeX/PEP).
+* Rationalize Writer settings (HTML/LaTeX/PEP) -- share settings.
 
 * The "docutils.conf" included with Docutils should become complete,
   with examples of every setting (many/most commented out).  It's
   currently sparse, requiring doc lookups.
 
-* Rework docs/tools.txt for the new configuration sections.  Merge
-  doc/latex.txt info into tools.txt.
+* Merge doc/latex.txt info into tools.txt and config.txt.
 
-* Add validation/conversion to SettingsSpec objects?  Entry in the
+* @@@ Add validation/conversion to SettingsSpec objects?  Entry in the
   keyword argument dictionary, to be handled by OptionParser?  How to
   pass it on to ConfigParser?  Or keep the exclusive responsibility in
   OptionParser?  Problem with the current "validation" attribute of
