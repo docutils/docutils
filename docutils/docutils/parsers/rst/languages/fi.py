@@ -54,8 +54,7 @@ directives = {
       u'kappale': u'sectnum',
       #u'alaviitteet': u'footnotes',
       #u'viitaukset': u'citations',
-      u'target-notes': u'target-notes',
-      u'restructuredtext-test-directive': u'restructuredtext-test-directive'}
+      u'target-notes (translation required)': u'target-notes'}
 """Finnish name to registered (in directives/__init__.py) directive name
 mapping."""
 
@@ -69,23 +68,19 @@ roles = {
     u'alaindeksi': u'subscript',
     u'indeksi': u'subscript',
     u'yl\u00e4indeksi': u'superscript',
-    u'title-reference': u'title-reference',
-    u'title': u'title-reference',
-    u'pep-reference': u'pep-reference',
-    u'pep': u'pep-reference',
-    u'rfc-reference': u'rfc-reference',
-    u'rfc': u'rfc-reference',
+    u'title-reference (translation required)': u'title-reference',
+    u'title (translation required)': u'title-reference',
+    u'pep-reference (translation required)': u'pep-reference',
+    u'rfc-reference (translation required)': u'rfc-reference',
     u'korostus': u'emphasis',
     u'vahvistus': u'strong',
     u'tasalevyinen': u'literal',
-    u'named-reference': u'named-reference',
-    u'anonymous-reference': u'anonymous-reference',
-    u'footnote-reference': u'footnote-reference',
-    u'citation-reference': u'citation-reference',
-    u'substitution-reference': u'substitution-reference',
+    u'named-reference (translation required)': u'named-reference',
+    u'anonymous-reference (translation required)': u'anonymous-reference',
+    u'footnote-reference (translation required)': u'footnote-reference',
+    u'citation-reference (translation required)': u'citation-reference',
+    u'substitution-reference (translation required)': u'substitution-reference',
     u'kohde': u'target',
-    u'uri-reference': u'uri-reference',
-    u'uri': u'uri-reference',
-    u'url': u'uri-reference',}
+    u'uri-reference (translation required)': u'uri-reference',
 """Mapping of Finnish role names to canonical role names for interpreted text.
 """
