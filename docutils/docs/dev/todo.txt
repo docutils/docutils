@@ -74,7 +74,8 @@ General
 
 * Need a Unicode to HTML entities codec for HTML writer?  No, the
   "xmlcharrefreplace" output error handler is sufficient.
-  Make it the default for HTML & XML writers?
+  Make it the default for HTML & XML writers?  Not as long as we need
+  to support Python versions prior to 2.3.
 
 * Add validation?  See http://pytrex.sourceforge.net, RELAX NG, pyRXP.
 
