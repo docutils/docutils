@@ -27,20 +27,9 @@ class Input(TransformSpec):
 
     default_source_path = None
 
-    def __init__(self, settings=None, source=None, source_path=None,
-                 encoding=None):
+    def __init__(self, source=None, source_path=None, encoding=None):
         self.encoding = encoding
         """Text encoding for the input source."""
-
-        if settings:
-            if not encoding:
-                self.encoding = settings.input_encoding
-            import warnings, traceback
-            warnings.warn(
-                'Setting input encoding via a "settings" struct is '
-                'deprecated; send encoding directly instead.\n%s'
-                % ''.join(traceback.format_list(traceback.extract_stack()
-                                                [-3:-1])))
 
         self.source = source
         """The source of input data."""
@@ -107,23 +96,13 @@ class Output(TransformSpec):
 
     default_destination_path = None
 
-    def __init__(self, settings=None, destination=None, destination_path=None,
+    def __init__(self, destination=None, destination_path=None,
                  encoding=None, error_handler='strict'):
         self.encoding = encoding
         """Text encoding for the output destination."""
 
         self.error_handler = error_handler or 'strict'
         """Text encoding error handler."""
-
-        if settings:
-            if not encoding:
-                self.encoding = settings.output_encoding
-            import warnings, traceback
-            warnings.warn(
-                'Setting output encoding via a "settings" struct is '
-                'deprecated; send encoding directly instead.\n%s'
-                % ''.join(traceback.format_list(traceback.extract_stack()
-                                                [-3:-1])))
 
         self.destination = destination
         """The destination for output data."""
@@ -154,7 +133,7 @@ class FileInput(Input):
     Input for single, simple file-like objects.
     """
 
-    def __init__(self, settings=None, source=None, source_path=None,
+    def __init__(self, source=None, source_path=None,
                  encoding=None, autoclose=1):
         """
         :Parameters:
@@ -164,7 +143,7 @@ class FileInput(Input):
             - `autoclose`: close automatically after read (boolean); always
               false if `sys.stdin` is the source.
         """
-        Input.__init__(self, settings, source, source_path, encoding)
+        Input.__init__(self, source, source_path, encoding)
         self.autoclose = autoclose
         if source is None:
             if source_path:
@@ -195,7 +174,7 @@ class FileOutput(Output):
     Output for single, simple file-like objects.
     """
 
-    def __init__(self, settings=None, destination=None, destination_path=None,
+    def __init__(self, destination=None, destination_path=None,
                  encoding=None, error_handler='strict', autoclose=1):
         """
         :Parameters:
@@ -207,8 +186,7 @@ class FileOutput(Output):
             - `autoclose`: close automatically after write (boolean); always
               false if `sys.stdout` is the destination.
         """
-        Output.__init__(self, settings, destination, destination_path,
-                        encoding)
+        Output.__init__(self, destination, destination_path, encoding)
         self.opened = 1
         self.autoclose = autoclose
         if destination is None:
