@@ -228,24 +228,63 @@ def class_directive(name, arguments, options, content, lineno,
 class_directive.arguments = (1, 0, 0)
 class_directive.content = 1
 
+role_arg_pat = re.compile(r'(%s)\s*(\(\s*(%s)\s*\)\s*)?$'
+                          % ((states.Inliner.simplename,) * 2))
 def role(name, arguments, options, content, lineno,
          content_offset, block_text, state, state_machine):
     """Dynamically create and register a custom interpreted text role."""
-    role_name = arguments[0].lower()
+    if content_offset > lineno or not content:
+        error = state_machine.reporter.error(
+            '"%s" directive requires arguments on the first line.'
+            % name, nodes.literal_block(block_text, block_text), line=lineno)
+        return [error]
+    args = content[0]
+    match = role_arg_pat.match(args)
+    if not match:
+        error = state_machine.reporter.error(
+            '"%s" directive arguments not valid role names: "%s".'
+            % (name, args), nodes.literal_block(block_text, block_text),
+            line=lineno)
+        return [error]
+    new_role_name = match.group(1)
+    base_role_name = match.group(3)
+    messages = []
+    if base_role_name:
+        base_role, messages = roles.role(
+            base_role_name, state_machine.language, lineno, state.reporter)
+        if base_role is None:
+            error = state.reporter.error(
+                'Unknown interpreted text role "%s".' % base_role_name,
+                nodes.literal_block(block_text, block_text), line=lineno)
+            return messages + [error]
+    else:
+        base_role = roles.generic_custom_role
+    assert not hasattr(base_role, 'arguments'), ( 
+        'Supplemental directive arguments for "%s" directive not supported'
+        '(specified by "%r" role).' % (name, base_role))
+    try:
+        (arguments, options, content, content_offset) = (
+            state.parse_directive_block(content[1:], content_offset, base_role,
+                                        option_presets={}))
+    except states.MarkupError, detail:
+        error = state_machine.reporter.error(
+            'Error in "%s" directive:\n%s.' % (name, detail),
+            nodes.literal_block(block_text, block_text), line=lineno)
+        return messages + [error]
     if not options.has_key('class'):
         try:
-            options['class'] = directives.class_option(role_name)
+            options['class'] = directives.class_option(new_role_name)
         except ValueError, detail:
             error = state_machine.reporter.error(
                 'Invalid argument for "%s" directive:\n%s.'
                 % (name, detail),
                 nodes.literal_block(block_text, block_text), line=lineno)
-            return [error]
-    roles.register_custom_role(role_name, options)
-    return []
+            return messages + [error]
+    role = roles.CustomRole(new_role_name, base_role, options, content)
+    roles.register_local_role(new_role_name, role)
+    return messages
 
-role.arguments = (1, 0, 0)
-role.options = {'class': directives.class_option}
+role.content = 1
 
 def directive_test_function(name, arguments, options, content, lineno,
                             content_offset, block_text, state, state_machine):
