@@ -147,7 +147,15 @@ class FileInput(Input):
         self.autoclose = autoclose
         if source is None:
             if source_path:
-                self.source = open(source_path)
+                try:
+                    self.source = open(source_path)
+                except IOError, error:
+                    print >>sys.stderr, '%s: %s' % (error.__class__.__name__,
+                                                    error)
+                    print >>sys.stderr, (
+                        'Unable to open source file for reading (%s).  Exiting.'
+                        % source_path)
+                    sys.exit(1)
             else:
                 self.source = sys.stdin
                 self.autoclose = None
@@ -203,7 +211,14 @@ class FileOutput(Output):
                 pass
 
     def open(self):
-        self.destination = open(self.destination_path, 'w')
+        try:
+            self.destination = open(self.destination_path, 'w')
+        except IOError, error:
+            print >>sys.stderr, '%s: %s' % (error.__class__.__name__,
+                                            error)
+            print >>sys.stderr, ('Unable to open destination file for writing '
+                                 '(%s).  Exiting.' % source_path)
+            sys.exit(1)
         self.opened = 1
 
     def write(self, data):
