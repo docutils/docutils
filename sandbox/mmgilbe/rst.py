@@ -118,6 +118,10 @@ class MoinTranslator(html4css1.HTMLTranslator):
         if self.strip_paragraph:
             string = string.replace('<p>', '')
             string = string.replace('</p>', '')
+            string = string.replace('\n', '')
+            if len(string) and string[-1] == ' ':
+                string = string[:-1]
+            print 'asdf', `string`
         f.write(string)
         self.body.append(string)
         
