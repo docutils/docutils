@@ -179,7 +179,8 @@ def pep_reference_role(role, rawtext, text, lineno, inliner):
             % text, line=lineno)
         prb = inliner.problematic(text, text, msg)
         return [prb], [msg]
-    ref = inliner.pep_url % pepnum # [XX]
+    # Base URL mainly used by inliner.pep_reference; so this is correct:
+    ref = inliner.pep_url % pepnum
     return [nodes.reference(rawtext, 'PEP ' + text, refuri=ref)], []
 register_canonical_role('pep-reference', pep_reference_role)
 
@@ -194,7 +195,8 @@ def rfc_reference_role(role, rawtext, text, lineno, inliner):
             '"%s" is invalid.' % text, line=lineno)
         prb = inliner.problematic(text, text, msg)
         return [prb], [msg]
-    ref = inliner.rfc_url % rfcnum # [XX]
+    # Base URL mainly used by inliner.rfc_reference, so this is correct:
+    ref = inliner.rfc_url % rfcnum
     return [nodes.reference(rawtext, 'RFC ' + text, refuri=ref)], []
 register_canonical_role('rfc-reference', rfc_reference_role)
 
