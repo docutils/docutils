@@ -57,7 +57,7 @@ and usually bug-free:
 * Snapshot of the Sandbox (experimental, contributed code):
   http://docutils.sf.net/docutils-sandbox-snapshot.tgz
 
-* `Snapshot of web files` (the files that generate the web site):
+* Snapshot of web files (the files that generate the web site):
   http://docutils.sf.net/docutils-web-snapshot.tgz
 
 To keep up to date on the latest developments, download fresh copies
