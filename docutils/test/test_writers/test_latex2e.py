@@ -69,52 +69,61 @@ totest = {}
 
 totest['table_of_contents'] = [
 # input
-## ["""\
-## .. contents:: Table of Contents
+["""\
+.. contents:: Table of Contents
 
-## Title 1
-## =======
-## Paragraph 1.
+Title 1
+=======
+Paragraph 1.
 
-## Title 2
-## -------
-## Paragraph 2.
-## """,
+Title 2
+-------
+Paragraph 2.
+""",
 ## # expected output
-## latex_head + """\
-## \\title{Title 1}
-## \\author{}
-## \\date{}
-## \\hypersetup{\npdftitle={Title 1}
-## }
-## \\raggedbottom
-## \\begin{document}
-## \\maketitle
+latex_head + """\
+\\title{}
+\\author{}
+\\date{}
+\\raggedbottom
+\\begin{document}
+\\maketitle
 
 
-## \\setlength{\\locallinewidth}{\\linewidth}
-## \\hypertarget{table-of-contents}{}
-## \\pdfbookmark[0]{Table of Contents}{table-of-contents}
-## \\subsection*{~\\hfill Table of Contents\\hfill ~}
-## \\begin{list}{}{}
-## \\item {} \\href{\#title-2}{Title 2}
+\\setlength{\\locallinewidth}{\\linewidth}
+\\hypertarget{table-of-contents}{}
+\\pdfbookmark[0]{Table of Contents}{table-of-contents}
+\\subsection*{~\\hfill Table of Contents\\hfill ~}
+\\begin{list}{}{}
+\\item {} \\href{\\#title-1}{Title 1}
+\\begin{list}{}{}
+\\item {} \\href{\#title-2}{Title 2}
 
-## \\end{list}
+\\end{list}
+
+\\end{list}
 
 
-## Paragraph 1.
+
+%___________________________________________________________________________
+
+\\hypertarget{title-1}{}
+\\pdfbookmark[0]{Title 1}{title-1}
+\\section*{Title 1}
+
+Paragraph 1.
 
 
-## %___________________________________________________________________________
+%___________________________________________________________________________
 
-## \\hypertarget{title-2}{}
-## \\pdfbookmark[0]{Title 2}{title-2}
-## \\section*{Title 2}
+\\hypertarget{title-2}{}
+\\pdfbookmark[1]{Title 2}{title-2}
+\\subsection*{Title 2}
 
-## Paragraph 2.
+Paragraph 2.
 
-## \\end{document}
-## """],
+\\end{document}
+"""],
 
 ]
 
