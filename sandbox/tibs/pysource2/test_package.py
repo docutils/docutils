@@ -49,7 +49,7 @@ class PackageTest(unittest.TestCase):
         self.assertEqual(str(parse_package("trivial_package")),
                          """\
 <Package filename="trivial_package">
-  <Package filename="sub_package">\n""")
+    <Package filename="sub_package">\n""")
 
 
 if __name__ == "__main__":
