@@ -1978,6 +1978,23 @@ I'm not averse to the idea of nested inline markup in general.  I just
 don't have the time or inclination to write a new parser now.  Of
 course, a good patch would be welcome!
 
+I envisage something like this.  Explicit-role interpreted text must
+be nestable.  Prefix-based is probably preferred, since suffix-based
+will look like inline literals::
+
+    ``text`:role1:`:role2:
+
+But it can be disambiguated, so it ought to be left up to the author::
+
+    `\ `text`:role1:`:role2:
+
+In addition, other forms of inline markup may be nested if
+unambiguous::
+
+    *emphasized ``literal`` and |substitution ref| and link_*
+
+IOW, the parser ought to be as permissive as possible.
+
 
 ..
    Local Variables:
