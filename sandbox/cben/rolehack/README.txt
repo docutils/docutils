@@ -23,8 +23,9 @@ convenient ;-).
 
 Note that the later scripts relies on some external commands (see the
 comments at its top).  `tex_to_images` seems to be separately
-availiable at
-http://cvs.sf.net/viewcvs.py/*checkout*/emu/speech_tools/scripts/tex_to_images.prl?rev=HEAD
+availiable from the `speech_tools CVS`__
+
+__ http://cvs.sf.net/viewcvs.py/*checkout*/emu/speech_tools/scripts/tex_to_images.prl?rev=HEAD
 
 Also note that the scripts you regexps to "parse" the
 roles/directives, so expect some bugs (e.g. don't try to split a
