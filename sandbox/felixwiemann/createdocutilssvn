@@ -1,0 +1,48 @@
+#!/bin/sh
+
+set -e
+shopt -s extglob
+
+# Prerequisites:
+# * cvs2svn version 1.2.1 or newer
+# * an (empty) directory "cvs2svn" in the working directory
+
+if test ! -d cvs2svn; then
+    # Don't run in the wrong directory.
+    echo 'Directory "cvs2svn" not found.  Aborting.'
+    exit 1
+fi
+
+date="`date --utc --iso-8601`"
+snapshot=docutils-cvsroot-$date.tar.bz2
+
+# If there's no snapshot from today, retrieve a new one.
+if test ! -f $snapshot; then
+    rm -f docutils-cvsroot.tar.bz2
+    wget http://cvs.sourceforge.net/cvstarballs/docutils-cvsroot.tar.bz2
+    mv -v docutils-cvsroot.tar.bz2 $snapshot
+fi
+
+# If it's not yet unpacked, unpack it.
+if test ! -d docutils-$date; then
+    rm docutils -rf
+    rm docutils-$date -rf
+    echo Unpacking...
+    tar xjf docutils-cvsroot-$date.tar.bz2
+    mv -v docutils docutils-$date
+fi
+
+cd cvs2svn
+# Clean up.
+rm docutils-cvs-$date -rf
+rm docutils-svn-$date -rf
+# Get a copy of the current CVS repository to mess around with.
+cp ../docutils-$date ./docutils-cvs-$date -R
+# Remove unnecessary stuff.
+rm docutils-cvs-$date/CVSROOT docutils-cvs-$date/sandbox/!(README.txt,v) -rf
+# Launch cvs2svn.
+nice -n 10 cvs2svn -s docutils-svn-$date --fs-type=fsfs docutils-cvs-$date 
+# Set permissions.
+cd docutils-cvs-$date
+chmod g+u * -R
+find * -type d | xargs chmod g+s
