@@ -1,6 +1,6 @@
-=========================================
- Docutils Project Documentation Overview
-=========================================
+==========================================
+ Docutils_ Project Documentation Overview
+==========================================
 
 :Author: David Goodger
 :Contact: goodger@python.org
@@ -15,7 +15,7 @@ those may not be completely up to date.
 
 __ http://docutils.sourceforge.net/#development-snapshots
 __ http://docutils.sourceforge.net/#project-releases
-
+.. _Docutils: http://docutils.sourceforge.net/
 
 .. contents::
 
@@ -23,7 +23,7 @@ __ http://docutils.sourceforge.net/#project-releases
 Docutils Stakeholders
 =====================
 
-There are several distinct groups of Docutils stakeholders:
+Docutils stakeholders can be categorized in several groups:
 
 1. End-users: users of reStructuredText and the Docutils tools.
    Although some are developers (e.g. Python developers utilizing
@@ -33,8 +33,7 @@ There are several distinct groups of Docutils stakeholders:
    programmers developing *with* Docutils.
 
 3. Component-developers: those who implement application-specific
-   components, directives, and/or roles, without contributing them
-   back to Docutils.
+   components, directives, and/or roles, separately from Docutils.
 
 4. Core-developers: developers of the Docutils codebase and
    participants in the Docutils project community.
@@ -45,7 +44,7 @@ There are several distinct groups of Docutils stakeholders:
 There's a lot of overlap between these groups.  Most (perhaps all)
 core-developers, component-developers, client-developers, and
 re-implementers are also end-users.  Core-developers are also
-library-user/developers, and may also be component-developers in other
+client-developers, and may also be component-developers in other
 projects.  Component-developers are also client-developers.
 
 
