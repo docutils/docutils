@@ -767,7 +767,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_tbody(self, node):
         self.write_colspecs()
-        #self.body.append(self.context.pop()) # '</colgroup>\n' or ''
+        self.body.append(self.context.pop()) # '</colgroup>\n' or ''
         self.body.append(self.starttag(node, 'tbody', valign='top'))
 
     def depart_tbody(self, node):
@@ -784,8 +784,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         pass
 
     def visit_tgroup(self, node):
-        #self.body.append(self.starttag(node, 'colgroup'))
-        #self.context.append('</colgroup>\n')
+        # Mozilla needs <colgroup>:
+        self.body.append(self.starttag(node, 'colgroup'))
+        self.context.append('</colgroup>\n')
         pass
 
     def depart_tgroup(self, node):
@@ -793,8 +794,9 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_thead(self, node):
         self.write_colspecs()
-        #self.body.append(self.context.pop()) # '</colgroup>\n'
-        #self.context.append('')
+        self.body.append(self.context.pop()) # '</colgroup>\n'
+        # There may or may not be a <thead>; this is for <tbody> to use:
+        self.context.append('')
         self.body.append(self.starttag(node, 'thead', valign='bottom'))
 
     def depart_thead(self, node):
