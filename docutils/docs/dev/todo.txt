@@ -359,6 +359,10 @@ Documentation
 
 * User docs.  What's needed?
 
+* Add an "examples" directory, beside "tools" and "docs", for
+  interesting examples of Docutils usage?  Have a top-level README.txt
+  file and a subdirectory for each example.  (Martin Blais)
+
 
 Implementation Docs
 ```````````````````
@@ -399,14 +403,6 @@ Specification
 
 * Rework PEP 257, separating style from spec from tools, wrt Docutils?
   See Doc-SIG from 2001-06-19/20.
-
-
-Web Site
-````````
-
-* Add an "examples" directory, beside "tools" and "docs", for
-  interesting examples of Docutils usage?  Have a top-level README.txt
-  file and a subdirectory for each example.  (Martin Blais)
 
 
 Python Source Reader
