@@ -247,8 +247,11 @@ Tilde in italian
 Does not work, or only in verbatim or verb. Could be fixed by using T1, but
 the hyphen in literal environments is different:
 
-* inline or in verbatim it is lower than it should.
-* in a block with markup two hyphens become one (endashed ?).
+* Inline or in verbatim it is lower than it should.
+  If package courier is used acroread 5 puts it too high, xpdf
+  shows it at the same height as the horizontal line of ``+``.
+* In a block with markup two hyphens become one (endashed ?).
+  and ``<<``, ``>>`` become separate characters too.
 
 Tables
 ------
@@ -298,8 +301,8 @@ Miscellaneous
 * The underscore ``_`` does not work in literal-blocks, has different width.
   I tried
 
-  - Underline a blank ``\underline{ }`` to low, as in windows-xp.
-    And elsewhere use this.
+  - Underline a blank ``\underline{ }`` to low, and does not fit the font.
+    But on many systems underscore is an underlined blank.
   - Escape it ``{\_}`` to narrow
   - Subscript a hyphen ``$_{\tt-}$`` too wide and thin
   - ``$_{-}$`` the same.
