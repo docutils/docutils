@@ -46,6 +46,10 @@ a literal block with underscores and markup
            mpl::push_back<       // >--------------+ |
                                  // <- *end* ------+-+
 
+
+inline ``literal`` with double hyphen ``two hyphens: --`` and tripplets
+``three hyphens: ---``.
+
 Special characters
 ------------------
 
