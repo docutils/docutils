@@ -15,3 +15,9 @@ for INF in `ls test/$FM` ; do
   diff -q -s $REFF $OUTF 
   echo --------------------------
 done
+INF=test/tools.txt
+OUTF="$INF-ltoc.tex"
+REFF="$OUTF.ref"
+$CMD --use-latex-toc 1 $INF > $OUTF
+diff -q -s $REFF $OUTF 
+  echo --------------------------

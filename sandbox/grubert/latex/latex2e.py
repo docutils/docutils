@@ -91,6 +91,9 @@ class Writer(writers.Writer):
           'recommended).',
           ['--embed-stylesheet'],
           {'action': 'store_true'}),
+         ('Table of contents by docutils (default) or latex. Latex(writer) supports only '
+          'one ToC per document, but docutils does not write pagenumbers.',
+          ['--use-latex-toc'], {'default': 0}),
          ))
 
     settings_default_overrides = {'output_encoding': 'latin-1'}
@@ -197,7 +200,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     # use latex tableofcontents or let docutils do it.
     # BUG: not tested.
-    latex_toc = 0
+    use_latex_toc = 0
     # table kind: if 0 tabularx (single page), 1 longtable
     # maybe should be decided on row count.
     use_longtable = 1
@@ -210,6 +213,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
         self.settings = settings = document.settings
+        self.use_latex_toc = settings.use_latex_toc
         # language: labels, bibliographic_fields, and author_separators.
         # to allow writing labes for specific languages.
         self.language = languages.get_language(settings.language_code)
@@ -395,13 +399,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append( '\\end{quote}\n')
 
     def visit_bullet_list(self, node):
-        if not self.latex_toc and self.topic_class == 'contents':
+        if not self.use_latex_toc and self.topic_class == 'contents':
             self.body.append( '\\begin{list}{}{}\n' )
         else:
             self.body.append( '\\begin{itemize}\n' )
 
     def depart_bullet_list(self, node):
-        if not self.latex_toc and self.topic_class == 'contents':
+        if not self.use_latex_toc and self.topic_class == 'contents':
             self.body.append( '\\end{list}\n' )
         else:
             self.body.append( '\\end{itemize}\n' )
@@ -526,7 +530,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body = self.docinfo + self.body
         # clear docinfo, so field names are no longer appended.
         self.docinfo = None
-        if self.latex_toc:
+        if self.use_latex_toc:
             self.body.append('\\tableofcontents\n\n\\bigskip\n')
 
     def visit_docinfo_item(self, node, name):
@@ -1174,24 +1178,25 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.pdfinfo.append( 'pdftitle={%s}' % self.encode(node.astext()) )
             raise nodes.SkipNode
         else:
-            name = None
-            if node.parent.hasattr('id'):
-                name = node.parent['id']
             self.body.append('\n\n')
             self.body.append('%' + '_' * 75)
             self.body.append('\n\n')
-            if name:
-                self.body.append( '\\hypertarget{%s}{}\n' % name)
+            if node.parent.hasattr('id'):
+                self.body.append('\\hypertarget{%s}{}\n' % node.parent['id'])
             # section_level 0 is title and handled above.    
             # BUG: latex has no deeper sections (actually paragrah is no section either).
+            if self.use_latex_toc:
+                section_star = ""
+            else:
+                section_star = "*"
             if (self.section_level<=3):  # 1,2,3    
-                self.body.append('\\%ssection*{' % ('sub'*(self.section_level-1)))
+                self.body.append('\\%ssection%s{' % ('sub'*(self.section_level-1),section_star))
             elif (self.section_level==4):      
                 #self.body.append('\\paragraph*{')
-                self.body.append('\\subsubsection*{')
+                self.body.append('\\subsubsection%s{' % (section_star))
             else:
                 #self.body.append('\\subparagraph*{')
-                self.body.append('\\subsubsection*{')
+                self.body.append('\\subsubsection%s{' % (section_star))
             # BUG: self.body.append( '\\label{%s}\n' % name)
             self.context.append('}\n')
 
@@ -1200,7 +1205,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if isinstance(node.parent, nodes.topic):
             self.body.append(self.context.pop())
         # BUG level depends on style.
-        if node.parent.hasattr('id'):
+        if node.parent.hasattr('id') and not self.use_latex_toc:
             # pdflatex allows level 0 to 3
             # ToC would be the only on level 0 so i choose to decrement the rest.
             # "Table of contents" bookmark to see the ToC. To avoid this
@@ -1213,7 +1218,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_topic(self, node):
         self.topic_class = node.get('class')
-        if self.latex_toc:
+        if self.use_latex_toc:
             self.topic_class = ''
             raise nodes.SkipNode
 
