@@ -195,8 +195,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # table kind: if 0 tabularx (single page), 1 longtable
     # maybe should be decided on row count.
     use_longtable = 1
-    # description environment for option-list. else tabularx
+    # TODO: use mixins for different implementations.
+    # list environment for option-list. else tabularx
     use_optionlist_for_option_list = 1
+    # list environment for docinfo. else tabularx
+    use_optionlist_for_docinfo = 0 # NOT YET IN USE
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
@@ -233,16 +236,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
               # admonition width and docinfo tablewidth
               '\\newlength{\\admwidth}\n\\addtolength{\\admwidth}{0.9\\textwidth}\n',
               # optionlist environment
-              '''\\newcommand{\\optionlistlabel}[1]{\\bf #1 \\hfill}
-              \\newenvironment{optionlist}[1]
-              {\\begin{list}{}
-                {\\setlength{\\labelwidth}{#1}
-                 \\setlength{\\rightmargin}{1cm}
-                 \\setlength{\\leftmargin}{\\rightmargin}
-                 \\addtolength{\\leftmargin}{\\labelwidth}
-                 \\addtolength{\\leftmargin}{\\labelsep}
-                 \\renewcommand{\\makelabel}{\\optionlistlabel}}
-              }{\\end{list}}''',
+              '\\newcommand{\\optionlistlabel}[1]{\\bf #1 \\hfill}\n'
+              '\\newenvironment{optionlist}[1]\n'
+              '{\\begin{list}{}\n'
+              '  {\\setlength{\\labelwidth}{#1}\n'
+              '   \\setlength{\\rightmargin}{1cm}\n'
+              '   \\setlength{\\leftmargin}{\\rightmargin}\n'
+              '   \\addtolength{\\leftmargin}{\\labelwidth}\n'
+              '   \\addtolength{\\leftmargin}{\\labelsep}\n'
+              '   \\renewcommand{\\makelabel}{\\optionlistlabel}}\n'
+              '}{\\end{list}}\n',
               ## stylesheet is last: so it might be possible to overwrite defaults.
               self.stylesheet % (self.d_stylesheet_path),
                             ]
