@@ -8,13 +8,22 @@
 :Copyright: This module has been placed in the public domain.
 
 Command-line and common processing for Docutils front-end tools.
+
+Exports the following classes:
+
+- `OptionParser`: Standard Docutils command-line processing.
+- `Values`: Option values; objects are simple structs (``object.attribute``).
+- `ConfigParser`: Standard Docutils config file processing.
 """
 
 __docformat__ = 'reStructuredText'
 
+import os
+import os.path
 import ConfigParser as CP
 import docutils
 from docutils import optik
+from docutils.optik import Values
 
 
 def store_multiple(option, opt, value, parser, *args, **kwargs):
@@ -33,11 +42,25 @@ def read_config_file(option, opt, value, parser):
     """
     Read a configuration file during option processing.  (Option callback.)
     """
-    config = ConfigParser()
-    config.read(value)
-    if config.has_section('options'):
-        for entry in config.options('options'):
-            setattr(parser.values, entry, config.get('options', entry))
+    config_parser = ConfigParser()
+    config_parser.read(value)
+    settings = config_parser.get_section('options')
+    make_paths_absolute(settings, os.path.dirname(value))
+    parser.values.__dict__.update(settings)
+
+relative_path_options = ('warning_stream', 'stylesheet', 'pep_stylesheet',
+                         'pep_template')
+
+def make_paths_absolute(dictionary, base_path=None):
+    """
+    Interpret filesystem path settings relative to the `base_path` given.
+    """
+    if base_path is None:
+        base_path = os.getcwd()
+    for option in relative_path_options:
+        if dictionary.has_key(option) and dictionary[option]:
+            dictionary[option] = os.path.normpath(
+                os.path.join(base_path, dictionary[option]))
 
 
 class OptionParser(optik.OptionParser):
@@ -113,6 +136,9 @@ class OptionParser(optik.OptionParser):
           '"--report=info".)',
           ['--verbose', '-v'], {'action': 'store_const', 'const': 'info',
                                 'dest': 'report_level'}),
+         ('Don't report any system messages.  (Same as "--report=none".)',
+          ['--quiet', '-q'], {'action': 'store_const', 'const': 'none',
+                              'dest': 'report_level'}),
          ('Set the threshold (<level>) at or above which system messages are '
           'converted to exceptions, halting execution immediately.  Levels '
           'as in --report.  Default is 4 (severe).',
@@ -136,7 +162,7 @@ class OptionParser(optik.OptionParser):
           '  Default is "en" (English).',
           ['--language', '-l'], {'dest': 'language_code', 'default': 'en',
                                  'metavar': '<name>'}),
-         ('Read this configuration <file>.',
+         ('Read configuration options from <file>, if it exists.',
           ['--config'], {'metavar': '<file>', 'type': 'string',
                          'action': 'callback', 'callback': read_config_file}),
          ("Show this program's version number and exit.",
@@ -186,9 +212,12 @@ class OptionParser(optik.OptionParser):
                     i += 3
 
     def check_values(self, values, args):
-        values.report_level = self.check_threshold(values.report_level)
-        values.halt_level = self.check_threshold(values.halt_level)
-        values.source, values.destination = self.check_args(args)
+        if hasattr(values, 'report_level'):
+            values.report_level = self.check_threshold(values.report_level)
+        if hasattr(values, 'halt_level'):
+            values.halt_level = self.check_threshold(values.halt_level)
+        values._source, values._destination = self.check_args(args)
+        make_paths_absolute(values.__dict__, os.getcwd())
         return values
 
     def check_threshold(self, level):
@@ -213,8 +242,62 @@ class OptionParser(optik.OptionParser):
 
 class ConfigParser(CP.ConfigParser):
 
+    standard_config_files = (
+        '/etc/docutils.conf',               # system-wide
+        './docutils.conf',                  # project-specific
+        os.path.expanduser('~/.docutils'))  # user-specific
+    """Docutils configuration files, using ConfigParser syntax (section
+    'options').  Later files override earlier ones."""
+
+    def read_standard_files(self):
+        self.read(self.standard_config_files)
+
     def optionxform(self, optionstr):
         """
         Transform '-' to '_' so the cmdline form of option names can be used.
         """
         return optionstr.lower().replace('-', '_')
+
+    def get_section(self, section, raw=0, vars=None):
+        """
+        Return a given section as a dictionary (empty if the section
+        doesn't exist).
+
+        All % interpolations are expanded in the return values, based on the
+        defaults passed into the constructor, unless the optional argument
+        `raw` is true.  Additional substitutions may be provided using the
+        `vars` argument, which must be a dictionary whose contents overrides
+        any pre-existing defaults.
+
+        The section DEFAULT is special.
+        """
+        try:
+            sectdict = self._ConfigParser__sections[section].copy()
+        except KeyError:
+            sectdict = {}
+        d = self._ConfigParser__defaults.copy()
+        d.update(sectdict)
+        # Update with the entry specific variables
+        if vars:
+            d.update(vars)
+        if raw:
+            return sectdict
+        # do the string interpolation
+        for option in sectdict.keys():
+            rawval = sectdict[option]
+            value = rawval              # Make it a pretty variable name
+            depth = 0
+            while depth < 10:           # Loop through this until it's done
+                depth += 1
+                if value.find("%(") >= 0:
+                    try:
+                        value = value % d
+                    except KeyError, key:
+                        raise CP.InterpolationError(key, option, section,
+                                                    rawval)
+                else:
+                    break
+            if value.find("%(") >= 0:
+                raise CP.InterpolationDepthError(option, section, rawval)
+            sectdict[option] = value
+        return sectdict
