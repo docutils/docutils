@@ -29,6 +29,8 @@ Exports the following:
     - `GridTableParserTestCase`
     - `SimpleTableParserTestSuite`
     - `SimpleTableParserTestCase`
+    - 'LatexPublishTestSuite'
+    - 'LatexPublishTestCase'
     - `DevNull` (output sink)
 """
 __docformat__ = 'reStructuredText'
@@ -42,6 +44,7 @@ from pprint import pformat
 from types import UnicodeType
 import package_unittest
 import docutils
+import docutils.core
 from docutils import frontend, nodes, statemachine, urischemes, utils
 from docutils.transforms import universal
 from docutils.parsers import rst
@@ -552,6 +555,44 @@ class PythonModuleParserTestSuite(CustomTestSuite):
                         continue
                 self.addTestCase(
                       PythonModuleParserTestCase, testmethod,
+                      input=case[0], expected=case[1],
+                      id='%s[%r][%s]' % (dictname, name, casenum),
+                      run_in_debugger=run_in_debugger)
+
+class LatexPublishTestCase(CustomTestCase):
+
+    """
+    Test case for publish.
+    """
+
+    def test_publish(self):
+        if self.run_in_debugger:
+            pdb.set_trace()
+        output = docutils.core.publish_string(source=self.input, source_path=None,
+                 destination_path=None,
+                 reader=None, reader_name='standalone',
+                 parser=None, parser_name='restructuredtext',
+                 writer=None, writer_name='latex',
+                 settings=None, settings_spec=None, settings_overrides=None)
+        self.compare_output(self.input, output, self.expected)
+
+class LatexPublishTestSuite(CustomTestSuite):
+
+    def __init__(self):
+        CustomTestSuite.__init__(self)
+
+    def generateTests(self, dict, dictname='totest'):
+        for name, cases in dict.items():
+            for casenum in range(len(cases)):
+                case = cases[casenum]
+                run_in_debugger = 0
+                if len(case)==3:
+                    if case[2]:
+                        run_in_debugger = 1
+                    else:
+                        continue
+                self.addTestCase(
+                      LatexPublishTestCase, 'test_publish',
                       input=case[0], expected=case[1],
                       id='%s[%r][%s]' % (dictname, name, casenum),
                       run_in_debugger=run_in_debugger)
