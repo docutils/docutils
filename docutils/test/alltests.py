@@ -38,10 +38,6 @@ class Tee:
         self.file.flush()
 
 
-# must redirect stderr *before* first import of unittest
-sys.stdout = sys.stderr = Tee('alltests.out')
-
-
 def pformat(suite):
     step = 4
     suitestr = repr(suite).replace('=[<', '=[\n<').replace(', ', ',\n')
@@ -59,12 +55,16 @@ def pformat(suite):
     return '\n'.join(output)
 
 
-if __name__ == '__main__':
-    import package_unittest
-    path, script = os.path.split(sys.argv[0])
-    suite = package_unittest.loadTestModules(path, 'test_', packages=1)
-    package_unittest.main(suite)
-    #if package_unittest.verbosity > 1:
-    #    print >>sys.stderr, pformat(suite) # check the test suite
-    finish = time.time()
-    print 'Elapsed time: %.3f seconds' % (finish - start)
+# must redirect stderr *before* first import of unittest
+sys.stdout = sys.stderr = Tee('alltests.out')
+
+import package_unittest
+
+path, script = os.path.split(sys.argv[0])
+suite = package_unittest.loadTestModules(path, 'test_', packages=1)
+package_unittest.main(suite)
+#if package_unittest.verbosity > 1:
+#    print >>sys.stderr, pformat(suite) # check the test suite
+finish = time.time()
+
+print 'Elapsed time: %.3f seconds' % (finish - start)
