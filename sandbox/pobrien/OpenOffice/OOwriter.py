@@ -373,6 +373,19 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.end_para)
         self.bodyOne = True
 
+    def visit_footer(self, node):
+        pass
+##         self.context.append(len(self.body))
+
+    def depart_footer(self, node):
+        pass
+##         start = self.context.pop()
+##         footer = (['<hr class="footer" />\n',
+##                    self.starttag(node, 'div', CLASS='footer')]
+##                   + self.body[start:] + ['</div>\n'])
+##         self.body_suffix[:0] = footer
+##         del self.body[start:]
+
     def visit_footnote(self, node):
         raise nodes.SkipNode
 
