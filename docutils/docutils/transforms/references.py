@@ -668,6 +668,10 @@ class TargetNotes(Transform):
     footnote references after each reference.
     """
 
+    def __init__(self, document, component, startnode=None):
+        Transform.__init__(self, document, component, startnode)
+        self.notes = {}
+
     def transform(self):
         nodelist = []
         for target in self.document.external_targets:
@@ -678,27 +682,37 @@ class TargetNotes(Transform):
             refs = self.document.refnames.get(name, [])
             if not refs:
                 continue
-            nodelist.append(self.make_target_footnote(target, refs))
+            footnote = self.make_target_footnote(target, refs)
+            if not self.notes.has_key(target['refuri']):
+                self.notes[target['refuri']] = footnote
+                nodelist.append(footnote)
         if len(self.document.anonymous_targets) \
                == len(self.document.anonymous_refs):
             for target, ref in zip(self.document.anonymous_targets,
                                    self.document.anonymous_refs):
                 if target.hasattr('refuri'):
-                    nodelist.append(self.make_target_footnote(target, [ref]))
+                    footnote = self.make_target_footnote(target, [ref])
+                    if not self.notes.has_key(target['refuri']):
+                        self.notes[target['refuri']] = footnote
+                        nodelist.append(footnote)
         self.startnode.parent.replace(self.startnode, nodelist)
         # @@@ what about indirect links to external targets?
 
     def make_target_footnote(self, target, refs):
-        footnote = nodes.footnote()
-        footnote_id = self.document.set_id(footnote)
-        # Use a colon; they can't be produced inside names by the parser:
-        footnote_name = 'target_note: ' + footnote_id
-        footnote['auto'] = 1
-        footnote['name'] = footnote_name
-        footnote += nodes.reference('', target['refuri'],
-                                    refuri=target['refuri'])
-        self.document.note_autofootnote(footnote)
-        self.document.note_explicit_target(footnote, footnote)
+        refuri = target['refuri']
+        if self.notes.has_key(refuri):  # duplicate?
+            footnote = self.notes[refuri]
+            footnote_name = footnote['name']
+        else:                           # original
+            footnote = nodes.footnote()
+            footnote_id = self.document.set_id(footnote)
+            # Use a colon; they can't be produced inside names by the parser:
+            footnote_name = 'target_note: ' + footnote_id
+            footnote['auto'] = 1
+            footnote['name'] = footnote_name
+            footnote += nodes.reference('', refuri, refuri=refuri)
+            self.document.note_autofootnote(footnote)
+            self.document.note_explicit_target(footnote, footnote)
         for ref in refs:
             refnode = nodes.footnote_reference(
                 refname=footnote_name, auto=1)
