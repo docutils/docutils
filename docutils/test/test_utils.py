@@ -12,11 +12,6 @@ Test module for utils.py.
 
 import unittest, StringIO, sys
 from DocutilsTestSupport import utils, nodes
-try:
-    import mypdb as pdb
-except:
-    import pdb
-pdb.tracenow = 0
 
 
 class ReporterTests(unittest.TestCase):
@@ -137,28 +132,28 @@ class ReporterCategoryTests(unittest.TestCase):
         self.stream.seek(0)
         self.stream.truncate()
         self.reporter = utils.Reporter(2, 4, self.stream, 1)
-        self.reporter.setconditions('lemon', 1, 3, self.stream, 0)
+        self.reporter.set_conditions('lemon', 1, 3, self.stream, 0)
 
     def test_getset(self):
-        self.reporter.setconditions('test', 5, 5, None, 0)
-        self.assertEquals(self.reporter.getconditions('other').astuple(),
+        self.reporter.set_conditions('test', 5, 5, None, 0)
+        self.assertEquals(self.reporter.get_conditions('other').astuple(),
                           (1, 2, 4, self.stream))
-        self.assertEquals(self.reporter.getconditions('test').astuple(),
+        self.assertEquals(self.reporter.get_conditions('test').astuple(),
                           (0, 5, 5, sys.stderr))
-        self.assertEquals(self.reporter.getconditions('test.dummy').astuple(),
+        self.assertEquals(self.reporter.get_conditions('test.dummy').astuple(),
                           (0, 5, 5, sys.stderr))
-        self.reporter.setconditions('test.dummy.spam', 1, 2, self.stream, 1)
+        self.reporter.set_conditions('test.dummy.spam', 1, 2, self.stream, 1)
         self.assertEquals(
-              self.reporter.getconditions('test.dummy.spam').astuple(),
+              self.reporter.get_conditions('test.dummy.spam').astuple(),
               (1, 1, 2, self.stream))
-        self.assertEquals(self.reporter.getconditions('test.dummy').astuple(),
+        self.assertEquals(self.reporter.get_conditions('test.dummy').astuple(),
                           (0, 5, 5, sys.stderr))
         self.assertEquals(
-              self.reporter.getconditions('test.dummy.spam.eggs').astuple(),
+              self.reporter.get_conditions('test.dummy.spam.eggs').astuple(),
               (1, 1, 2, self.stream))
-        self.reporter.unsetconditions('test.dummy.spam')
+        self.reporter.unset_conditions('test.dummy.spam')
         self.assertEquals(
-              self.reporter.getconditions('test.dummy.spam.eggs').astuple(),
+              self.reporter.get_conditions('test.dummy.spam.eggs').astuple(),
               (0, 5, 5, sys.stderr))
 
     def test_debug(self):
@@ -304,9 +299,9 @@ class MiscFunctionTests(unittest.TestCase):
              ('A  a  A  a', 'a a a a'),
              ('  AaA\n\r\naAa\tAaA\t\t', 'aaa aaa aaa')]
 
-    def test_normname(self):
+    def test_normalize_name(self):
         for input, output in self.names:
-            normed = utils.normname(input)
+            normed = utils.normalize_name(input)
             self.assertEquals(normed, output)
 
     ids = [('a', 'a'), ('A', 'a'), ('', ''), ('a b \n c', 'a-b-c'),

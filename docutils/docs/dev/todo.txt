@@ -9,6 +9,9 @@
 To Do
 =====
 
+Priority items are marked with "@" symbols.  The more @s, the higher
+the priority.
+
 General
 -------
 
@@ -33,20 +36,12 @@ General
     checked for correctness and refactored.  I'm afraid it's a bit of
     a spaghetti mess now.
 
-  - Change application error exceptions to use "StandardError" as
-    their base class instead of "Exception".
-
 - Add validation?  See http://pytrex.sourceforge.net, RELAX NG.
 
 - Ask Python-dev for opinions (GvR for a pronouncement) on special
   variables (__author__, __version__, etc.): convenience vs. namespace
   pollution.  Ask opinions on whether or not Docutils should recognize
   & use them.
-
-- Provide a mechanism to pass options to Readers, Writers, and Parsers
-  through docutils.core.publish/Publisher?  Or create custom
-  Reader/Writer/Parser objects first, and pass *them* to
-  publish/Publisher?
 
 - In reader.get_reader_class (& parser & writer too), should we be
   importing 'standalone' or 'docutils.readers.standalone'?  (This would
@@ -57,16 +52,14 @@ General
   permanently, read by subsequent processing runs, and updated with
   new entries.  ("Persistent ID mapping"?)
 
-- The "Docutils System Messages" section appears even if no actual
-  system messages are there.  They must be below the threshold.  The
-  transform should be fixed.
+- @@@ Implement a PEP reader.
 
-- TOC transform: use alt-text for inline images.
+- @@ Add support for character set encodings on input & output, Unicode
+  internally.
 
-- Implement a PEP reader.
-
-- Add support for character set encodings on input & output, Unicode
-  internally.  Need a Unicode -> HTML entities codec for HTML writer?
+  - Use an "encoding" directive, and/or an "encoding" field in field
+    lists & PEP headers.  (The same could apply to "language".)
+  - Need a Unicode -> HTML entities codec for HTML writer?
 
 
 Specification
@@ -101,8 +94,8 @@ reStructuredText Parser
 - And for the sake of completeness, should definition list terms be
   allowed to be very long (two or more lines) also?
 
-- Allow hyperlink references to targets in other documents?  Not in an
-  HTML-centric way, though (it's trivial to say
+- Support generic hyperlink references to targets in other documents?
+  Not in an HTML-centric way, though (it's trivial to say
   ``http://www.whatever.com/doc#name``, and useless in non-HTML
   contexts).  XLink/XPointer?  ``.. baseref::``?  See Doc-SIG
   2001-08-10.
@@ -176,17 +169,8 @@ reStructuredText Parser
           the left edge of the first line if it began on the same
           line as the field name.
 
-- Allow syntax constructs to be added or disabled at run-time.
-
 - Make footnotes two-way, GNU-style?  What if there are multiple
   references to a single footnote?
-
-- Add RFC-2822 header parsing (for PEP, email Readers).
-
-- Change ``.. meta::`` to use a "pending" element, only activated for
-  HTML writers (done).  Add reader/writer/parser attributes to pending
-  elements (done).  Figure out a way for transforms to know what
-  reader/writer is in control (@@@ in docutils.transforms.components).
 
 - Allow for variant styles by interpreting indented lists as if they
   weren't indented?  For example, currently the list below will be
@@ -213,8 +197,11 @@ reStructuredText Parser
   See the Doc-SIG discussion starting 2001-04-18 with Ed Loper's
   "Structuring: a summary; and an attempt at EBNF", item 4.
 
-- Make the parser modular.  Be able to turn on/off constructs, add
-  them at run time.  Or is subclassing enough?
+- Make the parser modular.  Allow syntax constructs to be added or
+  disabled at run-time.  Or is subclassing enough?
+
+- Continue to report (info, level 1) enumerated lists whose start
+  value is not ordinal-1?
 
 
 Directives
@@ -228,41 +215,99 @@ Directives
 
 - Implement directives:
 
-  - html.imagemap
+  - html.imagemap (Useful outside of HTML?  If not, replace with image
+    only in non-HTML writers?)
 
-  - components.endnotes, .citations, .topic, .sectnum (section
-    numbering; add support to .contents; could be cmdline option also)
+  - parts.endnotes, .citations, .topic, .sectnum (section numbering;
+    add support to .contents; could be cmdline option also)
 
   - misc.raw
 
-  - misc.include: ``#include`` one file in another.  But how to
-    parse wrt sections, reference names, conflicts?
+  - misc.include: ``#include`` one file in another.  But how to parse
+    wrt sections, reference names, conflicts?  Parse it in the current
+    document's context (C-preprocessor semantics), or separately and
+    then merge?
+
+    Use C-preprocessor semantics for locating include files?  E.g.,
+    ``.. include:: file.txt`` will read another file into the current
+    one, relative to the current file's directory, and ``.. include::
+    <standard>`` will read a standard include file from
+    ``docutils/include/``.  (Should "quotes" be required around
+    non-standard include files?)
 
   - misc.exec: Execute Python code & insert the results.  Perhaps
     dangerous?
 
   - misc.eval: Evaluate an expression & insert the text.  At parse
-    time or at substitution time?
+    time or at substitution time?  Dangerous?  Perhaps limit to canned
+    macros; see text.date_ below.
 
-  - block.qa: Questions & Answers.  Implement as a generic two-column
-    marked list?  Or as a standalone construct?
+  - @@@ body.qa/faq/questions: Questions & Answers.  Implement as a
+    generic two-column marked list?  As a standalone (non-directive)
+    construct?  (Is the markup ambiguous?)  Add support to
+    parts.Contents (optional attribute "qa" done).
 
-  - block.columns: Multi-column table/list, with number of columns as
+    New elements would be required.  Perhaps::
+
+        <!ELEMENT question_list (question_list_item+)>
+        <!ATTLIST question_list
+            numbered  (no | local | global)  #IMPLIED
+            start     NUMBER    #IMPLIED>
+        <!ELEMENT question_list_item (question, answer*)>
+        <!ELEMENT question %text.model;>
+        <!ELEMENT answer (%body.elements;)+>
+
+  - body.columns: Multi-column table/list, with number of columns as
     argument.
 
-  - block.verse: Paragraphs with linebreaks preserved.  A directive
-    would be easy; what about a literal-block-like prefix, perhaps
-    ';;'?  E.g.::
+  - body.verse: Paragraphs with linebreaks preserved, *and* inline
+    markup support too.  A directive would be easy; what about a
+    literal-block-like prefix, perhaps ';;'?  (It's a semi-literal
+    block, after all.)  Example::
 
-        Take it away, Eric the orchestra leader!  ;;
+        Take it away, Eric the Orchestra Leader!  ;;
 
-            Half a bee,
-            Philosophically,
-            Must ipso-facto
-            Half not be.
-            You see?
+            A one, two, a one two three four
 
-            ...
+            Half a bee, philosophically,
+            must, *ipso facto*, half not be.
+            But half the bee has got to be,
+            *vis a vis* its entity.  D'you see?
+
+            But can a bee be said to be
+            or not to be an entire bee,
+            when half the bee is not a bee,
+            due to some ancient injury?
+
+            Singing...
+
+    New elements would be required.  Perhaps::
+
+        <!ELEMENT verse (stanza | verse)+>
+        <!ELEMENT stanza (line+)>
+        <!ELEMENT line %text.model;>
+
+    We could get away without "line" elements, treating line breaks
+    within "stanzas" as significant.  But explicit is perhaps better
+    than implicit.
+
+    Within a "verse" element, should any other constructs be allowed?
+    Should lists be recognized?  The equivalent of block quotes (i.e.,
+    further indented blocks) would be nested verse elements.  These
+    could be "chorus" blocks.
+
+    Perhaps individually indented "continuation lines" should also be
+    recognized (maybe with a "continuation" attribute on the "line"
+    element, or significant whitespace in a single "line")::
+
+        "To Ma Own Beloved Lassie: A Poem on her 17th Birthday", by
+        Ewan McTeagle (for Lassie O'Shea): ;;
+
+            Lend us a couple of bob till Thursday.
+            I'm absolutely stint.
+            But I'm expecting a postal order and I can pay you back
+                as soon as it comes.
+            Love, Ewan.
 
   - colorize.python: Colorize Python code.  Fine for HTML output, but
     what about other formats?  Revert to a literal block?  Do we need
@@ -271,9 +316,15 @@ Directives
     use.  Use a factory function "transformFF()" which returns either
     "HTMLTransform()" instance or "GenericTransform" instance?
 
-  - text.date: Datestamp.  For substitutions.
+  - _`text.date`: Datestamp.  For substitutions.
 
-    - Combined with misc.include, implement canned macros?
+    - Combined with misc.include, implement canned macros?  E.g.::
+
+          .. include:: <macros>
+
+          Today's date is |date|.
+
+      Where "macros" contains ``.. |date| date::``, among others.
 
 
 Unimplemented Transforms
@@ -322,37 +373,17 @@ Unimplemented Transforms
 HTML Writer
 -----------
 
-- Considerations for an HTML Writer [#]_:
+- @@ Allow for style sheet info to be passed in, either as a <LINK>,
+  or as embedded style info.
 
-  - Boolean attributes.  ``<element boolean>`` is good, ``<element
-    boolean="boolean">`` is bad.  Use a special value in attribute
-    mappings, such as ``None``?
+- @ Construct a templating system, as in ht2html/yaptu, using
+  directives and substitutions for dynamic stuff.
 
-  - Escape double-dashes inside comments.
-
-  - Put the language code into an appropriate element's LANG
-    attribute (<HTML>?).
-
-  - Docutils identifiers (the "class" and "id" attributes) will
-    conform to the regular expression ``[a-z][-a-z0-9]*``.  See
-    ``docutils.utils.id()``.
-
-  .. [#] Source: `HTML 4.0 in Netscape and Explorer`__.
-  __ http://www.webreference.com/dev/html4nsie/index.html
-
-- Allow for style sheet info to be passed in, either as a <LINK>, or
-  as embedded style info.
-
-- Construct a templating system, as in ht2html/yaptu, using directives
-  and substitutions for dynamic stuff.
-
-- Improve the granularity of document parts in the HTML writer, so
+- @@ Improve the granularity of document parts in the HTML writer, so
   that one could just grab the parts needed.
 
-- Return a string instead of writing to a file?  Leave all I/O up to
-  the client?
-
-- Use lowercase element & attribute names for XHTML compatibility?
+- @@ Return a string instead of writing to a file?  Leave all I/O up
+  to the client?  Or up to an explicit distributor/filer?
 
 
 Coding Conventions
@@ -367,13 +398,14 @@ PEPs, with the following clarifications:
   lines & indentation), except for degenerate class or method
   definitions (i.e., ``class X: pass`` is O.K.).
 - Lines should be no more than 78 or 79 characters long.
-- "CamelCase" shall be used for class names.
+- "CamelCase" shall be used for class names (except for element
+  classes in docutils.nodes).
 - Use "lowercase" or "lowercase_with_underscores" for function,
   method, and variable names.  For short names, maximum two joined
   words, use lowercase (e.g. 'tagname').  For long names with three or
   more joined words, or where it's hard to parse the split between two
   words, use lowercase_with_underscores (e.g., 'note_explicit_target',
-  'explicit_target').
+  'explicit_target').  If in doubt, use underscores.
 
 __ http://www.python.org/peps/pep-0008.html
 __ http://www.python.org/peps/pep-0257.html

@@ -11,7 +11,7 @@ Test module for nodes.py.
 """
 
 import unittest
-from DocutilsTestSupport import nodes
+from DocutilsTestSupport import nodes, utils
 
 debug = 0
 
@@ -77,6 +77,37 @@ class ElementTests(unittest.TestCase):
     text
     more
 """)
+
+
+class TreeCopyVisitorTests(unittest.TestCase):
+
+    def setUp(self):
+        document = utils.new_document()
+        document += nodes.paragraph('', 'Paragraph 1.')
+        blist = nodes.bullet_list()
+        for i in range(1, 6):
+            item = nodes.list_item()
+            for j in range(1, 4):
+                item += nodes.paragraph('', 'Item %s, paragraph %s.' % (i, j))
+            blist += item
+        document += blist
+        self.document = document
+
+    def compare_trees(self, one, two):
+        self.assertEquals(one.__class__, two.__class__)
+        self.assertNotEquals(id(one), id(two))
+        children1 = one.getchildren()
+        children2 = two.getchildren()
+        self.assertEquals(len(children1), len(children2))
+        for i in range(len(children1)):
+            self.compare_trees(children1[i], children2[i])
+
+    def test_copy_whole(self):
+        visitor = nodes.TreeCopyVisitor(self.document)
+        self.document.walkabout(visitor)
+        newtree = visitor.get_tree_copy()
+        self.assertEquals(self.document.pformat(), newtree.pformat())
+        self.compare_trees(self.document, newtree)
 
 
 if __name__ == '__main__':

@@ -32,7 +32,7 @@ The |biohazard| symbol is deservedly scary-looking.
 """\
 <document>
     <paragraph>
-        The 
+        The \n\
         <image alt="biohazard" uri="biohazard.png">
          symbol is deservedly scary-looking.
     <substitution_definition name="biohazard">
@@ -44,7 +44,7 @@ Here's an |unknown| substitution.
 """\
 <document>
     <paragraph>
-        Here's an 
+        Here's an \n\
         <problematic id="id2" refid="id1">
             |unknown|
          substitution.
