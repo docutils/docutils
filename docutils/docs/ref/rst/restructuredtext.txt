@@ -1881,7 +1881,9 @@ words (alphanumerics plus internal hyphens, underscores, and periods;
 no whitespace).  Two colons are used after the directive type for
 these reasons:
 
-- To avoid clashes with common comment text like::
+- Two colons are distinctive, and unlikely to be used in common text.
+
+- Two colons avoids clashes with common comment text like::
 
       .. Danger: modify at your own risk!
 
