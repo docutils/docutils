@@ -13,11 +13,13 @@ def do_setup():
           author = 'David Goodger',
           author_email = 'goodger@users.sourceforge.net',
           license = 'public domain, Python, BSD (see COPYING.txt)',
-          packages = ['docutils', 'docutils.readers', 'docutils.writers',
-                      'docutils.transforms', 'docutils.languages', 
+          packages = ['docutils', 'docutils.languages',
                       'docutils.parsers', 'docutils.parsers.rst',
                       'docutils.parsers.rst.directives',
-                      'docutils.parsers.rst.languages'])
+                      'docutils.parsers.rst.languages',
+                      'docutils.readers', 'docutils.readers.python',
+                      'docutils.transforms',
+                      'docutils.writers',])
     return dist
 
 if __name__ == '__main__' :
