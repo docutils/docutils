@@ -102,6 +102,8 @@ class DocTitle(Transform):
     after the title(s).
     """
 
+    default_priority = 320
+
     def apply(self):
         if self.promote_document_title():
             self.promote_document_subtitle()
@@ -224,6 +226,8 @@ class DocInfo(Transform):
       being expanded. Only the "RCSfile" keyword is stable; its
       expansion text changes only if the file name changes.)
     """
+
+    default_priority = 340
 
     def apply(self):
         document = self.document

@@ -31,6 +31,8 @@ class Headers(Transform):
     Process fields in a PEP's initial RFC-2822 header.
     """
 
+    default_priority = 360
+
     pep_url = 'pep-%04d.html'
     pep_cvs_url = ('http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/python/'
                    'python/nondist/peps/pep-%04d.txt')
@@ -74,7 +76,7 @@ class Headers(Transform):
                             'header.')
         if pep == 0:
             # Special processing for PEP 0.
-            pending = nodes.pending(PEPZero, 'last reader', {})
+            pending = nodes.pending(PEPZero)
             self.document.insert(1, pending)
             self.document.note_pending(pending)
         for field in header:
@@ -136,9 +138,10 @@ class Contents(Transform):
     the RFC 2822 header.
     """
 
+    default_priority = 380
+
     def apply(self):
-        pending = nodes.pending(parts.Contents, 'first writer',
-                                {'title': None})
+        pending = nodes.pending(parts.Contents, {'title': None})
         self.document.insert(1, pending)
         self.document.note_pending(pending)
 
@@ -149,6 +152,8 @@ class TargetNotes(Transform):
     Locate the "References" section, insert a placeholder for an external
     target footnote insertion transform at the end, and run the transform.
     """
+
+    default_priority = 520
 
     def apply(self):
         doc = self.document
@@ -168,9 +173,9 @@ class TargetNotes(Transform):
                 doc.insert(copyright, refsect)
             else:
                 doc.append(refsect)
-        pending = nodes.pending(references.TargetNotes, 'immediate', {})
+        pending = nodes.pending(references.TargetNotes)
         refsect.append(pending)
-        pending.transform(doc, self, pending).apply()
+        self.document.note_pending(pending, 0)
 
 
 class PEPZero(Transform):
@@ -178,6 +183,8 @@ class PEPZero(Transform):
     """
     Special processing for PEP 0.
     """
+
+    default_priority =760
 
     def apply(self):
         visitor = PEPZeroSpecial(self.document)
