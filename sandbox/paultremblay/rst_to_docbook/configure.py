@@ -5,12 +5,14 @@ import rst_to_docbook.options_trem
 
 """
 
-The configuration script gets the target from the command line. It creates a file with the configuration variable, and a short script for the rest of script to be able to read and locate he configuration files.
+The configuration script gets the target from the command line. It creates a
+file with the configuration variable, and a short script for the rest of
+script to be able to read and locate he configuration files.
 
 """
 
 def configure():
-    target = get_target()
+    target, processor = get_target()
     make_var_file(target)
     make_location(target)
 
@@ -23,19 +25,26 @@ def get_target():
     """
     options_dict = {
         'target':     [1, 't'],
+        'proccessor':   [1, 'p'],
     }
     options_obj = rst_to_docbook.options_trem.ParseOptions(sys.argv, 
             options_dict)
     opt_dict, args = options_obj.parse_options()
     if opt_dict == 0:
-        sys.stderr.write('you must provide a target!\n')
+        sys.stderr.write('invalid options for configure.py\n'
+                'use python configure --target <desired folder>'
+                ' --proccessor <xslt proccessor>'
+                
+                )
         sys.exit(1)
     target = opt_dict.get('target')
     if not target:
-        sys.stderr.write('you must provide a target!\n')
-        sys.exit(1)
-    return target
+        target = default_target()
+    return target, ''
 
+def default_target():
+    return '/etc'
+    
 def make_var_file(target):
     write_obj = open('var_file', 'w')
     # write_obj.write('[global]\n')
