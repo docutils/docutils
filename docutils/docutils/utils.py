@@ -321,6 +321,8 @@ def assemble_option_dict(option_list, options_spec):
         - `DuplicateOptionError` for duplicate options.
         - `ValueError` for invalid option values (raised by conversion
            function).
+        - `TypeError` for invalid option value types (raised by conversion
+           function).
     """
     options = {}
     for name, value in option_list:
