@@ -181,5 +181,11 @@ th.field-name {
   font-weight: bold ;
   text-align: right }
 
+h1 tt, h2 tt, h3 tt, h4 tt, h5 tt, h6 tt {
+  font-size: larger }
+
+tt {
+  background-color: #eeeeee }
+
 ul.auto-toc {
   list-style-type: none }
