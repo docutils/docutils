@@ -8,13 +8,14 @@ inline LaTeX math and the ``texmath::`` directive as display latex math.
     running time when images are not changed and to reuse images for equal
     fomulas, image names are md5 of the formula (hoping that no collisions
     will happen) and images that already exist are not rebuilt.  You should
-    clean the ``imgmath``
+    purge the ``imgmath`` subdirectory manually to get rid of unused formulas.
 
     You'll need:
 
-    - ``tex_to_images`` (part of ``festival``, does anybody know a tool that
-      is more commonly availiable?  It's a Perl script which could be asily
-      recoded in Python but I'm too lazy...).  It, in turn, relies upon:
+    - ``tex_to_images``, part of ``speech_tools`` package, last version seems
+      to live at:
+      http://cvs.sourceforge.net/viewcvs.py/*checkout*/emu/speech_tools/scripts/tex_to_images.prl?rev=HEAD
+      It, in turn, relies upon:
 
       - LaTeX
       - ``dviselect`` (part of ``dviutils``)
@@ -61,9 +62,21 @@ class Tex_to_images(object):
             os.remove(fpath + '.tmp')
         return fpath + extension
     def texmath(self, text):
-        return 'image:: %s\n    :align: middle\n' % (self.process(text),)
+        src = self.process(text)
+        return '''\
+image:: %(src)s
+    :align: middle
+    :class: texmath
+    :alt: %(text)s
+''' % locals()
     def texdisplay(self, text):
-        return 'image:: %s\n    :align: center\n' % (self.process(text),)
+        src = self.process(text)
+        return '''\
+image:: %(src)s
+    :align: center
+    :class: texdisplay
+    :alt: %(text)s
+''' % locals()
 
 child = Tex_to_images()
 texmath = child.texmath
