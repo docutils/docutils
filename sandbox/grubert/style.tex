@@ -19,3 +19,12 @@
 % pagestyle
 \pagestyle{headings}
 
+% change maketitle
+\renewcommand{\maketitle}{
+  \begin{titlepage}
+    \begin{center}
+    \textsf{TITLE \@title} \\
+	Date: \today
+    \end{center}
+  \end{titlepage}
+}

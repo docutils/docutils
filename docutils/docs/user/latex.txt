@@ -205,6 +205,26 @@ reStructuredText do something like this::
      \\end{center}
 
 
+Custom title page
+-----------------
+
+Currently maketitle only shows the title and subtitle, date and author are shown 
+in the docinfo table.
+
+To change the titlepage layout, e.g. see fancyhdr, one must redefine the
+maketitle command in the stylesheet::
+
+  \renewcommand{\maketitle}{
+    \begin{titlepage}
+      \begin{center}
+      \textsf{TITLE \@title} \\
+      Date: \today
+      \end{center}
+    \end{titlepage}
+  }
+
+``\@title`` contains the title.
+
 Problems
 ========
 
