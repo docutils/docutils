@@ -31,8 +31,11 @@ class Writer(writers.Writer):
     """Formats this writer supports."""
 
     cmdline_options = (
-        ('Specify a stylesheet file.  Default is "default.css".',
-         ['--stylesheet'], {'default': 'default.css', 'metavar': '<file>'}),)
+        'HTML-Specific Options',
+        None,
+        (('Specify a stylesheet file.  Default is "default.css".',
+          ['--stylesheet'],
+          {'default': 'default.css', 'metavar': '<file>'}),),)
 
     output = None
     """Final translated form of `document`."""
