@@ -12,12 +12,12 @@ The document is based on the module's docstring -- no other
 documentation is implicitly included.
 
 Other documentation can be explicitly included by using the directives
-``.. include: function_or_class`` or ``.. include-all:``.
+``.. inline:: function_or_class`` or ``.. inline-all::``.
 
 The first directive includes the docstring from that function or
 class.  When the directive is encountered inside a class, it can refer
-either to the global or local namespace, as in ``..include:
-Document.add_child`` or ``.. include: add_child``.
+either to the global or local namespace, as in ``..inline::
+Document.add_child`` or ``.. inline:: add_child``.
 
 The second directive will include all children of the module or class,
 except those which start with a ``"_"`` (i.e., private), those that
@@ -25,7 +25,7 @@ have ``:ignore:`` anywhere in their docstring, or those that have
 already been included.
 
 You can also force a docstring to be ignored by using
-``.. ignore: function_or_class``.  This is useful for properties,
+``.. ignore:: function_or_class``.  This is useful for properties,
 whose documentation will not be extracted, or other times when
 you want to document the function or class separately from its
 docstring.
@@ -139,9 +139,9 @@ class InlineSubstitution:
     def __init__(self, rootNode):
         self.rootNode = rootNode
 
-    _inlineRE = re.compile(r'( *).. +inline: *(.*)')
-    _inlineAllRE = re.compile(r'( *).. +inline-all: *')
-    _ignoreRE = re.compile(r'( *).. ignore: *(.*)\n?')
+    _inlineRE = re.compile(r'( *).. +inline:: *(.*)')
+    _inlineAllRE = re.compile(r'( *).. +inline-all:: *')
+    _ignoreRE = re.compile(r'( *).. ignore:: *(.*)\n?')
 
     def substitute(self, s, currentNode=None, context=None):
         if currentNode is None:
@@ -236,7 +236,7 @@ class Function(Document):
         doc = Document.documentation(self, context)
         if not doc:
             doc = "Not documented."
-        return d + indent(doc)
+        return d + indent(doc) + "\n"
 
     def parameterText(self, param):
         t, name = param
