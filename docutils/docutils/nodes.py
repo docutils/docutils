@@ -261,7 +261,7 @@ class Element(Node):
     def _dom_node(self, domroot):
         element = domroot.createElement(self.tagname)
         for attribute, value in self.attributes.items():
-            if type(value) is ListType:
+            if isinstance(value, ListType):
                 value = ' '.join(value)
             element.setAttribute(attribute, str(value))
         for child in self.children:
@@ -1129,7 +1129,7 @@ class pending(Special, Invisible, PreBibliographic, Element):
                 internals.append('%7s%s:' % ('', key))
                 internals.extend(['%9s%s' % ('', line)
                                   for line in value.pformat().splitlines()])
-            elif value and type(value) == ListType \
+            elif value and isinstance(value, ListType) \
                   and isinstance(value[0], Node):
                 internals.append('%7s%s:' % ('', key))
                 for v in value:
