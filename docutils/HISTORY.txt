@@ -26,12 +26,13 @@ and related projects:
     Jemerov, Richard Jones, Andreas Jung, Garth Kidd, Nicola Larosa,
     Daniel Larsson, Marc-Andre Lemburg, Julien Letessier, Wolfgang
     Lipp, Edward Loper, Dallas Mahrt, Ken Manheimer, Vasko Miroslav,
-    Skip Montanaro, Paul Moore, Patrick K. O'Brien, Michel Pelletier,
-    Sam Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim, Brett g
-    Porter, Tavis Rudd, Oliver Rutherfurd, Kenichi Sato, Ueli
-    Schlaepfer, Gunnar Schwant, Bruce Smith, tav, Bob Tolbert,
-    Laurence Tratt, Guido van Rossum, Martin von Loewis, Greg Ward,
-    Barry Warsaw, Edward Welbourne, Ka-Ping Yee, Moshe Zadka
+    Skip Montanaro, Paul Moore, Nigel W. Moriarty, Mark Nodine,
+    Patrick K. O'Brien, Michel Pelletier, Sam Penrose, Tim Peters,
+    Pearu Peterson, Mark Pilgrim, Brett g Porter, Tavis Rudd, Oliver
+    Rutherfurd, Kenichi Sato, Ueli Schlaepfer, Gunnar Schwant, Bruce
+    Smith, tav, Bob Tolbert, Laurence Tratt, Guido van Rossum, Martin
+    von Loewis, Greg Ward, Barry Warsaw, Edward Welbourne, Ka-Ping
+    Yee, Moshe Zadka
 
 Thank you!
 
@@ -312,6 +313,7 @@ Specific:
   - Removed ``Reader.transform()`` method.
   - Added default parameter values to ``Reader.__init__()`` to make
     instantiation easier.
+  - Removed bogus aliases: "restructuredtext" is *not* a Reader.
 
 * docutils/readers/pep.py:
 
@@ -576,6 +578,9 @@ Specific:
 * tools/quicktest.py:
 
   - Added "-V"/"--version" option.
+
+* tools/editors: Support code for editors, added to project.  Contains
+  ``emacs/restructuredtext.el``.
 
 * tools/stylesheets/default.css: Moved into the stylesheets directory.
 
