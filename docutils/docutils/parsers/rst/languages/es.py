@@ -62,7 +62,7 @@ directives = {
       #'footnotes': 'footnotes',
       #'citations': 'citations',
       u'restructuredtext-test-directive': 'restructuredtext-test-directive'}
-"""English name to registered (in directives/__init__.py) directive name
+"""Spanish name to registered (in directives/__init__.py) directive name
 mapping."""
 
 roles = {
@@ -73,6 +73,8 @@ roles = {
     u'ac': 'acronym',
     u'indice': 'index',
     u'i': 'index',
+    u'subscript (translation required)': 'subscript',
+    u'superscript (translation required)': 'superscript',
     u'referencia-titulo': 'title-reference',
     u'titulo': 'title-reference',
     u't': 'title-reference',
