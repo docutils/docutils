@@ -100,6 +100,9 @@ class Parser(docutils.parsers.Parser):
           ['--trim-footnote-reference-space'],
           {'action': 'store_true'}),))
 
+    config_section = 'restructuredtext parser'
+    config_section_dependencies = ('parsers',)
+
     def __init__(self, rfc2822=None, inliner=None):
         if rfc2822:
             self.initial_state = 'RFC2822Body'

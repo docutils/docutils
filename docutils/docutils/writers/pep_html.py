@@ -21,20 +21,10 @@ class Writer(html4css1.Writer):
 
     settings_spec = html4css1.Writer.settings_spec + (
         'PEP/HTML-Specific Options',
-        'The HTML --footnote-references option is set to "brackets" by '
-        'default.',
-        (('Specify a PEP stylesheet URL, used verbatim.  Default is '
-          '--stylesheet\'s value.  If given, --pep-stylesheet overrides '
-          '--stylesheet.',
-          ['--pep-stylesheet'],
-          {'metavar': '<URL>'}),
-         ('Specify a PEP stylesheet file, relative to the current working '
-          'directory.  The path is adjusted relative to the output HTML '
-          'file.  Overrides --pep-stylesheet and --stylesheet-path.',
-          ['--pep-stylesheet-path'],
-          {'metavar': '<path>'}),
-         ('Specify a template file.  Default is "pep-html-template".',
-          ['--pep-template'],
+        """The HTML --footnote-references option's default is set to """
+        '"brackets".',
+        (('Specify a template file.  Default is "pep-html-template".',
+          ['--template'],
           {'default': 'pep-html-template', 'metavar': '<file>'}),
          ('Python\'s home URL.  Default is ".." (parent directory).',
           ['--python-home'],
@@ -49,7 +39,11 @@ class Writer(html4css1.Writer):
 
     settings_default_overrides = {'footnote_references': 'brackets'}
 
-    relative_path_settings = ('pep_stylesheet_path', 'pep_template')
+    relative_path_settings = (html4css1.Writer.relative_path_settings
+                              + ('template',))
+
+    config_section = 'pep_html writer'
+    config_section_dependencies = ('writers', 'html4css1 writer')
 
     def __init__(self):
         html4css1.Writer.__init__(self)
@@ -58,7 +52,7 @@ class Writer(html4css1.Writer):
     def translate(self):
         html4css1.Writer.translate(self)
         settings = self.document.settings
-        template = open(settings.pep_template).read()
+        template = open(settings.template).read()
         # Substitutions dict for template:
         subs = {}
         subs['encoding'] = settings.output_encoding
@@ -102,7 +96,7 @@ class HTMLTranslator(html4css1.HTMLTranslator):
                                        settings.pep_stylesheet_path)
         elif settings.pep_stylesheet:
             return settings.pep_stylesheet
-        elif settings._stylesheet_path:
+        elif settings.stylesheet_path:
             return utils.relative_path(relative_to, settings.stylesheet_path)
         else:
             return settings.stylesheet

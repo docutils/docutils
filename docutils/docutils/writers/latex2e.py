@@ -47,15 +47,13 @@ class Writer(writers.Writer):
           ['--attribution'],
           {'choices': ['dash', 'parentheses', 'parens', 'none'],
            'default': 'dash', 'metavar': '<format>'}),
-         ('Specify a stylesheet file. The file will be "input" by latex '
-          'in the document header. Default is "style.tex". '
-          'If this is set to "" disables input.'
-          'Overridden by --stylesheet-path.',
+         ('Specify a stylesheet file. The file will be "input" by latex in '
+          'the document header.  Default is "style.tex".  If this is set to '
+          '"" disables input.  Overridden by --stylesheet-path.',
           ['--stylesheet'],
           {'default': 'style.tex', 'metavar': '<file>'}),
          ('Specify a stylesheet file, relative to the current working '
-          'directory.'
-          'Overrides --stylesheet.',
+          'directory.  Overrides --stylesheet.',
           ['--stylesheet-path'],
           {'metavar': '<file>'}),
          ('Link to the stylesheet in the output LaTeX file.  This is the '
@@ -76,6 +74,9 @@ class Writer(writers.Writer):
           ['--hyperlink-color'], {'default': 'blue'}),))
 
     settings_defaults = {'output_encoding': 'latin-1'}
+
+    config_section = 'latex2e writer'
+    config_section_dependencies = ('writers',)
 
     output = None
     """Final translated form of `document`."""

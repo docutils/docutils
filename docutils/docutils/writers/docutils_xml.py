@@ -35,6 +35,9 @@ class Writer(writers.Writer):
           ['--no-doctype'], {'dest': 'doctype_declaration', 'default': 1,
                              'action': 'store_false'}),))
 
+    config_section = 'docutils_xml writer'
+    config_section_dependencies = ('writers',)
+
     output = None
     """Final translated form of `document`."""
 

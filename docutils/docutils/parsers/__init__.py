@@ -16,6 +16,7 @@ from docutils import Component
 class Parser(Component):
 
     component_type = 'parser'
+    config_section = 'parsers'
 
     def parse(self, inputstring, document):
         """Override to parse `inputstring` into document tree `document`."""

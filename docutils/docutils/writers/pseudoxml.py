@@ -19,6 +19,9 @@ class Writer(writers.Writer):
     supported = ('pprint', 'pformat', 'pseudoxml')
     """Formats this writer supports."""
 
+    config_section = 'pseudoxml writer'
+    config_section_dependencies = ('writers',)
+
     output = None
     """Final translated form of `document`."""
 
