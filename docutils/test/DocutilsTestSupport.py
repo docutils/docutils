@@ -154,6 +154,9 @@ class CustomTestSuite(unittest.TestSuite):
         self.addTest(tc)
         return tc
 
+    def generate_no_tests(self, *args, **kwargs):
+        pass
+
 
 class CustomTestCase(unittest.TestCase):
 
@@ -539,6 +542,17 @@ class PythonModuleParserTestSuite(CustomTestSuite):
     A collection of PythonModuleParserTestCase.
     """
 
+    notified = None
+
+    def __init__(self, *args, **kwargs):
+        if moduleparser is None:
+            if not self.notified:
+                print ('Tests of docutils.readers.python skipped; '
+                       'Python 2.2 or higher required.')
+                PythonModuleParserTestSuite.notified = 1
+            self.generateTests = self.generate_no_tests
+        CustomTestSuite.__init__(self, *args, **kwargs)
+
     def generateTests(self, dict, dictname='totest',
                       testmethod='test_parser'):
         """
@@ -564,14 +578,6 @@ class PythonModuleParserTestSuite(CustomTestSuite):
                       input=case[0], expected=case[1],
                       id='%s[%r][%s]' % (dictname, name, casenum),
                       run_in_debugger=run_in_debugger)
-
-    if moduleparser is None:
-        # Skip Python Source Reader tests for Python < 2.2:
-        def generateTests(*args, **kwargs): pass
-
-        #PythonModuleParserTestCase.test_parser = CustomTestCase.skip_test
-        #PythonModuleParserTestCase.test_token_parser_rhs = \
-        #    CustomTestCase.skip_test
 
 
 class WriterPublishTestCase(CustomTestCase, docutils.SettingsSpec):
