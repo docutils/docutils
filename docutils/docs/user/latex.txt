@@ -1,5 +1,5 @@
 =======================
- Docutils LaTex Writer
+ Docutils LaTeX Writer
 =======================
 
 :Author: Engelbert Gruber
@@ -40,7 +40,7 @@ LaTeX installation (if such a thing exists), therefore the document
 contains default settings. To allow *overwriting defaults* the stylesheet
 is included at last.
 
-Run ``rst2LaTeX.py --help`` to see the command-line options, or have look in
+Run ``rst2latex.py --help`` to see the command-line options, or have look in
 config documentytion.
 
 
@@ -103,7 +103,7 @@ Missing options
 Font selection
 --------------
 
-When generating pdf-files from LaTeX, use the pdfLaTeX command, the files
+When generating pdf-files from LaTeX, use the pdflatex command, the files
 are a lot smaller if postscript fonts are used. To do so put 
 ``\usepackage{times}`` into the styleshee
 
@@ -112,7 +112,7 @@ LaTeX font package, is too heavy compared to the others. There is a package
 or some commands too fix this, which i currently cannot find.
 
 Some people diagnose a similar unbalance for the postscript fonts, the
-package to fix this is ```\usepackage{psLaTeX}``.
+package to fix this is ```\usepackage{pslatex}``.
 
 Table of figures
 ----------------
