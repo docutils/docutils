@@ -30,9 +30,13 @@ class Input(TransformSpec):
 
     default_source_path = None
 
-    def __init__(self, source=None, source_path=None, encoding=None):
+    def __init__(self, source=None, source_path=None, encoding=None,
+                 error_handler='strict'):
         self.encoding = encoding
         """Text encoding for the input source."""
+
+        self.error_handler = error_handler
+        """Text decoding error handler."""
 
         self.source = source
         """The source of input data."""
@@ -42,6 +46,9 @@ class Input(TransformSpec):
 
         if not source_path:
             self.source_path = self.default_source_path
+
+        self.successful_encoding = None
+        """The encoding that successfully decoded the source data."""
 
     def __repr__(self):
         return '%s: source=%r, source_path=%r' % (self.__class__, self.source,
@@ -62,7 +69,7 @@ class Input(TransformSpec):
         """
         if (self.encoding and self.encoding.lower() == 'unicode'
             or isinstance(data, UnicodeType)):
-            return unicode(data)
+            return data
         encodings = [self.encoding, 'utf-8']
         try:
             encodings.append(locale.nl_langinfo(locale.CODESET))
@@ -81,7 +88,9 @@ class Input(TransformSpec):
             if not enc:
                 continue
             try:
-                return unicode(data, enc)
+                decoded = unicode(data, enc, self.error_handler)
+                self.successful_encoding = enc
+                return decoded
             except (UnicodeError, LookupError):
                 pass
         raise UnicodeError(
@@ -156,16 +165,20 @@ class FileInput(Input):
     """
 
     def __init__(self, source=None, source_path=None,
-                 encoding=None, autoclose=1, handle_io_errors=1):
+                 encoding=None, error_handler='strict',
+                 autoclose=1, handle_io_errors=1):
         """
         :Parameters:
             - `source`: either a file-like object (which is read directly), or
               `None` (which implies `sys.stdin` if no `source_path` given).
             - `source_path`: a path to a file, which is opened and then read.
+            - `encoding`: the expected text encoding of the input file.
+            - `error_handler`: the encoding error handler to use.
             - `autoclose`: close automatically after read (boolean); always
               false if `sys.stdin` is the source.
+            - `handle_io_errors`: summarize I/O errors here, and exit?
         """
-        Input.__init__(self, source, source_path, encoding)
+        Input.__init__(self, source, source_path, encoding, error_handler)
         self.autoclose = autoclose
         self.handle_io_errors = handle_io_errors
         if source is None:
@@ -194,9 +207,11 @@ class FileInput(Input):
         """
         Read and decode a single file and return the data (Unicode string).
         """
-        data = self.source.read()
-        if self.autoclose:
-            self.close()
+        try:
+            data = self.source.read()
+        finally:
+            if self.autoclose:
+                self.close()
         return self.decode(data)
 
     def close(self):
@@ -257,9 +272,11 @@ class FileOutput(Output):
         output = self.encode(data)
         if not self.opened:
             self.open()
-        self.destination.write(output)
-        if self.autoclose:
-            self.close()
+        try:
+            self.destination.write(output)
+        finally:
+            if self.autoclose:
+                self.close()
         return output
 
     def close(self):
