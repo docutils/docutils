@@ -15,6 +15,7 @@ custom component objects first, and pass *them* to
 __docformat__ = 'reStructuredText'
 
 import sys
+import pprint
 from docutils import __version__, Component, SettingsSpec
 from docutils import frontend, io, utils, readers, parsers, writers
 from docutils.frontend import OptionParser
@@ -181,43 +182,47 @@ class Publisher:
             self.apply_transforms(document)
             output = self.writer.write(document, self.destination)
             self.writer.assemble_parts()
-        except utils.SystemMessage, error:
-            if self.settings.traceback:
-                raise
-            self.report_SystemMessage(error)
-            exit = 1
-        except UnicodeError, error:
-            if self.settings.traceback:
-                raise
-            self.report_UnicodeError(error)
-            exit = 1
         except Exception, error:
             if self.settings.traceback:
                 raise
             self.report_Exception(error)
             exit = 1
-        if self.settings.dump_settings:
-            from pprint import pformat
-            print >>sys.stderr, '\n::: Runtime settings:'
-            print >>sys.stderr, pformat(self.settings.__dict__)
-        if self.settings.dump_internals and document:
-            from pprint import pformat
-            print >>sys.stderr, '\n::: Document internals:'
-            print >>sys.stderr, pformat(document.__dict__)
-        if self.settings.dump_transforms and document:
-            from pprint import pformat
-            print >>sys.stderr, '\n::: Transforms applied:'
-            print >>sys.stderr, pformat(document.transformer.applied)
-        if self.settings.dump_pseudo_xml and document:
-            print >>sys.stderr, '\n::: Pseudo-XML:'
-            print >>sys.stderr, document.pformat().encode(
-                'raw_unicode_escape')
+        self.debugging_dumps(document)
         if enable_exit and document and (document.reporter.max_level
                                          >= self.settings.exit_level):
             sys.exit(document.reporter.max_level + 10)
         elif exit:
             sys.exit(1)
         return output
+
+    def debugging_dumps(self, document):
+        if self.settings.dump_settings:
+            print >>sys.stderr, '\n::: Runtime settings:'
+            print >>sys.stderr, pprint.pformat(self.settings.__dict__)
+        if self.settings.dump_internals and document:
+            print >>sys.stderr, '\n::: Document internals:'
+            print >>sys.stderr, pprint.pformat(document.__dict__)
+        if self.settings.dump_transforms and document:
+            print >>sys.stderr, '\n::: Transforms applied:'
+            print >>sys.stderr, pprint.pformat(document.transformer.applied)
+        if self.settings.dump_pseudo_xml and document:
+            print >>sys.stderr, '\n::: Pseudo-XML:'
+            print >>sys.stderr, document.pformat().encode(
+                'raw_unicode_escape')
+
+    def report_Exception(self, error):
+        if isinstance(error, utils.SystemMessage):
+            self.report_SystemMessage(error)
+        elif isinstance(error, UnicodeError):
+            self.report_UnicodeError(error)
+        else:
+            print >>sys.stderr, '%s: %s' % (error.__class__.__name__, error)
+            print >>sys.stderr, ("""\
+Exiting due to error.  Use "--traceback" to diagnose.
+Please report errors to <docutils-users@lists.sf.net>.
+Include "--traceback" output, Docutils version (%s),
+Python version (%s), your OS type & version, and the
+command line used.""" % (__version__, sys.version.split()[0]))
 
     def report_SystemMessage(self, error):
         print >>sys.stderr, ('Exiting due to level-%s (%s) system message.'
@@ -254,15 +259,6 @@ Include "--traceback" output, Docutils version (%s),
 Python version (%s), your OS type & version, and the
 command line used.""" % (self.settings.output_encoding_error_handler,
                          __version__, sys.version.split()[0]))
-
-    def report_Exception(self, error):
-        print >>sys.stderr, '%s: %s' % (error.__class__.__name__, error)
-        print >>sys.stderr, ("""\
-Exiting due to error.  Use "--traceback" to diagnose.
-Please report errors to <docutils-users@lists.sf.net>.
-Include "--traceback" output, Docutils version (%s),
-Python version (%s), your OS type & version, and the
-command line used.""" % (__version__, sys.version.split()[0]))
 
 
 default_usage = '%prog [options] [<source> [<destination>]]'
