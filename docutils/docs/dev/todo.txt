@@ -29,9 +29,9 @@ __ http://docutils.sf.net/#please-contribute
 Priorities
 ==========
 
-Always high priority: `FIX BUGS!`__
+* Always high priority: `FIX BUGS!`__
 
-__ ../../BUGS.html
+  __ ../../BUGS.html
 
 * Include substitution files for character entities, produced by the
   tools/unicode2rstsubs.py.  As static data, these files could go
@@ -61,6 +61,21 @@ General
     checked for correctness and refactored.  I'm afraid it's a bit of
     a spaghetti mess now.
 
+* Language modules: in accented languages it may be useful to have
+  both accented and unaccented entries in the ``bibliographic_fields``
+  mapping for versatility.
+
+* Add a "--strict-language" option & setting: no English fallback for
+  language-dependent features.
+
+* Add internationalization to _`footer boilerplate text` (resulting
+  from "--generator", "--source-link", and "--date" etc.), allowing
+  translations.
+
+* Need a Unicode to HTML entities codec for HTML writer?  No, the
+  "xmlcharrefreplace" output error handler is sufficient.
+  Make it the default for HTML & XML writers?
+
 * Add validation?  See http://pytrex.sourceforge.net, RELAX NG, pyRXP.
 
 * Ask Python-dev for opinions (GvR for a pronouncement) on special
@@ -77,10 +92,6 @@ General
 * @@@ Perhaps store a _`name-to-id mapping file`?  This could be
   stored permanently, read by subsequent processing runs, and updated
   with new entries.  ("Persistent ID mapping"?)
-
-* Need a Unicode to HTML entities codec for HTML writer?  No, the
-  "xmlcharrefreplace" output error handler is sufficient.
-  Make it the default for HTML & XML writers?
 
 * Perhaps the ``Component.supports`` method should deal with
   individual features ("meta" etc.) instead of formats ("html" etc.)?
@@ -284,13 +295,6 @@ General
 * Multiple file I/O suggestion from Michael Hudson: use a file-like
   object or something you can iterate over to get file-like objects.
 
-* Language modules: in accented languages it may be useful to have
-  both accented and unaccented entries in the ``bibliographic_fields``
-  mapping for versatility.
-
-* Add a "--strict-language" option & setting: no English fallback for
-  language-dependent features.
-
 * Add an "--input-language" option & setting?  Specify a different
   language module for input (bibliographic fields, directives) than
   for output.  The "--language" option would set both input & output
@@ -315,10 +319,6 @@ General
   currently sparse, requiring doc lookups.
 
 * Merge docs/user/latex.txt info into tools.txt and config.txt.
-
-* Add internationalization to _`footer boilerplate text` (resulting
-  from "--generator", "--source-link", and "--date" etc.), allowing
-  translations.
 
 * Add an "--include file" command-line option (config setting too?),
   equivalent to ".. include:: file" as the first line of the doc text?
