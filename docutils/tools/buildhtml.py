@@ -10,8 +10,7 @@
 Generates .html from all the .txt files in a directory.
 
 Ordinary .txt files are understood to be standalone reStructuredText.
-Files named ``pep-*.txt`` are interpreted as PEPs (either old-style or
-new reStructuredText PEPs).
+Files named ``pep-*.txt`` are interpreted as reStructuredText PEPs.
 """
 # Once PySource is here, build .html from .py as well.
 
@@ -37,8 +36,9 @@ from docutils.writers import html4css1, pep_html
 
 
 usage = '%prog [options] [<directory> ...]'
-description = ('Generates .html from all the .txt files (including PEPs) '
-               'in each <directory> (default is the current directory).')
+description = ('Generates .html from all the reStructuredText .txt files '
+               '(including PEPs) in each <directory> '
+               '(default is the current directory).')
 
 
 class SettingsSpec(docutils.SettingsSpec):
@@ -108,9 +108,13 @@ class Builder:
             '': Struct(components=(pep.Reader, rst.Parser, pep_html.Writer,
                                    SettingsSpec)),
             '.txt': Struct(components=(rst.Parser, standalone.Reader,
-                                       html4css1.Writer, SettingsSpec)),
+                                       html4css1.Writer, SettingsSpec),
+                           reader_name='standalone',
+                           writer_name='html'),
             'PEPs': Struct(components=(rst.Parser, pep.Reader,
-                                       pep_html.Writer, SettingsSpec))}
+                                       pep_html.Writer, SettingsSpec),
+                           reader_name='pep',
+                           writer_name='pep_html')}
         """Publisher-specific settings.  Key '' is for the front-end script
         itself.  ``self.publishers[''].components`` must contain a superset of
         all components used by individual publishers."""
@@ -186,59 +190,36 @@ class Builder:
         prune = 0
         for name in names:
             if name.endswith('.txt'):
-                if name.startswith('pep-'):
-                    peps_found = 1
-                else:
-                    prune = self.process_txt(directory, name)
-                    if prune:
-                        break
-        if peps_found and not prune:
-            self.process_peps(directory)
+                prune = self.process_txt(directory, name)
+                if prune:
+                    break
         if not recurse:
             del names[:]
 
     def process_txt(self, directory, name):
-        settings = self.get_settings('.txt', directory)
+        if name.startswith('pep-'):
+            publisher = 'PEPs'
+        else:
+            publisher = '.txt'
+        settings = self.get_settings(publisher, directory)
+        pub_struct = self.publishers[publisher]
         if settings.prune and (directory in settings.prune):
             return 1
         settings._source = os.path.normpath(os.path.join(directory, name))
         settings._destination = settings._source[:-4]+'.html'
         if not self.initial_settings.silent:
-            print >>sys.stderr, '    ::: Processing .txt:', name
+            print >>sys.stderr, '    ::: Processing:', name
             sys.stderr.flush()
         try:
             core.publish_file(source_path=settings._source,
                               destination_path=settings._destination,
-                              reader_name='standalone',
+                              reader_name=pub_struct.reader_name,
                               parser_name='restructuredtext',
-                              writer_name='html',
+                              writer_name=pub_struct.writer_name,
                               settings=settings)
         except ApplicationError, error:
             print >>sys.stderr, ('        Error (%s): %s'
                                  % (error.__class__.__name__, error))
-
-    def process_peps(self, directory):
-        # only import PEP module/script if we need it.
-        import pep2html
-
-        settings = self.get_settings('PEPs', directory)
-        if settings.prune and (directory in settings.prune):
-            return 1
-        old_directory = os.getcwd()
-        os.chdir(directory)
-        if self.initial_settings.silent:
-            argv = ['-q']
-        else:
-            print >>sys.stderr, '    ::: Processing PEPs:'
-            sys.stderr.flush()
-            argv = []
-        pep2html.docutils_settings = settings
-        try:
-            pep2html.main(argv)
-        except Exception, error:
-            print >>sys.stderr, ('        Error (%s): %s'
-                                 % (error.__class__.__name__, error))
-        os.chdir(old_directory)
 
 
 if __name__ == "__main__":
