@@ -37,13 +37,17 @@ rm docutils-svn-$date -rf
 cp ../docutils-$date ./docutils-cvs-$date -R
 # Remove unnecessary stuff.
 cd docutils-cvs-$date/
-# CVSROOT isn't needed, standard.txt is broken.
+# CVSROOT isn't needed, standard.txt,v is broken.
 rm CVSROOT sandbox/felixwiemann/testing/data/Attic/standard.txt,v -rf
 cd ..
 # Launch cvs2svn.
-nice -n 10 cvs2svn -s docutils-svn-$date --fs-type=fsfs docutils-cvs-$date 
-# Set permissions.
+nice -n 10 cvs2svn -s docutils-svn-$date --fs-type=fsfs docutils-cvs-$date
 cd docutils-svn-$date
+# Add post-commit hook.
+sed 's/commit-watchers@example\.org/-h users.berlios.de docutils-checkins@lists.sourceforge.net/;
+     s/^log-commit/#log-commit/' < hooks/post-commit.tmpl > hooks/post-commit
+chmod a+x hooks/post-commit
+# Set permissions.
 chmod g+u * -R
 find * -type d | xargs chmod g+s
 # Create tarball.
