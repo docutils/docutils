@@ -934,8 +934,10 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_option(self, node):
         if self.context[-1]:
             self.body.append(', ')
+        self.body.append(self.starttag(node, 'span', '', CLASS='option'))
 
     def depart_option(self, node):
+        self.body.append('</span>')
         self.context[-1] += 1
 
     def visit_option_argument(self, node):
@@ -979,10 +981,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</tr>\n')
 
     def visit_option_string(self, node):
-        self.body.append(self.starttag(node, 'span', '', CLASS='option'))
+        pass
 
     def depart_option_string(self, node):
-        self.body.append('</span>')
+        pass
 
     def visit_organization(self, node):
         self.visit_docinfo_item(node, 'organization')
