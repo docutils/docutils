@@ -23,6 +23,7 @@ mydir = os.path.dirname(suite.func_code.co_filename)
 include1 = os.path.join(mydir, 'include1.txt')
 include1rel = DocutilsTestSupport.utils.relative_path(None, include1)
 include2 = os.path.join(mydir, 'include2.txt')
+include3 = os.path.join(mydir, 'include3.txt')
 
 totest = {}
 
@@ -202,6 +203,52 @@ A paragraph.
             <paragraph>
                 A paragraph.
 """ % include1rel],
+["""\
+In test data
+
+.. include:: %s
+""" % include3,
+"""\
+<document source="test data">
+    <paragraph>
+        In test data
+    <paragraph>
+        In include3.txt
+    <paragraph>
+        In includes/include4.txt
+    <paragraph>
+        In includes/include5.txt
+    <paragraph>
+        In includes/more/include6.txt
+""" ],
+["""\
+In test data
+
+Section
+=======
+
+(Section contents in nested parse; slice of input_lines ViewList.)
+
+.. include:: %s
+""" % include3,
+"""\
+<document source="test data">
+    <paragraph>
+        In test data
+    <section id="section" name="section">
+        <title>
+            Section
+        <paragraph>
+            (Section contents in nested parse; slice of input_lines ViewList.)
+        <paragraph>
+            In include3.txt
+        <paragraph>
+            In includes/include4.txt
+        <paragraph>
+            In includes/include5.txt
+        <paragraph>
+            In includes/more/include6.txt
+""" ],
 ]
 
 

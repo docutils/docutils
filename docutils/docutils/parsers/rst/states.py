@@ -1801,7 +1801,6 @@ class Body(RSTState):
         """
         arguments = []
         options = {}
-        content = []
         argument_spec = getattr(directive_fn, 'arguments', None)
         if argument_spec and argument_spec[:2] == (0, 0):
             argument_spec = None
