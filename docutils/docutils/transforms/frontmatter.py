@@ -328,7 +328,12 @@ class DocInfo(Transform):
                 authors = self.authors_from_paragraphs(field)
             authornodes = [nodes.author('', '', *author)
                            for author in authors if author]
-            docinfo.append(nodes.authors('', *authornodes))
+            if len(authornodes) > 1:
+                docinfo.append(nodes.authors('', *authornodes))
+            elif len(authornodes) == 1:
+                docinfo.append(authornodes[0])
+            else:
+                raise TransformError
         except TransformError:
             field[-1] += self.document.reporter.warning(
                   'Bibliographic field "%s" incompatible with extraction: '
@@ -348,7 +353,7 @@ class DocInfo(Transform):
             if len(authornames) > 1:
                 break
         authornames = [author.strip() for author in authornames]
-        authors = [[nodes.Text(author)] for author in authornames]
+        authors = [[nodes.Text(author)] for author in authornames if author]
         return authors
 
     def authors_from_bullet_list(self, field):
