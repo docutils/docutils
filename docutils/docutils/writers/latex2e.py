@@ -672,6 +672,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # ---------------
         # verbatim: to tell encode not to encode.
         self.verbatim = 0
+        # BUG hack to make new line blocks come out some way
+        self.line_block_depth = 0
         # insert_newline: to tell encode to replace blanks by "~".
         self.insert_none_breaking_blanks = 0
         # insert_newline: to tell encode to add latex newline.
@@ -1493,6 +1495,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_legend(self, node):
         self.body.append('}')
 
+    def visit_line(self, node):
+        self.body.append('~~'*self.line_block_depth)
+
+    def depart_line(self, node):
+        self.body.append('\\\\ \n')
+
     def visit_line_block(self, node):
         """line-block:
         * whitespace (including linebreaks) is significant
@@ -1500,8 +1508,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         * serif typeface
 
         """
-        self.body.append('\\begin{flushleft}\n')
+        if self.line_block_depth==0:
+            self.body.append('\\begin{flushleft}\n')
         self.insert_none_breaking_blanks = 1
+        self.line_block_depth += 1
         # mbox would stop LaTeX from wrapping long lines.
         # but line_blocks are allowed to wrap.
         self.line_block_without_mbox = 1
@@ -1517,8 +1527,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             self.body.append('}')
             self.mbox_newline = 0
+        self.line_block_depth -= 1
         self.insert_none_breaking_blanks = 0
-        self.body.append('\n\\end{flushleft}\n')
+        if self.line_block_depth==0:
+            self.body.append('\n\\end{flushleft}\n')
 
     def visit_list_item(self, node):
         # Append "{}" in case the next character is "[", which would break
