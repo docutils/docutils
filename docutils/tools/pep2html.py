@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-"""
-convert PEP's to (X)HTML - courtesy of /F
+"""Convert PEP's to (X)HTML - courtesy of /F
 
 Usage: %(PROGRAM)s [options] [peps]
 
@@ -381,6 +380,7 @@ def push_pep(htmlfiles, txtfiles, username, verbose):
     files = htmlfiles[:]
     files.extend(txtfiles)
     files.append("style.css")
+    files.append("pep.css")
     filelist = SPACE.join(files)
     rc = os.system("scp %s %s %s" % (quiet, filelist, target))
     if rc:
