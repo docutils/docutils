@@ -487,6 +487,21 @@ Another compound statement:
 
    Compound 4, a paragraph.
 
+Now something *really* perverted -- a nested compound block.  In
+LaTeX, the following paragraphs should all be first-line indented:
+
+.. compound::
+
+   Compound 5, block 1 (a paragraph).
+
+   .. compound::
+
+      Compound 6, block 2 in compound 5.
+
+      Compound 6, another paragraph.
+
+   Compound 5, block 3 (a paragraph).
+
 Substitution Definitions
 ------------------------
 
