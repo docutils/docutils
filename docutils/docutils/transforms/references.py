@@ -221,7 +221,7 @@ class IndirectHyperlinks(Transform):
         reftarget = self.document.ids[reftarget_id]
         if isinstance(reftarget, nodes.target) \
               and not reftarget.resolved and reftarget.hasattr('refname'):
-            self.one_indirect_target(reftarget) # multiply indirect
+            self.resolve_indirect_target(reftarget) # multiply indirect
         if reftarget.hasattr('refuri'):
             target['refuri'] = reftarget['refuri']
             if target.hasattr('name'):
