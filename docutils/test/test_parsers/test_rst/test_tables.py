@@ -18,7 +18,7 @@ def suite():
     s.generateTests(totest)
     return s
 
-mydir = os.path.dirname(suite.func_code.co_filename)
+mydir = 'test_parsers/test_rst/'
 include2 = os.path.join(mydir, 'test_directives/include2.txt')
 
 totest = {}
