@@ -108,6 +108,7 @@ Specific:
   - Added ``document.has_name()`` method.
   - Fixed DOM generation for list-attributes.
   - Added category class ``Labeled`` (used by footnotes & citations).
+  - Added ``Element.set_class()`` method (sets "class" attribute).
 
 * docutils/optik.py: Added to project.  Combined from the Optik
   package, with added option groups and other modifications.  The use
@@ -170,6 +171,9 @@ Specific:
   - Changed ``TableParser`` to ``GridTableParser``.
   - Added ``SimpleTableParser``.
   - Refactored naming.
+
+* docutils/parsers/rst/directives/__init__.py: Added "en" (English) as
+  a fallback language for directive names.
 
 * docutils/parsers/rst/directives/html.py: Changed the ``meta``
   directive to use a ``pending`` element, used only by HTML writers.
@@ -236,6 +240,7 @@ Specific:
   - Option lists: "<code>" changed to "<kbd>", ``option_argument``
     "<span>" changed to "<var>".
   - Inline literals: "<code>" changed to "<tt>".
+  - Many changes to optimize vertical space: compact simple lists etc.
 
 * docutils/writers/pep_html.py: Added to project; HTML Writer for
   PEPs (subclass of ``html4css1.Writer``).
