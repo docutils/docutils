@@ -230,7 +230,7 @@ _`expose_internals`
 
 _`file_insertion_enabled`
     Enable or disable directives that insert the contents of external
-    files, such as the "include__" & "raw__".  A "warning" system
+    files, such as the "include_" & "raw_".  A "warning" system
     message (including the directive text) is inserted instead.
 
     Default: enabled (1).  Options: ``--file-insertion-enabled,
