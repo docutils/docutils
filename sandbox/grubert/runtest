@@ -50,6 +50,22 @@ if [ -n "$1" -a ! "$1" == "-" ] ; then
   exit
 fi
 
+# table-style
+CMD="../../tools/rst2latex.py"
+
+for TABSTYLE in "" standard booktabs nolines ; do
+  for INF in `ls test/tables.txt` ; do
+    OUTF="$INF-$TABSTYLE.tex"
+    REFF="$OUTF.ref"
+    if [ -z $TABSTYLE ] ; then
+      $CMD $2 $3 $INF > $OUTF
+    else
+      $CMD --table-style=$TABSTYLE $2 $3 $INF > $OUTF
+    fi
+    do_diff $REFF $OUTF 
+  done
+done
+
 # with generated footer
 CMD="../../tools/rst2latex.py -gs"
 INF=test/docinfo.txt
