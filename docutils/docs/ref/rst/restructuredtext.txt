@@ -2700,7 +2700,8 @@ Two forms of URI are recognized:
 
        someone@somewhere.com
 
-Punctuation at the end of a URI is not considered part of the URI.
+Punctuation at the end of a URI is not considered part of the URI,
+unless the URI is terminated by a closing angle bracket (">").
 Backslashes may be used in URIs to escape markup characters,
 specifically asterisks ("*") and underscores ("_") which are vaid URI
 characters (see `Escaping Mechanism`_ above).
