@@ -11,16 +11,16 @@ registry.
 
 The interface for interpreted role functions is as follows::
 
-    def role_fn(name, rawtext, text, lineno, inliner):
+    def role_fn(name, rawtext, text, lineno, inliner, attributes={}):
         code...
 
 Parameters:
 
-- ``name`` is the interpreted role type or name.
+- ``name`` is the local name of the interpreted text role, the role name
+  actually used in the document.
 
-- ``rawtext`` is a string containing the entire interpreted text.
-  Include it as the content of a system message if there is a
-  problem.
+- ``rawtext`` is a string containing the entire interpreted text construct.
+  Include it as a literal block in a system message if there is a problem.
 
 - ``text`` is the interpreted text content.
 
@@ -29,6 +29,9 @@ Parameters:
 - ``inliner`` is the Inliner object that called the role function.
   It defines the following useful attributes: ``reporter``,
   ``problematic``, ``memo``, ``parent``, ``document``.
+
+- ``attributes``: A dictionary of additional attributes for the generated
+  elements, used for customization.
 
 Interpreted role functions return a tuple of two values:
 
@@ -130,22 +133,31 @@ def register_local_role(name, role_fn):
     """
     _roles[name] = role_fn
 
-######################################################################
-# Create and register the standard roles:
-######################################################################
+def register_generic_role(canonical_name, node_class):
+    """For roles which simply wrap a given `node_class` around the text."""
+    # Dynamically define a role function:
+    def role_fn(role, rawtext, text, lineno, inliner, nc=node_class):
+        return generic_role_helper(nc, role, rawtext, text, lineno, inliner)
+    # Register the role:
+    register_canonical_role(canonical_name, role_fn)
 
-def generic_role(node_class, role, rawtext, text, lineno, inliner,
-                 attributes={}):
+def generic_role_helper(node_class, role, rawtext, text, lineno, inliner,
+                        attributes={}):
     # If we wanted to, we could recursively call inliner.nested_parse
     # to interpret the text contents here (after appropriately
     # refactoring Inliner.parse).
     return [node_class(rawtext, text, **attributes)], []
 
-# Helper function:
-def register_generic_role(name, node_class):
-    def role_fn(role, rawtext, text, lineno, inliner, nc=node_class):
-        return generic_role(nc, role, rawtext, text, lineno, inliner)
-    register_canonical_role(name, role_fn)
+def register_custom_role(local_name, attributes):
+    """For roles defined in a document."""
+    def role_fn(role, rawtext, text, lineno, inliner, atts=attributes):
+        return generic_role_helper(
+            nodes.inline, role, rawtext, text, lineno, inliner, attributes=atts)
+    register_local_role(local_name, role_fn)
+
+######################################################################
+# Define and register the standard roles:
+######################################################################
 
 register_generic_role('abbreviation', nodes.abbreviation)
 register_generic_role('acronym', nodes.acronym)
@@ -155,12 +167,6 @@ register_generic_role('strong', nodes.strong)
 register_generic_role('subscript', nodes.subscript)
 register_generic_role('superscript', nodes.superscript)
 register_generic_role('title-reference', nodes.title_reference)
-
-def register_custom_role(name, attributes):
-    def role_fn(role, rawtext, text, lineno, inliner, atts=attributes):
-        return generic_role(nodes.inline, role, rawtext, text, lineno, inliner,
-                            attributes=atts)
-    register_local_role(name, role_fn)
 
 def pep_reference_role(role, rawtext, text, lineno, inliner):
     try:
