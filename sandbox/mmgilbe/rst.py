@@ -116,6 +116,8 @@ class Parser:
         # fragment contains all of the subtitles.
         if parts['subtitle']:
             text += '<h3>' + parts['subtitle'] + '</h3>'
+        if parts['docinfo']:
+            text += parts['docinfo']
         text += parts['fragment']
         self.request.write(html_escape_unicode(text))
         
@@ -353,4 +355,3 @@ class MoinTranslator(html4css1.HTMLTranslator):
         self.wiki_text = ''
         self.request.write(self.formatter.number_list(0))
         self.body.append(self.wiki_text)
-
