@@ -10,7 +10,7 @@
 Calling the `publish` convenience function (or instantiating a
 `Publisher` object) with component names will result in default
 behavior.  For custom behavior (setting component options), create
-custom component objects first, and pass *them* to 
+custom component objects first, and pass *them* to
 `publish`/`Publisher`.
 """
 
@@ -33,8 +33,8 @@ class Publisher:
                  warning_stream=None, debug=0):
         """
         Initial setup.  If any of `reader`, `parser`, or `writer` are
-        not specified, the corresponding 'set*' method should be
-        called.
+        not specified, the corresponding ``set_...`` method should be
+        called with a component name.
         """
         self.reader = reader
         self.parser = parser
@@ -85,4 +85,3 @@ def publish(source=None, destination=None,
     if writer is None:
         pub.set_writer(writer_name)
     pub.publish(source, destination)
-    
