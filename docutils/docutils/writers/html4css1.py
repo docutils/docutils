@@ -40,7 +40,12 @@ class Writer(writers.Writer):
          ('Specify a stylesheet file.  The path is interpreted relative '
           'to the output HTML file.  Overrides --stylesheet.',
           ['--stylesheet-path'],
-          {'metavar': '<file>'}),))
+          {'metavar': '<file>'}),
+         ('Format for footnote references: one of "superscript" or '
+          '"brackets".  Default is "superscript".',
+          ['--footnote-references'],
+          {'choices': ['superscript', 'brackets'], 'default': 'superscript',
+           'metavar': '<FORMAT>'}),))
 
     relative_path_options = ('stylesheet_path',)
 
@@ -610,11 +615,21 @@ class HTMLTranslator(nodes.NodeVisitor):
             href = '#' + node['refid']
         elif node.has_key('refname'):
             href = '#' + self.document.nameids[node['refname']]
-        self.body.append(self.starttag(node, 'a', '', href=href,
+        format = self.document.options.footnote_references
+        if format == 'brackets':
+            suffix = '['
+            self.context.append(']')
+        elif format == 'superscript':
+            suffix = '<sup>'
+            self.context.append('</sup>')
+        else:                           # shouldn't happen
+            suffix = '???'
+            self.content.append('???')
+        self.body.append(self.starttag(node, 'a', suffix, href=href,
                                        CLASS='footnote-reference'))
 
     def depart_footnote_reference(self, node):
-        self.body.append('</a>')
+        self.body.append(self.context.pop() + '</a>')
 
     def visit_generated(self, node):
         pass
