@@ -112,15 +112,15 @@ Test short underline.
 """,
 """\
 <document>
-    <system_message level="1" type="INFO">
-        <paragraph>
-            Title underline too short at line 2.
-        <literal_block>
-            Title
-            ====
     <section id="title" name="title">
         <title>
             Title
+        <system_message level="2" type="WARNING">
+            <paragraph>
+                Title underline too short at line 2.
+            <literal_block>
+                Title
+                ====
         <paragraph>
             Test short underline.
 """],
@@ -207,16 +207,16 @@ Test long title and space normalization.
 """,
 """\
 <document>
-    <system_message level="1" type="INFO">
-        <paragraph>
-            Title overline too short at line 1.
-        <literal_block>
-            =======
-             Long    Title
-            =======
     <section id="long-title" name="long title">
         <title>
             Long    Title
+        <system_message level="2" type="WARNING">
+            <paragraph>
+                Title overline too short at line 1.
+            <literal_block>
+                =======
+                 Long    Title
+                =======
         <paragraph>
             Test long title and space normalization.
 """],

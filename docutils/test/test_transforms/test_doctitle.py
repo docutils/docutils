@@ -99,7 +99,7 @@ Test short underline.
 <document id="title" name="title">
     <title>
         Title
-    <system_message level="1" type="INFO">
+    <system_message level="2" type="WARNING">
         <paragraph>
             Title underline too short at line 2.
         <literal_block>
@@ -121,7 +121,7 @@ The system_message should move after the document title
 <document id="long-title" name="long title">
     <title>
         Long    Title
-    <system_message level="1" type="INFO">
+    <system_message level="2" type="WARNING">
         <paragraph>
             Title overline too short at line 1.
         <literal_block>

@@ -38,11 +38,21 @@ any names; apologies (and please let me know!) if I have.
 Changes Since 0.2
 ========================
 
+* docutils/frontend.py:
+
+  - Check for & exit on identical source & destination paths.
+  - Fixed bug with absolute paths & ``--config``.
+
 * docutils/nodes.py:
 
   - Added "Invisible" element category class.
   - Changed ``Node.walk()`` & ``.walkabout()`` to permit more tree
     modification during a traversal.
+
+* docutils/parsers/rst/states.py:
+
+  - Changed "title under/overline too short" system messages from INFO
+    to WARNING, and fixed its insertion location.
 
 * docutils/parsers/rst/directives/body.py: Added to project.  Contains
   the "topic" directive.
@@ -73,9 +83,26 @@ Changes Since 0.2
   - Improved inline literals with ``<span class="pre">`` around chunks
     of text and ``&nbsp;`` for runs of spaces.
 
+* docutils/writers/pep_html.py:
+
+  - Parameterized output encoding in PEP template.
+  - Reworked substitutions from ``locals()`` into ``subs`` dict.
+
 * docs/tools.txt:
 
-  - Added "silent" setting for ``buildhtml.py``.
+  - Added a "silent" setting for ``buildhtml.py``.
+  - Added a "Getting Help" section.
+  - Rearranged the structure.
+
+* docs/rst/quickstart.txt:
+
+  - Added a table of contents.
+  - Added feedback information.
+
+* docs/rst/quickref.html:
+
+  - Added a "Getting Help" section.
+  - Added a style to make section header backlinks more subtle.
 
 * spec/pep-0256.txt: Converted to reStructuredText & updated.
 
@@ -91,22 +118,26 @@ Changes Since 0.2
 
 * tools/buildhtml.py:
 
-  - Added "--silent" option.
+  - Added ``--silent`` option.
+  - Fixed bug with absolute paths & ``--config``.
 
 * tools/default.css:
 
   - Added style for chunks of inline literals.
+  - Removed margin for first child of table cells.
+  - Right-aligned field list names.
 
 * tools/pep2html.py:
 
   - Made ``argv`` a parameter to ``main()``.
   - Added support for "Content-Type:" header & arbitrary PEP formats.
   - Linked "Content-Type: text/plain" to PEP 9.
+  - Files skipped (due to an error) are not pushed onto the server.
 
 * tools/stylesheets/pep.css:
 
   - Fixed nested section margins.
-  - Added style for chunks of inline literals.
+  - Other changes parallel those of ``../default.css``.
 
 
 Release 0.2 (2002-07-31)
@@ -301,8 +332,8 @@ Specific:
 
   - Changed ``Messages`` transform to properly filter out system
     messages below the warning threshold.
-  - Added ``Decorations`` transform (support for "--generator",
-    "--date", "--time", "--source-link" options).
+  - Added ``Decorations`` transform (support for ``--generator``,
+    ``--date``, ``--time``, ``--source-link`` options).
 
 * docutils/writers/__init__.py: Added "pdf" alias in anticipation of
   Engelbert Gruber's PDF writer.
@@ -458,7 +489,7 @@ Specific:
 
 * tools/quicktest.py:
 
-  - Added the "--attributes" option, hacked a bit.
+  - Added the ``--attributes`` option, hacked a bit.
   - Added a second command-line argument (output file); cleaned up.
 
 * tools/stylesheets/: Subdirectory added to project.
