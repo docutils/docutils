@@ -1,0 +1,9 @@
+LaTeX writer test no citations
+------------------------------
+
+This file is used to verify that no bibliography is inserted 
+when ``use-latex-citations`` is specified if there are no 
+citations [1]_ in the document.
+
+.. [1] footnotes are allowed. 
+
