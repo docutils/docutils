@@ -652,6 +652,12 @@ toc_backlinks
     Default: "entry".  Options: ``--toc-entry-backlinks,
     --toc-top-backlinks, --no-toc-backlinks``.
 
+traceback
+    Enable Python tracebacks when an error occurs.
+
+    Default: disabled (None).  Options: ``--traceback,
+    --no-traceback``.
+
 trim-footnote-reference-space
     (reStructuredText Parser.)  Remove spaces before footnote
     references.
