@@ -45,8 +45,7 @@ class Writer(Component):
         """Initialize the Writer instance."""
 
         self.parts = {}
-        """Collection of named parts of the document.  'whole' contains the
-        entire document."""
+        """Collection of named parts of the document."""
 
     def write(self, document, destination):
         self.document = document
@@ -71,6 +70,13 @@ class Writer(Component):
         raise NotImplementedError('subclass must override this method')
 
     def assemble_parts(self):
+        """
+        Assemble the `self.parts` dictionary.  Extend in subclasses.
+
+        Dictionary keys are the names of parts, and values are Unicode
+        strings; encoding is up to the client.  The 'whole' key contains the
+        entire document output.
+        """
         self.parts['whole'] = self.output
 
 
