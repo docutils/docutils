@@ -8,19 +8,18 @@ from distutils.core import setup
 def do_setup():
     extras = get_extras()
     if extras:
-        setup(py_modules = extras,
+        setup(name = 'Extras--IGNORE',  # name for tarball
+              py_modules = extras,
               package_dir = {'': 'extras'})
     kwargs = package_data.copy()
     if sys.hexversion >= 0x02030000:    # Python 2.3
         kwargs['classifiers'] = classifiers
     dist = setup(**kwargs)
-    #import pprint
-    #pprint.pprint(dist.__dict__)
     return dist
 
 package_data = {
-    'name': 'Docutils',
-    'description': 'Python Documentation Utilities',
+    'name': 'docutils',
+    'description': 'Docutils -- Python Documentation Utilities',
     'long_description': """\
 Docutils is a modular system for processing documentation
 into useful formats, such as HTML, XML, and TeX.  For input
