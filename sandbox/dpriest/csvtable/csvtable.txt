@@ -27,22 +27,14 @@ Example::
 Block markup and inline markup within cells is supported.  Line ends
 are recognized within cells.
 
-Supports CSV generators that do not insert "empty" entries at the end
-of short rows.
-
 Working Limitations::
 
 * Whitespace delimiters are supported only for external CSV files.
 
-* When using the ``hex ##`` character definition there must be only a
-  single space before the hexadecimal number.
-
 * There is no support for checking that the number of columns in each
-  row is the same.
-
-  .. [This is of benefit to some types of tables.  The results of
-     non-standard column counts is unpredictable, and will depend on
-     the particular Writer you are using.]
+  row is the same.  However, this directive supports CSV generators
+  that do not insert "empty" entries at the end of short rows, by
+  automatically adding empty entries.
 
   .. Add "strict" option to verify input?
 
@@ -74,35 +66,28 @@ The following options are recognized:
 ``file`` | ``url`` : path
     Path or URL to CSV file.
 
-``delim`` : char | "tab" | "space" | "lf" | "ff" | "vt" | "hex ##"
+``delim`` : char | "tab" | "space"
     A one-character string used to separate fields.  Defaults to ``,``
-    (comma).
+    (comma).  May be specified as a Unicode code point; see the
+    unicode_ directive for syntax details.
 
-    .. Would whitespace other than tab or space ever be used?  I doubt
-       it.  
-
-    .. Instead of "hex ##", use the same syntax as the "unicode"
-       directive.
-
-``quote`` : char | "tab" | "space" | "lf" | "ff" | "vt" | "hex ##"
+``quote`` : char
     A one-character string used to quote elements containing the
     delimiter or which start with the quote character.  Defaults to
-    ``"`` (quote).
-
-    .. I doubt whitespace would ever be used for quoting.  "char" only
-       should be fine.
+    ``"`` (quote).  May be specified as a Unicode code point; see the
+    unicode_ directive for syntax details.
 
 ``keepspace`` : flag
     Treat whitespace immediately following the delimiter as
     significant.  The default is to ignore such whitespace.
 
-``escape`` : char | "tab" | "space" | "lf" | "ff" | "vt" | "hex ##"
+``escape`` : char
     A one-character string used to escape the delimiter or quote
-    characters.  Used when the delimiter is used in an unquoted field,
-    or when quote characters are used within a field.  The default is
-    to double-up the character, e.g. "He said, ""Hi!"""
-
-    .. Again, doubtful if whitespace would ever be used.  Just "char".
+    characters.  May be specified as a Unicode code point; see the
+    unicode_ directive for syntax details.  Used when the delimiter is
+    used in an unquoted field, or when quote characters are used
+    within a field.  The default is to double-up the character,
+    e.g. "He said, ""Hi!"""
 
     .. Add another possible value, "double", to explicitly indicate
        the default case?
