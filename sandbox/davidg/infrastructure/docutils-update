@@ -54,6 +54,7 @@ find $project/test -name 'test_*.py' | xargs chmod +x
 tar -czf $project-snapshot.tgz $project
 tar -czf $project-sandbox-snapshot.tgz sandbox
 tar -czf $project-web-snapshot.tgz web
+( cd sandbox/gschwant ; tar -czf ../../docfactory-snapshot.tgz docfactory )
 
 # plant the snapshots
 mv *snapshot.tgz $dest
