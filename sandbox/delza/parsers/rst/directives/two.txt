@@ -1,7 +1,0 @@
-Test Two
---------
-
-This is *Test Two*, which is the **second** test
-of |reST| directive parsing.
-
-Doh!
