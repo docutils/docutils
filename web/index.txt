@@ -33,13 +33,13 @@ but may not necessarily be useful to everyone else.  Community
 feedback helps steer development in immediately useful directions.
 
 In other words: if you tell us what you need, you may just get it!  If
-you really need something, please consider contributing__ to Docutils
+you really need something, please consider contributing_ to Docutils
 in some way.
 
 Please post any feedback to the appropriate `mailing list`_, or `email
 the project coordinator`__ directly.
 
-__ `Please Contribute!`_
+.. _contributing: `Please Contribute!`_
 __ mailto_
 
 
@@ -53,19 +53,19 @@ merge has been completed, and those projects are now inactive.
 __ http://structuredtext.sourceforge.net/
 __ http://docstring.sourceforge.net/
 
-Docutils currently consists of a reStructuredText_ parser, a
-standalone file reader, and an HTML writer, plus a pseudo-XML writer
-for testing purposes.  A PEP__ reader & processing system is being
-developed, a PDF writer has been started, and a Python source reader
-(docstring extraction with context) is also under way.  There is a lot
-of design and implementation work to do, which could greatly benefit
-from a joint effort with existing projects.  The project `To Do list`_
-is brimming over with ideas.
+Docutils currently consists of a reStructuredText_ parser, readers for
+standalone files and PEPs_, and writers for HTML, Docutils-native
+XML, plus pseudo-XML for testing purposes.  A PDF writer has been
+started, and a Python source reader (docstring extraction with
+context) is also under way.  There is a lot of design and
+implementation work to do, which could greatly benefit from a joint
+effort with existing projects.  The project `To Do list`_ is brimming
+over with ideas.
 
 This project should be considered highly experimental; we're learning
 as we go.  APIs are subject to change at any time.
 
-__ `PEPs (Python Enhancement Proposals)`_
+.. _PEPs: `PEPs (Python Enhancement Proposals)`_
 
 
 Requirements
@@ -75,10 +75,10 @@ Requirements
   Python 2.1 or later is required to run the test suite.  You can get
   Python from http://www.python.org/.
 
-- Docutils uses Greg Ward's Optik__ option processing package.  It is
+- Docutils uses Greg Ward's Optik_ option processing package.  It is
   now included in the Docutils distribution.
 
-__ http://optik.sourceforge.net/
+.. _Optik: http://optik.sourceforge.net/
 
 
 Development Snapshots
@@ -106,8 +106,10 @@ repository`_ and read the latest README_ and HISTORY_ files.
 Project Releases
 ----------------
 
-Please note that the `development snapshots`_ above contain the latest
-versions of project files, although they may not be fully tested.
+Putting together an official "Release" of Docutils is a significant
+effort, so it isn't done that often.  Please note that the
+`development snapshots`_ above contain the latest versions of project
+files, although they may not be fully tested.
 
 The `latest project release package`_ (Docutils 0.1, 2002-04-20) and
 past project releases can be downloaded from the `project files

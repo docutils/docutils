@@ -116,7 +116,7 @@ class HTMLTranslator(nodes.NodeVisitor):
               self.html_head % options.language_code,
               self.content_type % options.output_encoding,
               self.generator,
-              self.stylesheet_link % utils.relative_uri(options.destination,
+              self.stylesheet_link % utils.relative_uri(options._destination,
                                                         options.stylesheet)]
         self.head = []
         self.body_prefix = ['</head>\n<body>\n']
