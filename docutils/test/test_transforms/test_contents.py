@@ -32,12 +32,12 @@ Title 1
 =======
 Paragraph 1.
 
-Title 2
--------
+Title_ 2
+--------
 Paragraph 2.
 
-Title 3
-```````
+_`Title` 3
+``````````
 Paragraph 3.
 
 Title 4
@@ -58,12 +58,14 @@ Paragraph 4.
                     <list_item>
                         <paragraph>
                             <reference id="id2" refid="title-2">
-                                Title 2
+                                Title
+                                 2
                         <bullet_list>
                             <list_item>
                                 <paragraph>
                                     <reference id="id3" refid="title-3">
-                                        Title 3
+                                        Title
+                                         3
                     <list_item>
                         <paragraph>
                             <reference id="id4" refid="title-4">
@@ -74,13 +76,17 @@ Paragraph 4.
         <paragraph>
             Paragraph 1.
         <section id="title-2" name="title 2">
-            <title refid="id2">
-                Title 2
+            <title>
+                <reference name="Title" refname="title">
+                    Title
+                 2
             <paragraph>
                 Paragraph 2.
             <section id="title-3" name="title 3">
                 <title refid="id3">
-                    Title 3
+                    <target id="title" name="title">
+                        Title
+                     3
                 <paragraph>
                     Paragraph 3.
         <section id="title-4" name="title 4">
