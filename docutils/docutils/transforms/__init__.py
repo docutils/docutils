@@ -59,7 +59,7 @@ class Transform:
         self.language = languages.get_language(
             document.settings.language_code)
         """Language module local to this document."""
-        
+
 
     def apply(self):
         """Override to apply the transform to the document tree."""
@@ -163,7 +163,6 @@ class Transformer(TransformSpec):
         decorated_list = [(f.priority, f) for f in unknown_reference_resolvers]
         decorated_list.sort()
         self.unknown_reference_resolvers.extend([f[1] for f in decorated_list])
-
 
     def apply_transforms(self):
         """Apply all of the stored transforms, in priority order."""
