@@ -1700,9 +1700,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item(node)
 
     def visit_paragraph(self, node):
+        index = node.parent.index(node)
         if not (self.topic_class == 'contents'
                 or (isinstance(node.parent, nodes.compound)
-                    and node.parent.index(node) > 0)):
+                    and index > 0 and not isinstance(node.parent[index - 1],
+                                                     nodes.paragraph))):
             self.body.append('\n')
 
     def depart_paragraph(self, node):
