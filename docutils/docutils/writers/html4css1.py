@@ -45,20 +45,17 @@ class Writer(writers.Writer):
         self.document.walkabout(visitor)
         self.output = visitor.astext()
 
-    def record(self):
-        self.recordfile(self.output, self.destination)
-
 
 class HTMLTranslator(nodes.NodeVisitor):
 
-    xml_declaration = '<?xml version="1.0" encoding="UTF-8"?>\n'
+    xml_declaration = '<?xml version="1.0" encoding="%s"?>\n'
     doctype = '<!DOCTYPE html' \
               ' PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"' \
               ' SYSTEM "http://www.w3.org/TR/xhtml1/DTD/' \
               'xhtml1-transitional.dtd">\n'
     html_head = '<html lang="%s">\n<head>\n'
     content_type = '<meta http-equiv="Content-Type" content="text/html; ' \
-                   'charset=UTF-8">\n'
+                   'charset=%s">\n'
     generator = '<meta name="generator" content="Docutils: ' \
                 'http://docutils.sourceforge.net/">\n'
     stylesheet_link = '<link rel="stylesheet" href="%s" type="text/css" />\n'
@@ -67,10 +64,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         nodes.NodeVisitor.__init__(self, document)
         self.language = languages.get_language(document.options.language_code)
         self.head_prefix = [
-              self.xml_declaration,     # @@@ % output_encoding
+              self.xml_declaration % document.options.output_encoding,
               self.doctype,
               self.html_head % document.options.language_code,
-              self.content_type,        # @@@ % output encoding
+              self.content_type % document.options.output_encoding,
               self.generator,
               self.stylesheet_link % document.options.stylesheet]
         self.head = []
@@ -97,7 +94,8 @@ class HTMLTranslator(nodes.NodeVisitor):
     def attval(self, text,
                transtable=string.maketrans('\n\r\t\v\f', '     ')):
         """Cleanse, encode, and return attribute value text."""
-        return self.encode(text.translate(transtable))
+        return self.encode(
+            text.encode('utf-8').translate(transtable).decode('utf-8'))
 
     def starttag(self, node, tagname, suffix='\n', infix='', **attributes):
         """
