@@ -941,6 +941,11 @@ class HTMLTranslator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def visit_reference(self, node):
+        if isinstance(node.parent, nodes.TextElement):
+            self.context.append('')
+        else:
+            self.body.append('<p>')
+            self.context.append('</p>\n')
         if node.has_key('refuri'):
             href = node['refuri']
         elif node.has_key('refid'):
@@ -952,6 +957,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_reference(self, node):
         self.body.append('</a>')
+        self.body.append(self.context.pop())
 
     def visit_revision(self, node):
         self.visit_docinfo_item(node, 'revision', meta=None)

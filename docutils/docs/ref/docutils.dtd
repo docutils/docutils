@@ -121,7 +121,7 @@ resolve to either an internal or external reference.
     | option_list
     | attention | caution | danger | error | hint | important | note
     | tip | warning | admonition
-    | target | substitution_definition | comment | pending
+    | reference | target | substitution_definition | comment | pending
     | system_message | raw
     %additional.body.elements; ">
 
@@ -512,6 +512,7 @@ following caveats:
 <!ELEMENT literal (#PCDATA)>
 <!ATTLIST literal %basic.atts;>
 
+<!-- Can also be a body element, when it contains an "image" element. -->
 <!ELEMENT reference %text.model;>
 <!ATTLIST reference
     %basic.atts;
