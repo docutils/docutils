@@ -190,6 +190,15 @@ totest['grid_tables'] = [
 '(at line offset 2 and 4); only one allowed.',
 'TableMarkupError: Multiple head/body row separators in table '
 '(at line offset 2 and 4); only one allowed.'],
+["""\
++-------------------------------------+
+|                                     |
++-------------------------------------+
+""",
+[(0, 0, 2, 38, [''])],
+([37],
+ [],
+ [[(0, 0, 1, [''])]])],
 ]
 
 

@@ -98,7 +98,7 @@ The included paragraphs should also be in the block quote.
             Here are some paragraphs
             that can appear at any level.
         <paragraph>
-            This file (include2.txt) is used by \n\
+            This file (include2.txt) is used by
             <literal>
                 test_include.py
             .
@@ -274,7 +274,7 @@ Testing relative includes:
         Here are some paragraphs
         that can appear at any level.
     <paragraph>
-        This file (include2.txt) is used by 
+        This file (include2.txt) is used by
         <literal>
             test_include.py
         .

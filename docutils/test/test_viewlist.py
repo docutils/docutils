@@ -148,9 +148,9 @@ Unindented text.
         self.a_list = self.text.splitlines(1)
         self.a = statemachine.StringList(self.a_list, 'a')
 
-    def test_strip_indent(self):
+    def test_trim_left(self):
         s = self.a[3:5]
-        s.strip_indent(4)
+        s.trim_left(4)
         self.assertEqual(s, [line.lstrip() for line in self.a_list[3:5]])
 
     def test_get_indented(self):

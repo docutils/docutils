@@ -324,6 +324,8 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
         self.populate_from_components((self,) + tuple(components))
         defaults = defaults or {}
         if read_config_files and not self.defaults['_disable_config']:
+            # @@@ Extract this code into a method, which can be called from
+            # the read_config_file callback also.
             config = ConfigParser()
             config.read_standard_files(self)
             config_settings = config.get_section('options')

@@ -89,6 +89,11 @@ Changes Since 0.3
     method definitions (via ``exec``) to dynamic assignments (via
     ``setattr``); thanks to Roman Suzi.
 
+* docutils/statemachine.py:
+
+  - Renamed ``StringList.strip_indent`` to ``.trim_left``.
+  - Added ``StringList.get_2D_block``.
+
 * docutils/utils.py:
 
   - Added "level" attribute to SystemMessage exceptions.
@@ -98,6 +103,16 @@ Changes Since 0.3
 
 * docutils/languages/ru.py: Added to project; Russian mappings by
   Roman Suzi.
+
+* docutils/parsers/rst/states.py:
+
+  - Updated ``RSTState.nested_parse`` for "include" in table cells,
+    but not sure of correctness.
+
+* docutils/parsers/rst/tableparser.py:
+
+  - Reworked for ``StringList``, to support "include" directives in
+    table cells.
 
 * docutils/parsers/rst/languages/af.py: Added to project; Afrikaans
   mappings by Jannie Hofmeyr.
