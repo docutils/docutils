@@ -922,7 +922,7 @@ class Inliner:
             if refname:
                 refnode['refname'] = refname
                 self.document.note_footnote_ref(refnode)
-            if self.document.settings.trim_footnote_reference_space:
+            if utils.get_trim_footnote_ref_space(self.document.settings):
                 before = before.rstrip()
         return (before, [refnode], remaining, [])
 
