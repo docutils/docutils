@@ -290,6 +290,13 @@ class MoinTranslator(html4css1.HTMLTranslator):
     #
             
     def visit_image(self, node):
+        """ 
+            Need to intervene in the case of inline images. We need moinmoin to
+            give us the actual src line to the image and then we can feed this
+            to the default html4css1 writer. NOTE: Since the writer can't "open"
+            this image the scale attribute doesn't work without directly
+            specifying the height or width (or both). 
+        """
         # We need process inline images with moinmoin. Otherwise let the normal
         # rst writer do its magic.
         if node['uri'].lstrip().startswith('inline:'):
