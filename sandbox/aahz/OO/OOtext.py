@@ -22,18 +22,24 @@ styles = '''<?xml version="1.0" encoding="UTF-8"?>
   <style:style style:name=".body" style:family="paragraph" style:parent-style-name="Standard"/>
   <style:style style:name=".CALLOUT" style:family="paragraph" style:parent-style-name=".body"/>
   <style:style style:name=".figure" style:family="paragraph" style:parent-style-name=".body"/>
-  <style:style style:name=".quotes" style:family="paragraph" style:parent-style-name=".body"/>
+  <style:style style:name=".quotes" style:family="paragraph" style:parent-style-name=".body">
+    <style:properties fo:margin-left="2cm" fo:margin-right="2cm" fo:text-indent="0cm" style:auto-text-indent="false"/>
+  </style:style>
   <style:list-style style:name=".bullet"/>
   <style:style style:name=".ch title" style:family="paragraph" style:parent-style-name=".body">
-    <style:properties style:font-size="20pt" fo:font-size="20pt"/>
+    <style:properties style:font-size="24pt" fo:font-size="24pt"/>
   </style:style>
   <style:style style:name=".head 1" style:family="paragraph" style:parent-style-name=".body">
+    <style:properties style:font-size="20pt" fo:font-size="20pt"/>
+  </style:style>
+  <style:style style:name=".head 2" style:family="paragraph" style:parent-style-name=".body">
     <style:properties style:font-size="16pt" fo:font-size="16pt"/>
   </style:style>
-  <style:style style:name=".head 2" style:family="paragraph" style:parent-style-name=".body"/>
   <style:style style:name=".code" style:family="paragraph" style:parent-style-name=".body">
    <style:properties style:font-name="Courier"/>
   </style:style>
+  <style:style style:name=".code first" style:family="paragraph" style:parent-style-name=".body"/>
+  <style:style style:name=".code last" style:family="paragraph" style:parent-style-name=".body"/>
   <style:style style:name="Footnote Symbol" style:family="text"/>
   <style:style style:name="Bullet Symbols" style:family="text">
    <style:properties style:font-name="StarSymbol" fo:font-size="9pt" style:font-name-complex="StarSymbol" style:font-size-complex="9pt"/>
@@ -65,7 +71,7 @@ styles = '''<?xml version="1.0" encoding="UTF-8"?>
  </office:styles>
  <office:automatic-styles>
   <style:page-master style:name="pm1">
-   <style:properties fo:page-width="20.999cm" fo:page-height="29.699cm" style:num-format="1" style:print-orientation="portrait" fo:margin-top="2.54cm" fo:margin-bottom="2.54cm" fo:margin-left="3.175cm" fo:margin-right="3.175cm" style:footnote-max-height="0cm">
+   <style:properties fo:page-width="20.999cm" fo:page-height="29.699cm" style:num-format="1" style:print-orientation="portrait" fo:margin-top="2.54cm" fo:margin-bottom="2.54cm" fo:margin-left="0cm" fo:margin-right="5cm" style:footnote-max-height="0cm">
     <style:footnote-sep style:width="0.018cm" style:distance-before-sep="0.101cm" style:distance-after-sep="0.101cm" style:adjustment="left" style:rel-width="25%" style:color="#000000"/>
    </style:properties>
    <style:header-style/>

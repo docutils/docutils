@@ -3,12 +3,16 @@ import os
 
 from docutils import nodes
 from docutils.parsers.rst import directives
+from docutils.parsers.rst.languages import en
 
 registry = directives._directive_registry
 registry['index'] = ('OOdirectives', 'index_directive')
 registry['include-code'] = ('OOdirectives', 'include_code')
 registry['include-output'] = ('OOdirectives', 'include_output')
 
+en.directives['index'] = 'index'
+en.directives['include-code'] = 'include-code'
+en.directives['include-output'] = 'include-output'
 
 
 class index_entry(nodes.General, nodes.Element): pass

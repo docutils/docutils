@@ -34,12 +34,10 @@ class Writer(writers.Writer):
     supported = ('OpenOffice')
     """Formats this writer supports."""
 
-    output = None
-    """Final translated form of `document`."""
-
     def __init__(self):
         writers.Writer.__init__(self)
-        self.translator_class = OpenOfficeTranslator
+        self.output = None
+        self.translator_class = Translator
 
     def translate(self):
         visitor = self.translator_class(self.document)
@@ -47,7 +45,7 @@ class Writer(writers.Writer):
         self.output = visitor.astext()
 
 
-class OpenOfficeTranslator(nodes.NodeVisitor):
+class Translator(nodes.NodeVisitor):
 
     header = [OOtext.content_header]
     footer = [OOtext.content_footer]
@@ -59,12 +57,14 @@ class OpenOfficeTranslator(nodes.NodeVisitor):
     end_charstyle = '</text:span>'
 
     line_break = '\n<text:line-break/>'
-    re_spaces = re.compile(' +')
+    re_spaces = re.compile('  +')
     spaces = '<text:s text:c="%d"/>'
+
+    re_annotation = re.compile(r'#\d+(?:, #\d+)*$')
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
-        self.options = options = document.options
+        self.settings = document.settings
         self.body = []
         self.section_level = 0
         self.skip_para_tag = False
@@ -80,6 +80,24 @@ class OpenOfficeTranslator(nodes.NodeVisitor):
         text = text.replace('"', "&quot;")
         text = text.replace(">", "&gt;")
         return text
+
+    def compress_spaces(self, line):
+        while 1:
+            match = self.re_spaces.search(line)
+            if match:
+                start, end = match.span()
+                numspaces = end - start
+                line = line[:start] + (self.spaces % numspaces) + line[end:]
+            else:
+                break
+        return line
+
+    def fix_annotation(self, line):
+        match = self.re_annotation.search(line)
+        if match:
+            pos = match.start()
+            line = line[:pos] + '|' + line[pos:]
+        return line
 
     def visit_Text(self, node):
         self.body.append(self.encode(node.astext()))
@@ -110,10 +128,10 @@ class OpenOfficeTranslator(nodes.NodeVisitor):
         self.skip_para_tag = False
 
     def visit_bullet_list(self, node):
-        self.body.append('<text:unordered-list text:style-name=".bullet">\n')
+        self.body.append('\n<text:unordered-list text:style-name=".bullet">\n')
 
     def depart_bullet_list(self, node):
-        self.body.append('</text:unordered-list>')
+        self.body.append('</text:unordered-list>\n')
 
     def visit_caption(self, node):
         self.body.append(self.starttag(node, 'p', '', CLASS='caption'))
@@ -211,11 +229,7 @@ class OpenOfficeTranslator(nodes.NodeVisitor):
         self.body.append('</td>')
 
     def visit_doctest_block(self, node):
-        self.body.append(self.starttag(node, 'pre', suffix='',
-                                       CLASS='doctest-block'))
-
-    def depart_doctest_block(self, node):
-        self.body.append('</pre>\n')
+        self.visit_literal_block(node)
 
     def visit_document(self, node):
         pass
@@ -384,7 +398,8 @@ class OpenOfficeTranslator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_image(self, node):
-        pass
+        name = "Figure: %s\n" % node.attributes['uri']
+        self.body.append(name)
 
     def depart_image(self, node):
         pass
@@ -400,17 +415,19 @@ class OpenOfficeTranslator(nodes.NodeVisitor):
         self.body.append(self.start_para % '.body')
         entries = node.astext().split('\n')
         for entry in entries:
-            self.body.append(index_format % entry)
+            self.body.append(index_format % self.encode(entry))
         self.body.append(self.end_para)
         raise nodes.SkipNode
 
     def visit_interpreted(self, node):
         # @@@ Incomplete, pending a proper implementation on the
         # Parser/Reader end.
-        self.body.append('<span class="interpreted">')
+        #self.body.append(node['role'] + ':')
+        self.body.append(node.astext())
+        raise nodes.SkipNode
 
     def depart_interpreted(self, node):
-        self.body.append('</span>')
+        pass
 
     # Don't need footnote labels/numbers
     def visit_label(self, node):
@@ -424,7 +441,7 @@ class OpenOfficeTranslator(nodes.NodeVisitor):
         self.body.append('</div>\n')
 
     def visit_line_block(self, node):
-        self.body.append(self.start_para % '.body')
+        self.body.append(self.start_para % '.quotes')
         lines = node.astext()
         lines = lines.split('\n')
         lines = self.line_break.join(lines)
@@ -436,7 +453,7 @@ class OpenOfficeTranslator(nodes.NodeVisitor):
         self.body.append('<text:list-item>')
 
     def depart_list_item(self, node):
-        self.body.append('</text:list-item>')
+        self.body.append('</text:list-item>\n')
 
     def visit_literal(self, node):
         self.body.append(self.start_charstyle % 'code')
@@ -445,16 +462,20 @@ class OpenOfficeTranslator(nodes.NodeVisitor):
         self.body.append(self.end_charstyle)
 
     def visit_literal_block(self, node):
+        self.body.append(self.start_para % '.code first')
+        self.body.append(self.end_para)
         lines = self.encode(node.astext())
         lines = lines.split('\n')
+        while lines[-1] == '':
+            lines.pop()
         for line in lines:
             self.body.append(self.start_para % '.code')
-            match = self.re_spaces.match(line)
-            if match:
-                numspaces = match.end()
-                line = (self.spaces % numspaces) + line[numspaces:]
+            line = self.fix_annotation(line)
+            line = self.compress_spaces(line)
             self.body.append(line)
             self.body.append(self.end_para)
+        self.body.append(self.start_para % '.code last')
+        self.body.append(self.end_para)
         raise nodes.SkipNode
 
     def visit_note(self, node):
@@ -543,17 +564,10 @@ class OpenOfficeTranslator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def visit_reference(self, node):
-        if node.has_key('refuri'):
-            href = node['refuri']
-        elif node.has_key('refid'):
-            href = '#' + node['refid']
-        elif node.has_key('refname'):
-            href = '#' + self.document.nameids[node['refname']]
-        self.body.append(self.starttag(node, 'a', '', href=href,
-                                       CLASS='reference'))
+        pass
 
     def depart_reference(self, node):
-        self.body.append('</a>')
+        pass
 
     def visit_row(self, node):
         self.body.append(self.starttag(node, 'tr', ''))
@@ -649,7 +663,14 @@ class OpenOfficeTranslator(nodes.NodeVisitor):
     def depart_warning(self, node):
         self.depart_admonition()
 
-    def unimplemented_visit(self, node):
+    def visit_system_message(self, node):
+        print node.astext()
+
+    def depart_system_message(self, node):
+        pass
+
+    def unknown_visit(self, node):
         print "Failure processing at line", node.line
+        print "Failure is", node.astext()
         raise NotImplementedError('visiting unimplemented node type: %s'
                                   % node.__class__.__name__)
