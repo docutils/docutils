@@ -28,13 +28,12 @@ XML, and TeX.  Several sources will be supported:
 - `PEPs (Python Enhancement Proposals)`_ (implemented).
 - And others as discovered.
 
-Please consider donating to Docutils:
+Please consider donating to Docutils: |donate|
 
-.. image:: http://images.sourceforge.net/images/project-support.jpg
+.. |donate| image:: http://images.sourceforge.net/images/project-support.jpg
    :target: http://sourceforge.net/donate/index.php?group_id=38414
    :width: 88
    :height: 32
-   :align: center
    :alt: Support the Docutils project!
 
 .. contents::
@@ -202,6 +201,7 @@ but those may not be completely up to date.
 - `A ReStructuredText Primer`__ (HTML file, or `text source`__)
 - `Quick reStructuredText`__ (user reference)
 - `Docutils Front-End Tools`__
+- `Docutils Configuration Files`__
 
 Also see the `Docutils FAQ`_.
 
@@ -209,6 +209,7 @@ __ docs/rst/quickstart.html
 __ docs/rst/quickstart.txt
 __ docs/rst/quickref.html
 __ docs/tools.html
+__ docs/config.html
 
 
 Developer Documentation
@@ -299,9 +300,11 @@ How-To's
 
 - `Docutils Internationalization`__
 - `Creating reStructuredText Directives`__
+- `Creating reStructuredText Interpreted Text Roles`__
 
 __ spec/howto/i18n.html
 __ spec/howto/rst-directives.html
+__ spec/howto/rst-roles.html
 
 
 The Sandbox
@@ -383,14 +386,7 @@ money.  There's a `To Do list`_ full of interesting ideas awaiting a
 champion.  If you're interested in participating in any way, please
 `contact the project coordinator`__.
 
-Please consider donating to Docutils:
-
-.. image:: http://images.sourceforge.net/images/project-support.jpg
-   :target: http://sourceforge.net/donate/index.php?group_id=38414
-   :width: 88
-   :height: 32
-   :align: center
-   :alt: Support the Docutils project!
+Please consider donating to Docutils: |donate|
 
 __ mailto_
 
