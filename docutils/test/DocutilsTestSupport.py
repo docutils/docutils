@@ -45,7 +45,7 @@ import unittest
 import docutils_difflib
 import inspect
 from pprint import pformat
-from types import UnicodeType
+from types import UnicodeType, StringType
 import package_unittest
 import docutils
 import docutils.core
@@ -87,8 +87,11 @@ class CustomTestCase(unittest.TestCase):
     Helper class, providing extended functionality over unittest.TestCase.
 
     This isn't specific to Docutils but of general use when dealing
-    with large amounts of text. In particular, see the compare_output
-    method and the parameter list of __init__.
+    with large amounts of text.  The methods failUnlessEqual,
+    failIfEqual, failUnlessAlmostEqual and failIfAlmostEqual have been
+    overwritten to provide better support for multi-line strings.
+    Furthermore, see the compare_output method and the parameter list
+    of __init__.
     """
 
     compare = docutils_difflib.Differ().compare
@@ -133,7 +136,7 @@ class CustomTestCase(unittest.TestCase):
         if type(expected) == UnicodeType:
             expected = expected.encode('raw_unicode_escape')
         try:
-            self.assertEquals('\n' + output, '\n' + expected)
+            self.assertEquals(output, expected)
         except AssertionError:
             print >>sys.stderr, '\n%s\ninput:' % (self,)
             print >>sys.stderr, input
@@ -141,6 +144,58 @@ class CustomTestCase(unittest.TestCase):
             print >>sys.stderr, ''.join(self.compare(expected.splitlines(1),
                                                      output.splitlines(1)))
             raise
+
+    def failUnlessEqual(self, first, second, msg=None):
+        """Fail if the two objects are unequal as determined by the '=='
+           operator.
+        """
+        if not first == second:
+            raise self.failureException, \
+                  (msg or '%s != %s' % _format_str(first, second))
+
+    def failIfEqual(self, first, second, msg=None):
+        """Fail if the two objects are equal as determined by the '=='
+           operator.
+        """
+        if first == second:
+            raise self.failureException, \
+                  (msg or '%s == %s' % _format_str(first, second))
+
+    def failUnlessAlmostEqual(self, first, second, places=7, msg=None):
+        """Fail if the two objects are unequal as determined by their
+           difference rounded to the given number of decimal places
+           (default 7) and comparing to zero.
+
+           Note that decimal places (from zero) are usually not the same
+           as significant digits (measured from the most signficant digit).
+        """
+        if round(second-first, places) != 0:
+            raise self.failureException, \
+                  (msg or '%s != %s within %s places' %
+                   _format_str(first, second, places))
+
+    def failIfAlmostEqual(self, first, second, places=7, msg=None):
+        """Fail if the two objects are equal as determined by their
+           difference rounded to the given number of decimal places
+           (default 7) and comparing to zero.
+
+           Note that decimal places (from zero) are usually not the same
+           as significant digits (measured from the most signficant digit).
+        """
+        if round(second-first, places) == 0:
+            raise self.failureException, \
+                  (msg or '%s == %s within %s places' %
+                   _format_str(first, second, places))
+
+    # Synonyms for assertion methods
+
+    assertEqual = assertEquals = failUnlessEqual
+
+    assertNotEqual = assertNotEquals = failIfEqual
+
+    assertAlmostEqual = assertAlmostEquals = failUnlessAlmostEqual
+
+    assertNotAlmostEqual = assertNotAlmostEquals = failIfAlmostEqual
 
 
 class CustomTestSuite(unittest.TestSuite):
@@ -739,3 +794,46 @@ def exception_data(code):
     except Exception, detail:
         return (detail, detail.args,
                 '%s: %s' % (detail.__class__.__name__, detail))
+
+
+def _format_str(*args):
+    r"""
+    Return a tuple containing representations of all args.
+
+    Same as map(repr, args) except that it returns multi-line
+    representations for strings containing newlines, e.g.::
+
+        '''\
+        foo  \n\
+        bar
+
+        baz'''
+
+    instead of::
+
+        'foo  \nbar\n\nbaz'
+
+    This is a helper function for CustomTestCase.
+    """
+    import re
+    return_tuple = []
+    for i in args:
+        r = repr(i)
+        if '\n' in i and (isinstance(i, StringType) or
+                          isinstance(i, UnicodeType)):
+            stripped = ''
+            if isinstance(i, UnicodeType):
+                # stripped = 'u' or 'U'
+                stripped = r[0]
+                r = r[1:]
+            # quote_char = "'" or '"'
+            quote_char = r[0]
+            assert quote_char in ("'", "'")
+            assert r[0] == r[-1]
+            r = r[1:-1]
+            r = (stripped + 3 * quote_char + '\\\n' +
+                 re.sub(r'(?<=[^\\])((\\\\)*)\\n', r'\1\n', r) +
+                 3 * quote_char)
+            r = re.sub(r' \n', r' \\n\\\n', r)
+        return_tuple.append(r)
+    return tuple(return_tuple)
