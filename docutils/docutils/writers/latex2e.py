@@ -216,7 +216,12 @@ latex_headings = {
             '\\setcounter{topnumber}{50}\n',
             '\\setcounter{bottomnumber}{50}\n',
             '% end floats for footnotes\n',
-            ]
+            ],
+         'some_commands' : [
+            '% some commands, that could be overwritten in the style file.\n'
+            '\\newcommand{\\rubric}[1]'
+            '{{\\hfill \\color{red}\\bfseries{}#1 \\hfill }}\n',
+         ]
         }
 
 
@@ -303,6 +308,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
               ]
         self.head_prefix.extend( latex_headings['optionlist_environment'] )
         self.head_prefix.extend( latex_headings['footnote_floats'] )
+        self.head_prefix.extend( latex_headings['some_commands'] )
         ## stylesheet is last: so it might be possible to overwrite defaults.
         stylesheet = self.get_stylesheet_reference()
         if stylesheet:
@@ -1362,6 +1368,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_topic(self, node):
         self.topic_class = ''
         self.body.append('\n')
+
+    def visit_rubric(self, node):
+#        self.body.append('\\hfill {\\color{red}\\bfseries{}')
+#        self.context.append('} \\hfill ~\n')
+        self.body.append('\\rubric{')
+        self.context.append('}\n')
+
+    def depart_rubric(self, node):
+        self.body.append(self.context.pop())
 
     def visit_transition(self, node):
         self.body.append('\n\n')
