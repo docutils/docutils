@@ -556,13 +556,6 @@ class document(Root, Structural, Element):
         self.reporter = reporter
         """System message generator."""
 
-        self.explicit_targets = {}
-        """Mapping of target names to explicit target nodes."""
-
-        self.implicit_targets = {}
-        """Mapping of target names to implicit (internal) target
-        nodes."""
-
         self.external_targets = []
         """List of external target nodes."""
 
@@ -583,6 +576,10 @@ class document(Root, Structural, Element):
 
         self.nameids = {}
         """Mapping of names to unique id's."""
+
+        self.nametypes = {}
+        """Mapping of names to hyperlink type (boolean: True => explicit,
+        False => implicit."""
 
         self.ids = {}
         """Mapping of ids to nodes."""
@@ -622,7 +619,7 @@ class document(Root, Structural, Element):
         """List of citation nodes."""
 
         self.pending = []
-        """List of pending elements @@@."""
+        """List of pending elements."""
 
         self.autofootnote_start = 1
         """Initial auto-numbered footnote number."""
@@ -642,12 +639,12 @@ class document(Root, Structural, Element):
         return domroot
 
     def set_id(self, node, msgnode=None):
-        if msgnode == None:
-            msgnode = self.messages
         if node.has_key('id'):
             id = node['id']
             if self.ids.has_key(id) and self.ids[id] is not node:
                 msg = self.reporter.severe('Duplicate ID: "%s".' % id)
+                if msgnode == None:
+                    msgnode = self.messages
                 msgnode += msg
         else:
             if node.has_key('name'):
@@ -659,66 +656,66 @@ class document(Root, Structural, Element):
                 self.id_start += 1
             node['id'] = id
         self.ids[id] = node
-        if node.has_key('name'):
-            self.nameids[node['name']] = id
         return id
 
-    def note_implicit_target(self, target, msgnode=None):
+    def set_name_id_map(self, node, id, msgnode=None, explicit=None):
+        if node.has_key('name'):
+            name = node['name']
+            if self.nameids.has_key(name):
+                self.set_duplicate_name_id(node, id, name, msgnode, explicit)
+            else:
+                self.nameids[name] = id
+                self.nametypes[name] = explicit
+
+    def set_duplicate_name_id(self, node, id, name, msgnode, explicit):
         if msgnode == None:
             msgnode = self.messages
-        id = self.set_id(target, msgnode)
-        name = target['name']
-        if self.explicit_targets.has_key(name) \
-              or self.implicit_targets.has_key(name):
-            msg = self.reporter.info(
-                  'Duplicate implicit target name: "%s".' % name,
-                  backrefs=[id])
-            msgnode += msg
-            self.clear_target_names(name, self.implicit_targets)
-            del target['name']
-            target['dupname'] = name
-            self.implicit_targets[name] = None
+        old_id = self.nameids[name]
+        old_explicit = self.nametypes[name]
+        self.nametypes[name] = old_explicit or explicit
+        if explicit:
+            if old_explicit:
+                level = 2
+                if old_id is not None:
+                    old_node = self.ids[old_id]
+                    if node.has_key('refuri'):
+                        refuri = node['refuri']
+                        if old_node.has_key('name') \
+                               and old_node.has_key('refuri') \
+                               and old_node['refuri'] == refuri:
+                            level = 1   # just inform if refuri's identical
+                    if level > 1:
+                        dupname(old_node)
+                        self.nameids[name] = None
+                msg = self.reporter.system_message(
+                    level, 'Duplicate explicit target name: "%s".' % name,
+                    backrefs=[id])
+                msgnode += msg
+                dupname(node)
+            else:
+                self.nameids[name] = id
+                if old_id is not None:
+                    old_node = self.ids[old_id]
+                    dupname(old_node)
         else:
-            self.implicit_targets[name] = target
+            if old_id is not None and not old_explicit:
+                self.nameids[name] = None
+                old_node = self.ids[old_id]
+                dupname(old_node)
+            dupname(node)
+        if not explicit or (not old_explicit and old_id is not None):
+            msg = self.reporter.info(
+                'Duplicate implicit target name: "%s".' % name,
+                backrefs=[id])
+            msgnode += msg
+
+    def note_implicit_target(self, target, msgnode=None):
+        id = self.set_id(target, msgnode)
+        self.set_name_id_map(target, id, msgnode, explicit=None)
 
     def note_explicit_target(self, target, msgnode=None):
-        if msgnode == None:
-            msgnode = self.messages
         id = self.set_id(target, msgnode)
-        name = target['name']
-        if self.explicit_targets.has_key(name):
-            level = 2
-            if target.has_key('refuri'): # external target, dups OK
-                refuri = target['refuri']
-                t = self.explicit_targets[name]
-                if t.has_key('name') and t.has_key('refuri') \
-                      and t['refuri'] == refuri:
-                    level = 1           # just inform if refuri's identical
-            msg = self.reporter.system_message(
-                  level, 'Duplicate explicit target name: "%s".' % name,
-                  backrefs=[id])
-            msgnode += msg
-            self.clear_target_names(name, self.explicit_targets,
-                                    self.implicit_targets)
-            if level > 1:
-                del target['name']
-                target['dupname'] = name
-        elif self.implicit_targets.has_key(name):
-            msg = self.reporter.info(
-                  'Duplicate implicit target name: "%s".' % name,
-                  backrefs=[id])
-            msgnode += msg
-            self.clear_target_names(name, self.implicit_targets)
-        self.explicit_targets[name] = target
-
-    def clear_target_names(self, name, *targetdicts):
-        for targetdict in targetdicts:
-            if not targetdict.has_key(name):
-                continue
-            node = targetdict[name]
-            if node.has_key('name'):
-                node['dupname'] = node['name']
-                del node['name']
+        self.set_name_id_map(target, id, msgnode, explicit=1)
 
     def note_refname(self, node):
         self.refnames.setdefault(node['refname'], []).append(node)
@@ -770,7 +767,6 @@ class document(Root, Structural, Element):
         self.note_refname(ref)
 
     def note_citation(self, citation):
-        self.set_id(citation)
         self.citations.append(citation)
 
     def note_citation_ref(self, ref):
@@ -787,8 +783,7 @@ class document(Root, Structural, Element):
                 msgnode = self.messages
             msgnode += msg
             oldnode = self.substitution_defs[name]
-            oldnode['dupname'] = oldnode['name']
-            del oldnode['name']
+            dupname(oldnode)
         # keep only the last definition
         self.substitution_defs[name] = subdef
 
@@ -1303,3 +1298,7 @@ def make_id(string):
 
 _non_id_chars = re.compile('[^a-z0-9]+')
 _non_id_at_ends = re.compile('^[-0-9]+|-+$')
+
+def dupname(node):
+    node['dupname'] = node['name']
+    del node['name']
