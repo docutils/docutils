@@ -4600,10 +4600,11 @@ Entity definition:
 
     paragraph_ | literal_block_ | doctest_block_ | line_block_
     | block_quote_ | table_ | figure_ | image_ | footnote_ | citation_
+    | rubric_
     | bullet_list_ | enumerated_list_ | definition_list_ | field_list_
     | option_list_
     | attention_ | caution_ | danger_ | error_ | hint_ | important_
-    | note_ | tip_ | warning_
+    | note_ | tip_ | warning_ | admonition_
     | target_ | substitution_definition_ | comment_ | pending_
     | system_message_ | raw_
     %additional.body.elements;
@@ -4612,11 +4613,11 @@ The ``%additional.body.elements;`` parameter entity can be used by
 wrapper DTDs to extend ``%body.elements;``.
 
 The ``%body.elements;`` parameter entity is directly employed in the
-content models of the following elements: attention_, block_quote_,
-caution_, citation_, danger_, definition_, description_, entry_,
-error_, field_body_, footer_, footnote_, header_, hint_, important_,
-legend_, list_item_, note_, sidebar_, system_message_, tip_, topic_,
-warning_
+content models of the following elements: admonition_, attention_,
+block_quote_, caution_, citation_, danger_, definition_, description_,
+entry_, error_, field_body_, footer_, footnote_, header_, hint_,
+important_, legend_, list_item_, note_, sidebar_, system_message_,
+tip_, topic_, warning_
 
 Via `%structure.model;`_, the ``%body.elements;`` parameter entity is
 indirectly employed in the content models of the document_ and
@@ -4654,8 +4655,8 @@ Entity definition:
     emphasis_ | strong_ | literal_
     | reference_ | footnote_reference_ | citation_reference_
     | substitution_reference_ | title_reference_
-    | abbreviation_ | acronym_
-    | problematic_ | generated_
+    | abbreviation_ | acronym_ | subscript_ | superscript_
+    | inline_ | problematic_ | generated_
     | target_ | image_ | raw_
     %additional.inline.elements;
 
@@ -4664,12 +4665,13 @@ wrapper DTDs to extend ``%inline.elements;``.
 
 Via `%text.model;`_, the ``%inline.elements;`` parameter entity is
 indirectly employed in the content models of the following elements:
-abbreviation_, acronym_, address_, author_, caption_, classifier_,
-contact_, copyright_, date_, doctest_block_, emphasis_, generated_,
-line_block_, literal_block_, organization_, paragraph_, problematic_,
-raw_, reference_, revision_, status_, strong_,
-substitution_definition_, substitution_reference_, subtitle_, target_,
-term_, title_, version_
+abbreviation_, acronym_, address_, attribution_, author_, caption_,
+classifier_, contact_, copyright_, date_, doctest_block_, emphasis_,
+generated_, inline_, line_block_, literal_block_, organization_,
+paragraph_, problematic_, raw_, reference_, revision_, rubric_,
+status_, strong_, subscript_, substitution_definition_,
+substitution_reference_, subtitle_, superscript_, target_, term_,
+title_, title_reference_, version_
 
 
 ``%reference.atts;``
