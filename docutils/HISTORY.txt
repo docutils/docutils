@@ -147,6 +147,7 @@ Changes Since 0.3
   - Parser now handles escapes in URIs correctly.
   - Made embedded-URIs' reference text omittable.  Idea from Beni
     Cherniavsky.
+  - Refactored explicit target processing code.
 
 * docutils/parsers/rst/tableparser.py:
 
@@ -159,6 +160,10 @@ Changes Since 0.3
     ``unchanged_required``, and added a new ``unchanged``.
   - Catch unicode value too high error; fixes bug 781766.
   - Beefed up directive error reporting.
+
+* docutils/parsers/rst/directives/images.py:
+
+  - Added "target" option to "image" directive.
 
 * docutils/parsers/rst/directives/misc.py:
 

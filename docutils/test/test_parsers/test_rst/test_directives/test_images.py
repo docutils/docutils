@@ -253,6 +253,65 @@ totest['images'] = [
     <paragraph>
         (Empty "alt" option.)
 """],
+["""\
+.. image:: picture.png
+   :target: bigpicture.png
+""",
+"""\
+<document source="test data">
+    <reference refuri="bigpicture.png">
+        <image uri="picture.png">
+"""],
+["""\
+.. image:: picture.png
+   :target: indirect_
+""",
+"""\
+<document source="test data">
+    <reference refname="indirect">
+        <image uri="picture.png">
+"""],
+["""\
+.. image:: picture.png
+   :target: a/multi/
+            line/uri
+
+.. image:: picture.png
+   :target: `a multi line
+            internal reference`_
+""",
+"""\
+<document source="test data">
+    <reference refuri="a/multi/line/uri">
+        <image uri="picture.png">
+    <reference refname="a multi line internal reference">
+        <image uri="picture.png">
+"""],
+["""\
+.. image:: picture.png
+   :target:
+
+.. image:: picture.png
+   :target: an invalid URI
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Error in "image" directive:
+            invalid option value: (option: "target"; value: None)
+            argument required but none supplied.
+        <literal_block xml:space="preserve">
+            .. image:: picture.png
+               :target:
+    <system_message level="2" line="4" source="test data" type="WARNING">
+        <paragraph>
+            Hyperlink target contains whitespace. Perhaps a footnote was intended?
+        <literal_block xml:space="preserve">
+            .. image:: picture.png
+               :target: an invalid URI
+    <image uri="picture.png">
+"""],
 ]
 
 

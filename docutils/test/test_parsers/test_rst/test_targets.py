@@ -51,7 +51,7 @@ External hyperlink targets:
    http://structuredtext.
    sourceforge.net
 
-.. _not-indirect: uri\_
+.. _not-indirect: uri\\_
 """,
 """\
 <document source="test data">
@@ -120,12 +120,12 @@ __ A multi-line verson of something
             .. __: Not a proper hyperlink target
     <system_message level="2" line="3" source="test data" type="WARNING">
         <paragraph>
-            Anonymous hyperlink target contains whitespace. Perhaps a footnote was intended?
+            Hyperlink target contains whitespace. Perhaps a footnote was intended?
         <literal_block xml:space="preserve">
             __ Although it ends with an underscore, this is not a phrase-link_
     <system_message level="2" line="5" source="test data" type="WARNING">
         <paragraph>
-            Anonymous hyperlink target contains whitespace. Perhaps a footnote was intended?
+            Hyperlink target contains whitespace. Perhaps a footnote was intended?
         <literal_block xml:space="preserve">
             __ A multi-line verson of something
             ending with an underscore, but not a phrase-link_
@@ -387,6 +387,17 @@ Anonymous indirect hyperlink target:
     <paragraph>
         Anonymous indirect hyperlink target:
     <target anonymous="1" id="id1" refname="reference">
+"""],
+["""\
+Anonymous external hyperlink target, not indirect:
+
+__ uri\\_
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Anonymous external hyperlink target, not indirect:
+    <target anonymous="1" id="id1" refuri="uri_">
 """],
 ["""\
 Anonymous indirect hyperlink targets:

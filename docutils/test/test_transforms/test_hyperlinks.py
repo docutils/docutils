@@ -512,6 +512,32 @@ __ http://example.org
             Anonymous hyperlink mismatch: 3 references but 1 targets.
             See "backrefs" attribute for IDs.
 """],
+["""\
+.. _external: http://uri
+.. _indirect: external_
+.. _internal:
+
+.. image:: picture.png
+   :target: external_
+
+.. image:: picture.png
+   :target: indirect_
+
+.. image:: picture.png
+   :target: internal_
+""",
+"""\
+<document source="test data">
+    <target id="external" name="external" refuri="http://uri">
+    <target id="indirect" name="indirect" refuri="http://uri">
+    <target id="internal" name="internal">
+    <reference refuri="http://uri">
+        <image uri="picture.png">
+    <reference refuri="http://uri">
+        <image uri="picture.png">
+    <reference refid="internal">
+        <image uri="picture.png">
+"""],
 ])
 
 
