@@ -68,6 +68,7 @@ class Writer(Component):
 
 _writer_aliases = {
       'html': 'html4css1',
+      'latex': 'latex2e',
       'pprint': 'pseudoxml',
       'pformat': 'pseudoxml',
       'pdf': 'rlpdf',
