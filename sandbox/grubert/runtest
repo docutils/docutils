@@ -19,6 +19,41 @@ function report() {
     echo "ERROR: $FAILS of $CHECKS failed"
   fi
 }
+#CMD="../../tools/rst2latex.py --snap-footnote-refs=1"
+#CMD="../../tools/rst2latex.py --footnote-references=superscript"
+#CMD="../../tools/rst2latex.py --documentclass=book --hyperlink-color=0"
+
+CMD="../../tools/rst2latex.py"
+if [ -z "$1" ] ; then
+  FM="*.txt"
+else
+  FM=$1
+fi
+
+for INF in `ls test/$FM` ; do
+  OUTF="$INF.tex"
+  REFF="$OUTF.ref"
+  $CMD $INF > $OUTF
+  do_diff $REFF $OUTF 
+done
+
+if [ -n "$1" ] ; then
+  report
+  exit
+fi
+
+INF=test/tools.txt
+OUTF="$INF-ltoc.tex"
+REFF="$OUTF.ref"
+$CMD --use-latex-toc 1 $INF > $OUTF
+do_diff $REFF $OUTF 
+
+CMD="../../tools/rst2latex.py -l de"
+INF=test/quotes.txt
+OUTF="$INF-l-de.tex"
+REFF="$OUTF.ref"
+$CMD $INF > $OUTF
+do_diff $REFF $OUTF 
 
 # with generated footer
 CMD="../../tools/rst2latex.py -gs"
@@ -68,36 +103,6 @@ do_diff $REFF $OUTF
 CMD="../../tools/rst2latex.py --attribution=parens"
 INF=test/attribution.txt
 OUTF="$INF-parens-attribution.tex"
-REFF="$OUTF.ref"
-$CMD $INF > $OUTF
-do_diff $REFF $OUTF 
-
-#CMD="../../tools/rst2latex.py --snap-footnote-refs=1"
-#CMD="../../tools/rst2latex.py --footnote-references=superscript"
-#CMD="../../tools/rst2latex.py --documentclass=book --hyperlink-color=0"
-
-CMD="../../tools/rst2latex.py"
-if [ -z "$1" ] ; then
-  FM="*.txt"
-else
-  FM=$1
-fi
-
-for INF in `ls test/$FM` ; do
-  OUTF="$INF.tex"
-  REFF="$OUTF.ref"
-  $CMD $INF > $OUTF
-  do_diff $REFF $OUTF 
-done
-INF=test/tools.txt
-OUTF="$INF-ltoc.tex"
-REFF="$OUTF.ref"
-$CMD --use-latex-toc 1 $INF > $OUTF
-do_diff $REFF $OUTF 
-
-CMD="../../tools/rst2latex.py -l de"
-INF=test/quotes.txt
-OUTF="$INF-l-de.tex"
 REFF="$OUTF.ref"
 $CMD $INF > $OUTF
 do_diff $REFF $OUTF 

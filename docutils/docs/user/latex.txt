@@ -109,6 +109,14 @@ docinfowidth           The width for the docinfo table.
                        Default: 0.9*textwidth, changed to e.g.::
 
                          \setlength{\docinfowidth}{0.7\textwidth}
+---------------------  ------------------------------------------------
+rubric style           The header contains the definition of a new
+                       LaTeX command rubric. The line::
+
+                         \renewcommand{\rubric}[1]{{\LARGE #1}}
+
+                       changes the style of rubric to left aligned,
+                       LARGE text.
 =====================  ================================================
 
 Missing options
