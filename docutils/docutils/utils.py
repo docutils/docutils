@@ -265,6 +265,8 @@ def extract_extension_options(field_list, options_spec):
         - `KeyError` for unknown option names.
         - `ValueError` for invalid option values (raised by the conversion
            function).
+        - `TypeError` for invalid option value types (raised by conversion
+           function).
         - `DuplicateOptionError` for duplicate options.
         - `BadOptionError` for invalid fields.
         - `BadOptionDataError` for invalid option data (missing name,
