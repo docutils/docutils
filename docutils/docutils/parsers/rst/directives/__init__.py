@@ -20,11 +20,12 @@ The interface for directive functions is as follows::
 
 Parameters:
 
-- ``name`` is the directive type or name.
+- ``name`` is the directive type or name (string).
 
-- ``arguments`` is a list of positional arguments.
+- ``arguments`` is a list of positional arguments (strings).
 
-- ``options`` is a dictionary mapping option names to values.
+- ``options`` is a dictionary mapping option names (strings) to values (type
+  depends on option conversion functions; see below).
 
 - ``content`` is a list of strings, the directive content.
 
