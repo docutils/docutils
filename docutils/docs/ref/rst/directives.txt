@@ -567,6 +567,56 @@ The "pull-quote" directive produces a "pull-quote"-class block quote.
 See Epigraph_ above for an analogous example.
 
 
+.. _compound:
+
+Compound Paragraph
+==================
+
+:Directive Type: "compound"
+:Doctree Element: compound
+:Directive Arguments: None.
+:Directive Options: Possible.
+:Directive Content: Interpreted as body elements.
+
+(New in Docutils 0.3.6)
+
+The "compound" directive is used to create a compound paragraph, which
+is a single logical paragraph containing multiple physical body
+elements such as simple paragraphs, literal blocks, tables, lists,
+etc., instead of directly containing text and inline elements.  For
+example::
+
+    .. compound::
+
+       The 'rm' command is very dangerous.  If you are logged
+       in as root and enter these commands ::
+
+           cd /
+           rm -rf *
+
+       you will erase the entire contents of your file system.
+
+In the example above, a literal block is "embedded" within a sentence
+that begins in one physical paragraph and ends in another.  A compound
+paragraph
+
+Compound paragraphs are typically rendered as multiple distinct text
+blocks, with the possibility of variations to emphasize their logical
+unity:
+
+* If paragraphs are rendered with a first-line indent, only the first
+  physical paragraph of a compound paragraph should have that indent
+  -- second and further physical paragraphs should omit the indents;
+* vertical spacing between physical elements may be reduced;
+* and so on.
+
+The following option is recognized:
+
+``class`` : text
+    Set a "class" attribute value on the compound element.  See the
+    class_ directive below.
+
+
 --------
  Tables
 --------
