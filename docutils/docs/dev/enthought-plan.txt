@@ -317,7 +317,7 @@ current Enthought code (from lib/cp/fluids/gassmann.py)::
 The docstring is 24 lines long.
 
 Rather than using subsections, field lists (which exist now) can save
-5 lines::
+6 lines::
 
     def max_gas(temperature, pressure, api, specific_gravity=.56):
         """
@@ -336,12 +336,14 @@ Rather than using subsections, field lists (which exist now) can save
         :Returns:
             max_gor : sequence
                 Maximum dissolved gas in liters/liter
-        :Description:
-            This estimate is based on equations given by Mavko,
-            Mukerji, and Dvorkin, (1998, pp. 218-219, or 2003, p. 236)
-            obtained originally from Batzle and Wang (1992).
+        :Description: This estimate is based on equations given by
+            Mavko, Mukerji, and Dvorkin, (1998, pp. 218-219, or 2003,
+            p. 236) obtained originally from Batzle and Wang (1992).
         """
         code...
+
+As with the "Description" field above, field bodies may begin on the
+same line as the field name, which also saves space.
 
 The output for field lists is typically a table structure.  For
 example:
@@ -371,24 +373,37 @@ Definition lists are currently defined as::
     term : classifier
         definition
 
-Where the classifier part is optional.
+Where the classifier part is optional.  Ideas for improvements:
 
-* We could allow multiple classifiers::
+1. We could allow multiple classifiers::
 
-      term : classifier one : two : three ...
-          definition
+       term : classifier one : two : three ...
+           definition
 
-* We could allow the definition on the same line as the term, but only
-  in limited and well-known contexts::
+2. We could allow the definition on the same line as the term.
 
-      term -- definition
+   * "--" could be used, but only in limited and well-known contexts::
 
-  This is the syntax used by StructuredText (one of reStructuredText's
-  predecessors).  It was not adopted for reStructuredText because it
-  is ambiguous -- people often use "--" in their text, as I just did.
-  But given a constrained context, the ambiguity would be acceptable.
-  That context would be: in docstrings, within a field list, perhaps
-  only with certain well-defined field names (parameters, returns).
+         term -- definition
+
+     This is the syntax used by StructuredText (one of
+     reStructuredText's predecessors).  It was not adopted for
+     reStructuredText because it is ambiguous -- people often use "--"
+     in their text, as I just did.  But given a constrained context,
+     the ambiguity would be acceptable (or would it?).  That context
+     would be: in docstrings, within a field list, perhaps only with
+     certain well-defined field names (parameters, returns).
+
+   * The "constrained context" above isn't really enough to make the
+     ambiguity acceptable.  Instead, a slightly more verbose but far
+     less ambiguous syntax is possible::
+
+         term === definition
+
+     This syntax has advantages.  Equals signs lend themselves to the
+     connotation of "definition".  And whereas one or two equals signs
+     are commonly used in program code, three equals signs in a row
+     have no conflicting meanings that I know of.
 
 
 Recommendation
@@ -402,20 +417,19 @@ Combining these ideas, the function definition becomes::
         Wang (1992).
 
         :Parameters:
-            temperature : sequence -- Temperature in degrees Celsius
-            pressure: sequence -- Pressure in MPa
-            api : sequence -- Stock tank oil API
-            specific_gravity : sequence -- Specific gravity of gas at
+            temperature : sequence === Temperature in degrees Celsius
+            pressure: sequence === Pressure in MPa
+            api : sequence === Stock tank oil API
+            specific_gravity : sequence === Specific gravity of gas at
                 STP, default is .56
         :Returns:
-            max_gor : sequence -- Maximum dissolved gas in liters/liter
-        :Description:
-            This estimate is based on equations given by Mavko,
-            Mukerji, and Dvorkin, (1998, pp. 218-219, or 2003, p. 236)
-            obtained originally from Batzle and Wang (1992).
+            max_gor : sequence === Maximum dissolved gas in liters/liter
+        :Description: This estimate is based on equations given by
+            Mavko, Mukerji, and Dvorkin, (1998, pp. 218-219, or 2003,
+            p. 236) obtained originally from Batzle and Wang (1992).
         """
         code...
 
-The docstring is reduced to 15 lines, from the original 24.  For
+The docstring is reduced to 14 lines, from the original 24.  For
 longer docstrings with many parameters and return values, the
 difference would be more significant.
