@@ -16,24 +16,24 @@ __docformat__ = 'reStructuredText'
 from docutils import nodes
 
 
-def raw(match, typename, data, state, statemachine, attributes):
+def raw(match, type_name, data, state, state_machine, attributes):
     return [], 1
 
-def directive_test_function(match, typename, data, state, statemachine,
+def directive_test_function(match, type_name, data, state, state_machine,
                             attributes):
     try:
-        statemachine.nextline()
-        indented, indent, offset, blankfinish = statemachine.getindented()
+        state_machine.next_line()
+        indented, indent, offset, blank_finish = state_machine.get_indented()
         text = '\n'.join(indented)
     except IndexError:
         text = ''
-        blankfinish = 1
+        blank_finish = 1
     if text:
-        info = statemachine.memo.reporter.info(
+        info = state_machine.reporter.info(
               'Directive processed. Type="%s", data="%s", directive block:'
-              % (typename, data), '', nodes.literal_block(text, text))
+              % (type_name, data), '', nodes.literal_block(text, text))
     else:
-        info = statemachine.memo.reporter.info(
-              'Directive processed. Type="%s", data="%s", directive block: None'
-              % (typename, data))
-    return [info], blankfinish
+        info = state_machine.reporter.info(
+              'Directive processed. Type="%s", data="%s", directive block: '
+              'None' % (type_name, data))
+    return [info], blank_finish

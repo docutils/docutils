@@ -17,15 +17,15 @@ from docutils.parsers.rst import states
 from docutils import nodes
 
 
-def admonition(nodeclass, match, typename, data, state, statemachine,
+def admonition(node_class, match, type_name, data, state, state_machine,
                attributes):
-    indented, indent, lineoffset, blankfinish \
-          = statemachine.getfirstknownindented(match.end())
+    indented, indent, line_offset, blank_finish \
+          = state_machine.get_first_known_indented(match.end())
     text = '\n'.join(indented)
-    admonitionnode = nodeclass(text)
+    admonition_node = node_class(text)
     if text:
-        state.nestedparse(indented, lineoffset, admonitionnode)
-    return [admonitionnode], blankfinish
+        state.nested_parse(indented, line_offset, admonition_node)
+    return [admonition_node], blank_finish
 
 def attention(*args, **kwargs):
     return admonition(nodes.attention, *args, **kwargs)

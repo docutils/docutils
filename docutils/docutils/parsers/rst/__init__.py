@@ -7,8 +7,7 @@
 :Date: $Date$
 :Copyright: This module has been placed in the public domain.
 
-This is ``the docutils.parsers.restructuredtext`` package. It exports a single
-class, `Parser`.
+This is ``docutils.parsers.rst`` package. It exports a single class, `Parser`.
 
 Usage
 =====
@@ -27,13 +26,13 @@ Usage
 
 3. Create a new empty `docutils.nodes.document` tree::
 
-       docroot = docutils.utils.newdocument()
+       document = docutils.utils.new_document()
 
-   See `docutils.utils.newdocument()` for parameter details.
+   See `docutils.utils.new_document()` for parameter details.
 
 4. Run the parser, populating the document tree::
 
-       document = parser.parse(input, docroot)
+       parser.parse(input, document)
 
 Parser Overview
 ===============
@@ -56,20 +55,25 @@ class Parser(docutils.parsers.Parser):
 
     """The reStructuredText parser."""
 
-    def __init__(self, rfc2822=None):
-        if rfc2822:
-            self.initialstate = 'RFC2822Body'
-        else:
-            self.initialstate = 'Body'
+    supported = ('restructuredtext', 'rst', 'rest', 'restx', 'rtxt', 'rstx')
+    """Aliases this parser supports."""
 
-    def parse(self, inputstring, docroot):
-        """Parse `inputstring` and populate `docroot`, a document tree."""
-        self.setup_parse(inputstring, docroot)
-        debug = docroot.reporter[''].debug
+    def __init__(self, rfc2822=None, inliner=None):
+        if rfc2822:
+            self.initial_state = 'RFC2822Body'
+        else:
+            self.initial_state = 'Body'
+        self.state_classes = states.state_classes
+        self.inliner = inliner
+
+    def parse(self, inputstring, document):
+        """Parse `inputstring` and populate `document`, a document tree."""
+        self.setup_parse(inputstring, document)
+        debug = document.reporter[''].debug
         self.statemachine = states.RSTStateMachine(
-              stateclasses=states.stateclasses,
-              initialstate=self.initialstate,
+              state_classes=self.state_classes,
+              initial_state=self.initial_state,
               debug=debug)
         inputlines = docutils.statemachine.string2lines(
-              inputstring, convertwhitespace=1)
-        self.statemachine.run(inputlines, docroot)
+              inputstring, convert_whitespace=1)
+        self.statemachine.run(inputlines, document, inliner=self.inliner)
