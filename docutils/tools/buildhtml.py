@@ -24,7 +24,7 @@ import os.path
 import copy
 import docutils
 from docutils import ApplicationError
-from docutils import core, frontend, io
+from docutils import core, frontend
 from docutils.parsers import rst
 from docutils.readers import standalone, pep
 from docutils.writers import html4css1, pep_html

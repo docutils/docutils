@@ -180,11 +180,12 @@ class ZReST(Item, PropertyManager, Historical, Implicit, Persistent):
         pub.settings.warning_stream = Warnings()
 
         # input
-        pub.source = docutils.io.StringInput(pub.settings)
-        pub.source.source = self.source
+        pub.source = docutils.io.StringInput(
+            source=self.source, encoding=pub.settings.input_encoding)
 
         # output - not that it's needed
-        pub.destination = docutils.io.StringOutput(pub.settings)
+        pub.destination = docutils.io.StringOutput(
+            encoding=pub.settings.output_encoding)
 
         # parse!
         document = pub.reader.read(pub.source, pub.parser, pub.settings)
@@ -264,6 +265,9 @@ modulesecurity.apply(globals())
 
 #
 # $Log$
+# Revision 1.6  2002/11/28 03:44:50  goodger
+# updated
+#
 # Revision 1.5  2002/11/05 05:27:56  goodger
 # fixed Reader name
 #

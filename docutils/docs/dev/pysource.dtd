@@ -29,7 +29,8 @@ The formal public identifier for this DTD is::
 
 <!ENTITY % additional.section.elements
   " | package_section | module_section | class_section
-    | method_section | function_section | module_attribute_section
+    | method_section | function_section
+    | module_attribute_section | function_attribute_section
     | class_attribute_section | instance_attribute_section ">
 
 <!ENTITY % additional.inline.elements
@@ -84,6 +85,10 @@ http://docutils.sourceforge.net/spec/docutils.dtd.
     (attribute, initial_value?, fullname?, %structure.model;)>
 <!ATTLIST module_attribute_section %basic.atts;>
 
+<!ELEMENT function_attribute_section
+    (attribute, initial_value?, fullname?, %structure.model;)>
+<!ATTLIST function_attribute_section %basic.atts;>
+
 <!ELEMENT class_attribute_section
     (attribute, initial_value?, fullname?, overrides?,
      %structure.model;)>
@@ -93,6 +98,11 @@ http://docutils.sourceforge.net/spec/docutils.dtd.
     (attribute, initial_value?, fullname?, overrides?,
      %structure.model;)>
 <!ATTLIST instance_attribute_section %basic.atts;>
+
+<!--
+    Section Subelements
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
 
 <!ELEMENT fullname
     (package | module | class | method | function | attribute)+>

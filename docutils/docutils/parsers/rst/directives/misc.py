@@ -30,7 +30,8 @@ def include(name, arguments, options, content, lineno,
     path = os.path.normpath(os.path.join(source_dir, path))
     path = utils.relative_path(None, path)
     try:
-        include_file = io.FileInput(state.document.settings, source_path=path)
+        include_file = io.FileInput(
+            source_path=path, encoding=state.document.settings.input_encoding)
     except IOError, error:
         severe = state_machine.reporter.severe(
               'Problems with "%s" directive path:\n%s.' % (name, error),

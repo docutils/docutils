@@ -46,7 +46,7 @@ from docutils import frontend, nodes, statemachine, urischemes, utils
 from docutils.transforms import universal
 from docutils.parsers import rst
 from docutils.parsers.rst import states, tableparser, directives, languages
-from docutils.readers import pep
+from docutils.readers import standalone, pep, pysource
 from docutils.statemachine import string2lines
 
 try:

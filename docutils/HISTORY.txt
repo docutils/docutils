@@ -122,6 +122,7 @@ Specific:
   - Added defaults for source & destination paths.
   - Allow for Unicode I/O with an explicit "unicode" encoding.
   - Added ``Output.encode()``.
+  - Deprecated reliance on runtime settings; pass encoding directly.
 
 * docutils/nodes.py:
 
@@ -337,6 +338,7 @@ Specific:
 * docutils/writers/docutils-xml.py:
 
   - Added XML and doctype declarations.
+  - Added "--no-doctype" and "--no-xml-declaration" options.
 
 * docutils/writers/html4css1.py:
 
