@@ -116,7 +116,6 @@ from docutils.nodes import fully_normalize_name as normalize_name
 from docutils.nodes import whitespace_normalize_name
 from docutils.parsers.rst import directives, languages, tableparser, roles
 from docutils.parsers.rst.languages import en as _fallback_language_module
-from docutils.transforms.structural import Transition as TransitionTransform
 
 
 class MarkupError(DataError): pass
@@ -2739,10 +2738,8 @@ class Line(SpecializedText):
             self.state_correction(context)
         if self.eofcheck:               # ignore EOFError with sections
             lineno = self.state_machine.abs_line_number() - 1
-            transition = nodes.pending(TransitionTransform,
-                                       rawsource=context[0])
+            transition = nodes.transition(rawsource=context[0])
             transition.line = lineno
-            self.document.note_pending(transition)
             self.parent += transition
         self.eofcheck = 1
         return []
@@ -2753,9 +2750,8 @@ class Line(SpecializedText):
         marker = context[0].strip()
         if len(marker) < 4:
             self.state_correction(context)
-        transition = nodes.pending(TransitionTransform, rawsource=marker)
+        transition = nodes.transition(rawsource=marker)
         transition.line = lineno
-        self.document.note_pending(transition)
         self.parent += transition
         return [], 'Body', []
 
