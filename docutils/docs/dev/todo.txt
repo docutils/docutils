@@ -1,6 +1,7 @@
 ======================
  Docutils_ To Do List
 ======================
+
 :Author: David Goodger (with input from many); open to all Docutils
          developers
 :Contact: goodger@python.org
@@ -37,12 +38,12 @@ Priorities
 
 
 General
-------- <<<<<<<<<<<<<<<<<
+=======
 
 * Refactor
 
   - Rename methods & variables according to the `Python coding
-    conventions`_ below.
+    conventions <policies.html#python-coding-conventions>`_.
 
   - The name-to-id conversion and hyperlink resolution code needs to be
     checked for correctness and refactored.  I'm afraid it's a bit of
@@ -66,7 +67,7 @@ General
   with new entries.  ("Persistent ID mapping"?)
 
 * Need a Unicode to HTML entities codec for HTML writer?  No, the
-  "xmlcharrefreplace" output encoding error handler is sufficient.
+  "xmlcharrefreplace" output error handler is sufficient.
   Make it the default for HTML & XML writers?
 
 * Perhaps the ``Component.supports`` method should deal with
@@ -334,13 +335,13 @@ General
 
 
 Documentation
--------------
+=============
 
 * User docs.  What's needed?
 
 
 Implementation Docs
-```````````````````
+-------------------
 
 * Internal module documentation (docstrings).
 
@@ -363,7 +364,7 @@ Implementation Docs
 
 
 Specification
-`````````````
+-------------
 
 * Complete PEP 258 Docutils Design Specification.
 
@@ -381,7 +382,7 @@ Specification
 
 
 Python Source Reader
---------------------
+====================
 
 General:
 
@@ -481,7 +482,7 @@ Miscellaneous ideas:
 
 
 reStructuredText Parser
------------------------
+=======================
 
 Also see the `... Or Not To Do?`__ list.
 
@@ -850,7 +851,7 @@ __ rst/alternatives.html#or-not-to-do
 * _`Segmented lists`::
 
       : segment : segment : segment
-      : segment : segment : very long 
+      : segment : segment : very long
         segment
       : segment : segment : segment
 
@@ -867,7 +868,7 @@ __ rst/alternatives.html#or-not-to-do
 
 
 Directives
-``````````
+----------
 
 Directives below are often referred to as "module.directive", the
 directive function.  The "module." is not part of the directive name
@@ -1286,7 +1287,7 @@ when used in a document.
              - On a stick!
 
     Issues:
-    
+
     * How to indicate that there's 1 header row?  Perhaps two lists?
       ::
 
@@ -1391,7 +1392,7 @@ when used in a document.
 
 
 Interpreted Text
-````````````````
+----------------
 
 Interpreted text is entirely a reStructuredText markup construct, a
 way to get around built-in limitations of the medium.  Some roles are
@@ -1541,100 +1542,86 @@ elements.
 
 
 Unimplemented Transforms
-------------------------
+========================
 
-Footnote & Citation Gathering
-`````````````````````````````
+* _`Footnote & Citation Gathering`
 
-Collect and move footnotes & citations to the end of a document.
-(Separate transforms.)
+  Collect and move footnotes & citations to the end of a document.
+  (Separate transforms.)
 
+* _`Hyperlink Target Gathering`
 
-Hyperlink Target Gathering
-``````````````````````````
+  It probably comes in two phases, because in a Python context we need
+  to *resolve* them on a per-docstring basis [do we? --DG], but if the
+  user is trying to do the callout form of presentation, they would
+  then want to group them all at the end of the document.
 
-It probably comes in two phases, because in a Python context we need
-to *resolve* them on a per-docstring basis [do we? --DG], but if the
-user is trying to do the callout form of presentation, they would
-then want to group them all at the end of the document.
+* _`Reference Merging`
 
+  When merging two or more subdocuments (such as docstrings),
+  conflicting references may need to be resolved.  There may be:
 
-Reference Merging
-`````````````````
+  * duplicate reference and/or substitution names that need to be made
+    unique; and/or
+  * duplicate footnote numbers that need to be renumbered.
 
-When merging two or more subdocuments (such as docstrings),
-conflicting references may need to be resolved.  There may be:
+  Should this be done before or after reference-resolving transforms
+  are applied?  What about references from within one subdocument to
+  inside another?
 
-* duplicate reference and/or substitution names that need to be made
-  unique; and/or
-* duplicate footnote numbers that need to be renumbered.
+* _`Document Splitting`
 
-Should this be done before or after reference-resolving transforms
-are applied?  What about references from within one subdocument to
-inside another?
+  If the processed document is written to multiple files (possibly in
+  a directory tree), it will need to be split up.  Internal references
+  will have to be adjusted.
 
+  (HTML only?  Initially, yes.  Eventually, anything should be
+  splittable.)
 
-Document Splitting
-``````````````````
+  Idea: insert a "destination" attribute into the root element of each
+  split-out document, containing the path/filename.  The Output object
+  or Writer will recognize this attribute and split out the files
+  accordingly.  Must allow for common headers & footers, prev/next,
+  breadcrumbs, etc.
 
-If the processed document is written to multiple files (possibly in a
-directory tree), it will need to be split up.  Internal references
-will have to be adjusted.
+* _`Navigation`
 
-(HTML only?  Initially, yes.  Eventually, anything should be
-splittable.)
+  If a document is split up, each segment will need navigation links:
+  parent, children (small TOC), previous (preorder), next (preorder).
+  Part of `Document Splitting`_?
 
-Idea: insert a "destination" attribute into the root element of each
-split-out document, containing the path/filename.  The Output object
-or Writer will recognize this attribute and split out the files
-accordingly.  Must allow for common headers & footers, prev/next,
-breadcrumbs, etc.
+* _`List of System Messages`
 
+  The ``system_message`` elements are inserted into the document tree,
+  adjacent to the problems themselves where possible.  Some (those
+  generated post-parse) are kept until later, in
+  ``document.messages``, and added as a special final section,
+  "Docutils System Messages".
 
-Navigation
-``````````
+  Docutils could be made to generate hyperlinks to all known
+  system_messages and add them to the document, perhaps to the end of
+  the "Docutils System Messages" section.
 
-If a document is split up, each segment will need navigation links:
-parent, children (small TOC), previous (preorder), next (preorder).
-Part of `Document Splitting`_?
+  Fred L. Drake, Jr. wrote:
 
+      I'd like to propose that both parse- and transformation-time
+      messages are included in the "Docutils System Messages" section.
+      If there are no objections, I can make the change.
 
-List of System Messages
-```````````````````````
+  The advantage of the current way of doing things is that parse-time
+  system messages don't require a transform; they're already in the
+  document.  This is valuable for testing (unit tests,
+  tools/quicktest.py).  So if we do decide to make a change, I think
+  the insertion of parse-time system messages ought to remain as-is
+  and the Messages transform ought to move all parse-time system
+  messages (remove from their originally inserted positions, insert in
+  System Messages section).
 
-The ``system_message`` elements are inserted into the document tree,
-adjacent to the problems themselves where possible.  Some (those
-generated post-parse) are kept until later, in ``document.messages``,
-and added as a special final section, "Docutils System Messages".
-
-Docutils could be made to generate hyperlinks to all known
-system_messages and add them to the document, perhaps to the end of
-the "Docutils System Messages" section.
-
-Fred L. Drake, Jr. wrote:
-
-    I'd like to propose that both parse- and transformation-time
-    messages are included in the "Docutils System Messages" section.
-    If there are no objections, I can make the change.
-
-The advantage of the current way of doing things is that parse-time
-system messages don't require a transform; they're already in the
-document.  This is valuable for testing (unit tests,
-tools/quicktest.py).  So if we do decide to make a change, I think the
-insertion of parse-time system messages ought to remain as-is and the
-Messages transform ought to move all parse-time system messages
-(remove from their originally inserted positions, insert in System
-Messages section).
-
-
-Others
-``````
-
-Index
+* _`Index Generation`
 
 
 HTML Writer
------------
+===========
 
 * Construct a _`templating system`, as in ht2html/yaptu, using
   directives and substitutions for dynamic stuff?  Or a specialized
@@ -1677,7 +1664,7 @@ HTML Writer
 
 
 Front-End Tools
----------------
+===============
 
 * What about if we don't know which Reader and/or Writer we are
   going to use?  If the Reader/Writer is specified on the
