@@ -169,17 +169,19 @@ __ http://www.python.org/peps/pep-0258.html
 Docutils Internals
 ------------------
 
+- Notes__ (includes the Docutils `To Do list`__ and `Project
+  Policies`__)
 - `Docutils Document Tree Structure`__ (incomplete; source only)
-- Notes__ (includes the project `To Do list`__)
 - `Python Source Reader`__ (incomplete)
 - `Docstring Semantics`__ (incomplete)
 - `Docutils Generic DTD`__
 - `OASIS XML Exchange Table Model Declaration Module`__
 - `Docutils Python DTD`__ (experimental)
 
-__ spec/doctree.txt
 __ spec/notes.html
 __ spec/notes.html#to-do
+__ spec/notes.html#project-policies
+__ spec/doctree.txt
 __ spec/pysource.html
 __ spec/semantics.html
 __ spec/docutils.dtd
