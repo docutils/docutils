@@ -288,24 +288,24 @@ Responsibilities:
 Examples of input sources:
 
 - A single file on disk or a stream (implemented as
-  ``docutils.io.FileIO``).
+  ``docutils.io.FileInput``).
 
-- Multiple files on disk (``MultiFileIO``?).
+- Multiple files on disk (``MultiFileInput``?).
 
 - Python source files: modules and packages.
 
 - Python strings, as received from a client application
-  (implemented as ``docutils.io.StringIO``).
+  (implemented as ``docutils.io.StringInput``).
 
 Examples of output destinations:
 
 - A single file on disk or a stream (implemented as
-  ``docutils.io.FileIO``).
+  ``docutils.io.FileOutput``).
 
 - A tree of directories and files on disk.
 
 - A Python string, returned to a client application (implemented as
-  ``docutils.io.StringIO``).
+  ``docutils.io.StringOutput``).
 
 - A single tree-shaped data structure in memory.
 

@@ -108,8 +108,8 @@ class Builder:
         if not options.silent:
             print >>sys.stderr, '    ::: Processing .txt:', name
             sys.stderr.flush()
-        self.pub.source = io.FileIO(options, source_path=options._source)
-        self.pub.destination = io.FileIO(
+        self.pub.source = io.FileInput(options, source_path=options._source)
+        self.pub.destination = io.FileOutput(
             options, destination_path=options._destination)
         self.pub.publish()
 
