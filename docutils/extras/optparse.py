@@ -283,6 +283,12 @@ class TitledHelpFormatter (HelpFormatter):
         return "%s\n%s\n" % (heading, "=-"[self.level] * len(heading))
 
 
+# Do the right thing with boolean values for all known Python versions.
+try:
+    True, False
+except NameError:
+    (True, False) = (1, 0)
+
 _builtin_cvt = { "int" : (int, "integer"),
                  "long" : (long, "long integer"),
                  "float" : (float, "floating-point"),
