@@ -104,7 +104,7 @@ class projectSettingsDlg(wxDialog):
 
         #--------------------------------------------------
         # Create a Notebook
-        tID = NewId()
+        tID = wxNewId()
         self.nb = wxNotebook(self, tID, style=wxCLIP_CHILDREN)
         #EVT_NOTEBOOK_PAGE_CHANGED(self.nb, tID, self.on_notebook_page_changed)
 
@@ -118,13 +118,13 @@ class projectSettingsDlg(wxDialog):
 
         # Output Directory
         wxStaticText(self.df, -1, 'Output-Directory', wxPoint(8, 42))
-        exitID = NewId()
+        exitID = wxNewId()
         self.dirCtrl    = wxTextCtrl(self.df, exitID,
                                      pos = wxPoint(96, 40),
                                      size = wxSize(240, 21))
         self.dirCtrl.SetHelpText('This is the default ' + \
                                  'directory for output-files.')
-        exitID = NewId()
+        exitID = wxNewId()
         self.btnSelDir  = wxButton(self.df, exitID, 'Select',
                                    pos = wxPoint(344, 40),
                                    size = wxSize(75, 23))
@@ -132,7 +132,7 @@ class projectSettingsDlg(wxDialog):
 
         # Title
         wxStaticText(self.df, -1, 'Title', wxPoint(8, 74))
-        exitID = NewId()
+        exitID = wxNewId()
         self.nameCtrl = wxTextCtrl(self.df, exitID,
                                    pos = wxPoint(96, 72),
                                    size = wxSize(240, 21),
@@ -149,7 +149,7 @@ class projectSettingsDlg(wxDialog):
 
         # Language Code
         wxStaticText(self.du, -1, 'Language-Code', wxPoint(8, 10))
-        exitID = NewId()
+        exitID = wxNewId()
         if not self.config.options['language_code'] in language_codes:
             language_codes.append(self.config.options['language_code'])
         language_codes.sort()
@@ -161,12 +161,12 @@ class projectSettingsDlg(wxDialog):
         
         # Stylesheet
         wxStaticText(self.du, -1, 'Stylesheet', wxPoint(8, 42))
-        exitID = NewId()
+        exitID = wxNewId()
         self.styCtrl    = wxTextCtrl(self.du, exitID,
                                      pos = wxPoint(96, 40),
                                      size = wxSize(240, 21))
         self.styCtrl.SetHelpText('Path to stylesheet.')
-        exitID = NewId()
+        exitID = wxNewId()
         self.btnSelSty  = wxButton(self.du, exitID, 'Select',
                                    pos = wxPoint(344, 40),
                                    size = wxSize(75, 23), style = 0)
@@ -174,7 +174,7 @@ class projectSettingsDlg(wxDialog):
 
         # Output Encoding
         wxStaticText(self.du, -1, 'Output-Encoding', wxPoint(8, 74))
-        exitID = NewId()
+        exitID = wxNewId()
         self.outencCtrl    = wxTextCtrl(self.du, exitID,
                                         self.config.options['output_encoding'],
                                         pos = wxPoint(96, 72),
@@ -183,7 +183,7 @@ class projectSettingsDlg(wxDialog):
 
         # Datestamp
         wxStaticText(self.du, -1, 'Datestamp', wxPoint(8, 106))
-        exitID = NewId()
+        exitID = wxNewId()
         self.datestampCtrl = wxTextCtrl(self.du, exitID,
                                         pos = wxPoint(96, 104),
                                         size = wxSize(115, 21))
@@ -192,7 +192,7 @@ class projectSettingsDlg(wxDialog):
                                        'a format string for time.strftime.')
 
         # TOC-Backlinks
-        exitID = NewId()
+        exitID = wxNewId()
         self.tocliCtrl = wxRadioBox(self.du, exitID, 'TOC-Backlinks',
                                     wxPoint(224, 79), wxDefaultSize,
                                     ['entry','top','none'],
@@ -203,7 +203,7 @@ class projectSettingsDlg(wxDialog):
                                    'of the TOC ("top"), or disable ("none").')
 
         # Footnote References
-        exitID = NewId()
+        exitID = wxNewId()
         self.footrefCtrl = wxRadioBox(self.du, exitID,
                                       'Footnote References',
                                       wxPoint(224, 131),
@@ -220,7 +220,7 @@ class projectSettingsDlg(wxDialog):
                       'Source-Link',
                       'Use LaTeX-TOC'
                       ]
-        exitID = NewId()
+        exitID = wxNewId()
         self.optionsCtrl = wxCheckListBox(self.du, exitID, wxPoint(50, 136),
                                           wxSize(161, 90), optionList)
         self.optionsCtrl.SetHelpText('Set more Docutils-options here.')
@@ -249,7 +249,7 @@ class projectSettingsDlg(wxDialog):
         size_of_nb = self.nb.GetSize()
         ok_position = wxPoint((size_of_nb[0]/2)-80,size_of_nb[1]+10)
         cancel_position = wxPoint((size_of_nb[0]/2)+5,size_of_nb[1]+10)
-        exitID = NewId()
+        exitID = wxNewId()
         self.ok         = wxButton(self, exitID, 'OK',
                                    pos = ok_position,
                                    size = wxSize(75, 23))
@@ -469,11 +469,11 @@ class hyperlinkDlg(wxDialog):
         self.directory = directory
         self.project = project
         wxStaticText(self, -1, 'Path?', wxPoint(8, 12))
-        exitID = NewId()
+        exitID = wxNewId()
         self.pathCtrl = wxTextCtrl(self, exitID,
                                    pos = wxPoint(46, 10),
                                    size = wxSize(240, 21))
-        exitID = NewId()
+        exitID = wxNewId()
         self.btnSelPath = wxButton(self, exitID, 'Select',
                                    pos = wxPoint(294, 10),
                                    size = btn_size)
@@ -532,7 +532,7 @@ class publishDlg(wxDialog):
         self.writer = 'HTML'
         # Writer
         wxStaticText(self, -1, 'Docutils-Writer:', wxPoint(8, 12))
-        exitID = NewId()
+        exitID = wxNewId()
         writers = publishers.keys()
         writers.sort()
         self.writerCtrl = wxChoice(self, exitID, (100, 10),
@@ -542,12 +542,12 @@ class publishDlg(wxDialog):
 
         # Output-directory
         wxStaticText(self, -1, 'Output-Directory:', wxPoint(8, 42))
-        exitID = NewId()
+        exitID = wxNewId()
         self.outdirCtrl = wxTextCtrl(self, exitID,
                                      pos = wxPoint(100, 40),
                                      size = wxSize(240, 21))
         self.outdirCtrl.SetValue(self.directory)
-        exitID = NewId()
+        exitID = wxNewId()
         self.btnSelOutdir = wxButton(self, exitID, 'Select',
                                      pos = wxPoint(350, 40),
                                      size = btn_size)
@@ -555,7 +555,7 @@ class publishDlg(wxDialog):
 
         # Output-file
         wxStaticText(self, -1, 'Output-File:', wxPoint(8, 72))
-        exitID = NewId()
+        exitID = wxNewId()
         self.outfileCtrl = wxTextCtrl(self, exitID,
                                       pos = wxPoint(100, 70),
                                       size = wxSize(240, 21))
@@ -611,7 +611,7 @@ class toolsDlg(wxDialog):
         mask = wxMaskColour(bmp, wxBLUE)
         bmp.SetMask(mask)
         self.idx1 = self.il.Add(bmp)
-        exitID = NewId()
+        exitID = wxNewId()
         self.list = wxListCtrl(self, exitID,
                                wxDLG_PNT(self, 26, 10),
                                wxDLG_SZE(self, 400, 120),
@@ -626,7 +626,7 @@ class toolsDlg(wxDialog):
         self.ok         = wxButton(self, wxID_OK, 'OK',
                                    pos = wxDLG_PNT(self, 195, 135),
                                    size = btn_size)
-        exitID = NewId()
+        exitID = wxNewId()
         bmp = images.getPlusBitmap()
         mask = wxMaskColour(bmp, wxBLUE)
         bmp.SetMask(mask)
@@ -634,7 +634,7 @@ class toolsDlg(wxDialog):
                            wxSize(23, 23))
         b.SetToolTipString("Add tool")
         EVT_BUTTON(self, exitID, self.on_plus_btn)
-        exitID = NewId()
+        exitID = wxNewId()
         bmp = images.getPenBitmap()
         mask = wxMaskColour(bmp, wxBLUE)
         bmp.SetMask(mask)
@@ -642,7 +642,7 @@ class toolsDlg(wxDialog):
                            wxSize(23, 23))
         b.SetToolTipString("Edit tool")
         EVT_BUTTON(self, exitID, self.on_edit_btn)
-        exitID = NewId()
+        exitID = wxNewId()
         bmp = images.getMinusBitmap()
         mask = wxMaskColour(bmp, wxBLUE)
         bmp.SetMask(mask)
