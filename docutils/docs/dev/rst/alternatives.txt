@@ -180,6 +180,60 @@ email mode, where we may be able to rely on less complex structure
 (few nested lists, for example).
 
 
+Multiple Roles in Interpreted Text
+----------------------------------
+
+In reStructuredText, inline markup cannot be nested.  This also
+applies to interpreted text.  In order to simultaneously combine
+multiple roles for a single piece of text, a syntax extension would be
+necessary.  Ideas:
+
+1. Initial idea::
+
+       `interpreted text`:role1,role2:
+
+2. Suggested by Jason Diamond::
+
+       `interpreted text`:role1:role2:
+
+If a document is so complex as to require nested inline markup,
+perhaps another markup system should be considered.  By design,
+reStructuredText does not have the flexibility of XML.
+
+
+Parameterized Interpreted Text
+------------------------------
+
+In some cases it may be expedient to pass parameters to interpreted
+text roles, analogous to function calls.  Ideas:
+
+1. Suggested by Jason Diamond::
+
+       `interpreted text`:role1(foo=bar):
+
+   Positional parameters could also be supported::
+
+       `CSS`:acronym(Cascading Style Sheets): is used for HTML, and
+       `CSS`:acronym(Content Scrambling System): is used for DVDs.
+
+   Problem: current interpreted text syntax does not recognize roles
+   containing whitespace.
+
+This pushes inline markup too far; readability becomes a serious
+issue.  Substitutions may provide a better alternative by pulling the
+details out of the text flow::
+
+    |CSS| is used for HTML, and |CSS-DVD| is used for DVDs.
+
+    .. |CSS| acronym:: Cascading Style Sheets
+    .. |CSS-DVD| acronym:: Content Scrambling System
+       :text: CSS
+
+This is going beyond the scope of reStructuredText though.  Documents
+requiring this functionality may be better off using XML or another
+markup system.
+
+
 Field Lists
 ===========
 
@@ -1747,6 +1801,7 @@ There are several possibilities for the implementation:
 Solution 3 was chosen for incorporation into the document tree model.
 
 .. _HTML: http://www.w3.org/MarkUp/
+
 
 
 ..
