@@ -108,9 +108,7 @@ Category members: document_, section_, topic_
 Structural Subelements
 ----------------------
 
-Structural subelements are child elements of structural elements, but
-contain no further structure of their own (except for text and inline
-elements).
+Structural subelements are child elements of structural elements.
 
 Category members: title_, subtitle_, docinfo_, decoration_,
 transition_
