@@ -14,33 +14,16 @@ __docformat__ = 'reStructuredText'
 
 
 import sys
-from docutils.parsers.rst import states
 from docutils import nodes, utils
-
-def unchanged(arg):
-    return arg                          # unchanged!
-
-def format_allowed( allowed ):
-    qouted = map( lambda s: '"%s"' % s, allowed )
-    return ' or '.join( [ ', '.join( qouted[:-1] ), qouted[-1] ] )
-
-def align( argument ):
-    allowed = ( 'top', 'middle', 'bottom', 'left', 'center', 'right' )
-    
-    try:
-        value = argument.lower().strip()
-    except AttributeError:
-        raise TypeError('must supply an argument; choose from %s',
-                         format_allowed( allowed ))
-    
-    if value in allowed:
-        return value
-    else:
-        raise ValueError(
-            '"%s" unknown; choose from %s' % (argument, format_allowed( allowed )) )
+from docutils.parsers.rst import directives
 
 
-image_option_spec = {'alt': unchanged,
+align_values = ('top', 'middle', 'bottom', 'left', 'center', 'right')
+
+def align(argument):
+    return directives.choice(argument, align_values)
+
+image_option_spec = {'alt': directives.unchanged,
                      'height': int,
                      'width': int,
                      'scale': int,
@@ -109,7 +92,8 @@ def figure(match, type_name, data, state, state_machine, option_presets):
             caption = nodes.caption(firstnode.rawsource, '',
                                     *firstnode.children)
             figurenode += caption
-        elif not (isinstance(firstnode, nodes.comment) and len(firstnode) == 0):
+        elif not (isinstance(firstnode, nodes.comment)
+                  and len(firstnode) == 0):
             error = state_machine.reporter.error(
                   'Figure caption must be a paragraph or empty comment.', '',
                   nodes.literal_block(blocktext, blocktext), line=lineno)
