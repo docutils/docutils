@@ -49,7 +49,7 @@ class Reader(Component):
             self.set_parser(parser_name)
 
         self.source = None
-        """Path to the source of raw input."""
+        """`docutils.io` IO object, source of input data."""
 
         self.input = None
         """Raw text input; either a single string or, for more complex cases,
@@ -65,30 +65,11 @@ class Reader(Component):
         if not self.parser:
             self.parser = parser
         self.options = options
-        self.scan()               # may modify self.parser, depending on input
+        # May modify self.parser, depending on input:
+        self.input = self.source.read(self)
         self.parse()
         self.transform()
         return self.document
-
-    def scan(self):
-        """Override to read `self.input` from `self.source`."""
-        raise NotImplementedError('subclass must override this method')
-
-    def scan_file(self, source):
-        """
-        Scan a single file and return the raw data.
-
-        Parameter `source` may be:
-
-        (a) a file-like object, which is read directly;
-        (b) a path to a file, which is opened and then read; or
-        (c) `None`, which implies `sys.stdin`.
-        """
-        if hasattr(source, 'read'):
-            return source.read()
-        if self.source:
-            return open(source).read()
-        return sys.stdin.read()
 
     def parse(self):
         """Parse `self.input` into a document tree."""

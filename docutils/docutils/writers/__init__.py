@@ -38,7 +38,7 @@ class Writer(Component):
     """Language module for the document."""
 
     destination = None
-    """Where to write the document."""
+    """`docutils.io` IO object; where to write the document."""
 
     transforms = ()
     """Ordered list of transform classes (each with a ``transform()`` method).
@@ -56,7 +56,8 @@ class Writer(Component):
         self.destination = destination
         self.transform()
         self.translate()
-        self.record()
+        output = self.destination.write(self.output)
+        return output
 
     def transform(self):
         """Run all of the transforms defined for this Writer."""
@@ -77,31 +78,6 @@ class Writer(Component):
         used by the current Reader as well.
         """
         raise NotImplementedError('subclass must override this method')
-
-    def record(self):
-        """Override to record `document` to `destination`."""
-        raise NotImplementedError('subclass must override this method')
-
-    def recordfile(self, output, destination):
-        """
-        Write `output` to a single file.
-
-        Parameters:
-
-        - `output`: Data to write.
-        - `destination`: one of:
-
-          (a) a file-like object, which is written directly;
-          (b) a path to a file, which is opened and then written; or
-          (c) `None`, which implies `sys.stdout`.
-        """
-        output = output.encode('utf-8') # @@@ temporary; must not hard-code
-        if hasattr(self.destination, 'write'):
-            destination.write(output)
-        elif self.destination:
-            open(self.destination, 'w').write(output)
-        else:
-            sys.stdout.write(output)
 
 
 _writer_aliases = {

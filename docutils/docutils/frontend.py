@@ -69,9 +69,12 @@ class OptionParser(optik.OptionParser):
          ('Send the output of system messages (warnings) to <file>.',
           ['--warnings'], {'dest': 'warning_stream', 'metavar': '<file>'}),
          ('Specify the encoding of input text.  Default is locale-dependent.',
-          ['--encoding', '-e'], {'metavar': '<name>'}),
-         ('Specify the language of input text (ISO 639 2-letter identifier.  '
-          'Default is "en" (English).',
+          ['--input-encoding', '-i'], {'metavar': '<name>'}),
+         ('Specify the encoding for output.  Default is UTF-8.',
+          ['--output-encoding', '-o'],
+          {'metavar': '<name>', 'default': 'utf-8'}),
+         ('Specify the language of input text (ISO 639 2-letter identifier).'
+          '  Default is "en" (English).',
           ['--language', '-l'], {'dest': 'language_code', 'default': 'en',
                                  'metavar': '<name>'}),
          ("Show this program's version number and exit.",

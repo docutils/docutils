@@ -27,9 +27,6 @@ class Writer(writers.Writer):
     def translate(self):
         self.output = self.document.pformat()
 
-    def record(self):
-        self.recordfile(self.output, self.destination)
-
     def supports(self, format):
         """This writer supports all format-specific elements."""
         return 1

@@ -32,6 +32,3 @@ class Reader(readers.Reader):
                   frontmatter.DocInfo,
                   references.Footnotes,
                   references.Hyperlinks,)
-
-    def scan(self):
-        self.input = self.scan_file(self.source)
