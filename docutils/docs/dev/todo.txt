@@ -1463,7 +1463,7 @@ elements.
   The example above would implement the "rewrite" role as adding a
   ``class="rewrite"`` attribute to the interpreted text ("inline"
   element).  The stylesheet would then pick up on the "class"
-  attribute to do the actual formatting.
+  attribute to do the actual formatting.  (Allow other base elements?)
 
   The same thing could be done with a directive, albeit a bit more
   verbosely::
@@ -1500,7 +1500,18 @@ elements.
 
     What to do if there are multiple definitions?  How to
     differentiate between CSS (Content Scrambling System) and CSS
-    (Cascading Style Sheets) in a single document?
+    (Cascading Style Sheets) in a single document?  David Priest
+    responds,
+
+        The short answer is: you don't.  Anyone who did such a thing
+        would be writing very poor documentation indeed.  (Though I
+        note that `somewhere else in the docs`__, there's mention of
+        allowing replacement text to be associated with the
+        abbreviation.  That takes care of the duplicate
+        acronyms/abbreviations problem, though a writer would be
+        foolish to ever need it.)
+
+        __ `inline parameter syntax`_
 
     How to define the full text?  Possibilities:
 
@@ -1521,12 +1532,13 @@ elements.
        Then again, a glossary could be formed by gathering individual
        definitions from around the document.
 
-    2. Some kind of `inline parameter syntax`__? ::
+    2. Some kind of `inline parameter syntax`_? ::
 
            `reST <reStructuredText>`:acronym: is `WYSIWYG <what you
            see is what you get>`:acronym: plaintext markup.
 
-       __ rst/alternatives.html#parameterized-interpreted-text
+       .. _inline parameter syntax:
+          rst/alternatives.html#parameterized-interpreted-text
 
     3. A combination of 1 & 2?
 
