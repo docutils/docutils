@@ -14,8 +14,8 @@ set -e
 # Remove module & files added by mistake
 ########################################
 
-rm -r /cvsroot/docutils/module					# duplicate of docutils module
-rm -r /cvsroot/docutils/docutils/docutils/Attic	# duplicates of CVSROOT files
+rm -rfv /cvsroot/docutils/modulename     # duplicate of sandbox module
+rm -rfv /cvsroot/docutils/docutils/Attic # duplicates of CVSROOT files
 
 
 # Create new empty directory structure
@@ -76,7 +76,7 @@ mv -v /cvsroot/docutils/docutils/spec/soextblx.dtd,v \
       /cvsroot/docutils/docutils/docs/ref/
 
 mv -v /cvsroot/docutils/docutils/spec/transforms.txt,v \
-      /cvsroot/docutils/docutils/docs/lib/
+      /cvsroot/docutils/docutils/docs/ref/
 
 mv -v /cvsroot/docutils/docutils/spec/rst/alternatives.txt,v \
       /cvsroot/docutils/docutils/docs/dev/rst/
@@ -99,7 +99,8 @@ mv -v /cvsroot/docutils/docutils/spec/pep-????.txt,v \
 # Remove old, unused, empty directories
 #######################################
 
-rmdir /cvsroot/docutils/docutils/spec/rst
-rmdir /cvsroot/docutils/docutils/spec
+rm -rfv /cvsroot/docutils/docutils/spec/Attic
+rmdir -v /cvsroot/docutils/docutils/spec/rst
+rmdir -v /cvsroot/docutils/docutils/spec
 
 echo Finished.
