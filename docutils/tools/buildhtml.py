@@ -16,6 +16,7 @@ import sys
 import os
 import os.path
 import copy
+from docutils import ApplicationError
 from docutils import core, frontend, io
 from docutils.parsers import rst
 from docutils.readers import pep
@@ -111,7 +112,11 @@ class Builder:
         self.pub.source = io.FileInput(options, source_path=options._source)
         self.pub.destination = io.FileOutput(
             options, destination_path=options._destination)
-        self.pub.publish()
+        try:
+            self.pub.publish()
+        except ApplicationError, error:
+            print >>sys.stderr, ('        Error (%s): %s'
+                                 % (error.__class__.__name__, error))
 
     def process_peps(self, options, directory):
         old_directory = os.getcwd()
@@ -123,7 +128,11 @@ class Builder:
             sys.stderr.flush()
             argv = []
         pep2html.docutils_options = options
-        pep2html.main(argv)
+        try:
+            pep2html.main(argv)
+        except Exception, error:
+            print >>sys.stderr, ('        Error (%s): %s'
+                                 % (error.__class__.__name__, error))
         os.chdir(old_directory)
 
     def process_command_line(self):
