@@ -950,9 +950,11 @@ stylist code will lower the barrier considerably.
 .. [#PEP-216] PEP 216, Docstring Format, Zadka
    (http://www.python.org/peps/pep-0216.html)
 
-.. _docutils.dtd: http://docutils.sourceforge.net/docs/ref/docutils.dtd
+.. _docutils.dtd:
+   http://docutils.sourceforge.net/docs/ref/docutils.dtd
 
-.. _soextbl.dtd: http://docutils.sourceforge.net/spec/soextblx.dtd
+.. _soextbl.dtd:
+   http://docutils.sourceforge.net/docs/ref/soextblx.dtd
 
 .. _The Docutils Document Tree:
    http://docutils.sourceforge.net/docs/ref/doctree.html
@@ -961,10 +963,10 @@ stylist code will lower the barrier considerably.
    http://www.openvms.compaq.com:8000/73final/5841/841pro_027.html
    #error_cond_severity
 
-.. _log4j project: http://jakarta.apache.org/log4j/
+.. _log4j project: http://logging.apache.org/log4j/
 
 .. _Docutils Python Source DTD:
-   http://docutils.sourceforge.net/spec/pysource.dtd
+   http://docutils.sourceforge.net/docs/dev/pysource.dtd
 
 .. _ISO 639: http://lcweb.loc.gov/standards/iso639-2/englangn.html
 
