@@ -57,7 +57,7 @@ Docutils is implemented in Python_.
 .. _Docutils: http://docutils.sourceforge.net/
 .. _PEPs (Python Enhancement Proposals):
    http://www.python.org/peps/pep-0012.html
-.. _PEP 258: docs/peps/pep-0258.html
+.. _PEP 258: http://www.python.org/peps/pep-0258.html
 .. _Python: http://www.python.org/
 
 
@@ -88,7 +88,8 @@ Introduction to reStructuredText`_.
 Please note that the name is "Docutils", not "DocUtils" or "Doc-Utils"
 or any other variation.
 
-.. _An Introduction to reStructuredText: docs/ref/rst/introduction.html
+.. _An Introduction to reStructuredText:
+   http://docutils.sourceforge.net/docs/ref/rst/introduction.html
 __ http://mail.python.org/pipermail/doc-sig/1999-December/000878.html
 __ http://mail.python.org/pipermail/doc-sig/2000-November/001252.html
 __ http://mail.python.org/pipermail/doc-sig/2000-November/001239.html
@@ -130,7 +131,7 @@ If anyone would like to volunteer as a release coordinator, please
 `contact the project coordinator`_.
 
 .. _development snapshots:
-   http://docutils.sf.net/#development-snapshots
+   http://docutils.sourceforge.net/#development-snapshots
 
 .. _contact the project coordinator:
    mailto:goodger@python.org
@@ -152,16 +153,19 @@ If you are reading this on the web, you can see for yourself.  `The
 source for this FAQ <FAQ.txt>`_ is written in reStructuredText; open
 it in another window and compare them side by side.
 
-`A ReStructuredText Primer <docs/user/rst/quickstart.html>`_ and the
-`Quick reStructuredText <docs/user/rst/quickref.html>`_ user reference
-are a good place to start.  The `reStructuredText Markup Specification
-<docs/ref/rst/restructuredtext.html>`_ is a detailed technical
-specification.
+`A ReStructuredText Primer`_ and the `Quick reStructuredText`_ user
+reference are a good place to start.  The `reStructuredText Markup
+Specification <docs/ref/rst/restructuredtext.html>`_ is a detailed
+technical specification.
 
+.. _A ReStructuredText Primer:
+   http://docutils.sourceforge.net/docs/user/rst/quickstart.html
+.. _Quick reStructuredText:
+   http://docutils.sourceforge.net/docs/user/rst/quickref.html
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _StructuredText:
    http://dev.zope.org/Members/jim/StructuredTextWiki/FrontPage/
-.. _Setext: mirror/setext.html
+.. _Setext: http://docutils.sourceforge.net/mirror/setext.html
 
 
 Why is it called "reStructuredText"?
@@ -256,9 +260,10 @@ input file, using whatever encoding suits your application, and tell
 Docutils the input encoding.  Docutils uses Unicode internally, so the
 em-dash character is a real em-dash internally.
 
-Emacs users should refer to the `Emacs Support for reStructuredText
-<tools/editors/emacs/README.html>`_ document.  Tips for other editors
-are welcome.
+Emacs users should refer to the `Emacs Support for reStructuredText`__
+document.  Tips for other editors are welcome.
+
+__ http://docutils.sourceforge.net/tools/editors/emacs/README.html
 
 ReStructuredText has no character entity subsystem; it doesn't know
 anything about XML charents.  To Docutils, "&mdash;" in input text is
@@ -270,13 +275,17 @@ character entity interpretation in either case.
 
 If you can't use a Unicode-compatible encoding and must rely on 7-bit
 ASCII, there is a workaround.  Files containing character entity set
-substitution definitions using the "unicode" directive `are available
-<tmp/charents/>`__ (`tarball <tmp/charents.tgz>`__).  A description
-and instructions for use `are here <tmp/charents/README.html>`__.
-Thanks to David Priest for the original idea.  Incorporating these
-files into Docutils is on the `to-do list
-<docs/dev/todo.html>`_.
+substitution definitions using the "unicode" directive `are
+available`_ (tarball_).  Please read the `description and
+instructions`_ for use.  Thanks to David Priest for the original idea.
+Incorporating these files into Docutils is on the `to-do list`_.
 
+.. _are available: http://docutils.sourceforge.net/tmp/charents/
+.. _tarball: http://docutils.sourceforge.net/tmp/charents.tgz
+.. _description and instructions:
+   http://docutils.sourceforge.net/tmp/charents/README.html
+.. _to-do list: http://docutils.sourceforge.net/docs/dev/todo.html
+   
 If you insist on using XML-style charents, you'll have to implement a
 pre-processing system to convert to UTF-8 or something.  That
 introduces complications though; you can no longer *write* about
@@ -349,7 +358,8 @@ Are there any Wikis that use reStructuredText syntax?
 There are several, with various degrees of completeness.  With no
 implied endorsement or recommendation, and in no particular order:
 
-* `Ian Bicking's experimental code <sandbox/ianb/wiki/WikiPage.py>`__
+* `Ian Bicking's experimental code
+  <http://docutils.sf.net/sandbox/ianb/wiki/WikiPage.py>`__
 * `MoinMoin <http://moin.sf.net>`__ has some support; `here's a sample
   <http://twistedmatrix.com/users/jh.twistd/moin/moin.cgi/RestSample>`__
 * Zope-based `Zwiki <http://zwiki.org/>`__
@@ -400,7 +410,9 @@ block quote context, like this::
 There has been a lot of discussion about this, but there are some
 issues that would need to be resolved before it could be implemented.
 There is a summary of the issues and pointers to the discussions in
-`the to-do list <docs/dev/todo.html#indented-lists>`__.
+`the to-do list`__.
+
+__ http://docutils.sourceforge.net/docs/dev/todo.html#indented-lists
 
 
 Could the requirement for blank lines around lists be relaxed?
@@ -425,13 +437,15 @@ How can I include mathematical equations in documents?
 There is no elegant built-in way, yet.  There are several ideas, but
 no obvious winner.  This issue requires a champion to solve the
 technical and aesthetic issues and implement a generic solution.
-Here's the `to-do list entry <docs/dev/todo.html#math-markup>`__.
+Here's the `to-do list entry`__.
+
+__ http://docutils.sourceforge.net/docs/dev/todo.html#math-markup
 
 There are several quick & dirty ways to include equations in
 documents:
 
 * For HTML there is MathML but its rendering is still quite broken (or
-  absent) on most browsers.  An example of raw MathML is `here
+  absent) on most browsers.  See an `example of raw MathML
   <http://sf.net/mailarchive/message.php?msg_id=2177102>`__.
 
 * If you use LaTeX output only, a simple way is to use the "raw"
@@ -611,8 +625,8 @@ known to give good results.  Reports of experiences with other
 browsers are welcome.
 
 
-Unexpected results from tools/html.py: H1, H1 instead of H1, H2.  Why?
-----------------------------------------------------------------------
+Unexpected results from tools/rst2html.py: H1, H1 instead of H1, H2.  Why?
+--------------------------------------------------------------------------
 
 Here's the question in full:
 
@@ -698,8 +712,10 @@ can tweak the `initial_header_level`_ setting
 to your specific document, you might end up with bad HTML (e.g. H3
 without H2).
 
-.. _doctitle_xform: docs/user/config.html#doctitle-xform
-.. _initial_header_level: docs/user/config.html#initial-header-level
+.. _doctitle_xform:
+   http://docutils.sourceforge.net/docs/user/config.html#doctitle-xform
+.. _initial_header_level:
+   http://docutils.sourceforge.net/docs/user/config.html#initial-header-level
 
 (Thanks to Mark McEahern for the question and much of the answer.)
 
@@ -763,7 +779,8 @@ of the output.  It must also match the document encoding.  For UTF-8::
 
     <?xml version="1.0" encoding="utf-8" ?>
 
-.. _sectnum: docs/ref/rst/directives.html#sectnum
+.. _sectnum:
+   http://docutils.sourceforge.net/docs/ref/rst/directives.html#sectnum
 
 
 Python Source Reader
