@@ -761,7 +761,11 @@ class HTMLTranslator(nodes.NodeVisitor):
         if isinstance(node.parent, nodes.TextElement):
             self.context.append('')
         else:
-            self.body.append('<p>')
+            if atts.has_key('align'):
+                self.body.append('<p align="%s">' %
+                                 (self.attval(atts['align'],)))
+            else:
+                self.body.append('<p>')
             self.context.append('</p>\n')
         self.body.append(self.emptytag(node, 'img', '', **atts))
 
