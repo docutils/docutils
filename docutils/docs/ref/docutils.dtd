@@ -19,15 +19,14 @@ The proposed formal public identifier for this DTD is::
     +//IDN python.org//DTD Docutils Generic//EN//XML
 -->
 
-
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Parameter Entities
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Parameter entities are used to simplify the DTD (reduce duplication)
-and to allow the DTD to be customized by wrapper DTDs. Parameter
-entities beginning with 'additional' are meant to allow easy extension
+and to allow the DTD to be customized by wrapper DTDs.  Parameter
+entities beginning with "additional" are meant to allow easy extension
 by wrapper DTDs.
 -->
 
@@ -36,6 +35,9 @@ by wrapper DTDs.
 
 <!-- Boolean: no if zero(s), yes if any other value. -->
 <!ENTITY % yesorno "NMTOKEN">
+
+<!-- Emphasize that the attribute value must be a number. -->
+<!ENTITY % number  "NMTOKEN">
 
 <!ENTITY % additional.basic.atts "">
 <!--
@@ -49,10 +51,10 @@ Attributes shared by all elements in this DTD:
 -->
 <!ENTITY % basic.atts
   " id        ID        #IMPLIED
-    name      CDATA     #IMPLIED
-    dupname   CDATA     #IMPLIED
+    name      NMTOKENS  #IMPLIED
+    dupname   NMTOKENS  #IMPLIED
     source    CDATA     #IMPLIED
-    class     CDATA     #IMPLIED
+    class     NMTOKENS  #IMPLIED
     %additional.basic.atts; ">
 
 <!-- External reference to a URI/URL. -->
@@ -73,7 +75,7 @@ Internal reference to the `name` attribute of an element. On a
 resolve to either an internal or external reference.
 -->
 <!ENTITY % refname.att
-  " refname   CDATA     #IMPLIED ">
+  " refname   NMTOKENS  #IMPLIED ">
 
 <!ENTITY % additional.reference.atts "">
 <!-- Collected hyperlink reference attributes. -->
@@ -89,7 +91,7 @@ resolve to either an internal or external reference.
 
 <!-- Auto-numbered footnote or title. -->
 <!ENTITY % auto.att
-  " auto      %yesorno; #IMPLIED ">
+  " auto      CDATA     #IMPLIED ">
 
 <!-- XML standard attribute for whitespace-preserving elements. -->
 <!ENTITY % fixedspace.att
@@ -106,10 +108,10 @@ resolve to either an internal or external reference.
     | field
     %additional.bibliographic.elements; ">
 
-<!ENTITY % additional.structural.elements "">
-<!ENTITY % structural.elements
+<!ENTITY % additional.section.elements "">
+<!ENTITY % section.elements
   " section
-    %additional.structural.elements; ">
+    %additional.section.elements; ">
 
 <!ENTITY % additional.body.elements "">
 <!ENTITY % body.elements
@@ -131,17 +133,19 @@ resolve to either an internal or external reference.
     | target | image | raw
     %additional.inline.elements; ">
 
+
 <!-- Element Content Models
 ================================================================== -->
 
 <!ENTITY % structure.model
   " ( ( (%body.elements; | topic)+,
         (transition, (%body.elements; | topic)+ )*,
-        (%structural.elements;)* )
-    | (%structural.elements;)+ ) ">
+        (%section.elements;)* )
+    | (%section.elements;)+ ) ">
 
 <!ENTITY % text.model
   " (#PCDATA | %inline.elements;)* ">
+
 
 <!-- Table Model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -165,8 +169,7 @@ http://www.oasis-open.org/html/tm9901.htm).
 <!ENTITY % tbl.entry.mdl        " (%body.elements;)* ">
 <!ENTITY % tbl.entry.att
   " %basic.atts;
-    morecols  NMTOKEN   #IMPLIED ">
-
+    morecols  %number;  #IMPLIED ">
 
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -178,7 +181,6 @@ http://www.oasis-open.org/html/tm9901.htm).
 <!ELEMENT document
     ((title, subtitle?)?, docinfo?, decoration?, %structure.model;)>
 <!ATTLIST document %basic.atts;>
-
 
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -194,7 +196,6 @@ http://www.oasis-open.org/html/tm9901.htm).
 
 <!ELEMENT subtitle %text.model;>
 <!ATTLIST subtitle %basic.atts;>
-
 
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -233,7 +234,6 @@ http://www.oasis-open.org/html/tm9901.htm).
 <!ELEMENT copyright %text.model;>
 <!ATTLIST copyright %basic.atts;>
 
-
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Decoration Elements
@@ -249,7 +249,6 @@ http://www.oasis-open.org/html/tm9901.htm).
 <!ELEMENT footer (%body.elements;)+>
 <!ATTLIST footer %basic.atts;>
 
-
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Structural Elements
@@ -264,7 +263,6 @@ http://www.oasis-open.org/html/tm9901.htm).
 
 <!ELEMENT transition EMPTY>
 <!ATTLIST transition %basic.atts;>
-
 
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -288,7 +286,7 @@ http://www.oasis-open.org/html/tm9901.htm).
                         #IMPLIED
     prefix    CDATA     #IMPLIED
     suffix    CDATA     #IMPLIED
-    start     NUMBER    #IMPLIED>
+    start     %number;  #IMPLIED>
 
 <!ELEMENT list_item (%body.elements;)+>
 <!ATTLIST list_item %basic.atts;>
@@ -440,9 +438,9 @@ either the string separating it from the `option` (typically either
     %basic.atts;
     uri       CDATA     #REQUIRED
     alt       CDATA     #IMPLIED
-    height    NMTOKEN   #IMPLIED
-    width     NMTOKEN   #IMPLIED
-    scale     NMTOKEN   #IMPLIED>
+    height    &number;  #IMPLIED
+    width     &number;  #IMPLIED
+    scale     &number;  #IMPLIED>
 
 <!ELEMENT caption %text.model;>
 <!ATTLIST caption %basic.atts;>
@@ -460,16 +458,15 @@ Table elements: table, tgroup, colspec, thead, tbody, row, entry.
 <!ATTLIST system_message
     %basic.atts;
     %backrefs.att;
-    level     NMTOKEN   #IMPLIED
-    type      CDATA     #IMPLIED>
+    level     &number;  #IMPLIED
+    type      NMTOKEN   #IMPLIED>
 
 <!-- Used to pass raw data through the system. Also inline. -->
 <!ELEMENT raw %text.model;>
 <!ATTLIST raw
     %basic.atts;
     %fixedspace.att;
-    format    CDATA     #IMPLIED>
-
+    format    NMTOKEN   #IMPLIED>
 
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -497,7 +494,7 @@ following caveats:
 <!ELEMENT interpreted (%text.model;)>
 <!ATTLIST interpreted
     %basic.atts;
-    role      CDATA     #IMPLIED
+    role      NMTOKEN   #IMPLIED
     position  (prefix | suffix)  #IMPLIED>
 
 <!ELEMENT literal (#PCDATA)>
@@ -532,7 +529,6 @@ following caveats:
 
 <!ELEMENT generated (%text.model;)>
 <!ATTLIST generated %basic.atts;>
-
 
 <!--
 Local Variables:
