@@ -4803,17 +4803,28 @@ Entity definition:
 
 .. parsed-literal::
 
-    ( ( (`%body.elements;`_ | topic_ | sidebar_)+,
-        (transition_, (`%body.elements;`_ | topic_ | sidebar_)+ )*,
-        ( (`%section.elements;`_), (transition_?, (`%section.elements;`_) )* )? )
-    | ( (`%section.elements;`_), (transition_?, (`%section.elements;`_) )* ) )? ">
+   ( ( (`%body.elements;`_ | topic_ | sidebar_)+, transition_? )*,
+     ( (`%section.elements;`_), (transition_?, (`%section.elements;`_) )* )? )
 
 Each document_ or section_ contains zero or more body elements,
-topics, and/or sidebars, optionally interspersed with transitions (but
-transitions cannot occur at the beginning or end, nor may there be two
-transitions in a row), followed by zero or more sections (whose
-contents are recursively the same as this model) optionally
-interspersed with transitions.
+topics, and/or sidebars, optionally interspersed with single
+transitions, followed by zero or more sections (whose contents are
+recursively the same as this model) optionally interspersed with
+transitions.
+
+The following restrictions are imposed by this model:
+
+* Transitions must be separated by other elements (body elements,
+  sections, etc.).  In other words, a transition may not be
+  immediately adjacent to another transition.
+
+* A transition may not occur at the beginning of a document or
+  section.
+
+An additional restriction, which cannot be expressed in the language
+of DTDs, is imposed by software:
+
+* A transition may not occur at the end of a document or section.
 
 The `%structure.model;`_ parameter entity is directly employed in the
 content models of the document_ and section_ elements.

@@ -140,11 +140,10 @@ resolve to either an internal or external reference.
 <!-- Element Content Models
 ================================================================== -->
 
+<!-- The structure model may not end with a transition. -->
 <!ENTITY % structure.model
-   " ( ( (%body.elements; | topic | sidebar)+,
-         (transition, (%body.elements; | topic | sidebar)+ )*,
-         ( (%section.elements;), (transition?, (%section.elements;) )* )? )
-     | ( (%section.elements;), (transition?, (%section.elements;) )* ) )? ">
+   " ( ( (%body.elements; | topic | sidebar)+, transition? )*,
+       ( (%section.elements;), (transition?, (%section.elements;) )* )? )">
 
 <!ENTITY % text.model
   " (#PCDATA | %inline.elements;)* ">
