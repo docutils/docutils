@@ -28,7 +28,6 @@
 ;;
 
 (defun replace-lines (fromchar tochar)
-  ;; by David Goodger
   "Replace flush-left lines, consisting of multiple FROMCHAR characters,
 with equal-length lines of TOCHAR."
   (interactive "\
@@ -52,21 +51,12 @@ cand replace with char: ")
 	 (message (format "%d lines replaced." found)))))))
 
 (defun join-paragraph ()
-  ;; by David Goodger
   "Join lines in current paragraph into one line, removing end-of-lines."
   (interactive)
-  (save-excursion
-    (backward-paragraph 1)
-    (forward-char 1)
-    (let ((start (point)))	; remember where we are
-      (forward-paragraph 1)	; go to the end of the paragraph
-      (beginning-of-line 0)	; go to the beginning of the previous line
-      (while (< start (point))	; as long as we haven't passed where we started
-	(delete-indentation)	; join this line to the line before
-	(beginning-of-line)))))	; and go back to the beginning of the line
+  (let ((fill-column 65000)) ; some big number
+    (call-interactively 'fill-paragraph)))
 
 (defun force-fill-paragraph ()
-  ;; by David Goodger
   "Fill paragraph at point, first joining the paragraph's lines into one.
 This is useful for filling list item paragraphs."
   (interactive)
