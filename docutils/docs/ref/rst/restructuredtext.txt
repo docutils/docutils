@@ -57,7 +57,7 @@ Here are examples of `body elements`_:
       external hyperlinks (Python_), internal cross-references
       (example_), footnote references ([1]_), citation references
       ([CIT2002]_), substitution references (|example|), and _`inline
-      hyperlink targets`.
+      internal targets`.
 
       Paragraphs are separated by blank lines and are left-aligned.
 
@@ -1460,7 +1460,7 @@ indirect.
        .. _Doc-SIG: http://mail.python.org/pipermail/doc-sig/
 
     An inline form of internal hyperlink target is available; see
-    `Inline Hyperlink Targets`_.
+    `Inline Internal Targets`_.
 
 2. _`External hyperlink targets` have an absolute or relative URI in
    their link blocks.  For example, take the following input::
@@ -1944,7 +1944,7 @@ identical start-strings and end-strings to indicate the markup:
 
 Three constructs use different start-strings and end-strings:
 
-- `inline hyperlink targets`_: "_`" and "`"
+- `inline internal targets`_: "_`" and "`"
 - `footnote references`_: "[" and "]_"
 - `hyperlink references`_: "`" and "\`_" (phrases), or just a
   trailing "_" (single words)
@@ -2005,7 +2005,7 @@ each character.  The inline markup recognition order is as follows:
 - Asterisks: `Strong emphasis`_ ("**") is recognized before emphasis_
   ("*").
 
-- Backquotes: `Inline literals`_ ("``"), `inline hyperlink targets`_
+- Backquotes: `Inline literals`_ ("``"), `inline internal targets`_
   (leading "_`", trailing "`"), are mutually independent, and are
   recognized before phrase `hyperlink references`_ (leading "`",
   trailing "\`_") and `interpreted text`_ ("`").
@@ -2153,17 +2153,17 @@ match references to targets, but otherwise behave similarly to named
 hyperlinks.
 
 
-Inline Hyperlink Targets
+Inline Internal Targets
 ------------------------
 
 DTD element: target.
 
 Start-string = "_`", end-string = "`".
 
-Inline hyperlink targets are the equivalent of explicit `internal
+Inline internal targets are the equivalent of explicit `internal
 hyperlink targets`_, but may appear within running text.  The syntax
 begins with an underscore and a backquote, is followed by a hyperlink
-name or phrase, and ends with a backquote.  Inline hyperlink targets
+name or phrase, and ends with a backquote.  Inline internal targets
 may not be anonymous.
 
 For example, the following paragraph contains a hyperlink target named
