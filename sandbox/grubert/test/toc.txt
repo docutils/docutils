@@ -1,0 +1,24 @@
+===================
+ table of contents
+===================
+
+.. contents::
+
+Quick-Start
+===========
+
+Test latex table of contents usage.
+
+Sub section
+-----------
+
+Needs some content
+
+A section
+=========
+
+Subsection again
+----------------
+
+This should do it.
+
