@@ -556,8 +556,8 @@ can tweak the `initial_header_level`_ setting
 to your specific document, you might end up with invalid HTML (e.g. H3
 without H2).
 
-.. _doctitle-xform: docs/config.html#doctitle-xform
-.. _initial-header-level: docs/config.html#initial-header-level
+.. _doctitle_xform: docs/config.html#doctitle-xform
+.. _initial_header_level: docs/config.html#initial-header-level
 
 (Thanks to Mark McEahern for the question and much of the answer.)
 
