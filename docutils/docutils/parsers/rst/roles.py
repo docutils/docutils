@@ -53,12 +53,11 @@ when no role is specified for a piece of interpreted text.
 
 _role_registry = {}
 """Mapping of canonical role names to role functions.  Language-dependent role
-names are defined in the ``language`` subpackage.  """
+names are defined in the ``language`` subpackage."""
 
 _roles = {}
-"""Mapping of language-dependent interpreted text role names to already
-imported directive functions."""
-
+"""Mapping of local or language-dependent interpreted text role names to role
+functions."""
 
 def role(role_name, language_module, lineno, inliner):
     """
