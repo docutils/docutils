@@ -51,9 +51,9 @@ you'll need the following:
 Installation
 ============
 
-The first step is to expand the ``.tar.gz`` or ``.tgz`` archive.  It
-contains a distutils setup file "setup.py".  OS-specific installation
-instructions follow.
+The first step is to expand the ``.tar.gz`` or ``.tgz`` archive. [1]_
+It contains a distutils setup file "setup.py".  OS-specific
+installation instructions follow.
 
 Win32
 -----
@@ -124,7 +124,7 @@ Publish a file as HTML
 A file which has been loaded into the editor can be published as HTML
 by pressing ``F7``.  The processing happens in a standard Docutils way: 
 The HTML file is created in the directory of your text file and you can 
-customize processing by setting up Docutils configuration files. [1]_
+customize processing by setting up Docutils configuration files. [2]_
 
 As soon as the processing is finished the HTML-file will be displayed 
 in a preview page.  Please note that this preview does **not** support 
@@ -164,7 +164,7 @@ dialog will appear.  It consists of two pages:
   the values of certain configuration file entries (*stylesheet*, 
   *output-encoding*, *datestamp*, ...).  Please have a closer look at 
   the Docutils documentation on configuration file entries to learn about 
-  the effect of these settings. [2]_
+  the effect of these settings. [3]_
 
 Press the "OK"-button to finish the setup.  The project appears as part
 of the tree on the left. 
@@ -260,9 +260,12 @@ will be implemented as well.  For example:
 
 .. Footnotes
 
-.. [1] http://docutils.sourceforge.net/docs/tools.html#configuration-files
+.. [1] The latest DocFactory-tarball is available at 
+       http://docutils.sf.net/docfactory-snapshot.tgz.
+ 
+.. [2] http://docutils.sourceforge.net/docs/tools.html#configuration-files
 
-.. [2] http://docutils.sourceforge.net/docs/tools.html#configuration-file-entries
+.. [3] http://docutils.sourceforge.net/docs/tools.html#configuration-file-entries
 
 .. Hyperlinks
 
