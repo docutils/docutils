@@ -475,12 +475,16 @@ stylesheet
 
     __ `stylesheet [latex2e writer]`_
 
-_`stylesheet_path`
+.. _stylesheet_path [html4css1 writer]:
+
+stylesheet_path
     Path to CSS stylesheet [#pwd]_.  Overrides "stylesheet" URL option
     (``--stylesheet``).  Path is adjusted relative to the output HTML
-    file.
+    file.  Also defined for the `LaTeX Writer`__.
 
-    Default: None.  Options: ``--stylesheet``.
+    Default: None.  Options: ``--stylesheet-path``.
+
+    __ `stylesheet_path [latex2e writer]`_
 
 .. _xml_declaration [html4css1 writer]:
 
@@ -538,32 +542,35 @@ _`use_latex_toc`
     *Note:* LaTeX will number the sections, which might be a bug in
     this case.
 
-    Default: off.  Options: ``--use-latex-toc``.
+    Default: off.  Option: ``--use-latex-toc``.
+
+.. XXX Missing: use_latex_docinfo
 
 _`use_latex_footnotes`
     Use LaTeX-footnotes not a figure simulation. This might give no
-    Hyperrefs on /to footnotes, but should be able to handle an unlimited
-    number of footnotes.
+    Hyperrefs on /to footnotes, but should be able to handle an
+    unlimited number of footnotes.
 
-    Default: off.  Options: ``--use-latex-footnotes``.
+    Default: off.  Option: ``--use-latex-footnotes``.
 
 _`hyperlink_color`
-    Color of any hyperlinks embedded in text. Use "0" to disable coloring
-    of links.
+    Color of any hyperlinks embedded in text. Use "0" to disable
+    coloring of links.
 
-    Default: "blue", use "0" to disable.  Options
+    Default: "blue", use "0" to disable.  Option:
+    ``--hyperlink-color``.
 
 _`documentclass`
     Specify latex documentclass, *but* beaware that books have chapters
     articles not.
 
-    Default: "article".
+    Default: "article".  Option: ``--documentclass``.
 
 _`documentoptions`
     Specify document options.  Multiple options can be given, separated by
     commas.
 
-    Default is "10pt".
+    Default is "10pt".  Option: ``--documentoptions``.
 
 .. _stylesheet [latex2e writer]:
 
@@ -572,9 +579,22 @@ stylesheet
     the document header. If this is set to "" disables generation of
     input latex command.  Also defined for the `HTML Writer`__.
 
-    Default: no stylesheet ("").
+    Default: no stylesheet ("").  Option: ``--stylesheet``.
 
     __ `stylesheet [html4css1 writer]`_
+
+.. _stylesheet_path [latex2e writer]:
+
+stylesheet_path
+    Path to stylesheet [#pwd]_.  Overrides "stylesheet" setting
+    (``--stylesheet``).  XXX LaTeX semantics?  Also defined for the
+    `HTML Writer`__.
+
+    Default: None.  Option: ``--stylesheet-path``.
+
+    __ `stylesheet_path [html4css1 writer]`_
+
+.. XXX Missing: embed_stylesheet
 
 .. _footnote_references [latex2e writer]:
 
@@ -582,7 +602,7 @@ footnote_references
     Format for footnote references: one of "superscript" or
     "brackets".  Also defined for the `HTML Writer`__.
 
-    Default is "brackets".
+    Default is "brackets".  Option: ``--footnote-references``.
 
     __ `footnote_references [html4css1 writer]`_
 
@@ -594,9 +614,39 @@ attribution
     "parentheses"/"parens" or "none".  Also defined for the `HTML
     Writer`__.
 
-    Default: "dash".
+    Default: "dash".  Option: ``--attribution``.
 
     __ `attribution [html4css1 writer]`_
+
+_`compound_enumerators`
+    Enable or disable compound enumerators for nested enumerated lists
+    (e.g. "1.2.a.ii").
+
+    Default: disabled (None).  Options: ``--compound-enumerators``,
+    ``--no-compound-enumerators``.
+
+_`section_prefix_for_enumerators`
+    Enable or disable section ("." subsection ...) prefixes for
+    compound enumerators.  This has no effect unless
+    `compound_enumerators`_ are enabled.
+    
+    Default: disabled (None).  Options:
+    ``--section-prefix-for-enumerators``,
+    ``--no-section-prefix-for-enumerators``.
+
+_`section_enumerator_separator`
+    The separator between section number prefix and enumerator for
+    compound enumerated lists (see `compound_enumerators`_).
+
+    Generally it isn't recommended to use both sub-sections and nested
+    enumerated lists with compound enumerators.  This setting avoids
+    ambiguity in the situation where a section "1" has a list item
+    enumerated "1.1", and subsection "1.1" has list item "1".  With a
+    separator of ".", these both would translate into a final compound
+    enumerator of "1.1.1".  With a separator of "-", we get the
+    unambiguous "1-1.1" and "1.1-1".
+
+    Default: "-".  Option: ``--section-enumerator-separator``.
 
 
 [pseudoxml writer]
