@@ -1223,7 +1223,7 @@ node_class_names = """
         footnote footnote_reference
     generated
     header hint
-    image important inline
+    image important info inline
     label legend line_block list_item literal literal_block
     note
     option option_argument option_group option_list option_list_item
