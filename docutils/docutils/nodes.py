@@ -1284,8 +1284,10 @@ class NodeVisitor:
        1995.
     """
 
-    optional = ('compound',)
+    optional = ()
     """
+    Tuple containing node class names (as strings).
+
     No exception will be raised if writers do not implement visit
     or departure functions for these node classes.
 
