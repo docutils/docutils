@@ -29,7 +29,7 @@ class Reader(Component):
 
     component_type = 'reader'
 
-    def __init__(self, parser, parser_name):
+    def __init__(self, parser=None, parser_name='restructuredtext'):
         """
         Initialize the Reader instance.
 
