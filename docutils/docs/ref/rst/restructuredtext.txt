@@ -754,7 +754,7 @@ DTD elements: field_list, field, field_name, field_argument,
 field_body.
 
 Field lists are most often used as part of an extension syntax, such
-as attributes for directives_, or database-like fields meant for
+as attributes for directives_, or database-like records meant for
 further processing.  They are not intended to be an alternative to
 definition lists.  Applications of reStructuredText may recognize
 field names and transform fields or field bodies in certain contexts.
@@ -815,7 +815,7 @@ Bibliographic Fields
 ````````````````````
 
 DTD elements: docinfo, author, authors, organization, contact,
-version, status, date, copyright, topic.
+version, status, date, copyright, field, topic.
 
 When a field list is the first non-comment element in a document
 (after the document title, if there is one), it may have certain
@@ -823,15 +823,15 @@ specific fields transformed to document bibliographic data.  This
 bibliographic data corresponds to the front matter of a book, such as
 the title page and copyright page.
 
-Certain field names (listed below) are recognized and transformed to
-the corresponding DTD elements, most becoming child elements of the
-"docinfo" element.  No ordering is required of these fields, although
-they may be rearranged to fit the document structure, as noted.
-Unless otherwise indicated in the list below, each of the
-bibliographic elements' field bodies may contain a single paragraph
-only.  Field bodies may be checked for `RCS keywords`_ and cleaned up.
-Any unrecognized fields will remain in a generic field list in the
-document body.
+Certain registered field names (listed below) are recognized and
+transformed to the corresponding DTD elements, most becoming child
+elements of the "docinfo" element.  No ordering is required of these
+fields, although they may be rearranged to fit the document structure,
+as noted.  Unless otherwise indicated below, each of the bibliographic
+elements' field bodies may contain a single paragraph only.  Field
+bodies may be checked for `RCS keywords`_ and cleaned up.  Any
+unrecognized fields will remain as generic fields in the docinfo
+element.
 
 The registered bibliographic field names and their corresponding DTD
 elements are as follows:
@@ -844,6 +844,7 @@ elements are as follows:
 - "Status": status.
 - "Date": date.
 - "Copyright": copyright.
+- "Dedication": topic.
 - "Abstract": topic.
 
 The "Authors" field may contain either: a single paragraph consisting
@@ -856,14 +857,17 @@ single name is interpreted as an "Author".  If a single name contains
 a comma, end it with a semicolon to disambiguate: ":Authors: Doe,
 Jane;".
 
-The "Abstract" field may contain arbitrary body elements.  Only one
-abstract is allowed.  The abstract becomes a topic element with title
-"Abstract" (or language equivalent) immediately following the docinfo
-element.
+The "Dedication" and "Abstract" fields may contain arbitrary body
+elements.  Only one of each is allowed.  They become topic elements
+with "Dedication" or "Abstract" titles (or language equivalents)
+immediately following the docinfo element.
 
-This field-name-to-element mapping can be extended, or replaced for
-other languages.  See the `DocInfo transform`_ implementation
-documentation for details.
+This field-name-to-element mapping can be replaced for other
+languages.  See the `DocInfo transform`_ implementation documentation
+for details.
+
+Unregistered/generic fields may contain one or more paragraphs or
+arbitrary body elements.
 
 
 RCS Keywords
@@ -1277,8 +1281,13 @@ column.  In that case, that line of text is parsed as a continuation
 line.  For this reason, cells in the first column of new rows (*not*
 continuation lines) *must* contain some text; blank cells would lead
 to a misinterpretation.  An empty comment ("..") is sufficient and
-will be omitted from the processed output.  Also, cells in the first
-column are limited to one line of text.
+will be omitted from the processed output.  Also, this mechanism
+limits cells in the first column to only one line of text.  Use `grid
+tables`_ if this limitation is unacceptable.
+
+Underlines of '-' may also be used to visually separate rows, even if
+there are no column spans.  This is especially useful in long tables,
+where rows are many lines long.
 
 Blank lines are permitted within simple tables.  Their interpretation
 depends on the context.  Blank lines *between* rows are ignored.
