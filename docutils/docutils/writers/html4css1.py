@@ -746,6 +746,8 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_image(self, node):
         atts = node.attributes.copy()
+        if atts.has_key('class'):
+            del atts['class']           # prevent duplication with node attrs
         atts['src'] = atts['uri']
         del atts['uri']
         if not atts.has_key('alt'):
