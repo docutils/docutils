@@ -80,13 +80,13 @@ The exceptions to the `Public Domain Dedication`_ above are:
 
   __ licenses/python-2-1-1.txt
 
-* test/difflib.py, copyright by the Python Software Foundation,
-  released under the `Python 2.2 license`_ (`local copy`__).  This
-  file is included for compatibility with Python versions less than
-  2.2; if you have Python 2.2 or higher, difflib.py is not needed and
-  may be removed.  (It's only used to report test failures anyhow; it
-  isn't installed anywhere.  The included file is a pre-generator
-  version of the difflib.py module included in Python 2.2.)
+* test/docutils_difflib.py, copyright by the Python Software
+  Foundation, released under the `Python 2.2 license`_ (`local
+  copy`__).  This file is included for compatibility with Python
+  versions less than 2.2.  (It's only used to report test failures
+  anyhow; it isn't installed anywhere.  The included file is a
+  pre-generator version of the difflib.py module included in Python
+  2.2.)
 
   __ licenses/python-2-2.txt
 
