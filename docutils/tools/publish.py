@@ -7,28 +7,12 @@
 :Date: $Date$
 :Copyright: This module has been placed in the public domain.
 
-A minimal front-end to the Docutils Publisher.
-
-This module takes advantage of the default values defined in `publish()`.
+A minimal front-end to the Docutils Publisher, producing pseudo-XML.
 """
 
-import sys
 from docutils.core import publish
-from docutils import utils
 
 
-reporter = utils.Reporter(1, 4)
+usage = 'usage:\n  %prog [options] [source [destination]]'
 
-if len(sys.argv) == 2:
-    source = sys.argv[1]
-    destination = None
-elif len(sys.argv) == 3:
-    source = sys.argv[1]
-    destination = sys.argv[2]
-elif len(sys.argv) > 3:
-    print >>sys.stderr, 'Maximum 2 arguments allowed.'
-    sys.exit(1)
-else:
-    source = None
-    destination = None
-publish(source=source, destination=destination, reporter=reporter)
+publish(usage=usage)
