@@ -70,7 +70,7 @@ Directive Name    Description
 ================  ====================================================
 attention         Specific admonition; also "caution", "danger",
                   "error", "hint", "important", "note", "tip", "warning"
-admonition        Generic admonition: ``.. admonition:: By The Way``
+admonition        Generic titled admonition: ``.. admonition:: By The Way``
 image             ``.. image:: picture.png``; many options possible
 figure            Like "image", but with optional caption and legend
 topic             ``.. topic:: Title``; like a mini section
@@ -82,7 +82,9 @@ rubric            ``.. rubric:: Informal Heading``
 epigraph          Block quote with class="epigraph"
 highlights        Block quote with class="highlights" 
 pull-quote        Block quote with class="pull-quote"
-table             Create a titled table
+table             Create a titled table (new in Docutils 0.3.1)
+csv-table         Create a titled table from CSV data (requires Python 2.3+;
+                  new in Docutils 0.3.4)
 contents          Generate a table of contents
 sectnum           Automatically number sections, subsections, etc.
 target-notes      Create an explicit footnote for each external target
@@ -92,7 +94,7 @@ raw               Non-reST data passed untouched to the Writer
 replace           Replacement text for substitution definitions
 unicode           Unicode character code conversion for substitution defs
 class             Set a "class" attribute on the next element
-role              Create a custom interpreted text role
+role              Create a custom interpreted text role (new in Docutils 0.3.2)
 ================  ====================================================
 
 Interpreted Text Role Quick Reference
