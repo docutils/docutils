@@ -41,7 +41,7 @@ this functionality is discouraged. Get a proper `Makefile' instead."
   :group 'rst
   :version "21.1")
 
-(defcustom rst-html-command "docutils_html"
+(defcustom rst-html-command "docutils-html"
   "Command to convert an reST file to HTML."
   :group 'rst-html
   :type '(string))
@@ -84,6 +84,45 @@ Stylesheets are set by an own option."
 	(call-interactively 'compile)
       (compile compile-command))
     ))
+
+(defun rst-html-compile-with-conf ()
+  "Compile command to convert reST document into HTML. Attempts to find
+configuration file, if it can, overrides the options."
+  (interactive)
+  (let ((conffile (rst-html-find-conf)))
+    (if conffile
+	(let* ((bufname (file-name-nondirectory buffer-file-name))
+	       (outname (file-name-sans-extension bufname)))
+	  (set (make-local-variable 'compile-command)
+	       (mapconcat 'identity
+			  (list rst-html-command
+				(concat "--config=\"" conffile "\"")
+				bufname (concat outname rst-html-extension))
+			  " "))
+	  (if (or compilation-read-command current-prefix-arg)
+	      (call-interactively 'compile)
+	    (compile compile-command)))
+      (call-interactively 'rst-html-compile)
+      )))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Find the configuration file in the parents.
+
+(defun rst-html-find-conf ()
+  "Look for the configuration file in the parents of the current path."
+  (interactive)
+  (let ((file-name "docutils.conf")
+	(buffer-file (buffer-file-name)))
+    ;; Move up in the dir hierarchy till we find a change log file.
+    (let ((dir (file-name-directory buffer-file)))
+      (while (and (or (not (string= "/" dir)) (setq dir nil) nil)
+		  (not (file-exists-p (concat dir file-name))))
+	;; Move up to the parent dir and try again.
+	(setq dir (expand-file-name (file-name-directory 
+				     (directory-file-name
+				     (file-name-directory dir))))) )
+      (or (and dir (concat dir file-name)) nil)
+    )))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
