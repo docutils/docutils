@@ -553,7 +553,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</li>\n')
 
     def visit_literal(self, node):
-        self.body.append('<tt>')
+        self.body.append(self.starttag(node, 'tt', '', CLASS='literal'))
 
     def depart_literal(self, node):
         self.body.append('</tt>')
