@@ -1,3 +1,17 @@
+2002-11
+-------
+
+pdfsamples
+~~~~~~~~~~
+
+a. reduced tools_test.txt_ multirow and multicol tablecells donot work. 
+  
+b. docs_tools.txt_.
+
+.. _tools_test.txt: test.pdf
+
+.. _docs_tools.txt: tools.pdf
+
 2002-09
 -------
 
