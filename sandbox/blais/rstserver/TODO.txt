@@ -25,3 +25,14 @@ Devel version
 - fix major problem with images and links within subdirectories
 - add %(home) to the default config parser environment
 - add redirect "Please wait... regenerating file."
+
+Ideas:
+
+- parse the whole thing, extract document titles
+- generate index.txt for each directory
+- unless a special directive is present within the index.txt file (if
+  present), concatenate to the read index.txt
+- output all documents in a separate root directory, with the same
+  structure
+- start from buildhtml.py
+
