@@ -743,7 +743,8 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_problematic(self, node):
         if node.hasattr('refid'):
-            self.body.append('<a href="#%s">' % node['refid'])
+            self.body.append('<a href="#%s" name="%s">' % (node['refid'],
+                                                           node['id']))
             self.context.append('</a>')
         else:
             self.context.append('')
@@ -820,24 +821,28 @@ class HTMLTranslator(nodes.NodeVisitor):
             raise nodes.SkipNode
         self.body.append(self.starttag(node, 'div', CLASS='system-message'))
         self.body.append('<p class="system-message-title">')
+        attr = {}
+        a_end = ''
+        backref_text = ''
+        if node.hasattr('id'):
+            attr['name'] = node['id']
         if node.hasattr('backrefs'):
             backrefs = node['backrefs']
             if len(backrefs) == 1:
-                self.body.append('<a href="#%s">%s</a> '
-                                 '(level %s system message)</p>\n'
-                                 % (backrefs[0], node['type'], node['level']))
+                attr['href'] = '#' + backrefs[0]
             else:
                 i = 1
                 backlinks = []
                 for backref in backrefs:
                     backlinks.append('<a href="#%s">%s</a>' % (backref, i))
                     i += 1
-                self.body.append('%s (%s; level %s system message)</p>\n'
-                                 % (node['type'], ', '.join(backlinks),
-                                    node['level']))
-        else:
-            self.body.append('%s (level %s system message)</p>\n'
-                             % (node['type'], node['level']))
+                backref_text = '%s; ' % ', '.join(backlinks)
+        if attr:
+            self.body.append(self.starttag({}, 'a', attr, ''))
+            a_end = '</a>'
+        self.body.append('%s%s (%slevel %s system message)</p>\n'
+                         % (node['type'], a_end, backref_text,
+                            node['level']))
 
     def depart_system_message(self, node):
         self.body.append('</div>\n')
