@@ -65,11 +65,6 @@ Future Plans
 Changes Since 0.3
 =================
 
-* docutils/writers/latex2e.py:
-
-  - Changed default stylesheet to "no stylesheet" to avoid latex complaining
-    about a missing file.
-
 * docutils/__init__.py:
 
   - 0.3.1: Reorganized config file format (multiple sections); see
@@ -171,6 +166,11 @@ Changes Since 0.3
     Kirill Lapshin).
   - Improved table grid/border handling (prompted by report from Bob
     Marshall).
+
+* docutils/writers/latex2e.py:
+
+  - Changed default stylesheet to "no stylesheet" to avoid latex complaining
+    about a missing file.
 
 * docs/config.txt: "Docutils Configuration Files", added to project.
   Moved config file entry descriptions from tools.txt.
