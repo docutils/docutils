@@ -1,6 +1,3 @@
-Title
-*****
-
 :Author: Foo Fred
 :Organization: Food Foomatics & Friends
 :Contact: foo@food.example.info

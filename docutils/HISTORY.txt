@@ -14,6 +14,15 @@
 Changes Since 0.3.7
 ===================
 
+* docutils/writers/latex2e.py:
+
+  - Improved --use-latex-docinfo so that organization/contact/address
+    fields are lumped with the last author field and appear on the
+    titlepage.
+  - Made sure the titlepage is always shown with --use-latex-docinfo,
+    even if the document has no title.
+  - Made sure that latex doesn't fill in today's date if no date field
+    was given.
 
 Release 0.3.7 (2004-12-24)
 ==========================
