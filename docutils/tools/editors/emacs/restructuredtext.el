@@ -269,7 +269,7 @@ This is useful for filling list item paragraphs."
   "Default section underlining character to use when there aren't
   any others to be used in the file.")
 
-(defvar rest-default-under-and-over-indent 2
+(defvar rest-default-under-and-over-indent 1
   "Number of characters to indent the section title when toggling
   sectioning styles.  This is used when switching from a simple 
   section style to a over-and-under style.")
@@ -402,7 +402,10 @@ This is useful for filling list item paragraphs."
       ;; else we're not switching characters, and there is some sectioning
       ;; already present, so check if the current sectioning is complete and
       ;; correct.
-      (let ((exps (concat "^" (make-string (+ endcol curindent) curchar) "$")))
+      (let ((exps (concat "^" 
+			  (regexp-quote (make-string 
+					 (+ endcol curindent) curchar)) 
+			  "$")))
 	(if (or
 	     (not (save-excursion (forward-line +1)
 				  (beginning-of-line)
