@@ -903,7 +903,10 @@ when used in a document.
 
   - _`images.image`: "border"?
 
-    Units of measure?  (See docutils-users, 2003-03-02.)
+    _`Units of measure`?  (See `docutils-users, 2003-03-02
+    <http://article.gmane.org/gmane.text.docutils.user/154>`__, and
+    `docutils-develop, 2004-04-29
+    <http://article.gmane.org/gmane.text.docutils.devel/1439>`_.)
 
   - _`images.figure`: "title" and "number", to indicate a formal
     figure?
