@@ -450,7 +450,7 @@ Docutils Package Structure
   - Package "docutils.languages": Language modules contain
     language-dependent strings and mappings.  They are named for their
     language identifier (as defined in `Choice of Docstring Format`_
-    above), converting dashes to underscores.
+    below), converting dashes to underscores.
 
     - Function "get_language(language_code)", returns matching
       language module.  (``docutils/languages/__init__.py``)
