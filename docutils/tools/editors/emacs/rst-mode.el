@@ -33,6 +33,11 @@
 ;;       (append '(("\\.rst$" . rst-mode)
 ;;                 ("\\.rest$" . rst-mode)) auto-mode-alist))
 
+;; You can also bind a command to automate converting to HTML:
+;; (defun user-rst-mode-hook ()
+;;   (local-set-key-safe [(control c)(?9)] 'rst-html-compile))
+;; (add-hook 'text-mode-hook 'user-rst-mode-hook)
+
 ;;; Code:
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -676,6 +681,48 @@ entered.")
 	(goto-char (nth 1 mtc))
 	(set-match-data mtc)
 	t))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Conversion to HTML, using compile.
+
+;; You can add something like this at the end your document to customize:
+;; .. Local Variables: ***
+;; .. mode: rst ***
+;; .. rst-html-stylesheet: "http://intranet/style.css" ***
+;; .. End: ***
+
+(defvar rst-html-command "docutils_html --no-toc-backlinks"
+  "Command to convert an reST file to HTML.")
+
+(defvar rst-html-options ""
+  "Local file options for reST to HTML conversion.  This is meant to be used
+within a file's local variables.")
+
+(defvar rst-html-stylesheet nil
+  "Stylesheet for reST to HTML conversion. This variable is provided as a simple
+convenience for local variables.")
+
+(defun rst-html-compile ()
+  "Compile command to convert reST document into HTML."
+  (interactive)
+  (let* ((bufname (file-name-nondirectory buffer-file-name))
+	 (outname (file-name-sans-extension bufname))
+	 (ssheet
+	  (or (and rst-html-stylesheet
+		   (concat "--stylesheet=\"" rst-html-stylesheet "\""))
+	      ""))
+	 )
+    (make-variable-buffer-local 'compile-command)
+    (setq compile-command
+	  (mapconcat 'identity
+		     (list rst-html-command
+			   ssheet rst-html-options
+			   bufname (concat outname ".html"))
+		     " "))
+    (if compilation-read-command
+	(call-interactively 'compile)
+      (compile compile-command))
+    ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
