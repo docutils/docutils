@@ -280,6 +280,8 @@ h1 {
   font-size: 18pt }
 
 h1.title {
+  color: white ;
+  background-color: #00009F ;
   padding-top: 0cm }
 
 h2 {

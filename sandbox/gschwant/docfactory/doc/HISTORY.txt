@@ -14,7 +14,7 @@ DocFactory 0.2 (2003/01/08)
   * New editor features:
 
     - Change EOLs to CR/LF/CRLF
-    - Find & Replace... (using `regular expression syntax`_ as defined
+    - Find & Replace... (using |regular expression syntax| as defined
       by Python's re-module)
     - Goto line...
     - Insert image/figure/path
@@ -31,7 +31,7 @@ DocFactory 0.2 (2003/01/08)
   * Stylesheet-support of HTML-viewer on Windows platforms. 
   * Automatic stylesheet-creation.
   * Animated "About"-dialog.
-  * Added "docfactory2exe.py" for usage with py2exe_. 
+  * Added "docfactory2exe.py" for usage with |py2exe|. 
   * Modified data storage. 
 
   **>>>** see README_ for details
@@ -43,6 +43,14 @@ DocFactory 0.1.4 (2002/09/30)
 DocFactory 0.1.3 (2002/09/15)
   * Initial sandbox-release.
 
-.. _py2exe:                      http://py2exe.sourceforge.net
-.. _`regular expression syntax`: http://www.python.org/doc/current/lib/re-syntax.html
+
+
+.. |py2exe| raw:: html
+
+  <a class="reference" href="http://py2exe.sourceforge.net" target="_top">py2exe</a>
+
+.. |regular expression syntax| raw:: html
+
+  <a class="reference" href="http://www.python.org/doc/current/lib/re-syntax.html target="_top">regular expression syntax</a>
+
 .. _README:                      ../README.html
