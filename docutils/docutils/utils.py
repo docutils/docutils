@@ -29,27 +29,28 @@ class Reporter:
     Five levels of system messages are defined, along with corresponding
     methods: `debug()`, `info()`, `warning()`, `error()`, and `severe()`.
 
-    There is typically one Reporter object per process. A Reporter object is
-    instantiated with thresholds for generating warnings and errors (raising
-    exceptions), a switch to turn debug output on or off, and an I/O stream
-    for warnings. These are stored in the default reporting category, ''
-    (zero-length string).
+    There is typically one Reporter object per process.  A Reporter object is
+    instantiated with thresholds for reporting (generating warnings) and
+    halting processing (raising exceptions), a switch to turn debug output on
+    or off, and an I/O stream for warnings.  These are stored in the default
+    reporting category, '' (zero-length string).
 
-    Multiple reporting categories [#]_ may be set, each with its own warning
-    and error thresholds, debugging switch, and warning stream (collectively a
-    `ConditionSet`). Categories are hierarchically-named strings that look
-    like attribute references: 'spam', 'spam.eggs', 'neeeow.wum.ping'. The
-    'spam' category is the ancestor of 'spam.bacon.eggs'. Unset categories
-    inherit stored conditions from their closest ancestor category that has
-    been set.
+    Multiple reporting categories [#]_ may be set, each with its own reporting
+    and halting thresholds, debugging switch, and warning stream
+    (collectively a `ConditionSet`).  Categories are hierarchical dotted-name
+    strings that look like attribute references: 'spam', 'spam.eggs',
+    'neeeow.wum.ping'.  The 'spam' category is the ancestor of
+    'spam.bacon.eggs'.  Unset categories inherit stored conditions from their
+    closest ancestor category that has been set.
 
     When a system message is generated, the stored conditions from its
-    category (or ancestor if unset) are retrieved. The system message level is
-    compared to the thresholds stored in the category, and a warning or error
-    is generated as appropriate. Debug messages are produced iff the stored
-    debug switch is on. Message output is sent to the stored warning stream.
+    category (or ancestor if unset) are retrieved.  The system message level
+    is compared to the thresholds stored in the category, and a warning or
+    error is generated as appropriate.  Debug messages are produced iff the
+    stored debug switch is on.  Message output is sent to the stored warning
+    stream.
 
-    The default category is '' (empty string). By convention, Writers should
+    The default category is '' (empty string).  By convention, Writers should
     retrieve reporting conditions from the 'writer' category (which, unless
     explicitly set, defaults to the conditions of the default category).
 
@@ -60,16 +61,16 @@ class Reporter:
     levels = 'DEBUG INFO WARNING ERROR SEVERE'.split()
     """List of names for system message levels, indexed by level."""
 
-    def __init__(self, warning_level, error_level, stream=None, debug=0):
+    def __init__(self, report_level, halt_level, stream=None, debug=0):
         """
         Initialize the `ConditionSet` forthe `Reporter`'s default category.
 
         :Parameters:
 
-            - `warning_level`: The level at or above which warning output will
+            - `report_level`: The level at or above which warning output will
               be sent to `stream`.
-            - `error_level`: The level at or above which `SystemMessage`
-              exceptions will be raised.
+            - `halt_level`: The level at or above which `SystemMessage`
+              exceptions will be raised, halting execution.
             - `debug`: Show debug (level=0) system messages?
             - `stream`: Where warning output is sent (`None` implies
               `sys.stderr`).
@@ -78,16 +79,16 @@ class Reporter:
         if stream is None:
             stream = sys.stderr
 
-        self.categories = {'': ConditionSet(debug, warning_level, error_level,
+        self.categories = {'': ConditionSet(debug, report_level, halt_level,
                                             stream)}
         """Mapping of category names to conditions. Default category is ''."""
 
-    def set_conditions(self, category, warning_level, error_level,
+    def set_conditions(self, category, report_level, halt_level,
                        stream=None, debug=0):
         if stream is None:
             stream = sys.stderr
-        self.categories[category] = ConditionSet(debug, warning_level,
-                                                 error_level, stream)
+        self.categories[category] = ConditionSet(debug, report_level,
+                                                 halt_level, stream)
 
     def unset_conditions(self, category):
         if category and self.categories.has_key(category):
@@ -112,13 +113,13 @@ class Reporter:
         msg = nodes.system_message(comment, level=level,
                                    type=self.levels[level],
                                    *children, **attributes)
-        debug, warning_level, error_level, stream = self[category].astuple()
-        if level >= warning_level or debug and level == 0:
+        debug, report_level, halt_level, stream = self[category].astuple()
+        if level >= report_level or debug and level == 0:
             if category:
                 print >>stream, 'Reporter "%s":' % category, msg.astext()
             else:
                 print >>stream, 'Reporter:', msg.astext()
-        if level >= error_level:
+        if level >= halt_level:
             raise SystemMessage(msg)
         return msg
 
@@ -172,14 +173,14 @@ class ConditionSet:
     category.
     """
 
-    def __init__(self, debug, warning_level, error_level, stream):
+    def __init__(self, debug, report_level, halt_level, stream):
         self.debug = debug
-        self.warning_level = warning_level
-        self.error_level = error_level
+        self.report_level = report_level
+        self.halt_level = halt_level
         self.stream = stream
 
     def astuple(self):
-        return (self.debug, self.warning_level, self.error_level,
+        return (self.debug, self.report_level, self.halt_level,
                 self.stream)
 
 
@@ -367,9 +368,9 @@ def id(string):
 non_id_chars = re.compile('[^a-z0-9]+')
 non_id_at_ends = re.compile('^[-0-9]+|-+$')
 
-def new_document(language_code='en', warning_level=2, error_level=4,
+def new_document(language_code='en', report_level=2, halt_level=4,
                  stream=None, debug=0):
-    reporter = Reporter(warning_level, error_level, stream, debug)
+    reporter = Reporter(report_level, halt_level, stream, debug)
     document = nodes.document(language_code=language_code, reporter=reporter)
     return document
 
