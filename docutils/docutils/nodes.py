@@ -21,8 +21,6 @@ hierarchy.
 .. _DTD: http://docutils.sourceforge.net/docs/ref/docutils.dtd
 """
 
-from __future__ import generators
-
 __docformat__ = 'reStructuredText'
 
 import sys
@@ -169,7 +167,7 @@ class Node:
         # list for next_node (for which it's convenient to have
         # condition as first parameter).
         """
-        Return an iterator containing
+        Return an iterable containing
     
         * self (if include_self is true)
         * all descendants in tree traversal order (if descend is true)
@@ -198,46 +196,46 @@ class Node:
 
             [<strong>, <#text: Foo>, <#text: Bar>, <reference>, <#text: Baz>]
         """
+        r = []
         if ascend:
             siblings=1
         if include_self and (condition is None or condition(self)):
-            yield self
+            r.append(self)
         if descend and len(self.children):
             for child in self:
-                for n in child.traverse(
+                r.extend(child.traverse(
                     include_self=1, descend=1, siblings=0, ascend=0,
-                    condition=condition):
-                    yield n
+                    condition=condition))
         if siblings or ascend:
             node = self
             while node.parent:
                 index = node.parent.index(node)
                 for sibling in node.parent[index+1:]:
-                    for n in sibling.traverse(include_self=1, descend=descend,
+                    r.extend(sibling.traverse(include_self=1, descend=descend,
                                               siblings=0, ascend=0,
-                                              condition=condition):
-                        yield n
+                                              condition=condition))
                 if not ascend:
                     break
                 else:
                     node = node.parent
+        return r
 
 
     def next_node(self, condition=None,
                   include_self=0, descend=1, siblings=0, ascend=0):
         """
-        Return the first node in the iterator returned by traverse(),
-        or None if the iterator is empty.
+        Return the first node in the iterable returned by traverse(),
+        or None if the iterable is empty.
 
         Parameter list is the same as of traverse.  Note that
         include_self defaults to 0, though.
         """
-        iterator = self.traverse(condition=condition,
+        iterable = self.traverse(condition=condition,
                                  include_self=include_self, descend=descend,
                                  siblings=siblings, ascend=ascend)
         try:
-            return iterator.next()
-        except StopIteration:
+            return iterable[0]
+        except IndexError:
             return None
 
 class Text(Node, UserString):
