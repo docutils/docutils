@@ -75,6 +75,7 @@ Changes Since 0.3
   - 0.3.1: Reorganized config file format (multiple sections); see
     docs/config.txt.
   - Added unknown_reference_resolvers attribute to TransformSpec.
+  - 0.3.2: Interpreted text reorganization.
 
 * docutils/core.py:
 
@@ -142,6 +143,11 @@ Changes Since 0.3
 * docutils/languages/ru.py: Added to project; Russian mappings by
   Roman Suzi.
 
+* docutils/parsers/rst/roles.py: Added to project.  Contains
+  interpreted text role functions, a registry for interpreted text
+  roles, and an API for adding to and retrieving from the registry.
+  Contributed by Edward Loper.
+
 * docutils/parsers/rst/states.py:
 
   - Updated ``RSTState.nested_parse`` for "include" in table cells.
@@ -165,6 +171,8 @@ Changes Since 0.3
     normalize_name. This is now handled in make_target.
   - Fixed bug relating to role-less interpreted text in non-English
     contexts.
+  - Reorganized interpreted text processing; moved code into the new
+    roles.py module.  Contributed by Edward Loper.
 
 * docutils/parsers/rst/tableparser.py:
 
