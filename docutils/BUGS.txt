@@ -119,6 +119,14 @@ Known Bugs
 
 Also see the `SourceForge Bug Tracker`_.
 
+* .. _duplicate footnotes:
+
+  The following input text causes a crash::
+
+      .. [1] Footnote.
+
+      .. [1] Footnote.
+
 * .. _unencoded stylesheet reference:
 
   ``--stylesheet='foo&bar'`` causes an invalid stylesheet reference to
