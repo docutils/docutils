@@ -1279,7 +1279,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     # footnote/citation label
     def visit_label(self, node):
-        if self.use_latex_footnotes:
+        if isinstance(node.parent, nodes.footnote) and self.use_latex_footnotes:
             raise nodes.SkipNode
         self.body.append('[')
 
