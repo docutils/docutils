@@ -12,6 +12,7 @@ Command-line and common processing for Docutils front-ends.
 
 __docformat__ = 'reStructuredText'
 
+import ConfigParser as CP
 import docutils
 from docutils import optik
 
@@ -92,11 +93,12 @@ class OptionParser(optik.OptionParser):
           ['--dump-internal-document-attributes'],
           {'action': 'store_true'}),))
     """Command-line option specifications, common to all Docutils front-ends.
-    Option group title, description, and a list/tuple of tuples: ``('help
-    text', [list of option strings], {keyword arguments})``.  Group title
-    and/or description may be `None`; no group title implies no group, just a
-    list of single options.  Option specs from Docutils components are also
-    used (see `populate_from_components()`)."""
+    One or more sets of option group title, description, and a
+    list/tuple of tuples: ``('help text', [list of option strings],
+    {keyword arguments})``.  Group title and/or description may be
+    `None`; no group title implies no group, just a list of single
+    options.  Option specs from Docutils components are also used (see
+    `populate_from_components()`)."""
 
     version_template = '%%prog (Docutils %s)' % docutils.__version__
 
@@ -114,16 +116,20 @@ class OptionParser(optik.OptionParser):
 
     def populate_from_components(self, components):
         for component in components:
-            if component is not None and component.cmdline_options:
-                title, description, option_spec = component.cmdline_options
-                if title:
-                    group = optik.OptionGroup(self, title, description)
-                    self.add_option_group(group)
-                else:
-                    group = self        # single options
-                for (help_text, option_strings, kwargs) in option_spec:
-                    group.add_option(help=help_text, *option_strings,
-                                     **kwargs)
+            if component is not None:
+                i = 0
+                cmdline_options = component.cmdline_options
+                while i < len(cmdline_options):
+                    title, description, option_spec = cmdline_options[i:i+3]
+                    if title:
+                        group = optik.OptionGroup(self, title, description)
+                        self.add_option_group(group)
+                    else:
+                        group = self        # single options
+                    for (help_text, option_strings, kwargs) in option_spec:
+                        group.add_option(help=help_text, *option_strings,
+                                         **kwargs)
+                    i += 3
 
     def check_values(self, values, args):
         values.report_level = self.check_threshold(values.report_level)
@@ -149,3 +155,12 @@ class OptionParser(optik.OptionParser):
         if args:
             self.error('Maximum 2 arguments allowed.')
         return source, destination
+
+
+class ConfigParser(CP.ConfigParser):
+
+    def optionxform(self, optionstr):
+        """
+        Transform '-' to '_' so the cmdline form of option names can be used.
+        """
+        return optionstr.lower().replace('-', '_')
