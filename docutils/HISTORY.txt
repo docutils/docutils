@@ -198,6 +198,8 @@ Specific:
   - Fixed bugs in ``relative_path()``.
   - Added support for improved diagnostics.
 
+* docutils/languages: Fixed bibliographic field language lookups.
+
 * docutils/languages/fr.py: Added to project; French mappings by
   Stefane Fermigier.
 
@@ -339,6 +341,7 @@ Specific:
 * docutils/transforms/frontmatter.py:
 
   - Improved support for generic fields.
+  - Fixed bibliographic field language lookups.
 
 * docutils/transforms/parts.py: Added to project.  Miscellaneous
   transforms.

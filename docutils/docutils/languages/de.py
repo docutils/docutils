@@ -10,9 +10,6 @@ German language mappings for language-dependent features of Docutils.
 
 __docformat__ = 'reStructuredText'
 
-from docutils import nodes
-
-
 labels = {
     'author': 'Autor',
     'authors': 'Autoren',
@@ -39,20 +36,19 @@ labels = {
 """Mapping of node class name to label text."""
 
 bibliographic_fields = {
-    'autor': nodes.author,
-    'autoren': nodes.authors,
-    'organisation': nodes.organization,
-    'adresse': nodes.address,
-    'kontakt': nodes.contact,
-    'version': nodes.version,
-    'revision': nodes.revision,
-    'status': nodes.status,
-    'datum': nodes.date,
-    'copyright': nodes.copyright,
-    'widmung': nodes.topic,
-    'zusammenfassung': nodes.topic}
-"""Field name (lowcased) to node class name mapping for bibliographic fields
-(field_list)."""
+    'autor': 'author',
+    'autoren': 'authors',
+    'organisation': 'organization',
+    'adresse': 'address',
+    'kontakt': 'contact',
+    'version': 'version',
+    'revision': 'revision',
+    'status': 'status',
+    'datum': 'date',
+    'copyright': 'copyright',
+    'widmung': 'dedication',
+    'zusammenfassung': 'abstract'}
+"""German (lowcased) to canonical name mapping for bibliographic fields."""
 
 author_separators = [';', ',']
 """List of separator strings for the 'Authors' bibliographic field. Tried in
