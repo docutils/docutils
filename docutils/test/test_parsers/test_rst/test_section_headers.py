@@ -816,6 +816,8 @@ Hi
 ...
 Yo
 ...
+
+Ho
 """,
 """\
 <document source="test data">
@@ -829,6 +831,29 @@ Yo
         <section id="yo" name="yo">
             <title>
                 Yo
+            <paragraph>
+                Ho
+"""],
+["""\
+Empty Section
+=============
+""",
+"""\
+<document source="test data">
+    <section id="empty-section" name="empty section">
+        <title>
+            Empty Section
+        <system_message level="3" line="2" source="test data" type="ERROR">
+            <paragraph>
+                Section empty; must have contents.
+"""],
+["""\
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="0" source="test data" type="ERROR">
+        <paragraph>
+            Document empty; must have contents.
 """],
 ]
 

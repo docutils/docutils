@@ -17,18 +17,18 @@ on the Docutils project, knowingly or not, in terms of encouragement,
 suggestions, criticism, bug reports, code contributions, tasty treats,
 and related projects:
 
-    Aahz, David Ascher, Fred Bremmer, Simon Budig, Brett Cannon, Adam
-    Chodorowski, Fred Drake, Dethe Elza, fantasai, Jim Fulton, Peter
-    Funk, Jorge Gonzalez, Engelbert Gruber, Simon Hefti, Doug
-    Hellmann, Juergen Hermann, Jeremy Hylton, Tony Ibbs, Alan Jaffray,
-    Dmitry Jemerov, Richard Jones, Garth Kidd, Daniel Larsson,
-    Marc-Andre Lemburg, Julien Letessier, Wolfgang Lipp, Edward Loper,
-    Dallas Mahrt, Ken Manheimer, Skip Montanaro, Paul Moore, Michel
-    Pelletier, Sam Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim,
-    Tavis Rudd, Oliver Rutherfurd, Kenichi Sato, Ueli Schlaepfer,
-    Gunnar Schwant, tav, Bob Tolbert, Laurence Tratt, Guido van
-    Rossum, Greg Ward, Barry Warsaw, Edward Welbourne, Ka-Ping Yee,
-    Moshe Zadka
+    Aahz, David Ascher, Fred Bremmer, Ian Bicking, Simon Budig, Brett
+    Cannon, Adam Chodorowski, Fred Drake, Dethe Elza, fantasai, Jim
+    Fulton, Peter Funk, Jorge Gonzalez, Engelbert Gruber, Simon Hefti,
+    Doug Hellmann, Juergen Hermann, Jeremy Hylton, Tony Ibbs, Alan
+    Jaffray, Dmitry Jemerov, Richard Jones, Garth Kidd, Daniel
+    Larsson, Marc-Andre Lemburg, Julien Letessier, Wolfgang Lipp,
+    Edward Loper, Dallas Mahrt, Ken Manheimer, Skip Montanaro, Paul
+    Moore, Michel Pelletier, Sam Penrose, Tim Peters, Pearu Peterson,
+    Mark Pilgrim, Brett g Porter, Tavis Rudd, Oliver Rutherfurd,
+    Kenichi Sato, Ueli Schlaepfer, Gunnar Schwant, tav, Bob Tolbert,
+    Laurence Tratt, Guido van Rossum, Greg Ward, Barry Warsaw, Edward
+    Welbourne, Ka-Ping Yee, Moshe Zadka
 
 Thank you!
 
@@ -214,13 +214,14 @@ Specific:
   - Improved definition list term/classifier parsing.
   - Added warnings for unknown directives.
   - Renamed ``Stuff`` to ``Struct``.
+  - Now flagged as errors: transitions at the beginning or end of
+    sections, empty sections (except title), and empty documents.
 
 * docutils/parsers/rst/tableparser.py:
 
   - Fixed a bug that was producing unwanted empty rows in "simple"
     tables.
   - Detect bad column spans in "simple" tables.
-
 
 * docutils/parsers/rst/directives: Updated all directive functions to
   new API.
@@ -257,6 +258,8 @@ Specific:
   - Added support for the observer pattern from ``utils.Reporter``, in
     ``Reader.parse`` and ``Reader.transform``.
   - Removed ``Reader.transform()`` method.
+  - Added default parameter values to ``Reader.__init__()`` to make
+    instantiation easier.
 
 * docutils/readers/pep.py:
 

@@ -121,6 +121,34 @@ A paragraph.
         <paragraph>
             A paragraph.
 """],
+["""\
+Include Test
+============
+
+.. include:: %s
+
+\\
+
+.. include:: %s
+
+A paragraph.
+""" % (include1, include1),
+"""\
+"""],
+["""\
+Include Test
+============
+
+.. include:: %s
+
+----------
+
+.. include:: %s
+
+A paragraph.
+""" % (include1, include1),
+"""\
+"""],
 ]
 
 
