@@ -199,7 +199,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
     generator = '%% generator Docutils: http://docutils.sourceforge.net/\n'
 
     # use latex tableofcontents or let docutils do it.
-    # BUG: not tested.
     use_latex_toc = 0
     # table kind: if 0 tabularx (single page), 1 longtable
     # maybe should be decided on row count.
@@ -233,7 +232,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
               # possible other packages.
               # * fancyhdr
               # * ltxtable is a combination of tabularx and longtable (pagebreaks).
-              #   but 
+              #   but ??
+              #
+              # extra space between text in tables and the line above them
+              '\\setlength{\\extrarowheight}{2pt}',
               '\\usepackage{amsmath}\n',   # what fore amsmath. 
               '\\usepackage{graphicx}\n',
               '\\usepackage{color}\n',
