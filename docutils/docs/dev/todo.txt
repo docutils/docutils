@@ -243,7 +243,7 @@ General
       As I said earlier in chapter :chapter:`objects`, the
       reference count gets increased every time a binding is made.
 
-* Add testing to Docutils front ends?
+* Add testing for Docutils' front end tools?
 
 * Changes to sandbox/davidg/infrastructure/docutils-update?
 
