@@ -3,6 +3,9 @@
 Convert latex math to images.  Treats the default and ``texmath`` roles as
 inline LaTeX math and the ``texmath::`` directive as display latex math.
 
+Mangles include directives, replacing ``.txt`` extension with
+``.imgmathhack.txt`` to help arranging preprocessing of included files.
+
 .. note::
     This runs external commands and leaves files after itself!  To reduce
     running time when images are not changed and to reuse images for equal
@@ -12,9 +15,12 @@ inline LaTeX math and the ``texmath::`` directive as display latex math.
 
     You'll need:
 
-    - ``tex_to_images``, part of ``speech_tools`` package, last version seems
-      to live at:
-      http://cvs.sourceforge.net/viewcvs.py/*checkout*/emu/speech_tools/scripts/tex_to_images.prl?rev=HEAD
+    - ``tex_to_images``, last version seems to live at the `speech_tools
+      CVS`__.
+      
+      __ http://cvs.sourceforge.net/viewcvs.py/*checkout*/
+         emu/speech_tools/scripts/tex_to_images.prl?rev=HEAD
+
       It, in turn, relies upon:
 
       - LaTeX
@@ -82,4 +88,10 @@ child = Tex_to_images()
 texmath = child.texmath
 texdisplay = child.texdisplay
 
-main({'texmath': texmath}, texmath, {'texmath': texdisplay})
+def mangle_include(text):
+    if text.endswith('.txt'):
+        text = text[:-4] + '.imgmathhack.txt'
+    return 'include:: ' + text
+
+main({'texmath': texmath}, texmath,
+     {'texmath': texdisplay, 'include': mangle_include})
