@@ -21,12 +21,17 @@ Exports the following:
 :Classes:
     - `CustomTestSuite`
     - `CustomTestCase`
+    - `TransformTestSuite`
+    - `TransformTestCase`
     - `ParserTestSuite`
     - `ParserTestCase`
+    - `PEPParserTestSuite`
+    - `PEPParserTestCase`
     - `GridTableParserTestSuite`
     - `GridTableParserTestCase`
     - `SimpleTableParserTestSuite`
     - `SimpleTableParserTestCase`
+    - `DevNull` (output sink)
 """
 __docformat__ = 'reStructuredText'
 
