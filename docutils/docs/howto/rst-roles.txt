@@ -16,9 +16,11 @@ Standard roles are described in `reStructuredText Interpreted Text
 Roles`_.  See the `Interpreted Text`_ section in the `reStructuredText
 Markup Specification`_ for syntax details.
 
-.. _reStructuredText Interpreted Text Roles: ../rst/interpreted.html
-.. _Interpreted Text: ../rst/reStructuredText.html#interpreted-text
-.. _reStructuredText Markup Specification: ../rst/reStructuredText.html
+.. _reStructuredText Interpreted Text Roles: ../ref/rst/roles.html
+.. _Interpreted Text:
+   ../ref/rst/restructuredtext.html#interpreted-text
+.. _reStructuredText Markup Specification:
+   ../ref/rst/restructuredtext.html
 
 
 .. contents::

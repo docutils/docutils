@@ -19,8 +19,8 @@ Specification`_, and standard directives are described in
 `reStructuredText Directives`_.
 
 .. _reStructuredText Markup Specification:
-   ../rst/reStructuredText.html#directives
-.. _reStructuredText Directives: ../rst/directives.html
+   ../ref/rst/restructuredtext.html#directives
+.. _reStructuredText Directives: ../ref/rst/directives.html
 
 
 .. contents:: Table of Contents
