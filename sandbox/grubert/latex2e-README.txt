@@ -4,20 +4,21 @@ latex2e BUGS TODOS and other animals
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
 
-Rev. 2003-01-07
+Rev. 2003-01-08
 
 To do
 ~~~~~
 
-* paragraph separation in tables is hairy. In tools.txt the option tables
-  right column, there should be some more spacing between the description
-  and "Default:".
+* In tools.txt the option tables right column, there should be some more spacing
+  between the description and the next paragraph "Default:".
 
+  Paragraph separation in tables is hairy. 
   see http://www.tex.ac.uk/cgi-bin/texfaq2html?label=struttab
 
   - The strut solution did not work.
   - setting extrarowheight added ad top of row not between paragraphs in
     a cell. ALTHOUGH i set it to 2pt because, text is too close to the topline.
+  - baselineskip/stretch does not help.
 
 * two hlines after table head and on table end ?
 
