@@ -521,7 +521,8 @@ _`initial_header_level`
 .. _stylesheet [html4css1 writer]:
 
 stylesheet
-    CSS stylesheet URL, used verbatim.  Overrides stylesheet_path.
+    CSS stylesheet URL, used verbatim.  Overrides stylesheet_path
+    [#override]_.
 
     Default: "default.css".  Options: ``--stylesheet``.
 
@@ -533,8 +534,9 @@ stylesheet
 
 stylesheet_path
     Path to CSS stylesheet [#pwd]_.  Overrides "stylesheet" URL
-    setting (``--stylesheet``).  Path is adjusted relative to the
-    output HTML file.  Also defined for the `LaTeX Writer`__.
+    setting (``--stylesheet``) [#override]_.  Path is adjusted
+    relative to the output HTML file.  Also defined for the `LaTeX
+    Writer`__.
 
     Default: None.  Options: ``--stylesheet-path``.
 
@@ -629,8 +631,9 @@ _`documentoptions`
 .. _stylesheet [latex2e writer]:
 
 stylesheet
-    Specify a stylesheet file. The file will be ``\input`` by latex in
-    the document header.  Also defined for the `HTML Writer`__.
+    Specify a stylesheet file.  Overrides stylesheet_path
+    [#override]_.  The file will be ``\input`` by latex in the
+    document header.  Also defined for the `HTML Writer`__.
 
     Default: no stylesheet ("").  Option: ``--stylesheet``.
 
@@ -640,7 +643,7 @@ stylesheet
 
 stylesheet_path
     Path to stylesheet [#pwd]_.  Overrides "stylesheet" setting
-    (``--stylesheet``).
+    (``--stylesheet``) [#override]_.
 
     Please note that you will have to run ``latex`` from the directory
     containing the output file; otherwise the stylesheet reference
@@ -798,6 +801,12 @@ _`_source`
 
 .. [#pwd] Path relative to the working directory of the process at
    launch.
+
+.. [#override] The overridden setting will automatically be set to
+   ``None`` for command-line options and config file settings.  Client
+   programs which specify defaults that override other settings must
+   do the overriding explicitly, by assigning ``None`` to the other
+   settings.
 
 
 ------------------------------

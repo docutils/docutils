@@ -460,6 +460,11 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
         keyword argument dictionary entries of components' ``settings_spec``
         attribute."""
 
+        self.overrides = {}
+        """{setting: overridden setting} mapping, used by `validate_options`.
+        The overridden setting is set to `None` when the key setting is
+        encountered."""
+
         self.lists = {}
         """Set of list-type settings."""
 
@@ -508,6 +513,8 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
                         self.validators[option.dest] = kwargs['validator']
                     if kwargs.get('action') == 'append':
                         self.lists[option.dest] = 1
+                    if kwargs.get('overrides'):
+                        self.overrides[option.dest] = kwargs['overrides']
                 if component.settings_defaults:
                     self.defaults.update(component.settings_defaults)
         for component in components:
@@ -621,7 +628,10 @@ section "Old-Format Configuration Files".
         self.remove_section('options')
 
     def validate_settings(self, filename, option_parser):
-        """Call the validator function on all applicable settings."""
+        """
+        Call the validator function and implement overrides on all applicable
+        settings.
+        """
         for section in self.sections():
             for setting in self.options(section):
                 validator = option_parser.validators.get(setting)
@@ -638,6 +648,9 @@ section "Old-Format Configuration Files".
                             % (filename, section, error.__class__.__name__,
                                error, setting, value)), None, sys.exc_info()[2])
                     self.set(section, setting, new_value)
+                override = option_parser.overrides.get(setting)
+                if override:
+                    self.set(section, override, None)
 
     def optionxform(self, optionstr):
         """
