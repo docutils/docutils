@@ -1,0 +1,21 @@
+@import url(df.css);
+
+a {
+  font-weight: bold ;
+  color: #8f8f8f ;
+  font-size: 8pt }
+
+a:hover {
+  color: black ;
+  background-color: white }
+
+a:active {
+  color: black ;
+  background-color: white }
+
+body {
+  padding-top: 1.9cm }
+
+p {
+  margin: 0em 0em ;
+  padding-bottom: 0.1cm }
