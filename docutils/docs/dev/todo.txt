@@ -87,27 +87,71 @@ General
 
   Ideas:
 
-  - A queue, with entries ``(priority, transform, pending=None)``.
+  - Add a ``Transformer`` class that registers and executes
+    transforms.
+
+    - Class contains a queue, with entries ``(priority, transform,
+      pending=None)``.
+
+    - Perhaps ``Transformer.add_transform(transform, priority=None)``,
+      where ``priority`` can be used to override the transform class'
+      ``default_priority`` class attribute (used if ``None``).
+
+    - Perhaps a ``Transformer.add_transforms(transform_list)`` method
+      for quick population.  ``docutils.Component`` could be the host
+      for the ``default_transforms`` class attribute and an
+      ``add_transforms()`` method.
+
+    - How to handle ``pending`` elements?  Perhaps a
+      ``Transformer.add_pending(pending, priority=None)`` method?
+      Just call it from ``nodes.document.note_pending()``.  Need to
+      re-sort the queue whenever a new transform is added.
+
+    - Who creates a ``Transformer`` object?  Attach it to the
+      ``document`` object?  Needs to be accessible when instantiating
+      other components?  Or when "runtime initializing" them.
+
+    - Should components initialize the ``Transformer`` object (add
+      ``self.add_transforms()`` calls to components' ``__init__``), or
+      should the ``Transformer`` initialize itself, accessing the
+      transform lists of the components?
+
+    - Pass a ``Transformer`` object at component instantiation time?
+
   - Transform classes can have ``priority`` class attributes.
     Each transform could have a unique priority.  Use a look-up table?
     No, that would require too many imports to construct.
-  - Priorities can be numeric.  Integers (0..100?  0..999?
-    0..9999?)?  Floats (would be easier to squeeze in new ones)?
-  - Priorities can be strings.  Numeric (000..999?  0000..9999?)?
-    Alphanumeric (a..z?  1, 1a, 1b, ...?)?
+
+    - Priorities can be numeric.  Integers (0..100?  0..999?
+      100..999?  0..9999?)?  Floats (would be easier to squeeze in new
+      ones)?
+
+    - Priorities can be strings.  Numeric (000..999?  100..999?
+      0000..9999?)?  Alphanumeric (a..z?  1, 1a, 1b, ...?)?
+
   - Document transform priorities.
-  - Add a ``Transformer`` class to register and execute transforms.
-    Perhaps ``Transformer.add_transform(transform, priority=None)``,
-    where ``priority`` can be used to override the transform class'
-    ``default_priority`` class attribute (used if ``None``).
-  - Perhaps a ``Transformer.add_transforms(transform_list)`` method
-    for quick population.  ``docutils.Component`` could be the host
-    for the "transforms" class attribute and an ``add_transforms()``.
-    A ``self.add_transforms()`` call could be added to component
-    initialization routines.
-  - How to handle ``pending`` elements?  Perhaps a
-    ``Transformer.add_transform(transform, priority=None)`` method?
-    Just call it from ``nodes.document.note_pending()``.
+
+  - Change ``Transform.transform()`` to ``Transform.apply()``?
+
+  ::
+
+                        +--------------------------+
+                        |        Docutils:         |
+                        | docutils.core.Publisher, |
+                        | docutils.core.publish()  |
+                        +--------------------------+
+                         /            |           \
+                        /             |            \
+               1,3,5   /        6     |             \ 7
+              +--------+       +-------------+      +--------+
+              | READER | ====> | TRANSFORMER | ===> | WRITER |
+              +--------+       +-------------+      +--------+
+               /     \\                                 |
+              /       \\                                |
+          2  /      4  \\                             8 |
+         +-----+   +--------+                        +-----+
+         | I/O |   | PARSER |                        | I/O |
+         +-----+   +--------+                        +-----+
 
 * @@@ Break up ``references.Hyperlinks`` into multiple smaller
   transforms.
@@ -115,52 +159,6 @@ General
 * Make it easier to say, "Here's a reStructuredText string; give me
   HTML."  Maybe ``core.publish_string()``; rename ``core.publish`` to
   ``core.publish_file()``?
-
-* @@@@ All system messages should have a "line" attribute, to improve
-  diagnostic output.  So all elements constructed by the parser should
-  have internal "line" ("lineno"/"line_number") attributes.  They'd
-  need internal "source" attributes as well (populating the external
-  "source" attribute would clutter up the output).
-
-  Is there any way we can get this to happen automagically, without
-  having to add the attribute manually to each object?  System
-  messages get their "source" attribute from the Reporter object (new
-  one for each source).
-
-  - Add an observer subject interface to StateMachine, called whenever
-    next_line, previous_line, or goto_line is called?
-
-  - Who to notify?  Publisher?  Document object?  Singleton?
-
-    - Document object: add ``note_source``, ``note_line_number``
-      methods.  ``note_line_number`` is called by
-      ``StateMachine.notify_observers``.  Whatever reads the source
-      calls ``note_source`` (``utils.new_document()``, "include"
-      directive.
-
-  - Add a ``line=None`` parameter to ``nodes.Node``; if unspecified,
-    it will get the line number from the observer.  (``source=None``
-    too?)
-
-  - Perhaps ``Element.append()`` etc. can also set the ``.document``
-    attribute of each node added.  The document object could hold the
-    current line number and source description, which would also be
-    copied over to the node.  Consolidate all assignments (parent,
-    document, source, line) into a single method.
-
-* @@@ Change stderr Reporter output to the GNU utilities format::
-
-      file:line: message
-
-  or the BSD 4.3 cc format::
-
-      file(line): message
-
-  The GNU utilities format doesn't work well on MacOS 9 & earlier,
-  where directory separators are colons.  "filename.txt:1:" looks like
-  a file or directory path.  Does MacOS X still use colons, or has it
-  switched to slashes?  In any case, the ubiquity of the GNU utilities
-  probably outweighs any such problem.
 
 * Standalone Reader: Implement an option to turn off the DocTitle
   transform?
@@ -535,12 +533,9 @@ __ rst/alternatives.html#or-not-to-do
   (And arguably invalid, since in Japanese the word "haiku" contains
   three syllables.)
 
-* Modify acceptable "simple reference name" syntax to allow for
-  ``object.__method__`` without requiring inline literals?  Simple
-  reference names currently allow any of "-", "_", and "." internally;
-  if we limit this to one at a time, problem solved.  I.e., none of
-  these would be recognized as simple names: "one..two", "one-.two",
-  "one._two", "one__two".
+* Implement auto-enumerated lists?  See `Auto-Enumerated Lists`__.
+
+  __ rst/alternatives.html#auto-enumerated-lists
 
 
 Directives
@@ -616,7 +611,7 @@ Directives
     default and only enabled with an explicit command-line option or
     config file setting.  Even then, an interactive prompt may be
     useful, such as:
-    
+
         The file.txt document you are processing contains a "system"
         directive requesting that the ``sudo rm -rf /`` command be
         executed.  Allow it to execute?  (y/N)
