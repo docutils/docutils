@@ -825,19 +825,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
         text = text.replace("%", '{\\%}')
         text = text.replace("#", '{\\#}')
         text = text.replace("~", '{\\textasciitilde}')
+        # Separate compound characters, e.g. "--" to "-{}-".  (The
+        # actual separation is done later; see below.)
+        separate_chars = '-'
         if self.literal_block or self.literal:
+            # In monospace-font, we also separate ",,", "``" and "''"
+            # and some other characters which can't occur in
+            # non-literal text.
+            separate_chars += ',`\'"<>'
             # pdflatex does not produce doublequotes for ngerman.
             text = self.babel.double_quotes_in_tt(text)
-            # Separate compound characters, e.g. ",,," to ",{},{},".
-            # This is usually only necessary when using T1
-            # font-encoding, but in some languages (like russian) T1
-            # is automatically activated, so we can't rely on
-            # font_encoding-guessing.  Thus we separate the characters
-            # unconditionally, even if it is not necessary.  Note that
-            # the separation must be done twice, because otherwise we
-            # would replace "---" by "-{}--".
-            for char in '"\',-<>`' * 2:
-                text = text.replace(char + char, char + '{}' + char)
             if self.font_encoding == 'OT1':
                 # We're using OT1 font-encoding and have to replace
                 # underscore by underlined blank, because this has
@@ -851,6 +848,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             text = self.babel.quote_quotes(text)
             text = text.replace("_", '{\\_}')
+        for char in separate_chars * 2:
+            # Do it twice ("* 2") becaues otherwise we would replace
+            # "---" by "-{}--".
+            text = text.replace(char + char, char + '{}' + char)
         if self.insert_newline or self.literal_block:
             # Insert a blank before the newline, to avoid
             # ! LaTeX Error: There's no line here to end.
