@@ -56,17 +56,24 @@ class Translator(nodes.NodeVisitor):
         self.colspecs = []
         self.compact_p = 1
         self.compact_simple = None
+        self.in_bullet_list = False
         self.in_docinfo = False
         self.in_sidebar = False
         self.sidebar_start = False
+        self.filterNewlines = True
 
     def astext(self):
         """Return the final formatted document as a string."""
         return ''.join(self.head + ['\n///BODY COPY START///'] +
                        self.body + ['///END BODY COPY///\n'] + self.foot)
 
+    def encode(self, text):
+        if self.filterNewlines:
+            text = text.replace('\n', ' ')
+        return text
+
     def visit_Text(self, node):
-        self.part.append(node.astext())
+        self.part.append(self.encode(node.astext()))
 
     def depart_Text(self, node):
         pass
@@ -127,30 +134,18 @@ class Translator(nodes.NodeVisitor):
             return 1
 
     def visit_bullet_list(self, node):
-        raise NotImplementedError, node.astext()
-        atts = {}
-        old_compact_simple = self.compact_simple
-        self.context.append((self.compact_simple, self.compact_p))
-        self.compact_p = None
-        self.compact_simple = (self.settings.compact_lists and
-                               (self.compact_simple
-                                or self.topic_class == 'contents'
-                                or self.check_simple_list(node)))
-        if self.compact_simple and not old_compact_simple:
-            atts['class'] = 'simple'
-        self.part.append(self.starttag(node, 'ul', **atts))
+        self.in_bullet_list = True
 
     def depart_bullet_list(self, node):
-        raise NotImplementedError, node.astext()
-        self.compact_simple, self.compact_p = self.context.pop()
-        self.part.append('</ul>\n')
+        self.in_bullet_list = False
+        self.part.append('\n')
 
     def visit_caption(self, node):
         self.part.append('\n///CAPTION///')
         self.visit_paragraph(node)
 
     def depart_caption(self, node):
-        pass
+        self.depart_paragraph(node)
 
     def visit_caution(self, node):
         self.visit_admonition(node, 'caution')
@@ -554,47 +549,31 @@ class Translator(nodes.NodeVisitor):
 
     def visit_line_block(self, node):
         raise NotImplementedError, node.astext()
-        self.part.append('\n///CODE///\n')
 
     def depart_line_block(self, node):
         raise NotImplementedError, node.astext()
-        self.part.append('\n///END CODE///\n')
 
     def visit_list_item(self, node):
-        raise NotImplementedError, node.astext()
-        self.part.append(self.starttag(node, 'li', ''))
-        if len(node):
-            node[0].set_class('first')
+        if self.in_bullet_list:
+            self.part.append('\n* ' + node.astext())
+            raise nodes.SkipNode
 
     def depart_list_item(self, node):
-        raise NotImplementedError, node.astext()
-        self.part.append('</li>\n')
+        self.part.append('\n')
 
     def visit_literal(self, node):
-        raise NotImplementedError, node.astext()
-        """Process text to prevent tokens from wrapping."""
-        self.part.append(self.starttag(node, 'tt', '', CLASS='literal'))
-        text = node.astext()
-        for token in self.words_and_spaces.findall(text):
-            if token.strip():
-                # Protect text like "--an-option" from bad line wrapping:
-                self.part.append('<span class="pre">%s</span>'
-                                 % self.encode(token))
-            elif token in ('\n', ' '):
-                # Allow breaks at whitespace:
-                self.part.append(token)
-            else:
-                # Protect runs of multiple spaces; the last space can wrap:
-                self.part.append('&nbsp;' * (len(token) - 1) + ' ')
-        self.part.append('</tt>')
-        # Content already processed:
-        raise nodes.SkipNode
+        self.part.append('///code///')
+
+    def depart_literal(self, node):
+        self.part.append('///code ends///')
 
     def visit_literal_block(self, node):
         self.part.append('\n///CODE///\n')
+        self.filterNewlines = False
 
     def depart_literal_block(self, node):
         self.part.append('\n///END CODE///\n')
+        self.filterNewlines = True
 
     def visit_meta(self, node):
         raise NotImplementedError, node.astext()
@@ -686,13 +665,10 @@ class Translator(nodes.NodeVisitor):
         if self.in_sidebar and self.sidebar_start:
             self.part.append('///BOX BODY///')
             self.sidebar_start = False
-        lines = node.astext().split('\n')
-        line = ' '.join(lines)
-        self.part.append('\n%s\n' % line)
-        raise nodes.SkipNode
+        self.part.append('\n')
 
     def depart_paragraph(self, node):
-        pass
+        self.part.append('\n')
 
     def visit_problematic(self, node):
         raise NotImplementedError, node.astext()
