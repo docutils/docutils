@@ -225,7 +225,7 @@ class OptionParser(optik.OptionParser, docutils.OptionSpec):
                 i += 3
         for component in components:
             if component and component.option_default_overrides:
-                self.set_defaults(component.option_default_overrides)
+                self.defaults.update(component.option_default_overrides)
 
     def check_values(self, values, args):
         if hasattr(values, 'report_level'):
