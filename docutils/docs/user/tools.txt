@@ -362,6 +362,11 @@ debug                 Report debug-level system messages.
                       Default: don't (None).  Options: ``--debug,
                       --no-debug``.
 --------------------  ------------------------------------------------
+doctype_declaration   (XML Writer.)  Generate XML with a DOCTYPE
+                      declaration.
+
+                      Default: do (1).  Options: ``--no-doctype``.
+--------------------  ------------------------------------------------
 dump_internals        At the end of processing, write all internal
                       attributes of the document
                       (``document.__dict__``) to stderr.
@@ -567,6 +572,17 @@ warning_stream        Path to a file for the output of system messages
 
                       Default: stderr (None).  Options:
                       ``--warnings``.
+--------------------  ------------------------------------------------
+xml_declaration       (XML Writer.)  Generate XML with an XML
+                      declaration.
+
+                      .. Caution:: The XML declaration carries text
+                         encoding information, without which standard
+                         tools may be unable to read the generated
+                         XML.
+
+                      Default: do (1).  Options:
+                      ``--no-xml-declaration``.
 
 --------------------  ------------------------------------------------
 **For Internal Use Only** (setting these in a config file has no effect)
