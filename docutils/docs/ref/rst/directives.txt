@@ -11,17 +11,22 @@ reStructuredText parser.
 
 Directives have the following syntax::
 
-    +-------+--------------------------+
-    | ".. " | directive type "::" data |
-    +-------+ directive block          |
-            |                          |
-            +--------------------------+
+    +-------+-------------------------------+
+    | ".. " | directive type "::" directive |
+    +-------+ block                         |
+            |                               |
+            +-------------------------------+
 
 Directives begin with an explicit markup start (two periods and a
-space), followed by the directive type, two colons, optional directive
-data (on the same line as the directive type) and an optional
-directive block (on subsequent lines).  The directive block is
-indented, aligned with the left edge of the directive type.
+space), followed by the directive type and two colons (collectively,
+the "directive marker").  The directive block begins immediately after
+the directive marker, and includes all subsequent indented lines.  The
+directive block is divided into arguments, options (a field list), and
+content.  See the Directives_ section in the `reStructuredText Markup
+Specification`_ for syntax details.
+
+.. _Directives: ./reStructuredText.html#directives
+.. _reStructuredText Markup Specification: ./reStructuredText.html
 
 
 .. contents::
@@ -31,11 +36,17 @@ indented, aligned with the left edge of the directive type.
  Admonitions
 -------------
 
-DTD elements: attention, caution, danger, error, hint, important,
-note, tip, warning.
+* Directive Types: "attention", "caution", "danger", "error", "hint",
+  "important", "note", "tip", "warning"
 
-Directive block: directive data and all following indented text
-are interpreted as body elements.
+* DTD Elements: attention, caution, danger, error, hint, important,
+  note, tip, warning
+
+* Directive Block:
+
+  - Arguments: None.
+  - Options: None.
+  - Content: Interpreted as body elements.
 
 Admonitions are specially marked "topics" that can appear anywhere an
 ordinary body element can.  They contain arbitrary body elements.
@@ -90,25 +101,30 @@ There are two image directives: "image" and "figure".
 Image
 =====
 
-DTD element: image.
+* Directive Type: "image"
 
-Directive block: directive data and following indented lines (up to
-the first blank line) are interpreted as image URI and optional
-attributes.
+* DTD Element: image
+
+* Directive Block:
+
+  - Arguments: One, required (image URI).
+  - Options: Possible.
+  - Content: None.
 
 An "image" is a simple picture::
 
     .. image:: picture.png
 
-The URI for the image source file is specified in the directive data.
-As with hyperlink targets, the image URI may begin on the same line as
-the explicit markup start and target name, or it may begin in an
-indented text block immediately following, with no intervening blank
-lines.  If there are multiple lines in the link block, they are
-stripped of leading and trailing whitespace and joined together.
+The URI for the image source file is specified in the directive
+argument.  As with hyperlink targets, the image URI may begin on the
+same line as the explicit markup start and target name, or it may
+begin in an indented text block immediately following, with no
+intervening blank lines.  If there are multiple lines in the link
+block, they are stripped of leading and trailing whitespace and joined
+together.
 
 Optionally, the image link block may end with a flat field list, the
-_`image attributes`.  For example::
+_`image options`.  For example::
 
     .. image:: picture.jpeg
        :height: 100
@@ -116,7 +132,7 @@ _`image attributes`.  For example::
        :scale: 50
        :alt: alternate text
 
-The following attributes are recognized:
+The following options are recognized:
 
 ``alt`` : text
     Alternate text: a short description of the image, displayed by
@@ -136,15 +152,19 @@ The following attributes are recognized:
 Figure
 ======
 
-DTD elements: figure, image, caption, legend.
+* Directive Type: "figure"
 
-Directive block: directive data and all following indented text are
-interpreted as an image URI, optional attributes, a caption, and an
-optional legend.
+* DTD Elements: figure, image, caption, legend
 
-A "figure" consists of image_ data (optionally including `image
-attributes`_), an optional caption (a single paragraph), and an
-optional legend (arbitrary body elements)::
+* Directive Block:
+
+  - Arguments: One, required (image URI).
+  - Options: Possible.
+  - Content: Interpreted as the figure caption and an optional legend.
+
+A "figure" consists of image_ data (including `image options`_), an
+optional caption (a single paragraph), and an optional legend
+(arbitrary body elements)::
 
     .. figure:: picture.png
        :scale: 50
@@ -166,7 +186,7 @@ optional legend (arbitrary body elements)::
        | .. image:: peak.png   | Mountain              |
        +-----------------------+-----------------------+
 
-There must be a blank line before the caption paragraph and before the
+There must be blank lines before the caption paragraph and before the
 legend.  To specify a legend without a caption, use an empty comment
 ("..") in place of the caption.
 
@@ -178,19 +198,25 @@ legend.  To specify a legend without a caption, use an empty comment
 Topic
 =====
 
-DTD element: topic.
+* Directive Type: "topic"
 
-Directive block: directive data and all following indented lines are
-collected.  The first line is interpreted as the topic title; the
-second line must be blank.  All subsequent lines are the topic body,
-interpreted as body elements.
+* DTD Element: topic
+
+* Directive Block:
+
+  - Arguments: None.
+  - Options: None.
+  - Content: Interpreted as the topic title and body.
 
 A topic is like a block quote with a title, or a self-contained
 section with no subsections.  Use the "topic" directive to indicate a
 self-contained idea that is separate from the flow of the document.
 Topics may occur anywhere a section or transition may occur.  Body
-elements (including topics) may not contain nested topics.  For
-example::
+elements (including topics) may not contain nested topics.
+
+The first line of the directive content block is interpreted as the
+topic title; the second line must be blank.  All subsequent lines make
+up the topic body, interpreted as body elements.  For example::
 
     topic:: Topic Title
 
@@ -202,10 +228,15 @@ example::
 Line Block
 ==========
 
-DTD element: line_block.
+* Directive Type: "line-block"
 
-Directive block: directive data and all following indented text become
-the body of the line block.
+* DTD Element: line_block
+
+* Directive Block: 
+
+  - Arguments: None.
+  - Options: None.
+  - Content: Becomes the body of the line block.
 
 The "line-block" directive constructs an element where whitespace
 (including linebreaks) is significant and inline markup is supported.
@@ -230,10 +261,15 @@ significant.  For example, here's a classic::
 Parsed Literal Block
 ====================
 
-DTD element: literal_block.
+* Directive Type: "literal-block"
 
-Directive block: directive data and all following indented text become
-the body of the literal block.
+* DTD Element: literal_block
+
+* Directive Block: 
+
+  - Arguments: None.
+  - Options: None.
+  - Content: Becomes the body of the literal block.
 
 Unlike an ordinary literal block, the "parsed-literal" directive
 constructs a literal block where the text is parsed for inline markup.
@@ -242,6 +278,7 @@ typically in a typewriter/monospaced typeface, like an ordinary
 literal block.  Parsed literal blocks are useful for adding hyperlinks
 to code examples.  However, care must be taken with the text, because
 inline markup is recognized; there is no protection from parsing.
+Backslash-escapes may be necessary in places.
 
 For example, all the element names in this content model are links::
 
@@ -261,16 +298,20 @@ For example, all the element names in this content model are links::
 Table of Contents
 =================
 
-DTD elements: pending, topic.
+* Directive Type: "contents"
 
-Directive block: directive data and following indented lines (up to
-the first blank line) are interpreted as the topic title and optional
-attributes.
+* DTD Elements: pending, topic
+
+* Directive Block: 
+
+  - Arguments: One, optional: title.
+  - Options: Possible.
+  - Content: None.
 
 The "contents" directive inserts a table of contents (TOC) in two
 passes: initial parse and transform.  During the initial parse, a
 "pending" element is generated which acts as a placeholder, storing
-the TOC title and any attributes internally.  At a later stage in the
+the TOC title and any options internally.  At a later stage in the
 processing, the "pending" element is replaced by a "topic" element, a
 title and the table of contents proper.
 
@@ -290,17 +331,17 @@ The title may span lines, although it is not recommended::
     .. contents:: Here's a very long Table of
        Contents title
 
-Attributes may be specified for the directive, using a field list::
+Options may be specified for the directive, using a field list::
 
     .. contents:: Table of Contents
        :depth: 2
 
-If the default title is to be used, the attribute field list may begin
+If the default title is to be used, the options field list may begin
 on the same line as the directive marker::
 
     .. contents:: :depth: 2
 
-The following attributes are recognized:
+The following options are recognized:
 
 ``depth`` : integer
     The number of section levels that are collected in the table of
@@ -317,26 +358,31 @@ The following attributes are recognized:
 Automatic Section Numbering
 ===========================
 
-DTD elements: pending, generated.
+* Directive Type: "sectnum" or "section-autonumbering" (synonyms)
 
-Directive block: directive data and following indented lines (up to
-the first blank line) are interpreted as optional attributes.
+* DTD Elements: pending, generated
+
+* Directive Block: 
+
+  - Arguments: None.
+  - Options: Possible.
+  - Content: None.
 
 The "sectnum" (or "section-autonumbering") directive automatically
-numbers sections and subsections in a document.  Section numbers of
-the "multiple enumeration" form, where each level has a number,
+numbers sections and subsections in a document.  Section numbers are
+of the "multiple enumeration" form, where each level has a number,
 separated by periods.  For example, the title of section 1, subsection
-2, subsubsection 3 would have "1.2.3" prefixed.  
+2, subsubsection 3 would have "1.2.3" prefixed.
 
-The "sectnum" directive does its work in two passes: initial parse and
-transform.  During the initial parse, a "pending" element is generated
-which acts as a placeholder, storing any attributes internally.  At a
-later stage in the processing, the "pending" element triggers a
+The "sectnum" directive does its work in two passes: the initial parse
+and a transform.  During the initial parse, a "pending" element is
+generated which acts as a placeholder, storing any options internally.
+At a later stage in the processing, the "pending" element triggers a
 transform, which adds section numbers to titles.  Section numbers are
 enclosed in a "generated" element, and titles have their "auto"
 attribute set to "1".
 
-The following attributes are recognized:
+The following options are recognized:
 
 ``depth`` : integer
     The number of section levels that are numbered by this directive.
@@ -350,9 +396,15 @@ The following attributes are recognized:
 Target Footnotes
 ================
 
-DTD elements: pending, footnote, footnote_reference.
+* Directive Type: "target-notes"
 
-Directive block: unused; directive data must be empty.
+* DTD Elements: pending, footnote, footnote_reference
+
+* Directive Block must be empty: 
+
+  - Arguments: None.
+  - Options: None.
+  - Content: None.
 
 The "target-notes" directive creates a footnote for each external
 target in the text, and corresponding footnote references after each
@@ -366,7 +418,15 @@ Footnotes
 
 **NOT IMPLEMENTED YET**
 
-DTD elements: pending, topic.
+* Directive Type: "footnotes"
+
+* DTD Elements: pending, topic
+
+* Directive Block: 
+
+  - Arguments: None?
+  - Options: Possible?
+  - Content: None.
 
 @@@
 
@@ -376,7 +436,15 @@ Citations
 
 **NOT IMPLEMENTED YET**
 
-DTD elements: pending, topic.
+* Directive Type: "citations"
+
+* DTD Elements: pending, topic
+
+* Directive Block: 
+
+  - Arguments: None?
+  - Options: Possible?
+  - Content: None.
 
 @@@
 
@@ -388,10 +456,17 @@ DTD elements: pending, topic.
 Meta
 ====
 
-Non-standard element: meta.
+.
 
-Directive block: directive data and following indented lines (up to
-the first blank line) are parsed for a flat field list.
+* Directive Type: "meta"
+
+* DTD Element: meta (non-standard)
+
+* Directive Block: 
+
+  - Arguments: None.
+  - Options: None.
+  - Content: Must contain a flat field list.
 
 The "meta" directive is used to specify HTML metadata stored in HTML
 META tags.  "Metadata" is data about data, in this case data about web
@@ -452,20 +527,48 @@ Non-standard element: imagemap.
  Miscellaneous
 ---------------
 
+Including an External Fragment
+==============================
+
+**NOT IMPLEMENTED YET**
+
+* Directive Type: "include"
+
+* DTD Elements: depend on data being included
+
+* Directive Block:
+
+  - Arguments: One, required (path to include file).
+  - Options: None.
+  - Content: None.
+
+The "include" directive reads a reStructuredText-formatted text file
+and parses it in the current document's context at the point of the
+directive.  For example::
+
+    .. include:: inclusion.txt
+
+
 Raw Data Pass-Through
 =====================
 
 **NOT IMPLEMENTED YET**
 
-DTD element: pending.
+* Directive Type: "raw"
 
-Directive block: the directive data is interpreted as an output format
-type, and all following indented text is stored verbatim,
-uninterpreted.
+* DTD Element: pending
+
+* Directive Block: 
+
+  - Arguments: One or two (?): one required (output format type), and
+    one optional (source path).
+  - Options: None?
+  - Content: Stored verbatim, uninterpreted.  None (empty) if a source
+    path argument given.
 
 The "raw" directive indicates non-reStructuredText data that is to be
 passed untouched to the Writer.  The name of the output format is
-given in the directive data.  During the initial parse, a "pending"
+given in the first argument.  During the initial parse, a "pending"
 element is generated which acts as a placeholder, storing the format
 and raw data internally.  The interpretation of the code is up to the
 Writer.  A Writer may ignore any raw output not matching its format.
@@ -484,14 +587,25 @@ output stream::
 
        \documentclass[twocolumn]{article}
 
+Raw data can also be read from an external file, specified in an
+optional second argument.  In this case, the content block must be
+empty.  For example::
+
+    .. raw:: html inclusion.html
+
 
 Restructuredtext-Test-Directive
 ===============================
 
-DTD element: system_warning.
+* Directive Type: "restructuredtext-test-directive"
 
-Directive block: directive data is stored, and all following indented
-text is interpreted as a literal block.
+* DTD Element: system_warning
+
+* Directive Block: 
+
+  - Arguments: None.
+  - Options: None.
+  - Content: Interpreted as a literal block.
 
 This directive is provided for test purposes only.  (Nobody is
 expected to type in a name *that* long!)  It is converted into a
