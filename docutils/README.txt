@@ -41,25 +41,20 @@ Project Files & Directories
 * docutils: The project source directory, installed as a Python
   package.
 
-* docs: The project user documentation directory.  The docs/rst
-  directory contains reStructuredText user docs.
+* docs: The project user documentation directory.  Contains the
+  following documents:
+
+  - docs/tools.txt: Docutils Front-End Tools
+  - docs/rst/quickstart.txt: A ReStructuredText Primer
+  - docs/rst/quickref.html: Quick reStructuredText (HTML only)
 
 * spec: The project specification directory.  Contains PEPs (Python
   Enhancement Proposals), XML DTDs (document type definitions), and
-  other documents.  The spec/rst directory contains the
+  other documents.  The ``spec/rst`` directory contains the
   reStructuredText specification.
 
-* tools: Directory for standalone scripts that use reStructuredText.
-
-  - quicktest.py: Input reStructuredText, output pretty-printed
-    pseudo-XML and various other forms.
-
-  - publish.py: A minimal example of a complete Docutils system, using
-    the "standalone" reader and "pformat" writer.
-
-  - html.py: Read standalone reStructuredText documents and write
-    HTML4/CSS1.  Uses the default.css stylesheet (but can be
-    overridden).
+* tools: Directory for Docutils front-end tools.  See docs/tools.txt
+  for documentation.
 
 * test: Unit tests; ``test/alltests.py`` runs all the tests.  Not
   required to use the software, but very useful if you're planning to
@@ -69,8 +64,8 @@ Project Files & Directories
 Installation
 ============
 
-The first step is to expand the .tar.gz or .tgz archive.  It contains
-a distutils setup file "setup.py".  OS-specific installation
+The first step is to expand the ``.tar.gz`` or ``.tgz`` archive.  It
+contains a distutils setup file "setup.py".  OS-specific installation
 instructions follow.
 
 GNU/Linux, Unix, MacOS X, etc.
@@ -109,8 +104,8 @@ Windows
 If your system is set up to run Python when you double-click on .py
 files, you can run install.py to do the same as the above.
 
-MacOS
------
+MacOS 8/9
+---------
 
 1. Open the folder containing the expanded archive.
 
@@ -139,11 +134,12 @@ Start with the html.py and publish.py front-end tools from the
 unpacked "tools" subdirectory.  Both tools take up to two arguments,
 the source path and destination path, with STDIN and STDOUT being the
 defaults.  Use the "--help" option to the front-end tools for details
-on options and arguments.
+on options and arguments.  See ``docs/tools.txt`` for full
+documentation.
 
 The package modules are continually growing and evolving.  The
 ``docutils.statemachine`` module is usable independently.  It contains
-extensive inline documentation (in reStructuredText format).
+extensive inline documentation (in reStructuredText format of course).
 
 Contributions are welcome!
 
