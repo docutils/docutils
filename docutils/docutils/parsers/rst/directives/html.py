@@ -1,49 +1,46 @@
-#! /usr/bin/env python
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
 """
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
-
 Directives for typically HTML-specific constructs.
 """
 
 __docformat__ = 'reStructuredText'
 
-
+import sys
 from docutils import nodes, utils
 from docutils.parsers.rst import states
 from docutils.transforms import components
 
 
-def meta(match, type_name, data, state, state_machine, option_presets):
-    line_offset = state_machine.line_offset
-    block, indent, offset, blank_finish = \
-          state_machine.get_first_known_indented(match.end(), until_blank=1)
+def meta(name, arguments, options, content, lineno,
+         content_offset, block_text, state, state_machine):
     node = nodes.Element()
-    if block:
+    if content:
         new_line_offset, blank_finish = state.nested_list_parse(
-              block, offset, node, initial_state='MetaBody',
-              blank_finish=blank_finish, state_machine_kwargs=metaSMkwargs)
-        if (new_line_offset - offset) != len(block):
+              content, content_offset, node, initial_state='MetaBody',
+              blank_finish=1, state_machine_kwargs=metaSMkwargs)
+        if (new_line_offset - content_offset) != len(content):
             # incomplete parse of block?
-            blocktext = '\n'.join(state_machine.input_lines[
-                  line_offset : state_machine.line_offset+1])
-            msg = state_machine.reporter.error(
-                  'Invalid meta directive.', '',
-                  nodes.literal_block(blocktext, blocktext),
-                  line=state_machine.abs_line_number())
-            node += msg
+            error = state_machine.reporter.error(
+                'Invalid meta directive.', '',
+                nodes.literal_block(block_text, block_text), line=lineno)
+            node += error
     else:
-        msg = state_machine.reporter.error(
-            'Empty meta directive.', line=state_machine.abs_line_number())
-        node += msg
-    return node.get_children(), blank_finish
+        error = state_machine.reporter.error(
+            'Empty meta directive.', '',
+            nodes.literal_block(block_text, block_text), line=lineno)
+        node += error
+    return node.get_children()
 
-def imagemap(match, type_name, data, state, state_machine, option_presets):
-    return [], 0
+meta.content = 1
+
+def imagemap(name, arguments, options, content, lineno,
+             content_offset, block_text, state, state_machine):
+    return []
 
 
 class MetaBody(states.SpecializedBody):
