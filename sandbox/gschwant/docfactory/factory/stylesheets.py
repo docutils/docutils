@@ -68,6 +68,14 @@ div.figure {
 div.footer, div.header {
   font-size: smaller }
 
+div.sidebar {
+  margin-left: 1em ;
+  border: medium outset ;
+  padding: 0em 1em ;
+  background-color: #ffffee ;
+  width: 40% ;
+  float: right }
+
 div.system-messages {
   margin: 5em }
 
@@ -122,6 +130,15 @@ p.credits {
 p.label {
   white-space: nowrap }
 
+p.sidebar-title {
+  font-family: sans-serif ;
+  font-weight: bold ;
+  font-size: larger }
+
+p.sidebar-subtitle {
+  font-family: sans-serif ;
+  font-weight: bold }
+
 p.topic-title {
   font-weight: bold }
 
@@ -150,6 +167,9 @@ span.classifier-delimiter {
 
 span.interpreted {
   font-family: sans-serif }
+
+span.option {
+  white-space: nowrap }
 
 span.option-argument {
   font-style: italic }
