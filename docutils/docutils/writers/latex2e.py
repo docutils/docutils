@@ -1134,7 +1134,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_document(self, node):
         self.body_prefix.append('\\begin{document}\n')
         # titled document?
-        if isinstance(node[0], nodes.title):
+        if len(node) and isinstance(node[0], nodes.title):
             self.body_prefix.append('\\maketitle\n\n')
             # alternative use titlepage environment.
             # \begin{titlepage}
