@@ -1,21 +1,19 @@
 =====================
- README: DocFactory_
+ DocFactory_ README
 =====================
 
 :author:    Dr. Gunnar Schwant
 :contact:   g.schwant@gmx.de
-:date:      $Date$
-:version:   0.1.4
+:date:      2003/01/07
+:version:   0.2
 :copyright: Copyright (c) 2002 Dr. Gunnar Schwant (g.schwant@gmx.de).
             All rights reserved.  See LICENSE.txt_ for license details.
 
 :abstract: This is a short introduction to DocFactory.  Hopefully,
            more documentation will be available soon.
 
-.. _DocFactory: http://docutils.sf.net/sandbox/gschwant/docfactory/
-
-.. sectnum::
 .. contents::
+.. section-numbering::
 
 
 What is it?
@@ -41,7 +39,7 @@ you'll need the following:
 
 * Python 2.1.1 or later (http://www.python.org).
 
-* wxPython 2.3.2.1 or later (http://wxpython.org).  Be sure to get the
+* wxPython 2.3.4.2 or later (http://wxpython.org).  Be sure to get the
   build matching the version of Python you're using.
 
 * Docutils 0.2.2 or later (http://docutils.sourceforge.net).  Use the
@@ -107,7 +105,7 @@ Create a new file
 
 Type ``Ctrl+N`` to create a new text file.  You will be asked for a
 location and title of the new file.  Afterwards the file will be
-created, added to the tree on the left and loaded it into the editor.  
+created, added to the tree on the left and loaded it into the editor.
 As you will notice the title has been inserted at the top of the
 file.
 
@@ -116,7 +114,17 @@ Open an existing file
 
 To open an already existing text file simply type ``Ctrl+O`` and
 select the file. It will be added to the tree and loaded into
-the editor.
+the editor.  Moreover, you can open a file from the command-line 
+if you specify the file as first parameter.  A command like ``python 
+[Scripts-directory]/docfactory.py [<file>]`` should launch DocFactory 
+and open the file for editing.  (Of course, this command depends on your 
+system.  For example::
+
+    C:\>python Python22\Scripts\docfactory.py temp\test.txt
+
+works on my windows machine.  In particular, the Python executable has
+to be on your path.)
+
 
 Publish a file as HTML
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -126,11 +134,14 @@ by pressing ``F7``.  The processing happens in a standard Docutils way:
 The HTML file is created in the directory of your text file and you can 
 customize processing by setting up Docutils configuration files. [2]_
 
-As soon as the processing is finished the HTML-file will be displayed 
-in a preview page.  Please note that this preview does **not** support 
-stylesheets.  If you want to have a look at the document in your default
-webbrowser (which hopefully does support stylesheets) click on "View 
-In Browser".
+As soon as the processing is finished the HTML-file will be displayed on 
+DocFactory's HTML-viewer page.  Please note that this viewer does support 
+stylesheets on Windows platforms only (including Windows 95, 98, ME, 2000, 
+NT, XP).  On any other platform you will have to check the final layout 
+with a webbrowser of your choice (which hopefully does support stylesheets).
+Click on "View In Browser" to open the file with your system's default 
+webbrowser.
+
 
 Projects
 --------
@@ -169,82 +180,139 @@ dialog will appear.  It consists of two pages:
 Press the "OK"-button to finish the setup.  The project appears as part
 of the tree on the left. 
 
+**A note on stylesheets:** You shouldn't worry about the stylesheet.  When 
+you leave the "Project Settings" dialog DocFactory checks if the stylesheet
+is present.  If the stylesheet can not be found a dialog window will pop up 
+and ask you if you want that DocFactory creates a stylesheet for you.  You 
+will be offered two different styles ("Classic" and "Modern").  Select one 
+and press "OK".
+
+
 Adding files to a project
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In order to create a new file within a project or add an existing file 
 to a project simply activate the project's item in the tree on the left 
-(double-click) and press ``Ctrl+N`` or ``Ctrl+O`` as described above. 
-The behaviour is like this: If a project is active any file which is 
-created and/or opened will be added to the active project.  (If no 
-project is active files will be created/opened outside of projects.)
+(double-click) and press ``Ctrl+N`` or ``Ctrl+O``.  The behaviour is like 
+this: If a project is active any file which is created and/or opened will 
+be added to the active project.  (If no project is active files will be 
+created/opened outside of projects.)
+
+
+Editing
+-------
 
 Keyboard Shortcuts
-------------------
+~~~~~~~~~~~~~~~~~~
 
 For rapid development DocFactory features Windows-style keyboard
 shortcuts:
 
-==============================  ======================================
+==============================  =======================================
 Action                          Keyboard Shortcut
-==============================  ======================================
+==============================  =======================================
 **File Menu**
-----------------------------------------------------------------------
+-----------------------------------------------------------------------
 New File                        Ctrl+N
-------------------------------  --------------------------------------
+------------------------------  ---------------------------------------
 Open File                       Ctrl+O
-------------------------------  --------------------------------------
+------------------------------  ---------------------------------------
 Save File                       Ctrl+S
-------------------------------  --------------------------------------
+------------------------------  ---------------------------------------
 Exit Application                Alt+X
-------------------------------  --------------------------------------
-
-**Process Menu**
-----------------------------------------------------------------------
-To HTML                         F7
-------------------------------  --------------------------------------
-
-**Editing**
-----------------------------------------------------------------------
-Cursor movement                 Arrow keys or mouse
-------------------------------  --------------------------------------
-Beginning of line               Home
-------------------------------  --------------------------------------
-End of line                     End
-------------------------------  --------------------------------------
-Beginning of buffer             Ctrl+Home
-------------------------------  --------------------------------------
-End of the buffer               Ctrl+End
-------------------------------  --------------------------------------
-Select text                     Hold down Shift while moving the
-                                cursor
-------------------------------  --------------------------------------
-Select all text                 Ctrl+A
-------------------------------  --------------------------------------
-Copy                            Ctrl+Ins, Ctrl+C
-------------------------------  --------------------------------------
-Cut                             Shift+Del, Ctrl+X
-------------------------------  --------------------------------------
-Paste                           Shift+Ins, Ctrl+V
-------------------------------  --------------------------------------
+------------------------------  ---------------------------------------
+**Edit Menu**
+-----------------------------------------------------------------------
 Undo                            Ctrl+Z
-------------------------------  --------------------------------------
+------------------------------  ---------------------------------------
 Redo                            Ctrl+Y
-------------------------------  --------------------------------------
+------------------------------  ---------------------------------------
+Cut                             Shift+Del, Ctrl+X
+------------------------------  ---------------------------------------
+Copy                            Ctrl+Ins, Ctrl+C
+------------------------------  ---------------------------------------
+Paste                           Shift+Ins, Ctrl+V
+------------------------------  ---------------------------------------
+Select all                      Ctrl+A
+------------------------------  ---------------------------------------
+Find & Replace                  Ctrl+F
+------------------------------  ---------------------------------------
+Goto line                       Ctrl+G
+------------------------------  ---------------------------------------
+**Process Menu**
+-----------------------------------------------------------------------
+To HTML                         F7
+------------------------------  ---------------------------------------
+**Further editing commands**
+-----------------------------------------------------------------------
+Cursor movement                 Arrow keys or mouse
+------------------------------  ---------------------------------------
+Beginning of line               Home
+------------------------------  ---------------------------------------
+End of line                     End
+------------------------------  ---------------------------------------
+Beginning of buffer             Ctrl+Home
+------------------------------  ---------------------------------------
+End of the buffer               Ctrl+End
+------------------------------  ---------------------------------------
+Select text                     Hold down Shift while moving the cursor
+------------------------------  ---------------------------------------
 Zoom-In                         Ctrl+L
-------------------------------  --------------------------------------
+------------------------------  ---------------------------------------
 Zoom-Out                        Ctrl+K
-==============================  ======================================
+==============================  =======================================
 
 Right mouse-click brings up a popup-dialog with most of the above
 editor commands.  Moreover, you can use the mouse to move selected
 text.
 
 
-*Now, this should be enough for the beginning.  Start playing with
-DocFactory, have fun, report bugs, contribute, ...  Any kind of
-feedback is welcome.*
+Find & Replace
+~~~~~~~~~~~~~~
 
+The "Find & Replace"-dialog was introduced with DocFactory release 0.2
+and is special in the sense that it uses `regular expression syntax`_ 
+for searching as defined by Python's re-module.  This offers a great deal
+of flexibility in searching.  For example: Searching for ``Fred|Ted`` will
+search the file for appearances of ``Fred`` as well as for appearances
+of ``Ted``.  However, it also requires a certain kind of familiarity with
+Python's regular expression syntax.  For example: In order to find 
+appearances of ``C:\temp\test.txt`` you will have to search for 
+``C:\\temp\\test.txt``.
+
+
+Data storage
+============
+
+DocFactory uses the Python's ConfigParser_-module to store any information 
+about projects which has to be saved between runs.  The storage file has
+a ``[docfactory_project: <name of project>]`` section for each project.
+(``<name of project>`` is replaced by the project's name.) Each section
+header is followed by two ``name=value`` entries: One for all project
+files and one for the outputdirectory. For example: The section for
+a project called ``project_01`` which consists of two files ``C:\file1.txt``,
+``C:\file2.txt`` and whose outputdirectory is ``C:\project1`` looks
+like this::
+
+    [docfactory_project: project_01]
+    files=C:\file1.txt;C:\file2.txt
+    outputdirectory=C:\project1
+
+As default the data storage file is located in the module's directory 
+(``os.path.dirname(docutils.factory.__file__)``). The default name of the 
+file is ``docfactory.dat``. 
+
+You can change the name and location of the data storage file by creating 
+a file called ``conf.pth`` in the module's directory.  This file should 
+consist of one line only which is the complete data storage path. For 
+example:  If the first line of ``conf.pth`` is 
+
+::
+
+    /home/fred/.docfactory
+
+DocFactory will store its data in ``/home/fred/.docfactory``.
+ 
 
 Future Directions
 =================
@@ -255,8 +323,13 @@ will be implemented as well.  For example:
 
 * more stylesheets (please contribute!)
 * preferences dialog
-* find & replace dialog
-* ...
+* [...]
+
+*Now, this should be enough for the beginning.  Start playing with
+DocFactory, have fun, report bugs, contribute, ...  Any kind of
+feedback is welcome.*
+
+---------
 
 .. Footnotes
 
@@ -269,8 +342,11 @@ will be implemented as well.  For example:
 
 .. Hyperlinks
 
-.. _LICENSE.txt:           LICENSE.html
-.. _reStructuredText:      http://docutils.sourceforge.net/rst.html
-.. _Python:                http://www.python.org
-.. _wxPython:              http://wxpython.org
-.. _Docutils:              http://docutils.sourceforge.net
+.. _LICENSE.txt:                 LICENSE.html
+.. _reStructuredText:            http://docutils.sourceforge.net/rst.html
+.. _Python:                      http://www.python.org
+.. _wxPython:                    http://wxpython.org
+.. _Docutils:                    http://docutils.sourceforge.net
+.. _`regular expression syntax`: http://www.python.org/doc/current/lib/re-syntax.html
+.. _ConfigParser:                http://www.python.org/doc/current/lib/module-ConfigParser.html
+.. _DocFactory: http://docutils.sf.net/sandbox/gschwant/docfactory/
