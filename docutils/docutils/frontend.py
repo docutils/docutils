@@ -12,9 +12,8 @@ Exports the following classes:
 * `OptionParser`: Standard Docutils command-line processing.
 * `Option`: Customized version of `optparse.Option`; validation support.
 * `Values`: Runtime settings; objects are simple structs
-  (``object.attribute``).
+  (``object.attribute``).  Supports cumulative list settings (attributes).
 * `ConfigParser`: Standard Docutils config file processing.
-* `DictUpdater`: Supports cumulative list settings (dict values).
 
 Also exports the following functions:
 
@@ -61,9 +60,7 @@ def read_config_file(option, opt, value, parser):
         new_settings = parser.get_config_file_settings(value)
     except ValueError, error:
         parser.error(error)
-    settings = DictUpdater(parser, parser.values.__dict__)
-    settings.update(new_settings)
-    parser.values._update_loose(settings.data)
+    parser.values.update(new_settings, parser)
 
 def validate_encoding(setting, value, option_parser,
                       config_parser=None, config_section=None):
@@ -168,6 +165,24 @@ def make_paths_absolute(pathdict, keys, base_path=None):
 
 def make_one_path_absolute(base_path, path):
     return os.path.abspath(os.path.join(base_path, path))
+
+
+class Values(optparse.Values):
+
+    """
+    Updates list attributes by extension rather than by replacement.
+    Works in conjunction with the `OptionParser.lists` instance attribute.
+    """
+
+    def update(self, other_dict, option_parser):
+        other_dict = other_dict.copy()
+        for setting in option_parser.lists:
+            if (hasattr(self, setting) and other_dict.has_key(setting)):
+                value = getattr(self, setting)
+                if value:
+                    value += other_dict[setting]
+                    del other_dict[setting]
+        self._update_loose(other_dict)
 
 
 class Option(optparse.Option):
@@ -464,11 +479,12 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
         return settings
 
     def get_config_file_settings(self, config_file):
+        """Returns a dictionary containing appropriate config file settings."""
         parser = ConfigParser()
         parser.read(config_file, self)
         base_path = os.path.dirname(config_file)
         applied = {}
-        settings = DictUpdater(self)
+        settings = Values()
         for component in self.components:
             if not component:
                 continue
@@ -477,10 +493,10 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
                 if applied.has_key(section):
                     continue
                 applied[section] = 1
-                settings.update(parser.get_section(section))
+                settings.update(parser.get_section(section), self)
         make_paths_absolute(
-            settings.data, self.relative_path_settings, base_path)
-        return settings.data
+            settings.__dict__, self.relative_path_settings, base_path)
+        return settings.__dict__
 
     def check_values(self, values, args):
         """Store positional arguments as runtime settings."""
@@ -505,6 +521,10 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
             self.error('Do not specify the same file for both source and '
                        'destination.  It will clobber the source file.')
         return source, destination
+
+    def get_default_values(self):
+        """Needed to get custom `Values` instances."""
+        return Values(self.defaults)
 
 
 class ConfigParser(CP.ConfigParser):
@@ -588,24 +608,3 @@ configuration files.  See <http://docutils.sf.net/docs/config.html>.
 
 class ConfigDeprecationWarning(DeprecationWarning):
     """Warning for deprecated configuration file features."""
-
-
-class DictUpdater:
-
-    """
-    Wraps a dict: updates list values by extension rather than by replacement.
-    Works in conjunction with the `OptionParser.lists` instance attribute.
-    """
-
-    def __init__(self, option_parser, data=None):
-        self.option_parser = option_parser
-        self.data = copy.deepcopy(data or {})
-
-    def update(self, other):
-        other = other.copy()
-        for setting in self.option_parser.lists:
-            if (self.data.has_key(setting) and self.data[setting]
-                and other.has_key(setting)):
-                self.data[setting] += other[setting]
-                del other[setting]
-        self.data.update(other)
