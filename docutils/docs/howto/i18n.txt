@@ -98,8 +98,9 @@ Each Docutils language module contains three module attributes:
 
 ``bibliographic_fields``
     This is a mapping of language-dependent field names (converted to
-    lower case) to node classes (in ``docutils.nodes``).  It is used
-    when parsing bibliographic fields.
+    lower case) to canonical field names (keys of
+    ``DocInfo.biblio_notes`` in ``docutils.transforms.frontmatter``).
+    It is used when transforming bibliographic fields.
 
     The keys should be translated to the target language.
 

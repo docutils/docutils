@@ -10,10 +10,6 @@ Slovak-language mappings for language-dependent features of Docutils.
 
 __docformat__ = 'reStructuredText'
 
-
-from docutils import nodes
-
-
 labels = {
       'author': u'Autor',
       'authors': u'Autori',
@@ -40,20 +36,19 @@ labels = {
 """Mapping of node class name to label text."""
 
 bibliographic_fields = {
-      u'autor': nodes.author,
-      u'autori': nodes.authors,
-      u'organiz\u00E1cia': nodes.organization,
-      u'adresa': nodes.address,
-      u'kontakt': nodes.contact,
-      u'verzia': nodes.version,
-      u'rev\u00EDzia': nodes.revision,
-      u'stav': nodes.status,
-      u'D\u00E1tum': nodes.date,
-      u'copyright': nodes.copyright,
-      u'venovanie': nodes.topic,
-      u'abstraktne': nodes.topic}
-"""Field name (lowcased) to node class name mapping for bibliographic fields
-(field_list)."""
+      u'autor': 'author',
+      u'autori': 'authors',
+      u'organiz\u00E1cia': 'organization',
+      u'adresa': 'address',
+      u'kontakt': 'contact',
+      u'verzia': 'version',
+      u'rev\u00EDzia': 'revision',
+      u'stav': 'status',
+      u'd\u00E1tum': 'date',
+      u'copyright': 'copyright',
+      u'venovanie': 'dedication',
+      u'abstraktne': 'abstract'}
+"""Slovak (lowcased) to canonical name mapping for bibliographic fields."""
 
 author_separators = [';', ',']
 """List of separator strings for the 'Authors' bibliographic field. Tried in

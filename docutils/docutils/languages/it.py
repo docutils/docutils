@@ -10,10 +10,6 @@ Italian-language mappings for language-dependent features of Docutils.
 
 __docformat__ = 'reStructuredText'
 
-
-from docutils import nodes
-
-
 labels = {
       'author': 'Autore',
       'authors': 'Autori',
@@ -40,20 +36,19 @@ labels = {
 """Mapping of node class name to label text."""
 
 bibliographic_fields = {
-      'autore': nodes.author,
-      'autori': nodes.authors,
-      'organizzazione': nodes.organization,
-      'indirizzo': nodes.address,
-      'contatti': nodes.contact,
-      'versione': nodes.version,
-      'revisione': nodes.revision,
-      'status': nodes.status,
-      'data': nodes.date,
-      'copyright': nodes.copyright,
-      'dedica': nodes.topic,
-      'riassunto': nodes.topic}
-"""Field name (lowcased) to node class name mapping for bibliographic fields
-(field_list)."""
+      'autore': 'author',
+      'autori': 'authors',
+      'organizzazione': 'organization',
+      'indirizzo': 'address',
+      'contatti': 'contact',
+      'versione': 'version',
+      'revisione': 'revision',
+      'status': 'status',
+      'data': 'date',
+      'copyright': 'copyright',
+      'dedica': 'dedication',
+      'riassunto': 'abstract'}
+"""Italian (lowcased) to canonical name mapping for bibliographic fields."""
 
 author_separators = [';', ',']
 """List of separator strings for the 'Authors' bibliographic field. Tried in

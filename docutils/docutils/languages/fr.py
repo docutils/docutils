@@ -10,10 +10,6 @@ French-language mappings for language-dependent features of Docutils.
 
 __docformat__ = 'reStructuredText'
 
-
-from docutils import nodes
-
-
 labels = {
       'author': 'Auteur',
       'authors': 'Auteurs',
@@ -40,20 +36,19 @@ labels = {
 """Mapping of node class name to label text."""
 
 bibliographic_fields = {
-      'auteur': nodes.author,
-      'auteurs': nodes.authors,
-      'organisation': nodes.organization,
-      'adresse': nodes.address,
-      'contact': nodes.contact,
-      'version': nodes.version,
-      'r\u00e9vision': nodes.revision,
-      'status': nodes.status,
-      'date': nodes.date,
-      'copyright': nodes.copyright,
-      'd\u00e9dicace': nodes.topic,
-      'r\u00e9sum\u00e9': nodes.topic}
-"""Field name (lowcased) to node class name mapping for bibliographic fields
-(field_list)."""
+      'auteur': 'author',
+      'auteurs': 'authors',
+      'organisation': 'organization',
+      'adresse': 'address',
+      'contact': 'contact',
+      'version': 'version',
+      'r\u00e9vision': 'revision',
+      'status': 'status',
+      'date': 'date',
+      'copyright': 'copyright',
+      'd\u00e9dicace': 'dedication',
+      'r\u00e9sum\u00e9': 'abstract'}
+"""French (lowcased) to canonical name mapping for bibliographic fields."""
 
 author_separators = [';', ',']
 """List of separator strings for the 'Authors' bibliographic field. Tried in
