@@ -963,6 +963,8 @@ when used in a document.
 
   - _`misc.include`:
 
+    - @@@ Allow whitespace in paths (just not at line boundaries).
+
     - "encoding" option?  Take default from runtime settings.  Use
       Input component to read it in?
 
@@ -998,40 +1000,8 @@ when used in a document.
       For a specific application, see the discussion of `character
       entity substitution definition files`_ above.
 
-  - _`misc.role`:
-
-    - Base the new role on other roles? ::
-
-          .. role:: custom
-             :base-role: abbreviation
-
-      This would make "custom" an alias for "abbreviation".  With a
-      "base-role" option, the "class" would no longer be implied.  It
-      would have to be explicitly specified::
-
-          .. role:: custom
-             :base-role: abbreviation
-             :class: special
-
-      This might produce ``<abbreviation class="special">``.
-
-      How do we pass in this "class" attribute (and other overrides)?
-      With an argument on role functions (``attributes={}``)?
-
-    - Perhaps the "role" directive can modify existing roles with
-      attributes? ::
-
-          .. role:: api
-             :base-role: named-reference
-             :attributes: :base: twisted.internet
-
-          To start the reactor, use the :api-ti:`reactor.run` method.
-          To stop it, use :api-ti:`reactor.stop`.
-
-      The problem with this is that it allows arbitrary attributes.
-      The base role function must support those attributes, either
-      passing them on to the doc tree (DTD support) or processing them
-      internally.
+  - _`misc.class`: @@@ Allow multiple classes (whitespace-separated)
+    to be declared.
 
 * Implement directives.  Each of the list items below begins with an
   identifier of the form, "module_name.directive_function_name".  The
