@@ -149,18 +149,17 @@ class Builder:
         Assumes the current directory has been set.
         """
         publisher = self.publishers[publisher_name]
-        settings = frontend.DictUpdater(publisher.option_parser,
-                                        publisher.setting_defaults.__dict__)
-        settings.update(self.config_settings)
+        settings = frontend.Values(publisher.setting_defaults.__dict__)
+        settings.update(self.config_settings, publisher.option_parser)
         if directory:
             local_config = publisher.option_parser.get_config_file_settings(
                 os.path.join(directory, 'docutils.conf'))
             frontend.make_paths_absolute(
                 local_config, publisher.option_parser.relative_path_settings,
                 directory)
-            settings.update(local_config)
-        settings.update(self.settings_spec.__dict__)
-        return frontend.Values(settings.data)
+            settings.update(local_config, publisher.option_parser)
+        settings.update(self.settings_spec.__dict__, publisher.option_parser)
+        return settings
 
     def run(self, directory=None, recurse=1):
         recurse = recurse and self.initial_settings.recurse
