@@ -517,6 +517,9 @@ class TextElement(Element):
     its immediate parent is a `TextElement` instance (including subclasses).
     This is handy for nodes like `image` that can appear both inline and as
     standalone body elements.
+
+    If passing children to `__init__()`, make sure to set `text` to
+    ``''`` or some other suitable value.
     """
 
     child_text_separator = ''
