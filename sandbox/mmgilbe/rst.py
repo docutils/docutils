@@ -45,12 +45,15 @@ class MoinWriter(html4css1.Writer):
         node['refuri'] = node['refname']
         del node['refname']
         return '1'
-
+    
+    wiki_resolver.priority = 001
+    
     def __init__(self, formatter, request):
         html4css1.Writer.__init__(self)
         self.formatter = formatter
         self.request = request
         self.unknown_reference_resolvers = [self.wiki_resolver]
+        
         
     def translate(self):
         visitor = MoinTranslator(self.document, self.formatter, self.request)
