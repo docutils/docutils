@@ -22,12 +22,14 @@ totest = {}
 
 totest['unicode'] = [
 ["""
-Insert an em-dash (|mdash|), a copyright symbol (|copy|), and a non-breaking
-space (|nbsp|).
+Insert an em-dash (|mdash|), a copyright symbol (|copy|), a non-breaking
+space (|nbsp|), a backwards-not-equals (|bne|), and a captial omega (|Omega|).
 
 .. |mdash| unicode:: 0x02014
 .. |copy| unicode:: \\u00A9
 .. |nbsp| unicode:: &#x000A0;
+.. |bne| unicode:: U0003D U020E5
+.. |Omega| unicode:: U+003A9
 """,
 u"""\
 <document source="test data">
@@ -38,10 +40,16 @@ u"""\
         ), a copyright symbol (
         <substitution_reference refname="copy">
             copy
-        ), and a non-breaking
+        ), a non-breaking
         space (
         <substitution_reference refname="nbsp">
             nbsp
+        ), a backwards-not-equals (
+        <substitution_reference refname="bne">
+            bne
+        ), and a captial omega (
+        <substitution_reference refname="Omega">
+            Omega
         ).
     <substitution_definition name="mdash">
         \u2014
@@ -49,12 +57,18 @@ u"""\
         \u00A9
     <substitution_definition name="nbsp">
         \u00A0
+    <substitution_definition name="bne">
+        =
+        \u20e5
+    <substitution_definition name="Omega">
+        \u03a9
 """],
 ["""
 Bad input:
 
 .. |empty| unicode::
 .. |not hex| unicode:: 0xHEX
+.. |not all hex| unicode:: UABCX
 .. unicode:: not in a substitution definition
 """,
 """\
@@ -74,7 +88,9 @@ Bad input:
             .. |empty| unicode::
     <substitution_definition name="not hex">
         0xHEX
-    <system_message level="3" line="6" source="test data" type="ERROR">
+    <substitution_definition name="not all hex">
+        UABCX
+    <system_message level="3" line="7" source="test data" type="ERROR">
         <paragraph>
             Invalid context: the "unicode" directive can only be used within a substitution definition.
         <literal_block xml:space="preserve">
