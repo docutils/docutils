@@ -269,24 +269,30 @@ underline style are deemed to be at the same level::
   Chapter 2 Title
   ===============
 
-results in:
+This results in the following structure, illustrated by simplified
+pseudo-XML::
 
-.. sorry, I change the heading style here, but it's only an example :)
+    <section>
+        <title>
+            Chapter 1 Title
+        <section>
+            <title>
+                Section 1.1 Title
+            <section>
+                <title>
+                    Subsection 1.1.1 Title
+        <section>
+            <title>
+                Section 1.2 Title
+    <section>
+        <title>
+            Chapter 2 Title
 
-Chapter 1 Title
-~~~~~~~~~~~~~~~
-
-Section 1.1 Title
-'''''''''''''''''
-
-Subsection 1.1.1 Title
-""""""""""""""""""""""
-
-Section 1.2 Title
-'''''''''''''''''
-
-Chapter 2 Title
-~~~~~~~~~~~~~~~
+(Pseudo-XML uses indentation for nesting and has no end-tags.  It's
+not possible to show actual processed output, as in the other
+examples, because sections cannot exist inside block quotes.  For a
+concrete example, compare the section structure of this document's
+source text and processed output.)
 
 Note that section headers are available as link targets, just using
 their name.  To link to the Lists_ heading, I write "``Lists_``".  If
