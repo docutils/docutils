@@ -47,8 +47,14 @@ Usage::
 
     buildhtml.py [options] [<directory> ...]
 
-After unpacking the Docutils package, the following commands will
-build all the HTML documents:
+After unpacking the Docutils package, the following shell commands
+will generate HTML for all included documentation::
+
+    cd docutils/tools
+    buildhtml.py ..
+
+For official releases, the directory may be called "docutils-X.Y",
+where "X.Y" is the release version.  Alternatively::
 
     cd docutils
     tools/buildhtml.py --config=tools/docutils.conf
@@ -57,9 +63,9 @@ The current directory (and all subdirectories) is chosen by default if
 no directory is named.  Incomplete files (such as spec/doctree.txt)
 may generate system messages; use the ``--quiet`` option to suppress
 all warnings.  The ``--config`` option ensures that the correct
-stylesheets, templates, and settings are in place.  Command-line
-options may be used to override config file settings or replace them
-altogether.
+stylesheets, templates, and settings are in place (``./docutils.conf``
+is picked up automatically).  Command-line options may be used to
+override config file settings or replace them altogether.
 
 
 html.py
@@ -247,13 +253,14 @@ files, in the following order:
    located in the user's home directory.  This file overrides both the
    system-wide and project-specific configuration files.
 
-4. A configuration file may be explicitly specified with the
-   "--config" command-line option.
-
 If more than one configuration file is found, all will be read but
 later entries will override earlier ones.  For example, a "stylesheet"
 entry in a user-specific configuration file will override a
 system-wide entry.
+
+In addition, a configuration file may be explicitly specified with the
+"--config" command-line option.  This configuration file is read after
+the three implicit ones listed above.
 
 Configuration files use the standard ConfigParser.py_ Python_ module.
 From its documentation:
@@ -300,7 +307,8 @@ config                Path to a configuration file to read (if it
 
                       Filesystem path settings contained within the
                       config file will be interpreted relative to the
-                      config file's location.
+                      config file's location (*not* relative to the
+                      current working directory).
 
                       Default: None.  Options: ``--config``.
 --------------------  ------------------------------------------------
