@@ -196,6 +196,20 @@ totest['images'] = [
 """],
 ["""\
 .. image:: picture.png
+   :scale is: 50
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Error in "image" directive options:
+            invalid option data: extension option field name may not contain multiple words.
+        <literal_block xml:space="1">
+            .. image:: picture.png
+               :scale is: 50
+"""],
+["""\
+.. image:: picture.png
    :scale: fifty
 """,
 """\

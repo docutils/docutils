@@ -27,7 +27,8 @@ def meta(match, type_name, data, state, state_machine, option_presets):
         new_line_offset, blank_finish = state.nested_list_parse(
               block, offset, node, initial_state='MetaBody',
               blank_finish=blank_finish, state_machine_kwargs=metaSMkwargs)
-        if (new_line_offset - offset) != len(block): # incomplete parse of block?
+        if (new_line_offset - offset) != len(block):
+            # incomplete parse of block?
             blocktext = '\n'.join(state_machine.input_lines[
                   line_offset : state_machine.line_offset+1])
             msg = state_machine.reporter.error(
@@ -58,7 +59,7 @@ class MetaBody(states.SpecializedBody):
         return [], next_state, []
 
     def parsemeta(self, match):
-        name, args = self.parse_field_marker(match)
+        name = self.parse_field_marker(match)
         indented, indent, line_offset, blank_finish = \
               self.state_machine.get_first_known_indented(match.end())
         node = self.meta()
@@ -72,20 +73,21 @@ class MetaBody(states.SpecializedBody):
                   nodes.literal_block(line, line),
                   line=self.state_machine.abs_line_number())
             return msg, blank_finish
+        tokens = name.split()
         try:
-            attname, val = utils.extract_name_value(name)[0]
+            attname, val = utils.extract_name_value(tokens[0])[0]
             node[attname.lower()] = val
         except utils.NameValueError:
-            node['name'] = name
-        for arg in args:
+            node['name'] = tokens[0]
+        for token in tokens[1:]:
             try:
-                attname, val = utils.extract_name_value(arg)[0]
+                attname, val = utils.extract_name_value(token)[0]
                 node[attname.lower()] = val
             except utils.NameValueError, detail:
                 line = self.state_machine.line
                 msg = self.reporter.error(
                       'Error parsing meta tag attribute "%s": %s.'
-                      % (arg, detail), '', nodes.literal_block(line, line),
+                      % (token, detail), '', nodes.literal_block(line, line),
                       line=self.state_machine.abs_line_number())
                 return msg, blank_finish
         self.document.note_pending(pending)

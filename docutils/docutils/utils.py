@@ -262,8 +262,8 @@ def extract_options(field_list):
     Return a list of option (name, value) pairs from field names & bodies.
 
     :Parameter:
-        `field_list`: A flat field list without field arguments, where each
-        field body consists of a single paragraph only.
+        `field_list`: A flat field list, where each field name is a single
+        word and each field body consists of a single paragraph only.
 
     :Exceptions:
         - `BadOptionError` for invalid fields.
@@ -272,9 +272,9 @@ def extract_options(field_list):
     """
     option_list = []
     for field in field_list:
-        if len(field) != 2:
+        if len(field[0].astext().split()) != 1:
             raise BadOptionError(
-                  'extension option field may not contain field arguments')
+                'extension option field name may not contain multiple words')
         name = str(field[0].astext().lower())
         body = field[1]
         if len(body) == 0:
