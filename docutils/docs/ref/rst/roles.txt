@@ -21,7 +21,7 @@ A default role may be defined by applications of reStructuredText; it
 is used if no explicit ``:role:`` prefix or suffix is given.  The
 "default default role" is `:title-reference:`_.
 
-See the `Interpreted Text`__ section in the `reStructuredText Markup
+See the `Interpreted Text`_ section in the `reStructuredText Markup
 Specification`_ for syntax details.
 
 .. _Interpreted Text: ./reStructuredText.html#interpreted-text
