@@ -637,22 +637,6 @@ section "Old-Format Configuration Files".
                 section_dict[option] = self.get(section, option, raw=1)
         return section_dict
 
-    def set(self, section, option, value):
-        """
-        Set an option.
-
-        Overrides stdlib ConfigParser's set() method to allow non-string
-        values.  Required for compatibility with Python 2.4.
-        """
-        if not section or section == CP.DEFAULTSECT:
-            sectdict = self._defaults
-        else:
-            try:
-                sectdict = self._sections[section]
-            except KeyError:
-                raise CP.NoSectionError(section)
-        sectdict[self.optionxform(option)] = value
-
 
 class ConfigDeprecationWarning(DeprecationWarning):
     """Warning for deprecated configuration file features."""
