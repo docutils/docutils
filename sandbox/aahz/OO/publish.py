@@ -16,7 +16,7 @@ try:
 except:
     pass
 
-from docutils.core import publish, default_description
+from docutils.core import publish_cmdline, default_description
 
 import OOdirectives
 
@@ -24,4 +24,4 @@ import OOdirectives
 description = ('Generates pseudo-XML from standalone reStructuredText '
                'sources (for testing purposes).  ' + default_description)
 
-publish(description=description)
+publish_cmdline(description=description)

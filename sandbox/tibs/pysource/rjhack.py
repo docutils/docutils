@@ -21,7 +21,7 @@ import visit, transform
 from docutils.parsers import Parser
 class SourceParser(Parser):
     supported = ('pysource',)
-    cmdline_options = (
+    settings_spec = (
         'PySource Parser Options',
         None,
         (('Be verbose while parsing', ['--verbose-parse'],
@@ -30,19 +30,19 @@ class SourceParser(Parser):
     )
     def parse(self, filename, document):
         if os.path.isdir(filename):
-            thing = visit.Package(document.options, filename)
+            thing = visit.Package(document.settings, filename)
         else:
-            thing = visit.Module(document.options, filename)
+            thing = visit.Module(document.settings, filename)
         process = transform.Process(with_groups=0, document=document)
         process(thing)
 
 from docutils.readers import Reader
 class SourceReader(Reader):
-    def read(self, source, parser, options):
+    def read(self, source, parser, settings):
         self.source = source
         if not self.parser:
             self.parser = parser
-        self.options = options
+        self.settings = settings
         # we want the input as the filename, not the file content
         self.source.source.close()
         self.input = self.source.source_path
@@ -50,11 +50,11 @@ class SourceReader(Reader):
         self.transform()
         return self.document
 
-from docutils.core import publish, default_description
+from docutils.core import publish_cmdline, default_description
 description = ('Generates (X)HTML documents from Python sources.  '
-                + default_description)
+               + default_description)
 parser = SourceParser()
 reader = SourceReader(parser, 'pysource')
-publish(reader=reader, parser=parser, writer_name='html',
-    description=description)
+publish_cmdline(reader=reader, parser=parser, writer_name='html',
+                description=description)
 

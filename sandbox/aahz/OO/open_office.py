@@ -10,9 +10,9 @@ import OOwriter
 
 pub = core.Publisher(writer=OOwriter.Writer())
 pub.set_reader('standalone', None, 'restructuredtext')
-options = pub.set_options()
-pub.source = io.FileInput(options, source_path=sys.argv[1])
-pub.destination = io.StringOutput(options)
+settings = pub.get_settings()
+pub.source = io.FileInput(settings, source_path=sys.argv[1])
+pub.destination = io.StringOutput(settings)
 content = pub.publish()
 
 manifest_list = [
