@@ -129,12 +129,10 @@ class MiscTests(unittest.TestCase):
         e = nodes.Element()
         e += nodes.Element()
         e[0] += nodes.Element()
-        e[0] += nodes.Element()
+        e[0] += nodes.TextElement()
         e[0][1] += nodes.Text('some text')
         e += nodes.Element()
         e += nodes.Element()
-        i = e
-        l = []
         self.assertEquals(getlist(e),
                           [e[0], e[0][0], e[0][1], e[0][1][0], e[1], e[2]])
         self.assertEquals(getlist(e, descend=0), [])
@@ -145,6 +143,20 @@ class MiscTests(unittest.TestCase):
         self.assertEquals(getlist(e[0][0], descend=0, ascend=0), [e[0][1]])
         self.assertEquals(getlist(e, cond=lambda x: x not in e[0:2]),
                           [e[0][0], e[0][1], e[0][1][0], e[2]])
+
+    def test_tree(self):
+        e = nodes.Element()
+        e += nodes.Element()
+        e[0] += nodes.Element()
+        e[0] += nodes.TextElement()
+        e[0][1] += nodes.Text('some text')
+        e += nodes.Element()
+        e += nodes.Element()
+        self.assertEquals(e.tree(),
+                          [e, e[0], e[0][0], e[0][1], e[0][1][0], e[1], e[2]])
+        self.assertEquals(e[0].tree(), [e[0], e[0][0], e[0][1], e[0][1][0]])
+        self.assertEquals(e[1].tree(), [e[1]])
+        self.assertEquals(e[0][1][0].tree(), [e[0][1][0]])
 
 
 class TreeCopyVisitorTests(unittest.TestCase):
