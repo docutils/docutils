@@ -357,6 +357,17 @@ _`warning_stream`
 
     Default: stderr (None).  Options: ``--warnings``.
 
+_`record_dependencies`
+
+    Path to a file to which Docutils writes a list of files the input
+    file(s) depends on, e.g. due to file inclusion. [#pwd]_ The format
+    is one filename per line.  This option is particularly useful in
+    conjunction with programs like ``make``.
+
+    Set to ``-`` in order to write dependencies to stdout.
+
+    Default: None.  Option: ``--record-dependencies``.
+
 
 [parsers]
 ---------
@@ -613,8 +624,7 @@ _`hyperlink_color`
     Color of any hyperlinks embedded in text. Use "0" to disable
     coloring of links.
 
-    Default: "blue", use "0" to disable.  Option:
-    ``--hyperlink-color``.
+    Default: "blue".  Option: ``--hyperlink-color``.
 
 _`documentclass`
     Specify latex documentclass, *but* beaware that books have chapters
@@ -626,7 +636,7 @@ _`documentoptions`
     Specify document options.  Multiple options can be given, separated by
     commas.
 
-    Default is "10pt".  Option: ``--documentoptions``.
+    Default: "10pt,a4paper".  Option: ``--documentoptions``.
 
 .. _stylesheet [latex2e writer]:
 
@@ -663,7 +673,7 @@ footnote_references
     Format for footnote references: one of "superscript" or
     "brackets".  Also defined for the `HTML Writer`__.
 
-    Default is "brackets".  Option: ``--footnote-references``.
+    Default: "brackets".  Option: ``--footnote-references``.
 
     __ `footnote_references [html4css1 writer]`_
 
@@ -709,13 +719,16 @@ _`section_enumerator_separator`
 
     Default: "-".  Option: ``--section-enumerator-separator``.
 
-table_style
+_`table_style`
     Specify the drawing of separation lines.
 
     - "standard" lines around and between cells.
     - "booktabs" a line above and below the table and one after the
       head.
     - "nolines".
+
+    Default: "standard".  Option: ``--table-style``.
+
 
 [pseudoxml writer]
 ``````````````````
