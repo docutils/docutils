@@ -154,11 +154,13 @@ Changes Since 0.3
 
   - Renamed ``unchanged()`` directive option conversion function to
     ``unchanged_required``, and added a new ``unchanged``.
-
-* docutils/parsers/rst/directives/__init__.py:
-
   - Catch unicode value too high error; fixes bug 781766.
   - Beefed up directive error reporting.
+
+* docutils/parsers/rst/directives/misc.py:
+
+  - Isolated the import of the ``urllib2`` module; was causing
+    problems on SourceForge (``libssl.so.2`` unavailable?).
 
 * docutils/parsers/rst/languages/af.py: Added to project; Afrikaans
   mappings by Jannie Hofmeyr.
