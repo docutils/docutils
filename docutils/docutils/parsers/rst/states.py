@@ -157,11 +157,12 @@ class RSTStateMachine(StateMachineWS):
                            title_styles=[],
                            section_level=0,
                            inliner=inliner)
-        self.document = self.memo.document
-        self.attach_observer(self.document.note_state_machine_change)
+        self.document = document
+        self.attach_observer(document.note_source)
         self.reporter = self.memo.reporter
         self.node = document
-        results = StateMachineWS.run(self, input_lines, input_offset)
+        results = StateMachineWS.run(self, input_lines, input_offset,
+                                     input_source=document['source'])
         assert results == [], 'RSTStateMachine.run() results should be empty!'
         self.check_document()
         self.node = self.memo = None    # remove unneeded references
@@ -190,7 +191,7 @@ class NestedStateMachine(StateMachineWS):
         self.match_titles = match_titles
         self.memo = memo
         self.document = memo.document
-        self.attach_observer(self.document.note_state_machine_change)
+        self.attach_observer(self.document.note_source)
         self.reporter = memo.reporter
         self.node = node
         results = StateMachineWS.run(self, input_lines, input_offset)
@@ -260,12 +261,16 @@ class RSTState(StateWS):
             state_machine_class = self.nested_sm
         if state_machine_kwargs is None:
             state_machine_kwargs = self.nested_sm_kwargs
+        block_length = len(block)
         state_machine = state_machine_class(debug=self.debug,
                                             **state_machine_kwargs)
         state_machine.run(block, input_offset, memo=self.memo,
                           node=node, match_titles=match_titles)
         state_machine.unlink()
-        return state_machine.abs_line_offset()
+        new_offset = state_machine.abs_line_offset()
+        # Adjustment for block if modified in nested parse:
+        self.state_machine.next_line(len(block) - block_length)
+        return new_offset
 
     def nested_list_parse(self, block, input_offset, node, initial_state,
                           blank_finish,
@@ -1270,10 +1275,12 @@ class Body(RSTState):
         return [], next_state, []
 
     def option_list_item(self, match):
+        offset = self.state_machine.abs_line_offset()
         options = self.parse_option_marker(match)
         indented, indent, line_offset, blank_finish = \
               self.state_machine.get_first_known_indented(match.end())
         if not indented:                # not an option list item
+            self.goto_line(offset)
             raise statemachine.TransitionCorrection('text')
         option_group = nodes.option_group('', *options)
         description = nodes.description('\n'.join(indented))
@@ -1366,10 +1373,11 @@ class Body(RSTState):
         try:
             block = self.state_machine.get_text_block(flush_left=1)
         except statemachine.UnexpectedIndentationError, instance:
-            block, lineno = instance.args
+            block, source, lineno = instance.args
             messages.append(self.reporter.error('Unexpected indentation.',
-                                                line=lineno))
+                                                source=source, line=lineno))
             blank_finish = 0
+        block.disconnect()
         width = len(block[0].strip())
         for i in range(len(block)):
             block[i] = block[i].strip()
@@ -1649,7 +1657,9 @@ class Body(RSTState):
               self.state_machine.get_first_known_indented(match.end(),
                                                           strip_indent=0)
         blocktext = (match.string[:match.end()] + '\n'.join(block))
-        block = [escape2null(line) for line in block]
+        block.disconnect()
+        for i in range(len(block)):
+            block[i] = escape2null(block[i])
         escaped = block[0].rstrip()
         blockindex = 0
         while 1:
@@ -1667,6 +1677,8 @@ class Body(RSTState):
         if not block[0]:
             del block[0]
             offset += 1
+        while block and not block[-1].strip():
+            block.pop()
         subname = subdefmatch.group('name')
         name = normalize_name(subname)
         substitutionnode = nodes.substitution_definition(
@@ -1674,11 +1686,9 @@ class Body(RSTState):
         substitutionnode.line = lineno
         if block:
             block[0] = block[0].strip()
-            newabsoffset, blank_finish = self.nested_list_parse(
+            new_abs_offset, blank_finish = self.nested_list_parse(
                   block, input_offset=offset, node=substitutionnode,
                   initial_state='SubstitutionDef', blank_finish=blank_finish)
-            self.state_machine.previous_line(
-                  len(block) + offset - newabsoffset - 1)
             i = 0
             for node in substitutionnode[:]:
                 if not (isinstance(node, nodes.Inline) or
@@ -1692,7 +1702,7 @@ class Body(RSTState):
                       'Substitution definition "%s" empty or invalid.'
                       % subname,
                       nodes.literal_block(blocktext, blocktext), line=lineno)
-                self.parent += msg
+                return [msg], blank_finish
             else:
                 del substitutionnode['alt']
                 self.document.note_substitution_def(
@@ -1702,8 +1712,7 @@ class Body(RSTState):
             msg = self.reporter.warning(
                   'Substitution definition "%s" missing contents.' % subname,
                   nodes.literal_block(blocktext, blocktext), line=lineno)
-            self.parent += msg
-        return [], blank_finish
+            return [msg], blank_finish
 
     def directive(self, match, **option_presets):
         type_name = match.group(1)
@@ -1722,8 +1731,9 @@ class Body(RSTState):
 
         Parameters:
 
-        - `directive_fn`: The function implementing the directive.  Must have
-          function attributes ``arguments``, ``options``, and ``content``.
+        - `directive_fn`: The function implementing the directive.  Uses
+          function attributes ``arguments``, ``options``, and/or ``content``
+          if present.
 
         - `match`: A regular expression match object which matched the first
           line of the directive.
@@ -1753,10 +1763,10 @@ class Body(RSTState):
         block_text = '\n'.join(self.state_machine.input_lines[
             initial_line_offset : self.state_machine.line_offset + 1])
         if indented and not indented[0].strip():
-            indented.pop(0)
+            indented.trim_start()
             line_offset += 1
         while indented and not indented[-1].strip():
-            indented.pop()
+            indented.trim_end()
         if indented and (argument_spec or option_spec):
             for i in range(len(indented)):
                 if not indented[i].strip():
@@ -1771,7 +1781,7 @@ class Body(RSTState):
             content_offset = line_offset
             arg_block = []
         while content and not content[0].strip():
-            content.pop(0)
+            content.trim_start()
             content_offset += 1
         try:
             if option_spec:
@@ -1790,7 +1800,7 @@ class Body(RSTState):
         result = directive_fn(
             type_name, arguments, options, content, lineno, content_offset,
             block_text, self, self.state_machine)
-        return result, blank_finish
+        return result, blank_finish or self.state_machine.is_next_line_blank()
 
     def parse_directive_options(self, option_presets, option_spec, arg_block):
         options = option_presets.copy()
@@ -1875,6 +1885,8 @@ class Body(RSTState):
             return [nodes.comment()], 1 # "A tiny but practical wart."
         indented, indent, offset, blank_finish = \
               self.state_machine.get_first_known_indented(match.end())
+        while indented and not indented[-1].strip():
+            indented.trim_end()
         text = '\n'.join(indented)
         return [nodes.comment(text, text)], blank_finish
 
@@ -2059,7 +2071,8 @@ class RFC2822Body(Body):
     def rfc2822_field(self, match):
         name = match.string[:match.string.find(':')]
         indented, indent, line_offset, blank_finish = \
-              self.state_machine.get_first_known_indented(match.end())
+              self.state_machine.get_first_known_indented(match.end(),
+                                                          until_blank=1)
         fieldnode = nodes.field()
         fieldnode += nodes.field_name(name, name)
         fieldbody = nodes.field_body('\n'.join(indented))
@@ -2213,7 +2226,7 @@ class ExtensionOptions(FieldList):
     def parse_field_body(self, indented, offset, node):
         """Override `Body.parse_field_body` for simpler parsing."""
         lines = []
-        for line in indented + ['']:
+        for line in list(indented) + ['']:
             if line.strip():
                 lines.append(line)
             elif lines:
@@ -2239,6 +2252,8 @@ class Explicit(SpecializedBody):
         self.parent += nodelist
         self.blank_finish = blank_finish
         return [], next_state, []
+
+    blank = SpecializedBody.invalid_input
 
 
 class SubstitutionDef(Body):
@@ -2353,9 +2368,10 @@ class Text(RSTState):
         try:
             block = self.state_machine.get_text_block(flush_left=1)
         except statemachine.UnexpectedIndentationError, instance:
-            block, lineno = instance.args
-            msg = self.reporter.error('Unexpected indentation.', line=lineno)
-        lines = context + block
+            block, source, lineno = instance.args
+            msg = self.reporter.error('Unexpected indentation.',
+                                      source=source, line=lineno)
+        lines = context + list(block)
         paragraph, literalnext = self.paragraph(lines, startline)
         self.parent += paragraph
         self.parent += msg
@@ -2373,7 +2389,7 @@ class Text(RSTState):
               self.state_machine.get_indented()
         nodelist = []
         while indented and not indented[-1].strip():
-            indented.pop()
+            indented.trim_end()
         if indented:
             data = '\n'.join(indented)
             nodelist.append(nodes.literal_block(data, data))
@@ -2388,8 +2404,8 @@ class Text(RSTState):
     def definition_list_item(self, termline):
         indented, indent, line_offset, blank_finish = \
               self.state_machine.get_indented()
-        definitionlistitem = nodes.definition_list_item('\n'.join(termline
-                                                                  + indented))
+        definitionlistitem = nodes.definition_list_item(
+            '\n'.join(termline + list(indented)))
         termlist, messages = self.term(
               termline, self.state_machine.abs_line_number() - 1)
         definitionlistitem += termlist
