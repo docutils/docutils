@@ -1,0 +1,41 @@
+======================================
+DocFactory_ Frequently Asked Questions
+======================================
+
+.. contents:: Questions
+.. section-numbering::
+
+How can I manage accentuated characters to be processed properly?
+=================================================================
+
+On the "Docutils"-page of the "Project-Settings"-dialog be sure to set 
+Docutils' output-encoding to the right value. For example: ``ISO-8859-1``
+for french or german accentuated characters. (The default setting is 
+``UTF-8``.) The problem is to find out which encoding you need. There is
+a wide variety of encodings available. Many of these encodings support 
+the same languages. However, they vary in individual characters. For 
+example, ``ISO-8859-1`` does not support the EURO SIGN (try ``cp1252``
+if you need it). If you face problems your first attempt should be
+to try out Python's different standard encodings which can be found
+at http://www.python.org/dev/doc/devel/lib/node123.html.
+
+Is it possible to run DocFactory on systems without a Python installation?
+==========================================================================
+
+The Docfactory-tarball contains a script called ``docfactory2exe.py``. If 
+py2exe_ is installed on your machine you can use this script to convert 
+``docfactory.py`` into a into an executable Windows program, which is able 
+to run without requiring a Python installation.  Copy ``docfactory2exe.py``
+and ``docfactory.ico`` (both part of the tarball) to the directory where 
+``docfactory.py`` is located, go to the command-line and enter
+
+::
+
+  python docfactory2exe.py py2exe -w -p encodings,docutils --icon docfactory.ico
+
+This will create a sub-directory ``dist\docfactory``, containing the file
+``docfactory.exe`` and several other files needed at runtime.  (Visit
+http://py2exe.sourceforge.net for more details.) 
+
+.. _py2exe:     http://py2exe.sourceforge.net
+.. _DocFactory: http://docutils.sf.net/sandbox/gschwant/docfactory/
