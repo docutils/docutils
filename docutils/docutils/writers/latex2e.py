@@ -1418,12 +1418,30 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_tip(self, node):
         self.depart_admonition()
 
+    def bookmark(self, node):
+        """Append latex href and pdfbookmarks for titles.
+        """
+        if node.parent.hasattr('id'):
+            self.body.append('\\hypertarget{%s}{}\n' % node.parent['id'])
+            if not self.use_latex_toc:
+                # BUG level depends on style. pdflatex allows level 0 to 3
+                # ToC would be the only on level 0 so i choose to decrement the rest.
+                # "Table of contents" bookmark to see the ToC. To avoid this
+                # we set all zeroes to one.
+                l = self.section_level
+                if l>0:
+                    l = l-1
+                # pdftex does not like "_" subscripts in titles
+                text = node.astext().replace("_","\\_")
+                self.body.append('\\pdfbookmark[%d]{%s}{%s}\n' % \
+                        (l,text,node.parent['id']))
     def visit_title(self, node):
         """Only 3 section levels are supported by LaTeX article (AFAIR)."""
+
+
         if isinstance(node.parent, nodes.topic):
             # section titles before the table of contents.
-            if node.parent.hasattr('id'):
-                self.body.append('\\hypertarget{%s}{}' % node.parent['id'])
+            self.bookmark(node)
             # BUG: latex chokes on center environment with "perhaps a missing item".
             # so we use hfill.
             self.body.append('\\subsection*{~\\hfill ')
@@ -1442,8 +1460,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('\n\n')
             self.body.append('%' + '_' * 75)
             self.body.append('\n\n')
-            if node.parent.hasattr('id'):
-                self.body.append('\\hypertarget{%s}{}\n' % node.parent['id'])
+            self.bookmark(node)
             # section_level 0 is title and handled above.
             # BUG: latex has no deeper sections (actually paragrah is no section either).
             if self.use_latex_toc:
@@ -1463,21 +1480,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_title(self, node):
         self.body.append(self.context.pop())
-        if isinstance(node.parent, nodes.sidebar):
-            return
-        # BUG level depends on style.
-        elif node.parent.hasattr('id') and not self.use_latex_toc:
-            # pdflatex allows level 0 to 3
-            # ToC would be the only on level 0 so i choose to decrement the rest.
-            # "Table of contents" bookmark to see the ToC. To avoid this
-            # we set all zeroes to one.
-            l = self.section_level
-            if l>0:
-                l = l-1
-            # pdftex does not like "_" subscripts in titles
-            text = node.astext().replace("_","\\_")
-            self.body.append('\\pdfbookmark[%d]{%s}{%s}\n' % \
-                (l,text,node.parent['id']))
 
     def visit_topic(self, node):
         self.topic_class = node.get('class')

@@ -89,8 +89,9 @@ latex_head + """\
 \\begin{document}
 \\maketitle
 
-\\hypertarget{table-of-contents}{}\\subsection*{~\\hfill Table of Contents\\hfill ~}
+\\hypertarget{table-of-contents}{}
 \\pdfbookmark[0]{Table of Contents}{table-of-contents}
+\\subsection*{~\\hfill Table of Contents\\hfill ~}
 \\begin{list}{}{}
 \\item \\href{#title-2}{Title 2}
 
@@ -103,8 +104,8 @@ Paragraph 1.
 %___________________________________________________________________________
 
 \\hypertarget{title-2}{}
-\\section*{Title 2}
 \\pdfbookmark[0]{Title 2}{title-2}
+\\section*{Title 2}
 
 Paragraph 2.
 
