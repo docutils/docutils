@@ -44,10 +44,13 @@ type definition.
  Admonitions
 -------------
 
+Specific Admonitions
+====================
+
 :Directive Types: "attention", "caution", "danger", "error", "hint",
-                  "important", "note", "tip", "warning"
+                  "important", "note", "tip", "warning", "admonition"
 :Doctree Elements: attention, caution, danger, error, hint, important,
-                   note, tip, warning
+                   note, tip, warning, admonition, title
 :Directive Arguments: None.
 :Directive Options: None.
 :Directive Content: Interpreted as body elements.
@@ -93,6 +96,43 @@ bullet list consisting of two list items::
        - The note contains all indented body elements
          following.
        - It includes this bullet list.
+
+
+Generic Admonition
+==================
+
+:Directive Type: "admonition"
+:Doctree Elements: admonition, title
+:Directive Arguments: One, required (admonition title)
+:Directive Options: Possible.
+:Directive Content: Interpreted as body elements.
+
+This is a generic, titled admonition.  The title may be anything the
+author desires.
+
+The author-supplied title is also used as a "class" attribute value
+after being converted into a valid identifier form (down-cased;
+non-alphanumeric characters converted to single hyphens; "admonition-"
+prefixed).  For example, this admonition::
+
+    .. admonition:: And, by the way...
+
+       You can make up your own admonition too.
+
+becomes the following document tree (pseudo-XML)::
+
+    <document source="test data">
+        <admonition class="admonition-and-by-the-way">
+            <title>
+                And, by the way...
+            <paragraph>
+                You can make up your own admonition too.
+
+The following option is recognized:
+
+``class`` : text
+    Override the computed "class" attribute value.  See the class_
+    directive below.
 
 
 --------
@@ -162,6 +202,10 @@ The following options are recognized:
     text flow around it.  The specific behavior depends upon the
     browser or rendering software used.
 
+``class`` : text
+    Set a "class" attribute value on the image element.  See the
+    class_ directive below.
+
 
 Figure
 ======
@@ -203,7 +247,7 @@ legend.  To specify a legend without a caption, use an empty comment
 
 The "figure" directive supports all of the options of the "image"
 directive (see `image options`_ above).  In addition, the following
-option is recognized:
+options are recognized:
 
 ``figwidth`` : integer or "image"
     The width of the figure in pixels, to limit the horizontal space
@@ -232,6 +276,10 @@ option is recognized:
         |wrap at this width.        |
         +---------------------------+
 
+``figclass`` : text
+    Set a "class" attribute value on the figure element.  See the
+    class_ directive below.
+
 .. [#] `Python Imaging Library`_.
 
 .. _PIL:
@@ -248,7 +296,7 @@ Topic
 :Directive Type: "topic"
 :Doctree Element: topic
 :Directive Arguments: 1, required (topic title).
-:Directive Options: None.
+:Directive Options: Possible.
 :Directive Content: Interpreted as the topic body.
 
 A topic is like a block quote with a title, or a self-contained
@@ -267,6 +315,12 @@ interpreted as body elements.  For example::
         the body of the topic, and are
         interpreted as body elements.
 
+The following option is recognized:
+
+``class`` : text
+    Set a "class" attribute value on the topic element.  See the
+    class_ directive below.
+
 
 Sidebar
 =======
@@ -274,7 +328,7 @@ Sidebar
 :Directive Type: "sidebar"
 :Doctree Element: sidebar
 :Directive Arguments: One, required (sidebar title).
-:Directive Options: Possible; optional subtitle.
+:Directive Options: Possible.
 :Directive Content: Interpreted as the sidebar body.
 
 Sidebars are like miniature, parallel documents that occur inside
@@ -299,10 +353,14 @@ interpreted as body elements.  For example::
        the body of the sidebar, and are
        interpreted as body elements.
 
-The following option is recognized:
+The following options are recognized:
 
 ``subtitle`` : text
     The sidebar's subtitle.
+
+``class`` : text
+    Set a "class" attribute value on the sidebar element.  See the
+    class_ directive below.
 
 
 Line Block
@@ -311,7 +369,7 @@ Line Block
 :Directive Type: "line-block"
 :Doctree Element: line_block
 :Directive Arguments: None.
-:Directive Options: None.
+:Directive Options: Possible.
 :Directive Content: Becomes the body of the line block.
 
 The "line-block" directive constructs an element where whitespace
@@ -335,6 +393,12 @@ example, here's a classic::
                 as soon as it comes.
             Love, Ewan.
 
+The following option is recognized:
+
+``class`` : text
+    Set a "class" attribute value on the line_block element.  See the
+    class_ directive below.
+
 
 Parsed Literal Block
 ====================
@@ -342,7 +406,7 @@ Parsed Literal Block
 :Directive Type: "parsed-literal"
 :Doctree Element: literal_block
 :Directive Arguments: None.
-:Directive Options: None.
+:Directive Options: Possible.
 :Directive Content: Becomes the body of the literal block.
 
 Unlike an ordinary literal block, the "parsed-literal" directive
@@ -363,6 +427,76 @@ For example, all the element names in this content model are links::
          docinfo_?,
          decoration_?,
          `%structure.model;`_)
+
+The following option is recognized:
+
+``class`` : text
+    Set a "class" attribute value on the literal_block element.  See
+    the class_ directive below.
+
+
+Rubric
+======
+
+:Directive Type: "rubric"
+:Doctree Element: rubric
+:Directive Arguments: 1, required (rubric text).
+:Directive Options: Possible.
+:Directive Content: None.
+
+     rubric n. 1. a title, heading, or the like, in a manuscript,
+     book, statute, etc., written or printed in red or otherwise
+     distinguished from the rest of the text. ...
+
+     -- Random House Webster's College Dictionary, 1991
+
+The "rubric" directive inserts a "rubric" element into the document
+tree.  A rubric is like an informal heading that doesn't correspond to
+the document's structure.
+
+The following option is recognized:
+
+``class`` : text
+    Set a "class" attribute value on the rubric element.  See the
+    class_ directive below.
+
+
+Epigraph
+========
+
+:Directive Type: "epigraph"
+:Doctree Element: block_quote
+:Directive Arguments: None.
+:Directive Options: None.
+:Directive Content: Interpreted as the body of the block quote.
+
+Produces an epigraph-class block quote.  For example, this input::
+
+     .. epigraph::
+
+        No matter where you go, there you are.
+
+        -- Buckaroo Banzai
+
+becomes this document tree fragment::
+
+    <block_quote class="epigraph">
+        <paragraph>
+            No matter where you go, there you are.
+        <attribution>
+            Buckaroo Banzai
+
+
+Highlights
+========
+
+:Directive Type: "highlights"
+:Doctree Element: block_quote
+:Directive Arguments: None.
+:Directive Options: None.
+:Directive Content: Interpreted as the body of the block quote.
+
+Produces a highlights-class block quote.  See Epigraph_ above.
 
 
 ----------------
@@ -416,13 +550,19 @@ The following options are recognized:
 ``depth`` : integer
     The number of section levels that are collected in the table of
     contents.  The default is unlimited depth.
+
 ``local`` : flag (empty)
     Generate a local table of contents.  Entries will only include
     subsections of the section in which the directive is given.  If no
     explicit title is given, the table of contents will not be titled.
+
 ``backlinks`` : "entry" or "top" or "none"
     Generate links from section headers back to the table of contents
     entries, the table of contents itself, or generate no backlinks.
+
+``class`` : text
+    Set a "class" attribute value on the topic element.  See the
+    class_ directive below.
 
 
 Automatic Section Numbering
@@ -618,7 +758,7 @@ Raw Data Pass-Through
 =====================
 
 :Directive Type: "raw"
-:Doctree Element: pending
+:Doctree Element: raw
 :Directive Arguments: One, required (output format type).
 :Directive Options: Possible.
 :Directive Content: Stored verbatim, uninterpreted.  None (empty) if a
@@ -626,10 +766,9 @@ Raw Data Pass-Through
 
 The "raw" directive indicates non-reStructuredText data that is to be
 passed untouched to the Writer.  The name of the output format is
-given in the first argument.  During the initial parse, a "pending"
-element is generated which acts as a placeholder, storing the format
-and raw data internally.  The interpretation of the code is up to the
-Writer.  A Writer may ignore any raw output not matching its format.
+given in the first argument.  The interpretation of the raw data is up
+to the Writer.  A Writer may ignore any raw output not matching its
+format.
 
 For example, the following input would be passed untouched by an HTML
 Writer::
@@ -664,7 +803,7 @@ Replacement Text
 ================
 
 :Directive Type: "replace"
-:Doctree Element: pending
+:Doctree Element: Text & inline elements
 :Directive Arguments: None.
 :Directive Options: None.
 :Directive Content: A single paragraph; may contain inline markup.
@@ -687,6 +826,86 @@ the "replace" directive::
 
     .. |Python| replace:: Python, *the* best language around
     .. _Python: http://www.python.org/
+
+
+Unicode Character Codes
+=======================
+
+:Directive Type: "unicode"
+:Doctree Element: Text
+:Directive Arguments: One or more, required (Unicode character codes
+                      & text).
+:Directive Options: None.
+:Directive Content: None.
+
+The "unicode" directive converts Unicode character codes (numerical
+values) to characters, and may be used in substitution definitions
+only.  Codes may be decimal numbers, hexadecimal numbers (prefixed by
+``0x``, ``x``, ``\x``, ``u``, or ``\u``), or XML-style numbered
+character entities (e.g. ``&#x1a2b;``).  Codes may be upper- or
+lowercase.  Spaces are ignored, and any other text remains as-is.
+
+Example::
+
+    "|copy|" is the copyright symbol.
+
+    .. |copy| unicode:: 0xA9
+
+
+Class
+=====
+
+:Directive Type: "class"
+:Doctree Element: pending
+:Directive Arguments: One, required (class name / attribute value).
+:Directive Options: None.
+:Directive Content: None.
+
+The "class" directive sets a "class" attribute value on the first
+immediately following non-comment element [#]_.  For details of the
+"class" attribute, see `its entry`__ in `The Docutils Document Tree`_.
+The "class" attribute value is converted to lowercase and all
+non-alphanumeric characters are converted to hyphens in order to match
+this regular expression: ``[a-z](-?[a-z0-9]+)*``.  See the docstring
+from ``docutils.nodes.make_id`` for the rationale.
+
+Examples::
+
+    .. class:: special
+
+    This is a "special" paragraph.
+
+    .. class:: exceptional
+
+    An Exceptional Section
+    ======================
+
+    This is an ordinary paragraph.
+
+The text above is parsed and transformed into this doctree fragment::
+
+    <paragraph class="special">
+        This is a "special" paragraph.
+    <section class="exceptional">
+        <title>
+            An Exceptional Section
+        <paragraph>
+            This is an ordinary paragraph.
+
+.. [#] To set a "class" attribute value on a block quote, the "class"
+   directive must be followed by an empty comment::
+
+       .. class:: highlights
+       ..
+
+           Block quote text.
+
+   The directive doesn't allow content, therefore an empty comment is
+   required to terminate the directive.  Without the empty comment,
+   the block quote text would be interpreted as the "class"
+   directive's content, and the parser would complain.
+
+__ ../doctree.html#class
 
 
 Restructuredtext-Test-Directive
