@@ -134,6 +134,18 @@ General
     This may be a more general solution, equally applicable to tables.
     However, explicit naming using an option seems simpler to users.
 
+  - Perhaps the figure name could be incorporated into the figure
+    definition, as an optional inline target part of the directive
+    argument::
+
+        .. figure:: _`figure name` image.png
+
+    Maybe with a delimiter::
+
+        .. figure:: _`figure name`: image.png
+
+    Or some other, simpler syntax.
+
   We'll also need syntax for object references.  See `OpenOffice.org
   XML`_ "reference fields":
 
@@ -163,6 +175,18 @@ General
     could also be utilized.
 
     See `Interpreted Text`_ below.
+
+  - We could leave the boilerplate text up to the document::
+
+        See Figure :fig:`figure name` on page :pg:`figure name`.
+
+  - Reference boilerplate could be specified in the document
+    (defaulting to nothing)::
+
+        .. fignum::
+           :prefix-ref: "Figure "
+           :prefix-caption: "Fig. "
+           :suffix-caption: :
 
   .. _OpenOffice.org XML: http://xml.openoffice.org/
 
@@ -1413,6 +1437,62 @@ when used in a document.
 
   - _`body.list-table`: See `List-Driven Tables
     <rst/alternatives.html#list-driven-tables>`_.
+
+  - _`body.compound` (working name only):
+
+    compound paragraph
+        A paragraph containing embedded block-level elements such as
+        literal blocks, tables, lists, etc., in addition to directly
+        containing text and inline elements.  Compound paragraphs are
+        typically rendered as multiple distinct text blocks.
+
+    simple paragraph
+        A paragraph which directly contains only text and inline
+        elements (like "emphasis").  Simple paragraphs can always be
+        rendered in a single contiguous text block.
+
+    When writing a paragraph, sometimes one wants to say something
+    like::
+
+        .. compound::
+
+           The 'rm' command is very dangerous.  If you are logged
+           in as root and enter these commands ::
+
+               cd /
+               rm -rf *
+
+           you will erase the entire contents of your file
+           system.
+
+    The literal block is essentially embedded in the middle of a
+    sentence, in a single "compound paragraph".  The second part of
+    the paragraph may be rendered differently than the first part
+    (e.g., no indentation of the first line).
+
+    The document model will need to be extended, probably like this::
+
+        <compound>
+            <paragraph>
+                This is a paragraph, containing an
+            <literal_block>
+                embedded literal block
+            <paragraph>
+                between segments.
+
+    The decision directive & element name has not been decided.  So
+    far, the contenders are:
+
+    * compound
+    * paragraph
+    * block
+
+    Looking at the DTD and at docs/ref/doctree.txt, there don't seem
+    to be any non-paragraph cases.  Every other element that directly
+    contains text is either inline (i.e., occurs within paragraphs) or
+    specialized and atomic (like literal blocks or titles) and would
+    never be "continued".  Paragraphs seem to be unique in this sense
+    among the elements.
 
   - _`colorize.python`: Colorize Python code.  Fine for HTML output,
     but what about other formats?  Revert to a literal block?  Do we
