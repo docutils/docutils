@@ -144,11 +144,10 @@ class RSTStateMachine(StateMachineWS):
     def run(self, input_lines, document, input_offset=0, match_titles=1,
             inliner=None):
         """
-        Parse `input_lines` and return a `docutils.nodes.document` instance.
+        Parse `input_lines` and modify the `document` node in place.
 
-        Extend `StateMachineWS.run()`: set up parse-global data, run the
-        StateMachine, and return the resulting
-        document.
+        Extend `StateMachineWS.run()`: set up parse-global data and
+        run the StateMachine.
         """
         self.language = languages.get_language(
             document.settings.language_code)
@@ -290,7 +289,7 @@ class RSTState(StateWS):
                           state_machine_kwargs=None):
         """
         Create a new StateMachine rooted at `node` and run it over the input
-        `block`. Also keep track of optional intermdediate blank lines and the
+        `block`. Also keep track of optional intermediate blank lines and the
         required final one.
         """
         if state_machine_class is None:
