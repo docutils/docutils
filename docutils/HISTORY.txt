@@ -203,6 +203,8 @@ Changes Since 0.3
 
   - Isolated the import of the ``urllib2`` module; was causing
     problems on SourceForge (``libssl.so.2`` unavailable?).
+  - Added the "role" directive for declaring custom interpreted text
+    roles.
 
 * docutils/parsers/rst/directives/parts.py:
 

@@ -22,7 +22,7 @@ def suite():
 
 totest = {}
 
-totest['tables_of_contents'] = ((), [
+totest['class'] = ((), [
 ["""\
 .. class:: one
 
@@ -92,7 +92,7 @@ Paragraph
             .. class::
     <system_message level="3" line="3" source="test data" type="ERROR">
         <paragraph>
-            Invalid class attribute value for "class" directive: 99
+            Invalid class attribute value for "class" directive: "99".
         <literal_block xml:space="preserve">
             .. class:: 99
 """],
