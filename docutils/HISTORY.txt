@@ -158,20 +158,26 @@ Specific:
   directives and roles.  Source text to be used as-is; not meant to be
   converted to HTML.
 
+* docs/user/rst/demo.txt: Added to project; moved from tools/test.txt
+  with a change of title.
+
 * test/functional/, contents, and test/test_functional.py: Added to
   project.
 
+* tools/buildhtml.py: Fixed bug with config file handling.
+
 * tools/html.py: Removed from project.
 
-* setup.py: Now also installs ``rst2latex.py``.
+* tools/pep2html.py: Removed from project.
 
 * tools/rst2pseudoxml.py: Renamed from publish.py.
 
 * tools/rst2xml.py: Renamed from docutils-xml.py.
 
-* tools/pep2html.py: Removed from project.
+* tools/test.txt: Removed from project; moved to
+  docs/user/rst/demo.txt.
 
-* docs/user/rst/demo.txt: Renamed from tools/test.txt.
+* setup.py: Now also installs ``rst2latex.py``.
 
 
 Release 0.3.3 (2004-05-09)
