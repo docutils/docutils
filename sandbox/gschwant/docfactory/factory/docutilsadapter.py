@@ -20,7 +20,14 @@ publishers = { 'HTML': (None, 'html', '.html'),
                'Docutils-XML': (None, 'xml', '.xml'),
                'LaTeX': (None, 'latex', '.tex'),
                'PEP-HTML': ('pep', 'pep_html', '.html'),
-               'Pseudo-XML': (None, None, '.xml') }
+               'Pseudo-XML': (None, None, '.xml'),
+               }
+
+try:
+    from docutils.writers import htmlnav
+    publishers['HTML with navigation-bars'] = (None, 'htmlnav', '.html')
+except:
+    pass
 
 def get_rest_bibl_fields(language_code='en'):
     # suitable for autocompletion in wxStyledTextCtrl
