@@ -388,7 +388,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # inside literal block: no quote mangling.
         self.literal_block = 0
         self.literal = 0
-
+        # true when encoding in math mode
+        self.mathmode = 0
+        
     def get_stylesheet_reference(self):
         if self.settings.stylesheet_path:
             return self.settings.stylesheet_path
@@ -465,7 +467,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # then dollar
         text = text.replace("$", '{\\$}')
-        if not ( self.literal_block or self.literal ):
+        if not ( self.literal_block or self.literal or self.mathmode ):
             # the vertical bar: in mathmode |,\vert or \mid
             #   in textmode \textbar
             text = text.replace("|", '{\\textbar}')
@@ -582,6 +584,25 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             self.body.append( '\\end{itemize}\n' )
 
+    # Imperfect superscript/subscript handling: mathmode italicizes
+    # all letters by default.
+    def visit_superscript(self, node):
+        self.body.append('$^{')
+        self.mathmode = 1
+
+    def depart_superscript(self, node):
+        self.body.append('}$')
+        self.mathmode = 0
+
+    def visit_subscript(self, node):
+        self.body.append('$_{')
+        self.mathmode = 1
+
+    def depart_subscript(self, node):
+        self.body.append('}$')
+        self.mathmode = 0
+
+        
     def visit_caption(self, node):
         self.body.append( '\\caption{' )
 
