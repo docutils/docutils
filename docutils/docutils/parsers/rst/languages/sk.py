@@ -57,3 +57,25 @@ directives = {
       }
 """Slovak name to registered (in directives/__init__.py) directive name
 mapping."""
+
+roles = {
+      u'abbreviation (translation required)': 'abbreviation',
+      u'acronym (translation required)': 'acronym',
+      u'index (translation required)': 'index',
+      u'subscript (translation required)': 'subscript',
+      u'superscript (translation required)': 'superscript',
+      u'title-reference (translation required)': 'title-reference',
+      u'pep-reference (translation required)': 'pep-reference',
+      u'rfc-reference (translation required)': 'rfc-reference',
+      u'emphasis (translation required)': 'emphasis',
+      u'strong (translation required)': 'strong',
+      u'literal (translation required)': 'literal',
+      u'named-reference (translation required)': 'named-reference',
+      u'anonymous-reference (translation required)': 'anonymous-reference',
+      u'footnote-reference (translation required)': 'footnote-reference',
+      u'citation-reference (translation required)': 'citation-reference',
+      u'substitution-reference (translation required)': 'substitution-reference',
+      u'target (translation required)': 'target',
+      u'uri-reference (translation required)': 'uri-reference',}
+"""Mapping of Slovak role names to canonical role names for interpreted text.
+"""

@@ -55,5 +55,27 @@ directives = {
       #'footnotes': 'footnotes',
       #'citations': 'citations',
       'restructuredtext-test-directive': 'restructuredtext-test-directive'}
-"""English name to registered (in directives/__init__.py) directive name
+"""Italian name to registered (in directives/__init__.py) directive name
 mapping."""
+
+roles = {
+      'abbreviation (translation required)': 'abbreviation',
+      'acronym (translation required)': 'acronym',
+      'index (translation required)': 'index',
+      'subscript (translation required)': 'subscript',
+      'superscript (translation required)': 'superscript',
+      'title-reference (translation required)': 'title-reference',
+      'pep-reference (translation required)': 'pep-reference',
+      'rfc-reference (translation required)': 'rfc-reference',
+      'emphasis (translation required)': 'emphasis',
+      'strong (translation required)': 'strong',
+      'literal (translation required)': 'literal',
+      'named-reference (translation required)': 'named-reference',
+      'anonymous-reference (translation required)': 'anonymous-reference',
+      'footnote-reference (translation required)': 'footnote-reference',
+      'citation-reference (translation required)': 'citation-reference',
+      'substitution-reference (translation required)': 'substitution-reference',
+      'target (translation required)': 'target',
+      'uri-reference (translation required)': 'uri-reference',}
+"""Mapping of Italian role names to canonical role names for interpreted text.
+"""

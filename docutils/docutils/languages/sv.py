@@ -43,6 +43,7 @@ labels = {
 bibliographic_fields = {
     # 'Author' and 'Authors' identical in Swedish; assume the plural:
     u'f\u00f6rfattare': 'authors',
+    u' n/a':            'author',
     u'organisation':    'organization',
     u'adress':          'address',
     u'kontakt':         'contact',
