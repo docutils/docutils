@@ -4,10 +4,13 @@ latex2e BUGS TODOS and other animals
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
 
-Rev. 2003-01-08
+Rev. 2003-01-09
 
 To do
 ~~~~~
+
+* Maybe add end of line after term in definition list. see
+    http://roundup.sf.net/doc-0.5/features.pdf
 
 * In tools.txt the option tables right column, there should be some more spacing
   between the description and the next paragraph "Default:".
@@ -86,7 +89,7 @@ To do
 
 * bullet lists have no bullets (test.txt)	
 
-* tables have borders, and the border is missing in multicol cells. or empty cells.
+* tables have borders, and the border is missing in empty cells.
 
 * footnotes are not all on the same page (as in tools/test.txt) and do not link back
   and forth.
@@ -95,9 +98,6 @@ To do
 
 * hyperlinks are not hyphenated this leads to bad spacing. see tools/test.txt 
   2.14 directives directives
-
-* latex might shift images (or figures) to other pages. this is latex. but then we 
-  need a see figure 1 note in the text.
 
 * meta keywords into pdf ?
 
