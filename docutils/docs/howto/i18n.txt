@@ -1,0 +1,91 @@
+================================
+ Docutils_ Internationalization
+================================
+
+:Author: David Goodger
+:Contact: goodger@users.sourceforge.net
+:Date: $Date$
+:Revision: $Revision$
+:Copyright: This document has been placed in the public domain.
+
+
+.. contents::
+
+
+This document describes the internationalization (hereafter "i18n":
+"i" + 18 letters + "n") facilities of the Docutils_ project.
+`Introduction to i18n`_ by Tomohiro KUBOTA is a good general
+reference.
+
+.. Note::
+
+   The i18n facilities of Docutils should be considered a "first
+   draft".  They work so far, but improvements are welcome.
+   Specifically, standard i18n facilities like "gettext" have yet to
+   be explored.
+
+Docutils is designed to work flexibly with text in multiple languages
+(one language at a time).  Language-specific features are (or should
+be [#]_) fully parameterized.  To enable a new language, two modules
+have to be added to the project: one for Docutils itself (the
+`Docutils Language Module`_) and one for the reStructuredText parser
+(the `reStructuredText Language Module`_).
+
+Language modules are named using a case-insensitive language
+identifier as defined in `RFC 1766`_.  A typical language identifier
+consists of a 2-letter language code from `ISO 639`_ (3-letter codes
+can be used if no 2-letter code exists; RFC 1766 is currently being
+revised to allow 3-letter codes).  If no language identifier is
+specified, the default is "en" for English.  Examples of module names
+include ``en.py``, ``fr.py``, and ``ja.py``
+
+.. [#] If anything in Docutils is insufficiently parameterized, it
+   should be considered a bug.  Please report bugs to the Docutils
+   project bug tracker on SourceForge at
+   http://sourceforge.net/tracker/?group_id=38414&atid=422030.
+
+.. _Docutils: http://docutils.sourceforge.net/
+.. _Introduction to i18n:
+   http://www.debian.org/doc/manuals/intro-i18n/
+.. _RFC 1766: http://www.faqs.org/rfcs/rfc1766.html
+.. _ISO 639: http://lcweb.loc.gov/standards/iso639-2/englangn.html
+
+
+Docutils Language Module
+========================
+
+Modules in ``docutils/languages`` contain language mappings for
+markup-independent language-specific features of Docutils:
+
+``labels``
+    This is a mapping of node class names to language-dependent
+    boilerplate label text.  The label text is used by Writer
+    components when they encounter document tree elements whose class
+    names are the mapping keys.
+
+``bibliographic_fields``
+    This is a mapping of language-dependent field names (converted to
+    lower case) to node classes (in ``docutils.nodes``).  It is used
+    when parsing bibliographic fields.
+
+``author_separators``
+    This is a list of strings used to parse the 'Authors'
+    bibliographic field.  They separate individual authors' names, and
+    are tried in order (i.e., earlier items take priority, and the
+    first item that matches wins).  The English-language module
+    defines them as ``[';', ',']``; semi-colons can be used to
+    separate names like "Arthur Pewtie, Esq.".
+
+
+reStructuredText Language Module
+================================
+
+Modules in ``docutils/parsers/rst/languages`` contain language
+mappings for language-specific features of the reStructuredText
+parser:
+
+``directives``
+    This is a mapping from language-dependent directive names to
+    canonical directive names.  The canonical directive names are
+    registered in ``docutils/parsers/rst/directives/__init__.py``, in
+    ``_directive_registry``.
