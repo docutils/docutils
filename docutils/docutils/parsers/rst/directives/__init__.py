@@ -24,9 +24,9 @@ Where:
 - ``state_machine`` is the state machine which controls the state which called
   the directive function.
 - ``attributes`` is a dictionary of extra attributes which may be added to the
-  element the directive produces. Currently, only an "alt" attribute is passed
-  by substitution definitions (value: the substitution name), which may by
-  used by an embedded image directive.
+  element the directive produces.  Currently, only an "alt" attribute is
+  passed by substitution definitions (value: the substitution name), which may
+  be used by an embedded image directive.
 
 Directive functions return a tuple of two values:
 

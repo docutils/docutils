@@ -80,12 +80,13 @@ where "X.Y" is the release version.  Alternatively::
     tools/buildhtml.py --config=tools/docutils.conf
 
 The current directory (and all subdirectories) is chosen by default if
-no directory is named.  Incomplete files (such as spec/doctree.txt)
-may generate system messages; use the ``--quiet`` option to suppress
-all warnings.  The ``--config`` option ensures that the correct
-stylesheets, templates, and settings are in place (``./docutils.conf``
-is picked up automatically).  Command-line options may be used to
-override config file settings or replace them altogether.
+no directory is named.  Some files may generate system messages
+(tools/test.txt contains intentional errors); use the ``--quiet``
+option to suppress all warnings.  The ``--config`` option ensures that
+the correct stylesheets, templates, and settings are in place
+(``./docutils.conf`` is picked up automatically).  Command-line
+options may be used to override config file settings or replace them
+altogether.
 
 
 html.py
