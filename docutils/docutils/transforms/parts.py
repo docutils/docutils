@@ -34,7 +34,8 @@ class SectNum(Transform):
     def apply(self):
         self.maxdepth = self.startnode.details.get('depth', sys.maxint)
         self.startnode.parent.remove(self.startnode)
-        self.update_section_numbers(self.document)
+        if self.document.settings.enable_section_numbering:
+            self.update_section_numbers(self.document)
 
     def update_section_numbers(self, node, prefix=(), depth=0):
         depth += 1
