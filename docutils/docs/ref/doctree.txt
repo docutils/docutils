@@ -10,13 +10,15 @@ A Guide to the Docutils DTD
 :Revision: $Revision$
 :Date: $Date$
 
+
 .. contents:: :depth: 1
 
-This document describes the XML data structure of Docutils_ documents,
-the relationships and semantics of elements.  The Docutils document
-structure is formally defined by the `Docutils Generic DTD`_ XML
-document type definition, docutils.dtd_, which is the definitive
-source for details of element structural relationships.
+
+This document describes the XML data structure of Docutils_ documents:
+the relationships and semantics of elements and attributes.  The
+Docutils document structure is formally defined by the `Docutils
+Generic DTD`_ XML document type definition, docutils.dtd_, which is
+the definitive source for details of element structural relationships.
 
 This document does not discuss implementation details.  Those can be
 found in internal documentation (docstrings) for the
@@ -803,7 +805,7 @@ reStructuredText source::
 
     A paragraph.
 
-Complete pseudo-XML_ result after parsing and transforms applied::
+Complete pseudo-XML_ result after parsing and applying transforms::
 
     <document id="title" name="title">
         <title>
@@ -1203,6 +1205,25 @@ Entity definition:
 
 The ``%additional.basic.atts;`` parameter entity can be used by
 wrapper DTDs to extend ``%basic.atts;``.
+
+
+``%bibliographic.elements;``
+============================
+
+The ``%bibliographic.elements;`` parameter entity contains an OR-list of all
+`bibliographic elements`_.
+
+Entity definition:
+
+.. parsed-literal::
+
+    author_ | authors_ | organization_ | contact_
+    | version_ | revision_ | status_ | date_ | copyright_
+    | field_
+    %additional.bibliographic.elements;
+
+The ``%additional.bibliographic.elements;`` parameter entity can be used by
+wrapper DTDs to extend ``%bibliographic.elements;``.
 
 
 ``%body.elements;``
