@@ -12,7 +12,6 @@ Tests for `docutils.transforms.parts.Contents` (via
 """
 
 from __init__ import DocutilsTestSupport
-from docutils.transforms.universal import LastReaderPending, FirstWriterPending
 from docutils.transforms.references import Substitutions
 from docutils.parsers.rst import Parser
 
@@ -25,7 +24,7 @@ def suite():
 
 totest = {}
 
-totest['tables_of_contents'] = ((Substitutions, FirstWriterPending), [
+totest['tables_of_contents'] = ((Substitutions,), [
 ["""\
 .. contents::
 

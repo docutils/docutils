@@ -24,7 +24,7 @@ def suite():
 
 totest = {}
 
-totest['system_message_sections'] = ((Substitutions, Messages,), [
+totest['system_message_sections'] = ((Substitutions, Messages), [
 ["""\
 This |unknown substitution| will generate a system message, thanks to
 the ``Substitutions`` transform. The ``Messages`` transform will

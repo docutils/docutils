@@ -28,7 +28,6 @@ totest['contents'] = [
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.parts.Contents
-             .stage: 'first writer'
              .details:
                title: None
 """],
@@ -40,7 +39,6 @@ totest['contents'] = [
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.parts.Contents
-             .stage: 'first writer'
              .details:
                title:
                  <title>
@@ -55,7 +53,6 @@ totest['contents'] = [
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.parts.Contents
-             .stage: 'first writer'
              .details:
                title:
                  <title>
@@ -71,7 +68,6 @@ totest['contents'] = [
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.parts.Contents
-             .stage: 'first writer'
              .details:
                title:
                  <title>
@@ -87,7 +83,6 @@ totest['contents'] = [
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.parts.Contents
-             .stage: 'first writer'
              .details:
                title:
                  <title>
@@ -107,7 +102,6 @@ totest['contents'] = [
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.parts.Contents
-             .stage: 'first writer'
              .details:
                depth: 2
                local: None
@@ -139,7 +133,6 @@ totest['contents'] = [
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.parts.Contents
-             .stage: 'first writer'
              .details:
                backlinks: None
                depth: 2

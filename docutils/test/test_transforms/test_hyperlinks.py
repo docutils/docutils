@@ -11,7 +11,8 @@ Tests for docutils.transforms.references.Hyperlinks.
 """
 
 from __init__ import DocutilsTestSupport
-from docutils.transforms.references import Hyperlinks
+from docutils.transforms.references import ChainedTargets, \
+     AnonymousHyperlinks, IndirectHyperlinks, ExternalTargets, InternalTargets
 from docutils.parsers.rst import Parser
 
 
@@ -25,7 +26,9 @@ totest = {}
 
 # Exhaustive listing of hyperlink variations: every combination of
 # target/reference, direct/indirect, internal/external, and named/anonymous.
-totest['exhaustive_hyperlinks'] = ((Hyperlinks,), [
+totest['exhaustive_hyperlinks'] = ((ChainedTargets, AnonymousHyperlinks,
+                                    IndirectHyperlinks, ExternalTargets,
+                                    InternalTargets,), [
 ["""\
 direct_ external
 
@@ -226,7 +229,9 @@ __ ztarget_
 """],
 ])
 
-totest['hyperlinks'] = ((Hyperlinks,), [
+totest['hyperlinks'] = ((ChainedTargets, AnonymousHyperlinks,
+                                    IndirectHyperlinks, ExternalTargets,
+                                    InternalTargets,), [
 ["""\
 .. _internal hyperlink:
 

@@ -12,8 +12,6 @@ Tests for `docutils.transforms.parts.SectNum` (via
 """
 
 from __init__ import DocutilsTestSupport
-from docutils.transforms.universal import LastReaderPending, \
-     FirstWriterPending
 from docutils.transforms.references import Substitutions
 from docutils.parsers.rst import Parser
 
@@ -26,8 +24,7 @@ def suite():
 
 totest = {}
 
-totest['section_numbers'] = ((Substitutions, LastReaderPending,
-                              FirstWriterPending), [
+totest['section_numbers'] = ((Substitutions,), [
 ["""\
 .. sectnum::
 

@@ -79,101 +79,6 @@ General
 * Perhaps the ``Component.supports`` method should deal with
   individual features ("meta" etc.) instead of formats ("html" etc.)?
 
-* @@@ Transforms need a priority system.  The "first reader" ...
-  "last writer" system is no longer adequate for pending transforms.
-  For example, the ``references.TargetNotes`` transform needs to run
-  after ``references.Hyperlinks.resolve_indirect()`` but before
-  ``references.Footnotes``.
-
-  Ideas:
-
-  - Add a ``Transformer`` class that registers and executes
-    transforms.
-
-    - Class contains a queue, with entries ``(priority, transform,
-      pending=None)``.
-
-    - Perhaps ``Transformer.add_transform(transform, priority=None)``,
-      where ``priority`` can be used to override the transform class'
-      ``default_priority`` class attribute (used if ``None``).
-
-    - Perhaps a ``Transformer.add_transforms(transform_list)`` method
-      for quick population.  ``docutils.Component`` could be the host
-      for the ``default_transforms`` class attribute and an
-      ``add_transforms()`` method.
-
-    - The ``Transformer`` class could host all universal transforms in
-      its ``default_transforms`` attribute.
-
-    - How to handle ``pending`` elements?  Perhaps a
-      ``Transformer.add_pending(pending, priority=None)`` method?
-      Just call it from ``nodes.document.note_pending()``.  Need to
-      re-sort the queue whenever a new transform is added.
-
-    - Who creates a ``Transformer`` object?  Attach it to the
-      ``document`` object?  Needs to be accessible when instantiating
-      other components?  Or when "runtime initializing" them?
-
-      a) ``core.Publisher`` creates a ``Transformer`` object,
-         initializes it from components (reader, parser, writer,
-         source, destination), and attaches it to ``document`` (via
-         ``settings``]?).
-
-      b) ``document`` is given a ``Transformer`` object
-         (``document.transformer``) in ``utils.new_document``.
-         ``Publisher`` populates ``document.transformer`` from
-         components after the ``self.reader.read`` call returns (be
-         sure to use ``self.reader.parser``, not ``self.parser``).
-         ``document.transformer.apply_all`` is called before
-         ``self.writer.write``.
-
-    - Should components initialize the ``Transformer`` object (add
-      ``self.add_transforms()`` calls to components' ``__init__``), or
-      should the ``Transformer`` initialize itself, accessing the
-      transform lists of the components?
-
-    - Pass a ``Transformer`` object at component instantiation time?
-
-  - Transform classes can have ``priority`` class attributes.
-    Each transform could have a unique priority.  Use a look-up table?
-    No, that would require too many imports to construct.
-
-    - Priorities can be numeric.  Integers (0..100?  0..999?
-      100..999?  0..9999?)?  Floats (would be easier to squeeze in new
-      ones)?
-
-    - Priorities can be strings.  Numeric (000..999?  100..999?
-      0000..9999?)?  Alphanumeric (a..z?  1, 1a, 1b, ...?)?
-
-  - Document transform priorities.
-
-  Updated project dataflow model under consideration for PEP 258::
-
-                        +---------------------------+
-                        |        Docutils:          |
-                        | docutils.core.Publisher,  |
-                        | docutils.core.publish_*() |
-                        +---------------------------+
-                         /            |            \
-                        /             |             \
-               1,3,5   /        6     |              \ 7
-              +--------+       +-------------+       +--------+
-              | READER | ----> | TRANSFORMER | ====> | WRITER |
-              +--------+       +-------------+       +--------+
-               /     \\                                  |
-              /       \\                                 |
-        2    /      4  \\                             8  |
-       +-------+   +--------+                        +--------+
-       | INPUT |   | PARSER |                        | OUTPUT |
-       +-------+   +--------+                        +--------+
-
-* @@@ Break up ``references.Hyperlinks`` into multiple smaller
-  transforms.
-
-* Make it easier to say, "Here's a reStructuredText string; give me
-  HTML."  Maybe ``core.publish_string()``; rename ``core.publish`` to
-  ``core.publish_file()``?
-
 * Standalone Reader: Implement an option to turn off the DocTitle
   transform?
 
@@ -486,6 +391,9 @@ Miscellaneous ideas:
 * Have links to colorized Python source files from API docs?  And
   vice-versa: backlinks from the colorized source files to the API
   docs!
+
+* In summaries, use the first *sentence* of a docstring if the first
+  line is not followed by a blank line.
 
 
 reStructuredText Parser

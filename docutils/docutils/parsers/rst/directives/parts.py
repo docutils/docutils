@@ -34,8 +34,7 @@ def contents(name, arguments, options, content, lineno,
     else:
         messages = []
         title = None
-    pending = nodes.pending(parts.Contents, 'first writer', {'title': title},
-                            block_text)
+    pending = nodes.pending(parts.Contents, {'title': title}, block_text)
     pending.details.update(options)
     state_machine.document.note_pending(pending)
     return [pending] + messages
@@ -48,7 +47,7 @@ contents.options = {'depth': directives.nonnegative_int,
 def sectnum(name, arguments, options, content, lineno,
             content_offset, block_text, state, state_machine):
     """Automatic section numbering."""
-    pending = nodes.pending(parts.SectNum, 'last reader', {})
+    pending = nodes.pending(parts.SectNum)
     pending.details.update(options)
     state_machine.document.note_pending(pending)
     return [pending]

@@ -218,6 +218,7 @@ Docutils Internals
 - Notes__ (includes the Docutils `To Do list`_ and `Project
   Policies`__)
 - `The Docutils Document Tree`__ (incomplete)
+- `Docutils Transforms`__
 - `Docstring Semantics`__ (incomplete)
 - `Docutils Generic DTD`__
 - `OASIS XML Exchange Table Model Declaration Module`__ (CALS tables
@@ -228,6 +229,7 @@ Docutils Internals
 __ spec/notes.html
 __ spec/notes.html#project-policies
 __ spec/doctree.html
+__ spec/transforms.html
 __ spec/semantics.html
 __ spec/docutils.dtd
 __ spec/soextblx.dtd

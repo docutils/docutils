@@ -11,7 +11,6 @@ Tests for docutils.transforms.components.Filter.
 """
 
 from __init__ import DocutilsTestSupport
-from docutils.transforms.universal import FirstWriterPending
 from docutils.parsers.rst import Parser
 
 
@@ -23,7 +22,7 @@ def suite():
 
 totest = {}
 
-totest['meta'] = ((FirstWriterPending,), [
+totest['meta'] = ((), [
 ["""\
 .. meta::
    :description: The reStructuredText plaintext markup language
