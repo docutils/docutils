@@ -214,6 +214,7 @@ Changes Since 0.2
   - Increased the size of inline literals (<tt>) in titles.
   - Restored the light gray background for inline literals.
   - Added support for "line_block" elements.
+  - Added style for "address" elements.
 
 * tools/pep2html.py:
 
@@ -223,6 +224,7 @@ Changes Since 0.2
   - Files skipped (due to an error) are not pushed onto the server.
   - Updated for new I/O classes.
   - Added ``check_requirements()`` & ``pep_type_error()``.
+  - Added some exception handling.
 
 * tools/stylesheets/pep.css:
 
