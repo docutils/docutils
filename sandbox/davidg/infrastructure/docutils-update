@@ -52,7 +52,7 @@ cvs -Q -z3 $root update 2>&1 > /dev/null
 
 # gather the materials
 cd $snapshotdir
-cvs -Q -z3 $root update -rHEAD #$project sandbox web
+cvs -Q -z3 $root update -rHEAD $project sandbox web
 
 # ensure executable bits are set
 chmod +x $project/*.py
@@ -62,10 +62,11 @@ find $project/test -name 'test_*.py' | xargs chmod +x
 
 # create the snapshots
 exclude='--exclude=CVS --exclude=.cvsignore'
-tar $exclude -czf $project-snapshot.tgz $project
-tar $exclude -czf $project-sandbox-snapshot.tgz sandbox
-tar $exclude -czf $project-web-snapshot.tgz web
-( cd sandbox/gschwant ; tar -czf ../../docfactory-snapshot.tgz docfactory )
+tar -cz $exclude -f $project-snapshot.tgz $project
+tar -cz $exclude -f $project-sandbox-snapshot.tgz sandbox
+tar -cz $exclude -f $project-web-snapshot.tgz web
+( cd sandbox/gschwant ;
+  tar -cz $exclude -f ../../docfactory-snapshot.tgz docfactory )
 
 # plant the snapshots
 mv -f *snapshot.tgz $dest
