@@ -12,7 +12,7 @@ Tests for PySource Reader functions.
 
 import unittest
 from __init__ import DocutilsTestSupport
-from docutils.readers.python.moduleparser import trim_docstring, TokenReader
+from docutils.readers.python.moduleparser import trim_docstring
 
 
 class MiscTests(unittest.TestCase):
@@ -50,10 +50,6 @@ Last line unindented."""),
             self.assertEquals(trim_docstring(docstring), expected)
             self.assertEquals(trim_docstring('\n    ' + docstring),
                               expected)
-
-#     def test_token_reader(self):
-#         tr = TokenReader('a = 1')
-#         self.assertEquals(tr.rhs('a', 1), '1')
 
 
 if __name__ == '__main__':

@@ -12,7 +12,7 @@ Ideas:
 * Tokenize the module in parallel to extract initial values, comments, etc.
 
 * Merge the compiler & tokenize output such that the raw text hangs off of
-  nodes?  Especially assignment expressions (RHS).
+  nodes.  Useful for assignment expressions (RHS).
 
 What I'd like to do is to take a module, read in the text, run it through the
 module parser (using compiler.py and tokenize.py) and produce a high-level AST
@@ -79,7 +79,12 @@ The module parser should produce a high-level AST, something like this::
                     1
                 <Docstring>
                     class_attribute's docstring
-            <Method name="__init__" argnames=['self', ('text', 'None')]>
+            <Method name="__init__">
+                <Parameters>
+                    <Parameter name="self">
+                    <Parameter name="text">
+                        <Expression>
+                            None
                 <Docstring>
                     __init__'s docstring
                 <Attribute name="instance_attribute" instance=True>
@@ -109,10 +114,10 @@ The module parser should produce a high-level AST, something like this::
                 <Docstring>
                     f.function_attribute's docstring
 
-compiler.parse() provides most of what's needed for this AST.  I think that
-"tokenize" can be used to get the rest, and all that's left is to hunker down
-and figure out how.  We can determine the line number from the
-compiler.parse() AST, and a get_rhs(lineno) method would provide the rest.
+compiler.parse() provides most of what's needed for this AST, and "tokenize"
+can be used to get the rest.  We can determine the line number from the
+compiler.parse() AST, and the TokenParser.rhs(lineno) method provides the
+rest.
 
 The Docutils Python reader component will transform this AST into a
 Python-specific doctree, and then a `stylist transform`_ would further
@@ -174,17 +179,17 @@ from types import StringType, UnicodeType
 
 def parse_module(module_text, filename):
     ast = compiler.parse(module_text)
-    visitor = ModuleVisitor(filename)
+    token_parser = TokenParser(module_text)
+    visitor = ModuleVisitor(filename, token_parser)
     compiler.walk(ast, visitor, walker=visitor)
     return visitor.module
 
 
-class ModuleVisitor(ASTVisitor):
+class BaseVisitor(ASTVisitor):
 
-    def __init__(self, filename):
+    def __init__(self, token_parser):
         ASTVisitor.__init__(self)
-        self.filename = filename
-        self.module = None
+        self.token_parser = token_parser
         self.context = []
         self.documentable = None
 
@@ -193,22 +198,12 @@ class ModuleVisitor(ASTVisitor):
         #print 'in default (%s)' % node.__class__.__name__
         #ASTVisitor.default(self, node, *args)
 
-    def default_ignore(self, node, *args):
-        #print 'in default_ignore (%s)' % node.__class__.__name__
+    def default_visit(self, node, *args):
+        #print 'in default_visit (%s)' % node.__class__.__name__
         ASTVisitor.default(self, node, *args)
 
-    def visitModule(self, node):
-        #print dir(node)
-        self.module = module = Module(node, self.filename)
-        if node.doc is not None:
-            module.append(Docstring(node, node.doc))
-        self.context.append(module)
-        self.documentable = module
-        self.visit(node.node)
-        self.context.pop()
 
-    def visitStmt(self, node):
-        self.default_ignore(node)
+class DocstringVisitor(BaseVisitor):
 
     def visitDiscard(self, node):
         if self.documentable:
@@ -221,17 +216,14 @@ class ModuleVisitor(ASTVisitor):
             else:
                 self.documentable = None
 
-    def visitImport(self, node):
-        self.context[-1].append(Import(node, node.names))
-        self.documentable = None
+    def visitStmt(self, node):
+        self.default_visit(node)
 
-    def visitFrom(self, node):
-        self.context[-1].append(
-            Import(node, node.names, from_name=node.modname))
-        self.documentable = None
+
+class AssignmentVisitor(DocstringVisitor):
 
     def visitAssign(self, node):
-        visitor = AssignmentVisitor()
+        visitor = AttributeVisitor(self.token_parser)
         compiler.walk(node, visitor, walker=visitor)
         if visitor.attributes:
             self.context[-1].extend(visitor.attributes)
@@ -241,66 +233,111 @@ class ModuleVisitor(ASTVisitor):
             self.documentable = None
 
 
-class AssignmentVisitor(ASTVisitor):
+class ModuleVisitor(AssignmentVisitor):
 
-    """
-    Tried reconstructing expressions (the RHS of assignments) by
-    visiting the compiler.parse() tree, but a lot of information is
-    missing, like parenthesis-grouping of expressions.
+    def __init__(self, filename, token_parser):
+        AssignmentVisitor.__init__(self, token_parser)
+        self.filename = filename
+        self.module = None
 
-    Gotta do it by parsing tokens.
-    """
+    def visitModule(self, node):
+        self.module = module = Module(node, self.filename)
+        if node.doc is not None:
+            module.append(Docstring(node, node.doc))
+        self.context.append(module)
+        self.documentable = module
+        self.visit(node.node)
+        self.context.pop()
 
-    def __init__(self):
-        ASTVisitor.__init__(self)
+    def visitImport(self, node):
+        self.context[-1].append(Import(node, node.names))
+        self.documentable = None
+
+    def visitFrom(self, node):
+        self.context[-1].append(
+            Import(node, node.names, from_name=node.modname))
+        self.documentable = None
+
+    def visitFunction(self, node):
+        visitor = FunctionVisitor(self.token_parser)
+        compiler.walk(node, visitor, walker=visitor)
+        self.context[-1].append(visitor.function)
+
+
+class AttributeVisitor(BaseVisitor):
+
+    def __init__(self, token_parser):
+        BaseVisitor.__init__(self, token_parser)
         self.attributes = []
-        self.parts = []
-
-    def default(self, node, *args):
-        print >>sys.stderr, '%s not visited!' % node.__class__.__name__
-        ASTVisitor.default(self, node)
 
     def visitAssign(self, node):
-        ASTVisitor.default(self, node)
-        self.attributes[-1].append(Expression(node, ''.join(self.parts)))
+        # Don't visit the expression itself, just the attribute nodes:
+        for child in node.nodes:
+            self.dispatch(child)
+        expression_text = self.token_parser.rhs(node.lineno)
+        expression = Expression(node, expression_text)
+        for attribute in self.attributes:
+            attribute.append(expression)
 
     def visitAssName(self, node):
         self.attributes.append(Attribute(node, node.name))
 
-    def visitAdd(self, node):
-        ASTVisitor.default(self, node)
-        self.parts[-2:] = ' + '.join(self.parts[-2:])
+    def visitAssTuple(self, node):
+        attributes = self.attributes
+        self.attributes = []
+        self.default_visit(node)
+        names = [attribute.name for attribute in self.attributes]
+        att_tuple = AttributeTuple(node, names)
+        att_tuple.lineno = self.attributes[0].lineno
+        self.attributes = attributes
+        self.attributes.append(att_tuple)
 
-    def visitAnd(self, node):
-        ASTVisitor.default(self, node)
-        self.parts.insert(len(self.parts) - 1, ' and ')
+    def visitAssAttr(self, node):
+        self.default_visit(node, node.attrname)
 
-    def visitBackquote(self, node):
-        self.parts.append('`')
-        ASTVisitor.default(self, node)
-        self.parts.append('`')
+    def visitGetattr(self, node, suffix):
+        self.default_visit(node, node.attrname + '.' + suffix)
 
-    def visitBitand(self, node):
-        ASTVisitor.default(self, node)
-        self.parts.insert(len(self.parts) - 1, ' & ')
+    def visitName(self, node, suffix):
+        self.attributes.append(Attribute(node, node.name + '.' + suffix))
 
-    def visitBitor(self, node):
-        ASTVisitor.default(self, node)
-        self.parts.insert(len(self.parts) - 1, ' | ')
 
-    def visitBitxor(self, node):
-        ASTVisitor.default(self, node)
-        self.parts.insert(len(self.parts) - 1, ' ^ ')
+class FunctionVisitor(DocstringVisitor):
 
-    def visitConst(self, node):
-        self.parts.append(repr(node.value))
+    def visitFunction(self, node):
+        self.function = function = Function(node, node.name)
+        if node.doc is not None:
+            function.append(Docstring(node, node.doc))
+        self.context.append(function)
+        self.documentable = function
+        self.parse_parameter_list(node)
+        self.visit(node.code)
+        self.context.pop()
 
-    def visitConst(self, node):
-        self.parts.append(repr(node.value))
-
-    def visitInvert(self, node):
-        self.parts.append('~ ')
-        ASTVisitor.default(self, node)
+    def parse_parameter_list(self, node):
+        parameters = []
+        special = []
+        argnames = list(node.argnames)
+        if node.kwargs:
+            special.append(ExcessKeywordArguments(node, argnames[-1]))
+            argnames.pop()
+        if node.varargs:
+            special.append(ExcessPositionalArguments(node, argnames[-1]))
+            argnames.pop()
+        defaults = list(node.defaults)
+        defaults = [None] * (len(argnames) - len(defaults)) + defaults
+        for argname, default in zip(argnames, defaults):
+            parameter = Parameter(node, argname)
+            if default:
+                default_text = self.token_parser.default(node.lineno)
+                parameter.append(Default(node, default_text))
+            parameters.append(parameter)
+        if parameters or special:
+            special.reverse()
+            parameters.extend(special)
+            parameter_list = ParameterList(node)
+            parameter_list.extend(parameters)
+            self.function.append(parameter_list)
 
 
 class Node:
@@ -395,6 +432,16 @@ class Attribute(Node):
         return Node.attlist(self, name=self.name)
 
 
+class AttributeTuple(Node):
+
+    def __init__(self, node, names):
+        Node.__init__(self, node)
+        self.names = names
+
+    def attlist(self):
+        return Node.attlist(self, names=' '.join(self.names))
+
+
 class Expression(Node):
 
     def __init__(self, node, text):
@@ -404,40 +451,98 @@ class Expression(Node):
     def __str__(self, indent='    ', level=0):
         prefix = indent * (level + 1)
         return '%s%s%s\n' % (Node.__str__(self, indent, level),
-                             prefix, self.text)
+                             prefix, self.text.encode('unicode-escape'))
 
 
-class TokenReader:
+class Function(Attribute): pass
+
+
+class ParameterList(Node): pass
+
+
+class Parameter(Attribute): pass
+
+
+class ExcessPositionalArguments(Parameter): pass
+
+
+class ExcessKeywordArguments(Parameter): pass
+
+
+class Default(Expression): pass
+
+
+class TokenParser:
 
     def __init__(self, text):
-        self.text = text
-        self.lines = text.splitlines(1)
+        self.text = text + '\n\n'
+        self.lines = self.text.splitlines(1)
         self.generator = tokenize.generate_tokens(iter(self.lines).next)
+        self.next()
 
     def __iter__(self):
         return self
 
     def next(self):
-        token = self.generator.next()
-        self.type, self.string, self.start, self.end, self.line = token
-        return token
+        self.token = self.generator.next()
+        self.type, self.string, self.start, self.end, self.line = self.token
+        return self.token
 
     def goto_line(self, lineno):
-        for token in self:
-            if self.start[0] >= lineno:
-                return token
-        else:
-            raise IndexError
-
-    def rhs(self, name, lineno):
-        self.goto_line(lineno)
-        while self.start[0] == lineno:
-            if self.type == token.OP and self.string == '=':
-                break
+        while self.start[0] < lineno:
             self.next()
-        else:
-            raise IndexError
-        
+        return token
+
+    def rhs(self, lineno):
+        """
+        Return a whitespace-normalized expression string from the right-hand
+        side of an assignment at line `lineno`.
+        """
+        self.goto_line(lineno)
+        while self.string != '=':
+            self.next()
+        while self.type != token.NEWLINE and self.string != ';':
+            append = 1
+            append_ws = 1
+            del_ws = 0
+            if self.string == '=':
+                start_row, start_col = self.end
+                tokens = []
+                last_type = None
+                last_string = None
+                backquote = 0
+                append = 0
+            elif self.string == '.':
+                del_ws = 1
+                append_ws = 0
+            elif self.string in ('(', '[', '{'):
+                append_ws = 0
+                if self.string in '([' and (last_type == token.NAME or
+                                            last_string in (')', ']', '}')):
+                    del_ws = 1
+            elif self.string in (')', ']', '}', ':', ','):
+                    del_ws = 1
+            elif self.string == '`':
+                if backquote:
+                    del_ws = 1
+                else:
+                    append_ws = 0
+                backquote = not backquote
+            elif self.type == tokenize.NL:
+                append = 0
+            if append:
+                if del_ws and tokens and tokens[-1] == ' ':
+                    del tokens[-1]
+                tokens.append(self.string)
+                last_type = self.type
+                last_string = self.string
+                if append_ws:
+                    tokens.append(' ')
+            self.next()
+        self.next()
+        text = ''.join(tokens)
+        return text.strip()
+
 
 def trim_docstring(text):
     """
