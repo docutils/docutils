@@ -588,3 +588,38 @@ Here's one:
    Double-dashes -- "--" -- must be escaped somehow in HTML output.
 
 (View the HTML source to see the comment.)
+
+Raw text
+--------
+
+This does not necessarily look nice, because there may be missing white space.
+
+It's just there to freeze the behavior.
+
+.. raw:: html latex
+
+   A test.
+
+.. raw:: html latex
+
+   Second test.
+
+.. class:: myclass
+
+.. raw:: html latex
+
+   Another test with myclass set.
+
+.. role:: raw-role(raw)
+   :format: html latex
+   :class: myrawroleclass
+
+This is the :raw-role:`fourth test` with myrawroleclass set.
+
+.. raw:: html
+
+   Fifth test in HTML.<br />Line two.
+
+.. raw:: latex
+
+   Fifth test in LaTeX.\\Line two.
