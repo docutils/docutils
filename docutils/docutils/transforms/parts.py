@@ -73,8 +73,11 @@ class Contents(Transform):
 
     def apply(self):
         topic = nodes.topic(CLASS='contents')
-        title = self.startnode.details['title']
-        if self.startnode.details.has_key('local'):
+        details = self.startnode.details
+        if details.has_key('class'):
+            topic.set_class(details['class'])
+        title = details['title']
+        if details.has_key('local'):
             startnode = self.startnode.parent
             # @@@ generate an error if the startnode (directive) not at
             # section/document top-level? Drag it up until it is?
@@ -94,8 +97,8 @@ class Contents(Transform):
             topic['name'] = name
         self.document.note_implicit_target(topic)
         self.toc_id = topic['id']
-        if self.startnode.details.has_key('backlinks'):
-            self.backlinks = self.startnode.details['backlinks']
+        if details.has_key('backlinks'):
+            self.backlinks = details['backlinks']
         else:
             self.backlinks = self.document.settings.toc_backlinks
         contents = self.build_contents(startnode)
