@@ -190,6 +190,7 @@ import token
 from compiler.consts import OP_ASSIGN
 from compiler.visitor import ASTVisitor
 from types import StringType, UnicodeType, TupleType
+from docutils.readers.python import pynodes
 
 
 def parse_module(module_text, filename):
@@ -418,6 +419,7 @@ class ModuleVisitor(AssignmentVisitor):
         self.module = None
 
     def visitModule(self, node):
+        
         self.module = module = Module(node, self.filename)
         if node.doc is not None:
             module.append(Docstring(node, node.doc))
@@ -782,3 +784,9 @@ def normalize_parameter_name(name):
         return '(%s)' % ', '.join([normalize_parameter_name(n) for n in name])
     else:
         return name
+
+if __name__ == '__main__':
+    import sys
+    filename = sys.argv[1]
+    content = open(filename).read()
+    print parse_module(content, filename)
