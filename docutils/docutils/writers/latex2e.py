@@ -85,53 +85,9 @@ class Writer(writers.Writer):
 Notes on LaTeX
 --------------
 
-* Put labels inside environments::
+* latex does not support multiple tocs in one document.
+  (might be no limitation except for docutils documentation)
 
-    \chapter[optional]{title}
-    \label{lab} % optional, for cross referencing
-    text for this unit ...
-    
-* unnumbered sections are not written to tableofcontents.
-  a. donot print numbers::
-      
-        \renewcommand{\thesection}{}
-  b. use::
-      
-        \addcontentsline{file}{sec_unit}{entry}
-
-     file toc,lof lot
-     sec_unit section, subsection , ...
-     entry the line::
-         
-        \numberline text pagenumber
-        
-  X. latex does not support multiple tocs in one document.
-     (might be no limitation except for docutils documentation)
-
-* sectioning::
-    
-    \part
-    \chapter (report style only) 
-    \section
-    \subsection
-    \subsubsection
-    \paragraph
-    \subparagraph
-    \subsubparagraph (milstd and book-form styles only) 
-    \subsubsubparagraph (milstd and book-form styles only)
-
-* documentclass options
-
-  all notitlepage.
-
-  article: 11pt, 12pt, twoside, twocolumn, draft, fleqn, leqno, acm
-  
-  report: 11pt, 12pt, twoside, twocolumn, draft, fleqn, leqno, acm
-  
-  letter: 11pt, 12pt, fleqn, leqno, acm
-  
-  book: 11pt, 12pt, twoside,twocolumn, draft, fleqn, leqno
-  
 * width 
 
   * linewidth - width of a line in the local environment
@@ -265,7 +221,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # to other packages, as done with babel. 
     # Dummy settings might be taken from document settings
 
-    ## For narrower things (tables, docinfos use admwidth in latex construct).
     d_class = 'article'    # document.settings.stylesheet
     d_options = '10pt'  # papersize, fontsize
     d_paper = 'a4paper'
@@ -336,8 +291,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
               self.geometry % (self.d_paper, self.d_margins),
               #
               self.generator,
-              # admonition width and docinfo tablewidth
-              '\\newlength{\\admwidth}\n\\addtolength{\\admwidth}{0.9\\textwidth}\n',
+              # latex lengths
+              '\\newlength{\\admonitionwidth}\n',
+              '\\setlength{\\admonitionwidth}{0.9\\textwidth}\n' 
+              # width for docinfo tablewidth
+              '\\newlength{\\docinfowidth}\n',
+              '\\setlength{\\docinfowidth}{0.9\\textwidth}\n' 
               ]
         self.head_prefix.extend( latex_headings['optionlist_environment'] )
         self.head_prefix.extend( latex_headings['footnote_floats'] )
@@ -478,7 +437,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_admonition(self, node, name):
         self.body.append('\\begin{center}\\begin{sffamily}\n')
-        self.body.append('\\fbox{\\parbox{\\admwidth}{\n')
+        self.body.append('\\fbox{\\parbox{\\admonitionwidth}{\n')
         self.body.append('\\textbf{\\large '+ self.language.labels[name] + '}\n');
         self.body.append('\\vspace{2mm}\n')
 
@@ -645,7 +604,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.docinfo = []
         self.docinfo.append('%' + '_'*75 + '\n')
         self.docinfo.append('\\begin{center}\n')
-        self.docinfo.append('\\begin{tabularx}{\\admwidth}{lX}\n')
+        self.docinfo.append('\\begin{tabularx}{\\docinfowidth}{lX}\n')
 
     def depart_docinfo(self, node):
         self.docinfo.append('\\end{tabularx}\n')

@@ -33,8 +33,10 @@ latex_head = """\
 \\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
 \\usepackage[a4paper,margin=2cm,nohead]{geometry}
 %% generator Docutils: http://docutils.sourceforge.net/
-\\newlength{\\admwidth}
-\\addtolength{\\admwidth}{0.9\\textwidth}
+\\newlength{\\admonitionwidth}
+\\setlength{\\admonitionwidth}{0.9\\textwidth}
+\\newlength{\\docinfowidth}
+\\setlength{\\docinfowidth}{0.9\\textwidth}
 \\newcommand{\\optionlistlabel}[1]{\\bf #1 \\hfill}
 \\newenvironment{optionlist}[1]
 {\\begin{list}{}
