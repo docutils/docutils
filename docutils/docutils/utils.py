@@ -10,9 +10,12 @@
 Miscellaneous utilities for the documentation utilities.
 """
 
-import sys, re
-import nodes
+__docformat__ = 'reStructuredText'
+
+import sys
+from types import StringTypes
 from docutils import ApplicationError, DataError
+from docutils import frontend, nodes
 
 
 class SystemMessage(ApplicationError):
@@ -72,12 +75,14 @@ class Reporter:
             - `halt_level`: The level at or above which `SystemMessage`
               exceptions will be raised, halting execution.
             - `debug`: Show debug (level=0) system messages?
-            - `stream`: Where warning output is sent (`None` implies
-              `sys.stderr`).
+            - `stream`: Where warning output is sent.  Can be file-like (has a
+              ``.write`` method), a string (file name, opened for writing), or
+              `None` (implies `sys.stderr`; default).
         """
-
         if stream is None:
             stream = sys.stderr
+        elif type(stream) in StringTypes:
+            raise NotImplementedError('This should open a file for writing.')
 
         self.categories = {'': ConditionSet(debug, report_level, halt_level,
                                             stream)}
@@ -321,57 +326,16 @@ def extract_name_value(line):
         attlist.append((attname.lower(), data))
     return attlist
 
-
 def normalize_name(name):
     """Return a case- and whitespace-normalized name."""
     return ' '.join(name.lower().split())
 
-def id(string):
-    """
-    Convert `string` into an identifier and return it.
-
-    Docutils identifiers will conform to the regular expression
-    ``[a-z][-a-z0-9]*``. For CSS compatibility, identifiers (the "class" and
-    "id" attributes) should have no underscores, colons, or periods. Hyphens
-    may be used.
-
-    - The `HTML 4.01 spec`_ defines identifiers based on SGML tokens:
-
-          ID and NAME tokens must begin with a letter ([A-Za-z]) and may be
-          followed by any number of letters, digits ([0-9]), hyphens ("-"),
-          underscores ("_"), colons (":"), and periods (".").
-
-    - However the `CSS1 spec`_ defines identifiers based on the "name" token,
-      a tighter interpretation ("flex" tokenizer notation; "latin1" and
-      "escape" 8-bit characters have been replaced with entities)::
-
-          unicode     \\[0-9a-f]{1,4}
-          latin1      [&iexcl;-&yuml;]
-          escape      {unicode}|\\[ -~&iexcl;-&yuml;]
-          nmchar      [-a-z0-9]|{latin1}|{escape}
-          name        {nmchar}+
-
-    The CSS1 "nmchar" rule does not include underscores ("_"), colons (":"),
-    or periods ("."), therefore "class" and "id" attributes should not contain
-    these characters. They should be replaced with hyphens ("-"). Combined
-    with HTML's requirements (the first character must be a letter; no
-    "unicode", "latin1", or "escape" characters), this results in the
-    ``[a-z][-a-z0-9]*`` pattern.
-
-    .. _HTML 4.01 spec: http://www.w3.org/TR/html401
-    .. _CSS1 spec: http://www.w3.org/TR/REC-CSS1
-    """
-    id = non_id_chars.sub('-', normalize_name(string))
-    id = non_id_at_ends.sub('', id)
-    return str(id)
-
-non_id_chars = re.compile('[^a-z0-9]+')
-non_id_at_ends = re.compile('^[-0-9]+|-+$')
-
-def new_document(language_code='en', report_level=2, halt_level=4,
-                 stream=None, debug=0):
-    reporter = Reporter(report_level, halt_level, stream, debug)
-    document = nodes.document(language_code=language_code, reporter=reporter)
+def new_document(options=None):
+    if options is None:
+        options = frontend.OptionParser().get_default_values()
+    reporter = Reporter(options.report_level, options.halt_level,
+                        options.warning_stream, options.debug)
+    document = nodes.document(options=options, reporter=reporter)
     return document
 
 def clean_rcs_keywords(paragraph, keyword_substitutions):
