@@ -111,7 +111,7 @@ class Node:
             'calling dispatch_visit for %s' % self.__class__.__name__,
             category='nodes.Node.walk')
         try:
-            visitor.dispatch_visit(self, self.__class__.__name__)
+            visitor.dispatch_visit(self)
         except (SkipChildren, SkipNode):
             return
         except SkipDeparture:           # not applicable; ignore
