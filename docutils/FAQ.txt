@@ -546,14 +546,14 @@ ordinary ``<h1>`` and ``<h2>``::
     h2.subtitle {
       text-align: center }
 
-If you don't want the top section heading to be interpretted as a
+If you don't want the top section heading to be interpreted as a
 title at all, disable the `doctitle_xform`_ setting
 (``--no-doc-title`` option).  This will interpret your document
 differently from the standard settings, which might not be a good
 idea.  If you don't like the reuse of the H1 in the HTML output, you
 can tweak the `initial_header_level`_ setting
 (``--initial-header-level`` option) -- but unless you match its value
-to your specific document, you might end up with invalid HTML (e.g. H3
+to your specific document, you might end up with bad HTML (e.g. H3
 without H2).
 
 .. _doctitle_xform: docs/config.html#doctitle-xform
