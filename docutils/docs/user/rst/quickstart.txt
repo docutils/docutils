@@ -4,6 +4,9 @@ A ReStructuredText Primer
 :Author: Richard Jones
 :Version: $Revision$
 
+.. contents::
+
+
 The text below contains links that look like "(quickref__)".  These
 are relative links that point to the `Quick reStructuredText`_ user
 reference.  If these links don't work, please refer to the `master
@@ -328,8 +331,17 @@ but there are a lot more to explore.  The `Quick reStructuredText`_
 user reference is a good place to go next.  For complete details, the
 `reStructuredText Markup Specification`_ is the place to go [#]_.
 
-.. _reStructuredText Markup Specification:
-   ../../spec/rst/reStructuredText.html
+Users who have questions or need assistance with Docutils or
+reStructuredText should `post a message`_ to the `Docutils-Users
+mailing list`_.  The `Docutils project web site`_ has more
+information.
 
 .. [#] If that relative link doesn't work, try the master document:
    http://docutils.sourceforge.net/spec/rst/reStructuredText.html.
+
+.. _reStructuredText Markup Specification:
+   ../../spec/rst/reStructuredText.html
+.. _post a message: mailto:docutils-users@lists.sourceforge.net
+.. _Docutils-Users mailing list:
+   http://lists.sourceforge.net/lists/listinfo/docutils-users
+.. _Docutils project web site: http://docutils.sourceforge.net/
