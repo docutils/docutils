@@ -29,7 +29,7 @@ def align(argument):
 def image(name, arguments, options, content, lineno,
           content_offset, block_text, state, state_machine):
     messages = []
-    reference = ''.join(arguments[0].split('\n'))
+    reference = directives.uri(arguments[0])
     options['uri'] = reference
     reference_node = None
     if options.has_key('target'):

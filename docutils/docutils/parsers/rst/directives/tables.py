@@ -152,7 +152,7 @@ csv_table.options = {'header-rows': directives.nonnegative_int,
                      'header': directives.unchanged,
                      'widths': directives.positive_int_list,
                      'file': directives.path,
-                     'url': directives.path,
+                     'url': directives.uri,
                      'encoding': directives.encoding,
                      'class': directives.class_option,
                      # field delimiter char

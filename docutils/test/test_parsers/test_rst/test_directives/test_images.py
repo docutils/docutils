@@ -44,7 +44,7 @@ totest['images'] = [
 """,
 """\
 <document source="test data">
-    <image uri="one two three.png">
+    <image uri="onetwothree.png">
 """],
 ["""\
 .. image:: picture.png
@@ -157,7 +157,7 @@ totest['images'] = [
 """,
 """\
 <document source="test data">
-    <image uri="picture.pngscale: 50">
+    <image uri="picture.pngscale:50">
 """],
 ["""\
 .. image:: picture.png

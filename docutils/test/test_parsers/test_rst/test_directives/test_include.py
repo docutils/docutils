@@ -28,6 +28,8 @@ include3 = os.path.join(mydir, 'include3.txt')
 include8 = os.path.join(mydir, 'include8.txt')
 include10 = os.path.join(mydir, 'include10.txt')
 include10rel = DocutilsTestSupport.utils.relative_path(None, include10)
+include11 = os.path.join(mydir, 'include 11.txt')
+include11rel = DocutilsTestSupport.utils.relative_path(None, include11)
 utf_16_file = os.path.join(mydir, 'utf-16.csv')
 utf_16_file_rel = DocutilsTestSupport.utils.relative_path(None, utf_16_file)
 
@@ -337,7 +339,20 @@ Include file is UTF-16-encoded, and is not valid ASCII.
 #         <literal_block xml:space="preserve">
 #             .. |bad| unicode:: 0xFFFFFFFFF
 # """ % (include10rel, include10rel)],
+["""\
+Include file with whitespace in the path:
+
+.. include:: %s
+""" % include11rel,
+"""\
+<document source="test data">
+    <paragraph>
+        Include file with whitespace in the path:
+    <paragraph>
+        some text
+"""],
 ]
+
 
 # Skip tests whose output contains "UnicodeDecodeError" if we are not
 # using Python 2.3 or higher.

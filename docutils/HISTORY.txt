@@ -39,17 +39,18 @@ Changes Since 0.3.7
 
 * docutils/parsers/rst/directives/__init__.py:
 
-  - Allowed whitespace in paths and URLs (``path`` function).
+  - Allowed whitespace in paths (``path`` function).
+  - Added ``uri`` directive option conversion function.
 
 * docutils/parsers/rst/directives/images.py:
 
-  - Allowed whitespace in "image" & "figure" directive URLs.
+  - Allowed whitespace (stripped) in "image" & "figure" directive URLs.
 
 * docutils/parsers/rst/directives/misc.py:
 
   - Fixed "include" and "raw" directives to catch text decoding
     errors.
-  - Allowed whitespace in "include" directive paths.
+  - Allowed whitespace in "include" & "raw" directive paths.
 
 * docutils/parsers/rst/directives/tables.py:
 
