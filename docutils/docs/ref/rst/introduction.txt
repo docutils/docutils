@@ -19,9 +19,9 @@ application domains.  Its parser is a component of Docutils_.
 This document defines the goals_ of reStructuredText and provides a
 history_ of the project.  It is written using the reStructuredText
 markup, and therefore serves as an example of its use.  Please also
-see an analysis of the `problems with StructuredText`_ and the
-`reStructuredText markup specification`_ itself at project's web page,
-http://docutils.sourceforge.net/rst.html.
+see an analysis of the `Problems With StructuredText`_ and the
+`reStructuredText Markup Specification`_ itself at the subproject's
+web page, http://docutils.sourceforge.net/rst.html.
 
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _StructuredText:
@@ -145,8 +145,8 @@ History
 reStructuredText_, the specification, is based on StructuredText_ and
 Setext_.  StructuredText was developed by Jim Fulton of `Zope
 Corporation`_ (formerly Digital Creations) and first released in 1996.
-It is now released as a part of the open-source 'Z Object Publishing
-Environment' (ZOPE_).  Ian Feldman's and Tony Sanders' earlier Setext_
+It is now released as a part of the open-source "Z Object Publishing
+Environment" (ZOPE_).  Ian Feldman's and Tony Sanders' earlier Setext_
 specification was either an influence on StructuredText or, by their
 similarities, at least evidence of the correctness of this approach.
 
@@ -157,13 +157,13 @@ I was not able to get pythondoc to work for me, I found StructuredText
 to be almost ideal for my needs.  I joined the Python Doc-SIG_
 (Documentation Special Interest Group) mailing list and found an
 ongoing discussion of the shortcomings of the StructuredText
-'standard'.  This discussion has been going on since the inception of
+"standard".  This discussion has been going on since the inception of
 the mailing list in 1996, and possibly predates it.
 
 I decided to modify the original module with my own extensions and
 some suggested by the Doc-SIG members.  I soon realized that the
 module was not written with extension in mind, so I embarked upon a
-general reworking, including adapting it to the 're' regular
+general reworking, including adapting it to the "re" regular
 expression module (the original inspiration for the name of this
 project).  Soon after I completed the modifications, I discovered that
 StructuredText.py was up to version 1.23 in the ZOPE distribution.
@@ -178,7 +178,7 @@ StructuredText.
 
 I decided that a complete rewrite was in order, and even started a
 `reStructuredText SourceForge project`_ (now inactive).  My
-motivations (the 'itches' I aim to 'scratch') are as follows:
+motivations (the "itches" I aim to "scratch") are as follows:
 
 - I need a standard format for inline documentation of the programs I
   write.  This inline documentation has to be convertible to other
@@ -229,7 +229,7 @@ June 2001, including posting the second draft of the spec [#spec-2]_
 and the first draft of PEPs 256, 257, and 258 [#peps-1]_ to the
 Doc-SIG.  These documents and the project implementation proceeded to
 evolve at a rapid pace.  Implementation history details can be found
-in the project file, HISTORY.txt_.
+in the `project history file`_.
 
 In November 2001, the reStructuredText parser was nearing completion.
 Development of the parser continued with the addition of small
@@ -253,7 +253,8 @@ followed.
 
 .. __: `reStructuredText SourceForge project`_
 
-.. [#spec-2]
+.. [#spec-2] The second draft of the spec:
+
    - `An Introduction to reStructuredText`__
    - `Problems With StructuredText`__
    - `reStructuredText Markup Specification`__
@@ -265,7 +266,8 @@ followed.
    __ http://mail.python.org/pipermail/doc-sig/2001-June/001860.html
    __ http://mail.python.org/pipermail/doc-sig/2001-June/001861.html
 
-.. [#peps-1]
+.. [#peps-1] First drafts of the PEPs:
+
    - `PEP 256: Docstring Processing System Framework`__
    - `PEP 258: DPS Generic Implementation Details`__
    - `PEP 257: Docstring Conventions`__
@@ -286,11 +288,10 @@ followed.
 .. _pythondoc: http://starship.python.net/crew/danilo/pythondoc/
 .. _StructuredTextNG:
    http://dev.zope.org/Members/jim/StructuredTextWiki/StructuredTextNG
-.. _HISTORY.txt:
-   http://docutils.sourceforge.net/HISTORY.txt
-.. _PEP 287: http://docutils.sourceforge.net/spec/pep-0287.txt
+.. _project history file: http://docutils.sourceforge.net/HISTORY.html
+.. _PEP 287: http://docutils.sourceforge.net/spec/pep-0287.html
 .. _Docstring Processing System framework:
-   http://docutils.sourceforge.net/spec/pep-0256.txt
+   http://docutils.sourceforge.net/spec/pep-0256.html
 .. _comp.lang.python: news:comp.lang.python
 .. _Python-dev: http://mail.python.org/pipermail/python-dev/
 .. _Docstring Processing System: http://docstring.sourceforge.net/
