@@ -15,7 +15,7 @@ custom component objects first, and pass *them* to
 __docformat__ = 'reStructuredText'
 
 import sys
-from docutils import Component
+from docutils import Component, __version__
 from docutils import frontend, io, utils, readers, parsers, writers
 from docutils.frontend import OptionParser
 
@@ -165,35 +165,52 @@ class Publisher:
         elif settings_overrides:
             self.settings._update(settings_overrides, 'loose')
         self.set_io()
+        exit = None
+        document = None
         try:
             document = self.reader.read(self.source, self.parser,
                                         self.settings)
             self.apply_transforms(document)
             output = self.writer.write(document, self.destination)
         except utils.SystemMessage, error:
+            if self.settings.traceback:
+                raise
             print >>sys.stderr, ('Exiting due to level-%s (%s) system message.'
                                  % (error.level,
                                     utils.Reporter.levels[error.level]))
-            sys.exit(1)
+            exit = 1
+        except Exception, error:
+            if self.settings.traceback:
+                raise
+            print >>sys.stderr, error
+            print >>sys.stderr, ("""\
+Exiting due to error.  Use "--traceback" to diagnose.
+Please report errors to <docutils-users@lists.sf.net>.
+Include "--traceback" output, Docutils version (%s),
+Python version (%s), your OS type & version, and the
+command line used.""" % (__version__, sys.version.split()[0]))
+            exit = 1
         if self.settings.dump_settings:
             from pprint import pformat
             print >>sys.stderr, '\n::: Runtime settings:'
             print >>sys.stderr, pformat(self.settings.__dict__)
-        if self.settings.dump_internals:
+        if self.settings.dump_internals and document:
             from pprint import pformat
             print >>sys.stderr, '\n::: Document internals:'
             print >>sys.stderr, pformat(document.__dict__)
-        if self.settings.dump_transforms:
+        if self.settings.dump_transforms and document:
             from pprint import pformat
             print >>sys.stderr, '\n::: Transforms applied:'
             print >>sys.stderr, pformat(document.transformer.applied)
-        if self.settings.dump_pseudo_xml:
+        if self.settings.dump_pseudo_xml and document:
             print >>sys.stderr, '\n::: Pseudo-XML:'
             print >>sys.stderr, document.pformat().encode(
                 'raw_unicode_escape')
-        if enable_exit and (document.reporter.max_level
-                            >= self.settings.exit_level):
+        if enable_exit and document and (document.reporter.max_level
+                                         >= self.settings.exit_level):
             sys.exit(document.reporter.max_level + 10)
+        elif exit:
+            sys.exit(1)
         return output
 
 
