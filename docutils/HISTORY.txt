@@ -56,6 +56,7 @@ Specific:
     the package.
   - Added ``Component`` base class for Docutils components; implements
     the ``supports`` method.
+  - Added ``__version__`` (thus, ``docutils.__version__``).
 
 * docutils/core.py:
 
@@ -84,6 +85,14 @@ Specific:
     imports.
   - Added ``decoration``, ``header``, and ``footer`` node classes, and
     ``PreDecorative`` mixin.
+
+* docutils/optik.py: Added to project.  Combined from the Optik
+  package, with added option groups and other modifications.  The use
+  of this module is probably only temporary.
+  
+* docutils/OptionParser.py: Added to project.  Combined from the Optik
+  package, with no modifications.  This module will probably
+  eventually take over from optik.py.  Not used at present.
 
 * docutils/statemachine.py:
 

@@ -76,6 +76,11 @@ General
   structure: single file or string, vs. directory/package or tree of
   strings.  Simple string I/O is default?
 
+- Name ideas: importer/exporter.  Perhaps reader/writer should be
+  applied to lower-level tasks?  "PySource Reader" or "PySource
+  Importer"?  "HTML Writer" or "HTML Exporter"?  If we stick with the
+  status quo, what to call the components that do low-level I/O?
+
 - Fix tests to run standalone.  I.e., allow::
 
       cd test/test_rst
@@ -314,8 +319,20 @@ Directives
     lists).  Without special syntax, this directive becomes low
     priority.
 
-  - _`body.columns`: Multi-column table/list, with number of columns
-    as argument.
+  - _`body.columns`: Multi-column table/list.  Number of columns as
+    argument?  Perhaps a variation on `table syntax alternative 2`__::
+
+        col 1 col 2
+        ===== =====
+        - 1   Second column of row 1.
+        - 2   Second column of row 2.
+              Second line of paragraph.
+        - 3   Second column of row 3.
+
+              Second paragraph of row 3,
+              column 2
+
+    __ problems.html#tables
 
   - @@ _`body.verse`: Paragraphs with linebreaks preserved, *and*
     inline markup support too.  Use cases: verse (poetry, song lyrics,
@@ -632,11 +649,10 @@ Copyrights and Licensing
 ------------------------
 
 The majority of the Docutils project code and documentation has been
-written by me (David Goodger), and has been placed in the public
-domain.  Unless clearly and explicitly indicated otherwise, any
-patches (modifications to existing files) submitted to the project for
-inclusion (via SourceForge trackers, mailing lists, or private email)
-are assumed to have been placed in the public domain as well.
+placed in the public domain.  Unless clearly and explicitly indicated
+otherwise, any patches (modifications to existing files) submitted to
+the project for inclusion (via SourceForge trackers, mailing lists, or
+private email) are assumed to be in the public domain as well.
 
 Any new files contributed to the project should clearly state their
 intentions regarding copyright, in one of the following ways:

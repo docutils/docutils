@@ -9,7 +9,7 @@ def do_setup():
           description = 'Python Documentation Utilities',
           #long_description = '',
           url = 'http://docutils.sourceforge.net/',
-          version = '0.1',
+          version = '0.1+',
           author = 'David Goodger',
           author_email = 'goodger@users.sourceforge.net',
           license = 'public domain, Python (see COPYING.txt)',
