@@ -19,8 +19,8 @@ to syntax constructs.
 .. contents::
 
 
-Python Source Reader
-====================
+Model
+=====
 
 The Python Source Reader ("PySource") model that's evolving in my mind
 goes something like this:
@@ -158,9 +158,6 @@ The role may be one of 'package', 'module', 'class', 'method',
 'exception_class', 'exception', 'warning_class', or 'warning'.  Other
 roles may be defined.
 
-.. _reStructuredText Markup Specification:
-    http://docutils.sourceforge.net/spec/rst/reStructuredText.html
-.. _Docutils: http://docutils.sourceforge.net/
 .. _pysource.dtd: http://docutils.sourceforge.net/spec/pysource.dtd
 .. _docutils.dtd: http://docutils.sourceforge.net/spec/docutils.dtd
 
