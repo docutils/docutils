@@ -47,13 +47,18 @@ from docutils.transforms import universal
 from docutils.parsers import rst
 from docutils.parsers.rst import states, tableparser, directives, languages
 from docutils.readers import standalone, pep, python
-from docutils.readers.python import moduleparser
 from docutils.statemachine import string2lines
+
+try:
+    from docutils.readers.python import moduleparser
+except:
+    moduleparser = None
 
 try:
     import mypdb as pdb
 except:
     import pdb
+
 
 
 class DevNull:
@@ -193,6 +198,9 @@ class CustomTestCase(unittest.TestCase):
             print >>sys.stderr, ''.join(self.compare(expected.splitlines(1),
                                                      output.splitlines(1)))
             raise
+
+    def skip_test(self):
+        print >>sys.stderr, '%s: Test skipped' % self
 
 
 class TransformTestSuite(CustomTestSuite):
@@ -500,6 +508,13 @@ class PythonModuleParserTestSuite(CustomTestSuite):
     A collection of PythonModuleParserTestCase.
     """
 
+    if moduleparser:
+        test_methods = {'test_parser': 'test_parser',
+                        'test_token_parser_rhs': 'test_token_parser_rhs'}
+    else:
+        test_methods = {'test_parser': 'skip_test',
+                        'test_token_parser_rhs': 'skip_test'}
+
     def generateTests(self, dict, dictname='totest',
                       testmethod='test_parser'):
         """
@@ -521,7 +536,8 @@ class PythonModuleParserTestSuite(CustomTestSuite):
                     else:
                         continue
                 self.addTestCase(
-                      PythonModuleParserTestCase, testmethod,
+                      PythonModuleParserTestCase,
+                      self.test_methods[testmethod],
                       input=case[0], expected=case[1],
                       id='%s[%r][%s]' % (dictname, name, casenum),
                       run_in_debugger=run_in_debugger)
