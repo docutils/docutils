@@ -1,3 +1,19 @@
+2003-02
+-------
+
+latex writer into main.
+
+* move latex2e.py into docutils/writers
+* move rst2latex.py into tools.
+* documentation: tools documentation.
+  commandline options, style.tex, ...
+
+  Where to move the latex2e-README. txt.
+* test: writer tests might be too simple, currently publish is used.
+  test/test_writers
+  test that the produced latex document is the same.
+
+
 2002-12
 -------
 
