@@ -3,7 +3,7 @@ latex2e BUGS TODOS and other animals
 
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
-Rev. 2002-11-12
+Rev. 2002-11-13
 
 To do
 ~~~~~
@@ -23,6 +23,7 @@ To do
 
 * table heads and footer for longtable (firstpage lastpage ..)
 
+* longtable does not work with multirow
 
 * ordered list numbering style is taken from latex a.,b. in source
   gives 1., .. in document.
@@ -105,6 +106,7 @@ ATTENTION
 Done
 ~~~~
 
+* bibliographic field names have a ":".
 * german (de*) quotes.
 * colspec for tables without heads.
 * multipage table
