@@ -37,10 +37,22 @@ class Writer(writers.Writer):
           '"default.css".',
           ['--stylesheet'],
           {'default': 'default.css', 'metavar': '<URL>'}),
-         ('Specify a stylesheet file.  The path is interpreted relative '
-          'to the output HTML file.  Overrides --stylesheet.',
+         ('Specify a stylesheet file, relative to the current working '
+          'directory.  The path is adjusted relative to the output HTML '
+          'file.  Overrides --stylesheet.',
           ['--stylesheet-path'],
           {'metavar': '<file>'}),
+         ('Link to the stylesheet in the output HTML file.  This is the '
+          'default.',
+          ['--link-stylesheet'],
+          {'dest': 'embed_stylesheet', 'action': 'store_false'}),
+         ('Embed the stylesheet in the output HTML file.  The stylesheet '
+          'file must be accessible during processing (--stylesheet-path is '
+          'recommended).  The stylesheet is embedded inside a comment, so it '
+          'must not contain the text "--" (two hyphens).  Default: link the '
+          'stylesheet, do not embed it.',
+          ['--embed-stylesheet'],
+          {'action': 'store_true'}),
          ('Format for footnote references: one of "superscript" or '
           '"brackets".  Default is "superscript".',
           ['--footnote-references'],
@@ -70,6 +82,7 @@ class Writer(writers.Writer):
         self.document.walkabout(visitor)
         self.output = visitor.astext()
         self.head_prefix = visitor.head_prefix
+        self.stylesheet = visitor.stylesheet
         self.head = visitor.head
         self.body_prefix = visitor.body_prefix
         self.body_pre_docinfo = visitor.body_pre_docinfo
@@ -82,7 +95,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     """
     This HTML writer has been optimized to produce visually compact
-    HTML (less vertical whitespace).  HTML's mixed content models
+    lists (less vertical whitespace).  HTML's mixed content models
     allow list items to contain "<li><p>body elements</p></li>" or
     "<li>just text</li>" or even "<li>text<p>and body
     elements</p>combined</li>", each with different effects.  It would
@@ -116,6 +129,8 @@ class HTMLTranslator(nodes.NodeVisitor):
       bodies, option descriptions, and list items, mark the first
       child with 'class="first"' if it is a paragraph.  The stylesheet
       sets the top margin to 0 for these paragraphs.
+
+    The ``--no-compact-lists`` option disables list whitespace optimization.
     """
 
     xml_declaration = '<?xml version="1.0" encoding="%s"?>\n'
@@ -129,6 +144,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     generator = '<meta name="generator" content="Docutils: ' \
                 'http://docutils.sourceforge.net/">\n'
     stylesheet_link = '<link rel="stylesheet" href="%s" type="text/css" />\n'
+    embedded_stylesheet = '<style type="text/css"><!--\n\n%s\n--></style>\n'
     named_tags = {'a': 1, 'applet': 1, 'form': 1, 'frame': 1, 'iframe': 1,
                   'img': 1, 'map': 1}
     words_and_spaces = re.compile(r'\S+| +|\n')
@@ -137,19 +153,19 @@ class HTMLTranslator(nodes.NodeVisitor):
         nodes.NodeVisitor.__init__(self, document)
         self.options = options = document.options
         self.language = languages.get_language(options.language_code)
-        if options.stylesheet_path:
-            stylesheet = utils.relative_path(options._destination,
-                                             options.stylesheet_path)
-        else:
-            stylesheet = options.stylesheet
         self.head_prefix = [
               self.xml_declaration % options.output_encoding,
               self.doctype,
               self.html_head % options.language_code,
               self.content_type % options.output_encoding,
-              self.generator,
-              self.stylesheet_link % stylesheet]
+              self.generator]
         self.head = []
+        stylesheet = self.get_stylesheet_reference()
+        if options.embed_stylesheet:
+            stylesheet_text = open(stylesheet).read()
+            self.stylesheet = [self.embedded_stylesheet % stylesheet_text]
+        else:
+            self.stylesheet = [self.stylesheet_link % stylesheet]
         self.body_prefix = ['</head>\n<body>\n']
         self.body_pre_docinfo = []
         self.docinfo = []
@@ -163,10 +179,18 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.compact_simple = None
         self.in_docinfo = None
 
+    def get_stylesheet_reference(self):
+        options = self.options
+        if options.stylesheet_path:
+            return utils.relative_path(options._destination,
+                                       options.stylesheet_path)
+        else:
+            return options.stylesheet
+
     def astext(self):
-        return ''.join(self.head_prefix + self.head + self.body_prefix
-                       + self.body_pre_docinfo + self.docinfo + self.body
-                       + self.body_suffix)
+        return ''.join(self.head_prefix + self.head + self.stylesheet
+                       + self.body_prefix + self.body_pre_docinfo
+                       + self.docinfo + self.body + self.body_suffix)
 
     def encode(self, text):
         """Encode special characters in `text` & return."""
