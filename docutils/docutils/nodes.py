@@ -1009,8 +1009,13 @@ class system_message(Special, PreBibliographic, Element, BackLinkable):
         Element.__init__(self, '', *children, **attributes)
 
     def astext(self):
-        return '%s/%s (%s) %s' % (self['type'], self['level'], self['source'],
-                                  Element.astext(self))
+        if self.hasattr('line'):
+            line = ', line %s' % self['line']
+        else:
+            line = ''
+        return '%s/%s (%s%s) %s' % (self['type'], self['level'],
+                                    self['source'], line,
+                                    Element.astext(self))
 
 
 class pending(Special, Invisible, PreBibliographic, Element):

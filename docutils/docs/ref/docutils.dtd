@@ -464,6 +464,7 @@ Table elements: table, tgroup, colspec, thead, tbody, row, entry.
     %basic.atts;
     %backrefs.att;
     level     &number;  #IMPLIED
+    line      &number;  #IMPLIED
     type      NMTOKEN   #IMPLIED>
 
 <!-- Used to pass raw data through the system. Also inline. -->
