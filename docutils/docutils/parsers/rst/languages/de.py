@@ -24,14 +24,14 @@ directives = {
       'tip': 'tip',
       'warnung': 'warning',
       'admonition (translation required)': 'admonition',
-      'sidebar (translation required)': 'sidebar',
-      'topic': 'topic',  # Überbegriff
+      'sidebar (translation required)': 'sidebar', # kasten ?
+      'topic': 'topic',  # Überbegriff, Thema ?
       'line-block': 'line-block',
       'parsed-literal': 'parsed-literal',
-      'rubric (translation required)': 'rubric',
+      'rubrik': 'rubric',
       'epigraph (translation required)': 'epigraph',
       'highlights (translation required)': 'highlights',
-      'pull-quote (translation required)': 'pull-quote',
+      'pull-quote (translation required)': 'pull-quote', # kasten too ?
       #'questions': 'questions',
       #'qa': 'questions',
       #'faq': 'questions',
