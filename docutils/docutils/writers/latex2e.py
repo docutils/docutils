@@ -574,19 +574,19 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             fontenc = ''
 
-        def graphicx_package():
-            if self.settings.graphicx_option == '':
-                return '\\usepackage{graphicx}\n'
-            if self.settings.graphicx_option.lower() == 'auto':
-                return '\n'.join(('%Check if we are compiling under latex or pdflatex',
-                                '\\ifx\\pdftexversion\\undefined',
-                                '  \\usepackage{graphicx}',
-                                '\\else',
-                                '  \\usepackage[pdftex]{graphicx}',
-                                '\\fi\n'))
-
-            return '\\usepackage[%s]{graphicx}\n' % self.settings.graphicx_option
-                    
+        if self.settings.graphicx_option == '':
+            self.graphicx_package = '\\usepackage{graphicx}\n'
+        elif self.settings.graphicx_option.lower() == 'auto':
+            self.graphicx_package = '\n'.join(
+                ('%Check if we are compiling under latex or pdflatex',
+                 '\\ifx\\pdftexversion\\undefined',
+                 '  \\usepackage{graphicx}',
+                 '\\else',
+                 '  \\usepackage[pdftex]{graphicx}',
+                 '\\fi\n'))
+        else:
+            self.graphicx_package = (
+                '\\usepackage[%s]{graphicx}\n' % self.settings.graphicx_option)
 
         self.head_prefix = [
               self.latex_head % (self.d_options,self.settings.documentclass),
@@ -606,7 +606,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
               # extra space between text in tables and the line above them
               '\\setlength{\\extrarowheight}{2pt}\n',
               '\\usepackage{amsmath}\n',   # what fore amsmath.
-              graphicx_package(),
+              self.graphicx_package,
               '\\usepackage{color}\n',
               '\\usepackage{multirow}\n',
               '\\usepackage{ifthen}\n',   # before hyperref!
