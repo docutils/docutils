@@ -153,6 +153,9 @@ Changes Since 0.3
   - Refactored explicit target processing code.
   - Added name attribute to references containing the reference name only
     through whitespace_normalize_name (no case changes).
+  - Added "origuri" attribute to references which contain an embedded uri. Some
+    writers (maybe other transforms) are interested in the original (non
+    normalized) uri text.
 
 * docutils/parsers/rst/tableparser.py:
 
