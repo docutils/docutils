@@ -13,9 +13,10 @@ def do_setup():
     extras = get_extras()
     if extras:
         kwargs['py_modules'] = extras
-        kwargs['cmdclass'] = {'build_py': dual_build_py}
     if sys.hexversion >= 0x02030000:    # Python 2.3
         kwargs['classifiers'] = classifiers
+    else:
+        kwargs['cmdclass'] = {'build_py': dual_build_py}
     dist = setup(**kwargs)
     return dist
 
@@ -28,7 +29,7 @@ into useful formats, such as HTML, XML, and TeX.  For input
 Docutils supports reStructuredText, an easy-to-read,
 what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
     'url': 'http://docutils.sourceforge.net/',
-    'version': '0.2+',
+    'version': '0.3',
     'author': 'David Goodger',
     'author_email': 'goodger@users.sourceforge.net',
     'license': 'public domain, Python, BSD, GPL (see COPYING.txt)',
@@ -96,7 +97,8 @@ class dual_build_py(build_py):
 
     """
     This class allows the distribution of both packages *and* modules with one
-    call to `distutils.core.setup()`.  Thanks to Thomas Heller.
+    call to `distutils.core.setup()` (necessary for pre-2.3 Python).  Thanks
+    to Thomas Heller.
     """
 
     def run(self):
