@@ -222,10 +222,6 @@ class Node:
         for node in self.get_children():
             nodelist.extend(node.flattened())
         return nodelist
-        r = [self]
-        for i in self.get_children():
-            r.extend(i.tree())
-        return r
 
 
 class Text(Node, UserString):
