@@ -92,7 +92,7 @@ http://docutils.sourceforge.net/spec/docutils.dtd.
 <!ELEMENT inheritance_list (class+)>
 <!ATTLIST inheritance_list %basic.atts;>
 
-<!ELEMENT parameter_list 
+<!ELEMENT parameter_list
     ((parameter_item+, optional_parameters*) | optional_parameters+)>
 <!ATTLIST parameter_list %basic.atts;>
 
