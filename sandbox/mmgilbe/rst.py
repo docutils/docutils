@@ -6,10 +6,6 @@
     @license: GNU GPL, see COPYING for details.
 """
 
-import sys
-from docutils import core, nodes, utils
-
-
 #############################################################################
 ### ReStructured Text Parser
 #############################################################################
@@ -21,10 +17,13 @@ import os.path
 import time
 import re
 from types import ListType
+
 import docutils
-from docutils import frontend, nodes, utils, writers, languages
+from docutils import core, frontend, nodes, utils, writers, languages
 from docutils.core import publish_string
 from docutils.writers import html4css1
+
+from MoinMoin.parser.wiki import Parser
 
 def html_escape_unicode(node):
     # Find Python function that does this for me. string.encode('ascii',
@@ -46,6 +45,8 @@ class MoinWriter(html4css1.Writer):
         if 'id' in node.attributes:
             return 0
         node['refuri'] = node['refname']
+        # The node is being processed by our wiki_resolver so we mark this as a
+        # node that should be run through the MoinMoin parser.
         node.wikiprocess = 1
         del node['refname']
         return '1'
@@ -54,10 +55,13 @@ class MoinWriter(html4css1.Writer):
     
     def __init__(self, formatter, request):
         html4css1.Writer.__init__(self)
-        from MoinMoin.parser.wiki import Parser
         self.formatter = formatter
         self.request = request
+        # Add our wiki unknown_reference_resolver to our list of functions to
+        # run when a target isn't found
         self.unknown_reference_resolvers = [self.wiki_resolver]
+        # We create a new parser to process MoinMoin wiki style links in the 
+        # restructured text.
         self.wikiparser = Parser('', self.request)
         self.wikiparser.formatter = self.formatter
         self.wikiparser.hilite_re = None
@@ -94,11 +98,15 @@ class MoinTranslator(html4css1.HTMLTranslator):
         self.formatter = formatter
         self.request = request
         self.level = 0
+        # We supply our own request.write so that the html is added to the
+        # html4css1 body list instead of printed to stdout.
         self.old_write = self.request.write
         self.request.write = self.rst_write
         self.wikiparser = parser
         self.wikiparser.request = request
         self.wikiparser.request.write = self.rst_write
+        # When we use MoinMoin to interpret a MoinMoin refuri we want to strip
+        # the paragraph tags to keep the correct formatting.
         self.strip_paragraph = 0
         
     def astext(self):
@@ -129,17 +137,25 @@ class MoinTranslator(html4css1.HTMLTranslator):
             handled = 1
             # We don't want these pieces wrapped in <p> tags, I think.
             self.strip_paragraph = 1
+            # Check for interwiki links
             if node['refuri'][:len('wiki:')] == 'wiki:':
-                link = self.wikiparser.interwiki((node['refuri'],
+                link = self.wikiparser.interwiki((node['refuri'], 
                                                   node.astext()))
                 self.body.append(link)
+            # Check for a subpage (a refuri with a / but no :)
             elif ('/' in node['refuri']) and \
                   (not ':' in node['refuri']):
-                self.wikiparser.raw = '[:%s: %s]' % (node['refuri'], node.astext())
+                self.wikiparser.raw = '[:%s: %s]' % \
+                                      (node['refuri'], node.astext())
                 self.wikiparser.format(self.formatter)
+            # This was handled by the wiki_resolver so run it through the
+            # MoinMoin parser.
             elif hasattr(node, 'wikiprocess'):
-                self.wikiparser.raw = '[:%s: %s]' % (node['refuri'], node.astext())
+                self.wikiparser.raw = '[:%s: %s]' % \
+                                      (node['refuri'], node.astext())
                 self.wikiparser.format(self.formatter)
+            # Not handled by our tests so give it to the html4css1
+            # translator.
             else:
                 handled = 0
             self.strip_paragraph = 0
