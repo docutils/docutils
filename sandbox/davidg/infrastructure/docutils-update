@@ -8,7 +8,6 @@
 #
 # Options:
 #   -f    Do not give feedback.
-#   -p    Run from the project directory.
 #   -t    Run the script in trace mode ("set -o xtrace").
 #   -u    Regenerate .html unconditionally.
 #   -v    Run verbosely.
@@ -45,16 +44,17 @@ remotehtdocs=/home/groups/d/do/docutils/htdocs
 pylib=$auxdir/lib/python
 lib=$pylib/$project
 
+export PYTHONPATH=$pylib:$lib:$lib/extras
+
 trace=0
 unconditional=0
 verbose=0
 feedback=1
 
-while getopts fptuv opt
+while getopts ftuv opt
 do
     case $opt in
         f)  feedback=;;
-        p)  export PYTHONPATH=$pylib:$lib:$lib/extras;;
         t)  trace=1;;
         u)  unconditional=1;;
         v)  verbose=1;;
