@@ -92,7 +92,7 @@ latex_head + """\
 \\setlength{\\locallinewidth}{\\linewidth}
 \\hypertarget{table-of-contents}{}
 \\pdfbookmark[0]{Table of Contents}{table-of-contents}
-\\subsection*{~\\hfill Table of Contents\\hfill ~}
+\\subsubsection*{~\\hfill Table of Contents\\hfill ~}
 \\begin{list}{}{}
 \\item {} \\href{\\#title-1}{Title 1}
 \\begin{list}{}{}
