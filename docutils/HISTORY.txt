@@ -59,9 +59,9 @@ General:
     section of ``docs/dev/todo.txt``.
   - Added ``THANKS.txt`` from "Acknowledgements" in ``HISTORY.txt``.
   - Added "How To Report Bugs" to ``BUGS.txt``.
-  - Went through all the docs (including under web/) and updated
-    links.  Mostly done by Felix Wiemann; thanks Felix!  (Still need
-    to update links in the code.)
+  - Went through all the sources and docs (including under web/) and
+    updated links.  Mostly done by Felix Wiemann; thanks Felix!
+    (Still need to update links in the sandboxes.)
 
 Specific:
 
