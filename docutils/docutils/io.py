@@ -55,11 +55,19 @@ class IO:
         Decode a string, `data`, heuristically.
         Raise UnicodeError if unsuccessful.
         """
-        encodings = [self.options.input_encoding,
-                     locale.getlocale()[1],
-                     'utf-8',
-                     locale.getdefaultlocale()[1],]
-        # is locale.getdefaultlocale() platform-specific?
+        encodings = [self.options.input_encoding, 'utf-8']
+        try:
+            encodings.append(locale.nl_langinfo(locale.CODESET))
+        except:
+            pass
+        try:
+            encodings.append(locale.getlocale()[1])
+        except:
+            pass
+        try:
+            encodings.append(locale.getdefaultlocale()[1])
+        except:
+            pass
         for enc in encodings:
             if not enc:
                 continue
