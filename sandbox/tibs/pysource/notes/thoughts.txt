@@ -1,0 +1,168 @@
+Thoughts on pysource
+====================
+
+:Author: Tibs
+:Date:   19 Sep 2002
+
+    [This is the contents of an email sent from Tibs to me, to tie up
+    -- or at least identify -- loose ends.  When Tibs writes "you",
+    he's referring to me.  It is published with Tibs' permission.  I
+    mostly agree with what Tibs has written.  I've added my own notes,
+    indented in square brackets, like this one.
+
+    --David Goodger]
+
+Well, having looked back at the pysource sources, I'm confirmed
+in my opinion that, if I were to start work on the project again,
+I would probably start a new version of pysource from scratch,
+using what I have learned (essentially, the content of visit.py),
+and taking advantage of all the new technology that is in the
+modern DOCUTILS.
+
+Thus I would (at least):
+
+1. produce a "frontend" using Optik
+2. rewrite visit.py more neatly
+3. construct DOCUTILS nodes to match pysource.dtd
+4. *possibly* meld those into the classes in visit.py
+   (but possibly not - some of the stuff in visit.py
+   seems to me to be, of necessity, a bit messy as it
+   is constructing stuff, and thus it may be premature
+   to "DOCUTILS" it before it is necessary).
+5. produce an example transform to amend the Python
+   specific DOCUTILS tree into a generic DOCUTILS
+   tree.
+
+That's a fair amount of work, and I'm not convinced that I can
+find the sustained effort [1]_, especially if you might be
+willing to take the task on (and if I would have been refactoring
+anyway, a whole different head may be a significant benefit).
+
+.. [1] I believe that's called "British understatement".
+
+Some comments on pysource.txt and pysource.dtd
+----------------------------------------------
+
+I believe that a <docstring> node is a Good Thing. It's a natural
+construct (if one believes that the other nodes are good things
+as well!), and it allows the "transform" of the Python specific
+tree to be done more sensibly.
+
+    [I think I finally understand what Tibs is getting at here.  I
+    thought he meant to have a <docstring> node in an otherwise
+    standard Docutils doctree, which just contained the raw docstring.
+     Instead, I believe he means that the Python-specific Docutils
+    doctree elements like <class_section> and
+    <module_section> (see pysource.dtd), should each have a <docstring>
+    element which contains ``%structure.model;``, instead of the
+    current ``%structure.model;`` directly inside the element.  In
+    other words, a <docstring> element would be a simple container for
+    all the parsed elements of the docstring.  On second thought, each
+    Python-specific section element would still have to have
+    ``%structure.model;``, in order to contain subsections.  A
+    <package_section> would contain <module_section>s, which would
+    contain <class_section>s, and so on.
+
+    So a <docstring> element may be useful as a convenience to
+    transforms.  It would be a trivial change anyhow.
+
+    The initial (internal) data structure resulting from the parsing
+    of Python modules & packages is a completely different beast.  It
+    should contain <docstring> nodes, along with <package>, <module>,
+    <class>, etc., nodes.  But these should *not* be subclasses of
+    docutils.nodes.Node, and this tree should not be a "Docutils
+    document tree".  It should be a separate, parallel structure.
+    Document tree nodes (docutils.nodes.Node objects) are not suited
+    for this work.
+
+    --DG]
+
+I recommend some initial "surgery" on the initial parse tree to
+make finding the docstrings for nodes easier.
+
+I reckon that one produces a Python-specific doctree, and then
+chooses one of several transforms to produce generic doctrees.
+
+By the way, I still vote for "static" introspection - that is,
+without actually importing the module. It does limit what one can
+do in some respects, but there are modules one might want to
+document that one does not wish to import (and indeed, at work we
+have some Python files that essentially cannot be introspected in
+this manner with any ease - they are "designed" to be imported by
+other modules after ``sys.path`` has been mangled suitably, and
+just don't work stand-alone).
+
+I've tried to expand out the ideas you had on how the "pysource"
+tool should work below.
+
+  although it occurs to me that this is all terribly obvious,
+  really. Oh well...
+
+The pysource tool
+-----------------
+
+The "input mode" should be the "Python Source Reader".
+
+  You can see where I'm starting from in pysource.txt.
+
+This produces, as its output, a Python-specific doctree,
+containing extra nodes as defined in pysource.dtd (etc.).
+
+One of the tasks undertaken by the Python Source Reader is to
+decide what to do with docstrings.  For each Python file, it
+discovers (from ``__docformat__``) if the input parser is
+"reStructuredText". If it is, then the contents of each docstring
+in that file will be parsed as such, including sorting out
+interpreted text (i.e., rendering it into links across the tree).
+If it is not, then each docstring will be treated as a literal
+block.
+
+  This admits the posibility of adding other parsers *for
+  docstrings* at a later date - which I suspect is how HappyDoc
+  does it. It is just necessary to publicise the API for the
+  Docstring class, and then someone else can provide alternate
+  plugins.
+
+The output of the Python Source Reader is thus a Python-specific
+doctree, with all docstrings fully processed (as appropriate),
+and held inside <docstring> elements.
+
+The next stage is handled by the Layout Transformer.
+
+    [What I call "stylist transforms".  --DG]
+
+This determines the layout of the document to be produced - the
+*kind* or *style* of output that the user wants (e.g., PyDoc
+style, LibRefMan style, generic docutils style, etc.).
+
+Each layout is represented by a class that walks the
+Python-specific doctree, replacing the Python-specific nodes with
+appropriate generic nodes. The output of the Layout Transformer
+is thus a generic doctree.
+
+The final stage is thus a normal DOCUTILS Writer - since it is
+taking input that is a generic doctree, this makes perfect
+sense. This also means that we get maximum leverage from existing
+Writers, which is essential (not just a Good Thing).
+
+As you point out, some layouts will probably only be appropriate
+for some output formats. Well, that's OK. On the other hand, if
+the output of the Layout stage *is* a generic doctree, we're not
+likely to get fatal errors by putting it through the wrong
+Writer, so we needn't worry too much.
+
+Thus one might envisage a command line something like::
+
+  pysource --layout:book --format:html this_module
+
+Of course, other command line switches would be options for
+particular phases (e.g., to use frames or not for HTML output). I
+can see wanting a series of configuration files that one could
+reference, to save specifying lots of switches.
+
+One specific thing to be decided, particularly for HTML, is
+whether one is outputting a "cluster" of files (e.g., as javadoc
+does). I reckon this can be left for later on, though (as can
+such issues as saying "other interesting sources are *over
+there*, so reference them if you can" - e.g., the Python
+library).
