@@ -157,7 +157,7 @@ Following along with the actual code is recommended.  The
     that ``self.set_source`` does for the source (the default
     ``self.destination_class`` is ``docutils.io.FileOutput``).
 
-.. _Docutils Configuration Files: ../user/tools.html
+.. _Docutils Configuration Files: ../user/config.html
 
 
 Runtime Settings Processing From Applications
