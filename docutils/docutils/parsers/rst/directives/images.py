@@ -73,7 +73,7 @@ def figure(name, arguments, options, content, lineno,
         return [image_node]
     figure_node = nodes.figure('', image_node)
     if figwidth == 'image':
-        if Image:
+        if Image and state.document.settings.file_insertion_enabled:
             # PIL doesn't like Unicode paths:
             try:
                 i = Image.open(str(image_node['uri']))

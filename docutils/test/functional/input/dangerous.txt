@@ -12,3 +12,5 @@ Potentially dangerous features (security holes):
    </script>
 .. csv-table:: :file: /etc/passwd
 .. csv-table:: :url: file:///etc/passwd
+.. figure:: picture.png
+   :figwidth: image

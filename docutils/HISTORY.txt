@@ -52,6 +52,8 @@ Changes Since 0.3.7
 * docutils/parsers/rst/directives/images.py:
 
   - Allowed whitespace (stripped) in "image" & "figure" directive URLs.
+  - Added support for the ``file_insertion_enabled`` setting in the
+    "figure" directive (disables "figwidth" option).
 
 * docutils/parsers/rst/directives/misc.py:
 
