@@ -348,12 +348,12 @@ Images
 
 An image directive (also clickable -- a hyperlink reference):
 
-.. image:: ../docs/user/rst/images/title.png
+.. image:: ../../../docs/user/rst/images/title.png
    :target: directives_
 
 A figure directive:
 
-.. figure:: ../docs/user/rst/images/title.png
+.. figure:: ../../../docs/user/rst/images/title.png
    :alt: reStructuredText, the markup syntax
 
    A figure is an image with a caption and/or a legend:
@@ -458,7 +458,7 @@ Substitution Definitions
 
 An inline image (|example|) example:
 
-.. |EXAMPLE| image:: ../docs/user/rst/images/biohazard.png
+.. |EXAMPLE| image:: ../../../docs/user/rst/images/biohazard.png
 
 (Substitution definitions are not visible in the HTML source.)
 

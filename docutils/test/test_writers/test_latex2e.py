@@ -19,7 +19,7 @@ def suite():
 
 
 latex_head = """\
-\\documentclass[10pt,english]{article}
+\\documentclass[10pt,a4paper,english]{article}
 \\usepackage{babel}
 \\usepackage{shortvrb}
 \\usepackage[latin1]{inputenc}
@@ -30,8 +30,9 @@ latex_head = """\
 \\usepackage{graphicx}
 \\usepackage{color}
 \\usepackage{multirow}
+\\usepackage{ifthen}
 \\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
-\\usepackage[a4paper,margin=2cm,nohead]{geometry}
+\\usepackage[DIV12]{typearea}
 %% generator Docutils: http://docutils.sourceforge.net/
 \\newlength{\\admonitionwidth}
 \\setlength{\\admonitionwidth}{0.9\\textwidth}
