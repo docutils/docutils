@@ -1,5 +1,13 @@
 #!/bin/sh
 
+CMD="../../tools/rst2latex.py --documentclass=book"
+INF=test/README.txt
+OUTF="$INF-book.tex"
+REFF="$OUTF.ref"
+$CMD $INF > $OUTF
+diff -q -s $REFF $OUTF 
+echo --------------------------
+
 CMD="python2.2 ./latex.py"
 
 if [ -z "$1" ] ; then
@@ -20,4 +28,14 @@ OUTF="$INF-ltoc.tex"
 REFF="$OUTF.ref"
 $CMD --use-latex-toc 1 $INF > $OUTF
 diff -q -s $REFF $OUTF 
-  echo --------------------------
+echo --------------------------
+
+CMD="../../tools/rst2latex.py -l de"
+INF=test/quotes.txt
+OUTF="$INF-l-de.tex"
+REFF="$OUTF.ref"
+$CMD $INF > $OUTF
+diff -q -s $REFF $OUTF 
+echo --------------------------
+
+
