@@ -23,7 +23,7 @@ import time
 from docutils import nodes, utils
 from docutils import ApplicationError, DataError
 from docutils.transforms import Transform, TransformError
-from docutils.transforms import parts
+from docutils.transforms import parts, references
 
 
 class Headers(Transform):
@@ -50,8 +50,14 @@ class Headers(Transform):
         pep = title = None
         for field in header:
             if field[0].astext().lower() == 'pep': # should be the first field
-                pep = int(field[1].astext())
-                break
+                value = field[1].astext()
+                try:
+                    pep = int(value)
+                except ValueError:
+                    raise DataError('"PEP" header must contain an integer; '
+                                    '"%s" is an invalid value.' % value)
+                else:
+                    break
         if pep is None:
             raise DataError('Document does not contain an RFC-2822 "PEP" '
                             'header.')
@@ -76,7 +82,7 @@ class Headers(Transform):
                       '%d-%b-%Y',
                       time.localtime(os.stat(self.document['source'])[8]))
                 body += nodes.paragraph()
-                uri = self.pep_cvs_url % int(pep)
+                uri = self.pep_cvs_url % pep
                 body[0][:] = [nodes.reference('', date, refuri=uri)]
             else:
                 # empty
@@ -102,7 +108,7 @@ class Headers(Transform):
             elif name == 'last-modified':
                 utils.clean_rcs_keywords(para, self.rcs_keyword_substitutions)
                 date = para.astext()
-                uri = self.pep_cvs_url % int(pep)
+                uri = self.pep_cvs_url % pep
                 para[:] = [nodes.reference('', date, refuri=uri)]
             elif name == 'content-type':
                 pep_type = para.astext()
@@ -115,15 +121,45 @@ class Headers(Transform):
 class Contents(Transform):
 
     """
-    Insert a table of contents into the document after the RFC 2822 header.
+    Insert a table of contents transform placeholder into the document after
+    the RFC 2822 header.
     """
-
 
     def transform(self):
         pending = nodes.pending(parts.Contents, 'first writer',
                                 {'title': None})
         self.document.insert(1, pending)
         self.document.note_pending(pending)
+
+
+class TargetNotes(Transform):
+
+    """
+    Locate the "References" section, insert a placeholder for an external
+    target footnote insertion transform at the end, and run the transform.
+    """
+
+    def transform(self):
+        doc = self.document
+        i = len(doc) - 1
+        refsect = copyright = None
+        while i >= 0 and isinstance(doc[i], nodes.section):
+            if 'references' in doc[i][0].astext().lower().split():
+                refsect = doc[i]
+                break
+            if 'copyright' in doc[i][0].astext().lower().split():
+                copyright = i
+            i -= 1
+        if not refsect:
+            refsect = nodes.section()
+            refsect += nodes.title('', 'References')
+            if copyright:
+                doc.insert(copyright, refsect)
+            else:
+                doc.append(refsect)
+        pending = nodes.pending(references.TargetNotes, 'immediate', {})
+        refsect.append(pending)
+        pending.transform(doc, self, pending).transform()
 
 
 class PEPZero(Transform):
@@ -142,7 +178,7 @@ class PEPZeroSpecial(nodes.SparseNodeVisitor):
 
     """
     Perform the special processing needed by PEP 0:
-    
+
     - Mask email addresses.
 
     - Link PEP numbers in the second column of 4-column tables to the PEPs
