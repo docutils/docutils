@@ -20,7 +20,13 @@ from docutils import optik
 class OptionParser(optik.OptionParser):
 
     """
-    Parser for command-line and library use.  The `cmdline_options` specification here and in other Docutils components are merged
+    Parser for command-line and library use.  The `cmdline_options`
+    specification here and in other Docutils components are merged to
+    build the set of command-line options for this process.
+
+    Common options (defined below) and component-specific options must
+    not conflict. Short options are reserved for common options, and
+    components are restrict to using long options.
     """
 
     threshold_choices = 'info 1 warning 2 error 3 severe 4 none 5'.split()
