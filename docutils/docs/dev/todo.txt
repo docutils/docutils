@@ -58,7 +58,7 @@ Bugs
 * tools/buildhtml.py needs a mechanism to skip directories
   (e.g. licenses, test).  Perhaps a ".prune-buildhtml" file?  A
   command-line option wouldn't work because it would require user
-  action.
+  action.  Config file setting?
 
 
 General
@@ -318,25 +318,32 @@ General
   reporting the successful input encoding.  Modify runtime settings?
   System message?  Simple stderr output?
 
-* Perhaps we need to re-evaluate the config file format, possibly
-  enabling a section for each Docutils component so that (for example)
-  HTML's and LaTeX's stylesheets don't interfere with each other.
+* @@@ Re-evaluate the config file format, enabling a section for each
+  Docutils component so that (for example) HTML's and LaTeX's
+  stylesheets don't interfere with each other.
 
-  Idea: adopt sections in the config file corresponding to Docutils
-  components, which define flat namespaces that can be applied in an
-  overlay fashion defined by the components themselves.  For example,
-  if the "pep_html" writer defines itself as derivative of the
-  "html4css1" writer, the "stylesheet" setting in the "[html4css1]"
-  section will be used unless the "[pep_html]" section overrides it.
-  In the absence of any "stylesheet" setting in either section, a
-  "stylesheet" setting in "[general]" would be used.  This would also
-  allow component-specific definitions of general or
-  other-component-specific settings, such as writer-specific overrides
-  for the "trim_footnote_reference_space" parser setting.
+  Details: <http://article.gmane.org/gmane.text.docutils.devel/876>.
+
+* Rationalize Writer settings (HTML/LaTeX/PEP).
 
 * The "docutils.conf" included with Docutils should become complete,
-  with examples of every setting (possibly commented).  It's currently
-  sparse, requiring doc lookups.
+  with examples of every setting (many/most commented out).  It's
+  currently sparse, requiring doc lookups.
+
+* Rework docs/tools.txt for the new configuration sections.  Merge
+  doc/latex.txt info into tools.txt.
+
+* Add validation/conversion to SettingsSpec objects?  Entry in the
+  keyword argument dictionary, to be handled by OptionParser?  How to
+  pass it on to ConfigParser?  Or keep the exclusive responsibility in
+  OptionParser?  Problem with the current "validation" attribute of
+  docutils.frontend.ConfigParser is that it separates this information
+  from the rest of the settings_spec.
+
+  Specifically, boolean values like "xml_declaration" ought to accept
+  "0" for false (not just '' empty string as now), and "false", "no",
+  and "off" too.  True values should be any of "1", "true", "yes", and
+  "on".
 
 * Add internationalization to footer boilerplate text (resulting from
   "--generator", "--source-link", and "--date" etc.), allowing
@@ -1211,7 +1218,16 @@ when used in a document.
     numbering and object references`_ above).  Possible options:
 
 	- "highlight" a range of lines
+
 	- "number" or "line-numbers"
+
+    - "styled" could indicate that the directive should check for
+      style comments at the end of lines to indicate styling or
+      markup.
+
+      Specific derivatives (i.e., a "python-interactive" directive)
+      could interpret style based on cues, like the ">>> " prompt and
+      "input()"/"raw_input()" calls.
 
 	See docutils-users 2003-03-03.
 
