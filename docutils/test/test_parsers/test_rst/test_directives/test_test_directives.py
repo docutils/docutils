@@ -187,6 +187,19 @@ Paragraph.
     <paragraph>
         Paragraph.
 """],
+["""\
+.. reStructuredText-test-directive::
+
+   Directive \\block \\*contains* \\\\backslashes.
+""",
+"""\
+<document source="test data">
+    <system_message level="1" line="1" source="test data" type="INFO">
+        <paragraph>
+            Directive processed. Type="reStructuredText-test-directive", arguments=[], options={}, content:
+        <literal_block xml:space="preserve">
+            Directive \\block \\*contains* \\\\backslashes.
+"""],
 ]
 
 
