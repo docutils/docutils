@@ -50,6 +50,10 @@ Setting/Config Entry   Description
 ---------------------  ------------------------------------------------
 --hyperlink-color      Color of any hyperlinks embedded in text 
                        (default: "blue", "0" to disable).
+---------------------  ------------------------------------------------
+--documentclass        Specify latex documentclass, *but* beaware that
+                       books have chapters articles not. 
+                       (default: "article").
 =====================  ================================================
 
 

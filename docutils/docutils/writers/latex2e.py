@@ -221,7 +221,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # to other packages, as done with babel. 
     # Dummy settings might be taken from document settings
 
-    d_class = 'article'    # document.settings.stylesheet
     d_options = '10pt'  # papersize, fontsize
     d_paper = 'a4paper'
     d_margins = '2cm'
@@ -268,7 +267,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.d_options += ',%s' % \
                     self.babel.get_language()
         self.head_prefix = [
-              self.latex_head % (self.d_options,self.d_class),
+              self.latex_head % (self.d_options,self.settings.documentclass),
               '\\usepackage{babel}\n',     # language is in documents settings.
               '\\usepackage{shortvrb}\n',  # allows verb in footnotes.
               self.encoding,
