@@ -123,8 +123,7 @@ class Configure:
         """
         file_exists = os.path.exists(file)
         if not file_exists:
-            sys.stderr.write('file does not exist\n')
-            sys.exit(1)
+            raise IOError, 'file %s does not exist' % file
         self.__file = file
 
     def read_configs(self):

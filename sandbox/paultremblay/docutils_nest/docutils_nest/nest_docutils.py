@@ -10,12 +10,12 @@ converst an XML file to nested tags
 
 
 """
+outer_dir =  docutils_nest.location.get_location()
+doc_nest_dir = os.path.join(outer_dir, '.docutils_nest')
 
 
 class GetOptions:
     def __init__(self, sys_string):
-        outer_dir =  docutils_nest.location.get_location()
-        self.__doc_nest_dir = os.path.join(outer_dir, '.docutils_nest')
         self.__sys_string = sys_string
 
     def get_options(self):
@@ -98,7 +98,7 @@ class NestDocutils:
         self.__output = output
 
     def nest_tags(self):
-        config_file = os.path.join(self.__doc_nest_dir, 'configure.xml')
+        config_file = os.path.join(doc_nest_dir, 'configure.xml')
         config_obj = GetConfig(config_file)
         config_values = config_obj.get_config()
         tags_obj = MakeTags(self.__file, self.__output, config_values)
@@ -113,7 +113,7 @@ if __name__ == '__main__':
     # sys.exit(0)
     options_obj = GetOptions(sys.argv)
     file, output = options_obj.get_options()
-    config_file = os.path.join(self.__doc_nest_dir, 'configure.xml')
+    config_file = os.path.join(doc_nest_dir, 'configure.xml')
     config_obj = GetConfig(config_file)
     config_values = config_obj.get_config()
     tags_obj = MakeTags(file, output, config_values)
