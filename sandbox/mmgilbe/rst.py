@@ -300,6 +300,7 @@ class MoinTranslator(html4css1.HTMLTranslator):
             # Only pass the src and alt parts to the writer. The rst writer 
             # inserts its own tags so we don't need the moinmoin html markup.
             node['uri'] = re.search('src="([^"]+)"', self.wiki_text).groups()[0]
-            node['alt'] = re.search('alt="([^"]*)"', self.wiki_text).groups()[0]
+            if not 'alt' in node.attributes:
+                node['alt'] = re.search('alt="([^"]*)"', self.wiki_text).groups()[0]
         html4css1.HTMLTranslator.visit_image(self, node)
         
