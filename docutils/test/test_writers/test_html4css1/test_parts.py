@@ -55,6 +55,15 @@ __ http://www.test.com/test_url
 {'fragment': '''<p>A simple <a class="reference" href="http://www.test.com/test_url">anonymous reference</a></p>\\n'''}
 """],
 ["""\
+One paragraph.
+
+Two paragraphs.
+""",
+"""\
+{'fragment': '''<p>One paragraph.</p>
+<p>Two paragraphs.</p>\\n'''}
+"""],
+["""\
 A simple `named reference`_ with stuff in between the
 reference and the target.
 
