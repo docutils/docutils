@@ -114,7 +114,7 @@ For *completeness*, _`let's` ``test`` **other** forms_
         <strong>
             other
          \n\
-        <reference refname="forms">
+        <reference name="forms" refname="forms">
             forms
         \n\
         <substitution_reference refname="of">

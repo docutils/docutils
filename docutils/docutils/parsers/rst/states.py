@@ -113,6 +113,7 @@ from docutils import nodes, statemachine, utils, urischemes
 from docutils import ApplicationError, DataError
 from docutils.statemachine import StateMachineWS, StateWS
 from docutils.nodes import fully_normalize_name as normalize_name
+from docutils.nodes import whitespace_normalize_name
 from docutils.parsers.rst import directives, languages, tableparser
 from docutils.parsers.rst.languages import en as _fallback_language_module
 
@@ -867,7 +868,8 @@ class Inliner:
         else:
             target = None
         refname = normalize_name(text)
-        reference = nodes.reference(rawsource, text)
+        reference = nodes.reference(rawsource, text,
+                                    name=whitespace_normalize_name(text))
         node_list = [reference]
         if rawsource[-2:] == '__':
             if target:
@@ -1017,8 +1019,9 @@ class Inliner:
     def reference(self, match, lineno, anonymous=None):
         referencename = match.group('refname')
         refname = normalize_name(referencename)
-        referencenode = nodes.reference(referencename + match.group('refend'),
-                                        referencename)
+        referencenode = nodes.reference(
+            referencename + match.group('refend'), referencename, 
+            name=whitespace_normalize_name(referencename))
         if anonymous:
             referencenode['anonymous'] = 1
             self.document.note_anonymous_ref(referencenode)
