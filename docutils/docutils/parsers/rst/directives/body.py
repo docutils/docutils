@@ -112,3 +112,11 @@ def highlights(name, arguments, options, content, lineno,
     return [block_quote] + messages
 
 highlights.content = 1
+
+def pull_quote(name, arguments, options, content, lineno,
+             content_offset, block_text, state, state_machine):
+    block_quote, messages = state.block_quote(content, content_offset)
+    block_quote.set_class('pull-quote')
+    return [block_quote] + messages
+
+pull_quote.content = 1

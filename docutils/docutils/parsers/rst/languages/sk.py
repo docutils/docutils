@@ -30,6 +30,7 @@ directives = {
       u'rubric (translation required)': 'rubric',
       u'epigraph (translation required)': 'epigraph',
       u'highlights (translation required)': 'highlights',
+      u'pull-quote (translation required)': 'pull-quote',
       #u'questions': 'questions',
       #u'qa': 'questions',
       #u'faq': 'questions',

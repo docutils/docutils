@@ -35,6 +35,7 @@ directives = {
       u'ep\u00edgrafe': 'epigraph',
       u'epigrafe': 'epigraph',
       u'destacado': 'highlights',
+      u'pull-quote (translation required)': 'pull-quote',
       #'questions': 'questions',
       #'qa': 'questions',
       #'faq': 'questions',
