@@ -369,10 +369,11 @@ or " ") or the text between option arguments (typically either "," or
     %basic.atts;
     %fixedspace.att;>
 
-<!ELEMENT line_block %text.model;>
-<!ATTLIST line_block
-    %basic.atts;
-    %fixedspace.att;>
+<!ELEMENT line_block ((line | line_block)+)>
+<!ATTLIST line_block %basic.atts;>
+
+<!ELEMENT line %text.model;>
+<!ATTLIST line %basic.atts;>
 
 <!ELEMENT block_quote ((%body.elements;)+, attribution?)>
 <!ATTLIST block_quote %basic.atts;>
