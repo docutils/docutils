@@ -434,7 +434,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.head.append('<meta name="%s" content="%s" />\n'
                              % (name, self.attval(node.astext())))
         self.body.append(self.starttag(node, 'tr', ''))
-        self.body.append('<th class="docinfo-name">%s:&nbsp;</th><td>\n'
+        self.body.append('<th class="docinfo-name">%s:&nbsp;</th>\n<td>'
                          % self.language.labels[name])
 
     def depart_docinfo_item(self):
