@@ -66,7 +66,10 @@ class Writer(writers.Writer):
           {'default': 1, 'action': 'store_true'}),
          ('Disable compact simple bullet and enumerated lists.',
           ['--no-compact-lists'],
-          {'dest': 'compact_lists', 'action': 'store_false'}),))
+          {'dest': 'compact_lists', 'action': 'store_false'}),
+         ('Omit the XML declaration.  Use with caution.',
+          ['--no-xml-declaration'], {'dest': 'xml_declaration', 'default': 1,
+                                     'action': 'store_false'}),))
 
     relative_path_settings = ('stylesheet_path',)
 
@@ -157,7 +160,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         lcode = settings.language_code
         self.language = languages.get_language(lcode)
         self.head_prefix = [
-              self.xml_declaration % settings.output_encoding,
+#              self.xml_declaration % settings.output_encoding,
               self.doctype,
               self.html_head % (lcode, lcode),
               self.content_type % settings.output_encoding,
@@ -197,9 +200,15 @@ class HTMLTranslator(nodes.NodeVisitor):
             return settings.stylesheet
 
     def astext(self):
-        return ''.join(self.head_prefix + self.head + self.stylesheet
-                       + self.body_prefix + self.body_pre_docinfo
-                       + self.docinfo + self.body + self.body_suffix)
+        settings = self.settings
+        output_prefix = []
+        if settings.xml_declaration:
+            output_prefix.append(
+                self.xml_declaration % settings.output_encoding)
+        return ''.join(output_prefix + self.head_prefix + self.head
+                       + self.stylesheet + self.body_prefix
+                       + self.body_pre_docinfo + self.docinfo
+                       + self.body + self.body_suffix)
 
     def encode(self, text):
         """Encode special characters in `text` & return."""
