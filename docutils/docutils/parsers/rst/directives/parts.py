@@ -78,4 +78,6 @@ def sectnum(name, arguments, options, content, lineno,
     state_machine.document.note_pending(pending)
     return [pending]
 
-sectnum.options = {'depth': int}
+sectnum.options = {'depth': int,
+                   'start': int,
+                   'prefix': directives.unchanged_required}

@@ -33,13 +33,27 @@ class SectNum(Transform):
 
     def apply(self):
         self.maxdepth = self.startnode.details.get('depth', sys.maxint)
+        self.startvalue = self.startnode.details.get('start', 1)
+        prefix = self.startnode.details.get('prefix', None)
+        if prefix is None:
+            self.prefix = ()
+        else:
+            self.prefix = (prefix,)
         self.startnode.parent.remove(self.startnode)
         if self.document.settings.sectnum_xform:
             self.update_section_numbers(self.document)
 
-    def update_section_numbers(self, node, prefix=(), depth=0):
+    def update_section_numbers(self, node, prefix=None, depth=0):
         depth += 1
-        sectnum = 1
+
+        if prefix:
+            sectnum = 1
+        else:
+            sectnum = self.startvalue
+            
+        if prefix is None:
+            prefix = self.prefix
+            
         for child in node:
             if isinstance(child, nodes.section):
                 numbers = prefix + (str(sectnum),)
