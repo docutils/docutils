@@ -1,7 +1,13 @@
-# /usr/bin/python 
+# /usr/bin/env python 
 
 import sys, os
 import options_trem
+
+"""
+
+The configuration script gets the target from the command line. It changest the setup.py and the actual scrilpt so that they have the right target.
+
+"""
 
 def configure():
     target = get_target()
@@ -9,6 +15,12 @@ def configure():
     change_script(target)
 
 def get_target():
+    """
+    This functions uses a module I wrote to parse options. If no options are
+    determined on the command line, the function returnst the default
+    /etc/nest_docutis
+
+    """
     options_dict = {
         'target':     [1, 't'],
     }
@@ -17,13 +29,18 @@ def get_target():
     opt_dict, args = options_obj.parse_options()
     if opt_dict == 0:
         sys.stdout.write('Will use the default configuration of /etc/nest_docutils\n')
-        return '/etc/nest_docutils'
+        return '/etc/docutils_nest'
     target = opt_dict.get('target')
     if not target:
-        return '/etc/nest_docutils'
+        return '/etc/docutils_nest'
     return target
 
 def change_setup(target):
+    """
+
+    Chage the setup.py file to reflect the target
+
+    """
     read_obj = open('setup.py', 'r')
     write_obj = open('temp', 'w')
     line = 1
@@ -47,6 +64,12 @@ def change_setup(target):
 
 
 def change_script(target):
+
+    """
+
+    Changet the script to reflect the right target
+
+    """
     read_obj = open('nest_inline/nest_docutils.py', 'r')
     write_obj = open('temp', 'w')
     line = 1
@@ -61,7 +84,7 @@ def change_script(target):
     read_obj.close()
     write_obj.close()
     read_obj = open('temp', 'r')
-    write_obj = open('nest_inline/nest_docutils.py', 'w')
+    write_obj = open('docutils_nest/nest_docutils.py', 'w')
     line = 1
     while line:
         line = read_obj.readline()
