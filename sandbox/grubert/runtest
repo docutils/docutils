@@ -56,6 +56,21 @@ for GO in "" auto pdftex dvips,300dpi ; do
     do_diff $REFF $OUTF 
 done
 
+# font encoding
+CMD="../../tools/rst2latex.py"
+for FONTENC in "" T1 OT1 ; do
+  for INF in `ls test/characters.txt` ; do
+    OUTF="$INF-$FONTENC.tex"
+    REFF="$OUTF.ref"
+    if [ -z $FONTENC ] ; then
+      $CMD $2 $3 $INF > $OUTF
+    else
+      $CMD --font-encoding=$FONTENC $2 $3 $INF > $OUTF
+    fi
+    do_diff $REFF $OUTF 
+  done
+done
+
 # table-style
 CMD="../../tools/rst2latex.py"
 
