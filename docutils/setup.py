@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # $Id$
+# Copyright: This file has been placed in the public domain.
 
 from distutils.core import setup
 

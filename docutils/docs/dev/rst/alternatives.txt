@@ -5,6 +5,7 @@
 :Contact: goodger@users.sourceforge.net
 :Revision: $Revision$
 :Date: $Date$
+:Copyright: This document has been placed in the public domain.
 
 The following are ideas, alternatives, and justifications that were
 considered for reStructuredText syntax, which did not originate with

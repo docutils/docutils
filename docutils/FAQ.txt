@@ -4,6 +4,7 @@
 
 :Date: $Date$
 :Web site: http://docutils.sourceforge.net/
+:Copyright: This document has been placed in the public domain.
 
 .. Please note that until there's a Q&A-specific construct available,
    this FAQ will use section titles for questions.  Therefore

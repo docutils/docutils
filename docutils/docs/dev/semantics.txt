@@ -5,6 +5,7 @@
 :Contact: goodger@users.sourceforge.net
 :Revision: $Revision$
 :Date: $Date$
+:Copyright: This document has been placed in the public domain.
 
 These are notes for a possible future PEP providing the final piece of
 the Python docstring puzzle: docstring semantics or documentation
