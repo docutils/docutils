@@ -20,15 +20,15 @@ and related projects:
 
     Aahz, David Abrahams, David Ascher, Heiko Baumann, Eric Bellot,
     Ian Bicking, Marek Blaha, Martin Blais, Fred Bremmer, Simon Budig,
-    Bill Bumgarner, Brett Cannon, Beni Cherniavsky, Adam Chodorowski,
-    Artur de Sousa Rocha, Jason Diamond, William Dode, Fred Drake,
-    Dethe Elza, Marcus Ertl, Benja Fallenstein, fantasai, Stefane
-    Fermigier, Jim Fulton, Peter Funk, Dinu C. Gherman, Jorge
-    Gonzalez, Engelbert Gruber, Simon Hefti, Doug Hellmann, Juergen
-    Hermann, Jannie Hofmeyr, Michael Hudson, Marcelo Huerta San
-    Martin, Ludger Humbert, Jeremy Hylton, Tony Ibbs, Alan Jaffray,
-    Dmitry Jemerov, Richard Jones, Andreas Jung, Garth Kidd, Axel
-    Kollmorgen, Kirill Lapshin, Nicola Larosa, Daniel Larsson,
+    Bill Bumgarner, Brett Cannon, Nicolas Chauveau, Beni Cherniavsky,
+    Adam Chodorowski, Artur de Sousa Rocha, Jason Diamond, William
+    Dode, Fred Drake, Dethe Elza, Marcus Ertl, Benja Fallenstein,
+    fantasai, Stefane Fermigier, Jim Fulton, Peter Funk, Dinu
+    C. Gherman, Jorge Gonzalez, Engelbert Gruber, Simon Hefti, Doug
+    Hellmann, Juergen Hermann, Jannie Hofmeyr, Michael Hudson, Marcelo
+    Huerta San Martin, Ludger Humbert, Jeremy Hylton, Tony Ibbs, Alan
+    Jaffray, Dmitry Jemerov, Richard Jones, Andreas Jung, Garth Kidd,
+    Axel Kollmorgen, Kirill Lapshin, Nicola Larosa, Daniel Larsson,
     Marc-Andre Lemburg, Julien Letessier, Wolfgang Lipp, Edward Loper,
     Dallas Mahrt, Ken Manheimer, Bob Marshall, Vasko Miroslav, Skip
     Montanaro, Paul Moore, Nigel W. Moriarty, Mark Nodine, Patrick
@@ -161,6 +161,10 @@ Changes Since 0.3
   - Catch unicode value too high error; fixes bug 781766.
   - Beefed up directive error reporting.
 
+* docutils/parsers/rst/directives/body.py:
+
+  - Added basic "table" directive.
+
 * docutils/parsers/rst/directives/images.py:
 
   - Added "target" option to "image" directive.
@@ -189,6 +193,7 @@ Changes Since 0.3
     Kirill Lapshin).
   - Improved table grid/border handling (prompted by report from Bob
     Marshall).
+  - Added support for table titles.
 
 * docutils/writers/latex2e.py:
 
