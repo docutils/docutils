@@ -33,6 +33,10 @@ class Writer(writers.Writer):
         (('Specify documentclass.  Default is "article".',
           ['--documentclass'],
           {'default': 'article', }),
+         ('Specify document options.  Multiple options can be given, '
+          'separated by commas.  Default is "10pt".',
+          ['--documentoptions'],
+          {'default': '10pt', }),
          ('Use LaTeX footnotes. '
           'Default: no, uses figures.',
           ['--use-latex-footnotes'],
@@ -240,8 +244,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # to other packages, as done with babel. 
     # Dummy settings might be taken from document settings
 
-    d_options = '10pt'  # papersize, fontsize
-    d_paper = 'a4paper'
+    d_paper = 'a4paper' # papersize
     d_margins = '2cm'
 
     latex_head = '\\documentclass[%s]{%s}\n'
@@ -283,6 +286,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.language = languages.get_language(settings.language_code)
         self.babel = Babel(settings.language_code)
         self.author_separator = self.language.author_separators[0]
+        self.d_options = self.settings.documentoptions
         if self.babel.get_language():
             self.d_options += ',%s' % \
                     self.babel.get_language()
