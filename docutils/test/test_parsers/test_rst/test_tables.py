@@ -593,6 +593,42 @@ No blank line after table.
                             (The first cell of this table may expand
                             to accommodate long filesystem paths.)
 """],
+[("""\
+Something before.
+
++------------------------------------------------------------------------------+
+| .. include::                                                                 |
+%s
++------------------------------------------------------------------------------+
+
+Something afterwards.
+
+And more.
+""") % ('\n'.join(['|    %-70s    |' % include2[part * 70 : (part + 1) * 70]
+                   for part in range(len(include2) / 70 + 1)])),
+"""\
+<document source="test data">
+    <paragraph>
+        Something before.
+    <table>
+        <tgroup cols="1">
+            <colspec colwidth="78">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Here are some paragraphs
+                            that can appear at any level.
+                        <paragraph>
+                            This file (include2.txt) is used by
+                            <literal>
+                                test_include.py
+                            .
+    <paragraph>
+        Something afterwards.
+    <paragraph>
+        And more.
+"""],
 ]
 
 totest['simple_tables'] = [
