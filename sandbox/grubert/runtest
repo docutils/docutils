@@ -1,6 +1,7 @@
 #!/bin/sh
 
 CMD="../../tools/rst2latex.py --documentclass=book"
+#CMD="../../tools/rst2latex.py --documentclass=book --hyperlink-color=0"
 INF=test/README.txt
 OUTF="$INF-book.tex"
 REFF="$OUTF.ref"

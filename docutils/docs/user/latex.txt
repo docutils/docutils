@@ -60,6 +60,10 @@ Setting/Config Entry   Description
                        If this is set to "" disables generation of 
                        input latex command.
                        (default: "style.tex").
+---------------------  ------------------------------------------------
+--footnote-references  Format for footnote references: one of 
+                       "superscript" or "brackets".  
+                       Default is "brackets".
 =====================  ================================================
 
 
