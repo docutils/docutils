@@ -250,24 +250,12 @@ Test missing titles; blank line in-between.
 """,
 """\
 <document source="test data">
-    <pending>
-        .. internal attributes:
-             .transform: docutils.transforms.structural.Transition
-             .details:
-    <pending>
-        .. internal attributes:
-             .transform: docutils.transforms.structural.Transition
-             .details:
+    <transition>
+    <transition>
     <paragraph>
         Test missing titles; blank line in-between.
-    <pending>
-        .. internal attributes:
-             .transform: docutils.transforms.structural.Transition
-             .details:
-    <pending>
-        .. internal attributes:
-             .transform: docutils.transforms.structural.Transition
-             .details:
+    <transition>
+    <transition>
 """],
 ["""\
 ========================
