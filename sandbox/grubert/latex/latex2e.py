@@ -316,6 +316,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             text = text.replace("\n", '\\\\\n')
         elif self.mbox_newline:
             text = text.replace("\n", '}\\\\\n\\mbox{')
+            text = text.replace(' ', '~')
         # unicode !!! 
         text = text.replace(u'\u2020', '{$\\dagger$}')
         return text

@@ -4,7 +4,7 @@ latex2e BUGS TODOS and other animals
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
 
-Rev. 2002-12-12
+Rev. 2002-12-17
 
 To do
 ~~~~~
@@ -14,8 +14,6 @@ To do
 
 * admonitions are not so visible as in html (make a border a bigger title, indent
   text)
-
-* leading spaces in line-blocks look squeezed 	
 
 * document errors are also too silent.
 
@@ -101,6 +99,7 @@ ATTENTION
 Done
 ~~~~
 
+* all spaces in line-blocks are nonbreakable (~). 	
 * newenvironment optionlist for option-lists.
 * append ":" onto definition list terms.
 * long option-groups use multicolumn.
