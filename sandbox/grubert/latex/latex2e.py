@@ -759,6 +759,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.use_verbatim_for_literal = 1
         if (self.use_verbatim_for_literal):
             self.verbatim = 1
+            self.body.append('\\begin{quote}\n')
             self.body.append('\\begin{verbatim}\n')
         else:
             self.body.append('{\\obeylines\\obeyspaces\\ttfamily\n')
@@ -766,6 +767,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_literal_block(self, node):
         if self.use_verbatim_for_literal:
             self.body.append('\n\\end{verbatim}\n')
+            self.body.append('\\end{quote}\n')
             self.verbatim = 0
         else:
             self.body.append('}\n')
