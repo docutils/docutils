@@ -1217,16 +1217,15 @@ class Body(RSTState):
             raise statemachine.TransitionCorrection('text')
         enumlist = nodes.enumerated_list()
         self.parent += enumlist
+        enumlist['enumtype'] = sequence
+        enumlist['prefix'] = self.enum.formatinfo[format].prefix
+        enumlist['suffix'] = self.enum.formatinfo[format].suffix
         if ordinal != 1:
+            enumlist['start'] = ordinal
             msg = self.reporter.info(
                 'Enumerated list start value not ordinal-1: "%s" (ordinal %s)'
                 % (text, ordinal), line=self.state_machine.abs_line_number())
             self.parent += msg
-        enumlist['enumtype'] = sequence
-        if ordinal != 1:
-            enumlist['start'] = ordinal
-        enumlist['prefix'] = self.enum.formatinfo[format].prefix
-        enumlist['suffix'] = self.enum.formatinfo[format].suffix
         listitem, blank_finish = self.list_item(match.end())
         enumlist += listitem
         offset = self.state_machine.line_offset + 1   # next line
