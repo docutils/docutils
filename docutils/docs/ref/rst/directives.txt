@@ -30,9 +30,9 @@ details.
 
 Descriptions below list "doctree elements" (document tree element
 names; XML DTD generic identifiers) corresponding to individual
-directives.  For details on the hierarchy of elements, please see
-`Docutils Document Tree Structure`_ and the `Generic Plaintext
-Document Interface DTD`_ XML document type definition.
+directives.  For details on the hierarchy of elements, please see `The
+Docutils Document Tree`_ and the `Docutils Generic DTD`_ XML document
+type definition.
 
 .. _Directives: ./reStructuredText.html#directives
 .. _reStructuredText Markup Specification: ./reStructuredText.html
