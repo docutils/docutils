@@ -1565,15 +1565,15 @@ The standard Docutils system uses the following symbols for footnote
 marks [#]_:
 
 - asterisk/star ("*")
-- dagger (HTML character entity "&dagger;")
-- double dagger ("&Dagger;")
-- section mark ("&sect;")
-- pilcrow or paragraph mark ("&para;")
+- dagger (HTML character entity "&dagger;", Unicode U+02020)
+- double dagger ("&Dagger;"/U+02021)
+- section mark ("&sect;"/U+000A7)
+- pilcrow or paragraph mark ("&para;"/U+000B6)
 - number sign ("#")
-- spade suit ("&spades;")
-- heart suit ("&hearts;")
-- diamond suit ("&diams;")
-- club suit ("&clubs;")
+- spade suit ("&spades;"/U+02660)
+- heart suit ("&hearts;"/U+02665)
+- diamond suit ("&diams;"/U+02666)
+- club suit ("&clubs;"/U+02663)
 
 .. [#] This list was inspired by the list of symbols for "Note
    Reference Marks" in The Chicago Manual of Style, 14th edition,
@@ -1583,6 +1583,11 @@ marks [#]_:
 
 If more than ten symbols are required, the same sequence will be
 reused, doubled and then tripled, and so on ("**" etc.).
+
+.. Note:: When using auto-symbol footnotes, the choice of output
+   encoding is important.  Many of the symbols used are not encodable
+   in certain common text encodings such as Latin-1 (ISO 8859-1).  The
+   use of UTF-8 for the output encoding is recommended.
 
 
 Mixed Manual and Auto-Numbered Footnotes
