@@ -26,31 +26,39 @@ class Writer(Component):
     Each writer must support all standard node types listed in
     `docutils.nodes.node_class_names`.
 
-    Call `write()` to process a document.
+    The `write()` method is the main entry point.
     """
 
     component_type = 'writer'
     config_section = 'writers'
 
     document = None
-    """The document to write."""
+    """The document to write (Docutils doctree); set by `write`."""
 
     output = None
-    """Final translated form of `document`."""
+    """Final translated form of `document`; set by `translate`."""
 
     language = None
-    """Language module for the document."""
+    """Language module for the document; set by `write`."""
 
     destination = None
-    """`docutils.io` IO object; where to write the document."""
+    """`docutils.io` IO object; where to write the document.  Set by `write`."""
 
     def __init__(self):
-        """Initialize the Writer instance."""
 
         self.parts = {}
         """Collection of named parts of the document."""
 
     def write(self, document, destination):
+        """
+        Process a document into its final form.
+
+        Translate `document` (a Docutils document tree) into the Writer's
+        native format, and write it out to its `destination` (a
+        `docutils.io.Output` subclass object).
+
+        Normally not overridden or extended in subclasses.
+        """
         self.document = document
         self.language = languages.get_language(
             document.settings.language_code)

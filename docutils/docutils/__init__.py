@@ -145,7 +145,8 @@ class Component(SettingsSpec, TransformSpec):
     """Base class for Docutils components."""
 
     component_type = None
-    """Override in subclasses."""
+    """Name of the component type ('reader', 'parser', 'writer').  Override in
+    subclasses."""
 
     supported = ()
     """Names for this component.  Override in subclasses."""
