@@ -748,9 +748,9 @@ You may have an decoding problem in your browser (or editor, etc.).
 The encoding of the output is set to "utf-8", but your browswer isn't
 recognizing that.  You can either try to fix your browser (enable
 "UTF-8 character set", sometimes called "Unicode"), or choose a
-different encoding for the HTML output.  If you're using Python 2.3+,
-try ``--output-encoding=ascii:xmlcharrefreplace`` for HTML (not
-applicable to non-XMLish outputs).
+different encoding for the HTML output.  You can also try
+``--output-encoding=ascii:xmlcharrefreplace`` for HTML (not applicable
+to non-XMLish outputs).
 
 If you're generating document fragments, the "Content-Type" metadata
 (between the HTML ``<head>`` and ``</head>`` tags) must agree with the

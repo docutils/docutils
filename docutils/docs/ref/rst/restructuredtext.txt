@@ -1587,8 +1587,7 @@ reused, doubled and then tripled, and so on ("**" etc.).
    in certain common text encodings such as Latin-1 (ISO 8859-1).  The
    use of UTF-8 for the output encoding is recommended.  An
    alternative for HTML and XML output is to use the
-   "xmlcharrefreplace" `output encoding error handler`__ (available in
-   Python 2.3 & later).
+   "xmlcharrefreplace" `output encoding error handler`__.
 
 __ ../../user/config.html#output-encoding-error-handler
 
