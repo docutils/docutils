@@ -578,6 +578,21 @@ class C:
                 <Expression lineno="4">
                     1
 '''],
+['''\
+class C:
+    def __init__(self):
+        local = foo(a = 1)
+''',
+'''\
+<Module filename="test data">
+    <Class lineno="1" name="C">
+        <Method lineno="2" name="__init__">
+            <ParameterList lineno="2">
+                <Parameter lineno="2" name="self">
+            <Attribute lineno="3" name="local">
+                <Expression lineno="3">
+                    foo(a = 1)
+'''],
 ]
 
 totest['ignore'] = [
