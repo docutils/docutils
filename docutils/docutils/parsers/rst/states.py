@@ -802,17 +802,13 @@ class Inliner:
             match = pattern.search(text)
             if match:
                 try:
-                    return (self.text(text[:match.start()])
+                    # Must recurse on strings before *and* after the match;
+                    # there may be multiple patterns.
+                    return (self.implicit_inline(text[:match.start()], lineno)
                             + dispatch(self, match, lineno) +
                             self.implicit_inline(text[match.end():], lineno))
                 except MarkupMismatch:
                     pass
-        return [nodes.Text(unescape(text))]
-
-    def text(self, text):
-        """Return a list containing one `nodes.Text` node or nothing."""
-        if not text:
-            return []
         return [nodes.Text(unescape(text))]
         
 
