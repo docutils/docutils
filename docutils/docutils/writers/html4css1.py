@@ -203,6 +203,15 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_Text(self, node):
         pass
 
+    def visit_address(self, node):
+        self.visit_docinfo_item(node, 'address', meta=None)
+        self.body.append(self.starttag(node, 'pre', suffix='',
+                                       CLASS='line-block'))
+
+    def depart_address(self, node):
+        self.body.append('</pre>\n')
+        self.depart_docinfo_item()
+
     def visit_admonition(self, node, name):
         self.body.append(self.starttag(node, 'div', CLASS=name))
         self.body.append('<p class="admonition-title">'
@@ -328,7 +337,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def visit_contact(self, node):
-        self.visit_docinfo_item(node, 'contact')
+        self.visit_docinfo_item(node, 'contact', meta=None)
 
     def depart_contact(self, node):
         self.depart_docinfo_item()
@@ -403,9 +412,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.docinfo = self.body[start:]
         self.body = []
 
-    def visit_docinfo_item(self, node, name):
-        self.head.append('<meta name="%s" content="%s" />\n'
-                         % (name, self.attval(node.astext())))
+    def visit_docinfo_item(self, node, name, meta=1):
+        if meta:
+            self.head.append('<meta name="%s" content="%s" />\n'
+                             % (name, self.attval(node.astext())))
         self.body.append(self.starttag(node, 'tr', ''))
         self.body.append('<th class="docinfo-name">%s:&nbsp;</th><td>\n'
                          % self.language.labels[name])
@@ -572,7 +582,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                     backlinks.append('<a class="fn-backref" href="#%s">%s</a>'
                                      % (backref, i))
                     i += 1
-                self.context.append('(%s) ' % ', '.join(backlinks))
+                self.context.append('(<em>%s</em>) ' % ', '.join(backlinks))
                 self.context.append('<a name="%s">' % node['id'])
         else:
             self.context.append('')
@@ -810,7 +820,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</a>')
 
     def visit_revision(self, node):
-        self.visit_docinfo_item(node, 'revision')
+        self.visit_docinfo_item(node, 'revision', meta=None)
 
     def depart_revision(self, node):
         self.depart_docinfo_item()
@@ -830,7 +840,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</div>\n')
 
     def visit_status(self, node):
-        self.visit_docinfo_item(node, 'status')
+        self.visit_docinfo_item(node, 'status', meta=None)
 
     def depart_status(self, node):
         self.depart_docinfo_item()
@@ -859,7 +869,6 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'div', CLASS='system-message'))
         self.body.append('<p class="system-message-title">')
         attr = {}
-        a_end = ''
         backref_text = ''
         if node.hasattr('id'):
             attr['name'] = node['id']
@@ -873,13 +882,15 @@ class HTMLTranslator(nodes.NodeVisitor):
                 for backref in backrefs:
                     backlinks.append('<a href="#%s">%s</a>' % (backref, i))
                     i += 1
-                backref_text = '%s; ' % ', '.join(backlinks)
+                backref_text = '; <em>%s</em>' % ', '.join(backlinks)
         if attr:
-            self.body.append(self.starttag({}, 'a', '', **attr))
+            a_start = self.starttag({}, 'a', '', **attr)
             a_end = '</a>'
-        self.body.append('%s%s (%slevel %s system message)</p>\n'
-                         % (node['type'], a_end, backref_text,
-                            node['level']))
+        else:
+            a_start = a_end = ''
+        self.body.append('System Message: %s%s/%s%s (<tt>%s</tt>%s)</p>\n'
+                         % (a_start, node['type'], node['level'], a_end,
+                            node['source'], backref_text))
 
     def depart_system_message(self, node):
         self.body.append('</div>\n')
@@ -992,7 +1003,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         pass
 
     def visit_version(self, node):
-        self.visit_docinfo_item(node, 'version')
+        self.visit_docinfo_item(node, 'version', meta=None)
 
     def depart_version(self, node):
         self.depart_docinfo_item()
