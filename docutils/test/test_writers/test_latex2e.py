@@ -267,6 +267,38 @@ Inline \\texttt{literal "quotes"} should be kept.
 """],
 ]
 
-if __name__ == '__main__':
-    import unittest
-    unittest.main(defaultTest='suite')
+totest['table_caption'] = [
+# input
+["""\
+.. table:: Foo
+
+   +-----+-----+
+   |     |     |
+   +-----+-----+
+   |     |     |
+   +-----+-----+
+""",
+latex_head + """\
+\\title{}
+\\author{}
+\\date{}
+\\raggedbottom
+\\begin{document}
+\\maketitle
+
+
+\\setlength{\\locallinewidth}{\\linewidth}
+
+\\begin{longtable}[c]{|p{0.06\locallinewidth}|p{0.06\locallinewidth}|}
+\\caption{Foo}\\\\
+\\hline
+\\endhead
+%[visit_tbody]
+ &  \\\\ \hline
+ &  \\\\ \hline
+%[depart_tbody]
+\\end{longtable}
+
+\\end{document}
+"""],
+]
