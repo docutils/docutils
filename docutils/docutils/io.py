@@ -30,7 +30,7 @@ class Input(TransformSpec):
     def __init__(self, settings=None, source=None, source_path=None,
                  encoding=None):
         self.encoding = encoding
-        """The character encoding for the input source."""
+        """Text encoding for the input source."""
 
         if settings:
             if not encoding:
@@ -109,8 +109,13 @@ class Output(TransformSpec):
 
     def __init__(self, settings=None, destination=None, destination_path=None,
                  encoding=None):
+        encoding, error_handler = (encoding.split(':') + ['strict'])[:2]
+        
         self.encoding = encoding
-        """The character encoding for the output destination."""
+        """Text encoding for the output destination."""
+
+        self.error_handler = error_handler
+        """Text encoding error handler."""
 
         if settings:
             if not encoding:
@@ -142,7 +147,7 @@ class Output(TransformSpec):
         if self.encoding and self.encoding.lower() == 'unicode':
             return data
         else:
-            return data.encode(self.encoding or '')
+            return data.encode(self.encoding, self.error_handler)
 
 
 class FileInput(Input):
