@@ -178,6 +178,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
               '\\usepackage{babel}\n',     # language is in documents settings.
               '\\usepackage{shortvrb}\n',  # allows verb in footnotes.
               self.encoding,
+              '\\usepackage{tabularx}\n',  # for docinfo, ...
               '\\usepackage{amsmath}\n',   # what fore amsmath. 
               '\\usepackage{graphicx}\n',
               '\\usepackage{color}\n',
