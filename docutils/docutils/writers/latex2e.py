@@ -1180,6 +1180,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         * whitespace (including linebreaks) is significant
         * inline markup is supported.
         * serif typeface
+
+        mbox would stop LaTeX from wrapping long lines.
         """
         self.body.append('\\begin{flushleft}\n')
         self.insert_none_breaking_blanks = 1
@@ -1223,6 +1225,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         blocks of text, where the inline markup is not recognized,
         but are also the product of the parsed-literal directive,
         where the markup is respected.
+        
+        mbox stops LaTeX from wrapping long lines.
         """
         # In both cases, we want to use a typewriter/monospaced typeface.
         # For "real" literal-blocks, we can use \verbatim, while for all
