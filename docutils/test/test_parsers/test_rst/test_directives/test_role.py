@@ -80,13 +80,62 @@ Now that it's defined, :custom:`interpreted` works.
             interpreted
          works.
 """],
-["""
+["""\
+.. role:: custom(emphasis)
+
+:custom:`text`
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <emphasis class="custom">
+            text
+"""],
+["""\
+.. role:: custom ( emphasis )
+
+:custom:`text`
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <emphasis class="custom">
+            text
+"""],
+["""\
+.. role:: custom(emphasis)
+   :class: special
+
+:custom:`text`
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <emphasis class="special">
+            text
+"""],
+["""\
+.. role:: custom(unknown-role)
+""",
+"""\
+<document source="test data">
+    <system_message level="1" line="1" source="test data" type="INFO">
+        <paragraph>
+            No role entry for "unknown-role" in module "docutils.parsers.rst.languages.en".
+            Trying "unknown-role" as canonical role name.
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Unknown interpreted text role "unknown-role".
+        <literal_block xml:space="preserve">
+            .. role:: custom(unknown-role)
+"""],
+["""\
 .. role:: custom
    :class: 1
 """,
 """\
 <document source="test data">
-    <system_message level="3" line="2" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Error in "role" directive:
             invalid option value: (option: "class"; value: '1')
@@ -95,12 +144,12 @@ Now that it's defined, :custom:`interpreted` works.
             .. role:: custom
                :class: 1
 """],
-["""
+["""\
 .. role:: 1
 """,
 """\
 <document source="test data">
-    <system_message level="3" line="2" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Invalid argument for "role" directive:
             cannot make "1" into a class name.

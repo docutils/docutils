@@ -192,7 +192,7 @@ totest['references'] = [
 <document source="test data">
     <paragraph>
         <problematic id="id2" refid="id1">
-            -1
+            :PEP:`-1`
     <system_message backrefs="id2" id="id1" level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             PEP number must be a number from 0 to 9999; "-1" is invalid.
@@ -213,7 +213,7 @@ totest['references'] = [
 <document source="test data">
     <paragraph>
         <problematic id="id2" refid="id1">
-            0
+            :RFC:`0`
     <system_message backrefs="id2" id="id1" level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             RFC number must be a number greater than or equal to 1; "0" is invalid.

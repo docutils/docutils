@@ -354,6 +354,12 @@ General
   for easy syntax checking.  See the `2004-02-18 "rest checking and
   source path"`_ thread.
 
+* Add a generic meta-stylesheet mechanism?  An external file could
+  associate style names ("class" attributes) with specific elements.
+  Could be generalized to arbitrary output attributes; useful for HTML
+  & XMLs.  Aahz implemented something like this in
+  sandbox/aahz/Effective/EffMap.py.
+
 
 Documentation
 -------------
@@ -2022,9 +2028,9 @@ distributed as part of Docutils releases.  Feel free to check in code
 to the CVS sandbox; that way people can try it out but you won't have
 to worry about it working 100% error-free, as is the goal of the `main
 source tree`_.  Each developer who wants to play in the sandbox should
-create their own subdirectory (suggested name: SourceForge ID,
-nickname, or given name + family initial).  It's OK to make a mess!
-But please, play nice.
+create either a project-specific subdirectory or personal subdirectory
+(suggested name: SourceForge ID, nickname, or given name + family
+initial).  It's OK to make a mess!  But please, play nice.
 
 Please update the `sandbox README`_ file with links and a brief
 description of your work.
@@ -2034,7 +2040,9 @@ out new, experimental components, the following sandbox directory
 structure is recommended::
 
     sandbox/
-        userid/
+        project_name/ # For a project where you invite contributions.
+                      # Structure as in userid/component_name below.
+        userid/       # For personal space.
             component_name/ # A verbose name is best.
                 README.txt  # Please explain requirements,
                             # purpose/goals, and usage.
@@ -2110,12 +2118,17 @@ web directory on SourceForge (``/home/groups/d/do/docutils/htdocs/``).
 For a new .txt file, just SSH to SourceForge and ::
 
     touch filename.html
+    chmod g+w filename.html
     sleep 1
     touch filename.txt
 
 The script will take care of the rest within an hour.  Thereafter
 whenever the .txt file is modified (checked in to CVS), the .html will
 be regenerated automatically.
+
+After adding directories to CVS, allow the script to run once to
+create the directories in the filesystem before preparing for HTML
+processing as described above.
 
 The docutils-update__ script is in CVS as
 ``sandbox/davidg/infrastructure/docutils-update``.

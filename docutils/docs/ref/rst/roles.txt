@@ -23,20 +23,51 @@ is used if no explicit ``:role:`` prefix or suffix is given.  The
 "default default role" is `:title-reference:`_.
 
 See the `Interpreted Text`_ section in the `reStructuredText Markup
-Specification`_ for syntax details.
+Specification`_ for syntax details.  For details on the hierarchy of
+elements, please see `The Docutils Document Tree`_ and the `Docutils
+Generic DTD`_ XML document type definition.  For interpreted text role
+implementation details, see `Creating reStructuredText Interpreted
+Text Roles`_.
 
-.. _Interpreted Text: ./reStructuredText.html#interpreted-text
-.. _reStructuredText Markup Specification: ./reStructuredText.html
+.. _"role" directive: directives.html#role
+.. _Interpreted Text: reStructuredText.html#interpreted-text
+.. _reStructuredText Markup Specification: reStructuredText.html
+.. _The Docutils Document Tree: ../doctree.html
+.. _Docutils Generic DTD: ../docutils.dtd
+.. _Creating reStructuredText Interpreted Text Roles: ../howto/rst-roles.html
 
 
 .. contents::
 
+
+---------------
+ Customization
+---------------
+
+Custom interpreted text roles may be defined in a document with the
+`"role" directive`_.  Customization details are listed with each role.
+
+.. _class:
+
+The ``class`` option is recognized by the "role" directive for most
+interpreted text roles.  A description__ is provided by `"role"
+directive`_ documentation.
+
+__ directives.html#role-class
+
+
+---------------------------------
+ Standard Interpreted Text Roles
+---------------------------------
 
 ``:emphasis:``
 ==============
 
 :Aliases: None
 :DTD Element: emphasis
+:Customization:
+    :Options: class_.
+    :Content: None.
 
 Implements emphasis.  These are equivalent::
 
@@ -49,6 +80,9 @@ Implements emphasis.  These are equivalent::
 
 :Aliases: None
 :DTD Element: literal
+:Customization:
+    :Options: class_.
+    :Content: None.
 
 Implements inline literal text.  These are equivalent::
 
@@ -71,6 +105,9 @@ spaces.
 
 :Aliases: ``:PEP:``
 :DTD Element: reference
+:Customization:
+    :Options: class_.
+    :Content: None.
 
 The ``:pep-reference:`` role is used to create an HTTP reference to a
 PEP (Python Enhancement Proposal).  The ``:PEP:`` alias is usually
@@ -90,6 +127,9 @@ This is equivalent to::
 
 :Aliases: ``:RFC:``
 :DTD Element: reference
+:Customization:
+    :Options: class_.
+    :Content: None.
 
 The ``:rfc-reference:`` role is used to create an HTTP reference to an
 RFC (Internet Request for Comments).  The ``:RFC:`` alias is usually
@@ -109,6 +149,9 @@ This is equivalent to::
 
 :Aliases: None
 :DTD Element: strong
+:Customization:
+    :Options: class_.
+    :Content: None.
 
 Implements strong emphasis.  These are equivalent::
 
@@ -121,6 +164,9 @@ Implements strong emphasis.  These are equivalent::
 
 :Aliases: ``:sub:``
 :DTD Element: subscript
+:Customization:
+    :Options: class_.
+    :Content: None.
 
 Implements subscripts.
 
@@ -154,6 +200,9 @@ Implements subscripts.
 
 :Aliases: ``:sup:``
 :DTD Element: superscript
+:Customization:
+    :Options: class_.
+    :Content: None.
 
 Implements superscripts.  See the tip in `:subscript:`_ above.
 
@@ -163,6 +212,9 @@ Implements superscripts.  See the tip in `:subscript:`_ above.
 
 :Aliases: ``:title:``, ``:t:``.
 :DTD Element: title_reference
+:Customization:
+    :Options: class_.
+    :Content: None.
 
 The ``:title-reference:`` role is used to describe the titles of
 books, periodicals, and other materials.  It is the equivalent of the

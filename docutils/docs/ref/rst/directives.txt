@@ -33,12 +33,14 @@ Descriptions below list "doctree elements" (document tree element
 names; XML DTD generic identifiers) corresponding to individual
 directives.  For details on the hierarchy of elements, please see `The
 Docutils Document Tree`_ and the `Docutils Generic DTD`_ XML document
-type definition.
+type definition.  For directive implementation details, see `Creating
+reStructuredText Directives`_.
 
-.. _Directives: ./reStructuredText.html#directives
-.. _reStructuredText Markup Specification: ./reStructuredText.html
+.. _Directives: reStructuredText.html#directives
+.. _reStructuredText Markup Specification: reStructuredText.html
 .. _The Docutils Document Tree: ../doctree.html
 .. _Docutils Generic DTD: ../docutils.dtd
+.. _Creating reStructuredText Directives: ../howto/rst-directives.html
 
 
 -------------
@@ -967,10 +969,11 @@ Custom Interpreted Text Roles
 =============================
 
 :Directive Type: "role"
-:Doctree Element: None.
-:Directive Arguments: One, required (role name).
-:Directive Options: Possible.
-:Directive Content: None.
+:Doctree Element: None; affects subsequent parsing.
+:Directive Arguments: Two; one required (role name), one optional
+                      (base role name, in parentheses).
+:Directive Options: Possible (depends on base role).
+:Directive Content: depends on base role.
 
 The "role" directive dynamically creates a custom interpreted text
 role and registers it with the parser.  This means that after
@@ -978,7 +981,7 @@ declaring a role like this::
 
     .. role:: custom
 
-the document may use the "custom" role::
+the document may use the new "custom" role::
 
     An example of using :custom:`interpreted text`
 
@@ -991,8 +994,26 @@ This will be parsed into the following document tree fragment::
 
 The role must be declared in a document before it can be used.
 
-The ":class:" option can be used to set a "class" attribute that is
-different from the role name.  For example::
+The new role may be based on an existing role, specified as a second
+argument in parentheses (whitespace optional)::
+
+    .. role:: custom(emphasis)
+
+    :custom:`text`
+
+The parsed result is as follows::
+
+    <paragraph>
+        <emphasis class="custom">
+            text
+
+If no base role is explicitly specified, a generic custom role is
+automatically used.  Subsequent interpreted text will produce an
+"inline" element with a "class" attribute, as in the first example
+above.
+
+With most roles, the ":class:" option can be used to set a "class"
+attribute that is different from the role name.  For example::
 
     .. role:: custom
        :class: special
@@ -1005,14 +1026,23 @@ This is the parsed result::
         <inline class="special">
             interpreted text
 
-The following option is recognized:
+.. _role class:
+
+The following option is recognized by the "role" directive for most
+base roles:
 
 ``class`` : text
-    Set a "class" attribute value on the ``inline`` elements produced
-    when the custom interpreted text role is used.  If no directive
-    options are specified, a "class" option with the directive
-    argument (role name) as the value is implied.  See the class_
-    directive above.
+    Set a "class" attribute value on the element produced (``inline``,
+    or element associated with a base class) when the custom
+    interpreted text role is used.  If no directive options are
+    specified, a "class" option with the directive argument (role
+    name) as the value is implied.  See the class_ directive above.
+
+Specific roles may support other options and/or directive content.
+See the `reStructuredText Interpreted Text Roles`_ document for
+details.
+
+.. _reStructuredText Interpreted Text Roles: interpreted.html
 
 
 Restructuredtext-Test-Directive
