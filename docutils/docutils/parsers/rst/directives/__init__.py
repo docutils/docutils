@@ -51,6 +51,8 @@ _directive_registry = {
       'hint': ('admonitions', 'hint'),
       'warning': ('admonitions', 'warning'),
       'topic': ('body', 'topic'),
+      'line-block': ('body', 'line_block'),
+      'parsed-literal': ('body', 'parsed_literal'),
       #'questions': ('body', 'question_list'),
       'image': ('images', 'image'),
       'figure': ('images', 'figure'),
