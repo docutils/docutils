@@ -223,9 +223,9 @@ def extract_extension_options(field_list, option_spec):
         - `BadOptionDataError` for invalid option data (missing name,
           missing data, bad quotes, etc.).
     """
-    attlist = extract_options(field_list)
-    attdict = assemble_option_dict(attlist, option_spec)
-    return attdict
+    option_list = extract_options(field_list)
+    option_dict = assemble_option_dict(option_list, option_spec)
+    return option_dict
 
 def extract_options(field_list):
     """
@@ -240,7 +240,7 @@ def extract_options(field_list):
         - `BadOptionDataError` for invalid option data (missing name,
           missing data, bad quotes, etc.).
     """
-    attlist = []
+    option_list = []
     for field in field_list:
         if len(field) != 2:
             raise BadOptionError(
@@ -256,17 +256,17 @@ def extract_options(field_list):
                   'a single paragraph only (option "%s")' % name)
         else:
             data = body[0][0].astext()
-        attlist.append((name, data))
-    return attlist
+        option_list.append((name, data))
+    return option_list
 
-def assemble_option_dict(attlist, attspec):
+def assemble_option_dict(option_list, option_spec):
     """
     Return a mapping of option names to values.
 
     :Parameters:
-        - `attlist`: A list of (name, value) pairs (the output of
+        - `option_list`: A list of (name, value) pairs (the output of
           `extract_options()`).
-        - `attspec`: Dictionary mapping known option names to a
+        - `option_spec`: Dictionary mapping known option names to a
           conversion function such as `int` or `float`.
 
     :Exceptions:
@@ -276,8 +276,8 @@ def assemble_option_dict(attlist, attspec):
            function).
     """
     options = {}
-    for name, value in attlist:
-        convertor = attspec[name]       # raises KeyError if unknown
+    for name, value in option_list:
+        convertor = option_spec[name]       # raises KeyError if unknown
         if options.has_key(name):
             raise DuplicateOptionError('duplicate option "%s"' % name)
         try:
