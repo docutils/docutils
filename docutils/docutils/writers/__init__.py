@@ -44,6 +44,10 @@ class Writer(Component):
     def __init__(self):
         """Initialize the Writer instance."""
 
+        self.parts = {}
+        """Collection of named parts of the document.  'whole' contains the
+        entire document."""
+
     def write(self, document, destination):
         self.document = document
         self.language = languages.get_language(
@@ -65,6 +69,9 @@ class Writer(Component):
         used by the current Reader as well.
         """
         raise NotImplementedError('subclass must override this method')
+
+    def assemble_parts(self):
+        self.parts['whole'] = self.output
 
 
 _writer_aliases = {

@@ -31,7 +31,9 @@ Exports the following:
     - `SimpleTableParserTestCase`
     - `WriterPublishTestCase`
     - `LatexWriterPublishTestCase`
+    - `HtmlWriterPublishTestCase`
     - `PublishTestSuite`
+    - `HtmlFragmentTestSuite`
     - `DevNull` (output sink)
 """
 __docformat__ = 'reStructuredText'
@@ -596,13 +598,41 @@ class LatexWriterPublishTestCase(WriterPublishTestCase):
     writer_name = 'latex'
 
 
+class HtmlWriterPublishTestCase(WriterPublishTestCase):
+
+    """
+    Test case for fragment code in HTML writer.
+    """
+
+    writer_name = 'html'
+
+    def __init__(self, *args, **kwargs):
+        self.settings_overrides = kwargs['settings_overrides']
+        """Settings overrides to use for this test case."""
+
+        del kwargs['settings_overrides'] # only wanted here
+        CustomTestCase.__init__(self, *args, **kwargs)
+
+    def test_publish(self):
+        if self.run_in_debugger:
+            pdb.set_trace()
+        output = docutils.core.publish_parts(
+            source=self.input,
+            reader_name='standalone',
+            parser_name='restructuredtext',
+            writer_name=self.writer_name,
+            settings_spec=self,
+            settings_overrides=self.settings_overrides)
+        self.compare_output(self.input, output['fragment'], self.expected)
+
+
 class PublishTestSuite(CustomTestSuite):
 
     TEST_CLASSES = {
         'latex': LatexWriterPublishTestCase,
     }
 
-    def __init__(self,writer_name):
+    def __init__(self, writer_name):
         """
         `writer_name` is the name of the writer 
         to use.  It must be a key in `TEST_CLASSES`.
@@ -626,6 +656,28 @@ class PublishTestSuite(CustomTestSuite):
                       id='%s[%r][%s]' % (dictname, name, casenum),
                       run_in_debugger=run_in_debugger)
 
+
+class HtmlFragmentTestSuite(CustomTestSuite):
+    def __init__(self):
+        CustomTestSuite.__init__(self)
+        self.test_class = HtmlWriterPublishTestCase
+
+    def generateTests(self, dict, dictname='totest'):
+        for name, (settings_overrides, cases) in dict.items():
+            for casenum in range(len(cases)):
+                case = cases[casenum]
+                run_in_debugger = 0
+                if len(case)==3:
+                    if case[2]:
+                        run_in_debugger = 1
+                    else:
+                        continue
+                self.addTestCase(
+                      self.test_class, 'test_publish',
+                      settings_overrides=settings_overrides,
+                      input=case[0], expected=case[1],
+                      id='%s[%r][%s]' % (dictname, name, casenum),
+                      run_in_debugger=run_in_debugger)
 
 def exception_data(code):
     """
