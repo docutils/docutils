@@ -547,6 +547,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_field(self, node):
+        # real output is done in siblings: _argument, _body, _name
         self.body.append('%[visit_field]\n')
 
     def depart_field(self, node):
@@ -581,7 +582,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_field_name(self, node):
         # BUG this duplicates docinfo_item
-        self.body.append('%[visit_field_item "'+ node.astext() +'"]\n')
         if self.docinfo:
             self.docinfo.append('\\textbf{%s} &\n\t' % node.astext())
             raise nodes.SkipNode
