@@ -115,10 +115,12 @@ class Publisher:
         self.options = option_parser.parse_args(argv)
 
     def set_io(self):
-        self.source = self.source_class(self.options,
-                                        source_path=self.options._source)
-        self.destination = self.destination_class(
-            self.options, destination_path=self.options._destination)
+        if self.source is None:
+            self.source = self.source_class(self.options,
+                                            source_path=self.options._source)
+        if self.destination is None:
+            self.destination = self.destination_class(
+                self.options, destination_path=self.options._destination)
 
     def publish(self, argv=None, usage=None, description=None,
                 option_spec=None):
@@ -129,7 +131,7 @@ class Publisher:
         """
         if self.options is None:
             self.process_command_line(argv, usage, description, option_spec)
-            self.set_io()
+        self.set_io()
         document = self.reader.read(self.source, self.parser, self.options)
         output = self.writer.write(document, self.destination)
         if self.options.dump_internals:
