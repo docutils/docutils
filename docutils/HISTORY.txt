@@ -190,6 +190,7 @@ Specific:
     names; empty tag format).
   - Escape double-dashes in comment text.
   - Improved boilerplate & modularity of output.
+  - Exposed modular output in Writer class.
   - Added a "generator" meta tag to <head>.
   - Added support for the ``--stylesheet`` option.
   - Added support for ``decoration``, ``header``, and ``footer``
