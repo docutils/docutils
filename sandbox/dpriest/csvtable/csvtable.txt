@@ -1,0 +1,83 @@
+CSV Table
+=========
+
+:Directive Type: "csvtable"
+:Doctree Element: table
+:Directive Arguments: 1, optional (table title).
+:Directive Options: Possible.
+:Directive Content: A CSV (comma-separated values) table.
+
+The "csvtable" directive is used to create a table::
+
+    .. csvtable:: Frozen Delights!
+       :headers: "Treat" "Quantity" "Description"
+       :widths: 15, 10, 30
+
+       "Albatross", 2.99, "On a stick!"
+       "Crunchy Frog", 1.49, "If we took the bones out, it wouldn't be crunchy now, would it?"
+       "Gannet Ripple", 1.99, "On a stick!"
+
+The following options are recognized:
+
+``class`` : text
+    Set a "class" attribute value on the table element.  See the
+    class_ directive below.
+
+``headrows`` : integer
+    The number of rows to use in the table header. Optional:
+    defaults to 1 unless ``headers`` is also defined.
+
+``headers`` : "column head" ["column head"...]
+    Sets column table headers. Optional: if defined, ``headrows``
+    defaults to 0 unless explicitly overridden.
+
+``widths`` : integer [, integer...]
+    A comma-separated list of relative column widths.  Optional:
+    defaults to equal-width columns (100%/#columns).
+
+``file`` | ``url`` : path
+    Path or URL to CSV file.  Optional.
+
+``delim`` : [char | tab | space | lf | ff | vt | hex ##]
+    A one-character string used to separate fields. Optional:
+    defaults to ``,`` (comma).
+
+``quote`` : [char | tab | space | lf | ff | vt | hex ##]
+    A one-character string used to quote elements containing
+    the delimiter or which start with the quote character. Optional:
+    defaults to ``"`` (quote).
+
+``lineend`` : [cr | lf | crlf]
+    The string used to terminate lines in the CSV file.  Useful only
+    for external CSV files.  Optional: defaults to ``crlf``
+    (carriage return + linefeed).
+
+``skipspace`` :
+    When defined, whitespace immediately following the delimiter is ignored.
+    Optional: when not defined, whitespace is not ignored.
+
+``escape`` : [char | tab | space | lf | ff | vt | hex ##]
+    A one-character string used to escape the delimiter or quote characters.
+    Used when the delimiter is used in an unquoted field, or when quote
+    characters are used within a field.
+    Optional: defaults is to double-up the character, ie) "He said, ""Hi!"""
+
+Working Limitations::
+
+    Inline formatting within cells is supported.  Line ends are not recognized
+    within a cell, thus block formatting within cells is largely unsupported.
+    (Block formatting works only for the first line of the cell.)
+
+    Whitespace delimiters are supported only for external CSV files.
+
+    When using the ``hex ##`` character definition there must be only a single
+    space before the hexadecimal number.
+
+    There is no support for checking that the number of columns in each row is
+    the same.  This is of benefit to some types of tables.  The results of
+    non-standard column counts is unpredictable, and will depend on the
+    particular Writer you are using.
+
+    This directive is not Unicode compatible.  It may also have problems with
+    ASCII NUL characters.  Accordingly, CSV tables should be ASCII-printable
+    safe.

@@ -1,0 +1,32 @@
+Headline
+========
+
++--------------------------+------------+----------+----------+
+| Header row, column 1     | Header 2   | Header 3 | Header 4 |
++==========================+============+==========+==========+
+| body *row* 1, column 1   | column 2   | column 3 | column 4 |
++--------------------------+------------+----------+----------+
+| body row 2               | Cells may span columns.          |
++--------------------------+------------+---------------------+
+| body row 3               | Cells may  | - Table cells       |
++--------------------------+ span rows. | - contain           |
+| body row 4               |            | - body elements.    |
++--------------------------+------------+---------------------+
+
+
+.. csvtable:: SpamSpamSpamSpamRat
+   :header_rowcount: 2
+   :skipinitialspace: yes
+   :col_widths: 24, 10, 10, 12
+   :lineterminator: lf
+
+   "Header row, column 1", "Header 2", "Header 3", "Header 4"
+   "Body *row* 1, column 1", "Column 2", "Column 3", "Column 4"
+   "Body row 2", "Cells may span columns.",,
+   "Body row 3", "Cells may span rows.", "- Table cells - contain - body elements.",
+   "Body row 4", , ,
+
+
+.. csvtable::
+   :class: EXTERNAL TABLE!
+   :file: csv-directive_test-external_table.txt
