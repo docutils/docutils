@@ -70,7 +70,7 @@ General
   avoid importing top-level modules if the module name is not in
   docutils/readers.  Potential nastiness.)
 
-* Perhaps store a name-to-id mapping file?  This could be stored
+* Perhaps store a _`name-to-id mapping file`?  This could be stored
   permanently, read by subsequent processing runs, and updated with
   new entries.  ("Persistent ID mapping"?)
 
@@ -170,11 +170,100 @@ General
 
   .. _Filesystem Hierarchy Standard: http://www.pathname.com/fhs.
 
+* Add object numbering and object references (tables & figures).
+
+  We'll need _`persistent sequences`, such as chapter numbers.  See
+  OpenOffice XML "fields".
+
+  We need to name the objects:
+
+  - "name" attribute for the "figure" directive? ::
+
+        .. figure:: image.png
+           :name: image's name
+
+    How to name tables, which don't need directives?
+
+  - But this could also be done this way (perhaps more generally)::
+
+        .. _figure name:
+
+        .. figure:: image.png
+
+    Applies equally well to tables.
+
+  We'll also need syntax for object references.  See OpenOffice XML
+  "reference fields":
+
+  - Parameterized substitutions?  For example::
+
+        See |figure (figure name)|, on |page (figure name)|.
+
+        .. |figure (name)| figure-ref:: (name)
+        .. |page (name)| page-ref:: (name)
+
+    The result would be::
+
+        See figure 3.11 on page 157.
+
+    But this would require substitution directives to be processed at
+    reference-time, not at definition-time as they are now.  Or,
+    perhaps the directives could just leave ``pending`` elements
+    behind, and the transforms do the work?  How to pass the data
+    through?
+
+  - An interpreted text approach is better::
+
+        See :figure:`figure name` on :page:`figure name`.
+
+    The "figure" and "page" roles could generate some boilerplate
+    text.  The position of the role (prefix or suffix) could also be
+    utilized.
+
+* Think about large documents made up of multiple subdocument files.
+  Issues: continuity (`persistent sequences`_ above), cross-references
+  (`name-to-id mapping file`_ above and `targets in other documents`_
+  below).
+
+  When writing a book, the author probably wants to split it up into
+  files, perhaps one per chapter (but perhaps even more detailed). 
+  However, we'd like to be able to have references from one chapter to
+  another, and have continuous numbering (pages and chapters, as
+  applicable).  Of course, none of this is implemented yet.  There has
+  been some thought put into some aspects; see `the "include"
+  directive`__ and the `Reference Merging`_ transform below.
+
+  When I was working with SGML in Japan, we had a system where there
+  was a top-level coordinating file, book.sgml, which contained the
+  top-level structure of a book: the <book> element, containing the
+  book <title> and empty component elements (<preface>, <chapter>,
+  <appendix>, etc.), each with filename attributes pointing to the
+  actual source for the component.  Something like this::
+
+      <book id="bk01">
+      <title>Title of the Book</title>
+      <preface inrefid="pr01"></preface>
+      <chapter inrefid="ch01"></chapter>
+      <chapter inrefid="ch02"></chapter>
+      <chapter inrefid="ch03"></chapter>
+      <appendix inrefid="ap01"></appendix>
+      </book>
+
+  (The "inrefid" attribute stood for "insertion reference ID".)
+
+  The processing system would process each component separately, but
+  it would recognize and use the book file to coordinate chapter and
+  page numbering, and keep a persistent ID to (title, page number)
+  mapping database for cross-references.  Docutils could use a similar
+  system for large-scale, multipart documents.
+
+  __ rst/directives.html#including-an-external-document-fragment
+
 
 Documentation
 -------------
 
-* User docs.
+* User docs.  What's needed?
 
 
 Implementation Docs
@@ -185,7 +274,7 @@ Implementation Docs
 * spec/doctree.txt: DTD element structural relationships, semantics,
   and attributes.  In progress; element descriptions to be completed.
 
-* How-to docs: In spec/howto/?
+* How-to docs: In spec/howto/.
 
   - How a Writer works & how to write one
 
@@ -210,7 +299,8 @@ Specification
 
         [Tibs:] Eventually we need to have direct documentation in
         there on how it all hangs together - the DTD is not enough
-        (indeed, is it still meant to be correct?  [Yes, it is.]).
+        (indeed, is it still meant to be correct?  [Yes, it is.
+        --DG]).
 
 * Rework PEP 257, separating style from spec from tools, wrt Docutils?
   See Doc-SIG from 2001-06-19/20.
@@ -299,8 +389,8 @@ __ rst/alternatives.html#or-not-to-do
 * And for the sake of completeness, should definition list terms be
   allowed to be very long (two or more lines) also?
 
-* Support generic hyperlink references to targets in other documents?
-  Not in an HTML-centric way, though (it's trivial to say
+* Support generic hyperlink references to _`targets in other
+  documents`?  Not in an HTML-centric way, though (it's trivial to say
   ``http://www.example.com/doc#name``, and useless in non-HTML
   contexts).  XLink/XPointer?  ``.. baseref::``?  See Doc-SIG
   2001-08-10.
@@ -547,7 +637,7 @@ Directives
 
 * Implement attributes on existing directives:
 
-  - _`images.image`: "align", "border"?
+  - _`images.image`: "border"?
 
   - _`parts.sectnum`: "start", "local"?
 
