@@ -23,6 +23,8 @@ class Input:
     Abstract base class for input wrappers.
     """
 
+    default_source_path = None
+
     def __init__(self, options, source=None, source_path=None):
         self.options = options
         """An option values object with "input_encoding" and "output_encoding"
@@ -33,6 +35,9 @@ class Input:
 
         self.source_path = source_path
         """A text reference to the source."""
+
+        if not source_path:
+            self.source_path = self.default_source_path
 
     def __repr__(self):
         return '%s: source=%r, source_path=%r' % (self.__class__, self.source,
@@ -84,6 +89,8 @@ class Output:
     Abstract base class for output wrappers.
     """
 
+    default_destination_path = None
+
     def __init__(self, options, destination=None, destination_path=None):
         self.options = options
         """An option values object with "input_encoding" and "output_encoding"
@@ -94,6 +101,9 @@ class Output:
 
         self.destination_path = destination_path
         """A text reference to the destination."""
+
+        if not destination_path:
+            self.destination_path = self.default_destination_path
 
     def __repr__(self):
         return ('%s: destination=%r, destination_path=%r'
@@ -201,6 +211,8 @@ class StringInput(Input):
     Direct string input.
     """
 
+    default_source_path = 'string input'
+
     def read(self, reader):
         """Decode and return the source string."""
         return self.decode(self.source)
@@ -211,6 +223,8 @@ class StringOutput(Output):
     """
     Direct string output.
     """
+
+    default_destination_path = 'string output'
 
     def write(self, data):
         """Encode `data`, store it in `self.destination`, and return it."""
@@ -224,6 +238,8 @@ class NullInput(Input):
     Degenerate input: read nothing.
     """
 
+    default_source_path = 'null input'
+
     def read(self, reader):
         """Return a null string."""
         return u''
@@ -234,6 +250,8 @@ class NullOutput(Output):
     """
     Degenerate output: write nothing.
     """
+
+    default_destination_path = 'null output'
 
     def write(self, data):
         """Do nothing ([don't even] send data to the bit bucket)."""
