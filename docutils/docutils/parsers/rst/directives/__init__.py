@@ -109,6 +109,7 @@ _directive_registry = {
       'epigraph': ('body', 'epigraph'),
       'highlights': ('body', 'highlights'),
       'pull-quote': ('body', 'pull_quote'),
+      'compound': ('body', 'compound'),
       #'questions': ('body', 'question_list'),
       'table': ('tables', 'table'),
       'csv-table': ('tables', 'csv_table'),
