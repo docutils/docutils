@@ -214,6 +214,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.insert_newline = 0
         # mbox_newline: to tell encode to add mbox and newline.
         self.mbox_newline = 0
+        # current quote index: we have quote start, quote end
+        self.quote_index = 0
 
     def language_label(self, docutil_label):
         return self.language.labels[docutil_label]
@@ -226,6 +228,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
             < > are only available in math-mode (really ?)
             $ starts math- mode.
+        AND quotes:
+        
         """
         if self.verbatim:
             return text
@@ -243,6 +247,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
         text = text.replace("%", '{\\%}')
         text = text.replace("#", '{\\#}')
         text = text.replace("~", '{\\~{ }}')
+        # quotes BUG de needs other qoutes.
+        q = ("``", "''"); # q_de = ("\"`", "\"'")
+        t = None
+        for part in text.split('"'):
+            if t == None:
+                t = part
+            else:
+                t += q[self.quote_index] + part
+                self.quote_index = (self.quote_index + 1) % 2
+        text = t
         if self.insert_newline:
             text = text.replace("\n", '\\\\\n')
         elif self.mbox_newline:
