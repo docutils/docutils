@@ -160,7 +160,8 @@ class FinalChecks(Transform):
 
     def apply(self):
         visitor = FinalCheckVisitor(
-            self.document, self.document.transformer.unknown_reference_resolvers)
+            self.document,
+            self.document.transformer.unknown_reference_resolvers)
         self.document.walk(visitor)
         if self.document.settings.expose_internals:
             visitor = InternalAttributeExposer(self.document)
@@ -183,12 +184,10 @@ class FinalCheckVisitor(nodes.SparseNodeVisitor):
         refname = node['refname']
         id = self.document.nameids.get(refname)
         if id is None:
-            handled = None
-            for i in self.unknown_reference_resolvers:
-                if i(node):
-                    handled = 1
+            for resolver_function in self.unknown_reference_resolvers:
+                if resolver_function(node):
                     break
-            if not handled:
+            else:
                 msg = self.document.reporter.error(
                       'Unknown target name: "%s".' % (node['refname']),
                       base_node=node)
