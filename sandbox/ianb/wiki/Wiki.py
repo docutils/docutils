@@ -1,47 +1,101 @@
-import os, re, stat, time
+"""
+The Wiki module primarily exports the `WikiPage` class:
+
+    .. inline: WikiPage
+
+There are also several searching methods:
+
+    .. inline: allPages
+    .. inline: recentPages
+    .. inline: search
+    .. inline: searchTitles
+
+There is one module global to be printed at the top of
+every Wiki page:
+
+    `css`:
+        The HTML to put the proper CSS at the top of the page.  This
+        should be put in the ``<head>`` section of the page.
+"""
+
+import os, re, time
 from docutils import core, io
-from cgi import escape
 from docutils import readers
-import sys
+
+__all__ = ['WikiPage', 'allPages', 'recentPages',
+           'searchTitles', 'search', 'css']
 
 ## All the Wiki pages will be kept in this directory:
-pageDir = '/usr/home/ianb/prog/WebwareWiki/pages'
+pageDir = '/usr/home/ianb/w/pypaper/pages/'
 
-class WikiPage:
+class WikiPage(object):
+    """
+    WikiPage is a class to represent one page in a WikiWikiWeb [#]_.
+    The page may or may not yet exist -- that is, it may not yet
+    have content.
+
+    .. [#] http://c2.com/cgi-bin/wiki
+
+    It has the following properties and methods:
+
+        `html`:
+            A read-only property giving the HTML for the page.
+            If the page does not yet have content the text
+            ``"This page has not yet been created"`` is returned.
+        `text`:
+            The text for the page.  To save new text, simply
+            assign to this property.
+        .. ignore: html
+        .. ignore: text
+        .. ignore: setText
+        .. inline-all:
+
+    """
 
     def __init__(self, pageName):
+        """
+        Each page has a name, which is a unique identifier, for example
+        ``"FrontPage"``, which identifies the page in the URL and
+        for linking.
+        """
         self.name = pageName
 
-    def basePath(self, name=None):
-        """Returns the base path (sans extension) for this page,
-        or the page named by ``name``"""
-        if name is None: name = self.name
-        return os.path.join(pageDir, name)
+    def basePath(self):
+        """
+        :Ignore: yes
+        Returns the base path (sans extension) for this page
+        """
+        return _basePath(self.name)
 
-    def exists(self, name=None):
-        """Does this page (or page named by ``name``) exist?"""
-        return os.path.exists(self.basePath(name) + ".html")
+    basePath = property(basePath)
+
+    def exists(self):
+        """Does this page have content yet?"""
+        return _exists(self.name)
 
     def html(self):
         """Returns text of HTML for page (HTML fragment only)"""
         if self.exists():
-            html = open(self.basePath() + ".html").read()
+            html = open(self.basePath + ".html").read()
             html = self._subWikiLinks(html)
             return html
         else:
             return 'This page has not yet been created.'
 
-    def previewHTML(self, text):
+    html = property(html)
+
+    def preview(self, text):
         """Returns an HTML preview of the text"""
         return self._subWikiLinks(self._convertText(text))
 
     _wikiLinkRE = re.compile(r'(<a [^>]* href=")!(.*?)("[^>]*>)(.*?)(</a>)',
                              re.I+re.S)
+    
     def _subWikiLinks(self, text):
         return self._wikiLinkRE.sub(self._subLink, ' %s ' % text)
 
     def _subLink(self, match):
-        if self.exists(match.group(2)):
+        if _exists(match.group(2)):
             return match.group(1) + match.group(2) + match.group(3) + match.group(4) + match.group(5)
         else:
             return '<span class="nowiki">%s%s%s%s?%s</span>' \
@@ -49,26 +103,23 @@ class WikiPage:
                       match.group(3), match.group(5))
 
     def text(self):
-        """Returns (reST) text for page"""
+        """
+        The text of the page.  ReStructuredText is used, though the
+        parsing is internal to the module.  You can assign to this
+        property to save new text for the page.
+        """
         if self.exists():
-            return open(self.basePath() + ".txt").read()
+            return open(self.basePath + ".txt").read()
         else:
             return ''
-
-    def searchMatches(self, text):
-        return self.searchTitleMatches(text) \
-               or self.text().lower().find(text.lower()) != -1
-
-    def searchTitleMatches(self, text):
-        return self.title().lower().find(text.lower()) != -1
 
     def setText(self, text):
         """Sets the text for the page (and updates cached HTML at the
         same time)"""
-        f = open(self.basePath() + ".txt", 'w')
+        f = open(self.basePath + ".txt", 'w')
         f.write(text)
         f.close()
-        f = open(self.basePath() + ".html", 'w')
+        f = open(self.basePath + ".html", 'w')
         f.write(self._convertText(text))
         f.close()
 
@@ -82,19 +133,42 @@ class WikiPage:
     def _cleanHTML(self, html):
         return html[html.find('<body>'):html.find('</body>')]
 
+    text = property(text, setText)
+
+    def searchMatches(self, text):
+        """
+        :Ignore: yes
+        """
+        return self.searchTitleMatches(text) \
+               or self.text().lower().find(text.lower()) != -1
+
+    def searchTitleMatches(self, text):
+        """
+        :Ignore: yes
+        """
+        return self.title().lower().find(text.lower()) != -1
+
     def modifiedDate(self):
         """Date modified (integer timestamp)"""
-        return os.stat(self.basePath() + ".txt")[stat.ST_MTIME]
+        return os.stat(self.basePath + ".txt").st_mtime
+
+    modifiedDate = property(modifiedDate)
 
     def modifiedDateText(self):
         """Text representation of modified date"""
         return time.strftime("%a %m/%d/%y", time.gmtime(self.modifiedDate()))
 
+    modifiedDateText = property(modifiedDateText)
+
     def title(self):
+        """Page title"""
         return self.name
+        
+    title = property(title)
 
 
 def allPages():
+    """All pages with content in the system"""
     return [WikiPage(page[:-4])
             for page in os.listdir(pageDir)
             if page.endswith('.txt')]
@@ -117,6 +191,19 @@ def search(text):
             if page.searchMatches(text)]
 
 
+def _basePath(name):
+    return os.path.join(pageDir, name)
+
+def _exists(name):
+    return os.path.exists(_basePath(name) + ".html")
+
+try:
+    f = open('default.css')
+except IOError:
+    css = ""
+else:
+    css = '<style type="text/css">\n%s</style>\n' % f.read()
+    f.close()
 
 ########################################
 ## reST-specific stuff
@@ -128,6 +215,7 @@ from docutils.readers import standalone
 from docutils.transforms import Transform
 
 class WikiLinkResolver(nodes.SparseNodeVisitor):
+    ":Ignore: yes"
 
     def visit_reference(self, node):
         if node.resolved or not node.hasattr('refname'):
@@ -143,6 +231,7 @@ class WikiLinkResolver(nodes.SparseNodeVisitor):
         del node['refname']
 
 class WikiLink(Transform):
+    ":Ignore: yes"
 
     default_priority = 800
 
@@ -151,6 +240,7 @@ class WikiLink(Transform):
         self.document.walk(visitor)
         
 class Reader(standalone.Reader):
+    ":Ignore: yes"
 
     supported = standalone.Reader.supported + ('wiki',)
 
