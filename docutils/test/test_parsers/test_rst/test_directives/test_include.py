@@ -127,8 +127,6 @@ Include Test
 
 .. include:: %s
 
-\\
-
 .. include:: %s
 
 A paragraph.
