@@ -34,7 +34,7 @@ The proposed formal public identifier for this DTD is::
 
 <!ENTITY % additional.inline.elements
   " | package | module | class | method | function
-    | variable | parameter | type
+    | variable | parameter | type | attribute
     | module_attribute | class_attribute | instance_attribute
     | exception_class | warning_class ">
 
@@ -58,10 +58,12 @@ http://docutils.sourceforge.net/spec/docutils.dtd.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -->
 
-<!ELEMENT package_section (package, fullname?, %structure.model;)>
+<!ELEMENT package_section
+    (package, fullname?, import_list?, %structure.model;)>
 <!ATTLIST package_section %basic.atts;>
 
-<!ELEMENT module_section (module, fullname?, %structure.model;)>
+<!ELEMENT module_section
+    (module, fullname?, import_list?, %structure.model;)>
 <!ATTLIST module_section %basic.atts;>
 
 <!ELEMENT class_section
@@ -79,24 +81,32 @@ http://docutils.sourceforge.net/spec/docutils.dtd.
 <!ATTLIST function_section %basic.atts;>
 
 <!ELEMENT module_attribute_section
-    (module_attribute, initial_value?, fullname?, %structure.model;)>
+    (attribute, initial_value?, fullname?, %structure.model;)>
 <!ATTLIST module_attribute_section %basic.atts;>
 
 <!ELEMENT class_attribute_section
-    (class_attribute, initial_value?, fullname?, overrides?,
+    (attribute, initial_value?, fullname?, overrides?,
      %structure.model;)>
 <!ATTLIST class_attribute_section %basic.atts;>
 
 <!ELEMENT instance_attribute_section
-    (instance_attribute, initial_value?, fullname?, overrides?,
+    (attribute, initial_value?, fullname?, overrides?,
      %structure.model;)>
 <!ATTLIST instance_attribute_section %basic.atts;>
 
-<!ELEMENT fullname (package | module | class | method | function)+>
+<!ELEMENT fullname
+    (package | module | class | method | function | attribute)+>
 <!ATTLIST fullname %basic.atts;>
 
-<!ELEMENT overrides (fullname+)>
-<!ATTLIST overrides %basic.atts;>
+<!ELEMENT import_list (import_item+)>
+<!ATTLIST import_list %basic.atts;>
+
+<!--
+Support ``import module``, ``import module as alias``, ``from module
+import identifier``, and ``from module import identifier as alias``.
+-->
+<!ELEMENT import_item (fullname, identifier?, alias?)>
+<!ATTLIST import_item %basic.atts;>
 
 <!ELEMENT inheritance_list (class+)>
 <!ATTLIST inheritance_list %basic.atts;>
@@ -120,6 +130,9 @@ http://docutils.sourceforge.net/spec/docutils.dtd.
 
 <!ELEMENT parameter_default (#PCDATA)>
 <!ATTLIST parameter_default %basic.atts;>
+
+<!ELEMENT overrides (fullname+)>
+<!ATTLIST overrides %basic.atts;>
 
 <!ELEMENT initial_value (#PCDATA)>
 <!ATTLIST initial_value %basic.atts;>
@@ -160,6 +173,18 @@ Also used as the `class_section` identifier/title, and in the
 <!-- Also used as the `function_section` identifier/title. -->
 <!ELEMENT function (#PCDATA)>
 <!ATTLIST function
+    %basic.atts;
+    %reference.atts;>
+
+<!--
+??? Use this instead of the ``*_attribute`` elements below?  Add a
+"type" attribute to differentiate?
+
+Also used as the identifier/title for `module_attribute_section`,
+`class_attribute_section`, and `instance_attribute_section`.
+-->
+<!ELEMENT attribute (#PCDATA)>
+<!ATTLIST attribute
     %basic.atts;
     %reference.atts;>
 
