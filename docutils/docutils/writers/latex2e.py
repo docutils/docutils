@@ -1318,7 +1318,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_term(self, node):
         # definition list term.
-        self.body.append(':]\n')
+        self.body.append(']\n')
 
     def visit_tgroup(self, node):
         #self.body.append(self.starttag(node, 'colgroup'))
