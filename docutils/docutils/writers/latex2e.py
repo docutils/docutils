@@ -1223,12 +1223,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def visit_reference(self, node):
-        # for pdflatex hyperrefs might be supported
-        if self.literal_block and (self.use_for_literal_block == "mbox"):
-            # mbox does not like the  '#'
-            hash_char = '\\#'
-        else:
-            hash_char = '#'
+        # BUG: hash_char "#" is trouble some in LaTeX.
+        # mbox and other environment do not like the '#'.
+        hash_char = '\\#'
 
         if node.has_key('refuri'):
             href = node['refuri']
