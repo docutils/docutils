@@ -69,7 +69,7 @@ to templates.  DO NOT USE THIS HTML FILE AS YOUR TEMPLATE!
 DTD = ('<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"\n'
        '                      "http://www.w3.org/TR/REC-html40/loose.dtd">')
 
-fixpat = re.compile("((http|ftp):[-_a-zA-Z0-9/.+~:?#$=&,]+)|(pep-\d+(.txt)?)|"
+fixpat = re.compile("((https?|ftp):[-_a-zA-Z0-9/.+~:?#$=&,]+)|(pep-\d+(.txt)?)|"
                     "(RFC[- ]?(?P<rfcnum>\d+))|"
                     "(PEP\s+(?P<pepnum>\d+))|"
                     ".")
@@ -96,7 +96,8 @@ def usage(code, msg=''):
 def fixanchor(current, match):
     text = match.group(0)
     link = None
-    if text.startswith('http:') or text.startswith('ftp:'):
+    if (text.startswith('http:') or text.startswith('https:')
+        or text.startswith('ftp:')):
         # Strip off trailing punctuation.  Pattern taken from faqwiz.
         ltext = list(text)
         while ltext:
