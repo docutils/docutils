@@ -47,7 +47,7 @@ Docutils is implemented in Python_.
 .. _Docutils: http://docutils.sourceforge.net/
 .. _PEPs (Python Enhancement Proposals):
    http://www.python.org/peps/pep-0012.html
-.. _PEP 258: spec/pep-0258.html
+.. _PEP 258: docs/peps/pep-0258.html
 .. _Python: http://www.python.org/
 
 
@@ -78,7 +78,7 @@ Introduction to reStructuredText`_.
 Please note that the name is "Docutils", not "DocUtils" or "Doc-Utils"
 or any other variation.
 
-.. _An Introduction to reStructuredText: spec/rst/introduction.html
+.. _An Introduction to reStructuredText: ref/rst/introduction.html
 __ http://mail.python.org/pipermail/doc-sig/1999-December/000878.html
 __ http://mail.python.org/pipermail/doc-sig/2000-November/001252.html
 __ http://mail.python.org/pipermail/doc-sig/2000-November/001239.html
@@ -142,10 +142,10 @@ If you are reading this on the web, you can see for yourself.  `The
 source for this FAQ <FAQ.txt>`_ is written in reStructuredText; open
 it in another window and compare them side by side.
 
-`A ReStructuredText Primer <docs/rst/quickstart.html>`_ and the `Quick
-reStructuredText <docs/rst/quickref.html>`_ user reference are a good
-place to start.  The `reStructuredText Markup Specification
-<spec/rst/reStructuredText.html>`_ is a detailed technical
+`A ReStructuredText Primer <docs/user/rst/quickstart.html>`_ and the
+`Quick reStructuredText <docs/user/rst/quickref.html>`_ user reference
+are a good place to start.  The `reStructuredText Markup Specification
+<docs/ref/rst/restructuredtext.html>`_ is a detailed technical
 specification.
 
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
@@ -262,7 +262,8 @@ substitution definitions using the "unicode" directive `are available
 <tmp/charents/>`__ (`tarball <tmp/charents.tgz>`__).  A description
 and instructions for use `are here <tmp/charents/README.html>`__.
 Thanks to David Priest for the original idea.  Incorporating these
-files into Docutils is on the `to-do list <spec/notes.html#to-do>`_.
+files into Docutils is on the `to-do list
+<docs/dev/todo.html>`_.
 
 If you insist on using XML-style charents, you'll have to implement a
 pre-processing system to convert to UTF-8 or something.  That
@@ -381,8 +382,7 @@ block quote context, like this::
 There has been a lot of discussion about this, but there are some
 issues that would need to be resolved before it could be implemented.
 There is a summary of the issues and pointers to the discussions in
-`the to-do list
-<http://docutils.sf.net/spec/notes.html#indented-lists>`__.
+`the to-do list <docs/dev/todo.html#indented-lists>`__.
 
 
 Could the requirement for blank lines around lists be relaxed?
@@ -407,7 +407,7 @@ How can I include mathematical equations in documents?
 There is no elegant built-in way, yet.  There are several ideas, but
 no obvious winner.  This issue requires a champion to solve the
 technical and aesthetic issues and implement a generic solution.
-Here's the `to-do list entry <spec/notes.html#math-markup>`__.
+Here's the `to-do list entry <docs/dev/todo.html#math-markup>`__.
 
 There are several quick & dirty ways to include equations in
 documents:
@@ -556,8 +556,8 @@ can tweak the `initial_header_level`_ setting
 to your specific document, you might end up with bad HTML (e.g. H3
 without H2).
 
-.. _doctitle_xform: docs/config.html#doctitle-xform
-.. _initial_header_level: docs/config.html#initial-header-level
+.. _doctitle_xform: docs/user/config.html#doctitle-xform
+.. _initial_header_level: docs/user/config.html#initial-header-level
 
 (Thanks to Mark McEahern for the question and much of the answer.)
 
