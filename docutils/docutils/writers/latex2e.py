@@ -57,8 +57,9 @@ class Writer(writers.Writer):
           'recommended).',
           ['--embed-stylesheet'],
           {'action': 'store_true'}),
-         ('Table of contents by docutils (default) or latex. Latex(writer) supports only '
-          'one ToC per document, but docutils does not write pagenumbers.',
+         ('Table of contents by docutils (default) or latex. Latex(writer) '
+          'supports only one ToC per document, but docutils does not write '
+          'pagenumbers.',
           ['--use-latex-toc'], {'default': 0}),
         ('Color of any hyperlinks embedded in text (default: "blue", "0" to disable).',
          ['--hyperlink-color'], {'default': 'blue'}),
