@@ -1,6 +1,6 @@
 import cStringIO, cgi, sys, urllib
 import docutils.utils
-from docutils.parsers.restructuredtext import Parser
+from docutils.parsers import get_parser_class
 
 class DumbPythonPointFormatter:
     def __init__(self):
@@ -330,9 +330,9 @@ class DumbPythonPointFormatter:
         self.w(cgi.escape(node.data))
 
 def main(filename, debug=0):
-    parser = Parser()
+    parser = get_parser_class('rest')()
     input = open(filename).read()
-    document = dps.utils.newdocument()
+    document = docutils.utils.new_document(parser)
     parser.parse(input, document)
     if debug == 1:
         print document.pformat()
