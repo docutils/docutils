@@ -46,7 +46,8 @@ from docutils import frontend, nodes, statemachine, urischemes, utils
 from docutils.transforms import universal
 from docutils.parsers import rst
 from docutils.parsers.rst import states, tableparser, directives, languages
-from docutils.readers import standalone, pep, pysource
+from docutils.readers import standalone, pep, python
+from docutils.readers.python import moduleparser
 from docutils.statemachine import string2lines
 
 try:
@@ -492,3 +493,45 @@ class SimpleTableParserTestSuite(CustomTestSuite):
                                  id='%s[%r][%s]' % (dictname, name, casenum),
                                  run_in_debugger=run_in_debugger)
 
+
+class PythonModuleParserTestSuite(CustomTestSuite):
+
+    """
+    A collection of PythonModuleParserTestCase.
+    """
+
+    def generateTests(self, dict, dictname='totest',
+                      testmethod='test_parser'):
+        """
+        Stock the suite with test cases generated from a test data dictionary.
+
+        Each dictionary key (test type's name) maps to a list of tests. Each
+        test is a list: input, expected output, optional modifier. The
+        optional third entry, a behavior modifier, can be 0 (temporarily
+        disable this test) or 1 (run this test under the pdb debugger). Tests
+        should be self-documenting and not require external comments.
+        """
+        for name, cases in dict.items():
+            for casenum in range(len(cases)):
+                case = cases[casenum]
+                run_in_debugger = 0
+                if len(case)==3:
+                    if case[2]:
+                        run_in_debugger = 1
+                    else:
+                        continue
+                self.addTestCase(
+                      PythonModuleParserTestCase, testmethod,
+                      input=case[0], expected=case[1],
+                      id='%s[%r][%s]' % (dictname, name, casenum),
+                      run_in_debugger=run_in_debugger)
+
+
+class PythonModuleParserTestCase(CustomTestCase):
+
+    def test_parser(self):
+        if self.run_in_debugger:
+            pdb.set_trace()
+        module = moduleparser.parse_module(self.input, 'test data')
+        output = str(module)
+        self.compare_output(self.input, output, self.expected)
