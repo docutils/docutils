@@ -23,6 +23,7 @@ Exports the following:
     - `TransformTestSuite`
     - `ParserTestCase`
     - `ParserTestSuite`
+    - `TransitionTestCase`
     - `PEPParserTestCase`
     - `PEPParserTestSuite`
     - `GridTableParserTestCase`
@@ -424,6 +425,26 @@ class ParserTestSuite(CustomTestSuite):
                       input=case[0], expected=case[1],
                       id='%s[%r][%s]' % (dictname, name, casenum),
                       run_in_debugger=run_in_debugger)
+
+
+class TransitionTestCase(ParserTestCase):
+
+    """
+    Transitions-specific test case, testing parser and transforms.
+    For use with ParserTestSuite.
+    """
+    
+    def test_parser(self):
+        if self.run_in_debugger:
+            pdb.set_trace()
+        document = utils.new_document('test data', self.settings)
+        # Remove any additions made by "role" directives:
+        roles._roles = {}
+        self.parser.parse(self.input, document)
+        document.transformer.apply_transforms()
+        output = document.pformat()
+        self.compare_output(self.input, output, self.expected)
+
 
 
 class PEPParserTestCase(ParserTestCase):
