@@ -204,8 +204,10 @@ General
   space (0x00-0x7F, 0xA0-0xFF), so there's no point in checking for
   both.  If one succeeds, the other one inevitably will too.
 
-  `Introduction to i18n`_ by Tomohiro KUBOTA is a good reference
-  (http://www.debian.org/doc/manuals/intro-i18n/).
+  `Introduction to i18n`_ by Tomohiro KUBOTA is a good reference.
+
+  .. _Introduction to i18n:
+     http://www.debian.org/doc/manuals/intro-i18n/
 
 - Need a Unicode -> HTML entities codec for HTML writer?
 
