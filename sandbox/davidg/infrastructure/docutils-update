@@ -52,7 +52,7 @@ cd $tmp
 cvs -Q -z3 $root export -rHEAD $project sandbox web
 
 if [ $? -ne 0 ] ; then
-	exit 1
+    exit 1
 fi
 
 # remove junk
@@ -99,9 +99,9 @@ for htmlfile in `find .. -name '*.html'` ; do
         if [ $unconditional -eq 1 -o $txtfile -nt $htmlfile ] ; then
             if [ "${base:0:4}" == "pep-" ] ; then
                 echo "$txtfile (PEP)"
-				# pep2html.py fails on SourceForge; can't import cgi
-				# (cgi imports urllib which imports socket which imports 
-				# _socket; libssl.so.2 doesn't exist on SF):
+                # pep2html.py fails on SourceForge; can't import cgi
+                # (cgi imports urllib which imports socket which imports 
+                # _socket; libssl.so.2 doesn't exist on SF):
                 ~/bin/python $lib/tools/pep.py --config=$dir/docutils.conf $txtfile $htmlfile
             else
                 echo $txtfile
@@ -110,3 +110,6 @@ for htmlfile in `find .. -name '*.html'` ; do
         fi
     fi
 done
+
+# Local Variables:
+# indent-tabs-mode: nil
