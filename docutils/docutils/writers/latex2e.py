@@ -881,13 +881,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_emphasis(self, node):
         self.body.append('\\emph{')
-        if self.literal_block:
-            self.literal_block_stack.append('\\emph{')
+        self.literal_block_stack.append('\\emph{')
 
     def depart_emphasis(self, node):
         self.body.append('}')
-        if self.literal_block:
-            self.literal_block_stack.pop()
+        self.literal_block_stack.pop()
 
     def visit_entry(self, node):
         # cell separation
@@ -1242,9 +1240,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('\\begin{verbatim}\n')
         else:
             self.literal_block = 1
-            self.mbox_newline = 1
             self.insert_none_breaking_blanks = 1
-            self.body.append('\\begin{ttfamily}\\begin{flushleft}\n\\mbox{')
+            self.body.append('\\begin{ttfamily}\\begin{flushleft}\n')
+            self.mbox_newline = 1
+            if self.mbox_newline:
+                self.body.append('\\mbox{')
             # * obey..: is from julien and never worked for me (grubert).
             #   self.body.append('{\\obeylines\\obeyspaces\\ttfamily\n')
 
@@ -1253,7 +1253,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('\n\\end{verbatim}\n')
             self.verbatim = 0
         else:
-            self.body.append('}\n\\end{flushleft}\\end{ttfamily}\n')
+            if self.mbox_newline:
+                self.body.append('}')
+            self.body.append('\n\\end{flushleft}\\end{ttfamily}\n')
             self.insert_none_breaking_blanks = 0
             self.mbox_newline = 0
             # obey end: self.body.append('}\n')
@@ -1443,13 +1445,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_strong(self, node):
         self.body.append('\\textbf{')
-        if self.literal_block:
-            self.literal_block_stack.append('\\textbf{')
+        self.literal_block_stack.append('\\textbf{')
 
     def depart_strong(self, node):
         self.body.append('}')
-        if self.literal_block:
-            self.literal_block_stack.pop()
+        self.literal_block_stack.pop()
 
     def visit_substitution_definition(self, node):
         raise nodes.SkipNode
