@@ -172,6 +172,10 @@ def directive(directive_name, language_module, document):
         return None, messages
     return function, messages
 
+def register_directive(name, directive):
+    """Register a nonstandard application-defined directive function."""
+    _directives[name] = directive
+
 def flag(argument):
     """
     Check for a valid flag option (no argument) and return ``None``.
