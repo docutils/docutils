@@ -99,25 +99,29 @@ def loadTestModules(path, name='', packages=None):
     for mod in testModules:
         if debug:
             print >>sys.stderr, "importing %s" % mod
-        module = import_module(mod)
-        # if there's a suite defined, incorporate its contents
         try:
-            suite = getattr(module, 'suite')
-        except AttributeError:
-            # Look for individual tests
-            moduleTests = testLoader.loadTestsFromModule(module)
-            # unittest.TestSuite.addTests() doesn't work as advertised,
-            # as it can't load tests from another TestSuite, so we have
-            # to cheat:
-            testSuite.addTest(moduleTests)
-            continue
-        if type(suite) == types.FunctionType:
-            testSuite.addTest(suite())
-        elif type(suite) == types.InstanceType \
-              and isinstance(suite, unittest.TestSuite):
-            testSuite.addTest(suite)
+            module = import_module(mod)
+        except ImportError:
+            print >>sys.stderr, "ERROR: Can't import %s, skipping its tests!" % mod
         else:
-            raise AssertionError, "don't understand suite (%s)" % mod
+            # if there's a suite defined, incorporate its contents
+            try:
+                suite = getattr(module, 'suite')
+            except AttributeError:
+                # Look for individual tests
+                moduleTests = testLoader.loadTestsFromModule(module)
+                # unittest.TestSuite.addTests() doesn't work as advertised,
+                # as it can't load tests from another TestSuite, so we have
+                # to cheat:
+                testSuite.addTest(moduleTests)
+                continue
+            if type(suite) == types.FunctionType:
+                testSuite.addTest(suite())
+            elif type(suite) == types.InstanceType \
+                  and isinstance(suite, unittest.TestSuite):
+                testSuite.addTest(suite)
+            else:
+                raise AssertionError, "don't understand suite (%s)" % mod
     sys.path.pop(0)
     return testSuite
 

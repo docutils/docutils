@@ -177,6 +177,13 @@ Also see the `SourceForge Bug Tracker`_.
   all IDs from definitions after the first substitution reference is
   processed.
 
+* Under Python 2.1, the test suite should skip tests of
+  ``docutils/readers/python/`` but still tries to import it from
+  ``test/test_readers/test_python/test_functions.py``.  This now
+  causes an extra error message about failed import; instead, it
+  should not have been skipped completely (a message about the
+  skipping is printed anyway).
+
 
 ..
    Local Variables:
