@@ -55,7 +55,8 @@ directives = {
       u'imagen': 'image',
       u'figura': 'figure',
       u'incluir': 'include',
-      u'raw': 'raw',
+      u'sin-analisis': 'raw',
+      u'sin-an\u00e1lisis': 'raw',
       u'reemplazar': 'replace',
       u'unicode': 'unicode',
       u'clase': 'class',
@@ -94,7 +95,7 @@ roles = {
     u'enfasis': 'emphasis',
     u'\u00e9nfasis': 'emphasis',
     u'destacado': 'strong',
-    u'literal': 'literal',              # translation required?
+    u'literal': 'literal',              # "literal" is also a word in Spanish :-)
     u'referencia-con-nombre': 'named-reference',
     u'referencia-anonima': 'anonymous-reference',
     u'referencia-an\u00f3nima': 'anonymous-reference',
@@ -106,6 +107,8 @@ roles = {
     u'referencia-uri': 'uri-reference',
     u'uri': 'uri-reference',
     u'url': 'uri-reference',
-    u'raw (translation required)': 'raw',}
+    u'sin-analisis': 'raw',
+    u'sin-an\u00e1lisis': 'raw',
+}
 """Mapping of Spanish role names to canonical role names for interpreted text.
 """

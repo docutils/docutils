@@ -53,7 +53,7 @@ directives = {
       u'bildo': 'image',
       u'figuro': 'figure',
       u'inkludi': 'include',
-      u'senformata': 'raw',
+      u'senanaliza': 'raw',
       u'anstatauxi': 'replace',
       u'anstata\u016di': 'replace',
       u'unicode': 'unicode',
@@ -102,6 +102,7 @@ roles = {
     u'uri-referenco': 'uri-reference',
     u'uri': 'uri-reference',
     u'url': 'uri-reference',
-    u'raw (translation required)': 'raw',}
+    u'senanaliza': 'raw',
+}
 """Mapping of Esperanto role names to canonical role names for interpreted text.
 """
