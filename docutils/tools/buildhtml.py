@@ -133,13 +133,14 @@ class Builder:
         """
         for name, publisher in self.publishers.items():
             option_parser = OptionParser(
-                components=publisher.components,
+                components=publisher.components, read_config_files=1,
                 usage=usage, description=description)
             publisher.option_parser = option_parser
             publisher.setting_defaults = option_parser.get_default_values()
             frontend.make_paths_absolute(publisher.setting_defaults.__dict__,
                                          option_parser.relative_path_settings)
-        self.config_settings = option_parser.get_standard_config_settings()
+            publisher.config_settings = (
+                option_parser.get_standard_config_settings())
         self.settings_spec = self.publishers[''].option_parser.parse_args(
             values=frontend.Values())   # no defaults; just the cmdline opts
         self.initial_settings = self.get_settings('')
@@ -154,7 +155,7 @@ class Builder:
         """
         publisher = self.publishers[publisher_name]
         settings = frontend.Values(publisher.setting_defaults.__dict__)
-        settings.update(self.config_settings, publisher.option_parser)
+        settings.update(publisher.config_settings, publisher.option_parser)
         if directory:
             local_config = publisher.option_parser.get_config_file_settings(
                 os.path.join(directory, 'docutils.conf'))
