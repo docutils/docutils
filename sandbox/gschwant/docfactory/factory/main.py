@@ -3,7 +3,7 @@
 """
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
-:version: 0.2
+:version: 0.2.1
 """
 
 import browser, images, re, sys, os, time
@@ -467,68 +467,73 @@ class DocFactoryFrame(wxFrame):
 
     def publishFileAsHTML(self, file):
         if os.path.exists(file):
+            go_ahead = 1
             if self.project != None:
                 dir = self.project.directory
             else:
                 dir = os.path.dirname(file)
-            wxBeginBusyCursor()
-            try:
-                self.log.Clear()
-                t = time.localtime(time.time())
-                st = time.strftime('%d-%b-%Y, %H:%M:%S: ', t)
-                wxLogMessage('%sProcessing %s.' % (st, file))
-                htmlfile = self.htmlfile(file)
-                if htmlfile == file:
-                    customMsgBox(self, 'Destination and source are identical.'
-                                 '\nNo processing.', 'wakeup')
-                    warning_lines = error_lines = []
+                dlg = wxDirDialog(self, 'Outputdirectory?', dir)
+                if dlg.ShowModal() == wxID_OK:
+                    dir = dlg.GetPath()
                 else:
-                    try:
-                        rest2html(file, htmlfile, dir)
-                    finally:
-                        warning_lines, error_lines = get_errors(self.log.GetValue())
-                        linecount = self.editor.GetLineCount()
-                        self.editor.MarkerDeleteAll(0)
-                        self.editor.MarkerDeleteAll(1)
-                        if warning_lines != []:
-                            for line in warning_lines:
-                                if line < linecount:
-                                    self.editor.MarkerAdd(line, 0)
-                            self.editor.GotoLine(warning_lines[-1])
-                        if error_lines != []:
-                            for line in error_lines:
-                                if line < linecount:
-                                    self.editor.MarkerAdd(line, 1)
-                            self.editor.GotoLine(error_lines[-1])
-                        self.editor.IsModified = 0
-                htmlfile_basename = os.path.basename(htmlfile)
-                if os.path.exists(htmlfile):
-                    if self.nb.GetPageCount() > 1:
-                        self.nb.DeletePage(1)
-                    # init html-viewer page
-                    if wxPlatform == '__WXMSW__':
-                        htmlprv = browser.IEHtmlPanel(self.nb, self, self.log,
-                                                      htmlfile)
+                    go_ahead = 0
+                dlg.Destroy()
+            if go_ahead:
+                wxBeginBusyCursor()
+                try:
+                    self.log.Clear()
+                    t = time.localtime(time.time())
+                    st = time.strftime('%d-%b-%Y, %H:%M:%S: ', t)
+                    wxLogMessage('%sProcessing %s.' % (st, file))
+                    htmlfile = self.htmlfile(file, dir)
+                    if htmlfile == file:
+                        customMsgBox(self, 'Destination and source are identical.'
+                                     '\nNo processing.', 'wakeup')
+                        warning_lines = error_lines = []
                     else:
-                        htmlprv = browser.HtmlPanel(self.nb, self, self.log,
-                                                    htmlfile)
-                    self.nb.AddPage(htmlprv, 'HTML-Viewer: %s'
-                                    % htmlfile_basename)
-                    if warning_lines == error_lines == []:
-                        self.nb.SetSelection(1)
-                t = time.localtime(time.time())
-                st = time.strftime('%d-%b-%Y, %H:%M:%S: ', t)
-                wxLogMessage('%sFinished.' % st)
-            finally:
-                wxEndBusyCursor()
+                        try:
+                            rest2html(file, htmlfile, dir)
+                        finally:
+                            warning_lines, error_lines = get_errors(self.log.GetValue())
+                            linecount = self.editor.GetLineCount()
+                            self.editor.MarkerDeleteAll(0)
+                            self.editor.MarkerDeleteAll(1)
+                            if warning_lines != []:
+                                for line in warning_lines:
+                                    if line < linecount:
+                                        self.editor.MarkerAdd(line, 0)
+                                self.editor.GotoLine(warning_lines[-1])
+                            if error_lines != []:
+                                for line in error_lines:
+                                    if line < linecount:
+                                        self.editor.MarkerAdd(line, 1)
+                                self.editor.GotoLine(error_lines[-1])
+                            self.editor.IsModified = 0
+                    htmlfile_basename = os.path.basename(htmlfile)
+                    if os.path.exists(htmlfile):
+                        if self.nb.GetPageCount() > 1:
+                            self.nb.DeletePage(1)
+                        # init html-viewer page
+                        if wxPlatform == '__WXMSW__':
+                            htmlprv = browser.IEHtmlPanel(self.nb, self, self.log,
+                                                          htmlfile)
+                        else:
+                            htmlprv = browser.HtmlPanel(self.nb, self, self.log,
+                                                        htmlfile)
+                        self.nb.AddPage(htmlprv, 'HTML-Viewer: %s'
+                                        % htmlfile_basename)
+                        if warning_lines == error_lines == []:
+                            self.nb.SetSelection(1)
+                    t = time.localtime(time.time())
+                    st = time.strftime('%d-%b-%Y, %H:%M:%S: ', t)
+                    wxLogMessage('%sFinished.' % st)
+                finally:
+                    wxEndBusyCursor()
 
-    def htmlfile(self, file):
-        if self.project != None:
-            htmlfile = os.path.join(self.project.directory,
-                                    os.path.splitext(os.path.basename(file))[0] \
-                                    + '.html')
-        else:
-            htmlfile = os.path.splitext(file)[0] + '.html'
+    def htmlfile(self, file, dir):
+        htmlfile = os.path.join(dir,
+                                os.path.splitext(os.path.basename(file))[0] \
+                                + '.html')
         return htmlfile
 
     def insert_image(self, directive):
@@ -544,14 +549,30 @@ class DocFactoryFrame(wxFrame):
             dir = self.imagedir
         dlg = ImageDialog(self, dir)
         dlg.Centre()
+        go_ahead = 1
         if dlg.ShowModal() == wxID_OK:
             target = dlg.GetFile()
             self.imagedir = os.path.dirname(target)
+        else:
+            go_ahead = 0
+        dlg.Destroy()
+        if go_ahead:
+            if self.project != None:
+                dir = self.project.directory
+            else:
+                dir = os.path.dirname(file)
+                dlg = wxDirDialog(self, 'Calculate path relative'
+                                  ' to which outputdirectory?', dir)
+                if dlg.ShowModal() == wxID_OK:
+                    dir = dlg.GetPath()
+                else:
+                    go_ahead = 0
+                dlg.Destroy()
+        if go_ahead:
             text = '\n\n.. %s:: %s\n\n' % (directive,
-                                           quote(relative_path(self.htmlfile(file),
+                                           quote(relative_path(self.htmlfile(file,dir),
                                                                target)))
             self.editor.ReplaceSelection(text)
-        dlg.Destroy()
 
     def CheckEditorChanges(self):
         go_ahead = 1
@@ -955,10 +976,26 @@ class DocFactoryFrame(wxFrame):
         dlg = wxFileDialog (self, "Choose file",
                             dir, '', '*.*',
                             wxOPEN|wxFILE_MUST_EXIST)
+        go_ahead = 1
         if dlg.ShowModal() == wxID_OK:
             target = dlg.GetPath()
+        else:
+            go_ahead = 0
+        if go_ahead:
+            if self.project != None:
+                dir = self.project.directory
+            else:
+                dir = os.path.dirname(file)
+                dlg = wxDirDialog(self, 'Calculate path relative'
+                                  ' to which outputdirectory?', dir)
+                if dlg.ShowModal() == wxID_OK:
+                    dir = dlg.GetPath()
+                else:
+                    go_ahead = 0
+                dlg.Destroy()
+        if go_ahead:
             self.editor.ReplaceSelection(
-                quote(relative_path(self.htmlfile(file), target)))
+                quote(relative_path(self.htmlfile(file,dir), target)))
         dlg.Destroy()
 
     def on_help_about(self, event):

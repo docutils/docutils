@@ -1,7 +1,7 @@
 """
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
-:version: 0.2
+:version: 0.2.1
 """
 
 from   wxPython.lib.throbber import Throbber
@@ -56,7 +56,7 @@ class aboutDlg(wxDialog):
         #text.SetFont(wxFont(20, wxSWISS, wxNORMAL, wxBOLD, false))
 
         text = wxStaticText(self , -1,
-                            '>>> release:           0.2',
+                            '>>> release:           0.2.1',
                             wxPoint(9, 50))
         text = wxStaticText(self, -1,
                             '>>> manufactured by:   gunnar schwant',
@@ -301,9 +301,7 @@ class projectSettingsDlg(wxDialog):
             customMsgBox(self, 'Invalid Output-Directory.', 'wakeup')
         elif name == '':
             customMsgBox(self, 'You have to enter a Project-Title.', 'wakeup')
-        elif (name in self.invalid_names) or \
-             (cfg.has_section(docfactory_section) and \
-              name != self.project.name):
+        elif (name in self.invalid_names):
             customMsgBox(self,
                          'Invalid Project-Title. Please try another title.',
                          'wakeup')

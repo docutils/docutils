@@ -1,6 +1,6 @@
-=====================
- DocFactory_ README
-=====================
+====================
+ DocFactory README
+====================
 
 :author:    Dr. Gunnar Schwant
 :contact:   g.schwant@gmx.de
@@ -349,4 +349,3 @@ feedback is welcome.*
 .. _Docutils:                    http://docutils.sourceforge.net
 .. _`regular expression syntax`: http://www.python.org/doc/current/lib/re-syntax.html
 .. _ConfigParser:                http://www.python.org/doc/current/lib/module-ConfigParser.html
-.. _DocFactory: http://docutils.sf.net/sandbox/gschwant/docfactory/
