@@ -143,6 +143,29 @@ u"""\
         BogusMegaCorp
         \u2122
 """],
+["""\
+Insert an em-dash |---| automatically trimming whitespace.
+Some substitutions |TM| only need trimming on one side.
+
+.. |---| unicode:: U+02014
+   :trim:
+.. |TM| unicode:: U+02122
+   :ltrim:
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        Insert an em-dash
+        \u2014
+        automatically trimming whitespace.
+        Some substitutions
+        \u2122
+         only need trimming on one side.
+    <substitution_definition ltrim="1" name="---" rtrim="1">
+        \u2014
+    <substitution_definition ltrim="1" name="TM">
+        \u2122
+"""],
 ])
 
 

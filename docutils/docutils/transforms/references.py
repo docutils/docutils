@@ -700,7 +700,22 @@ class Substitutions(Transform):
                     msg.add_backref(prbid)
                     ref.parent.replace(ref, prb)
                 else:
-                    ref.parent.replace(ref, defs[key].get_children())
+                    subdef = defs[key]
+                    parent = ref.parent
+                    index = parent.index(ref)
+                    if  (subdef.attributes.has_key('ltrim')
+                         or subdef.attributes.has_key('trim')):
+                        if index > 0 and isinstance(parent[index - 1],
+                                                    nodes.Text):
+                            parent.replace(parent[index - 1],
+                                           parent[index - 1].rstrip())
+                    if  (subdef.attributes.has_key('rtrim')
+                         or subdef.attributes.has_key('trim')):
+                        if  (len(parent) > index + 1
+                             and isinstance(parent[index + 1], nodes.Text)):
+                            parent.replace(parent[index + 1],
+                                           parent[index + 1].lstrip())
+                    parent.replace(ref, subdef.get_children())
         self.document.substitution_refs = None  # release replaced references
 
 
