@@ -373,7 +373,7 @@ Project Links
 .. _CVS:
 .. _browse the CVS repository:
    http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/docutils/
-.. _To Do list: docs/dev/to-do.html
+.. _To Do list: docs/dev/todo.html
 .. _README: README.html
 .. _HISTORY: HISTORY.html
 .. _COPYING: COPYING.html
