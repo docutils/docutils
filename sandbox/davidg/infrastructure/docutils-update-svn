@@ -1,14 +1,12 @@
-#! /bin/sh
+#! /bin/bash
 # $Id$
 #
 # This script is installed as a cron job to automatically update the
-# Docutils web site whenever the CVS files change.  Any .html document
+# Docutils web site whenever the SVN files change.  Any .html document
 # with a corresponding .txt file is regenerated whenever the .txt
 # changes.
 #
 # Options:
-#   -e    Access CVS as current user ("ext" instead of "pserver"; requires
-#         authentication).
 #   -f    Provide feedback at start and end of program run.
 #   -p    Run from the project directory.
 #   -t    Run the script in trace mode ("set -o xtrace").
@@ -21,26 +19,22 @@ set -e
 # make all newly created files group writeable
 umask 002
 
-projdir=/home/groups/d/do/docutils
+projdir=/home/groups/docutils/htdocs/aux
 project=docutils
-dest=$projdir/htdocs
+dest=/home/groups/docutils/htdocs
 snapshotdir=$projdir/snapshots
 pylib=$projdir/lib/python
 lib=$pylib/$project
-root=
-
-export CVS_RSH=ssh
-export CVSROOT=:pserver:anonymous@cvs1:/cvsroot/$project
+root=svn://svn.berlios.de/docutils/trunk
 
 feedback=0
 trace=0
 unconditional=0
 verbose=0
 
-while getopts efptuv opt
+while getopts fptuv opt
 do
     case $opt in
-        e)  root="-d:ext:${USER}@cvs1:/cvsroot/docutils" ;;
         f)  feedback=1;;
         p)  export PYTHONPATH=$pylib:$lib:$lib/extras;;
         t)  trace=1;;
@@ -61,11 +55,13 @@ fi
 
 # update library area
 cd $lib
-cvs -Q -z3 $root update -d -P 2>&1 > /dev/null
+svn up
+
+# -------------------- Snapshots: --------------------
 
 # gather the materials
 cd $snapshotdir
-cvs -Q -z3 $root update -d -P -rHEAD $project sandbox web
+svn up
 
 # ensure proper permissions are set
 find . -type f -print0 | xargs -0 chmod ug+rw 2> /dev/null || true
@@ -78,7 +74,7 @@ chmod +x $project/test/alltests.py 2> /dev/null || true
 find $project/test -name 'test_*.py' -print0 | xargs -0 chmod +x 2> /dev/null || true
 
 # create the snapshots
-exclude='--exclude=CVS --exclude=.cvsignore'
+exclude='--exclude=.svn'
 tar -cz $exclude -f $project-snapshot.tgz $project
 tar -cz $exclude -f $project-sandbox-snapshot.tgz sandbox
 tar -cz $exclude -f $project-web-snapshot.tgz web
@@ -88,20 +84,22 @@ tar -cz $exclude -f $project-web-snapshot.tgz web
 # plant the snapshots
 mv -f *snapshot.tgz $dest
 
-# update htdocs
-cp -ruf $project/* $dest
-cp -ruf sandbox $dest
-cp -ruf web/* web/.[^.]* $dest
+# -------------------- htdocs: --------------------
 
-# remove CVS crud
-cd $dest
-find -name CVS -type d -exec rm -rf {} \; -prune
-find -name .cvsignore -type f -exec rm -f {} \; -prune
+cd $snapshotdir
+
+function copy_to_dest() {
+    find "$@" -type d -name .svn -prune -o -type f -print0 | \
+        xargs -0 cp --update --parents --target-directory=$dest
+}
+
+# update htdocs
+copy_to_dest $project/* sandbox web/* web/.[^.]*
 
 # ensure proper permissions are set
 cd $dest
 find . -type f -print0 | xargs -0 chmod ug+rw 2> /dev/null || true
-find . -type d -print0 | xargs -0 chmod ug+rwxs 2> /dev/null || true
+find . -name aux -o -type d -print0 | xargs -0 chmod ug+rwxs 2> /dev/null || true
 
 # update HTML docs
 cd $dest/tools
@@ -118,13 +116,10 @@ for htmlfile in `find .. -name '*.html'` ; do
         if [ $unconditional -eq 1 -o $txtfile -nt $htmlfile ] ; then
             if [ "${base:0:4}" == "pep-" ] ; then
                 echo "$txtfile (PEP)"
-                # pep2html.py fails on SourceForge; can't import cgi
-                # (cgi imports urllib which imports socket which imports 
-                # _socket; libssl.so.2 doesn't exist on SF):
-                ~/bin/python $lib/tools/pep.py --config=$dir/docutils.conf $txtfile $htmlfile
+                python $lib/tools/pep.py --config=$dir/docutils.conf $txtfile $htmlfile
             else
                 echo $txtfile
-                ~/bin/python $lib/tools/rst2html.py --config=$dir/docutils.conf $txtfile $htmlfile
+                python $lib/tools/rst2html.py --config=$dir/docutils.conf $txtfile $htmlfile
             fi
         fi
     fi
