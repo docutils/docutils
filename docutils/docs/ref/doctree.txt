@@ -198,9 +198,10 @@ Inline elements directly contain text data, and may also contain
 further inline elements.  Inline elements are contained within simple
 body elements.  Most inline elements have a "mixed content model".
 
-Category members: citation_reference_, emphasis_, footnote_reference_,
-generated_, image_, interpreted_, literal_, problematic_, reference_,
-strong_, substitution_reference_, target_, raw_
+Category members: abbreviation_, acronym_, citation_reference_,
+emphasis_, footnote_reference_, generated_, image_, literal_,
+problematic_, reference_, strong_, substitution_reference_, target_,
+title_reference_, raw_
 
 
 .. _HTML: http://www.w3.org/MarkUp/
@@ -277,6 +278,18 @@ following subsections:
 Many of the element reference sections below are marked "_`to be
 completed`".  Please help complete this document by contributing to
 its writing.
+
+
+``abbreviation``
+================
+
+`To be completed`_.
+
+
+``acronym``
+===========
+
+`To be completed`_.
 
 
 ``address``
@@ -2405,12 +2418,6 @@ Pseudo-XML_ fragment from simple parsing::
                     Call your mother.
 
 
-``interpreted``
-===============
-
-`To be completed`_.
-
-
 ``label``
 =========
 
@@ -3743,6 +3750,12 @@ Pseudo-XML_ fragment from simple parsing::
             A Title
         <paragraph>
             A paragraph.
+
+
+``title_reference``
+===================
+
+`To be completed`_.
 
 
 ``topic``
