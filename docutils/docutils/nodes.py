@@ -82,7 +82,7 @@ class Node:
             return
         except SkipDeparture:           # not applicable; ignore
             pass
-        children = self.getchildren()
+        children = self.get_children()
         try:
             for i in range(len(children)):
                 children[i].walk(visitor)
@@ -110,7 +110,7 @@ class Node:
                 return
             except SkipDeparture:
                 call_depart = 0
-            children = self.getchildren()
+            children = self.get_children()
             try:
                 for i in range(len(children)):
                     children[i].walkabout(visitor)
@@ -161,7 +161,7 @@ class Text(Node, MutableString):
             result.append(indent + line + '\n')
         return ''.join(result)
 
-    def getchildren(self):
+    def get_children(self):
         """Text nodes have no children. Return []."""
         return []
 
@@ -396,7 +396,7 @@ class Element(Node):
         elif new is not None:
             self[index:index+1] = new
 
-    def findclass(self, childclass, start=0, end=sys.maxint):
+    def first_child_matching_class(self, childclass, start=0, end=sys.maxint):
         """
         Return the index of the first child whose class exactly matches.
 
@@ -415,7 +415,8 @@ class Element(Node):
                     return index
         return None
 
-    def findnonclass(self, childclass, start=0, end=sys.maxint):
+    def first_child_not_matching_class(self, childclass, start=0,
+                                       end=sys.maxint):
         """
         Return the index of the first child whose class does *not* match.
 
@@ -442,7 +443,7 @@ class Element(Node):
                        [child.pformat(indent, level+1)
                         for child in self.children])
 
-    def getchildren(self):
+    def get_children(self):
         """Return this element's children."""
         return self.children
 
@@ -1152,20 +1153,22 @@ class TreeCopyVisitor(GenericNodeVisitor):
 
     def __init__(self, document):
         GenericNodeVisitor.__init__(self, document)
-        self.parent_stack = [[]]
+        self.parent_stack = []
+        self.parent = []
 
     def get_tree_copy(self):
-        return self.parent_stack[0][0]
+        return self.parent[0]
 
     def default_visit(self, node):
         """Copy the current node, and make it the new acting parent."""
         newnode = node.copy()
-        self.parent_stack[-1].append(newnode)
-        self.parent_stack.append(newnode)
+        self.parent.append(newnode)
+        self.parent_stack.append(self.parent)
+        self.parent = newnode
 
     def default_departure(self, node):
         """Restore the previous acting parent."""
-        self.parent_stack.pop()
+        self.parent = self.parent_stack.pop()
 
 
 class TreePruningException(Exception):
