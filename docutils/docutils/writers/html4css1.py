@@ -190,12 +190,13 @@ class HTMLTranslator(nodes.NodeVisitor):
                                     % settings.output_encoding)
         self.head = []
         if settings.embed_stylesheet:
-            stylesheet = self.get_stylesheet_reference(
+            stylesheet = utils.get_stylesheet_reference(settings,
                 os.path.join(os.getcwd(), 'dummy'))
+            settings.record_dependencies.add(stylesheet)
             stylesheet_text = open(stylesheet).read()
             self.stylesheet = [self.embedded_stylesheet % stylesheet_text]
         else:
-            stylesheet = self.get_stylesheet_reference()
+            stylesheet = utils.get_stylesheet_reference(settings)
             if stylesheet:
                 self.stylesheet = [self.stylesheet_link % stylesheet]
             else:
@@ -224,17 +225,6 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.header = []
         self.footer = []
         self.in_document_title = 0
-
-    def get_stylesheet_reference(self, relative_to=None):
-        settings = self.settings
-        if settings.stylesheet_path:
-            assert not settings.stylesheet, \
-                   'stylesheet and stylesheet_path are mutually exclusive.'
-            if relative_to == None:
-                relative_to = settings._destination
-            return utils.relative_path(relative_to, settings.stylesheet_path)
-        else:
-            return settings.stylesheet
 
     def astext(self):
         return ''.join(self.head_prefix + self.head
