@@ -1,7 +1,6 @@
 #!/bin/sh
 
 CMD="../../tools/rst2latex.py --documentclass=book"
-#CMD="../../tools/rst2latex.py --documentclass=book --hyperlink-color=0"
 INF=test/README.txt
 OUTF="$INF-book.tex"
 REFF="$OUTF.ref"
@@ -9,7 +8,9 @@ $CMD $INF > $OUTF
 diff -q -s $REFF $OUTF 
 echo --------------------------
 
-CMD="python2.2 ./latex.py"
+CMD="../../tools/rst2latex.py"
+#CMD="../../tools/rst2latex.py --footnote-references=superscript"
+#CMD="../../tools/rst2latex.py --documentclass=book --hyperlink-color=0"
 
 if [ -z "$1" ] ; then
   FM="*.txt"
