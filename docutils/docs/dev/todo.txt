@@ -71,8 +71,7 @@ General
   - Is a system-wide configuration file (in ``/etc/docutils.conf``) a
     good idea?
 
-  - ``~/.docutils`` does not work (because the tilde is only expanded
-    by the shell).  Is a user-specific configuration file really
+  - Is a user-specific configuration file (``~/.docutils``) really
     necessary?  Maybe the name (``.docutils``) needs discussion, too.
 
 * Language modules: in accented languages it may be useful to have
