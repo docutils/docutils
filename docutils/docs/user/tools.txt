@@ -300,7 +300,7 @@ Some knowledge of Python_ is assumed for some attributes.
 Config Entry Name     Description
 ====================  ================================================
 config                Path to a configuration file to read (if it
-                      exists) [#pwd]. Settings may override defaults
+                      exists) [#pwd]_. Settings may override defaults
                       and earlier settings.  This is only effective as
                       a command-line option; setting it in a config
                       file has no effect.
@@ -385,13 +385,13 @@ pep_home              (PEP/HTML Writer.)  Home URL prefix for PEPs.
                       ``--pep-home``.
 --------------------  ------------------------------------------------
 pep_stylesheet        (PEP/HTML Writer.)  Path to CSS stylesheet
-                      [#pwd].  Overrides HTML stylesheet
+                      [#pwd]_.  Overrides HTML stylesheet
                       (``--stylesheet``).
 
                       Default: None.  Options: ``--pep-stylesheet``.
 --------------------  ------------------------------------------------
 pep_template          (PEP/HTML Writer.)  Path to PEP template file
-                      [#pwd].
+                      [#pwd]_.
 
                       Default: "pep-html-template" (in current
                       directory).  Options: ``--pep-template``.
@@ -426,7 +426,7 @@ source_url            An explicit URL for a "View document source"
                       Default: compute if source_link (None).
                       Options: ``--source-uri, --no-source-link``.
 --------------------  ------------------------------------------------
-stylesheet            (HTML Writer.)  Path to CSS stylesheet [#pwd].
+stylesheet            (HTML Writer.)  Path to CSS stylesheet [#pwd]_.
 
                       Default: "default.css".  Options:
                       ``--stylesheet``.
@@ -440,7 +440,7 @@ toc_backlinks         Enable backlinks from section titles to table of
                       --no-toc-backlinks``.
 --------------------  ------------------------------------------------
 warning_stream        Path to a file for the output of system messages
-                      (warnings) [#pwd].
+                      (warnings) [#pwd]_.
 
                       Default: stderr (None).  Options:
                       ``--warnings``.
