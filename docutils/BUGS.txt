@@ -119,12 +119,6 @@ Known Bugs
 
 Also see the `SourceForge Bug Tracker`_.
 
-* .. _unencoded stylesheet reference:
-
-  ``--stylesheet='foo&bar'`` causes an invalid stylesheet reference to
-  be inserted in an HTML file, because the ``&`` isn't encoded as
-  ``&amp;``.
-
 * ``utils.relative_path()`` sometimes returns absolute _`paths on
   Windows` (like ``C:/test/foo.css``) where it could have chosen a
   relative path.
