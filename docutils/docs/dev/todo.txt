@@ -611,12 +611,13 @@ __ rst/alternatives.html#or-not-to-do
   See the `Doc-SIG discussion starting 2001-04-18`__ with Ed Loper's
   "Structuring: a summary; and an attempt at EBNF", item 4 (and
   follow-ups, here__ and here__).  Also `docutils-users,
-  2003-02-17`__.
+  2003-02-17`__ and `beginning 2003-08-04`__.
 
   __ http://mail.python.org/pipermail/doc-sig/2001-April/001776.html
   __ http://mail.python.org/pipermail/doc-sig/2001-April/001789.html
   __ http://mail.python.org/pipermail/doc-sig/2001-April/001793.html
   __ http://sourceforge.net/mailarchive/message.php?msg_id=3838913
+  __ http://sf.net/mailarchive/forum.php?thread_id=2957175&forum_id=11444
 
 * Make the parser modular.  Allow syntax constructs to be added or
   disabled at run-time.  Or is subclassing enough?
