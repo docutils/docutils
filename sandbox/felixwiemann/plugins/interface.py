@@ -19,6 +19,11 @@ out of a math patch, but that will to require more code.)
 Things not (yet) covered here:
 
 * Adding a Component (this may require a generic frontend).
+* Adding a directive (will require more complicated code than for
+  roles, because of arguments and options).
+* Extending the parser by modifying a parser instance.  (Do we *want*
+  to support that?  It's powerful, but a little bit hackish.)
+* Adding a transform.  (Do we need that?)
 * Writing a test case for an extension.
 """
 
@@ -74,18 +79,24 @@ class KeyNodeHTMLSupport(docutils.WriterExtension):
     extends = 'html4css1'
     """The writer this extension extends."""
 
-    node = 'KeyNode'
+    handlers = {'KeyNode': (html_visit_keynode, html_depart_keynode)}
     """
-    The node we are implementing support for.
-
-    It's a string, because it should be possible to provide support
-    for nodes which aren't available (e.g. because they are part of
-    another plugin).
+    Dictionary mapping node names to pairs of visit and departure
+    functions.
     """
 
-    handlers = (html_visit_keynode, html_depart_keynode)
+    name = 'DefaultKeyHTMLSupport'
     """
-    A pair of visit and departure functions.
+    Name of this extension.
+
+    This is needed when there are several extensions proving support
+    for the same node, because in this case the user would have to
+    specify the name of the preferred extension (probably using an
+    option).
+
+    For convenience, maybe we shouldn't require setting a name
+    attribute and have a default name of 'default' (or
+    self.__class__?).
     """
 
     settings_spec = (('Render key buttons in <tt> tags in HTML.',
@@ -96,21 +107,16 @@ class KeyNodeHTMLSupport(docutils.WriterExtension):
                       {'dest': 'key_html_tt', 'action': 'store_false'},))
     """
     Sequence of settings.
-
-    There is no 'validator' now, but that's actually not needed.
-    Docutils can choose the right validator automatically.
     """
 
 
 class KeyNodeLaTeXSupport(docutils.WriterExtension):
-    
+
     """Support for the LaTeX writer.  See KeyNodeHTMLSupport."""
-    
+
     extends = 'latex2e'
-    
-    node = 'KeyNode'
-    
-    handlers = ('\\fbox{', '}')
+
+    handlers = {'KeyNode': ('\\fbox{', '}')}
     """
     Here we have strings instead of functions.  They are simply
     inserted into the data stream; the visitor should know how to do
@@ -119,6 +125,8 @@ class KeyNodeLaTeXSupport(docutils.WriterExtension):
     This is shorter and simpler than using lambdas, e.g. ``(lambda:
     '\\fbox{', lambda: '}')``.
     """
+
+    name = 'DefaultKeyLaTeXSupport'
 
 
 class KeyRole(docutils.ParserExtension):
@@ -184,14 +192,22 @@ class KeyRole(docutils.ParserExtension):
 
     raw = 1
     """
-    The run() method wants to get a raw string, so we set raw to 1.
-    (Backslashes aren't interpreted then, but that isn't important in
-    the case of our key role.)
+    If we pass pre-parsed contents to the role as proposed in
+    <http://article.gmane.org/gmane.text.docutils.user/1727>, we need
+    this ``raw`` attribute for the following purpose:
 
-    If `raw` were 0, the run() method would get a list with one Text
-    node.  Backslashes would be interpreted, and if there were
-    nested-inline-markup support, the list might contain any Inline
-    elements.
+        The run() method wants to get a raw string, so we set raw to 1.
+        (Backslashes aren't interpreted then, but that isn't important in
+        the case of our key role.)
+
+        If ``raw`` were 0, the run() method would get a list with one
+        Text node.  Backslashes would be interpreted, and if there
+        were nested-inline-markup support, the list might contain any
+        Inline elements.
+
+    If the role handler processes the role contents itself as proposed
+    in <http://article.gmane.org/gmane.text.docutils.user/1729>, we
+    don't need the ``raw`` attribute.
     """
 
     def run(self, contents):
@@ -214,10 +230,10 @@ class KeyRole(docutils.ParserExtension):
             # Not a valid key combination.
             # Now we want to throw an error, but that isn't easy.
             # Theoretically, we could do:
-            msg = self.inliner.reporter.error(
-                'Invalid key string: %s' % contents, lineno=self.lineno)
-            prb = self.inliner.problematic(contents, contents, msg)
-            return [prb], [msg]
+            #msg = self.inliner.reporter.error(
+            #    'Invalid key string: %s' % contents, lineno=self.lineno)
+            #prb = self.inliner.problematic(contents, contents, msg)
+            #return [prb], [msg]
             # But this causes a lot of redundancy, given that it's
             # such a common case.  It would be better to have a
             # shortcut like this instead:
