@@ -2642,7 +2642,7 @@ Markup errors are handled according to the specification in `PEP
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _Docutils: http://docutils.sourceforge.net/
 .. _The Docutils Document Tree: ../doctree.html
-.. _Docutils Generic DTD: ../gpdi.dtd
+.. _Docutils Generic DTD: ../docutils.dtd
 .. _transforms:
    http://docutils.sourceforge.net/docutils/transforms/
 .. _Grouch: http://www.mems-exchange.org/software/grouch/
