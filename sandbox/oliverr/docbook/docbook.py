@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 
 """
 :Author: Ollie Rutherfurd
@@ -49,24 +49,62 @@ a Field List in DocBook, so this is done using a
     and Definition List are generating the same type
     of output.
 
+Bibliography Elements
+---------------------
+
+Here's how reST's bibliography elements are mapped
+to DocBook elements:
+
++--------------+---------------------------------------------+
+| reST Element | DocBook Element                             |
++==============+=============================================+
+| author       | {doctype}info/author/othername              |
+|              | or                                          |
+|              | {doctype}info/authorgroup/author/othername  |
+|              | if nested under ``authors``                 |
++--------------+---------------------------------------------+
+| authors      | {doctype}info/authorgroup/                  |
++--------------+---------------------------------------------+
+| contact      | {doctype}info/author/email                  |
++--------------+---------------------------------------------+
+| copyright    | {doctype}info/legalnotice                   |
++--------------+---------------------------------------------+
+| date         | {doctype}info/date                          |
++--------------+---------------------------------------------+
+| organization | {doctype}info/orgname                       |
++--------------+---------------------------------------------+
+| revision     | concatenated with ``version`` into          |
+|              | {doctype}info/edition                       |
++--------------+---------------------------------------------+
+| status       | {doctype}info/releaseinfo                   |
++--------------+---------------------------------------------+
+| version      | concatenated with ``revision`` into         |
+|              | {doctype}info/edition                       |
++--------------+---------------------------------------------+
+
+Note: ``{doctype}`` is the type of the DocBook document 
+being generated, one of the following: ``article``, 
+``book``, or ``chapter``.
+
 Todo
 ====
 
-- Bibliography element
-- Footnotes are totally broken.
-- Inline images
-- Plenty of other  things -- most of them are 
-  flagged with ``TODO: ...`` comments.
+- Inline images -- need to figure out how to identify an inline image
+- list item marks are not guarenteed to be what was specified (if they
+  are it is be coincidence, however unless one starts out of order
+  they should match most of the time).
+
+Should para, note, etc... not in a section at the start
+of the document be stuffed into an untitled ``section``?
 
 """
 
 __docformat__ = 'reStructuredText'
 
-import sys
-import string
 import re
-from types import ListType
+import string
 from docutils import writers, nodes, languages
+from types import ListType
 
 class Writer(writers.Writer):
 
@@ -80,7 +118,7 @@ class Writer(writers.Writer):
             {'default': 'article', 
              'metavar': '<name>',
              'type': 'choice', 
-             'choices': ('article', 'boot', 'chapter',)
+             'choices': ('article', 'book', 'chapter',)
             }
          ),
         )
@@ -94,74 +132,70 @@ class Writer(writers.Writer):
         self.document.walkabout(visitor)
         self.output = visitor.astext()
 
-    def record(self):
-        self.recordfile(self.output, self.destination)
 
 class DocBookTranslator(nodes.NodeVisitor):
 
-    # QUESTION: should encoding be variable?
-    XML_DECL = '<?xml version="1.0" encoding="UTF-8"?>\n'
+    XML_DECL = '<?xml version="1.0" encoding="%s"?>\n'
 
-    DOCTYPE_DECL = """<!DOCTYPE %s PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
-                    "http://www.oasis-open.org/docbook/xml/4.0/docbookx.dtd">\n"""
+    DOCTYPE_DECL = """<!DOCTYPE %s 
+        PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+        "http://www.oasis-open.org/docbook/xml/4.0/docbookx.dtd">\n"""
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
         self.language = languages.get_language(document.options.language_code)
-        # doctype may be: article, book, or chapter
         self.doctype = document.options.doctype
-        if self.doctype not in ('article','book','chapter'):
-            raise ValueError('doctype must be one of: %s, %s, %s (got %s)' \
-                % ('article','book','chapter', self.doctype,))
         self.doc_header = [
-            self.XML_DECL,   # @@@ % output_encoding
+            self.XML_DECL % (document.options.output_encoding,),
             self.DOCTYPE_DECL % (self.doctype,),
             '<%s>\n' % (self.doctype,),
         ]
         self.doc_footer = [
             '</%s>\n' % (self.doctype,)
         ]
-        self.biblio = {}
         self.body = []
         self.section = 0
         self.context = []
         self.colnames = []
-
-    # def getDocInfo(self):
-        # """Creates elements for all document attributes to go
-        # into `{doctype}info` element. It's just temporary
-        # solution.
-        # """
-        # 
-        # # FIXME: this method won't work when setting multiple
-        # # elements for a sub-element
-        # def createNodes(path,text):
-            # nodes = path.split('/')
-            # elements = ['\n<%s>' % name for name in nodes]
-            # elements.append(text)
-            # nodes.reverse()
-            # elements.extend(['</%s>\n' % name for name in nodes])
-            # return ''.join(elements)
-        # buff = ['<%sinfo>\n' % (self.doctype,)]
-        # for (path,text) in self.docinfo.items():
-            # buff.append(createNodes(path,text))
-        # return ''.join(buff) + '</%sinfo>\n' % (self.doctype,)
+        self.footnotes = {}
+        self.footnote_map = {}
+        self.docinfo = []
 
     def astext(self):
-        # TODO: include {doctype}info elements
         return ''.join(self.doc_header
-                    #+ [self.getDocInfo()]
+                    + self.docinfo
                     + self.body
                     + self.doc_footer)
 
     def encode(self, text):
         """Encode special characters in `text` & return."""
-        # @@@ A codec to do these and all other HTML entities would be nice.
+        # @@@ A codec to do these and all other 
+        # HTML entities would be nice.
         text = text.replace("&", "&amp;")
         text = text.replace("<", "&lt;")
         text = text.replace('"', "&quot;")
         text = text.replace(">", "&gt;")
         return text
+
+    def rearrange_footnotes(self):
+        """
+        Replaces ``foonote_reference`` placeholders with
+        ``footnote`` element content as DocBook and reST
+        handle footnotes differently.
+
+        DocBook defines footnotes inline, whereas they
+        may be anywere in reST.  This function replaces the 
+        first instance of a ``footnote_reference`` with 
+        the ``footnote`` element itself, and later 
+        references of the same a  footnote with 
+        ``footnoteref`` elements.
+        """
+        for (footnote_id,refs) in self.footnote_map.items():
+            ref_id, context, pos = refs[0]
+            context[pos] = ''.join(self.footnotes[footnote_id])
+            for ref_id, context, pos in refs[1:]:
+                context[pos] = '<footnoteref linkend="%s"/>' \
+                    % (footnote_id,)
 
     def attval(self, text,
                transtable=string.maketrans('\n\r\t\v\f', '     ')):
@@ -170,8 +204,9 @@ class DocBookTranslator(nodes.NodeVisitor):
 
     def starttag(self, node, tagname, suffix='\n', infix='', **attributes):
         """
-        Construct and return a start tag given a node (id & class attributes
-        are extracted), tag name, and optional attributes.
+        Construct and return a start tag given a node 
+        (id & class attributes are extracted), tag name, 
+        and optional attributes.
         """
         atts = {}
         for (name, value) in attributes.items():
@@ -211,16 +246,19 @@ class DocBookTranslator(nodes.NodeVisitor):
 
     def visit_attention(self, node):
         self.body.append(self.starttag(node, 'note'))
-        self.body.append('\n<title>%s</title>\n' % (self.language.labels[node.tagname],))
+        self.body.append('\n<title>%s</title>\n' 
+            % (self.language.labels[node.tagname],))
 
     def depart_attention(self, node):
         self.body.append('</note>\n')
 
-    # TODO: author (map to {doctype}info/author/othername)
-    visit_author = depart_author = lambda self,node: None
+    # author is handled in ``visit_docinfo()``
+    def visit_author(self, node):
+        raise nodes.SkipNode
 
-    # TODO: authors (use authorgroup)
-    visit_authors = depart_authors = lambda self,node: None
+    # authors is handled in ``visit_docinfo()``
+    def visit_authors(self, node):
+        raise nodes.SkipNode
 
     def visit_block_quote(self, node):
         self.body.append(self.starttag(node, 'blockquote'))
@@ -244,17 +282,42 @@ class DocBookTranslator(nodes.NodeVisitor):
 
     def visit_caution(self, node):
         self.body.append(self.starttag(node, 'caution'))
-        self.body.append('\n<title>%s</title>\n' % (self.language.labels[node.tagname],))
+        self.body.append('\n<title>%s</title>\n' 
+            % (self.language.labels[node.tagname],))
 
     def depart_caution(self, node):
         self.body.append('</caution>\n')
 
-    # QUESTION: how should citation be handled?
+    # reST seems to handle citations as a labled
+    # footnotes, whereas DocBook doesn't from what
+    # I can tell, so I'm not sure how to give DocBook
+    # citations that result in equivlent output
+    # as the docutils html writer.
+    #
+    # Currently, citations are handled as footnotes,
+    # using the citation label as the footnote label
+    # which seems functionally equivlent, but the
+    # DocBook stylesheets for generating HTML output
+    # don't seem to be using the label for foonotes
+    # so this doesn't work.
+    #
+    # So I'm at a bit of a loss as to how to 
+    # handle citations. Any ideas or suggestions would
+    # be welcome.
+
     # TODO: citation
-    visit_citation = depart_citation = lambda self, node: None
+    def visit_citation(self, node):
+        self.visit_footnote(node)
+
+    def depart_citation(self, node):
+        self.depart_footnote(node)
 
     # TODO: citation_reference
-    visit_citation_reference = depart_citation_reference = lambda self, node: None
+    def visit_citation_reference(self, node):
+        self.visit_footnote_reference(node)
+
+    def depart_citation_reference(self, node):
+        pass
 
     def visit_classifier(self, node):
         self.body.append(' : ')
@@ -276,25 +339,27 @@ class DocBookTranslator(nodes.NodeVisitor):
         self.body.append('<!-- %s -->\n' % sub('- ', node.astext()))
         raise nodes.SkipNode
 
+    # contact is handled in ``visit_docinfo()``
     def visit_contact(self, node):
-        # TODO: map to {doctype}info/author/email
-        # (if other needed parts of author are present)
         raise nodes.SkipNode
 
-    # TODO: copyright
-    visit_copyright = depart_copyright = lambda self,node: None
+    # copyright is handled in ``visit_docinfo()``
+    def visit_copyright(self, node):
+        raise nodes.SkipNode
 
     def visit_danger(self, node):
         self.body.append(self.starttag(node, 'caution'))
-        self.body.append('\n<title>%s</title>\n' % (self.language.labels[node.tagname],))
+        self.body.append('\n<title>%s</title>\n' 
+            % (self.language.labels[node.tagname],))
 
     def depart_danger(self, node):
         self.body.append('</caution>\n')
 
+    # date is handled in ``visit_docinfo()``
     def visit_date(self, node):
-        # TODO: include date in {doctype}info/date
         raise nodes.SkipNode
 
+    # TODO: decoration
     def visit_decoration(self, node):
         pass
 
@@ -302,7 +367,7 @@ class DocBookTranslator(nodes.NodeVisitor):
         pass
 
     def visit_definition(self, node):
-        # "term" is not closed
+        # "term" is not closed in depart_term
         self.body.append('</term>\n')
         self.body.append(self.starttag(node, 'listitem'))
 
@@ -328,7 +393,100 @@ class DocBookTranslator(nodes.NodeVisitor):
         self.body.append('</entry>\n')
 
     def visit_docinfo(self, node):
-        pass
+        """
+        Collects all docinfo elements for the document.
+
+        Since reST's bibliography elements don't map very
+        cleanly to DocBook, rather than maintain state and
+        check dependencies within the different visitor
+        fuctions all processing of bibliography elements
+        is dont within this function.
+
+        .. NOTE:: Skips processing of all child nodes as
+                  everything should be collected here.
+        """
+
+        docinfo = ['<%sinfo>\n' % self.doctype]
+
+        authors = []
+        author = ''
+        contact = ''
+        date = ''
+        legalnotice = ''
+        orgname = ''
+        releaseinfo = ''
+        revision,version = '',''
+
+        for n in node:
+            if isinstance(n, nodes.author):
+                author = n.astext()
+            elif isinstance(n, nodes.authors):
+                for a in n:
+                    authors.append(a.astext())
+            elif isinstance(n, nodes.contact):
+                contact = n.astext()
+            elif isinstance(n, nodes.copyright):
+                legalnotice = n.astext()
+            elif isinstance(n, nodes.date):
+                date = n.astext()
+            elif isinstance(n, nodes.organization):
+                orgname = n.astext()
+            elif isinstance(n, nodes.revision):
+                revision = 'Revision ' + n.astext()
+            elif isinstance(n, nodes.status):
+                releaseinfo = n.astext()
+            elif isinstance(n, nodes.version):
+                version = 'Version ' + n.astext()
+            # since all child nodes are handled here raise an exception
+            # if node is not handled, so it doesn't silently slip through.
+            else:
+                raise self.unimplemented_visit(n)
+
+        # can only add author if name is present
+        # since contact is associate with author, the contact
+        # can also only be added if an author name is given.
+        if author:
+            docinfo.append('<author>\n')
+            docinfo.append('<othername>%s</othername>\n' % author)
+            if contact:
+                docinfo.append('<email>%s</email>\n' % contact)
+            docinfo.append('</author>\n')
+
+        if authors:
+            docinfo.append('<authorgroup>\n')
+            for name in authors:
+                docinfo.append(
+                    '<author><othername>%s</othername></author>\n' % name)
+            docinfo.append('</authorgroup>\n')
+
+        if revision or version:
+            edition = version
+            if edition and revision:
+                edition += ', ' + revision
+            elif revision:
+                edition = revision
+            docinfo.append('<edition>%s</edition>\n' % edition)
+
+        if date:
+            docinfo.append('<date>%s</date>\n' % date)
+
+        if orgname:
+            docinfo.append('<orgname>%s</orgname>\n' % orgname)
+
+        if releaseinfo:
+            docinfo.append('<releaseinfo>%s</releaseinfo>\n' % releaseinfo)
+
+        if legalnotice:
+            docinfo.append('<legalnotice>\n')
+            docinfo.append('<para>%s</para>\n' % legalnotice)
+            docinfo.append('</legalnotice>\n')
+
+        if len(docinfo) > 1:
+            docinfo.append('</%sinfo>\n' % self.doctype)
+
+        self.docinfo = docinfo
+
+        raise nodes.SkipChildren
 
     def depart_docinfo(self, node):
         pass
@@ -345,7 +503,7 @@ class DocBookTranslator(nodes.NodeVisitor):
         pass
 
     def depart_document(self, node):
-        pass
+        self.rearrange_footnotes()
 
     def visit_emphasis(self, node):
         self.body.append(self.starttag(node, 'emphasis'))
@@ -360,7 +518,8 @@ class DocBookTranslator(nodes.NodeVisitor):
             atts['morerows'] = node['morerows']
         if node.has_key('morecols'):
             atts['namest'] = self.colnames[self.entry_level]
-            atts['nameend'] = self.colnames[self.entry_level + node['morecols']]
+            atts['nameend'] = self.colnames[self.entry_level \
+                + node['morecols']]
         self.entry_level += 1   # for tracking what namest and nameend are
         self.body.append(self.starttag(node, tagname, **atts))
 
@@ -376,7 +535,8 @@ class DocBookTranslator(nodes.NodeVisitor):
 
     def visit_error(self, node):
         self.body.append(self.starttag(node, 'caution'))
-        self.body.append('\n<title>%s</title>\n' % (self.language.labels[node.tagname],))
+        self.body.append('\n<title>%s</title>\n' 
+            % (self.language.labels[node.tagname],))
 
     def depart_error(self, node):
         self.body.append('</caution>\n')
@@ -419,7 +579,6 @@ class DocBookTranslator(nodes.NodeVisitor):
 
     def depart_field_name(self, node):
         pass
-        #self.body.append('</term>\n')
 
     def visit_figure(self, node):
         self.body.append(self.starttag(node, 'informalfigure'))
@@ -437,33 +596,61 @@ class DocBookTranslator(nodes.NodeVisitor):
     def depart_footer(self, node):
         pass
 
-
     def visit_footnote(self, node):
+        self.footnotes[node['id']] = []
         atts = {'id': node['id']}
         if isinstance(node[0], nodes.label):
-            # FIXME: this fails with the second auto-sequence
-            # symbol (after "#")
-            #atts['label'] = node[0].astext()
-            pass
-        self.body.append(self.starttag(node, 'footnote', **atts))
+            # FIXME: this fails with the second auto-sequenece character
+            # used in the test document ``test.txt``.
+            atts['label'] = node[0].astext()
+        self.footnotes[node['id']].append(
+            self.starttag(node, 'footnote', **atts))
+
+        # replace body with this with a footnote collector list
+        # which will hold all the contents for this footnote.
+        # This needs to be kept separate so it can be used to replace
+        # the first ``footnote_reference`` as DocBook defines 
+        # ``footnote`` elements inline. 
+        self._body = self.body
+        self.body = self.footnotes[node['id']]
 
     def depart_footnote(self, node):
-        self.body.append('</footnote>\n')
+        # finish footnote and then replace footnote collector
+        # with real body list.
+        self.footnotes[node['id']].append('</footnote>\n')
+        self.body = self._body
+        self._body = None
 
     def visit_footnote_reference(self, node):
         if node.has_key('refid'):
-            linkend = node['refid']
+            refid = node['refid']
         else:
-            linkend = self.document.nameids[node['refname']]
-        self.body.append(self.emptytag(node, 'footnoteref', linkend=linkend))
-        # so footnote reference doesn't show up twice, like: [1] 1
+            refid = self.document.nameids[node['refname']]
+
+        # going to replace this footnote reference with the actual
+        # footnote later on, so store the footnote id to replace
+        # this reference with and the list and position to replace it
+        # in. Both list and position are stored in case a footnote
+        # reference is within a footnote, in which case ``self.body``
+        # won't really be ``self.body`` but a footnote collector
+        # list.
+        refs = self.footnote_map.get(refid, [])
+        refs.append((node['id'], self.body, len(self.body),))
+        self.footnote_map[refid] = refs
+
+        # add place holder list item which should later be 
+        # replaced with the contents of the footnote element
+        # and it's child elements
+        self.body.append('<!-- REPLACE WITH FOOTNOTE -->')
+
         raise nodes.SkipNode
 
     # TODO: header
 
     def visit_hint(self, node):
         self.body.append(self.starttag(node, 'note'))
-        self.body.append('\n<title>%s</title>\n' % (self.language.labels[node.tagname],))
+        self.body.append('\n<title>%s</title>\n' 
+            % (self.language.labels[node.tagname],))
 
     def depart_hint(self, node):
         self.body.append('</note>\n')
@@ -512,7 +699,9 @@ class DocBookTranslator(nodes.NodeVisitor):
         self.body.append('</constant>\n')
 
     def visit_label(self, node):
-        # NOTE: getting label for "footnote" in ``visit_footnote``
+        # getting label for "footnote" in ``visit_footnote``
+        # because label is an attribute for the ``footnote``
+        # element.
         if isinstance(node.parent, nodes.footnote):
             raise nodes.SkipNode
         # TODO: handle citation label
@@ -523,6 +712,7 @@ class DocBookTranslator(nodes.NodeVisitor):
         pass
 
     def visit_legend(self, node):
+        # TODO: explain why this is empty....
         pass
 
     def depart_legend(self, node):
@@ -548,7 +738,8 @@ class DocBookTranslator(nodes.NodeVisitor):
 
     def visit_note(self, node):
         self.body.append(self.starttag(node, 'note'))
-        self.body.append('\n<title>%s</title>\n' % (self.language.labels[node.tagname],))
+        self.body.append('\n<title>%s</title>\n' 
+            % (self.language.labels[node.tagname],))
 
     def depart_note(self, node):
         self.body.append('</note>\n')
@@ -608,8 +799,8 @@ class DocBookTranslator(nodes.NodeVisitor):
     def depart_option_string(self, node):
         pass
 
+    # organization is handled in ``visit_docinfo()``
     def visit_organization(self, node):
-        self.biblio['orgname'] = node.astext()
         raise nodes.SkipNode
 
     def visit_paragraph(self, node):
@@ -642,8 +833,9 @@ class DocBookTranslator(nodes.NodeVisitor):
     def depart_reference(self, node):
         self.body.append('</%s>' % (self.context.pop(),))
 
-    # TODO: revision
-    visit_revision = depart_revision = lambda self,node: None
+    # revision is handled in ``visit_docinfo()``
+    def visit_revision(self, node):
+        raise nodes.SkipNode
 
     def visit_row(self, node):
         self.entry_level = 0
@@ -666,8 +858,9 @@ class DocBookTranslator(nodes.NodeVisitor):
         else:
             self.body.append('</section>\n')
 
-    # TODO: status
-    visit_status = depart_status = lambda self,node: None
+    # author is handled in ``visit_docinfo()``
+    def visit_status(self, node):
+        raise nodes.SkipNode
 
     def visit_strong(self, node):
         self.body.append(self.starttag(node, 'emphasis', role='strong'))
@@ -743,7 +936,7 @@ class DocBookTranslator(nodes.NodeVisitor):
         self.body.append('</title>\n')
 
     def visit_topic(self, node):
-        # NOTE: Table of Contents are handled by DocBook
+        # Table of Contents generation handled by DocBook
         if node.get('class') == 'contents':
             raise nodes.SkipChildren
         elif node.get('class') == 'abstract':
@@ -766,8 +959,8 @@ class DocBookTranslator(nodes.NodeVisitor):
     def depart_transition(self, node):
         pass
 
+    # author is handled in ``visit_docinfo()``
     def visit_version(self, node):
-        # TODO: include in {doctype}info/edition?
         raise nodes.SkipNode
 
     def visit_warning(self, node):
@@ -780,4 +973,5 @@ class DocBookTranslator(nodes.NodeVisitor):
         raise NotImplementedError('visiting unimplemented node type: %s'
                 % node.__class__.__name__)
 
-# :collapseFolds=1:folding=indent:indentSize=4:lineSeparator=\n:noTabs=true:tabSize=4:
+# :collapseFolds=1:folding=indent:indentSize=4:
+# :lineSeparator=\n:noTabs=true:tabSize=4:
