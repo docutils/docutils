@@ -2,7 +2,7 @@
    transforms to after the document title, subtitle, and docinfo.
 
 ================================
- reStructuredText Test Document
+ reStructuredText Demonstration
 ================================
 
 .. Above is the document title, and below is the subtitle.
@@ -44,13 +44,15 @@
 
 :abstract:
 
-    This is a test document, containing at least one example of each
-    reStructuredText construct.
+    This document is a demonstration of the reStructuredText markup
+    language, containing examples of all basic reStructuredText
+    constructs and many advanced constructs.
 
 .. meta::
-   :keywords: reStructuredText, test, parser
-   :description lang=en: A test document, containing at least one
-       example of each reStructuredText construct.
+   :keywords: reStructuredText, demonstration, demo, parser
+   :description lang=en: A demonstration of the reStructuredText
+       markup language, containing examples of all basic
+       constructs and many advanced constructs.
 
 .. contents:: Table of Contents
 .. section-numbering::
