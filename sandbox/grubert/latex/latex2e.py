@@ -237,8 +237,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             text = text.replace("\n", '\\\\\n')
         elif self.mbox_newline:
             text = text.replace("\n", '}\\\\\n\\mbox{')
-        # unicode: not needed as long  as output encoding is latin-1.
-        # and not supported as long as output encoding is set to latin-1.
+        # unicode !!! 
         text = text.replace(u'\u2020', '{$\\dagger$}')
         return text
 
