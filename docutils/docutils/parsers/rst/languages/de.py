@@ -46,6 +46,7 @@ directives = {
       'abbildung': 'figure',
       u'unver\xe4ndert': 'raw',
       u'einf\xfcgen': 'include',
+      'ersetzung': 'replace',
       'ersetzen': 'replace',
       'ersetze': 'replace',
       'unicode': 'unicode',
