@@ -598,9 +598,9 @@ __ rst/alternatives.html#or-not-to-do
           the left edge of the first line if it began on the same
           line as the field name.
 
-* Allow for variant styles by interpreting indented lists as if they
-  weren't indented?  For example, currently the list below will be
-  parsed as a list within a block quote::
+* Allow for variant styles by interpreting _`indented lists` as if
+  they weren't indented?  For example, currently the list below will
+  be parsed as a list within a block quote::
 
       paragraph
 
@@ -631,9 +631,15 @@ __ rst/alternatives.html#or-not-to-do
   It may seem minor, but it adds ambiguity to the parser, which is
   bad.
 
-  See the Doc-SIG discussion starting 2001-04-18 with Ed Loper's
-  "Structuring: a summary; and an attempt at EBNF", item 4.  Also
-  docutils-users, 2003-02-17.
+  See the `Doc-SIG discussion starting 2001-04-18`__ with Ed Loper's
+  "Structuring: a summary; and an attempt at EBNF", item 4 (and
+  follow-ups, here__ and here__).  Also `docutils-users,
+  2003-02-17`__.
+
+  __ http://mail.python.org/pipermail/doc-sig/2001-April/001776.html
+  __ http://mail.python.org/pipermail/doc-sig/2001-April/001789.html
+  __ http://mail.python.org/pipermail/doc-sig/2001-April/001793.html
+  __ http://sourceforge.net/mailarchive/message.php?msg_id=3838913
 
 * Make the parser modular.  Allow syntax constructs to be added or
   disabled at run-time.  Or is subclassing enough?
