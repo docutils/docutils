@@ -583,7 +583,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.font_encoding == 'OT1':
             fontenc_header = ''
         elif self.font_encoding == '':
-            fontenc_header = '\\usepackage{ae}\n'
+            fontenc_header = '\\usepackage{ae}\n\\usepackage{aeguill}\n'
         else:
             fontenc_header = '\\usepackage[%s]{fontenc}\n' % (self.font_encoding,)
         input_encoding = self.encoding % self.to_latex_encoding(settings.output_encoding)
