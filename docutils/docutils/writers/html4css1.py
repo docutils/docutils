@@ -56,6 +56,44 @@ class Writer(writers.Writer):
 
 class HTMLTranslator(nodes.NodeVisitor):
 
+    """
+    This HTML writer has been optimized to produce visually compact
+    HTML (less vertical whitespace).  HTML's mixed content models
+    allow list items to contain "<li><p>body elements</p></li>" or
+    "<li>just text</li>" or even "<li>text<p>and body
+    elements</p>combined</li>", each with different effects.  It would
+    be best to stick with strict body elements in list items, but they
+    affect vertical spacing in browsers (although they really
+    shouldn't).
+
+    Here is an outline of the optimization:
+
+    - Check for and omit <p> tags in "simple" lists: list items
+      contain either a single paragraph, a nested simple list, or a
+      paragraph followed by a nested simple list.  This means that
+      this list can be compact:
+    
+          - Item 1.
+          - Item 2.
+    
+      But this list cannot be compact:
+    
+          - Item 1.
+    
+            This second paragraph forces space between list items.
+    
+          - Item 2.
+    
+    - In non-list contexts, omit <p> tags on a paragraph if that
+      paragraph is the only child of its parent (footnotes & citations
+      are allowed a label first).
+    
+    - Regardless of the above, in definitions, table cells, field
+      bodies, option descriptions, and list items, mark the first
+      child with 'class="first"' if it is a paragraph.  The stylesheet
+      sets the top margin to 0 for these paragraphs.
+    """
+
     xml_declaration = '<?xml version="1.0" encoding="%s"?>\n'
     doctype = '<!DOCTYPE html' \
               ' PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"' \
