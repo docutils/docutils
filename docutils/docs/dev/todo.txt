@@ -39,7 +39,7 @@ Bugs
   Fixing this may be tricky, and isn't a high priority.
 
   Idea: two-pass hyperlink resolution, ignoring errors on the first
-  pass?
+  pass?  Nah, too complicated.
 
   Perhaps the directive should do a bit more work up-front: create the
   "topic" and "title", and leave the "pending" node for contents.
@@ -51,9 +51,10 @@ Bugs
 
 * In text inserted by the "include" directive, errors are often not
   reported with the correct "source" or "line" numbers.  Perhaps all
-  Reporter calls need a "base_node" parameter.  There's a test in
-  test/test_parsers/test_rst/test_directives/test_include.py
-  (commented out, because the test fails).
+  Reporter calls need "source" and "line" keyword arguments.
+  Elements' .line assignments should be checked.  (Assign to .source
+  too?  Add a set_info method?  To what?)  There's a test in
+  test/test_parsers/test_rst/test_directives/test_include.py.
 
 * Explicit targets are sometimes mis-located.  In particular, placing
   a target before a section header puts the target at the end of the
@@ -91,7 +92,9 @@ General
   permanently, read by subsequent processing runs, and updated with
   new entries.  ("Persistent ID mapping"?)
 
-* Need a Unicode to HTML entities codec for HTML writer?
+* Need a Unicode to HTML entities codec for HTML writer?  No, the
+  "xmlcharrefreplace" output encoding error handler is sufficient.
+  Make it the default for HTML & XML writers?
 
 * Perhaps the ``Component.supports`` method should deal with
   individual features ("meta" etc.) instead of formats ("html" etc.)?
@@ -134,6 +137,9 @@ General
 
     This would also allow other options to be set, like border
     styles.  The same technique could be used for other objects.
+
+    A preliminary "table" directive has been implemented, supporting
+    table titles.  Perhaps the name should derive from the title.
 
   - The object could also be done this way::
 
@@ -1596,14 +1602,22 @@ Index
 HTML Writer
 -----------
 
-* @@ Construct a _`templating system`, as in ht2html/yaptu, using
-  directives and substitutions for dynamic stuff.  Or a specialized
+* Construct a _`templating system`, as in ht2html/yaptu, using
+  directives and substitutions for dynamic stuff?  Or a specialized
   writer to generate .ht & links.h files for ht2html?
 
+  This is an overly generic, ambitious, and unnecessary idea.  The two
+  systems, ht2html & yaptu, represent different approaches to
+  templating.  Ht2html stiches bits of HTML together to make unified
+  web pages.  Yaptu is for generic programmable text replacement.
+  Templating should simply be left to other systems.  Users can choose
+  a templating system to apply to their reStructuredText documents as
+  best serves their interests.
+
 * Add a setting (or another writer) which produces just the contents
-  of the <body> element.  What about the rest; it should be accessible
-  somehow, especially the docinfo fields.  Part of the ht2html
-  implementation?  Generic component output?
+  of the <body> element (_`HTML fragments`).  What about the rest; it
+  should be accessible somehow, especially the docinfo fields.  Part
+  of the ht2html implementation?  Generic component output?
 
   I think a separate writer which inherits from html4css1.py would be
   a good start.  An "inline" or body-only HTML writer has to omit some
@@ -1623,6 +1637,9 @@ HTML Writer
   for this variant output.  Should the metadata values be simple text
   strings, or HTML snippets (they may contain markup), or both?  There
   may be other issues to be worked out.
+
+  There's an example of such need in the recipe at
+  <http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/193890>.
 
 * Add more support for <link> elements, especially for navigation
   bars.
