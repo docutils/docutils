@@ -2,10 +2,10 @@
 """
     MoinMoin - ReStructured Text Parser
 
-    @copyright: 2002 by J�rgen Hermann <jh@web.de>
+    @copyright: 2004 by Matthew Gilbert <gilbert@voxmea.net>
     @license: GNU GPL, see COPYING for details.
     
-    REQUIRES docutils 0.3.5
+    REQUIRES docutils 0.3.3 or later
     .
 """
 
@@ -31,8 +31,10 @@ from docutils.nodes import fully_normalize_name
 def html_escape_unicode(node):
     # Find Python function that does this for me. string.encode('ascii',
     # 'xmlcharrefreplace') only 2.3 and above.
-    s = node.replace(u'\xa0', '&#xa0;')
-    return s.replace(u'\u2020', '&#x2020;')
+    for i in node:
+        if ord(i) > 127:
+            node = node.replace(i, '&#%d;' % (ord(i)))
+    return node
 
 class MoinWriter(html4css1.Writer):
     
