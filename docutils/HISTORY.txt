@@ -23,9 +23,10 @@ and related projects:
     Tony Ibbs, Alan Jaffray, Richard Jones, Garth Kidd, Daniel
     Larsson, Marc-Andre Lemburg, Wolfgang Lipp, Edward Loper, Ken
     Manheimer, Paul Moore, Michel Pelletier, Sam Penrose, Tim Peters,
-    Mark Pilgrim, Tavis Rudd, Ollie Rutherfurd, Ueli Schlaepfer,
-    Gunnar Schwant, tav, Bob Tolbert, Laurence Tratt, Guido van
-    Rossum, Barry Warsaw, Edward Welbourne, Ka-Ping Yee, Moshe Zadka
+    Pearu Peterson, Mark Pilgrim, Tavis Rudd, Ollie Rutherfurd, Ueli
+    Schlaepfer, Gunnar Schwant, tav, Bob Tolbert, Laurence Tratt,
+    Guido van Rossum, Barry Warsaw, Edward Welbourne, Ka-Ping Yee,
+    Moshe Zadka
 
 Thank you!
 
@@ -36,6 +37,20 @@ any names; apologies (and please let me know!) if I have.
 
 Changes Since 0.2
 ========================
+
+* docutils/transforms/parts.py:
+
+  - Moved the "id" attribute from TOC list items to the references
+    (``Contents.build_contents()``).
+
+* docutils/writers/html4css1.py:
+
+  - "name" attributes only on these tags: a, applet, form, frame,
+    iframe, img, map.
+  - Add "name" attribute to <a> in section titles for Netscape 4
+    support (bug report: Pearu Peterson).
+  - Fixed targets (names) on footnote, citation, topic title,
+    problematic, and system_message nodes (for Netscape 4).
 
 * docs/tools.txt:
 
