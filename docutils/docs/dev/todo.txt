@@ -363,6 +363,8 @@ General
   could be used by any writer, and applying such classes to all tables
   in a document with writer options is too broad.
 
+* Make the csv-table directive work with Python 2.1/2.2.
+
 
 Documentation
 =============
