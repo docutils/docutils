@@ -21,6 +21,8 @@ from docutils import nodes, utils, writers, languages
 
 import OOtext
 
+import Image  # from the Python Imaging Library
+
 section_styles = [
     '.ch title',
     '.head 1',
@@ -71,6 +73,9 @@ class Translator(nodes.NodeVisitor):
         self.compact_p = 1
         self.compact_simple = None
         self.context = []
+        self.inBulletList = False
+        self.inEnumList = False
+        self.newSection = False
 
     def astext(self):
         return ''.join(self.header + self.body + self.footer)
@@ -149,18 +154,18 @@ class Translator(nodes.NodeVisitor):
         self.skip_para_tag = False
 
     def visit_bullet_list(self, node):
-        self.body.append('\n<text:unordered-list text:style-name=".bullet">\n')
+        self.inBulletList = True
+        self.body.append('\n<text:unordered-list text:style-name="BulletList">\n')
 
     def depart_bullet_list(self, node):
         self.body.append('</text:unordered-list>\n')
+        self.inBulletList = False
 
     def visit_caption(self, node):
         pass
-#        self.body.append(self.starttag(node, 'p', '', CLASS='caption'))
 
     def depart_caption(self, node):
         pass
-#        self.body.append('</p>\n')
 
     def visit_caution(self, node):
         self.visit_admonition(node, 'caution')
@@ -299,34 +304,12 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.context.pop())
 
     def visit_enumerated_list(self, node):
-        pass
-##         """
-##         The 'start' attribute does not conform to HTML 4.01's strict.dtd, but
-##         CSS1 doesn't help. CSS2 isn't widely enough supported yet to be
-##         usable.
-##         """
-##         atts = {}
-##         if node.has_key('start'):
-##             atts['start'] = node['start']
-##         if node.has_key('enumtype'):
-##             atts['class'] = node['enumtype']
-##         # @@@ To do: prefix, suffix. How? Change prefix/suffix to a
-##         # single "format" attribute? Use CSS2?
-##         old_compact_simple = self.compact_simple
-##         self.context.append((self.compact_simple, self.compact_p))
-##         self.compact_p = None
-##         self.compact_simple = (self.options.compact_lists and
-##                                (self.compact_simple
-##                                 or self.topic_class == 'contents'
-##                                 or self.check_simple_list(node)))
-##         if self.compact_simple and not old_compact_simple:
-##             atts['class'] = (atts.get('class', '') + ' simple').strip()
-##         self.body.append(self.starttag(node, 'ol', **atts))
+        self.inEnumList = True
+        self.body.append('\n<text:ordered-list text:style-name="NumberedList">\n')
 
     def depart_enumerated_list(self, node):
-        pass
-##         self.compact_simple, self.compact_p = self.context.pop()
-##         self.body.append('</ol>\n')
+        self.body.append('</text:ordered-list>\n')
+        self.inEnumList = False
 
     def visit_error(self, node):
         self.visit_admonition(node, 'error')
@@ -436,18 +419,31 @@ class Translator(nodes.NodeVisitor):
 
     def visit_image(self, node):
         name = str(node.attributes['uri'])
+        image = Image.open(name)
+        format = image.format
+        dpi = 96.0
+        width, height = image.size
+        width /= dpi
+        height /= dpi
+        scale = None
+        if 'scale' in node.attributes:
+            scale = node.attributes['scale']
+        if scale is not None:
+            factor = scale / 100.0
+            width *= factor
+            height *= factor
         # Add to our list so that rest2oo.py can create the manifest.
-        if name.endswith('.png'):
+        if format == 'PNG':
             OOtext.pictures.append((name, OOtext.m_png_format % name))
-        elif name.endswith('.tif'):
+        elif format == 'TIFF':
             OOtext.pictures.append((name, OOtext.m_tif_format % name))
         else:
             print '*** Image type not recognized ***', repr(name)
-        self.body.append('<draw:image draw:style-name="fr1"\n')
+        self.body.append('<draw:image draw:style-name="image"\n')
         self.body.append('draw:name="%s"\n' % name)
-        self.body.append('text:anchor-type="paragraph"\n')
-        self.body.append('svg:width="1inch"\n')
-        self.body.append('svg:height="1inch"\n')
+        self.body.append('text:anchor-type="char"\n')
+        self.body.append('svg:width="%0.2finch"\n' % width)
+        self.body.append('svg:height="%0.2finch"\n' % height)
         self.body.append('draw:z-index="0"\n')
         self.body.append('xlink:href="#Pictures/%s"\n' % name)
         self.body.append('xlink:type="simple"\n') 
@@ -592,8 +588,16 @@ class Translator(nodes.NodeVisitor):
         self.body.append('</span>')
 
     def visit_paragraph(self, node):
+        style = '.body'
+        if self.inBulletList:
+            style = '.bullet'
+        elif self.inEnumList:
+            style = '.numlist'
+        elif self.newSection:
+            style = '.body1'
+            self.newSection = False
         if not self.skip_para_tag:
-            self.body.append(self.start_para % '.body')
+            self.body.append(self.start_para % style)
 
     def depart_paragraph(self, node):
         if not self.skip_para_tag:
@@ -637,6 +641,7 @@ class Translator(nodes.NodeVisitor):
 
     def visit_section(self, node):
         self.section_level += 1
+        self.newSection = True
 
     def depart_section(self, node):
         self.section_level -= 1

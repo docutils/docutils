@@ -280,21 +280,51 @@ fo:margin-right="0inch" fo:font-size="11pt"
 style:font-size-asian="11pt" fo:text-indent="0inch"
 style:auto-text-indent="false"/></style:style>
 
-<style:style style:name=".bullet" 
+<style:style style:name=".bullet"
 style:family="paragraph"
-style:list-style-name="WW8Num8">
+style:list-style-name="BulletList">
 <style:properties
-fo:margin-left="0.5inch" fo:margin-right="0inch"
-fo:margin-top="0.028inch" fo:margin-bottom="0.028inch"
-fo:color="#000000" style:font-name="AGaramond" fo:font-size="11pt"
-fo:language="en" fo:country="US" style:font-name-asian="Times New
-Roman" style:font-size-asian="11pt" fo:line-height="0.1937inch"
-fo:text-align="justify" style:justify-single-word="false"
-fo:orphans="0" fo:widows="0" fo:text-indent="0.0008inch"
+fo:margin-left="0.5inch"
+fo:margin-right="0inch"
+fo:margin-top="0.028inch"
+fo:margin-bottom="0.028inch"
+fo:color="#000000"
+style:font-name="AGaramond"
+fo:font-size="11pt"
+fo:language="en"
+fo:country="US"
+style:font-name-asian="Times New Roman"
+style:font-size-asian="11pt"
+fo:line-height="0.1937inch"
+fo:text-align="justify"
+style:justify-single-word="false"
+fo:orphans="0"
+fo:widows="0"
+fo:text-indent="0inch"
 style:auto-text-indent="false">
 <style:tab-stops>
 <style:tab-stop
-style:position="0inch"/></style:tab-stops></style:properties></style:style>
+style:position="0inch"/>
+</style:tab-stops>
+</style:properties>
+</style:style>
+
+<text:list-style style:name="BulletList">
+<text:list-level-style-bullet text:level="1"
+text:style-name="Bullet" 
+style:num-suffix="."
+text:bullet-char="*">
+<style:properties
+text:min-label-width="0.25inch"
+style:font-name="Wingdings"/>
+</text:list-level-style-bullet>
+</text:list-style>
+
+<style:style style:name="Bullet"
+style:family="text">
+<style:properties
+style:font-name="Wingdings"/>
+</style:style>
 
 <style:style style:name=".CALLOUT" 
 style:family="paragraph"
@@ -394,17 +424,34 @@ fo:widows="2"/></style:style>
 
 <style:style style:name=".numlist" 
 style:family="paragraph"
-style:list-style-name="WW8Num17">
+style:list-style-name="NumberedList">
 <style:properties
-fo:margin-top="0.028inch" fo:margin-bottom="0.028inch"
-fo:color="#000000" style:font-name="AGaramond" fo:font-size="11pt"
-fo:language="en" fo:country="US" style:font-name-asian="Times New
-Roman" style:font-size-asian="11pt" fo:line-height="0.1937inch"
-fo:text-align="justify" style:justify-single-word="false"
+fo:margin-top="0.028inch"
+fo:margin-bottom="0.028inch"
+fo:color="#000000"
+style:font-name="AGaramond"
+fo:font-size="11pt"
+fo:language="en"
+fo:country="US"
+style:font-name-asian="Times New Roman"
+style:font-size-asian="11pt"
+fo:line-height="0.1937inch"
+fo:text-align="justify"
+style:justify-single-word="false"
 fo:orphans="0" fo:widows="0">
 <style:tab-stops>
-<style:tab-stop
-style:position="0.5inch"/></style:tab-stops></style:properties></style:style>
+<style:tab-stop style:position="0.5inch"/>
+</style:tab-stops>
+</style:properties></style:style>
+
+<text:list-style style:name="NumberedList">
+<text:list-level-style-number text:level="1"
+style:num-suffix="." 
+style:num-format="1">
+<style:properties
+text:min-label-width="0.25inch"/>
+</text:list-level-style-number>
+</text:list-style>
 
 <style:style style:name=".numlist 1" 
 style:family="paragraph"
@@ -426,12 +473,26 @@ fo:widows="0"/></style:style>
 
 <style:style style:name="image" 
 style:family="graphics">
-<style:properties
-svg:x="0inch" 
-svg:y="0inch" 
-style:vertical-pos="below"
-style:horizontal-pos="left"
-style:horizontal-rel="page-content"/>
+<style:properties style:wrap="none"
+style:vertical-pos="top"
+style:vertical-rel="char"
+style:horizontal-pos="from-left"
+style:horizontal-rel="paragraph-content"
+fo:background-color="transparent"
+fo:padding="0.0102inch"
+fo:border="none" style:mirror="none"
+fo:clip="rect(0inch 0inch 0inch 0inch)"
+draw:luminance="0%"
+draw:contrast="0%"
+draw:red="0%"
+draw:green="0%"
+draw:blue="0%"
+draw:gamma="100"
+draw:color-inversion="false"
+draw:transparency="-100%"
+draw:color-mode="standard">
+<style:background-image/>
+</style:properties>
 </style:style>
 
 <style:style style:name="Page Number" 
@@ -636,5 +697,11 @@ Manning Publications Co.
 </style:master-page>
 </office:master-styles>
 </office:document-styles>
+
+'''
+
+# Temporary style info:
+
+'''
 
 '''
