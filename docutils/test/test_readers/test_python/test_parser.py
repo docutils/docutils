@@ -417,21 +417,38 @@ def f(a, b):
             <Parameter lineno="1" name="a">
             <Parameter lineno="1" name="b">
 '''],
-# ['''\
-# def f(a=None, b=1):
-#     local = 1
-# ''',
-# '''\
-# <Module filename="test data">
-#     <Function lineno="1" name="f">
-#         <ParameterList lineno="1">
-#             <Parameter lineno="1" name="a">
-#                 <Default lineno="1">
-#                     None
-#             <Parameter lineno="1" name="b">
-#                 <Default lineno="1">
-#                     1
-# '''],
+['''\
+def f(a=None, b=1):
+    local = 1
+''',
+'''\
+<Module filename="test data">
+    <Function lineno="1" name="f">
+        <ParameterList lineno="1">
+            <Parameter lineno="1" name="a">
+                <Default lineno="1">
+                    None
+            <Parameter lineno="1" name="b">
+                <Default lineno="1">
+                    1
+'''],
+['''\
+def f(a, (b, c, d)=range(3),
+      e=None):
+    local = 1
+''',
+'''\
+<Module filename="test data">
+    <Function lineno="1" name="f">
+        <ParameterList lineno="1">
+            <Parameter lineno="1" name="a">
+            <ParameterTuple lineno="1" names="(b, c, d)">
+                <Default lineno="1">
+                    range(3)
+            <Parameter lineno="1" name="e">
+                <Default lineno="1">
+                    None
+'''],
 ['''\
 def f(*args):
     local = 1
@@ -452,36 +469,47 @@ def f(**kwargs):
         <ParameterList lineno="1">
             <ExcessKeywordArguments lineno="1" name="kwargs">
 '''],
-# ['''\
-# def f(a, b=None, *args, **kwargs):
-#     local = 1
-# ''',
-# '''\
-# <Module filename="test data">
-#     <Function lineno="1" name="f">
-#         <ParameterList lineno="1">
-#             <Parameter lineno="1" name="a">
-#             <Parameter lineno="1" name="b">
-#                 <Default lineno="1">
-#                     None
-#             <ExcessPositionalArguments lineno="1" name="args">
-#             <ExcessKeywordArguments lineno="1" name="kwargs">
-# '''],
-# ['''\
-# def f():
-#     pass
-# f.attrib = 1
-# """f.attrib's docstring"""
-# ''', # "
-# '''\
-# <Module filename="test data">
-#     <Function lineno="1" name="f">
-#         <Attribute lineno="3" name="attrib">
-#             <Expression lineno="3">
-#                 1
-#             <Docstring lineno="4">
-#                 f.attrib's docstring
-# '''], # '
+['''\
+def f(a, b=None, *args, **kwargs):
+    local = 1
+''',
+'''\
+<Module filename="test data">
+    <Function lineno="1" name="f">
+        <ParameterList lineno="1">
+            <Parameter lineno="1" name="a">
+            <Parameter lineno="1" name="b">
+                <Default lineno="1">
+                    None
+            <ExcessPositionalArguments lineno="1" name="args">
+            <ExcessKeywordArguments lineno="1" name="kwargs">
+'''],
+['''\
+def f():
+    pass
+f.attrib = 1
+"""f.attrib's docstring"""
+''', # "
+# @@@ When should the Attribute move inside the Function?
+'''\
+<Module filename="test data">
+    <Function lineno="1" name="f">
+    <Attribute lineno="3" name="f.attrib">
+        <Expression lineno="3">
+            1
+        <Docstring lineno="4">
+            f.attrib's docstring
+'''], # '
+['''\
+def f():
+    def g():
+        pass
+    local = 1
+''',
+'''\
+<Module filename="test data">
+    <Function lineno="1" name="f">
+'''],
 ]
 
 totest['ignore'] = [
