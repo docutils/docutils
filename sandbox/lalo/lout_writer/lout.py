@@ -155,6 +155,32 @@ extend @BasicSetup @DocumentSetup
     }
 ''' # the @SideBar command
 
+_book_options = {
+    'title': '@Title',
+    'author': '@Author',
+    'version': '@Edition',
+    'organization': '@Publisher',
+    'beforetitlepage': '@BeforeTitlePage',
+    'ontitlepage': '@OnTitlePage',
+    'aftertitlepage': '@AfterTitlePage',
+    'copyright': '@AfterTitlePage',
+    'atend': '@AtEnd',
+    'initialfont': '@InitialFont',
+    'initialbreak': '@InitialBreak',
+    'initialspace': '@InitialSpace',
+    'initiallanguage': '@InitialLanguage',
+    'pageorientation': '@PageOrientation',
+    'pageheaders': '@PageHeaders',
+    'columnnumber': '@ColumnNumber',
+    'firstpagenumber': '@FirstPageNumber',
+    'introfirstpagenumber': '@IntroFirstPageNumber',
+    'optimizepages': '@OptimizePages',
+    'glossarytext': '@GlossaryText',
+    'indextext': '@IndexText',
+    'indexatext': '@IndexAText',
+    'indexbtext': '@IndexBText',
+}
+
 class LoutTranslator(nodes.NodeVisitor):
 
     """
@@ -433,6 +459,10 @@ class LoutTranslator(nodes.NodeVisitor):
         pass
 
     def visit_docinfo_item(self, node, name, meta=1):
+        if self.docinfo.get(name):
+            self.docinfo[name] = ', '.join((self.docinfo[name], node.astext()))
+        else:
+            self.docinfo[name] = node.astext()
         raise nodes.SkipNode
         self.body.append(self.starttag(node, 'tr', ''))
         self.body.append('\n@CurveBox paint { red } { th class="docinfo-name" }%s:@CurveBox paint { red } { "/" th }\n@CurveBox paint { red } { td }\n'
@@ -469,7 +499,29 @@ class LoutTranslator(nodes.NodeVisitor):
             self.body = ["@SysInclude { book }\n",
                          "@Book\n"
                          "    @InitialLanguage { %s }\n"
-                         "//\n" % self.language_name]
+                         % self.language_name]
+            extra_docinfo = []
+            if self.docinfo.has_key('subtitle'):
+                title = self.encode(self.docinfo.get('title', ''))
+                subt = self.encode(self.docinfo['subtitle'])
+                del self.docinfo['title'], self.docinfo['subtitle']
+                self.body.append("    @Title {\n%s\n@LLP\n-6p @Font @II { %s }\n}\n" % (
+                    title, subt))
+            for name, value in self.docinfo.items():
+                key = name.lower()
+                if key in _book_options.keys():
+                    self.body.append("    %s { %s }\n" % (_book_options[key],
+                                                        self.encode(value)))
+                else:
+                    if name == key:
+                        name = name.capitalize()
+                    extra_docinfo.append('%s: %s' % (name, self.encode(value)))
+            if extra_docinfo:
+                if not self.docinfo.has_key('beforetitlepage'):
+                    self.body.append("    @BeforeTitlePage { %s }\n" % ('\n'.join(extra_docinfo)))
+                elif not self.docinfo.has_key('aftertitlepage'):
+                    self.body.append("    @AfterTitlePage { %s }\n" % ('\n'.join(extra_docinfo)))
+            self.body.append("//\n")
             if self.preface:
                 self.body.extend(self.preface)
             if self.introduction:
@@ -546,7 +598,9 @@ class LoutTranslator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_field(self, node):
-        pass
+        if isinstance(node.parent, nodes.docinfo):
+            self.docinfo[node[0].astext()] = node[1].astext()
+            raise nodes.SkipNode
 
     def depart_field(self, node):
         pass
@@ -843,7 +897,7 @@ class LoutTranslator(nodes.NodeVisitor):
     def depart_reference(self, node):
         if node.has_key('refid'):
             # FIXME should be a setting
-            self.body.append('(p. @PageOf {%s})' % node['refid'])
+            self.body.append(' (p. @PageOf {%s})' % node['refid'])
         self.body.append(' }')
 
     def visit_revision(self, node):
