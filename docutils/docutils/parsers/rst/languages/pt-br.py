@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 # Author: David Goodger
 # Contact: goodger@users.sourceforge.net
 # Revision: $Revision$
