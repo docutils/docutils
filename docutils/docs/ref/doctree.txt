@@ -44,8 +44,8 @@ ReStructuredText Primer`_.  For complete technical details, see the
 .. _Introducing the Extensible Markup Language (XML):
    http://xml.coverpages.org/xmlIntro.html
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
-.. _A ReStructuredText Primer: ../docs/rst/quickstart.html
-.. _reStructuredText Markup Specification: rst/reStructuredText.html
+.. _A ReStructuredText Primer: ../user/rst/quickstart.html
+.. _reStructuredText Markup Specification: rst/restructuredtext.html
 
 
 -------------------
