@@ -314,8 +314,11 @@ __ rst/alternatives.html#or-not-to-do
   non-alphanumeric non-whitespace character.
 
 - Decide whether or not to implement Simon Budig's "inline external
-  targets" syntax idea, and if so, how (pragma directive or full-blown
-  addition to the spec & parser).
+  targets" syntax idea, and if so, how:
+
+  - regular directive affecting its indented text block
+  - pragma directive affecting the entire document
+  - or a full-blown addition to the spec & parser
 
 - Add support for pragma (syntax-altering) directives.
 
@@ -882,6 +885,20 @@ structure is recommended::
                 setup.py    # Use Distutils to install the component
                             # code and tools/ files into the right
                             # places in Docutils.
+
+
+Release Checklist
+=================
+
+* Edit the version number in the following files:
+
+  + docutils:
+
+    - setup.py
+    - HISTORY.txt
+    - docutils/__init__.py
+
+  + web: index.txt
 
 
 ..

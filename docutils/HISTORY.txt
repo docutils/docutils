@@ -34,6 +34,22 @@ hard cash :-).)  Hopefully I haven't forgotten anyone or misspelled
 any names; apologies (and please let me know!) if I have.
 
 
+Changes Since 0.2
+========================
+
+* docs/tools.txt:
+
+  - Added "silent" setting for ``buildhtml.py``.
+
+* tools/buildhtml.py:
+
+  - Added "--silent" option.
+
+* tools/pep2html.py:
+
+  - Made ``argv`` a parameter to ``main()``.
+
+
 Release 0.2 (2002-07-31)
 ========================
 
