@@ -40,7 +40,7 @@ goes something like this:
    - merge hyperlinks
    - merge namespaces
    - create various sections like "Module Attributes", "Functions",
-     "Classes", "Class Attributes", etc.; see spec/ppdi.dtd
+     "Classes", "Class Attributes", etc.; see pysource.dtd_
    - convert the above special sections to ordinary doctree nodes
 
 4. Run transforms on the combined doctree.  Examples: resolving

@@ -360,10 +360,10 @@ you wish to supply additional information, you may::
      :scale: 50
      :alt: alternate text
 
-See the full image directive documentation__ for more info.
+See the full `image directive documentation`__ for more info.
 
-__ ../../spec/rst/directives.html
-__ ../../spec/rst/directives.html#images
+__ ../../ref/rst/directives.html
+__ ../../ref/rst/directives.html#images
 
 
 What Next?

@@ -18,7 +18,7 @@ is represented by abstract base classes (`Root`, `Structural`, `Body`,
 ``isinstance(node, base_class)`` to determine the position of the node in the
 hierarchy.
 
-.. _DTD: http://docutils.sourceforge.net/spec/docutils.dtd
+.. _DTD: http://docutils.sourceforge.net/docs/ref/docutils.dtd
 """
 
 __docformat__ = 'reStructuredText'

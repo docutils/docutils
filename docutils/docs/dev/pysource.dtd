@@ -14,7 +14,8 @@ below).
 
 More information about this DTD and the Docutils project can be found
 at http://docutils.sourceforge.net/.  The latest version of this DTD
-is available from http://docutils.sourceforge.net/spec/pysource.dtd.
+is available from
+http://docutils.sourceforge.net/docs/dev/pysource.dtd.
 
 The formal public identifier for this DTD is::
 
@@ -45,7 +46,7 @@ The formal public identifier for this DTD is::
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This DTD extends the Docutils Generic DTD, available from
-http://docutils.sourceforge.net/spec/docutils.dtd.
+http://docutils.sourceforge.net/docs/ref/docutils.dtd.
 -->
 
 <!ENTITY % docutils PUBLIC
