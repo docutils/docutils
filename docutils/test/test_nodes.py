@@ -142,7 +142,7 @@ class MiscTests(unittest.TestCase):
                           [e[0], e[0][0], e[0][1], e[0][1][0]])
         self.assertEquals(getlist(e[0][0], descend=0, ascend=0), [e[0][1]])
         self.testlist = e[0:2]
-        self.assertEquals(getlist(e, cond=self.not_in_testlist),
+        self.assertEquals(getlist(e, condition=self.not_in_testlist),
                           [e[0][0], e[0][1], e[0][1][0], e[2]])
 
     def not_in_testlist(self, x):
