@@ -816,6 +816,40 @@ __ rst/alternatives.html#or-not-to-do
 
 * Could the "break" concept above be extended to inline forms?
   E.g. "^L" in the middle of a sentence could cause a line break.
+  Only recognize it at the end of a line (i.e., "\f\n")?
+
+  Or is formfeed inappropriate?  Perhaps vertical tab ("\v"), but even
+  that's a stretch.  Can't use carriage returns, since they're
+  commonly used for line endings.
+
+* Allow a "::"-only paragraph (first line, actually) to introduce a
+  literal block without a blank line?  (Idea from Paul Moore.) ::
+
+      ::
+          This is a literal block
+
+  Is indentation enough to make the separation between a paragraph
+  which contains just a ``::`` and the literal text unambiguous?
+  There's one problem with this concession.  What if one wants a
+  definition list item which defines the term "::"?  We'd have to
+  escape it.  Currenty, "\::" doesn't work (although it should;
+  **bug**), and ":\:" is misinterpreted as a field name (name "\";
+  also a **bug**).  Assuming these bugs are squashed, I suppose it's a
+  useful special case.  It would only be reasonable to apply it to
+  "::"-only paragraphs though.  I think the blank line is visually
+  necessary if there's text before the "::":
+
+      The text in this paragraph needs separation
+      from the literal block following::
+          This doesn't look right.
+
+  Another idea.  Would it be worthwhile to allow literal blocks to
+  begin without a newline after the "::"?  Example:
+
+      ::  while True:
+              print 'hello world'
+
+  Perhaps.  Perhaps not.
 
 
 Directives
@@ -1842,6 +1876,9 @@ create their own subdirectory (suggested name: SourceForge ID,
 nickname, or given name + family initial).  It's OK to make a mess!
 But please, play nice.
 
+Please update the `sandbox README`_ file with links and a brief
+description of your work.
+
 In order to minimize the work necessary for others to install and try
 out new, experimental components, the following sandbox directory
 structure is recommended::
@@ -1871,6 +1908,8 @@ structure is recommended::
 Some sandbox projects are destined to become Docutils components once
 completed.  Others, such as add-ons to Docutils or applications of
 Docutils, graduate to become `parallel projects`_.
+
+.. _sandbox README: http://docutils.sf.net/sandbox/README.html
 
 
 .. _parallel project:
