@@ -50,13 +50,17 @@ To do
 
 * tablewidth: the real problem is: using the proportion of the rst-table is only
   a little clue but e.g. on description tables usually the left side could be
-	made narrower
-	1. rough guessing: the rst file has 80 columns, latex gives me 100 so make it 
-	   narrowe to have the same proportion respectively to the page.
-		 means: table_width = sum(colwidth)
-		   table_width_for_latex = table_width / 80
-	2. process the table and try to guess which of the columns is the narrowest 
-	   (contains only one liner/word) and make this one auto_width (center/left/right?).
+  made narrower
+
+  1. rough guessing: the rst file has 80 columns, latex gives me 100 so make it 
+     narrowe to have the same proportion respectively to the page.
+     means::
+
+       table_width = sum(colwidth)
+       table_width_for_latex = table_width / 80
+
+  2. process the table and try to guess which of the columns is the narrowest 
+     (contains only one liner/word) and make this one auto_width (center/left/right?).
 
 * pep headers come in different ?
 
