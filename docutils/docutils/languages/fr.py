@@ -43,7 +43,7 @@ bibliographic_fields = {
       'contact': 'contact',
       'version': 'version',
       'r\u00e9vision': 'revision',
-      'status': 'status',
+      'statut': 'status',
       'date': 'date',
       'copyright': 'copyright',
       'd\u00e9dicace': 'dedication',
