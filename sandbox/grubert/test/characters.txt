@@ -53,3 +53,8 @@ Example
 
 This is not writer but reader specific.
 
+hash # in section title
+-----------------------
+
+with pdflatex.
+

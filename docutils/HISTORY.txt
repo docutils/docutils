@@ -99,6 +99,7 @@ Specific:
   - Replace ``--`` in literal by ``-{}-`` because fontencoding T1 has endash.
   - Replave ``_`` in literal by an underlined blank, because it has the correct
     width.
+  - Fix: encode pdfbookmark titles, ``#`` broke pdflatex.
 
 * docs/index.txt: "Docutils Project Documentation Overview", added to
   project.

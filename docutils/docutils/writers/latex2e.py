@@ -1810,7 +1810,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 if l>0:
                     l = l-1
                 # pdftex does not like "_" subscripts in titles
-                text = node.astext().replace("_","\\_")
+                text = self.encode(node.astext())
                 self.body.append('\\pdfbookmark[%d]{%s}{%s}\n' % \
                         (l,text,node.parent['id']))
 
