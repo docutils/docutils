@@ -290,10 +290,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_docinfo(self, node):
         self.docinfo.append('\\end{tabular}\n')
         self.body = self.docinfo + self.body
+        # clear docinfo, so field names are no longer appended.
+        self.docinfo = None
 
     def visit_docinfo_item(self, node, name):
         # should we stick to latex or docutils.
-        # latex article has its own handling of date and author
+        # latex article has its own handling of date and author.
+        # If we use it we get latexs language handling.
         latex_docinfo = 0
         
         if name == 'abstract':
@@ -308,13 +311,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # BUG: time portion is not included in date 
             self.head.append('\\date{%s}\n' % self.attval(node.astext()))
             raise nodes.SkipNode
-        elif latex_docinfo and name == 'author':
+        ## elif latex_docinfo and name == 'author':
+        elif name == 'author':
             self.head.append('\\author{%s}\n' % self.attval(node.astext()))
             raise nodes.SkipNode
         else:
             ##self.head.append('\\%s{%s}\n'
             ##            % (name, self.attval(node.astext())))
-            self.docinfo.append('\\textbf{:%s:} &\n\t' % name)
+            self.docinfo.append('\\textbf{%s} &\n\t' % name)
             self.context.append(' \\\\\n')
             self.context.append(self.docinfo)
             self.context.append(len(self.body))
@@ -412,7 +416,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_field_body(self, node):
         ##self.body.append('%[visit_field_body]\n')
-        pass
+        # BUG attach as text we loose references.
+        if self.docinfo:
+            self.docinfo.append('%s \\\\\n' % node.astext())
+            raise nodes.SkipNode
 
     def depart_field_body(self, node):
         ##self.body.append('%[depart_field_body]\n')
@@ -427,10 +434,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_field_name(self, node):
-        self.body.append('\\textbf{:')
+        # BUG this duplicates docinfo_item
+        if self.docinfo:
+            self.docinfo.append('\\textbf{%s} &\n\t' % node.astext())
+            raise nodes.SkipNode
+        else:
+            self.body.append('\\textbf{')
 
     def depart_field_name(self, node):
-        self.body.append(':}')
+        if not self.docinfo:
+            self.body.append(':}')
 
     def visit_figure(self, node):
         self.body.append( '\\begin{figure}\n' )

@@ -12,3 +12,7 @@ Rev. 2002-09-26
   the backslash was not escaped, but as i do it becomes a newline.
   We might need a latin-1 encoding of the text and put it into
   verbatim.
+
+* additional docinfo items: the field_body is inserted as text.
+
+* docinfo item names must be translated.  
