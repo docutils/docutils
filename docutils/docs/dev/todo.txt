@@ -1662,6 +1662,13 @@ Unimplemented Transforms
 HTML Writer
 ===========
 
+* Test with modern browsers if it's possible to remove the "name"
+  attributes, which currently serve only for backwards-compatibility
+  to browsers which aren't XHTML compliant.
+
+  If all browsers support the "id" attribute, remove the "name"
+  attributes.
+
 * Add more support for <link> elements, especially for navigation
   bars.
 
