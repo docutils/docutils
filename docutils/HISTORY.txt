@@ -19,13 +19,13 @@ and related projects:
 
     Aahz, David Abrahams, David Ascher, Fred Bremmer, Ian Bicking,
     Martin Blais, Simon Budig, Bill Bumgarner, Brett Cannon, Adam
-    Chodorowski, Jason Diamond, Fred Drake, Dethe Elza, Benja
-    Fallenstein, fantasai, Stefane Fermigier, Jim Fulton, Peter Funk,
-    Jorge Gonzalez, Engelbert Gruber, Simon Hefti, Doug Hellmann,
-    Juergen Hermann, Michael Hudson, Jeremy Hylton, Tony Ibbs, Alan
-    Jaffray, Dmitry Jemerov, Richard Jones, Andreas Jung, Garth Kidd,
-    Nicola Larosa, Daniel Larsson, Marc-Andre Lemburg, Julien
-    Letessier, Wolfgang Lipp, Edward Loper, Dallas Mahrt, Ken
+    Chodorowski, Jason Diamond, Fred Drake, Dethe Elza, Marcus Ertl,
+    Benja Fallenstein, fantasai, Stefane Fermigier, Jim Fulton, Peter
+    Funk, Jorge Gonzalez, Engelbert Gruber, Simon Hefti, Doug
+    Hellmann, Juergen Hermann, Michael Hudson, Jeremy Hylton, Tony
+    Ibbs, Alan Jaffray, Dmitry Jemerov, Richard Jones, Andreas Jung,
+    Garth Kidd, Nicola Larosa, Daniel Larsson, Marc-Andre Lemburg,
+    Julien Letessier, Wolfgang Lipp, Edward Loper, Dallas Mahrt, Ken
     Manheimer, Vasko Miroslav, Skip Montanaro, Paul Moore, Nigel
     W. Moriarty, Mark Nodine, Patrick K. O'Brien, Michel Pelletier,
     Sam Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim, Brett g
@@ -127,6 +127,7 @@ Specific:
   - Allow for Unicode I/O with an explicit "unicode" encoding.
   - Added ``Output.encode()``.
   - Deprecated reliance on runtime settings; pass encoding directly.
+  - Recognize Unicode strings in ``Input.decode()``.
 
 * docutils/nodes.py:
 
