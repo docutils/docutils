@@ -927,6 +927,7 @@ class document(Root, Structural, Element):
 
 class title(Titular, PreBibliographic, TextElement): pass
 class subtitle(Titular, PreBibliographic, TextElement): pass
+class rubric(Titular, TextElement): pass
 
 
 # ========================
@@ -1045,6 +1046,7 @@ class literal_block(General, FixedTextElement): pass
 class doctest_block(General, FixedTextElement): pass
 class line_block(General, FixedTextElement): pass
 class block_quote(General, Element): pass
+class attribution(Part, TextElement): pass
 class attention(Admonition, Element): pass
 class caution(Admonition, Element): pass
 class danger(Admonition, Element): pass
@@ -1054,6 +1056,7 @@ class note(Admonition, Element): pass
 class tip(Admonition, Element): pass
 class hint(Admonition, Element): pass
 class warning(Admonition, Element): pass
+class admonition(Admonition, Element): pass
 class comment(Special, Invisible, PreBibliographic, FixedTextElement): pass
 class substitution_definition(Special, Invisible, TextElement): pass
 class target(Special, Invisible, Inline, TextElement, Targetable): pass
@@ -1182,6 +1185,8 @@ class substitution_reference(Inline, TextElement): pass
 class title_reference(Inline, TextElement): pass
 class abbreviation(Inline, TextElement): pass
 class acronym(Inline, TextElement): pass
+class superscript(Inline, TextElement): pass
+class subscript(Inline, TextElement): pass
 
 
 class image(General, Inline, TextElement):
@@ -1190,6 +1195,7 @@ class image(General, Inline, TextElement):
         return self.get('alt', '')
 
 
+class inline(Inline, TextElement): pass
 class problematic(Inline, TextElement): pass
 class generated(Inline, TextElement): pass
 
@@ -1200,7 +1206,8 @@ class generated(Inline, TextElement): pass
 
 node_class_names = """
     Text
-    abbreviation acronym address attention author authors
+    abbreviation acronym address admonition attention attribution author
+        authors
     block_quote bullet_list
     caption caution citation citation_reference classifier colspec comment
         contact copyright
@@ -1211,15 +1218,15 @@ node_class_names = """
         footnote footnote_reference
     generated
     header hint
-    image important
+    image important inline
     label legend line_block list_item literal literal_block
     note
     option option_argument option_group option_list option_list_item
         option_string organization
     paragraph pending problematic
-    raw reference revision row
-    section sidebar status strong substitution_definition
-        substitution_reference subtitle system_message
+    raw reference revision row rubric
+    section sidebar status strong subscript substitution_definition
+        substitution_reference subtitle superscript system_message
     table target tbody term tgroup thead tip title title_reference topic
         transition
     version
@@ -1421,9 +1428,9 @@ def make_id(string):
     Convert `string` into an identifier and return it.
 
     Docutils identifiers will conform to the regular expression
-    ``[a-z][-a-z0-9]*``. For CSS compatibility, identifiers (the "class" and
-    "id" attributes) should have no underscores, colons, or periods. Hyphens
-    may be used.
+    ``[a-z](-?[a-z0-9]+)*``.  For CSS compatibility, identifiers (the "class"
+    and "id" attributes) should have no underscores, colons, or periods.
+    Hyphens may be used.
 
     - The `HTML 4.01 spec`_ defines identifiers based on SGML tokens:
 
@@ -1446,7 +1453,7 @@ def make_id(string):
     these characters. They should be replaced with hyphens ("-"). Combined
     with HTML's requirements (the first character must be a letter; no
     "unicode", "latin1", or "escape" characters), this results in the
-    ``[a-z][-a-z0-9]*`` pattern.
+    ``[a-z](-?[a-z0-9]+)*`` pattern.
 
     .. _HTML 4.01 spec: http://www.w3.org/TR/html401
     .. _CSS1 spec: http://www.w3.org/TR/REC-CSS1
