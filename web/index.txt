@@ -51,7 +51,7 @@ __ http://docstring.sourceforge.net/
 
 Docutils currently consists of a reStructuredText_ parser, a
 standalone file reader, and an HTML writer, plus a pseudo-XML writer
-for testing purposes.  A PEP_ reader & processing system is being
+for testing purposes.  A PEP__ reader & processing system is being
 developed, a PDF writer has been started, and a Python source reader
 (docstring extraction with context) is also under way.  There is a lot
 of design and implementation work to do, which could greatly benefit
@@ -60,6 +60,8 @@ is brimming over with ideas.
 
 This project should be considered highly experimental; we're learning
 as we go.  APIs are subject to change at any time.
+
+__ `PEPs (Python Enhancement Proposals)`_
 
 
 Requirements
@@ -192,11 +194,11 @@ Docutils Internals
 - `Python Source Reader`__ (incomplete)
 - `Docstring Semantics`__ (incomplete)
 - `Docutils Generic DTD`__
-- `OASIS XML Exchange Table Model Declaration Module`__
+- `OASIS XML Exchange Table Model Declaration Module`__ (CALS tables
+  DTD module)
 - `Docutils Python DTD`__ (experimental)
 
 __ spec/notes.html
-.. _To Do list: spec/notes.html#to-do
 __ spec/notes.html#project-policies
 __ spec/doctree.txt
 __ spec/pysource.html
@@ -275,7 +277,7 @@ Project Links
   __ http://sourceforge.net/mail/?group_id=38414
   __ http://sourceforge.net/news/?group_id=38414
 
-  __ `browse the CVS repository`_
+  __ CVS_
 
   __ Doc-SIG_
 
@@ -292,8 +294,10 @@ Project Links
 .. _project files page:
    http://sourceforge.net/project/showfiles.php?group_id=38414
 .. _Anonymous CVS access: http://sourceforge.net/cvs/?group_id=38414
+.. _CVS:
 .. _browse the CVS repository:
    http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/docutils/
+.. _To Do list: spec/notes.html#to-do
 .. _README: README.html
 .. _HISTORY: HISTORY.html
 .. _master repository:
