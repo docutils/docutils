@@ -1,5 +1,5 @@
 PEP: 287
-Title: reStructuredText Standard Docstring Format
+Title: reStructuredText Docstring Format
 Version: $Revision$
 Last-Modified: $Date$
 Author: goodger@users.sourceforge.net (David Goodger)
@@ -23,11 +23,11 @@ Abstract
     plaintext markup syntax.
 
     Only the low-level syntax of docstrings is addressed here.  This
-    PEP is not concerned with docstring semantics or processing at
-    all.  Nor is it an attempt to deprecate pure plaintext docstrings,
-    which are always going to be legitimate.  The reStructuredText
-    markup is an alternative for those who want more expressive
-    docstrings.
+    PEP is not concerned with docstring semantics or processing at all
+    (see PEP 256 for a "Roadmap to the Doctring PEPs").  Nor is it an
+    attempt to deprecate pure plaintext docstrings, which are always
+    going to be legitimate.  The reStructuredText markup is an
+    alternative for those who want more expressive docstrings.
 
 
 Benefits
@@ -48,26 +48,26 @@ Benefits
     and software systems; readers are only meant to see the processed
     form, either on paper or via browser software.  ReStructuredText
     is different: it is intended to be easily readable in source form,
-    without prior knowledge of the markup.   ReStructuredText is
+    without prior knowledge of the markup.  ReStructuredText is
     entirely readable in plaintext format, and many of the markup
     forms match common usage (e.g., ``*emphasis*``), so it reads quite
     naturally.  Yet it is rich enough to produce complex documents,
     and extensible so that there are few limits.  Of course, to write
-    reStructuredText documents prior knowledge is required.
+    reStructuredText documents some prior knowledge is required.
 
     The reStructuredText parser is available now.  The Docutils
     project is at the point where standalone reStructuredText
     documents can be converted to HTML; other output format writers
     will become available over time.  Work is progressing on a Python
-    source "Reader" which will implement auto-documentation.  Authors
-    of existing auto-documentation tools are encouraged to integrate
-    the reStructuredText parser into their projects, or better yet, to
-    join forces to produce a world-class toolset for the Python
-    standard library.
+    source "Reader" which will implement auto-documentation from
+    docstrings.  Authors of existing auto-documentation tools are
+    encouraged to integrate the reStructuredText parser into their
+    projects, or better yet, to join forces to produce a world-class
+    toolset for the Python standard library.
 
     Tools will become available in the near future, which will allow
     programmers to generate HTML for online help, XML for multiple
-    purposes, and eventually PDF/DocBook/LaTeX for printed
+    purposes, and eventually PDF, DocBook, and LaTeX for printed
     documentation, essentially "for free" from the existing
     docstrings.  The adoption of a standard will, at the very least,
     benefit docstring processing tools by preventing further
@@ -76,7 +76,7 @@ Benefits
     Eventually PyDoc, the one existing standard auto-documentation
     tool, could have reStructuredText support added.  In the interim
     it will have no problem with reStructuredText markup, since it
-    treats all docstrings as plaintext.
+    treats all docstrings as preformatted plaintext.
 
 
 Goals
@@ -166,12 +166,12 @@ Rationale
     others):
 
     1. Docstrings written within Python code are available from within
-       the interactive interpreter, and can be 'print'ed.  Thus the
+       the interactive interpreter, and can be "print"ed.  Thus the
        use of plaintext for easy readability.
 
     2. Programmers want to add structure to their docstrings, without
        sacrificing raw docstring readability.  Unadorned plaintext
-       cannot be transformed ('up-translated') into useful structured
+       cannot be transformed ("up-translated") into useful structured
        formats.
 
     3. Explicit markup (like XML or TeX) is widely considered
@@ -225,7 +225,7 @@ Rationale
       Early on, variants of Setext (Structure Enhanced Text),
       including Zope Corp's StructuredText, were proposed for Python
       docstring formatting.  Hereafter these variants will
-      collectively be call 'STexts'.  STexts have the advantage of
+      collectively be called "STexts".  STexts have the advantage of
       being easy to read without special knowledge, and relatively
       easy to write.
 
@@ -577,11 +577,14 @@ Questions & Answers
            This PEP proposes adding `frungible doodads`_ to the core.
            It extends PEP 9876 [#pep9876]_ via the BCA [#]_ mechanism.
 
+           ...
+    
+           References & Footnotes
+           ======================
+
            .. _frungible doodads: http://www.example.org/
 
-           .. [#pep9876] `PEP 9876`__, Let's Hope We Never Get Here
-
-           __ http://www.python.org/peps/pep-9876.html
+           .. [#pep9876] PEP 9876, Let's Hope We Never Get Here
 
            .. [#] "Bogus Complexity Addition"
 
@@ -597,7 +600,7 @@ Questions & Answers
        URL references can be named ("frungible doodads"), and can be
        referenced from multiple places in the document without
        additional definitions.  When converted to HTML, references
-       will be replaced with inline hyperlinks (HTML <A> tags).  The
+       will be replaced with inline hyperlinks (HTML <a> tags).  The
        two footnotes are automatically numbered, so they will always
        stay in sync.  The first footnote also contains an internal
        reference name, "pep9876", so it's easier to see the connection
@@ -610,7 +613,7 @@ Questions & Answers
 
            It extends PEP 9876 [PEP9876]_ ...
 
-           .. [PEP9876] `PEP 9876`_, Let's Hope We Never Get Here
+           .. [PEP9876] PEP 9876, Let's Hope We Never Get Here
 
        Footnotes are numbered, whereas citations use text for their
        references.
@@ -779,8 +782,9 @@ References & Footnotes
 
     [22] http://docutils.sourceforge.net/
 
-    [23] From "The Zen of Python (by Tim Peters)",
-         http://www.python.org/doc/Humor.html#zen (or ``import this``)
+    [23] From "The Zen of Python (by Tim Peters)"
+         (http://www.python.org/doc/Humor.html#zen or just
+         "``import this``" in Python)
 
     [24] PEP 216, Docstring Format, Zadka
          http://www.python.org/peps/pep-0216.html
