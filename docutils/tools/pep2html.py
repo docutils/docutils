@@ -31,8 +31,6 @@ Options:
 The optional argument `peps' is a list of either pep numbers or .txt files.
 """
 
-# Requires Python 2.2
-
 import sys
 import os
 import re
@@ -42,13 +40,9 @@ import getopt
 import errno
 import random
 import time
-from email.Utils import parseaddr
 
-try:
-    import docutils
-except ImportError:
-    docutils = None
-
+REQUIRES = {'python': '2.2',
+            'docutils': '0.2.1'}
 PROGRAM = sys.argv[0]
 RFCURL = 'http://www.faqs.org/rfcs/rfc%d.html'
 PEPURL = 'pep-%04d.html'
@@ -134,6 +128,7 @@ def linkemail(address, pepno):
 
 
 def fixfile(inpath, input_lines, outfile):
+    from email.Utils import parseaddr
     basename = os.path.basename(inpath)
     infile = iter(input_lines)
     # convert plain text pep to minimal XHTML markup
@@ -303,10 +298,11 @@ def fix_rst_pep(inpath, input_lines, outfile):
         options = pub.set_options()
     options._source = inpath
     options._destination = outfile.name
-    pub.source = io.StringIO(
+    pub.source = io.StringInput(
         options, source=''.join(input_lines), source_path=inpath)
-    pub.destination = io.FileIO(
-        options, destination=outfile, destination_path=outfile.name)
+    pub.destination = io.FileOutput(
+        options, destination=outfile, destination_path=outfile.name,
+        autoclose=0)
     pub.publish()
 
 
@@ -350,9 +346,6 @@ def find_pep(pep_str):
     num = int(pep_str)
     return "pep-%04d.txt" % num
 
-PEP_TYPE_DISPATCH = {'text/plain': fixfile,
-                     'text/x-rst': fix_rst_pep}
-
 def make_html(inpath, verbose=0):
     input_lines = get_input_lines(inpath)
     pep_type = get_pep_type(input_lines)
@@ -365,11 +358,8 @@ def make_html(inpath, verbose=0):
                               % (inpath, pep_type))
         sys.stdout.flush()
         return None
-    elif pep_type == 'text/x-rst' and not docutils:
-        print >> sys.stderr, ('Error: Docutils not present for "%s" PEP file '
-                              '%s.  See README.txt for installation.'
-                              % (pep_type, inpath))
-        sys.stdout.flush()
+    elif PEP_TYPE_DISPATCH[pep_type] == None:
+        pep_type_error(inpath, pep_type)
         return None
     outpath = os.path.splitext(inpath)[0] + ".html"
     if verbose:
@@ -401,6 +391,42 @@ def push_pep(htmlfiles, txtfiles, username, verbose):
         sys.exit(rc)
 
 
+PEP_TYPE_DISPATCH = {'text/plain': fixfile,
+                     'text/x-rst': fix_rst_pep}
+PEP_TYPE_MESSAGES = {}
+
+def check_requirements():
+    # Check Python:
+    try:
+        from email.Utils import parseaddr
+    except ImportError:
+        PEP_TYPE_DISPATCH['text/plain'] = None
+        PEP_TYPE_MESSAGES['text/plain'] = (
+            'Python %s or better required for "%%(pep_type)s" PEP '
+            'processing; %s present (%%(inpath)s).'
+            % (REQUIRES['python'], sys.version.split()[0]))
+    # Check Docutils:
+    try:
+        import docutils
+    except ImportError:
+        PEP_TYPE_DISPATCH['text/x-rst'] = None
+        PEP_TYPE_MESSAGES['text/x-rst'] = (
+            'Docutils not present for "%(pep_type)s" PEP file %(inpath)s.  '
+            'See README.txt for installation.')
+    else:
+        if docutils.__version__ < REQUIRES['docutils']:
+            PEP_TYPE_DISPATCH['text/x-rst'] = None
+            PEP_TYPE_MESSAGES['text/x-rst'] = (
+                'Docutils must be reinstalled for "%%(pep_type)s" PEP '
+                'processing (%%(inpath)s).  Version %s or better required; '
+                '%s present.  See README.txt for installation.'
+                % (REQUIRES['docutils'], docutils.__version__))
+
+def pep_type_error(inpath, pep_type):
+    print >> sys.stderr, 'Error: ' + PEP_TYPE_MESSAGES[pep_type] % locals()
+    sys.stdout.flush()
+
+
 def browse_file(pep):
     import webbrowser
     file = find_pep(pep)
@@ -425,6 +451,8 @@ def main(argv=None):
     username = ''
     verbose = 1
     browse = 0
+
+    check_requirements()
 
     if argv is None:
         argv = sys.argv[1:]
