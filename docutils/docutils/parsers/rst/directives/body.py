@@ -15,24 +15,6 @@ import sys
 from docutils import nodes
 from docutils.parsers.rst import directives
 
-# Directive Handler Functions
-#
-# What they do is blah blah
-#
-# They are called by blah blah after being looked up blah blah
-#
-# Parameter      Required Type Role
-# ============== ============= =============================
-# name           str           ???
-# arguments      ???           ???
-# options        ???           ???
-# content        ???           ???
-# lineno         ???           ???
-# content_offset ???           ???
-# block_text     ???           ???
-# state          ???           ???
-# state_machine  ???           ???
-# node_class     ???           ???
               
 def topic(name, arguments, options, content, lineno,
           content_offset, block_text, state, state_machine,
@@ -92,7 +74,7 @@ def line_block(name, arguments, options, content, lineno,
     text = '\n'.join(content)
     text_nodes, messages = state.inline_text(text, lineno)
     node = node_class(text, '', *text_nodes, **options)
-    node.line = content_offset
+    node.line = content_offset + 1
     return [node] + messages
 
 line_block.options = {'class': directives.class_option}
