@@ -39,6 +39,7 @@ contents_attribute_spec = {'depth': int,
                            'qa': unchanged}
 
 def contents(match, type_name, data, state, state_machine, attributes):
+    """Table of contents."""
     lineno = state_machine.abs_line_number()
     line_offset = state_machine.line_offset
     datablock, indent, offset, blank_finish = \
@@ -60,7 +61,7 @@ def contents(match, type_name, data, state, state_machine, attributes):
     else:
         messages = []
         title = None
-    pending = nodes.pending(parts.Contents, 'last reader', {'title': title},
+    pending = nodes.pending(parts.Contents, 'first writer', {'title': title},
                             blocktext)
     if attlines:
         success, data, blank_finish = state.parse_extension_attributes(
@@ -79,22 +80,11 @@ def contents(match, type_name, data, state, state_machine, attributes):
 sectnum_attribute_spec = {'depth': int}
 
 def sectnum(match, type_name, data, state, state_machine, attributes):
-    """
-    Parse the `.. sectnum::` directive.
-
-    The following attributes are supported:
-
-     - :depth:
-
-    The attributes can be specified in the lines following the directive,
-    or it is possible to specify one attribute in the same line as the
-    directive itself.
-    """
+    """Automatic section numbering."""
     lineno = state_machine.abs_line_number()
     line_offset = state_machine.line_offset
     datablock, indent, offset, blank_finish = \
           state_machine.get_first_known_indented(match.end(), until_blank=1)
-
     pending = nodes.pending(parts.SectNum, 'last reader', {})
     success, data, blank_finish = state.parse_extension_attributes(
           sectnum_attribute_spec, datablock, blank_finish)
@@ -105,6 +95,5 @@ def sectnum(match, type_name, data, state, state_machine, attributes):
               'Error in "%s" directive attributes at line %s:\n%s.'
               % (match.group(1), lineno, data), '')
         return [error], blank_finish
-
     state_machine.document.note_pending(pending)
     return [pending], blank_finish
