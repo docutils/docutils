@@ -15,10 +15,10 @@
     <!-- Caveat: if you're reading the HTML for the examples, -->
     <!-- beware that it was hand-generated, not by Docutils/ReST.  -->
 
-    <p align="right"><em><a href="http://docutils.sourceforge.net/docs/rst/quickref.html"
+    <p align="right"><em><a href="http://docutils.sourceforge.net/docs/user/rst/quickref.html"
     >http://docutils.sourceforge.net/docs/rst/quickref.html</a></em>
     <br align="right"><em>Being a cheat-sheet for reStructuredText</em>
-    <br align="right"><em>Updated 2004-05-15</em>
+    <br align="right"><em>Updated 2004-06-11</em>
 
     <blockquote>
       <p>Copyright: This document has been placed in the public domain.
@@ -717,28 +717,36 @@ unindented literal blocks:
       <td>
         <p>Grid table:</p>
         <table border="1">
-          <tr valign="top">
-        <th>Header 1
-        <th>Header 2
-        <th>Header 3
-          <tr>
-        <td>body row 1
-        <td>column 2
-        <td>column 3
-          <tr>
-        <td>body row 2
-        <td colspan="2">Cells may span columns.
-          <tr valign="top">
-        <td>body row 3
-        <td rowspan="2">Cells may<br>span rows.
-        <td rowspan="2">
-          <ul>
-            <li>Cells
-            <li>contain
-            <li>blocks.
-          </ul>
-          <tr valign="top">
-        <td>body row 4
+          <thead valign="bottom">
+            <tr>
+              <th>Header 1
+              <th>Header 2
+              <th>Header 3
+            </tr>
+          </thead>
+          <tbody valign="top">
+            <tr>
+              <td>body row 1
+              <td>column 2
+              <td>column 3
+            </tr>
+            <tr>
+              <td>body row 2
+              <td colspan="2">Cells may span columns.
+            </tr>
+            <tr>
+              <td>body row 3
+              <td rowspan="2">Cells may<br>span rows.
+              <td rowspan="2">
+                <ul>
+                  <li>Cells
+                  <li>contain
+                  <li>blocks.
+                </ul>
+            </tr>
+            <tr>
+              <td>body row 4
+            </tr>
         </table>
     <tr valign="top">
       <td>
@@ -757,7 +765,7 @@ unindented literal blocks:
 
       <td>
         <p>Simple table:</p>
-        <table frame="border" rules="all">
+        <table border="1">
           <colgroup>
             <col colwidth="31%" />
             <col colwidth="31%" />
