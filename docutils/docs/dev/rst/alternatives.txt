@@ -2174,7 +2174,7 @@ could be represented as follows::
                      <line>
                          due to some ancient injury?
 
-I wasn't sure what to do about even more complex line blocks:
+I wasn't sure what to do about even more complex line blocks::
 
      |     Indented
      | Not indented
