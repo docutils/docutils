@@ -33,9 +33,9 @@ totest['figures'] = [
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Image URI at line 1 contains whitespace.
+            Image URI contains whitespace.
         <literal_block xml:space="1">
             .. figure:: not an image URI
 """],
@@ -60,7 +60,7 @@ totest['figures'] = [
 <document source="test data">
     <figure>
         <image uri="picture.png">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Figure caption must be a paragraph or empty comment.
         <literal_block xml:space="1">
@@ -75,9 +75,9 @@ totest['figures'] = [
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Image URI at line 1 contains whitespace.
+            Image URI contains whitespace.
         <literal_block xml:space="1">
             .. figure:: not an image URI
             \n\

@@ -49,9 +49,9 @@ across lines*
         <problematic id="id2" refid="id1">
             *
         emphasis without closing asterisk
-    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
-            Inline emphasis start-string without end-string at line 1.
+            Inline emphasis start-string without end-string.
 """],
 ["""\
 '*emphasis*' and 1/*emphasis*/2 and 3-*emphasis*-4 and 5:*emphasis*:6
@@ -87,9 +87,9 @@ what about *this**?
         <problematic id="id2" refid="id1">
             *
         args' will trigger a warning and may be problematic)
-    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" line="5" source="test data" type="WARNING">
         <paragraph>
-            Inline emphasis start-string without end-string at line 5.
+            Inline emphasis start-string without end-string.
     <paragraph>
         what about \n\
         <emphasis>
@@ -141,9 +141,9 @@ totest['strong'] = [
         <problematic id="id2" refid="id1">
             **
         kwargs' will trigger a warning and may be problematic)
-    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" line="3" source="test data" type="WARNING">
         <paragraph>
-            Inline strong start-string without end-string at line 3.
+            Inline strong start-string without end-string.
 """],
 ["""\
 Strong asterisk: *****
@@ -170,9 +170,9 @@ Strong double asterisk: ******
         <problematic id="id2" refid="id1">
             **
         strong without closing asterisks
-    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
-            Inline strong start-string without end-string at line 1.
+            Inline strong start-string without end-string.
 """],
 ]
 
@@ -231,9 +231,9 @@ and may be problematic)
             ``
         standalone TeX quotes'' will trigger a warning
         and may be problematic)
-    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" line="3" source="test data" type="WARNING">
         <paragraph>
-            Inline literal start-string without end-string at line 3.
+            Inline literal start-string without end-string.
 """],
 ["""\
 Find the ```interpreted text``` in this paragraph!
@@ -255,9 +255,9 @@ Find the ```interpreted text``` in this paragraph!
         <problematic id="id2" refid="id1">
             ``
         literal without closing backquotes
-    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
-            Inline literal start-string without end-string at line 1.
+            Inline literal start-string without end-string.
 """],
 ]
 
@@ -297,9 +297,9 @@ totest['interpreted'] = [
     <paragraph>
         <problematic id="id2" refid="id1">
             :role:`interpreted`:role:
-    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
-            Multiple roles in interpreted text at line 1 (both prefix and suffix present; only one allowed).
+            Multiple roles in interpreted text (both prefix and suffix present; only one allowed).
 """],
 ["""\
 :role:`:not-role: interpreted`
@@ -357,9 +357,9 @@ totest['interpreted'] = [
         <problematic id="id2" refid="id1">
             `
         interpreted without closing backquote
-    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
-            Inline interpreted text or phrase reference start-string without end-string at line 1.
+            Inline interpreted text or phrase reference start-string without end-string.
 """],
 ]
 
@@ -457,9 +457,9 @@ Invalid phrase reference:
     <paragraph>
         <problematic id="id2" refid="id1">
             :role:`phrase reference`_
-    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" line="3" source="test data" type="WARNING">
         <paragraph>
-            Mismatch: both interpreted text role prefix and reference suffix at line 3.
+            Mismatch: both interpreted text role prefix and reference suffix.
 """],
 ["""\
 Invalid phrase reference:
@@ -473,9 +473,9 @@ Invalid phrase reference:
     <paragraph>
         <problematic id="id2" refid="id1">
             `phrase reference`:role:_
-    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" line="3" source="test data" type="WARNING">
         <paragraph>
-            Mismatch: both interpreted text role suffix and reference suffix at line 3.
+            Mismatch: both interpreted text role suffix and reference suffix.
 """],
 ["""\
 `phrase reference_ without closing backquote
@@ -489,9 +489,9 @@ Invalid phrase reference:
         <reference refname="reference">
             reference
          without closing backquote
-    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
-            Inline interpreted text or phrase reference start-string without end-string at line 1.
+            Inline interpreted text or phrase reference start-string without end-string.
 """],
 ["""\
 `anonymous phrase reference__ without closing backquote
@@ -505,9 +505,9 @@ Invalid phrase reference:
         <reference anonymous="1">
             reference
          without closing backquote
-    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
-            Inline interpreted text or phrase reference start-string without end-string at line 1.
+            Inline interpreted text or phrase reference start-string without end-string.
 """],
 ]
 
@@ -553,9 +553,9 @@ And _`this`_ is just plain confusing.
         <problematic id="id2" refid="id1">
             _`
         this`_ is just plain confusing.
-    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" line="3" source="test data" type="WARNING">
         <paragraph>
-            Inline target start-string without end-string at line 3.
+            Inline target start-string without end-string.
 """],
 ["""\
 _`inline target without closing backquote
@@ -566,9 +566,9 @@ _`inline target without closing backquote
         <problematic id="id2" refid="id1">
             _`
         inline target without closing backquote
-    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
-            Inline target start-string without end-string at line 1.
+            Inline target start-string without end-string.
 """],
 ]
 
@@ -692,9 +692,9 @@ reference|
         <problematic id="id2" refid="id1">
             |
         substitution reference without closing verbar
-    <system_message backrefs="id2" id="id1" level="2" source="test data" type="WARNING">
+    <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
-            Inline substitution_reference start-string without end-string at line 1.
+            Inline substitution_reference start-string without end-string.
 """],
 ]
 

@@ -89,16 +89,16 @@ Scrambled:
 <document source="test data">
     <paragraph>
         Scrambled:
-    <system_message level="1" source="test data" type="INFO">
+    <system_message level="1" line="3" source="test data" type="INFO">
         <paragraph>
-            Enumerated list start value not ordinal-1 at line 3: "3" (ordinal 3)
+            Enumerated list start value not ordinal-1: "3" (ordinal 3)
     <enumerated_list enumtype="arabic" prefix="" start="3" suffix=".">
         <list_item>
             <paragraph>
                 Item three.
-    <system_message level="1" source="test data" type="INFO">
+    <system_message level="1" line="5" source="test data" type="INFO">
         <paragraph>
-            Enumerated list start value not ordinal-1 at line 5: "2" (ordinal 2)
+            Enumerated list start value not ordinal-1: "2" (ordinal 2)
     <enumerated_list enumtype="arabic" prefix="" start="2" suffix=".">
         <list_item>
             <paragraph>
@@ -127,9 +127,9 @@ Skipping item 3:
         <list_item>
             <paragraph>
                 Item 1.
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="4" source="test data" type="WARNING">
         <paragraph>
-            Enumerated list ends without a blank line; unexpected unindent at line 4.
+            Enumerated list ends without a blank line; unexpected unindent.
     <paragraph>
         2. Item 2.
         4. Item 4.
@@ -151,9 +151,9 @@ And again:
 <document source="test data">
     <paragraph>
         Start with non-ordinal-1:
-    <system_message level="1" source="test data" type="INFO">
+    <system_message level="1" line="3" source="test data" type="INFO">
         <paragraph>
-            Enumerated list start value not ordinal-1 at line 3: "0" (ordinal 0)
+            Enumerated list start value not ordinal-1: "0" (ordinal 0)
     <enumerated_list enumtype="arabic" prefix="" start="0" suffix=".">
         <list_item>
             <paragraph>
@@ -169,9 +169,9 @@ And again:
                 Item three.
     <paragraph>
         And again:
-    <system_message level="1" source="test data" type="INFO">
+    <system_message level="1" line="10" source="test data" type="INFO">
         <paragraph>
-            Enumerated list start value not ordinal-1 at line 10: "2" (ordinal 2)
+            Enumerated list start value not ordinal-1: "2" (ordinal 2)
     <enumerated_list enumtype="arabic" prefix="" start="2" suffix=".">
         <list_item>
             <paragraph>
@@ -466,9 +466,9 @@ iii. Item iii.
         <list_item>
             <paragraph>
                 Item H.
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="11" source="test data" type="WARNING">
         <paragraph>
-            Enumerated list ends without a blank line; unexpected unindent at line 11.
+            Enumerated list ends without a blank line; unexpected unindent.
     <enumerated_list enumtype="upperroman" prefix="" suffix=".">
         <list_item>
             <paragraph>
@@ -504,9 +504,9 @@ iii. Item iii.
         <list_item>
             <paragraph>
                 Item h.
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="23" source="test data" type="WARNING">
         <paragraph>
-            Enumerated list ends without a blank line; unexpected unindent at line 23.
+            Enumerated list ends without a blank line; unexpected unindent.
     <enumerated_list enumtype="lowerroman" prefix="" suffix=".">
         <list_item>
             <paragraph>
@@ -666,9 +666,9 @@ Princeton, NJ.
         <list_item>
             <paragraph>
                 Physicist, who was a colleague of
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="3" source="test data" type="WARNING">
         <paragraph>
-            Enumerated list ends without a blank line; unexpected unindent at line 3.
+            Enumerated list ends without a blank line; unexpected unindent.
     <paragraph>
         C. Chemist.  They all worked in
         Princeton, NJ.
@@ -693,25 +693,25 @@ Princeton, NJ.
         <list_item>
             <paragraph>
                 Item two: line 1,
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="4" source="test data" type="WARNING">
         <paragraph>
-            Enumerated list ends without a blank line; unexpected unindent at line 4.
+            Enumerated list ends without a blank line; unexpected unindent.
     <block_quote>
         <paragraph>
             line 2.
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="5" source="test data" type="WARNING">
         <paragraph>
-            Block quote ends without a blank line; unexpected unindent at line 5.
-    <system_message level="1" source="test data" type="INFO">
+            Block quote ends without a blank line; unexpected unindent.
+    <system_message level="1" line="5" source="test data" type="INFO">
         <paragraph>
-            Enumerated list start value not ordinal-1 at line 5: "3" (ordinal 3)
+            Enumerated list start value not ordinal-1: "3" (ordinal 3)
     <enumerated_list enumtype="arabic" prefix="" start="3" suffix=".">
         <list_item>
             <paragraph>
                 Item three: paragraph 1, line 1,
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="6" source="test data" type="WARNING">
         <paragraph>
-            Enumerated list ends without a blank line; unexpected unindent at line 6.
+            Enumerated list ends without a blank line; unexpected unindent.
     <block_quote>
         <paragraph>
             line 2.

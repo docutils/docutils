@@ -123,9 +123,9 @@ Paragraph
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Empty meta directive at line 1.
+            Empty meta directive.
 """],
 ["""\
 .. meta::
@@ -133,9 +133,9 @@ Paragraph
 """,
 """\
 <document source="test data">
-    <system_message level="1" source="test data" type="INFO">
+    <system_message level="1" line="2" source="test data" type="INFO">
         <paragraph>
-            No content for meta tag "empty" at line 2.
+            No content for meta tag "empty".
         <literal_block xml:space="1">
             :empty:
 """],
@@ -145,9 +145,9 @@ Paragraph
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="2" source="test data" type="ERROR">
         <paragraph>
-            Invalid meta directive at line 2.
+            Invalid meta directive.
         <literal_block xml:space="1">
             .. meta::
                not a field list
@@ -167,9 +167,9 @@ Paragraph
                nodes:
                  <meta content="content" name="name">
                writer: 'html'
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="3" source="test data" type="ERROR">
         <paragraph>
-            Invalid meta directive at line 3.
+            Invalid meta directive.
         <literal_block xml:space="1">
             .. meta::
                :name: content
@@ -181,9 +181,9 @@ Paragraph
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="2" source="test data" type="ERROR">
         <paragraph>
-            Error parsing meta tag attribute "notattval" at line 2: missing "=".
+            Error parsing meta tag attribute "notattval": missing "=".
         <literal_block xml:space="1">
             :name notattval: content
 """],

@@ -137,9 +137,9 @@ totest['contents'] = [
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Error in "contents" directive options at line 1:
+            Error in "contents" directive options:
             invalid option value: (option: "depth"; value: 'two')
             invalid literal for int(): two.
         <literal_block xml:space="1">
@@ -152,9 +152,9 @@ totest['contents'] = [
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Error in "contents" directive options at line 1:
+            Error in "contents" directive options:
             unknown option: "width".
         <literal_block xml:space="1">
             .. contents::
@@ -166,9 +166,9 @@ totest['contents'] = [
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Error in "contents" directive options at line 1:
+            Error in "contents" directive options:
             invalid option value: (option: "backlinks"; value: 'no way!')
             "no way!" unknown; choose from "top", "entry", or "none".
         <literal_block xml:space="1">
@@ -181,9 +181,9 @@ totest['contents'] = [
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Error in "contents" directive options at line 1:
+            Error in "contents" directive options:
             invalid option value: (option: "backlinks"; value: None)
             must supply an argument; choose from "top", "entry", or "none".
         <literal_block xml:space="1">

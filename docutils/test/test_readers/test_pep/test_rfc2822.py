@@ -126,9 +126,9 @@ empty item above, no blank line
             <field_name>
                 field
             <field_body>
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="2" source="test data" type="WARNING">
         <paragraph>
-            RFC2822-style field list ends without a blank line; unexpected unindent at line 2.
+            RFC2822-style field list ends without a blank line; unexpected unindent.
     <paragraph>
         empty item above, no blank line
 """],

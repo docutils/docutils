@@ -82,22 +82,22 @@ Test unexpected section titles.
     <paragraph>
         Test unexpected section titles.
     <block_quote>
-        <system_message level="4" source="test data" type="SEVERE">
+        <system_message level="4" line="4" source="test data" type="SEVERE">
             <paragraph>
-                Unexpected section title at line 4.
+                Unexpected section title.
             <literal_block xml:space="1">
                 Title
                 =====
         <paragraph>
             Paragraph.
-        <system_message level="4" source="test data" type="SEVERE">
+        <system_message level="4" line="7" source="test data" type="SEVERE">
             <paragraph>
-                Unexpected section title or transition at line 7.
+                Unexpected section title or transition.
             <literal_block xml:space="1">
                 -----
-        <system_message level="4" source="test data" type="SEVERE">
+        <system_message level="4" line="9" source="test data" type="SEVERE">
             <paragraph>
-                Unexpected section title at line 9.
+                Unexpected section title.
             <literal_block xml:space="1">
                 Title
                 -----
@@ -115,9 +115,9 @@ Test short underline.
     <section id="title" name="title">
         <title>
             Title
-        <system_message level="2" source="test data" type="WARNING">
+        <system_message level="2" line="2" source="test data" type="WARNING">
             <paragraph>
-                Title underline too short at line 2.
+                Title underline too short.
             <literal_block xml:space="1">
                 Title
                 ====
@@ -160,9 +160,9 @@ Test overline title with inset.
 """,
 """\
 <document source="test data">
-    <system_message level="4" source="test data" type="SEVERE">
+    <system_message level="4" line="1" source="test data" type="SEVERE">
         <paragraph>
-            Incomplete section title at line 1.
+            Incomplete section title.
         <literal_block xml:space="1">
             ========================
              Test Missing Underline
@@ -174,9 +174,9 @@ Test overline title with inset.
 """,
 """\
 <document source="test data">
-    <system_message level="4" source="test data" type="SEVERE">
+    <system_message level="4" line="1" source="test data" type="SEVERE">
         <paragraph>
-            Missing underline for overline at line 1.
+            Missing underline for overline.
         <literal_block xml:space="1">
             ========================
              Test Missing Underline
@@ -189,9 +189,9 @@ Test missing underline, with paragraph.
 """,
 """\
 <document source="test data">
-    <system_message level="4" source="test data" type="SEVERE">
+    <system_message level="4" line="1" source="test data" type="SEVERE">
         <paragraph>
-            Missing underline for overline at line 1.
+            Missing underline for overline.
         <literal_block xml:space="1">
             =======
              Title
@@ -210,9 +210,9 @@ Test long title and space normalization.
     <section id="long-title" name="long title">
         <title>
             Long    Title
-        <system_message level="2" source="test data" type="WARNING">
+        <system_message level="2" line="1" source="test data" type="WARNING">
             <paragraph>
-                Title overline too short at line 1.
+                Title overline too short.
             <literal_block xml:space="1">
                 =======
                  Long    Title
@@ -229,9 +229,9 @@ Paragraph.
 """,
 """\
 <document source="test data">
-    <system_message level="4" source="test data" type="SEVERE">
+    <system_message level="4" line="1" source="test data" type="SEVERE">
         <paragraph>
-            Title overline & underline mismatch at line 1.
+            Title overline & underline mismatch.
         <literal_block xml:space="1">
             =======
              Title
@@ -252,21 +252,21 @@ Test missing titles; blank line in-between.
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Document or section may not begin with a transition (line 1).
+            Document or section may not begin with a transition.
     <transition>
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="3" source="test data" type="ERROR">
         <paragraph>
-            At least one body element must separate transitions; adjacent transitions at line 3.
+            At least one body element must separate transitions; adjacent transitions not allowed.
     <transition>
     <paragraph>
         Test missing titles; blank line in-between.
     <transition>
     <transition>
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="9" source="test data" type="ERROR">
         <paragraph>
-            Document or section may not end with a transition (line 9).
+            Document or section may not end with a transition.
 """],
 ["""\
 ========================
@@ -279,17 +279,17 @@ Test missing titles; nothing in-between.
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Invalid section title or transition marker at line 1.
+            Invalid section title or transition marker.
         <literal_block xml:space="1">
             ========================
             ========================
     <paragraph>
         Test missing titles; nothing in-between.
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="6" source="test data" type="ERROR">
         <paragraph>
-            Invalid section title or transition marker at line 6.
+            Invalid section title or transition marker.
         <literal_block xml:space="1">
             ========================
             ========================
@@ -468,9 +468,9 @@ Paragraph 4.
             Title 3
         <paragraph>
             Paragraph 3.
-        <system_message level="4" source="test data" type="SEVERE">
+        <system_message level="4" line="15" source="test data" type="SEVERE">
             <paragraph>
-                Title level inconsistent at line 15:
+                Title level inconsistent:
             <literal_block xml:space="1">
                 Title 4
                 ```````
@@ -519,9 +519,9 @@ Paragraph 4.
             Title 3
         <paragraph>
             Paragraph 3.
-        <system_message level="4" source="test data" type="SEVERE">
+        <system_message level="4" line="19" source="test data" type="SEVERE">
             <paragraph>
-                Title level inconsistent at line 19:
+                Title level inconsistent:
             <literal_block xml:space="1">
                 ```````
                 Title 4
@@ -579,9 +579,9 @@ Paragraph.
         <list_item>
             <paragraph>
                 Item 2.
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="3" source="test data" type="WARNING">
         <paragraph>
-            Enumerated list ends without a blank line; unexpected unindent at line 3.
+            Enumerated list ends without a blank line; unexpected unindent.
     <section id="numbered-title" name="3. numbered title">
         <title>
             3. Numbered Title
@@ -589,6 +589,7 @@ Paragraph.
             Paragraph.
 """],
 ]
+
 
 if __name__ == '__main__':
     import unittest

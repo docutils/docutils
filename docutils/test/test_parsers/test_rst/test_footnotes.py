@@ -102,9 +102,9 @@ No blank line.
     <footnote id="id1" name="1">
         <label>
             1
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="2" source="test data" type="WARNING">
         <paragraph>
-            Explicit markup ends without a blank line; unexpected unindent at line 2.
+            Explicit markup ends without a blank line; unexpected unindent.
     <paragraph>
         No blank line.
 """],

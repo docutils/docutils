@@ -61,13 +61,13 @@ totest['full_tables'] = [
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Malformed table at line 1; formatting as a literal block.
-    <literal_block xml:space="1">
-        +-----------------------+
-        | A malformed table. |
-        +-----------------------+
+            Malformed table.
+        <literal_block xml:space="1">
+            +-----------------------+
+            | A malformed table. |
+            +-----------------------+
 """],
 ["""\
 +------------------------+
@@ -439,9 +439,9 @@ No blank line after table.
                     <entry>
                         <paragraph>
                             cell 4
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="6" source="test data" type="WARNING">
         <paragraph>
-            Blank line required after table at line 6.
+            Blank line required after table.
     <paragraph>
         No blank line after table.
 """],
@@ -474,12 +474,12 @@ No blank line after table.
                     <entry>
                         <paragraph>
                             cell 4
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="6" source="test data" type="ERROR">
         <paragraph>
-            Unexpected indentation at line 6.
-    <system_message level="2" source="test data" type="WARNING">
+            Unexpected indentation.
+    <system_message level="2" line="6" source="test data" type="WARNING">
         <paragraph>
-            Blank line required after table at line 6.
+            Blank line required after table.
     <block_quote>
         <paragraph>
             Unexpected indent and no blank line after table.
@@ -493,16 +493,16 @@ No blank line after table.
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Malformed table at line 1; formatting as a literal block.
+            Malformed table.
             Malformed table; parse incomplete.
-    <literal_block xml:space="1">
-        +--------------+-------------+
-        | A bad table. |             |
-        +--------------+             |
-        | Cells must be rectangles.  |
-        +----------------------------+
+        <literal_block xml:space="1">
+            +--------------+-------------+
+            | A bad table. |             |
+            +--------------+             |
+            | Cells must be rectangles.  |
+            +----------------------------+
 """],
 ["""\
 +------------------------------+
@@ -724,14 +724,14 @@ no bottom       border
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Malformed table at line 1; formatting as a literal block.
+            Malformed table.
             No bottom table border found.
-    <literal_block xml:space="1">
-        ==============  ======
-        A simple table  with
-        no bottom       border
+        <literal_block xml:space="1">
+            ==============  ======
+            A simple table  with
+            no bottom       border
 """],
 ["""\
 ==============  ======
@@ -742,18 +742,18 @@ No blank line after table.
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Malformed table at line 1; formatting as a literal block.
+            Malformed table.
             No bottom table border found or no blank line after table bottom.
-    <literal_block xml:space="1">
-        ==============  ======
-        A simple table  cell 2
-        cell 3          cell 4
-        ==============  ======
-    <system_message level="2" source="test data" type="WARNING">
+        <literal_block xml:space="1">
+            ==============  ======
+            A simple table  cell 2
+            cell 3          cell 4
+            ==============  ======
+    <system_message level="2" line="5" source="test data" type="WARNING">
         <paragraph>
-            Blank line required after table at line 5.
+            Blank line required after table.
     <paragraph>
         No blank line after table.
 """],
@@ -787,9 +787,9 @@ No blank line after table.
                     <entry>
                         <paragraph>
                             cell 4
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="6" source="test data" type="WARNING">
         <paragraph>
-            Blank line required after table at line 6.
+            Blank line required after table.
     <paragraph>
         No blank line after table.
 """],
@@ -802,18 +802,18 @@ cell 3          cell 4
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Malformed table at line 1; formatting as a literal block.
+            Malformed table.
             No bottom table border found or no blank line after table bottom.
-    <literal_block xml:space="1">
-        ==============  ======
-        A simple table  cell 2
-        cell 3          cell 4
-        ==============  ======
-    <system_message level="2" source="test data" type="WARNING">
+        <literal_block xml:space="1">
+            ==============  ======
+            A simple table  cell 2
+            cell 3          cell 4
+            ==============  ======
+    <system_message level="2" line="5" source="test data" type="WARNING">
         <paragraph>
-            Blank line required after table at line 5.
+            Blank line required after table.
     <block_quote>
         <paragraph>
             Unexpected indent and no blank line after table.
@@ -826,15 +826,15 @@ cell 3          cell 4
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Malformed table at line 1; formatting as a literal block.
+            Malformed table.
             Column span alignment problem at line offset 2.
-    <literal_block xml:space="1">
-        ==============  ======
-        A bad table     cell 2
-        cell 3          cell 4
-        ============  ========
+        <literal_block xml:space="1">
+            ==============  ======
+            A bad table     cell 2
+            cell 3          cell 4
+            ============  ========
 """],
 ["""\
 ========  =========
@@ -844,15 +844,15 @@ cell 3       cell 4
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Malformed table at line 1; formatting as a literal block.
+            Malformed table.
             Text in column margin at line offset 1.
-    <literal_block xml:space="1">
-        ========  =========
-        A bad table  cell 2
-        cell 3       cell 4
-        ========  =========
+        <literal_block xml:space="1">
+            ========  =========
+            A bad table  cell 2
+            cell 3       cell 4
+            ========  =========
 """],
 ["""\
 ==  ============================
@@ -969,15 +969,15 @@ cell 3          the bottom border below is too long
 """,
 """\
 <document source="test data">
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Malformed table at line 1; formatting as a literal block.
+            Malformed table.
             Bottom/header table border does not match top border.
-    <literal_block xml:space="1">
-        ==============  ======
-        A simple table  this text extends to the right
-        cell 3          the bottom border below is too long
-        ==============  ========
+        <literal_block xml:space="1">
+            ==============  ======
+            A simple table  this text extends to the right
+            cell 3          the bottom border below is too long
+            ==============  ========
 """],
 ]
 

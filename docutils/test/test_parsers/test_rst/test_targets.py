@@ -79,19 +79,19 @@ Indirect hyperlink targets:
 """,
 """\
 <document source="test data">
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="1" source="test data" type="WARNING">
         <paragraph>
-            Hyperlink target at line 1 contains whitespace. Perhaps a footnote was intended?
+            Hyperlink target contains whitespace. Perhaps a footnote was intended?
         <literal_block xml:space="1">
             .. _target1: Not a proper hyperlink target
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="3" source="test data" type="WARNING">
         <paragraph>
-            Hyperlink target at line 3 contains whitespace. Perhaps a footnote was intended?
+            Hyperlink target contains whitespace. Perhaps a footnote was intended?
         <literal_block xml:space="1">
             .. _target2: Although it ends with an underscore, this is not a phrase-link_
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="5" source="test data" type="WARNING">
         <paragraph>
-            Hyperlink target at line 5 contains whitespace. Perhaps a footnote was intended?
+            Hyperlink target contains whitespace. Perhaps a footnote was intended?
         <literal_block xml:space="1">
             .. _target3: A multi-line verson of something
                ending with an underscore, but not a phrase-link_
@@ -106,19 +106,19 @@ __ A multi-line verson of something
 """,
 """\
 <document source="test data">
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="1" source="test data" type="WARNING">
         <paragraph>
-            Hyperlink target at line 1 contains whitespace. Perhaps a footnote was intended?
+            Hyperlink target contains whitespace. Perhaps a footnote was intended?
         <literal_block xml:space="1">
             .. __: Not a proper hyperlink target
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="3" source="test data" type="WARNING">
         <paragraph>
-            Anonymous hyperlink target at line 3 contains whitespace. Perhaps a footnote was intended?
+            Anonymous hyperlink target contains whitespace. Perhaps a footnote was intended?
         <literal_block xml:space="1">
             __ Although it ends with an underscore, this is not a phrase-link_
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="5" source="test data" type="WARNING">
         <paragraph>
-            Anonymous hyperlink target at line 5 contains whitespace. Perhaps a footnote was intended?
+            Anonymous hyperlink target contains whitespace. Perhaps a footnote was intended?
         <literal_block xml:space="1">
             __ A multi-line verson of something
             ending with an underscore, but not a phrase-link_
@@ -407,22 +407,23 @@ no blank line
     <target anonymous="1" id="id2" refname="reference">
     <target anonymous="1" id="id3" refname="reference">
     <target id="target1" name="target1" refname="reference">
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="7" source="test data" type="WARNING">
         <paragraph>
-            Explicit markup ends without a blank line; unexpected unindent at line 7.
+            Explicit markup ends without a blank line; unexpected unindent.
     <paragraph>
         no blank line
     <target id="target2" name="target2" refname="reference">
     <target anonymous="1" id="id4" refname="reference">
     <target anonymous="1" id="id5" refname="reference">
     <target anonymous="1" id="id6" refname="reference">
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="13" source="test data" type="WARNING">
         <paragraph>
-            Explicit markup ends without a blank line; unexpected unindent at line 13.
+            Explicit markup ends without a blank line; unexpected unindent.
     <paragraph>
         no blank line
 """],
 ]
+
 
 if __name__ == '__main__':
     import unittest

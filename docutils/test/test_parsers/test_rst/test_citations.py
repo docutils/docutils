@@ -113,9 +113,9 @@ No blank line.
     <citation id="citation" name="citation">
         <label>
             citation
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="2" source="test data" type="WARNING">
         <paragraph>
-            Explicit markup ends without a blank line; unexpected unindent at line 2.
+            Explicit markup ends without a blank line; unexpected unindent.
     <paragraph>
         No blank line.
 """],

@@ -124,9 +124,9 @@ Different bullets:
         <list_item>
             <paragraph>
                 item 3
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="8" source="test data" type="WARNING">
         <paragraph>
-            Bullet list ends without a blank line; unexpected unindent at line 8.
+            Bullet list ends without a blank line; unexpected unindent.
     <bullet_list bullet="-">
         <list_item>
             <paragraph>
@@ -142,9 +142,9 @@ no blank line
         <list_item>
             <paragraph>
                 item
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="2" source="test data" type="WARNING">
         <paragraph>
-            Bullet list ends without a blank line; unexpected unindent at line 2.
+            Bullet list ends without a blank line; unexpected unindent.
     <paragraph>
         no blank line
 """],
@@ -168,9 +168,9 @@ empty item above, no blank line
 <document source="test data">
     <bullet_list bullet="-">
         <list_item>
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="2" source="test data" type="WARNING">
         <paragraph>
-            Bullet list ends without a blank line; unexpected unindent at line 2.
+            Bullet list ends without a blank line; unexpected unindent.
     <paragraph>
         empty item above, no blank line
 """],

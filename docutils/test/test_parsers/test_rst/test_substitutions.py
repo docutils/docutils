@@ -138,54 +138,55 @@ No blank line after.
         Here are some bad cases:
     <substitution_definition name="symbol">
         <image alt="symbol" uri="symbol.png">
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="4" source="test data" type="WARNING">
         <paragraph>
-            Explicit markup ends without a blank line; unexpected unindent at line 4.
+            Explicit markup ends without a blank line; unexpected unindent.
     <paragraph>
         No blank line after.
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="6" source="test data" type="WARNING">
         <paragraph>
-            Substitution definition "empty" missing contents at line 6.
+            Substitution definition "empty" missing contents.
         <literal_block xml:space="1">
             .. |empty|
-    <system_message level="3" source="test data" type="ERROR">
+    <system_message level="3" line="8" source="test data" type="ERROR">
         <paragraph>
-            Unknown directive type "directive" at line 8.
+            Unknown directive type "directive".
         <literal_block xml:space="1">
             directive:: symbol.png
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="8" source="test data" type="WARNING">
         <paragraph>
-            Substitution definition "unknown" empty or invalid at line 8.
+            Substitution definition "unknown" empty or invalid.
         <literal_block xml:space="1">
             .. |unknown| directive:: symbol.png
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="10" source="test data" type="WARNING">
         <paragraph>
-            Substitution definition "invalid 1" empty or invalid at line 10.
+            Substitution definition "invalid 1" empty or invalid.
         <literal_block xml:space="1">
             .. |invalid 1| there's no directive here
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="11" source="test data" type="WARNING">
         <paragraph>
-            Substitution definition "invalid 2" empty or invalid at line 11.
+            Substitution definition "invalid 2" empty or invalid.
         <literal_block xml:space="1">
             .. |invalid 2| there's no directive here
                With some block quote text, line 1.
                And some more, line 2.
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="12" source="test data" type="WARNING">
         <paragraph>
-            Explicit markup ends without a blank line; unexpected unindent at line 12.
+            Explicit markup ends without a blank line; unexpected unindent.
     <block_quote>
         <paragraph>
             With some block quote text, line 1.
             And some more, line 2.
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="15" source="test data" type="WARNING">
         <paragraph>
-            Substitution definition "invalid 3" empty or invalid at line 15.
+            Substitution definition "invalid 3" empty or invalid.
         <literal_block xml:space="1">
             .. |invalid 3| there's no directive here
     <comment xml:space="1">
         | bad name | bad data
 """],
 ]
+
 
 if __name__ == '__main__':
     import unittest

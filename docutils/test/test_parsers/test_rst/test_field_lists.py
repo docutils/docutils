@@ -114,9 +114,9 @@ empty item above, no blank line
             <field_name>
                 field
             <field_body>
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="2" source="test data" type="WARNING">
         <paragraph>
-            Field list ends without a blank line; unexpected unindent at line 2.
+            Field list ends without a blank line; unexpected unindent.
     <paragraph>
         empty item above, no blank line
 """],
@@ -457,9 +457,9 @@ Field: marker is missing its open-colon.
             <field_body>
                 <paragraph>
                     Me
-    <system_message level="2" source="test data" type="WARNING">
+    <system_message level="2" line="5" source="test data" type="WARNING">
         <paragraph>
-            Field list ends without a blank line; unexpected unindent at line 5.
+            Field list ends without a blank line; unexpected unindent.
     <paragraph>
         No blank line before this paragraph.
     <field_list>
