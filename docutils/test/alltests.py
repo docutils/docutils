@@ -19,6 +19,7 @@ start = time.time()
 
 import sys
 import os
+import docutils
 
 
 class Tee:
@@ -59,6 +60,9 @@ def pformat(suite):
 sys.stdout = sys.stderr = Tee('alltests.out')
 
 import package_unittest
+
+print ('Testing Docutils %s with Python %s'
+       % (docutils.__version__, sys.version.split()[0]))
 
 path, script = os.path.split(sys.argv[0])
 suite = package_unittest.loadTestModules(path, 'test_', packages=1)
