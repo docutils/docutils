@@ -368,6 +368,15 @@ dump_internals        (Hidden option.)  At the end of processing,
                       Default: don't (None).  Options:
                       ``--dump-internals``.
 --------------------  ------------------------------------------------
+embed_stylesheet      (HTML Writer.)  Embed the stylesheet in the
+                      output HTML file.  The stylesheet file must be
+                      accessible during processing.  The stylesheet is
+                      embedded inside a comment, so it must not
+                      contain the text "--" (two hyphens).
+
+                      Default: link, don't embed (None).  Options:
+                      ``--embed-stylesheet, --link-stylesheet``.
+--------------------  ------------------------------------------------
 footnote_backlinks    Enable or disable backlinks from footnotes and
                       citations to their references.
 
@@ -441,7 +450,8 @@ pep_stylesheet        (PEP/HTML Writer.)  CSS stylesheet URL, used
                       Default: None.  Options: ``--pep-stylesheet``.
 --------------------  ------------------------------------------------
 pep_stylesheet_path   (PEP/HTML Writer.)  Path to CSS stylesheet
-                      [#pwd]_.  Overrides HTML stylesheet
+                      [#pwd]_.  Path is adjusted relative to the
+                      output HTML file.  Overrides HTML stylesheet
                       (``--stylesheet``) and PEP stylesheet
                       (``--pep-stylesheet``).
 
@@ -505,7 +515,8 @@ stylesheet            (HTML Writer.)  CSS stylesheet URL, used
 --------------------  ------------------------------------------------
 stylesheet-path       (HTML Writer.)  Path to CSS stylesheet [#pwd]_.
                       Overrides "stylesheet" URL option
-                      (``--stylesheet``).
+                      (``--stylesheet``).  Path is adjusted relative
+                      to the output HTML file.
 
                       Default: None.  Options: ``--stylesheet``.
 --------------------  ------------------------------------------------
