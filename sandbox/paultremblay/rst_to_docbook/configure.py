@@ -47,7 +47,7 @@ def make_location(target):
     write_obj.write(
     """
 def get_location():
-    return %s
+    return '%s'
 
 
     """

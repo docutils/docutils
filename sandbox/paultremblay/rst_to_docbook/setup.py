@@ -13,14 +13,14 @@ if not var_file_exists:
 read_obj = open('var_file', 'r')
 lines = read_obj.readlines()
 data_location = lines[0]
-data_xslt_location = os.path.join(data_location, 'xslt_stylesheets', '.rst_to_docboook')
+data_xslt_location = os.path.join(data_location, '.rst_to_docbook', 'xslt_stylesheets')
 read_obj.close()
 
 
 
 setup(name="rst_to_docbook",
     version=".1",
-    description="Extensions that add features to docutils.",
+    description="convert rst to docbook.",
     author="Paul Tremblay",
     author_email="phthenry@earthlink.net",
     packages=['rst_to_docbook'],
