@@ -56,10 +56,9 @@ from docutils.parsers.rst import states, tableparser, roles, languages
 from docutils.readers import standalone, pep
 from docutils.statemachine import StringList, string2lines
 
-try:
+if sys.hexversion >= 0x02020000:    # Python 2.2
     from docutils.readers.python import moduleparser
-    from tokenize import generate_tokens # new in Python 2.2
-except:
+else:
     moduleparser = None
 
 try:
@@ -540,11 +539,6 @@ class PythonModuleParserTestSuite(CustomTestSuite):
     A collection of PythonModuleParserTestCase.
     """
 
-    if moduleparser is None:
-        PythonModuleParserTestCase.test_parser = CustomTestCase.skip_test
-        PythonModuleParserTestCase.test_token_parser_rhs = \
-            CustomTestCase.skip_test
-
     def generateTests(self, dict, dictname='totest',
                       testmethod='test_parser'):
         """
@@ -570,6 +564,14 @@ class PythonModuleParserTestSuite(CustomTestSuite):
                       input=case[0], expected=case[1],
                       id='%s[%r][%s]' % (dictname, name, casenum),
                       run_in_debugger=run_in_debugger)
+
+    if moduleparser is None:
+        # Skip Python Source Reader tests for Python < 2.2:
+        def generateTests(*args, **kwargs): pass
+
+        #PythonModuleParserTestCase.test_parser = CustomTestCase.skip_test
+        #PythonModuleParserTestCase.test_token_parser_rhs = \
+        #    CustomTestCase.skip_test
 
 
 class WriterPublishTestCase(CustomTestCase, docutils.SettingsSpec):
