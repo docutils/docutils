@@ -75,8 +75,8 @@ top level of the Docutils project directory.
 .. _THANKS.txt: ../THANKS.html
 
 
-``user/``: Introductory/Tutorial Material for End-Users
-=======================================================
+``user/``: Introductory & Tutorial Material for End-Users
+=========================================================
 
 Docutils-general:
 
@@ -121,15 +121,6 @@ reStructuredText_:
 * `reStructuredText Interpreted Text Roles <ref/rst/roles.html>`__
 
 
-``howto/``: Instructions for Component-Developers and Core-Developers
-=====================================================================
-
-* `Docutils Internationalization <howto/i18n.html>`__
-* `Creating reStructuredText Directives <howto/rst-directives.html>`__
-* `Creating reStructuredText Interpreted Text Roles
-  <howto/rst-roles.html>`__
-
-
 ``peps/``: Python Enhancement Proposals
 =======================================
 
@@ -137,10 +128,9 @@ reStructuredText_:
   generic proposal.  [`PEP 256`__ in the `master repository`_]
 * `PEP 257: Docstring Conventions`__ addresses docstring style and
   touches on content.  [`PEP 257`__ in the `master repository`_]
-* `PEP 258: Docutils Design Specification`__ documents design issues
-  and implementation details for Docutils (this project), a specific
-  docstring processing system.  [`PEP 258`__ in the `master
-  repository`_]
+* `PEP 258: Docutils Design Specification`__ is an overview of the
+  architecture of Docutils.  It documents design issues and
+  implementation details.  [`PEP 258`__ in the `master repository`_]
 * `PEP 287: reStructuredText Docstring Format`__ proposes a standard
   markup syntax.  [`PEP 287`__ in the `master repository`_]
 
@@ -153,9 +143,30 @@ __ peps/pep-0257.html
 __ http://www.python.org/peps/pep-0257.html
 __ peps/pep-0256.html
 __ http://www.python.org/peps/pep-0256.html
+.. _PEP 258:
 __ peps/pep-0258.html
 __ http://www.python.org/peps/pep-0258.html
 .. _master repository: http://www.python.org/peps/
+
+
+``api/``: API Reference Material for Client-Developers
+======================================================
+
+`PEP 258`_ is an overview of the architecture of Docutils.
+
+* `The Docutils Publisher <api/publisher.txt>`__
+* `Inside A Docutils Command-Line Front-End Tool <api/cmdline-tool.txt>`__
+* `Docutils Runtime Settings <api/runtime-settings.txt>`__
+* (`Docutils Transforms <ref/transforms.html>`__ should be moved here)
+
+
+``howto/``: Instructions for Developers
+=======================================
+
+* `Docutils Internationalization <howto/i18n.html>`__
+* `Creating reStructuredText Directives <howto/rst-directives.html>`__
+* `Creating reStructuredText Interpreted Text Roles
+  <howto/rst-roles.html>`__
 
 
 ``dev/``: Development Notes and Plans for Core-Developers
