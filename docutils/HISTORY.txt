@@ -278,8 +278,8 @@ Specific:
   - Return ``None`` for missing directives.
 
 * docutils/parsers/rst/directives/body.py: Added to project.  Contains
-  the "topic", "sidebar", "line-block", and "parsed-literal"
-  directives.
+  the "topic", "sidebar" (from Patrick O'Brien), "line-block", and
+  "parsed-literal" directives.
 
 * docutils/parsers/rst/directives/images.py:
 

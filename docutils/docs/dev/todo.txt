@@ -1191,7 +1191,9 @@ HTML Writer
   writer to generate .ht & links.h files for ht2html?
 
 * Add a setting (or another writer) which produces just the contents
-  of the <body> element.  Part of the ht2html implementation?
+  of the <body> element.  What about the rest; it should be accessible
+  somehow, especially the docinfo fields.  Part of the ht2html
+  implementation?  Generic component output?
 
 * Add more support for <link> elements, especially for navigation
   bars.

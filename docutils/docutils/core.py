@@ -286,7 +286,13 @@ def publish_string(source, source_path=None, destination_path=None,
 
     For encoded string output, be sure to set the "output_encoding" setting to
     the desired encoding.  Set it to "unicode" for unencoded Unicode string
-    output.
+    output.  Here's how::
+
+        publish_string(..., settings_overrides={'output_encoding': 'unicode'})
+
+    Similarly for Unicode string input (`source`)::
+
+        publish_string(..., settings_overrides={'input_encoding': 'unicode'})
 
     Parameters:
 
