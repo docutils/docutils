@@ -948,7 +948,6 @@ class rubric(Titular, TextElement): pass
 # ========================
 
 class docinfo(Bibliographic, Element): pass
-class info(Bibliographic, Element): pass
 class author(Bibliographic, TextElement): pass
 class authors(Bibliographic, Element): pass
 class organization(Bibliographic, TextElement): pass
@@ -1240,7 +1239,7 @@ node_class_names = """
         footnote footnote_reference
     generated
     header hint
-    image important info inline
+    image important inline
     label legend line line_block list_item literal literal_block
     note
     option option_argument option_group option_list option_list_item
