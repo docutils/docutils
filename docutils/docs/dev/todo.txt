@@ -522,6 +522,10 @@ __ rst/alternatives.html#or-not-to-do
   This may not be just a parser issue though; it may need framework
   support.
 
+  Mailing list thread: `Images in both HTML and LaTeX`__
+
+  __ http://thread.gmane.org/gmane.text.docutils.user/1239
+
 * Implement the header row separator modification to table.el.  (Wrote
   to Takaaki Ota & the table.el mailing list on 2001-08-12, suggesting
   support for "=====" header rows.  On 2001-08-17 he replied, saying
@@ -867,6 +871,25 @@ __ rst/alternatives.html#or-not-to-do
 
   This would correspond well to DocBook's SegmentedList.  Output could
   be tabular or "name: value" pairs, as described in DocBook's docs.
+
+* Allow backslash-escaped colons in field names::
+
+      :Case Study\: Event Handling: This chapter will be dropped.
+
+* When using superscripted footnotes references, the space looks ugly.
+  We could automatically activate --trim-footnote-reference-space when
+  --footnote-references=superscript (or --use-latex-footnotes for the
+  LaTeX writer) is supplied.
+
+  There should be also an option to deactivate the space-trimming,
+  e.g. --leave-footnote-reference-space.  The implementation logic is
+  a bit tricky: --leave-footnote-reference-space can't just be
+  "settings.trim_footnote_reference_space = False", because of the
+  automatic activation, unless the order of options is significant.
+  If the order is significant, the automatic activation has to take
+  place in the option-handling code.  But config files are handled
+  after the fact, so order can't be relied upon there.  So they have
+  to be two independent settings.
 
 
 Directives

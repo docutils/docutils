@@ -183,6 +183,10 @@ Also see the `SourceForge Bug Tracker`_.
   all IDs from definitions after the first substitution reference is
   processed.
 
+* The last segment ("/fc++") gets dropped from this URL::
+
+      http://www.cc.gatech.edu/~yannis/fc++
+
 
 ..
    Local Variables:
