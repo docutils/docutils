@@ -11,6 +11,7 @@ PEP HTML Writer.
 __docformat__ = 'reStructuredText'
 
 
+import random
 import sys
 import docutils
 from docutils import frontend, nodes, utils
@@ -31,12 +32,7 @@ class Writer(html4css1.Writer):
           {'default': '..', 'metavar': '<URL>'}),
          ('Home URL prefix for PEPs.  Default is "." (current directory).',
           ['--pep-home'],
-          {'default': '.', 'metavar': '<URL>'}),
-         # Workaround for SourceForge's broken Python
-         # (``import random`` causes a segfault).
-         (frontend.SUPPRESS_HELP,
-          ['--no-random'],
-          {'action': 'store_true', 'validator': frontend.validate_boolean}),))
+          {'default': '.', 'metavar': '<URL>'}),))
 
     settings_default_overrides = {'footnote_references': 'brackets'}
 
@@ -70,14 +66,10 @@ class Writer(html4css1.Writer):
         header = self.document[index]
         pepnum = header[0][1].astext()
         subs['pep'] = pepnum
-        if settings.no_random:
-            subs['banner'] = 0
-        else:
-            import random
-            subs['banner'] = random.randrange(64)
+        subs['banner'] = random.randrange(64)
         try:
             subs['pepnum'] = '%04i' % int(pepnum)
-        except:
+        except ValueError:
             subs['pepnum'] = pepnum
         subs['title'] = header[1][1].astext()
         subs['body'] = ''.join(
