@@ -289,7 +289,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</p>\n</td></tr>')
 
     def visit_doctest_block(self, node):
-        self.body.append(self.starttag(node, 'pre', CLASS='doctest-block'))
+        self.body.append(self.starttag(node, 'pre', suffix='',
+            CLASS='doctest-block'))
 
     def depart_doctest_block(self, node):
         self.body.append('</pre>\n')
