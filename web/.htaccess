@@ -1,0 +1,54 @@
+# This file is intended to provide seamless redirection from old URLs
+# to new URLs after a site reorganization.
+# Do not edit arbitrarily.  Check with docutils-develop@lists.sf.net first.
+
+Redirect permanent /docs/config.html http://docutils.sourceforge.net/docs/user/config.html
+Redirect permanent /docs/config.txt  http://docutils.sourceforge.net/docs/user/config.txt
+Redirect permanent /docs/latex.html  http://docutils.sourceforge.net/docs/user/latex.html
+Redirect permanent /docs/latex.txt   http://docutils.sourceforge.net/docs/user/latex.txt
+Redirect permanent /docs/tools.html  http://docutils.sourceforge.net/docs/user/tools.html
+Redirect permanent /docs/tools.txt   http://docutils.sourceforge.net/docs/user/tools.txt
+
+RedirectMatch permanent /docs/rst/([^#]*) http://docutils.sourceforge.net/docs/user/rst/$1
+# instead of:
+# Redirect permanent /docs/rst/quickref.html   http://docutils.sourceforge.net/docs/user/rst/quickref.html
+# Redirect permanent /docs/rst/quickstart.html http://docutils.sourceforge.net/docs/user/rst/quickstart.html
+# Redirect permanent /docs/rst/quickstart.txt  http://docutils.sourceforge.net/docs/user/rst/quickstart.txt
+# Redirect permanent /docs/rst/cheatsheet.txt  http://docutils.sourceforge.net/docs/user/rst/cheatsheet.txt
+# Redirect permanent /docs/rst/quickref.html   http://docutils.sourceforge.net/docs/user/rst/quickref.html
+
+RedirectMatch permanent /spec/howto/([^#]*) http://docutils.sourceforge.net/docs/howto/$1
+
+Redirect permanent /spec/pysource.dtd   http://docutils.sourceforge.net/docs/dev/pysource.dtd
+Redirect permanent /spec/pysource.txt   http://docutils.sourceforge.net/docs/dev/pysource.txt
+Redirect permanent /spec/pysource.html  http://docutils.sourceforge.net/docs/dev/pysource.html
+Redirect permanent /spec/semantics.txt  http://docutils.sourceforge.net/docs/dev/semantics.txt
+Redirect permanent /spec/semantics.html http://docutils.sourceforge.net/docs/dev/semantics.html
+Redirect permanent /spec/notes.txt      http://docutils.sourceforge.net/docs/dev/todo.txt
+Redirect permanent /spec/notes.html     http://docutils.sourceforge.net/docs/dev/todo.html
+
+Redirect permanent /spec/doctree.txt  http://docutils.sourceforge.net/docs/ref/doctree.txt
+Redirect permanent /spec/doctree.html http://docutils.sourceforge.net/docs/ref/doctree.html
+Redirect permanent /spec/docutils.dtd http://docutils.sourceforge.net/docs/ref/docutils.dtd
+Redirect permanent /spec/soextblx.dtd http://docutils.sourceforge.net/docs/ref/soextblx.dtd
+
+Redirect permanent /spec/transforms.txt  http://docutils.sourceforge.net/docs/ref/transforms.txt
+Redirect permanent /spec/transforms.html http://docutils.sourceforge.net/docs/ref/transforms.html
+
+Redirect permanent /spec/rst/alternatives.txt  http://docutils.sourceforge.net/docs/dev/rst/alternatives.txt
+Redirect permanent /spec/rst/alternatives.html http://docutils.sourceforge.net/docs/dev/rst/alternatives.html
+Redirect permanent /spec/rst/problems.txt      http://docutils.sourceforge.net/docs/dev/rst/problems.txt
+Redirect permanent /spec/rst/problems.html     http://docutils.sourceforge.net/docs/dev/rst/problems.html
+
+Redirect permanent /spec/rst/reStructuredText.txt  http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.txt
+Redirect permanent /spec/rst/reStructuredText.html http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
+Redirect permanent /spec/rst/restructuredtext.txt  http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.txt
+Redirect permanent /spec/rst/restructuredtext.html http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
+Redirect permanent /spec/rst/directives.txt        http://docutils.sourceforge.net/docs/ref/rst/directives.txt
+Redirect permanent /spec/rst/directives.html       http://docutils.sourceforge.net/docs/ref/rst/directives.html
+Redirect permanent /spec/rst/interpreted.txt       http://docutils.sourceforge.net/docs/ref/rst/roles.txt
+Redirect permanent /spec/rst/interpreted.html      http://docutils.sourceforge.net/docs/ref/rst/roles.html
+Redirect permanent /spec/rst/introduction.txt      http://docutils.sourceforge.net/docs/ref/rst/introduction.txt
+Redirect permanent /spec/rst/introduction.html     http://docutils.sourceforge.net/docs/ref/rst/introduction.html
+
+RedirectMatch permanent /spec/pep-([^#]*) http://docutils.sourceforge.net/docs/peps/pep-$1
