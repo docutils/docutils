@@ -544,12 +544,14 @@ class HTMLTranslator(nodes.NodeVisitor):
             backrefs = node['backrefs']
             if len(backrefs) == 1:
                 self.context.append(('</a>', ''))
-                self.context.append(('<a href="#%s">' % backrefs[0],))
+                self.context.append(('<a class="fn-backref" href="#%s">'
+                                     % backrefs[0],))
             else:
                 i = 1
                 backlinks = []
                 for backref in backrefs:
-                    backlinks.append('<a href="#%s">%s</a>' % (backref, i))
+                    backlinks.append('<a class="fn-backref" href="#%s">%s</a>'
+                                     % (backref, i))
                     i += 1
                 self.context.append(('', '(%s) ' % ', '.join(backlinks)))
                 self.context.append(('',))
@@ -912,7 +914,8 @@ class HTMLTranslator(nodes.NodeVisitor):
                   self.starttag(node, 'h%s' % self.section_level, ''))
             context = ''
             if node.hasattr('refid'):
-                self.body.append('<a href="#%s">' % node['refid'])
+                self.body.append('<a class="toc-backref" href="#%s">'
+                                 % node['refid'])
                 context = '</a>'
             self.context.append('%s</h%s>\n' % (context, self.section_level))
 
