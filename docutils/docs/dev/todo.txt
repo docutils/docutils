@@ -636,6 +636,9 @@ __ rst/alternatives.html#or-not-to-do
   first blank line ends it) where every line begins with the same
   non-alphanumeric non-whitespace character.
 
+* Should the "doctest" element go away, and the construct simply be a
+  front-end to generic literal blocks?
+
 * Add support for pragma (syntax-altering) directives.
 
   Some pragma directives could be local-scope unless explicitly
