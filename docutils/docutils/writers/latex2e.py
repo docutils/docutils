@@ -116,22 +116,30 @@ Notes on LaTeX
 --------------
 
 * Put labels inside environments::
+
     \chapter[optional]{title}
     \label{lab} % optional, for cross referencing
     text for this unit ...
+    
 * unnumbered sections are not written to tableofcontents.
   a. donot print numbers::
+      
         \renewcommand{\thesection}{}
   b. use::
+      
         \addcontentsline{file}{sec_unit}{entry}
+
      file toc,lof lot
      sec_unit section, subsection , ...
      entry the line::
+         
         \numberline text pagenumber
+        
   X. latex does not support multiple tocs in one document.
      (might be no limitation except for docutils documentation)
 
 * sectioning::
+    
     \part
     \chapter (report style only) 
     \section
@@ -331,8 +339,19 @@ class LaTeXTranslator(nodes.NodeVisitor):
         """
         if self.verbatim:
             return text
-        # first the backslash
-        text = text.replace("\\", '{\\textbackslash}')
+        # compile the regexps once. do it here so one can see them.
+        #
+        # first the braces.
+        if not self.__dict__.has_key('encode_re_braces'):
+            self.encode_re_braces = re.compile(r'([{}])')
+        text = self.encode_re_braces.sub(r'{\\\1}',text)
+        if not self.__dict__.has_key('encode_re_bslash'):
+            # find backslash: except in the form '{\{}' or '{\}}'.
+            self.encode_re_bslash = re.compile(r'(?<!{)(\\)(?![{}]})')
+        # then the backslash: except in the form from line above:
+        # either '{\{}' or '{\}}'.
+        text = self.encode_re_bslash.sub(r'{\\textbackslash}', text)
+
         # then dollar
         text = text.replace("$", '{\\$}')
         # then all that needs math mode
@@ -835,7 +854,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         atts = node.attributes.copy()
         href = atts['uri']
         ##self.body.append('\\begin{center}\n')
-        self.body.append('\\includegraphics{%s}\n' % href)
+        self.body.append('\n\\includegraphics{%s}\n' % href)
         ##self.body.append('\\end{center}\n')
 
     def depart_image(self, node):
@@ -908,7 +927,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('\\begin{verbatim}\n')
         elif (self.use_for_literal_block == "mbox"):
             self.mbox_newline = 1
-            self.body.append('\\ttfamily{\\begin{flushleft}\n\\mbox{')
+            self.body.append('\\begin{ttfamily}\\begin{flushleft}\n\\mbox{')
         else:
             self.body.append('{\\obeylines\\obeyspaces\\ttfamily\n')
 
@@ -917,7 +936,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('\n\\end{verbatim}\n')
             self.verbatim = 0
         elif (self.use_for_literal_block == "mbox"):
-            self.body.append('}\n\\end{flushleft}}\n')
+            self.body.append('}\n\\end{flushleft}\\end{ttfamily}\n')
             self.mbox_newline = 0
         else:
             self.body.append('}\n')
