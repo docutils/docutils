@@ -918,7 +918,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         else:
             self.body.append(
                   self.starttag(node, 'h%s' % self.section_level, ''))
-            atts = {'name': node.parent['id']}
+            atts = {}
+            if node.parent.hasattr('id'):
+                atts['name'] = node.parent['id']
             if node.hasattr('refid'):
                 atts['class'] = 'toc-backref'
                 atts['href'] = '#' + node['refid']
