@@ -112,6 +112,9 @@ Changes Since 0.3
   - Changed ``SparseNodeVisitor`` and ``GenericNodeVisitor`` dynamic
     method definitions (via ``exec``) to dynamic assignments (via
     ``setattr``); thanks to Roman Suzi.
+  - Added indirect_reference_name attribute to the Targetable class. This
+    attribute holds the whitespace_normalized_name (contains mixed case) of a
+    target.
 
 * docutils/statemachine.py:
 
@@ -153,9 +156,8 @@ Changes Since 0.3
   - Refactored explicit target processing code.
   - Added name attribute to references containing the reference name only
     through whitespace_normalize_name (no case changes).
-  - Added "origuri" attribute to references which contain an embedded uri. Some
-    writers (maybe other transforms) are interested in the original (non
-    normalized) uri text.
+  - parse_target no longer returns the refname after going through
+    normalize_name. This is now handled in make_target.
 
 * docutils/parsers/rst/tableparser.py:
 
@@ -213,6 +215,10 @@ Changes Since 0.3
   - Verifying that external targets are truly targets and not indirect 
     references. This is because we are now adding a "name" attribute to 
     references in addition to targets. Note sure if this is correct!
+  - Added code to hook into the unknown_reference_resolvers list for a
+    transformer in resolve_indirect_target. This allows the
+    unknown_reference_resolvers to keep around indirect targets which docutils 
+    doesn't know about.
 
 * docutils/transforms/universal.py:
 
@@ -662,6 +668,9 @@ Specific:
 * docutils/transforms/__init__.py:
 
   - Added ``Transformer`` class and completed transform reform.
+  - Added unknown_reference_resolvers list for each transformer. This list holds
+    the list of functions provided by each component of the transformer that
+    help resolve references.
 
 * docutils/transforms/frontmatter.py:
 

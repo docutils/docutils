@@ -599,6 +599,9 @@ class Targetable(Resolvable):
 
     referenced = 0
 
+    indirect_reference_name = None
+    """Holds the whitespace_normalized_name (contains mixed case) of a target"""
+
 class Labeled:
     """Contains a `label` as its first element."""
 

@@ -854,7 +854,6 @@ class Inliner:
 
     def phrase_ref(self, before, after, rawsource, escaped, text):
         match = self.patterns.embedded_uri.search(escaped)
-        uri_text = None
         if match:
             text = unescape(escaped[:match.start(0)])
             uri_text = match.group(2)
@@ -869,15 +868,8 @@ class Inliner:
         else:
             target = None
         refname = normalize_name(text)
-        # Only add origuri attribute if the rawsource does contain an
-        # embedded_uri
-        if uri_text:
-            reference = nodes.reference(rawsource, text,
-                                        name=whitespace_normalize_name(text),
-                                        origuri=uri_text)
-        else:
-            reference = nodes.reference(rawsource, text,
-                                        name=whitespace_normalize_name(text))
+        reference = nodes.reference(rawsource, text,
+                                    name=whitespace_normalize_name(text))
         node_list = [reference]
         if rawsource[-2:] == '__':
             if target:
@@ -1898,7 +1890,8 @@ class Body(RSTState):
     def make_target(self, block, block_text, lineno, target_name):
         target_type, data = self.parse_target(block, block_text, lineno)
         if target_type == 'refname':
-            target = nodes.target(block_text, '', refname=data)
+            target = nodes.target(block_text, '', refname=normalize_name(data))
+            target.indirect_reference_name = data
             self.add_target(target_name, '', target, lineno)
             self.document.note_indirect_target(target)
             return target
@@ -1936,7 +1929,7 @@ class Body(RSTState):
 
     def is_reference(self, reference):
         match = self.explicit.patterns.reference.match(
-            normalize_name(reference))
+            whitespace_normalize_name(reference))
         if not match:
             return None
         return unescape(match.group('simple') or match.group('phrase'))
