@@ -600,6 +600,15 @@ class LatexWriterPublishTestCase(WriterPublishTestCase):
     writer_name = 'latex'
 
 
+class PseudoXMLWriterPublishTestCase(WriterPublishTestCase):
+
+    """
+    Test case for pseudo-XML writer.
+    """
+
+    writer_name = 'pseudoxml'
+
+
 class HtmlWriterPublishTestCase(WriterPublishTestCase):
 
     """
@@ -632,6 +641,7 @@ class PublishTestSuite(CustomTestSuite):
 
     TEST_CLASSES = {
         'latex': LatexWriterPublishTestCase,
+        'pseudoxml': PseudoXMLWriterPublishTestCase,
     }
 
     def __init__(self, writer_name):
