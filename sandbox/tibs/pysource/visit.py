@@ -126,11 +126,11 @@ __docformat__ = "reST"
 
 
 # ----------------------------------------------------------------------
-def make_Docstring(text, options):
+def make_Docstring(text, settings):
     """A factory function to handle non-existant docstrings.
     """
     if text:
-        return Docstring(text, options)
+        return Docstring(text, settings)
     else:
         return None
 
@@ -138,7 +138,7 @@ class Docstring:
     """We use this to represent a docstring, parsed and unparsed.
     """
 
-    def __init__(self, text, options, debug=0):
+    def __init__(self, text, settings, debug=0):
         """Instantiate a new Docstring from its text.
         """
         self.text = self._trim(text)
@@ -149,8 +149,8 @@ class Docstring:
         (thus, only non-None if we *are* parsing docstrings in
         the containing module).
         """
-        self.options = options
-        """The docutils options to apply to new document parsers.
+        self.settings = settings
+        """The docutils settings to apply to new document parsers.
         """
 
         self.debug = debug
@@ -223,7 +223,7 @@ class Docstring:
         """Parse our text with the given parser.
         """
         import docutils
-        self.document = docutils.utils.new_document(self.text, self.options)
+        self.document = docutils.utils.new_document(self.text, self.settings)
         parser.parse(self.text,self.document)
 
     def add_to_DPS(self,dps):
@@ -678,9 +678,9 @@ class Base(ScopeMixin):
 
     verbose = 0
 
-    def __init__(self, options, name, fullname, docstring=None):
-        self.options = options
-        """ The parser options
+    def __init__(self, settings, name, fullname, docstring=None):
+        self.settings = settings
+        """ The parser settings
         """
 
         self.name = name
@@ -693,7 +693,7 @@ class Base(ScopeMixin):
         in a module `bob`, this would be "bob.Jim.fred"
         """
 
-        self.docstring = make_Docstring(docstring, options)
+        self.docstring = make_Docstring(docstring, settings)
         """The docstring for this scope, or None.
         Note that, at least for the moment, we're only supporting
         one docstring for an entity. This may need to change for
@@ -966,20 +966,20 @@ class Package(Base):
     its members itself - that is, it is self-constructing.
     """
 
-    def __init__(self,options,directory,parent=None,debug=0):
+    def __init__(self,settings,directory,parent=None,debug=0):
         """Instantiate a new package.
 
         If this is a "sub" package, then `parent` should be a Package
         instance, within which we may be found...
 
-        `options` will give the parsing options -- `verbose_parse` will
+        `settings` will give the parsing settings -- `verbose_parse` will
         cause the generation of a message for each stage of the production
         of our data, and `debug` will give a message for each "entity"
         in the AST that we visit.
         """
 
-        self.options = options
-        self.verbose = options.verbose_parse
+        self.settings = settings
+        self.verbose = settings.verbose_parse
         self.debug   = debug
 
         path = os.path.expanduser(directory) # expand "~"
@@ -994,10 +994,10 @@ class Package(Base):
         base,name = os.path.split(path)
         if parent:
             fullname = parent.fullname + "." + name
-            Base.__init__(self,options,name,fullname)
+            Base.__init__(self,settings,name,fullname)
         else:
             # With no parent, our name and fullname are the same.
-            Base.__init__(self,options,name,name)
+            Base.__init__(self,settings,name,name)
 
         self.modules = {}
         """Remember the modules (or Python files, really)
@@ -1026,7 +1026,7 @@ class Package(Base):
         # such as an __all__ value, which we may later want to use to
         # determine which files to read and parse, and which to ignore
         path = os.path.join(self.directory,"__init__.py")
-        self.addModule(Module(self.options,path,package=self, debug=self.debug))
+        self.addModule(Module(self.settings,path,package=self, debug=self.debug))
 
         # But, for the moment, just parse all the Python files...
         for file in files:
@@ -1035,7 +1035,7 @@ class Package(Base):
                 continue
             elif ext in [".py",".pyw"]:
                 path = os.path.join(self.directory,file)
-                self.addModule(Module(self.options,path,package=self,    
+                self.addModule(Module(self.settings,path,package=self,    
                     debug=self.debug))
 
     def addModule(self,mod):
@@ -1097,20 +1097,20 @@ class Module(Base):
     we can update our Module with any globals used therein...
     """
 
-    def __init__(self,options,filename,docstring=None,package=None,debug=0):
+    def __init__(self,settings,filename,docstring=None,package=None,debug=0):
         """Instantiate a new module.
 
         If this is a module within a package, then `package` should be
         a Package instance.
 
-        `options` will give the parsing options -- `verbose_parse` will
+        `settings` will give the parsing settings -- `verbose_parse` will
         cause the generation of a message for each stage of the production
         of our data, and `debug` will give a message for each "entity"
         in the AST that we visit.
         """
-        self.options = options
+        self.settings = settings
         self.package = package
-        self.verbose = options.verbose_parse
+        self.verbose = settings.verbose_parse
         self.debug   = debug
 
         self.docformat,self.language = utils.docformat("plaintext")
@@ -1128,10 +1128,10 @@ class Module(Base):
 
         if package:
             fullname = package.fullname + "." + name
-            Base.__init__(self,options, name,fullname,docstring)
+            Base.__init__(self,settings, name,fullname,docstring)
         else:
             # Without a package, our name and fullname are the same
-            Base.__init__(self,options, name,name,docstring)
+            Base.__init__(self,settings, name,name,docstring)
 
         self.ast = None
         """The parse tree, as produced by compiler.
@@ -1251,7 +1251,7 @@ class Module(Base):
         if self.debug:
             self._report("Module",self.filename,scope,superscope)
 
-        self.docstring = make_Docstring(node.doc, self.options)
+        self.docstring = make_Docstring(node.doc, self.settings)
 
         # Visit our children with ourselves as their scope
         self.visit(node.node,self)
@@ -1280,7 +1280,7 @@ class Module(Base):
         #    Getattr(Getattr(Name('docutils'), 'nodes'), '_TextElement')
         # that we get for something like docutils.nodes into something
         # easier to deal with...
-        cls = Class(self.options,node.name,fullname,node.bases,node.doc)
+        cls = Class(self.settings,node.name,fullname,node.bases,node.doc)
         if scope:
             scope.addClass(cls)
 
@@ -1310,10 +1310,10 @@ class Module(Base):
         fullname = "%s.%s"%(scope.fullname,node.name)
 
         if isinstance(scope,Class):
-            fun = Method(self.options,node.name,fullname,
+            fun = Method(self.settings,node.name,fullname,
                          node.argnames,node.defaults,node.flags,node.doc)
         else:
-            fun = Function(self.options,node.name,fullname,
+            fun = Function(self.settings,node.name,fullname,
                            node.argnames,node.defaults,node.flags,node.doc)
         scope.addFunction(fun)
 
@@ -1323,7 +1323,7 @@ class Module(Base):
         scope.scope_define_name(node.name,fullname,fun)
         for argname in node.argnames:
             fullname = "%s.%s:%s"%(scope.fullname,node.name,argname)
-            name = Argument(self.options,argname,fullname)
+            name = Argument(self.settings,argname,fullname)
             name.scope_define_parent(fun,self)
             fun.scope_define_name(argname,fullname,name)
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1441,10 +1441,10 @@ class Module(Base):
             what = Name
 
         if hasattr(node,"docstring"):
-            name = what(self.options,node.name,fullname,
+            name = what(self.settings,node.name,fullname,
                 docstring=node.docstring)
         else:
-            name = what(self.options,node.name,fullname)
+            name = what(self.settings,node.name,fullname)
         if hasattr(node,"assign_expr"):
             name.setValue(node.assign_expr)
         if scope.isGlobal(node.name):
@@ -1546,7 +1546,7 @@ class Module(Base):
             # Experimental scope work
             for item in node.names:
                 fullname = scope.fullname + "." + item[0]
-                name = ImportName(self.options,item[0],fullname)
+                name = ImportName(self.settings,item[0],fullname)
                 name.scope_define_parent(scope,self)
                 scope.scope_define_name(item[0],fullname,name)
             # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1567,7 +1567,7 @@ class Module(Base):
             # Experimental scope work
             for item in node.names:
                 fullname = scope.fullname + "." + item[0]
-                name = ImportName(self.options,item[0],fullname)
+                name = ImportName(self.settings,item[0],fullname)
                 name.scope_define_parent(scope,self)
                 scope.scope_define_name(item[0],fullname,name)
             # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1618,8 +1618,8 @@ class Module(Base):
 class Class(Base):
     """The representation of a Python class."""
 
-    def __init__(self,options,name,fullname,bases,docstring):
-        Base.__init__(self,options,name,fullname,docstring)
+    def __init__(self,settings,name,fullname,bases,docstring):
+        Base.__init__(self,settings,name,fullname,docstring)
 
         self.bases = bases or []
         """A list of the base classes for this class."""
@@ -1669,8 +1669,8 @@ class Function(Base):
     But see also `Method`.
     """
 
-    def __init__(self,options,name,fullname,args,defaults,flags,docstring):
-        Base.__init__(self,options,name,fullname,docstring)
+    def __init__(self,settings,name,fullname,args,defaults,flags,docstring):
+        Base.__init__(self,settings,name,fullname,docstring)
 
         self.args = args
         """The arguments for this function or method."""
@@ -1794,10 +1794,10 @@ class Name(ScopeMixin):
     things.)
     """
 
-    def __init__(self,options,name,fullname,selfname=None,docstring=None):
+    def __init__(self,settings,name,fullname,selfname=None,docstring=None):
         """Instantiate a new Name.
 
-        * `options`  -- the options for the parser
+        * `settings`  -- the settings for the parser
         * `name`     -- the name of this, erm, name
         * `fullname` -- the "fully qualified" name - this is the "path" from
           our top-level entity down to this name (e.g., module.class.name)
@@ -1816,7 +1816,7 @@ class Name(ScopeMixin):
         in a module `bob`, this would be "bob.Jim.fred"
         """
 
-        self.docstring = make_Docstring(docstring, options)
+        self.docstring = make_Docstring(docstring, settings)
         """The docstring for this name, or None.
         Note that, at least for the moment, we're only supporting
         one docstring for an entity. See the equivalent comment

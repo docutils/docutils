@@ -71,7 +71,7 @@ class Writer(writers.Writer):
     supported = ('latex','latex2e')
     """Formats this writer supports."""
 
-    cmdline_options = (
+    settings_spec = (
         'LaTeX-Specific Options',
         'The LaTeX "--output-encoding" default is "latin-1".',
         (('Specify documentclass.  Default is "article".',
@@ -84,7 +84,7 @@ class Writer(writers.Writer):
            'metavar': '<FORMAT>'}),
           ))
 
-    option_default_overrides = {'output_encoding': 'latin-1'}
+    settings_default_overrides = {'output_encoding': 'latin-1'}
 
     output = None
     """Final translated form of `document`."""
@@ -135,8 +135,8 @@ Notes on LaTeX
 class LaTeXTranslator(nodes.NodeVisitor):
     # When options are given to the documentclass, latex will pass them
     # to other packages, as done with babel. 
-    # Dummy settings might be taken from document options
-    d_class = 'article'    # document.options.stylesheet
+    # Dummy settings might be taken from document settings
+    d_class = 'article'    # document.settings.stylesheet
     d_options = '10pt'  # papersize, fontsize
     d_paper = 'a4paper'
     d_margins = '2cm'
@@ -156,16 +156,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
-        self.options = options = document.options
+        self.settings = settings = document.settings
         # language: labels, bibliographic_fields, and author_separators.
         # to allow writing labes for specific languages.
-        self.language = languages.get_language(document.options.language_code)
-        if _ISO639_TO_BABEL.has_key(document.options.language_code):
+        self.language = languages.get_language(settings.language_code)
+        if _ISO639_TO_BABEL.has_key(settings.language_code):
             self.d_options += ',%s' % \
-                    _ISO639_TO_BABEL[document.options.language_code]
+                    _ISO639_TO_BABEL[settings.language_code]
         self.head_prefix = [
               self.latex_head % (self.d_options,self.d_class),
-              '\\usepackage{babel}\n',     # language is in documents options.
+              '\\usepackage{babel}\n',     # language is in documents settings.
               '\\usepackage{shortvrb}\n',  # allows verb in footnotes.
               self.encoding,
               '\\usepackage{graphicx}\n',
@@ -590,7 +590,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             href = '#' + node['refid']
         elif node.has_key('refname'):
             href = '#' + self.document.nameids[node['refname']]
-        format = self.options.footnote_references
+        format = self.settings.footnote_references
         if format == 'brackets':
             suffix = '['
             self.context.append(']')

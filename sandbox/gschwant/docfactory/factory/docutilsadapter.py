@@ -6,7 +6,7 @@
 
 from   docutils.languages.en             import bibliographic_fields
 from   docutils.parsers.rst.languages.en import directives
-from   docutils.core                     import publish
+from   docutils.core                     import publish_cmdline
 from   re                                import findall
 import os, sys
 from   wxPython.wx                       import wxLogMessage
@@ -36,7 +36,7 @@ def rest2html(file, htmlfile, dir):
     error_lines = []
     sys.stderr = StdCatcher()
     os.chdir(dir)    
-    publish(writer_name='html', argv = [file, htmlfile])
+    publish_cmdline(writer_name='html', argv = [file, htmlfile])
     warning_lines = sys.stderr.GetWarnings()
     error_lines = sys.stderr.GetErrors()
     sys.stderr = sys.__stderr__

@@ -162,33 +162,33 @@ class ZReST(Item, PropertyManager, Historical, Implicit, Persistent):
         pub.set_writer('html')
 
         # go with the defaults
-        pub.set_options()
+        pub.get_settings()
 
         # this is needed, but doesn't seem to do anything
-        pub.options._destination = ''
+        pub.settings._destination = ''
 
         # use the stylesheet chosen by the user
-        pub.options.stylesheet = self.stylesheet
+        pub.settings.stylesheet = self.stylesheet
 
         # set the reporting level to something sane
-        pub.options.report_level = int(self.report_level)
+        pub.settings.report_level = int(self.report_level)
 
         # don't break if we get errors
-        pub.options.halt_level = 6
+        pub.settings.halt_level = 6
 
         # remember warnings
-        pub.options.warning_stream = Warnings()
+        pub.settings.warning_stream = Warnings()
 
         # input
-        pub.source = docutils.io.StringInput(pub.options)
+        pub.source = docutils.io.StringInput(pub.settings)
         pub.source.source = self.source
 
         # output - not that it's needed
-        pub.destination = docutils.io.StringOutput(pub.options)
+        pub.destination = docutils.io.StringOutput(pub.settings)
 
         # parse!
-        document = pub.reader.read(pub.source, pub.parser, pub.options)
-        self.warnings = ''.join(pub.options.warning_stream.messages)
+        document = pub.reader.read(pub.source, pub.parser, pub.settings)
+        self.warnings = ''.join(pub.settings.warning_stream.messages)
 
         if document.children:
             item = document.children[0]
@@ -264,6 +264,9 @@ modulesecurity.apply(globals())
 
 #
 # $Log$
+# Revision 1.4  2002/10/18 05:10:33  goodger
+# Refactored names (options -> settings; etc.); updated.
+#
 # Revision 1.3  2002/08/15 05:02:41  richard
 # pull out the document title too
 #

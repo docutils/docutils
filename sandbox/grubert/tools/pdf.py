@@ -10,7 +10,7 @@
 A minimal front-end to the Docutils Publisher, producing PDF via ReportLabs.
 """
 
-from docutils.core import publish
+from docutils.core import publish_cmdline
 try:
     from docutils.writers.rlpdf import Writer
 except ImportError:
@@ -19,4 +19,4 @@ except ImportError:
 
 usage = 'usage:\n  %prog [options] [source [destination]]'
 
-publish(writer=Writer(), usage=usage)
+publish_cmdline(writer=Writer(), usage=usage)

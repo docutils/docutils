@@ -60,7 +60,7 @@ class OpenOfficeTranslator(nodes.NodeVisitor):
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
-        self.options = options = document.options
+        self.settings = settings = document.settings
         self.body = []
         self.section_level = 0
 
@@ -257,7 +257,7 @@ class OpenOfficeTranslator(nodes.NodeVisitor):
         old_compact_simple = self.compact_simple
         self.context.append((self.compact_simple, self.compact_p))
         self.compact_p = None
-        self.compact_simple = (self.options.compact_lists and
+        self.compact_simple = (self.settings.compact_lists and
                                (self.compact_simple
                                 or self.topic_class == 'contents'
                                 or self.check_simple_list(node)))
@@ -327,7 +327,7 @@ class OpenOfficeTranslator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def footnote_backrefs(self, node):
-        if self.options.footnote_backlinks and node.hasattr('backrefs'):
+        if self.settings.footnote_backlinks and node.hasattr('backrefs'):
             backrefs = node['backrefs']
             if len(backrefs) == 1:
                 self.context.append('')

@@ -108,7 +108,7 @@ from types import ListType
 
 class Writer(writers.Writer):
 
-    cmdline_options = (
+    settings_spec = (
         'DocBook-Specific Options',
         None,
         (('Set DocBook document type. '
@@ -143,10 +143,11 @@ class DocBookTranslator(nodes.NodeVisitor):
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
-        self.language = languages.get_language(document.options.language_code)
-        self.doctype = document.options.doctype
+        self.language = languages.get_language(
+            document.settings.language_code)
+        self.doctype = document.settings.doctype
         self.doc_header = [
-            self.XML_DECL % (document.options.output_encoding,),
+            self.XML_DECL % (document.settings.output_encoding,),
             self.DOCTYPE_DECL % (self.doctype,),
             '<%s>\n' % (self.doctype,),
         ]

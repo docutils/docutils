@@ -28,10 +28,10 @@ index_directive.content = 1
 
 def include_code(name, arguments, options, content, lineno,
         content_offset, block_text, state, state_machine):
-    print >> sys.stderr, state_machine.document.options._source
+    print >> sys.stderr, state_machine.document.settings._source
     return []
     document = state_machine.document
-    source = document.options._source
+    source = document.settings._source
     if source is not None:
         if has_attr(
 
