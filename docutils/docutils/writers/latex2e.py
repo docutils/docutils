@@ -106,7 +106,13 @@ class Writer(writers.Writer):
          ('Set the separator between section number and enumerator '
           'for compound enumerated lists.  Default is "-".',
           ['--section-enumerator-separator'],
-          {'default': '-', 'metavar': '<char>'}),))
+          {'default': '-', 'metavar': '<char>'}),
+         ('When possibile, use verbatim for literal-blocks.'
+          'Default is to always use the mbox environment.',
+          ['--use-verbatim-when-possible'],
+          {'default': 0, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+          ))
 
     settings_defaults = {'output_encoding': 'latin-1'}
 
@@ -1202,31 +1208,43 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_literal_block(self, node):
         """
-        .. parsed-literal::
+        Render a literal-block.
+
+        Literal blocks are used for "::"-prefixed literal-indented
+        blocks of text, where the inline markup is not recognized,
+        but are also the product of the parsed-literal directive,
+        where the markup is respected.
         """
-        # typically in a typewriter/monospaced typeface.
-        # care must be taken with the text, because inline markup is recognized.
+        # In both cases, we want to use a typewriter/monospaced typeface.
+        # For "real" literal-blocks, we can use \verbatim, while for all
+        # the others we must use \mbox.
         #
-        # possibilities:
-        # * verbatim: is no possibility, as inline markup does not work.
-        # * obey..: is from julien and never worked for me (grubert).
-        self.use_for_literal_block = "mbox"
-        self.literal_block = 1
-        if (self.use_for_literal_block == "mbox"):
+        # We can distinguish between the two kinds by the number of
+        # siblings the compose this node: if it is composed by a
+        # single element, it's surely is either a real one, otherwise
+        # it's a parsed-literal that does not contain any markup.
+        # 
+        if self.settings.use_verbatim_when_possible and (len(node) == 1):
+            self.verbatim = 1
+            self.body.append('\\begin{verbatim}\n')
+        else:
+            self.literal_block = 1
             self.mbox_newline = 1
             self.insert_none_breaking_blanks = 1
             self.body.append('\\begin{ttfamily}\\begin{flushleft}\n\\mbox{')
-        else:
-            self.body.append('{\\obeylines\\obeyspaces\\ttfamily\n')
+            # * obey..: is from julien and never worked for me (grubert).
+            #   self.body.append('{\\obeylines\\obeyspaces\\ttfamily\n')
 
     def depart_literal_block(self, node):
-        if (self.use_for_literal_block == "mbox"):
+        if self.verbatim:
+            self.body.append('\n\\end{verbatim}\n')
+            self.verbatim = 0
+        else:
             self.body.append('}\n\\end{flushleft}\\end{ttfamily}\n')
             self.insert_none_breaking_blanks = 0
             self.mbox_newline = 0
-        else:
-            self.body.append('}\n')
-        self.literal_block = 0
+            # obey end: self.body.append('}\n')
+            self.literal_block = 0
 
     def visit_meta(self, node):
         self.body.append('[visit_meta]\n')
