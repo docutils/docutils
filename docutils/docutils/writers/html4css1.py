@@ -983,7 +983,8 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_paragraph(self, node):
         # Omit <p> tags if this is an only child and optimizable.
-        if (not isinstance(node.parent, nodes.compound) and
+        if (not isinstance(node.parent, nodes.document) and
+            not isinstance(node.parent, nodes.compound) and
             (node.attributes in ({}, {'class': 'first'}, {'class': 'last'},
                                  {'class': 'first last'})) and
             (self.compact_simple or
