@@ -70,6 +70,7 @@ class Tex_to_images(object):
             os.remove(fpath + '.tmp')
         return fpath + extension
     def texmath(self, text):
+        text = ' '.join(text.split())
         src = self.process(text)
         return '''\
 image:: %(src)s
