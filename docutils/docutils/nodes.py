@@ -107,11 +107,10 @@ class Node:
         Parameter `visitor`: A `NodeVisitor` object, containing a
         ``visit_...`` method for each `Node` subclass encountered.
         """
-        name = 'visit_' + self.__class__.__name__
-        method = getattr(visitor, name, visitor.unknown_visit)
-        visitor.document.reporter.debug(name, category='nodes.Node.walk')
+        visitor.document.reporter.debug(self.__class__.__name__,
+                                        category='nodes.Node.walk')
         try:
-            method(self)
+            visitor.dispatch_visit(self, self.__class__.__name__)
         except (SkipChildren, SkipNode):
             return
         except SkipDeparture:           # not applicable; ignore
@@ -134,12 +133,11 @@ class Node:
         and ``depart_...`` methods for each `Node` subclass encountered.
         """
         call_depart = 1
-        name = 'visit_' + self.__class__.__name__
-        method = getattr(visitor, name, visitor.unknown_visit)
-        visitor.document.reporter.debug(name, category='nodes.Node.walkabout')
+        visitor.document.reporter.debug(self.__class__.__name__,
+                                        category='nodes.Node.walkabout')
         try:
             try:
-                method(self)
+                visitor.dispatch_visit(self, self.__class__.__name__)
             except SkipNode:
                 return
             except SkipDeparture:
@@ -153,11 +151,9 @@ class Node:
         except SkipChildren:
             pass
         if call_depart:
-            name = 'depart_' + self.__class__.__name__
-            method = getattr(visitor, name, visitor.unknown_departure)
-            visitor.document.reporter.debug(
-                  name, category='nodes.Node.walkabout')
-            method(self)
+            visitor.document.reporter.debug(self.__class__.__name__,
+                                            category='nodes.Node.walkabout')
+            visitor.dispatch_depart(self, self.__class__.__name__)
 
 
 class Text(Node, UserString):
@@ -1274,6 +1270,14 @@ class NodeVisitor:
 
     def __init__(self, document):
         self.document = document
+
+    def dispatch_visit(self, node, method_name):
+        method = getattr(self, 'visit_' + method_name, self.unknown_visit)
+        return method(node)
+
+    def dispatch_depart(self, node, method_name):
+        method = getattr(self, 'depart_' + method_name, self.unknown_departure)
+        return method(node)
 
     def unknown_visit(self, node):
         """
