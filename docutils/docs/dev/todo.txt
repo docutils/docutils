@@ -19,7 +19,11 @@ the priority.  Items in question form (containing "?") are ideas which
 require more thought and debate; they are potential to-do's.
 
 Many of these items are awaiting champions.  If you see something
-you'd like to tackle, please do!
+you'd like to tackle, please do!  If there's something you'd like to
+see done but are unable to implement it yourself, `please consider
+contributing`__ in other ways.
+
+__ http://docutils.sf.net/#please-contribute
 
 
 Priorities
