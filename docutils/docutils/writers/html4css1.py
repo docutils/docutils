@@ -57,7 +57,12 @@ class Writer(writers.Writer):
           '"brackets".  Default is "superscript".',
           ['--footnote-references'],
           {'choices': ['superscript', 'brackets'], 'default': 'superscript',
-           'metavar': '<FORMAT>'}),
+           'metavar': '<format>'}),
+         ('Format for block quote attributions: one of "dash" (em-dash '
+          'prefix), "parentheses"/"parens", or "none".  Default is "dash".',
+          ['--attribution'],
+          {'choices': ['dash', 'parentheses', 'parens', 'none'],
+           'default': 'dash', 'metavar': '<format>'}),
          ('Remove extra vertical whitespace between items of bullet lists '
           'and enumerated lists, when list items are "simple" (i.e., all '
           'items each contain one paragraph and/or one "simple" sublist '
@@ -292,12 +297,19 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_attention(self, node):
         self.depart_admonition()
 
+    attribution_formats = {'dash': ('&mdash;', ''),
+                           'parentheses': ('(', ')'),
+                           'parens': ('(', ')'),
+                           'none': ('', '')}
+
     def visit_attribution(self, node):
+        prefix, suffix = self.attribution_formats[self.settings.attribution]
+        self.context.append(suffix)
         self.body.append(
-            self.starttag(node, 'p', u'&mdash;', CLASS='attribution'))
+            self.starttag(node, 'p', prefix, CLASS='attribution'))
 
     def depart_attribution(self, node):
-        self.body.append('</p>\n')
+        self.body.append(self.context.pop() + '</p>\n')
 
     def visit_author(self, node):
         self.visit_docinfo_item(node, 'author')

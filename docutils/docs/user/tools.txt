@@ -358,6 +358,12 @@ for some attributes.
 ====================  ================================================
 Setting/Config Entry  Description
 ====================  ================================================
+attribution           (HTML Writer.)  Format for block quote
+                      attributions: one of "dash" (em-dash prefix),
+                      "parentheses"/"parens", or "none".
+
+                      Default: "dash".  Options: ``--attribution``.
+--------------------  ------------------------------------------------
 compact_lists         (HTML Writer.)  Remove extra vertical whitespace
                       between items of bullet lists and enumerated
                       lists, when list items are "simple" (i.e., all
