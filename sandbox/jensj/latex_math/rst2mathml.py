@@ -11,25 +11,39 @@ except:
     pass
 
 from docutils.parsers.rst.roles import register_canonical_role
-from docutils.nodes import Inline, Text, TextElement
+from docutils import nodes
 from docutils.writers.html4css1 import HTMLTranslator
 from docutils.parsers.rst.directives import _directives
 from docutils.core import publish_cmdline, default_description
 
 
 # Define LaTeX math node:
-class latex_math(Inline, Text):
+class latex_math(nodes.Element):
     tagname = '#latex-math'
-    def __init__(self, rawsource, latex):
-        Text.__init__(self, latex, rawsource)
+    def __init__(self, rawsource, mathml_tree):
+        nodes.Element.__init__(self, rawsource)
+        self.mathml_tree = mathml_tree
 
-
+"""
+try:
+        rfcnum = int(text)
+        if rfcnum <= 0:
+            raise ValueError
+    except ValueError:
+"""
+    
 # Register role:
 def latex_math_role(role, rawtext, text, lineno, inliner,
                     options={}, content=[]):
     i = rawtext.find('`')
-##    node = nodes.latex_math(rawtext, text.replace('\x00','\\'))
-    node = latex_math(rawtext, rawtext[i+1:-1])
+    latex = rawtext[i+1:-1]
+    try:
+        mathml_tree = parse_latex_math(latex, inline=True)
+    except SyntaxError, msg:
+        msg = inliner.reporter.error(msg, line=lineno)
+        prb = inliner.problematic(rawtext, rawtext, msg)
+        return [prb], [msg]
+    node = latex_math(rawtext, mathml_tree)
     return [node], []
 register_canonical_role('latex-math', latex_math_role)
 
@@ -37,7 +51,14 @@ register_canonical_role('latex-math', latex_math_role)
 # Register directive:
 def latex_math_directive(name, arguments, options, content, lineno,
                          content_offset, block_text, state, state_machine):
-    node = latex_math(block_text, ''.join(content))
+    latex = ''.join(content)
+    try:
+        mathml_tree = parse_latex_math(latex, inline=False)
+    except SyntaxError, msg:
+        error = state_machine.reporter.error(
+            msg, nodes.literal_block(block_text, block_text), line=lineno)
+        return [error]
+    node = latex_math(block_text, mathml_tree)
     return [node]
 latex_math_directive.arguments = None
 latex_math_directive.options = {}
@@ -47,10 +68,17 @@ _directives['latex-math'] = latex_math_directive
 
 # Add visit/depart methods to HTML-Translator:
 def visit_latex_math(self, node):
-    text = node.astext()
-    inline = isinstance(node.parent, TextElement)
-    mml = mathml(text, inline)
-    self.body.append(mml)
+    mathml = ''.join(node.mathml_tree.xml())
+    string = """<math xmlns="http://www.w3.org/1998/Math/MathML">
+    <semantics>
+    %s
+    </semantics>
+    </math>
+    """ % mathml
+    inline = isinstance(node.parent, nodes.TextElement)
+    if not inline:
+        string += '<br/>\n'
+    self.body.append(string)
     if not self.has_mathml_dtd:
         doctype = ('<!DOCTYPE html'
                    ' PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN"'
@@ -490,7 +518,7 @@ def handle_keyword(name, node, string):
             if string.startswith(par):
                 break
         else:
-            raise SyntaxError
+            raise SyntaxError, 'Missing right brace!'
         node.closepar = par
         node = node.close()
         skip += len(par)
@@ -519,34 +547,6 @@ def handle_keyword(name, node, string):
                     raise SyntaxError, 'Unknown LaTeX command: ' + name
 
     return node, skip
-
-
-def mathml(string, inline):
-    tree = parse_latex_math(string, inline)
-##    print repr(tree)
-    string = string.replace("&", "&amp;")
-    string = string.replace("<", "&lt;")
-    string = string.replace(">", "&gt;")
-    xml = ''.join(tree.xml())
-    xml = """<math xmlns="http://www.w3.org/1998/Math/MathML">
-    <semantics>
-    %s
-    <annotation encoding="LaTeX">%s</annotation>
-    </semantics>
-    </math>
-    """ % (xml, string)
-    if inline:
-        return xml
-    else:
-        return xml + '<br/>\n'
-
-
-## if __name__ == '__main__':
-##     import sys
-##     tree = parse_latex_math(sys.argv[1], 1)
-##     print repr(tree)
-##     print tree.xml()
-##     print ''.join(tree.xml()).encode('ascii', 'ignore')
 
 
 description = ('Generates (X)HTML documents from standalone reStructuredText '
