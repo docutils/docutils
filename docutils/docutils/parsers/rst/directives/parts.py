@@ -42,7 +42,8 @@ def contents(name, arguments, options, content, lineno,
 contents.arguments = (0, 1, 1)
 contents.options = {'depth': directives.nonnegative_int,
                     'local': directives.flag,
-                    'backlinks': backlinks}
+                    'backlinks': backlinks,
+                    'class': directives.class_option}
 
 def sectnum(name, arguments, options, content, lineno,
             content_offset, block_text, state, state_machine):
