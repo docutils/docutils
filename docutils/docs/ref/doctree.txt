@@ -896,7 +896,7 @@ Content Model
 
 Attributes
     The ``title`` element contains the `common attributes`_ (id_,
-    name_, dupname_, source_, and class_), refid_, and auto_.
+    name_, dupname_, source_, and class_), plus refid_ and auto_.
 
     ``refid`` is used as a backlink to a table of contents entry.
 
@@ -1155,7 +1155,7 @@ Entity definition:
 
 .. parsed-literal::
 
-    anonymous %yesorno; #IMPLIED
+    anonymous_ %yesorno; #IMPLIED
 
 
 ``%auto.att;``
@@ -1181,7 +1181,7 @@ Entity definition:
 
 .. parsed-literal::
 
-    backrefs_   IDREFS    #IMPLIED
+    backrefs_  IDREFS    #IMPLIED
 
 
 ``%basic.atts;``
@@ -1240,7 +1240,7 @@ Entity definition:
 
 .. parsed-literal::
 
-    xml:space (default | preserve) #FIXED 'preserve'
+    `xml:space`_ (default | preserve) #FIXED 'preserve'
 
 
 ``%inline.elements;``
