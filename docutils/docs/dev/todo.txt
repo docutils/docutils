@@ -337,8 +337,6 @@ HTML Writer
     conform to the regular expression ``[a-z][-a-z0-9]*``.  See
     ``docutils.utils.id()``.
 
-  .. _HTML 4.01 spec: http://www.w3.org/TR/html401
-  .. _CSS1 spec: http://www.w3.org/TR/REC-CSS1
   .. [#] Source: `HTML 4.0 in Netscape and Explorer`__.
   __ http://www.webreference.com/dev/html4nsie/index.html
 
