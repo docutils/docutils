@@ -43,7 +43,7 @@ Simple String with *markup*
 Simple String with an even simpler ``inline literal``
 """,
 """\
-{'fragment': '''<p>Simple String with an even simpler <tt class="literal"><span class="pre">inline</span> <span class="pre">literal</span></tt></p>\\n'''}
+{'fragment': '''<p>Simple String with an even simpler <tt class="docutils literal"><span class="pre">inline</span> <span class="pre">literal</span></tt></p>\\n'''}
 """
 ],
 ["""\
@@ -149,7 +149,7 @@ Simple String with *markup*
 Simple String with an even simpler ``inline literal``
 """,
 """\
-{'fragment': '''<p>Simple String with an even simpler <tt class="literal"><span class="pre">inline</span> <span class="pre">literal</span></tt></p>\\n'''}
+{'fragment': '''<p>Simple String with an even simpler <tt class="docutils literal"><span class="pre">inline</span> <span class="pre">literal</span></tt></p>\\n'''}
 """
 ],
 ["""\
