@@ -102,6 +102,9 @@ Changes Since 0.3
 * docutils/languages/af.py: Added to project; Afrikaans
   mappings by Jannie Hofmeyr.
 
+* docutils/languages/eo.py: Added to project; Esperanto mappings by
+  Marcelo Huerta San Martin.
+
 * docutils/languages/ru.py: Added to project; Russian mappings by
   Roman Suzi.
 
@@ -122,6 +125,9 @@ Changes Since 0.3
 
 * docutils/parsers/rst/languages/af.py: Added to project; Afrikaans
   mappings by Jannie Hofmeyr.
+
+* docutils/parsers/rst/languages/eo.py: Added to project; Esperanto
+  mappings by Marcelo Huerta San Martin.
 
 * docutils/parsers/rst/languages/ru.py: Added to project; Russian
   mappings by Roman Suzi.
