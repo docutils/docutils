@@ -1762,7 +1762,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_title(self, node):
         """Only 3 section levels are supported by LaTeX article (AFAIR)."""
 
-        self.body.append(type(node.parent))
         if isinstance(node.parent, nodes.topic):
             # section titles before the table of contents.
             self.bookmark(node)
