@@ -10,6 +10,9 @@
 :Copyright: This module has been placed in the public domain.
 """
 
+import locale
+locale.setlocale(locale.LC_ALL, '')
+
 import sys
 import os
 import getopt
