@@ -426,6 +426,9 @@ class SimpleTableParser(TableParser):
             if end < 0:
                 end = len(line)
             cols.append((begin, end))
+        if self.columns:
+            # Allow for an unbounded rightmost column:
+            cols[-1] = (cols[-1][0], self.columns[-1][1])
         return cols
 
     def init_row(self, colspec, offset):
