@@ -23,18 +23,18 @@ and related projects:
     Dethe Elza, Marcus Ertl, Benja Fallenstein, fantasai, Stefane
     Fermigier, Jim Fulton, Peter Funk, Jorge Gonzalez, Engelbert
     Gruber, Simon Hefti, Doug Hellmann, Juergen Hermann, Michael
-    Hudson, Marcelo Huerta San Martin, Jeremy Hylton, Tony Ibbs, Alan
-    Jaffray, Dmitry Jemerov, Richard Jones, Andreas Jung, Garth Kidd,
-    Nicola Larosa, Daniel Larsson, Marc-Andre Lemburg, Julien
-    Letessier, Wolfgang Lipp, Edward Loper, Dallas Mahrt, Ken
-    Manheimer, Vasko Miroslav, Skip Montanaro, Paul Moore, Nigel
-    W. Moriarty, Mark Nodine, Patrick K. O'Brien, Michel Pelletier,
-    Sam Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim, Brett g
-    Porter, David Priest, Jens Quade, Andy Robinson, Tavis Rudd,
-    Oliver Rutherfurd, Kenichi Sato, Ueli Schlaepfer, Gunnar Schwant,
-    Bruce Smith, tav, Bob Tolbert, Paul Tremblay, Laurence Tratt,
-    Guido van Rossum, Martin von Loewis, Greg Ward, Barry Warsaw,
-    Edward Welbourne, Ka-Ping Yee, Moshe Zadka
+    Hudson, Marcelo Huerta San Martin, Ludger Humbert, Jeremy Hylton,
+    Tony Ibbs, Alan Jaffray, Dmitry Jemerov, Richard Jones, Andreas
+    Jung, Garth Kidd, Nicola Larosa, Daniel Larsson, Marc-Andre
+    Lemburg, Julien Letessier, Wolfgang Lipp, Edward Loper, Dallas
+    Mahrt, Ken Manheimer, Vasko Miroslav, Skip Montanaro, Paul Moore,
+    Nigel W. Moriarty, Mark Nodine, Patrick K. O'Brien, Michel
+    Pelletier, Sam Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim,
+    Brett g Porter, David Priest, Jens Quade, Andy Robinson, Tavis
+    Rudd, Oliver Rutherfurd, Kenichi Sato, Ueli Schlaepfer, Gunnar
+    Schwant, Bruce Smith, tav, Bob Tolbert, Paul Tremblay, Laurence
+    Tratt, Guido van Rossum, Martin von Loewis, Greg Ward, Barry
+    Warsaw, Edward Welbourne, Ka-Ping Yee, Moshe Zadka
 
 Thank you!
 
