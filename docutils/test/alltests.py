@@ -61,11 +61,15 @@ sys.stdout = sys.stderr = Tee('alltests.out')
 
 import package_unittest
 
-print ('Testing Docutils %s with Python %s'
-       % (docutils.__version__, sys.version.split()[0]))
+print ('Testing Docutils %s with Python %s on %s at %s'
+       % (docutils.__version__, sys.version.split()[0],
+          time.strftime('%Y-%m-%d'), time.strftime('%H:%M:%S')))
+sys.stdout.flush()
 
 path, script = os.path.split(sys.argv[0])
 suite = package_unittest.loadTestModules(path, 'test_', packages=1)
+sys.stdout.flush()
+
 package_unittest.main(suite)
 #if package_unittest.verbosity > 1:
 #    print >>sys.stderr, pformat(suite) # check the test suite
