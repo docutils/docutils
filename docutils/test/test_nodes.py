@@ -28,11 +28,6 @@ class TextTests(unittest.TestCase):
     def test_str(self):
         self.assertEquals(str(self.text), 'Line 1.\nLine 2.')
 
-    def test_asdom(self):
-        dom = self.text.asdom()
-        self.assertEquals(dom.toxml(), 'Line 1.\nLine 2.')
-        dom.unlink()
-
     def test_astext(self):
         self.assertEquals(self.text.astext(), 'Line 1.\nLine 2.')
 

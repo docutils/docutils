@@ -156,6 +156,7 @@ Specific:
     before backslash-escape resolution.
   - Support for new transform system.
   - Reworked ``pending`` element.
+  - Fixed XML DOM bug (SF #660611).
 
 * docutils/statemachine.py:
 
@@ -287,6 +288,9 @@ Specific:
 
 * docutils/parsers/rst/languages/de.py: Added to project; German
   mappings by Engelbert Gruber.
+
+* docutils/parsers/rst/languages/fr.py: Placeholder added to project;
+  awaiting translation.
 
 * docutils/parsers/rst/languages/it.py: Added to project; Italian
   mappings by Nicola Larosa.
