@@ -99,6 +99,8 @@ Changes Since 0.3
   - Enabled flexible boolean values: yes/no, true/false, on/off.
   - Added ``Values``, a subclass of ``optparse.Values``, with support
     for list setting attributes.
+  - Added support for new ``DOCUTILSCONFIG`` environment variable;
+    thanks to Beni Cherniavsky.
 
 * docutils/io.py:
 
