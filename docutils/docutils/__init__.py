@@ -122,6 +122,13 @@ class TransformSpec:
 
     default_transforms = ()
     """Transforms required by this class.  Override in subclasses."""
+    
+    unknown_reference_resolvers = ()
+    """List of functions to try to resolve unknown references. Called when
+    FinalCheckVisitor is unable to find a correct target. The list should
+    contain functions which will try to resolve unknown references. Each 
+    function can have a default_priority attribute which will effect the order 
+    the unknown_reference_resolvers are run. Override in subclass"""
 
 
 class Component(SettingsSpec, TransformSpec):
@@ -133,7 +140,7 @@ class Component(SettingsSpec, TransformSpec):
 
     supported = ()
     """Names for this component.  Override in subclasses."""
-
+    
     def supports(self, format):
         """
         Is `format` supported by this component?
