@@ -109,11 +109,15 @@ Requirements
 - Docutils uses Greg Ward's Optik_/optparse option processing package.
   It is included in the Docutils distribution.
 
+- The `Python Imaging Library`, or PIL, is used for some image
+  manipulation operations if it is installed.
+
 .. [#] Python 2.1 may be used providing the compiler package is
    installed.  The compiler package can be found in the Tools/
    directory of Python's source distribution.
 
 .. _Optik: http://optik.sourceforge.net/
+.. _Python Imaging Library: http://www.pythonware.com/products/pil/
 
 
 Download
@@ -242,6 +246,8 @@ but those may not be completely up to date.
 
 - `A ReStructuredText Primer`__ (HTML file, or `text source`__)
 - `Quick reStructuredText`__ (user reference)
+- `reStructuredText Cheat Sheet`__ (text only; 1 page for syntax, 1
+  page directive & role reference)
 - `Docutils Front-End Tools`__
 - `Docutils Configuration Files`__
 
@@ -250,6 +256,7 @@ Also see the `Docutils FAQ`_.
 __ docs/rst/quickstart.html
 __ docs/rst/quickstart.txt
 __ docs/rst/quickref.html
+__ docs/rst/cheatsheet.txt
 __ docs/tools.html
 __ docs/config.html
 

@@ -33,6 +33,8 @@ User Documentation
 
 - `A ReStructuredText Primer`__ (HTML file, or `text source`__).
 - `Quick reStructuredText`__ (user reference)
+- `reStructuredText Cheat Sheet`__ (text only; 1 page for syntax, 1
+  page directive & role reference)
 
 Users who have questions or need assistance with Docutils or
 reStructuredText should `post a message`__ to the `Docutils-Users
@@ -41,6 +43,7 @@ mailing list`__.
 __ docs/rst/quickstart.html
 __ docs/rst/quickstart.txt
 __ docs/rst/quickref.html
+__ docs/rst/cheatsheet.txt
 __ mailto:docutils-users@lists.sourceforge.net
 __ http://lists.sourceforge.net/lists/listinfo/docutils-users
 
@@ -55,6 +58,7 @@ Specification
   History__ of reStructuredText)
 - `reStructuredText Markup Specification`__
 - `reStructuredText Directives`__
+- `reStructuredText Interpreted Text Roles`__
 - `A Record of reStructuredText Syntax Alternatives`__
 - `Problems With StructuredText`__
 
@@ -63,6 +67,7 @@ __ spec/rst/introduction.html#goals
 __ spec/rst/introduction.html#history
 __ spec/rst/reStructuredText.html
 __ spec/rst/directives.html
+__ spec/rst/interpreted.html
 __ spec/rst/alternatives.html
 __ spec/rst/problems.html
 
