@@ -244,48 +244,39 @@ command line used.""" % (__version__, sys.version.split()[0]))
                                 utils.Reporter.levels[error.level]))
 
     def report_UnicodeError(self, error):
-        print >>sys.stderr, '%s: %s' % (error.__class__.__name__, error)
-
-        # A `UnicodeError` objected contained no useful args until Python 2.3
-        try:
-            print >>sys.stderr, """
-The specified output encoding (%s) cannot
-handle all of the output.""" % error.encoding
-        except AttributeError:
-            print >>sys.stderr, """
-The specified output encoding cannot
-handle all of the output."""
-
-        print """\
-Try setting "--output-encoding-error-handler" to
-
-* "xmlcharrefreplace" (for HTML & XML output);"""
+        sys.stderr.write(
+            '%s: %s\n'
+            '\n'
+            'The specified output encoding (%s) cannot\n'
+            'handle all of the output.\n'
+            'Try setting "--output-encoding-error-handler" to\n'
+            '\n'
+            '* "xmlcharrefreplace" (for HTML & XML output);\n'
+            % (error.__class__.__name__, error,
+               self.settings.output_encoding))
         try:
             data = error.object[error.start:error.end]
-            print >>sys.stderr, """\
-  the output will contain "%s" and should be usable.
-* "backslashreplace" (for other output formats, Python 2.3+);
-  look for "%s" in the output.""" % (
-    data.encode('ascii', 'xmlcharrefreplace'),
-    data.encode('ascii', 'backslashreplace'))
+            sys.stderr.write(
+                '  the output will contain "%s" and should be usable.\n'
+                '* "backslashreplace" (for other output formats, Python 2.3+);\n'
+                '  look for "%s" in the output.\n'
+                % (data.encode('ascii', 'xmlcharrefreplace'),
+                   data.encode('ascii', 'backslashreplace')))
         except AttributeError:
-            print >>sys.stderr, """\
-  the output should be usable as-is."""
-
-        print >>sys.stderr, ("""\
-* "replace"; look for "?" in the output.
-
-"--output-encoding-error-handler" is currently set to
-"%s".
-
-Exiting due to error.  Use "--traceback" to diagnose.
-If the advice above doesn't eliminate the error,
-please report it to <docutils-users@lists.sf.net>.
-Include "--traceback" output, Docutils version (%s),
-Python version (%s), your OS type & version, and the
-command line used.""" % (self.settings.output_encoding_error_handler,
-                         __version__, sys.version.split()[0]))
-
+            sys.stderr.write('  the output should be usable as-is.\n')
+        sys.stderr.write(
+            '* "replace"; look for "?" in the output.\n'
+            '\n'
+            '"--output-encoding-error-handler" is currently set to "%s".\n'
+            '\n'
+            'Exiting due to error.  Use "--traceback" to diagnose.\n'
+            'If the advice above doesn\'t eliminate the error,\n'
+            'please report it to <docutils-users@lists.sf.net>.\n'
+            'Include "--traceback" output, Docutils version (%s),\n'
+            'Python version (%s), your OS type & version, and the\n'
+            'command line used.\n'
+            % (self.settings.output_encoding_error_handler,
+               __version__, sys.version.split()[0]))
 
 default_usage = '%prog [options] [<source> [<destination>]]'
 default_description = ('Reads from <source> (default is stdin) and writes to '
