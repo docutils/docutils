@@ -325,6 +325,7 @@ class Table:
         self._open = 0
         # miscellaneous attributes
         self._attrs = {}
+        self._col_width = []
 
     def open(self):
         self._open = 1
@@ -391,6 +392,7 @@ class Table:
         for node in self._col_specs:
             colwidth = float(node['colwidth']+1) / width
             total_width += colwidth
+        self._col_width = []
         # donot make it full linewidth
         factor = 0.93
         if total_width > 1.0:
@@ -399,8 +401,14 @@ class Table:
         latex_table_spec = ""
         for node in self._col_specs:
             colwidth = factor * float(node['colwidth']+1) / width
+            self._col_width.append(colwidth+0.005)
             latex_table_spec += "%sp{%.2f\\locallinewidth}" % (bar,colwidth+0.005)
         return latex_table_spec+bar
+
+    def get_column_width(self):
+        """ return columnwidth for current cell (not multicell) 
+        """
+        return "%.2f\\locallinewidth" % self._col_width[self._cell_in_row-1]
 
     def visit_thead(self):
         self._in_thead = 1
@@ -1017,13 +1025,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append(' & ')
 
         # multi{row,column}
+        # IN WORK BUG TODO HACK continues here
         if node.has_key('morerows') and node.has_key('morecols'):
             raise NotImplementedError('Cells that '
             'span multiple rows *and* columns are not supported, sorry.')
         if node.has_key('morerows'):
-            raise NotImplementedError('multiple rows are not working (yet), sorry.')
             count = node['morerows'] + 1
-            self.body.append('\\multirow{%d}*{' % count)
+            self.body.append('\\multirow{%d}{%s}{' % \
+                    (count,self.active_table.get_column_width()))
             self.context.append('}')
             # BUG following rows must have empty cells.
         elif node.has_key('morecols'):
