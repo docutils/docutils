@@ -41,11 +41,14 @@ def topic(name, arguments, options, content, lineno,
         messages.extend(more_messages)
     text = '\n'.join(content)
     node = node_class(text, *(titles + messages))
+    if options.has_key('class'):
+        node.set_class(options['class'])
     if text:
         state.nested_parse(content, content_offset, node)
     return [node]
 
 topic.arguments = (1, 0, 1)
+topic.options = {'class': directives.class_option}
 topic.content = 1
 
 def sidebar(name, arguments, options, content, lineno,
@@ -55,7 +58,8 @@ def sidebar(name, arguments, options, content, lineno,
                  node_class=nodes.sidebar)
 
 sidebar.arguments = (1, 0, 1)
-sidebar.options = {'subtitle': directives.unchanged}
+sidebar.options = {'subtitle': directives.unchanged,
+                   'class': directives.class_option}
 sidebar.content = 1
 
 def line_block(name, arguments, options, content, lineno,
@@ -68,9 +72,10 @@ def line_block(name, arguments, options, content, lineno,
         return [warning]
     text = '\n'.join(content)
     text_nodes, messages = state.inline_text(text, lineno)
-    node = node_class(text, '', *text_nodes)
+    node = node_class(text, '', *text_nodes, **options)
     return [node] + messages
 
+line_block.options = {'class': directives.class_option}
 line_block.content = 1
 
 def parsed_literal(name, arguments, options, content, lineno,
@@ -79,4 +84,31 @@ def parsed_literal(name, arguments, options, content, lineno,
                       content_offset, block_text, state, state_machine,
                       node_class=nodes.literal_block)
 
+parsed_literal.options = {'class': directives.class_option}
 parsed_literal.content = 1
+
+def rubric(name, arguments, options, content, lineno,
+             content_offset, block_text, state, state_machine):
+    rubric_text = arguments[0]
+    textnodes, messages = state.inline_text(rubric_text, lineno)
+    rubric = nodes.rubric(rubric_text, '', *textnodes, **options)
+    return [rubric] + messages
+
+rubric.arguments = (1, 0, 1)
+rubric.options = {'class': directives.class_option}
+
+def epigraph(name, arguments, options, content, lineno,
+             content_offset, block_text, state, state_machine):
+    block_quote, messages = state.block_quote(content, content_offset)
+    block_quote.set_class('epigraph')
+    return [block_quote] + messages
+
+epigraph.content = 1
+
+def highlights(name, arguments, options, content, lineno,
+             content_offset, block_text, state, state_machine):
+    block_quote, messages = state.block_quote(content, content_offset)
+    block_quote.set_class('highlights')
+    return [block_quote] + messages
+
+highlights.content = 1
