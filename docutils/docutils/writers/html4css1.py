@@ -394,7 +394,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.head.append('<meta name="%s" content="%s" />\n'
                          % (name, self.attval(node.astext())))
         self.body.append(self.starttag(node, 'tr', ''))
-        self.body.append('<td class="docinfo-name">%s:&nbsp;</td><td>\n'
+        self.body.append('<th class="docinfo-name">%s:&nbsp;</th><td>\n'
                          % self.language.labels[name])
 
     def depart_docinfo_item(self):
@@ -487,7 +487,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</span>')
 
     def visit_field_body(self, node):
-        self.body.append(':&nbsp;</td>')
+        self.body.append(':&nbsp;</th>')
         self.body.append(self.starttag(node, 'td', '', CLASS='field-body'))
         if len(node) and isinstance(node[0], nodes.paragraph):
             node[0].set_class('first')
@@ -510,7 +510,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             class_name = 'docinfo-name'
         else:
             class_name = 'field-name'
-        self.body.append(self.starttag(node, 'td', '', CLASS=class_name))
+        self.body.append(self.starttag(node, 'th', '', CLASS=class_name))
 
     def depart_field_name(self, node):
         """
