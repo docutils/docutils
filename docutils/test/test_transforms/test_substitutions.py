@@ -80,12 +80,14 @@ u"""\
 
 totest['unicode'] = ((Substitutions,), [
 ["""\
-Insert an em-dash (|mdash|), a copyright symbol (|copy|), and a non-breaking
-space (|nbsp|).
+Insert an em-dash (|mdash|), a copyright symbol (|copy|), a non-breaking
+space (|nbsp|), a backwards-not-equals (|bne|), and a captial omega (|Omega|).
 
 .. |mdash| unicode:: 0x02014
 .. |copy| unicode:: \\u00A9
 .. |nbsp| unicode:: &#x000A0;
+.. |bne| unicode:: U0003D U020E5
+.. |Omega| unicode:: U+003A9
 """,
 u"""\
 <document source="test data">
@@ -93,17 +95,27 @@ u"""\
         Insert an em-dash (
         \u2014
         ), a copyright symbol (
-        \u00A9
-        ), and a non-breaking
+        \u00a9
+        ), a non-breaking
         space (
-        \u00A0
+        \u00a0
+        ), a backwards-not-equals (
+        =
+        \u20e5
+        ), and a captial omega (
+        \u03a9
         ).
     <substitution_definition name="mdash">
         \u2014
     <substitution_definition name="copy">
-        \u00A9
+        \u00a9
     <substitution_definition name="nbsp">
-        \u00A0
+        \u00a0
+    <substitution_definition name="bne">
+        =
+        \u20e5
+    <substitution_definition name="Omega">
+        \u03a9
 """],
 ])
 
