@@ -115,6 +115,7 @@ totest['contents'] = [
 .. contents:: Table of Contents
    :local:
    :depth: 2
+   :backlinks: none
 """,
 """\
 <document>
@@ -123,6 +124,7 @@ totest['contents'] = [
              .transform: docutils.transforms.parts.Contents
              .stage: 'last reader'
              .details:
+               backlinks: None
                depth: 2
                local: None
                title:
@@ -138,8 +140,8 @@ totest['contents'] = [
     <system_message level="3" type="ERROR">
         <paragraph>
             Error in "contents" directive attributes at line 1:
-            invalid attribute value:
-            (attribute "depth", value "two") invalid literal for int(): two.
+            invalid attribute value: (attribute: "depth"; value: 'two')
+            invalid literal for int(): two.
         <literal_block>
             .. contents::
                :depth: two
@@ -157,6 +159,36 @@ totest['contents'] = [
         <literal_block>
             .. contents::
                :width: 2
+"""],
+["""\
+.. contents::
+   :backlinks: no way!
+""",
+"""\
+<document>
+    <system_message level="3" type="ERROR">
+        <paragraph>
+            Error in "contents" directive attributes at line 1:
+            invalid attribute value: (attribute: "backlinks"; value: 'no way!')
+            "no way!" unknown; choose from "top", "entry", or "none".
+        <literal_block>
+            .. contents::
+               :backlinks: no way!
+"""],
+["""\
+.. contents::
+   :backlinks:
+""",
+"""\
+<document>
+    <system_message level="3" type="ERROR">
+        <paragraph>
+            Error in "contents" directive attributes at line 1:
+            invalid attribute value: (attribute: "backlinks"; value: None)
+            must supply an argument; choose from "top", "entry", or "none".
+        <literal_block>
+            .. contents::
+               :backlinks:
 """],
 ]
 

@@ -133,8 +133,8 @@ totest['images'] = [
     <system_message level="3" type="ERROR">
         <paragraph>
             Error in "image" directive attributes at line 1:
-            invalid attribute value:
-            (attribute "scale", value "None") object can't be converted to int.
+            invalid attribute value: (attribute: "scale"; value: None)
+            object can't be converted to int.
         <literal_block>
             .. image:: picture.png
                :scale:
@@ -203,8 +203,8 @@ totest['images'] = [
     <system_message level="3" type="ERROR">
         <paragraph>
             Error in "image" directive attributes at line 1:
-            invalid attribute value:
-            (attribute "scale", value "fifty") invalid literal for int(): fifty.
+            invalid attribute value: (attribute: "scale"; value: 'fifty')
+            invalid literal for int(): fifty.
         <literal_block>
             .. image:: picture.png
                :scale: fifty

@@ -94,10 +94,6 @@ ol.lowerroman {
 ol.upperroman {
   list-style: upper-roman }
 
-/*dd p:first-child, li p:first-child, td p:first-child, th p:first-child {
-  margin-top: 0 ;
-  padding-top: 0 }
-*/
 p.caption {
   font-style: italic }
 

@@ -298,16 +298,64 @@ Paragraph.
 """,
 """\
 <document>
-    <topic class="contents" id="id2">
+    <topic class="contents" id="id1">
         <bullet_list>
-            <list_item id="id1">
+            <list_item id="id2">
                 <paragraph>
                     <reference refid="contents">
                         Contents
     <paragraph>
         Test duplicate name "Contents".
     <section id="contents" name="contents">
+        <title refid="id2">
+            Contents
+        <paragraph>
+            Paragraph.
+"""],
+["""\
+.. contents::
+   :backlinks: top
+
+Contents
+--------
+Paragraph.
+""",
+"""\
+<document>
+    <topic class="contents" id="id1">
+        <title>
+            Contents
+        <bullet_list>
+            <list_item id="id2">
+                <paragraph>
+                    <reference refid="contents">
+                        Contents
+    <section id="contents" name="contents">
         <title refid="id1">
+            Contents
+        <paragraph>
+            Paragraph.
+"""],
+["""\
+.. contents::
+   :backlinks: none
+
+Contents
+--------
+Paragraph.
+""",
+"""\
+<document>
+    <topic class="contents" id="id1">
+        <title>
+            Contents
+        <bullet_list>
+            <list_item id="id2">
+                <paragraph>
+                    <reference refid="contents">
+                        Contents
+    <section id="contents" name="contents">
+        <title>
             Contents
         <paragraph>
             Paragraph.
