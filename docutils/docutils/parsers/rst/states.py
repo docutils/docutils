@@ -1361,8 +1361,9 @@ class Body(RSTState):
             footnote['name'] = name
             self.document.note_footnote(footnote)
         if name:
-            self.document.note_explicit_target(footnote,
-                                                                 footnote)
+            self.document.note_explicit_target(footnote, footnote)
+        else:
+            self.document.set_id(footnote)
         if indented:
             self.nested_parse(indented, input_offset=offset, node=footnote)
         return [footnote], blank_finish
@@ -1444,8 +1445,7 @@ class Body(RSTState):
                 self.document.note_external_target(target)
             else:
                 self.document.note_internal_target(target)
-            self.document.note_explicit_target(
-                  target, self.parent)
+            self.document.note_explicit_target(target, self.parent)
         else:                       # anonymous target
             if refuri:
                 target['refuri'] = refuri
