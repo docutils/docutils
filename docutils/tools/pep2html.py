@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Convert PEP's to (X)HTML - courtesy of /F
+"""Convert PEPs to (X)HTML - courtesy of /F
 
 Usage: %(PROGRAM)s [options] [peps]
 
@@ -16,7 +16,7 @@ Options:
         will browse PEP 0.
 
     -i/--install
-        After generating the HTML, install it and the plain text source file
+        After generating the HTML, install it and the plaintext source file
         (.txt) on python.org.  In that case the user's name is used in the scp
         and ssh commands, unless "-u username" is given (in which case, it is
         used instead).  Without -i, -u is ignored.
@@ -131,7 +131,7 @@ def fixfile(inpath, input_lines, outfile):
     from email.Utils import parseaddr
     basename = os.path.basename(inpath)
     infile = iter(input_lines)
-    # convert plain text pep to minimal XHTML markup
+    # convert plaintext pep to minimal XHTML markup
     print >> outfile, DTD
     print >> outfile, '<html>'
     print >> outfile, '<head>'
@@ -181,7 +181,8 @@ def fixfile(inpath, input_lines, outfile):
             print >> outfile, ('[<b><a href="pep-%04d.txt">PEP Source</a>'
                                '</b>]' % int(pep))
         except ValueError, error:
-            print >> sys.stderr, '%s: %s' % (error.__class__.__name__, error)
+            print >> sys.stderr, ('ValueError (invalid PEP number): %s'
+                                  % error)
     print >> outfile, '</td></tr></table>'
     print >> outfile, '<div class="header">\n<table border="0">'
     for k, v in header:
