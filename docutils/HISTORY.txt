@@ -11,8 +11,8 @@
 .. contents::
 
 
-Changes Since 0.3.5
-===================
+Release 0.4.0 (2004-12-24)
+==========================
 
 * docutils/frontend.py:
 
