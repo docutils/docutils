@@ -1,10 +1,10 @@
-"""
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
+"""
 This is the ``docutils.parsers.restructuredtext.states`` module, the core of
 the reStructuredText parser.  It defines the following:
 
@@ -217,8 +217,22 @@ class RSTState(StateWS):
         """
         try:
             self.state_machine.goto_line(abs_line_offset)
-        except IndexError:
+        except EOFError:
             pass
+
+    def no_match(self, context, transitions):
+        """
+        Override `StateWS.no_match` to generate a system message.
+
+        This code should never be run.
+        """
+        self.reporter.severe(
+            'Internal error: no transition pattern match.  State: "%s"; '
+            'transitions: %s; context: %s; current line: %r.'
+            % (self.__class__.__name__, transitions, context,
+               self.state_machine.line),
+            line=self.state_machine.abs_line_number())
+        return context, None, []
 
     def bof(self, context):
         """Called at beginning of file."""
@@ -950,7 +964,7 @@ class Body(RSTState):
           'simple_table_top': simple_table_top_pat,
           'explicit_markup': r'\.\.( +|$)',
           'anonymous': r'__( +|$)',
-          'line': r'(%(nonalphanum7bit)s)\1\1\1+ *$' % pats,
+          'line': r'(%(nonalphanum7bit)s)\1* *$' % pats,
           'text': r''}
     initial_transitions = (
           'bullet',
@@ -1099,7 +1113,7 @@ class Body(RSTState):
             return None
         try:
             next_line = self.state_machine.next_line()
-        except IndexError:              # end of input lines
+        except EOFError:              # end of input lines
             self.state_machine.previous_line()
             return 1
         else:
@@ -1830,6 +1844,13 @@ class Body(RSTState):
         """Section title overline or transition marker."""
         if self.state_machine.match_titles:
             return [match.string], 'Line', []
+        elif len(match.string.strip()) < 4:
+            msg = self.reporter.info(
+                'Unexpected possible title overline or transition.\n'
+                "Treating it as ordinary text because it's so short.", '',
+                line=self.state_machine.abs_line_number())
+            self.parent += msg
+            raise statemachine.TransitionCorrection('text')
         else:
             blocktext = self.state_machine.line
             msg = self.reporter.severe(
@@ -2127,11 +2148,19 @@ class Text(RSTState):
         source = title + '\n' + underline
         messages = []
         if len(title) > len(underline):
-            blocktext = context[0] + '\n' + self.state_machine.line
-            msg = self.reporter.warning(
-                  'Title underline too short.', '',
-                  nodes.literal_block(blocktext, blocktext), line=lineno)
-            messages.append(msg)
+            if len(underline) < 4:
+                msg = self.reporter.info(
+                    'Possible title underline, too short for the title.\n'
+                    "Treating it as ordinary text because it's so short.", '',
+                    line=lineno)
+                self.parent += msg
+                raise statemachine.TransitionCorrection('text')
+            else:
+                blocktext = context[0] + '\n' + self.state_machine.line
+                msg = self.reporter.warning(
+                    'Title underline too short.', '',
+                    nodes.literal_block(blocktext, blocktext), line=lineno)
+                messages.append(msg)
         style = underline[0]
         context[:] = []
         self.section(title, source, style, lineno - 1, messages)
@@ -2153,7 +2182,7 @@ class Text(RSTState):
         if literalnext:
             try:
                 self.state_machine.next_line()
-            except IndexError:
+            except EOFError:
                 pass
             self.parent += self.literal_block()
         return [], next_state, []
@@ -2260,6 +2289,9 @@ class Line(SpecializedText):
 
     def eof(self, context):
         """Transition marker at end of section or document."""
+        marker = context[0].strip()
+        if len(marker) < 4:
+            self.state_correction(context)
         if self.eofcheck:               # ignore EOFError with sections
             transition = nodes.transition(context[0])
             self.parent += transition
@@ -2272,7 +2304,10 @@ class Line(SpecializedText):
 
     def blank(self, match, context, next_state):
         """Transition marker."""
-        transition = nodes.transition(context[0])
+        marker = context[0].strip()
+        if len(marker) < 4:
+            self.state_correction(context)
+        transition = nodes.transition(marker)
         if len(self.parent) == 0:
             msg = self.reporter.error(
                   'Document or section may not begin with a transition.',
@@ -2295,35 +2330,50 @@ class Line(SpecializedText):
         underline = ''
         try:
             underline = self.state_machine.next_line()
-        except IndexError:
+        except EOFError:
             blocktext = overline + '\n' + title
-            msg = self.reporter.severe(
-                  'Incomplete section title.', '',
-                  nodes.literal_block(blocktext, blocktext), line=lineno)
-            self.parent += msg
-            return [], 'Body', []
+            if len(overline.rstrip()) < 4:
+                self.short_overline(context, blocktext, lineno, 2)
+            else:
+                msg = self.reporter.severe(
+                    'Incomplete section title.', '',
+                    nodes.literal_block(blocktext, blocktext), line=lineno)
+                self.parent += msg
+                return [], 'Body', []
         source = '%s\n%s\n%s' % (overline, title, underline)
         overline = overline.rstrip()
         underline = underline.rstrip()
         if not self.transitions['underline'][0].match(underline):
-            msg = self.reporter.severe(
-                  'Missing underline for overline.', '',
-                  nodes.literal_block(source, source), line=lineno)
-            self.parent += msg
-            return [], 'Body', []
+            blocktext = overline + '\n' + title + '\n' + underline
+            if len(overline.rstrip()) < 4:
+                self.short_overline(context, blocktext, lineno, 2)
+            else:
+                msg = self.reporter.severe(
+                    'Missing underline for overline.', '',
+                    nodes.literal_block(source, source), line=lineno)
+                self.parent += msg
+                return [], 'Body', []
         elif overline != underline:
-            msg = self.reporter.severe(
-                  'Title overline & underline mismatch.', '',
-                  nodes.literal_block(source, source), line=lineno)
-            self.parent += msg
-            return [], 'Body', []
+            blocktext = overline + '\n' + title + '\n' + underline
+            if len(overline.rstrip()) < 4:
+                self.short_overline(context, blocktext, lineno, 2)
+            else:
+                msg = self.reporter.severe(
+                      'Title overline & underline mismatch.', '',
+                      nodes.literal_block(source, source), line=lineno)
+                self.parent += msg
+                return [], 'Body', []
         title = title.rstrip()
         messages = []
         if len(title) > len(overline):
-            msg = self.reporter.warning(
-                  'Title overline too short.', '',
-                  nodes.literal_block(source, source), line=lineno)
-            messages.append(msg)
+            blocktext = overline + '\n' + title + '\n' + underline
+            if len(overline.rstrip()) < 4:
+                self.short_overline(context, blocktext, lineno, 2)
+            else:
+                msg = self.reporter.warning(
+                      'Title overline too short.', '',
+                      nodes.literal_block(source, source), line=lineno)
+                messages.append(msg)
         style = (overline[0], underline[0])
         self.eofcheck = 0               # @@@ not sure this is correct
         self.section(title.lstrip(), source, style, lineno + 1, messages)
@@ -2332,14 +2382,29 @@ class Line(SpecializedText):
 
     indent = text                       # indented title
 
-    def underline(self, match=None, context=None, next_state=None):
-        blocktext = context[0] + '\n' + self.state_machine.line
+    def underline(self, match, context, next_state):
+        overline = context[0]
+        blocktext = overline + '\n' + self.state_machine.line
+        lineno = self.state_machine.abs_line_number() - 1
+        if len(overline.rstrip()) < 4:
+            self.short_overline(context, blocktext, lineno, 1)
         msg = self.reporter.error(
               'Invalid section title or transition marker.', '',
-              nodes.literal_block(blocktext, blocktext),
-              line=self.state_machine.abs_line_number() - 1)
+              nodes.literal_block(blocktext, blocktext), line=lineno)
         self.parent += msg
         return [], 'Body', []
+
+    def short_overline(self, context, blocktext, lineno, lines=1):
+        msg = self.reporter.info(
+            'Possible incomplete section title.\nTreating the overline as '
+            "ordinary text because it's so short.", '', line=lineno)
+        self.parent += msg
+        self.state_correction(context, lines)
+
+    def state_correction(self, context, lines=1):
+        self.state_machine.previous_line(lines)
+        context[:] = []
+        raise statemachine.StateCorrection('Body', 'text')
 
 
 state_classes = (Body, BulletList, DefinitionList, EnumeratedList, FieldList,
