@@ -39,8 +39,12 @@ class Writer(writers.Writer):
     output = None
     """Final translated form of `document`."""
 
+    def __init__(self):
+        writers.Writer.__init__(self)
+        self.translator_class = HTMLTranslator
+
     def translate(self):
-        visitor = HTMLTranslator(self.document)
+        visitor = self.translator_class(self.document)
         self.document.walkabout(visitor)
         self.output = visitor.astext()
         self.head_prefix = visitor.head_prefix
@@ -402,11 +406,12 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</span>')
 
     def visit_field_body(self, node):
-        self.body.append(':</p>\n</td><td>')
-        self.body.append(self.starttag(node, 'div', CLASS='field-body'))
+        self.body.append(':</p>\n</td><td>\n')
+        #self.body.append(self.starttag(node, 'div', CLASS='field-body'))
 
     def depart_field_body(self, node):
-        self.body.append('</div></td>\n')
+        #self.body.append('</div></td>\n')
+        self.body.append('</td>\n')
 
     def visit_field_list(self, node):
         self.body.append(self.starttag(node, 'table', frame='void',
