@@ -555,6 +555,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         self.head_prefix = [
               self.latex_head % (self.d_options,self.settings.documentclass),
+              # T1 should fix ~ in italian documents, but break "--" in ttfamily.
+              #'\\usepackage[T1]{fontenc}\n',
               '\\usepackage{babel}\n',     # language is in documents settings.
               '\\usepackage{shortvrb}\n',  # allows verb in footnotes.
               self.encoding % self.to_latex_encoding(settings.output_encoding),
