@@ -237,9 +237,10 @@ Tables
 * Table cells with multirow and multicolumn
 * literal-blocks in table cells: 
 
-  - if verbatim or flushleft have vertical space above and below.
-  - if raggedright we might have firstline indent, depending on
-    the document setting.
+  If verbatim or flushleft one gets vertical space above and below.
+  This is bad for the topmost paragraph in a cell, therefore the writer
+  uses raggedright. Ragged right fails on followup paragraphs as the
+  vertical space would get lost.
 
 Notes
 ~~~~~
