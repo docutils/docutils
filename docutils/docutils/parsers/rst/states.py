@@ -556,14 +556,19 @@ class Inliner:
     # Valid URI characters (see RFC 2396 & RFC 2732);
     # final \x00 allows backslash escapes in URIs:
     uric = r"""[-_.!~*'()[\];/:@&=+$,%a-zA-Z0-9\x00]"""
+    # Delimiter indicating the end of a URI (not part of the URI):
+    uri_end_delim = r"""[>]"""
     # Last URI character; same as uric but no punctuation:
-    urilast = r"""[_~/a-zA-Z0-9]"""
+    urilast = r"""[_~*/=+a-zA-Z0-9]"""
+    # End of a URI (either 'urilast' or 'uric followed by a
+    # uri_end_delim'):
+    uri_end = r"""(?:%(urilast)s|%(uric)s(?=%(uri_end_delim)s))""" % locals()
     emailc = r"""[-_!~*'{|}/#?^`&=+$%a-zA-Z0-9\x00]"""
     email_pattern = r"""
           %(emailc)s+(?:\.%(emailc)s+)*   # name
           @                               # at
           %(emailc)s+(?:\.%(emailc)s*)*   # host
-          %(urilast)s                     # final URI char
+          %(uri_end)s                     # final URI char
           """
     parts = ('initial_inline', start_string_prefix, '',
              [('start', '', non_whitespace_after,  # simple start-strings
@@ -642,15 +647,15 @@ class Inliner:
                       (                       # either:
                         (//?)?                  # hierarchical URI
                         %(uric)s*               # URI characters
-                        %(urilast)s             # final URI char
+                        %(uri_end)s             # final URI char
                       )
                       (                       # optional query
                         \?%(uric)s*
-                        %(urilast)s
+                        %(uri_end)s
                       )?
                       (                       # optional fragment
                         \#%(uric)s*
-                        %(urilast)s
+                        %(uri_end)s
                       )?
                     )
                   )
