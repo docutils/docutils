@@ -82,7 +82,7 @@ __ http://mail.python.org/pipermail/doc-sig/2002-March/002526.html
 
     Thanks to reST/DPS [now Docutils --ed], I'll soon be able to go
     ahead and apply the same tools for extracting documentation out of
-    my python code.  Hey, that's a printable and a browsable version
+    my Python code.  Hey, that's a printable and a browsable version
     *for free*!  Personally, I consider this a large benefit.
 
     ... All essential constructs for everyday use are there, and much
@@ -156,24 +156,35 @@ __ http://mail.python.org/pipermail/python-list/2002-April/096656.html
     Any programmer can learn the basics in 15 minutes or less.
 
     And it really is very very easy to write documents in it.  I do
-    belive that if I where ever to write a book (again) i would write
+    belive that if I were ever to write a book (again) I would write
     it in ReST.
 
     And as far as I can tell from the specs, ReST solves most of the
-    problems I have had with structured text. A few things gets a
-    little more complicated and some get simpler. All in all a good
+    problems I have had with structured text.  A few things gets a
+    little more complicated and some get simpler.  All in all a good
     bargain.
 
-    I would certainly use it. I also hope that it gets integrated into
-    Zope.
+    I would certainly use it.  I also hope that it gets integrated
+    into Zope.
 
 `David Abrahams on Python-Dev, 2002-04-06`__:
 
 __ http://mail.python.org/pipermail/python-dev/2002-April/022443.html
 
-    Incidentally, I'm really excited about reST. I've been looking for
-    a tolerable markup for C++ comments, and reST looks like it might
-    fit the bill.
+    Incidentally, I'm really excited about reST.  I've been looking
+    for a tolerable markup for C++ comments, and reST looks like it
+    might fit the bill.
+
+`Eric Jones on Python-Dev, 2002-08-01`__:
+
+__ http://mail.python.org/pipermail/python-dev/2002-August/027198.html
+
+    I would very much like to see reStructuredText, or some minor
+    variation on it, move forward as a "standard" for doc-strings very
+    soon.  I have long lamented not having a prescribed format *and*
+    an associated processing tool suite included in the standard
+    library.  Even if the format isn't perfect (I think it looks very
+    good), it is time to pick a reasonable candidate and go.
 
 This being the Internet, there were plenty of people opposed to the
 idea of reStructuredText, some vehemently.  Discovering *those* gems
