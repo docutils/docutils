@@ -273,6 +273,20 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_Text(self, node):
         pass
 
+    def visit_abbreviation(self, node):
+        # @@@ implementation incomplete ("title" attribute)
+        self.body.append(self.starttag(node, 'abbr', ''))
+
+    def depart_abbreviation(self, node):
+        self.body.append('</abbr>')
+
+    def visit_acronym(self, node):
+        # @@@ implementation incomplete ("title" attribute)
+        self.body.append(self.starttag(node, 'acronym', ''))
+
+    def depart_acronym(self, node):
+        self.body.append('</acronym>')
+
     def visit_address(self, node):
         self.visit_docinfo_item(node, 'address', meta=None)
         self.body.append(self.starttag(node, 'pre', CLASS='address'))
@@ -750,6 +764,12 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_important(self, node):
         self.depart_admonition()
 
+    def visit_inline(self, node):
+        self.body.append(self.starttag(node, 'span', ''))
+
+    def depart_inline(self, node):
+        self.body.append('</span>')
+
     def visit_label(self, node):
         self.body.append(self.starttag(node, 'td', '%s[' % self.context.pop(),
                                        CLASS='label'))
@@ -965,6 +985,12 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_strong(self, node):
         self.body.append('</strong>')
 
+    def visit_subscript(self, node):
+        self.body.append(self.starttag(node, 'sub', ''))
+
+    def depart_subscript(self, node):
+        self.body.append('</sub>')
+
     def visit_substitution_definition(self, node):
         """Internal only."""
         raise nodes.SkipNode
@@ -983,6 +1009,12 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_subtitle(self, node):
         self.body.append(self.context.pop())
+
+    def visit_superscript(self, node):
+        self.body.append(self.starttag(node, 'sup', ''))
+
+    def depart_superscript(self, node):
+        self.body.append('</sup>')
 
     def visit_system_message(self, node):
         if node['level'] < self.document.reporter['writer'].report_level:
