@@ -777,8 +777,6 @@ The following options are recognized:
        the default case?
 
 
-.. _list-table:
-
 List Table
 ==========
 
