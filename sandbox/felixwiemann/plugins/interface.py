@@ -170,7 +170,7 @@ class KeyRole(docutils.ParserExtension):
 
     # The rest of this class definition is specific to reST roles:
 
-    name = 'key'
+    role_name = 'key'
     """
     Name of this role.
 
