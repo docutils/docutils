@@ -79,6 +79,8 @@ General:
 
 Specific:
 
+* COPYING.txt: Added "Public Domain Dedication".
+
 * FAQ.txt: Frequently asked questions, added to project.
 
 * setup.py:
@@ -123,6 +125,9 @@ Specific:
   - Added ``Publisher.set_components()`` method; support for
     ``publish_*()`` conveninece functions.
   - Moved config file processing to docutils/frontend.py.
+  - Added support for exit status ("exit_level" setting &
+    ``enable_exit`` parameter for Publisher.publish() and convenience
+    functions).
 
 * docutils/frontend.py:
 
@@ -148,6 +153,7 @@ Specific:
   - Updated ``OptionParser.populate_from_components`` to handle new
     ``SettingsSpec.settings_defaults`` dict.
   - Added support for "-" => stdin/stdout.
+  - Added "exit_level" setting ("--exit" option).
 
 * docutils/io.py:
 
@@ -248,6 +254,8 @@ Specific:
   - Moved ``normalize_name()`` to nodes.py (``fully_normalize_name``).
   - Added support for encoding Reporter stderr output, and encoding
     error handlers.
+  - Reporter keeps track of the highest level system message yet
+    generated.
 
 * docutils/languages: Fixed bibliographic field language lookups.
 
@@ -557,8 +565,11 @@ Specific:
   - Removed the 4-character minimum for section title underlines.
 
 * extras: Directory added to project; contains third-party modules
-  that Docutils depends on.  These are only installed if they're not
-  already present.
+  that Docutils depends on (optparse, textwrap, roman).  These are
+  only installed if they're not already present.
+
+* licenses: Directory added to project; contains copies of license
+  files for non-public-domain files.
 
 * spec/doctree.txt:
 
