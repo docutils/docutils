@@ -118,8 +118,8 @@ The role may be one of 'package', 'module', 'class', 'method',
 'exception_class', 'exception', 'warning_class', or 'warning'.  Other
 roles may be defined.
 
-.. _pysource.dtd: http://docutils.sourceforge.net/spec/pysource.dtd
-.. _docutils.dtd: http://docutils.sourceforge.net/spec/docutils.dtd
+.. _pysource.dtd: pysource.dtd
+.. _docutils.dtd: ../ref/docutils.dtd
 
 
 ..
