@@ -216,7 +216,15 @@ class IndirectHyperlinks(Transform):
         refname = target['refname']
         reftarget_id = self.document.nameids.get(refname)
         if not reftarget_id:
-            self.nonexistent_indirect_target(target)
+            # Check the unknown_reference_resolvers
+            handled = 0
+            for i in self.document.transformer.unknown_reference_resolvers:
+                print `target`
+                if i(target):
+                    handled = 1
+                    break
+            if not handled:
+                self.nonexistent_indirect_target(target)
             return
         reftarget = self.document.ids[reftarget_id]
         if isinstance(reftarget, nodes.target) \

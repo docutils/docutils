@@ -159,13 +159,8 @@ class FinalChecks(Transform):
     default_priority = 840
 
     def apply(self):
-        unknown_reference_resolvers = []
-        for i in self.document.transformer.components.values():
-            unknown_reference_resolvers.extend(i.unknown_reference_resolvers)
-        decorated_list = [(f.priority, f) for f in unknown_reference_resolvers]
-        decorated_list.sort()
-        unknown_reference_resolvers = [f[1] for f in decorated_list]
-        visitor = FinalCheckVisitor(self.document, unknown_reference_resolvers)
+        visitor = FinalCheckVisitor(
+            self.document, self.document.transformer.unknown_reference_resolvers)
         self.document.walk(visitor)
         if self.document.settings.expose_internals:
             visitor = InternalAttributeExposer(self.document)
