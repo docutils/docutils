@@ -194,7 +194,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.topic_class = ''
 
     def language_label(self, docutil_label):
-        return self.language.labels[docutil_label]
+        if self.language.labels.has_key(docutil_label):
+            return self.language.labels[docutil_label]
+        return docutil_label
 
     def encode(self, text):
         """
