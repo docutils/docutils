@@ -18,6 +18,9 @@ from docutils import writers
 
 class Writer(writers.Writer):
 
+    supported = ('pprint', 'pformat', 'pseudoxml')
+    """Formats this writer supports."""
+
     output = None
     """Final translated form of `document`."""
 
@@ -26,3 +29,7 @@ class Writer(writers.Writer):
 
     def record(self):
         self.recordfile(self.output, self.destination)
+
+    def supports(self, format):
+        """This writer supports all format-specific elements."""
+        return 1
