@@ -11,10 +11,6 @@ Python Enhancement Proposal (PEP) Reader.
 __docformat__ = 'reStructuredText'
 
 
-import sys
-import os
-import re
-from docutils import nodes
 from docutils.readers import standalone
 from docutils.transforms import peps, references
 from docutils.parsers import rst
@@ -23,7 +19,7 @@ from docutils.parsers import rst
 class Inliner(rst.states.Inliner):
 
     """
-    Extend `rst.Inliner` to for local PEP references.
+    Extend `rst.Inliner` for local PEP references.
     """
 
     pep_url = rst.states.Inliner.pep_url_local

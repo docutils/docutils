@@ -118,7 +118,7 @@ class Builder:
             frontend.make_paths_absolute(publisher.setting_defaults.__dict__,
                                          option_parser.relative_path_settings)
         config_parser = frontend.ConfigParser()
-        config_parser.read_standard_files()
+        config_parser.read_standard_files(option_parser)
         self.config_settings = config_parser.get_section('options')
         frontend.make_paths_absolute(
             self.config_settings,
@@ -140,7 +140,8 @@ class Builder:
         settings.__dict__.update(self.config_settings)
         if directory:
             config_parser = frontend.ConfigParser()
-            config_parser.read(os.path.join(directory, 'docutils.conf'))
+            config_parser.read(os.path.join(directory, 'docutils.conf'),
+                               publisher.option_parser)
             local_config = config_parser.get_section('options')
             frontend.make_paths_absolute(
                 local_config, publisher.option_parser.relative_path_settings,

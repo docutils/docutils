@@ -30,11 +30,11 @@ and related projects:
     Manheimer, Vasko Miroslav, Skip Montanaro, Paul Moore, Nigel
     W. Moriarty, Mark Nodine, Patrick K. O'Brien, Michel Pelletier,
     Sam Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim, Brett g
-    Porter, David Priest, Andy Robinson, Tavis Rudd, Oliver
-    Rutherfurd, Kenichi Sato, Ueli Schlaepfer, Gunnar Schwant, Bruce
-    Smith, tav, Bob Tolbert, Paul Tremblay, Laurence Tratt, Guido van
-    Rossum, Martin von Loewis, Greg Ward, Barry Warsaw, Edward
-    Welbourne, Ka-Ping Yee, Moshe Zadka
+    Porter, David Priest, Jens Quade, Andy Robinson, Tavis Rudd,
+    Oliver Rutherfurd, Kenichi Sato, Ueli Schlaepfer, Gunnar Schwant,
+    Bruce Smith, tav, Bob Tolbert, Paul Tremblay, Laurence Tratt,
+    Guido van Rossum, Martin von Loewis, Greg Ward, Barry Warsaw,
+    Edward Welbourne, Ka-Ping Yee, Moshe Zadka
 
 Thank you!
 
@@ -101,6 +101,7 @@ Specific:
   - Added ``Publisher.apply_transforms()`` method.
   - Added ``Publisher.set_components()`` method; support for
     ``publish_*()`` conveninece functions.
+  - Moved config file processing to docutils/frontend.py.
 
 * docutils/frontend.py:
 
@@ -116,6 +117,12 @@ Specific:
     "--dump-settings", and "--dump-transforms" hidden options.
   - Removed nasty internals-fiddling ``ConfigParser.get_section``
     code, replaced with correct code.
+  - Added validation functionality for config files.
+  - Added "--error-encoding" option/setting, "_disable_config"
+    internal setting.
+  - Added encoding validation; updated "--input-encoding" and
+    "--output-encoding".
+  - Moved config file processing from docutils/core.py.
 
 * docutils/io.py:
 
@@ -130,6 +137,7 @@ Specific:
   - Added ``Output.encode()``.
   - Deprecated reliance on runtime settings; pass encoding directly.
   - Recognize Unicode strings in ``Input.decode()``.
+  - Added support for output encoding error handlers.
 
 * docutils/nodes.py:
 
@@ -206,6 +214,8 @@ Specific:
   - Fixed bugs in ``relative_path()``.
   - Added support for improved diagnostics.
   - Moved ``normalize_name()`` to nodes.py (``fully_normalize_name``).
+  - Added support for encoding Reporter stderr output, and encoding
+    error handlers.
 
 * docutils/languages: Fixed bibliographic field language lookups.
 
@@ -298,7 +308,8 @@ Specific:
 
 * docutils/parsers/rst/directives/body.py: Added to project.  Contains
   the "topic", "sidebar" (from Patrick O'Brien), "line-block",
-  "parsed-literal", "rubric", "epigraph", and "highlights" directives.
+  "parsed-literal", "rubric", "epigraph", "highlights" and
+  "pull-quote" directives.
 
 * docutils/parsers/rst/directives/images.py:
 

@@ -851,8 +851,9 @@ __ rst/alternatives.html#or-not-to-do
 
   Perhaps.  Perhaps not.
 
-* Allow whitespace before the "::" in directives?  Hyperlink targets
-  too?  This would appease some of our French-speaking users.
+* Allow whitespace before the "::" in directives?  Before the ":" in
+  hyperlink targets too?  This would appease some of our
+  French-speaking users.
 
 
 Directives
@@ -919,8 +920,10 @@ when used in a document.
     A "refnum" option (better name?) would insert reference names
     (targets) consisting of the reference number.  Then a URL could be
     of the form ``http://host/document.html#2.5`` (or "2-5"?).  Allow
-    internal references by number?  Issue: altering the section
-    structure of a document could render hyperlinks invalid.
+    internal references by number?  Allow name-based *and*
+    number-based ids at the same time, or only one or the other (which
+    would the table of contents use)?  Usage issue: altering the
+    section structure of a document could render hyperlinks invalid.
 
   - _`parts.contents`: Add a "suppress" or "prune" option?  It would
     suppress contents display for sections in a branch from that point
