@@ -1927,17 +1927,17 @@ Directives`_ document, and are always available.  Any other directives
 are domain-specific, and may require special action to make them
 available when processing the document.
 
-For example, here's how an image may be placed::
+For example, here's how an image_ may be placed::
 
     .. image:: mylogo.jpeg
 
-A figure (a graphic with a caption) may placed like this::
+A figure_ (a graphic with a caption) may placed like this::
 
     .. figure:: larch.png
 
        The larch.
 
-An admonition (note, caution, etc.) contains other body elements::
+An admonition_ (note, caution, etc.) contains other body elements::
 
     .. note:: This is a paragraph
 
@@ -2028,7 +2028,7 @@ Substitution definitions are indicated by an explicit markup start
 vertical bar, whitespace, and the definition block.  Substitution text
 may not begin or end with whitespace.  A substitution definition block
 contains an embedded inline-compatible directive (without the leading
-".. "), such as an image.  For example::
+".. "), such as an image_.  For example::
 
     The |biohazard| symbol must be used on containers used to
     dispose of medical waste.
@@ -2133,7 +2133,7 @@ Images
         .. |-><-| image:: discord.png
         .. _POEE: http://www.poee.org/
 
-    The "image" directive has been implemented.
+    The "image_" directive has been implemented.
 
 Styles [#]_
     Substitution references may be used to associate inline text with
@@ -2816,6 +2816,8 @@ Markup errors are handled according to the specification in `PEP
    http://www.w3.org/TR/WCAG10-HTML-TECHS/#link-text
 .. _image: directives.html#image
 .. _meta: directives.html#meta
+.. _figure: directives.html#figure
+.. _admonition: directives.html#admonitions
 .. _reStructuredText Directives: directives.html
 .. _reStructuredText Interpreted Text Roles: roles.html
 .. _RFC2396: http://www.rfc-editor.org/rfc/rfc2396.txt
