@@ -61,11 +61,14 @@ div.warning p.admonition-title {
   font-weight: bold ;
   font-family: sans-serif }
 
+/* Uncomment (and remove this text!) to get reduced vertical space in
+   compound paragraphs.
 div.compound .compound-first, div.compound .compound-middle {
   margin-bottom: 0.5em }
 
 div.compound .compound-last, div.compound .compound-middle {
   margin-top: 0.5em }
+*/
 
 div.dedication {
   margin: 2em 5em ;
