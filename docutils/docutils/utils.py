@@ -12,9 +12,10 @@ Miscellaneous utilities for the documentation utilities.
 
 import sys, re
 import nodes
+from docutils import ApplicationError, DataError
 
 
-class SystemMessage(Exception):
+class SystemMessage(ApplicationError):
 
     def __init__(self, system_message):
         Exception.__init__(self, system_message.astext())
@@ -59,15 +60,15 @@ class Reporter:
     levels = 'DEBUG INFO WARNING ERROR SEVERE'.split()
     """List of names for system message levels, indexed by level."""
 
-    def __init__(self, warninglevel, errorlevel, stream=None, debug=0):
+    def __init__(self, warning_level, error_level, stream=None, debug=0):
         """
         Initialize the `ConditionSet` forthe `Reporter`'s default category.
 
         :Parameters:
 
-            - `warninglevel`: The level at or above which warning output will
+            - `warning_level`: The level at or above which warning output will
               be sent to `stream`.
-            - `errorlevel`: The level at or above which `SystemMessage`
+            - `error_level`: The level at or above which `SystemMessage`
               exceptions will be raised.
             - `debug`: Show debug (level=0) system messages?
             - `stream`: Where warning output is sent (`None` implies
@@ -77,29 +78,29 @@ class Reporter:
         if stream is None:
             stream = sys.stderr
 
-        self.categories = {'': ConditionSet(debug, warninglevel, errorlevel,
+        self.categories = {'': ConditionSet(debug, warning_level, error_level,
                                             stream)}
         """Mapping of category names to conditions. Default category is ''."""
 
-    def setconditions(self, category, warninglevel, errorlevel,
-                      stream=None, debug=0):
+    def set_conditions(self, category, warning_level, error_level,
+                       stream=None, debug=0):
         if stream is None:
             stream = sys.stderr
-        self.categories[category] = ConditionSet(debug, warninglevel,
-                                                 errorlevel, stream)
+        self.categories[category] = ConditionSet(debug, warning_level,
+                                                 error_level, stream)
 
-    def unsetconditions(self, category):
+    def unset_conditions(self, category):
         if category and self.categories.has_key(category):
             del self.categories[category]
 
-    __delitem__ = unsetconditions
+    __delitem__ = unset_conditions
 
-    def getconditions(self, category):
+    def get_conditions(self, category):
         while not self.categories.has_key(category):
             category = category[:category.rfind('.') + 1][:-1]
         return self.categories[category]
 
-    __getitem__ = getconditions
+    __getitem__ = get_conditions
 
     def system_message(self, level, comment=None, category='',
                        *children, **attributes):
@@ -111,13 +112,13 @@ class Reporter:
         msg = nodes.system_message(comment, level=level,
                                    type=self.levels[level],
                                    *children, **attributes)
-        debug, warninglevel, errorlevel, stream = self[category].astuple()
-        if level >= warninglevel or debug and level == 0:
+        debug, warning_level, error_level, stream = self[category].astuple()
+        if level >= warning_level or debug and level == 0:
             if category:
                 print >>stream, 'Reporter "%s":' % category, msg.astext()
             else:
                 print >>stream, 'Reporter:', msg.astext()
-        if level >= errorlevel:
+        if level >= error_level:
             raise SystemMessage(msg)
         return msg
 
@@ -171,18 +172,18 @@ class ConditionSet:
     category.
     """
 
-    def __init__(self, debug, warninglevel, errorlevel, stream):
+    def __init__(self, debug, warning_level, error_level, stream):
         self.debug = debug
-        self.warninglevel = warninglevel
-        self.errorlevel = errorlevel
+        self.warning_level = warning_level
+        self.error_level = error_level
         self.stream = stream
 
     def astuple(self):
-        return (self.debug, self.warninglevel, self.errorlevel,
+        return (self.debug, self.warning_level, self.error_level,
                 self.stream)
 
 
-class ExtensionAttributeError(Exception): pass
+class ExtensionAttributeError(DataError): pass
 class BadAttributeError(ExtensionAttributeError): pass
 class BadAttributeDataError(ExtensionAttributeError): pass
 class DuplicateAttributeError(ExtensionAttributeError): pass
@@ -272,7 +273,7 @@ def assemble_attribute_dict(attlist, attspec):
     return attributes
 
 
-class NameValueError(Exception): pass
+class NameValueError(DataError): pass
 
 
 def extract_name_value(line):
@@ -320,7 +321,7 @@ def extract_name_value(line):
     return attlist
 
 
-def normname(name):
+def normalize_name(name):
     """Return a case- and whitespace-normalized name."""
     return ' '.join(name.lower().split())
 
@@ -359,15 +360,24 @@ def id(string):
     .. _HTML 4.01 spec: http://www.w3.org/TR/html401
     .. _CSS1 spec: http://www.w3.org/TR/REC-CSS1
     """
-    id = non_id_chars.sub('-', normname(string))
+    id = non_id_chars.sub('-', normalize_name(string))
     id = non_id_at_ends.sub('', id)
     return str(id)
 
 non_id_chars = re.compile('[^a-z0-9]+')
 non_id_at_ends = re.compile('^[-0-9]+|-+$')
 
-def newdocument(languagecode='en', warninglevel=2, errorlevel=4,
-                stream=None, debug=0):
-    reporter = Reporter(warninglevel, errorlevel, stream, debug)
-    document = nodes.document(languagecode=languagecode, reporter=reporter)
+def new_document(language_code='en', warning_level=2, error_level=4,
+                 stream=None, debug=0):
+    reporter = Reporter(warning_level, error_level, stream, debug)
+    document = nodes.document(language_code=language_code, reporter=reporter)
     return document
+
+def clean_rcs_keywords(paragraph, keyword_substitutions):
+    if len(paragraph) == 1 and isinstance(paragraph[0], nodes.Text):
+        textnode = paragraph[0]
+        for pattern, substitution in keyword_substitutions:
+            match = pattern.match(textnode.data)
+            if match:
+                textnode.data = pattern.sub(substitution, textnode.data)
+                return

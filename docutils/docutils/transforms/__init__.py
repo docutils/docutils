@@ -29,32 +29,37 @@ these standard transforms.
 __docformat__ = 'reStructuredText'
 
 
-from docutils import languages
+from docutils import languages, ApplicationError, Component
 
 
-class TransformError(Exception): pass
+class TransformError(ApplicationError): pass
 
 
-class Transform:
+class Transform(Component):
 
     """
     Docutils transform component abstract base class.
     """
 
-    def __init__(self, doctree, startnode=None):
+    def __init__(self, document, component, startnode=None):
         """
         Initial setup for in-place document transforms.
         """
 
-        self.doctree = doctree
+        self.document = document
         """The document tree to transform."""
+
+        self.component = component
+        """The Docutils component running this transform.  Transforms can
+        query their controlling components with calls to
+        `docutils.Component.supports()`."""
 
         self.startnode = startnode
         """Node from which to begin the transform.  For many transforms which
         apply to the document as a whole, `startnode` is not set (i.e. its
         value is `None`)."""
 
-        self.language = languages.getlanguage(doctree.languagecode)
+        self.language = languages.getlanguage(document.language_code)
         """Language module local to this document."""
 
     def transform(self):

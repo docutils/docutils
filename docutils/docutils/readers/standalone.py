@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 """
-:Authors: David Goodger
+:Author: David Goodger
 :Contact: goodger@users.sourceforge.net
 :Revision: $Revision$
 :Date: $Date$
@@ -21,6 +21,9 @@ from docutils.parsers.rst import Parser
 
 class Reader(readers.Reader):
 
+    supported = ('standalone',)
+    """Contexts this reader supports."""
+
     document = None
     """A single document tree."""
 
@@ -31,4 +34,4 @@ class Reader(readers.Reader):
                   references.Hyperlinks,)
 
     def scan(self):
-        self.input = self.scanfile(self.source)
+        self.input = self.scan_file(self.source)
