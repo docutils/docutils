@@ -2422,7 +2422,7 @@ For example, here is a reference to a title describing a tag::
    at the expense of general readability.  Inline URIs, especially
    long ones, inevitably interrupt the natural flow of text.  For
    documents meant to be read in source form, the use of independent
-   block-level `hyperlink targets`_ is **strongly** recommended.  The
+   block-level `hyperlink targets`_ is **strongly recommended**.  The
    embedded URI construct is most suited to documents intended *only*
    to be read in processed form.
 
