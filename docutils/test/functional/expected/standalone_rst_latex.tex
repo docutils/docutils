@@ -152,45 +152,45 @@ reStructuredText construct.
 
 \item {} \href{\#literal-blocks}{2.7~~~Literal Blocks}
 
-\item {} \href{\#block-quotes}{2.8~~~Block Quotes}
+\item {} \href{\#line-blocks}{2.8~~~Line Blocks}
 
-\item {} \href{\#doctest-blocks}{2.9~~~Doctest Blocks}
+\item {} \href{\#block-quotes}{2.9~~~Block Quotes}
 
-\item {} \href{\#footnotes}{2.10~~~Footnotes}
+\item {} \href{\#doctest-blocks}{2.10~~~Doctest Blocks}
 
-\item {} \href{\#citations}{2.11~~~Citations}
+\item {} \href{\#footnotes}{2.11~~~Footnotes}
 
-\item {} \href{\#targets}{2.12~~~Targets}
+\item {} \href{\#citations}{2.12~~~Citations}
+
+\item {} \href{\#targets}{2.13~~~Targets}
 \begin{list}{}{}
-\item {} \href{\#duplicate-target-names}{2.12.1~~~Duplicate Target Names}
+\item {} \href{\#duplicate-target-names}{2.13.1~~~Duplicate Target Names}
 
-\item {} \href{\#id18}{2.12.2~~~Duplicate Target Names}
+\item {} \href{\#id18}{2.13.2~~~Duplicate Target Names}
 
 \end{list}
 
-\item {} \href{\#directives}{2.13~~~Directives}
+\item {} \href{\#directives}{2.14~~~Directives}
 \begin{list}{}{}
-\item {} \href{\#document-parts}{2.13.1~~~Document Parts}
+\item {} \href{\#document-parts}{2.14.1~~~Document Parts}
 
-\item {} \href{\#images}{2.13.2~~~Images}
+\item {} \href{\#images}{2.14.2~~~Images}
 
-\item {} \href{\#admonitions}{2.13.3~~~Admonitions}
+\item {} \href{\#admonitions}{2.14.3~~~Admonitions}
 
-\item {} \href{\#topics-sidebars-and-rubrics}{2.13.4~~~Topics, Sidebars, and Rubrics}
+\item {} \href{\#topics-sidebars-and-rubrics}{2.14.4~~~Topics, Sidebars, and Rubrics}
 
-\item {} \href{\#target-footnotes}{2.13.5~~~Target Footnotes}
+\item {} \href{\#target-footnotes}{2.14.5~~~Target Footnotes}
 
-\item {} \href{\#line-blocks}{2.13.6~~~Line Blocks}
-
-\item {} \href{\#replacement-text}{2.13.7~~~Replacement Text}
+\item {} \href{\#replacement-text}{2.14.6~~~Replacement Text}
 
 \end{list}
 
-\item {} \href{\#substitution-definitions}{2.14~~~Substitution Definitions}
+\item {} \href{\#substitution-definitions}{2.15~~~Substitution Definitions}
 
-\item {} \href{\#comments}{2.15~~~Comments}
+\item {} \href{\#comments}{2.16~~~Comments}
 
-\item {} \href{\#colspanning-tables}{2.16~~~Colspanning tables}
+\item {} \href{\#colspanning-tables}{2.17~~~Colspanning tables}
 
 \end{list}
 
@@ -560,9 +560,19 @@ Or they can be quoted without indentation:
 
 %___________________________________________________________________________
 
+\hypertarget{line-blocks}{}
+\pdfbookmark[1]{2.8~~~Line Blocks}{line-blocks}
+\subsection*{2.8~~~Line Blocks}
+
+(To be inserted from line{\_}blocks.txt once the LaTeX writer has
+implemented it.)
+
+
+%___________________________________________________________________________
+
 \hypertarget{block-quotes}{}
-\pdfbookmark[1]{2.8~~~Block Quotes}{block-quotes}
-\subsection*{2.8~~~Block Quotes}
+\pdfbookmark[1]{2.9~~~Block Quotes}{block-quotes}
+\subsection*{2.9~~~Block Quotes}
 
 Block quotes consist of indented body elements:
 \begin{quote}
@@ -582,8 +592,8 @@ own it, and what it is too.
 %___________________________________________________________________________
 
 \hypertarget{doctest-blocks}{}
-\pdfbookmark[1]{2.9~~~Doctest Blocks}{doctest-blocks}
-\subsection*{2.9~~~Doctest Blocks}
+\pdfbookmark[1]{2.10~~~Doctest Blocks}{doctest-blocks}
+\subsection*{2.10~~~Doctest Blocks}
 \begin{verbatim}>>> print 'Python-specific usage examples; begun with ">>>"'
 Python-specific usage examples; begun with ">>>"
 >>> print '(cut and pasted from interactive Python sessions)'
@@ -593,8 +603,8 @@ Python-specific usage examples; begun with ">>>"
 %___________________________________________________________________________
 
 \hypertarget{footnotes}{}
-\pdfbookmark[1]{2.10~~~Footnotes}{footnotes}
-\subsection*{2.10~~~Footnotes}
+\pdfbookmark[1]{2.11~~~Footnotes}{footnotes}
+\subsection*{2.11~~~Footnotes}
 \begin{figure}[b]\hypertarget{id6}[1]
 A footnote contains body elements, consistently indented by at
 least 3 spaces.
@@ -628,8 +638,8 @@ nonexistent footnote:{\color{red}\bfseries{}{[}5]{\_}}.
 %___________________________________________________________________________
 
 \hypertarget{citations}{}
-\pdfbookmark[1]{2.11~~~Citations}{citations}
-\subsection*{2.11~~~Citations}
+\pdfbookmark[1]{2.12~~~Citations}{citations}
+\subsection*{2.12~~~Citations}
 \begin{figure}[b]\hypertarget{cit2002}[CIT2002]
 Citations are text-labeled footnotes. They may be
 rendered separately and differently from footnotes.
@@ -642,8 +652,8 @@ citation.
 %___________________________________________________________________________
 
 \hypertarget{targets}{}
-\pdfbookmark[1]{2.12~~~Targets}{targets}
-\subsection*{2.12~~~Targets}
+\pdfbookmark[1]{2.13~~~Targets}{targets}
+\subsection*{2.13~~~Targets}
 \hypertarget{example}{}
 This paragraph is pointed to by the explicit ``example'' target. A
 reference can be found under \href{\#inline-markup}{Inline Markup}, above. \href{\#inline-hyperlink-targets}{Inline
@@ -665,8 +675,8 @@ error.
 %___________________________________________________________________________
 
 \hypertarget{duplicate-target-names}{}
-\pdfbookmark[2]{2.12.1~~~Duplicate Target Names}{duplicate-target-names}
-\subsubsection*{2.12.1~~~Duplicate Target Names}
+\pdfbookmark[2]{2.13.1~~~Duplicate Target Names}{duplicate-target-names}
+\subsubsection*{2.13.1~~~Duplicate Target Names}
 
 Duplicate names in section headers or other implicit targets will
 generate ``info'' (level-1) system messages.  Duplicate names in
@@ -676,8 +686,8 @@ explicit targets will generate ``warning'' (level-2) system messages.
 %___________________________________________________________________________
 
 \hypertarget{id18}{}
-\pdfbookmark[2]{2.12.2~~~Duplicate Target Names}{id18}
-\subsubsection*{2.12.2~~~Duplicate Target Names}
+\pdfbookmark[2]{2.13.2~~~Duplicate Target Names}{id18}
+\subsubsection*{2.13.2~~~Duplicate Target Names}
 
 Since there are two ``Duplicate Target Names'' section headers, we
 cannot uniquely refer to either of them by name.  If we try to (like
@@ -687,22 +697,20 @@ this: {\color{red}\bfseries{}`Duplicate Target Names`{\_}}), an error is generat
 %___________________________________________________________________________
 
 \hypertarget{directives}{}
-\pdfbookmark[1]{2.13~~~Directives}{directives}
-\subsection*{2.13~~~Directives}
+\pdfbookmark[1]{2.14~~~Directives}{directives}
+\subsection*{2.14~~~Directives}
 \begin{list}{}{}
-\item {} \href{\#document-parts}{2.13.1~~~Document Parts}
+\item {} \href{\#document-parts}{2.14.1~~~Document Parts}
 
-\item {} \href{\#images}{2.13.2~~~Images}
+\item {} \href{\#images}{2.14.2~~~Images}
 
-\item {} \href{\#admonitions}{2.13.3~~~Admonitions}
+\item {} \href{\#admonitions}{2.14.3~~~Admonitions}
 
-\item {} \href{\#topics-sidebars-and-rubrics}{2.13.4~~~Topics, Sidebars, and Rubrics}
+\item {} \href{\#topics-sidebars-and-rubrics}{2.14.4~~~Topics, Sidebars, and Rubrics}
 
-\item {} \href{\#target-footnotes}{2.13.5~~~Target Footnotes}
+\item {} \href{\#target-footnotes}{2.14.5~~~Target Footnotes}
 
-\item {} \href{\#line-blocks}{2.13.6~~~Line Blocks}
-
-\item {} \href{\#replacement-text}{2.13.7~~~Replacement Text}
+\item {} \href{\#replacement-text}{2.14.6~~~Replacement Text}
 
 \end{list}
 
@@ -715,8 +723,8 @@ others, please see
 %___________________________________________________________________________
 
 \hypertarget{document-parts}{}
-\pdfbookmark[2]{2.13.1~~~Document Parts}{document-parts}
-\subsubsection*{2.13.1~~~Document Parts}
+\pdfbookmark[2]{2.14.1~~~Document Parts}{document-parts}
+\subsubsection*{2.14.1~~~Document Parts}
 
 An example of the ``contents'' directive can be seen above this section
 (a local, untitled table of \href{\#contents}{contents}) and at the beginning of the
@@ -726,8 +734,8 @@ document (a document-wide \href{\#table-of-contents}{table of contents}).
 %___________________________________________________________________________
 
 \hypertarget{images}{}
-\pdfbookmark[2]{2.13.2~~~Images}{images}
-\subsubsection*{2.13.2~~~Images}
+\pdfbookmark[2]{2.14.2~~~Images}{images}
+\subsubsection*{2.14.2~~~Images}
 
 An image directive (also clickable -- a hyperlink reference):
 \href{\#directives}{\includegraphics{../../../docs/user/rst/images/title.png}}
@@ -765,8 +773,8 @@ This paragraph is also part of the legend.
 %___________________________________________________________________________
 
 \hypertarget{admonitions}{}
-\pdfbookmark[2]{2.13.3~~~Admonitions}{admonitions}
-\subsubsection*{2.13.3~~~Admonitions}
+\pdfbookmark[2]{2.14.3~~~Admonitions}{admonitions}
+\subsubsection*{2.14.3~~~Admonitions}
 \begin{center}\begin{sffamily}
 \fbox{\parbox{\admonitionwidth}{
 \textbf{\large Attention!}
@@ -876,8 +884,8 @@ You can make up your own admonition too.
 %___________________________________________________________________________
 
 \hypertarget{topics-sidebars-and-rubrics}{}
-\pdfbookmark[2]{2.13.4~~~Topics, Sidebars, and Rubrics}{topics-sidebars-and-rubrics}
-\subsubsection*{2.13.4~~~Topics, Sidebars, and Rubrics}
+\pdfbookmark[2]{2.14.4~~~Topics, Sidebars, and Rubrics}{topics-sidebars-and-rubrics}
+\subsubsection*{2.14.4~~~Topics, Sidebars, and Rubrics}
 
 \setlength{\locallinewidth}{0.9\admonitionwidth}
 \begin{center}\begin{sffamily}
@@ -909,8 +917,8 @@ This is a topic.
 %___________________________________________________________________________
 
 \hypertarget{target-footnotes}{}
-\pdfbookmark[2]{2.13.5~~~Target Footnotes}{target-footnotes}
-\subsubsection*{2.13.5~~~Target Footnotes}
+\pdfbookmark[2]{2.14.5~~~Target Footnotes}{target-footnotes}
+\subsubsection*{2.14.5~~~Target Footnotes}
 \begin{figure}[b]\hypertarget{id21}[5]
 \href{http://www.python.org/}{http://www.python.org/}
 \end{figure}
@@ -918,33 +926,9 @@ This is a topic.
 
 %___________________________________________________________________________
 
-\hypertarget{line-blocks}{}
-\pdfbookmark[2]{2.13.6~~~Line Blocks}{line-blocks}
-\subsubsection*{2.13.6~~~Line Blocks}
-
-Take it away, Eric the Orchestra Leader!
-\begin{flushleft}
-A~one,~two,~a~one~two~three~four~\\
-~\\
-Half~a~bee,~philosophically,~\\
-~~~~must,~\emph{ipso~facto},~half~not~be.~\\
-But~half~the~bee~has~got~to~be,~\\
-~~~~\emph{vis~a~vis}~its~entity.~~D'you~see?~\\
-~\\
-But~can~a~bee~be~said~to~be~\\
-~~~~or~not~to~be~an~entire~bee,~\\
-~~~~~~~~when~half~the~bee~is~not~a~bee,~\\
-~~~~~~~~~~~~due~to~some~ancient~injury?~\\
-~\\
-Singing...
-\end{flushleft}
-
-
-%___________________________________________________________________________
-
 \hypertarget{replacement-text}{}
-\pdfbookmark[2]{2.13.7~~~Replacement Text}{replacement-text}
-\subsubsection*{2.13.7~~~Replacement Text}
+\pdfbookmark[2]{2.14.6~~~Replacement Text}{replacement-text}
+\subsubsection*{2.14.6~~~Replacement Text}
 
 I recommend you try \href{http://www.python.org/}{Python, \emph{the} best language around}\raisebox{.5em}[0em]{\scriptsize\hyperlink{id21}{5}}.
 
@@ -952,8 +936,8 @@ I recommend you try \href{http://www.python.org/}{Python, \emph{the} best langua
 %___________________________________________________________________________
 
 \hypertarget{substitution-definitions}{}
-\pdfbookmark[1]{2.14~~~Substitution Definitions}{substitution-definitions}
-\subsection*{2.14~~~Substitution Definitions}
+\pdfbookmark[1]{2.15~~~Substitution Definitions}{substitution-definitions}
+\subsection*{2.15~~~Substitution Definitions}
 
 An inline image (\includegraphics{../../../docs/user/rst/images/biohazard.png}) example:
 
@@ -963,8 +947,8 @@ An inline image (\includegraphics{../../../docs/user/rst/images/biohazard.png}) 
 %___________________________________________________________________________
 
 \hypertarget{comments}{}
-\pdfbookmark[1]{2.15~~~Comments}{comments}
-\subsection*{2.15~~~Comments}
+\pdfbookmark[1]{2.16~~~Comments}{comments}
+\subsection*{2.16~~~Comments}
 
 Here's one:
 % Comments begin with two dots and a space. Anything may
@@ -979,8 +963,8 @@ Here's one:
 %___________________________________________________________________________
 
 \hypertarget{colspanning-tables}{}
-\pdfbookmark[1]{2.16~~~Colspanning tables}{colspanning-tables}
-\subsection*{2.16~~~Colspanning tables}
+\pdfbookmark[1]{2.17~~~Colspanning tables}{colspanning-tables}
+\subsection*{2.17~~~Colspanning tables}
 
 This table has a cell spanning two columns:
 

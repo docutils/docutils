@@ -730,12 +730,12 @@ reference|
             Inline substitution_reference start-string without end-string.
 """],
 ["""\
-| and || and |||
+first | then || and finally |||
 """,
 """\
 <document source="test data">
     <paragraph>
-        | and || and |||
+        first | then || and finally |||
 """],
 ]
 
