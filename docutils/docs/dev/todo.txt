@@ -384,7 +384,7 @@ What else is needed?
 Developer Docs
 --------------
 
-* The settings/options system.
+* Complete `Docutils Runtime Settings <../api/runtime-settings.html>`_.
 
 * @@@ Improve the internal module documentation (docstrings in the
   code).  Specific deficiencies listed below.
