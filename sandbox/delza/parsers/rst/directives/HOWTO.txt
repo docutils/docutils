@@ -11,7 +11,8 @@ directive.
 Define Directive
 ----------------
 
-The directive signature itself should follow this template:
+The directive implementation itself is a callback function whose signature should 
+follow this template::
 
     def my_directive(match, type_name, data, state, state_machine, option_presets):
        """
@@ -30,14 +31,20 @@ You will have to define the options your directive requires.  This is a
 dictionary of name, conversion pairs which are applied to each option value to
 convert it to an expected type.  Python's built-in conversion are often usable
 for this, for example, str, int, float.  Other useful types would be bool
-(included in python 1.3) and exists (to test for existence of an option when
+(included in python 2.3) and exists (to test for existence of an option when
 you don't care about the value or the option has no value).
 
 Parse Directive
 ---------------
 
-You'll want to use the parse_directive method, which has returns a 4-tuple
-(arguments, options, content, blank_finish) and has the following signature:
+Within your directive implementation, you'll want to use the parse_directive function, 
+which has returns a 4-tuple(arguments, options, content, blank_finish).  If your
+directive requires content be non-blank (for instance) you'll need to check for
+this in the result -- this is part of the directive implementation and is not
+handled by parse_directive at this time.
+
+
+The parse_directive function has the following signature:
 
     def parse_directive(match, type_name, state, state_machine,
                         option_presets, arguments=None,
