@@ -740,10 +740,10 @@ Definition Lists
 Doctree elements: definition_list, definition_list_item, term,
 classifier, definition.
 
-Each definition list item contains a term, an optional classifier, and
-a definition.  A term is a simple one-line word or phrase.  An
-optional classifier may follow the term on the same line, after an
-inline " : " (space, colon, space).  A definition is a block indented
+Each definition list item contains a term, optional classifiers, and a
+definition.  A term is a simple one-line word or phrase.  Optional
+classifiers may follow the term on the same line, each after an inline
+" : " (space, colon, space).  A definition is a block indented
 relative to the term, and may contain multiple paragraphs and other
 body elements.  There may be no blank line between a term line and a
 definition block (this distinguishes definition lists from `block
@@ -761,7 +761,10 @@ last definition list item, but are optional in-between.  For example::
     term 3 : classifier
         Definition 3.
 
-Inline markup is parsed in the term line before the term/classifier
+    term 4 : classifier one : classifier two
+        Definition 4.
+
+Inline markup is parsed in the term line before the classifier
 delimiter (" : ") is recognized.  The delimiter will only be
 recognized if it appears outside of any inline markup.
 
@@ -780,12 +783,12 @@ A definition list may be used in various ways, including:
 
 Syntax diagram::
 
-    +---------------------------+
-    | term [ " : " classifier ] |
-    +--+------------------------+--+
-       | definition                |
-       | (body elements)+          |
-       +---------------------------+
+    +----------------------------+
+    | term [ " : " classifier ]* |
+    +--+-------------------------+--+
+       | definition                 |
+       | (body elements)+           |
+       +----------------------------+
 
 
 Field Lists
