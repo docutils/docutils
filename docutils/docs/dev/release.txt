@@ -12,7 +12,8 @@
 
 (Steps in boldface text are *not* covered by the release script at
 sandbox/felixwiemann/release.sh.  "Not covered" means that you aren't
-even reminded of them.)
+even reminded of them.  Note: The release.sh script needs to be
+updated to reflect the recent move to Subversion!)
 
 * **Announce a checkin freeze on Docutils-develop.  Post a list of
   major changes since the last release and ask for additions.**
@@ -37,10 +38,9 @@ even reminded of them.)
 
   (a) Create a new empty directory and ``cd`` into it.
 
-  (b) Get a clean snapshot of the CVS files::
+  (b) Get a clean snapshot of the main tree::
 
-          cvs -z3 -d:pserver:anonymous@cvs.sf.net:/cvsroot/docutils \
-              export -rHEAD docutils
+          svn export svn://svn.berlios.de/docutils/trunk/docutils
 
   (c) Use Distutils to create the release tarball::
 

@@ -101,9 +101,9 @@ Copyrights and Licensing
 The majority of the Docutils project code and documentation has been
 placed in the public domain.  Unless clearly and explicitly indicated
 otherwise, any patches (modifications to existing files) submitted to
-the project for inclusion (via CVS, SourceForge trackers, mailing
-lists, or private email) are assumed to be in the public domain as
-well.
+the project for inclusion (via Subversion, SourceForge trackers,
+mailing lists, or private email) are assumed to be in the public
+domain as well.
 
 Any new files contributed to the project should clearly state their
 intentions regarding copyright, in one of the following ways:
@@ -125,23 +125,25 @@ author(s) of the files should be willing to assign copyright to the
 PSF.
 
 
-CVS Check-ins
-=============
+Subversion Check-ins
+====================
 
-Instructions for CVS access can be found at
-http://sourceforge.net/cvs/?group_id=38414.  Anyone can access the CVS
+Please see the `repository documentation`_ for details on how to
+access Docutils' Subversion repository.  Anyone can access the
 repository anonymously.  Only project developers can make changes.
-See `Setting Up For Docutils Development`_ below for more info.
+Also see `Setting Up For Docutils Development`_ below for more info.
+
+.. _repository documentation: repository.html
 
 Unless you really *really* know what you're doing, please limit your
-CVS commands to ``cvs checkout``, ``cvs commit/checkin``, and ``cvs
-add``.  Do **NOT** use ``cvs import`` unless you're absolutely sure
+Subversion commands to ``svn checkout``, ``svn commit``, and ``svn
+add``.  Do **NOT** use ``svn import`` unless you're absolutely sure
 you know what you're doing.  Even then, grab a copy of the `nightly
-CVS tarball`_, set it up on your own machine, and experiment *there*
-first.
+repository tarball`_, set it up on your own machine, and experiment
+*there* first (but remove hooks/post-commit first).
 
-The `main source tree`_ ("docutils" CVS module) should always be kept
-in a stable state (usable and as problem-free as possible).  The
+The `main source tree`_ ("trunk/docutils" directory) should always be
+kept in a stable state (usable and as problem-free as possible).  The
 Docutils project shall follow the `Python Check-in Policies`_ (as
 applicable), with particular emphasis as follows:
 
@@ -188,7 +190,7 @@ applicable), with particular emphasis as follows:
   cases to the test suite.  Practise test-first programming; it's fun,
   it's addictive, and it works!
 
-* The `sandbox CVS directory`_ is the place to put new, incomplete or
+* The `sandbox directory`_ is the place to put new, incomplete or
   experimental code.  See `Additions to Docutils`_ and `The Sandbox`_
   below.
 
@@ -203,24 +205,24 @@ Docutils will pursue an open and trusting policy for as long as
 possible, and deal with any aberrations if (and hopefully not when)
 they happen.  I'd rather see a torrent of loose contributions than
 just a trickle of perfect-as-they-stand changes.  The occasional
-mistake is easy to fix.  That's what CVS is for.
+mistake is easy to fix.  That's what Subversion is for.
 
 .. _main source tree:
-   http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/docutils/docutils/
+   http://svn.berlios.de/viewcvs/docutils/trunk/docutils/
 .. _Python Check-in Policies: http://www.python.org/dev/tools.html
-.. _sandbox CVS directory:
-   http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/docutils/sandbox/
-.. _nightly CVS tarball:
-   http://cvs.sourceforge.net/cvstarballs/docutils-cvsroot.tar.bz2
+.. _sandbox directory:
+   http://svn.berlios.de/viewcvs/docutils/trunk/sandbox/
+.. _nightly repository tarball:
+   http://svn.berlios.de/svndumps/docutils-repos.gz
 
 
 Additions to Docutils
 ---------------------
 
 Additions to the project, such as new components, should be developed
-in the `sandbox CVS directory`_ until they're in `good shape`_,
-usable_, documented_, and `reasonably complete`_.  Adding to the `main
-source tree`_ or to a `parallel project`_ implies a commitment to the
+in the `sandbox directory`_ until they're in `good shape`_, usable_,
+documented_, and `reasonably complete`_.  Adding to the `main source
+tree`_ or to a `parallel project`_ implies a commitment to the
 Docutils user community.
 
 * Why the sandbox?
@@ -262,25 +264,6 @@ to completion.
 .. _Docutils Configuration Files: ../user/config.html
 
 
-CVS Startup File
-----------------
-
-In your ~/.cvsrc file, make sure you have a line like this::
-
-    update -dP
-
-This ensures that new directories are created and empty directories
-are pruned (removed) from your working copy.  In addition, these lines
-are useful::
-
-    cvs -q -z3
-    diff -u
-
-``cvs -q`` suppresses many non-essential messages.  ``-z3`` compresses
-data between client and server.  ``diff -u`` creates "unified diffs";
-specify ``diff -c`` if you prefer context diffs.
-
-
 Setting Up For Docutils Development
 -----------------------------------
 
@@ -294,7 +277,7 @@ meaning.  There are two ways to keep the Docutils code accessible:
   up your local working copy of the code.  This is the recommended
   method.
 
-  For the bash shell and Docutils checked out from CVS in
+  For the bash shell and Docutils checked out from Subversion in
   ``~/projects/docutils/``, add this to your ``~/.profile``::
 
       PYTHONPATH=$HOME/projects/docutils/docutils
@@ -334,8 +317,8 @@ Developers should subscribe to the mailing lists:
   (email to Doc-SIG@python.org).
 * Docutils-develop__, for implementation discussions
   (email to docutils-develop@lists.sourceforge.net).
-* Docutils-checkins__, to monitor CVS checkin messages (automatically
-  generated; normally read-only).
+* Docutils-checkins__, to monitor Subversion check-in messages
+  (automatically generated; normally read-only).
 * Docutils-users__, to monitor and help out with usage issues and bug
   reports.
 
@@ -348,11 +331,11 @@ __ http://lists.sourceforge.net/lists/listinfo/docutils-users
 The Sandbox
 ===========
 
-The `sandbox CVS directory`_ is a place to play around, to try out and
-share ideas.  It's a part of the CVS repository but it isn't
+The `sandbox directory`_ is a place to play around, to try out and
+share ideas.  It's a part of the Subversion repository but it isn't
 distributed as part of Docutils releases.  Feel free to check in code
-to the CVS sandbox; that way people can try it out but you won't have
-to worry about it working 100% error-free, as is the goal of the `main
+to the sandbox; that way people can try it out but you won't have to
+worry about it working 100% error-free, as is the goal of the `main
 source tree`_.  Each developer who wants to play in the sandbox should
 create either a project-specific subdirectory or personal subdirectory
 (suggested name: SourceForge ID, nickname, or given name + family
@@ -406,13 +389,14 @@ functioning of Docutils.  Examples are specialized add-ons or
 plug-ins, and applications of Docutils.  They use Docutils, but
 Docutils does not require their presence to function.
 
-An official parallel project will have its own CVS directory beside
-(or parallel to) the main Docutils CVS directory.  It can have its own
-web page in the docutils.sourceforge.net domain, its own file releases
-and downloadable CVS snapshots, and even a mailing list if that proves
-useful. However, an official parallel project has implications: it is
-expected to be maintained and continue to work with changes to the
-core Docutils.
+An official parallel project will have its own directory beside (or
+parallel to) the main ``docutils`` directory in the Subversion
+repository.  It can have its own web page in the
+docutils.sourceforge.net domain, its own file releases and
+downloadable snapshots, and even a mailing list if that proves useful.
+However, an official parallel project has implications: it is expected
+to be maintained and continue to work with changes to the core
+Docutils.
 
 A parallel project requires a project leader, who must commit to
 coordinate and maintain the implementation:
