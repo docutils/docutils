@@ -15,7 +15,7 @@ from   dialogs                   import *
 from   controls                  import CustomStyledTextCtrl
 from   controls                  import CustomTreeCtrl
 from   controls                  import CustomStatusBar
-from   docutilsadapter           import publish_document, get_errors
+from   docutilsadapter           import publish_document, get_errors, get_rest_bibl_fields
 from   docutils.utils            import relative_path
 from   urllib                    import quote
 from   wxPython.lib.buttons      import *
@@ -120,6 +120,7 @@ class DocFactoryFrame(wxFrame):
         self.editor = None
         self.activeitem = None
         self.imagedir = None
+        self.language_code = 'en'
 
         # Application-Icon
         bmp = images.getLogoSmallBitmap()
@@ -729,6 +730,7 @@ class DocFactoryFrame(wxFrame):
             self.nb.DeletePage(1)
         self.nb.SetSelection(0)
         self.editor.LoadFile(file)
+        self.set_editor_language_code(file)
         self.nb.SetPageText(0, 'Editor: %s' %
                             os.path.basename(file))
         self.editor.Enable(1)
@@ -815,6 +817,23 @@ class DocFactoryFrame(wxFrame):
         f = open(DATA, 'wt')
         cfg.write(f)
         f.close()
+
+    def set_editor_language_code(self, file=None):
+        language_code = 'en'
+        if self.project != None:
+            directory = self.project.directory
+        else:
+            directory = os.path.split(os.path.abspath(file))[0]
+        docutils_conf = os.path.join(directory, 'docutils.conf')
+        if os.path.exists(docutils_conf):
+            try:
+                cfg = ConfigParser.ConfigParser()
+                cfg.read(docutils_conf)
+                if cfg.has_option('options', 'language_code'):
+                    language_code = cfg.get('options', 'language_code')
+            except:
+                print '%s:\n%s\n%s' % sys.exc_info()
+        self.editor.bibliographic_fields = get_rest_bibl_fields(language_code)        
 
     # --------------------------------------------------------------------
     # event handlers
@@ -1310,6 +1329,7 @@ class DocFactoryFrame(wxFrame):
             go_ahead = 0
         else:
             name, directory = dlg.getValues()
+            self.set_editor_language_code()
         dlg.Destroy()
 
         if go_ahead:

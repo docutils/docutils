@@ -10,7 +10,7 @@ from   wxPython.help                 import *
 from   wxPython.lib.filebrowsebutton import DirBrowseButton
 from   docutils.utils                import relative_path
 from   urllib                        import quote
-from   docutilsadapter               import publishers
+from   docutilsadapter               import language_codes, publishers
 import images, os, string, ConfigParser, stylesheets, throbimages
 
 NAME = 'DocFactory'
@@ -150,7 +150,6 @@ class projectSettingsDlg(wxDialog):
         # Language Code
         wxStaticText(self.du, -1, 'Language-Code', wxPoint(8, 10))
         exitID = wxNewId()
-        language_codes = ['de', 'en', 'fr', 'it', 'sk', 'sv']
         if not self.config.options['language_code'] in language_codes:
             language_codes.append(self.config.options['language_code'])
         language_codes.sort()
