@@ -24,7 +24,7 @@
     <p align="right"><em><a href="http://docutils.sourceforge.net/docs/rst/quickref.html"
     >http://docutils.sourceforge.net/docs/rst/quickref.html</a></em>
     <br align="right"><em>Being a cheat-sheet for reStructuredText</em>
-    <br align="right"><em>Updated 2002-10-08</em>
+    <br align="right"><em>Updated 2003-03-22</em>
 
 
     <p>The full details of the markup may be found on the
@@ -188,16 +188,17 @@
       <li>The end-string must be immediately preceded by non-whitespace.
       <li>The end-string must end a text block (end of document or
     followed by a blank line) or be immediately followed by whitespace
-    or any of&nbsp;<samp>' " . , : ; ! ? - ) ] }</samp> or&nbsp;<samp>&gt;</samp>.
+    or any of&nbsp;<samp>' " . , : ; ! ? - ) ] } / \</samp> 
+	or&nbsp;<samp>&gt;</samp>.
       <li>If a start-string is immediately preceded by one of&nbsp;
     <samp>' " ( [ {</samp> or&nbsp;<samp>&lt;</samp>, it must not be
     immediately followed by the corresponding character from&nbsp;
     <samp>' " ) ] }</samp> or&nbsp;<samp>&gt;</samp>.
       <li>An end-string must be separated by at least one
     character from the start-string.
-      <li>An <a href="#escaping">unescaped</a> backslash preceding a start-string or end-string will
-    disable markup recognition, except for the end-string of inline
-    literals.
+      <li>An <a href="#escaping">unescaped</a> backslash preceding a
+	start-string or end-string will disable markup recognition, except
+    for the end-string of inline literals.
     </ol>
 
     <p>Also remember that inline markup may not be nested (well,

@@ -343,12 +343,16 @@ mechanism to override the default meaning of the characters used for
 the markup.  In reStructuredText we use the backslash, commonly used
 as an escaping character in other domains.
 
-A backslash followed by any character escapes that character.  The
-escaped character represents the character itself, and is prevented
-from playing a role in any markup interpretation.  The backslash is
-removed from the output.  A literal backslash is represented by two
-backslashes in a row (the first backslash "escapes" the second,
-preventing it being interpreted in an "escaping" role).
+A backslash followed by any character (except whitespace characters)
+escapes that character.  The escaped character represents the
+character itself, and is prevented from playing a role in any markup
+interpretation.  The backslash is removed from the output.  A literal
+backslash is represented by two backslashes in a row (the first
+backslash "escapes" the second, preventing it being interpreted in an
+"escaping" role).
+
+Backslash-escaped whitespace characters are removed from the document.
+This allows for character-level `inline markup`_.
 
 There are two contexts in which backslashes have no special meaning:
 literal blocks and inline literals.  In these contexts, a single
@@ -2142,9 +2146,8 @@ In reStructuredText, inline markup applies to words or phrases within
 a text block.  The same whitespace and punctuation that serves to
 delimit words in written text is used to delimit the inline markup
 syntax constructs.  The text within inline markup may not begin or end
-with whitespace.  Arbitrary character-level markup is not supported
-[#]_; it is not possible to mark up individual characters within a
-word.  Inline markup cannot be nested.
+with whitespace.  Arbitrary `character-level inline markup`_ is
+supported although not encouraged.  Inline markup cannot be nested.
 
 There are nine inline markup constructs.  Five of the constructs use
 identical start-strings and end-strings to indicate the markup:
@@ -2183,7 +2186,7 @@ end-string will not be recognized or processed.
 4. Inline markup end-strings must end a text block or be immediately
    followed by whitespace or one of::
 
-       ' " ) ] } > - / : . , ; ! ?
+       ' " ) ] } > - / : . , ; ! ? \
 
 5. If an inline markup start-string is immediately preceded by a
    single or double quote, "(", "[", "{", or "<", it must not be
@@ -2245,17 +2248,35 @@ each character.  The inline markup recognition order is as follows:
 
 - `Standalone hyperlinks`_ are the last to be recognized.
 
-.. [#] Backslash escapes can be used to allow arbitrary text to
-   immediately follow inline markup::
 
-       Python ``list``\s use square bracket syntax.
+Character-Level Inline Markup
+-----------------------------
 
-   The backslash will disappear from the processed document.  The word
-   "list" will appear as inline literal text, and the letter "s" will
-   immediately follow it as normal text, with no space in-between.
+It is possible to mark up individual characters within a word with
+backslash escapes (see `Escaping Mechanism`_ above).  Backslash
+escapes can be used to allow arbitrary text to immediately follow
+inline markup::
 
-   There is not yet any way for arbitrary text to immediately precede
-   inline markup.
+    Python ``list``\s use square bracket syntax.
+
+The backslash will disappear from the processed document.  The word
+"list" will appear as inline literal text, and the letter "s" will
+immediately follow it as normal text, with no space in-between.
+
+Arbitrary text may immediately precede inline markup using
+backslash-escaped whitespace::
+
+    Possible in *re*\ ``Structured``\ *Text*, though not encouraged.
+
+The backslashes and spaces separating "re", "Structured", and "Text"
+above will disappear from the processed document.
+    
+.. CAUTION::
+
+   The use of backslash-escapes for character-level inline markup is
+   not encouraged.  Such use is ugly and detrimental to the
+   unprocessed document's readability.  Please use this feature
+   sparingly and only where absolutely necessary.
 
 
 Emphasis
@@ -2427,7 +2448,7 @@ For example, here is a reference to a title describing a tag::
 
     See `HTML Element: \<a>`_ below.
 
-.. Caution::
+.. CAUTION::
 
    This construct offers easy authoring and maintenance of hyperlinks
    at the expense of general readability.  Inline URIs, especially
