@@ -37,7 +37,7 @@ handles everything else.  There are five convenience functions in the
   Useful when only portions of the processed document are desired.
   Currently only implemented for the HTML Writer.
 
-  There are examples in the ``docutils/examples.py`` module.
+  There are examples in the `docutils/examples.py`_ module.
 
 * ``publish_programmatically``: for custom programmatic use.  This
   function implements common code and is used by ``publish_file``,
@@ -45,6 +45,7 @@ handles everything else.  There are five convenience functions in the
   the encoded string output and the Publisher object.
 
 .. _Inside A Docutils Command-Line Front-End Tool: ./cmdline-tool.html
+.. _docutils/examples.py: ../../docutils/examples.py
 
 
 Configuration
