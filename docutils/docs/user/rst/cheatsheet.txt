@@ -1,0 +1,115 @@
+.. Comments begin with ".. ". Document title (specialized section title) next:
+
+=====================================================
+ The reStructuredText_ Cheat Sheet: Syntax Reminders
+=====================================================
+:Author: David Goodger <goodger@python.org>
+:Date: $Date$
+:Revision: $Revision$
+:Info: Use the `text source <cheatsheet.txt>`_, **not** the HTML.
+       See <http://docutils.sf.net/rst.html> for full info.
+:Description: This is a "docinfo block", or bibliographic field list
+
+Section Structure
+=================
+Section titles are underlined or overlined & underlined.
+
+Body Elements
+=============
+Grid table:
+
++--------------------------------+-----------------------------------+
+| Paragraphs are flush-left,     | Literal block, preceded by "::":: |
+| separated by blank lines.      |                                   |
+|                                |     Indented                      |
+|     Block quotes are indented. |                                   |
++--------------------------------+ or::                              |
+| >>> print 'Doctest block'      |                                   |
+| Doctest block                  | > Quoted                          |
++--------------------------------+-----------------------------------+
+
+Simple tables:
+
+================  ====================================================
+List Type         Examples
+================  ====================================================
+Bullet list       * items begin with "-", "+", or "*"
+Enumerated list   1. items use any variation of "1.", "A)", and "(i)"
+Definition list   Term is flush-left : optional classifier
+                      Definition is indented, no blank line between
+Field list        :field name: field body
+Option list       -o  at least 2 spaces between option & description
+================  ====================================================
+
+================  ====================================================
+Explicit Markup   Examples (only visible in the `text source`_)
+================  ====================================================
+Footnote          .. [1] Manually numbered or [#] auto-numbered
+                     (even [#labelled]) or [*] auto-symbol
+Citation          .. [CIT2002] A citation.
+Hyperlink Target  .. _reStructuredText: http://docutils.sf.net/rst.html
+                  .. _indirect target: reStructuredText_
+                  .. _internal target:
+Anonymous Target  __ http://docutils.sf.net/spec/rst/reStructuredText.html
+Directive ("::")  .. image:: images/biohazard.png
+Substitution Def  .. |substitution| replace:: like an inline directive
+Comment           .. is anything else
+================  ====================================================
+
+Inline Markup
+=============
+*emphasis*; **strong emphasis**; `interpreted text`; `interpreted text
+with role`:emphasis:; ``inline literal text``; standalone hyperlink,
+http://docutils.sourceforge.net; named reference, reStructuredText_;
+`anonymous reference`__; footnote reference, [1]_; citation reference,
+[CIT2002]_; |substitution|; _`inline internal target`.
+
+Directive Quick Reference
+=========================
+See <http://docutils.sf.net/spec/rst/directives.html> for full info.
+
+================  ====================================================
+Directive Name    Description
+================  ====================================================
+attention         Specific admonition; also "caution", "danger",
+                  "error", "hint", "important", "note", "tip", "warning"
+admonition        Generic admonition: ``.. admonition:: By The Way``
+image             ``.. image:: picture.png``; many options possible
+figure            Like "image", but with optional caption and legend
+topic             ``.. topic:: Title``; like a mini section
+sidebar           ``.. sidebar:: Title``; like a mini parallel document
+line-block        Line breaks and leading whitespace is significant;
+                  useful for addresses & verse
+parsed-literal    A literal block with parsed inline markup
+rubric            ``.. rubric:: Informal Heading``
+epigraph          Block quote with class="epigraph"
+highlights        Block quote with class="highlights" 
+pull-quote        Block quote with class="pull-quote"
+contents          Generate a table of contents
+sectnum           Automatically number sections, subsections, etc.
+target-notes      Create an explicit footnote for each external target
+meta              HTML-specific metadata
+include           Read an external reST file as if it were inline
+raw               Non-reST data passed untouched to the Writer
+replace           Replacement text for substitution definitions
+unicode           Unicode character code conversion for substitution defs
+class             Set a "class" attribute on the next element
+role              Create a custom interpreted text role
+================  ====================================================
+
+Interpreted Text Role Quick Reference
+=====================================
+See <http://docutils.sf.net/spec/rst/interpreted.html> for full info.
+
+================  ====================================================
+Role Name         Description
+================  ====================================================
+emphasis          Equivalent to *emphasis*
+literal           Equivalent to ``literal``, except not as literal
+PEP               Reference to a numbered Python Enhancement Proposal
+RFC               Reference to a numbered Internet Request For Comments
+strong            Equivalent to **strong**
+sub               Subscript
+sup               Superscript
+title             Title reference (book, etc.); standard default role
+================  ====================================================
