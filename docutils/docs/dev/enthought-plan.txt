@@ -72,7 +72,7 @@ Development Plan
    .. _Epydoc: http://epydoc.sourceforge.net/
    .. _HappyDoc: http://happydoc.sourceforge.net/
    .. _PEP 258:
-      http://docutils.sf.net/spec/pep-0258.html#python-source-reader
+      http://docutils.sf.net/docs/peps/pep-0258.html#python-source-reader
 
 2. Decide on a base platform.  The best way to achieve Enthought's
    goals in a reasonable time frame may be to extend Epydoc or
