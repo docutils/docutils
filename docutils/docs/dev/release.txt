@@ -83,8 +83,8 @@
 
 11. Log in to the SourceForge web interface.
 
-12. Access the file release system on SourceForge (Admin interface).
-    Fill in the fields:
+12. Access the _`file release system` on SourceForge (Admin
+    interface).  Fill in the fields:
 
         :Package ID:      docutils
         :Release Name:    <use release number only, e.g. 0.3>
