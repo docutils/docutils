@@ -21,19 +21,20 @@ from docutils.writers import html4css1
 
 class Writer(html4css1.Writer):
 
-    cmdline_options = (
+    cmdline_options = html4css1.Writer.cmdline_options + (
         'PEP/HTML-Specific Options',
         None,
-        (('Specify a stylesheet file.  Default is "pep.css".',
-          ['--stylesheet'],
-          {'default': 'pep.css', 'metavar': '<file>'}),
+        (("Specify a PEP stylesheet file.  Default is --stylesheet's value.  "
+          'If given, --pep-stylesheet overrides --stylesheet.',
+          ['--pep-stylesheet'],
+          {'metavar': '<file>'}),
          ('Specify a template file.  Default is "pep-html-template".',
-          ['--template'],
+          ['--pep-template'],
           {'default': 'pep-html-template', 'metavar': '<file>'}),
          ('Python\'s home URL.  Default is ".." (parent directory).',
           ['--python-home'],
           {'default': '..', 'metavar': '<URL>'}),
-         ('Home URL for this PEP.  Default is "." (current directory).',
+         ('Home URL prefix for PEPs.  Default is "." (current directory).',
           ['--pep-home'],
           {'default': '.', 'metavar': '<URL>'}),
          # Workaround for SourceForge's broken Python
@@ -48,8 +49,10 @@ class Writer(html4css1.Writer):
     def translate(self):
         html4css1.Writer.translate(self)
         options = self.document.options
-        template = open(options.template).read()
-        stylesheet = options.stylesheet
+        template = open(options.pep_template).read()
+        stylesheet = options.pep_stylesheet
+        if stylesheet is None:
+            stylesheet = options.stylesheet
         pyhome = options.python_home
         pephome = options.pep_home
         if pyhome == '..':
