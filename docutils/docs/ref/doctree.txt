@@ -109,6 +109,8 @@ Structural Subelements
 ----------------------
 
 Structural subelements are child elements of structural elements.
+Simple structuctural subelements (title_, subtitle_) contain text
+data; the others are compound and do not directly contain text data.
 
 Category members: title_, subtitle_, docinfo_, decoration_,
 transition_
@@ -118,7 +120,10 @@ Bibliographic Elements
 ``````````````````````
 
 The docinfo_ element is an optional child of document_.  It groups
-bibliographic elements together.
+bibliographic elements together.  All bibliographic elements except
+authors_ and field_ contain text data.  authors_ contains further
+bibliographic elements (most notably author_).  field_ contains
+field_name_ and field_body_ body subelements.
 
 Category members: address_, author_, authors_, contact_, copyright_,
 date_, field_, organization_, revision_, status_, version_
