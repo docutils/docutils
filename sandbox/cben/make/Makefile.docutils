@@ -27,19 +27,22 @@ $(docutils.)DOCS ?= $(wildcard *$($(docutils.)SRCEXT))
 # The docs without the suffix, making rules shorter.
 $(docutils.)STEMS ?= $($(docutils.)DOCS:$($(docutils.)SRCEXT)=)
 
-docutils.all: html ps pdf
+# Set $(docutils.)ALL to change the things to build by default.
+$(docutils.)ALL ?= html ps pdf
+
+docutils.all: $($(docutils.)ALL)
 
 # Targets like ``clean`` weren't directly used.  Rather they don't have
 # commands but have targets like ``docutils.clean`` (that do have commands) as
 # prerequisites.  This allows you to give your commands for them.  You can
 # inhibit these alias dependencies by setting ENABLE_SHORT_TARGETS to 0.
-# There is no ``all`` alias anyway  because it's too probable that you
-# will want to define it yourself to some subset.
 $(docutils.)ENABLE_SHORT_TARGETS ?= 1
 
 ifeq "$($(docutils.)ENABLE_SHORT_TARGETS)" "1"
+safeclean: docutils.safeclean
 mostlyclean: docutils.mostlyclean
 clean: docutils.clean
+all: docutils.all
 endif
 
 html: $($(docutils.)STEMS:=.html)
@@ -48,10 +51,16 @@ dvi: $($(docutils.)STEMS:=.dvi)
 ps: $($(docutils.)STEMS:=.ps)
 pdf: $($(docutils.)STEMS:=.pdf)
 
+# Extensions that are direct outputs of this makefile.
 $(docutils.)CLEAN_EXTS += $(foreach tool,$($(docutils.)TOOLS),$($(docutils.)$(tool).TRGEXT))
-$(docutils.)CLEAN_EXTS += .log .aux .out .dvi .ps .pdf
+$(docutils.)CLEAN_EXTS += .dvi .ps .pdf
+# Extensions of unnneded byproducts.
+$(docutils.)SAFECLEAN_EXTS += .log .aux .out .toc
 
-docutils.mostlyclean:
+docutils.safeclean:
+	-rm -f $(foreach ext,$($(docutils.)SAFECLEAN_EXTS),$($(docutils.)STEMS:=$(ext)))
+
+docutils.mostlyclean: docutils.safeclean
 	-rm -f $(foreach ext,$($(docutils.)CLEAN_EXTS),$($(docutils.)STEMS:=$(ext)))
 
 docutils.clean: docutils.mostlyclean
