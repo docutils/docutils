@@ -28,7 +28,6 @@ from docutils import core, frontend
 from docutils.parsers import rst
 from docutils.readers import standalone, pep
 from docutils.writers import html4css1, pep_html
-import pep2html
 
 
 usage = '%prog [options] [<directory> ...]'
@@ -196,6 +195,9 @@ class Builder:
                                  % (error.__class__.__name__, error))
 
     def process_peps(self, directory):
+        # only import PEP module/script if we need it.
+        import pep2html
+
         settings = self.get_settings('PEPs', directory)
         old_directory = os.getcwd()
         os.chdir(directory)
