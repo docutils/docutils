@@ -25,16 +25,59 @@
 
 ;;; Code:
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Customization
 
 (defvar rst-mode-lazy t
-  "If non-nil `rst-mode' font-locks comment and literal blocks correctly.
-Because this is really slow it switches on `lazy-lock-mode' automatically. You
-may increase `lazy-lock-defer-time' for reasonable results.
+  "If non-nil `rst-mode' font-locks comment, literal blocks, and sections
+correctly. Because this is really slow it switches on `lazy-lock-mode'
+automatically. You may increase `lazy-lock-defer-time' for reasonable results.
 
 If nil comments and literal blocks are font-locked only on the line they start.
 
 The value of this variable is used when `rst-mode' is loaded.")
+
+;; Faces for displaying items on several levels
+(defconst rst-level-face-max 6
+  "Maximum depth of level faces defined")
+(defconst rst-level-face-base-color "grey"
+  "The base color to be used for creating level faces")
+(defconst rst-level-face-base-light 85
+  "The lightness factor for the base color")
+(defconst rst-level-face-format-light "%2d"
+  "The format for the lightness factor for the base color")
+(defconst rst-level-face-step-light -7
+  "The step width to use for next color")
+
+;; Define the faces
+(let ((i 1))
+  (while (<= i rst-level-face-max)
+    (let ((sym (intern (format "rst-level-%d-face" i)))
+	  (doc (format "Face for showing items at level %d" i))
+	  (col (format (concat "%s" rst-level-face-format-light)
+		       rst-level-face-base-color
+		       (+ (* (1- i) rst-level-face-step-light)
+			  rst-level-face-base-light))))
+      (make-empty-face sym)
+      (set-face-doc-string sym doc)
+      (set-face-background sym col)
+      (set sym sym)
+    (setq i (1+ i)))))
+
+(defvar rst-adornment-faces-alist
+  '((1 . rst-level-1-face)
+    (2 . rst-level-2-face)
+    (3 . rst-level-3-face)
+    (4 . rst-level-4-face)
+    (5 . rst-level-5-face)
+    (6 . rst-level-6-face)
+    (t . font-lock-keyword-face)
+    (nil . font-lock-keyword-face))
+  "An alist mapping adornment types to faces. Key is a number (for faces for
+section texts on that level), t (for a face for transitions) or nil (default
+face used for section adornment).")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defvar rst-mode-map nil
   "Keymap for rst mode.")
@@ -60,6 +103,7 @@ if that value is non-nil."
   (set (make-local-variable 'comment-start) ".. ")
   (set (make-local-variable 'indent-line-function) 'indent-relative-maybe)
   (set (make-local-variable 'font-lock-multiline) t)
+  (make-local-variable 'rst-font-lock-adornment-section-alist)
   (run-hooks 'rst-mode-hook))
 
 (unless rst-mode-syntax-table
@@ -82,6 +126,8 @@ if that value is non-nil."
 ;(defvar rst-mode-abbrev-table nil
 ;  "Abbrev table used while in rst mode.")
 ;(define-abbrev-table 'rst-mode-abbrev-table ())
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defvar rst-font-lock-keywords
     ;; The rst-links in the following comments all relate to sections in
@@ -137,14 +183,21 @@ if that value is non-nil."
 	 (re-imv2 (concat re-imbeg2 "|" re-imend))
 	 ;; Supported URI schemes
 	 (re-uris1 "\\(acap\\|cid\\|data\\|dav\\|fax\\|file\\|ftp\\|gopher\\|http\\|https\\|imap\\|ldap\\|mailto\\|mid\\|modem\\|news\\|nfs\\|nntp\\|pop\\|prospero\\|rtsp\\|service\\|sip\\|tel\\|telnet\\|tip\\|urn\\|vemmi\\|wais\\)")
+	 ;; Line starting with adornment and optional whitespace; complete
+	 ;; adornment is in (match-string 1); there must be at least 3
+	 ;; characters because otherwise explicit markup start would be
+	 ;; recognized
+	 (re-ado2 (concat "^\\(\\(["
+			  (if (< emacs-major-version 21)
+			      "^a-zA-Z0-9 \t\x00-\x1F"
+			    "^[:word:][:space:][:cntrl:]")
+			  "]\\)\\2\\2+\\)" re-hws "*$"))
 	 )
     (list
      ;; FIXME: Block markup is not recognized in blocks after explicit markup
      ;; start
 
      ;; Simple `Body Elements`_
-     ;; Sections_ FIXME: missing
-     ;; Transitions_ FIXME: missing
      ;; `Bullet Lists`_
      (list
       (concat re-bol "\\([-*+]" re-blksep1 "\\)")
@@ -232,9 +285,26 @@ if that value is non-nil."
 
      ;; Do all block fontification as late as possible so 'append works
 
+     ;; Sections_ / Transitions_
+     (append
+      (list
+       re-ado2)
+      (if (not rst-mode-lazy)
+	  (list 1 face-block)
+	(list
+	 (list 'rst-font-lock-handle-adornment
+	       '(progn
+		  (setq rst-font-lock-adornment-point (match-end 1))
+		  (point-max))
+	       nil
+	       (list 1 '(cdr (assoc nil rst-adornment-faces-alist))
+		     'append t)
+	       (list 2 '(cdr (assoc rst-font-lock-section rst-adornment-faces-alist))
+		     'append t)
+	       (list 3 '(cdr (assoc nil rst-adornment-faces-alist))
+		     'append t)))))
+
      ;; `Comments`_
-     ;; FIXME: For some reason this does not work when re-ems is embedded in
-     ;; the comment; this has probably to do with the multiline match
      (append
       (list
        (concat re-bol "\\(" re-ems "\\)\[^[|_]\\([^:]\\|:\\([^:]\\|$\\)\\)*$")
@@ -243,7 +313,7 @@ if that value is non-nil."
 	  (list
 	   (list 'rst-font-lock-find-unindented-line
 		 '(progn
-		    (setq rst-current-indentation-point (match-end 1))
+		    (setq rst-font-lock-indentation-point (match-end 1))
 		    (point-max))
 		 nil
 		 (list 0 face-comment 'append)))))
@@ -256,7 +326,7 @@ if that value is non-nil."
 	  (list
 	   (list 'rst-font-lock-find-unindented-line
 		 '(progn
-		    (setq rst-current-indentation-point 'next)
+		    (setq rst-font-lock-indentation-point 'next)
 		    (point-max))
 		 nil
 		 (list 0 face-comment 'append)))))
@@ -270,12 +340,15 @@ if that value is non-nil."
 	  (list
 	   (list 'rst-font-lock-find-unindented-line
 		 '(progn
-		    (setq rst-current-indentation-point t)
+		    (setq rst-font-lock-indentation-point t)
 		    (point-max))
 		 nil
 		 (list 0 face-literal 'append)))))
      ))
   "Keywords to highlight in rst mode.")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Indented blocks
 
 (defun rst-move-forward-unindented-line (&optional limit column)
   "Find the next non-empty line which is not indented at least to COLUMN.
@@ -310,13 +383,13 @@ and point is not moved. LIMIT defaults to (point-max)."
 ; `rst-font-lock-find-unindented-line' shall take the indentation from the next
 ; non-empty line. Also used as a trigger for
 ; `rst-font-lock-find-unindented-line'.
-(defvar rst-current-indentation-point nil)
+(defvar rst-font-lock-indentation-point nil)
 
 (defun rst-font-lock-find-unindented-line (limit)
-  (let* ((ind-pnt rst-current-indentation-point)
+  (let* ((ind-pnt rst-font-lock-indentation-point)
 	 (beg-pnt ind-pnt))
     ;; May run only once - enforce this
-    (setq rst-current-indentation-point nil)
+    (setq rst-font-lock-indentation-point nil)
     (when (and ind-pnt (not (numberp ind-pnt)))
       ;; Find indentation point in next line if any
       (setq ind-pnt
@@ -341,6 +414,106 @@ and point is not moved. LIMIT defaults to (point-max)."
       (goto-char (or (rst-move-forward-unindented-line limit) limit))
       (set-match-data (list beg-pnt (point)))
       t)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Adornments
+
+; Stores the point where the current adornment ends. Also used as a trigger for
+; `rst-font-lock-handle-adornment'.
+(defvar rst-font-lock-adornment-point nil)
+
+; Here `rst-font-lock-handle-adornment' stores the section level of the current
+; adornment or t for a transition.
+(defvar rst-font-lock-section nil)
+
+; Associates adornments with section levels as encountered while font-locking.
+; The key is a two character string. The first character is the adornment
+; character. The second character distinguishes underline sections (`u'),
+; overline/underline sections (`o'). The value is the section level.
+;
+; This is made buffer local on start and adornments found during font lock are
+; entered.
+(defvar rst-font-lock-adornment-section-alist nil)
+
+; Handles adornments for sections and transitions. Returns three match groups.
+; First and last match group matched pure adornment while second group matched
+; section text.
+(defun rst-font-lock-handle-adornment (limit)
+  (let* ((ado-pnt rst-font-lock-adornment-point))
+    ;; May run only once - enforce this
+    (setq rst-font-lock-adornment-point nil)
+    (when ado-pnt
+      (let ((ado-ch (aref (match-string-no-properties 1) 0))
+	    (ado-re (regexp-quote (match-string-no-properties 1)))
+	    (nxt-emp
+	     (save-excursion
+	       (save-match-data
+		 (or (not (zerop (forward-line 1)))
+		     (looking-at "\\s *$")))))
+	    (prv-emp
+	     (save-excursion
+	       (save-match-data
+		 (or (not (zerop (forward-line -1)))
+		     (looking-at "\\s *$")))))
+	    (beg-pnt
+	     (save-excursion
+	       (forward-line 0)
+	       (point)))
+	    (end-pnt ado-pnt)
+	    beg-ovr end-ovr beg-und end-und ado-key)
+	(cond
+	 ((and nxt-emp prv-emp)
+	  ;; A transition
+	  (setq rst-font-lock-section t))
+	 (prv-emp
+	  ;; An overline
+	  (setq ado-key (concat (list ado-ch) "o"))
+	  (setq beg-ovr beg-pnt)
+	  (setq end-ovr end-pnt)
+	  (save-excursion
+	    (save-match-data
+	      (forward-line 1)
+	      (setq beg-pnt (point))
+	      (setq end-pnt nil)
+	      (while (and (< (point) limit) (not end-pnt))
+		(if (looking-at "\\s *$")
+		    ;; No underline found
+		    (setq end-pnt (1- (point)))
+		  (when (looking-at (concat "\\(" ado-re "\\)\\s *$"))
+		    (setq end-und (match-end 1))
+		    (forward-line 0)
+		    (setq beg-und (point))
+		    (setq end-pnt (1- beg-und))))
+		(forward-line 1)))))
+	 (t
+	  ;; An underline
+	  (setq ado-key (concat (list ado-ch) "u"))
+	  (setq beg-und beg-pnt)
+	  (setq end-und end-pnt)
+	  (setq end-pnt (1- beg-und))
+	  (setq beg-pnt
+		(save-excursion
+		  (save-match-data
+		    (re-search-backward "^\\s *$" 1 'move)
+		    (forward-line 1)
+		    (point))))))
+	(when ado-key
+	  (unless (assoc ado-key rst-font-lock-adornment-section-alist)
+	    (let ((new 1))
+	      (while (rassoc new rst-font-lock-adornment-section-alist)
+		(setq new (1+ new)))
+	      (setq rst-font-lock-adornment-section-alist
+		    (append rst-font-lock-adornment-section-alist
+			    (list (cons ado-key new))))))
+	  (setq rst-font-lock-section
+		(cdr (assoc ado-key rst-font-lock-adornment-section-alist))))
+	(goto-char (or end-und end-pnt end-ovr))
+	(set-match-data (list (or beg-ovr beg-pnt beg-und)
+			      (or end-und end-pnt end-und)
+			      beg-ovr end-ovr beg-pnt end-pnt beg-und end-und))
+	t))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ; rst-mode has its own mind about font-lock-support-mode
 (if (boundp 'font-lock-support-mode)
