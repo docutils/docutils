@@ -109,7 +109,7 @@ Requirements
   It is included in the Docutils distribution.
 
 .. [#] Python 2.1 may be used providing the compiler package is
-   installed.  The compiler package can be found in the tools/
+   installed.  The compiler package can be found in the Tools/
    directory of Python's source distribution.
 
 .. _Optik: http://optik.sourceforge.net/
@@ -132,11 +132,12 @@ Unstable Releases
 `````````````````
 
 The `latest unstable project release package`_ (Docutils 0.3.3,
-2004-05-09) is **alpha** software.  This means that it works
-(somehow), but you should not use it in a production environment and
-you should be prepare to update soon, because it still contains bugs.
-(If you discover a bug, please post a short note to the
-Docutils-develop `mailing list`_.)
+2004-05-09) is **alpha** software.  It works, has more features than
+the latest "stable" release, and many bugs have been fixed, but it may
+contain new bugs.  It may not be suitable for use in a production
+environment and you should be prepared to update soon.  (If you
+discover a bug, please post a short note to the Docutils-develop
+`mailing list`_.)
 
 Major changes since Docutils 0.3:
 
