@@ -32,7 +32,7 @@ directives = {
       u'exergue': 'epigraph',
       u'\u00E9pigraphe': 'epigraph',
       u'chapeau': 'highlights',
-      u'pull-quote (translation required)': 'pull-quote',
+      u'accroche': 'pull-quote',
       #u'questions': 'questions',
       #u'qr': 'questions',
       #u'faq': 'questions',
