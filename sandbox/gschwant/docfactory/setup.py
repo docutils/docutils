@@ -1,0 +1,40 @@
+#!/usr/bin/env python
+# $Id$
+
+from distutils.core import setup
+
+LONG_DESCRIPTION = """\
+DocFactory is a wxPython-GUI for Docutils. It is distributed as
+a subpackage of Docutils (docutils.factory). The main front-end
+(docfactory.py) is installed as a "script". After installation
+you should find it in the scripts-directory of your Python
+environment.
+
+System requirements:
+
+* Python 2.1.1 or later (http://www.python.org).
+* wxPython 2.3.2.1 or later (http://wxpython.org).  Be sure to get the
+  build matching the version of Python you're using.
+* The latest Docutils code (http://docutils.sourceforge.net).
+"""
+
+def do_setup():
+    dist = setup(
+          name = 'DocFactory',
+          description = 'wxPython-GUI for Docutils',
+          long_description = LONG_DESCRIPTION,
+          url = 'http://docutils.sourceforge.net/docfactory/',
+          version = '0.1.3',
+          author = 'Dr. Gunnar Schwant',
+          author_email = 'g.schwant@gmx.de',
+          license = 'BSD (see LICENSE.txt)',
+          packages = ['docutils.factory'],
+          package_dir = {'docutils.factory': 'factory'},
+          scripts = ['docfactory.py'],
+          #data_files = [('share/docutils', [])],
+          )
+    return dist
+
+
+if __name__ == '__main__' :
+    do_setup()
