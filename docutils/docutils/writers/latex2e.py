@@ -34,9 +34,9 @@ class Writer(writers.Writer):
           ['--documentclass'],
           {'default': 'article', }),
          ('Specify document options.  Multiple options can be given, '
-          'separated by commas.  Default is "10pt".',
+          'separated by commas.  Default is "10pt,a4paper".',
           ['--documentoptions'],
-          {'default': '10pt', }),
+          {'default': '10pt,a4paper', }),
          ('Use LaTeX footnotes. LaTeX supports only numbered footnotes (does it?). '
           'Default: no, uses figures.',
           ['--use-latex-footnotes'],
@@ -297,10 +297,15 @@ class DocumentClass:
 
     # BUG: LaTeX has no deeper sections (actually paragrah is no
     # section either).
+    # BUG: No support for unknown document classes.  Make 'article'
+    # default?
     _class_sections = {
         'book': ( 'chapter', 'section', 'subsection', 'subsubsection' ),
+        'scrbook': ( 'chapter', 'section', 'subsection', 'subsubsection' ),
         'report': ( 'chapter', 'section', 'subsection', 'subsubsection' ),
+        'scrreprt': ( 'chapter', 'section', 'subsection', 'subsubsection' ),
         'article': ( 'section', 'subsection', 'subsubsection' ),
+        'scrartcl': ( 'section', 'subsection', 'subsubsection' ),
         }
     _deepest_section = 'subsubsection'
 
@@ -486,13 +491,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # to other packages, as done with babel.
     # Dummy settings might be taken from document settings
 
-    d_paper = 'a4paper' # papersize
-    d_margins = '2cm'
-
     latex_head = '\\documentclass[%s]{%s}\n'
     encoding = '\\usepackage[%s]{inputenc}\n'
     linking = '\\usepackage[colorlinks=%s,linkcolor=%s,urlcolor=%s]{hyperref}\n'
-    geometry = '\\usepackage[%s,margin=%s,nohead]{geometry}\n'
     stylesheet = '\\input{%s}\n'
     # add a generated on day , machine by user using docutils version.
     generator = '%% generator Docutils: http://docutils.sourceforge.net/\n'
@@ -551,6 +552,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         self.d_class = DocumentClass(settings.documentclass)
 
+        # HACK.  Should have more sophisticated typearea handling.
+        if settings.documentclass.find('scr') == -1:
+            self.typearea = '\\usepackage[DIV12]{typearea}\n'
+        else:
+            if self.d_options.find('DIV') == -1 and self.d_options.find('BCOR') == -1:
+                self.typearea = '\\typearea{12}\n'
+            else:
+                self.typearea = ''
+
         # object for a table while proccessing.
         self.active_table = Table('longtable',settings.table_style)
         if self.fontenc == 'T1':
@@ -579,10 +589,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
               '\\usepackage{graphicx}\n',
               '\\usepackage{color}\n',
               '\\usepackage{multirow}\n',
+              '\\usepackage{ifthen}\n',   # before hyperref!
               self.linking % (self.colorlinks, self.hyperlink_color, self.hyperlink_color),
-              # geometry and fonts might go into style.tex.
-              self.geometry % (self.d_paper, self.d_margins),
-              #
+              self.typearea,
               self.generator,
               # latex lengths
               '\\newlength{\\admonitionwidth}\n',
@@ -1096,6 +1105,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_document(self, node):
         self.body_prefix.append('\\begin{document}\n')
+        # BUG: \maketitle without title (i.e. --no-doc-title) adds
+        # unnecessary vspace.
         self.body_prefix.append('\\maketitle\n\n')
         # alternative use titlepage environment.
         # \begin{titlepage}
