@@ -2302,6 +2302,10 @@ setting has been supplied::
 ``generated``
 =============
 
+Docutils wraps ``generated`` elements around text that is inserted
+(generated) by Docutils; i.e., text that was not in the document, like
+section numbers inserted by the "sectnum" directive.
+
 `To be completed`_.
 
 

@@ -73,6 +73,27 @@ __ http://sourceforge.net/tracker/?group_id=38414&atid=422030
       .. |substitute| replace:: |replace|
       .. |replace| replace:: swap
 
+  This is tricky.  Substitutions have to propagate back completely.
+
+* Another bug from David Abrahams (run with ``rst2html.py --traceback``)::
+
+      .. [#crtp] See |runtime| 
+
+      foo [#tag_dispatching]_
+
+      .. [#tag_dispatching] See  |runtime|  
+
+      .. |runtime| replace:: 7__
+      __ runtime.html
+
+      __ reference/__main.html
+
+  Change the references.Substitutions tranform's priority from 220 to
+  680, so it happens after reference resolution?  Then we have to deal
+  with multiple IDs.  Perhaps the Substitution transform should remove
+  all IDs from definitions after the first substitution reference is
+  processed.
+
 
 General
 -------
