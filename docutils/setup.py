@@ -3,15 +3,17 @@
 # Copyright: This file has been placed in the public domain.
 
 import sys
+import os
 from distutils.core import setup
+from distutils.command.build_py import build_py
+
 
 def do_setup():
+    kwargs = package_data.copy()
     extras = get_extras()
     if extras:
-        setup(name = 'Extras--IGNORE',  # name for tarball
-              py_modules = extras,
-              package_dir = {'': 'extras'})
-    kwargs = package_data.copy()
+        kwargs['py_modules'] = extras
+        kwargs['cmdclass'] = {'build_py': dual_build_py}
     if sys.hexversion >= 0x02030000:    # Python 2.3
         kwargs['classifiers'] = classifiers
     dist = setup(**kwargs)
@@ -31,6 +33,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
     'author_email': 'goodger@users.sourceforge.net',
     'license': 'public domain, Python, BSD, GPL (see COPYING.txt)',
     'platforms': 'OS-independent',
+    'package_dir': {'docutils': 'docutils', '': 'extras'},
     'packages': ['docutils', 'docutils.languages',
                  'docutils.parsers', 'docutils.parsers.rst',
                  'docutils.parsers.rst.directives',
@@ -87,6 +90,23 @@ def get_extras():
         except (ImportError, AttributeError, ValueError):
             extras.append(module_name)
     return extras
+
+
+class dual_build_py(build_py):
+
+    """
+    This class allows the distribution of both packages *and* modules with one
+    call to `distutils.core.setup()`.  Thanks to Thomas Heller.
+    """
+
+    def run(self):
+        if not self.py_modules and not self.packages:
+            return
+        if self.py_modules:
+            self.build_modules()
+        if self.packages:
+            self.build_packages()
+        self.byte_compile(self.get_outputs(include_bytecode=0))
 
 
 if __name__ == '__main__' :
