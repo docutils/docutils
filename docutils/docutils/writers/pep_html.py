@@ -53,7 +53,7 @@ class Writer(html4css1.Writer):
             pepnum = '%04i' % int(pep)
         except:
             pepnum = pep
-        title = self.document[1][1].astext()
+        title = header[1][1].astext()
         body = ''.join(self.body)
         body_suffix = ''.join(self.body_suffix)
         self.output = template % locals()
