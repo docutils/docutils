@@ -1260,7 +1260,7 @@ class superscript(Inline, TextElement): pass
 class subscript(Inline, TextElement): pass
 
 
-class image(General, Inline, TextElement):
+class image(General, Inline, Element):
 
     def astext(self):
         return self.get('alt', '')

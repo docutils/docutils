@@ -25,6 +25,11 @@ Changes Since 0.3.7
     encoding is explicitly given, and to provide better reporting of
     decoding errors.
 
+* docutils/nodes.py:
+
+  - ``image`` element class changed to subclass of Element, not
+    TextElement (it's an empty element, and cannot contain text).
+
 * docutils/parsers/rst/states.py:
 
   - Added check for escaped at-mark to prevent email address recognition.
