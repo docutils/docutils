@@ -243,3 +243,9 @@ tt {
 
 ul.auto-toc {
   list-style-type: none }
+
+div.compound .compound-first, div.compound .compound-middle {
+  margin-bottom: 0.5em }
+
+div.compound .compound-last, div.compound .compound-middle {
+  margin-top: 0.5em }

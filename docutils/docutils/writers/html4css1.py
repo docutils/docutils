@@ -467,6 +467,11 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_compound(self, node):
         self.body.append(self.starttag(node, 'div', CLASS='compound'))
+        if len(node) > 1:
+            node[0].set_class('compound-first')
+            node[-1].set_class('compound-last')
+            for child in node[1:-1]:
+                child.set_class('compound-middle')
 
     def depart_compound(self, node):
         self.body.append('</div>\n')
