@@ -21,6 +21,7 @@ import time
 from docutils import nodes, utils
 from docutils import ApplicationError, DataError
 from docutils.transforms import Transform, TransformError
+from docutils.transforms import parts
 
 
 class Headers(Transform):
@@ -98,3 +99,17 @@ class Headers(Transform):
                 para[:] = [nodes.reference('', date, refuri=uri)]
             elif name == 'version' and len(body):
                 utils.clean_rcs_keywords(para, self.rcs_keyword_substitutions)
+
+
+class Contents(Transform):
+
+    """
+    Insert a table of contents into the document after the RFC 2822 header.
+    """
+
+
+    def transform(self):
+        pending = nodes.pending(parts.Contents, 'last reader',
+                                {'title': None})
+        self.document.insert(1, pending)
+        self.document.note_pending(pending)
