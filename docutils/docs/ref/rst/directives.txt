@@ -1172,21 +1172,25 @@ Hexadecimal codes are case-insensitive.
 
 For example, the following text::
 
-    Copyright |copy| 2003, |BogusMegaCorp (TM)|.
+    Copyright |copy| 2003, |BogusMegaCorp (TM)| |---|
+    all rights reserved.
 
     .. |copy| unicode:: 0xA9 .. copyright sign
-       :ltrim:
     .. |BogusMegaCorp (TM)| unicode:: BogusMegaCorp U+2122
        .. with trademark sign
+    .. |---| unicode:: U+02014 .. em dash
+       :trim:
 
 results in:
 
-    Copyright |copy| 2003, |BogusMegaCorp (TM)|.
+    Copyright |copy| 2003, |BogusMegaCorp (TM)| |---|
+    all rights reserved.
 
     .. |copy| unicode:: 0xA9 .. copyright sign
-       :ltrim:
     .. |BogusMegaCorp (TM)| unicode:: BogusMegaCorp U+2122
        .. with trademark sign
+    .. |---| unicode:: U+02014 .. em dash
+       :trim:
 
 The following options are recognized:
 
