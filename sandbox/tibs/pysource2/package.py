@@ -7,8 +7,12 @@
 :Copyright: This module has been placed in the public domain.
 """
 
+__docformat__ = 'reStructuredText'
+
 import os
 from docutils.readers.python.moduleparser import Node, parse_module
+
+DEBUG = 0
 
 class NotAPackageException(Exception):
     pass
@@ -69,12 +73,26 @@ class NotPython(Node):
 
 
 # ----------------------------------------------------------------------
-def parse_package(package_path,ignore=None):
+def parse_package_or_module(path):
+    """Parse a package or module for documentation purposes.
+
+    `path` should either be a directory representing a Python package, or
+    a single Python file.
+    """
+    path = os.path.normpath(path)
+    if os.path.isdir(path):
+        return parse_package(path)
+    else:
+        return parse_file(path,path)
+
+def parse_package(package_path):
     """Parse a package for documentation purposes.
 
     `package_path` should be the system path of the package directory, which is
     not necessarily the same as the Python path...
     """
+
+    if DEBUG: print "Parsing package",package_path
 
     package_path = os.path.normpath(package_path)
     dir,file = os.path.split(package_path)
@@ -91,6 +109,9 @@ def parse_subpackage(package_path,subpackage):
     """
 
     sub_path = os.path.join(package_path,subpackage)
+
+    if DEBUG: print "Parsing sub-package",sub_path
+
     files = os.listdir(sub_path)
     if "__init__.py" not in files:
         raise NotAPackageException,\
@@ -113,7 +134,15 @@ def parse_subpackage(package_path,subpackage):
             except NotAPackageException:
                 pass
         else:
-            node.append(parse_file(fullpath,filename))
+            # We do *not* want to try .pyc or .pyo files - we can guarantee
+            # that they won't parse (the Python compiler code gets unhappy
+            # about NULL bytes therein), and we definitely don't want an
+            # entry for such files in our documentation.
+            # Similarly, I work on Linux, and don't want to consider files
+            # that end with "~" (this last is a bit nasty...)
+            if os.path.splitext(filename)[1] not in (".pyc",".pyo") and \
+               filename[-1] != "~":
+                node.append(parse_file(fullpath,filename))
     return node
 
 def parse_file(fullpath,filename):
@@ -125,6 +154,8 @@ def parse_file(fullpath,filename):
     Returns a docutils parse tree for said file.
     """
 
+    if DEBUG: print "Parsing file",fullpath
+
     # @@@ Should we worry about the extension of the file?
     # Trying to use that to predict the contents can be a problem
     # - we already know that we have to worry about ".pyw" as well
@@ -133,7 +164,6 @@ def parse_file(fullpath,filename):
     # file "look" more like a Unix executable. On the whole, it's
     # probably better to try to parse a file, and worry about it
     # not parsing if/when that occurs.
-
     module = open(fullpath)
     try:
         module_body = module.read()
@@ -142,6 +172,7 @@ def parse_file(fullpath,filename):
         except SyntaxError:
             # OK - it wasn't Python - so what *should* we do with it?
             module_node = NotPython(filename)
+            if DEBUG: print "    (not Python)"
         return module_node
     finally:
         module.close()
