@@ -25,7 +25,7 @@ Sandbox Projects
 Project Infrastructure
 ----------------------
 
-`docutils-update <sandbox/davidg/infrastructure/docutils-update>`_ is
+`docutils-update <davidg/infrastructure/docutils-update>`_ is
 a script that is installed as a cron job on SourceForge to
 automatically update the Docutils_ web site whenever the CVS files
 change.  Any .html document with a corresponding .txt file is
