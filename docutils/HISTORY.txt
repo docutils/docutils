@@ -164,6 +164,7 @@ Specific:
   - Redefined "--pep-stylesheet" as containing an invariant URL, used
     verbatim.  Added "--pep-stylesheet-path", interpreted w.r.t. the
     working directory.
+  - Added an override on the "--footnote-references" option.
 
 * docs/tools.txt:
 
