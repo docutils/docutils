@@ -46,6 +46,14 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
             1
         <date>
             2001-08-11
+        <field>
+            <field_name>
+                Parameter
+            <field_argument>
+                i
+            <field_body>
+                <paragraph>
+                    integer
     <topic class="abstract">
         <title>
             Abstract
@@ -55,15 +63,6 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
             It is automatically moved to the end of the other bibliographic elements.
     <comment>
         Bibliographic element extraction.
-    <field_list>
-        <field>
-            <field_name>
-                Parameter
-            <field_argument>
-                i
-            <field_body>
-                <paragraph>
-                    integer
 """],
 ["""\
 .. Bibliographic element extraction.
@@ -86,16 +85,6 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                 me@my.org
         <version>
             1
-        <date>
-            2001-08-11
-    <topic class="abstract">
-        <title>
-            Abstract
-        <paragraph>
-            Abstract 1.
-    <comment>
-        Bibliographic element extraction.
-    <field_list>
         <field>
             <field_name>
                 Abstract
@@ -104,7 +93,9 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                     Abstract 2 (should generate a warning).
                 <system_message level="2" type="WARNING">
                     <paragraph>
-                        There can only be one abstract.
+                        There can only be one "Abstract" field.
+        <date>
+            2001-08-11
         <field>
             <field_name>
                 Parameter
@@ -113,6 +104,13 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
             <field_body>
                 <paragraph>
                     integer
+    <topic class="abstract">
+        <title>
+            Abstract
+        <paragraph>
+            Abstract 1.
+    <comment>
+        Bibliographic element extraction.
 """],
 ["""\
 :Author: - must be a paragraph
@@ -127,12 +125,6 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
 """\
 <document>
     <docinfo>
-        <status>
-            a \n\
-            <emphasis>
-                simple
-             paragraph
-    <field_list>
         <field>
             <field_name>
                 Author
@@ -144,6 +136,11 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                 <system_message level="2" type="WARNING">
                     <paragraph>
                         Cannot extract bibliographic field "Author" containing anything other than a single paragraph.
+        <status>
+            a \n\
+            <emphasis>
+                simple
+             paragraph
         <field>
             <field_name>
                 Date
@@ -245,7 +242,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
 """,
 """\
 <document>
-    <field_list>
+    <docinfo>
         <field>
             <field_name>
                 Authors
