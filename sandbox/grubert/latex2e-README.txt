@@ -3,14 +3,18 @@ latex2e BUGS TODOS and other animals
 
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
-Rev. 2002-11-08
+Rev. 2002-11-11
 
 To do
 ~~~~~
 mostly errors when processing tools/test.txt.
 
 * ordered list numbering style is taken from latex a.,b. in source
-  gives 1., .. in document (as in html).
+  gives 1., .. in document.
+
+* field lists as two column table or description ?
+
+* use table columnwidth.
 
 * pep headers come in different ?
 
@@ -80,3 +84,8 @@ mostly errors when processing tools/test.txt.
 
 * ATTENTION:
   put labeling inside environments.
+
+Done
+~~~~
+
+* literal blocks are inside a quote environment (means indented).
