@@ -1,5 +1,5 @@
 #!/bin/sh
-''''exec python -u "$0" #'''
+''''exec python -u "$0" "$@" #'''
 
 # Author: David Goodger
 # Contact: goodger@users.sourceforge.net
