@@ -177,7 +177,7 @@ def replace(name, arguments, options, content, lineno,
 replace.content = 1
 
 def unicode_directive(name, arguments, options, content, lineno,
-                         content_offset, block_text, state, state_machine):
+                      content_offset, block_text, state, state_machine):
     r"""
     Convert Unicode character codes (numbers) to characters.  Codes may be
     decimal numbers, hexadecimal numbers (prefixed by ``0x``, ``x``, ``\x``,
@@ -191,6 +191,14 @@ def unicode_directive(name, arguments, options, content, lineno,
             'substitution definition.' % (name),
             nodes.literal_block(block_text, block_text), line=lineno)
         return [error]
+    substitution_definition = state_machine.node
+    if options.has_key('trim'):
+        substitution_definition.attributes['ltrim'] = 1
+        substitution_definition.attributes['rtrim'] = 1
+    if options.has_key('ltrim'):
+        substitution_definition.attributes['ltrim'] = 1
+    if options.has_key('rtrim'):
+        substitution_definition.attributes['rtrim'] = 1
     codes = unicode_comment_pattern.split(arguments[0])[0].split()
     element = nodes.Element()
     for code in codes:
@@ -206,6 +214,9 @@ def unicode_directive(name, arguments, options, content, lineno,
     return element.children
 
 unicode_directive.arguments = (1, 0, 1)
+unicode_directive.options = {'trim': directives.flag,
+                             'ltrim': directives.flag,
+                             'rtrim': directives.flag}
 unicode_comment_pattern = re.compile(r'( |\n|^)\.\. ')
 
 def class_directive(name, arguments, options, content, lineno,
