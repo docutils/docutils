@@ -18,11 +18,11 @@ Images
 
 An image directive:
 
-.. image:: ../docs/rst/images/title.png
+.. image:: images/title.png
 
 A figure directive:
 
-.. figure:: ../docs/rst/images/title.png
+.. figure:: images/title.png
    :alt: reStructuredText, the markup syntax
 
    A figure is an image with a caption and/or a legend:
