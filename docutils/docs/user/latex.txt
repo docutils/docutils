@@ -54,6 +54,12 @@ Setting/Config Entry   Description
 --documentclass        Specify latex documentclass, *but* beaware that
                        books have chapters articles not. 
                        (default: "article").
+---------------------  ------------------------------------------------
+--stylesheet           Specify a stylesheet file. The file will be 
+                       ``input`` by latex in the document header. 
+                       If this is set to "" disables generation of 
+                       input latex command.
+                       (default: "style.tex").
 =====================  ================================================
 
 
@@ -97,8 +103,46 @@ docinfowidth           The width for the docinfo table.
 Missing options
 ---------------
 
-* Selection of latex documentclass and fontsize.
+* Selection of latex fontsize.
 * Assumed reST linelength for table width setting.
+
+Commands directly to LaTeX
+==========================
+
+By means of the reST-raw directive one can give commands directly to 
+LaTeX, e.g. forcing a page break::
+
+  .. raw:: latex
+
+     \newpage
+
+
+Or setting formulas in LaTeX::
+
+  .. raw:: latex
+
+     $$x^3 + 3x^2a + 3xa^2 + a^3,$$
+
+
+Or making a colorbox: If someone wants to get a red background for a textblock,
+she/he can put \definecolor{bg}{rgb}{.9,0,0} into style.tex and in
+reStructuredText do something like this::
+
+  |begincolorbox|
+  Nobody expects the spanish inquisition.
+  |endcolorbox|
+
+  .. |begincolorbox| raw:: latex
+
+     \\begin{center}
+     \\colorbox{bg}{
+     \\parbox{0.985\\linewidth}{
+
+  .. |endcolorbox| raw:: latex
+
+     }}
+     \\end{center}
+
 
 Problems
 ========
@@ -137,6 +181,7 @@ Tables
 Miscellaneous
 -------------
 
+* recongize LaTeX (or even latex) and replace by ```\LaTeX``.
 * Support embed-stylesheet.
 * the ^-sign is problematic: using mathmode wedge is usually the wrong font.
 * Sidebar handling.
