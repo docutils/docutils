@@ -808,6 +808,28 @@ Paragraph
         <paragraph>
             ...
 """],
+["""\
+..
+Hi
+..
+
+...
+Yo
+...
+""",
+"""\
+<document source="test data">
+    <comment xml:space="1">
+    <system_message level="2" line="2" source="test data" type="WARNING">
+        <paragraph>
+            Explicit markup ends without a blank line; unexpected unindent.
+    <section id="hi" name="hi">
+        <title>
+            Hi
+        <section id="yo" name="yo">
+            <title>
+                Yo
+"""],
 ]
 
 

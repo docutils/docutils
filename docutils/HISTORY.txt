@@ -17,17 +17,17 @@ on the Docutils project, knowingly or not, in terms of encouragement,
 suggestions, criticism, bug reports, code contributions, tasty treats,
 and related projects:
 
-    Aahz, David Ascher, Fred Bremmer, Simon Budig, Adam Chodorowski,
-    Fred Drake, Dethe Elza, fantasai, Jim Fulton, Peter Funk,
-    Engelbert Gruber, Simon Hefti, Doug Hellmann, Juergen Hermann,
-    Jeremy Hylton, Tony Ibbs, Alan Jaffray, Dmitry Jemerov, Richard
-    Jones, Garth Kidd, Daniel Larsson, Marc-Andre Lemburg, Wolfgang
-    Lipp, Edward Loper, Ken Manheimer, Skip Montanaro, Paul Moore,
-    Michel Pelletier, Sam Penrose, Tim Peters, Pearu Peterson, Mark
-    Pilgrim, Tavis Rudd, Ollie Rutherfurd, Kenichi Sato, Ueli
-    Schlaepfer, Gunnar Schwant, tav, Bob Tolbert, Laurence Tratt,
-    Guido van Rossum, Barry Warsaw, Edward Welbourne, Ka-Ping Yee,
-    Moshe Zadka
+    Aahz, David Ascher, Fred Bremmer, Simon Budig, Brett Cannon, Adam
+    Chodorowski, Fred Drake, Dethe Elza, fantasai, Jim Fulton, Peter
+    Funk, Engelbert Gruber, Simon Hefti, Doug Hellmann, Juergen
+    Hermann, Jeremy Hylton, Tony Ibbs, Alan Jaffray, Dmitry Jemerov,
+    Richard Jones, Garth Kidd, Daniel Larsson, Marc-Andre Lemburg,
+    Julien Letessier, Wolfgang Lipp, Edward Loper, Ken Manheimer, Skip
+    Montanaro, Paul Moore, Michel Pelletier, Sam Penrose, Tim Peters,
+    Pearu Peterson, Mark Pilgrim, Tavis Rudd, Ollie Rutherfurd,
+    Kenichi Sato, Ueli Schlaepfer, Gunnar Schwant, tav, Bob Tolbert,
+    Laurence Tratt, Guido van Rossum, Barry Warsaw, Edward Welbourne,
+    Ka-Ping Yee, Moshe Zadka
 
 Thank you!
 
@@ -136,6 +136,8 @@ Specific:
     options; reworked ``Inliner`` code to make customization easier.
   - Removed field argument parsing.
   - Added support for short section title over/underlines.
+  - Fixed "simple reference name" regexp to ignore text like
+    "object.__method__"; not an anonymous reference.
 
 * docutils/parsers/rst/tableparser.py:
 
@@ -308,6 +310,11 @@ Specific:
     contexts.
   - Removed field arguments and made field lists a generic construct.
   - Removed the 4-character minimum for section title underlines.
+
+* tools:
+
+  - Made the ``locale.setlocale()`` calls in front ends
+    fault-tolerant.
 
 * tools/buildhtml.py:
 

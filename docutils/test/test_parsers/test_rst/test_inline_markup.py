@@ -383,7 +383,8 @@ ref__
             ref
 """],
 ["""\
-ref_, r_, r_e-f_, -ref_, and anonymousref__, but not _ref_
+ref_, r_, r_e-f_, -ref_, and anonymousref__,
+but not _ref_ or __attr__ or object.__attr__
 """,
 """\
 <document source="test data">
@@ -402,7 +403,8 @@ ref_, r_, r_e-f_, -ref_, and anonymousref__, but not _ref_
         , and \n\
         <reference anonymous="1">
             anonymousref
-        , but not _ref_
+        ,
+        but not _ref_ or __attr__ or object.__attr__
 """],
 ]
 
