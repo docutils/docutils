@@ -38,7 +38,7 @@ complete details.
    See `Releases & Snapshots`_ below for details.
 
 3. Unpack the tarball in a temporary directory (**not** directly in
-   Python's ``site-packages``) and install with the standard::
+   Python's ``site-packages``) and install with the standard ::
 
        python setup.py install
 
