@@ -4,10 +4,12 @@ latex2e BUGS TODOS and other animals
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
 
-Rev. 2002-12-17
+Rev. 2002-12-18
 
 To do
 ~~~~~
+
+* pdfbookmark level 4 (and greater) does not work.
 
 * center subsection{Abstract} gives a latex error here.
   ``! LaTeX Error: Something's wrong--perhaps a missing \item.``
@@ -99,6 +101,7 @@ ATTENTION
 Done
 ~~~~
 
+* sue subsubsection for deeper ones.
 * all spaces in line-blocks are nonbreakable (~). 	
 * newenvironment optionlist for option-lists.
 * append ":" onto definition list terms.

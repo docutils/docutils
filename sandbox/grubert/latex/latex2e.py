@@ -1171,7 +1171,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('\n\n')
             if name:
                 self.body.append( '\\hypertarget{%s}{}\n' % name)
-            self.body.append('\\%ssection*{' % ('sub'*(self.section_level-1)))
+            # section_level 0 is title and handled above.    
+            # BUG: latex has no deeper sections (actually paragrah is no section either).
+            if (self.section_level<=3):  # 1,2,3    
+                self.body.append('\\%ssection*{' % ('sub'*(self.section_level-1)))
+            elif (self.section_level==4):      
+                #self.body.append('\\paragraph*{')
+                self.body.append('\\subsubsection*{')
+            else:
+                #self.body.append('\\subparagraph*{')
+                self.body.append('\\subsubsection*{')
             # BUG: self.body.append( '\\label{%s}\n' % name)
             self.context.append('}\n')
 
