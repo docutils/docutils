@@ -208,6 +208,8 @@ Specific:
 
 * spec/pep-0256.txt: Converted to reStructuredText & updated.
 
+* spec/pep-0257.txt: Converted to reStructuredText & updated.
+
 * spec/pep-0258.txt: Converted to reStructuredText & updated.
 
 * spec/rst/directives.txt:
@@ -230,7 +232,17 @@ Specific:
   - Updated for new I/O classes.
   - Added some exception handling.
 
-* tools/default.css:
+* tools/pep2html.py:
+
+  - Made ``argv`` a parameter to ``main()``.
+  - Added support for "Content-Type:" header & arbitrary PEP formats.
+  - Linked "Content-Type: text/plain" to PEP 9.
+  - Files skipped (due to an error) are not pushed onto the server.
+  - Updated for new I/O classes.
+  - Added ``check_requirements()`` & ``pep_type_error()``.
+  - Added some exception handling.
+
+* tools/stylesheets/default.css: Moved into the stylesheets directory.
 
   - Added style for chunks of inline literals.
   - Removed margin for first child of table cells.
@@ -241,16 +253,6 @@ Specific:
   - Added support for "line_block" elements.
   - Added style for "address" elements.
   - Removed "a.footnote-reference" style; doing it with ``<sup>`` now.
-
-* tools/pep2html.py:
-
-  - Made ``argv`` a parameter to ``main()``.
-  - Added support for "Content-Type:" header & arbitrary PEP formats.
-  - Linked "Content-Type: text/plain" to PEP 9.
-  - Files skipped (due to an error) are not pushed onto the server.
-  - Updated for new I/O classes.
-  - Added ``check_requirements()`` & ``pep_type_error()``.
-  - Added some exception handling.
 
 * tools/stylesheets/pep.css:
 

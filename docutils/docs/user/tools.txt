@@ -120,15 +120,17 @@ Stylesheets
 
 ``html.py`` inserts into the generated HTML a link to a cascading
 stylesheet, defaulting to "``default.css``" (override with a
-"``--stylesheet``" command-line option or with a configuration file).
-The "``tools/default.css``" stylesheet is provided for basic use.  To
-experiment with styles, rather than editing the default stylesheet
-(which will be updated as the project evolves), it is recommended to
-use the "``@import``" statement to create a "wrapper" stylesheet.  For
-example, a "``my.css``" stylesheet could contain the following::
+"``--stylesheet``" or "``--stylesheet-path``" command-line option or
+with configuration file settings).  The
+"``tools/stylesheets/default.css``" stylesheet is provided for basic
+use.  To experiment with styles, rather than editing the default
+stylesheet (which will be updated as the project evolves), it is
+recommended to use an "``@import``" statement to create a "wrapper"
+stylesheet.  For example, a "``my.css``" stylesheet could contain the
+following::
 
     @import url(default.css);
-    
+
     h1, h2, h3, h4, h5, h6, p.topic-title {
       font-family: sans-serif }
 
@@ -503,11 +505,11 @@ _directories          (``buildhtml.py`` front end.)  List of paths to
                       (None).  No command-line options.
 --------------------  ------------------------------------------------
 _destination          Path to output destination, set from positional
-                      arguments.  Default: stdout (None).  No 
+                      arguments.  Default: stdout (None).  No
                       command-line options.
 --------------------  ------------------------------------------------
 _source               Path to input source, set from positional
-                      arguments.  Default: stdin (None).  No 
+                      arguments.  Default: stdin (None).  No
                       command-line options.
 ====================  ================================================
 
