@@ -1012,6 +1012,7 @@ class transition(Structural, Element): pass
 # ===============
 
 class paragraph(General, TextElement): pass
+class compound(General, Element): pass
 class bullet_list(Sequential, Element): pass
 class enumerated_list(Sequential, Element): pass
 class list_item(Part, Element): pass
@@ -1227,7 +1228,7 @@ node_class_names = """
         authors
     block_quote bullet_list
     caption caution citation citation_reference classifier colspec comment
-        contact copyright
+        compound contact copyright
     danger date decoration definition definition_list definition_list_item
         description docinfo doctest_block document
     emphasis entry enumerated_list error
@@ -1280,6 +1281,14 @@ class NodeVisitor:
        1995.
     """
 
+    optional = ('compound',)
+    """
+    No exception will be raised if writers do not implement visit
+    or departure functions for these node classes.
+
+    Used to ensure transitional compatibility with existing 3rd-party writers.
+    """
+
     def __init__(self, document):
         self.document = document
 
@@ -1315,8 +1324,11 @@ class NodeVisitor:
 
         Raise an exception unless overridden.
         """
-        raise NotImplementedError('%s visiting unknown node type: %s'
-                                  % (self.__class__, node.__class__.__name__))
+        if  (node.document.settings.strict_visitor
+             or node.__class__.__name__ not in self.optional):
+            raise NotImplementedError(
+                '%s visiting unknown node type: %s'
+                % (self.__class__, node.__class__.__name__))
 
     def unknown_departure(self, node):
         """
@@ -1324,8 +1336,11 @@ class NodeVisitor:
 
         Raise exception unless overridden.
         """
-        raise NotImplementedError('%s departing unknown node type: %s'
-                                  % (self.__class__, node.__class__.__name__))
+        if  (node.document.settings.strict_visitor
+             or node.__class__.__name__ not in self.optional):
+            raise NotImplementedError(
+                '%s departing unknown node type: %s'
+                % (self.__class__, node.__class__.__name__))
 
 
 class SparseNodeVisitor(NodeVisitor):
