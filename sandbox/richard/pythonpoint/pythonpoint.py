@@ -232,7 +232,6 @@ class DumbPythonPointFormatter(nodes.NodeVisitor):
         attrs = node.attributes
         doc = self.document
         ok = 1
-        print node
         if attrs.has_key('refuri'):
             self.w('<a href="%s">'%attrs['refuri'])
         elif doc.explicit_targets.has_key(attrs['refname']):
