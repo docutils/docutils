@@ -151,6 +151,8 @@ Changes Since 0.3
   - Made embedded-URIs' reference text omittable.  Idea from Beni
     Cherniavsky.
   - Refactored explicit target processing code.
+  - Added name attribute to references containing the reference name only
+    through whitespace_normalize_name (no case changes).
 
 * docutils/parsers/rst/tableparser.py:
 
@@ -171,6 +173,8 @@ Changes Since 0.3
 * docutils/parsers/rst/directives/images.py:
 
   - Added "target" option to "image" directive.
+  - Added name attribute to references containing the reference name only
+    through whitespace_normalize_name (no case changes).
 
 * docutils/parsers/rst/directives/misc.py:
 
@@ -200,6 +204,12 @@ Changes Since 0.3
   - The "contents" directive does more work up-front, creating the
     "topic" and "title", and leaving the "pending" node for the
     transform.
+    
+* docutils/transforms/references.py:
+
+  - Verifying that external targets are truly targets and not indirect 
+    references. This is because we are now adding a "name" attribute to 
+    references in addition to targets. Note sure if this is correct!
 
 * docutils/transforms/universal.py:
 

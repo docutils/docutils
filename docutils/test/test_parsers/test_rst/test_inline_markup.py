@@ -280,7 +280,7 @@ ref_
 """\
 <document source="test data">
     <paragraph>
-        <reference refname="ref">
+        <reference name="ref" refname="ref">
             ref
 """],
 ["""\
@@ -289,7 +289,7 @@ ref__
 """\
 <document source="test data">
     <paragraph>
-        <reference anonymous="1">
+        <reference anonymous="1" name="ref">
             ref
 """],
 ["""\
@@ -299,19 +299,19 @@ but not _ref_ or __attr__ or object.__attr__
 """\
 <document source="test data">
     <paragraph>
-        <reference refname="ref">
+        <reference name="ref" refname="ref">
             ref
         , \n\
-        <reference refname="r">
+        <reference name="r" refname="r">
             r
         , \n\
-        <reference refname="r_e-f">
+        <reference name="r_e-f" refname="r_e-f">
             r_e-f
         , -
-        <reference refname="ref">
+        <reference name="ref" refname="ref">
             ref
         , and \n\
-        <reference anonymous="1">
+        <reference anonymous="1" name="anonymousref">
             anonymousref
         ,
         but not _ref_ or __attr__ or object.__attr__
@@ -325,7 +325,7 @@ totest['phrase_references'] = [
 """\
 <document source="test data">
     <paragraph>
-        <reference refname="phrase reference">
+        <reference name="phrase reference" refname="phrase reference">
             phrase reference
 """],
 ["""\
@@ -334,7 +334,7 @@ totest['phrase_references'] = [
 """\
 <document source="test data">
     <paragraph>
-        <reference anonymous="1">
+        <reference anonymous="1" name="anonymous reference">
             anonymous reference
 """],
 ["""\
@@ -344,7 +344,7 @@ across lines`_
 """\
 <document source="test data">
     <paragraph>
-        <reference refname="phrase reference across lines">
+        <reference name="phrase reference across lines" refname="phrase reference across lines">
             phrase reference
             across lines
 """],
@@ -354,7 +354,7 @@ across lines`_
 """\
 <document source="test data">
     <paragraph>
-        <reference refname="phrase`_ reference">
+        <reference name="phrase`_ reference" refname="phrase`_ reference">
             phrase`_ reference
 """],
 ["""\
@@ -398,7 +398,7 @@ Invalid phrase reference:
         <problematic id="id2" refid="id1">
             `
         phrase \n\
-        <reference refname="reference">
+        <reference name="reference" refname="reference">
             reference
          without closing backquote
     <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
@@ -414,7 +414,7 @@ Invalid phrase reference:
         <problematic id="id2" refid="id1">
             `
         anonymous phrase \n\
-        <reference anonymous="1">
+        <reference anonymous="1" name="reference">
             reference
          without closing backquote
     <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
@@ -430,7 +430,7 @@ totest['embedded_URIs'] = [
 """\
 <document source="test data">
     <paragraph>
-        <reference refuri="http://example.com">
+        <reference name="phrase reference" refuri="http://example.com">
             phrase reference
         <target id="phrase-reference" name="phrase reference" refuri="http://example.com">
 """],
@@ -440,7 +440,7 @@ totest['embedded_URIs'] = [
 """\
 <document source="test data">
     <paragraph>
-        <reference refuri="http://example.com">
+        <reference name="anonymous reference" refuri="http://example.com">
             anonymous reference
 """],
 ["""\
@@ -450,7 +450,7 @@ totest['embedded_URIs'] = [
 """\
 <document source="test data">
     <paragraph>
-        <reference refuri="http://example.com">
+        <reference name="embedded URI on next line" refuri="http://example.com">
             embedded URI on next line
 """],
 ["""\
@@ -460,7 +460,7 @@ long/path>`__
 """\
 <document source="test data">
     <paragraph>
-        <reference refuri="http://example.com/long/path">
+        <reference name="embedded URI across lines" refuri="http://example.com/long/path">
             embedded URI across lines
 """],
 ["""\
@@ -470,7 +470,7 @@ long/path /and  /whitespace>`__
 """\
 <document source="test data">
     <paragraph>
-        <reference refuri="http://example.com/long/path/and/whitespace">
+        <reference name="embedded URI with whitespace" refuri="http://example.com/long/path/and/whitespace">
             embedded URI with whitespace
 """],
 ["""\
@@ -482,10 +482,10 @@ long/path /and  /whitespace>`__
 """\
 <document source="test data">
     <paragraph>
-        <reference refuri="mailto:jdoe@example.com">
+        <reference name="embedded email address" refuri="mailto:jdoe@example.com">
             embedded email address
     <paragraph>
-        <reference refuri="mailto:jdoe@example.com">
+        <reference name="embedded email address broken across lines" refuri="mailto:jdoe@example.com">
             embedded email address broken across lines
 """],
 ["""\
@@ -504,22 +504,22 @@ See `HTML Anchors: \\<a>`_.
 """\
 <document source="test data">
     <paragraph>
-        <reference anonymous="1">
+        <reference anonymous="1" name="embedded URI with too much whitespace < http://example.com/ long/path /and /whitespace >">
             embedded URI with too much whitespace < http://example.com/
             long/path /and  /whitespace >
     <paragraph>
-        <reference anonymous="1">
+        <reference anonymous="1" name="embedded URI with too much whitespace at end <http://example.com/ long/path /and /whitespace >">
             embedded URI with too much whitespace at end <http://example.com/
             long/path /and  /whitespace >
     <paragraph>
-        <reference anonymous="1">
+        <reference anonymous="1" name="embedded URI with no preceding whitespace<http://example.com>">
             embedded URI with no preceding whitespace<http://example.com>
     <paragraph>
-        <reference anonymous="1">
+        <reference anonymous="1" name="escaped URI <http://example.com>">
             escaped URI <http://example.com>
     <paragraph>
         See \n\
-        <reference refname="html anchors: <a>">
+        <reference name="HTML Anchors: <a>" refname="html anchors: <a>">
             HTML Anchors: <a>
         .
 """],
@@ -535,11 +535,11 @@ Relative URIs' reference text can be omitted:
     <paragraph>
         Relative URIs' reference text can be omitted:
     <paragraph>
-        <reference refuri="reference">
+        <reference name="reference" refuri="reference">
             reference
         <target id="reference" name="reference" refuri="reference">
     <paragraph>
-        <reference refuri="anonymous">
+        <reference name="anonymous" refuri="anonymous">
             anonymous
 """],
 ]

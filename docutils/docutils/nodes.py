@@ -820,6 +820,7 @@ class document(Root, Structural, Element):
     def has_name(self, name):
         return self.nameids.has_key(name)
 
+    # "note" here is an imperative verb: "take note of".
     def note_implicit_target(self, target, msgnode=None):
         id = self.set_id(target, msgnode)
         self.set_name_id_map(target, id, msgnode, explicit=None)

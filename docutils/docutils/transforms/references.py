@@ -353,7 +353,8 @@ class ExternalTargets(Transform):
                 try:
                     reflist = self.document.refnames[name]
                 except KeyError, instance:
-                    if target.referenced:
+                    # @@@ First clause correct???
+                    if not isinstance(target, nodes.target) or target.referenced:
                         continue
                     msg = self.document.reporter.info(
                           'External hyperlink target "%s" is not referenced.'
