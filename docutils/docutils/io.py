@@ -54,6 +54,9 @@ class Input:
 
             locale.setlocale(locale.LC_ALL, '')
         """
+        if self.settings.input_encoding \
+               and self.settings.input_encoding.lower() == 'unicode':
+            return unicode(data)
         encodings = [self.settings.input_encoding, 'utf-8']
         try:
             encodings.append(locale.nl_langinfo(locale.CODESET))
@@ -109,6 +112,13 @@ class Output:
 
     def write(self, data):
         raise NotImplementedError
+
+    def encode(self, data):
+        if self.settings.output_encoding \
+               and self.settings.output_encoding.lower() == 'unicode':
+            return data
+        else:
+            return data.encode(self.settings.output_encoding or '')
 
 
 class FileInput(Input):
@@ -190,7 +200,7 @@ class FileOutput(Output):
 
     def write(self, data):
         """Encode `data`, write it to a single file, and return it."""
-        output = data.encode(self.settings.output_encoding)
+        output = self.encode(data)
         if not self.opened:
             self.open()
         self.destination.write(output)
@@ -209,15 +219,11 @@ class StringInput(Input):
     Direct string input.
     """
 
-    default_source_path = 'string input'
+    default_source_path = '<string>'
 
     def read(self, reader):
         """Decode and return the source string."""
-        if self.settings.input_encoding \
-               and self.settings.input_encoding.lower() == 'unicode':
-            return self.source
-        else:
-            return self.decode(self.source)
+        return self.decode(self.source)
 
 
 class StringOutput(Output):
@@ -226,15 +232,11 @@ class StringOutput(Output):
     Direct string output.
     """
 
-    default_destination_path = 'string output'
+    default_destination_path = '<string>'
 
     def write(self, data):
         """Encode `data`, store it in `self.destination`, and return it."""
-        if self.settings.output_encoding \
-               and self.settings.output_encoding.lower() == 'unicode':
-            self.destination = data
-        else:
-            self.destination = data.encode(self.settings.output_encoding)
+        self.destination = self.encode(data)
         return self.destination
 
 
