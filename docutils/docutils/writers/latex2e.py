@@ -1701,10 +1701,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_paragraph(self, node):
         index = node.parent.index(node)
-        if not (self.topic_class == 'contents'
-                or (isinstance(node.parent, nodes.compound)
-                    and index > 0 and not isinstance(node.parent[index - 1],
-                                                     nodes.paragraph))):
+        if not (self.topic_class == 'contents' or
+                (isinstance(node.parent, nodes.compound) and
+                 index > 0 and
+                 not isinstance(node.parent[index - 1], nodes.paragraph) and
+                 not isinstance(node.parent[index - 1], nodes.compound))):
             self.body.append('\n')
 
     def depart_paragraph(self, node):
