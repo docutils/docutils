@@ -2,7 +2,7 @@
  Docutils History
 ==================
 
-:Authors: David Goodger, and all Docutils developers
+:Author: David Goodger, and all Docutils developers
 :Contact: goodger@python.org
 :Date: $Date$
 :Web site: http://docutils.sourceforge.net/
