@@ -1974,7 +1974,7 @@ class Body(RSTState):
                 arguments = self.parse_directive_arguments(argument_spec,
                                                            arg_block)
             if content and not content_spec:
-                raise MarkupError('no content permitted.')
+                raise MarkupError('no content permitted')
         except MarkupError, detail:
             error = self.reporter.error(
                 'Error in "%s" directive:\n%s.' % (type_name, detail),

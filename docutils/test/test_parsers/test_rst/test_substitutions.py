@@ -84,7 +84,7 @@ Here's a series of substitution definitions:
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Error in "image" directive:
-            no content permitted..
+            no content permitted.
         <literal_block xml:space="preserve">
             image:: symbol.png
             \n\
