@@ -17,9 +17,8 @@ custom component objects first, and pass *them* to
 __docformat__ = 'reStructuredText'
 
 import sys
-import os.path
 from docutils import Component
-from docutils import readers, parsers, writers, io
+from docutils import frontend, io, readers, parsers, writers
 from docutils.frontend import OptionParser, ConfigParser
 
 
@@ -28,12 +27,6 @@ class Publisher:
     """
     A facade encapsulating the high-level logic of a Docutils system.
     """
-
-    config_files = ('/etc/docutils.conf',               # system-wide
-                    './docutils.conf',                  # project-specific
-                    os.path.expanduser('~/.docutils'))  # user-specific
-    """Docutils configuration files, using ConfigParser syntax (section
-    'options').  Later files override earlier ones."""
 
     def __init__(self, reader=None, parser=None, writer=None,
                  source=None, source_class=io.FileIO,
@@ -84,10 +77,10 @@ class Publisher:
     def setup_option_parser(self, usage=None, description=None,
                             option_spec=None, **defaults):
         config = ConfigParser()
-        config.read(self.config_files)
-        if config.has_section('options'):
-            for option in config.options('options'):
-                defaults[option] = config.get('options', option)
+        config.read_standard_files()
+        config_options = config.get_section('options')
+        frontend.make_paths_absolute(config_options)
+        defaults.update(config_options)
         option_parser = OptionParser(
             components=(option_spec, self.reader, self.parser, self.writer),
             usage=usage, description=description)
@@ -121,10 +114,12 @@ class Publisher:
         if argv is None:
             argv = sys.argv[1:]
         self.options = option_parser.parse_args(argv)
+
+    def set_io(self):
         self.source = self.source_class(self.options,
-                                        source_path=self.options.source)
+                                        source_path=self.options._source)
         self.destination = self.destination_class(
-            self.options, destination_path=self.options.destination)
+            self.options, destination_path=self.options._destination)
 
     def publish(self, argv=None, usage=None, description=None,
                 option_spec=None):
@@ -135,6 +130,7 @@ class Publisher:
         """
         if self.options is None:
             self.process_command_line(argv, usage, description, option_spec)
+            self.set_io()
         document = self.reader.read(self.source, self.parser, self.options)
         output = self.writer.write(document, self.destination)
         if self.options.dump_internals:
