@@ -133,7 +133,7 @@ class MoinTranslator(html4css1.HTMLTranslator):
         
     def visit_reference(self, node):
         if 'refuri' in node.attributes:
-            # We unset this if none our tests don't handle the node
+            # We unset this if our tests don't handle the node
             handled = 1
             # We don't want these pieces wrapped in <p> tags, I think.
             self.strip_paragraph = 1
