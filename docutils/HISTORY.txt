@@ -50,6 +50,8 @@ Specific:
   - Bumped version to 0.2.1 to reflect changes to I/O classes.
   - Bumped version to 0.2.2 to reflect changes to stylesheet options.
   - Factored ``OptionSpec`` out of ``Component``; separately useful.
+  - Bumped version to 0.2.3 because of the new ``--embed-stylesheet``
+    option and its effect on the PEP template & writer.
 
 * docutils/core.py:
 
@@ -193,6 +195,8 @@ Specific:
     working directory.
   - Added "--footnote-references" option (superscript or brackets).
   - Added "--compact-lists" and "--no-compact-lists" options.
+  - Added "--embed-stylesheet" and "--link-stylesheet" options;
+    factored out ``HTMLTranslator.get_stylesheet_reference()``.
 
 * docutils/writers/pep_html.py:
 
@@ -202,6 +206,7 @@ Specific:
     verbatim.  Added "--pep-stylesheet-path", interpreted w.r.t. the
     working directory.
   - Added an override on the "--footnote-references" option.
+  - Factored out ``HTMLTranslator.get_stylesheet_reference()``.
 
 * docs/tools.txt:
 
@@ -214,11 +219,13 @@ Specific:
 
   - Added a table of contents.
   - Added feedback information.
+  - Added mention of minimum section title underline lengths.
 
 * docs/rst/quickref.html:
 
   - Added a "Getting Help" section.
   - Added a style to make section header backlinks more subtle.
+  - Added mention of minimum section title underline lengths.
 
 * spec/doctree.txt:
 
@@ -281,6 +288,10 @@ Specific:
   - Fixed bug with absolute paths & ``--config``.
   - Updated for new I/O classes.
   - Added some exception handling.
+
+* tools/pep-html-template:
+
+  - Allow for ``--embed-stylesheet``.
 
 * tools/pep2html.py:
 
