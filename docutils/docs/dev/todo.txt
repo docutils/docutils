@@ -665,6 +665,11 @@ Also see the `... Or Not To Do?`__ list.
 
 __ rst/alternatives.html#or-not-to-do
 
+* Create ``info``-level system messages for unnecessarily
+  backslash-escaped characters (as in ``"\something"``, rendered as
+  "something") to allow checking for errors which silently slipped
+  through.
+
 * Add (functional) tests for untested roles.
 
 * The parser doesn't know anything about double-width characters such
@@ -890,9 +895,9 @@ __ rst/alternatives.html#or-not-to-do
   final behavior would be up to the Writer.  The directive argument
   could be one of page/column/recto/verso for added flexibility.
 
-  Currently ^L (Python's "\f") characters are treated as whitespace.
+  Currently ^L (Python's ``\f``) characters are treated as whitespace.
   They're converted to single spaces, actually, as are vertical tabs
-  (^K, Python's "\v").  It would be possible to recognize form feeds
+  (^K, Python's ``\v``).  It would be possible to recognize form feeds
   as markup, but it requires some thought and discussion first.  Are
   there any downsides?  Many editing environments do not allow the
   insertion of control characters.  Will it cause any harm?  It would
@@ -923,10 +928,10 @@ __ rst/alternatives.html#or-not-to-do
 
 * Could the "break" concept above be extended to inline forms?
   E.g. "^L" in the middle of a sentence could cause a line break.
-  Only recognize it at the end of a line (i.e., "\f\n")?
+  Only recognize it at the end of a line (i.e., ``\f\n``)?
 
-  Or is formfeed inappropriate?  Perhaps vertical tab ("\v"), but even
-  that's a stretch.  Can't use carriage returns, since they're
+  Or is formfeed inappropriate?  Perhaps vertical tab (``\v``), but
+  even that's a stretch.  Can't use carriage returns, since they're
   commonly used for line endings.
 
 * Allow a "::"-only paragraph (first line, actually) to introduce a
@@ -939,8 +944,8 @@ __ rst/alternatives.html#or-not-to-do
   which contains just a ``::`` and the literal text unambiguous?
   There's one problem with this concession.  What if one wants a
   definition list item which defines the term "::"?  We'd have to
-  escape it.  Currenty, "\::" doesn't work (although it should;
-  **bug**), and ":\:" is misinterpreted as a field name (name "\";
+  escape it.  Currenty, ``\::`` doesn't work (although it should;
+  **bug**), and ``:\:`` is misinterpreted as a field name (name ``\``;
   also a **bug**).  Assuming these bugs are squashed, I suppose it's a
   useful special case.  It would only be reasonable to apply it to
   "::"-only paragraphs though.  I think the blank line is visually
