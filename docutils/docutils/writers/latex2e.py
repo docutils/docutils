@@ -345,6 +345,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.docinfo = None
         # inside literal block: no quote mangling.
         self.literal_block = 0
+        self.literal = 0
 
     def get_stylesheet_reference(self):
         if self.settings.stylesheet_path:
@@ -396,7 +397,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         text = text.replace("%", '{\\%}')
         text = text.replace("#", '{\\#}')
         text = text.replace("~", '{\\~{ }}')
-        if not self.literal_block:
+        if self.literal_block or self.literal:
+            # a thinspace after every quote.
+            # requested by g.schwant but not yet verified.
+            #text = text.replace('"', '"\\,')
+            pass
+        else:
             text = self.babel.quote_quotes(text)
         if self.insert_newline:
             text = text.replace("\n", '\\\\\n')
@@ -929,10 +935,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\n')
 
     def visit_literal(self, node):
+        self.literal = 1
         self.body.append('\\texttt{')
 
     def depart_literal(self, node):
         self.body.append('}')
+        self.literal = 0
 
     def visit_literal_block(self, node):
         """
