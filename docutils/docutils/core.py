@@ -69,7 +69,8 @@ class Publisher:
         Set default option values (keyword arguments).
 
         Set components first (`self.set_reader` & `self.set_writer`).
-        Overrides the command line.
+        Explicitly setting options disables command line option processing
+        from `self.publish()`.
         """
         option_parser = OptionParser(
             components=(self.reader, self.parser, self.writer),
