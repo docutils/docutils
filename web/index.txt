@@ -332,8 +332,7 @@ docutils-develop@lists.sourceforge.net.
 * Docutils interface to PythonPoint_, also by Richard Jones, produces
   PDF presentations using ReportLabs.
 
-* Engelbert Gruber has begun `LaTeX Writer`_ and `ReportLabs/PDF
-  Writer`_ components.
+* Engelbert Gruber has begun `LaTeX Writer`_ and `ManPage Writer`_ components.
 
 * ? has taken over `ReportLabs/PDF Writer`_ components.
 
