@@ -78,6 +78,35 @@ u"""\
 """],
 ])
 
+totest['unicode'] = ((Substitutions,), [
+["""\
+Insert an em-dash (|mdash|), a copyright symbol (|copy|), and a non-breaking
+space (|nbsp|).
+
+.. |mdash| unicode:: 0x02014
+.. |copy| unicode:: \\u00A9
+.. |nbsp| unicode:: &#x000A0;
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        Insert an em-dash (
+        \u2014
+        ), a copyright symbol (
+        \u00A9
+        ), and a non-breaking
+        space (
+        \u00A0
+        ).
+    <substitution_definition name="mdash">
+        \u2014
+    <substitution_definition name="copy">
+        \u00A9
+    <substitution_definition name="nbsp">
+        \u00A0
+"""],
+])
+
 
 if __name__ == '__main__':
     import unittest

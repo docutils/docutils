@@ -851,6 +851,26 @@ __ rst/alternatives.html#or-not-to-do
 
   Perhaps.  Perhaps not.
 
+* Add attribution parsing to block quotes?  Iff the last paragraph
+  [#]_ begins with "--", it becomes an attribution.  This goes back to
+  Paul Moore's initial "Using blockquote element for quotes" post
+  (docutils-users 2003-04-18).  Example::
+
+      Structured text is really a great idea for certain situations;
+      reST is a much better implementation of the idea than any
+      versions I've seen before.
+
+      -- Guido van Rossum on Python-Dev, 2002-04-04
+
+  .. [#] Also check for a final definition list with one item, whose
+     term begins with "--"?  If an attribution wraps, it may be
+     formatted like this::
+
+         A quote.
+
+         -- An attribution
+            more info here
+
 
 Directives
 ``````````
@@ -863,11 +883,13 @@ when used in a document.
 
 * Use the language module for directive option names?
 
+* Add "substitution_only" and "substitution_ok" function attributes,
+  and automate context checking?
+
 * Implement options on existing directives:
 
-  - Add a "class" option to many/most directives, to set an arbitrary
-    "class" attribute on the enclosing element (see `misc.class`_)?
-    Perhaps "name" as well?
+  - Add a "name" option to directives, to set an author-supplied
+    identifier?
 
   - _`images.image`: "border"?  "link"?
 
@@ -977,24 +999,8 @@ when used in a document.
     problem similar to the first problem listed for misc.encoding_,
     although to a lesser degree.
 
-  - _`misc.class`: Specify a "class" attribute value to an element
-    (enclosing? preceding? following?).  See docutils-develop
-    2003-01-29.
-
-    Idea: if the "class" directive has no content, it applies to the
-    enclosing element; useful for structural elements & containers
-    (sections, block quotes, etc.).  With content, it applies to the
-    content; useful for body elements (paragraphs, lists, etc.).
-
   - _`misc.settings`: Set any Docutils runtime setting from within a
     document?
-
-  - _`misc.unicode`: Convert one or more numerical character codes
-    (decimal, or hex if it begins with ``0x`` or ``\u``) to a Unicode
-    character.  Behave like "replace", for character entity
-    substitution definitions, e.g.::
-
-        .. |mdash| unicode:: \u2014
 
   - Docutils already has the ability to say "use this content for
     Writer X" (via the "raw" directive), but it doesn't have the
@@ -1192,9 +1198,6 @@ when used in a document.
     internal section structure, with adornment styles independent of
     the main document.
 
-  - _`admonitions.admonition`: Generic, titled admonition.  Use
-    author-supplied title as "class" attribute value?
-
   - _`colorize.python`: Colorize Python code.  Fine for HTML output,
     but what about other formats?  Revert to a literal block?  Do we
     need some kind of "alternate" mechanism?  Perhaps use a "pending"
@@ -1339,6 +1342,15 @@ elements.
   .. _multiple roles:
      rst/alternatives.html#multiple-roles-in-interpreted-text
 
+* Add directives for each role as well?  This would allow indirect
+  nested markup::
+
+      This text contains |nested inline markup|.
+
+      .. |nested inline markup| emphasis::
+
+         nested ``inline`` markup
+
 * Add document-local _`role bindings`, associating directives with
   roles? ::
 
@@ -1384,11 +1396,23 @@ elements.
 
   Lesser of two evils?
 
-* Add new syntax for _`nested inline markup`? ::
+* Add new syntax for _`nested inline markup`?  From a proposal by Paul
+  Tremblay::
 
       :role:[inline text]
 
-  From a proposal by Paul Tremblay.
+  Or extend the parser to parse nested interpreted text? ::
+
+      :emphasis:`Some emphasized text with :strong:`some more
+      emphasized text` in it and **perhaps** :reference:`a link``
+
+  See the docutils-users `"nested inline tags" thread`__ and earlier
+  discussions
+  (http://mail.python.org/pipermail/doc-sig/2001-November/002388.html
+  and
+  http://mail.python.org/pipermail/doc-sig/2001-November/002363.html).
+
+  __ http://sf.net/mailarchive/forum.php?thread_id=2073680&forum_id=11444
 
 * Perhaps a "role" directive can modify existing roles with
   attributes? ::

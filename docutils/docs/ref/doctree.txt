@@ -140,12 +140,13 @@ Body elements are contained within structural elements and compound
 body elements.  There are two subcategories of body elements: simple
 and compound.
 
-Category members:  attention_, block_quote_, bullet_list_, caution_,
-citation_, comment_, danger_, definition_list_, doctest_block_,
-enumerated_list_, error_, field_list_, figure_, footnote_, hint_,
-image_, important_, line_block_, literal_block_, note_, option_list_,
-paragraph_, pending_, raw_, substitution_definition_,
-system_message_, table_, target_, tip_, warning_
+Category members: admonition_, attention_, block_quote_, bullet_list_,
+caution_, citation_, comment_, danger_, definition_list_,
+doctest_block_, enumerated_list_, error_, field_list_, figure_,
+footnote_, hint_, image_, important_, line_block_, literal_block_,
+note_, option_list_, paragraph_, pending_, raw_, rubric_,
+substitution_definition_, system_message_, table_, target_, tip_,
+warning_
 
 
 Simple Body Elements
@@ -156,8 +157,8 @@ that contain text data may also contain inline elements.  Such
 elements therefore have a "mixed content model".
 
 Category members: comment_, doctest_block_, image_, line_block_,
-literal_block_, paragraph_, pending_, raw_, substitution_definition_,
-target_
+literal_block_, paragraph_, pending_, raw_, rubric_,
+substitution_definition_, target_
 
 
 Compound Body Elements
@@ -166,9 +167,9 @@ Compound Body Elements
 Compound body elements contain local substructure (body subelements)
 and further body elements.  They do not directly contain text data.
 
-Category members: attention_, block_quote_, bullet_list_, caution_,
-citation_, danger_, definition_list_, enumerated_list_, error_,
-field_list_, figure_, footnote_, hint_, important_, note_,
+Category members: admonition_, attention_, block_quote_, bullet_list_,
+caution_, citation_, danger_, definition_list_, enumerated_list_,
+error_, field_list_, figure_, footnote_, hint_, important_, note_,
 option_list_, system_message_, table_, tip_, warning_
 
 
@@ -182,8 +183,8 @@ elements (containing text data, like field_name_).  These subelements
 always occur within specific parent elements, never at the body
 element level (beside paragraphs, etc.).
 
-Category members (simple): caption_, classifier_, colspec_,
-field_name_, label_, option_argument_, option_string_, term_
+Category members (simple): attribution_, caption_, classifier_,
+colspec_, field_name_, label_, option_argument_, option_string_, term_
 
 Category members (compound): definition_, definition_list_item_,
 description_, entry_, field_, field_body_, legend_, list_item_,
@@ -199,9 +200,9 @@ further inline elements.  Inline elements are contained within simple
 body elements.  Most inline elements have a "mixed content model".
 
 Category members: abbreviation_, acronym_, citation_reference_,
-emphasis_, footnote_reference_, generated_, image_, literal_,
-problematic_, reference_, strong_, substitution_reference_, target_,
-title_reference_, raw_
+emphasis_, footnote_reference_, generated_, image_, inline_, literal_,
+problematic_, reference_, strong_, subscript_,
+substitution_reference_, superscript_, target_, title_reference_, raw_
 
 
 .. _HTML: http://www.w3.org/MarkUp/
@@ -340,7 +341,6 @@ Content Model
     ``address``.
 
 
-
 Examples
 --------
 
@@ -366,13 +366,79 @@ See docinfo_ for a more complete example, including processing
 context.
 
 
+``admonition``
+==============
+
+This element is a generic, titled admonition.  Also see the specific
+admonition elements Docutils offers (in alphabetical order): caution_,
+danger_, error_, hint_, important_, note_, tip_, warning_.
+
+
+Details
+-------
+
+:Category:
+    `Compound Body Elements`_
+
+:Parents:
+    All elements employing the `%body.elements;`_ or
+    `%structure.model;`_ parameter entities in their content models
+    may contain ``admonition``.
+
+:Children:
+    ``admonition`` elements begin with a title_ and may contain one or
+    more `body elements`_.
+
+:Analogues:
+    ``admonition`` has no direct analogues in common DTDs.  It can be
+    emulated with primitives and type effects.
+
+:Processing:
+    Rendered distinctly (inset and/or in a box, etc.).
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+   (title_, (`%body.elements;`_)+)
+
+:Attributes:
+    The ``admonition`` element contains only the `common attributes`_:
+    id_, name_, dupname_, source_, and class_.
+
+:Parameter Entities:
+    The `%body.elements;`_ parameter entity directly includes
+    ``admonition``.  The `%structure.model;`_ parameter entity
+    indirectly includes ``admonition``.
+
+
+Examples
+--------
+
+reStructuredText source::
+
+    .. admonition:: And, by the way...
+
+       You can make up your own admonition too.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <admonition class="admonition-and-by-the-way">
+        <title>
+            And, by the way...
+        <paragraph>
+            You can make up your own admonition too.
+
+
 ``attention``
 =============
 
 The ``attention`` element is an admonition, a distinctive and
 self-contained notice.  Also see the other admonition elements
 Docutils offers (in alphabetical order): caution_, danger_, error_,
-hint_, important_, note_, tip_, warning_.
+hint_, important_, note_, tip_, warning_, and the generic admonition_.
 
 
 Details
@@ -427,6 +493,12 @@ Pseudo-XML_ fragment from simple parsing::
     <attention>
         <paragraph>
             All your base are belong to us.
+
+
+``attribution``
+===============
+
+`To be completed`_.
 
 
 ``author``
@@ -586,7 +658,8 @@ Details
     may contain ``block_quote``.
 
 :Children:
-    ``block_quote`` elements may contain `body elements`_.
+    ``block_quote`` elements contain `body elements`_ followed by an
+    optional attribution_ element.
 
 :Analogues:
     ``block_quote`` is analogous to the "blockquote" element in both
@@ -602,7 +675,7 @@ Content Model
 
 .. parsed-literal::
 
-   (`%body.elements;`_)+
+   ((`%body.elements;`_)+, attribution_?)
 
 :Attributes:
     The ``block_quote`` element contains only the `common
@@ -730,7 +803,7 @@ See list_item_ for another example.
 The ``caution`` element is an admonition, a distinctive and
 self-contained notice.  Also see the other admonition elements
 Docutils offers (in alphabetical order): attention_, danger_, error_,
-hint_, important_, note_, tip_, warning_.
+hint_, important_, note_, tip_, warning_, and the generic admonition_.
 
 
 Details
@@ -1021,7 +1094,7 @@ context.
 The ``danger`` element is an admonition, a distinctive and
 self-contained notice.  Also see the other admonition elements
 Docutils offers (in alphabetical order): attention_, caution_, error_,
-hint_, important_, note_, tip_, warning_.
+hint_, important_, note_, tip_, warning_, and the generic admonition_.
 
 
 Details
@@ -1856,7 +1929,8 @@ See list_item_ for another example.
 The ``error`` element is an admonition, a distinctive and
 self-contained notice.  Also see the other admonition elements
 Docutils offers (in alphabetical order): attention_, caution_,
-danger_, hint_, important_, note_, tip_, warning_.
+danger_, hint_, important_, note_, tip_, warning_, and the generic
+admonition_.
 
 
 Details
@@ -2277,7 +2351,8 @@ None.
 The ``hint`` element is an admonition, a distinctive and
 self-contained notice.  Also see the other admonition elements
 Docutils offers (in alphabetical order): attention_, caution_,
-danger_, error_, important_, note_, tip_, warning_.
+danger_, error_, important_, note_, tip_, warning_, and the generic
+admonition_.
 
 
 Details
@@ -2346,7 +2421,8 @@ Pseudo-XML_ fragment from simple parsing::
 The ``important`` element is an admonition, a distinctive and
 self-contained notice.  Also see the other admonition elements
 Docutils offers (in alphabetical order): attention_, caution_,
-danger_, error_, hint_, note_, tip_, warning_.
+danger_, error_, hint_, note_, tip_, warning_, and the generic
+admonition_.
 
 
 Details
@@ -2416,6 +2492,12 @@ Pseudo-XML_ fragment from simple parsing::
             <list_item>
                 <paragraph>
                     Call your mother.
+
+
+``inline``
+==========
+
+`To be completed`_.
 
 
 ``label``
@@ -2686,7 +2768,8 @@ Pseudo-XML_ fragment from simple parsing::
 The ``note`` element is an admonition, a distinctive and
 self-contained notice.  Also see the other admonition elements
 Docutils offers (in alphabetical order): attention_, caution_,
-danger_, error_, hint_, important_, tip_, warning_.
+danger_, error_, hint_, important_, tip_, warning_, and the generic
+admonition_.
 
 
 Details
@@ -3299,6 +3382,21 @@ context.
 `To be completed`_.
 
 
+``rubric``
+==========
+
+     rubric n. 1. a title, heading, or the like, in a manuscript,
+     book, statute, etc., written or printed in red or otherwise
+     distinguished from the rest of the text. ...
+
+     -- Random House Webster's College Dictionary, 1991
+
+A rubric is like an informal heading that doesn't correspond to the
+document's structure.
+
+`To be completed`_.
+
+
 ``section``
 ===========
 
@@ -3549,6 +3647,12 @@ context.
 `To be completed`_.
 
 
+``subscript``
+=============
+
+`To be completed`_.
+
+
 ``substitution_definition``
 ===========================
 
@@ -3628,6 +3732,12 @@ Note how two section levels have collapsed, promoting their titles to
 become the document's title and subtitle.  Since there is only one
 structural element (document), the subsection's ``id`` and ``name``
 attributes are stored in the ``subtitle`` element.
+
+
+``superscript``
+===============
+
+`To be completed`_.
 
 
 ``system_message``
@@ -3718,7 +3828,7 @@ classifier_ elements.
 The ``tip`` element is an admonition, a distinctive and self-contained
 notice.  Also see the other admonition elements Docutils offers (in
 alphabetical order): attention_, caution_, danger_, error_, hint_,
-important_, note_, warning_.
+important_, note_, warning_, and the generic admonition_.
 
 
 Details
@@ -3778,7 +3888,7 @@ Pseudo-XML_ fragment from simple parsing::
 =========
 
 The ``title`` element stores the title of a document_, section_,
-topic_, or sidebar_.
+topic_, sidebar_, or generic admonition_.
 
 
 Details
@@ -3789,7 +3899,7 @@ Details
 
 :Parents:
     The following elements may contain ``title``: document_, section_,
-    topic_, sidebar_
+    topic_, sidebar_, admonition_
 
 :Children:
     ``title`` elements may contain text data plus `inline elements`_.
@@ -4215,10 +4325,20 @@ The ``bullet`` attribute is used in the bullet_list_ element.
 `Attribute type`_: ``NMTOKENS``.  Default value: none.
 
 The ``class`` attribute contains one or more names used to classify an
-element.  It can be used to carry context forward between a Docutils
-Reader and Writer, when a custom structure is reduced to a
-standardized document tree.  ``class`` is one of the `common
-attributes`_, shared by all Docutils elements.
+element.  The purpose of the attribute is to indicate an "is-a"
+variant relationship, to allow an extensible way of defining
+sub-classes of existing elements.  It can be used to carry context
+forward between a Docutils Reader and Writer, when a custom structure
+is reduced to a standardized document tree.  One common use is in
+conjunction with stylesheets, to add selection criteria.  It should
+not be used to carry formatting instructions or arbitrary content.
+
+The ``class`` attribute's contents should be ignorable.  Writers that
+are not familiar with the variant expressed should be able to ignore
+the attribute.
+
+``class`` is one of the `common attributes`_, shared by all Docutils
+elements.
 
 
 ``delimiter``

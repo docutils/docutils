@@ -136,7 +136,8 @@ Specific:
   - Changed ``Node.walk()`` & ``.walkabout()`` to permit more tree
     modification during a traversal.
   - Added element classes: ``line_block``, ``generated``, ``address``,
-    ``sidebar``.
+    ``sidebar``, ``rubric``, ``attribution``, ``admonition``,
+    ``superscript``, ``subscript``, ``inline``
   - Added support for lists of nodes to ``Element.insert()``.
   - Fixed parent linking in ``Element.replace()``.
   - Added new abstract superclass ``FixedTextElement``; adds
@@ -262,6 +263,7 @@ Specific:
     from David Abrahams).
   - Made substitutions case-sensitive-but-forgiving; moved some code
     to ``docutils.nodes``.
+  - Added support for block quote attributions.
 
 * docutils/parsers/rst/tableparser.py:
 
@@ -275,30 +277,37 @@ Specific:
 * docutils/parsers/rst/directives/__init__.py:
 
   - Added ``flag()``, ``unchanged()``, ``path()``,
-    ``nonnegative_int()``, and ``choice()`` directive option helper
-    functions.
+    ``nonnegative_int()``, ``choice()``, and ``class_option()``
+    directive option helper functions.
   - Added warnings for unknown directives.
   - Return ``None`` for missing directives.
   - Added ``register_directive()``, thanks to William Dode and Paul
     Moore.
 
+* docutils/parsers/rst/directives/admonitions.py:
+
+  - Added "admonition" directive.
+
 * docutils/parsers/rst/directives/body.py: Added to project.  Contains
-  the "topic", "sidebar" (from Patrick O'Brien), "line-block", and
-  "parsed-literal" directives.
+  the "topic", "sidebar" (from Patrick O'Brien), "line-block",
+  "parsed-literal", "rubric", "epigraph", and "highlights" directives.
 
 * docutils/parsers/rst/directives/images.py:
 
   - Added an "align" attribute to the "image" & "figure" directives
     (by Adam Chodorowski).
+  - Added "class" option to "image", and "figclass" to "figure".
 
 * docutils/parsers/rst/directives/misc.py:
 
   - Added "include", "raw", and "replace" directives, courtesy of
     Dethe Elza.
+  - Added "unicode" and "class" directives.
 
 * docutils/parsers/rst/directives/parts.py:
 
   - Added the "sectnum" directive; by Dmitry Jemerov.
+  - Added "class" option to "contents" directive.
 
 * docutils/parsers/rst/directives/references.py: Added to project.
   Contains the "target-notes" directive.
@@ -356,6 +365,10 @@ Specific:
   - Improved support for generic fields.
   - Fixed bibliographic field language lookups.
 
+* docutils/transforms/misc.py:
+
+  - Added ``ClassAttribute`` to support the "class" directive.
+
 * docutils/transforms/parts.py: Added to project.  Miscellaneous
   transforms.
 
@@ -364,6 +377,7 @@ Specific:
   - Moved the "id" attribute from TOC list items to the references
     (``Contents.build_contents()``).
   - Added the ``SectNum`` transform; by Dmitry Jemerov.
+  - Added "class" attribute support to ``Contents``.
 
 * docutils/transforms/peps.py:
 
@@ -430,7 +444,8 @@ Specific:
   - Refined XML prologue.
   - Support for no stylesheet.
   - Removed "interpreted" element support.
-  - Added support for "title_reference", "sidebar" elements.
+  - Added support for "title_reference", "sidebar", "attribution",
+    "rubric", and generic "admonition" elements.
 
 * docutils/writers/latex2e.py: LaTeX Writer, added by Engelbert Gruber
   (from the sandbox).
@@ -482,7 +497,7 @@ Specific:
     docstrings.
   - Wrote descriptions of all common attributes and parameter
     entities.  Filled in introductory material.
-  - Working through the element descriptions: 53 down, 32 to go.
+  - Working through the element descriptions: 55 down, 37 to go.
   - Removed "Representation of Horizontal Rules" to
     spec/rst/alternatives.txt.
 
@@ -505,7 +520,8 @@ Specific:
     "abbreviation", "acronym".
   - Removed "refuri" attribute from "footnote_reference" and
     "citation_reference".
-  - Added "sidebar" element.
+  - Added "sidebar", "rubric", "attribution", "admonition",
+    "superscript", "subscript", and "inline" elements.
 
 * spec/pep-0256.txt: Converted to reStructuredText & updated.
 
@@ -536,10 +552,15 @@ Specific:
 * spec/rst/directives.txt:
 
   - Added directives: "topic", "sectnum", "target-notes",
-    "line-block", "parsed-literal", "include", "replace", "sidebar".
+    "line-block", "parsed-literal", "include", "replace", "sidebar",
+    "admonition", "rubric", "epigraph", "highlights", "unicode" and
+    "class".
   - Formalized descriptions of directive details.
   - Added an "align" attribute to the "image" & "figure" directives
     (by Adam Chodorowski).
+  - Added "class" options to "topic", "sidebar", "line-block",
+    "parsed-literal", "contents", and "image"; and "figclass" to
+    "figure".
 
 * spec/rst/interpreted.txt: Added to project.  Descriptions of
   interpreted text roles.

@@ -24,6 +24,8 @@ Transforms Listed in Priority Order
 ==============================  ============================  ========
 Transform: module.Class         Added By                      Priority
 ==============================  ============================  ========
+misc.class                      "class" (d/p)                 210
+
 references.Substitutions        standalone (r), pep (r)       220
 
 frontmatter.DocTitle            standalone (r)                320

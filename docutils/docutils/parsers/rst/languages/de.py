@@ -23,10 +23,14 @@ directives = {
       'notiz': 'note',
       'tip': 'tip',
       'warnung': 'warning',
+      'admonition (translation required)': 'admonition',
       'sidebar (translation required)': 'sidebar',
       'topic': 'topic',  # Überbegriff
       'line-block': 'line-block',
       'parsed-literal': 'parsed-literal',
+      'rubric (translation required)': 'rubric',
+      'epigraph (translation required)': 'epigraph',
+      'highlights (translation required)': 'highlights',
       #'questions': 'questions',
       #'qa': 'questions',
       #'faq': 'questions',
@@ -38,6 +42,8 @@ directives = {
       'include': 'include', # einfügen, "füge ein" would be more like a command.
                             # einfügung would be the noun. 
       'replace': 'replace', # ersetzen, ersetze
+      'unicode': 'unicode',
+      'class (translation required)': 'class',
       'inhalt': 'contents',
       'sectnum': 'sectnum',
       'section-numbering': 'sectnum',
