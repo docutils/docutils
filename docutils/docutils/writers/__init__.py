@@ -95,7 +95,8 @@ class Writer(Component):
 _writer_aliases = {
       'html': 'html4css1',
       'pprint': 'pseudoxml',
-      'pformat': 'pseudoxml',}
+      'pformat': 'pseudoxml',
+      'pdf': 'rlpdf',}
 
 def get_writer_class(writer_name):
     """Return the Writer class from the `writer_name` module."""
