@@ -27,8 +27,6 @@ function report() {
 }
 
 BASE_CMD="../../tools/rst2latex.py"
-#CMD="../../tools/rst2latex.py --footnote-references=superscript"
-#CMD="../../tools/rst2latex.py --documentclass=book --hyperlink-color=0"
 
 CMD="../../tools/rst2latex.py"
 if [ -z "$1" ] ; then
@@ -152,6 +150,20 @@ done
 CMD="../../tools/rst2latex.py --use-latex-footnotes"
 INF=test/footnotes.txt
 OUTF="$INF-use-latex-footnotes.tex"
+REFF="$OUTF.ref"
+$CMD $INF > $OUTF
+do_diff $REFF $OUTF 
+
+# use latex citations
+CMD="../../tools/rst2latex.py --use-latex-citations"
+INF=test/footnotes.txt
+OUTF="$INF-use-latex-citations.tex"
+REFF="$OUTF.ref"
+$CMD $INF > $OUTF
+do_diff $REFF $OUTF 
+# on a file without citations
+INF=test/no-citations.txt
+OUTF="$INF-use-latex-citations.tex"
 REFF="$OUTF.ref"
 $CMD $INF > $OUTF
 do_diff $REFF $OUTF 

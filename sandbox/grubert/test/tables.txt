@@ -88,3 +88,72 @@ poses problems
 |  >                       |  >                         |
 +--------------------------+----------------------------+
 
+a longer and complicated table thanks to dave abrahams
+
++--------------------------+----------------------------+-------------------------+
+|Metafunction              |Result `` ::type``          |Complexity               |
++==========================+============================+=========================+
+|``find<seq, T>``          |An iterator to the first    |Linear                   |
+|                          |occurrence of ``T`` in      |                         |
+|                          |``seq``, or                 |                         |
+|                          |``end<seq>::type`` if not   |                         |
+|                          |found.                      |                         |
++--------------------------+----------------------------+-------------------------+
+|``find_if<seq, T, pred>`` |An iterator to the first    |Linear                   |
+|                          |element of ``seq`` that     |                         |
+|                          |satisfies predicate         |                         |
+|                          |``pred``, or                |                         |
+|                          |``end<seq>::type`` if not   |                         |
+|                          |found.                      |                         |
++--------------------------+----------------------------+-------------------------+
+|``contains<seq, T>``      |True iff ``seq`` contains   |Linear                   |
+|                          |``T``.                      |                         |
++--------------------------+----------------------------+-------------------------+
+|``count<seq, T>``         |The number of occurences of |Linear                   |
+|                          |``T`` in ``seq``.           |                         |
++--------------------------+----------------------------+-------------------------+
+|``count_if<seq, pred>``   |The number of elements in   |Linear                   |
+|                          |``seq`` that satisfy        |                         |
+|                          |predicate ``pred``.         |                         |
++--------------------------+----------------------------+-------------------------+
+|``equal<seq1, seq2>``     |True iff ``seq1`` and       |Linear                   |
+|                          |``seq2`` contain the same   |                         |
+|                          |elements in the same order. |                         |
++--------------------------+----------------------------+-------------------------+
+|::                        |The earliest                |Logarithmic in           |
+|                          |order-preserving position at|invocations to           |
+|  lower_bound<            |which ``T`` could be        |``compare``. Logarithmic |
+|      seq, T              |inserted in a sequence      |traversal of             |
+|    , compare = less<_,_> |``seq`` sorted according to |random-access            |
+|  >                       |comparison ``compare``.     |sequences. Linear        |
+|                          |                            |traversal otherwise.     |
++--------------------------+----------------------------+-------------------------+
+|::                        |The latest order-preserving |Logarithmic in           |
+|                          |position at which ``T``     |invocations to           |
+|  upper_bound<            |could be inserted in a      |``compare``. Logarithmic |
+|      seq, T              |sequence ``seq`` sorted     |traversal of             |
+|    , compare = less<_,_> |according to comparison     |random-access            |
+|  >                       |``compare``.                |sequences. Linear        |
+|                          |                            |traversal otherwise.     |
++--------------------------+----------------------------+-------------------------+
+|::                        |The first position ``i`` in |Linear                   |
+|                          |``seq`` such that for all   |                         |
+|  max_element<            |positions ``j``::           |                         |
+|      seq                 |                            |                         |
+|    , compare = less<_,_> |  apply<                    |                         |
+|  >                       |      compare               |                         |
+|                          |    , deref<i>::type        |                         |
+|                          |    , deref<j>::type        |                         |
+|                          |  >::type::value == false   |                         |
++--------------------------+----------------------------+-------------------------+
+|::                        |The first position ``i`` in |Linear                   |
+|                          |``seq`` such that for all   |                         |
+|  min_element<            |positions ``j``::           |                         |
+|      seq                 |                            |                         |
+|    , compare = less<_,_> |  apply<                    |                         |
+|  >                       |      compare               |                         |
+|                          |    , deref<j>::type        |                         |
+|                          |    , deref<i>::type        |                         |
+|                          |  >::type::value == false   |                         |
++--------------------------+----------------------------+-------------------------+
+
