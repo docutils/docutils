@@ -206,7 +206,13 @@ And even more stuff
 </div>
 </div>
 </div>\\n'''}
-"""]
+"""],
+["""\
+* bullet
+* list
+""",
+"""\
+"""],
 ])
 
 
