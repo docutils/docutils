@@ -87,7 +87,7 @@ least important):
 .. _Style Guide for Python Code:
    http://www.python.org/peps/pep-0008.html
 .. _Docstring Conventions: http://www.python.org/peps/pep-0257.html
-.. _Docutils Internationalization: howto/i18n.html#python-code
+.. _Docutils Internationalization: ../howto/i18n.html#python-code
 
 
 Copyrights and Licensing
@@ -132,8 +132,8 @@ Unless you really *really* know what you're doing, please limit your
 CVS commands to ``cvs checkout``, ``cvs commit/checkin``, and ``cvs
 add``.  Do **NOT** use ``cvs import`` unless you're absolutely sure
 you know what you're doing.  Even then, grab a copy of the `nightly
-CVS tarball <http://cvs.sf.net/cvstarballs/docutils-cvsroot.tar.gz>`_,
-set it up on your own machine, and experiment *there* first.
+CVS tarball`_, set it up on your own machine, and experiment *there*
+first.
 
 The `main source tree`_ ("docutils" CVS module) should always be kept
 in a stable state (usable and as problem-free as possible).  The
@@ -172,7 +172,8 @@ mistake is easy to fix.  That's what CVS is for.
 .. _Python Check-in Policies: http://www.python.org/dev/tools.html
 .. _sandbox CVS directory:
    http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/docutils/sandbox/
-
+.. _nightly CVS tarball:
+   http://cvs.sourceforge.net/cvstarballs/docutils-cvsroot.tar.bz2
 
 Additions to Docutils
 ---------------------

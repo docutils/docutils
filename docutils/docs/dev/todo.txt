@@ -81,7 +81,7 @@ General
   /usr/local/etc/docutils.conf too?  See the `Filesystem Hierarchy
   Standard`_.
 
-  .. _Filesystem Hierarchy Standard: http://www.pathname.com/fhs.
+  .. _Filesystem Hierarchy Standard: http://www.pathname.com/fhs
 
 * Add _`object numbering and object references` (tables & figures).
   These would be the equivalent of DocBook's "formal" elements.
@@ -193,7 +193,7 @@ General
   mapping database for cross-references.  Docutils could use a similar
   system for large-scale, multipart documents.
 
-  __ rst/directives.html#including-an-external-document-fragment
+  __ ../ref/rst/directives.html#including-an-external-document-fragment
 
   Aahz's idea:
 
@@ -450,7 +450,8 @@ Miscellaneous ideas:
   ``##`` is useful though.  It allows doc-comments and implementation
   comments.
 
-  .. _additional docstrings: pep-0258.html#additional-docstrings
+  .. _additional docstrings:
+     ../peps/pep-0258.html#additional-docstrings
 
 * HappyDoc uses an initial comment block to set "parser configuration
   values".  Do the same thing for Docutils, to set runtime settings on
@@ -698,9 +699,9 @@ __ rst/alternatives.html#or-not-to-do
   somehow?  See docutils-develop 2003-02-13.
 
 * Include the _`character entity substitution definition files`
-  `temporarily stored here <tmp/charents>`__, perhaps in a
-  ``docutils/parsers/rst/includes/`` directory.  See `misc.include`_
-  below.
+  `temporarily stored here <http://docutils.sf.net/tmp/charents/>`__,
+  perhaps in a ``docutils/parsers/rst/includes/`` directory.  See
+  `misc.include`_ below.
 
 * Should ^L (or something else in reST) be defined to mean
   force/suggest page breaks in whatever output we have?

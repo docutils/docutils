@@ -256,12 +256,14 @@ References and Footnotes
 .. _Web: http://www-cs-faculty.stanford.edu/~knuth/cweb.html
 
 .. _doc.py:
-   http://www.lemburg.com/files/python/SoftwareDescriptions.html#doc.py
+   http://www.egenix.com/files/python/SoftwareDescriptions.html#doc.py
 
 .. _pythondoc:
 .. _gendoc: http://starship.python.net/crew/danilo/pythondoc/
 
 .. _HappyDoc: http://happydoc.sourceforge.net/
+
+.. XXX Crystal 404.
 
 .. _Crystal: http://www.btinternet.com/~tratt/comp/python/crystal/
 

@@ -851,7 +851,7 @@ cleanly readable text.
 .. _Setext: http://docutils.sourceforge.net/mirror/setext.html
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _detailed description:
-   http://www.tibsnjoan.demon.co.uk/STNG-format.html
+   http://homepage.ntlworld.com/tibsnjoan/docutils/STNG-format.html
 .. _STMinus: http://www.cis.upenn.edu/~edloper/pydoc/stminus.html
 .. _StructuredTextNG:
    http://dev.zope.org/Members/jim/StructuredTextWiki/StructuredTextNG
