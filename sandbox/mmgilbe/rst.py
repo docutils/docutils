@@ -26,7 +26,7 @@ from docutils import frontend, nodes, utils, writers, languages
 from docutils.core import publish_string
 from docutils.writers import html4css1
 
-def mastext(node):
+def html_escape_unicode(node):
     # Find Python function that does this for me. string.encode('ascii',
     # 'xmlcharrefreplace')
     s = node.replace(u'\xa0', '&#xa0;')
@@ -69,7 +69,7 @@ class MoinWriter(html4css1.Writer):
                                  self.request,
                                  self.wikiparser)
         self.document.walkabout(visitor)
-        self.output = mastext(visitor.astext())
+        self.output = html_escape_unicode(visitor.astext())
         
 
 class Parser:
@@ -83,7 +83,7 @@ class Parser:
                               writer = MoinWriter(formatter, self.request),
                               enable_exit = None, 
                               settings_overrides = {'traceback': 1})
-        self.request.write(mastext(text))
+        self.request.write(html_escape_unicode(text))
         
 
 class MoinTranslator(html4css1.HTMLTranslator):
