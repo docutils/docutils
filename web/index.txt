@@ -211,7 +211,8 @@ Docutils Internals
 - `Docutils Generic DTD`__
 - `OASIS XML Exchange Table Model Declaration Module`__ (CALS tables
   DTD module)
-- `Docutils Python DTD`__ (experimental)
+- `Python Source Reader`_ (incomplete)
+- `Docutils Python DTD`_ (experimental)
 
 __ spec/notes.html
 __ spec/notes.html#project-policies
@@ -219,7 +220,8 @@ __ spec/doctree.html
 __ spec/semantics.html
 __ spec/docutils.dtd
 __ spec/soextblx.dtd
-__ spec/pysource.dtd
+.. _Python Source Reader: spec/pysource.html
+.. _Docutils Python DTD: spec/pysource.dtd
 
 
 reStructuredText
@@ -260,6 +262,49 @@ It's OK to make a mess in the Sandbox!  But please, play nice.
 
 __
 __ sandbox/
+
+
+Sandbox Projects
+----------------
+
+Anyone is welcome to contribute to any of these projects.  Interested
+developers are welcome to take on any projects which appear to be
+dormant.
+
+* ZReST_, by Richard Jones, is a "ReStructuredText Document for Zope"
+  application that is complete and ready to install.
+
+* PySource_, by Tony Ibbs, is an experimental Python source Reader. 
+  In some form, it will soon become part of core Docutils.  There is
+  some related code in David Goodger's sandbox (pysource_reader_) and
+  a `Python Source Reader`_ document.
+
+* Docutils interface to PythonPoint_, also by Richard Jones, produces
+  PDF presentations using ReportLabs.
+
+* Engelbert Gruber has begun `LaTeX Writer`_ and `ReportLabs/PDF
+  Writer`_ components.
+
+* Oliver Rutherford has begun a `DocBook Writer`_ component.
+
+* Simon Budig has a modified ``states.py`` parser module and
+  supporting documents for his controversial proposal for `inline
+  external targets`_.  Also see the `summary of the issues`__ which is
+  more up to date.
+
+* Gunnar Schwant has begun DocFactory_, a wxPython GUI application for
+  Docutils.
+
+.. _ZReST: sandbox/richard/ZReST/
+.. _PySource: sandbox/tibs/pysource/
+.. _pysource_reader: sandbox/davidg/pysource_reader/
+.. _PythonPoint: sandbox/richard/pythonpoint/
+.. _LaTeX Writer: sandbox/grubert/latex/
+.. _ReportLabs/PDF Writer: sandbox/grubert/rlpdf/
+.. _DocBook Writer: sandbox/oliverr/docbook/
+.. _inline external targets: sandbox/simonb/
+__ spec/rst/alternatives.html#inline-external-targets
+.. _DocFactory: sandbox/gschwant/docfactory/README.html
 
 
 Please Contribute!
