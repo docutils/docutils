@@ -330,6 +330,8 @@ Specific:
   - Wrote descriptions of all common attributes and parameter
     entities.  Filled in introductory material.
   - Working through the element descriptions: 33 down, 50 to go.
+  - Removed "Representation of Horizontal Rules" to
+    spec/rst/alternatives.txt.
 
 * spec/docutils.dtd:
 
@@ -363,6 +365,11 @@ Specific:
 
 * spec/howto/i18n.txt: Docutils Internationalization.  Added to
   project.
+
+* spec/rst/alternatives.txt:
+
+  - Added "Doctree Representation of Transitions" from
+    spec/doctree.txt.
 
 * spec/rst/directives.txt:
 
