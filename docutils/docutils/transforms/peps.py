@@ -120,7 +120,7 @@ class Contents(Transform):
 
 
     def transform(self):
-        pending = nodes.pending(parts.Contents, 'last reader',
+        pending = nodes.pending(parts.Contents, 'first writer',
                                 {'title': None})
         self.document.insert(1, pending)
         self.document.note_pending(pending)
