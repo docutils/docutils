@@ -803,7 +803,9 @@ class document(Root, Structural, Element):
         if node.has_key('id'):
             id = node['id']
             if self.ids.has_key(id) and self.ids[id] is not node:
-                msgnode += self.reporter.severe('Duplicate ID: "%s".' % id)
+                msg = self.reporter.severe('Duplicate ID: "%s".' % id)
+                if msgnode != None:
+                    msgnode += msg
         else:
             if node.has_key('name'):
                 id = make_id(node['name'])
@@ -873,9 +875,11 @@ class document(Root, Structural, Element):
                     if level > 1:
                         dupname(old_node)
                         self.nameids[name] = None
-                msgnode += self.reporter.system_message(
+                msg = self.reporter.system_message(
                     level, 'Duplicate explicit target name: "%s".' % name,
                     backrefs=[id], base_node=node)
+                if msgnode != None:
+                    msgnode += msg
                 dupname(node)
             else:
                 self.nameids[name] = id
@@ -889,9 +893,11 @@ class document(Root, Structural, Element):
                 dupname(old_node)
             dupname(node)
         if not explicit or (not old_explicit and old_id is not None):
-            msgnode += self.reporter.info(
+            msg = self.reporter.info(
                 'Duplicate implicit target name: "%s".' % name,
                 backrefs=[id], base_node=node)
+            if msgnode != None:
+                msgnode += msg
 
     def has_name(self, name):
         return self.nameids.has_key(name)
@@ -965,9 +971,11 @@ class document(Root, Structural, Element):
     def note_substitution_def(self, subdef, def_name, msgnode=None):
         name = subdef['name'] = whitespace_normalize_name(def_name)
         if self.substitution_defs.has_key(name):
-            msgnode += self.reporter.error(
+            msg = self.reporter.error(
                   'Duplicate substitution definition name: "%s".' % name,
                   base_node=subdef)
+            if msgnode != None:
+                msgnode += msg
             oldnode = self.substitution_defs[name]
             dupname(oldnode)
         # keep only the last definition:
