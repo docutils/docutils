@@ -6,6 +6,8 @@
 :Revision: $Revision$
 :Date: $Date$
 
+.. contents:: :depth: 1
+
 This document describes the XML data structure of Docutils documents,
 the relationships and semantics of elements.  The Docutils document
 structure is formally defined by the `Docutils Generic DTD`_ XML
@@ -26,9 +28,6 @@ introductory articles, see `Introducing the Extensible Markup Language
 .. _docutils.dtd: http://docutils.sourceforge.net/spec/docutils.dtd
 .. _Introducing the Extensible Markup Language (XML):
    http://xml.coverpages.org/xmlIntro.html
-
-.. contents::
-
 
 -------------------
  Element Hierarchy
@@ -106,6 +105,10 @@ data may occur at the same level.
  Element Reference
 -------------------
 
+.. contents::
+   :local:
+   :depth: 1
+
 Each element in the document tree model is described in its own
 section below.  Each section contains the following subsections:
 
@@ -138,77 +141,112 @@ section below.  Each section contains the following subsections:
 ``document``
 ============
 
+Description
+-----------
+
 The ``document`` element is the root (topmost) element of the Docutils
 document tree.  ``document`` is the direct or indirect ancestor of
 every other element in the tree.
 
-contents
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+    ((title_,
+      subtitle_?)?, 
+     docinfo_?, 
+     decoration_?, 
+     `%structure.model;`_)
+
 
 Attributes
-----------
+``````````
 
 `Common external attributes`_.
+
+
+Example
+-------
 
 
 ---------------------
  Attribute Reference
 ---------------------
 
-External Attributes
-===================
+.. contents::
+   :local:
+   :depth: 1
 
 Through the `%basic.atts;`_ parameter entity, all elements share the
 following _`common external attributes`: id_, name_, dupname_,
-source_.
+source_, class_.
 
 
 ``anonymous``
--------------
+=============
+
 The ``anonymous`` attribute
 
 
 ``auto``
---------
+========
+
 The ``auto`` attribute
 
 
+``class``
+=========
+
+The ``class`` attribute
+
+
 ``dupname``
------------
+===========
+
 The ``dupname`` attribute
 
 
 ``id``
-------
+======
+
 The ``id`` attribute
 
 
 ``name``
---------
+========
+
 The ``name`` attribute
 
 
 ``refid``
----------
+=========
+
 The ``refid`` attribute
 
 
 ``refname``
------------
+===========
+
 The ``refname`` attribute
 
 
 ``refuri``
-----------
+==========
+
 The ``refuri`` attribute
 
 
 ``source``
-----------
+==========
+
 The ``source`` attribute
 
 
 ``xml:space``
--------------
+=============
+
 The ``xml:space`` attribute
 
 
@@ -216,40 +254,56 @@ The ``xml:space`` attribute
  DTD Parameter Entities
 ------------------------
 
+.. contents::
+   :local:
+   :depth: 1
+
+
 ``%basic.atts;``
 ================
+
 The ``%basic.atts;`` parameter entity lists attributes common to all
 elements.  See `Common Attributes`_.
 
 
 ``%body.elements;``
 ===================
+
 The ``%body.elements;`` parameter entity
 
 
 ``%inline.elements;``
-====================
+=====================
+
 The ``%inline.elements;`` parameter entity
 
 
 ``%reference.atts;``
 ====================
+
 The ``%reference.atts;`` parameter entity
 
 
 ``%structure.model;``
 =====================
+
 The ``%structure.model;`` parameter entity
 
 
 ``%text.model;``
 ================
+
 The ``%text.model;`` parameter entity
 
 
---------------------------------
- Appendix: Miscellaneous Topics
---------------------------------
+----------------------
+ Miscellaneous Topics
+----------------------
+
+.. contents::
+   :local:
+   :depth: 1
+
 
 Representation of Horizontal Rules
 ==================================
