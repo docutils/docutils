@@ -1598,7 +1598,7 @@ class Body(RSTState):
         except KeyError, detail:
             return 0, ('unknown attribute: "%s"' % detail), blank_finish
         except (ValueError, TypeError), detail:
-            return 0, ('invalid attribute value:\n%s' % detail), blank_finish
+            return 0, ('invalid attribute value: %s' % detail), blank_finish
         except utils.ExtensionAttributeError, detail:
             return 0, ('invalid attribute data: %s' % detail), blank_finish
         return 1, attributes, blank_finish
