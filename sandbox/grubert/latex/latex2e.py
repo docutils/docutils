@@ -194,6 +194,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.context = []
         self.topic_class = ''
 
+    def language_label(self, docutil_label):
+        if self.language.labels.has_key(docutil_label):
+            return self.language.labels[docutil_label]
+        return docutil_label
+            
+        
+
     def encode(self, text):
         """
         Encode special characters in `text` & return.
@@ -409,27 +416,28 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.context.append('\\end{abstract}\n')
             self.context.append(self.body)
             self.context.append(len(self.body))
-        elif latex_docinfo and name == 'date':
-            # BUG: time portion is not included in date 
-            self.head.append('\\date{%s}\n' % self.attval(node.astext()))
-            raise nodes.SkipNode
-        ## elif latex_docinfo and name == 'author':
-        elif name == 'author':
-            self.head.append('\\author{%s}\n' % self.attval(node.astext()))
-            if not self.pdfinfo == None:
-                # BUG only the last one survives
-                self.pdfinfo.append( 'pdfauthor={%s}' % self.attval(node.astext()) )
-            raise nodes.SkipNode
         else:
-            ##self.head.append('\\%s{%s}\n'
-            ##            % (name, self.attval(node.astext())))
-            self.docinfo.append('\\textbf{%s} &\n\t' % name)
+            if name == 'author':
+                if not self.pdfinfo == None:
+                    # BUG only the last one survives
+                    self.pdfinfo.append( 'pdfauthor={%s}' 
+                                        % self.attval(node.astext()) )
+                if latex_docinfo:
+                    self.head.append('\\author{%s}\n' % self.attval(node.astext()))
+                    raise nodes.SkipNode
+                else:
+                    self.head.append('\\author{}\n')
+            elif name == 'date':
+                if latex_docinfo:
+                    self.head.append('\\date{%s}\n' % self.attval(node.astext()))
+                    raise nodes.SkipNode
+                else:
+                    self.head.append("\\date{}\n")
+
+            self.docinfo.append('\\textbf{%s} &\n\t' % self.language_label(name))
             self.context.append(' \\\\\n')
             self.context.append(self.docinfo)
             self.context.append(len(self.body))
-            ##self.context.append('')
-            ##self.context.append(self.body)
-            ##raise nodes.SkipNode
         # \thanks is a footnote to the title.
 
     def depart_docinfo_item(self, node):
@@ -507,33 +515,30 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_field(self, node):
-        ##self.body.append('%[visit_field]\n')
-        pass
+        self.body.append('%[visit_field]\n')
 
     def depart_field(self, node):
         self.body.append('\n')
         ##self.body.append('%[depart_field]\n')
 
     def visit_field_argument(self, node):
-        ##self.body.append('%[visit_field_argument]\n')
-        pass
+        self.body.append('%[visit_field_argument]\n')
 
     def depart_field_argument(self, node):
-        ##self.body.append('%[depart_field_argument]\n')
-        pass
+        self.body.append('%[depart_field_argument]\n')
 
     def visit_field_body(self, node):
-        ##self.body.append('%[visit_field_body]\n')
-        # BUG attach as text we loose references.
+        # BUG by attach as text we loose references.
         if self.docinfo:
             self.docinfo.append('%s \\\\\n' % node.astext())
             raise nodes.SkipNode
+        # what happens if not docinfo
 
     def depart_field_body(self, node):
-        ##self.body.append('%[depart_field_body]\n')
-        pass
+        self.body.append('%[depart_field_body]\n')
 
     def visit_field_list(self, node):
+        self.body.append('%[visit_field_list]\n')
         ##self.body.append('\\begin{description}\n')
         pass
 
@@ -543,8 +548,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_field_name(self, node):
         # BUG this duplicates docinfo_item
+        self.body.append('%[visit_field_item "'+ node.astext() +'"]\n')
         if self.docinfo:
-            self.docinfo.append('\\textbf{%s} &\n\t' % node.astext())
+            s = self.language_label(node.astext())
+            self.docinfo.append('\\textbf{%s} &\n\t' % s)
             raise nodes.SkipNode
         else:
             self.body.append('\\textbf{')
