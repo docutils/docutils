@@ -1054,7 +1054,14 @@ class option_string(Part, TextElement): pass
 class description(Part, Element): pass
 class literal_block(General, FixedTextElement): pass
 class doctest_block(General, FixedTextElement): pass
-class line_block(General, FixedTextElement): pass
+class line_block(General, Element): pass
+
+
+class line(General, TextElement):
+
+    indent = None
+
+
 class block_quote(General, Element): pass
 class attribution(Part, TextElement): pass
 class attention(Admonition, Element): pass
@@ -1229,7 +1236,7 @@ node_class_names = """
     generated
     header hint
     image important info inline
-    label legend line_block list_item literal literal_block
+    label legend line line_block list_item literal literal_block
     note
     option option_argument option_group option_list option_list_item
         option_string organization
