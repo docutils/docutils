@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 """
-:Authors: David Goodger
+:Author: David Goodger
 :Contact: goodger@users.sourceforge.net
 :Revision: $Revision$
 :Date: $Date$
@@ -146,14 +146,11 @@ class Hyperlinks(Transform):
 
     def resolve_indirect_target(self, target):
         refname = target['refname']
-        reftarget = None
-        if self.document.explicit_targets.has_key(refname):
-            reftarget = self.document.explicit_targets[refname]
-        elif self.document.implicit_targets.has_key(refname):
-            reftarget = self.document.implicit_targets[refname]
-        if not reftarget:
+        reftarget_id = self.document.nameids.get(refname)
+        if not reftarget_id:
             self.nonexistent_indirect_target(target)
             return
+        reftarget = self.document.ids[reftarget_id]
         if isinstance(reftarget, nodes.target) \
               and not reftarget.resolved and reftarget.hasattr('refname'):
             self.one_indirect_target(reftarget) # multiply indirect
@@ -179,9 +176,9 @@ class Hyperlinks(Transform):
         naming = ''
         if target.hasattr('name'):
             naming = '"%s" ' % target['name']
-            reflist = self.document.refnames[target['name']]
+            reflist = self.document.refnames.get(target['name'], [])
         else:
-            reflist = self.document.refnames[target['id']]
+            reflist = self.document.refids.get(target['id'], [])
         naming += '(id="%s")' % target['id']
         msg = self.document.reporter.warning(
               'Indirect hyperlink target %s refers to target "%s", '
@@ -495,7 +492,7 @@ class Footnotes(Transform):
             while 1:
                 label = str(startnum)
                 startnum += 1
-                if not self.document.explicit_targets.has_key(label):
+                if not self.document.nameids.has_key(label):
                     break
             footnote.insert(0, nodes.label('', label))
             if footnote.hasattr('dupname'):
@@ -540,8 +537,9 @@ class Footnotes(Transform):
                     ref.parent.replace(ref, prb)
                 break
             ref += nodes.Text(label)
-            footnote = self.document.explicit_targets[label]
-            ref['refid'] = footnote['id']
+            id = self.document.nameids[label]
+            footnote = self.document.ids[id]
+            ref['refid'] = id
             self.document.note_refid(ref)
             footnote.add_backref(ref['id'])
             ref.resolved = 1
