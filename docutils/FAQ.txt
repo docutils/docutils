@@ -274,6 +274,32 @@ substitution definitions using the "unicode_" directive `are
 available`_ (tarball_).  Please read the `description and
 instructions`_ for use.  Thanks to David Priest for the original idea.
 Incorporating these files into Docutils is on the `to-do list`_.
+   
+If you insist on using XML-style charents, you'll have to implement a
+pre-processing system to convert to UTF-8 or something.  That
+introduces complications though; you can no longer *write* about
+charents naturally; instead of writing "&mdash;" you'd have to write
+"&amp;mdash;".
+
+For the common case of long dashes, you might also want to insert the
+following substitution definitons into your document (both of them are
+using the "unicode_" directive)::
+
+    .. |--| unicode:: U+2013   .. en dash
+    .. |---| unicode:: U+2014  .. em dash, trimming surrounding whitespace
+       :trim:
+
+.. |--| unicode:: U+2013   .. en dash
+.. |---| unicode:: U+2014  .. em dash, trimming surrounding whitespace
+   :trim:
+
+Now you can write dashes using pure ASCII: "``foo |--| bar; foo |---|
+bar``", rendered as "foo |--| bar; foo |---| bar".  (Note that Mozilla
+and Firefox may render this incorrectly.)  The ``:trim:`` option for
+the em dash is necessary because you cannot write "``foo|---|bar``";
+thus you need to add spaces ("``foo |---| bar``") and advise the
+reStructuredText parser to trim the spaces using the ``:trim:``
+option.
 
 .. _unicode:
    http://docutils.sf.net/docs/ref/rst/directives.html#unicode-character-codes
@@ -282,12 +308,6 @@ Incorporating these files into Docutils is on the `to-do list`_.
 .. _description and instructions:
    http://docutils.sourceforge.net/tmp/charents/README.html
 .. _to-do list: http://docutils.sourceforge.net/docs/dev/todo.html
-   
-If you insist on using XML-style charents, you'll have to implement a
-pre-processing system to convert to UTF-8 or something.  That
-introduces complications though; you can no longer *write* about
-charents naturally; instead of writing "&mdash;" you'd have to write
-"&amp;mdash;".
 
 
 How can I generate backticks using a Scandinavian keyboard?
