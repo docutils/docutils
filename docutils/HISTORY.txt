@@ -47,6 +47,11 @@ Changes Since 0.3.7
     the next text element.
   - Fixed duplicate footnote label bug.
 
+* docutils/writers/html4css1.py:
+
+  - Fixed unencoded stylesheet reference bug (characters like "&" in
+    stylesheet reference).
+
 * docutils/writers/latex2e.py:
 
   - Improved --use-latex-docinfo so that organization/contact/address

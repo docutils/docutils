@@ -198,7 +198,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         else:
             stylesheet = utils.get_stylesheet_reference(settings)
             if stylesheet:
-                self.stylesheet = [self.stylesheet_link % stylesheet]
+                self.stylesheet = [self.stylesheet_link
+                                   % self.encode(stylesheet)]
             else:
                 self.stylesheet = []
         self.body_prefix = ['</head>\n<body>\n']
