@@ -28,7 +28,7 @@ class Writer(writers.Writer):
 
     settings_spec = (
         'LaTeX-Specific Options',
-        'The LaTeX "--output-encoding" default is "latin-1".',
+        'The LaTeX "--output-encoding" default is "latin-1:strict".',
         (('Specify documentclass.  Default is "article".',
           ['--documentclass'],
           {'default': 'article', }),
@@ -75,7 +75,7 @@ class Writer(writers.Writer):
         ),
     )
 
-    settings_default_overrides = {'output_encoding': 'latin-1'}
+    settings_default_overrides = {'output_encoding': 'latin-1:strict'}
 
     output = None
     """Final translated form of `document`."""
