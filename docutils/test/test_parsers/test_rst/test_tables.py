@@ -26,7 +26,7 @@ totest['full_tables'] = [
 +-------------------------------------+
 """,
 """\
-<document>
+<document source="test data">
     <table>
         <tgroup cols="1">
             <colspec colwidth="37">
@@ -43,7 +43,7 @@ totest['full_tables'] = [
 +-----------------------+
 """,
 """\
-<document>
+<document source="test data">
     <table>
         <tgroup cols="1">
             <colspec colwidth="23">
@@ -60,11 +60,11 @@ totest['full_tables'] = [
 +-----------------------+
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Malformed table at line 1; formatting as a literal block.
-    <literal_block>
+    <literal_block xml:space="1">
         +-----------------------+
         | A malformed table. |
         +-----------------------+
@@ -79,7 +79,7 @@ totest['full_tables'] = [
 +------------------------+
 """,
 """\
-<document>
+<document source="test data">
     <table>
         <tgroup cols="1">
             <colspec colwidth="24">
@@ -103,7 +103,7 @@ totest['full_tables'] = [
 +--------------+--------------+
 """,
 """\
-<document>
+<document source="test data">
     <table>
         <tgroup cols="2">
             <colspec colwidth="14">
@@ -125,7 +125,7 @@ totest['full_tables'] = [
 +--------------+
 """,
 """\
-<document>
+<document source="test data">
     <table>
         <tgroup cols="1">
             <colspec colwidth="14">
@@ -147,7 +147,7 @@ totest['full_tables'] = [
 +--------------+-------------+
 """,
 """\
-<document>
+<document source="test data">
     <table>
         <tgroup cols="2">
             <colspec colwidth="14">
@@ -176,7 +176,7 @@ totest['full_tables'] = [
 +------------------------------+
 """,
 """\
-<document>
+<document source="test data">
     <table>
         <tgroup cols="2">
             <colspec colwidth="14">
@@ -205,7 +205,7 @@ totest['full_tables'] = [
 +--------------------------+
 """,
 """\
-<document>
+<document source="test data">
     <table>
         <tgroup cols="2">
             <colspec colwidth="12">
@@ -236,7 +236,7 @@ totest['full_tables'] = [
 +--------------+--------------+
 """,
 """\
-<document>
+<document source="test data">
     <table>
         <tgroup cols="2">
             <colspec colwidth="14">
@@ -264,7 +264,7 @@ totest['full_tables'] = [
 +------------+-------------+---------------+
 """,
 """\
-<document>
+<document source="test data">
     <table>
         <tgroup cols="3">
             <colspec colwidth="12">
@@ -302,7 +302,7 @@ Complex spanning pattern (no edge knows all rows/cols):
 +-------------------------+-----------+
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Complex spanning pattern (no edge knows all rows/cols):
     <table>
@@ -344,7 +344,7 @@ Complex spanning pattern (no edge knows all rows/cols):
 +------------------------+------------+---------------------+
 """,
 """\
-<document>
+<document source="test data">
     <table>
         <tgroup cols="4">
             <colspec colwidth="24">
@@ -419,7 +419,7 @@ Complex spanning pattern (no edge knows all rows/cols):
 No blank line after table.
 """,
 """\
-<document>
+<document source="test data">
     <table>
         <tgroup cols="2">
             <colspec colwidth="17">
@@ -439,7 +439,7 @@ No blank line after table.
                     <entry>
                         <paragraph>
                             cell 4
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Blank line required after table at line 6.
     <paragraph>
@@ -454,7 +454,7 @@ No blank line after table.
     Unexpected indent and no blank line after table.
 """,
 """\
-<document>
+<document source="test data">
     <table>
         <tgroup cols="2">
             <colspec colwidth="17">
@@ -474,10 +474,10 @@ No blank line after table.
                     <entry>
                         <paragraph>
                             cell 4
-    <system_message level="3" type="ERROR">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Unexpected indentation at line 6.
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Blank line required after table at line 6.
     <block_quote>
@@ -492,12 +492,12 @@ No blank line after table.
 +----------------------------+
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Malformed table at line 1; formatting as a literal block.
             Malformed table; parse incomplete.
-    <literal_block>
+    <literal_block xml:space="1">
         +--------------+-------------+
         | A bad table. |             |
         +--------------+             |
@@ -514,7 +514,7 @@ No blank line after table.
 +------------------------------+
 """,
 """\
-<document>
+<document source="test data">
     <table>
         <tgroup cols="1">
             <colspec colwidth="30">
@@ -540,7 +540,7 @@ No blank line after table.
 +------------------+--------+
 """,
 """\
-<document>
+<document source="test data">
     <table>
         <tgroup cols="2">
             <colspec colwidth="18">
@@ -568,7 +568,7 @@ A table with  two columns.
 Paragraph.
 """,
 """\
-<document>
+<document source="test data">
     <table>
         <tgroup cols="2">
             <colspec colwidth="12">
@@ -591,7 +591,7 @@ and           two rows.
 ============  ============
 """,
 """\
-<document>
+<document source="test data">
     <table>
         <tgroup cols="2">
             <colspec colwidth="12">
@@ -619,7 +619,7 @@ two rows, and a column span.
 ============================
 """,
 """\
-<document>
+<document source="test data">
     <table>
         <tgroup cols="2">
             <colspec colwidth="12">
@@ -651,7 +651,7 @@ two rows, and a column span.
 ==  ===========  ===========
 """,
 """\
-<document>
+<document source="test data">
     <table>
         <tgroup cols="3">
             <colspec colwidth="2">
@@ -702,7 +702,7 @@ A table with three  columns.
 ==================  ========
 """,
 """\
-<document>
+<document source="test data">
     <table>
         <tgroup cols="3">
             <colspec colwidth="7">
@@ -723,12 +723,12 @@ A simple table  with
 no bottom       border
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Malformed table at line 1; formatting as a literal block.
             No bottom table border found.
-    <literal_block>
+    <literal_block xml:space="1">
         ==============  ======
         A simple table  with
         no bottom       border
@@ -741,17 +741,17 @@ cell 3          cell 4
 No blank line after table.
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Malformed table at line 1; formatting as a literal block.
             No bottom table border found or no blank line after table bottom.
-    <literal_block>
+    <literal_block xml:space="1">
         ==============  ======
         A simple table  cell 2
         cell 3          cell 4
         ==============  ======
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Blank line required after table at line 5.
     <paragraph>
@@ -766,7 +766,7 @@ cell 3          cell 4
 No blank line after table.
 """,
 """\
-<document>
+<document source="test data">
     <table>
         <tgroup cols="2">
             <colspec colwidth="14">
@@ -787,7 +787,7 @@ No blank line after table.
                     <entry>
                         <paragraph>
                             cell 4
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Blank line required after table at line 6.
     <paragraph>
@@ -801,17 +801,17 @@ cell 3          cell 4
     Unexpected indent and no blank line after table.
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Malformed table at line 1; formatting as a literal block.
             No bottom table border found or no blank line after table bottom.
-    <literal_block>
+    <literal_block xml:space="1">
         ==============  ======
         A simple table  cell 2
         cell 3          cell 4
         ==============  ======
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Blank line required after table at line 5.
     <block_quote>
@@ -825,12 +825,12 @@ cell 3          cell 4
 ============  ========
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Malformed table at line 1; formatting as a literal block.
             Column span alignment problem at line offset 2.
-    <literal_block>
+    <literal_block xml:space="1">
         ==============  ======
         A bad table     cell 2
         cell 3          cell 4
@@ -843,12 +843,12 @@ cell 3       cell 4
 ========  =========
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Malformed table at line 1; formatting as a literal block.
             Text in column margin at line offset 1.
-    <literal_block>
+    <literal_block xml:space="1">
         ========  =========
         A bad table  cell 2
         cell 3       cell 4
@@ -867,7 +867,7 @@ cell 3       cell 4
 ==  ============================
 """,
 """\
-<document>
+<document source="test data">
     <table>
         <tgroup cols="2">
             <colspec colwidth="2">
@@ -913,7 +913,7 @@ with empty cells
 ================  ======
 """,
 """\
-<document>
+<document source="test data">
     <table>
         <tgroup cols="2">
             <colspec colwidth="16">
@@ -939,7 +939,7 @@ with empty cells
 ==============  ========
 """,
 """\
-<document>
+<document source="test data">
     <table>
         <tgroup cols="2">
             <colspec colwidth="14">
@@ -968,12 +968,12 @@ cell 3          the bottom border below is too long
 ==============  ========
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Malformed table at line 1; formatting as a literal block.
             Bottom/header table border does not match top border.
-    <literal_block>
+    <literal_block xml:space="1">
         ==============  ======
         A simple table  this text extends to the right
         cell 3          the bottom border below is too long

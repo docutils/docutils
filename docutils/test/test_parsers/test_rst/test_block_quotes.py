@@ -27,7 +27,7 @@ Line 2.
    Indented.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Line 1.
         Line 2.
@@ -44,7 +44,7 @@ Line 2.
       Indented 2.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Line 1.
         Line 2.
@@ -61,11 +61,11 @@ Line 2.
     Unexpectedly indented.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Line 1.
         Line 2.
-    <system_message level="3" type="ERROR">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Unexpected indentation at line 3.
     <block_quote>
@@ -80,14 +80,14 @@ Line 2.
 no blank line
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Line 1.
         Line 2.
     <block_quote>
         <paragraph>
             Indented.
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Block quote ends without a blank line; unexpected unindent at line 5.
     <paragraph>
@@ -104,7 +104,7 @@ Is this correct? Should it generate a warning?
 Yes, it is correct, no warning necessary.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Here is a paragraph.
     <block_quote>

@@ -24,7 +24,7 @@ totest['paragraphs'] = [
 A paragraph.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         A paragraph.
 """],
@@ -34,7 +34,7 @@ Paragraph 1.
 Paragraph 2.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Paragraph 1.
     <paragraph>
@@ -46,7 +46,7 @@ Line 2.
 Line 3.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Line 1.
         Line 2.
@@ -62,7 +62,7 @@ Line 2.
 Line 3.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Paragraph 1, Line 1.
         Line 2.
@@ -77,7 +77,7 @@ A. Einstein was a really
 smart dude.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         A. Einstein was a really
         smart dude.

@@ -190,7 +190,7 @@ def main():
     options.debug = optargs['debug']
     parser = Parser()
     input = inputFile.read()
-    document = new_document(options)
+    document = new_document(inputFile.name, options)
     parser.parse(input, document)
     output = format(outputFormat, input, document, optargs)
     outputFile.write(output)

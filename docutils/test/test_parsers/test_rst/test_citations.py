@@ -24,7 +24,7 @@ totest['citations'] = [
 .. [citation] This is a citation.
 """,
 """\
-<document>
+<document source="test data">
     <citation id="citation" name="citation">
         <label>
             citation
@@ -35,7 +35,7 @@ totest['citations'] = [
 .. [citation1234] This is a citation with year.
 """,
 """\
-<document>
+<document source="test data">
     <citation id="citation1234" name="citation1234">
         <label>
             citation1234
@@ -47,7 +47,7 @@ totest['citations'] = [
    on multiple lines.
 """,
 """\
-<document>
+<document source="test data">
     <citation id="citation" name="citation">
         <label>
             citation
@@ -63,7 +63,7 @@ totest['citations'] = [
   on multiple lines with less space.
 """,
 """\
-<document>
+<document source="test data">
     <citation id="citation1" name="citation1">
         <label>
             citation1
@@ -83,7 +83,7 @@ totest['citations'] = [
    whose block starts on line 2.
 """,
 """\
-<document>
+<document source="test data">
     <citation id="citation" name="citation">
         <label>
             citation
@@ -97,7 +97,7 @@ totest['citations'] = [
 That was an empty citation.
 """,
 """\
-<document>
+<document source="test data">
     <citation id="citation" name="citation">
         <label>
             citation
@@ -109,11 +109,11 @@ That was an empty citation.
 No blank line.
 """,
 """\
-<document>
+<document source="test data">
     <citation id="citation" name="citation">
         <label>
             citation
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Explicit markup ends without a blank line; unexpected unindent at line 2.
     <paragraph>
@@ -125,10 +125,10 @@ No blank line.
 .. [*citationlabelwithmarkup*] this isn't a citation
 """,
 """\
-<document>
-    <comment>
+<document source="test data">
+    <comment xml:space="1">
         [citation label with spaces] this isn't a citation
-    <comment>
+    <comment xml:space="1">
         [*citationlabelwithmarkup*] this isn't a citation
 """],
 ]

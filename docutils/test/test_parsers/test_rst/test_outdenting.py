@@ -31,7 +31,7 @@ This paragraph ends the bullet list item before a block quote.
   Block quote.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Anywhere a paragraph would have an effect on the current
         indentation level, a comment or list item should also.
@@ -62,12 +62,12 @@ This paragraph ends the bullet list item before a block quote.
   Block quote.
 """,
 """\
-<document>
+<document source="test data">
     <bullet_list bullet="+">
         <list_item>
             <paragraph>
                 bullet
-    <comment>
+    <comment xml:space="1">
         Comments swallow up all indented text following.
         \n\
         (Therefore this is not a) block quote.
@@ -78,7 +78,7 @@ This paragraph ends the bullet list item before a block quote.
             <paragraph>
                 If we want a block quote after this bullet list item,
                 we need to use an empty comment:
-    <comment>
+    <comment xml:space="1">
     <block_quote>
         <paragraph>
             Block quote.

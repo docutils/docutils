@@ -27,7 +27,7 @@ See PEP 287 (pep-0287.txt),
 and RFC 2822 (which obsoletes RFC822 and RFC-733).
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         See \n\
         <reference refuri="pep-0287.html">
@@ -57,7 +57,7 @@ RFC
 2822
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         References split across lines:
     <paragraph>
@@ -75,7 +75,7 @@ Test PEP-specific implicit references before a URL:
 PEP 287 (http://www.python.org/peps/pep-0287.html), RFC 2822.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Test PEP-specific implicit references before a URL:
     <paragraph>
@@ -99,7 +99,7 @@ For *completeness*, _`let's` ``test`` **other** forms_
 .. [*] See http://docutils.sf.net/spec/rst/reStructuredText.html.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         For \n\
         <emphasis>

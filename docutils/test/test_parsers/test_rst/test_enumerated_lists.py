@@ -28,7 +28,7 @@ totest['enumerated_lists'] = [
 3. Item three.
 """,
 """\
-<document>
+<document source="test data">
     <enumerated_list enumtype="arabic" prefix="" suffix=".">
         <list_item>
             <paragraph>
@@ -48,7 +48,7 @@ No blank lines betwen items:
 3. Item three.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         No blank lines betwen items:
     <enumerated_list enumtype="arabic" prefix="" suffix=".">
@@ -67,7 +67,7 @@ No blank lines betwen items:
 empty item above, no blank line
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         1.
         empty item above, no blank line
@@ -86,17 +86,17 @@ Scrambled:
 1. Item one.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Scrambled:
-    <system_message level="1" type="INFO">
+    <system_message level="1" source="test data" type="INFO">
         <paragraph>
             Enumerated list start value not ordinal-1 at line 3: "3" (ordinal 3)
     <enumerated_list enumtype="arabic" prefix="" start="3" suffix=".">
         <list_item>
             <paragraph>
                 Item three.
-    <system_message level="1" type="INFO">
+    <system_message level="1" source="test data" type="INFO">
         <paragraph>
             Enumerated list start value not ordinal-1 at line 5: "2" (ordinal 2)
     <enumerated_list enumtype="arabic" prefix="" start="2" suffix=".">
@@ -120,14 +120,14 @@ Skipping item 3:
 4. Item 4.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Skipping item 3:
     <enumerated_list enumtype="arabic" prefix="" suffix=".">
         <list_item>
             <paragraph>
                 Item 1.
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Enumerated list ends without a blank line; unexpected unindent at line 4.
     <paragraph>
@@ -148,10 +148,10 @@ And again:
 3. Item three.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Start with non-ordinal-1:
-    <system_message level="1" type="INFO">
+    <system_message level="1" source="test data" type="INFO">
         <paragraph>
             Enumerated list start value not ordinal-1 at line 3: "0" (ordinal 0)
     <enumerated_list enumtype="arabic" prefix="" start="0" suffix=".">
@@ -169,7 +169,7 @@ And again:
                 Item three.
     <paragraph>
         And again:
-    <system_message level="1" type="INFO">
+    <system_message level="1" source="test data" type="INFO">
         <paragraph>
             Enumerated list start value not ordinal-1 at line 10: "2" (ordinal 2)
     <enumerated_list enumtype="arabic" prefix="" start="2" suffix=".">
@@ -191,7 +191,7 @@ And again:
    Paragraph 2.
 """,
 """\
-<document>
+<document source="test data">
     <enumerated_list enumtype="arabic" prefix="" suffix=".">
         <list_item>
             <paragraph>
@@ -232,7 +232,7 @@ ii. Item ii.
 iii. Item iii.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Different enumeration sequences:
     <enumerated_list enumtype="arabic" prefix="" suffix=".">
@@ -309,7 +309,7 @@ iiii. iiii
 (IVXLCDM) IVXLCDM
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Bad Roman numerals:
     <enumerated_list enumtype="lowerroman" prefix="" suffix=".">
@@ -364,7 +364,7 @@ iii. Item iii.
 Phew! Safe!
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Potentially ambiguous cases:
     <enumerated_list enumtype="upperalpha" prefix="" suffix=".">
@@ -438,7 +438,7 @@ ii. Item ii.
 iii. Item iii.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Definitely ambiguous:
     <enumerated_list enumtype="upperalpha" prefix="" suffix=".">
@@ -466,7 +466,7 @@ iii. Item iii.
         <list_item>
             <paragraph>
                 Item H.
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Enumerated list ends without a blank line; unexpected unindent at line 11.
     <enumerated_list enumtype="upperroman" prefix="" suffix=".">
@@ -504,7 +504,7 @@ iii. Item iii.
         <list_item>
             <paragraph>
                 Item h.
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Enumerated list ends without a blank line; unexpected unindent at line 23.
     <enumerated_list enumtype="lowerroman" prefix="" suffix=".">
@@ -534,7 +534,7 @@ Different enumeration formats:
 (3) Item (3).
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Different enumeration formats:
     <enumerated_list enumtype="arabic" prefix="" suffix=".">
@@ -596,7 +596,7 @@ Nested enumerated lists:
 3. Item 3.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Nested enumerated lists:
     <enumerated_list enumtype="arabic" prefix="" suffix=".">
@@ -658,7 +658,7 @@ Princeton, NJ.
 """,
 # @@@ I think this is the correct result, but I'm not certain:
 """\
-<document>
+<document source="test data">
     <enumerated_list enumtype="upperalpha" prefix="" suffix=".">
         <list_item>
             <paragraph>
@@ -666,7 +666,7 @@ Princeton, NJ.
         <list_item>
             <paragraph>
                 Physicist, who was a colleague of
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Enumerated list ends without a blank line; unexpected unindent at line 3.
     <paragraph>
@@ -684,7 +684,7 @@ Princeton, NJ.
    Paragraph 2.
 """,
 """\
-<document>
+<document source="test data">
     <enumerated_list enumtype="arabic" prefix="" suffix=".">
         <list_item>
             <paragraph>
@@ -693,23 +693,23 @@ Princeton, NJ.
         <list_item>
             <paragraph>
                 Item two: line 1,
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Enumerated list ends without a blank line; unexpected unindent at line 4.
     <block_quote>
         <paragraph>
             line 2.
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Block quote ends without a blank line; unexpected unindent at line 5.
-    <system_message level="1" type="INFO">
+    <system_message level="1" source="test data" type="INFO">
         <paragraph>
             Enumerated list start value not ordinal-1 at line 5: "3" (ordinal 3)
     <enumerated_list enumtype="arabic" prefix="" start="3" suffix=".">
         <list_item>
             <paragraph>
                 Item three: paragraph 1, line 1,
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Enumerated list ends without a blank line; unexpected unindent at line 6.
     <block_quote>

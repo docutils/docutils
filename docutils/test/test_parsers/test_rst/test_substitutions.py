@@ -26,7 +26,7 @@ Here's an image substitution definition:
 .. |symbol| image:: symbol.png
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Here's an image substitution definition:
     <substitution_definition name="symbol">
@@ -39,7 +39,7 @@ Embedded directive starts on the next line:
    image:: symbol.png
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Embedded directive starts on the next line:
     <substitution_definition name="symbol">
@@ -55,7 +55,7 @@ Here's a series of substitution definitions:
 .. |symbol 3| image:: symbol3.png
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Here's a series of substitution definitions:
     <substitution_definition name="symbol 1">
@@ -70,7 +70,7 @@ Here's a series of substitution definitions:
    split across lines| image:: symbol.png
 """,
 """\
-<document>
+<document source="test data">
     <substitution_definition name="very long substitution text, split across lines">
         <image alt="very long substitution text, split across lines" uri="symbol.png">
 """],
@@ -84,7 +84,7 @@ Followed by a paragraph.
     Followed by a block quote.
 """,
 """\
-<document>
+<document source="test data">
     <substitution_definition name="symbol 1">
         <image alt="symbol 1" uri="symbol.png">
     <paragraph>
@@ -102,12 +102,12 @@ Here are some duplicate substitution definitions:
 .. |symbol| image:: symbol.png
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Here are some duplicate substitution definitions:
     <substitution_definition dupname="symbol">
         <image alt="symbol" uri="symbol.png">
-    <system_message level="3" type="ERROR">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Duplicate substitution definition name: "symbol".
     <substitution_definition name="symbol">
@@ -133,56 +133,56 @@ No blank line after.
 .. | bad name | bad data
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Here are some bad cases:
     <substitution_definition name="symbol">
         <image alt="symbol" uri="symbol.png">
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Explicit markup ends without a blank line; unexpected unindent at line 4.
     <paragraph>
         No blank line after.
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Substitution definition "empty" missing contents at line 6.
-        <literal_block>
+        <literal_block xml:space="1">
             .. |empty|
-    <system_message level="3" type="ERROR">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Unknown directive type "directive" at line 8.
-        <literal_block>
+        <literal_block xml:space="1">
             directive:: symbol.png
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Substitution definition "unknown" empty or invalid at line 8.
-        <literal_block>
+        <literal_block xml:space="1">
             .. |unknown| directive:: symbol.png
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Substitution definition "invalid 1" empty or invalid at line 10.
-        <literal_block>
+        <literal_block xml:space="1">
             .. |invalid 1| there's no directive here
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Substitution definition "invalid 2" empty or invalid at line 11.
-        <literal_block>
+        <literal_block xml:space="1">
             .. |invalid 2| there's no directive here
                With some block quote text, line 1.
                And some more, line 2.
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Explicit markup ends without a blank line; unexpected unindent at line 12.
     <block_quote>
         <paragraph>
             With some block quote text, line 1.
             And some more, line 2.
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Substitution definition "invalid 3" empty or invalid at line 15.
-        <literal_block>
+        <literal_block xml:space="1">
             .. |invalid 3| there's no directive here
-    <comment>
+    <comment xml:space="1">
         | bad name | bad data
 """],
 ]

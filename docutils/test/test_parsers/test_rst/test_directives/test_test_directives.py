@@ -26,8 +26,8 @@ totest['test_directives'] = [
 Paragraph.
 """,
 """\
-<document>
-    <system_message level="1" type="INFO">
+<document source="test data">
+    <system_message level="1" source="test data" type="INFO">
         <paragraph>
             Directive processed. Type="reStructuredText-test-directive", data="", directive block: None
     <paragraph>
@@ -39,8 +39,8 @@ Paragraph.
 Paragraph.
 """,
 """\
-<document>
-    <system_message level="1" type="INFO">
+<document source="test data">
+    <system_message level="1" source="test data" type="INFO">
         <paragraph>
             Directive processed. Type="reStructuredText-test-directive", data="argument", directive block: None
     <paragraph>
@@ -54,11 +54,11 @@ Paragraph.
 Paragraph.
 """,
 """\
-<document>
-    <system_message level="1" type="INFO">
+<document source="test data">
+    <system_message level="1" source="test data" type="INFO">
         <paragraph>
             Directive processed. Type="reStructuredText-test-directive", data="", directive block:
-        <literal_block>
+        <literal_block xml:space="1">
             Directive block contains one paragraph, with a blank line before.
     <paragraph>
         Paragraph.
@@ -70,11 +70,11 @@ Paragraph.
 Paragraph.
 """,
 """\
-<document>
-    <system_message level="1" type="INFO">
+<document source="test data">
+    <system_message level="1" source="test data" type="INFO">
         <paragraph>
             Directive processed. Type="reStructuredText-test-directive", data="", directive block:
-        <literal_block>
+        <literal_block xml:space="1">
             Directive block contains one paragraph, no blank line before.
     <paragraph>
         Paragraph.
@@ -87,13 +87,13 @@ no blank line.
 Paragraph.
 """,
 """\
-<document>
-    <system_message level="1" type="INFO">
+<document source="test data">
+    <system_message level="1" source="test data" type="INFO">
         <paragraph>
             Directive processed. Type="reStructuredText-test-directive", data="", directive block:
-        <literal_block>
+        <literal_block xml:space="1">
             block
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Explicit markup ends without a blank line; unexpected unindent at line 3.
     <paragraph>

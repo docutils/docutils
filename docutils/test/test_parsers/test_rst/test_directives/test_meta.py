@@ -26,7 +26,7 @@ totest['meta'] = [
    :keywords: plaintext,markup language
 """,
 """\
-<document>
+<document source="test data">
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.components.Filter
@@ -50,7 +50,7 @@ totest['meta'] = [
    :description lang=fr: Un histoire amusant
 """,
 """\
-<document>
+<document source="test data">
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.components.Filter
@@ -73,7 +73,7 @@ totest['meta'] = [
    :http-equiv=Content-Type: text/html; charset=ISO-8859-1
 """,
 """\
-<document>
+<document source="test data">
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.components.Filter
@@ -89,7 +89,7 @@ totest['meta'] = [
      over multiple lines
 """,
 """\
-<document>
+<document source="test data">
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.components.Filter
@@ -106,7 +106,7 @@ Paragraph
    :name: content
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Paragraph
     <pending>
@@ -122,8 +122,8 @@ Paragraph
 .. meta::
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Empty meta directive at line 1.
 """],
@@ -132,11 +132,11 @@ Paragraph
    :empty:
 """,
 """\
-<document>
-    <system_message level="1" type="INFO">
+<document source="test data">
+    <system_message level="1" source="test data" type="INFO">
         <paragraph>
             No content for meta tag "empty" at line 2.
-        <literal_block>
+        <literal_block xml:space="1">
             :empty:
 """],
 ["""\
@@ -144,11 +144,11 @@ Paragraph
    not a field list
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Invalid meta directive at line 2.
-        <literal_block>
+        <literal_block xml:space="1">
             .. meta::
                not a field list
 """],
@@ -158,7 +158,7 @@ Paragraph
    not a field
 """,
 """\
-<document>
+<document source="test data">
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.components.Filter
@@ -167,10 +167,10 @@ Paragraph
                nodes:
                  <meta content="content" name="name">
                writer: 'html'
-    <system_message level="3" type="ERROR">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Invalid meta directive at line 3.
-        <literal_block>
+        <literal_block xml:space="1">
             .. meta::
                :name: content
                not a field
@@ -180,11 +180,11 @@ Paragraph
    :name notattval: content
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Error parsing meta tag attribute "notattval" at line 2: missing "=".
-        <literal_block>
+        <literal_block xml:space="1">
             :name notattval: content
 """],
 ]

@@ -26,10 +26,10 @@ A paragraph::
     A literal block.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         A paragraph:
-    <literal_block>
+    <literal_block xml:space="1">
         A literal block.
 """],
 ["""\
@@ -38,10 +38,10 @@ A paragraph with a space after the colons:: \n\
     A literal block.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         A paragraph with a space after the colons:
-    <literal_block>
+    <literal_block xml:space="1">
         A literal block.
 """],
 ["""\
@@ -58,14 +58,14 @@ Another paragraph::
 A final paragraph.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         A paragraph:
-    <literal_block>
+    <literal_block xml:space="1">
         A literal block.
     <paragraph>
         Another paragraph:
-    <literal_block>
+    <literal_block xml:space="1">
         Another literal block.
         With two blank lines following.
     <paragraph>
@@ -79,12 +79,12 @@ one line::
     A literal block.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         A paragraph
         on more than
         one line:
-    <literal_block>
+    <literal_block xml:space="1">
         A literal block.
 """],
 ["""\
@@ -95,15 +95,15 @@ one line::
     with no blank line above.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         A paragraph
         on more than
         one line:
-    <system_message level="3" type="ERROR">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Unexpected indentation at line 4.
-    <literal_block>
+    <literal_block xml:space="1">
         A literal block
         with no blank line above.
 """],
@@ -114,12 +114,12 @@ A paragraph::
 no blank line
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         A paragraph:
-    <literal_block>
+    <literal_block xml:space="1">
         A literal block.
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Literal block ends without a blank line; unexpected unindent at line 4.
     <paragraph>
@@ -131,10 +131,10 @@ A paragraph: ::
     A literal block.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         A paragraph:
-    <literal_block>
+    <literal_block xml:space="1">
         A literal block.
 """],
 ["""\
@@ -145,10 +145,10 @@ A paragraph:
     A literal block.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         A paragraph:
-    <literal_block>
+    <literal_block xml:space="1">
         A literal block.
 """],
 ["""\
@@ -158,10 +158,10 @@ A paragraph:
     A literal block.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         A paragraph:
-    <literal_block>
+    <literal_block xml:space="1">
         A literal block.
 """],
 ["""\
@@ -170,10 +170,10 @@ A paragraph::
 Not a literal block.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         A paragraph:
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Literal block expected at line 2; none found.
     <paragraph>
@@ -188,10 +188,10 @@ A paragraph::
     Literal line 3.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         A paragraph:
-    <literal_block>
+    <literal_block xml:space="1">
           A wonky literal block.
         Literal line 2.
         \n\
@@ -201,10 +201,10 @@ A paragraph::
 EOF, even though a literal block is indicated::
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         EOF, even though a literal block is indicated:
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Literal block expected at line 2; none found.
 """],

@@ -33,10 +33,10 @@ Title
 Paragraph.
 """,
 """\
-<document id="title" name="title">
+<document id="title" name="title" source="test data">
     <title>
         Title
-    <comment>
+    <comment xml:space="1">
         test title promotion
     <paragraph>
         Paragraph.
@@ -47,7 +47,7 @@ Title
 Paragraph (no blank line).
 """,
 """\
-<document id="title" name="title">
+<document id="title" name="title" source="test data">
     <title>
         Title
     <paragraph>
@@ -62,7 +62,7 @@ Title
 Paragraph.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Paragraph.
     <section id="title" name="title">
@@ -81,7 +81,7 @@ Subtitle
 Test title & subtitle.
 """,
 """\
-<document id="title" name="title">
+<document id="title" name="title" source="test data">
     <title>
         Title
     <subtitle id="subtitle" name="subtitle">
@@ -96,13 +96,13 @@ Title
 Test short underline.
 """,
 """\
-<document id="title" name="title">
+<document id="title" name="title" source="test data">
     <title>
         Title
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Title underline too short at line 2.
-        <literal_block>
+        <literal_block xml:space="1">
             Title
             ====
     <paragraph>
@@ -118,13 +118,13 @@ The system_message should move after the document title
 (it was before the beginning of the section).
 """,
 """\
-<document id="long-title" name="long title">
+<document id="long-title" name="long title" source="test data">
     <title>
         Long    Title
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Title overline too short at line 1.
-        <literal_block>
+        <literal_block xml:space="1">
             =======
              Long    Title
             =======
@@ -149,10 +149,10 @@ Title 3
 Paragraph 3.
 """,
 """\
-<document id="title-1" name="title 1">
+<document id="title-1" name="title 1" source="test data">
     <title>
         Title 1
-    <comment>
+    <comment xml:space="1">
         Test multiple second-level titles.
     <paragraph>
         Paragraph 1.

@@ -30,7 +30,7 @@ totest['meta'] = ((FirstWriterPending,), [
    :keywords: plaintext,markup language
 """,
 """\
-<document>
+<document source="test data">
     <meta content="The reStructuredText plaintext markup language" name="description">
     <meta content="plaintext,markup language" name="keywords">
 """],

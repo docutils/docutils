@@ -837,10 +837,10 @@ DTD elements: docinfo, author, authors, organization, contact,
 version, status, date, copyright, field, topic.
 
 When a field list is the first non-comment element in a document
-(after the document title, if there is one), it may have certain
-specific fields transformed to document bibliographic data.  This
-bibliographic data corresponds to the front matter of a book, such as
-the title page and copyright page.
+(after the document title, if there is one), it may have its fields
+transformed to document bibliographic data.  This bibliographic data
+corresponds to the front matter of a book, such as the title page and
+copyright page.
 
 Certain registered field names (listed below) are recognized and
 transformed to the corresponding DTD elements, most becoming child
@@ -859,6 +859,7 @@ elements are as follows:
 - "Authors": authors.
 - "Organization": organization.
 - "Contact": contact.
+- "Address": address.
 - "Version": version.
 - "Status": status.
 - "Date": date.
@@ -875,6 +876,10 @@ first, so "Doe, Jane; Doe, John" will work.  In some languages
 single name is interpreted as an "Author".  If a single name contains
 a comma, end it with a semicolon to disambiguate: ":Authors: Doe,
 Jane;".
+
+The "Address" field is for a multi-line surface mailing address.  A
+specialized form of line block`_ (see `reStructuredText Directives`_),
+newlines and whitespace will be preserved.
 
 The "Dedication" and "Abstract" fields may contain arbitrary body
 elements.  Only one of each is allowed.  They become topic elements

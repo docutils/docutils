@@ -24,7 +24,7 @@ totest['bullet_lists'] = [
 - item
 """,
 """\
-<document>
+<document source="test data">
     <bullet_list bullet="-">
         <list_item>
             <paragraph>
@@ -36,7 +36,7 @@ totest['bullet_lists'] = [
 * item 2
 """,
 """\
-<document>
+<document source="test data">
     <bullet_list bullet="*">
         <list_item>
             <paragraph>
@@ -52,7 +52,7 @@ No blank line between:
 + item 2
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         No blank line between:
     <bullet_list bullet="+">
@@ -71,7 +71,7 @@ No blank line between:
 - item 2
 """,
 """\
-<document>
+<document source="test data">
     <bullet_list bullet="-">
         <list_item>
             <paragraph>
@@ -88,7 +88,7 @@ No blank line between:
 - item 2
 """,
 """\
-<document>
+<document source="test data">
     <bullet_list bullet="-">
         <list_item>
             <paragraph>
@@ -109,7 +109,7 @@ Different bullets:
 - item 4
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Different bullets:
     <bullet_list bullet="-">
@@ -124,7 +124,7 @@ Different bullets:
         <list_item>
             <paragraph>
                 item 3
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Bullet list ends without a blank line; unexpected unindent at line 8.
     <bullet_list bullet="-">
@@ -137,12 +137,12 @@ Different bullets:
 no blank line
 """,
 """\
-<document>
+<document source="test data">
     <bullet_list bullet="-">
         <list_item>
             <paragraph>
                 item
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Bullet list ends without a blank line; unexpected unindent at line 2.
     <paragraph>
@@ -154,7 +154,7 @@ no blank line
 empty item above
 """,
 """\
-<document>
+<document source="test data">
     <bullet_list bullet="-">
         <list_item>
     <paragraph>
@@ -165,10 +165,10 @@ empty item above
 empty item above, no blank line
 """,
 """\
-<document>
+<document source="test data">
     <bullet_list bullet="-">
         <list_item>
-    <system_message level="2" type="WARNING">
+    <system_message level="2" source="test data" type="WARNING">
         <paragraph>
             Bullet list ends without a blank line; unexpected unindent at line 2.
     <paragraph>

@@ -47,7 +47,7 @@ totest['admonitions'] = [
    - Back up your data.
 """,
 """\
-<document>
+<document source="test data">
     <attention>
         <paragraph>
             Directives at large.
@@ -98,7 +98,7 @@ totest['admonitions'] = [
 .. note:: No blank lines in-between.
 """,
 """\
-<document>
+<document source="test data">
     <note>
         <paragraph>
             One-line notes.

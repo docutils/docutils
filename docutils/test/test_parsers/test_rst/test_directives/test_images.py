@@ -24,29 +24,29 @@ totest['images'] = [
 .. image:: picture.png
 """,
 """\
-<document>
+<document source="test data">
     <image uri="picture.png">
 """],
 ["""\
 .. image::
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Missing image URI argument at line 1.
-        <literal_block>
+        <literal_block xml:space="1">
             .. image::
 """],
 ["""\
 .. image:: one two three
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Image URI at line 1 contains whitespace.
-        <literal_block>
+        <literal_block xml:space="1">
             .. image:: one two three
 """],
 ["""\
@@ -56,7 +56,7 @@ totest['images'] = [
    :scale: 50
 """,
 """\
-<document>
+<document source="test data">
     <image height="100" scale="50" uri="picture.png" width="200">
 """],
 ["""\
@@ -67,7 +67,7 @@ totest['images'] = [
    :scale: 50
 """,
 """\
-<document>
+<document source="test data">
     <image height="100" scale="50" uri="picture.png" width="200">
 """],
 ["""\
@@ -77,11 +77,11 @@ totest['images'] = [
    :scale: 50
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Missing image URI argument at line 1.
-        <literal_block>
+        <literal_block xml:space="1">
             .. image::
                :height: 100
                :width: 200
@@ -95,7 +95,7 @@ totest['images'] = [
    :scale: 50
 """,
 """\
-<document>
+<document source="test data">
     <image height="100" scale="50" uri="a/very/long/path/to/picture.png" width="200">
 """],
 ["""\
@@ -106,7 +106,7 @@ totest['images'] = [
    :alt: Alternate text for the picture
 """,
 """\
-<document>
+<document source="test data">
     <image alt="Alternate text for the picture" height="100" scale="50" uri="picture.png" width="200">
 """],
 ["""\
@@ -114,13 +114,13 @@ totest['images'] = [
    :scale: - 50
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Error in "image" directive attributes at line 1:
             invalid attribute data: extension attribute field body may contain
             a single paragraph only (attribute "scale").
-        <literal_block>
+        <literal_block xml:space="1">
             .. image:: picture.png
                :scale: - 50
 """],
@@ -129,13 +129,13 @@ totest['images'] = [
    :scale:
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Error in "image" directive attributes at line 1:
             invalid attribute value: (attribute: "scale"; value: None)
             object can't be converted to int.
-        <literal_block>
+        <literal_block xml:space="1">
             .. image:: picture.png
                :scale:
 """],
@@ -144,12 +144,12 @@ totest['images'] = [
    :scale 50
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Error in "image" directive attributes at line 1:
             invalid attribute block.
-        <literal_block>
+        <literal_block xml:space="1">
             .. image:: picture.png
                :scale 50
 """],
@@ -158,11 +158,11 @@ totest['images'] = [
    scale: 50
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Image URI at line 1 contains whitespace.
-        <literal_block>
+        <literal_block xml:space="1">
             .. image:: picture.png
                scale: 50
 """],
@@ -171,12 +171,12 @@ totest['images'] = [
    :: 50
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Error in "image" directive attributes at line 1:
             invalid attribute block.
-        <literal_block>
+        <literal_block xml:space="1">
             .. image:: picture.png
                :: 50
 """],
@@ -185,12 +185,12 @@ totest['images'] = [
    :sale: 50
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Error in "image" directive attributes at line 1:
             unknown attribute: "sale".
-        <literal_block>
+        <literal_block xml:space="1">
             .. image:: picture.png
                :sale: 50
 """],
@@ -199,13 +199,13 @@ totest['images'] = [
    :scale: fifty
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Error in "image" directive attributes at line 1:
             invalid attribute value: (attribute: "scale"; value: 'fifty')
             invalid literal for int(): fifty.
-        <literal_block>
+        <literal_block xml:space="1">
             .. image:: picture.png
                :scale: fifty
 """],
@@ -215,12 +215,12 @@ totest['images'] = [
    :scale: 50
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Error in "image" directive attributes at line 1:
             invalid attribute data: duplicate attribute "scale".
-        <literal_block>
+        <literal_block xml:space="1">
             .. image:: picture.png
                :scale: 50
                :scale: 50

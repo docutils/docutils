@@ -30,7 +30,7 @@ Test transition markers.
 Paragraph
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Test transition markers.
     <transition>
@@ -51,7 +51,7 @@ Section 2
 Paragraph 2 in section 2.
 """,
 """\
-<document>
+<document source="test data">
     <section id="section-1" name="section 1">
         <title>
             Section 1
@@ -86,8 +86,8 @@ may not end with a transition.
 --------
 """,
 """\
-<document>
-    <system_message level="3" type="ERROR">
+<document source="test data">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Document or section may not begin with a transition (line 1).
     <transition>
@@ -97,11 +97,11 @@ may not end with a transition.
         The DTD specifies that two transitions may not
         be adjacent:
     <transition>
-    <system_message level="3" type="ERROR">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             At least one body element must separate transitions; adjacent transitions at line 10.
     <transition>
-    <system_message level="3" type="ERROR">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             At least one body element must separate transitions; adjacent transitions at line 12.
     <transition>
@@ -109,7 +109,7 @@ may not end with a transition.
         The DTD also specifies that a section or document
         may not end with a transition.
     <transition>
-    <system_message level="3" type="ERROR">
+    <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Document or section may not end with a transition (line 17).
 """],
@@ -123,16 +123,16 @@ Test unexpected transition markers.
     Paragraph.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Test unexpected transition markers.
     <block_quote>
         <paragraph>
             Block quote.
-        <system_message level="4" type="SEVERE">
+        <system_message level="4" source="test data" type="SEVERE">
             <paragraph>
                 Unexpected section title or transition at line 5.
-            <literal_block>
+            <literal_block xml:space="1">
                 --------
         <paragraph>
             Paragraph.

@@ -107,7 +107,7 @@ class MiscTests(unittest.TestCase):
 class TreeCopyVisitorTests(unittest.TestCase):
 
     def setUp(self):
-        document = utils.new_document()
+        document = utils.new_document('test data')
         document += nodes.paragraph('', 'Paragraph 1.')
         blist = nodes.bullet_list()
         for i in range(1, 6):

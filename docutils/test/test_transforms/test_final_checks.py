@@ -28,13 +28,13 @@ totest['final_checks'] = ((FinalChecks,), [
 Unknown reference_.
 """,
 """\
-<document>
+<document source="test data">
     <paragraph>
         Unknown \n\
         <problematic id="id2" refid="id1">
             reference_
         .
-    <system_message backrefs="id2" id="id1" level="3" type="ERROR">
+    <system_message backrefs="id2" id="id1" level="3" source="test data" type="ERROR">
         <paragraph>
             Unknown target name: "reference".
 """],

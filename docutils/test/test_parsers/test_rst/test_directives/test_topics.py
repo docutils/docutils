@@ -24,13 +24,13 @@ totest['topics'] = [
 .. topic::
 """,
 """\
-<document>
+<document source="test data">
 """],
 ["""\
 .. topic:: Title
 """,
 """\
-<document>
+<document source="test data">
     <topic>
         <title>
             Title
@@ -41,7 +41,7 @@ totest['topics'] = [
    Body.
 """,
 """\
-<document>
+<document source="test data">
     <topic>
         <title>
             Title
@@ -56,7 +56,7 @@ totest['topics'] = [
    Body.
 """,
 """\
-<document>
+<document source="test data">
     <topic>
         <title>
             Title
@@ -68,11 +68,11 @@ totest['topics'] = [
    Body.
 """,
 """\
-<document>
+<document source="test data">
     <topic>
         <title>
             Title
-        <system_message level="2" type="WARNING">
+        <system_message level="2" source="test data" type="WARNING">
             <paragraph>
                 The second line of a topic block must be blank (line 2).
         <paragraph>
@@ -85,11 +85,11 @@ totest['topics'] = [
    Body.
 """,
 """\
-<document>
+<document source="test data">
     <topic>
         <title>
             Title
-        <system_message level="2" type="WARNING">
+        <system_message level="2" source="test data" type="WARNING">
             <paragraph>
                 The second line of a topic block must be blank (line 4).
         <paragraph>
@@ -103,14 +103,14 @@ totest['topics'] = [
       Body.
 """,
 """\
-<document>
+<document source="test data">
     <topic>
         <title>
             Title
-        <system_message level="3" type="ERROR">
+        <system_message level="3" source="test data" type="ERROR">
             <paragraph>
                 Topics may not be nested within body elements (line 2).
-            <literal_block>
+            <literal_block xml:space="1">
                 .. topic:: Nested
                 \n\
                    Body.
@@ -124,18 +124,18 @@ totest['topics'] = [
    More.
 """,
 """\
-<document>
+<document source="test data">
     <topic>
         <title>
             Title
-        <system_message level="3" type="ERROR">
+        <system_message level="3" source="test data" type="ERROR">
             <paragraph>
                 Topics may not be nested within body elements (line 2).
-            <literal_block>
+            <literal_block xml:space="1">
                 .. topic:: Nested
                 \n\
                    Body.
-        <system_message level="2" type="WARNING">
+        <system_message level="2" source="test data" type="WARNING">
             <paragraph>
                 Explicit markup ends without a blank line; unexpected unindent at line 5.
         <paragraph>
