@@ -6,6 +6,10 @@
    DocFactory-tarball, please use docutils to convert
    it to HTML and open index.html with your webbrowser.
 
+DocFactory 0.2.6 (2004/04/03)
+  * Fixed some bugs. Thanks for Linux-related hints to Jens Koehler
+    and Bjoern Pfeiffer :-))
+
 DocFactory 0.2.5 (2004/02/13)
   * Python 2.3.2 / wxPython 2.4.2.4 / Docutils 0.3 now required
   * Fixed potential bug with Python 2.3.2 / wxPython 2.4.2.4

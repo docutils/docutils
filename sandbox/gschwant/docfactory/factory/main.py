@@ -3,7 +3,7 @@
 """
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
-:version: 0.2.5
+:version: 0.2.6
 """
 
 import browser, images, re, sys, os, time, ConfigParser
@@ -1561,9 +1561,10 @@ class DocFactoryFrame(wxFrame):
         if go_ahead:
             self.nb.SetSelection(0)
             if item != self.activeitem:
-                olditemparent = self.tree.GetItemParent(self.activeitem)
-                self.tree.SetItemBold(olditemparent, 0)
-                self.tree.SetItemTextColour(olditemparent, wxBLACK)
+                if self.activeitem != self.root:
+                    olditemparent = self.tree.GetItemParent(self.activeitem)
+                    self.tree.SetItemBold(olditemparent, 0)
+                    self.tree.SetItemTextColour(olditemparent, wxBLACK)
                 self.tree.SetItemBold(self.activeitem, 0)
                 self.tree.SetItemTextColour(self.activeitem, wxBLACK)
                 self.activeitem = item
