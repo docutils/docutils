@@ -173,7 +173,10 @@ class OptionParser(optik.OptionParser, docutils.OptionSpec):
          # Hidden options, for development use only:
          (optik.SUPPRESS_HELP,
           ['--dump-internals'],
-          {'action': 'store_true'}),))
+          {'action': 'store_true'}),
+         (optik.SUPPRESS_HELP,
+          ['--expose-internal-attribute'],
+          {'action': 'append', 'dest': 'expose_internals'}),))
     """Command-line options common to all Docutils front ends.  Option specs
     specific to individual Docutils components are also used (see
     `populate_from_components()`)."""
