@@ -71,9 +71,9 @@ as we go.  APIs are subject to change at any time.
 Requirements
 ------------
 
-- Python 2.0 or later must already be installed to run the code.
-  Python 2.1 or later is required to run the test suite.  You can get
-  Python from http://www.python.org/.
+- Python 2.1 or later must already be installed to run the code and
+  the test suite.  The latest release is recommended (currently 2.1.3
+  or 2.2.1).  Python is available from http://www.python.org/.
 
 - Docutils uses Greg Ward's Optik_ option processing package.  It is
   now included in the Docutils distribution.
@@ -93,10 +93,13 @@ with caution, as they may contain transient bugs or incompatibilities.
   specifications`__
 - `Snapshot of the Sandbox`__ (experimental, contributed code; see
   `The Sandbox`_ below for details)
+- `Snapshot of DocFactory project files`__ (this is a subset of the
+  Sandbox snapshot above; you don't need both)
 - `Snapshot of web files`__ (the files that generate this web site)
 
 __ http://docutils.sourceforge.net/docutils-snapshot.tgz
 __ http://docutils.sourceforge.net/docutils-sandbox-snapshot.tgz
+__ http://docutils.sourceforge.net/docfactory-snapshot.tgz
 __ http://docutils.sourceforge.net/docutils-web-snapshot.tgz
 
 `Anonymous CVS access`_ is available.  You can also `browse the CVS
