@@ -133,15 +133,15 @@ class HTMLTranslator(nodes.NodeVisitor):
     """
 
     xml_declaration = '<?xml version="1.0" encoding="%s"?>\n'
-    doctype = '<!DOCTYPE html' \
-              ' PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"' \
-              ' SYSTEM "http://www.w3.org/TR/xhtml1/DTD/' \
-              'xhtml1-transitional.dtd">\n'
+    doctype = ('<!DOCTYPE html' 
+               ' PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"'
+               ' "http://www.w3.org/TR/xhtml1/DTD/'
+               'xhtml1-transitional.dtd">\n')
     html_head = '<html lang="%s">\n<head>\n'
-    content_type = '<meta http-equiv="Content-Type" content="text/html; ' \
-                   'charset=%s" />\n'
-    generator = '<meta name="generator" content="Docutils %s: ' \
-                'http://docutils.sourceforge.net/" />\n'
+    content_type = ('<meta http-equiv="Content-Type" content="text/html; '
+                    'charset=%s" />\n')
+    generator = ('<meta name="generator" content="Docutils %s: '
+                 'http://docutils.sourceforge.net/" />\n')
     stylesheet_link = '<link rel="stylesheet" href="%s" type="text/css" />\n'
     embedded_stylesheet = '<style type="text/css"><!--\n\n%s\n--></style>\n'
     named_tags = {'a': 1, 'applet': 1, 'form': 1, 'frame': 1, 'iframe': 1,
