@@ -205,9 +205,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.topic_class = ''
 
     def language_label(self, docutil_label):
-        if self.language.labels.has_key(docutil_label):
-            return self.language.labels[docutil_label]
-        return docutil_label
+        return self.language.labels[docutil_label]
 
     def encode(self, text):
         """
@@ -563,8 +561,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # BUG this duplicates docinfo_item
         self.body.append('%[visit_field_item "'+ node.astext() +'"]\n')
         if self.docinfo:
-            s = self.language_label(node.astext())
-            self.docinfo.append('\\textbf{%s} &\n\t' % s)
+            self.docinfo.append('\\textbf{%s} &\n\t' % node.astext())
             raise nodes.SkipNode
         else:
             self.body.append('\\textbf{')
