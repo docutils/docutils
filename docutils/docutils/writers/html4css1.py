@@ -951,7 +951,8 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_table(self, node):
         self.body.append(
-              self.starttag(node, 'table', frame='border', rules='all'))
+              self.starttag(node, 'table', CLASS="table",
+                            frame='border', rules='all'))
 
     def depart_table(self, node):
         self.body.append('</table>\n')
