@@ -16,7 +16,7 @@ import images
 from   dialogs              import *
 from   controls             import ReSTstc
 from   docutilsadapter      import rest2html
-from   docutils.utils       import relative_uri
+from   docutils.utils       import relative_path
 from   urllib               import quote
 
 #-------------------------------------------------------------------------
@@ -27,10 +27,10 @@ NAME = 'DocFactory'
 DATA = 'dbase.dat'
 
 # need some IDs
-[wxID_WXNEWPROJ, wxID_WXOPENPROJ, wxID_WXNEWREST, wxID_WXADDFILE, wxID_WXREMFILE,
- wxID_WXSAVEFILE, wxID_WXEXITAPP, wxID_WXPUBLRESTHTML, wxID_WXPROJSETTINGS,
- wxID_WXINSERTPATH, wxID_WXCLOSEPROJ, wxID_WXDELETEPROJ] \
- = map(lambda init_menubar: wxNewId(), range(12))
+[wxID_WXNEWPROJ, wxID_WXOPENPROJ, wxID_WXNEWREST, wxID_WXADDFILE,
+ wxID_WXREMFILE, wxID_WXSAVEFILE, wxID_WXEXITAPP, wxID_WXPUBLRESTHTML,
+ wxID_WXPROJSETTINGS, wxID_WXINSERTPATH, wxID_WXCLOSEPROJ,
+ wxID_WXDELETEPROJ] = map(lambda init_menubar: wxNewId(), range(12))
 
 # Accelerator-Table for key commands
 ACCEL = [(wxACCEL_NORMAL,WXK_F7,wxID_WXPUBLRESTHTML),
@@ -78,15 +78,15 @@ class CustomLog(wxPyLog):
 
 class DocFactoryFrame(wxFrame):
     def __init__(self, projects=[]):
-        wxFrame.__init__(self, NULL, -1, NAME, wxDefaultPosition,
-                         (800, 600),
-                         style=wxDEFAULT_FRAME_STYLE|wxNO_FULL_REPAINT_ON_RESIZE)
+        wxFrame.__init__(
+            self, NULL, -1, NAME, wxDefaultPosition, (800, 600),
+            style=wxDEFAULT_FRAME_STYLE|wxNO_FULL_REPAINT_ON_RESIZE)
         self.Centre()
         self.projects = projects
         self.project = None
         self.editor = None
 
-        # Application-Icon        
+        # Application-Icon
         bmp = images.getLogoSmallBitmap()
         mask = wxMaskColour(bmp, wxWHITE)
         bmp.SetMask(mask)
@@ -95,9 +95,9 @@ class DocFactoryFrame(wxFrame):
         self.SetIcon(logoicon)
 
         self.init_menubar()
-        
+
         self.SetAcceleratorTable(wxAcceleratorTable(ACCEL))
-        
+
         # splitter windows
         splitter = wxSplitterWindow(self, -1, style=wxNO_3D|wxSP_3D)
         splitter2 = wxSplitterWindow(splitter, -1, style=wxNO_3D|wxSP_3D)
@@ -124,7 +124,7 @@ class DocFactoryFrame(wxFrame):
         self.log = wxTextCtrl(splitter2, -1,
                               style = wxTE_MULTILINE|wxTE_READONLY|wxHSCROLL)
 
-        # editor-page       
+        # editor-page
         self.InitEditorPage()
 
         # Set the wxWindows log target to be this textctrl
@@ -145,7 +145,7 @@ class DocFactoryFrame(wxFrame):
         self.statusbartimer = wxPyTimer(self.Notify)
         self.statusbartimer.Start(1000)
         self.Notify()
-        
+
         self.Show(true)
 
         # Some global state variables.
@@ -162,7 +162,7 @@ class DocFactoryFrame(wxFrame):
         mainwindow = self
 
         # Project
-        menu=wxMenu()                             
+        menu=wxMenu()
         menu.Append(wxID_WXNEWREST, '&New\tCtrl+N',
                     'Create a new reST-file and add to project')
         EVT_MENU(self, wxID_WXNEWREST, self.on_file_create)
@@ -184,25 +184,25 @@ class DocFactoryFrame(wxFrame):
         self.mainmenu.Append (menu, '&File')
 
         # Insert
-        menu=wxMenu()                             
+        menu=wxMenu()
         menu.Append(wxID_WXINSERTPATH, '&Path',
-                    'Insert path')  
+                    'Insert path')
         EVT_MENU(self, wxID_WXINSERTPATH, self.on_insert_path)
         menu.Enable(wxID_WXINSERTPATH, FALSE)
         self.mainmenu.Append (menu, '&Insert')
 
         # Process
-        menu=wxMenu()                             
+        menu=wxMenu()
         menu.Append(wxID_WXPUBLRESTHTML, 'To &HTML\tF7',
-                    'Create HTML from active file')  
+                    'Create HTML from active file')
         EVT_MENU(self, wxID_WXPUBLRESTHTML, self.on_file_html)
         menu.Enable(wxID_WXPUBLRESTHTML, FALSE)
         self.mainmenu.Append (menu, '&Process')
 
         # Project
-        menu=wxMenu()                             
-        menu.Append(wxID_WXNEWPROJ, '&New', 'Create a new project')  
-        EVT_MENU(self, wxID_WXNEWPROJ, self.on_project_new)    
+        menu=wxMenu()
+        menu.Append(wxID_WXNEWPROJ, '&New', 'Create a new project')
+        EVT_MENU(self, wxID_WXNEWPROJ, self.on_project_new)
         menu.Append(wxID_WXOPENPROJ, '&Open...\tCtrl+O',
                     'Open an existing project')
         EVT_MENU(self, wxID_WXOPENPROJ, self.on_project_open)
@@ -222,15 +222,15 @@ class DocFactoryFrame(wxFrame):
         menu.Enable(wxID_WXCLOSEPROJ, FALSE)
         menu.Enable(wxID_WXPROJSETTINGS, FALSE)
         self.mainmenu.Append (menu, 'Pr&oject')
-        
+
         # Help
-        menu=wxMenu()                             
-        exitID=wxNewId()                          
-        menu.Append(exitID, '&About', 'About')  
+        menu=wxMenu()
+        exitID=wxNewId()
+        menu.Append(exitID, '&About', 'About')
         EVT_MENU(self, exitID, self.on_help_about)
         self.mainmenu.Append (menu, '&Help')
-        
-        self.SetMenuBar(self.mainmenu) 
+
+        self.SetMenuBar(self.mainmenu)
 
     def activateMenuItemsProjectOpen(self, value):
         menu = self.mainmenu.GetMenu(0)
@@ -244,7 +244,7 @@ class DocFactoryFrame(wxFrame):
             menu.Enable(wxID_WXDELETEPROJ, value)
         menu.Enable(wxID_WXCLOSEPROJ, value)
         menu.Enable(wxID_WXPROJSETTINGS, value)
-        
+
     def activateMenuItemsFileSelected(self, value):
         menu = self.mainmenu.GetMenu(1)
         menu.Enable(wxID_WXINSERTPATH, value)
@@ -328,9 +328,9 @@ class DocFactoryFrame(wxFrame):
                 warning_lines = []
                 error_lines = []
                 try:
-                    warning_lines, error_lines = rest2html(file, htmlfile,
-                                                           os.path.join(self.project.directory,
-                                                                        self.project.stylesheet))
+                    warning_lines, error_lines = rest2html(
+                        file, htmlfile, os.path.join(self.project.directory,
+                                                     self.project.stylesheet))
                 finally:
                     linecount = self.editor.GetLineCount()
                     self.editor.MarkerDeleteAll(0)
@@ -351,8 +351,10 @@ class DocFactoryFrame(wxFrame):
                     if self.nb.GetPageCount() > 1:
                         self.nb.DeletePage(1)
                     # init html preview page
-                    htmlprv = browser.HtmlPanel(self.nb, self, self.log, htmlfile)
-                    self.nb.AddPage(htmlprv, 'Preview: %s' % htmlfile_basename)
+                    htmlprv = browser.HtmlPanel(self.nb, self, self.log,
+                                                htmlfile)
+                    self.nb.AddPage(htmlprv, 'Preview: %s'
+                                    % htmlfile_basename)
                     if warning_lines == error_lines == []:
                         self.nb.SetSelection(1)
                 t = time.localtime(time.time())
@@ -376,8 +378,8 @@ class DocFactoryFrame(wxFrame):
         go_ahead = true
         if self.editor != None:
             if self.editor.IsModified:
-                dlg=wxMessageDialog(self, 'Save changes?',
-                                    NAME, wxYES_NO | wxCANCEL | wxICON_QUESTION)
+                dlg=wxMessageDialog(self, 'Save changes?', NAME,
+                                    wxYES_NO | wxCANCEL | wxICON_QUESTION)
                 result = dlg.ShowModal()
                 if result == wxID_YES:
                     file = self.tree.GetItemText(self.activeitem)
@@ -423,8 +425,9 @@ class DocFactoryFrame(wxFrame):
                 available_projects.append(project.name)
             if available_projects != []:
                 available_projects.sort()
-                dlg = wxSingleChoiceDialog(self, 'Select a project', 'Projects',
-                                           available_projects, wxOK|wxCANCEL)
+                dlg = wxSingleChoiceDialog(self, 'Select a project',
+                                           'Projects', available_projects,
+                                           wxOK|wxCANCEL)
                 dlg.Centre()
                 if dlg.ShowModal() == wxID_OK:
                     project_name = dlg.GetStringSelection()
@@ -434,7 +437,8 @@ class DocFactoryFrame(wxFrame):
                             self.projectInit(self.project)
                 dlg.Destroy()
             else:
-                customMsgBox(self, 'Sorry, I don\'t remember any projects.', 'info')
+                customMsgBox(self, 'Sorry, I don\'t remember any projects.',
+                             'info')
 
     def on_project_delete(self, event):
         available_projects = []
@@ -454,7 +458,8 @@ class DocFactoryFrame(wxFrame):
                             self.delete_project(project)
             dlg.Destroy()
         else:
-            customMsgBox(self, 'Sorry, I don\'t remember any projects.', 'info')
+            customMsgBox(self, 'Sorry, I don\'t remember any projects.',
+                         'info')
 
     def on_project_new(self, event):
         go_ahead = true
@@ -559,8 +564,8 @@ class DocFactoryFrame(wxFrame):
                     self.project.add(file)
                     self.projectSave()
                 else:
-                    customMsgBox(self, 'This file is already part of your project.',
-                                 'wakeup')
+                    customMsgBox(self, 'This file is already part of your '
+                                 'project.', 'wakeup')
             dlg.Destroy()
 
     def on_file_create(self, event):
@@ -576,8 +581,9 @@ class DocFactoryFrame(wxFrame):
             dlg.Destroy()
 
             if go_ahead:
-                dlg = wxTextEntryDialog(self, 'Enter a title for this document:',
-                                        'Title', '', wxOK | wxCANCEL)
+                dlg = wxTextEntryDialog(
+                    self, 'Enter a title for this document:', 'Title', '',
+                    wxOK | wxCANCEL)
                 dlg.Centre()
                 if dlg.ShowModal() == wxID_OK:
                     title = dlg.GetValue()
@@ -585,7 +591,7 @@ class DocFactoryFrame(wxFrame):
                     go_ahead = false
                 dlg.Destroy()
 
-            if go_ahead:                
+            if go_ahead:
                 try:
                     f = open(file, 'w')
                     f.write(len(title)*'='+'\n')
@@ -605,7 +611,8 @@ class DocFactoryFrame(wxFrame):
                     self.tree.Expand(self.root)
                     self.projectSave()
                 except:
-                    customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
+                    customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(),
+                                 'error')
             dlg.Destroy()
 
     def on_file_remove(self, event):
@@ -619,15 +626,17 @@ class DocFactoryFrame(wxFrame):
                 self.nb.SetPageText(0, 'Editor')
                 self.editor.Clear()
                 self.editor.Enable(0)
-                dlg=wxMessageDialog(self, 'Delete file %s from disk?' % file,
-                                    NAME, wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION)
+                dlg=wxMessageDialog(
+                    self, 'Delete file %s from disk?' % file, NAME,
+                    wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION)
                 result = dlg.ShowModal()
                 if result == wxID_YES:
                     try:
                         self.activateMenuItemsFileSelected(FALSE)
                         os.remove(file)
                     except:
-                        customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
+                        customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(),
+                                     'error')
                 dlg.Destroy()
             else:
                 customMsgBox(self, 'No file selected.', 'wakeup')
@@ -640,7 +649,7 @@ class DocFactoryFrame(wxFrame):
                 self.editor.SaveFile(file)
                 if self.nb.GetPageCount() > 1:
                     self.nb.DeletePage(1)
-                
+
     def on_file_html(self, event):
         if self.project <> None:
             item = self.activeitem
@@ -665,8 +674,9 @@ class DocFactoryFrame(wxFrame):
                                     wxOPEN|wxFILE_MUST_EXIST)
                 if dlg.ShowModal() == wxID_OK:
                     target = dlg.GetPath()
-                    self.editor.InsertText(self.editor.GetCurrentPos(),
-                                           quote(relative_uri(self.htmlfile(source), target)))
+                    self.editor.InsertText(
+                        self.editor.GetCurrentPos(),
+                        quote(relative_path(self.htmlfile(source), target)))
                 dlg.Destroy()
             else:
                 customMsgBox(self, 'No file selected.', 'wakeup')
@@ -705,7 +715,7 @@ class DocFactoryFrame(wxFrame):
                 self.activeitem = item
             else:
                 go_ahead = false
-                
+
         if go_ahead:
             if item != self.root:
                 self.tree.SetItemBold(item, 1)
@@ -718,7 +728,8 @@ class DocFactoryFrame(wxFrame):
                     self.editor.Enable(1)
                     self.activateMenuItemsFileSelected(TRUE)
                 else:
-                    dlg=wxMessageDialog(self, '%s does not exist.\nRemove from project?' % file,
+                    dlg=wxMessageDialog(self, '%s does not exist.\nRemove '
+                                        'from project?' % file,
                                         NAME, wxYES_NO | wxICON_QUESTION)
                     if dlg.ShowModal() == wxID_YES:
                         self.tree.Delete(item)
