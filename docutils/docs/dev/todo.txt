@@ -633,8 +633,7 @@ __ rst/alternatives.html#or-not-to-do
 
   Another idea: in an ordinary paragraph, if the first line ends with
   a backslash (escaping the newline), interpret the entire paragraph
-  as a verse block?  This ties in to the `character processing`_ idea,
-  above.  For example::
+  as a verse block?  For example::
 
       Add just one backslash\
       And this paragraph becomes
