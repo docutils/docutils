@@ -87,7 +87,7 @@ resolve to either an internal or external reference.
 <!ENTITY % anonymous.att
   " anonymous %yesorno; #IMPLIED ">
 
-<!-- Auto-numbered footnote. -->
+<!-- Auto-numbered footnote or title. -->
 <!ENTITY % auto.att
   " auto      %yesorno; #IMPLIED ">
 
@@ -127,7 +127,8 @@ resolve to either an internal or external reference.
 <!ENTITY % inline.elements
   " emphasis | strong | interpreted | literal
     | reference | footnote_reference | citation_reference
-    | substitution_reference | target | image | problematic | raw
+    | substitution_reference | problematic | generated 
+    | target | image | raw
     %additional.inline.elements; ">
 
 <!-- Element Content Models
@@ -188,7 +189,8 @@ http://www.oasis-open.org/html/tm9901.htm).
 <!ELEMENT title %text.model;>
 <!ATTLIST title
     %basic.atts;
-    %refid.att;>
+    %refid.att;
+    %auto.att;>
 
 <!ELEMENT subtitle %text.model;>
 <!ATTLIST subtitle %basic.atts;>
@@ -522,6 +524,9 @@ following caveats:
 <!ATTLIST problematic
     %basic.atts;
     %refid.att;>
+
+<!ELEMENT generated (%text.model;)>
+<!ATTLIST generated %basic.atts;>
 
 
 <!--
