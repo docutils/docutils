@@ -5,36 +5,37 @@
 :author:    Dr. Gunnar Schwant
 :contact:   g.schwant@gmx.de
 :date:      $Date$
-:version:   0.1.3
+:version:   0.1.4
 :copyright: Copyright (c) 2002 Dr. Gunnar Schwant (g.schwant@gmx.de).
             All rights reserved.  See LICENSE.txt_ for license details.
 
-:abstract: This is a short introduction to **DocFactory**.  Hopefully,
+:abstract: This is a short introduction to DocFactory.  Hopefully,
            more documentation will be available soon.
 
 .. _DocFactory: http://docutils.sf.net/sandbox/gschwant/docfactory/
 
+.. sectnum::
 .. contents::
 
 
 What is it?
 ===========
 
-**DocFactory** is a kind of *integrated publishing environment* for
+DocFactory is a kind of *integrated publishing environment* for
 documentation, tied to Docutils_.  In fact, the intention of
-**DocFactory** is to be a GUI for Docutils.  At present it can be used
+DocFactory is to be a GUI for Docutils.  At present it can be used
 to edit a set of one or more reStructuredText_ files simultaneously
 and publish them as HTML.  Support for other markups and output
 formats is planned for future releases; see `Future Directions`_.
 
-**DocFactory** was built using Docutils_, Python_ and wxPython_.
+DocFactory was built using Docutils_, Python_ and wxPython_.
 *Many thanks to all developers!*
 
 
 System requirements
 ===================
 
-**DocFactory** is distributed as a subpackage of Docutils
+DocFactory is distributed as a subpackage of Docutils
 (``docutils.factory``).  In order to run it in a Python-environment
 you'll need the following:
 
@@ -50,102 +51,138 @@ you'll need the following:
 Installation
 ============
 
+The first step is to expand the ``.tar.gz`` or ``.tgz`` archive.  It
+contains a distutils setup file "setup.py".  OS-specific installation
+instructions follow.
+
 Win32
 -----
 
-Download and run the Windows installer "DocFactory-0.1.3.win32.exe".
+1. Open a DOS box (Command Shell, MSDOS Prompt, or whatever they're
+   calling it these days).
+
+2. Go to the directory created by expanding the archive::
+
+       cd <archive_directory_path>
+
+3. Install the package::
+
+       <path_to_python.exe>\python setup.py install
 
 
 GNU/Linux, Unix, MacOS X, etc.
 ------------------------------
 
-Extract the ``.tar.gz`` or ``.tgz`` archive.  It contains a distutils
-setup file "setup.py".  Run this python script with argument
-"install"::
+1. Open a shell.
 
-    python setup.py install
+2. Go to the directory created by expanding the archive::
 
-If the python executable isn't on your path, you'll have to specify
-the complete path, such as ``/usr/local/bin/python``.  You may need
-root permissions to complete this step.
+       cd <archive_directory_path>
+
+3. Install the package::
+
+       python setup.py install
+
+   If the python executable isn't on your path, you'll have to specify
+   the complete path, such as /usr/local/bin/python.  You may need
+   root permissions to complete this step.
 
 
 Usage
 =====
 
-A short introductory example
-----------------------------
+How to start DocFactory
+-----------------------
 
 After successful installation you'll find "docfactory.py" in the
 scripts-directory of your Python environment.  Run this file in the
 same way as you do it with any other Python-program on your system.
 The main window will appear.
 
-Select "Project -> New" to create a new project.  This will bring up
-the "Project Settings"-dialog where you have to specify some basic
-information about your project:
+Files
+-----
 
-*Title*
-  Enter a title for your
-  project here.
+Create a new file
+~~~~~~~~~~~~~~~~~
 
-*Author*
-  Enter your name here. It will
-  be used as default value for
-  author in new files.
-
-*Contact*
-  Enter your e-mail-address here.
-  It will be used as default value
-  for contact in new files.
-
-*Output-Directory*
-  This is the directory where HTML-files
-  will be created.
-
-*Stylesheet*
-  Specify a stylesheet (``.css``) in the
-  output-directory which will be used by
-  HTML-output. You can choose an arbitrary
-  stylesheet by pressing "Select". (Please note
-  that the selected stylesheet will be copied 
-  to the output-directory.)
-
-If you press the dialog's "OK"-button a project tree will be created
-in the left splitter window and the editor page will appear.  Now you
-have two options:
-
-1. Add an existing reStructuredText file to your project.
-
-   *or*
-
-2. Create a new reStructuredText file which will be added to your
-   project.
-
-Let's proceed with option 2: Type ``Ctrl+N``.  You will be asked for a
+Type ``Ctrl+N`` to create a new text file.  You will be asked for a
 location and title of the new file.  Afterwards the file will be
-created and added to the project tree on the left.  Select the file in
-the project tree to load it into the editor.  As you will notice the
-titles and some bibliographic fields have been inserted already :-).
+created, added to the tree on the left and loaded it into the editor.  
+As you will notice the title has been inserted at the top of the
+file.
 
-Press ``F7`` to publish the file as HTML.  As soon as the processing
-is finished the HTML-file will be displayed in a preview page.  Please
-note that this preview does **not** support stylesheets.  If you want
-to have a look at your document in your web browser (which hopefully
-does support stylesheets) click on "View In Browser".  [#]_
+Open an existing file
+~~~~~~~~~~~~~~~~~~~~~
 
-Now, this should be enough for the beginning.  Start playing with
-**DocFactory**, have fun, report bugs, contribute, ...  Any kind of
-feedback is welcome.
+To open an already existing text file simply type ``Ctrl+O`` and
+select the file. It will be added to the tree and loaded into
+the editor.
 
-.. [#] Up to now this is supported on win32 only.  Please contribute
-   if you are running DocFactory on a non-win32 OS.
+Publish a file as HTML
+~~~~~~~~~~~~~~~~~~~~~~
 
+A file which has been loaded into the editor can be published as HTML
+by pressing ``F7``.  The processing happens in a standard Docutils way: 
+The HTML file is created in the directory of your text file and you can 
+customize processing by setting up Docutils configuration files. [1]_
+
+As soon as the processing is finished the HTML-file will be displayed 
+in a preview page.  Please note that this preview does **not** support 
+stylesheets.  If you want to have a look at the document in your default
+webbrowser (which hopefully does support stylesheets) click on "View 
+In Browser".
+
+Projects
+--------
+
+If you want
+
+* to edit and publish one or more text files in the same way 
+
+* to use DocFactory to edit the same files more than once *or* 
+
+* to setup a Docutils configuration file easily
+
+a project may be the right choice for you. 
+
+Setting up a project
+~~~~~~~~~~~~~~~~~~~~
+
+To setup a project select "Project -> New".  The **Project Settings** 
+dialog will appear.  It consists of two pages: 
+
+**DocFactory-page**
+  On this page you specify an *output-directory* and a *title* for your 
+  project. The output-directory is the place where any HTML-files will 
+  be created.
+
+**Docutils-page**
+  As part of your project a Docutils configuration file ``docutils.conf``
+  will be created in the output-directory. (If there is already a 
+  ``docutils.conf`` file in the output-directory this one will be used.) 
+  On the Docutils-page of the "Project Settings" dialog you can set 
+  the values of certain configuration file entries (*stylesheet*, 
+  *output-encoding*, *datestamp*, ...).  Please have a closer look at 
+  the Docutils documentation on configuration file entries to learn about 
+  the effect of these settings. [2]_
+
+Press the "OK"-button to finish the setup.  The project appears as part
+of the tree on the left. 
+
+Adding files to a project
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In order to create a new file within a project or add an existing file 
+to a project simply activate the project's item in the tree on the left 
+(double-click) and press ``Ctrl+N`` or ``Ctrl+O`` as described above. 
+The behaviour is like this: If a project is active any file which is 
+created and/or opened will be added to the active project.  (If no 
+project is active files will be created/opened outside of projects.)
 
 Keyboard Shortcuts
 ------------------
 
-For rapid development **DocFactory** features Windows-style keyboard
+For rapid development DocFactory features Windows-style keyboard
 shortcuts:
 
 ==============================  ======================================
@@ -155,6 +192,8 @@ Action                          Keyboard Shortcut
 ----------------------------------------------------------------------
 New File                        Ctrl+N
 ------------------------------  --------------------------------------
+Open File                       Ctrl+O
+------------------------------  --------------------------------------
 Save File                       Ctrl+S
 ------------------------------  --------------------------------------
 Exit Application                Alt+X
@@ -163,11 +202,6 @@ Exit Application                Alt+X
 **Process Menu**
 ----------------------------------------------------------------------
 To HTML                         F7
-------------------------------  --------------------------------------
-
-**Project Menu**
-----------------------------------------------------------------------
-Open Project                    Ctrl+O
 ------------------------------  --------------------------------------
 
 **Editing**
@@ -207,10 +241,15 @@ editor commands.  Moreover, you can use the mouse to move selected
 text.
 
 
+*Now, this should be enough for the beginning.  Start playing with
+DocFactory, have fun, report bugs, contribute, ...  Any kind of
+feedback is welcome.*
+
+
 Future Directions
 =================
 
-Future releases of **DocFactory** will support any markup and output
+Future releases of DocFactory will support any markup and output
 formats which are supported by Docutils.  Some other useful things
 will be implemented as well.  For example:
 
@@ -219,18 +258,16 @@ will be implemented as well.  For example:
 * find & replace dialog
 * ...
 
-.. _LICENSE.txt:      LICENSE.html
-.. _reStructuredText: http://docutils.sourceforge.net/rst.html
-.. _Python:           http://www.python.org
-.. _wxPython:         http://wxpython.org
-.. _py2exe:           http://py2exe.sourceforge.net
-.. _Docutils:         http://docutils.sourceforge.net
+.. Footnotes
 
-
-..
-   Local Variables:
-   mode: indented-text
-   indent-tabs-mode: nil
-   sentence-end-double-space: t
-   fill-column: 70
-   End:
+.. [1] http://docutils.sourceforge.net/docs/tools.html#configuration-files
+
+.. [2] http://docutils.sourceforge.net/docs/tools.html#configuration-file-entries
+
+.. Hyperlinks
+
+.. _LICENSE.txt:           LICENSE.html
+.. _reStructuredText:      http://docutils.sourceforge.net/rst.html
+.. _Python:                http://www.python.org
+.. _wxPython:              http://wxpython.org
+.. _Docutils:              http://docutils.sourceforge.net
