@@ -101,6 +101,7 @@ donations, tasty treats, and related projects:
 * Tavis Rudd
 * Tracy Ruggles
 * Oliver Rutherfurd
+* Luc Saffre
 * Kenichi Sato
 * Ueli Schlaepfer
 * Gunnar Schwant
