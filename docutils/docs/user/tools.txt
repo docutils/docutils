@@ -166,9 +166,12 @@ be overridden by command-line options or configuration files.  The
 "``tools/stylesheets/pep.css``" stylesheet is intended specifically
 for PEP use.
 
+.. XXX the docutils.conf in spec/ was next to the PEPs.  Now it's
+   gone; there is no docutils.conf in docs/peps/.
+
 The "``docutils.conf``" `configuration file`_ in the "``spec``"
 directory of Docutils contains a default setup for use in processing
-the PEP files there (``spec/pep-*.txt``) into HTML.  It specifies a
+the PEP files there (``docs/peps/pep-*.txt``) into HTML.  It specifies a
 default template (``tools/pep-html-template``) and a default
 stylesheet (``tools/stylesheets/pep.css``).  See Stylesheets_ above
 for more information.
