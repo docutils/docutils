@@ -269,12 +269,12 @@ Syntax for Interpreted Text Role Bindings
 -----------------------------------------
 
 The following syntax (idea from Jeffrey C. Jacobs) could be used to
-associate directives with roles.
+associate directives with roles::
 
-      .. :rewrite: class:: rewrite
+    .. :rewrite: class:: rewrite
 
-      `She wore ribbons in her hair and it lay with streaks of
-      grey`:rewrite:
+    `She wore ribbons in her hair and it lay with streaks of
+    grey`:rewrite:
 
 The syntax is similar to that of substitution declarations, and the
 directive/role association may resolve implementation issues.  The
