@@ -982,7 +982,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             a_start = a_end = ''
         self.body.append('System Message: %s%s/%s%s (<tt>%s</tt>%s)%s</p>\n'
                          % (a_start, node['type'], node['level'], a_end,
-                            node['source'], line, backref_text))
+                            self.encode(node['source']), line, backref_text))
 
     def depart_system_message(self, node):
         self.body.append('</div>\n')
