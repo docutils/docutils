@@ -23,7 +23,7 @@ import time
 import re
 from types import ListType
 import docutils
-from docutils import nodes, utils, writers, languages
+from docutils import frontend, nodes, utils, writers, languages
 
 
 class Writer(writers.Writer):
@@ -46,14 +46,15 @@ class Writer(writers.Writer):
          ('Link to the stylesheet in the output HTML file.  This is the '
           'default.',
           ['--link-stylesheet'],
-          {'dest': 'embed_stylesheet', 'action': 'store_false'}),
+          {'dest': 'embed_stylesheet', 'action': 'store_false',
+           'validator': frontend.validate_boolean}),
          ('Embed the stylesheet in the output HTML file.  The stylesheet '
           'file must be accessible during processing (--stylesheet-path is '
           'recommended).  The stylesheet is embedded inside a comment, so it '
           'must not contain the text "--" (two hyphens).  Default: link the '
           'stylesheet, do not embed it.',
           ['--embed-stylesheet'],
-          {'action': 'store_true'}),
+          {'action': 'store_true', 'validator': frontend.validate_boolean}),
          ('Format for footnote references: one of "superscript" or '
           '"brackets".  Default is "superscript".',
           ['--footnote-references'],
@@ -69,13 +70,15 @@ class Writer(writers.Writer):
           'items each contain one paragraph and/or one "simple" sublist '
           'only).  Default: enabled.',
           ['--compact-lists'],
-          {'default': 1, 'action': 'store_true'}),
+          {'default': 1, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
          ('Disable compact simple bullet and enumerated lists.',
           ['--no-compact-lists'],
           {'dest': 'compact_lists', 'action': 'store_false'}),
          ('Omit the XML declaration.  Use with caution.',
-          ['--no-xml-declaration'], {'dest': 'xml_declaration', 'default': 1,
-                                     'action': 'store_false'}),))
+          ['--no-xml-declaration'],
+          {'dest': 'xml_declaration', 'default': 1, 'action': 'store_false',
+           'validator': frontend.validate_boolean}),))
 
     relative_path_settings = ('stylesheet_path',)
 

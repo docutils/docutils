@@ -75,6 +75,7 @@ __docformat__ = 'reStructuredText'
 import docutils.parsers
 import docutils.statemachine
 from docutils.parsers.rst import states
+from docutils import frontend
 
 
 class Parser(docutils.parsers.Parser):
@@ -89,16 +90,16 @@ class Parser(docutils.parsers.Parser):
         None,
         (('Recognize and link to PEP references (like "PEP 258").',
           ['--pep-references'],
-          {'action': 'store_true'}),
+          {'action': 'store_true', 'validator': frontend.validate_boolean}),
          ('Recognize and link to RFC references (like "RFC 822").',
           ['--rfc-references'],
-          {'action': 'store_true'}),
+          {'action': 'store_true', 'validator': frontend.validate_boolean}),
          ('Set number of spaces for tab expansion (default 8).',
           ['--tab-width'],
           {'metavar': '<width>', 'type': 'int', 'default': 8}),
          ('Remove spaces before footnote references.',
           ['--trim-footnote-reference-space'],
-          {'action': 'store_true'}),))
+          {'action': 'store_true', 'validator': frontend.validate_boolean}),))
 
     config_section = 'restructuredtext parser'
     config_section_dependencies = ('parsers',)

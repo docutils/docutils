@@ -12,7 +12,7 @@ __docformat__ = 'reStructuredText'
 
 
 import sys
-from docutils import readers
+from docutils import frontend, readers
 from docutils.transforms import frontmatter, references
 from docutils.parsers.rst import Parser
 
@@ -32,11 +32,13 @@ class Reader(readers.Reader):
           'document title (and subsequent section title to document '
           'subtitle promotion; enabled by default).',
           ['--no-doc-title'],
-          {'dest': 'doctitle_xform', 'action': 'store_false', 'default': 1}),
+          {'dest': 'doctitle_xform', 'action': 'store_false', 'default': 1,
+           'validator': frontend.validate_boolean}),
          ('Disable the bibliographic field list transform (enabled by '
           'default).',
           ['--no-doc-info'],
-          {'dest': 'docinfo_xform', 'action': 'store_false', 'default': 1}),))
+          {'dest': 'docinfo_xform', 'action': 'store_false', 'default': 1,
+           'validator': frontend.validate_boolean}),))
 
     config_section = 'standalone reader'
     config_section_dependencies = ('readers',)

@@ -20,7 +20,7 @@ import time
 import re
 import string
 from types import ListType
-from docutils import writers, nodes, languages
+from docutils import frontend, nodes, languages, writers
 
 class Writer(writers.Writer):
 
@@ -36,7 +36,8 @@ class Writer(writers.Writer):
          ('Use LaTeX footnotes. '
           'Default: no, uses figures.',
           ['--use-latex-footnotes'],
-          {'default': 0, 'action': 'store_true'}),
+          {'default': 0, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
          ('Format for footnote references: one of "superscript" or '
           '"brackets".  Default is "brackets".',
           ['--footnote-references'],
@@ -48,8 +49,8 @@ class Writer(writers.Writer):
           {'choices': ['dash', 'parentheses', 'parens', 'none'],
            'default': 'dash', 'metavar': '<format>'}),
          ('Specify a stylesheet file. The file will be "input" by latex in '
-          'the document header.  Default is "no stylesheet".  If this is set to '
-          '"" disables input.  Overridden by --stylesheet-path.',
+          'the document header.  Default is no stylesheet ("").  '
+          'Overridden by --stylesheet-path.',
           ['--stylesheet'],
           {'default': '', 'metavar': '<file>'}),
          ('Specify a stylesheet file, relative to the current working '
@@ -59,16 +60,18 @@ class Writer(writers.Writer):
          ('Link to the stylesheet in the output LaTeX file.  This is the '
           'default.',
           ['--link-stylesheet'],
-          {'dest': 'embed_stylesheet', 'action': 'store_false'}),
+          {'dest': 'embed_stylesheet', 'action': 'store_false',
+           'validator': frontend.validate_boolean}),
          ('Embed the stylesheet in the output LaTeX file.  The stylesheet '
           'file must be accessible during processing (--stylesheet-path is '
           'recommended).',
-          ['--embed-stylesheet'],
-          {'action': 'store_true'}),
-         ('Table of contents by docutils (default) or latex. Latex(writer) '
+          ['--embed-stylesheet'], {'action': 'store_true'}),
+         ('Table of contents by docutils (default) or latex. Latex (writer) '
           'supports only one ToC per document, but docutils does not write '
           'pagenumbers.',
-          ['--use-latex-toc'], {'default': 0}),
+          ['--use-latex-toc'],
+          {'default': 0, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
          ('Color of any hyperlinks embedded in text '
           '(default: "blue", "0" to disable).',
           ['--hyperlink-color'], {'default': 'blue'}),))
