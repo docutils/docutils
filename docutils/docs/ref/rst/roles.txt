@@ -31,6 +31,40 @@ Specification`_ for syntax details.
 .. contents::
 
 
+``:emphasis:``
+==============
+
+:Aliases: None
+:DTD Element: emphasis
+
+Implements emphasis.  These are equivalent::
+
+    *text*
+    :emphasis:`text`
+
+
+``:literal:``
+==============
+
+:Aliases: None
+:DTD Element: literal
+
+Implements inline literal text.  These are equivalent::
+
+    ``text``
+    :literal:`text`
+
+Care must be taken with backslash-escapes though.  These are *not*
+equivalent::
+
+    ``text \ and \ backslashes``
+    :literal:`text \ and \ backslashes`
+
+The backslashes in the first line are preserved (and do nothing),
+whereas the backslashes in the second line escape the following
+spaces.
+
+
 ``:pep-reference:``
 ===================
 
@@ -67,6 +101,36 @@ This is equivalent to::
     See `RFC 2822`__ for information about email headers.
 
     __ http://www.faqs.org/rfcs/rfc2822.html
+
+
+``:strong:``
+============
+
+:Aliases: None
+:DTD Element: strong
+
+Implements strong emphasis.  These are equivalent::
+
+    **text**
+    :strong:`text`
+
+
+``:subscript:``
+===============
+
+:Aliases: ``:sub:``
+:DTD Element: subscript
+
+Implements subscripts.
+
+
+``:superscript:``
+=================
+
+:Aliases: ``:sup:``
+:DTD Element: superscript
+
+Implements superscripts.
 
 
 ``:title-reference:``

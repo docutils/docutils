@@ -1237,13 +1237,6 @@ references, which will be processed by the various Writers.  No Writer
 will need to have any knowledge of the Python-Reader origin of these
 elements.
 
-* Add interpreted text support code. (Done)
-
-  Ideally and eventually, the "interpreted" element will disappear
-  from the Docutils doctree.  In its place will be a customizable set
-  of inline elements including "acronym" and "index_entry", directly
-  created by the parser.
-
 * Add a test for language mappings.
 
 * Alan Jaffray suggested (and I agree) that it would be sensible to:
@@ -1257,22 +1250,15 @@ elements.
     which contain interpreted text with no explicitly specified role
     (there will always be a default role, so this won't happen)
 
-* Perhaps the default implicit role for interpreted text could be
-  "title", as in, "title of a book".  It'd be a text-only reference,
-  no hyperlink.  Idea from Aahz' 2002-05-09 Doc-SIG post.  (Done)
-
 * Add a directive establishing a mapping of interpreted text role
   aliases?  A set of default roles (index, acronym, etc.) could exist,
   and the directive could assign abbreviations (i, a, etc.) or other
   alternatives.
 
-* Explicitly add inline markup roles (emphasis, strong, literal) to
-  the built-in list of interpreted text roles?  Useful for
-  completeness, and potentially useful if `multiple roles`_ ever
-  become possible.
-
-  .. _multiple roles:
-     rst/alternatives.html#multiple-roles-in-interpreted-text
+* Add explicit interpreted text roles for the rest of the implicit
+  inline markup constructs: named-reference, anonymous-reference,
+  footnote-reference, citation-reference, substitution-reference,
+  target, uri-riference (& synonyms).
 
 * Add directives for each role as well?  This would allow indirect
   nested markup::
@@ -1349,9 +1335,49 @@ elements.
         separate file but I'm experimenting with creating a directive
         that will use some form of reST syntax to let you define them.
 
-    What to do with an undefined acronym or abbreviation?
+    Should Docutils complain about undefined acronyms or
+    abbreviations?
 
-  - "superscript" and "subscript" (synonyms "sup" and "sub").
+    What to do if there are multiple definitions?  How to
+    differentiate between CSS (Content Scrambling System) and CSS
+    (Cascading Style Sheets) in a single document?
+
+    How to define the full text?  Possibilities:
+
+    1. With a directive and a definition list? ::
+
+           .. acronyms::
+
+              reST
+                  reStructuredText
+              DPS
+                  Docstring Processing System
+
+       Would this list remain in the document as a glossary, or would
+       it simply build an internal lookup table?  A "glossary"
+       directive could be used to make the intention clear.
+       Acronyms/abbreviations and glossaries could work together.
+
+       Then again, a glossary could be formed by gathering individual
+       definitions from around the document.
+
+    2. Some kind of `inline parameter syntax`__? ::
+
+           `reST <reStructuredText>`:acronym: is `WYSIWYG <what you
+           see is what you get>`:acronym: plaintext markup.
+
+       __ rst/alternatives.html#parameterized-interpreted-text
+
+    3. A combination of 1 & 2?
+
+       The multiple definitions issue could be handled by establishing
+       rules of priority.  For example, directive-based lookup tables
+       have highest priority, followed by the first inline definition.
+       Multiple definitions in directive-based lookup tables would
+       trigger warnings, similar to the rules of `implicit hyperlink
+       targets`__.
+
+       __ rst/reStructuredText.html#implicit-hyperlink-targets
 
   - "annotation": The equivalent of the HTML "title" attribute.  This
     is secondary information that may "pop up" when the pointer hovers

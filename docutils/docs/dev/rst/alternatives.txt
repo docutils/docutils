@@ -205,9 +205,10 @@ Parameterized Interpreted Text
 ------------------------------
 
 In some cases it may be expedient to pass parameters to interpreted
-text roles, analogous to function calls.  Ideas:
+text, analogous to function calls.  Ideas:
 
-1. Suggested by Jason Diamond::
+1. Parameterize the interpreted text role itself (suggested by Jason
+   Diamond)::
 
        `interpreted text`:role1(foo=bar):
 
@@ -216,12 +217,30 @@ text roles, analogous to function calls.  Ideas:
        `CSS`:acronym(Cascading Style Sheets): is used for HTML, and
        `CSS`:acronym(Content Scrambling System): is used for DVDs.
 
-   Problem: current interpreted text syntax does not recognize roles
-   containing whitespace.
+   Technical problem: current interpreted text syntax does not
+   recognize roles containing whitespace.  Design problem: this smells
+   like programming language syntax, but reStructuredText is not a
+   programming language.
 
-This pushes inline markup too far; readability becomes a serious
-issue.  Substitutions may provide a better alternative by pulling the
-details out of the text flow::
+2. Put the parameters inside the interpreted text::
+
+       `CSS (Cascading Style Sheets)`:acronym: is used for HTML, and
+       `CSS (Content Scrambling System)`:acronym: is used for DVDs.
+
+   Although this could be defined on an individual basis (per role),
+   we ought to have a standard.  Hyperlinks with embedded URIs already
+   use angle brackets; perhaps they could be used here too::
+
+       `CSS <Cascading Style Sheets>`:acronym: is used for HTML, and
+       `CSS <Content Scrambling System>`:acronym: is used for DVDs.
+
+   Do angle brackets connote URLs too much for this to be acceptable?
+   How about the "tag" connotation -- does it save them or doom them?
+
+Does this push inline markup too far?  Readability becomes a serious
+issue.  Substitutions may provide a better alternative (at the expense
+of verbosity and duplication) by pulling the details out of the text
+flow::
 
     |CSS| is used for HTML, and |CSS-DVD| is used for DVDs.
 
@@ -229,9 +248,18 @@ details out of the text flow::
     .. |CSS-DVD| acronym:: Content Scrambling System
        :text: CSS
 
-This is going beyond the scope of reStructuredText though.  Documents
-requiring this functionality may be better off using XML or another
-markup system.
+----------------------------------------------------------------------
+
+This whole idea may be going beyond the scope of reStructuredText.
+Documents requiring this functionality may be better off using XML or
+another markup system.
+
+This argument comes up regularly when pushing the envelope of
+reStructuredText syntax.  I think it's a useful argument in that it
+provides a check on creeping featurism.  In many cases, the resulting
+verbosity produces such unreadable plaintext that there's a natural
+desire *not* to use it unless absolutely necessary.  It's a matter of
+finding the right balance.
 
 
 Character Processing
@@ -261,6 +289,11 @@ represented in the text: a copyright symbol should be represented by
 the copyright symbol character.  If this is not possible in an
 authoring environment, a pre-processing stage can be added, or a table
 of substitution definitions can be devised.
+
+A "unicode" directive has been implemented to allow direct
+specification of esoteric characters.  In combination with the
+substitution construct, "include" files defining common sets of
+character entities can be defined and used.
 
 To allow for `character-level inline markup`_, a limited form of
 character processing has been added to the spec and parser: escaped

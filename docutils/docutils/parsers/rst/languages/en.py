@@ -60,6 +60,10 @@ roles = {
     'ac': 'acronym',
     'index': 'index',
     'i': 'index',
+    'subscript': 'subscript',
+    'sub': 'subscript',
+    'superscript': 'superscript',
+    'sup': 'superscript',
     'title-reference': 'title-reference',
     'title': 'title-reference',
     't': 'title-reference',
@@ -78,7 +82,6 @@ roles = {
     'target': 'target',
     'uri-reference': 'uri-reference',
     'uri': 'uri-reference',
-    'url': 'uri-reference',
-    }
+    'url': 'uri-reference',}
 """Mapping of English role names to canonical role names for interpreted text.
 """
