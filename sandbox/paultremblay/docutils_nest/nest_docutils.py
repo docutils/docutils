@@ -4,7 +4,13 @@ import docutils_nest.nested_inline
 import docutils_nest.read_config
 import docutils_nest.options_trem
 
-ext_location = '/home/paul/docutils-extensions' #  $configure$
+"""
+converst an XML file to nested tags
+
+
+"""
+
+ext_location = '/etc/docutils_nest' #  $configure$
 
 dir_exists = os.path.exists(ext_location)
 
@@ -20,7 +26,7 @@ class GetOptions:
         options_dict = {
             'output':   [1,'o']
         }
-        options_obj = options_trem.ParseOptions(
+        options_obj = docutils_nest.options_trem.ParseOptions(
                                         system_string = self.__sys_string,
                                         options_dict = options_dict,
                                         )
