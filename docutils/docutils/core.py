@@ -17,7 +17,7 @@ __docformat__ = 'reStructuredText'
 import sys
 from docutils import Component
 from docutils import frontend, io, utils, readers, parsers, writers
-from docutils.frontend import OptionParser, ConfigParser
+from docutils.frontend import OptionParser
 
 
 class Publisher:
