@@ -1337,9 +1337,10 @@ when used in a document.
 
     compound paragraph
         A paragraph containing embedded block-level elements such as
-        literal blocks, tables, lists, etc., in addition to directly
-        containing text and inline elements.  Compound paragraphs are
-        typically rendered as multiple distinct text blocks.
+        simple paragraphs, literal blocks, tables, lists, etc.,
+        instead of directly containing text and inline elements.
+        Compound paragraphs are typically rendered as multiple
+        distinct text blocks.
 
     simple paragraph
         A paragraph which directly contains only text and inline
