@@ -40,6 +40,11 @@ Bugs
   Idea: two-pass hyperlink resolution, ignoring errors on the first
   pass?
 
+- Section headers must have underlines at least 4 characters long.
+  But when the section title is only 3 characters long, it's natural
+  to underline with "===" (I just did).  The parser should produce a
+  warning in such cases.
+
 
 General
 -------
@@ -230,9 +235,6 @@ __ rst/alternatives.html#or-not-to-do
           the left edge of the first line if it began on the same
           line as the field name.
 
-- Make footnotes two-way, GNU-style?  What if there are multiple
-  references to a single footnote?
-
 - Allow for variant styles by interpreting indented lists as if they
   weren't indented?  For example, currently the list below will be
   parsed as a list within a block quote::
@@ -296,12 +298,16 @@ __ rst/alternatives.html#or-not-to-do
 
       John Doe wrote::
 
-      > Great idea!
+      >> Great idea!
       >
       > Why didn't I think of that?
 
-  Every line of the literal block would have to begin with the same
+  The literal block would have to be a continuous text block (the
+  first blank line ends it) where every line begins with the same
   non-alphanumeric non-whitespace character.
+
+- The parser doesn't know anything about double-width characters such
+  as Chinese hanza & Japanese kanji/kana.
 
 
 Directives
@@ -627,6 +633,11 @@ Front-Ends
   anyway, so there's no advantage (we can't use it to avoid
   conflicts) to splitting common and component-specific options
   apart.
+
+- Allow multiple option groups per component (thus enabling component
+  subclasses to easily incorporate their superclass' options).
+
+- Parameterize help text & defaults somehow?  Perhaps a callback?
 
 
 Project Policies
