@@ -104,6 +104,7 @@ Specific:
   - Replave ``_`` in literal by an underlined blank, because it has the correct
     width.
   - Fix: encode pdfbookmark titles, ``#`` broke pdflatex.
+  - A few unicode replacements, if output_encoding != utf
 
 * docs/index.txt: "Docutils Project Documentation Overview", added to
   project.

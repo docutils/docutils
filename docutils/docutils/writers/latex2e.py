@@ -784,8 +784,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
         text = text.replace('[', '{[}')
         if self.insert_none_breaking_blanks:
             text = text.replace(' ', '~')
-        # unicode !!!
-        text = text.replace(u'\u2020', '{$\\dagger$}')
+        if self.settings.output_encoding != 'utf-8':
+            # see LaTeX codec http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/252124
+            text = text.replace(u'\u00A0', '~')
+            text = text.replace(u'\u00A9', '{\\copyright}')
+            text = text.replace(u'\u2013', '{--}')
+            text = text.replace(u'\u2014', '{---}')
+            text = text.replace(u'\u2020', '{\\dag}')
+            text = text.replace(u'\u2021', '{\\ddag}')
         return text
 
     def attval(self, text,
