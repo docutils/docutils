@@ -45,6 +45,11 @@ Bugs
   to underline with "===" (I just did).  The parser should produce a
   warning in such cases.
 
+- The parser doesn't know anything about double-width characters such
+  as Chinese hanza & Japanese kanji/kana.  Also, it's dependent on
+  whitespace and punctuation as markup delimiters, which may not be
+  applicable in these languages.
+
 
 General
 -------
@@ -69,7 +74,7 @@ General
 
   - User docs.
   
-    - How to use the front-ends (docs/tools.txt).
+    - How to use the front-end tools (docs/tools.txt).
 
     - Configuration file syntax & recognized entries.
 
@@ -300,9 +305,6 @@ __ rst/alternatives.html#or-not-to-do
   The literal block would have to be a continuous text block (the
   first blank line ends it) where every line begins with the same
   non-alphanumeric non-whitespace character.
-
-- The parser doesn't know anything about double-width characters such
-  as Chinese hanza & Japanese kanji/kana.
 
 
 Directives
@@ -582,8 +584,8 @@ HTML Writer
   iframe, img, map.
 
 
-Front-Ends
-----------
+Front-End Tools
+---------------
 
 - Common and component-specific options must not conflict.  Reserve
   short options for the core, and restrict components to long
@@ -596,7 +598,7 @@ Front-Ends
   Perhaps have different types of front ends:
 
   a) _`Fully qualified`: Reader and Writer are hard-coded into the
-     front-end (e.g. ``pep2html [options]``, ``pysource2pdf
+     front end (e.g. ``pep2html [options]``, ``pysource2pdf
      [options]``).
 
   b) _`Partially qualified`: Reader is hard-coded, and the Writer is
@@ -607,7 +609,7 @@ Front-Ends
 
   c) _`Unqualified`: Reader and Writer are specified as subcommands
      (e.g. ``publish pep html [options]``, ``publish pysource pdf
-     [options]``).  A single front-end would be sufficient, but
+     [options]``).  A single front end would be sufficient, but
      probably only useful for testing purposes.
 
   d) _`Dynamic`: Reader and/or Writer are specified by options, with
@@ -619,7 +621,7 @@ Front-Ends
 
   Allow common options before subcommands, as in CVS?  Or group all
   options together?  In the case of the `fully qualified`_
-  front-ends, all the options will have to be grouped together
+  front ends, all the options will have to be grouped together
   anyway, so there's no advantage (we can't use it to avoid
   conflicts) to splitting common and component-specific options
   apart.
@@ -872,7 +874,7 @@ structure is recommended::
                     ...
                 test/       # Test suite.
                     ...
-                tools/      # For front-ends etc.
+                tools/      # For front ends etc.
                     ...
                 setup.py    # Use Distutils to install the component
                             # code and tools/ files into the right

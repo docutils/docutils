@@ -795,11 +795,12 @@ The syntax for field arguments may be extended in the future.  For
 example, quoted phrases may be treated as a single argument, and
 direct support for the "name=value" syntax may be added.
 
-Standard RFC822 headers cannot be used for this construct because they
-are ambiguous.  A word followed by a colon at the beginning of a line
-is common in written text.  However, in well-defined contexts such as
-when a field list invariably occurs at the beginning of a document
-(PEPs and email messages), standard RFC822 headers could be used.
+Standard RFC822_ headers cannot be used for this construct because
+they are ambiguous.  A word followed by a colon at the beginning of a
+line is common in written text.  However, in well-defined contexts
+such as when a field list invariably occurs at the beginning of a
+document (PEPs and email messages), standard RFC822 headers could be
+used.
 
 Syntax diagram (simplified)::
 

@@ -135,11 +135,11 @@ not appear.
 Usage
 =====
 
-Start with the html.py and publish.py front-ends from the unpacked
-"tools" subdirectory.  Both tools take up to two arguments, the source
-path and destination path, with STDIN and STDOUT being the defaults.
-Use the "--help" option to the front-ends for details on options and
-arguments.
+Start with the html.py and publish.py front-end tools from the
+unpacked "tools" subdirectory.  Both tools take up to two arguments,
+the source path and destination path, with STDIN and STDOUT being the
+defaults.  Use the "--help" option to the front-end tools for details
+on options and arguments.
 
 The package modules are continually growing and evolving.  The
 ``docutils.statemachine`` module is usable independently.  It contains

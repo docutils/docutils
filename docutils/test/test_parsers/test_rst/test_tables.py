@@ -642,11 +642,13 @@ two rows, and a column span.
 1   A table with three rows,
 --  ------------------------
 2   and three    columns.
-3   First and last rows
+3   First and third rows
     contain column spans.
 
-    This last row is a multi-line row, and overflows to the right.
-==  ========================
+    This row is a multi-line row, and overflows to the right.
+--  ------------------------
+4   One last     row.
+==  ===========  ===========
 """,
 """\
 <document>
@@ -654,7 +656,7 @@ two rows, and a column span.
         <tgroup cols="3">
             <colspec colwidth="2">
             <colspec colwidth="11">
-            <colspec colwidth="49">
+            <colspec colwidth="44">
             <tbody>
                 <row>
                     <entry>
@@ -679,10 +681,20 @@ two rows, and a column span.
                             3
                     <entry morecols="1">
                         <paragraph>
-                            First and last rows
+                            First and third rows
                             contain column spans.
                         <paragraph>
-                            This last row is a multi-line row, and overflows to the right.
+                            This row is a multi-line row, and overflows to the right.
+                <row>
+                    <entry>
+                        <paragraph>
+                            4
+                    <entry>
+                        <paragraph>
+                            One last
+                    <entry>
+                        <paragraph>
+                            row.
 """],
 ["""\
 =======  =========  ========
@@ -948,6 +960,24 @@ with empty cells
                     <entry>
                         <paragraph>
                             cells.
+"""],
+["""\
+==============  ======
+A simple table  this text extends to the right
+cell 3          the bottom border below is too long
+==============  ========
+""",
+"""\
+<document>
+    <system_message level="3" type="ERROR">
+        <paragraph>
+            Malformed table at line 1; formatting as a literal block.
+            Bottom/header table border does not match top border.
+    <literal_block>
+        ==============  ======
+        A simple table  this text extends to the right
+        cell 3          the bottom border below is too long
+        ==============  ========
 """],
 ]
 
