@@ -704,6 +704,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def get_stylesheet_reference(self, relative_to=None):
         settings = self.settings
         if settings.stylesheet_path:
+            assert not settings.stylesheet, \
+                   'stylesheet and stylesheet_path are mutually exclusive.'
             if relative_to == None:
                 relative_to = settings._destination
             return utils.relative_path(relative_to, settings.stylesheet_path)
