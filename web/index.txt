@@ -10,16 +10,13 @@ The purpose of the Docutils project is to create a set of tools for
 processing plaintext documentation into useful formats, such as HTML,
 XML, and TeX.  Several sources will be supported:
 
-- Standalone files.
-
+- Standalone files (implemented).
 - Inline documentation from Python modules and packages, extracted
   with namespace context.
-
 - `Python Enhancement Proposals`__ (PEPs).
-
-  __ peps_
-
 - And others as discovered.
+
+__ peps_
 
 
 Project Status
@@ -47,16 +44,16 @@ October to April).  The snapshots should be used with caution, as they
 may contain transient bugs or incompatibilities.
 
 - `Docutils code, tests, documentation, and specifications`__
+- `The Sandbox`__ (experimental, contributed code; see `The Sandbox`_
+  below for details)
+- `Web files`__ (the files that generate this web site)
 
-  __ http://docutils.sourceforge.net/docutils-snapshot.tgz
+__ http://docutils.sourceforge.net/docutils-snapshot.tgz
+__ http://docutils.sourceforge.net/docutils-sandbox-snapshot.tgz
+__ http://docutils.sourceforge.net/docutils-web-snapshot.tgz
 
-- `Docutils Sandbox`__ (experimental, contributed code)
-
-  __ http://docutils.sourceforge.net/docutils-sandbox-snapshot.tgz
-
-- `Docutils web files`__ (the files that generate this web site)
-
-  __ http://docutils.sourceforge.net/docutils-web-snapshot.tgz
+`Anonymous CVS access`_ is available.  You can also `browse the CVS
+repository`_ and read the latest README_ and HISTORY_ files.
 
 
 Project Releases
@@ -67,8 +64,25 @@ versions of project files, although they may not be fully tested.
 
 The `latest project release package`_ (Docutils 0.1, 2002-04-20) and
 past project releases can be downloaded from the `project files
-page`_.  `Anonymous CVS access`_ is available.  You can also `browse
-the CVS repository`_ and read the latest README_ and HISTORY_ files.
+page`_.
+
+Mailing Lists
+-------------
+
+You can keep up to date by joining the mailing lists.  Two lists have
+been set up specifically for the Docutils project:
+
+- `docutils-develop`__, for development discussions
+  (email to docutils-develop@lists.sourceforge.net).
+- `docutils-checkins`__, for CVS checkin messages.
+
+High-level discussions take place on the `Python Doc-SIG mailing
+list`__ (email to Doc-SIG@python.org).  The Doc-SIG has greater
+exposure, whereas the Docutils-specific lists are more focused.
+
+__ http://lists.sourceforge.net/lists/listinfo/docutils-develop
+__ http://lists.sourceforge.net/lists/listinfo/docutils-checkins
+__ http://mail.python.org/mailman/listinfo/doc-sig
 
 
 User Documentation
@@ -79,14 +93,12 @@ from the ``docs`` directory of the `daily snapshots`_ above.  They are
 also distributed with the `latest project release package`_, but these
 may not be completely up to date.
 
-- `A ReStructuredText Primer`__ (HTML file, or `text source`__).
-
-  __ docs/rst/quickstart.html
-  __ docs/rst/quickstart.txt
-
+- `A ReStructuredText Primer`__ (HTML file, or `text source`__)
 - `Quick reStructuredText`__ (user reference)
 
-  __ docs/rst/quickref.html
+__ docs/rst/quickstart.html
+__ docs/rst/quickstart.txt
+__ docs/rst/quickref.html
 
 
 Specification
@@ -107,6 +119,9 @@ PEPs (Python Enhancement Proposals)
   docstring processing system.  [`PEP 257`__ in the `master
   repository`_]
 
+Please note that PEPs in the `master repository`_ may not be current,
+whereas the local versions are.
+
 __ spec/pep-0287.txt
 __ http://www.python.org/peps/pep-0287.html
 __ spec/pep-0257.txt
@@ -115,6 +130,7 @@ __ spec/pep-0256.txt
 __ http://www.python.org/peps/pep-0256.html
 __ spec/pep-0258.txt
 __ http://www.python.org/peps/pep-0258.html
+
 
 Docutils Internals
 ------------------
@@ -155,23 +171,46 @@ __ spec/rst/alternatives.html
 __ spec/rst/problems.html
 
 
-Contribute!
+The Sandbox
 ===========
+
+The Sandbox__ is a place to play around, to try out and share ideas. 
+It's a part of the CVS repository but it isn't distributed as part of
+Docutils releases (you can get a recent tarball from the `daily
+snapshots`_).  Each developer who wants to play in it should create
+their own subdirectory (suggested name: given name + family initial).
+
+Please feel free to `visit the sandbox`__.
+
+It's OK to make a mess in the Sandbox!  But please, play nice.
+
+__
+__ sandbox/
+
+
+Please Contribute!
+==================
 
 Please help this project succeed by contributing.  We're looking for
 all kinds of contributions: testing, ideas, code, bug reports,
 administration, tasty snacks, computer equipment, and large sums of
-money.  If you're interested in participating, please `contact the
-project administrator`__.
+money.  If you're interested in participating in any way, please
+`contact the project administrator`__.
 
 __ `David Goodger`_
 
 
-Project Info
-============
+Project Links
+=============
 
 - `Project Summary page`__: `released files`__, `Bug reports`__,
   patches__, `mailing lists`__, and news__.
+- `Docutils CVS repository`__
+- Project administrator: `David Goodger`_
+- Please direct discussions to the `Python Documentation Special
+  Interest Group (Doc-SIG)`__: doc-sig@python.org.
+- Powered by |Python|__
+- Hosted by |SourceForge|__
 
   __ http://sourceforge.net/projects/docutils/
   __ `project files page`_
@@ -180,23 +219,12 @@ Project Info
   __ http://sourceforge.net/mail/?group_id=38414
   __ http://sourceforge.net/news/?group_id=38414
 
-- `Docutils Processing System CVS repository`__
-
   __ `browse the CVS repository`_
 
-- Project administrator: `David Goodger`_
-
-- Please direct discussions to the `Python Documentation Special
-  Interest Group (Doc-SIG)`__: doc-sig@python.org.
-
-  __ http://www.python.org/sigs/doc-sig/
-
-- Powered by |Python|__
-
+  __ Doc-SIG_
+  
   __ http://www.python.org/
   .. |Python| image:: PyBanner016.png
-
-- Hosted by |SourceForge|__
 
   __ http://sourceforge.net/
   .. |SourceForge| image::
@@ -204,7 +232,6 @@ Project Info
      :width: 88
      :height: 31
      :alt: SourceForge Logo
-
 
 .. _project files page:
    http://sourceforge.net/project/showfiles.php?group_id=38414
@@ -216,6 +243,7 @@ Project Info
 .. _master repository:
 .. _peps: http://www.python.org/peps/
 .. _David Goodger: mailto:goodger@users.sourceforge.net
+.. _Doc-SIG: http://www.python.org/sigs/doc-sig/
 
 .. _latest project release package:
    http://prdownloads.sourceforge.net/docutils/docutils-0.1.tar.gz
