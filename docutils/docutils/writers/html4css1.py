@@ -1054,6 +1054,15 @@ class HTMLTranslator(nodes.NodeVisitor):
                 self.context.append('</a></p>\n')
             else:
                 self.context.append('</p>\n')
+        elif isinstance(node.parent, nodes.sidebar):
+            self.body.append(
+                  self.starttag(node, 'p', '', CLASS='sidebar-title'))
+            if node.parent.hasattr('id'):
+                self.body.append(
+                    self.starttag({}, 'a', '', name=node.parent['id']))
+                self.context.append('</a></p>\n')
+            else:
+                self.context.append('</p>\n')
         elif self.section_level == 0:
             # document title
             self.head.append('<title>%s</title>\n'

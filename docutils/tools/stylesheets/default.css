@@ -121,6 +121,9 @@ p.credits {
 p.label {
   white-space: nowrap }
 
+p.sidebar-title {
+  font-weight: bold }
+
 p.topic-title {
   font-weight: bold }
 
