@@ -31,6 +31,8 @@ Where:
 
 __docformat__ = 'reStructuredText'
 
+from docutils.parsers.rst.languages import en as _fallback_language_module
+
 
 _directive_registry = {
       'attention': ('admonitions', 'attention'),
@@ -63,15 +65,24 @@ _modules = {}
 _directives = {}
 """Cache of imported directive functions."""
 
-def directive(directivename, languagemodule):
+def directive(directive_name, language_module):
     """
     Locate and return a directive function from its language-dependent name.
+    If not found in the current language, check English.
     """
-    normname = directivename.lower()
+    normname = directive_name.lower()
     if _directives.has_key(normname):
         return _directives[normname]
     try:
-        canonicalname = languagemodule.directives[normname]
+        canonicalname = language_module.directives[normname]
+    except KeyError:
+        try:
+            # Try English as a fallback:
+            canonicalname = _fallback_language_module.directives[normname]
+        except KeyError:
+            # The canonical name should be an English name, but just in case:
+            canonicalname = normname
+    try:
         modulename, functionname = _directive_registry[canonicalname]
     except KeyError:
         return None
