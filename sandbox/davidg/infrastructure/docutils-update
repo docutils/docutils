@@ -1,9 +1,11 @@
 #! /bin/sh
+# $Id$
 
+projdir=/home/groups/d/do/docutils
 project=docutils
-dest=~/doc
-tmp=~/tmp/$project
-pylib=~/lib/python
+dest=$projdir/htdocs
+tmp=$projdir/tmp/$project
+pylib=$projdir/lib/python
 lib=$pylib/$project
 
 export PYTHONPATH=$pylib:$lib
