@@ -34,6 +34,8 @@ directives = {
       'figure': 'figure',
       #'raw': 'raw',
       'contents': 'contents',
+      'sectnum': 'sectnum',
+      'section-numbering': 'sectnum',
       #'footnotes': 'footnotes',
       #'citations': 'citations',
       'restructuredtext-test-directive': 'restructuredtext-test-directive'}
