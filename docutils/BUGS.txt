@@ -35,7 +35,8 @@ First, make sure it's a new bug:
 * Are you using the very latest version of Docutils?  The bug may have
   already been fixed.  Please get the latest version of Docutils from
   CVS_ or from the `development snapshot`_ and check again.  Even if
-  this bug is not fixed, others probably are.
+  your bug has not been fixed, others probably have, and you're better
+  off with the most up-to-date code.
 
   If you don't have time to check the latest snapshot, please report
   the bug anyway.  We'd rather tell you that it's already fixed than
