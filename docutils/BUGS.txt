@@ -133,6 +133,14 @@ Also see the `SourceForge Bug Tracker`_.
       .. role:: a
       .. role:: b(literal)
 
+  Another way to reproduce this bug::
+
+      ----
+      Test
+      ----
+
+      .. role:: fileref(emphasis)
+
 * _`Line numbers` in system messages are inconsistent in the parser.
 
   - In text inserted by the "include" directive, errors are often not
