@@ -369,6 +369,7 @@ Specific:
 * tools/default.css:
 
   - Added support for ``header`` and ``footer`` elements.
+  - Added styles for "Dedication" topics (biblio fields).
 
 * tools/docutils-xml.py: Added to project.
 
