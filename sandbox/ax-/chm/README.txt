@@ -11,14 +11,13 @@ this is the complete docutils_ documentation - all \*.txt files and
 chm file. the `first version`_ was handmade (and incomplete). the 
 current version uses Ollie Rutherfurd's lovely rst2chm_::
 
-  rst2chm.py --title=reStructuredText --default-topic=spec\rst\introduction.html 
-             --no-clean rst.chm
-             spec\rst\*.txt docs\rst\*.txt docs\*.txt *.txt spec\*.txt spec\howto\*.txt
+  rst2chm.py --title=reStructuredText --default-topic=docs\rst\quickref.html 
+             --no-clean --stylesheet=tools\stylesheets\default.css rst.chm
+             docs\rst\*.txt spec\rst\*.txt docs\*.txt *.txt spec\*.txt spec\howto\*.txt
 
 and a few manual improvements (inclusion and "sectioning" of 
-`docs/rst/quickref.html`_, some rearrangements of toc entries, and an 
-improved stylesheet) (and is complete). and probably won't see an update 
-any soon.
+`docs/rst/quickref.html`_, some rearrangements of toc entries, and 
+improved stylesheets) (and is complete).
 
 the chm is also available from http://chm.kollm.org/ [#]_.
 

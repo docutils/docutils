@@ -274,6 +274,16 @@
                      <param name="Name" value="Literal Blocks">
                      <param name="Local" value="spec/rst/reStructuredText.html#literal-blocks">
                    </OBJECT>
+               <UL>
+                  <LI><OBJECT type="text/sitemap">
+                        <param name="Name" value="Indented Literal Blocks">
+                        <param name="Local" value="spec/rst/reStructuredText.html#indented-literal-blocks">
+                      </OBJECT>
+                  <LI><OBJECT type="text/sitemap">
+                        <param name="Name" value="Quoted Literal Blocks">
+                        <param name="Local" value="spec/rst/reStructuredText.html#quoted-literal-blocks">
+                      </OBJECT>
+               </UL>
                <LI><OBJECT type="text/sitemap">
                      <param name="Name" value="Block Quotes">
                      <param name="Local" value="spec/rst/reStructuredText.html#block-quotes">
@@ -600,6 +610,68 @@
              </OBJECT>
       </UL>
       <LI><OBJECT type="text/sitemap">
+            <param name="Name" value="Problems With StructuredText">
+            <param name="Local" value="spec/rst/problems.html">
+          </OBJECT>
+      <UL>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Formal Specification">
+               <param name="Local" value="spec/rst/problems.html#formal-specification">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Understanding and Extending the Code">
+               <param name="Local" value="spec/rst/problems.html#understanding-and-extending-the-code">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Section Structure via Indentation">
+               <param name="Local" value="spec/rst/problems.html#section-structure-via-indentation">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Character Escaping Mechanism">
+               <param name="Local" value="spec/rst/problems.html#character-escaping-mechanism">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Blank Lines in Lists">
+               <param name="Local" value="spec/rst/problems.html#blank-lines-in-lists">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Bullet List Markup">
+               <param name="Local" value="spec/rst/problems.html#bullet-list-markup">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Enumerated List Markup">
+               <param name="Local" value="spec/rst/problems.html#enumerated-list-markup">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Definition List Markup">
+               <param name="Local" value="spec/rst/problems.html#definition-list-markup">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Literal Blocks">
+               <param name="Local" value="spec/rst/problems.html#literal-blocks">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Tables">
+               <param name="Local" value="spec/rst/problems.html#tables">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Delimitation of Inline Markup">
+               <param name="Local" value="spec/rst/problems.html#delimitation-of-inline-markup">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Underlining">
+               <param name="Local" value="spec/rst/problems.html#underlining">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Inline Literals">
+               <param name="Local" value="spec/rst/problems.html#inline-literals">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Hyperlinks">
+               <param name="Local" value="spec/rst/problems.html#hyperlinks">
+             </OBJECT>
+      </UL>
+      <LI><OBJECT type="text/sitemap">
             <param name="Name" value="A Record of reStructuredText Syntax Alternatives">
             <param name="Local" value="spec/rst/alternatives.html">
           </OBJECT>
@@ -690,66 +762,160 @@
              </OBJECT>
       </UL>
       <LI><OBJECT type="text/sitemap">
-            <param name="Name" value="Problems With StructuredText">
-            <param name="Local" value="spec/rst/problems.html">
+            <param name="Name" value="Docutils Configuration Files">
+            <param name="Local" value="docs/config.html">
           </OBJECT>
       <UL>
          <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Formal Specification">
-               <param name="Local" value="spec/rst/problems.html#formal-specification">
+               <param name="Name" value="Configuration File Syntax">
+               <param name="Local" value="docs/config.html#configuration-file-syntax">
              </OBJECT>
          <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Understanding and Extending the Code">
-               <param name="Local" value="spec/rst/problems.html#understanding-and-extending-the-code">
+               <param name="Name" value="Configuration File Sections &amp; Entries">
+               <param name="Local" value="docs/config.html#configuration-file-sections-entries">
+             </OBJECT>
+         <UL>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="[general]">
+                  <param name="Local" value="docs/config.html#general">
+                </OBJECT>
+            <UL>
+               <LI><OBJECT type="text/sitemap">
+                     <param name="Name" value="[parsers]">
+                     <param name="Local" value="docs/config.html#parsers">
+                   </OBJECT>
+               <UL>
+                  <LI><OBJECT type="text/sitemap">
+                        <param name="Name" value="[restructuredtext parser]">
+                        <param name="Local" value="docs/config.html#restructuredtext-parser">
+                      </OBJECT>
+               </UL>
+               <LI><OBJECT type="text/sitemap">
+                     <param name="Name" value="[readers]">
+                     <param name="Local" value="docs/config.html#readers">
+                   </OBJECT>
+               <UL>
+                  <LI><OBJECT type="text/sitemap">
+                        <param name="Name" value="[standalone reader]">
+                        <param name="Local" value="docs/config.html#standalone-reader">
+                      </OBJECT>
+                  <LI><OBJECT type="text/sitemap">
+                        <param name="Name" value="[pep reader]">
+                        <param name="Local" value="docs/config.html#pep-reader">
+                      </OBJECT>
+                  <LI><OBJECT type="text/sitemap">
+                        <param name="Name" value="[python reader]">
+                        <param name="Local" value="docs/config.html#python-reader">
+                      </OBJECT>
+               </UL>
+               <LI><OBJECT type="text/sitemap">
+                     <param name="Name" value="[writers]">
+                     <param name="Local" value="docs/config.html#writers">
+                   </OBJECT>
+               <UL>
+                  <LI><OBJECT type="text/sitemap">
+                        <param name="Name" value="[docutils_xml writer]">
+                        <param name="Local" value="docs/config.html#docutils-xml-writer">
+                      </OBJECT>
+                  <LI><OBJECT type="text/sitemap">
+                        <param name="Name" value="[html4css1 writer]">
+                        <param name="Local" value="docs/config.html#html4css1-writer">
+                      </OBJECT>
+                  <UL>
+                     <LI><OBJECT type="text/sitemap">
+                           <param name="Name" value="[pep_html writer]">
+                           <param name="Local" value="docs/config.html#pep-html-writer">
+                         </OBJECT>
+                  </UL>
+                  <LI><OBJECT type="text/sitemap">
+                        <param name="Name" value="[latex2e writer]">
+                        <param name="Local" value="docs/config.html#latex2e-writer">
+                      </OBJECT>
+                  <LI><OBJECT type="text/sitemap">
+                        <param name="Name" value="[pseudoxml writer]">
+                        <param name="Local" value="docs/config.html#pseudoxml-writer">
+                      </OBJECT>
+               </UL>
+               <LI><OBJECT type="text/sitemap">
+                     <param name="Name" value="[applications]">
+                     <param name="Local" value="docs/config.html#applications">
+                   </OBJECT>
+               <UL>
+                  <LI><OBJECT type="text/sitemap">
+                        <param name="Name" value="[buildhtml application]">
+                        <param name="Local" value="docs/config.html#buildhtml-application">
+                      </OBJECT>
+                  <LI><OBJECT type="text/sitemap">
+                        <param name="Name" value="[docfactory application]">
+                        <param name="Local" value="docs/config.html#docfactory-application">
+                      </OBJECT>
+               </UL>
+            </UL>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="Other Settings">
+                  <param name="Local" value="docs/config.html#other-settings">
+                </OBJECT>
+         </UL>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Old-Format Configuration Files">
+               <param name="Local" value="docs/config.html#old-format-configuration-files">
+             </OBJECT>
+      </UL>
+      <LI><OBJECT type="text/sitemap">
+            <param name="Name" value="Docutils LaTeX Writer">
+            <param name="Local" value="docs/latex.html">
+          </OBJECT>
+      <UL>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Introduction">
+               <param name="Local" value="docs/latex.html#introduction">
              </OBJECT>
          <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Section Structure via Indentation">
-               <param name="Local" value="spec/rst/problems.html#section-structure-via-indentation">
+               <param name="Name" value="Options">
+               <param name="Local" value="docs/latex.html#options">
              </OBJECT>
+         <UL>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="Missing options">
+                  <param name="Local" value="docs/latex.html#missing-options">
+                </OBJECT>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="Font selection">
+                  <param name="Local" value="docs/latex.html#font-selection">
+                </OBJECT>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="Table of figures">
+                  <param name="Local" value="docs/latex.html#table-of-figures">
+                </OBJECT>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="Section numbering">
+                  <param name="Local" value="docs/latex.html#section-numbering">
+                </OBJECT>
+         </UL>
          <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Character Escaping Mechanism">
-               <param name="Local" value="spec/rst/problems.html#character-escaping-mechanism">
+               <param name="Name" value="Commands directly to LaTeX">
+               <param name="Local" value="docs/latex.html#commands-directly-to-latex">
              </OBJECT>
+         <UL>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="Custom title page">
+                  <param name="Local" value="docs/latex.html#custom-title-page">
+                </OBJECT>
+         </UL>
          <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Blank Lines in Lists">
-               <param name="Local" value="spec/rst/problems.html#blank-lines-in-lists">
+               <param name="Name" value="Problems">
+               <param name="Local" value="docs/latex.html#problems">
              </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Bullet List Markup">
-               <param name="Local" value="spec/rst/problems.html#bullet-list-markup">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Enumerated List Markup">
-               <param name="Local" value="spec/rst/problems.html#enumerated-list-markup">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Definition List Markup">
-               <param name="Local" value="spec/rst/problems.html#definition-list-markup">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Literal Blocks">
-               <param name="Local" value="spec/rst/problems.html#literal-blocks">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Tables">
-               <param name="Local" value="spec/rst/problems.html#tables">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Delimitation of Inline Markup">
-               <param name="Local" value="spec/rst/problems.html#delimitation-of-inline-markup">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Underlining">
-               <param name="Local" value="spec/rst/problems.html#underlining">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Inline Literals">
-               <param name="Local" value="spec/rst/problems.html#inline-literals">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Hyperlinks">
-               <param name="Local" value="spec/rst/problems.html#hyperlinks">
-             </OBJECT>
+         <UL>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="Tables">
+                  <param name="Local" value="docs/latex.html#tables">
+                </OBJECT>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="Miscellaneous">
+                  <param name="Local" value="docs/latex.html#miscellaneous">
+                </OBJECT>
+         </UL>
       </UL>
       <LI><OBJECT type="text/sitemap">
             <param name="Name" value="Docutils Front-End Tools">
@@ -823,71 +989,21 @@
                   <param name="Name" value="Configuration Files">
                   <param name="Local" value="docs/tools.html#configuration-files">
                 </OBJECT>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="Configuration File Entries">
-                  <param name="Local" value="docs/tools.html#configuration-file-entries">
-                </OBJECT>
-            <UL>
-               <LI><OBJECT type="text/sitemap">
-                     <param name="Name" value="For Internal Use Only">
-                     <param name="Local" value="docs/tools.html#for-internal-use-only">
-                   </OBJECT>
-            </UL>
          </UL>
       </UL>
       <LI><OBJECT type="text/sitemap">
-            <param name="Name" value="Docutils LaTex Writer">
-            <param name="Local" value="docs/latex.html">
+            <param name="Name" value="Copying Docutils">
+            <param name="Local" value="COPYING.html">
           </OBJECT>
       <UL>
          <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Introduction">
-               <param name="Local" value="docs/latex.html#introduction">
+               <param name="Name" value="Public Domain Dedication">
+               <param name="Local" value="COPYING.html#public-domain-dedication">
              </OBJECT>
          <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Options">
-               <param name="Local" value="docs/latex.html#options">
+               <param name="Name" value="Exceptions">
+               <param name="Local" value="COPYING.html#exceptions">
              </OBJECT>
-         <UL>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="Options on the Commandline">
-                  <param name="Local" value="docs/latex.html#options-on-the-commandline">
-                </OBJECT>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="Options in the Stylesheet">
-                  <param name="Local" value="docs/latex.html#options-in-the-stylesheet">
-                </OBJECT>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="Missing options">
-                  <param name="Local" value="docs/latex.html#missing-options">
-                </OBJECT>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="Font selection">
-                  <param name="Local" value="docs/latex.html#font-selection">
-                </OBJECT>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="Table of figures">
-                  <param name="Local" value="docs/latex.html#table-of-figures">
-                </OBJECT>
-         </UL>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Commands directly to LaTeX">
-               <param name="Local" value="docs/latex.html#commands-directly-to-latex">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Problems">
-               <param name="Local" value="docs/latex.html#problems">
-             </OBJECT>
-         <UL>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="Tables">
-                  <param name="Local" value="docs/latex.html#tables">
-                </OBJECT>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="Miscellaneous">
-                  <param name="Local" value="docs/latex.html#miscellaneous">
-                </OBJECT>
-         </UL>
       </UL>
       <LI><OBJECT type="text/sitemap">
             <param name="Name" value="Docutils Frequently Asked Questions">
@@ -969,6 +1085,18 @@
                   <param name="Name" value="2.11   Are there any Weblog (Blog) projects that use reStructuredText syntax?">
                   <param name="Local" value="FAQ.html#are-there-any-weblog-blog-projects-that-use-restructuredtext-syntax">
                 </OBJECT>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="2.12   Can lists be indented without generating block quotes?">
+                  <param name="Local" value="FAQ.html#can-lists-be-indented-without-generating-block-quotes">
+                </OBJECT>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="2.13   Could the requirement for blank lines around lists be relaxed?">
+                  <param name="Local" value="FAQ.html#could-the-requirement-for-blank-lines-around-lists-be-relaxed">
+                </OBJECT>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="2.14   How can I include mathematical equations in documents?">
+                  <param name="Local" value="FAQ.html#how-can-i-include-mathematical-equations-in-documents">
+                </OBJECT>
          </UL>
          <LI><OBJECT type="text/sitemap">
                <param name="Name" value="3   HTML Writer">
@@ -1016,6 +1144,36 @@
                   <param name="Local" value="FAQ.html#is-the-docutils-document-model-based-on-any-existing-xml-models">
                 </OBJECT>
          </UL>
+      </UL>
+      <LI><OBJECT type="text/sitemap">
+            <param name="Name" value="Docutils History">
+            <param name="Local" value="HISTORY.html">
+          </OBJECT>
+      <UL>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Acknowledgements">
+               <param name="Local" value="HISTORY.html#acknowledgements">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Future Plans">
+               <param name="Local" value="HISTORY.html#future-plans">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Changes Since 0.3">
+               <param name="Local" value="HISTORY.html#changes-since-0-3">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Release 0.3 (2003-06-24)">
+               <param name="Local" value="HISTORY.html#release-0-3-2003-06-24">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Release 0.2 (2002-07-31)">
+               <param name="Local" value="HISTORY.html#release-0-2-2002-07-31">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Release 0.1 (2002-04-20)">
+               <param name="Local" value="HISTORY.html#release-0-1-2002-04-20">
+             </OBJECT>
       </UL>
       <LI><OBJECT type="text/sitemap">
             <param name="Name" value="README: Docutils">
@@ -1071,170 +1229,6 @@
          <LI><OBJECT type="text/sitemap">
                <param name="Name" value="Getting Help">
                <param name="Local" value="README.html#getting-help">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Abstract">
-               <param name="Local" value="spec/pep-0256.html#abstract">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Road Map to the Docstring PEPs">
-               <param name="Local" value="spec/pep-0256.html#road-map-to-the-docstring-peps">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Rationale">
-               <param name="Local" value="spec/pep-0256.html#rationale">
-             </OBJECT>
-         <UL>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="PyDoc &amp; Other Existing Systems">
-                  <param name="Local" value="spec/pep-0256.html#pydoc-other-existing-systems">
-                </OBJECT>
-         </UL>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Specification">
-               <param name="Local" value="spec/pep-0256.html#specification">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Project Web Site">
-               <param name="Local" value="spec/pep-0256.html#project-web-site">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="References and Footnotes">
-               <param name="Local" value="spec/pep-0256.html#references-and-footnotes">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Copyright">
-               <param name="Local" value="spec/pep-0256.html#copyright">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Acknowledgements">
-               <param name="Local" value="spec/pep-0256.html#acknowledgements">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Abstract">
-               <param name="Local" value="spec/pep-0257.html#abstract">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Rationale">
-               <param name="Local" value="spec/pep-0257.html#rationale">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Specification">
-               <param name="Local" value="spec/pep-0257.html#specification">
-             </OBJECT>
-         <UL>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="What is a Docstring?">
-                  <param name="Local" value="spec/pep-0257.html#what-is-a-docstring">
-                </OBJECT>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="One-line Docstrings">
-                  <param name="Local" value="spec/pep-0257.html#one-line-docstrings">
-                </OBJECT>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="Multi-line Docstrings">
-                  <param name="Local" value="spec/pep-0257.html#multi-line-docstrings">
-                </OBJECT>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="Handling Docstring Indentation">
-                  <param name="Local" value="spec/pep-0257.html#handling-docstring-indentation">
-                </OBJECT>
-         </UL>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="References and Footnotes">
-               <param name="Local" value="spec/pep-0257.html#references-and-footnotes">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Copyright">
-               <param name="Local" value="spec/pep-0257.html#copyright">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Acknowledgements">
-               <param name="Local" value="spec/pep-0257.html#acknowledgements">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Abstract">
-               <param name="Local" value="spec/pep-0287.html#abstract">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Benefits">
-               <param name="Local" value="spec/pep-0287.html#benefits">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Goals">
-               <param name="Local" value="spec/pep-0287.html#goals">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Rationale">
-               <param name="Local" value="spec/pep-0287.html#rationale">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Specification">
-               <param name="Local" value="spec/pep-0287.html#specification">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Docstring-Significant Features">
-               <param name="Local" value="spec/pep-0287.html#docstring-significant-features">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Questions &amp; Answers">
-               <param name="Local" value="spec/pep-0287.html#questions-answers">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="References &amp; Footnotes">
-               <param name="Local" value="spec/pep-0287.html#references-footnotes">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Copyright">
-               <param name="Local" value="spec/pep-0287.html#copyright">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Acknowledgements">
-               <param name="Local" value="spec/pep-0287.html#acknowledgements">
-             </OBJECT>
-      </UL>
-      <LI><OBJECT type="text/sitemap">
-            <param name="Name" value="Docutils History">
-            <param name="Local" value="HISTORY.html">
-          </OBJECT>
-      <UL>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Acknowledgements">
-               <param name="Local" value="HISTORY.html#acknowledgements">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Future Plans">
-               <param name="Local" value="HISTORY.html#future-plans">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Changes Since 0.3">
-               <param name="Local" value="HISTORY.html#changes-since-0-3">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Release 0.3 (2003-06-24)">
-               <param name="Local" value="HISTORY.html#release-0-3-2003-06-24">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Release 0.2 (2002-07-31)">
-               <param name="Local" value="HISTORY.html#release-0-2-2002-07-31">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Release 0.1 (2002-04-20)">
-               <param name="Local" value="HISTORY.html#release-0-1-2002-04-20">
-             </OBJECT>
-      </UL>
-      <LI><OBJECT type="text/sitemap">
-            <param name="Name" value="Copying Docutils">
-            <param name="Local" value="COPYING.html">
-          </OBJECT>
-      <UL>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Public Domain Dedication">
-               <param name="Local" value="COPYING.html#public-domain-dedication">
-             </OBJECT>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Exceptions">
-               <param name="Local" value="COPYING.html#exceptions">
              </OBJECT>
       </UL>
       <LI><OBJECT type="text/sitemap">
@@ -2582,17 +2576,225 @@
          </UL>
       </UL>
       <LI><OBJECT type="text/sitemap">
-            <param name="Name" value="Docutils Transforms">
-            <param name="Local" value="spec/transforms.html">
+            <param name="Name" value="Docutils Notes">
+            <param name="Local" value="spec/notes.html">
           </OBJECT>
       <UL>
          <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Transforms Listed in Priority Order">
-               <param name="Local" value="spec/transforms.html#transforms-listed-in-priority-order">
+               <param name="Name" value="To Do">
+               <param name="Local" value="spec/notes.html#to-do">
+             </OBJECT>
+         <UL>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="Bugs">
+                  <param name="Local" value="spec/notes.html#bugs">
+                </OBJECT>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="General">
+                  <param name="Local" value="spec/notes.html#general">
+                </OBJECT>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="Documentation">
+                  <param name="Local" value="spec/notes.html#documentation">
+                </OBJECT>
+            <UL>
+               <LI><OBJECT type="text/sitemap">
+                     <param name="Name" value="Implementation Docs">
+                     <param name="Local" value="spec/notes.html#implementation-docs">
+                   </OBJECT>
+               <LI><OBJECT type="text/sitemap">
+                     <param name="Name" value="Specification">
+                     <param name="Local" value="spec/notes.html#specification">
+                   </OBJECT>
+            </UL>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="Python Source Reader">
+                  <param name="Local" value="spec/notes.html#python-source-reader">
+                </OBJECT>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="reStructuredText Parser">
+                  <param name="Local" value="spec/notes.html#restructuredtext-parser">
+                </OBJECT>
+            <UL>
+               <LI><OBJECT type="text/sitemap">
+                     <param name="Name" value="Directives">
+                     <param name="Local" value="spec/notes.html#directives">
+                   </OBJECT>
+               <LI><OBJECT type="text/sitemap">
+                     <param name="Name" value="Interpreted Text">
+                     <param name="Local" value="spec/notes.html#interpreted-text">
+                   </OBJECT>
+            </UL>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="Unimplemented Transforms">
+                  <param name="Local" value="spec/notes.html#unimplemented-transforms">
+                </OBJECT>
+            <UL>
+               <LI><OBJECT type="text/sitemap">
+                     <param name="Name" value="Footnote &amp; Citation Gathering">
+                     <param name="Local" value="spec/notes.html#footnote-citation-gathering">
+                   </OBJECT>
+               <LI><OBJECT type="text/sitemap">
+                     <param name="Name" value="Hyperlink Target Gathering">
+                     <param name="Local" value="spec/notes.html#hyperlink-target-gathering">
+                   </OBJECT>
+               <LI><OBJECT type="text/sitemap">
+                     <param name="Name" value="Reference Merging">
+                     <param name="Local" value="spec/notes.html#reference-merging">
+                   </OBJECT>
+               <LI><OBJECT type="text/sitemap">
+                     <param name="Name" value="Document Splitting">
+                     <param name="Local" value="spec/notes.html#document-splitting">
+                   </OBJECT>
+               <LI><OBJECT type="text/sitemap">
+                     <param name="Name" value="Navigation">
+                     <param name="Local" value="spec/notes.html#navigation">
+                   </OBJECT>
+               <LI><OBJECT type="text/sitemap">
+                     <param name="Name" value="List of System Messages">
+                     <param name="Local" value="spec/notes.html#list-of-system-messages">
+                   </OBJECT>
+               <LI><OBJECT type="text/sitemap">
+                     <param name="Name" value="Filtering System Messages">
+                     <param name="Local" value="spec/notes.html#filtering-system-messages">
+                   </OBJECT>
+               <LI><OBJECT type="text/sitemap">
+                     <param name="Name" value="Others">
+                     <param name="Local" value="spec/notes.html#others">
+                   </OBJECT>
+            </UL>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="HTML Writer">
+                  <param name="Local" value="spec/notes.html#html-writer">
+                </OBJECT>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="Front-End Tools">
+                  <param name="Local" value="spec/notes.html#front-end-tools">
+                </OBJECT>
+         </UL>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Project Policies">
+               <param name="Local" value="spec/notes.html#project-policies">
+             </OBJECT>
+         <UL>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="Python Coding Conventions">
+                  <param name="Local" value="spec/notes.html#python-coding-conventions">
+                </OBJECT>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="Copyrights and Licensing">
+                  <param name="Local" value="spec/notes.html#copyrights-and-licensing">
+                </OBJECT>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="CVS Check-ins">
+                  <param name="Local" value="spec/notes.html#cvs-check-ins">
+                </OBJECT>
+            <UL>
+               <LI><OBJECT type="text/sitemap">
+                     <param name="Name" value="Additions to Docutils">
+                     <param name="Local" value="spec/notes.html#additions-to-docutils">
+                   </OBJECT>
+            </UL>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="Mailing Lists">
+                  <param name="Local" value="spec/notes.html#mailing-lists">
+                </OBJECT>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="The Sandbox">
+                  <param name="Local" value="spec/notes.html#the-sandbox">
+                </OBJECT>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="Parallel Projects">
+                  <param name="Local" value="spec/notes.html#parallel-projects">
+                </OBJECT>
+         </UL>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Web Site">
+               <param name="Local" value="spec/notes.html#web-site">
              </OBJECT>
          <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Transform Priority Range Categories">
-               <param name="Local" value="spec/transforms.html#transform-priority-range-categories">
+               <param name="Name" value="Release Procedure">
+               <param name="Local" value="spec/notes.html#release-procedure">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Abstract">
+               <param name="Local" value="spec/pep-0256.html#abstract">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Road Map to the Docstring PEPs">
+               <param name="Local" value="spec/pep-0256.html#road-map-to-the-docstring-peps">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Rationale">
+               <param name="Local" value="spec/pep-0256.html#rationale">
+             </OBJECT>
+         <UL>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="PyDoc &amp; Other Existing Systems">
+                  <param name="Local" value="spec/pep-0256.html#pydoc-other-existing-systems">
+                </OBJECT>
+         </UL>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Specification">
+               <param name="Local" value="spec/pep-0256.html#specification">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Project Web Site">
+               <param name="Local" value="spec/pep-0256.html#project-web-site">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="References and Footnotes">
+               <param name="Local" value="spec/pep-0256.html#references-and-footnotes">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Copyright">
+               <param name="Local" value="spec/pep-0256.html#copyright">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Acknowledgements">
+               <param name="Local" value="spec/pep-0256.html#acknowledgements">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Abstract">
+               <param name="Local" value="spec/pep-0257.html#abstract">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Rationale">
+               <param name="Local" value="spec/pep-0257.html#rationale">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Specification">
+               <param name="Local" value="spec/pep-0257.html#specification">
+             </OBJECT>
+         <UL>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="What is a Docstring?">
+                  <param name="Local" value="spec/pep-0257.html#what-is-a-docstring">
+                </OBJECT>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="One-line Docstrings">
+                  <param name="Local" value="spec/pep-0257.html#one-line-docstrings">
+                </OBJECT>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="Multi-line Docstrings">
+                  <param name="Local" value="spec/pep-0257.html#multi-line-docstrings">
+                </OBJECT>
+            <LI><OBJECT type="text/sitemap">
+                  <param name="Name" value="Handling Docstring Indentation">
+                  <param name="Local" value="spec/pep-0257.html#handling-docstring-indentation">
+                </OBJECT>
+         </UL>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="References and Footnotes">
+               <param name="Local" value="spec/pep-0257.html#references-and-footnotes">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Copyright">
+               <param name="Local" value="spec/pep-0257.html#copyright">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Acknowledgements">
+               <param name="Local" value="spec/pep-0257.html#acknowledgements">
              </OBJECT>
          <LI><OBJECT type="text/sitemap">
                <param name="Name" value="Abstract">
@@ -2706,6 +2908,46 @@
                <param name="Name" value="Acknowledgements">
                <param name="Local" value="spec/pep-0258.html#acknowledgements">
              </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Abstract">
+               <param name="Local" value="spec/pep-0287.html#abstract">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Benefits">
+               <param name="Local" value="spec/pep-0287.html#benefits">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Goals">
+               <param name="Local" value="spec/pep-0287.html#goals">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Rationale">
+               <param name="Local" value="spec/pep-0287.html#rationale">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Specification">
+               <param name="Local" value="spec/pep-0287.html#specification">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Docstring-Significant Features">
+               <param name="Local" value="spec/pep-0287.html#docstring-significant-features">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Questions &amp; Answers">
+               <param name="Local" value="spec/pep-0287.html#questions-answers">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="References &amp; Footnotes">
+               <param name="Local" value="spec/pep-0287.html#references-footnotes">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Copyright">
+               <param name="Local" value="spec/pep-0287.html#copyright">
+             </OBJECT>
+         <LI><OBJECT type="text/sitemap">
+               <param name="Name" value="Acknowledgements">
+               <param name="Local" value="spec/pep-0287.html#acknowledgements">
+             </OBJECT>
       </UL>
       <LI><OBJECT type="text/sitemap">
             <param name="Name" value="Python Source Reader">
@@ -2740,145 +2982,17 @@
              </OBJECT>
       </UL>
       <LI><OBJECT type="text/sitemap">
-            <param name="Name" value="Docutils Notes">
-            <param name="Local" value="spec/notes.html">
+            <param name="Name" value="Docutils Transforms">
+            <param name="Local" value="spec/transforms.html">
           </OBJECT>
       <UL>
          <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="To Do">
-               <param name="Local" value="spec/notes.html#to-do">
+               <param name="Name" value="Transforms Listed in Priority Order">
+               <param name="Local" value="spec/transforms.html#transforms-listed-in-priority-order">
              </OBJECT>
-         <UL>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="Bugs">
-                  <param name="Local" value="spec/notes.html#bugs">
-                </OBJECT>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="General">
-                  <param name="Local" value="spec/notes.html#general">
-                </OBJECT>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="Documentation">
-                  <param name="Local" value="spec/notes.html#documentation">
-                </OBJECT>
-            <UL>
-               <LI><OBJECT type="text/sitemap">
-                     <param name="Name" value="Implementation Docs">
-                     <param name="Local" value="spec/notes.html#implementation-docs">
-                   </OBJECT>
-               <LI><OBJECT type="text/sitemap">
-                     <param name="Name" value="Specification">
-                     <param name="Local" value="spec/notes.html#specification">
-                   </OBJECT>
-               <LI><OBJECT type="text/sitemap">
-                     <param name="Name" value="Web Site">
-                     <param name="Local" value="spec/notes.html#web-site">
-                   </OBJECT>
-            </UL>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="Python Source Reader">
-                  <param name="Local" value="spec/notes.html#python-source-reader">
-                </OBJECT>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="reStructuredText Parser">
-                  <param name="Local" value="spec/notes.html#restructuredtext-parser">
-                </OBJECT>
-            <UL>
-               <LI><OBJECT type="text/sitemap">
-                     <param name="Name" value="Directives">
-                     <param name="Local" value="spec/notes.html#directives">
-                   </OBJECT>
-               <LI><OBJECT type="text/sitemap">
-                     <param name="Name" value="Interpreted Text">
-                     <param name="Local" value="spec/notes.html#interpreted-text">
-                   </OBJECT>
-            </UL>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="Unimplemented Transforms">
-                  <param name="Local" value="spec/notes.html#unimplemented-transforms">
-                </OBJECT>
-            <UL>
-               <LI><OBJECT type="text/sitemap">
-                     <param name="Name" value="Footnote &amp; Citation Gathering">
-                     <param name="Local" value="spec/notes.html#footnote-citation-gathering">
-                   </OBJECT>
-               <LI><OBJECT type="text/sitemap">
-                     <param name="Name" value="Hyperlink Target Gathering">
-                     <param name="Local" value="spec/notes.html#hyperlink-target-gathering">
-                   </OBJECT>
-               <LI><OBJECT type="text/sitemap">
-                     <param name="Name" value="Reference Merging">
-                     <param name="Local" value="spec/notes.html#reference-merging">
-                   </OBJECT>
-               <LI><OBJECT type="text/sitemap">
-                     <param name="Name" value="Document Splitting">
-                     <param name="Local" value="spec/notes.html#document-splitting">
-                   </OBJECT>
-               <LI><OBJECT type="text/sitemap">
-                     <param name="Name" value="Navigation">
-                     <param name="Local" value="spec/notes.html#navigation">
-                   </OBJECT>
-               <LI><OBJECT type="text/sitemap">
-                     <param name="Name" value="List of System Messages">
-                     <param name="Local" value="spec/notes.html#list-of-system-messages">
-                   </OBJECT>
-               <LI><OBJECT type="text/sitemap">
-                     <param name="Name" value="Filtering System Messages">
-                     <param name="Local" value="spec/notes.html#filtering-system-messages">
-                   </OBJECT>
-               <LI><OBJECT type="text/sitemap">
-                     <param name="Name" value="Others">
-                     <param name="Local" value="spec/notes.html#others">
-                   </OBJECT>
-            </UL>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="HTML Writer">
-                  <param name="Local" value="spec/notes.html#html-writer">
-                </OBJECT>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="Front-End Tools">
-                  <param name="Local" value="spec/notes.html#front-end-tools">
-                </OBJECT>
-         </UL>
          <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Project Policies">
-               <param name="Local" value="spec/notes.html#project-policies">
-             </OBJECT>
-         <UL>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="Python Coding Conventions">
-                  <param name="Local" value="spec/notes.html#python-coding-conventions">
-                </OBJECT>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="Copyrights and Licensing">
-                  <param name="Local" value="spec/notes.html#copyrights-and-licensing">
-                </OBJECT>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="CVS Check-ins">
-                  <param name="Local" value="spec/notes.html#cvs-check-ins">
-                </OBJECT>
-            <UL>
-               <LI><OBJECT type="text/sitemap">
-                     <param name="Name" value="Additions to Docutils">
-                     <param name="Local" value="spec/notes.html#additions-to-docutils">
-                   </OBJECT>
-            </UL>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="Mailing Lists">
-                  <param name="Local" value="spec/notes.html#mailing-lists">
-                </OBJECT>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="The Sandbox">
-                  <param name="Local" value="spec/notes.html#the-sandbox">
-                </OBJECT>
-            <LI><OBJECT type="text/sitemap">
-                  <param name="Name" value="Parallel Projects">
-                  <param name="Local" value="spec/notes.html#parallel-projects">
-                </OBJECT>
-         </UL>
-         <LI><OBJECT type="text/sitemap">
-               <param name="Name" value="Release Procedure">
-               <param name="Local" value="spec/notes.html#release-procedure">
+               <param name="Name" value="Transform Priority Range Categories">
+               <param name="Local" value="spec/transforms.html#transform-priority-range-categories">
              </OBJECT>
       </UL>
       <LI><OBJECT type="text/sitemap">
