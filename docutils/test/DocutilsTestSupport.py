@@ -58,6 +58,7 @@ from docutils.statemachine import StringList, string2lines
 
 try:
     from docutils.readers.python import moduleparser
+    from tokenize import generate_tokens # new in Python 2.2
 except:
     moduleparser = None
 
