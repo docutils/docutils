@@ -69,7 +69,7 @@ class DataError(ApplicationError): pass
 class OptionSpec:
 
     """
-    Runtime option specification base class.  
+    Runtime option specification base class.
 
     OptionSpec subclass objects used by `docutils.frontend.OptionParser`.
     """
@@ -85,7 +85,7 @@ class OptionSpec:
     option_default_overrides = None
     """A dictionary of auxiliary defaults, to override defaults for options
     defined in other components.  Override in subclasses."""
-    
+
     relative_path_options = ()
     """Options containing filesystem paths.  Override in subclasses.
 

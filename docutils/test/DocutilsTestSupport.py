@@ -251,7 +251,7 @@ class TransformTestCase(CustomTestCase):
     cases that have nothing to do with the input and output of the transform.
     """
 
-    options = frontend.OptionParser().get_default_values()
+    options = frontend.OptionParser(components=(rst.Parser,)).get_default_values()
     options.report_level = 1
     options.halt_level = 5
     options.debug = package_unittest.debug
@@ -314,7 +314,7 @@ class ParserTestCase(CustomTestCase):
     parser = rst.Parser()
     """Parser shared by all ParserTestCases."""
 
-    options = frontend.OptionParser().get_default_values()
+    options = frontend.OptionParser(components=(parser,)).get_default_values()
     options.report_level = 5
     options.halt_level = 5
     options.debug = package_unittest.debug
@@ -372,6 +372,12 @@ class PEPParserTestCase(ParserTestCase):
 
     parser = rst.Parser(rfc2822=1, inliner=pep.Inliner())
     """Parser shared by all PEPParserTestCases."""
+
+    option_parser = frontend.OptionParser(components=(parser, pep.Reader))
+    options = option_parser.get_default_values()
+    options.report_level = 5
+    options.halt_level = 5
+    options.debug = package_unittest.debug
 
 
 class PEPParserTestSuite(ParserTestSuite):
