@@ -1,5 +1,54 @@
+===============
 Making a writer
 ===============
+
+:Author: engelbert gruber
+:Contact: grubert@users.sourceforge.net
+:Date: $Date$
+:Web site: http://docutils.sourceforge.net/
+
+.. contents::
+
+Introduction
+============
+
+This might become a document sometime, is now a FAQ, collected
+from docutils-develop@lists.sourceforge.net.
+
+This should give help in making a writer for the python docutils.
+Writers are backends writing to a dedicated format.
+
+General description
+===================
+
+from PEP-0258:
+
+  Writers produce the final output (HTML, XML, TeX, etc.). Writers translate 
+	the internal document tree structure into the final data format, possibly
+	running Writer-specific transforms first.
+
+	Responsibilities:
+
+  *	Run transforms over the doctree(s).
+  *	Translate doctree(s) into specific output formats.
+	* Transform references into format-native forms.
+	* Write the translated output to the destination I/O.
+
+or in other words
+
+  By the time the document gets to the Writer, it should be in
+  final form.  The Writer's job is simply (and only) to translate from
+  the Docutils doctree structure to the target format.  Some small
+  transforms may be required, but they should be local and
+  format-specific.
+
+
+The smallest writer
+===================
+
+Next to come. This should be a writer module where everything is done 
+in unimplemented.
+
 
 General Problems
 ----------------
@@ -39,5 +88,9 @@ it context might be unecessary.
         tail = self.body[size:] + [tail]
         del self.body[size:]
         dest.extend(tail)
+
+
+Notes on Classes
+----------------
 
 
