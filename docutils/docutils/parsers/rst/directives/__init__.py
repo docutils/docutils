@@ -83,6 +83,7 @@ See `Creating reStructuredText Directives`_ for more information.
 
 __docformat__ = 'reStructuredText'
 
+import re
 from docutils import nodes
 from docutils.parsers.rst.languages import en as _fallback_language_module
 
@@ -281,6 +282,30 @@ def class_option(argument):
     if not class_name:
         raise ValueError('cannot make "%s" into a class name' % argument)
     return class_name
+
+unicode_pattern = re.compile(
+    r'(?:0x|x|\\x|U\+?|\\u)([0-9a-f]+)$|&#x([0-9a-f]+);$', re.IGNORECASE)
+
+def unicode_code(code):
+    r"""
+    Convert a Unicode character code to a Unicode character.
+
+    Codes may be decimal numbers, hexadecimal numbers (prefixed by ``0x``,
+    ``x``, ``\x``, ``U+``, ``u``, or ``\u``; e.g. ``U+262E``), or XML-style
+    numeric character entities (e.g. ``&#x262E;``).  Other text remains as-is.
+    """
+    try:
+        if code.isdigit():                  # decimal number
+            return unichr(int(code))
+        else:
+            match = unicode_pattern.match(code)
+            if match:                       # hex number
+                value = match.group(1) or match.group(2)
+                return unichr(int(value, 16))
+            else:                           # other text
+                return code
+    except OverflowError, detail:
+        raise ValueError('code too large (%s)' % detail)
 
 def format_values(values):
     return '%s, or "%s"' % (', '.join(['"%s"' % s for s in values[:-1]]),
