@@ -626,24 +626,27 @@ class RSTState(StateWS):
         before, inlines, remaining, sysmessages, endstring = self.inlineobj(
               match, lineno, self.inline.patterns.substitution_ref,
               nodes.substitution_reference)
-        if inlines:
-            assert len(inlines) == 1
+        if len(inlines) == 1:
             subrefnode = inlines[0]
-            assert isinstance(subrefnode, nodes.substitution_reference)
-            subreftext = subrefnode.astext()
-            refname = normname(subreftext)
-            subrefnode['refname'] = refname
-            self.statemachine.memo.document.note_substitution_ref(subrefnode)
-            if endstring[-1:] == '_':
-                referencenode = nodes.reference('|%s%s' % (subreftext, endstring), '')
-                if endstring[-2:] == '__':
-                    referencenode['anonymous'] = 1
-                    self.statemachine.memo.document.note_anonymous_ref(referencenode)
-                else:
-                    referencenode['refname'] = refname
-                    self.statemachine.memo.document.note_refname(referencenode)
-                referencenode += subrefnode
-                inlines = [referencenode]
+            if isinstance(subrefnode, nodes.substitution_reference):
+                subreftext = subrefnode.astext()
+                refname = normname(subreftext)
+                subrefnode['refname'] = refname
+                self.statemachine.memo.document.note_substitution_ref(
+                      subrefnode)
+                if endstring[-1:] == '_':
+                    referencenode = nodes.reference(
+                          '|%s%s' % (subreftext, endstring), '')
+                    if endstring[-2:] == '__':
+                        referencenode['anonymous'] = 1
+                        self.statemachine.memo.document.note_anonymous_ref(
+                              referencenode)
+                    else:
+                        referencenode['refname'] = refname
+                        self.statemachine.memo.document.note_refname(
+                              referencenode)
+                    referencenode += subrefnode
+                    inlines = [referencenode]
         return before, inlines, remaining, sysmessages
 
     def footnote_reference(self, match, lineno):
@@ -788,10 +791,10 @@ class RSTState(StateWS):
             processed += self.standalone_uri(remaining, lineno)
         return processed, messages
 
-    def unindentwarning(self):
+    def unindent_warning(self, node_name):
         return self.statemachine.memo.reporter.warning(
-              ('Unindent without blank line at line %s.'
-                  % (self.statemachine.abslineno() + 1)))
+              ('%s ends without a blank line; unexpected unindent at line %s.'
+               % (node_name, self.statemachine.abslineno() + 1)))
 
 
 class Body(RSTState):
@@ -882,7 +885,7 @@ class Body(RSTState):
         blockquote = self.block_quote(indented, lineoffset)
         self.statemachine.node += blockquote
         if not blankfinish:
-            self.statemachine.node += self.unindentwarning()
+            self.statemachine.node += self.unindent_warning('Block quote')
         return context, nextstate, []
 
     def block_quote(self, indented, lineoffset):
@@ -904,7 +907,7 @@ class Body(RSTState):
               node=bulletlist, initialstate='BulletList',
               blankfinish=blankfinish)
         if not blankfinish:
-            self.statemachine.node += self.unindentwarning()
+            self.statemachine.node += self.unindent_warning('Bullet list')
         self.gotoline(newlineoffset)
         return [], nextstate, []
 
@@ -930,7 +933,8 @@ class Body(RSTState):
             bq = self.block_quote(indented, lineoffset)
             self.statemachine.node += bq
             if not blankfinish:
-                self.statemachine.node += self.unindentwarning()
+                self.statemachine.node += self.unindent_warning(
+                      'Enumerated list')
             return [], nextstate, []
         if ordinal != 1:
             msg = self.statemachine.memo.reporter.info(
@@ -955,7 +959,7 @@ class Body(RSTState):
               blankfinish=blankfinish,
               extrasettings={'lastordinal': ordinal, 'format': format})
         if not blankfinish:
-            self.statemachine.node += self.unindentwarning()
+            self.statemachine.node += self.unindent_warning('Enumerated list')
         self.gotoline(newlineoffset)
         return [], nextstate, []
 
@@ -1022,7 +1026,7 @@ class Body(RSTState):
               node=fieldlist, initialstate='FieldList',
               blankfinish=blankfinish)
         if not blankfinish:
-            self.statemachine.node += self.unindentwarning()
+            self.statemachine.node += self.unindent_warning('Field list')
         self.gotoline(newlineoffset)
         return [], nextstate, []
 
@@ -1062,7 +1066,7 @@ class Body(RSTState):
             blockquote = self.block_quote(indented, lineoffset)
             self.statemachine.node += blockquote
             if not blankfinish:
-                self.statemachine.node += self.unindentwarning()
+                self.statemachine.node += self.unindent_warning('Option list')
             return [], nextstate, []
         self.statemachine.node += optionlist
         optionlist += listitem
@@ -1073,7 +1077,7 @@ class Body(RSTState):
               node=optionlist, initialstate='OptionList',
               blankfinish=blankfinish)
         if not blankfinish:
-            self.statemachine.node += self.unindentwarning()
+            self.statemachine.node += self.unindent_warning('Option list')
         self.gotoline(newlineoffset)
         return [], nextstate, []
 
@@ -1592,8 +1596,8 @@ class Body(RSTState):
 
     def explicitlist(self, blankfinish):
         """
-        Create a nested state machine for a series of explicit markup constructs
-        (including anonymous hyperlink targets).
+        Create a nested state machine for a series of explicit markup
+        constructs (including anonymous hyperlink targets).
         """
         offset = self.statemachine.lineoffset + 1   # next line
         newlineoffset, blankfinish = self.nestedlistparse(
@@ -1603,7 +1607,7 @@ class Body(RSTState):
               blankfinish=blankfinish)
         self.gotoline(newlineoffset)
         if not blankfinish:
-            self.statemachine.node += self.unindentwarning()
+            self.statemachine.node += self.unindent_warning('Explicit markup')
 
     def anonymous(self, match, context, nextstate):
         """Anonymous hyperlink targets."""
@@ -1857,7 +1861,7 @@ class Text(RSTState):
               node=definitionlist, initialstate='DefinitionList',
               blankfinish=blankfinish, blankfinishstate='Definition')
         if not blankfinish:
-            self.statemachine.node += self.unindentwarning()
+            self.statemachine.node += self.unindent_warning('Definition list')
         self.gotoline(newlineoffset)
         return [], 'Body', []
 
@@ -1918,7 +1922,7 @@ class Text(RSTState):
             data = '\n'.join(indented)
             nodelist.append(nodes.literal_block(data, data))
             if not blankfinish:
-                nodelist.append(self.unindentwarning())
+                nodelist.append(self.unindent_warning('Literal block'))
         else:
             nodelist.append(self.statemachine.memo.reporter.warning(
                   'Literal block expected at line %s; none found.'
