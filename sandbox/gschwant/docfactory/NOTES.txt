@@ -1,0 +1,52 @@
+===================
+ DocFactory_ Notes
+===================
+
+:Date: $Date$
+:Revision: $Revision$
+
+.. _DocFactory: http://docutils.sf.net/sandbox/gschwant/docfactory/
+
+.. contents::
+
+The names of the original contributors are appended to the items,
+marked in brackets.
+
+
+To Do
+=====
+
+* Convert system message handling from stderr parsing to simply using
+  the "line" attribute of system_message elements, accessible from
+  ``document.parse_messages`` and ``document.transform_messages``.
+  [David Goodger]
+
+* Use the docutils.conf config file mechanism.  May require changes to
+  the current Docutils setup.  [David Goodger]
+
+* Add a dependency checking mechanism, like that in pep2html.py.
+  [David Goodger]
+
+* Any variable data saved between runs should be stored in the user's
+  home directory; perhaps in a ~/.docutils file.  [David Goodger]
+
+
+Ideas
+=====
+
+* Should the interface be file-centric instead of project-centric?  I
+  think the user should be able to open a file, edit it, and process
+  it, without having to create a project first.  Projects should be
+  optional.  [David Goodger]
+
+* What is the current representation of a project?  Is it best? 
+  [David Goodger]
+
+
+..
+   Local Variables:
+   mode: indented-text
+   indent-tabs-mode: nil
+   sentence-end-double-space: t
+   fill-column: 70
+   End:
