@@ -4,13 +4,20 @@ latex2e BUGS TODOS and other animals
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
 
-Rev. 2002-12-09
+Rev. 2002-12-12
 
 To do
 ~~~~~
 
 * center subsection{Abstract} gives a latex error here.
   ``! LaTeX Error: Something's wrong--perhaps a missing \item.``
+
+* admonitions are not so visible as in html (make a border a bigger title, indent
+  text)
+
+* leading spaces in line-blocks look squeezed 	
+
+* document errors are also too silent.
 
 * the title "table of contents" is centered too.
 
@@ -62,13 +69,6 @@ To do
 * latex might shift images (or figures) to other pages. this is latex. but then we 
   need a see figure 1 note in the text.
 
-* admonitions are not so visible as in html (make a border a bigger title, indent
-  text)
-
-* leading spaces in line-blocks look squeezed 	
-
-* document errors are also too silent.
-
 * meta keywords into pdf ?
 
 * pagestyle headings does not work, when sections are starred.
@@ -98,6 +98,8 @@ ATTENTION
 
 Done
 ~~~~
+
+* append ":" onto definition list terms.
 * long option-groups use multicolumn.
 * remove borders from option-lists.
 * lists that donot start at one donot work.
