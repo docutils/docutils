@@ -215,6 +215,11 @@ The following options are recognized:
     text flow around it.  The specific behavior depends upon the
     browser or rendering software used.
 
+``target`` : text (URI or reference name)
+    Makes the image into a hyperlink reference ("clickable").  The
+    option argument may be a URI (relative or absolute), or a
+    reference name with underscore suffix (e.g. ``name_``).
+
 ``class`` : text
     Set a "class" attribute value on the image element.  See the
     class_ directive below.
