@@ -50,7 +50,7 @@ Changes Since 0.3.7
 * docutils/writers/html4css1.py:
 
   - Fixed unencoded stylesheet reference bug (characters like "&" in
-    stylesheet reference).
+    stylesheet references).
   - ``target`` nodes now appear as ``span`` tags (instead of ``a``
     tags).
 
