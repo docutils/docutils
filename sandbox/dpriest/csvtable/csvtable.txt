@@ -103,3 +103,6 @@ The following options are recognized:
     to double-up the character, e.g. "He said, ""Hi!"""
 
     .. Again, doubtful if whitespace would ever be used.  Just "char".
+
+    .. Add another possible value, "double", to explicitly indicate
+       the default case?
