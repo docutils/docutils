@@ -71,10 +71,6 @@ cd
 rm -rf $tmp
 
 # update library area
-cd $lib/web
-cvs -Q update 2>&1 > /dev/null
-cd $lib/sandbox
-cvs -Q update 2>&1 > /dev/null
 cd $lib
 cvs -Q update 2>&1 > /dev/null
 
