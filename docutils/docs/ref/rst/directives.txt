@@ -36,11 +36,12 @@ Docutils Document Tree`_ and the `Docutils Generic DTD`_ XML document
 type definition.  For directive implementation details, see `Creating
 reStructuredText Directives`_.
 
-.. _Directives: reStructuredText.html#directives
-.. _reStructuredText Markup Specification: reStructuredText.html
+.. _Directives: restructuredtext.html#directives
+.. _reStructuredText Markup Specification: restructuredtext.html
 .. _The Docutils Document Tree: ../doctree.html
 .. _Docutils Generic DTD: ../docutils.dtd
-.. _Creating reStructuredText Directives: ../howto/rst-directives.html
+.. _Creating reStructuredText Directives:
+   ../../howto/rst-directives.html
 
 
 -------------
@@ -1082,7 +1083,7 @@ Specific roles may support other options and/or directive content.
 See the `reStructuredText Interpreted Text Roles`_ document for
 details.
 
-.. _reStructuredText Interpreted Text Roles: interpreted.html
+.. _reStructuredText Interpreted Text Roles: roles.html
 
 
 Restructuredtext-Test-Directive

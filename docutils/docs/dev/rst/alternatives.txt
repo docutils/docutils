@@ -18,7 +18,8 @@ for full details of the established syntax.
 .. _StructuredText:
    http://dev.zope.org/Members/jim/StructuredTextWiki/FrontPage
 .. _Problems with StructuredText: problems.html
-.. _reStructuredText Markup Specification: reStructuredText.html
+.. _reStructuredText Markup Specification:
+   ../../ref/rst/restructuredtext.html
 
 
 .. contents::
@@ -2452,7 +2453,7 @@ further character processing will be of this functional type, rather
 than of the character-encoding type.
 
 .. _character-level inline markup:
-   reStructuredText.html#character-level-inline-markup
+   ../../ref/rst/restructuredtext.html#character-level-inline-markup
 
 * Directive idea::
 
