@@ -395,7 +395,44 @@ Directives
 
 - Use the language module for directive attribute names?
 
-- Add more attributes to the image directive: align, border?
+- Implement attributes on existing directives:
+
+  - _`images.image`: "align", "border"?
+
+  - _`parts.sectnum`: "start", "local"?
+
+    A "local" attribute could enable numbering for sections from a
+    certain point down, and sections in the rest of the document are
+    not numbered.  For example, a reference section of a manual might
+    be numbered, but not the rest.  OTOH, an all-or-nothing approach
+    would probably be enough.
+
+    The "start" attribute will specify the sequence set to use at the
+    same time as the starting value, for the first part of the section
+    number (i.e., section, not subsection).  For example::
+
+        .. sectnum: :start: 1
+
+        .. sectnum: :start: A
+
+        .. sectnum: :start: 5
+
+        .. sectnum: :start: I
+
+    The first one is the default: start at 1, numbered.  The second
+    one specifies letters, and start at "A".  The third specifies
+    numbers, start at 5.  The last example could signal Roman
+    numerals, although I don't know if they'd be applicable here.
+    Enumerated lists already do all this; perhaps that code could be
+    reused.
+
+    Here comes the tricky part.  The "sectnum" directive should be
+    usable multiple times in a single document.  For example, in a
+    long document with "chapter" and "appendix" sections, there could
+    be a second "sectnum" before the first appendix, changing the
+    sequence used (from 1,2,3... to A,B,C...).  This is where the
+    "local" concept comes in.  This part of the implementation can be
+    left for later.
 
 - Implement directives.  Each of the list items below begins with an
   identifier of the form, "module_name.directive_function_name".  The
@@ -408,33 +445,6 @@ Directives
   - _`parts.endnotes`: See `Footnote & Citation Gathering`_.
 
   - _`parts.citations`: See `Footnote & Citation Gathering`_.
-
-  - _`parts.sectnum`: Automatic section numbering.  Could be a
-    command-line option also/instead.
-
-    Something like this::
-    
-        .. sectnum::
-    
-        Section One
-        ===========
-    
-        Section Two
-        ===========
-    
-        Subsection One
-        --------------
-    
-    When processed, the numbers "1", "2", and "2.1" would be prefixed
-    to the titles automatically.  The directive name could be
-    "sectnum" or "section-numbers" or "section-numbering", perhaps
-    with a ":global:" attribute.  A ":depth:" attribute would also be
-    useful (analogous to that of the "contents" directive).  Perhaps
-    some kind of styling attribute as well?
-
-    Add support to the "contents" directive.  Instead of bullet lists,
-    the table of contents could be implemented with enumerated lists.
-    Nested simple enumerators or compound enumerators ("2.1")?
 
   - _`misc.raw`
 
@@ -779,6 +789,8 @@ Front-End Tools
   initialize ``cmdline_options`` in ``__init__`` or ``init_options``?
 
 - Disable common options that don't apply?
+
+- Implement the "sectnum" directive as a command-line option also?
 
 
 Project Policies

@@ -78,7 +78,8 @@ class Writer(html4css1.Writer):
         except:
             subs['pepnum'] = pepnum
         subs['title'] = header[1][1].astext()
-        subs['body'] = ''.join(self.body)
+        subs['body'] = ''.join(
+            self.body_pre_docinfo + self.docinfo + self.body)
         subs['body_suffix'] = ''.join(self.body_suffix)
         self.output = template % subs
 
