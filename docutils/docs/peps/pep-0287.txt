@@ -772,7 +772,7 @@ References & Footnotes
 .. [#Zen] From `The Zen of Python (by Tim Peters)`__ (or just
    "``import this``" in Python)
 
-   __ http://www.python.org/doc/Humor.html#zen
+__ http://www.python.org/doc/Humor.html#zen
 
 .. [#PEP-216] PEP 216, Docstring Format, Zadka
    (http://www.python.org/peps/pep-0216.html)
