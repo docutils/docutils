@@ -473,14 +473,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     # avoid latexs maketitle generating one for us.
                     self.head.append("\\date{}\n")
             if name == 'address':
-                # self.insert_newline = 1 does not work in tabular
-                # BUG keeping linebreaks in address: 
-                # a) flushleft needs \\ 
-                # b) paragraph with raggedright,
-                # both might have a vertical space above.
-                #self.docinfo.append('\\begin{flushleft}\n')
-                #self.context.append('\n\\end{flushleft}\n\\\\\n')
-                self.context.append(' \\\\\n')
+                self.insert_newline = 1 
+                self.docinfo.append('{\\raggedright\n')
+                self.context.append(' } \\\\\n')
             else:    
                 self.context.append(' \\\\\n')
             self.context.append(self.docinfo)
