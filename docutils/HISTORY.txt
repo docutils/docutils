@@ -59,6 +59,7 @@ Changes Since 0.3.5
 * docutils/parsers/rst/directives/misc.py:
 
   - Added "encoding" option to "include" and "raw" directives.
+  - Added "trim", "ltrim", and "rtrim" options to "unicode" directive.
 
 * docutils/parsers/rst/directives/parts.py:
 
@@ -75,6 +76,11 @@ Changes Since 0.3.5
 
   - Fixed bug when multiple "class" directives are applied to a single
     element.
+
+* docutils/transforms/references.py:
+
+  - Added support for trimming whitespace from beside substitution
+    references.
 
 * docutils/transforms/universal.py:
 
@@ -108,6 +114,8 @@ Changes Since 0.3.5
 
   - Changed structure of the ``line_block`` element; added ``line``.
   - Added ``compound`` element.
+  - Added "ltrim" and "rtrim" attributes to
+    ``substitution_definition`` element.
 
 * docs/ref/rst/directives.txt
 
