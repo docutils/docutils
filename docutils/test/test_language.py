@@ -1,53 +1,73 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
-# Author:    engelbert gruber
+# Authors:   Engelbert Gruber; David Goodger
 # Contact:   grubert@users.sourceforge.net
 # Revision:  $Revision$
 # Date:      $Date$
 # Copyright: This module has been placed in the public domain.
 
-
 """
-Test module for language modules for completeness.
+Tests for language module completeness.
+
+Specify a language code (e.g. "de") as a command-line parameter to test only
+that language.
 """
 
-# i am unsure about how to test:
-# the result i want is a test per lanuage.
-# because this way the first error stops it.
-
-import unittest
+import sys
+import os
+import re
 import docutils.languages
-from docutils.parsers.rst import directives
 import docutils.parsers.rst.languages
+from docutils.parsers.rst import directives
+from DocutilsTestSupport import CustomTestSuite, CustomTestCase
 
-debug = 0
+reference_language = 'en'
 
-import os, re
 
-class LanguageTests(unittest.TestCase):
+class LanguageTestSuite(CustomTestSuite):
 
-    def _get_installed_languages(self):
+    language_module_pattern = re.compile('^([a-z]{2,3}(_[a-z]{2,8})*)\.py$')
+
+    def __init__(self, languages=None):
+        CustomTestSuite.__init__(self)
+        if languages:
+            self.languages = languages
+        else:
+            self.get_languages()
+
+    def get_languages(self):
         """
-        get installed language translations from docutils.language.
-        One might also get from parsers.rst.language.
+        Get installed language translations from docutils.languages and from
+        docutils.parsers.rst.languages.
         """
-        lang_re = re.compile('^([a-z]{2}(_[A-Z]{2})?)\.py$')
-        self.languages_found = []
-        for mod in os.listdir(globals()['docutils'].languages.__path__[0]):
-            match = lang_re.match(mod)
-            if match and not match.group(1) == self.reference_language:
-                self.languages_found.append(match.group(1))
-        print self.languages_found
+        languages = {}
+        for mod in (os.listdir(docutils.languages.__path__[0])
+                    + os.listdir(docutils.parsers.rst.languages.__path__[0])):
+            match = self.language_module_pattern.match(mod)
+            if match:
+                languages[match.group(1)] = 1
+        del languages[reference_language]
+        self.languages = languages.keys()
 
-    def setUp(self):
-        self.reference_language = 'en'
-        self._get_installed_languages()
-        self.ref = docutils.languages.get_language(self.reference_language)
+    def generateTests(self):
+        for language in self.languages:
+            for method in LanguageTestCase.test_methods:
+                self.addTestCase(LanguageTestCase, method, None, None,
+                                 id=language+'.py', language=language)
 
-    def debug(self):
-        print "Reference language:", self.reference_language
 
-    def _xor(self,ref_dict,l_dict):
+class LanguageTestCase(CustomTestCase):
+
+    test_methods = ['test_label_translations', 'test_directives']
+    """Names of methods used to test each language."""
+
+    def __init__(self, *args, **kwargs):
+        self.ref = docutils.languages.get_language(reference_language)
+        self.language = kwargs['language']
+        del kwargs['language']          # only wanted here
+        CustomTestCase.__init__(self, *args, **kwargs)
+
+    def _xor(self, ref_dict, l_dict):
         """
         Returns entries that are only in one dictionary.
         (missing_in_lang, more_than_in_ref).
@@ -60,46 +80,58 @@ class LanguageTests(unittest.TestCase):
         for label in l_dict.keys():
             if not ref_dict.has_key(label):
                 too_much.append(label)
-        return (missing,too_much)
+        return (missing, too_much)
 
-    def _test_label_translations(self,lang):
-        """check label translations."""
-        l = docutils.languages.get_language(lang)
+    def test_label_translations(self):
+        try:
+            module = docutils.languages.get_language(self.language)
+            if not module:
+                raise ImportError
+        except ImportError:
+            self.fail('No docutils.languages.%s module.' % self.language)
+        missed, unknown = self._xor(self.ref.labels, module.labels)
+        if missed or unknown:
+            self.fail("Missed: %s; Unknown: %s" % (str(missed), str(unknown)))
 
-        (missed,too_much) = self._xor(self.ref.labels,l.labels)
-        if len(missed)>0 or len(too_much)>0:
-            raise NameError, "Missed: %s, Too much: %s" %(str(missed),str(too_much))
-
-#    def test_bibliographic_fields(self):
-#       print "  bibliographic_fields length compare"
-#       if not len(ref.bibliographic_fields) == len(l.bibliographic_fields):
-#           print "  mismatch: ref has %d entries language %d." % \
-#               (len(ref.bibliographic_fields), len(l.bibliographic_fields))
-
-    def _test_directives(self,lang):
-        l_directives = docutils.parsers.rst.languages.get_language(lang)
+    def test_directives(self):
+        try:
+            module = docutils.parsers.rst.languages.get_language(
+                self.language)
+            if not module:
+                raise ImportError
+        except ImportError:
+            self.fail('No docutils.parsers.rst.languages.%s module.'
+                      % self.language)
         failures = ""
-        for d in l_directives.directives.keys():
+        for d in module.directives.keys():
             try:
-                func, msg = directives.directive(d, l_directives, None)
-            except:
-                failures += "%s," % d 
-        if not failures == "":
-            raise NameError, failures
+                func, msg = directives.directive(d, module, None)
+            except Exception, error:
+                failures += "%s (%s)," % (d, error)
+        if failures:
+            self.fail(failures)
 
-    def test_language(self):
-        for lang in self.languages_found:
-            self._test_label_translations(lang)
-            self._test_directives(lang)
-            
+
+languages_to_test = []
+
+def suite():
+    s = LanguageTestSuite(languages_to_test)
+    s.generateTests()
+    return s
+
+def get_language_arguments():
+    while len(sys.argv) > 1:
+        last = sys.argv[-1]
+        if last.startswith('-'):
+            break
+        languages_to_test.append(last)
+        sys.argv.pop()
+    languages_to_test.reverse()
+
 
 if __name__ == '__main__':
-    import sys
-    # and get language to test
-    unittest.main()
+    get_language_arguments()
+    import unittest
+    unittest.main(defaultTest='suite')
     
-
-
-
 # vim: set et ts=4 ai :
-        
