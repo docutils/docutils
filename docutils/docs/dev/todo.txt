@@ -715,15 +715,16 @@ when used in a document.
 
 * Implement options on existing directives:
 
+  - Add a "class" option to many/most directives, to set an arbitrary
+    "class" attribute on the enclosing element (see `misc.class`_)?
+    Perhaps "name" as well?
+
   - _`images.image`: "border"?  "link"?
 
     Units of measure?  (See docutils-users, 2003-03-02.)
 
   - _`images.figure`: "title" and "number", to indicate a formal
     figure?
-
-    "figure-width" to constrain the width to actual width of the
-    image.  Would require PIL.
 
   - _`parts.sectnum`: "local"?, "start", "refnum"
 
@@ -965,7 +966,8 @@ when used in a document.
 
 	See docutils-users 2003-03-03.
 
-  - _`admonitions.admonition`: Generic, titled admonition.
+  - _`admonitions.admonition`: Generic, titled admonition.  Use
+    author-supplied title as "class" attribute value?
 
   - _`colorize.python`: Colorize Python code.  Fine for HTML output,
     but what about other formats?  Revert to a literal block?  Do we
@@ -1059,6 +1061,26 @@ elements.
 
   .. _multiple roles:
      rst/alternatives.html#multiple-roles-in-interpreted-text
+
+* Add document-local role bindings, associating directives with roles?
+
+      ``She wore ribbons in her hair and it lay with streaks of
+      grey``:rewrite:
+
+      .. :rewrite: class:: rewrite
+
+  The syntax is similar to that of substitution declarations, and the
+  directive/role association may resolve implementation issues.  The
+  semantics, ramifications, and implementation details do need to be
+  worked out though.  Syntax idea from Jeffrey C. Jacobs.
+
+  The example above would implement the "rewrite" role as adding a
+  ``class="rewrite"`` attribute to the interpreted text.  The
+  stylesheet would then pick up on the "class" attribute to do the
+  actual formatting.
+
+  But what's the doctree element?  Shall we introduce an arbitrary
+  "span" element?  Put "interpreted" back for such purposes?
 
 * Implement roles:
 
