@@ -59,8 +59,8 @@ class Decorations(Transform):
                or options.source_url:
             text = []
             if options.source_link and options.source or options.source_url:
-                if options.source_uri:
-                    source = options.source_uri
+                if options.source_url:
+                    source = options.source_url
                 else:
                     source = utils.relative_uri(options.destination,
                                                 options.source)
