@@ -322,6 +322,18 @@ General
   enabling a section for each Docutils component so that (for example)
   HTML's and LaTeX's stylesheets don't interfere with each other.
 
+  Idea: adopt sections in the config file corresponding to Docutils
+  components, which define flat namespaces that can be applied in an
+  overlay fashion defined by the components themselves.  For example,
+  if the "pep_html" writer defines itself as derivative of the
+  "html4css1" writer, the "stylesheet" setting in the "[html4css1]"
+  section will be used unless the "[pep_html]" section overrides it.
+  In the absence of any "stylesheet" setting in either section, a
+  "stylesheet" setting in "[general]" would be used.  This would also
+  allow component-specific definitions of general or
+  other-component-specific settings, such as writer-specific overrides
+  for the "trim_footnote_reference_space" parser setting.
+
 * The "docutils.conf" included with Docutils should become complete,
   with examples of every setting (possibly commented).  It's currently
   sparse, requiring doc lookups.
