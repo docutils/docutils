@@ -148,7 +148,7 @@ Specific:
     names, removed ``Inliner.groups`` and ``Body.explicit.groups``.
   - Converted regexps from ``'%s' % var`` to ``'%(var)s' % locals()``.
   - Fixed a bug in ``Inliner.interpreted_or_phrase_ref()``.
-  - Allow non-ASCII in "simple names" (directive names, field names,
+  - Allowed non-ASCII in "simple names" (directive names, field names,
     references, etc.).
 
 * docutils/parsers/rst/directives/html.py: Changed the ``meta``
@@ -178,6 +178,7 @@ Specific:
 
   - Added filter for `Contents`, to use alt-text for inline images,
     and to remove inline markup that doesn't make sense in the ToC.
+  - Added "name" attribute to TOC topic depending on its title.
 
 * docutils/transforms/references.py: Fixed indirect target resolution
   in ``Hyperlinks`` transform.
@@ -257,6 +258,7 @@ Specific:
   - Clarified purpose of directives.
   - Added ``-/:`` characters to inline markup's start string prefix,
     ``/`` to end string suffix.
+  - Updated "Authors" bibliographic field behavior.
 
 * test: Made test modules standalone (subdirectories became packages).
 
