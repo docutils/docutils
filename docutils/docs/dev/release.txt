@@ -122,10 +122,10 @@
       ~/docutils-docs.tar.bz2`` in the newly created ``htdocs/X.Y.Z``
       directory.
 
-16. Bump the version number again (as per step 1).
+16. Bump the version number again (as per step 2) and update the files
+    in ``test/functional/expected/``.
 
-17. Announce the release and the end of the checkin freeze on
-    Docutils-develop.
+17. Announce the end of the checkin freeze on Docutils-develop.
 
 18. Add a SourceForge News item, with title "Docutils X.Y.Z released"
     and containing the release tarball's download URL.
