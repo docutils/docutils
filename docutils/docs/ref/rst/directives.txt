@@ -961,7 +961,7 @@ The text above is parsed and transformed into this doctree fragment::
 __ ../doctree.html#class
 
 
-.. role::
+.. _role:
 
 Custom Interpreted Text Roles
 =============================
