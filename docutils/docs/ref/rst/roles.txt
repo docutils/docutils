@@ -292,14 +292,14 @@ more formats (Writer names) must be provided in a "format" option.
 
 For example, the following creates an HTML-specific "html" role::
 
-    .. role:: html(raw)
+    .. role:: raw-html(raw)
        :format: html
 
 This role can now be used directly to pass data untouched to the HTML
 Writer.  For example::
 
     If there just *has* to have a line break here,
-    :html:`<br />`
+    :raw-html:`<br />`
     it can be accomplished with a "raw"-derived role.
     But the line block syntax should be considered first.
 
