@@ -1199,18 +1199,22 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_reference(self, node):
         # for pdflatex hyperrefs might be supported
+        if self.literal_block and (self.use_for_literal_block == "mbox"):
+            # mbox does not like the  '#'
+            hash_char = '\\#'
+        else:
+            hash_char = '#'
+
         if node.has_key('refuri'):
             href = node['refuri']
         elif node.has_key('refid'):
-            href = '#' + node['refid']
+            href = hash_char + node['refid']
         elif node.has_key('refname'):
-            href = '#' + self.document.nameids[node['refname']]
-        ##self.body.append('[visit_reference]')
+            href = hash_char + self.document.nameids[node['refname']]
         self.body.append('\\href{%s}{' % href)
 
     def depart_reference(self, node):
         self.body.append('}')
-        ##self.body.append('[depart_reference]')
 
     def visit_revision(self, node):
         self.visit_docinfo_item(node, 'revision')

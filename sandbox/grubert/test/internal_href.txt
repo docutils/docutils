@@ -1,0 +1,14 @@
+see below__ for a bang.
+
+__ `xxx`_
+
+.. parsed-literal::
+
+    see below__ for a bang from literal.
+
+__ `xxx`_
+
+.. _xxx:
+
+Bang!
+
