@@ -28,7 +28,7 @@ the reStructuredText parser.  It defines the following:
     - `SpecializedText`: Superclass for continuation lines of Text-variants.
     - `Definition`: Second line of potential definition_list_item.
     - `Line`: Second line of overlined section title or transition marker.
-    - `Stuff`: An auxiliary collection class.
+    - `Struct`: An auxiliary collection class.
 
 :Exception classes:
     - `MarkupError`
@@ -120,9 +120,9 @@ class ParserError(ApplicationError): pass
 class MarkupMismatch(Exception): pass
 
 
-class Stuff:
+class Struct:
 
-    """Stores a bunch of stuff for dotted-attribute access."""
+    """Stores data attributes for dotted-attribute access."""
 
     def __init__(self, **keywordargs):
         self.__dict__.update(keywordargs)
@@ -151,12 +151,12 @@ class RSTStateMachine(StateMachineWS):
         if inliner is None:
             inliner = Inliner()
         inliner.init_customizations(document.settings)
-        self.memo = Stuff(document=document,
-                          reporter=document.reporter,
-                          language=self.language,
-                          title_styles=[],
-                          section_level=0,
-                          inliner=inliner)
+        self.memo = Struct(document=document,
+                           reporter=document.reporter,
+                           language=self.language,
+                           title_styles=[],
+                           section_level=0,
+                           inliner=inliner)
         self.document = self.memo.document
         self.attach_observer(self.document.note_state_machine_change)
         self.reporter = self.memo.reporter
@@ -524,7 +524,7 @@ class Inliner:
                )
               ]
              )
-    patterns = Stuff(
+    patterns = Struct(
           initial=build_regexp(parts),
           emphasis=re.compile(non_whitespace_escape_before
                               + r'(\*)' + end_string_suffix),
@@ -903,13 +903,13 @@ class Body(RSTState):
     Generic classifier of the first line of a block.
     """
 
-    enum = Stuff()
+    enum = Struct()
     """Enumerated list parsing information."""
 
     enum.formatinfo = {
-          'parens': Stuff(prefix='(', suffix=')', start=1, end=-1),
-          'rparen': Stuff(prefix='', suffix=')', start=0, end=-1),
-          'period': Stuff(prefix='', suffix='.', start=0, end=-1)}
+          'parens': Struct(prefix='(', suffix=')', start=1, end=-1),
+          'rparen': Struct(prefix='', suffix=')', start=0, end=-1),
+          'period': Struct(prefix='', suffix='.', start=0, end=-1)}
     enum.formats = enum.formatinfo.keys()
     enum.sequences = ['arabic', 'loweralpha', 'upperalpha',
                       'lowerroman', 'upperroman'] # ORDERED!
@@ -1449,10 +1449,10 @@ class Body(RSTState):
         return row
 
 
-    explicit = Stuff()
+    explicit = Struct()
     """Patterns and constants used for explicit markup recognition."""
 
-    explicit.patterns = Stuff(
+    explicit.patterns = Struct(
           target=re.compile(r"""
                             (
                               _               # anonymous target
@@ -1903,10 +1903,7 @@ class Body(RSTState):
                 try:
                     return method(self, expmatch)
                 except MarkupError, (message, lineno): # never reached?
-                    errors.append(
-                        self.reporter.warning(
-                        '%s: %s' % (detail.__class__.__name__, message),
-                        line=lineno))
+                    errors.append(self.reporter.warning(message, line=lineno))
                     break
         nodelist, blank_finish = self.comment(match)
         return nodelist + errors, blank_finish
