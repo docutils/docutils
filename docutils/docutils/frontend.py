@@ -472,21 +472,19 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
             if component and component.settings_default_overrides:
                 self.defaults.update(component.settings_default_overrides)
 
-    def get_config_files(self):
+    def get_standard_config_files(self):
         """Return list of config files, from environment or standard."""
         try:
             config_files = os.environ['DOCUTILSCONFIG']
-            if config_files == '':
-                return []
-            else:
-                return config_files.split(os.pathsep)
+            return [f for f in config_files.split(os.pathsep) if f != '']
         except KeyError:
             return self.standard_config_files
 
     def get_standard_config_settings(self):
-        config_files = map(os.path.expanduser, self.get_config_files())
+        config_files = map(os.path.expanduser,
+                           self.get_standard_config_files())
         settings = {}
-        for filename in self.standard_config_files:
+        for filename in config_files:
             settings.update(self.get_config_file_settings(filename))
         return settings
 

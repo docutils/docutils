@@ -67,57 +67,76 @@ class ConfigFileTests(unittest.TestCase):
         self.option_parser = frontend.OptionParser(
             components=(pep_html.Writer,), read_config_files=None)
 
+    def files_settings(self, *names):
+        settings = {}
+        for name in names:
+            settings.update(self.option_parser.get_config_file_settings(
+                self.config_files[name]))
+        return settings
+
+    def expected_settings(self, *names):
+        expected = {}
+        for name in names:
+            expected.update(self.settings[name])
+        return expected
+
     def compare_output(self, result, expected):
         """`result` and `expected` should both be dicts."""
-        result = pprint.pformat(result)
-        expected = pprint.pformat(expected)
+        result = pprint.pformat(result) + '\n'
+        expected = pprint.pformat(expected) + '\n'
         try:
-            self.assertEquals('\n' + result, '\n' + expected)
+            self.assertEquals(result, expected)
         except AssertionError:
             print >>sys.stderr, '\n%s\n' % (self,)
-            print >>sys.stderr, '-: expected\n+: result'
+            print >>sys.stderr, '+: result\n-: expected'
             print >>sys.stderr, ''.join(self.compare(expected.splitlines(1),
                                                      result.splitlines(1)))
             raise
 
+    def test_nofiles(self):
+        self.compare_output(self.files_settings(),
+                            self.expected_settings())
+
     def test_old(self):
-        settings = self.option_parser.get_config_file_settings(
-            self.config_files['old'])
-        self.compare_output(settings, self.settings['old'])
+        self.compare_output(self.files_settings('old'),
+                            self.expected_settings('old'))
 
     def test_one(self):
-        settings = self.option_parser.get_config_file_settings(
-            self.config_files['one'])
-        self.compare_output(settings, self.settings['one'])
+        self.compare_output(self.files_settings('one'),
+                            self.expected_settings('one'))
 
     def test_multiple(self):
-        settings = self.option_parser.get_config_file_settings(
-            self.config_files['one'])
-        settings.update(self.option_parser.get_config_file_settings(
-            self.config_files['two']))
-        expected = self.settings['one'].copy()
-        expected.update(self.settings['two'])
-        self.compare_output(settings, expected)
+        self.compare_output(self.files_settings('one', 'two'),
+                            self.expected_settings('one', 'two'))
 
     def test_old_and_new(self):
-        settings = self.option_parser.get_config_file_settings(
-            self.config_files['one'])
-        settings.update(self.option_parser.get_config_file_settings(
-            self.config_files['two']))
-        expected = self.settings['old'].copy()
-        expected.update(self.settings['two'])
-        self.compare_output(settings, expected)
+        self.compare_output(self.files_settings('old', 'two'),
+                            self.expected_settings('old', 'two'))
 
     def test_list(self):
-        settings = self.option_parser.get_config_file_settings(
-            self.config_files['list'])
-        self.compare_output(settings, self.settings['list'])
+        self.compare_output(self.files_settings('list'),
+                            self.expected_settings('list'))
 
     def test_error_handler(self):
-        settings = self.option_parser.get_config_file_settings(
-            self.config_files['error'])
-        self.compare_output(settings, self.settings['error'])
+        self.compare_output(self.files_settings('error'),
+                            self.expected_settings('error'))
 
+
+class ConfigEnvVarFileTests(ConfigFileTests):
+
+    def setUp(self):
+        ConfigFileTests.setUp(self)
+        self.orig_environ = os.environ
+        os.environ = dict(os.environ)
+
+    def files_settings(self, *names):
+        files = [self.config_files[name] for name in names]
+        os.environ['DOCUTILSCONFIG'] = os.pathsep.join(files)
+        return self.option_parser.get_standard_config_settings()
+
+    def tearDown(self):
+        os.environ = self.orig_environ
+    
 
 if __name__ == '__main__':
     unittest.main()

@@ -42,11 +42,12 @@ later entries will override earlier ones.  For example, a "stylesheet"
 entry in a user-specific configuration file will override a
 "stylesheet" entry in the system-wide file.
 
-You can override the default 3 pathes by the environment variable
-``DOCUTILSCONFIG``, which should a colon-separated
-(semicolon-separated on windows) sequence of pathes to search instead
-(leave it empty to search no files at all).  Tilde-expansion is
-performed; relative pathes are relative to current working directory.
+You can replace the default 3 pathes with the environment variable
+``DOCUTILSCONFIG``.  It should a colon-separated (semicolon-separated
+on windows) sequence of files to search instead (leave it empty to
+search no files at all).  Tilde-expansion is performed; relative
+pathes are relative to current working directory; empty-string path
+items are ignored.
 
 In addition, a configuration file may be explicitly specified with the
 "--config" command-line option.  This configuration file is read after
