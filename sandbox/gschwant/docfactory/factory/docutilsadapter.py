@@ -4,7 +4,7 @@
 :version: 0.2.3
 """
 
-from   docutils.languages.en             import bibliographic_fields
+from   docutils.languages                import en, de, fr, it
 from   docutils.parsers.rst.languages.en import directives
 from   docutils.core                     import publish_cmdline, publish_file
 from   docutils                          import __version__
@@ -14,16 +14,27 @@ from   wxPython.wx                       import wxLogMessage
 
 docutilsversion = __version__
 
+language_codes = ['en', 'de', 'fr', 'it']
+
 publishers = { 'HTML': (None, 'html', '.html'),
                'Docutils-XML': (None, 'xml', '.xml'),
                'LaTeX': (None, 'latex', '.tex'),
                'PEP-HTML': ('pep', 'pep_html', '.html'),
                'Pseudo-XML': (None, None, '.xml') }
 
-def get_rest_bibl_fields():
+def get_rest_bibl_fields(language_code='en'):
     # suitable for autocompletion in wxStyledTextCtrl
     bibl_fields = ''
-    list = bibliographic_fields.keys()
+    if language_code not in language_codes:
+        language_code = 'en'
+    if language_code == 'en':
+        list = en.bibliographic_fields.keys()
+    if language_code == 'de':
+        list = de.bibliographic_fields.keys()
+    if language_code == 'fr':
+        list = fr.bibliographic_fields.keys()
+    if language_code == 'it':
+        list = it.bibliographic_fields.keys()
     list.sort()
     for value in list:
         bibl_fields = '%s %s:' % (bibl_fields, value)
