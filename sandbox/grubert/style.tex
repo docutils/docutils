@@ -1,4 +1,20 @@
 % donot indent first line.
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{5pt plus 2pt minus 1pt}
-  
+
+% sloppy
+% ------
+% Less strict (opposite to default fussy) space size between words. Therefore
+% less hyphenation.
+\sloppy
+
+% fonts
+% -----
+% times for pdf generation, gives smaller pdf files.
+%
+% But in standard postscript fonts: courier and times/helvetica do not fit.
+% Maybe use pslatex.
+\usepackage{times} 
+
+% pagestyle
+\pagestyle{headings}
