@@ -664,12 +664,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # NOTE: Latex wants a date and an author, rst puts this into
         #   docinfo, so normally we donot want latex author/date handling.
         # latex article has its own handling of date and author, deactivate.
+        # So we always emit \title{...} \author{...} \date{...}, even if the
+        # "..." are empty strings.
         self.head = [ ]
-        if not self.use_latex_docinfo:
-            self.head.extend( [ '\\author{}\n', '\\date{}\n' ] )
-        self.body_prefix = ['\\raggedbottom\n']
         # separate title, so we can appen subtitle.
-        self.title = ""
+        self.title = ''
+        # if use_latex_docinfo: collects lists of author/organization/contact/address lines
+        self.author_stack = []
+        self.date = ''
+
+        self.body_prefix = ['\\raggedbottom\n']
         self.body = []
         self.body_suffix = ['\n']
         self.section_level = 0
@@ -677,8 +681,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.topic_class = ''
         # column specification for tables
         self.table_caption = None
-        # if use_latex_docinfo: collects lists of author/organization/contact/address lines
-        self.author_stack = []
+        
         # Flags to encode
         # ---------------
         # verbatim: to tell encode not to encode.
@@ -878,15 +881,19 @@ class LaTeXTranslator(nodes.NodeVisitor):
         return self.encode(whitespace.sub(' ', text))
 
     def astext(self):
-        if self.pdfinfo:
+        if self.pdfinfo is not None:
             if self.pdfauthor:
                 self.pdfinfo.append('pdfauthor={%s}' % self.pdfauthor)
+        if self.pdfinfo:
             pdfinfo = '\\hypersetup{\n' + ',\n'.join(self.pdfinfo) + '\n}\n'
         else:
             pdfinfo = ''
-        title = '\\title{%s}\n' % self.title
-        return ''.join(self.head_prefix + [title]
-                        + self.head + [pdfinfo]
+        head = '\\title{%s}\n\\author{%s}\n\\date{%s}\n' % \
+               (self.title,
+                ' \\and\n'.join(['~\\\\\n'.join(author_lines)
+                                 for author_lines in self.author_stack]),
+                self.date)
+        return ''.join(self.head_prefix + [head] + self.head + [pdfinfo]
                         + self.body_prefix  + self.body + self.body_suffix)
 
     def visit_Text(self, node):
@@ -1111,10 +1118,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.docinfo.append('\\begin{tabularx}{\\docinfowidth}{lX}\n')
 
     def depart_docinfo(self, node):
-        if self.use_latex_docinfo and self.author_stack:
-            self.head.append('\\author{%s}\n' % \
-                ' \\and\n'.join(['~\\\\\n'.join(author_lines)
-                                for author_lines in self.author_stack]) )
         self.docinfo.append('\\end{tabularx}\n')
         self.docinfo.append('\\end{center}\n')
         self.body = self.docinfo + self.body
@@ -1144,7 +1147,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.author_stack[-1].append(text)
                 raise nodes.SkipNode
             elif name == 'date':
-                self.head.append('\\date{%s}\n' % self.attval(node.astext()))
+                self.date = self.attval(node.astext())
                 raise nodes.SkipNode
         self.docinfo.append('\\textbf{%s}: &\n\t' % self.language_label(name))
         if name == 'address':
@@ -1177,7 +1180,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_document(self, node):
         self.body_prefix.append('\\begin{document}\n')
         # titled document?
-        if len(node) and isinstance(node[0], nodes.title):
+        if self.use_latex_docinfo or len(node) and isinstance(node[0], nodes.title):
             self.body_prefix.append('\\maketitle\n\n')
             # alternative use titlepage environment.
             # \begin{titlepage}
