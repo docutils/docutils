@@ -1018,8 +1018,6 @@ when used in a document.
   - All directives that produce titled elements should grow implicit
     reference names based on the titles.
 
-  - @ _`body.table`: Document, add tests.
-
   - _`images.image`: "border"?
 
     _`Units of measure`?  (See `docutils-users, 2003-03-02
