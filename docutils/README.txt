@@ -51,13 +51,13 @@ snapshots always contain the latest code and documentation, usually
 updated within an hour of changes being committed to the repository,
 and usually bug-free:
 
-- Snapshot of Docutils code, tests, documentation, and
+* Snapshot of Docutils code, tests, documentation, and
   specifications: http://docutils.sf.net/docutils-snapshot.tgz
 
-- Snapshot of the Sandbox (experimental, contributed code):
+* Snapshot of the Sandbox (experimental, contributed code):
   http://docutils.sf.net/docutils-sandbox-snapshot.tgz
 
-- `Snapshot of web files` (the files that generate the web site):
+* `Snapshot of web files` (the files that generate the web site):
   http://docutils.sf.net/docutils-web-snapshot.tgz
 
 To keep up to date on the latest developments, download fresh copies
@@ -109,9 +109,9 @@ Project Files & Directories
 * tools: Directory for Docutils front-end tools.  See docs/tools.txt
   for documentation.
 
-* test: Unit tests; ``test/alltests.py`` runs all the tests.  Not
-  required to use the software, but very useful if you're planning to
-  modify it.
+* test: Unit tests.  Not required to use the software, but very useful
+  if you're planning to modify it.  See `Running the Test Suite`_
+  below.
 
 
 Installation
@@ -189,13 +189,15 @@ Usage
 After unpacking and installing the Docutils package, the following
 shell commands will generate HTML for all included documentation::
 
-    cd docutils/tools
+    cd <archive_directory_path>/tools
     buildhtml.py ../
 
-For official releases, the directory may be called "docutils-X.Y",
-where "X.Y" is the release version.  Alternatively::
+The final directory name of the ``<archive_directory_path>`` is
+"docutils" for snapshots.  For official releases, the directory may be
+called "docutils-X.Y", where "X.Y" is the release version.
+Alternatively::
 
-    cd docutils
+    cd <archive_directory_path>
     tools/buildhtml.py --config=tools/docutils.conf
 
 Some files may generate system messages (warnings and errors).  The
@@ -216,6 +218,42 @@ extensive inline documentation (in reStructuredText format of course).
 Contributions are welcome!
 
 .. _Docutils Front-End Tools: docs/tools.html
+
+
+Running the Test Suite
+======================
+
+To run the entire test suite, after installation_ open a shell and use
+the following commands::
+
+    cd <archive_directory_path>/test
+    ./alltests.py
+
+You should see a long line of periods, one for each test, and then a
+summary like this::
+
+    Ran 518 tests in 24.653s
+
+    OK
+    Elapsed time: 26.189 seconds
+
+The number of tests will grow over time, and the times reported will
+depend on the computer running the tests.  The difference between the
+two times represents the time required to set up the tests (import
+modules, create data structures, etc.).
+
+If any of the tests fail, please `open a bug report`_ or `send
+email`_.  Please include all relevant output, information about your
+operating system, Python version, and Docutils version.  To see the
+Docutils version, use these commands::
+
+    cd ../tools
+    ./quicktest.py --version
+
+.. _open a bug report:
+   http://sourceforge.net/tracker/?group_id=38414&atid=422030
+.. _send email: mailto:docutils-users@lists.sourceforge.net
+   ?subject=Docutils%20test%20suite%20failure
 
 
 Getting Help
