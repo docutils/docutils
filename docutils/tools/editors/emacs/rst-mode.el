@@ -1,6 +1,6 @@
 ;;; rst-mode.el --- Mode for viewing and editing reStructuredText-documents.
 
-;; Copyright 2003 Stefan Merten
+;; Copyright 2003 Stefan Merten <smerten@oekonux.de>
 ;; 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -80,7 +80,11 @@ The value of this variable is used when Rst Mode is turned on."
   :group 'rst-faces
   :type '(face))
 
-(defcustom rst-directive-face 'font-lock-builtin-face
+(defcustom rst-directive-face
+  ;; XEmacs compatibility
+  (if (boundp 'font-lock-builtin-face)
+      'font-lock-builtin-face
+    'font-lock-preprocessor-face)
   "Directives and roles"
   :group 'rst-faces
   :type '(face))
@@ -90,12 +94,20 @@ The value of this variable is used when Rst Mode is turned on."
   :group 'rst-faces
   :type '(face))
 
-(defcustom rst-emphasis1-face 'italic
+(defcustom rst-emphasis1-face
+  ;; XEmacs compatibility
+  (if (facep 'italic)
+      ''italic
+    'italic)
   "Simple emphasis"
   :group 'rst-faces
   :type '(face))
 
-(defcustom rst-emphasis2-face 'bold
+(defcustom rst-emphasis2-face
+  ;; XEmacs compatibility
+  (if (facep 'bold)
+      ''bold
+    'bold)
   "Double emphasis"
   :group 'rst-faces
   :type '(face))
@@ -303,7 +315,10 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
 	 ;; characters because otherwise explicit markup start would be
 	 ;; recognized
 	 (re-ado2 (concat "^\\(\\(["
-			  (if (< emacs-major-version 21)
+			  (if (or
+			       (< emacs-major-version 21)
+			       (save-match-data
+				 (string-match "XEmacs\\|Lucid" emacs-version)))
 			      "^a-zA-Z0-9 \t\x00-\x1F"
 			    "^[:word:][:space:][:cntrl:]")
 			  "]\\)\\2\\2+\\)" re-hws "*$"))
@@ -316,20 +331,20 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
      ;; `Bullet Lists`_
      (list
       (concat re-bol "\\([-*+]" re-blksep1 "\\)")
-      1 'rst-block-face)
+      1 rst-block-face)
      ;; `Enumerated Lists`_
      (list
       (concat re-bol "\\((?\\([0-9]+\\|[A-Za-z]\\|[IVXLCMivxlcm]+\\)[.)]" re-blksep1 "\\)")
-      1 'rst-block-face)
+      1 rst-block-face)
      ;; `Definition Lists`_ FIXME: missing
      ;; `Field Lists`_
      (list
       (concat re-bol "\\(:[^:]+:\\)" re-blksep1)
-      1 'rst-external-face)
+      1 rst-external-face)
      ;; `Option Lists`_
      (list
       (concat re-bol "\\(\\(\\(\\([-+/]\\|--\\)\\sw\\(-\\|\\sw\\)*\\([ =]\\S +\\)?\\)\\(,[\t ]\\)?\\)+\\)\\($\\|[\t ]\\{2\\}\\)")
-      1 'rst-block-face)
+      1 rst-block-face)
 
      ;; `Tables`_ FIXME: missing
 
@@ -337,66 +352,66 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
      ;; `Footnotes`_ / `Citations`_
      (list
       (concat re-bol "\\(" re-ems "\\[[^[]+\\]\\)" re-blksep1)
-      1 'rst-definition-face)
+      1 rst-definition-face)
      ;; `Directives`_ / `Substitution Definitions`_
      (list
       (concat re-bol "\\(" re-ems "\\)\\(\\(|[^|]+|[\t ]+\\)?\\)\\(" re-sym1 "+::\\)" re-blksep1)
-      (list 1 'rst-directive-face)
-      (list 2 'rst-definition-face)
-      (list 4 'rst-directive-face))
+      (list 1 rst-directive-face)
+      (list 2 rst-definition-face)
+      (list 4 rst-directive-face))
      ;; `Hyperlink Targets`_
      (list
       (concat re-bol "\\(" re-ems "_\\([^:\\`]\\|\\\\.\\|`[^`]+`\\)+:\\)" re-blksep1)
-      1 'rst-definition-face)
+      1 rst-definition-face)
      (list
       (concat re-bol "\\(__\\)" re-blksep1)
-      1 'rst-definition-face)
+      1 rst-definition-face)
 
      ;; All `Inline Markup`_
      ;; FIXME: Condition 5 preventing fontification of e.g. "*" not implemented
      ;; `Strong Emphasis`_
      (list
       (concat re-imp1 "\\(\\*\\*" re-ima2 "\\*\\*\\)" re-ims1)
-      2 'rst-emphasis2-face)
+      2 rst-emphasis2-face)
      ;; `Emphasis`_
      (list
       (concat re-imp1 "\\(\\*" re-ima2 "\\*\\)" re-ims1)
-      2 'rst-emphasis1-face)
+      2 rst-emphasis1-face)
      ;; `Inline Literals`_
      (list
       (concat re-imp1 "\\(``" re-imb2 "``\\)" re-ims1)
-      2 'rst-literal-face)
+      2 rst-literal-face)
      ;; `Inline Internal Targets`_
      (list
       (concat re-imp1 "\\(_`" re-imb2 "`\\)" re-ims1)
-      2 'rst-definition-face)
+      2 rst-definition-face)
      ;; `Hyperlink References`_
      ;; FIXME: `Embedded URIs`_ not considered
      (list
       (concat re-imp1 "\\(\\(`" re-imb2 "`\\|\\sw+\\)__?\\)" re-ims1)
-      2 'rst-reference-face)
+      2 rst-reference-face)
      ;; `Interpreted Text`_
      (list
       (concat re-imp1 "\\(\\(:" re-sym1 "+:\\)?\\)\\(`" re-imb2 "`\\)\\(\\(:" re-sym1 "+:\\)?\\)" re-ims1)
-      (list 2 'rst-directive-face)
-      (list 5 'rst-external-face)
-      (list 8 'rst-directive-face))
+      (list 2 rst-directive-face)
+      (list 5 rst-external-face)
+      (list 8 rst-directive-face))
      ;; `Footnote References`_ / `Citation References`_
      (list
       (concat re-imp1 "\\(\\[[^]]+\\]_\\)" re-ims1)
-      2 'rst-reference-face)
+      2 rst-reference-face)
      ;; `Substitution References`_
      (list
       (concat re-imp1 "\\(|" re-imv2 "|\\)" re-ims1)
-      2 'rst-reference-face)
+      2 rst-reference-face)
      ;; `Standalone Hyperlinks`_
      (list
       ;; FIXME: This takes it easy by using a whitespace as delimiter
       (concat re-imp1 "\\(" re-uris1 ":\\S +\\)" re-ims1)
-      2 'rst-definition-face)
+      2 rst-definition-face)
      (list
       (concat re-imp1 "\\(" re-sym1 "+@" re-sym1 "+\\)" re-ims1)
-      2 'rst-definition-face)
+      2 rst-definition-face)
 
      ;; Do all block fontification as late as possible so 'append works
 
@@ -405,7 +420,7 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
       (list
        re-ado2)
       (if (not rst-mode-lazy)
-	  (list 1 'rst-block-face)
+	  (list 1 rst-block-face)
 	(list
 	 (list 'rst-font-lock-handle-adornment
 	       '(progn
@@ -423,7 +438,7 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
      (append
       (list
        (concat re-bol "\\(" re-ems "\\)\[^[|_]\\([^:]\\|:\\([^:]\\|$\\)\\)*$")
-       (list 1 'rst-comment-face))
+       (list 1 rst-comment-face))
       (if rst-mode-lazy
 	  (list
 	   (list 'rst-font-lock-find-unindented-line
@@ -431,12 +446,12 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
 		    (setq rst-font-lock-indentation-point (match-end 1))
 		    (point-max))
 		 nil
-		 (list 0 'rst-comment-face 'append)))))
+		 (list 0 rst-comment-face 'append)))))
      (append
       (list
        (concat re-bol "\\(" re-emt "\\)\\(\\s *\\)$")
-       (list 1 'rst-comment-face)
-       (list 2 'rst-comment-face))
+       (list 1 rst-comment-face)
+       (list 2 rst-comment-face))
       (if rst-mode-lazy
 	  (list
 	   (list 'rst-font-lock-find-unindented-line
@@ -444,13 +459,13 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
 		    (setq rst-font-lock-indentation-point 'next)
 		    (point-max))
 		 nil
-		 (list 0 'rst-comment-face 'append)))))
+		 (list 0 rst-comment-face 'append)))))
 
      ;; `Literal Blocks`_
      (append
       (list
        (concat re-bol "\\(\\([^.\n]\\|\\.[^.\n]\\).*\\)?\\(::\\)$")
-       (list 3 'rst-block-face))
+       (list 3 rst-block-face))
       (if rst-mode-lazy
 	  (list
 	   (list 'rst-font-lock-find-unindented-line
@@ -458,7 +473,7 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
 		    (setq rst-font-lock-indentation-point t)
 		    (point-max))
 		 nil
-		 (list 0 'rst-literal-face 'append)))))
+		 (list 0 rst-literal-face 'append)))))
      )))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
