@@ -115,6 +115,13 @@ Notes on LaTeX
   * textwidth - the width of text on the page
 
   Maybe always use linewidth ?
+
+  *Bug* inside a minipage a (e.g. Sidebar) the linewidth is
+        not changed, needs fix in docutils so that tables
+        are not too wide.
+
+        So we add locallinewidth set it initially and
+        on entering sidebar and reset on exit.
 """
 
 class Babel:
@@ -325,6 +332,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
               # width for docinfo tablewidth
               '\\newlength{\\docinfowidth}\n',
               '\\setlength{\\docinfowidth}{0.9\\textwidth}\n'
+              # linewidth of current environment, so tables are not wider
+              # than the sidebar: using locallinewidth seams to defer evaluation
+              # of linewidth, this is fixing it.
+              '\\newlength{\\locallinewidth}\n',
+              # will be set later.
               ]
         self.head_prefix.extend( latex_headings['optionlist_environment'] )
         self.head_prefix.extend( latex_headings['footnote_floats'] )
@@ -745,6 +757,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body_prefix.append('\\maketitle\n\n')
         # alternative use titlepage environment.
         # \begin{titlepage}
+        self.body.append('\n\\setlength{\\locallinewidth}{\\linewidth}\n')
 
     def depart_document(self, node):
         self.body_suffix.append('\\end{document}\n')
@@ -1246,12 +1259,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_sidebar(self, node):
         # BUG:  this is just a hack to make sidebars render something
+        self.body.append('\n\\setlength{\\locallinewidth}{0.9\\admonitionwidth}\n')
         self.body.append('\\begin{center}\\begin{sffamily}\n')
         self.body.append('\\fbox{\\colorbox[gray]{0.80}{\\parbox{\\admonitionwidth}{\n')
 
     def depart_sidebar(self, node):
         self.body.append('}}}\n') # end parbox colorbox fbox
         self.body.append('\\end{sffamily}\n\\end{center}\n');
+        self.body.append('\n\\setlength{\\locallinewidth}{\\linewidth}\n')
 
 
     attribution_formats = {'dash': ('---', ''),
@@ -1329,7 +1344,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         latex_table_spec = ""
         for node in self.colspecs:
             colwidth = factor * float(node['colwidth']) / width
-            latex_table_spec += "|p{%.2f\\linewidth}" % colwidth
+            latex_table_spec += "|p{%.2f\\locallinewidth}" % colwidth
         self.colspecs = []
         return latex_table_spec+"|"
 
