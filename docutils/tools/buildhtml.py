@@ -54,15 +54,21 @@ class SettingsSpec(docutils.SettingsSpec):
         None,
         (('Recursively scan subdirectories for files to process.  This is '
           'the default.',
-          ['--recurse'], {'action': 'store_true', 'default': 1}),
+          ['--recurse'],
+          {'action': 'store_true', 'default': 1,
+           'validator': frontend.validate_boolean}),
          ('Do not scan subdirectories for files to process.',
           ['--local'], {'dest': 'recurse', 'action': 'store_false'}),
          ('Do not process files in <directory>.  This option may be used '
           'more than once to specify multiple directories.',
-          ['--prune'], {'metavar': '<directory>', 'action': 'append'}),
+          ['--prune'],
+          {'metavar': '<directory>', 'action': 'append',
+           'validator': frontend.validate_colon_separated_string_list}),
          ('Work silently (no progress messages).  Independent of "--quiet".',
-          ['--silent'], {'action': 'store_true'}),))
+          ['--silent'],
+          {'action': 'store_true', 'validator': frontend.validate_boolean}),))
 
+    relative_path_settings = ('prune',)
     config_section = 'buildhtml application'
     config_section_dependencies = ('applications',)
 
@@ -102,9 +108,9 @@ class Builder:
             '': Struct(components=(pep.Reader, rst.Parser, pep_html.Writer,
                                    SettingsSpec)),
             '.txt': Struct(components=(rst.Parser, standalone.Reader,
-                                       html4css1.Writer)),
+                                       html4css1.Writer, SettingsSpec)),
             'PEPs': Struct(components=(rst.Parser, pep.Reader,
-                                       pep_html.Writer))}
+                                       pep_html.Writer, SettingsSpec))}
         """Publisher-specific settings.  Key '' is for the front-end script
         itself.  ``self.publishers[''].components`` must contain a superset of
         all components used by individual publishers."""
@@ -143,19 +149,18 @@ class Builder:
         Assumes the current directory has been set.
         """
         publisher = self.publishers[publisher_name]
-        settings = copy.deepcopy(publisher.setting_defaults)
-        settings.__dict__.update(self.config_settings)
+        settings = frontend.DictUpdater(publisher.option_parser,
+                                        publisher.setting_defaults.__dict__)
+        settings.update(self.config_settings)
         if directory:
-            config_parser = frontend.ConfigParser()
-            config_parser.read(os.path.join(directory, 'docutils.conf'),
-                               publisher.option_parser)
-            local_config = config_parser.get_section('options')
+            local_config = publisher.option_parser.get_config_file_settings(
+                os.path.join(directory, 'docutils.conf'))
             frontend.make_paths_absolute(
                 local_config, publisher.option_parser.relative_path_settings,
                 directory)
-            settings.__dict__.update(local_config)
-        settings.__dict__.update(self.settings_spec.__dict__)
-        return settings
+            settings.update(local_config)
+        settings.update(self.settings_spec.__dict__)
+        return frontend.Values(settings.data)
 
     def run(self, directory=None, recurse=1):
         recurse = recurse and self.initial_settings.recurse
@@ -169,23 +174,34 @@ class Builder:
             os.path.walk(directory, self.visit, recurse)
 
     def visit(self, recurse, directory, names):
+        settings = self.get_settings('', directory)
+        if settings.prune and (os.path.abspath(directory) in settings.prune):
+            print >>sys.stderr, '/// ...Skipping directory (pruned):', directory
+            sys.stderr.flush()
+            names[:] = []
+            return
         if not self.initial_settings.silent:
             print >>sys.stderr, '/// Processing directory:', directory
             sys.stderr.flush()
         peps_found = 0
+        prune = 0
         for name in names:
             if name.endswith('.txt'):
                 if name.startswith('pep-'):
                     peps_found = 1
                 else:
-                    self.process_txt(directory, name)
-        if peps_found:
+                    prune = self.process_txt(directory, name)
+                    if prune:
+                        break
+        if peps_found and not prune:
             self.process_peps(directory)
         if not recurse:
             del names[:]
 
     def process_txt(self, directory, name):
         settings = self.get_settings('.txt', directory)
+        if settings.prune and (directory in settings.prune):
+            return 1
         settings._source = os.path.normpath(os.path.join(directory, name))
         settings._destination = settings._source[:-4]+'.html'
         if not self.initial_settings.silent:
@@ -207,6 +223,8 @@ class Builder:
         import pep2html
 
         settings = self.get_settings('PEPs', directory)
+        if settings.prune and (directory in settings.prune):
+            return 1
         old_directory = os.getcwd()
         os.chdir(directory)
         if self.initial_settings.silent:
