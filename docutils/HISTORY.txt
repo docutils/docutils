@@ -7,6 +7,7 @@
 :Date: $Date$
 :Website: http://docutils.sourceforge.net/
 
+.. contents::
 
 Acknowledgements
 ================
@@ -29,18 +30,28 @@ hard cash :-).)  Hopefully I haven't forgotten anyone or misspelled
 any names; apologies (and please let me know!) if I have.
 
 
-Release 0.1 (2002-04-??)
+Release 0.1 (2002-04-20)
 ========================
 
 This is the first release of Docutils, merged from the now inactive
 reStructuredText__ and `Docstring Processing System`__ projects.  For
-the pre-Docutils history, see the `reStructuredText HISTORY.txt`__ and
-the `DPS HISTORY.txt`__ files.
+the pre-Docutils history, see the `reStructuredText HISTORY`__ and the
+`DPS HISTORY`__ files.
 
 __ http://structuredtext.sourceforge.net/
 __ http://docstring.sourceforge.net/
-__ http://structuredtext.sourceforge.net/HISTORY.txt
-__ http://docstring.sourceforge.net/HISTORY.txt
+__ http://structuredtext.sourceforge.net/HISTORY.html
+__ http://docstring.sourceforge.net/HISTORY.html
+
+General changes: renamed 'dps' package to 'docutils'; renamed
+'restructuredtext' subpackage to 'rst'; merged the codebases; merged
+the test suites (reStructuredText's test/test_states renamed to
+test/test_rst); and all modifications required to make it all work.
+
+* docutils/parsers/rst/states.py:
+
+  - Improved diagnostic system messages for missing blank lines.
+  - Fixed substitution_reference bug.
 
 
 ..
