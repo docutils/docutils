@@ -803,6 +803,19 @@ ftp://ends.with.a.period.
         ?)
 """],
 ["""\
+Valid URL with escaped markup characters:
+
+http://example.com/\\*content\\*/whatever
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Valid URL with escaped markup characters:
+    <paragraph>
+        <reference refuri="http://example.com/*content*/whatever">
+            http://example.com/*content*/whatever
+"""],
+["""\
 None of these are standalone hyperlinks (their "schemes"
 are not recognized): signal:noise, a:b.
 """,

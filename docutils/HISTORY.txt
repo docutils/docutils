@@ -144,6 +144,7 @@ Changes Since 0.3
   - Added inline markup parsing to field lists' field names.
   - Added support for quoted (and unindented) literal blocks.
     Driven in part by a bribe from Frank Siebenlist (thanks!).
+  - Parser now handles escapes in URIs correctly.
 
 * docutils/parsers/rst/tableparser.py:
 

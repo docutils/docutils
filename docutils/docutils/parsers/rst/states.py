@@ -601,11 +601,12 @@ class Inliner:
     non_whitespace_after = r'(?![ \n])'
     # Alphanumerics with isolated internal [-._] chars (i.e. not 2 together):
     simplename = r'(?:(?!_)\w)+(?:[-._](?:(?!_)\w)+)*'
-    # Valid URI characters (see RFC 2396 & RFC 2732):
-    uric = r"""[-_.!~*'()[\];/:@&=+$,%a-zA-Z0-9]"""
+    # Valid URI characters (see RFC 2396 & RFC 2732);
+    # final \x00 allows backslash escapes in URIs:
+    uric = r"""[-_.!~*'()[\];/:@&=+$,%a-zA-Z0-9\x00]"""
     # Last URI character; same as uric but no punctuation:
     urilast = r"""[_~/a-zA-Z0-9]"""
-    emailc = r"""[-_!~*'{|}/#?^`&=+$%a-zA-Z0-9]"""
+    emailc = r"""[-_!~*'{|}/#?^`&=+$%a-zA-Z0-9\x00]"""
     email_pattern = r"""
           %(emailc)s+(?:\.%(emailc)s+)*   # name
           @                               # at
