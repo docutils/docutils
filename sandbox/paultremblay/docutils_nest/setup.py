@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os, sys
 from distutils.core import setup
 
 
@@ -11,7 +12,7 @@ if not var_file_exists:
 read_obj = open('var_file', 'r')
 lines = read_obj.readlines()
 target = lines[0]
-data_location = os.path.join(data_location, '.docutils_nest')
+data_location = os.path.join(target, '.docutils_nest')
 read_obj.close()
 
 
