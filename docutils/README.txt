@@ -30,8 +30,8 @@ complete details.
    Python 2.2 or later [1]_ is required; Python 2.2.2 or later is
    recommended.
 
-2. Use the latest Docutils code.  Get the code from CVS or from the
-   snapshot:
+2. Use the latest Docutils code.  Get the code from Subversion or from
+   the snapshot:
 
        http://docutils.sf.net/docutils-snapshot.tgz
 
@@ -88,7 +88,7 @@ Releases & Snapshots
 ====================
 
 Putting together an official "Release" of Docutils is a significant
-effort, so it isn't done that often.  In the meantime, the CVS
+effort, so it isn't done that often.  In the meantime, the Subversion
 snapshots always contain the latest code and documentation, usually
 updated within an hour of changes being committed to the repository,
 and usually bug-free:
@@ -104,9 +104,9 @@ and usually bug-free:
 
 To keep up to date on the latest developments, download fresh copies
 of the snapshots regularly.  New functionality is being added weekly,
-sometimes daily.  (There's also the CVS repository, and a mailing list
-for CVS messages.  See the web site [address above] or
-docs/dev/policies.txt for details.)
+sometimes daily.  (There's also the Subversion repository, and a
+mailing list for check-in messages.  See the web site [address above]
+or docs/dev/policies.txt for details.)
 
 
 Requirements
