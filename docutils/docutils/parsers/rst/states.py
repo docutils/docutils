@@ -156,6 +156,7 @@ class RSTStateMachine(StateMachineWS):
                           section_level=0,
                           inliner=inliner)
         self.document = self.memo.document
+        self.attach_observer(self.document.note_state_machine_change)
         self.reporter = self.memo.reporter
         self.node = document
         results = StateMachineWS.run(self, input_lines, input_offset)
@@ -179,6 +180,7 @@ class NestedStateMachine(StateMachineWS):
         self.match_titles = match_titles
         self.memo = memo
         self.document = memo.document
+        self.attach_observer(self.document.note_state_machine_change)
         self.reporter = memo.reporter
         self.node = node
         results = StateMachineWS.run(self, input_lines, input_offset)
