@@ -76,7 +76,7 @@ roles = {
       u'pep-r\u00E9f\u00E9rence': 'pep-reference',
       u'rfc-r\u00E9f\u00E9rence': 'rfc-reference',
       u'emphase': 'emphasis',
-      u'gras': 'strong',
+      u'fort': 'strong',
       u'litt\u00E9ral': 'literal',
       u'nomm\u00E9e-r\u00E9f\u00E9rence': 'named-reference',
       u'anonyme-r\u00E9f\u00E9rence': 'anonymous-reference',
