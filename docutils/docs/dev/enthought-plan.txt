@@ -267,6 +267,14 @@ But Janet Swisher rightly pointed out that this could collide with
 ordinary comments that are then block-commented.  This applies to
 double-hash-marks on the first line only as well.  So they're out.
 
+On the other hand, the JavaDoc-comment style ("##" on the first line
+only, "#" after that) is used in Fredrik Lundh's PythonDoc_.  It may
+be worthwhile to conform to this syntax, reinforcing it as a standard.
+PythonDoc does not support terse doc comments (text after "##" on the
+first line).
+
+.. _PythonDoc: http://effbot.org/zone/pythondoc.htm
+
 
 Update
 ``````
