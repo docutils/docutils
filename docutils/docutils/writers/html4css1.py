@@ -549,9 +549,9 @@ class HTMLTranslator(nodes.NodeVisitor):
                and node.hasattr('backrefs'):
             backrefs = node['backrefs']
             if len(backrefs) == 1:
-                self.context.append(('</a>', ''))
-                self.context.append(('<a class="fn-backref" href="#%s">'
-                                     % backrefs[0],))
+                self.context.append('')
+                self.context.append('<a class="fn-backref" href="#%s" '
+                                    'name="%s">' % (backrefs[0], node['id']))
             else:
                 i = 1
                 backlinks = []
@@ -559,11 +559,11 @@ class HTMLTranslator(nodes.NodeVisitor):
                     backlinks.append('<a class="fn-backref" href="#%s">%s</a>'
                                      % (backref, i))
                     i += 1
-                self.context.append(('', '(%s) ' % ', '.join(backlinks)))
-                self.context.append(('',))
+                self.context.append('(%s) ' % ', '.join(backlinks))
+                self.context.append('<a name="%s">' % node['id'])
         else:
-            self.context.append(('', ''))
-            self.context.append(('',))
+            self.context.append('')
+            self.context.append('<a name="%s">' % node['id'])
 
     def depart_footnote(self, node):
         self.body.append('</td></tr>\n'
@@ -627,7 +627,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                                        CLASS='label'))
 
     def depart_label(self, node):
-        self.body.append(']%s</td><td>%s' % self.context.pop())
+        self.body.append(']</a></td><td>%s' % self.context.pop())
 
     def visit_legend(self, node):
         self.body.append(self.starttag(node, 'div', CLASS='legend'))
@@ -908,7 +908,12 @@ class HTMLTranslator(nodes.NodeVisitor):
         if isinstance(node.parent, nodes.topic):
             self.body.append(
                   self.starttag(node, 'p', '', CLASS='topic-title'))
-            self.context.append('</p>\n')
+            if node.parent.hasattr('id'):
+                self.body.append(
+                    self.starttag({}, 'a', '', name=node.parent['id']))
+                self.context.append('</a></p>\n')
+            else:
+                self.context.append('</p>\n')
         elif self.section_level == 0:
             # document title
             self.head.append('<title>%s</title>\n'
