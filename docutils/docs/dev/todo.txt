@@ -1832,6 +1832,12 @@ HTML Writer
       -->
 
 
+LaTeX writer
+============
+
+* Add an ``--embed-stylesheet`` (and ``--link-stylesheet``) option.
+
+
 Front-End Tools
 ===============
 
