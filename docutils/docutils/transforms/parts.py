@@ -52,12 +52,15 @@ class Contents(Transform):
         contents = self.build_contents(startnode)
         if len(contents):
             if title:
-                topic['name'] = title.astext()
+                name = title.astext()
                 topic += title
             else:
-                topic['name'] = self.language.labels['contents']
+                name = self.language.labels['contents']
             topic += contents
             self.startnode.parent.replace(self.startnode, topic)
+            name = utils.normalize_name(name)
+            if not self.document.has_name(name):
+                topic['name'] = name
             self.document.note_implicit_target(topic)
         else:
             self.startnode.parent.remove(self.startnode)
