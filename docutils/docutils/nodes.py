@@ -710,6 +710,9 @@ class document(Root, Structural, Element):
                 backrefs=[id])
             msgnode += msg
 
+    def has_name(self, name):
+        return self.nameids.has_key(name)
+
     def note_implicit_target(self, target, msgnode=None):
         id = self.set_id(target, msgnode)
         self.set_name_id_map(target, id, msgnode, explicit=None)
