@@ -1536,11 +1536,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             self.literal_block = 1
             self.insert_none_breaking_blanks = 1
-            if self.active_table.is_open():
-                self.body.append('\n{\\ttfamily \\raggedright \\noindent\n')
-            else:    
-                self.body.append('\\begin{ttfamily}')
-                self.body.append('\\begin{flushleft}\n')
+            self.body.append('\n{\\vspace{1ex}\\ttfamily \\raggedright \\noindent\n')
             # * obey..: is from julien and never worked for me (grubert).
             #   self.body.append('{\\obeylines\\obeyspaces\\ttfamily\n')
 
@@ -1549,12 +1545,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('\n\\end{verbatim}\n')
             self.verbatim = 0
         else:
-            if self.active_table.is_open():
-                self.body.append('\n}\n')
-            else:
-                self.body.append('\n')
-                self.body.append('\\end{flushleft}')
-                self.body.append('\\end{ttfamily}\n')
+            self.body.append('\n}\n')
             self.insert_none_breaking_blanks = 0
             self.literal_block = 0
             # obey end: self.body.append('}\n')
