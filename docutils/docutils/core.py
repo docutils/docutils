@@ -1,5 +1,5 @@
 # Authors: David Goodger
-# Contact: goodger@users.sourceforge.net
+# Contact: goodger@python.org
 # Revision: $Revision$
 # Date: $Date$
 # Copyright: This module has been placed in the public domain.
@@ -9,15 +9,17 @@ Calling the ``publish_*`` convenience functions (or instantiating a
 `Publisher` object) with component names will result in default
 behavior.  For custom behavior (setting component options), create
 custom component objects first, and pass *them* to
-``publish_*``/`Publisher`.
+``publish_*``/`Publisher`.  See `The Docutils Publisher`_.
+
+.. _The Docutils Publisher: http://docutils.sf.net/docs/api/publisher.html
 """
 
 __docformat__ = 'reStructuredText'
 
 import sys
 import pprint
-from docutils import __version__, Component, SettingsSpec
-from docutils import frontend, io, utils, readers, parsers, writers
+from docutils import __version__, SettingsSpec
+from docutils import frontend, io, utils, readers, writers
 from docutils.frontend import OptionParser
 
 
@@ -38,22 +40,23 @@ class Publisher:
         """
 
         self.reader = reader
-        """A `readers.Reader` instance."""
+        """A `docutils.readers.Reader` instance."""
 
         self.parser = parser
-        """A `parsers.Parser` instance."""
+        """A `docutils.parsers.Parser` instance."""
 
         self.writer = writer
-        """A `writers.Writer` instance."""
+        """A `docutils.writers.Writer` instance."""
 
         self.source = source
-        """The source of input data, an `io.Input` instance."""
+        """The source of input data, a `docutils.io.Input` instance."""
 
         self.source_class = source_class
         """The class for dynamically created source objects."""
 
         self.destination = destination
-        """The destination for docutils output, an `io.Output` instance."""
+        """The destination for docutils output, a `docutils.io.Output`
+        instance."""
 
         self.destination_class = destination_class
         """The class for dynamically created destination objects."""
@@ -86,8 +89,9 @@ class Publisher:
     def setup_option_parser(self, usage=None, description=None,
                             settings_spec=None, config_section=None,
                             **defaults):
-        if config_section and not settings_spec:
-            settings_spec = SettingsSpec()
+        if config_section:
+            if not settings_spec:
+                settings_spec = SettingsSpec()
             settings_spec.config_section = config_section
             parts = config_section.split()
             if len(parts) > 1 and parts[-1] == 'application':
@@ -112,6 +116,17 @@ class Publisher:
             usage, description, settings_spec, config_section, **defaults)
         self.settings = option_parser.get_default_values()
         return self.settings
+
+    def process_programmatic_settings(self, settings_spec,
+                                      settings_overrides,
+                                      config_section):
+        if self.settings is None:
+            defaults = (settings_overrides or {}).copy()
+            # Propagate exceptions by default when used programmatically:
+            defaults.setdefault('traceback', 1)
+            self.get_settings(settings_spec=settings_spec,
+                              config_section=config_section,
+                              **defaults)
 
     def process_command_line(self, argv=None, usage=None, description=None,
                              settings_spec=None, config_section=None,
@@ -272,8 +287,9 @@ def publish_cmdline(reader=None, reader_name='standalone',
                     enable_exit_status=1, argv=None,
                     usage=default_usage, description=default_description):
     """
-    Set up & run a `Publisher` (and return the encoded string output).
-    For command-line front ends.
+    Set up & run a `Publisher` for command-line-based file I/O (input and
+    output file paths taken automatically from the command line).  Return the
+    encoded string output also.
 
     Parameters: see `publish_programmatically` for the remainder.
 
@@ -298,15 +314,15 @@ def publish_file(source=None, source_path=None,
                  settings=None, settings_spec=None, settings_overrides=None,
                  config_section=None, enable_exit_status=None):
     """
-    Set up & run a `Publisher` (and return the encoded string output).
-    For programmatic use with file-like I/O.
+    Set up & run a `Publisher` for programmatic use with file-like I/O.
+    Return the encoded string output also.
 
     Parameters: see `publish_programmatically`.
     """
     output, pub = publish_programmatically(
-        source=source, source_path=source_path, source_class=io.FileInput,
-        destination=destination, destination_path=destination_path,
+        source_class=io.FileInput, source=source, source_path=source_path,
         destination_class=io.FileOutput,
+        destination=destination, destination_path=destination_path,
         reader=reader, reader_name=reader_name,
         parser=parser, parser_name=parser_name,
         writer=writer, writer_name=writer_name,
@@ -324,11 +340,11 @@ def publish_string(source, source_path=None, destination_path=None,
                    settings_overrides=None, config_section=None,
                    enable_exit_status=None):
     """
-    Set up & run a `Publisher`, and return the encoded string output.
-    For programmatic use with string I/O.
+    Set up & run a `Publisher` for programmatic use with string I/O.  Return
+    the encoded string or Unicode string output.
 
-    For encoded string output, be sure to set the "output_encoding" setting to
-    the desired encoding.  Set it to "unicode" for unencoded Unicode string
+    For encoded string output, be sure to set the 'output_encoding' setting to
+    the desired encoding.  Set it to 'unicode' for unencoded Unicode string
     output.  Here's one way::
 
         publish_string(..., settings_overrides={'output_encoding': 'unicode'})
@@ -340,9 +356,9 @@ def publish_string(source, source_path=None, destination_path=None,
     Parameters: see `publish_programmatically`.
     """
     output, pub = publish_programmatically(
-        source=source, source_path=source_path, source_class=io.StringInput,
-        destination=None, destination_path=destination_path,
+        source_class=io.StringInput, source=source, source_path=source_path,
         destination_class=io.StringOutput,
+        destination=None, destination_path=destination_path,
         reader=reader, reader_name=reader_name,
         parser=parser, parser_name=parser_name,
         writer=writer, writer_name=writer_name,
@@ -364,8 +380,8 @@ def publish_parts(source, source_path=None, destination_path=None,
     Dictionary keys are the names of parts, and values are Unicode strings;
     encoding is up to the client.  For programmatic use with string I/O.
 
-    For encoded string input, be sure to set the "input_encoding" setting to
-    the desired encoding.  Set it to "unicode" for unencoded Unicode string
+    For encoded string input, be sure to set the 'input_encoding' setting to
+    the desired encoding.  Set it to 'unicode' for unencoded Unicode string
     input.  Here's how::
 
         publish_string(..., settings_overrides={'input_encoding': 'unicode'})
@@ -373,9 +389,9 @@ def publish_parts(source, source_path=None, destination_path=None,
     Parameters: see `publish_programmatically`.
     """
     output, pub = publish_programmatically(
-        source=source, source_path=source_path, source_class=io.StringInput,
-        destination=None, destination_path=destination_path,
+        source_class=io.StringInput, source=source, source_path=source_path,
         destination_class=io.StringOutput,
+        destination=None, destination_path=destination_path,
         reader=reader, reader_name=reader_name,
         parser=parser, parser_name=parser_name,
         writer=writer, writer_name=writer_name,
@@ -385,8 +401,8 @@ def publish_parts(source, source_path=None, destination_path=None,
         enable_exit_status=enable_exit_status)
     return pub.writer.parts
 
-def publish_programmatically(source, source_path, source_class,
-                            destination, destination_path, destination_class,
+def publish_programmatically(source_class, source, source_path,
+                            destination_class, destination, destination_path,
                             reader, reader_name,
                             parser, parser_name,
                             writer, writer_name,
@@ -394,51 +410,101 @@ def publish_programmatically(source, source_path, source_class,
                             settings_overrides, config_section,
                             enable_exit_status):
     """
-    Set up & run a `Publisher` for programmatic use.  Return the encoded
-    string output and the Publisher object.
+    Set up & run a `Publisher` for custom programmatic use.  Return the
+    encoded string output and the Publisher object.
+
+    Applications should not need to call this function directly.  If it does
+    seem to be necessary to call this function directly, please write to the
+    docutils-develop@lists.sourceforge.net mailing list.
 
     Parameters:
 
-    - `source`: An input string; required.  This can be an encoded 8-bit
-      string (set the "input_encoding" setting to the correct encoding) or a
-      Unicode string (set the "input_encoding" setting to "unicode").
-    - `source_path`: Path to the file or object that produced `source`;
-      optional.  Only used for diagnostic output.
-    - `source_class`: The class for dynamically created source objects.
-    - `destination_path`: Path to the file or object which will receive the
-      output; optional.  Used for determining relative paths (stylesheets,
-      source links, etc.).
-    - `destination_class`: The class for dynamically created destination
-      objects.
-    - `reader`: A `docutils.readers.Reader` object.
-    - `reader_name`: Name or alias of the Reader class to be instantiated if
+    * `source_class` **required**: The class for dynamically created source
+      objects.  Typically `io.FileInput` or `io.StringInput`.
+
+    * `source`: Type depends on `source_class`:
+
+      - `io.FileInput`: Either a file-like object (must have 'read' and
+        'close' methods), or ``None`` (`source_path` is opened).  If neither
+        `source` nor `source_path` are supplied, `sys.stdin` is used.
+
+      - `io.StringInput` **required**: The input string, either an encoded
+        8-bit string (set the 'input_encoding' setting to the correct
+        encoding) or a Unicode string (set the 'input_encoding' setting to
+        'unicode').
+
+    * `source_path`: Type depends on `source_class`:
+
+      - `io.FileInput`: Path to the input file, opened if no `source`
+        supplied.
+
+      - `io.StringInput`: Optional.  Path to the file or object that produced
+        `source`.  Only used for diagnostic output.
+
+    * `destination_class` **required**: The class for dynamically created
+      destination objects.  Typically `io.FileOutput` or `io.StringOutput`.
+
+    * `destination`: Type depends on `destination_class`:
+
+      - `io.FileOutput`: Either a file-like object (must have 'write' and
+        'close' methods), or ``None`` (`destination_path` is opened).  If
+        neither `destination` nor `destination_path` are supplied,
+        `sys.stdout` is used.
+
+      - `io.StringOutput`: Not used; pass ``None``.
+
+    * `destination_path`: Type depends on `destination_class`:
+
+      - `io.FileOutput`: Path to the output file.  Opened if no `destination`
+        supplied.
+
+      - `io.StringOutput`: Path to the file or object which will receive the
+        output; optional.  Used for determining relative paths (stylesheets,
+        source links, etc.).
+
+    * `reader`: A `docutils.readers.Reader` object.
+
+    * `reader_name`: Name or alias of the Reader class to be instantiated if
       no `reader` supplied.
-    - `parser`: A `docutils.parsers.Parser` object.
-    - `parser_name`: Name or alias of the Parser class to be instantiated if
+
+    * `parser`: A `docutils.parsers.Parser` object.
+
+    * `parser_name`: Name or alias of the Parser class to be instantiated if
       no `parser` supplied.
-    - `writer`: A `docutils.writers.Writer` object.
-    - `writer_name`: Name or alias of the Writer class to be instantiated if
+
+    * `writer`: A `docutils.writers.Writer` object.
+
+    * `writer_name`: Name or alias of the Writer class to be instantiated if
       no `writer` supplied.
-    - `settings`: Runtime settings object.
-    - `settings_spec`: Extra settings specification; a `docutils.SettingsSpec`
-      subclass.  Used only if no `settings` specified.
-    - `settings_overrides`: A dictionary containing program-specific overrides
-      of component settings.
-    - `config_section`: Name of configuration file section for application.
-      Used only if no `settings` or `settings_spec` specified.
-    - `enable_exit_status`: Boolean; enable exit status at end of processing?
+
+    * `settings`: A runtime settings (`docutils.frontend.Values`) object, for
+      dotted-attribute access to runtime settings.  It's the end result of the
+      `SettingsSpec`, config file, and option processing.  If `settings` is
+      passed, it's assumed to be complete and no further setting/config/option
+      processing is done.
+
+    * `settings_spec`: A `docutils.SettingsSpec` subclass or object.  Provides
+      extra application-specific settings definitions independently of
+      components.  In other words, the application becomes a component, and
+      its settings data is processed along with that of the other components.
+      Used only if no `settings` specified.
+
+    * `settings_overrides`: A dictionary containing application-specific
+      settings defaults that override the defaults of other components.
+      Used only if no `settings` specified.
+
+    * `config_section`: A string, the name of the configuration file section
+      for this application.  Overrides the ``config_section`` attribute
+      defined by `settings_spec`.  Used only if no `settings` specified.
+
+    * `enable_exit_status`: Boolean; enable exit status at end of processing?
     """
     pub = Publisher(reader, parser, writer, settings=settings,
                     source_class=source_class,
                     destination_class=destination_class)
     pub.set_components(reader_name, parser_name, writer_name)
-    if settings is None:
-        pub.get_settings(
-            settings_spec=settings_spec, config_section=config_section,
-            # Propagate exceptions by default when used programmatically:
-            traceback=1,
-            # In case _disable_config is set:
-            **(settings_overrides or {}))
+    pub.process_programmatic_settings(
+        settings_spec, settings_overrides, config_section)
     pub.set_source(source, source_path)
     pub.set_destination(destination, destination_path)
     output = pub.publish(enable_exit_status=enable_exit_status)
