@@ -8,6 +8,12 @@
 Default cascading style sheet for the HTML output of Docutils.
 */
 
+.first {
+  margin-top: 0 }
+
+.last {
+  margin-bottom: 0 }
+
 a.target {
   color: blue }
 
@@ -109,9 +115,6 @@ p.credits {
   font-style: italic ;
   font-size: smaller }
 
-p.first {
-  margin-top: 0 }
-
 p.label {
   white-space: nowrap }
 
@@ -131,7 +134,6 @@ pre.line-block {
 pre.literal-block, pre.doctest-block {
   margin-left: 2em ;
   margin-right: 2em ;
-  margin-bottom: 0 ;
   background-color: #eeeeee }
 
 span.classifier {
@@ -173,9 +175,6 @@ td, th {
   padding-left: 0.5em ;
   padding-right: 0.5em ;
   vertical-align: top }
-
-td > p:first-child, th > p:first-child {
-  margin-top: 0em }
 
 th.docinfo-name, th.field-name {
   font-weight: bold ;

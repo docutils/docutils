@@ -8,6 +8,12 @@
 Default cascading style sheet for the PEP HTML output of Docutils.
 */
 
+.first {
+  margin-top: 0 }
+
+.last {
+  margin-bottom: 0 }
+
 .navigation {
   width: 100% ;
   background: #99ccff ;
@@ -174,9 +180,6 @@ p.credits {
   font-style: italic ;
   font-size: smaller }
 
-p.first {
-  margin-top: 0 }
-
 p.label {
   white-space: nowrap }
 
@@ -221,9 +224,6 @@ td, th {
   padding-left: 0.5em ;
   padding-right: 0.5em ;
   vertical-align: top }
-
-td > :first-child, th > :first-child {
-  margin-top: 0em }
 
 td.num {
   text-align: right }
