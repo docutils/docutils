@@ -35,7 +35,7 @@ Quantum mechanics:
 
    -\frac{1}{2}\nabla^2 \psi + v \psi = \epsilon \psi
 
-Math split over Two lines:
+Math split over two lines:
 
 .. latex-math::
 
