@@ -121,10 +121,10 @@ Doc-SIG@python.org).
 
 Two lists have been set up specifically for the Docutils project:
 
-- docutils-develop__, for development discussions
+- Docutils-develop__, for implementation discussions
   (email to docutils-develop@lists.sourceforge.net).
-- docutils-checkins__, for CVS checkin messages (normally
-  read-only).
+- Docutils-checkins__, to monitor CVS checkin messages (automatically
+  generated; normally read-only).
 
 The Doc-SIG_ has greater exposure and is therefore a better forum for
 general discussions (such as reStructuredText syntax or the high-level
