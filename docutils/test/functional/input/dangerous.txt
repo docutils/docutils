@@ -1,0 +1,13 @@
+Potentially dangerous features (security holes):
+
+.. include:: /etc/passwd
+.. raw:: html
+   :file: /etc/passwd
+.. raw:: html
+   :url: file:///etc/passwd
+.. raw:: html
+
+   <script>
+       that does something really nasty
+   </script>
+

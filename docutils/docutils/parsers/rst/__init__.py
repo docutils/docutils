@@ -112,7 +112,23 @@ class Parser(docutils.parsers.Parser):
          ('Leave spaces before footnote references.',
           ['--leave-footnote-reference-space'],
           {'action': 'store_false', 'dest': 'trim_footnote_reference_space',
-           'validator': frontend.validate_boolean}),))
+           'validator': frontend.validate_boolean}),
+         ('Disable directives that insert the contents of external file '
+          '("include" & "raw"); replaced with a "warning" system message.',
+          ['--no-file-insertion'],
+          {'action': 'store_false', 'default': 1,
+           'dest': 'file_insertion_enabled'}),
+         ('Enable directives that insert the contents of external file '
+          '("include" & "raw").  Enabled by default.',
+          ['--file-insertion-enabled'],
+          {'action': 'store_true', 'dest': 'file_insertion_enabled'}),
+         ('Disable the "raw" directives; replaced with a "warning" '
+          'system message.',
+          ['--no-raw'],
+          {'action': 'store_false', 'default': 1, 'dest': 'raw_enabled'}),
+         ('Enable the "raw" directive.  Enabled by default.',
+          ['--raw-enabled'],
+          {'action': 'store_true', 'dest': 'raw_enabled'}),))
 
     config_section = 'restructuredtext parser'
     config_section_dependencies = ('parsers',)

@@ -33,6 +33,10 @@ Changes Since 0.3.7
 * docutils/languages/nl.py: Added to project; Dutch mappings by
   Martijn Pieters.
 
+* docutils/parsers/rst/__init__.py:
+
+  - Added settings: ``file_insertion_enabled`` & ``raw_enabled``.
+
 * docutils/parsers/rst/states.py:
 
   - Added check for escaped at-mark to prevent email address recognition.
@@ -54,6 +58,8 @@ Changes Since 0.3.7
   - Fixed "include" and "raw" directives to catch text decoding
     errors.
   - Allowed whitespace in "include" & "raw" directive paths.
+  - Added support for ``file_insertion_enabled`` & ``raw_enabled``
+    settings in "include" & "raw" directives
 
 * docutils/parsers/rst/directives/tables.py:
 
