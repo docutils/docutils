@@ -115,7 +115,7 @@ Output Structure and Navigation
    cross-referenced.
 
 5. The HTML suite should provide consistent navigation back to the
-   home page, which will include the following information: o
+   home page, which will include the following information:
 
    * Bibliographic information
 
