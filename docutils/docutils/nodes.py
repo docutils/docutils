@@ -1123,8 +1123,8 @@ class pending(Special, Invisible, PreBibliographic, Element):
 
     But the "contents" directive can't do its work until the entire document
     has been parsed and possibly transformed to some extent.  So the directive
-    code leaves a placeholder behind that will trigger the second phase of the
-    its processing, something like this::
+    code leaves a placeholder behind that will trigger the second phase of its
+    processing, something like this::
 
         <pending ...public attributes...> + internal attributes
 
