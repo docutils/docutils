@@ -5,6 +5,7 @@
 :Contact: goodger@users.sourceforge.net
 :Revision: $Revision$
 :Date: $Date$
+:Copyright: This document has been placed in the public domain.
 
 This document describes the interpreted text roles implemented in the
 reference reStructuredText parser.

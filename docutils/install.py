@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # $Id$
+# Copyright: This file has been placed in the public domain.
 
 """
 This is a quick & dirty installation shortcut. It is equivalent to the

@@ -5,6 +5,7 @@
 :Contact: goodger@users.sourceforge.net
 :Revision: $Revision$
 :Date: $Date$
+:Copyright: This document has been placed in the public domain.
 
 reStructuredText_ is an easy-to-read, what-you-see-is-what-you-get
 plaintext markup syntax and parser system.  It is useful for inline

@@ -6,6 +6,7 @@
 :Contact: goodger@users.sourceforge.net
 :Date: $Date$
 :Web site: http://docutils.sourceforge.net/
+:Copyright: This document has been placed in the public domain.
 
 .. contents::
 
