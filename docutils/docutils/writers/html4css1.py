@@ -328,6 +328,8 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_description(self, node):
         self.body.append(self.starttag(node, 'td', ''))
+        if len(node) and isinstance(node[0], nodes.paragraph):
+            node[0].set_class('first')
 
     def depart_description(self, node):
         self.body.append('</td>')
@@ -492,7 +494,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.footnote_backrefs(node)
 
     def footnote_backrefs(self, node):
-        if node.hasattr('backrefs'):
+        if self.document.options.footnote_backlinks \
+               and node.hasattr('backrefs'):
             backrefs = node['backrefs']
             if len(backrefs) == 1:
                 self.context.append(('</a>', ''))
@@ -907,7 +910,7 @@ class SimpleListChecker(nodes.GenericNodeVisitor):
     """
     Raise `nodes.SkipNode` if non-simple list item is encountered.
 
-    Here "simple" means a list item containing anything other than a single
+    Here "simple" means a list item containing nothing other than a single
     paragraph, a simple list, or a paragraph followed by a simple list.
     """
 
