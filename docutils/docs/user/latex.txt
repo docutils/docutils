@@ -181,6 +181,8 @@ Tables
              tablewidth is set relative to this value. If someone produces
              documents with line length of 132 this will fail.
 
+             Table width is tried to fit in page even if it is wider than
+             the assumed linewidth, still assumed linewidth is a hook. 
 
 * In tools.txt the option tables right column, there should be some more spacing
   between the description and the next paragraph "Default:".

@@ -1,5 +1,3 @@
-#! /usr/bin/env python
-
 """
 :Author: Engelbert Gruber
 :Contact: grubert@users.sourceforge.net
@@ -12,6 +10,9 @@ LaTeX2e document tree Writer.
 
 __docformat__ = 'reStructuredText'
 
+# code contributions from several people included, thanks too all.
+# some named: David Abrahams, Julien Letessier, who is missing.
+#
 # convention deactivate code by two # e.g. ##.
 
 import sys
@@ -1210,12 +1211,23 @@ class LaTeXTranslator(nodes.NodeVisitor):
         Assumes reST line length being 80 characters.
         """
         width = 80
-        s = ""
+        
+        total_width = 0.0
+        # donot make it full linewidth
+        factor = 0.93
+        # first see if we get too wide.
         for node in self.colspecs:
-            colwidth = 0.93 * float(node['colwidth']) / width 
-            s += "|p{%.2f\\linewidth}" % colwidth
+            colwidth = factor * float(node['colwidth']) / width 
+            total_width += colwidth
+        if total_width > 1.0:
+            factor /= total_width
+            
+        latex_table_spec = ""
+        for node in self.colspecs:
+            colwidth = factor * float(node['colwidth']) / width 
+            latex_table_spec += "|p{%.2f\\linewidth}" % colwidth
         self.colspecs = []
-        return s+"|"
+        return latex_table_spec+"|"
 
     def visit_table(self, node):
         if self.use_longtable:
