@@ -608,8 +608,13 @@ class LatexPublishTestSuite(CustomTestSuite):
                       run_in_debugger=run_in_debugger)
 
 
-def exception_args(code):
+def exception_data(code):
+    """
+    Execute `code` and return the resulting exception, the exception arguments,
+    and the formatted exception string.
+    """
     try:
         exec(code)
     except Exception, detail:
-        return detail.args
+        return (detail, detail.args,
+                '%s: %s' % (detail.__class__.__name__, detail))
