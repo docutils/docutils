@@ -124,6 +124,13 @@ def validate_boolean(setting, value, option_parser,
                    None, sys.exc_info()[2])
     return value
 
+def validate_nonnegative_int(setting, value, option_parser,
+                             config_parser=None, config_section=None):
+    value = int(value)
+    if value < 0:
+        raise ValueError('negative value; must be positive or zero')
+    return value
+
 def validate_threshold(setting, value, option_parser,
                        config_parser=None, config_section=None):
     try:

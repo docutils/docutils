@@ -63,6 +63,12 @@ class Writer(writers.Writer):
           ['--initial-header-level'],
           {'choices': '1 2 3 4 5 6'.split(), 'default': '1',
            'metavar': '<level>'}),
+         ('Specify the maximum width (in characters) for one-column field '
+          'names.  Longer field names will span the entire row.  Default is '
+          '14 characters.  Use 0 for "no limit".',
+          ['--field-name-limit'],
+          {'default': 14, 'metavar': '<level>',
+           'validator': frontend.validate_nonnegative_int}),
          ('Format for footnote references: one of "superscript" or '
           '"brackets".  Default is "brackets".',
           ['--footnote-references'],
@@ -679,7 +685,8 @@ class HTMLTranslator(nodes.NodeVisitor):
             atts['class'] = 'docinfo-name'
         else:
             atts['class'] = 'field-name'
-        if len(node.astext()) > 14:
+        if ( self.settings.field_name_limit
+             and len(node.astext()) > self.settings.field_name_limit):
             atts['colspan'] = 2
             self.context.append('</tr>\n<tr><td>&nbsp;</td>')
         else:
