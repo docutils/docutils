@@ -214,10 +214,10 @@ class ParseOptions:
             
             #  previous value was an option with an argument, so this arg is
             #  actually an argument that has already been added
+            counter += 1
             if slurp_value:
                 slurp_value = 0
                 continue
-            counter += 1
 
             # not an option--an argument
             if arg[0] != '-':
@@ -371,12 +371,14 @@ if __name__ == '__main__':
     this_dict = {
         'indents': [0, 'i'],
         'output': [1, 'o'],
+        'test3': [1, 't'],
     }
     test_obj = ParseOptions(system_string = sys.argv,
                     options_dict = this_dict 
             )
 
     options, the_args = test_obj.parse_options()
+    print options, the_args
 
     """
     this_options = ['--foo', '-o']
