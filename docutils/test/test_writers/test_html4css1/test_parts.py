@@ -28,24 +28,21 @@ totest['Title promotion'] = ({}, [
 Simple String
 """,
 """\
-{'fragment': '''Simple String''',
- 'stylesheet': '''<link rel="stylesheet" href="default.css" type="text/css" />\\n'''}
+{'fragment': '''Simple String'''}
 """
 ],
 ["""\
 Simple String with *markup*
 """,
 """\
-{'fragment': '''Simple String with <em>markup</em>''',
- 'stylesheet': '''<link rel="stylesheet" href="default.css" type="text/css" />\\n'''}
+{'fragment': '''Simple String with <em>markup</em>'''}
 """
 ],
 ["""\
 Simple String with an even simpler ``inline literal``
 """,
 """\
-{'fragment': '''Simple String with an even simpler <tt class="literal"><span class="pre">inline</span> <span class="pre">literal</span></tt>''',
- 'stylesheet': '''<link rel="stylesheet" href="default.css" type="text/css" />\\n'''}
+{'fragment': '''Simple String with an even simpler <tt class="literal"><span class="pre">inline</span> <span class="pre">literal</span></tt>'''}
 """
 ],
 ["""\
@@ -54,8 +51,7 @@ A simple `anonymous reference`__
 __ http://www.test.com/test_url
 """,
 """\
-{'fragment': '''<p>A simple <a class="reference" href="http://www.test.com/test_url">anonymous reference</a></p>\\n''',
- 'stylesheet': '''<link rel="stylesheet" href="default.css" type="text/css" />\\n'''}
+{'fragment': '''<p>A simple <a class="reference" href="http://www.test.com/test_url">anonymous reference</a></p>\\n'''}
 """],
 ["""\
 A simple `named reference`_ with stuff in between the
@@ -65,8 +61,7 @@ reference and the target.
 """,
 """\
 {'fragment': '''<p>A simple <a class="reference" href="http://www.test.com/test_url">named reference</a> with stuff in between the
-reference and the target.</p>\\n''',
- 'stylesheet': '''<link rel="stylesheet" href="default.css" type="text/css" />\\n'''}
+reference and the target.</p>\\n'''}
 """],
 ["""\
 +++++
@@ -95,7 +90,6 @@ And even more stuff
 <p>And even more stuff</p>
 </div>
 </div>\\n''',
- 'stylesheet': '''<link rel="stylesheet" href="default.css" type="text/css" />\\n''',
  'title': '''Title'''}
 """],
 ["""\
@@ -118,7 +112,6 @@ Some stuff
 </table>\\n''',
  'fragment': '''<p>Some stuff</p>\\n''',
  'meta': '''<meta name="author" content="me" />\\n''',
- 'stylesheet': '''<link rel="stylesheet" href="default.css" type="text/css" />\\n''',
  'title': '''Title'''}
 """]
 ])
@@ -128,24 +121,21 @@ totest['No title promotion'] = ({'doctitle_xform' : 0}, [
 Simple String
 """,
 """\
-{'fragment': '''Simple String''',
- 'stylesheet': '''<link rel="stylesheet" href="default.css" type="text/css" />\\n'''}
+{'fragment': '''Simple String'''}
 """
 ],
 ["""\
 Simple String with *markup*
 """,
 """\
-{'fragment': '''Simple String with <em>markup</em>''',
- 'stylesheet': '''<link rel="stylesheet" href="default.css" type="text/css" />\\n'''}
+{'fragment': '''Simple String with <em>markup</em>'''}
 """
 ],
 ["""\
 Simple String with an even simpler ``inline literal``
 """,
 """\
-{'fragment': '''Simple String with an even simpler <tt class="literal"><span class="pre">inline</span> <span class="pre">literal</span></tt>''',
- 'stylesheet': '''<link rel="stylesheet" href="default.css" type="text/css" />\\n'''}
+{'fragment': '''Simple String with an even simpler <tt class="literal"><span class="pre">inline</span> <span class="pre">literal</span></tt>'''}
 """
 ],
 ["""\
@@ -154,8 +144,7 @@ A simple `anonymous reference`__
 __ http://www.test.com/test_url
 """,
 """\
-{'fragment': '''<p>A simple <a class="reference" href="http://www.test.com/test_url">anonymous reference</a></p>\\n''',
- 'stylesheet': '''<link rel="stylesheet" href="default.css" type="text/css" />\\n'''}
+{'fragment': '''<p>A simple <a class="reference" href="http://www.test.com/test_url">anonymous reference</a></p>\\n'''}
 """],
 ["""\
 A simple `named reference`_ with stuff in between the
@@ -165,8 +154,7 @@ reference and the target.
 """,
 """\
 {'fragment': '''<p>A simple <a class="reference" href="http://www.test.com/test_url">named reference</a> with stuff in between the
-reference and the target.</p>\\n''',
- 'stylesheet': '''<link rel="stylesheet" href="default.css" type="text/css" />\\n'''}
+reference and the target.</p>\\n'''}
 """],
 ["""\
 +++++
@@ -197,8 +185,7 @@ And even more stuff
 <p>And even more stuff</p>
 </div>
 </div>
-</div>\\n''',
- 'stylesheet': '''<link rel="stylesheet" href="default.css" type="text/css" />\\n'''}
+</div>\\n'''}
 """]
 ])
 
