@@ -49,19 +49,24 @@ class Contents(Transform):
             startnode = self.document
             if not title:
                 title = nodes.title('', self.language.labels['contents'])
+        if title:
+            name = title.astext()
+            topic += title
+        else:
+            name = self.language.labels['contents']
+        name = utils.normalize_name(name)
+        if not self.document.has_name(name):
+            topic['name'] = name
+        self.document.note_implicit_target(topic)
+        self.toc_id = topic['id']
+        if self.startnode.details.has_key('backlinks'):
+            self.backlinks = self.startnode.details['backlinks']
+        else:
+            self.backlinks = self.document.options.toc_backlinks
         contents = self.build_contents(startnode)
         if len(contents):
-            if title:
-                name = title.astext()
-                topic += title
-            else:
-                name = self.language.labels['contents']
             topic += contents
             self.startnode.parent.replace(self.startnode, topic)
-            name = utils.normalize_name(name)
-            if not self.document.has_name(name):
-                topic['name'] = name
-            self.document.note_implicit_target(topic)
         else:
             self.startnode.parent.remove(self.startnode)
 
@@ -83,7 +88,10 @@ class Contents(Transform):
             entry = nodes.paragraph('', '', reference)
             item = nodes.list_item('', entry)
             itemid = self.document.set_id(item)
-            title['refid'] = itemid
+            if self.backlinks == 'entry':
+                title['refid'] = itemid
+            elif self.backlinks == 'top':
+                title['refid'] = self.toc_id
             if level < depth:
                 subsects = self.build_contents(section, level)
                 item += subsects
