@@ -1948,8 +1948,9 @@ follows.  If any of the conditions are not met, the start-string or
 end-string will not be recognized or processed.
 
 1. Inline markup start-strings must start a text block or be
-   immediately preceded by whitespace, single or double quotes, "(",
-   "[", "{", or "<".
+   immediately preceded by whitespace or one of::
+
+       ' " ( [ { < - / :
 
 2. Inline markup start-strings must be immediately followed by
    non-whitespace.
@@ -1960,7 +1961,7 @@ end-string will not be recognized or processed.
 4. Inline markup end-strings must end a text block or be immediately
    followed by whitespace or one of::
 
-       ' " . , : ; ! ? - ) ] } >
+       ' " ) ] } > - / : . , ; ! ?
 
 5. If an inline markup start-string is immediately preceded by a
    single or double quote, "(", "[", "{", or "<", it must not be
