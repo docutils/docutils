@@ -51,23 +51,23 @@ Paragraph 4.
         <title>
             Contents
         <bullet_list>
-            <list_item id="id1">
+            <list_item>
                 <paragraph>
-                    <reference refid="title-1">
+                    <reference id="id1" refid="title-1">
                         Title 1
                 <bullet_list>
-                    <list_item id="id2">
+                    <list_item>
                         <paragraph>
-                            <reference refid="title-2">
+                            <reference id="id2" refid="title-2">
                                 Title 2
                         <bullet_list>
-                            <list_item id="id3">
+                            <list_item>
                                 <paragraph>
-                                    <reference refid="title-3">
+                                    <reference id="id3" refid="title-3">
                                         Title 3
-                    <list_item id="id4">
+                    <list_item>
                         <paragraph>
-                            <reference refid="title-4">
+                            <reference id="id4" refid="title-4">
                                 Title 4
     <section id="title-1" name="title 1">
         <title refid="id1">
@@ -107,14 +107,14 @@ Paragraph 2.
         <title>
             Table of Contents
         <bullet_list>
-            <list_item id="id1">
+            <list_item>
                 <paragraph>
-                    <reference refid="title-1">
+                    <reference id="id1" refid="title-1">
                         Title 1
                 <bullet_list>
-                    <list_item id="id2">
+                    <list_item>
                         <paragraph>
-                            <reference refid="title-2">
+                            <reference id="id2" refid="title-2">
                                 Title 2
     <section id="title-1" name="title 1">
         <title refid="id1">
@@ -146,13 +146,13 @@ Paragraph 2.
         <title>
             There's an image in Title 2
         <bullet_list>
-            <list_item id="id1">
+            <list_item>
                 <paragraph>
-                    <reference refid="title-1">
+                    <reference id="id1" refid="title-1">
                         Title 1
-            <list_item id="id2">
+            <list_item>
                 <paragraph>
-                    <reference refid="title-2">
+                    <reference id="id2" refid="title-2">
                         Title 2
     <section id="title-1" name="title 1">
         <title refid="id1">
@@ -193,18 +193,18 @@ Paragraph 4.
         <title>
             Contents
         <bullet_list>
-            <list_item id="id1">
+            <list_item>
                 <paragraph>
-                    <reference refid="title-1">
+                    <reference id="id1" refid="title-1">
                         Title 1
                 <bullet_list>
-                    <list_item id="id2">
+                    <list_item>
                         <paragraph>
-                            <reference refid="title-2">
+                            <reference id="id2" refid="title-2">
                                 Title 2
-                    <list_item id="id3">
+                    <list_item>
                         <paragraph>
-                            <reference refid="title-4">
+                            <reference id="id3" refid="title-4">
                                 Title 4
     <section id="title-1" name="title 1">
         <title refid="id1">
@@ -255,18 +255,18 @@ Paragraph 4.
             Title 1
         <topic class="contents" id="contents" name="contents">
             <bullet_list>
-                <list_item id="id1">
+                <list_item>
                     <paragraph>
-                        <reference refid="title-2">
+                        <reference id="id1" refid="title-2">
                             Title 2
                     <bullet_list>
-                        <list_item id="id2">
+                        <list_item>
                             <paragraph>
-                                <reference refid="title-3">
+                                <reference id="id2" refid="title-3">
                                     Title 3
-                <list_item id="id3">
+                <list_item>
                     <paragraph>
-                        <reference refid="title-4">
+                        <reference id="id3" refid="title-4">
                             Title 4
         <paragraph>
             Paragraph 1.
@@ -300,9 +300,9 @@ Paragraph.
 <document>
     <topic class="contents" id="id1">
         <bullet_list>
-            <list_item id="id2">
+            <list_item>
                 <paragraph>
-                    <reference refid="contents">
+                    <reference id="id2" refid="contents">
                         Contents
     <paragraph>
         Test duplicate name "Contents".
@@ -326,9 +326,9 @@ Paragraph.
         <title>
             Contents
         <bullet_list>
-            <list_item id="id2">
+            <list_item>
                 <paragraph>
-                    <reference refid="contents">
+                    <reference id="id2" refid="contents">
                         Contents
     <section id="contents" name="contents">
         <title refid="id1">
@@ -350,9 +350,9 @@ Paragraph.
         <title>
             Contents
         <bullet_list>
-            <list_item id="id2">
+            <list_item>
                 <paragraph>
-                    <reference refid="contents">
+                    <reference id="id2" refid="contents">
                         Contents
     <section id="contents" name="contents">
         <title>

@@ -24,9 +24,10 @@ directives = {
       'note': 'note',
       'tip': 'tip',
       'warning': 'warning',
-      'questions': 'questions',
-      'qa': 'questions',
-      'faq': 'questions',
+      'topic': 'topic',
+      #'questions': 'questions',
+      #'qa': 'questions',
+      #'faq': 'questions',
       'meta': 'meta',
       #'imagemap': 'imagemap',
       'image': 'image',
@@ -35,7 +36,6 @@ directives = {
       'contents': 'contents',
       #'footnotes': 'footnotes',
       #'citations': 'citations',
-      #'topic': 'topic',
       'restructuredtext-test-directive': 'restructuredtext-test-directive'}
 """English name to registered (in directives/__init__.py) directive name
 mapping."""

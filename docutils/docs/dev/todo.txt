@@ -140,9 +140,6 @@ General
 - @@@ Add references to the user docs: bugs to the SF bug tracker,
   questions to the mailing lists.
 
-- @@@ Add a transform to remove body-level targets from the doctree,
-  as the first stage of optimization.
-
 
 Specification
 -------------
@@ -410,8 +407,6 @@ Directives
     problem similar to the first problem listed for misc.encoding_,
     although to a lesser degree.
 
-  - @@@ _`body.topic`
-
   - _`body.qa` (directive a.k.a. "faq", "questions"): Questions &
     Answers.  Implement as a generic two-column marked list?  As a
     standalone (non-directive) construct?  (Is the markup ambiguous?)
@@ -674,9 +669,6 @@ HTML Writer
 
 - Add more support for <link> elements, especially for navigation
   bars.
-
-- @@@ Add ``<span class="pre">`` around chunks of text in inline
-  literals, and a "whitespace: pre" style to the stylesheet. 
 
 
 Front-End Tools
