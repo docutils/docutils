@@ -27,6 +27,8 @@ Doctils DocBook Writer ChangeLog
 
 * Using DocBook 4.2 instead of DocBook 4.
 
+* ``title`` element placed before ``{doctype}info`` element.
+
 .. [#] `rubric` is mapped to `bridgehead`, which seemed to be the best 
    match. However, I've never heard of either of these, so it's just a 
    best guess.

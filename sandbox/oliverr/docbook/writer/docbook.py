@@ -77,9 +77,14 @@ class DocBookTranslator(nodes.NodeVisitor):
         self.footnotes = {}
         self.footnote_map = {}
         self.docinfo = []
+        self.title = ''
 
     def astext(self):
+        title = ''
+        if self.title:
+            title = '<title>' + self.title + '</title>'
         return ''.join(self.doc_header
+                    + [title]
                     + self.docinfo
                     + self.body
                     + self.doc_footer)
@@ -957,7 +962,15 @@ class DocBookTranslator(nodes.NodeVisitor):
         self.body.append('</tip>\n')
 
     def visit_title(self, node):
-        self.body.append(self.starttag(node, 'title', ''))
+        # document title needs to go before docinfo
+        # but docinfo is visited first, so we're catching
+        # the document title so it can be placed in front
+        # of docinfo in ``astext()``.
+        if isinstance(node.parent, nodes.document):
+            self.title = node.astext()
+            raise nodes.SkipNode
+        else:
+            self.body.append(self.starttag(node, 'title', ''))
 
     def depart_title(self, node):
         self.body.append('</title>\n')
