@@ -170,15 +170,7 @@ class RSTStateMachine(StateMachineWS):
         results = StateMachineWS.run(self, input_lines, input_offset,
                                      input_source=document['source'])
         assert results == [], 'RSTStateMachine.run() results should be empty!'
-        self.check_document()
         self.node = self.memo = None    # remove unneeded references
-
-    def check_document(self):
-        """Check for illegal structure: empty document."""
-        if len(self.document) == 0:
-            error = self.reporter.error(
-                'Document empty; must have contents.', line=0)
-            self.document += error
 
 
 class NestedStateMachine(StateMachineWS):
@@ -384,26 +376,10 @@ class RSTState(StateWS):
               self.state_machine.input_lines[offset:], input_offset=absoffset,
               node=section_node, match_titles=1)
         self.goto_line(newabsoffset)
-        self.check_section(section_node)
         if memo.section_level <= mylevel: # can't handle next section?
             raise EOFError              # bubble up to supersection
         # reset section_level; next pass will detect it properly
         memo.section_level = mylevel
-
-    def check_section(self, section):
-        """
-        Check for illegal structure: empty section, misplaced transitions.
-        """
-        lineno = section.line
-        if len(section) <= 1:
-            error = self.reporter.error(
-                'Section empty; must have contents.', line=lineno)
-            section += error
-            return
-        if not isinstance(section[0], nodes.title): # shouldn't ever happen
-            error = self.reporter.error(
-                'First element of section must be a title.', line=lineno)
-            section.insert(0, error)
 
     def paragraph(self, lines, lineno):
         """

@@ -59,6 +59,7 @@ Changes Since 0.3.5
   - Moved ``escape2null`` and ``unescape`` functions to docutils/utils.py.
   - Changed role function API: the "text" parameter now takes
     null-escaped interpreted text content.
+  - Empty sections and documents are allowed now.
 
 * docutils/parsers/rst/directives/__init__.py:
 
