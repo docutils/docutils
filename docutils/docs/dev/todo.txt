@@ -1113,7 +1113,7 @@ when used in a document.
     ability to say "use this content for any Writer other than X".  It
     wouldn't be difficult to add this ability though.
 
-    My first idea would be to add a set of conditional directives.
+    My first idea would be to add a set of _`conditional directives`.
     Let's call them "writer-is" and "writer-is-not" for discussion
     purposes (don't worry about implemention details).  We might
     have::
