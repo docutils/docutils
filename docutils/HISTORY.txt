@@ -30,6 +30,12 @@ Changes Since 0.3.5
   - Added dispatch_visit and dispatch_departure methods to
     NodeVisitor; useful as a hook for Visitors.
 
+* docutils/parsers/rst/states.py:
+
+  - Fixed bug where a "role" directive in a nested parse would crash
+    the parser; the state machine's "language" attribute was not being
+    copied over.
+
 * docutils/parsers/rst/directives/__init__.py:
 
   - Added ``encoding`` directive option conversion function.
