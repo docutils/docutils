@@ -231,11 +231,9 @@ Some limitations and difference apply:
   ``latex``; use ``pdflatex`` instead.
 - Only the Latin-1 output encoding has been tested up to now (Latin-1
   has been made the default output encoding for LaTeX).
-- The generated file includes a file ``style.tex``, which allows the
-  inclusion of special packages or changes to settings made in the
-  header.
-- Not all constructs are possible (e.g. row/column spans in tables are
-  not).
+- The optional stylesheet file allows the inclusion of special packages 
+  or overwriting default settings for LaTeX.
+- Not all constructs are possible, see `Generating LaTeX with Docutils`_.
 
 
 docutils-xml.py
@@ -313,7 +311,7 @@ set once and take effect every time you use a front-end tool.
 For details, see `Docutils Configuration Files`_.
 
 .. _Docutils Configuration Files: config.html
-
+.. _Generating LaTeX with Docutils: latex.html
 
 ..
    Local Variables:
