@@ -59,8 +59,18 @@ class Reporter:
     retrieve reporting conditions from the 'writer' category (which, unless
     explicitly set, defaults to the conditions of the default category).
 
+    The Reporter class also employs a modified form of the "Observer" pattern
+    [GoF95]_ to track system messages generated.  The `attach_observer` method
+    should be called before parsing, with a bound method or function which
+    accepts system messages.  The observer can be removed with
+    `detach_observer`, and another added in its place.
+
     .. [#] The concept of "categories" was inspired by the log4j project:
        http://jakarta.apache.org/log4j/.
+
+    .. [GoF95] Gamma, Helm, Johnson, Vlissides. *Design Patterns: Elements of
+       Reusable Object-Oriented Software*. Addison-Wesley, Reading, MA, USA,
+       1995.
     """
 
     levels = 'DEBUG INFO WARNING ERROR SEVERE'.split()
@@ -95,6 +105,10 @@ class Reporter:
                                             stream)}
         """Mapping of category names to conditions. Default category is ''."""
 
+        self.observers = []
+        """List of bound methods or functions to call with each system_message
+        created."""
+
     def set_conditions(self, category, report_level, halt_level,
                        stream=None, debug=0):
         if stream is None:
@@ -115,6 +129,20 @@ class Reporter:
 
     __getitem__ = get_conditions
 
+    def attach_observer(self, observer):
+        """
+        The `observer` parameter is a function or bound method which takes one
+        argument, a `nodes.system_message` instance.
+        """
+        self.observers.append(observer)
+
+    def detach_observer(self, observer):
+        self.observers.remove(observer)
+
+    def notify_observers(self, message):
+        for observer in self.observers:
+            observer(message)
+
     def system_message(self, level, comment=None, category='',
                        *children, **attributes):
         """
@@ -134,6 +162,8 @@ class Reporter:
                 print >>stream, 'Reporter:', msg.astext()
         if level >= halt_level:
             raise SystemMessage(msg)
+        if level > 0 or debug:
+            self.notify_observers(msg)
         return msg
 
     def debug(self, comment=None, category='', *children, **attributes):
@@ -362,7 +392,7 @@ def relative_path(source, target):
 
     If there is no common prefix, return the absolute path to `target`.
     """
-    source_parts = os.path.abspath(source).split(os.sep)
+    source_parts = os.path.abspath(source or '').split(os.sep)
     target_parts = os.path.abspath(target).split(os.sep)
     if source_parts[:1] != target_parts[:1]:
         # Nothing in common between paths.  Return absolute path.
