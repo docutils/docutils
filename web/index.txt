@@ -73,11 +73,9 @@ In other words: if you tell us what you need, you may just get it!  If
 you really need something, please consider contributing_ to Docutils
 in some way.
 
-Please post any feedback to the appropriate `mailing list`_, or `email
-the project coordinator`__ directly.
+Please post any feedback to the appropriate `mailing list`_.
 
 .. _contributing: `Please Contribute!`_
-__ mailto_
 
 
 Project Status
@@ -128,6 +126,34 @@ Requirements
 Download
 ========
 
+Development Snapshots
+---------------------
+
+Development snapshots of the project files are available as .tgz
+tarballs.  They are generated automatically from CVS, usually within
+an hour of a change being checked in.  The snapshots are highly
+recommended over the "official" releases, as they contain the latest
+features and bug fixes.  However, they may contain transient bugs or
+incompatibilities.
+
+- `Snapshot of Docutils code, tests, documentation, and
+  specifications`__
+- `Snapshot of the Sandbox`__ (experimental, contributed code; see
+  `The Sandbox`_ below for details)
+- `Snapshot of DocFactory project files`__ (this is a subset of the
+  Sandbox snapshot above; you don't need both)
+- `Snapshot of web files`__ (the files that generate this web site)
+
+__ http://docutils.sourceforge.net/docutils-snapshot.tgz
+__ http://docutils.sourceforge.net/docutils-sandbox-snapshot.tgz
+__ http://docutils.sourceforge.net/docfactory-snapshot.tgz
+__ http://docutils.sourceforge.net/docutils-web-snapshot.tgz
+
+`Anonymous CVS access`_ is available.  You can also `browse the CVS
+repository`_ and read the latest README_, HISTORY_, COPYING_, and FAQ_
+files.
+
+
 Project Releases
 ----------------
 
@@ -164,34 +190,6 @@ For a more detailed list of changes, read the `HISTORY of Docutils
 Thanks to Felix Wiemann for putting together this release!
 
 __ 0.3.3/HISTORY.html
-
-
-Development Snapshots
----------------------
-
-Development snapshots of the project files are available as .tgz
-tarballs.  They are generated automatically from CVS, usually within
-an hour of a change being checked in.  The snapshots are highly
-recommended over the "official" releases, as they contain the latest
-features and bug fixes.  However, they may contain transient bugs or
-incompatibilities.
-
-- `Snapshot of Docutils code, tests, documentation, and
-  specifications`__
-- `Snapshot of the Sandbox`__ (experimental, contributed code; see
-  `The Sandbox`_ below for details)
-- `Snapshot of DocFactory project files`__ (this is a subset of the
-  Sandbox snapshot above; you don't need both)
-- `Snapshot of web files`__ (the files that generate this web site)
-
-__ http://docutils.sourceforge.net/docutils-snapshot.tgz
-__ http://docutils.sourceforge.net/docutils-sandbox-snapshot.tgz
-__ http://docutils.sourceforge.net/docfactory-snapshot.tgz
-__ http://docutils.sourceforge.net/docutils-web-snapshot.tgz
-
-`Anonymous CVS access`_ is available.  You can also `browse the CVS
-repository`_ and read the latest README_, HISTORY_, COPYING_, and FAQ_
-files.
 
 
 .. _mailing list:
