@@ -203,6 +203,11 @@ Problems
 
 Open to be fixed or open to discussion.
 
+Tilde in italian
+----------------
+
+Does not work, or only in verbatim or verb.
+
 Tables
 ------
 
