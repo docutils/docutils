@@ -56,18 +56,15 @@ REFF="$OUTF.ref"
 $CMD -l de $INF > $OUTF
 do_diff $REFF $OUTF 
 
-INF=test/tools.txt
-OUTF="$INF-ltoc.tex"
-REFF="$OUTF.ref"
-$CMD --use-latex-toc 1 $INF > $OUTF
-do_diff $REFF $OUTF 
-
-INF=test/manual2.txt
-OUTF="$INF-ltoc.tex"
-REFF="$OUTF.ref"
-$CMD --use-latex-toc 1 $INF > $OUTF
-do_diff $REFF $OUTF 
-
+# with latex toc
+for F in tools manual2 contents-1 ; do
+  INF=test/$F.txt
+  OUTF="$INF-ltoc.tex"
+  REFF="$OUTF.ref"
+  $CMD --use-latex-toc=1 $INF > $OUTF
+  do_diff $REFF $OUTF 
+done
+  
 CMD="../../tools/rst2latex.py -l de"
 INF=test/quotes.txt
 OUTF="$INF-l-de.tex"
