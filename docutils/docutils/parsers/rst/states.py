@@ -882,7 +882,7 @@ class Inliner:
                             self.implicit_inline(text[match.end():], lineno))
                 except MarkupMismatch:
                     pass
-        return [nodes.Text(unescape(text))]
+        return [nodes.Text(unescape(text), rawsource=unescape(text, 1))]
 
     dispatch = {'*': emphasis,
                 '**': strong,
@@ -2365,17 +2365,24 @@ class Text(RSTState):
     def term(self, lines, lineno):
         """Return a definition_list's term and optional classifier."""
         assert len(lines) == 1
-        nodelist = []
-        parts = lines[0].split(' : ', 1)  # split into 1 or 2 parts
-        termpart = parts[0].rstrip()
-        textnodes, messages = self.inline_text(termpart, lineno)
-        nodelist = [nodes.term(termpart, '', *textnodes)]
-        if len(parts) == 2:
-            classifierpart = parts[1].lstrip()
-            textnodes, cpmessages = self.inline_text(classifierpart, lineno)
-            nodelist.append(nodes.classifier(classifierpart, '', *textnodes))
-            messages += cpmessages
-        return nodelist, messages
+        text_nodes, messages = self.inline_text(lines[0], lineno)
+        term_node = nodes.term()
+        node_list = [term_node]
+        for i in range(len(text_nodes)):
+            node = text_nodes[i]
+            if isinstance(node, nodes.Text):
+                parts = node.rawsource.split(' : ', 1)
+                if len(parts) == 1:
+                    term_node += node
+                else:
+                    term_node += nodes.Text(parts[0].rstrip())
+                    classifier_node = nodes.classifier('', parts[1])
+                    classifier_node += text_nodes[i+1:]
+                    node_list.append(classifier_node)
+                    break
+            else:
+                term_node += node
+        return node_list, messages
 
 
 class SpecializedText(Text):
