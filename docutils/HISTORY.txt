@@ -86,6 +86,7 @@ Specific:
   - Added ``Component.component_type`` attribute.
   - Bumped version to 0.2.8 because of the internal parser switch from
     plain lists to the docutils.statemachine.StringList objects.
+  - Bumped version to 0.2.9 because of the frontend.py API changes.
 
 * docutils/core.py:
 
