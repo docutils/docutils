@@ -93,13 +93,6 @@ General
 * Perhaps the ``Component.supports`` method should deal with
   individual features ("meta" etc.) instead of formats ("html" etc.)?
 
-* Add /usr/etc/docutils.conf to config file list?  System-wide,
-  whereas /etc/docutils.conf is machine-specific.
-  /usr/local/etc/docutils.conf too?  See the `Filesystem Hierarchy
-  Standard`_.
-
-  .. _Filesystem Hierarchy Standard: http://www.pathname.com/fhs
-
 * Add _`object numbering and object references` (tables & figures).
   These would be the equivalent of DocBook's "formal" elements.
 
