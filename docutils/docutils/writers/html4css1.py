@@ -86,6 +86,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.context = []
         self.topic_class = ''
         self.colspecs = []
+        self.compact_p = 1
+        self.compact_simple = None
 
     def astext(self):
         return ''.join(self.head_prefix + self.head
@@ -182,13 +184,29 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_block_quote(self, node):
         self.body.append('</blockquote>\n')
 
-    def visit_bullet_list(self, node):
-        if self.topic_class == 'contents':
-            self.body.append(self.starttag(node, 'ul', compact=None))
+    def check_simple_list(self, node):
+        visitor = SimpleListChecker(self.document)
+        try:
+            node.walk(visitor)
+        except nodes.NodeFound:
+            return None
         else:
-            self.body.append(self.starttag(node, 'ul'))
+            return 1
+
+    def visit_bullet_list(self, node):
+        atts = {}
+        old_compact_simple = self.compact_simple
+        self.context.append((self.compact_simple, self.compact_p))
+        self.compact_p = None
+        self.compact_simple = (self.compact_simple
+                               or self.topic_class == 'contents'
+                               or self.check_simple_list(node))
+        if self.compact_simple and not old_compact_simple:
+            atts['class'] = 'simple'
+        self.body.append(self.starttag(node, 'ul', **atts))
 
     def depart_bullet_list(self, node):
+        self.compact_simple, self.compact_p = self.context.pop()
         self.body.append('</ul>\n')
 
     def visit_caption(self, node):
@@ -206,10 +224,10 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_citation(self, node):
         self.body.append(self.starttag(node, 'table', CLASS='citation',
                                        frame="void", rules="none"))
-        self.body.append('<col class="label" />\n'
+        self.body.append('<colgroup><col class="label" /><col /></colgroup>\n'
                          '<col />\n'
                          '<tbody valign="top">\n'
-                         '<tr><td>\n')
+                         '<tr>')
         self.footnote_backrefs(node)
 
     def depart_citation(self, node):
@@ -289,7 +307,9 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_definition(self, node):
         self.body.append('</dt>\n')
-        self.body.append(self.starttag(node, 'dd'))
+        self.body.append(self.starttag(node, 'dd', ''))
+        if len(node) and isinstance(node[0], nodes.paragraph):
+            node[0].set_class('first')
 
     def depart_definition(self, node):
         self.body.append('</dd>\n')
@@ -307,7 +327,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         pass
 
     def visit_description(self, node):
-        self.body.append('<td>\n')
+        self.body.append(self.starttag(node, 'td', ''))
 
     def depart_description(self, node):
         self.body.append('</td>')
@@ -361,10 +381,12 @@ class HTMLTranslator(nodes.NodeVisitor):
             atts['rowspan'] = node['morerows'] + 1
         if node.has_key('morecols'):
             atts['colspan'] = node['morecols'] + 1
-        self.body.append(self.starttag(node, tagname, **atts))
-        self.context.append('</%s>' % tagname.lower())
+        self.body.append(self.starttag(node, tagname, '', **atts))
+        self.context.append('</%s>\n' % tagname.lower())
         if len(node) == 0:              # empty cell
             self.body.append('&nbsp;')
+        elif isinstance(node[0], nodes.paragraph):
+            node[0].set_class('first')
 
     def depart_entry(self, node):
         self.body.append(self.context.pop())
@@ -382,9 +404,18 @@ class HTMLTranslator(nodes.NodeVisitor):
             atts['class'] = node['enumtype']
         # @@@ To do: prefix, suffix. How? Change prefix/suffix to a
         # single "format" attribute? Use CSS2?
+        old_compact_simple = self.compact_simple
+        self.context.append((self.compact_simple, self.compact_p))
+        self.compact_p = None
+        self.compact_simple = (self.compact_simple
+                               or self.topic_class == 'contents'
+                               or self.check_simple_list(node))
+        if self.compact_simple and not old_compact_simple:
+            atts['class'] = (atts.get('class', '') + ' simple').strip()
         self.body.append(self.starttag(node, 'ol', **atts))
 
     def depart_enumerated_list(self, node):
+        self.compact_simple, self.compact_p = self.context.pop()
         self.body.append('</ol>\n')
 
     def visit_error(self, node):
@@ -410,6 +441,8 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_field_body(self, node):
         self.body.append(':&nbsp;</td>')
         self.body.append(self.starttag(node, 'td', '', CLASS='field-body'))
+        if len(node) and isinstance(node[0], nodes.paragraph):
+            node[0].set_class('first')
 
     def depart_field_body(self, node):
         self.body.append('</td>\n')
@@ -453,28 +486,28 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_footnote(self, node):
         self.body.append(self.starttag(node, 'table', CLASS='footnote',
                                        frame="void", rules="none"))
-        self.body.append('<col class="label" />\n'
-                         '<col />\n'
+        self.body.append('<colgroup><col class="label" /><col /></colgroup>\n'
                          '<tbody valign="top">\n'
-                         '<tr><td>\n')
+                         '<tr>')
         self.footnote_backrefs(node)
 
     def footnote_backrefs(self, node):
         if node.hasattr('backrefs'):
             backrefs = node['backrefs']
             if len(backrefs) == 1:
-                self.body.append('<a href="#%s">' % backrefs[0])
                 self.context.append(('</a>', ''))
+                self.context.append(('<a href="#%s">' % backrefs[0],))
             else:
                 i = 1
                 backlinks = []
                 for backref in backrefs:
                     backlinks.append('<a href="#%s">%s</a>' % (backref, i))
                     i += 1
-                self.context.append(('', ('<p>(%s)</p>\n'
-                                          % ', '.join(backlinks))))
+                self.context.append(('', '(%s) ' % ', '.join(backlinks)))
+                self.context.append(('',))
         else:
             self.context.append(('', ''))
+            self.context.append(('',))
 
     def depart_footnote(self, node):
         self.body.append('</td></tr>\n'
@@ -534,11 +567,11 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</span>')
 
     def visit_label(self, node):
-        self.body.append(self.starttag(node, 'p', '[', CLASS='label'))
+        self.body.append(self.starttag(node, 'td', '%s[' % self.context.pop(),
+                                       CLASS='label'))
 
     def depart_label(self, node):
-        self.body.append(']%s</p>\n'
-                         '</td><td>%s\n' % self.context.pop())
+        self.body.append(']%s</td><td>%s' % self.context.pop())
 
     def visit_legend(self, node):
         self.body.append(self.starttag(node, 'div', CLASS='legend'))
@@ -547,7 +580,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</div>\n')
 
     def visit_list_item(self, node):
-        self.body.append(self.starttag(node, 'li'))
+        self.body.append(self.starttag(node, 'li', ''))
+        if len(node) and isinstance(node[0], nodes.paragraph):
+            node[0].set_class('first')
 
     def depart_list_item(self, node):
         self.body.append('</li>\n')
@@ -599,12 +634,12 @@ class HTMLTranslator(nodes.NodeVisitor):
         else:
             self.context.append('')
         self.body.append(self.starttag(node, 'td', **atts))
-        self.body.append('<p><kbd>')
-        self.context.append(0)
+        self.body.append('<kbd>')
+        self.context.append(0)          # count number of options
 
     def depart_option_group(self, node):
         self.context.pop()
-        self.body.append('</kbd></p>\n</td>')
+        self.body.append('</kbd></td>\n')
         self.body.append(self.context.pop())
 
     def visit_option_list(self, node):
@@ -637,14 +672,18 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item()
 
     def visit_paragraph(self, node):
-        if not self.topic_class == 'contents':
+        # Omit <p> tags if this is an only child and optimizable.
+        if (self.compact_simple or
+            self.compact_p and (len(node.parent) == 1 or
+                                len(node.parent) == 2 and
+                                isinstance(node.parent[0], nodes.label))):
+            self.context.append('')
+        else:
             self.body.append(self.starttag(node, 'p', ''))
+            self.context.append('</p>\n')
 
     def depart_paragraph(self, node):
-        if self.topic_class == 'contents':
-            self.body.append('\n')
-        else:
-            self.body.append('</p>\n')
+        self.body.append(self.context.pop())
 
     def visit_problematic(self, node):
         if node.hasattr('refid'):
@@ -861,3 +900,34 @@ class HTMLTranslator(nodes.NodeVisitor):
     def unimplemented_visit(self, node):
         raise NotImplementedError('visiting unimplemented node type: %s'
                                   % node.__class__.__name__)
+
+
+class SimpleListChecker(nodes.GenericNodeVisitor):
+
+    """
+    Raise `nodes.SkipNode` if non-simple list item is encountered.
+
+    Here "simple" means a list item containing anything other than a single
+    paragraph, a simple list, or a paragraph followed by a simple list.
+    """
+
+    def default_visit(self, node):
+        raise nodes.NodeFound
+
+    def visit_bullet_list(self, node):
+        pass
+
+    def visit_enumerated_list(self, node):
+        pass
+
+    def visit_list_item(self, node):
+        if len(node) <= 1 or (len(node) == 2 and
+                              isinstance(node[0], nodes.paragraph) and
+                              (isinstance(node[1], nodes.bullet_list) or
+                               isinstance(node[1], nodes.enumerated_list))):
+            return
+        else:
+            raise nodes.NodeFound
+
+    def visit_paragraph(self, node):
+        raise nodes.SkipNode
