@@ -17,9 +17,10 @@ custom component objects first, and pass *them* to
 __docformat__ = 'reStructuredText'
 
 import sys
+import os.path
 from docutils import Component
 from docutils import readers, parsers, writers, io
-from docutils.frontend import OptionParser
+from docutils.frontend import OptionParser, ConfigParser
 
 
 class Publisher:
@@ -27,6 +28,12 @@ class Publisher:
     """
     A facade encapsulating the high-level logic of a Docutils system.
     """
+
+    config_files = ('/etc/docutils.conf',               # system-wide
+                    './docutils.conf',                  # project-specific
+                    os.path.expanduser('~/.docutils'))  # user-specific
+    """Docutils configuration files, using ConfigParser syntax (section
+    'options').  Later files override earlier ones."""
 
     def __init__(self, reader=None, parser=None, writer=None,
                  source=None, source_class=io.FileIO,
@@ -74,7 +81,21 @@ class Publisher:
         writer_class = writers.get_writer_class(writer_name)
         self.writer = writer_class()
 
-    def set_options(self, option_spec=None, **defaults):
+    def setup_option_parser(self, usage=None, description=None,
+                            option_spec=None, **defaults):
+        config = ConfigParser()
+        config.read(self.config_files)
+        if config.has_section('options'):
+            for option in config.options('options'):
+                defaults[option] = config.get('options', option)
+        option_parser = OptionParser(
+            components=(option_spec, self.reader, self.parser, self.writer),
+            usage=usage, description=description)
+        option_parser.set_defaults(**defaults)
+        return option_parser
+
+    def set_options(self, usage=None, description=None,
+                    option_spec=None, **defaults):
         """
         Set and return default option values (keyword arguments).
 
@@ -82,23 +103,21 @@ class Publisher:
         Explicitly setting options disables command line option processing
         from `self.publish()`.
         """
-        option_parser = OptionParser(
-            components=(option_spec, self.reader, self.parser, self.writer))
-        option_parser.set_defaults(**defaults)
+        option_parser = self.setup_option_parser(usage, description,
+                                                 option_spec, **defaults)
         self.options = option_parser.get_default_values()
         return self.options
 
     def process_command_line(self, argv=None, usage=None, description=None,
-                             option_spec=None):
+                             option_spec=None, **defaults):
         """
         Pass an empty list to `argv` to avoid reading `sys.argv` (the
         default).
 
         Set components first (`self.set_reader` & `self.set_writer`).
         """
-        option_parser = OptionParser(
-            components=(option_spec, self.reader, self.parser, self.writer),
-            usage=usage, description=description)
+        option_parser = self.setup_option_parser(usage, description,
+                                                 option_spec, **defaults)
         if argv is None:
             argv = sys.argv[1:]
         self.options, source, destination = option_parser.parse_args(argv)
