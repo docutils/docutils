@@ -1,4 +1,17 @@
+2002-12-28  Bill Bumgarner  <bbum@codefab.com>
+    * Added support for subtitle, note, and block_quote.  Cleaned up a
+      compile of CSS leftovers.
+    * DocArticle/DocArticle/__init__.py: Added support for arbitrary fields
+      and moved docinfo presentation to being table based (so that multiline
+      field values actually work).   Lots of cleanup-- reordered a bunch of
+      methods that had gotten out of order.  Added limited support for
+      Admonitions-- not at all useful yet.
+
 2002-12-27  Bill Bumgarner  <bbum@codefab.com>
+    * DocArticle/DocArticle/__init__.py: Added support for subtitle and
+      block_quote nodes.
     * Added initial working implementation of DocArticle HTML writer.
     * 00README.txt: Added basic information.
+    (HTMLDocArticleTranslator.__init__): Moved to a more traditional
+      initialization of instance variables.
 
