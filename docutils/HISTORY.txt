@@ -22,11 +22,12 @@ and related projects:
     Engelbert Gruber, Simon Hefti, Doug Hellmann, Juergen Hermann,
     Jeremy Hylton, Tony Ibbs, Alan Jaffray, Dmitry Jemerov, Richard
     Jones, Garth Kidd, Daniel Larsson, Marc-Andre Lemburg, Wolfgang
-    Lipp, Edward Loper, Ken Manheimer, Paul Moore, Michel Pelletier,
-    Sam Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim, Tavis Rudd,
-    Ollie Rutherfurd, Kenichi Sato, Ueli Schlaepfer, Gunnar Schwant,
-    tav, Bob Tolbert, Laurence Tratt, Guido van Rossum, Barry Warsaw,
-    Edward Welbourne, Ka-Ping Yee, Moshe Zadka
+    Lipp, Edward Loper, Ken Manheimer, Skip Montanaro, Paul Moore,
+    Michel Pelletier, Sam Penrose, Tim Peters, Pearu Peterson, Mark
+    Pilgrim, Tavis Rudd, Ollie Rutherfurd, Kenichi Sato, Ueli
+    Schlaepfer, Gunnar Schwant, tav, Bob Tolbert, Laurence Tratt,
+    Guido van Rossum, Barry Warsaw, Edward Welbourne, Ka-Ping Yee,
+    Moshe Zadka
 
 Thank you!
 
@@ -240,6 +241,7 @@ Specific:
   - Updated enumerated list description; added a discussion of the
     second-line validity checking.
   - Updated directive description.
+  - Added a note redirecting newbies to the user docs.
 
 * tools/buildhtml.py:
 
