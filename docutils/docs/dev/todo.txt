@@ -395,64 +395,73 @@ General
 Documentation
 -------------
 
-* The documentation is currently messed up.  These are the plans for
+* .. _documentation cleanup:
+
+  The documentation is currently messed up.  These are the plans for
   an overall cleanup:
 
   - Create new subdirectories of docs/:
 
     * ``docs/user/``: introductory/tutorial material for end-users
-    * ``docs/dev/``: for core-developers
+    * ``docs/dev/``: for core-developers (development notes, plans, etc.)
     * ``docs/ref/``: reference material for all groups
     * ``docs/howto/``: for component-developers and core-developers
-    * ``docs/lib/``: API reference material for library-user/developers
     * ``docs/peps/``: Python Enhancement Proposals
 
-  - Move 'Acknowledgements' from ``HISTORY.txt`` to ``THANKS.txt``.
-
   - Move ``docs/*`` to ``docs/user/``.
-
-  - Split up ``spec/notes.txt`` to ``BUGS.txt``,
-    ``docs/dev/todo.txt``, ``docs/dev/policies.txt``,
-    ``docs/dev/website.txt``, ``docs/dev/release.txt``.
-
-  - Move 'Future Plans' from ``HISTORY.txt`` to new 'Priorities'
-    section of ``docs/dev/todo.txt``.
 
   - Move ``pysource.dtd``, ``pysource.txt``, ``semantics.txt`` from
     ``spec/`` to ``docs/dev``.
 
-  - Move ``doctree.txt``, ``docutils.dtd``, ``soextblx.dtd`` from
-    ``spec/`` to ``docs/ref/``.
+  - Move ``doctree.txt``, ``docutils.dtd``, ``soextblx.dtd``,
+    ``transforms.txt`` from ``spec/`` to ``docs/ref/``.
 
-  - Move ``transforms.txt`` from ``spec/`` to ``docs/lib/``.
+  - Move ``alternatives.txt``, and ``problems.txt`` from ``spec/rst/``
+    to ``docs/dev/rst/``.  (Move "Doctree Representation of
+    Transitions" section of ``alternatives.txt`` elsewhere?  [Not
+    yet.])
 
-  - Move ``alternatives.txt``, ``introduction.txt``, and
-    ``problems.txt`` from ``spec/rst/`` to ``docs/dev/rst/``.
-    (Move "Doctree Representation of Transitions" section of
-    ``alternatives.txt`` elsewhere?  Where?)
-
-  - Move ``reStructuredText.txt``, ``directives.txt``, and
-    ``interpreted.txt`` from ``spec/rst/`` to ``docs/ref/rst/``.
-    (Rename ``interpreted.txt`` to ``roles.txt``?)
+  - Move `reStructuredText.txt``, ``directives.txt``,
+    ``interpreted.txt``, and ``introduction.txt`` from ``spec/rst/``
+    to ``docs/ref/rst/``.  Rename ``interpreted.txt`` to
+    ``roles.txt``.  Rename ``reStructuredText.txt`` to
+    ``restructuredtext.txt``.
 
   - Move ``spec/howto/`` to ``docs/howto``.
     (Not to ``docs/dev/howto/``; not just for core-developers.)
 
-  It would be useful to keep the CVS history of moved files.  To do
-  so, we need to supply SourceForge with a `script for modifying the
-  Docutils CVS repository`__.  Any other pending repository cleanups
-  (remove "module" module; others?)  should be done at the same time.
+  In order to keep the CVS history of moved files, we need to supply
+  SourceForge with a `script for modifying the Docutils CVS
+  repository`__.  Any other pending repository cleanups should be done
+  at the same time.  Script now in CVS:
+  sandbox/davidg/infrastructure/cvs-reorg.sh.
 
   __ http://sf.net/docman/display_doc.php?docid=768&group_id=1#repositoryrestructure
 
-* After doing the cleanup:
+  After doing the cleanup (running the cvs-reorg.sh script):
+
+  - Add ``docs/index.txt``.
 
   - Add 'how to report bugs' to ``BUGS.txt`` (like `Subversion's
     <http://svn.collab.net/viewcvs/svn/trunk/BUGS?rev=9086&view=markup>`__).
 
-  - Add ``docs/index.txt``.
+  - Move 'Future Plans' from ``HISTORY.txt`` to new 'Priorities'
+    section of ``docs/dev/todo.txt``.
+
+  - Add ``THANKS.txt`` from 'Acknowledgements' in ``HISTORY.txt``.
+
+  - Add ``BUGS.txt``, ``docs/dev/policies.txt``,
+    ``docs/dev/website.txt``, ``docs/dev/release.txt`` from all but
+    the "to do" list in ``docs/dev/todo.txt``.
+
+  - Add symlinks from all old paths to new paths.
+
+  - Go through all the docs (including under web/) & code and fix
+    broken links.
 
 * User docs.  What's needed?
+
+  - reST cheat sheet -- max. 2 pages.
 
 
 Implementation Docs
