@@ -15,7 +15,7 @@ custom component objects first, and pass *them* to
 __docformat__ = 'reStructuredText'
 
 import sys
-from docutils import Component, __version__
+from docutils import __version__, Component, SettingsSpec
 from docutils import frontend, io, utils, readers, parsers, writers
 from docutils.frontend import OptionParser
 
@@ -83,7 +83,14 @@ class Publisher:
             self.set_writer(writer_name)
 
     def setup_option_parser(self, usage=None, description=None,
-                            settings_spec=None, **defaults):
+                            settings_spec=None, config_section=None,
+                            **defaults):
+        if config_section and not settings_spec:
+            settings_spec = SettingsSpec()
+            settings_spec.config_section = config_section
+            parts = config_section.split()
+            if len(parts) > 1 and parts[-1] == 'application':
+                settings_spec.config_section_dependencies = ['applications']
         #@@@ Add self.source & self.destination to components in future?
         option_parser = OptionParser(
             components=(self.parser, self.reader, self.writer, settings_spec),
@@ -92,7 +99,7 @@ class Publisher:
         return option_parser
 
     def get_settings(self, usage=None, description=None,
-                     settings_spec=None, **defaults):
+                     settings_spec=None, config_section=None, **defaults):
         """
         Set and return default settings (overrides in `defaults` dict).
 
@@ -100,21 +107,22 @@ class Publisher:
         Explicitly setting `self.settings` disables command line option
         processing from `self.publish()`.
         """
-        option_parser = self.setup_option_parser(usage, description,
-                                                 settings_spec, **defaults)
+        option_parser = self.setup_option_parser(
+            usage, description, settings_spec, config_section, **defaults)
         self.settings = option_parser.get_default_values()
         return self.settings
 
     def process_command_line(self, argv=None, usage=None, description=None,
-                             settings_spec=None, **defaults):
+                             settings_spec=None, config_section=None,
+                             **defaults):
         """
         Pass an empty list to `argv` to avoid reading `sys.argv` (the
         default).
 
         Set components first (`self.set_reader` & `self.set_writer`).
         """
-        option_parser = self.setup_option_parser(usage, description,
-                                                 settings_spec, **defaults)
+        option_parser = self.setup_option_parser(
+            usage, description, settings_spec, config_section,**defaults)
         if argv is None:
             argv = sys.argv[1:]
         self.settings = option_parser.parse_args(argv)
@@ -152,15 +160,16 @@ class Publisher:
 
     def publish(self, argv=None, usage=None, description=None,
                 settings_spec=None, settings_overrides=None,
-                enable_exit=None):
+                config_section=None, enable_exit=None):
         """
         Process command line options and arguments (if `self.settings` not
         already set), run `self.reader` and then `self.writer`.  Return
         `self.writer`'s output.
         """
         if self.settings is None:
-            self.process_command_line(argv, usage, description, settings_spec,
-                                      **(settings_overrides or {}))
+            self.process_command_line(
+                argv, usage, description, settings_spec, config_section,
+                **(settings_overrides or {}))
         elif settings_overrides:
             self.settings._update(settings_overrides, 'loose')
         self.set_io()
@@ -221,7 +230,8 @@ def publish_cmdline(reader=None, reader_name='standalone',
                     parser=None, parser_name='restructuredtext',
                     writer=None, writer_name='pseudoxml',
                     settings=None, settings_spec=None,
-                    settings_overrides=None, enable_exit=1, argv=None,
+                    settings_overrides=None, config_section=None,
+                    enable_exit=1, argv=None,
                     usage=default_usage, description=default_description):
     """
     Set up & run a `Publisher`.  For command-line front ends.
@@ -242,6 +252,8 @@ def publish_cmdline(reader=None, reader_name='standalone',
       subclass.  Used only if no `settings` specified.
     - `settings_overrides`: A dictionary containing program-specific overrides
       of component settings.
+    - `config_section`: Name of configuration file section for application.
+      Used only if no `settings` or `settings_spec` specified.
     - `enable_exit`: Boolean; enable exit status at end of processing?
     - `argv`: Command-line argument list to use instead of ``sys.argv[1:]``.
     - `usage`: Usage string, output if there's a problem parsing the command
@@ -252,7 +264,7 @@ def publish_cmdline(reader=None, reader_name='standalone',
     pub = Publisher(reader, parser, writer, settings=settings)
     pub.set_components(reader_name, parser_name, writer_name)
     pub.publish(argv, usage, description, settings_spec, settings_overrides,
-                enable_exit=enable_exit)
+                config_section=config_section, enable_exit=enable_exit)
 
 def publish_file(source=None, source_path=None,
                  destination=None, destination_path=None,
@@ -260,7 +272,7 @@ def publish_file(source=None, source_path=None,
                  parser=None, parser_name='restructuredtext',
                  writer=None, writer_name='pseudoxml',
                  settings=None, settings_spec=None, settings_overrides=None,
-                 enable_exit=None):
+                 config_section=None, enable_exit=None):
     """
     Set up & run a `Publisher`.  For programmatic use with file-like I/O.
 
@@ -288,12 +300,15 @@ def publish_file(source=None, source_path=None,
       subclass.  Used only if no `settings` specified.
     - `settings_overrides`: A dictionary containing program-specific overrides
       of component settings.
+    - `config_section`: Name of configuration file section for application.
+      Used only if no `settings` or `settings_spec` specified.
     - `enable_exit`: Boolean; enable exit status at end of processing?
     """
     pub = Publisher(reader, parser, writer, settings=settings)
     pub.set_components(reader_name, parser_name, writer_name)
     if settings is None:
-        settings = pub.get_settings(settings_spec=settings_spec)
+        settings = pub.get_settings(settings_spec=settings_spec,
+                                    config_section=config_section)
     if settings_overrides:
         settings._update(settings_overrides, 'loose')
     pub.set_source(source, source_path)
@@ -305,7 +320,8 @@ def publish_string(source, source_path=None, destination_path=None,
                    parser=None, parser_name='restructuredtext',
                    writer=None, writer_name='pseudoxml',
                    settings=None, settings_spec=None,
-                   settings_overrides=None, enable_exit=None):
+                   settings_overrides=None, config_section=None,
+                   enable_exit=None):
     """
     Set up & run a `Publisher`, and return the string output.
     For programmatic use with string I/O.
@@ -344,6 +360,8 @@ def publish_string(source, source_path=None, destination_path=None,
       subclass.  Used only if no `settings` specified.
     - `settings_overrides`: A dictionary containing program-specific overrides
       of component settings.
+    - `config_section`: Name of configuration file section for application.
+      Used only if no `settings` or `settings_spec` specified.
     - `enable_exit`: Boolean; enable exit status at end of processing?
     """
     pub = Publisher(reader, parser, writer, settings=settings,
@@ -351,7 +369,8 @@ def publish_string(source, source_path=None, destination_path=None,
                     destination_class=io.StringOutput)
     pub.set_components(reader_name, parser_name, writer_name)
     if settings is None:
-        settings = pub.get_settings(settings_spec=settings_spec)
+        settings = pub.get_settings(settings_spec=settings_spec,
+                                    config_section=config_section)
     if settings_overrides:
         settings._update(settings_overrides, 'loose')
     pub.set_source(source, source_path)
