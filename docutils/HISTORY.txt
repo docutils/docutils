@@ -43,9 +43,9 @@ General:
   SourceForge with a `script for modifying the Docutils CVS
   repository`__.
 
-  __ http://cvs.sourceforge.net/viewcvs.py/*checkout*/docutils/sandbox/davidg/infrastructure/cvs-reorg.sh?content-type=text/plain&rev=1.22
+  __ http://cvs.sourceforge.net/viewcvs.py/*checkout*/docutils/sandbox/davidg/infrastructure/cvs-reorg.sh?content-type=text/plain&rev=1.5
 
-  After doing the cleanup:
+  After running the cleanup script:
 
   - Added ``docs/index.txt``.
   - Added a ``.htaccess`` file to the ``web`` module, containing
@@ -110,10 +110,10 @@ Specific:
 
   - Added directive: "table".
 
-* docs/user/rst/cheatsheet.txt: "The reStructuredText Cheat Sheet" added to
-  project.  1 page for syntax, and a 1 page reference for directives
-  and roles.  Source text to be used as-is; not meant to be converted
-  to HTML.
+* docs/user/rst/cheatsheet.txt: "The reStructuredText Cheat Sheet"
+  added to project.  1 page for syntax, and a 1 page reference for
+  directives and roles.  Source text to be used as-is; not meant to be
+  converted to HTML.
 
 
 Release 0.3.3 (2004-05-09)
