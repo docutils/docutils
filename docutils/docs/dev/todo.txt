@@ -371,9 +371,6 @@ General
   option could be added to Docutils front ends to do this.  (Idea from
   Engelbert Gruber.)
 
-* Change the "class" attribute of elements (set with
-  Element.set_class) to a list?
-
 * Enable feedback of some kind from internal decisions, such as
   reporting the successful input encoding.  Modify runtime settings?
   System message?  Simple stderr output?
@@ -1373,9 +1370,6 @@ when used in a document.
   - _`body.sidebar`: Add to the already implemented directive.  Allow
     internal section structure, with adornment styles independent of
     the main document.
-
-  - _`body.list-table`: See `List-Driven Tables
-    <rst/alternatives.html#list-driven-tables>`_.
 
   - _`colorize.python`: Colorize Python code.  Fine for HTML output,
     but what about other formats?  Revert to a literal block?  Do we
