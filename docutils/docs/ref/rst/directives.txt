@@ -132,15 +132,19 @@ The following options are recognized:
     Alternate text: a short description of the image, displayed by
     applications that cannot display images, or spoken by applications
     for visually impaired users.
+
 ``height`` : integer
     The height of the image in pixels, used to reserve space or scale
     the image vertically.
+
 ``width`` : integer
     The width of the image in pixels, used to reserve space or scale
     the image horizontally.
+
 ``scale`` : integer
     The uniform scaling factor of the image, a percentage (but no "%"
     symbol is required or allowed).  "100" means full-size.
+
 ``align`` : "top", "middle", "bottom", "left", "center", or "right"
     The alignment of the image, equivalent to the HTML ``<img>`` tag's
     "align" attribute.  The values "top", "middle", and "bottom"
@@ -158,7 +162,7 @@ Figure
 :Directive Type: "figure"
 :DTD Elements: figure, image, caption, legend
 :Directive Arguments: One, required (image URI).
-:Directive Options: Possible.
+:Directive Options: Possible; same as those of the `image`_ directive.
 :Directive Content: Interpreted as the figure caption and an optional
                     legend.
 
