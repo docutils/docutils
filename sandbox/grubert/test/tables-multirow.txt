@@ -1,0 +1,41 @@
+Multirows dont work.
+
+.. table:: row on left side
+
+   +------+------+
+   | test | test |
+   |      +------+
+   | test | test |
+   +------+------+
+   | belo |      |
+   +------+------+
+
+.. table:: row on right side
+
+   +------+------+
+   | abov | e    |
+   +------+------+
+   | test | test |
+   +------+ test |
+   | test | test |
+   +------+------+
+
+.. table:: row in the midle
+
+   +------+------+------+
+   | test | test | test |
+   +------+ test +------+
+   | test | test | test |
+   +------+------+------+
+
+.. table:: row left and right
+
+   +------+------+------+
+   | test | test | test |
+   |      +------+ test |
+   | test | test | test |
+   +------+------+------+
+
+
+cell spanning in multirow table is missing !
+
