@@ -3,11 +3,29 @@ latex2e BUGS TODOS and other animals
 
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
-Rev. 2002-11-06
+Rev. 2002-11-07
 
 To do
 ~~~~~
 mostly errors when processing tools/test.txt.
+
+* quotes: dgoogder::
+
+    >       99           99
+    >         this is bad
+    >         
+    >   whereas they should look like this::
+    >   
+    >       66               99
+    >         that is the way
+
+  but in german::
+
+    >           66
+    >     anders
+    >   99
+
+
 
 * tabularx says "donot use any multicolmn which spans any X column.
   maybe use ltxtable instead of tabularx (Longtable combined with tabularx).
