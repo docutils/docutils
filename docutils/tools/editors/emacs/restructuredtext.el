@@ -36,42 +36,39 @@ cand replace with char: ")
 	(search-failed
 	 (message (format "%d lines replaced." found)))))))
 
-(defun repeat-last-character ()
-  ;; by Martin Blais
-  "Fills the current line up to the length of the preceding line (if not empty),
-using the last character on the current line.  If the preceding line is empty,
-or if a prefix argument is provided, fill up to the fill-column.
+(defun repeat-last-character (&optional tofill)
+  "Fills the current line up to the length of the preceding line (if not
+empty), using the last character on the current line.  If the preceding line is
+empty, we use the fill-column.
+
+If a prefix argument is provided, use the next line rather than the preceding
+line.
 
 If the current line is longer than the desired length, shave the characters off
 the current line to fit the desired length.
 
 As an added convenience, if the command is repeated immediately, the alternative
-behaviour is performed."
-
-;; TODO
-;; ----
-;; It would be useful if only these characters were repeated:
-;; =-`:.'"~^_*+#<>!$%&(),/;?@[\]{|}
-;; Especially, empty lines shouldn't be repeated.
-
+column is used (fill-column vs. end of previous/next line)."
   (interactive)
   (let* ((curcol (current-column))
-	 (curline (+ (count-lines (point-min) (point)) (if (eq curcol 0) 1 0)))
+	 (curline (+ (count-lines (point-min) (point))
+		     (if (eq curcol 0) 1 0)))
 	 (lbp (line-beginning-position 0))
-	 (prevcol (if (= curline 1)
+	 (prevcol (if (and (= curline 1) (not current-prefix-arg))
 		      fill-column
 		    (save-excursion
-		      (forward-line -1)
+		      (forward-line (if current-prefix-arg 1 -1))
 		      (end-of-line)
 		      (skip-chars-backward " \t" lbp)
 		      (let ((cc (current-column)))
 			(if (= cc 0) fill-column cc)))))
 	 (rightmost-column
-	  (cond (current-prefix-arg fill-column)
+	  (cond (tofill fill-column)
 		((equal last-command 'repeat-last-character)
 		 (if (= curcol fill-column) prevcol fill-column))
 		(t (save-excursion
-		     (if (= prevcol 0) fill-column prevcol))) )) )
+		     (if (= prevcol 0) fill-column prevcol)))
+		)) )
     (end-of-line)
     (if (> (current-column) rightmost-column)
 	;; shave characters off the end
@@ -80,7 +77,8 @@ behaviour is performed."
 		       (point))
       ;; fill with last characters
       (insert-char (preceding-char)
-		   (- rightmost-column (current-column)))) ))
+		   (- rightmost-column (current-column))))
+    ))
 
 (defun reST-title-char-p (c)
   ;; by Martin Blais
