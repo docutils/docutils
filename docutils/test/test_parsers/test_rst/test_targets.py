@@ -186,11 +186,11 @@ Duplicate external targets (same URIs):
 <document>
     <paragraph>
         Duplicate external targets (same URIs):
-    <target dupname="target" id="target" refuri="first">
+    <target id="target" name="target" refuri="first">
     <system_message backrefs="id1" level="1" type="INFO">
         <paragraph>
             Duplicate explicit target name: "target".
-    <target id="id1" name="target" refuri="first">
+    <target dupname="target" id="id1" refuri="first">
 """],
 ["""\
 Duplicate implicit targets.

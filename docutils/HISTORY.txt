@@ -17,13 +17,14 @@ on the Docutils project, knowingly or not, in terms of encouragement,
 suggestions, criticism, bug reports, code contributions, tasty treats,
 and related projects:
 
-    David Ascher, Fred Drake, Jim Fulton, Peter Funk, Engelbert
-    Gruber, Doug Hellmann, Juergen Hermann, Tony Ibbs, Alan Jaffray,
-    Richard Jones, Garth Kidd, Daniel Larsson, Marc-Andre Lemburg,
-    Wolfgang Lipp, Edward Loper, Ken Manheimer, Paul Moore, Michel
-    Pelletier, Sam Penrose, Tim Peters, Mark Pilgrim, Tavis Rudd, Ueli
-    Schlaepfer, tav, Bob Tolbert, Laurence Tratt, Guido van Rossum,
-    Barry Warsaw, Edward Welbourne, Ka-Ping Yee, Moshe Zadka
+    Aahz, David Ascher, Fred Drake, Dethe Elza, Jim Fulton, Peter
+    Funk, Engelbert Gruber, Doug Hellmann, Juergen Hermann, Tony Ibbs,
+    Alan Jaffray, Richard Jones, Garth Kidd, Daniel Larsson,
+    Marc-Andre Lemburg, Wolfgang Lipp, Edward Loper, Ken Manheimer,
+    Paul Moore, Michel Pelletier, Sam Penrose, Tim Peters, Mark
+    Pilgrim, Tavis Rudd, Ollie Rutherfurd, Ueli Schlaepfer, tav, Bob
+    Tolbert, Laurence Tratt, Guido van Rossum, Barry Warsaw, Edward
+    Welbourne, Ka-Ping Yee, Moshe Zadka
 
 Thank you!
 
@@ -62,7 +63,8 @@ Specific:
 
   - Removed many keyword parameters to ``Publisher.__init__()`` and
     ``publish()``; bundled into an option values object.  Added
-    ``argv`` and ``usage`` parameters for command-line support.
+    "argv", "usage", "description", and "option_spec" parameters for
+    command-line support.
   - Added ``Publisher.process_command_line()`` and ``.set_options()``
     methods.
 
@@ -85,6 +87,9 @@ Specific:
     imports.
   - Added ``decoration``, ``header``, and ``footer`` node classes, and
     ``PreDecorative`` mixin.
+  - Reworked the name/id bookkeeping; to ``document``, removed
+    ``explicit_targets`` and ``implicit_targets`` attributes, added
+    ``nametypes`` attribute and ``set_name_id_map`` method.
 
 * docutils/optik.py: Added to project.  Combined from the Optik
   package, with added option groups and other modifications.  The use
@@ -126,6 +131,7 @@ Specific:
   - Added ``MarkupMismatch`` exception; for late corrections.
   - Added ``-/:`` characters to inline markup's start string prefix,
     ``/`` to end string suffix.
+  - Fixed a footnote bug.
 
 * docutils/parsers/rst/directives/html.py: Changed the ``meta``
   directive to use a ``pending`` element, used only by HTML writers.
@@ -141,6 +147,9 @@ Specific:
 * docutils/transforms/__init__.py: ``Transform.__init__()`` now
   requires a ``component`` parameter.
 
+* docutils/transforms/components.py: Added to project; transforms
+  related to Docutils components.
+
 * docutils/transforms/peps.py: Added to project; PEP-specific.
 
 * docutils/transforms/parts.py: Renamed from old components.py.
@@ -148,8 +157,8 @@ Specific:
   - Added filter for `Contents`, to use alt-text for inline images,
     and to remove inline markup that doesn't make sense in the ToC.
 
-* docutils/transforms/components.py: Added to project; transforms
-  related to Docutils components.
+* docutils/transforms/references.py: Fixed indirect target resolution
+  in ``Hyperlinks`` transform.
 
 * docutils/transforms/universal.py:
 
@@ -177,6 +186,8 @@ Specific:
 * spec/docutils.dtd:
 
   - Added ``decoration``, ``header``, and ``footer`` elements.
+  - Brought ``interpreted`` element in line with the parser: changed
+    attribute "type" to "role", added "position".
 
 * spec/notes.txt: Continual updates.  Added "Project Policies".
 
@@ -191,6 +202,14 @@ Specific:
 
   - Reworked structural elements, incorporating ideas from Tony Ibbs.
 
+* spec/rst/alternatives.txt: Expanded auto-enumerated list idea;
+  thanks to Fred Bremmer.
+
+* spec/rst/problems.txt:
+
+  - Updated the Enumerated List Markup discussion.
+  - Added new alternative table markup syntaxes.
+
 * spec/rst/reStructuredText.txt:
 
   - Clarified field list usage.
@@ -198,12 +217,6 @@ Specific:
   - Clarified purpose of directives.
   - Added ``-/:`` characters to inline markup's start string prefix,
     ``/`` to end string suffix.
-
-* spec/rst/alternatives.txt: Expanded auto-enumerated list idea;
-  thanks to Fred Bremmer.
-
-* spec/rst/problems.txt: Updated the Enumerated List Markup
-  discussion.
 
 * test: Made test modules standalone (subdirectories became packages).
 
@@ -225,6 +238,8 @@ Specific:
 * tools/default.css:
 
   - Added support for ``header`` and ``footer`` elements.
+
+* tools/quicktest.py:  Added the "--attributes" option, hacked a bit.
 
 
 Release 0.1 (2002-04-20)

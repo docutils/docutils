@@ -21,7 +21,7 @@ one-to-many relationships; sections may contain (sub)sections, tables
 contain further body elements, etc. ::
 
   +--------------------------------------------------------------------+
-  | document  [may begin with a title, subtitle, docinfo]              |
+  | document  [may begin with a title, subtitle, docinfo, decoration]  |
   |                             +--------------------------------------+
   |                             | sections  [each begins with a title] |
   +-----------------------------+-------------------------+------------+
@@ -41,11 +41,12 @@ contain further body elements, etc. ::
  Element Hierarchy
 -------------------
 
-A class hierarchy has been implemented in nodes.py where the position
-of the element (the level at which it can occur) is significant.
-E.G., Root, Structural, Body, Inline classes etc.  Certain
-transformations will be easier because we can use isinstance() on
-them.
+A class hierarchy has been implemented in nodes.py.  The position of
+each node (the level at which it can occur) is significant and is
+represented by abstract base classes (Root, Structural, Body, Inline,
+etc.).  Certain transformations will be easier because we can use
+``isinstance(node, base_class)`` to determine the position of the node
+in the hierarchy.
 
 The elements making up Docutils document trees can be categorized into
 the following groups:
