@@ -1432,7 +1432,7 @@ class Body(RSTState):
                 optlist.append(option)
             else:
                 raise MarkupError(
-                    'wrong numer of option tokens (=%s), should be 1 or 2: '
+                    'wrong number of option tokens (=%s), should be 1 or 2: '
                     '"%s"' % (len(tokens), optionstring),
                     self.state_machine.abs_line_number() + 1)
         return optlist
