@@ -26,9 +26,11 @@ quicktest.py: quickly test the restructuredtext parser.
 
 Usage::
 
-    quicktest.py [options] [filename]
+    quicktest.py [options] [<source> [<destination>]]
 
-``filename`` is the name of the file to use as input (default is stdin).
+``source`` is the name of the file to use as input (default is stdin).
+``destination`` is the name of the file to create as output (default is
+stdout).
 
 Options:
 """
@@ -38,8 +40,8 @@ options = [('pretty', 'p',
            ('test', 't', 'output test-ready data (input & expected output, '
             'ready to be copied to a parser test module)'),
            ('rawxml', 'r', 'output raw XML'),
-           ('styledxml=', 's', 'output raw XML with XSL style sheet reference '
-            '(filename supplied in the option argument)'),
+           ('styledxml=', 's', 'output raw XML with XSL style sheet '
+            'reference (filename supplied in the option argument)'),
            ('xml', 'x', 'output pretty XML (indented)'),
            ('attributes', '', 'dump document attributes after processing'),
            ('debug', 'd', 'debug mode (lots of output)'),
@@ -74,8 +76,8 @@ def _styledxml(input, document, optargs):
     docnode = document.asdom().childNodes[0]
     return '%s\n%s\n%s' % (
           '<?xml version="1.0" encoding="ISO-8859-1"?>',
-          '<?xml-stylesheet type="text/xsl" href="%s"?>' % optargs['styledxml'],
-          docnode.toxml())
+          '<?xml-stylesheet type="text/xsl" href="%s"?>'
+          % optargs['styledxml'], docnode.toxml())
 
 def _prettyxml(input, document, optargs):
     return document.asdom().toprettyxml('    ', '\n')
@@ -96,7 +98,7 @@ def _test(input, document, optargs):
 
 def escape(text):
     """
-    Return `text` in a form compatible with triple-double-quoted Python strings.
+    Return `text` in triple-double-quoted Python string form.
     """
     text = text.replace('\\', '\\\\')   # escape backslashes
     text = text.replace('"""', '""\\"') # break up triple-double-quotes
@@ -154,33 +156,36 @@ def posixGetArgs(argv):
             optargs['debug'] = 1
         else:
             raise getopt.GetoptError, "getopt should have saved us!"
-    if len(args) > 1:
-        print "Only one file at a time, thanks."
+    if len(args) > 2:
+        print 'Maximum 2 arguments allowed.'
         usage()
         sys.exit(1)
-    if len(args) == 1:
-        inputFile = open(args[0])
-    else:
-        inputFile = sys.stdin
-    return inputFile, outputFormat, optargs
+    inputFile = sys.stdin
+    outputFile = sys.stdout
+    if args:
+        inputFile = open(args.pop(0))
+    if args:
+        outputFile = open(args.pop(0), 'w')
+    return inputFile, outputFile, outputFormat, optargs
 
 def macGetArgs():
     import EasyDialogs
     EasyDialogs.Message("""\
-In the following window, please:
+Use the next dialog to build a command line:
 
-1. Choose an output format from the "Option" list.
-2. Click "Add" (if you don't, the default format will
-   be "pretty").
-3. Click "Add existing file..." and choose an input file.
-4. Click "OK".""")
+1. Choose an output format from the [Option] list 
+2. Click [Add]
+3. Choose an input file: [Add existing file...]
+4. Save the output: [Add new file...]
+5. [OK]""")
     optionlist = [(longopt, description)
                   for (longopt, shortopt, description) in options]
-    argv = EasyDialogs.GetArgv(optionlist=optionlist, addnewfile=0, addfolder=0)
+    argv = EasyDialogs.GetArgv(optionlist=optionlist, addfolder=0)
     return posixGetArgs(argv)
 
 def main():
-    inputFile, outputFormat, optargs = getArgs() # process cmdline arguments
+    # process cmdline arguments:
+    inputFile, outputFile, outputFormat, optargs = getArgs()
     options = OptionParser().get_default_values()
     options.debug = optargs['debug']
     parser = Parser()
@@ -188,7 +193,7 @@ def main():
     document = new_document(options)
     parser.parse(input, document)
     output = format(outputFormat, input, document, optargs)
-    print output,
+    outputFile.write(output)
     if optargs['attributes']:
         import pprint
         pprint.pprint(document.__dict__)
