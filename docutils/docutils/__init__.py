@@ -51,7 +51,7 @@ Subpackages:
 
 __docformat__ = 'reStructuredText'
 
-__version__ = '0.3.1'
+__version__ = '0.3.2'
 """``major.minor.micro`` version number.  The micro number is bumped any time
 there's a change in the API incompatible with one of the front ends or
 significant new functionality.  The minor number is bumped whenever there is a
