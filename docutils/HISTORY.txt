@@ -44,6 +44,7 @@ Changes Since 0.3.5
   - Fixed directive parsing bug: argument-less directives didn't
     notice that arguments were present.
   - Removed error checking for transitions.
+  - Added support for multiple classifiers in definition list items.
 
 * docutils/parsers/rst/directives/__init__.py:
 
@@ -120,6 +121,7 @@ Changes Since 0.3.5
   - Added "ltrim" and "rtrim" attributes to
     ``substitution_definition`` element.
   - Enabled multiple format names for ``raw`` element.
+  - Enabled multiple classifiers in ``definition_list_item`` elements.
 
 * docs/ref/rst/directives.txt
 
@@ -128,6 +130,7 @@ Changes Since 0.3.5
 * docs/ref/rst/restructuredtext.txt:
 
   - Added syntax for line blocks.
+  - Definition list items may have multiple classifiers.
 
 * tools/stylesheets/default.css:
 
