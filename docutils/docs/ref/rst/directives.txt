@@ -456,8 +456,6 @@ Citations
 Meta
 ====
 
-.
-
 * Directive Type: "meta"
 
 * DTD Element: meta (non-standard)

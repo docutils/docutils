@@ -94,8 +94,10 @@ General
 
   - A queue, with entries ``(priority, transform, pending=None)``.
   - Transform classes can have ``priority`` class attributes.
-  - Priorities can be numeric.  Integers (0..100?  000..999?)?  Floats
-    (would be easier to squeeze in new ones)?
+  - Priorities can be numeric.  Integers (0..100?  0..999?
+    0..9999?)?  Floats (would be easier to squeeze in new ones)?
+  - Priorities can be strings.  Numeric (000..999?  0000..9999?)?
+    Alphanumeric (a..z?  1, 1a, 1b, ...?)?
   - Each transform would have a unique priority.  Use a look-up table?
     No, that would require too many imports to construct.  Document
     transform priorities.
