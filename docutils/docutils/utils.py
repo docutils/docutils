@@ -13,7 +13,7 @@ Miscellaneous utilities for the documentation utilities.
 __docformat__ = 'reStructuredText'
 
 import sys
-from types import StringTypes
+from types import StringType, UnicodeType
 from docutils import ApplicationError, DataError
 from docutils import frontend, nodes
 
@@ -81,7 +81,7 @@ class Reporter:
         """
         if stream is None:
             stream = sys.stderr
-        elif type(stream) in StringTypes:
+        elif type(stream) in (StringType, UnicodeType):
             raise NotImplementedError('This should open a file for writing.')
 
         self.categories = {'': ConditionSet(debug, report_level, halt_level,
