@@ -1349,7 +1349,7 @@ class OptionParser (OptionContainer):
             formatter = self.formatter
         formatter.store_option_strings(self)
         result = []
-        result.append(formatter.format_heading("options"))
+        result.append(formatter.format_heading("Options"))
         formatter.indent()
         if self.option_list:
             result.append(OptionContainer.format_option_help(self, formatter))
