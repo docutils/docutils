@@ -349,6 +349,11 @@ General
   "--generator", "--source-link", and "--date" etc.), allowing
   translations.
 
+* Add an "--include file" command-line option (config setting too?),
+  equivalent to ".. include:: file" as the first line of the doc text?
+  Especially useful for character entity sets, text transform specs,
+  boilerplate, etc.
+
 
 Documentation
 -------------
