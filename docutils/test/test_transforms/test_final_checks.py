@@ -12,7 +12,6 @@ Tests for docutils.transforms.universal.FinalChecks.
 
 from __init__ import DocutilsTestSupport
 from docutils.transforms.universal import FinalChecks
-from docutils.transforms.references import Footnotes
 from docutils.parsers.rst import Parser
 
 
