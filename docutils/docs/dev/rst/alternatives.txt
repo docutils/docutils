@@ -23,339 +23,9 @@ for full details of the established syntax.
 
 .. contents::
 
-
-... Or Not To Do?
-=================
-
-This is the realm of the possible but questionably probable.  These
-ideas are kept here as a record of what has been proposed, for
-posterity and in case any of them prove to be useful.
-
-
-Compound Enumerated Lists
--------------------------
-
-Allow for compound enumerators, such as "1.1." or "1.a." or "1(a)", to
-allow for nested enumerated lists without indentation?
-
-
-Sloppy Indentation of List Items
---------------------------------
-
-Perhaps the indentation shouldn't be so strict.  Currently, this is
-required::
-
-    1. First line,
-       second line.
-
-Anything wrong with this? ::
-
-    1. First line,
-     second line.
-
-Problem? ::
-
-    1. First para.
-
-       Block quote.  (no good: requires some indent relative to first
-       para)
-
-     Second Para.
-
-    2. Have to carefully define where the literal block ends::
-
-         Literal block
-
-       Literal block?
-
-Hmm...  Non-strict indentation isn't such a good idea.
-
-
-Lazy Indentation of List Items
-------------------------------
-
-Another approach: Going back to the first draft of reStructuredText
-(2000-11-27 post to Doc-SIG)::
-
-    - This is the fourth item of the main list (no blank line above).
-    The second line of this item is not indented relative to the
-    bullet, which precludes it from having a second paragraph.
-
-Change that to *require* a blank line above and below, to reduce
-ambiguity.  This "loosening" may be added later, once the parser's
-been nailed down.  However, a serious drawback of this approach is to
-limit the content of each list item to a single paragraph.
-
-
-David's Idea for Lazy Indentation
-`````````````````````````````````
-
-Consider a paragraph in a word processor.  It is a single logical line
-of text which ends with a newline, soft-wrapped arbitrarily at the
-right edge of the page or screen.  We can think of a plaintext
-paragraph in the same way, as a single logical line of text, ending
-with two newlines (a blank line) instead of one, and which may contain
-arbitrary line breaks (newlines) where it was accidentally
-hard-wrapped by an application.  We can compensate for the accidental
-hard-wrapping by "unwrapping" every unindented second and subsequent
-line.  The indentation of the first line of a paragraph or list item
-would determine the indentation for the entire element.  Blank lines
-would be required between list items when using lazy indentation.
-
-The following example shows the lazy indentation of multiple body
-elements::
-
-    - This is the first paragraph
-    of the first list item.
-
-      Here is the second paragraph
-    of the first list item.
-
-    - This is the first paragraph
-    of the second list item.
-
-      Here is the second paragraph
-    of the second list item.
-
-A more complex example shows the limitations of lazy indentation::
-
-    - This is the first paragraph
-    of the first list item.
-
-      Next is a definition list item:
-
-      Term
-          Definition.  The indentation of the term is
-    required, as is the indentation of the definition's
-    first line.
-
-          When the definition extends to more than
-    one line, lazy indentation may occur.  (This is the second
-    paragraph of the definition.)
-
-    - This is the first paragraph
-    of the second list item.
-
-      - Here is the first paragraph of
-    the first item of a nested list.
-
-      So this paragraph would be outside of the nested list,
-    but inside the second list item of the outer list.
-
-    But this paragraph is not part of the list at all.
-
-And the ambiguity remains::
-
-    - Look at the hyphen at the beginning of the next line
-    - is it a second list item marker, or a dash in the text?
-
-    Similarly, we may want to refer to numbers inside enumerated
-    lists:
-
-    1. How many socks in a pair? There are
-    2. How many pants in a pair? Exactly
-    1. Go figure.
-
-Literal blocks and block quotes would still require consistent
-indentation for all their lines.  For block quotes, we might be able
-to get away with only requiring that the first line of each contained
-element be indented.  For example::
-
-    Here's a paragraph.
-
-        This is a paragraph inside a block quote.
-    Second and subsequent lines need not be indented at all.
-
-        - A bullet list inside
-    the block quote.
-
-          Second paragraph of the
-    bullet list inside the block quote.
-
-Although feasible, this form of lazy indentation has problems.  The
-document structure and hierarchy is not obvious from the indentation,
-making the source plaintext difficult to read.  This will also make
-keeping track of the indentation while writing difficult and
-error-prone.  However, these problems may be acceptable for Wikis and
-email mode, where we may be able to rely on less complex structure
-(few nested lists, for example).
-
-
-Multiple Roles in Interpreted Text
-----------------------------------
-
-In reStructuredText, inline markup cannot be nested (yet; `see
-below`__).  This also applies to interpreted text.  In order to
-simultaneously combine multiple roles for a single piece of text, a
-syntax extension would be necessary.  Ideas:
-
-1. Initial idea::
-
-       `interpreted text`:role1,role2:
-
-2. Suggested by Jason Diamond::
-
-       `interpreted text`:role1:role2:
-
-If a document is so complex as to require nested inline markup,
-perhaps another markup system should be considered.  By design,
-reStructuredText does not have the flexibility of XML.
-
-__ `Nested Inline Markup`_
-
-
-Parameterized Interpreted Text
-------------------------------
-
-In some cases it may be expedient to pass parameters to interpreted
-text, analogous to function calls.  Ideas:
-
-1. Parameterize the interpreted text role itself (suggested by Jason
-   Diamond)::
-
-       `interpreted text`:role1(foo=bar):
-
-   Positional parameters could also be supported::
-
-       `CSS`:acronym(Cascading Style Sheets): is used for HTML, and
-       `CSS`:acronym(Content Scrambling System): is used for DVDs.
-
-   Technical problem: current interpreted text syntax does not
-   recognize roles containing whitespace.  Design problem: this smells
-   like programming language syntax, but reStructuredText is not a
-   programming language.
-
-2. Put the parameters inside the interpreted text::
-
-       `CSS (Cascading Style Sheets)`:acronym: is used for HTML, and
-       `CSS (Content Scrambling System)`:acronym: is used for DVDs.
-
-   Although this could be defined on an individual basis (per role),
-   we ought to have a standard.  Hyperlinks with embedded URIs already
-   use angle brackets; perhaps they could be used here too::
-
-       `CSS <Cascading Style Sheets>`:acronym: is used for HTML, and
-       `CSS <Content Scrambling System>`:acronym: is used for DVDs.
-
-   Do angle brackets connote URLs too much for this to be acceptable?
-   How about the "tag" connotation -- does it save them or doom them?
-
-Does this push inline markup too far?  Readability becomes a serious
-issue.  Substitutions may provide a better alternative (at the expense
-of verbosity and duplication) by pulling the details out of the text
-flow::
-
-    |CSS| is used for HTML, and |CSS-DVD| is used for DVDs.
-
-    .. |CSS| acronym:: Cascading Style Sheets
-    .. |CSS-DVD| acronym:: Content Scrambling System
-       :text: CSS
-
-----------------------------------------------------------------------
-
-This whole idea may be going beyond the scope of reStructuredText.
-Documents requiring this functionality may be better off using XML or
-another markup system.
-
-This argument comes up regularly when pushing the envelope of
-reStructuredText syntax.  I think it's a useful argument in that it
-provides a check on creeping featurism.  In many cases, the resulting
-verbosity produces such unreadable plaintext that there's a natural
-desire *not* to use it unless absolutely necessary.  It's a matter of
-finding the right balance.
-
-
-Syntax for Interpreted Text Role Bindings
------------------------------------------
-
-The following syntax (idea from Jeffrey C. Jacobs) could be used to
-associate directives with roles::
-
-    .. :rewrite: class:: rewrite
-
-    `She wore ribbons in her hair and it lay with streaks of
-    grey`:rewrite:
-
-The syntax is similar to that of substitution declarations, and the
-directive/role association may resolve implementation issues.  The
-semantics, ramifications, and implementation details would need to be
-worked out.
-
-The example above would implement the "rewrite" role as adding a
-``class="rewrite"`` attribute to the interpreted text ("inline"
-element).  The stylesheet would then pick up on the "class" attribute
-to do the actual formatting.
-
-The advantage of the new syntax would be flexibility.  Uses other than
-"class" may present themselves.  The disadvantage is complexity:
-having to implement new syntax for a relatively specialized operation,
-and having new semantics in existing directives ("class::" would do
-something different).
-
-The `"role" directive`__ has been implemented.
-
-__ http://docutils.sf.net/spec/rst/directives.html#role
-
-
-Character Processing
---------------------
-
-Several people have suggested adding some form of character processing
-to reStructuredText:
-
-* Some sort of automated replacement of ASCII sequences:
-
-  - ``--`` to em-dash (or ``--`` to en-dash, and ``---`` to em-dash).
-  - Convert quotes to curly quote entities.  (Essentially impossible
-    for HTML?  Unnecessary for TeX.)
-  - Various forms of ``:-)`` to smiley icons.
-  - ``"\ "`` to &nbsp;.  Problem with line-wrapping though: it could
-    end up escaping the newline.
-  - Escaped newlines to <BR>.
-  - Escaped period or quote or dash as a disappearing catalyst to
-    allow character-level inline markup?
-
-* XML-style character entities, such as "&copy;" for the copyright
-  symbol.
-
-Docutils has no need of a character entity subsystem.  Supporting
-Unicode and text encodings, character entities should be directly
-represented in the text: a copyright symbol should be represented by
-the copyright symbol character.  If this is not possible in an
-authoring environment, a pre-processing stage can be added, or a table
-of substitution definitions can be devised.
-
-A "unicode" directive has been implemented to allow direct
-specification of esoteric characters.  In combination with the
-substitution construct, "include" files defining common sets of
-character entities can be defined and used.  `A set of character
-entity set definition files have been defined`__ (`tarball`__).
-There's also `a description and instructions for use`__.
-
-__ http://docutils.sf.net/tmp/charents/
-__ http://docutils.sf.net/tmp/charents.tgz
-__ http://docutils.sf.net/tmp/charents/README.html
-
-To allow for `character-level inline markup`_, a limited form of
-character processing has been added to the spec and parser: escaped
-whitespace characters are removed from the processed document.  Any
-further character processing will be of this functional type, rather
-than of the character-encoding type.
-
-.. _character-level inline markup:
-   reStructuredText.html#character-level-inline-markup
-
-* Directive idea::
-
-      .. text-replace:: "pattern" "replacement"
-
-  - Support Unicode "U+XXXX" codes.
-  - Support regexps, perhaps with alternative "regexp-replace"
-    directive.
-  - Flags for regexps; ":flags:" option, or individuals.
-  - Specifically, should the default be case-sensistive or
-    -insensitive?
-
+-------------
+ Implemented
+-------------
 
 Field Lists
 ===========
@@ -1131,377 +801,6 @@ Which brings us back to "substitution".  The overall best names are
 long way to go to add one word!
 
 
-Reworking Footnotes
-===================
-
-As a further wrinkle (see `Reworking Explicit Markup (Round 1)`_
-above), in the wee hours of 2002-02-28 I posted several ideas for
-changes to footnote syntax:
-
-    - Change footnote syntax from ``.. [1]`` to ``_[1]``? ...
-    - Differentiate (with new DTD elements) author-date "citations"
-      (``[GVR2002]``) from numbered footnotes? ...
-    - Render footnote references as superscripts without "[]"? ...
-
-These ideas are all related, and suggest changes in the
-reStructuredText syntax as well as the docutils tree model.
-
-The footnote has been used for both true footnotes (asides expanding
-on points or defining terms) and for citations (references to external
-works).  Rather than dealing with one amalgam construct, we could
-separate the current footnote concept into strict footnotes and
-citations.  Citations could be interpreted and treated differently
-from footnotes.  Footnotes would be limited to numerical labels:
-manual ("1") and auto-numbered (anonymous "#", named "#label").
-
-The footnote is the only explicit markup construct (starts with ".. ")
-that directly translates to a visible body element.  I've always been
-a little bit uncomfortable with the ".. " marker for footnotes because
-of this; ".. " has a connotation of "special", but footnotes aren't
-especially "special".  Printed texts often put footnotes at the bottom
-of the page where the reference occurs (thus "foot note").  Some HTML
-designs would leave footnotes to be rendered the same positions where
-they're defined.  Other online and printed designs will gather
-footnotes into a section near the end of the document, converting them
-to "endnotes" (perhaps using a directive in our case); but this
-"special processing" is not an intrinsic property of the footnote
-itself, but a decision made by the document author or processing
-system.
-
-Citations are almost invariably collected in a section at the end of a
-document or section.  Citations "disappear" from where they are
-defined and are magically reinserted at some well-defined point.
-There's more of a connection to the "special" connotation of the ".. "
-syntax.  The point at which the list of citations is inserted could be
-defined manually by a directive (e.g., ".. citations::"), and/or have
-default behavior (e.g., a section automatically inserted at the end of
-the document) that might be influenced by options to the Writer.
-
-Syntax proposals:
-
-+ Footnotes:
-
-  - Current syntax::
-
-        .. [1] Footnote 1
-        .. [#] Auto-numbered footnote.
-        .. [#label] Auto-labeled footnote.
-
-  - The syntax proposed in the original 2002-02-28 Doc-SIG post:
-    remove the ".. ", prefix a "_"::
-
-        _[1] Footnote 1
-        _[#] Auto-numbered footnote.
-        _[#label] Auto-labeled footnote.
-
-    The leading underscore syntax (earlier dropped because
-    ``.. _[1]:`` was too verbose) is a useful reminder that footnotes
-    are hyperlink targets.
-
-  - Minimal syntax: remove the ".. [" and "]", prefix a "_", and
-    suffix a "."::
-
-        _1. Footnote 1.
-        _#. Auto-numbered footnote.
-        _#label. Auto-labeled footnote.
-
-                 ``_1.``, ``_#.``, and ``_#label.`` are markers,
-                 like list markers.
-
-    Footnotes could be rendered something like this in HTML
-
-        | 1. This is a footnote.  The brackets could be dropped
-        |    from the label, and a vertical bar could set them
-        |    off from the rest of the document in the HTML.
-
-    Two-way hyperlinks on the footnote marker ("1." above) would also
-    help to differentiate footnotes from enumerated lists.
-
-    If converted to endnotes (by a directive/transform), a horizontal
-    half-line might be used instead.  Page-oriented output formats
-    would typically use the horizontal line for true footnotes.
-
-+ Footnote references:
-
-  - Current syntax::
-
-        [1]_, [#]_, [#label]_
-
-  - Minimal syntax to match the minimal footnote syntax above::
-
-        1_, #_, #label_
-
-    As a consequence, pure-numeric hyperlink references would not be
-    possible; they'd be interpreted as footnote references.
-
-+ Citation references: no change is proposed from the current footnote
-  reference syntax::
-
-      [GVR2001]_
-
-+ Citations:
-
-  - Current syntax (footnote syntax)::
-
-        .. [GVR2001] Python Documentation; van Rossum, Drake, et al.;
-           http://www.python.org/doc/
-
-  - Possible new syntax::
-
-        _[GVR2001] Python Documentation; van Rossum, Drake, et al.;
-                   http://www.python.org/doc/
-
-        _[DJG2002]
-            Docutils: Python Documentation Utilities project; Goodger
-            et al.; http://docutils.sourceforge.net/
-
-    Without the ".. " marker, subsequent lines would either have to
-    align as in one of the above, or we'd have to allow loose
-    alignment (I'd rather not)::
-
-        _[GVR2001] Python Documentation; van Rossum, Drake, et al.;
-            http://www.python.org/doc/
-
-I proposed adopting the "minimal" syntax for footnotes and footnote
-references, and adding citations and citation references to
-reStructuredText's repertoire.  The current footnote syntax for
-citations is better than the alternatives given.
-
-From a reply by Tony Ibbs on 2002-03-01:
-
-    However, I think easier with examples, so let's create one::
-
-        Fans of Terry Pratchett are perhaps more likely to use
-        footnotes [1]_ in their own writings than other people
-        [2]_.  Of course, in *general*, one only sees footnotes
-        in academic or technical writing - it's use in fiction
-        and letter writing is not normally considered good
-        style [4]_, particularly in emails (not a medium that
-        lends itself to footnotes).
-
-        .. [1] That is, little bits of referenced text at the
-           bottom of the page.
-        .. [2] Because Terry himself does, of course [3]_.
-        .. [3] Although he has the distinction of being
-           *funny* when he does it, and his fans don't always
-           achieve that aim.
-        .. [4] Presumably because it detracts from linear
-           reading of the text - this is, of course, the point.
-
-    and look at it with the second syntax proposal::
-
-        Fans of Terry Pratchett are perhaps more likely to use
-        footnotes [1]_ in their own writings than other people
-        [2]_.  Of course, in *general*, one only sees footnotes
-        in academic or technical writing - it's use in fiction
-        and letter writing is not normally considered good
-        style [4]_, particularly in emails (not a medium that
-        lends itself to footnotes).
-
-        _[1] That is, little bits of referenced text at the
-             bottom of the page.
-        _[2] Because Terry himself does, of course [3]_.
-        _[3] Although he has the distinction of being
-             *funny* when he does it, and his fans don't always
-             achieve that aim.
-        _[4] Presumably because it detracts from linear
-             reading of the text - this is, of course, the point.
-
-    (I note here that if I have gotten the indentation of the
-    footnotes themselves correct, this is clearly not as nice.  And if
-    the indentation should be to the left margin instead, I like that
-    even less).
-
-    and the third (new) proposal::
-
-        Fans of Terry Pratchett are perhaps more likely to use
-        footnotes 1_ in their own writings than other people
-        2_.  Of course, in *general*, one only sees footnotes
-        in academic or technical writing - it's use in fiction
-        and letter writing is not normally considered good
-        style 4_, particularly in emails (not a medium that
-        lends itself to footnotes).
-
-        _1. That is, little bits of referenced text at the
-            bottom of the page.
-        _2. Because Terry himself does, of course 3_.
-        _3. Although he has the distinction of being
-            *funny* when he does it, and his fans don't always
-            achieve that aim.
-        _4. Presumably because it detracts from linear
-            reading of the text - this is, of course, the point.
-
-    I think I don't, in practice, mind the targets too much (the use
-    of a dot after the number helps a lot here), but I do have a
-    problem with the body text, in that I don't naturally separate out
-    the footnotes as different than the rest of the text - instead I
-    keep wondering why there are numbers interspered in the text.  The
-    use of brackets around the numbers ([ and ]) made me somehow parse
-    the footnote references as "odd" - i.e., not part of the body text
-    - and thus both easier to skip, and also (paradoxically) easier to
-    pick out so that I could follow them.
-
-    Thus, for the moment (and as always susceptable to argument), I'd
-    say -1 on the new form of footnote reference (i.e., I much prefer
-    the existing ``[1]_`` over the proposed ``1_``), and ambivalent
-    over the proposed target change.
-
-    That leaves David's problem of wanting to distinguish footnotes
-    and citations - and the only thing I can propose there is that
-    footnotes are numeric or # and citations are not (which, as a
-    human being, I can probably cope with!).
-
-From a reply by Paul Moore on 2002-03-01:
-
-    I think the current footnote syntax ``[1]_`` is *exactly* the
-    right balance of distinctness vs unobtrusiveness.  I very
-    definitely don't think this should change.
-
-    On the target change, it doesn't matter much to me.
-
-From a further reply by Tony Ibbs on 2002-03-01, referring to the
-"[1]" form and actual usage in email:
-
-    Clearly this is a form people are used to, and thus we should
-    consider it strongly (in the same way that the usage of ``*..*``
-    to mean emphasis was taken partly from email practise).
-
-    Equally clearly, there is something "magical" for people in the
-    use of a similar form (i.e., ``[1]``) for both footnote reference
-    and footnote target - it seems natural to keep them similar.
-
-    ...
-
-    I think that this established plaintext usage leads me to strongly
-    believe we should retain square brackets at both ends of a
-    footnote.  The markup of the reference end (a single trailing
-    underscore) seems about as minimal as we can get away with.  The
-    markup of the target end depends on how one envisages the thing -
-    if ".." means "I am a target" (as I tend to see it), then that's
-    good, but one can also argue that the "_[1]" syntax has a neat
-    symmetry with the footnote reference itself, if one wishes (in
-    which case ".." presumably means "hidden/special" as David seems
-    to think, which is why one needs a ".." *and* a leading underline
-    for hyperlink targets.
-
-Given the persuading arguments voiced, we'll leave footnote & footnote
-reference syntax alone.  Except that these discussions gave rise to
-the "auto-symbol footnote" concept, which has been added.  Citations
-and citation references have also been added.
-
-
-Auto-Enumerated Lists
-=====================
-
-The advantage of auto-numbered enumerated lists would be similar to
-that of auto-numbered footnotes: lists could be written and rearranged
-without having to manually renumber them.  The disadvantages are also
-the same: input and output wouldn't match exactly; the markup may be
-ugly or confusing (depending on which alternative is chosen).
-
-1. Use the "#" symbol.  Example::
-
-       #. Item 1.
-       #. Item 2.
-       #. Item 3.
-
-   Advantages: simple, explicit.  Disadvantage: enumeration sequence
-   cannot be specified (limited to arabic numerals); ugly.
-
-2. As a variation on #1, first initialize the enumeration sequence?
-   For example::
-
-       a) Item a.
-       #) Item b.
-       #) Item c.
-
-   Advantages: simple, explicit, any enumeration sequence possible.
-   Disadvantages: ugly; perhaps confusing with mixed concrete/abstract
-   enumerators.
-
-3. Alternative suggested by Fred Bremmer, from experience with MoinMoin::
-
-       1. Item 1.
-       1. Item 2.
-       1. Item 3.
-
-   Advantages: enumeration sequence is explicit (could be multiple
-   "a." or "(I)" tokens).  Disadvantages: perhaps confusing; otherwise
-   erroneous input (e.g., a duplicate item "1.") would pass silently,
-   either causing a problem later in the list (if no blank lines
-   between items) or creating two lists (with blanks).
-
-   Take this input for example::
-
-       1. Item 1.
-
-       1. Unintentional duplicate of item 1.
-
-       2. Item 2.
-
-   Currently the parser will produce two list, "1" and "1,2" (no
-   warnings, because of the presence of blank lines).  Using Fred's
-   notation, the current behavior is "1,1,2 -> 1 1,2" (without blank
-   lines between items, it would be "1,1,2 -> 1 [WARNING] 1,2").  What
-   should the behavior be with auto-numbering?
-
-   Fred has produced a patch__, whose initial behavior is as follows::
-
-       1,1,1   -> 1,2,3
-       1,2,2   -> 1,2,3
-       3,3,3   -> 3,4,5
-       1,2,2,3 -> 1,2,3 [WARNING] 3
-       1,1,2   -> 1,2 [WARNING] 2
-
-   (After the "[WARNING]", the "3" would begin a new list.)
-
-   I have mixed feelings about adding this functionality to the spec &
-   parser.  It would certainly be useful to some users (myself
-   included; I often have to renumber lists).  Perhaps it's too
-   clever, asking the parser to guess too much.  What if you *do* want
-   three one-item lists in a row, each beginning with "1."?  You'd
-   have to use empty comments to force breaks.  Also, I question
-   whether "1,2,2 -> 1,2,3" is optimal behavior.
-
-   In response, Fred came up with "a stricter and more explicit rule
-   [which] would be to only auto-number silently if *all* the
-   enumerators of a list were identical".  In that case::
-
-       1,1,1   -> 1,2,3
-       1,2,2   -> 1,2 [WARNING] 2
-       3,3,3   -> 3,4,5
-       1,2,2,3 -> 1,2 [WARNING] 2,3
-       1,1,2   -> 1,2 [WARNING] 2
-
-   Should any start-value be allowed ("3,3,3"), or should
-   auto-numbered lists be limited to begin with ordinal-1 ("1", "A",
-   "a", "I", or "i")?
-
-   __ http://sourceforge.net/tracker/index.php?func=detail&aid=548802
-      &group_id=38414&atid=422032
-
-4. Alternative proposed by Tony Ibbs::
-
-       #1. First item.
-       #3. Aha - I edited this in later.
-       #2. Second item.
-
-   The initial proposal required unique enumerators within a list, but
-   this limits the convenience of a feature of already limited
-   applicability and convenience.  Not a useful requirement; dropped.
-
-   Instead, simply prepend a "#" to a standard list enumerator to
-   indicate auto-enumeration.  The numbers (or letters) of the
-   enumerators themselves are not significant, except:
-
-   - as a sequence indicator (arabic, roman, alphabetic; upper/lower),
-
-   - and perhaps as a start value (first list item).
-
-   Advantages: explicit, any enumeration sequence possible.
-   Disadvantages: a bit ugly.
-
-
 Inline External Targets
 =======================
 
@@ -1926,6 +1225,575 @@ Solution 3 was chosen for incorporation into the document tree model.
 .. _HTML: http://www.w3.org/MarkUp/
 
 
+-----------------
+ Not Implemented
+-----------------
+
+Reworking Footnotes
+===================
+
+As a further wrinkle (see `Reworking Explicit Markup (Round 1)`_
+above), in the wee hours of 2002-02-28 I posted several ideas for
+changes to footnote syntax:
+
+    - Change footnote syntax from ``.. [1]`` to ``_[1]``? ...
+    - Differentiate (with new DTD elements) author-date "citations"
+      (``[GVR2002]``) from numbered footnotes? ...
+    - Render footnote references as superscripts without "[]"? ...
+
+These ideas are all related, and suggest changes in the
+reStructuredText syntax as well as the docutils tree model.
+
+The footnote has been used for both true footnotes (asides expanding
+on points or defining terms) and for citations (references to external
+works).  Rather than dealing with one amalgam construct, we could
+separate the current footnote concept into strict footnotes and
+citations.  Citations could be interpreted and treated differently
+from footnotes.  Footnotes would be limited to numerical labels:
+manual ("1") and auto-numbered (anonymous "#", named "#label").
+
+The footnote is the only explicit markup construct (starts with ".. ")
+that directly translates to a visible body element.  I've always been
+a little bit uncomfortable with the ".. " marker for footnotes because
+of this; ".. " has a connotation of "special", but footnotes aren't
+especially "special".  Printed texts often put footnotes at the bottom
+of the page where the reference occurs (thus "foot note").  Some HTML
+designs would leave footnotes to be rendered the same positions where
+they're defined.  Other online and printed designs will gather
+footnotes into a section near the end of the document, converting them
+to "endnotes" (perhaps using a directive in our case); but this
+"special processing" is not an intrinsic property of the footnote
+itself, but a decision made by the document author or processing
+system.
+
+Citations are almost invariably collected in a section at the end of a
+document or section.  Citations "disappear" from where they are
+defined and are magically reinserted at some well-defined point.
+There's more of a connection to the "special" connotation of the ".. "
+syntax.  The point at which the list of citations is inserted could be
+defined manually by a directive (e.g., ".. citations::"), and/or have
+default behavior (e.g., a section automatically inserted at the end of
+the document) that might be influenced by options to the Writer.
+
+Syntax proposals:
+
++ Footnotes:
+
+  - Current syntax::
+
+        .. [1] Footnote 1
+        .. [#] Auto-numbered footnote.
+        .. [#label] Auto-labeled footnote.
+
+  - The syntax proposed in the original 2002-02-28 Doc-SIG post:
+    remove the ".. ", prefix a "_"::
+
+        _[1] Footnote 1
+        _[#] Auto-numbered footnote.
+        _[#label] Auto-labeled footnote.
+
+    The leading underscore syntax (earlier dropped because
+    ``.. _[1]:`` was too verbose) is a useful reminder that footnotes
+    are hyperlink targets.
+
+  - Minimal syntax: remove the ".. [" and "]", prefix a "_", and
+    suffix a "."::
+
+        _1. Footnote 1.
+        _#. Auto-numbered footnote.
+        _#label. Auto-labeled footnote.
+
+                 ``_1.``, ``_#.``, and ``_#label.`` are markers,
+                 like list markers.
+
+    Footnotes could be rendered something like this in HTML
+
+        | 1. This is a footnote.  The brackets could be dropped
+        |    from the label, and a vertical bar could set them
+        |    off from the rest of the document in the HTML.
+
+    Two-way hyperlinks on the footnote marker ("1." above) would also
+    help to differentiate footnotes from enumerated lists.
+
+    If converted to endnotes (by a directive/transform), a horizontal
+    half-line might be used instead.  Page-oriented output formats
+    would typically use the horizontal line for true footnotes.
+
++ Footnote references:
+
+  - Current syntax::
+
+        [1]_, [#]_, [#label]_
+
+  - Minimal syntax to match the minimal footnote syntax above::
+
+        1_, #_, #label_
+
+    As a consequence, pure-numeric hyperlink references would not be
+    possible; they'd be interpreted as footnote references.
+
++ Citation references: no change is proposed from the current footnote
+  reference syntax::
+
+      [GVR2001]_
+
++ Citations:
+
+  - Current syntax (footnote syntax)::
+
+        .. [GVR2001] Python Documentation; van Rossum, Drake, et al.;
+           http://www.python.org/doc/
+
+  - Possible new syntax::
+
+        _[GVR2001] Python Documentation; van Rossum, Drake, et al.;
+                   http://www.python.org/doc/
+
+        _[DJG2002]
+            Docutils: Python Documentation Utilities project; Goodger
+            et al.; http://docutils.sourceforge.net/
+
+    Without the ".. " marker, subsequent lines would either have to
+    align as in one of the above, or we'd have to allow loose
+    alignment (I'd rather not)::
+
+        _[GVR2001] Python Documentation; van Rossum, Drake, et al.;
+            http://www.python.org/doc/
+
+I proposed adopting the "minimal" syntax for footnotes and footnote
+references, and adding citations and citation references to
+reStructuredText's repertoire.  The current footnote syntax for
+citations is better than the alternatives given.
+
+From a reply by Tony Ibbs on 2002-03-01:
+
+    However, I think easier with examples, so let's create one::
+
+        Fans of Terry Pratchett are perhaps more likely to use
+        footnotes [1]_ in their own writings than other people
+        [2]_.  Of course, in *general*, one only sees footnotes
+        in academic or technical writing - it's use in fiction
+        and letter writing is not normally considered good
+        style [4]_, particularly in emails (not a medium that
+        lends itself to footnotes).
+
+        .. [1] That is, little bits of referenced text at the
+           bottom of the page.
+        .. [2] Because Terry himself does, of course [3]_.
+        .. [3] Although he has the distinction of being
+           *funny* when he does it, and his fans don't always
+           achieve that aim.
+        .. [4] Presumably because it detracts from linear
+           reading of the text - this is, of course, the point.
+
+    and look at it with the second syntax proposal::
+
+        Fans of Terry Pratchett are perhaps more likely to use
+        footnotes [1]_ in their own writings than other people
+        [2]_.  Of course, in *general*, one only sees footnotes
+        in academic or technical writing - it's use in fiction
+        and letter writing is not normally considered good
+        style [4]_, particularly in emails (not a medium that
+        lends itself to footnotes).
+
+        _[1] That is, little bits of referenced text at the
+             bottom of the page.
+        _[2] Because Terry himself does, of course [3]_.
+        _[3] Although he has the distinction of being
+             *funny* when he does it, and his fans don't always
+             achieve that aim.
+        _[4] Presumably because it detracts from linear
+             reading of the text - this is, of course, the point.
+
+    (I note here that if I have gotten the indentation of the
+    footnotes themselves correct, this is clearly not as nice.  And if
+    the indentation should be to the left margin instead, I like that
+    even less).
+
+    and the third (new) proposal::
+
+        Fans of Terry Pratchett are perhaps more likely to use
+        footnotes 1_ in their own writings than other people
+        2_.  Of course, in *general*, one only sees footnotes
+        in academic or technical writing - it's use in fiction
+        and letter writing is not normally considered good
+        style 4_, particularly in emails (not a medium that
+        lends itself to footnotes).
+
+        _1. That is, little bits of referenced text at the
+            bottom of the page.
+        _2. Because Terry himself does, of course 3_.
+        _3. Although he has the distinction of being
+            *funny* when he does it, and his fans don't always
+            achieve that aim.
+        _4. Presumably because it detracts from linear
+            reading of the text - this is, of course, the point.
+
+    I think I don't, in practice, mind the targets too much (the use
+    of a dot after the number helps a lot here), but I do have a
+    problem with the body text, in that I don't naturally separate out
+    the footnotes as different than the rest of the text - instead I
+    keep wondering why there are numbers interspered in the text.  The
+    use of brackets around the numbers ([ and ]) made me somehow parse
+    the footnote references as "odd" - i.e., not part of the body text
+    - and thus both easier to skip, and also (paradoxically) easier to
+    pick out so that I could follow them.
+
+    Thus, for the moment (and as always susceptable to argument), I'd
+    say -1 on the new form of footnote reference (i.e., I much prefer
+    the existing ``[1]_`` over the proposed ``1_``), and ambivalent
+    over the proposed target change.
+
+    That leaves David's problem of wanting to distinguish footnotes
+    and citations - and the only thing I can propose there is that
+    footnotes are numeric or # and citations are not (which, as a
+    human being, I can probably cope with!).
+
+From a reply by Paul Moore on 2002-03-01:
+
+    I think the current footnote syntax ``[1]_`` is *exactly* the
+    right balance of distinctness vs unobtrusiveness.  I very
+    definitely don't think this should change.
+
+    On the target change, it doesn't matter much to me.
+
+From a further reply by Tony Ibbs on 2002-03-01, referring to the
+"[1]" form and actual usage in email:
+
+    Clearly this is a form people are used to, and thus we should
+    consider it strongly (in the same way that the usage of ``*..*``
+    to mean emphasis was taken partly from email practise).
+
+    Equally clearly, there is something "magical" for people in the
+    use of a similar form (i.e., ``[1]``) for both footnote reference
+    and footnote target - it seems natural to keep them similar.
+
+    ...
+
+    I think that this established plaintext usage leads me to strongly
+    believe we should retain square brackets at both ends of a
+    footnote.  The markup of the reference end (a single trailing
+    underscore) seems about as minimal as we can get away with.  The
+    markup of the target end depends on how one envisages the thing -
+    if ".." means "I am a target" (as I tend to see it), then that's
+    good, but one can also argue that the "_[1]" syntax has a neat
+    symmetry with the footnote reference itself, if one wishes (in
+    which case ".." presumably means "hidden/special" as David seems
+    to think, which is why one needs a ".." *and* a leading underline
+    for hyperlink targets.
+
+Given the persuading arguments voiced, we'll leave footnote & footnote
+reference syntax alone.  Except that these discussions gave rise to
+the "auto-symbol footnote" concept, which has been added.  Citations
+and citation references have also been added.
+
+
+--------
+ Tabled
+--------
+
+Reworking Explicit Markup (Round 2)
+===================================
+
+See `Reworking Explicit Markup (Round 1)`_ for an earlier discussion.
+
+In April 2004, a new thread becan on docutils-develop: `Inconsistency
+in RST markup`__.  Several arguments were made; the first argument
+begat later arguments.  Below, the arguments are paraphrased "in
+quotes", with responses.
+
+__ http://thread.gmane.org/gmane.text.docutils.devel/1386
+
+1. References and targets take this form::
+
+       targetname_   
+
+       .. _targetname: stuff
+
+   But footnotes, "which generate links just like targets do", are
+   written as::
+
+       [1]_
+
+       .. [1] stuff
+
+   "Footnotes should be written as"::
+
+       [1]_
+
+       .. _[1]: stuff
+
+   But they're not the same type of animal.  That's not a "footnote
+   target", it's a *footnote*.  Being a target is not a footnote's
+   primary purpose (an arguable point).  It just happens to grow a
+   target automatically, for convenience.  Just as a section title::
+
+       Title
+       =====
+
+   isn't a "title target", it's a *title*, which happens to grow a
+   target automatically.  The consistency is there, it's just deeper
+   than at first glance.
+
+   Also, ".. [1]" was chosen for footnote syntax because it closely
+   resembles one form of actual footnote rendering.  ".. _[1]:" is too
+   verbose; excessive punctuation is required to get the job done.
+
+   For more of the reasoning behind the syntax, see `Problems With
+   StructuredText (Hyperlinks)
+   <http://docutils.sf.net/spec/rst/problems.html#hyperlinks>`__ and
+   `Reworking Footnotes`_.
+
+2. "I expect directives to also look like ``.. this:`` [one colon]
+   because that also closely parallels the link and footnote target
+   markup."
+
+   There are good reasons for the two-colon syntax:
+
+       Two colons are used after the directive type for these reasons:
+
+       - Two colons are distinctive, and unlikely to be used in common
+         text.
+
+       - Two colons avoids clashes with common comment text like::
+
+             .. Danger: modify at your own risk!
+
+       - If an implementation of reStructuredText does not recognize a
+         directive (i.e., the directive-handler is not installed), a
+         level-3 (error) system message is generated, and the entire
+         directive block (including the directive itself) will be
+         included as a literal block.  Thus "::" is a natural choice.
+
+       -- http://docutils.sf.net/spec/rst/reStructuredText.html#directives
+
+   The last reason is not particularly compelling; it's more of a
+   convenient coincidence or mnemonic.
+
+3. "Comments always seemed too easy.  I almost never write comments.
+   I'd have no problem writing '.. comment:' in front of my comments.
+   In fact, it would probably be more readable, as comments *should*
+   be set off strongly, because they are very different from normal
+   text."
+
+   Many people do use comments though, and some applications of
+   reStructuredText require it.  For example, all reStructuredText
+   PEPs (and this document!) have an Emacs stanza at the bottom, in a
+   comment.  Having to write ".. comment::" would be very obtrusive.
+
+   Comments *should* be dirt-easy to do.  It should be easy to
+   "comment out" a block of text.  Comments in programming languages
+   and other markup languages are invariably easy.
+
+   Any author is welcome to preface their comments with "Comment:" or
+   "Do Not Print" or "Note to Editor" or anything they like.  A
+   "comment" directive could easily be implemented.  It might be
+   confused with admonition directives, like "note" and "caution"
+   though.  In unrelated (and unpublished and unfinished) work, adding
+   a "comment" directive as a true document element was considered::
+
+       If structure is necessary, we could use a "comment" directive
+       (to avoid nonsensical DTD changes, the "comment" directive
+       could produce an untitled topic element).
+
+4. "One of the goals of reStructuredText is to be *readable* by people
+   who don't know it.  This construction violates that: it is not at
+   all obvious to the uninitiated that text marked by '..' is a
+   comment.  On the other hand, '.. comment:' would be totally
+   transparent."
+
+   Totally transparent, perhaps, but also very obtrusive.  Another of
+   `reStructuredText's goals`_ is to be unobtrusive, and
+   ".. comment::" would violate that.  The goals of reStructuredText
+   are many, and they conflict.  Determining the right set of goals
+   and finding solutions that best fit is done on a case-by-case
+   basis.  
+
+   Even readability is has two aspects.  Being readable without any
+   prior knowledge is one.  Being as easily read in raw form as in
+   processed form is the other.  ".." may not contribute to the former
+   aspect, but ".. comment::" would certainly detract from the latter.
+
+   .. _author's note:
+   .. _reStructuredText's goals:
+      http://docutils.sf.net/spec/rst/introduction.html#goals
+
+5. "Recently I sent someone an rst document, and they got confused; I
+   had to explain to them that '..' marks comments, *unless* it's a
+   directive, etc..."
+
+   The explanation of directives *is* roundabout, defining comments in
+   terms of not being other things.  That's definitely a wart.
+
+6. "Under the current system, a mistyped directive (with ':' instead
+   of '::') will be silently ignored.  This is an error that could
+   easily go unnoticed."
+
+   A parser option/setting like "--comments-on-stderr" would help.
+
+7. "I'd prefer to see double-dot-space / command / double-colon as the
+   standard Docutils markup-marker.  It's unusual enough to avoid
+   being accidently used.  Everything that starts with a double-dot
+   should end with a double-colon."
+
+   That would increase the punctuation verbosity of some constructs
+   considerably.
+
+8. Edward Loper proposed the following plan for backwards
+   compatibility:
+
+       1. ".. foo" will generate a deprecation warning to stderr, and
+          nothing in the output (no system messages).
+       2. ".. foo: bar" will be treated as a directive foo.  If there
+          is no foo directive, then do the normal error output.
+       3. ".. foo:: bar" will generate a deprecation warning to
+          stderr, and be treated as a directive.  Or leave it valid?
+
+       So some existing documents might start printing deprecation
+       warnings, but the only existing documents that would *break*
+       would be ones that say something like::
+
+           .. warning: this should be a comment
+
+       instead of::
+
+           .. warning:: this should be a comment
+
+       Here, we're trading fairly common a silent error (directive
+       falsely treated as a comment) for a fairly uncommon explicitly
+       flagged error (comment falsely treated as directive).  To make
+       things even easier, we could add a sentence to the
+       unknown-directive error.  Something like "If you intended to
+       create a comment, please use '.. comment:' instead".
+
+On one hand, I understand and sympathize with the points raised.  On
+the other hand, I think the current syntax strikes the right balance
+(but I acknowledge a possible lack of objectivity).  On the gripping
+hand, the comment and directive syntax has become well established, so
+even if it's a wart, it may be a wart we have to live with.
+
+Making any of these changes would cause a lot of breakage or at least
+deprecation warnings.  I'm not sure the benefit is worth the cost.
+
+For now, we'll treat this as an unresolved legacy issue.
+
+
+-------
+ To Do
+-------
+
+Auto-Enumerated Lists
+=====================
+
+The advantage of auto-numbered enumerated lists would be similar to
+that of auto-numbered footnotes: lists could be written and rearranged
+without having to manually renumber them.  The disadvantages are also
+the same: input and output wouldn't match exactly; the markup may be
+ugly or confusing (depending on which alternative is chosen).
+
+1. Use the "#" symbol.  Example::
+
+       #. Item 1.
+       #. Item 2.
+       #. Item 3.
+
+   Advantages: simple, explicit.  Disadvantage: enumeration sequence
+   cannot be specified (limited to arabic numerals); ugly.
+
+2. As a variation on #1, first initialize the enumeration sequence?
+   For example::
+
+       a) Item a.
+       #) Item b.
+       #) Item c.
+
+   Advantages: simple, explicit, any enumeration sequence possible.
+   Disadvantages: ugly; perhaps confusing with mixed concrete/abstract
+   enumerators.
+
+3. Alternative suggested by Fred Bremmer, from experience with MoinMoin::
+
+       1. Item 1.
+       1. Item 2.
+       1. Item 3.
+
+   Advantages: enumeration sequence is explicit (could be multiple
+   "a." or "(I)" tokens).  Disadvantages: perhaps confusing; otherwise
+   erroneous input (e.g., a duplicate item "1.") would pass silently,
+   either causing a problem later in the list (if no blank lines
+   between items) or creating two lists (with blanks).
+
+   Take this input for example::
+
+       1. Item 1.
+
+       1. Unintentional duplicate of item 1.
+
+       2. Item 2.
+
+   Currently the parser will produce two list, "1" and "1,2" (no
+   warnings, because of the presence of blank lines).  Using Fred's
+   notation, the current behavior is "1,1,2 -> 1 1,2" (without blank
+   lines between items, it would be "1,1,2 -> 1 [WARNING] 1,2").  What
+   should the behavior be with auto-numbering?
+
+   Fred has produced a patch__, whose initial behavior is as follows::
+
+       1,1,1   -> 1,2,3
+       1,2,2   -> 1,2,3
+       3,3,3   -> 3,4,5
+       1,2,2,3 -> 1,2,3 [WARNING] 3
+       1,1,2   -> 1,2 [WARNING] 2
+
+   (After the "[WARNING]", the "3" would begin a new list.)
+
+   I have mixed feelings about adding this functionality to the spec &
+   parser.  It would certainly be useful to some users (myself
+   included; I often have to renumber lists).  Perhaps it's too
+   clever, asking the parser to guess too much.  What if you *do* want
+   three one-item lists in a row, each beginning with "1."?  You'd
+   have to use empty comments to force breaks.  Also, I question
+   whether "1,2,2 -> 1,2,3" is optimal behavior.
+
+   In response, Fred came up with "a stricter and more explicit rule
+   [which] would be to only auto-number silently if *all* the
+   enumerators of a list were identical".  In that case::
+
+       1,1,1   -> 1,2,3
+       1,2,2   -> 1,2 [WARNING] 2
+       3,3,3   -> 3,4,5
+       1,2,2,3 -> 1,2 [WARNING] 2,3
+       1,1,2   -> 1,2 [WARNING] 2
+
+   Should any start-value be allowed ("3,3,3"), or should
+   auto-numbered lists be limited to begin with ordinal-1 ("1", "A",
+   "a", "I", or "i")?
+
+   __ http://sourceforge.net/tracker/index.php?func=detail&aid=548802
+      &group_id=38414&atid=422032
+
+4. Alternative proposed by Tony Ibbs::
+
+       #1. First item.
+       #3. Aha - I edited this in later.
+       #2. Second item.
+
+   The initial proposal required unique enumerators within a list, but
+   this limits the convenience of a feature of already limited
+   applicability and convenience.  Not a useful requirement; dropped.
+
+   Instead, simply prepend a "#" to a standard list enumerator to
+   indicate auto-enumeration.  The numbers (or letters) of the
+   enumerators themselves are not significant, except:
+
+   - as a sequence indicator (arabic, roman, alphabetic; upper/lower),
+
+   - and perhaps as a start value (first list item).
+
+   Advantages: explicit, any enumeration sequence possible.
+   Disadvantages: a bit ugly.
+
+
 Nested Inline Markup
 ====================
 
@@ -2265,190 +2133,338 @@ directive only) until all Writers have been updated to support the new
 syntax & implementation.
 
 
-Reworking Explicit Markup (Round 2)
-===================================
+-------------------
+ ... Or Not To Do?
+-------------------
 
-See `Reworking Explicit Markup (Round 1)`_ for an earlier discussion.
+This is the realm of the possible but questionably probable.  These
+ideas are kept here as a record of what has been proposed, for
+posterity and in case any of them prove to be useful.
 
-In April 2004, a new thread becan on docutils-develop: `Inconsistency
-in RST markup`__.  Several arguments were made; the first argument
-begat later arguments.  Below, the arguments are paraphrased "in
-quotes", with responses.
 
-__ http://thread.gmane.org/gmane.text.docutils.devel/1386
+Compound Enumerated Lists
+=========================
 
-1. References and targets take this form::
+Allow for compound enumerators, such as "1.1." or "1.a." or "1(a)", to
+allow for nested enumerated lists without indentation?
 
-       targetname_   
 
-       .. _targetname: stuff
+Sloppy Indentation of List Items
+================================
 
-   But footnotes, "which generate links just like targets do", are
-   written as::
+Perhaps the indentation shouldn't be so strict.  Currently, this is
+required::
 
-       [1]_
+    1. First line,
+       second line.
 
-       .. [1] stuff
+Anything wrong with this? ::
 
-   "Footnotes should be written as"::
+    1. First line,
+     second line.
 
-       [1]_
+Problem? ::
 
-       .. _[1]: stuff
+    1. First para.
 
-   But they're not the same type of animal.  That's not a "footnote
-   target", it's a *footnote*.  Being a target is not a footnote's
-   primary purpose (an arguable point).  It just happens to grow a
-   target automatically, for convenience.  Just as a section title::
+       Block quote.  (no good: requires some indent relative to first
+       para)
 
-       Title
-       =====
+     Second Para.
 
-   isn't a "title target", it's a *title*, which happens to grow a
-   target automatically.  The consistency is there, it's just deeper
-   than at first glance.
+    2. Have to carefully define where the literal block ends::
 
-   Also, ".. [1]" was chosen for footnote syntax because it closely
-   resembles one form of actual footnote rendering.  ".. _[1]:" is too
-   verbose; excessive punctuation is required to get the job done.
+         Literal block
 
-   For more of the reasoning behind the syntax, see `Problems With
-   StructuredText (Hyperlinks)
-   <http://docutils.sf.net/spec/rst/problems.html#hyperlinks>`__ and
-   `Reworking Footnotes`_.
+       Literal block?
 
-2. "I expect directives to also look like ``.. this:`` [one colon]
-   because that also closely parallels the link and footnote target
-   markup."
+Hmm...  Non-strict indentation isn't such a good idea.
 
-   There are good reasons for the two-colon syntax:
 
-       Two colons are used after the directive type for these reasons:
+Lazy Indentation of List Items
+==============================
 
-       - Two colons are distinctive, and unlikely to be used in common
-         text.
+Another approach: Going back to the first draft of reStructuredText
+(2000-11-27 post to Doc-SIG)::
 
-       - Two colons avoids clashes with common comment text like::
+    - This is the fourth item of the main list (no blank line above).
+    The second line of this item is not indented relative to the
+    bullet, which precludes it from having a second paragraph.
 
-             .. Danger: modify at your own risk!
+Change that to *require* a blank line above and below, to reduce
+ambiguity.  This "loosening" may be added later, once the parser's
+been nailed down.  However, a serious drawback of this approach is to
+limit the content of each list item to a single paragraph.
 
-       - If an implementation of reStructuredText does not recognize a
-         directive (i.e., the directive-handler is not installed), a
-         level-3 (error) system message is generated, and the entire
-         directive block (including the directive itself) will be
-         included as a literal block.  Thus "::" is a natural choice.
 
-       -- http://docutils.sf.net/spec/rst/reStructuredText.html#directives
+David's Idea for Lazy Indentation
+---------------------------------
 
-   The last reason is not particularly compelling; it's more of a
-   convenient coincidence or mnemonic.
+Consider a paragraph in a word processor.  It is a single logical line
+of text which ends with a newline, soft-wrapped arbitrarily at the
+right edge of the page or screen.  We can think of a plaintext
+paragraph in the same way, as a single logical line of text, ending
+with two newlines (a blank line) instead of one, and which may contain
+arbitrary line breaks (newlines) where it was accidentally
+hard-wrapped by an application.  We can compensate for the accidental
+hard-wrapping by "unwrapping" every unindented second and subsequent
+line.  The indentation of the first line of a paragraph or list item
+would determine the indentation for the entire element.  Blank lines
+would be required between list items when using lazy indentation.
 
-3. "Comments always seemed too easy.  I almost never write comments.
-   I'd have no problem writing '.. comment:' in front of my comments.
-   In fact, it would probably be more readable, as comments *should*
-   be set off strongly, because they are very different from normal
-   text."
+The following example shows the lazy indentation of multiple body
+elements::
 
-   Many people do use comments though, and some applications of
-   reStructuredText require it.  For example, all reStructuredText
-   PEPs (and this document!) have an Emacs stanza at the bottom, in a
-   comment.  Having to write ".. comment::" would be very obtrusive.
+    - This is the first paragraph
+    of the first list item.
 
-   Comments *should* be dirt-easy to do.  It should be easy to
-   "comment out" a block of text.  Comments in programming languages
-   and other markup languages are invariably easy.
+      Here is the second paragraph
+    of the first list item.
 
-   Any author is welcome to preface their comments with "Comment:" or
-   "Do Not Print" or "Note to Editor" or anything they like.  A
-   "comment" directive could easily be implemented.  It might be
-   confused with admonition directives, like "note" and "caution"
-   though.  In unrelated (and unpublished and unfinished) work, adding
-   a "comment" directive as a true document element was considered::
+    - This is the first paragraph
+    of the second list item.
 
-       If structure is necessary, we could use a "comment" directive
-       (to avoid nonsensical DTD changes, the "comment" directive
-       could produce an untitled topic element).
+      Here is the second paragraph
+    of the second list item.
 
-4. "One of the goals of reStructuredText is to be *readable* by people
-   who don't know it.  This construction violates that: it is not at
-   all obvious to the uninitiated that text marked by '..' is a
-   comment.  On the other hand, '.. comment:' would be totally
-   transparent."
+A more complex example shows the limitations of lazy indentation::
 
-   Totally transparent, perhaps, but also very obtrusive.  Another of
-   `reStructuredText's goals`_ is to be unobtrusive, and
-   ".. comment::" would violate that.  The goals of reStructuredText
-   are many, and they conflict.  Determining the right set of goals
-   and finding solutions that best fit is done on a case-by-case
-   basis.  
+    - This is the first paragraph
+    of the first list item.
 
-   Even readability is has two aspects.  Being readable without any
-   prior knowledge is one.  Being as easily read in raw form as in
-   processed form is the other.  ".." may not contribute to the former
-   aspect, but ".. comment::" would certainly detract from the latter.
+      Next is a definition list item:
 
-   .. _author's note:
-   .. _reStructuredText's goals:
-      http://docutils.sf.net/spec/rst/introduction.html#goals
+      Term
+          Definition.  The indentation of the term is
+    required, as is the indentation of the definition's
+    first line.
 
-5. "Recently I sent someone an rst document, and they got confused; I
-   had to explain to them that '..' marks comments, *unless* it's a
-   directive, etc..."
+          When the definition extends to more than
+    one line, lazy indentation may occur.  (This is the second
+    paragraph of the definition.)
 
-   The explanation of directives *is* roundabout, defining comments in
-   terms of not being other things.  That's definitely a wart.
+    - This is the first paragraph
+    of the second list item.
 
-6. "Under the current system, a mistyped directive (with ':' instead
-   of '::') will be silently ignored.  This is an error that could
-   easily go unnoticed."
+      - Here is the first paragraph of
+    the first item of a nested list.
 
-   A parser option/setting like "--comments-on-stderr" would help.
+      So this paragraph would be outside of the nested list,
+    but inside the second list item of the outer list.
 
-7. "I'd prefer to see double-dot-space / command / double-colon as the
-   standard Docutils markup-marker.  It's unusual enough to avoid
-   being accidently used.  Everything that starts with a double-dot
-   should end with a double-colon."
+    But this paragraph is not part of the list at all.
 
-   That would increase the punctuation verbosity of some constructs
-   considerably.
+And the ambiguity remains::
 
-8. Edward Loper proposed the following plan for backwards
-   compatibility:
+    - Look at the hyphen at the beginning of the next line
+    - is it a second list item marker, or a dash in the text?
 
-       1. ".. foo" will generate a deprecation warning to stderr, and
-          nothing in the output (no system messages).
-       2. ".. foo: bar" will be treated as a directive foo.  If there
-          is no foo directive, then do the normal error output.
-       3. ".. foo:: bar" will generate a deprecation warning to
-          stderr, and be treated as a directive.  Or leave it valid?
+    Similarly, we may want to refer to numbers inside enumerated
+    lists:
 
-       So some existing documents might start printing deprecation
-       warnings, but the only existing documents that would *break*
-       would be ones that say something like::
+    1. How many socks in a pair? There are
+    2. How many pants in a pair? Exactly
+    1. Go figure.
 
-           .. warning: this should be a comment
+Literal blocks and block quotes would still require consistent
+indentation for all their lines.  For block quotes, we might be able
+to get away with only requiring that the first line of each contained
+element be indented.  For example::
 
-       instead of::
+    Here's a paragraph.
 
-           .. warning:: this should be a comment
+        This is a paragraph inside a block quote.
+    Second and subsequent lines need not be indented at all.
 
-       Here, we're trading fairly common a silent error (directive
-       falsely treated as a comment) for a fairly uncommon explicitly
-       flagged error (comment falsely treated as directive).  To make
-       things even easier, we could add a sentence to the
-       unknown-directive error.  Something like "If you intended to
-       create a comment, please use '.. comment:' instead".
+        - A bullet list inside
+    the block quote.
 
-On one hand, I understand and sympathize with the points raised.  On
-the other hand, I think the current syntax strikes the right balance
-(but I acknowledge a possible lack of objectivity).  On the gripping
-hand, the comment and directive syntax has become well established, so
-even if it's a wart, it may be a wart we have to live with.
+          Second paragraph of the
+    bullet list inside the block quote.
 
-Making any of these changes would cause a lot of breakage or at least
-deprecation warnings.  I'm not sure the benefit is worth the cost.
+Although feasible, this form of lazy indentation has problems.  The
+document structure and hierarchy is not obvious from the indentation,
+making the source plaintext difficult to read.  This will also make
+keeping track of the indentation while writing difficult and
+error-prone.  However, these problems may be acceptable for Wikis and
+email mode, where we may be able to rely on less complex structure
+(few nested lists, for example).
 
-For now, we'll treat this as an unresolved legacy issue.
+
+Multiple Roles in Interpreted Text
+==================================
+
+In reStructuredText, inline markup cannot be nested (yet; `see
+above`__).  This also applies to interpreted text.  In order to
+simultaneously combine multiple roles for a single piece of text, a
+syntax extension would be necessary.  Ideas:
+
+1. Initial idea::
+
+       `interpreted text`:role1,role2:
+
+2. Suggested by Jason Diamond::
+
+       `interpreted text`:role1:role2:
+
+If a document is so complex as to require nested inline markup,
+perhaps another markup system should be considered.  By design,
+reStructuredText does not have the flexibility of XML.
+
+__ `Nested Inline Markup`_
+
+
+Parameterized Interpreted Text
+==============================
+
+In some cases it may be expedient to pass parameters to interpreted
+text, analogous to function calls.  Ideas:
+
+1. Parameterize the interpreted text role itself (suggested by Jason
+   Diamond)::
+
+       `interpreted text`:role1(foo=bar):
+
+   Positional parameters could also be supported::
+
+       `CSS`:acronym(Cascading Style Sheets): is used for HTML, and
+       `CSS`:acronym(Content Scrambling System): is used for DVDs.
+
+   Technical problem: current interpreted text syntax does not
+   recognize roles containing whitespace.  Design problem: this smells
+   like programming language syntax, but reStructuredText is not a
+   programming language.
+
+2. Put the parameters inside the interpreted text::
+
+       `CSS (Cascading Style Sheets)`:acronym: is used for HTML, and
+       `CSS (Content Scrambling System)`:acronym: is used for DVDs.
+
+   Although this could be defined on an individual basis (per role),
+   we ought to have a standard.  Hyperlinks with embedded URIs already
+   use angle brackets; perhaps they could be used here too::
+
+       `CSS <Cascading Style Sheets>`:acronym: is used for HTML, and
+       `CSS <Content Scrambling System>`:acronym: is used for DVDs.
+
+   Do angle brackets connote URLs too much for this to be acceptable?
+   How about the "tag" connotation -- does it save them or doom them?
+
+Does this push inline markup too far?  Readability becomes a serious
+issue.  Substitutions may provide a better alternative (at the expense
+of verbosity and duplication) by pulling the details out of the text
+flow::
+
+    |CSS| is used for HTML, and |CSS-DVD| is used for DVDs.
+
+    .. |CSS| acronym:: Cascading Style Sheets
+    .. |CSS-DVD| acronym:: Content Scrambling System
+       :text: CSS
+
+----------------------------------------------------------------------
+
+This whole idea may be going beyond the scope of reStructuredText.
+Documents requiring this functionality may be better off using XML or
+another markup system.
+
+This argument comes up regularly when pushing the envelope of
+reStructuredText syntax.  I think it's a useful argument in that it
+provides a check on creeping featurism.  In many cases, the resulting
+verbosity produces such unreadable plaintext that there's a natural
+desire *not* to use it unless absolutely necessary.  It's a matter of
+finding the right balance.
+
+
+Syntax for Interpreted Text Role Bindings
+=========================================
+
+The following syntax (idea from Jeffrey C. Jacobs) could be used to
+associate directives with roles::
+
+    .. :rewrite: class:: rewrite
+
+    `She wore ribbons in her hair and it lay with streaks of
+    grey`:rewrite:
+
+The syntax is similar to that of substitution declarations, and the
+directive/role association may resolve implementation issues.  The
+semantics, ramifications, and implementation details would need to be
+worked out.
+
+The example above would implement the "rewrite" role as adding a
+``class="rewrite"`` attribute to the interpreted text ("inline"
+element).  The stylesheet would then pick up on the "class" attribute
+to do the actual formatting.
+
+The advantage of the new syntax would be flexibility.  Uses other than
+"class" may present themselves.  The disadvantage is complexity:
+having to implement new syntax for a relatively specialized operation,
+and having new semantics in existing directives ("class::" would do
+something different).
+
+The `"role" directive`__ has been implemented.
+
+__ http://docutils.sf.net/spec/rst/directives.html#role
+
+
+Character Processing
+====================
+
+Several people have suggested adding some form of character processing
+to reStructuredText:
+
+* Some sort of automated replacement of ASCII sequences:
+
+  - ``--`` to em-dash (or ``--`` to en-dash, and ``---`` to em-dash).
+  - Convert quotes to curly quote entities.  (Essentially impossible
+    for HTML?  Unnecessary for TeX.)
+  - Various forms of ``:-)`` to smiley icons.
+  - ``"\ "`` to &nbsp;.  Problem with line-wrapping though: it could
+    end up escaping the newline.
+  - Escaped newlines to <BR>.
+  - Escaped period or quote or dash as a disappearing catalyst to
+    allow character-level inline markup?
+
+* XML-style character entities, such as "&copy;" for the copyright
+  symbol.
+
+Docutils has no need of a character entity subsystem.  Supporting
+Unicode and text encodings, character entities should be directly
+represented in the text: a copyright symbol should be represented by
+the copyright symbol character.  If this is not possible in an
+authoring environment, a pre-processing stage can be added, or a table
+of substitution definitions can be devised.
+
+A "unicode" directive has been implemented to allow direct
+specification of esoteric characters.  In combination with the
+substitution construct, "include" files defining common sets of
+character entities can be defined and used.  `A set of character
+entity set definition files have been defined`__ (`tarball`__).
+There's also `a description and instructions for use`__.
+
+__ http://docutils.sf.net/tmp/charents/
+__ http://docutils.sf.net/tmp/charents.tgz
+__ http://docutils.sf.net/tmp/charents/README.html
+
+To allow for `character-level inline markup`_, a limited form of
+character processing has been added to the spec and parser: escaped
+whitespace characters are removed from the processed document.  Any
+further character processing will be of this functional type, rather
+than of the character-encoding type.
+
+.. _character-level inline markup:
+   reStructuredText.html#character-level-inline-markup
+
+* Directive idea::
+
+      .. text-replace:: "pattern" "replacement"
+
+  - Support Unicode "U+XXXX" codes.
+  - Support regexps, perhaps with alternative "regexp-replace"
+    directive.
+  - Flags for regexps; ":flags:" option, or individuals.
+  - Specifically, should the default be case-sensistive or
+    -insensitive?
 
 
 ..
