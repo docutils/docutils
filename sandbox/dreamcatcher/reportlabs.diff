@@ -1,0 +1,1295 @@
+? __init__.pyc
+? newpara.diff
+? rl_config.pyc
+? rlab.diff
+? lib/PyFontify.pyc
+? lib/__init__.pyc
+? lib/abag.pyc
+? lib/colors.pyc
+? lib/enums.pyc
+? lib/fonts.pyc
+? lib/logger.pyc
+? lib/pagesizes.pyc
+? lib/rparsexml.pyc
+? lib/sequencer.pyc
+? lib/styles.pyc
+? lib/units.pyc
+? lib/utils.pyc
+? lib/xmllib.pyc
+? pdfbase/__init__.pyc
+? pdfbase/_fontdata.pyc
+? pdfbase/pdfdoc.pyc
+? pdfbase/pdfmetrics.pyc
+? pdfbase/pdfutils.pyc
+? pdfgen/__init__.pyc
+? pdfgen/canvas.pyc
+? pdfgen/pathobject.pyc
+? pdfgen/pdfgeom.pyc
+? pdfgen/textobject.pyc
+? platypus/__init__.pyc
+? platypus/doctemplate.pyc
+? platypus/flowables.pyc
+? platypus/frames.pyc
+? platypus/para.pyc
+? platypus/paragraph.pyc
+? platypus/paraparser.pyc
+? platypus/tables.pyc
+? platypus/xpreformatted.pyc
+Index: lib/rparsexml.py
+===================================================================
+RCS file: /cvsroot/reportlab/reportlab/lib/rparsexml.py,v
+retrieving revision 1.2
+diff -u -r1.2 rparsexml.py
+--- lib/rparsexml.py	4 Nov 2002 00:11:48 -0000	1.2
++++ lib/rparsexml.py	28 May 2003 19:45:52 -0000
+@@ -168,15 +168,15 @@
+     #    raise ValueError, "I don't handle ampersands yet!!!"
+     docontents = 1
+     if firstbracket<0:
+-            # no tags
+-            #if verbose: print "no tags"
+-            if toplevel is not None:
+-                #D = {NAMEKEY: NONAME, CONTENTSKEY: [xmltext[cursor:]]}
+-                ContentList = [xmltext[cursor:]]
+-                ContentList = unEscapeContentList(ContentList)
+-                return (NameString, AttDict, ContentList, ExtraStuff)
+-            else:
+-                raise ValueError, "no tags at non-toplevel %s" % `xmltext[cursor:cursor+20]`
++        # no tags
++        #if verbose: print "no tags"
++        if toplevel is not None:
++            #D = {NAMEKEY: NONAME, CONTENTSKEY: [xmltext[cursor:]]}
++            ContentList = [xmltext[cursor:]]
++            ContentList = unEscapeContentList(ContentList)
++            return ((NameString, AttDict, ContentList, ExtraStuff), cursor)
++        else:
++            raise ValueError, "no tags at non-toplevel %s" % `xmltext[cursor:cursor+20]`
+     #D = {}
+     L = []
+     # look for start tag
+Index: pdfgen/canvas.py
+===================================================================
+RCS file: /cvsroot/reportlab/reportlab/pdfgen/canvas.py,v
+retrieving revision 1.111
+diff -u -r1.111 canvas.py
+--- pdfgen/canvas.py	10 Apr 2003 00:01:17 -0000	1.111
++++ pdfgen/canvas.py	28 May 2003 19:45:54 -0000
+@@ -429,13 +429,13 @@
+         is to keep the user's current zoom settings. the last
+         arguments may or may not be needed depending on the
+         choice of 'fitType'.
+-        
++
+         Fit types and the other arguments they use are:
+         /XYZ left top zoom - fine grained control.  null
+           or zero for any of the parameters means 'leave
+           as is', so "0,0,0" will keep the reader's settings.
+           NB. Adobe Reader appears to prefer "null" to 0's.
+-          
++
+         /Fit - entire page fits in window
+ 
+         /FitH top - top coord at top of window, width scaled
+@@ -443,7 +443,7 @@
+ 
+         /FitV left - left coord at left of window, height
+                      scaled to fit
+-                     
++
+         /FitR left bottom right top - scale window to fit
+                                   the specified rectangle
+ 
+@@ -464,7 +464,7 @@
+             right = "null"
+         if zoom is None:
+             zoom = "null"
+-        
++
+         if fitType == "XYZ":
+             dest.xyz(left,top,zoom)
+         elif fitType == "Fit":
+@@ -483,7 +483,7 @@
+         elif fitType == "FitBV":
+             dest.fitbv(left)
+         else:
+-            raise "Unknown Fit type %s" % (fitType,)           
++            raise "Unknown Fit type %s" % (fitType,)
+ 
+         dest.setPage(pageref)
+         return dest
+@@ -498,7 +498,7 @@
+            the page."""
+         #This method should probably be deprecated since it is just a sub-set of bookmarkPage
+         return self.bookmarkPage(key,fitType="FitH",top=yhorizontal)
+-                    
++
+     def bookmarkHorizontal(self, key, relativeX, relativeY):
+         """w.r.t. the current transformation, bookmark this horizontal."""
+         (xt, yt) = self.absolutePosition(relativeX,relativeY)
+@@ -829,7 +829,7 @@
+         assert rot % 90.0 == 0.0, "Rotation must be a multiple of 90 degrees"
+         self._pageRotation = rot
+ 
+-        
++
+     def addLiteral(self, s, escaped=1):
+         """introduce the literal text of PDF operations s into the current stream.
+            Only use this if you are an expert in the PDF file format."""
+Index: platypus/para.py
+===================================================================
+RCS file: /cvsroot/reportlab/reportlab/platypus/para.py,v
+retrieving revision 1.6
+diff -u -r1.6 para.py
+--- platypus/para.py	9 Apr 2003 22:58:37 -0000	1.6
++++ platypus/para.py	28 May 2003 19:45:55 -0000
+@@ -63,7 +63,8 @@
+ from reportlab.platypus.flowables import Flowable
+ from reportlab.lib import colors
+ 
+-import string
++from types import StringType, UnicodeType, InstanceType, TupleType, ListType, FloatType
++from string import letters as LETTERS, whitespace as WHITESPACE
+ 
+ # SET THIS TO CAUSE A VIEWING BUG WITH ACROREAD 3 (for at least one input)
+ # CAUSEERROR = 0
+@@ -91,7 +92,6 @@
+             program = []
+         self.lineOpHandlers = [] # for handling underlining and hyperlinking, etc
+         self.program = program
+-        #self.
+         self.indent = self.rightIndent = 0.0
+         self.baseindent = 0.0 # adjust this to add more indentation for bullets, eg
+         self.fontName = "Helvetica"
+@@ -102,10 +102,12 @@
+         from reportlab.lib.enums import TA_LEFT
+         self.alignment = TA_LEFT
+         self.textStateStack = []
++
+     TEXT_STATE_VARIABLES = ("indent", "rightIndent", "fontName", "fontSize",
+                             "leading", "fontColor", "lineOpHandlers", "rise",
+                             "alignment")
+                             #"textStateStack")
++
+     def pushTextState(self):
+         state = []
+         for var in self.TEXT_STATE_VARIABLES:
+@@ -116,6 +118,7 @@
+         #print "push", self.textStateStack
+         #print "push", len(self.textStateStack), state
+         return state
++
+     def popTextState(self):
+         state = self.textStateStack[-1]
+         self.textStateStack = self.textStateStack[:-1]
+@@ -136,7 +139,6 @@
+         remainder = program[:]
+         #program1 = remainder[:] # debug only
+         lineprogram = []
+-        from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_RIGHT, TA_JUSTIFY
+         #if maxheight<TOOSMALLSPACE:
+         #    raise ValueError, "attempt to format inside too small a height! "+repr(maxheight)
+         heightremaining = maxheight-leading
+@@ -150,9 +152,11 @@
+             linewidth = maxwidth - indent - rightIndent
+             beforelinestate = self.__dict__.copy()
+             if linewidth<TOOSMALLSPACE:
+-                raise ValueError, "indents %s %s too wide for space %s" % (self.indent, self.rightIndent, maxwidth)
++                raise ValueError, "indents %s %s too wide for space %s" % (self.indent, self.rightIndent, \
++                                                                           maxwidth)
+             try:
+-                (lineIsFull, line, cursor, currentLength, usedIndent, maxLength, justStrings) = self.fitLine(remainder, maxwidth)
++                (lineIsFull, line, cursor, currentLength, \
++                 usedIndent, maxLength, justStrings) = self.fitLine(remainder, maxwidth)
+             except:
+ ##                print "failed to fit line near", cursorcount # debug
+ ##                for i in program1[max(0,cursorcount-10): cursorcount]:
+@@ -235,20 +239,23 @@
+         self.__dict__.update(startstate)
+         heightused = maxheight - heightremaining
+         return (lineprogram, remainder, laststate, heightused)
++
+     def getState(self):
+         # inlined
+         return self.__dict__.copy()
++
+     def resetState(self, state):
+         # primarily inlined
+         self.__dict__.update(state)
++
+ ##    def sizeOfWord(self, word):
+ ##        inlineThisFunctionForEfficiency
+ ##        return float(stringWidth(word, self.fontName, self.fontSize))
++
+     def fitLine(self, program, totalLength):
+         "fit words (and other things) onto a line"
+         # assuming word lengths and spaces have not been yet added
+         # fit words onto a line up to maxlength, adding spaces and respecting extra space
+-        from types import StringType, TupleType, InstanceType, FloatType
+         from reportlab.pdfbase.pdfmetrics import stringWidth
+         usedIndent = self.indent
+         maxLength = totalLength - usedIndent - self.rightIndent
+@@ -269,7 +276,7 @@
+             opcode = program[cursor]
+             #if debug: print "opcode", cursor, opcode
+             topcode = type(opcode)
+-            if topcode is StringType or topcode is InstanceType:
++            if topcode in (StringType, UnicodeType, InstanceType):
+                 lastneedspace = needspace
+                 needspace = 0
+                 if topcode is InstanceType:
+@@ -278,7 +285,7 @@
+                     needspace = 0
+                 else:
+                     saveopcode = opcode
+-                    opcode = opcode.strip() #string.strip(opcode)
++                    opcode = opcode.strip()
+                     if opcode:
+                         width = stringWidth(opcode, fontName, fontSize)
+                     else:
+@@ -342,7 +349,7 @@
+                     oldcolor = self.fontColor
+                     (i, colorname) = opcode
+                     #print "opcode", opcode
+-                    if type(colorname) is StringType:
++                    if type(colorname) in (StringType, UnicodeType):
+                         color = self.fontColor = getattr(colors, colorname)
+                     else:
+                         color = self.fontColor = colorname # assume its something sensible :)
+@@ -357,7 +364,7 @@
+                     # change font size
+                     (i, fontsize) = opcode
+                     size = abs(float(fontsize))
+-                    if type(fontsize) is StringType:
++                    if type(fontsize) in (StringType, UnicodeType):
+                         if fontsize[:1]=="+":
+                             fontSize = self.fontSize = self.fontSize + size
+                         elif fontsize[:1]=="-":
+@@ -457,41 +464,43 @@
+             line.append( ("nextLine", 0) )
+         #print "fitline", line
+         return (lineIsFull, line, cursor, currentLength, usedIndent, maxLength, justStrings)
++
+     def centerAlign(self, line, lineLength, maxLength):
+         diff = maxLength-lineLength
+         shift = diff/2.0
+         if shift>TOOSMALLSPACE:
+             return self.insertShift(line, shift)
+         return line
++
+     def rightAlign(self, line, lineLength, maxLength):
+         shift = maxLength-lineLength
+         #die
+         if shift>TOOSMALLSPACE:
+             return self.insertShift(line, shift)
+         return line
++
+     def insertShift(self, line, shift):
+         # insert shift just before first visible element in line
+-        from types import StringType, InstanceType
+         result = []
+         first = 1
+         for e in line:
+             te = type(e)
+-            if first and (te is StringType or te is InstanceType):
++            if first and (te in (StringType, UnicodeType, InstanceType)):
+                 result.append(shift)
+                 first = 0
+             result.append(e)
+         return result
++
+     def justifyAlign(self, line, lineLength, maxLength):
+         diff = maxLength-lineLength
+         # count EXPANDABLE SPACES AFTER THE FIRST VISIBLE
+-        from types import InstanceType, StringType, TupleType, FloatType
+         spacecount = 0
+         visible = 0
+         for e in line:
+             te = type(e)
+             if te is FloatType and e>TOOSMALLSPACE and visible:
+                 spacecount = spacecount+1
+-            elif te is StringType or te is InstanceType:
++            elif te in (StringType, UnicodeType, InstanceType):
+                 visible = 1
+         #if debug: print "diff is", diff, "wordcount", wordcount #; die
+         if spacecount<1:
+@@ -509,7 +518,7 @@
+             e = line[cursor]
+             te = type(e)
+             result.append(e)
+-            if (te is InstanceType or te is StringType):
++            if (te in (StringType, UnicodeType, InstanceType)):
+                 visible = 1
+             elif te is FloatType and e>TOOSMALLSPACE and visible:
+                 expanded = e+shift
+@@ -545,25 +554,23 @@
+ ##                first = 0
+ ##            cursor = cursor+1
+ ##        return result
++
+     def shrinkWrap(self, line):
+         # for non justified text, collapse adjacent text/shift's into single operations
+-        #return line # for testing
+         result = []
+         index = 0
+         maxindex = len(line)
+-        from types import FloatType, StringType, InstanceType
+-        from string import join
+         while index<maxindex:
+             e = line[index]
+             te = type(e)
+-            if te is StringType and index<maxindex-1:
++            if te in (StringType, UnicodeType) and index<maxindex-1:
+                 # collect strings and floats
+                 thestrings = [e]
+                 thefloats = 0.0
+                 index = index+1
+                 nexte = line[index]
+                 tnexte = type(nexte)
+-                while index<maxindex and (tnexte is FloatType or tnexte is StringType):
++                while index<maxindex and (tnexte in (FloatType, StringType, UnicodeType)):
+                     # switch to expandable space if appropriate
+                     if tnexte is FloatType:
+                         if thefloats<0 and nexte>0:
+@@ -571,14 +578,14 @@
+                         if nexte<0 and thefloats>0:
+                             nexte = -nexte
+                         thefloats = thefloats + nexte
+-                    elif tnexte is StringType:
++                    elif tnexte in (StringType, UnicodeType):
+                         thestrings.append(nexte)
+                     index = index+1
+                     if index<maxindex:
+                         nexte = line[index]
+                         tnexte = type(nexte)
+                 # wrap up the result
+-                s = string.join(thestrings)
++                s = ' '.join(thestrings)
+                 result.append(s)
+                 result.append(float(thefloats))
+                 # back up for unhandled element
+@@ -588,12 +595,12 @@
+             index = index+1
+ 
+         return result
++
+     def cleanProgram(self, line):
+         "collapse adjacent spacings"
+         #return line # for debugging
+         result = []
+         last = 0
+-        from types import FloatType, TupleType, StringType, InstanceType
+         for e in line:
+             if type(e) is FloatType:
+                 # switch to expandable space if appropriate
+@@ -634,7 +641,9 @@
+                 tthis = type(this)
+                 tnext = type(next)
+                 # don't swap visibles
+-                if tthis is StringType or tnext is StringType or this is InstanceType or tnext is InstanceType:
++                if tthis in (StringType, UnicodeType) or \
++                   tnext in (StringType, UnicodeType) or \
++                   this is InstanceType or tnext is InstanceType:
+                     doswap = 0
+                 # only swap two tuples if the second one is an end operation and the first is something else
+                 elif tthis is TupleType:
+@@ -654,10 +663,10 @@
+                     result[nextindex] = this
+                     change = 1
+         return result
++
+     def runOpCodes(self, program, canvas, textobject):
+         "render the line(s)"
+-        #import types
+-        from types import StringType, TupleType, InstanceType, FloatType
++
+         escape = canvas._escape
+         code = textobject._code
+         startstate = self.__dict__.copy()
+@@ -672,7 +681,7 @@
+         indented = 0
+         for opcode in program:
+             topcode = type(opcode)
+-            if topcode is StringType or topcode is InstanceType:
++            if topcode in (StringType, UnicodeType, InstanceType):
+                 if not indented:
+                     if abs(thislineindent)>TOOSMALLSPACE:
+                         #if debug: print "INDENTING", thislineindent
+@@ -688,7 +697,7 @@
+                     font = self.fontName
+                     size = self.fontSize
+                     textobject.setFont(font, size)
+-                if topcode is StringType:
++                if topcode in (StringType, UnicodeType):
+                     #textobject.textOut(opcode)
+                     text = escape(opcode)
+                     code.append('(%s) Tj' % text)
+@@ -723,7 +732,7 @@
+                     oldcolor = self.fontColor
+                     (i, colorname) = opcode
+                     #print "opcode", opcode
+-                    if type(colorname) is StringType:
++                    if type(colorname) in (StringType, UnicodeType):
+                         color = self.fontColor = getattr(colors, colorname)
+                     else:
+                         color = self.fontColor = colorname # assume its something sensible :)
+@@ -744,7 +753,7 @@
+                     # change font size
+                     (i, fontsize) = opcode
+                     size = abs(float(fontsize))
+-                    if type(fontsize) is StringType:
++                    if type(fontsize) in (StringType, UnicodeType):
+                         if fontsize[:1]=="+":
+                             fontSize = self.fontSize = self.fontSize + size
+                         elif fontsize[:1]=="-":
+@@ -834,12 +843,12 @@
+ 
+ def stringLine(line, length):
+     "simple case: line with just strings and spacings which can be ignored"
++
+     strings = []
+-    from types import StringType
+     for x in line:
+-        if type(x) is StringType:
++        if type(x) in (StringType, UnicodeType):
+             strings.append(x)
+-    text = string.join(strings)
++    text = ' '.join(strings)
+     result = [text, float(length)]
+     nextlinemark = ("nextLine", 0)
+     if line and line[-1]==nextlinemark:
+@@ -848,14 +857,14 @@
+ 
+ def simpleJustifyAlign(line, currentLength, maxLength):
+     "simple justification with only strings"
++
+     strings = []
+-    from types import StringType
+     for x in line[:-1]:
+-        if type(x) is StringType:
++        if type(x) in (StringType, UnicodeType):
+             strings.append(x)
+     nspaces = len(strings)-1
+     slack = maxLength-currentLength
+-    text = string.join(strings)
++    text = ' '.join(strings)
+     if nspaces>0 and slack>0:
+         wordspacing = slack/float(nspaces)
+         result = [("wordSpacing", wordspacing), text, maxLength, ("wordSpacing", 0)]
+@@ -869,16 +878,15 @@
+ from reportlab.lib.colors import black
+ 
+ def readBool(text):
+-    if string.upper(text) in ("Y", "YES", "TRUE", "1"):
++    if text.upper() in ("Y", "YES", "TRUE", "1"):
+         return 1
+-    elif string.upper(text) in ("N", "NO", "FALSE", "0"):
++    elif text.upper() in ("N", "NO", "FALSE", "0"):
+         return 0
+     else:
+         raise RMLError, "true/false attribute has illegal value '%s'" % text
+ 
+ def readAlignment(text):
+-    from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_RIGHT, TA_JUSTIFY
+-    up = string.upper(text)
++    up = text.upper()
+     if up == 'LEFT':
+         return TA_LEFT
+     elif up == 'RIGHT':
+@@ -891,13 +899,13 @@
+ def readLength(text):
+     """Read a dimension measurement: accept "3in", "5cm",
+     "72 pt" and so on."""
+-    text = string.strip(text)
++    text = text.strip()
+     try:
+         return float(text)
+     except ValueError:
+-        text = string.lower(text)
++        text = text.lower()
+         numberText, units = text[:-2],text[-2:]
+-        numberText = string.strip(numberText)
++        numberText = numberText.strip()
+         try:
+             number = float(numberText)
+         except ValueError:
+@@ -916,13 +924,12 @@
+ 
+ def lengthSequence(s, converter=readLength):
+     """from "(2, 1)" or "2,1" return [2,1], for example"""
+-    from string import split, strip
+-    s = strip(s)
++    s = s.strip()
+     if s[:1]=="(" and s[-1:]==")":
+         s = s[1:-1]
+-    sl = split(s, ",")
+-    sl = map(strip, sl)
+-    sl = map(converter, sl)
++    sl = s.split(',')
++    sl = [s.strip() for s in sl]
++    sl = [converter(s) for s in sl]
+     return sl
+ 
+ 
+@@ -931,7 +938,7 @@
+     if not text:
+         return None
+     from reportlab.lib import colors
+-    if text[0] in string.letters:
++    if text[0] in LETTERS:
+         return colors.__dict__[text]
+     tup = lengthSequence(text)
+ 
+@@ -978,6 +985,7 @@
+     bulletIndent=0
+     textColor=black
+     backColor=None
++
+     def __init__(self, name, parent=None, **kw):
+         mydict = self.__dict__
+         if parent:
+@@ -985,6 +993,7 @@
+                 mydict[a]=b
+         for (a,b) in kw.items():
+             mydict[a] =  b
++
+     def addAttributes(self, dictionary):
+         for key in dictionary.keys():
+             value = dictionary[key]
+@@ -999,14 +1008,21 @@
+     "h1.defaultStyle": "Heading1",
+     "h2.defaultStyle": "Heading2",
+     "h3.defaultStyle": "Heading3",
++    "h4.defaultStyle": "Heading4",
++    "h5.defaultStyle": "Heading5",
++    "h6.defaultStyle": "Heading6",
+     "title.defaultStyle": "Title",
++    "subtitle.defaultStyle": "SubTitle",
+     "para.defaultStyle": "Normal",
+     "pre.defaultStyle": "Code",
+-    "li.defaultStyle": "Definition"
++    "ul.defaultStyle": "Definition",
++    "ol.defaultStyle": "Definition",
++    "li.defaultStyle": "Definition",
+     }
+ 
+ class FastPara(Flowable):
+     "paragraph with no special features (not even a single ampersand!)"
++
+     def __init__(self, style, simpletext):
+         #if debug:
+         #    print "FAST", id(self)
+@@ -1015,6 +1031,7 @@
+         self.style = style
+         self.simpletext = simpletext
+         self.lines = None
++
+     def wrap(self, availableWidth, availableHeight):
+         simpletext = self.simpletext
+         self.availableWidth = availableWidth
+@@ -1027,7 +1044,7 @@
+         size = style.fontSize
+         firstindent = style.firstLineIndent
+         #textcolor = style.textColor
+-        words = string.split(simpletext)
++        words = simpletext.split()
+         lines = []
+         from reportlab.pdfbase.pdfmetrics import stringWidth
+         spacewidth = stringWidth(" ", font, size)
+@@ -1062,18 +1079,18 @@
+                     #print "currentline", currentline
+                 else:
+                     # emit the line
+-                    lines.append( (string.join(currentline), currentlength, len(currentline)) )
++                    lines.append( (' '.join(currentline), currentlength, len(currentline)) )
+                     currentline = []
+                     currentlength = 0
+                     heightused = heightused+leading
+                     if heightused+leading>availableHeight:
+                         done = 1
+             if currentlength and not done:
+-                lines.append( (string.join(currentline), currentlength, len(currentline) ))
++                lines.append( (' '.join(currentline), currentlength, len(currentline) ))
+                 heightused = heightused+leading
+             self.lines = lines
+             self.height = heightused
+-            remainder = self.remainder = string.join(words[cursor:])
++            remainder = self.remainder = ' '.join(words[cursor:])
+             #print "lines", lines
+             #print "remainder is", remainder
+         else:
+@@ -1086,6 +1103,7 @@
+             result = (availableWidth, heightused)
+         #if debug: print "wrap is", (availableWidth, availableHeight), result, len(lines)
+         return result
++
+     def split(self, availableWidth, availableHeight):
+         style = self.style
+         leading = style.leading
+@@ -1102,7 +1120,6 @@
+             return [self]
+ 
+     def draw(self):
+-        from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_RIGHT, TA_JUSTIFY
+         style = self.style
+         lines = self.lines
+         rightIndent = style.rightIndent
+@@ -1158,10 +1175,12 @@
+             #textobject.textOut(text)
+             y = y-leading
+         c.drawText(textobject)
++
+     def getSpaceBefore(self):
+         #if debug:
+         #    print "got space before", self.spaceBefore
+         return self.style.spaceBefore
++
+     def getSpaceAfter(self):
+         #print "got space after", self.spaceAfter
+         return self.style.spaceAfter
+@@ -1174,15 +1193,39 @@
+         result[stylenamekey] = styles[stylenamevalue]
+     return result
+ 
++def buildContext(stylesheet=None):
++    result = {}
++    from reportlab.lib.styles import getSampleStyleSheet
++    from reportlab.lib.styles import StyleSheet1
++    if stylesheet is not None:
++        if isinstance(stylesheet, StyleSheet1):
++            result.update(stylesheet.byName.copy())
++            result.update(stylesheet.byAlias.copy())
++        else:
++            if hasattr(stylesheet, 'copy'):
++                result.update(stylesheet.copy())
++    else:
++        stylesheet = {}
++    styles = getSampleStyleSheet()
++    for (stylenamekey, stylenamevalue) in DEFAULT_ALIASES.items():
++        # Copy styles with the same name as aliases
++        if stylesheet.has_key(stylenamevalue):
++            result[stylenamekey] = stylesheet[stylenamevalue]
++        # Then, fill in defaults if they were not filled yet.
++        if not result.has_key(stylenamekey) and styles.has_key(stylenamevalue):
++            result[stylenamekey] = styles[stylenamevalue]
++
++    return result
++
+ class Para(Flowable):
++
+     spaceBefore = 0
+     spaceAfter = 0
++
+     def __init__(self, style, parsedText=None, bulletText=None, state=None, context=None, baseindent=0):
+         #print id(self), "para", parsedText
+         self.baseindent = baseindent
+-        if context is None:
+-            context = defaultContext()
+-        self.context = context
++        self.context = buildContext(context)
+         self.parsedText = parsedText
+         self.bulletText = bulletText
+         self.style1 = style # make sure Flowable doesn't use this unless wanted! call it style1 NOT style
+@@ -1199,15 +1242,18 @@
+         #    print "spaceBefore is", self.spaceBefore, self.parsedText
+         self.bold = 0
+         self.italic = 0
+-        self.face = "times"
+-        self.size = 10
++        self.face = style.fontName
++        self.size = style.fontSize
++
+     def getSpaceBefore(self):
+         #if debug:
+         #    print "got space before", self.spaceBefore
+         return self.spaceBefore
++
+     def getSpaceAfter(self):
+         #print "got space after", self.spaceAfter
+         return self.spaceAfter
++
+     def wrap(self, availableWidth, availableHeight):
+         if debug:
+             print "WRAPPING", id(self), availableWidth, availableHeight
+@@ -1242,7 +1288,8 @@
+         if not program:
+             self.program = program = self.compileProgram(parsedText)
+         if not self.formattedProgram:
+-            (formattedProgram, remainder, laststate, heightused) = p.format(availableWidth, availableHeight, program, leading)
++            (formattedProgram, remainder, \
++             laststate, heightused) = p.format(availableWidth, availableHeight, program, leading)
+             self.formattedProgram = formattedProgram
+             self.height = heightused
+             self.laststate = laststate
+@@ -1259,7 +1306,8 @@
+             height = availableHeight + 1
+             #print "laststate is", laststate
+             #print "saving remainder", remainder
+-            self.remainder = Para(self.style1, parsedText=None, bulletText=None, state=laststate)
++            self.remainder = Para(self.style1, parsedText=None, bulletText=None, \
++                                  state=laststate, context=self.context)
+             self.remainder.program = remainder
+             self.remainder.spaceAfter = self.spaceAfter
+             self.spaceAfter = 0
+@@ -1277,6 +1325,7 @@
+                 print "exact match???" + repr(availableHeight, h)
+             print "wrap is", (availableWidth, availableHeight), result
+         return result
++
+     def split(self, availableWidth, availableHeight):
+         #if debug:
+         #    print "SPLITTING", id(self), availableWidth, availableHeight
+@@ -1300,6 +1349,7 @@
+             result= [self]
+         #if debug: print "split is", result
+         return result
++
+     def draw(self):
+         p = self.myengine #paragraphEngine()
+         formattedProgram = self.formattedProgram
+@@ -1362,40 +1412,15 @@
+         # now look for a place where to insert the unindent after the first line
+         if style.firstLineIndent:
+             count = 0
+-            from types import StringType, InstanceType
+             for x in program:
+                 count = count+1
+                 tx = type(x)
+-                if tx is StringType or tx is InstanceType:
++                if tx in (StringType, UnicodeType, InstanceType):
+                     break
+             program.insert( count, ("indent", -style.firstLineIndent ) ) # defaults to end if no visibles
+-        #print "="*8, id(self), "program is"
+-        #for x in program:
+-        #    print x
+-##        print "="*11
+-##        # check pushes and pops
+-##        stackcount = 0
+-##        dump = 0
+-##        from types import TupleType
+-##        for x in program:
+-##            if dump:
+-##                print "dump:", x
+-##            if type(x) is TupleType:
+-##                i = x[0]
+-##                if i=="push":
+-##                    stackcount = stackcount+1
+-##                    print " "*stackcount, "push", stackcount
+-##                if i=="pop":
+-##                    stackcount = stackcount-1
+-##                    print " "*stackcount, "pop", stackcount
+-##                if stackcount<0:
+-##                    dump=1
+-##                    print "STACK UNDERFLOW!"
+-##        if dump: stop
+         return program
++
+     def linearize(self, program = None, parsedText=None):
+-        #print "LINEARIZING", self
+-        #program = self.program = []
+         if parsedText is None:
+             parsedText = self.parsedText
+         style = self.style1
+@@ -1417,23 +1442,22 @@
+             program.append( ("leading", 0) )
+         program.append( ("nextLine", 0) )
+         program.append( ("pop",) )
++
+     def compileComponent(self, parsedText, program):
+-        import types
+         ttext = type(parsedText)
+-        #program = self.program
+-        if ttext is types.StringType:
++        if ttext in (StringType, UnicodeType):
+             # handle special characters here...
+             # short cut
+             if parsedText:
+-                stext = parsedText.strip() #string.strip(parsedText)
++                stext = parsedText.strip()
+                 if not stext:
+                     program.append(" ") # contract whitespace to single space
+                 else:
+                     handleSpecialCharacters(self, parsedText, program)
+-        elif ttext is types.ListType:
++        elif ttext is ListType:
+             for e in parsedText:
+                 self.compileComponent(e, program)
+-        elif ttext is types.TupleType:
++        elif ttext is TupleType:
+             (tagname, attdict, content, extra) = parsedText
+             if not attdict:
+                 attdict = {}
+@@ -1455,10 +1479,11 @@
+                         a("</%s>" % tagname)
+                     else:
+                         a("/>")
+-                    t = string.join(L, "")
++                    t = ''.join(L)
+                     handleSpecialCharacters(self, t, program)
+                 else:
+                     raise ValueError, "don't know how to handle tag " + repr(tagname)
++
+     def shiftfont(self, program, face=None, bold=None, italic=None):
+         oldface = self.face
+         oldbold = self.bold
+@@ -1481,26 +1506,29 @@
+         # "anonymous" tag: just do the content
+         for e in content:
+             self.compileComponent(e, program)
+-    #compile_para = compile_ # at least for now...
++
+     def compile_pageNumber(self, attdict, content, extra, program):
+         program.append(PageNumberObject())
++
+     def compile_b(self, attdict, content, extra, program):
+         (f,b,i) = self.shiftfont(program, bold=1)
+         for e in content:
+             self.compileComponent(e, program)
+         self.shiftfont(program, bold=b)
++
+     def compile_i(self, attdict, content, extra, program):
+         (f,b,i) = self.shiftfont(program, italic=1)
+         for e in content:
+             self.compileComponent(e, program)
+         self.shiftfont(program, italic=i)
++
+     def compile_u(self, attdict, content, extra, program):
+         # XXXX must eventually add things like alternative colors
+-        #program = self.program
+         program.append( ('lineOperation', UNDERLINE) )
+         for e in content:
+             self.compileComponent(e, program)
+         program.append( ('endLineOperation', UNDERLINE) )
++
+     def compile_sub(self, attdict, content, extra, program):
+         size = self.size
+         self.size = newsize = size * 0.7
+@@ -1515,18 +1543,15 @@
+         program.append( ('rise', rise) )
+ 
+     def compile_ul(self, attdict, content, extra, program, tagname="ul"):
+-        # by transformation
+-        #print "compile", tagname, attdict
+         atts = attdict.copy()
+         bulletmaker = bulletMaker(tagname, atts, self.context)
+         # now do each element as a separate paragraph
+-        import types
+         for e in content:
+             te = type(e)
+-            if te is types.StringType:
+-                if e.strip(): #string.strip(e):
++            if te in (StringType, UnicodeType):
++                if e.strip():
+                     raise ValueError, "don't expect CDATA between list elements"
+-            elif te is types.TupleType:
++            elif te is TupleType:
+                 (tagname, attdict1, content1, extra) = e
+                 if tagname!="li":
+                     raise ValueError, "don't expect %s inside list" % repr(tagname)
+@@ -1534,57 +1559,59 @@
+                 if attdict1:
+                     newatts.update(attdict1)
+                 bulletmaker.makeBullet(newatts)
+-                self.compile_para(newatts, content1, extra, program)
++                self.compile_li(newatts, content1, extra, program)
+ 
+     def compile_ol(self, attdict, content, extra, program):
+         return self.compile_ul(attdict, content, extra, program, tagname="ol")
+ 
++    def compile_li(self, attdict, content, extra, program):
++        self.compile_para(attdict, content, extra, program)
++
+     def compile_dl(self, attdict, content, extra, program):
+-        # by transformation
+-        #print "compile", tagname, attdict
+-        atts = attdict.copy()
+-        # by transformation
+-        #print "compile", tagname, attdict
+         atts = attdict.copy()
+         bulletmaker = bulletMaker("dl", atts, self.context)
+         # now do each element as a separate paragraph
+-        import types
+         contentcopy = list(content) # copy for destruction
+         bullet = ""
+         while contentcopy:
+             e = contentcopy[0]
+             del contentcopy[0]
+             te = type(e)
+-            if te is types.StringType:
+-                if e.strip(): #string.strip(e):
++            if te in (StringType, UnicodeType):
++                if e.strip():
+                     raise ValueError, "don't expect CDATA between list elements"
+                 elif not contentcopy:
+                     break # done at ending whitespace
+                 else:
+                     continue # ignore intermediate whitespace
+-            elif te is types.TupleType:
++            elif te is TupleType:
+                 (tagname, attdict1, content1, extra) = e
+                 if tagname!="dd" and tagname!="dt":
+-                    raise ValueError, "don't expect %s here inside list, expect 'dd' or 'dt'" % repr(tagname)
++                    raise ValueError, "don't expect %s here inside list, expect 'dd' or 'dt'" % \
++                          repr(tagname)
+                 if tagname=="dt":
+                     if bullet:
+                         raise ValueError, "dt will not be displayed unless followed by a dd: "+repr(bullet)
+                     if content1:
+-                        if len(content1)!=1:
+-                            raise ValueError, "only simple strings supported in dd content currently: "+repr(content1)
+-                        bullet = content1[0]
+-                        if type(bullet) is not types.StringType:
+-                            raise ValueError, "only simple strings supported in dd content currently: "+repr(content1)
++                        self.compile_dt(attdict1, content1, extra, program)
++                        # raise ValueError, \
++                        # "only simple strings supported in dd content currently: "+repr(content1)
+                 elif tagname=="dd":
+                     newatts = atts.copy()
+                     if attdict1:
+                         newatts.update(attdict1)
+                     bulletmaker.makeBullet(newatts, bl=bullet)
+-                    self.compile_para(newatts, content1, extra, program)
++                    self.compile_dd(newatts, content1, extra, program)
+                     bullet = "" # don't use this bullet again
+         if bullet:
+             raise ValueError, "dt will not be displayed unless followed by a dd"+repr(bullet)
+ 
++    def compile_dt(self, attdict, content, extra, program):
++        self.compile_para(attdict, content, extra, program)
++
++    def compile_dd(self, attdict, content, extra, program):
++        self.compile_para(attdict, content, extra, program)
++
+     def compile_super(self, attdict, content, extra, program):
+         size = self.size
+         self.size = newsize = size * 0.7
+@@ -1597,6 +1624,7 @@
+         program.append( ('size', size) )
+         self.size = size
+         program.append( ('rise', -rise) )
++
+     def compile_font(self, attdict, content, extra, program):
+         #program = self.program
+         program.append( ("push",) ) # store current data
+@@ -1618,6 +1646,7 @@
+         for e in content:
+             self.compileComponent(e, program)
+         program.append( ("pop",) ) # restore as before
++
+     def compile_a(self, attdict, content, extra, program):
+         url = attdict["href"]
+         colorname = attdict.get("color", "blue")
+@@ -1632,6 +1661,7 @@
+         program.append( ('endLineOperation', UNDERLINE) )
+         program.append( ('endLineOperation', Link) )
+         program.append( ("pop",) ) # restore as before
++
+     def compile_link(self, attdict, content, extra, program):
+         dest = attdict["destination"]
+         colorname = attdict.get("color", None)
+@@ -1647,6 +1677,7 @@
+         program.append( ('endLineOperation', UNDERLINE) )
+         program.append( ('endLineOperation', Link) )
+         program.append( ("pop",) ) # restore as before
++
+     def compile_setLink(self, attdict, content, extra, program):
+         dest = attdict["destination"]
+         colorname = attdict.get("color", "blue")
+@@ -1664,43 +1695,55 @@
+             program.append( ('endLineOperation', UNDERLINE) )
+         program.append( ('endLineOperation', Link) )
+         program.append( ("pop",) ) # restore as before
++
+     #def compile_p(self, attdict, content, extra, program):
+     #    # have to be careful about base indent here!
+     #    not finished
++
+     def compile_bullet(self, attdict, content, extra, program):
+-        from types import StringType
+         ### eventually should allow things like images and graphics in bullets too XXXX
+-        if len(content)!=1 or type(content[0]) is not StringType:
++        if len(content)!=1 or type(content[0]) not in (StringType, UnicodeType):
+             raise ValueError, "content for bullet must be a single string"
+         text = content[0]
+         self.do_bullet(text, program)
++
+     def do_bullet(self, text, program):
+         style = self.style1
+-        #program = self.program
+         indent = style.bulletIndent + self.baseindent
+         font = style.bulletFontName
+         size = style.bulletFontSize
+         program.append( ("bullet", text, indent, font, size) )
++
+     def compile_tt(self, attdict, content, extra, program):
+         (f,b,i) = self.shiftfont(program, face="Courier")
+         for e in content:
+             self.compileComponent(e, program)
+         self.shiftfont(program, face=f)
++
+     def compile_greek(self, attdict, content, extra, program):
+         self.compile_font({"face": "symbol"}, content, extra, program)
++
+     def compile_evalString(self, attdict, content, extra, program):
+         program.append( EvalStringObject(attdict, content, extra, self.context) )
++
+     def compile_name(self, attdict, content, extra, program):
+         program.append( NameObject(attdict, content, extra, self.context) )
++
+     def compile_getName(self, attdict, content, extra, program):
+         program.append( GetNameObject(attdict, content, extra, self.context) )
++
+     def compile_seq(self, attdict, content, extra, program):
+         program.append( SeqObject(attdict, content, extra, self.context) )
++
+     def compile_seqReset(self, attdict, content, extra, program):
+         program.append( SeqResetObject(attdict, content, extra, self.context) )
++
+     def compile_seqDefault(self, attdict, content, extra, program):
+         program.append( SeqDefaultObject(attdict, content, extra, self.context) )
++
+     def compile_para(self, attdict, content, extra, program, stylename = "para.defaultStyle"):
++        if attdict is None:
++            attdict = {}
+         context = self.context
+         stylename = attdict.get("style", stylename)
+         style = context[stylename]
+@@ -1708,45 +1751,37 @@
+         newstyle.addAttributes(attdict)
+         bulletText = attdict.get("bulletText", None)
+         mystyle = self.style1
+-        #newstyle.bulletIndent = mystyle.leftIndent+newstyle.bulletIndent
+-        #print "attdict", attdict
+-        #print "leftindent, baseindent", mystyle.leftIndent
+-        #print "bulletIndent", newstyle.bulletIndent
+-        thepara = Para(newstyle, content, context=context, bulletText=bulletText) # possible ref loop on context, break later
++        thepara = Para(newstyle, content, context=context, bulletText=bulletText)
++        # possible ref loop on context, break later
+         # now compile it and add it to the program
+         mybaseindent = self.baseindent
+         self.baseindent = thepara.baseindent = mystyle.leftIndent + self.baseindent
+         thepara.linearize(program=program)
+-        #print "program so far"
+-        #for x in program:
+-        #    print x
+         program.append( ("nextLine", 0) )
+         self.baseindent = mybaseindent
+ 
+-
+ class bulletMaker:
++
+     def __init__(self, tagname, atts, context):
+         self.tagname = tagname
+-        #print "context is", context
+-        style = "li.defaultStyle"
++        self.context = context
++        style = context.has_key(tagname) and tagname or "%s.defaultStyle" % tagname
+         self.style = style = atts.get("style", style)
+-        typ = {"ul": "disc", "ol": "1", "dl": None}[tagname]
+-        #print tagname, "bulletmaker type is", typ
+-        self.typ =typ = atts.get("type", typ)
+-        #print tagname, "bulletmaker type is", typ
++        typ = {"ul": "disc", "ol": "1"}.get(tagname, None)
++        self.typ = typ = atts.get("type", typ)
+         if not atts.has_key("leftIndent"):
+             # get the style so you can choose an indent length
+-            thestyle = context[style]
+             from reportlab.pdfbase.pdfmetrics import stringWidth
+-            size = thestyle.fontSize
++            size = self.context[self.style].fontSize
+             indent = stringWidth("XXX", "Courier", size)
+             atts["leftIndent"] = str(indent)
+         self.count = 0
++
+     def makeBullet(self, atts, bl=None):
+         count = self.count = self.count+1
+         typ = self.typ
+         tagname = self.tagname
+-        #print "makeBullet", tagname, typ, count
++        if bl == 'm': raise ValueError
+         # forget space before for non-first elements
+         if count>1:
+             atts["spaceBefore"] = "0"
+@@ -1758,7 +1793,7 @@
+                 else:
+                     raise ValueError, "unordered list type %s not implemented" % repr(typ)
+                 if not atts.has_key("bulletFontName"):
+-                    atts["bulletFontName"] = "ZapfDingbats"
++                    atts["bulletFontName"] = self.context[self.style].bulletFontName or "ZapfDingbats"
+             elif tagname=="ol":
+                 if typ=="1": bl = repr(count)
+                 elif typ=="a":
+@@ -1778,7 +1813,9 @@
+ 
+ class EvalStringObject:
+     "this will only work if rml2pdf is present"
++
+     tagname = "evalString"
++
+     def __init__(self, attdict, content, extra, context):
+         if not attdict:
+             attdict = {}
+@@ -1786,11 +1823,13 @@
+         self.content = content
+         self.context = context
+         self.extra = extra
++
+     def getOp(self, tuple, engine):
+         from rlextra.rml2pdf.rml2pdf import Controller
+         #print "tuple", tuple
+         op = self.op = Controller.processTuple(tuple, self.context, {})
+         return op
++
+     def width(self, engine):
+         from reportlab.pdfbase.pdfmetrics import stringWidth
+         content = self.content
+@@ -1803,10 +1842,12 @@
+         #print self
+         s = str(op)
+         return stringWidth(s, engine.fontName, engine.fontSize)
++
+     def execute(self, engine, textobject, canvas):
+         textobject.textOut(str(self.op))
+ 
+ class SeqObject(EvalStringObject):
++
+     def getOp(self, tuple, engine):
+         from reportlab.lib.sequencer import getSequencer
+         globalsequencer = getSequencer()
+@@ -1830,6 +1871,7 @@
+         pass # name doesn't produce any output
+ 
+ class SeqDefaultObject(NameObject):
++
+     def getOp(self, tuple, engine):
+         from reportlab.lib.sequencer import getSequencer
+         globalsequencer = getSequencer()
+@@ -1843,6 +1885,7 @@
+         return ""
+ 
+ class SeqResetObject(NameObject):
++
+     def getOp(self, tuple, engine):
+         from reportlab.lib.sequencer import getSequencer
+         import math
+@@ -1864,11 +1907,14 @@
+     tagname = "getName"
+ 
+ class PageNumberObject:
++
+     def __init__(self, example="XXX"):
+         self.example = example # XXX SHOULD ADD THE ABILITY TO PASS IN EXAMPLES
++
+     def width(self, engine):
+         from reportlab.pdfbase.pdfmetrics import stringWidth
+         return stringWidth(self.example, engine.fontName, engine.fontSize)
++
+     def execute(self, engine, textobject, canvas):
+         n = canvas.getPageNumber()
+         textobject.textOut(str(n))
+@@ -1890,11 +1936,10 @@
+             mystyle.addAttributes(attdict)
+             bulletText = attdict.get("bulletText", None)
+             # can we use the fast implementation?
+-            import types
+             result = None
+             if not bulletText and len(content)==1:
+                 text = content[0]
+-                if type(text) is types.StringType and "&" not in text:
++                if type(text) in (StringType, UnicodeType) and "&" not in text:
+                     result = FastPara(mystyle, text)
+             if result is None:
+                 result = Para(mystyle, content, context=context, bulletText=bulletText) # possible ref loop on context, break later
+@@ -2119,7 +2164,7 @@
+     for fragment in amptext:
+         if not first:
+             # check for special chars
+-            semi = string.find(fragment, ";")
++            semi = fragment.find(";")
+             if semi>0:
+                 name = fragment[:semi]
+                 if greeks.has_key(name):
+@@ -2128,7 +2173,7 @@
+                     (f,b,i) = engine.shiftfont(program, face="symbol")
+                     program.append(greeksub)
+                     engine.shiftfont(program, face=f)
+-                    if fragment and fragment[0] in string.whitespace:
++                    if fragment and fragment[0] in WHITESPACE:
+                         program.append(" ") # follow the greek with a space
+                 else:
+                     # add back the &
+@@ -2143,10 +2188,10 @@
+         # does the last one need a space?
+         if sfragment and fragment:
+             # reader 3 used to go nuts if you don't special case the last frag, but it's fixed?
+-            if fragment[-1] in string.whitespace: # or fragment==lastfrag:
++            if fragment[-1] in WHITESPACE: # or fragment==lastfrag:
+                 program.append( sfragment[-1]+" " )
+             else:
+-                last = sfragment[-1].strip() #string.strip(sfragment[-1])
++                last = sfragment[-1].strip()
+                 if last:
+                     #print "last is", repr(last)
+                     program.append( last )
+@@ -2154,7 +2199,7 @@
+     #print "HANDLED", program
+     return program
+ 
+-def Paragraph(text, style, bulletText=None, frags=None):
++def Paragraph(text, style, bulletText=None, frags=None, context=None):
+     """ Paragraph(text, style, bulletText=None)
+     intended to be like a platypus Paragraph but better.
+     """
+@@ -2165,7 +2210,7 @@
+         # use the fully featured one.
+         from reportlab.lib import rparsexml
+         parsedpara = rparsexml.parsexmlSimple(text)
+-        return Para(style, parsedText=parsedpara, bulletText=bulletText, state=None)
++        return Para(style, parsedText=parsedpara, bulletText=bulletText, state=None, context=context)
+ 
+ ##class Paragraph(Para):
+ ##    """ Paragraph(text, style, bulletText=None)
+@@ -2206,8 +2251,10 @@
+ UNDERLINE = UnderLineHandler()
+ 
+ class HotLink(UnderLineHandler):
++
+     def __init__(self, url):
+         self.url = url
++
+     def end_at(self, x, y, para, canvas, textobject):
+         fontsize = para.fontSize
+         rect = [self.xStart, self.yStart, x,y+fontsize]
+@@ -2215,27 +2262,31 @@
+             print "LINKING RECTANGLE", rect
+             #canvas.rect(self.xStart, self.yStart, x-self.xStart,y+fontsize-self.yStart, stroke=1)
+         self.link(rect, canvas)
++
+     def link(self, rect, canvas):
+         canvas.linkURL(self.url, rect, relative=1)
+ 
+ class InternalLink(HotLink):
++
+     def link(self, rect, canvas):
+         destinationname = self.url
+         contents = ""
+         canvas.linkRect(contents, destinationname, rect, Border="[0 0 0]")
+ 
+ class DefDestination(HotLink):
++
+     defined = 0
++
+     def link(self, rect, canvas):
+         destinationname = self.url
+         if not self.defined:
+             [x, y, x1, y1] = rect
+-            canvas.bookmarkHorizontal(destinationname, x,y1) # use the upper y
++            canvas.bookmarkHorizontal(destinationname, x, y1) # use the upper y
+             self.defined = 1
+ 
+ def splitspace(text):
+     # split on spacing but include spaces at element ends
+-    stext = string.split(text)
++    stext = text.split()
+     result = []
+     for e in stext:
+         result.append(e+" ")
