@@ -139,6 +139,15 @@ from module import name as local
         name as local
 '''],
 ['''\
+from module import name1, name2 as local2
+''',
+'''\
+<Module filename="test data">
+    <Import from="module" lineno="1">
+        name1
+        name2 as local2
+'''],
+['''\
 from module.sub import name
 ''',
 '''\
@@ -179,7 +188,7 @@ from __future__ import division
 # '''\
 # <Module filename="test data">
 #     <Attribute lineno="1" name="a">
-#         <Expression>
+#         <Expression lineno="1">
 #             1
 # '''],
 # ['''\
@@ -189,7 +198,7 @@ from __future__ import division
 # '''\
 # <Module filename="test data">
 #     <Attribute lineno="1" name="a">
-#         <Expression>
+#         <Expression lineno="1">
 #             1
 #         <Docstring lineno="2">
 #             a's docstring
@@ -202,7 +211,7 @@ from __future__ import division
 # '''\
 # <Module filename="test data">
 #     <Attribute lineno="1" name="a">
-#         <Expression>
+#         <Expression lineno="1">
 #             1
 #         <Docstring lineno="2">
 #             a's docstring
@@ -210,13 +219,13 @@ from __future__ import division
 #             additional docstring
 # '''], #'
 # ['''\
-# a = 1 + 2
+# a = 1 + 2 * 3 / 4 ** 5
 # ''',
 # '''\
 # <Module filename="test data">
 #     <Attribute lineno="1" name="a">
-#         <Expression>
-#             1 + 2
+#         <Expression lineno="1">
+#             1 + 2 * 3 / 4 ** 5
 # '''],
 # ['''\
 # a = 1 \\
@@ -225,8 +234,35 @@ from __future__ import division
 # '''\
 # <Module filename="test data">
 #     <Attribute lineno="1" name="a">
-#         <Expression>
+#         <Expression lineno="1">
 #             1 + 2
+# '''],
+# ['''\
+# a = not 1 and 2 or 3
+# ''',
+# '''\
+# <Module filename="test data">
+#     <Attribute lineno="1" name="a">
+#         <Expression lineno="1">
+#             not 1 and 2 or 3
+# '''],
+# ['''\
+# a = ~ 1 & 2 | 3 ^ 4
+# ''',
+# '''\
+# <Module filename="test data">
+#     <Attribute lineno="1" name="a">
+#         <Expression lineno="1">
+#             ~ 1 & 2 | 3 ^ 4
+# '''],
+# ['''\
+# a = `1 & 2`
+# ''',
+# '''\
+# <Module filename="test data">
+#     <Attribute lineno="1" name="a">
+#         <Expression lineno="1">
+#             `1 & 2`
 # '''],
 # ['''\
 # very_long_name = \\
@@ -235,7 +271,7 @@ from __future__ import division
 # '''\
 # <Module filename="test data">
 #     <Attribute lineno="1" name="very_long_name">
-#         <Expression>
+#         <Expression lineno="1">
 #             x
 # '''],
 # ['''\
@@ -245,7 +281,7 @@ from __future__ import division
 # '''\
 # <Module filename="test data">
 #     <Attribute lineno="1" name="very_long_name">
-#         <Expression>
+#         <Expression lineno="1">
 #             x
 # '''],
 # ['''\
@@ -256,7 +292,7 @@ from __future__ import division
 # '''\
 # <Module filename="test data">
 #     <Attribute lineno="1" name="very_long_name">
-#         <Expression>
+#         <Expression lineno="1">
 #             x
 # '''],
 # ['''\
@@ -273,13 +309,13 @@ from __future__ import division
 # '''\
 # <Module filename="test data">
 #     <Attribute lineno="1" name="a">
-#         <Expression>
+#         <Expression lineno="1">
 #             (1 + 2)
 #     <Attribute lineno="3" name="b">
-#         <Expression>
+#         <Expression lineno="3">
 #             a.b[1 + fn(x, y, z, {'key': (1 + 2 + 3)})]
 #     <Attribute lineno="7" name="c">
-#         <Expression>
+#         <Expression lineno="7">
 #             """first line\\nsecond line\\n    third"""
 # '''],
 # ['''\
@@ -303,6 +339,12 @@ from __future__ import division
 totest['ignore'] = [
 ['''\
 1 + 2
+''',
+'''\
+<Module filename="test data">
+'''],
+['''\
+del a
 ''',
 '''\
 <Module filename="test data">
