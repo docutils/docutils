@@ -6,3 +6,6 @@ test_destination = "standalone_rst_html4css1.html"
 reader_name = "standalone"
 parser_name = "rst"
 writer_name = "html4css1"
+
+# Settings
+settings_overrides['stylesheet_path'] = "../tools/stylesheets/default.css"
