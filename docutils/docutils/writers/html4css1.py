@@ -94,9 +94,6 @@ class Writer(writers.Writer):
     config_section = 'html4css1 writer'
     config_section_dependencies = ('writers',)
 
-    output = None
-    """Final translated form of `document`."""
-
     def __init__(self):
         writers.Writer.__init__(self)
         self.translator_class = HTMLTranslator

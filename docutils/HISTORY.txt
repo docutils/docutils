@@ -263,6 +263,7 @@ Changes Since 0.3
 
   - Added assemble_parts method to the Writer class to allow for
     access to a documents individual parts.
+  - Documented & set default for ``Writer.output`` attribute.
 
 * docutils/writers/html4css1.py:
 
