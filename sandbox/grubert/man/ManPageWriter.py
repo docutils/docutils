@@ -1,7 +1,9 @@
 # Author: 
 # Contact: grubert@users.sf.net
-# Copyright: 2003 - engelbert grubet - All Rights Reserved
+# Copyright: 2003 - engelbert gruber - All Rights Reserved
 # License: This module is put into the public domain.
+#
+# CVS: $Id$
 
 """
 Man page formatting for reStructuredText.

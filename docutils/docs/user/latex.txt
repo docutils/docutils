@@ -272,4 +272,16 @@ Miscellaneous
 * For additional docinfo items: the field_body is inserted as text, i.e. no
   markup is done.
 * Multiple author entries in docinfo (same thing as in html).
+* pslatex has not textbackslash ind bold ?
+* make use (but test against pslatex) ::
+
+    \textbackslash      \backslash \
+    \textbar            \mid       |
+    \textless           <          <
+    \textgreater        >          >
+    \textasciicircum    \hat       ^
+    \textasciitilde     \tilde     ~
+    \textbullet         \bullet    gefüllter Kreis auf halber Höhe
+    \textperiodcentered \cdot      ·
+    \textvisiblespace   (n.v.)     sichtbares Leerzeichen
 

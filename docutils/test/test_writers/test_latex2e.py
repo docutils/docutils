@@ -37,6 +37,7 @@ latex_head = """\
 \\setlength{\\admonitionwidth}{0.9\\textwidth}
 \\newlength{\\docinfowidth}
 \\setlength{\\docinfowidth}{0.9\\textwidth}
+\\newlength{\\locallinewidth}
 \\newcommand{\\optionlistlabel}[1]{\\bf #1 \\hfill}
 \\newenvironment{optionlist}[1]
 {\\begin{list}{}
@@ -89,6 +90,8 @@ latex_head + """\
 \\begin{document}
 \\maketitle
 
+
+\\setlength{\\locallinewidth}{\\linewidth}
 \\hypertarget{table-of-contents}{}
 \\pdfbookmark[0]{Table of Contents}{table-of-contents}
 \\subsection*{~\\hfill Table of Contents\\hfill ~}
@@ -138,6 +141,8 @@ latex_head + """\
 \\begin{document}
 \\maketitle
 
+
+\\setlength{\\locallinewidth}{\\linewidth}
 \\newcounter{listcnt1}
 \\begin{list}{\\arabic{listcnt1}.}
 {
@@ -228,6 +233,8 @@ latex_head + """\
 \\begin{document}
 \\maketitle
 
+
+\\setlength{\\locallinewidth}{\\linewidth}
 
 Depending on language quotes are converted for latex.
 Expecting ``en'' here.
