@@ -1138,9 +1138,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_table(self, node):
         self.body.append(
-              # "border=None" is a boolean attribute;
-              # it means "standard border", not "no border":
-              self.starttag(node, 'table', CLASS="table", border="1"))
+            self.starttag(node, 'table', CLASS="table", border="1"))
 
     def depart_table(self, node):
         self.body.append('</table>\n')
