@@ -61,8 +61,15 @@ class Component:
     Base class for Docutils components.
     """
 
-    names = ()
+    supported = ()
     """Names for this component.  Override in subclasses."""
 
     def supports(self, format):
+        """
+        Is `format` supported by this component?
+
+        To be used by transforms to ask the component (Reader or Writer)
+        controlling the transform if that component supports a certain input
+        context or output format.
+        """
         return format in self.supported
