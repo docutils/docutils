@@ -261,6 +261,7 @@ Specific:
   - Added support for optional footnote/citation backlinks.
   - Added support for generic bibliographic fields.
   - Identify backrefs.
+  - Relative URLs for stylesheet links.
 
 * docutils/writers/pep_html.py: Added to project; HTML Writer for
   PEPs (subclass of ``html4css1.Writer``).
@@ -276,9 +277,6 @@ Specific:
 
   - Changed the title to "The Docutils Document Tree".
   - Added "Hyperlink Bookkeeping" section.
-
-* spec/docutils.conf: Added to project.  Not a spec itself, but a
-  configuration file for Docutils processing of the specs.
 
 * spec/docutils.dtd:
 
@@ -368,6 +366,8 @@ Specific:
 
   - Added support for ``header`` and ``footer`` elements.
   - Added styles for "Dedication" topics (biblio fields).
+
+* tools/docutils.conf: A configuration file; added to project.
 
 * tools/docutils-xml.py: Added to project.
 
