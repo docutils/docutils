@@ -6,11 +6,26 @@
 ;; Support code for editing reStructuredText with Emacs indented-text mode.
 ;; The goal is to create an integrated reStructuredText editing mode.
 ;;
-;; Updates
-;; -------
+;; Installation instructions
+;; -------------------------
 ;;
-;; 2003-02-25 (blais): updated repeat-last-character function and added
-;;                     a few routines for navigating between titles.
+;; You should bind the versatile sectioning command to some key in the text-mode
+;; hook. Something like this::
+;;
+;;   (defun user-rst-mode-hook ()
+;;     (local-set-key [(control ?=)] 'rest-adjust-section-title)
+;;     )
+;;   (add-hook 'text-mode-hook 'user-rst-mode-hook)
+;;
+;; Other specialized and more generic functions are also available.
+;; Note that C-= is a good binding, since it allows you to specif a negative arg
+;; easily with C-- C-= (easy to type), as well as ordinary prefix arg with
+;; C-u C-=.
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Generic text functions that are more convenient than the defaults.
+;;
 
 (defun replace-lines (fromchar tochar)
   ;; by David Goodger
@@ -35,6 +50,407 @@ cand replace with char: ")
 	    (insert-char tochar l))
 	(search-failed
 	 (message (format "%d lines replaced." found)))))))
+
+(defun join-paragraph ()
+  ;; by David Goodger
+  "Join lines in current paragraph into one line, removing end-of-lines."
+  (interactive)
+  (save-excursion
+    (backward-paragraph 1)
+    (forward-char 1)
+    (let ((start (point)))	; remember where we are
+      (forward-paragraph 1)	; go to the end of the paragraph
+      (beginning-of-line 0)	; go to the beginning of the previous line
+      (while (< start (point))	; as long as we haven't passed where we started
+	(delete-indentation)	; join this line to the line before
+	(beginning-of-line)))))	; and go back to the beginning of the line
+
+(defun force-fill-paragraph ()
+  ;; by David Goodger
+  "Fill paragraph at point, first joining the paragraph's lines into one.
+This is useful for filling list item paragraphs."
+  (interactive)
+  (join-paragraph)
+  (fill-paragraph nil))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; The following functions implement a smart automatic title sectioning feature.
+;; The idea is that with the cursor sitting on a section title, we try to get as
+;; much information from context and do the best thing. This function can be
+;; invoked many time and/or with prefix argument to rotate between the various
+;; options.
+;;
+;; There are two styles of sectioning:
+;;
+;; 1. simple-underline, e.g.      |Some Title
+;;                                |----------
+;;
+;; 2. overline-and-underline, e.g.  |------------
+;;                                  | Some Title
+;;                                  |------------
+;;
+;; Some notes:
+;;
+;; - the underlining character that is used depends on context. The file is
+;;   scanned to find other sections and an appropriate character is selected.
+;;   If the function is invoked on a section that is complete, the character
+;;   is rotated among the existing ones.
+;;
+;; - prefix argument is used to alternate the sectioning style.
+;;
+;; Examples:
+;;
+;;   |Some Title       --->    |Some Title
+;;   | 			       |----------
+;;
+;;   |Some Title       --->    |Some Title
+;;   |----- 		       |----------
+;;
+;;   |                         |------------
+;;   | Some Title      --->    | Some Title
+;;   | 			       |------------
+;;
+;; In overline-and-underline style, a variable is available to select how much
+;; space to leave before and after the title (it can be zero) when alternating
+;; the style.  Note that if the title already has some whitespace in front of
+;; it, we don't adjust it to the variable setting, we use the whitespace that is
+;; already there for adjustment.
+
+(defun rest-line-single-char-p ()
+  "Predicate return the unique char if the current line is
+  composed only of a single repeated non-whitespace
+  character. This returns the char even if there is whitespace at
+  the beginning of the line."
+  (save-excursion
+    (back-to-indentation)
+    (if (not (looking-at "\n"))
+	(let ((c (thing-at-point 'char)))
+	  (and (looking-at (format "[%s]+\\s-*$" c))
+	       (not (looking-at "::\\s-*$"))
+	       (not (looking-at "\\.\\.\\.\\s-*$"))
+	       (not (looking-at ".\\s-*$")) ;; discard one char line
+	       (string-to-char c))))
+    ))
+
+(defun rest-find-last-section-char ()
+  "Looks backward for the last section char found in the file."
+
+  (let (c)
+    (save-excursion 
+      (while (and (not c) (not (bobp)))
+	(forward-line -1)
+	(setq c (rest-line-single-char-p))
+	))
+    c))
+
+(defun rest-current-section-char (&optional point)
+  "Gets the section char around the current point."
+  (save-excursion
+    (if point (goto-char point))
+    (let ((offlist '(0 1 -2))
+	  loff
+	  rval
+	  c)
+      (while offlist
+	(forward-line (car offlist))
+	(setq c (rest-line-single-char-p))
+	(if c
+	    (progn (setq offlist nil
+			 rval c))
+	  (setq offlist (cdr offlist)))
+	)
+      rval
+      )))
+
+(defun rest-initial-sectioning-style (&optional point)
+  "Looks around point and attempts to determine the sectioning
+  style, between simple-underline and overline-and-underline.  If
+  there aren't any existing over/underlines, return nil."
+  (save-excursion
+    (if point (goto-char point))
+    (let (ou)
+      (save-excursion
+	(setq ou (mapcar
+		  (lambda (x)
+		    (forward-line x)
+		    (rest-line-single-char-p))
+		  '(-1 2))))
+      (beginning-of-line)
+      (cond
+       ((equal ou '(nil nil)) nil)
+       ((car ou) 'over-and-under) ;; we only need check the overline
+       (t 'simple)
+       )
+      )))
+
+(defun rest-all-section-chars (&optional ignore-lines)
+  "Finds all the section chars in the entire file and orders them
+  hierarchically, removing duplicates.  Basically, returns a list
+  of the section underlining characters.
+
+  Optional parameters IGNORE-AROUND can be a list of lines to
+  ignore."
+
+  (let (chars 
+	c
+	(curline 1))
+    (save-excursion
+      (beginning-of-buffer)
+      (while (< (point) (buffer-end 1))
+	(if (not (memq curline ignore-lines))
+	    (progn
+	      (setq c (rest-line-single-char-p))
+	      (if c
+		  (progn
+		    (add-to-list 'chars c t)
+		    ))) )
+	(forward-line 1) (setq curline (+ curline 1))
+	))
+    chars))
+
+(defun rest-update-section (underlinechar style &optional indent)
+  "Unconditionally updates the overline/underline of a section
+  title using the given character CHAR, with STYLE 'simple or
+  'over-and-under, in which case with title whitespace separation
+  on each side with INDENT whitespaces.  If the style is 'simple,
+  whitespace before the title is removed.
+
+  If there are existing overline and/or underline, they are
+  removed before adding the requested adornments."
+
+  (interactive)
+  (let (marker
+	len
+	ec
+	(c ?-))
+
+      (end-of-line)
+      (setq marker (point-marker))
+
+      ;; Fixup whitespace at the beginning and end of the line
+      (if (or (null indent) (eq style 'simple))
+	  (setq indent 0))
+      (beginning-of-line)
+      (delete-horizontal-space)
+      (insert (make-string indent ? ))
+
+      (end-of-line)
+      (delete-horizontal-space)
+
+      ;; Set the current column, we're at the end of the title line
+      (setq len (+ (current-column) indent))
+
+      ;; Remove previous line if it consists only of a single repeated character
+      (save-excursion
+	(forward-line -1)
+	(and (rest-line-single-char-p)
+	     (kill-whole-line 1)))
+
+      ;; Remove following line if it consists only of a single repeated character
+      (save-excursion
+	(forward-line +1)
+	(and (rest-line-single-char-p)
+	     (kill-whole-line 1))
+	;; Add a newline if we're at the end of the buffer, for the subsequence
+	;; inserting of the underline
+	(if (= (point) (buffer-end 1))
+	    (newline 1)))
+
+      ;; Insert overline
+      (if (eq style 'over-and-under)
+	  (save-excursion
+	    (beginning-of-line)
+	    (open-line 1)
+	    (insert (make-string len underlinechar))))
+
+      ;; Insert underline
+      (forward-line +1)
+      (open-line 1)
+      (insert (make-string len underlinechar))
+
+      (forward-line +1)
+      (goto-char marker)
+      ))
+
+
+(defvar rest-default-section-char ?=
+  "Default section underlining character to use when there aren't
+  any others to be used in the file.")
+
+(defvar rest-default-under-and-over-indent 2
+  "Number of characters to indent the section title when toggling
+  sectioning styles.  This is used when switching from a simple 
+  section style to a over-and-under style.")
+
+(defun rest-adjust-section-title ()
+  "Adjust/rotate the section underlining for the section around
+  point.
+
+  This function is the main entry point of this module and is a
+  bit of a swiss knife.  It is meant as the single function to
+  invoke to adjust the underlines (and possibly overlines) of a
+  section title in restructuredtext.  The next action it takes
+  depends on context around the point, and it is meant to be
+  invoked possibly more than once. Basically, this function deals
+  with:
+
+  - underlining a title if it does not have an underline;
+  - adjusting the length of the underline characters to fit a
+    modified title;
+  - rotating the underlines/overlines in the set of already
+    existing underline chars used in the file;
+  - switching between simple underline and over-and-under style
+    sectioning (or box style).
+
+  Here are the gory details:
+
+  - If the current line has no underline character around it,
+    search backwards for a previously used underlining character,
+    and underline the current line as a section title (also see
+    prefix argument below).
+
+    If no pre-existing underlining character is found in the
+    file, we use the last seen underline char or
+    rest-default-section-char if this is the first title in the
+    entire file.
+
+  - If the current line does have an underline or overline, and
+    if
+
+    - the underline do not extend to exactly the end of the
+      title line, this changes the length of the under(over)lines
+      to fit exactly the section title;
+
+    - the underline length is already adjusted to the end of the
+      title line, we search the file for the underline chars, and
+      we rotate the current title's underline character with that
+      list (going down the hierarchy that is present in the
+      file);
+
+    If there is a prefix argument, switch the style between the
+    initial sectioning style and the other sectioning style.  The
+    two styles are overline-and-underline and simple-underline.
+    
+    If however, you are on a complete section title and you
+    specify a negative argument, the effect of the prefix
+    argument is to change the direction of rotation of the
+    underline characters. Thus using a prefix argument and a
+    negative prefix argument achieves a different result in the
+    case of rotation.
+
+    Note that the initial style of underlining (simple underline
+    or box-style) depends on if there is whitespace at the start
+    of the line.  If there are already underlines/overlines,
+    those are used to select the style, otherwise if there is
+    whitespace at the front of the title overline-and-underline
+    style is chosen, and otherwise simple underline.
+
+    Also, note that this should work on the section title line as
+    well as on a complete or incomplete underline for a
+    title (first thing we check for that case and move the cursor
+    up a line if needed)."
+
+  (interactive)
+
+  ;; check if we're on an underline under a title line, and move the cursor up
+  ;; if it is so.
+  (if (and (or (rest-line-single-char-p) 
+	       (looking-at "^\\s-*$"))
+	   (save-excursion
+	     (forward-line -1)
+	     (beginning-of-line)
+	     (looking-at "^.+$")))
+      (forward-line -1))
+
+  (let (
+	;; find current sectioning character
+	(curchar (rest-current-section-char))
+	;; find current sectioning style
+	(init-style (rest-initial-sectioning-style))
+	;; find current indentation of title line
+	(curindent (save-excursion
+		     (back-to-indentation)
+		     (current-column)))
+
+	;; ending column
+	(endcol (- (line-end-position) (line-beginning-position)))
+	)
+
+    ;; if there is no current style found...
+    (if (eq init-style nil)
+	;; select based on the whitespace at the beginning of the line
+	(save-excursion
+	  (beginning-of-line)
+	  (setq init-style
+		(if (looking-at "^\\s-+") 'over-and-under 'simple))))
+
+    ;; if we're switching characters, we're going to simply change the
+    ;; sectioning style.  this branch is also taken if there is no current
+    ;; sectioning around the title.
+    (if (or (and current-prefix-arg
+		 (not (< (prefix-numeric-value current-prefix-arg) 0)))
+	    (eq curchar nil))
+
+
+
+	;; we're switching characters or there is currently no sectioning
+	(progn
+	  (setq curchar 
+		(or curchar
+		    (rest-find-last-section-char)
+		    (car (rest-all-section-chars))
+		    rest-default-section-char))
+	  
+	  (rest-update-section
+	   (or curchar rest-default-section-char)
+	   (if current-prefix-arg
+	       (if (eq init-style 'over-and-under) 'simple 'over-and-under)
+	     init-style)
+	   rest-default-under-and-over-indent)
+	  )
+
+      ;; else we're not switching characters, and there is some sectioning
+      ;; already present, so check if the current sectioning is complete and
+      ;; correct.
+      (let ((exps (concat "^" (make-string (+ endcol curindent) curchar) "$")))
+	(if (or
+	     (not (save-excursion (forward-line +1)
+				  (beginning-of-line)
+				  (looking-at exps)))
+	     (and (eq init-style 'over-and-under)
+		  (not (save-excursion (forward-line -1)
+				       (beginning-of-line)
+				       (looking-at exps)))))
+
+	    ;; the current sectioning needs to be fixed/updated!
+	    (rest-update-section curchar init-style curindent)
+
+	  ;; the current sectioning is complete, rotate characters
+	  (let* ( (curline (+ (count-lines (point-min) (point))
+			      (if (bolp) 1 0)))
+		  (allchars (rest-all-section-chars 
+			     (list (- curline 1) curline (+ curline 1))))
+		  (rotchars (append allchars (list (car allchars))))
+		  (nextchar 
+		   (or (cadr (memq curchar 
+				   (if (< (prefix-numeric-value 
+					   current-prefix-arg) 0)
+				       (reverse rotchars) rotchars)))
+		       (car allchars)) ) )
+
+	    (if nextchar
+		(rest-update-section nextchar init-style curindent))
+	    )))
+      )))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Generic character repeater function.
+;;
+;; For sections, better to use the specialized function above, but this can
+;; be useful for creating separators.
 
 (defun repeat-last-character (&optional tofill)
   "Fills the current line up to the length of the preceding line (if not
@@ -80,14 +496,21 @@ column is used (fill-column vs. end of previous/next line)."
 		   (- rightmost-column (current-column))))
     ))
 
-(defun reST-title-char-p (c)
-  ;; by Martin Blais
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Section movement commands.
+;;
+
+;; Note: this is not quite correct, the definition is any non alpha-numeric
+;; character.
+(defun rest-title-char-p (c)
   "Returns true if the given character is a valid title char."
   (and (string-match "[-=`:\\.'\"~^_*+#<>!$%&(),/;?@\\\|]"
 		     (char-to-string c)) t))
 
-(defun reST-forward-title ()
-  ;; by Martin Blais
+(defun rest-forward-section ()
   "Skip to the next restructured text section title."
   (interactive)
   (let* ( (newpoint
@@ -104,8 +527,7 @@ column is used (fill-column vs. end of previous/next line)."
 	     (point))) )
     (if newpoint (goto-char newpoint)) ))
 
-(defun reST-backward-title ()
-  ;; by Martin Blais
+(defun rest-backward-section ()
   "Skip to the previous restructured text section title."
   (interactive)
   (let* ( (newpoint
@@ -124,86 +546,9 @@ column is used (fill-column vs. end of previous/next line)."
 	     (point))) )
     (if newpoint (goto-char newpoint)) ))
 
-(defun join-paragraph ()
-  ;; by David Goodger & Martin Blais
-  "Join lines in current paragraph into one line, removing end-of-lines."
-  (interactive)
-  (let ((fill-column 65000)) ; some big number
-    (call-interactively 'fill-paragraph)))
 
-(defun force-fill-paragraph ()
-  ;; by David Goodger
-  "Fill paragraph at point, first joining the paragraph's lines into one.
-This is useful for filling list item paragraphs."
-  (interactive)
-  (join-paragraph)
-  (fill-paragraph nil))
-
-(defun line-single-char-p ()
-  "Predicate is t if the current line is composed only of a
-  single repeated non-whitespace character."
-  (save-excursion
-    (back-to-indentation)
-    (if (not (looking-at "\n"))
-	(looking-at (format "[%s]+\\s-*$" (thing-at-point 'char))))
-    ))
-
-(defun reST-box-section ()
-  "Adds hanging overline and underline title markers for the text
-on the current line.  If the text is not indented, we indent it
-by one char.
-
-The underline character chosen is the one present in the current
-underline, or '-'.
-
-In addition, this function removes any existing overline and
-underline and replaces it with the update one.  This allows you
-to edit a title and then simple update the boxing around it."
-
-  (interactive)
-  (save-excursion
-    (let (bc
-	  ec
-	  (c ?-))
-
-      ;; Fix indentation if the line does not begin with some whitespace
-      (beginning-of-line)
-      (and (not (looking-at "[\t ]")) (insert " "))
-      (back-to-indentation)
-      (setq bc (current-column))
-
-      ;; Remove whitespace at the end of the line
-      (end-of-line)
-      (delete-horizontal-space)
-      (setq ec (current-column))
-
-      ;; Remove previous line if it consists only of a single repeated character
-      (save-excursion
-	(forward-line -1)
-	(and (line-single-char-p)
-	     (kill-whole-line 1)))
-
-      ;; Remove previous line if it consists only of a single repeated character
-      (save-excursion
-	(forward-line +1)
-	(if (line-single-char-p)
-	    (progn
-	      ;; Get the previous character from the first char of the following line
-	      (back-to-indentation)
-	      (setq c (string-to-char (thing-at-point 'char)))
-	      (kill-whole-line 1))))
-
-      ;; Insert overline
-      (beginning-of-line)
-      (open-line 1)
-      (move-to-column (- bc 1) t)
-      (insert (make-string (+ (- ec bc) 2) c))
-
-      ;; Insert overline
-      (forward-line +2)
-      (open-line 1)
-      (move-to-column (- bc 1) t)
-      (insert (make-string (+ (- ec bc) 2) c))
-
-      )))
-
+;;------------------------------------------------------------------------------
+;; For backwards compatibility.  Remove at some point.
+(defalias 'reST-title-char-p 'rest-title-char-p)
+(defalias 'reST-forward-title 'rest-forward-section)
+(defalias 'reST-backward-title 'rest-backward-section)
