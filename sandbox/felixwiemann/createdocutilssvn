@@ -47,5 +47,5 @@ cd docutils-svn-$date
 chmod g+u * -R
 find * -type d | xargs chmod g+s
 # Create tarball.
-tar czvf ../docutils-svn-$date.tar.gz *
+tar cjvf ../docutils-svn-$date.tar.bz2 *
 cd ..
