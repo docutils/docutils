@@ -41,6 +41,8 @@ Changes Since 0.2
 * docutils/__init__.py:
 
   - Bumped version to 0.2.1 to reflect changes to I/O classes.
+  - Bumped version to 0.2.2 to reflect changes to stylesheet options.
+  - Factored ``OptionSpec`` out of ``Component``; separately useful.
 
 * docutils/core.py:
 
@@ -50,6 +52,12 @@ Changes Since 0.2
 
   - Check for & exit on identical source & destination paths.
   - Fixed bug with absolute paths & ``--config``.
+  - Set non-command-line defaults in ``OptionParser.__init__()``:
+    ``_source`` & ``_destination``.
+  - Distributed ``relative_path_options`` to components; updated
+    ``OptionParser.populate_from_components()`` to combine it all.
+  - Require list of keys in ``make_paths_absolute`` (was implicit in
+    global ``relative_path_options``).
 
 * docutils/io.py:
 
@@ -138,17 +146,24 @@ Changes Since 0.2
   - Added support for "line_block", "address" elements.
   - Improved backlinks (footnotes & system_messages).
   - Improved system_message output.
+  - Redefined "--stylesheet" as containing an invariant URL, used
+    verbatim.  Added "--stylesheet-path", interpreted w.r.t. the
+    working directory.
 
 * docutils/writers/pep_html.py:
 
   - Parameterized output encoding in PEP template.
   - Reworked substitutions from ``locals()`` into ``subs`` dict.
+  - Redefined "--pep-stylesheet" as containing an invariant URL, used
+    verbatim.  Added "--pep-stylesheet-path", interpreted w.r.t. the
+    working directory.
 
 * docs/tools.txt:
 
   - Added a "silent" setting for ``buildhtml.py``.
   - Added a "Getting Help" section.
   - Rearranged the structure.
+  - Kept up to date, with new command-line options etc.
 
 * docs/rst/quickstart.txt:
 
@@ -169,7 +184,7 @@ Changes Since 0.2
     docstrings.
   - Wrote descriptions of all common attributes and parameter
     entities.  Filled in introductory material.
-  - Working through the element descriptions: 21 down, 63 to go.
+  - Working through the element descriptions: 29 down, 55 to go.
 
 * spec/docutils.dtd:
 
