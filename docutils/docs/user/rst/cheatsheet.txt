@@ -50,7 +50,7 @@ Citation          .. [CIT2002] A citation.
 Hyperlink Target  .. _reStructuredText: http://docutils.sf.net/rst.html
                   .. _indirect target: reStructuredText_
                   .. _internal target:
-Anonymous Target  __ http://docutils.sf.net/spec/rst/reStructuredText.html
+Anonymous Target  __ http://docutils.sf.net/docs/ref/rst/restructuredtext.html
 Directive ("::")  .. image:: images/biohazard.png
 Substitution Def  .. |substitution| replace:: like an inline directive
 Comment           .. is anything else

@@ -20,8 +20,9 @@
 
 ;; This package provides support for documents marked up using the
 ;; reStructuredText format
-;; [http://docutils.sourceforge.net/spec/rst/reStructuredText.html]. Support
-;; includes font locking as well as some convenience functions for editing.
+;; [http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html].
+;; Support includes font locking as well as some convenience functions
+;; for editing.
 
 ;; The package is based on `text-mode' and inherits some things from it.
 ;; Particularly `text-mode-hook' is run before `rst-mode-hook'.
@@ -53,7 +54,7 @@
 (defgroup rst nil "Support for reStructuredText documents"
   :group 'wp
   :version "21.1"
-  :link '(url-link "http://docutils.sourceforge.net/spec/rst/reStructuredText.html"))
+  :link '(url-link "http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html"))
 
 (defcustom rst-mode-hook nil
   "Hook run when Rst Mode is turned on. The hook for Text Mode is run before
@@ -288,7 +289,7 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
 (defun rst-font-lock-keywords-function ()
   "Returns keywords to highlight in rst mode according to current settings."
   ;; The reST-links in the comments below all relate to sections in
-  ;; http://docutils.sourceforge.net/spec/rst/reStructuredText.html
+  ;; http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
   (let* ( ;; This gets big - so let's define some abbreviations
 	 ;; horizontal white space
 	 (re-hws "[\t ]")
