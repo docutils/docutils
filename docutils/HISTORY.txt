@@ -59,7 +59,7 @@ Changes Since 0.2
   - Added "Invisible" element category class.
   - Changed ``Node.walk()`` & ``.walkabout()`` to permit more tree
     modification during a traversal.
-  - Added "generated" element.
+  - Added element classes: ``line_block``, ``generated``.
   - Added support for lists of nodes to ``Element.insert()``.
   - Fixed parent linking in ``Element.replace()``.
 
@@ -67,9 +67,11 @@ Changes Since 0.2
 
   - Changed "title under/overline too short" system messages from INFO
     to WARNING, and fixed its insertion location.
+  - Fixed enumerated list item parsing to allow paragraphs & section
+    titles to begin with enumerators.
 
 * docutils/parsers/rst/directives/body.py: Added to project.  Contains
-  the "topic" directive.
+  the "topic", "line-block", and "parsed-literal" directives.
 
 * docutils/parsers/rst/directives/parts.py:
 
@@ -115,6 +117,7 @@ Changes Since 0.2
     of text and ``&nbsp;`` for runs of spaces.
   - Improved modularity of output; added ``self.body_pre_docinfo`` and
     ``self.docinfo`` segments.
+  - Added support for "line_block" elements.
 
 * docutils/writers/pep_html.py:
 
@@ -148,7 +151,10 @@ Changes Since 0.2
 * spec/docutils.dtd:
 
   - Added "generated" inline element.
+  - Added "line_block" body element.
   - Added "auto" attribute to "title".
+  - Changed content models of "literal_block" and "doctest_block" to
+    ``%text.model``.
 
 * spec/pep-0256.txt: Converted to reStructuredText & updated.
 
@@ -156,11 +162,14 @@ Changes Since 0.2
 
 * spec/rst/directives.txt:
 
-  - Added directives: "topic", "sectnum", "target-notes".
+  - Added directives: "topic", "sectnum", "target-notes",
+    "line-block", "parsed-literal".
 
 * spec/rst/reStructuredText.txt:
 
   - Disambiguated comments (just add a newline after the "::").
+  - Updated enumerated list description; added a discussion of the
+    second-line validity checking.
 
 * tools/buildhtml.py:
 
@@ -176,6 +185,7 @@ Changes Since 0.2
   - Support for auto-numbered section titles in TOCs.
   - Increased the size of inline literals (<tt>) in titles.
   - Restored the light gray background for inline literals.
+  - Added support for "line_block" elements.
 
 * tools/pep2html.py:
 

@@ -556,9 +556,35 @@ Paragraph.
 """,
 """\
 <document>
-    <section id="1-numbered-title" name="1. numbered title">
+    <section id="numbered-title" name="1. numbered title">
         <title>
             1. Numbered Title
+        <paragraph>
+            Paragraph.
+"""],
+["""\
+1. Item 1.
+2. Item 2.
+3. Numbered Title
+=================
+
+Paragraph.
+""",
+"""\
+<document>
+    <enumerated_list enumtype="arabic" prefix="" suffix=".">
+        <list_item>
+            <paragraph>
+                Item 1.
+        <list_item>
+            <paragraph>
+                Item 2.
+    <system_message level="2" type="WARNING">
+        <paragraph>
+            Enumerated list ends without a blank line; unexpected unindent at line 3.
+    <section id="numbered-title" name="3. numbered title">
+        <title>
+            3. Numbered Title
         <paragraph>
             Paragraph.
 """],

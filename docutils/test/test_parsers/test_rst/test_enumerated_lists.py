@@ -68,16 +68,18 @@ empty item above, no blank line
 """,
 """\
 <document>
-    <enumerated_list enumtype="arabic" prefix="" suffix=".">
-        <list_item>
-    <system_message level="2" type="WARNING">
-        <paragraph>
-            Enumerated list ends without a blank line; unexpected unindent at line 2.
     <paragraph>
+        1.
         empty item above, no blank line
 """],
 ["""\
 Scrambled:
+
+3. Item three.
+
+2. Item two.
+
+1. Item one.
 
 3. Item three.
 2. Item two.
@@ -94,23 +96,21 @@ Scrambled:
         <list_item>
             <paragraph>
                 Item three.
-    <system_message level="2" type="WARNING">
-        <paragraph>
-            Enumerated list ends without a blank line; unexpected unindent at line 4.
     <system_message level="1" type="INFO">
         <paragraph>
-            Enumerated list start value not ordinal-1 at line 4: "2" (ordinal 2)
+            Enumerated list start value not ordinal-1 at line 5: "2" (ordinal 2)
     <enumerated_list enumtype="arabic" prefix="" start="2" suffix=".">
         <list_item>
             <paragraph>
                 Item two.
-    <system_message level="2" type="WARNING">
-        <paragraph>
-            Enumerated list ends without a blank line; unexpected unindent at line 5.
     <enumerated_list enumtype="arabic" prefix="" suffix=".">
         <list_item>
             <paragraph>
                 Item one.
+    <paragraph>
+        3. Item three.
+        2. Item two.
+        1. Item one.
 """],
 ["""\
 Skipping item 3:
@@ -127,19 +127,12 @@ Skipping item 3:
         <list_item>
             <paragraph>
                 Item 1.
-        <list_item>
-            <paragraph>
-                Item 2.
     <system_message level="2" type="WARNING">
         <paragraph>
-            Enumerated list ends without a blank line; unexpected unindent at line 5.
-    <system_message level="1" type="INFO">
-        <paragraph>
-            Enumerated list start value not ordinal-1 at line 5: "4" (ordinal 4)
-    <enumerated_list enumtype="arabic" prefix="" start="4" suffix=".">
-        <list_item>
-            <paragraph>
-                Item 4.
+            Enumerated list ends without a blank line; unexpected unindent at line 4.
+    <paragraph>
+        2. Item 2.
+        4. Item 4.
 """],
 ["""\
 Start with non-ordinal-1:
@@ -297,11 +290,22 @@ iii. Item iii.
 Bad Roman numerals:
 
 i. i
+
 ii. ii
+
 iii. iii
+
 iiii. iiii
+      second line
+
+(LCD) is an acronym made up of Roman numerals
+
+(livid) is a word made up of Roman numerals
+
+(CIVIL) is another such word
 
 (I) I
+
 (IVXLCDM) IVXLCDM
 """,
 """\
@@ -318,28 +322,25 @@ iiii. iiii
         <list_item>
             <paragraph>
                 iii
-    <system_message level="2" type="WARNING">
-        <paragraph>
-            Enumerated list ends without a blank line; unexpected unindent at line 6.
-    <system_message level="3" type="ERROR">
-        <paragraph>
-            Enumerated list start value invalid at line 6: "iiii" (sequence 'lowerroman')
-    <block_quote>
-        <paragraph>
-            iiii
+    <definition_list>
+        <definition_list_item>
+            <term>
+                iiii. iiii
+            <definition>
+                <paragraph>
+                    second line
+    <paragraph>
+        (LCD) is an acronym made up of Roman numerals
+    <paragraph>
+        (livid) is a word made up of Roman numerals
+    <paragraph>
+        (CIVIL) is another such word
     <enumerated_list enumtype="upperroman" prefix="(" suffix=")">
         <list_item>
             <paragraph>
                 I
-    <system_message level="2" type="WARNING">
-        <paragraph>
-            Enumerated list ends without a blank line; unexpected unindent at line 9.
-    <system_message level="3" type="ERROR">
-        <paragraph>
-            Enumerated list start value invalid at line 9: "IVXLCDM" (sequence 'upperroman')
-    <block_quote>
-        <paragraph>
-            IVXLCDM
+    <paragraph>
+        (IVXLCDM) IVXLCDM
 """],
 ["""\
 Potentially ambiguous cases:
@@ -465,16 +466,13 @@ iii. Item iii.
         <list_item>
             <paragraph>
                 Item H.
+    <system_message level="2" type="WARNING">
+        <paragraph>
+            Enumerated list ends without a blank line; unexpected unindent at line 11.
+    <enumerated_list enumtype="upperroman" prefix="" suffix=".">
         <list_item>
             <paragraph>
                 Item I.
-    <system_message level="2" type="WARNING">
-        <paragraph>
-            Enumerated list ends without a blank line; unexpected unindent at line 12.
-    <system_message level="1" type="INFO">
-        <paragraph>
-            Enumerated list start value not ordinal-1 at line 12: "II" (ordinal 2)
-    <enumerated_list enumtype="upperroman" prefix="" start="2" suffix=".">
         <list_item>
             <paragraph>
                 Item II.
@@ -506,16 +504,13 @@ iii. Item iii.
         <list_item>
             <paragraph>
                 Item h.
+    <system_message level="2" type="WARNING">
+        <paragraph>
+            Enumerated list ends without a blank line; unexpected unindent at line 23.
+    <enumerated_list enumtype="lowerroman" prefix="" suffix=".">
         <list_item>
             <paragraph>
                 Item i.
-    <system_message level="2" type="WARNING">
-        <paragraph>
-            Enumerated list ends without a blank line; unexpected unindent at line 24.
-    <system_message level="1" type="INFO">
-        <paragraph>
-            Enumerated list start value not ordinal-1 at line 24: "ii" (ordinal 2)
-    <enumerated_list enumtype="lowerroman" prefix="" start="2" suffix=".">
         <list_item>
             <paragraph>
                 Item ii.
@@ -677,6 +672,52 @@ Princeton, NJ.
     <paragraph>
         C. Chemist.  They all worked in
         Princeton, NJ.
+"""],
+["""\
+1. Item one: line 1,
+   line 2.
+2. Item two: line 1,
+  line 2.
+3. Item three: paragraph 1, line 1,
+ line 2.
+
+   Paragraph 2.
+""",
+"""\
+<document>
+    <enumerated_list enumtype="arabic" prefix="" suffix=".">
+        <list_item>
+            <paragraph>
+                Item one: line 1,
+                line 2.
+        <list_item>
+            <paragraph>
+                Item two: line 1,
+    <system_message level="2" type="WARNING">
+        <paragraph>
+            Enumerated list ends without a blank line; unexpected unindent at line 4.
+    <block_quote>
+        <paragraph>
+            line 2.
+    <system_message level="2" type="WARNING">
+        <paragraph>
+            Block quote ends without a blank line; unexpected unindent at line 5.
+    <system_message level="1" type="INFO">
+        <paragraph>
+            Enumerated list start value not ordinal-1 at line 5: "3" (ordinal 3)
+    <enumerated_list enumtype="arabic" prefix="" start="3" suffix=".">
+        <list_item>
+            <paragraph>
+                Item three: paragraph 1, line 1,
+    <system_message level="2" type="WARNING">
+        <paragraph>
+            Enumerated list ends without a blank line; unexpected unindent at line 6.
+    <block_quote>
+        <paragraph>
+            line 2.
+        <block_quote>
+            <paragraph>
+                Paragraph 2.
 """],
 ]
 
