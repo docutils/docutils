@@ -50,8 +50,12 @@ class DocutilsXMLTestCase(unittest.TestCase):
 
                         s = docutils.SettingsSpec()
                         s.settings_default_overrides = settings
-                        self.assertEqual(docutils.core.publish_string(source=self.input, reader_name='standalone',
-                                                                      writer_name='docutils_xml', settings_spec=s), expected)
+                        self.assertEqual(docutils.core.publish_string
+                                         (source=self.input,
+                                          reader_name='standalone',
+                                          writer_name='docutils_xml',
+                                          settings_spec=s),
+                                         expected)
 
 
 if __name__ == '__main__':
