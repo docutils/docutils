@@ -14,6 +14,7 @@ from __init__ import DocutilsTestSupport
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
+    s.test_case_class = DocutilsTestSupport.TransitionTestCase
     s.generateTests(totest)
     return s
 
@@ -99,11 +100,11 @@ may not end with a transition.
     <transition>
     <system_message level="3" line="10" source="test data" type="ERROR">
         <paragraph>
-            At least one body element must separate transitions; adjacent transitions not allowed.
+            At least one body element must separate transitions; adjacent transitions are not allowed.
     <transition>
     <system_message level="3" line="12" source="test data" type="ERROR">
         <paragraph>
-            At least one body element must separate transitions; adjacent transitions not allowed.
+            At least one body element must separate transitions; adjacent transitions are not allowed.
     <transition>
     <paragraph>
         The DTD also specifies that a section or document
@@ -111,7 +112,7 @@ may not end with a transition.
     <transition>
     <system_message level="3" line="17" source="test data" type="ERROR">
         <paragraph>
-            Document or section may not end with a transition.
+            Document may not end with a transition.
 """],
 ["""\
 Test unexpected transition markers.
@@ -161,7 +162,7 @@ Section 1
 
 ----------
 
-Illegal transitions.
+The next transition is legal:
 
 ----------
 
@@ -179,24 +180,62 @@ Section 2
             Section 1
         <system_message level="3" line="6" source="test data" type="ERROR">
             <paragraph>
-                Section may not begin with a transition.
+                Document or section may not begin with a transition.
         <transition>
         <paragraph>
-            Illegal transitions.
-        <transition>
-        <system_message level="3" line="10" source="test data" type="ERROR">
-            <paragraph>
-                Section may not end with a transition.
+            The next transition is legal:
+    <transition>
     <section id="section-2" name="section 2">
         <title>
             Section 2
         <system_message level="3" line="15" source="test data" type="ERROR">
             <paragraph>
-                Section may not begin with a transition.
+                Document or section may not begin with a transition.
         <transition>
         <system_message level="3" line="15" source="test data" type="ERROR">
             <paragraph>
-                Document or section may not end with a transition.
+                Document may not end with a transition.
+"""],
+["""\
+A paragraph and two transitions.
+
+----------
+
+----------
+
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        A paragraph and two transitions.
+    <transition>
+    <system_message level="3" line="5" source="test data" type="ERROR">
+        <paragraph>
+            At least one body element must separate transitions; adjacent transitions are not allowed.
+    <transition>
+    <system_message level="3" line="5" source="test data" type="ERROR">
+        <paragraph>
+            Document may not end with a transition.
+"""],
+["""\
+A paragraph and two transitions.
+
+----------
+
+----------
+""", # the same:
+"""\
+<document source="test data">
+    <paragraph>
+        A paragraph and two transitions.
+    <transition>
+    <system_message level="3" line="5" source="test data" type="ERROR">
+        <paragraph>
+            At least one body element must separate transitions; adjacent transitions are not allowed.
+    <transition>
+    <system_message level="3" line="5" source="test data" type="ERROR">
+        <paragraph>
+            Document may not end with a transition.
 """],
 ["""\
 ----------
@@ -211,6 +250,117 @@ Document beginning with a transition.
     <transition>
     <paragraph>
         Document beginning with a transition.
+"""],
+["""\
+Section 1
+=========
+
+Subsection 1
+------------
+
+Some text.
+
+----------
+
+Section 2
+=========
+
+Some text.
+""",
+"""\
+<document source="test data">
+    <section id="section-1" name="section 1">
+        <title>
+            Section 1
+        <section id="subsection-1" name="subsection 1">
+            <title>
+                Subsection 1
+            <paragraph>
+                Some text.
+    <transition>
+    <section id="section-2" name="section 2">
+        <title>
+            Section 2
+        <paragraph>
+            Some text.
+"""],
+["""\
+Section 1
+=========
+
+----------
+
+----------
+
+----------
+
+Section 2
+=========
+
+Some text.
+""",
+"""\
+<document source="test data">
+    <section id="section-1" name="section 1">
+        <title>
+            Section 1
+        <system_message level="3" line="4" source="test data" type="ERROR">
+            <paragraph>
+                Document or section may not begin with a transition.
+        <transition>
+        <system_message level="3" line="6" source="test data" type="ERROR">
+            <paragraph>
+                At least one body element must separate transitions; adjacent transitions are not allowed.
+        <transition>
+        <system_message level="3" line="8" source="test data" type="ERROR">
+            <paragraph>
+                At least one body element must separate transitions; adjacent transitions are not allowed.
+    <transition>
+    <section id="section-2" name="section 2">
+        <title>
+            Section 2
+        <paragraph>
+            Some text.
+"""],
+["""\
+----------
+
+----------
+
+----------
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Document or section may not begin with a transition.
+    <transition>
+    <system_message level="3" line="3" source="test data" type="ERROR">
+        <paragraph>
+            At least one body element must separate transitions; adjacent transitions are not allowed.
+    <transition>
+    <system_message level="3" line="5" source="test data" type="ERROR">
+        <paragraph>
+            At least one body element must separate transitions; adjacent transitions are not allowed.
+    <transition>
+    <system_message level="3" line="5" source="test data" type="ERROR">
+        <paragraph>
+            Document may not end with a transition.
+"""],
+["""\
+A paragraph.
+
+----------
+
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        A paragraph.
+    <transition>
+    <system_message level="3" line="3" source="test data" type="ERROR">
+        <paragraph>
+            Document may not end with a transition.
 """],
 ]
 
