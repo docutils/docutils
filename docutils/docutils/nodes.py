@@ -87,12 +87,11 @@ class Node:
 
     def walk(self, visitor):
         """
-        Traverse a tree of `Node` objects, calling ``visit_...`` methods of
-        `visitor` when entering each node. If there is no
-        ``visit_particular_node`` method for a node of type
-        ``particular_node``, the ``unknown_visit`` method is called.  (The
-        `walkabout()` method is similar, except it also calls ``depart_...``
-        methods before exiting each node.)
+        Traverse a tree of `Node` objects, calling the
+        `dispatch_visit()` method of `visitor` when entering each
+        node.  (The `walkabout()` method is similar, except it also
+        calls the `dispatch_departure()` method before exiting each
+        node.)
 
         This tree traversal supports limited in-place tree
         modifications.  Replacing one node with one or more nodes is
@@ -100,12 +99,12 @@ class Node:
         or replaced occurs after the current node, the old node will
         still be traversed, and any new nodes will not.
 
-        Within ``visit_...`` methods (and ``depart_...`` methods for
+        Within ``visit`` methods (and ``depart`` methods for 
         `walkabout()`), `TreePruningException` subclasses may be raised
         (`SkipChildren`, `SkipSiblings`, `SkipNode`, `SkipDeparture`).
 
         Parameter `visitor`: A `NodeVisitor` object, containing a
-        ``visit_...`` method for each `Node` subclass encountered.
+        ``visit`` implementation for each `Node` subclass encountered.
         """
         visitor.document.reporter.debug(
             'calling dispatch_visit for %s' % self.__class__.__name__,
@@ -125,13 +124,13 @@ class Node:
 
     def walkabout(self, visitor):
         """
-        Perform a tree traversal similarly to `Node.walk()` (which see),
-        except also call ``depart_...`` methods before exiting each node. If
-        there is no ``depart_particular_node`` method for a node of type
-        ``particular_node``, the ``unknown_departure`` method is called.
+        Perform a tree traversal similarly to `Node.walk()` (which
+        see), except also call the `dispatch_departure()` method
+        before exiting each node.
 
-        Parameter `visitor`: A `NodeVisitor` object, containing ``visit_...``
-        and ``depart_...`` methods for each `Node` subclass encountered.
+        Parameter `visitor`: A `NodeVisitor` object, containing a
+        ``visit`` and ``depart`` implementation for each `Node`
+        subclass encountered.
         """
         call_depart = 1
         visitor.document.reporter.debug(
@@ -1248,14 +1247,17 @@ node_class_names = """
 class NodeVisitor:
 
     """
-    "Visitor" pattern [GoF95]_ abstract superclass implementation for document
-    tree traversals.
+    "Visitor" pattern [GoF95]_ abstract superclass implementation for
+    document tree traversals.
 
-    Each node class has corresponding methods, doing nothing by default;
-    override individual methods for specific and useful behaviour.  The
-    "``visit_`` + node class name" method is called by `Node.walk()` upon
-    entering a node.  `Node.walkabout()` also calls the "``depart_`` + node
-    class name" method before exiting a node.
+    Each node class has corresponding methods, doing nothing by
+    default; override individual methods for specific and useful
+    behaviour.  The `dispatch_visit()` method is called by
+    `Node.walk()` upon entering a node.  `Node.walkabout()` also calls
+    the `dispatch_departure()` method before exiting a node.
+
+    The dispatch methods call "``visit_`` + node class name" or
+    "``depart_`` + node class name", resp.
 
     This is a base class for visitors whose ``visit_...`` & ``depart_...``
     methods should be implemented for *all* node types encountered (such as
@@ -1275,6 +1277,11 @@ class NodeVisitor:
         self.document = document
 
     def dispatch_visit(self, node):
+        """
+        Call self."``visit_`` + node class name" with `node` as
+        parameter.  If the ``visit_...`` method does not exist, call
+        self.unknown_visit.
+        """
         node_name = node.__class__.__name__
         method = getattr(self, 'visit_' + node_name, self.unknown_visit)
         self.document.reporter.debug(
@@ -1283,6 +1290,11 @@ class NodeVisitor:
         return method(node)
 
     def dispatch_departure(self, node):
+        """
+        Call self."``depart_`` + node class name" with `node` as
+        parameter.  If the ``depart_...`` method does not exist, call
+        self.unknown_departure.
+        """
         node_name = node.__class__.__name__
         method = getattr(self, 'depart_' + node_name, self.unknown_departure)
         self.document.reporter.debug(
