@@ -758,7 +758,7 @@ his essay `The Magic Cauldron`_:
     through to contribute.
 
     .. _The Magic Cauldron:
-    http://www.tuxedo.org/~esr/writings/magic-cauldron/
+       http://www.tuxedo.org/~esr/writings/magic-cauldron/
 
 Therefore, we will endeavour to keep the barrier to entry as low as
 possible.  The policies below should not be thought of as barriers,
