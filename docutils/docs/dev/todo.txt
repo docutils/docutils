@@ -68,6 +68,10 @@ General
     - Howto: Directives
 
   - User docs.
+  
+    - How to use the front-ends (docs/tools.txt).
+
+    - Configuration file syntax & recognized entries.
 
 - Refactor
 
@@ -110,9 +114,6 @@ General
 - Add a command-line option & directive attribute to control TOC
   backlinks: no TOC backlinks, backlinks to TOC entries, or backlinks
   to TOC itself only.
-
-- Add resource file support (~/.docutils?): overrides application
-  defaults, overridden by command-line options.  What syntax to use?
 
 
 Specification
