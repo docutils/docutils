@@ -55,6 +55,7 @@ _directive_registry = {
       'image': ('images', 'image'),
       'figure': ('images', 'figure'),
       'contents': ('parts', 'contents'),
+      'sectnum': ('parts', 'sectnum'),
       #'footnotes': ('parts', 'footnotes'),
       #'citations': ('parts', 'citations'),
       'meta': ('html', 'meta'),
