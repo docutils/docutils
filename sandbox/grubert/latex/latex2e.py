@@ -546,6 +546,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.context[-1] += 1
 
     def visit_enumerated_list(self, node):
+        # Enumerations can be nested within one another, up to four levels deep.
         self.body.append('\\begin{enumerate}\n')
 
     def depart_enumerated_list(self, node):

@@ -19,13 +19,13 @@ mostly errors when processing tools/test.txt.
     >       66               99
     >         that is the way
 
-  but in german::
+  for latex2e ``that is the way''. but in german::
 
     >           66
     >     anders
     >   99
 
-
+  use "`andres"'.
 
 * tabularx says "donot use any multicolmn which spans any X column.
   maybe use ltxtable instead of tabularx (Longtable combined with tabularx).
@@ -43,7 +43,9 @@ mostly errors when processing tools/test.txt.
 
 * table cells with multirow and multicolumn
 
-* enumeration too deep
+* enumeration too deep: latex goes up to four.
+  by accident or design latex and html conform on item numbering style.
+	
 
 * lists that donot start at one donot work.
 
