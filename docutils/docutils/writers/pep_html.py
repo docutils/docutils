@@ -93,20 +93,21 @@ class Writer(html4css1.Writer):
 
 class HTMLTranslator(html4css1.HTMLTranslator):
 
-    def get_stylesheet_reference(self):
+    def get_stylesheet_reference(self, relative_to=None):
         options = self.options
+        if relative_to == None:
+            relative_to = options._destination
         if options.pep_stylesheet_path:
-            return utils.relative_path(options._destination,
+            return utils.relative_path(relative_to,
                                        options.pep_stylesheet_path)
         elif options.pep_stylesheet:
             return options.pep_stylesheet
         elif options._stylesheet_path:
-            return utils.relative_path(options._destination,
-                                       options.stylesheet_path)
+            return utils.relative_path(relative_to, options.stylesheet_path)
         else:
             return options.stylesheet
 
     def depart_field_list(self, node):
         html4css1.HTMLTranslator.depart_field_list(self, node)
-        if node.hasattr('class') and node['class'] == 'rfc2822':
+        if node.get('class') == 'rfc2822':
              self.body.append('<hr />\n')
