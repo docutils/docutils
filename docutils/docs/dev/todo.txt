@@ -148,7 +148,7 @@ PySource Reader
 
 - Analyze Tony Ibbs' PySource code.
 
-- Analyze Doug Hellman's HappyDoc project.
+- Analyze Doug Hellmann's HappyDoc project.
 
 - Take the best ideas and integrate them into Docutils 0.3.
 
