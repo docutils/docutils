@@ -4,8 +4,8 @@
 # Date: $Date$
 # Copyright: This module has been placed in the public domain.
 
-from docutils import writers, nodes, languages
-import docutils, html4css1, os
+from docutils import writers
+import html4css1, os
 
 class Writer(html4css1.Writer):
 
