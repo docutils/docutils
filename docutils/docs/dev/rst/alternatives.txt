@@ -1324,6 +1324,302 @@ ugly or confusing (depending on which alternative is chosen).
    Advantages: explicit, any enumeration sequence possible.
    Disadvantages: a bit ugly.
 
+
+Inline External Targets
+=======================
+
+Currently reStructuredText has two hyperlink syntax variations:
+
+* Named hyperlinks::
+
+      This is a named reference_ of one word ("reference").  Here is
+      a `phrase reference`_.  Phrase references may even cross `line
+      boundaries`_.
+
+      .. _reference: http://www.example.org/reference/
+      .. _phrase reference: http://www.example.org/phrase_reference/
+      .. _line boundaries: http://www.example.org/line_boundaries/
+
+  + Advantages: 
+
+    - The plaintext is readable.
+    - Each target may be reused multiple times (e.g., just write
+      ``"reference_"`` again).
+    - No syncronized ordering of references and targets is necessary.
+  
+  + Disadvantages:
+  
+    - The reference text must be repeated as target names; could lead
+      to mistakes.
+    - The target URLs may be located far from the references, and hard
+      to find in the plaintext.
+
+* Anonymous hyperlinks (in current reStructuredText)::
+
+      This is a named reference__ of one word ("reference").  Here is
+      a `phrase reference`__.  Phrase references may even cross `line
+      boundaries`__.
+
+      __ http://www.example.org/reference/
+      __ http://www.example.org/phrase_reference/
+      __ http://www.example.org/line_boundaries/
+
+  + Advantages: 
+
+    - The plaintext is readable.
+    - The reference text does not have to be repeated.
+  
+  + Disadvantages:
+  
+    - References and targets must be kept in sync.
+    - Targets cannot be reused.
+    - The target URLs may be located far from the references.
+
+For comparison and historical background, StructuredText also has two
+syntaxes for hyperlinks:
+
+* First, ``"reference text":URL``::
+
+      This is a named "reference":http://www.example.org/reference/
+      of one word ("reference").  Here is a "phrase
+      reference":http://www.example.org/phrase_reference/.
+
+* Second, ``"reference text", http://example.com/absolute_URL``::
+
+      This is a named "reference", http://www.example.org/reference/
+      of one word ("reference").  Here is a "phrase reference",
+      http://www.example.org/phrase_reference/.
+
+Both syntaxes share advantages and disadvantages:
+
++ Advantages: 
+
+  - The target is specified immediately adjacent to the reference.
+
++ Disadvantages:
+
+  - Poor plaintext readability.
+  - Targets cannot be reused.
+  - Both syntaxes use double quotes, common in ordinary text.
+  - In the first syntax, the URL and the last word are stuck
+    together, exacerbating the line wrap problem.
+  - The second syntax is too magical; text could easily be written
+    that way by accident (although only absolute URLs are recognized
+    here, perhaps because of the potential for ambiguity).
+
+A new type of "inline external hyperlink" has been proposed.
+
+1. On 2002-06-28, Simon Budig proposed__ a new syntax for
+   reStructuredText hyperlinks::
+
+       This is a reference_(http://www.example.org/reference/) of one
+       word ("reference").  Here is a `phrase
+       reference`_(http://www.example.org/phrase_reference/).  Are
+       these examples, (single-underscore), named?  If so, `anonymous
+       references`__(http://www.example.org/anonymous/) using two
+       underscores would probably be preferable.
+ 
+   __ http://mail.python.org/pipermail/doc-sig/2002-June/002648.html
+
+   The syntax, advantages, and disadvantages are similar to those of
+   StructuredText.
+
+   + Advantages: 
+   
+     - The target is specified immediately adjacent to the reference.
+   
+   + Disadvantages:
+   
+     - Poor plaintext readability.
+     - Targets cannot be reused (unless named, but the semantics are
+       unclear).
+
+   + Problems:
+
+     - The "`ref`_(URL)" syntax forces the last word of the reference
+       text to be joined to the URL, making a potentially very long
+       word that can't be wrapped (URLs can be very long).  The
+       reference and the URL should be separate.  This is a symptom
+       of the following point:
+
+     - The syntax produces a single compound construct made up of two
+       equally important parts, *with syntax in the middle*, *between*
+       the reference and the target.  This is unprecedented in
+       reStructuredText.
+
+     - The "inline hyperlink" text is *not* a named reference (there's
+       no lookup by name), so it shouldn't look like one.
+
+     - According to the IETF standards RFC 2396 and RFC 2732,
+       parentheses are legal URI characters and curly braces are legal
+       email characters, making their use prohibitively difficult.
+
+     - The named/anonymous semantics are unclear.
+
+2. After an analysis__ of the syntax of (1) above, we came up with the
+   following compromise syntax::
+
+       This is an anonymous reference__
+       __<http://www.example.org/reference/> of one word
+       ("reference").  Here is a `phrase reference`__
+       __<http://www.example.org/phrase_reference/>.  `Named
+       references`_ _<http://www.example.org/anonymous/> use single
+       underscores.
+
+   __ http://mail.python.org/pipermail/doc-sig/2002-July/002670.html
+
+   The syntax builds on that of the existing "inline internal
+   targets": ``an _`inline internal target`.``
+
+   + Advantages: 
+
+     - The target is specified immediately adjacent to the reference,
+       improving maintainability:
+  
+       - References and targets are easily kept in sync.
+       - The reference text does not have to be repeated.
+
+     - The construct is executed in two parts: references identical to
+       existing references, and targets that are new but not too big a
+       stretch from current syntax.
+
+     - There's overwhelming precedent for quoting URLs with angle
+       brackets [#]_.
+
+   + Disadvantages:
+  
+     - Poor plaintext readability.
+     - Lots of "line noise".
+     - Targets cannot be reused (unless named; see below).
+
+   To alleviate the readability issue slightly, we could allow the
+   target to appear later, such as after the end of the sentence::
+
+       This is a named reference__ of one word ("reference").
+       __<http://www.example.org/reference/>  Here is a `phrase
+       reference`__.  __<http://www.example.org/phrase_reference/>
+
+   Problem: this could only work for one reference at a time
+   (reference/target pairs must be proximate [refA trgA refB trgB],
+   not interleaved [refA refB trgA trgB] or nested [refA refB trgB
+   trgA]).  This variation is too problematic; references and inline
+   external targets will have to be kept imediately adjacent (see (3)
+   below).
+
+   The ``"reference__ __<target>"`` syntax is actually for "anonymous
+   inline external targets", emphasized by the double underscores.  It
+   follows that single trailing and leading underscores would lead to
+   *implicitly named* inline external targets.  This would allow the
+   reuse of targets by name.  So after ``"reference_ _<target>"``,
+   another ``"reference_"`` would point to the same target.
+
+   .. [#]
+      From RFC 2396 (URI syntax):
+
+          The angle-bracket "<" and ">" and double-quote (")
+          characters are excluded [from URIs] because they are often
+          used as the delimiters around URI in text documents and
+          protocol fields.
+   
+          Using <> angle brackets around each URI is especially
+          recommended as a delimiting style for URI that contain
+          whitespace.
+   
+      From RFC 822 (email headers):
+   
+          Angle brackets ("<" and ">") are generally used to indicate
+          the presence of a one machine-usable reference (e.g.,
+          delimiting mailboxes), possibly including source-routing to
+          the machine.
+
+3. If it is best for references and inline external targets to be
+   immediately adjacent, then they might as well be integrated.
+   Here's an alternative syntax embedding the target URL in the
+   reference::
+
+       This is an anonymous `reference <http://www.example.org
+       /reference/>`__ of one word ("reference").  Here is a `phrase
+       reference <http://www.example.org/phrase_reference/>`__.
+
+   Advantages and disadvantages are similar to those in (2).
+   Readability is still an issue, but the syntax is a bit less
+   heavyweight (reduced line noise).
+
+   Problem: how to refer to a title like "HTML Anchors: <a>" (which
+   ends with an HTML/SGML/XML tag)?  We could either require more
+   syntax on the target (like ``"`reference text
+   __<http://example.com/>`__"``), or require the odd conflicting
+   title to be escaped (like ``"`HTML Anchors: \<a>`__"``).  The
+   latter seems preferable, and not too onerous.
+
+   Similarly to (2) above, a single trailing underscore would convert
+   the reference & inline external target from anonymous to implicitly
+   named, allowing reuse of targets by name.
+
+   I think this is the least objectionable of the syntax alternatives.
+
+With any kind of inline external target syntax it comes down to the
+conflict between maintainability and plaintext readability.  I don't
+see a major problem with reStructuredText's maintainability, and I
+don't want to sacrifice plaintext readability to "improve" it.
+
+The proponents of inline external targets want them for easily
+maintainable web pages.  The arguments go something like this:
+
+- Named hyperlinks are difficult to maintain because the reference
+  text is duplicated as the target name.
+
+  To which I said, "So use anonymous hyperlinks."
+
+- Anonymous hyperlinks are difficult to maintain becuase the
+  references and targets have to be kept in sync.
+
+  "So keep the targets close to the references, grouped after each
+  paragraph.  Maintenance is trivial."
+
+- But targets grouped after paragraphs break the flow of text.
+
+  "Surely less than URLs embedded in the text!  And if the intent is
+  to produce web pages, not readable plaintext, then who cares about
+  the flow of text?"
+
+Many participants have voiced their objections to the proposed syntax:
+
+    Garth Kidd: "I strongly prefer the current way of doing it.
+    Inline is spectactularly messy, IMHO."
+
+    Tony Ibbs: "I vehemently agree... that the inline alternatives
+    being suggested look messy - there are/were good reasons they've
+    been taken out...  I don't believe I would gain from the new
+    syntaxes."
+
+    Paul Moore: "I agree as well.  The proposed syntax is far too
+    punctuation-heavy, and any of the alternatives discussed are
+    ambiguous or too subtle."
+
+Others have voiced their support:
+
+    fantasai: "I agree with Simon.  In many cases, though certainly
+    not in all, I find parenthesizing the url in plain text flows
+    better than relegating it to a footnote."
+
+    Ken Manheimer: "I'd like to weigh in requesting some kind of easy,
+    direct inline reference link."
+
+(Interesting that those *against* the proposal have been using
+reStructuredText for a while, and those *for* the proposal are either
+new to the list ["fantasai", background unknown] or longtime
+StructuredText users [Ken Manheimer].)
+
+As is probably obvious, I'm ambivalent/against the proposed "inline
+external targets".  I value reStructuredText's readability very
+highly, and although the proposed syntax offers convenience, I don't
+know if the convenience is worth the cost in ugliness.  Does the
+proposed syntax compromise readability too much, or should the choice
+be left up to the author?  Perhaps if the syntax is *allowed* but its
+use strongly *discouraged*, for aesthetic reasons?  Or would that just
+be hypocritical?  Dilemma.
+
 
 ..
    Local Variables:
