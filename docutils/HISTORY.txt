@@ -296,6 +296,8 @@ Specific:
   - Removed PEP & RFC reference detection code; moved to
     parsers/rst/states.py as options (enabled here by default).
   - Added support for pre-acceptance PEPs (no PEP number yet).
+  - Moved ``Inliner`` & made it a class attribute of ``Reader`` for
+    easy subclassing.
 
 * docutils/transforms/__init__.py:
 

@@ -720,7 +720,7 @@ Directives
   - _`parts.citations`: See `Footnote & Citation Gathering`_.
 
   - _`misc.exec`: Execute Python code & insert the results.  Perhaps
-    dangerous?
+    dangerous?  Call it "python" to allow for other languages?
 
   - _`misc.system`?: Execute an ``os.system()`` call, and insert the
     results (possibly as a literal block).  Definitely dangerous!  How
