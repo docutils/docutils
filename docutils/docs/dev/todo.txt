@@ -40,16 +40,6 @@ Bugs
   Idea: two-pass hyperlink resolution, ignoring errors on the first
   pass?
 
-- @@@ Section headers must have underlines at least 4 characters long.
-  But when the section title is only 3 characters long, it's natural
-  to underline with "===" (I just did).  The parser should produce a
-  warning in such cases.
-
-  Or should the parser simply recognize such short underlines?  A
-  zero-tolerance policy might work: over/underlines of 3 or fewer
-  characters which are shorter than the "title" text are not
-  recognized as titles, and should generate an "info" message.
-
 - The parser doesn't know anything about double-width characters such
   as Chinese hanza & Japanese kanji/kana.  Also, it's dependent on
   whitespace and punctuation as markup delimiters, which may not be

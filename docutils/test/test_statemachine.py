@@ -1,12 +1,12 @@
 #! /usr/bin/env python
 
-"""
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
+"""
 Test module for statemachine.py.
 """
 
@@ -154,7 +154,7 @@ class SMWSTests(unittest.TestCase):
 
     def test___init__(self):
         self.assertEquals(self.sm.states.keys(), ['MockState'])
-        self.assertEquals(len(self.sm.states['MockState'].transitions), 2)
+        self.assertEquals(len(self.sm.states['MockState'].transitions), 4)
 
     def test_get_indented(self):
         self.sm.input_lines = testtext

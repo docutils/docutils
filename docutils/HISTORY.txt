@@ -94,6 +94,23 @@ Specific:
     ``document``, removed ``messages``.  Added ``note_parse_message``
     and ``note_transform_message`` methods.
 
+* docutils/statemachine.py:
+
+  - Factored out ``State.add_initial_transitions()`` so it can be
+    extended.
+  - Converted whitespace-specific "blank" and "indent" transitions
+    from special-case code to ordinary transitions: removed
+    ``StateMachineWS.check_line()`` & ``.check_whitespace()``, added
+    ``StateWS.add_initial_transitions()`` method, ``ws_patterns`` &
+    ``ws_initial_transitions`` attributes.
+  - Removed ``State.match_transition()`` after merging it into
+    ``.check_line()``.
+  - Added ``StateCorrection`` exception.
+  - Added support for ``StateCorrection`` in ``StateMachine.run()``
+    (moved ``TransitionCorrection`` support there too.)
+  - Changed ``StateMachine.next_line()`` and ``.goto_line()`` to raise
+    ``EOFError`` instead of ``IndexError``.
+  - Added ``State.no_match`` method.
 
 * docutils/utils.py:
 
@@ -118,6 +135,12 @@ Specific:
   - Added support for "--pep-references" and "--rfc-references"
     options; reworked ``Inliner`` code to make customization easier.
   - Removed field argument parsing.
+  - Added support for short section title over/underlines.
+
+* docutils/parsers/rst/tableparser.py:
+
+  - Fixed a bug that was producing unwanted empty rows in "simple"
+    tables.
 
 * docutils/parsers/rst/directives/__init__.py:
 
@@ -197,6 +220,7 @@ Specific:
   - Added "--compact-lists" and "--no-compact-lists" options.
   - Added "--embed-stylesheet" and "--link-stylesheet" options;
     factored out ``HTMLTranslator.get_stylesheet_reference()``.
+  - Improved field list rendering.
 
 * docutils/writers/pep_html.py:
 
@@ -220,12 +244,14 @@ Specific:
   - Added a table of contents.
   - Added feedback information.
   - Added mention of minimum section title underline lengths.
+  - Removed the 4-character minimum for section title underlines.
 
 * docs/rst/quickref.html:
 
   - Added a "Getting Help" section.
-  - Added a style to make section header backlinks more subtle.
+  - Added a style to make section title backlinks more subtle.
   - Added mention of minimum section title underline lengths.
+  - Removed the 4-character minimum for section title underlines.
 
 * spec/doctree.txt:
 
@@ -281,6 +307,7 @@ Specific:
   - Expanded description of inline markup start-strings in non-markup
     contexts.
   - Removed field arguments and made field lists a generic construct.
+  - Removed the 4-character minimum for section title underlines.
 
 * tools/buildhtml.py:
 
@@ -315,6 +342,7 @@ Specific:
   - Added support for "line_block" elements.
   - Added style for "address" elements.
   - Removed "a.footnote-reference" style; doing it with ``<sup>`` now.
+  - Improved field list rendering.
 
 * tools/stylesheets/pep.css:
 

@@ -1,12 +1,12 @@
 #! /usr/bin/env python
 
-"""
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
+"""
 Tests for states.py.
 """
 
@@ -153,6 +153,24 @@ A paragraph:
 """],
 ["""\
 A paragraph:
+::
+
+    A literal block.
+""",
+"""\
+<document source="test data">
+    <system_message level="1" line="2" source="test data" type="INFO">
+        <paragraph>
+            Possible title underline, too short for the title.
+            Treating it as ordinary text because it's so short.
+    <paragraph>
+        A paragraph:
+    <literal_block xml:space="1">
+        A literal block.
+"""],
+["""\
+A paragraph:
+
 ::
 
     A literal block.

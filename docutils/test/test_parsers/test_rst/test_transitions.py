@@ -1,12 +1,12 @@
 #! /usr/bin/env python
 
-"""
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
+"""
 Tests for transition markers.
 """
 
@@ -136,6 +136,22 @@ Test unexpected transition markers.
                 --------
         <paragraph>
             Paragraph.
+"""],
+["""\
+Short transition marker.
+
+---
+
+Paragraph
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Short transition marker.
+    <paragraph>
+        ---
+    <paragraph>
+        Paragraph
 """],
 ]
 
