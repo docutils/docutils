@@ -19,13 +19,13 @@ def topic(name, arguments, options, content, lineno,
           content_offset, block_text, state, state_machine):
     if not state_machine.match_titles:
         error = state_machine.reporter.error(
-              'Topics may not be nested within topics or body elements.', '',
+              'Topics may not be nested within topics or body elements.',
               nodes.literal_block(block_text, block_text), line=lineno)
         return [error]
     if not content:
         warning = state_machine.reporter.warning(
             'Content block expected for the "%s" directive; none found.'
-            % name, '', nodes.literal_block(block_text, block_text),
+            % name, nodes.literal_block(block_text, block_text),
             line=lineno)
         return [warning]
     title_text = arguments[0]

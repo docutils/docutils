@@ -26,7 +26,7 @@ def image(name, arguments, options, content, lineno,
     reference = ''.join(arguments[0].split('\n'))
     if reference.find(' ') != -1:
         error = state_machine.reporter.error(
-              'Image URI contains whitespace.', '',
+              'Image URI contains whitespace.',
               nodes.literal_block(block_text, block_text), line=lineno)
         return [error]
     options['uri'] = reference
@@ -58,7 +58,7 @@ def figure(name, arguments, options, content, lineno,
         elif not (isinstance(first_node, nodes.comment)
                   and len(first_node) == 0):
             error = state_machine.reporter.error(
-                  'Figure caption must be a paragraph or empty comment.', '',
+                  'Figure caption must be a paragraph or empty comment.',
                   nodes.literal_block(block_text, block_text), line=lineno)
             return [figure_node, error]
         if len(node) > 1:

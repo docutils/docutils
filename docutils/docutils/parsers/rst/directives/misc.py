@@ -20,14 +20,14 @@ def include(name, arguments, options, content, lineno,
     path = ''.join(arguments[0].splitlines())
     if path.find(' ') != -1:
         error = state_machine.reporter.error(
-              '"%s" directive path contains whitespace.' % name, '',
+              '"%s" directive path contains whitespace.' % name,
               nodes.literal_block(block_text, block_text), line=lineno)
         return [error]
     try:
         include_file = open(path)
     except IOError, error:
         severe = state_machine.reporter.severe(
-              'Problems with "%s" directive path:\n%s.' % (name, error), '',
+              'Problems with "%s" directive path:\n%s.' % (name, error),
               nodes.literal_block(block_text, block_text), line=lineno)
         return [severe]
     include_text = include_file.read()
@@ -67,7 +67,7 @@ def raw(name, arguments, options, content, lineno,
         if options.has_key('file') or options.has_key('url'):
             error = state_machine.reporter.error(
                   '"%s" directive may not both specify an external file and '
-                  'have content.' % name, '',
+                  'have content.' % name,
                   nodes.literal_block(block_text, block_text), line=lineno)
             return [error]
         text = '\n'.join(content)
@@ -75,7 +75,7 @@ def raw(name, arguments, options, content, lineno,
         if options.has_key('url'):
             error = state_machine.reporter.error(
                   'The "file" and "url" options may not be simultaneously '
-                  'specified for the "%s" directive.' % name, '',
+                  'specified for the "%s" directive.' % name,
                   nodes.literal_block(block_text, block_text), line=lineno)
             return [error]
         try:
@@ -83,8 +83,7 @@ def raw(name, arguments, options, content, lineno,
         except IOError, error:
             severe = state_machine.reporter.severe(
                   'Problems with "%s" directive path:\n%s.' % (name, error),
-                  '', nodes.literal_block(block_text, block_text),
-                  line=lineno)
+                  nodes.literal_block(block_text, block_text), line=lineno)
             return [severe]
         text = raw_file.read()
         raw_file.close()
@@ -95,7 +94,7 @@ def raw(name, arguments, options, content, lineno,
         except (URLError, IOError, OSError), error:
             severe = state_machine.reporter.severe(
                   'Problems with "%s" directive URL "%s":\n%s.'
-                  % (name, options['url'], error), '',
+                  % (name, options['url'], error),
                   nodes.literal_block(block_text, block_text), line=lineno)
             return [severe]
         text = raw_file.read()
@@ -104,7 +103,7 @@ def raw(name, arguments, options, content, lineno,
     else:
         error = state_machine.reporter.warning(
             'The "%s" directive requires content; none supplied.' % (name),
-            '', nodes.literal_block(block_text, block_text), line=lineno)
+            nodes.literal_block(block_text, block_text), line=lineno)
         return [error]
     raw_node = nodes.raw('', text, **attributes)
     return [raw_node]
@@ -119,7 +118,7 @@ def replace(name, arguments, options, content, lineno,
     if not isinstance(state, states.SubstitutionDef):
         error = state_machine.reporter.error(
             'Invalid context: the "%s" directive can only be used within a '
-            'substitution definition.' % (name), '',
+            'substitution definition.' % (name),
             nodes.literal_block(block_text, block_text), line=lineno)
         return [error]
     text = '\n'.join(content)
@@ -154,7 +153,7 @@ def directive_test_function(name, arguments, options, content, lineno,
         text = '\n'.join(content)
         info = state_machine.reporter.info(
             'Directive processed. Type="%s", arguments=%r, options=%r, '
-            'content:' % (name, arguments, options), '',
+            'content:' % (name, arguments, options),
             nodes.literal_block(text, text), line=lineno)
     else:
         info = state_machine.reporter.info(
