@@ -80,7 +80,7 @@ __ http://mail.python.org/pipermail/doc-sig/2002-March/002526.html
     *for free*!  Personally, I consider this a large benefit.
 
     ... All essential constructs for everyday use are there, and much
-	more if needed. ...
+    more if needed. ...
 
 `Guido van Rossum, enthusiastic about PEP 287 but a bit hasty (see the
 follow-ups) on Python-Dev, 2002-04-02`__:
