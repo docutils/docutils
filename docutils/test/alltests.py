@@ -30,7 +30,6 @@ class Tee:
         self.stream = stream
 
     def write(self, string):
-        string = string.encode('raw-unicode-escape')
         self.stream.write(string)
         self.file.write(string)
 
