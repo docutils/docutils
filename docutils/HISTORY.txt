@@ -18,14 +18,14 @@ suggestions, criticism, bug reports, code contributions, tasty treats,
 and related projects:
 
     Aahz, David Ascher, Fred Bremmer, Simon Budig, Adam Chodorowski,
-    Fred Drake, Dethe Elza, Jim Fulton, Peter Funk, Engelbert Gruber,
-    Simon Hefti, Doug Hellmann, Juergen Hermann, Tony Ibbs, Alan
-    Jaffray, Richard Jones, Garth Kidd, Daniel Larsson, Marc-Andre
-    Lemburg, Wolfgang Lipp, Edward Loper, Ken Manheimer, Paul Moore,
-    Michel Pelletier, Sam Penrose, Tim Peters, Mark Pilgrim, Tavis
-    Rudd, Ollie Rutherfurd, Ueli Schlaepfer, Gunnar Schwant, tav, Bob
-    Tolbert, Laurence Tratt, Guido van Rossum, Barry Warsaw, Edward
-    Welbourne, Ka-Ping Yee, Moshe Zadka
+    Fred Drake, Dethe Elza, fantasai, Jim Fulton, Peter Funk,
+    Engelbert Gruber, Simon Hefti, Doug Hellmann, Juergen Hermann,
+    Tony Ibbs, Alan Jaffray, Richard Jones, Garth Kidd, Daniel
+    Larsson, Marc-Andre Lemburg, Wolfgang Lipp, Edward Loper, Ken
+    Manheimer, Paul Moore, Michel Pelletier, Sam Penrose, Tim Peters,
+    Mark Pilgrim, Tavis Rudd, Ollie Rutherfurd, Ueli Schlaepfer,
+    Gunnar Schwant, tav, Bob Tolbert, Laurence Tratt, Guido van
+    Rossum, Barry Warsaw, Edward Welbourne, Ka-Ping Yee, Moshe Zadka
 
 Thank you!
 
