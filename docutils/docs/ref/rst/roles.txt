@@ -290,7 +290,7 @@ The "raw" role cannot be used directly.  The `"role" directive`_ must
 first be used to build custom roles based on the "raw" role.  One or
 more formats (Writer names) must be provided in a "format" option.
 
-For example, the following creates an HTML-specific "html" role::
+For example, the following creates an HTML-specific "raw-html" role::
 
     .. role:: raw-html(raw)
        :format: html
@@ -302,6 +302,10 @@ Writer.  For example::
     :raw-html:`<br />`
     it can be accomplished with a "raw"-derived role.
     But the line block syntax should be considered first.
+
+.. Tip:: Roles based on "raw" should clearly indicate their origin, so
+   they are not mistaken for reStructuredText markup.  Using a "raw-"
+   prefix for role names is recommended.
 
 In addition to "class_", the following option is recognized:
 
