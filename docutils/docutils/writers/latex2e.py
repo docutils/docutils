@@ -112,6 +112,13 @@ class Writer(writers.Writer):
           ['--use-verbatim-when-possible'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
+         ('Table style. "standard" with horizontal and vertical lines, '
+          '"booktabs" (LaTeX booktabs style) only horizontal lines '
+          'above and below the table and below the header or "nolines".'
+          '(default: "standard"',
+          ['--table-style'],
+          {'choices': ['standard', 'booktabs','nolines'], 'default': 'standard',
+           'metavar': '<format>'}),
           ))
 
     settings_defaults = {'output_encoding': 'latin-1'}
@@ -307,7 +314,125 @@ class DocumentClass:
         else:
             return self._deepest_section
 
+class Table:
+    """ Manage a table while traversing. 
+        Maybe change to a mixin defining the visit/departs, but then
+        class Table internal variables are in the Translator.
+    """
+    def __init__(self,latex_type,table_style):
+        self._latex_type = latex_type
+        self._table_style = table_style
+        self._open = 0
+        # miscellaneous attributes
+        self._attrs = {}
 
+    def open(self):
+        self._open = 1
+        self._col_specs = []
+        self.caption = None
+        self._attrs = {}
+        self._in_head = 0 # maybe context with search
+    def close(self):
+        self._open = 0
+        self._col_specs = None
+        self.caption = None
+        self._attrs = {}
+
+    def used_packages(self):
+        if self._table_style == 'booktabs':
+            return '\\usepackage{booktabs}\n'
+        return ''
+    def is_open(self):
+        return self._open
+    def get_latex_type(self):
+        return self._latex_type
+    
+    def set(self,attr,value):
+        self._attrs[attr] = value
+    def get(self,attr):
+        if self._attrs.has_key(attr):
+            return self._attrs[attr]
+        return None
+    def get_vertical_bar(self):
+        if self._table_style == 'standard':
+            return '|'
+        return ''
+    # horizontal lines are drawn below a row, because we.
+    def get_opening(self):
+        return '\\begin{%s}[c]' % self._latex_type
+    def get_closing(self):
+        line = ""
+        if self._table_style == 'booktabs':
+            line = '\\bottomrule\n'
+        elif self._table_style == 'standard':
+            lines = '\\hline\n'
+        return '%s\\end{%s}' % (line,self._latex_type)
+
+    def visit_colspec(self,node):
+        self._col_specs.append(node)
+
+    def get_colspecs(self):
+        """
+        Return column specification for longtable.
+
+        Assumes reST line length being 80 characters.
+        Table width is hairy.
+
+        === ===
+        ABC DEF
+        === ===
+
+        usually gets to narrow, therefore we add 1 (fiddlefactor).
+        """
+        width = 80
+
+        total_width = 0.0
+        # first see if we get too wide.
+        for node in self._col_specs:
+            colwidth = float(node['colwidth']+1) / width
+            total_width += colwidth
+        # donot make it full linewidth
+        factor = 0.93
+        if total_width > 1.0:
+            factor /= total_width
+        bar = self.get_vertical_bar()
+        latex_table_spec = ""
+        for node in self._col_specs:
+            colwidth = factor * float(node['colwidth']+1) / width
+            latex_table_spec += "%sp{%.2f\\locallinewidth}" % (bar,colwidth+0.005)
+        return latex_table_spec+bar
+
+    def visit_thead(self):
+        self._in_thead = 1
+        if self._table_style == 'standard':
+            return ['\\hline\n']
+        elif self._table_style == 'booktabs':
+            return ['\\toprule\n']
+        return []
+    def depart_thead(self):
+        a = []
+        #if self._table_style == 'standard':
+        #    a.append('\\hline\n')
+        if self._table_style == 'booktabs':
+            a.append('\\midrule\n')
+        a.append('\\endhead\n')
+        # for longtable one could add firsthead, foot and lastfoot
+        self._in_thead = 0
+        return a
+    def visit_row(self):
+        self._cell_in_row = 0
+    def depart_row(self):
+        self._cell_in_row = None  # remove cell counter
+        if self._table_style == 'standard':
+            return [' \\\\\n','\\hline\n']
+        return [' \\\\\n']
+
+    def get_entry_number(self):
+        return self._cell_in_row
+    def visit_entry(self):
+        self._cell_in_row += 1
+
+        
 class LaTeXTranslator(nodes.NodeVisitor):
     # When options are given to the documentclass, latex will pass them
     # to other packages, as done with babel.
@@ -326,9 +451,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     # use latex tableofcontents or let docutils do it.
     use_latex_toc = 0
-    # table kind: if 0 tabularx (single page), 1 longtable
-    # maybe should be decided on row count.
-    use_longtable = 1
+
     # TODO: use mixins for different implementations.
     # list environment for option-list. else tabularx
     use_optionlist_for_option_list = 1
@@ -378,6 +501,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         self.d_class = DocumentClass(settings.documentclass)
 
+        # object for a table while proccessing.
+        self.active_table = Table('longtable',settings.table_style)
+
         self.head_prefix = [
               self.latex_head % (self.d_options,self.settings.documentclass),
               '\\usepackage{babel}\n',     # language is in documents settings.
@@ -386,6 +512,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
               # * tabularx: for docinfo, automatic width of columns, always on one page.
               '\\usepackage{tabularx}\n',
               '\\usepackage{longtable}\n',
+              self.active_table.used_packages(),
               # possible other packages.
               # * fancyhdr
               # * ltxtable is a combination of tabularx and longtable (pagebreaks).
@@ -402,6 +529,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
               self.geometry % (self.d_paper, self.d_margins),
               #
               self.generator,
+              # TODO active_table.definitions
               # latex lengths
               '\\newlength{\\admonitionwidth}\n',
               '\\setlength{\\admonitionwidth}{0.9\\textwidth}\n'
@@ -443,7 +571,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.context = []
         self.topic_class = ''
         # column specification for tables
-        self.colspecs = []
         self.table_caption = None
         # do we have one or more authors
         self.author_stack = None
@@ -739,10 +866,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append( '})\n' )
 
     def visit_colspec(self, node):
-        if self.use_longtable:
-            self.colspecs.append(node)
-        else:
-            self.context[-1] += 1
+        self.active_table.visit_colspec(node)
 
     def depart_colspec(self, node):
         pass
@@ -888,11 +1012,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.literal_block_stack.pop()
 
     def visit_entry(self, node):
+        self.active_table.visit_entry()
         # cell separation
-        column_one = 1
-        if self.context[-1] > 0:
-            column_one = 0
-        if not column_one:
+        if self.active_table.get_entry_number() != 1:
             self.body.append(' & ')
 
         # multi{row,column}
@@ -909,12 +1031,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
         elif node.has_key('morecols'):
             # the vertical bar before column is missing if it is the first column.
             # the one after always.
-            if column_one:
-                bar = '|'
+            if self.active_table.get_entry_number() == 1:
+                bar1 = self.active_table.get_vertical_bar()
             else:
-                bar = ''
+                bar1 = ''
             count = node['morecols'] + 1
-            self.body.append('\\multicolumn{%d}{%sl|}{' % (count, bar))
+            self.body.append('\\multicolumn{%d}{%sl%s}{' % \
+                    (count, bar1, self.active_table.get_vertical_bar()))
             self.context.append('}')
         else:
             self.context.append('')
@@ -929,7 +1052,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_entry(self, node):
         self.body.append(self.context.pop()) # header / not header
         self.body.append(self.context.pop()) # multirow/column
-        self.context[-1] += 1
 
     def visit_enumerated_list(self, node):
         # We create our own enumeration list environment.
@@ -1399,11 +1521,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item(node)
 
     def visit_row(self, node):
-        self.context.append(0)
+        self.active_table.visit_row()
 
     def depart_row(self, node):
-        self.context.pop()  # remove cell counter
-        self.body.append(' \\\\ \\hline\n')
+        self.body.extend(self.active_table.depart_row())
         # BUG if multirow cells \cline{x-y}
 
     def visit_section(self, node):
@@ -1482,70 +1603,19 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if node['level'] < self.document.reporter['writer'].report_level:
             raise nodes.SkipNode
 
-
     def depart_system_message(self, node):
         self.body.append('\n')
 
-    def get_colspecs(self):
-        """
-        Return column specification for longtable.
-
-        Assumes reST line length being 80 characters.
-        Table width is hairy.
-
-        === ===
-        ABC DEF
-        === ===
-
-        usually gets to narrow, therefore we add 1 (fiddlefactor).
-        """
-        width = 80
-
-        total_width = 0.0
-        # first see if we get too wide.
-        for node in self.colspecs:
-            colwidth = float(node['colwidth']+1) / width
-            total_width += colwidth
-        # donot make it full linewidth
-        factor = 0.93
-        if total_width > 1.0:
-            factor /= total_width
-
-        latex_table_spec = ""
-        for node in self.colspecs:
-            colwidth = factor * float(node['colwidth']+1) / width
-            latex_table_spec += "|p{%.2f\\locallinewidth}" % (colwidth+0.005)
-        self.colspecs = []
-        return latex_table_spec+"|"
-
     def visit_table(self, node):
-        if self.use_longtable:
-            self.body.append('\n\\begin{longtable}[c]')
-        else:
-            self.body.append('\n\\begin{tabularx}{\\linewidth}')
-            self.context.append('table_sentinel') # sentinel
-            self.context.append(0) # column counter
+        if self.active_table.is_open():
+            print 'nested tables are not supported'
+            raise AssertionError
+        self.active_table.open()
+        self.body.append('\n' + self.active_table.get_opening())
 
     def depart_table(self, node):
-        if self.use_longtable:
-            self.body.append('\\end{longtable}\n')
-        else:
-            self.body.append('\\end{tabularx}\n')
-            sentinel = self.context.pop()
-            if sentinel != 'table_sentinel':
-                print 'context:', self.context + [sentinel]
-                raise AssertionError
-
-    def table_preamble(self):
-        if self.use_longtable:
-            self.body.append('{%s}\n' % self.get_colspecs())
-            if self.table_caption:
-                self.body.append('\\caption{%s}\\\\\n' % self.table_caption)
-                self.table_caption = None
-        else:
-            if self.context[-1] != 'table_sentinel':
-                self.body.append('{%s}' % ('|X' * self.context.pop() + '|'))
-                self.body.append('\n\\hline')
+        self.body.append(self.active_table.get_closing() + '\n')
+        self.active_table.close()
 
     def visit_target(self, node):
         # BUG: why not (refuri or refid or refname) means not footnote ?
@@ -1562,13 +1632,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_tbody(self, node):
         # BUG write preamble if not yet done (colspecs not [])
         # for tables without heads.
-        if self.colspecs:
+        if not self.active_table.get('preamble written'):
             self.visit_thead(None)
-            self.depart_thead(None)
-        self.body.append('%[visit_tbody]\n')
+            # self.depart_thead(None)
 
     def depart_tbody(self, node):
-        self.body.append('%[depart_tbody]\n')
+        pass
 
     def visit_term(self, node):
         self.body.append('\\item[')
@@ -1586,29 +1655,27 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_thead(self, node):
-        # number_of_columns will be zero after get_colspecs.
-        # BUG ! push onto context for depart to pop it.
-        number_of_columns = len(self.colspecs)
-        self.table_preamble()
-        #BUG longtable needs firstpage and lastfooter too.
-        self.body.append('\\hline\n')
+        self.body.append('{%s}\n' % self.active_table.get_colspecs())
+        if self.active_table.caption:
+            self.body.append('\\caption{%s}\\\\\n' % self.active_table.caption)
+        self.active_table.set('preamble written',1)
+        # TODO longtable supports firsthead and lastfoot too.
+        self.body.extend(self.active_table.visit_thead())
 
     def depart_thead(self, node):
-        if self.use_longtable:
-            # the table header written should be on every page
-            # => \endhead
-            self.body.append('\\endhead\n')
-            # and the firsthead => \endfirsthead
-            # BUG i want a "continued from previous page" on every not
-            # firsthead, but then we need the header twice.
-            #
-            # there is a \endfoot and \endlastfoot too.
-            # but we need the number of columns to
-            # self.body.append('\\multicolumn{%d}{c}{"..."}\n' % number_of_columns)
-            # self.body.append('\\hline\n\\endfoot\n')
-            # self.body.append('\\hline\n')
-            # self.body.append('\\endlastfoot\n')
-
+        # the table header written should be on every page
+        # => \endhead
+        self.body.extend(self.active_table.depart_thead())
+        # and the firsthead => \endfirsthead
+        # BUG i want a "continued from previous page" on every not
+        # firsthead, but then we need the header twice.
+        #
+        # there is a \endfoot and \endlastfoot too.
+        # but we need the number of columns to
+        # self.body.append('\\multicolumn{%d}{c}{"..."}\n' % number_of_columns)
+        # self.body.append('\\hline\n\\endfoot\n')
+        # self.body.append('\\hline\n')
+        # self.body.append('\\endlastfoot\n')
 
     def visit_tip(self, node):
         self.visit_admonition(node, 'tip')
@@ -1637,7 +1704,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_title(self, node):
         """Only 3 section levels are supported by LaTeX article (AFAIR)."""
 
-
         if isinstance(node.parent, nodes.topic):
             # section titles before the table of contents.
             self.bookmark(node)
@@ -1651,7 +1717,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.context.append('}\n\\smallskip\n')
         elif isinstance(node.parent, nodes.table):
             # caption must be written after column spec
-            self.table_caption = node.astext()
+            self.active_table.caption = node.astext()
             raise nodes.SkipNode
         elif self.section_level == 0:
             # document title
@@ -1690,8 +1756,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\n')
 
     def visit_rubric(self, node):
-#        self.body.append('\\hfill {\\color{red}\\bfseries{}')
-#        self.context.append('} \\hfill ~\n')
         self.body.append('\\rubric{')
         self.context.append('}\n')
 
@@ -1705,7 +1769,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\n\n')
 
     def depart_transition(self, node):
-        #self.body.append('[depart_transition]')
         pass
 
     def visit_version(self, node):

@@ -292,11 +292,10 @@ latex_head + """\
 \\begin{longtable}[c]{|p{0.07\locallinewidth}|p{0.07\locallinewidth}|}
 \\caption{Foo}\\\\
 \\hline
-\\endhead
-%[visit_tbody]
- &  \\\\ \hline
- &  \\\\ \hline
-%[depart_tbody]
+ &  \\\\
+\hline
+ &  \\\\
+\hline
 \\end{longtable}
 
 \\end{document}
