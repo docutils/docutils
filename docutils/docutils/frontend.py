@@ -138,7 +138,7 @@ class OptionParser(optik.OptionParser):
                                  'metavar': '<name>'}),
          ('Read this configuration <file>.',
           ['--config'], {'metavar': '<file>', 'type': 'string',
-                         'action': 'callback', 'callback': read_config_file})
+                         'action': 'callback', 'callback': read_config_file}),
          ("Show this program's version number and exit.",
           ['--version'], {'action': 'version'}),
          ('Show this help message and exit.',
