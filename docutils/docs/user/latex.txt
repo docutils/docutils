@@ -245,7 +245,7 @@ Miscellaneous
 
   - Escape it ``{\_}`` to narrow
   - Underline a blank ``\underline{ }`` to low, as in windows-xp.
-  - Subscript a hyphen ``$_{\tt-}$ too wide and thin
+  - Subscript a hyphen ``$_{\tt-}$`` too wide and thin
   - ``$_{-}$`` the same.
 
 * recongize LaTeX and replace by ``\LaTeX``.
