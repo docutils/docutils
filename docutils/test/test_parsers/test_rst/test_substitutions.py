@@ -137,6 +137,21 @@ u"""\
         \u00C9
 """],
 ["""\
+Raw substitution, backslashes should be preserved:
+
+.. |alpha| raw:: latex
+
+   $\\\\alpha$
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Raw substitution, backslashes should be preserved:
+    <substitution_definition name="alpha">
+        <raw format="latex" xml:space="preserve">
+            $\\\\alpha$
+"""],
+["""\
 Here are some duplicate substitution definitions:
 
 .. |symbol| image:: symbol.png

@@ -1936,9 +1936,7 @@ class Body(RSTState):
                                                           strip_indent=0)
         blocktext = (match.string[:match.end()] + '\n'.join(block))
         block.disconnect()
-        for i in range(len(block)):
-            block[i] = escape2null(block[i])
-        escaped = block[0].rstrip()
+        escaped = escape2null(block[0].rstrip())
         blockindex = 0
         while 1:
             subdefmatch = pattern.match(escaped)
@@ -1946,7 +1944,7 @@ class Body(RSTState):
                 break
             blockindex += 1
             try:
-                escaped = escaped + ' ' + block[blockindex].strip()
+                escaped = escaped + ' ' + escape2null(block[blockindex].strip())
             except IndexError:
                 raise MarkupError('malformed substitution definition.',
                                   lineno)

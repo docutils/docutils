@@ -170,7 +170,7 @@ def unicode_directive(name, arguments, options, content, lineno,
             'substitution definition.' % (name),
             nodes.literal_block(block_text, block_text), line=lineno)
         return [error]
-    codes = arguments[0].split('.. ')[0].split()
+    codes = unicode_comment_pattern.split(arguments[0])[0].split()
     element = nodes.Element()
     for code in codes:
         try:
@@ -193,7 +193,9 @@ def unicode_directive(name, arguments, options, content, lineno,
 
 unicode_directive.arguments = (1, 0, 1)
 unicode_pattern = re.compile(
-    r'(?:0x|x|\x00x|U\+?|\x00u)([0-9a-f]+)$|&#x([0-9a-f]+);$', re.IGNORECASE)
+    r'(?:0x|x|\\x|U\+?|\\u)([0-9a-f]+)$|&#x([0-9a-f]+);$', re.IGNORECASE)
+unicode_comment_pattern = re.compile(r'( |\n|^).. ')
+
 
 def class_directive(name, arguments, options, content, lineno,
                        content_offset, block_text, state, state_machine):
