@@ -294,7 +294,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_attribution(self, node):
         self.body.append(
-            self.starttag(node, 'p', u'\u2014', CLASS='attribution'))
+            self.starttag(node, 'p', u'&mdash;', CLASS='attribution'))
 
     def depart_attribution(self, node):
         self.body.append('</p>\n')
