@@ -66,12 +66,14 @@ class Reporter:
     levels = 'DEBUG INFO WARNING ERROR SEVERE'.split()
     """List of names for system message levels, indexed by level."""
 
-    def __init__(self, report_level, halt_level, stream=None, debug=0):
+    def __init__(self, source, report_level, halt_level, stream=None,
+                 debug=0):
         """
         Initialize the `ConditionSet` forthe `Reporter`'s default category.
 
         :Parameters:
 
+            - `source`: The path to or description of the source data.
             - `report_level`: The level at or above which warning output will
               be sent to `stream`.
             - `halt_level`: The level at or above which `SystemMessage`
@@ -81,6 +83,9 @@ class Reporter:
               ``.write`` method), a string (file name, opened for writing), or
               `None` (implies `sys.stderr`; default).
         """
+        self.source = source
+        """The path to or description of the source data."""
+        
         if stream is None:
             stream = sys.stderr
         elif type(stream) in (StringType, UnicodeType):
@@ -120,6 +125,7 @@ class Reporter:
         msg = nodes.system_message(comment, level=level,
                                    type=self.levels[level],
                                    *children, **attributes)
+        msg['source'] = self.source
         debug, report_level, halt_level, stream = self[category].astuple()
         if level >= report_level or debug and level == 0:
             if category:
@@ -333,12 +339,12 @@ def normalize_name(name):
     """Return a case- and whitespace-normalized name."""
     return ' '.join(name.lower().split())
 
-def new_document(options=None):
+def new_document(source, options=None):
     if options is None:
         options = frontend.OptionParser().get_default_values()
-    reporter = Reporter(options.report_level, options.halt_level,
+    reporter = Reporter(source, options.report_level, options.halt_level,
                         options.warning_stream, options.debug)
-    document = nodes.document(options=options, reporter=reporter)
+    document = nodes.document(options, reporter, source=source)
     return document
 
 def clean_rcs_keywords(paragraph, keyword_substitutions):
