@@ -251,14 +251,26 @@ def path(argument):
     Return the path argument unwrapped (with newlines removed).
     (Directive option conversion function.)
 
-    Raise ``ValueError`` if no argument is found or if the path contains
-    internal whitespace.
+    Raise ``ValueError`` if no argument is found.
     """
     if argument is None:
         raise ValueError('argument required but none supplied')
     else:
         path = ''.join([s.strip() for s in argument.splitlines()])
         return path
+
+def uri(argument):
+    """
+    Return the URI argument with whitespace removed.
+    (Directive option conversion function.)
+
+    Raise ``ValueError`` if no argument is found.
+    """
+    if argument is None:
+        raise ValueError('argument required but none supplied')
+    else:
+        uri = ''.join(argument.split())
+        return uri
 
 def nonnegative_int(argument):
     """
@@ -294,10 +306,13 @@ unicode_pattern = re.compile(
 def unicode_code(code):
     r"""
     Convert a Unicode character code to a Unicode character.
+    (Directive option conversion function.)
 
     Codes may be decimal numbers, hexadecimal numbers (prefixed by ``0x``,
     ``x``, ``\x``, ``U+``, ``u``, or ``\u``; e.g. ``U+262E``), or XML-style
     numeric character entities (e.g. ``&#x262E;``).  Other text remains as-is.
+
+    Raise ValueError for illegal Unicode code values.
     """
     try:
         if code.isdigit():                  # decimal number
@@ -313,6 +328,10 @@ def unicode_code(code):
         raise ValueError('code too large (%s)' % detail)
 
 def single_char_or_unicode(argument):
+    """
+    A single character is returned as-is.  Unicode characters codes are
+    converted as in `unicode_code`.  (Directive option conversion function.)
+    """
     char = unicode_code(argument)
     if len(char) > 1:
         raise ValueError('%r invalid; must be a single character or '
@@ -320,6 +339,10 @@ def single_char_or_unicode(argument):
     return char
 
 def single_char_or_whitespace_or_unicode(argument):
+    """
+    As with `single_char_or_unicode`, but "tab" and "space" are also supported.
+    (Directive option conversion function.)
+    """
     if argument == 'tab':
         char = '\t'
     elif argument == 'space':
@@ -329,12 +352,23 @@ def single_char_or_whitespace_or_unicode(argument):
     return char
 
 def positive_int(argument):
+    """
+    Converts the argument into an integer.  Raises ValueError for negative,
+    zero, or non-integer values.  (Directive option conversion function.)
+    """
     value = int(argument)
     if value < 1:
         raise ValueError('negative or zero value; must be positive')
     return value
 
 def positive_int_list(argument):
+    """
+    Converts a space- or comma-separated list of values into a Python list
+    of integers.
+    (Directive option conversion function.)
+
+    Raises ValueError for non-positive-integer values.
+    """
     if ',' in argument:
         entries = argument.split(',')
     else:
@@ -342,6 +376,12 @@ def positive_int_list(argument):
     return [positive_int(entry) for entry in entries]
 
 def encoding(argument):
+    """
+    Verfies the encoding argument by lookup.
+    (Directive option conversion function.)
+
+    Raises ValueError for unknown encodings.
+    """
     try:
         codecs.lookup(argument)
     except LookupError:
