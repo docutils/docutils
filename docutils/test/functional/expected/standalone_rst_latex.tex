@@ -264,11 +264,11 @@ A paragraph.
 
 Paragraphs contain text and may contain inline markup: \emph{emphasis},
 \textbf{strong emphasis}, \texttt{inline literals}, standalone hyperlinks
-(\href{http://www.python.org}{http://www.python.org}), external hyperlinks (\href{http://www.python.org/}{Python} [\hyperlink{id21}{5}]), internal
+(\href{http://www.python.org}{http://www.python.org}), external hyperlinks (\href{http://www.python.org/}{Python}\raisebox{.5em}[0em]{\scriptsize\hyperlink{id21}{5}}), internal
 cross-references (\href{\#example}{example}), external hyperlinks with embedded URIs
 (\href{http://www.python.org}{Python web site}), footnote references
-(manually numbered [\hyperlink{id6}{1}], anonymous auto-numbered [\hyperlink{id9}{3}], labeled
-auto-numbered [\hyperlink{label}{2}], or symbolic [\hyperlink{id10}{*}]), citation references
+(manually numbered\raisebox{.5em}[0em]{\scriptsize\hyperlink{id6}{1}}, anonymous auto-numbered\raisebox{.5em}[0em]{\scriptsize\hyperlink{id9}{3}}, labeled
+auto-numbered\raisebox{.5em}[0em]{\scriptsize\hyperlink{label}{2}}, or symbolic\raisebox{.5em}[0em]{\scriptsize\hyperlink{id10}{*}}), citation references
 ([\hyperlink{cit2002}{CIT2002}]), substitution references (\includegraphics{../../../docs/user/rst/images/biohazard.png}), and \hypertarget{inline-hyperlink-targets}{inline
 hyperlink targets} (see \href{\#targets}{Targets} below for a reference back to here).
 Character-level inline markup is also possible (although exceedingly
@@ -602,10 +602,10 @@ least 3 spaces.
 This is the footnote's second paragraph.
 \end{figure}
 \begin{figure}[b]\hypertarget{label}[2]
-Footnotes may be numbered, either manually (as in [\hyperlink{id6}{1}]) or
+Footnotes may be numbered, either manually (as in\raisebox{.5em}[0em]{\scriptsize\hyperlink{id6}{1}}) or
 automatically using a ``{\#}''-prefixed label.  This footnote has a
 label so it can be referred to from multiple places, both as a
-footnote reference ([\hyperlink{label}{2}]) and as a hyperlink reference
+footnote reference (\raisebox{.5em}[0em]{\scriptsize\hyperlink{label}{2}}) and as a hyperlink reference
 (\href{\#label}{label}).
 \end{figure}
 \begin{figure}[b]\hypertarget{id9}[3]
@@ -614,14 +614,14 @@ label of ``{\#}'' only.
 \end{figure}
 \begin{figure}[b]\hypertarget{id10}[*]
 Footnotes may also use symbols, specified with a ``*'' label.
-Here's a reference to the next footnote: [\hyperlink{id12}{{\dag}}].
+Here's a reference to the next footnote:\raisebox{.5em}[0em]{\scriptsize\hyperlink{id12}{{\dag}}}.
 \end{figure}
 \begin{figure}[b]\hypertarget{id12}[{\dag}]
 This footnote shows the next symbol in the sequence.
 \end{figure}
 \begin{figure}[b]\hypertarget{id13}[4]
 Here's an unreferenced footnote, with a reference to a
-nonexistent footnote: {\color{red}\bfseries{}{[}5]{\_}}.
+nonexistent footnote:{\color{red}\bfseries{}{[}5]{\_}}.
 \end{figure}
 
 
@@ -653,7 +653,7 @@ Section headers are implicit targets, referred to by name. See
 \href{\#targets}{Targets}, which is a subsection of \href{\#body-elements}{Body Elements}.
 
 Explicit external targets are interpolated into references such as
-``\href{http://www.python.org/}{Python} [\hyperlink{id21}{5}]''.
+``\href{http://www.python.org/}{Python}\raisebox{.5em}[0em]{\scriptsize\hyperlink{id21}{5}}''.
 
 Targets may be indirect and anonymous.  Thus \href{\#targets}{this phrase} may also
 refer to the \href{\#targets}{Targets} section.
@@ -946,7 +946,7 @@ Singing...
 \pdfbookmark[2]{2.13.7~~~Replacement Text}{replacement-text}
 \subsubsection*{2.13.7~~~Replacement Text}
 
-I recommend you try \href{http://www.python.org/}{Python, \emph{the} best language around} [\hyperlink{id21}{5}].
+I recommend you try \href{http://www.python.org/}{Python, \emph{the} best language around}\raisebox{.5em}[0em]{\scriptsize\hyperlink{id21}{5}}.
 
 
 %___________________________________________________________________________
