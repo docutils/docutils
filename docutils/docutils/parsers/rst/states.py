@@ -1090,6 +1090,7 @@ class Body(RSTState):
           'field_marker': r':[^: ]([^:]*[^: ])?:( +|$)',
           'option_marker': r'%(option)s(, %(option)s)*(  +| ?$)' % pats,
           'doctest': r'>>>( +|$)',
+          'line_block': r'\|( +|$)',
           'grid_table_top': grid_table_top_pat,
           'simple_table_top': simple_table_top_pat,
           'explicit_markup': r'\.\.( +|$)',
@@ -1102,6 +1103,7 @@ class Body(RSTState):
           'field_marker',
           'option_marker',
           'doctest',
+          'line_block',
           'grid_table_top',
           'simple_table_top',
           'explicit_markup',
@@ -1189,12 +1191,12 @@ class Body(RSTState):
         i, blank_finish = self.list_item(match.end())
         bulletlist += i
         offset = self.state_machine.line_offset + 1   # next line
-        newline_offset, blank_finish = self.nested_list_parse(
+        new_line_offset, blank_finish = self.nested_list_parse(
               self.state_machine.input_lines[offset:],
               input_offset=self.state_machine.abs_line_offset() + 1,
               node=bulletlist, initial_state='BulletList',
               blank_finish=blank_finish)
-        self.goto_line(newline_offset)
+        self.goto_line(new_line_offset)
         if not blank_finish:
             self.parent += self.unindent_warning('Bullet list')
         return [], next_state, []
@@ -1475,6 +1477,69 @@ class Body(RSTState):
         data = '\n'.join(self.state_machine.get_text_block())
         self.parent += nodes.doctest_block(data, data)
         return [], next_state, []
+
+    def line_block(self, match, context, next_state):
+        """First line of a line block."""
+        block = nodes.line_block()
+        self.parent += block
+        lineno = self.state_machine.abs_line_number()
+        line, messages, blank_finish = self.line_block_line(match, lineno)
+        block += line
+        self.parent += messages
+        if not blank_finish:
+            offset = self.state_machine.line_offset + 1   # next line
+            new_line_offset, blank_finish = self.nested_list_parse(
+                  self.state_machine.input_lines[offset:],
+                  input_offset=self.state_machine.abs_line_offset() + 1,
+                  node=block, initial_state='LineBlock',
+                  blank_finish=0)
+            self.goto_line(new_line_offset)
+        if not blank_finish:
+            self.parent += self.reporter.warning(
+                'Line block ends without a blank line.',
+                line=(self.state_machine.abs_line_number() + 1))
+        if len(block):
+            if block[0].indent is None:
+                block[0].indent = 0
+            self.nest_line_block_lines(block)
+        return [], next_state, []
+
+    def line_block_line(self, match, lineno):
+        """Return one line element of a line_block."""
+        indented, indent, line_offset, blank_finish = \
+              self.state_machine.get_first_known_indented(match.end(),
+                                                          until_blank=1)
+        text = u'\n'.join(indented)
+        text_nodes, messages = self.inline_text(text, lineno)
+        line = nodes.line(text, '', *text_nodes)
+        if match.string.rstrip() != '|': # not empty
+            line.indent = len(match.group(1)) - 1
+        return line, messages, blank_finish
+
+    def nest_line_block_lines(self, block):
+        for index in range(1, len(block)):
+            if block[index].indent is None:
+                block[index].indent = block[index - 1].indent
+        self.nest_line_block_segment(block)
+
+    def nest_line_block_segment(self, block):
+        indents = [item.indent for item in block]
+        least = min(indents)
+        new_items = []
+        new_block = nodes.line_block()
+        for item in block:
+            if item.indent > least:
+                new_block.append(item)
+            else:
+                if len(new_block):
+                    self.nest_line_block_segment(new_block)
+                    new_items.append(new_block)
+                    new_block = nodes.line_block()
+                new_items.append(item)
+        if len(new_block):
+            self.nest_line_block_segment(new_block)
+            new_items.append(new_block)
+        block[:] = new_items
 
     def grid_table_top(self, match, context, next_state):
         """Top border of a full table."""
@@ -2274,6 +2339,7 @@ class SpecializedBody(Body):
     field_marker = invalid_input
     option_marker = invalid_input
     doctest = invalid_input
+    line_block = invalid_input
     grid_table_top = invalid_input
     simple_table_top = invalid_input
     explicit_markup = invalid_input
@@ -2389,6 +2455,22 @@ class ExtensionOptions(FieldList):
                 text = '\n'.join(lines)
                 node += nodes.paragraph(text, text)
                 lines = []
+
+
+class LineBlock(SpecializedBody):
+
+    """Second and subsequent lines of a line_block."""
+
+    blank = SpecializedBody.invalid_input
+
+    def line_block(self, match, context, next_state):
+        """New line of line block."""
+        lineno = self.state_machine.abs_line_number()
+        line, messages, blank_finish = self.line_block_line(match, lineno)
+        self.parent += line
+        self.parent.parent += messages
+        self.blank_finish = blank_finish
+        return [], next_state, []
 
 
 class Explicit(SpecializedBody):
@@ -2854,8 +2936,8 @@ class QuotedLiteralBlock(RSTState):
 
 
 state_classes = (Body, BulletList, DefinitionList, EnumeratedList, FieldList,
-                 OptionList, ExtensionOptions, Explicit, Text, Definition,
-                 Line, SubstitutionDef, RFC2822Body, RFC2822List)
+                 OptionList, LineBlock, ExtensionOptions, Explicit, Text,
+                 Definition, Line, SubstitutionDef, RFC2822Body, RFC2822List)
 """Standard set of State classes used to start `RSTStateMachine`."""
 
 
