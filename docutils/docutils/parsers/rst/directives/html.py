@@ -15,32 +15,33 @@ __docformat__ = 'reStructuredText'
 
 from docutils import nodes, utils
 from docutils.parsers.rst import states
+from docutils.transforms import components
 
 
-def meta(match, typename, data, state, statemachine, attributes):
-    lineoffset = statemachine.lineoffset
-    block, indent, offset, blankfinish = \
-          statemachine.getfirstknownindented(match.end(), uptoblank=1)
+def meta(match, type_name, data, state, state_machine, attributes):
+    line_offset = state_machine.line_offset
+    block, indent, offset, blank_finish = \
+          state_machine.get_first_known_indented(match.end(), until_blank=1)
     node = nodes.Element()
     if block:
-        newlineoffset, blankfinish = state.nestedlistparse(
-              block, offset, node, initialstate='MetaBody',
-              blankfinish=blankfinish, statemachinekwargs=metaSMkwargs)
-        if (newlineoffset - offset) != len(block): # incomplete parse of block?
-            blocktext = '\n'.join(statemachine.inputlines[
-                  lineoffset : statemachine.lineoffset+1])
-            msg = statemachine.memo.reporter.error(
+        new_line_offset, blank_finish = state.nested_list_parse(
+              block, offset, node, initial_state='MetaBody',
+              blank_finish=blank_finish, state_machine_kwargs=metaSMkwargs)
+        if (new_line_offset - offset) != len(block): # incomplete parse of block?
+            blocktext = '\n'.join(state_machine.input_lines[
+                  line_offset : state_machine.line_offset+1])
+            msg = state_machine.reporter.error(
                   'Invalid meta directive at line %s.'
-                  % statemachine.abslineno(), '',
+                  % state_machine.abs_line_number(), '',
                   nodes.literal_block(blocktext, blocktext))
             node += msg
     else:
-        msg = statemachine.memo.reporter.error(
-              'Empty meta directive at line %s.' % statemachine.abslineno())
+        msg = state_machine.reporter.error('Empty meta directive at line %s.'
+                                          % state_machine.abs_line_number())
         node += msg
-    return node.getchildren(), blankfinish
+    return node.getchildren(), blank_finish
 
-def imagemap(match, typename, data, state, statemachine, attributes):
+def imagemap(match, type_name, data, state, state_machine, attributes):
     return [], 0
 
 
@@ -50,24 +51,27 @@ class MetaBody(states.SpecializedBody):
         """HTML-specific "meta" element."""
         pass
 
-    def field_marker(self, match, context, nextstate):
+    def field_marker(self, match, context, next_state):
         """Meta element."""
-        node, blankfinish = self.parsemeta(match)
-        self.statemachine.node += node
-        return [], nextstate, []
+        node, blank_finish = self.parsemeta(match)
+        self.parent += node
+        return [], next_state, []
 
     def parsemeta(self, match):
         name, args = self.parse_field_marker(match)
-        indented, indent, lineoffset, blankfinish = \
-              self.statemachine.getfirstknownindented(match.end())
+        indented, indent, line_offset, blank_finish = \
+              self.state_machine.get_first_known_indented(match.end())
         node = self.meta()
+        pending = nodes.pending(components.Filter, 'first writer',
+                                {'writer': 'html', 'nodes': [node]})
         node['content'] = ' '.join(indented)
         if not indented:
-            line = self.statemachine.line
-            msg = self.statemachine.memo.reporter.info(
-                  'No content for meta tag "%s".' % name, '',
-                  nodes.literal_block(line, line))
-            self.statemachine.node += msg
+            line = self.state_machine.line
+            msg = self.reporter.info(
+                  'No content for meta tag "%s" at line %s.'
+                  % (name, self.state_machine.abs_line_number()),
+                  '', nodes.literal_block(line, line))
+            return msg, blank_finish
         try:
             attname, val = utils.extract_name_value(name)[0]
             node[attname.lower()] = val
@@ -78,12 +82,14 @@ class MetaBody(states.SpecializedBody):
                 attname, val = utils.extract_name_value(arg)[0]
                 node[attname.lower()] = val
             except utils.NameValueError, detail:
-                line = self.statemachine.line
-                msg = self.statemachine.memo.reporter.error(
-                      'Error parsing meta tag attribute "%s": %s'
-                      % (arg, detail), '', nodes.literal_block(line, line))
-                self.statemachine.node += msg
-        return node, blankfinish
+                line = self.state_machine.line
+                msg = self.reporter.error(
+                      'Error parsing meta tag attribute "%s" at line %s: %s.'
+                      % (arg, self.state_machine.abs_line_number(), detail),
+                      '', nodes.literal_block(line, line))
+                return msg, blank_finish
+        self.document.note_pending(pending)
+        return pending, blank_finish
 
 
-metaSMkwargs = {'stateclasses': (MetaBody,)}
+metaSMkwargs = {'state_classes': (MetaBody,)}
