@@ -17,13 +17,13 @@ on the Docutils project, knowingly or not, in terms of encouragement,
 suggestions, criticism, bug reports, code contributions, tasty treats,
 and related projects:
 
-    David Ascher, Fred Drake, Jim Fulton, Peter Funk, Doug Hellmann,
-    Juergen Hermann, Tony Ibbs, Alan Jaffray, Richard Jones, Garth
-    Kidd, Daniel Larsson, Marc-Andre Lemburg, Wolfgang Lipp, Edward
-    Loper, Ken Manheimer, Paul Moore, Michel Pelletier, Sam Penrose,
-    Tim Peters, Mark Pilgrim, Tavis Rudd, Ueli Schlaepfer, Bob
-    Tolbert, Laurence Tratt, Guido van Rossum, Barry Warsaw, Edward
-    Welbourne, Ka-Ping Yee, Moshe Zadka
+    David Ascher, Fred Drake, Jim Fulton, Peter Funk, Engelbert
+    Gruber, Doug Hellmann, Juergen Hermann, Tony Ibbs, Alan Jaffray,
+    Richard Jones, Garth Kidd, Daniel Larsson, Marc-Andre Lemburg,
+    Wolfgang Lipp, Edward Loper, Ken Manheimer, Paul Moore, Michel
+    Pelletier, Sam Penrose, Tim Peters, Mark Pilgrim, Tavis Rudd, Ueli
+    Schlaepfer, Bob Tolbert, Laurence Tratt, Guido van Rossum, Barry
+    Warsaw, Edward Welbourne, Ka-Ping Yee, Moshe Zadka
 
 Thank you!
 
@@ -67,6 +67,11 @@ Specific:
 
   - Added ``runtime_init`` method to ``StateMachine`` and ``State``.
   - Added underscores to improve many awkward names.
+
+* docutils/urischemes.py:
+
+  - Filled in some descriptions.
+  - Added "shttp" scheme.
 
 * docutils/utils.py:
 
@@ -122,12 +127,18 @@ Specific:
     names; empty tag format).
   - Escape double-dashes in comment text.
   - Improved boilerplate & modularity of output.
+  - Added a "generator" meta tag to <head>.
 
 * docutils/writers/pseudoxml.py: Renamed from pprint.py.
 
 * spec/notes.txt: Continual updates.  Added "Project Policies".
 
 * spec/pep-0257.txt: Clarified prohibition of signature repetition.
+
+* spec/pep-0287.txt:
+
+  - Minor edits.
+  - Reworked Q&A as an enumerated list.
 
 * spec/rst/reStructuredText.txt:
 
