@@ -274,7 +274,8 @@ def publish_cmdline(reader=None, reader_name='standalone',
                     enable_exit_status=1, argv=None,
                     usage=default_usage, description=default_description):
     """
-    Set up & run a `Publisher`.  For command-line front ends.
+    Set up & run a `Publisher` (and return the encoded string output).
+    For command-line front ends.
 
     Parameters:
 
@@ -303,9 +304,10 @@ def publish_cmdline(reader=None, reader_name='standalone',
     """
     pub = Publisher(reader, parser, writer, settings=settings)
     pub.set_components(reader_name, parser_name, writer_name)
-    pub.publish(argv, usage, description, settings_spec, settings_overrides,
-                config_section=config_section,
-                enable_exit_status=enable_exit_status)
+    output = pub.publish(
+        argv, usage, description, settings_spec, settings_overrides,
+        config_section=config_section, enable_exit_status=enable_exit_status)
+    return output
 
 def publish_file(source=None, source_path=None,
                  destination=None, destination_path=None,
@@ -315,7 +317,8 @@ def publish_file(source=None, source_path=None,
                  settings=None, settings_spec=None, settings_overrides=None,
                  config_section=None, enable_exit_status=None):
     """
-    Set up & run a `Publisher`.  For programmatic use with file-like I/O.
+    Set up & run a `Publisher` (and return the encoded string output).
+    For programmatic use with file-like I/O.
 
     Parameters:
 
@@ -356,7 +359,8 @@ def publish_file(source=None, source_path=None,
         settings._update(settings_overrides, 'loose')
     pub.set_source(source, source_path)
     pub.set_destination(destination, destination_path)
-    pub.publish(enable_exit_status=enable_exit_status)
+    output = pub.publish(enable_exit_status=enable_exit_status)
+    return output
 
 def publish_string(source, source_path=None, destination_path=None, 
                    reader=None, reader_name='standalone',
@@ -366,7 +370,7 @@ def publish_string(source, source_path=None, destination_path=None,
                    settings_overrides=None, config_section=None,
                    enable_exit_status=None):
     """
-    Set up & run a `Publisher`, and return the string output.
+    Set up & run a `Publisher`, and return the encoded string output.
     For programmatic use with string I/O.
 
     For encoded string output, be sure to set the "output_encoding" setting to
