@@ -1,12 +1,10 @@
-#! /usr/bin/env python
+# Authors: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
 """
-:Authors: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
-
 Calling the `publish` convenience function (or instantiating a
 `Publisher` object) with component names will result in default
 behavior.  For custom behavior (setting component options), create

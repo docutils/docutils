@@ -1,13 +1,12 @@
-#! /usr/bin/env python
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
 """
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
-
-This is ``docutils.parsers.rst`` package. It exports a single class, `Parser`.
+This is ``docutils.parsers.rst`` package. It exports a single class, `Parser`,
+the reStructuredText parser.
 
 Usage
 =====

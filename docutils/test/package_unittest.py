@@ -1,12 +1,12 @@
 #! /usr/bin/env python
 
-"""
-:Author: Garth Kidd
-:Contact: garth@deadlybloodyserious.com
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Author: Garth Kidd
+# Contact: garth@deadlybloodyserious.com
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
+"""
 This module extends unittest.py with `loadTestModules()`, by loading multiple
 test modules from a directory.  Optionally, test packages are also loaded,
 recursively.

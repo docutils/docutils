@@ -1,12 +1,10 @@
-#! /usr/bin/env python
+# Author:    Adam Chodorowski
+# Contact:   chodorowski@users.sourceforge.net
+# Revision:  $Revision$
+# Date:      $Date$
+# Copyright: This module has been placed in the public domain.
 
 """
-:Author:    Adam Chodorowski
-:Contact:   chodorowski@users.sourceforge.net
-:Revision:  $Revision$
-:Date:      $Date$
-:Copyright: This module has been placed in the public domain.
-
 Swedish language mappings for language-dependent features of reStructuredText.
 """
 
