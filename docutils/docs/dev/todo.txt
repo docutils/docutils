@@ -398,41 +398,62 @@ Documentation
 * The documentation is currently messed up.  These are the plans for
   an overall cleanup:
 
+  - Create new subdirectories of docs/:
+
+    * ``docs/user/``: introductory/tutorial material for end-users
+    * ``docs/dev/``: for core-developers
+    * ``docs/ref/``: reference material for all groups
+    * ``docs/howto/``: for component-developers and core-developers
+    * ``docs/lib/``: API reference material for library-user/developers
+
   - Move 'Acknowledgements' from ``HISTORY.txt`` to ``THANKS.txt``.
 
   - Move ``docs/*`` to ``docs/user/``.
-
-  - Create ``docs/dev/``.
 
   - Split up ``spec/notes.txt`` to ``BUGS.txt``,
     ``docs/dev/todo.txt``, ``docs/dev/policies.txt``,
     ``docs/dev/website.txt``, ``docs/dev/release.txt``.
 
-  - Move 'Future Plans' from ``HISTORY.txt`` to ``docs/dev/todo.txt``.
+  - Move 'Future Plans' from ``HISTORY.txt`` to new 'Priorities'
+    section of ``docs/dev/todo.txt``.
 
-  - Move ``spec/rst/introduction.txt`` to ``docs/user/rst/``.
+  - Move ``pysource.dtd``, ``pysource.txt``, ``semantics.txt`` from
+    ``spec/`` to ``docs/dev``.
 
-  - Move ``spec/rst/problems.txt`` and ``spec/rst/alternatives.txt``
-    to ``docs/dev/rst/``.
+  - Move ``doctree.txt``, ``docutils.dtd``, ``soextblx.dtd`` from
+    ``spec/`` to ``docs/ref/``.
 
-  - Move ``spec/howto/`` to ``docs/dev/howto/``.
+  - Move ``transforms.txt`` from ``spec/`` to ``docs/lib/``.
 
-  - Move ``spec/`` to ``docs/spec/``.
+  - PEPs in ``spec/``?  Move to ``docs/ref/`` or ``docs/dev/``?
+
+  - Move ``alternatives.txt``, ``introduction.txt``, and
+    ``problems.txt`` from ``spec/rst/`` to ``docs/dev/rst/``.
+    (Move "Doctree Representation of Transitions" section of
+    ``alternatives.txt`` elsewhere?  Where?)
+
+  - Move ``reStructuredText.txt``, ``directives.txt``, and
+    ``interpreted.txt`` from ``spec/rst/`` to ``docs/ref/rst/``.
+    (Rename ``interpreted.txt`` to ``roles.txt``?)
+
+  - Move ``spec/howto/`` to ``docs/howto``.
+    (Not to ``docs/dev/howto/``; not just for core-developers.)
+
+  It would be useful to keep the CVS history of moved files.  To do
+  so, we need to supply SourceForge with a `script for modifying the
+  Docutils CVS repository`__.  Any other pending repository cleanups
+  (remove "module" module; others?)  should be done at the same time.
+
+  __ http://sf.net/docman/display_doc.php?docid=768&group_id=1#repositoryrestructure
 
 * After doing the cleanup:
 
-  - Add 'how to report bugs' to ``BUGS.txt``.
+  - Add 'how to report bugs' to ``BUGS.txt`` (like `Subversion's
+    <http://svn.collab.net/viewcvs/svn/trunk/BUGS?rev=9086&view=markup>`__).
 
   - Add ``docs/index.txt``.
 
-  - Create a 'priority' section in ``docs/dev/todo.txt`` and (maybe)
-    ``BUGS.txt``.
-
 * User docs.  What's needed?
-
-* Add an "examples" directory, beside "tools" and "docs", for
-  interesting examples of Docutils usage?  Have a top-level README.txt
-  file and a subdirectory for each example.  (Martin Blais)
 
 
 Implementation Docs
