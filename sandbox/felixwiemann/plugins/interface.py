@@ -19,7 +19,6 @@ out of a math patch, but that will to require more code.)
 Things not (yet) covered here:
 
 * Adding a Component (this may require a generic frontend).
-* Adding an option.
 * Writing a test case for an extension.
 """
 
