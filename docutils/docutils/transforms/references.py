@@ -37,8 +37,11 @@ class SectionTargets(Transform):
         """
         assert isinstance(target, nodes.target)
         # Find next node which is not a target.
-        n = target.next_node(
-            condition=lambda x: not isinstance(x, nodes.target))
+        n = target.next_node(condition=lambda x:
+                             not isinstance(x, nodes.target) or
+                             x.has_key('refid') or
+                             x.has_key('refuri') or
+                             x.has_key('refname'))
         if isinstance(n, nodes.section):
             assert isinstance(n[0], nodes.title)
             target.parent.remove(target)
