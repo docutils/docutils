@@ -405,11 +405,19 @@ pep_home              (PEP/HTML Writer.)  Home URL prefix for PEPs.
                       Default: current directory (".").  Options:
                       ``--pep-home``.
 --------------------  ------------------------------------------------
-pep_stylesheet        (PEP/HTML Writer.)  Path to CSS stylesheet
-                      [#pwd]_.  Overrides HTML stylesheet
+pep_stylesheet        (PEP/HTML Writer.)  CSS stylesheet URL, used
+                      verbatim.  Overrides HTML stylesheet
                       (``--stylesheet``).
 
                       Default: None.  Options: ``--pep-stylesheet``.
+--------------------  ------------------------------------------------
+pep_stylesheet_path   (PEP/HTML Writer.)  Path to CSS stylesheet
+                      [#pwd]_.  Overrides HTML stylesheet
+                      (``--stylesheet``) and PEP stylesheet
+                      (``--pep-stylesheet``).
+
+                      Default: None.  Options:
+                      ``--pep-stylesheet-path``.
 --------------------  ------------------------------------------------
 pep_template          (PEP/HTML Writer.)  Path to PEP template file
                       [#pwd]_.
@@ -449,15 +457,22 @@ source_link           Include a "View document source" link in the
                       ``--source-link, --no-source-link``.
 --------------------  ------------------------------------------------
 source_url            An explicit URL for a "View document source"
-                      link.
+                      link, used verbatim.
 
                       Default: compute if source_link (None).
                       Options: ``--source-uri, --no-source-link``.
 --------------------  ------------------------------------------------
-stylesheet            (HTML Writer.)  Path to CSS stylesheet [#pwd]_.
+stylesheet            (HTML Writer.)  CSS stylesheet URL, used
+                      verbatim.
 
                       Default: "default.css".  Options:
                       ``--stylesheet``.
+--------------------  ------------------------------------------------
+stylesheet-path       (HTML Writer.)  Path to CSS stylesheet [#pwd]_.
+                      Overrides "stylesheet" URL option
+                      (``--stylesheet``).
+
+                      Default: None.  Options: ``--stylesheet``.
 --------------------  ------------------------------------------------
 toc_backlinks         Enable backlinks from section titles to table of
                       contents entries ("entry"), to the top of the
@@ -473,6 +488,7 @@ warning_stream        Path to a file for the output of system messages
                       Default: stderr (None).  Options:
                       ``--warnings``.
 
+--------------------  ------------------------------------------------
 **For Internal Use Only** (setting these in a config file has no effect)
 ----------------------------------------------------------------------
 _directories          (``buildhtml.py`` front end.)  List of paths to

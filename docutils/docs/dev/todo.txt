@@ -828,51 +828,6 @@ Front-End Tools
 
 - Implement the "sectnum" directive as a command-line option also?
 
-- @@@ Fix the absolute/relative path handling.
-
-  All references to files (stylesheet, source file [in footer], PEP
-  template) are interpreted relative to the current working directory,
-  and adjusted relative to the destination directory.  For example::
-
-      cd /work
-      html.py -s --stylesheet=default.css /src/test.txt /dst/text.html
-
-  This will interpret the stylesheet as "/work/default.css", so the
-  stylesheet link in the HTML (which is written to the /dst dir) will
-  read "../work/default.css", and the source link (-s option) will
-  read "../src/test.txt".
-
-  - Perhaps the current behavior should be optional
-    ("--relative-paths" or something).  The default could be not to
-    process paths at all, just use them verbatim.
-
-  - We could add an "--verbatim-paths" option, which indicates that
-    paths should not be modified at all.
-
-  - Use variant options, such as "--stylesheet-url=URL", which
-    wouldn't be interpreted as paths.
-
-  - Redefine "--stylesheet=URL" as an invariant, uninterpreted.  Add
-    an interpreted "--stylesheet-path=PATH".  Similarly for
-    "--pep-stylesheet".  The -path variant would override.
-
-  Paths and URLs should be treated differently.  Sometimes a relative
-  path can be treated as the equivalent of a relative URL, but that's
-  not the case for absolute paths/URLs.  The "--pep-template" value is
-  *not* a URL, but a local file.  "--stylesheet" could be either.
-  Source links (generated in the footer) may depend on how the HTML is
-  installed.  I've been putting .html files in the same directories as
-  the source .txt files, but there are other ways to do it, and the
-  directory layout used at runtime may be different from the installed
-  layout.
-
-  Bug reports by Adam Chodorowski and Kenichi Sato.
-
-- ``options._destination`` shouldn't have to be set.  It's currently
-  needed to calculate relative paths for the stylesheet link.  But the
-  client shouldn't have to deal with it.  It's a file-bias that needs
-  fixing.
-
 
 Project Policies
 ================

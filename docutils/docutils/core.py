@@ -76,14 +76,15 @@ class Publisher:
 
     def setup_option_parser(self, usage=None, description=None,
                             option_spec=None, **defaults):
-        config = ConfigParser()
-        config.read_standard_files()
-        config_options = config.get_section('options')
-        frontend.make_paths_absolute(config_options)
-        defaults.update(config_options)
         option_parser = OptionParser(
             components=(option_spec, self.reader, self.parser, self.writer),
             usage=usage, description=description)
+        config = ConfigParser()
+        config.read_standard_files()
+        config_options = config.get_section('options')
+        frontend.make_paths_absolute(config_options,
+                                     option_parser.relative_path_options)
+        defaults.update(config_options)
         option_parser.set_defaults(**defaults)
         return option_parser
 

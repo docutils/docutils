@@ -16,6 +16,7 @@ import sys
 import os
 import os.path
 import copy
+import docutils
 from docutils import ApplicationError
 from docutils import core, frontend, io
 from docutils.parsers import rst
@@ -29,7 +30,7 @@ description = ('Generates .html from all the .txt files (including PEPs) '
                'in each <directory> (default is the current directory).')
 
 
-class OptionSpec:
+class OptionSpec(docutils.OptionSpec):
 
     """
     Command-line options for the ``buildhtml.py`` front end.
@@ -140,11 +141,14 @@ class Builder:
             components=(OptionSpec, pep.Reader, rst.Parser, pep_html.Writer),
             usage=usage, description=description)
         self.option_defaults = option_parser.get_default_values()
-        frontend.make_paths_absolute(self.option_defaults.__dict__)
+        self.relative_path_options = option_parser.relative_path_options
+        frontend.make_paths_absolute(self.option_defaults.__dict__,
+                                     self.relative_path_options)
         config_parser = frontend.ConfigParser()
         config_parser.read_standard_files()
         self.config_settings = config_parser.get_section('options')
-        frontend.make_paths_absolute(self.config_settings)
+        frontend.make_paths_absolute(self.config_settings,
+                                     self.relative_path_options)
         self.cmdline_options = option_parser.parse_args(
             values=frontend.Values())   # no defaults
 
@@ -162,7 +166,8 @@ class Builder:
             config_parser = frontend.ConfigParser()
             config_parser.read(os.path.join(directory, 'docutils.conf'))
             local_config = config_parser.get_section('options')
-            frontend.make_paths_absolute(local_config, directory)
+            frontend.make_paths_absolute(
+                local_config, self.relative_path_options, directory)
             options.__dict__.update(local_config)
         options.__dict__.update(self.cmdline_options.__dict__)
         return options
