@@ -279,10 +279,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item(node)
 
     def visit_authors(self, node):
-        self.visit_docinfo_item(node, 'author')
+        # ignore. visit_author is called for each one
+        # self.visit_docinfo_item(node, 'author')
+        pass
 
     def depart_authors(self, node):
-        self.depart_docinfo_item(node)
+        # self.depart_docinfo_item(node)
+        pass
 
     def visit_block_quote(self, node):
         self.body.append( '\\begin{quote}\n')
