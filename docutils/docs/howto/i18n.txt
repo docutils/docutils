@@ -31,14 +31,6 @@ have to be added to the project: one for Docutils itself (the
 `Docutils Language Module`_) and one for the reStructuredText parser
 (the `reStructuredText Language Module`_).
 
-Language modules are named using a case-insensitive language
-identifier as defined in `RFC 1766`_.  A typical language identifier
-consists of a 2-letter language code from `ISO 639`_ (3-letter codes
-can be used if no 2-letter code exists; RFC 1766 is currently being
-revised to allow 3-letter codes).  If no language identifier is
-specified, the default is "en" for English.  Examples of module names
-include ``en.py``, ``fr.py``, and ``ja.py``
-
 .. [#] If anything in Docutils is insufficiently parameterized, it
    should be considered a bug.  Please report bugs to the Docutils
    project bug tracker on SourceForge at
@@ -47,8 +39,40 @@ include ``en.py``, ``fr.py``, and ``ja.py``
 .. _Docutils: http://docutils.sourceforge.net/
 .. _Introduction to i18n:
    http://www.debian.org/doc/manuals/intro-i18n/
+
+
+Language Module Names
+=====================
+
+Language modules are named using a case-insensitive language
+identifier as defined in `RFC 1766`_.  A typical language identifier
+consists of a 2-letter language code from `ISO 639`_ (3-letter codes
+can be used if no 2-letter code exists; RFC 1766 is currently being
+revised to allow 3-letter codes).  If no language identifier is
+specified, the default is "en" for English.  Examples of module names
+include ``en.py``, ``fr.py``, and ``ja.py``
+
 .. _RFC 1766: http://www.faqs.org/rfcs/rfc1766.html
 .. _ISO 639: http://lcweb.loc.gov/standards/iso639-2/englangn.html
+
+
+Python Code
+===========
+
+All Python code in Docutils will be ASCII-only.  In language modules,
+Unicode-escapes will have to be used for non-ASCII characters.
+Although it may be possible for some developers to store non-ASCII
+characters directly in strings, it will cause problems for other
+developers whose locales are set up differently.
+
+`PEP 263`_ introduces source code encodings to Python modules,
+implemented beginning in Python 2.3.  Until PEP 263 is fully
+implemented as a well-established convention, proven robust in daily
+use, and the tools (editors, CVS, email, etc.) recognize this
+convention, Docutils shall remain conservative.
+
+As mentioned in the note above, developers are invited to explore
+"gettext" and other i18n technologies.
 
 
 Docutils Language Module
