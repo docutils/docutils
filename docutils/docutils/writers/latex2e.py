@@ -410,16 +410,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item(node)
 
     def visit_admonition(self, node, name):
-        self.body.append('\\begin{center}\n');
-        # alternatives: parbox or minipage.
-        # minpage has footnotes on the minipage.
-        # BUG there is no border.
-        self.body.append('\\parbox{\\admwidth}{\\textbf{'
-                         + self.language.labels[name] + '}\n')
+        self.body.append('\\begin{center}\\begin{sffamily}\n')
+        self.body.append('\\fbox{\\parbox{\\admwidth}{\n')
+        self.body.append('\\textbf{\\large '+ self.language.labels[name] + '}\n');
+        self.body.append('\\vspace{2mm}\n')
+
 
     def depart_admonition(self):
-        self.body.append('}\n')
-        self.body.append('\\end{center}\n');
+        self.body.append('}}\n') # end parbox fbox
+        self.body.append('\\end{sffamily}\n\\end{center}\n');
 
     def visit_attention(self, node):
         self.visit_admonition(node, 'attention')
