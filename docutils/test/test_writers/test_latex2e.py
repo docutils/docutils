@@ -253,14 +253,14 @@ Expecting ``en'' here.
 Inside literal blocks quotes should be left untouched
 (use only two quotes in test code makes life easier for
 the python interpreter running the test):
-\\begin{ttfamily}\\begin{flushleft}
+\\begin{quote}{\\ttfamily \\raggedright \\noindent
 ""~\\\\
 This~is~left~"untouched"~also~*this*.~\\\\
 ""
-\\end{flushleft}\\end{ttfamily}
-\\begin{ttfamily}\\begin{flushleft}
+}\\end{quote}
+\\begin{quote}{\\ttfamily \\raggedright \\noindent
 should~get~"quotes"~and~\\emph{italics}.
-\\end{flushleft}\\end{ttfamily}
+}\\end{quote}
 
 Inline \\texttt{literal "quotes"} should be kept.
 
@@ -325,13 +325,13 @@ latex_head + """\
 
 
 \\setlength{\\locallinewidth}{\\linewidth}
-\\begin{ttfamily}\\begin{flushleft}
+\\begin{quote}{\\ttfamily \\raggedright \\noindent
 something~before~to~get~a~end~of~line.~\\\\
 {[}~\\\\
 ~\\\\
 the~empty~line~gets~tested~too~\\\\
 ]
-\\end{flushleft}\\end{ttfamily}
+}\\end{quote}
 
 \\end{document}
 """],
