@@ -67,7 +67,8 @@ class Writer(writers.Writer):
           '"brackets".  Default is "superscript".',
           ['--footnote-references'],
           {'choices': ['superscript', 'brackets'], 'default': 'superscript',
-           'metavar': '<format>'}),
+           'metavar': '<format>',
+           'overrides': 'trim_footnote_reference_space'}),
          ('Format for block quote attributions: one of "dash" (em-dash '
           'prefix), "parentheses"/"parens", or "none".  Default is "dash".',
           ['--attribution'],

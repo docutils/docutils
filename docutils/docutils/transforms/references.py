@@ -767,7 +767,7 @@ class TargetNotes(Transform):
             self.document.note_footnote_ref(refnode)
             index = ref.parent.index(ref) + 1
             reflist = [refnode]
-            if not self.document.settings.trim_footnote_reference_space:
+            if not utils.get_trim_footnote_ref_space(self.document.settings):
                 reflist.insert(0, nodes.Text(' '))
             ref.parent.insert(index, reflist)
         return footnote

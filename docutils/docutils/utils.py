@@ -463,6 +463,21 @@ def get_stylesheet_reference(settings, relative_to=None):
     else:
         return settings.stylesheet
 
+def get_trim_footnote_ref_space(settings):
+    """
+    Return whether or not to trim footnote space.
+
+    If trim_footnote_reference_space is not None, return it.
+
+    If trim_footnote_reference_space is None, return False unless the
+    footnote reference style is 'superscript'.
+    """
+    if settings.trim_footnote_reference_space is None:
+        return hasattr(settings, 'footnote_references') and \
+               settings.footnote_references == 'superscript'
+    else:
+        return settings.trim_footnote_reference_space
+
 def get_source_line(node):
     """
     Return the "source" and "line" attributes from the `node` given or from

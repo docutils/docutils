@@ -46,7 +46,8 @@ class Writer(writers.Writer):
           '"brackets".  Default is "brackets".',
           ['--footnote-references'],
           {'choices': ['superscript', 'brackets'], 'default': 'brackets',
-           'metavar': '<format>'}),
+           'metavar': '<format>',
+           'overrides': 'trim_footnote_reference_space'}),
          ('Use LaTeX citations. '
           'Default: no, uses figures which might get mixed with images.',
           ['--use-latex-citations'],
