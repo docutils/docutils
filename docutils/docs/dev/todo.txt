@@ -589,9 +589,9 @@ __ rst/alternatives.html#or-not-to-do
   whitespace and punctuation as markup delimiters, which may not be
   applicable in these languages.
 
-  Python 2.4 introduces the iswide() and width() string methods, so
-  this problem will be resolved later, when Python 2.4 is being used
-  more widely.
+  Python 2.4 introduces the function ``unicodedata.east_asian_width``,
+  so this problem will be resolved later, when Python 2.4 is in a
+  reasonably stable state and being used more widely.
 
 * Clean up the code; refactor as required.
 
