@@ -151,7 +151,8 @@ class MoinTranslator(html4css1.HTMLTranslator):
     def visit_reference(self, node):
         target = None
         if 'refuri' in node.attributes:
-            if node['refuri'].find('wiki:') != -1:
+            if (node['refuri'].find('wiki:') != -1) or \
+               (node['refuri'].find('attachment:') != -1):
                 target = node['refuri']
             elif ('name' in node.attributes and 
                   fully_normalize_name(node['name']) == node['refuri']):
