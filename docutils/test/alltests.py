@@ -1,4 +1,4 @@
-#!/usr/bin/env py4123
+#!/usr/bin/env python
 
 # Author: David Goodger
 # Contact: goodger@users.sourceforge.net
