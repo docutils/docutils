@@ -24,9 +24,9 @@ and related projects:
     Jones, Garth Kidd, Daniel Larsson, Marc-Andre Lemburg, Wolfgang
     Lipp, Edward Loper, Ken Manheimer, Paul Moore, Michel Pelletier,
     Sam Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim, Tavis Rudd,
-    Ollie Rutherfurd, Ueli Schlaepfer, Gunnar Schwant, tav, Bob
-    Tolbert, Laurence Tratt, Guido van Rossum, Barry Warsaw, Edward
-    Welbourne, Ka-Ping Yee, Moshe Zadka
+    Ollie Rutherfurd, Kenichi Sato, Ueli Schlaepfer, Gunnar Schwant,
+    tav, Bob Tolbert, Laurence Tratt, Guido van Rossum, Barry Warsaw,
+    Edward Welbourne, Ka-Ping Yee, Moshe Zadka
 
 Thank you!
 
@@ -42,6 +42,10 @@ Changes Since 0.2
 
   - Bumped version to 0.2.1 to reflect changes to I/O classes.
 
+* docutils/core.py:
+
+  - Made ``publish()`` a bit more convenient.
+
 * docutils/frontend.py:
 
   - Check for & exit on identical source & destination paths.
@@ -55,6 +59,7 @@ Changes Since 0.2
   - ``FileOutput.write()`` now returns the encoded output string.
   - Try to get path/stream name automatically in ``FileInput`` &
     ``FileOutput``.
+  - Added defaults for source & destination paths.
 
 * docutils/nodes.py:
 
@@ -162,9 +167,9 @@ Changes Since 0.2
     about the element class library.
   - Moved some implementation-specific stuff into ``docutils.nodes``
     docstrings.
-  - Lots of progress.  Wrote descriptions of all common attributes and
-    parameter entities.  Filled in introductory material.  Started on
-    element descriptions (3 down, 80 to go).
+  - Wrote descriptions of all common attributes and parameter
+    entities.  Filled in introductory material.
+  - Working through the element descriptions: 21 down, 63 to go.
 
 * spec/docutils.dtd:
 
@@ -198,6 +203,7 @@ Changes Since 0.2
   - Added ``--silent`` option.
   - Fixed bug with absolute paths & ``--config``.
   - Updated for new I/O classes.
+  - Added some exception handling.
 
 * tools/default.css:
 
@@ -326,7 +332,7 @@ Specific:
   - Changed names of Reporter's thresholds:
     warning_level -> report_level; error_level -> halt_level.
   - Moved ``utils.id()`` to ``nodes.make_id()``.
-  - Added ``relative_uri(source, target)``.
+  - Added ``relative_path(source, target)``.
 
 * docutils/languages/de.py: German mappings; added to project.  Thanks
   to Gunnar Schwant for the translations.
