@@ -563,7 +563,7 @@ class Footnotes(Transform):
                       'Too many symbol footnote references: only %s '
                       'corresponding footnotes available.' % len(labels),
                       base_node=ref)
-                msgid = self.set_id(msg)
+                msgid = self.document.set_id(msg)
                 for ref in self.document.symbol_footnote_refs[i:]:
                     if ref.resolved or ref.hasattr('refid'):
                         continue
