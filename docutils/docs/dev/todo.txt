@@ -197,7 +197,7 @@ General
 
     This would also allow other attributes to be set, like border
     styles.  The same technique could be used for other objects.
-           
+
   - The object could also be done this way::
 
         .. _figure name:
@@ -243,7 +243,7 @@ General
   below).
 
   When writing a book, the author probably wants to split it up into
-  files, perhaps one per chapter (but perhaps even more detailed). 
+  files, perhaps one per chapter (but perhaps even more detailed).
   However, we'd like to be able to have references from one chapter to
   another, and have continuous numbering (pages and chapters, as
   applicable).  Of course, none of this is implemented yet.  There has
@@ -275,6 +275,51 @@ General
   system for large-scale, multipart documents.
 
   __ rst/directives.html#including-an-external-document-fragment
+
+  Aahz's idea:
+
+      First the ToC::
+
+          .. ToC-list::
+              Introduction.txt
+              Objects.txt
+              Data.txt
+              Control.txt
+
+      Then a sample use::
+
+          .. include:: ToC.txt
+
+          As I said earlier in chapter :chapter:`Objects.txt`, the
+          reference count gets increased every time a binding is made.
+
+      Which produces::
+
+          As I said earlier in chapter 2, the
+          reference count gets increased every time a binding is made.
+
+      The ToC in this form doesn't even need to be references to actual
+      reST documents; I'm simply doing it that way for a minimum of
+      future-proofing, in case I do want to add the ability to pick up
+      references within external chapters.
+
+  Perhaps, instead of ToC (which would overload the "contents"
+  directive concept already in use), we could use "manifest".  A
+  "manifest" directive might associate local reference names with
+  files::
+
+      .. manifest::
+         intro: Introduction.txt
+         objects: Objects.txt
+         data: Data.txt
+         control: Control.txt
+
+  Then the sample becomes::
+
+      .. include:: manifest.txt
+
+      As I said earlier in chapter :chapter:`objects`, the
+      reference count gets increased every time a binding is made.
 
 * Change ``document.options`` to ``document.settings``?
 
@@ -802,7 +847,7 @@ Directives
     The words "paragraph", "marked", and "index" would become index
     entries pointing at the words in the first paragraph.  The index
     entry words appear verbatim in the text.  (Don't worry about the
-    ugly ":index:" part; if indexing is the only application of
+    ugly ":index:" part; if indexing is the only/main application of
     interpreted text in your documents, it can be implicit and
     omitted.)  The two directives provide manual indexing, where the
     index entry words ("markup" and "syntax") do not appear in the
@@ -843,6 +888,36 @@ Directives
         many permutations to consider.
 
     Also "see / see also" index entries.
+
+    Given::
+
+        Here's a paragraph.
+
+        .. index:: paragraph
+
+    (The "index" directive above actually targets the *preceding*
+    object.)  The directive should produce something like this XML::
+
+        <paragraph>
+        <index_entry text="paragraph"/>
+        Here's a paragraph.
+        </paragraph>
+
+    This kind of content model would also allow true inline
+    index-entries::
+
+        Here's a `paragraph`:index:.
+
+    If the "index" role were the default for the application, it could be
+    dropped::
+
+        Here's a `paragraph`.
+
+    Both of these would result in this XML::
+
+        <paragraph>
+        Here's a <index_entry>paragraph</index_entry>.
+        </paragraph>
 
   - _`colorize.python`: Colorize Python code.  Fine for HTML output,
     but what about other formats?  Revert to a literal block?  Do we
