@@ -24,7 +24,7 @@ class Process:
     """The infrastucture that knows how to produce our DOCUTILS node tree.
     """
 
-    def __init__(self,with_groups=1):
+    def __init__(self, with_groups=1, document=None):
         """Instantiate our transformation to a DOCUTILS tree.
 
         At the moment, whilst we are considering both my own old HTML
@@ -33,7 +33,7 @@ class Process:
         buildtree will not output "group" elements...
         """
         self.current_module = None
-        self.dps = buildtree.BuildTree(with_groups=with_groups)
+        self.dps = buildtree.BuildTree(with_groups=with_groups, root=document)
 
     def __call__(self,thing):
         """Produce a DOCUTILS 'document' node and attach our information to it
