@@ -2,13 +2,7 @@
 # Contact: docutils@tekNico.net, lele@seldati.it
 # Revision: $Revision$
 # Date: $Date$
-# Date: $Date$
 # Copyright: This module has been placed in the public domain.
-
-# New language mappings are welcome.  Before doing a new translation, please
-# read <http://docutils.sf.net/spec/howto/i18n.html>.  Two files must be
-# translated for each language: one in docutils/languages, the other in
-# docutils/parsers/rst/languages.
 
 """
 Italian-language mappings for language-dependent features of
