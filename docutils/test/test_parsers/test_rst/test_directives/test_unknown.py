@@ -30,16 +30,28 @@ totest['unknown'] = [
 """,
 """\
 <document source="test data">
+    <system_message level="2" line="1" source="test data" type="WARNING">
+        <paragraph>
+            No directive entry for "reStructuredText-unknown-directive" in module "docutils.parsers.rst.languages.en".
+            Trying "reStructuredText-unknown-directive" as canonical directive name.
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Unknown directive type "reStructuredText-unknown-directive".
         <literal_block xml:space="preserve">
             .. reStructuredText-unknown-directive::
+    <system_message level="2" line="3" source="test data" type="WARNING">
+        <paragraph>
+            No directive entry for "reStructuredText-unknown-directive" in module "docutils.parsers.rst.languages.en".
+            Trying "reStructuredText-unknown-directive" as canonical directive name.
     <system_message level="3" line="3" source="test data" type="ERROR">
         <paragraph>
             Unknown directive type "reStructuredText-unknown-directive".
         <literal_block xml:space="preserve">
             .. reStructuredText-unknown-directive:: argument
+    <system_message level="2" line="5" source="test data" type="WARNING">
+        <paragraph>
+            No directive entry for "reStructuredText-unknown-directive" in module "docutils.parsers.rst.languages.en".
+            Trying "reStructuredText-unknown-directive" as canonical directive name.
     <system_message level="3" line="5" source="test data" type="ERROR">
         <paragraph>
             Unknown directive type "reStructuredText-unknown-directive".

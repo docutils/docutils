@@ -103,7 +103,7 @@ __ http://docutils.sourceforge.net/docfactory-snapshot.tgz
 __ http://docutils.sourceforge.net/docutils-web-snapshot.tgz
 
 `Anonymous CVS access`_ is available.  You can also `browse the CVS
-repository`_ and read the latest README_ and HISTORY_ files.
+repository`_ and read the latest README_, HISTORY_, and FAQ_ files.
 
 
 Project Releases
@@ -125,8 +125,9 @@ Mailing Lists
 -------------
 
 Users who have questions or need assistance with Docutils or
-reStructuredText should `post a message`__ to the `Docutils-Users
-mailing list`__.
+reStructuredText should first check the `Docutils FAQ`_.  If the
+question or problem is not answered there, please `post a message`__
+to the `Docutils-Users mailing list`__.
 
 Developers can keep up to date and help out by joining the mailing
 lists.
@@ -148,6 +149,8 @@ general discussions (such as reStructuredText syntax or the high-level
 Docutils project model), whereas the Docutils-specific lists are more
 focused on the implementation.
 
+.. _FAQ:
+.. _Docutils FAQ: FAQ.html
 __ mailto:docutils-users@lists.sourceforge.net
 __ http://lists.sourceforge.net/lists/listinfo/docutils-users
 __ http://mail.python.org/mailman/listinfo/doc-sig
@@ -161,11 +164,13 @@ User Documentation
 The latest working documents may be accessed individually below, or
 from the ``docs`` directory of the `development snapshots`_ above. 
 They are also distributed with the `latest project release package`_,
-but these may not be completely up to date.
+but those may not be completely up to date.
 
 - `A ReStructuredText Primer`__ (HTML file, or `text source`__)
 - `Quick reStructuredText`__ (user reference)
 - `Docutils Front-End Tools`__
+
+Also see the `Docutils FAQ`_.
 
 __ docs/rst/quickstart.html
 __ docs/rst/quickstart.txt
@@ -255,8 +260,10 @@ __ spec/rst/problems.html
 How-To's
 --------
 
+- `Docutils Internationalization`__
 - `Creating reStructuredText Directives`__
 
+__ spec/howto/i18n.html
 __ spec/howto/rst-directives.html
 
 

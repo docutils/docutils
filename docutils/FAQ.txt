@@ -73,6 +73,9 @@ predecessors) and graciously donated the name.
 For more history of reStructuredText and the Docutils project, see `An
 Introduction to reStructuredText`_.
 
+Please note that the name is "Docutils", not "DocUtils" or "Doc-Utils"
+or any other variation.
+
 .. _An Introduction to reStructuredText: spec/rst/introduction.html
 __ http://mail.python.org/pipermail/doc-sig/1999-December/000878.html
 __ http://mail.python.org/pipermail/doc-sig/2000-November/001252.html

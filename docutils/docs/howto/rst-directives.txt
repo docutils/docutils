@@ -168,9 +168,18 @@ directive function itself.
 Register the Directive
 ======================
 
-Register the new directive in ``directives/__init__.py``, in the
+Register the new directive in
+``docutils/parsers/rst/directives/__init__.py``, in the
 ``_directive_registry`` dictionary.  This allows the reStructuredText
 parser to find and use the directive.
+
+Add an entry to ``docutils/parsers/rst/languages/en.py`` for the
+directive, mapping the English name to the canonical name (both
+lowercase).  Usually the English name and the canonical name are the
+same.
+
+Please check for and update any other language modules for languages
+in which you are proficient.
 
 
 Examples
