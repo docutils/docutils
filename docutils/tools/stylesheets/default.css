@@ -170,7 +170,8 @@ table.footnote {
 
 td, th {
   padding-left: 0.5em ;
-  padding-right: 0.5em }
+  padding-right: 0.5em ;
+  vertical-align: top }
 
 td > p:first-child, th > p:first-child {
   margin-top: 0em }
