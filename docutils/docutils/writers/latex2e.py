@@ -1104,7 +1104,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_image(self, node):
-        attrs = node.attributes.copy()
+        attrs = node.attributes
         pre = []                        # in reverse order
         post = ['\\includegraphics{%s}' % attrs['uri']]
         inline = isinstance(node.parent, nodes.TextElement)
