@@ -556,11 +556,11 @@ Yes, in conjunction with other projects.
 
 Docstring extraction functionality from within Docutils is still under
 development.  There is most of a source code parsing module in
-docutils/readers/python/moduleparser.py.  I (David Goodger) haven't
-worked on it in a while, but I do plan to finish it eventually.  Ian
-Bicking wrote an initial front end for my moduleparser module, in
-sandbox/ianb/extractor/extractor.py.  There has also been some recent
-activity in sandbox/tibs/pysource2/.
+docutils/readers/python/moduleparser.py.  We do plan to finish it
+eventually.  Ian Bicking wrote an initial front end for the
+moduleparser.py module, in sandbox/ianb/extractor/extractor.py.  Ian
+also did some work on the Python Source Reader
+(docutils.readers.python) component at PyCon DC 2004.
 
 Version 2.0 of Ed Loper's `Epydoc <http://epydoc.sourceforge.net/>`_
 supports reStructuredText-format docstrings for HTML output.  Docutils
