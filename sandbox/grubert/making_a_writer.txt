@@ -58,8 +58,8 @@ Empty methods
 
 It is legal and does not hint to missing functionality, when a
 method only implements pass, it just means that this calls information
-is not used, the actual content is usually produced between visit_
-and depart_ calls. e.g.::
+is not used, the actual content is usually produced between ``visit_*``
+and ``depart_*`` calls. e.g.::
 
     def visit_Text(self, node):
         self.body.append(self.encode(node.astext()))
