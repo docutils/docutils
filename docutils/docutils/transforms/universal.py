@@ -111,6 +111,29 @@ class Messages(Transform):
             self.document += section
 
 
+class FilterMessages(Transform):
+
+    """
+    Remove system messages below verbosity threshold.
+    """
+
+    default_priority = 870
+
+    def apply(self):
+        visitor = SystemMessageFilterVisitor(self.document)
+        self.document.walk(visitor)
+
+
+class SystemMessageFilterVisitor(nodes.SparseNodeVisitor):
+
+    def unknown_visit(self, node):
+        pass
+
+    def visit_system_message(self, node):
+        if node['level'] < self.document.reporter['writer'].report_level:
+            node.parent.remove(node)
+
+
 class TestMessages(Transform):
 
     """

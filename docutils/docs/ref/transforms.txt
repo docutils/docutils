@@ -71,7 +71,9 @@ universal.FinalChecks           Transformer                   840
 
 universal.Messages              Transformer                   860
 
-universal.TestMessages          DocutilsTestSupport           890
+universal.FilterMessages        Transformer                   870
+
+universal.TestMessages          DocutilsTestSupport           880
 
 misc.CallBack                   n/a                           990
 ==============================  ============================  ========
