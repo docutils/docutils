@@ -877,6 +877,14 @@ are not recognized): signal:noise, a:b.
         None of these are standalone hyperlinks (their "schemes"
         are not recognized): signal:noise, a:b.
 """],
+["""\
+Escaped email addresses are not recognized: test\@example.org
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Escaped email addresses are not recognized: test@example.org
+"""],
 ]
 
 totest['miscellaneous'] = [
