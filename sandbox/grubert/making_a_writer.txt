@@ -50,6 +50,24 @@ Next to come. This should be a writer module where everything is done
 in unimplemented.
 
 
+Methods
+=======
+
+Fallback methods
+----------------
+
+If derived from NodeVisitor
+* unknown_visit, unknown_departure
+
+Deriving from SparseNodeVisitor means everything might pass.
+
+GenericNodeVisitor adds 
+* default_visit, default_depart.
+
+unimplemented_visit( self, node) seams to be there for both.
+
+Each might raise NotImplementedError(describe_here), 
+
 General Problems
 ----------------
 
