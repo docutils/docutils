@@ -3,7 +3,7 @@ Title: Docstring Conventions
 Version: $Revision$
 Last-Modified: $Date$
 Author: David Goodger <goodger@users.sourceforge.net>,
-        Guido van Rossum guido@python.org
+        Guido van Rossum <guido@python.org>
 Discussions-To: doc-sig@python.org
 Status: Active
 Type: Informational
@@ -214,7 +214,7 @@ to list each argument on a separate line.  For example::
 The BDFL [3]_ recommends inserting a blank line between the last
 paragraph in a multi-line docstring and its closing quotes, placing
 the closing quotes on a line by themselves.  This way, Emacs'
-fill-paragraph command can be used on it.
+``fill-paragraph`` command can be used on it.
 
 
 References and Footnotes
