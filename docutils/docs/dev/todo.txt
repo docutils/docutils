@@ -111,6 +111,9 @@ General
   backlinks: no TOC backlinks, backlinks to TOC entries, or backlinks
   to TOC itself only.
 
+- Add resource file support (~/.docutils?): overrides application
+  defaults, overridden by command-line options.  What syntax to use?
+
 
 Specification
 -------------
