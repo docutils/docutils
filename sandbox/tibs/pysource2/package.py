@@ -2,15 +2,13 @@
 """
 
 import os
-from docutils.readers.python.moduleparser import Node
+from docutils.readers.python.moduleparser import Node, parse_module
 
 class NotAPackageException(Exception):
     pass
 
-class NoSuchDirectoryException(Exception):
-    pass
-
-
+
+# ----------------------------------------------------------------------
 class Package(Node):
     """This class represents a Python package.
 
@@ -18,6 +16,9 @@ class Package(Node):
     This may be extended/altered/expanded to include/disambiguate the
     name of the package, the "full" name of the package (e.g., if it is
     a sub-package) and the full path of the package, as needs indicate.
+
+    Note that a package must, by definition, include at least one module,
+    i.e., __init__.py (otherwise, it isn't a package).
     """
 
     def __init__(self, filename):
@@ -39,39 +40,48 @@ class Package(Node):
         return Node.attlist(self, filename=self.filename)
 
 
-def parse_package(package_path):
+
+# ----------------------------------------------------------------------
+class NotPython(Node):
+    """This class is used to represent a non-Python file.
+
+    @@@ If the file isn't Python, should we try for reStructuredText?
+    """
+
+    def __init__(self, filename):
+        """Initialise a NotPython instance.
+
+        @@@ Same caveats as Package.
+        """
+        # Hackery - the following two lines copied from Node itself.
+        self.children = []
+        self.lineno = None
+        self.filename = filename
+
+    def attlist(self):
+        return Node.attlist(self, filename=self.filename)
+
+
+# ----------------------------------------------------------------------
+def parse_package(package_path,ignore=None):
     """Parse a package for documentation purposes.
 
     `package_path` should be the system path of the package directory, which is
     not necessarily the same as the Python path...
-
-    Note that the final result is expected to return a Docutils tree, not
-    a string - but for the moment a string is easier.
     """
 
     package_path = os.path.normpath(package_path)
-    if not os.path.exists(package_path):
-        raise NoSuchDirectoryException,\
-              "Directory '%s' does not exist"%package_path
-
-    if not os.path.isdir(package_path):
-        raise NotAPackageException,\
-              "Directory '%s' is not a Python package"%package_path
-
     dir,file = os.path.split(package_path)
     if dir == "":
         dir = "."
     return parse_subpackage(dir,file)
 
-def parse_subpackage(package_path,subpackage,indent=""):
+def parse_subpackage(package_path,subpackage):
     """Parse a subpackage for documentation purposes.
 
     `package_path` should be the system path of the package directory,
     and `subpackage` is the (file) name of the subpackage therein. It
     is assumed that this is already known to be a directory.
-
-    The indentation is purely for debugging purposes, and should not
-    (of course) actually be used in the returned value.
     """
 
     sub_path = os.path.join(package_path,subpackage)
@@ -81,19 +91,58 @@ def parse_subpackage(package_path,subpackage,indent=""):
               "Directory '%s' is not a Python package"%sub_path
 
     node = Package(subpackage)
-    ###text = '%s<Package filename="%s">\n'%(indent,subpackage)
 
-    for file in files:
-        if os.path.isdir(os.path.join(sub_path,file)):
+    # Should we sort the files? Well, if we don't have them in a predictable
+    # order, it is harder to test the result(!), and also I believe that it
+    # is easier to use the output if there is some obvious ordering. Of course,
+    # the question then becomes whether packages and modules should be in the
+    # same sequence, or separated.
+    files.sort()
+
+    for filename in files:
+        fullpath = os.path.join(sub_path,filename)
+        if os.path.isdir(fullpath):
             try:
-                ###text += parse_subpackage(sub_path,file,indent+"  ")
-                node.append(parse_subpackage(sub_path,file))
+                node.append(parse_subpackage(sub_path,filename))
             except NotAPackageException:
                 pass
-
-    ###return text
+        else:
+            node.append(parse_file(fullpath,filename))
     return node
 
+def parse_file(fullpath,filename):
+    """Parse a single file (which we hope is a Python file).
+
+    * `fullpath` is the full path of the file
+    * `filename` is the name we want to use for it in the docutils tree
+
+    Returns a docutils parse tree for said file.
+    """
+
+    # @@@ Should we worry about the extension of the file?
+    # Trying to use that to predict the contents can be a problem
+    # - we already know that we have to worry about ".pyw" as well
+    # as ".py", not to mention the possibility (e.g., on Unix) of
+    # having removed the extension in order to make an executable
+    # file "look" more like a Unix executable. On the whole, it's
+    # probably better to try to parse a file, and worry about it
+    # not parsing if/when that occurs.
+
+    module = open(fullpath)
+    try:
+        module_body = module.read()
+        try:
+            module_node = parse_module(module_body,filename)
+        except SyntaxError:
+            # OK - it wasn't Python - so what *should* we do with it?
+            module_node = NotPython(filename)
+        return module_node
+    finally:
+        module.close()
+
+
+
+# ----------------------------------------------------------------------
 if __name__ == "__main__":
     result = parse_package("trivial_package")
     print result
