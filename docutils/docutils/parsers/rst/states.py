@@ -6,21 +6,24 @@
 :Copyright: This module has been placed in the public domain.
 
 This is the ``docutils.parsers.restructuredtext.states`` module, the core of
-the reStructuredText parser. It defines the following:
+the reStructuredText parser.  It defines the following:
 
 :Classes:
     - `RSTStateMachine`: reStructuredText parser's entry point.
     - `NestedStateMachine`: recursive StateMachine.
     - `RSTState`: reStructuredText State superclass.
     - `Body`: Generic classifier of the first line of a block.
+    - `SpecializedBody`: Superclass for compound element members.
     - `BulletList`: Second and subsequent bullet_list list_items
-    - `DefinitionList`: Second and subsequent definition_list_items.
-    - `EnumeratedList`: Second and subsequent enumerated_list list_items.
-    - `FieldList`: Second and subsequent fields.
-    - `OptionList`: Second and subsequent option_list_items.
-    - `Explicit`: Second and subsequent explicit markup constructs.
+    - `DefinitionList`: Second+ definition_list_items.
+    - `EnumeratedList`: Second+ enumerated_list list_items.
+    - `FieldList`: Second+ fields.
+    - `OptionList`: Second+ option_list_items.
+    - `RFC2822List`: Second+ RFC2822-style fields.
+    - `Explicit`: Second+ explicit markup constructs.
     - `SubstitutionDef`: For embedded directives in substitution definitions.
     - `Text`: Classifier of second line of a text block.
+    - `SpecializedText`: Superclass for continuation lines of Text-variants.
     - `Definition`: Second line of potential definition_list_item.
     - `Line`: Second line of overlined section title or transition marker.
     - `Stuff`: An auxilliary collection class.
@@ -28,12 +31,10 @@ the reStructuredText parser. It defines the following:
 :Exception classes:
     - `MarkupError`
     - `ParserError`
-    - `TransformationError`
 
 :Functions:
     - `escape2null()`: Return a string, escape-backslashes converted to nulls.
     - `unescape()`: Return a string, nulls removed or restored to backslashes.
-    - `normname()`: Return a case- and whitespace-normalized name.
 
 :Attributes:
     - `stateclasses`: set of State classes used with `RSTStateMachine`.
@@ -42,22 +43,22 @@ Parser Overview
 ===============
 
 The reStructuredText parser is implemented as a state machine, examining its
-input one line at a time. To understand how the parser works, please first
-become familiar with the `docutils.statemachine` module. In the description
+input one line at a time.  To understand how the parser works, please first
+become familiar with the `docutils.statemachine` module.  In the description
 below, references are made to classes defined in this module; please see the
 individual classes for details.
 
 Parsing proceeds as follows:
 
 1. The state machine examines each line of input, checking each of the
-   transition patterns of the state `Body`, in order, looking for a match. The
-   implicit transitions (blank lines and indentation) are checked before any
-   others. The 'text' transition is a catch-all (matches anything).
+   transition patterns of the state `Body`, in order, looking for a match.
+   The implicit transitions (blank lines and indentation) are checked before
+   any others.  The 'text' transition is a catch-all (matches anything).
 
 2. The method associated with the matched transition pattern is called.
 
    A. Some transition methods are self-contained, appending elements to the
-      document tree ('doctest' parses a doctest block). The parser's current
+      document tree ('doctest' parses a doctest block).  The parser's current
       line index is advanced to the end of the element, and parsing continues
       with step 1.
 
@@ -71,11 +72,11 @@ Parsing proceeds as follows:
 
       - A new state machine is created and its initial state is set to the
         appropriate specialized state (`BulletList` in the case of the
-        'bullet' transition). This state machine is run to parse the compound
+        'bullet' transition).  This state machine is run to parse the compound
         element (or series of explicit markup elements), and returns as soon
-        as a non-member element is encountered. For example, the `BulletList`
+        as a non-member element is encountered.  For example, the `BulletList`
         state machine aborts as soon as it encounters an element which is not
-        a list item of that bullet list. The optional omission of
+        a list item of that bullet list.  The optional omission of
         inter-element blank lines is handled by the nested state machine.
 
       - The current line index is advanced to the end of the elements parsed,
@@ -83,7 +84,7 @@ Parsing proceeds as follows:
 
    C. The result of the 'text' transition depends on the next line of text.
       The current state is changed to `Text`, under which the second line is
-      examined. If the second line is:
+      examined.  If the second line is:
 
       - Indented: The element is a definition list item, and parsing proceeds
         similarly to step 2.B, using the `DefinitionList` state.
@@ -93,8 +94,8 @@ Parsing proceeds as follows:
         used.
 
       - Anything else: The element is a paragraph, which is examined for
-        inline markup and appended to the parent element. Processing continues
-        with step 1.
+        inline markup and appended to the parent element.  Processing
+        continues with step 1.
 """
 
 __docformat__ = 'reStructuredText'
@@ -865,7 +866,6 @@ class Body(RSTState):
                 'explicit_markup': r'\.\.( +|$)',
                 'anonymous': r'__( +|$)',
                 'line': r'(%(nonalphanum7bit)s)\1\1\1+ *$' % pats,
-                #'rfc822': r'[!-9;-~]+:( +|$)',
                 'text': r''}
     initialtransitions = ['bullet',
                           'enumerator',
@@ -1666,6 +1666,49 @@ class Body(RSTState):
         return [match.string], 'Text', []
 
 
+class RFC2822Body(Body):
+
+    """
+    RFC2822 headers are only valid as the first constructs in documents.  As
+    soon as anything else appears, the `Body` state should take over.
+    """
+
+    patterns = Body.patterns.copy()     # can't modify the original
+    patterns['rfc2822'] = r'[!-9;-~]+:( +|$)'
+    initialtransitions = [(name, 'Body') for name in Body.initialtransitions]
+    initialtransitions.insert(-1, ('rfc2822', 'Body')) # just before 'text'
+
+    def rfc2822(self, match, context, nextstate):
+        """RFC2822-style field list item."""
+        fieldlist = nodes.field_list()
+        self.statemachine.node += fieldlist
+        field, blankfinish = self.rfc2822_field(match)
+        fieldlist += field
+        offset = self.statemachine.lineoffset + 1   # next line
+        newlineoffset, blankfinish = self.nestedlistparse(
+              self.statemachine.inputlines[offset:],
+              inputoffset=self.statemachine.abslineoffset() + 1,
+              node=fieldlist, initialstate='RFC2822List',
+              blankfinish=blankfinish)
+        if not blankfinish:
+            self.statemachine.node += self.unindent_warning(
+                  'RFC2822-style field list')
+        self.gotoline(newlineoffset)
+        return [], nextstate, []
+
+    def rfc2822_field(self, match):
+        name = match.string[:match.string.find(':')]
+        indented, indent, lineoffset, blankfinish = \
+              self.statemachine.getfirstknownindented(match.end())
+        fieldnode = nodes.field()
+        fieldnode += nodes.field_name(name, name)
+        fieldbody = nodes.field_body('\n'.join(indented))
+        fieldnode += fieldbody
+        if indented:
+            self.nestedparse(indented, inputoffset=lineoffset, node=fieldbody)
+        return fieldnode, blankfinish
+
+
 class SpecializedBody(Body):
 
     """
@@ -1764,11 +1807,21 @@ class OptionList(SpecializedBody):
         return [], 'OptionList', []
 
 
-class RFC822List(SpecializedBody):
+class RFC2822List(SpecializedBody, RFC2822Body):
 
-    """Second and subsequent RFC822 field_list fields."""
+    """Second and subsequent RFC2822-style field_list fields."""
 
-    pass
+    patterns = RFC2822Body.patterns
+    initialtransitions = RFC2822Body.initialtransitions
+
+    def rfc2822(self, match, context, nextstate):
+        """RFC2822-style field list item."""
+        field, blankfinish = self.rfc2822_field(match)
+        self.statemachine.node += field
+        self.blankfinish = blankfinish
+        return [], 'RFC2822List', []
+
+    blank = SpecializedBody.invalid_input
 
 
 class Explicit(SpecializedBody):
@@ -2093,8 +2146,8 @@ class Line(SpecializedText):
 
 
 stateclasses = [Body, BulletList, DefinitionList, EnumeratedList, FieldList,
-                OptionList, RFC822List, Explicit, Text, Definition, Line,
-                SubstitutionDef]
+                OptionList, Explicit, Text, Definition, Line, SubstitutionDef,
+                RFC2822Body, RFC2822List]
 """Standard set of State classes used to start `RSTStateMachine`."""
 
 
