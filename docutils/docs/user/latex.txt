@@ -199,6 +199,17 @@ Problems
 
 Open to be fixed or open to discussion.
 
+footnotes and citations
+-----------------------
+
+Initially both were implemented using figures, because hyperlinking back
+and forth seemed to be impossible. Later images were put into figures.
+
+This results in footnotes images and figures possibly being mixed at page 
+foot.
+
+* use LaTeX footnotes and citations (to be implemented).
+
 Tilde in italian
 ----------------
 
