@@ -1,0 +1,39 @@
+Targets
+-------
+
+.. _example:
+
+This paragraph is pointed to by the explicit "example" target. A
+reference can be found under `Inline Markup`_, above. `Inline
+hyperlink targets`_ are also possible.
+
+Section headers are implicit targets, referred to by name. See
+Targets_, which is a subsection of `Body Elements`_.
+
+Explicit external targets are interpolated into references such as
+"Python_".
+
+.. _Python: http://www.python.org/
+
+Targets may be indirect and anonymous.  Thus `this phrase`__ may also
+refer to the Targets_ section.
+
+__ Targets_
+
+Here's a `hyperlink reference without a target`_, which generates an
+error.
+
+Duplicate Target Names
+``````````````````````
+
+Duplicate names in section headers or other implicit targets will
+generate "info" (level-1) system messages.  Duplicate names in
+explicit targets will generate "warning" (level-2) system messages.
+
+Duplicate Target Names
+``````````````````````
+
+Since there are two "Duplicate Target Names" section headers, we
+cannot uniquely refer to either of them by name.  If we try to (like
+this: `Duplicate Target Names`_), an error is generated.
+

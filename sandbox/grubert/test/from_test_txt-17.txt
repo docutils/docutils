@@ -1,0 +1,9 @@
+Substitution Definitions
+------------------------
+
+An inline image (|example|) example:
+
+.. |EXAMPLE| image:: ../docs/rst/images/biohazard.png
+
+(Substitution definitions are not visible in the HTML source.)
+

@@ -1,0 +1,124 @@
+Directives
+----------
+
+.. contents:: :local:
+
+These are just a sample of the many reStructuredText Directives.  For
+others, please see http://docutils.sf.net/spec/rst/directives.html.
+
+Document Parts
+``````````````
+
+An example of the "contents" directive can be seen above this section
+(a local, untitled table of contents_) and at the beginning of the
+document (a document-wide `table of contents`_).
+
+Images
+``````
+
+An image directive:
+
+.. image:: ../docs/rst/images/title.png
+
+A figure directive:
+
+.. figure:: ../docs/rst/images/title.png
+   :alt: reStructuredText, the markup syntax
+
+   A figure is an image with a caption and/or a legend:
+
+   +------------+-----------------------------------------------+
+   | re         | Revised, revisited, based on 're' module.     |
+   +------------+-----------------------------------------------+
+   | Structured | Structure-enhanced text, structuredtext.      |
+   +------------+-----------------------------------------------+
+   | Text       | Well it is, isn't it?                         |
+   +------------+-----------------------------------------------+
+
+   This paragraph is also part of the legend.
+
+Admonitions
+```````````
+
+.. Attention:: Directives at large.
+
+.. Caution::
+
+   Don't take any wooden nickels.
+
+.. DANGER:: Mad scientist at work!
+
+.. Error:: Does not compute.
+
+.. Hint:: It's bigger than a bread box.
+
+.. Important::
+   - Wash behind your ears.
+   - Clean up your room.
+   - Call your mother.
+   - Back up your data.
+
+.. Note:: This is a note.
+
+.. Tip:: 15% if the service is good.
+
+.. WARNING:: Strong prose may provoke extreme mental exertion.
+   Reader discretion is strongly advised.
+
+.. admonition:: And, by the way...
+
+   You can make up your own admonition too.
+
+Topics, Sidebars, and Rubrics
+`````````````````````````````
+
+.. sidebar:: Sidebar Title
+   :subtitle: Optional Subtitle
+
+   This is a sidebar.  It is for text outside the flow of the main
+   text.
+
+   .. rubric:: This is a rubric inside a sidebar
+
+   Sidebars often appears beside the main text with a border and
+   background color.
+
+.. topic:: Topic Title
+
+   This is a topic.
+
+.. rubric:: This is a rubric
+
+Target Footnotes
+````````````````
+
+.. target-notes::
+
+Line Blocks
+```````````
+
+Take it away, Eric the Orchestra Leader!
+
+.. line-block::
+
+   A one, two, a one two three four
+
+   Half a bee, philosophically,
+       must, *ipso facto*, half not be.
+   But half the bee has got to be,
+       *vis a vis* its entity.  D'you see?
+
+   But can a bee be said to be
+       or not to be an entire bee,
+           when half the bee is not a bee,
+               due to some ancient injury?
+
+   Singing...
+
+Replacement Text
+````````````````
+
+I recommend you try |Python|_.
+
+.. |Python| replace:: Python, *the* best language around
+

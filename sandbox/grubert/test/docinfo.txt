@@ -1,0 +1,24 @@
+==================
+ README: Docutils
+==================
+
+:Author: David Goodger
+:Contact: goodger@users.sourceforge.net
+:Date: $Date$
+:Web site: http://docutils.sourceforge.net/
+:Copyright: This document has been placed in the public domain.
+
+.. contents::
+
+
+Thank you for downloading the Python Docutils project archive.  As
+this is a work in progress, please check the project website for
+updated working files (snapshots).  This project should be considered
+highly experimental; APIs are subject to change at any time.
+
+
+Quick-Start
+===========
+
+This is for tests with docinfo and latex header settings.
+
