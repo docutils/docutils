@@ -147,12 +147,12 @@ def publish(reader=None, reader_name='standalone',
             parser=None, parser_name='restructuredtext',
             writer=None, writer_name='pseudoxml',
             argv=None, usage=default_usage, description=default_description,
-            option_spec=None):
+            option_spec=None, options=None):
     """
     A convenience function for file I/O front ends; set up & run a
     `Publisher`.
     """
-    pub = Publisher(reader, parser, writer)
+    pub = Publisher(reader, parser, writer, options=options)
     if reader is None:
         pub.set_reader(reader_name, parser, parser_name)
     if writer is None:
