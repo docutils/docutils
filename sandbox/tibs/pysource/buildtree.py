@@ -169,8 +169,8 @@ class BuildTree:
                       "Cannot insert 'document' except at root of stack"
             warninglevel = keywords.get("warninglevel",2)
             errorlevel = keywords.get("errorlevel",4)
-            reporter = docutils.utils.Reporter(warning_level=warninglevel,
-                                          error_level=errorlevel)
+            reporter = docutils.utils.Reporter(report_level=warninglevel,
+                                               stop_level=errorlevel)
             instance = docutils.nodes.document(reporter,"en")
         else:
             instance = self.make(thing,*args,**keywords)

@@ -29,7 +29,7 @@ class Publisher:
     """A `utils.Reporter` instance used for all document processing."""
 
     def __init__(self, reader=None, parser=None, writer=None, reporter=None,
-                 language_code='en', warning_level=2, error_level=4,
+                 language_code='en', report_level=2, halt_level=4,
                  warning_stream=None, debug=0):
         """
         Initial setup.  If any of `reader`, `parser`, or `writer` are
@@ -40,7 +40,7 @@ class Publisher:
         self.parser = parser
         self.writer = writer
         if not reporter:
-            reporter = utils.Reporter(warning_level, error_level,
+            reporter = utils.Reporter(report_level, halt_level,
                                       warning_stream, debug)
         self.reporter = reporter
         self.language_code = language_code
@@ -76,10 +76,10 @@ def publish(source=None, destination=None,
             parser=None, parser_name='restructuredtext',
             writer=None, writer_name='pseudoxml',
             reporter=None, language_code='en',
-            warning_level=2, error_level=4, warning_stream=None, debug=0):
+            report_level=2, halt_level=4, warning_stream=None, debug=0):
     """A convenience function; set up & run a `Publisher`."""
     pub = Publisher(reader, parser, writer, reporter, language_code,
-                    warning_level, error_level, warning_stream, debug)
+                    report_level, halt_level, warning_stream, debug)
     if reader is None:
         pub.set_reader(reader_name, parser, parser_name)
     if writer is None:

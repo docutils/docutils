@@ -33,7 +33,7 @@ class Messages(Transform):
 
     def transform(self):
         unfiltered = self.document.messages.get_children()
-        threshold = self.document.reporter['writer'].warning_level
+        threshold = self.document.reporter['writer'].report_level
         messages = []
         for msg in unfiltered:
             if msg['level'] >= threshold:

@@ -236,7 +236,7 @@ class TransformTestCase(CustomTestCase):
     def test_transforms(self):
         if self.runInDebugger:
             pdb.set_trace()
-        document = utils.new_document(warning_level=1, error_level=5,
+        document = utils.new_document(report_level=1, halt_level=5,
                                       debug=package_unittest.debug,
                                       stream=DevNull())
         self.parser.parse(self.input, document)
@@ -251,7 +251,7 @@ class TransformTestCase(CustomTestCase):
         print '\n', self.id
         print '-' * 70
         print self.input
-        document = utils.new_document(warning_level=1, error_level=5,
+        document = utils.new_document(report_level=1, halt_level=5,
                                       debug=package_unittest.debug,
                                       stream=DevNull())
         self.parser.parse(self.input, document)
@@ -281,7 +281,7 @@ class ParserTestCase(CustomTestCase):
     def test_parser(self):
         if self.runInDebugger:
             pdb.set_trace()
-        document = utils.new_document(warning_level=5, error_level=5,
+        document = utils.new_document(report_level=5, halt_level=5,
                                       debug=package_unittest.debug)
         self.parser.parse(self.input, document)
         output = document.pformat()

@@ -78,6 +78,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def encode(self, text):
         """Encode special characters in `text` & return."""
+        # @@@ A codec to do these and all other HTML entities would be nice.
         text = text.replace("&", "&amp;")
         text = text.replace("<", "&lt;")
         text = text.replace('"', "&quot;")
@@ -663,7 +664,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</h2>\n')
 
     def visit_system_message(self, node):
-        if node['level'] < self.document.reporter['writer'].warning_level:
+        if node['level'] < self.document.reporter['writer'].report_level:
             raise nodes.SkipNode
         self.body.append(self.starttag(node, 'div', CLASS='system-message'))
         self.body.append('<p class="system-message-title">')
