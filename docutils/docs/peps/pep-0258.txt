@@ -186,7 +186,7 @@ attached to every new document tree.  The Publisher_ calls
 ``Transformer.apply_transforms()`` to apply all stored transforms to
 the document tree.  Transforms change the document tree from one form
 to another, add to the tree, or prune it.  Transforms resolve
-references and footnote numbers, processing interpreted text, and do
+references and footnote numbers, process interpreted text, and do
 other context-sensitive processing.
 
 Some transforms are specific to components (Readers, Parser, Writers,

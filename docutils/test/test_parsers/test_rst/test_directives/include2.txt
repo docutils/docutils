@@ -1,5 +1,5 @@
 Here are some paragraphs
 that can appear at any level.
 
-This file is used by 
+This file (include2.txt) is used by 
 ``test_include.py``.

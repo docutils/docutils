@@ -7,7 +7,8 @@
 # Copyright: This module has been placed in the public domain.
 
 """
-Tests for states.py.
+Tests for inline markup in docutils/parsers/rst/states.py.
+Interpreted text tests are in a separate module, test_interpreted.py.
 """
 
 from __init__ import DocutilsTestSupport
@@ -269,108 +270,6 @@ Python ``list``\\s use square bracket syntax.
         <literal>
             list
         s use square bracket syntax.
-"""],
-]
-
-totest['interpreted'] = [
-["""\
-`interpreted`
-""",
-"""\
-<document source="test data">
-    <paragraph>
-        <interpreted>
-            interpreted
-"""],
-["""\
-:role:`interpreted`
-""",
-"""\
-<document source="test data">
-    <paragraph>
-        <interpreted position="prefix" role="role">
-            interpreted
-"""],
-["""\
-`interpreted`:role:
-""",
-"""\
-<document source="test data">
-    <paragraph>
-        <interpreted position="suffix" role="role">
-            interpreted
-"""],
-["""\
-:role:`interpreted`:role:
-""",
-"""\
-<document source="test data">
-    <paragraph>
-        <problematic id="id2" refid="id1">
-            :role:`interpreted`:role:
-    <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
-        <paragraph>
-            Multiple roles in interpreted text (both prefix and suffix present; only one allowed).
-"""],
-["""\
-:role:`:not-role: interpreted`
-""",
-"""\
-<document source="test data">
-    <paragraph>
-        <interpreted position="prefix" role="role">
-            :not-role: interpreted
-"""],
-["""\
-:very.long-role_name:`interpreted`
-""",
-"""\
-<document source="test data">
-    <paragraph>
-        <interpreted position="prefix" role="very.long-role_name">
-            interpreted
-"""],
-["""\
-`interpreted` but not \\`interpreted` [`] or ({[`] or [`]}) or `
-""",
-"""\
-<document source="test data">
-    <paragraph>
-        <interpreted>
-            interpreted
-         but not `interpreted` [`] or ({[`] or [`]}) or `
-"""],
-["""\
-`interpreted`-text `interpreted`: text `interpreted`:text `text`'s interpreted
-""",
-"""\
-<document source="test data">
-    <paragraph>
-        <interpreted>
-            interpreted
-        -text \n\
-        <interpreted>
-            interpreted
-        : text \n\
-        <interpreted>
-            interpreted
-        :text \n\
-        <interpreted>
-            text
-        's interpreted
-"""],
-["""\
-`interpreted without closing backquote
-""",
-"""\
-<document source="test data">
-    <paragraph>
-        <problematic id="id2" refid="id1">
-            `
-        interpreted without closing backquote
-    <system_message backrefs="id2" id="id1" level="2" line="1" source="test data" type="WARNING">
-        <paragraph>
-            Inline interpreted text or phrase reference start-string without end-string.
 """],
 ]
 
