@@ -265,6 +265,12 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_date(self, node):
         self.depart_docinfo_item()
 
+    def visit_decoration(self, node):
+        pass
+
+    def depart_decoration(self, node):
+        pass
+
     def visit_definition(self, node):
         self.body.append('</dt>\n')
         self.body.append(self.starttag(node, 'dd'))
@@ -425,6 +431,16 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_figure(self, node):
         self.body.append('</div>\n')
 
+    def visit_footer(self, node):
+        self.context.append(len(self.body))
+
+    def depart_footer(self, node):
+        start = self.context.pop()
+        footer = ([self.starttag(node, 'div', CLASS='footer'), '<hr />\n']
+                  + self.body[start:] + ['</div>\n'])
+        self.body_suffix[:0] = footer
+        del self.body[start:]
+
     def visit_footnote(self, node):
         self.body.append(self.starttag(node, 'table', CLASS='footnote',
                                        frame="void", rules="none"))
@@ -448,6 +464,16 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_footnote_reference(self, node):
         self.body.append('</a>')
+
+    def visit_header(self, node):
+        self.context.append(len(self.body))
+
+    def depart_header(self, node):
+        start = self.context.pop()
+        self.body_prefix.append(self.starttag(node, 'div', CLASS='header'))
+        self.body_prefix.extend(self.body[start:])
+        self.body_prefix.append('<hr />\n</div>\n')
+        del self.body[start:]
 
     def visit_hint(self, node):
         self.visit_admonition(node, 'hint')
