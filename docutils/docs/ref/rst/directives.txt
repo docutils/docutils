@@ -9,6 +9,14 @@
 This document describes the directives implemented in the reference
 reStructuredText parser.
 
+Directives have the following syntax::
+
+    +-------+--------------------------+
+    | ".. " | directive type "::" data |
+    +-------+ directive block          |
+            |                          |
+            +--------------------------+
+
 
 .. contents::
 
@@ -235,7 +243,7 @@ The following attributes are recognized:
 
 ``depth`` : integer
     The number of section levels that are collected in the table of
-    contents.
+    contents.  The default is unlimited depth.
 ``local`` : empty
     Generate a local table of contents.  Entries will only include
     subsections of the section in which the directive is given.  If no
@@ -243,6 +251,35 @@ The following attributes are recognized:
 ``backlinks`` : "entry" or "top" or "none"
     Generate links from section headers back to the table of contents
     entries, the table of contents itself, or generate no backlinks.
+
+
+Automatic Section Numbering
+===========================
+
+DTD elements: pending, generated.
+
+Directive block: directive data and following indented lines (up to
+the first blank line) are interpreted as optional attributes.
+
+The "sectnum" (or "section-autonumbering") directive automatically
+numbers sections and subsections in a document.  Section numbers of
+the "multiple enumeration" form, where each level has a number,
+separated by periods.  For example, the title of section 1, subsection
+2, subsubsection 3 would have "1.2.3" prefixed.  
+
+The "sectnum" directive does its work in two passes: initial parse and
+transform.  During the initial parse, a "pending" element is generated
+which acts as a placeholder, storing any attributes internally.  At a
+later stage in the processing, the "pending" element triggers a
+transform, which adds section numbers to titles.  Section numbers are
+enclosed in a "generated" element, and titles have their "auto"
+attribute set to "1".
+
+The following attributes are recognized:
+
+``depth`` : integer
+    The number of section levels that are numbered by this directive.
+    The default is unlimited depth.
 
 
 Footnotes
@@ -261,16 +298,6 @@ Citations
 **NOT IMPLEMENTED YET**
 
 DTD elements: pending, topic.
-
-@@@
-
-
-Topic
-=====
-
-**NOT IMPLEMENTED YET**
-
-DTD element: topic.
 
 @@@
 
