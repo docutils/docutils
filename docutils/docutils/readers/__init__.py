@@ -86,7 +86,8 @@ class Reader(Component):
     def new_document(self):
         """Create and return a new empty document tree (root node)."""
         document = utils.new_document(self.options)
-        document['source'] = self.source
+        if self.source.source_path:
+            document['source'] = self.source.source_path
         return document
 
 
