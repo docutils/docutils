@@ -75,12 +75,3 @@ poses problems
                                                                    horizontal space.
 ============================ ==================================== ===========================================
 
-The text in the right column will *not* have linebreaks where the original one has.
-
-+------+------+
-| test | test |
-+------+ test |
-| test | test |
-+------+------+
-
-
