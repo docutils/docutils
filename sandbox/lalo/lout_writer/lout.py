@@ -1,0 +1,1168 @@
+"""
+:Author: Lalo Martins
+:Contact: lalo@laranja.org
+:Revision: $Revision$
+:Date: $Date$
+:Copyright: This module has been placed in the public domain.
+
+Lout document tree Writer. See http://lout.sf.net/
+"""
+
+__docformat__ = 'reStructuredText'
+
+# initial code based on copy-pastes from the latex and html writers.
+#
+# convention: deactivate code by two # e.g. ##.
+
+import sys
+import time
+import re
+import string
+from types import ListType
+from docutils import frontend, nodes, languages, writers
+
+class Writer(writers.Writer):
+
+    supported = ('lout', 'loutdoc', 'loutbook', 'loutreport')
+    """Formats this writer supports."""
+
+    settings_spec = (
+        'Lout-Specific Options',
+        'The Lout "--output-encoding" default is "latin-1:strict".',
+        (('Specify document type.  Default is "doc".  '
+          'If you don\'t specify a setup file, the document type should '
+          'be the name of a system include file, which will be "@SysInclude"d '
+          'by lout in the document header.  If you specify a setup file, no '
+          '@SysInclude will be generated, but you still must specify the '
+          'document type, because the writer will take some decisions based '
+          'on known document types (for example, "doc" has no titlepage).  '
+          'Accepted values are "doc", "book" and "report".',
+          ['--doctype'],
+          {'default': 'doc', }),
+         ('Specify a setup file. The file will be "@Includ"ed by lout in '
+          'the document header.  Default is no setup file ("").  '
+          'See --doctype; overridden by --setupfile-path.',
+          ['--setupfile'],
+          {'default': '', 'metavar': '<file>'}),
+         ('Specify a setupfile file, relative to the current working '
+          'directory.  Overrides --setupfile; see also --doctype.',
+          ['--setupfile-path'],
+          {'metavar': '<file>'}),
+         ('Let Lout print docutils document info in the title page.',
+          ['--use-lout-docinfo'], #not implemented
+          {'default': 0, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Insert "smart-quotes" (replace "foo" by ``foo\'\').  '
+          'Default: yes',
+          ['--smart-quotes'],
+          {'default': 1, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Do not insert "smart-quotes".  ',
+          ['--no-smart-quotes'],
+          {'dest': 'smart_quotes', 'action': 'store_false',
+           'validator': frontend.validate_boolean}),
+         ('Mark the first chapter as a preface.  '
+          'Optionally, any non-titled text before the first chapter '
+          'is a preface - but then it cannot have sections.'
+          '("book" doctype only)',
+          ['--has-preface'],
+          {'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Mark the first chapter as an introduction '
+          '(or the second if the first is a preface) '
+          '("book" doctype only)',
+          ['--has-introduction'],
+          {'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('The first level divisions are parts, not chapters.  '
+          '("book" doctype only)',
+          ['--has-parts'],
+          {'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+        ))
+
+    settings_defaults = {'output_encoding': 'latin-1'}
+    # FIXME: default doctype should depend on the writer name
+
+    config_section = 'lout writer'
+    config_section_dependencies = ('writers',)
+
+    output = None
+    """Final translated form of `document`."""
+
+    def translate(self):
+        visitor = LoutTranslator(self.document)
+        self.document.walkabout(visitor)
+        self.output = visitor.astext()
+        self.body = visitor.body
+
+
+_language_names = {
+    'it': 'it',
+    'cs': 'cs',
+    'no': 'no',
+    'da': 'da',
+    'pl': 'pl',
+    'nl': 'nl',
+    'pt': 'pt',
+    'en': 'en',
+    'ru': 'ru',
+    'en-gb': 'en-GB',
+    'fi': 'fi',
+    'sl': 'sl',
+    'fr': 'fr',
+    'es': 'es',
+    'de': 'de',
+    'sv': 'sv',
+    'hu': 'hu',
+    'hr': 'Croatian',
+    'sk': 'Slovak',
+    'hsb': 'UpperSorbian',
+}
+
+def _get_language_name(lcode):
+    lcode = lcode.lower()
+    if _language_names.has_key(lcode):
+        return _language_names[lcode]
+    # support dialects
+    l = lcode.split('-')[0]
+    if _language_names.has_key(l):
+        return _language_names[l]
+    raise KeyError, 'Language %s not supported by Lout' % lcode
+
+class LoutTranslator(nodes.NodeVisitor):
+
+    """
+    WRITEME
+    """
+    _special_chars = '#&/@^{|}~'
+    words_and_spaces = re.compile(r'\S+| +|\n') # REMOVEME
+
+    def __init__(self, document):
+        nodes.NodeVisitor.__init__(self, document)
+        self.settings = settings = document.settings
+        lcode = settings.language_code
+        self.language = languages.get_language(lcode)
+        self.language_name = _get_language_name(lcode)
+        self.section_level = 0
+        self.section_title = None
+        self.section_commands = []
+        self.section_nesting = 0
+        self.section_nesting_stack = []
+        self.body = []
+        self.literal_block = self.literal = None
+        self.in_dquote = None
+        self.docinfo = {}
+        self.doctype = self.settings.doctype.lower()
+        if self.doctype == 'book':
+            self.chapters = []
+            self.parts = []
+            self.preface = []
+            self.introduction = []
+        self.topic_class = ''
+
+    def astext(self):
+        return '\n'.join(self.body)
+
+    def encode(self, text):
+        """Encode special characters in `text` & return."""
+        # small complication: must encode " and \ at the same time
+        if (not self.settings.smart_quotes) or self.literal_block or self.literal:
+            newt = []
+            for part in text.split('"'):
+                newt.append(part.replace('\\', r'"\\"'))
+            text = '"\\""'.join(newt)
+        else:
+            oldt = text.split('"')
+            newt = [oldt[0].replace('\\', r'"\\"')]
+            for part in range(1, len(oldt)):
+                if oldt[part-1] and oldt[part-1][-1] == '\\':
+                    newt[-1] = oldt[part-1][:-1] + '"\\""'
+                elif not (oldt[part-1] and oldt[part-1][-1].isalnum()):
+                    newt.append("``")
+                    self.in_dquote = 1
+                elif self.in_dquote and not (oldt[part] and oldt[part][0].isalnum()):
+                    newt.append("''")
+                    self.in_dquote = 1
+                else:
+                    newt.append('"\\""')
+                newt.append(oldt[part].replace('\\', r'"\\"'))
+            text = ''.join(newt)
+        for c in self._special_chars:
+            text = text.replace(c, '"%s"' % c)
+        return text
+
+    def attval(self, text, whitespace=re.compile('[\n\r\t\v\f]')):
+        """REMOVEME"""
+        return ''
+
+    def starttag(self, node, tagname, suffix='\n', infix='', **attributes):
+        """REMOVEME"""
+        return '<%s>' % tagname
+
+    def emptytag(self, node, tagname, suffix='\n', **attributes):
+        """REMOVEME"""
+        return ''
+
+    def visit_Text(self, node):
+        self.body.append(self.encode(node.astext()))
+
+    def depart_Text(self, node):
+        pass
+
+    def visit_abbreviation(self, node):
+        # @@@ implementation incomplete ("title" attribute)
+        self.body.append(self.starttag(node, 'abbr', ''))
+
+    def depart_abbreviation(self, node):
+        self.body.append('<end abbr>')
+
+    def visit_acronym(self, node):
+        # @@@ implementation incomplete ("title" attribute)
+        self.body.append(self.starttag(node, 'acronym', ''))
+
+    def depart_acronym(self, node):
+        self.body.append('<end acronym>')
+
+    def visit_address(self, node):
+        self.visit_docinfo_item(node, 'address', meta=None)
+        self.body.append(self.starttag(node, 'pre', CLASS='address'))
+
+    def depart_address(self, node):
+        self.body.append('\n<end pre>\n')
+        self.depart_docinfo_item()
+
+    def visit_admonition(self, node, name=''):
+        self.body.append(self.starttag(node, 'div',
+                                        CLASS=(name or 'admonition')))
+        if name:
+            self.body.append('<p class="admonition-title">'
+                             + self.language.labels[name] + '<end p>\n')
+
+    def depart_admonition(self, node=None):
+        self.body.append('<end div>\n')
+
+    def visit_attention(self, node):
+        self.visit_admonition(node, 'attention')
+
+    def depart_attention(self, node):
+        self.depart_admonition()
+
+    attribution_formats = {'dash': ('&mdash;', ''),
+                           'parentheses': ('(', ')'),
+                           'parens': ('(', ')'),
+                           'none': ('', '')}
+
+    def visit_attribution(self, node):
+        pass
+
+    def depart_attribution(self, node):
+        pass
+
+    def visit_author(self, node):
+        self.visit_docinfo_item(node, 'author')
+
+    def depart_author(self, node):
+        self.depart_docinfo_item()
+
+    def visit_authors(self, node):
+        pass
+
+    def depart_authors(self, node):
+        pass
+
+    def visit_block_quote(self, node):
+        self.body.append(self.starttag(node, 'blockquote'))
+
+    def depart_block_quote(self, node):
+        self.body.append('<end blockquote>\n')
+
+    def check_simple_list(self, node):
+        """Check for a simple list that can be rendered compactly."""
+        visitor = SimpleListChecker(self.document)
+        try:
+            node.walk(visitor)
+        except nodes.NodeFound:
+            return None
+        else:
+            return 1
+
+    def visit_bullet_list(self, node):
+        if self.topic_class == 'contents':
+            raise nodes.SkipNode
+        self.body.append(self.starttag(node, 'ul'))
+
+    def depart_bullet_list(self, node):
+        self.body.append('<end ul>\n')
+
+    def visit_caption(self, node):
+        self.body.append(self.starttag(node, 'p', '', CLASS='caption'))
+
+    def depart_caption(self, node):
+        self.body.append('<end p>\n')
+
+    def visit_caution(self, node):
+        self.visit_admonition(node, 'caution')
+
+    def depart_caution(self, node):
+        self.depart_admonition()
+
+    def visit_citation(self, node):
+        self.body.append(self.starttag(node, 'table', CLASS='citation',
+                                       frame="void", rules="none"))
+        self.body.append('<colgroup><col class="label" .><col .><end colgroup>\n'
+                         '<col .>\n'
+                         '<tbody valign="top">\n'
+                         '<tr>')
+        self.footnote_backrefs(node)
+
+    def depart_citation(self, node):
+        self.body.append('<end td><end tr>\n'
+                         '<end tbody>\n<end table>\n')
+
+    def visit_citation_reference(self, node):
+        href = ''
+        if node.has_key('refid'):
+            href = '#' + node['refid']
+        elif node.has_key('refname'):
+            href = '#' + self.document.nameids[node['refname']]
+        self.body.append(self.starttag(node, 'a', '[', href=href,
+                                       CLASS='citation-reference'))
+
+    def depart_citation_reference(self, node):
+        self.body.append(']<end a>')
+
+    def visit_classifier(self, node):
+        self.body.append(' <span class="classifier-delimiter">:<end span> ')
+        self.body.append(self.starttag(node, 'span', '', CLASS='classifier'))
+
+    def depart_classifier(self, node):
+        self.body.append('<end span>')
+
+    def visit_colspec(self, node):
+        pass
+
+    def depart_colspec(self, node):
+        pass
+
+    def visit_comment(self, node):
+        """Escape double-dashes in comment text."""
+        for line in node.astext().split('\n'):
+            self.body.append('# %s' % line)
+        # Content already processed:
+        raise nodes.SkipNode
+
+    def visit_contact(self, node):
+        self.visit_docinfo_item(node, 'contact', meta=None)
+
+    def depart_contact(self, node):
+        self.depart_docinfo_item()
+
+    def visit_copyright(self, node):
+        self.visit_docinfo_item(node, 'copyright')
+
+    def depart_copyright(self, node):
+        self.depart_docinfo_item()
+
+    def visit_danger(self, node):
+        self.visit_admonition(node, 'danger')
+
+    def depart_danger(self, node):
+        self.depart_admonition()
+
+    def visit_date(self, node):
+        self.visit_docinfo_item(node, 'date')
+
+    def depart_date(self, node):
+        self.depart_docinfo_item()
+
+    def visit_decoration(self, node):
+        pass
+
+    def depart_decoration(self, node):
+        pass
+
+    def visit_definition(self, node):
+        self.body.append('<end dt>\n')
+        self.body.append(self.starttag(node, 'dd', ''))
+        if len(node):
+            node[0].set_class('first')
+            node[-1].set_class('last')
+
+    def depart_definition(self, node):
+        self.body.append('<end dd>\n')
+
+    def visit_definition_list(self, node):
+        self.body.append(self.starttag(node, 'dl'))
+
+    def depart_definition_list(self, node):
+        self.body.append('<end dl>\n')
+
+    def visit_definition_list_item(self, node):
+        pass
+
+    def depart_definition_list_item(self, node):
+        pass
+
+    def visit_description(self, node):
+        self.body.append(self.starttag(node, 'td', ''))
+        if len(node):
+            node[0].set_class('first')
+            node[-1].set_class('last')
+
+    def depart_description(self, node):
+        self.body.append('<end td>')
+
+    def visit_docinfo(self, node):
+        pass
+
+    def depart_docinfo(self, node):
+        pass
+
+    def visit_docinfo_item(self, node, name, meta=1):
+        raise nodes.SkipNode
+        self.body.append(self.starttag(node, 'tr', ''))
+        self.body.append('<th class="docinfo-name">%s:<end th>\n<td>'
+                         % self.language.labels[name])
+        if len(node):
+            if isinstance(node[0], nodes.Element):
+                node[0].set_class('first')
+            if isinstance(node[-1], nodes.Element):
+                node[-1].set_class('last')
+
+    def depart_docinfo_item(self):
+        return
+        self.body.append('<end td><end tr>\n')
+
+    def visit_doctest_block(self, node):
+        self.body.append(self.starttag(node, 'pre', CLASS='doctest-block'))
+
+    def depart_doctest_block(self, node):
+        self.body.append('\n<end pre>\n')
+
+    def visit_document(self, node):
+        if self.doctype == 'report':
+            raise NotImplemented
+        pass
+
+    def depart_document(self, node):
+        if self.doctype == 'doc':
+            # FIXME: add docinfo as a table?
+            self.body.insert(0, "@SysInclude { doc }\n"
+                             "@Doc @Text @Begin\n")
+            self.body.append("\n@End @Text\n")
+        elif self.doctype == 'book':
+            # FIXME: add docinfo
+            self.body = ["@SysInclude { book }\n"
+                         "@Book\n"
+                         "    @InitialLanguage { %s }\n"
+                         "//\n" % self.language_name]
+            if self.preface:
+                self.body.extend(self.preface)
+            if self.introduction:
+                self.body.extend(self.introduction)
+            if self.settings.has_parts:
+                for part in self.parts:
+                    for chapter in part:
+                        self.body.extend(chapter)
+            else:
+                for chapter in self.chapters:
+                    self.body.extend(chapter)
+        elif self.doctype == 'report':
+            raise NotImplemented
+
+    def visit_emphasis(self, node):
+        self.body.append('@II {')
+
+    def depart_emphasis(self, node):
+        self.body.append('}')
+
+    def visit_entry(self, node):
+        if isinstance(node.parent.parent, nodes.thead):
+            tagname = 'th'
+        else:
+            tagname = 'td'
+        atts = {}
+        if node.has_key('morerows'):
+            atts['rowspan'] = node['morerows'] + 1
+        if node.has_key('morecols'):
+            atts['colspan'] = node['morecols'] + 1
+        self.body.append(self.starttag(node, tagname, '', **atts))
+        if len(node) == 0:              # empty cell
+            self.body.append('&nbsp;')
+        else:
+            node[0].set_class('first')
+            node[-1].set_class('last')
+
+    def depart_entry(self, node):
+        pass
+
+    def visit_enumerated_list(self, node):
+        """
+        The 'start' attribute does not conform to HTML 4.01's strict.dtd, but
+        CSS1 doesn't help. CSS2 isn't widely enough supported yet to be
+        usable.
+        """
+        atts = {}
+        if node.has_key('start'):
+            atts['start'] = node['start']
+        if node.has_key('enumtype'):
+            atts['class'] = node['enumtype']
+        self.body.append(self.starttag(node, 'ol', **atts))
+
+    def depart_enumerated_list(self, node):
+        self.body.append('<end ol>\n')
+
+    def visit_error(self, node):
+        self.visit_admonition(node, 'error')
+
+    def depart_error(self, node):
+        self.depart_admonition()
+
+    def visit_field(self, node):
+        self.body.append(self.starttag(node, 'tr', '', CLASS='field'))
+
+    def depart_field(self, node):
+        self.body.append('<end tr>\n')
+
+    def visit_field_body(self, node):
+        self.body.append(self.starttag(node, 'td', '', CLASS='field-body'))
+        if len(node):
+            node[0].set_class('first')
+            node[-1].set_class('last')
+
+    def depart_field_body(self, node):
+        self.body.append('<end td>\n')
+
+    def visit_field_list(self, node):
+        self.body.append(self.starttag(node, 'table', frame='void',
+                                       rules='none', CLASS='field-list'))
+        self.body.append('<col class="field-name" .>\n'
+                         '<col class="field-body" .>\n'
+                         '<tbody valign="top">\n')
+
+    def depart_field_list(self, node):
+        self.body.append('<end tbody>\n<end table>\n')
+
+    def visit_field_name(self, node):
+        atts = {}
+        atts['class'] = 'field-name'
+        if len(node.astext()) > 14:
+            atts['colspan'] = 2
+        self.body.append(self.starttag(node, 'th', '', **atts))
+
+    def depart_field_name(self, node):
+        self.body.append(':<end th>')
+
+    def visit_figure(self, node):
+        atts = {'class': 'figure'}
+        if node.get('width'):
+            atts['style'] = 'width: %spx' % node['width']
+        self.body.append(self.starttag(node, 'div', **atts))
+
+    def depart_figure(self, node):
+        self.body.append('<end div>\n')
+
+    def visit_footer(self, node):
+        pass
+
+    def depart_footer(self, node):
+        footer = (['<hr class="footer" .>\n',
+                   self.starttag(node, 'div', CLASS='footer')]
+                  + self.body[start:] + ['<end div>\n'])
+        self.body_suffix[:0] = footer
+        del self.body[start:]
+
+    def visit_footnote(self, node):
+        self.body.append(self.starttag(node, 'table', CLASS='footnote',
+                                       frame="void", rules="none"))
+        self.body.append('<colgroup><col class="label" .><col .><end colgroup>\n'
+                         '<tbody valign="top">\n'
+                         '<tr>')
+        self.footnote_backrefs(node)
+
+    def footnote_backrefs(self, node):
+        if self.settings.footnote_backlinks and node.hasattr('backrefs'):
+            backrefs = node['backrefs']
+            if len(backrefs) == 1:
+                pass
+            else:
+                i = 1
+                backlinks = []
+                for backref in backrefs:
+                    backlinks.append('<a class="fn-backref" href="#%s">%s<end a>'
+                                     % (backref, i))
+                    i += 1
+
+    def depart_footnote(self, node):
+        self.body.append('<end td><end tr>\n'
+                         '<end tbody>\n<end table>\n')
+
+    def visit_footnote_reference(self, node):
+        href = ''
+        if node.has_key('refid'):
+            href = '#' + node['refid']
+        elif node.has_key('refname'):
+            href = '#' + self.document.nameids[node['refname']]
+        format = self.settings.footnote_references
+        if format == 'brackets':
+            suffix = '['
+        elif format == 'superscript':
+            suffix = '<sup>'
+        else:                           # shouldn't happen
+            suffix = '???'
+            self.content.append('???')
+        self.body.append(self.starttag(node, 'a', suffix, href=href,
+                                       CLASS='footnote-reference'))
+
+    def depart_footnote_reference(self, node):
+        pass
+
+    def visit_generated(self, node):
+        pass
+
+    def depart_generated(self, node):
+        pass
+
+    def visit_header(self, node):
+        pass
+
+    def depart_header(self, node):
+        self.body_prefix.append(self.starttag(node, 'div', CLASS='header'))
+        self.body_prefix.extend(self.body[start:])
+        self.body_prefix.append('<hr .>\n<end div>\n')
+        del self.body[start:]
+
+    def visit_hint(self, node):
+        self.visit_admonition(node, 'hint')
+
+    def depart_hint(self, node):
+        self.depart_admonition()
+
+    def visit_image(self, node):
+        atts = node.attributes.copy()
+        if atts.has_key('class'):
+            del atts['class']           # prevent duplication with node attrs
+        atts['src'] = atts['uri']
+        del atts['uri']
+        if not atts.has_key('alt'):
+            atts['alt'] = atts['src']
+        if isinstance(node.parent, nodes.TextElement):
+            pass
+        else:
+            if atts.has_key('align'):
+                self.body.append('<p align="%s">' %
+                                 (self.attval(atts['align'],)))
+            else:
+                self.body.append('<p>')
+        self.body.append(self.emptytag(node, 'img', '', **atts))
+
+    def depart_image(self, node):
+        pass
+
+    def visit_important(self, node):
+        self.visit_admonition(node, 'important')
+
+    def depart_important(self, node):
+        self.depart_admonition()
+
+    def visit_inline(self, node):
+        self.body.append(self.starttag(node, 'span', ''))
+
+    def depart_inline(self, node):
+        self.body.append('<end span>')
+
+    def visit_label(self, node):
+        pass
+
+    def depart_label(self, node):
+        pass
+
+    def visit_legend(self, node):
+        self.body.append(self.starttag(node, 'div', CLASS='legend'))
+
+    def depart_legend(self, node):
+        self.body.append('<end div>\n')
+
+    def visit_line_block(self, node):
+        self.body.append(self.starttag(node, 'pre', CLASS='line-block'))
+
+    def depart_line_block(self, node):
+        self.body.append('\n<end pre>\n')
+
+    def visit_list_item(self, node):
+        self.body.append(self.starttag(node, 'li', ''))
+        if len(node):
+            node[0].set_class('first')
+
+    def depart_list_item(self, node):
+        self.body.append('<end li>\n')
+
+    def visit_literal(self, node):
+        """Process text to prevent tokens from wrapping."""
+        self.body.append(self.starttag(node, 'tt', '', CLASS='literal'))
+        text = node.astext()
+        for token in self.words_and_spaces.findall(text):
+            if token.strip():
+                # Protect text like "--an-option" from bad line wrapping:
+                self.body.append('<span class="pre">%s<end span>'
+                                 % self.encode(token))
+            elif token in ('\n', ' '):
+                # Allow breaks at whitespace:
+                self.body.append(token)
+            else:
+                # Protect runs of multiple spaces; the last space can wrap:
+                self.body.append('&nbsp;' * (len(token) - 1) + ' ')
+        self.body.append('<end tt>')
+        # Content already processed:
+        raise nodes.SkipNode
+
+    def visit_literal_block(self, node):
+        self.body.append(self.starttag(node, 'pre', CLASS='literal-block'))
+
+    def depart_literal_block(self, node):
+        self.body.append('\n<end pre>\n')
+
+    def visit_meta(self, node):
+        pass
+
+    def depart_meta(self, node):
+        pass
+
+    def visit_note(self, node):
+        self.visit_admonition(node, 'note')
+
+    def depart_note(self, node):
+        self.depart_admonition()
+
+    def visit_option(self, node):
+        pass
+
+    def depart_option(self, node):
+        pass
+
+    def visit_option_argument(self, node):
+        self.body.append(node.get('delimiter', ' '))
+        self.body.append(self.starttag(node, 'var', ''))
+
+    def depart_option_argument(self, node):
+        self.body.append('<end var>')
+
+    def visit_option_group(self, node):
+        atts = {}
+        if len(node.astext()) > 14:
+            atts['colspan'] = 2
+        self.body.append(self.starttag(node, 'td', **atts))
+        self.body.append('<kbd>')
+
+    def depart_option_group(self, node):
+        self.body.append('<end kbd><end td>\n')
+
+    def visit_option_list(self, node):
+        self.body.append(
+              self.starttag(node, 'table', CLASS='option-list',
+                            frame="void", rules="none"))
+        self.body.append('<col class="option" .>\n'
+                         '<col class="description" .>\n'
+                         '<tbody valign="top">\n')
+
+    def depart_option_list(self, node):
+        self.body.append('<end tbody>\n<end table>\n')
+
+    def visit_option_list_item(self, node):
+        self.body.append(self.starttag(node, 'tr', ''))
+
+    def depart_option_list_item(self, node):
+        self.body.append('<end tr>\n')
+
+    def visit_option_string(self, node):
+        self.body.append(self.starttag(node, 'span', '', CLASS='option'))
+
+    def depart_option_string(self, node):
+        self.body.append('<end span>')
+
+    def visit_organization(self, node):
+        self.visit_docinfo_item(node, 'organization')
+
+    def depart_organization(self, node):
+        self.depart_docinfo_item()
+
+    def visit_paragraph(self, node):
+        self.body.append('\n@PP')
+
+    def depart_paragraph(self, node):
+        pass
+
+    def visit_problematic(self, node):
+        if node.hasattr('refid'):
+            self.body.append('<a href="#%s" name="%s">' % (node['refid'],
+                                                           node['id']))
+        self.body.append(self.starttag(node, 'span', '', CLASS='problematic'))
+
+    def depart_problematic(self, node):
+        self.body.append('<end span>')
+
+    def visit_raw(self, node):
+        if node.get('format') == 'lout':
+            self.body.append(node.astext())
+        # Keep non-HTML raw text out of output:
+        raise nodes.SkipNode
+
+    def visit_reference(self, node):
+        if node.has_key('refuri'):
+            href = node['refuri']
+        elif node.has_key('refid'):
+            href = '#' + node['refid']
+        elif node.has_key('refname'):
+            href = '#' + self.document.nameids[node['refname']]
+        self.body.append(self.starttag(node, 'a', '', href=href,
+                                       CLASS='reference'))
+
+    def depart_reference(self, node):
+        self.body.append('<end a>')
+
+    def visit_revision(self, node):
+        self.visit_docinfo_item(node, 'revision', meta=None)
+
+    def depart_revision(self, node):
+        self.depart_docinfo_item()
+
+    def visit_row(self, node):
+        self.body.append(self.starttag(node, 'tr', ''))
+
+    def depart_row(self, node):
+        self.body.append('<end tr>\n')
+
+    def visit_rubric(self, node):
+        self.body.append(self.starttag(node, 'p', '', CLASS='rubric'))
+
+    def depart_rubric(self, node):
+        self.body.append('<end p>\n')
+
+    def visit_section(self, node):
+        #print 'visit section level', self.section_level, node.__dict__
+        self.section_level += 1
+        if self.doctype == 'doc':
+            pass
+        elif self.doctype == 'book':
+            if self.section_level == 1:
+                if not (self.chapters or self.parts):
+                    # first one
+                    if self.body and not self.preface:
+                        # text before first chapter is always a preface
+                        self.body.insert(0, '@Preface\n'
+                                         '@Begin')
+                        self.body.append('@End @Preface')
+                        self.preface = self.body
+                        self.body = []
+                        # don't return, as we're actually starting the *next* chapter
+                        # after the preface
+                    elif self.settings.has_preface and not self.preface:
+                        self.body = self.preface = [
+                            '@Preface\n'
+                            '  @Title {',
+                            '', # title placeholder
+                            '}\n'
+                            '@Begin']
+                        self.section_commands.append('@Preface')
+                        self.section_title = 1
+                        return
+                    if self.settings.has_introduction and not self.introduction:
+                        self.body = self.introduction = [
+                            '@Introduction\n'
+                            '  @Title {',
+                            '', # title placeholder
+                            '}\n'
+                            '@Begin']
+                        self.section_commands.append('@Introduction')
+                        self.section_title = 1
+                        return
+                    # no, it's actually a chapter or part
+                    self.body = []
+                    self.chapters.append(self.body)
+                    if self.settings.has_parts:
+                        self.body.extend([0, ''])
+                        self.section_title = 1
+                        self.parts.append(self.chapters)
+                elif self.settings.has_parts:
+                    # new part (not first)
+                    self.body = [0, '']
+                    self.section_title = 1
+                    self.chapters = [self.body]
+                    self.parts.append(self.chapters)
+            level = self.section_level
+            extra = ''
+            if self.settings.has_parts:
+                level -= 1
+            if level == 1: # chapter
+                if self.body and type(self.body[0]) is type(0): # first real chapter in a part
+                    del self.chapters[0] # we don't want it on the output
+                    del self.body[0]     # delete the marker too
+                    ptitle = self.body.pop(0)
+                    if self.body and self.body[0] == '@PP': # always is
+                        del self.body[0]
+                    ptext = '\n'.join(self.body).strip()
+                    extra = '  @PartTitle { %s }' % self.encode(ptitle)
+                    if ptext:
+                        extra += '\n  @PartText {\n%s\n}' % ptext
+                self.body = []
+                self.chapters.append(self.body)
+                self.section_commands.append('@Chapter')
+            elif level == 2:
+                self.section_commands.append('@Section')
+            elif level == 3:
+                self.section_commands.append('@SubSection')
+            elif level == 4:
+                self.section_commands.append('@SubSubSection')
+            if 0 < level <= 4:
+                if level > 1 and self.section_nesting < self.section_level:
+                    self.section_nesting_stack.append((self.section_nesting,
+                                                       self.section_commands[-1][1:]))
+                    self.body.append('\n@Begin%ss' % self.section_nesting_stack[-1][1])
+                    self.section_nesting = self.section_level
+                self.body.append('%s @Title {' % self.section_commands[-1])
+                self.section_title = len(self.body)
+                self.body.extend(['', '}'])
+                if node.hasattr('id'):
+                    self.body.append('  @Tag { %s }' % node['id'])
+                if extra:
+                    self.body.append(extra)
+                self.body.append('@Begin')
+            elif level > 4: # unsupported level, let's cheat
+                # IMPROVEME: perhaps allow two or three different levels?
+                self.body.extend(['\n@Display @Heading { ',
+                                  '', # title placeholder
+                                  ' }'])
+                self.section_title = len(self.body) - 2
+                self.section_commands.append(None)
+###
+##             self.body.append(
+##                   self.starttag(node, 'h%s' % self.section_level, ''))
+##             atts = {}
+##             if node.parent.hasattr('id'):
+##                 atts['name'] = node.parent['id']
+##             if node.hasattr('refid'):
+##                 atts['class'] = 'toc-backref'
+##                 atts['href'] = '#' + node['refid']
+##             self.body.append(self.starttag({}, 'a', '', **atts))
+
+    def depart_section(self, node):
+        while self.section_nesting > self.section_level:
+            self.section_nesting, cmd = self.section_nesting_stack.pop()
+            self.body.append('\n@End%ss' % cmd)
+        self.section_level -= 1
+        if self.section_commands:
+            cmd = self.section_commands.pop()
+            if cmd:
+                self.body.append('\n@End %s' % cmd)
+
+    def visit_sidebar(self, node):
+        self.body.append(self.starttag(node, 'div', CLASS='sidebar'))
+        self.in_sidebar = 1
+
+    def depart_sidebar(self, node):
+        self.body.append('<end div>\n')
+        self.in_sidebar = None
+
+    def visit_status(self, node):
+        self.visit_docinfo_item(node, 'status', meta=None)
+
+    def depart_status(self, node):
+        self.depart_docinfo_item()
+
+    def visit_strong(self, node):
+        self.body.append('@B {')
+
+    def depart_strong(self, node):
+        self.body.append('}')
+
+    def visit_subscript(self, node):
+        self.body.append(self.starttag(node, 'sub', ''))
+
+    def depart_subscript(self, node):
+        self.body.append('<end sub>')
+
+    def visit_substitution_definition(self, node):
+        """Internal only."""
+        raise nodes.SkipNode
+
+    def visit_substitution_reference(self, node):
+        self.unimplemented_visit(node)
+
+    def visit_subtitle(self, node):
+        if isinstance(node.parent, nodes.sidebar):
+            self.body.append(self.starttag(node, 'p', '',
+                                           CLASS='sidebar-subtitle'))
+        else:
+            self.body.append(self.starttag(node, 'h2', '', CLASS='subtitle'))
+
+    def depart_subtitle(self, node):
+        pass
+
+    def visit_superscript(self, node):
+        self.body.append(self.starttag(node, 'sup', ''))
+
+    def depart_superscript(self, node):
+        self.body.append('<end sup>')
+
+    def visit_system_message(self, node):
+        if node['level'] < self.document.reporter['writer'].report_level:
+            # Level is too low to display:
+            raise nodes.SkipNode
+        self.body.append(self.starttag(node, 'div', CLASS='system-message'))
+        self.body.append('<p class="system-message-title">')
+        attr = {}
+        backref_text = ''
+        if node.hasattr('id'):
+            attr['name'] = node['id']
+        if node.hasattr('backrefs'):
+            backrefs = node['backrefs']
+            if len(backrefs) == 1:
+                backref_text = ('; <em><a href="#%s">backlink<end a><end em>'
+                                % backrefs[0])
+            else:
+                i = 1
+                backlinks = []
+                for backref in backrefs:
+                    backlinks.append('<a href="#%s">%s<end a>' % (backref, i))
+                    i += 1
+                backref_text = ('; <em>backlinks: %s<end em>'
+                                % ', '.join(backlinks))
+        if node.hasattr('line'):
+            line = ', line %s' % node['line']
+        else:
+            line = ''
+        if attr:
+            a_start = self.starttag({}, 'a', '', **attr)
+            a_end = '<end a>'
+        else:
+            a_start = a_end = ''
+        self.body.append('System Message: %s%s/%s%s (<tt>%s<end tt>%s)%s<end p>\n'
+                         % (a_start, node['type'], node['level'], a_end,
+                            self.encode(node['source']), line, backref_text))
+
+    def depart_system_message(self, node):
+        self.body.append('<end div>\n')
+
+    def visit_table(self, node):
+        self.body.append(
+              # "border=None" is a boolean attribute;
+              # it means "standard border", not "no border":
+              self.starttag(node, 'table', CLASS="table", border=None))
+
+    def depart_table(self, node):
+        self.body.append('<end table>\n')
+
+    def visit_target(self, node):
+        if not (node.has_key('refuri') or node.has_key('refid')
+                or node.has_key('refname')):
+            self.body.append(self.starttag(node, 'a', '', CLASS='target'))
+
+    def depart_target(self, node):
+        pass
+
+    def visit_tbody(self, node):
+        self.body.append(self.starttag(node, 'tbody', valign='top'))
+
+    def depart_tbody(self, node):
+        self.body.append('<end tbody>\n')
+
+    def visit_term(self, node):
+        self.body.append(self.starttag(node, 'dt', ''))
+
+    def depart_term(self, node):
+        """
+        Leave the end tag to `self.visit_definition()`, in case there's a
+        classifier.
+        """
+        pass
+
+    def visit_tgroup(self, node):
+        # Mozilla needs <colgroup>:
+        self.body.append(self.starttag(node, 'colgroup'))
+        # Appended by thead or tbody:
+
+    def depart_tgroup(self, node):
+        pass
+
+    def visit_thead(self, node):
+        self.body.append(self.starttag(node, 'thead', valign='bottom'))
+
+    def depart_thead(self, node):
+        self.body.append('<end thead>\n')
+
+    def visit_tip(self, node):
+        self.visit_admonition(node, 'tip')
+
+    def depart_tip(self, node):
+        self.depart_admonition()
+
+    def visit_title(self, node):
+        # there is a limited number of title levels in lout;
+        # worse, the number (and the commands, in fact) depends
+        # on the doctype
+        check_id = 0
+        if isinstance(node.parent, nodes.topic):
+            self.body.append(
+                  self.starttag(node, 'p', '', CLASS='topic-title'))
+            check_id = 1
+        elif isinstance(node.parent, nodes.sidebar):
+            self.body.append(
+                  self.starttag(node, 'p', '', CLASS='sidebar-title'))
+            check_id = 1
+        elif isinstance(node.parent, nodes.admonition):
+            self.body.append(
+                  self.starttag(node, 'p', '', CLASS='admonition-title'))
+            check_id = 1
+        else:
+            if self.section_level == 0: # book title
+                self.docinfo['title'] = node.astext()
+            else: # regular title, handled in visit_section
+                self.body[self.section_title] = self.encode(node.astext())
+            raise nodes.SkipNode
+        if check_id:
+            if node.parent.hasattr('id'):
+                self.body.append(
+                    self.starttag({}, 'a', '', name=node.parent['id']))
+
+    def depart_title(self, node):
+        pass
+
+    def visit_title_reference(self, node):
+        self.body.append(self.starttag(node, 'cite', ''))
+
+    def depart_title_reference(self, node):
+        self.body.append('<end cite>')
+
+    def visit_topic(self, node):
+        self.topic_class = node.get('class')
+        if self.topic_class == 'contents':
+            raise nodes.SkipNode
+        self.body.append(self.starttag(node, 'div', CLASS='topic'))
+
+    def depart_topic(self, node):
+        if self.topic_class != 'contents':
+            self.body.append('<end div>\n')
+        self.topic_class = ''
+
+    def visit_transition(self, node):
+        self.body.append(self.emptytag(node, 'hr'))
+
+    def depart_transition(self, node):
+        pass
+
+    def visit_version(self, node):
+        self.visit_docinfo_item(node, 'version', meta=None)
+
+    def depart_version(self, node):
+        self.depart_docinfo_item()
+
+    def visit_warning(self, node):
+        self.visit_admonition(node, 'warning')
+
+    def depart_warning(self, node):
+        self.depart_admonition()
+
+    def unimplemented_visit(self, node):
+        raise NotImplementedError('visiting unimplemented node type: %s'
+                                  % node.__class__.__name__)
