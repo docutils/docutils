@@ -10,6 +10,8 @@
 Test module for nodes.py.
 """
 
+from __future__ import nested_scopes
+
 import unittest
 from types import ClassType
 from DocutilsTestSupport import nodes, utils
@@ -117,15 +119,13 @@ class MiscTests(unittest.TestCase):
         self.assert_(e.has_children())
         self.assert_(not e[0].has_children())
 
-    def getlist(self, n, **kwargs):
-        r = []
-        while n is not None:
-            n = n.next_node(**kwargs)
-            r.append(n)
-        return r[:-1]
-
     def test_next_node(self):
-        getlist = self.getlist
+        def getlist(n, **kwargs):
+            r = []
+            while n is not None:
+                n = n.next_node(**kwargs)
+                r.append(n)
+            return r[:-1]
         e = nodes.Element()
         e += nodes.Element()
         e[0] += nodes.Element()
