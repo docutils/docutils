@@ -1331,7 +1331,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 class SimpleListChecker(nodes.GenericNodeVisitor):
 
     """
-    Raise `nodes.SkipNode` if non-simple list item is encountered.
+    Raise `nodes.NodeFound` if non-simple list item is encountered.
 
     Here "simple" means a list item containing nothing other than a single
     paragraph, a simple list, or a paragraph followed by a simple list.
