@@ -11,6 +11,23 @@ for processing tools/test.txt use pdflatex because it will handle png-images.
 To do
 ~~~~~
 
+* dedication is centered italic in html (test.txt).
+
+* term: html puts classifier in italic and newline after classifier,
+  latex in parentheses and no newline after it (test.txt).
+
+* field lists are indented in latex (test.txt).
+
+* literal block is indented in html (test.txt).
+
+* attribution (Anne ELk) is right aligned in html.
+
+* doctest block is indented in html.
+
+* footnotes donot link back in latex.
+
+* rubric, sidebar, ...
+
 * citation references and bibtex: could we learn or use something ?
 
   e.g. contemplating about persistence storage of references or
