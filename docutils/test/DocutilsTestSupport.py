@@ -83,11 +83,16 @@ class CustomTestSuite(unittest.TestSuite):
         """
         unittest.TestSuite.__init__(self, tests)
         if id is None:
+            mypath = os.path.abspath(
+                sys.modules[CustomTestSuite.__module__].__file__)
             outerframes = inspect.getouterframes(inspect.currentframe())
-            mypath = outerframes[0][1]
             for outerframe in outerframes[1:]:
                 if outerframe[3] != '__init__':
                     callerpath = outerframe[1]
+                    if callerpath is None:
+                        # It happens sometimes.  Why is a mystery.
+                        callerpath = os.getcwd()
+                    callerpath = os.path.abspath(callerpath)
                     break
             mydir, myname = os.path.split(mypath)
             if not mydir:
