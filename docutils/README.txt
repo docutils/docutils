@@ -146,7 +146,8 @@ Project Files & Directories
 
 * setup.py: Installation script.  See "Installation" below.
 
-* install.py: Quick & dirty installation script.  Just run it.
+* install.py: Quick & dirty installation script.  Just run it.  For
+  any kind of customization or help though, setup.py must be used.
 
 * docutils: The project source directory, installed as a Python
   package.
