@@ -553,7 +553,7 @@ Produces a pull-quote-class block quote.  See Epigraph_ above.
 Formal tables need more structure than the reStructuredText syntax
 supplies.  Tables may be given titles with the table_ directive.
 Sometimes reStructuredText tables are inconvenient to write, or table
-data in a standard format is readily available.  The csvtable_
+data in a standard format is readily available.  The csv-table_
 directive supports CSV data.
 
 
@@ -565,6 +565,8 @@ Table
 :Directive Arguments: 1, optional (table title).
 :Directive Options: Possible.
 :Directive Content: A normal reStructuredText table.
+
+(New in Docutils 0.3.1)
 
 The "table" directive is used to create a titled table, to associate a
 title with a table::
@@ -585,18 +587,28 @@ The following option is recognized:
     class_ directive below.
 
 
-.. _csvtable:
+.. _csv-table:
 
 CSV Table
 =========
 
-:Directive Type: "csvtable"
+:Directive Type: "csv-table"
 :Doctree Element: table
 :Directive Arguments: 1, optional (table title).
 :Directive Options: Possible.
 :Directive Content: A CSV (comma-separated values) table.
 
-The "csvtable" directive is used to create a table from CSV
+.. Warning::
+
+   The "csv-table" directive requires the ``csv.py`` module of the
+   Python standard library, which was added in Python 2.3.  It will
+   not work with earlier versions of Python.  Using the "csv-table"
+   directive in a document will make the document **incompatible**
+   with systems using Python 2.1 or 2.2.
+
+(New in Docutils 0.3.4)
+
+The "csv-table" directive is used to create a table from CSV
 (comma-separated values) data.  CSV is a common data format generated
 by spreadsheet applications and commercial databases.  The data may be
 internal (an integral part of the document) or external (a separate
@@ -604,7 +616,7 @@ file).
 
 Example::
 
-    .. csvtable:: Frozen Delights!
+    .. csv-table:: Frozen Delights!
        :headers: "Treat", "Quantity", "Description"
        :widths: 15, 10, 30
 
@@ -1123,6 +1135,8 @@ Custom Interpreted Text Roles
                       (base role name, in parentheses).
 :Directive Options: Possible (depends on base role).
 :Directive Content: depends on base role.
+
+(New in Docutils 0.3.2)
 
 The "role" directive dynamically creates a custom interpreted text
 role and registers it with the parser.  This means that after

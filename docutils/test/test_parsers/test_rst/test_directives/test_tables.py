@@ -12,6 +12,12 @@ Tests for tables.py directives.
 
 from __init__ import DocutilsTestSupport
 
+try:
+    import csv
+except ImportError:
+    csv = None
+
+
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
     s.generateTests(totest)
@@ -95,8 +101,8 @@ totest['table'] = [
 """],
 ]
 
-#xtotest = {} ; x
-totest['csv-table'] = [
+if csv:
+    totest['csv-table'] = [
 ["""\
 .. csv-table:: inline with integral header
    :widths: 10,20,30
@@ -349,6 +355,40 @@ totest['csv-table'] = [
             The "csv-table" directive requires content; none supplied.
         <literal_block xml:space="preserve">
             .. csv-table:: empty
+"""],
+["""\
+.. csv-table:: insufficient header row data
+   :header-rows: 2
+
+   some, csv, data
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            2 header row(s) specified but only 1 row(s) of data supplied ("csv-table" directive).
+        <literal_block xml:space="preserve">
+            .. csv-table:: insufficient header row data
+               :header-rows: 2
+            
+               some, csv, data
+"""],
+["""\
+.. csv-table:: insufficient body data
+   :header-rows: 1
+
+   some, csv, data
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Insufficient data supplied (1 row(s)); no data remaining for table body, required by "csv-table" directive.
+        <literal_block xml:space="preserve">
+            .. csv-table:: insufficient body data
+               :header-rows: 1
+            
+               some, csv, data
 """],
 ["""\
 .. csv-table:: content and external
