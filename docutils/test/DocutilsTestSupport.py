@@ -87,11 +87,10 @@ class CustomTestCase(unittest.TestCase):
     Helper class, providing extended functionality over unittest.TestCase.
 
     This isn't specific to Docutils but of general use when dealing
-    with large amounts of text.  The methods failUnlessEqual,
-    failIfEqual, failUnlessAlmostEqual and failIfAlmostEqual have been
-    overwritten to provide better support for multi-line strings.
-    Furthermore, see the compare_output method and the parameter list
-    of __init__.
+    with large amounts of text.  The methods failUnlessEqual and
+    failIfEqual have been overwritten to provide better support for
+    multi-line strings.  Furthermore, see the compare_output method
+    and the parameter list of __init__.
     """
 
     compare = docutils_difflib.Differ().compare
@@ -161,41 +160,11 @@ class CustomTestCase(unittest.TestCase):
             raise self.failureException, \
                   (msg or '%s == %s' % _format_str(first, second))
 
-    def failUnlessAlmostEqual(self, first, second, places=7, msg=None):
-        """Fail if the two objects are unequal as determined by their
-           difference rounded to the given number of decimal places
-           (default 7) and comparing to zero.
-
-           Note that decimal places (from zero) are usually not the same
-           as significant digits (measured from the most signficant digit).
-        """
-        if round(second-first, places) != 0:
-            raise self.failureException, \
-                  (msg or '%s != %s within %s places' %
-                   _format_str(first, second, places))
-
-    def failIfAlmostEqual(self, first, second, places=7, msg=None):
-        """Fail if the two objects are equal as determined by their
-           difference rounded to the given number of decimal places
-           (default 7) and comparing to zero.
-
-           Note that decimal places (from zero) are usually not the same
-           as significant digits (measured from the most signficant digit).
-        """
-        if round(second-first, places) == 0:
-            raise self.failureException, \
-                  (msg or '%s == %s within %s places' %
-                   _format_str(first, second, places))
-
     # Synonyms for assertion methods
 
     assertEqual = assertEquals = failUnlessEqual
 
     assertNotEqual = assertNotEquals = failIfEqual
-
-    assertAlmostEqual = assertAlmostEquals = failUnlessAlmostEqual
-
-    assertNotAlmostEqual = assertNotAlmostEquals = failIfAlmostEqual
 
 
 class CustomTestSuite(unittest.TestSuite):
