@@ -177,6 +177,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
               self.geometry % (self.d_paper, self.d_margins),
               #
               self.generator,
+              # admonition width
+              '\\newlength{\\admwidth}\n\\addtolength{\\admwidth}{0.9\\textwidth}\n'
                             ]
         if self.linking: # and maybe check for pdf
             self.pdfinfo = [ ]
@@ -192,11 +194,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.topic_class = ''
 
     def language_label(self, docutil_label):
-        if self.language.labels.has_key(docutil_label):
-            return self.language.labels[docutil_label]
-        return docutil_label
-            
-        
+        return self.language.labels[docutil_label]
 
     def encode(self, text):
         """
@@ -242,11 +240,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item(node)
 
     def visit_admonition(self, node, name):
-        self.body.append('\\paragraph{'
-                         + self.language.labels[name] + '}\n{')
+        self.body.append('\\begin{center}\n');
+        # alternatives: parbox or minipage.
+        # minpage has footnotes on the minipage.
+        # BUG there is no border.
+        self.body.append('\\parbox{\\admwidth}{\\textbf{'
+                         + self.language.labels[name] + '}\n')
 
     def depart_admonition(self):
         self.body.append('}\n')
+        self.body.append('\\end{center}\n');
 
     def visit_attention(self, node):
         self.visit_admonition(node, 'attention')
@@ -951,6 +954,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             if name:
                 self.body.append( '\\hypertarget{%s}{}\n' % name)
             self.body.append('\\%ssection*{' % ('sub'*(self.section_level-1)))
+            # BUG: self.body.append( '\\label{%s}\n' % name)
         self.context.append('}\n')
 
     def depart_title(self, node):

@@ -1,10 +1,14 @@
 latex2e BUGS TODOS and other animals
 ------------------------------------
 
-Rev. 2002-10-15
+Rev. 2002-10-17
 
 To do
 ~~~~~
+
+* pagestyle headings does not work, when sections are starred.
+
+* latex does not hyphenate here. 
 
 * check indentation in verbatim is right.
 
