@@ -327,12 +327,17 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.topic_class = ''
         # column specification for tables
         self.colspecs = []
+        # Flags to encode
+        # ---------------
         # verbatim: to tell encode not to encode.
         self.verbatim = 0
-        # insert_newline: to tell encode to add newline.
+        # insert_newline: to tell encode to replace blanks by "~".
+        self.insert_none_breaking_blanks = 0
+        # insert_newline: to tell encode to add latex newline.
         self.insert_newline = 0
         # mbox_newline: to tell encode to add mbox and newline.
         self.mbox_newline = 0
+
         # enumeration is done by list environment.
         self._enum_cnt = 0
         # docinfo. 
@@ -397,9 +402,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             text = self.babel.quote_quotes(text)
         if self.insert_newline:
-            text = text.replace("\n", '\\\\\n')
+            # HACK: insert a blank before the newline, to avoid 
+            # ! LaTeX Error: There's no line here to end.
+            text = text.replace("\n", '~\\\\\n')
         elif self.mbox_newline:
             text = text.replace("\n", '}\\\\\n\\mbox{')
+        if self.insert_none_breaking_blanks:
             text = text.replace(' ', '~')
         # unicode !!! 
         text = text.replace(u'\u2020', '{$\\dagger$}')
@@ -914,13 +922,25 @@ class LaTeXTranslator(nodes.NodeVisitor):
         """line-block: 
         * whitespace (including linebreaks) is significant 
         * inline markup is supported. 
-        * serif typeface"""
-        self.mbox_newline = 1
-        self.body.append('\\begin{flushleft}\n\\mbox{')
+        * serif typeface
+        """
+        self.body.append('\\begin{flushleft}\n')
+        self.insert_none_breaking_blanks = 1
+        self.line_block_without_mbox = 1
+        if self.line_block_without_mbox:
+            self.insert_newline = 1
+        else:
+            self.mbox_newline = 1
+            self.body.append('\\mbox{')
 
     def depart_line_block(self, node):
-        self.body.append('}\n\\end{flushleft}\n')
-        self.mbox_newline = 0
+        if self.line_block_without_mbox:
+            self.insert_newline = 0
+        else:
+            self.body.append('}')
+            self.mbox_newline = 0
+        self.insert_none_breaking_blanks = 0
+        self.body.append('\n\\end{flushleft}\n')
 
     def visit_list_item(self, node):
         self.body.append('\\item ')
@@ -950,6 +970,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.literal_block = 1
         if (self.use_for_literal_block == "mbox"):
             self.mbox_newline = 1
+            self.insert_none_breaking_blanks = 1
             self.body.append('\\begin{ttfamily}\\begin{flushleft}\n\\mbox{')
         else:
             self.body.append('{\\obeylines\\obeyspaces\\ttfamily\n')
@@ -957,6 +978,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_literal_block(self, node):
         if (self.use_for_literal_block == "mbox"):
             self.body.append('}\n\\end{flushleft}\\end{ttfamily}\n')
+            self.insert_none_breaking_blanks = 0
             self.mbox_newline = 0
         else:
             self.body.append('}\n')
