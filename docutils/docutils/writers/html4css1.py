@@ -143,6 +143,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         text = text.replace("<", "&lt;")
         text = text.replace('"', "&quot;")
         text = text.replace(">", "&gt;")
+        text = text.replace("@", "&#64;") # may thwart some address harvesters
         return text
 
     def attval(self, text,
