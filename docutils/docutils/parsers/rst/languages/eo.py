@@ -54,6 +54,7 @@ directives = {
       u'anstata\u016di': 'replace',
       u'unicode': 'unicode',
       u'klaso': 'class',
+      u'role (translation required)': 'role',
       u'enhavo': 'contents',
       u'seknum': 'sectnum',
       u'sekcia-numerado': 'sectnum',

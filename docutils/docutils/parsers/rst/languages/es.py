@@ -55,6 +55,7 @@ directives = {
       u'reemplazar': 'replace',
       u'unicode': 'unicode',
       u'clase': 'class',
+      u'role (translation required)': 'role',
       u'contenido': 'contents',
       u'numseccion': 'sectnum',
       u'numsecci\u00f3n': 'sectnum',

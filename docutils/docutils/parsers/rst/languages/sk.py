@@ -49,6 +49,7 @@ directives = {
       u'nahradi\x9d': 'replace',
       u'unicode': 'unicode',
       u'class (translation required)': 'class',
+      u'role (translation required)': 'role',
       u'obsah': 'contents',
       u'\xe8as\x9d': 'sectnum',
       u'\xe8as\x9d-\xe8\xedslovanie': 'sectnum',

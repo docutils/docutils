@@ -118,6 +118,7 @@ _directive_registry = {
       'replace': ('misc', 'replace'),
       'unicode': ('misc', 'unicode_directive'),
       'class': ('misc', 'class_directive'),
+      'role': ('misc', 'role'),
       'restructuredtext-test-directive': ('misc', 'directive_test_function'),}
 """Mapping of directive name to (module name, function name).  The directive
 name is canonical & must be lowercase.  Language-dependent names are defined
@@ -272,7 +273,10 @@ def class_option(argument):
     """
     if argument is None:
         raise ValueError('argument required but none supplied')
-    return nodes.make_id(argument)
+    class_name = nodes.make_id(argument)
+    if not class_name:
+        raise ValueError('cannot make "%s" into a class name' % argument)
+    return class_name
 
 def format_values(values):
     return '%s, or "%s"' % (', '.join(['"%s"' % s for s in values[:-1]]),

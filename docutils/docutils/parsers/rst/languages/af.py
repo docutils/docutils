@@ -49,6 +49,7 @@ directives = {
       'vervang': 'replace',
       'unicode': 'unicode', # should this be translated? unikode
       'klas': 'class',
+      'role (translation required)': 'role',
       'inhoud': 'contents',
       'sectnum': 'sectnum',
       'section-numbering': 'sectnum',

@@ -50,7 +50,8 @@ directives = {
                             # einfügung would be the noun. 
       'ersetzung': 'replace', # ersetzen, ersetze
       'unicode': 'unicode',
-      'klasse': 'class',    # offer class too ?
+      'klasse': 'class',    # offer "class" too ?
+      'role (translation required)': 'role',
       'inhalt': 'contents',
       'sectnum': 'sectnum',
       'section-numbering': 'sectnum',
