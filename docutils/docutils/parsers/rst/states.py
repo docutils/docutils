@@ -2382,24 +2382,18 @@ class Text(RSTState):
     def underline(self, match, context, next_state):
         """Section title."""
         lineno = self.state_machine.abs_line_number()
-        if not self.state_machine.match_titles:
-            blocktext = context[0] + '\n' + self.state_machine.line
-            msg = self.reporter.severe(
-                'Unexpected section title.',
-                nodes.literal_block(blocktext, blocktext), line=lineno)
-            self.parent += msg
-            return [], next_state, []
         title = context[0].rstrip()
         underline = match.string.rstrip()
         source = title + '\n' + underline
         messages = []
         if len(title) > len(underline):
             if len(underline) < 4:
-                msg = self.reporter.info(
-                    'Possible title underline, too short for the title.\n'
-                    "Treating it as ordinary text because it's so short.",
-                    line=lineno)
-                self.parent += msg
+                if self.state_machine.match_titles:
+                    msg = self.reporter.info(
+                        'Possible title underline, too short for the title.\n'
+                        "Treating it as ordinary text because it's so short.",
+                        line=lineno)
+                    self.parent += msg
                 raise statemachine.TransitionCorrection('text')
             else:
                 blocktext = context[0] + '\n' + self.state_machine.line
@@ -2407,6 +2401,14 @@ class Text(RSTState):
                     'Title underline too short.',
                     nodes.literal_block(blocktext, blocktext), line=lineno)
                 messages.append(msg)
+        if not self.state_machine.match_titles:
+            blocktext = context[0] + '\n' + self.state_machine.line
+            msg = self.reporter.severe(
+                'Unexpected section title.',
+                nodes.literal_block(blocktext, blocktext), line=lineno)
+            self.parent += messages
+            self.parent += msg
+            return [], next_state, []
         style = underline[0]
         context[:] = []
         self.section(title, source, style, lineno - 1, messages)
