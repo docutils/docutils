@@ -216,10 +216,10 @@ def main():
         else:
             if os.path.isdir(filename):
                 print >>sys.stderr, "*** Parsing the Python package",filename
-                thing = visit.Package(filename,verbose=verbose)
+                thing = visit.Package(None, filename)
             else:
                 print >>sys.stderr, "*** Parsing the Python file",filename
-                thing = visit.Module(filename,verbose=verbose)
+                thing = visit.Module(None, filename)
 
             if want_docutilstree:
                 if not quiet:

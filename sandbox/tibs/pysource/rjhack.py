@@ -10,7 +10,7 @@
 A front end to the Docutils Publisher, taking Python source and producing HTML.
 """
 
-import locale
+import os, locale
 try:
     locale.setlocale(locale.LC_ALL, '')
 except:
@@ -28,9 +28,11 @@ class SourceParser(Parser):
           {'action': 'store_true'}),
         )
     )
-    def parse(self, inputstring, document):
-        thing = visit.Module(inputstring,
-            verbose=document.options.verbose_parse)
+    def parse(self, filename, document):
+        if os.path.isdir(filename):
+            thing = visit.Package(document.options, filename)
+        else:
+            thing = visit.Module(document.options, filename)
         process = transform.Process(with_groups=0, document=document)
         process(thing)
 
