@@ -86,7 +86,7 @@ Changes Since 0.3
   - Added "config_section" parameter to several methods and functions,
     allowing front ends to easily specify their config file sections.
   - Added publish_parts convenience function to allow access to individual
-    parts of a document
+    parts of a document.
 
 * docutils/examples.py: Added to project; practical examples of
   Docutils client code, to be used as-is or as models for variations.
@@ -121,9 +121,11 @@ Changes Since 0.3
   - Changed ``SparseNodeVisitor`` and ``GenericNodeVisitor`` dynamic
     method definitions (via ``exec``) to dynamic assignments (via
     ``setattr``); thanks to Roman Suzi.
-  - Added indirect_reference_name attribute to the Targetable class. This
-    attribute holds the whitespace_normalized_name (contains mixed case) of a
-    target.
+  - Encapsulated visitor dynamic assignments in a function; thanks to
+    Ian Bicking.
+  - Added indirect_reference_name attribute to the Targetable
+    class. This attribute holds the whitespace_normalized_name
+    (contains mixed case) of a target.
 
 * docutils/statemachine.py:
 
@@ -246,8 +248,8 @@ Changes Since 0.3
     references in addition to targets. Note sure if this is correct!
   - Added code to hook into the unknown_reference_resolvers list for a
     transformer in resolve_indirect_target. This allows the
-    unknown_reference_resolvers to keep around indirect targets which docutils 
-    doesn't know about.
+    unknown_reference_resolvers to keep around indirect targets which
+    docutils doesn't know about.
   - Added specific error message for duplicate targets.
 
 * docutils/transforms/universal.py:
