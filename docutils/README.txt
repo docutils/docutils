@@ -12,8 +12,47 @@
 
 Thank you for downloading the Python Docutils project archive.  As
 this is a work in progress, please check the project website for
-updated working files.  This project should be considered highly
-experimental; APIs are subject to change at any time.
+updated working files (snapshots).  This project should be considered
+highly experimental; APIs are subject to change at any time.
+
+
+Quick-Start
+===========
+
+This is for those who want to get up & running quickly.  Read on for
+complete details.
+
+1. Get and install the latest release of Python, available from
+
+       http://www.python.org/
+
+   Python 2.1.3 or later is required; Python 2.2.2 or later is
+   recommended.
+
+2. Use the latest Docutils code.  Get the code from CVS or from the
+   snapshot:
+
+       http://docutils.sf.net/docutils-snapshot.tgz
+
+   See `Releases & Snapshots`_ below for details.
+
+3. Unpack the tarball and install with the standard ::
+
+       python setup.py install
+
+   See Installation_ below for details.
+
+4. Use a front-end tool from the "tools" subdirectory of the same
+   directory as in step 3.  For example::
+
+       cd tools
+       html.py test.txt test.html
+
+   See Usage_ below for details.
+
+
+Purpose
+=======
 
 The purpose of the Docutils project is to create a set of tools for
 processing plaintext documentation into useful formats, such as HTML,
@@ -203,15 +242,15 @@ Alternatively::
     tools/buildhtml.py --config=tools/docutils.conf
 
 Some files may generate system messages (warnings and errors).  The
-``tools/test.txt`` file contains 5 intentional errors.  (They test the
-error reporting mechanism!)
+``tools/test.txt`` file (under the archive directory) contains 5
+intentional errors.  (They test the error reporting mechanism!)
 
 There are many front-end tools in the unpacked "tools" subdirectory.
-Most tools take up to two arguments, the source path and destination
-path, with STDIN and STDOUT being the defaults.  Use the "--help"
-option to the front-end tools for details on options and arguments.
-See `Docutils Front-End Tools`_ (``docs/tools.txt``) for full
-documentation.
+You may want to begin with the "html.py" front-end tool.  Most tools
+take up to two arguments, the source path and destination path, with
+STDIN and STDOUT being the defaults.  Use the "--help" option to the
+front-end tools for details on options and arguments.  See `Docutils
+Front-End Tools`_ (``docs/tools.txt``) for full documentation.
 
 The package modules are continually growing and evolving.  The
 ``docutils.statemachine`` module is usable independently.  It contains

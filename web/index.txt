@@ -10,8 +10,6 @@
 
 :Date: $Date$
 
-.. contents::
-
 The purpose of the Docutils project is to create a set of tools for
 processing plaintext documentation into useful formats, such as HTML,
 XML, and TeX.  Several sources will be supported:
@@ -21,6 +19,17 @@ XML, and TeX.  Several sources will be supported:
   with namespace context.
 - `PEPs (Python Enhancement Proposals)`_ (implemented).
 - And others as discovered.
+
+.. contents::
+
+
+Getting Started
+===============
+
+To get up & running quickly, see the Quick-Start_ section of the
+README_ file.
+
+.. _Quick-Start: README.html#quick-start
 
 
 Feedback
@@ -73,7 +82,7 @@ Requirements
 
 - Python 2.1 or later must already be installed to run the code and
   the test suite.  The latest release is recommended (currently 2.1.3
-  or 2.2.1).  Python is available from http://www.python.org/.
+  or 2.2.2).  Python is available from http://www.python.org/.
 
 - Docutils uses Greg Ward's Optik_ option processing package.  It is
   now included in the Docutils distribution.
@@ -112,7 +121,7 @@ Project Releases
 Putting together an official "Release" of Docutils is a significant
 effort, so it isn't done that often.  Please note that the
 `development snapshots`_ above contain the latest versions of project
-files, although they may not be fully tested.
+files, and are strongly recommended.
 
 The `latest project release package`_ (Docutils 0.2, 2002-07-31) and
 past project releases can be downloaded from the `project files
@@ -292,7 +301,8 @@ Sandbox Projects
 
 Anyone is welcome to contribute to any of these projects.  Interested
 developers are welcome to take on any projects which appear to be
-dormant.
+dormant.  Please direct any email to
+docutils-develop@lists.sourceforge.net.
 
 * ZReST_, by Richard Jones, is a "ReStructuredText Document for Zope"
   application that is complete and ready to install.
@@ -308,7 +318,8 @@ dormant.
 * Engelbert Gruber has begun `LaTeX Writer`_ and `ReportLabs/PDF
   Writer`_ components.
 
-* Oliver Rutherfurd has begun a `DocBook Writer`_ component.
+* Oliver Rutherfurd has begun a `DocBook Writer`_ component and
+  `HT2HTML integration`_ component.
 
 * Simon Budig has a modified ``states.py`` parser module and
   supporting documents for his controversial proposal for `inline
@@ -318,6 +329,10 @@ dormant.
 * Gunnar Schwant has begun DocFactory_, a wxPython GUI application for
   Docutils.
 
+* Aahz has begun an `OpenOffice.org Writer`_.
+
+* Ian Bicking is working on code for a Wiki_.
+
 .. _ZReST: sandbox/richard/ZReST/
 .. _PySource: sandbox/tibs/pysource/
 .. _pysource_reader: sandbox/davidg/pysource_reader/
@@ -325,9 +340,12 @@ dormant.
 .. _LaTeX Writer: sandbox/grubert/latex/
 .. _ReportLabs/PDF Writer: sandbox/grubert/rlpdf/
 .. _DocBook Writer: sandbox/oliverr/docbook/
+.. _HT2HTML integration: sandbox/oliverr/ht/README.html
 .. _inline external targets: sandbox/simonb/
 __ spec/rst/alternatives.html#inline-external-targets
 .. _DocFactory: sandbox/gschwant/docfactory/README.html
+.. _OpenOffice.org Writer: sandbox/aahz/OO/
+.. _Wiki: sandbox/ianb/wiki/
 
 
 Please Contribute!
