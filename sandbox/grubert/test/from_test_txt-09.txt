@@ -1,11 +1,17 @@
 Literal Blocks
 --------------
 
-Literal blocks are indented, and indicated with a double-colon ("::")
-at the end of the preceding paragraph (right here ``-->``)::
+Literal blocks are indicated with a double-colon ("::") at the end of
+the preceding paragraph (over there ``-->``).  They can be indented::
 
     if literal_block:
         text = 'is left as-is'
         spaces_and_linebreaks = 'are preserved'
         markup_processing = None
+
+Or they can be quoted without indentation::
+
+>> Great idea!
+>
+> Why didn't I think of that?
 

@@ -1,6 +1,9 @@
 Character tests
 ===============
 
+bracketts in lists
+------------------
+
 LaTeX has some special characters in certain cases, e.g. # is LaTeX's macro
 argument chracter.
 
@@ -32,4 +35,21 @@ up to now.
 
 *Fix* append "{}" to the item command, i.e. ::
 
+
+
   \item {} [Advanced]
+
+double back qoutes field list names  
+-----------------------------------
+
+The *double back qoutes* in the follwing example are ignored, i.e.
+they are still *double back quotes* in TeX.
+
+Example
+
+
+   :The ``lambda`` Operator: A metafunction which transforms a lambda
+      expression into a corresponding metafunction class.  
+
+This is not writer but reader specific.
+
