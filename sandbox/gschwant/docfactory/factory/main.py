@@ -3,10 +3,10 @@
 """
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
-:version: 0.2.2
+:version: 0.2.3
 """
 
-import browser, images, re, sys, os, time
+import browser, images, re, sys, os, time, ConfigParser
 from   wxPython.wx               import *
 from   wxPython.lib.dialogs      import wxMultipleChoiceDialog
 from   wxPython.lib.imagebrowser import ImageDialog
@@ -15,7 +15,7 @@ from   dialogs                   import *
 from   controls                  import CustomStyledTextCtrl
 from   controls                  import CustomTreeCtrl
 from   controls                  import CustomStatusBar
-from   docutilsadapter           import rest2html, get_errors
+from   docutilsadapter           import publish_document, get_errors
 from   docutils.utils            import relative_path
 from   urllib                    import quote
 from   wxPython.lib.buttons      import *
@@ -44,7 +44,7 @@ except:
 
 # need some IDs
 [wxID_WXNEWPROJ, wxID_WXNEWREST, wxID_WXOPENFILE, 
- wxID_WXREMFILE, wxID_WXSAVEFILE, wxID_WXEXITAPP, wxID_WXPUBLRESTHTML,
+ wxID_WXREMFILE, wxID_WXSAVEFILE, wxID_WXEXITAPP, wxID_WXPUBL,
  wxID_WXPROJSETTINGS, wxID_WXINSERTPATH, wxID_WXINSERTIMAGE,
  wxID_WXINSERTFIGURE, wxID_WXCLOSEFILE, wxID_WXVIEWEOLS, wxID_WXEOLSTOCR,
  wxID_WXEOLSTOLF, wxID_WXEOLSTOCRLF, wxID_WXEOLSTO, wxID_WXVIEWEDGE,
@@ -52,20 +52,26 @@ except:
  wxID_WXUNDO, wxID_WXREDO, wxID_WXGOTO, wxID_WXSELECTALL, wxID_WXVIEWWS,
  wxID_WXDELETEPROJ, wxID_WXFONTSIZE, wxID_WXSMALLFONT, wxID_WXNORMALFONT,
  wxID_WXBIGFONT, wxID_WXINSERT, wxID_WXBTNBOLD, wxID_WXBTNITALIC,
- wxID_WXBTNLITERAL, wxID_WXBTNLINK, wxID_WXBTNIMAGE,
- wxID_WXINSERTHYPERLINK, wxID_WXBTNPASTE, wxID_WXBTNCOPY,
+ wxID_WXBTNLITERAL, wxID_WXBTNLINK, wxID_WXBTNIMAGE, wxID_WXBTNTOOL,
+ wxID_WXINSERTHYPERLINK, wxID_WXBTNPASTE, wxID_WXBTNCOPY, wxID_WXRUNTOOL,
  wxID_WXBTNCUT, wxID_WXBTNREDO, wxID_WXBTNUNDO, wxID_WXBTNSAVE,
- wxID_WXBTNOPEN, wxID_WXBTNNEW, wxID_WXBTNABOUT,
- wxID_WXFINDREPLACE] = map(lambda init_menubar: wxNewId(), range(48))
+ wxID_WXBTNOPEN, wxID_WXBTNNEW, wxID_WXBTNPUBLISH, wxID_WXBTNABOUT,
+ wxID_WXFINDREPLACE] = map(lambda init_menubar: wxNewId(), range(51))
 
 # Accelerator-Table for key commands
-ACCEL = [(wxACCEL_NORMAL,WXK_F7,wxID_WXPUBLRESTHTML),
+ACCEL = [(wxACCEL_NORMAL,WXK_F7,wxID_WXPUBL),
+         (wxACCEL_NORMAL,WXK_F8,wxID_WXRUNTOOL),
          (wxACCEL_CTRL,ord('F'),wxID_WXFINDREPLACE),
          (wxACCEL_CTRL,ord('G'),wxID_WXGOTO),
          (wxACCEL_CTRL,ord('N'),wxID_WXNEWREST),
          (wxACCEL_CTRL,ord('O'),wxID_WXOPENFILE),
          (wxACCEL_CTRL,ord('S'),wxID_WXSAVEFILE),
          (wxACCEL_ALT,ord('X'),wxID_WXEXITAPP)]
+
+#-------------------------------------------------------------------------
+
+def get_file_extension(filename):
+    return os.path.splitext(filename)[1]
 
 #-------------------------------------------------------------------------
 
@@ -211,6 +217,11 @@ class DocFactoryFrame(wxFrame):
         EVT_MENU(self, wxID_WXREMFILE, self.on_file_remove)
         menu.Enable(wxID_WXREMFILE, 0)
         menu.AppendSeparator()
+        menu.Append(wxID_WXPUBL, 'Publish...\tF7',
+                    'Publish file')
+        EVT_MENU(self, wxID_WXPUBL, self.on_publish)
+        menu.Enable(wxID_WXPUBL, 0)
+        menu.AppendSeparator()
         menu.Append(wxID_WXEXITAPP, 'Exit\tAlt+X', 'Exit program')
         EVT_MENU(self, wxID_WXEXITAPP, self.on_app_exit)
         self.mainmenu.Append (menu, '&File')
@@ -307,14 +318,6 @@ class DocFactoryFrame(wxFrame):
         menu.Enable(wxID_WXFONTSIZE, 0)
         self.mainmenu.Append(menu, '&View')
 
-        # Process
-        menu=wxMenu()
-        menu.Append(wxID_WXPUBLRESTHTML, 'To HTML\tF7',
-                    'Create HTML from active file')
-        EVT_MENU(self, wxID_WXPUBLRESTHTML, self.on_file_html)
-        menu.Enable(wxID_WXPUBLRESTHTML, 0)
-        self.mainmenu.Append (menu, '&Process')
-
         # Project
         menu=wxMenu()
         menu.Append(wxID_WXNEWPROJ, 'New', 'Create a new project')
@@ -331,6 +334,17 @@ class DocFactoryFrame(wxFrame):
         menu.Enable(wxID_WXPROJSETTINGS, 0)
         self.mainmenu.Append (menu, 'Pr&oject')
 
+        self.init_tools()
+        
+        # Toolbox
+        menu=wxMenu()
+        exitID=wxNewId()
+        menu.Append(exitID, 'Configure', 'Configure toolbox')
+        EVT_MENU(self, exitID, self.on_configure_tools)
+        menu.Append(wxID_WXRUNTOOL, 'Open...\tF8', 'Open toolbox')
+        EVT_MENU(self, wxID_WXRUNTOOL, self.on_run_tool)
+        self.mainmenu.Append (menu, '&Toolbox')
+        
         # Help
         menu=wxMenu()
         exitID=wxNewId()
@@ -402,15 +416,34 @@ class DocFactoryFrame(wxFrame):
         bmp = images.getLinkBitmap()
         mask = wxMaskColour(bmp, wxBLUE)
         bmp.SetMask(mask)
-        tb.AddLabelTool(wxID_WXBTNLINK, 'Link', bmp, shortHelp='Hyperlink', longHelp='Hyperlink')
+        tb.AddLabelTool(wxID_WXBTNLINK, 'Hyperlink', bmp,
+                        shortHelp='Insert hyperlink',
+                        longHelp='Insert hyperlink')
         EVT_TOOL(tb, wxID_WXBTNLINK, self.on_btn_hyperlink)
         tb.EnableTool(wxID_WXBTNLINK, 0)
         bmp = images.getImageBitmap()
         mask = wxMaskColour(bmp, wxBLUE)
         bmp.SetMask(mask)
-        tb.AddLabelTool(wxID_WXBTNIMAGE, 'Image', bmp, shortHelp='Image', longHelp='Image')
+        tb.AddLabelTool(wxID_WXBTNIMAGE, 'Image', bmp,
+                        shortHelp='Insert image',
+                        longHelp='Insert image')
         EVT_TOOL(tb, wxID_WXBTNIMAGE, self.on_btn_image)
         tb.EnableTool(wxID_WXBTNIMAGE, 0)
+        tb.AddSeparator()
+        bmp = images.getPublishBitmap()
+        mask = wxMaskColour(bmp, wxRED)
+        bmp.SetMask(mask)
+        tb.AddLabelTool(wxID_WXBTNPUBLISH, 'Publish', bmp, shortHelp='Publish file',
+                        longHelp='Publish file')
+        EVT_TOOL(tb, wxID_WXBTNPUBLISH, self.on_publish)
+        tb.EnableTool(wxID_WXBTNPUBLISH, 0)
+        tb.AddSeparator()
+        bmp = images.getToolBitmap()
+        mask = wxMaskColour(bmp, wxBLUE)
+        bmp.SetMask(mask)
+        tb.AddLabelTool(wxID_WXBTNTOOL, 'Toolbox', bmp, shortHelp='Open toolbox',
+                        longHelp='Open toolbox')
+        EVT_TOOL(tb, wxID_WXBTNTOOL, self.on_run_tool)
         tb.AddSeparator()
         bmp = images.getBoldBitmap()
         mask = wxMaskColour(bmp, wxWHITE)
@@ -451,6 +484,20 @@ class DocFactoryFrame(wxFrame):
                         longHelp='Display program information')
         EVT_TOOL(tb, wxID_WXBTNABOUT, self.on_help_about)
         tb.Realize()
+
+    def init_tools(self):
+        self.tools = {}
+        if os.path.exists(DATA):
+            try:
+                cfg = ConfigParser.ConfigParser()
+                cfg.read(DATA)
+                if cfg.has_section('tools'):
+                    i = 0
+                    for tool in cfg.options('tools'):
+                        i = i+1
+                        self.tools[i]=[i]+cfg.get('tools', tool).split(';')
+            except:
+                customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
     
     def init_tree(self):
         self.tree.DeleteAllItems()
@@ -494,7 +541,7 @@ class DocFactoryFrame(wxFrame):
     # --------------------------------------------------------------------
 
     def activateMenuItemsProjectOpen(self, value):
-        menu = self.mainmenu.GetMenu(4)
+        menu = self.mainmenu.GetMenu(self.mainmenu.FindMenu('Project'))
         if len(self.projects) > 0 and value:
             menu.Enable(wxID_WXDELETEPROJ, value)
         menu.Enable(wxID_WXPROJSETTINGS, value)
@@ -507,6 +554,7 @@ class DocFactoryFrame(wxFrame):
             menu.Enable(wxID_WXREMFILE, 0)
         menu.Enable(wxID_WXCLOSEFILE, value)
         menu.Enable(wxID_WXSAVEFILE, value)
+        menu.Enable(wxID_WXPUBL, value)
         menu = self.mainmenu.GetMenu(self.mainmenu.FindMenu('Edit'))
         menu.Enable(wxID_WXUNDO, value)
         menu.Enable(wxID_WXREDO, value)
@@ -523,8 +571,6 @@ class DocFactoryFrame(wxFrame):
         menu.Enable(wxID_WXVIEWEDGE, value)
         menu.Enable(wxID_WXVIEWWS, value)
         menu.Enable(wxID_WXFONTSIZE, value)
-        menu = self.mainmenu.GetMenu(self.mainmenu.FindMenu('Process'))
-        menu.Enable(wxID_WXPUBLRESTHTML, value)
         self.toolbar.EnableTool(wxID_WXBTNSAVE, value)
         self.toolbar.EnableTool(wxID_WXBTNLINK, value)
         self.toolbar.EnableTool(wxID_WXBTNIMAGE, value)
@@ -536,6 +582,7 @@ class DocFactoryFrame(wxFrame):
         self.toolbar.EnableTool(wxID_WXBTNCUT, value)
         self.toolbar.EnableTool(wxID_WXBTNREDO, value)
         self.toolbar.EnableTool(wxID_WXBTNUNDO, value)
+        self.toolbar.EnableTool(wxID_WXBTNPUBLISH, value)
 
     def CheckEditorChanges(self):
         go_ahead = 1
@@ -696,77 +743,69 @@ class DocFactoryFrame(wxFrame):
         except:
             customMsgBox(self, 'ERROR 0001\n%s:\n%s\n%s' % sys.exc_info(), 'error')
 
-    def publishFileAsHTML(self, file):
-        if os.path.exists(file):
-            go_ahead = 1
-            if self.project != None:
-                dir = self.project.directory
+    def publishFile(self, infile, outfile, outdir, writer):
+        wxBeginBusyCursor()
+        try:
+            self.log.Clear()
+            t = time.localtime(time.time())
+            st = time.strftime('%d-%b-%Y, %H:%M:%S', t)
+            wxLogMessage('%s: Publishing %s' % (st, writer))
+            wxLogMessage('SOURCE: %s' % infile)
+            outfile_fullpath = os.path.join(outdir, outfile)
+            wxLogMessage('DESTINATION: %s' % outfile_fullpath)
+            if outfile_fullpath == infile:
+                customMsgBox(self, 'Destination and source are identical.'
+                             '\nNo processing.', 'wakeup')
+                warning_lines = error_lines = []
             else:
-                dir = os.path.dirname(file)
-                dlg = wxDirDialog(self, 'Outputdirectory?', dir)
-                if dlg.ShowModal() == wxID_OK:
-                    dir = dlg.GetPath()
-                else:
-                    go_ahead = 0
-                dlg.Destroy()
-            if go_ahead:
-                wxBeginBusyCursor()
                 try:
-                    self.log.Clear()
-                    t = time.localtime(time.time())
-                    st = time.strftime('%d-%b-%Y, %H:%M:%S: ', t)
-                    wxLogMessage('%sProcessing %s.' % (st, file))
-                    htmlfile = self.htmlfile(file, dir)
-                    if htmlfile == file:
-                        customMsgBox(self, 'Destination and source are identical.'
-                                     '\nNo processing.', 'wakeup')
-                        warning_lines = error_lines = []
-                    else:
-                        try:
-                            rest2html(file, htmlfile, dir)
-                        finally:
-                            warning_lines, error_lines = get_errors(self.log.GetValue())
-                            linecount = self.editor.GetLineCount()
-                            self.editor.MarkerDeleteAll(0)
-                            self.editor.MarkerDeleteAll(1)
-                            if warning_lines != []:
-                                for line in warning_lines:
-                                    if line < linecount:
-                                        self.editor.MarkerAdd(line, 0)
-                                self.editor.GotoLine(warning_lines[-1])
-                            if error_lines != []:
-                                for line in error_lines:
-                                    if line < linecount:
-                                        self.editor.MarkerAdd(line, 1)
-                                self.editor.GotoLine(error_lines[-1])
-                            self.editor.IsModified = 0
-                    htmlfile_basename = os.path.basename(htmlfile)
-                    if os.path.exists(htmlfile):
-                        if self.nb.GetPageCount() > 1:
-                            self.nb.DeletePage(1)
-                        # init html-viewer page
-                        if wxPlatform == '__WXMSW__':
-                            htmlprv = browser.IEHtmlPanel(self.nb, self, self.log,
-                                                          'file://%s' % quote(htmlfile))
-                        else:
-                            htmlprv = browser.HtmlPanel(self.nb, self, self.log,
-                                                        htmlfile)
-                        self.nb.AddPage(htmlprv, 'HTML-Viewer: %s'
-                                        % htmlfile_basename)
-                        if warning_lines == error_lines == []:
-                            self.nb.SetSelection(1)
-                    t = time.localtime(time.time())
-                    st = time.strftime('%d-%b-%Y, %H:%M:%S: ', t)
-                    wxLogMessage('%sFinished.' % st)
+                    publish_document(writer, infile, outfile, outdir)
                 finally:
-                    wxEndBusyCursor()
+                    warning_lines, error_lines = get_errors(self.log.GetValue())
+                    linecount = self.editor.GetLineCount()
+                    self.editor.MarkerDeleteAll(0)
+                    self.editor.MarkerDeleteAll(1)
+                    if warning_lines != []:
+                        for line in warning_lines:
+                            if line < linecount:
+                                self.editor.MarkerAdd(line, 0)
+                        self.editor.GotoLine(warning_lines[-1])
+                    if error_lines != []:
+                        for line in error_lines:
+                            if line < linecount:
+                                self.editor.MarkerAdd(line, 1)
+                        self.editor.GotoLine(error_lines[-1])
+                    self.editor.IsModified = 0
+            if os.path.exists(outfile_fullpath):
+                if self.nb.GetPageCount() > 1:
+                    self.nb.DeletePage(1)
+                if get_file_extension(outfile) in ['.html', '.htm']:
+                    # init html-viewer page
+                    if wxPlatform == '__WXMSW__':
+                        htmlprv = browser.IEHtmlPanel(self.nb, self, self.log,
+                                                      'file://%s' % quote(outfile_fullpath))
+                    else:
+                        htmlprv = browser.HtmlPanel(self.nb, self, self.log,
+                                                    outfile_fullpath)
+                    self.nb.AddPage(htmlprv, 'HTML-Viewer: %s'
+                                    % outfile)
+                    if warning_lines == error_lines == []:
+                        self.nb.SetSelection(1)
+            t = time.localtime(time.time())
+            st = time.strftime('%d-%b-%Y, %H:%M:%S: ', t)
+            wxLogMessage('%sFinished.' % st)
+        finally:
+            wxEndBusyCursor()
 
     def save_projects(self):
         cfg = ConfigParser.ConfigParser()
+        cfg.read(DATA)
+        for section in cfg.sections():
+            if section[:19] == 'docfactory_project:':
+                cfg.remove_section(section)
         for project in self.projects:
             section = 'docfactory_project: %s' % project.name
-            if not cfg.has_section(section):
-                cfg.add_section(section)
+            cfg.add_section(section)
             cfg.set(section, 'outputdirectory', project.directory)
             files = ''
             for file in project.files:
@@ -802,6 +841,27 @@ class DocFactoryFrame(wxFrame):
 
         if go_ahead and self.CheckEditorChanges():
             self.Destroy()
+
+    def on_configure_tools(self, event):
+        dlg = toolsDlg(self)
+        dlg.Centre()
+        if dlg.ShowModal() == wxID_OK:
+            self.tools = dlg.get_tools()
+        dlg.Destroy()
+        cfg = ConfigParser.ConfigParser()
+        try:
+            cfg.read(DATA)
+            if cfg.has_section('tools'):
+                cfg.remove_section('tools')
+            cfg.add_section('tools')
+            for tool in self.tools.values():
+                cfg.set('tools', str(tool[0]),
+                        '%s;%s;%s' % (tool[1],tool[2],tool[3]))
+            f = open(DATA, 'wt')
+            cfg.write(f)
+            f.close()
+        except:
+            customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
 
     def on_copy(self, event):
         self.editor.Copy()
@@ -989,7 +1049,7 @@ class DocFactoryFrame(wxFrame):
         if self.nb.GetPageCount() > 1:
             self.nb.DeletePage(1)
 
-    def on_file_html(self, event):
+    def on_publish(self, event):
         item = self.activeitem
         file = self.tree.GetItemText(item)
         if self.editor.IsModified:
@@ -997,7 +1057,17 @@ class DocFactoryFrame(wxFrame):
             wxLogMessage('Saving %s.' % file)
             self.editor.SaveFile(file)
             wxEndBusyCursor()
-        self.publishFileAsHTML(file)
+        if os.path.exists(file):
+            go_ahead = 1
+            dlg = publishDlg(self, infile=file, project=self.project)
+            dlg.Centre()
+            if dlg.ShowModal() == wxID_OK:
+                outfile, outdir, writer = dlg.GetValues()
+            else:
+                go_ahead = 0
+            dlg.Destroy()
+            if go_ahead:
+                self.publishFile(file, outfile, outdir, writer)
 
     def on_find(self, event):
         et = event.GetEventType()
@@ -1264,6 +1334,59 @@ class DocFactoryFrame(wxFrame):
     def on_redo(self, event):
         self.editor.Redo()
 
+    def on_run_tool(self, event):
+        go_ahead = 1
+        choices = []
+        for tool in self.tools.values():
+            choices.append('%s: %s' % (tool[0],tool[1]))
+        dlg = wxSingleChoiceDialog(self, 'Select a tool...', 'Toolbox',
+                                   choices, wxOK|wxCANCEL)
+        dlg.Centre()
+        if dlg.ShowModal() == wxID_OK:
+            tool_id=int(dlg.GetStringSelection().split(':')[0])
+            for key in self.tools.keys():
+                if self.tools[key][0] == tool_id:
+                    tool_key = key
+                    break
+        else:
+            go_ahead = 0
+        dlg.Destroy()
+        if go_ahead:
+            self.log.Clear()
+            tool = self.tools[tool_key]
+            item = self.activeitem
+            file = self.tree.GetItemText(item)
+            curdir = os.getcwd()
+            try:
+                replmts = {'$[FileDir]': os.path.split(file)[0],
+                           '$[FilePath]': file,
+                           '$[FileName]': os.path.split(file)[1],
+                           '$[FileBase]': os.path.splitext(os.path.basename(file))[0],
+                           '$[ProjectDir]': self.project.directory}
+                command = tool[2]
+                for str in replmts.keys():
+                    command = command.replace(str, replmts[str])
+                directory = tool[3]
+                for str in replmts.keys():
+                    directory = directory.replace(str, replmts[str])
+            except:
+                go_ahead = 0
+                customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
+        if go_ahead:
+            t = time.localtime(time.time())
+            st = time.strftime('%d-%b-%Y, %H:%M:%S', t)
+            wxLogMessage('%s: %s' % (st, tool[1]))
+            wxLogMessage('COMMAND: %s\nDIRECTORY: %s' % (command, directory))
+            try:
+                os.chdir(directory)
+                os.system(command)
+                t = time.localtime(time.time())
+                st = time.strftime('%d-%b-%Y, %H:%M:%S', t)
+                wxLogMessage('%s: Finished.' % st)
+            except:
+                customMsgBox(self, '%s:\n%s\n%s' % sys.exc_info(), 'error')
+            os.chdir(curdir)
+
     def on_select_all(self, event):
         self.editor.SelectAll()
 
@@ -1396,7 +1519,7 @@ class FactoryApp(wxApp):
                             project.files = cfg.get(section, 'files').split(';')
                             if project.files == ['']:
                                 project.files = []
-                    self.projects.append(project)
+                        self.projects.append(project)
             except:
                 f = open('error.txt', 'w')
                 f.write('%s:\n%s\n%s' % sys.exc_info())

@@ -4,7 +4,7 @@
 
 :author:    Dr. Gunnar Schwant
 :contact:   g.schwant@gmx.de
-:date:      2003/01/11
+:date:      2003/03/02
 :copyright: Copyright (c) 2002 Dr. Gunnar Schwant (g.schwant@gmx.de).
             All rights reserved.  See LICENSE.txt_ for license details.
 
@@ -12,8 +12,7 @@
            more documentation will be available soon.
 
 .. contents::
-.. section-numbering::
-
+.. sectnum::
 
 What is it?
 ===========
@@ -129,22 +128,38 @@ works on my windows machine.  In particular, the Python executable has
 to be on your path.)
 
 
-Publish a file as HTML
-~~~~~~~~~~~~~~~~~~~~~~
+Publish a file
+~~~~~~~~~~~~~~
 
-A file which has been loaded into the editor can be published as HTML
-by pressing ``F7``.  The processing happens in a standard Docutils way: 
-The HTML file is created in the directory of your text file and you can 
-customize processing by setting up Docutils configuration files. [2]_
+To "publish" a file means to process the file into useful formats, such 
+as HTML, XML or TeX.
 
-As soon as the processing is finished the HTML-file will be displayed on 
-DocFactory's HTML-viewer page.  Please note that this viewer does support 
-stylesheets on Windows platforms only (including Windows 95, 98, ME, 2000, 
-NT, XP).  On any other platform you will have to check the final layout 
-with a webbrowser of your choice (which hopefully does support stylesheets).
-Click on "View In Browser" to open the file with your system's default 
-webbrowser.
+A file which has been loaded into the editor can be published by pressing 
+``F7``.  You will be asked for a docutils-writer, an output-directory and 
+a filename:
 
+================= =========================================================
+Dialogue Item     Description
+================= ========================================================= 
+Docutils-Writer   The docutils-writer which will be used for publishing.
+Output-Directory  The directory where the output-file will be created.
+Output-File       The name of the output-file. (Existing files will be 
+                  overwritten!) 
+================= =========================================================
+
+Press "OK" to start the publisher. 
+
+If you choose the HTML-writer the HTML-file will be displayed on 
+DocFactory's HTML-viewer-page as soon as it is finished.  Please note that 
+this viewer does support stylesheets on Windows platforms only (including 
+Windows 95, 98, ME, 2000, NT, XP).  On any other platform you will have to 
+check the final layout with a webbrowser of your choice (which hopefully 
+does support stylesheets). Click on "View In Browser" to open the file 
+with your system's default webbrowser.
+
+.. note:: Please note that publishing happens in a standard Docutils way 
+          and can be customized by setting up Docutils configuration files.
+          [2]_
 
 Projects
 --------
@@ -167,8 +182,8 @@ dialog will appear.  It consists of two pages:
 
 **DocFactory-page**
   On this page you specify an *output-directory* and a *title* for your 
-  project. The output-directory is the place where any HTML-files will 
-  be created.
+  project. The output-directory is the default directory for any 
+  output-files be created.
 
 **Docutils-page**
   As part of your project a Docutils configuration file ``docutils.conf``
@@ -222,6 +237,8 @@ Open File                       ``Ctrl+O``
 ------------------------------  -------------------------------------------
 Save File                       ``Ctrl+S``
 ------------------------------  -------------------------------------------
+Publish File                    ``F7``
+------------------------------  -------------------------------------------
 Exit Application                ``Alt+X``
 ------------------------------  -------------------------------------------
 **Edit Menu**
@@ -242,9 +259,9 @@ Find & Replace                  ``Ctrl+F``
 ------------------------------  -------------------------------------------
 Goto line                       ``Ctrl+G``
 ------------------------------  -------------------------------------------
-**Process Menu**
+**Toolbox Menu**
 ---------------------------------------------------------------------------
-To HTML                         ``F7``
+Open toolbox                    ``F8``
 ------------------------------  -------------------------------------------
 **Further editing commands**
 ---------------------------------------------------------------------------
@@ -284,31 +301,50 @@ appearances of ``C:\temp\test.txt`` you will have to search for
 ``C:\\temp\\test.txt``.
 
 
-Data storage
+Toolbox
+-------
+
+The Toolbox allows you to run operating system commands from within 
+DocFactory. In the menu bar select "Toolbox -> Configure" to set up
+your personal toolbox. Press the "+"-button to add a new tool. You will
+be asked for a **name**, a **command** and an **initial directory**:
+
+================= =========================================================
+Dialogue Item     Description
+================= ========================================================= 
+Name              An individual name of the tool.
+Command           The operating system command which will be executed
+                  when you run the tool.
+Initial Directory The initial working directory of the tool. 
+================= =========================================================
+
+Command and initial directory of a tool may include **tool macros** which
+will be replaced on tool-execution as follows:
+
+================= =========================================================
+Tool Macro        Description 
+================= =========================================================
+``$[FilePath]``   The full pathname of the active file. 
+``$[FileDir]``    The drive and directory of the active file. 
+``$[FileName]``   The filename of the active file. 
+``$[FileBase]``   The filename without the extension. 
+``$[ProjectDir]`` The output-directory of the active project.
+================= =========================================================
+
+To launch a tool select "Toolbox -> Open..." or press ``F8``.
+
+Data Storage
 ============
 
 DocFactory uses the Python's |ConfigParser|-module to store any information 
-about projects which has to be saved between runs.  The storage file has
-a ``[docfactory_project: <name of project>]`` section for each project.
-(``<name of project>`` is replaced by the project's name.) Each section
-header is followed by two ``name=value`` entries: One for all project
-files and one for the outputdirectory. For example: The section for
-a project called ``project_01`` which consists of two files ``C:\file1.txt``,
-``C:\file2.txt`` and whose outputdirectory is ``C:\project1`` looks
-like this::
-
-    [docfactory_project: project_01]
-    files=C:\file1.txt;C:\file2.txt
-    outputdirectory=C:\project1
-
-As default the data storage file is located in the module's directory 
-(``os.path.dirname(docutils.factory.__file__)``). The default name of the 
-file is ``docfactory.dat``. 
+about projects, tools, etc. which has to be saved between runs. [4]_ 
+As default the data storage file is located in the package's directory. [5]_ 
+The default name of the file is ``docfactory.dat``. 
 
 You can change the name and location of the data storage file by creating 
-a file called ``conf.pth`` in the module's directory.  This file should 
-consist of one line only which is the complete data storage path. For 
-example:  If the first line of ``conf.pth`` is 
+a file called ``conf.pth`` in the package's directory.  This file should 
+consist of one line only which contains the complete data storage path. 
+For example:  If the first line of ``conf.pth`` is 
 
 ::
 
@@ -342,6 +378,20 @@ feedback is welcome.*
 .. [2] http://docutils.sourceforge.net/docs/tools.html#configuration-files
 
 .. [3] http://docutils.sourceforge.net/docs/tools.html#configuration-file-entries
+
+.. [4] The storage file has a ``[docfactory_project: <name of project>]`` 
+       section for each project. (``<name of project>`` is replaced by the 
+       project's name.) Each section header is followed by two ``name=value`` 
+       entries: One for all project files and one for the outputdirectory. 
+       For example: The section for a project called ``project_01`` which 
+       consists of two files ``C:\file1.txt``, ``C:\file2.txt`` and whose 
+       output-directory is ``C:\project1`` looks like this::
+
+         [docfactory_project: project_01]
+         files=C:\file1.txt;C:\file2.txt
+         outputdirectory=C:\project1
+
+.. [5] ``os.path.dirname(docutils.factory.__file__)``
 
 .. Hyperlinks
 

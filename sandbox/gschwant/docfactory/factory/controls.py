@@ -1,11 +1,10 @@
 """
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
-:version: 0.2.2
+:version: 0.2.3
 """
 
 import os, throbimages, time
-from   wxPython.lib.throbber import Throbber
 from   wxPython.wx           import *
 from   wxPython.stc          import *
 from   docutilsadapter       import get_rest_bibl_fields
