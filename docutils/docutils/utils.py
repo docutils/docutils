@@ -1,12 +1,10 @@
-#! /usr/bin/env python
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
 """
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
-
 Miscellaneous utilities for the documentation utilities.
 """
 
@@ -375,6 +373,7 @@ def new_document(source, options=None):
     reporter = Reporter(source, options.report_level, options.halt_level,
                         options.warning_stream, options.debug)
     document = nodes.document(options, reporter, source=source)
+    document.note_source(source)
     return document
 
 def clean_rcs_keywords(paragraph, keyword_substitutions):
