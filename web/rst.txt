@@ -52,6 +52,108 @@ __ spec/rst/alternatives.html
 __ spec/rst/problems.html
 
 
+Testimonials
+============
+
+The following testimonials were all unsolicited.  Some arose during
+related discussions, others appeared out of the blue.
+
+This being the Internet, there were plenty of people opposed to
+reStructuredText, some vehemently.  Discovering those gems is left as
+an exercise for the reader.
+
+Ueli Schlaepfer on Doc-SIG, 2002-03-28:
+
+    I have adopted reST as my tool of choice for producing notes while
+    doing lab work (mostly in a matlab environment).  Since then, the
+    quality of such documentation has increased noticeably, mostly for
+    two reasons:
+
+    - I no longer need to switch to another tool, so the threshold has
+      fallen to very low.  Note that "another tool" means Winword...
+    - Still, I have a powerful set of markup constructs at my
+      fingertips that let me create the kind of documents I need with
+      more ease than any other tool I can think of.
+
+    Thanks to reST/DPS [now Docutils --ed], I'll soon be able to go
+    ahead and apply the same tools for extracting documentation out of
+    my python code.  Hey, that's a printable and a browsable version
+    *for free*!  Personally, I consider this a large benefit.
+
+Guido van Rossum, enthusiastic but a bit hasty on Python-Dev,
+2002-04-02:
+
+    Good PEP, David!  What's the next step?  Should the processing
+    code be incorporated in the standard library?  Should we start
+    converting the standard library docs to reStructuredText?
+
+Timothy Delaney on comp.lang.python, 2002-04-03:
+
+    I read through all the reStructuredText docs, comparing the text
+    versions to the html versions.  I found the text versions to be
+    *very* easy to read, whilst making it obvious in most cases when
+    something was "special".
+
+    I particularly like the system of doing hyperlinks...
+
+    Definitely +1 from me ... I would really like a standard, clean
+    docstring format. Might make it easier to get my next project done
+    in Python.
+
+Guido van Rossum on Python-Dev, 2002-04-03:
+
+    I think that reStructuredText is a good format for marking up
+    docstrings; it's probably as good as it gets given the
+    requirements (a fairly elaborate feature set, yet more readable
+    "in the raw" than HTML).
+
+Richard Jones on comp.lang.python, 2002-04-03:
+
+    How I see it is that ReST is a middle ground between markup and
+    non-.  It has markup, and you can use it to the extreme.  Or you
+    can follow some simple conventions (the most basic form of markup)
+    and not worry about all the finer detail stuff. The difference
+    between::
+
+        @section{The Section Title}
+
+    and::
+
+        The Section Title
+        -----------------
+
+    Is pretty clearly to me that the second doesn't *look* like
+    markup, even though it is.
+
+Guido van Rossum on Python-Dev, 2002-04-04:
+
+    Structured text is really a great idea for certain situations;
+    reST is a much better implementation of the idea than any versions
+    I've seen before.
+
+Max M on comp.lang.python, 2002-04-05:
+
+    Any programmer can learn the basics in 15 minutes or less.
+
+    And it really is very very easy to write documents in it.  I do
+    belive that if I where ever to write a book (again) i would write
+    it in ReST.
+
+    And as far as I can tell from the specs, ReST solves most of the
+    problems I have had with structured text. A few things gets a
+    little more complicated and some get simpler. All in all a good
+    bargain.
+
+    I would certainly use it. I also hope that it gets integrated into
+    Zope.
+
+David Abrahams on Python-Dev, 2002-04-06:
+
+    Incidentally, I'm really excited about reST. I've been looking for
+    a tolerable markup for C++ comments, and reST looks like it might
+    fit the bill.
+
+
 .. _Docutils: index.html
 .. _StructuredText:
    http://dev.zope.org/Members/jim/StructuredTextWiki/FrontPage/
