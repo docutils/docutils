@@ -1194,9 +1194,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_raw(self, node):
         if node.has_key('format') and node['format'].lower() == 'latex':
-            # @@@ Wrong fix!
-            from docutils.parsers.rst.states import unescape
-            self.body.append(unescape(node.astext(), restore_backslashes=1))
+            self.body.append(node.astext())
         raise nodes.SkipNode
 
     def visit_reference(self, node):
