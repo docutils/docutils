@@ -34,54 +34,8 @@ posterity and in case any of them prove to be useful.
 Compound Enumerated Lists
 -------------------------
 
-Allow for compound enumerators, such as '1.1.' or '1.a.' or '1(a)', to
+Allow for compound enumerators, such as "1.1." or "1.a." or "1(a)", to
 allow for nested enumerated lists without indentation?
-
-
-Auto-Numbered Enumerated Lists
-------------------------------
-
-The advantage of auto-numbered enumerated lists would be similar to
-auto-numbered footnotes: no manual renumbering would be required.  The
-disadvantages are also the same: input and output don't match exactly;
-the markup may be ugly.
-
-1. Use the "#" symbol.  Example::
-
-       #. Item 1.
-       #. Item 2.
-       #. Item 3.
-
-   Advantage: simple, explicit.  Disadvantage: only one enumeration
-   sequence (arabic numerals), a bit ugly.
-
-2. As a variation on #1, first initialize the enumeration sequence?
-   For example::
-
-       a) Item a.
-       #) Item b.
-       #) Item c.
-
-   Advantages: simple, explicit, any enumeration sequence possible.
-   Disadvantages: a bit ugly.
-
-3. Alternative suggested by Fred Bremmer, from experience with MoinMoin::
-
-       1. Item 1.
-       1. Item 2.
-       1. Item 3.
-
-   Advantages: enumeration sequence is explicit (could be 'a.' or
-   '(I)').  Disadvantage: otherwise erroneous input (e.g., a duplicate
-   item 1) would pass silently, either causing a problem later in the
-   list (if no blank lines between items) or creating two lists (with
-   blanks)::
-
-       1. Item 1.
-
-       1. Unintentional duplicate of item 1.
-
-       2. Item 2.
 
 
 Sloppy Indentation of List Items
@@ -696,8 +650,8 @@ used square brackets for phrase-links.  I changed my mind because:
    identifiers heuristically, but it doesn't take much imagination to
    come up with counter-examples where PyDoc's heuristics would result
    in embarassing failure.  I wanted to do it deterministically, and
-   that called for syntax.  I called this construct 'interpreted
-   text'.
+   that called for syntax.  I called this construct "interpreted
+   text".
 
 4. Leveraging off the ``*emphasis*/**strong**`` syntax, lead to the
    idea of using double-backquotes as syntax.
@@ -1257,6 +1211,118 @@ Given the persuading arguments voiced, we'll leave footnote & footnote
 reference syntax alone.  Except that these discussions gave rise to
 the "auto-symbol footnote" concept, which has been added.  Citations
 and citation references have also been added.
+
+
+Auto-Enumerated Lists
+=====================
+
+The advantage of auto-numbered enumerated lists would be similar to
+that of auto-numbered footnotes: lists could be written and rearranged
+without having to manually renumber them.  The disadvantages are also
+the same: input and output wouldn't match exactly; the markup may be
+ugly or confusing (depending on which alternative is chosen).
+
+1. Use the "#" symbol.  Example::
+
+       #. Item 1.
+       #. Item 2.
+       #. Item 3.
+
+   Advantages: simple, explicit.  Disadvantage: enumeration sequence
+   cannot be specified (limited to arabic numerals); ugly.
+
+2. As a variation on #1, first initialize the enumeration sequence?
+   For example::
+
+       a) Item a.
+       #) Item b.
+       #) Item c.
+
+   Advantages: simple, explicit, any enumeration sequence possible.
+   Disadvantages: ugly; perhaps confusing with mixed concrete/abstract
+   enumerators.
+
+3. Alternative suggested by Fred Bremmer, from experience with MoinMoin::
+
+       1. Item 1.
+       1. Item 2.
+       1. Item 3.
+
+   Advantages: enumeration sequence is explicit (could be multiple
+   "a." or "(I)" tokens).  Disadvantages: perhaps confusing; otherwise
+   erroneous input (e.g., a duplicate item "1.") would pass silently,
+   either causing a problem later in the list (if no blank lines
+   between items) or creating two lists (with blanks).
+
+   Take this input for example::
+
+       1. Item 1.
+
+       1. Unintentional duplicate of item 1.
+
+       2. Item 2.
+
+   Currently the parser will produce two list, "1" and "1,2" (no
+   warnings, because of the presence of blank lines).  Using Fred's
+   notation, the current behavior is "1,1,2 -> 1 1,2" (without blank
+   lines between items, it would be "1,1,2 -> 1 [WARNING] 1,2").  What
+   should the behavior be with auto-numbering?
+
+   Fred has produced a patch__, whose initial behavior is as follows::
+
+       1,1,1   -> 1,2,3
+       1,2,2   -> 1,2,3
+       3,3,3   -> 3,4,5
+       1,2,2,3 -> 1,2,3 [WARNING] 3
+       1,1,2   -> 1,2 [WARNING] 2
+
+   (After the "[WARNING]", the "3" would begin a new list.)
+
+   I have mixed feelings about adding this functionality to the spec &
+   parser.  It would certainly be useful to some users (myself
+   included; I often have to renumber lists).  Perhaps it's too
+   clever, asking the parser to guess too much.  What if you *do* want
+   three one-item lists in a row, each beginning with "1."?  You'd
+   have to use empty comments to force breaks.  Also, I question
+   whether "1,2,2 -> 1,2,3" is optimal behavior.
+
+   In response, Fred came up with "a stricter and more explicit rule
+   [which] would be to only auto-number silently if *all* the
+   enumerators of a list were identical".  In that case:
+
+       1,1,1   -> 1,2,3
+       1,2,2   -> 1,2 [WARNING] 2
+       3,3,3   -> 3,4,5
+       1,2,2,3 -> 1,2 [WARNING] 2,3
+       1,1,2   -> 1,2 [WARNING] 2
+
+   Should any start-value be allowed ("3,3,3"), or should
+   auto-numbered lists be limited to begin with ordinal-1 ("1", "A",
+   "a", "I", or "i")?
+
+   __ http://sourceforge.net/tracker/index.php?func=detail&aid=548802
+      &group_id=38414&atid=422032
+
+4. Alternative proposed by Tony Ibbs::
+
+       #1. First item.
+       #3. Aha - I edited this in later.
+       #2. Second item.
+
+   The initial proposal required unique enumerators within a list, but
+   this limits the convenience of a feature of already limited
+   applicability and convenience.  Not a useful requirement; dropped.
+
+   Instead, simply prepend a "#" to a standard list enumerator to
+   indicate auto-enumeration.  The numbers (or letters) of the
+   enumerators themselves are not significant, except:
+
+   - as a sequence indicator (arabic, roman, alphabetic; upper/lower),
+
+   - and perhaps as a start value (first list item).
+
+   Advantages: explicit, any enumeration sequence possible.
+   Disadvantages: a bit ugly.
 
 
 ..
