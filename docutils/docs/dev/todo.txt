@@ -381,8 +381,8 @@ User Docs
 What else is needed?
 
 
-Implementation Docs
--------------------
+Developer Docs
+--------------
 
 * @@@ Improve the internal module documentation (docstrings in the
   code).  Specific deficiencies listed below.
@@ -408,6 +408,8 @@ Implementation Docs
 * Write an overview of the Docutils architecture, as an introduction
   for developers.  What connects to what, why, and how.  Either update
   PEP 258 (see PEPs_ below) or as a separate doc.
+
+* Give information about unit tests.  Maybe as a howto?
 
 
 How-Tos
@@ -451,7 +453,7 @@ General:
 
 * Investigate how POD handles literate programming.
 
-* Take the best ideas and integrate them into Docutils 0.3.
+* Take the best ideas and integrate them into Docutils.
 
 Miscellaneous ideas:
 
