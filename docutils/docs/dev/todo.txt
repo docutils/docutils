@@ -77,11 +77,11 @@ __ http://sourceforge.net/tracker/?group_id=38414&atid=422030
 
 * Another bug from David Abrahams (run with ``rst2html.py --traceback``)::
 
-      .. [#crtp] See |runtime| 
+      .. [#crtp] See |runtime|
 
       foo [#tag_dispatching]_
 
-      .. [#tag_dispatching] See  |runtime|  
+      .. [#tag_dispatching] See  |runtime|
 
       .. |runtime| replace:: 7__
       __ runtime.html
@@ -904,6 +904,12 @@ __ rst/alternatives.html#or-not-to-do
               (transition?, (%section.elements;))* )
           | (transition?, (%section.elements;))+ ) ">
 
+* Add an option to allow arbitrary URI schemes (not just those in
+  urischemes.py)?  This would make text like "signal:noise" into a
+  URI.
+
+* Add an option to add URI schemes at runtime.
+
 
 Directives
 ``````````
@@ -1432,7 +1438,7 @@ elements.
 * Add explicit interpreted text roles for the rest of the implicit
   inline markup constructs: named-reference, anonymous-reference,
   footnote-reference, citation-reference, substitution-reference,
-  target, uri-riference (& synonyms).
+  target, uri-reference (& synonyms).
 
 * Add directives for each role as well?  This would allow indirect
   nested markup::
