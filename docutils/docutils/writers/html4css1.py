@@ -479,7 +479,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</code>')
 
     def visit_literal_block(self, node):
-        self.body.append(self.starttag(node, 'pre', CLASS='literal-block'))
+        self.body.append(self.starttag(node, 'pre', suffix='',
+            CLASS='literal-block'))
 
     def depart_literal_block(self, node):
         self.body.append('</pre>\n')
