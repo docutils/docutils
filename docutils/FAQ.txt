@@ -394,6 +394,7 @@ How can I include mathematical equations in documents?
 There is no elegant built-in way, yet.  There are several ideas, but
 no obvious winner.  This issue requires a champion to solve the
 technical and aesthetic issues and implement a generic solution.
+Here's the `to-do list entry <spec/notes.html#math-markup>`__.
 
 There are several quick & dirty ways to include equations in
 documents:
