@@ -55,9 +55,9 @@ The Tools
 buildhtml.py
 ------------
 
-:Readers: Standalone, PEP
-:Parser: reStructuredText
-:Writers: HTML, PEP/HTML
+* Readers: Standalone, PEP
+* Parser: reStructuredText
+* Writers: HTML, PEP/HTML
 
 Use ``buildhtml.py`` to generate .html from all the .txt files
 (including PEPs) in each <directory> given, and their subdirectories
@@ -92,9 +92,9 @@ altogether.
 html.py
 -------
 
-:Reader: Standalone
-:Parser: reStructuredText
-:Writer: HTML
+* Reader: Standalone
+* Parser: reStructuredText
+* Writer: HTML
 
 The ``html.py`` front end reads standalone reStructuredText source
 files and produces HTML 4 (XHTML 1) output compatible with modern
@@ -146,9 +146,9 @@ incremental experimentation.
 pep.py
 ------
 
-:Reader: PEP
-:Parser: reStructuredText
-:Writer: PEP/HTML
+* Reader: PEP
+* Parser: reStructuredText
+* Writer: PEP/HTML
 
 ``pep.py`` reads a new-style PEP (marked up with reStructuredText) and
 produces HTML.  It requires a template file and a stylesheet.  By
@@ -169,9 +169,9 @@ for more information.
 pep2html.py
 -----------
 
-:Reader: PEP
-:Parser: reStructuredText
-:Writer: PEP/HTML
+* Reader: PEP
+* Parser: reStructuredText
+* Writer: PEP/HTML
 
 ``pep2html.py`` is a modified version of the original script by
 Fredrik Lundh, with support for Docutils added.  It reads the
@@ -190,9 +190,9 @@ files.  If no arguments are given, all files of the form
 docutils-xml.py
 ---------------
 
-:Reader: Standalone
-:Parser: reStructuredText
-:Writer: XML (Docutils native)
+* Reader: Standalone
+* Parser: reStructuredText
+* Writer: XML (Docutils native)
 
 The ``docutils-xml.py`` front end produces Docutils-native XML output.
 This can be transformed with standard XML tools such as XSLT
@@ -202,12 +202,12 @@ processors into arbitrary final forms.
 publish.py
 ----------
 
-:Reader: Standalone
-:Parser: reStructuredText
-:Writer: Pseudo-XML
+* Reader: Standalone
+* Parser: reStructuredText
+* Writer: Pseudo-XML
 
-``publish.py`` is used for debugging the Docutils Reader -> Transform
--> Writer pipeline.  It produces a compact pretty-printed
+``publish.py`` is used for debugging the Docutils Reader to Transform
+to Writer pipeline.  It produces a compact pretty-printed
 "pseudo-XML", where nesting is indicated by indentation (no end-tags).
 External attributes for all elements are output, and internal
 attributes for any leftover "pending" elements are also given.
@@ -216,9 +216,9 @@ attributes for any leftover "pending" elements are also given.
 quicktest.py
 ------------
 
-:Reader: N/A
-:Parser: reStructuredText
-:Writer: N/A
+* Reader: N/A
+* Parser: reStructuredText
+* Writer: N/A
 
 The ``quicktest.py`` tool is used for testing the reStructuredText
 parser.  It does not use a Docutils Reader or Writer or the standard
