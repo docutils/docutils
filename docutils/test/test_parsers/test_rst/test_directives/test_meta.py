@@ -1,12 +1,12 @@
 #! /usr/bin/env python
 
-"""
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
+"""
 Tests for html.py meta directives.
 """
 
@@ -126,6 +126,8 @@ Paragraph
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Empty meta directive.
+        <literal_block xml:space="preserve">
+            .. meta::
 """],
 ["""\
 .. meta::
@@ -145,7 +147,7 @@ Paragraph
 """,
 """\
 <document source="test data">
-    <system_message level="3" line="2" source="test data" type="ERROR">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Invalid meta directive.
         <literal_block xml:space="preserve">
@@ -154,6 +156,32 @@ Paragraph
 """],
 ["""\
 .. meta::
+   :name: content
+   not a field
+   :name: content
+""",
+"""\
+<document source="test data">
+    <pending>
+        .. internal attributes:
+             .transform: docutils.transforms.components.Filter
+             .stage: 'first writer'
+             .details:
+               nodes:
+                 <meta content="content" name="name">
+               writer: 'html'
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Invalid meta directive.
+        <literal_block xml:space="preserve">
+            .. meta::
+               :name: content
+               not a field
+               :name: content
+"""],
+["""\
+.. meta::
+   :name: content
    :name: content
    not a field
 """,
@@ -167,11 +195,20 @@ Paragraph
                nodes:
                  <meta content="content" name="name">
                writer: 'html'
-    <system_message level="3" line="3" source="test data" type="ERROR">
+    <pending>
+        .. internal attributes:
+             .transform: docutils.transforms.components.Filter
+             .stage: 'first writer'
+             .details:
+               nodes:
+                 <meta content="content" name="name">
+               writer: 'html'
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Invalid meta directive.
         <literal_block xml:space="preserve">
             .. meta::
+               :name: content
                :name: content
                not a field
 """],

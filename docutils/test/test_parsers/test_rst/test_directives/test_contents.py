@@ -1,12 +1,12 @@
 #! /usr/bin/env python
 
-"""
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
+"""
 Tests for parts.py contents directive.
 """
 
@@ -75,7 +75,9 @@ totest['contents'] = [
              .details:
                title:
                  <title>
-                     Table of Contents
+                     Table
+                     of
+                     Contents
 """],
 ["""\
 .. contents:: *Table* of ``Contents``
@@ -119,7 +121,7 @@ totest['contents'] = [
 <document source="test data">
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Error in "contents" directive options:
+            Error in "contents" directive:
             invalid option value: (option: "local"; value: 'arg')
             no argument is allowed; "arg" supplied.
         <literal_block xml:space="preserve">
@@ -154,7 +156,7 @@ totest['contents'] = [
 <document source="test data">
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Error in "contents" directive options:
+            Error in "contents" directive:
             invalid option value: (option: "depth"; value: 'two')
             invalid literal for int(): two.
         <literal_block xml:space="preserve">
@@ -169,7 +171,7 @@ totest['contents'] = [
 <document source="test data">
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Error in "contents" directive options:
+            Error in "contents" directive:
             unknown option: "width".
         <literal_block xml:space="preserve">
             .. contents::
@@ -183,7 +185,7 @@ totest['contents'] = [
 <document source="test data">
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Error in "contents" directive options:
+            Error in "contents" directive:
             invalid option value: (option: "backlinks"; value: 'no way!')
             "no way!" unknown; choose from "top", "entry", or "none".
         <literal_block xml:space="preserve">
@@ -198,7 +200,7 @@ totest['contents'] = [
 <document source="test data">
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Error in "contents" directive options:
+            Error in "contents" directive:
             invalid option value: (option: "backlinks"; value: None)
             must supply an argument; choose from "top", "entry", or "none".
         <literal_block xml:space="preserve">

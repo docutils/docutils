@@ -1,12 +1,12 @@
 #! /usr/bin/env python
 
-"""
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
+"""
 Tests for the "topic" directive.
 """
 
@@ -25,15 +25,23 @@ totest['topics'] = [
 """,
 """\
 <document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Error in "topic" directive:
+            1 argument(s) required, 0 supplied.
+        <literal_block xml:space="preserve">
+            .. topic::
 """],
 ["""\
 .. topic:: Title
 """,
 """\
 <document source="test data">
-    <topic>
-        <title>
-            Title
+    <system_message level="2" line="1" source="test data" type="WARNING">
+        <paragraph>
+            Content block expected for the "topic" directive; none found.
+        <literal_block xml:space="preserve">
+            .. topic:: Title
 """],
 ["""\
 .. topic:: Title
@@ -57,11 +65,16 @@ totest['topics'] = [
 """,
 """\
 <document source="test data">
-    <topic>
-        <title>
-            Title
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Body.
+            Error in "topic" directive:
+            1 argument(s) required, 0 supplied.
+        <literal_block xml:space="preserve">
+            .. topic::
+            \n\
+               Title
+            \n\
+               Body.
 """],
 ["""\
 .. topic:: Title
@@ -69,14 +82,12 @@ totest['topics'] = [
 """,
 """\
 <document source="test data">
-    <topic>
-        <title>
-            Title
-        <system_message level="2" line="2" source="test data" type="WARNING">
-            <paragraph>
-                The second line of a topic block must be blank.
+    <system_message level="2" line="1" source="test data" type="WARNING">
         <paragraph>
-            Body.
+            Content block expected for the "topic" directive; none found.
+        <literal_block xml:space="preserve">
+            .. topic:: Title
+               Body.
 """],
 ["""\
 .. topic::
@@ -86,14 +97,15 @@ totest['topics'] = [
 """,
 """\
 <document source="test data">
-    <topic>
-        <title>
-            Title
-        <system_message level="2" line="4" source="test data" type="WARNING">
-            <paragraph>
-                The second line of a topic block must be blank.
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Body.
+            Error in "topic" directive:
+            1 argument(s) required, 0 supplied.
+        <literal_block xml:space="preserve">
+            .. topic::
+            \n\
+               Title
+               Body.
 """],
 ["""\
 .. topic:: Title
@@ -109,7 +121,7 @@ totest['topics'] = [
             Title
         <system_message level="3" line="3" source="test data" type="ERROR">
             <paragraph>
-                Topics may not be nested within body elements.
+                Topics may not be nested within topics or body elements.
             <literal_block xml:space="preserve">
                 .. topic:: Nested
                 \n\
@@ -130,7 +142,7 @@ totest['topics'] = [
             Title
         <system_message level="3" line="3" source="test data" type="ERROR">
             <paragraph>
-                Topics may not be nested within body elements.
+                Topics may not be nested within topics or body elements.
             <literal_block xml:space="preserve">
                 .. topic:: Nested
                 \n\
@@ -144,9 +156,7 @@ totest['topics'] = [
 ["""\
 .. topic:: Title
 
-   .. topic::
-
-      Nested
+   .. topic:: Nested
 
       Body.
 
@@ -161,11 +171,9 @@ More.
             Title
         <system_message level="3" line="3" source="test data" type="ERROR">
             <paragraph>
-                Topics may not be nested within body elements.
+                Topics may not be nested within topics or body elements.
             <literal_block xml:space="preserve">
-                .. topic::
-                \n\
-                   Nested
+                .. topic:: Nested
                 \n\
                    Body.
         <paragraph>

@@ -1,12 +1,12 @@
 #! /usr/bin/env python
 
-"""
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
+"""
 Tests for admonitions.py directives.
 """
 
@@ -108,6 +108,17 @@ totest['admonitions'] = [
     <note>
         <paragraph>
             No blank lines in-between.
+"""],
+["""\
+.. note::
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            The "note" admonition is empty; content required.
+        <literal_block xml:space="preserve">
+            .. note::
 """],
 ]
 
