@@ -14,7 +14,7 @@ from __init__ import DocutilsTestSupport
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
-    s.test_case_class = DocutilsTestSupport.TransitionTestCase
+    s.test_case_class = DocutilsTestSupport.ParserTransformTestCase
     s.generateTests(totest)
     return s
 
