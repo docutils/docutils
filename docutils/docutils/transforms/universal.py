@@ -136,9 +136,8 @@ class FinalCheckVisitor(nodes.SparseNodeVisitor):
         if node.resolved or not node.hasattr('refname'):
             return
         refname = node['refname']
-        try:
-            id = self.document.nameids[refname]
-        except KeyError:
+        id = self.document.nameids.get(refname)
+        if id is None:
             msg = self.document.reporter.error(
                   'Unknown target name: "%s".' % (node['refname']))
             self.document.messages += msg
@@ -148,11 +147,11 @@ class FinalCheckVisitor(nodes.SparseNodeVisitor):
             prbid = self.document.set_id(prb)
             msg.add_backref(prbid)
             node.parent.replace(node, prb)
-            return
-        del node['refname']
-        node['refid'] = id
-        self.document.ids[id].referenced = 1
-        node.resolved = 1
+        else:
+            del node['refname']
+            node['refid'] = id
+            self.document.ids[id].referenced = 1
+            node.resolved = 1
 
     visit_footnote_reference = visit_citation_reference = visit_reference
 
