@@ -14,7 +14,6 @@ __docformat__ = 'reStructuredText'
 import sys
 from docutils import frontend, readers
 from docutils.transforms import frontmatter, references
-from docutils.parsers.rst import Parser
 
 
 class Reader(readers.Reader):
