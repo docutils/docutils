@@ -85,6 +85,7 @@ See `Creating reStructuredText Directives`_ for more information.
 __docformat__ = 'reStructuredText'
 
 import re
+import codecs
 from docutils import nodes
 from docutils.parsers.rst.languages import en as _fallback_language_module
 
@@ -339,9 +340,12 @@ def positive_int_list(argument):
         entries = argument.split()
     return [positive_int(entry) for entry in entries]
 
-def format_values(values):
-    return '%s, or "%s"' % (', '.join(['"%s"' % s for s in values[:-1]]),
-                            values[-1])
+def encoding(argument):
+    try:
+        codecs.lookup(argument)
+    except LookupError:
+        raise ValueError('unknown encoding: "%s"' % argument)
+    return argument
 
 def choice(argument, values):
     """
@@ -368,3 +372,7 @@ def choice(argument, values):
     else:
         raise ValueError('"%s" unknown; choose from %s'
                          % (argument, format_values(values)))
+
+def format_values(values):
+    return '%s, or "%s"' % (', '.join(['"%s"' % s for s in values[:-1]]),
+                            values[-1])
