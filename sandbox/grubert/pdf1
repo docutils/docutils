@@ -5,7 +5,7 @@ QWRITER=$DOCUTILS/tools/quicktest.py
 OUT=test.pdf
 TEXT=pdftest_2.txt
 
-PYTHONPATH=.:$DOCUTILS:$PYTHONPATH
+PYTHONPATH=`pwd`:$DOCUTILS:$PYTHONPATH
 
 if [ -n "$1" -a -e "$1" ] ;  then
   TEXT=$1
@@ -20,5 +20,5 @@ if [ -n "$1" ] ; then
   fi
 fi
 
-./tools/pdf.py $TEXT $OUT
+./pdf.py $TEXT $OUT
 

@@ -21,14 +21,8 @@ import time
 from types import ListType
 from docutils import writers, nodes, languages
 
-# sandbox hack
-try:
-    from docutils.writers.pdf.stylesheet import getStyleSheet
-    from docutils.writers.pdf.rltemplate import RLDocTemplate
-except:
-    from pdf.stylesheet import getStyleSheet
-    from pdf.rltemplate import RLDocTemplate
-# end of sandbox hack
+from stylesheet import getStyleSheet
+from rltemplate import RLDocTemplate
 
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.enums import *
@@ -50,7 +44,9 @@ class Writer(writers.Writer):
     def record(self):
         doc = RLDocTemplate(self.destination, pagesize=A4)
         doc.build(self.story)
-
+				
+    def lower(self):
+        return 'pdf'		
 
 class PDFTranslator(nodes.NodeVisitor):
 
