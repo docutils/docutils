@@ -958,18 +958,6 @@ __ rst/alternatives.html#or-not-to-do
 
       .. _name: ^url
 
-* Allow _`transitions` between sections?  A transition immediately
-  preceding a section title could be interpreted as a sibling of that
-  section.  The context would obviate the need for a special
-  directive.  The document model would have to accommodate the
-  change::
-
-      <!ENTITY % structure.model
-        " ( ( (%body.elements; | topic | sidebar)+,
-              (transition, (%body.elements; | topic | sidebar)+ )*,
-              (transition?, (%section.elements;))* )
-          | (transition?, (%section.elements;))+ ) ">
-
 * Add an option to allow arbitrary URI schemes (not just those in
   urischemes.py)?  This would make text like "signal:noise" into a
   URI.
