@@ -126,6 +126,11 @@ class FileInput(Input):
             else:
                 self.source = sys.stdin
                 self.autoclose = None
+        if not source_path:
+            try:
+                self.source_path = self.source.name
+            except AttributeError:
+                pass
 
     def read(self, reader):
         """Read and decode a single file and return the data."""
@@ -165,6 +170,11 @@ class FileOutput(Output):
             else:
                 self.destination = sys.stdout
                 self.autoclose = None
+        if not destination_path:
+            try:
+                self.destination_path = self.destination.name
+            except AttributeError:
+                pass
 
     def open(self):
         self.destination = open(self.destination_path, 'w')
