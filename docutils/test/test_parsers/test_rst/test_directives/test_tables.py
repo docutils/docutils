@@ -12,6 +12,7 @@ Tests for tables.py directives.
 
 from __init__ import DocutilsTestSupport
 
+import os
 try:
     import csv
 except ImportError:
@@ -22,6 +23,10 @@ def suite():
     s = DocutilsTestSupport.ParserTestSuite()
     s.generateTests(totest)
     return s
+
+mydir = os.path.dirname(suite.func_code.co_filename)
+utf_16_csv = os.path.join(mydir, 'utf-16.csv')
+utf_16_csv_rel = DocutilsTestSupport.utils.relative_path(None, utf_16_csv)
 
 totest = {}
 
@@ -101,7 +106,10 @@ totest['table'] = [
 """],
 ]
 
-if csv:
+if not csv:
+    print ('Tests of "csv-table" directive skipped; '
+           'Python 2.3 or higher required.')
+else:
     totest['csv-table'] = [
 ["""\
 .. csv-table:: inline with integral header
@@ -388,7 +396,7 @@ u"""\
         <literal_block xml:space="preserve">
             .. csv-table:: insufficient header row data
                :header-rows: 2
-            
+            \n\
                some, csv, data
 """],
 ["""\
@@ -405,7 +413,7 @@ u"""\
         <literal_block xml:space="preserve">
             .. csv-table:: insufficient body data
                :header-rows: 1
-            
+            \n\
                some, csv, data
 """],
 ["""\
@@ -422,7 +430,7 @@ u"""\
         <literal_block xml:space="preserve">
             .. csv-table:: content and external
                :file: bogus.csv
-            
+            \n\
                some, csv, data
 """],
 ["""\
@@ -449,7 +457,7 @@ u"""\
 <document source="test data">
     <table>
         <title>
-            error in the 
+            error in the \n\
             <problematic id="id2" refid="id1">
                 *
             title
@@ -514,7 +522,7 @@ u"""\
         <literal_block xml:space="preserve">
             .. csv-table:: column mismatch
                :widths: 10,20
-            
+            \n\
                some, csv, data
 """],
 ["""\
@@ -538,7 +546,7 @@ u"""\
         <literal_block xml:space="preserve">
             .. csv-table:: bad column widths
                :widths: 10,y,z
-            
+            \n\
                some, csv, data
     <system_message level="3" line="6" source="test data" type="ERROR">
         <paragraph>
@@ -548,7 +556,7 @@ u"""\
         <literal_block xml:space="preserve">
             .. csv-table:: bad column widths
                :widths: 0 0 0
-            
+            \n\
                some, csv, data
 """],
 ["""\
@@ -686,7 +694,7 @@ u"""\
             newline inside string
         <literal_block xml:space="preserve">
             .. csv-table:: bad CSV data
-            
+            \n\
                "bad", \"csv, data
 """],
 ["""\
@@ -704,13 +712,89 @@ u"""\
         <literal_block xml:space="preserve">
             .. csv-table:: bad CSV header data
                :header: "bad", \"csv, data
-            
+            \n\
                good, csv, data
 """],
+["""\
+.. csv-table:: bad encoding
+   :file: %s
+   :encoding: latin-1
+
+(7- and 8-bit text encoded as UTF-16 has lots of null/zero bytes.)
+""" % utf_16_csv,
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Error with CSV data in "csv-table" directive:
+            string with NUL bytes
+        <literal_block xml:space="preserve">
+            .. csv-table:: bad encoding
+               :file: %s
+               :encoding: latin-1
+    <paragraph>
+        (7- and 8-bit text encoded as UTF-16 has lots of null/zero bytes.)
+""" % utf_16_csv],
+["""\
+.. csv-table:: good encoding
+   :file: %s
+   :encoding: utf-16
+   :header-rows: 1
+""" % utf_16_csv,
+u"""\
+<document source="test data">
+    <table>
+        <title>
+            good encoding
+        <tgroup cols="3">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
+            <thead>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Treat
+                    <entry>
+                        <paragraph>
+                            Quantity
+                    <entry>
+                        <paragraph>
+                            Description
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Albatr\u00b0\u00df
+                    <entry>
+                        <paragraph>
+                            2.99
+                    <entry>
+                        <paragraph>
+                            \u00a1On a \u03c3\u03c4\u03b9\u03ba!
+                <row>
+                    <entry>
+                        <paragraph>
+                            Crunchy Frog
+                    <entry>
+                        <paragraph>
+                            1.49
+                    <entry>
+                        <paragraph>
+                            If we took the b\u00f6nes out, it wouldn\u2019t be
+                            crunchy, now would it?
+                <row>
+                    <entry>
+                        <paragraph>
+                            Gannet Ripple
+                    <entry>
+                        <paragraph>
+                            1.99
+                    <entry>
+                        <paragraph>
+                            \u00bfOn a \u03c3\u03c4\u03b9\u03ba?
+"""],
 ]
-else:
-    print ('Tests of "csv-table" directive skipped; '
-           'Python 2.3 or higher required.')
 
 
 if __name__ == '__main__':

@@ -254,6 +254,25 @@ _`input_encoding`
 
     Default: auto-detect (None).  Options: ``--input-encoding, -i``.
 
+_`input_encoding_error_handler`
+    The error handler for undecodable characters in the input.
+    Acceptable values include:
+
+    strict
+        Raise an exception in case of an encoding error.
+    replace
+        Replace malformed data with the official Unicode replacement
+        character, U+FFFD.
+    ignore
+        Ignore malformed data and continue without further notice.
+
+    Acceptable values are the same as for the "error" parameter of
+    Python's ``unicode`` function; other values may be defined in
+    applications or in future versions of Python.
+
+    Default: "strict".  Options: ``--input-encoding-error-handler,
+    --input-encoding, -i``.
+
 _`language_code`
     `ISO 639`_ 2-letter language code (3-letter codes used only if no
     2-letter code exists).

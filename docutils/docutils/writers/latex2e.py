@@ -510,14 +510,14 @@ class Table:
         
 class LaTeXTranslator(nodes.NodeVisitor):
 
-    def dispatch_visit(self, node, method_name):
+    def dispatch_visit(self, node):
         if self.call_class and \
            isinstance(node, nodes.Element) and \
            node.hasattr('class'):
             self.body.append('\\docutilsclass{%s}{' % node.get('class'))
         return nodes.NodeVisitor.dispatch_visit(self, node, method_name)
 
-    def dispatch_depart(self, node, method_name):
+    def dispatch_depart(self, node):
         r = nodes.NodeVisitor.dispatch_depart(self, node, method_name)
         if self.call_class and \
            isinstance(node, nodes.Element) and \
