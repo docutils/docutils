@@ -3,7 +3,7 @@ Title: reStructuredText Docstring Format
 Version: $Revision$
 Last-Modified: $Date$
 Author: David Goodger <goodger@users.sourceforge.net>
-Discussions-To: doc-sig@python.org
+Discussions-To: <doc-sig@python.org>
 Status: Draft
 Type: Informational
 Content-Type: text/x-rst
@@ -55,6 +55,13 @@ format, and many of the markup forms match common usage (e.g.,
 to produce complex documents, and extensible so that there are few
 limits.  Of course, to write reStructuredText documents some prior
 knowledge is required.
+
+The markup offers functionality and expressivity, while maintaining
+easy readability in the source text.  The processed form (HTML etc.)
+makes it all accessible to readers: inline live hyperlinks; live links
+to and from footnotes; automatic tables of contents (with live
+links!); tables; images for diagrams etc.; pleasant, readable styled
+text.
 
 The reStructuredText parser is available now, part of the Docutils_
 project.  Standalone reStructuredText documents and PEPs can be
