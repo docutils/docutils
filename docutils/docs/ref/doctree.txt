@@ -124,7 +124,7 @@ The docinfo_ element is an optional child of document_.  It groups
 bibliographic elements together.
 
 Category members: author_, authors_, contact_, copyright_, date_,
-organization_, revision_, status_, version_
+field_, organization_, revision_, status_, version_
 
 
 Decorative Elements
@@ -166,7 +166,7 @@ target_
 Compound Body Elements
 ----------------------
 
-Compound body elements contain local substructure (component parts)
+Compound body elements contain local substructure (body subelements)
 and further body elements.  They do not directly contain text data.
 
 Category members: attention_, block_quote_, bullet_list_, caution_,
@@ -175,21 +175,24 @@ field_list_, figure_, footnote_, hint_, important_, note_,
 option_list_, system_message_, table_, tip_, warning_
 
 
-Compound Body Subelements
-`````````````````````````
+Body Subelements
+````````````````
 
-Compound body elements contain specific compound body subelements
-(e.g. bullet_list_ contains list_item_).  Subelements may themselves
-be compound elements (containing further child elements, like field_)
-or simple data elements (containing text data, like field_name_).
-These subelements always occur within specific parent elements, never
-at the body element level (just below sections, etc.).
+Compound body elements contain specific subelements (e.g. bullet_list_
+contains list_item_).  Subelements may themselves be compound elements
+(containing further child elements, like field_) or simple data
+elements (containing text data, like field_name_).  These subelements
+always occur within specific parent elements, never at the body
+element level (beside paragraphs, etc.).
 
-Category members: caption_, classifier_, colspec_, definition_,
-definition_list_item_, description_, entry_, field_, field_argument_,
-field_body_, field_name_, label_, legend_, list_item_, option_,
-option_argument_, option_group_, option_list_item_, option_string_,
-row_, tbody_, term_, tgroup_, thead_
+Category members (simple): caption_, classifier_, colspec_,
+field_argument_, field_name_, label_, option_argument_,
+option_string_, term_
+
+Category members (compound): definition_, definition_list_item_,
+description_, entry_, field_, field_body_, legend_, list_item_,
+option_, option_group_, option_list_item_, row_, tbody_, tgroup_,
+thead_
 
 
 Inline Elements
@@ -201,7 +204,7 @@ body elements.  Most inline elements have a "mixed content model".
 
 Category members: citation_reference_, emphasis_, footnote_reference_,
 generated_, image_, interpreted_, literal_, problematic_, reference_,
-strong_, substitution_reference_, target_, raw_.
+strong_, substitution_reference_, target_, raw_
 
 
 .. _HTML: http://www.w3.org/MarkUp/
@@ -217,11 +220,14 @@ strong_, substitution_reference_, target_, raw_.
               :depth: 1
 
 Each element in the DTD (document type definition) is described in its
-own section below.  Each section contains the following subsections
-and items:
+own section below.  Each section contains an introduction plus the
+following subsections:
 
-* The initial text contains a description of the semantics of the
-  element, plus:
+* Details (of element relationships and semantics):
+
+  - Category: One or more references to the element categories in
+    `Element Hierarchy`_ above.  Some elements belong to more than one
+    category.
 
   - Parents: A list of elements which may contain the element.
 
@@ -234,7 +240,9 @@ and items:
   - Processing: Lists formatting or rendering recommendations for the
     element.
 
-* Content Model: from the `Docutils DTD`_.
+* Content Model:
+
+  The formal XML content model from the `Docutils DTD`_, followed by:
 
   - Attributes: Describes (or refers to descriptions of) the possible
     values and semantics of each attribute.
@@ -242,29 +250,31 @@ and items:
   - Parameter Entities: Lists the parameter entities which include the
     element described.
 
-* Example: Where possible, a reStructuredText example is shown along
-  with a fragment of the document tree resulting from parsing.
+* Examples: reStructuredText examples are shown along with
+  fragments of the document trees resulting from parsing.
   _`Pseudo-XML` is used for the results of parsing and processing.
   Pseudo-XML is a representation of XML where nesting is indicated by
   indentation and end-tags are not shown.  Some of the precision of
-  real XML is traded for easier readability.  For example, the
-  following are equivalent.  XML::
+  real XML is given up in exchange for easier readability.  For
+  example, the following are equivalent:
 
-      <document>
-      <section id="a-title" name="a title">
-      <title>A Title</title>
-      <paragraph>A paragraph.</paragraph>
-      </section>
-      </document>
+  - Real XML::
 
-  Pseudo-XML::
+        <document>
+        <section id="a-title" name="a title">
+        <title>A Title</title>
+        <paragraph>A paragraph.</paragraph>
+        </section>
+        </document>
 
-      <document>
-          <section id="a-title" name="a title">
-              <title>
-                  A Title
-              <paragraph>
-                  A paragraph.
+  - Pseudo-XML::
+
+        <document>
+            <section id="a-title" name="a title">
+                <title>
+                    A Title
+                <paragraph>
+                    A paragraph.
 
 --------------------
 
@@ -414,20 +424,24 @@ its writing.
 ``document``
 ============
 
-Element category: `structural elements`_.
-
 The ``document`` element is the root (topmost) element of the Docutils
 document tree.  ``document`` is the direct or indirect ancestor of
 every other element in the tree.  It encloses the entire document
 tree.  It is the starting point for a document.
 
+
+Details
+-------
+
+Category
+    `Structural Elements`_
+
 Parents
     The ``document`` element has no parents.
 
 Children
-    ``document`` elements may contain the following elements: title_,
-    subtitle_, docinfo_, decoration_, topic_, transition_, section_,
-    and `body elements`_.
+    ``document`` elements may contain `structural subelements`_,
+    `structural elements`_, and `body elements`_.
 
 Analogies
     ``document`` is analogous to the HTML "html" element and several
@@ -459,8 +473,8 @@ Attributes
     id_, name_, dupname_, source_, and class_.
 
 
-Example
--------
+Examples
+--------
 
 reStructuredText source::
 
@@ -761,12 +775,17 @@ document title::
 ``subtitle``
 ============
 
-Element category: `structural subelements`_.
-
 The ``subtitle`` element stores the subtitle of a document_.
 
+
+Details
+-------
+
+Category
+    `Structural Subelements`_
+
 Parents
-    The following elements may contain ``subtitle``: document_.
+    The following elements may contain ``subtitle``: document_
 
 Children
     ``subtitle`` elements may contain text data plus `inline
@@ -792,8 +811,8 @@ Attributes
     id_, name_, dupname_, source_, and class_.
 
 
-Example
--------
+Examples
+--------
 
 reStructuredText source::
 
@@ -873,14 +892,19 @@ attributes are stored in the ``subtitle`` element.
 ``title``
 =========
 
-Element category: `structural subelements`_.
-
 The ``title`` element stores the title of a document_, section_, or
 topic_.
 
+
+Details
+-------
+
+Category
+    `Structural Subelements`_
+
 Parents
     The following elements may contain ``title``: document_, section_,
-    topic_.
+    topic_
 
 Children
     ``title`` elements may contain text data plus `inline elements`_.
@@ -907,8 +931,8 @@ Attributes
     has been numbered automatically.
 
 
-Example
--------
+Examples
+--------
 
 reStructuredText source::
 
