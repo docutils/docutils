@@ -74,11 +74,15 @@ class Reader(Component):
 
     def parse(self):
         """Parse `self.input` into a document tree."""
-        self.document = self.new_document()
-        self.parser.parse(self.input, self.document)
+        self.document = document = self.new_document()
+        document.reporter.attach_observer(document.note_parse_message)
+        self.parser.parse(self.input, document)
+        document.reporter.detach_observer(document.note_parse_message)
 
     def transform(self):
         """Run all of the transforms defined for this Reader."""
+        self.document.reporter.attach_observer(
+            self.document.note_transform_message)
         for xclass in (universal.first_reader_transforms
                        + tuple(self.transforms)
                        + universal.last_reader_transforms):
