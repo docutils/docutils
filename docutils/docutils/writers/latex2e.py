@@ -754,7 +754,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def language_label(self, docutil_label):
         return self.language.labels[docutil_label]
 
-    def utf8_to_latex(self,text):
+    def unicode_to_latex(self,text):
         # see LaTeX codec http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/252124
         # Only some special chracters are translated, for documents with many utf-8
         # chars one should use the LaTeX unicode package.
@@ -763,6 +763,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             u'\u00A9' : '{\\copyright}',
             u'\u2013' : '{--}',
             u'\u2014' : '{---}',
+            u'\u201C' : '``',
+            u'\u201D' : '\'\'',
             u'\u2020' : '{\\dag}',
             u'\u2021' : '{\\ddag}',
             u'\u21d4' : '{$\\Leftrightarrow$}',
@@ -858,7 +860,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.insert_none_breaking_blanks:
             text = text.replace(' ', '~')
         if self.settings.output_encoding != 'utf-8':
-            text = self.utf8_to_latex(text)
+            text = self.unicode_to_latex(text)
         return text
 
     def attval(self, text,
