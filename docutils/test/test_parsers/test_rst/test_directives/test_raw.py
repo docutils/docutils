@@ -11,6 +11,7 @@ Tests for misc.py "raw" directive.
 """
 
 import os.path
+import sys
 from __init__ import DocutilsTestSupport
 
 
@@ -135,6 +136,17 @@ Raw input file is UTF-16-encoded, and is not valid ASCII.
         Should the parser complain becau\xdfe there is no :file:?  BUG?
 """],
 ]
+
+# Skip tests whose output contains "UnicodeDecodeError" if we are not
+# using Python 2.3 or higher.
+if sys.version_info < (2, 3):
+    for i in range(len(totest['raw'])):
+        if totest['raw'][i][1].find('UnicodeDecodeError') != -1:
+            del totest['raw'][i]
+            print ("Test totest['raw'][%s] skipped; "
+                   "Python 2.3+ required for expected output." % i)
+            # Assume we have only one of these tests.
+            break
 
 
 if __name__ == '__main__':
