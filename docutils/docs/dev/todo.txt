@@ -37,9 +37,6 @@ Priorities
   tools/unicode2rstsubs.py.  As static data, these files could go
   inside the docutils package somewhere.
 
-* Rename front-end tools (perhaps to "rst2*" pattern) and have
-  setup.py install them.
-
 * A Python Source Reader component (Python auto-documentation) will be
   added.  See the document `"Plan for Enthought API Documentation
   Tool"`__ for details.  If you'd like to help, let me know!
