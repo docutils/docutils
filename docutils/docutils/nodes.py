@@ -663,8 +663,11 @@ class document(Root, Structural, Element):
         self.id_start = 1
         """Initial ID number."""
 
-        self.messages = Element()
-        """System messages generated after parsing."""
+        self.parse_messages = []
+        """System messages generated while parsing."""
+
+        self.transform_messages = []
+        """System messages generated while applying transforms."""
 
     def asdom(self, dom=xml.dom.minidom):
         domroot = dom.Document()
@@ -676,9 +679,8 @@ class document(Root, Structural, Element):
             id = node['id']
             if self.ids.has_key(id) and self.ids[id] is not node:
                 msg = self.reporter.severe('Duplicate ID: "%s".' % id)
-                if msgnode == None:
-                    msgnode = self.messages
-                msgnode += msg
+                if msgnode != None:
+                    msgnode += msg
         else:
             if node.has_key('name'):
                 id = make_id(node['name'])
@@ -731,8 +733,6 @@ class document(Root, Structural, Element):
                 self.nametypes[name] = explicit
 
     def set_duplicate_name_id(self, node, id, name, msgnode, explicit):
-        if msgnode == None:
-            msgnode = self.messages
         old_id = self.nameids[name]
         old_explicit = self.nametypes[name]
         self.nametypes[name] = old_explicit or explicit
@@ -753,7 +753,8 @@ class document(Root, Structural, Element):
                 msg = self.reporter.system_message(
                     level, 'Duplicate explicit target name: "%s".' % name,
                     backrefs=[id])
-                msgnode += msg
+                if msgnode != None:
+                    msgnode += msg
                 dupname(node)
             else:
                 self.nameids[name] = id
@@ -770,7 +771,8 @@ class document(Root, Structural, Element):
             msg = self.reporter.info(
                 'Duplicate implicit target name: "%s".' % name,
                 backrefs=[id])
-            msgnode += msg
+            if msgnode != None:
+                msgnode += msg
 
     def has_name(self, name):
         return self.nameids.has_key(name)
@@ -845,9 +847,8 @@ class document(Root, Structural, Element):
         if self.substitution_defs.has_key(name):
             msg = self.reporter.error(
                   'Duplicate substitution definition name: "%s".' % name)
-            if msgnode == None:
-                msgnode = self.messages
-            msgnode += msg
+            if msgnode != None:
+                msgnode += msg
             oldnode = self.substitution_defs[name]
             dupname(oldnode)
         # keep only the last definition
@@ -859,6 +860,12 @@ class document(Root, Structural, Element):
 
     def note_pending(self, pending):
         self.pending.append(pending)
+
+    def note_parse_message(self, message):
+        self.parse_messages.append(message)
+
+    def note_transform_message(self, message):
+        self.transform_messages.append(message)
 
     def copy(self):
         return self.__class__(self.options, self.reporter,
