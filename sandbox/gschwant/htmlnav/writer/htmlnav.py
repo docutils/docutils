@@ -4,8 +4,8 @@
 # Date: $Date$
 # Copyright: This module has been placed in the public domain.
 
-from docutils import writers
-import html4css1, os
+from docutils import writers, nodes, languages
+import docutils, html4css1, os
 
 class Writer(html4css1.Writer):
 
@@ -28,8 +28,10 @@ class HTMLTranslator(html4css1.HTMLTranslator):
                                 'right.nav')
         if os.path.exists(navright):
             colspan = 3
+            width = '70%'
         else:
             colspan = 2
+            width = '85%'
         navleft = '%s%s' % (os.path.splitext(self.settings._destination)[0],
                             '.nav')
         bgcolor = color1 = color2 = self.navigation_bgcolor
@@ -62,11 +64,12 @@ class HTMLTranslator(html4css1.HTMLTranslator):
                           '; border-color: #FFFFFF }\n' \
                           'td.navigation { font-size: 8pt ; padding-left: ' \
                           '0em ; padding-right: 0em }\n' \
-                          '--></style>\n</head>\n<body>\n<table ' \
+                          '--></style>\n</head>\n<body>\n<table width="100%" ' \
                           'class="navigation" border="0" cellspacing="0" ' \
                           'cellpadding="0">'
             if os.path.exists(navtop):
-                body_prefix = '%s\n<tr><td class="navigation" bgcolor="%s">' \
+                body_prefix = body_prefix + '\n<tr><td width="15%" '
+                body_prefix = '%s class="navigation" bgcolor="%s">' \
                               % (body_prefix, bgcolor)
                 if cornerpic != None:
                     body_prefix = '%s\n<center><img src="%s"></center>' \
@@ -98,8 +101,8 @@ class HTMLTranslator(html4css1.HTMLTranslator):
             lines = f.readlines()
             f.close()
             body_prefix = '%s\n<tr><td class="navigation" bgcolor="%s" ' \
-                          'width="150" valign="top">' \
                           % (body_prefix, bgcolor)
+            body_prefix = body_prefix + ' width="15%" valign="top">'
             body_prefix = body_prefix + '\n<table class="navigation" ' \
                           'width="100%" border="0" cellspacing="0" ' \
                           'cellpadding="3">'
@@ -129,8 +132,9 @@ class HTMLTranslator(html4css1.HTMLTranslator):
                     body_prefix = '%s\n<tr><td bgcolor="%s" ' \
                                   'class="navigation">&nbsp;%s</td></tr>' \
                                   % (body_prefix, color2, val[1])
-            body_prefix = '%s\n</table>\n</td>\n<td width="15">&nbsp;' \
-                          '&nbsp;</td>\n<td width="600">' % body_prefix 
+            body_prefix = '%s\n</table>\n</td>\n<td ' \
+                          'width="15">&nbsp;&nbsp;</td>\n<td width="%s">' \
+                          % (body_prefix, width)
         else:
             body_prefix = '</head>\n<body>\n'
         return body_prefix
@@ -149,8 +153,8 @@ class HTMLTranslator(html4css1.HTMLTranslator):
             lines = f.readlines()
             f.close()
             body_suffix = '</td><td width="15">&nbsp;&nbsp;</td>\n<td ' \
-                          'class="navigation" width="150" valign="top" ' \
-                          'bgcolor="%s">' % bgcolor
+                          'class="navigation" width="15%" valign="top" '
+            body_suffix = '%s bgcolor="%s">' % (body_suffix, bgcolor)
             body_suffix = body_suffix + '\n<table class="navigation" ' \
                           'width="100%" border="0" cellspacing="0" ' \
                           'cellpadding="3">' 
