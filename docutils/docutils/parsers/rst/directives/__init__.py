@@ -75,7 +75,7 @@ def directive(directive_name, language_module):
         return _directives[normname]
     try:
         canonicalname = language_module.directives[normname]
-    except KeyError:
+    except (KeyError, AttributeError):
         try:
             # Try English as a fallback:
             canonicalname = _fallback_language_module.directives[normname]
