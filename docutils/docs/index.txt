@@ -152,12 +152,12 @@ __ http://www.python.org/peps/pep-0258.html
 ``api/``: API Reference Material for Client-Developers
 ======================================================
 
-`PEP 258`_ is an overview of the architecture of Docutils.
-
 * `The Docutils Publisher <api/publisher.html>`__
 * `Inside A Docutils Command-Line Front-End Tool <api/cmdline-tool.html>`__
 * `Docutils Runtime Settings <api/runtime-settings.html>`__
 * (`Docutils Transforms <ref/transforms.html>`__ should be moved here)
+
+`PEP 258`_ is an overview of the architecture of Docutils.
 
 
 ``howto/``: Instructions for Developers
