@@ -19,7 +19,7 @@ import re
 from types import UnicodeType
 import docutils.languages
 import docutils.parsers.rst.languages
-from docutils.parsers.rst import states, directives
+from docutils.parsers.rst import states, directives, roles
 from DocutilsTestSupport import CustomTestSuite, CustomTestCase
 
 reference_language = 'en'
@@ -165,13 +165,13 @@ class LanguageTestCase(CustomTestCase):
         failures = []
         for d in module.roles.values():
             try:
-                method = states.Inliner._interpreted_roles[d]
+                method = roles._roles[d]
                 #if not method:
                 #    failures.append('"%s": unknown role' % d)
             except KeyError, error:
                 failures.append('"%s": %s' % (d, error))
         inverted = self._invert(module.roles)
-        canonical = states.Inliner._interpreted_roles.keys()
+        canonical = roles._roles.keys()
         canonical.sort()
         canonical.remove('restructuredtext-unimplemented-role')
         for name in canonical:
