@@ -1174,7 +1174,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</sup>')
 
     def visit_system_message(self, node):
-        if node['level'] < self.document.reporter['writer'].report_level:
+        if node['level'] < self.document.reporter.report_level:
             # Level is too low to display:
             raise nodes.SkipNode
         self.body.append(self.starttag(node, 'div', CLASS='system-message'))

@@ -144,11 +144,10 @@ class Parser(docutils.parsers.Parser):
     def parse(self, inputstring, document):
         """Parse `inputstring` and populate `document`, a document tree."""
         self.setup_parse(inputstring, document)
-        debug = document.reporter[''].debug
         self.statemachine = states.RSTStateMachine(
               state_classes=self.state_classes,
               initial_state=self.initial_state,
-              debug=debug)
+              debug=document.reporter.debug_flag)
         inputlines = docutils.statemachine.string2lines(
               inputstring, tab_width=document.settings.tab_width,
               convert_whitespace=1)

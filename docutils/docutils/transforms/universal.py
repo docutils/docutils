@@ -97,7 +97,7 @@ class Messages(Transform):
 
     def apply(self):
         unfiltered = self.document.transform_messages
-        threshold = self.document.reporter['writer'].report_level
+        threshold = self.document.reporter.report_level
         messages = []
         for msg in unfiltered:
             if msg['level'] >= threshold and not msg.parent:
@@ -130,7 +130,7 @@ class SystemMessageFilterVisitor(nodes.SparseNodeVisitor):
         pass
 
     def visit_system_message(self, node):
-        if node['level'] < self.document.reporter['writer'].report_level:
+        if node['level'] < self.document.reporter.report_level:
             node.parent.remove(node)
 
 

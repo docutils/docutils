@@ -1822,7 +1822,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append(self.context.pop())
 
     def visit_system_message(self, node):
-        if node['level'] < self.document.reporter['writer'].report_level:
+        if node['level'] < self.document.reporter.report_level:
             raise nodes.SkipNode
 
     def depart_system_message(self, node):

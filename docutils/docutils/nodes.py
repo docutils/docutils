@@ -111,8 +111,8 @@ class Node:
         ``visit`` implementation for each `Node` subclass encountered.
         """
         visitor.document.reporter.debug(
-            'calling dispatch_visit for %s' % self.__class__.__name__,
-            category='nodes.Node.walk')
+            'docutils.nodes.Node.walk calling dispatch_visit for %s'
+            % self.__class__.__name__)
         try:
             visitor.dispatch_visit(self)
         except (SkipChildren, SkipNode):
@@ -138,8 +138,8 @@ class Node:
         """
         call_depart = 1
         visitor.document.reporter.debug(
-            'calling dispatch_visit for %s' % self.__class__.__name__,
-            category='nodes.Node.walkabout')
+            'docutils.nodes.Node.walkabout calling dispatch_visit for %s'
+            % self.__class__.__name__)
         try:
             try:
                 visitor.dispatch_visit(self)
@@ -157,8 +157,8 @@ class Node:
             pass
         if call_depart:
             visitor.document.reporter.debug(
-                'calling dispatch_departure for %s' % self.__class__.__name__,
-                category='nodes.Node.walkabout')
+                'docutils.nodes.Node.walkabout calling dispatch_departure '
+                'for %s' % self.__class__.__name__)
             visitor.dispatch_departure(self)
 
     def traverse(self, condition=None,
@@ -1409,8 +1409,8 @@ class NodeVisitor:
         node_name = node.__class__.__name__
         method = getattr(self, 'visit_' + node_name, self.unknown_visit)
         self.document.reporter.debug(
-            'calling %s for %s' % (method.__name__, node_name),
-            category='nodes.NodeVisitor.dispatch_visit')
+            'docutils.nodes.NodeVisitor.dispatch_visit calling %s for %s'
+            % (method.__name__, node_name))
         return method(node)
 
     def dispatch_departure(self, node):
@@ -1422,8 +1422,8 @@ class NodeVisitor:
         node_name = node.__class__.__name__
         method = getattr(self, 'depart_' + node_name, self.unknown_departure)
         self.document.reporter.debug(
-            'calling %s for %s' % (method.__name__, node_name),
-            category='nodes.NodeVisitor.dispatch_departure')
+            'docutils.nodes.NodeVisitor.dispatch_departure calling %s for %s'
+            % (method.__name__, node_name))
         return method(node)
 
     def unknown_visit(self, node):
