@@ -719,14 +719,6 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_important(self, node):
         self.depart_admonition()
 
-    def visit_interpreted(self, node):
-        # @@@ Incomplete, pending a proper implementation on the
-        # Parser/Reader end.
-        self.body.append('<span class="interpreted">')
-
-    def depart_interpreted(self, node):
-        self.body.append('</span>')
-
     def visit_label(self, node):
         self.body.append(self.starttag(node, 'td', '%s[' % self.context.pop(),
                                        CLASS='label'))
@@ -1073,6 +1065,12 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_title(self, node):
         self.body.append(self.context.pop())
+
+    def visit_title_reference(self, node):
+        self.body.append(self.starttag(node, 'cite', ''))
+
+    def depart_title_reference(self, node):
+        self.body.append('</cite>')
 
     def visit_topic(self, node):
         self.body.append(self.starttag(node, 'div', CLASS='topic'))
