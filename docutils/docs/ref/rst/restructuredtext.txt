@@ -1506,7 +1506,7 @@ marks [#]_:
 
 .. [#] This list was inspired by the list of symbols for "Note
    Reference Marks" in The Chicago Manual of Style, 14th edition,
-   section 12.51.  "Parallels" ("\|\|") were given in CMoS instead of
+   section 12.51.  "Parallels" ("||") were given in CMoS instead of
    the pilcrow.  The last four symbols (the card suits) were added
    arbitrarily.
 
@@ -2189,8 +2189,21 @@ end-string will not be recognized or processed.
    literals`_.  See `Escaping Mechanism`_ above for details.
 
 For example, none of the following are recognized as containing inline
-markup start-strings: " * ", '"*"', "'*'", "(*)", "(* ", "[*]", "{*}",
-"\*", " ` ", etc.
+markup start-strings:
+
+- asterisks: * "*" '*' (*) (* [*] {*} 1*x BOM32_*
+- double asterisks: **  a**b O(N**2) etc.
+- backquotes: ` `` etc.
+- underscores: _ __ __init__ __init__() etc.
+- vertical bars: | || etc.
+
+It may be desirable to use inline literals for some of these anyhow,
+especially if they represent code snippets.  It's a judgement call.
+
+These cases *do* require either literal-quoting or escaping to avoid
+misinterpretation::
+
+    *4, class_, *args, **kwargs, `TeX-quoted', *ML, *.txt
 
 The inline markup recognition rules were devised intentionally to
 allow 90% of non-markup uses of "*", "`", "_", and "|" *without*
