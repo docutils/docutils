@@ -51,6 +51,7 @@ Changes Since 0.2
     support (bug report: Pearu Peterson).
   - Fixed targets (names) on footnote, citation, topic title,
     problematic, and system_message nodes (for Netscape 4).
+  - Changed field names from "<td>" to "<th>".
 
 * docs/tools.txt:
 
