@@ -489,6 +489,31 @@ def get_source_line(node):
         node = node.parent
     return None, None
 
+def escape2null(text):
+    """Return a string with escape-backslashes converted to nulls."""
+    parts = []
+    start = 0
+    while 1:
+        found = text.find('\\', start)
+        if found == -1:
+            parts.append(text[start:])
+            return ''.join(parts)
+        parts.append(text[start:found])
+        parts.append('\x00' + text[found+1:found+2])
+        start = found + 2               # skip character after escape
+
+def unescape(text, restore_backslashes=0):
+    """
+    Return a string with nulls removed or restored to backslashes.
+    Backslash-escaped spaces are also removed.
+    """
+    if restore_backslashes:
+        return text.replace('\x00', '\\')
+    else:
+        for sep in ['\x00 ', '\x00\n', '\x00']:
+            text = ''.join(text.split(sep))
+        return text
+
 
 class DependencyList:
 
