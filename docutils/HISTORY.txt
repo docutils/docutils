@@ -31,9 +31,10 @@ and related projects:
     K. O'Brien, Michel Pelletier, Sam Penrose, Tim Peters, Pearu
     Peterson, Mark Pilgrim, Brett g Porter, David Priest, Andy
     Robinson, Tavis Rudd, Oliver Rutherfurd, Kenichi Sato, Ueli
-    Schlaepfer, Gunnar Schwant, Bruce Smith, tav, Bob Tolbert,
-    Laurence Tratt, Guido van Rossum, Martin von Loewis, Greg Ward,
-    Barry Warsaw, Edward Welbourne, Ka-Ping Yee, Moshe Zadka
+    Schlaepfer, Gunnar Schwant, Bruce Smith, tav, Bob Tolbert, Paul
+    Tremblay, Laurence Tratt, Guido van Rossum, Martin von Loewis,
+    Greg Ward, Barry Warsaw, Edward Welbourne, Ka-Ping Yee, Moshe
+    Zadka
 
 Thank you!
 
@@ -264,6 +265,10 @@ Specific:
   - Made substitutions case-sensitive-but-forgiving; moved some code
     to ``docutils.nodes``.
   - Added support for block quote attributions.
+  - Added a kludge to work-around a conflict between the bubble-up
+    parser strategy and short titles (<= 3 char-long over- &
+    underlines).  Fixes SF bug #738803 "infinite loop with multiple
+    titles" submitted by Jason Diamond.
 
 * docutils/parsers/rst/tableparser.py:
 
