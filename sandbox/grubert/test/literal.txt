@@ -37,6 +37,18 @@ with the following syntax:
            *commands*
 
 
+parsed literal with markup spanning lines.
+
+.. parsed-literal::
+
+   Hey!
+     *this is some emphasized text
+     that spans two lines* and
+     this is **some more bold text
+     spanning two lines**
+
+
+
 a literal block with underscores and markup
 
 .. parsed-literal::
