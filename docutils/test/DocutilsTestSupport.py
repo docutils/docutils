@@ -29,8 +29,9 @@ Exports the following:
     - `GridTableParserTestCase`
     - `SimpleTableParserTestSuite`
     - `SimpleTableParserTestCase`
-    - 'LatexPublishTestSuite'
-    - 'LatexPublishTestCase'
+    - `WriterPublishTestCase`
+    - `LatexWriterPublishTestCase`
+    - `PublishTestSuite`
     - `DevNull` (output sink)
 """
 __docformat__ = 'reStructuredText'
@@ -564,16 +565,15 @@ class PythonModuleParserTestSuite(CustomTestSuite):
                       run_in_debugger=run_in_debugger)
 
 
-# @@@ These should be generalized to WriterPublishTestCase/Suite or
-# just PublishTestCase/Suite, as per TransformTestCase/Suite.
-class LatexPublishTestCase(CustomTestCase, docutils.SettingsSpec):
+class WriterPublishTestCase(CustomTestCase, docutils.SettingsSpec):
 
     """
     Test case for publish.
     """
 
     settings_default_overrides = {'_disable_config': 1}
-
+    writer_name = '' # override in subclasses
+    
     def test_publish(self):
         if self.run_in_debugger:
             pdb.set_trace()
@@ -581,15 +581,33 @@ class LatexPublishTestCase(CustomTestCase, docutils.SettingsSpec):
               source=self.input,
               reader_name='standalone',
               parser_name='restructuredtext',
-              writer_name='latex',
+              writer_name=self.writer_name,
               settings_spec=self)
         self.compare_output(self.input, output, self.expected)
 
 
-class LatexPublishTestSuite(CustomTestSuite):
+class LatexWriterPublishTestCase(WriterPublishTestCase):
 
-    def __init__(self):
+    """
+    Test case for Latex writer.
+    """
+
+    writer_name = 'latex'
+
+
+class PublishTestSuite(CustomTestSuite):
+
+    TEST_CLASSES = {
+        'latex': LatexWriterPublishTestCase,
+    }
+
+    def __init__(self,writer_name):
+        """
+        `writer_name` is the name of the writer 
+        to use.  It must be a key in `TEST_CLASSES`.
+        """
         CustomTestSuite.__init__(self)
+        self.test_class = self.TEST_CLASSES[writer_name]
 
     def generateTests(self, dict, dictname='totest'):
         for name, cases in dict.items():
@@ -602,7 +620,7 @@ class LatexPublishTestSuite(CustomTestSuite):
                     else:
                         continue
                 self.addTestCase(
-                      LatexPublishTestCase, 'test_publish',
+                      self.test_class, 'test_publish',
                       input=case[0], expected=case[1],
                       id='%s[%r][%s]' % (dictname, name, casenum),
                       run_in_debugger=run_in_debugger)

@@ -13,7 +13,7 @@ Tests for latex2e writer.
 from __init__ import DocutilsTestSupport
 
 def suite():
-    s = DocutilsTestSupport.LatexPublishTestSuite()
+    s = DocutilsTestSupport.PublishTestSuite('latex')
     s.generateTests(totest)
     return s
 
