@@ -74,6 +74,8 @@ convention, Docutils shall remain conservative.
 As mentioned in the note above, developers are invited to explore
 "gettext" and other i18n technologies.
 
+.. _PEP 263: http://www.python.org/peps/pep-0263.html
+
 
 Docutils Language Module
 ========================
