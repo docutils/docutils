@@ -136,18 +136,23 @@ class Publisher:
             self.process_command_line(argv, usage, description, option_spec)
         document = self.reader.read(self.source, self.parser, self.options)
         output = self.writer.write(document, self.destination)
-        if self.options.dump_internal_document_attributes:
+        if self.options.dump_internals:
             from pprint import pformat
             print >>sys.stderr, pformat(document.__dict__)
         return output
 
 
+default_usage = '%prog [options] [<source> [<destination>]]'
+default_description = ('Reads from <source> (default is stdin) and writes to '
+                       '<destination> (default is stdout).')
+
 def publish(reader=None, reader_name='standalone',
             parser=None, parser_name='restructuredtext',
             writer=None, writer_name='pseudoxml',
-            argv=None, usage=None, description=None, option_spec=None):
+            argv=None, usage=default_usage, description=default_description,
+            option_spec=None):
     """
-    A convenience function for file I/O front-ends; set up & run a
+    A convenience function for file I/O front ends; set up & run a
     `Publisher`.
     """
     pub = Publisher(reader, parser, writer)
