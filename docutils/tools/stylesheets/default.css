@@ -47,6 +47,15 @@ div.note p.admonition-title, div.tip p.admonition-title {
   font-weight: bold ;
   font-family: sans-serif }
 
+div.dedication {
+  margin: 2em 5em ;
+  text-align: center ;
+  font-style: italic }
+
+div.dedication p.topic-title {
+  font-weight: bold ;
+  font-style: normal }
+
 div.figure {
   margin-left: 2em }
 
