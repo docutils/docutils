@@ -1,5 +1,5 @@
 # Author: Bill Bumgarner
-# Contact: bbum@codefab.com
+# Contact: bbum@mac.com
 # Copyright: 2002 - Bill Bumgarner - All Rights Reserved
 # License: The MIT License -- see LICENSE.txt
 
@@ -74,6 +74,7 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
         self.section_level = 0
         self.headerContent = []
         self.bodyContent = []
+        self.bodySuffix = []
         self.metaContent = []
         self.context = []
         self.spewTextContext = [True]
@@ -96,7 +97,7 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
         return ''.join([DocArticleText.contentStart, DocArticleText.headerStart] +
                        self.headerContent +
                        [DocArticleText.headerEnd, DocArticleText.bodyStart] +
-                       self.body_pre_docinfo + self.docinfo + self.bodyContent +
+                       self.body_pre_docinfo + self.docinfo + self.bodyContent + self.bodySuffix +
                        [DocArticleText.bodyEnd, DocArticleText.contentEnd])
 
     def encode(self, text):
@@ -165,18 +166,35 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
         self.bodyContent.append('\n</pre>\n')
         self.depart_docinfo_item(node)
 
-    def visit_admonition(self, node, name, admonitionCellAtts={}):
+    def visit_admonition(self, node, name='', admonitionCellAtts={}):
         baseAdmonitionCellAtts = {"width" : "15%"}
         baseAdmonitionCellAtts.update(admonitionCellAtts)
         self.bodyContent.append('<table width="90%" border="1" align="center">\n'
                                 '<tbody><tr><td><table width="100%"><tbody><tr>\n')
         self.bodyContent.append(self.starttag(node, 'td', **baseAdmonitionCellAtts))
-        self.bodyContent.append(self.language.labels[name.lower()])
+        if name:
+            self.bodyContent.append(self.language.labels[name.lower()])
         self.bodyContent.append('</td><td>')
 
 
     def depart_admonition(self, node):
         self.bodyContent.append('</td></tr></tbody></table></td></tr></tbody></table>')
+
+    attribution_formats = {'dash': ('&mdash;', ''),
+                           'parentheses': ('(', ')'),
+                           'parens': ('(', ')'),
+                           'none': ('', '')}
+
+    def visit_attribution(self, node):
+        # prefix, suffix = self.attribution_formats[self.settings.attribution]
+        prefix, suffix = ('(', ')')
+        self.context.append(suffix)
+        self.bodyContent.append(
+            self.starttag(node, 'p', prefix))
+
+    def depart_attribution(self, node):
+        self.bodyContent.append(self.context.pop() + '</p>\n')
+
 
     def visit_author(self, node):
         self.visit_docinfo_item(node, 'Author')
@@ -450,6 +468,17 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
     def depart_figure(self, node):
         self.bodyContent.append('</div>\n')
 
+    def visit_footer(self, node):
+        self.context.append(len(self.body))
+
+    def depart_footer(self, node):
+        start = self.context.pop()
+        footer = (['<hr/>\n',
+                   self.starttag(node, 'div')]
+                  + self.bodyContent[start:] + ['</div>\n'])
+        self.bodySuffix[:0] = footer
+        del self.bodyContent[start:]
+
     def check_simple_list(self, node):
         """Check for a simple list that can be rendered compactly."""
         visitor = SimpleListChecker(self.document)
@@ -518,6 +547,12 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
         self.bodyContent.append('</a>')
         self.bodyContent.append(self.context.pop())
         self.bodyContent.append('</b>')
+
+    def visit_rubric(self, node):
+        self.bodyContent.append(self.starttag(node, 'p', ''))
+
+    def depart_rubric(self, node):
+        self.bodyContent.append('</p>\n')
 
     def visit_generated(self, node):
         pass
@@ -762,6 +797,12 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
     def depart_strong(self, node):
         self.bodyContent.append('</strong>')
 
+    def visit_subscript(self, node):
+        self.bodyContent.append(self.starttag(node, 'sub', ''))
+
+    def depart_subscript(self, node):
+        self.bodyContent.append('</sub>')
+
     def visit_substitution_definition(self, node):
         raise nodes.SkipNode # internal
 
@@ -773,6 +814,12 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
 
     def depart_subtitle(self, node):
         self.bodyContent.append('</h3>\n')
+
+    def visit_superscript(self, node):
+        self.bodyContent.append(self.starttag(node, 'sup', ''))
+
+    def depart_superscript(self, node):
+        self.bodyContent.append('</sup>')
 
     def visit_table(self, node):
         self.bodyContent.append(self.starttag(node, 'table'))
