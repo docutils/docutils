@@ -1436,11 +1436,11 @@ A new type of "inline external hyperlink" has been proposed.
 
    + Problems:
 
-     - The "`ref`_(URL)" syntax forces the last word of the reference
-       text to be joined to the URL, making a potentially very long
-       word that can't be wrapped (URLs can be very long).  The
-       reference and the URL should be separate.  This is a symptom
-       of the following point:
+     - The ``"`ref`_(URL)"`` syntax forces the last word of the
+       reference text to be joined to the URL, making a potentially
+       very long word that can't be wrapped (URLs can be very long). 
+       The reference and the URL should be separate.  This is a
+       symptom of the following point:
 
      - The syntax produces a single compound construct made up of two
        equally important parts, *with syntax in the middle*, *between*
