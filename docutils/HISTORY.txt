@@ -33,25 +33,108 @@ any names; apologies (and please let me know!) if I have.
 Changes Since 0.1
 ========================
 
+General:
+
+- The word "component" was being used ambiguously.  From now on,
+  "component" will be used to mean "Docutils component", as in Reader,
+  Writer, Parser, or Transform.  Portions of documents (Table of
+  Contents, sections, etc.)  will be called "document parts".
+
+* docutils/__init__.py:
+
+  - Added ``ApplicationError`` and ``DataError``, for use throughout
+    the package.
+  - Added ``Component`` base class for Docutils components; implements
+    the ``supports`` method.
+
+* docutils/nodes.py:
+
+  - Added ``TreeCopyVisitor`` class.
+  - Added a ``copy`` method to ``Node`` and subclasses.
+  - Added a ``SkipDeparture`` exception for visitors.
+
+* docutils/statemachine.py:
+
+  - Added ``runtime_init`` method to ``StateMachine`` and ``State``.
+  - Added underscores to improve many awkward names.
+
+* docutils/utils.py:
+
+  - Added ``clean_rcs_keywords`` function (moved from
+    docutils/transforms/frontmatter.py
+    ``DocInfo.filter_rcs_keywords``).
+  - Added underscores to improve many awkward names.
+
 * docutils/parsers/rst/states.py:
 
+  - Added underscores to improve many awkward names.
   - Added RFC-2822 header support.
+  - Extracted the inline parsing code from ``RSTState`` to a separate
+    class, ``Inliner``, which will allow easy subclassing.
+  - Made local bindings for ``memo`` container & often-used contents
+    (reduces code complexity a lot).  See ``RSTState.runtime_init()``.
+  - ``RSTState.parent`` replaces ``RSTState.statemachine.node``.
+  - Added ``MarkupMismatch`` exception; for late corrections.
+
+* docutils/parsers/rst/directives/html.py: Changed the ``meta``
+  directive to use a ``pending`` element, used only by HTML writers.
+
+* docutils/parsers/rst/directives/parts.py: Renamed from
+  components.py.
+
+* docutils/readers/__init__.py: Gave Readers more control over
+  choosing and instantiating Parsers.
+
+* docutils/readers/pep.py: Added to project; for PEP processing.
+
+* docutils/transforms/__init__.py: ``Transform.__init__()`` now
+  requires a ``component`` parameter.
+
+* docutils/transforms/peps.py: Added to project; PEP-specific.
+
+* docutils/transforms/parts.py: Renamed from old components.py.
+
+  - Added filter for `Contents`, to use alt-text for inline images,
+    and to remove inline markup that doesn't make sense in the ToC.
+
+* docutils/transforms/components.py: Added to project; transforms
+  related to Docutils components.
+
+* docutils/transforms/universal.py: Changed ``Messages`` transform to
+  properly filter out system messages below the warning threshold.
+
+* docutils/writers/html4css1.py:
+
+  - Made XHTML-compatible (switched to lowercase element & attribute
+    names; empty tag format).
+  - Escape double-dashes in comment text.
+
+* docutils/writers/pseudoxml.py: Renamed from pprint.py.
+
+* spec/pep-0257.txt: Clarified prohibition of signature repetition.
+
+* spec/rst/reStructuredText.txt:
+
+  - Clarified field list usage.
+  - Updated enumerated list description.
+
+* spec/rst/alternatives.txt: Expanded auto-enumerated list idea;
+  thanks to Fred Bremmer.
+
+* spec/rst/problems.txt: Updated the Enumerated List Markup
+  discussion.
 
 * test: Made test modules standalone (subdirectories became packages).
 
-* test/DocutilsTestSupport.py: Support for RFC-2822 testing.
+* test/DocutilsTestSupport.py: Support for PEP extensions to
+  reStructuredText.
 
 * test/package_unittest.py: Renamed from UnitTestFolder.py.
 
   - Now supports true packages containing test modules
     (``__init__.py`` files required); fixes duplicate module name bug.
 
-* spec/pep-0257.txt: Clarified prohibition of signature repetition.
-
-* spec/rst/reStructuredText.txt: Clarified field list usage.
-
-* spec/rst/alternatives.txt: Expanded auto-numbered enumerated list
-  idea; thanks to Fred Bremmer.
+* test/test_pep/: Subpackage added to project; PEP testing.
 
 
 Release 0.1 (2002-04-20)
