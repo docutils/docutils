@@ -31,21 +31,20 @@ class SectionTargets(Transform):
                 self.relocate(target)
 
     def relocate(self, target):
-        """
-        Move "target" elements into the next title element if
-        necessary.
-        """
+        """Move "target" elements into the next title element if necessary."""
         assert isinstance(target, nodes.target)
         # Find next node which is not a target.
-        n = target.next_node(condition=lambda x:
-                             not isinstance(x, nodes.target) or
-                             x.has_key('refid') or
-                             x.has_key('refuri') or
-                             x.has_key('refname'))
+        n = target.next_node(condition=self.condition)
         if isinstance(n, nodes.section):
             assert isinstance(n[0], nodes.title)
             target.parent.remove(target)
             n[0].insert(0, target)
+
+    # This function needs a better name (and possibly a docstring), describing
+    # what it does and hopefully why:
+    def condition(self, node):
+        return (not isinstance(node, nodes.target) or node.has_key('refid')
+                or node.has_key('refuri') or node.has_key('refname'))
 
 
 class ChainedTargets(Transform):

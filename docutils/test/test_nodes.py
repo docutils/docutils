@@ -148,7 +148,7 @@ class MiscTests(unittest.TestCase):
     def not_in_testlist(self, x):
         return x not in self.testlist
 
-    def test_tree(self):
+    def test_flattened(self):
         e = nodes.Element()
         e += nodes.Element()
         e[0] += nodes.Element()
@@ -156,11 +156,12 @@ class MiscTests(unittest.TestCase):
         e[0][1] += nodes.Text('some text')
         e += nodes.Element()
         e += nodes.Element()
-        self.assertEquals(e.tree(),
+        self.assertEquals(e.flattened(),
                           [e, e[0], e[0][0], e[0][1], e[0][1][0], e[1], e[2]])
-        self.assertEquals(e[0].tree(), [e[0], e[0][0], e[0][1], e[0][1][0]])
-        self.assertEquals(e[1].tree(), [e[1]])
-        self.assertEquals(e[0][1][0].tree(), [e[0][1][0]])
+        self.assertEquals(e[0].flattened(),
+                          [e[0], e[0][0], e[0][1], e[0][1][0]])
+        self.assertEquals(e[1].flattened(), [e[1]])
+        self.assertEquals(e[0][1][0].flattened(), [e[0][1][0]])
 
 
 class TreeCopyVisitorTests(unittest.TestCase):

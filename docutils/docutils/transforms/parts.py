@@ -123,8 +123,8 @@ class Contents(Transform):
             entry = nodes.paragraph('', '', reference)
             item = nodes.list_item('', entry)
             if (self.backlinks in ('entry', 'top') and
-                not filter(lambda x: isinstance(x, nodes.reference),
-                           title.tree())):
+                not [node for node in title.flattened()
+                     if isinstance(node, nodes.reference)]):
                 if self.backlinks == 'entry':
                     title['refid'] = ref_id
                 elif self.backlinks == 'top':
