@@ -19,7 +19,7 @@ import re
 from types import UnicodeType
 import docutils.languages
 import docutils.parsers.rst.languages
-from docutils.parsers.rst import directives
+from docutils.parsers.rst import states, directives
 from DocutilsTestSupport import CustomTestSuite, CustomTestCase
 
 reference_language = 'en'
@@ -58,7 +58,8 @@ class LanguageTestSuite(CustomTestSuite):
 
 class LanguageTestCase(CustomTestCase):
 
-    test_methods = ['test_label_translations', 'test_directives']
+    test_methods = ['test_labels', 'test_bibliographic_fields',
+                    'test_directives', 'test_roles']
     """Names of methods used to test each language."""
 
     def __init__(self, *args, **kwargs):
@@ -82,7 +83,14 @@ class LanguageTestCase(CustomTestCase):
                 too_much.append(label)
         return (missing, too_much)
 
-    def test_label_translations(self):
+    def _invert(self, adict):
+        """Return an inverted (keys & values swapped) dictionary."""
+        inverted = {}
+        for key, value in adict.items():
+            inverted[value] = key
+        return inverted
+
+    def test_labels(self):
         try:
             module = docutils.languages.get_language(self.language)
             if not module:
@@ -91,9 +99,24 @@ class LanguageTestCase(CustomTestCase):
             self.fail('No docutils.languages.%s module.' % self.language)
         missed, unknown = self._xor(self.ref.labels, module.labels)
         if missed or unknown:
-            self.fail(
-                'Module docutils.languages.%s:\n    Missed: %s; Unknown: %s'
-                % (self.language, str(missed), str(unknown)))
+            self.fail('Module docutils.languages.%s.labels:\n'
+                      '    Missed: %s; Unknown: %s'
+                      % (self.language, str(missed), str(unknown)))
+
+    def test_bibliographic_fields(self):
+        try:
+            module = docutils.languages.get_language(self.language)
+            if not module:
+                raise ImportError
+        except ImportError:
+            self.fail('No docutils.languages.%s module.' % self.language)
+        missed, unknown = self._xor(
+            self._invert(self.ref.bibliographic_fields),
+            self._invert(module.bibliographic_fields))
+        if missed or unknown:
+            self.fail('Module docutils.languages.%s.bibliographic_fields:\n'
+                      '    Missed: %s; Unknown: %s'
+                      % (self.language, str(missed), str(unknown)))
 
     def test_directives(self):
         try:
@@ -112,14 +135,47 @@ class LanguageTestCase(CustomTestCase):
                     failures.append('"%s": unknown directive' % d)
             except Exception, error:
                 failures.append('"%s": %s' % (d, error))
-        reverse = {}
-        for key, value in module.directives.items():
-            reverse[value] = key
+        inverted = self._invert(module.directives)
         canonical = directives._directive_registry.keys()
         canonical.sort()
         canonical.remove('restructuredtext-test-directive')
         for name in canonical:
-            if not reverse.has_key(name):
+            if not inverted.has_key(name):
+                failures.append('"%s": translation missing' % name)
+        if failures:
+            text = ('Module docutils.parsers.rst.languages.%s:\n    %s'
+                    % (self.language, '\n    '.join(failures)))
+            if type(text) == UnicodeType:
+                text = text.encode('raw_unicode_escape')
+            self.fail(text)
+
+    def test_roles(self):
+        try:
+            module = docutils.parsers.rst.languages.get_language(
+                self.language)
+            if not module:
+                raise ImportError
+            module.roles
+        except ImportError:
+            self.fail('No docutils.parsers.rst.languages.%s module.'
+                      % self.language)
+        except AttributeError:
+            self.fail('No "roles" mapping in docutils.parsers.rst.languages.'
+                      '%s module.' % self.language)
+        failures = []
+        for d in module.roles.values():
+            try:
+                method = states.Inliner._interpreted_roles[d]
+                #if not method:
+                #    failures.append('"%s": unknown role' % d)
+            except KeyError, error:
+                failures.append('"%s": %s' % (d, error))
+        inverted = self._invert(module.roles)
+        canonical = states.Inliner._interpreted_roles.keys()
+        canonical.sort()
+        canonical.remove('restructuredtext-unimplemented-role')
+        for name in canonical:
+            if not inverted.has_key(name):
                 failures.append('"%s": translation missing' % name)
         if failures:
             text = ('Module docutils.parsers.rst.languages.%s:\n    %s'
