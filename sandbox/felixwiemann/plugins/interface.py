@@ -63,16 +63,16 @@ def html_depart_keynode(visitor, node):
         return '</span>'
 
 
-class KeyNodeWriterHandling(docutils.WriterSupport):
+class KeyNodeHTMLSupport(docutils.WriterExtension):
 
     """
-    This class describes writer handling for the KeyNode, i.e. it
+    This class describes HTML writer handling for the KeyNode, i.e. it
     provides visit_ and depart_ methods.  (By the way, is there any
     term for visit_/depart_ methods?)
-
-    It is automatically picked up by Docutils as soon as there is a
-    node (a KeyNode in this case) a writer cannot handle.
     """
+
+    extends = 'html4css1'
+    """The writer this extension extends."""
 
     node = 'KeyNode'
     """
@@ -83,37 +83,9 @@ class KeyNodeWriterHandling(docutils.WriterSupport):
     another plugin).
     """
 
-    handlers = {'html4css1': (html_visit_keynode, html_depart_keynode),
-                'latex2e': ('\\fbox{', '}')}
+    handlers = (html_visit_keynode, html_depart_keynode)
     """
-    A dictionary mapping writer names to visit-departure pairs.  visit
-    and departure are either strings (then they're simply inserted
-    into the data stream; the visitor should know how to do this) or
-    they're functions which are then called like this:
-    function(visitor, node)
-
-    Note that the keys should be strings, not classes, because the
-    writer module might be unavailable (e.g. we might want support
-    for the DocBook writer, which isn't included in the standard
-    Docutils distribution).
-    """
-
-
-class KeyNodeSettings(docutils.SettingExtension):
-
-    """
-    This class adds settings.
-
-    It is automatically picked up by Docutils, because at the time the
-    settings are needed (e.g. when running "rst2html.py --help"), it
-    isn't possible to know which extensions will be loaded and thus
-    which settings will be applicable.
-    """
-
-    component = 'html4css1'
-    """
-    The settings specified in this class belong to the HTML writer
-    component.
+    A pair of visit and departure functions.
     """
 
     settings_spec = (('Render key buttons in <tt> tags in HTML.',
@@ -130,33 +102,84 @@ class KeyNodeSettings(docutils.SettingExtension):
     """
 
 
-class KeyRole(docutils.parsers.rst.Role):
+class KeyNodeLaTeXSupport(docutils.WriterExtension):
+    
+    """Support for the LaTeX writer.  See KeyNodeHTMLSupport."""
+    
+    extends = 'latex2e'
+    
+    node = 'KeyNode'
+    
+    handlers = ('\\fbox{', '}')
+    """
+    Here we have strings instead of functions.  They are simply
+    inserted into the data stream; the visitor should know how to do
+    this.
+
+    This is shorter and simpler than using lambdas, e.g. ``(lambda:
+    '\\fbox{', lambda: '}')``.
+    """
+
+
+class KeyRole(docutils.ParserExtension):
 
     """
     This is the role implementation for the reST parser.
 
-    To register this class, the Docutils extension system does this,
-    basically:
+    It is only registered at the parser if the parser requests it.
 
-    1. KeyRole.extends => 'restructuredtext parser'
-       (The `extends` attribute is defined in the base class
-       `parsers.rst.Role` for convenience.)
-    2. Find the component which matches 'restructuredtext parser'.
-       => a reST parser instance
-    3. Call rest_parser_instance.register(KeyRole).
-       (The reST parser recognizes that it's a role and adds it.)
+    The reST parser, for example, issues a request when it encounters
+    ".. require:: something".  The request procedure might look like
+    this:
+
+    Let's say the reST parser encounters a ".. require:: key".  Then
+    it calls docutils.register_extension_by_id(self, 'key').  The
+    register function determines that the first parameter (self) is a
+    component instance of type Parser (so it only considers
+    ParserExtensions) and that its name is 'restructuredtext' (so it
+    only considers extensions whose `extends` attribute is
+    'restructuredtext').
+
+    For all matching extensions, the register function then looks at
+    the `id` attribute.  If the second parameter ('key' in this
+    example) matches `id`, the extension is registered at the
+    component instance passed as first parameter.
     """
 
-    names = ['key', 'shortcut']
-    """
-    Names of this role.
+    extends = 'restructuredtext'
+    """The component this extension extends."""
 
-    This means we can use :key:`Ctrl+C` or :shortcut:`Ctrl+C`.
+    id = 'key'
+    """
+    The id under which this extension is known.
+
+    In this case, it's used for ".. require:: key" in reST.
+
+    The presence of an `id` attribute means that the extension isn't
+    loaded automatically but only on request.  (Is that too much
+    magic?)
+    """
+
+    type = 'role'
+    """
+    The type of this extension.
+
+    Might also be 'directive', for example.  This attribute is read by
+    the reST parser.
+    """
+
+    # The rest of this class definition is specific to reST roles:
+
+    name = 'key'
+    """
+    Name of this role.
+
+    This means we can write :key:`Ctrl+C`.
 
     There is no i18n support yet, because using a dictionary like
-    {'en': ['key', 'shortcut']} seems a little bit too complex (since
-    translations usually aren't necessary) and the current i18n system
-    needs a redesign anyway.
+    {'en': 'key'} seems a little bit too complex (since translations
+    usually aren't necessary) and the current i18n system needs a
+    redesign anyway.
     """
 
     raw = 1
@@ -195,13 +218,11 @@ class KeyRole(docutils.parsers.rst.Role):
                 'Invalid key string: %s' % contents, lineno=self.lineno)
             prb = self.inliner.problematic(contents, contents, msg)
             return [prb], [msg]
-            # But this contains a lot of redundancy, given that it's
+            # But this causes a lot of redundancy, given that it's
             # such a common case.  It would be better to have a
             # shortcut like this instead:
-            raise docutils.parsers.rst.RoleError('Invalid key string')
-            # or even
-            raise self.Error('Invalid key string')
-            # which would both do the same as the three lines above.
+            raise self.parser.RoleError('Invalid key string')
+            # which does the same as the three lines above.
 
         # Now comes our highly sophisticated key combination parsing
         # algorithm.
@@ -211,40 +232,3 @@ class KeyRole(docutils.parsers.rst.Role):
             nodes.append(nodes.Text('+'))
             nodes.append(KeyNode(i))
         return [nodes], []
-
-
-class KeyExtension(docutils.Extension):
-
-    """
-    This is the class describing the extension.
-
-    As it's a subclass of docutils.Extension, it is automatically
-    recognized by Docutils, so we don't need to register the extension
-    anywhere.
-    """
-
-    ids = ['key', 'keybutton', 'key_button']
-    """For ".. require:: key" in reST."""
-
-    name = 'Key Button'
-    """This is the "Key Button" plugin."""
-
-    description = 'Support for visual key buttons.'
-    """A description.  Maybe that's necessary for some help message."""
-
-    nodes = [KeyNode]
-    """Nodes this extension adds.  Do we need this?"""
-
-    extension_classes = [KeyRole]
-    """
-    Classes to be registered at the component instances.
-
-    Is there a more precise name than `extension_classes`?  After all,
-    the KeyRole class isn't an extension by itself, but a *part* of an
-    extension.  We need a concise term for such classes.  Some ideas:
-
-    * enhancers
-    * extenders
-    * extension_components
-    * extension_classes (that's what I chose, but it isn't nice)
-    """
