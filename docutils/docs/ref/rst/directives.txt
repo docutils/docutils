@@ -1147,7 +1147,7 @@ Unicode Character Codes
 :Doctree Element: Text
 :Directive Arguments: One or more, required (Unicode character codes,
                       optional text, and comments).
-:Directive Options: None.
+:Directive Options: Possible.
 :Directive Content: None.
 
 The "unicode" directive converts Unicode character codes (numerical
@@ -1175,6 +1175,7 @@ For example, the following text::
     Copyright |copy| 2003, |BogusMegaCorp (TM)|.
 
     .. |copy| unicode:: 0xA9 .. copyright sign
+       :ltrim:
     .. |BogusMegaCorp (TM)| unicode:: BogusMegaCorp U+2122
        .. with trademark sign
 
@@ -1183,8 +1184,21 @@ results in:
     Copyright |copy| 2003, |BogusMegaCorp (TM)|.
 
     .. |copy| unicode:: 0xA9 .. copyright sign
+       :ltrim:
     .. |BogusMegaCorp (TM)| unicode:: BogusMegaCorp U+2122
        .. with trademark sign
+
+The following options are recognized:
+
+``ltrim`` : flag
+    Whitespace to the left of the substitution reference is removed.
+
+``rtrim`` : flag
+    Whitespace to the right of the substitution reference is removed.
+
+``trim`` : flag
+    Equivalent to ``ltrim`` plus ``rtrim``; whitespace on both sides
+    of the substitution reference is removed.
 
 
 Class
