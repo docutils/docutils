@@ -60,8 +60,8 @@ directives = {
       #'citations (translation required)': 'citations',
       'target-notes (translation required)': 'target-notes',
       'restructuredtext-test-directive': 'restructuredtext-test-directive'}
-"""English name to registered (in directives/__init__.py) directive name
-mapping."""
+"""Traditional Chinese name to registered (in directives/__init__.py)
+directive name mapping."""
 
 roles = {
     # language-dependent: fixed
@@ -95,5 +95,5 @@ roles = {
     'uri (translation required)': 'uri-reference',
     'url (translation required)': 'uri-reference',
     'raw (translation required)': 'raw',}
-"""Mapping of Traditional Chinese role names to canonical role names for interpreted text.
-"""
+"""Mapping of Traditional Chinese role names to canonical role names for
+interpreted text."""
