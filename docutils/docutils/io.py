@@ -171,13 +171,14 @@ class FileOutput(Output):
         self.opened = 1
 
     def write(self, data):
-        """Encode and write `data` to a single file."""
+        """Encode `data`, write it to a single file, and return it."""
         output = data.encode(self.options.output_encoding)
         if not self.opened:
             self.open()
         self.destination.write(output)
         if self.autoclose:
             self.close()
+        return output
 
     def close(self):
         self.destination.close()
@@ -202,7 +203,7 @@ class StringOutput(Output):
     """
 
     def write(self, data):
-        """Encode and return `data`."""
+        """Encode `data`, store it in `self.destination`, and return it."""
         self.destination = data.encode(self.options.output_encoding)
         return self.destination
 
