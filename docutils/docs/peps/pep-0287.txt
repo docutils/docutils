@@ -55,11 +55,11 @@ to produce complex documents, and extensible so that there are few
 limits.  Of course, to write reStructuredText documents some prior
 knowledge is required.
 
-The reStructuredText parser is available now.  The Docutils project is
-at the point where standalone reStructuredText documents can be
-converted to HTML; other output format writers will become available
-over time.  Work is progressing on a Python source "Reader" which will
-implement auto-documentation from docstrings.  Authors of existing
+The reStructuredText parser is available now.  Standalone
+reStructuredText documents and PEPs can be converted to HTML; other
+output format writers will become available over time.  Work is
+progressing on a Python source "Reader" which will implement
+auto-documentation from docstrings.  Authors of existing
 auto-documentation tools are encouraged to integrate the
 reStructuredText parser into their projects, or better yet, to join
 forces to produce a world-class toolset for the Python standard
@@ -140,7 +140,8 @@ a) Keep the existing PEP section structure constructs (one-line
 b) Replace the PEP section structure constructs with the
    reStructuredText syntax.  Section headers will require underlines,
    subsections will be supported out of the box, and body text need
-   not be indented (except for block quotes).
+   not be indented (except for block quotes).  This strategy is
+   recommended, and has already been implemented.
 
 Support for RFC 2822 headers has been added to the reStructuredText
 parser for PEPs (unambiguous given a specific context: the first
@@ -622,18 +623,18 @@ Questions & Answers
 6. The existing pep2html.py script converts the existing PEP format to
    HTML.  How will the new-format PEPs be converted to HTML?
 
-   One of the deliverables of the Docutils_ project will be a new
-   version of pep2html.py with integrated reStructuredText parsing.
-   The Docutils project will support PEPs with a "PEP Reader"
-   component, including all functionality currently in pep2html.py
-   (auto-recognition of PEP & RFC references).
+   A new version of pep2html.py with integrated reStructuredText
+   parsing has been completed.  The Docutils project supports PEPs
+   with a "PEP Reader" component, including all functionality
+   currently in pep2html.py (auto-recognition of PEP & RFC references,
+   email masking, etc.).
 
 7. Who's going to convert the existing PEPs to reStructuredText?
 
    PEP authors or volunteers may convert existing PEPs if they like,
    but there is no requirement to do so.  The reStructuredText-based
    PEPs will coexist with the old PEP standard.  The pep2html.py
-   mentioned in answer 6 will process both old and new standards.
+   mentioned in answer 6 processes both old and new standards.
 
 8. Why use reStructuredText for README and other ancillary files?
 
