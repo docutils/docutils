@@ -17,21 +17,24 @@ from docutils import nodes
 from docutils.parsers.rst.directives.util import cheapDirective, CheapException, openAny
 from docutils.statemachine import StateMachineWS
 import sys
-from docutils.parsers.rst.directives import parse_directive
+from docutils.parsers.rst.directives import parse_directive, DirectiveParseError
 
 def exists(arg):
   return 1
 
-include_option_spec = {}
+include_option_spec = {'file': str, 'url': str,}
 
-def include(match, type_name, data, state, state_machine, option_pre):
+def include(match, type_name, data, state, state_machine, options):
     '''
     Test new directive parsing
     '''
-    print >> sys.sdtout, this.__name__
-    result = parse_directive(match, type_name, state, state_machine, option_pre, {'file': str, 'url': str})
-    for l in result:
-      print >> sys.stdout >> '   ', l
+    try:
+        arguments, options, content, blank_finish = parse_directive(match, type_name, data, 
+            state, state_machine, options, option_spec=include_option_spec)
+    except DirectiveParseError, (error, unparsed):
+        return [error], unparsed
+    temp_node = nodes.section('doh!', **options)
+    return temp_node, blank_finish
       
 raw = include
     

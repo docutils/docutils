@@ -39,6 +39,7 @@ Directive functions return a tuple of two values:
 __docformat__ = 'reStructuredText'
 
 from docutils.parsers.rst.languages import en as _fallback_language_module
+from docutils import nodes
 import docutils
 
 
@@ -88,15 +89,16 @@ class DirectiveParseError(docutils.ApplicationError):
     self.unparsed = unparsed
 
 
-#def parse_directive(match, type_name, data, state, state_machine, attributes,
-#  attribute_spec={}):
+#def parse_directive(match, type_name, data, state, state_machine, options,
+#  option_spec={}):
 
-def parse_directive(match, type_name, state, state_machine,
-                    option_presets, arguments=None,
+def parse_directive(match, type_name, data, state, state_machine,
+                    options, arguments=None,
                     option_spec={}, content=None):
     """
     Parameters:
 
+:1
     - `match`, `type_name`, state`, `state_machine`, and
       `option_presets`: See `docutils.parsers.rst.directives.__init__`.
     - `arguments`: A 2-tuple of the number of ``(required,
@@ -126,38 +128,33 @@ def parse_directive(match, type_name, state, state_machine,
           line_offset : line_offset + len(datablock) + 1])
     for i in range(len(datablock)):
         if datablock[i][:1] == ':':
-            attlines = datablock[i:]
+            optlines = datablock[i:]
             datablock = datablock[:i]
             break
     else:
-        attlines = []
-    attoffset = line_offset + i
+        optlines = []
+    optoffset = line_offset + i
     reference = ''.join([line.strip() for line in datablock])
-    if attlines:
-        success, data, blank_finish = state.parse_extension_attributes(
-              attribute_spec, attlines, blank_finish)
-        if success:                     # data is a dict of attributes
-            attributes.update(data)
+    if optlines:
+        success, data, blank_finish = state.parse_extension_options(
+              option_spec, optlines, blank_finish)
+        if success:                     # data is a dict of options
+            options.update(data)
         else:                           # data is an error string
             error = state_machine.reporter.error(
-                  'Error in "%s" directive attributes at line %s:\n%s.'
+                  'Error in "%s" directive options at line %s:\n%s.'
                   % (match.group(1), lineno, data), '',
                   nodes.literal_block(blocktext, blocktext))
-            raise CheapException(error, blank_finish)
-
-    return datablock, blocktext, blank_finish
-
-def openAny(path):
-    try:
-      # is it a file?
-      return open(path)
-    except :
-      try:
-        # is it a url?
-        return urlopen(path)
-      except (URLError, ValueError):
-        # treat as a string
-        return StringIO(path)
+            raise DirectiveParseError(error, blank_finish)
+    indented, indent, line_offset, blank_finish = state_machine.get_first_known_indented(match.end())
+    while indented and not indented[-1].strip():
+      indented.pop()
+    if not indented or len(indented) < 3:
+        content = []
+    else:
+        content = indented[2:]  
+    arguments = datablock
+    return arguments, options, content, blank_finish
 
 def directive(directive_name, language_module):
     """
@@ -217,3 +214,4 @@ def choice(argument, values):
     else:
         raise ValueError('"%s" unknown; choose from %s'
                          % (argument, format_values(values)))
+
