@@ -43,10 +43,17 @@ def read_config_file(option, opt, value, parser):
     """
     config_parser = ConfigParser()
     config_parser.read(value)
-    settings = config_parser.get_section('options')
-    make_paths_absolute(settings, parser.relative_path_settings,
+
+    default_section = 'options'
+    for section_name in config_parser.sections:
+        if section_name == default_section:
+            prefix = ''
+        else:
+            prefix = section_name + '_'
+        settings = config_parser.get_section(section_name)
+        make_paths_absolute(settings, parser.relative_path_settings,
                         os.path.dirname(value))
-    parser.values.__dict__.update(settings)
+        parser.values.__dict__.update(settings)
 
 def make_paths_absolute(pathdict, keys, base_path=None):
     """

@@ -8,11 +8,36 @@ $CMD $INF > $OUTF
 diff -q -s $REFF $OUTF 
 echo --------------------------
 
-CMD="../../tools/rst2latex.py"
+#CMD="../../tools/rst2latex.py --dump-settings"
+CMD="../../tools/rst2latex.py --no-doc-info"
+INF=test/README.txt
+OUTF="$INF-no-info.tex"
+REFF="$OUTF.ref"
+$CMD $INF > $OUTF
+diff -q -s $REFF $OUTF 
+echo --------------------------
+
+CMD="../../tools/rst2latex.py --no-doc-title"
+INF=test/README.txt
+OUTF="$INF-no-title.tex"
+REFF="$OUTF.ref"
+$CMD $INF > $OUTF
+diff -q -s $REFF $OUTF 
+echo --------------------------
+
+CMD="../../tools/rst2latex.py --no-doc-title --no-doc-info"
+INF=test/README.txt
+OUTF="$INF-no-title-info.tex"
+REFF="$OUTF.ref"
+$CMD $INF > $OUTF
+diff -q -s $REFF $OUTF 
+echo --------------------------
+
 #CMD="../../tools/rst2latex.py --snap-footnote-refs=1"
 #CMD="../../tools/rst2latex.py --footnote-references=superscript"
 #CMD="../../tools/rst2latex.py --documentclass=book --hyperlink-color=0"
 
+CMD="../../tools/rst2latex.py"
 if [ -z "$1" ] ; then
   FM="*.txt"
 else
