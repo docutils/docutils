@@ -136,7 +136,19 @@ Implements subscripts.
 
    See `the reStructuredText spec`__ for further information.
 
+   In such cases, readability of the plain text can be greatly
+   improved with substitutions::
+
+       The chemical formula for pure water is |H20|.
+
+       .. |H20| replace:: H\ :sub:`2`\ O
+
+   See `the reStructuredText spec`__ for further information on
+   `character-level markup`__ and `the substitution mechanism`__.
+
+   __ ./reStructuredText.html
    __ ./reStructuredText.html#character-level-inline-markup
+   __ ./reStructuredText.html#substitution-references
 
 
 ``:superscript:``
