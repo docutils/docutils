@@ -93,6 +93,7 @@ Todo
 - list item marks are not guarenteed to be what was specified (if they
   are it is be coincidence, however unless one starts out of order
   they should match most of the time).
+- sidebar subtitle needs to go into sidebarinfo
 
 Should para, note, etc... not in a section at the start
 of the document be stuffed into an untitled ``section``?
@@ -407,6 +408,20 @@ class DocBookTranslator(nodes.NodeVisitor):
                   everything should be collected here.
         """
 
+        # XXX There are a number of fields in docinfo elements
+        #     which don't map nicely to docbook elements and 
+        #     reST allows one to insert arbitrary fields into
+        #     the header, We need to be able to handle fields
+        #     which either don't map or nicely or are unexpected.
+        #     I'm thinking of just using DocBook to display these
+        #     elements in some sort of tabular format -- but
+        #     to collecting them is not straight-forward.  
+        #     Paragraphs, links, lists, etc... can all live within
+        #     the values so we either need a separate visitor
+        #     to translate these elements, or to maintain state
+        #     in any possible child elements (not something I
+        #     want to do).
+
         docinfo = ['<%sinfo>\n' % self.doctype]
 
         authors = []
@@ -438,9 +453,15 @@ class DocBookTranslator(nodes.NodeVisitor):
                 releaseinfo = n.astext()
             elif isinstance(n, nodes.version):
                 version = 'Version ' + n.astext()
+            elif isinstance(n, nodes.field):
+                # XXX
+                import sys
+                print >> sys.stderr, "I don't do 'field' yet"
             # since all child nodes are handled here raise an exception
             # if node is not handled, so it doesn't silently slip through.
             else:
+                print dir(n)
+                print n.astext()
                 raise self.unimplemented_visit(n)
 
         # can only add author if name is present
@@ -507,10 +528,11 @@ class DocBookTranslator(nodes.NodeVisitor):
         self.rearrange_footnotes()
 
     def visit_emphasis(self, node):
-        self.body.append(self.starttag(node, 'emphasis'))
+        #self.body.append(self.starttag(node, 'emphasis'))  # XXX
+        self.body.append('<emphasis>')
 
     def depart_emphasis(self, node):
-        self.body.append('</emphasis>\n')
+        self.body.append('</emphasis>')
 
     def visit_entry(self, node):
         tagname = 'entry'
@@ -522,7 +544,7 @@ class DocBookTranslator(nodes.NodeVisitor):
             atts['nameend'] = self.colnames[self.entry_level \
                 + node['morecols']]
         self.entry_level += 1   # for tracking what namest and nameend are
-        self.body.append(self.starttag(node, tagname, **atts))
+        self.body.append(self.starttag(node, tagname, '', **atts))
 
     def depart_entry(self, node):
         self.body.append('</entry>\n')
@@ -648,6 +670,13 @@ class DocBookTranslator(nodes.NodeVisitor):
 
     # TODO: header
 
+    # ??? does anything need to be done for generated?
+    def visit_generated(self, node):
+        pass
+
+    def depart_generated(self, node):
+        pass
+
     def visit_hint(self, node):
         self.body.append(self.starttag(node, 'note'))
         self.body.append('\n<title>%s</title>\n' 
@@ -673,14 +702,14 @@ class DocBookTranslator(nodes.NodeVisitor):
         # namespace prefix xmlXPathCompiledEval: evaluation failed
         # When I switched to version 1.49 of the docbook-stylesheets
         # I didn't have this problem.
-        self.body.append('<mediaobject>\n')
-        self.body.append('<imageobject>\n')
+        self.body.append('<mediaobject>')
+        self.body.append('<imageobject>')
         self.body.append(self.emptytag(node, 'imagedata', **atts))
-        self.body.append('</imageobject>\n')
+        self.body.append('</imageobject>')
         if alt:
             self.body.append('<textobject><phrase>' \
                 '%s</phrase></textobject>\n' % alt)
-        self.body.append('</mediaobject>\n')
+        self.body.append('</mediaobject>')
 
     def depart_image(self, node):
         pass
@@ -718,6 +747,12 @@ class DocBookTranslator(nodes.NodeVisitor):
 
     def depart_legend(self, node):
         pass
+
+    def visit_line_block(self, node):
+        self.body.append(self.starttag(node, 'literallayout'))
+
+    def depart_line_block(self, node):
+        self.body.append('</literallayout>\n')
 
     def visit_list_item(self, node):
         self.body.append(self.starttag(node, 'listitem'))
@@ -870,10 +905,11 @@ class DocBookTranslator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def visit_strong(self, node):
-        self.body.append(self.starttag(node, 'emphasis', role='strong'))
+        # self.body.append(self.starttag(node, 'emphasis', role='strong')) # XXX
+        self.body.append('<emphasis role="strong">')
 
     def depart_strong(self, node):
-        self.body.append('</emphasis>\n')
+        self.body.append('</emphasis>')
 
     def visit_substitution_definition(self, node):
         raise nodes.SkipNode
@@ -886,6 +922,8 @@ class DocBookTranslator(nodes.NodeVisitor):
 
     def depart_subtitle(self, node):
         self.body.append('</subtitle>\n')
+        if isinstance(node.parent, nodes.sidebar):
+            self.body.append('</sidebarinfo>\n')
 
     # TODO: system_message
     visit_system_message = depart_system_message = lambda self, node: None
@@ -937,19 +975,43 @@ class DocBookTranslator(nodes.NodeVisitor):
         self.body.append('</tip>\n')
 
     def visit_title(self, node):
-        self.body.append(self.starttag(node, 'title'))
+        # HACK: sidebar subtitle needs to go into sidebarinfo
+        # so it's easier to put the title in there too
+        if isinstance(node.parent, nodes.sidebar):
+            if isinstance(node.parent.children[1], nodes.subtitle):
+                self.body.append('<sidebarinfo>')
+        self.body.append(self.starttag(node, 'title', ''))
 
     def depart_title(self, node):
         self.body.append('</title>\n')
 
+    # XXX just a hack for now
+    def visit_title_reference(self, node):
+        #self.body.append(self.starttag(node, 'emphasis'))  # XXX
+        self.body.append('<emphasis>')
+
+    # XXX just a hack for now
+    def depart_title_reference(self, node):
+        self.body.append('</emphasis>')
+
     def visit_topic(self, node):
+        # TODO: map dedication to dedication
+
         # Table of Contents generation handled by DocBook
         if node.get('class') == 'contents':
             raise nodes.SkipChildren
         elif node.get('class') == 'abstract':
             self.body.append(self.starttag(node, 'abstract'))
             self.context.append('abstract')
+        # generic "topic" element 
+        # XXX I don't really know what else to do with it.
+        elif node.get('class','') == '':
+            self.body.append(self.starttag(node, 'section'))
+            self.context.append('section')
         else:
+            # XXX debug code
+            print 'class:', node.get('class')
+            print node.__class__.__name__
             print node
             print `node`
             print dir(node)
