@@ -1,0 +1,36 @@
+Presentation Cover
+------------------
+
+*Richard Jones, Another Author*
+
+*Some very important conference, March 2002*
+
+Second slide
+------------
+
+- blah, blah blah blah blah. blah, blah blah blah blah.
+- blah, blah blah blah blah.
+
+Another slide
+-------------
+
+bare para blah, blah blah blah blah. blah, blah blah blah blah.
+
+definition term
+  blah, blah blah blah blah. blah, blah blah blah blah.
+another one
+  note, don't have more than one para in here!
+
+bare para blah, blah blah blah blah. blah, blah blah blah blah.
+
+Another slide
+-------------
+
+hi, another para
+
+- ooh, bullet points
+- yeah!
+- woo! **bold** and *italics* are OK!
+
+don't nest _anything_ ... PLATYPUS can't deal with it. That means no
+indented bullets, no multiple paras in bullets or definitions...
