@@ -45,7 +45,7 @@ options = [('pretty', 'p',
            ('styledxml=', 's', 'output raw XML with XSL style sheet '
             'reference (filename supplied in the option argument)'),
            ('xml', 'x', 'output pretty XML (indented)'),
-           ('attributes', '', 'dump document attributes after processing'),
+           ('attributes', 'A', 'dump document attributes after processing'),
            ('debug', 'd', 'debug mode (lots of output)'),
            ('version', 'V', 'show Docutils version then exit'),
            ('help', 'h', 'show help text then exit')]
@@ -58,7 +58,7 @@ def usage():
         if longopt[-1:] == '=':
             opts = '-%s arg, --%sarg' % (shortopt, longopt)
         else:
-            opts = '-%s, --%s' % (shortopt, longopt),
+            opts = '-%s, --%s' % (shortopt, longopt)
         print '%-15s' % opts,
         if len(opts) > 14:
             print '%-16s' % '\n',
