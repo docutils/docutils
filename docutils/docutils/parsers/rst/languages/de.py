@@ -22,7 +22,7 @@ directives = {
       'notiz': 'note',
       'tip': 'tip',
       'warnung': 'warning',
-      'topic': 'topic',  # Inhalt, Thema or Überbegriff
+      'topic': 'topic',  # Überbegriff
       'line-block': 'line-block',
       'parsed-literal': 'parsed-literal',
       #'questions': 'questions',
@@ -31,8 +31,11 @@ directives = {
       'meta': 'meta',
       #'imagemap': 'imagemap',
       'bild': 'image',
-      'figure': 'figure', # also Bild ?
-      #'raw': 'raw',
+      'abbildung': 'figure',
+      'raw': 'raw',         # unbearbeitet
+      'include': 'include', # einfügen, "füge ein" would be more like a command.
+                            # einfügung would be the noun. 
+      'replace': 'replace', # ersetzen, ersetze
       'inhalt': 'contents',
       'sectnum': 'sectnum',
       'section-numbering': 'sectnum',
