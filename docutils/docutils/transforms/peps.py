@@ -32,6 +32,7 @@ class Headers(Transform):
     Process fields in a PEP's initial RFC-2822 header.
     """
 
+    pep_url = 'pep-%04d.html'
     pep_cvs_url = ('http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/python/'
                    'python/nondist/peps/pep-%04d.txt')
     rcs_keyword_substitutions = (
@@ -65,7 +66,7 @@ class Headers(Transform):
             if len(body) > 1:
                 raise DataError('PEP header field body contains multiple '
                                 'elements:\n%s' % field.pformat(level=1))
-            elif len(body):
+            elif len(body) == 1:
                 if not isinstance(body[0], nodes.paragraph):
                     raise DataError('PEP header field body may only contain '
                                     'a single paragraph:\n%s'
@@ -78,6 +79,7 @@ class Headers(Transform):
                 uri = self.pep_cvs_url % int(pep)
                 body[0][:] = [nodes.reference('', date, refuri=uri)]
             else:
+                # empty
                 continue
             para = body[0]
             if name == 'author':
@@ -99,7 +101,7 @@ class Headers(Transform):
                 for refpep in body.astext().split():
                     pepno = int(refpep)
                     newbody.append(nodes.reference(
-                          refpep, refpep, refuri='pep-%04d.html' % pepno))
+                          refpep, refpep, refuri=self.pep_url % pepno))
                     newbody.append(space)
                 para[:] = newbody[:-1] # drop trailing space
             elif name == 'last-modified':
@@ -132,21 +134,29 @@ class PEPZero(Transform):
     """
 
     def transform(self):
-        visitor = EmailMasker(self.document)
+        visitor = PEPZeroSpecial(self.document)
         self.document.walk(visitor)
         self.startnode.parent.remove(self.startnode)
 
 
-class EmailMasker(nodes.SparseNodeVisitor):
+class PEPZeroSpecial(nodes.SparseNodeVisitor):
 
     """
-    For all email-address references such as "user@host", mask the address as
-    "user at host" (text) to thwart simple email address harvesters.
+    Perform the special processing needed by PEP 0:
+    
+    - For all email-address references such as "user@host", mask the address
+      as "user at host" (text) to thwart simple email address harvesters
+      (except for those listed in `non_masked_addresses` and addresses in the
+      "Discussions-To" field).
+
+    - Link PEP numbers in the second column of 4-column tables to the PEPs
+      themselves.
     """
 
     non_masked_addresses = ('peps@python.org',
                             'python-list@python.org',
                             'python-dev@python.org')
+    pep_url = Headers.pep_url
 
     def unknown_visit(self, node):
         pass
@@ -160,3 +170,29 @@ class EmailMasker(nodes.SparseNodeVisitor):
     def visit_field_list(self, node):
         if node.hasattr('class') and node['class'] == 'rfc2822':
             raise nodes.SkipNode
+
+    def visit_tgroup(self, node):
+        if node['cols'] != 4:
+            raise nodes.SkipNode
+        self.entry = 0
+
+    def visit_colspec(self, node):
+        self.entry += 1
+        if self.entry == 2:
+            node['class'] = 'num'
+
+    def visit_row(self, node):
+        self.entry = 0
+
+    def visit_entry(self, node):
+        self.entry += 1
+        if self.entry == 2 and len(node) == 1:
+            p = node[0]
+            if isinstance(p, nodes.paragraph) and len(p) == 1:
+                text = p.astext()
+                try:
+                    pep = int(text)
+                    ref = self.pep_url % pep
+                    p[0] = nodes.reference(text, text, refuri=ref)
+                except ValueError:
+                    pass
