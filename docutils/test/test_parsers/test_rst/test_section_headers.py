@@ -762,6 +762,25 @@ Paragraph
             Over & underline too short.
 """],
 ["""\
+Paragraph
+
+    ABC
+    ==
+
+    Underline too short.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Paragraph
+    <block_quote>
+        <paragraph>
+            ABC
+            ==
+        <paragraph>
+            Underline too short.
+"""],
+["""\
 ...
 ...
 

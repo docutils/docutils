@@ -45,10 +45,6 @@ Bugs
   whitespace and punctuation as markup delimiters, which may not be
   applicable in these languages.
 
-* In docutils.transforms.peps.TargetNotes, an empty References section
-  is generated even if there are no references.  Reported by David
-  Ascher.
-
 
 General
 -------
