@@ -283,6 +283,11 @@ Specific:
     parser strategy and short titles (<= 3 char-long over- &
     underlines).  Fixes SF bug #738803 "infinite loop with multiple
     titles" submitted by Jason Diamond.
+  - Added explicit interpreted text roles for standard inline markup:
+    "emphasis", "strong", "literal".
+  - Implemented "superscript" and "subscript" interpreted text roles.
+  - Added initial support for "abbreviation" and "acronym" roles;
+    incomplete.
 
 * docutils/parsers/rst/tableparser.py:
 
@@ -470,6 +475,9 @@ Specific:
   - Added support for "title_reference", "sidebar", "attribution",
     "rubric", and generic "admonition" elements.
   - Added "--attribution" option.
+  - Added support for "inline", "subscript", "superscript" elements.
+  - Added initial support for "abbreviation" and "acronym";
+    incomplete.
 
 * docutils/writers/latex2e.py: LaTeX Writer, added by Engelbert Gruber
   (from the sandbox).

@@ -125,6 +125,54 @@ totest['basics'] = [
     <paragraph>
         :title:`` (empty interpteted text not recognized)
 """],
+["""\
+Explicit roles for standard inline markup:
+:emphasis:`emphasis`,
+:strong:`strong`,
+:literal:`inline literal text`.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Explicit roles for standard inline markup:
+        <emphasis>
+            emphasis
+        ,
+        <strong>
+            strong
+        ,
+        <literal>
+            inline literal text
+        .
+"""],
+["""\
+Simple explicit roles:
+:ab:`abbreviation`,
+:ac:`acronym`,
+:sup:`superscript`,
+:sub:`subscript`,
+:title:`title reference`.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Simple explicit roles:
+        <abbreviation>
+            abbreviation
+        ,
+        <acronym>
+            acronym
+        ,
+        <superscript>
+            superscript
+        ,
+        <subscript>
+            subscript
+        ,
+        <title_reference>
+            title reference
+        .
+"""],
 ]
 
 totest['references'] = [
@@ -232,6 +280,22 @@ totest['unknown_roles'] = [
     <system_message backrefs="id2" id="id1" level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Unknown interpreted text role "very.long-role_name".
+"""],
+["""\
+:restructuredtext-unimplemented-role:`interpreted`
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <problematic id="id2" refid="id1">
+            :restructuredtext-unimplemented-role:`interpreted`
+    <system_message level="1" line="1" source="test data" type="INFO">
+        <paragraph>
+            No role entry for "restructuredtext-unimplemented-role" in module "docutils.parsers.rst.languages.en".
+            Trying "restructuredtext-unimplemented-role" as canonical role name.
+    <system_message backrefs="id2" id="id1" level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Interpreted text role "restructuredtext-unimplemented-role" not implemented.
 """],
 ]
 
