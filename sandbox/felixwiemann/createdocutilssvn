@@ -23,14 +23,11 @@ if test ! -f $snapshot; then
     mv -v docutils-cvsroot.tar.bz2 $snapshot
 fi
 
-# If it's not yet unpacked, unpack it.
-if test ! -d docutils-$date; then
-    rm docutils -rf
-    rm docutils-$date -rf
-    echo Unpacking...
-    tar xjf docutils-cvsroot-$date.tar.bz2
-    mv -v docutils docutils-$date
-fi
+rm docutils -rf
+rm docutils-$date -rf
+echo Unpacking...
+tar xjf docutils-cvsroot-$date.tar.bz2
+mv -v docutils docutils-$date
 
 cd cvs2svn
 # Clean up.
