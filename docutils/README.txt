@@ -38,7 +38,7 @@ complete details.
    See `Releases & Snapshots`_ below for details.
 
 3. Unpack the tarball in a temporary directory (**not** directly in
-   Python's ``site-packages``) and install with the standard ::
+   Python's ``site-packages``) and install with the standard::
 
        python setup.py install
 
@@ -48,7 +48,8 @@ complete details.
    directory as in step 3.  For example::
 
        cd tools
-       ./rst2html.py ../FAQ.txt ../FAQ.html
+       ./rst2html.py ../FAQ.txt ../FAQ.html        (Unix)
+       python rst2html.py ..\FAQ.txt ..\FAQ.html   (Windows)
 
    See Usage_ below for details.
 
@@ -260,13 +261,19 @@ shell commands will generate HTML for all included documentation::
     cd <archive_directory_path>/tools
     ./buildhtml.py ../
 
+On Windows systems, type::
+
+    cd <archive_directory_path>\tools
+    python buildhtml.py ..
+
 The final directory name of the ``<archive_directory_path>`` is
 "docutils" for snapshots.  For official releases, the directory may be
-called "docutils-X.Y", where "X.Y" is the release version.
+called "docutils-X.Y.Z", where "X.Y.Z" is the release version.
 Alternatively::
 
     cd <archive_directory_path>
-    tools/buildhtml.py --config=tools/docutils.conf
+    tools/buildhtml.py --config=tools/docutils.conf          (Unix)
+    python tools\buildhtml.py --config=tools\docutils.conf   (Windows)
 
 Some files may generate system messages (warnings and errors).  The
 ``docs/user/rst/demo.txt`` file (under the archive directory) contains
@@ -295,6 +302,11 @@ the following commands::
     cd <archive_directory_path>/test
     ./alltests.py
 
+Under Windows, type::
+
+    cd <archive_directory_path>\test
+    python alltests.py
+
 You should see a long line of periods, one for each test, and then a
 summary like this::
 
@@ -311,10 +323,15 @@ modules, create data structures, etc.).
 If any of the tests fail, please `open a bug report`_ or `send email`_
 [2]_.  Please include all relevant output, information about your
 operating system, Python version, and Docutils version.  To see the
-Docutils version, use these commands::
+Docutils version, use these commands in the shell::
 
     cd ../tools
     ./quicktest.py --version
+
+Windows users type these commands::
+
+    cd ..\tools
+    python quicktest.py --version
 
 .. _open a bug report:
    http://sourceforge.net/tracker/?group_id=38414&atid=422030
