@@ -945,6 +945,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\n')
 
     def get_colspecs(self):
+        """
+        Return column specification for longtable.
+        """
         width = 0
         for node in self.colspecs:
             width += node['colwidth']
@@ -993,6 +996,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append(self.context.pop())
 
     def visit_tbody(self, node):
+        # BUG write preamble if not yet done (colspecs not [])
+        # for tables without heads.
         self.body.append('%[visit_tbody]\n')
 
     def depart_tbody(self, node):
@@ -1013,12 +1018,29 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_thead(self, node):
+        # number_of_columns will be zero after get_colspecs.
+        # ! push onto context for depart to pop it.
+        number_of_columns = len(self.colspecs)
         self.table_preamble()
         #BUG longtable needs firstpage and lastfooter too.
-        self.body.append('%[visit_thead]\n')
+        self.body.append('\\hline\n')
 
     def depart_thead(self, node):
-        self.body.append('%[depart_thead]\n')
+        if self.use_longtable:
+            # the table header written should be on every page
+            # => \endhead
+            self.body.append('\\endhead\n')
+            # and the firsthead => \endfirsthead
+            # BUG i want a "continued from previous page" on every not
+            # firsthead, but then we need the header twice.
+            #
+            # there is a \endfoot and \endlastfoot too.
+            # but we need the number of columns to 
+            # self.body.append('\\multicolumn{%d}{c}{"..."}\n' % number_of_columns)
+            # self.body.append('\\hline\n\\endfoot\n')
+            # self.body.append('\\hline\n')
+            # self.body.append('\\endlastfoot\n')
+            
 
     def visit_tip(self, node):
         self.visit_admonition(node, 'tip')
