@@ -18,19 +18,20 @@ suggestions, criticism, bug reports, code contributions, tasty treats,
 and related projects:
 
     Aahz, David Abrahams, David Ascher, Fred Bremmer, Ian Bicking,
-    Simon Budig, Brett Cannon, Adam Chodorowski, Fred Drake, Dethe
-    Elza, Benja Fallenstein, fantasai, Stefane Fermigier, Jim Fulton,
-    Peter Funk, Jorge Gonzalez, Engelbert Gruber, Simon Hefti, Doug
-    Hellmann, Juergen Hermann, Michael Hudson, Jeremy Hylton, Tony
-    Ibbs, Alan Jaffray, Dmitry Jemerov, Richard Jones, Andreas Jung,
-    Garth Kidd, Daniel Larsson, Marc-Andre Lemburg, Julien Letessier,
-    Wolfgang Lipp, Edward Loper, Dallas Mahrt, Ken Manheimer, Vasko
-    Miroslav, Skip Montanaro, Paul Moore, Patrick K. O'Brien, Michel
-    Pelletier, Sam Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim,
-    Brett g Porter, Tavis Rudd, Oliver Rutherfurd, Kenichi Sato, Ueli
-    Schlaepfer, Gunnar Schwant, tav, Bob Tolbert, Laurence Tratt,
-    Guido van Rossum, Martin von Loewis, Greg Ward, Barry Warsaw,
-    Edward Welbourne, Ka-Ping Yee, Moshe Zadka
+    Simon Budig, Bill Bumgarner, Brett Cannon, Adam Chodorowski, Fred
+    Drake, Dethe Elza, Benja Fallenstein, fantasai, Stefane Fermigier,
+    Jim Fulton, Peter Funk, Jorge Gonzalez, Engelbert Gruber, Simon
+    Hefti, Doug Hellmann, Juergen Hermann, Michael Hudson, Jeremy
+    Hylton, Tony Ibbs, Alan Jaffray, Dmitry Jemerov, Richard Jones,
+    Andreas Jung, Garth Kidd, Nicola Larosa, Daniel Larsson,
+    Marc-Andre Lemburg, Julien Letessier, Wolfgang Lipp, Edward Loper,
+    Dallas Mahrt, Ken Manheimer, Vasko Miroslav, Skip Montanaro, Paul
+    Moore, Patrick K. O'Brien, Michel Pelletier, Sam Penrose, Tim
+    Peters, Pearu Peterson, Mark Pilgrim, Brett g Porter, Tavis Rudd,
+    Oliver Rutherfurd, Kenichi Sato, Ueli Schlaepfer, Gunnar Schwant,
+    tav, Bob Tolbert, Laurence Tratt, Guido van Rossum, Martin von
+    Loewis, Greg Ward, Barry Warsaw, Edward Welbourne, Ka-Ping Yee,
+    Moshe Zadka
 
 Thank you!
 
@@ -110,6 +111,8 @@ Specific:
     global ``relative_path_settings``).
   - Added "--expose-internal-attribute", "--dump-pseudo-xml",
     "--dump-settings", and "--dump-transforms" hidden options.
+  - Removed nasty internals-fiddling ``ConfigParser.get_section``
+    code, replaced with correct code.
 
 * docutils/io.py:
 
@@ -179,6 +182,8 @@ Specific:
   - Added ``ViewList`` & ``StringList`` classes;
     ``extract_indented()`` becomes ``StringList.get_indented()``.
   - Added ``StateMachine.insert_input()``.
+  - Fixed ViewList slice handling for Python 2.3.  Patch from (and
+    thanks to) Fred Drake.
 
 * docutils/utils.py:
 
@@ -191,6 +196,9 @@ Specific:
 
 * docutils/languages/fr.py: Added to project; French mappings by
   Stefane Fermigier.
+
+* docutils/languages/it.py: Added to project; Italian mappings by
+  Nicola Larosa.
 
 * docutils/languages/sk.py: Added to project; Slovak mappings by
   Miroslav Vasko.
@@ -279,6 +287,9 @@ Specific:
 
 * docutils/parsers/rst/languages/de.py: Added to project; German
   mappings by Engelbert Gruber.
+
+* docutils/parsers/rst/languages/it.py: Added to project; Italian
+  mappings by Nicola Larosa.
 
 * docutils/parsers/rst/languages/sk.py: Added to project; Slovak
   mappings by Miroslav Vasko.
