@@ -430,7 +430,7 @@ either the string separating it from the `option` (typically either
 <!ELEMENT pending EMPTY>
 <!ATTLIST pending %basic.atts;>
 
-<!ELEMENT figure (image, ((caption, legend?) | legend) >
+<!ELEMENT figure (image, ((caption, legend?) | legend)) >
 <!ATTLIST figure %basic.atts;>
 
 <!-- Also an inline element. -->
@@ -439,9 +439,9 @@ either the string separating it from the `option` (typically either
     %basic.atts;
     uri       CDATA     #REQUIRED
     alt       CDATA     #IMPLIED
-    height    &number;  #IMPLIED
-    width     &number;  #IMPLIED
-    scale     &number;  #IMPLIED>
+    height    %number;  #IMPLIED
+    width     %number;  #IMPLIED
+    scale     %number;  #IMPLIED>
 
 <!ELEMENT caption %text.model;>
 <!ATTLIST caption %basic.atts;>
@@ -459,8 +459,8 @@ Table elements: table, tgroup, colspec, thead, tbody, row, entry.
 <!ATTLIST system_message
     %basic.atts;
     %backrefs.att;
-    level     &number;  #IMPLIED
-    line      &number;  #IMPLIED
+    level     %number;  #IMPLIED
+    line      %number;  #IMPLIED
     type      NMTOKEN   #IMPLIED>
 
 <!-- Used to pass raw data through the system. Also inline. -->
