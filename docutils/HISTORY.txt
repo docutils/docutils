@@ -208,6 +208,9 @@ Specific:
 
 * spec/pep-0257.txt: Clarified prohibition of signature repetition.
 
+* spec/pep-0258.txt: Updated.  Added text from pysource.txt and
+  mailing list discussions.
+
 * spec/pep-0287.txt:
 
   - Minor edits.
