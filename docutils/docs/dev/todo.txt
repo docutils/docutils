@@ -269,8 +269,8 @@ Directives
   - _`body.verse`: Paragraphs with linebreaks preserved, *and* inline
     markup support too.  Use cases: verse (poetry, song lyrics, etc.),
     address blocks.  A directive would be easy; what about a
-    literal-block-like prefix, perhaps ';;'?  (It's a semi-literal
-    block, after all.)  Example::
+    literal-block-like prefix, perhaps "``;;``"?  (It is a semi-
+    literal-block, after all.)  Example::
 
         Take it away, Eric the Orchestra Leader!  ;;
 
