@@ -178,7 +178,7 @@ class Values(optparse.Values):
         if isinstance(other_dict, Values):
             other_dict = other_dict.__dict__
         other_dict = other_dict.copy()
-        for setting in option_parser.lists:
+        for setting in option_parser.lists.keys():
             if (hasattr(self, setting) and other_dict.has_key(setting)):
                 value = getattr(self, setting)
                 if value:
