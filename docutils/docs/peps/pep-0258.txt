@@ -455,7 +455,8 @@ Docutils Package Structure
     - Function "get_language(language_code)", returns matching
       language module.  (``docutils/languages/__init__.py``)
 
-    - Module "docutils.languages.en" (English).
+    - Modules: en.py (English), de.py (German), fr.py (French), sk.py
+      (Slovak), sv.py (Swedish).
 
     - Other languages to be added.
 

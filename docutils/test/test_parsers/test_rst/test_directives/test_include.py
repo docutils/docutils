@@ -21,6 +21,7 @@ def suite():
 
 mydir = os.path.dirname(suite.func_code.co_filename)
 include1 = os.path.join(mydir, 'include1.txt')
+include1rel = DocutilsTestSupport.utils.relative_path(None, include1)
 include2 = os.path.join(mydir, 'include2.txt')
 
 totest = {}
@@ -47,8 +48,8 @@ A paragraph.
                 <literal>
                     test_include.py
                 .
-        <paragraph>
-            A paragraph.
+            <paragraph>
+                A paragraph.
 """],
 ["""\
 Include Test
@@ -71,7 +72,7 @@ A paragraph.
             This file is used by ``test_include.py``.
         <paragraph>
             A paragraph.
-""" % DocutilsTestSupport.utils.relative_path(None, include1)],
+""" % include1rel],
 ["""\
 Let's test the parse context.
 
@@ -132,7 +133,32 @@ Include Test
 A paragraph.
 """ % (include1, include1),
 """\
-"""],
+<document source="test data">
+    <section id="include-test" name="include test">
+        <title>
+            Include Test
+        <section dupname="inclusion 1" id="inclusion-1">
+            <title>
+                Inclusion 1
+            <paragraph>
+                This file is used by 
+                <literal>
+                    test_include.py
+                .
+        <section dupname="inclusion 1" id="id1">
+            <title>
+                Inclusion 1
+            <system_message backrefs="id1" level="1" line="2" source="%s" type="INFO">
+                <paragraph>
+                    Duplicate implicit target name: "inclusion 1".
+            <paragraph>
+                This file is used by 
+                <literal>
+                    test_include.py
+                .
+            <paragraph>
+                A paragraph.
+""" % include1rel],
 ["""\
 Include Test
 ============
@@ -146,7 +172,36 @@ Include Test
 A paragraph.
 """ % (include1, include1),
 """\
-"""],
+<document source="test data">
+    <section id="include-test" name="include test">
+        <title>
+            Include Test
+        <section dupname="inclusion 1" id="inclusion-1">
+            <title>
+                Inclusion 1
+            <paragraph>
+                This file is used by 
+                <literal>
+                    test_include.py
+                .
+            <transition>
+            <system_message level="3" line="12" source="test data" type="ERROR">
+                <paragraph>
+                    Section may not end with a transition.
+        <section dupname="inclusion 1" id="id1">
+            <title>
+                Inclusion 1
+            <system_message backrefs="id1" level="1" line="2" source="%s" type="INFO">
+                <paragraph>
+                    Duplicate implicit target name: "inclusion 1".
+            <paragraph>
+                This file is used by 
+                <literal>
+                    test_include.py
+                .
+            <paragraph>
+                A paragraph.
+""" % include1rel],
 ]
 
 

@@ -22,8 +22,7 @@ Default cascading style sheet for the PEP HTML output of Docutils.
 
 .navigation .navicon {
   width: 150px ;
-  height: 35 ;
-  margin-bottom: 0em }
+  height: 35 }
 
 .navigation .textlinks {
   padding-left: 1em ;

@@ -243,8 +243,6 @@ def fixfile(inpath, input_lines, outfile):
         if line.strip() == LOCALVARS:
             break
         if line[0].strip():
-            if line.strip() == LOCALVARS:
-                break
             if not need_pre:
                 print >> outfile, '</pre>'
             print >> outfile, '<h3>%s</h3>' % line.strip()

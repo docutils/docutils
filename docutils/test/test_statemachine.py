@@ -157,7 +157,7 @@ class SMWSTests(unittest.TestCase):
         self.assertEquals(len(self.sm.states['MockState'].transitions), 4)
 
     def test_get_indented(self):
-        self.sm.input_lines = testtext
+        self.sm.input_lines = statemachine.StringList(testtext)
         self.sm.line_offset = -1
         self.sm.next_line(3)
         indented, offset, good = self.sm.get_known_indented(2)
@@ -182,7 +182,7 @@ class SMWSTests(unittest.TestCase):
         self.failUnless(good)
 
     def test_get_text_block(self):
-        self.sm.input_lines = testtext
+        self.sm.input_lines = statemachine.StringList(testtext)
         self.sm.line_offset = -1
         self.sm.next_line()
         textblock = self.sm.get_text_block()
@@ -192,7 +192,7 @@ class SMWSTests(unittest.TestCase):
         self.assertEquals(textblock, testtext[2:4])
 
     def test_get_text_block_flush_left(self):
-        self.sm.input_lines = testtext
+        self.sm.input_lines = statemachine.StringList(testtext)
         self.sm.line_offset = -1
         self.sm.next_line()
         textblock = self.sm.get_text_block(flush_left=1)
@@ -274,21 +274,9 @@ class MiscTests(unittest.TestCase):
     s2l_string = "hello\tthere\thow are\tyou?\n\tI'm fine\tthanks.\n"
     s2l_expected = ['hello   there   how are you?',
                     "        I'm fine        thanks."]
-    indented_string = """\
-        a
-      literal
-           block"""
-
     def test_string2lines(self):
         self.assertEquals(statemachine.string2lines(self.s2l_string),
                           self.s2l_expected)
-
-    def test_extract_indented(self):
-        block = statemachine.string2lines(self.indented_string)
-        self.assertEquals(statemachine.extract_indented(block),
-                          ([s[6:] for s in block], 6, 1))
-        self.assertEquals(statemachine.extract_indented(self.s2l_expected),
-                          ([], 0, 0))
 
 
 if __name__ == '__main__':

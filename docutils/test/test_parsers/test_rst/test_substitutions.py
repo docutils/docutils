@@ -200,13 +200,6 @@ No blank line after.
             .. |invalid 2| there's no directive here
                With some block quote text, line 1.
                And some more, line 2.
-    <system_message level="2" line="12" source="test data" type="WARNING">
-        <paragraph>
-            Explicit markup ends without a blank line; unexpected unindent.
-    <block_quote>
-        <paragraph>
-            With some block quote text, line 1.
-            And some more, line 2.
     <system_message level="2" line="15" source="test data" type="WARNING">
         <paragraph>
             Substitution definition "invalid 3" empty or invalid.

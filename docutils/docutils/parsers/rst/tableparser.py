@@ -131,7 +131,7 @@ class GridTableParser(TableParser):
     head_body_separator_pat = re.compile(r'\+=[=+]+=\+ *$')
 
     def setup(self, block):
-        self.block = block[:]           # make a copy; it may be modified
+        self.block = list(block)        # make a copy; it may be modified
         self.bottom = len(block) - 1
         self.right = len(block[0]) - 1
         self.head_body_sep = None
@@ -371,7 +371,7 @@ class SimpleTableParser(TableParser):
     span_pat = re.compile('-[ -]*$')
 
     def setup(self, block):
-        self.block = block[:]           # make a copy; it will be modified
+        self.block = list(block)        # make a copy; it will be modified
         # Convert top & bottom borders to column span underlines:
         self.block[0] = self.block[0].replace('=', '-')
         self.block[-1] = self.block[-1].replace('=', '-')
