@@ -122,11 +122,11 @@ Development Snapshots
 ---------------------
 
 Development snapshots of the project files are available as .tgz
-tarballs.  They are generated automatically from CVS, usually within
-an hour of a change being checked in.  The snapshots are highly
-recommended over the "official" releases, as they contain the latest
-features and bug fixes.  However, they may contain transient bugs or
-incompatibilities.
+tarballs.  They are generated automatically from the Subversion
+repository, usually within an hour of a change being checked in.  The
+snapshots are highly recommended over the "official" releases, as they
+contain the latest features and bug fixes.  However, they may contain
+transient bugs or incompatibilities.
 
 - `Snapshot of Docutils code, tests, documentation, and
   specifications`__
@@ -141,9 +141,9 @@ __ http://docutils.sourceforge.net/docutils-sandbox-snapshot.tgz
 __ http://docutils.sourceforge.net/docfactory-snapshot.tgz
 __ http://docutils.sourceforge.net/docutils-web-snapshot.tgz
 
-`Anonymous CVS access`_ is available.  You can also `browse the CVS
-repository`_ and read the latest README_, HISTORY_, COPYING_, FAQ_ and
-BUGS_ files.
+`Anonymous Subversion access`_ is available.  You can also `browse the
+Subversion repository`_ and read the latest README_, HISTORY_,
+COPYING_, FAQ_ and BUGS_ files.
 
 
 Project Releases
@@ -211,8 +211,8 @@ project:
 
 - Docutils-develop__, for implementation discussions
   (email to docutils-develop@lists.sourceforge.net).
-- Docutils-checkins__, to monitor CVS checkin messages (automatically
-  generated; normally read-only).
+- Docutils-checkins__, to monitor change/checkin messages
+  (automatically generated; normally read-only).
 
 The Doc-SIG_ has greater exposure and is therefore a better forum for
 general discussions (such as reStructuredText syntax or the high-level
@@ -250,11 +250,11 @@ The Sandbox
 ===========
 
 The Sandbox__ is a place to play around, to try out and share ideas.
-It's a part of the CVS repository but it isn't distributed as part of
-Docutils releases (you can get a recent tarball from the `development
-snapshots`_).  Each developer who wants to play in it should create
-their own subdirectory (suggested name: SourceForge ID, or given name
-+ family initial).
+It's a part of the Subversion repository but it isn't distributed as
+part of Docutils releases (you can get a recent tarball from the
+`development snapshots`_).  Each developer who wants to play in it
+should create their own subdirectory (suggested name: SourceForge ID,
+or given name + family initial).
 
 Please feel free to `visit the sandbox`__.
 
@@ -344,7 +344,7 @@ Project Links
 
 - `Project Summary page`__: `released files`__, `bug reports`__,
   patches__, `mailing lists`__, and news__.
-- `Docutils CVS repository`__
+- `Docutils Subversion repository`__
 - Project coordinator and architect: `David Goodger`_
 - Please direct discussions to the `Python Documentation Special
   Interest Group (Doc-SIG)`__: doc-sig@python.org.
@@ -358,7 +358,7 @@ Project Links
   __ http://sourceforge.net/mail/?group_id=38414
   __ http://sourceforge.net/news/?group_id=38414
 
-  __ CVS_
+  __ Subversion_
 
   __ Doc-SIG_
 
@@ -375,10 +375,11 @@ Project Links
 .. _reStructuredText: rst.html
 .. _project files page:
    http://sourceforge.net/project/showfiles.php?group_id=38414
-.. _Anonymous CVS access: http://sourceforge.net/cvs/?group_id=38414
-.. _CVS:
-.. _browse the CVS repository:
-   http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/docutils/
+.. _Anonymous Subversion access:
+   http://docutils.sourceforge.net/docs/dev/repository.html
+.. _Subversion:
+.. _browse the Subversion repository:
+   http://svn.berlios.de/viewcvs/docutils/
 .. _To Do list: docs/dev/todo.html
 .. _README: README.html
 .. _HISTORY: HISTORY.html
