@@ -234,3 +234,6 @@ td.num {
 th.field-name {
   font-weight: bold ;
   text-align: right }
+
+ul.auto-toc {
+  list-style-type: none }
