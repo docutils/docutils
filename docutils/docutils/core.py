@@ -90,14 +90,6 @@ class Publisher:
             argv = sys.argv[1:]
         self.options, self.source, self.destination \
                       = option_parser.parse_args(argv)
-        """
-        # For testing purposes:
-        from pprint import pformat
-        print 'options:'
-        print pformat(options.__dict__)
-        print 'source=%r, destination=%r' % (source, destination)
-        sys.exit(0)
-        """
 
     def publish(self, argv=None, usage=None):
         """
