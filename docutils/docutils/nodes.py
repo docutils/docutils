@@ -550,12 +550,10 @@ class Element(Node):
         if not isinstance(childclass, TupleType):
             childclass = (childclass,)
         for index in range(start, min(len(self), end)):
-            match = 0
             for c in childclass:
                 if isinstance(self.children[index], c):
-                    match = 1
                     break
-            if not match:
+            else:
                 return index
         return None
 
