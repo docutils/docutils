@@ -47,9 +47,8 @@ Hosters
 =======
 
 BerliOS
-  SF-like.  Some issues:
-  https://developer.berlios.de/support/?func=detailsupport&group_id=1&support_id=101222
-  https://developer.berlios.de/support/?func=detailsupport&group_id=1&support_id=101211
+  SF-like.  One issue left:
+  https://developer.berlios.de/bugs/?func=detailbug&group_id=1&bug_id=3524
 
 http://www.python-hosting.com/freetracFaq
   Not sure about anonymous access, ViewCVS, and adding users.
