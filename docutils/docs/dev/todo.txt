@@ -455,10 +455,13 @@ Documentation
     ``docs/dev/website.txt``, ``docs/dev/release.txt`` from all but
     the "to do" list in ``docs/dev/todo.txt``.
 
-  - Add symlinks from all old paths to new paths.
+  - Add a ``.htaccess`` file to the ``web`` module containing
+    redirects from all old paths to new paths.  They'll preserve
+    fragments (the "#name" part of a URL), and won't clutter up the
+    file system, and will correct the URL in the user's browser.
 
-  - Go through all the docs (including under web/) & code and fix
-    broken links.
+  - Go through all the docs (including under web/) & code and update
+    links.
 
 * User docs.  What's needed?
 
