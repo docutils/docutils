@@ -1144,6 +1144,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\\end{sffamily}\n\\end{center}\n');
 
 
+    def visit_attribution(self, node):
+        # latex: mdash is "---"
+        self.body.append('\n--- ')
+
+    def depart_attribution(self, node):
+        self.body.append('\n')
+
     def visit_status(self, node):
         self.visit_docinfo_item(node, 'status')
 
