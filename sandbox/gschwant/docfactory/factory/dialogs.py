@@ -122,8 +122,8 @@ class projectSettingsDlg(wxDialog):
         self.dirCtrl    = wxTextCtrl(self.df, exitID,
                                      pos = wxPoint(96, 40),
                                      size = wxSize(240, 21))
-        self.dirCtrl.SetHelpText('This is the directory where any ' + \
-                                 'HTML-files will be created.')
+        self.dirCtrl.SetHelpText('This is the project's default ' + \
+                                 'directory for output-files.')
         exitID = wxNewId()
         self.btnSelDir  = wxButton(self.df, exitID, 'Select',
                                    pos = wxPoint(344, 40),
@@ -166,7 +166,7 @@ class projectSettingsDlg(wxDialog):
         self.styCtrl    = wxTextCtrl(self.du, exitID,
                                      pos = wxPoint(96, 40),
                                      size = wxSize(240, 21))
-        self.styCtrl.SetHelpText('Path to CSS stylesheet.')
+        self.styCtrl.SetHelpText('Path to stylesheet.')
         exitID = wxNewId()
         self.btnSelSty  = wxButton(self.du, exitID, 'Select',
                                    pos = wxPoint(344, 40),
@@ -284,8 +284,10 @@ class projectSettingsDlg(wxDialog):
         if not os.path.isdir(dir):
             customMsgBox(self, 'Invalid Output-Directory.', 'wakeup')
         else:
+            wildcard = 'Stylesheet-Files (*.css, *.tex)|*.css;*.tex|' \
+                       'All files (*.*)|*.*'
             dlg = wxFileDialog(self, 'Choose a stylesheet',
-                               dir, '', '*.css',
+                               dir, '', wildcard,
                                wxOPEN|wxFILE_MUST_EXIST)
             if dlg.ShowModal() == wxID_OK:
                 stylesheetpath = relative_path(self.configfile,
@@ -454,7 +456,7 @@ class Config:
         self.options['language_code']       = 'en'
         self.options['output_encoding']     = 'UTF-8'
         self.options['source_link']         = ''
-        self.options['stylesheet']          = 'default.css'
+        self.options['stylesheet']          = ''
         self.options['toc_backlinks']       = 'entry'
         self.options['use_latex_toc']       = '1'
 

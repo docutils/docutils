@@ -4,7 +4,7 @@
 :version: 0.2.2
 """
 
-classic = '''
+classic_css = '''
 /*
 :Author: David Goodger
 :Contact: goodger@users.sourceforge.net
@@ -195,7 +195,7 @@ ul.auto-toc {
   list-style-type: none }
 '''
 
-modern = classic + '''
+modern_css = classic_css + '''
 
 /*
 Additional styles for "modern"-style of DocFactory.
@@ -425,4 +425,29 @@ h1 tt, h2 tt, h3 tt, h4 tt, h5 tt, h6 tt {
   font-size: 10pt }
 '''
 
-stylesheets = { 'classic': classic, 'modern': modern }
+classic_tex = '''
+% donot indent first line.
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 2pt minus 1pt}
+
+% sloppy
+% ------
+% Less strict (opposite to default fussy) space size between words. Therefore
+% less hyphenation.
+\sloppy
+
+% fonts
+% -----
+% times for pdf generation, gives smaller pdf files.
+%
+% But in standard postscript fonts: courier and times/helvetica do not fit.
+% Maybe use pslatex.
+\usepackage{times} 
+
+% pagestyle
+\pagestyle{plain}
+'''
+
+stylesheets = { 'Classic (CSS)': classic_css,
+                'Classic (TeX)': classic_tex,
+                'Modern (CSS)': modern_css }
