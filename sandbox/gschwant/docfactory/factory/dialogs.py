@@ -59,7 +59,7 @@ class aboutDlg(wxDialog):
         #text.SetFont(wxFont(20, wxSWISS, wxNORMAL, wxBOLD, false))
 
         text = wxStaticText(self , -1,
-                            '>>> release:           0.2.2',
+                            '>>> release:           0.2.3',
                             wxPoint(9, 50))
         text = wxStaticText(self, -1,
                             '>>> manufactured by:   gunnar schwant',
@@ -74,7 +74,7 @@ class aboutDlg(wxDialog):
                             '>>> wxPython version:  2.3.4.2',
                             wxPoint(9, 110))
         text = wxStaticText(self, -1,
-                            '>>> Docutils version:  0.2.2 (or later)',
+                            '>>> Docutils version:  0.2.8 (or later)',
                             wxPoint(9, 125))
         text = wxStaticText(self, -1,
                             '>>> special thanks to: guido van rossum,',

@@ -40,7 +40,7 @@ you'll need the following:
 * wxPython 2.3.4.2 or later (|http://wxpython.org|).  Be sure to get the
   build matching the version of Python you're using.
 
-* Docutils 0.2.2 or later (|http://docutils.sourceforge.net|).  Use the
+* Docutils 0.2.8 or later (|http://docutils.sourceforge.net|).  Use the
   CVS snapshot; improvements are being made almost daily.
 
 
