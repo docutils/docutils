@@ -6,6 +6,17 @@
 :Revision: $Revision$
 :Date: $Date$
 
+.. Note::
+
+   This document is a detailed technical specification; it is not a
+   tutorial or a primer.  If this is your first exposure to
+   reStructuredText, please read `A ReStructuredText Primer`_ and the
+   `Quick reStructuredText`_ user reference first.
+
+.. _A ReStructuredText Primer: ../../docs/rst/quickstart.html
+.. _Quick reStructuredText: ../../docs/rst/quickref.html
+
+
 reStructuredText_ is plaintext that uses simple and intuitive
 constructs to indicate the structure of a document.  These constructs
 are equally easy to read in raw and processed forms.  This document is
@@ -2515,10 +2526,8 @@ Markup errors are handled according to the specification in `PEP
 
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _Docutils: http://docutils.sourceforge.net/
-.. _Docutils Document Tree Structure:
-   http://docutils.sourceforge.net/spec/doctree.txt
-.. _Generic Plaintext Document Interface DTD:
-   http://docutils.sourceforge.net/spec/gpdi.dtd
+.. _Docutils Document Tree Structure: ../doctree.html
+.. _Generic Plaintext Document Interface DTD: ../gpdi.dtd
 .. _transforms:
    http://docutils.sourceforge.net/docutils/transforms/
 .. _Grouch: http://www.mems-exchange.org/software/grouch/
