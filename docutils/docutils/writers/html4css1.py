@@ -912,14 +912,18 @@ class HTMLTranslator(nodes.NodeVisitor):
                     i += 1
                 backref_text = ('; <em>backlinks: %s</em>'
                                 % ', '.join(backlinks))
+        if node.hasattr('line'):
+            line = ', line %s' % node['line']
+        else:
+            line = ''
         if attr:
             a_start = self.starttag({}, 'a', '', **attr)
             a_end = '</a>'
         else:
             a_start = a_end = ''
-        self.body.append('System Message: %s%s/%s%s (<tt>%s</tt>)%s</p>\n'
+        self.body.append('System Message: %s%s/%s%s (<tt>%s</tt>%s)%s</p>\n'
                          % (a_start, node['type'], node['level'], a_end,
-                            node['source'], backref_text))
+                            node['source'], line, backref_text))
 
     def depart_system_message(self, node):
         self.body.append('</div>\n')
