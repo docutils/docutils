@@ -883,7 +883,7 @@ Unicode Character Codes
 The "unicode" directive converts Unicode character codes (numerical
 values) to characters, and may be used in substitution definitions
 only.  Codes may be decimal numbers, hexadecimal numbers (prefixed by
-``0x``, ``x``, ``\x``, ``u``, or ``\u``), or XML-style numeric
+``0x``, ``x``, ``\x``, ``U+``, ``u``, or ``\u``), or XML-style numeric
 character entities (e.g. ``&#x1a2b;``).  Codes are case-insensitive.
 
 Text following " .. " is a comment and is ignored.  Spaces are
