@@ -55,8 +55,8 @@ class Writer(html4css1.Writer):
         stylesheet = options.pep_stylesheet
         if stylesheet is None:
             stylesheet = options.stylesheet
-        subs['stylesheet'] = utils.relative_uri(options._destination,
-                                                stylesheet)
+        subs['stylesheet'] = utils.relative_path(options._destination,
+                                                 stylesheet)
         pyhome = options.python_home
         subs['pyhome'] = pyhome
         subs['pephome'] = options.pep_home

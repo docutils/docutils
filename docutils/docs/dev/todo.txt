@@ -90,6 +90,16 @@ General
   after ``references.Hyperlinks.resolve_indirect()`` but before
   ``references.Footnotes``.
 
+  Ideas:
+
+  - A queue, with entries ``(priority, transform, pending=None)``.
+  - Transform classes can have ``priority`` class attributes.
+  - Priorities can be numeric.  Integers (0..100?  000..999?)?  Floats
+    (would be easier to squeeze in new ones)?
+  - Each transform would have a unique priority.  Use a look-up table?
+    No, that would require too many imports to construct.  Document
+    transform priorities.
+
 - @@@ Break up ``references.Hyperlinks`` into multiple smaller
   transforms.
 
@@ -145,11 +155,68 @@ Specification
 PySource Reader
 ---------------
 
+General:
+
 - Analyze Tony Ibbs' PySource code.
 
 - Analyze Doug Hellmann's HappyDoc project.
 
 - Take the best ideas and integrate them into Docutils 0.3.
+
+Miscellaneous ideas:
+
+- If we can detect that a comment block begins with ``##``, a la
+  JavaDoc, it might be useful to indicate interspersed section headers
+  & explanatory text in a module.  For example::
+
+      """Module docstring."""
+
+      ##
+      # Constants
+      # =========
+
+      a = 1
+      b = 2
+
+      ##
+      # Exception Classes
+      # =================
+
+      class MyException(Exception): pass
+
+      # etc.
+
+- HappyDoc's idea of using comment blocks when there's no docstring
+  may be useful to get around the conflict between `additional
+  docstrings`_ and ``from __future__ import`` for module docstrings.
+  A module could begin like this::
+
+      #!/usr/bin/env python
+      # :Author: Me
+      # :Copyright: whatever
+
+      """This is the public module docstring (``__doc__``)."""
+
+      # More docs, in comments.
+      # All comments at the beginning of a module could be
+      # accumulated as docstrings.
+      # We can't have another docstring here, because of the
+      # ``__future__`` statement.
+
+      from __future__ import division
+
+  .. _additional docstrings: pep-0258.html#additional-docstrings
+
+- Multi-file output should be divisible at arbitrary level.
+
+- Support all forms of ``import`` statements:
+
+  - ``import module``: listed as "module"
+  - ``import module as alias``: "alias (module)"
+  - ``from module import identifier``: "identifier (from module)"
+  - ``from module import identifier as alias``: "alias (identifier
+    from module)"
+  - ``from module import *``: "all identifiers (``*``) from module"
 
 
 reStructuredText Parser
@@ -450,8 +517,7 @@ Directives
 
   - _`misc.raw`: See `Raw Data Pass-Through`__ in rst/directives.txt.
 
-    __ http://docutils.sf.net/spec/rst/directives.html
-       #raw-data-pass-through
+    __ rst/directives.html#raw-data-pass-through
 
   - _`misc.include`: ``#include`` one file in another.  But how to
     parse wrt sections, reference names, conflicts?  For now, we'll
@@ -762,7 +828,7 @@ Front-End Tools
 
 - Implement the "sectnum" directive as a command-line option also?
 
-- Add a "--relative-paths" option?
+- @@@ Fix the absolute/relative path handling.
 
   All references to files (stylesheet, source file [in footer], PEP
   template) are interpreted relative to the current working directory,
@@ -771,14 +837,36 @@ Front-End Tools
       cd /work
       html.py -s --stylesheet=default.css /src/test.txt /dst/text.html
 
-  This will interpret the stylesheet as "work/default.css", so the
-  stylesheet link in the HTML (which is in the /dst dir) will read
-  "../work/default.css", and the source link (-s option) will read
-  "../src/test.txt".
+  This will interpret the stylesheet as "/work/default.css", so the
+  stylesheet link in the HTML (which is written to the /dst dir) will
+  read "../work/default.css", and the source link (-s option) will
+  read "../src/test.txt".
 
-  Perhaps the current behavior should be optional ("--relative-paths"
-  or something).  The default should probably be not to process paths
-  at all, just use them verbatim.
+  - Perhaps the current behavior should be optional
+    ("--relative-paths" or something).  The default could be not to
+    process paths at all, just use them verbatim.
+
+  - We could add an "--verbatim-paths" option, which indicates that
+    paths should not be modified at all.
+
+  - Use variant options, such as "--stylesheet-url=URL", which
+    wouldn't be interpreted as paths.
+
+  - Redefine "--stylesheet=URL" as an invariant, uninterpreted.  Add
+    an interpreted "--stylesheet-path=PATH".  Similarly for
+    "--pep-stylesheet".  The -path variant would override.
+
+  Paths and URLs should be treated differently.  Sometimes a relative
+  path can be treated as the equivalent of a relative URL, but that's
+  not the case for absolute paths/URLs.  The "--pep-template" value is
+  *not* a URL, but a local file.  "--stylesheet" could be either.
+  Source links (generated in the footer) may depend on how the HTML is
+  installed.  I've been putting .html files in the same directories as
+  the source .txt files, but there are other ways to do it, and the
+  directory layout used at runtime may be different from the installed
+  layout.
+
+  Bug reports by Adam Chodorowski and Kenichi Sato.
 
 - ``options._destination`` shouldn't have to be set.  It's currently
   needed to calculate relative paths for the stylesheet link.  But the
