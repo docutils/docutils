@@ -407,7 +407,9 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
     ends.  Setting specs specific to individual Docutils components are also
     used (see `populate_from_components()`)."""
 
-    settings_defaults = {'_disable_config': None}
+    settings_defaults = {'_disable_config': None,
+                         '_source': None,
+                         '_destination': None}
     """Defaults for settings that don't have command-line option equivalents."""
 
     relative_path_settings = ('warning_stream',)
@@ -446,16 +448,13 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
         self.relative_path_settings = list(self.relative_path_settings)
         self.components = (self,) + tuple(components)
         self.populate_from_components(self.components)
-        defaults = defaults or {}
+        self.set_defaults(**(defaults or {}))
         if read_config_files and not self.defaults['_disable_config']:
             try:
                 config_settings = self.get_standard_config_settings()
             except ValueError, error:
                 self.error(error)
-            defaults.update(config_settings.__dict__)
-        # Internal settings with no defaults from settings specifications;
-        # initialize manually:
-        self.set_defaults(_source=None, _destination=None, **defaults)
+            self.set_defaults(**config_settings.__dict__)
 
     def populate_from_components(self, components):
         """
