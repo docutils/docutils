@@ -136,6 +136,12 @@ Bullet Lists
 
   * Nested item 3.
 
+  * This nested list should be compacted by the HTML writer.
+
+    .. _target:
+
+    .. Even if this item contains a target and a comment.
+
 Enumerated Lists
 ----------------
 

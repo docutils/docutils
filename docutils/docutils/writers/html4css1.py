@@ -1360,7 +1360,7 @@ class SimpleListChecker(nodes.GenericNodeVisitor):
 
     def invisible_visit(self, node):
         """Invisible nodes should be ignored."""
-        pass
+        raise nodes.SkipNode
 
     visit_comment = invisible_visit
     visit_substitution_definition = invisible_visit
