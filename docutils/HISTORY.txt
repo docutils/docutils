@@ -82,7 +82,7 @@ Specific:
 * docutils/frontend.py: Added to project; support for front-end
   (command-line) scripts.  Option specifications may be augmented by
   components.  Requires Optik (http://optik.sf.net/) for option
-  processing.
+  processing (installed locally as docutils/optik.py).
 
 * docutils/io.py: Added to project; uniform API for a variety of input
   output mechanisms.
@@ -114,10 +114,6 @@ Specific:
 * docutils/optik.py: Added to project.  Combined from the Optik
   package, with added option groups and other modifications.  The use
   of this module is probably only temporary.
-
-* docutils/OptionParser.py: Added to project.  Combined from the Optik
-  package, with no modifications.  This module will probably
-  eventually take over from optik.py.  Not used at present.
 
 * docutils/statemachine.py:
 
@@ -263,6 +259,7 @@ Specific:
     and footnote/citation backlinks.
   - Added support for optional footnote/citation backlinks.
   - Added support for generic bibliographic fields.
+  - Identify backrefs.
 
 * docutils/writers/pep_html.py: Added to project; HTML Writer for
   PEPs (subclass of ``html4css1.Writer``).

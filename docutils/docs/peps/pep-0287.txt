@@ -548,6 +548,8 @@ Questions & Answers
            This PEP proposes adding frungible doodads [1] to the core.
            It extends PEP 9876 [2] via the BCA [3] mechanism.
 
+       ...
+
        References and Footnotes
 
            [1] http://www.example.org/
@@ -641,7 +643,7 @@ Questions & Answers
    The reasoning given for PEPs in answer 4 above also applies to
    README and other ancillary files.  By adopting a standard markup,
    these files can be converted to attractive cross-referenced HTML
-   and put up on python.org.  Developers of Python projects can also
+   and put up on python.org.  Developers of other projects can also
    take advantage of this facility for their own documentation.
 
 9. Won't the superficial similarity to existing markup conventions
