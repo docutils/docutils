@@ -26,3 +26,13 @@ False  True   True
 True   True   True
 =====  =====  ======
 
+a table without head
+
+.. table:: Foo
+
+   +-----+-----+
+   |     |     |
+   +-----+-----+
+   |     |     |
+   +-----+-----+
+
