@@ -301,8 +301,8 @@ An `anonymous embedded uri <http://direct>`__.
 ])
 
 totest['hyperlinks'] = ((ChainedTargets, AnonymousHyperlinks,
-                                    IndirectHyperlinks, ExternalTargets,
-                                    InternalTargets,), [
+                         IndirectHyperlinks, ExternalTargets,
+                         InternalTargets,), [
 ["""\
 .. _internal hyperlink:
 
@@ -537,6 +537,35 @@ __ http://example.org
         <image uri="picture.png">
     <reference name="internal_" refid="internal">
         <image uri="picture.png">
+"""],
+["""\
+.. contents:: Table of Contents
+.. _indirect reference to the table of contents: `table of contents`_
+
+Section
+=======
+
+Testing an `indirect reference to the table of contents`_.
+""",
+"""\
+<document source="test data">
+    <topic class="contents" id="table-of-contents" name="table of contents">
+        <title>
+            Table of Contents
+        <bullet_list>
+            <list_item>
+                <paragraph>
+                    <reference id="id1" refid="section">
+                        Section
+    <target id="indirect-reference-to-the-table-of-contents" name="indirect reference to the table of contents" refid="table-of-contents">
+    <section id="section" name="section">
+        <title refid="id1">
+            Section
+        <paragraph>
+            Testing an 
+            <reference name="indirect reference to the table of contents" refid="table-of-contents">
+                indirect reference to the table of contents
+            .
 """],
 ])
 
