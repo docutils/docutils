@@ -330,6 +330,7 @@ style:font-name="Wingdings"/>
 style:family="paragraph"
 style:parent-style-name=".body">
 <style:properties
+fo:background-color="#e6e6e6"
 fo:margin-left="0.25inch" fo:margin-right="0.25inch"
 fo:margin-top="0.0835inch" fo:margin-bottom="0.0835inch"
 fo:text-indent="0inch"
