@@ -545,6 +545,34 @@ Pull-Quote
 Produces a pull-quote-class block quote.  See Epigraph_ above.
 
 
+Table
+=====
+
+:Directive Type: "table"
+:Doctree Element: table
+:Directive Arguments: 1, optional (table title).
+:Directive Options: Possible.
+:Directive Content: A normal reStructuredText table.
+
+The "table" directive is used to create a titled table, to associate a
+title with a table::
+
+    .. table:: Truth table for "not"
+
+       =====  =====
+         A    not A
+       =====  =====
+       False  True
+       True   False
+       =====  =====
+
+The following option is recognized:
+
+``class`` : text
+    Set a "class" attribute value on the table element.  See the
+    class_ directive below.
+
+
 ----------------
  Document Parts
 ----------------
