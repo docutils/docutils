@@ -4,10 +4,12 @@ latex2e BUGS TODOS and other animals
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
 
-Rev. 2003-03-20
+Rev. 2003-03-24
 
 To do
 ~~~~~
+
+* support embed-stylesheet.
 
 * the ^-sign is problematic: using mathmode wedge is usually the wrong font.
 
@@ -39,8 +41,7 @@ To do
 
 * center subsection{Abstract} gives a latex error here.
   ``! LaTeX Error: Something's wrong--perhaps a missing \item.``
-  Committed a HACK: an empty list.
-
+  Committed a HACK: centerinh by hfill
 
 * document errors are also too silent.
 
@@ -128,6 +129,7 @@ ATTENTION
 
 Done
 ~~~~
+* support stylesheet and stylesheet-path.
 * FIX: QUICK: for latex error on abstract.
 * FIX: ^ by mathmode wedge (verb|^| did not work in mbox). 
 * admonitions are not so visible as in html (make a border a bigger title, indent

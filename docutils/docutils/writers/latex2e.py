@@ -82,6 +82,17 @@ class Writer(writers.Writer):
           ['--footnote-references'],
           {'choices': ['superscript', 'brackets'], 'default': 'brackets',
            'metavar': '<FORMAT>'}),
+         ('Specify a stylesheet file. The file will be "input" by latex '
+          'in the document header. Default is "style.tex". '
+          'If this is set to "" disables input.'
+          'Overridden by --stylesheet-path.',
+          ['--stylesheet'],
+          {'default': 'style.tex', 'metavar': '<file>'}),
+         ('Specify a stylesheet file, relative to the current working '
+          'directory.'
+          'Overrides --stylesheet.',
+          ['--stylesheet-path'],
+          {'metavar': '<file>'}),
          ('Link to the stylesheet in the output LaTeX file.  This is the '
           'default.',
           ['--link-stylesheet'],
@@ -212,8 +223,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
     d_options = '10pt'  # papersize, fontsize
     d_paper = 'a4paper'
     d_margins = '2cm'
-    d_stylesheet_path = 'style.tex'
-    # for pdflatex some other package. pslatex
 
     latex_head = '\\documentclass[%s]{%s}\n'
     encoding = '\\usepackage[latin1]{inputenc}\n'
@@ -286,8 +295,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
               ]
         self.head_prefix.extend( latex_headings['footnote_floats'] )
         ## stylesheet is last: so it might be possible to overwrite defaults.
-        self.head_prefix.append(
-              self.stylesheet % (self.d_stylesheet_path) )
+        stylesheet = self.get_stylesheet_reference()
+        if stylesheet:
+            self.head_prefix.append(self.stylesheet % (stylesheet))
 
         if self.linking: # and maybe check for pdf
             self.pdfinfo = [ ]
@@ -322,6 +332,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self._enum_cnt = 0
         # docinfo. 
         self.docinfo = None
+
+    def get_stylesheet_reference(self):
+        if self.settings.stylesheet_path:
+            return self.settings.stylesheet_path
+        else:
+            return self.settings.stylesheet
 
     def language_label(self, docutil_label):
         return self.language.labels[docutil_label]
