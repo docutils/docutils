@@ -888,7 +888,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # multi{row,column}
         if node.has_key('morerows') and node.has_key('morecols'):
-            raise NotImplementedError('LaTeX can\'t handle cells that'
+            raise NotImplementedError('LaTeX can\'t handle cells that '
             'span multiple rows *and* columns, sorry.')
         atts = {}
         if node.has_key('morerows'):
@@ -1107,14 +1107,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         attrs = node.attributes.copy()
         pre = []                        # in reverse order
         post = ['\\includegraphics{%s}' % attrs['uri']]
-        def prepost(pre_append, post_append):
-            pre.append(pre_append)
-            post.append(post_append)
         inline = isinstance(node.parent, nodes.TextElement)
         if 'scale' in attrs:
             # Could also be done with ``scale`` option to
             # ``\includegraphics``; doing it this way for consistency.
-            prepost('\\scalebox{%f}{' % (attrs['scale'] / 100.0,), '}')
+            pre.append('\\scalebox{%f}{' % (attrs['scale'] / 100.0,))
+            post.append('}')
         if 'align' in attrs:
             align_prepost = {
                 # By default latex aligns the top of an image.
@@ -1128,11 +1126,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 (0, 'left'): ('{', '\\hfill}'),
                 (0, 'right'): ('{\\hfill', '}'),}
             try:
-                prepost(*align_prepost[inline, attrs['align']])
+                pre.append(align_prepost[inline, attrs['align']][0])
+                post.append(align_prepost[inline, attrs['align']][1])
             except KeyError:
-                pass                    # complain here?
+                pass                    # XXX complain here?
         if not inline:
-            prepost('\n', '\n')
+            pre.append('\n')
+            post.append('\n')
         pre.reverse()
         self.body.extend(pre + post)
 
