@@ -382,49 +382,97 @@ class ExternalTargets(Transform):
 
 class InternalTargets(Transform):
 
-    """
-    Given::
-
-        <paragraph>
-            <reference refname="direct internal">
-                direct internal
-        <target id="id1" name="direct internal">
-
-    The "refname" attribute is replaced by "refid" linking to the target's
-    "id"::
-
-        <paragraph>
-            <reference refid="id1">
-                direct internal
-        <target id="id1" name="direct internal">
-    """
-
     default_priority = 660
 
     def apply(self):
         for target in self.document.internal_targets:
-            if target.hasattr('refuri') or target.hasattr('refid') \
-                  or not target.hasattr('name'):
-                continue
-            name = target['name']
-            refid = target['id']
-            try:
-                reflist = self.document.refnames[name]
-            except KeyError, instance:
-                if target.referenced:
-                    continue
-                msg = self.document.reporter.info(
-                      'Internal hyperlink target "%s" is not referenced.'
-                      % name, base_node=target)
-                target.referenced = 1
-                continue
-            for ref in reflist:
-                if ref.resolved:
-                    continue
-                del ref['refname']
-                ref['refid'] = refid
-                ref.resolved = 1
+            self.resolve_reference_ids(target)
+            if not (target.attributes.has_key('refid')
+                    or target.attributes.has_key('refuri')
+                    or target.attributes.has_key('refname')):
+                self.relocate(target)
+
+    def resolve_reference_ids(self, target):
+        """
+        Given::
+
+            <paragraph>
+                <reference refname="direct internal">
+                    direct internal
+            <target id="id1" name="direct internal">
+
+        The "refname" attribute is replaced by "refid" linking to the target's
+        "id"::
+
+            <paragraph>
+                <reference refid="id1">
+                    direct internal
+            <target id="id1" name="direct internal">
+        """
+        if target.hasattr('refuri') or target.hasattr('refid') \
+              or not target.hasattr('name'):
+            return
+        name = target['name']
+        refid = target['id']
+        try:
+            reflist = self.document.refnames[name]
+        except KeyError, instance:
+            if target.referenced:
+                return
+            msg = self.document.reporter.info(
+                  'Internal hyperlink target "%s" is not referenced.'
+                  % name, base_node=target)
             target.referenced = 1
+            return
+        for ref in reflist:
+            if ref.resolved:
+                return
+            del ref['refname']
+            ref['refid'] = refid
+            ref.resolved = 1
+        target.referenced = 1
+
+    def relocate(self, target):
+        """
+        Move "target" elements into the next text element
+        (in tree traversal order).
+        """
+        parent = target.parent
+        child = target
+        while parent:
+            # Check all following siblings:
+            for index in range(parent.index(child) + 1, len(parent)):
+                element = parent[index]
+                visitor = InternalTargetRelocationPointLocator(self.document)
+                try:
+                    element.walk(visitor)
+                except nodes.NodeFound:
+                    target.parent.remove(target)
+                    visitor.found.insert(0, target)
+                    return
+            else:
+                # At end of section or container; try parent's sibling
+                child = parent
+                parent = parent.parent
+        error = self.document.reporter.error(
+            'No element suitable for hosting target, following internal '
+            'target "%s".' % target['name'], line=target.line)
+        target.parent.replace(target, error)
+
+
+class InternalTargetRelocationPointLocator(nodes.GenericNodeVisitor):
+
+    """
+    Find the first text-containing node that can host an internal target.
+    """
+
+    found = None
+
+    def default_visit(self, node):
+        if (isinstance(node, nodes.TextElement)
+            and not isinstance(node, nodes.Special)):
+            self.found = node
+            raise nodes.NodeFound
 
 
 class Footnotes(Transform):

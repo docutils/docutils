@@ -66,8 +66,8 @@ direct_ internal
 """,
 """\
 <document source="test data">
-    <target id="direct" name="direct">
     <paragraph>
+        <target id="direct" name="direct">
         <reference name="direct" refid="direct">
             direct
          internal
@@ -82,8 +82,8 @@ indirect_ internal
 """,
 """\
 <document source="test data">
-    <target id="ztarget" name="ztarget">
     <paragraph>
+        <target id="ztarget" name="ztarget">
         <reference name="indirect" refid="ztarget">
             indirect
          internal
@@ -240,8 +240,8 @@ __ ztarget_
 """,
 """\
 <document source="test data">
-    <target id="ztarget" name="ztarget">
     <paragraph>
+        <target id="ztarget" name="ztarget">
         <reference anonymous="1" name="indirect internal" refid="ztarget">
             indirect internal
     <target anonymous="1" id="id1" refid="ztarget">
@@ -261,14 +261,14 @@ __ ztarget_
 """,
 """\
 <document source="test data">
-    <target dupname="ztarget" id="ztarget">
     <paragraph>
+        <target dupname="ztarget" id="ztarget">
         First
     <system_message backrefs="id1" level="2" line="5" source="test data" type="WARNING">
         <paragraph>
             Duplicate explicit target name: "ztarget".
-    <target dupname="ztarget" id="id1">
     <paragraph>
+        <target dupname="ztarget" id="id1">
         Second
     <paragraph>
         <problematic id="id4" refid="id3">
@@ -322,8 +322,8 @@ By this `internal hyperlink`_ referemce.
 """,
 """\
 <document source="test data">
-    <target id="internal-hyperlink" name="internal hyperlink">
     <paragraph>
+        <target id="internal-hyperlink" name="internal hyperlink">
         This paragraph referenced.
     <paragraph>
         By this \n\
@@ -344,9 +344,9 @@ The results of the transform are not visible at the XML level.
 """,
 """\
 <document source="test data">
-    <target id="chained" name="chained">
-    <target id="internal-hyperlink" name="internal hyperlink">
     <paragraph>
+        <target id="internal-hyperlink" name="internal hyperlink">
+        <target id="chained" name="chained">
         This paragraph referenced.
     <paragraph>
         By this \n\
@@ -540,8 +540,8 @@ __ http://example.org
 <document source="test data">
     <target id="external" name="external" refuri="http://uri">
     <target id="indirect" name="indirect" refuri="http://uri">
-    <target id="internal" name="internal">
     <reference name="external_" refuri="http://uri">
+        <target id="internal" name="internal">
         <image uri="picture.png">
     <reference name="indirect_" refuri="http://uri">
         <image uri="picture.png">
@@ -576,6 +576,30 @@ Testing an `indirect reference to the table of contents`_.
             <reference name="indirect reference to the table of contents" refid="table-of-contents">
                 indirect reference to the table of contents
             .
+"""],
+["""\
+Target should end up inside the section title, not before the section:
+
+.. _explicit target:
+
+Title
+-----
+
+Let's reference it (`explicit target`_) to avoid an irrelevant error.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Target should end up inside the section title, not before the section:
+    <section id="title" name="title">
+        <title>
+            <target id="explicit-target" name="explicit target">
+            Title
+        <paragraph>
+            Let's reference it (
+            <reference name="explicit target" refid="explicit-target">
+                explicit target
+            ) to avoid an irrelevant error.
 """],
 # ["""\
 # Title
