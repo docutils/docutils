@@ -367,27 +367,46 @@ class MoinTranslator(html4css1.HTMLTranslator):
 
         
 class MoinDirectives:
+    """
+        Class to handle all custom directive handling. This code is called as
+        part of the parsing stage.
+    """
     
     def __init__(self):
         directives.register_directive('include', self.include)
         directives.register_directive('macro', self.macro)
 
+    # Handle the include directive rather than letting the default docutils
+    # parser handle it. This allows the inclusing of MoinMoin pages instead of
+    # something from the filesystem.
     def include(self, name, arguments, options, content, lineno,
                 content_offset, block_text, state, state_machine):
+        # content contains the included file name
         if len(content):
             page = Page(content[0])
             text = page.get_raw_body()
             lines = text.split('\n')
+            # Remove the "#format rst" line
             lines = lines[1:]
+            # Insert the text from the included document and then continue
+            # parsing
             state_machine.insert_input(lines, 'MoinDirectives')
         return
         
     include.content = True
     
+    # Add additional macro directive. 
+    # This allows MoinMoin macros to be used either by using the directive
+    # directly or by using the substitution syntax. Much cleaner than using the
+    # reference hack (`[[SomeMacro]]`_). This however simply adds a node to the
+    # document tree which is a reference, but through a much better user
+    # interface.
     def macro(self, name, arguments, options, content, lineno,
                 content_offset, block_text, state, state_machine):
+        # content contains macro to be called
         if len(content):
             from docutils.nodes import reference
+            # Allow either with or without brackets
             if content[0].startswith('[['):
                 macro = content[0]
             else:
