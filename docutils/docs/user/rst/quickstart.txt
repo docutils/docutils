@@ -3,6 +3,7 @@ A ReStructuredText Primer
 
 :Author: Richard Jones
 :Version: $Revision$
+:Copyright: This document has been placed in the public domain.
 
 .. contents::
 
