@@ -184,20 +184,17 @@ class Publisher:
         except utils.SystemMessage, error:
             if self.settings.traceback:
                 raise
-            print >>sys.stderr, ('Exiting due to level-%s (%s) system message.'
-                                 % (error.level,
-                                    utils.Reporter.levels[error.level]))
+            self.report_SystemMessage(error)
+            exit = 1
+        except UnicodeEncodeError, error:
+            if self.settings.traceback:
+                raise
+            self.report_UnicodeEncodeError(error)
             exit = 1
         except Exception, error:
             if self.settings.traceback:
                 raise
-            print >>sys.stderr, error
-            print >>sys.stderr, ("""\
-Exiting due to error.  Use "--traceback" to diagnose.
-Please report errors to <docutils-users@lists.sf.net>.
-Include "--traceback" output, Docutils version (%s),
-Python version (%s), your OS type & version, and the
-command line used.""" % (__version__, sys.version.split()[0]))
+            self.report_Exception(error)
             exit = 1
         if self.settings.dump_settings:
             from pprint import pformat
@@ -221,6 +218,51 @@ command line used.""" % (__version__, sys.version.split()[0]))
         elif exit:
             sys.exit(1)
         return output
+
+    def report_SystemMessage(self, error):
+        print >>sys.stderr, ('Exiting due to level-%s (%s) system message.'
+                             % (error.level,
+                                utils.Reporter.levels[error.level]))
+
+    def report_UnicodeEncodeError(self, error):
+        print >>sys.stderr, '%s: %s' % (error.__class__.__name__, error)
+        print >>sys.stderr, ("""
+The specified output encoding (%s) cannot
+handle all of the output.
+Try setting "--output-encoding-error-handler" to
+""" % (self.settings.output_encoding)),
+        if sys.hexversion >= 0x02030000:    # Python 2.3
+            print >>sys.stderr, ("""
+* "xmlcharrefreplace" (for HTML & XML output, Python 2.3+);
+  the output will contain "%s" and should be usable.
+* "backslashreplace" (for other output formats, Python 2.3+);
+  look for "%s" in the output.
+*""" % (error.object[error.start:error.end].encode('ascii',
+                                                    'xmlcharrefreplace'),
+         error.object[error.start:error.end].encode('ascii',
+                                                    'backslashreplace'))),
+        print >>sys.stderr, ("""\
+"replace" (Python 2.1 or 2.2); look for "?" in the output.
+
+"--output-encoding-error-handler" is currently set to
+"%s".
+
+Exiting due to error.  Use "--traceback" to diagnose.
+If the advice above doesn't eliminate the error,
+please report it to <docutils-users@lists.sf.net>.
+Include "--traceback" output, Docutils version (%s),
+Python version (%s), your OS type & version, and the
+command line used.""" % (self.settings.output_encoding_error_handler,
+                         __version__, sys.version.split()[0]))
+
+    def report_Exception(self, error):
+        print >>sys.stderr, '%s: %s' % (error.__class__.__name__, error)
+        print >>sys.stderr, ("""\
+Exiting due to error.  Use "--traceback" to diagnose.
+Please report errors to <docutils-users@lists.sf.net>.
+Include "--traceback" output, Docutils version (%s),
+Python version (%s), your OS type & version, and the
+command line used.""" % (__version__, sys.version.split()[0]))
 
 
 default_usage = '%prog [options] [<source> [<destination>]]'
