@@ -608,11 +608,12 @@ Directives
     (And arguably invalid, since in Japanese the word "haiku" contains
     three syllables.)
 
-    Directive/construct name alternatives: verse, addressblock,
-    address, lineblock, lines, multiline, freeform, keeplines, nowrap,
-    haiku, keepbreaks, linebreaks, obeylines, linewise, textblock,
-    textart, text, linetext.  Current favorites: "line_block" for
-    element name, "lines" for directive name.
+    Directive/construct name alternatives: verse, address block,
+    address, line block, lines, multi-line, free-form, keep lines,
+    no-wrap, haiku, keep breaks, line breaks, obey lines, line-wise,
+    text block, text art, text, line text, line list.  Current
+    favorites: "line_block" for element name, "lines" for directive
+    name.
 
   - _`body.example`: Examples; suggested by Simon Hefti.  Semantics as
     per Docbook's "example"; admonition-style, numbered, reference,

@@ -42,13 +42,16 @@ __ docs/rst/quickref.html
 Specification
 =============
 
-- `An Introduction to reStructuredText`__
+- `An Introduction to reStructuredText`__ (includes the Goals__ and
+  History__ of reStructuredText)
 - `reStructuredText Markup Specification`__
 - `reStructuredText Directives`__
 - `A Record of reStructuredText Syntax Alternatives`__
 - `Problems With StructuredText`__
 
 __ spec/rst/introduction.html
+__ spec/rst/introduction.html#goals
+__ spec/rst/introduction.html#history
 __ spec/rst/reStructuredText.html
 __ spec/rst/directives.html
 __ spec/rst/alternatives.html
