@@ -384,11 +384,13 @@ What else is needed?
 Developer Docs
 --------------
 
+* The settings/options system.
+
 * @@@ Improve the internal module documentation (docstrings in the
   code).  Specific deficiencies listed below.
 
-  - docutils.parsers.rst.states.State.build_table: data structure required
-    (including StringList).
+  - docutils.parsers.rst.states.State.build_table: data structure
+    required (including StringList).
 
   - docutils.parsers.rst.states: more complete documentation of parser
     internals.
@@ -409,8 +411,6 @@ Developer Docs
   for developers.  What connects to what, why, and how.  Either update
   PEP 258 (see PEPs_ below) or as a separate doc.
 
-* Give information about unit tests.  Maybe as a howto?
-
 
 How-Tos
 -------
@@ -422,6 +422,8 @@ How-Tos
 * Creating Docutils Transforms
 
 * Creating Docutils Parsers
+
+* Using Docutils as a Library
 
 
 PEPs
