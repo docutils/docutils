@@ -234,6 +234,7 @@ Specific:
   - Updated for ``statemachine.StringList``.
   - Enabled recognition of schemeless email addresses in targets.
   - Added support for embedded URIs in hyperlink references.
+  - Added backslash-escapes to inline markup end-string suffix.
 
 * docutils/parsers/rst/tableparser.py:
 

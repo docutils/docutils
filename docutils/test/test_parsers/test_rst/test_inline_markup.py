@@ -259,6 +259,17 @@ Find the ```interpreted text``` in this paragraph!
         <paragraph>
             Inline literal start-string without end-string.
 """],
+["""\
+Python ``list``\\s use square bracket syntax.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Python \n\
+        <literal>
+            list
+        s use square bracket syntax.
+"""],
 ]
 
 totest['interpreted'] = [

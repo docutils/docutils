@@ -464,10 +464,11 @@ __ rst/alternatives.html#or-not-to-do
   - Convert quotes to curly quote entities.  (Essentially impossible
     for HTML?  Unnecessary for TeX.  An output issue?)
   - Various forms of ``:-)`` to smiley icons.
-  - ``"\ "`` to &nbsp;.
+  - ``"\ "`` to &nbsp;.  Problem with line-wrapping though: it could
+    end up escaping the newline.
   - Escaped newlines to <BR>.
-  - Escaped period or quote as a disappearing catalyst to allow
-    character-level inline markup?
+  - Escaped period or quote or dash as a disappearing catalyst to
+    allow character-level inline markup?
   - Others?
 
   How to represent character entities in the text though?  Probably as
@@ -475,6 +476,17 @@ __ rst/alternatives.html#or-not-to-do
 
   Which component is responsible for this, the parser, the reader, or
   the writer?
+
+* From David Abrahams, 15 Dec 2002 (docutils-users list):
+
+      Would it break anything if you added the backslash to the list
+      of "certain punctuation characters"?  That way, I could write
+      ``list``\s and get exactly the effect I want.
+
+  Interesting idea.  May work.  I'll have to think it through.  There
+  may be adverse side-effects due to the way backslash-escapes are
+  handled internally (they're converted to \x00 null bytes, which I've
+  always thought was a bit of a kludge, but it's worked thus far).
 
 * Implement the header row separator modification to table.el.  (Wrote
   to Takaaki Ota & the table.el mailing list on 2001-08-12, suggesting
@@ -1004,6 +1016,9 @@ HTML Writer
 * Make the "class" attributes optional?  Implies no stylesheet?
 
 * Add a setting to customize the header tag levels, i.e. <h1>.
+
+* Base list compaction on the spacing of source list?  Would require
+  parser support.  (Idea: fantasai, 16 Dec 2002, doc-sig.)
 
 
 Front-End Tools
