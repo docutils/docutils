@@ -21,8 +21,7 @@ class Writer(html4css1.Writer):
 
     settings_spec = html4css1.Writer.settings_spec + (
         'PEP/HTML-Specific Options',
-        """The HTML --footnote-references option's default is set to """
-        '"brackets".',
+        None,
         (('Specify a template file.  Default is "pep-html-template".',
           ['--template'],
           {'default': 'pep-html-template', 'metavar': '<file>'}),
@@ -36,8 +35,6 @@ class Writer(html4css1.Writer):
          (frontend.SUPPRESS_HELP,
           ['--no-random'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),))
-
-    settings_default_overrides = {'footnote_references': 'brackets'}
 
     relative_path_settings = (html4css1.Writer.relative_path_settings
                               + ('template',))
