@@ -527,7 +527,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         if len(node):
             if isinstance(node[0], nodes.Element):
                 node[0].set_class('first')
-            if isinstance(node[0], nodes.Element):
+            if isinstance(node[-1], nodes.Element):
                 node[-1].set_class('last')
 
     def depart_docinfo_item(self):
