@@ -236,13 +236,19 @@ Tables
   maybe use ltxtable instead of tabularx (Longtable combined with tabularx).
   but ltxtable disables longtable's multicolumn.
 * Table cells with multirow and multicolumn
-* Tables have borders, and the border is missing in empty cells.
-
 
 Miscellaneous
 -------------
 
-* recongize LaTeX (or even LaTeX) and replace by ``\LaTeX``.
+* The underscore ``_`` does not work in literal-blocks, has different width.
+  I tried
+
+  - Escape it ``{\_}`` to narrow
+  - Underline a blank ``\underline{ }`` to low, as in windows-xp.
+  - Subscript a hyphen ``$_{\tt-}$ too wide and thin
+  - ``$_{-}$`` the same.
+
+* recongize LaTeX and replace by ``\LaTeX``.
 * Support embed-stylesheet.
 * the ^-sign is problematic: using mathmode wedge is usually the wrong font.
 * Sidebar handling.
