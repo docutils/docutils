@@ -19,7 +19,7 @@ def suite():
 
 totest = {}
 
-totest['literal_blocks'] = [
+totest['indented_literal_blocks'] = [
 ["""\
 A paragraph::
 
@@ -191,7 +191,7 @@ Not a literal block.
 <document source="test data">
     <paragraph>
         A paragraph:
-    <system_message level="2" line="2" source="test data" type="WARNING">
+    <system_message level="2" line="3" source="test data" type="WARNING">
         <paragraph>
             Literal block expected; none found.
     <paragraph>
@@ -225,6 +225,103 @@ EOF, even though a literal block is indicated::
     <system_message level="2" line="2" source="test data" type="WARNING">
         <paragraph>
             Literal block expected; none found.
+"""],
+]
+
+totest['quoted_literal_blocks'] = [
+["""\
+A paragraph::
+
+> A literal block.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        A paragraph:
+    <literal_block xml:space="preserve">
+        > A literal block.
+"""],
+["""\
+A paragraph::
+
+
+> A literal block.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        A paragraph:
+    <literal_block xml:space="preserve">
+        > A literal block.
+"""],
+["""\
+A paragraph::
+
+> A literal block.
+> Line 2.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        A paragraph:
+    <literal_block xml:space="preserve">
+        > A literal block.
+        > Line 2.
+"""],
+["""\
+A paragraph::
+
+> A literal block.
+  Indented line.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        A paragraph:
+    <literal_block xml:space="preserve">
+        > A literal block.
+    <system_message level="3" line="4" source="test data" type="ERROR">
+        <paragraph>
+            Unexpected indentation.
+    <block_quote>
+        <paragraph>
+            Indented line.
+"""],
+["""\
+A paragraph::
+
+> A literal block.
+Text.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        A paragraph:
+    <literal_block xml:space="preserve">
+        > A literal block.
+    <system_message level="3" line="4" source="test data" type="ERROR">
+        <paragraph>
+            Inconsistent literal block quoting.
+    <paragraph>
+        Text.
+"""],
+["""\
+A paragraph::
+
+> A literal block.
+$ Inconsistent line.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        A paragraph:
+    <literal_block xml:space="preserve">
+        > A literal block.
+    <system_message level="3" line="4" source="test data" type="ERROR">
+        <paragraph>
+            Inconsistent literal block quoting.
+    <paragraph>
+        $ Inconsistent line.
 """],
 ]
 

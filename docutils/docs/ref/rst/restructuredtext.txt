@@ -124,8 +124,9 @@ Here are examples of `body elements`_:
 
 - `Literal blocks`_::
 
-      Literal blocks are indented, and indicated with a double-colon
-      ("::") at the end of the preceding paragraph (right here -->)::
+      Literal blocks are either indented or line-prefix-quoted blocks,
+      and indicated with a double-colon ("::") at the end of the
+      preceding paragraph (right here -->)::
 
           if literal_block:
               text = 'is left as-is'
@@ -1036,12 +1037,13 @@ Literal Blocks
 
 Doctree element: literal_block.
 
-A paragraph consisting of two colons ("::") signifies that all
-following **indented** text blocks comprise a literal block.  No
-markup processing is done within a literal block.  It is left as-is,
-and is typically rendered in a monospaced typeface::
+A paragraph consisting of two colons ("::") signifies that the
+following text block(s) comprise a literal block.  The literal block
+must either be indented or quoted (see below).  No markup processing
+is done within a literal block.  It is left as-is, and is typically
+rendered in a monospaced typeface::
 
-    This is a typical paragraph.  A literal block follows.
+    This is a typical paragraph.  An indented literal block follows.
 
     ::
 
@@ -1087,11 +1089,21 @@ colons after "Paragraph"):
 
           Literal block
 
-The minimum leading whitespace will be removed from each line of the
-literal block.  Other than that, all whitespace (including line
-breaks) is preserved.  Blank lines are required before and after a
-literal block, but these blank lines are not included as part of the
-literal block.
+All whitespace (including line breaks, but excluding minimum
+indentation for indented literal blocks) is preserved.  Blank lines
+are required before and after a literal block, but these blank lines
+are not included as part of the literal block.
+
+
+Indented Literal Blocks
+```````````````````````
+
+Indented literal blocks are indicated by indentation relative to the
+surrounding text (leading whitespace on each line).  The minimum
+indentation will be removed from each line of an indented literal
+block.  The literal block need not be contiguous; blank lines are
+allowed between sections of indented text.  The literal block ends
+with the end of the indentation.
 
 Syntax diagram::
 
@@ -1100,8 +1112,47 @@ Syntax diagram::
     | (ends with "::")             |
     +------------------------------+
        +---------------------------+
-       | literal block             |
+       | indented literal block    |
        +---------------------------+
+
+
+Quoted Literal Blocks
+`````````````````````
+
+Quoted literal blocks are unindented contiguous blocks of text where
+each line begins with the same non-alphanumeric printable 7-bit ASCII
+character [#]_.  A blank line ends a quoted literal block.  The
+quoting characters are preserved in the processed document.
+
+.. [#]
+   The following are all valid quoting characters::
+
+       ! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~
+
+   Note that these are the same characters as are valid for title
+   adornment of sections_.
+
+Possible uses include literate programming in Haskell and email
+quoting::
+
+    John Doe wrote::
+
+    >> Great idea!
+    >
+    > Why didn't I think of that?
+
+    You just did!  ;-)
+
+Syntax diagram::
+
+    +------------------------------+
+    | paragraph                    |
+    | (ends with "::")             |
+    +------------------------------+
+    +------------------------------+
+    | ">" per-line-quoted          |
+    | ">" contiguous literal block |
+    +------------------------------+
 
 
 Block Quotes

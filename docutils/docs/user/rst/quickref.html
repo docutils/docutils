@@ -18,7 +18,7 @@
     <p align="right"><em><a href="http://docutils.sourceforge.net/docs/rst/quickref.html"
     >http://docutils.sourceforge.net/docs/rst/quickref.html</a></em>
     <br align="right"><em>Being a cheat-sheet for reStructuredText</em>
-    <br align="right"><em>Updated 2003-06-10</em>
+    <br align="right"><em>Updated 2003-12-20</em>
 
     <blockquote>
       <p>Copyright: This document has been placed in the public domain.
@@ -538,7 +538,7 @@
       <td>
 <samp>A&nbsp;paragraph&nbsp;containing&nbsp;only&nbsp;two&nbsp;colons</samp>
 <br><samp>indicates&nbsp;that&nbsp;the&nbsp;following&nbsp;indented</samp>
-<br><samp>text&nbsp;is&nbsp;a&nbsp;literal&nbsp;block.</samp>
+<br><samp>or&nbsp;quoted&nbsp;text&nbsp;is&nbsp;a&nbsp;literal&nbsp;block.</samp>
 <br>
 <br><samp>::</samp>
 <br>
@@ -559,17 +559,22 @@
 <br>
 <br><samp>Literal&nbsp;blocks&nbsp;end&nbsp;when&nbsp;text&nbsp;returns&nbsp;to</samp>
 <br><samp>the&nbsp;preceding&nbsp;paragraph's&nbsp;indentation.</samp>
-<br><samp>This&nbsp;means&nbsp;that&nbsp;something&nbsp;like::</samp>
+<br><samp>This&nbsp;means&nbsp;that&nbsp;something&nbsp;like&nbsp;this</samp>
+<br><samp>is&nbsp;possible::</samp>
 <br>
 <br><samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We&nbsp;start&nbsp;here</samp>
 <br><samp>&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;continue&nbsp;here</samp>
 <br><samp>&nbsp;&nbsp;and&nbsp;end&nbsp;here.</samp>
 <br>
-<br><samp>is&nbsp;possible.</samp>
+<br><samp>Per-line&nbsp;quoting&nbsp;can&nbsp;also&nbsp;be&nbsp;used&nbsp;on</samp>
+<br><samp>unindented&nbsp;literal&nbsp;blocks:</samp>
+<br>
+<br><samp>>&nbsp;Useful&nbsp;for&nbsp;quotes&nbsp;from&nbsp;email&nbsp;and</samp>
+<br><samp>>&nbsp;for&nbsp;Haskell&nbsp;literate&nbsp;programming.<samp>
 
       <td>
         <p>A paragraph containing only two colons
-indicates that the following indented
+indicates that the following indented or quoted
 text is a literal block.
 
         <pre>
@@ -591,14 +596,19 @@ colon if preceded by text, like this:
 
         <p>Literal blocks end when text returns to
 the preceding paragraph's indentation.
-This means that something like:
+This means that something like this is possible:
 
         <pre>
       We start here
     and continue here
   and end here.</pre>
 
-        <p>is possible.
+        <p>Per-line quoting can also be used on
+unindented literal blocks:
+
+        <pre>
+  > Useful for quotes from email and
+  > for Haskell literate programming.</pre>
     </table>
 
     <h2><a href="#contents" name="block-quotes" class="backref"
@@ -1236,7 +1246,7 @@ dispose&nbsp;of&nbsp;medical&nbsp;waste.</samp>
     <a href="http://www.tibsnjoan.co.uk/">Tibs</a>
     (<a href="mailto:tibs@tibsnjoan.co.uk"><tt>tibs@tibsnjoan.co.uk</tt></a>)
     and David Goodger
-    (<a href="mailto:goodger@users.sourceforge.net">goodger@users.sourceforge.net</a>)
+    (<a href="mailto:goodger@python.org">goodger@python.org</a>)
     </address>
     <!-- Created: Fri Aug 03 09:11:57 GMT Daylight Time 2001 -->
   </body>

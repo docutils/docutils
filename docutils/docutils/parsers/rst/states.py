@@ -274,7 +274,7 @@ class RSTState(StateWS):
         state_machine.unlink()
         new_offset = state_machine.abs_line_offset()
         # No `block.parent` implies disconnected -- lines aren't in sync:
-        if block.parent:
+        if block.parent and (len(block) - block_length) != 0:
             # Adjustment for block if modified in nested parse:
             self.state_machine.next_line(len(block) - block_length)
         return new_offset
@@ -2661,19 +2661,28 @@ class Text(RSTState):
         """Return a list of nodes."""
         indented, indent, offset, blank_finish = \
               self.state_machine.get_indented()
-        nodelist = []
         while indented and not indented[-1].strip():
             indented.trim_end()
-        if indented:
-            data = '\n'.join(indented)
-            nodelist.append(nodes.literal_block(data, data))
-            if not blank_finish:
-                nodelist.append(self.unindent_warning('Literal block'))
-        else:
-            nodelist.append(self.reporter.warning(
-                  'Literal block expected; none found.',
-                  line=self.state_machine.abs_line_number()))
+        if not indented:
+            return self.quoted_literal_block()
+        nodelist = []
+        data = '\n'.join(indented)
+        nodelist.append(nodes.literal_block(data, data))
+        if not blank_finish:
+            nodelist.append(self.unindent_warning('Literal block'))
         return nodelist
+
+    def quoted_literal_block(self):
+        abs_line_offset = self.state_machine.abs_line_offset()
+        offset = self.state_machine.line_offset
+        parent_node = nodes.Element()
+        new_abs_offset = self.nested_parse(
+            self.state_machine.input_lines[offset:],
+            input_offset=abs_line_offset, node=parent_node, match_titles=0,
+            state_machine_kwargs={'state_classes': (QuotedLiteralBlock,),
+                                  'initial_state': 'QuotedLiteralBlock'})
+        self.goto_line(new_abs_offset)
+        return parent_node.children
 
     def definition_list_item(self, termline):
         indented, indent, line_offset, blank_finish = \
@@ -2889,6 +2898,77 @@ class Line(SpecializedText):
         self.state_machine.previous_line(lines)
         context[:] = []
         raise statemachine.StateCorrection('Body', 'text')
+
+
+class QuotedLiteralBlock(RSTState):
+
+    """
+    Nested parse handler for quoted (unindented) literal blocks.
+
+    Special-purpose.  Not for inclusion in `state_classes`.
+    """
+
+    patterns = {'initial_quoted': r'(%(nonalphanum7bit)s)' % Body.pats,
+                'text': r''}
+    initial_transitions = ('initial_quoted', 'text')
+
+    def __init__(self, state_machine, debug=0):
+        RSTState.__init__(self, state_machine, debug)
+        self.messages = []
+        self.initial_lineno = None
+
+    def blank(self, match, context, next_state):
+        if context:
+            raise EOFError
+        else:
+            return context, next_state, []
+
+    def eof(self, context):
+        if context:
+            text = '\n'.join(context)
+            literal_block = nodes.literal_block(text, text)
+            literal_block.line = self.initial_lineno
+            self.parent += literal_block
+        else:
+            self.parent += self.reporter.warning(
+                'Literal block expected; none found.',
+                line=self.state_machine.abs_line_number())
+            self.state_machine.previous_line()
+        self.parent += self.messages
+        return []
+
+    def indent(self, match, context, next_state):
+        assert context, ('QuotedLiteralBlock.indent: context should not '
+                         'be empty!')
+        self.messages.append(
+            self.reporter.error('Unexpected indentation.',
+                                line=self.state_machine.abs_line_number()))
+        self.state_machine.previous_line()
+        raise EOFError
+
+    def initial_quoted(self, match, context, next_state):
+        """Match arbitrary quote character on the first line only."""
+        self.remove_transition('initial_quoted')
+        quote = match.string[0]
+        pattern = re.compile(re.escape(quote))
+        # New transition matches consistent quotes only:
+        self.add_transition('quoted',
+                            (pattern, self.quoted, self.__class__.__name__))
+        self.initial_lineno = self.state_machine.abs_line_number()
+        return [match.string], next_state, []
+
+    def quoted(self, match, context, next_state):
+        """Match consistent quotes on subsequent lines."""
+        context.append(match.string)
+        return context, next_state, []
+
+    def text(self, match, context, next_state):
+        if context:
+            self.messages.append(
+                self.reporter.error('Inconsistent literal block quoting.',
+                                    line=self.state_machine.abs_line_number()))
+            self.state_machine.previous_line()
+        raise EOFError
 
 
 state_classes = (Body, BulletList, DefinitionList, EnumeratedList, FieldList,
