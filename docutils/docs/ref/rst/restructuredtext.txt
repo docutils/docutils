@@ -1582,11 +1582,14 @@ Directives
 DTD elements: depend on the directive.
 
 Directives are an extension mechanism for reStructuredText, a way of
-adding support for new constructs without adding new syntax.
-Directives which have been implemented and registered in the reference
-reStructuredText parser are described in the `reStructuredText
-Directives`_ document.  For example, here's how an image may be
-placed::
+adding support for new constructs without adding new syntax.  All
+standard directives (those implemented and registered in the reference
+reStructuredText parser) are described in the `reStructuredText
+Directives`_ document, and are always available.  Any other directives
+are domain-specific, and may require special action to make them
+available when processing the document.
+
+For example, here's how an image may be placed::
 
     .. image:: mylogo.png
 
