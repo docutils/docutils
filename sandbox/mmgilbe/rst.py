@@ -20,6 +20,7 @@ import os.path
 import time
 import re
 from types import ListType
+import new
 
 import docutils
 from docutils import core, frontend, nodes, utils, writers, languages
@@ -285,24 +286,26 @@ class MoinTranslator(html4css1.HTMLTranslator):
             specifying the height or width (or both).
             
             TODO: Need to handle figures similarly. 
-                  Can we handle this without having to add the inline?
         """
         uri = node['uri'].lstrip()
-        if uri.startswith('inline:'):
+        prefix = ''       # assume no prefix
+        if ':' in uri:
+            prefix = uri.split(':',1)[0]
+        # if prefix isn't URL, try to display in page
+        if not prefix.lower() in ('file','http','https',):
+            # no prefix given, so fake "inline:"
+            if not prefix:
+                node['uri'] = 'inline:' + uri
             self.process_inline(node, 'uri')
-        # If its not a uri containing a ':' then its probably destined for
-        # wiki space.
-        # elif ':' not in uri:
-            # self.process_wiki_target('inline:%s' % (uri))
         html4css1.HTMLTranslator.visit_image(self, node)
         
     def create_wiki_functor(self, moin_func):
         moin_callable = getattr(self.formatter, moin_func)
-        def visit_func(node):
+        def visit_func(self, node):
             self.wiki_text = ''
             self.request.write(moin_callable(1))
             self.body.append(self.wiki_text)
-        def depart_func(node):
+        def depart_func(self, node):
             self.wiki_text = ''
             self.request.write(moin_callable(0))
             self.body.append(self.wiki_text)
@@ -335,6 +338,8 @@ class MoinTranslator(html4css1.HTMLTranslator):
             'warning': 'highlight'}
         for rest_func, moin_func in handlers.items():
             visit_func, depart_func = self.create_wiki_functor(moin_func)
+            visit_func = new.instancemethod(visit_func, self, MoinTranslator)
+            depart_func = new.instancemethod(depart_func, self, MoinTranslator)
             setattr(self, 'visit_%s' % (rest_func), visit_func)
             setattr(self, 'depart_%s' % (rest_func), depart_func)
         
