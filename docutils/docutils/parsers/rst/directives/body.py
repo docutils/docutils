@@ -144,3 +144,20 @@ def pull_quote(name, arguments, options, content, lineno,
     return [block_quote] + messages
 
 pull_quote.content = 1
+
+def compound(name, arguments, options, content, lineno,
+             content_offset, block_text, state, state_machine):
+    text = '\n'.join(content)
+    if not text:
+        error = state_machine.reporter.error(
+            'The "%s" directive is empty; content required.' % name,
+            nodes.literal_block(block_text, block_text), line=lineno)
+        return [error]
+    node = nodes.compound(text)
+    if options.has_key('class'):
+        node.set_class(options['class'])
+    state.nested_parse(content, content_offset, node)
+    return [node]
+
+compound.options = {'class': directives.class_option}
+compound.content = 1
