@@ -102,7 +102,7 @@ PEPs (Python Enhancement Proposals)
 - `PEP 256: Docstring Processing System Framework`__ presents a
   high-level generic processing proposal.  [`PEP 257`__ in the `master
   repository`_]
-- `PEP 258: Docutils Design Specification__ documents design issues
+- `PEP 258: Docutils Design Specification`__ documents design issues
   and implementation details for Docutils (this project), a specific
   docstring processing system.  [`PEP 257`__ in the `master
   repository`_]
