@@ -43,9 +43,9 @@ class Writer(writers.Writer):
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
          ('Format for footnote references: one of "superscript" or '
-          '"brackets".  Default is "brackets".',
+          '"brackets".  Default is "superscript".',
           ['--footnote-references'],
-          {'choices': ['superscript', 'brackets'], 'default': 'brackets',
+          {'choices': ['superscript', 'brackets'], 'default': 'superscript',
            'metavar': '<format>',
            'overrides': 'trim_footnote_reference_space'}),
          ('Use LaTeX citations. '

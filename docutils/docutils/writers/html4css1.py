@@ -64,9 +64,9 @@ class Writer(writers.Writer):
           {'choices': '1 2 3 4 5 6'.split(), 'default': '1',
            'metavar': '<level>'}),
          ('Format for footnote references: one of "superscript" or '
-          '"brackets".  Default is "superscript".',
+          '"brackets".  Default is "brackets".',
           ['--footnote-references'],
-          {'choices': ['superscript', 'brackets'], 'default': 'superscript',
+          {'choices': ['superscript', 'brackets'], 'default': 'brackets',
            'metavar': '<format>',
            'overrides': 'trim_footnote_reference_space'}),
          ('Format for block quote attributions: one of "dash" (em-dash '
