@@ -16,13 +16,21 @@
 Overview
 ========
 
-The package docutils_nest adds functionality to docutils. XML authors
-and developers might find it useful. Others will not find it useful.
+This directory contains a number of modules that add functionality to
+docutils.
 
-As its name implies, docutils_nest allows users to add nested inline
-structure to a rst document.
+1. The package docutils_nest adds functionality to docutils. XML authors
+    and developers might find it useful. Others will not find it useful.
 
-See the README.txt in /docutils_nest.
+   As its name implies, docutils_nest allows users to add nested inline
+   structure to a rst document.
+
+   See the README.txt in /docutils_nest.
+
+2. rst_to_docbook
+
+  This script has not been written. It will convert rst to docbook,
+  using xml tools such as xslt.
 
 
 
