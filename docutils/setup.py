@@ -60,10 +60,12 @@ classifiers = [
     'Topic :: Documentation',
     'Topic :: Software Development :: Documentation',
     'Topic :: Text Processing',
+    'Natural Language :: Afrikaans',
     'Natural Language :: English',
     'Natural Language :: French',
     'Natural Language :: German',
     'Natural Language :: Italian',
+    'Natural Language :: Russian',
     'Natural Language :: Slovak',
     'Natural Language :: Spanish',
     'Natural Language :: Swedish',]
