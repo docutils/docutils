@@ -69,7 +69,7 @@ Setting/Config Entry   Description
                        ``input`` by latex in the document header. 
                        If this is set to "" disables generation of 
                        input latex command.
-                       (default: "style.tex").
+                       (default: "no stylesheet").
 ---------------------  ------------------------------------------------
 --footnote-references  Format for footnote references: one of 
                        "superscript" or "brackets".  

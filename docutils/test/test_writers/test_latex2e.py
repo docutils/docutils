@@ -61,7 +61,6 @@ latex_head = """\
 % some commands, that could be overwritten in the style file.
 \\newcommand{\\rubric}[1]{\\subsection*{~\\hfill {\\it #1} \\hfill ~}}
 % end of "some commands"
-\\input{style.tex}
 """
 
 totest = {}
