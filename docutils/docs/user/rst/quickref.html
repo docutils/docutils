@@ -20,7 +20,7 @@
     <p align="right"><em><a href="http://docutils.sourceforge.net/docs/rst/quickref.html"
     >http://docutils.sourceforge.net/docs/rst/quickref.html</a></em>
 	<br align="right"><em>Being a cheat-sheet for reStructuredText</em>
-	<br align="right"><em>Version 0.8a of 2002-07-12</em>
+	<br align="right"><em>Version 0.9 of 2002-07-23</em>
 
 
     <p>The full details may be found on the
@@ -625,6 +625,10 @@ This means that something like:
 
     <p>(<a href="../../spec/rst/reStructuredText.html#tables">details?</a>)
 
+    <p>There are two syntaxes for tables in reStructuredText.  Grid
+    tables are complete but cumbersome to create.  Simple tables are
+    easy to create but limited (no row spans, etc.).</p>
+
     <p><table border="1" width="100%" bgcolor="#ffffcc" cellpadding="3">
       <thead>
 	<tr align="left" bgcolor="#99CCFF">
@@ -634,19 +638,22 @@ This means that something like:
       <tbody>
 	<tr valign="top">
 	  <td>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;+------------+------------+-----------+</samp>
-<br><samp>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;Header&nbsp;1&nbsp;&nbsp;&nbsp;|&nbsp;Header&nbsp;2&nbsp;&nbsp;&nbsp;|&nbsp;Header&nbsp;3&nbsp;&nbsp;|</samp>
-<br><samp>&nbsp;&nbsp;&nbsp;&nbsp;+============+============+===========+</samp>
-<br><samp>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;body&nbsp;row&nbsp;1&nbsp;|&nbsp;column&nbsp;2&nbsp;&nbsp;&nbsp;|&nbsp;column&nbsp;3&nbsp;&nbsp;|</samp>
-<br><samp>&nbsp;&nbsp;&nbsp;&nbsp;+------------+------------+-----------+</samp>
-<br><samp>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;body&nbsp;row&nbsp;2&nbsp;|&nbsp;Cells&nbsp;may&nbsp;span&nbsp;columns.|</samp>
-<br><samp>&nbsp;&nbsp;&nbsp;&nbsp;+------------+------------+-----------+</samp>
-<br><samp>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;body&nbsp;row&nbsp;3&nbsp;|&nbsp;Cells&nbsp;may&nbsp;&nbsp;|&nbsp;-&nbsp;Cells&nbsp;&nbsp;&nbsp;|</samp>
-<br><samp>&nbsp;&nbsp;&nbsp;&nbsp;+------------+&nbsp;span&nbsp;rows.&nbsp;|&nbsp;-&nbsp;contain&nbsp;|</samp>
-<br><samp>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;body&nbsp;row&nbsp;4&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;-&nbsp;blocks.&nbsp;|</samp>
-<br><samp>&nbsp;&nbsp;&nbsp;&nbsp;+------------+------------+-----------+</samp>
+<p><samp>Grid table:</samp></p>
+
+<p><samp>+------------+------------+-----------+</samp>
+<br><samp>|&nbsp;Header&nbsp;1&nbsp;&nbsp;&nbsp;|&nbsp;Header&nbsp;2&nbsp;&nbsp;&nbsp;|&nbsp;Header&nbsp;3&nbsp;&nbsp;|</samp>
+<br><samp>+============+============+===========+</samp>
+<br><samp>|&nbsp;body&nbsp;row&nbsp;1&nbsp;|&nbsp;column&nbsp;2&nbsp;&nbsp;&nbsp;|&nbsp;column&nbsp;3&nbsp;&nbsp;|</samp>
+<br><samp>+------------+------------+-----------+</samp>
+<br><samp>|&nbsp;body&nbsp;row&nbsp;2&nbsp;|&nbsp;Cells&nbsp;may&nbsp;span&nbsp;columns.|</samp>
+<br><samp>+------------+------------+-----------+</samp>
+<br><samp>|&nbsp;body&nbsp;row&nbsp;3&nbsp;|&nbsp;Cells&nbsp;may&nbsp;&nbsp;|&nbsp;-&nbsp;Cells&nbsp;&nbsp;&nbsp;|</samp>
+<br><samp>+------------+&nbsp;span&nbsp;rows.&nbsp;|&nbsp;-&nbsp;contain&nbsp;|</samp>
+<br><samp>|&nbsp;body&nbsp;row&nbsp;4&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;-&nbsp;blocks.&nbsp;|</samp>
+<br><samp>+------------+------------+-----------+</samp></p>
 	  <td>
-	    <table align="center" border="1">
+        <p>Grid table:</p>
+	    <table border="1">
 	      <tr valign="top">
 		<th>Header 1
 		<th>Header 2
@@ -670,6 +677,56 @@ This means that something like:
 	      <tr valign="top">
 		<td>body row 4
 	    </table>
+	<tr valign="top">
+	  <td>
+<p><samp>Simple table:</samp></p>
+
+<p><samp>=====&nbsp;&nbsp;=====&nbsp;&nbsp;======</samp>
+<br><samp>&nbsp;&nbsp;&nbsp;Inputs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Output</samp>
+<br><samp>------------&nbsp;&nbsp;------</samp>
+<br><samp>&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;or&nbsp;B</samp>
+<br><samp>=====&nbsp;&nbsp;=====&nbsp;&nbsp;======</samp>
+<br><samp>False&nbsp;&nbsp;False&nbsp;&nbsp;False</samp>
+<br><samp>True&nbsp;&nbsp;&nbsp;False&nbsp;&nbsp;True</samp>
+<br><samp>False&nbsp;&nbsp;True&nbsp;&nbsp;&nbsp;True</samp>
+<br><samp>True&nbsp;&nbsp;&nbsp;True&nbsp;&nbsp;&nbsp;True</samp>
+<br><samp>=====&nbsp;&nbsp;=====&nbsp;&nbsp;======</samp></p>
+
+	  <td>
+        <p>Simple table:</p>
+        <table frame="border" rules="all">
+          <colgroup>
+            <col colwidth="31%" />
+            <col colwidth="31%" />
+            <col colwidth="38%" />
+          </colgroup>
+          <thead valign="bottom">
+            <tr>
+              <th colspan="2">Inputs
+              <th>Output
+            <tr>
+              <th>A
+              <th>B
+              <th>A or B
+          <tbody valign="top">
+            <tr>
+              <td>False
+              <td>False
+              <td>False
+            <tr>
+              <td>True
+              <td>False
+              <td>True
+            <tr>
+              <td>False
+              <td>True
+              <td>True
+            <tr>
+              <td>True
+              <td>True
+              <td>True
+        </table>
+
     </table>
 
     <h2><a href="#contents" name="transitions">Transitions</a></h2>
