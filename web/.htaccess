@@ -52,3 +52,6 @@ Redirect permanent /spec/rst/introduction.txt      http://docutils.sourceforge.n
 Redirect permanent /spec/rst/introduction.html     http://docutils.sourceforge.net/docs/ref/rst/introduction.html
 
 RedirectMatch permanent /spec/pep-([^#]*) http://docutils.sourceforge.net/docs/peps/pep-$1
+
+Redirect permanent /tools/test.txt  http://docutils.sourceforge.net/docs/user/rst/demo.txt
+Redirect permanent /tools/test.html http://docutils.sourceforge.net/docs/user/rst/demo.html
