@@ -377,6 +377,7 @@ class SimpleTableParser(TableParser):
         self.block[-1] = self.block[-1].replace('=', '-')
         self.head_body_sep = None
         self.columns = []
+        self.border_end = None
         self.table = []
         self.done = [-1] * len(block[0])
         self.rowseps = {0: [0]}
@@ -390,7 +391,8 @@ class SimpleTableParser(TableParser):
         job.
         """
         # Top border must fully describe all table columns.
-        self.columns = self.parse_columns(self.block[0])
+        self.columns = self.parse_columns(self.block[0], 0)
+        self.border_end = self.columns[-1][1]
         firststart, firstend = self.columns[0]
         block = self.block[1:]
         offset = 0
@@ -412,7 +414,7 @@ class SimpleTableParser(TableParser):
                 # Accumulate lines of incomplete row.
                 rowlines.append((line.rstrip(), offset))
 
-    def parse_columns(self, line):
+    def parse_columns(self, line, offset):
         """
         Given a column span underline, return a list of (begin, end) pairs.
         """
@@ -427,6 +429,9 @@ class SimpleTableParser(TableParser):
                 end = len(line)
             cols.append((begin, end))
         if self.columns:
+            if cols[-1][1] != self.border_end:
+                raise TableMarkupError('Column span incomplete at line '
+                                       'offset %s.' % offset)
             # Allow for an unbounded rightmost column:
             cols[-1] = (cols[-1][0], self.columns[-1][1])
         return cols
@@ -457,10 +462,6 @@ class SimpleTableParser(TableParser):
         text from each line, and check for text in column margins.  Finally,
         adjust for insigificant whitespace.
         """
-        if spanline:
-            columns = self.parse_columns(spanline[0])
-        else:
-            columns = self.columns[:]
         while lines and not lines[-1][0]:
             lines.pop()                 # Remove blank trailing lines.
         if lines:
@@ -470,6 +471,10 @@ class SimpleTableParser(TableParser):
         else:
             # No new row, just blank lines.
             return
+        if spanline:
+            columns = self.parse_columns(*spanline)
+        else:
+            columns = self.columns[:]
         row = self.init_row(columns, offset)
         # "Infinite" value for a dummy last column's beginning, used to
         # check for text overflow:
