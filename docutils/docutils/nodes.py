@@ -107,7 +107,7 @@ class Node:
         Parameter `visitor`: A `NodeVisitor` object, containing a
         ``visit_...`` method for each `Node` subclass encountered.
         """
-        visitor.document.reporter.debug(self.__class__.__name__,
+        visitor.document.reporter.debug('visit_' + self.__class__.__name__,
                                         category='nodes.Node.walk')
         try:
             visitor.dispatch_visit(self, self.__class__.__name__)
@@ -133,7 +133,7 @@ class Node:
         and ``depart_...`` methods for each `Node` subclass encountered.
         """
         call_depart = 1
-        visitor.document.reporter.debug(self.__class__.__name__,
+        visitor.document.reporter.debug('visit_' + self.__class__.__name__,
                                         category='nodes.Node.walkabout')
         try:
             try:
@@ -151,9 +151,10 @@ class Node:
         except SkipChildren:
             pass
         if call_depart:
-            visitor.document.reporter.debug(self.__class__.__name__,
-                                            category='nodes.Node.walkabout')
-            visitor.dispatch_depart(self, self.__class__.__name__)
+            visitor.document.reporter.debug(
+                'depart_' + self.__class__.__name__,
+                category='nodes.Node.walkabout')
+            visitor.dispatch_departure(self, self.__class__.__name__)
 
 
 class Text(Node, UserString):
@@ -1275,7 +1276,7 @@ class NodeVisitor:
         method = getattr(self, 'visit_' + method_name, self.unknown_visit)
         return method(node)
 
-    def dispatch_depart(self, node, method_name):
+    def dispatch_departure(self, node, method_name):
         method = getattr(self, 'depart_' + method_name, self.unknown_departure)
         return method(node)
 
