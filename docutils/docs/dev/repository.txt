@@ -102,32 +102,32 @@ Subversion servers without having to enter your password.  There are
 two places to add your SSH public key on BerliOS: your web account and
 your shell account.
 
-1. Adding your SSH key to your BerliOS web account:
+* Adding your SSH key to your BerliOS web account:
 
-   * Log in on the web at https://developer.berlios.de/.  Create your
+  1. Log in on the web at https://developer.berlios.de/.  Create your
      account first if necessary.  You should be taken to your "My
      Personal Page" (https://developer.berlios.de/my/).
 
-   * Choose "Account Options" from the menu below the top banner.
+  2. Choose "Account Options" from the menu below the top banner.
 
-   * At the bottom of the "Account Maintenance" page
+  3. At the bottom of the "Account Maintenance" page
      (https://developer.berlios.de/account/) you'll find a "Shell
      Account Information" section; click on "[Edit Keys]".
 
-   * Copy and paste your SSH public key into the edit box on this page
+  4. Copy and paste your SSH public key into the edit box on this page
      (https://developer.berlios.de/account/editsshkeys.php).  Further
      instructions are available on this page.
 
-2. Adding your SSH key to your BerliOS shell account:
+* Adding your SSH key to your BerliOS shell account:
 
-   * Log in to the BerliOS shell server::
+  1. Log in to the BerliOS shell server::
 
          ssh username@shell.berlios.de
 
      You'll be asked for your password, which you set when you created
      your account.
 
-   * Create a .ssh directory in your home directory, and remove
+  2. Create a .ssh directory in your home directory, and remove
      permissions for group & other::
 
          mkdir .ssh
@@ -135,12 +135,12 @@ your shell account.
 
      Exit the SSH session.
 
-   * Copy your public key to the .ssh directory on BerliOS::
+  3. Copy your public key to the .ssh directory on BerliOS::
 
          scp .ssh/id_dsa.pub username@shell.berlios.de:.ssh/authorized_keys
 
-   Now you should be able to start an SSH session without needing your
-   password.
+  Now you should be able to start an SSH session without needing your
+  password.
 
 
 Web Access
