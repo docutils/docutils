@@ -38,6 +38,7 @@ class Reader(docutils.readers.Reader):
         module_section.walk(visitor)
         self.document.append(module_section)
 
+
 class DocformatVisitor(nodes.SparseNodeVisitor):
 
     """
@@ -68,6 +69,7 @@ class DocformatVisitor(nodes.SparseNodeVisitor):
                                           pynodes.class_section)):
             looking_in = looking_in.parent
         looking_in['docformat'] = name
+
 
 class DocstringFormattingVisitor(nodes.SparseNodeVisitor):
 
@@ -109,7 +111,8 @@ class DocstringFormattingVisitor(nodes.SparseNodeVisitor):
                 return node['docformat']
             node = node.parent
         return self.default_parser
-    
+
+
 if __name__ == '__main__':
     try:
         import locale
@@ -119,8 +122,8 @@ if __name__ == '__main__':
 
     from docutils.core import publish_cmdline, default_description
 
-    description = ('Generates pseudo-XML from standalone reStructuredText '
-                   'sources (for testing purposes).  ' + default_description)
+    description = ('Generates pseudo-XML from Python modules '
+                   '(for testing purposes).  ' + default_description)
 
     publish_cmdline(description=description,
                     reader=Reader())
