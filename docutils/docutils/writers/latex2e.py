@@ -48,10 +48,10 @@ class Writer(writers.Writer):
           {'choices': ['dash', 'parentheses', 'parens', 'none'],
            'default': 'dash', 'metavar': '<format>'}),
          ('Specify a stylesheet file. The file will be "input" by latex in '
-          'the document header.  Default is "style.tex".  If this is set to '
+          'the document header.  Default is "no stylesheet".  If this is set to '
           '"" disables input.  Overridden by --stylesheet-path.',
           ['--stylesheet'],
-          {'default': 'style.tex', 'metavar': '<file>'}),
+          {'default': '', 'metavar': '<file>'}),
          ('Specify a stylesheet file, relative to the current working '
           'directory.  Overrides --stylesheet.',
           ['--stylesheet-path'],
