@@ -162,14 +162,6 @@ Also see the `SourceForge Bug Tracker`_.
   Quite a few nodes are getting a "None" source attribute as well.  In
   particular, see the bodies of definition lists.
 
-* .. _mislocated targets:
-
-  Explicit targets are sometimes mis-located.  In particular, placing
-  a target before a section header puts the target at the end of the
-  previous section instead of the start of the next section.  The code
-  in docutils.transforms.misc.ClassAttribute could be used to fix
-  this.  (Reported by David Priest.)
-
 * David Abrahams pointed out that _`doubly-indirect substitutions`
   have a bug, but only when there's multiple references::
 

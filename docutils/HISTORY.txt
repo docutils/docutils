@@ -36,6 +36,11 @@ Changes Since 0.3.7
   - Added "list-table" directive.
   - Caught empty CSV table bug.
 
+* docutils/transforms/references.py:
+
+  - Fixed mislocated internal targets bug, by relocating targets into
+    the next text element.
+
 * docutils/writers/latex2e.py:
 
   - Improved --use-latex-docinfo so that organization/contact/address
