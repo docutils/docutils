@@ -1,12 +1,39 @@
 #!/bin/sh
 
+CHECKS=0
+FAILS=0
+
+function do_diff() {
+  CHECKS=$((CHECKS + 1)) 
+  diff -q -s $1 $2
+  if test $? -gt 0 ; then
+    FAILS=$((FAIL + 1)) 
+  fi
+}
+
+function report() {
+  echo "-------------------------------------"
+  if test $FAILS -eq 0 ; then
+    echo "OK: all $CHECKS tests passed"
+  else
+    echo "ERROR: $FAILS of $CHECKS failed"
+  fi
+}
+
+# with generated footer
+CMD="../../tools/rst2latex.py -gs"
+INF=test/README.txt
+OUTF="$INF-gs.tex"
+REFF="$OUTF.ref"
+$CMD $INF > $OUTF
+do_diff $REFF $OUTF 
+
 CMD="../../tools/rst2latex.py --documentclass=book"
 INF=test/README.txt
 OUTF="$INF-book.tex"
 REFF="$OUTF.ref"
 $CMD $INF > $OUTF
-diff -q -s $REFF $OUTF 
-echo --------------------------
+do_diff $REFF $OUTF 
 
 #CMD="../../tools/rst2latex.py --dump-settings"
 CMD="../../tools/rst2latex.py --no-doc-info"
@@ -14,24 +41,21 @@ INF=test/README.txt
 OUTF="$INF-no-info.tex"
 REFF="$OUTF.ref"
 $CMD $INF > $OUTF
-diff -q -s $REFF $OUTF 
-echo --------------------------
+do_diff $REFF $OUTF 
 
 CMD="../../tools/rst2latex.py --no-doc-title"
 INF=test/README.txt
 OUTF="$INF-no-title.tex"
 REFF="$OUTF.ref"
 $CMD $INF > $OUTF
-diff -q -s $REFF $OUTF 
-echo --------------------------
+do_diff $REFF $OUTF 
 
 CMD="../../tools/rst2latex.py --no-doc-title --no-doc-info"
 INF=test/README.txt
 OUTF="$INF-no-title-info.tex"
 REFF="$OUTF.ref"
 $CMD $INF > $OUTF
-diff -q -s $REFF $OUTF 
-echo --------------------------
+do_diff $REFF $OUTF 
 
 echo ATTRIBUTION
 CMD="../../tools/rst2latex.py --attribution=none"
@@ -39,16 +63,15 @@ INF=test/attribution.txt
 OUTF="$INF-none-attribution.tex"
 REFF="$OUTF.ref"
 $CMD $INF > $OUTF
-diff -q -s $REFF $OUTF 
+do_diff $REFF $OUTF 
 
 CMD="../../tools/rst2latex.py --attribution=parens"
 INF=test/attribution.txt
 OUTF="$INF-parens-attribution.tex"
 REFF="$OUTF.ref"
 $CMD $INF > $OUTF
-diff -q -s $REFF $OUTF 
+do_diff $REFF $OUTF 
 
-echo --------------------------
 #CMD="../../tools/rst2latex.py --snap-footnote-refs=1"
 #CMD="../../tools/rst2latex.py --footnote-references=superscript"
 #CMD="../../tools/rst2latex.py --documentclass=book --hyperlink-color=0"
@@ -64,22 +87,20 @@ for INF in `ls test/$FM` ; do
   OUTF="$INF.tex"
   REFF="$OUTF.ref"
   $CMD $INF > $OUTF
-  diff -q -s $REFF $OUTF 
-  echo --------------------------
+  do_diff $REFF $OUTF 
 done
 INF=test/tools.txt
 OUTF="$INF-ltoc.tex"
 REFF="$OUTF.ref"
 $CMD --use-latex-toc 1 $INF > $OUTF
-diff -q -s $REFF $OUTF 
-echo --------------------------
+do_diff $REFF $OUTF 
 
 CMD="../../tools/rst2latex.py -l de"
 INF=test/quotes.txt
 OUTF="$INF-l-de.tex"
 REFF="$OUTF.ref"
 $CMD $INF > $OUTF
-diff -q -s $REFF $OUTF 
-echo --------------------------
+do_diff $REFF $OUTF 
 
+report
 
