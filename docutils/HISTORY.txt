@@ -19,13 +19,13 @@ and related projects:
 
     Aahz, David Ascher, Fred Bremmer, Simon Budig, Adam Chodorowski,
     Fred Drake, Dethe Elza, Jim Fulton, Peter Funk, Engelbert Gruber,
-    Doug Hellmann, Juergen Hermann, Tony Ibbs, Alan Jaffray, Richard
-    Jones, Garth Kidd, Daniel Larsson, Marc-Andre Lemburg, Wolfgang
-    Lipp, Edward Loper, Ken Manheimer, Paul Moore, Michel Pelletier,
-    Sam Penrose, Tim Peters, Mark Pilgrim, Tavis Rudd, Ollie
-    Rutherfurd, Ueli Schlaepfer, tav, Bob Tolbert, Laurence Tratt,
-    Guido van Rossum, Barry Warsaw, Edward Welbourne, Ka-Ping Yee,
-    Moshe Zadka
+    Simon Hefti, Doug Hellmann, Juergen Hermann, Tony Ibbs, Alan
+    Jaffray, Richard Jones, Garth Kidd, Daniel Larsson, Marc-Andre
+    Lemburg, Wolfgang Lipp, Edward Loper, Ken Manheimer, Paul Moore,
+    Michel Pelletier, Sam Penrose, Tim Peters, Mark Pilgrim, Tavis
+    Rudd, Ollie Rutherfurd, Ueli Schlaepfer, tav, Bob Tolbert,
+    Laurence Tratt, Guido van Rossum, Barry Warsaw, Edward Welbourne,
+    Ka-Ping Yee, Moshe Zadka
 
 Thank you!
 
@@ -72,6 +72,8 @@ Specific:
   - Added ``Publisher.process_command_line()`` and ``.set_options()``
     methods.
   - Reworked I/O model for ``docutils.io`` wrappers.
+  - Updated ``Publisher.set_options()``; now returns option values
+    object.
 
 * docutils/frontend.py: Added to project; support for front-end
   (command-line) scripts.  Option specifications may be augmented by
@@ -227,6 +229,10 @@ Specific:
   - Improved option list spacing (thanks to Richard Jones).
   - Modified field list output.
   - Added backlinks to footnotes & citations.
+  - Added percentage widths to "<col>" tags (from colspec).
+  - Option lists: "<code>" changed to "<kbd>", ``option_argument``
+    "<span>" changed to "<var>".
+  - Inline literals: "<code>" changed to "<tt>".
 
 * docutils/writers/pep_html.py: Added to project; HTML Writer for
   PEPs (subclass of ``html4css1.Writer``).
@@ -327,6 +333,9 @@ Specific:
 * tools/pep.py: Added to project; PEP to HTML front-end.
 
 * tools/pep-html-template: Added to project.
+
+* tools/pep2html.py: Added to project from Python (nondist/peps).
+  Added support for Docutils (reStructuredText PEPs).
 
 * tools/quicktest.py: Added the "--attributes" option, hacked a bit.
 
