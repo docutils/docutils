@@ -158,7 +158,7 @@ General
 
   - Parameterized substitutions?  For example::
 
-        See |figure (figure name)|, on |page (figure name)|.
+        See |figure (figure name)| on |page (figure name)|.
 
         .. |figure (name)| figure-ref:: (name)
         .. |page (name)| page-ref:: (name)
