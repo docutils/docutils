@@ -529,7 +529,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
               self.geometry % (self.d_paper, self.d_margins),
               #
               self.generator,
-              # TODO active_table.definitions
               # latex lengths
               '\\newlength{\\admonitionwidth}\n',
               '\\setlength{\\admonitionwidth}{0.9\\textwidth}\n'
@@ -1019,9 +1018,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # multi{row,column}
         if node.has_key('morerows') and node.has_key('morecols'):
-            raise NotImplementedError('LaTeX can\'t handle cells that '
-            'span multiple rows *and* columns, sorry.')
-        atts = {}
+            raise NotImplementedError('Cells that '
+            'span multiple rows *and* columns are not supported, sorry.')
         if node.has_key('morerows'):
             raise NotImplementedError('multiple rows are not working (yet), sorry.')
             count = node['morerows'] + 1
@@ -1424,7 +1422,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.use_optionlist_for_option_list:
             self.body.append('\\item [')
         else:
-            atts = {}
             if len(node.astext()) > 14:
                 self.body.append('\\multicolumn{2}{l}{')
                 self.context.append('} \\\\\n  ')
