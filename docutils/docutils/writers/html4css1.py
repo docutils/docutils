@@ -932,7 +932,9 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_raw(self, node):
         if node.get('format') == 'html':
-            self.body.append(node.astext())
+            # @@@ Wrong fix!
+            from docutils.parsers.rst.states import unescape
+            self.body.append(unescape(node.astext(), restore_backslashes=1))
         # Keep non-HTML raw text out of output:
         raise nodes.SkipNode
 
