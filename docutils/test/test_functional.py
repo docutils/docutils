@@ -57,12 +57,9 @@ class FunctionalTestSuite(DocutilsTestSupport.CustomTestSuite):
                                  configfile=config_file_full_path)
 
 
-class FunctionalTestCase(DocutilsTestSupport.CustomTestCase,
-                         docutils.SettingsSpec):
+class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
 
     """Test case for one config file."""
-
-    settings_default_overrides = {'_disable_config': 1}
 
     def __init__(self, *args, **kwargs):
         """Set self.configfile, pass arguments to parent __init__."""
@@ -78,7 +75,10 @@ class FunctionalTestCase(DocutilsTestSupport.CustomTestCase,
         cwd = os.getcwd()
         os.chdir(testroot)
         # Keyword parameters for publish_file:
-        params = {'settings_overrides': {}} # initialize for settings files
+        params = {}
+        # Initialize 'settings_overrides' for test settings scripts,
+        # and disable configuration files:
+        params['settings_overrides'] = {'_disable_config': 1}
         # Read the variables set in the default config file and in
         # the current config file into params:
         execfile(os.path.join(datadir, 'tests', '_default.py'), params)
@@ -108,7 +108,7 @@ class FunctionalTestCase(DocutilsTestSupport.CustomTestCase,
                 del params[key]
         # Get output (automatically written to the output/ directory
         # by publish_file):
-        output = docutils.core.publish_file(settings_spec=self, **params)
+        output = docutils.core.publish_file(**params)
         os.chdir(cwd)
         # Get the expected output *after* writing the actual output.
         self.assert_(os.access(expected_path, os.R_OK),\
