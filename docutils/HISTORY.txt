@@ -38,10 +38,20 @@ any names; apologies (and please let me know!) if I have.
 Changes Since 0.2
 ========================
 
+* docutils/__init__.py:
+
+  - Bumped version to 0.2.1 to reflect changes to I/O classes.
+
 * docutils/frontend.py:
 
   - Check for & exit on identical source & destination paths.
   - Fixed bug with absolute paths & ``--config``.
+
+* docutils/io.py:
+
+  - Split ``IO`` classes into subclasses of ``Input`` and ``Output``.
+  - Added automatic closing to ``FileInput`` and ``FileOutput``.
+  - Delayed opening of ``FileOutput`` file until ``write()`` called.
 
 * docutils/nodes.py:
 
@@ -120,6 +130,7 @@ Changes Since 0.2
 
   - Added ``--silent`` option.
   - Fixed bug with absolute paths & ``--config``.
+  - Updated for new I/O classes.
 
 * tools/default.css:
 
@@ -133,6 +144,8 @@ Changes Since 0.2
   - Added support for "Content-Type:" header & arbitrary PEP formats.
   - Linked "Content-Type: text/plain" to PEP 9.
   - Files skipped (due to an error) are not pushed onto the server.
+  - Updated for new I/O classes.
+  - Added ``check_requirements()`` & ``pep_type_error()``.
 
 * tools/stylesheets/pep.css:
 

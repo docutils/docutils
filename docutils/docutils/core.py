@@ -29,8 +29,8 @@ class Publisher:
     """
 
     def __init__(self, reader=None, parser=None, writer=None,
-                 source=None, source_class=io.FileIO,
-                 destination=None, destination_class=io.FileIO,
+                 source=None, source_class=io.FileInput,
+                 destination=None, destination_class=io.FileOutput,
                  options=None):
         """
         Initial setup.  If any of `reader`, `parser`, or `writer` are not
@@ -48,13 +48,13 @@ class Publisher:
         """A `writers.Writer` instance."""
 
         self.source = source
-        """The source of input data, an `io.IO` instance."""
+        """The source of input data, an `io.Input` instance."""
 
         self.source_class = source_class
         """The class for dynamically created source objects."""
 
         self.destination = destination
-        """The destination for docutils output, an `io.IO` instance."""
+        """The destination for docutils output, an `io.Output` instance."""
 
         self.destination_class = destination_class
         """The class for dynamically created destination objects."""

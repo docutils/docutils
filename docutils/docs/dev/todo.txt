@@ -50,14 +50,15 @@ Bugs
   whitespace and punctuation as markup delimiters, which may not be
   applicable in these languages.
 
-- Text like "``--an-option``" can get wrapped badly in HTML browsers,
-  like "``--\nan-option``".  Should inline literals prevent soft
-  linebreaks?  Allow breaks at whitespace or not at all?
-
 - @@@ This shouldn't be recognized as a list item::
 
       A. Einstein was a really
       smart dude.
+
+  Or this::
+
+      1. This is the heading of section one
+      =====================================
 
   The only problem is, what about this? ::
 
@@ -68,12 +69,19 @@ Bugs
       A. Einstein was a really smart dude.
       B. So was Carl Sagan.
 
+  But what about this?  Accidents can happen::
+
+      A. Einstein was a great influence on
+      B. Physicist, who was a colleague of
+      C. Chemist.  They all worked in
+      Princeton, NJ.
+
   Time to put more smarts into the list item recognition code, or
   just document it as a corner case and require escapes?  E.g.::
 
       \A. Einstein was a really smart dude.
 
-  (Bug report by Jeremy Hylton.)
+  (Bug reports by Jeremy Hylton and Dmitry Jemerov.)
 
 
 General
@@ -85,11 +93,19 @@ General
 
   - Implementation docs.
 
-    - spec/doctree.txt: Doctree nodes (DTD element) semantics:
+    - spec/doctree.txt: Doctree element (DTD element) semantics:
 
       - External (public) attributes (node.attributes).
-      - Internal attributes (node.*).
-      - Linking mechanism.
+      - Internal attributes (node.*). (?)
+      - Linking mechanism. (?)
+
+      Should this document be about the code (implementation details),
+      or about the DTD (document tree elements)?  I'm having trouble
+      writing it because it's a bit schizo; doesn't know what it is.
+      Perhaps it should simply document the DTD elements, their
+      semantics, and only refer to the implementation.  Descriptions
+      of the classes, their methods, and internal attributes belong in
+      the implementation docs (docstrings for now).
 
     - How a Writer works & how to write one
 
@@ -136,9 +152,6 @@ General
 
 - Perhaps the ``Component.supports`` method should deal with
   individual features ("meta" etc.) instead of formats ("html" etc.)?
-
-- @@@ Add references to the user docs: bugs to the SF bug tracker,
-  questions to the mailing lists.
 
 
 Specification
@@ -341,12 +354,35 @@ __ rst/alternatives.html#or-not-to-do
   first blank line ends it) where every line begins with the same
   non-alphanumeric non-whitespace character.
 
-- Decide whether or not to implement Simon Budig's "inline external
-  targets" syntax idea, and if so, how:
+- @@@ Decide whether or not to implement Simon Budig's "inline
+  external targets" syntax idea, and if so, how?
 
-  - regular directive affecting its indented text block
-  - pragma directive affecting the entire document
-  - or a full-blown addition to the spec & parser
+  - As a regular directive affecting its indented text block::
+
+        .. inline-urls::
+
+           This is an anonymous `reference <http://www.example.org
+           /reference/>`__ of one word ("reference").  Here is a
+           `phrase reference <http://www.example.org
+           /phrase_reference/>`__.
+
+  - As a pragma directive affecting the entire document (from that
+    point on).  Perhaps a variation on the regular directive::
+
+        .. inline-urls:: :pragma:
+
+        Ordinary paragraphs ...
+
+        This is an anonymous `reference <http://www.example.org
+        /reference/>`__ of one word ("reference").  Here is a
+        `phrase reference <http://www.example.org
+        /phrase_reference/>`__.
+
+    Perhaps "``:global:``" instead of "``:pragma:``"?  This pattern
+    could be useful for other pragma directives: local-scope unless
+    explicitly specified as global/pragma.
+
+  - Or as a full-blown addition to the spec & parser.
 
 - Add support for pragma (syntax-altering) directives.
 
@@ -369,8 +405,8 @@ Directives
 
   - _`parts.citations`: See `Footnote & Citation Gathering`_.
 
-  - _`parts.sectnum` (section numbering; add support to .contents;
-    could be cmdline option also)
+  - _`parts.sectnum` (automatic section numbering; add support to
+    the "contents" directive; could be cmdline option also)
 
   - _`misc.raw`
 
