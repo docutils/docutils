@@ -1,8 +1,8 @@
-2002-06-24
+2004-07-23
 
 A DocBook writer for Docutils.
 
-It works okay so far, but still needs a bunch of work.
+It works okay so far, but still needs work.
 
 The main missing pieces are bibliography elements citations.
 

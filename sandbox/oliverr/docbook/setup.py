@@ -6,8 +6,8 @@ def do_setup():
     dist = setup(
         name='Docutils DocBook XML Writer',
         description='A DocBook XML Writer for Docutils',
-        url='http://docutils.sourceforg.net/sandbox/oliverr/docbook/',
-        version='0.1',
+        url='http://docutils.sourceforge.net/sandbox/oliverr/docbook/',
+        version='0.2',
         author='Ollie Rutherfurd',
         author_email='oliver@rutherfurd.net',
         license='Public Domain',
