@@ -153,6 +153,7 @@ Specific:
   - figures get "here" option (LaTeX per default puts them at bottom),
     and figure content is centered.
   - Rowspan support for tables.
+  - Fix: admonition titles before first section.
 
 * docs/index.txt: "Docutils Project Documentation Overview", added to
   project.
