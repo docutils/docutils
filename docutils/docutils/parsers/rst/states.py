@@ -2823,7 +2823,7 @@ class Line(SpecializedText):
                 self.short_overline(context, blocktext, lineno, 2)
             else:
                 msg = self.reporter.severe(
-                    'Missing underline for overline.',
+                    'Missing matching underline for section title overline.',
                     nodes.literal_block(source, source), line=lineno)
                 self.parent += msg
                 return [], 'Body', []
