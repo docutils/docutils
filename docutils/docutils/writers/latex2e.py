@@ -1195,7 +1195,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_tbody(self, node):
         # BUG write preamble if not yet done (colspecs not [])
         # for tables without heads.
-        if len(self.colspecs) > 0:
+        if self.colspecs:
             self.visit_thead(None)
             self.depart_thead(None)
         self.body.append('%[visit_tbody]\n')
