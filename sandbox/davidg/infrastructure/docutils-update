@@ -33,7 +33,7 @@ htdocsdest=$auxdir/htdocs
 # Where to create the snapshots (non-public).
 snapshotdir=$auxdir/snapshots
 # Where to publish the snapshots (public).
-snapshotdest=$basedir
+snapshotdest=/home/groups/ftp/pub/docutils
 sshdir=$auxdir/.ssh
 bindir=$auxdir/bin
 htdocs_patchfile=$auxdir/htdocs.patch
