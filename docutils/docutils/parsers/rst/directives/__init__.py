@@ -258,10 +258,7 @@ def path(argument):
         raise ValueError('argument required but none supplied')
     else:
         path = ''.join([s.strip() for s in argument.splitlines()])
-        if path.find(' ') == -1:
-            return path
-        else:
-            raise ValueError('path contains whitespace')
+        return path
 
 def nonnegative_int(argument):
     """

@@ -156,8 +156,7 @@ value ``None``.  Three directive function attributes are recognized:
     empty string ("") if no argument is found.
 
   - ``path``: Returns the path argument unwrapped (with newlines
-    removed).  Raises ``ValueError`` if no argument is found or if the
-    path contains internal whitespace.
+    removed).  Raises ``ValueError`` if no argument is found.
 
   - ``nonnegative_int``: Checks for a nonnegative integer argument,
     and raises ``ValueError`` if not.
@@ -289,12 +288,6 @@ early version of the image directive function::
     def image(name, arguments, options, content, lineno,
               content_offset, block_text, state, state_machine):
         reference = ''.join(arguments[0].split('\n'))
-        if reference.find(' ') != -1:
-            error = state_machine.reporter.error(
-                  'Image URI contains whitespace.', '',
-                  nodes.literal_block(block_text, block_text),
-                  line=lineno)
-            return [error]
         options['uri'] = reference
         image_node = nodes.image(block_text, **options)
         return [image_node]
@@ -312,8 +305,7 @@ Several things are noteworthy in the code above:
    to contain whitespace (see the argument spec above,
    ``image.arguments = (1, 0, 1)``).  This is to allow for long URLs
    which may span multiple lines.  The first line of the ``image``
-   function joins the URL, discarding any embedded newlines.  Then the
-   result is checked for embedded spaces, which are *not* allowed.
+   function joins the URL, discarding any embedded newlines.
 
 2. The reference is added to the ``options`` dictionary under the
    "uri" key; this becomes an attribute of the ``nodes.image`` element

@@ -29,17 +29,6 @@ totest['figures'] = [
         <image uri="picture.png">
 """],
 ["""\
-.. figure:: not an image URI
-""",
-"""\
-<document source="test data">
-    <system_message level="3" line="1" source="test data" type="ERROR">
-        <paragraph>
-            Image URI contains whitespace.
-        <literal_block xml:space="preserve">
-            .. figure:: not an image URI
-"""],
-["""\
 .. figure:: picture.png
 
    A picture with a caption.
@@ -67,21 +56,6 @@ totest['figures'] = [
             .. figure:: picture.png
             \n\
                - A picture with an invalid caption.
-"""],
-["""\
-.. figure:: not an image URI
-
-   And a caption.
-""",
-"""\
-<document source="test data">
-    <system_message level="3" line="1" source="test data" type="ERROR">
-        <paragraph>
-            Image URI contains whitespace.
-        <literal_block xml:space="preserve">
-            .. figure:: not an image URI
-            \n\
-               And a caption.
 """],
 ["""\
 .. figure:: picture.png

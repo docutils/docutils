@@ -1823,14 +1823,7 @@ class Body(RSTState):
             if refname:
                 return 'refname', refname
         reference = ''.join([line.strip() for line in block])
-        if reference.find(' ') == -1:
-            return 'refuri', unescape(reference)
-        else:
-            warning = self.reporter.warning(
-                  'Hyperlink target contains whitespace. Perhaps a footnote '
-                  'was intended?',
-                  nodes.literal_block(block_text, block_text), line=lineno)
-            return 'malformed', warning
+        return 'refuri', unescape(reference)
 
     def is_reference(self, reference):
         match = self.explicit.patterns.reference.match(

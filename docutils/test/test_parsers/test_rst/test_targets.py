@@ -77,60 +77,6 @@ Indirect hyperlink targets:
     <target id="target2" name="target2" refname="phrase-link reference">
 """],
 ["""\
-.. _target1: Not a proper hyperlink target
-
-.. _target2: Although it ends with an underscore, this is not a phrase-link_
-
-.. _target3: A multi-line verson of something
-   ending with an underscore, but not a phrase-link_
-""",
-"""\
-<document source="test data">
-    <system_message level="2" line="1" source="test data" type="WARNING">
-        <paragraph>
-            Hyperlink target contains whitespace. Perhaps a footnote was intended?
-        <literal_block xml:space="preserve">
-            .. _target1: Not a proper hyperlink target
-    <system_message level="2" line="3" source="test data" type="WARNING">
-        <paragraph>
-            Hyperlink target contains whitespace. Perhaps a footnote was intended?
-        <literal_block xml:space="preserve">
-            .. _target2: Although it ends with an underscore, this is not a phrase-link_
-    <system_message level="2" line="5" source="test data" type="WARNING">
-        <paragraph>
-            Hyperlink target contains whitespace. Perhaps a footnote was intended?
-        <literal_block xml:space="preserve">
-            .. _target3: A multi-line verson of something
-               ending with an underscore, but not a phrase-link_
-"""],
-["""\
-.. __: Not a proper hyperlink target
-
-__ Although it ends with an underscore, this is not a phrase-link_
-
-__ A multi-line verson of something
-   ending with an underscore, but not a phrase-link_
-""",
-"""\
-<document source="test data">
-    <system_message level="2" line="1" source="test data" type="WARNING">
-        <paragraph>
-            Hyperlink target contains whitespace. Perhaps a footnote was intended?
-        <literal_block xml:space="preserve">
-            .. __: Not a proper hyperlink target
-    <system_message level="2" line="3" source="test data" type="WARNING">
-        <paragraph>
-            Hyperlink target contains whitespace. Perhaps a footnote was intended?
-        <literal_block xml:space="preserve">
-            __ Although it ends with an underscore, this is not a phrase-link_
-    <system_message level="2" line="5" source="test data" type="WARNING">
-        <paragraph>
-            Hyperlink target contains whitespace. Perhaps a footnote was intended?
-        <literal_block xml:space="preserve">
-            __ A multi-line verson of something
-            ending with an underscore, but not a phrase-link_
-"""],
-["""\
 .. _a long target name:
 
 .. _`a target name: including a colon (quoted)`:
@@ -392,12 +338,15 @@ Anonymous indirect hyperlink target:
 Anonymous external hyperlink target, not indirect:
 
 __ uri\\_
+
+__ this URI ends with an underscore_
 """,
 """\
 <document source="test data">
     <paragraph>
         Anonymous external hyperlink target, not indirect:
     <target anonymous="1" id="id1" refuri="uri_">
+    <target anonymous="1" id="id2" refuri="this URI ends with an underscore_">
 """],
 ["""\
 Anonymous indirect hyperlink targets:
