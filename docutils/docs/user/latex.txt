@@ -38,7 +38,7 @@ contains default settings. To allow *overwriting defaults* the stylesheet
 is included at last.
 
 Options on the Commandline
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------
 
 =====================  ================================================
 Setting/Config Entry   Description
@@ -54,7 +54,7 @@ Setting/Config Entry   Description
 
 
 Options in the Stylesheet
-~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------
 
 =====================  ================================================
 Setting/Config Entry   Description
@@ -63,9 +63,11 @@ papersize              Default: a4paper. Paper geometry can be changed
                        using ``\geometry{xxx}`` entries.
 
                        Some possibilities:
+
                        * a4paper, b3paper, letterpaper, executivepaper,
                          legalpaper
                        * landscape, portrait, twoside.
+
                        and a ton of other option setting margins.
 ---------------------  ------------------------------------------------
 paragraph indent       By default latex indents the forst line in a
@@ -75,7 +77,6 @@ paragraph indent       By default latex indents the forst line in a
 
                          \setlength{\parindent}{0pt}
                          \setlength{\parskip}{6pt plus 2pt minus 1pt}
-
 =====================  ================================================
 
 Missing options
