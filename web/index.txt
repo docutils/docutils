@@ -95,8 +95,6 @@ Docutils is in active development and should be considered highly
 experimental.  We're learning as we go.  APIs are subject to change at
 any time.
 
-.. _PEPs: `PEPs (Python Enhancement Proposals)`_
-
 
 Requirements
 ============
@@ -368,19 +366,23 @@ Project Links
      :alt: SourceForge Logo
   .. :border: 0
 
+.. _reStructuredText: rst.html
 .. _project files page:
    http://sourceforge.net/project/showfiles.php?group_id=38414
 .. _Anonymous CVS access: http://sourceforge.net/cvs/?group_id=38414
 .. _CVS:
 .. _browse the CVS repository:
    http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/docutils/
-.. _To Do list: spec/notes.html#to-do
+.. _To Do list: docs/dev/to-do.html
 .. _README: README.html
 .. _HISTORY: HISTORY.html
 .. _COPYING: COPYING.html
 .. _mailto:
 .. _David Goodger: mailto:goodger@users.sourceforge.net
 .. _Doc-SIG: http://www.python.org/sigs/doc-sig/
+
+.. _PEPs:
+.. _PEPs (Python Enhancement Proposals): http://www.python.org/peps/
 
 .. _latest project release package:
    http://prdownloads.sourceforge.net/docutils/docutils-0.3.3-alpha.tar.gz
