@@ -90,10 +90,10 @@ class Headers(Transform):
                 for node in para:
                     if isinstance(node, nodes.reference):
                         node.parent.replace(node, mask_email(node, pep))
-            elif name in ('replaces', 'replaced-by'):
+            elif name in ('replaces', 'replaced-by', 'requires'):
                 newbody = []
                 space = nodes.Text(' ')
-                for refpep in body.astext().split():
+                for refpep in re.split(',?\s+', body.astext()):
                     pepno = int(refpep)
                     newbody.append(nodes.reference(
                           refpep, refpep, refuri=self.pep_url % pepno))
@@ -104,6 +104,10 @@ class Headers(Transform):
                 date = para.astext()
                 uri = self.pep_cvs_url % int(pep)
                 para[:] = [nodes.reference('', date, refuri=uri)]
+            elif name == 'content-type':
+                pep_type = para.astext()
+                uri = self.pep_url % 12
+                para[:] = [nodes.reference('', pep_type, refuri=uri)]
             elif name == 'version' and len(body):
                 utils.clean_rcs_keywords(para, self.rcs_keyword_substitutions)
 
