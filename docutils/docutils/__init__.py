@@ -124,11 +124,18 @@ class TransformSpec:
     """Transforms required by this class.  Override in subclasses."""
     
     unknown_reference_resolvers = ()
-    """List of functions to try to resolve unknown references. Called when
-    FinalCheckVisitor is unable to find a correct target. The list should
-    contain functions which will try to resolve unknown references. Each 
-    function can have a default_priority attribute which will effect the order 
-    the unknown_reference_resolvers are run. Override in subclass"""
+    """List of functions to try to resolve unknown references.  Called when
+    FinalCheckVisitor is unable to find a correct target.  The list should
+    contain functions which will try to resolve unknown references, with the
+    following signature::
+
+        def reference_resolver(node):
+            '''Returns boolean: true if resolved, false if not.'''
+
+    Each function must have a "priority" attribute which will affect the order
+    the unknown_reference_resolvers are run.
+
+    Override in subclasses."""
 
 
 class Component(SettingsSpec, TransformSpec):
