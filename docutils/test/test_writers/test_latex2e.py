@@ -88,8 +88,6 @@ latex_head + """\
 \\date{}
 \\raggedbottom
 \\begin{document}
-\\maketitle
-
 
 \\setlength{\\locallinewidth}{\\linewidth}
 \\hypertarget{table-of-contents}{}
@@ -150,8 +148,6 @@ latex_head + """\
 \\date{}
 \\raggedbottom
 \\begin{document}
-\\maketitle
-
 
 \\setlength{\\locallinewidth}{\\linewidth}
 \\newcounter{listcnt1}
@@ -242,8 +238,6 @@ latex_head + """\
 \\date{}
 \\raggedbottom
 \\begin{document}
-\\maketitle
-
 
 \\setlength{\\locallinewidth}{\\linewidth}
 
@@ -285,8 +279,6 @@ latex_head + """\
 \\date{}
 \\raggedbottom
 \\begin{document}
-\\maketitle
-
 
 \\setlength{\\locallinewidth}{\\linewidth}
 
@@ -321,8 +313,6 @@ latex_head + """\
 \\date{}
 \\raggedbottom
 \\begin{document}
-\\maketitle
-
 
 \\setlength{\\locallinewidth}{\\linewidth}
 \\begin{quote}{\\ttfamily \\raggedright \\noindent
