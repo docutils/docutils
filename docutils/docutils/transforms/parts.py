@@ -34,8 +34,7 @@ class SectNum(Transform):
     def apply(self):
         self.maxdepth = self.startnode.details.get('depth', sys.maxint)
         self.startnode.parent.remove(self.startnode)
-        if self.document.settings.enable_section_numbering:
-            self.update_section_numbers(self.document)
+        self.update_section_numbers(self.document)
 
     def update_section_numbers(self, node, prefix=(), depth=0):
         depth += 1
@@ -59,11 +58,11 @@ class Contents(Transform):
     """
     This transform generates a table of contents from the entire document tree
     or from a single branch.  It locates "section" elements and builds them
-    into a nested bullet list, which is placed within a "topic".  A title is
-    either explicitly specified, taken from the appropriate language module,
-    or omitted (local table of contents).  The depth may be specified.
-    Two-way references between the table of contents and section titles are
-    generated (requires Writer support).
+    into a nested bullet list, which is placed within a "topic" created by the
+    contents directive.  A title is either explicitly specified, taken from
+    the appropriate language module, or omitted (local table of contents).
+    The depth may be specified.  Two-way references between the table of
+    contents and section titles are generated (requires Writer support).
 
     This transform requires a startnode, which which contains generation
     options and provides the location for the generated table of contents (the
@@ -73,41 +72,26 @@ class Contents(Transform):
     default_priority = 720
 
     def apply(self):
-        topic = nodes.topic(CLASS='contents')
         details = self.startnode.details
-        if details.has_key('class'):
-            topic.set_class(details['class'])
-        title = details['title']
         if details.has_key('local'):
-            startnode = self.startnode.parent
+            startnode = self.startnode.parent.parent
             # @@@ generate an error if the startnode (directive) not at
             # section/document top-level? Drag it up until it is?
             while not isinstance(startnode, nodes.Structural):
                 startnode = startnode.parent
         else:
             startnode = self.document
-            if not title:
-                title = nodes.title('', self.language.labels['contents'])
-        if title:
-            name = title.astext()
-            topic += title
-        else:
-            name = self.language.labels['contents']
-        name = nodes.fully_normalize_name(name)
-        if not self.document.has_name(name):
-            topic['name'] = name
-        self.document.note_implicit_target(topic)
-        self.toc_id = topic['id']
+
+        self.toc_id = self.startnode.parent['id']
         if details.has_key('backlinks'):
             self.backlinks = details['backlinks']
         else:
             self.backlinks = self.document.settings.toc_backlinks
         contents = self.build_contents(startnode)
         if len(contents):
-            topic += contents
-            self.startnode.parent.replace(self.startnode, topic)
+            self.startnode.parent.replace(self.startnode, contents)
         else:
-            self.startnode.parent.remove(self.startnode)
+            self.startnode.parent.parent.remove(self.startnode.parent)
 
     def build_contents(self, node, level=0):
         level += 1
