@@ -866,7 +866,7 @@ __ rst/alternatives.html#or-not-to-do
 
       .. _name: ^url
 
-* Allow transitions between sections?  A transition immediately
+* Allow _`transitions` between sections?  A transition immediately
   preceding a section title could be interpreted as a sibling of that
   section.  The context would obviate the need for a special
   directive.  The document model would have to accommodate the
