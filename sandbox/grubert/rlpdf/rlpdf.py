@@ -53,7 +53,7 @@ class PDFTranslator(nodes.NodeVisitor):
     def __init__(self, doctree):
         self.styleSheet = getStyleSheet()
         nodes.NodeVisitor.__init__(self, doctree)
-        self.language = languages.get_language(doctree.language_code)
+        self.language = languages.get_language(doctree.options.language_code)
         self.head = []
         self.body = []
         self.foot = []

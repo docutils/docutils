@@ -59,7 +59,7 @@ class Transform(Component):
         apply to the document as a whole, `startnode` is not set (i.e. its
         value is `None`)."""
 
-        self.language = languages.get_language(document.language_code)
+        self.language = languages.get_language(document.options.language_code)
         """Language module local to this document."""
 
     def transform(self):

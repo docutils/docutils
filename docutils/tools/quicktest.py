@@ -10,7 +10,9 @@
 :Copyright: This module has been placed in the public domain.
 """
 
-import sys, os, getopt
+import sys
+import os
+import getopt
 import docutils.utils
 from docutils.parsers.rst import Parser
 

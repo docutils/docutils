@@ -10,7 +10,9 @@
 Test module for statemachine.py.
 """
 
-import unittest, sys, re
+import unittest
+import sys
+import re
 from DocutilsTestSupport import statemachine
 
 

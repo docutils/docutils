@@ -54,7 +54,8 @@ across lines*
             Inline emphasis start-string without end-string at line 1.
 """],
 ["""\
-'*emphasis*' but not '*' or '"*"' or  x*2* or 2*x* or \\*args or *
+'*emphasis*' and 1/*emphasis*/2 and 3-*emphasis*-4 and 5:*emphasis*:6
+but not '*' or '"*"' or  x*2* or 2*x* or \\*args or *
 or *the\\* *stars\\\\\\* *inside*
 
 (however, '*args' will trigger a warning and may be problematic)
@@ -67,7 +68,17 @@ what about *this**?
         '
         <emphasis>
             emphasis
-        ' but not '*' or '"*"' or  x*2* or 2*x* or *args or *
+        ' and 1/
+        <emphasis>
+            emphasis
+        /2 and 3-
+        <emphasis>
+            emphasis
+        -4 and 5:
+        <emphasis>
+            emphasis
+        :6
+        but not '*' or '"*"' or  x*2* or 2*x* or *args or *
         or \n\
         <emphasis>
             the* *stars\* *inside
@@ -78,7 +89,7 @@ what about *this**?
         args' will trigger a warning and may be problematic)
     <system_message backrefs="id2" id="id1" level="2" type="WARNING">
         <paragraph>
-            Inline emphasis start-string without end-string at line 4.
+            Inline emphasis start-string without end-string at line 5.
     <paragraph>
         what about \n\
         <emphasis>
@@ -360,7 +371,7 @@ ref__
             ref
 """],
 ["""\
-ref_, r_, r_e-f_, and anonymousref__, but not _ref_ or -ref_
+ref_, r_, r_e-f_, -ref_, and anonymousref__, but not _ref_
 """,
 """\
 <document>
@@ -373,10 +384,13 @@ ref_, r_, r_e-f_, and anonymousref__, but not _ref_ or -ref_
         , \n\
         <reference refname="r_e-f">
             r_e-f
+        , -
+        <reference refname="ref">
+            ref
         , and \n\
         <reference anonymous="1">
             anonymousref
-        , but not _ref_ or -ref_
+        , but not _ref_
 """],
 ]
 

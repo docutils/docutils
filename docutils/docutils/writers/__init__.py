@@ -52,7 +52,7 @@ class Writer(Component):
 
     def write(self, document, destination):
         self.document = document
-        self.language = languages.get_language(document.language_code)
+        self.language = languages.get_language(document.options.language_code)
         self.destination = destination
         self.transform()
         self.translate()

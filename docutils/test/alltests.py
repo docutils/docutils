@@ -17,7 +17,8 @@ import time
 # and setup outside of unittest.
 start = time.time()
 
-import sys, os
+import sys
+import os
 
 
 class Tee:
