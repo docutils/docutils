@@ -72,7 +72,7 @@ empty item above, no blank line
         <list_item>
     <system_message level="2" type="WARNING">
         <paragraph>
-            Unindent without blank line at line 2.
+            Enumerated list ends without a blank line; unexpected unindent at line 2.
     <paragraph>
         empty item above, no blank line
 """],
@@ -96,7 +96,7 @@ Scrambled:
                 Item three.
     <system_message level="2" type="WARNING">
         <paragraph>
-            Unindent without blank line at line 4.
+            Enumerated list ends without a blank line; unexpected unindent at line 4.
     <system_message level="1" type="INFO">
         <paragraph>
             Enumerated list start value not ordinal-1 at line 4: '2' (ordinal 2)
@@ -106,7 +106,7 @@ Scrambled:
                 Item two.
     <system_message level="2" type="WARNING">
         <paragraph>
-            Unindent without blank line at line 5.
+            Enumerated list ends without a blank line; unexpected unindent at line 5.
     <enumerated_list enumtype="arabic" prefix="" suffix=".">
         <list_item>
             <paragraph>
@@ -132,7 +132,7 @@ Skipping item 3:
                 Item 2.
     <system_message level="2" type="WARNING">
         <paragraph>
-            Unindent without blank line at line 4.
+            Enumerated list ends without a blank line; unexpected unindent at line 4.
     <system_message level="1" type="INFO">
         <paragraph>
             Enumerated list start value not ordinal-1 at line 5: '4' (ordinal 4)
@@ -320,7 +320,7 @@ iiii. iiii
                 iii
     <system_message level="2" type="WARNING">
         <paragraph>
-            Unindent without blank line at line 4.
+            Enumerated list ends without a blank line; unexpected unindent at line 4.
     <system_message level="3" type="ERROR">
         <paragraph>
             Enumerated list start value invalid at line 6: 'iiii' (sequence 'lowerroman')
@@ -333,7 +333,7 @@ iiii. iiii
                 I
     <system_message level="2" type="WARNING">
         <paragraph>
-            Unindent without blank line at line 9.
+            Enumerated list ends without a blank line; unexpected unindent at line 9.
     <system_message level="3" type="ERROR">
         <paragraph>
             Enumerated list start value invalid at line 9: 'IVXLCDM' (sequence 'upperroman')
@@ -470,7 +470,7 @@ iii. Item iii.
                 Item I.
     <system_message level="2" type="WARNING">
         <paragraph>
-            Unindent without blank line at line 4.
+            Enumerated list ends without a blank line; unexpected unindent at line 4.
     <system_message level="1" type="INFO">
         <paragraph>
             Enumerated list start value not ordinal-1 at line 12: 'II' (ordinal 2)
@@ -511,7 +511,7 @@ iii. Item iii.
                 Item i.
     <system_message level="2" type="WARNING">
         <paragraph>
-            Unindent without blank line at line 16.
+            Enumerated list ends without a blank line; unexpected unindent at line 16.
     <system_message level="1" type="INFO">
         <paragraph>
             Enumerated list start value not ordinal-1 at line 24: 'ii' (ordinal 2)
