@@ -47,7 +47,7 @@ First, make sure it's a new bug:
   for evidence that it should behave the way you expect
 
 If you're not sure, please ask on the
-docutils-users@lists.sourceforge.net mailing list first.
+docutils-users@lists.sourceforge.net [1]_ mailing list first.
 
 If it's a new bug, the most important thing you can do is to write a
 simple description and a recipe that reproduces the bug.  Try to
@@ -91,6 +91,16 @@ Thank you!
 
 (This section was inspired by the `Subversion project's`__ BUGS__
 file.)
+
+.. [1] Due to overwhelming amounts of spam, the
+   docutils-users@lists.sourceforge.net mailing list has been set up
+   for subscriber posting only.  Non-subscribers who post to
+   docutils-users will receive a message with "Subject: Your message
+   to Docutils-users awaits moderator approval".  Legitimate messages
+   are accepted and posted as soon as possible (a list administrator
+   must verify the message manually).  If you'd like to subscribe to
+   docutils-users, please visit
+   <http://lists.sourceforge.net/lists/listinfo/docutils-users>.
 
 __ http://subversion.tigris.org/
 __ http://svn.collab.net/viewcvs/svn/trunk/BUGS?view=markup

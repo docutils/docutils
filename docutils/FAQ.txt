@@ -17,9 +17,19 @@
 
 
 This is a work in progress.  Please feel free to ask questions and/or
-provide answers; `send email`__ to the `Docutils-Users mailing
-list`__.  Project members should feel free to edit the source text
-file directly.
+provide answers; `send email`__ to the `Docutils-Users mailing list`__
+[1]_.  Project members should feel free to edit the source text file
+directly.
+
+.. [1] Due to overwhelming amounts of spam, the
+   docutils-users@lists.sourceforge.net mailing list has been set up
+   for subscriber posting only.  Non-subscribers who post to
+   docutils-users will receive a message with "Subject: Your message
+   to Docutils-users awaits moderator approval".  Legitimate messages
+   are accepted and posted as soon as possible (a list administrator
+   must verify the message manually).  If you'd like to subscribe to
+   docutils-users, please visit
+   <http://lists.sourceforge.net/lists/listinfo/docutils-users>.
 
 .. _let us know:
 __ mailto:docutils-users@lists.sourceforge.net
