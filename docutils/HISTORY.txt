@@ -31,6 +31,8 @@ Changes Since 0.3.7
   - Fixed ``Input.decode`` method to apply heuristics only if no
     encoding is explicitly given, and to provide better reporting of
     decoding errors.
+  - The ``Input.decode`` method now removes byte order marks (BOMs)
+    from input streams.
 
 * docutils/nodes.py:
 
