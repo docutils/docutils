@@ -10,11 +10,6 @@
 Perform tests with the data in the functional/ directory.
 
 Read README.txt for details on how this is done.
-
-To do: make this test module runnable from anywhere.  For example::
-
-    cd docutils/test/functional
-    ../test_functional.py
 """
 
 import sys
@@ -27,6 +22,7 @@ import docutils.core
 import DocutilsTestSupport
 
 
+# Ugly magic to determine the test directory.
 testroot = os.path.dirname(DocutilsTestSupport.__file__)
 
 datadir = 'functional'
@@ -40,7 +36,10 @@ class FunctionalTestSuite(DocutilsTestSupport.CustomTestSuite):
     def __init__(self):
         """Process all config files in functional/tests/."""
         DocutilsTestSupport.CustomTestSuite.__init__(self)
+        os.chdir(testroot)
+        self.added = 0
         os.path.walk(os.path.join(datadir, 'tests'), self.walker, None)
+        assert self.added, 'No functional tests found.'
 
     def walker(self, dummy, dirname, names):
         """
@@ -55,6 +54,7 @@ class FunctionalTestSuite(DocutilsTestSupport.CustomTestSuite):
                 self.addTestCase(FunctionalTestCase, 'test', None, None,
                                  id=config_file_full_path,
                                  configfile=config_file_full_path)
+                self.added += 1
 
 
 class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
@@ -72,7 +72,6 @@ class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
 
     def test(self):
         """Process self.configfile."""
-        cwd = os.getcwd()
         os.chdir(testroot)
         # Keyword parameters for publish_file:
         params = {}
@@ -109,7 +108,6 @@ class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
         # Get output (automatically written to the output/ directory
         # by publish_file):
         output = docutils.core.publish_file(**params)
-        os.chdir(cwd)
         # Get the expected output *after* writing the actual output.
         self.assert_(os.access(expected_path, os.R_OK),\
                      'Cannot find expected output at\n' + expected_path)
