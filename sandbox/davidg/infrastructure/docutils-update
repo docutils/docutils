@@ -16,6 +16,9 @@
 # exit on error
 set -e
 
+# make all newly created files group writeable
+umask 002
+
 projdir=/home/groups/d/do/docutils
 project=docutils
 dest=$projdir/htdocs
@@ -55,8 +58,8 @@ cd $snapshotdir
 cvs -Q -z3 $root update -rHEAD $project sandbox web
 
 # ensure proper permissions are set
-find . -type f | xargs chmod g+rw 2> /dev/null
-find . -type d | xargs chmod g+rwx 2> /dev/null
+find . -type f | xargs chmod ug+rw 2> /dev/null
+find . -type d | xargs chmod ug+rwx 2> /dev/null
 
 # ensure executable bits are set
 chmod +x $project/*.py
@@ -81,8 +84,8 @@ tar -c $exclude -f - sandbox | ( cd $dest ; tar -xf - )
 ( cd web ; tar -c $exclude -f - . ) | ( cd $dest ; tar -xf - )
 
 # ensure proper permissions are set
-find . -type f | xargs chmod g+rw 2> /dev/null
-find . -type d | xargs chmod g+rwx 2> /dev/null
+find . -type f | xargs chmod ug+rw 2> /dev/null
+find . -type d | xargs chmod ug+rwx 2> /dev/null
 
 # update HTML docs
 cd $dest/tools
