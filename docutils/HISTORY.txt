@@ -144,6 +144,8 @@ Specific:
   - Fixed a bug with literal blocks.
   - Applied patch from Simon Budig: simplified regexps with symbolic
     names, removed ``Inliner.groups`` and ``Body.explicit.groups``.
+  - Converted regexps from ``'%s' % var`` to ``'%(var)s' % locals()``.
+  - Fixed a bug in ``Inliner.interpreted_or_phrase_ref()``.
 
 * docutils/parsers/rst/directives/html.py: Changed the ``meta``
   directive to use a ``pending`` element, used only by HTML writers.
@@ -197,6 +199,9 @@ Specific:
     with Unicode.
 
 * docutils/writers/pseudoxml.py: Renamed from pprint.py.
+
+* docutils/writers/docutils_xml.py: Added to project; trivial writer
+  of the Docutils internal doctree in XML.
 
 * spec/doctree.txt: Changed the title to "The Docutils Document Tree".
 
@@ -253,14 +258,19 @@ Specific:
 
 * test/test_pep/: Subpackage added to project; PEP testing.
 
-* tools: Updated html.py and publish.py front-ends to use the new
-  command-line processing facilities of ``docutils.frontend`` (exposed
-  in ``docutils.core.Publisher``), reducing each to just a few lines
-  of code.
+* tools:
+
+  - Updated html.py and publish.py front-ends to use the new
+    command-line processing facilities of ``docutils.frontend``
+    (exposed in ``docutils.core.Publisher``), reducing each to just a
+    few lines of code.
+  - Added ``locale.setlocale()`` calls to front-ends.
 
 * tools/default.css:
 
   - Added support for ``header`` and ``footer`` elements.
+
+* tools/docutils-xml.py: Added to project.
 
 * tools/quicktest.py:  Added the "--attributes" option, hacked a bit.
 

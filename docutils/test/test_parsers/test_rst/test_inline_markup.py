@@ -290,6 +290,18 @@ totest['interpreted'] = [
             interpreted
 """],
 ["""\
+:role:`interpreted`:role:
+""",
+"""\
+<document>
+    <paragraph>
+        <problematic id="id2" refid="id1">
+            :role:`interpreted`:role:
+    <system_message backrefs="id2" id="id1" level="2" type="WARNING">
+        <paragraph>
+            Multiple roles in interpreted text at line 1 (both prefix and suffix present; only one allowed).
+"""],
+["""\
 :role:`:not-role: interpreted`
 """,
 """\
@@ -447,7 +459,7 @@ Invalid phrase reference:
             :role:`phrase reference`_
     <system_message backrefs="id2" id="id1" level="2" type="WARNING">
         <paragraph>
-            Mismatch: inline interpreted text start-string and role with phrase-reference end-string at line 3.
+            Mismatch: both interpreted text role prefix and reference suffix at line 3.
 """],
 ["""\
 Invalid phrase reference:
@@ -463,7 +475,7 @@ Invalid phrase reference:
             `phrase reference`:role:_
     <system_message backrefs="id2" id="id1" level="2" type="WARNING">
         <paragraph>
-            Mismatch: inline interpreted text start-string and role with phrase-reference end-string at line 3.
+            Mismatch: both interpreted text role suffix and reference suffix at line 3.
 """],
 ["""\
 `phrase reference_ without closing backquote

@@ -1,3 +1,9 @@
+.. This document is *not* meant to be a model for good
+   reStructuredText usage.  It is full of external hyperlinks, and
+   makes extensive use of anonymous hyperlink syntax, which is not
+   easy to follow from the source text.  Please refer to the processed
+   HTML instead: http://docutils.sourceforge.net/index.html
+
 ==========================================
  Docutils: Python Documentation Utilities
 ==========================================

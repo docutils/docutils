@@ -22,6 +22,12 @@ you'd like to tackle, please do!
 Bugs
 ----
 
+- The move to I/O classes (io.py) has broken the "view source" links.
+  (Pointed out by Simon Budig.)
+
+  Perhaps add attributes to I/O classes, like ``IO.source_path``?
+  Include logic to skip link creation if ``IO.source_path`` is empty.
+
 - (Fixed, I think.)  When there are duplicate implicit target names
   (e.g., section headers), a named hyperlink will link to the last of
   them.  It shouldn't link to any at all, and should report an error.
