@@ -121,13 +121,19 @@ page`_.
 Mailing Lists
 -------------
 
-You can keep up to date and help out by joining the mailing lists.
+Users who have questions or need assistance with Docutils or
+reStructuredText should `post a message`__ to the `Docutils-Users
+mailing list`__.
+
+Developers can keep up to date and help out by joining the mailing
+lists.
 
 High-level discussions take place on the `Python Documentation Special
 Interest Group (Doc-SIG) mailing list`__ (email to
 Doc-SIG@python.org).
 
-Two lists have been set up specifically for the Docutils project:
+Two lists have been set up specifically for developers of the Docutils
+project:
 
 - Docutils-develop__, for implementation discussions
   (email to docutils-develop@lists.sourceforge.net).
@@ -139,6 +145,8 @@ general discussions (such as reStructuredText syntax or the high-level
 Docutils project model), whereas the Docutils-specific lists are more
 focused on the implementation.
 
+__ mailto:docutils-users@lists.sourceforge.net
+__ http://lists.sourceforge.net/lists/listinfo/docutils-users
 __ http://mail.python.org/mailman/listinfo/doc-sig
 __ http://lists.sourceforge.net/lists/listinfo/docutils-develop
 __ http://lists.sourceforge.net/lists/listinfo/docutils-checkins
