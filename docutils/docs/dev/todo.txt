@@ -203,19 +203,6 @@ reStructuredText Parser
   See the Doc-SIG discussion starting 2001-04-18 with Ed Loper's
   "Structuring: a summary; and an attempt at EBNF", item 4.
 
-- Produce a better system message when a list ends abruptly.  Input::
-
-      -1    Option "1"
-      -2
-
-  Produces::
-
-      Reporter: WARNING (2) Unindent without blank line at line 2.
-
-  But it should produce::
-
-      Reporter: WARNING (2) List ends without blank line at line 2.
-
 
 Directives
 ``````````
