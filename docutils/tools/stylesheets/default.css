@@ -224,15 +224,13 @@ table {
   margin-bottom: 0.5em }
 
 table.citation {
-  border-left: solid thin gray ;
-  padding-left: 0.5ex }
+  border-left: solid thin gray }
 
 table.docinfo {
   margin: 2em 4em }
 
 table.footnote {
-  border-left: solid thin black ;
-  padding-left: 0.5ex }
+  border-left: solid thin black }
 
 td, th {
   padding-left: 0.5em ;
