@@ -992,7 +992,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if not inline:
             prepost('\n', '\n')
         pre.reverse()
-        self.body.append(''.join(pre + post))
+        self.body.extend(pre + post)
 
     def depart_image(self, node):
         pass
