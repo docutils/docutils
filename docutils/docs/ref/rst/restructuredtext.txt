@@ -896,9 +896,8 @@ single name is interpreted as an "Author".  If a single name contains
 a comma, end it with a semicolon to disambiguate: ":Authors: Doe,
 Jane;".
 
-The "Address" field is for a multi-line surface mailing address.  A
-specialized form of line block`_ (see `reStructuredText Directives`_),
-newlines and whitespace will be preserved.
+The "Address" field is for a multi-line surface mailing address.
+Newlines and whitespace will be preserved.
 
 The "Dedication" and "Abstract" fields may contain arbitrary body
 elements.  Only one of each is allowed.  They become topic elements
