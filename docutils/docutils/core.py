@@ -120,10 +120,11 @@ class Publisher:
                                                  option_spec, **defaults)
         if argv is None:
             argv = sys.argv[1:]
-        self.options, source, destination = option_parser.parse_args(argv)
-        self.source = self.source_class(self.options, source_path=source)
+        self.options = option_parser.parse_args(argv)
+        self.source = self.source_class(self.options,
+                                        source_path=self.options.source)
         self.destination = self.destination_class(
-            self.options, destination_path=destination)
+            self.options, destination_path=self.options.destination)
 
     def publish(self, argv=None, usage=None, description=None,
                 option_spec=None):
