@@ -388,12 +388,9 @@ class Element(Node):
     def __iadd__(self, other):
         """Append a node or a list of nodes to `self.children`."""
         if isinstance(other, Node):
-            self.setup_child(other)
-            self.children.append(other)
+            self.append(other)
         elif other is not None:
-            for node in other:
-                self.setup_child(node)
-            self.children.extend(other)
+            self.extend(other)
         return self
 
     def astext(self):
@@ -426,8 +423,7 @@ class Element(Node):
 
     def extend(self, item):
         for node in item:
-            self.setup_child(node)
-        self.children.extend(item)
+            self.append(node)
 
     def insert(self, index, item):
         if isinstance(item, Node):
