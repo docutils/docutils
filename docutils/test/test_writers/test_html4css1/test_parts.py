@@ -10,7 +10,8 @@
 Test for fragment code in HTML writer.
 
 Note: the 'body' and 'whole' entries have been removed from the parts
-dictionaries (redundant), along with any entries with empty values.
+dictionaries (redundant), along with 'meta' and 'stylesheet' entries with
+standard values, and any entries with empty values.
 """
 
 from __init__ import DocutilsTestSupport
