@@ -24,14 +24,6 @@ class latex_math(nodes.Element):
         nodes.Element.__init__(self, rawsource)
         self.mathml_tree = mathml_tree
 
-"""
-try:
-        rfcnum = int(text)
-        if rfcnum <= 0:
-            raise ValueError
-    except ValueError:
-"""
-    
 # Register role:
 def latex_math_role(role, rawtext, text, lineno, inliner,
                     options={}, content=[]):
@@ -405,7 +397,7 @@ def parse_latex_math(string, inline=True):
                 node = entry
                 skip = 2
             else:
-                raise SyntaxError
+                raise SyntaxError, 'Syntax error!'
         elif c.isalpha():
             node = node.append(mi(c))
         elif c.isdigit():
@@ -439,7 +431,7 @@ def parse_latex_math(string, inline=True):
             node.close().append(entry)
             node = entry
         else:
-            raise SyntaxError
+            raise SyntaxError, 'Syntax error!'
         string = string[skip:]
     return tree
 
@@ -474,19 +466,24 @@ mathbb = {'A': u'\U0001D538',
 def handle_keyword(name, node, string):
     skip = 0
     if name == 'begin':
-        assert string.startswith('{matrix}')
+        if not string.startswith('{matrix}'):
+            raise SyntaxError, 'Expected "\begin{matrix}"!'
         skip = 8
         entry = mtd()
         table = mtable(mtr(entry))
         node.append(table)
         node = entry
     elif name == 'end':
-        assert string.startswith('{matrix}')
+        if not string.startswith('{matrix}'):
+            raise SyntaxError, 'Expected "\end{matrix}"!'
         skip = 8
         node = node.close().close().close()
     elif name == 'text':
-        assert string[0] == '{'
-        i = string.index('}')
+        if string[0] != '{':
+            raise SyntaxError, 'Expected "\text{...}"!'
+        i = string.find('}')
+        if i == -1:
+            raise SyntaxError, 'Expected "\text{...}"!'
         node = node.append(mtext(string[1:i]))
         skip = i + 1
     elif name == 'sqrt':
@@ -505,7 +502,7 @@ def handle_keyword(name, node, string):
             if string.startswith(par):
                 break
         else:
-            raise SyntaxError
+            raise SyntaxError, 'Missing left-brace!'
         fenced = mfenced(par)
         node.append(fenced)
         node = fenced
@@ -518,7 +515,7 @@ def handle_keyword(name, node, string):
             if string.startswith(par):
                 break
         else:
-            raise SyntaxError, 'Missing right brace!'
+            raise SyntaxError, 'Missing right-brace!'
         node.closepar = par
         node = node.close()
         skip += len(par)
@@ -527,7 +524,8 @@ def handle_keyword(name, node, string):
         node.append(style)
         node = style
     elif name == 'mathbb':
-        assert string[0] == '{' and string[1].isupper() and string[2] == '}'
+        if string[0] != '{' or not string[1].isupper() or string[2] != '}':
+            raise SyntaxError, 'Expected something like "\mathbb{A}"!'
         node = node.append(mi(mathbb[string[1]]))
         skip = 3
     else:

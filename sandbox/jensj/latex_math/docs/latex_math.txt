@@ -1,0 +1,162 @@
+==================================
+Using LaTeX syntax for mathematics
+==================================
+
+.. role:: m(latex-math)
+.. contents::
+
+
+
+Introduction
+============
+
+This document describes a LaTeX-math plug-in for reStructuredText.
+The html-writer will generate a combination of html and MathML.
+
+.. note::
+
+   This document contains MathML.  Your browser may not be able to
+   display it correctly!
+
+
+ftp://ftp.ams.org/pub/tex/doc/amsmath/short-math-guide.pdf
+
+
+Role and directive
+==================
+
+There is a role called ``latex-math`` that can be used for inline
+mathematical expressions: ``:latex-math:`\psi(r) = \exp(-2r)``` will
+produce :m:`\psi(r)=\exp(-2r)`.  Inside the back-tics you can write
+anything you would write between dollar signs in a LaTeX ducument.
+
+For producing displayed math (like an ``equation*`` environment in a
+LaTeX document) there is a ``latex-math`` role.  If you write::
+
+  .. latex-math::
+
+     \psi(r) = e^{-2r}
+
+you will get:
+
+.. latex-math::
+
+   \psi(r) = e^{-2r}
+
+
+
+Commands and symbols
+====================
+
+The parser does not understand *all* LaTeX-math, but basic
+everyday-math works.  If a command or a special symbol is not desribed
+in this document, then it is probably not implemented.
+
+
+  ============================  ========================
+  :m:`\tilde{n}` ``\tilde{n}``  :m:`\hat{H}` ``\hat{H}``
+  :m:`\bar{v}` ``\bar{v}``
+  ============================  ========================
+
+  *Accents*
+
+
+  =====================  ==============================  ===============================
+  command                example                         result
+  =====================  ==============================  ===============================
+  ``\sqrt``              ``\sqrt{x^2-1}``                :m:`\sqrt{x^2-1}`
+  ``\frac``              ``\frac{1}{2}``                 :m:`\frac{1}{2}`
+  ``\text``              ``k_{\text{B}}T``               :m:`k_{\text{B}}T`
+  ``\left``, ``\right``  ``\left(\frac{1}{2}\right)^n``  :m:`\left(\frac{1}{2}\right)^n`
+  ``\mathbf``            ``\mathbf{r}^2=x^2+y^2+z^2``    :m:`\mathbf{r}^2=x^2+y^2+z^2`
+  ``\mathbb``            ``\mathbb{A}``                  :m:`\mathbb{A}`
+  =====================  ==============================  ===============================
+
+  *LaTeX commands*.
+
+
+  ================================  ================================  ================================  ================================
+  :m:`\Delta` ``\Delta``            :m:`\Gamma` ``\Gamma``            :m:`\Lambda` ``\Lambda``          :m:`\Omega` ``\Omega``
+  :m:`\Phi` ``\Phi``                :m:`\Pi` ``\Pi``                  :m:`\Psi` ``\Psi``                :m:`\Sigma` ``\Sigma``
+  :m:`\Theta` ``\Theta``            :m:`\Upsilon` ``\Upsilon``        :m:`\Xi` ``\Xi``                  :m:`\alpha` ``\alpha``
+  :m:`\beta` ``\beta``              :m:`\chi` ``\chi``                :m:`\delta` ``\delta``            :m:`\epsilon` ``\epsilon``
+  :m:`\eta` ``\eta``                :m:`\gamma` ``\gamma``            :m:`\iota` ``\iota``              :m:`\kappa` ``\kappa``
+  :m:`\lambda` ``\lambda``          :m:`\mu` ``\mu``                  :m:`\nu` ``\nu``                  :m:`\omega` ``\omega``
+  :m:`\phi` ``\phi``                :m:`\pi` ``\pi``                  :m:`\psi` ``\psi``                :m:`\rho` ``\rho``
+  :m:`\sigma` ``\sigma``            :m:`\tau` ``\tau``                :m:`\theta` ``\theta``            :m:`\upsilon` ``\upsilon``
+  :m:`\varepsilon` ``\varepsilon``  :m:`\varkappa` ``\varkappa``      :m:`\varphi` ``\varphi``          :m:`\varpi` ``\varpi``
+  :m:`\varrho` ``\varrho``          :m:`\varsigma` ``\varsigma``      :m:`\vartheta` ``\vartheta``      :m:`\xi` ``\xi``
+  :m:`\zeta` ``\zeta``
+  ================================  ================================  ================================  ================================
+
+  *Greek letters*.
+
+
+  ===============  ===============  ===============  ===============  ===============  ===============
+  ``\arccos``      ``\arcsin``      ``\arctan``      ``\arg``         ``\cos``         ``\cosh``
+  ``\cot``         ``\coth``        ``\csc``         ``\deg``         ``\det``         ``\dim``
+  ``\exp``         ``\gcd``         ``\hom``         ``\inf``         ``\ker``         ``\lg``
+  ``\lim``         ``\liminf``      ``\limsup``      ``\ln``          ``\log``         ``\max``
+  ``\min``         ``\Pr``          ``\sec``         ``\sin``         ``\sinh``        ``\sup``
+  ``\tan``         ``\tanh``        ``\injlim``      ``\varinjlim``   ``\varlimsup``   ``\projlim``
+  ``\varliminf``   ``\varprojlim``
+  ===============  ===============  ===============  ===============  ===============  ===============
+
+  *Log-like symbols*.
+
+
+
+
+
+Miscellaneous
+=============
+
+Displayed math can use ``\\`` and ``&`` for line shifts and
+allignments::
+
+  .. latex-math::
+
+     a & = & (x + y)^2 \\
+       & = & x^2 + 2xy + y^2
+
+The result is:
+
+.. latex-math::
+
+   a & = & (x + y)^2 \\
+     & = & x^2 + 2xy + y^2
+
+The LaTeX writer will put displayed equations inside a ``split``
+environment inside an ``equation*`` environment::
+
+  \begin{equation*}
+    \begin{split}
+      a & = & (x + y)^2 \\
+        & = & x^2 + 2xy + y^2
+    \end{split}
+  \end{equation*}
+
+The ``matrix`` environment can also contain ``\\`` and ``&``::
+
+  .. latex-math::
+
+    \left(\begin{matrix} a & b \\ c & d \end{matrix}\right)
+
+Result:
+
+.. latex-math::
+
+  \left(\begin{matrix} a & b \\ c & d \end{matrix}\right)
+
+
+
+ToDo
+====
+
+* Math inside text: ``n - 1 \text{if $n$ is odd}``.
+* Spaces ...
+* More special symbols.
+* Remove circular refs.
+* Decimal numbers.
+* ``\mathbb{ABC}`` does not work (use ``\mathbb{A}\mathbb{B}\mathbb{C}``).
+* ``\not`` operator is missing.
