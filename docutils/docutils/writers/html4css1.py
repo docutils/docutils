@@ -456,6 +456,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_colspec(self, node):
         self.colspecs.append(node)
+        # "stubs" list is an attribute of the tgroup element:
         node.parent.stubs.append(node.attributes.get('stub'))
 
     def depart_colspec(self, node):
@@ -604,13 +605,19 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</em>')
 
     def visit_entry(self, node):
-        if ( isinstance(node.parent.parent, nodes.thead)
-             or node.parent.parent.parent.stubs[node.parent.column]):
+        atts = {'class': []}
+        if isinstance(node.parent.parent, nodes.thead):
+            atts['class'].append('head')
+        if node.parent.parent.parent.stubs[node.parent.column]:
+            # "stubs" list is an attribute of the tgroup element
+            atts['class'].append('stub')
+        if atts['class']:
             tagname = 'th'
+            atts['class'] = ' '.join(atts['class'])
         else:
             tagname = 'td'
+            del atts['class']
         node.parent.column += 1
-        atts = {}
         if node.has_key('morerows'):
             atts['rowspan'] = node['morerows'] + 1
         if node.has_key('morecols'):
