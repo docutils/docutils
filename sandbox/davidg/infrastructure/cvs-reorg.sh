@@ -1,8 +1,9 @@
 #!/bin/sh
+# $Id$
 # CVS reorganization script for Docutils (docutils.sf.net).
 # By Felix Wiemann and David Goodger
-# Part of the plan described in
-# <http://docutils.sf.net/spec/notes.html#documentation-cleanup>.
+# Implemented on 2004-06-02; see
+# <http://docutils.sf.net/HISTORY.html#documentation-cleanup-reorganization>.
 
 # Paths should be absolute (implied by
 # http://sf.net/docman/display_doc.php?docid=768&group_id=1#repositoryrestructure).
