@@ -546,7 +546,8 @@ source_url            An explicit URL for a "View document source"
                       Options: ``--source-uri, --no-source-link``.
 --------------------  ------------------------------------------------
 stylesheet            (HTML Writer.)  CSS stylesheet URL, used
-                      verbatim.
+                      verbatim.  Overridden by "stylesheet_path" URL
+                      option (``--stylesheet-path``).
 
                       Default: "default.css".  Options:
                       ``--stylesheet``.
