@@ -23,21 +23,30 @@ def main():
     pub.destination = io.StringOutput(settings)
     content = pub.publish()
 
-    manifest_list = [
+    xml_manifest_list = [
         ('content.xml', content),
         ('styles.xml', OOtext.styles)
         ]
 
-    manifest_entries = []
-    for docname, _ in manifest_list:
-        manifest_entries.append(OOtext.manifest_format % docname)
-    manifest = OOtext.manifest % '\n '.join(manifest_entries)
-    manifest_list.append( ('META-INF/manifest.xml', manifest) )
+    xml_entries = []
+    for docname, _ in xml_manifest_list:
+        xml_entries.append(OOtext.m_xml_format % docname)
+
+    image_manifest_list = OOtext.pictures
+
+    image_entries = []
+    for name in image_manifest_list:
+        image_entries.append(OOtext.m_tif_format % name)
+
+    manifest = OOtext.manifest % ('\n '.join(image_entries), '\n '.join(xml_entries))
+    xml_manifest_list.append(('META-INF/manifest.xml', manifest))
 
     zip = zipfile.ZipFile(sys.argv[2], "w")
-    for docname, contents in manifest_list:
+    for docname, contents in xml_manifest_list:
         zinfo = zipfile.ZipInfo(docname)
         zip.writestr(zinfo, contents)
+    for name in image_manifest_list:
+        zip.write(name, 'Pictures/' + name)
     zip.close()
 
 if __name__ == '__main__':

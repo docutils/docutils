@@ -16,6 +16,10 @@ manifest = '''<?xml version="1.0" encoding="UTF-8"?>
 </manifest:manifest>
 '''
 
+# The pictures list gets populated by OOwriter as it comes across
+# images in the document.
+pictures = []
+
 m_xml_format = '<manifest:file-entry manifest:media-type="text/xml" manifest:full-path="%s"/>'
 
 m_tif_format = '<manifest:file-entry manifest:media-type="image/tif" manifest:full-path="Pictures/%s"/>'

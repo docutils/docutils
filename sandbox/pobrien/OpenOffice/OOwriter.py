@@ -435,7 +435,10 @@ class Translator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_image(self, node):
-        name = node.attributes['uri']
+        name = str(node.attributes['uri'])
+        # Add to our list so that rest2oo.py can create the manifest.
+        print 'image:', repr(name)
+        OOtext.pictures.append(name)
         self.body.append('<draw:image draw:style-name="imageframe"\n')
         self.body.append('draw:name="%s"\n' % name)
         self.body.append('text:anchor-type="char"\n')
@@ -446,7 +449,7 @@ class Translator(nodes.NodeVisitor):
         self.body.append('xlink:type="simple"\n') 
         self.body.append('xlink:show="embed"\n')
         self.body.append('xlink:actuate="onLoad"/>\n')
-        self.body.append('Figure X.X:\n')
+        self.body.append('Figure X.X\n')
 
     def depart_image(self, node):
         pass
