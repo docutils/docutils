@@ -158,7 +158,7 @@ class ZReST(Item, PropertyManager, Historical, Implicit, Persistent):
         '''
         # format with strings
         pub = docutils.core.Publisher()
-        pub.set_reader('restructuredtext', None, 'restructuredtext')
+        pub.set_reader('standalone', None, 'restructuredtext')
         pub.set_writer('html')
 
         # go with the defaults
@@ -264,6 +264,9 @@ modulesecurity.apply(globals())
 
 #
 # $Log$
+# Revision 1.5  2002/11/05 05:27:56  goodger
+# fixed Reader name
+#
 # Revision 1.4  2002/10/18 05:10:33  goodger
 # Refactored names (options -> settings; etc.); updated.
 #
