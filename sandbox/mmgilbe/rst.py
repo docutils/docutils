@@ -23,7 +23,6 @@ from types import ListType
 
 import docutils
 from docutils import core, frontend, nodes, utils, writers, languages
-from docutils.core import publish_string
 from docutils.core import publish_parts
 from docutils.writers import html4css1
 from docutils.nodes import fully_normalize_name
