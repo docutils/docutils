@@ -196,7 +196,24 @@ class Node:
                 node = r
 
     def tree(self):
-        """Return the tree of this node."""
+        """
+        Return the tree of this node.
+
+        Given the a paragraph node with the following tree::
+
+            <paragraph>
+                <emphasis>
+                    <strong>
+                        Foo
+                    Bar
+                <reference name="Baz" refid="baz">
+                    Baz
+
+        Then paragraph.tree() is::
+
+            [<paragraph>, <emphasis>, <strong>, <Text>, <Text>,
+             <reference>, <Text>]
+        """
         r = [self]
         for i in self.get_children():
             r.extend(i.tree())
