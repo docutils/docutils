@@ -161,6 +161,40 @@ class Node:
                 category='nodes.Node.walkabout')
             visitor.dispatch_departure(self)
 
+    def has_children(self):
+        """Return true if this node has children."""
+        return 0
+
+    def next_node(self, descend=1, ascend=1, cond=lambda e: 1):
+        """
+        Return the next node in tree traversal order for which the
+        condition cond(node) is true.
+
+        If descend is true, traverse children as well.  If ascend is
+        true, go up in the tree if there is no direct next sibling.
+        Return None if there is no next node.
+        """
+        node = self
+        while 1:
+            if descend and node.has_children():
+                r = node[0]
+            elif node.parent is not None:
+                # Index of the next sibling.
+                index = node.parent.index(node) + 1
+                if index < len(node.parent):
+                    r = node.parent[index]
+                elif ascend:
+                    r = node.parent.next_node(descend=0, ascend=1)
+                else:
+                    return None
+            else:
+                return None
+            if cond(r):
+                return r
+            else:
+                # Get r.next_node(...), avoiding recursion.
+                node = r
+
 
 class Text(Node, UserString):
 
@@ -504,6 +538,10 @@ class Element(Node):
     def get_children(self):
         """Return this element's children."""
         return self.children
+
+    def has_children(self):
+        """Return true if this node has children."""
+        return len(self.children) > 0
 
     def copy(self):
         return self.__class__(**self.attributes)

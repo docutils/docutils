@@ -10,6 +10,8 @@
 Test module for nodes.py.
 """
 
+from __future__ import nested_scopes
+
 import unittest
 from types import ClassType
 from DocutilsTestSupport import nodes, utils
@@ -107,6 +109,42 @@ class MiscTests(unittest.TestCase):
         for input, output in self.ids:
             normed = nodes.make_id(input)
             self.assertEquals(normed, output)
+
+    def test_has_children(self):
+        self.assert_(not nodes.Text('some text').has_children())
+        self.assert_(not nodes.Node().has_children())
+        e = nodes.TextElement()
+        self.assert_(not e.has_children())
+        e += nodes.Text('some text')
+        self.assert_(e.has_children())
+        self.assert_(not e[0].has_children())
+
+    def test_next_node(self):
+        def getlist(n, **kwargs):
+            r = []
+            while n is not None:
+                n = n.next_node(**kwargs)
+                r.append(n)
+            return r[:-1]
+        e = nodes.Element()
+        e += nodes.Element()
+        e[0] += nodes.Element()
+        e[0] += nodes.Element()
+        e[0][1] += nodes.Text('some text')
+        e += nodes.Element()
+        e += nodes.Element()
+        i = e
+        l = []
+        self.assertEquals(getlist(e),
+                          [e[0], e[0][0], e[0][1], e[0][1][0], e[1], e[2]])
+        self.assertEquals(getlist(e, descend=0), [])
+        self.assertEquals(getlist(e[0], descend=0), [e[1], e[2]])
+        self.assertEquals(getlist(e[0][0], descend=0), [e[0][1], e[1], e[2]])
+        self.assertEquals(getlist(e, ascend=0),
+                          [e[0], e[0][0], e[0][1], e[0][1][0]])
+        self.assertEquals(getlist(e[0][0], descend=0, ascend=0), [e[0][1]])
+        self.assertEquals(getlist(e, cond=lambda x: x not in e[0:2]),
+                          [e[0][0], e[0][1], e[0][1][0], e[2]])
 
 
 class TreeCopyVisitorTests(unittest.TestCase):
