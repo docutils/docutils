@@ -10,6 +10,9 @@
 A minimal front-end to the Docutils Publisher, producing HTML.
 """
 
+import locale
+locale.setlocale(locale.LC_ALL, '')
+
 from docutils.core import publish
 
 
