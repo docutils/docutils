@@ -6,20 +6,32 @@
 # Date: $Date$
 # Copyright: This module has been placed in the public domain.
 
-"""Perform tests with the data in the functional/ directory.
+"""
+Perform tests with the data in the functional/ directory.
 
-Read README.txt for details on how this is done."""
+Read README.txt for details on how this is done.
 
-import docutils
-import docutils.core
+To do: make this test module runnable from anywhere.  For example::
+
+    cd docutils/test/functional
+    ../test_functional.py
+"""
+
+import sys
 import os
 import os.path
 import unittest
 import difflib
+import docutils
+import docutils.core
 import DocutilsTestSupport
+
+
+testroot = os.path.dirname(DocutilsTestSupport.__file__)
 
 datadir = 'functional'
 """The directory to store the data needed for the functional tests."""
+
 
 class FunctionalTestSuite(DocutilsTestSupport.CustomTestSuite):
 
@@ -29,23 +41,24 @@ class FunctionalTestSuite(DocutilsTestSupport.CustomTestSuite):
         """Process all config files in functional/tests/."""
         DocutilsTestSupport.CustomTestSuite.__init__(self)
         os.path.walk(os.path.join(datadir, 'tests'), self.walker, None)
-    
+
     def walker(self, dummy, dirname, names):
-        """Process all config files among ``names`` in ``dirname``.
+        """
+        Process all config files among `names` in `dirname`.
 
         This is a helper function for os.path.walk.  A config file is
-        a Python file (*.py) which sets several veriables."""
-        
-        for i in filter(lambda x: x.endswith('.py') and not
-                        x.startswith('_'), names):
-            
-            c = os.path.join(dirname, i)
-            """Full path of configuration file."""
-            
-            self.addTestCase(
-                FunctionalTestCase, 'test', None, None, id=c, configfile=c)
-            
-class FunctionalTestCase(DocutilsTestSupport.CustomTestCase, docutils.SettingsSpec):
+        a Python file (*.py) which sets several variables.
+        """
+        for name in names:
+            if name.endswith('.py') and not name.startswith('_'):
+                config_file_full_path = os.path.join(dirname, name)
+                self.addTestCase(FunctionalTestCase, 'test', None, None,
+                                 id=config_file_full_path,
+                                 configfile=config_file_full_path)
+
+
+class FunctionalTestCase(DocutilsTestSupport.CustomTestCase,
+                         docutils.SettingsSpec):
 
     """Test case for one config file."""
 
@@ -55,78 +68,72 @@ class FunctionalTestCase(DocutilsTestSupport.CustomTestCase, docutils.SettingsSp
         """Set self.configfile, pass arguments to parent __init__."""
         self.configfile = kwargs['configfile']
         del kwargs['configfile']
-        self.shortDescription = self.getdesc
         DocutilsTestSupport.CustomTestCase.__init__(self, *args, **kwargs)
 
-    def getdesc(self):
-        """Ugly hack for Python 2.1."""
-        return 'Functional test for ' + self.configfile
+    def shortDescription(self):
+        return 'test_functional.py: ' + self.configfile
 
     def test(self):
-
         """Process self.configfile."""
-    
-        params = {'settings_overrides': {}}
-        """Keyword parameters for publish_file."""
-        # Note that settings_overrides has been initialized to an
-        # empty dictionary.
-
+        cwd = os.getcwd()
+        os.chdir(testroot)
+        # Keyword parameters for publish_file:
+        params = {'settings_overrides': {}} # initialize for settings files
         # Read the variables set in the default config file and in
-        # the current config file into params.
+        # the current config file into params:
         execfile(os.path.join(datadir, 'tests', '_default.py'), params)
         execfile(self.configfile, params)
-
+        # Check for required settings:
         assert params.has_key('test_source'),\
                "No 'test_source' supplied in " + self.configfile
         assert params.has_key('test_destination'),\
                "No 'test_destination' supplied in " + self.configfile
-
-        # Set source_path and destination_path if not given.
-        params.setdefault(
-            'source_path',
-            os.path.join(datadir, 'input', params['test_source']))
-        params.setdefault(
-            'destination_path',
-            os.path.join(datadir, 'output', params['test_destination']))
-        """Path for actual output."""
-        
+        # Set source_path and destination_path if not given:
+        params.setdefault('source_path',
+                          os.path.join(datadir, 'input',
+                                       params['test_source']))
+        # Path for actual output:
+        params.setdefault('destination_path',
+                          os.path.join(datadir, 'output',
+                                       params['test_destination']))
+        # Path for expected output:
         expected_path = os.path.join(datadir, 'expected',
                                      params['test_destination'])
-        """Path for expected output."""
-
-        # test_source and test_destination aren't needed anymore.
+        # test_source and test_destination aren't needed any more:
         del params['test_source']
         del params['test_destination']
-
-        # Delete private stuff like params['__builtins__'].
+        # Delete private stuff like params['__builtins__']:
         for key in params.keys():
             if key.startswith('_'):
                 del params[key]
-
-        # Get output.  (Automatically written to the output/ directory
-        # by publish_file.)
+        # Get output (automatically written to the output/ directory
+        # by publish_file):
         output = docutils.core.publish_file(settings_spec=self, **params)
-
+        os.chdir(cwd)
         # Get the expected output *after* writing the actual output.
         self.assert_(os.access(expected_path, os.R_OK),\
                      'Cannot find expected output at\n' + expected_path)
         expected = open(expected_path).read()
-        # Generate diff if unified_diff available.
-        if hasattr(difflib, 'unified_diff'):
-            diff = ('Functional test failed:\n\n' +
-                    ''.join(difflib.unified_diff(
-                expected.splitlines(1),
-                output.splitlines(1),
-                expected_path,
-                params['destination_path'])))
-        else:
-            diff = ('Functional test failed. '
-                    'Please compare the following files:\n%s\n%s\n' %
-                    (expected_path, params['destination_path']))
-        self.assertEqual(output, expected, diff)
+        diff = ('Please compare the expected and actual output files:\n'
+                'diff %s %s\n' % (expected_path, params['destination_path']))
+        try:
+            self.assertEquals(output, expected, diff)
+        except AssertionError:
+            if hasattr(difflib, 'unified_diff'):
+                # Generate diff if unified_diff available:
+                diff = ''.join(
+                    difflib.unified_diff(expected.splitlines(1),
+                                         output.splitlines(1),
+                                         expected_path,
+                                         params['destination_path']))
+            print >>sys.stderr, '\n%s:' % (self,)
+            print >>sys.stderr, diff
+            raise
+
 
 def suite():
     return FunctionalTestSuite()
+
 
 if __name__ == '__main__':
     unittest.main(defaultTest='suite')
