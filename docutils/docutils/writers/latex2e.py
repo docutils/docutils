@@ -130,7 +130,7 @@ class Writer(writers.Writer):
           'Default is no option.',
           ['--graphicx-option'],
           {'default': ''}),
-         ('LaTeX font encoding.'
+         ('LaTeX font encoding. '
           'Possible values are "T1", "OT1", "" or some other fontenc option. '
           'The font encoding influences available symbols, e.g. "<<" as one '
           'character. Default is "" which leads to package "ae" (a T1 '
