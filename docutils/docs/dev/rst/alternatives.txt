@@ -41,18 +41,47 @@ allow for nested enumerated lists without indentation?
 Auto-Numbered Enumerated Lists
 ------------------------------
 
-Add these?  Example::
+The advantage of auto-numbered enumerated lists would be similar to
+auto-numbered footnotes: no manual renumbering would be required.  The
+disadvantages are also the same: input and output don't match exactly;
+the markup may be ugly.
 
-    #. Item 1.
-    #. Item 2.
-    #. Item 3.
+1. Use the "#" symbol.  Example::
 
-Arabic numerals only, or any sequence if first initialized?  For
-example::
+       #. Item 1.
+       #. Item 2.
+       #. Item 3.
 
-    a) Item a.
-    #) Item b.
-    #) Item c.
+   Advantage: simple, explicit.  Disadvantage: only one enumeration
+   sequence (arabic numerals), a bit ugly.
+
+2. As a variation on #1, first initialize the enumeration sequence?
+   For example::
+
+       a) Item a.
+       #) Item b.
+       #) Item c.
+
+   Advantages: simple, explicit, any enumeration sequence possible.
+   Disadvantages: a bit ugly.
+
+3. Alternative suggested by Fred Bremmer, from experience with MoinMoin::
+
+       1. Item 1.
+       1. Item 2.
+       1. Item 3.
+
+   Advantages: enumeration sequence is explicit (could be 'a.' or
+   '(I)').  Disadvantage: otherwise erroneous input (e.g., a duplicate
+   item 1) would pass silently, either causing a problem later in the
+   list (if no blank lines between items) or creating two lists (with
+   blanks)::
+
+       1. Item 1.
+
+       1. Unintentional duplicate of item 1.
+
+       2. Item 2.
 
 
 Sloppy Indentation of List Items
