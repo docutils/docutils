@@ -13,10 +13,8 @@ XML, and TeX.  Several sources will be supported:
 - Standalone files (implemented).
 - Inline documentation from Python modules and packages, extracted
   with namespace context.
-- `Python Enhancement Proposals`__ (PEPs).
+- `PEPs (Python Enhancement Proposals)`_.
 - And others as discovered.
-
-__ peps_
 
 
 Feedback
@@ -300,9 +298,7 @@ Project Links
 .. _To Do list: spec/notes.html#to-do
 .. _README: README.html
 .. _HISTORY: HISTORY.html
-.. _master repository:
-.. _pep:
-.. _peps: http://www.python.org/peps/
+.. _master repository: http://www.python.org/peps/
 .. _mailto:
 .. _David Goodger: mailto:goodger@users.sourceforge.net
 .. _Doc-SIG: http://www.python.org/sigs/doc-sig/
