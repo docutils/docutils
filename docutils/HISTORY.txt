@@ -457,6 +457,7 @@ Specific:
   - Removed "interpreted" element support.
   - Added support for "title_reference", "sidebar", "attribution",
     "rubric", and generic "admonition" elements.
+  - Added "--attribution" option.
 
 * docutils/writers/latex2e.py: LaTeX Writer, added by Engelbert Gruber
   (from the sandbox).

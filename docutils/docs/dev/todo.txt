@@ -851,25 +851,8 @@ __ rst/alternatives.html#or-not-to-do
 
   Perhaps.  Perhaps not.
 
-* Add attribution parsing to block quotes?  Iff the last paragraph
-  [#]_ begins with "--", it becomes an attribution.  This goes back to
-  Paul Moore's initial "Using blockquote element for quotes" post
-  (docutils-users 2003-04-18).  Example::
-
-      Structured text is really a great idea for certain situations;
-      reST is a much better implementation of the idea than any
-      versions I've seen before.
-
-      -- Guido van Rossum on Python-Dev, 2002-04-04
-
-  .. [#] Also check for a final definition list with one item, whose
-     term begins with "--"?  If an attribution wraps, it may be
-     formatted like this::
-
-         A quote.
-
-         -- An attribution
-            more info here
+* Allow whitespace before the "::" in directives?  Hyperlink targets
+  too?  This would appease some of our French-speaking users.
 
 
 Directives
