@@ -21,6 +21,11 @@ import string
 from types import ListType
 from docutils import frontend, nodes, languages, writers
 
+try:
+    True
+except NameError:
+    True, False = 1, 0
+
 class Writer(writers.Writer):
 
     supported = ('lout', 'loutdoc', 'loutbook', 'loutreport')
@@ -32,14 +37,14 @@ class Writer(writers.Writer):
         (('Specify document type.  Default is "doc".  '
           'If you don\'t specify a setup file, the document type should '
           'be the name of a system include file, which will be "@SysInclude"d '
-          'by lout in the document header.  If you specify a setup file, no '
+          'by Lout in the document header.  If you specify a setup file, no '
           '@SysInclude will be generated, but you still must specify the '
           'document type, because the writer will take some decisions based '
           'on known document types (for example, "doc" has no titlepage).  '
           'Accepted values are "doc", "book" and "report".',
           ['--doctype'],
           {'default': 'doc', }),
-         ('Specify a setup file. The file will be "@Includ"ed by lout in '
+         ('Specify a setup file. The file will be "@Includ"ed by Lout in '
           'the document header.  Default is no setup file ("").  '
           'See --doctype; overridden by --setupfile-path.',
           ['--setupfile'],
@@ -129,6 +134,25 @@ def _get_language_name(lcode):
     if _language_names.has_key(l):
         return _language_names[l]
     raise KeyError, 'Language %s not supported by Lout' % lcode
+
+_lout_header = '''
+# This document was generated automatically by the Python Docutils
+# package. It is not meant to be edited manually.
+# http://docutils.sourceforge.net/
+
+extend @BasicSetup @DocumentSetup
+
+    def @SideBar
+	right @Text
+    {
+	def @Send into { @ColTopPlace&&following }
+	    right x
+	{
+	    x
+	}
+	@Send @CurveBox margin { 1m } paint { rgb 1 1 0.93 } @Text
+    }
+''' # the @SideBar command
 
 class LoutTranslator(nodes.NodeVisitor):
 
@@ -290,11 +314,12 @@ class LoutTranslator(nodes.NodeVisitor):
 
     def visit_bullet_list(self, node):
         if self.topic_class == 'contents':
+            # we let Lout generate contents, thank you sir
             raise nodes.SkipNode
-        self.body.append(self.starttag(node, 'ul'))
+        self.body.append('@BulletList')
 
     def depart_bullet_list(self, node):
-        self.body.append('@CurveBox paint { red } { "/" ul }\n')
+        self.body.append('@EndList')
 
     def visit_caption(self, node):
         self.body.append(self.starttag(node, 'p', '', CLASS='caption'))
@@ -384,20 +409,17 @@ class LoutTranslator(nodes.NodeVisitor):
         pass
 
     def visit_definition(self, node):
-        self.body.append('@CurveBox paint { red } { "/" dt }\n')
-        self.body.append(self.starttag(node, 'dd', ''))
-        if len(node):
-            node[0].set_class('first')
-            node[-1].set_class('last')
+        self.body.append('{')
+        node['kill-first-paragraph'] = True
 
     def depart_definition(self, node):
-        self.body.append('@CurveBox paint { red } { "/" dd }\n')
+        self.body.append('}')
 
     def visit_definition_list(self, node):
-        self.body.append(self.starttag(node, 'dl'))
+        self.body.append('@TaggedList')
 
     def depart_definition_list(self, node):
-        self.body.append('@CurveBox paint { red } { "/" dl }\n')
+        self.body.append('@EndList')
 
     def visit_definition_list_item(self, node):
         pass
@@ -449,12 +471,12 @@ class LoutTranslator(nodes.NodeVisitor):
     def depart_document(self, node):
         if self.doctype == 'doc':
             # FIXME: add docinfo as a table?
-            self.body.insert(0, "@SysInclude { doc }\n"
-                             "@Doc @Text @Begin\n")
+            self.body.insert(0, "@SysInclude { doc }")
+            self.body.insert(1, "@Doc @Text @Begin\n")
             self.body.append("\n@End @Text\n")
         elif self.doctype == 'book':
             # FIXME: add docinfo
-            self.body = ["@SysInclude { book }\n"
+            self.body = ["@SysInclude { book }",
                          "@Book\n"
                          "    @InitialLanguage { %s }\n"
                          "//\n" % self.language_name]
@@ -471,6 +493,13 @@ class LoutTranslator(nodes.NodeVisitor):
                     self.body.extend(chapter)
         elif self.doctype == 'report':
             raise NotImplemented
+        if self.settings.setupfile_path or self.settings.setupfile:
+            if self.settings.setupfile_path:
+                name = self.settings.setupfile_path
+            else:
+                name = self.settings.setupfile
+            self.body[0] = '@Include { "%s" }' % name
+        self.body.insert(1, _lout_header)
 
     def visit_emphasis(self, node):
         self.body.append('@II {')
@@ -521,21 +550,21 @@ class LoutTranslator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_field(self, node):
-        self.body.append(self.starttag(node, 'tr', '', CLASS='field'))
+        pass
 
     def depart_field(self, node):
-        self.body.append('@CurveBox paint { red } { "/" tr }\n')
+        pass
 
     def visit_field_body(self, node):
-        self.body.append(self.starttag(node, 'td', '', CLASS='field-body'))
-        if len(node):
-            node[0].set_class('first')
-            node[-1].set_class('last')
+        self.body.append('{')
+        node['kill-first-paragraph'] = True
 
     def depart_field_body(self, node):
-        self.body.append('@CurveBox paint { red } { "/" td }\n')
+        self.body.append('}')
 
     def visit_field_list(self, node):
+        self.body.append('@WideTaggedList')
+        return
         self.body.append(self.starttag(node, 'table', frame='void',
                                        rules='none', CLASS='field-list'))
         self.body.append('@CurveBox paint { red } { col class="field-name" "/" }\n'
@@ -543,17 +572,16 @@ class LoutTranslator(nodes.NodeVisitor):
                          '@CurveBox paint { red } { tbody valign="top" }\n')
 
     def depart_field_list(self, node):
-        self.body.append('@CurveBox paint { red } { "/" tbody }\n@CurveBox paint { red } { "/" table }\n')
+        self.body.append('@EndList')
 
     def visit_field_name(self, node):
-        atts = {}
-        atts['class'] = 'field-name'
-        if len(node.astext()) > 14:
-            atts['colspan'] = 2
-        self.body.append(self.starttag(node, 'th', '', **atts))
+        if len(node.astext()) > 7:
+            self.body.append('@DropTagItem {')
+        else:
+            self.body.append('@TagItem {')
 
     def depart_field_name(self, node):
-        self.body.append(':@CurveBox paint { red } { "/" th }')
+        self.body.append('}')
 
     def visit_figure(self, node):
         atts = {'class': 'figure'}
@@ -692,12 +720,11 @@ class LoutTranslator(nodes.NodeVisitor):
         self.body.append('\n@CurveBox paint { red } { "/" pre }\n')
 
     def visit_list_item(self, node):
-        self.body.append(self.starttag(node, 'li', ''))
-        if len(node):
-            node[0].set_class('first')
+        self.body.append('@ListItem {')
+        node['kill-first-paragraph'] = True
 
     def depart_list_item(self, node):
-        self.body.append('@CurveBox paint { red } { "/" li }\n')
+        self.body.append('}')
 
     def visit_literal(self, node):
         """Process text to prevent tokens from wrapping."""
@@ -751,7 +778,7 @@ class LoutTranslator(nodes.NodeVisitor):
 
     def visit_option_group(self, node):
         atts = {}
-        if len(node.astext()) > 14:
+        if len(node.astext()) > 10:
             atts['colspan'] = 2
         self.body.append(self.starttag(node, 'td', **atts))
         self.body.append('@CurveBox paint { red } { kbd }')
@@ -789,7 +816,10 @@ class LoutTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item()
 
     def visit_paragraph(self, node):
-        self.body.append('\n@PP')
+        if node.parent.get('kill-first-paragraph'):
+            del node.parent['kill-first-paragraph']
+        else:
+            self.body.append('\n@PP')
 
     def depart_paragraph(self, node):
         pass
@@ -811,16 +841,19 @@ class LoutTranslator(nodes.NodeVisitor):
 
     def visit_reference(self, node):
         if node.has_key('refuri'):
-            href = node['refuri']
+            self.body.append('"%s" @ExternalLink {' % node['refuri'])
+            return
         elif node.has_key('refid'):
-            href = '#' + node['refid']
+            href = node['refid']
         elif node.has_key('refname'):
-            href = '#' + self.document.nameids[node['refname']]
-        self.body.append(self.starttag(node, 'a', '', href=href,
-                                       CLASS='reference'))
+            href = node['refid'] = self.document.nameids[node['refname']]
+        self.body.append('%s @CrossLink {' % href)
 
     def depart_reference(self, node):
-        self.body.append('@CurveBox paint { red } { "/" a }')
+        if node.has_key('refid'):
+            # FIXME should be a setting
+            self.body.append('(p. @PageOf {%s})' % node['refid'])
+        self.body.append('}')
 
     def visit_revision(self, node):
         self.visit_docinfo_item(node, 'revision', meta=None)
@@ -958,11 +991,11 @@ class LoutTranslator(nodes.NodeVisitor):
                 self.body.append('\n@End %s' % cmd)
 
     def visit_sidebar(self, node):
-        self.body.append(self.starttag(node, 'div', CLASS='sidebar'))
+        self.body.append('@SideBar {')
         self.in_sidebar = 1
 
     def depart_sidebar(self, node):
-        self.body.append('@CurveBox paint { red } { "/" div }\n')
+        self.body.append('}')
         self.in_sidebar = None
 
     def visit_status(self, node):
@@ -992,13 +1025,13 @@ class LoutTranslator(nodes.NodeVisitor):
 
     def visit_subtitle(self, node):
         if isinstance(node.parent, nodes.sidebar):
-            self.body.append(self.starttag(node, 'p', '',
-                                           CLASS='sidebar-subtitle'))
+            self.body.append('@RawDisplay @I {')
         else:
-            self.body.append(self.starttag(node, 'h2', '', CLASS='subtitle'))
+            self.docinfo['subtitle'] = node.astext()
+            raise nodes.SkipNode
 
     def depart_subtitle(self, node):
-        pass
+        self.body.append('}')
 
     def visit_superscript(self, node):
         self.body.append(self.starttag(node, 'sup', ''))
@@ -1069,14 +1102,13 @@ class LoutTranslator(nodes.NodeVisitor):
         self.body.append('@CurveBox paint { red } { "/" tbody }\n')
 
     def visit_term(self, node):
-        self.body.append(self.starttag(node, 'dt', ''))
+        if len(node.astext()) > 3:
+            self.body.append('@DropTagItem {')
+        else:
+            self.body.append('@TagItem {')
 
     def depart_term(self, node):
-        """
-        Leave the end tag to `self.visit_definition()`, in case there's a
-        classifier.
-        """
-        pass
+        self.body.append('}')
 
     def visit_tgroup(self, node):
         # Mozilla needs <colgroup>:
@@ -1099,7 +1131,7 @@ class LoutTranslator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_title(self, node):
-        # there is a limited number of title levels in lout;
+        # there is a limited number of title levels in Lout;
         # worse, the number (and the commands, in fact) depends
         # on the doctype
         check_id = 0
@@ -1108,8 +1140,7 @@ class LoutTranslator(nodes.NodeVisitor):
                   self.starttag(node, 'p', '', CLASS='topic-title'))
             check_id = 1
         elif isinstance(node.parent, nodes.sidebar):
-            self.body.append(
-                  self.starttag(node, 'p', '', CLASS='sidebar-title'))
+            self.body.append('@RawDisplay @Heading {')
             check_id = 1
         elif isinstance(node.parent, nodes.admonition):
             self.body.append(
@@ -1123,11 +1154,12 @@ class LoutTranslator(nodes.NodeVisitor):
             raise nodes.SkipNode
         if check_id:
             if node.parent.hasattr('id'):
-                self.body.append(
-                    self.starttag({}, 'a', '', name=node.parent['id']))
+                # TESTME
+                self.body.append('@PageMark { %s }' % node.parent['id'])
 
     def depart_title(self, node):
-        pass
+        if (isinstance(node.parent, nodes.sidebar)):
+            self.body.append('}')
 
     def visit_title_reference(self, node):
         self.body.append(self.starttag(node, 'cite', ''))
