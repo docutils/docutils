@@ -87,14 +87,8 @@ class Publisher:
         #@@@ Add self.source & self.destination to components in future?
         option_parser = OptionParser(
             components=(settings_spec, self.parser, self.reader, self.writer),
+            defaults=defaults, read_config_files=1,
             usage=usage, description=description)
-        config = ConfigParser()
-        config.read_standard_files()
-        config_settings = config.get_section('options')
-        frontend.make_paths_absolute(config_settings,
-                                     option_parser.relative_path_settings)
-        defaults.update(config_settings)
-        option_parser.set_defaults(**defaults)
         return option_parser
 
     def get_settings(self, usage=None, description=None,
