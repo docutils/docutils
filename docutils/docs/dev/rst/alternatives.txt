@@ -1696,7 +1696,7 @@ Issues:
          Description
              - On a stick!
              - If we took the bones out, it wouldn't be
-               crunchy, now would it?               
+               crunchy, now would it?
 
 * A syntax for stubs in ASCII-art tables is easy to imagine::
 
@@ -1705,6 +1705,16 @@ Issues:
       +========================++============+==========+
       | body row 1, column 1   || column 2   | column 3 |
       +------------------------++------------+----------+
+
+  Or this idea from Nick Moffitt::
+
+      +-----+---+---+
+      | XOR # T | F |
+      +=====+===+===+
+      |   T # F | T |
+      +-----+---+---+
+      |   F # T | F |
+      +-----+---+---+
 
 
 Auto-Enumerated Lists
@@ -2102,7 +2112,7 @@ __ http://thread.gmane.org/gmane.text.docutils.devel/1386
 
 1. References and targets take this form::
 
-       targetname_   
+       targetname_
 
        .. _targetname: stuff
 
@@ -2203,7 +2213,7 @@ __ http://thread.gmane.org/gmane.text.docutils.devel/1386
    ".. comment::" would violate that.  The goals of reStructuredText
    are many, and they conflict.  Determining the right set of goals
    and finding solutions that best fit is done on a case-by-case
-   basis.  
+   basis.
 
    Even readability is has two aspects.  Being readable without any
    prior knowledge is one.  Being as easily read in raw form as in
