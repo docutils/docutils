@@ -55,7 +55,7 @@ docstring):
 Runtime Settings Processing for Command-Line Tools
 ==================================================
 
-Following allong with the actual code is recommended.  The
+Following along with the actual code is recommended.  The
 ``docutils/__init__.py``, ``docutils/core.py``, and
 ``docutils.frontend`` modules are described.
 
@@ -96,7 +96,7 @@ Following allong with the actual code is recommended.  The
 
 6. The ``docutils.frontend.OptionParser`` object's ``__init__`` method
    calls ``self.populate_from_components`` with ``self.components``,
-   which consists of ``self`` prepended to the ``components`` tuple it
+   which consists of ``self`` pre-pended to the ``components`` tuple it
    received.  ``self`` (``docutils.frontend.OptionParser``) defines
    general Docutils settings.
 
@@ -167,9 +167,9 @@ Applications process runtime settings in a significantly different way
 than `command-line tools`_ do.  Instead of calling
 ``publish_cmdline``, the application calls one of ``publish_file``,
 ``publish_string``, or ``publish_parts``.  These in turn call
-``publish_programatically``, which implements a generic programmatic
+``publish_programmatically``, which implements a generic programmatic
 interface.  Although an application may also call
-``publish_programatically`` directly, it is not recommended (if it
+``publish_programmatically`` directly, it is not recommended (if it
 does seem to be necessary, please write to the `Docutils-Develop
 mailing list`_).
 
