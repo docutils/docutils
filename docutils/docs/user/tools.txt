@@ -9,13 +9,23 @@
 
 Once the Docutils package is unpacked, you will discover a "``tools``"
 directory containing several front ends for common Docutils
-processing.  Most front ends combine a Docutils "Reader" (which knows
-how to interpret a file in context) with a "Writer" (which knows how
-to generate a specific data format)
+processing.  Most Docutils front ends combine a specific "Reader"
+(which knows how to interpret a file in context), a "Parser" (which
+understands the syntax of the text), and a "Writer" (which knows how
+to generate a specific data format).  Most front ends have common
+options and the same command-line usage pattern::
 
-Each tool has a "``--help``" option which lists the `command-line
-options`_ and arguments it supports.  Processing can also be
-customized with `configuration files`_.
+    toolname [options] [<source> [<destination]]
+
+The sole exception is pep2html.py_.  See html.py_ for concrete
+examples.  Each tool has a "``--help``" option which lists the
+`command-line options`_ and arguments it supports.  Processing can
+also be customized with `configuration files`_.
+
+The two arguments, "source" and "destination", are optional.  If only
+one argument (source) is specified, the standard output (stdout) is
+used for the destination.  If no arguments are specified, the standard
+input (stdin) is used for the source as well.
 
 
 .. contents::
@@ -29,10 +39,50 @@ html.py
 :Writer: HTML
 
 The ``html.py`` front end reads standalone reStructuredText source
-files and produces HTML 4 (XHTML 1) output.  It inserts a link to a
-cascading stylesheet (``.css`` file), ``default.css`` unless specified
-by a "--stylesheet" command-line option or in a configuration file.
-The ``tools/default.css`` stylesheet is provided for basic use.
+files and produces HTML 4 (XHTML 1) output compatible with modern
+browsers.  For example, to process a reStructuredText file
+"``test.txt``" into HTML::
+
+    html.py test.txt test.html
+
+In fact, there *is* a "``test.txt``" file in the "``tools``"
+directory.  It contains "at least one example of each reStructuredText
+construct", including intentional errors.  Use it to put the system
+through its paces and compare input to output.
+
+Now open the "``test.html``" file in your favorite browser to see the
+results.  To get a footer with a link to the source file, date & time
+of processing, and links to the Docutils projects, add some options::
+
+    html.py -stg test.txt test.html
+
+
+Stylesheets
+-----------
+
+``html.py`` inserts into the generated HTML a link to a cascading
+stylesheet, defaulting to "``default.css``" (override with a
+"``--stylesheet``" command-line option or with a configuration file).
+The "``tools/default.css``" stylesheet is provided for basic use.  To
+experiment with styles, rather than editing the default stylesheet
+(which will be updated as the project evolves), it is recommended to
+use the "``@import``" statement to create a "wrapper" stylesheet.  For
+example, a "``my.css``" stylesheet could contain the following::
+
+    @import url(default.css);
+    
+    h1, h2, h3, h4, h5, h6, p.topic-title {
+      font-family: sans-serif }
+
+Generate HTML with the following command::
+
+    html.py -stg --stylesheet my.css test.txt test.html
+
+When viewed in a browser, the new "wrapper" stylesheet will change the
+typeface family of titles to "sans serif", typically Helvetica or
+Arial.  Other styles will not be affected.  Styles in wrapper
+stylesheets override styles in imported stylesheets, enabling
+incremental experimentation.
 
 
 pep.py
@@ -44,17 +94,18 @@ pep.py
 
 ``pep.py`` reads a new-style PEP (marked up with reStructuredText) and
 produces HTML.  It requires a template file and a stylesheet.  By
-default, it makes use of a ``pep-html-template`` file and a
-``default.css`` stylesheet in the current directory, but these can be
-overridden by command-line options or configuration files.  The
-``tools/stylesheets/pep.css`` stylesheet is intended specifically for
-PEP use.
+default, it makes use of a "``pep-html-template``" file and a
+"``default.css``" stylesheet in the current directory, but these can
+be overridden by command-line options or configuration files.  The
+"``tools/stylesheets/pep.css``" stylesheet is intended specifically
+for PEP use.
 
-The ``docutils.conf`` `configuration file`_ in the "``spec``"
+The "``docutils.conf``" `configuration file`_ in the "``spec``"
 directory of Docutils contains a default setup for use in processing
-the PEP files there (``spec/pep-*.txt``) into HTML.  It specifies
-defaults of ``tools/pep-html-template`` and
-``tools/stylesheets/pep.css``.
+the PEP files there (``spec/pep-*.txt``) into HTML.  It specifies a
+default template (``tools/pep-html-template``) and a default
+stylesheet (``tools/stylesheets/pep.css``).  See Stylesheets_ above
+for more information.
 
 
 pep2html.py
@@ -70,7 +121,12 @@ beginning of a PEP text file to determine the format (old-style
 indented or new-style reStructuredText) and processes accordingly.
 Since it does not use the Docutils front end mechanism (the common
 command-line options are not supported), it must be configured using
-`configuration files`_.
+`configuration files`_.  The template and stylesheet requirements of
+``pep2html.py`` are the same as those of `pep.py`_ above.
+
+Arguments to ``pep2html.py`` may be a list of PEP numbers or .txt
+files.  If no arguments are given, all files of the form
+"``pep-*.txt``" are processed.
 
 
 docutils-xml.py
@@ -107,12 +163,12 @@ quicktest.py
 :Writer: N/A
 
 The ``quicktest.py`` tool is used for testing the reStructuredText
-parser.  It does not use the Docutils Reader/Writer mechanism.
-Rather, it does its own I/O and calls the parser directly.  No
-transforms are applied to the parsed document.  Various forms output
-are possible:
+parser.  It does not use a Docutils Reader or Writer or the standard
+Docutils command-line options.  Rather, it does its own I/O and calls
+the parser directly.  No transforms are applied to the parsed
+document.  Various forms output are possible:
 
-- Pretty-printed pseudo-XML
+- Pretty-printed pseudo-XML (default)
 - Test data (Python list of input and pseudo-XML output strings;
   useful for creating new test cases)
 - Pretty-printed native XML
@@ -195,148 +251,125 @@ Configuration File Entries
 --------------------------
 
 The entry names listed below may be specified in `configuration
-files`_ (hyphens may be used in place of underscores).  Some knowledge
-of Python_ is assumed for some attributes.
+files`_.  Hyphens may be used in place of underscores in entry names.
+Some knowledge of Python_ is assumed for some attributes.
 
 ====================  ================================================
-Entry Name            Description and Command-Line Options
+Config Entry Name     Description
 ====================  ================================================
 datestamp             Include a time/datestamp in the document footer.
                       Contains a format string for ``time.strftime``.
 
-                      Default: None.
-
-                      ``--date, -d, --time, -t, --no-datestamp``
-
+                      Default: None.  Options: ``--date, -d, --time,
+                      -t, --no-datestamp``.
+--------------------  ------------------------------------------------
 debug                 Report debug-level system messages.
 
-                      Default: don't (None).
-
-                      ``--debug, --no-debug``
-
+                      Default: don't (None).  Options: ``--debug,
+                      --no-debug``.
+--------------------  ------------------------------------------------
 dump_internals        Hidden option: At the end of processing, print
                       out all internal attributes of the document
                       (``document.__dict__``).
 
-                      Default: don't (None).
-
-                      ``--dump-internals``
-
+                      Default: don't (None).  Options:
+                      ``--dump-internals``.
+--------------------  ------------------------------------------------
 footnote_backlinks    Enable or disable backlinks from footnotes and
                       citations to their references.
 
-                      Default: enabled (1).
-
-                      ``--footnote-backlinks, --no-footnote-backlinks``
-
+                      Default: enabled (1).  Options:
+                      ``--footnote-backlinks,
+                      --no-footnote-backlinks``.
+--------------------  ------------------------------------------------
 generator             Include a "Generated by Docutils" credit and
                       link in the document footer.
 
-                      Default: off (None).
-
-                      ``--generator, -g, --no-generator``
-
+                      Default: off (None).  Options: ``--generator,
+                      -g, --no-generator``.
+--------------------  ------------------------------------------------
 halt_level            Set the threshold at or above which system
                       messages are converted to exceptions, halting
                       execution immediately.
 
-                      Default: severe (4).
-
-                      ``--halt, --strict``
-
+                      Default: severe (4).  Options: ``--halt,
+                      --strict``.
+--------------------  ------------------------------------------------
 indents               XML-specific: Generate XML with indents and
                       newlines.
 
-                      Default: None.
-
-                      ``--indents``
-
-input_encoding        Default: auto-detect (None).
-
-                      ``--input-encoding, -i``
-
-language_code         Default: English ("en").
-
-                      ``--language, -l``
-
+                      Default: None.  Options: ``--indents``.
+--------------------  ------------------------------------------------
+input_encoding        Default: auto-detect (None).  Options:
+                      ``--input-encoding, -i``.
+--------------------  ------------------------------------------------
+language_code         Default: English ("en").  Options: ``--language,
+                      -l``.
+--------------------  ------------------------------------------------
 newlines              XML-specific: Generate XML with newlines before
                       and after tags.
 
-                      Default: None.
-
-                      ``--newlines``
-
+                      Default: None.  Options: ``--newlines``.
+--------------------  ------------------------------------------------
 no_random             PEP/HTML-specific hidden option: Workaround for
                       platforms which core-dump on "``import
                       random``".
 
-                      Default: random enabled (None).
-
-                      ``--no-random``
-
-output_encoding       Default: UTF-8.
-
-                      ``--output-encoding, -o``
-
+                      Default: random enabled (None).  Options:
+                      ``--no-random``.
+--------------------  ------------------------------------------------
+output_encoding       Default: UTF-8.  Options: ``--output-encoding,
+                      -o``.
+--------------------  ------------------------------------------------
 pep_home              PEP/HTML-specific: Home URL prefix for PEPs.
 
-                      Default: current directory (".").
-
-                      ``--pep-home``
-
+                      Default: current directory (".").  Options:
+                      ``--pep-home``.
+--------------------  ------------------------------------------------
 pep_stylesheet        PEP/HTML-specific: Overrides HTML stylesheet.
 
-                      Default: None.
-
-                      ``--pep-stylesheet``
-
+                      Default: None.  Options: ``--pep-stylesheet``.
+--------------------  ------------------------------------------------
 pep_template          PEP/HTML-specific: PEP template file.
 
-                      Default: "pep-html-template".
-
-                      ``--pep-template``
-
+                      Default: "pep-html-template".  Options:
+                      ``--pep-template``.
+--------------------  ------------------------------------------------
 python_home           PEP/HTML-specific: Python's home URL.
 
-                      Default: parent directory ("..").
-
-                      ``--python-home``
-
+                      Default: parent directory ("..").  Options:
+                      ``--python-home``.
+--------------------  ------------------------------------------------
 report_level          Set verbosity threshold at or above which system
                       messages are reported.
 
-                      Default: warning (2).
-
-                      ``--report, -r, --verbose``
-
+                      Default: warning (2).  Options: ``--report, -r,
+                      --verbose``.
+--------------------  ------------------------------------------------
 source_link           Include a "View document source" link in the
                       document footer.
 
-                      Default: don't (None).
-
-                      ``--source-link, --no-source-link``
-
+                      Default: don't (None).  Options:
+                      ``--source-link, --no-source-link``.
+--------------------  ------------------------------------------------
 stylesheet            HTML-specific.
 
-                      Default: "default.css".
-
-                      ``--stylesheet``
-
+                      Default: "default.css".  Options:
+                      ``--stylesheet``.
+--------------------  ------------------------------------------------
 toc_backlinks         Enable backlinks from section titles to table of
                       contents entries ("entry"), to the top of the
                       TOC ("top"), or disable ("none").
 
-                      Default: "entry".
-
+                      Default: "entry".  Options:
                       ``--toc-entry-backlinks, --toc-top-backlinks,
-                      --no-toc-backlinks``
-
+                      --no-toc-backlinks``.
+--------------------  ------------------------------------------------
 warning_stream        Send the output of system messages (warnings) to
                       a file.
 
-                      Default: stderr (None).
-
-                      ``--warnings``
+                      Default: stderr (None).  Options:
+                      ``--warnings``.
 ====================  ================================================
 
 
