@@ -12,6 +12,7 @@
 #   -p    Run from the project directory.
 #   -t    Run the script in trace mode ("set -o xtrace").
 #   -u    Regenerate .html unconditionally.
+#   -v    Run verbosely.
 
 # exit on error
 set -e
@@ -32,20 +33,22 @@ export CVSROOT=:pserver:anonymous@cvs1:/cvsroot/$project
 
 trace=0
 unconditional=0
+verbose=0
 
-while getopts eptu opt
+while getopts eptuv opt
 do
     case $opt in
         e)  root="-d:ext:${USER}@cvs1:/cvsroot/docutils" ;;
         p)  export PYTHONPATH=$pylib:$lib:$lib/extras;;
         t)  trace=1;;
         u)  unconditional=1;;
+        v)  verbose=1;;
         \?) exit 2;;
     esac
 done
 shift `expr $OPTIND - 1`
 
-if [ $trace -eq 1 ] ; then
+if [ $trace -eq 1 -o $verbose -eq 1 ] ; then
     set -o xtrace
 fi
 
@@ -95,6 +98,11 @@ find . -type d -print0 | xargs -0 chmod ug+rwxs 2> /dev/null || true
 
 # update HTML docs
 cd $dest/tools
+
+if [ $trace -eq 0 ] ; then
+    set +o xtrace
+fi
+
 for htmlfile in `find .. -name '*.html'` ; do
     dir=`dirname $htmlfile`
     base=`basename $htmlfile .html`
