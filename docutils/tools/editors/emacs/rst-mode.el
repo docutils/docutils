@@ -32,11 +32,18 @@
 ;; (setq auto-mode-alist
 ;;       (append '(("\\.rst$" . rst-mode)
 ;;                 ("\\.rest$" . rst-mode)) auto-mode-alist))
-
-;; You can also bind a command to automate converting to HTML:
-;; (defun user-rst-mode-hook ()
-;;   (local-set-key-safe [(control c)(?9)] 'rst-html-compile))
-;; (add-hook 'text-mode-hook 'user-rst-mode-hook)
+;;
+;; If you are using `.txt' as a standard extension for reST files as
+;; http://docutils.sourceforge.net/FAQ.html#what-s-the-standard-filename-extension-for-a-restructuredtext-file
+;; suggests you may use one of the `Local Variables in Files' mechanism Emacs
+;; provides to set the major mode automatically. For instance you may use
+;;
+;; .. -*- mode: rst -*-
+;;
+;; in the very first line of your file. However, because this is a major
+;; security breach you or your administrator may have chosen to switch that
+;; feature off. See `Local Variables in Files' in the Emacs documentation for a
+;; more complete discussion.
 
 ;;; Code:
 
@@ -64,6 +71,8 @@ If nil comments and literal blocks are font-locked only on the line they start.
 The value of this variable is used when Rst Mode is turned on."
   :group 'rst
   :type '(boolean))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defgroup rst-faces nil "Faces used in Rst Mode"
   :group 'rst
@@ -171,6 +180,29 @@ title adornment)."
   :type '(alist :key-type (choice (integer :tag "Section level")
 				  (boolean :tag "transitions (on) / section title adornment (off)"))
 		:value-type (face)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defgroup rst-html nil "Settings for conversion to HTML available by \\[rst-html-compile]. Use of this functionality is discouraged. Get a proper
+`Makefile' instead."
+  :group 'rst
+  :version "21.1")
+
+(defcustom rst-html-command "docutils_html"
+  "Command to convert an reST file to HTML."
+  :group 'rst-html
+  :type '(string))
+
+(defcustom rst-html-stylesheet ""
+  "Stylesheet for reST to HTML conversion. Empty for no special stylesheet."
+  :group 'rst-html
+  :type '(string))
+
+(defcustom rst-html-options ""
+  "Local file options for reST to HTML conversion.
+Stylesheets are set by an own option."
+  :group 'rst-html
+  :type '(string))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -683,24 +715,7 @@ entered.")
 	t))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Conversion to HTML, using compile.
-
-;; You can add something like this at the end your document to customize:
-;; .. Local Variables: ***
-;; .. mode: rst ***
-;; .. rst-html-stylesheet: "http://intranet/style.css" ***
-;; .. End: ***
-
-(defvar rst-html-command "docutils_html --no-toc-backlinks"
-  "Command to convert an reST file to HTML.")
-
-(defvar rst-html-options ""
-  "Local file options for reST to HTML conversion.  This is meant to be used
-within a file's local variables.")
-
-(defvar rst-html-stylesheet nil
-  "Stylesheet for reST to HTML conversion. This variable is provided as a simple
-convenience for local variables.")
+;; Conversion to HTML
 
 (defun rst-html-compile ()
   "Compile command to convert reST document into HTML."
@@ -708,21 +723,20 @@ convenience for local variables.")
   (let* ((bufname (file-name-nondirectory buffer-file-name))
 	 (outname (file-name-sans-extension bufname))
 	 (ssheet
-	  (or (and rst-html-stylesheet
+	  (or (and (not (zerop (length rst-html-stylesheet)))
 		   (concat "--stylesheet=\"" rst-html-stylesheet "\""))
-	      ""))
-	 )
-    (make-variable-buffer-local 'compile-command)
-    (setq compile-command
-	  (mapconcat 'identity
-		     (list rst-html-command
-			   ssheet rst-html-options
-			   bufname (concat outname ".html"))
-		     " "))
+	      "")))
+    (set (make-local-variable 'compile-command)
+	 (mapconcat 'identity
+		    (list rst-html-command
+			  ssheet rst-html-options
+			  bufname (concat outname ".html"))
+;; FIXME: There should be at least a customizable variable for the output
+;; extension
+		    " "))
     (if compilation-read-command
 	(call-interactively 'compile)
-      (compile compile-command))
-    ))
+      (compile compile-command))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
