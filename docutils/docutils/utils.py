@@ -20,8 +20,9 @@ from docutils import frontend, nodes
 
 class SystemMessage(ApplicationError):
 
-    def __init__(self, system_message):
+    def __init__(self, system_message, level):
         Exception.__init__(self, system_message.astext())
+        self.level = level
 
 
 class Reporter:
@@ -181,7 +182,7 @@ class Reporter:
             else:
                 print >>stream, msgtext
         if level >= halt_level:
-            raise SystemMessage(msg)
+            raise SystemMessage(msg, level)
         if level > 0 or debug:
             self.notify_observers(msg)
         self.max_level = max(level, self.max_level)
