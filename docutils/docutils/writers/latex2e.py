@@ -76,6 +76,10 @@ class Writer(writers.Writer):
           ['--use-latex-toc'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
+         ('Let LaTeX print author and date, donot show it in docutils document info.',
+          ['--use-latex-docinfo'],
+          {'default': 0, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
          ('Color of any hyperlinks embedded in text '
           '(default: "blue", "0" to disable).',
           ['--hyperlink-color'], {'default': 'blue'}),))
@@ -273,6 +277,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         nodes.NodeVisitor.__init__(self, document)
         self.settings = settings = document.settings
         self.use_latex_toc = settings.use_latex_toc
+        self.use_latex_docinfo = settings.use_latex_docinfo
         self.use_latex_footnotes = settings.use_latex_footnotes
         self.hyperlink_color = settings.hyperlink_color
         if self.hyperlink_color == '0':
@@ -338,9 +343,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # NOTE: Latex wants a date and an author, rst puts this into
         #   docinfo, so normally we donot want latex author/date handling.
         # latex article has its own handling of date and author, deactivate.
-        self.latex_docinfo = 0
         self.head = [ ]
-        if not self.latex_docinfo:
+        if not self.use_latex_docinfo:
             self.head.extend( [ '\\author{}\n', '\\date{}\n' ] )
         self.body_prefix = ['\\raggedbottom\n']
         # separate title, so we can appen subtitle.
@@ -687,23 +691,21 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.docinfo = None
 
     def visit_docinfo_item(self, node, name):
-        if not self.latex_docinfo:
-            self.docinfo.append('\\textbf{%s}: &\n\t' % self.language_label(name))
         if name == 'author':
             if not self.pdfinfo == None:
                 if not self.pdfauthor:
                     self.pdfauthor = self.attval(node.astext())
                 else:
                     self.pdfauthor += self.author_separator + self.attval(node.astext())
-            if self.latex_docinfo:
+            if self.use_latex_docinfo:
                 self.head.append('\\author{%s}\n' % self.attval(node.astext()))
                 raise nodes.SkipNode
         elif name == 'date':
-            if self.latex_docinfo:
+            if self.use_latex_docinfo:
                 self.head.append('\\date{%s}\n' % self.attval(node.astext()))
                 raise nodes.SkipNode
+        self.docinfo.append('\\textbf{%s}: &\n\t' % self.language_label(name))
         if name == 'address':
-            # BUG will fail if latex_docinfo is set.
             self.insert_newline = 1
             self.docinfo.append('{\\raggedright\n')
             self.context.append(' } \\\\\n')
@@ -1435,6 +1437,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 text = node.astext().replace("_","\\_")
                 self.body.append('\\pdfbookmark[%d]{%s}{%s}\n' % \
                         (l,text,node.parent['id']))
+
     def visit_title(self, node):
         """Only 3 section levels are supported by LaTeX article (AFAIR)."""
 
