@@ -145,14 +145,12 @@ class MoinTranslator(html4css1.HTMLTranslator):
             # We don't want these pieces wrapped in <p> tags, I think.
             self.strip_paragraph = 1
             # Unless the user has explicitly added the type of the uri then we
-            # let MoinMoin handle it.
-            if ':' not in node['refuri']:
+            # let MoinMoin handle it. Also explicitly handle interwiki links
+            if (node['refuri'].find('wiki:') != -1) or \
+               (':' not in node['refuri']):
                 # The node should have a whitespace normalized name if the
                 # docutlis restructured text parser would normally fully
-                # normalize the name. Also need to make sure we should be using
-                # the name attribute instead of the refuri if the refuri really
-                # is just the name fully normalized. We check by seeing if they
-                # are the same string taking away any case modifications.
+                # normalize the name. 
                 # if 'name' in node.attributes and \
                 # node['name'].lower() == node['refuri'].lower():
                 if 'origuri' in node.attributes and len(node['origuri']):
@@ -161,8 +159,12 @@ class MoinTranslator(html4css1.HTMLTranslator):
                     target = node['name']
                 else:
                     target = node['refuri']
-                self.wikiparser.raw = '[:%s: %s]' % (target, 
-                                                     node.astext())
+                if ':' in target:
+                    self.wikiparser.raw = '[%s %s]' % (target, 
+                                                         node.astext())
+                else:
+                    self.wikiparser.raw = '[:%s: %s]' % (target, 
+                                                         node.astext())
                 self.wikiparser.format(self.formatter)
                 handled = 1
             self.strip_paragraph = 0
