@@ -84,17 +84,12 @@ class Headers(Transform):
             para = body[0]
             if name == 'author':
                 for node in para:
-                    if isinstance(node, nodes.reference) \
-                           and node.has_key('refuri') \
-                           and node['refuri'].startswith('mailto:'):
-                        replacement = node.astext().replace('@', ' at ')
-                        node.parent.replace(node, nodes.Text(replacement))
+                    if isinstance(node, nodes.reference):
+                        node.parent.replace(node, mask_email(node))
             elif name == 'discussions-to':
                 for node in para:
-                    if isinstance(node, nodes.reference) \
-                           and node.has_key('refuri') \
-                           and node['refuri'].startswith('mailto:'):
-                        node['refuri'] += '?subject=PEP%%20%s' % pep
+                    if isinstance(node, nodes.reference):
+                        node.parent.replace(node, mask_email(node, pep))
             elif name in ('replaces', 'replaced-by'):
                 newbody = []
                 space = nodes.Text(' ')
@@ -144,28 +139,19 @@ class PEPZeroSpecial(nodes.SparseNodeVisitor):
     """
     Perform the special processing needed by PEP 0:
     
-    - For all email-address references such as "user@host", mask the address
-      as "user at host" (text) to thwart simple email address harvesters
-      (except for those listed in `non_masked_addresses` and addresses in the
-      "Discussions-To" field).
+    - Mask email addresses.
 
     - Link PEP numbers in the second column of 4-column tables to the PEPs
       themselves.
     """
 
-    non_masked_addresses = ('peps@python.org',
-                            'python-list@python.org',
-                            'python-dev@python.org')
     pep_url = Headers.pep_url
 
     def unknown_visit(self, node):
         pass
 
     def visit_reference(self, node):
-        if node.hasattr('refuri') and node['refuri'].startswith('mailto:') \
-               and node['refuri'][8:] not in self.non_masked_addresses:
-            replacement = node.astext().replace('@', ' at ')
-            node.parent.replace(node, nodes.Text(replacement))
+        node.parent.replace(node, mask_email(node))
 
     def visit_field_list(self, node):
         if node.hasattr('class') and node['class'] == 'rfc2822':
@@ -196,3 +182,34 @@ class PEPZeroSpecial(nodes.SparseNodeVisitor):
                     p[0] = nodes.reference(text, text, refuri=ref)
                 except ValueError:
                     pass
+
+
+non_masked_addresses = ('peps@python.org',
+                        'python-list@python.org',
+                        'python-dev@python.org')
+
+def mask_email(ref, pepno=None):
+    """
+    Mask the email address in `ref` and return a replacement node.
+
+    `ref` is returned unchanged if it contains no email address.
+
+    For email addresses such as "user@host", mask the address as "user at
+    host" (text) to thwart simple email address harvesters (except for those
+    listed in `non_masked_addresses`).  If a PEP number (`pepno`) is given,
+    return a reference including a default email subject.
+    """
+    if ref.hasattr('refuri') and ref['refuri'].startswith('mailto:'):
+        if ref['refuri'][8:] in non_masked_addresses:
+            replacement = ref[0]
+        else:
+            replacement_text = ref.astext().replace('@', '&#32;&#97;t&#32;')
+            replacement = nodes.raw('', replacement_text, format='html')
+        if pepno is None:
+            return replacement
+        else:
+            ref['refuri'] += '?subject=PEP%%20%s' % pepno
+            ref[:] = [replacement]
+            return ref
+    else:
+        return ref
