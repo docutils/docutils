@@ -248,7 +248,7 @@ Directives
     time or at substitution time?  Dangerous?  Perhaps limit to canned
     macros; see text.date_ below.
 
-  - @@@ _`body.qa` (directive a.k.a. "faq" "questions"): Questions &
+  - @@@ _`body.qa` (directive a.k.a. "faq", "questions"): Questions &
     Answers.  Implement as a generic two-column marked list?  As a
     standalone (non-directive) construct?  (Is the markup ambiguous?) 
     Add support to parts.Contents (optional attribute "qa" done).
@@ -269,8 +269,8 @@ Directives
   - _`body.verse`: Paragraphs with linebreaks preserved, *and* inline
     markup support too.  Use cases: verse (poetry, song lyrics, etc.),
     address blocks.  A directive would be easy; what about a
-    literal-block-like prefix, perhaps "``;;``"?  (It is a semi-
-    literal-block, after all.)  Example::
+    literal-block-like prefix, perhaps "``;;``"?  (It is, after all, a
+    *semi-literal* literal block, no?)  Example::
 
         Take it away, Eric the Orchestra Leader!  ;;
 
