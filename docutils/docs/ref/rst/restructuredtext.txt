@@ -2519,6 +2519,14 @@ For example, here is a reference to a title describing a tag::
 
     See `HTML Element: \<a>`_ below.
 
+The reference text may also be omitted, in which case the URI will be
+duplicated for use as the reference text.  This is useful for relative
+URIs where the address or file name is also the desired reference
+text::
+
+    See `<a_named_relative_link>`_ or `<an_anonymous_relative_link>`__
+    for details.
+
 .. CAUTION::
 
    This construct offers easy authoring and maintenance of hyperlinks
