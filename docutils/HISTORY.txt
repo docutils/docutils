@@ -125,6 +125,8 @@ Specific:
     width.
   - Fix: encode pdfbookmark titles, ``#`` broke pdflatex.
   - A few unicode replacements, if output_encoding != utf
+  - Add "--graphicx-option".
+  - Indent literal-blocks.
 
 * docs/index.txt: "Docutils Project Documentation Overview", added to
   project.
