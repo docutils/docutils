@@ -27,7 +27,7 @@ the reStructuredText parser.  It defines the following:
     - `SpecializedText`: Superclass for continuation lines of Text-variants.
     - `Definition`: Second line of potential definition_list_item.
     - `Line`: Second line of overlined section title or transition marker.
-    - `Stuff`: An auxilliary collection class.
+    - `Stuff`: An auxiliary collection class.
 
 :Exception classes:
     - `MarkupError`
