@@ -24,7 +24,7 @@ def admonition(node_class, name, arguments, options, content, lineno,
         return [admonition_node]
     else:
         error = state_machine.reporter.error(
-            'The "%s" admonition is empty; content required.' % (name), '',
+            'The "%s" admonition is empty; content required.' % (name),
             nodes.literal_block(block_text, block_text), line=lineno)
         return [error]
 

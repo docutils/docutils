@@ -26,12 +26,12 @@ def meta(name, arguments, options, content, lineno,
         if (new_line_offset - content_offset) != len(content):
             # incomplete parse of block?
             error = state_machine.reporter.error(
-                'Invalid meta directive.', '',
+                'Invalid meta directive.',
                 nodes.literal_block(block_text, block_text), line=lineno)
             node += error
     else:
         error = state_machine.reporter.error(
-            'Empty meta directive.', '',
+            'Empty meta directive.',
             nodes.literal_block(block_text, block_text), line=lineno)
         node += error
     return node.get_children()
@@ -66,7 +66,7 @@ class MetaBody(states.SpecializedBody):
         if not indented:
             line = self.state_machine.line
             msg = self.reporter.info(
-                  'No content for meta tag "%s".' % name, '',
+                  'No content for meta tag "%s".' % name,
                   nodes.literal_block(line, line),
                   line=self.state_machine.abs_line_number())
             return msg, blank_finish
@@ -84,7 +84,7 @@ class MetaBody(states.SpecializedBody):
                 line = self.state_machine.line
                 msg = self.reporter.error(
                       'Error parsing meta tag attribute "%s": %s.'
-                      % (token, detail), '', nodes.literal_block(line, line),
+                      % (token, detail), nodes.literal_block(line, line),
                       line=self.state_machine.abs_line_number())
                 return msg, blank_finish
         self.document.note_pending(pending)
