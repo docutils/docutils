@@ -167,6 +167,9 @@ class CustomTestCase(unittest.TestCase):
             raise self.failureException, \
                   (msg or '%s == %s' % _format_str(first, second))
 
+    def setUp(self):
+        os.chdir(testroot)
+
     # Synonyms for assertion methods
 
     assertEqual = assertEquals = failUnlessEqual
