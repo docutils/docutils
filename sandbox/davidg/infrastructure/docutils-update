@@ -44,6 +44,12 @@ cvs -Q -z3 export -rHEAD web
 # remove junk
 find -name .cvsignore | xargs rm
 
+# ensure executable bits are set
+chmod +x $project/*.py
+chmod +x $project/tools/*.py
+chmod +x $project/test/alltests.py
+find $project/test -name 'test_*.py' | xargs chmod +x
+
 # create the snapshots
 tar -czf $project-snapshot.tgz $project
 tar -czf $project-sandbox-snapshot.tgz sandbox
