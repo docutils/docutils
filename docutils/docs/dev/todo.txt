@@ -405,6 +405,7 @@ Documentation
     * ``docs/ref/``: reference material for all groups
     * ``docs/howto/``: for component-developers and core-developers
     * ``docs/lib/``: API reference material for library-user/developers
+    * ``docs/peps/``: Python Enhancement Proposals
 
   - Move 'Acknowledgements' from ``HISTORY.txt`` to ``THANKS.txt``.
 
