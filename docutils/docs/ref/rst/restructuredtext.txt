@@ -1005,11 +1005,11 @@ an equals sign may be used as a delimiter between options and option
 argument placeholders; short options ("-" or "+" prefix only) may omit
 the delimiter.  Option arguments may take one of two forms:
 
-- Begin with a letter ([a-zA-Z]) and subsequently consist of letters,
-  numbers, underscores and hyphens ([a-zA-Z0-9_-]).
-- Begin with an open-angle-bracket (<) and end with a
-  close-angle-bracket (>); any characters except angle brackets are
-  allowed internally.
+- Begins with a letter (``[a-zA-Z]``) and subsequently consists of
+  letters, numbers, underscores and hyphens (``[a-zA-Z0-9_-]``).
+- Begins with an open-angle-bracket (``<``) and ends with a
+  close-angle-bracket (``>``); any characters except angle brackets
+  are allowed internally.
 
 Multiple option "synonyms" may be listed, sharing a single
 description.  They must be separated by comma-space.
