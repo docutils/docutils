@@ -19,8 +19,23 @@ from docutils.transforms import parts
 def unchanged(arg):
     return arg                          # unchanged!
 
+def backlinks(arg):
+    try:
+        value = arg.lower().strip()
+    except AttributeError:
+        raise TypeError('must supply an argument; choose from "top", '
+                        '"entry", or "none"')
+    if value == 'none':
+        return None
+    elif value == 'top' or arg == 'entry':
+        return value
+    else:
+        raise ValueError(
+            '"%s" unknown; choose from "top", "entry", or "none"' % arg)
+
 contents_attribute_spec = {'depth': int,
                            'local': unchanged,
+                           'backlinks': backlinks,
                            'qa': unchanged}
 
 def contents(match, type_name, data, state, state_machine, attributes):
