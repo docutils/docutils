@@ -1067,6 +1067,19 @@ Raw Data Pass-Through
 :Directive Content: Stored verbatim, uninterpreted.  None (empty) if a
                     "file" or "url" option given.
 
+.. WARNING::
+
+   The "raw" directive is a stop-gap measure allowing the author to
+   bypass reStructuredText's markup.  It is a "power-user" feature
+   that should not be overused or abused.  The use of "raw" ties
+   documents to specific output formats and makes them less portable.
+
+   If you often need to use the "raw" directive or a "raw"-derived
+   interpreted text role, that is a sign either of overuse/abuse or
+   that functionality may be missing from reStructuredText.  Please
+   describe your situation in email to
+   docutils-users@lists.sourceforge.net.
+
 The "raw" directive indicates non-reStructuredText data that is to be
 passed untouched to the Writer.  The names of the output formats are
 given in the directive arguments.  The interpretation of the raw data
@@ -1303,7 +1316,7 @@ Custom Interpreted Text Roles
 
 :Directive Type: "role"
 :Doctree Element: None; affects subsequent parsing.
-:Directive Arguments: Two; one required (role name), one optional
+:Directive Arguments: Two; one required (new role name), one optional
                       (base role name, in parentheses).
 :Directive Options: Possible (depends on base role).
 :Directive Content: depends on base role.
