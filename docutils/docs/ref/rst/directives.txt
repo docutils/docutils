@@ -96,7 +96,7 @@ stripped of leading and trailing whitespace and joined together.
 Optionally, the image link block may end with a flat field list, the
 _`image attributes`.  For example::
 
-    .. image:: picture.png
+    .. image:: picture.jpeg
        :height: 100
        :width: 200
        :scale: 50

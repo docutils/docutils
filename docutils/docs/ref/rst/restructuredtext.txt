@@ -1591,7 +1591,7 @@ available when processing the document.
 
 For example, here's how an image may be placed::
 
-    .. image:: mylogo.png
+    .. image:: mylogo.jpeg
 
 A figure (a graphic with a caption) may placed like this::
 
