@@ -20,6 +20,13 @@ def getStyleSheet():
                                   spaceAfter=4)
                    )
 
+    stylesheet.add(ParagraphStyle(name='DocInfo',
+                                  parent=stylesheet['Normal'],
+                                  leading=12,
+                                  spaceBefore=0,
+                                  spaceAfter=0)
+                   )
+
     stylesheet.add(ParagraphStyle(name='Comment',
                                   fontName='Times-Italic')
                    )
@@ -133,23 +140,14 @@ def getStyleSheet():
                                   ),
                    alias='topic-item-%s' % i)
 
-    stylesheet.add(ParagraphStyle(name='Bullet',
+    stylesheet.add(ParagraphStyle(name='UnorderedList',
                                   parent=stylesheet['Normal'],
                                   firstLineIndent=0,
                                   leftIndent=18,
                                   bulletIndent=9,
                                   spaceBefore=0,
                                   bulletFontName='Symbol'),
-                   alias='bu')
-
-    for i in range(0, 15):
-        indent = 18*i
-        stylesheet.add(ParagraphStyle(name='Bullet%s'% i, 
-                                      parent=stylesheet['Bullet'],
-                                      bulletIndent=indent,
-                                      leftIndent=indent+9,
-                                      ),
-                       alias='bu%s' % i)
+                   alias='ul')
 
     stylesheet.add(ParagraphStyle(name='Definition',
                                   parent=stylesheet['Normal'],
@@ -159,7 +157,11 @@ def getStyleSheet():
                                   spaceAfter=2,
                                   spaceBefore=2,
                                   bulletFontName='Times-BoldItalic'),
-                   alias='df')
+                   alias='dl')
+
+    stylesheet.add(ParagraphStyle(name='OrderedList',
+                                  parent=stylesheet['Definition']),
+                   alias='ol')
 
     stylesheet.add(ParagraphStyle(name='Code',
                                   parent=stylesheet['Normal'],
