@@ -1,21 +1,15 @@
-This directory contains parts of makefiles intended for inclusion in your
-makefiles.
-
-``Makelib.docutils`` contains only variables settings and implicit rules. 
-It's designed to be maximally friendly to the makefile it's included in.
-
-``Makefile.docutils`` includes the above file and builds upon it some useful
-rules like ``html``, ``pdf`` or ``clean``.  The minimum example of a makefile
-including it is::
+`Makefile.docutils <Makefile.docutils>`_ is a makefile that handles most
+things one would want to do with docutils.  For minimal applications it can be
+used directly; typically you would include it in your makefiles, e.g.::
 
     DOCS = foo.txt bar.txt
     
     include Makefile.docutils
 
-However these makefiles are very flexible and configurable by setting many
-variables.  They also support pre/postprocessing, notably with
+This makefile is very flexible and can be configured by setting many
+variables.  It also supports pre/postprocessing, currently with
 `sandbox/cben/rolehack <../rolehack>`_ scripts and rudimentary
-format-dependant convertion of ``.*`` names with sed scripts.
+output-format-dependant convertion of ``.*`` names with sed scripts.
 
 Enjoy and tell me (cben@users.sf.net) if you miss any functionality or
 flexibility...
