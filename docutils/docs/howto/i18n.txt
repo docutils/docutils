@@ -45,14 +45,18 @@ Language Module Names
 =====================
 
 Language modules are named using a case-insensitive language
-identifier as defined in `RFC 1766`_.  A typical language identifier
-consists of a 2-letter language code from `ISO 639`_ (3-letter codes
-can be used if no 2-letter code exists; RFC 1766 is currently being
-revised to allow 3-letter codes).  The language identifier can have an
-optional subtag, typically for variations based on country (from `ISO
-3166`_ 2-letter country codes).  If no language identifier is
-specified, the default is "en" for English.  Examples of module names
-include ``en.py``, ``fr.py``, ``ja.py``, and ``pt-br.py``.
+identifier as defined in `RFC 1766`_, converting hyphens to
+underscores [#]_.  A typical language identifier consists of a
+2-letter language code from `ISO 639`_ (3-letter codes can be used if
+no 2-letter code exists; RFC 1766 is currently being revised to allow
+3-letter codes).  The language identifier can have an optional subtag,
+typically for variations based on country (from `ISO 3166`_ 2-letter
+country codes).  If no language identifier is specified, the default
+is "en" for English.  Examples of module names include ``en.py``,
+``fr.py``, ``ja.py``, and ``pt_br.py``.
+
+.. [#] Subtags are separated from primary tags by underscores instead
+   of hyphens, to conform to Python naming rules.
 
 .. _RFC 1766: http://www.faqs.org/rfcs/rfc1766.html
 .. _ISO 639: http://lcweb.loc.gov/standards/iso639-2/englangn.html
