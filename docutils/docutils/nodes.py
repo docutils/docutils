@@ -10,11 +10,15 @@
 Docutils document tree element class library.
 
 Classes in CamelCase are abstract base classes or auxiliary classes. The one
-exception is `Text`, for a text node; uppercase is used to differentiate from
-element classes.
+exception is `Text`, for a text (PCDATA) node; uppercase is used to
+differentiate from element classes.  Classes in lower_case_with_underscores
+are element classes, matching the XML element generic identifiers in the DTD_.
 
-Classes in lower_case_with_underscores are element classes, matching the XML
-element generic identifiers in the DTD_.
+The position of each node (the level at which it can occur) is significant and
+is represented by abstract base classes (`Root`, `Structural`, `Body`,
+`Inline`, etc.).  Certain transformations will be easier because we can use
+``isinstance(node, base_class)`` to determine the position of the node in the
+hierarchy.
 
 .. _DTD: http://docutils.sourceforge.net/spec/docutils.dtd
 """
@@ -676,6 +680,36 @@ class document(Root, Structural, Element):
         return id
 
     def set_name_id_map(self, node, id, msgnode=None, explicit=None):
+        """
+        `self.nameids` maps names to IDs, while `self.nametypes` maps names to
+        booleans representing hyperlink type (True==explicit,
+        False==implicit).  This method updates the mappings.
+
+        The following state transition table shows how `self.nameids` ("ids")
+        and `self.nametypes` ("types") change with new input (a call to this
+        method), and what actions are performed:
+
+        ====  =====  ========  ========  =======  ====  =====  =====
+         Old State    Input          Action        New State   Notes
+        -----------  --------  -----------------  -----------  -----
+        ids   types  new type  sys.msg.  dupname  ids   types
+        ====  =====  ========  ========  =======  ====  =====  =====
+        --    --     explicit  --        --       new   True
+        --    --     implicit  --        --       new   False
+        None  False  explicit  --        --       new   True
+        old   False  explicit  implicit  old      new   True
+        None  True   explicit  explicit  new      None  True
+        old   True   explicit  explicit  new,old  None  True   [#]_
+        None  False  implicit  implicit  new      None  False
+        old   False  implicit  implicit  new,old  None  False
+        None  True   implicit  implicit  new      None  True
+        old   True   implicit  implicit  new      old   True
+        ====  =====  ========  ========  =======  ====  =====  =====
+
+        .. [#] Do not clear the name-to-id map or invalidate the old target if
+           both old and new targets are external and refer to identical URIs.
+           The new target is invalidated regardless.
+        """
         if node.has_key('name'):
             name = node['name']
             if self.nameids.has_key(name):
