@@ -5,15 +5,18 @@ latex writer into main
 ~~~~~~~~~~~~~~~~~~~~~~
 
 Done:
+
 * move latex2e.py into docutils/writers
 * move rst2latex.py into tools.
 * add latex to writers/__init__ writer_aliases.
 * documentation: tools documentation.
 
 To do:
+
 * commandline options, style.tex, ...
 
-  Where to move the latex2e-README. txt.
+  Where to move the latex2e-README.txt.
+
 * test: writer tests might be too simple, currently publish is used.
   test/test_writers
   test that the produced latex document is the same.
