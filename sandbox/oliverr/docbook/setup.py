@@ -4,7 +4,7 @@ from distutils.core import setup
 
 def do_setup():
     dist = setup(
-        name='docbook-xml-writer',
+        name='Docutils DocBook XML Writer',
         description='A DocBook XML Writer for Docutils',
         url='http://docutils.sourceforg.net/sandbox/oliverr/docbook/',
         version='0.1',
@@ -16,7 +16,6 @@ def do_setup():
         scripts=['rst2docbook.py']
     )
     return dist
-
 
 if __name__ == '__main__':
     do_setup()

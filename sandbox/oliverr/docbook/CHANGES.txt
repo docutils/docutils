@@ -1,0 +1,34 @@
+Doctils DocBook Writer ChangeLog
+================================
+
+2003-07-19
+----------
+
+* Added support for ``address``, ``admonition``, ``attribution``, 
+  ``dedication`` (topic class), ``subscript``, ``superscript``, 
+  and ``rubric`` [#]_ elments.
+
+* Changed ``title_reference`` mapping from ``emphasis`` to ``citetitle``.
+
+* Character in attribute names & values >= 128, are encoded as numeric
+  entities (that might not be the correct name).  Here's what I mean::
+
+  	chr(128) -> &#128;
+
+  I added this becuase converting "tools\test.txt" failed on input line 303.
+  The attribute value for the label was ``u'\u2020'``.
+
+* Removed insertion of `` : `` from ``visit_classifier``.  There was
+  discussion on one of the docutils lists that the writers should not be
+  inserting anything.
+
+* If the parent element of an image is a paragraph, it maps to
+  ``inlinemediaobject``, otherwise as ``mediaobject``.
+
+* Using DocBook 4.2 instead of DocBook 4.
+
+.. [#] `rubric` is mapped to `bridgehead`, which seemed to be the best 
+   match. However, I've never heard of either of these, so it's just a 
+   best guess.
+
+.. :lineSeparator=\n:maxLineLen=72:mode=rest:noTabs=false:tabSize=4:wrap=hard:
