@@ -307,7 +307,9 @@ def fix_rst_pep(inpath, input_lines, outfile):
         reader_name='pep',
         parser_name='restructuredtext',
         writer_name='pep_html',
-        settings=docutils_settings)
+        settings=docutils_settings,
+        # Allow Docutils traceback if there's an exception:
+        settings_overrides={'traceback': 1})
     outfile.write(output)
 
 
