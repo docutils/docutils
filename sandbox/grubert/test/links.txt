@@ -1,0 +1,14 @@
+Link formatting
+---------------
+
+especially the hash "#" character is problematic for LaTeX as it is
+used in LaTeX's macro language.
+
+Contributed by d.abrahams
+
+.. Sidebar:: ``const`` and an iterator's ``value_type``
+
+   argument will be correct for all `lvalue iterators`_.
+
+.. _`lvalue iterators`: new-iter-concepts.html#lvalue-iterators-lib-lvalue-iterators
+

@@ -1249,13 +1249,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # BUG: hash_char "#" is trouble some in LaTeX.
         # mbox and other environment do not like the '#'.
         hash_char = '\\#'
-
         if node.has_key('refuri'):
-            href = node['refuri']
+            href = node['refuri'].replace('#',hash_char)
         elif node.has_key('refid'):
             href = hash_char + node['refid']
         elif node.has_key('refname'):
             href = hash_char + self.document.nameids[node['refname']]
+        else:
+            raise AssertionError('Unknown reference.')
         self.body.append('\\href{%s}{' % href)
 
     def depart_reference(self, node):
