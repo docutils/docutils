@@ -14,6 +14,11 @@
 Changes Since 0.3.7
 ===================
 
+* docutils/core.py:
+
+  - Enabled ``--dump-*`` options when ``--traceback`` specified,
+    allowing for easier debugging.
+
 * docutils/io.py:
 
   - Fixed ``Input.decode`` method to apply heuristics only if no
@@ -40,6 +45,7 @@ Changes Since 0.3.7
 
   - Fixed mislocated internal targets bug, by relocating targets into
     the next text element.
+  - Fixed duplicate footnote label bug.
 
 * docutils/writers/latex2e.py:
 
