@@ -591,7 +591,7 @@ class Admonition(Body): pass
 class Special(Body):
     """Special internal body elements."""
 
-class Invisible:
+class Invisible(PreBibliographic):
     """Internal elements that don't appear in output."""
 
 class Part: pass
@@ -1079,7 +1079,7 @@ class tip(Admonition, Element): pass
 class hint(Admonition, Element): pass
 class warning(Admonition, Element): pass
 class admonition(Admonition, Element): pass
-class comment(Special, Invisible, PreBibliographic, FixedTextElement): pass
+class comment(Special, Invisible, FixedTextElement): pass
 class substitution_definition(Special, Invisible, TextElement): pass
 class target(Special, Invisible, Inline, TextElement, Targetable): pass
 class footnote(General, Element, Labeled, BackLinkable): pass
@@ -1115,7 +1115,7 @@ class system_message(Special, PreBibliographic, Element, BackLinkable):
                                        self['level'], Element.astext(self))
 
 
-class pending(Special, Invisible, PreBibliographic, Element):
+class pending(Special, Invisible, Element):
 
     """
     The "pending" element is used to encapsulate a pending operation: the
