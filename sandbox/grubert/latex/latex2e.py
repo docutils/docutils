@@ -146,8 +146,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
     encoding = '\\usepackage[latin1]{inputenc}\n'
     linking = '\\usepackage[colorlinks]{hyperref}\n'
     geometry = '\\usepackage[%s,margin=%s]{geometry}\n'
-    # fonts might go into stylesheet.
-    fonts = '\\usepackage{%s}\n'
     stylesheet = '\\input{%s}\n'
     # add a generated on day , machine by user using docutils versoin.
     generator = '%% generator Docutils: http://docutils.sourceforge.net/\n'
@@ -177,7 +175,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
               self.stylesheet % "style.tex",
               # geometry and fonts might go into style.tex.
               self.geometry % (self.d_paper, self.d_margins),
-              self.fonts % "palatino",
               #
               self.generator,
                             ]
