@@ -168,8 +168,8 @@ interface.  Although an application may also call
 does seem to be necessary, please write to the `Docutils-Develop
 mailing list`_).
 
-``publish_programmatically`` accepts the same _`convenience function
-parameters` as ``publish_cmdline``.  Where things differ is that
+``publish_programmatically`` accepts the same `convenience function
+parameters`_ as ``publish_cmdline``.  Where things differ is that
 programmatic use does not
 
 TO BE COMPLETED.
