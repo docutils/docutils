@@ -91,8 +91,8 @@ snapshots always contain the latest code and documentation, usually
 updated within an hour of changes being committed to the repository,
 and usually bug-free:
 
-* Snapshot of Docutils code, tests, documentation, and
-  specifications: http://docutils.sf.net/docutils-snapshot.tgz
+* Snapshot of Docutils code, front-end tools, tests, documentation,
+  and specifications: http://docutils.sf.net/docutils-snapshot.tgz
 
 * Snapshot of the Sandbox (experimental, contributed code):
   http://docutils.sf.net/docutils-sandbox-snapshot.tgz
@@ -232,8 +232,8 @@ Mac OS 8/9
    list choose "install", click "Add", then click "OK".
 
 If install.py is a "Python module" (see step 2 above if it isn't), you
-can run it instead of the above.  The distutils options window will
-not appear.
+can run it (double-click) instead of the above.  The distutils options
+window will not appear.
 
 
 Usage

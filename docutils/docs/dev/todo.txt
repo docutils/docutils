@@ -807,6 +807,10 @@ __ rst/alternatives.html#or-not-to-do
 
   Perhaps.  Perhaps not.
 
+* Add new syntax for _`nested inline markup`?  Or extend the parser to
+  parse nested inline markup somehow?  See the `collected notes
+  <http://docutils.sf.net/spec/rst/alternatives.html#nested-inline-markup>`__.
+
 
 Directives
 ``````````
@@ -1305,24 +1309,6 @@ elements.
 
   The advantage of the new syntax would be flexibility.  Uses other
   than "class" may present themselves.
-
-* Add new syntax for _`nested inline markup`?  From a proposal by Paul
-  Tremblay::
-
-      :role:[inline text]
-
-  Or extend the parser to parse nested interpreted text? ::
-
-      :emphasis:`Some emphasized text with :strong:`some more
-      emphasized text` in it and **perhaps** :reference:`a link``
-
-  See the docutils-users `"nested inline tags" thread`__ and earlier
-  discussions
-  (http://mail.python.org/pipermail/doc-sig/2001-November/002388.html
-  and
-  http://mail.python.org/pipermail/doc-sig/2001-November/002363.html).
-
-  __ http://sf.net/mailarchive/forum.php?thread_id=2073680&forum_id=11444
 
 * Perhaps a "role" directive can modify existing roles with
   attributes? ::

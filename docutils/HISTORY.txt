@@ -638,6 +638,7 @@ Specific:
     spec/doctree.txt.
   - Updated "Inline External Targets" & closed the debate.
   - Added ideas for interpreted text syntax extensions.
+  - Added "Nested Inline Markup" section.
 
 * spec/rst/directives.txt:
 
