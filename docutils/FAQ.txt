@@ -1,0 +1,159 @@
+=====================================
+ Docutils Frequently Asked Questions
+=====================================
+
+:Date: $Date$
+:Web site: http://docutils.sourceforge.net/
+
+.. Please note that until there's a Q&A-specific construct available,
+   this FAQ will use section titles for questions.  Therefore
+   questions must fit on one line.  The title may be a summary of the
+   question, with the full question in the section body.
+
+
+.. contents::
+.. sectnum::
+
+
+This is a work in progress.  Please feel free to ask questions and/or
+provide answers; `send email`__ to the `Docutils-Users mailing
+list`__.
+
+__ mailto:docutils-users@lists.sourceforge.net
+__ http://lists.sourceforge.net/lists/listinfo/docutils-users
+
+
+Docutils
+========
+
+What is Docutils?
+-----------------
+
+
+Why is it named "Docutils"?
+---------------------------
+
+
+reStructuredText
+================
+
+What is reStructuredText?
+-------------------------
+
+
+Why is it named "reStructuredText"?
+-----------------------------------
+
+
+What's the standard abbreviation for "reStructuredText"?
+--------------------------------------------------------
+
+"RST" and "ReST" (or "reST") are both acceptable.  "reSTX" is not.
+
+
+What's the standard filename extension for a reStructuredText file?
+-------------------------------------------------------------------
+
+It's ".txt".  Some people would like to use ".rest" or ".rst" or
+".restx", but why bother?  ReStructuredText source files are meant to
+be readable as plaintext, and most operating systems know that ".txt"
+means "text file".
+
+
+How can I indicate the document title?  Subtitle?
+-------------------------------------------------
+
+If there's only one highest-level section title at the beginning of a
+document, it is treated specially, as the document title.  Similarly,
+a lone second-highest-level section title may become the document
+subtitle if it immediately follows the document title.
+
+For example::
+
+    This is the Document Title
+    ==========================
+
+    This is the Document Subtitle
+    -----------------------------
+
+    Here's an ordinary paragraph.
+
+Counterexample::
+
+    Here's an ordinary paragraph.
+
+    This is *not* a Document Title
+    ==============================
+
+    The "ordinary paragraph" above the section title
+    prevents it from becoming the document title.
+
+
+HTML Writer
+===========
+
+Unexpected results from tools/html.py: H1, H1 instead of H1, H2.  Why?
+----------------------------------------------------------------------
+
+Here's the question in full:
+
+    I have this text::
+
+        Heading 1
+        =========
+
+        All my life, I wanted to be H1.
+
+        Heading 1.1
+        -----------
+
+        But along came H1, and so shouldn't I be H2?
+        No!  I'm H1!
+
+        Heading 1.1.1
+        *************
+
+        Yeah, imagine me, I'm stuck at H3!  No?!?
+
+    When I run it through tools/html.py, I get unexpected results
+    (below).  I was expecting H1, H2, then H3; instead, I get H1, H1,
+    H2.  What gives? ::
+
+        ...
+        <html lang="en">
+        <head>
+        ...
+        <title>Heading 1</title>
+        <link rel="stylesheet" href="default.css" type="text/css" />
+        </head>
+        <body>
+        <div class="document" id="heading-1">
+        <h1 class="title">Heading 1</h1>                <-- first H1
+        <p>All my life, I wanted to be H1.</p>
+        <div class="section" id="heading-1-1">
+        <h1><a name="heading-1-1">Heading 1.1</a></h1>        <-- H1
+        <p>But along came H1, and so now I must be H2.</p>
+        <div class="section" id="heading-1-1-1">
+        <h2><a name="heading-1-1-1">Heading 1.1.1</a></h2>
+        <p>Yeah, imagine me, I'm stuck at H3!</p>
+        ...
+
+Check the "class" attribute on the H1 tags, and you will see a
+difference.  The first H1 is actually ``<h1 class="title">``; this is
+the document title, and the default stylesheet renders it centered.
+There can also be an ``<h2 class="subtitle">`` for the document
+subtitle.
+
+If there's only one highest-level section title at the beginning of a
+document, it is treated specially, as the document title.  (Similarly,
+a lone second-highest-level section title may become the document
+subtitle.)  Rather than use a plain H1 for that, we use ``<h1
+class="title">`` so that we can use H1 again within the document.  Why
+we do this?  HTML only has H1-H6, so by making H1 do double duty, we
+effectively reserve these tags to provide 6 levels of heading beyond
+the single document title.
+
+HTML is being used for dumb formatting for nothing but final display.
+A stylesheet *is* required, and you're welcome to roll your own.
+
+(Thanks to Mark McEahern for the question and much of the answer.)
