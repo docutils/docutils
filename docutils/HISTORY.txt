@@ -100,6 +100,7 @@ Changes Since 0.3
     for list setting attributes.
   - Added support for new ``DOCUTILSCONFIG`` environment variable;
     thanks to Beni Cherniavsky.
+  - Added "--no-section-numbering" option.
 
 * docutils/io.py:
 
@@ -209,6 +210,7 @@ Changes Since 0.3
   - The "contents" directive does more work up-front, creating the
     "topic" and "title", and leaving the "pending" node for the
     transform.
+  - Added support for disabling of section numbering.
     
 * docutils/transforms/references.py:
 

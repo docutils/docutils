@@ -280,6 +280,12 @@ _`report_level`
     Default: warning (2).  Options: ``--report, -r, --verbose, -v,
     --quiet, -q``.
 
+_`sectnum_xform`
+    Enable or disable the section numbering transform
+    (docutils.transforms.parts.SectNum).
+
+    Default: enabled (1).  Options: ``--no-section-numbering``.
+
 _`source_link`
     Include a "View document source" link in the document footer.  URL
     will be relative to the destination.
