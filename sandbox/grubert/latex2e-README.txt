@@ -11,6 +11,11 @@ for processing tools/test.txt use pdflatex because it will handle png-images.
 To do
 ~~~~~
 
+* setting urls: french does put a spcae before ":" and "?".
+
+  using ``\url`` long urls the url is typeset int tt, but hyphenates.
+  using ``\href`` does typeset in normal font.
+
 * dedication is centered italic in html (test.txt).
 
 * term: html puts classifier in italic and newline after classifier,
