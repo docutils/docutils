@@ -16,7 +16,7 @@ import docutils
 import docutils.core
 
 
-class DocutilsXMLTestCase(unittest.TestCase):
+class DocutilsXMLTestCase(unittest.TestCase, docutils.SettingsSpec):
 
     input = 'Test\n====\n\nSubsection\n----------\n\nTest\n\n----------\n\nTest.'
     xmldecl = '<?xml version="1.0" encoding="iso-8859-1"?>\n'
@@ -27,8 +27,10 @@ class DocutilsXMLTestCase(unittest.TestCase):
     bodynewlines = '<document id="test" name="test" source="&lt;string&gt;">\n<title>\nTest\n</title>\n<subtitle id="subsection" name="subsection">\nSubsection\n</subtitle>\n<paragraph>\nTest\n</paragraph>\n<transition/>\n<paragraph>\nTest.\n</paragraph>\n</document>\n'
     bodyindents = '<document id="test" name="test" source="&lt;string&gt;">\n    <title>\n        Test\n    </title>\n    <subtitle id="subsection" name="subsection">\n        Subsection\n    </subtitle>\n    <paragraph>\n        Test\n    </paragraph>\n    <transition/>\n    <paragraph>\n        Test.\n    </paragraph>\n</document>\n'
 
+    settings_default_overrides = {'_disable_config': 1}
+
     def test_publish(self):
-        settings = {'output_encoding': 'iso-8859-1', '_disable_config': 1}
+        settings = {'output_encoding': 'iso-8859-1'}
         for settings['newlines'] in 0, 1:
             for settings['indents'] in 0, 1:
                 for settings['xml_declaration'] in 0, 1:
@@ -51,6 +53,7 @@ class DocutilsXMLTestCase(unittest.TestCase):
                                          (source=self.input,
                                           reader_name='standalone',
                                           writer_name='docutils_xml',
+                                          settings_spec=self,
                                           settings_overrides=settings),
                                          expected)
 
