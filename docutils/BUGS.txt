@@ -119,8 +119,8 @@ Known Bugs
 
 Also see the `SourceForge Bug Tracker`_.
 
-* ``utils.relative_path()`` sometimes returns absolute paths on
-  Windows (like ``C:/test/foo.css``) where it could have chosen a
+* ``utils.relative_path()`` sometimes returns absolute _`paths on
+  Windows` (like ``C:/test/foo.css``) where it could have chosen a
   relative path.
 
   Furthermore, absolute pathnames are inserted verbatim, like
