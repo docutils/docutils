@@ -35,6 +35,9 @@ class Writer(Component):
     document = None
     """The document to write."""
 
+    output = None
+    """Final translated form of `document`."""
+
     language = None
     """Language module for the document."""
 
@@ -66,6 +69,9 @@ class Writer(Component):
         support all standard elements (listed in
         `docutils.nodes.node_class_names`) and possibly non-standard elements
         used by the current Reader as well.
+
+        The final translated form of `self.document` should be assigned to
+        `self.output`.
         """
         raise NotImplementedError('subclass must override this method')
 
