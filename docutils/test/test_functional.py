@@ -117,9 +117,9 @@ class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
                 'Please compare the expected and actual output files:\n'
                 '  diff %s %s\n'
                 'If the actual output is correct, please replace the\n'
-                'expected output and check it in to CVS:\n'
+                'expected output and check it in to Subversion:\n'
                 '  mv %s %s\n'
-                '  cvs commit -m "<comment>" %s'
+                '  svn commit -m "<comment>" %s'
                 % (expected_path, params['destination_path'],
                    params['destination_path'], expected_path, expected_path))
         try:
