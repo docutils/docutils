@@ -1,22 +1,23 @@
 Headline
 ========
 
-+--------------------------+------------+----------+----------+
-| Header row, column 1     | Header 2   | Header 3 | Header 4 |
-+==========================+============+==========+==========+
-| body *row* 1, column 1   | column 2   | column 3 | column 4 |
-+--------------------------+------------+----------+----------+
-| body row 2               | Cells may span columns.          |
-+--------------------------+------------+---------------------+
-| body row 3               | Cells may  | - Table cells       |
-+--------------------------+ span rows. | - contain           |
-| body row 4               |            | - body elements.    |
-+--------------------------+------------+---------------------+
+.. table:: Standard table
+
+   +--------------------------+------------+----------+----------+
+   | Header row, column 1     | Header 2   | Header 3 | Header 4 |
+   +==========================+============+==========+==========+
+   | body *row* 1, column 1   | column 2   | column 3 | column 4 |
+   +--------------------------+------------+----------+----------+
+   | body row 2               | Cells may span columns.          |
+   +--------------------------+------------+---------------------+
+   | body row 3               | Cells may  | - Table cells       |
+   +--------------------------+ span rows. | - contain           |
+   | body row 4               |            | - body elements.    |
+   +--------------------------+------------+---------------------+
 
 
-.. csvtable:: SpamSpamSpamSpamRat
-   :headrows: 1
-   :skipspace: yes
+.. csvtable:: Inline CSV table
+   :header-rows: 1
    :widths: 24, 10, 10, 12
 
    "Header row, column 1", "Header 2", "Header 3", "Header 4"
@@ -26,6 +27,5 @@ Headline
    "Body row 4", , ,
 
 
-.. csvtable::
-   :class: EXTERNAL TABLE!
+.. csvtable:: Included CSV table
    :file: csv-directive_test-external_table.txt
