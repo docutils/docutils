@@ -282,6 +282,16 @@ latex_headings = {
               '   \\renewcommand{\\makelabel}{\\optionlistlabel}}\n'
               '}{\\end{list}}\n',
               ],
+        'lineblock_environment' : [
+            '\\newenvironment{lineblock}\n'
+            '{\\begin{list}{}\n'
+            '  {\\setlength{\\partopsep}{\\parskip}\n'
+            '   \\addtolength{\\partopsep}{\\baselineskip}\n'
+            '   \\topsep0pt\\itemsep0.15\\baselineskip\\parsep0pt\n'
+            '   \\leftmargin2em}\n'
+            ' \\raggedright}\n'
+            '{\\end{list}}\n'
+            ],
         'footnote_floats' : [
             '% begin: floats for footnotes tweaking.\n',
             '\\setlength{\\floatsep}{0.5em}\n',
@@ -295,13 +305,13 @@ latex_headings = {
             '\\setcounter{bottomnumber}{50}\n',
             '% end floats for footnotes\n',
             ],
-         'some_commands' : [
+        'some_commands' : [
             '% some commands, that could be overwritten in the style file.\n'
             '\\newcommand{\\rubric}[1]'
             '{\\subsection*{~\\hfill {\\it #1} \\hfill ~}}\n'
             '\\newcommand{\\titlereference}[1]{\\textsl{#1}}\n'
             '% end of "some commands"\n',
-         ]
+            ]
         }
 
 class DocumentClass:
@@ -634,6 +644,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
               # will be set later.
               ]
         self.head_prefix.extend( latex_headings['optionlist_environment'] )
+        self.head_prefix.extend( latex_headings['lineblock_environment'] )
         self.head_prefix.extend( latex_headings['footnote_floats'] )
         self.head_prefix.extend( latex_headings['some_commands'] )
         ## stylesheet is last: so it might be possible to overwrite defaults.
@@ -670,8 +681,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # ---------------
         # verbatim: to tell encode not to encode.
         self.verbatim = 0
-        # BUG hack to make new line blocks come out some way
-        self.line_block_depth = 0
         # insert_newline: to tell encode to replace blanks by "~".
         self.insert_none_breaking_blanks = 0
         # insert_newline: to tell encode to add latex newline.
@@ -1506,41 +1515,18 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('}')
 
     def visit_line(self, node):
-        self.body.append('~~'*self.line_block_depth)
+        self.body.append('\item[] ')
 
     def depart_line(self, node):
-        self.body.append('\\\\ \n')
+        self.body.append('\n')
 
     def visit_line_block(self, node):
-        """line-block:
-        * whitespace (including linebreaks) is significant
-        * inline markup is supported.
-        * serif typeface
-
-        """
-        if self.line_block_depth==0:
-            self.body.append('\\begin{flushleft}\n')
-        self.insert_none_breaking_blanks = 1
-        self.line_block_depth += 1
-        # mbox would stop LaTeX from wrapping long lines.
-        # but line_blocks are allowed to wrap.
-        self.line_block_without_mbox = 1
-        if self.line_block_without_mbox:
-            self.insert_newline = 1
-        else:
-            self.mbox_newline = 1
-            self.body.append('\\mbox{')
+        if isinstance(node.parent, nodes.line_block):
+            self.body.append('\\item[] ')
+        self.body.append('\n\\begin{lineblock}\n')
 
     def depart_line_block(self, node):
-        if self.line_block_without_mbox:
-            self.insert_newline = 0
-        else:
-            self.body.append('}')
-            self.mbox_newline = 0
-        self.line_block_depth -= 1
-        self.insert_none_breaking_blanks = 0
-        if self.line_block_depth==0:
-            self.body.append('\n\\end{flushleft}\n')
+        self.body.append('\\end{lineblock}\n')
 
     def visit_list_item(self, node):
         # Append "{}" in case the next character is "[", which would break
