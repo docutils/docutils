@@ -181,6 +181,8 @@ Tables
 Miscellaneous
 -------------
 
+* line-blocks are set line wise, therfore markups e.g. emphasize
+  that run over line ends do not work.
 * recongize LaTeX (or even latex) and replace by ```\LaTeX``.
 * Support embed-stylesheet.
 * the ^-sign is problematic: using mathmode wedge is usually the wrong font.
