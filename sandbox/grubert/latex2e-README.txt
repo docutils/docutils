@@ -71,14 +71,10 @@ To do
 * admonitions are not so visible as in html (make a border a bigger title, indent
   text)
 
-* footnotes are different (what is a footnote for a html document, and why does it have
-  more than one footer ?)
-
 * leading spaces in line-blocks look squeezed 	
 
 * document errors are also too silent.
 
-* footnotes are spread vertically ?
 * meta keywords into pdf ?
 
 * pagestyle headings does not work, when sections are starred.
@@ -86,6 +82,9 @@ To do
 * latex does not hyphenate here. 
 
 * additional docinfo items: the field_body is inserted as text.
+
+* footnotes are spread vertically (not with juliens style.tex)
+  so include always.
 
 * for pdflatex package times gives smaller files than paladino.
 
