@@ -236,13 +236,13 @@ This is useful for filling list item paragraphs."
       (save-excursion
 	(forward-line -1)
 	(and (rest-line-single-char-p)
-	     (kill-whole-line 1)))
+	     (kill-line 1)))
 
       ;; Remove following line if it consists only of a single repeated character
       (save-excursion
 	(forward-line +1)
 	(and (rest-line-single-char-p)
-	     (kill-whole-line 1))
+	     (kill-line 1))
 	;; Add a newline if we're at the end of the buffer, for the subsequence
 	;; inserting of the underline
 	(if (= (point) (buffer-end 1))
@@ -382,8 +382,6 @@ This is useful for filling list item paragraphs."
     (if (or (and current-prefix-arg
 		 (not (< (prefix-numeric-value current-prefix-arg) 0)))
 	    (eq curchar nil))
-
-
 
 	;; we're switching characters or there is currently no sectioning
 	(progn
