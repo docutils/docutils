@@ -168,7 +168,7 @@ after a blank line.
   Unlike the other two, the definition lists consist of a term, and
   the definition of that term.  The format of a definition list is::
 
-    what 
+    what
       Definition lists associate a term with a definition.
 
     *how*
@@ -178,7 +178,7 @@ after a blank line.
 
   Results in:
 
-  what 
+  what
     Definition lists associate a term with a definition.
 
   *how*
@@ -222,7 +222,7 @@ from the output::
 
   ::
 
-      This is preformatted text, and the 
+      This is preformatted text, and the
       last "::" paragraph is removed
 
 Results in:
