@@ -443,10 +443,8 @@ Invalid phrase reference:
     <paragraph>
         Invalid phrase reference:
     <paragraph>
-        :role:
         <problematic id="id2" refid="id1">
-            `
-        phrase reference`_
+            :role:`phrase reference`_
     <system_message backrefs="id2" id="id1" level="2" type="WARNING">
         <paragraph>
             Mismatch: inline interpreted text start-string and role with phrase-reference end-string at line 3.
@@ -461,9 +459,11 @@ Invalid phrase reference:
     <paragraph>
         Invalid phrase reference:
     <paragraph>
-        <interpreted>
-            phrase reference
-        :role:_
+        <problematic id="id2" refid="id1">
+            `phrase reference`:role:_
+    <system_message backrefs="id2" id="id1" level="2" type="WARNING">
+        <paragraph>
+            Mismatch: inline interpreted text start-string and role with phrase-reference end-string at line 3.
 """],
 ["""\
 `phrase reference_ without closing backquote
