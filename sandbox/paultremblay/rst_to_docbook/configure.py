@@ -128,7 +128,7 @@ def make_configuration_file(processor):
     write_obj = open('data/configuration.xml', 'w')
     write_obj.write("""
 <configuration>
-    <xslt-processor>%s</xslt-processor>
+    <xslt-processor processor = "%s"/>
 </configuration>
     """ % processor
             )

@@ -14,6 +14,7 @@ read_obj = open('var_file', 'r')
 lines = read_obj.readlines()
 data_location = lines[0]
 data_xslt_location = os.path.join(data_location, '.rst_to_docbook', 'xslt_stylesheets')
+data_config_location = os.path.join(data_location, '.rst_to_docbook')
 read_obj.close()
 
 
@@ -31,7 +32,8 @@ setup(name="rst_to_docbook",
                         'data/xslt_stylesheets/reStruct_to_docbook.xsl',
                         'data/xslt_stylesheets/reStructure_to_docbook.xsl'
                      ]
-                    )
+                    ),
+                    (data_config_location, ['data/configuration_file'])
     
     ],
     scripts=["scripts/rst2docbook.py"],
