@@ -7,12 +7,14 @@
 :Date: $Date$
 :Web-site: http://docutils.sourceforge.net/
 
-Thank you for downloading the Python Docutils project arhive.  As this
-is a work in progress, please check the project website for updated
-working files.
+Thank you for downloading the Python Docutils project archive.  As
+this is a work in progress, please check the project website for
+updated working files.  This project should be considered highly
+experimental; APIs are subject to change at any time.
 
-To run the code, Python 2.0 or later must already be installed.  You
-can get Python from http://www.python.org/.
+To run the code, Python 2.0 or later must already be installed.
+Python 2.1 or later is required to run the test suite.  You can get
+Python from http://www.python.org/.
 
 
 Project Files & Directories
@@ -33,12 +35,12 @@ Project Files & Directories
 * docutils: The project source directory, installed as a Python
   package.
 
-* docs: The project user documentation directory.  The docs/rest
+* docs: The project user documentation directory.  The docs/rst
   directory contains reStructuredText user docs.
 
 * spec: The project specification directory.  Contains PEPs (Python
   Enhancement Proposals), XML DTDs (document type definitions), and
-  other documents.  The spec/rest directory contains the
+  other documents.  The spec/rst directory contains the
   reStructuredText specification.
 
 * tools: Directory for standalone scripts that use reStructuredText.
