@@ -3,7 +3,7 @@ class ParseOptions:
 
     """
 
-        Requiries:
+        Requires:
 
            system_string --The string from the command line
 
@@ -273,18 +273,26 @@ class ParseOptions:
         """
         highest = 0
         counter = 0
+        found_options = 0
         for item in self.__system_string:
             if item[0] == '-':
                 highest = counter
+                found_options = 1
             counter += 1
 
-        just_options = self.__system_string[:highest + 1]
-        arguments = self.__system_string[highest + 1:]
+        if found_options:
+            just_options = self.__system_string[:highest + 1]
+            arguments = self.__system_string[highest + 1:]
+        else:
+            just_options = []
+            arguments = self.__system_string
+            print arguments
 
-        for item in just_options:
-            if item[0] != '-':
-                sys.stderr.write('%s is an argument in an option list\n' % item)
-                self.__options_okay = 0
+        if found_options:
+            for item in just_options:
+                if item[0] != '-':
+                    sys.stderr.write('%s is an argument in an option list\n' % item)
+                    self.__options_okay = 0
         return just_options, arguments
             
         
