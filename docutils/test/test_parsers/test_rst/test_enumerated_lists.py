@@ -89,7 +89,7 @@ Scrambled:
         Scrambled:
     <system_message level="1" type="INFO">
         <paragraph>
-            Enumerated list start value not ordinal-1 at line 3: '3' (ordinal 3)
+            Enumerated list start value not ordinal-1 at line 3: "3" (ordinal 3)
     <enumerated_list enumtype="arabic" prefix="" start="3" suffix=".">
         <list_item>
             <paragraph>
@@ -99,7 +99,7 @@ Scrambled:
             Enumerated list ends without a blank line; unexpected unindent at line 4.
     <system_message level="1" type="INFO">
         <paragraph>
-            Enumerated list start value not ordinal-1 at line 4: '2' (ordinal 2)
+            Enumerated list start value not ordinal-1 at line 4: "2" (ordinal 2)
     <enumerated_list enumtype="arabic" prefix="" start="2" suffix=".">
         <list_item>
             <paragraph>
@@ -135,7 +135,7 @@ Skipping item 3:
             Enumerated list ends without a blank line; unexpected unindent at line 5.
     <system_message level="1" type="INFO">
         <paragraph>
-            Enumerated list start value not ordinal-1 at line 5: '4' (ordinal 4)
+            Enumerated list start value not ordinal-1 at line 5: "4" (ordinal 4)
     <enumerated_list enumtype="arabic" prefix="" start="4" suffix=".">
         <list_item>
             <paragraph>
@@ -160,7 +160,7 @@ And again:
         Start with non-ordinal-1:
     <system_message level="1" type="INFO">
         <paragraph>
-            Enumerated list start value not ordinal-1 at line 3: '0' (ordinal 0)
+            Enumerated list start value not ordinal-1 at line 3: "0" (ordinal 0)
     <enumerated_list enumtype="arabic" prefix="" start="0" suffix=".">
         <list_item>
             <paragraph>
@@ -178,7 +178,7 @@ And again:
         And again:
     <system_message level="1" type="INFO">
         <paragraph>
-            Enumerated list start value not ordinal-1 at line 10: '2' (ordinal 2)
+            Enumerated list start value not ordinal-1 at line 10: "2" (ordinal 2)
     <enumerated_list enumtype="arabic" prefix="" start="2" suffix=".">
         <list_item>
             <paragraph>
@@ -323,7 +323,7 @@ iiii. iiii
             Enumerated list ends without a blank line; unexpected unindent at line 6.
     <system_message level="3" type="ERROR">
         <paragraph>
-            Enumerated list start value invalid at line 6: 'iiii' (sequence 'lowerroman')
+            Enumerated list start value invalid at line 6: "iiii" (sequence 'lowerroman')
     <block_quote>
         <paragraph>
             iiii
@@ -336,7 +336,7 @@ iiii. iiii
             Enumerated list ends without a blank line; unexpected unindent at line 9.
     <system_message level="3" type="ERROR">
         <paragraph>
-            Enumerated list start value invalid at line 9: 'IVXLCDM' (sequence 'upperroman')
+            Enumerated list start value invalid at line 9: "IVXLCDM" (sequence 'upperroman')
     <block_quote>
         <paragraph>
             IVXLCDM
@@ -473,7 +473,7 @@ iii. Item iii.
             Enumerated list ends without a blank line; unexpected unindent at line 12.
     <system_message level="1" type="INFO">
         <paragraph>
-            Enumerated list start value not ordinal-1 at line 12: 'II' (ordinal 2)
+            Enumerated list start value not ordinal-1 at line 12: "II" (ordinal 2)
     <enumerated_list enumtype="upperroman" prefix="" start="2" suffix=".">
         <list_item>
             <paragraph>
@@ -514,7 +514,7 @@ iii. Item iii.
             Enumerated list ends without a blank line; unexpected unindent at line 24.
     <system_message level="1" type="INFO">
         <paragraph>
-            Enumerated list start value not ordinal-1 at line 24: 'ii' (ordinal 2)
+            Enumerated list start value not ordinal-1 at line 24: "ii" (ordinal 2)
     <enumerated_list enumtype="lowerroman" prefix="" start="2" suffix=".">
         <list_item>
             <paragraph>
