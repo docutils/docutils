@@ -1,5 +1,5 @@
 # Author: David Goodger
-# Contact: goodger@users.sourceforge.net
+# Contact: goodger@python.org
 # Revision: $Revision$
 # Date: $Date$
 # Copyright: This module has been placed in the public domain.
@@ -107,8 +107,9 @@ _directive_registry = {
       'epigraph': ('body', 'epigraph'),
       'highlights': ('body', 'highlights'),
       'pull-quote': ('body', 'pull_quote'),
-      'table': ('body', 'table'),
       #'questions': ('body', 'question_list'),
+      'table': ('tables', 'table'),
+      'csv-table': ('tables', 'csv_table'),
       'image': ('images', 'image'),
       'figure': ('images', 'figure'),
       'contents': ('parts', 'contents'),
@@ -306,6 +307,36 @@ def unicode_code(code):
                 return code
     except OverflowError, detail:
         raise ValueError('code too large (%s)' % detail)
+
+
+def single_char_or_unicode(argument):
+    char = unicode_code(argument)
+    if len(char) > 1:
+        raise ValueError('%r invalid; must be a single character or '
+                         'a Unicode code' % char)
+    return char
+
+def single_char_or_whitespace_or_unicode(argument):
+    if argument == 'tab':
+        char = '\t'
+    elif argument == 'space':
+        char = ' '
+    else:
+        char = single_char_or_unicode(argument)
+    return char
+
+def positive_int(argument):
+    value = int(argument)
+    if value < 1:
+        raise ValueError('negative or zero value; must be positive')
+    return value
+
+def positive_int_list(argument):
+    if ',' in argument:
+        entries = argument.split(',')
+    else:
+        entries = argument.split()
+    return [positive_int(entry) for entry in entries]
 
 def format_values(values):
     return '%s, or "%s"' % (', '.join(['"%s"' % s for s in values[:-1]]),
