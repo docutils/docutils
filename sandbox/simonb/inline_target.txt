@@ -1,0 +1,34 @@
+Sample usage of inline targets
+------------------------------
+
+Here is some sample text, that tests an syntax for inline targets.
+There has been a lot of discussion starting here__
+__<http://mail.python.org/pipermail/doc-sig/2002-June/002648.html>
+
+This just has been an anonymous reference, that immediately got resolved.
+Please note, that this can be mixed freely__ with "real" anonymous__
+links__ __<http://www.gimp.org> and the inlined target will always__
+be assigned to the anonymous link immediately in front of it.
+
+regular anonymous links should not be disturbed. They should get resolved
+without noticing that there has been an immediately resolved one inbetween.
+
+ __ anonlink1.html
+ __ anonlink2.html
+ __ anonlink3.html
+
+As a not yet discussed feature I have the equivalent construct for named
+links. this example_ _<http://example.com> shows how this works. You can refer
+a second time to example_ as usual.
+
+I wonder what happenes here__
+ __ <here.html>
+
+Of course you can `add links to multiple words`__ __<multiple.html>.
+So `the implementation`_ is kind of consistent with the usual link
+syntax. I am not sure if the added space and the doubling of the
+underscores is worth it just to avoid long words.
+It introduces a lot of line noise. Changing this in `the
+implementation`_ _<file:/home/simon/ST/docutils/parsers/rst/states.py>
+should be fairly trivial: I'd guess that adjsuting te regex in two places
+would do the trick.
