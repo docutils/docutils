@@ -1964,20 +1964,6 @@ expected results, and running the test suite too.  The modified
 Docutils code has to be accessible to Python for the tests to have any
 meaning.  There are two ways to keep the Docutils code accessible:
 
-* Before you run anything, every time you make a change, reinstall
-  Docutils::
-
-      python setup.py install
-
-  .. CAUTION::
-
-     This method is **not** recommended for day-to-day development;
-     it's too easy to forget.  Confusion inevitably ensues.
-
-     If you install Docutils this way, Python will always pick up the
-     last-installed copy of the code.  If you ever forget to reinstall
-     the "docutils" package, Python won't see your latest changes.
-
 * Update your ``PYTHONPATH`` environment variable so that Python picks
   up your local working copy of the code.  This is the recommended
   method.
@@ -1996,6 +1982,20 @@ meaning.  There are two ways to keep the Docutils code accessible:
   directory to your ``PATH``::
 
       PATH=$PATH:$HOME/projects/docutils/docutils/tools
+
+* Before you run anything, every time you make a change, reinstall
+  Docutils::
+
+      python setup.py install
+
+  .. CAUTION::
+
+     This method is **not** recommended for day-to-day development;
+     it's too easy to forget.  Confusion inevitably ensues.
+
+     If you install Docutils this way, Python will always pick up the
+     last-installed copy of the code.  If you ever forget to reinstall
+     the "docutils" package, Python won't see your latest changes.
 
 
 Mailing Lists
