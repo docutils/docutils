@@ -193,7 +193,7 @@ Mailing Lists
 Users who have questions or need assistance with Docutils or
 reStructuredText should first check the `Docutils FAQ`_.  If the
 question or problem is not answered there, please `post a message`__
-to the `Docutils-Users mailing list`__.
+to the `Docutils-users mailing list`__.
 
 Developers can keep up to date and help out by joining the mailing
 lists.
@@ -215,6 +215,10 @@ general discussions (such as reStructuredText syntax or the high-level
 Docutils project model), whereas the Docutils-specific lists are more
 focused on the implementation.
 
+You can also access read-only archives of the mailing lists via Gmane:
+Docutils-users__, Docutils-develop__, Docutils-checkings__ and
+Doc-SIG__.
+
 .. _FAQ:
 .. _Docutils FAQ: FAQ.html
 __ mailto:docutils-users@lists.sourceforge.net
@@ -222,6 +226,10 @@ __ http://lists.sourceforge.net/lists/listinfo/docutils-users
 __ http://mail.python.org/mailman/listinfo/doc-sig
 __ http://lists.sourceforge.net/lists/listinfo/docutils-develop
 __ http://lists.sourceforge.net/lists/listinfo/docutils-checkins
+__ http://news.gmane.org/gmane.text.docutils.user
+__ http://news.gmane.org/gmane.text.docutils.devel
+__ http://news.gmane.org/gmane.text.docutils.cvs
+__ http://news.gmane.org/gmane.comp.python.documentation
 
 
 User Documentation
