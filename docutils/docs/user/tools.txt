@@ -542,7 +542,7 @@ stylesheet            (HTML Writer.)  CSS stylesheet URL, used
                       Default: "default.css".  Options:
                       ``--stylesheet``.
 --------------------  ------------------------------------------------
-stylesheet-path       (HTML Writer.)  Path to CSS stylesheet [#pwd]_.
+stylesheet_path       (HTML Writer.)  Path to CSS stylesheet [#pwd]_.
                       Overrides "stylesheet" URL option
                       (``--stylesheet``).  Path is adjusted relative
                       to the output HTML file.
