@@ -912,17 +912,17 @@ class Inliner:
         msg_text = []
         if role:
             name = role.lower()
+            canonical = None
+            try:
+                canonical = self.language.roles[name]
+            except AttributeError, error:
+                msg_text.append('Problem retrieving role entry from language '
+                                'module %r: %s.' % (self.language, error))
+            except KeyError:
+                msg_text.append('No role entry for "%s" in module "%s".'
+                                % (name, self.language.__name__))
         else:
-            name = self.default_interpreted_role
-        canonical = None
-        try:
-            canonical = self.language.roles[name]
-        except AttributeError, error:
-            msg_text.append('Problem retrieving role entry from language '
-                            'module %r: %s.' % (self.language, error))
-        except KeyError:
-            msg_text.append('No role entry for "%s" in module "%s".'
-                            % (name, self.language.__name__))
+            canonical = self.default_interpreted_role
         if not canonical:
             try:
                 canonical = _fallback_language_module.roles[name]
