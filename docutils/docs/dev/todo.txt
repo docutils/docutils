@@ -37,8 +37,10 @@ Priorities
   setup.py install them.
 
 * A Python Source Reader component (Python auto-documentation) will be
-  added as soon as there's enough time, effort, and will.  If you'd
-  like to help, let me know!
+  added.  See the document `"Plan for Enthought API Documentation
+  Tool"`__ for details.  If you'd like to help, let me know!
+
+  __ enthought-plan.html
 
 
 General
@@ -76,9 +78,6 @@ General
 
 * Perhaps the ``Component.supports`` method should deal with
   individual features ("meta" etc.) instead of formats ("html" etc.)?
-
-* Standalone Reader: Implement an option to turn off the DocTitle
-  transform?
 
 * Add /usr/etc/docutils.conf to config file list?  System-wide,
   whereas /etc/docutils.conf is machine-specific.
@@ -244,7 +243,7 @@ General
       As I said earlier in chapter :chapter:`objects`, the
       reference count gets increased every time a binding is made.
 
-* Add functional testing to Docutils: Readers, Writers, front ends.
+* Add testing to Docutils front ends?
 
 * Changes to sandbox/davidg/infrastructure/docutils-update?
 
@@ -367,7 +366,10 @@ General
   could be used by any writer, and applying such classes to all tables
   in a document with writer options is too broad.
 
-* Make the csv-table directive work with Python 2.1/2.2.
+* Make the csv-table directive work with Python 2.1/2.2.  (See the
+  discussion_ on the mailing list.)
+
+  .. _discussion: http://thread.gmane.org/gmane.text.docutils.user/1319
 
 
 Documentation
