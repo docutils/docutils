@@ -27,19 +27,17 @@ class Reader(readers.Reader):
 
     settings_spec = (
         'Standalone Reader',
-        'The standalone reader defines a list of transforms.',
-        (
-          ('Disable doctitle transform.  By default the transform is enabled.',
-            ['--no-doc-title'],
-            {'default': 1, 'action': 'store_false' },
-          ),
-          ('Disable docinfo transform.  By default the transform is enabled.',
-            ['--no-doc-info'],
-            {'default': 1, 'action': 'store_false' },
-          ),
-        )
-        )
- 
+        None,
+        (('Disable the promotion of a lone top-level section title to '
+          'document title (and subsequent section title to document '
+          'subtitle promotion; enabled by default).',
+          ['--no-doc-title'],
+          {'dest': 'doctitle_xform', 'action': 'store_false', 'default': 1}),
+         ('Disable the bibliographic field list transform (enabled by '
+          'default).',
+          ['--no-doc-info'],
+          {'dest': 'docinfo_xform', 'action': 'store_false', 'default': 1}),))
+
     default_transforms = (references.Substitutions,
                           frontmatter.DocTitle,
                           frontmatter.DocInfo,
