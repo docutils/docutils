@@ -52,23 +52,6 @@ $(docutils.)PEPTOOL ?= pep2html.py
 
 # @@@ TODO: Support other tools, e.g. RST2XML.
 
-# Extra options
-# =============
-
-# You can provide extra docutils options by setting
-# $(docutils.)<toolname>.FLAGS.  $(docutils.)FLAGS gives default flags for all tools.
-$(docutils.)FLAGS ?=
-$(docutils.)RST2HTML.FLAGS += $($(docutils.)FLAGS)
-$(docutils.)RST2LATEX.FLAGS += $($(docutils.)FLAGS)
-$(docutils.)PEPTOOL.FLAGS += $($(docutils.)FLAGS)
-
-# Consider using config files instead of flags for most tasks.
-# Note that you can do something like::
-#
-#     RST2HTML.FLAGS += --config=$(*D)/docutils.conf
-#
-# To use per-directory config files; similar tricks allow per-file config...
-
 # Extensions
 # ==========
 
@@ -211,6 +194,24 @@ endif
 
 %$($(docutils.)PDFLATEX_WILD_EXTS.TRGEXT): %$($(docutils.)PDFLATEX_WILD_EXTS.SRCEXT)
 	sed -e 's/\(\\includegraphics{[^}]*\)\.\*}/\1$($(docutils.)PDFLATEX_WILD_EXTS.IMGEXT)}/g' -e 's/\(\\href{[^}]*\)\.\*}/\1$($(docutils.)PDFLATEX_WILD_EXTS.LINKEXT)}/g' $< > $@
+
+
+# Extra options
+# =============
+
+# You can provide extra docutils options by setting
+# $(docutils.)<toolname>.FLAGS.  $(docutils.)FLAGS gives default flags for all tools.
+$(docutils.)FLAGS ?=
+$(docutils.)RST2HTML.FLAGS += $($(docutils.)FLAGS)
+$(docutils.)RST2LATEX.FLAGS += $($(docutils.)FLAGS)
+$(docutils.)PEPTOOL.FLAGS += $($(docutils.)FLAGS)
+
+# Consider using config files instead of flags for most tasks.
+# Note that you can do something like::
+#
+#     RST2HTML.FLAGS += --config=$(*D)/docutils.conf
+#
+# To use per-directory config files; similar tricks allow per-file config...
 
 
 # Extra dependencies
