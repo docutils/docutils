@@ -11,7 +11,7 @@ LaTeX2e document tree Writer.
 __docformat__ = 'reStructuredText'
 
 # code contributions from several people included, thanks too all.
-# some named: David Abrahams, Julien Letessier, Lele Gaifax, who is missing.
+# some named: David Abrahams, Julien Letessier, Lele Gaifax, and others.
 #
 # convention deactivate code by two # e.g. ##.
 
