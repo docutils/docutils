@@ -288,6 +288,7 @@ Specific:
   - Fixed bug with absolute paths & ``--config``.
   - Updated for new I/O classes.
   - Added some exception handling.
+  - Separated publishers' option defaults; prevents interference.
 
 * tools/pep-html-template:
 
