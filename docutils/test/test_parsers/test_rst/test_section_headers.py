@@ -548,6 +548,20 @@ Paragraph.
         <paragraph>
             Paragraph.
 """],
+["""\
+1. Numbered Title
+=================
+
+Paragraph.
+""",
+"""\
+<document>
+    <section id="1-numbered-title" name="1. numbered title">
+        <title>
+            1. Numbered Title
+        <paragraph>
+            Paragraph.
+"""],
 ]
 
 if __name__ == '__main__':
