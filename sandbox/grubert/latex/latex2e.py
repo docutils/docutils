@@ -170,6 +170,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # language: labels, bibliographic_fields, and author_separators.
         # to allow writing labes for specific languages.
         self.language = languages.get_language(settings.language_code)
+        self.author_separator = self.language.author_separators[0]
         if _ISO639_TO_BABEL.has_key(settings.language_code):
             self.d_options += ',%s' % \
                     _ISO639_TO_BABEL[settings.language_code]
@@ -194,6 +195,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                             ]
         if self.linking: # and maybe check for pdf
             self.pdfinfo = [ ]
+            self.pdfauthor = None
             # pdftitle, pdfsubject, pdfauthor, pdfkeywords, pdfcreator, pdfproducer
         else:
             self.pdfinfo = None
@@ -235,6 +237,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def astext(self):
         if self.pdfinfo:
+            if self.pdfauthor:
+                self.pdfinfo.append('pdfauthor={%s}' % self.pdfauthor)
             pdfinfo = '\\hypersetup{\n' + ',\n'.join(self.pdfinfo) + '\n}\n'
         else:
             pdfinfo = ''
@@ -437,8 +441,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
             if name == 'author':
                 if not self.pdfinfo == None:
                     # BUG only the last one survives
-                    self.pdfinfo.append( 'pdfauthor={%s}' 
-                                        % self.attval(node.astext()) )
+                    if not self.pdfauthor:
+                        self.pdfauthor = self.attval(node.astext())
+                    else:
+                        # BUG use author sep
+                        self.pdfauthor += self.author_separator + self.attval(node.astext())
                 if latex_docinfo:
                     self.head.append('\\author{%s}\n' % self.attval(node.astext()))
                     raise nodes.SkipNode
