@@ -690,6 +690,9 @@ if csv:
                good, csv, data
 """],
 ]
+else:
+    print ('Tests of "csv-table" directive skipped; '
+           'Python 2.3 or higher required.')
 
 
 if __name__ == '__main__':
