@@ -79,10 +79,25 @@ are as follows:
 
 Directive functions return a list of nodes which will be inserted into
 the document tree at the point where the directive was encountered.
-This can be an empty list if there is nothing to insert.  Directives
-have no corresponding element; choose the most appropriate elements
-from the existing Docutils elements.  See `The Docutils Document
-Tree`_ and the ``docutils.nodes`` module.
+This can be an empty list if there is nothing to insert.  For ordinary
+directives, the list must contain body elements or structural
+elements.  Some directives are intended specifically for substitution
+definitions, and must return a list of ``Text`` nodes and/or inline
+elements (suitable for inline insertion, in place of the substitution
+reference).  Such directives must verify substitution definition
+context, typically using code like this::
+
+    if not isinstance(state, states.SubstitutionDef):
+        error = state_machine.reporter.error(
+            'Invalid context: the "%s" directive can only be used '
+            'within a substitution definition.' % (name),
+            nodes.literal_block(block_text, block_text), line=lineno)
+        return [error]
+
+There is no single element that corresponds exactly to directives.
+Instead, choose the most appropriate elements from the existing
+Docutils elements.  See `The Docutils Document Tree`_ and the
+``docutils.nodes`` module.
 
 .. _The Docutils Document Tree: ../ref/doctree.html
 
@@ -227,7 +242,8 @@ function simply hands off control to a generic directive function::
 Note that the only thing distinguishing the various admonition
 directives is the element (node class) generated.  In the code above,
 the node class is passed as the first argument to the generic
-directive function, where the actual processing takes place::
+directive function (early version), where the actual processing takes
+place::
 
    def admonition(node_class, name, arguments, options, content, lineno,
                   content_offset, block_text, state, state_machine):
@@ -265,8 +281,8 @@ Three things are noteworthy in the function above:
 
 The "image" directive is used to insert a picture into a document.
 This directive has one argument, the path to the image file, and
-supports several options.  There is no directive content.  Here's the
-image directive function::
+supports several options.  There is no directive content.  Here's an
+early version of the image directive function::
 
     def image(name, arguments, options, content, lineno,
               content_offset, block_text, state, state_machine):
@@ -318,8 +334,8 @@ Several things are noteworthy in the code above:
 The "contents" directive is used to insert an auto-generated table of
 contents (TOC) into a document.  It takes one optional argument, a
 title for the TOC.  If no title is specified, a default title is used
-instead.  The directive also handles several options.  Here's the
-code::
+instead.  The directive also handles several options.  Here's an early
+version of the code::
 
     def contents(name, arguments, options, content, lineno,
                  content_offset, block_text, state, state_machine):
