@@ -237,10 +237,11 @@ Tables
 * Table cells with multirow and multicolumn
 * literal-blocks in table cells: 
 
-  If verbatim or flushleft one gets vertical space above and below.
-  This is bad for the topmost paragraph in a cell, therefore the writer
-  uses raggedright. Ragged right fails on followup paragraphs as the
-  vertical space would get lost.
+  - If verbatim or flushleft is used one gets vertical space above and below.
+  - This is bad for the topmost paragraph in a cell, therefore the writer
+    uses raggedright. 
+  - Ragged right fails on followup paragraphs as the vertical space would be
+    missing.
 
 Notes
 ~~~~~
