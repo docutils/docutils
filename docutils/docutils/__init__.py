@@ -12,12 +12,14 @@ Package Structure
 
 Modules:
 
-- __init__.py: Contains the package docstring only (this text).
+- __init__.py: Contains component base classes, exception classes, and
+  Docutils `__version__`.
 
-- core.py: Contains the ``Publisher`` class and ``publish()`` convenience
-  function.
+- core.py: Contains the ``Publisher`` class and ``publish_*()`` convenience
+  functions.
 
-- frontend.py: Command-line and common processing for Docutils front-ends.
+- frontend.py: Runtime settings (command-line interface, configuration files)
+  processing, for Docutils front-ends.
 
 - io.py: Provides a uniform API for low-level input and output.
 
@@ -49,12 +51,12 @@ Subpackages:
 
 __docformat__ = 'reStructuredText'
 
-__version__ = '0.3.0'
+__version__ = '0.3.1'
 """``major.minor.micro`` version number.  The micro number is bumped any time
-there's a change in the API incompatible with one of the front ends.  The
-minor number is bumped whenever there is a project release.  The major number
-will be bumped when the project is feature-complete, and perhaps if there is a
-major change in the design."""
+there's a change in the API incompatible with one of the front ends or
+significant new functionality.  The minor number is bumped whenever there is a
+project release.  The major number will be bumped when the project is
+feature-complete, and perhaps if there is a major change in the design."""
 
 
 class ApplicationError(StandardError): pass
@@ -91,9 +93,19 @@ class SettingsSpec:
 
     relative_path_settings = ()
     """Settings containing filesystem paths.  Override in subclasses.
-
     Settings listed here are to be interpreted relative to the current working
     directory."""
+
+    config_section = None
+    """The name of the config file section specific to this component
+    (lowercase, no brackets).  Override in subclasses."""
+
+    config_section_dependencies = None
+    """A list of names of config file sections that are to be applied before
+    `config_section`, in order (from general to specific).  In other words,
+    the settings in `config_section` are to be overlaid on top of the settings
+    from these sections.  The "general" section is assumed implicitly.
+    Override in subclasses."""
 
 
 class TransformSpec:
