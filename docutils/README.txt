@@ -26,7 +26,7 @@ complete details.
 
        http://www.python.org/
 
-   Python 2.2 or later is required; Python 2.2.2 or later is
+   Python 2.2 or later [#py21]_ is required; Python 2.2.2 or later is
    recommended.
 
 2. Use the latest Docutils code.  Get the code from CVS or from the
@@ -109,9 +109,13 @@ for details.)
 Requirements
 ============
 
-To run the code, Python 2.2 or later must already be installed.  The
-latest release is recommended (2.2.2 as of this writing).  Python is
-available from http://www.python.org/.
+To run the code, Python 2.2 or later [#py21]_ must already be
+installed.  The latest release is recommended (2.2.2 as of this
+writing).  Python is available from http://www.python.org/.
+
+.. [#py21] Python 2.1 may be used providing the compiler package is
+   installed.  The compiler package can be found in the Tools/
+   directory of Python's source distribution.
 
 
 Project Files & Directories

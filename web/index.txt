@@ -80,12 +80,16 @@ as we go.  APIs are subject to change at any time.
 Requirements
 ------------
 
-- Python 2.2 or later must already be installed to run the code and
-  the test suite.  The latest release is recommended (currently
+- Python 2.2 or later [#]_ must already be installed to run the code
+  and the test suite.  The latest release is recommended (currently
   2.2.2).  Python is available from http://www.python.org/.
 
 - Docutils uses Greg Ward's Optik_ option processing package.  It is
   now included in the Docutils distribution.
+
+.. [#] Python 2.1 may be used providing the compiler package is
+   installed.  The compiler package can be found in the Tools/
+   directory of Python's source distribution.
 
 .. _Optik: http://optik.sourceforge.net/
 
