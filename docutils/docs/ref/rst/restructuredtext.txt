@@ -1112,8 +1112,8 @@ within the block quote::
 
         -- Sherlock Holmes
 
-If the final block of a block quote begins with "--" or a true em-dash
-(flush left within the block quote), it is interpreted as an
+If the final block of a block quote begins with "--", "---", or a true
+em-dash (flush left within the block quote), it is interpreted as an
 attribution.  If the attribution consists of multiple lines, the left
 edges of the second and subsequent lines must align.
 
