@@ -131,7 +131,7 @@ Implements subscripts.
    Backslash-escaped whitespace can be used; the whitespace will be
    removed from the processed document::
 
-       H\ :sub:`2`O
+       H\ :sub:`2`\ O
        E = mc\ :sup:`2`
 
    See `the reStructuredText spec`__ for further information.
