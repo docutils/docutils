@@ -138,7 +138,6 @@ class Translator(nodes.NodeVisitor):
 
     def depart_bullet_list(self, node):
         self.in_bullet_list = False
-        self.part.append('\n')
 
     def visit_caption(self, node):
         self.part.append('\n///CAPTION///')
@@ -555,11 +554,10 @@ class Translator(nodes.NodeVisitor):
 
     def visit_list_item(self, node):
         if self.in_bullet_list:
-            self.part.append('\n* ' + node.astext())
-            raise nodes.SkipNode
+            self.part.append('\n* ')
 
     def depart_list_item(self, node):
-        self.part.append('\n')
+        pass
 
     def visit_literal(self, node):
         self.part.append('///code///')
@@ -665,7 +663,8 @@ class Translator(nodes.NodeVisitor):
         if self.in_sidebar and self.sidebar_start:
             self.part.append('///BOX BODY///')
             self.sidebar_start = False
-        self.part.append('\n')
+        if not  self.in_bullet_list:
+            self.part.append('\n')
 
     def depart_paragraph(self, node):
         self.part.append('\n')
