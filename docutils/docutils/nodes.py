@@ -466,6 +466,11 @@ class Element(Node):
     def copy(self):
         return self.__class__(**self.attributes)
 
+    def set_class(self, name):
+        """Add a new name to the "class" attribute."""
+        self.attributes['class'] = (self.attributes.get('class', '') + ' '
+                                    + name.lower()).strip()
+
 
 class TextElement(Element):
 
