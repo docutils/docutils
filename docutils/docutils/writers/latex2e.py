@@ -367,8 +367,6 @@ class Table:
         if self._table_style == 'booktabs':
             return '\\usepackage{booktabs}\n'
         return ''
-    def is_open(self):
-        return self._open
     def get_latex_type(self):
         return self._latex_type
     
