@@ -1672,8 +1672,9 @@ class Body(RSTState):
 
     def directive(self, match, **option_presets):
         type_name = match.group(1)
-        directive_function = directives.directive(type_name,
-                                                  self.memo.language)
+        directive_function, messages = directives.directive(
+            type_name, self.memo.language, self.document)
+        self.parent += messages
         if directive_function:
             return self.parse_directive(
                 directive_function, match, type_name, option_presets)
@@ -1969,6 +1970,8 @@ class Body(RSTState):
         """Section title overline or transition marker."""
         if self.state_machine.match_titles:
             return [match.string], 'Line', []
+        elif match.string.strip() == '::':
+            raise statemachine.TransitionCorrection('text')
         elif len(match.string.strip()) < 4:
             msg = self.reporter.info(
                 'Unexpected possible title overline or transition.\n'
