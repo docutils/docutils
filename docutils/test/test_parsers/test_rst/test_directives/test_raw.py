@@ -43,7 +43,7 @@ totest['raw'] = [
 <document source="test data">
     <raw format="html" source="%s" xml:space="preserve">
         <p>This file is used by <tt>test_raw.py</tt>.</p>
-""" % raw1],
+""" % DocutilsTestSupport.utils.relative_path(None, raw1)],
 ["""\
 .. raw:: html
    :file: rawfile.html

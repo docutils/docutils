@@ -193,11 +193,11 @@ Use the next dialog to build a command line:
 def main():
     # process cmdline arguments:
     inputFile, outputFile, outputFormat, optargs = getArgs()
-    options = OptionParser(components=(Parser,)).get_default_values()
-    options.debug = optargs['debug']
+    settings = OptionParser(components=(Parser,)).get_default_values()
+    settings.debug = optargs['debug']
     parser = Parser()
     input = inputFile.read()
-    document = new_document(inputFile.name, options)
+    document = new_document(inputFile.name, settings)
     parser.parse(input, document)
     output = format(outputFormat, input, document, optargs)
     outputFile.write(output)

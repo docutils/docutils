@@ -25,7 +25,7 @@ class Reader(standalone.Reader):
     supported = ('pep',)
     """Contexts this reader supports."""
 
-    cmdline_options = (
+    settings_spec = (
         'PEP Reader Option Defaults',
         'The --pep-references and --rfc-references options (for the '
         'reStructuredText parser) are on by default.',
@@ -38,7 +38,7 @@ class Reader(standalone.Reader):
                   references.Footnotes,
                   references.Hyperlinks,)
 
-    option_default_overrides = {'pep_references': 1, 'rfc_references': 1}
+    settings_default_overrides = {'pep_references': 1, 'rfc_references': 1}
 
     def __init__(self, parser, parser_name):
         """`parser` should be ``None``."""

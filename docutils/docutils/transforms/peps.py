@@ -38,7 +38,7 @@ class Headers(Transform):
           (re.compile(r'\$' r'RCSfile: (.+),v \$$', re.IGNORECASE), r'\1'),
           (re.compile(r'\$[a-zA-Z]+: (.+) \$$'), r'\1'),)
 
-    def transform(self):
+    def apply(self):
         if not len(self.document):
             raise DataError('Document tree is empty.')
         header = self.document[0]
@@ -136,7 +136,7 @@ class Contents(Transform):
     the RFC 2822 header.
     """
 
-    def transform(self):
+    def apply(self):
         pending = nodes.pending(parts.Contents, 'first writer',
                                 {'title': None})
         self.document.insert(1, pending)
@@ -150,7 +150,7 @@ class TargetNotes(Transform):
     target footnote insertion transform at the end, and run the transform.
     """
 
-    def transform(self):
+    def apply(self):
         doc = self.document
         i = len(doc) - 1
         refsect = copyright = None
@@ -170,7 +170,7 @@ class TargetNotes(Transform):
                 doc.append(refsect)
         pending = nodes.pending(references.TargetNotes, 'immediate', {})
         refsect.append(pending)
-        pending.transform(doc, self, pending).transform()
+        pending.transform(doc, self, pending).apply()
 
 
 class PEPZero(Transform):
@@ -179,7 +179,7 @@ class PEPZero(Transform):
     Special processing for PEP 0.
     """
 
-    def transform(self):
+    def apply(self):
         visitor = PEPZeroSpecial(self.document)
         self.document.walk(visitor)
         self.startnode.parent.remove(self.startnode)

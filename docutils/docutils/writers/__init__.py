@@ -39,7 +39,7 @@ class Writer(Component):
     """`docutils.io` IO object; where to write the document."""
 
     transforms = ()
-    """Ordered list of transform classes (each with a ``transform()`` method).
+    """Ordered list of transform classes (each with an ``apply()`` method).
     Populated by subclasses. `Writer.transform()` instantiates & runs them."""
 
     def __init__(self):
@@ -50,7 +50,8 @@ class Writer(Component):
 
     def write(self, document, destination):
         self.document = document
-        self.language = languages.get_language(document.options.language_code)
+        self.language = languages.get_language(
+            document.settings.language_code)
         self.destination = destination
         self.transform()
         self.translate()
@@ -62,7 +63,7 @@ class Writer(Component):
         for xclass in (universal.first_writer_transforms
                        + tuple(self.transforms)
                        + universal.last_writer_transforms):
-            xclass(self.document, self).transform()
+            xclass(self.document, self).apply()
 
     def translate(self):
         """

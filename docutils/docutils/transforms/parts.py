@@ -31,7 +31,7 @@ class SectNum(Transform):
     be used.
     """
 
-    def transform(self):
+    def apply(self):
         self.maxdepth = self.startnode.details.get('depth', sys.maxint)
         self.startnode.parent.remove(self.startnode)
         self.update_section_numbers(self.document)
@@ -69,7 +69,7 @@ class Contents(Transform):
     startnode is replaced by the table of contents "topic").
     """
 
-    def transform(self):
+    def apply(self):
         topic = nodes.topic(CLASS='contents')
         title = self.startnode.details['title']
         if self.startnode.details.has_key('local'):
@@ -95,7 +95,7 @@ class Contents(Transform):
         if self.startnode.details.has_key('backlinks'):
             self.backlinks = self.startnode.details['backlinks']
         else:
-            self.backlinks = self.document.options.toc_backlinks
+            self.backlinks = self.document.settings.toc_backlinks
         contents = self.build_contents(startnode)
         if len(contents):
             topic += contents

@@ -249,11 +249,12 @@ class TransformTestCase(CustomTestCase):
     cases that have nothing to do with the input and output of the transform.
     """
 
-    options = frontend.OptionParser(components=(rst.Parser,)).get_default_values()
-    options.report_level = 1
-    options.halt_level = 5
-    options.debug = package_unittest.debug
-    options.warning_stream = DevNull()
+    option_parser = frontend.OptionParser(components=(rst.Parser,))
+    settings = option_parser.get_default_values()
+    settings.report_level = 1
+    settings.halt_level = 5
+    settings.debug = package_unittest.debug
+    settings.warning_stream = DevNull()
 
     def __init__(self, *args, **kwargs):
         self.transforms = kwargs['transforms']
@@ -271,13 +272,13 @@ class TransformTestCase(CustomTestCase):
     def test_transforms(self):
         if self.run_in_debugger:
             pdb.set_trace()
-        document = utils.new_document('test data', self.options)
+        document = utils.new_document('test data', self.settings)
         document.reporter.attach_observer(document.note_parse_message)
         self.parser.parse(self.input, document)
         document.reporter.detach_observer(document.note_parse_message)
         document.reporter.attach_observer(document.note_transform_message)
         for transformClass in (self.transforms + universal.test_transforms):
-            transformClass(document, self).transform()
+            transformClass(document, self).apply()
         output = document.pformat()
         self.compare_output(self.input, output, self.expected)
 
@@ -287,12 +288,12 @@ class TransformTestCase(CustomTestCase):
         print '\n', self.id
         print '-' * 70
         print self.input
-        document = utils.new_document('test data', self.options)
+        document = utils.new_document('test data', self.settings)
         self.parser.parse(self.input, document)
         print '-' * 70
         print document.pformat()
         for transformClass in self.transforms:
-            transformClass(document).transform()
+            transformClass(document).apply()
         output = document.pformat()
         print '-' * 70
         print output
@@ -312,15 +313,16 @@ class ParserTestCase(CustomTestCase):
     parser = rst.Parser()
     """Parser shared by all ParserTestCases."""
 
-    options = frontend.OptionParser(components=(parser,)).get_default_values()
-    options.report_level = 5
-    options.halt_level = 5
-    options.debug = package_unittest.debug
+    option_parser = frontend.OptionParser(components=(parser,))
+    settings = option_parser.get_default_values()
+    settings.report_level = 5
+    settings.halt_level = 5
+    settings.debug = package_unittest.debug
 
     def test_parser(self):
         if self.run_in_debugger:
             pdb.set_trace()
-        document = utils.new_document('test data', self.options)
+        document = utils.new_document('test data', self.settings)
         self.parser.parse(self.input, document)
         output = document.pformat()
         self.compare_output(self.input, output, self.expected)
@@ -372,10 +374,10 @@ class PEPParserTestCase(ParserTestCase):
     """Parser shared by all PEPParserTestCases."""
 
     option_parser = frontend.OptionParser(components=(parser, pep.Reader))
-    options = option_parser.get_default_values()
-    options.report_level = 5
-    options.halt_level = 5
-    options.debug = package_unittest.debug
+    settings = option_parser.get_default_values()
+    settings.report_level = 5
+    settings.halt_level = 5
+    settings.debug = package_unittest.debug
 
 
 class PEPParserTestSuite(ParserTestSuite):

@@ -145,11 +145,12 @@ class RSTStateMachine(StateMachineWS):
         StateMachine, and return the resulting
         document.
         """
-        self.language = languages.get_language(document.options.language_code)
+        self.language = languages.get_language(
+            document.settings.language_code)
         self.match_titles = match_titles
         if inliner is None:
             inliner = Inliner()
-        inliner.init_customizations(document.options)
+        inliner.init_customizations(document.settings)
         self.memo = Stuff(document=document,
                           reporter=document.reporter,
                           language=self.language,
@@ -431,12 +432,12 @@ class Inliner:
         """List of (pattern, bound method) tuples, used by
         `self.implicit_inline`."""
 
-    def init_customizations(self, options):
-        """Option-based customizations; run when parsing begins."""
-        if options.pep_references:
+    def init_customizations(self, settings):
+        """Setting-based customizations; run when parsing begins."""
+        if settings.pep_references:
             self.implicit_dispatch.append((self.patterns.pep,
                                            self.pep_reference))
-        if options.rfc_references:
+        if settings.rfc_references:
             self.implicit_dispatch.append((self.patterns.rfc,
                                            self.rfc_reference))
 

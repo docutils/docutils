@@ -41,7 +41,22 @@ Changes Since 0.2
 
 General:
 
-- Changed "attribute" to "option" for directives/extensions.
+* Renamed "attribute" to "option" for directives/extensions.
+
+* Renamed transform method "transform" to "apply".
+
+* Renamed "options" to "settings" for runtime settings (as set by
+  command-line options).  Sometimes "option" (singular) became
+  "settings" (plural).  Some variations below:
+
+  - document.options -> document.settings (stored in other objects as
+    well)
+  - option_spec -> settings_spec (not directives though)
+  - OptionSpec -> SettingsSpec
+  - cmdline_options -> settings_spec
+  - relative_path_options -> relative_path_settings
+  - option_default_overrides -> settings_default_overrides
+  - Publisher.set_options -> Publisher.get_settings
 
 Specific:
 
@@ -51,18 +66,20 @@ Specific:
 
   - Bumped version to 0.2.1 to reflect changes to I/O classes.
   - Bumped version to 0.2.2 to reflect changes to stylesheet options.
-  - Factored ``OptionSpec`` out of ``Component``; separately useful.
+  - Factored ``SettingsSpec`` out of ``Component``; separately useful.
   - Bumped version to 0.2.3 because of the new ``--embed-stylesheet``
     option and its effect on the PEP template & writer.
   - Bumped version to 0.2.4 due to changes to the PEP template &
     stylesheet.
   - Bumped version to 0.2.5 to reflect changes to Reporter output.
   - Added ``TransformSpec`` class for new transform system.
+  - Bumped version to 0.2.6 for API changes (renaming).
 
 * docutils/core.py:
 
   - Made ``publish()`` a bit more convenient.
   - Generalized ``Publisher.set_io``.
+  - Renamed ``publish()`` to ``publish_cmdline()``.
 
 * docutils/frontend.py:
 
@@ -70,10 +87,10 @@ Specific:
   - Fixed bug with absolute paths & ``--config``.
   - Set non-command-line defaults in ``OptionParser.__init__()``:
     ``_source`` & ``_destination``.
-  - Distributed ``relative_path_options`` to components; updated
+  - Distributed ``relative_path_settings`` to components; updated
     ``OptionParser.populate_from_components()`` to combine it all.
   - Require list of keys in ``make_paths_absolute`` (was implicit in
-    global ``relative_path_options``).
+    global ``relative_path_settings``).
   - Added ``--expose-internal-attribute`` option.
 
 * docutils/io.py:
@@ -304,7 +321,7 @@ Specific:
   - Added a "silent" setting for ``buildhtml.py``.
   - Added a "Getting Help" section.
   - Rearranged the structure.
-  - Kept up to date, with new command-line options etc.
+  - Kept up to date, with new settings, command-line options etc.
 
 * docs/rst/quickstart.txt:
 
@@ -408,7 +425,7 @@ Specific:
   - Fixed bug with absolute paths & ``--config``.
   - Updated for new I/O classes.
   - Added some exception handling.
-  - Separated publishers' option defaults; prevents interference.
+  - Separated publishers' setting defaults; prevents interference.
 
 * tools/pep-html-template:
 

@@ -30,7 +30,7 @@ class Writer(writers.Writer):
     supported = ('html', 'html4css1', 'xhtml')
     """Formats this writer supports."""
 
-    cmdline_options = (
+    settings_spec = (
         'HTML-Specific Options',
         None,
         (('Specify a stylesheet URL, used verbatim.  Default is '
@@ -68,7 +68,7 @@ class Writer(writers.Writer):
           ['--no-compact-lists'],
           {'dest': 'compact_lists', 'action': 'store_false'}),))
 
-    relative_path_options = ('stylesheet_path',)
+    relative_path_settings = ('stylesheet_path',)
 
     output = None
     """Final translated form of `document`."""
@@ -130,7 +130,8 @@ class HTMLTranslator(nodes.NodeVisitor):
       child with 'class="first"' if it is a paragraph.  The stylesheet
       sets the top margin to 0 for these paragraphs.
 
-    The ``--no-compact-lists`` option disables list whitespace optimization.
+    The ``no_compact_lists`` setting (``--no-compact-lists`` command-line
+    option) disables list whitespace optimization.
     """
 
     xml_declaration = '<?xml version="1.0" encoding="%s"?>\n'
@@ -151,16 +152,16 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
-        self.options = options = document.options
-        self.language = languages.get_language(options.language_code)
+        self.settings = settings = document.settings
+        self.language = languages.get_language(settings.language_code)
         self.head_prefix = [
-              self.xml_declaration % options.output_encoding,
+              self.xml_declaration % settings.output_encoding,
               self.doctype,
-              self.html_head % options.language_code,
-              self.content_type % options.output_encoding,
+              self.html_head % settings.language_code,
+              self.content_type % settings.output_encoding,
               self.generator % docutils.__version__]
         self.head = []
-        if options.embed_stylesheet:
+        if settings.embed_stylesheet:
             stylesheet = self.get_stylesheet_reference(os.getcwd())
             stylesheet_text = open(stylesheet).read()
             self.stylesheet = [self.embedded_stylesheet % stylesheet_text]
@@ -181,13 +182,13 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.in_docinfo = None
 
     def get_stylesheet_reference(self, relative_to=None):
-        options = self.options
-        if options.stylesheet_path:
+        settings = self.settings
+        if settings.stylesheet_path:
             if relative_to == None:
-                relative_to = options._destination
-            return utils.relative_path(relative_to, options.stylesheet_path)
+                relative_to = settings._destination
+            return utils.relative_path(relative_to, settings.stylesheet_path)
         else:
-            return options.stylesheet
+            return settings.stylesheet
 
     def astext(self):
         return ''.join(self.head_prefix + self.head + self.stylesheet
@@ -311,7 +312,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         old_compact_simple = self.compact_simple
         self.context.append((self.compact_simple, self.compact_p))
         self.compact_p = None
-        self.compact_simple = (self.options.compact_lists and
+        self.compact_simple = (self.settings.compact_lists and
                                (self.compact_simple
                                 or self.topic_class == 'contents'
                                 or self.check_simple_list(node)))
@@ -539,7 +540,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         old_compact_simple = self.compact_simple
         self.context.append((self.compact_simple, self.compact_p))
         self.compact_p = None
-        self.compact_simple = (self.options.compact_lists and
+        self.compact_simple = (self.settings.compact_lists and
                                (self.compact_simple
                                 or self.topic_class == 'contents'
                                 or self.check_simple_list(node)))
@@ -625,7 +626,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.footnote_backrefs(node)
 
     def footnote_backrefs(self, node):
-        if self.options.footnote_backlinks and node.hasattr('backrefs'):
+        if self.settings.footnote_backlinks and node.hasattr('backrefs'):
             backrefs = node['backrefs']
             if len(backrefs) == 1:
                 self.context.append('')
@@ -654,7 +655,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             href = '#' + node['refid']
         elif node.has_key('refname'):
             href = '#' + self.document.nameids[node['refname']]
-        format = self.options.footnote_references
+        format = self.settings.footnote_references
         if format == 'brackets':
             suffix = '['
             self.context.append(']')

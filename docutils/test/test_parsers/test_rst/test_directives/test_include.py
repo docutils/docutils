@@ -71,7 +71,7 @@ A paragraph.
             This file is used by ``test_include.py``.
         <paragraph>
             A paragraph.
-""" % include1],
+""" % DocutilsTestSupport.utils.relative_path(None, include1)],
 ["""\
 Let's test the parse context.
 

@@ -57,7 +57,7 @@ class Parser(docutils.parsers.Parser):
     supported = ('restructuredtext', 'rst', 'rest', 'restx', 'rtxt', 'rstx')
     """Aliases this parser supports."""
 
-    cmdline_options = (
+    settings_spec = (
         'reStructuredText Parser Options',
         None,
         (('Recognize and link to PEP references (like "PEP 258").',
@@ -87,6 +87,6 @@ class Parser(docutils.parsers.Parser):
               initial_state=self.initial_state,
               debug=debug)
         inputlines = docutils.statemachine.string2lines(
-              inputstring, tab_width=document.options.tab_width,
+              inputstring, tab_width=document.settings.tab_width,
               convert_whitespace=1)
         self.statemachine.run(inputlines, document, inliner=self.inliner)

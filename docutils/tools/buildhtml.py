@@ -36,15 +36,15 @@ description = ('Generates .html from all the .txt files (including PEPs) '
                'in each <directory> (default is the current directory).')
 
 
-class OptionSpec(docutils.OptionSpec):
+class SettingsSpec(docutils.SettingsSpec):
 
     """
-    Command-line options for the ``buildhtml.py`` front end.
+    Runtime settings & command-line options for the front end.
     """
 
     # Can't be included in OptionParser below because we don't want to
     # override the base class.
-    cmdline_options = (
+    settings_spec = (
         'Build-HTML Options',
         None,
         (('Recursively scan subdirectories for files to process.  This is '
@@ -88,7 +88,7 @@ class Builder:
 
     def __init__(self):
         self.publishers = {
-            '': Struct(components=(OptionSpec, pep.Reader, rst.Parser,
+            '': Struct(components=(SettingsSpec, pep.Reader, rst.Parser,
                                    pep_html.Writer),
                        setup=None),
             '.txt': Struct(components=(rst.Parser, standalone.Reader,
@@ -109,17 +109,18 @@ class Builder:
 
         Each publisher (combination of parser, reader, and writer) may have
         its own configuration defaults, which must be kept separate from those
-        of the other publishers.  Option defaults are combined with the config
-        file settings and command-line options by `self.get_options()`.
+        of the other publishers.  Setting defaults are combined with the
+        config file settings and command-line options by
+        `self.get_settings()`.
         """
         for name, publisher in self.publishers.items():
             option_parser = OptionParser(
                 components=publisher.components,
                 usage=usage, description=description)
             publisher.option_parser = option_parser
-            publisher.option_defaults = option_parser.get_default_values()
-            frontend.make_paths_absolute(publisher.option_defaults.__dict__,
-                                         option_parser.relative_path_options)
+            publisher.setting_defaults = option_parser.get_default_values()
+            frontend.make_paths_absolute(publisher.setting_defaults.__dict__,
+                                         option_parser.relative_path_settings)
             if publisher.setup:
                 publisher.setup()
         config_parser = frontend.ConfigParser()
@@ -127,32 +128,32 @@ class Builder:
         self.config_settings = config_parser.get_section('options')
         frontend.make_paths_absolute(
             self.config_settings,
-            self.publishers[''].option_parser.relative_path_options)
-        self.cmdline_options = self.publishers[''].option_parser.parse_args(
+            self.publishers[''].option_parser.relative_path_settings)
+        self.settings_spec = self.publishers[''].option_parser.parse_args(
             values=frontend.Values())   # no defaults; just the cmdline opts
-        self.initial_options = self.get_options('')
+        self.initial_settings = self.get_settings('')
 
-    def get_options(self, publisher_name, directory=None):
+    def get_settings(self, publisher_name, directory=None):
         """
-        Return an option values object, from multiple sources.
+        Return a settings object, from multiple sources.
 
-        Copy the option defaults, overlay the startup config file settings,
+        Copy the setting defaults, overlay the startup config file settings,
         then the local config file settings, then the command-line options.
         Assumes the current directory has been set.
         """
         publisher = self.publishers[publisher_name]
-        options = copy.deepcopy(publisher.option_defaults)
-        options.__dict__.update(self.config_settings)
+        settings = copy.deepcopy(publisher.setting_defaults)
+        settings.__dict__.update(self.config_settings)
         if directory:
             config_parser = frontend.ConfigParser()
             config_parser.read(os.path.join(directory, 'docutils.conf'))
             local_config = config_parser.get_section('options')
             frontend.make_paths_absolute(
-                local_config, publisher.option_parser.relative_path_options,
+                local_config, publisher.option_parser.relative_path_settings,
                 directory)
-            options.__dict__.update(local_config)
-        options.__dict__.update(self.cmdline_options.__dict__)
-        return options
+            settings.__dict__.update(local_config)
+        settings.__dict__.update(self.settings_spec.__dict__)
+        return settings
 
     def setup_html_publisher(self):
         pub = core.Publisher()
@@ -162,18 +163,18 @@ class Builder:
         self.html_publisher = pub
 
     def run(self, directory=None, recurse=1):
-        recurse = recurse and self.initial_options.recurse
+        recurse = recurse and self.initial_settings.recurse
         if directory:
             self.directories = [directory]
-        elif self.cmdline_options._directories:
-            self.directories = self.cmdline_options._directories
+        elif self.settings_spec._directories:
+            self.directories = self.settings_spec._directories
         else:
             self.directories = [os.getcwd()]
         for directory in self.directories:
             os.path.walk(directory, self.visit, recurse)
 
     def visit(self, recurse, directory, names):
-        if not self.initial_options.silent:
+        if not self.initial_settings.silent:
             print >>sys.stderr, '/// Processing directory:', directory
             sys.stderr.flush()
         peps_found = 0
@@ -189,17 +190,17 @@ class Builder:
             del names[:]
 
     def process_txt(self, directory, name):
-        options = self.get_options('.txt', directory)
-        options._source = os.path.normpath(os.path.join(directory, name))
-        options._destination = options._source[:-4]+'.html'
+        settings = self.get_settings('.txt', directory)
+        settings._source = os.path.normpath(os.path.join(directory, name))
+        settings._destination = settings._source[:-4]+'.html'
         pub = self.html_publisher
-        pub.options = options
-        if not self.initial_options.silent:
+        pub.settings = settings
+        if not self.initial_settings.silent:
             print >>sys.stderr, '    ::: Processing .txt:', name
             sys.stderr.flush()
-        pub.source = io.FileInput(options, source_path=options._source)
+        pub.source = io.FileInput(settings, source_path=settings._source)
         pub.destination = io.FileOutput(
-            options, destination_path=options._destination)
+            settings, destination_path=settings._destination)
         try:
             pub.publish()
         except ApplicationError, error:
@@ -207,16 +208,16 @@ class Builder:
                                  % (error.__class__.__name__, error))
 
     def process_peps(self, directory):
-        options = self.get_options('PEPs', directory)
+        settings = self.get_settings('PEPs', directory)
         old_directory = os.getcwd()
         os.chdir(directory)
-        if self.initial_options.silent:
+        if self.initial_settings.silent:
             argv = ['-q']
         else:
             print >>sys.stderr, '    ::: Processing PEPs:'
             sys.stderr.flush()
             argv = []
-        pep2html.docutils_options = options
+        pep2html.docutils_settings = settings
         try:
             pep2html.main(argv)
         except Exception, error:
