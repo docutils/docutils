@@ -6,10 +6,10 @@
 :Date: $Date$
 :Revision: $Revision$
 
-
 .. _Docutils: http://docutils.sourceforge.net/
 
 .. contents::
+
 
 To Do
 =====
@@ -124,8 +124,14 @@ General
 - Perhaps the ``Component.supports`` method should deal with
   individual features ("meta" etc.) instead of formats ("html" etc.)?
 
-- Should transforms have a priority system?  Is the "first reader" ...
-  "last writer" system adequate for pending transforms?
+- Transforms need a priority system.  The "first reader" ...  "last
+  writer" system is no longer adequate for pending transforms.  For
+  example, the ``references.TargetNotes`` transform needs to run after
+  ``references.Hyperlinks.resolve_indirect()`` but before
+  ``references.Footnotes``.
+
+  - Break up ``references.Hyperlinks`` into multiple smaller
+    transforms.
 
 
 Documentation
@@ -148,8 +154,8 @@ Implementation Docs
 
 - Howto: Directives
 
-- Document the ``pending`` elements and when they're triggered ("first
-  reader", "last writer", etc.).
+- Document the ``pending`` elements, how they're generated and when
+  they're triggered ("first reader", "last writer", etc.).
 
 - Document the transforms (perhaps in docstrings?): how they're used,
   what they do, dependencies & order considerations.

@@ -59,6 +59,8 @@ Changes Since 0.2
   - Changed ``Node.walk()`` & ``.walkabout()`` to permit more tree
     modification during a traversal.
   - Added "generated" element.
+  - Added support for lists of nodes to ``Element.insert()``.
+  - Fixed parent linking in ``Element.replace()``.
 
 * docutils/parsers/rst/states.py:
 
@@ -72,6 +74,13 @@ Changes Since 0.2
 
   - Added the "sectnum" directive; by Dmitry Jemerov.
 
+* docutils/parsers/rst/directives/references.py: Added to project.
+  Contains the "target-notes" directive.
+
+* docutils/readers/pep.py:
+
+  - Added the ``peps.TargetNotes`` transform to the Reader.
+
 * docutils/transforms/parts.py:
 
   - Moved the "id" attribute from TOC list items to the references
@@ -83,6 +92,11 @@ Changes Since 0.2
   - Added ``mask_email()`` function, updating to pep2html.py's
     functionality.
   - Linked "Content-Type: text/x-rst" to PEP 12.
+  - Added the ``TargetNotes`` PEP-specific transform.
+
+* docutils/transforms/references.py:
+
+  - Added the ``TargetNotes`` generic transform.
 
 * docutils/writers/html4css1.py:
 
@@ -141,8 +155,7 @@ Changes Since 0.2
 
 * spec/rst/directives.txt:
 
-  - Added the "topic" directive.
-  - Added the "sectnum" directive.
+  - Added directives: "topic", "sectnum", "target-notes".
 
 * spec/rst/reStructuredText.txt:
 
