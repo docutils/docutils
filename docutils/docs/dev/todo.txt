@@ -296,9 +296,8 @@ Implementation Docs
 
   - Transforms
 
-* Document the ``pending`` elements, how they're generated and when
-  they're triggered ("first reader", "last writer", etc.; priority
-  system due to be reworked, as noted above).
+* Document the ``pending`` elements, how they're generated and what
+  they do.
 
 * Document the transforms (perhaps in docstrings?): how they're used,
   what they do, dependencies & order considerations.

@@ -160,18 +160,21 @@ class TargetNotes(Transform):
         i = len(doc) - 1
         refsect = copyright = None
         while i >= 0 and isinstance(doc[i], nodes.section):
-            if 'references' in doc[i][0].astext().lower().split():
+            title_words = doc[i][0].astext().lower().split()
+            if 'references' in title_words:
                 refsect = doc[i]
                 break
-            if 'copyright' in doc[i][0].astext().lower().split():
+            elif 'copyright' in title_words:
                 copyright = i
             i -= 1
         if not refsect:
             refsect = nodes.section()
             refsect += nodes.title('', 'References')
             if copyright:
+                # Put the new "References" section before "Copyright":
                 doc.insert(copyright, refsect)
             else:
+                # Put the new "References" section at end of doc:
                 doc.append(refsect)
         pending = nodes.pending(references.TargetNotes)
         refsect.append(pending)

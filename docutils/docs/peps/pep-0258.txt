@@ -20,7 +20,7 @@ This PEP documents design issues and implementation details for
 Docutils, a Python Docstring Processing System (DPS).  The rationale
 and high-level concepts of a DPS are documented in PEP 256, "Docstring
 Processing System Framework" [#PEP-256]_.  Also see PEP 256 for a
-"Roadmap to the Docstring PEPs".
+"Road Map to the Docstring PEPs".
 
 Docutils is being designed modularly so that any of its components can
 be replaced easily.  In addition, Docutils is not limited to the
@@ -192,9 +192,9 @@ other context-sensitive processing.
 Some transforms are specific to components (Readers, Parser, Writers,
 Input, Output).  Standard component-specific transforms are specified
 in the ``default_transforms`` attribute of component classes.  After
-the Reader has finished processing, the Publisher_ calls the
-Transformer object's "populate_from_components" method with a list of
-components.
+the Reader has finished processing, the Publisher_ calls
+``Transformer.populate_from_components()`` with a list of components
+and all default transforms are stored.
 
 Each transform is a class in a module in the ``docutils/transforms/``
 package, a subclass of ``docutils.tranforms.Transform``.  Transform

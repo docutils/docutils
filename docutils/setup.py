@@ -17,7 +17,8 @@ def do_setup():
                       'docutils.transforms', 'docutils.languages', 
                       'docutils.parsers', 'docutils.parsers.rst',
                       'docutils.parsers.rst.directives',
-                      'docutils.parsers.rst.languages'])
+                      'docutils.parsers.rst.languages'],
+          scripts = ['tools/html.py']            )
     return dist
 
 if __name__ == '__main__' :
