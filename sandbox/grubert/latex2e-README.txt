@@ -31,20 +31,11 @@ To do
 
 * footnotes donot link back in latex.
 
-* rubric, sidebar, ...
-
-* citation references and bibtex: could we learn or use something ?
-
-  e.g. contemplating about persistence storage of references or
-  the like reminds me of latex generating toc,lot,lof files.
-
 * quotes for german: {\glqq} {\grqq} {\glq} {\grq} {\dq}.
 
 * support embed-stylesheet.
 
 * the ^-sign is problematic: using mathmode wedge is usually the wrong font.
-
-* sidebar handling.
 
 * Maybe add end of line after term in definition list. see
     http://roundup.sf.net/doc-0.5/features.pdf
