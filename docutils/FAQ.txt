@@ -225,6 +225,18 @@ Counterexample::
     The "ordinary paragraph" above the section title
     prevents it from becoming the document title.
 
+Another counterexample::
+
+    This is not the Document Title,  because...
+    ===========================================
+
+    Here's an ordinary paragraph.
+
+    ... the title adornment is not unique
+    =====================================
+
+    Another ordinary paragraph.
+
 
 How can I represent esoteric characters (e.g. character entities) in a document?
 --------------------------------------------------------------------------------
