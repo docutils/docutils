@@ -52,7 +52,8 @@ class ClassAttribute(Transform):
             # Check for appropriate following siblings:
             for index in range(parent.index(child) + 1, len(parent)):
                 element = parent[index]
-                if isinstance(element, nodes.Invisible):
+                if (isinstance(element, nodes.Invisible) or
+                    isinstance(element, nodes.system_message)):
                     continue
                 element.set_class(class_value)
                 pending.parent.remove(pending)
