@@ -47,7 +47,7 @@ Paragraph 4.
 """,
 """\
 <document>
-    <topic class="contents">
+    <topic class="contents" id="contents" name="Contents">
         <title>
             Contents
         <bullet_list>
@@ -103,7 +103,7 @@ Paragraph 2.
 """,
 """\
 <document>
-    <topic class="contents">
+    <topic class="contents" id="table-of-contents" name="Table of Contents">
         <title>
             Table of Contents
         <bullet_list>
@@ -142,7 +142,7 @@ Paragraph 2.
 """,
 """\
 <document>
-    <topic class="contents">
+    <topic class="contents" id="there-s-an-image-in-title-2" name="There's an image in Title 2">
         <title>
             There's an image in Title 2
         <bullet_list>
@@ -189,7 +189,7 @@ Paragraph 4.
 """,
 """\
 <document>
-    <topic class="contents">
+    <topic class="contents" id="contents" name="Contents">
         <title>
             Contents
         <bullet_list>
@@ -253,7 +253,7 @@ Paragraph 4.
     <section id="title-1" name="title 1">
         <title>
             Title 1
-        <topic class="contents">
+        <topic class="contents" id="contents" name="Contents">
             <bullet_list>
                 <list_item id="id1">
                     <paragraph>
@@ -285,6 +285,32 @@ Paragraph 4.
                 Title 4
             <paragraph>
                 Paragraph 4.
+"""],
+["""\
+.. contents::
+   :local:
+
+Test duplicate name "Contents".
+
+Contents
+--------
+Paragraph.
+""",
+"""\
+<document>
+    <topic class="contents" id="id2" name="Contents">
+        <bullet_list>
+            <list_item id="id1">
+                <paragraph>
+                    <reference refid="contents">
+                        Contents
+    <paragraph>
+        Test duplicate name "Contents".
+    <section id="contents" name="contents">
+        <title refid="id1">
+            Contents
+        <paragraph>
+            Paragraph.
 """],
 ["""\
 .. contents::
