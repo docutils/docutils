@@ -275,7 +275,7 @@ def assemble_attribute_dict(attlist, attspec):
         try:
             attributes[name] = convertor(value)
         except (ValueError, TypeError), detail:
-            raise detail.__class__('(attribute "%s", value "%s") %s'
+            raise detail.__class__('(attribute: "%s"; value: %r)\n%s'
                                    % (name, value, detail))
     return attributes
 
