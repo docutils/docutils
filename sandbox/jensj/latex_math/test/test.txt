@@ -29,7 +29,11 @@ We have :latex-math:`|\mathbf{M}| = ad - bc`.
 * hat: :latex-math:`\hat{H}`
 * bar: :latex-math:`\bar{v}`
 
-Fancy characters: :latex-math:`\mathbb{B}`.
+Quantum mechanics:
+
+.. latex-math::
+
+   -\frac{1}{2}\nabla^2 \psi + v \psi = \epsilon \psi
 
 Math split over Two lines:
 
