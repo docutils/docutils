@@ -17,7 +17,8 @@
 
 This is a work in progress.  Please feel free to ask questions and/or
 provide answers; `send email`__ to the `Docutils-Users mailing
-list`__.
+list`__.  Project members should feel free to edit the source text
+file directly.
 
 __ mailto:docutils-users@lists.sourceforge.net
 __ http://lists.sourceforge.net/lists/listinfo/docutils-users
@@ -29,9 +30,58 @@ Docutils
 What is Docutils?
 -----------------
 
+Docutils_ is a system for processing plaintext documentation into
+useful formats, such as HTML, XML, and TeX.  It supports multiple
+types of input, such as standalone files (implemented), inline
+documentation from Python modules and packages (under development),
+`PEPs (Python Enhancement Proposals)`_ (implemented), and others as
+discovered.
 
-Why is it named "Docutils"?
----------------------------
+For an overview of the Docutils project implementation, see `PEP
+258`_, "Docutils Design Specification".
+
+Docutils is implemented in Python_.
+
+.. _Docutils: http://docutils.sourceforge.net/
+.. _PEPs (Python Enhancement Proposals):
+   http://www.python.org/peps/pep-0012.html
+.. _PEP 258: spec/pep-0258.html
+.. _Python: http://www.python.org/
+
+
+Why is it called "Docutils"?
+----------------------------
+
+Docutils is short for "Python Documentation Utilities".  The name
+"Docutils" was inspired by "Distutils", the Python Distribution
+Utilities architected by Greg Ward, a component of Python's standard
+library.
+
+The earliest know use of the term "docutils" in a Python context was a
+`fleeting reference`__ in a message by Fred Drake on 1999-12-02 in the
+Python Doc-SIG mailing list.  It was suggested `as a project name`__
+on 2000-11-27 on Doc-SIG, again by Fred Drake, in response to a
+question from Tony "Tibs" Ibbs: "What do we want to *call* this
+thing?".  This was shortly after David Goodger first `announced
+reStructuredText`__ on Doc-SIG.
+
+Tibs used the name "Docutils" for his effort
+
+    to document what the Python docutils package should support, with
+    a particular emphasis on documentation strings ("docstrings")
+    
+    (http://homepage.ntlworld.com/tibsnjoan/docutils/STpy.html)
+
+Tibs joined the current project (and its predecessors) and has
+graciously donated the name "Docutils".
+
+For more history of reStructuredText and the Docutils project, see `An
+Introduction to reStructuredText`_.
+
+.. _An Introduction to reStructuredText: spec/rst/introduction.html
+__ http://mail.python.org/pipermail/doc-sig/1999-December/000878.html
+__ http://mail.python.org/pipermail/doc-sig/2000-November/001252.html
+__ http://mail.python.org/pipermail/doc-sig/2000-November/001239.html
 
 
 reStructuredText
@@ -40,15 +90,45 @@ reStructuredText
 What is reStructuredText?
 -------------------------
 
+reStructuredText_ is an easy-to-read, what-you-see-is-what-you-get
+plaintext markup syntax and parser system.  The reStructuredText
+parser is a component of Docutils_.  reStructuredText is a revision
+and reinterpretation of the StructuredText_ and Setext_ lightweight
+markup systems.
 
-Why is it named "reStructuredText"?
------------------------------------
+If you are reading this on the web, you can see for yourself.  `The
+source for this FAQ`__ is written in reStructuredText; open it in
+another window and compare them side by side.
+
+.. _reStructuredText: http://docutils.sourceforge.net/rst.html
+.. _StructuredText:
+   http://dev.zope.org/Members/jim/StructuredTextWiki/FrontPage/
+.. _Setext: mirror/setext.html
+__ FAQ.txt
+
+
+Why is it called "reStructuredText"?
+------------------------------------
+
+The name came from a combination of "StructuredText", one of
+reStructuredText's predecessors, with "re" (as in the ``re.py``
+regular expression module), "revised", "reworked", and
+"reinterpreted".  For a detailed history of reStructuredText and the
+Docutils project, see `An Introduction to reStructuredText`_.
 
 
 What's the standard abbreviation for "reStructuredText"?
 --------------------------------------------------------
 
-"RST" and "ReST" (or "reST") are both acceptable.  "reSTX" is not.
+"RST" and "ReST" (or "reST") are both acceptable.  Care should be
+taken with capitalization, to avoid confusion with "REST__", an
+acronym for "Representational State Transfer".
+
+The abbreviations "reSTX" and "rSTX"/"rstx" should **not** be used;
+they overemphasize reStructuredText's precedessor, Zope's
+StructuredText.
+
+__ http://www.xml.com/pub/a/2002/02/06/rest.html
 
 
 What's the standard filename extension for a reStructuredText file?
@@ -56,8 +136,10 @@ What's the standard filename extension for a reStructuredText file?
 
 It's ".txt".  Some people would like to use ".rest" or ".rst" or
 ".restx", but why bother?  ReStructuredText source files are meant to
-be readable as plaintext, and most operating systems know that ".txt"
-means "text file".
+be readable as plaintext, and most operating systems already associate
+".txt" with text files.  Using a specialized filename extension would
+require that users alter their OS settings, which is something that
+many users will not be willing or able to do.
 
 
 How can I indicate the document title?  Subtitle?
@@ -117,7 +199,7 @@ Here's the question in full:
 
     When I run it through tools/html.py, I get unexpected results
     (below).  I was expecting H1, H2, then H3; instead, I get H1, H1,
-    H2.  What gives? ::
+    H2::
 
         ...
         <html lang="en">
@@ -137,6 +219,8 @@ Here's the question in full:
         <h2><a name="heading-1-1-1">Heading 1.1.1</a></h2>
         <p>Yeah, imagine me, I'm stuck at H3!</p>
         ...
+
+    What gives? 
 
 Check the "class" attribute on the H1 tags, and you will see a
 difference.  The first H1 is actually ``<h1 class="title">``; this is
