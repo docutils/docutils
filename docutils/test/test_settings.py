@@ -59,7 +59,7 @@ class ConfigFileTests(unittest.TestCase):
                 'stylesheet_path': fixpath('data/stylesheets/pep.css'),
                 'template': fixpath('data/pep-html-template')},
         'two': {'generator': 0,
-                'record_dependencies': utils.DependencyList(),
+                'record_dependencies': utils.DependencyList(None, ['x', 'y']),
                 'stylesheet': None,
                 'stylesheet_path': fixpath('data/test.css')},
         'list': {'expose_internals': ['a', 'b', 'c', 'd', 'e']},
@@ -94,9 +94,6 @@ class ConfigFileTests(unittest.TestCase):
         if not expected.has_key('record_dependencies'):
             # Delete it if we don't want to test it.
             del result['record_dependencies']
-        elif type(expected['record_dependencies']) == StringType:
-            expected['record_dependencies'] = utils.DependencyList(
-                expected['record_dependencies'])
         result = pprint.pformat(result) + '\n'
         expected = pprint.pformat(expected) + '\n'
         try:
