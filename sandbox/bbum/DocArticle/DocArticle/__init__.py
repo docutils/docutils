@@ -42,6 +42,16 @@ class DocArticleWriter(writers.Writer):
 SpewNothing = 0
 SpewParagraph = 1
 SpewBreak = 2
+SpewBreakBreak = 3
+SpewNothingThenPara = 4
+
+olTypeTranslator = {
+    'arabic' : '1',
+    'upperalpha' : 'A',
+    'loweralpha' : 'a',
+    'upperroman' : 'I',
+    'lowerroman' : 'i'
+    }
 
 class HTMLDocArticleTranslator(nodes.NodeVisitor):
     named_tags = {'a': 1,
@@ -196,6 +206,17 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
     def depart_emphasis(self, node):
         self.bodyContent.append('</i>')
 
+    def visit_enumerated_list(self, node):
+        atts = {}
+        if node.has_key('start'):
+            atts['start'] = node['start']
+        if node.has_key('enumtype'):
+            atts['type'] = olTypeTranslator[node['enumtype']]
+        self.bodyContent.append(self.starttag(node, 'ol', **atts))
+
+    def depart_enumerated_list(self, node):
+        self.bodyContent.append('</ol>\n')
+
     def visit_field(self, node):
         self.bodyContent.append(self.starttag(node, 'tr', ''))
 
@@ -308,9 +329,11 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
 
     def visit_list_item(self, node):
         self.bodyContent.append(self.starttag(node, 'li', ''))
+        self.spewParaTag.append(SpewNothingThenPara)
 
     def depart_list_item(self, node):
         self.bodyContent.append('</li>\n')
+        self.spewParaTag.pop()
 
     def visit_literal(self, node):
         self.bodyContent.append(self.starttag(node, 'code', ''))
@@ -342,11 +365,17 @@ class HTMLDocArticleTranslator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_paragraph(self, node):
-        if self.spewParaTag[-1] == SpewParagraph:
+        currentSpewParaTag = self.spewParaTag[-1]
+        if currentSpewParaTag == SpewParagraph:
             self.bodyContent.append(self.starttag(node, 'p', ''))
             self.context.append('</p>\n')
-        elif self.spewParaTag[-1] == SpewBreak:
+        elif currentSpewParaTag == SpewBreak:
             self.context.append('<br />\n')
+        elif currentSpewParaTag == SpewBreakBreak:
+            self.context.append('<br /><br />\n')
+        elif currentSpewParaTag == SpewNothingThenPara:
+            self.context.append(None)
+            self.spewParaTag[-1] = SpewParagraph
         else:
             self.context.append(None)
 
