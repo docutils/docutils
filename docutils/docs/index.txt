@@ -2,8 +2,11 @@
  Docutils Project Documentation Overview
 =========================================
 
+:Author: David Goodger
+:Contact: goodger@python.org
 :Date: $Date$
 :Revision: $Revision$
+:Copyright: This document has been placed in the public domain.
 
 The latest working documents may be accessed individually below, or
 from the ``docs`` directory of the `development snapshots`__.  They

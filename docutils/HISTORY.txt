@@ -2,73 +2,13 @@
  Docutils History
 ==================
 
-:Author: David Goodger, and all Docutils developers
+:Author: David Goodger; open to all Docutils developers
 :Contact: goodger@python.org
 :Date: $Date$
 :Web site: http://docutils.sourceforge.net/
 :Copyright: This document has been placed in the public domain.
 
 .. contents::
-
-Acknowledgements
-================
-
-I would like to acknowledge the people who have made a direct impact
-on the Docutils project, knowingly or not, in terms of encouragement,
-suggestions, criticism, bug reports, code contributions, cash
-donations, tasty treats, and related projects:
-
-    Aahz, David Abrahams, David Ascher, Heiko Baumann, Eric Bellot,
-    Ian Bicking, Marek Blaha, Martin Blais, Stephen Boulet, Fred
-    Bremmer, Simon Budig, Bill Bumgarner, Brett Cannon, Greg Chapman,
-    Nicolas Chauveau, Beni Cherniavsky, Adam Chodorowski, Brent Cook,
-    Laura Creighton, Artur de Sousa Rocha, Stephan Deibel & `Wing IDE
-    <http://wingide.com/>`__, Jason Diamond, William Dode, Fred Drake,
-    Reggie Dugard, Dethe Elza, Marcus Ertl, Benja Fallenstein,
-    fantasai, Stefane Fermigier, Jim Fulton, Peter Funk, Lele Gaifax,
-    Dinu C. Gherman, Matt Gilbert, Jorge Gonzalez, Engelbert Gruber,
-    Jacob Hallen, Simon Hefti, Doug Hellmann, Juergen Hermann, Jannie
-    Hofmeyr, Steve Holden, Michael Hudson, Marcelo Huerta San Martin,
-    Ludger Humbert, Jeremy Hylton, Tony Ibbs, Alan Jaffray, Dmitry
-    Jemerov, Richard Jones, Andreas Jung, Garth Kidd, Axel Kollmorgen,
-    Jeff Kowalczyk, Dave Kuhlman, Lloyd Kvam, Kirill Lapshin, Nicola
-    Larosa, Daniel Larsson, Marc-Andre Lemburg, Julien Letessier,
-    Wolfgang Lipp, Edward Loper, Dallas Mahrt, Ken Manheimer, Bob
-    Marshall, Mark McEahern, Vincent McIntyre, John F Meinel Jr, Vasko
-    Miroslav, Skip Montanaro, Paul Moore, Nigel W. Moriarty, Mark
-    Nodine, Patrick K. O'Brien, Michel Pelletier, Sam Penrose, Tim
-    Peters, Pearu Peterson, Mark Pilgrim, Brett g Porter, David
-    Priest, Jens Quade, Andy Robinson, Tavis Rudd, Tracy Ruggles,
-    Oliver Rutherfurd, Kenichi Sato, Ueli Schlaepfer, Gunnar Schwant,
-    Bill Sconce, Frank Siebenlist, Bruce Smith, Darek Suchojad, Roman
-    Suzi, tav, Kent Tenney, Bob Tolbert, Paul Tremblay, Laurence
-    Tratt, Adrian van den Dries, Guido van Rossum, Paul Viren, Martin
-    von Loewis, Greg Ward, Barry Warsaw, Edward Welbourne, Felix
-    Wiemann, Ka-Ping Yee, Moshe Zadka
-
-Thank you!
-
-Special thanks to `SourceForge <http://sourceforge.net>`__ and the
-`Python Software Foundation <http://www.python.org/psf/>`__.
-
-Hopefully I haven't forgotten anyone or misspelled any names;
-apologies (and please let me know!) if I have.
-
-
-Future Plans
-============
-
-* Include substitution files for character entities, produced by the
-  tools/unicode2rstsubs.py.  As static data, these files could go
-  inside the docutils package somewhere.
-
-* Rename front-end tools (perhaps to "rst2*" pattern) and have
-  setup.py install them.
-
-* A Python Source Reader component (Python auto-documentation) will be
-  added as soon as there's enough time, effort, and will.  If you'd
-  like to help, let me know!
-
 
 Changes Since 0.3.3
 ===================
@@ -112,25 +52,24 @@ General:
     redirects for all old paths to new paths.  They'll preserve
     fragments (the "#name" part of a URL), and won't clutter up the
     file system, and will correct the URL in the user's browser.
+  - Added ``BUGS.txt``, ``docs/dev/policies.txt``,
+    ``docs/dev/website.txt``, ``docs/dev/release.txt`` from all but
+    the "To Do" list itself in ``docs/dev/todo.txt``.
+  - Moved "Future Plans" from ``HISTORY.txt`` to new "Priorities"
+    section of ``docs/dev/todo.txt``.
+  - Added ``THANKS.txt`` from "Acknowledgements" in ``HISTORY.txt``.
+  - Added "How To Report Bugs" to ``BUGS.txt``.
 
   Still to do:
-
-  - Move 'Future Plans' from ``HISTORY.txt`` to new 'Priorities'
-    section of ``docs/dev/todo.txt``.
-
-  - Add ``THANKS.txt`` from 'Acknowledgements' in ``HISTORY.txt``.
-
-  - Add ``BUGS.txt``, ``docs/dev/policies.txt``,
-    ``docs/dev/website.txt``, ``docs/dev/release.txt`` from all but
-    the "to do" list in ``docs/dev/todo.txt``.
-
-  - Add 'how to report bugs' to ``BUGS.txt`` (like `Subversion's
-    <http://svn.collab.net/viewcvs/svn/trunk/BUGS?rev=9086&view=markup>`__).
 
   - Go through all the docs (including under web/) & code and update
     links.
 
 Specific:
+
+* BUGS.txt: Added to project.
+
+* THANKS.txt: Added to project.
 
 * docutils/__init__.py:
 
@@ -157,6 +96,15 @@ Specific:
 
 * docs/index.txt: "Docutils Project Documentation Overview", added to
   project.
+
+* docs/dev/policies.txt: Added to project (extracted from
+  ``docs/dev/todo.txt``, formerly ``spec/notes.txt``).
+
+* docs/dev/release.txt: Added to project (extracted from
+  ``docs/dev/todo.txt``, formerly ``spec/notes.txt``).
+
+* docs/dev/website.txt: Added to project (extracted from
+  ``docs/dev/todo.txt``, formerly ``spec/notes.txt``).
 
 * docs/ref/rst/directives.txt:
 
