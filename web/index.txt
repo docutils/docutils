@@ -10,6 +10,14 @@
 
 :Date: $Date$
 
+.. topic:: *FLASH NEWS!*  DAVID GOODGER NEEDS A JOB!
+
+   `The coordinator of the Docutils project, David Goodger, is looking
+   for a new job.  Does your company need an experienced Python
+   programmer and sysadmin?  Know of anybody who does?  Please follow
+   this link for more info.
+   <http://starship.python.net/~goodger/cv/>`__
+      
 The purpose of the Docutils project is to create a set of tools for
 processing plaintext documentation into useful formats, such as HTML,
 XML, and TeX.  Several sources will be supported:
