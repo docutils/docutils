@@ -1255,7 +1255,7 @@ class Body(RSTState):
         return blockquote, messages
 
     # u'\u2014' is an em-dash:
-    attribution_pattern = re.compile(ur'(--|\u2014)(?![-\n]) *(?=[^ \n])')
+    attribution_pattern = re.compile(ur'(---?(?!-)|\u2014) *(?=[^ \n])')
 
     def check_attribution(self, indented, line_offset):
         """

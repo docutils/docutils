@@ -148,16 +148,29 @@ Paragraph.
             Attribution
 """],
 [u"""\
-Paragraph.
+Alternative: true em-dash.
 
    Block quote.
 
    \u2014 Attribution
+
+Alternative: three hyphens.
+
+   Block quote.
+
+   --- Attribution
 """,
 """\
 <document source="test data">
     <paragraph>
-        Paragraph.
+        Alternative: true em-dash.
+    <block_quote>
+        <paragraph>
+            Block quote.
+        <attribution>
+            Attribution
+    <paragraph>
+        Alternative: three hyphens.
     <block_quote>
         <paragraph>
             Block quote.
@@ -213,12 +226,6 @@ Paragraph.
 
    Block quote.
 
-   --- Not an attribution
-
-Paragraph.
-
-   Block quote.
-
    -- Not an attribution line one
       and line two
           and line three
@@ -237,13 +244,6 @@ Paragraph.
             Block quote.
         <paragraph>
             -- Not an attribution
-    <paragraph>
-        Paragraph.
-    <block_quote>
-        <paragraph>
-            Block quote.
-        <paragraph>
-            --- Not an attribution
     <paragraph>
         Paragraph.
     <block_quote>
