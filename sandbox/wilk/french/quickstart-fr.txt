@@ -14,7 +14,7 @@ S'ils ne fonctionnent pas, reférez vous au document `master quick
 reference`_.
 
 __ 
-.. _Quick reStructuredText: quickref.html
+.. _Quick reStructuredText: http://docutils.sourceforge.net/docs/rst/quickref.html
 .. _master quick reference: 
    http://docutils.sourceforge.net/docs/rst/quickref.html
 
@@ -51,14 +51,14 @@ Le résultat donne :
 
   En voilà un autre
   
-__ quickref.html#paragraphs
+__ http://docutils.sourceforge.net/docs/rst/quickref.html#paragraphs
 
 Styles de texte
 ---------------
 
 (quickref__)
 
-__ quickref.html#inline-markup
+__ http://docutils.sourceforge.net/docs/rst/quickref.html#inline-markup
 
 Dans les paragraphes et le corps du texte, nous pouvons utiliser
 des marqueurs pour *italique* avec "``*italique*``" ou **gras**
@@ -66,7 +66,7 @@ avec "``**gras**``".
 
 Si l'on souhaite qu'un texte apparaisse dans une police à chasse
 fixe "````doubles apostrophes inversées````". 
-Notez qu'aucune modification supplémentaire n'est apportée entre deux
+Notez qu'aucun traitement supplémentaire n'est apporté entre deux
 doubles apostrophes inversées - les astérisques, comme dans "``*``",
 sont donc conservées en l'état.
 
@@ -82,7 +82,7 @@ en l'entourant de doubles apostrophes inversées (litteral), comme cela ::
 
   ``\*``
 
-__ quickref.html#escaping
+__ http://docutils.sourceforge.net/docs/rst/quickref.html#escaping
 
 Listes
 ------
@@ -98,7 +98,7 @@ Les listes doivent toujours démarrer un nouveau paragraphe
 Listes **numérotées** (par des nombres, lettres, chiffres romains;
 quickref__)
 
-__ quickref.html#enumerated-lists
+__ http://docutils.sourceforge.net/docs/rst/quickref.html#enumerated-lists
 
   En démarrant une ligne avec un numéro ou une lettre suivie d'un
   point ".", une parenthèse droite ")" ou entouré par des parenthèses
@@ -150,7 +150,7 @@ __ quickref.html#enumerated-lists
 
 Listes **à puce** (quickref__)
 
-__ quickref.html#bullet-lists
+__ http://docutils.sourceforge.net/docs/rst/quickref.html#bullet-lists
 
   De la même manière que pour les listes numérotées, il faut démarrer
   la première ligne avec une puce - soit "-", "+" ou "*"::
@@ -175,7 +175,7 @@ __ quickref.html#bullet-lists
 
 Les listes de **définitions** (quickref__)
 
-__ quickref.html#definition-lists
+__ http://docutils.sourceforge.net/docs/rst/quickref.html#definition-lists
 
   Comme les deux autres, les listes de définitions consistent en un
   terme et la définition de ce terme. Le format est le suivant::
@@ -202,7 +202,7 @@ Préformatage
 -------------
 (quickref__)
 
-__ quickref.html#literal-blocks
+__ http://docutils.sourceforge.net/docs/rst/quickref.html#literal-blocks
 
 Pour inclure un texte préformaté sans traitement
 il suffit de terminer le paragraphe par "``::``". Le texte préformaté est
@@ -241,7 +241,7 @@ Sections
 --------
 (quickref__)
 
-__ quickref.html#section-structure
+__ http://docutils.sourceforge.net/docs/rst/quickref.html#section-structure
 
 Pour diviser un texte en plusieurs sections, nous utilisons des
 **entêtes de section**. C'est à dire une seule ligne de texte (d'un
@@ -323,7 +323,7 @@ Images
 ------
 (quickref__)
 
-__ quickref.html#directives
+__ http://docutils.sourceforge.net/docs/rst/quickref.html#directives
 
 Pour inclure une image dans votre document, vous devez utiliser la directive__
 ``image``.
