@@ -5,8 +5,11 @@
 # Copyright: This module has been placed in the public domain.
 
 """
-This module contains practical examples of Docutils client code.  These
-functions may be used as-is, or as models for variations.
+This module contains practical examples of Docutils client code.
+
+Importing this module is not recommended; its contents are subject to change
+in future Docutils releases.  Instead, it is recommended that you copy and
+paste the parts you need into your own code, modifying as necessary.
 """
 
 from docutils import core
