@@ -122,10 +122,13 @@ class Contents(Transform):
             ref_id = self.document.set_id(reference)
             entry = nodes.paragraph('', '', reference)
             item = nodes.list_item('', entry)
-            if self.backlinks == 'entry':
-                title['refid'] = ref_id
-            elif self.backlinks == 'top':
-                title['refid'] = self.toc_id
+            if (self.backlinks in ('entry', 'top') and
+                not filter(lambda x: isinstance(x, nodes.reference),
+                           title.tree())):
+                if self.backlinks == 'entry':
+                    title['refid'] = ref_id
+                elif self.backlinks == 'top':
+                    title['refid'] = self.toc_id
             if level < depth:
                 subsects = self.build_contents(section, level)
                 item += subsects
