@@ -127,13 +127,19 @@ class Output(TransformSpec):
     def encode(self, data):
         if self.encoding and self.encoding.lower() == 'unicode':
             return data
-        elif (self.error_handler == 'xmlcharrefreplace' and
-              sys.hexversion < 0x02030000):
-            # We are using xmlcharrefreplace on a Python version which
-            # doesn't support it.
-            return ''.join([self.xmlcharref_encode(char) for char in data])
         else:
-            return data.encode(self.encoding, self.error_handler)
+            try:
+                return data.encode(self.encoding, self.error_handler)
+            except ValueError:
+                # ValueError is raised if there are unencodable chars
+                # in data and the error_handler isn't found.
+                if self.error_handler == 'xmlcharrefreplace':
+                    # We are using xmlcharrefreplace with a Python
+                    # version that doesn't support it (2.1 or 2.2), so
+                    # we emulate its behavior.
+                    return ''.join([self.xmlcharref_encode(char) for char in data])
+                else:
+                    raise
 
     def xmlcharref_encode(self, char):
         """Emulate Python 2.3's 'xmlcharrefreplace' encoding error handler."""
