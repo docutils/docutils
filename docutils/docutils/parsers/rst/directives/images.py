@@ -40,18 +40,22 @@ def image(name, arguments, options, content, lineno,
         block = [line for line in block]
         target_type, data = state.parse_target(block, block_text, lineno)
         if target_type == 'refuri':
-            node_list = nodes.reference(refuri=data)
+            reference = nodes.reference(refuri=data)
         elif target_type == 'refname':
-            node_list = nodes.reference(
+            reference = nodes.reference(
                 refname=data, name=whitespace_normalize_name(options['target']))
-            state.document.note_refname(node_list)
+            state.document.note_refname(reference)
         else:                           # malformed target
-            node_list = [data]          # data is a system message
+            reference = [data]          # data is a system message
         del options['target']
     else:
-        node_list = []
-    node_list.append(nodes.image(block_text, **options))
-    return node_list
+        reference = None
+    image_node = nodes.image(block_text, **options)
+    if reference:
+        reference += image_node
+        return [reference]
+    else:
+        return [image_node]
 
 image.arguments = (1, 0, 1)
 image.options = {'alt': directives.unchanged,
