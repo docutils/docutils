@@ -502,18 +502,33 @@ class SimpleTableParserTestSuite(CustomTestSuite):
                                  run_in_debugger=run_in_debugger)
 
 
+class PythonModuleParserTestCase(CustomTestCase):
+
+    def test_parser(self):
+        if self.run_in_debugger:
+            pdb.set_trace()
+        module = moduleparser.parse_module(self.input, 'test data')
+        output = str(module)
+        self.compare_output(self.input, output, self.expected)
+
+    def test_token_parser_rhs(self): 
+        if self.run_in_debugger:
+            pdb.set_trace()
+        tr = moduleparser.TokenParser(self.input)
+        output = tr.rhs(1)
+        self.compare_output(self.input, output, self.expected)
+
+
 class PythonModuleParserTestSuite(CustomTestSuite):
 
     """
     A collection of PythonModuleParserTestCase.
     """
 
-    if moduleparser:
-        test_methods = {'test_parser': 'test_parser',
-                        'test_token_parser_rhs': 'test_token_parser_rhs'}
-    else:
-        test_methods = {'test_parser': 'skip_test',
-                        'test_token_parser_rhs': 'skip_test'}
+    if moduleparser is None:
+        PythonModuleParserTestCase.test_parser = CustomTestCase.skip_test
+        PythonModuleParserTestCase.test_token_parser_rhs = \
+            CustomTestCase.skip_test
 
     def generateTests(self, dict, dictname='totest',
                       testmethod='test_parser'):
@@ -536,28 +551,10 @@ class PythonModuleParserTestSuite(CustomTestSuite):
                     else:
                         continue
                 self.addTestCase(
-                      PythonModuleParserTestCase,
-                      self.test_methods[testmethod],
+                      PythonModuleParserTestCase, testmethod,
                       input=case[0], expected=case[1],
                       id='%s[%r][%s]' % (dictname, name, casenum),
                       run_in_debugger=run_in_debugger)
-
-
-class PythonModuleParserTestCase(CustomTestCase):
-
-    def test_parser(self):
-        if self.run_in_debugger:
-            pdb.set_trace()
-        module = moduleparser.parse_module(self.input, 'test data')
-        output = str(module)
-        self.compare_output(self.input, output, self.expected)
-
-    def test_token_parser_rhs(self): 
-        if self.run_in_debugger:
-            pdb.set_trace()
-        tr = moduleparser.TokenParser(self.input)
-        output = tr.rhs(1)
-        self.compare_output(self.input, output, self.expected)
 
 
 def exception_args(code):
