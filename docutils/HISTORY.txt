@@ -31,6 +31,9 @@ Changes Since 0.3.5
   - Added dispatch_visit and dispatch_departure methods to
     NodeVisitor; useful as a hook for Visitors.
   - Changed structure of ``line_block``; added ``line``.
+  - Added ``compound`` node class.
+  - Added a mechanism for Visitors to transitionally ignore new node
+    classes.
 
 * docutils/parsers/rst/states.py:
 
@@ -50,6 +53,7 @@ Changes Since 0.3.5
   - Converted the line-block directive to use the new structure.
   - Extracted the old line-block functionality to the ``block``
     function (still used).
+  - Added ``compound`` directive.
 
 * docutils/parsers/rst/directives/misc.py:
 
@@ -79,6 +83,7 @@ Changes Since 0.3.5
   - Added support for the new line_block/line structure.
   - --footnote-references now overrides
     --trim-footnote-reference-space, if applicable.
+  - Added support for ``compound`` elements.
 
 * docutils/writers/latex2e.py:
 
@@ -91,6 +96,7 @@ Changes Since 0.3.5
     --trim-footnote-reference-space, if applicable.
   - The footnote label style now matches the footnote reference style
     ("brackets" or "superscript").
+  - Added support for ``compound`` elements.
 
 * docs/ref/docutils.dtd:
 
