@@ -121,7 +121,7 @@ A paragraph.
         <system_message level="4" line="4" source="test data" type="SEVERE">
             <paragraph>
                 Problems with "include" directive path:
-                [Errno 2] No such file or directory: 'nonexistent.txt'.
+                IOError: [Errno 2] No such file or directory: 'nonexistent.txt'.
             <literal_block xml:space="preserve">
                 .. include:: nonexistent.txt
         <paragraph>
