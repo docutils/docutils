@@ -34,10 +34,10 @@ and related projects:
     Pelletier, Sam Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim,
     Brett g Porter, David Priest, Jens Quade, Andy Robinson, Tavis
     Rudd, Oliver Rutherfurd, Kenichi Sato, Ueli Schlaepfer, Gunnar
-    Schwant, Bruce Smith, Roman Suzi, tav, Bob Tolbert, Paul Tremblay,
-    Laurence Tratt, Adrian van den Dries, Guido van Rossum, Martin von
-    Loewis, Greg Ward, Barry Warsaw, Edward Welbourne, Ka-Ping Yee,
-    Moshe Zadka
+    Schwant, Bruce Smith, Roman Suzi, tav, Kent Tenney, Bob Tolbert,
+    Paul Tremblay, Laurence Tratt, Adrian van den Dries, Guido van
+    Rossum, Paul Viren, Martin von Loewis, Greg Ward, Barry Warsaw,
+    Edward Welbourne, Ka-Ping Yee, Moshe Zadka
 
 Thank you!
 
@@ -48,9 +48,6 @@ any names; apologies (and please let me know!) if I have.
 
 Future Plans
 ============
-
-* The config file layout will be completely overhauled for the 0.4
-  release.
 
 * Include substitution files for character entities, produced by the
   tools/unicode2rstsubs.py.  As static data, these files could go
@@ -67,16 +64,29 @@ Future Plans
 Changes Since 0.3
 =================
 
+* docutils/__init__.py:
+
+  - 0.3.1: Reorganized config file format (multiple sections); see
+    docs/config.txt.
+
 * docutils/core.py:
 
   - Catch system messages to stop tracebacks from parsing errors.
   - Catch exceptions during processing report & exit without
     tracebacks, except when "--traceback" used.
+  - Reordered components for OptionParser; application comes last.
 
 * docutils/frontend.py:
 
   - Added "--traceback" & "--no-traceback" options ("traceback"
     setting).
+  - Implemented support for config file reorganization:
+    ``standard_config_files`` moved from ``ConfigParser`` to
+    ``OptionParser``; added
+    ``OptionParser.get_config_file_settings()`` and
+    ``.get_standard_config_settings()``; support for old "[options]"
+    section (with deprecation warning) and mapping from old to new
+    settings.
 
 * docutils/io.py:
 
@@ -144,6 +154,21 @@ Changes Since 0.3
     Kirill Lapshin).
   - Improved table grid/border handling (prompted by report from Bob
     Marshall).
+
+* docs/config.txt: "Docutils Configuration Files", added to project.
+  Moved config file entry descriptions from tools.txt.
+
+* docs/tools.txt:
+
+  - Moved config file entry descriptions to config.txt.
+
+* tools/buildhtml.py:
+
+  - Began addition of "--prune" option (unfinished).
+
+* tools/docutils.conf:
+
+  - Updated for configuration file reorganization.
 
 
 Release 0.3 (2003-06-24)
