@@ -192,8 +192,9 @@ class Values(optparse.Values):
 
     def __init__(self, *args, **kwargs):
         optparse.Values.__init__(self, *args, **kwargs)
-        # Set up dependency list, in case it is needed.
-        self.record_dependencies = docutils.utils.DependencyList()
+        if self.record_dependencies is None:
+            # Set up dependency list, in case it is needed.
+            self.record_dependencies = docutils.utils.DependencyList()
 
     def update(self, other_dict, option_parser):
         if isinstance(other_dict, Values):
@@ -418,8 +419,8 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
          ('Write dependencies (caused e.g. by file inclusions) to '
           '<file>.  Useful in conjunction with programs like "make".',
           ['--record-dependencies'],
-          {'dest': 'record_dependencies', 'metavar': '<file>',
-           'validator': validate_dependency_file}),
+          {'metavar': '<file>', 'validator': validate_dependency_file,
+           'default': None}),           # default set in Values class
          ('Read configuration settings from <file>, if it exists.',
           ['--config'], {'metavar': '<file>', 'type': 'string',
                          'action': 'callback', 'callback': read_config_file}),
