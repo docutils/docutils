@@ -184,7 +184,7 @@ The docstring processing system framework is broken up as follows:
 
    - Docstring extraction rules.
 
-   - Readers, which encapsulate the input context .
+   - Readers, which encapsulate the input context.
 
    - Parsers.
 
