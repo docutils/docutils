@@ -30,6 +30,30 @@ hard cash :-).)  Hopefully I haven't forgotten anyone or misspelled
 any names; apologies (and please let me know!) if I have.
 
 
+Changes Since 0.1
+========================
+
+* docutils/parsers/rst/states.py:
+
+  - Added RFC-2822 header support.
+
+* test: Made test modules standalone (subdirectories became packages).
+
+* test/DocutilsTestSupport.py: Support for RFC-2822 testing.
+
+* test/package_unittest.py: Renamed from UnitTestFolder.py.
+
+  -  Now supports true packages containing test modules
+    (``__init__.py`` files required); fixes duplicate module name bug.
+
+* spec/pep-0257.txt: Clarified prohibition of signature repetition.
+
+* spec/rst/reStructuredText.txt: Clarified field list usage.
+
+* spec/rst/alternatives.txt: Expanded auto-numbered enumerated list
+  idea; thanks to Fred Bremmer.
+
+
 Release 0.1 (2002-04-20)
 ========================
 

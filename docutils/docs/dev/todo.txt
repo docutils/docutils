@@ -60,6 +60,11 @@ General
 
 - TOC transform: use alt-text for inline images.
 
+- Implement a PEP reader.
+
+- Add support for character set encodings on input & output, Unicode
+  internally.
+
 
 Specification
 -------------
@@ -203,6 +208,9 @@ reStructuredText Parser
   See the Doc-SIG discussion starting 2001-04-18 with Ed Loper's
   "Structuring: a summary; and an attempt at EBNF", item 4.
 
+- Make the parser modular.  Be able to turn on/off constructs, add
+  them at run time.
+
 
 Directives
 ``````````
@@ -337,6 +345,9 @@ HTML Writer
 
 - Improve the granularity of document parts in the HTML writer, so
   that one could just grab the parts needed.
+
+- Return a string instead of writing to a file?  Leave all I/O up to
+  the client?
 
 
 Coding Conventions
