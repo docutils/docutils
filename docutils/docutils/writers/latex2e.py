@@ -577,11 +577,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_date(self, node):
         self.depart_docinfo_item(node)
 
-#    def visit_decoration(self, node):
-#        pass
+    def visit_decoration(self, node):
+        pass
 
-#    def depart_decoration(self, node):
-#        pass
+    def depart_decoration(self, node):
+        pass
 
     def visit_definition(self, node):
         self.body.append('%[visit_definition]\n')
