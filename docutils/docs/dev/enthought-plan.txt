@@ -104,7 +104,7 @@ member who would like CVS write access will get it.
 If either Epydoc or HappyDoc is chosen as the base platform, I will
 ask the project's administrator for CVS access for myself and any
 Enthought staff member who wants it.  If sufficient access is not
-granted -- althought I doubt that there would be any problem -- we may
+granted -- although I doubt that there would be any problem -- we may
 have to begin a fork, which could be hosted on SourceForge, on
 Enthought's Subversion server, or anywhere else deemed appropriate.
 
