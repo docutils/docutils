@@ -142,11 +142,11 @@ circular_ indirect reference
 """\
 <document source="test data">
     <paragraph>
-        <problematic ids="id3" refid="id1">
+        <problematic ids="id2" refid="id1">
             circular_
          indirect reference
     <target ids="circular" names="circular" refid="circular">
-    <problematic ids="id2" refid="id1">
+    <problematic ids="id3" refid="id1">
         .. _indirect: circular_
     <system_message backrefs="id2 id3" ids="id1" level="3" line="3" source="test data" type="ERROR">
         <paragraph>

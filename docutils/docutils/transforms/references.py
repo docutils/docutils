@@ -665,7 +665,9 @@ class Substitutions(Transform):
     def apply(self):
         defs = self.document.substitution_defs
         normed = self.document.substitution_names
-        for refname, refs in self.document.substitution_refs.items():
+        subreflist = self.document.substitution_refs.items()
+        subreflist.sort()
+        for refname, refs in subreflist:
             for ref in refs:
                 key = None
                 if defs.has_key(refname):
@@ -777,7 +779,8 @@ class TargetNotes(Transform):
 
 
 def uniq(L):
-     d = {}
-     for x in L:
-         d[x] = None
-     return d.keys()
+     r = []
+     for item in L:
+         if not item in r:
+             r.append(item)
+     return r
