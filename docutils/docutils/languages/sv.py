@@ -17,38 +17,38 @@ from docutils import nodes
 
 
 labels = {
-    'author': 'Författare',
-    'authors': 'Författare',
-    'organization': 'Organisation',
-    'contact': 'Kontakt',
-    'version': 'Version',
-    'revision': 'Revision',
-    'status': 'Status',
-    'date': 'Datum',
-    'copyright': 'Copyright',
-    'abstract': 'Sammanfattning',
-    'attention': 'Observera!',
-    'caution': 'Varning!',
-    'danger': 'FARA!',
-    'error': 'Fel',
-    'hint': 'Vägledning',
-    'important': 'Viktigt',
-    'note': 'Notera',
-    'tip': 'Tips',
-    'warning': 'Varning',
-    'contents': 'Innehåll'}
+    'author':       u'F\u00f6rfattare',
+    'authors':      u'F\u00f6rfattare',
+    'organization': u'Organisation',
+    'contact':      u'Kontakt',
+    'version':      u'Version',
+    'revision':     u'Revision',
+    'status':       u'Status',
+    'date':         u'Datum',
+    'copyright':    u'Copyright',
+    'abstract':     u'Sammanfattning',
+    'attention':    u'Observera!',
+    'caution':      u'Varning!',
+    'danger':       u'FARA!',
+    'error':        u'Fel',
+    'hint':         u'V\u00e4gledning',
+    'important':    u'Viktigt',
+    'note':         u'Notera',
+    'tip':          u'Tips',
+    'warning':      u'Varning',
+    'contents':     u'Inneh\u00e5ll' }
 """Mapping of node class name to label text."""
 
 bibliographic_fields = {
-    'författare': nodes.authors,
-    'organisation': nodes.organization,
-    'kontakt': nodes.contact,
-    'version': nodes.version,
-    'revision': nodes.revision,
-    'status': nodes.status,
-    'datum': nodes.date,
-    'copyright': nodes.copyright,
-    'sammanfattning': nodes.topic}
+    u'f\u00f6rfattare': nodes.authors,
+    u'organisation':    nodes.organization,
+    u'kontakt':         nodes.contact,
+    u'version':         nodes.version,
+    u'revision':        nodes.revision,
+    u'status':          nodes.status,
+    u'datum':           nodes.date,
+    u'copyright':       nodes.copyright,
+    u'sammanfattning':  nodes.topic }
 """Field name (lowcased) to node class name mapping for bibliographic fields
 (field_list)."""
 
