@@ -113,6 +113,11 @@ Changes Since 0.3
   - Reworked for ``StringList``, to support "include" directives in
     table cells.
 
+* docutils/parsers/rst/directives/__init__.py:
+
+  - Renamed ``unchanged()`` directive option conversion function to
+    ``unchanged_required``, and added a new ``unchanged``.
+
 * docutils/parsers/rst/languages/af.py: Added to project; Afrikaans
   mappings by Jannie Hofmeyr.
 

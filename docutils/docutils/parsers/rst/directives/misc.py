@@ -229,5 +229,5 @@ def directive_test_function(name, arguments, options, content, lineno,
     return [info]
 
 directive_test_function.arguments = (0, 1, 1)
-directive_test_function.options = {'option': directives.unchanged}
+directive_test_function.options = {'option': directives.unchanged_required}
 directive_test_function.content = 1
