@@ -4,11 +4,12 @@ latex2e BUGS TODOS and other animals
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
 
-Rev. 2003-02-17
+Rev. 2003-02-24
 
 To do
 ~~~~~
 
+* sidebar handling.
 * Maybe add end of line after term in definition list. see
     http://roundup.sf.net/doc-0.5/features.pdf
 
