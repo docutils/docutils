@@ -13,10 +13,14 @@ __docformat__ = 'reStructuredText'
 
 import sys
 import os.path
-import csv
 from docutils import nodes, statemachine, utils
 from docutils.utils import SystemMessagePropagation
 from docutils.parsers.rst import directives
+
+try:
+    import csv                          # new in Python 2.3
+except ImportError:
+    csv = None
 
 try:
     import urllib2
@@ -71,48 +75,49 @@ def make_title(arguments, state, lineno):
     return title, messages
 
 
-class DocutilsDialect(csv.Dialect):
+if csv:
+    class DocutilsDialect(csv.Dialect):
 
-    """CSV dialect for `csv_table` directive function."""
+        """CSV dialect for `csv_table` directive function."""
 
-    delimiter = ','
-    quotechar = '"'
-    doublequote = True
-    skipinitialspace = True
-    lineterminator = '\n'
-    quoting = csv.QUOTE_MINIMAL
+        delimiter = ','
+        quotechar = '"'
+        doublequote = True
+        skipinitialspace = True
+        lineterminator = '\n'
+        quoting = csv.QUOTE_MINIMAL
 
-    def __init__(self, options):
-        if options.has_key('delim'):
-            self.delimiter = str(options['delim'])
-        if options.has_key('keepspace'):
-            self.skipinitialspace = False
-        if options.has_key('quote'):
-            self.quotechar = str(options['quote'])
-        if options.has_key('escape'):
-            self.doublequote = False
-            self.escapechar = str(options['escape'])
-        csv.Dialect.__init__(self)
+        def __init__(self, options):
+            if options.has_key('delim'):
+                self.delimiter = str(options['delim'])
+            if options.has_key('keepspace'):
+                self.skipinitialspace = False
+            if options.has_key('quote'):
+                self.quotechar = str(options['quote'])
+            if options.has_key('escape'):
+                self.doublequote = False
+                self.escapechar = str(options['escape'])
+            csv.Dialect.__init__(self)
 
 
-class HeaderDialect(csv.Dialect):
+    class HeaderDialect(csv.Dialect):
 
-    """CSV dialect to use for the "header" option data."""
+        """CSV dialect to use for the "header" option data."""
 
-    delimiter = ','
-    quotechar = '"'
-    escapechar = '\\'
-    doublequote = False
-    skipinitialspace = True
-    lineterminator = '\n'
-    quoting = csv.QUOTE_MINIMAL
+        delimiter = ','
+        quotechar = '"'
+        escapechar = '\\'
+        doublequote = False
+        skipinitialspace = True
+        lineterminator = '\n'
+        quoting = csv.QUOTE_MINIMAL
 
 
 def csv_table(name, arguments, options, content, lineno,
              content_offset, block_text, state, state_machine):
-    
-    title, messages = make_title(arguments, state, lineno)
     try:
+        check_requirements(name, lineno, block_text, state_machine)
+        title, messages = make_title(arguments, state, lineno)
         csv_data, source = get_csv_data(
             name, options, content, lineno, block_text, state, state_machine)
         table_head, max_header_cols = process_header_option(
@@ -121,13 +126,10 @@ def csv_table(name, arguments, options, content, lineno,
             csv_data, DocutilsDialect(options), source, options)
         max_cols = max(max_cols, max_header_cols)
         header_rows = options.get('header-rows', 0) # default 0
+        check_table_dimensions(
+            rows, header_rows, name, lineno, block_text, state_machine)
         table_head.extend(rows[:header_rows])
         table_body = rows[header_rows:]
-        if not table_body:
-            error = state_machine.reporter.error(
-                  '"%s" directive requires table body content.' % name,
-                  nodes.literal_block(block_text, block_text), line=lineno)
-            return [error]
         col_widths = get_column_widths(
             max_cols, name, options, lineno, block_text, state_machine)
         extend_short_rows_with_empty_cells(max_cols, (table_head, table_body))
@@ -162,6 +164,15 @@ csv_table.options = {'header-rows': directives.nonnegative_int,
                      # char used to escape delim & quote as-needed:
                      'escape': directives.single_char_or_unicode,}
 csv_table.content = 1
+
+def check_requirements(name, lineno, block_text, state_machine):
+    if not csv:
+        error = state_machine.reporter.error(
+            'The "%s" directive is not compatible with this version of '
+            'Python (%s).  Requires the "csv" module, new in Python 2.3.'
+            % (name, sys.version.split()[0]),
+            nodes.literal_block(block_text, block_text), line=lineno)
+        raise SystemMessagePropagation(error)
 
 def get_csv_data(name, options, content, lineno, block_text,
                  state, state_machine):
@@ -247,6 +258,21 @@ def parse_csv_data_into_rows(csv_data, dialect, source, options):
         rows.append(row_data)
         max_cols = max(max_cols, len(row))
     return rows, max_cols
+
+def check_table_dimensions(rows, header_rows, name, lineno, block_text,
+                           state_machine):
+    if len(rows) < header_rows:
+        error = state_machine.reporter.error(
+            '%s header row(s) specified but only %s row(s) of data supplied '
+            '("%s" directive).' % (header_rows, len(rows), name),
+            nodes.literal_block(block_text, block_text), line=lineno)
+        raise SystemMessagePropagation(error)
+    elif len(rows) == header_rows > 0:
+        error = state_machine.reporter.error(
+            'Insufficient data supplied (%s row(s)); no data remaining for '
+            'table body, required by "%s" directive.' % (len(rows), name),
+            nodes.literal_block(block_text, block_text), line=lineno)
+        raise SystemMessagePropagation(error)
 
 def get_column_widths(max_cols, name, options, lineno, block_text,
                       state_machine):
