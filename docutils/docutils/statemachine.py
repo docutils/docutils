@@ -814,7 +814,8 @@ class StateMachineWS(StateMachine):
             offset += 1
         return indented, offset, blank_finish
 
-    def get_first_known_indented(self, indent, until_blank=0, strip_indent=1):
+    def get_first_known_indented(self, indent, until_blank=0, strip_indent=1,
+                                 strip_top=1):
         """
         Return an indented block and info.
 
@@ -827,6 +828,7 @@ class StateMachineWS(StateMachine):
               (1).
             - `strip_indent`: Strip `indent` characters of indentation if true
               (1, default).
+            - `strip_top`: Strip blank lines from the beginning of the block.
 
         :Return:
             - the indented block,
@@ -840,9 +842,10 @@ class StateMachineWS(StateMachine):
               self.input_lines[self.line_offset + 1:], until_blank,
               strip_indent)
         self.next_line(len(indented) - 1) # advance to last indented line
-        while indented and not indented[0].strip():
-            indented.pop(0)
-            offset += 1
+        if strip_top:
+            while indented and not indented[0].strip():
+                indented.pop(0)
+                offset += 1
         return indented, indent, offset, blank_finish
 
 
