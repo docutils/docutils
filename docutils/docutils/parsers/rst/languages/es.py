@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 # Author: Marcelo Huerta San Martín
 # Contact: mghsm@uol.com.ar
 # Revision: $Revision$
