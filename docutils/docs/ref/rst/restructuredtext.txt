@@ -2287,42 +2287,39 @@ Strongly emphasized text is typically displayed in boldface.
 Interpreted Text
 ----------------
 
-DTD element: interpreted.
+DTD element: depends on the explicit or implicit role and processing.
 
 Start-string = end-string = "`".
 
-Text enclosed by single backquote characters is interpreted::
+Interpreted text is text that is meant to be related, indexed, linked,
+summarized, or otherwise processed, but the text itself is typically
+left alone.  Interpreted text is enclosed by single backquote
+characters::
 
     This is `interpreted text`.
 
-Interpreted text is text that is meant to be related, indexed, linked,
-summarized, or otherwise processed, but the text itself is left
-alone.  The text is "tagged" directly, in-place.  The semantics of
-interpreted text are domain-dependent.  It can be used as implicit or
-explicit descriptive markup (such as for program identifiers, as in
-the `Python Source Reader`_), for cross-reference interpretation (such
-as index entries), or for other applications where context can be
-inferred.
-
-The role of the interpreted text determines how the text is
-interpreted.  It is normally inferred implicitly.  The role of the
-interpreted text may also be indicated explicitly, using a role
-marker, either as a prefix or as a suffix to the interpreted text,
-depending on which reads better::
+The "role" of the interpreted text determines how the text is
+interpreted.  The role may be inferred implicitly (as above; the
+"default role" is used) or indicated explicitly, using a role marker.
+A role marker consists of a colon, the role name, and another colon.
+A role name is a single word consisting of alphanumerics plus internal
+hyphens, underscores, and periods; no whitespace or other characters
+are allowed.  A role marker is either a prefix or a suffix to the
+interpreted text, whichever reads better; it's up to the author::
 
     :role:`interpreted text`
 
     `interpreted text`:role:
 
-Roles are simply extensions of the available inline constructs; to
-emphasis_, `strong emphasis`_, `inline literals`_, and `hyperlink
-references`_, we can add "index entry", "acronym", "class", "red",
-"blinking" or anything else we want.
-
-A role marker consists of a colon, the role name, and another colon.
-A role name is a single word consisting of alphanumerics plus internal
-hyphens, underscores, and periods; no whitespace or other characters
-are allowed.
+Interpreted text allows extensions to the available inline descriptive
+markup constructs.  To emphasis_, `strong emphasis`_, `inline
+literals`_, and `hyperlink references`_, we can add "title reference",
+"index entry", "acronym", "class", "red", "blinking" or anything else
+we want.  Only pre-determined roles are recognized; unknown roles will
+generate errors.  A core set of standard roles is implemented in the
+reference parser; see `reStructuredText Interpreted Text Roles`_ for
+individual descriptions.  In addition, applications may support
+specialized roles.
 
 
 Inline Literals
@@ -2536,7 +2533,7 @@ Examples::
 Standalone Hyperlinks
 ---------------------
 
-DTD element: link.
+DTD element: reference.
 
 Start-string = end-string = "" (empty string).
 
@@ -2630,8 +2627,7 @@ Markup errors are handled according to the specification in `PEP
 .. _HTML Techniques for Web Content Accessibility Guidelines:
    http://www.w3.org/TR/WCAG10-HTML-TECHS/#link-text
 .. _reStructuredText Directives: directives.html
-.. _Python Source Reader:
-   http://docutils.sourceforge.net/spec/pysource.txt
+.. _reStructuredText Interpreted Text Roles: interpreted.html
 .. _RFC2396: http://www.rfc-editor.org/rfc/rfc2396.txt
 .. _RFC2732: http://www.rfc-editor.org/rfc/rfc2732.txt
 .. _Zope: http://www.zope.com/
