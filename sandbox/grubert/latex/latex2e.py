@@ -82,7 +82,16 @@ class Writer(writers.Writer):
           ['--footnote-references'],
           {'choices': ['superscript', 'brackets'], 'default': 'brackets',
            'metavar': '<FORMAT>'}),
-          ))
+         ('Link to the stylesheet in the output LaTeX file.  This is the '
+          'default.',
+          ['--link-stylesheet'],
+          {'dest': 'embed_stylesheet', 'action': 'store_false'}),
+         ('Embed the stylesheet in the output LaTeX file.  The stylesheet '
+          'file must be accessible during processing (--stylesheet-path is '
+          'recommended).',
+          ['--embed-stylesheet'],
+          {'action': 'store_true'}),
+         ))
 
     settings_default_overrides = {'output_encoding': 'latin-1'}
 
@@ -140,14 +149,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
     d_options = '10pt'  # papersize, fontsize
     d_paper = 'a4paper'
     d_margins = '2cm'
+    d_stylesheet_path = 'style.tex'
     # for pdflatex some other package. pslatex
 
     latex_head = '\\documentclass[%s]{%s}\n'
     encoding = '\\usepackage[latin1]{inputenc}\n'
-    linking = '\\usepackage[colorlinks]{hyperref}\n'
-    geometry = '\\usepackage[%s,margin=%s]{geometry}\n'
+    linking = '\\usepackage[colorlinks,linkcolor=blue]{hyperref}\n'
+    geometry = '\\usepackage[%s,margin=%s,nohead]{geometry}\n'
     stylesheet = '\\input{%s}\n'
-    # add a generated on day , machine by user using docutils versoin.
+    # add a generated on day , machine by user using docutils version.
     generator = '%% generator Docutils: http://docutils.sourceforge.net/\n'
 
     # use latex tableofcontents or let docutils do it.
@@ -168,11 +178,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
               '\\usepackage{babel}\n',     # language is in documents settings.
               '\\usepackage{shortvrb}\n',  # allows verb in footnotes.
               self.encoding,
+              '\\usepackage{amsmath}\n',   # what fore amsmath. 
               '\\usepackage{graphicx}\n',
               '\\usepackage{color}\n',
               '\\usepackage{multirow}\n',
               self.linking,
-              self.stylesheet % "style.tex",
+              self.stylesheet % (self.d_stylesheet_path),
               # geometry and fonts might go into style.tex.
               self.geometry % (self.d_paper, self.d_margins),
               #
@@ -204,10 +215,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # $ % & ~ _ ^ \ { }
         Escaping with a backslash does not help with backslashes, ~ and ^.
         """
-        text = text.replace("\\", '{$\\backslash$}')
+        text = text.replace("\\", '{\\textbackslash}')
         text = text.replace("&", '{\\&}')
         text = text.replace("_", '{\\_}')
-        text = text.replace("^", '{\verb|^|}')
+        text = text.replace("^", '{\verb|^|}') # ugly
         text = text.replace("%", '{\\%}')
         text = text.replace("#", '{\\#}')
         text = text.replace("~", '{\\~{ }}')
@@ -218,7 +229,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def attval(self, text,
                whitespace=re.compile('[\n\r\t\v\f]')):
-        """Cleanse, HTML encode, and return attribute value text."""
+        """Cleanse, encode, and return attribute value text."""
         return self.encode(whitespace.sub(' ', text))
 
     def astext(self):
@@ -300,20 +311,18 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_citation(self, node):
-        notename = node['id']
-        self.body.append('\\begin{figure}[b]')
-        self.body.append('\\hypertarget{%s}' % notename)
+        self.visit_footnote(node)
 
     def depart_citation(self, node):
-        self.body.append('\\end{figure}')
+        self.depart_footnote(node)
 
     def visit_citation_reference(self, node):
         href = ''
         if node.has_key('refid'):
-            href = '#' + node['refid']
+            href = node['refid']
         elif node.has_key('refname'):
-            href = '#' + self.document.nameids[node['refname']]
-        self.body.append('[\\href{%s}{' % href)
+            href = self.document.nameids[node['refname']]
+        self.body.append('[\\hyperlink{%s}{' % href)
 
     def depart_citation_reference(self, node):
         self.body.append('}]')
@@ -371,6 +380,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('%[visit_definition]\n')
 
     def depart_definition(self, node):
+        self.body.append('\n')
         self.body.append('%[depart_definition]\n')
 
     def visit_definition_list(self, node):
@@ -394,10 +404,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_docinfo(self, node):
         self.docinfo = []
         self.docinfo.append('%' + '_'*75 + '\n')
-        self.docinfo.append('\\begin{tabular}{ll}\n')
+        self.docinfo.append('\\begin{tabularx}{\\linewidth}{lX}\n')
 
     def depart_docinfo(self, node):
-        self.docinfo.append('\\end{tabular}\n')
+        self.docinfo.append('\\end{tabularx}\n')
         self.body = self.docinfo + self.body
         # clear docinfo, so field names are no longer appended.
         self.docinfo = None
@@ -530,6 +540,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('%[depart_field_argument]\n')
 
     def visit_field_body(self, node):
+        self.body.append('%[visit_field_body]\n')
         # BUG by attach as text we loose references.
         if self.docinfo:
             self.docinfo.append('%s \\\\\n' % node.astext())
@@ -589,20 +600,19 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_footnote_reference(self, node):
         href = ''
         if node.has_key('refid'):
-            href = '#' + node['refid']
+            href = node['refid']
         elif node.has_key('refname'):
-            href = '#' + self.document.nameids[node['refname']]
+            href = self.document.nameids[node['refname']]
         format = self.settings.footnote_references
         if format == 'brackets':
             suffix = '['
             self.context.append(']')
         elif format == 'superscript':
-            suffix = '<sup>'
-            self.context.append('</sup>')
+            suffix = '\\raisebox{.5em}[0em]{\\scriptsize'
+            self.context.append('}')
         else:                           # shouldn't happen
-            suffix = '???'
-            self.context.append('???')
-        self.body.append('%s\\href{%s}{' % (suffix,href))
+            raise AssertionError('Illegal footnote reference format.')
+        self.body.append('%s\\hyperlink{%s}{' % (suffix,href))
 
     def depart_footnote_reference(self, node):
         self.body.append('}%s' % self.context.pop())
@@ -619,10 +629,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_header(self, node):
         start = self.context.pop()
         self.body_prefix.append('\n\\verb|begin_header|\n')
-        ##self.body_prefix.append(self.starttag(node, 'div', CLASS='header'))
         self.body_prefix.extend(self.body[start:])
         self.body_prefix.append('\n\\verb|end_header|\n')
-        ##self.body_prefix.append('<hr />\n</div>\n')
         del self.body[start:]
 
     def visit_hint(self, node):
@@ -656,7 +664,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_literal(node)
 
     def visit_label(self, node):
-        # footnote label
+        # footnote/citation label
         self.body.append('[')
 
     def depart_label(self, node):
@@ -702,7 +710,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_meta(self, node):
         self.body.append('[visit_meta]\n')
-        self.head.append(self.starttag(node, 'meta', **node.attributes))
+        ##self.head.append(self.starttag(node, 'meta', **node.attributes))
 
     def depart_meta(self, node):
         self.body.append('[depart_meta]\n')
@@ -740,14 +748,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_option_list(self, node):
         self.body.append('% option list\n')
         self.body.append('\\begin{center}\n')
-        self.body.append('\\begin{tabular}{ll}\n')
+        self.body.append('\\begin{tabularx}{.9\\linewidth}{|l|X|}\n')
 
     def depart_option_list(self, node):
-        self.body.append('\\end{tabular}\n')
+        self.body.append('\\hline\n')
+        self.body.append('\\end{tabularx}\n')
         self.body.append('\\end{center}\n')
 
     def visit_option_list_item(self, node):
-        pass
+        self.body.append('\\hline\n')
 
     def depart_option_list_item(self, node):
         self.body.append('\\\\\n')
@@ -777,17 +786,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('\n')
 
     def visit_problematic(self, node):
-        ##if node.hasattr('refid'):
-        ##   self.body.append('<a href="#%s">' % node['refid'])
-        ##   self.context.append('</a>')
-        ##else:
-        ##   self.context.append('')
-        ##self.body.append(self.starttag(node, 'span', '', CLASS='problematic'))
         self.body.append('{\\color{red}\\bfseries{}')
 
     def depart_problematic(self, node):
-        ##self.body.append('</span>')
-        ##self.body.append(self.context.pop())
         self.body.append('}')
 
     def visit_raw(self, node):
@@ -817,9 +818,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item(node)
 
     def visit_row(self, node):
-        ##self.body.append(self.starttag(node, 'tr', ''))
         self.context.append(0)
-        pass
 
     def depart_row(self, node):
         self.context.pop()  # remove cell counter
@@ -866,12 +865,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\n')
 
     def visit_table(self, node):
-        self.body.append('\n\\begin{tabular}')
+        self.body.append('\n\\begin{tabularx}{\\linewidth}')
         self.context.append('table_sentinel') # sentinel
         self.context.append(0) # column counter
 
     def depart_table(self, node):
-        self.body.append('\\end{tabular}\n')
+        self.body.append('\\end{tabularx}\n')
         sentinel = self.context.pop()
         if sentinel != 'table_sentinel':
             print 'context:', self.context + [sentinel]
@@ -879,14 +878,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def table_preamble(self):
         if self.context[-1] != 'table_sentinel':
-            self.body.append('{%s}' % ('|l' * self.context.pop() + '|'))
+            self.body.append('{%s}' % ('|X' * self.context.pop() + '|'))
             self.body.append('\n\\hline')
 
     def visit_target(self, node):
         if not (node.has_key('refuri') or node.has_key('refid')
                 or node.has_key('refname')):
-            ##self.body.append(self.starttag(node, 'a', '', CLASS='target'))
-            ##self.body.append(str(node))
             self.body.append('\\hypertarget{%s}{' % node['name'])
             self.context.append('}')
         else:
@@ -905,7 +902,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_term(self, node):
-        ##self.body.append(self.starttag(node, 'dt', ''))
         self.body.append('\\item[')
 
     def depart_term(self, node):
