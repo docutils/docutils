@@ -120,6 +120,11 @@ reStructuredText_:
 * `reStructuredText Directives <ref/rst/directives.html>`__
 * `reStructuredText Interpreted Text Roles <ref/rst/roles.html>`__
 
+Prehistoric:
+
+* `Setext Documents Mirror
+  <http://docutils.sourceforge.net/mirror/setext.html>`__
+
 
 ``peps/``: Python Enhancement Proposals
 =======================================
