@@ -60,7 +60,10 @@ class Writer(writers.Writer):
          ('Table of contents by docutils (default) or latex. Latex(writer) supports only '
           'one ToC per document, but docutils does not write pagenumbers.',
           ['--use-latex-toc'], {'default': 0}),
-         ))
+        ('Color of any hyperlinks embedded in text (default: "blue", "0" to disable).',
+         ['--hyperlink-color'], {'default': 'blue'}),
+        ),
+    )
 
     settings_default_overrides = {'output_encoding': 'latin-1'}
 
@@ -269,7 +272,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     latex_head = '\\documentclass[%s]{%s}\n'
     encoding = '\\usepackage[latin1]{inputenc}\n'
-    linking = '\\usepackage[colorlinks,linkcolor=blue]{hyperref}\n'
+    linking = '\\usepackage[colorlinks=%s,linkcolor=%s,urlcolor=%s]{hyperref}\n'
     geometry = '\\usepackage[%s,margin=%s,nohead]{geometry}\n'
     stylesheet = '\\input{%s}\n'
     # add a generated on day , machine by user using docutils version.
@@ -286,10 +289,20 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # list environment for docinfo. else tabularx
     use_optionlist_for_docinfo = 0 # NOT YET IN USE
 
+    # default link color
+    hyperlink_color = "blue"
+
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
         self.settings = settings = document.settings
         self.use_latex_toc = settings.use_latex_toc
+        self.hyperlink_color = settings.hyperlink_color
+        if self.hyperlink_color == '0':
+            self.hyperlink_color = 'black'
+            self.colorlinks = 'false'
+        else:
+            self.colorlinks = 'true'
+            
         # language: labels, bibliographic_fields, and author_separators.
         # to allow writing labes for specific languages.
         self.language = languages.get_language(settings.language_code)
@@ -317,7 +330,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
               '\\usepackage{graphicx}\n',
               '\\usepackage{color}\n',
               '\\usepackage{multirow}\n',
-              self.linking,
+              self.linking % (self.colorlinks, self.hyperlink_color, self.hyperlink_color),
               # geometry and fonts might go into style.tex.
               self.geometry % (self.d_paper, self.d_margins),
               #
