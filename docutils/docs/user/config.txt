@@ -360,9 +360,10 @@ _`warning_stream`
 _`record_dependencies`
 
     Path to a file to which Docutils writes a list of files the input
-    file(s) depends on, e.g. due to file inclusion. [#pwd]_ The format
-    is one filename per line.  This option is particularly useful in
-    conjunction with programs like ``make``.
+    file(s) depends on [#dependencies]_, e.g. due to file
+    inclusion. [#pwd]_ The format is one filename per line.  This
+    option is particularly useful in conjunction with programs like
+    ``make``.
 
     Set to ``-`` in order to write dependencies to stdout.
 
@@ -821,6 +822,20 @@ _`_source`
    do the overriding explicitly, by assigning ``None`` to the other
    settings.
 
+.. [#dependencies] Some notes on the dependency recorder:
+
+   * Images are only added to the dependency list if the
+     reStructuredText parser extracted image dimensions from the file.
+
+   * Stylesheets are only added if they are embedded.
+
+   * For practical reasons, the output of the LaTeX writer is
+     considered merely an *intermediate* processing stage.  The
+     dependency recorder records all files the *rendered* file
+     (e.g. in PDF or DVI format) depends on.  Thus, images and
+     stylesheets are both unconditionally recorded as dependencies
+     when using the LaTeX writer.
+   
 
 ------------------------------
 Old-Format Configuration Files
