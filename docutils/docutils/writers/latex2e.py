@@ -1183,13 +1183,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         """
         Return column specification for longtable.
 
-        The width is scaled down by 93%. We do it here
-        because then we can use linewidth which should be the local
-        width.
+        Assumes reST line length being 80 characters.
         """
-        width = 0
-        for node in self.colspecs:
-            width += node['colwidth']
+        width = 80
         s = ""
         for node in self.colspecs:
             colwidth = 0.93 * float(node['colwidth']) / width 

@@ -4,7 +4,7 @@ latex2e BUGS TODOS and other animals
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
 
-Rev. 2003-04-01
+Rev. 2003-04-09
 
 To do
 ~~~~~
@@ -66,20 +66,6 @@ To do
 * table heads and footer for longtable (firstpage lastpage ..)
 
 * longtable does not work with multirow
-
-* tablewidth: the real problem is: using the proportion of the rst-table is only
-  a little clue but e.g. on description tables usually the left side could be
-  made narrower
-
-  1. rough guessing: the rst file has 80 columns, latex gives me 100 so make it 
-     narrowe to have the same proportion respectively to the page.
-     means::
-
-       table_width = sum(colwidth)
-       table_width_for_latex = table_width / 80
-
-  2. process the table and try to guess which of the columns is the narrowest 
-     (contains only one liner/word) and make this one auto_width (center/left/right?).
 
 * tabularx says "do not use any multicolmn which spans any X column.
   maybe use ltxtable instead of tabularx (Longtable combined with tabularx).
