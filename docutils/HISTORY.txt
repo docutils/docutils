@@ -242,7 +242,7 @@ Specific:
 * docutils/parser/rst/__init__.py:
 
   - Added options: "--pep-references", "--rfc-references",
-    "--tab-width".
+    "--tab-width", "--trim-footnote-reference-space".
 
 * docutils/parsers/rst/states.py:
 
@@ -291,6 +291,8 @@ Specific:
   - Implemented "superscript" and "subscript" interpreted text roles.
   - Added initial support for "abbreviation" and "acronym" roles;
     incomplete.
+  - Added support for "--trim-footnote-reference-space" option.
+  - Optional space before colons in directives & hyperlink targets.
 
 * docutils/parsers/rst/tableparser.py:
 
