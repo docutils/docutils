@@ -50,7 +50,7 @@ from docutils.transforms import universal
 from docutils.parsers import rst
 from docutils.parsers.rst import states, tableparser, directives, languages
 from docutils.readers import standalone, pep, python
-from docutils.statemachine import string2lines
+from docutils.statemachine import StringList, string2lines
 
 try:
     from docutils.readers.python import moduleparser
@@ -62,6 +62,9 @@ try:
 except:
     import pdb
 
+
+# Hack to make repr(StringList) look like repr(list):
+StringList.__repr__ = StringList.__str__
 
 
 class DevNull:
@@ -405,7 +408,7 @@ class GridTableParserTestCase(CustomTestCase):
     parser = tableparser.GridTableParser()
 
     def test_parse_table(self):
-        self.parser.setup(string2lines(self.input))
+        self.parser.setup(StringList(string2lines(self.input), 'test data'))
         try:
             self.parser.find_head_body_sep()
             self.parser.parse_table()
@@ -417,7 +420,8 @@ class GridTableParserTestCase(CustomTestCase):
 
     def test_parse(self):
         try:
-            output = self.parser.parse(string2lines(self.input))
+            output = self.parser.parse(StringList(string2lines(self.input),
+                                                  'test data'))
         except Exception, details:
             output = '%s: %s' % (details.__class__.__name__, details)
         self.compare_output(self.input, pformat(output) + '\n',
