@@ -55,6 +55,11 @@ Bugs
   test/test_parsers/test_rst/test_directives/test_include.py
   (commented out, because the test fails).
 
+* tools/buildhtml.py needs a mechanism to skip directories
+  (e.g. licenses, test).  Perhaps a ".prune-buildhtml" file?  A
+  command-line option wouldn't work because it would require user
+  action.
+
 
 General
 -------
@@ -1961,7 +1966,12 @@ Release Procedure
    (a) Expand the tarball in a new location, not over any existing
        files.
 
-   (b) ``python setup.py install``
+   (b) Install from expanded directory::
+
+           cd docutils-X.Y
+           python setup.py install
+
+       The "install" command may require root permissions.
 
 6. Run the test suite from the expanded archive directory: ``cd test ;
    alltests.py``.
