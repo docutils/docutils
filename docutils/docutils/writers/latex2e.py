@@ -1107,6 +1107,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_section(self, node):
         self.section_level -= 1
 
+    def visit_sidebar(self, node):
+        # BUG:  this is just a hack to make sidebars render something 
+        self.body.append('\\begin{center}\\begin{sffamily}\n')
+        self.body.append('\\fbox{\\colorbox[gray]{0.80}{\\parbox{\\admonitionwidth}{\n')
+
+    def depart_sidebar(self, node):
+        self.body.append('}}}\n') # end parbox colorbox fbox
+        self.body.append('\\end{sffamily}\n\\end{center}\n');
+
+
     def visit_status(self, node):
         self.visit_docinfo_item(node, 'status')
 
