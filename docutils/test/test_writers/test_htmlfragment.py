@@ -74,8 +74,7 @@ Another Section
 
 And even more stuff
 """,
-     """\
-<h1 class="title">Title</h1>
+"""\
 <p>Some stuff</p>
 <div class="section" id="subtitle">
 <h1><a name="subtitle">Subtitle</a></h1>
@@ -85,8 +84,20 @@ And even more stuff
 <p>And even more stuff</p>
 </div>
 </div>
+"""],
+["""\
++++++
+Title
++++++
+
+:author: me
+
+Some stuff
+""",
+"""\
+<p>Some stuff</p>
 """]
-    ])
+])
 
 totest['No title promotion'] = ({'doctitle_xform' : 0}, [
     ["""\
