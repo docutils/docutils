@@ -61,7 +61,8 @@ def include(name, arguments, options, content, lineno,
         return []
 
 include.arguments = (1, 0, 1)
-include.options = {'literal': directives.flag}
+include.options = {'literal': directives.flag,
+                   'encoding': directives.encoding}
 
 def raw(name, arguments, options, content, lineno,
         content_offset, block_text, state, state_machine):
@@ -139,7 +140,8 @@ def raw(name, arguments, options, content, lineno,
 
 raw.arguments = (1, 0, 1)
 raw.options = {'file': directives.path,
-               'url': directives.path}
+               'url': directives.path,
+               'encoding': directives.encoding}
 raw.content = 1
 
 def replace(name, arguments, options, content, lineno,
