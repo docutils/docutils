@@ -17,7 +17,10 @@ contains a minimum of formatting information. A cascading style sheet
 __docformat__ = 'reStructuredText'
 
 
-import sys, time, string, re
+import sys
+import time
+import string
+import re
 from types import ListType
 from docutils import writers, nodes, languages
 
@@ -26,6 +29,10 @@ class Writer(writers.Writer):
 
     supported = ('html', 'html4css1', 'xhtml')
     """Formats this writer supports."""
+
+    cmdline_options = (
+        ('Specify a stylesheet file.  Default is "default.css".',
+         ['--stylesheet'], {'default': 'default.css', 'metavar': '<file>'}),)
 
     output = None
     """Final translated form of `document`."""
@@ -51,19 +58,18 @@ class HTMLTranslator(nodes.NodeVisitor):
                    'charset=UTF-8">\n'
     generator = '<meta name="generator" content="Docutils: ' \
                 'http://docutils.sourceforge.net/">\n'
-    stylesheet_link = '<link rel="stylesheet" href="default.css"' \
-                      ' type="text/css" />\n'
+    stylesheet_link = '<link rel="stylesheet" href="%s" type="text/css" />\n'
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
-        self.language = languages.get_language(document.language_code)
+        self.language = languages.get_language(document.options.language_code)
         self.head_prefix = [
               self.xml_declaration,     # @@@ % output_encoding
               self.doctype,
-              self.html_head % document.language_code,
+              self.html_head % document.options.language_code,
               self.content_type,        # @@@ % output encoding
               self.generator,
-              self.stylesheet_link]     # @@@ % stylesheet
+              self.stylesheet_link % document.options.stylesheet]
         self.head = []
         self.body_prefix = ['</head>\n<body>\n']
         self.body = []
