@@ -222,11 +222,11 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
     """
 
     standard_config_files = [
-        '/etc/docutils.conf',               # system-wide
-        './docutils.conf',                  # project-specific
-        os.path.expanduser('~/.docutils')]  # user-specific
-    """Docutils configuration files, using ConfigParser syntax.
-    Later files override earlier ones."""
+        '/etc/docutils.conf',           # system-wide
+        './docutils.conf',              # project-specific
+        '~/.docutils']                  # user-specific
+    """Docutils configuration files, using ConfigParser syntax.  Filenames
+    will be tilde-expanded later.  Later files override earlier ones."""
 
     threshold_choices = 'info 1 warning 2 error 3 severe 4 none 5'.split()
     """Possible inputs for for --report and --halt threshold values."""
@@ -472,7 +472,19 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
             if component and component.settings_default_overrides:
                 self.defaults.update(component.settings_default_overrides)
 
+    def get_config_files(self):
+        """Return list of config files, from environment or standard."""
+        try:
+            config_files = os.environ['DOCUTILSCONFIG']
+            if config_files == '':
+                return []
+            else:
+                return config_files.split(os.pathsep)
+        except KeyError:
+            return self.standard_config_files
+
     def get_standard_config_settings(self):
+        config_files = map(os.path.expanduser, self.get_config_files())
         settings = {}
         for filename in self.standard_config_files:
             settings.update(self.get_config_file_settings(filename))
