@@ -12,6 +12,8 @@ this is a work in progress, please check the project website for
 updated working files.  This project should be considered highly
 experimental; APIs are subject to change at any time.
 
+.. contents::
+
 
 Requirements
 ============
@@ -59,7 +61,8 @@ Project Files & Directories
     the "standalone" reader and "pformat" writer.
 
   - html.py: Read standalone reStructuredText documents and write
-    HTML4/CSS1.  Uses the default.css stylesheet.
+    HTML4/CSS1.  Uses the default.css stylesheet (but can be
+    overridden).
 
 * test: Unit tests; ``test/alltests.py`` runs all the tests.  Not
   required to use the software, but very useful if you're planning to
@@ -73,8 +76,8 @@ The first step is to expand the .tar.gz archive.  It contains a
 distutils setup file "setup.py".  OS-specific installation
 instructions follow.
 
-Linux, Unix, MacOS X
---------------------
+GNU/Linux, Unix, MacOS X, etc.
+------------------------------
 
 1. Open a shell.
 
