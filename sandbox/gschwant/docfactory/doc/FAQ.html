@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="cp1252" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=cp1252" />
+<meta name="generator" content="Docutils 0.2.8: http://docutils.sourceforge.net/" />
+<title>DocFactory Frequently Asked Questions</title>
+<link rel="stylesheet" href="stylesheets/df.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="docfactory-frequently-asked-questions">
+<h1 class="title">DocFactory Frequently Asked Questions</h1>
+<div class="contents topic" id="questions">
+<p class="topic-title"><a name="questions">Questions</a></p>
+<ul class="auto-toc simple">
+<li><a class="reference" href="#how-can-i-manage-accentuated-characters-to-be-processed-properly" id="id1" name="id1">1   How can I manage accentuated characters to be processed properly?</a></li>
+<li><a class="reference" href="#is-it-possible-to-run-docfactory-on-systems-without-a-python-installation" id="id2" name="id2">2   Is it possible to run DocFactory on systems without a Python installation?</a></li>
+</ul>
+</div>
+<div class="section" id="how-can-i-manage-accentuated-characters-to-be-processed-properly">
+<h1><a class="toc-backref" href="#questions" name="how-can-i-manage-accentuated-characters-to-be-processed-properly">1   How can I manage accentuated characters to be processed properly?</a></h1>
+<p>On the &quot;Docutils&quot;-page of the &quot;Project-Settings&quot;-dialog be sure to set 
+Docutils' output-encoding to the right value. For example: <tt class="literal"><span class="pre">ISO-8859-1</span></tt>
+for french or german accentuated characters. (The default setting is 
+<tt class="literal"><span class="pre">UTF-8</span></tt>.) The problem is to find out which encoding you need. There is
+a wide variety of encodings available. Many of these encodings support 
+the same languages. However, they vary in individual characters. For 
+example, <tt class="literal"><span class="pre">ISO-8859-1</span></tt> does not support the EURO SIGN (try <tt class="literal"><span class="pre">cp1252</span></tt>
+if you need it). If you face problems your first attempt should be
+to try out Python's different standard encodings which can be found
+at <a class="reference" href="http://www.python.org/dev/doc/devel/lib/node123.html">http://www.python.org/dev/doc/devel/lib/node123.html</a>.</p>
+</div>
+<div class="section" id="is-it-possible-to-run-docfactory-on-systems-without-a-python-installation">
+<h1><a class="toc-backref" href="#questions" name="is-it-possible-to-run-docfactory-on-systems-without-a-python-installation">2   Is it possible to run DocFactory on systems without a Python installation?</a></h1>
+<p>The Docfactory-tarball contains a script called <tt class="literal"><span class="pre">docfactory2exe.py</span></tt>. If 
+<a class="reference" href="http://py2exe.sourceforge.net">py2exe</a> is installed on your machine you can use this script to convert 
+<tt class="literal"><span class="pre">docfactory.py</span></tt> into a into an executable Windows program, which is able 
+to run without requiring a Python installation.  Copy <tt class="literal"><span class="pre">docfactory2exe.py</span></tt>
+and <tt class="literal"><span class="pre">docfactory.ico</span></tt> (both part of the tarball) to the directory where 
+<tt class="literal"><span class="pre">docfactory.py</span></tt> is located, go to the command-line and enter</p>
+<pre class="literal-block">
+python docfactory2exe.py py2exe -w -p encodings,docutils --icon docfactory.ico
+</pre>
+<p>This will create a sub-directory <tt class="literal"><span class="pre">dist\docfactory</span></tt>, containing the file
+<tt class="literal"><span class="pre">docfactory.exe</span></tt> and several other files needed at runtime.  (Visit
+<a class="reference" href="http://py2exe.sourceforge.net">http://py2exe.sourceforge.net</a> for more details.)</p>
+</div>
+</div>
+</body>
+</html>
