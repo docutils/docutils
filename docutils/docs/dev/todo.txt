@@ -173,7 +173,8 @@ General
 * Add object numbering and object references (tables & figures).
 
   We'll need _`persistent sequences`, such as chapter numbers.  See
-  OpenOffice XML "fields".
+  `OpenOffice.org XML`_ "fields".  Should the sequences be automatic
+  or manual (user-specifyable)?
 
   We need to name the objects:
 
@@ -182,18 +183,32 @@ General
         .. figure:: image.png
            :name: image's name
 
-    How to name tables, which don't need directives?
+    To name tables, we could use a "table" directive::
 
-  - But this could also be done this way (perhaps more generally)::
+        .. table:: optional title here
+           :name: table's name
+
+           =====  =====
+             x    not x
+           =====  =====
+           True   False
+           False  True
+           =====  =====
+
+    This would also allow other attributes to be set, like border
+    styles.  The same technique could be used for other objects.
+           
+  - The object could also be done this way::
 
         .. _figure name:
 
         .. figure:: image.png
 
-    Applies equally well to tables.
+    This may be a more general solution, equally applicable to tables.
+    However, explicit naming using an option seems simpler to users.
 
-  We'll also need syntax for object references.  See OpenOffice XML
-  "reference fields":
+  We'll also need syntax for object references.  See `OpenOffice.org
+  XML`_ "reference fields":
 
   - Parameterized substitutions?  For example::
 
@@ -210,15 +225,17 @@ General
     reference-time, not at definition-time as they are now.  Or,
     perhaps the directives could just leave ``pending`` elements
     behind, and the transforms do the work?  How to pass the data
-    through?
+    through?  Too complicated.
 
-  - An interpreted text approach is better::
+  - An interpreted text approach is simpler and better::
 
         See :figure:`figure name` on :page:`figure name`.
 
-    The "figure" and "page" roles could generate some boilerplate
-    text.  The position of the role (prefix or suffix) could also be
-    utilized.
+    The "figure" and "page" roles could generate appropriate
+    boilerplate text.  The position of the role (prefix or suffix)
+    could also be utilized.
+
+  .. _OpenOffice.org XML: http://xml.openoffice.org/
 
 * Think about large documents made up of multiple subdocument files.
   Issues: continuity (`persistent sequences`_ above), cross-references
@@ -258,6 +275,8 @@ General
   system for large-scale, multipart documents.
 
   __ rst/directives.html#including-an-external-document-fragment
+
+* Change ``document.options`` to ``document.settings``?
 
 
 Documentation

@@ -45,6 +45,8 @@ General:
 
 Specific:
 
+* FAQ.txt: Frequently asked questions, added to project.
+
 * docutils/__init__.py:
 
   - Bumped version to 0.2.1 to reflect changes to I/O classes.
@@ -144,7 +146,8 @@ Specific:
 
 * docutils/parser/rst/__init__.py:
 
-  - Added the "--pep-references" and "--rfc-references" options.
+  - Added options: "--pep-references", "--rfc-references",
+    "--tab-width".
 
 * docutils/parsers/rst/states.py:
 
@@ -272,6 +275,7 @@ Specific:
     factored out ``HTMLTranslator.get_stylesheet_reference()``.
   - Improved field list rendering.
   - Added Docutils version to "generator" meta tag.
+  - Fixed a bug with images; they must be inline, so wrapped in <p>.
 
 * docutils/writers/pep_html.py:
 

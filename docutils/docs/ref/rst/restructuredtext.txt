@@ -433,9 +433,9 @@ rearranging the document fragment into a complete document with a
 title and possibly other metadata elements (author, date, etc.; see
 `Bibliographic Fields`_).
 
-Specifically, there is no way to specify a document title and subtitle
-explicitly in reStructuredText.  Instead, a lone top-level section
-title (see Sections_ below) can be treated as the document
+Specifically, there is no way to indicate a document title and
+subtitle explicitly in reStructuredText.  Instead, a lone top-level
+section title (see Sections_ below) can be treated as the document
 title.  Similarly, a lone second-level section title immediately after
 the "document title" can become the document subtitle.  See the
 `DocTitle transform`_ for details.
@@ -1483,7 +1483,9 @@ may be the only character in the label.  For example::
     .. [*] This is the footnote.
 
 A transform will insert symbols as labels into corresponding footnotes
-and footnote references.
+and footnote references.  The number of references must be equal to
+the number of footnotes.  One symbol footnote cannot have multiple
+references.
 
 The standard Docutils system uses the following symbols for footnote
 marks [#]_:
