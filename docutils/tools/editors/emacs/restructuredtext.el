@@ -83,7 +83,7 @@ column is used (fill-column vs. end of previous/next line)."
 (defun reST-title-char-p (c)
   ;; by Martin Blais
   "Returns true if the given character is a valid title char."
-  (and (string-match "[-=`:\\.'\"~^_*+#<>!$%&(),/;?@\\\|]" 
+  (and (string-match "[-=`:\\.'\"~^_*+#<>!$%&(),/;?@\\\|]"
 		     (char-to-string c)) t))
 
 (defun reST-forward-title ()
@@ -97,8 +97,8 @@ column is used (fill-column vs. end of previous/next line)."
 	       (not
 		(and (re-search-forward "^[A-Za-z0-9].*[ \t]*$" nil t)
 		     (reST-title-char-p (char-after (+ (point) 1)))
-		     (looking-at (format "\n%c\\{%d,\\}[ \t]*$" 
-					 (char-after (+ (point) 1)) 
+		     (looking-at (format "\n%c\\{%d,\\}[ \t]*$"
+					 (char-after (+ (point) 1))
 					 (current-column))))))
 	     (beginning-of-line)
 	     (point))) )
@@ -117,8 +117,8 @@ column is used (fill-column vs. end of previous/next line)."
 		     (re-search-backward "^[A-Za-z0-9].*[ \t]*$" nil t)
 		     (or (end-of-line) t)
 		     (reST-title-char-p (char-after (+ (point) 1)))
-		     (looking-at (format "\n%c\\{%d,\\}[ \t]*$" 
-					 (char-after (+ (point) 1)) 
+		     (looking-at (format "\n%c\\{%d,\\}[ \t]*$"
+					 (char-after (+ (point) 1))
 					 (current-column))))))
 	     (beginning-of-line)
 	     (point))) )
@@ -145,3 +145,72 @@ This is useful for filling list item paragraphs."
   (interactive)
   (join-paragraph)
   (fill-paragraph nil))
+
+(defun line-single-char-p ()
+  "Predicate is t if the current line is composed only of a
+  single repeated non-whitespace character."
+  (save-excursion
+    (back-to-indentation)
+    (if (not (looking-at "\n"))
+	(looking-at (format "[%s]+\\s-*$" (thing-at-point 'char))))
+    ))
+
+(defun reST-box-section ()
+  "Adds hanging overline and underline title markers for the text
+on the current line.  If the text is not indented, we indent it
+by one char.
+
+The underline character chosen is the one present in the current
+underline, or '-'.
+
+In addition, this function removes any existing overline and
+underline and replaces it with the update one.  This allows you
+to edit a title and then simple update the boxing around it."
+
+  (interactive)
+  (save-excursion
+    (let (bc
+	  ec
+	  (c ?-))
+
+      ;; Fix indentation if the line does not begin with some whitespace
+      (beginning-of-line)
+      (and (not (looking-at "[\t ]")) (insert " "))
+      (back-to-indentation)
+      (setq bc (current-column))
+
+      ;; Remove whitespace at the end of the line
+      (end-of-line)
+      (delete-horizontal-space)
+      (setq ec (current-column))
+
+      ;; Remove previous line if it consists only of a single repeated character
+      (save-excursion
+	(forward-line -1)
+	(and (line-single-char-p)
+	     (kill-whole-line 1)))
+
+      ;; Remove previous line if it consists only of a single repeated character
+      (save-excursion
+	(forward-line +1)
+	(if (line-single-char-p)
+	    (progn
+	      ;; Get the previous character from the first char of the following line
+	      (back-to-indentation)
+	      (setq c (string-to-char (thing-at-point 'char)))
+	      (kill-whole-line 1))))
+
+      ;; Insert overline
+      (beginning-of-line)
+      (open-line 1)
+      (move-to-column (- bc 1) t)
+      (insert (make-string (+ (- ec bc) 2) c))
+
+      ;; Insert overline
+      (forward-line +2)
+      (open-line 1)
+      (move-to-column (- bc 1) t)
+      (insert (make-string (+ (- ec bc) 2) c))
+
+      )))
+
