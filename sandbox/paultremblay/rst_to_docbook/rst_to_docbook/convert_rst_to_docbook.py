@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python 
 
 # configure rst_2_dbk_dir by hand
 configure_dir = ''
