@@ -63,6 +63,16 @@ __ http://sourceforge.net/tracker/?group_id=38414&atid=422030
 
 * Document title should grow an implicit target.
 
+* David Abrahams pointed out that doubly-indirect substitutions have a
+  bug, but only when there's multiple references::
+
+      |substitute| my coke for gin
+      |substitute| you for my mum
+      at least I'll get my washing done
+
+      .. |substitute| replace:: |replace|
+      .. |replace| replace:: swap
+
 
 General
 -------
@@ -1634,7 +1644,7 @@ HTML Writer
   with the broken servers w.r.t. encodings?  Perhaps something like
   this:
 
-      <!-- 
+      <!--
       If your browser is showing gibberish, the server may be broken.
       Try manually setting the character coding to "UTF-8".  In
       Mozilla/Firefox, do ...  In Internet Explorer, do ...

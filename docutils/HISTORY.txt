@@ -248,6 +248,7 @@ Changes Since 0.3
     transformer in resolve_indirect_target. This allows the
     unknown_reference_resolvers to keep around indirect targets which docutils 
     doesn't know about.
+  - Added specific error message for duplicate targets.
 
 * docutils/transforms/universal.py:
 
@@ -256,6 +257,7 @@ Changes Since 0.3
   - Added hook (via docutils.TransformSpec.unknown_reference_resolvers)
     to FinalCheckVisitor for application-specific handling of 
     unresolvable references.
+  - Added specific error message for duplicate targets.
   
 * docutils/writers/__init__.py:
 
