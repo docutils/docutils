@@ -85,7 +85,7 @@ Specific:
   - Try to get path/stream name automatically in ``FileInput`` &
     ``FileOutput``.
   - Added defaults for source & destination paths.
-  - Allow for Unicode string I/O.
+  - Allow for Unicode string I/O with an explicit "unicode" encoding.
 
 * docutils/nodes.py:
 
