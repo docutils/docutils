@@ -50,32 +50,38 @@ class Writer(html4css1.Writer):
         html4css1.Writer.translate(self)
         options = self.document.options
         template = open(options.pep_template).read()
+        # Substitutions dict for template:
+        subs = {}
+        subs['encoding'] = options.output_encoding
         stylesheet = options.pep_stylesheet
         if stylesheet is None:
             stylesheet = options.stylesheet
-        stylesheet = utils.relative_uri(options._destination, stylesheet)
+        subs['stylesheet'] = utils.relative_uri(options._destination,
+                                                stylesheet)
         pyhome = options.python_home
-        pephome = options.pep_home
+        subs['pyhome'] = pyhome
+        subs['pephome'] = options.pep_home
         if pyhome == '..':
-            pepindex = '.'
+            subs['pepindex'] = '.'
         else:
-            pepindex = pyhome + '/peps/'
+            subs['pepindex'] = pyhome + '/peps/'
         index = self.document.first_child_matching_class(nodes.field_list)
         header = self.document[index]
-        pep = header[0][1].astext()
+        pepnum = header[0][1].astext()
+        subs['pep'] = pepnum
         if options.no_random:
-            banner = 0
+            subs['banner'] = 0
         else:
             import random
-            banner = random.randrange(64)
+            subs['banner'] = random.randrange(64)
         try:
-            pepnum = '%04i' % int(pep)
+            subs['pepnum'] = '%04i' % int(pepnum)
         except:
-            pepnum = pep
-        title = header[1][1].astext()
-        body = ''.join(self.body)
-        body_suffix = ''.join(self.body_suffix)
-        self.output = template % locals()
+            subs['pepnum'] = pepnum
+        subs['title'] = header[1][1].astext()
+        subs['body'] = ''.join(self.body)
+        subs['body_suffix'] = ''.join(self.body_suffix)
+        self.output = template % subs
 
 
 class HTMLTranslator(html4css1.HTMLTranslator):
