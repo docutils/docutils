@@ -1071,7 +1071,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\n\\setlength{\\locallinewidth}{\\linewidth}\n')
 
     def depart_document(self, node):
-        if self._use_latex_citations:
+        # TODO insertion point of bibliography should none automatic.
+        if self._use_latex_citations and len(self._bibitems)>0:
             widest_label = ""
             for bi in self._bibitems:
                 if len(widest_label)<len(bi[0]):
