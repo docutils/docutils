@@ -115,6 +115,12 @@ if csv:
 def csv_table(name, arguments, options, content, lineno,
              content_offset, block_text, state, state_machine):
     try:
+        if ( not state.document.settings.file_insertion_enabled
+             and (options.has_key('file') or options.has_key('url')) ):
+            warning = state_machine.reporter.warning(
+                '"%s" directive disabled.' % name,
+                nodes.literal_block(block_text, block_text), line=lineno)
+            return [warning]
         check_requirements(name, lineno, block_text, state_machine)
         title, messages = make_title(arguments, state, lineno)
         csv_data, source = get_csv_data(
@@ -205,7 +211,8 @@ def get_csv_data(name, options, content, lineno, block_text,
             state.document.settings.record_dependencies.add(source)
             csv_file = io.FileInput(
                 source_path=source, encoding=encoding,
-                error_handler=state.document.settings.input_encoding_error_handler,
+                error_handler
+                    =state.document.settings.input_encoding_error_handler,
                 handle_io_errors=None)
             csv_data = csv_file.read().splitlines()
         except IOError, error:
