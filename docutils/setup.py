@@ -19,17 +19,19 @@ def do_setup():
     return dist
 
 package_data = {
-    'name': 'docutils',
+    'name': 'Docutils',
     'description': 'Python Documentation Utilities',
     'long_description': """\
-Docutils is a modular system for processing documentation into useful formats,
-such as HTML, XML, and TeX.  For input Docutils supports reStructuredText, an
-easy-to-read, what-you-see-is-what-you-get plaintext markup syntax.""",
+Docutils is a modular system for processing documentation
+into useful formats, such as HTML, XML, and TeX.  For input
+Docutils supports reStructuredText, an easy-to-read,
+what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
     'url': 'http://docutils.sourceforge.net/',
     'version': '0.2+',
     'author': 'David Goodger',
     'author_email': 'goodger@users.sourceforge.net',
     'license': 'public domain, Python, BSD, GPL (see COPYING.txt)',
+    'platforms': 'OS-independent',
     'packages': ['docutils', 'docutils.languages',
                  'docutils.parsers', 'docutils.parsers.rst',
                  'docutils.parsers.rst.directives',
