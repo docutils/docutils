@@ -41,7 +41,7 @@ fi
 for INF in `ls test/$FM` ; do
   OUTF="$INF.tex"
   REFF="$OUTF.ref"
-  $CMD $2 $INF > $OUTF
+  $CMD $2 $3 $INF > $OUTF
   do_diff $REFF $OUTF 
 done
 
@@ -87,6 +87,14 @@ REFF="$OUTF.ref"
 $CMD $INF > $OUTF
 do_diff $REFF $OUTF 
 
+CMD="../../tools/rst2latex.py --use-latex-docinfo"
+INF=test/docinfo.txt
+OUTF="$INF-use-latex-docinfo.tex"
+REFF="$OUTF.ref"
+$CMD $INF > $OUTF
+do_diff $REFF $OUTF 
+
+CMD="../../tools/rst2latex.py"
 # with latex toc
 for F in toc ; do
   INF=test/$F.txt
