@@ -155,6 +155,7 @@ Specific:
   - Redefined "--stylesheet" as containing an invariant URL, used
     verbatim.  Added "--stylesheet-path", interpreted w.r.t. the
     working directory.
+  - Added "--footnote-references" option (superscript or brackets).
 
 * docutils/writers/pep_html.py:
 
@@ -238,6 +239,7 @@ Specific:
   - Restored the light gray background for inline literals.
   - Added support for "line_block" elements.
   - Added style for "address" elements.
+  - Removed "a.footnote-reference" style; doing it with ``<sup>`` now.
 
 * tools/pep2html.py:
 
