@@ -148,6 +148,7 @@ class RSTStateMachine(StateMachineWS):
         self.match_titles = match_titles
         if inliner is None:
             inliner = Inliner()
+        inliner.init_customizations(document.options)
         self.memo = Stuff(document=document,
                           reporter=document.reporter,
                           language=self.language,
@@ -407,6 +408,20 @@ class Inliner:
     Parse inline markup; call the `parse()` method.
     """
 
+    def __init__(self):
+        self.implicit_dispatch = [(self.patterns.uri, self.standalone_uri),]
+        """List of (pattern, bound method) tuples, used by
+        `self.implicit_inline`."""
+
+    def init_customizations(self, options):
+        """Option-based customizations; run when parsing begins."""
+        if options.pep_references:
+            self.implicit_dispatch.append((self.patterns.pep,
+                                           self.pep_reference))
+        if options.rfc_references:
+            self.implicit_dispatch.append((self.patterns.rfc,
+                                           self.rfc_reference))
+
     def parse(self, text, lineno, memo, parent):
         """
         Return 2 lists: nodes (text and inline elements), and system_messages.
@@ -548,7 +563,21 @@ class Inliner:
                   )
                 )
                 %(end_string_suffix)s
-                """ % locals(), re.VERBOSE))
+                """ % locals(), re.VERBOSE),
+          pep=re.compile(
+                r"""
+                %(start_string_prefix)s
+                (
+                  (pep-(?P<pepnum1>\d+)(.txt)?) # reference to source file
+                |
+                  (PEP\s+(?P<pepnum2>\d+))      # reference by name
+                )
+                %(end_string_suffix)s""" % locals(), re.VERBOSE),
+          rfc=re.compile(
+                r"""
+                %(start_string_prefix)s
+                (RFC(-|\s+)?(?P<rfcnum>\d+))
+                %(end_string_suffix)s""" % locals(), re.VERBOSE))
 
     def quoted_start(self, match):
         """Return 1 if inline markup start-string is 'quoted', 0 if not."""
@@ -787,31 +816,55 @@ class Inliner:
         else:                   # not a valid scheme
             raise MarkupMismatch
 
-    implicit = ((patterns.uri, standalone_uri),)
-    """List of (pattern, dispatch method) pairs."""
+    pep_url_local = 'pep-%04d.html'
+    pep_url_absolute = 'http://www.python.org/peps/pep-%04d.html'
+    pep_url = pep_url_absolute
+
+    def pep_reference(self, match, lineno):
+        text = match.group(0)
+        if text.startswith('pep-'):
+            pepnum = int(match.group('pepnum1'))
+        elif text.startswith('PEP'):
+            pepnum = int(match.group('pepnum2'))
+        else:
+            raise MarkupMismatch
+        ref = self.pep_url % pepnum
+        unescaped = unescape(text, 0)
+        return [nodes.reference(unescape(text, 1), unescaped, refuri=ref)]
+
+    rfc_url = 'http://www.faqs.org/rfcs/rfc%d.html'
+
+    def rfc_reference(self, match, lineno):
+        text = match.group(0)
+        if text.startswith('RFC'):
+            rfcnum = int(match.group('rfcnum'))
+            ref = self.rfc_url % rfcnum
+        else:
+            raise MarkupMismatch
+        unescaped = unescape(text, 0)
+        return [nodes.reference(unescape(text, 1), unescaped, refuri=ref)]
 
     def implicit_inline(self, text, lineno):
         """
-        Check each of the patterns in `self.implicit` for a match, and
-        dispatch to the stored method for the pattern.  Recursively check the
-        text before and after the match.  Return a list of `nodes.Text` and
-        inline element nodes.
+        Check each of the patterns in `self.implicit_dispatch` for a match,
+        and dispatch to the stored method for the pattern.  Recursively check
+        the text before and after the match.  Return a list of `nodes.Text`
+        and inline element nodes.
         """
         if not text:
             return []
-        for pattern, dispatch in self.implicit:
+        for pattern, method in self.implicit_dispatch:
             match = pattern.search(text)
             if match:
                 try:
                     # Must recurse on strings before *and* after the match;
                     # there may be multiple patterns.
                     return (self.implicit_inline(text[:match.start()], lineno)
-                            + dispatch(self, match, lineno) +
+                            + method(match, lineno) +
                             self.implicit_inline(text[match.end():], lineno))
                 except MarkupMismatch:
                     pass
         return [nodes.Text(unescape(text))]
-        
 
     dispatch = {'*': emphasis,
                 '**': strong,
@@ -1047,10 +1100,10 @@ class Body(RSTState):
         try:
             next_line = self.state_machine.next_line()
         except IndexError:              # end of input lines
-            self.state_machine.previous_line()            
+            self.state_machine.previous_line()
             return 1
         else:
-            self.state_machine.previous_line()            
+            self.state_machine.previous_line()
         if not next_line[:1].strip():   # blank or indented
             return 1
         next_enumerator = self.make_enumerator(ordinal + 1, sequence, format)
