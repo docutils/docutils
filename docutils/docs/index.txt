@@ -108,8 +108,8 @@ Docutils-general:
 * `OASIS XML Exchange Table Model Declaration Module
   <ref/soextblx.dtd>`__ (CALS tables DTD module)
 
-Although not in the "ref" directory, `PEP 258 <peps/pep-0258.html>`_
-is a must-read reference for any Docutils developer.
+Although not in the "ref" directory, `PEP 258`_ is a must-read
+reference for any Docutils developer.
 
 reStructuredText_:
 
