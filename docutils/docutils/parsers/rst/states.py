@@ -2146,13 +2146,13 @@ class Body(RSTState):
            re.compile(r"""
                       \.\.[ ]+          # explicit markup start
                       _                 # target indicator
-                      (?![ ])           # first char. not space
+                      (?![ ]|$)         # first char. not space or EOL
                       """, re.VERBOSE)),
           (substitution_def,
            re.compile(r"""
                       \.\.[ ]+          # explicit markup start
                       \|                # substitution indicator
-                      (?![ ])           # first char. not space
+                      (?![ ]|$)         # first char. not space or EOL
                       """, re.VERBOSE)),
           (directive,
            re.compile(r"""

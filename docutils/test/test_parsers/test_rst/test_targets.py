@@ -400,6 +400,14 @@ no blank line
     <paragraph>
         no blank line
 """],
+["""\
+.. _
+""",
+"""\
+<document source="test data">
+    <comment xml:space="preserve">
+        _
+"""],
 ]
 
 
