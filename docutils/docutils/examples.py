@@ -12,8 +12,8 @@ functions may be used as-is, or as models for variations.
 from docutils import core
 
 
-def html_parts(input_string, destination_path=None,
-               input_encoding='unicode', doctitle=1):
+def html_parts(input_string, source_path=None, destination_path=None,
+               input_encoding='unicode', doctitle=1, initial_header_level=1):
     """
     Given an input string, returns a dictionary of HTML document parts.
 
@@ -23,6 +23,8 @@ def html_parts(input_string, destination_path=None,
     Parameters:
 
     - `input_string`: A multi-line text string; required.
+    - `source_path`: Path to the source file or object.  Optional, but useful
+      for diagnostic output (system messages).
     - `destination_path`: Path to the file or object which will receive the
       output; optional.  Used for determining relative paths (stylesheets,
       source links, etc.).
@@ -32,17 +34,21 @@ def html_parts(input_string, destination_path=None,
     - `doctitle`: Disable the promotion of a lone top-level section title to
       document title (and subsequent section title to document subtitle
       promotion); enabled by default.
+    - `initial_header_level`: The initial level for header elements (e.g. 1
+      for "<h1>").
     """
     overrides = {'input_encoding': input_encoding,
-                 'doctitle_xform': doctitle}
+                 'doctitle_xform': doctitle,
+                 'initial_header_level': initial_header_level}
     parts = core.publish_parts(
-        source=input_string, destination_path=destination_path,
+        source=input_string, source_path=source_path,
+        destination_path=destination_path,
         writer_name='html', settings_overrides=overrides)
     return parts
 
-def html_fragment(input_string, destination_path=None,
+def html_fragment(input_string, source_path=None, destination_path=None,
                   input_encoding='unicode', output_encoding='unicode',
-                  doctitle=1):
+                  doctitle=1, initial_header_level=1):
     """
     Given an input string, returns an HTML fragment as a string.
 
@@ -55,8 +61,10 @@ def html_fragment(input_string, destination_path=None,
       string is desired, use the default value of "unicode" .
     """
     parts = html_parts(
-        input_string=input_string, destination_path=destination_path,
-        input_encoding=input_encoding, doctitle=doctitle)
+        input_string=input_string, source_path=source_path,
+        destination_path=destination_path,
+        input_encoding=input_encoding, doctitle=doctitle,
+        initial_header_level=initial_header_level)
     fragment = parts['fragment']
     if output_encoding != 'unicode':
         fragment = fragment.encode(output_encoding)
