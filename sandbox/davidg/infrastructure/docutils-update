@@ -1,0 +1,73 @@
+#! /bin/sh
+
+project=docutils
+dest=~/doc
+tmp=~/tmp/$project
+pylib=~/lib/python
+lib=$pylib/$project
+
+export PYTHONPATH=$pylib:$lib
+export CVSROOT=:pserver:anonymous@cvs.$project.sourceforge.net:/cvsroot/$project
+
+unconditional=0
+
+while getopts u opt
+do
+    case $opt in
+        u)  unconditional=1;;
+        \?) exit 2;;
+    esac
+done
+shift `expr $OPTIND - 1`
+
+# prep the tmp area
+rm -rf $tmp 2>&1 > /dev/null
+mkdir -p $tmp 2>&1 > /dev/null
+cd $tmp
+
+# gather the materials
+cvs -Q -z3 export -rHEAD $project
+cvs -Q -z3 export -rHEAD sandbox
+cvs -Q -z3 export -rHEAD web
+
+# create the snapshots
+tar -czf $project-snapshot.tgz $project
+tar -czf $project-sandbox-snapshot.tgz sandbox
+tar -czf $project-web-snapshot.tgz web
+
+# plant the snapshots
+mv *snapshot.tgz $dest
+
+# update htdocs
+cd $project
+cp -ru . $dest
+cd ..
+cp -ru sandbox $dest
+cd web
+cp -ru . $dest
+
+# destroy the evidence
+cd
+rm -rf $tmp
+
+# update library area
+cd $lib/web
+cvs -Q update 2>&1 > /dev/null
+cd $lib/sandbox
+cvs -Q update 2>&1 > /dev/null
+cd $lib
+cvs -Q update 2>&1 > /dev/null
+
+# update HTML docs
+cd $dest
+for htmlfile in `find . -name '*.html'` ; do
+    dir=`dirname $htmlfile`
+    base=`basename $htmlfile .html`
+    txtfile=$dir/$base.txt
+    if [ -e $txtfile ] ; then
+        if [ $unconditional -eq 1 -o $txtfile -nt $htmlfile ] ; then
+            echo $txtfile
+            ( cd $dir ; ~/bin/python $lib/tools/html.py -gst $base.txt $base.html )
+        fi
+    fi
+done
