@@ -291,6 +291,11 @@ class HTMLTranslator(nodes.NodeVisitor):
         """Construct and return an XML-compatible empty tag."""
         return self.starttag(node, tagname, suffix, infix=' /', **attributes)
 
+    def set_first_last(self, node):
+        if len(node):
+            node[0].set_class('first')
+            node[-1].set_class('last')
+
     def visit_Text(self, node):
         self.body.append(self.encode(node.astext()))
 
@@ -499,9 +504,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_definition(self, node):
         self.body.append('</dt>\n')
         self.body.append(self.starttag(node, 'dd', ''))
-        if len(node):
-            node[0].set_class('first')
-            node[-1].set_class('last')
+        self.set_first_last(node)
 
     def depart_definition(self, node):
         self.body.append('</dd>\n')
@@ -520,9 +523,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_description(self, node):
         self.body.append(self.starttag(node, 'td', ''))
-        if len(node):
-            node[0].set_class('first')
-            node[-1].set_class('last')
+        self.set_first_last(node)
 
     def depart_description(self, node):
         self.body.append('</td>')
@@ -597,9 +598,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.context.append('</%s>\n' % tagname.lower())
         if len(node) == 0:              # empty cell
             self.body.append('&nbsp;')
-        else:
-            node[0].set_class('first')
-            node[-1].set_class('last')
+        self.set_first_last(node)
 
     def depart_entry(self, node):
         self.body.append(self.context.pop())
@@ -646,9 +645,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_field_body(self, node):
         self.body.append(self.starttag(node, 'td', '', CLASS='field-body'))
-        if len(node):
-            node[0].set_class('first')
-            node[-1].set_class('last')
+        self.set_first_last(node)
 
     def depart_field_body(self, node):
         self.body.append('</td>\n')
@@ -979,7 +976,8 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_paragraph(self, node):
         # Omit <p> tags if this is an only child and optimizable.
-        if ((node.attributes in ({}, {'class': 'first'}, {'class': 'last'},
+        if (not isinstance(node.parent, nodes.compound) and
+            (node.attributes in ({}, {'class': 'first'}, {'class': 'last'},
                                  {'class': 'first last'})) and
             (self.compact_simple or
              self.compact_p and (len(node.parent) == 1 or
