@@ -479,6 +479,9 @@ class DependencyList:
     
     """
     List of dependencies, with file recording support.
+
+    Note that the output file is not automatically closed.  You have
+    to explicitly call the close() method.
     """
     
     def __init__(self, output_file=None, dependencies=[]):
@@ -520,6 +523,13 @@ class DependencyList:
             self.list.append(filename)
             if self.file is not None:
                 print >>self.file, filename
+
+    def close(self):
+        """
+        Close the output file.
+        """
+        self.file.close()
+        self.file = None
 
     def __repr__(self):
         data = repr(self.list)
