@@ -133,7 +133,9 @@ class TransformSpec:
             '''Returns boolean: true if resolved, false if not.'''
 
     Each function must have a "priority" attribute which will affect the order
-    the unknown_reference_resolvers are run.
+    the unknown_reference_resolvers are run::
+
+        reference_resolver.priority = 100
 
     Override in subclasses."""
 
