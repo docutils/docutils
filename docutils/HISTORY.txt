@@ -276,6 +276,9 @@ Specific:
 * docutils/parsers/rst/languages/de.py: Added to project; German
   mappings by Engelbert Gruber.
 
+* docutils/parsers/rst/languages/sk.py: Added to project; Slovak
+  mappings by Miroslav Vasko.
+
 * docutils/readers/__init__.py:
 
   - Added support for the observer pattern from ``utils.Reporter``, in
