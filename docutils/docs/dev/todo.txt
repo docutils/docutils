@@ -333,6 +333,36 @@ General
   & XMLs.  Aahz implemented something like this in
   sandbox/aahz/Effective/EffMap.py.
 
+* William Dode suggested that table cells be assigned "class"
+  attributes by columns, so that stylesheets can affect text
+  alignment.  Unfortunately, there doesn't seem to be a way (in HTML
+  at least) to leverage the "colspec" elements (HTML "col" tags) by
+  adding classes to them.  The resulting HTML is very verbose::
+
+      <td class="col1">111</td>
+      <td class="col2">222</td>
+      ...
+
+  At the very least, it should be an option.  People who don't use it
+  shouldn't be penalized by increases in their HTML file sizes.
+
+  Table rows could also be assigned classes (like odd/even).  That
+  would be easier to implement.
+
+  How should it be implemented?
+
+  * There could be writer options (column classes & row classes) with
+    standard values.
+
+  * The table directive could grow some options.  Something like
+    ":cell-classes: col1 col2 col3" (either must match the number of
+    columns, or repeat to fill?)  and ":row-classes: odd even" (repeat
+    to fill; body rows only, or header rows too?).
+
+  Probably per-table directive options are best.  The "class" values
+  could be used by any writer, and applying such classes to all tables
+  in a document with writer options is too broad.
+
 
 Documentation
 =============
@@ -1282,60 +1312,8 @@ when used in a document.
     internal section structure, with adornment styles independent of
     the main document.
 
-  - _`body.list-table`: The idea came from Dylan Jay:
-
-        ... to use a two level bulleted list with something to
-        indicate it should be rendered as a table ...
-
-    It's an interesting idea.  It could be implemented in as a
-    directive which transforms a uniform two-level bullet list into a
-    table.  Using a directive would allow the author to explicitly set
-    the table's orientation (by column or by row), the presence of row
-    headers, etc.
-
-    This is what it might look like::
-
-        .. list-table::
-
-           * - Treat
-             - Quantity
-             - Description
-           * - Albatross!
-             - 299
-             - On a stick!
-           * - Crunchy Frog!
-             - 1499
-             - If we took the bones out, it wouldn't be crunchy,
-               now would it?
-           * - Gannet Ripple!
-             - 199
-             - On a stick!
-
-    Issues:
-
-    * How to indicate that there's 1 header row?  Perhaps two lists?
-      ::
-
-          .. list-table::
-
-             + - Treat
-               - Quantity
-               - Description
-
-             * - Albatross!
-               - 299
-               - On a stick!
-
-      A directive option (``:headrows: 1``)?
-
-    * How to indicate the column widths?  A directive option? ::
-
-          .. list-table::
-             :widths: 15 10 35
-
-      Automatic defaults from the text used?
-
-    * How to handle row and/or column spans?
+  - _`body.list-table`: See `List-Driven Tables
+    <rst/alternatives.html#list-driven-tables>`_.
 
   - _`colorize.python`: Colorize Python code.  Fine for HTML output,
     but what about other formats?  Revert to a literal block?  Do we
