@@ -95,7 +95,8 @@ class Input(TransformSpec):
             try:
                 decoded = unicode(data, enc, self.error_handler)
                 self.successful_encoding = enc
-                return decoded
+                # Return decoded, removing BOMs.
+                return decoded.replace(u'\ufeff', u'')
             except (UnicodeError, LookupError), error:
                 pass
         if error is not None:
