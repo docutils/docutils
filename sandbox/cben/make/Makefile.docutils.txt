@@ -191,7 +191,9 @@ This makefile provides rules that support preprocessing by
 	$(docutils.)ENABLE_MATHHACK ?= 0
 	
 	$(docutils.)MATHHACK.SRCEXT := $($(docutils.)RST2LATEX.SRCEXT)
-	$(docutils.)MATHHACK.TRGEXT ?= $($(docutils.)RST2LATEX.SRCEXT).mathhack
+	ifeq "$(origin $(docutils.)MATHHACK.TRGEXT)" "undefined"
+	$(docutils.)MATHHACK.TRGEXT := $($(docutils.)RST2LATEX.SRCEXT).mathhack
+	endif
 	
 
 In theory, IMGMATHHACK is applicable to all tools.  It's not very useful
@@ -200,7 +202,9 @@ with anything but RST2HTML, so that's the only one we attach to currently...
 ::
 
 	$(docutils.)IMGMATHHACK.SRCEXT := $($(docutils.)RST2HTML.SRCEXT)
-	$(docutils.)IMGMATHHACK.TRGEXT ?= $($(docutils.)RST2HTML.SRCEXT).imgmathhack
+	ifeq "$(origin $(docutils.)IMGMATHHACK.TRGEXT)" "undefined"
+	$(docutils.)IMGMATHHACK.TRGEXT := $($(docutils.)RST2HTML.SRCEXT).imgmathhack
+	endif
 	
 	ifeq "$($(docutils.)ENABLE_MATHHACK)" "1"
 	$(docutils.)RST2LATEX.SRCEXT := $($(docutils.)MATHHACK.TRGEXT)
@@ -333,27 +337,45 @@ Chain to the tools.
 	
 	
 
-Extra options
-=============
+Config files and extra flags
+============================
+
+Consider using config files instead of flags for most tasks.  To specify
+config file(s) other than the default, set `CONFIG` to a space-separated
+list of them.  Later files override earlier ones (and all override the
+`DOCUTILSCONFIG` environment variable, which you should *not* touch in a
+Makefile, it's for the user).  Non-existant config files are ignored.
+
+Relative file names in `CONFIG` are relative to the current directory,
+independently of the target name.  If you use ``%`` in `CONFIG`, it will be
+replaced with the target name (without extension) and it will be
+interpretted relative to the target's directory -- giving you per-file
+configs.
+
+::
+
+	$(docutils.)CONFIG ?=
+	
+
+I found absolutely no way to implement in make per-directory config file
+dependencies that don't depend on the target basename.  You can just do::
+
+    $(docutils.)FLAGS += $(*D)/config.file.name
+
+but it won't be considered a dependency (which is not such a big issue).  Or
+you can always run make in the directory of the target...
 
 You can provide extra docutils options by setting variables named
 `<toolname>.FLAGS`.  `FLAGS` gives default flags for all tools.
 
 ::
 
-	$(docutils.)FLAGS ?=
+	$(docutils.)FLAGS += $(foreach c,$($(docutils.)CONFIG),--config=$(subst %,$(*D)/,$(findstring %,$(c)))$(subst %,$(*F),$(c)))
 	$(docutils.)RST2HTML.FLAGS += $($(docutils.)FLAGS)
 	$(docutils.)RST2LATEX.FLAGS += $($(docutils.)FLAGS)
 	$(docutils.)PEPTOOL.FLAGS += $($(docutils.)FLAGS)
 	
-
-Consider using config files instead of flags for most tasks.
-Note that you can do something like::
-
-    RST2HTML.FLAGS += --config=$(*D)/docutils.conf
-
-to use per-directory config files; similar tricks allow per-file config...
-
+	
 
 Extra dependencies
 ==================
@@ -361,24 +383,19 @@ Extra dependencies
 When docutils config files change, it usually affects docutils' so it should
 be rebuilt.  So we add them as dependencies.
 
-Figure out the config files from the environment:
+Figure out the default config files from the environment:
 
 ::
 
 	DOCUTILSCONFIG ?= /etc/docutils.conf:./docutils.conf:$(HOME)/.docutils
 	
 
-Please *don't* override `DOCUTILSCONFIG` in makefiles, it's for the user.
-Note that ``./docutils.conf`` is taken from the current working directory
-which need not be the same as the processed file's, which gives you some
-control.  Add ``--config=...`` to `FLAGS` for more control.
-
 You can set `CONFIG_DEPS` to override the depencies on config files without
 changing the actual config files used by docutils.  It's space-separated.
 
 ::
 
-	$(docutils.)CONFIG_DEPS ?= $(subst :, ,$(DOCUTILSCONFIG))
+	$(docutils.)CONFIG_DEPS ?= $(subst :, ,$(DOCUTILSCONFIG)) $($(docutils.)CONFIG)
 	
 
 `EXTRA_DEPS` specifies the actual extra dependencies.
@@ -398,6 +415,7 @@ yourself, as long as you don't provide commands, e.g. ::
 
 Typical extra depencies you'd want to add: HTML stylesheets (if you embed
 them), files appearing in ``.. include::``.
+
 
 HTML output
 ===========
