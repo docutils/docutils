@@ -1,5 +1,4 @@
-# WARNING TO PAUL: DON'T EDIT THIS FILE
-
+# WARNING TO PAUL: DON'T EDIT THIS FILE use update.py instead.
 import paul.options, sys, os, tempfile
 
 

@@ -13,6 +13,7 @@ if not var_file_exists:
 read_obj = open('var_file', 'r')
 lines = read_obj.readlines()
 data_location = lines[0]
+data_xslt_location = os.path.join(data_location, 'xslt_stylesheets')
 read_obj.close()
 
 
@@ -23,12 +24,8 @@ setup(name="rst_to_docbook",
     author="Paul Tremblay",
     author_email="phthenry@earthlink.net",
     packages=['rst_to_docbook'],
-    data_files = [(data_location, ["data/data.txt"])],
-    # apparently, the first in the tupple below
-    # is the dirctory to install to, and the second
-    # is the current location to build from?
-    # data_files = [("/etc/docutils_nest", ["data/configure.xml"])],
-    # scripts=["scripts/docutils-nest-xml.py"],
+    data_files = [(data_xslt_location, ["data/xslt_stylesheets/*"])],
+    scripts=["scripts/rst2docbook.py"],
     )
 
 os.remove('var_file')

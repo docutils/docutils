@@ -145,7 +145,7 @@ class ConvertRstToDoc:
     def __xsl_convert_to_docbook(self, file, output):
         sys.stdout.write('doing final converstion with xslt...\n')
         xsl_file = os.path.join(self.__rst_2_dbk_dir,
-            'xslt_stylesheets', 'reStruct_to_docbook.xsl'
+            'xslt_stylesheets', 'reStructure_to_docbook.xsl'
                 )
          # reStructure_to_docbook.xsl
         trans_obj =  rst_to_docbook.xsl_convert.XslConvert()
