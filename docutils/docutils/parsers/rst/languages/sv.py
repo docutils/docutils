@@ -24,16 +24,18 @@ directives = {
       u'tips': 'tip',
       u'varning': 'warning',
       u'fr\u00e5gor': 'questions',
-      u'fr\u00e5gor-och-svar': 'questions', # NOTE: A bit long, but recommended by
-      u'vanliga-fr\u00e5gor': 'questions',  # NOTE: http://www.nada.kth.se/dataterm/
+      # NOTE: A bit long, but recommended by http://www.nada.kth.se/dataterm/:
+      u'fr\u00e5gor-och-svar': 'questions',
+      u'vanliga-fr\u00e5gor': 'questions',  
       u'meta': 'meta',
-      # u'bildkarta': 'imagemap', # FIXME: Translation might be to literal.
+      # u'bildkarta': 'imagemap',   # FIXME: Translation might be too literal.
       u'bild': 'image',
       u'figur': 'figure',
-      # u'r\u00e5': 'raw',             # FIXME: Translation might be to literal.
-      u'innehåll': 'contents',
+      # u'r\u00e5': 'raw',          # FIXME: Translation might be too literal.
+      u'inneh\u00e5ll': 'contents',
       # u'fotnoter': 'footnotes',
       # u'citeringar': 'citations',
       # u'\u00e4mne': 'topic',
       u'restructuredtext-test-directive': 'restructuredtext-test-directive' }
-"""Swedish name to registered (in directives/__init__.py) directive name mapping."""
+"""Swedish name to registered (in directives/__init__.py) directive name
+mapping."""
