@@ -74,14 +74,14 @@ class attribute_tuple(PythonStructural, TextElement): pass
 
 
 # Collect all the classes we've written above
-node_class_names = []
-def build_node_class_names():
+def install_node_class_names():
+    node_class_names = []
     for name, var in globals().items():
         if (type(var) is types.ClassType
             and issubclass(var, PythonStructural) \
             and name.lower() == name):
             node_class_names.append(var.tagname or name)
-
-# Register the new node names with GenericNodeVisitor and
-# SpecificNodeVisitor:
-nodes._add_node_class_names(node_class_names)
+    # Register the new node names with GenericNodeVisitor and
+    # SpecificNodeVisitor:
+    nodes._add_node_class_names(node_class_names)
+install_node_class_names()

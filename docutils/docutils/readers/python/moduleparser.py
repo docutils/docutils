@@ -7,11 +7,10 @@
 """
 Parser for Python modules.
 
-The `parse_module()` function takes a module's text and file name, runs it
-through the module parser (using compiler.py and tokenize.py) and produces a
-"module documentation tree": a high-level AST full of nodes that are
-interesting from an auto-documentation standpoint.  For example, given this
-module (x.py)::
+The `parse_module()` function takes a module's text and file name,
+runs it through the module parser (using compiler.py and tokenize.py)
+and produces a parse tree of the source code, using the nodes as found
+in pynodes.py.  For example, given this module (x.py)::
 
     # comment
 
@@ -50,69 +49,95 @@ module (x.py)::
 
 The module parser will produce this module documentation tree::
 
-    <Module filename="test data">
-        <Comment lineno=1>
-            comment
-        <Docstring>
+    <module_section filename="test data">
+        <docstring>
             Docstring
-        <Docstring lineno="5">
+        <docstring lineno="5">
             Additional docstring
-        <Attribute lineno="7" name="__docformat__">
-            <Expression lineno="7">
+        <attribute lineno="7">
+	    <object_name>
+	        __docformat__
+            <expression_value lineno="7">
                 'reStructuredText'
-        <Attribute lineno="9" name="a">
-            <Expression lineno="9">
+        <attribute lineno="9">
+	    <object_name>
+	        a
+            <expression_value lineno="9">
                 1
-            <Docstring lineno="10">
+            <docstring lineno="10">
                 Attribute docstring
-        <Class bases="Super" lineno="12" name="C">
-            <Docstring lineno="12">
+        <class_section lineno="12">
+	    <object_name>
+	        C
+            <class_base>
+	        Super
+            <docstring lineno="12">
                 C's docstring
-            <Attribute lineno="16" name="class_attribute">
-                <Expression lineno="16">
+            <attribute lineno="16">
+	        <object_name>
+		    class_attribute
+                <expression_value lineno="16">
                     1
-                <Docstring lineno="17">
+                <docstring lineno="17">
                     class_attribute's docstring
-            <Method lineno="19" name="__init__">
-                <Docstring lineno="19">
+            <method_section lineno="19">
+	        <object_name>
+		    __init__
+                <docstring lineno="19">
                     __init__'s docstring
-                <ParameterList lineno="19">
-                    <Parameter lineno="19" name="self">
-                    <Parameter lineno="19" name="text">
-                        <Default lineno="19">
+                <parameter_list lineno="19">
+                    <parameter lineno="19">
+		        <object_name>
+			    self
+                    <parameter lineno="19">
+		        <object_name>
+			    text
+                        <parameter_default lineno="19">
                             None
-                <Attribute lineno="22" name="self.instance_attribute">
-                    <Expression lineno="22">
+                <attribute lineno="22">
+		    <object_name>
+		        self.instance_attribute
+                    <expression_value lineno="22">
                         (text * 7 + ' whaddyaknow')
-                    <Docstring lineno="24">
+                    <docstring lineno="24">
                         instance_attribute's docstring
-        <Function lineno="27" name="f">
-            <Docstring lineno="27">
+        <function_section lineno="27">
+	    <object_name>
+	        f
+            <docstring lineno="27">
                 f's docstring
-            <ParameterList lineno="27">
-                <Parameter lineno="27" name="x">
-                    <Comment>
+            <parameter_list lineno="27">
+                <parameter lineno="27">
+		    <object_name>
+		        x
+                    <comment>
                         # parameter x
-                <Parameter lineno="27" name="y">
-                    <Default lineno="27">
+                <parameter lineno="27">
+		    <object_name>
+		        y
+                    <parameter_default lineno="27">
                         a * 5
-                    <Comment>
+                    <comment>
                         # parameter y
-                <ExcessPositionalArguments lineno="27" name="args">
-                    <Comment>
+                <parameter excess_positional="1" lineno="27">
+		    <object_name>
+		        args
+                    <comment>
                         # parameter args
-        <Attribute lineno="33" name="f.function_attribute">
-            <Expression lineno="33">
+        <attribute lineno="33">
+	    <object_name>
+	        f.function_attribute
+            <expression_value lineno="33">
                 1
-            <Docstring lineno="34">
+            <docstring lineno="34">
                 f.function_attribute's docstring
 
 (Comments are not implemented yet.)
 
 compiler.parse() provides most of what's needed for this doctree, and
-"tokenize" can be used to get the rest.  We can determine the line number from
-the compiler.parse() AST, and the TokenParser.rhs(lineno) method provides the
-rest.
+"tokenize" can be used to get the rest.  We can determine the line
+number from the compiler.parse() AST, and the TokenParser.rhs(lineno)
+method provides the rest.
 
 The Docutils Python reader component will transform this module doctree into a
 Python-specific Docutils doctree, and then a `stylist transform`_ will
