@@ -84,6 +84,14 @@ class Writer(writers.Writer):
           ['--has-parts'],
           {'action': 'store_true',
            'validator': frontend.validate_boolean}),
+         ('Use dashes (Lout --).  See dashes-regexp.',
+          ['--use-dashes'],
+          {'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Regular expression used to find dashes, if use-dashes is true.  '
+          'Default: `(?<![\\w"{-])[-](?![\\w"}-])\'.',
+          ['--dashes-regexp'],
+          {'default': r'(?<![\w"{-])[-](?![\w"}-])', 'metavar': '<regexp>'}),
         ))
 
     settings_defaults = {'output_encoding': 'latin-1'}
@@ -211,6 +219,8 @@ class LoutTranslator(nodes.NodeVisitor):
             self.preface = []
             self.introduction = []
         self.topic_class = ''
+        self.kill_next_paragraph = False
+        self.dashes_re = re.compile(settings.dashes_regexp)
 
     def astext(self):
         return ''.join(self.body)
@@ -239,8 +249,19 @@ class LoutTranslator(nodes.NodeVisitor):
                     newt.append('"\\""')
                 newt.append(oldt[part].replace('\\', r'"\\"'))
             text = ''.join(newt)
+        # special chars
         for c in self._special_chars:
             text = text.replace(c, '"%s"' % c)
+        # Lout replaces -- and --- for wide dash characters - we don't want that
+        newt = []
+        for part in text.split('---'):
+            newt.append(part.replace('--', '"--"'))
+        text = '{@OneRow {- |2p {-} |2p -}}'.join(newt)
+        # insert dashes, if requested
+        # FIXME: have to document how this interacts with previous replacements
+        if self.settings.use_dashes:
+            text = self.dashes_re.sub('--', text)
+        # done
         return text
 
     def attval(self, text, whitespace=re.compile('[\n\r\t\v\f]')):
@@ -336,8 +357,9 @@ class LoutTranslator(nodes.NodeVisitor):
         self.body.append('@BulletList')
 
     def depart_bullet_list(self, node):
-        self.body.append('@EndList')
-
+        self.body.append('\n@EndList\n')
+        self.kill_next_paragraph = True
+    
     def visit_caption(self, node):
         self.body.append(self.starttag(node, 'p', '', CLASS='caption'))
 
@@ -426,7 +448,7 @@ class LoutTranslator(nodes.NodeVisitor):
 
     def visit_definition(self, node):
         self.body.append(' { ')
-        node['kill-first-paragraph'] = True
+        self.kill_next_paragraph = True
 
     def depart_definition(self, node):
         self.body.append(' }\n')
@@ -436,6 +458,7 @@ class LoutTranslator(nodes.NodeVisitor):
 
     def depart_definition_list(self, node):
         self.body.append('\n@EndList\n')
+        self.kill_next_paragraph = True
 
     def visit_definition_list_item(self, node):
         pass
@@ -556,7 +579,7 @@ class LoutTranslator(nodes.NodeVisitor):
         self.body.append('%s { ' % letter)
         if isinstance(node.parent.parent, nodes.thead):
             self.body.append('@Heading { ')
-        node['kill-first-paragraph'] = True
+        self.kill_next_paragraph = True
         return
         atts = {}
         if node.has_key('morerows'):
@@ -590,6 +613,7 @@ class LoutTranslator(nodes.NodeVisitor):
 
     def depart_enumerated_list(self, node):
         self.body.append('\n@CurveBox paint { red } { "/" ol }\n')
+        #self.kill_next_paragraph = True
 
     def visit_error(self, node):
         self.visit_admonition(node, 'error')
@@ -607,7 +631,7 @@ class LoutTranslator(nodes.NodeVisitor):
 
     def visit_field_body(self, node):
         self.body.append(' { ')
-        node['kill-first-paragraph'] = True
+        self.kill_next_paragraph = True
 
     def depart_field_body(self, node):
         self.body.append(' }\n')
@@ -618,6 +642,7 @@ class LoutTranslator(nodes.NodeVisitor):
 
     def depart_field_list(self, node):
         self.body.append('\n@EndList\n')
+        self.kill_next_paragraph = True
 
     def visit_field_name(self, node):
         if len(node.astext()) > 7:
@@ -766,7 +791,7 @@ class LoutTranslator(nodes.NodeVisitor):
 
     def visit_list_item(self, node):
         self.body.append('\n@ListItem { ')
-        node['kill-first-paragraph'] = True
+        self.kill_next_paragraph = True
 
     def depart_list_item(self, node):
         self.body.append(' }\n')
@@ -841,6 +866,7 @@ class LoutTranslator(nodes.NodeVisitor):
 
     def depart_option_list(self, node):
         self.body.append('\n@CurveBox paint { red } { "/" tbody }\n@CurveBox paint { red } { "/" table }\n')
+        #self.kill_next_paragraph = True
 
     def visit_option_list_item(self, node):
         self.body.append(self.starttag(node, 'tr', ''))
@@ -861,8 +887,8 @@ class LoutTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item()
 
     def visit_paragraph(self, node):
-        if node.parent.get('kill-first-paragraph'):
-            del node.parent['kill-first-paragraph']
+        if self.kill_next_paragraph:
+            self.kill_next_paragraph = False
         else:
             self.body.append('\n@PP\n')
 
@@ -920,10 +946,13 @@ class LoutTranslator(nodes.NodeVisitor):
         pass
 
     def visit_rubric(self, node):
-        self.body.append(self.starttag(node, 'p', '', CLASS='rubric'))
+        # red perhaps?
+        self.body.append('@RightDisplay @I {')
+
 
     def depart_rubric(self, node):
-        self.body.append('\n@CurveBox paint { red } { "/" p }\n')
+        self.body.append('}\n')
+        self.kill_next_paragraph = True
 
     def visit_section(self, node):
         #print 'visit section level', self.section_level, node.__dict__
@@ -1013,7 +1042,7 @@ class LoutTranslator(nodes.NodeVisitor):
                     self.body.append('  @Tag { %s }\n' % node['id'])
                 if extra:
                     self.body.append(extra)
-                self.body.append('@Begin')
+                self.body.append('@Begin\n')
             elif level > 4: # unsupported level, let's cheat
                 # IMPROVEME: perhaps allow two or three different levels?
                 self.body.extend(['\n@Display @Heading { ',
@@ -1021,16 +1050,8 @@ class LoutTranslator(nodes.NodeVisitor):
                                   ' }\n'])
                 self.section_title = len(self.body) - 2
                 self.section_commands.append(None)
-###
-##             self.body.append(
-##                   self.starttag(node, 'h%s' % self.section_level, ''))
-##             atts = {}
-##             if node.parent.hasattr('id'):
-##                 atts['name'] = node.parent['id']
-##             if node.hasattr('refid'):
-##                 atts['class'] = 'toc-backref'
-##                 atts['href'] = '#' + node['refid']
-##             self.body.append(self.starttag({}, 'a', '', **atts))
+        # reset state stuff that may be left over
+        self.kill_next_paragraph = False
 
     def depart_section(self, node):
         while self.section_nesting > self.section_level:
@@ -1045,6 +1066,7 @@ class LoutTranslator(nodes.NodeVisitor):
     def visit_sidebar(self, node):
         self.body.append('\n@SideBar { ')
         self.in_sidebar = 1
+        self.kill_next_paragraph = False
 
     def depart_sidebar(self, node):
         self.body.append(' }\n')
@@ -1226,7 +1248,7 @@ class LoutTranslator(nodes.NodeVisitor):
         self.topic_class = ''
 
     def visit_transition(self, node):
-        self.body.append(self.emptytag(node, 'hr'))
+        self.body.append('\n@LP @FullWidthRule\n')
 
     def depart_transition(self, node):
         pass
