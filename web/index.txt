@@ -212,7 +212,8 @@ The Sandbox__ is a place to play around, to try out and share ideas.
 It's a part of the CVS repository but it isn't distributed as part of
 Docutils releases (you can get a recent tarball from the `daily
 snapshots`_).  Each developer who wants to play in it should create
-their own subdirectory (suggested name: given name + family initial).
+their own subdirectory (suggested name: SourceForge ID, or given name
++ family initial).
 
 Please feel free to `visit the sandbox`__.
 
