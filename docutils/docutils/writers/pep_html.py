@@ -36,8 +36,10 @@ class Writer(html4css1.Writer):
          ('Home URL for this PEP.  Default is "." (current directory).',
           ['--pep-home'],
           {'default': '.', 'metavar': '<URL>'}),
-         (optik.SUPPRESS_HELP, ['--no-random'],
-          {'action': 'store_true'}),))
+         # Workaround for SourceForge's broken Python
+         # (``import random`` causes a segfault).
+         (optik.SUPPRESS_HELP,
+          ['--no-random'], {'action': 'store_true'}),))
 
     def __init__(self):
         html4css1.Writer.__init__(self)
