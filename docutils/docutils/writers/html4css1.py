@@ -981,16 +981,25 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_organization(self, node):
         self.depart_docinfo_item()
 
-    def visit_paragraph(self, node):
-        # Omit <p> tags if this is an only child and optimizable.
-        if (not isinstance(node.parent, nodes.document) and
-            not isinstance(node.parent, nodes.compound) and
-            (node.attributes in ({}, {'class': 'first'}, {'class': 'last'},
+    def should_be_compact_paragraph(self, node):
+        """
+        Determine if the <p> tags around paragraph ``node`` can be omitted.
+        """
+        if (isinstance(node.parent, nodes.document) or
+            isinstance(node.parent, nodes.compound)):
+            # Never compact paragraphs in document or compound.
+            return 0
+        if ((node.attributes in ({}, {'class': 'first'}, {'class': 'last'},
                                  {'class': 'first last'})) and
             (self.compact_simple or
              self.compact_p and (len(node.parent) == 1 or
                                  len(node.parent) == 2 and
                                  isinstance(node.parent[0], nodes.label)))):
+            return 1
+        return 0
+
+    def visit_paragraph(self, node):
+        if self.should_be_compact_paragraph(node):
             self.context.append('')
         else:
             self.body.append(self.starttag(node, 'p', ''))
