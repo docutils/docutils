@@ -13,8 +13,8 @@ from the ``docs`` directory of the `development snapshots`__.  They
 are also distributed with the `latest project release package`__, but
 those may not be completely up to date.
 
-__ ../index.html#development-snapshots
-__ ../index.html#latest-project-release-package
+__ http://docutils.sourceforge.net/#development-snapshots
+__ http://docutils.sourceforge.net/#latest-project-release-package
 
 
 .. contents::
@@ -84,7 +84,7 @@ Docutils-general:
 * `Docutils Configuration Files <user/config.html>`__
 * `Docutils LaTeX Writer <user/latex.html>`__
 
-`reStructuredText <../rst.html>`_:
+`reStructuredText <http://docutils.sourceforge.net/rst.html>`_:
 
 * `A ReStructuredText Primer (HTML) <user/rst/quickstart.html>`__ (or
   `text source <user/rst/quickstart.txt>`__)
