@@ -16,7 +16,10 @@ custom component objects first, and pass *them* to
 
 __docformat__ = 'reStructuredText'
 
-import readers, parsers, writers, utils
+import sys
+from docutils import Component
+from docutils import readers, parsers, writers
+from docutils.frontend import OptionParser
 
 
 class Publisher:
@@ -25,63 +28,95 @@ class Publisher:
     A facade encapsulating the high-level logic of a Docutils system.
     """
 
-    reporter = None
-    """A `utils.Reporter` instance used for all document processing."""
+    def __init__(self, reader=None, parser=None, writer=None):
+        """
+        Initial setup.  If any of `reader`, `parser`, or `writer` are not
+        specified, the corresponding ``set_...`` method should be called with
+        a component name (`set_reader` sets the parser as well).
+        """
 
-    def __init__(self, reader=None, parser=None, writer=None, reporter=None,
-                 language_code='en', report_level=2, halt_level=4,
-                 warning_stream=None, debug=0):
-        """
-        Initial setup.  If any of `reader`, `parser`, or `writer` are
-        not specified, the corresponding ``set_...`` method should be
-        called with a component name.
-        """
         self.reader = reader
+        """A `readers.Reader` instance."""
+        
         self.parser = parser
-        self.writer = writer
-        if not reporter:
-            reporter = utils.Reporter(report_level, halt_level,
-                                      warning_stream, debug)
-        self.reporter = reporter
-        self.language_code = language_code
+        """A `parsers.Parser` instance."""
 
-    def set_reader(self, reader_name, parser, parser_name,
-                   language_code=None):
+        self.writer = writer
+        """A `writers.Writer` instance."""
+
+        self.options = None
+        """An object containing Docutils settings as instance attributes.
+        Set by `self.process_command_line()` or `self.set_options()`."""
+
+        self.source = None
+        """The source of input data."""
+
+        self.destination = None
+        """The destination for docutils output."""
+
+    def set_reader(self, reader_name, parser, parser_name):
         """Set `self.reader` by name."""
         reader_class = readers.get_reader_class(reader_name)
-        self.reader = reader_class(self.reporter, parser, parser_name,
-                                   language_code or self.language_code)
-
-    def set_parser(self, parser_name):
-        """Set `self.parser` by name."""
-        parser_class = parsers.get_parser_class(parser_name)
-        self.parser = parser_class()
+        self.reader = reader_class(parser, parser_name)
 
     def set_writer(self, writer_name):
         """Set `self.writer` by name."""
         writer_class = writers.get_writer_class(writer_name)
         self.writer = writer_class()
 
-    def publish(self, source, destination):
+    def set_options(self, **defaults):
         """
-        Run `source` through `self.reader`, then through `self.writer` to
-        `destination`.
+        Set default option values (keyword arguments).
+
+        Set components first (`self.set_reader` & `self.set_writer`).
+        Overrides the command line.
         """
-        document = self.reader.read(source, self.parser)
-        self.writer.write(document, destination)
+        option_parser = OptionParser(
+            components=(self.reader, self.parser, self.writer),
+            defaults=defaults)
+        self.options = option_parser.get_default_values()
+
+    def process_command_line(self, argv=None, usage=None):
+        """
+        Pass an empty list to `argv` to avoid reading `sys.argv` (the
+        default).
+        
+        Set components first (`self.set_reader` & `self.set_writer`).
+        """
+        option_parser = OptionParser(
+            components=(self.reader, self.parser, self.writer), usage=usage)
+        if argv is None:
+            argv = sys.argv[1:]
+        self.options, self.source, self.destination \
+                      = option_parser.parse_args(argv)
+        """
+        # For testing purposes:
+        from pprint import pformat
+        print 'options:'
+        print pformat(options.__dict__)
+        print 'source=%r, destination=%r' % (source, destination)
+        sys.exit(0)
+        """
+
+    def publish(self, argv=None, usage=None):
+        """
+        Process command line options and arguments, run `self.reader`
+        and then `self.writer`.
+        """
+        if self.options is None:
+            self.process_command_line(argv, usage)
+        document = self.reader.read(self.source, self.parser, self.options)
+        self.writer.write(document, self.destination)
 
 
-def publish(source=None, destination=None,
-            reader=None, reader_name='standalone',
+def publish(reader=None, reader_name='standalone',
             parser=None, parser_name='restructuredtext',
             writer=None, writer_name='pseudoxml',
-            reporter=None, language_code='en',
-            report_level=2, halt_level=4, warning_stream=None, debug=0):
+            argv=None, usage=None):
     """A convenience function; set up & run a `Publisher`."""
-    pub = Publisher(reader, parser, writer, reporter, language_code,
-                    report_level, halt_level, warning_stream, debug)
+    pub = Publisher(reader, parser, writer)
     if reader is None:
         pub.set_reader(reader_name, parser, parser_name)
     if writer is None:
         pub.set_writer(writer_name)
-    pub.publish(source, destination)
+    pub.publish(argv, usage)
