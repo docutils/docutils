@@ -1,0 +1,220 @@
+Adding <group>, losing <package_section> and their ilk
+======================================================
+
+:Author: Tibs
+:Date: 2001-11-18
+
+Background
+----------
+I am currently writing software that will take information from
+Python source files, produce a DPS node tree therefrom, and allow
+the user to generate HTML from that.
+
+My initial implementation produced a *variant* of the DPS node
+tree, which contained many structures that related closely to the
+information derived from Python - for instance, something like::
+
+    <py_class name="Fred">
+        <docstring>
+            This is a very silly class.
+        <py_attr_list>
+            <py_attr name="jim">
+        <py_method "name="method">
+
+For various reasons, the (implicit) DTD wasn't shaping up very
+like that proposed by David Goodger, so I asked about the
+possibility of amending the "standard" DTD. This led to a
+discussion of how the flow of information through a DPS processor
+should actually work, with the result being David's diagram
+[#diagram]_::
+
+  +--------+     +--------+     +------------+     +--------+
+  | READER | --> | linker | --> | transforms | --> | WRITER |
+  +--------+     +--------+     +------------+     +--------+
+      |                          TOC, index,            |
+      |                          etc. (optional)        |
+  +--------+                                       +--------+
+  | PARSER |                                       | filer  |
+  +--------+                                       +--------+ 
+
+David also made the point that, within this plan, the result of
+the ``linker`` phase is a normal DPS tree, which can be
+transformed with any of the "standard" transformation tools (for
+instance, to resolve automatic footnotes), and then output with
+any writer.
+
+Whilst David's diagram is not *quite* how I see the process, it's
+close enough for this purpose. Thus pydps [#pydps]_ might be shown
+as::
+
+  +--------+     +--------------+     +------------+     +---------+
+  | READER | --> | transform.py | --> | transforms | --> | html.py |
+  +--------+     +--------------+     +------------+     +---------+
+      |                                                      |
+  +----------+                                     +---------------+
+  | visit.py |                                     | buildhtml.py  |
+  +----------+                                     +---------------+
+
+The "READER" is implicit in the main utility (currently
+``pydps.py``), and locates the relevant Python files. It then
+uses ``visit.py`` to generate a tree representing the Python code
+(the Python ``compiler`` module, standard with Python 2.2 and
+above, but in ``Tools`` before that, is used).
+
+``transform.py`` (which, by David's diagrams, should maybe be
+called ``link``) transforms that information into a proper DPS
+node tree. At the time of writing, no transformations are done.
+
+Finally, HTML is output from the DPS node tree by ``html.py``.
+
+So, in summary:
+
+   1. ``transform.py`` generates a *normal* DPS tree. It doesn't
+      use any "odd" nodes (except <group> - but we'll discuss
+      that later on). This means that it should be possible to
+      plug in any other writer, and produce a different format as
+      output - a very significant advantage.
+
+   2. ``html.py`` expects to be given a *normal* DPS tree. This
+      means that it should be usable by any other utility that
+      also provides a normal DPS tree - again an advantage.
+
+The problem
+-----------
+But there is a clash in requirements here. Whilst it is very nice
+to be able to represent the Python information as "normal" DPS
+(guaranteeing that anyone can do useful things with it), there is
+some need to transfer information that goes beyond that. There
+are two main reasons for wanting to do this:
+
+  * Data mining
+  * Presentation
+
+For the first, although DPS/reST/pydps is primarily about
+producing human-viewable documentation, it might also be nice to
+be able to extract parts of it automatically, for various
+purposes - for instance, retrieve just the information about
+which classes inherit from other. This information will, in part,
+be obvious from the text chosen within the document (a title like
+"Class Fred" might be taken to be useful, for instance!), but it
+would be nice to give a bit more help.
+
+For the second, it's relatively difficult to produce better
+layout for DPS Python documentation without more information to
+work on. If one uses the (rather garish) default presentation
+produced by pydps (and no, I'm not saying that's a *nice*
+presentation, but it is the one I've got as an example), it is
+clearly useful to be able to:
+
+  1. group together the package/class/method/etc title and its
+     full name/path/whatever
+
+  2. group together a method or function's signature and its
+     docstring
+
+David's original approach to this was to introduce a host of
+Python specific tags into ``nodes.py`` [#nodes]_ - for instance::
+
+    package_section
+    module_section
+    ...
+    instance_attribute_section
+    ...
+    parameter_item
+    parameter_tuple
+    ...
+    package
+    module
+    class_attribute
+
+There are several problems with approach. Perhaps the most
+serious is that *all* generic DPS writers need to understand
+this host of elements that are only relevant to Python. Clearly,
+someone writing a writer for other purposes may be reluctant to
+go to this (to them) redundant effort.
+
+From my point of view, an immediate problem is that the set of
+elements is not *quite* what I want - which means working towards
+a set of patches for ``nodes.py`` and the relevant DTD, and
+getting David to agree to them (well, that last is a useful
+process to have in place, but still). Since I'm not likely to get
+it right immediately, this is a repetitive process.
+
+Lastly, one might imagine someone from another programming
+language domain adopting DPS/reST. One can expect them to be
+frustrated if the set of constructs provided for Python doesn't
+quite match the set of constructs required to describe their
+language in a natural manner.
+
+Luckily (!), I have a counter proposal, which hopefully keeps the
+baby and just loses the bath water.
+
+Groups and "style"
+------------------
+The first thing that I realised was that, for convenience of
+output at least, I wanted to be able to group elements together -
+or, in terms of the DPS tree, insert an arbitrary "subroot"
+within the tree to 'abstract' a branch of the tree.
+
+This is particularly useful for linking together the parts of the
+text that deal with (for instance) attribution, or unusual
+globals, without having to embed yet another section.
+
+There is, of course, precedent. HTML provides <div> and <span> -
+one for "structural" elements, and one for inline elements (I
+forget which is which), and TeX and LaTeX are well-known for
+their use of grouping (e.g., the ``\begin{xxx}`` and
+``\end{xxx}`` in LaTeX).
+
+I don't consider it worth making the <div>/<span> distinction in
+the context of a tree - it is perfectly evident what is beingp
+grouped from the elements themselves.
+
+Once one has a <group> element, it is natural to annotate it with
+*what* it is a group of/for. I chose the arbitrary term "style" -
+partly because it is not used in HTML/XML for any purpose I am
+aware of.
+
+And once one has the "style" attribute, it becomes possible to
+use it elsewhere - most notably in <section> elements, saving the
+need for a myriad of different sections for different purposes.
+
+In these instances, it is perhaps acting more like the "class"
+attribute in HTML - indicating, to some extent, meaning, but
+aimed mostly at presentation (via CSS).
+
+The other obvious place to use it is in the automatically
+generated text for things like names, where (at least
+pre-"combing"/transformation) one is "pretending" to have
+assigned a role (just as a person might in a docstring) (but see
+[#style]_).
+
+Summary
+-------
+Current DPS defines many element types for use in Python code
+representation.
+
+However, there are major advantages in only using the "simple"
+DPS nodes for all purposes.
+
+This becomes simple and practical given a single extra, general
+purpose, element: <group>.
+
+Furthermore, adding a standard attribute called "style" (or
+perhaps "role" - see [#style]_) seems to fulfil any other
+outstanding requirements.
+
+References
+----------
+.. [#diagram] in email by David Goodger to Doc-SIG, dated
+   21 September 2001 04:31, "Re: [Doc-SIG] DPS components".
+
+.. [#style] Hmm - maybe "style" should be "role", to match
+   with the way that a :role:`of something` gets handled...
+
+.. [#pydps] Normally to be found at
+   http://www.tibsnjoan.co.uk/reST/pydps.tgz,
+   although note that this is not currently up-to-date.
+
+.. [#nodes] dps/dps/nodes.py in the DPS distribution
+   (``dps.nodes`` if one is importing it).
