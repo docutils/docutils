@@ -74,7 +74,6 @@ def raw(name, arguments, options, content, lineno,
     """
     attributes = {'format': arguments[0]}
     encoding = options.get('encoding', state.document.settings.input_encoding)
-    error_handler = state.document.settings.input_encoding_error_handler
     if content:
         if options.has_key('file') or options.has_key('url'):
             error = state_machine.reporter.error(
