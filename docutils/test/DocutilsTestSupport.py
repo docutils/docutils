@@ -807,7 +807,7 @@ def _format_str(*args):
             assert r[0] == r[-1]
             r = r[1:-1]
             r = (stripped + 3 * quote_char + '\\\n' +
-                 re.sub(r'(?<=[^\\])((\\\\)*)\\n', r'\1\n', r) +
+                 re.sub(r'(?<!\\)((\\\\)*)\\n', r'\1\n', r) +
                  3 * quote_char)
             r = re.sub(r' \n', r' \\n\\\n', r)
         return_tuple.append(r)
