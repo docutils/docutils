@@ -124,26 +124,26 @@ u"""\
         \u2122
 """],
 ["""
-.. |too big for int| unicode:: 0x1111111111
+.. |too big for int| unicode:: 0x111111111111111111
 .. |too big for unicode| unicode:: 0x11111111
 """,
 """\
 <document source="test data">
     <system_message level="3" line="2" source="test data" type="ERROR">
         <paragraph>
-            Invalid character code: 0x1111111111
+            Invalid character code: 0x111111111111111111
             OverflowError: long int too large to convert to int
         <literal_block xml:space="preserve">
-            unicode:: 0x1111111111
+            unicode:: 0x111111111111111111
     <system_message level="2" line="2" source="test data" type="WARNING">
         <paragraph>
             Substitution definition "too big for int" empty or invalid.
         <literal_block xml:space="preserve">
-            .. |too big for int| unicode:: 0x1111111111
+            .. |too big for int| unicode:: 0x111111111111111111
     <system_message level="3" line="3" source="test data" type="ERROR">
         <paragraph>
             Invalid character code: 0x11111111
-            ValueError: unichr() arg not in range(0x10000) (narrow Python build)
+            %s
         <literal_block xml:space="preserve">
             unicode:: 0x11111111
     <system_message level="2" line="3" source="test data" type="WARNING">
@@ -151,7 +151,7 @@ u"""\
             Substitution definition "too big for unicode" empty or invalid.
         <literal_block xml:space="preserve">
             .. |too big for unicode| unicode:: 0x11111111
-"""],
+""" % DocutilsTestSupport.exception_data('unichr(0x11111111)')[2]],
 ]
 
 
