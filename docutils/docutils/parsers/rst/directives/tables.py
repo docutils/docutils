@@ -203,11 +203,11 @@ def get_csv_data(name, options, content, lineno, block_text,
         source = os.path.normpath(os.path.join(source_dir, options['file']))
         source = utils.relative_path(None, source)
         try:
+            state.document.settings.record_dependencies.add(source)
             csv_file = io.FileInput(
                 source_path=source, encoding=encoding,
                 error_handler=state.document.settings.input_encoding_error_handler,
-                handle_io_errors=None,
-                dep_file=state.document.settings.dependency_file)
+                handle_io_errors=None)
             csv_data = csv_file.read().splitlines()
         except IOError, error:
             severe = state_machine.reporter.severe(

@@ -37,11 +37,11 @@ def include(name, arguments, options, content, lineno,
     path = utils.relative_path(None, path)
     encoding = options.get('encoding', state.document.settings.input_encoding)
     try:
+        state.document.settings.record_dependencies.add(path)
         include_file = io.FileInput(
             source_path=path, encoding=encoding,
             error_handler=state.document.settings.input_encoding_error_handler,
-            handle_io_errors=None,
-            dep_file=state.document.settings.dependency_file)
+            handle_io_errors=None)
     except IOError, error:
         severe = state_machine.reporter.severe(
               'Problems with "%s" directive path:\n%s: %s.'
@@ -95,11 +95,11 @@ def raw(name, arguments, options, content, lineno,
         path = os.path.normpath(os.path.join(source_dir, options['file']))
         path = utils.relative_path(None, path)
         try:
+            state.document.settings.record_dependencies.add(path)
             raw_file = io.FileInput(
                 source_path=path, encoding=encoding,
                 error_handler=state.document.settings.input_encoding_error_handler,
-                handle_io_errors=None,
-                dep_file=state.document.settings.dependency_file)
+                handle_io_errors=None)
         except IOError, error:
             severe = state_machine.reporter.severe(
                   'Problems with "%s" directive path:\n%s.' % (name, error),
