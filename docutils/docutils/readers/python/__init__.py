@@ -7,8 +7,8 @@
 """
 This package contains the Python Source Reader modules.
 
-It requires Python 2.2 or higher (`moduleparser` depends on `compiler` and
-`tokenizer` modules).
+It requires Python 2.2 or higher (`moduleparser` depends on the
+`compiler` and `tokenize` modules).
 """
 
 __docformat__ = 'reStructuredText'
