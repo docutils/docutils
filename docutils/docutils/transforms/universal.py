@@ -12,9 +12,6 @@ Transforms needed by most or all documents:
   `nodes.document.transform_messages`.
 - `TestMessages`: Like `Messages`, used on test runs.
 - `FinalReferences`: Resolve remaining references.
-- `Pending`: Execute pending transforms (abstract base class;
-  `FirstReaderPending`, `LastReaderPending`, `FirstWriterPending`, and
-  `LastWriterPending` are its concrete subclasses).
 """
 
 __docformat__ = 'reStructuredText'
@@ -31,6 +28,8 @@ class Decorations(Transform):
     """
     Populate a document's decoration element (header, footer).
     """
+
+    default_priority = 820
 
     def apply(self):
         header = self.generate_header()
@@ -94,6 +93,8 @@ class Messages(Transform):
     of the document.
     """
 
+    default_priority = 860
+
     def apply(self):
         unfiltered = self.document.transform_messages
         threshold = self.document.reporter['writer'].report_level
@@ -116,6 +117,8 @@ class TestMessages(Transform):
     Append all post-parse system messages to the end of the document.
     """
 
+    default_priority = 890
+
     def apply(self):
         for msg in self.document.transform_messages:
             if not msg.parent:
@@ -129,6 +132,8 @@ class FinalChecks(Transform):
 
     - Check for dangling references (incl. footnote & citation).
     """
+
+    default_priority = 840
 
     def apply(self):
         visitor = FinalCheckVisitor(self.document)
@@ -178,61 +183,3 @@ class InternalAttributeExposer(nodes.GenericNodeVisitor):
             value = getattr(node, att, None)
             if value is not None:
                 node['internal:' + att] = value
-
-
-class Pending(Transform):
-
-    """
-    Base class for the execution of pending transforms.
-
-    `nodes.pending` element objects each contain a "stage" attribute; the
-    stage of the pending element must match the `stage` of this transform.
-    """
-
-    stage = None
-    """The stage of processing applicable to this transform; match with
-    `nodes.pending.stage`.  Possible values include 'first reader',
-    'last reader', 'first writer', and 'last writer'.  Overriden in
-    subclasses (below)."""
-
-    def apply(self):
-        for pending in self.document.pending:
-            if pending.stage == self.stage:
-                pending.transform(self.document, self.component,
-                                  pending).apply()
-
-
-class FirstReaderPending(Pending):
-
-    stage = 'first reader'
-
-
-class LastReaderPending(Pending):
-
-    stage = 'last reader'
-
-
-class FirstWriterPending(Pending):
-
-    stage = 'first writer'
-
-
-class LastWriterPending(Pending):
-
-    stage = 'last writer'
-
-
-test_transforms = (TestMessages,)
-"""Universal transforms to apply to the raw document when testing."""
-
-first_reader_transforms = (FirstReaderPending,)
-"""Universal transforms to apply before any other Reader transforms."""
-
-last_reader_transforms = (LastReaderPending, Decorations)
-"""Universal transforms to apply after all other Reader transforms."""
-
-first_writer_transforms = (FirstWriterPending,)
-"""Universal transforms to apply before any other Writer transforms."""
-
-last_writer_transforms = (LastWriterPending, FinalChecks, Messages)
-"""Universal transforms to apply after all other Writer transforms."""
