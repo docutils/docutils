@@ -205,7 +205,8 @@ The following options are recognized:
 
 ``scale`` : integer
     The uniform scaling factor of the image, a percentage (but no "%"
-    symbol is required or allowed).  "100" means full-size.
+    symbol is required or allowed).  "100" means full-size.  PIL_
+    [#PIL]_ may be required.
 
 ``align`` : "top", "middle", "bottom", "left", "center", or "right"
     The alignment of the image, equivalent to the HTML ``<img>`` tag's
@@ -272,9 +273,9 @@ options are recognized:
 ``figwidth`` : integer or "image"
     The width of the figure in pixels, to limit the horizontal space
     used.  A special value of "image" is allowed, in which case the
-    included image's actual width is used (requires PIL_ [#]_).  If the
-    image file is not found or the required software is unavailable,
-    this option is ignored.
+    included image's actual width is used (requires PIL_ [#PIL]_).  If
+    the image file is not found or the required software is
+    unavailable, this option is ignored.
 
     Sets the "width" attribute of the "figure" doctree element.
 
@@ -300,7 +301,7 @@ options are recognized:
     Set a "class" attribute value on the figure element.  See the
     class_ directive below.
 
-.. [#] `Python Imaging Library`_.
+.. [#PIL] `Python Imaging Library`_.
 
 .. _PIL:
 .. _Python Imaging Library: http://www.pythonware.com/products/pil/
