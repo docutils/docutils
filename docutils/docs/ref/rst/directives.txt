@@ -616,7 +616,7 @@ Example::
 Block markup and inline markup within cells is supported.  Line ends
 are recognized within cells.
 
-Working Limitations::
+Working limitations:
 
 * Whitespace delimiters are supported only for external CSV files.
 
