@@ -18,7 +18,7 @@ __docformat__ = 'reStructuredText'
 
 
 import time
-from types import ListType, UnicodeType
+from types import ListType, TupleType, UnicodeType
 from docutils import writers, nodes, languages
 
 from stylesheet import getStyleSheet
@@ -42,9 +42,9 @@ class Writer(writers.Writer):
         'PDF-Specific Options',
         None,
         (('Format for footnote references: one of "superscript" or '
-          '"brackets".  Default is "superscript".',
+          '"brackets".  Default is "brackets".',
           ['--footnote-references'],
-          {'choices': ['superscript', 'brackets'], 'default': 'superscript',
+          {'choices': ['superscript', 'brackets'], 'default': 'brackets',
            'metavar': '<FORMAT>'}),))
 
     output = None
@@ -77,6 +77,7 @@ class PDFTranslator(nodes.NodeVisitor):
         self.styleSheet = getStyleSheet()
         nodes.NodeVisitor.__init__(self, doctree)
         self.language = languages.get_language(doctree.settings.language_code)
+        self.in_docinfo = None
         self.head = []
         self.body = []
         self.foot = []
@@ -93,6 +94,8 @@ class PDFTranslator(nodes.NodeVisitor):
     def encode(self, text):
         """Encode special characters in `text` & return."""
         if type(text) is UnicodeType:
+            text = text.replace(u'\u2020', u' ')
+            text = text.replace(u'\xa0', u' ')
             text = text.encode('utf-8')
         #text = text.replace("&", "&amp;")
         #text = text.replace("<", '"')
@@ -101,13 +104,12 @@ class PDFTranslator(nodes.NodeVisitor):
         # footnotes have character values above 128 ?
         return text
 
-    def append_styled(self, text, in_style='Normal'):
+    def append_para(self, text, in_style='Normal', bulletText=None):
+        if type(text) in (ListType, TupleType):
+            text = ''.join([self.encode(t) for t in text])
         style = self.styleSheet[in_style]
-        self.story.append(Paragraph(self.encode(text), style, bulletText=None, context=self.styleSheet))
-
-    def append_normal(self, text):
-        style = self.styleSheet['Normal']
-        self.story.append(Paragraph(self.encode(text), style, bulletText=None, context=self.styleSheet))
+        self.story.append(Paragraph(self.encode(text), style, \
+                                    bulletText=bulletText, context=self.styleSheet))
 
     def starttag(self, node, tagname, suffix='\n', **attributes):
         atts = {}
@@ -136,12 +138,10 @@ class PDFTranslator(nodes.NodeVisitor):
         return '<%s>%s' % (' '.join(parts), suffix)
 
     def visit_Text(self, node):
-        if 'literal_block' in self.context: return
         self.context.append('#text')
         self.body.append(node.astext())
 
     def depart_Text(self, node):
-        if 'literal_block' in self.context: return
         self.context.pop()
 
     def visit_admonition(self, node, name):
@@ -160,6 +160,12 @@ class PDFTranslator(nodes.NodeVisitor):
         self.visit_docinfo_item(node, 'author')
 
     def depart_author(self, node):
+        self.depart_docinfo_item()
+
+    def visit_address(self, node):
+        self.visit_docinfo_item(node, 'address')
+
+    def depart_address(self, node):
         self.depart_docinfo_item()
 
     def visit_version(self, node):
@@ -195,15 +201,17 @@ class PDFTranslator(nodes.NodeVisitor):
         pass
 
     def visit_bullet_list(self, node):
+        self.context.append(len(self.body))
         self.context.append('ul')
-        self.body.append('<ul>')
+        self.body.append('<ul bulletText="%s">' % self.bulletText)
 
     def depart_bullet_list(self, node):
         self.context.pop()
         self.body.append('</ul>')
-        if not self.context:
-            self.append_normal(''.join(self.body))
-            self.body = []
+        start = self.context.pop()
+        if not 'ul' in self.context:
+            self.append_para(self.body[start:])
+            self.body = self.body[:start]
 
     def visit_caption(self, node):
         pass
@@ -275,12 +283,17 @@ class PDFTranslator(nodes.NodeVisitor):
         self.body.append('</dd>')
 
     def visit_definition_list(self, node):
+        self.context.append(len(self.body))
         self.context.append('dl')
         self.body.append(self.starttag(node, 'dl'))
 
     def depart_definition_list(self, node):
         self.context.pop()
         self.body.append('</dl>')
+        start = self.context.pop()
+        if not 'dl' in self.context:
+            self.append_para(self.body[start:])
+            self.body = self.body[:start]
 
     def visit_definition_list_item(self, node):
         pass
@@ -295,22 +308,33 @@ class PDFTranslator(nodes.NodeVisitor):
         pass
 
     def visit_docinfo(self, node):
-        pass
+        self.context.append(len(self.body))
+        self.in_docinfo = 1
 
     def depart_docinfo(self, node):
-        pass
+        start = self.context.pop()
+        docinfo = self.body[start:]
+        self.body = self.body[:start]
+        self.append_para(docinfo)
+        self.in_docinfo = None
 
     def visit_docinfo_item(self, node, name):
-        self.context.append('docinfo_item')
+        self.body.append('<para style="DocInfo"><b>%s: </b>' % self.language.labels[name])
 
     def depart_docinfo_item(self):
-        self.context.pop()
+        self.body.append('</para>')
 
     def visit_doctest_block(self, node):
-        pass
+        self.visit_literal_block(node)
 
     def depart_doctest_block(self, node):
-        pass
+        self.depart_literal_block(node)
+
+    def visit_line_block(self, node):
+        self.visit_literal_block(node)
+
+    def depart_line_block(self, node):
+        self.depart_literal_block(node)
 
     def visit_document(self, node):
         pass
@@ -333,12 +357,17 @@ class PDFTranslator(nodes.NodeVisitor):
         pass
 
     def visit_enumerated_list(self, node):
+        self.context.append(len(self.body))
         self.context.append('ol')
         self.body.append('<ol>')
 
     def depart_enumerated_list(self, node):
         self.context.pop()
         self.body.append('</ol>')
+        start = self.context.pop()
+        if not 'ol' in self.context:
+            self.append_para(self.body[start:])
+            self.body = self.body[:start]
 
     def visit_error(self, node):
         self.visit_admonition(node, 'error')
@@ -347,10 +376,10 @@ class PDFTranslator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_field(self, node):
-        pass
+        self.body.append('<para>')
 
     def depart_field(self, node):
-        pass
+        self.body.append('</para>')
 
     def visit_field_argument(self, node):
         pass
@@ -359,30 +388,25 @@ class PDFTranslator(nodes.NodeVisitor):
         pass
 
     def visit_field_list(self, node):
-        self.visit_definition_list(node)
+        self.context.append(len(self.body))
+        self.body.append('<para>')
 
     def depart_field_list(self, node):
-        self.depart_definition_list(node)
-        if not self.context and self.body:
-            self.append_normal('\n'.join(self.body))
-            self.body = []
+        start = self.context.pop()
+        self.body.append('</para>')
+        self.append_para(self.body[start:])
+        self.body = self.body[:start]
 
     def visit_field_name(self, node):
-        self.visit_term(node)
+        self.body.append('<b>')
 
     def depart_field_name(self, node):
-        self.depart_term(node)
+        self.body.append(': </b>')
 
     def visit_field_body(self, node):
-        self.visit_definition(node)
-
-    def depart_field_body(self, node):
-        self.depart_definition(node)
-
-    def visit_figure(self, node):
         pass
 
-    def depart_figure(self, node):
+    def depart_field_body(self, node):
         pass
 
     def visit_footnote(self, node):
@@ -405,7 +429,7 @@ class PDFTranslator(nodes.NodeVisitor):
                                                  i,
                                                  '</link>'))
                     i += 1
-                self.context.append('<i>(%s)</i> ' % ', '.join(backlinks))
+                self.context.append(' <i>(%s)</i> ' % ', '.join(backlinks))
                 self.context.append("%s%s" % (self.starttag({}, 'setLink', '', destination=node['id']), \
                                  '</setLink>'))
         else:
@@ -415,7 +439,7 @@ class PDFTranslator(nodes.NodeVisitor):
 
     def footnote_backrefs_depart(self, node):
         if not self.context and self.body:
-            self.append_normal('\n'.join(self.body))
+            self.append_para(self.body)
             self.body = []
 
     def depart_footnote(self, node):
@@ -477,12 +501,15 @@ class PDFTranslator(nodes.NodeVisitor):
         pass
 
     def visit_label(self, node):
-        pass
+        if 'footnotes' in self.context:
+            self.body.append('[')
 
     def depart_label(self, node):
         if 'footnotes' in self.context:
+            self.body.append(']')
             self.body.append(self.context.pop())
             self.body.append(self.context.pop())
+        self.body.append('   ')
 
     def visit_legend(self, node):
         pass
@@ -505,11 +532,11 @@ class PDFTranslator(nodes.NodeVisitor):
         self.context.pop()
 
     def visit_literal_block(self, node):
-        self.context.append('literal_block')
         self.story.append(Preformatted(node.astext(), self.styleSheet['Code']))
+        raise nodes.SkipNode
 
     def depart_literal_block(self, node):
-        self.context.pop()
+        pass
 
     def visit_meta(self, node):
         self.head.append(self.starttag(node, 'meta', **node.attributes))
@@ -542,10 +569,15 @@ class PDFTranslator(nodes.NodeVisitor):
         pass
 
     def visit_option_list(self, node):
-        pass
+        self.context.append(len(self.body))
+        self.context.append('option_list')
 
     def depart_option_list(self, node):
-        pass
+        self.context.pop()
+        start = self.context.pop()
+        if not 'option_list' in self.context:
+            self.append_para(self.body[start:])
+            self.body = self.body[:start]
 
     def visit_option_list_item(self, node):
         pass
@@ -566,13 +598,15 @@ class PDFTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item()
 
     def visit_paragraph(self, node):
+        self.context.append(len(self.body))
         self.context.append('p')
 
     def depart_paragraph(self, node):
         self.context.pop()
+        start = self.context.pop()
         if not self.context and self.body:
-            self.append_normal('\n'.join(self.body))
-            self.body = []
+            self.append_para(self.body[start:])
+            self.body = self.body[:start]
 
     def visit_problematic(self, node):
         pass
@@ -593,13 +627,12 @@ class PDFTranslator(nodes.NodeVisitor):
                 href = node['id']
             elif node.has_key('name'):
                 href = node['name']
-            self.body.append(self.starttag(node, 'setLink', '', destination=href))
-            self.context.append('</setLink>')
-        else:
-            self.context.append('')
+            self.body.append("%s%s" % (self.starttag(node, 'setLink', '', destination=href), \
+                             '</setLink>'))
+        raise nodes.SkipNode
 
     def depart_target(self, node):
-        self.body.append(self.context.pop())
+        pass
 
     def visit_reference(self, node):
         self.context.append('a')
@@ -658,18 +691,18 @@ class PDFTranslator(nodes.NodeVisitor):
         self.body.append('</b>')
 
     def visit_subtitle(self, node):
-        self.context.append('subtitle')
+        self.context.append(len(self.body))
         self.context.append('subtitle')
 
     def depart_subtitle(self, node):
         style = self.context.pop()
-        self.append_styled(''.join(self.body), style)
-        self.body = []
-        self.context.pop()
+        start = self.context.pop()
+        self.append_para(self.body[start:], style)
+        self.body = self.body[:start]
 
     def visit_title(self, node):
         atts = {}
-
+        self.context.append(len(self.body))
         self.context.append('title')
         if isinstance(node.parent, nodes.topic):
             self.context.append('')
@@ -695,17 +728,18 @@ class PDFTranslator(nodes.NodeVisitor):
         if node.parent.hasattr('id'):
             self.body.append(self.context.pop())
         style = self.context.pop()
-        if not 'topic' in self.context:
-            self.append_styled(''.join(self.body), style)
-            self.body = []
         self.context.pop()
+        if isinstance(node.parent, nodes.topic):
+            style = self.topic_class
+        start = self.context.pop()
+        self.append_para(self.body[start:], style)
+        self.body = self.body[:start]
 
     def unimplemented_visit(self, node):
         raise NotImplementedError('visiting unimplemented node type: %s'
                                   % node.__class__.__name__)
 
     def visit_topic(self, node):
-        self.context.append('topic')
         if node.hasattr('id'):
             self.context.append('</setLink>')
             self.body.append(self.starttag({}, 'setLink', '', destination=node['id']))
@@ -713,10 +747,6 @@ class PDFTranslator(nodes.NodeVisitor):
     def depart_topic(self, node):
         if node.hasattr('id'):
             self.body.append(self.context.pop())
-        self.context.pop()
-        if not self.context and self.body:
-            self.append_styled(''.join(self.body), self.topic_class)
-            self.body = []
 
     def visit_generated(self, node):
         pass
@@ -731,7 +761,12 @@ class PDFTranslator(nodes.NodeVisitor):
     def visit_comment(self, node):
         raise nodes.SkipNode
 
-    visit_line_block = invisible_visit
+    depart_comment = invisible_visit
+    visit_substitution_definition = visit_comment
+    depart_substitution_definition = depart_comment
+    visit_figure = visit_comment
+    depart_figure = depart_comment
+
     visit_sidebar = invisible_visit
     visit_warning = invisible_visit
     visit_tip = invisible_visit
@@ -741,13 +776,8 @@ class PDFTranslator(nodes.NodeVisitor):
     visit_table = invisible_visit
     visit_title_reference = invisible_visit
     visit_transition = invisible_visit
-    visit_address = invisible_visit
-    visit_substitution_definition = invisible_visit
     visit_pending = invisible_visit
-    depart_comment = invisible_visit
-    depart_address = invisible_visit
     depart_pending = invisible_visit
-    depart_substitution_definition = invisible_visit
     depart_transition = invisible_visit
     depart_title_reference = invisible_visit
     depart_table = invisible_visit
@@ -757,4 +787,3 @@ class PDFTranslator(nodes.NodeVisitor):
     depart_tip = invisible_visit
     depart_warning = invisible_visit
     depart_sidebar = invisible_visit
-    depart_line_block = invisible_visit
