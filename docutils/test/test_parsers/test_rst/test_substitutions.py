@@ -46,6 +46,19 @@ Embedded directive starts on the next line:
         <image alt="symbol" uri="symbol.png">
 """],
 ["""\
+Trailing spaces should not be significant:
+
+.. |symbol| image:: \n\
+   symbol.png
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Trailing spaces should not be significant:
+    <substitution_definition name="symbol">
+        <image alt="symbol" uri="symbol.png">
+"""],
+["""\
 Here's a series of substitution definitions:
 
 .. |symbol 1| image:: symbol1.png
