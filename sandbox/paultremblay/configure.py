@@ -70,7 +70,7 @@ def change_script(target):
     Changet the script to reflect the right target
 
     """
-    read_obj = open('nest_inline/nest_docutils.py', 'r')
+    read_obj = open('docutils_nest/nest_docutils.py', 'r')
     write_obj = open('temp', 'w')
     line = 1
     while line:
