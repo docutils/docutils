@@ -382,7 +382,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
          ('Specify the text encoding for error output.  Default is ASCII.  '
           'Optionally also specify the error handler for unencodable '
           'characters, after a colon (":"); default is "%s".  (See '
-          '"--output-encoding-error-handler".'
+          '"--output-encoding-error-handler".)'
           % default_error_encoding_error_handler,
           ['--error-encoding', '-e'],
           {'metavar': '<name[:handler]>', 'default': 'ascii',
