@@ -204,16 +204,37 @@ class Function(Document):
 
     def process_parameter(self, param):
         ## @@: handle defaults, *args, etc.
-        self.parameters.append(('normal', param.name))
+        if param.children:
+            val = ('default', (param.name, param.children[0].text))
+        elif isinstance(param, moduleparser.ExcessPositionalArguments):
+            val = ('*', param.name)
+        elif isinstance(param, moduleparser.ExcessKeywordArguments):
+            val = ('**', param.name)
+        else:
+            val = ('normal', param.name)
+        self.parameters.append(val)
 
     def documentation(self):
-        return "`%s(%s)`:\n%s" % (self.name,
-                                    ', '.join([self.parameterText(p)
-                                               for p in self.parameters]),
-                                    indent(Document.documentation(self)))
+        d = "`%s(%s)`:\n" % (self.name,
+                             ', '.join([self.parameterText(p)
+                                        for p in self.parameters]))
+        doc = Document.documentation(self)
+        if not doc:
+            doc = "Not documented."
+        return d + indent(doc)
 
     def parameterText(self, param):
-        return param[1]
+        t, name = param
+        if t == 'normal':
+            return name
+        elif t == 'default':
+            return '%s=%s' % (name[0], name[1])
+        elif t == '*':
+            return '*%s' % name
+        elif t == '**':
+            return '**%s' % name
+        else:
+            assert 0
 
 class Class(Document):
 
