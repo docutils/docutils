@@ -192,7 +192,9 @@ class HTMLTranslator(nodes.NodeVisitor):
             else:
                 self.stylesheet = []
         self.body_prefix = ['</head>\n<body>\n']
+        # document title, subtitle display
         self.body_pre_docinfo = []
+        # author, date, etc.
         self.docinfo = []
         self.body = []
         self.body_suffix = ['</body>\n</html>\n']
