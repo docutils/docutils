@@ -131,6 +131,7 @@ _`image options`.  For example::
        :width: 200
        :scale: 50
        :alt: alternate text
+       :align: right
 
 The following options are recognized:
 
@@ -147,6 +148,12 @@ The following options are recognized:
 ``scale`` : integer
     The uniform scaling factor of the image, a percentage (but no "%"
     symbol is required or allowed).  "100" means full-size.
+``align`` : keyword 
+    The alignment of the image. Allowed values are "top", "middle" and 
+    "bottom" which control the vertical alignment (relative to the text
+    baseline) in addition to "left", "center" and "right" which control 
+    the horizontal alignment (allowing you to float the image, having the
+    text flow around it).
 
 
 Figure
