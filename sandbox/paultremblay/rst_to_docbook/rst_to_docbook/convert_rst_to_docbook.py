@@ -7,6 +7,7 @@ import sys, os, tempfile, codecs
 import docutils_nest.nest_utils
 import docutils_nest.rst_options
 import rst_to_docbook.xsl_convert, rst_to_docbook.location
+import rst_to_docbook.read_config
 
 """
 Module for convert rst documents to docbook
@@ -23,6 +24,8 @@ class ConvertRstToDoc:
     def __init__(self, doc_debug = 0):
         outer_dir =  rst_to_docbook.location.get_location()
         self.__rst_2_dbk_dir = os.path.join(outer_dir, '.rst_to_docbook')
+        config_file = os.path.join(self.__rst_2_dbk_dir, 'configure.xml')
+        self.__xslt_processor = self.__get_configs(config_file)
         if doc_debug:
             self.__setup_debug()
         else:
@@ -43,6 +46,14 @@ class ConvertRstToDoc:
         self.__debug = 1
 
 
+    def __get_configs(self, config_file):
+        config_obj = rst_to_docbook.read_config.Configure(config_file)
+        config_dict = config_obj.read_configs()
+        processor = config_dict.get('xslt-processor')
+        processor = processor[0]
+        return processor
+
+        
     def convert_to_docbook(self):
         # get file, output, and the docutils_options
         file, output, docutils_options =  self.__handle_options()
@@ -128,7 +139,7 @@ class ConvertRstToDoc:
                 )
         sys.stdout.write('converting string in nest-utils '
             'with xslt...\n')
-        trans_obj =  rst_to_docbook.xsl_convert.XslConvert()
+        trans_obj =  rst_to_docbook.xsl_convert.XslConvert(processor = self.__xslt_processor)
         trans_obj.transform(file = file, 
                             xsl_file = xsl_file, 
                             output = output)
@@ -139,7 +150,7 @@ class ConvertRstToDoc:
                 )
         sys.stdout.write('converting args in nest-utils '
             'with xslt...\n')
-        trans_obj =  rst_to_docbook.xsl_convert.XslConvert()
+        trans_obj =  rst_to_docbook.xsl_convert.XslConvert(processor = self.__xslt_processor)
         trans_obj.transform(file = file, 
                             xsl_file = xsl_file, 
                             output = output)
@@ -149,7 +160,7 @@ class ConvertRstToDoc:
             'xslt_stylesheets', 'reStructure_to_docbook.xsl'
                 )
          # reStructure_to_docbook.xsl
-        trans_obj =  rst_to_docbook.xsl_convert.XslConvert()
+        trans_obj =  rst_to_docbook.xsl_convert.XslConvert(processor = self.__xslt_processor)
         trans_obj.transform(file = file, 
                             xsl_file = xsl_file, 
                             output = output)

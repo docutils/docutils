@@ -125,7 +125,7 @@ def get_location():
     % target)
 
 def make_configuration_file(processor):
-    write_obj = open('data/configuration.xml', 'w')
+    write_obj = open('data/configure.xml', 'w')
     write_obj.write("""
 <configuration>
     <xslt-processor processor = "%s"/>
