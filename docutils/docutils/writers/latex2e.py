@@ -76,13 +76,37 @@ class Writer(writers.Writer):
           ['--use-latex-toc'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Let LaTeX print author and date, donot show it in docutils document info.',
+         ('Let LaTeX print author and date, do not show it in docutils '
+          'document info.',
           ['--use-latex-docinfo'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
          ('Color of any hyperlinks embedded in text '
           '(default: "blue", "0" to disable).',
-          ['--hyperlink-color'], {'default': 'blue'}),))
+          ['--hyperlink-color'], {'default': 'blue'}),
+         ('Enable compound enumerators for nested enumerated lists '
+          '(e.g. "1.2.a.ii").  Default: disabled.',
+          ['--compound-enumerators'],
+          {'default': None, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Disable compound enumerators for nested enumerated lists.  This is '
+          'the default.',
+          ['--no-compound-enumerators'],
+          {'action': 'store_false', 'dest': 'compound_enumerators'}),
+         ('Enable section ("." subsection ...) prefixes for compound '
+          'enumerators.  This has no effect without --compound-enumerators.  '
+          'Default: disabled.',
+          ['--section-prefix-for-enumerators'],
+          {'default': None, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Disable section prefixes for compound enumerators.  '
+          'This is the default.',
+          ['--no-section-prefix-for-enumerators'],
+          {'action': 'store_false', 'dest': 'section_prefix_for_enumerators'}),
+         ('Set the separator between section number and enumerator '
+          'for compound enumerated lists.  Default is "-".',
+          ['--section-enumerator-separator'],
+          {'default': '-', 'metavar': '<char>'}),))
 
     settings_defaults = {'output_encoding': 'latin-1'}
 
@@ -305,6 +329,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # list environment for docinfo. else tabularx
     use_optionlist_for_docinfo = 0 # NOT YET IN USE
 
+    # Use compound enumerations (1.A.1.)
+    compound_enumerators = 0
+
+    # If using compound enumerations, include section information.
+    section_prefix_for_enumerators = 0
+
+    # This is the character that separates the section ("." subsection ...)
+    # prefix from the regular list enumerator.
+    section_enumerator_separator = '-'
+
     # default link color
     hyperlink_color = "blue"
 
@@ -315,6 +349,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.use_latex_docinfo = settings.use_latex_docinfo
         self.use_latex_footnotes = settings.use_latex_footnotes
         self.hyperlink_color = settings.hyperlink_color
+        self.compound_enumerators = settings.compound_enumerators
+        self.section_prefix_for_enumerators = (
+            settings.section_prefix_for_enumerators)
+        self.section_enumerator_separator = (
+            settings.section_enumerator_separator.replace('_', '\\_'))
         if self.hyperlink_color == '0':
             self.hyperlink_color = 'black'
             self.colorlinks = 'false'
@@ -414,6 +453,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # enumeration is done by list environment.
         self._enum_cnt = 0
+
+        # Stack of section counters so that we don't have to use_latex_toc.
+        # This will grow and shrink as processing occurs.
+        # Initialized for potential first-level sections.
+        self._section_number = [0]
+
+        # The current stack of enumerations so that we can expand
+        # them into a compound enumeration
+        self._enumeration_counters = []
+
         # docinfo.
         self.docinfo = None
         # inside literal block: no quote mangling.
@@ -421,7 +470,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.literal = 0
         # true when encoding in math mode
         self.mathmode = 0
-        
+
     def get_stylesheet_reference(self):
         if self.settings.stylesheet_path:
             return self.settings.stylesheet_path
@@ -634,7 +683,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('}$')
         self.mathmode = 0
 
-        
     def visit_caption(self, node):
         self.body.append( '\\caption{' )
 
@@ -882,13 +930,22 @@ class LaTeXTranslator(nodes.NodeVisitor):
         enum_prefix = ""
         if node.has_key('prefix'):
             enum_prefix = node['prefix']
-
+        if self.compound_enumerators:
+            pref = ""
+            if self.section_prefix_for_enumerators and self.section_level:
+                for i in range(self.section_level):
+                    pref += '%d.' % self._section_number[i]
+                pref = pref[:-1] + self.section_enumerator_separator
+                enum_prefix += pref
+            for counter in self._enumeration_counters:
+                enum_prefix += counter + '.'
         enum_type = "arabic"
         if node.has_key('enumtype'):
             enum_type = node['enumtype']
         if enum_style.has_key(enum_type):
             enum_type = enum_style[enum_type]
         counter_name = "listcnt%d" % self._enum_cnt;
+        self._enumeration_counters.append("\\%s{%s}" % (enum_type,counter_name))
         self.body.append('\\newcounter{%s}\n' % counter_name)
         self.body.append('\\begin{list}{%s\\%s{%s}%s}\n' % \
             (enum_prefix,enum_type,counter_name,enum_suffix))
@@ -904,6 +961,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_enumerated_list(self, node):
         self.body.append('\\end{list}\n')
+        self._enumeration_counters.pop()
 
     def visit_error(self, node):
         self.visit_admonition(node, 'error')
@@ -1308,8 +1366,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_section(self, node):
         self.section_level += 1
+        # Initialize counter for potential subsections:
+        self._section_number.append(0)
+        # Counter for this section's level (initialized by parent section):
+        self._section_number[self.section_level - 1] += 1
 
     def depart_section(self, node):
+        # Remove counter for potential subsections:
+        self._section_number.pop()
         self.section_level -= 1
 
     def visit_sidebar(self, node):
