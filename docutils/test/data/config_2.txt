@@ -1,0 +1,10 @@
+# Test config file (new format)
+
+[general]
+
+generator: no
+
+
+[html4css1 writer]
+
+stylesheet-path: test.css
