@@ -25,10 +25,10 @@ modulesecurity.declareProtected('View management screens',
 manage_addZReSTForm = DTMLFile('dtml/manage_addZReSTForm', globals())
 
 modulesecurity.declareProtected('Add Z Roundups', 'manage_addZReST')
-def manage_addZReST(self, id, title='', file='', REQUEST=None):
+def manage_addZReST(self, id, file='', REQUEST=None):
     """Add a ZReST product """
     # validate the instance_home
-    self._setObject(id, ZReST(id, title))
+    self._setObject(id, ZReST(id))
     self._getOb(id).manage_upload(file)
     if REQUEST:
         return self.manage_main(self, REQUEST)
@@ -46,9 +46,9 @@ class ZReST(Item, PropertyManager, Historical, Implicit, Persistent):
     meta_type =  'ReStructuredText Document'
     security = ClassSecurityInfo()
 
-    def __init__(self, id, title):
+    def __init__(self, id):
         self.id = id
-        self.title = title
+        self.title = id
         self.stylesheet = 'default.css'
         self.report_level = '2'
         self.source = self.formatted = ''
@@ -90,13 +90,12 @@ class ZReST(Item, PropertyManager, Historical, Implicit, Persistent):
 
     # edit action
     security.declareProtected('Edit ReStructuredText', 'manage_edit')
-    def manage_edit(self, data, title, SUBMIT='Change',dtpref_cols='50',
+    def manage_edit(self, data, SUBMIT='Change',dtpref_cols='50',
                     dtpref_rows='20', REQUEST=None):
         '''Alias index_html to roundup's index
         '''
-        self.title=str(title)
         if self._size_changes.has_key(SUBMIT):
-            return self._er(data,title,SUBMIT,dtpref_cols,dtpref_rows,REQUEST)
+            return self._er(data, SUBMIT, dtpref_cols, dtpref_rows, REQUEST)
         if data != self.source:
             self.source = data
             self.render()
@@ -114,7 +113,7 @@ class ZReST(Item, PropertyManager, Historical, Implicit, Persistent):
         'Taller': (5,0),
         'Shorter': (-5,0),
     }
-    def _er(self,data,title,SUBMIT,dtpref_cols,dtpref_rows,REQUEST):
+    def _er(self, data, SUBMIT, dtpref_cols, dtpref_rows, REQUEST):
         dr,dc = self._size_changes[SUBMIT]
         rows=max(1,int(dtpref_rows)+dr)
         cols=max(40,int(dtpref_cols)+dc)
@@ -122,9 +121,8 @@ class ZReST(Item, PropertyManager, Historical, Implicit, Persistent):
         resp=REQUEST['RESPONSE']
         resp.setCookie('dtpref_rows',str(rows),path='/',expires=e)
         resp.setCookie('dtpref_cols',str(cols),path='/',expires=e)
-        return self.manage_main(
-            self,REQUEST,title=title,__str__=self.quotedHTML(data),
-            dtpref_cols=cols,dtpref_rows=rows)
+        return self.manage_main(self, REQUEST, __str__=self.quotedHTML(data),
+            dtpref_cols=cols, dtpref_rows=rows)
     security.declarePrivate('quotedHTML')
     def quotedHTML(self,
                    text=None,
@@ -191,6 +189,11 @@ class ZReST(Item, PropertyManager, Historical, Implicit, Persistent):
         # parse!
         document = pub.reader.read(pub.source, pub.parser, pub.options)
         self.warnings = ''.join(pub.options.warning_stream.messages)
+
+        if document.children:
+            item = document.children[0]
+            if item.tagname == 'title':
+                self.title = str(item.children[0])
 
         # do the format
         self.formatted = pub.writer.write(document, pub.destination)
@@ -261,6 +264,9 @@ modulesecurity.apply(globals())
 
 #
 # $Log$
+# Revision 1.3  2002/08/15 05:02:41  richard
+# pull out the document title too
+#
 # Revision 1.2  2002/08/15 04:36:56  richard
 # FTP interface and Reporter message snaffling
 #

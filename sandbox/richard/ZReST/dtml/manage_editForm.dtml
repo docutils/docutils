@@ -13,22 +13,19 @@ the <em>browse</em> button to select a local file to upload.
 </pre>
 </dtml-if>
 
+<p class="form-help"><strong>Help:</strong> ReStructuredText
+ <a href="http://docutils.sourceforge.net/docs/rst/quickstart.html">primer</a>
+  for beginners,
+ <a href="http://docutils.sourceforge.net/docs/rst/quickref.html">quick
+  reference</a> for the more advanced and
+ <a href="http://docutils.sourceforge.net/rst.html">home page</a> for all
+  the details.
+</p>
+
 <form action="manage_edit" method="post">
 <table cellpadding="2" cellspacing="0" width="100%" border="0">
 
 <dtml-with keyword_args mapping>
-<tr>
-  <td align="left" valign="top">
-  <div class="form-optional">
-  Description (Title)
-  </div>
-  </td>
-  <td align="left" valign="top">
-  <input type="text" name="title" size="40" value="<dtml-if 
-   title><dtml-var title html_quote></dtml-if>">
-  </td>
-</tr>
-
 <tr>
   <td align="left" valign="top" colspan="2">
   <div style="width: 100%;">

@@ -22,16 +22,6 @@ clicking the <em>Browse</em> button.
   <tr>
     <td align="left" valign="top">
     <div class="form-optional">
-     Description (Title)
-    </div>
-    </td>
-    <td align="left" valign="top">
-    <input type="text" name="title" size="40" />
-    </td>
-  </tr>
-  <tr>
-    <td align="left" valign="top">
-    <div class="form-optional">
     File
     </div>
     </td>
