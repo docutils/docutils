@@ -9,6 +9,11 @@ Rev. 2002-12-19
 To do
 ~~~~~
 
+* switches:
+  --suppress-toc-for-latex: donot write one even if rst says so
+  --use-latex-toc: or find another way to have linenumbers in the toc.
+  
+
 * two hlines after table head and on table end ?
 
 * table: multicol rows have now lines.
