@@ -1089,8 +1089,8 @@ class system_message(Special, PreBibliographic, Element, BackLinkable):
 
     def astext(self):
         line = self.get('line', '')
-        return '%s:%s: (%s/%s) %s' % (self['source'], line, self['type'],
-                                      self['level'], Element.astext(self))
+        return u'%s:%s: (%s/%s) %s' % (self['source'], line, self['type'],
+                                       self['level'], Element.astext(self))
 
 
 class pending(Special, Invisible, PreBibliographic, Element):
