@@ -4035,8 +4035,8 @@ The ``transition`` element is commonly seen in novels and short
 fiction, as a gap spanning one or more lines, with or without a type
 ornament such as a row of asterisks.  Transitions separate other body
 elements, dividing a section into untitled divisions.  A transition
-may not begin or end a section or document, nor may two transitions be
-immediately adjacent.
+may not begin or end a document, it may not begin a section, nor may
+two transitions be immediately adjacent.
 
 See `Doctree Representation of Transitions`__ in `A Record of
 reStructuredText Syntax Alternatives`__.
