@@ -15,17 +15,65 @@
 
 import re
 import new
+import StringIO
+import __builtin__
+import sys
+import copy
 
-import docutils
-from docutils import core, frontend, nodes, utils, writers, languages
-from docutils.core import publish_parts
-from docutils.writers import html4css1
-from docutils.nodes import fully_normalize_name
-from docutils.parsers import rst
-from docutils.parsers.rst import directives, roles, states
+# docutils imports are below
+import MoinMoin.parser.wiki
 from MoinMoin.Page import Page
 
 Dependencies = [] # this parser just depends on the raw text
+
+# --- make docutils safe by overriding all module-scoped names related to IO ---
+
+# TODO: Add an error message to dummyOpen so that the user knows what they did
+# requested an unsupported feature of docutils in MoinMoin.
+def dummyOpen(x, y=None, z=None): return
+
+class dummyIO(StringIO.StringIO):
+    def __init__(self, destination=None, destination_path=None,
+                 encoding=None, error_handler='', autoclose=1,
+                 handle_io_errors=1, source_path=None):
+        StringIO.StringIO.__init__(self)
+        pass
+
+class dummyUrllib2:
+    def urlopen(a):
+        print 'dummyUrllib2'
+        return StringIO.StringIO()
+    urlopen = staticmethod(urlopen)
+
+# # # All docutils imports must be contained below here
+import docutils
+from docutils.core import publish_parts
+from docutils.writers import html4css1
+from docutils.nodes import fully_normalize_name, reference
+from docutils.parsers import rst
+from docutils.parsers.rst import directives, roles
+# # # All docutils imports must be contained above here
+
+def safe_import(name, globals = None, locals = None, fromlist = None):
+    mod = __builtin__.__import__(name, globals, locals, fromlist)
+    if mod:
+        mod.open = dummyOpen
+        mod.urllib2 = dummyUrllib2
+    return mod
+
+# Go through and change all docutils modules to use a dummyOpen and dummyUrllib2
+# module. Also make sure that any docutils imported modules also get the dummy
+# implementations.
+for i in sys.modules.keys():
+    if i.startswith('docutils') and sys.modules[i]:
+        sys.modules[i].open = dummyOpen
+        sys.modules[i].urllib2 = dummyUrllib2
+        sys.modules[i].__import__ = safe_import
+
+docutils.io.FileInput = dummyIO
+docutils.io.FileOutput = dummyIO
+
+# --- End of dummy-code --------------------------------------------------------
 
 def html_escape_unicode(node):
     # Find Python function that does this for me. string.encode('ascii',
@@ -76,8 +124,7 @@ class MoinWriter(html4css1.Writer):
         self.unknown_reference_resolvers = [self.wiki_resolver]
         # We create a new parser to process MoinMoin wiki style links in the 
         # reST.
-        from MoinMoin.parser.wiki import Parser
-        self.wikiparser = Parser('', self.request)
+        self.wikiparser = MoinMoin.parser.wiki.Parser('', self.request)
         self.wikiparser.formatter = self.formatter
         self.wikiparser.hilite_re = None
         self.nodes = []
@@ -106,7 +153,7 @@ class Parser:
         
     def format(self, formatter):
         # Create our simple parser
-        parser = MoinDirectives()
+        parser = MoinDirectives(self.request)
         
         parts =  publish_parts(source = self.raw,
                                writer = MoinWriter(formatter, self.request))
@@ -372,22 +419,58 @@ class MoinDirectives:
         part of the parsing stage.
     """
     
-    def __init__(self):
-        directives.register_directive('include', self.include)
-        directives.register_directive('macro', self.macro)
+    def __init__(self, request):
+        self.request = request
 
+        # include MoinMoin pages
+        directives.register_directive('include', self.include)
+
+        # used for MoinMoin macros
+        directives.register_directive('macro', self.macro)
+        
+        # disallow a few directives in order to prevent XSS
+        # disallowed include because it suffers from these bugs:
+        #  * recursive includes are possible
+
+        # for directive in ('meta', 'include', 'raw'):
+        for directive in ('meta', 'raw'):
+            directives.register_directive(directive, None)
+            
+        # disable the raw role
+        roles._roles['raw'] = None
+        
+        # As a quick fix for infinite includes we only allow a fixed number of 
+        # includes per page
+        self.num_includes = 0
+        self.max_includes = 20
+        
     # Handle the include directive rather than letting the default docutils
-    # parser handle it. This allows the inclusing of MoinMoin pages instead of
+    # parser handle it. This allows the inclusion of MoinMoin pages instead of
     # something from the filesystem.
     def include(self, name, arguments, options, content, lineno,
                 content_offset, block_text, state, state_machine):
         # content contains the included file name
+        
+        _ = self.request.getText
+        
+        # Limit the number of documents that can be included
+        if self.num_includes < self.max_includes:
+            self.num_includes += 1
+        else:
+            lines = [_("**Maximum number of allowable included documents exceeded**")]
+            state_machine.insert_input(lines, 'MoinDirectives')
+            return
+        
         if len(content):
-            page = Page(content[0])
-            text = page.get_raw_body()
-            lines = text.split('\n')
-            # Remove the "#format rst" line
-            lines = lines[1:]
+            page = Page(page_name = content[0], request = self.request)
+            if page.exists():
+                text = page.get_raw_body()
+                lines = text.split('\n')
+                # Remove the "#format rst" line
+                if lines[0].startswith("#format"):
+                    del lines[0]
+            else:
+                lines = [_("**Could not find the referenced page: %s**") % (content[0],)]
             # Insert the text from the included document and then continue
             # parsing
             state_machine.insert_input(lines, 'MoinDirectives')
@@ -405,7 +488,6 @@ class MoinDirectives:
                 content_offset, block_text, state, state_machine):
         # content contains macro to be called
         if len(content):
-            from docutils.nodes import reference
             # Allow either with or without brackets
             if content[0].startswith('[['):
                 macro = content[0]
@@ -417,3 +499,4 @@ class MoinDirectives:
         return
 
     macro.content = True
+    
