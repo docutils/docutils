@@ -467,7 +467,7 @@ formats may have limits (HTML has 6 levels).
    Some characters are more suitable than others.  The following are
    recommended::
 
-       = - ` : ' " ~ ^ _ * + # < >
+       = - ` : . ' " ~ ^ _ * + #
 
 Rather than imposing a fixed number and order of section title
 adornment styles, the order enforced will be the order as encountered.
