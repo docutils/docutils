@@ -183,29 +183,6 @@ title adornment)."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defgroup rst-html nil "Settings for conversion to HTML available by \\[rst-html-compile]. Use of this functionality is discouraged. Get a proper
-`Makefile' instead."
-  :group 'rst
-  :version "21.1")
-
-(defcustom rst-html-command "docutils_html"
-  "Command to convert an reST file to HTML."
-  :group 'rst-html
-  :type '(string))
-
-(defcustom rst-html-stylesheet ""
-  "Stylesheet for reST to HTML conversion. Empty for no special stylesheet."
-  :group 'rst-html
-  :type '(string))
-
-(defcustom rst-html-options ""
-  "Local file options for reST to HTML conversion.
-Stylesheets are set by an own option."
-  :group 'rst-html
-  :type '(string))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;; FIXME: Code from `restructuredtext.el' should be integrated
 
 (defvar rst-mode-syntax-table nil
@@ -713,30 +690,6 @@ entered.")
 	(goto-char (nth 1 mtc))
 	(set-match-data mtc)
 	t))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Conversion to HTML
-
-(defun rst-html-compile ()
-  "Compile command to convert reST document into HTML."
-  (interactive)
-  (let* ((bufname (file-name-nondirectory buffer-file-name))
-	 (outname (file-name-sans-extension bufname))
-	 (ssheet
-	  (or (and (not (zerop (length rst-html-stylesheet)))
-		   (concat "--stylesheet=\"" rst-html-stylesheet "\""))
-	      "")))
-    (set (make-local-variable 'compile-command)
-	 (mapconcat 'identity
-		    (list rst-html-command
-			  ssheet rst-html-options
-			  bufname (concat outname ".html"))
-;; FIXME: There should be at least a customizable variable for the output
-;; extension
-		    " "))
-    (if compilation-read-command
-	(call-interactively 'compile)
-      (compile compile-command))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
