@@ -5,10 +5,11 @@
 :version: $Revision$
 :copyright: This stylesheet has been placed in the public domain.
 
-Default cascading style sheet Docutils web pages.
+Default cascading style sheet for Docutils web pages.
 */
 
-@import url(main.css) ;
+/* Most of the style rules are in here: */
+@import url(main.css);
 
 body {
   background-color: #F0F0FF }
