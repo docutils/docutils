@@ -27,7 +27,6 @@ from docutils.core import publish_parts
 from docutils.writers import html4css1
 from docutils.nodes import fully_normalize_name
 
-
 def html_escape_unicode(node):
     # Find Python function that does this for me. string.encode('ascii',
     # 'xmlcharrefreplace') only 2.3 and above.
@@ -38,13 +37,20 @@ def html_escape_unicode(node):
 
 class MoinWriter(html4css1.Writer):
     
-    config_section = 'moin writer'
+    config_section = 'MoinMoin writer'
     config_section_dependencies = ('writers',)
 
     """Final translated form of `document`."""
     output = None
     
     def wiki_resolver(self, node):
+        """
+            Normally an unknown reference would be an error in an rest document.
+            However, this is how new documents are created in the wiki. This
+            passes on unknown references to eventually be handled by the
+            MoinMoin formatter.
+        """
+        # TODO: Need to better document the attributes here.
         if getattr(node, 'indirect_reference_name', None):
             node['refuri'] = node.indirect_reference_name
             return 1
@@ -88,7 +94,6 @@ class MoinWriter(html4css1.Writer):
         self.output = html_escape_unicode(visitor.astext())
         
 
-# TODO: Evaluate if this would be easier to sub class the real moin wiki parser.
 class Parser:
     
     # allow caching - This should be turned off when testing.
@@ -120,194 +125,210 @@ class MoinTranslator(html4css1.HTMLTranslator):
         html4css1.HTMLTranslator.__init__(self, document)
         self.formatter = formatter
         self.request = request
-        # We supply our own request.write so that the html is added to the
-        # html4css1 body list instead of printed to stdout by the default
-        # MoinTranslator writer. TODO: Confirm this is really what we're doing. 
-        self.old_write = self.request.write
-        self.request.write = self.rst_write
+        # MMG: Using our own writer when needed. Save the old one to restore
+        # after the page has been processed by the html4css1 parser.
+        self.original_write, self.request.write = self.request.write, self.capture_wiki_formatting
         self.wikiparser = parser
         self.wikiparser.request = request
-        self.wikiparser.request.write = self.rst_write
-        # When we use MoinMoin to interpret a MoinMoin refuri we want to strip
-        # the paragraph tags to keep the correct formatting. This is used in
-        # rst_write where by default we don't need to strip anything which is
-        # why it is initialized to 0. 
-        self.strip_paragraph = 0
-        self.writer = writer
         # MoinMoin likes to start the initial headers at level 3 and the title
-        # gets level 2, so to comply with their style's we do so here also. 
+        # gets level 2, so to comply with their style's, we do so here also. 
         # TODO: Could this be fixed by passing this value in settings_overrides?
         self.initial_header_level = 3
         # Temporary place for wiki returned markup. This will be filled when
         # replacing the default writer with the capture_wiki_formatting
         # function (see visit_image for an example). 
         self.wiki_text = ''
-        
-    def astext(self):
-        self.request.write = self.old_write
-        return html4css1.HTMLTranslator.astext(self)
-    
-    def rst_write(self, string):
-        if self.strip_paragraph:
-            replacement = {'<p>': '', '</p>': '', '\n': '', '> ': '>'}
-            for src, dst in replacement.items():
-                string = string.replace(src, dst)
-            # Everything seems to have a space ending the text block. We want to
-            # get rid of this
-            if string and string[-1] == ' ':
-                string = string[:-1]
-        self.body.append(string)
-        
-    def visit_reference(self, node):
-        target = None
-        
-        # These are the special link schemes that MoinMoin supports. We let
-        # MoinMoin handle these types.
-        moin_link_schemes = ['wiki:', 'attachment:', 'inline:', 'drawing:']
-        
-        # Do I need to lstrip? TODO: Find this out. Doesn't look like I need to
-        # since I don't when assigning target.
-        if 'refuri' in node.attributes:
-            refuri = node['refuri']
-            if [i for i in moin_link_schemes if refuri.lstrip().startswith(i)]:
-                target = refuri
-            # What is this? TODO: Figure this out and comment
-            elif ('name' in node.attributes and 
-                  fully_normalize_name(node['name']) == refuri):
-                target = ':%s:' % (node['name'])
-            # The node should have a whitespace normalized name if the docutlis 
-            # restructured text parser would normally fully normalize the name. 
-            elif ':' not in refuri:
-                target = ':%s:' % (refuri)
-        
-            if target:
-                self.strip_paragraph = 1
-                
-                # inline is special. We're not doing a link really, we need
-                # moinmoin to actually insert the attachment.
-                if target.startswith('inline:'):
-                    self.wikiparser.raw = target 
-                    self.wikiparser.format(self.formatter)
-                else:
-                    # Sometimes a newline will creep in to the node's text. This
-                    # throws the moinmoin regex so a link will not get processed.
-                    node_text = node.astext().replace('\n', ' ')
-                    self.wikiparser.raw = '[%s %s]' % (target, 
-                                                       node_text)
-                    self.wikiparser.format(self.formatter)
-                    
-                self.strip_paragraph = 0
-                raise docutils.nodes.SkipNode
-                return
-                
-        html4css1.HTMLTranslator.visit_reference(self, node)
+        self.setup_wiki_handlers()
 
-
-    #
-    # Text markup
-    #
-
-    def visit_emphasis(self, node):
-        self.request.write(self.formatter.emphasis(1))
-
-    def depart_emphasis(self, node):
-        self.request.write(self.formatter.emphasis(0))
-
-    def visit_strong(self, node):
-        self.request.write(self.formatter.strong(1))
-
-    def depart_strong(self, node):
-        self.request.write(self.formatter.strong(0))
-
-    def visit_literal(self, node):
-        self.request.write(self.formatter.code(1))
-
-    def depart_literal(self, node):
-        self.request.write(self.formatter.code(0))
-
-    #
-    # Blocks
-    #
-
-    def visit_literal_block(self, node):
-        self.request.write(self.formatter.preformatted(1))
-
-    def depart_literal_block(self, node):
-        self.request.write(self.formatter.preformatted(0))
-
-    #
-    # Simple Lists
-    #
-
-    def visit_bullet_list(self, node):
-        self.request.write(self.formatter.bullet_list(1))
-
-    def depart_bullet_list(self, node):
-        self.request.write(self.formatter.bullet_list(0))
-
-    def visit_enumerated_list(self, node):
-        self.request.write(self.formatter.number_list(1, start=node.get('start', None)))
-
-    def depart_enumerated_list(self, node):
-        self.request.write(self.formatter.number_list(0))
-
-    def visit_list_item(self, node):
-        self.request.write(self.formatter.listitem(1))
-
-    def depart_list_item(self, node):
-        self.request.write(self.formatter.listitem(0))
-
-
-    #
-    # Definition List
-    #
-
-    def visit_definition_list(self, node):
-        self.request.write(self.formatter.definition_list(1))
-
-    def depart_definition_list(self, node):
-        self.request.write(self.formatter.definition_list(0))
-
-
-    #
-    # Admonitions
-    #
-
-    def visit_warning(self, node):
-        self.request.write(self.formatter.highlight(1))
-
-    def depart_warning(self, node):
-        self.request.write(self.formatter.highlight(0))
-        
     def capture_wiki_formatting(self, text):
-        # For some reason getting empty strings here which overwrite what we
-        # really want (i.e. this is called multiple times per format call).
+        """
+            Captures MoinMoin generated markup to the instance variable
+            wiki_text.
+        """
+        # For some reason getting empty strings here which of course overwrites 
+        # what we really want (this is called multiple times per MoinMoin 
+        # format call, which I don't understand).
         if text:
             self.wiki_text = text
 
-    #
-    # Images
-    #
+    def add_wiki_markup(self):
+        """
+            Place holder in case this becomes more elaborate someday. For now it
+            only appends the MoinMoin generated markup to the html body and
+            raises SkipNode.
+        """
+        self.body.append(self.wiki_text)
+        raise docutils.nodes.SkipNode
+        
+    def astext(self):
+        self.request.write = self.original_write
+        return html4css1.HTMLTranslator.astext(self)
+        
+    def process_inline(self, node, uri_string):
+        """
+            Process the "inline:" link scheme. This can either ome from
+            visit_reference or from visit_image. The uri_string changes
+            depending on the caller. The uri is passed to MoinMoin to handle the
+            inline link. If it is an image, the src line is extracted and passed
+            to the html4css1 writer to allow the rest image attributes.
+            Otherwise, the html from MoinMoin is inserted into the rest document
+            and SkipNode is raised.
+        """
+        self.wikiparser.raw = node[uri_string]
+        self.wikiparser.format(self.formatter)
+        # Only pass the src and alt parts to the writer. The rest writer 
+        # inserts its own tags so we don't need the MoinMoin html markup.
+        src = re.search('src="([^"]+)"', self.wiki_text)
+        if src:
+            node['uri'] = src.groups()[0]
+            if not 'alt' in node.attributes:
+                alt = re.search('alt="([^"]*)"', self.wiki_text)
+                if alt:
+                    node['alt'] = alt.groups()[0]
+        else:
+            # Image doesn't exist yet for the page so just use what's
+            # returned from MoinMoin verbatim
+            self.add_wiki_markup()
             
+    def process_wiki_target(self, target):
+        self.wikiparser.raw = target
+        self.wikiparser.format(self.formatter)
+        # MMG: May need a call to fixup_wiki_formatting here but I 
+        # don't think so.
+        self.add_wiki_markup()
+        
+    def fixup_wiki_formatting(self, text):
+        replacement = {'<p>': '', '</p>': '', '\n': '', '> ': '>'}
+        for src, dst in replacement.items():
+            text = text.replace(src, dst)
+        # Everything seems to have a space ending the text block. We want to
+        # get rid of this
+        if text and text[-1] == ' ':
+            text = text[:-1]
+        return text
+
+    def visit_reference(self, node):
+        """
+            Pass links to MoinMoin to get the correct wiki space url. Extract
+            the url and pass it on to the html4css1 writer to handle. Inline
+            images are also handled by visit_image. Not sure what the "drawing:"
+            link scheme is used for, so for now it is handled here.
+            
+            Also included here is a hack to allow MoinMoin macros. This routine
+            checks for a link which starts with "[[". This link is passed to the
+            MoinMoin formatter and the resulting markup is inserted into the
+            document in the place of the original link reference. 
+        """
+        moin_link_schemes = ['wiki:', 'attachment:', 'drawing:', '[[',
+                             'inline:']
+                             
+        if 'refuri' in node.attributes:
+            target = None
+            refuri = node['refuri']
+            
+            # MMG: Fix this line
+            if [scheme for scheme in moin_link_schemes if 
+                    refuri.lstrip().startswith(scheme)]:
+                target = refuri
+            # TODO: Figure out the following two elif's and comment
+            # appropriately.
+            # The node should have a whitespace normalized name if the docutlis 
+            # restructured text parser would normally fully normalize the name.
+            elif ('name' in node.attributes and 
+                  fully_normalize_name(node['name']) == refuri):
+                target = ':%s:' % (node['name'])
+            # If its not a uri containing a ':' then its probably destined for
+            # wiki space.
+            elif ':' not in refuri:
+                target = ':%s:' % (refuri)
+                
+            if target:
+                if target.startswith('inline:'):
+                    self.process_inline(node, 'refuri')
+                elif target.startswith('[[') and target.endswith(']]'):
+                    self.process_wiki_target(target)
+                else:
+                    # Not a macro or inline so hopefully its a link. Put the target in 
+                    # brackets so that MoinMoin knows its a link. Extract the
+                    # href, if it exists, and let docutils handle it from there.
+                    # If there is no href just add whatever MoinMoin returned.
+                    node_text = node.astext().replace('\n', ' ')
+                    self.wikiparser.raw = '[%s %s]' % (target, node_text)
+                    self.wikiparser.format(self.formatter)
+                    href = re.search('href="([^"]+)"', self.wiki_text)
+                    if href:
+                        node['refuri'] = href.groups()[0]
+                    else:
+                        self.wiki_text = self.fixup_wiki_formatting(self.wiki_text)
+                        self.add_wiki_markup()
+        html4css1.HTMLTranslator.visit_reference(self, node)
+    
     def visit_image(self, node):
         """ 
-            Need to intervene in the case of inline images. We need moinmoin to
+            Need to intervene in the case of inline images. We need MoinMoin to
             give us the actual src line to the image and then we can feed this
             to the default html4css1 writer. NOTE: Since the writer can't "open"
             this image the scale attribute doesn't work without directly
-            specifying the height or width (or both). 
+            specifying the height or width (or both).
+            
+            TODO: Need to handle figures similarly. 
+                  Can we handle this without having to add the inline?
         """
-        # We need process inline images with moinmoin. Otherwise let the normal
-        # rst writer do its magic.
-        if node['uri'].lstrip().startswith('inline:'):
-            old_writer, self.request.write = self.request.write, self.capture_wiki_formatting
-            self.wikiparser.raw = node['uri']
-            self.wikiparser.format(self.formatter)
-            self.request.write = old_writer
-            # Only pass the src and alt parts to the writer. The rst writer 
-            # inserts its own tags so we don't need the moinmoin html markup.
-            node['uri'] = re.search('src="([^"]+)"', self.wiki_text).groups()[0]
-            if not 'alt' in node.attributes:
-                node['alt'] = re.search('alt="([^"]*)"', self.wiki_text).groups()[0]
+        uri = node['uri'].lstrip()
+        if uri.startswith('inline:'):
+            self.process_inline(node, 'uri')
+        # If its not a uri containing a ':' then its probably destined for
+        # wiki space.
+        # elif ':' not in uri:
+            # self.process_wiki_target('inline:%s' % (uri))
         html4css1.HTMLTranslator.visit_image(self, node)
         
+    def create_wiki_functor(self, moin_func):
+        moin_callable = getattr(self.formatter, moin_func)
+        def visit_func(node):
+            self.request.write(moin_callable(1))
+            self.body.append(self.wiki_text)
+        def depart_func(node):
+            self.request.write(moin_callable(0))
+            self.body.append(self.wiki_text)
+        return visit_func, depart_func
+
+    def setup_wiki_handlers(self):
+        """
+            Have the MoinMoin formatter handle markup when it makes sense. These
+            are portions of the document that do not contain rest specific
+            markup. This allows these portions of the document to look
+            consistent with other wiki pages.
+            
+            Setup dispatch routines to handle basic document markup. The
+            hanlders dict is the html4css1 handler name followed by the wiki
+            handler name.
+        """
+        handlers = {
+            # Text Markup
+            'emphasis': 'emphasis',
+            'strong': 'strong',
+            'literal': 'code',
+            # Blocks
+            'literal_block': 'preformatted',
+            # Simple Lists
+            'bullet_list': 'bullet_list',
+            'list_item': 'listitem',
+            # Definition List
+            'definition_list': 'definition_list',
+            # Admonitions
+            'warning': 'highlight'}
+        for rest_func, moin_func in handlers.items():
+            visit_func, depart_func = self.create_wiki_functor(moin_func)
+            setattr(self, 'visit_%s' % (rest_func), visit_func)
+            setattr(self, 'depart_%s' % (rest_func), depart_func)
+        
+    # Enumerated list takes an extra paramter so we handle this differently
+    def visit_enumerated_list(self, node):
+        self.request.write(self.formatter.number_list(1, start=node.get('start', None)))
+        self.body.append(self.wiki_text)
+
+    def depart_enumerated_list(self, node):
+        self.request.write(self.formatter.number_list(0))
+        self.body.append(self.wiki_text)
+
