@@ -7,17 +7,11 @@
 """
 Parser for Python modules.
 
-Ideas:
-
-* Tokenize the module in parallel to extract initial values, comments, etc.
-
-* Merge the compiler & tokenize output such that the raw text hangs off of
-  nodes.  Useful for assignment expressions (RHS).
-
-What I'd like to do is to take a module, read in the text, run it through the
-module parser (using compiler.py and tokenize.py) and produce a high-level AST
-full of nodes that are interesting from an auto-documentation standpoint.  For
-example, given this module (x.py)::
+The `parse_module()` function takes a module's text and file name, runs it
+through the module parser (using compiler.py and tokenize.py) and produces a
+"module documentation tree": a high-level AST full of nodes that are
+interesting from an auto-documentation standpoint.  For example, given this
+module (x.py)::
 
     # comment
 
@@ -54,75 +48,77 @@ example, given this module (x.py)::
     f.function_attribute = 1
     '''f.function_attribute's docstring'''
 
-The module parser should produce a high-level AST, something like this::
+The module parser will produce this module documentation tree::
 
-    <Module filename="x.py">
+    <Module filename="test data">
         <Comment lineno=1>
             comment
-        <Docstring lineno=3>
+        <Docstring>
             Docstring
-        <Docstring lineno=...>           (I'll leave out the lineno's)
+        <Docstring lineno="5">
             Additional docstring
-        <Attribute name="__docformat__">
-            <Expression>
+        <Attribute lineno="7" name="__docformat__">
+            <Expression lineno="7">
                 'reStructuredText'
-        <Attribute name="a">
-            <Expression>
+        <Attribute lineno="9" name="a">
+            <Expression lineno="9">
                 1
-            <Docstring>
+            <Docstring lineno="10">
                 Attribute docstring
-        <Class name="C" inheritance="Super">
-            <Docstring>
+        <Class bases="Super" lineno="12" name="C">
+            <Docstring lineno="12">
                 C's docstring
-            <Attribute name="class_attribute">
-                <Expression>
+            <Attribute lineno="16" name="class_attribute">
+                <Expression lineno="16">
                     1
-                <Docstring>
+                <Docstring lineno="17">
                     class_attribute's docstring
-            <Method name="__init__">
-                <Parameters>
-                    <Parameter name="self">
-                    <Parameter name="text">
-                        <Expression>
-                            None
-                <Docstring>
+            <Method lineno="19" name="__init__">
+                <Docstring lineno="19">
                     __init__'s docstring
-                <Attribute name="instance_attribute" instance=True>
-                    <Expression>
-                        (text * 7
-                         + ' whaddyaknow')
-                    <Docstring>
-                        class_attribute's docstring
-        <Function name="f">
-            <Parameters>
-                <Parameter name="x">
+                <ParameterList lineno="19">
+                    <Parameter lineno="19" name="self">
+                    <Parameter lineno="19" name="text">
+                        <Default lineno="19">
+                            None
+                <Attribute lineno="22" name="self.instance_attribute">
+                    <Expression lineno="22">
+                        (text * 7 + ' whaddyaknow')
+                    <Docstring lineno="24">
+                        instance_attribute's docstring
+        <Function lineno="27" name="f">
+            <Docstring lineno="27">
+                f's docstring
+            <ParameterList lineno="27">
+                <Parameter lineno="27" name="x">
                     <Comment>
                         # parameter x
-                <Parameter name="y">
-                    <Expression>
-                        a*5
+                <Parameter lineno="27" name="y">
+                    <Default lineno="27">
+                        a * 5
                     <Comment>
                         # parameter y
-                <Parameter name="args" varargs=True>
+                <ExcessPositionalArguments lineno="27" name="args">
                     <Comment>
                         # parameter args
-            <Docstring>
-                f's docstring
-            <Attribute name="function_attribute">
-                <Expression>
-                    1
-                <Docstring>
-                    f.function_attribute's docstring
+        <Attribute lineno="33" name="f.function_attribute">
+            <Expression lineno="33">
+                1
+            <Docstring lineno="34">
+                f.function_attribute's docstring
 
-compiler.parse() provides most of what's needed for this AST, and "tokenize"
-can be used to get the rest.  We can determine the line number from the
-compiler.parse() AST, and the TokenParser.rhs(lineno) method provides the
+(Comments are not implemented yet.)
+
+compiler.parse() provides most of what's needed for this doctree, and
+"tokenize" can be used to get the rest.  We can determine the line number from
+the compiler.parse() AST, and the TokenParser.rhs(lineno) method provides the
 rest.
 
-The Docutils Python reader component will transform this AST into a
-Python-specific doctree, and then a `stylist transform`_ would further
-transform it into a generic doctree.  Namespaces will have to be compiled for
-each of the scopes, but I'm not certain at what stage of processing.
+The Docutils Python reader component will transform this module doctree into a
+Python-specific Docutils doctree, and then a `stylist transform`_ will
+further transform it into a generic doctree.  Namespaces will have to be
+compiled for each of the scopes, but I'm not certain at what stage of
+processing.
 
 It's very important to keep all docstring processing out of this, so that it's
 a completely generic and not tool-specific.
@@ -131,7 +127,7 @@ a completely generic and not tool-specific.
 > generic doctree?  Or, even from the AST to the final output?
 
 I want the docutils.readers.python.moduleparser.parse_module() function to
-produce a standard documentation-oriented AST that can be used by any tool.
+produce a standard documentation-oriented tree that can be used by any tool.
 We can develop it together without having to compromise on the rest of our
 design (i.e., HappyDoc doesn't have to be made to work like Docutils, and
 vice-versa).  It would be a higher-level version of what compiler.py provides.
@@ -171,6 +167,17 @@ Issues
   basic AST produced by the ASTVisitor walk, or generated by another tree
   traversal?
 
+* At what point should a distinction be made between local variables &
+  instance attributes in __init__ methods?
+
+* Docstrings are getting their lineno from their parents.  Should the
+  TokenParser find the real line no's?
+
+* Comments: include them?  How and when?  Only full-line comments, or
+  parameter comments too?  (See function "f" above for an example.)
+
+* Module could use more docstrings & refactoring in places.
+
 """
 
 __docformat__ = 'reStructuredText'
@@ -186,178 +193,12 @@ from types import StringType, UnicodeType, TupleType
 
 
 def parse_module(module_text, filename):
+    """Return a module documentation tree from `module_text`."""
     ast = compiler.parse(module_text)
     token_parser = TokenParser(module_text)
     visitor = ModuleVisitor(filename, token_parser)
     compiler.walk(ast, visitor, walker=visitor)
     return visitor.module
-
-
-class BaseVisitor(ASTVisitor):
-
-    def __init__(self, token_parser):
-        ASTVisitor.__init__(self)
-        self.token_parser = token_parser
-        self.context = []
-        self.documentable = None
-
-    def default(self, node, *args):
-        self.documentable = None
-        #print 'in default (%s)' % node.__class__.__name__
-        #ASTVisitor.default(self, node, *args)
-
-    def default_visit(self, node, *args):
-        #print 'in default_visit (%s)' % node.__class__.__name__
-        ASTVisitor.default(self, node, *args)
-
-
-class DocstringVisitor(BaseVisitor):
-
-    def visitDiscard(self, node):
-        if self.documentable:
-            self.visit(node.expr)
-
-    def visitConst(self, node):
-        if self.documentable:
-            if type(node.value) in (StringType, UnicodeType):
-                self.documentable.append(Docstring(node, node.value))
-            else:
-                self.documentable = None
-
-    def visitStmt(self, node):
-        self.default_visit(node)
-
-
-class AssignmentVisitor(DocstringVisitor):
-
-    def visitAssign(self, node):
-        visitor = AttributeVisitor(self.token_parser)
-        compiler.walk(node, visitor, walker=visitor)
-        if visitor.attributes:
-            self.context[-1].extend(visitor.attributes)
-        if len(visitor.attributes) == 1:
-            self.documentable = visitor.attributes[0]
-        else:
-            self.documentable = None
-
-
-class ModuleVisitor(AssignmentVisitor):
-
-    def __init__(self, filename, token_parser):
-        AssignmentVisitor.__init__(self, token_parser)
-        self.filename = filename
-        self.module = None
-
-    def visitModule(self, node):
-        self.module = module = Module(node, self.filename)
-        if node.doc is not None:
-            module.append(Docstring(node, node.doc))
-        self.context.append(module)
-        self.documentable = module
-        self.visit(node.node)
-        self.context.pop()
-
-    def visitImport(self, node):
-        self.context[-1].append(Import(node, node.names))
-        self.documentable = None
-
-    def visitFrom(self, node):
-        self.context[-1].append(
-            Import(node, node.names, from_name=node.modname))
-        self.documentable = None
-
-    def visitFunction(self, node):
-        visitor = FunctionVisitor(self.token_parser)
-        compiler.walk(node, visitor, walker=visitor)
-        self.context[-1].append(visitor.function)
-
-
-class AttributeVisitor(BaseVisitor):
-
-    def __init__(self, token_parser):
-        BaseVisitor.__init__(self, token_parser)
-        self.attributes = []
-
-    def visitAssign(self, node):
-        # Don't visit the expression itself, just the attribute nodes:
-        for child in node.nodes:
-            self.dispatch(child)
-        expression_text = self.token_parser.rhs(node.lineno)
-        expression = Expression(node, expression_text)
-        for attribute in self.attributes:
-            attribute.append(expression)
-
-    def visitAssName(self, node):
-        self.attributes.append(Attribute(node, node.name))
-
-    def visitAssTuple(self, node):
-        attributes = self.attributes
-        self.attributes = []
-        self.default_visit(node)
-        names = [attribute.name for attribute in self.attributes]
-        att_tuple = AttributeTuple(node, names)
-        att_tuple.lineno = self.attributes[0].lineno
-        self.attributes = attributes
-        self.attributes.append(att_tuple)
-
-    def visitAssAttr(self, node):
-        self.default_visit(node, node.attrname)
-
-    def visitGetattr(self, node, suffix):
-        self.default_visit(node, node.attrname + '.' + suffix)
-
-    def visitName(self, node, suffix):
-        self.attributes.append(Attribute(node, node.name + '.' + suffix))
-
-
-class FunctionVisitor(DocstringVisitor):
-
-    in_function = 0
-
-    def visitFunction(self, node):
-        if self.in_function:
-            # Don't bother with nested function definitions.
-            return
-        self.in_function = 1
-        self.function = function = Function(node, node.name)
-        if node.doc is not None:
-            function.append(Docstring(node, node.doc))
-        self.context.append(function)
-        self.documentable = function
-        self.parse_parameter_list(node)
-        self.visit(node.code)
-        self.context.pop()
-
-    def parse_parameter_list(self, node):
-        parameters = []
-        special = []
-        argnames = list(node.argnames)
-        if node.kwargs:
-            special.append(ExcessKeywordArguments(node, argnames[-1]))
-            argnames.pop()
-        if node.varargs:
-            special.append(ExcessPositionalArguments(node, argnames[-1]))
-            argnames.pop()
-        defaults = list(node.defaults)
-        defaults = [None] * (len(argnames) - len(defaults)) + defaults
-        function_parameters = self.token_parser.function_parameters(
-            node.lineno)
-        #print >>sys.stderr, function_parameters
-        for argname, default in zip(argnames, defaults):
-            if type(argname) is TupleType:
-                parameter = ParameterTuple(node, argname)
-                argname = normalize_parameter_name(argname)
-            else:
-                parameter = Parameter(node, argname)
-            if default:
-                parameter.append(Default(node, function_parameters[argname]))
-            parameters.append(parameter)
-        if parameters or special:
-            special.reverse()
-            parameters.extend(special)
-            parameter_list = ParameterList(node)
-            parameter_list.extend(parameters)
-            self.function.append(parameter_list)
 
 
 class Node:
@@ -496,6 +337,254 @@ class ExcessKeywordArguments(Parameter): pass
 
 
 class Default(Expression): pass
+
+
+class Class(Node):
+
+    def __init__(self, node, name, bases=None):
+        Node.__init__(self, node)
+        self.name = name
+        self.bases = bases or []
+
+    def attlist(self):
+        atts = {'name': self.name}
+        if self.bases:
+            atts['bases'] = ' '.join(self.bases)
+        return Node.attlist(self, **atts)
+
+
+class Method(Function): pass
+
+
+class BaseVisitor(ASTVisitor):
+
+    def __init__(self, token_parser):
+        ASTVisitor.__init__(self)
+        self.token_parser = token_parser
+        self.context = []
+        self.documentable = None
+
+    def default(self, node, *args):
+        self.documentable = None
+        #print 'in default (%s)' % node.__class__.__name__
+        #ASTVisitor.default(self, node, *args)
+
+    def default_visit(self, node, *args):
+        #print 'in default_visit (%s)' % node.__class__.__name__
+        ASTVisitor.default(self, node, *args)
+
+
+class DocstringVisitor(BaseVisitor):
+
+    def visitDiscard(self, node):
+        if self.documentable:
+            self.visit(node.expr)
+
+    def visitConst(self, node):
+        if self.documentable:
+            if type(node.value) in (StringType, UnicodeType):
+                self.documentable.append(Docstring(node, node.value))
+            else:
+                self.documentable = None
+
+    def visitStmt(self, node):
+        self.default_visit(node)
+
+
+class AssignmentVisitor(DocstringVisitor):
+
+    def visitAssign(self, node):
+        visitor = AttributeVisitor(self.token_parser)
+        compiler.walk(node, visitor, walker=visitor)
+        if visitor.attributes:
+            self.context[-1].extend(visitor.attributes)
+        if len(visitor.attributes) == 1:
+            self.documentable = visitor.attributes[0]
+        else:
+            self.documentable = None
+
+
+class ModuleVisitor(AssignmentVisitor):
+
+    def __init__(self, filename, token_parser):
+        AssignmentVisitor.__init__(self, token_parser)
+        self.filename = filename
+        self.module = None
+
+    def visitModule(self, node):
+        self.module = module = Module(node, self.filename)
+        if node.doc is not None:
+            module.append(Docstring(node, node.doc))
+        self.context.append(module)
+        self.documentable = module
+        self.visit(node.node)
+        self.context.pop()
+
+    def visitImport(self, node):
+        self.context[-1].append(Import(node, node.names))
+        self.documentable = None
+
+    def visitFrom(self, node):
+        self.context[-1].append(
+            Import(node, node.names, from_name=node.modname))
+        self.documentable = None
+
+    def visitFunction(self, node):
+        visitor = FunctionVisitor(self.token_parser)
+        compiler.walk(node, visitor, walker=visitor)
+        self.context[-1].append(visitor.function)
+
+    def visitClass(self, node):
+        visitor = ClassVisitor(self.token_parser)
+        compiler.walk(node, visitor, walker=visitor)
+        self.context[-1].append(visitor.klass)
+
+
+class AttributeVisitor(BaseVisitor):
+
+    def __init__(self, token_parser):
+        BaseVisitor.__init__(self, token_parser)
+        self.attributes = []
+
+    def visitAssign(self, node):
+        # Don't visit the expression itself, just the attribute nodes:
+        for child in node.nodes:
+            self.dispatch(child)
+        expression_text = self.token_parser.rhs(node.lineno)
+        expression = Expression(node, expression_text)
+        for attribute in self.attributes:
+            attribute.append(expression)
+
+    def visitAssName(self, node):
+        self.attributes.append(Attribute(node, node.name))
+
+    def visitAssTuple(self, node):
+        attributes = self.attributes
+        self.attributes = []
+        self.default_visit(node)
+        names = [attribute.name for attribute in self.attributes]
+        att_tuple = AttributeTuple(node, names)
+        att_tuple.lineno = self.attributes[0].lineno
+        self.attributes = attributes
+        self.attributes.append(att_tuple)
+
+    def visitAssAttr(self, node):
+        self.default_visit(node, node.attrname)
+
+    def visitGetattr(self, node, suffix):
+        self.default_visit(node, node.attrname + '.' + suffix)
+
+    def visitName(self, node, suffix):
+        self.attributes.append(Attribute(node, node.name + '.' + suffix))
+
+
+class FunctionVisitor(DocstringVisitor):
+
+    in_function = 0
+    function_class = Function
+
+    def visitFunction(self, node):
+        if self.in_function:
+            self.documentable = None
+            # Don't bother with nested function definitions.
+            return
+        self.in_function = 1
+        self.function = function = self.function_class(node, node.name)
+        if node.doc is not None:
+            function.append(Docstring(node, node.doc))
+        self.context.append(function)
+        self.documentable = function
+        self.parse_parameter_list(node)
+        self.visit(node.code)
+        self.context.pop()
+
+    def parse_parameter_list(self, node):
+        parameters = []
+        special = []
+        argnames = list(node.argnames)
+        if node.kwargs:
+            special.append(ExcessKeywordArguments(node, argnames[-1]))
+            argnames.pop()
+        if node.varargs:
+            special.append(ExcessPositionalArguments(node, argnames[-1]))
+            argnames.pop()
+        defaults = list(node.defaults)
+        defaults = [None] * (len(argnames) - len(defaults)) + defaults
+        function_parameters = self.token_parser.function_parameters(
+            node.lineno)
+        #print >>sys.stderr, function_parameters
+        for argname, default in zip(argnames, defaults):
+            if type(argname) is TupleType:
+                parameter = ParameterTuple(node, argname)
+                argname = normalize_parameter_name(argname)
+            else:
+                parameter = Parameter(node, argname)
+            if default:
+                parameter.append(Default(node, function_parameters[argname]))
+            parameters.append(parameter)
+        if parameters or special:
+            special.reverse()
+            parameters.extend(special)
+            parameter_list = ParameterList(node)
+            parameter_list.extend(parameters)
+            self.function.append(parameter_list)
+
+
+class ClassVisitor(AssignmentVisitor):
+
+    in_class = 0
+
+    def __init__(self, token_parser):
+        AssignmentVisitor.__init__(self, token_parser)
+        self.bases = []
+
+    def visitClass(self, node):
+        if self.in_class:
+            self.documentable = None
+            # Don't bother with nested class definitions.
+            return
+        self.in_class = 1
+        #import mypdb as pdb
+        #pdb.set_trace()
+        for base in node.bases:
+            self.visit(base)
+        self.klass = klass = Class(node, node.name, self.bases)
+        if node.doc is not None:
+            klass.append(Docstring(node, node.doc))
+        self.context.append(klass)
+        self.documentable = klass
+        self.visit(node.code)
+        self.context.pop()
+
+    def visitGetattr(self, node, suffix=None):
+        if suffix:
+            name = node.attrname + '.' + suffix
+        else:
+            name = node.attrname
+        self.default_visit(node, name)
+
+    def visitName(self, node, suffix=None):
+        if suffix:
+            name = node.name + '.' + suffix
+        else:
+            name = node.name
+        self.bases.append(name)
+
+    def visitFunction(self, node):
+        if node.name == '__init__':
+            visitor = InitMethodVisitor(self.token_parser)
+        else:
+            visitor = MethodVisitor(self.token_parser)
+        compiler.walk(node, visitor, walker=visitor)
+        self.context[-1].append(visitor.function)
+
+
+class MethodVisitor(FunctionVisitor):
+
+    function_class = Method
+
+
+class InitMethodVisitor(MethodVisitor, AssignmentVisitor): pass
 
 
 class TokenParser:
@@ -645,7 +734,8 @@ class TokenParser:
                     self._backquote = 0
                     self.note_token()
                 else:                   # ignore these tokens:
-                    assert self.string in ('*', '**', '\n'), (
+                    assert (self.string in ('*', '**', '\n') 
+                            or self.type == tokenize.COMMENT), (
                         'token=%r' % (self.token,))
             else:
                 self.note_token()
@@ -659,7 +749,7 @@ def trim_docstring(text):
     See PEP 257.
     """
     if not text:
-        return ''
+        return text
     # Convert tabs to spaces (following the normal Python rules)
     # and split into a list of lines:
     lines = text.expandtabs().splitlines()

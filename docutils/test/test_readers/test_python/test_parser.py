@@ -504,11 +504,79 @@ f.attrib = 1
 def f():
     def g():
         pass
+    """Not a docstring"""
     local = 1
 ''',
 '''\
 <Module filename="test data">
     <Function lineno="1" name="f">
+'''],
+]
+
+totest['class'] = [
+['''\
+class C:
+    """class C's docstring"""
+''',
+'''\
+<Module filename="test data">
+    <Class lineno="1" name="C">
+        <Docstring lineno="1">
+            class C's docstring
+'''],
+['''\
+class C(Super):
+    pass
+
+class D(SuperD, package.module.SuperD):
+    pass
+''',
+'''\
+<Module filename="test data">
+    <Class bases="Super" lineno="1" name="C">
+    <Class bases="SuperD package.module.SuperD" lineno="4" name="D">
+'''],
+['''\
+class C:
+    class D:
+        pass
+    """Not a docstring"""
+''',
+'''\
+<Module filename="test data">
+    <Class lineno="1" name="C">
+'''],
+['''\
+class C:
+    def f(self):
+        self.local = 1
+        local = 1
+''',
+'''\
+<Module filename="test data">
+    <Class lineno="1" name="C">
+        <Method lineno="2" name="f">
+            <ParameterList lineno="2">
+                <Parameter lineno="2" name="self">
+'''],
+['''\
+class C:
+    def __init__(self):
+        self.local = 1
+        local = 1
+''',
+'''\
+<Module filename="test data">
+    <Class lineno="1" name="C">
+        <Method lineno="2" name="__init__">
+            <ParameterList lineno="2">
+                <Parameter lineno="2" name="self">
+            <Attribute lineno="3" name="self.local">
+                <Expression lineno="3">
+                    1
+            <Attribute lineno="4" name="local">
+                <Expression lineno="4">
+                    1
 '''],
 ]
 
@@ -524,6 +592,96 @@ del a
 ''',
 '''\
 <Module filename="test data">
+'''],
+]
+
+# @@@ no comments yet
+totest['everything'] = [
+['''\
+# comment
+
+"""Docstring"""
+
+"""Additional docstring"""
+
+__docformat__ = 'reStructuredText'
+
+a = 1
+"""Attribute docstring"""
+
+class C(Super):
+
+    """C's docstring"""
+
+    class_attribute = 1
+    """class_attribute's docstring"""
+
+    def __init__(self, text=None):
+        """__init__'s docstring"""
+
+        self.instance_attribute = (text * 7
+                                   + ' whaddyaknow')
+        """instance_attribute's docstring"""
+
+
+def f(x,                            # parameter x
+      y=a*5,                        # parameter y
+      *args):                       # parameter args
+    """f's docstring"""
+    return [x + item for item in args]
+
+f.function_attribute = 1
+"""f.function_attribute's docstring"""
+''',
+'''\
+<Module filename="test data">
+    <Docstring>
+        Docstring
+    <Docstring lineno="5">
+        Additional docstring
+    <Attribute lineno="7" name="__docformat__">
+        <Expression lineno="7">
+            'reStructuredText'
+    <Attribute lineno="9" name="a">
+        <Expression lineno="9">
+            1
+        <Docstring lineno="10">
+            Attribute docstring
+    <Class bases="Super" lineno="12" name="C">
+        <Docstring lineno="12">
+            C's docstring
+        <Attribute lineno="16" name="class_attribute">
+            <Expression lineno="16">
+                1
+            <Docstring lineno="17">
+                class_attribute's docstring
+        <Method lineno="19" name="__init__">
+            <Docstring lineno="19">
+                __init__'s docstring
+            <ParameterList lineno="19">
+                <Parameter lineno="19" name="self">
+                <Parameter lineno="19" name="text">
+                    <Default lineno="19">
+                        None
+            <Attribute lineno="22" name="self.instance_attribute">
+                <Expression lineno="22">
+                    (text * 7 + ' whaddyaknow')
+                <Docstring lineno="24">
+                    instance_attribute's docstring
+    <Function lineno="27" name="f">
+        <Docstring lineno="27">
+            f's docstring
+        <ParameterList lineno="27">
+            <Parameter lineno="27" name="x">
+            <Parameter lineno="27" name="y">
+                <Default lineno="27">
+                    a * 5
+            <ExcessPositionalArguments lineno="27" name="args">
+    <Attribute lineno="33" name="f.function_attribute">
+        <Expression lineno="33">
+            1
+        <Docstring lineno="34">
+            f.function_attribute's docstring
 '''],
 ]
 
