@@ -16,6 +16,7 @@ that language.
 import sys
 import os
 import re
+from types import UnicodeType
 import docutils.languages
 import docutils.parsers.rst.languages
 from docutils.parsers.rst import directives
@@ -46,8 +47,6 @@ class LanguageTestSuite(CustomTestSuite):
             match = self.language_module_pattern.match(mod)
             if match:
                 languages[match.group(1)] = 1
-        del languages[reference_language]
-        # maybe test reference language too: directives can fail.
         self.languages = languages.keys()
 
     def generateTests(self):
@@ -92,7 +91,7 @@ class LanguageTestCase(CustomTestCase):
             self.fail('No docutils.languages.%s module.' % self.language)
         missed, unknown = self._xor(self.ref.labels, module.labels)
         if missed or unknown:
-            self.fail("Missed: %s; Unknown: %s" % (str(missed), str(unknown)))
+            self.fail('Missed: %s; Unknown: %s' % (str(missed), str(unknown)))
 
     def test_directives(self):
         try:
@@ -103,16 +102,28 @@ class LanguageTestCase(CustomTestCase):
         except ImportError:
             self.fail('No docutils.parsers.rst.languages.%s module.'
                       % self.language)
-        failures = ""
+        failures = []
         for d in module.directives.keys():
             try:
                 func, msg = directives.directive(d, module, None)
                 if not func:
-                    failures += "%s (%s)," % (d, "unknown directive")
+                    failures.append('"%s": unknown directive' % d)
             except Exception, error:
-                failures += "%s (%s)," % (d, error)
+                failures.append('"%s": %s' % (d, error))
+        reverse = {}
+        for key, value in module.directives.items():
+            reverse[value] = key
+        canonical = directives._directive_registry.keys()
+        canonical.sort()
+        canonical.remove('restructuredtext-test-directive')
+        for name in canonical:
+            if not reverse.has_key(name):
+                failures.append('"%s": translation missing' % name)
         if failures:
-            self.fail(failures)
+            text = '\n    ' + '\n    '.join(failures)
+            if type(text) == UnicodeType:
+                text = text.encode('raw_unicode_escape')
+            self.fail(text)
 
 
 languages_to_test = []
