@@ -68,9 +68,8 @@ class OptionParser(optik.OptionParser):
           ['--no-debug'], {'action': 'store_false', 'dest': 'debug'}),
          ('Send the output of system messages (warnings) to <file>.',
           ['--warnings'], {'dest': 'warning_stream', 'metavar': '<file>'}),
-         # @@@ Take default encoding & language from locale?
-         #('Specify the encoding of input text.  Default is "utf-8".',
-         # ['--encoding', '-e'], {'default': 'utf-8', 'metavar': '<name>'}),
+         ('Specify the encoding of input text.  Default is locale-dependent.',
+          ['--encoding', '-e'], {'metavar': '<name>'}),
          ('Specify the language of input text (ISO 639 2-letter identifier.  '
           'Default is "en" (English).',
           ['--language', '-l'], {'dest': 'language_code', 'default': 'en',
@@ -78,12 +77,17 @@ class OptionParser(optik.OptionParser):
          ("Show this program's version number and exit.",
           ['--version'], {'action': 'version'}),
          ('Show this help message and exit.',
-          ['--help', '-h'], {'action': 'help'}),))
+          ['--help', '-h'], {'action': 'help'}),
+         # Hidden options, for development use only:
+         (optik.SUPPRESS_HELP, ['--dump-internal-document-attributes'],
+          {'action': 'store_true'}),))
+
     """Command-line option specifications, common to all Docutils front-ends.
     Option group title, description, and a list/tuple of tuples: ``('help
-    text', [list of option strings], {keyword arguments})``.  Option specs
-    from Docutils components are also used (see
-    `populate_from_components()`)."""
+    text', [list of option strings], {keyword arguments})``.  Group title
+    and/or description may be `None`; no group title implies no group, just a
+    list of single options.  Option specs from Docutils components are also
+    used (see `populate_from_components()`)."""
 
     thresholds = {'info': 1, 'warning': 2, 'error': 3, 'severe': 4, 'none': 5}
     """Lookup table for --report and --halt threshold values."""
@@ -107,8 +111,11 @@ class OptionParser(optik.OptionParser):
         for component in components:
             if component is not None and component.cmdline_options:
                 title, description, option_spec = component.cmdline_options
-                group = optik.OptionGroup(self, title, description)
-                self.add_option_group(group)
+                if title:
+                    group = optik.OptionGroup(self, title, description)
+                    self.add_option_group(group)
+                else:
+                    group = self        # single options
                 for (help_text, option_strings, kwargs) in option_spec:
                     group.add_option(help=help_text, *option_strings,
                                      **kwargs)
