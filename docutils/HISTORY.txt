@@ -144,6 +144,9 @@ Specific:
 * docutils/languages/de.py: German mappings; added to project.  Thanks
   to Gunnar Schwant for the translations.
 
+* docutils/languages/en.py: Added "Dedication" bibliographic field
+  mappings.
+
 * docutils/languages/sv.py: Swedish mappings; added to project by Adam
   Chodorowski.
 
@@ -204,9 +207,11 @@ Specific:
 * docutils/transforms/components.py: Added to project; transforms
   related to Docutils components.
 
-* docutils/transforms/frontmatter.py: In ``DocInfo.extract_authors``,
-  check for a single "author" in an "authors" group, and convert it to
-  a single "author" element.
+* docutils/transforms/frontmatter.py:
+
+  - In ``DocInfo.extract_authors``, check for a single "author" in an
+    "authors" group, and convert it to a single "author" element.
+  - Added support for "Dedication" and generic bibliographic fields.
 
 * docutils/transforms/peps.py: Added to project; PEP-specific.
 
@@ -257,6 +262,7 @@ Specific:
   - Add a command-line options & directive attributes to control TOC
     and footnote/citation backlinks.
   - Added support for optional footnote/citation backlinks.
+  - Added support for generic bibliographic fields.
 
 * docutils/writers/pep_html.py: Added to project; HTML Writer for
   PEPs (subclass of ``html4css1.Writer``).
@@ -281,6 +287,7 @@ Specific:
   - Added ``decoration``, ``header``, and ``footer`` elements.
   - Brought ``interpreted`` element in line with the parser: changed
     attribute "type" to "role", added "position".
+  - Added support for generic bibliographic fields.
 
 * spec/notes.txt: Continual updates.  Added "Project Policies".
 
@@ -332,6 +339,7 @@ Specific:
   - Added "simple table" syntax to supplement the existing but
     newly-renamed "grid tables".
   - Added cautions for anonymous hyperlink use.
+  - Added "Dedication" and generic bibliographic fields.
 
 * test: Made test modules standalone (subdirectories became packages).
 
@@ -371,7 +379,10 @@ Specific:
 * tools/pep2html.py: Added to project from Python (nondist/peps).
   Added support for Docutils (reStructuredText PEPs).
 
-* tools/quicktest.py: Added the "--attributes" option, hacked a bit.
+* tools/quicktest.py:
+
+  - Added the "--attributes" option, hacked a bit.
+  - Added a second command-line argument (output file); cleaned up.
 
 * tools/stylesheets/: Subdirectory added to project.
 

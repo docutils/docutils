@@ -116,6 +116,15 @@ General
 - Perhaps the ``Component.supports`` method should deal with
   individual features ("meta" etc.) instead of formats ("html" etc.)?
 
+- Get the "--source-link" option (or a variation) to produce relative
+  links, like in this case::
+
+      cd tools
+      html.py -s ../spec/rst/problems.txt ../spec/rst/problems.html
+
+  The source link should refer to "problems.txt" (relative to
+  "problems.html"), not "../spec/rst/problems.txt" which it does now.
+
 
 Specification
 -------------
@@ -567,16 +576,6 @@ HTML Writer
 - @@@ Construct a _`templating system`, as in ht2html/yaptu, using
   directives and substitutions for dynamic stuff.
 
-- If a list's items contain single paragraphs only, omit the <P> tags?
-  Recursively?  (if item == list whose items are single paragraphs
-  only...)  Optional, with "--compact-lists" and "--no-compact-lists"?
-  Should only simple lists be compacted, or should the first paragraph
-  of all list items lack a <p> (perhaps "--compact-all-lists" and
-  "--compact-simple-lists")?
-
-  Tried it.  Twice.  Not easy.  If you're interested, email me for a
-  copy of the patches.
-
 - Add more support for <link> elements, especially for navigation
   bars.
 
@@ -628,6 +627,10 @@ Front-End Tools
 
 - Parameterize help text & defaults somehow?  Perhaps a callback?  Or
   initialize ``cmdline_options`` in ``__init__``?
+
+- Write a tool (perhaps ``html-all.py`` or ``htmldocs.py``) which
+  generates .html from all the .txt files in the project.  It could
+  even be run by setup.py as a final step!
 
 
 Project Policies
