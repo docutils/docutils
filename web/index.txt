@@ -19,7 +19,7 @@ XML, and TeX.  Several sources will be supported:
 - Standalone files (implemented).
 - Inline documentation from Python modules and packages, extracted
   with namespace context.
-- `PEPs (Python Enhancement Proposals)`_.
+- `PEPs (Python Enhancement Proposals)`_ (implemented).
 - And others as discovered.
 
 
@@ -179,7 +179,7 @@ PEPs (Python Enhancement Proposals)
 Please note that PEPs in the `master repository`_ may not be current,
 whereas the local versions are.
 
-__ spec/pep-0287.txt
+__ spec/pep-0287.html
 __ http://www.python.org/peps/pep-0287.html
 __ spec/pep-0257.txt
 __ http://www.python.org/peps/pep-0257.html
