@@ -13,7 +13,8 @@
 import sys
 import os
 import getopt
-import docutils.utils
+from docutils.frontend import OptionParser
+from docutils.utils import new_document
 from docutils.parsers.rst import Parser
 
 
@@ -37,6 +38,7 @@ options = [('pretty', 'p',
            ('styledxml=', 's', 'output raw XML with XSL style sheet reference '
             '(filename supplied in the option argument)'),
            ('xml', 'x', 'output pretty XML (indented)'),
+           ('attributes', '', 'dump document attributes after processing'),
            ('debug', 'd', 'debug mode (lots of output)'),
            ('help', 'h', 'show help text')]
 """See distutils.fancy_getopt.FancyGetopt.__init__ for a description of the
@@ -127,7 +129,7 @@ def posixGetArgs(argv):
     except getopt.GetoptError:
         usage()
         sys.exit(2)
-    optargs = {'debug': 0}
+    optargs = {'debug': 0, 'attributes': 0}
     for o, a in opts:
         if o in ['-h', '--help']:
             usage()
@@ -143,6 +145,8 @@ def posixGetArgs(argv):
             outputFormat = 'pretty'
         elif o in ['-t', '--test']:
             outputFormat = 'test'
+        elif o == '--attributes':
+            optargs['attributes'] = 1
         elif o in ['-d', '--debug']:
             optargs['debug'] = 1
         else:
@@ -174,12 +178,17 @@ In the following window, please:
 
 def main():
     inputFile, outputFormat, optargs = getArgs() # process cmdline arguments
+    options = OptionParser().get_default_values()
+    options.debug = optargs['debug']
     parser = Parser()
     input = inputFile.read()
-    document = docutils.utils.new_document(debug=optargs['debug'])
+    document = new_document(options)
     parser.parse(input, document)
     output = format(outputFormat, input, document, optargs)
     print output,
+    if optargs['attributes']:
+        import pprint
+        pprint.pprint(document.__dict__)
 
 
 if __name__ == '__main__':
