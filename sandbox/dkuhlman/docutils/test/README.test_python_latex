@@ -1,0 +1,36 @@
+
+=============================================
+Notes on Unit Test Additions for Python LaTeX
+=============================================
+
+
+DocutilsTestSupport.py
+======================
+
+Added two classes (PythonLatexPublishTestCase and
+PythonLatexPublishTestSuite) that drive the tests.  These classes
+were modelled on classes LatexPublishTestCase and
+LatexPublishTestSuite respectively.
+
+Note that class PythonLatexPublishTestCase overrides method
+compare_output and adds method remove_lines.  These methods remove
+the "generated on" lines from both input and output because the
+date will always differ.
+
+See file DocutilsTestSupport.patch
+
+
+test_writers/test_python_latex.py
+=================================
+
+Contains the tests.
+
+
+test_writers/Data/*
+===================
+
+Contains reST source documents (*.txt) and generated LaTeX
+documents (*.tex) that were used in the input and output strings
+in test_python_latex.py.
+
+
