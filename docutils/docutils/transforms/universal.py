@@ -159,7 +159,13 @@ class FinalChecks(Transform):
     default_priority = 840
 
     def apply(self):
-        visitor = FinalCheckVisitor(self.document)
+        unknown_reference_resolvers = []
+        for i in self.document.transformer.components.values():
+            unknown_reference_resolvers.extend(i.unknown_reference_resolvers)
+        decorated_list = [(f.priority, f) for f in unknown_reference_resolvers]
+        decorated_list.sort()
+        unknown_reference_resolvers = [f[1] for f in decorated_list]
+        visitor = FinalCheckVisitor(self.document, unknown_reference_resolvers)
         self.document.walk(visitor)
         if self.document.settings.expose_internals:
             visitor = InternalAttributeExposer(self.document)
@@ -167,6 +173,11 @@ class FinalChecks(Transform):
 
 
 class FinalCheckVisitor(nodes.SparseNodeVisitor):
+    
+    def __init__(self, document, unknown_reference_resolvers):
+        nodes.SparseNodeVisitor.__init__(self, document)
+        self.document = document
+        self.unknown_reference_resolvers = unknown_reference_resolvers
 
     def unknown_visit(self, node):
         pass
@@ -177,15 +188,21 @@ class FinalCheckVisitor(nodes.SparseNodeVisitor):
         refname = node['refname']
         id = self.document.nameids.get(refname)
         if id is None:
-            msg = self.document.reporter.error(
-                  'Unknown target name: "%s".' % (node['refname']),
-                  base_node=node)
-            msgid = self.document.set_id(msg)
-            prb = nodes.problematic(
-                  node.rawsource, node.rawsource, refid=msgid)
-            prbid = self.document.set_id(prb)
-            msg.add_backref(prbid)
-            node.parent.replace(node, prb)
+            handled = None
+            for i in self.unknown_reference_resolvers:
+                if i(node):
+                    handled = 1
+                    break
+            if not handled:
+                msg = self.document.reporter.error(
+                      'Unknown target name: "%s".' % (node['refname']),
+                      base_node=node)
+                msgid = self.document.set_id(msg)
+                prb = nodes.problematic(
+                      node.rawsource, node.rawsource, refid=msgid)
+                prbid = self.document.set_id(prb)
+                msg.add_backref(prbid)
+                node.parent.replace(node, prb)
         else:
             del node['refname']
             node['refid'] = id
