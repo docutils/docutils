@@ -502,6 +502,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_interpreted(self, node):
+        # @@@ Incomplete, pending a proper implementation on the
+        # Parser/Reader end.
         self.body.append('<span class="interpreted">')
 
     def depart_interpreted(self, node):
@@ -684,10 +686,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</strong>')
 
     def visit_substitution_definition(self, node):
-        raise nodes.SkipChildren
-
-    def depart_substitution_definition(self, node):
-        pass
+        raise nodes.SkipNode
 
     def visit_substitution_reference(self, node):
         self.unimplemented_visit(node)
