@@ -27,11 +27,19 @@ How To Report A Bug
 If you think you've discovered a bug, please read through these
 guidelines before reporting it.
 
-First, make sure it's a bug:
+First, make sure it's a new bug:
+
+* Please check the list of `known bugs`_ below and the `SourceForge
+  Bug Tracker`_ to see if it has already been reported.
 
 * Are you using the very latest version of Docutils?  The bug may have
   already been fixed.  Please get the latest version of Docutils from
-  CVS_ or from the `development snapshot`_ and check again.
+  CVS_ or from the `development snapshot`_ and check again.  Even if
+  this bug is not fixed, others probably are.
+
+  If you don't have time to check the latest snapshot, please report
+  the bug anyway.  We'd rather tell you that it's already fixed than
+  miss reports of unfixed bugs.
 
 * If Docutils does not behave the way you expect, look in the
   documentation_ (don't forget the FAQ_!) and `mailing list archives`_
@@ -40,12 +48,8 @@ First, make sure it's a bug:
 If you're not sure, please ask on the
 docutils-users@lists.sourceforge.net mailing list first.
 
-Once you've established that it is a bug in the current codebase,
-please check the list of `known bugs`_ below and the `SourceForge Bug
-Tracker`_ to see if it has already been reported.
-
-If it's a new bug, the most important thing you can do is come up with
-a simple description and a recipe that reproduces the bug.  Try to
+If it's a new bug, the most important thing you can do is to write a
+simple description and a recipe that reproduces the bug.  Try to
 create a minimal document that demonstrates the bug.  The easier you
 make it to understand and track down the bug, the more likely a fix
 will be.
