@@ -1,7 +1,7 @@
 """
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
-:version: 0.2.4
+:version: 0.2.5
 """
 
 from   wxPython.lib.throbber         import Throbber
@@ -59,7 +59,7 @@ class aboutDlg(wxDialog):
         #text.SetFont(wxFont(20, wxSWISS, wxNORMAL, wxBOLD, false))
 
         text = wxStaticText(self , -1,
-                            '>>> release:           0.2.4',
+                            '>>> release:           0.2.5',
                             wxPoint(9, 50))
         text = wxStaticText(self, -1,
                             '>>> manufactured by:   gunnar schwant',
@@ -68,13 +68,13 @@ class aboutDlg(wxDialog):
                             '>>> mailto:            g.schwant@gmx.de',
                             wxPoint(9, 80))
         text = wxStaticText(self, -1,
-                            '>>> Python version:    2.1.1 (or later)',
+                            '>>> Python version:    2.3.2 (or later)',
                             wxPoint(9, 95))
         text = wxStaticText(self, -1,
-                            '>>> wxPython version:  2.3.4.2',
+                            '>>> wxPython version:  2.4.2.4',
                             wxPoint(9, 110))
         text = wxStaticText(self, -1,
-                            '>>> Docutils version:  0.2.8 (or later)',
+                            '>>> Docutils version:  0.3 (or later)',
                             wxPoint(9, 125))
         text = wxStaticText(self, -1,
                             '>>> special thanks to: guido van rossum,',
