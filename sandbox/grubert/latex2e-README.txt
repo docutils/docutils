@@ -3,10 +3,16 @@ latex2e BUGS TODOS and other animals
 
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
+
 Rev. 2002-12-09
 
 To do
 ~~~~~
+
+* center subsection{Abstract} gives a latex error here.
+  ``! LaTeX Error: Something's wrong--perhaps a missing \item.``
+
+* the title "table of contents" is centered too.
 
 * consider peter funk's hooks for TeXpert:
   
@@ -20,6 +26,7 @@ To do
     ``\appendix``, ``\makeindex``, ``\makeglossary`` and some such 
     for larger documents.
 
+* hyphens: co-developers should be co--developers ?
 
 * table heads and footer for longtable (firstpage lastpage ..)
 
@@ -38,13 +45,7 @@ To do
   maybe use ltxtable instead of tabularx (Longtable combined with tabularx).
   but ltxtable disables longtable's multicolumn.
 
-* abstract is not a docinfo entry so latex abstract is never used.
-
 * multiple author entries in docinfo (same thing as in html).
-
-* dedication should be centered, text and title. 
-
-* abstract title should be centered. 
 
 * the indentional problematic error in test.txt is not referring anywhere.
 
@@ -106,6 +107,7 @@ ATTENTION
 Done
 ~~~~
 
+* abstract title should be centered. 
 * docinfo table centered and narrower.
 * bibliographic field names have a ":".
 * german (de*) quotes.

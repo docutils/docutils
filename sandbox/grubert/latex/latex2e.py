@@ -626,7 +626,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_field(self, node):
         # real output is done in siblings: _argument, _body, _name
-        self.body.append('%[visit_field]\n')
+        pass
 
     def depart_field(self, node):
         self.body.append('\n')
@@ -1081,9 +1081,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_title(self, node):
         """Only 3 section levels are supported by LaTeX article (AFAIR)."""
         if isinstance(node.parent, nodes.topic):
+            # section titles before the table of contents.
             if node.parent.hasattr('id'):
                 self.body.append('\\hypertarget{%s}{}' % node.parent['id'])
-            self.body.append('\\paragraph{')
+            self.body.append('\\begin{center}\n')
+            self.context.append('\\end{center}\n')
+            ## should this be section subsection or 
+            self.body.append('\\subsection*{')
+            self.context.append('}\n')
         elif self.section_level == 0:
             # document title
             self.title = self.encode(node.astext())
@@ -1101,10 +1106,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.body.append( '\\hypertarget{%s}{}\n' % name)
             self.body.append('\\%ssection*{' % ('sub'*(self.section_level-1)))
             # BUG: self.body.append( '\\label{%s}\n' % name)
-        self.context.append('}\n')
+            self.context.append('}\n')
 
     def depart_title(self, node):
         self.body.append(self.context.pop())
+        if isinstance(node.parent, nodes.topic):
+            self.body.append(self.context.pop())
         # BUG level depends on style.
         if node.parent.hasattr('id'):
             # pdflatex seamsnot to care about the actual level, so i did 
@@ -1122,12 +1129,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.latex_toc:
             self.topic_class = ''
             raise nodes.SkipNode
-        ##self.body.append('% [visit_topic]\n')
 
     def depart_topic(self, node):
-        if not self.latex_toc:
-            self.body.append('% [depart_topic]\n')
         self.topic_class = ''
+        self.body.append('\n')
 
     def visit_transition(self, node):
         self.body.append('\n\n')
