@@ -348,7 +348,7 @@ documentation.  Alternatives:
    allowed; the first line of text in a cell determines its left
    margin.
 
-2. Below is a minimalist possibility.  It may be better suited to
+2. Below is a simpler table structure.  It may be better suited to
    manual input than alternative #1, but there is no Emacs editing
    mode available.  One disadvantage is that it resembles section
    titles; a one-column table would look exactly like section &
@@ -374,7 +374,80 @@ documentation.  Alternatives:
    table consists of '=' underlines.  A blank line is required
    following a table.
 
-Alternative #1 is the choice adopted by reStructuredText.
+3. A minimalist alternative is as follows::
+
+       ========  ========  ========
+                 Header 2 & 3 Span
+                 ------------------
+       Header 1  Header 2  Header 3
+       ========  ========  ========
+       Each      line is   a new row.
+       Each row  consists  of one line only.
+       Row       spans     are not possible.
+       The last  column    may spill over to the right.
+       Column spans are possible with an underline joining columns.
+       ----------------------------
+       The span  is        limited to the row above the underline.
+       ========  ========  ========
+
+   The table begins with a top border of equals signs with one or more
+   spaces at each column boundary (regardless of spans).  There must
+   be at least two columns in the table (to differentiate it from
+   section headers).  Each line starts a new row.  The rightmost
+   column is unbounded; text may continue past the edge of the table.
+   Each row/line must contain spaces at column boundaries, except for
+   explicit column spans.  Underlines of '-' can be used to indicate
+   column spans, but should be used sparingly if at all.  Lines
+   containing column span underlines may not contain any other text.
+   The last of the optional head rows is underlined with '=', again
+   with spaces at column boundaries.  The bottom boundary of the table
+   consists of '=' underlines.  A blank line is required following a
+   table.
+
+4. As a variation of alternative 3, bullet list syntax in the first
+   column could be used to indicate row starts.  Multi-line rows are
+   possible, but row spans are not.  For example::
+
+       ===== =====
+       col 1 col 2
+       ===== =====
+       - 1   Second column of row 1.
+       - 2   Second column of row 2.
+             Second line of paragraph.
+       - 3   Second column of row 3.
+
+             Second paragraph of row 3,
+             column 2
+       ===== =====
+
+   Column spans would be indicated on the line after the last line of
+   the row.  To indicate a real bullet list within a first-column
+   cell, simply nest the bullets.
+
+5. In a further variation, we could simply assume that whitespace in
+   the first column implies a multi-line row; the text in other
+   columns is continuation text.  For example::
+
+       ===== =====
+       col 1 col 2
+       ===== =====
+       1     Second column of row 1.
+       2     Second column of row 2.
+             Second line of paragraph.
+       3     Second column of row 3.
+
+             Second paragraph of row 3,
+             column 2
+       ===== =====
+
+   Limitations of this approach:
+
+   - Cells in the first column are limited to one line of text.
+
+   - Cells in the first column *must* contain some text; blank cells
+     would lead to a misinterpretation.
+
+Alternative #1 has been adopted by reStructuredText.
 
 
 Delimitation of Inline Markup
