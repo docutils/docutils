@@ -126,8 +126,7 @@ def validate_boolean(setting, value, option_parser,
 def validate_threshold(setting, value, option_parser,
                        config_parser=None, config_section=None):
     try:
-        int(value)
-        return value
+        return int(value)
     except ValueError:
         try:
             return option_parser.thresholds[value.lower()]
