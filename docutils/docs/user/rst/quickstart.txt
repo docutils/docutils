@@ -251,9 +251,8 @@ These are a single line of text (one or more words) with an underline
 "``======``", tildes "``~~~~~~``" or any of the non-alphanumeric
 characters ``= - ` : ' " ~ ^ _ * + # < >`` that you feel comfortable
 with.  The underline/overline must be at least as long as the title
-text, and a minumum of 4 characters long.  Be consistent though, since
-all sections marked with the same underline style are deemed to be at
-the same level::
+text.  Be consistent though, since all sections marked with the same
+underline style are deemed to be at the same level::
 
   Chapter 1 Title
   ===============
