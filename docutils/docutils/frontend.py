@@ -204,9 +204,12 @@ class Values(optparse.Values):
 
 class Option(optparse.Option):
 
+    ATTRS = optparse.Option.ATTRS + ['overrides']
+
     def process(self, opt, value, values, parser):
         """
-        Call the validator function on applicable settings.
+        Call the validator function on applicable settings and
+        evaluate the 'overrides' option.
         Extends `optparse.Option.process`.
         """
         result = optparse.Option.process(self, opt, value, values, parser)
@@ -223,6 +226,8 @@ class Option(optparse.Option):
                         % (opt, error.__class__.__name__, error)),
                            None, sys.exc_info()[2])
                 setattr(values, setting, new_value)
+            if self.overrides is not None:
+                setattr(values, self.overrides, None)
         return result
 
 
