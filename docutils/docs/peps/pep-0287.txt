@@ -703,23 +703,25 @@ Questions & Answers
     11. I want to write all my strings in Unicode.  Will anything
         break?
 
-        The parser will fully support Unicode.  It may not yet, but
-        only because nobody's gotten around to implementing or testing
-        Unicode support.  Contributions are always welcome!
+        The parser fully supports Unicode.  Docutils supports
+        arbitrary input encodings.
 
     12. Why does the community need a new structured text design?
 
         The existing structured text designs are deficient, for the
-        reasons given in "Rationale" above.
+        reasons given in "Rationale" above.  reStructuredText aims to
+        be a complete markup syntax, within the limitations of the
+        "readable plaintext" medium.
 
     13. What is wrong with existing documentation methodologies?
 
         What existing methodologies?  For Python docstrings, there is
         **no** official standard markup format, let alone a
-        documentation methodology.  The question of methodology is at
-        a much higher level than syntax (what this PEP addresses),
-        potentially much more controversial and difficult to resolve,
-        and is intentionally left out of this discussion.
+        documentation methodology, akin to JavaDoc.  The question of
+        methodology is at a much higher level than syntax (which this
+        PEP addresses).  It is potentially much more controversial and
+        difficult to resolve, and is intentionally left out of this
+        discussion.
 
 
 References & Footnotes
