@@ -1,0 +1,3 @@
+.. include:: data/standard.txt
+.. include:: data/table_colspan.txt
+.. include:: data/errors.txt
