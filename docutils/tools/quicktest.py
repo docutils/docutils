@@ -8,8 +8,8 @@
 # Date: $Date$
 # Copyright: This module has been placed in the public domain.
 
-import locale
 try:
+    import locale
     locale.setlocale(locale.LC_ALL, '')
 except:
     pass

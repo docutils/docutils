@@ -12,7 +12,10 @@ will exist for a variety of input/output mechanisms.
 __docformat__ = 'reStructuredText'
 
 import sys
-import locale
+try:
+    import locale
+except:
+    pass
 from types import UnicodeType
 from docutils import TransformSpec
 

@@ -10,8 +10,8 @@
 A minimal front end to the Docutils Publisher, producing Docutils XML.
 """
 
-import locale
 try:
+    import locale
     locale.setlocale(locale.LC_ALL, '')
 except:
     pass
