@@ -427,31 +427,6 @@ class ParserTestSuite(CustomTestSuite):
                       run_in_debugger=run_in_debugger)
 
 
-class ParserTransformTestCase(ParserTestCase):
-
-    """
-    Like ParserTestCase, except that default transforms are run.
-
-    For use with ParserTestSuite.
-    """
-
-    # Get settings with report_level == 1 from TransformTestCase
-    settings = TransformTestCase.settings
-
-    def test_parser(self):
-        if self.run_in_debugger:
-            pdb.set_trace()
-        document = utils.new_document('test data', self.settings)
-        # Remove any additions made by "role" directives:
-        roles._roles = {}
-        self.parser.parse(self.input, document)
-        document.transformer.populate_from_components([rst.Parser])
-        document.transformer.apply_transforms()
-        output = document.pformat()
-        self.compare_output(self.input, output, self.expected)
-
-
-
 class PEPParserTestCase(ParserTestCase):
 
     """PEP-specific parser test case."""
