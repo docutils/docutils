@@ -648,23 +648,27 @@ The following formatting types are recognized:
 - surrounded by parentheses: "(1)", "(A)", "(a)", "(I)", "(i)".
 - suffixed with a right-parenthesis: "1)", "A)", "a)", "I)", "i)".
 
-A system message will be generated for each of the following cases:
+While parsing an enumerated list, a new list will be started whenever:
 
-- The enumerators do not all have the same format and sequence type.
+- An enumerator is encountered which does not have the same format and
+  sequence type as the current list (e.g. "1.", "(a)" produces two
+  separate lists).
 
-- The enumerators are not in sequence (i.e., "1.", "3." generates a
-  level-1 [info] system message and produces two separate lists).
+- The enumerators are not in sequence (e.g., "1.", "3." produces two
+  separate lists).
 
 It is recommended that the enumerator of the first list item be
 ordinal-1 ("1", "A", "a", "I", or "i").  Although other start-values
-will be recognized, they may not be supported by the output format.
+will be recognized, they may not be supported by the output format.  A
+level-1 [info] system message will be generated for any list beginning
+with a non-ordinal-1 enumerator.
 
 Lists using Roman numerals must begin with "I"/"i" or a
 multi-character value, such as "II" or "XV".  Any other
-single-character Roman numeral ("V", "X", etc.) will be interpreted as
-a letter of the alphabet, not as a Roman numeral.  Likewise, lists
-using letters of the alphabet may not begin with "I"/"i", since these
-are recognized as Roman numeral 1.
+single-character Roman numeral ("V", "X", "L", "C", "D", "M") will be
+interpreted as a letter of the alphabet, not as a Roman numeral.
+Likewise, lists using letters of the alphabet may not begin with
+"I"/"i", since these are recognized as Roman numeral 1.
 
 Nested enumerated lists must be created with indentation.  For
 example::

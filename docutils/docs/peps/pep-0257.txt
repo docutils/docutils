@@ -114,7 +114,7 @@ Specification
 
       This type of docstring is only appropriate for C functions (such
       as built-ins), where introspection is not possible.  However,
-      the nature of the return value cannot be determined by
+      the nature of the *return value* cannot be determined by
       introspection, so it should be mentioned.  The preferred form
       for such a docstring would be something like::
 

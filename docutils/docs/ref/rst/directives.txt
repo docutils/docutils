@@ -157,9 +157,9 @@ legend.  To specify a legend without a caption, use an empty comment
 ("..") in place of the caption.
 
 
----------------------
- Document Components
----------------------
+----------------
+ Document Parts
+----------------
 
 Table of Contents
 =================
