@@ -528,7 +528,7 @@ class Inliner:
     openers = '\'"([{<'
     closers = '\'")]}>'
     start_string_prefix = (r'((?<=^)|(?<=[-/: \n%s]))' % re.escape(openers))
-    end_string_suffix = (r'((?=$)|(?=[-/:.,;!? \n%s]))' % re.escape(closers))
+    end_string_suffix = (r'((?=$)|(?=[-/:.,;!? \n\x00%s]))' % re.escape(closers))
     non_whitespace_before = r'(?<![ \n])'
     non_whitespace_escape_before = r'(?<![ \n\x00])'
     non_whitespace_after = r'(?![ \n])'

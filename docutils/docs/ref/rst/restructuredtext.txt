@@ -2140,9 +2140,9 @@ In reStructuredText, inline markup applies to words or phrases within
 a text block.  The same whitespace and punctuation that serves to
 delimit words in written text is used to delimit the inline markup
 syntax constructs.  The text within inline markup may not begin or end
-with whitespace.  Arbitrary character-level markup is not supported;
-it is not possible to mark up individual characters within a word.
-Inline markup cannot be nested.
+with whitespace.  Arbitrary character-level markup is not supported
+[#]_; it is not possible to mark up individual characters within a
+word.  Inline markup cannot be nested.
 
 There are nine inline markup constructs.  Five of the constructs use
 identical start-strings and end-strings to indicate the markup:
@@ -2242,6 +2242,18 @@ each character.  The inline markup recognition order is as follows:
   recognized.
 
 - `Standalone hyperlinks`_ are the last to be recognized.
+
+.. [#] Backslash escapes can be used to allow arbitrary text to
+   immediately follow inline markup::
+
+       Python ``list``\s use square bracket syntax.
+
+   The backslash will disappear from the processed document.  The word
+   "list" will appear as inline literal text, and the letter "s" will
+   immediately follow it as normal text, with no space in-between.
+
+   There is not yet any way for arbitrary text to immediately precede
+   inline markup.
 
 
 Emphasis
