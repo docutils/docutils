@@ -358,7 +358,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
          ('Specify the text encoding for output.  Default is UTF-8.  '
           'Optionally also specify the error handler for unencodable '
           'characters, after a colon (":"); default is "strict".  (See '
-          '"--output-encoding-error-encoding".)',
+          '"--output-encoding-error-handler".)',
           ['--output-encoding', '-o'],
           {'metavar': '<name[:handler]>', 'default': 'utf-8',
            'validator': validate_encoding_and_error_handler}),
@@ -372,7 +372,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
          ('Specify the text encoding for error output.  Default is ASCII.  '
           'Optionally also specify the error handler for unencodable '
           'characters, after a colon (":"); default is "%s".  (See '
-          '"--output-encoding-error-encoding".'
+          '"--output-encoding-error-handler".'
           % default_error_encoding_error_handler,
           ['--error-encoding', '-e'],
           {'metavar': '<name[:handler]>', 'default': 'ascii',
@@ -636,6 +636,22 @@ section "Old-Format Configuration Files".
             for option in self.options(section):
                 section_dict[option] = self.get(section, option, raw=1)
         return section_dict
+
+    def set(self, section, option, value):
+        """
+        Set an option.
+
+        Overrides stdlib ConfigParser's set() method to allow non-string
+        values.  Required for compatibility with Python 2.4.
+        """
+        if not section or section == CP.DEFAULTSECT:
+            sectdict = self._defaults
+        else:
+            try:
+                sectdict = self._sections[section]
+            except KeyError:
+                raise CP.NoSectionError(section)
+        sectdict[self.optionxform(option)] = value
 
 
 class ConfigDeprecationWarning(DeprecationWarning):
