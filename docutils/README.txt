@@ -22,9 +22,6 @@ To run the code, Python 2.0 or later must already be installed.
 Python 2.1 or later is required to run the test suite.  You can get
 Python from http://www.python.org/.
 
-Greg Ward's Optik option processing package is required.  You can get
-Optik from http://optik.sourceforge.net/.
-
 
 Project Files & Directories
 ===========================
@@ -72,8 +69,8 @@ Project Files & Directories
 Installation
 ============
 
-The first step is to expand the .tar.gz archive.  It contains a
-distutils setup file "setup.py".  OS-specific installation
+The first step is to expand the .tar.gz or .tgz archive.  It contains
+a distutils setup file "setup.py".  OS-specific installation
 instructions follow.
 
 GNU/Linux, Unix, MacOS X, etc.
@@ -141,13 +138,14 @@ Usage
 Start with the html.py and publish.py front-ends from the unpacked
 "tools" subdirectory.  Both tools take up to two arguments, the source
 path and destination path, with STDIN and STDOUT being the defaults.
+Use the "--help" option to the front-ends for details on options and
+arguments.
 
 The package modules are continually growing and evolving.  The
 ``docutils.statemachine`` module is usable independently.  It contains
 extensive inline documentation (in reStructuredText format).
 
-The specs, the package structure, and the skeleton modules may also be
-of interest to you.  Contributions are welcome!
+Contributions are welcome!
 
 
 ..

@@ -64,18 +64,19 @@ Requirements
   Python 2.1 or later is required to run the test suite.  You can get
   Python from http://www.python.org/.
 
-- Greg Ward's Optik option processing package is required.  You can
-  get Optik from http://optik.sourceforge.net/.
+- Docutils uses Greg Ward's Optik__ option processing package.  It is
+  now included in the Docutils distribution.
+
+__ http://optik.sourceforge.net/
 
 
-Daily Snapshots
----------------
+Development Snapshots
+---------------------
 
-Daily snapshots of the project files are available.  They are
-generated automatically from CVS around midnight in North America's
-Eastern time zone (UTC-0400 from April to October, UTC-0500 from
-October to April).  The snapshots should be used with caution, as they
-may contain transient bugs or incompatibilities.
+Development snapshots of the project files are available as .tgz
+tarballs.  They are generated automatically from CVS, usually within
+an hour of a change being checked in.  The snapshots should be used
+with caution, as they may contain transient bugs or incompatibilities.
 
 - `Snapshot of Docutils code, tests, documentation, and
   specifications`__
@@ -94,7 +95,7 @@ repository`_ and read the latest README_ and HISTORY_ files.
 Project Releases
 ----------------
 
-Please note that the `daily snapshots`_ above contain the latest
+Please note that the `development snapshots`_ above contain the latest
 versions of project files, although they may not be fully tested.
 
 The `latest project release package`_ (Docutils 0.1, 2002-04-20) and
@@ -115,9 +116,9 @@ Doc-SIG@python.org).
 
 Two lists have been set up specifically for the Docutils project:
 
-- `docutils-develop`__, for development discussions
+- docutils-develop__, for development discussions
   (email to docutils-develop@lists.sourceforge.net).
-- `docutils-checkins`__, for CVS checkin messages (normally
+- docutils-checkins__, for CVS checkin messages (normally
   read-only).
 
 The Doc-SIG_ has greater exposure and is therefore a better forum for
@@ -134,9 +135,9 @@ User Documentation
 ==================
 
 The latest working documents may be accessed individually below, or
-from the ``docs`` directory of the `daily snapshots`_ above.  They are
-also distributed with the `latest project release package`_, but these
-may not be completely up to date.
+from the ``docs`` directory of the `development snapshots`_ above. 
+They are also distributed with the `latest project release package`_,
+but these may not be completely up to date.
 
 - `A ReStructuredText Primer`__ (HTML file, or `text source`__)
 - `Quick reStructuredText`__ (user reference)
@@ -180,7 +181,7 @@ __ http://www.python.org/peps/pep-0258.html
 Docutils Internals
 ------------------
 
-- Notes__ (includes the Docutils `To Do list`__ and `Project
+- Notes__ (includes the Docutils `To Do list`_ and `Project
   Policies`__)
 - `Docutils Document Tree Structure`__ (incomplete; source only)
 - `Python Source Reader`__ (incomplete)
@@ -190,7 +191,7 @@ Docutils Internals
 - `Docutils Python DTD`__ (experimental)
 
 __ spec/notes.html
-__ spec/notes.html#to-do
+.. _To Do list: spec/notes.html#to-do
 __ spec/notes.html#project-policies
 __ spec/doctree.txt
 __ spec/pysource.html
@@ -224,7 +225,7 @@ The Sandbox
 
 The Sandbox__ is a place to play around, to try out and share ideas.
 It's a part of the CVS repository but it isn't distributed as part of
-Docutils releases (you can get a recent tarball from the `daily
+Docutils releases (you can get a recent tarball from the `development
 snapshots`_).  Each developer who wants to play in it should create
 their own subdirectory (suggested name: SourceForge ID, or given name
 + family initial).
@@ -243,7 +244,8 @@ Please Contribute!
 Please help this project succeed by contributing.  We're looking for
 all kinds of contributions: testing, ideas, code, bug reports,
 administration, tasty snacks, computer equipment, and large sums of
-money.  If you're interested in participating in any way, please
+money.  There's a `To Do list`_ full of interesting ideas awaiting a
+champion.  If you're interested in participating in any way, please
 `contact the project coordinator`__.
 
 __ mailto_

@@ -15,6 +15,9 @@ Priority items are marked with "@" symbols.  The more @s, the higher
 the priority.  Items in question form (containing "?") are ideas which
 require more thought and debate; they are potential to-do's.
 
+Many of these items are awaiting champions.  If you see something
+you'd like to tackle, please do!
+
 
 General
 -------
@@ -237,6 +240,32 @@ __ http://docutils.sf.net/spec/rst/alternatives.html#or-not-to-do
 
 - Continue to report (info, level 1) enumerated lists whose start
   value is not ordinal-1?
+
+- Generalize the "doctest block" construct (which is overly
+  Python-centric) to other interactive sessions?  "Doctest block"
+  could be renamed to "I/O block" or "interactive block", and each of
+  these could also be recognized as such by the parser:
+
+  - Shell sessions::
+
+        $ cat example1.txt
+        A block beginning with a "$ " prompt is interpreted as a shell
+        session interactive block.  As with Doctest blocks, the
+        interactive block ends with the first blank line, and wouldn't
+        have to be indented.
+
+  - Root shell sessions::
+
+        # cat example2.txt
+        A block beginning with a "# " prompt is interpreted as a root
+        shell session (the user is or has to be logged in as root)
+        interactive block.  Again, the block ends with a blank line.
+
+  Other standard (and unambiguous) interactive session prompts could
+  easily be added (such as "> " for WinDOS).
+
+  Tony Ibbs spoke out against this idea (2002-06-14 Doc-SIG thread
+  "docutils feedback").
 
 
 Directives
