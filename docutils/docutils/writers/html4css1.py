@@ -892,7 +892,8 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_literal(self, node):
         """Process text to prevent tokens from wrapping."""
-        self.body.append(self.starttag(node, 'tt', '', CLASS='docutils literal'))
+        self.body.append(
+            self.starttag(node, 'tt', '', CLASS='docutils literal'))
         text = node.astext()
         for token in self.words_and_spaces.findall(text):
             if token.strip():
@@ -955,7 +956,8 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.context.append('</tr>\n<tr><td>&nbsp;</td>')
         else:
             self.context.append('')
-        self.body.append(self.starttag(node, 'td', CLASS='option-group', **atts))
+        self.body.append(
+            self.starttag(node, 'td', CLASS='option-group', **atts))
         self.body.append('<kbd>')
         self.context.append(0)          # count number of options
 
