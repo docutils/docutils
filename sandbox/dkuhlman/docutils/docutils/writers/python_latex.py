@@ -21,6 +21,13 @@ import string
 import urllib, urlparse
 from docutils import writers, nodes, languages
 
+## from IPython.Shell import IPShellEmbed
+## args = ''
+## ipshell = IPShellEmbed(args,
+##     banner = 'Dropping into IPython',
+##     exit_msg = 'Leaving Interpreter, back to program.')
+
+
 # To turn off debug printing, set to 0.
 DEBUG_FLAG = 1
 
@@ -57,7 +64,8 @@ class Writer(writers.Writer):
           {'default': 'howto', }),
     ))
 
-    settings_defaults = {}
+    #settings_defaults = {}
+    settings_defaults = {'output_encoding': 'latin-1'}
 
     output = None
     """Final translated form of `document`."""
@@ -91,6 +99,7 @@ class DocPyTranslator(nodes.NodeVisitor):
               #self.geometry % (self.d_paper, self.d_margins),
               #
               self.generator,
+              '\\usepackage{html}\n',
               ]
 
         # NOTE: Latex wants a date and an author, rst puts this into
@@ -167,7 +176,7 @@ class DocPyTranslator(nodes.NodeVisitor):
         text = text.replace("^", '{\\ensuremath{^\\wedge}}')
         text = text.replace("%", '{\\%}')
         text = text.replace("#", '{\\#}')
-        text = text.replace("~", '{\\~{ }}')
+        text = text.replace("~", '{\\~{}}')
         if self.insert_newline:
             # HACK: insert a blank before the newline, to avoid 
             # ! LaTeX Error: There's no line here to end.
@@ -198,7 +207,7 @@ class DocPyTranslator(nodes.NodeVisitor):
                 self.cleanHref(self.docinfo['address']))
         self.body_prefix.append('\\maketitle\n')
         self.body_prefix.append('\\ifhtml\n')
-        self.body_prefix.append('\\chapter*{Front Matter\label{front}}\n')
+        self.body_prefix.append('\\chapter*{Front Matter\\label{front}}\n')
         self.body_prefix.append('\\fi\n')
         if self.docinfo.has_key('copyright'):
             self.body_prefix.append('\n%s\n' % self.docinfo['copyright'])
@@ -264,25 +273,42 @@ class DocPyTranslator(nodes.NodeVisitor):
         pass
 
     def visit_block_quote(self, node):
-        self.body.append( '\\begin{quote}\n')
+        # If the block quote contains a single object and that object
+        #   is a list, then generate a list not a block quote.
+        # This lets us indent lists.
+        done = 0
+        if len(node.children) == 1:
+            child = node.children[0]
+            if isinstance(child, nodes.bullet_list) or \
+                    isinstance(child, nodes.enumerated_list):
+                done = 1
+        if not done:
+            self.body.append('\\begin{quote}\n')
 
     def depart_block_quote(self, node):
-        self.body.append( '\\end{quote}\n')
+        done = 0
+        if len(node.children) == 1:
+            child = node.children[0]
+            if isinstance(child, nodes.bullet_list) or \
+                    isinstance(child, nodes.enumerated_list):
+                done = 1
+        if not done:
+            self.body.append('\\end{quote}\n')
 
     def visit_bullet_list(self, node):
-        self.body.append( '\\begin{itemize}\n' )
+        self.body.append('\\begin{itemize}\n' )
 
     def depart_bullet_list(self, node):
-        self.body.append( '\\end{itemize}\n' )
+        self.body.append('\\end{itemize}\n' )
 
     def visit_enumerated_list(self, node):
-        self.body.append( '\\begin{enumerate}\n' )
+        self.body.append('\\begin{enumerate}\n' )
 
     def depart_enumerated_list(self, node):
         self.body.append('\\end{enumerate}\n')
 
     def visit_caption(self, node):
-        self.body.append( '\\caption{' )
+        self.body.append('\\caption{' )
 
     def depart_caption(self, node):
         self.body.append('}')
@@ -728,24 +754,56 @@ class DocPyTranslator(nodes.NodeVisitor):
         href = href.replace('#', '\\#{}')
         return href
 
+##     def visit_reference(self, node):
+##         self.pdebug('%% [(visit_reference) node: %s]\n' % str(node))
+##         if node.has_key('refuri'):
+##             self.href = node['refuri']
+##         elif node.has_key('refid'):
+##             self.href = '#' + node['refid']
+##         elif node.has_key('refname'):
+##             self.href = '#' + self.document.nameids[node['refname']]
+##         self.href = self.cleanHref(self.href)
+##         if self.seealso:
+##             self.body.append('\\seeurl{%s}{' % self.href)
+##         else:
+##             self.body.append('\\ulink{')
+## 
+##     def depart_reference(self, node):
+##         if self.seealso:
+##             self.body.append('}')
+##         else:
+##             self.body.append('}{%s}' % self.href)
+
     def visit_reference(self, node):
-        if node.has_key('refuri'):
-            self.href = node['refuri']
-        elif node.has_key('refid'):
-            self.href = '#' + node['refid']
-        elif node.has_key('refname'):
-            self.href = '#' + self.document.nameids[node['refname']]
-        self.href = self.cleanHref(self.href)
+        #self.pdebug('%% [(visit_reference) node: %s]\n' % str(node))
         if self.seealso:
-            self.body.append('\\seeurl{%s}{' % self.href)
+            if node.has_key('refuri'):
+                href = node['refuri']
+                href = self.cleanHref(href)
+                self.body.append('\\seeurl{%s}{' % href)
         else:
-            self.body.append('\\ulink{')
+            if node.has_key('refuri'):
+                # External hyperlink
+                self.body.append('\\ulink{')
+            elif node.has_key('refid'):
+                # Internal hyperlink
+                href = node['refid']
+                href = self.cleanHref(href)
+                self.body.append('\\ref{%s}' % href)
+                raise nodes.SkipNode
 
     def depart_reference(self, node):
         if self.seealso:
             self.body.append('}')
         else:
-            self.body.append('}{%s}' % self.href)
+            if node.has_key('refuri'):
+                # External hyperlink
+                href = node['refuri']
+                href = self.cleanHref(href)
+                self.body.append('}{%s}' % href)
+            elif node.has_key('refid'):
+                # Internal hyperlink
+                pass
 
     def visit_revision(self, node):
         ## self.pdebug('%% [(visit_revision) node: "%s"]\n' % str(node))
@@ -835,15 +893,18 @@ class DocPyTranslator(nodes.NodeVisitor):
         self.body.append('\n')
 
     def visit_target(self, node):
-        if not (node.has_key('refuri') or node.has_key('refid')
-                or node.has_key('refname')):
-            self.body.append('\\hypertarget{%s}{' % node['name'])
-            self.context.append('}')
-        else:
-            self.context.append('')
+        #self.pdebug('%% [(visit_target) node: %s]\n' % str(node))
+        pass
+##         if not (node.has_key('refuri') or node.has_key('refid')
+##                 or node.has_key('refname')):
+##             self.body.append('\\hypertarget{%s}{' % node['name'])
+##             self.context.append('}')
+##         else:
+##             self.context.append('')
 
     def depart_target(self, node):
-        self.body.append(self.context.pop())
+        pass
+##         self.body.append(self.context.pop())
 
     def visit_table(self, node):
         self.tableSpec = TableSpec()
@@ -934,14 +995,16 @@ class DocPyTranslator(nodes.NodeVisitor):
     def depart_tip(self, node):
         self.depart_admonition()
 
-    def string_to_label(self, text):
-        text = text.replace(' ', '-')
-        text = text.replace('_', '-')
-        return text
+##     def string_to_label(self, text):
+##         text = text.replace(' ', '-')
+##         text = text.replace('_', '-')
+##         return text
 
     def visit_title(self, node):
-        #self.pdebug('%% [(visit_title) section_level: %d  node: "%s"]\n' % \
-        #    (self.section_level, node.astext().lower()))
+        #self.pdebug('%% [(visit_title) section_level: %d  node.astext: "%s"]\n' % \
+        #    (self.section_level, node.astext()))
+        #self.pdebug('%% [(visit_title) section_level: %d  node.astext.encode: "%s"]\n' % \
+        #    (self.section_level, self.encode(node.astext())))
         if self.section_level == 0:
             self.title_before_section = 1
         if self.seealso:
@@ -961,17 +1024,26 @@ class DocPyTranslator(nodes.NodeVisitor):
                 self.body.append('%' + '_' * 75)
                 self.body.append('\n\n')
                 s1 = self.encode(node.astext())
-                s2 = self.string_to_label(node.astext())
+                # Remove the non-breaking space character.
+                # Not needed.  Using output-encoding=latin-1 fixes this.
+                #s1 = s1.replace(u'\xa0', ' ')
+                s2 = nodes.make_id(node.astext())
+                
+                #ipshell('(visit_title) Entering ipshell.\nHit Ctrl-D to exit ipshell.')
+                
                 if (self.section_level == 1):
-                    self.body.append('\\section{%s\label{%s}}\n' % (s1, s2))
+                    self.body.append('\\section{%s\\label{%s}}\n' % (s1, s2))
+                    #self.body.append(
+                    #    '\\section{\htmladdnormallink[%s]{%s}{}}\n' % \
+                    #    (s2, s1))
                 elif (self.section_level == 2):      
-                    self.body.append('\\subsection{%s\label{%s}}\n' % (s1, s2))
+                    self.body.append('\\subsection{%s\\label{%s}}\n' % (s1, s2))
                 elif (self.section_level == 3):
-                    self.body.append('\\subsubsection{%s\label{%s}}\n' % (s1, s2))
+                    self.body.append('\\subsubsection{%s\\label{%s}}\n' % (s1, s2))
                 elif (self.section_level == 4):
-                    self.body.append('\\paragraph{%s\label{%s}}\n' % (s1, s2))
+                    self.body.append('\\paragraph{%s\\label{%s}}\n' % (s1, s2))
                 else:
-                    self.body.append('\\subparagraph{%s\label{%s}}\n' % (s1, s2))
+                    self.body.append('\\subparagraph{%s\\label{%s}}\n' % (s1, s2))
             raise nodes.SkipNode
         
     def depart_title(self, node):
@@ -981,6 +1053,8 @@ class DocPyTranslator(nodes.NodeVisitor):
         topic_class = node.get('class')
         if topic_class == 'abstract':
             self.docinfo['abstract'] = node.astext()[9:]
+            raise nodes.SkipNode
+        else:
             raise nodes.SkipNode
 
     def depart_topic(self, node):
