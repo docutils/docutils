@@ -304,16 +304,6 @@ General
   option could be added to Docutils front ends to do this.  (Idea from
   Engelbert Gruber.)
 
-* Add a "test_language.py" module to the test suite.  Engelbert Gruber
-  has started one.  See docutils-develop, 2002-11-05, article
-  "language set testing".
-  
-  Idea: the "test_language.py" module could test all languages when
-  run by "alltests.py", and it could accept a language name argument
-  if run as a script, like this::
-
-      test_language.py de
-
 
 Documentation
 -------------
@@ -691,6 +681,12 @@ __ rst/alternatives.html#or-not-to-do
 * Implement auto-enumerated lists?  See `Auto-Enumerated Lists`__.
 
   __ rst/alternatives.html#auto-enumerated-lists
+
+* Support whitespace in angle-bracketed standalone URLs according to
+  Appendix E ("Recommendations for Delimiting URI in Context") of `RFC
+  2396`_.
+
+  .. _RFC 2396: http://www.rfc-editor.org/rfc/rfc2396.txt
 
 
 Directives
