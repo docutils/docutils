@@ -18,7 +18,6 @@ README: |scriptName|
 Overview
 ========
 
-
 The script |scriptName| extends the power of docultils by allowing XML authors
 and developers to include nested inline markup in their documents. While
 docutils allows for infinite nesting on the block level, it limits inline
@@ -37,12 +36,13 @@ inline text, |scriptName| allows you to customize the markup.
 Quick Example
 =============
 
-Let's say you wanted to include a comment in your final XML document, and you want to have a phrase that is emphasized within this comment. You type::
+You wantd to include a comment with emphasized text in your final XML
+document. You type::
   
   [:comment: Maybe I should include *The Sun Also Rises?*]
 
 
-You then type 
+You then issue the command: 
 
 |scriptName| --output my_document.rst
 
@@ -55,15 +55,36 @@ The output is::
 Installation
 ============
 
-1. Install python.
+1. Install python. (http://www.python.org)
 
-2. Install the docutils package. ()
+2. Install the docutils package. (http://docutils.sourceforge.net/)
 
-3. Install the PyXml package. ()
+3. Install the PyXml package. (http://pyxml.sourceforge.net/)
 
-4. Download the 
+4. Install the |moduleName|. You will need to have cvs installed on
+your machine. 
 
-5. Run the configuration script to set the path and location of the configuration file.
+  1. Open a shell. Type
+
+    ::
+    
+      cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/docutils login
+    
+    When asked for a password, simpy hit return.
+
+
+  2. Download the |moduleName|. Type
+
+    ::
+
+      cvs -z3
+      -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/docutils co
+      sandbox/paultremblay
+
+    This command will download the directory sandbox/paultremblay to your
+    current directory. Change to the directory /sandbox/paultremblay.
+
+  3. Run the configuration script to set the path and location of the configuration file.
 
    ::
 
@@ -73,11 +94,11 @@ Installation
    the configuration file will be placed in /etc/|moduleName|.
 
 
-3. Install the modules in the usual way:
+  4. Install the modules in the usual way:
 
-   python setup.py build
+    python setup.py build
 
-   python setup.py install
+    python setup.py install
 
 
 Use
@@ -123,7 +144,8 @@ script will produce this output::
   <inline arg1 = "math-forumla-containing-closing-bracket">2x</inline><problematic
   description = "solitary closing bracket my produce output you don't want"/>]
 
-In order to overcome this problem, use the following::
+In order to overcome this problem, escape the first closing bracket
+with literal markup::
 
   [:math-forumula-containing-closing-bracket: 2x ``]`` ]
 
@@ -190,10 +212,14 @@ Project Files & Directories
 
 * README.txt: You're reading it.
 
-.. To be filled in later
+*|moduleName|: Contains all the modules for the script to run
 
+*doc: The documentation for the module, including a copy of this
+README.txt.
 
+*scripts: the script |scriptName|.
 
+*test_files: Files to test the script.
 
 
 Getting Help
