@@ -67,6 +67,11 @@ div.section {
   margin-right: 1em ;
   margin-bottom: 1.5em }
 
+div.section div.section {
+  margin-left: 0em ;
+  margin-right: 0em ;
+  margin-top: 1.5em }
+
 div.abstract {
   margin: 2em 5em }
 
@@ -204,6 +209,9 @@ span.interpreted {
 
 span.option-argument {
   font-style: italic }
+
+span.pre {
+  white-space: pre }
 
 span.problematic {
   color: red }
