@@ -27,12 +27,12 @@ Setting Up For Testing
 
 Recent versions of Python's ``unittest.py`` module have an annoying
 new "feature", where newlines in test failure output are displayed as
-"\n" (two characters) instead of as actual newlines.  This means that
-test failure output is unreadable and unuseable.  Earlier versions
-didn't have this feature, and the output could easily be copied and
-pasted into test data modules.  Revision `1.7.2.1 of unittest.py`__
-works well.  Download it, place it in the ``test/`` directory, and
-enjoy much better output.
+``\n`` (two characters) instead of as actual newlines.  This means
+that test failure output is unreadable and unuseable.  Earlier
+versions didn't have this feature, and the output could easily be
+copied and pasted into test data modules.  Revision `1.7.2.1 of
+unittest.py`__ works well.  Download it, place it in the ``test/``
+directory, and enjoy much better output.
 
 __ http://cvs.sf.net/viewcvs.py/*checkout*/python/python/dist/src/Lib/unittest.py?rev=1.7.2.1
 
