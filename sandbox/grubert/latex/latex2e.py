@@ -438,28 +438,36 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.context.append(self.body)
             self.context.append(len(self.body))
         else:
+            self.docinfo.append('\\textbf{%s} &\n\t' % self.language_label(name))
             if name == 'author':
                 if not self.pdfinfo == None:
-                    # BUG only the last one survives
                     if not self.pdfauthor:
                         self.pdfauthor = self.attval(node.astext())
                     else:
-                        # BUG use author sep
                         self.pdfauthor += self.author_separator + self.attval(node.astext())
                 if latex_docinfo:
                     self.head.append('\\author{%s}\n' % self.attval(node.astext()))
                     raise nodes.SkipNode
                 else:
+                    # avoid latexs maketitle generating one for us.
                     self.head.append('\\author{}\n')
             elif name == 'date':
                 if latex_docinfo:
                     self.head.append('\\date{%s}\n' % self.attval(node.astext()))
                     raise nodes.SkipNode
                 else:
+                    # avoid latexs maketitle generating one for us.
                     self.head.append("\\date{}\n")
-
-            self.docinfo.append('\\textbf{%s} &\n\t' % self.language_label(name))
-            self.context.append(' \\\\\n')
+            if name == 'address':
+                # BUG keeping linebreaks in address: 
+                # a) flushleft needs \\ 
+                # b) paragraph with raggedright,
+                # both might have a vertical space above.
+                #self.docinfo.append('\\begin{flushleft}\n')
+                #self.context.append('\n\\end{flushleft}\n\\\\\n')
+                self.context.append(' \\\\\n')
+            else:    
+                self.context.append(' \\\\\n')
             self.context.append(self.docinfo)
             self.context.append(len(self.body))
         # \thanks is a footnote to the title.
