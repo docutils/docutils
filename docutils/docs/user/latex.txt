@@ -297,18 +297,6 @@ foot.
 If ``use-latex-citations`` is used a bibliography is inserted right at
 the end of the document. *This should be customizable*.
 
-Tilde in italian
-----------------
-
-Does not work, or only in verbatim or verb. Could be fixed by using T1, but
-the hyphen in literal environments is different:
-
-* Inline or in verbatim it is lower than it should.
-  If package courier is used acroread 5 puts it too high, xpdf
-  shows it at the same height as the horizontal line of ``+``.
-* In a block with markup two hyphens become one (endashed ?).
-  and ``<<``, ``>>`` become separate characters too.
-
 Tables
 ------
 
@@ -354,18 +342,8 @@ Miscellaneous
 * Selection of LaTeX fontsize configurable.
 * Assumed reST linelength for table width setting configurable.
 * literal-block indentation configurable.
-* The underscore ``_`` does not work in literal-blocks, has different width.
-  I tried
-
-  - Underline a blank ``\underline{ }`` to low, and does not fit the font.
-    But on many systems underscore is an underlined blank.
-  - Escape it ``{\_}`` to narrow
-  - Subscript a hyphen ``$_{\tt-}$`` too wide and thin
-  - ``$_{-}$`` the same.
-
 * recongize LaTeX and replace by ``\LaTeX``.
 * Support embed-stylesheet.
-* the ^-sign is problematic: using mathmode wedge is usually the wrong font.
 * Sidebar handling.
 * Maybe add end of line after term in definition list. see
     http://roundup.sf.net/doc-0.5/features.pdf
@@ -386,7 +364,6 @@ Miscellaneous
     ``\appendix``, ``\makeindex``, ``\makeglossary`` and some such 
     for larger documents.
 
-* Hyphens: co-developers should be co--developers?
 * The indentional problematic error in docs/user/rst/demo.txt is not
   referring anywhere.
 * Footnotes are not all on the same page (as in
@@ -399,18 +376,6 @@ Miscellaneous
 * For additional docinfo items: the field_body is inserted as text, i.e. no
   markup is done.
 * Multiple author entries in docinfo (same thing as in html).
-* pslatex has not textbackslash in bold ?
-* make use (but test against pslatex) ::
-
-    \textbackslash      \backslash \
-    \textbar            \mid       |
-    \textless           <          <
-    \textgreater        >          >
-    \textasciicircum    \hat       ^
-    \textasciitilde     \tilde     ~
-    \textbullet         \bullet    gefüllter Kreis auf halber Höhe
-    \textperiodcentered \cdot      ·
-    \textvisiblespace   (n.v.)     sichtbares Leerzeichen
 * keep literal-blocks together on a page, avoid pagebreaks.
 
   failed experiments up to now: samepage, minipage, pagebreak 1 to 4 before
