@@ -460,3 +460,32 @@ def get_source_line(node):
             return node.source, node.line
         node = node.parent
     return None, None
+
+
+class DependencyList:
+    
+    def __init__(self, output_file=None, dependencies=[]):
+        self.list = []
+        self.set_output(output_file)
+        for i in dependencies:
+            self.add(i)
+
+    def set_output(self, output_file):
+        if output_file == '-':
+            self.file = sys.stdout
+        elif output_file:
+            self.file = open(output_file, 'w')
+        else:
+            self.file = None
+
+    def add(self, filename):
+        if not filename in self.list:
+            self.list.append(filename)
+            if self.file is not None:
+                print >>self.file, filename
+
+    def __repr__(self):
+        data = repr(self.list)
+        if len(data) > 60:
+            data = data[:56] + ' ...'
+        return '<%s: %s>' % (self.__class__.__name__, data)
