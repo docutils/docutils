@@ -611,9 +611,6 @@ __ rst/alternatives.html#or-not-to-do
 * Allow the _`:trim:` option for all directives when they occur in a
   substitution definition, not only the unicode_ directive.
 
-  Allow other characters than spaces to be trimmed (e.g. ``:trim: -``
-  for trimming hyphens).
-
   .. _unicode:
      http://docutils.sf.net/docs/ref/rst/directives.html#unicode-character-codes
   
