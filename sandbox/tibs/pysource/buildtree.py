@@ -69,18 +69,20 @@ class group(docutils.nodes.Element):
 # ----------------------------------------------------------------------
 class BuildTree:
 
-    def __init__(self,with_groups=1):
+    def __init__(self, with_groups=1, root=None):
         self.stack = []
         """A stack of tuples of the form ("classname",classinstance).
         """
 
-        self.root = None
+        self.root = root
         """A memory of the first item on the stack (notionally, the
         "document") - we need this because if we `start` a document,
         fill it up, and then `end` it, that final `end` will remove
         the appropriate instance from the stack, leaving no record.
         Thus this is that record.
         """
+        if root is not None:
+            self._stack_add(root)
 
         self.with_groups = with_groups
 
@@ -164,13 +166,15 @@ class BuildTree:
             self.end("paragraph")
 
         if name == "document":
+            if self.root:
+                return
             if len(self.stack) > 0:
                 raise ValueError,\
                       "Cannot insert 'document' except at root of stack"
             warninglevel = keywords.get("warninglevel",2)
             errorlevel = keywords.get("errorlevel",4)
-            reporter = docutils.utils.Reporter(report_level=warninglevel,
-                                               stop_level=errorlevel)
+            reporter = docutils.utils.Reporter('fubar', warninglevel,
+                errorlevel)
             instance = docutils.nodes.document(reporter,"en")
         else:
             instance = self.make(thing,*args,**keywords)

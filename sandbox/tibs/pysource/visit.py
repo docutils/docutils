@@ -219,7 +219,7 @@ class Docstring:
         """Parse our text with the given parser.
         """
         import docutils
-        self.document = docutils.utils.new_document()
+        self.document = docutils.utils.new_document(self.text)
         parser.parse(self.text,self.document)
 
     def add_to_DPS(self,dps):
