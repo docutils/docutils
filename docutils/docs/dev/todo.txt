@@ -345,8 +345,9 @@ Implementation Docs
 
 * Internal module documentation (docstrings).
 
-* ../ref/doctree.txt: DTD element structural relationships, semantics,
-  and attributes.  In progress; element descriptions to be completed.
+* docs/ref/doctree.txt: DTD element structural relationships,
+  semantics, and attributes.  In progress; element descriptions to be
+  completed.
 
 * How-to docs: In docs/howto/.
 
