@@ -193,7 +193,10 @@ def directive(directive_name, language_module, document):
     return function, messages
 
 def register_directive(name, directive):
-    """Register a nonstandard application-defined directive function."""
+    """
+    Register a nonstandard application-defined directive function.
+    Language lookups are not needed for such functions.
+    """
     _directives[name] = directive
 
 def flag(argument):
