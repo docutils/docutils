@@ -293,19 +293,18 @@ line_block_ element: whitespace is significant, especially newlines.
 Details
 -------
 
-Category
-    `Bibliographic Elements`_
+:Category: `Bibliographic Elements`_
 
-Parents
+:Parents:
     The following elements may contain ``address``: docinfo_, authors_
 
-Children
+:Children:
     ``address`` elements contain text data plus `inline elements`_.
 
-Analogies
+:Analogies:
     ``address`` is analogous to the DocBook "address" element.
 
-Processing
+:Processing:
     As with the line_block_ element, newlines and other whitespace is
     significant and must be preserved.  However, a monospaced typeface
     need not be used.
@@ -320,11 +319,11 @@ Content Model
 
     `%text.model;`_
 
-Attributes
+:Attributes:
     The ``address`` element contains the `common attributes`_ (id_,
     name_, dupname_, source_, and class_), plus `xml:space`_.
 
-Parameter Entities
+:Parameter Entities:
     The `%bibliographic.elements;`_ parameter entity directly includes
     ``address``.
 
@@ -370,19 +369,18 @@ The ``author`` element holds the name of the author of the document.
 Details
 -------
 
-Category
-    `Bibliographic Elements`_
+:Category: `Bibliographic Elements`_
 
-Parents
+:Parents:
     The following elements may contain ``author``: docinfo_, authors_
 
-Children
+:Children:
     ``author`` elements may contain text data plus `inline elements`_.
 
-Analogies
+:Analogies:
     ``author`` is analogous to the DocBook "author" element.
 
-Processing
+:Processing:
     See docinfo_.
 
 
@@ -393,11 +391,11 @@ Content Model
 
     `%text.model;`_
 
-Attributes
+:Attributes:
     The ``author`` element contains only the `common attributes`_:
     id_, name_, dupname_, source_, and class_.
 
-Parameter Entities
+:Parameter Entities:
     The `%bibliographic.elements;`_ parameter entity directly includes
     ``author``.
 
@@ -435,20 +433,19 @@ documents with multiple authors.
 Details
 -------
 
-Category
-    `Bibliographic Elements`_
+:Category: `Bibliographic Elements`_
 
-Parents
+:Parents:
     Only the docinfo_ element contains ``authors``.
 
-Children
+:Children:
     ``authors`` elements may contain the following elements: author_,
     organization_, address_, contact_
 
-Analogies
+:Analogies:
     ``authors`` is analogous to the DocBook "authors" element.
 
-Processing
+:Processing:
     See docinfo_.
 
 
@@ -459,11 +456,11 @@ Content Model
 
     ((author_, organization_?, address_?, contact_?)+)
 
-Attributes
+:Attributes:
     The ``authors`` element contains only the `common attributes`_:
     id_, name_, dupname_, source_, and class_.
 
-Parameter Entities
+:Parameter Entities:
     The `%bibliographic.elements;`_ parameter entity directly includes
     ``authors``.
 
@@ -516,18 +513,17 @@ uniformly marked with bullets.  Bullets are typically simple dingbats
 Details
 -------
 
-Category
-    `Compound Body Elements`_
+:Category: `Compound Body Elements`_
 
-Parents
+:Parents:
     All elements employing the `%body.elements;`_ or
     `%structure.model;`_ parameter entities in their content models
     may contain ``bullet_list``.
 
-Children
+:Children:
     ``bullet_list`` elements contain one or more list_item_ elements.
 
-Analogies
+:Analogies:
     ``bullet_list`` is analogous to the HTML "ul" element and to the
     DocBook "itemizedlist" element.  HTML's "ul" is short for
     "unordered list", which we consider to be a misnomer.  "Unordered"
@@ -535,7 +531,7 @@ Analogies
     affecting the meaning of the list.  Bullet lists *are* often
     ordered; the ordering is simply left implicit.
 
-Processing
+:Processing:
     Each list item should begin a new vertical block, prefaced by a
     bullet/dingbat.
 
@@ -547,7 +543,7 @@ Content Model
 
     (list_item_+)
 
-Attributes
+:Attributes:
     The ``bullet_list`` element contains the `common attributes`_
     (id_, name_, dupname_, source_, and class_), plus bullet_.
 
@@ -555,7 +551,7 @@ Attributes
     data.  In reStructuredText, it contains one of "-", "+", or "*".
     It may be ignored in processing.
 
-Parameter Entities
+:Parameter Entities:
     The `%body.elements;`_ parameter entity directly includes
     ``bullet_list``.  The `%structure.model;`_ parameter entity
     indirectly includes ``bullet_list``.
@@ -622,20 +618,19 @@ used to indicate the type of a variable.
 Details
 -------
 
-Category
-    `Body Subelements`_ (simple)
+:Category: `Body Subelements`_ (simple)
 
-Parents
+:Parents:
     Only the definition_list_item_ element contains ``classifier``.
 
-Children
+:Children:
     ``classifier`` elements may contain text data plus `inline elements`_.
 
-Analogies
+:Analogies:
     ``classifier`` has no direct analogues in common DTDs.  It can be
     emulated with primitives or type effects.
 
-Processing
+:Processing:
     See definition_list_item_.
 
 
@@ -646,7 +641,7 @@ Content Model
 
     `%text.model;`_
 
-Attributes
+:Attributes:
     The ``classifier`` element contains only the `common attributes`_:
     id_, name_, dupname_, source_, and class_.
 
@@ -705,21 +700,20 @@ is typically used for an email or web address.
 Details
 -------
 
-Category
-    `Bibliographic Elements`_
+:Category: `Bibliographic Elements`_
 
-Parents
+:Parents:
     The following elements may contain ``contact``: docinfo_, authors_
 
-Children
+:Children:
     ``contact`` elements may contain text data plus `inline
     elements`_.
 
-Analogies
+:Analogies:
     ``contact`` is analogous to the DocBook "email" element.  The HTML
     "address" element serves a similar purpose.
 
-Processing
+:Processing:
     See docinfo_.
 
 
@@ -730,11 +724,11 @@ Content Model
 
     `%text.model;`_
 
-Attributes
+:Attributes:
     The ``contact`` element contains only the `common attributes`_:
     id_, name_, dupname_, source_, and class_.
 
-Parameter Entities
+:Parameter Entities:
     The `%bibliographic.elements;`_ parameter entity directly includes
     ``contact``.
 
@@ -772,20 +766,19 @@ The ``copyright`` element contains the document's copyright statement.
 Details
 -------
 
-Category
-    `Bibliographic Elements`_
+:Category: `Bibliographic Elements`_
 
-Parents
+:Parents:
     Only the docinfo_ element contains ``copyright``.
 
-Children
+:Children:
     ``copyright`` elements may contain text data plus `inline
     elements`_.
 
-Analogies
+:Analogies:
     ``copyright`` is analogous to the DocBook "copyright" element.
 
-Processing
+:Processing:
     See docinfo_.
 
 
@@ -796,11 +789,11 @@ Content Model
 
     `%text.model;`_
 
-Attributes
+:Attributes:
     The ``copyright`` element contains only the `common attributes`_:
     id_, name_, dupname_, source_, and class_.
 
-Parameter Entities
+:Parameter Entities:
     The `%bibliographic.elements;`_ parameter entity directly includes
     ``copyright``.
 
@@ -844,19 +837,18 @@ last modification of the document.
 Details
 -------
 
-Category
-    `Bibliographic Elements`_
+:Category: `Bibliographic Elements`_
 
-Parents
+:Parents:
     Only the docinfo_ element contains ``date``.
 
-Children
+:Children:
     ``date`` elements may contain text data plus `inline elements`_.
 
-Analogies
+:Analogies:
     ``date`` is analogous to the DocBook "date" element.
 
-Processing
+:Processing:
     Often used with the RCS/CVS keyword "Date".  See docinfo_.
 
 
@@ -867,11 +859,11 @@ Content Model
 
     `%text.model;`_
 
-Attributes
+:Attributes:
     The ``date`` element contains only the `common attributes`_:
     id_, name_, dupname_, source_, and class_.
 
-Parameter Entities
+:Parameter Entities:
     The `%bibliographic.elements;`_ parameter entity directly includes
     ``date``.
 
@@ -912,21 +904,20 @@ footer_ element is implemented, populated with processing information
 Details
 -------
 
-Category
-    `Structural Subelements`_
+:Category: `Structural Subelements`_
 
-Parents
+:Parents:
     Only the document_ element contains ``decoration``.
 
-Children
+:Children:
     ``decoration`` elements may contain `decorative elements`_.
 
-Analogies
+:Analogies:
     There are no direct analogies to ``decoration`` in HTML or in
     DocBook.  Equivalents are typically constructed from primitives
     and/or generated by the processing system.
 
-Processing
+:Processing:
     See the individual `decorative elements`_.
 
 Content Model
@@ -939,7 +930,7 @@ Content Model
 Although the content model doesn't specifically require contents, no
 empty ``decoration`` elements are ever created.
 
-Attributes
+:Attributes:
     The ``decoration`` element contains only the `common attributes`_:
     id_, name_, dupname_, source_, and class_.
 
@@ -974,20 +965,19 @@ to define a term_ in a definition_list_.
 Details
 -------
 
-Category
-    `Body Subelements`_ (compound)
+:Category: `Body Subelements`_ (compound)
 
-Parents
+:Parents:
     Only definition_list_item_ elements contain ``definition``.
 
-Children
+:Children:
     ``definition`` elements may contain `body elements`_.
 
-Analogies
+:Analogies:
     ``definition`` is analogous to the HTML "dd" element and to the
     DocBook "listitem" element (inside a "variablelistentry" element).
 
-Processing
+:Processing:
     See definition_list_item_.
 
 
@@ -998,7 +988,7 @@ Content Model
 
     (`%body.elements;`_)+
 
-Attributes
+:Attributes:
     The ``definition`` element contains only the `common attributes`_:
     id_, name_, dupname_, source_, and class_.
 
@@ -1022,23 +1012,22 @@ describe or classify things, for dialogues, or to itemize subtopics
 Details
 -------
 
-Category
-    `Compound Body Elements`_
+:Category: `Compound Body Elements`_
 
-Parents
+:Parents:
     All elements employing the `%body.elements;`_ or
     `%structure.model;`_ parameter entities in their content models
     may contain ``definition_list``.
 
-Children
+:Children:
     ``definition_list`` elements contain one or more
     definition_list_item_ elements.
 
-Analogies
+:Analogies:
     ``definition_list`` is analogous to the HTML "dl" element and to
     the DocBook "variablelist" element.
 
-Processing
+:Processing:
     See definition_list_item_.
 
 
@@ -1049,11 +1038,11 @@ Content Model
 
     (definition_list_item_+)
 
-Attributes
+:Attributes:
     The ``definition_list`` element contains only the `common
     attributes`_: id_, name_, dupname_, source_, and class_.
 
-Parameter Entities
+:Parameter Entities:
     The `%body.elements;`_ parameter entity directly includes
     ``definition_list``.  The `%structure.model;`_ parameter entity
     indirectly includes ``definition_list``.
@@ -1103,22 +1092,21 @@ term_/definition_ pair (with optional classifier_).
 Details
 -------
 
-Category
-    `Body Subelements`_ (compound)
+:Category: `Body Subelements`_ (compound)
 
-Parents
+:Parents:
     Only the definition_list_ element contains
     ``definition_list_item``.
 
-Children
+:Children:
     ``definition_list_item`` elements each contain a single term_,
     an optional classifier_, and a definition_.
 
-Analogies
+:Analogies:
     ``definition_list_item`` is analogous to the DocBook
     "variablelistentry" element.
 
-Processing
+:Processing:
     The optional classifier_ can be rendered differently from the
     term_.  They should be separated visually, typically by spaces
     plus a colon or dash.
@@ -1131,7 +1119,7 @@ Content Model
 
     (term_, classifier_?, definition_)
 
-Attributes
+:Attributes:
     The ``definition_list_item`` element contains only the `common
     attributes`_: id_, name_, dupname_, source_, and class_.
 
@@ -1195,21 +1183,20 @@ front matter of a book, such as the title page and copyright page.
 Details
 -------
 
-Category
-    `Structural Subelements`_
+:Category: `Structural Subelements`_
 
-Parents
+:Parents:
     Only the document_ element contains ``docinfo``.
 
-Children
+:Children:
     ``docinfo`` elements contain `bibliographic elements`_.
 
-Analogies
+:Analogies:
     ``docinfo`` is analogous to DocBook "info" elements ("bookinfo"
     etc.).  There are no directly analogous HTML elements; the "meta"
     element carries some of the same information, albeit invisibly.
 
-Processing
+:Processing:
     The ``docinfo`` element may be rendered as a two-column table or
     in other styles.  It may even be invisible or omitted from the
     processed output.  Meta-data may be extracted from ``docinfo``
@@ -1231,7 +1218,7 @@ Content Model
 
     (`%bibliographic.elements;`_)+
 
-Attributes
+:Attributes:
     The ``docinfo`` element contains only the `common attributes`_:
     id_, name_, dupname_, source_, and class_.
 
@@ -1307,17 +1294,16 @@ tree.  It is the starting point for a document.
 Details
 -------
 
-Category
-    `Structural Elements`_
+:Category: `Structural Elements`_
 
-Parents
+:Parents:
     The ``document`` element has no parents.
 
-Children
+:Children:
     ``document`` elements may contain `structural subelements`_,
     `structural elements`_, and `body elements`_.
 
-Analogies
+:Analogies:
     ``document`` is analogous to the HTML "html" element and to
     several DocBook elements such as "book".
 
@@ -1345,7 +1331,7 @@ programmatically.
 See the `%structure.model;`_ parameter entity for details of the body
 of a ``document``.
 
-Attributes
+:Attributes:
     The ``document`` element contains only the `common attributes`_:
     id_, name_, dupname_, source_, and class_.
 
@@ -1401,23 +1387,22 @@ uniformly marked with enumerator labels.
 Details
 -------
 
-Category
-    `Compound Body Elements`_
+:Category: `Compound Body Elements`_
 
-Parents
+:Parents:
     All elements employing the `%body.elements;`_ or
     `%structure.model;`_ parameter entities in their content models
     may contain ``enumerated_list``.
 
-Children
+:Children:
     ``enumerated_list`` elements contain one or more list_item_
     elements.
 
-Analogies
+:Analogies:
     ``enumerated_list`` is analogous to the HTML "ol" element and to
     the DocBook "orderedlist" element.
 
-Processing
+:Processing:
     Each list item should begin a new vertical block, prefaced by a
     enumeration marker (such as "1.").
 
@@ -1429,7 +1414,7 @@ Content Model
 
     (list_item_+)
 
-Attributes
+:Attributes:
     The ``enumerated_list`` element contains the `common attributes`_
     (id_, name_, dupname_, source_, and class_), plus enumtype_,
     prefix_, suffix_, and start_.
@@ -1455,7 +1440,7 @@ Attributes
     list, in decimal.  For lists beginning at value 1 ("1", "a", "A",
     "i", or "I"), this attribute may be omitted.
 
-Parameter Entities
+:Parameter Entities:
     The `%body.elements;`_ parameter entity directly includes
     ``enumerated_list``.  The `%structure.model;`_ parameter entity
     indirectly includes ``enumerated_list``.
@@ -1545,16 +1530,15 @@ processing information (datestamp, a link to Docutils_, etc.).
 Details
 -------
 
-Category
-    `Decorative Elements`_
+:Category: `Decorative Elements`_
 
-Parents
+:Parents:
     Only the decoration_ element contains ``footer``.
 
-Children
+:Children:
     ``footer`` elements may contain `body elements`_.
 
-Analogies
+:Analogies:
     There are no direct analogies to ``footer`` in HTML or DocBook.
     Equivalents are typically constructed from primitives and/or
     generated by the processing system.
@@ -1567,7 +1551,7 @@ Content Model
 
     (`%body.elements;`_)+
 
-Attributes
+:Attributes:
     The ``footer`` element contains only the `common attributes`_:
     id_, name_, dupname_, source_, and class_.
 
@@ -1621,16 +1605,15 @@ page.  Docutils does not yet make use of the ``header`` element.
 Details
 -------
 
-Category
-    `Decorative Elements`_
+:Category: `Decorative Elements`_
 
-Parents
+:Parents:
     Only the decoration_ element contains ``header``.
 
-Children
+:Children:
     ``header`` elements may contain `body elements`_.
 
-Analogies
+:Analogies:
     There are no direct analogies to ``header`` in HTML or DocBook.
     Equivalents are typically constructed from primitives and/or
     generated by the processing system.
@@ -1643,7 +1626,7 @@ Content Model
 
     (`%body.elements;`_)+
 
-Attributes
+:Attributes:
     The ``header`` element contains only the `common attributes`_:
     id_, name_, dupname_, source_, and class_.
 
@@ -1706,21 +1689,20 @@ item.
 Details
 -------
 
-Category
-    `Body Subelements`_ (compound)
+:Category: `Body Subelements`_ (compound)
 
-Parents
+:Parents:
     The bullet_list_ and enumerated_list_ elements contain
     ``list_item``.
 
-Children
+:Children:
     ``list_item`` elements may contain `body elements`_.
 
-Analogies
+:Analogies:
     ``list_item`` is analogous to the HTML "li" element and to the
     DocBook "listitem" element.
 
-Processing
+:Processing:
     See bullet_list_ or enumerated_list_.
 
 
@@ -1731,7 +1713,7 @@ Content Model
 
     (`%body.elements;`_)+
 
-Attributes
+:Attributes:
     The ``list_item`` element contains only the `common attributes`_:
     id_, name_, dupname_, source_, and class_.
 
@@ -1832,21 +1814,20 @@ organization, or the organization responsible for the document.
 Details
 -------
 
-Category
-    `Bibliographic Elements`_
+:Category: `Bibliographic Elements`_
 
-Parents
+:Parents:
     Only the docinfo_ element contains ``organization``.
 
-Children
+:Children:
     ``organization`` elements may contain text data plus `inline
     elements`_.
 
-Analogies
+:Analogies:
     ``organization`` is analogous to the DocBook "orgname",
     "corpname", or "publishername" elements.
 
-Processing
+:Processing:
     See docinfo_.
 
 
@@ -1857,11 +1838,11 @@ Content Model
 
     `%text.model;`_
 
-Attributes
+:Attributes:
     The ``organization`` element contains only the `common attributes`_:
     id_, name_, dupname_, source_, and class_.
 
-Parameter Entities
+:Parameter Entities:
     The `%bibliographic.elements;`_ parameter entity directly includes
     ``organization``.
 
@@ -1899,19 +1880,18 @@ single paragraph, a fundamental building block of documents.
 Details
 -------
 
-Category
-    `Simple Body Elements`_
+:Category: `Simple Body Elements`_
 
-Parents
+:Parents:
     All elements employing the `%body.elements;`_ or
     `%structure.model;`_ parameter entities in their content models
     may contain ``paragraph``.
 
-Children
+:Children:
     ``paragraph`` elements may contain text data plus `inline
     elements`_.
 
-Analogies
+:Analogies:
     ``paragraph`` is analogous to the HTML "p" element and to the
     DocBook "para" elements.
 
@@ -1923,11 +1903,11 @@ Content Model
 
     `%text.model;`_
 
-Attributes
+:Attributes:
     The ``paragraph`` element contains only the `common attributes`_:
     id_, name_, dupname_, source_, and class_.
 
-Parameter Entities
+:Parameter Entities:
     The `%body.elements;`_ parameter entity directly includes
     ``paragraph``.  The `%structure.model;`_ parameter entity
     indirectly includes ``paragraph``.
@@ -1980,22 +1960,21 @@ It can be used alone or in conjunction with version_.
 Details
 -------
 
-Category
-    `Bibliographic Elements`_
+:Category: `Bibliographic Elements`_
 
-Parents
+:Parents:
     Only the docinfo_ element contains ``revision``.
 
-Children
+:Children:
     ``revision`` elements may contain text data plus `inline
     elements`_.
 
-Analogies
+:Analogies:
     ``revision`` is analogous to but simpler than the DocBook
     "revision" element.  It closely matches the DocBook "revnumber"
     element, but in a simpler context.
 
-Processing
+:Processing:
     Often used with the RCS/CVS keyword "Revision".  See docinfo_.
 
 
@@ -2006,11 +1985,11 @@ Content Model
 
     `%text.model;`_
 
-Attributes
+:Attributes:
     The ``revision`` element contains only the `common attributes`_:
     id_, name_, dupname_, source_, and class_.
 
-Parameter Entities
+:Parameter Entities:
     The `%bibliographic.elements;`_ parameter entity directly includes
     ``revision``.
 
@@ -2060,18 +2039,17 @@ not after it.
 Details
 -------
 
-Category
-    `Structural Elements`_
+:Category: `Structural Elements`_
 
-Parents
+:Parents:
     The following elements may contain ``section``: document_,
     section_
 
-Children
+:Children:
     ``section`` elements begin with a title_, and may contain `body
     elements`_ and transition_ and topic_ elements.
 
-Analogies
+:Analogies:
     ``section`` is analogous to DocBook recursive "section" elements,
     and to HTML "div" elements combined with "h1" etc. title elements.
 
@@ -2087,11 +2065,11 @@ Content Model
 See the `%structure.model;`_ parameter entity for details of the body
 of a ``section``.
 
-Attributes
+:Attributes:
     The ``section`` element contains only the `common attributes`_:
     id_, name_, dupname_, source_, and class_.
 
-Parameter Entities
+:Parameter Entities:
     The `%section.elements;`_ parameter entity directly includes
     ``section``.  The `%structure.model;`_ parameter entity indirectly
     includes ``section``.
@@ -2153,19 +2131,18 @@ such as "Draft", "Final", "Work In Progress", etc.
 Details
 -------
 
-Category
-    `Bibliographic Elements`_
+:Category: `Bibliographic Elements`_
 
-Parents
+:Parents:
     Only the docinfo_ element contains ``status``.
 
-Children
+:Children:
     ``status`` elements may contain text data plus `inline elements`_.
 
-Analogies
+:Analogies:
     ``status`` is analogous to the DocBook "status" element.
 
-Processing
+:Processing:
     See docinfo_.
 
 
@@ -2176,11 +2153,11 @@ Content Model
 
     `%text.model;`_
 
-Attributes
+:Attributes:
     The ``status`` element contains only the `common attributes`_:
     id_, name_, dupname_, source_, and class_.
 
-Parameter Entities
+:Parameter Entities:
     The `%bibliographic.elements;`_ parameter entity directly includes
     ``status``.
 
@@ -2235,21 +2212,20 @@ The ``subtitle`` element stores the subtitle of a document_.
 Details
 -------
 
-Category
-    `Structural Subelements`_
+:Category: `Structural Subelements`_
 
-Parents
+:Parents:
     Only the document_ element contains ``subtitle``.
 
-Children
+:Children:
     ``subtitle`` elements may contain text data plus `inline
     elements`_.
 
-Analogies
+:Analogies:
     ``subtitle`` is analogous to HTML header elements ("h2" etc.) and
     to the DocBook "subtitle" element.
 
-Processing
+:Processing:
     A document's subtitle is usually rendered smaller than its title_.
 
 
@@ -2260,7 +2236,7 @@ Content Model
 
     `%text.model;`_
 
-Attributes
+:Attributes:
     The ``subtitle`` element contains only the `common attributes`_:
     id_, name_, dupname_, source_, and class_.
 
@@ -2329,20 +2305,19 @@ definition_list_.
 Details
 -------
 
-Category
-    `Body Subelements`_ (simple)
+:Category: `Body Subelements`_ (simple)
 
-Parents
+:Parents:
     Only the definition_list_item_ element contains ``term``.
 
-Children
+:Children:
     ``term`` elements may contain text data plus `inline elements`_.
 
-Analogies
+:Analogies:
     ``term`` is analogous to the HTML "dt" element and to the DocBook
     "term" element.
 
-Processing
+:Processing:
     See definition_list_item_.
 
 
@@ -2353,7 +2328,7 @@ Content Model
 
     `%text.model;`_
 
-Attributes
+:Attributes:
     The ``term`` element contains only the `common attributes`_:
     id_, name_, dupname_, source_, and class_.
 
@@ -2393,17 +2368,16 @@ topic_.
 Details
 -------
 
-Category
-    `Structural Subelements`_
+:Category: `Structural Subelements`_
 
-Parents
+:Parents:
     The following elements may contain ``title``: document_, section_,
     topic_
 
-Children
+:Children:
     ``title`` elements may contain text data plus `inline elements`_.
 
-Analogies
+:Analogies:
     ``title`` is analogous to HTML "title" and header ("h1" etc.)
     elements, and to the DocBook "title" element.
 
@@ -2415,7 +2389,7 @@ Content Model
 
     `%text.model;`_
 
-Attributes
+:Attributes:
     The ``title`` element contains the `common attributes`_ (id_,
     name_, dupname_, source_, and class_), plus refid_ and auto_.
 
@@ -2457,20 +2431,19 @@ a ``table`` or a ``list``, or inside another ``topic``.
 Details
 -------
 
-Category
-    `Structural Elements`_
+:Category: `Structural Elements`_
 
-Parents
+:Parents:
     The following elements may contain ``topic``: document_, section_
 
-Children
+:Children:
     ``topic`` elements begin with a title_ and may contain `body
     elements`_.
 
-Analogies
+:Analogies:
     ``topic`` is analogous to the DocBook "simplesect" element.
 
-Processing
+:Processing:
     A ``topic`` element should be set off from the rest of the
     document somehow, such as with indentation or a border.
 
@@ -2483,11 +2456,11 @@ Content Model
     (title_?,
      (`%body.elements;`_)+)
 
-Attributes
+:Attributes:
     The ``topic`` element contains only the `common attributes`_:
     id_, name_, dupname_, source_, and class_.
 
-Parameter Entities
+:Parameter Entities:
     The `%structure.model;`_ parameter entity directly includes
     ``topic``.
 
@@ -2529,20 +2502,19 @@ See `Representation of Horizontal Rules`_ below.
 Details
 -------
 
-Category
-    `Structural Subelements`_
+:Category: `Structural Subelements`_
 
-Parents
+:Parents:
     The following elements may contain ``transition``: document_,
     section_
 
-Children
+:Children:
     ``transition`` is an empty element and has no children.
 
-Analogies
+:Analogies:
     ``transition`` is analogous to the HTML "hr" element.
 
-Processing
+:Processing:
     The ``transition`` element is typically rendered as vertical
     whitespace (more than that separating paragraphs), with or without
     a horizontal line or row of asterisks.  In novels, transitions are
@@ -2559,11 +2531,11 @@ Content Model
 
 The ``transition`` element has no content; it is a "point element".
 
-Attributes
+:Attributes:
     The ``transition`` element contains only the `common attributes`_:
     id_, name_, dupname_, source_, and class_.
 
-Parameter Entities
+:Parameter Entities:
     The `%structure.model;`_ parameter entity directly includes
     ``transition``.
 
@@ -2599,21 +2571,20 @@ It can be used alone or in conjunction with revision_.
 Details
 -------
 
-Category
-    `Bibliographic Elements`_
+:Category: `Bibliographic Elements`_
 
-Parents
+:Parents:
     Only the docinfo_ element contains ``version``.
 
-Children
+:Children:
     ``version`` elements may contain text data plus `inline
     elements`_.
 
-Analogies
+:Analogies:
     ``version`` may be considered analogous to the DocBook "revision",
     "revnumber", or "biblioid" elements.
 
-Processing
+:Processing:
     Sometimes used with the RCS/CVS keyword "Revision".  See docinfo_
     and revision_.
 
@@ -2625,11 +2596,11 @@ Content Model
 
     `%text.model;`_
 
-Attributes
+:Attributes:
     The ``version`` element contains only the `common attributes`_:
     id_, name_, dupname_, source_, and class_.
 
-Parameter Entities
+:Parameter Entities:
     The `%bibliographic.elements;`_ parameter entity directly includes
     ``version``.
 
