@@ -7,6 +7,9 @@
 :Date: $Date$
 :Web site: http://docutils.sourceforge.net/
 
+.. contents::
+
+
 Thank you for downloading the Python Docutils project archive.  As
 this is a work in progress, please check the project website for
 updated working files.  This project should be considered highly
@@ -38,8 +41,6 @@ Support for the following sources is planned:
 .. _PEPs (Python Enhancement Proposals):
    http://www.python.org/peps/pep-0012.html
 
-.. contents::
-
 
 Releases & Snapshots
 ====================
@@ -69,9 +70,9 @@ for details.)
 Requirements
 ============
 
-To run the code, Python 2.0 or later must already be installed.
-Python 2.1 or later is required to run the test suite.  You can get
-Python from http://www.python.org/.
+To run the code, Python 2.1 or later must already be installed.  The
+latest release is recommended (2.1.3 or 2.2.1 as of this writing).
+Python is available from http://www.python.org/.
 
 
 Project Files & Directories
@@ -102,7 +103,8 @@ Project Files & Directories
 * spec: The project specification directory.  Contains PEPs (Python
   Enhancement Proposals), XML DTDs (document type definitions), and
   other documents.  The ``spec/rst`` directory contains the
-  reStructuredText specification.
+  reStructuredText specification.  The ``spec/howto`` directory
+  contains How-To documents for developers.
 
 * tools: Directory for Docutils front-end tools.  See docs/tools.txt
   for documentation.
@@ -119,8 +121,9 @@ The first step is to expand the ``.tar.gz`` or ``.tgz`` archive.  It
 contains a distutils setup file "setup.py".  OS-specific installation
 instructions follow.
 
-GNU/Linux, Unix, MacOS X, etc.
-------------------------------
+
+GNU/Linux, BSDs, Unix, MacOS X, etc.
+------------------------------------
 
 1. Open a shell.
 
@@ -138,6 +141,7 @@ GNU/Linux, Unix, MacOS X, etc.
 
 You can also just run install.py; it does the same thing.
 
+
 Windows
 -------
 
@@ -154,6 +158,7 @@ Windows
 
 If your system is set up to run Python when you double-click on .py
 files, you can run install.py to do the same as the above.
+
 
 MacOS 8/9
 ---------

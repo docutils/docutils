@@ -173,16 +173,17 @@ Implementation Docs
 * Internal module documentation (docstrings).
 
 * spec/doctree.txt: DTD element structural relationships, semantics,
-  and attributes.
+  and attributes.  In progress; element descriptions to be completed.
 
-* How a Writer works & how to write one
+* How-to docs: In spec/howto/?
 
-* Howto: Transforms
+  - How a Writer works & how to write one
 
-* Howto: Directives
+  - Transforms
 
 * Document the ``pending`` elements, how they're generated and when
-  they're triggered ("first reader", "last writer", etc.).
+  they're triggered ("first reader", "last writer", etc.; priority
+  system due to be reworked, as noted above).
 
 * Document the transforms (perhaps in docstrings?): how they're used,
   what they do, dependencies & order considerations.
@@ -293,6 +294,19 @@ __ rst/alternatives.html#or-not-to-do
   ``http://www.example.com/doc#name``, and useless in non-HTML
   contexts).  XLink/XPointer?  ``.. baseref::``?  See Doc-SIG
   2001-08-10.
+
+* In target URLs, it would be useful to not explicitly specify the
+  file extension.  If we're generating HTML, then ".html" is
+  appropriate; if PDF, then ".pdf"; etc.  How about using ".*" to
+  indicate "choose the most appropriate filename extension?  For
+  example::
+
+      .. _Another Document: another.*
+
+  Should the choice be from among existing files only?
+
+  This may not be just a parser issue though; it may need framework
+  support.
 
 * Add _`character processing`?  For example:
 
@@ -579,37 +593,6 @@ Directives
 
   - _`parts.citations`: See `Footnote & Citation Gathering`_.
 
-  - _`misc.raw`: See `Raw Data Pass-Through`__ in rst/directives.txt.
-
-    __ rst/directives.html#raw-data-pass-through
-
-  - _`misc.include`: ``#include`` one file in another.  See `Including
-    an External Fragment`__ in rst/directives.txt.  But how to parse
-    wrt sections, reference names, conflicts?  For now, we'll parse it
-    in the current document's context (C-preprocessor semantics).
-    Perhaps later, when there's a need, we'll figure out how to
-    provide separate parsing (parse separately and then merge).
-
-    Implementation ideas: Model the directive parsing on the "images"
-    directive.  A separate, nested parse is probably needed, since
-    it's not a good idea to alter the already-read data.  Use
-    ``state.nested_parse()`` (see directives/admonitions.py), and pass
-    in ``match_titles=1``.  The reporting mechanism has been revamped
-    to include the file which is the source of system messages; a new
-    ``utils.Reporter`` object will need to be created for each input
-    source.  (Need to notify ``document.note_source(source)`` upon
-    entering a new source file, and again when returning to the old
-    source file.)
-
-    YAGNI for now: Use C-preprocessor semantics for locating include
-    files?  E.g., ``.. include:: file.txt`` will read another file
-    into the current one, relative to the current file's directory,
-    and ``.. include:: <standard>`` will read a standard include file
-    from ``docutils/include/``.  (Should "quotes" be required around
-    non-standard include files?)
-
-    __ rst/directives.html#including-an-external-fragment
-
   - _`misc.exec`: Execute Python code & insert the results.  Perhaps
     dangerous?
 
@@ -851,8 +834,6 @@ HTML Writer
 
 * Add more support for <link> elements, especially for navigation
   bars.
-
-* ``<meta>`` tags should be XML empty tags: ``<meta />``.
 
 
 Front-End Tools

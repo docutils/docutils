@@ -28,8 +28,8 @@ See statemachine.py_ for an example of a Python module fully
 documented using reStructuredText.
 
 
-User Docs
-=========
+User Documentation
+==================
 
 - `A ReStructuredText Primer`__ (HTML file, or `text source`__).
 - `Quick reStructuredText`__ (user reference)
@@ -45,8 +45,11 @@ __ mailto:docutils-users@lists.sourceforge.net
 __ http://lists.sourceforge.net/lists/listinfo/docutils-users
 
 
+Developer Documentation
+=======================
+
 Specification
-=============
+-------------
 
 - `An Introduction to reStructuredText`__ (includes the Goals__ and
   History__ of reStructuredText)
@@ -62,6 +65,14 @@ __ spec/rst/reStructuredText.html
 __ spec/rst/directives.html
 __ spec/rst/alternatives.html
 __ spec/rst/problems.html
+
+
+How-To's
+--------
+
+- `Creating reStructuredText Directives`__
+
+__ spec/howto/rst-directives.html
 
 
 Testimonials
