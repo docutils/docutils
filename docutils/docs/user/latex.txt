@@ -123,6 +123,8 @@ rubric style           The header contains the definition of a new
                        sets rubric to subsection style in red.
 
                        Default: subsection style italic.
+---------------------  ------------------------------------------------
+font selection         see below
 =====================  ================================================
 
 Missing options
@@ -130,6 +132,21 @@ Missing options
 
 * Selection of latex fontsize.
 * Assumed reST linelength for table width setting.
+
+Font selection
+--------------
+
+When generating pdf-files from LaTeX, use the pdflatex command, the files
+are a lot smaller if postscript fonts are used. To do so put 
+``\usepackage{times}`` into the styleshee
+
+It is said that the typewriter font in computer modern font, the default
+LaTeX font package, is too heavy compared to the others. There is a package
+or some commands too fix this, which i currently cannot find.
+
+Some people diagnose a similar unbalance for the postscript fonts, the
+package to fix this is ```\usepackage{pslatex}``.
+
 
 Commands directly to LaTeX
 ==========================
