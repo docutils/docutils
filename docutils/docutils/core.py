@@ -183,7 +183,7 @@ class Publisher:
             output = self.writer.write(document, self.destination)
             self.writer.assemble_parts()
         except Exception, error:
-            if self.settings.traceback:
+            if self.settings.traceback: # propagate exceptions?
                 raise
             self.report_Exception(error)
             exit = 1
@@ -350,6 +350,8 @@ def publish_file(source=None, source_path=None,
     if settings is None:
         settings = pub.get_settings(settings_spec=settings_spec,
                                     config_section=config_section)
+    # Set to propagate exceptions by default when used programmatically:
+    settings.traceback = 1
     if settings_overrides:
         settings._update(settings_overrides, 'loose')
     pub.set_source(source, source_path)
@@ -412,6 +414,8 @@ def publish_string(source, source_path=None, destination_path=None,
     if settings is None:
         settings = pub.get_settings(settings_spec=settings_spec,
                                     config_section=config_section)
+    # Set to propagate exceptions by default when used programmatically:
+    settings.traceback = 1
     if settings_overrides:
         settings._update(settings_overrides, 'loose')
     pub.set_source(source, source_path)
@@ -471,6 +475,8 @@ def publish_parts(source, source_path=None, destination_path=None,
     if settings is None:
         settings = pub.get_settings(settings_spec=settings_spec,
                                     config_section=config_section)
+    # Set to propagate exceptions by default when used programmatically:
+    settings.traceback = 1
     if settings_overrides:
         settings._update(settings_overrides, 'loose')
     pub.set_source(source, source_path)
