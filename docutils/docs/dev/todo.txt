@@ -584,7 +584,7 @@ Please consider subscribing to the appropriate `mailing lists`_.
 .. _main source tree:
    http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/docutils/docutils/
 .. _Python Check-in Policies: http://www.python.org/dev/tools.html
-.. sandbox CVS directory:
+.. _sandbox CVS directory:
    http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/docutils/sandbox/
 .. _mailing lists: ../index.html#mailing-lists
 
@@ -630,14 +630,15 @@ to completion.
 The Sandbox
 -----------
 
-The sandbox_ directory is a place to play around, to try out and share
-ideas.  It's a part of the CVS repository but it isn't distributed as
-part of Docutils releases.  Feel free to check in code to the CVS
-sandbox; that way people can try it out but you won't have to worry
-about it working 100% error-free, as is the goal of the `main source
-tree`_.  Each developer who wants to play in the sandbox should create
-their own subdirectory (suggested name: SourceForge ID, or given name
-+ family initial).  It's OK to make a mess!  But please, play nice.
+The `sandbox CVS directory`_ is a place to play around, to try out and
+share ideas.  It's a part of the CVS repository but it isn't
+distributed as part of Docutils releases.  Feel free to check in code
+to the CVS sandbox; that way people can try it out but you won't have
+to worry about it working 100% error-free, as is the goal of the `main
+source tree`_.  Each developer who wants to play in the sandbox should
+create their own subdirectory (suggested name: SourceForge ID, or
+given name + family initial).  It's OK to make a mess!  But please,
+play nice.
 
 In order to minimize the work necessary for others to install and try
 out new, experimental components, the following sandbox directory
