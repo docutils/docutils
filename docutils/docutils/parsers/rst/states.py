@@ -114,7 +114,7 @@ from docutils import ApplicationError, DataError
 from docutils.statemachine import StateMachineWS, StateWS
 from docutils.nodes import fully_normalize_name as normalize_name
 from docutils.nodes import whitespace_normalize_name
-from docutils.parsers.rst import directives, languages, tableparser
+from docutils.parsers.rst import directives, languages, tableparser, roles
 from docutils.parsers.rst.languages import en as _fallback_language_module
 
 
@@ -475,46 +475,9 @@ class Inliner:
     """
     Parse inline markup; call the `parse()` method.
     """
-
-    _interpreted_roles = {
-        # Values of ``None`` mean "not implemented yet":
-        'title-reference': 'generic_interpreted_role',
-        'abbreviation': 'generic_interpreted_role',
-        'acronym': 'generic_interpreted_role',
-        'index': None,
-        'subscript': 'generic_interpreted_role',
-        'superscript': 'generic_interpreted_role',
-        'emphasis': 'generic_interpreted_role',
-        'strong': 'generic_interpreted_role',
-        'literal': 'generic_interpreted_role',
-        'named-reference': None,
-        'anonymous-reference': None,
-        'uri-reference': None,
-        'pep-reference': 'pep_reference_role',
-        'rfc-reference': 'rfc_reference_role',
-        'footnote-reference': None,
-        'citation-reference': None,
-        'substitution-reference': None,
-        'target': None,
-        'restructuredtext-unimplemented-role': None}
-    """Mapping of canonical interpreted text role name to method name.
-    Initializes a name to bound-method mapping in `__init__`."""
-
     default_interpreted_role = 'title-reference'
     """The role to use when no explicit role is given.
     Override in subclasses."""
-
-    generic_roles = {'abbreviation': nodes.abbreviation,
-                     'acronym': nodes.acronym,
-                     'emphasis': nodes.emphasis,
-                     'literal': nodes.literal,
-                     'strong': nodes.strong,
-                     'subscript': nodes.subscript,
-                     'superscript': nodes.superscript,
-                     'title-reference': nodes.title_reference,}
-    """Mapping of canonical interpreted text role name to node class.
-    Used by the `generic_interpreted_role` method for simple, straightforward
-    roles (simple wrapping; no extra processing)."""
 
     def __init__(self, roles=None):
         """
@@ -525,17 +488,6 @@ class Inliner:
         self.implicit_dispatch = [(self.patterns.uri, self.standalone_uri),]
         """List of (pattern, bound method) tuples, used by
         `self.implicit_inline`."""
-
-        self.interpreted_roles = {}
-        """Mapping of canonical role name to role function or bound method.
-        Items removed from this mapping will be disabled."""
-
-        for canonical, method in self._interpreted_roles.items():
-            if method:
-                self.interpreted_roles[canonical] = getattr(self, method)
-            else:
-                self.interpreted_roles[canonical] = None
-        self.interpreted_roles.update(roles or {})
 
     def init_customizations(self, settings):
         """Setting-based customizations; run when parsing begins."""
@@ -825,26 +777,11 @@ class Inliner:
                 return self.phrase_ref(string[:matchstart], string[textend:],
                                        rawsource, escaped, text)
             else:
-                try:
-                    return self.interpreted(
-                        string[:rolestart], string[textend:],
-                        rawsource, text, role, lineno)
-                except UnknownInterpretedRoleError, detail:
-                    msg = self.reporter.error(
-                        'Unknown interpreted text role "%s".' % role,
-                        line=lineno)
-                    text = unescape(string[rolestart:textend], 1)
-                    prb = self.problematic(text, text, msg)
-                    return (string[:rolestart], [prb], string[textend:],
-                            detail.args[0] + [msg])
-                except InterpretedRoleNotImplementedError, detail:
-                    msg = self.reporter.error(
-                        'Interpreted text role "%s" not implemented.' % role,
-                        line=lineno)
-                    text = unescape(string[rolestart:textend], 1)
-                    prb = self.problematic(text, text, msg)
-                    return (string[:rolestart], [prb], string[textend:],
-                            detail.args[0] + [msg])
+                rawsource = unescape(string[rolestart:textend], 1)
+                nodelist, messages = self.interpreted(rawsource, text, role,
+                                                      lineno)
+                return (string[:rolestart], nodelist,
+                        string[textend:], messages)
         msg = self.reporter.warning(
               'Inline interpreted text or phrase reference start-string '
               'without end-string.', line=lineno)
@@ -896,50 +833,19 @@ class Inliner:
         else:
             return uri
 
-    def interpreted(self, before, after, rawsource, text, role, lineno):
-        role_function, canonical, messages = self.get_role_function(role,
-                                                                    lineno)
-        if role_function:
-            nodelist, messages2 = role_function(canonical, rawsource, text,
-                                                lineno)
-            messages.extend(messages2)
-            return before, nodelist, after, messages
+    def interpreted(self, rawsource, text, role, lineno):
+        if not role:
+            role = roles.DEFAULT_INTERPRETED_ROLE
+        role_fn, messages = roles.role(role, self.language, lineno, self)
+        if role_fn:
+            nodes, messages2 = role_fn(role, rawsource, text, lineno, self)
+            return nodes, messages + messages2
         else:
-            raise InterpretedRoleNotImplementedError(messages)
-
-    def get_role_function(self, role, lineno):
-        messages = []
-        msg_text = []
-        if role:
-            name = role.lower()
-            canonical = None
-            try:
-                canonical = self.language.roles[name]
-            except AttributeError, error:
-                msg_text.append('Problem retrieving role entry from language '
-                                'module %r: %s.' % (self.language, error))
-            except KeyError:
-                msg_text.append('No role entry for "%s" in module "%s".'
-                                % (name, self.language.__name__))
-        else:
-            canonical = self.default_interpreted_role
-        if not canonical:
-            try:
-                canonical = _fallback_language_module.roles[name]
-                msg_text.append('Using English fallback for role "%s".'
-                                % name)
-            except KeyError:
-                msg_text.append('Trying "%s" as canonical role name.'
-                                % name)
-                # Should be an English name, but just in case:
-                canonical = name
-        if msg_text:
-            message = self.reporter.info('\n'.join(msg_text), line=lineno)
-            messages.append(message)
-        try:
-            return self.interpreted_roles[canonical], canonical, messages
-        except KeyError:
-            raise UnknownInterpretedRoleError(messages)
+            msg = self.reporter.error(
+                'Unknown interpreted text role "%s".' % role,
+                line=lineno)
+            return ([self.problematic(rawsource, rawsource, msg)],
+                    messages + [msg])
 
     def literal(self, match, lineno):
         before, inlines, remaining, sysmessages, endstring = self.inline_obj(
@@ -1109,45 +1015,6 @@ class Inliner:
                 '|': substitution_reference,
                 '_': reference,
                 '__': anonymous_reference}
-
-    def generic_interpreted_role(self, role, rawtext, text, lineno):
-        try:
-            role_class = self.generic_roles[role]
-        except KeyError:
-            msg = self.reporter.error('Unknown interpreted text role: "%s".'
-                                      % role, line=lineno)
-            prb = self.problematic(text, text, msg)
-            return [prb], [msg]
-        return [role_class(rawtext, text)], []
-
-    def pep_reference_role(self, role, rawtext, text, lineno):
-        try:
-            pepnum = int(text)
-            if pepnum < 0 or pepnum > 9999:
-                raise ValueError
-        except ValueError:
-            msg = self.reporter.error(
-                'PEP number must be a number from 0 to 9999; "%s" is invalid.'
-                % text, line=lineno)
-            prb = self.problematic(text, text, msg)
-            return [prb], [msg]
-        ref = self.pep_url % pepnum
-        return [nodes.reference(rawtext, 'PEP ' + text, refuri=ref)], []
-
-    def rfc_reference_role(self, role, rawtext, text, lineno):
-        try:
-            rfcnum = int(text)
-            if rfcnum <= 0:
-                raise ValueError
-        except ValueError:
-            msg = self.reporter.error(
-                'RFC number must be a number greater than or equal to 1; '
-                '"%s" is invalid.' % text, line=lineno)
-            prb = self.problematic(text, text, msg)
-            return [prb], [msg]
-        ref = self.rfc_url % rfcnum
-        return [nodes.reference(rawtext, 'RFC ' + text, refuri=ref)], []
-
 
 class Body(RSTState):
 
