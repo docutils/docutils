@@ -1138,12 +1138,14 @@ class raw(Special, Inline, PreBibliographic, FixedTextElement):
 
 class emphasis(Inline, TextElement): pass
 class strong(Inline, TextElement): pass
-class interpreted(Inline, Referential, TextElement): pass
 class literal(Inline, TextElement): pass
 class reference(Inline, Referential, TextElement): pass
 class footnote_reference(Inline, Referential, TextElement): pass
 class citation_reference(Inline, Referential, TextElement): pass
 class substitution_reference(Inline, TextElement): pass
+class title_reference(Inline, TextElement): pass
+class abbreviation(Inline, TextElement): pass
+class acronym(Inline, TextElement): pass
 
 
 class image(General, Inline, TextElement):
@@ -1162,7 +1164,7 @@ class generated(Inline, TextElement): pass
 
 node_class_names = """
     Text
-    address attention author authors
+    abbreviation acronym address attention author authors
     block_quote bullet_list
     caption caution citation citation_reference classifier colspec comment
         contact copyright
@@ -1173,7 +1175,7 @@ node_class_names = """
         footnote footnote_reference
     generated
     header hint
-    image important interpreted
+    image important
     label legend line_block list_item literal literal_block
     note
     option option_argument option_group option_list option_list_item
@@ -1182,7 +1184,8 @@ node_class_names = """
     raw reference revision row
     section status strong substitution_definition substitution_reference
         subtitle system_message
-    table target tbody term tgroup thead tip title topic transition
+    table target tbody term tgroup thead tip title title_reference topic
+        transition
     version
     warning""".split()
 """A list of names of all concrete Node subclasses."""
