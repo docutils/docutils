@@ -673,6 +673,73 @@ __ rst/alternatives.html#or-not-to-do
   first blank line ends it) where every line begins with the same
   non-alphanumeric non-whitespace character.
 
+  On 2003-06-17 Peter Simons requested a similar feature in the
+  "Literal Haskell Support" thread on docutils-develop.  Regarding
+  this to-do item, he wrote
+
+      I think that the '::' solution is not optimal.  IMHO the leading
+      '>' should be enough for "docutils-hs2whatever" to know this is
+      a code block. In a perfect world, additional mark-up should not
+      be required.
+
+  My reply was
+
+      Who said it's a perfect world? ;-)
+
+      The "::" reduces ambiguity, especially in the case of
+      single-line quoted blocks with certain quote characters.
+
+  Do we limit the characters that can be used for quoting?  If so,
+  what characters?  Or would all non-alphanumeric non-whitespace 7-bit
+  ASCII characters be OK?  This would include all of these::
+
+       ! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~
+
+  There are many situations where some kind of left border is used for
+  quoting.  I've often seen vertical bars used::
+
+       | Quoted text
+       | here.
+
+  I've seen legal documents that have something like this::
+
+       ) Quoted text
+       ) here.
+
+  Or was it the other way around? ::
+
+       ( Quoted text
+       ( here.
+
+  A problem: if whitespace wasn't required, this could occur
+  accidentally in ordinary text::
+
+       (Quoted text here?)
+
+  I think we'd have to require whitespace (perhaps allowing for
+  multiple quote characters before the whitespace, which would allow
+  for email).
+
+  What about asterisks? ::
+
+       * Quoted text
+       * here.
+
+  Big problem!  That's a bullet list.  So we can't allow "*", "-", or
+  "+", unless we disambiguate with "::".
+
+  Other conceivable quote characters include: # $ % : ; = [ ] { }
+
+  If we required multiple lines, it would be easier to be sure the
+  text is unambiguous.  I don't think we can require that though.
+
+  Another issue: do the quoting characters stay in the literal block
+  (i.e., do they show up in the processed document)?
+
+  Relax the "::" requirement somehow?  Runtime setting & directive to
+  specify literal line prefix?  Extend to doctest-like blocks (marker
+  on the first line sufficient)?
+
 * Should the "doctest" element go away, and the construct simply be a
   front-end to generic literal blocks?
 
