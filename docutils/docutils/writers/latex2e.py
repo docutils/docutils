@@ -349,7 +349,7 @@ class DocumentClass:
             return self._deepest_section
 
 class Table:
-    """ Manage a table while traversing. 
+    """ Manage a table while traversing.
         Maybe change to a mixin defining the visit/departs, but then
         class Table internal variables are in the Translator.
     """
@@ -381,7 +381,7 @@ class Table:
         return ''
     def get_latex_type(self):
         return self._latex_type
-    
+
     def set(self,attr,value):
         self._attrs[attr] = value
     def get(self,attr):
@@ -442,7 +442,7 @@ class Table:
         return latex_table_spec+bar
 
     def get_column_width(self):
-        """ return columnwidth for current cell (not multicell) 
+        """ return columnwidth for current cell (not multicell)
         """
         return "%.2f\\locallinewidth" % self._col_width[self._cell_in_row-1]
 
@@ -471,7 +471,7 @@ class Table:
         for i in range(len(self._rowspan)):
             if (self._rowspan[i]>0):
                 self._rowspan[i] -= 1
-        
+
         if self._table_style == 'standard':
             rowspans = []
             for i in range(len(self._rowspan)):
@@ -507,7 +507,7 @@ class Table:
     def visit_entry(self):
         self._cell_in_row += 1
 
-        
+
 class LaTeXTranslator(nodes.NodeVisitor):
 
     # When options are given to the documentclass, latex will pass them
@@ -677,8 +677,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.topic_class = ''
         # column specification for tables
         self.table_caption = None
-        # do we have one or more authors
-        self.author_stack = None
+        # if use_latex_docinfo: collects lists of author/organization/contact/address lines
+        self.author_stack = []
         # Flags to encode
         # ---------------
         # verbatim: to tell encode not to encode.
@@ -927,14 +927,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_authors(self, node):
         # not used: visit_author is called anyway for each author.
-        if self.use_latex_docinfo:
-            self.author_stack = []
+        pass
 
     def depart_authors(self, node):
-        if self.use_latex_docinfo:
-            self.head.append('\\author{%s}\n' % \
-                ' \\and '.join(self.author_stack) )
-            self.author_stack = None
+        pass
 
     def visit_block_quote(self, node):
         self.body.append( '\\begin{quote}\n')
@@ -1115,6 +1111,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.docinfo.append('\\begin{tabularx}{\\docinfowidth}{lX}\n')
 
     def depart_docinfo(self, node):
+        if self.use_latex_docinfo and self.author_stack:
+            self.head.append('\\author{%s}\n' % \
+                ' \\and\n'.join(['~\\\\\n'.join(author_lines)
+                                for author_lines in self.author_stack]) )
         self.docinfo.append('\\end{tabularx}\n')
         self.docinfo.append('\\end{center}\n')
         self.body = self.docinfo + self.body
@@ -1128,14 +1128,22 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     self.pdfauthor = self.attval(node.astext())
                 else:
                     self.pdfauthor += self.author_separator + self.attval(node.astext())
-            if self.use_latex_docinfo:
-                if self.author_stack == None:
-                    self.head.append('\\author{%s}\n' % self.attval(node.astext()))
+        if self.use_latex_docinfo:
+            if name in ('author', 'organization', 'contact', 'address'):
+                # We attach these to the last author.  If any of them precedes
+                # the first author, put them in a separate "author" group (for
+                # no better semantics).
+                if name == 'author' or not self.author_stack:
+                    self.author_stack.append([])
+                if name == 'address':   # newlines are meaningful
+                    self.insert_newline = 1
+                    text = self.encode(node.astext())
+                    self.insert_newline = 0
                 else:
-                    self.author_stack.append( self.attval(node.astext()) )
+                    text = self.attval(node.astext())
+                self.author_stack[-1].append(text)
                 raise nodes.SkipNode
-        elif name == 'date':
-            if self.use_latex_docinfo:
+            elif name == 'date':
                 self.head.append('\\date{%s}\n' % self.attval(node.astext()))
                 raise nodes.SkipNode
         self.docinfo.append('\\textbf{%s}: &\n\t' % self.language_label(name))
@@ -1186,7 +1194,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             for bi in self._bibitems:
                 self.body.append('\\bibitem[%s]{%s}{%s}\n' % (bi[0], bi[0], bi[1]))
             self.body.append('\\end{thebibliography}\n')
-            
+
         self.body_suffix.append('\\end{document}\n')
 
     def visit_emphasis(self, node):
