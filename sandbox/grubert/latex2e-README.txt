@@ -4,15 +4,16 @@ latex2e BUGS TODOS and other animals
 for processing tools/test.txt use pdflatex because it will handle png-images.
 
 
-Rev. 2002-12-27
+Rev. 2003-01-03
 
 To do
 ~~~~~
 
-
 * two hlines after table head and on table end ?
 
-* table: multicol rows have now lines.
+* doctest blocks is incorrect (python prompt is escaped inside verbatim).
+
++ table: multicol cells are always {l}.
 
 * should tables without vertical markup be set without borders ?
 
@@ -119,6 +120,7 @@ ATTENTION
 Done
 ~~~~
 
+* table: multicol rows have no vertical lines.
 * --use-latex-toc: so we get pagenumbers.
 * reduce table width to 0.93 of linewidth.
 * decrement pdfbookmark levels. now 0 to 3.

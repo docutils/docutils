@@ -611,7 +611,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_entry(self, node):
         # cell separation
+        column_one = 1
         if self.context[-1] > 0:
+            column_one = 0
+        if not column_one:
             self.body.append(' & ')
 
         # multi{row,column}
@@ -621,11 +624,17 @@ class LaTeXTranslator(nodes.NodeVisitor):
         atts = {}
         if node.has_key('morerows'):
             count = node['morerows'] + 1
-            self.body.append('\\multirow{%s}*{' % count)
+            self.body.append('\\multirow{%d}*{' % count)
             self.context.append('}')
         elif node.has_key('morecols'):
+            # the vertical bar before column is missing if it is the first column.
+            # the one after always.
+            if column_one:
+                bar = '|'
+            else:
+                bar = ''
             count = node['morecols'] + 1
-            self.body.append('\\multicolumn{%s}{l}{' % count)
+            self.body.append('\\multicolumn{%d}{%sl|}{' % (count, bar))
             self.context.append('}')
         else:
             self.context.append('')
