@@ -438,6 +438,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.topic_class = ''
         # column specification for tables
         self.colspecs = []
+        self.table_caption = None
         # do we have one or more authors
         self.author_stack = None
         # Flags to encode
@@ -1488,6 +1489,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def table_preamble(self):
         if self.use_longtable:
             self.body.append('{%s}\n' % self.get_colspecs())
+            if self.table_caption:
+                self.body.append('\\caption{%s}\\\\\n' % self.table_caption)
+                self.table_caption = None
         else:
             if self.context[-1] != 'table_sentinel':
                 self.body.append('{%s}' % ('|X' * self.context.pop() + '|'))
@@ -1595,6 +1599,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         elif isinstance(node.parent, nodes.sidebar):
             self.body.append('\\textbf{\\large ')
             self.context.append('}\n\\smallskip\n')
+        elif isinstance(node.parent, nodes.table):
+            # caption must be written after column spec
+            self.table_caption = node.astext()
+            raise nodes.SkipNode
         elif self.section_level == 0:
             # document title
             self.title = self.encode(node.astext())
