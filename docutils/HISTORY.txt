@@ -19,15 +19,15 @@ and related projects:
 
     Aahz, David Ascher, Fred Bremmer, Simon Budig, Brett Cannon, Adam
     Chodorowski, Fred Drake, Dethe Elza, fantasai, Jim Fulton, Peter
-    Funk, Engelbert Gruber, Simon Hefti, Doug Hellmann, Juergen
-    Hermann, Jeremy Hylton, Tony Ibbs, Alan Jaffray, Dmitry Jemerov,
-    Richard Jones, Garth Kidd, Daniel Larsson, Marc-Andre Lemburg,
-    Julien Letessier, Wolfgang Lipp, Edward Loper, Dallas Mahrt, Ken
-    Manheimer, Skip Montanaro, Paul Moore, Michel Pelletier, Sam
-    Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim, Tavis Rudd,
-    Ollie Rutherfurd, Kenichi Sato, Ueli Schlaepfer, Gunnar Schwant,
-    tav, Bob Tolbert, Laurence Tratt, Guido van Rossum, Barry Warsaw,
-    Edward Welbourne, Ka-Ping Yee, Moshe Zadka
+    Funk, Jorge Gonzalez, Engelbert Gruber, Simon Hefti, Doug
+    Hellmann, Juergen Hermann, Jeremy Hylton, Tony Ibbs, Alan Jaffray,
+    Dmitry Jemerov, Richard Jones, Garth Kidd, Daniel Larsson,
+    Marc-Andre Lemburg, Julien Letessier, Wolfgang Lipp, Edward Loper,
+    Dallas Mahrt, Ken Manheimer, Skip Montanaro, Paul Moore, Michel
+    Pelletier, Sam Penrose, Tim Peters, Pearu Peterson, Mark Pilgrim,
+    Tavis Rudd, Ollie Rutherfurd, Kenichi Sato, Ueli Schlaepfer,
+    Gunnar Schwant, tav, Bob Tolbert, Laurence Tratt, Guido van
+    Rossum, Barry Warsaw, Edward Welbourne, Ka-Ping Yee, Moshe Zadka
 
 Thank you!
 
@@ -54,6 +54,7 @@ Specific:
     option and its effect on the PEP template & writer.
   - Bumped version to 0.2.4 due to changes to the PEP template &
     stylesheet.
+  - Bumped version to 0.2.5 to reflect changes to Reporter output.
 
 * docutils/core.py:
 
@@ -69,6 +70,7 @@ Specific:
     ``OptionParser.populate_from_components()`` to combine it all.
   - Require list of keys in ``make_paths_absolute`` (was implicit in
     global ``relative_path_options``).
+  - Added ``--expose-internal-attribute`` option.
 
 * docutils/io.py:
 
@@ -104,6 +106,7 @@ Specific:
     - Added ``document.current_source`` & ``.current_line``
       attributes, and ``.note_state_machine_change`` &
       ``.note_source`` observer methods.
+    - Changed "system_message" output to GNU-Tools format.
 
   - Added a "rawsource" attribute to the ``Text`` class, for text
     before backslash-escape resolution.
@@ -232,6 +235,10 @@ Specific:
 * docutils/transforms/references.py:
 
   - Added the ``TargetNotes`` generic transform.
+
+* docutils/transforms/universal.py:
+
+  - Added support for the ``--expose-internal-attributes`` option.
 
 * docutils/writers/docutils-xml.py:
 

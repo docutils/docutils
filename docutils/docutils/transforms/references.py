@@ -1,11 +1,10 @@
-#! /usr/bin/env python
-"""
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
+"""
 Transforms for resolving references:
 
 - `Hyperlinks`: Used to resolve hyperlink targets and references.
@@ -72,8 +71,9 @@ class Hyperlinks(Transform):
               != len(self.document.anonymous_targets):
             msg = self.document.reporter.error(
                   'Anonymous hyperlink mismatch: %s references but %s '
-                  'targets.' % (len(self.document.anonymous_refs),
-                                len(self.document.anonymous_targets)))
+                  'targets.\nSee "backrefs" attribute for IDs.'
+                  % (len(self.document.anonymous_refs),
+                     len(self.document.anonymous_targets)))
             msgid = self.document.set_id(msg)
             for ref in self.document.anonymous_refs:
                 prb = nodes.problematic(
@@ -185,7 +185,8 @@ class Hyperlinks(Transform):
         naming += '(id="%s")' % target['id']
         msg = self.document.reporter.warning(
               'Indirect hyperlink target %s refers to target "%s", '
-              'which does not exist.' % (naming, target['refname']))
+              'which does not exist.' % (naming, target['refname']),
+              base_node=target)
         msgid = self.document.set_id(msg)
         for ref in reflist:
             prb = nodes.problematic(
@@ -216,7 +217,7 @@ class Hyperlinks(Transform):
                     return
                 msg = self.document.reporter.info(
                       'Indirect hyperlink target "%s" is not referenced.'
-                      % name)
+                      % name, base_node=target)
                 target.referenced = 1
                 return
             delatt = 'refname'
@@ -229,7 +230,7 @@ class Hyperlinks(Transform):
                     return
                 msg = self.document.reporter.info(
                       'Indirect hyperlink target id="%s" is not referenced.'
-                      % id)
+                      % id, base_node=target)
                 target.referenced = 1
                 return
             delatt = 'refid'
@@ -272,7 +273,7 @@ class Hyperlinks(Transform):
                         continue
                     msg = self.document.reporter.info(
                           'External hyperlink target "%s" is not referenced.'
-                          % name)
+                          % name, base_node=target)
                     target.referenced = 1
                     continue
                 for ref in reflist:
@@ -313,7 +314,7 @@ class Hyperlinks(Transform):
                     continue
                 msg = self.document.reporter.info(
                       'Internal hyperlink target "%s" is not referenced.'
-                      % name)
+                      % name, base_node=target)
                 target.referenced = 1
                 continue
             for ref in reflist:
@@ -522,7 +523,7 @@ class Footnotes(Transform):
                 msg = self.document.reporter.error(
                       'Too many autonumbered footnote references: only %s '
                       'corresponding footnotes available.'
-                      % len(self.autofootnote_labels))
+                      % len(self.autofootnote_labels), base_node=ref)
                 msgid = self.document.set_id(msg)
                 for ref in self.document.autofootnote_refs[i:]:
                     if ref.resolved or ref.hasattr('refname'):
@@ -560,7 +561,8 @@ class Footnotes(Transform):
             except IndexError:
                 msg = self.document.reporter.error(
                       'Too many symbol footnote references: only %s '
-                      'corresponding footnotes available.' % len(labels))
+                      'corresponding footnotes available.' % len(labels),
+                      base_node=ref)
                 msgid = self.set_id(msg)
                 for ref in self.document.symbol_footnote_refs[i:]:
                     if ref.resolved or ref.hasattr('refid'):
@@ -642,7 +644,7 @@ class Substitutions(Transform):
                 else:
                     msg = self.document.reporter.error(
                           'Undefined substitution referenced: "%s".'
-                          % refname)
+                          % refname, base_node=ref)
                     msgid = self.document.set_id(msg)
                     prb = nodes.problematic(
                           ref.rawsource, ref.rawsource, refid=msgid)

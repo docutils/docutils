@@ -236,7 +236,7 @@ Mixed anonymous and labelled auto-numbered footnotes:
         <paragraph>
             Auto-numbered footnote 5.
     <footnote auto="1" dupname="five" id="id9">
-        <system_message backrefs="id9" level="2" source="test data" type="WARNING">
+        <system_message backrefs="id9" level="2" line="12" source="test data" type="WARNING">
             <paragraph>
                 Duplicate explicit target name: "five".
         <paragraph>
@@ -303,7 +303,7 @@ and labelled auto-numbered footnotes:
         <paragraph>
             Auto-numbered footnote 5.
     <footnote auto="1" dupname="five" id="id12">
-        <system_message backrefs="id12" level="2" source="test data" type="WARNING">
+        <system_message backrefs="id12" level="2" line="14" source="test data" type="WARNING">
             <paragraph>
                 Duplicate explicit target name: "five".
         <paragraph>

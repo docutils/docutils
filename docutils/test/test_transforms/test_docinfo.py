@@ -1,12 +1,12 @@
 #! /usr/bin/env python
 
-"""
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Author: David Goodger
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
+"""
 Tests for docutils.transforms.frontmatter.DocInfo.
 """
 
@@ -94,7 +94,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
             <field_body>
                 <paragraph>
                     Abstract 2 (should generate a warning).
-                <system_message level="2" source="test data" type="WARNING">
+                <system_message level="2" line="9" source="test data" type="WARNING">
                     <paragraph>
                         There can only be one "Abstract" field.
         <date>
@@ -134,7 +134,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                     <list_item>
                         <paragraph>
                             must be a paragraph
-                <system_message level="2" source="test data" type="WARNING">
+                <system_message level="2" line="1" source="test data" type="WARNING">
                     <paragraph>
                         Cannot extract bibliographic field "Author" containing anything other than a single paragraph.
         <status>
@@ -150,14 +150,14 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                     But only one
                 <paragraph>
                     paragraph.
-                <system_message level="2" source="test data" type="WARNING">
+                <system_message level="2" line="3" source="test data" type="WARNING">
                     <paragraph>
                         Cannot extract compound bibliographic field "Date".
         <field>
             <field_name>
                 Version
             <field_body>
-                <system_message level="2" source="test data" type="WARNING">
+                <system_message level="2" line="6" source="test data" type="WARNING">
                     <paragraph>
                         Cannot extract empty bibliographic field "Version".
     <comment xml:space="preserve">
@@ -248,7 +248,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
             <field_name>
                 Authors
             <field_body>
-                <system_message level="2" source="test data" type="WARNING">
+                <system_message level="2" line="1" source="test data" type="WARNING">
                     <paragraph>
                         Cannot extract empty bibliographic field "Authors".
         <field>
@@ -262,7 +262,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                     <list_item>
                         <paragraph>
                             Two
-                <system_message level="2" source="test data" type="WARNING">
+                <system_message level="2" line="3" source="test data" type="WARNING">
                     <paragraph>
                         Bibliographic field "Authors" incompatible with extraction: it must contain either a single paragraph (with authors separated by one of ";,"), multiple paragraphs (one per author), or a bullet list with one paragraph (one author) per item.
         <field>
@@ -272,7 +272,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                 <bullet_list bullet="-">
                     <list_item>
                     <list_item>
-                <system_message level="2" source="test data" type="WARNING">
+                <system_message level="2" line="6" source="test data" type="WARNING">
                     <paragraph>
                         Bibliographic field "Authors" incompatible with extraction: it must contain either a single paragraph (with authors separated by one of ";,"), multiple paragraphs (one per author), or a bullet list with one paragraph (one author) per item.
         <field>
@@ -285,7 +285,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                             One
                 <paragraph>
                     Two
-                <system_message level="2" source="test data" type="WARNING">
+                <system_message level="2" line="10" source="test data" type="WARNING">
                     <paragraph>
                         Bibliographic field "Authors" incompatible with extraction: it must contain either a single paragraph (with authors separated by one of ";,"), multiple paragraphs (one per author), or a bullet list with one paragraph (one author) per item.
         <field>
@@ -298,7 +298,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                             One
                         <paragraph>
                             Two
-                <system_message level="2" source="test data" type="WARNING">
+                <system_message level="2" line="15" source="test data" type="WARNING">
                     <paragraph>
                         Bibliographic field "Authors" incompatible with extraction: it must contain either a single paragraph (with authors separated by one of ";,"), multiple paragraphs (one per author), or a bullet list with one paragraph (one author) per item.
 """],

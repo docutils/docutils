@@ -1,11 +1,10 @@
-#! /usr/bin/env python
-"""
-:Authors: David Goodger, Ueli Schlaepfer
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Authors: David Goodger, Ueli Schlaepfer
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
+"""
 This package contains modules for standard tree transforms available
 to Docutils components. Tree transforms serve a variety of purposes:
 

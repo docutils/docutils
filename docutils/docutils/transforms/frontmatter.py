@@ -1,11 +1,10 @@
-#! /usr/bin/env python
-"""
-:Authors: David Goodger, Ueli Schlaepfer
-:Contact: goodger@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Authors: David Goodger, Ueli Schlaepfer
+# Contact: goodger@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
+"""
 Transforms related to the front matter of a document (information
 found before the main text):
 
@@ -266,7 +265,8 @@ class DocInfo(Transform):
                     elif issubclass(biblioclass, nodes.topic):
                         if topics[normedname]:
                             field[-1] += self.document.reporter.warning(
-                                  'There can only be one "%s" field.' % name)
+                                  'There can only be one "%s" field.' % name,
+                                  base_node=field)
                             raise TransformError
                         title = nodes.title(name, labels[normedname])
                         topics[normedname] = biblioclass(
@@ -291,19 +291,22 @@ class DocInfo(Transform):
     def check_empty_biblio_field(self, field, name):
         if len(field[-1]) < 1:
             field[-1] += self.document.reporter.warning(
-                  'Cannot extract empty bibliographic field "%s".' % name)
+                  'Cannot extract empty bibliographic field "%s".' % name,
+                  base_node=field)
             return None
         return 1
 
     def check_compound_biblio_field(self, field, name):
         if len(field[-1]) > 1:
             field[-1] += self.document.reporter.warning(
-                  'Cannot extract compound bibliographic field "%s".' % name)
+                  'Cannot extract compound bibliographic field "%s".' % name,
+                  base_node=field)
             return None
         if not isinstance(field[-1][0], nodes.paragraph):
             field[-1] += self.document.reporter.warning(
                   'Cannot extract bibliographic field "%s" containing '
-                  'anything other than a single paragraph.' % name)
+                  'anything other than a single paragraph.' % name,
+                  base_node=field)
             return None
         return 1
 
@@ -339,7 +342,8 @@ class DocInfo(Transform):
                   'separated by one of "%s"), multiple paragraphs (one per '
                   'author), or a bullet list with one paragraph (one author) '
                   'per item.'
-                  % (name, ''.join(self.language.author_separators)))
+                  % (name, ''.join(self.language.author_separators)),
+                  base_node=field)
             raise
 
     def authors_from_one_paragraph(self, field):
