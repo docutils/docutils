@@ -77,3 +77,15 @@ of the tilde ~ and the backquote chars.
 
 
 this works as long as the document is not italian.
+
+bracketts at line start and empty lines
+
+.. parsed-literal::
+
+   with
+   [
+       _Container=std::map<std::string,std::string>,
+       _InIt=std::list<std::string>::iterator
+   ]
+   *messages continue...*
+
