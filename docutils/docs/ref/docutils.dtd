@@ -103,6 +103,7 @@ resolve to either an internal or external reference.
 <!ENTITY % bibliographic.elements
   " author | authors | organization | contact
     | version | revision | status | date | copyright
+    | field
     %additional.bibliographic.elements; ">
 
 <!ENTITY % additional.structural.elements "">
