@@ -134,16 +134,17 @@ def register_local_role(name, role_fn):
 # Create and register the standard roles:
 ######################################################################
 
-def make_generic_role(node_class, role, rawtext, text, lineno, inliner):
+def generic_role(node_class, role, rawtext, text, lineno, inliner,
+                 attributes={}):
     # If we wanted to, we could recursively call inliner.nested_parse
     # to interpret the text contents here (after appropriately
     # refactoring Inliner.parse).
-    return [node_class(rawtext, text)], []
+    return [node_class(rawtext, text, **attributes)], []
 
 # Helper function:
 def register_generic_role(name, node_class):
     def role_fn(role, rawtext, text, lineno, inliner, nc=node_class):
-        return make_generic_role(nc, role, rawtext, text, lineno, inliner)
+        return generic_role(nc, role, rawtext, text, lineno, inliner)
     register_canonical_role(name, role_fn)
 
 register_generic_role('abbreviation', nodes.abbreviation)
@@ -154,6 +155,12 @@ register_generic_role('strong', nodes.strong)
 register_generic_role('subscript', nodes.subscript)
 register_generic_role('superscript', nodes.superscript)
 register_generic_role('title-reference', nodes.title_reference)
+
+def register_custom_role(name, attributes):
+    def role_fn(role, rawtext, text, lineno, inliner, atts=attributes):
+        return generic_role(nodes.inline, role, rawtext, text, lineno, inliner,
+                            attributes=atts)
+    register_local_role(name, role_fn)
 
 def pep_reference_role(role, rawtext, text, lineno, inliner):
     try:
