@@ -1306,7 +1306,7 @@ elements.
      rst/alternatives.html#multiple-roles-in-interpreted-text
 
 * Add document-local _`role bindings`, associating directives with
-  roles?
+  roles? ::
 
       ``She wore ribbons in her hair and it lay with streaks of
       grey``:rewrite:
