@@ -20,7 +20,7 @@ import time
 import re
 import string
 from types import ListType
-from docutils import frontend, nodes, languages, writers
+from docutils import frontend, nodes, languages, writers, utils
 
 class Writer(writers.Writer):
 
@@ -701,11 +701,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # true when encoding in math mode
         self.mathmode = 0
 
-    def get_stylesheet_reference(self):
-        if self.settings.stylesheet_path:
-            return self.settings.stylesheet_path
+    def get_stylesheet_reference(self, relative_to=None):
+        settings = self.settings
+        if settings.stylesheet_path:
+            assert not settings.stylesheet, \
+                   'stylesheet and stylesheet_path are mutually exclusive.'
+            if relative_to == None:
+                relative_to = settings._destination
+            return utils.relative_path(relative_to, settings.stylesheet_path)
         else:
-            return self.settings.stylesheet
+            return settings.stylesheet
 
     def to_latex_encoding(self,docutils_encoding):
         """
