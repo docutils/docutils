@@ -547,6 +547,10 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_document(self, node):
         self.body.append(self.starttag(node, 'div', CLASS='document'))
+        # empty or untitled document?
+        if not len(node) or not isinstance(node[0], nodes.title):
+            # for XHTML conformance:
+            self.head.insert(0, '<title />\n')
 
     def depart_document(self, node):
         self.body.append('</div>\n')
