@@ -94,8 +94,7 @@ class CustomTestCase(unittest.TestCase):
     compare = docutils_difflib.Differ().compare
     """Comparison method shared by all subclasses."""
 
-    def __init__(self, method_name, input, expected, id,
-                 run_in_debugger=0, short_description=None):
+    def __init__(self, method_name, input, expected, id, run_in_debugger=0):
         """
         Initialise the CustomTestCase.
 
@@ -106,15 +105,11 @@ class CustomTestCase(unittest.TestCase):
         expected -- expected output from the parser.
         id -- unique test identifier, used by the test framework.
         run_in_debugger -- if true, run this test under the pdb debugger.
-        short_description -- override to default test description.
         """
         self.id = id
         self.input = input
         self.expected = expected
         self.run_in_debugger = run_in_debugger
-        
-        # XXX What do we do with short_description?  It isn't used at
-        # all.
         
         # Ring your mother.
         unittest.TestCase.__init__(self, method_name)
@@ -153,9 +148,7 @@ class CustomTestSuite(unittest.TestSuite):
     """
     A collection of CustomTestCases.
 
-    Provides test suite ID generation.
-    
-    XXX Any other reason why we need this class?
+    Provides test suite ID generation and a method for adding test cases.
     """
 
     id = ''
@@ -197,8 +190,7 @@ class CustomTestSuite(unittest.TestSuite):
             self.id = id
 
     def addTestCase(self, test_case_class, method_name, input, expected,
-                    id=None, run_in_debugger=0, short_description=None,
-                    **kwargs):
+                    id=None, run_in_debugger=0, **kwargs):
         """
         Create a CustomTestCase in the CustomTestSuite.
         Also return it, just in case.
@@ -211,7 +203,6 @@ class CustomTestSuite(unittest.TestSuite):
         expected -- expected output from the parser.
         id -- unique test identifier, used by the test framework.
         run_in_debugger -- if true, run this test under the pdb debugger.
-        short_description -- override to default test description.
         """
         if id is None:                  # generate id if required
             id = self.next_test_case_id
@@ -220,9 +211,7 @@ class CustomTestSuite(unittest.TestSuite):
         tcid = '%s: %s' % (self.id, id)
         # generate and add test case
         tc = test_case_class(method_name, input, expected, tcid,
-                             run_in_debugger=run_in_debugger,
-                             short_description=short_description,
-                             **kwargs)
+                             run_in_debugger=run_in_debugger, **kwargs)
         self.addTest(tc)
         return tc
 
