@@ -142,8 +142,8 @@ __ http://docutils.sourceforge.net/docfactory-snapshot.tgz
 __ http://docutils.sourceforge.net/docutils-web-snapshot.tgz
 
 `Anonymous CVS access`_ is available.  You can also `browse the CVS
-repository`_ and read the latest README_, HISTORY_, COPYING_, and FAQ_
-files.
+repository`_ and read the latest README_, HISTORY_, COPYING_, FAQ_ and
+BUGS_ files.
 
 
 Project Releases
@@ -364,6 +364,7 @@ Project Links
 .. _README: README.html
 .. _HISTORY: HISTORY.html
 .. _COPYING: COPYING.html
+.. _BUGS: BUGS.html
 .. _mailto:
 .. _David Goodger: mailto:goodger@users.sourceforge.net
 .. _Doc-SIG: http://www.python.org/sigs/doc-sig/
