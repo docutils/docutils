@@ -82,6 +82,8 @@ Specific:
     "enable_exit_status".
   - Enabled traceback (exception propagation) by default in
     programmatic convenience functions.
+  - Now publish_file and publish_cmdline convenience functions return
+    the encoded string results in addition to their regular I/O.
 
 * docutils/frontend.py:
 
