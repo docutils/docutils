@@ -62,9 +62,6 @@ Bugs
   in docutils.transforms.misc.ClassAttribute could be used to fix
   this.  (Reported by David Priest.)
 
-* System messages shouldn't be filtered by the Writer, but by a
-  transform.  See `Filtering System Messages`_.
-
 
 General
 -------
@@ -1585,18 +1582,6 @@ insertion of parse-time system messages ought to remain as-is and the
 Messages transform ought to move all parse-time system messages
 (remove from their originally inserted positions, insert in System
 Messages section).
-
-
-Filtering System Messages
-`````````````````````````
-
-@@@ Implement this.
-
-Currently the Writer is responsible for filtering out system messages
-that are below the current threshold.  Should the filtering be in a
-separate transform?  [Yes.]  It would then happen regardless of the
-writer used.  Perhaps some writers don't want system messages
-filtered?  [The user can adjust filtering levels.]
 
 
 Others
