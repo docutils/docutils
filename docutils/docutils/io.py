@@ -108,13 +108,11 @@ class Output(TransformSpec):
     default_destination_path = None
 
     def __init__(self, settings=None, destination=None, destination_path=None,
-                 encoding=None):
-        encoding, error_handler = (encoding.split(':') + ['strict'])[:2]
-        
+                 encoding=None, error_handler='strict'):
         self.encoding = encoding
         """Text encoding for the output destination."""
 
-        self.error_handler = error_handler
+        self.error_handler = error_handler or 'strict'
         """Text encoding error handler."""
 
         if settings:
@@ -198,7 +196,7 @@ class FileOutput(Output):
     """
 
     def __init__(self, settings=None, destination=None, destination_path=None,
-                 encoding=None, autoclose=1):
+                 encoding=None, error_handler='strict', autoclose=1):
         """
         :Parameters:
             - `destination`: either a file-like object (which is written
