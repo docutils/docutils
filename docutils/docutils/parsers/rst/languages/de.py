@@ -13,16 +13,16 @@ __docformat__ = 'reStructuredText'
 
 
 directives = {
-      'Achtung': 'attention',
-      'Vorsicht': 'caution',
-      'Gefahr': 'danger',
-      'Fehler': 'error',
-      'Hinweis': 'hint',
-      'Wichtig': 'important',
-      'Notiz': 'note',
-      'Tip': 'tip',
-      'Warnung': 'warning',
-      'Topic': 'topic',  # Inhalt, Thema or Überbegriff
+      'achtung': 'attention',
+      'vorsicht': 'caution',
+      'gefahr': 'danger',
+      'fehler': 'error',
+      'hinweis': 'hint',
+      'wichtig': 'important',
+      'notiz': 'note',
+      'tip': 'tip',
+      'warnung': 'warning',
+      'topic': 'topic',  # Inhalt, Thema or Überbegriff
       'line-block': 'line-block',
       'parsed-literal': 'parsed-literal',
       #'questions': 'questions',
@@ -30,10 +30,10 @@ directives = {
       #'faq': 'questions',
       'meta': 'meta',
       #'imagemap': 'imagemap',
-      'Bild': 'image',
+      'bild': 'image',
       'figure': 'figure', # also Bild ?
       #'raw': 'raw',
-      'Inhalt': 'contents',
+      'inhalt': 'contents',
       'sectnum': 'sectnum',
       'section-numbering': 'sectnum',
       'target-notes': 'target-notes',
