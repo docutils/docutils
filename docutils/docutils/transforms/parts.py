@@ -20,12 +20,13 @@ import sys
 from docutils import nodes, utils
 from docutils.transforms import TransformError, Transform
 
+
 class SectNum(Transform):
 
     """
     This transform automatically assigns numbers to the titles of
-    document sections. It is possible to limit the maximum section
-    level for which the numbers are added. For those sections that
+    document sections.  It is possible to limit the maximum section
+    level for which the numbers are added.  For those sections that
     are auto-numbered, the "autonum" attribute is set, informing the
     contents table generator that a different form of the TOC should
     be used.
@@ -34,24 +35,24 @@ class SectNum(Transform):
     def transform(self):
         self.maxdepth = self.startnode.details.get('depth', sys.maxint)
         self.startnode.parent.remove(self.startnode)
-        self.update_section_numbers(self.document, "", 1)
+        self.update_section_numbers(self.document)
 
-    def update_section_numbers(self, node, prefix, depth):
-        cur_index = 1
+    def update_section_numbers(self, node, prefix=(), depth=0):
+        depth += 1
+        sectnum = 1
         for child in node:
             if isinstance(child, nodes.section):
-                number_str = "%s%d." % (prefix, cur_index)
+                numbers = prefix + (str(sectnum),)
                 title = child[0]
-                child['autonum_origtitle'] = copy_and_filter(self.document,
-                                                             title)
-                child['autonum_prefix'] = prefix
-                if isinstance(title[0], nodes.Text):
-                    title[0].data = number_str + " " + title[0].data
-                else:
-                    title.insert(0, nodes.Text(number_str + " "))
+                # Use &nbsp; for spacing:
+                generated = nodes.generated(
+                    '', '.'.join(numbers) + u'\u00a0' * 3, CLASS='sectnum')
+                title.insert(0, generated)
+                title['auto'] = 1
                 if depth < self.maxdepth:
-                    self.update_section_numbers(child, number_str, depth+1)
-                cur_index += 1
+                    self.update_section_numbers(child, numbers, depth)
+                sectnum += 1
+
 
 class Contents(Transform):
 
@@ -116,16 +117,8 @@ class Contents(Transform):
         depth = self.startnode.details.get('depth', sys.maxint)
         for section in sections:
             title = section[0]
-
-            # If the title has been modified by the sectnum transform,
-            # take the title before modification saved in the
-            # `autonum_origtitle` attribute.
-            entrytext = section.get('autonum_origtitle', '')
-            if entrytext:
-                autonum = 1
-                autonum_prefix = section.get('autonum_prefix')
-            else:
-                entrytext = copy_and_filter(self.document, title)
+            auto = title.get('auto')    # May be set by SectNum.
+            entrytext = self.copy_and_filter(title)
             reference = nodes.reference('', '', refid=section['id'],
                                         *entrytext)
             ref_id = self.document.set_id(reference)
@@ -140,21 +133,18 @@ class Contents(Transform):
                 item += subsects
             entries.append(item)
         if entries:
-            if autonum:
-                entries = nodes.enumerated_list('',
-                    enumtype='arabic',
-                    prefix=autonum_prefix,
-                    suffix='.',
-                    *entries)
-            else:
-                entries = nodes.bullet_list('', *entries)
-        return entries
+            contents = nodes.bullet_list('', *entries)
+            if auto:
+                contents.set_class('auto-toc')
+            return contents
+        else:
+            return []
 
-def copy_and_filter(document, node):
-    """Return a copy of a title, with references, images, etc. removed."""
-    visitor = ContentsFilter(document)
-    node.walkabout(visitor)
-    return visitor.get_entry_text()
+    def copy_and_filter(self, node):
+        """Return a copy of a title, with references, images, etc. removed."""
+        visitor = ContentsFilter(self.document)
+        node.walkabout(visitor)
+        return visitor.get_entry_text()
 
 
 class ContentsFilter(nodes.TreeCopyVisitor):
