@@ -1,0 +1,1064 @@
+\documentclass[10pt,a4paper,english]{article}
+\usepackage{babel}
+\usepackage{shortvrb}
+\usepackage[latin1]{inputenc}
+\usepackage{tabularx}
+\usepackage{longtable}
+\setlength{\extrarowheight}{2pt}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{ifthen}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+\usepackage[DIV12]{typearea}
+%% generator Docutils: http://docutils.sourceforge.net/
+\newlength{\admonitionwidth}
+\setlength{\admonitionwidth}{0.9\textwidth}
+\newlength{\docinfowidth}
+\setlength{\docinfowidth}{0.9\textwidth}
+\newlength{\locallinewidth}
+\newcommand{\optionlistlabel}[1]{\bf #1 \hfill}
+\newenvironment{optionlist}[1]
+{\begin{list}{}
+  {\setlength{\labelwidth}{#1}
+   \setlength{\rightmargin}{1cm}
+   \setlength{\leftmargin}{\rightmargin}
+   \addtolength{\leftmargin}{\labelwidth}
+   \addtolength{\leftmargin}{\labelsep}
+   \renewcommand{\makelabel}{\optionlistlabel}}
+}{\end{list}}
+% begin: floats for footnotes tweaking.
+\setlength{\floatsep}{0.5em}
+\setlength{\textfloatsep}{\fill}
+\addtolength{\textfloatsep}{3em}
+\renewcommand{\textfraction}{0.5}
+\renewcommand{\topfraction}{0.5}
+\renewcommand{\bottomfraction}{0.5}
+\setcounter{totalnumber}{50}
+\setcounter{topnumber}{50}
+\setcounter{bottomnumber}{50}
+% end floats for footnotes
+% some commands, that could be overwritten in the style file.
+\newcommand{\rubric}[1]{\subsection*{~\hfill {\it #1} \hfill ~}}
+\newcommand{\titlereference}[1]{\textsl{#1}}
+% end of "some commands"
+\title{reStructuredText Test Document\\
+\large{Examples of Syntax Constructs}
+}
+\author{}
+\date{}
+\hypersetup{
+pdftitle={reStructuredText Test Document},
+pdfauthor={David Goodger;Me;Myself;I}
+}
+\raggedbottom
+\begin{document}
+\maketitle
+
+%___________________________________________________________________________
+\begin{center}
+\begin{tabularx}{\docinfowidth}{lX}
+\textbf{Author}: &
+	David Goodger \\
+\textbf{Address}: &
+	{\raggedright
+123 Example Street~\\
+Example, EX  Canada~\\
+A1B 2C3 } \\
+\textbf{Contact}: &
+	\href{mailto:goodger@users.sourceforge.net}{goodger@users.sourceforge.net} \\
+\textbf{Author}: &
+	Me \\
+\textbf{Author}: &
+	Myself \\
+\textbf{Author}: &
+	I \\
+\textbf{Organization}: &
+	humankind \\
+\textbf{Date}: &
+	2004-06-20 \\
+\textbf{Status}: &
+	This is a ``work in progress'' \\
+\textbf{Revision}: &
+	1.1 \\
+\textbf{Version}: &
+	1 \\
+\textbf{Copyright}: &
+	This document has been placed in the public domain. You
+may do with it as you wish. You may copy, modify,
+redistribute, reattribute, sell, buy, rent, lease,
+destroy, or improve it, quote it at length, excerpt,
+incorporate, collate, fold, staple, or mutilate it, or do
+anything else to it that your or anyone else's heart
+desires. \\
+\textbf{field name}: &
+	This is a generic bibliographic field. \\
+\textbf{field name 2}: &
+	Generic bibliographic fields may contain multiple body elements.
+
+Like this. \\
+\end{tabularx}
+\end{center}
+
+\setlength{\locallinewidth}{\linewidth}
+
+
+\subsection*{~\hfill Dedication\hfill ~}
+
+For Docutils users {\&} co-developers.
+
+\subsection*{~\hfill Abstract\hfill ~}
+
+This is a test document, containing at least one example of each
+reStructuredText construct.
+
+% This is a comment. Note how any initial comments are moved by
+% transforms to after the document title, subtitle, and docinfo. 
+% Above is the document title, and below is the subtitle.
+% They are transformed from section titles after parsing. 
+% bibliographic fields (which also require a transform): 
+\hypertarget{table-of-contents}{}
+\pdfbookmark[0]{Table of Contents}{table-of-contents}
+\subsection*{~\hfill Table of Contents\hfill ~}
+\begin{list}{}{}
+\item {} \href{\#structural-elements}{1~~~Structural Elements}
+\begin{list}{}{}
+\item {} \href{\#section-title}{1.1~~~Section Title}
+
+\item {} \href{\#transitions}{1.2~~~Transitions}
+
+\end{list}
+
+\item {} \href{\#body-elements}{2~~~Body Elements}
+\begin{list}{}{}
+\item {} \href{\#paragraphs}{2.1~~~Paragraphs}
+\begin{list}{}{}
+\item {} \href{\#inline-markup}{2.1.1~~~Inline Markup}
+
+\end{list}
+
+\item {} \href{\#bullet-lists}{2.2~~~Bullet Lists}
+
+\item {} \href{\#enumerated-lists}{2.3~~~Enumerated Lists}
+
+\item {} \href{\#definition-lists}{2.4~~~Definition Lists}
+
+\item {} \href{\#field-lists}{2.5~~~Field Lists}
+
+\item {} \href{\#option-lists}{2.6~~~Option Lists}
+
+\item {} \href{\#literal-blocks}{2.7~~~Literal Blocks}
+
+\item {} \href{\#block-quotes}{2.8~~~Block Quotes}
+
+\item {} \href{\#doctest-blocks}{2.9~~~Doctest Blocks}
+
+\item {} \href{\#footnotes}{2.10~~~Footnotes}
+
+\item {} \href{\#citations}{2.11~~~Citations}
+
+\item {} \href{\#targets}{2.12~~~Targets}
+\begin{list}{}{}
+\item {} \href{\#duplicate-target-names}{2.12.1~~~Duplicate Target Names}
+
+\item {} \href{\#id18}{2.12.2~~~Duplicate Target Names}
+
+\end{list}
+
+\item {} \href{\#directives}{2.13~~~Directives}
+\begin{list}{}{}
+\item {} \href{\#document-parts}{2.13.1~~~Document Parts}
+
+\item {} \href{\#images}{2.13.2~~~Images}
+
+\item {} \href{\#admonitions}{2.13.3~~~Admonitions}
+
+\item {} \href{\#topics-sidebars-and-rubrics}{2.13.4~~~Topics, Sidebars, and Rubrics}
+
+\item {} \href{\#target-footnotes}{2.13.5~~~Target Footnotes}
+
+\item {} \href{\#line-blocks}{2.13.6~~~Line Blocks}
+
+\item {} \href{\#replacement-text}{2.13.7~~~Replacement Text}
+
+\end{list}
+
+\item {} \href{\#substitution-definitions}{2.14~~~Substitution Definitions}
+
+\item {} \href{\#comments}{2.15~~~Comments}
+
+\item {} \href{\#colspanning-tables}{2.16~~~Colspanning tables}
+
+\end{list}
+
+\item {} \href{\#error-handling}{3~~~Error Handling}
+
+\end{list}
+
+
+
+%___________________________________________________________________________
+
+\hypertarget{structural-elements}{}
+\pdfbookmark[0]{1~~~Structural Elements}{structural-elements}
+\section*{1~~~Structural Elements}
+
+
+%___________________________________________________________________________
+
+\hypertarget{section-title}{}
+\pdfbookmark[1]{1.1~~~Section Title}{section-title}
+\subsection*{1.1~~~Section Title}
+
+That's it, the text just above this line.
+
+
+%___________________________________________________________________________
+
+\hypertarget{transitions}{}
+\pdfbookmark[1]{1.2~~~Transitions}{transitions}
+\subsection*{1.2~~~Transitions}
+
+Here's a transition:
+
+
+%___________________________________________________________________________
+\hspace*{\fill}\hrulefill\hspace*{\fill}
+
+
+It divides the section.
+
+
+%___________________________________________________________________________
+
+\hypertarget{body-elements}{}
+\pdfbookmark[0]{2~~~Body Elements}{body-elements}
+\section*{2~~~Body Elements}
+
+
+%___________________________________________________________________________
+
+\hypertarget{paragraphs}{}
+\pdfbookmark[1]{2.1~~~Paragraphs}{paragraphs}
+\subsection*{2.1~~~Paragraphs}
+
+A paragraph.
+
+
+%___________________________________________________________________________
+
+\hypertarget{inline-markup}{}
+\pdfbookmark[2]{2.1.1~~~Inline Markup}{inline-markup}
+\subsubsection*{2.1.1~~~Inline Markup}
+
+Paragraphs contain text and may contain inline markup: \emph{emphasis},
+\textbf{strong emphasis}, \texttt{inline literals}, standalone hyperlinks
+(\href{http://www.python.org}{http://www.python.org}), external hyperlinks (\href{http://www.python.org/}{Python} [\hyperlink{id21}{5}]), internal
+cross-references (\href{\#example}{example}), external hyperlinks with embedded URIs
+(\href{http://www.python.org}{Python web site}), footnote references
+(manually numbered [\hyperlink{id6}{1}], anonymous auto-numbered [\hyperlink{id9}{3}], labeled
+auto-numbered [\hyperlink{label}{2}], or symbolic [\hyperlink{id10}{*}]), citation references
+([\hyperlink{cit2002}{CIT2002}]), substitution references (\includegraphics{../docs/user/rst/images/biohazard.png}), and \hypertarget{inline-hyperlink-targets}{inline
+hyperlink targets} (see \href{\#targets}{Targets} below for a reference back to here).
+Character-level inline markup is also possible (although exceedingly
+ugly!) in \emph{re}\texttt{Structured}\emph{Text}.  Problems are indicated by
+{\color{red}\bfseries{}{\textbar}problematic{\textbar}} text (generated by processing errors; this one is
+intentional).
+
+The default role for interpreted text is \titlereference{Title Reference}.  Here are
+some explicit interpreted text roles: a PEP reference (\href{http://www.python.org/peps/pep-0287.html}{PEP 287}); an
+RFC reference (\href{http://www.faqs.org/rfcs/rfc2822.html}{RFC 2822}); a $_{subscript}$; a $^{superscript}$;
+and explicit roles for \emph{standard} \textbf{inline}
+\texttt{markup}.
+% DO NOT RE-WRAP THE FOLLOWING PARAGRAPH! 
+
+Let's test wrapping and whitespace significance in inline literals:
+\texttt{This is an example of --inline-literal --text, --including some--
+strangely--hyphenated-words.  Adjust-the-width-of-your-browser-window
+to see how the text is wrapped.  -- ---- --------  Now note    the
+spacing    between the    words of    this sentence    (words
+should    be grouped    in pairs).}
+
+If the \texttt{--pep-references} option was supplied, there should be a
+live link to PEP 258 here.
+
+
+%___________________________________________________________________________
+
+\hypertarget{bullet-lists}{}
+\pdfbookmark[1]{2.2~~~Bullet Lists}{bullet-lists}
+\subsection*{2.2~~~Bullet Lists}
+\begin{itemize}
+\item {} 
+A bullet list
+\begin{itemize}
+\item {} 
+Nested bullet list.
+
+\item {} 
+Nested item 2.
+
+\end{itemize}
+
+\item {} 
+Item 2.
+
+Paragraph 2 of item 2.
+\begin{itemize}
+\item {} 
+Nested bullet list.
+
+\item {} 
+Nested item 2.
+\begin{itemize}
+\item {} 
+Third level.
+
+\item {} 
+Item 2.
+
+\end{itemize}
+
+\item {} 
+Nested item 3.
+
+\end{itemize}
+
+\end{itemize}
+
+
+%___________________________________________________________________________
+
+\hypertarget{enumerated-lists}{}
+\pdfbookmark[1]{2.3~~~Enumerated Lists}{enumerated-lists}
+\subsection*{2.3~~~Enumerated Lists}
+\newcounter{listcnt1}
+\begin{list}{\arabic{listcnt1}.}
+{
+\usecounter{listcnt1}
+\setlength{\rightmargin}{\leftmargin}
+}
+\item {} 
+Arabic numerals.
+\newcounter{listcnt2}
+\begin{list}{\alph{listcnt2})}
+{
+\usecounter{listcnt2}
+\setlength{\rightmargin}{\leftmargin}
+}
+\item {} 
+lower alpha)
+\newcounter{listcnt3}
+\begin{list}{(\roman{listcnt3})}
+{
+\usecounter{listcnt3}
+\setlength{\rightmargin}{\leftmargin}
+}
+\item {} 
+(lower roman)
+\newcounter{listcnt4}
+\begin{list}{\Alph{listcnt4}.}
+{
+\usecounter{listcnt4}
+\setlength{\rightmargin}{\leftmargin}
+}
+\item {} 
+upper alpha.
+\newcounter{listcnt5}
+\begin{list}{\Roman{listcnt5})}
+{
+\usecounter{listcnt5}
+\setlength{\rightmargin}{\leftmargin}
+}
+\item {} 
+upper roman)
+
+\end{list}
+
+\end{list}
+
+\end{list}
+
+\end{list}
+
+\item {} 
+Lists that don't start at 1:
+\newcounter{listcnt6}
+\begin{list}{\arabic{listcnt6}.}
+{
+\usecounter{listcnt6}
+\addtocounter{listcnt6}{2}
+\setlength{\rightmargin}{\leftmargin}
+}
+\item {} 
+Three
+
+\item {} 
+Four
+
+\end{list}
+\newcounter{listcnt7}
+\begin{list}{\Alph{listcnt7}.}
+{
+\usecounter{listcnt7}
+\addtocounter{listcnt7}{2}
+\setlength{\rightmargin}{\leftmargin}
+}
+\item {} 
+C
+
+\item {} 
+D
+
+\end{list}
+\newcounter{listcnt8}
+\begin{list}{\roman{listcnt8}.}
+{
+\usecounter{listcnt8}
+\addtocounter{listcnt8}{2}
+\setlength{\rightmargin}{\leftmargin}
+}
+\item {} 
+iii
+
+\item {} 
+iv
+
+\end{list}
+
+\end{list}
+
+
+%___________________________________________________________________________
+
+\hypertarget{definition-lists}{}
+\pdfbookmark[1]{2.4~~~Definition Lists}{definition-lists}
+\subsection*{2.4~~~Definition Lists}
+\begin{description}
+%[visit_definition_list_item]
+\item[Term]
+%[visit_definition]
+
+Definition
+
+%[depart_definition]
+%[depart_definition_list_item]
+%[visit_definition_list_item]
+\item[Term]
+(\textbf{classifier})
+%[visit_definition]
+
+Definition paragraph 1.
+
+Definition paragraph 2.
+
+%[depart_definition]
+%[depart_definition_list_item]
+%[visit_definition_list_item]
+\item[Term]
+%[visit_definition]
+
+Definition
+
+%[depart_definition]
+%[depart_definition_list_item]
+\end{description}
+
+
+%___________________________________________________________________________
+
+\hypertarget{field-lists}{}
+\pdfbookmark[1]{2.5~~~Field Lists}{field-lists}
+\subsection*{2.5~~~Field Lists}
+\begin{quote}
+\begin{description}
+\item [what:]
+Field lists map field names to field bodies, like database
+records.  They are often part of an extension syntax.  They are
+an unambiguous variant of RFC 2822 fields.
+
+
+\item [how arg1 arg2:]
+The field marker is a colon, the field name, and a colon.
+
+The field body may contain one or more body elements, indented
+relative to the field marker.
+
+
+\end{description}
+\end{quote}
+
+
+%___________________________________________________________________________
+
+\hypertarget{option-lists}{}
+\pdfbookmark[1]{2.6~~~Option Lists}{option-lists}
+\subsection*{2.6~~~Option Lists}
+
+For listing command-line options:
+% [option list]
+\begin{optionlist}{3cm}
+\item [-a]  
+command-line option ``a''
+\item [-b file]  
+options can have arguments
+and long descriptions
+\item [--long]  
+options can be long also
+\item [--input=file]  
+long options can also have
+arguments
+\item [--very-long-option]  
+The description can also start on the next line.
+
+The description may contain multiple body elements,
+regardless of where it starts.
+\item [-x, -y, -z]  
+Multiple options are an ``option group''.
+\item [-v, --verbose]  
+Commonly-seen: short {\&} long options.
+\item [-1 file, --one=file, --two file]  
+Multiple options with arguments.
+\item [/V]  
+DOS/VMS-style options too
+\end{optionlist}
+
+There must be at least two spaces between the option and the
+description.
+
+
+%___________________________________________________________________________
+
+\hypertarget{literal-blocks}{}
+\pdfbookmark[1]{2.7~~~Literal Blocks}{literal-blocks}
+\subsection*{2.7~~~Literal Blocks}
+
+Literal blocks are indicated with a double-colon (``::'') at the end of
+the preceding paragraph (over there \texttt{-->}).  They can be indented:
+\begin{ttfamily}\begin{flushleft}
+if~literal{\underline{~}}block:~\\
+~~~~text~=~'is~left~as-is'~\\
+~~~~spaces{\underline{~}}and{\underline{~}}linebreaks~=~'are~preserved'~\\
+~~~~markup{\underline{~}}processing~=~None
+\end{flushleft}\end{ttfamily}
+
+Or they can be quoted without indentation:
+\begin{ttfamily}\begin{flushleft}
+>>~Great~idea!~\\
+>~\\
+>~Why~didn't~I~think~of~that?
+\end{flushleft}\end{ttfamily}
+
+
+%___________________________________________________________________________
+
+\hypertarget{block-quotes}{}
+\pdfbookmark[1]{2.8~~~Block Quotes}{block-quotes}
+\subsection*{2.8~~~Block Quotes}
+
+Block quotes consist of indented body elements:
+\begin{quote}
+
+My theory by A. Elk.  Brackets Miss, brackets.  This theory goes
+as follows and begins now.  All brontosauruses are thin at one
+end, much much thicker in the middle and then thin again at the
+far end.  That is my theory, it is mine, and belongs to me and I
+own it, and what it is too.
+
+\begin{flushright}
+---Anne Elk (Miss)
+\end{flushright}
+\end{quote}
+
+
+%___________________________________________________________________________
+
+\hypertarget{doctest-blocks}{}
+\pdfbookmark[1]{2.9~~~Doctest Blocks}{doctest-blocks}
+\subsection*{2.9~~~Doctest Blocks}
+\begin{verbatim}>>> print 'Python-specific usage examples; begun with ">>>"'
+Python-specific usage examples; begun with ">>>"
+>>> print '(cut and pasted from interactive Python sessions)'
+(cut and pasted from interactive Python sessions)\end{verbatim}
+
+
+%___________________________________________________________________________
+
+\hypertarget{footnotes}{}
+\pdfbookmark[1]{2.10~~~Footnotes}{footnotes}
+\subsection*{2.10~~~Footnotes}
+\begin{figure}[b]\hypertarget{id6}[1]
+A footnote contains body elements, consistently indented by at
+least 3 spaces.
+
+This is the footnote's second paragraph.
+\end{figure}
+\begin{figure}[b]\hypertarget{label}[2]
+Footnotes may be numbered, either manually (as in [\hyperlink{id6}{1}]) or
+automatically using a ``{\#}''-prefixed label.  This footnote has a
+label so it can be referred to from multiple places, both as a
+footnote reference ([\hyperlink{label}{2}]) and as a hyperlink reference
+(\href{\#label}{label}).
+\end{figure}
+\begin{figure}[b]\hypertarget{id9}[3]
+This footnote is numbered automatically and anonymously using a
+label of ``{\#}'' only.
+\end{figure}
+\begin{figure}[b]\hypertarget{id10}[*]
+Footnotes may also use symbols, specified with a ``*'' label.
+Here's a reference to the next footnote: [\hyperlink{id12}{{\dag}}].
+\end{figure}
+\begin{figure}[b]\hypertarget{id12}[{\dag}]
+This footnote shows the next symbol in the sequence.
+\end{figure}
+\begin{figure}[b]\hypertarget{id13}[4]
+Here's an unreferenced footnote, with a reference to a
+nonexistent footnote: {\color{red}\bfseries{}{[}5]{\_}}.
+\end{figure}
+
+
+%___________________________________________________________________________
+
+\hypertarget{citations}{}
+\pdfbookmark[1]{2.11~~~Citations}{citations}
+\subsection*{2.11~~~Citations}
+\begin{figure}[b]\hypertarget{cit2002}[CIT2002]
+Citations are text-labeled footnotes. They may be
+rendered separately and differently from footnotes.
+\end{figure}
+
+Here's a reference to the above, [\hyperlink{cit2002}{CIT2002}], and a {\color{red}\bfseries{}{[}nonexistent]{\_}}
+citation.
+
+
+%___________________________________________________________________________
+
+\hypertarget{targets}{}
+\pdfbookmark[1]{2.12~~~Targets}{targets}
+\subsection*{2.12~~~Targets}
+\hypertarget{example}{}
+This paragraph is pointed to by the explicit ``example'' target. A
+reference can be found under \href{\#inline-markup}{Inline Markup}, above. \href{\#inline-hyperlink-targets}{Inline
+hyperlink targets} are also possible.
+
+Section headers are implicit targets, referred to by name. See
+\href{\#targets}{Targets}, which is a subsection of \href{\#body-elements}{Body Elements}.
+
+Explicit external targets are interpolated into references such as
+``\href{http://www.python.org/}{Python} [\hyperlink{id21}{5}]''.
+
+Targets may be indirect and anonymous.  Thus \href{\#targets}{this phrase} may also
+refer to the \href{\#targets}{Targets} section.
+
+Here's a {\color{red}\bfseries{}`hyperlink reference without a target`{\_}}, which generates an
+error.
+
+
+%___________________________________________________________________________
+
+\hypertarget{duplicate-target-names}{}
+\pdfbookmark[2]{2.12.1~~~Duplicate Target Names}{duplicate-target-names}
+\subsubsection*{2.12.1~~~Duplicate Target Names}
+
+Duplicate names in section headers or other implicit targets will
+generate ``info'' (level-1) system messages.  Duplicate names in
+explicit targets will generate ``warning'' (level-2) system messages.
+
+
+%___________________________________________________________________________
+
+\hypertarget{id18}{}
+\pdfbookmark[2]{2.12.2~~~Duplicate Target Names}{id18}
+\subsubsection*{2.12.2~~~Duplicate Target Names}
+
+Since there are two ``Duplicate Target Names'' section headers, we
+cannot uniquely refer to either of them by name.  If we try to (like
+this: {\color{red}\bfseries{}`Duplicate Target Names`{\_}}), an error is generated.
+
+
+%___________________________________________________________________________
+
+\hypertarget{directives}{}
+\pdfbookmark[1]{2.13~~~Directives}{directives}
+\subsection*{2.13~~~Directives}
+\begin{list}{}{}
+\item {} \href{\#document-parts}{2.13.1~~~Document Parts}
+
+\item {} \href{\#images}{2.13.2~~~Images}
+
+\item {} \href{\#admonitions}{2.13.3~~~Admonitions}
+
+\item {} \href{\#topics-sidebars-and-rubrics}{2.13.4~~~Topics, Sidebars, and Rubrics}
+
+\item {} \href{\#target-footnotes}{2.13.5~~~Target Footnotes}
+
+\item {} \href{\#line-blocks}{2.13.6~~~Line Blocks}
+
+\item {} \href{\#replacement-text}{2.13.7~~~Replacement Text}
+
+\end{list}
+
+
+These are just a sample of the many reStructuredText Directives.  For
+others, please see
+\href{http://docutils.sourceforge.net/docs/ref/rst/directives.html}{http://docutils.sourceforge.net/docs/ref/rst/directives.html}.
+
+
+%___________________________________________________________________________
+
+\hypertarget{document-parts}{}
+\pdfbookmark[2]{2.13.1~~~Document Parts}{document-parts}
+\subsubsection*{2.13.1~~~Document Parts}
+
+An example of the ``contents'' directive can be seen above this section
+(a local, untitled table of \href{\#contents}{contents}) and at the beginning of the
+document (a document-wide \href{\#table-of-contents}{table of contents}).
+
+
+%___________________________________________________________________________
+
+\hypertarget{images}{}
+\pdfbookmark[2]{2.13.2~~~Images}{images}
+\subsubsection*{2.13.2~~~Images}
+
+An image directive (also clickable -- a hyperlink reference):
+\href{\#directives}{\includegraphics{../docs/user/rst/images/title.png}}
+A figure directive:
+\begin{figure}[htbp]\begin{center}
+
+\includegraphics{../docs/user/rst/images/title.png}
+\caption{A figure is an image with a caption and/or a legend:}{\small 
+\begin{longtable}[c]{|p{0.16\locallinewidth}|p{0.56\locallinewidth}|}
+\hline
+
+re
+ & 
+Revised, revisited, based on 're' module.
+ \\
+\hline
+
+Structured
+ & 
+Structure-enhanced text, structuredtext.
+ \\
+\hline
+
+Text
+ & 
+Well it is, isn't it?
+ \\
+\hline
+\end{longtable}
+
+This paragraph is also part of the legend.
+}\end{center}\end{figure}
+
+
+%___________________________________________________________________________
+
+\hypertarget{admonitions}{}
+\pdfbookmark[2]{2.13.3~~~Admonitions}{admonitions}
+\subsubsection*{2.13.3~~~Admonitions}
+\begin{center}\begin{sffamily}
+\fbox{\parbox{\admonitionwidth}{
+\textbf{\large Attention!}
+\vspace{2mm}
+
+Directives at large.
+}}
+\end{sffamily}
+\end{center}
+\begin{center}\begin{sffamily}
+\fbox{\parbox{\admonitionwidth}{
+\textbf{\large Caution!}
+\vspace{2mm}
+
+Don't take any wooden nickels.
+}}
+\end{sffamily}
+\end{center}
+\begin{center}\begin{sffamily}
+\fbox{\parbox{\admonitionwidth}{
+\textbf{\large !DANGER!}
+\vspace{2mm}
+
+Mad scientist at work!
+}}
+\end{sffamily}
+\end{center}
+\begin{center}\begin{sffamily}
+\fbox{\parbox{\admonitionwidth}{
+\textbf{\large Error}
+\vspace{2mm}
+
+Does not compute.
+}}
+\end{sffamily}
+\end{center}
+\begin{center}\begin{sffamily}
+\fbox{\parbox{\admonitionwidth}{
+\textbf{\large Hint}
+\vspace{2mm}
+
+It's bigger than a bread box.
+}}
+\end{sffamily}
+\end{center}
+\begin{center}\begin{sffamily}
+\fbox{\parbox{\admonitionwidth}{
+\textbf{\large Important}
+\vspace{2mm}
+\begin{itemize}
+\item {} 
+Wash behind your ears.
+
+\item {} 
+Clean up your room.
+
+\item {} 
+Call your mother.
+
+\item {} 
+Back up your data.
+
+\end{itemize}
+}}
+\end{sffamily}
+\end{center}
+\begin{center}\begin{sffamily}
+\fbox{\parbox{\admonitionwidth}{
+\textbf{\large Note}
+\vspace{2mm}
+
+This is a note.
+}}
+\end{sffamily}
+\end{center}
+\begin{center}\begin{sffamily}
+\fbox{\parbox{\admonitionwidth}{
+\textbf{\large Tip}
+\vspace{2mm}
+
+15{\%} if the service is good.
+}}
+\end{sffamily}
+\end{center}
+\begin{center}\begin{sffamily}
+\fbox{\parbox{\admonitionwidth}{
+\textbf{\large Warning}
+\vspace{2mm}
+
+Strong prose may provoke extreme mental exertion.
+Reader discretion is strongly advised.
+}}
+\end{sffamily}
+\end{center}
+\begin{center}\begin{sffamily}
+\fbox{\parbox{\admonitionwidth}{
+\vspace{2mm}
+\textbf{\large And, by the way...}
+\smallskip
+
+You can make up your own admonition too.
+}}
+\end{sffamily}
+\end{center}
+
+
+%___________________________________________________________________________
+
+\hypertarget{topics-sidebars-and-rubrics}{}
+\pdfbookmark[2]{2.13.4~~~Topics, Sidebars, and Rubrics}{topics-sidebars-and-rubrics}
+\subsubsection*{2.13.4~~~Topics, Sidebars, and Rubrics}
+
+\setlength{\locallinewidth}{0.9\admonitionwidth}
+\begin{center}\begin{sffamily}
+\fbox{\colorbox[gray]{0.80}{\parbox{\admonitionwidth}{
+\textbf{\large Sidebar Title}
+\smallskip
+~\\
+\textbf{Optional Subtitle}
+\smallskip
+
+This is a sidebar.  It is for text outside the flow of the main
+text.
+\rubric{This is a rubric inside a sidebar}
+
+Sidebars often appears beside the main text with a border and
+background color.
+}}}
+\end{sffamily}
+\end{center}
+
+\setlength{\locallinewidth}{\linewidth}
+\subsection*{~\hfill Topic Title\hfill ~}
+
+This is a topic.
+
+\rubric{This is a rubric}
+
+
+%___________________________________________________________________________
+
+\hypertarget{target-footnotes}{}
+\pdfbookmark[2]{2.13.5~~~Target Footnotes}{target-footnotes}
+\subsubsection*{2.13.5~~~Target Footnotes}
+\begin{figure}[b]\hypertarget{id21}[5]
+\href{http://www.python.org/}{http://www.python.org/}
+\end{figure}
+
+
+%___________________________________________________________________________
+
+\hypertarget{line-blocks}{}
+\pdfbookmark[2]{2.13.6~~~Line Blocks}{line-blocks}
+\subsubsection*{2.13.6~~~Line Blocks}
+
+Take it away, Eric the Orchestra Leader!
+\begin{flushleft}
+A~one,~two,~a~one~two~three~four~\\
+~\\
+Half~a~bee,~philosophically,~\\
+~~~~must,~\emph{ipso~facto},~half~not~be.~\\
+But~half~the~bee~has~got~to~be,~\\
+~~~~\emph{vis~a~vis}~its~entity.~~D'you~see?~\\
+~\\
+But~can~a~bee~be~said~to~be~\\
+~~~~or~not~to~be~an~entire~bee,~\\
+~~~~~~~~when~half~the~bee~is~not~a~bee,~\\
+~~~~~~~~~~~~due~to~some~ancient~injury?~\\
+~\\
+Singing...
+\end{flushleft}
+
+
+%___________________________________________________________________________
+
+\hypertarget{replacement-text}{}
+\pdfbookmark[2]{2.13.7~~~Replacement Text}{replacement-text}
+\subsubsection*{2.13.7~~~Replacement Text}
+
+I recommend you try \href{http://www.python.org/}{Python, \emph{the} best language around} [\hyperlink{id21}{5}].
+
+
+%___________________________________________________________________________
+
+\hypertarget{substitution-definitions}{}
+\pdfbookmark[1]{2.14~~~Substitution Definitions}{substitution-definitions}
+\subsection*{2.14~~~Substitution Definitions}
+
+An inline image (\includegraphics{../docs/user/rst/images/biohazard.png}) example:
+
+(Substitution definitions are not visible in the HTML source.)
+
+
+%___________________________________________________________________________
+
+\hypertarget{comments}{}
+\pdfbookmark[1]{2.15~~~Comments}{comments}
+\subsection*{2.15~~~Comments}
+
+Here's one:
+% Comments begin with two dots and a space. Anything may
+% follow, except for the syntax of footnotes, hyperlink
+% targets, directives, or substitution definitions.
+% 
+% Double-dashes -- "--" -- must be escaped somehow in HTML output. 
+
+(View the HTML source to see the comment.)
+
+
+%___________________________________________________________________________
+
+\hypertarget{colspanning-tables}{}
+\pdfbookmark[1]{2.16~~~Colspanning tables}{colspanning-tables}
+\subsection*{2.16~~~Colspanning tables}
+
+This table has a cell spanning two columns:
+
+\begin{longtable}[c]{|p{0.07\locallinewidth}|p{0.07\locallinewidth}|p{0.09\locallinewidth}|}
+\hline
+\multicolumn{2}{|l|}{\textbf{
+Inputs
+}} & \textbf{
+Output
+} \\
+\hline
+\textbf{
+A
+} & \textbf{
+B
+} & \textbf{
+A or B
+} \\
+\hline
+\endhead
+
+False
+ & 
+False
+ & 
+False
+ \\
+\hline
+
+True
+ & 
+False
+ & 
+True
+ \\
+\hline
+
+False
+ & 
+True
+ & 
+True
+ \\
+\hline
+
+True
+ & 
+True
+ & 
+True
+ \\
+\hline
+\end{longtable}
+
+
+%___________________________________________________________________________
+
+\hypertarget{error-handling}{}
+\pdfbookmark[0]{3~~~Error Handling}{error-handling}
+\section*{3~~~Error Handling}
+
+Any errors caught during processing will generate system messages.
+
+There should be five messages in the following, auto-generated
+section, ``Docutils System Messages'':
+% section should be added by Docutils automatically 
+
+
+%___________________________________________________________________________
+
+\section*{Docutils System Messages}
+
+Undefined substitution referenced: ``problematic''.
+
+
+Unknown target name: ``5''.
+
+
+Unknown target name: ``nonexistent''.
+
+
+Unknown target name: ``hyperlink reference without a target''.
+
+
+Duplicate target name, cannot be used as a unique reference: ``duplicate target names''.
+
+
+\end{document}
