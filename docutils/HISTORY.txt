@@ -30,11 +30,21 @@ Changes Since 0.3.7
   - Added check for escaped at-mark to prevent email address recognition.
   - Fixed option lists to allow spaces inside ``<angle-bracketed option
     arguments>``.
+  - Allowed whitespace in paths and URLs.
+
+* docutils/parsers/rst/directives/__init__.py:
+
+  - Allowed whitespace in paths and URLs (``path`` function).
+
+* docutils/parsers/rst/directives/images.py:
+
+  - Allowed whitespace in "image" & "figure" directive URLs.
 
 * docutils/parsers/rst/directives/misc.py:
 
   - Fixed "include" and "raw" directives to catch text decoding
     errors.
+  - Allowed whitespace in "include" directive paths.
 
 * docutils/parsers/rst/directives/tables.py:
 
@@ -581,11 +591,11 @@ Release 0.3.3 (2004-05-09)
     "topic" and "title", and leaving the "pending" node for the
     transform.  Allows earlier reference resolution; fixes subtle bug.
   - Added support for disabling of section numbering.
-    
+
 * docutils/transforms/references.py:
 
-  - Verifying that external targets are truly targets and not indirect 
-    references. This is because we are now adding a "name" attribute to 
+  - Verifying that external targets are truly targets and not indirect
+    references. This is because we are now adding a "name" attribute to
     references in addition to targets. Note sure if this is correct!
   - Added code to hook into the unknown_reference_resolvers list for a
     transformer in resolve_indirect_target. This allows the
@@ -598,10 +608,10 @@ Release 0.3.3 (2004-05-09)
   - Added FilterMessages transform (removes system messages below the
     verbosity threshold).
   - Added hook (via docutils.TransformSpec.unknown_reference_resolvers)
-    to FinalCheckVisitor for application-specific handling of 
+    to FinalCheckVisitor for application-specific handling of
     unresolvable references.
   - Added specific error message for duplicate targets.
-  
+
 * docutils/writers/__init__.py:
 
   - Added assemble_parts method to the Writer class to allow for
@@ -641,7 +651,7 @@ Release 0.3.3 (2004-05-09)
   - It's now possible to use four section levels in the `book` and
     `report` LaTeX classes.  The default `article` class still has
     three levels limit.
-    
+
 * docs/config.txt: "Docutils Configuration Files", added to project.
   Moved config file entry descriptions from tools.txt.
 
