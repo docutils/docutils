@@ -60,8 +60,8 @@ classifiers = [
     'Topic :: Documentation',
     'Topic :: Software Development :: Documentation',
     'Topic :: Text Processing',
+    'Natural Language :: English',      # main/default language, keep first
     'Natural Language :: Afrikaans',
-    'Natural Language :: English',
     'Natural Language :: French',
     'Natural Language :: German',
     'Natural Language :: Italian',
