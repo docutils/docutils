@@ -583,8 +583,8 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_document(self, node):
         self.fragment.extend(self.body)
-        self.body.insert(0, self.starttag(node, 'div', CLASS='document'))
-        self.body.append('</div>\n')
+        self.body_prefix.append(self.starttag(node, 'div', CLASS='document'))
+        self.body_suffix.insert(0, '</div>\n')
 
     def visit_emphasis(self, node):
         self.body.append('<em>')
@@ -826,13 +826,19 @@ class HTMLTranslator(nodes.NodeVisitor):
         if isinstance(node.parent, nodes.TextElement):
             self.context.append('')
         else:
-            if atts.has_key('align'):
-                self.body.append('<p align="%s">' %
-                                 (self.attval(atts['align'],)))
-            else:
-                self.body.append('<p>')
-            self.context.append('</p>\n')
+            div_atts = self.image_div_atts(node)
+            self.body.append(self.starttag({}, 'div', '', **div_atts))
+            self.context.append('</div>\n')
         self.body.append(self.emptytag(node, 'img', '', **atts))
+
+    def image_div_atts(self, image_node):
+        div_atts = {'class': 'image'}
+        if image_node.attributes.has_key('class'):
+            div_atts['class'] += ' ' + image_node.attributes['class']
+        if image_node.attributes.has_key('align'):
+            div_atts['align'] = self.attval(image_node.attributes['align'])
+            div_atts['class'] += ' align-%s' % div_atts['align']
+        return div_atts
 
     def depart_image(self, node):
         self.body.append(self.context.pop())
@@ -1040,9 +1046,12 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_reference(self, node):
         if isinstance(node.parent, nodes.TextElement):
             self.context.append('')
-        else:
-            self.body.append('<p>')
-            self.context.append('</p>\n')
+        else:                           # contains an image
+            assert len(node) == 1 and isinstance(node[0], nodes.image)
+            div_atts = self.image_div_atts(node[0])
+            div_atts['class'] += ' image-reference'
+            self.body.append(self.starttag({}, 'div', '', **div_atts))
+            self.context.append('</div>\n')
         href = ''
         if node.has_key('refuri'):
             href = node['refuri']
