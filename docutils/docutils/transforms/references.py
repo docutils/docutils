@@ -5,12 +5,7 @@
 # Copyright: This module has been placed in the public domain.
 
 """
-Transforms for resolving references:
-
-- `Hyperlinks`: Used to resolve hyperlink targets and references.
-- `Footnotes`: Resolve footnote numbering and references.
-- `Substitutions`: Resolve substitutions.
-- `TargetNotes`: Create footnotes for external targets.
+Transforms for resolving references.
 """
 
 __docformat__ = 'reStructuredText'
@@ -24,49 +19,113 @@ from docutils.transforms import TransformError, Transform
 indices = xrange(sys.maxint)
 
 
-class Hyperlinks(Transform):
+class ChainedTargets(Transform):
 
-    """Resolve the various types of hyperlink targets and references."""
+    """
+    Attributes "refuri" and "refname" are migrated from the final direct
+    target up the chain of contiguous adjacent internal targets, using
+    `ChainedTargetResolver`.
+    """
+
+    default_priority = 420
 
     def apply(self):
-        self.resolve_chained_targets()
-        self.resolve_anonymous()
-        self.resolve_indirect()
-        self.resolve_external_targets()
-        self.resolve_internal_targets()
-
-    def resolve_chained_targets(self):
-        """
-        Attributes "refuri" and "refname" are migrated from the final direct
-        target up the chain of contiguous adjacent internal targets, using
-        `ChainedTargetResolver`.
-        """
         visitor = ChainedTargetResolver(self.document)
         self.document.walk(visitor)
 
-    def resolve_anonymous(self):
-        """
-        Link anonymous references to targets.  Given::
 
+class ChainedTargetResolver(nodes.SparseNodeVisitor):
+
+    """
+    Copy reference attributes up the length of a hyperlink target chain.
+
+    "Chained targets" are multiple adjacent internal hyperlink targets which
+    "point to" an external or indirect target.  After the transform, all
+    chained targets will effectively point to the same place.
+
+    Given the following ``document`` as input::
+
+        <document>
+            <target id="a" name="a">
+            <target id="b" name="b">
+            <target id="c" name="c" refuri="http://chained.external.targets">
+            <target id="d" name="d">
             <paragraph>
-                <reference anonymous="1">
-                    internal
-                <reference anonymous="1">
-                    external
-            <target anonymous="1" id="id1">
-            <target anonymous="1" id="id2" refuri="http://external">
+                I'm known as "d".
+            <target id="e" name="e">
+            <target id="id1">
+            <target id="f" name="f" refname="d">
 
-        Corresponding references are linked via "refid" or resolved via
-        "refuri"::
+    ``ChainedTargetResolver(document).walk()`` will transform the above into::
 
+        <document>
+            <target id="a" name="a" refuri="http://chained.external.targets">
+            <target id="b" name="b" refuri="http://chained.external.targets">
+            <target id="c" name="c" refuri="http://chained.external.targets">
+            <target id="d" name="d">
             <paragraph>
-                <reference anonymous="1" refid="id1">
-                    text
-                <reference anonymous="1" refuri="http://external">
-                    external
-            <target anonymous="1" id="id1">
-            <target anonymous="1" id="id2" refuri="http://external">
-        """
+                I'm known as "d".
+            <target id="e" name="e" refname="d">
+            <target id="id1" refname="d">
+            <target id="f" name="f" refname="d">
+    """
+
+    def unknown_visit(self, node):
+        pass
+
+    def visit_target(self, node):
+        if node.hasattr('refuri'):
+            attname = 'refuri'
+            call_if_named = self.document.note_external_target
+        elif node.hasattr('refname'):
+            attname = 'refname'
+            call_if_named = self.document.note_indirect_target
+        elif node.hasattr('refid'):
+            attname = 'refid'
+            call_if_named = None
+        else:
+            return
+        attval = node[attname]
+        index = node.parent.index(node)
+        for i in range(index - 1, -1, -1):
+            sibling = node.parent[i]
+            if not isinstance(sibling, nodes.target) \
+                  or sibling.hasattr('refuri') \
+                  or sibling.hasattr('refname') \
+                  or sibling.hasattr('refid'):
+                break
+            sibling[attname] = attval
+            if sibling.hasattr('name') and call_if_named:
+                call_if_named(sibling)
+
+
+class AnonymousHyperlinks(Transform):
+
+    """
+    Link anonymous references to targets.  Given::
+
+        <paragraph>
+            <reference anonymous="1">
+                internal
+            <reference anonymous="1">
+                external
+        <target anonymous="1" id="id1">
+        <target anonymous="1" id="id2" refuri="http://external">
+
+    Corresponding references are linked via "refid" or resolved via "refuri"::
+
+        <paragraph>
+            <reference anonymous="1" refid="id1">
+                text
+            <reference anonymous="1" refuri="http://external">
+                external
+        <target anonymous="1" id="id1">
+        <target anonymous="1" id="id2" refuri="http://external">
+    """
+
+    default_priority = 440
+
+    def apply(self):
         if len(self.document.anonymous_refs) \
               != len(self.document.anonymous_targets):
             msg = self.document.reporter.error(
@@ -92,56 +151,62 @@ class Hyperlinks(Transform):
                 self.document.note_refid(ref)
             target.referenced = 1
 
-    def resolve_indirect(self):
-        """
-        a) Indirect external references::
 
-               <paragraph>
-                   <reference refname="indirect external">
-                       indirect external
-               <target id="id1" name="direct external"
-                   refuri="http://indirect">
-               <target id="id2" name="indirect external"
-                   refname="direct external">
+class IndirectHyperlinks(Transform):
 
-           The "refuri" attribute is migrated back to all indirect targets
-           from the final direct target (i.e. a target not referring to
-           another indirect target)::
+    """
+    a) Indirect external references::
 
-               <paragraph>
-                   <reference refname="indirect external">
-                       indirect external
-               <target id="id1" name="direct external"
-                   refuri="http://indirect">
-               <target id="id2" name="indirect external"
-                   refuri="http://indirect">
+           <paragraph>
+               <reference refname="indirect external">
+                   indirect external
+           <target id="id1" name="direct external"
+               refuri="http://indirect">
+           <target id="id2" name="indirect external"
+               refname="direct external">
 
-           Once the attribute is migrated, the preexisting "refname" attribute
-           is dropped.
+       The "refuri" attribute is migrated back to all indirect targets
+       from the final direct target (i.e. a target not referring to
+       another indirect target)::
 
-        b) Indirect internal references::
+           <paragraph>
+               <reference refname="indirect external">
+                   indirect external
+           <target id="id1" name="direct external"
+               refuri="http://indirect">
+           <target id="id2" name="indirect external"
+               refuri="http://indirect">
 
-               <target id="id1" name="final target">
-               <paragraph>
-                   <reference refname="indirect internal">
-                       indirect internal
-               <target id="id2" name="indirect internal 2"
-                   refname="final target">
-               <target id="id3" name="indirect internal"
-                   refname="indirect internal 2">
+       Once the attribute is migrated, the preexisting "refname" attribute
+       is dropped.
 
-           Targets which indirectly refer to an internal target become one-hop
-           indirect (their "refid" attributes are directly set to the internal
-           target's "id"). References which indirectly refer to an internal
-           target become direct internal references::
+    b) Indirect internal references::
 
-               <target id="id1" name="final target">
-               <paragraph>
-                   <reference refid="id1">
-                       indirect internal
-               <target id="id2" name="indirect internal 2" refid="id1">
-               <target id="id3" name="indirect internal" refid="id1">
-        """
+           <target id="id1" name="final target">
+           <paragraph>
+               <reference refname="indirect internal">
+                   indirect internal
+           <target id="id2" name="indirect internal 2"
+               refname="final target">
+           <target id="id3" name="indirect internal"
+               refname="indirect internal 2">
+
+       Targets which indirectly refer to an internal target become one-hop
+       indirect (their "refid" attributes are directly set to the internal
+       target's "id"). References which indirectly refer to an internal
+       target become direct internal references::
+
+           <target id="id1" name="final target">
+           <paragraph>
+               <reference refid="id1">
+                   indirect internal
+           <target id="id2" name="indirect internal 2" refid="id1">
+           <target id="id3" name="indirect internal" refid="id1">
+    """
+
+    default_priority = 460
+
+    def apply(self):
         for target in self.document.indirect_targets:
             if not target.resolved:
                 self.resolve_indirect_target(target)
@@ -246,22 +311,28 @@ class Hyperlinks(Transform):
                 self.resolve_indirect_references(ref)
         target.referenced = 1
 
-    def resolve_external_targets(self):
-        """
-        Given::
 
-            <paragraph>
-                <reference refname="direct external">
-                    direct external
-            <target id="id1" name="direct external" refuri="http://direct">
+class ExternalTargets(Transform):
 
-        The "refname" attribute is replaced by the direct "refuri" attribute::
+    """
+    Given::
 
-            <paragraph>
-                <reference refuri="http://direct">
-                    direct external
-            <target id="id1" name="direct external" refuri="http://direct">
-        """
+        <paragraph>
+            <reference refname="direct external">
+                direct external
+        <target id="id1" name="direct external" refuri="http://direct">
+
+    The "refname" attribute is replaced by the direct "refuri" attribute::
+
+        <paragraph>
+            <reference refuri="http://direct">
+                direct external
+        <target id="id1" name="direct external" refuri="http://direct">
+    """
+
+    default_priority = 640
+
+    def apply(self):
         for target in self.document.external_targets:
             if target.hasattr('refuri') and target.hasattr('name'):
                 name = target['name']
@@ -284,23 +355,29 @@ class Hyperlinks(Transform):
                     ref.resolved = 1
                 target.referenced = 1
 
-    def resolve_internal_targets(self):
-        """
-        Given::
 
-            <paragraph>
-                <reference refname="direct internal">
-                    direct internal
-            <target id="id1" name="direct internal">
+class InternalTargets(Transform):
 
-        The "refname" attribute is replaced by "refid" linking to the target's
-        "id"::
+    """
+    Given::
 
-            <paragraph>
-                <reference refid="id1">
-                    direct internal
-            <target id="id1" name="direct internal">
-        """
+        <paragraph>
+            <reference refname="direct internal">
+                direct internal
+        <target id="id1" name="direct internal">
+
+    The "refname" attribute is replaced by "refid" linking to the target's
+    "id"::
+
+        <paragraph>
+            <reference refid="id1">
+                direct internal
+        <target id="id1" name="direct internal">
+    """
+
+    default_priority = 660
+
+    def apply(self):
         for target in self.document.internal_targets:
             if target.hasattr('refuri') or target.hasattr('refid') \
                   or not target.hasattr('name'):
@@ -324,71 +401,6 @@ class Hyperlinks(Transform):
                 ref['refid'] = refid
                 ref.resolved = 1
             target.referenced = 1
-
-
-class ChainedTargetResolver(nodes.SparseNodeVisitor):
-
-    """
-    Copy reference attributes up the length of a hyperlink target chain.
-
-    "Chained targets" are multiple adjacent internal hyperlink targets which
-    "point to" an external or indirect target.  After the transform, all
-    chained targets will effectively point to the same place.
-
-    Given the following ``document`` as input::
-
-        <document>
-            <target id="a" name="a">
-            <target id="b" name="b">
-            <target id="c" name="c" refuri="http://chained.external.targets">
-            <target id="d" name="d">
-            <paragraph>
-                I'm known as "d".
-            <target id="e" name="e">
-            <target id="id1">
-            <target id="f" name="f" refname="d">
-
-    ``ChainedTargetResolver(document).walk()`` will transform the above into::
-
-        <document>
-            <target id="a" name="a" refuri="http://chained.external.targets">
-            <target id="b" name="b" refuri="http://chained.external.targets">
-            <target id="c" name="c" refuri="http://chained.external.targets">
-            <target id="d" name="d">
-            <paragraph>
-                I'm known as "d".
-            <target id="e" name="e" refname="d">
-            <target id="id1" refname="d">
-            <target id="f" name="f" refname="d">
-    """
-
-    def unknown_visit(self, node):
-        pass
-
-    def visit_target(self, node):
-        if node.hasattr('refuri'):
-            attname = 'refuri'
-            call_if_named = self.document.note_external_target
-        elif node.hasattr('refname'):
-            attname = 'refname'
-            call_if_named = self.document.note_indirect_target
-        elif node.hasattr('refid'):
-            attname = 'refid'
-            call_if_named = None
-        else:
-            return
-        attval = node[attname]
-        index = node.parent.index(node)
-        for i in range(index - 1, -1, -1):
-            sibling = node.parent[i]
-            if not isinstance(sibling, nodes.target) \
-                  or sibling.hasattr('refuri') \
-                  or sibling.hasattr('refname') \
-                  or sibling.hasattr('refid'):
-                break
-            sibling[attname] = attval
-            if sibling.hasattr('name') and call_if_named:
-                call_if_named(sibling)
 
 
 class Footnotes(Transform):
@@ -451,6 +463,8 @@ class Footnotes(Transform):
     After adding labels and reference text, the "auto" attributes can be
     ignored.
     """
+
+    default_priority = 620
 
     autofootnote_labels = None
     """Keep track of unlabeled autonumbered footnotes."""
@@ -635,6 +649,10 @@ class Substitutions(Transform):
                 <image alt="biohazard" uri="biohazard.png">
     """
 
+    default_priority = 220
+    """The Substitutions transform has to be applied very early, before
+    `docutils.tranforms.frontmatter.DocTitle` and others."""
+
     def apply(self):
         defs = self.document.substitution_defs
         for refname, refs in self.document.substitution_refs.items():
@@ -661,11 +679,12 @@ class TargetNotes(Transform):
     footnote references after each reference.
     """
 
-    def __init__(self, document, component, startnode=None):
-        Transform.__init__(self, document, component, startnode)
-        self.notes = {}
+    default_priority = 540
+    """The TargetNotes transform has to be applied after `IndirectHyperlinks`
+    but before `Footnotes`."""
 
     def apply(self):
+        notes = {}
         nodelist = []
         for target in self.document.external_targets:
             name = target.get('name')
@@ -675,26 +694,25 @@ class TargetNotes(Transform):
             refs = self.document.refnames.get(name, [])
             if not refs:
                 continue
-            footnote = self.make_target_footnote(target, refs)
-            if not self.notes.has_key(target['refuri']):
-                self.notes[target['refuri']] = footnote
+            footnote = self.make_target_footnote(target, refs, notes)
+            if not notes.has_key(target['refuri']):
+                notes[target['refuri']] = footnote
                 nodelist.append(footnote)
         if len(self.document.anonymous_targets) \
                == len(self.document.anonymous_refs):
             for target, ref in zip(self.document.anonymous_targets,
                                    self.document.anonymous_refs):
                 if target.hasattr('refuri'):
-                    footnote = self.make_target_footnote(target, [ref])
-                    if not self.notes.has_key(target['refuri']):
-                        self.notes[target['refuri']] = footnote
+                    footnote = self.make_target_footnote(target, [ref], notes)
+                    if not notes.has_key(target['refuri']):
+                        notes[target['refuri']] = footnote
                         nodelist.append(footnote)
         self.startnode.parent.replace(self.startnode, nodelist)
-        # @@@ what about indirect links to external targets?
 
-    def make_target_footnote(self, target, refs):
+    def make_target_footnote(self, target, refs, notes):
         refuri = target['refuri']
-        if self.notes.has_key(refuri):  # duplicate?
-            footnote = self.notes[refuri]
+        if notes.has_key(refuri):  # duplicate?
+            footnote = notes[refuri]
             footnote_name = footnote['name']
         else:                           # original
             footnote = nodes.footnote()
@@ -709,6 +727,8 @@ class TargetNotes(Transform):
             self.document.note_autofootnote(footnote)
             self.document.note_explicit_target(footnote, footnote)
         for ref in refs:
+            if isinstance(ref, nodes.target):
+                continue
             refnode = nodes.footnote_reference(
                 refname=footnote_name, auto=1)
             self.document.note_autofootnote_ref(refnode)
