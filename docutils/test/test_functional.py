@@ -113,8 +113,15 @@ class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
         self.assert_(os.access(expected_path, os.R_OK),\
                      'Cannot find expected output at\n' + expected_path)
         expected = open(expected_path).read()
-        diff = ('Please compare the expected and actual output files:\n'
-                'diff %s %s\n' % (expected_path, params['destination_path']))
+        diff = ('The expected and actual output differs.\n'
+                'Please compare the expected and actual output files:\n'
+                '  diff %s %s\n'
+                'If the actual output is correct, please replace the\n'
+                'expected output and check it in to CVS:\n'
+                '  mv %s %s\n'
+                '  cvs commit -m "<comment>" %s'
+                % (expected_path, params['destination_path'],
+                   params['destination_path'], expected_path, expected_path))
         try:
             self.assertEquals(output, expected, diff)
         except AssertionError:
