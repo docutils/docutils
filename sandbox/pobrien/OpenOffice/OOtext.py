@@ -72,7 +72,8 @@ office:version="1.0">
 
 <office:font-decls>
 
-<style:font-decl style:name="Wingdings" fo:font-family="Wingdings"
+<style:font-decl style:name="Wingdings"
+fo:font-family="Wingdings"
 style:font-pitch="variable"
 style:font-charset="x-symbol"/>
 <style:font-decl style:name="Palatino"
@@ -80,38 +81,42 @@ fo:font-family="Palatino"/>
 <style:font-decl style:name="Courier"
 fo:font-family="Courier"
 style:font-family-generic="modern"/>
-<style:font-decl style:name="Arial
-Unicode MS" fo:font-family="&apos;Arial Unicode MS&apos;"
+<style:font-decl style:name="Arial Unicode MS"
+fo:font-family="&apos;Arial Unicode MS&apos;"
 style:font-pitch="variable"/>
-<style:font-decl style:name="HG Mincho
-Light J" fo:font-family="&apos;HG Mincho Light J&apos;"
+<style:font-decl style:name="HG Mincho Light J"
+fo:font-family="&apos;HG Mincho Light J&apos;"
 style:font-pitch="variable"/>
 <style:font-decl style:name="AGaramond"
-fo:font-family="AGaramond" style:font-family-generic="roman"
+fo:font-family="AGaramond"
+style:font-family-generic="roman"
 style:font-pitch="variable"/>
-<style:font-decl style:name="AGaramond
-Bold" fo:font-family="&apos;AGaramond Bold&apos;"
+<style:font-decl style:name="AGaramond Bold"
+fo:font-family="&apos;AGaramond Bold&apos;"
 style:font-family-generic="roman"
 style:font-pitch="variable"/>
 <style:font-decl style:name="Times"
-fo:font-family="Times" style:font-family-generic="roman"
+fo:font-family="Times"
+style:font-family-generic="roman"
 style:font-pitch="variable"/>
-<style:font-decl style:name="Times New
-Roman" fo:font-family="&apos;Times New Roman&apos;"
+<style:font-decl style:name="Times New Roman"
+fo:font-family="&apos;Times New Roman&apos;"
 style:font-family-generic="roman"
 style:font-pitch="variable"/>
 <style:font-decl style:name="Arial"
-fo:font-family="Arial" style:font-family-generic="swiss"
-style:font-pitch="variable"/>
-<style:font-decl style:name="Helvetica"
-fo:font-family="Helvetica" style:font-family-generic="swiss"
-style:font-pitch="variable"/>
-<style:font-decl
-style:name="Helvetica-Narrow" fo:font-family="Helvetica-Narrow"
+fo:font-family="Arial"
 style:font-family-generic="swiss"
 style:font-pitch="variable"/>
-<style:font-decl style:name="Humanst521
-Cn BT" fo:font-family="&apos;Humanst521 Cn BT&apos;"
+<style:font-decl style:name="Helvetica"
+fo:font-family="Helvetica"
+style:font-family-generic="swiss"
+style:font-pitch="variable"/>
+<style:font-decl style:name="Helvetica-Narrow"
+fo:font-family="Helvetica-Narrow"
+style:font-family-generic="swiss"
+style:font-pitch="variable"/>
+<style:font-decl style:name="Humanst521 Cn BT"
+fo:font-family="&apos;Humanst521 Cn BT&apos;"
 style:font-family-generic="swiss"
 style:font-pitch="variable"/>
 <style:font-decl style:name="Luxi Sans"
@@ -119,10 +124,11 @@ fo:font-family="&apos;Luxi Sans&apos;"
 style:font-family-generic="swiss"
 style:font-pitch="variable"/>
 <style:font-decl style:name="Tahoma"
-fo:font-family="Tahoma" style:font-family-generic="swiss"
+fo:font-family="Tahoma"
+style:font-family-generic="swiss"
 style:font-pitch="variable"/>
-<style:font-decl style:name="Univers 45
-Light" fo:font-family="&apos;Univers 45 Light&apos;"
+<style:font-decl style:name="Univers 45 Light"
+fo:font-family="&apos;Univers 45 Light&apos;"
 style:font-family-generic="swiss"
 style:font-pitch="variable"/>
 
@@ -158,6 +164,10 @@ fo:hyphenation-ladder-count="no-limit"
 style:text-autospace="ideograph-alpha"
 style:punctuation-wrap="hanging" style:line-break="strict"
 style:tab-stop-distance="0.5inch"/></style:default-style>
+
+<style:style style:name="code" 
+style:family="text">
+<style:properties style:font-name="Courier"/></style:style>
 
 <style:style style:name="Standard" 
 style:family="paragraph"
