@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 """
 Treat the default, ``texmath`` and ``texdisplay`` as LaTeX math and convert to
-inline images.
+images.  It sets the ``:align:`` image parameter differently on
+``texdisplay``.
 
 .. note::
     This runs external commands and leaves files after itself!  You need:
@@ -25,6 +26,10 @@ class Tex_to_images(object):
     """Feeds math to ``tex_to_images``.  Always goes through ppm."""
     def __init__(self, dir='./mathhack', out_pattern='mathhack_NNN',
                  options='-s 1.5', converter='pnmtopng', extension='.png'):
+        try:
+            os.mkdir(dir)
+        except OSError:
+            pass
         self.counter = 1
         self.options = options
         self.dir = dir
