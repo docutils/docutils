@@ -113,8 +113,8 @@ resolve to either an internal or external reference.
 
 <!ENTITY % additional.body.elements "">
 <!ENTITY % body.elements
-  " paragraph | literal_block | block_quote | doctest_block | table
-    | figure | image | footnote | citation
+  " paragraph | literal_block | doctest_block | line_block | block_quote
+    | table | figure | image | footnote | citation
     | bullet_list | enumerated_list | definition_list | field_list
     | option_list
     | attention | caution | danger | error | hint | important | note
@@ -354,15 +354,20 @@ either the string separating it from the `option` (typically either
 <!ELEMENT description (%body.elements;)+>
 <!ATTLIST description %basic.atts;>
 
-<!ELEMENT literal_block (#PCDATA)>
+<!ELEMENT literal_block %text.model;>
 <!ATTLIST literal_block
+    %basic.atts;
+    %fixedspace.att;>
+
+<!ELEMENT line_block %text.model;>
+<!ATTLIST line_block
     %basic.atts;
     %fixedspace.att;>
 
 <!ELEMENT block_quote (%body.elements;)+>
 <!ATTLIST block_quote %basic.atts;>
 
-<!ELEMENT doctest_block (#PCDATA)>
+<!ELEMENT doctest_block %text.model;>
 <!ATTLIST doctest_block
     %basic.atts;
     %fixedspace.att;>
