@@ -176,11 +176,12 @@ reStructuredText markup.  It is implemented in the
 Transforms
 ----------
 
-Transforms change the document tree from one form to another, add to
-the tree, or prune it.  Transforms are run by Reader and Writer
-objects.  Some transforms are Reader-specific, some are
-Parser-specific, and others are Writer-specific.  The choice and order
-of transforms is specified in the Reader and Writer objects.
+Transforms are applied to the document tree to change it from one form
+to another, to add to the tree, or to prune it.  Transforms are
+applied by Reader and Writer objects.  Some transforms are
+Reader-specific, some are Parser-specific, and others are
+Writer-specific.  The choice and order of transforms is specified in
+the Reader and Writer objects.
 
 Each transform is a class in a module in the ``docutils/transforms/``
 package, a subclass of docutils.tranforms.Transform.
