@@ -53,7 +53,12 @@ class Node:
     """The line number (1-based) of the beginning of this Node in `source`."""
 
     def __nonzero__(self):
-        """Node instances are always true."""
+        """
+        Node instances are always true, even if they're empty.
+
+        Use `len()` to check node length.  Use `None` to represent a boolean
+        false value.
+        """
         return 1
 
     def asdom(self, dom=xml.dom.minidom):
@@ -174,6 +179,9 @@ class Text(Node, UserString):
         if len(data) > 70:
             data = repr(self.data[:64] + ' ...')
         return '<%s: %s>' % (self.tagname, data)
+
+    def __len__(self):
+        return len(self.data)
 
     def shortrepr(self):
         data = repr(self.data)
