@@ -13,14 +13,6 @@
 
 :Date: $Date$
 
-.. Note::
-
-   On 2004-06-02 (Wednesday), we reorganized the project
-   documentation.  URL redirection is in place, but if there are any
-   broken links or other issues, please notify the `docutils-users
-   mailing list <mailto:docutils-users@lists.sourceforge.net>`__
-   [#docutils-users]_.
-
 The purpose of the Docutils project is to create a set of tools for
 processing plaintext documentation into useful formats, such as HTML,
 XML, and TeX.  Includes reStructuredText_, the easy to read, easy to
