@@ -1000,20 +1000,10 @@ __ rst/alternatives.html#or-not-to-do
 
 * _`footnote spaces`:
 
-  When using superscripted footnote references, the space looks ugly.
-  We could automatically activate --trim-footnote-reference-space when
-  --footnote-references=superscript (or --use-latex-footnotes for the
-  LaTeX writer) is supplied.
-
-  There should be also an option to deactivate the space-trimming,
-  e.g. --leave-footnote-reference-space.  The implementation logic is
-  a bit tricky: --leave-footnote-reference-space can't just be
-  "settings.trim_footnote_reference_space = False", because of the
-  automatic activation, unless the order of options is significant.
-  If the order is significant, the automatic activation has to take
-  place in the option-handling code.  But config files are handled
-  after the fact, so order can't be relied upon there.  So they have
-  to be two independent settings.
+  When supplying the command line options
+  --footnote-references=brackets and --use-latex-footnotes with the
+  LaTeX writer (which might very well happen when using configuration
+  files), the spaces in front of footnote references aren't trimmed.
 
 * Enable _`tables inside XML comments`, where "--" ends comments.  I
   see three implementation possibilities:
