@@ -13,13 +13,12 @@
 
 :Date: $Date$
 
-.. topic:: DOCUTILS PROJECT COORDINATOR LOOKING FOR WORK
+.. Note::
 
-   `The coordinator of the Docutils project, David Goodger, is looking
-   for a job, contract work, or consulting work.  Does your company
-   need an experienced Python programmer and sysadmin?  Know of
-   anybody who does?  Please follow this link for more info.
-   <http://starship.python.net/~goodger/cv/>`__
+   On 2004-06-02 (Wednesday), we reorganized the project
+   documentation.  URL redirection is in place, but if there are any
+   broken links or other issues, please notify the `docutils-users
+   mailing list <mailto:docutils-users@lists.sourceforge.net>`__.
       
 The purpose of the Docutils project is to create a set of tools for
 processing plaintext documentation into useful formats, such as HTML,
