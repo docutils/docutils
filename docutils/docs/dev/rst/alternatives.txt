@@ -1288,7 +1288,7 @@ ugly or confusing (depending on which alternative is chosen).
 
    In response, Fred came up with "a stricter and more explicit rule
    [which] would be to only auto-number silently if *all* the
-   enumerators of a list were identical".  In that case:
+   enumerators of a list were identical".  In that case::
 
        1,1,1   -> 1,2,3
        1,2,2   -> 1,2 [WARNING] 2
