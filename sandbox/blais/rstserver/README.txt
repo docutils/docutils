@@ -1,9 +1,9 @@
-==========================
-ReST tree conversion tools
-==========================
+===============
+ReST CGI server
+===============
 
 :Author: Martin Blais
-:Contact: blais@iro.umontreal.ca
+:Contact: blais@furius.ca
 :Date: $Date$
 
 These tools are used to automatically convert a hierarchy of rest (docutils)
