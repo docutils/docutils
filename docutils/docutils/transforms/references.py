@@ -701,7 +701,9 @@ class TargetNotes(Transform):
             footnote_name = 'target_note: ' + footnote_id
             footnote['auto'] = 1
             footnote['name'] = footnote_name
-            footnote += nodes.reference('', refuri, refuri=refuri)
+            footnote_paragraph = nodes.paragraph()
+            footnote_paragraph += nodes.reference('', refuri, refuri=refuri)
+            footnote += footnote_paragraph
             self.document.note_autofootnote(footnote)
             self.document.note_explicit_target(footnote, footnote)
         for ref in refs:
