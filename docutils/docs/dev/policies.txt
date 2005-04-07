@@ -10,9 +10,10 @@
 
 .. contents::
 
-A few quotes sum up the policies of the Docutils project.  The IETF's
-classic credo (by MIT professor Dave Clark) is an ideal we can aspire
-to:
+Docutils is a meritocracy based on code contribution and lots of
+discussion [#bcs]_.  A few quotes sum up the policies of the Docutils
+project.  The IETF's classic credo (by MIT professor Dave Clark) is an
+ideal we can aspire to:
 
     We reject: kings, presidents, and voting.  We believe in: rough
     consensus and running code.
@@ -35,13 +36,16 @@ Therefore, we will endeavour to keep the barrier to entry as low as
 possible.  The policies below should not be thought of as barriers,
 but merely as a codification of experience to date.  These are "best
 practices", not absolutes; exceptions are expected, tolerated, and
-used as a source of improvement.
+used as a source of improvement.  Feedback and criticism is welcome.
 
 As for control issues, Emmett Plant (CEO of the Xiph.org Foundation,
 originators of Ogg Vorbis) put it well when he said:
 
     Open source dictates that you lose a certain amount of control
     over your codebase, and that's okay with us.
+
+.. [#bcs] Phrase borrowed from `Ben Collins-Sussman of the Subversion
+   project <http://www.red-bean.com/sussman/svn-anti-fud.html>`__.
 
 
 Python Coding Conventions
@@ -153,16 +157,16 @@ applicable), with particular emphasis as follows:
       cd docutils/test
       ./alltests.py
 
-  Docutils currently supports Python 2.1 [1]_ or later, with some
-  things only working (and being tested) on 2.3.  Therefore, you
-  should actually have Pythons 2.1 [1]_, 2.2 and 2.3 installed and
-  always run the tests on all of them.  (A good way to do that is to
-  always run the test suite through a short script that runs
+  Docutils currently supports Python 2.1 [#py21]_ or later, with some
+  things only working (and being tested) on Python 2.3+.  Therefore,
+  you should actually have Pythons 2.1 [#py21]_, 2.2 and 2.3 installed
+  and always run the tests on all of them.  (A good way to do that is
+  to always run the test suite through a short script that runs
   ``alltests.py`` under each version of Python.)  If you can't afford
   intalling 3 Python versions, the edge cases (2.1 and 2.3) should
   cover most of it.
 
-  .. [1] Python 2.1 may be used providing the compiler package is
+  .. [#py21] Python 2.1 may be used providing the compiler package is
      installed.  The compiler package can be found in the Tools/
      directory of Python 2.1's source distribution.
 
@@ -174,18 +178,10 @@ applicable), with particular emphasis as follows:
   * `PEP 290 - Code Migration and Modernization`__
 
   __ http://www.python.org/doc/2.2.3/whatsnew/whatsnew22.html
-  __ http://www.python.org/doc/2.3.4/whatsnew/whatsnew23.html
-  __ http://www.python.org/dev/doc/devel/whatsnew/whatsnew24.html
+  __ http://www.python.org/doc/2.3.5/whatsnew/whatsnew23.html
+  __ http://www.python.org/doc/2.4.1/whatsnew/whatsnew24.html
   __ http://www.python.org/peps/pep-0290.html
 
-  Note that there are currently some known issues with development
-  versions of Python 2.4-to-be (see the thread about `Python 2.4
-  compatibility`_ for details).  There is no need to pass the test
-  suite under it, unless you wish to tackle these issues...
-
-  .. _Python 2.4 compatibility:
-     http://thread.gmane.org/gmane.text.docutils.devel/2071
-    
 * When adding new functionality (or fixing bugs), be sure to add test
   cases to the test suite.  Practise test-first programming; it's fun,
   it's addictive, and it works!
