@@ -57,6 +57,8 @@ directives = {
       u'obsah': 'contents',
       u'sectnum (translation required)': 'sectnum',
       u'section-numbering (translation required)': 'sectnum',
+      u'header (translation required)': 'header',
+      u'footer (translation required)': 'footer',
       #'footnotes': 'footnotes',
       #'citations': 'citations',
       u'target-notes (translation required)': 'target-notes',

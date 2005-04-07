@@ -57,6 +57,8 @@ directives = {
       u'\xe8as\x9d': 'sectnum',
       u'\xe8as\x9d-\xe8\xedslovanie': 'sectnum',
       u'cie\xbeov\xe9-pozn\xe1mky': 'target-notes',
+      u'header (translation required)': 'header',
+      u'footer (translation required)': 'footer',
       #u'footnotes': 'footnotes',
       #u'citations': 'citations',
       }

@@ -56,6 +56,8 @@ directives = {
       'inhoud': 'contents',
       'sectnum': 'sectnum',
       'section-numbering': 'sectnum',
+      u'header (translation required)': 'header',
+      u'footer (translation required)': 'footer',
       #'voetnote': 'footnotes',
       #'aanhalings': 'citations',
       'teikennotas': 'target-notes',

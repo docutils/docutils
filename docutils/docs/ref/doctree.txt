@@ -62,7 +62,7 @@ one-to-many relationships; sections may contain (sub)sections, tables
 contain further body elements, etc. ::
 
   +--------------------------------------------------------------------+
-  | document  [may begin with a title, subtitle, docinfo, decoration]  |
+  | document  [may begin with a title, subtitle, decoration, docinfo]  |
   |                             +--------------------------------------+
   |                             | sections  [each begins with a title] |
   +-----------------------------+-------------------------+------------+
@@ -112,7 +112,7 @@ Structural subelements are child elements of structural elements.
 Simple structuctural subelements (title_, subtitle_) contain text
 data; the others are compound and do not directly contain text data.
 
-Category members: title_, subtitle_, docinfo_, decoration_,
+Category members: title_, subtitle_, decoration_, docinfo_,
 transition_
 
 
@@ -146,7 +146,7 @@ body elements.  There are two subcategories of body elements: simple
 and compound.
 
 Category members: admonition_, attention_, block_quote_, bullet_list_,
-caution_, citation_, comment_, danger_, definition_list_,
+caution_, citation_, comment_, compound_, danger_, definition_list_,
 doctest_block_, enumerated_list_, error_, field_list_, figure_,
 footnote_, hint_, image_, important_, line_block_, literal_block_,
 note_, option_list_, paragraph_, pending_, raw_, rubric_,
@@ -173,9 +173,10 @@ Compound body elements contain local substructure (body subelements)
 and further body elements.  They do not directly contain text data.
 
 Category members: admonition_, attention_, block_quote_, bullet_list_,
-caution_, citation_, danger_, definition_list_, enumerated_list_,
-error_, field_list_, figure_, footnote_, hint_, important_, note_,
-option_list_, system_message_, table_, tip_, warning_
+caution_, citation_, compound_, danger_, definition_list_,
+enumerated_list_, error_, field_list_, figure_, footnote_, hint_,
+important_, note_, option_list_, system_message_, table_, tip_,
+warning_
 
 
 Body Subelements
@@ -959,6 +960,12 @@ Pseudo-XML_ fragment from simple parsing::
 `To be completed`_.
 
 
+``compound``
+============
+
+`To be completed`_.
+
+
 ``contact``
 ===========
 
@@ -1250,6 +1257,7 @@ Details
 
 :Processing:
     See the individual `decorative elements`_.
+
 
 Content Model
 -------------
@@ -1758,20 +1766,21 @@ Content Model
 
 .. parsed-literal::
 
-    ((title_,
-      subtitle_?)?,
-     docinfo_?,
-     decoration_?,
-     `%structure.model;`_)
+    ( (title_, subtitle_?)?,
+      decoration_?,
+      (docinfo_, transition_?)?,
+      `%structure.model;`_ )
 
 Depending on the source of the data and the stage of processing, the
 "document" may not initially contain a "title".  A document title is
 not directly representable in reStructuredText_.  Instead, a lone
 top-level section may have its title promoted to become the document
 title_, and similarly for a lone second-level (sub)section's title to
-become the document subtitle_.  The "docinfo_" may be transformed from
-an initial field_list_, and "decoration_" is usually constructed
-programmatically.
+become the document subtitle_.
+
+The contents of "decoration_" may be specified in a document,
+constructed programmatically, or both.  The "docinfo_" may be
+transformed from an initial field_list_.
 
 See the `%structure.model;`_ parameter entity for details of the body
 of a ``document``.
@@ -2314,7 +2323,7 @@ section numbers inserted by the "sectnum" directive.
 
 The ``header`` element is a container element whose contents are meant
 to appear at the top of a web page, or at the top of every printed
-page.  Docutils does not yet make use of the ``header`` element.
+page.
 
 
 Details
@@ -2350,7 +2359,17 @@ Content Model
 Examples
 --------
 
-None.
+reStructuredText source fragment::
+
+    .. header:: This space for rent.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <document>
+        <decoration>
+            <header>
+                <paragraph>
+                    This space for rent.
 
 
 ``hint``
@@ -4611,14 +4630,14 @@ Entity definition:
 
 .. parsed-literal::
 
-    paragraph_ | literal_block_ | doctest_block_ | line_block_
-    | block_quote_ | table_ | figure_ | image_ | footnote_ | citation_
-    | rubric_
+    paragraph_ | compound_ | literal_block_ | doctest_block_
+    | line_block_ | block_quote_
+    | table_ | figure_ | image_ | footnote_ | citation_ | rubric_
     | bullet_list_ | enumerated_list_ | definition_list_ | field_list_
     | option_list_
-    | attention_ | caution_ | danger_ | error_ | hint_ | important_
-    | note_ | tip_ | warning_ | admonition_
-    | target_ | substitution_definition_ | comment_ | pending_
+    | attention_ | caution_ | danger_ | error_ | hint_ | important_ | note_
+    | tip_ | warning_ | admonition_
+    | reference_ | target_ | substitution_definition_ | comment_ | pending_
     | system_message_ | raw_
     %additional.body.elements;
 
@@ -4627,10 +4646,10 @@ wrapper DTDs to extend ``%body.elements;``.
 
 The ``%body.elements;`` parameter entity is directly employed in the
 content models of the following elements: admonition_, attention_,
-block_quote_, caution_, citation_, danger_, definition_, description_,
-entry_, error_, field_body_, footer_, footnote_, header_, hint_,
-important_, legend_, list_item_, note_, sidebar_, system_message_,
-tip_, topic_, warning_
+block_quote_, caution_, citation_, compound_, danger_, definition_,
+description_, entry_, error_, field_body_, footer_, footnote_,
+header_, hint_, important_, legend_, list_item_, note_, sidebar_,
+system_message_, tip_, topic_, warning_
 
 Via `%structure.model;`_, the ``%body.elements;`` parameter entity is
 indirectly employed in the content models of the document_ and

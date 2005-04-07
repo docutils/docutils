@@ -68,6 +68,8 @@ directives = {
       u'numeracion-seccion': 'sectnum',
       u'numeraci\u00f3n-secci\u00f3n': 'sectnum',
       u'notas-destino': 'target-notes',
+      u'header (translation required)': 'header',
+      u'footer (translation required)': 'footer',
       #'footnotes': 'footnotes',
       #'citations': 'citations',
       u'restructuredtext-test-directive': 'restructuredtext-test-directive'}

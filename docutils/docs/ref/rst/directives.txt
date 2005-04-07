@@ -464,11 +464,10 @@ For example, all the element names in this content model are links::
 
     .. parsed-literal::
 
-        ((title_,
-          subtitle_?)?,
-         docinfo_?,
+       ( (title_, subtitle_?)?,
          decoration_?,
-         `%structure.model;`_)
+         (docinfo_, transition_?)?,
+         `%structure.model;`_ )
 
 The following option is recognized:
 
@@ -956,6 +955,40 @@ The following options are recognized:
     Combined with ``prefix``, this may be used to force the right
     numbering for a document split over several source files.  The
     default is 1.
+
+
+.. _header:
+.. _footer:
+
+Document Header & Footer
+========================
+
+:Directive Types: "header" and "footer"
+:Doctree Elements: decoration, header, footer
+:Directive Arguments: None.
+:Directive Options: None.
+:Directive Content: Interpreted as body elements.
+
+(New in Docutils 0.3.8)
+
+The "header" and "footer" directives create document decorations,
+useful for page navigation, notes, time/datestamp, etc.  For example::
+
+    .. header:: This space for rent.
+
+This will add a paragraph to the document header, which will appear at
+the top of the generated web page or at the top of every printed page.
+
+These directives may be used multiple times, cumulatively.  There is
+currently support for only one header and footer.
+
+In addition to the use of these directives to populate header and
+footer content, content may also be added automatically by the
+processing system.  For example, if certain runtime settings are
+enabled, the document footer is populated with processing information
+such as a datestamp, a link to `the Docutils website`_, etc.
+
+.. _the Docutils website: http://docutils.sourceforge.net
 
 
 ------------

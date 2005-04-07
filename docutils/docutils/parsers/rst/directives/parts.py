@@ -80,3 +80,36 @@ sectnum.options = {'depth': int,
                    'start': int,
                    'prefix': directives.unchanged_required,
                    'suffix': directives.unchanged_required}
+
+def header_footer(node, name, arguments, options, content, lineno,
+                  content_offset, block_text, state, state_machine):
+    """Contents of document header or footer."""
+    if not content:
+        warning = state_machine.reporter.warning(
+            'Content block expected for the "%s" directive; none found.'
+            % name, nodes.literal_block(block_text, block_text),
+            line=lineno)
+        node.children.append(nodes.paragraph(
+            '', 'Problem with the "%s" directive: no content supplied.' % name))
+        return [warning]
+    text = '\n'.join(content)
+    state.nested_parse(content, content_offset, node)
+    return []
+
+def header(name, arguments, options, content, lineno,
+           content_offset, block_text, state, state_machine):
+    decoration = state_machine.document.get_decoration()
+    node = decoration.get_header()
+    return header_footer(node, name, arguments, options, content, lineno,
+                         content_offset, block_text, state, state_machine)
+
+header.content = 1
+
+def footer(name, arguments, options, content, lineno,
+           content_offset, block_text, state, state_machine):
+    decoration = state_machine.document.get_decoration()
+    node = decoration.get_footer()
+    return header_footer(node, name, arguments, options, content, lineno,
+                         content_offset, block_text, state, state_machine)
+
+footer.content = 1

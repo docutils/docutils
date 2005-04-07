@@ -103,7 +103,7 @@ class Node:
         or replaced occurs after the current node, the old node will
         still be traversed, and any new nodes will not.
 
-        Within ``visit`` methods (and ``depart`` methods for 
+        Within ``visit`` methods (and ``depart`` methods for
         `walkabout()`), `TreePruningException` subclasses may be raised
         (`SkipChildren`, `SkipSiblings`, `SkipNode`, `SkipDeparture`).
 
@@ -168,7 +168,7 @@ class Node:
         # condition as first parameter).
         """
         Return an iterable containing
-    
+
         * self (if include_self is true)
         * all descendants in tree traversal order (if descend is true)
         * all siblings (if siblings is true) and their descendants (if
@@ -672,15 +672,12 @@ class Root: pass
 
 class Titular: pass
 
-class PreDecorative:
-    """Category of Node which may occur before Decorative Nodes."""
-
-class PreBibliographic(PreDecorative):
+class PreBibliographic:
     """Category of Node which may occur before Bibliographic Nodes."""
 
-class Bibliographic(PreDecorative): pass
+class Bibliographic: pass
 
-class Decorative: pass
+class Decorative(PreBibliographic): pass
 
 class Structural: pass
 
@@ -818,6 +815,9 @@ class document(Root, Structural, Element):
         import docutils.transforms
         self.transformer = docutils.transforms.Transformer(self)
         """Storage for transforms to be applied to this document."""
+
+        self.decoration = None
+        """Document's `decoration` node."""
 
         self.document = self
 
@@ -1036,6 +1036,16 @@ class document(Root, Structural, Element):
         return self.__class__(self.settings, self.reporter,
                               **self.attributes)
 
+    def get_decoration(self):
+        if not self.decoration:
+            self.decoration = decoration()
+            index = self.first_child_not_matching_class(Titular)
+            if index is None:
+                self.children.append(self.decoration)
+            else:
+                self.children.insert(index, self.decoration)
+        return self.decoration
+
 
 # ================
 #  Title Elements
@@ -1067,7 +1077,19 @@ class copyright(Bibliographic, TextElement): pass
 #  Decorative Elements
 # =====================
 
-class decoration(Decorative, Element): pass
+class decoration(Decorative, Element):
+
+    def get_header(self):
+        if not len(self.children) or not isinstance(self.children[0], header):
+            self.children.insert(0, header())
+        return self.children[0]
+
+    def get_footer(self):
+        if not len(self.children) or not isinstance(self.children[-1], footer):
+            self.children.append(footer())
+        return self.children[-1]
+
+
 class header(Decorative, Element): pass
 class footer(Decorative, Element): pass
 

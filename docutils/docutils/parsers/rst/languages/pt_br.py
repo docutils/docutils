@@ -57,6 +57,8 @@ directives = {
       u'\u00EDndice': 'contents',
       'numsec': 'sectnum',
       u'numera\u00E7\u00E3o-de-se\u00E7\u00F5es': 'sectnum',
+      u'header (translation required)': 'header',
+      u'footer (translation required)': 'footer',
       #u'notas-de-rorap\u00E9': 'footnotes',
       #u'cita\u00E7\u00F5es': 'citations',
       u'links-no-rodap\u00E9': 'target-notes',

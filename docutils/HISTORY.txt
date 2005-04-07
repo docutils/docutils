@@ -42,6 +42,9 @@ Changes Since 0.3.7
   - Added empty list as default value for the following attributes:
     ``ids``, ``names``, ``dupnames``, ``classes``, and ``backrefs``.
   - Removed ``Element.set_class()`` method.
+  - Added ``document.decoration`` attribute,
+    ``document.get_decoration`` method, and ``decoration.get_header``
+    & ``.get_footer`` methods.
 
 * docutils/languages/nl.py: Added to project; Dutch mappings by
   Martijn Pieters.
@@ -79,6 +82,10 @@ Changes Since 0.3.7
   - Allowed whitespace in "include" & "raw" directive paths.
   - Added support for ``file_insertion_enabled`` & ``raw_enabled``
     settings in "include" & "raw" directives.
+
+* docutils/parsers/rst/directives/parts.py:
+
+  - Added "header" & "footer" directives.
 
 * docutils/parsers/rst/directives/tables.py:
 

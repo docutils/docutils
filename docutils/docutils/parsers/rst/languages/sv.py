@@ -56,6 +56,8 @@ directives = {
       u'inneh\u00e5ll': 'contents',
       u'sektionsnumrering': 'sectnum',
       u'target-notes (translation required)': 'target-notes',
+      u'header (translation required)': 'header',
+      u'footer (translation required)': 'footer',
       # u'fotnoter': 'footnotes',
       # u'citeringar': 'citations',
       }

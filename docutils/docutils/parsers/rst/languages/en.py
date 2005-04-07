@@ -57,6 +57,8 @@ directives = {
       'contents': 'contents',
       'sectnum': 'sectnum',
       'section-numbering': 'sectnum',
+      'header': 'header',
+      'footer': 'footer',
       #'footnotes': 'footnotes',
       #'citations': 'citations',
       'target-notes': 'target-notes',
