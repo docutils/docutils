@@ -228,25 +228,6 @@ _`expose_internals`
     Default: don't (None).  Options: ``--expose-internal-attribute``
     (hidden, for development use only).
 
-_`field_name_limit`
-
-    The maximum width (in characters) for one-column field names.
-    Longer field names will span the entire row.  0 indicates "no
-    limit".
-
-    Default: 14 characters.  Option: ``--field-name-limit``.
-
-_`file_insertion_enabled`
-    Enable or disable directives that insert the contents of external
-    files, such as the "include_" & "raw_".  A "warning" system
-    message (including the directive text) is inserted instead.
-
-    Default: enabled (1).  Options: ``--file-insertion-enabled,
-    --no-file-insertion``.
-
-    .. _include: ../ref/rst/directives.html#include
-    .. _raw: ../ref/rst/directives.html#raw
-
 _`footnote_backlinks`
     Enable or disable backlinks from footnotes and citations to their
     references.
@@ -328,12 +309,6 @@ _`output_encoding_error_handler`
     Default: "strict".  Options: ``--output-encoding-error-handler,
     --output-encoding, -o``.
 
-_`raw_enabled`
-    Enable or disable the "raw_" directive.  A "warning" system
-    message (including the directive text) is inserted instead.
-
-    Default: enabled (1).  Options: ``--raw-enabled, --no-raw``.
-
 _`report_level`
     Verbosity threshold at or above which system messages are
     reported.
@@ -412,6 +387,17 @@ Docutils currently supports only one parser, for reStructuredText.
 [restructuredtext parser]
 `````````````````````````
 
+_`file_insertion_enabled`
+    Enable or disable directives that insert the contents of external
+    files, such as the "include_" & "raw_".  A "warning" system
+    message (including the directive text) is inserted instead.
+
+    Default: enabled (1).  Options: ``--file-insertion-enabled,
+    --no-file-insertion``.
+
+    .. _include: ../ref/rst/directives.html#include
+    .. _raw: ../ref/rst/directives.html#raw
+
 _`pep_references`
     Recognize and link to standalone PEP references (like "PEP 258").
 
@@ -423,6 +409,12 @@ _`pep_base_url`
 
     Default: "http://www.python.org/peps/".  Option:
     ``--pep-base-url``.
+
+_`raw_enabled`
+    Enable or disable the "raw_" directive.  A "warning" system
+    message (including the directive text) is inserted instead.
+
+    Default: enabled (1).  Options: ``--raw-enabled, --no-raw``.
 
 _`rfc_references`
     Recognize and link to standalone RFC references (like "RFC 822").
@@ -549,6 +541,14 @@ _`embed_stylesheet`
 
     Default: link, don't embed (None).  Options: ``--embed-stylesheet,
     --link-stylesheet``.
+
+_`field_name_limit`
+
+    The maximum width (in characters) for one-column field names.
+    Longer field names will span the entire row.  0 indicates "no
+    limit".
+
+    Default: 14 characters.  Option: ``--field-name-limit``.
 
 .. _footnote_references [html4css1 writer]:
 
