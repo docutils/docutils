@@ -89,7 +89,7 @@ def header_footer(node, name, arguments, options, content, lineno,
             'Content block expected for the "%s" directive; none found.'
             % name, nodes.literal_block(block_text, block_text),
             line=lineno)
-        node.children.append(nodes.paragraph(
+        node.append(nodes.paragraph(
             '', 'Problem with the "%s" directive: no content supplied.' % name))
         return [warning]
     text = '\n'.join(content)

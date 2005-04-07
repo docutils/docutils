@@ -1041,9 +1041,9 @@ class document(Root, Structural, Element):
             self.decoration = decoration()
             index = self.first_child_not_matching_class(Titular)
             if index is None:
-                self.children.append(self.decoration)
+                self.append(self.decoration)
             else:
-                self.children.insert(index, self.decoration)
+                self.insert(index, self.decoration)
         return self.decoration
 
 
@@ -1081,12 +1081,12 @@ class decoration(Decorative, Element):
 
     def get_header(self):
         if not len(self.children) or not isinstance(self.children[0], header):
-            self.children.insert(0, header())
+            self.insert(0, header())
         return self.children[0]
 
     def get_footer(self):
         if not len(self.children) or not isinstance(self.children[-1], footer):
-            self.children.append(footer())
+            self.append(footer())
         return self.children[-1]
 
 
