@@ -109,7 +109,8 @@ Changes Since 0.3.7
     tags).
   - Added support for multiple IDs per node by creating empty ``span``
     tags.
-  - Added the ``field_name_limit`` setting & support.
+  - Added the ``field_name_limit`` & ``option_limit`` settings &
+    support.
   - Added support for table stub columns.
 
 * docutils/writers/latex2e.py:

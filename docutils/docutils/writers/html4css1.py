@@ -64,9 +64,17 @@ class Writer(writers.Writer):
           {'choices': '1 2 3 4 5 6'.split(), 'default': '1',
            'metavar': '<level>'}),
          ('Specify the maximum width (in characters) for one-column field '
-          'names.  Longer field names will span the entire row.  Default is '
-          '14 characters.  Use 0 for "no limit".',
+          'names.  Longer field names will span an entire row of the table '
+          'used to render the field list.  Default is 14 characters.  '
+          'Use 0 for "no limit".',
           ['--field-name-limit'],
+          {'default': 14, 'metavar': '<level>',
+           'validator': frontend.validate_nonnegative_int}),
+         ('Specify the maximum width (in characters) for options in option '
+          'lists.  Longer options will span an entire row of the table used '
+          'to render the option list.  Default is 14 characters.  '
+          'Use 0 for "no limit".',
+          ['--option-limit'],
           {'default': 14, 'metavar': '<level>',
            'validator': frontend.validate_nonnegative_int}),
          ('Format for footnote references: one of "superscript" or '
@@ -973,7 +981,8 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_option_group(self, node):
         atts = {}
-        if len(node.astext()) > 14:
+        if ( self.settings.option_limit
+             and len(node.astext()) > self.settings.option_limit):
             atts['colspan'] = 2
             self.context.append('</tr>\n<tr><td>&nbsp;</td>')
         else:

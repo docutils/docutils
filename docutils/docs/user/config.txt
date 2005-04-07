@@ -543,10 +543,9 @@ _`embed_stylesheet`
     --link-stylesheet``.
 
 _`field_name_limit`
-
     The maximum width (in characters) for one-column field names.
-    Longer field names will span the entire row.  0 indicates "no
-    limit".
+    Longer field names will span an entire row of the table used to
+    render the field list.  0 indicates "no limit".
 
     Default: 14 characters.  Option: ``--field-name-limit``.
 
@@ -570,6 +569,13 @@ _`initial_header_level`
     Default: 1 (for "<h1>").  Option: ``--initial-header-level``.
 
 .. _stylesheet [html4css1 writer]:
+
+_`option_limit`
+    The maximum width (in characters) for options in option lists.
+    Longer options will span an entire row of the table used to render
+    the option list.  0 indicates "no limit".
+
+    Default: 14 characters.  Option: ``--option-limit``.
 
 stylesheet
     CSS stylesheet URL, used verbatim.  Overrides stylesheet_path
