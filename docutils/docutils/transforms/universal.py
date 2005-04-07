@@ -36,12 +36,12 @@ class Decorations(Transform):
         if header_nodes:
             decoration = self.document.get_decoration()
             header = decoration.get_header()
-            header.children.extend(header_nodes)
+            header.extend(header_nodes)
         footer_nodes = self.generate_footer()
         if footer_nodes:
             decoration = self.document.get_decoration()
             footer = decoration.get_footer()
-            footer.children.extend(footer_nodes)
+            footer.extend(footer_nodes)
 
     def generate_header(self):
         return None
