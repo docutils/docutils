@@ -1161,10 +1161,6 @@ when used in a document.
     Add an option to include topics in the TOC?  Another for sidebars?
     See docutils-develop 2003-01-29.
 
-  - _`parts.header` & _`parts.footer`: Add "header" and "footer"
-    directives to specify document-specific contents for header and
-    footer?
-
   - _`misc.include`:
 
     - "encoding" option?  Take default from runtime settings.  Use
@@ -1471,6 +1467,10 @@ when used in a document.
   - _`pysource.usage`: Extract a usage message from the program,
     either by running it at the command line with a ``--help`` option
     or through an exposed API.  [Suggestion for Optik.]
+
+  - _`parts.header` & _`parts.footer`: Add "header" and "footer"
+    directives to specify document-specific contents for header and
+    footer?
 
 
 Interpreted Text
