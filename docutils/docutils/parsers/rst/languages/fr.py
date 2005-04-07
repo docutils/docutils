@@ -61,6 +61,8 @@ directives = {
       u'sectnum': 'sectnum',
       u'section-num\u00E9rot\u00E9e': 'sectnum',
       u'liens': 'target-notes',
+      u'header (translation required)': 'header',
+      u'footer (translation required)': 'footer',
       #u'footnotes (translation required)': 'footnotes',
       #u'citations (translation required)': 'citations',
       }

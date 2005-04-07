@@ -60,6 +60,8 @@ directives = {
       'kapitel-nummerierung': 'sectnum',
       'abschnitts-nummerierung': 'sectnum',
       u'linkziel-fu\xdfnoten': 'target-notes',
+      u'header (translation required)': 'header',
+      u'footer (translation required)': 'footer',
       #u'fu\xdfnoten': 'footnotes',
       #'zitate': 'citations',
       }

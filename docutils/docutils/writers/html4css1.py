@@ -732,7 +732,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         start = self.context.pop()
         footer = (['<hr class="docutils footer" />\n',
                    self.starttag(node, 'div', CLASS='footer')]
-                  + self.body[start:] + ['</div>\n'])
+                  + self.body[start:] + ['\n</div>\n'])
         self.footer.extend(footer)
         self.body_suffix[:0] = footer
         del self.body[start:]
@@ -814,7 +814,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         start = self.context.pop()
         header = [self.starttag(node, 'div', CLASS='header')]
         header.extend(self.body[start:])
-        header.append('<hr class="docutils header"/>\n</div>\n')
+        header.append('\n</div>\n<hr class="docutils header"/>\n')
         self.body_prefix.extend(header)
         self.header = header
         del self.body[start:]

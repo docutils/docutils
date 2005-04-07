@@ -58,6 +58,8 @@ directives = {
       'seznum': 'sectnum',
       'sezioni-autonumerate': 'sectnum',
       'annota-riferimenti-esterni': 'target-notes',
+      u'header (translation required)': 'header',
+      u'footer (translation required)': 'footer',
       #'footnotes': 'footnotes',
       #'citations': 'citations',
       'restructuredtext-test-directive': 'restructuredtext-test-directive'}

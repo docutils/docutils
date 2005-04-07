@@ -258,11 +258,10 @@ class DocInfo(Transform):
         candidate = document[index]
         if isinstance(candidate, nodes.field_list):
             biblioindex = document.first_child_not_matching_class(
-                  nodes.Titular)
+                  (nodes.Titular, nodes.Decorative))
             nodelist = self.extract_bibliographic(candidate)
             del document[index]         # untransformed field list (candidate)
             document[biblioindex:biblioindex] = nodelist
-        return
 
     def extract_bibliographic(self, field_list):
         docinfo = nodes.docinfo()

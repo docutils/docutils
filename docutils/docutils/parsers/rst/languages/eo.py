@@ -63,6 +63,8 @@ directives = {
       u'enhavo': 'contents',
       u'seknum': 'sectnum',
       u'sekcia-numerado': 'sectnum',
+      u'header (translation required)': 'header',
+      u'footer (translation required)': 'footer',
       #'footnotes': 'footnotes',
       #'citations': 'citations',
       u'celaj-notoj': 'target-notes',

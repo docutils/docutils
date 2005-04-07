@@ -32,19 +32,16 @@ class Decorations(Transform):
     default_priority = 820
 
     def apply(self):
-        header = self.generate_header()
-        footer = self.generate_footer()
-        if header or footer:
-            decoration = nodes.decoration()
-            decoration += header
-            decoration += footer
-            document = self.document
-            index = document.first_child_not_matching_class(
-                nodes.PreDecorative)
-            if index is None:
-                document += decoration
-            else:
-                document[index:index] = [decoration]
+        header_nodes = self.generate_header()
+        if header_nodes:
+            decoration = self.document.get_decoration()
+            header = decoration.get_header()
+            header.children.extend(header_nodes)
+        footer_nodes = self.generate_footer()
+        if footer_nodes:
+            decoration = self.document.get_decoration()
+            footer = decoration.get_footer()
+            footer.children.extend(footer_nodes)
 
     def generate_header(self):
         return None
@@ -79,9 +76,7 @@ class Decorations(Transform):
                     nodes.reference('', 'reStructuredText', refuri='http://'
                                     'docutils.sourceforge.net/rst.html'),
                     nodes.Text(' source.\n')])
-            footer = nodes.footer()
-            footer += nodes.paragraph('', '', *text)
-            return footer
+            return [nodes.paragraph('', '', *text)]
         else:
             return None
 

@@ -57,6 +57,8 @@ directives = {
       'contents (translation required)': 'contents',
       'sectnum (translation required)': 'sectnum',
       'section-numbering (translation required)': 'sectnum',
+      u'header (translation required)': 'header',
+      u'footer (translation required)': 'footer',
       #'footnotes (translation required)': 'footnotes',
       #'citations (translation required)': 'citations',
       'target-notes (translation required)': 'target-notes',

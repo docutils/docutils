@@ -61,7 +61,9 @@ directives = {
  u'\u0441\u043e\u0432\u0435\u0442': u'hint',
  u'\u0441\u043e\u0434\u0435\u0440\u0436\u0430\u043d\u0438\u0435': u'contents',
  u'\u0442\u0435\u043c\u0430': u'topic',
- u'\u044d\u043f\u0438\u0433\u0440\u0430\u0444': u'epigraph'}
+ u'\u044d\u043f\u0438\u0433\u0440\u0430\u0444': u'epigraph',
+ u'header (translation required)': 'header',
+ u'footer (translation required)': 'footer',}
 """Russian name to registered (in directives/__init__.py) directive name
 mapping."""
 

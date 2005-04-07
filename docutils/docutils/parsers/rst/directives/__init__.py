@@ -118,6 +118,8 @@ _directive_registry = {
       'figure': ('images', 'figure'),
       'contents': ('parts', 'contents'),
       'sectnum': ('parts', 'sectnum'),
+      'header': ('parts', 'header'),
+      'footer': ('parts', 'footer'),
       #'footnotes': ('parts', 'footnotes'),
       #'citations': ('parts', 'citations'),
       'target-notes': ('references', 'target_notes'),
