@@ -476,6 +476,10 @@ General
 
 * Add support for _`plugins`.
 
+* Add support for document decorations other than headers & footers?
+  For example, top/bottom/side navigation bars for web pages.  Generic
+  decorations?
+
 
 Documentation
 =============
@@ -1160,6 +1164,10 @@ when used in a document.
 
     Add an option to include topics in the TOC?  Another for sidebars?
     See docutils-develop 2003-01-29.
+
+  - _`parts.header` & _`parts.footer`: Support multiple, named headers
+    & footers?  For example, separate headers & footers for odd, even,
+    and the first page of a document.
 
   - _`misc.include`:
 
