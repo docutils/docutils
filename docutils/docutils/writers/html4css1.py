@@ -730,9 +730,10 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_footer(self, node):
         start = self.context.pop()
-        footer = (['<hr class="docutils footer" />\n',
-                   self.starttag(node, 'div', CLASS='footer')]
-                  + self.body[start:] + ['\n</div>\n'])
+        footer = [self.starttag(node, 'div', CLASS='footer'),
+                  '<hr class="footer" />\n']
+        footer.extend(self.body[start:])
+        footer.append('\n</div>\n')
         self.footer.extend(footer)
         self.body_suffix[:0] = footer
         del self.body[start:]
@@ -814,9 +815,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         start = self.context.pop()
         header = [self.starttag(node, 'div', CLASS='header')]
         header.extend(self.body[start:])
-        header.append('\n</div>\n<hr class="docutils header"/>\n')
+        header.append('\n<hr class="header"/>\n</div>\n')
         self.body_prefix.extend(header)
-        self.header = header
+        self.header.extend(header)
         del self.body[start:]
 
     def visit_hint(self, node):
