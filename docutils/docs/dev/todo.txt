@@ -1751,6 +1751,186 @@ LaTeX writer
 * Add an ``--embed-stylesheet`` (and ``--link-stylesheet``) option.
 
 
+HTML SlideShow Writer
+=====================
+
+Add a Writer for presentations, derivative of the HTML Writer.  Given
+an input document containing one section per slide, the output would
+consist of a master document for the speaker, and a slide file (or set
+of filess, one (or more) for each slide).  Each slide would contain
+the slide text (large, stylesheet-controlled) and images, plus "next"
+and "previous" links in consistent places.  The speaker's master
+document would contain a small version of the slide text with
+speaker's notes interspersed.  The master document could use
+``target="whatever"`` to direct links to a separate window on a second
+monitor (e.g., a projector).
+
+Ideas:
+
+* Base the output on `S5 <http://www.meyerweb.com/eric/tools/s5/>`_.
+
+Below, "[S5?]" indicates that S5 already implements (or may implement)
+part of the feature.
+
+Features & issues:
+
+* [S5?]  Incremental slides, where each slide adds to the one before
+  (ticking off items in a list, delaying display of later items).  The
+  speaker's master document would list each transition in the TOC and
+  provide links in the content.
+
+  Have special support for this, or just copy slide text?  Could use
+  transitions to separate stages, or a special directive.  Problem
+  with transitions is that they can't be used everywhere -- not, for
+  example, within a list (see the example below).  A directive
+  (possible names: pause, delay, break, cut, continue, suspend, hold,
+  stay, stop) seems like a better solution.  Should the directive be
+  available in all contexts (and ineffectual in all but SlideShow
+  context), or added at runtime by the SlideShow Writer?
+
+  The directive could accept text content, which would be rendered
+  while paused but would disappear when the slide is continued (the
+  text could also be a link to the next slide).  In the speaker's
+  master document, the text "paused:" could appear, prefixed to the
+  directive text.
+
+* Speaker's notes -- how to intersperse?  Could use reST comments
+  (".."), but make them visible in the speaker's master document.  If
+  structure is necessary, we could use a "comment" directive (to avoid
+  nonsensical DTD changes, the "comment" directive could produce an
+  untitled topic element).
+
+  The speaker's notes would be separate from S5's handout content.
+
+* Speaker's master document could use frames for easy navigation: TOC
+  on the left, content on the right.
+
+  - It would be nice if clicking in the TOC frame simultaneously
+    linked to both the speaker's notes frame and to the slide window,
+    synchronizing both.  Needs JavaScript?
+
+  - TOC would have to be tightly formatted -- minimal indentation.
+
+  - TOC auto-generated, as in the PEP Reader.  (What if there already
+    is a "contents" directive in the document?)
+
+  - There could be another frame on the left (top-left or bottom-left)
+    containing a single "Next" link, always pointing to the next slide
+    (synchronized, of course).  Also "Previous" link?  FF/Rew go to
+    the beginning of the next/current parent section?  First/Last
+    also?  Tape-player-style buttons like ``|<<  <<  <  >  >>  >>|``?
+
+* [S5?]  Need to support templating of some kind, for uniform slide
+  layout.  Or build in support for limited features?  E.g., top/bottom
+  or left/right banners, images on each page, background color and/or
+  image, etc.
+
+* [S5?]  One layout for all slides, or allow some variation?
+
+* For nested sections, do we show the section's ancestry on each
+  slide?  Optional?  No -- leave the implementation to someone who
+  wants it.
+
+* [S5?]  Stylesheets for slides:
+
+  - Tweaked for different resolutions, 1024x768 etc.
+  - Some layout elements have fixed positions.
+  - Text must be quite large.
+  - Allow 10 lines of text per slide?  15?
+  - Title styles vary by level, but not so much?
+
+* [S5?]  Need a transform to number slides for output filenames?, and
+  for hyperlinks?
+
+* Directive to begin a new, untitled (blank) slide?
+
+* Directive to begin a new slide, continuation, using the same title
+  as the previous slide?
+
+Here's an example that I was hoping to show at PyCon DC 2005::
+
+    ========================
+     The Docutils SlideShow
+    ========================
+
+    Welcome To The Docutils SlideShow!
+    ==================================
+
+    .. pause::
+
+    David Goodger
+
+    goodger@python.org
+
+    http://python.net/~goodger
+
+    .. (introduce yourself)
+
+       Hi, I'm David Goodger from Montreal, Canada.
+
+       I've been working on Docutils since 2000.
+       Time flies!
+
+    .. pause::
+
+    Docutils
+
+    http://docutils.sourceforge.net
+
+    .. I also volunteer as a Python Enhancement Proposal (or PEP)
+       editor.
+
+    .. SlideShow is a new feature of Docutils.  This presentation was
+       written using the Docutils SlideShow system.  The slides you
+       are seeing are HTML, rendered by a standard Mozilla Firefox
+       browser.
+
+
+    The Docutils SlideShow System
+    =============================
+
+    .. The Docutils SlideShow System provides
+
+    Easy and open presentations.
+
+
+    Features
+    ========
+
+    * reStructuredText-based input files.
+
+      .. reStructuredText is a what-you-see-is-what-you-get
+         plaintext format.  Easy to read & write, non-proprietary,
+         editable in your favourite text editor.
+
+      .. Parsers for other markup languages can be added to Docutils.
+         In the future, I hope some are.
+
+      .. pause:: ...
+
+    * Stylesheet-driven HTML output.
+
+      .. The format of all elements of the output slides are
+         controlled by CSS (cascading stylesheets).
+
+      .. pause:: ...
+
+    * Works with any modern browser.
+
+      .. that supports CSS, frames, and JavaScript.
+         Tested with Mozilla Firefox.
+
+      .. pause:: ...
+
+    * Works on any OS.
+
+
+    Etc.
+    ====
+
+    That's as far as I got, but you get the idea...
+
+
 Front-End Tools
 ===============
 
