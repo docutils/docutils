@@ -86,7 +86,8 @@ class Contents(Transform):
             startnode = self.startnode.parent.parent
             # @@@ generate an error if the startnode (directive) not at
             # section/document top-level? Drag it up until it is?
-            while not isinstance(startnode, nodes.Structural):
+            while not (isinstance(startnode, nodes.section)
+                       or isinstance(startnode, nodes.document)):
                 startnode = startnode.parent
         else:
             startnode = self.document
