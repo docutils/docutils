@@ -1091,7 +1091,7 @@ when used in a document.
 * Change directive functions to directive classes?  Superclass'
   ``__init__()`` could handle all the bookkeeping.
 
-* Implement options on existing directives:
+* Implement options or features on existing directives:
 
   - Add a "name" option to directives, to set an author-supplied
     identifier?
@@ -1211,7 +1211,7 @@ when used in a document.
 
     - Add support for inclusion by URL::
 
-          .. include:: 
+          .. include::
              :url: http://www.example.org/inclusion.txt
 
   - _`misc.raw`: add a "destination" option to the "raw" directive? ::
@@ -1223,7 +1223,10 @@ when used in a document.
 
     It needs thought & discussion though, to come up with a consistent
     set of destination labels and consistent behavior.
-  
+
+  - _`body.sidebar`: Allow internal section structure?  Adornment
+    styles would be independent of the main document.
+
 * Implement directives.  Each of the list items below begins with an
   identifier of the form, "module_name.directive_function_name".  The
   directive name itself could be the same as the
@@ -1393,10 +1396,6 @@ when used in a document.
       "input()"/"raw_input()" calls.
 
     See docutils-users 2003-03-03.
-
-  - _`body.sidebar`: Add to the already implemented directive.  Allow
-    internal section structure, with adornment styles independent of
-    the main document.
 
   - _`colorize.python`: Colorize Python code.  Fine for HTML output,
     but what about other formats?  Revert to a literal block?  Do we
