@@ -854,21 +854,15 @@ Table of Contents
 :Directive Options: Possible.
 :Directive Content: None.
 
-The "contents" directive inserts a table of contents (TOC) in two
-passes: initial parse and transform.  During the initial parse, a
-"pending" element is generated which acts as a placeholder, storing
-the TOC title and any options internally.  At a later stage in the
-processing, the "pending" element is replaced by a "topic" element, a
-title and the table of contents proper.
-
-The directive in its simplest form::
+The "contents" directive generates a table of contents (TOC).  Here's
+the directive in its simplest form::
 
     .. contents::
 
 Language-dependent boilerplate text will be used for the title.  The
 English default title text is "Contents".
 
-An explicit title, may be specified::
+An explicit title may be specified::
 
     .. contents:: Table of Contents
 
