@@ -26,10 +26,17 @@ def backlinks(arg):
 
 def contents(name, arguments, options, content, lineno,
              content_offset, block_text, state, state_machine):
-    """Table of contents."""
+    """
+    Table of contents.
+
+    The table of contents is generated in two passes: initial parse and
+    transform.  During the initial parse, a 'pending' element is generated
+    which acts as a placeholder, storing the TOC title and any options
+    internally.  At a later stage in the processing, the 'pending' element is
+    replaced by a 'topic' element, a title and the table of contents proper.
+    """
     document = state_machine.document
     language = languages.get_language(document.settings.language_code)
-
     if arguments:
         title_text = arguments[0]
         text_nodes, messages = state.inline_text(title_text, lineno)
@@ -40,22 +47,17 @@ def contents(name, arguments, options, content, lineno,
             title = None
         else:
             title = nodes.title('', language.labels['contents'])
-
     topic = nodes.topic(classes=['contents'])
-
     topic['classes'] += options.get('class', [])
-
     if title:
         name = title.astext()
         topic += title
     else:
         name = language.labels['contents']
-
     name = nodes.fully_normalize_name(name)
     if not document.has_name(name):
         topic['names'].append(name)
     document.note_implicit_target(topic)
-
     pending = nodes.pending(parts.Contents, rawsource=block_text)
     pending.details.update(options)
     document.note_pending(pending)
