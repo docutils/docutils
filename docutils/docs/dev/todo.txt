@@ -1163,7 +1163,9 @@ when used in a document.
     down.  Or a new directive, like "prune-contents"?
 
     Add an option to include topics in the TOC?  Another for sidebars?
-    See docutils-develop 2003-01-29.
+    The "topic" directive could have a "contents" option, or the
+    "contents" directive" could have an "include-topics" option.  See
+    docutils-develop 2003-01-29.
 
   - _`parts.header` & _`parts.footer`: Support multiple, named headers
     & footers?  For example, separate headers & footers for odd, even,
