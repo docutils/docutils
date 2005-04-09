@@ -35,6 +35,13 @@ def contents(name, arguments, options, content, lineno,
     internally.  At a later stage in the processing, the 'pending' element is
     replaced by a 'topic' element, a title and the table of contents proper.
     """
+    if not (state_machine.match_titles
+            or isinstance(state_machine.node, nodes.sidebar)):
+        error = state_machine.reporter.error(
+              'The "%s" directive may not be used within topics '
+              'or body elements.' % name,
+              nodes.literal_block(block_text, block_text), line=lineno)
+        return [error]
     document = state_machine.document
     language = languages.get_language(document.settings.language_code)
     if arguments:

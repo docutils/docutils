@@ -3550,7 +3550,7 @@ Details
 
 :Children:
     ``sidebar`` elements begin with a title_ and an optional subtitle_
-    and contain `body elements`_.
+    and contain `body elements`_ and topic_ elements.
 
 :Analogues:
     ``sidebar`` is analogous to the DocBook "sidebar" element.
@@ -3568,7 +3568,7 @@ Content Model
 .. parsed-literal::
 
     (title_, subtitle_?,
-     (`%body.elements;`_)+)
+     (`%body.elements;`_ | topic_)+)
 
 :Attributes:
     The ``sidebar`` element contains only the `common attributes`_:
@@ -3985,7 +3985,7 @@ The ``topic`` element is a nonrecursive section_-like construct which
 may occur at the top level of a section_ wherever a body element
 (list, table, etc.) is allowed.  In other words, ``topic`` elements
 cannot nest inside body elements, so you can't have a ``topic`` inside
-a ``table`` or a ``list``, or inside another ``topic`` (or sidebar_).
+a ``table`` or a ``list``, or inside another ``topic``.
 
 
 Details
@@ -3995,7 +3995,8 @@ Details
     `Structural Elements`_
 
 :Parents:
-    The following elements may contain ``topic``: document_, section_
+    The following elements may contain ``topic``: document_, section_,
+    sidebar_
 
 :Children:
     ``topic`` elements begin with a title_ and may contain `body

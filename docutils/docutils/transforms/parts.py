@@ -84,14 +84,12 @@ class Contents(Transform):
         details = self.startnode.details
         if details.has_key('local'):
             startnode = self.startnode.parent.parent
-            # @@@ generate an error if the startnode (directive) not at
-            # section/document top-level? Drag it up until it is?
             while not (isinstance(startnode, nodes.section)
                        or isinstance(startnode, nodes.document)):
+                # find the ToC root: a direct ancestor of startnode
                 startnode = startnode.parent
         else:
             startnode = self.document
-
         self.toc_id = self.startnode.parent['ids'][0]
         if details.has_key('backlinks'):
             self.backlinks = details['backlinks']
