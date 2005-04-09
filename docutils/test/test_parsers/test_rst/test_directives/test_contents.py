@@ -202,6 +202,37 @@ totest['contents'] = [
             .. contents::
                :backlinks:
 """],
+["""\
+* .. contents::
+""",
+"""\
+<document source="test data">
+    <bullet_list bullet="*">
+        <list_item>
+            <system_message level="3" line="1" source="test data" type="ERROR">
+                <paragraph>
+                    The "contents" directive may not be used within topics or body elements.
+                <literal_block xml:space="preserve">
+                    .. contents::
+"""],
+["""\
+.. sidebar:: containing contents
+
+   .. contents::
+""",
+"""\
+<document source="test data">
+    <sidebar>
+        <title>
+            containing contents
+        <topic classes="contents" ids="contents" names="contents">
+            <title>
+                Contents
+            <pending>
+                .. internal attributes:
+                     .transform: docutils.transforms.parts.Contents
+                     .details:
+"""],
 ]
 
 

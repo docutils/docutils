@@ -279,7 +279,7 @@ Eventual replacement for docinfo? -->
 <!ELEMENT topic (title?, (%body.elements;)+)>
 <!ATTLIST topic %basic.atts;>
 
-<!ELEMENT sidebar (title, subtitle?, (%body.elements;)+)>
+<!ELEMENT sidebar (title, subtitle?, (%body.elements; | topic)+)>
 <!ATTLIST sidebar %basic.atts;>
 
 <!ELEMENT transition EMPTY>

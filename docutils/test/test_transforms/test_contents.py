@@ -375,6 +375,57 @@ Degenerate case, no table of contents generated.
     <paragraph>
         Degenerate case, no table of contents generated.
 """],
+["""\
+Title 1
+=======
+
+Paragraph 1.
+
+.. sidebar:: Contents
+
+   .. contents::
+      :local:
+
+Title 2
+-------
+Paragraph 2.
+
+Title 3
+```````
+Paragraph 3.
+""",
+"""\
+<document source="test data">
+    <section ids="title-1" names="title 1">
+        <title>
+            Title 1
+        <paragraph>
+            Paragraph 1.
+        <sidebar>
+            <title>
+                Contents
+            <topic classes="contents" ids="contents" names="contents">
+                <bullet_list>
+                    <list_item>
+                        <paragraph>
+                            <reference ids="id1" refid="title-2">
+                                Title 2
+                        <bullet_list>
+                            <list_item>
+                                <paragraph>
+                                    <reference ids="id2" refid="title-3">
+                                        Title 3
+        <section ids="title-2" names="title 2">
+            <title refid="id1">
+                Title 2
+            <paragraph>
+                Paragraph 2.
+            <section ids="title-3" names="title 3">
+                <title refid="id2">
+                    Title 3
+                <paragraph>
+                    Paragraph 3.
+"""],
 ])
 
 

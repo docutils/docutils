@@ -22,9 +22,10 @@ from docutils.parsers.rst.roles import set_classes
 def topic(name, arguments, options, content, lineno,
           content_offset, block_text, state, state_machine,
           node_class=nodes.topic):
-    if not state_machine.match_titles:
+    if not (state_machine.match_titles
+            or isinstance(state_machine.node, nodes.sidebar)):
         error = state_machine.reporter.error(
-              'The "%s" directive may not be used within topics, sidebars, '
+              'The "%s" directive may not be used within topics '
               'or body elements.' % name,
               nodes.literal_block(block_text, block_text), line=lineno)
         return [error]

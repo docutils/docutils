@@ -121,7 +121,7 @@ totest['topics'] = [
             Title
         <system_message level="3" line="3" source="test data" type="ERROR">
             <paragraph>
-                The "topic" directive may not be used within topics, sidebars, or body elements.
+                The "topic" directive may not be used within topics or body elements.
             <literal_block xml:space="preserve">
                 .. topic:: Nested
                 \n\
@@ -142,7 +142,7 @@ totest['topics'] = [
             Title
         <system_message level="3" line="3" source="test data" type="ERROR">
             <paragraph>
-                The "topic" directive may not be used within topics, sidebars, or body elements.
+                The "topic" directive may not be used within topics or body elements.
             <literal_block xml:space="preserve">
                 .. topic:: Nested
                 \n\
@@ -171,7 +171,7 @@ More.
             Title
         <system_message level="3" line="3" source="test data" type="ERROR">
             <paragraph>
-                The "topic" directive may not be used within topics, sidebars, or body elements.
+                The "topic" directive may not be used within topics or body elements.
             <literal_block xml:space="preserve">
                 .. topic:: Nested
                 \n\
@@ -222,13 +222,11 @@ More.
             Title
         <subtitle>
             Outer
-        <system_message level="3" line="4" source="test data" type="ERROR">
+        <topic>
+            <title>
+                Nested
             <paragraph>
-                The "topic" directive may not be used within topics, sidebars, or body elements.
-            <literal_block xml:space="preserve">
-                .. topic:: Nested
-                \n\
-                   Body.
+                Body.
         <paragraph>
             More.
     <paragraph>
