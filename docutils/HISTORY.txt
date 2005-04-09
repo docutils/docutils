@@ -69,6 +69,11 @@ Changes Since 0.3.7
   - Allowed whitespace in paths (``path`` function).
   - Added ``uri`` directive option conversion function.
 
+* docutils/parsers/rst/directives/body.py:
+
+  - Fixed illegal context bug with "topic" directive (allowed within
+    sidebars; not within body elements).
+
 * docutils/parsers/rst/directives/images.py:
 
   - Allowed whitespace (stripped) in "image" & "figure" directive URLs.
@@ -86,6 +91,8 @@ Changes Since 0.3.7
 * docutils/parsers/rst/directives/parts.py:
 
   - Added "header" & "footer" directives.
+  - Fixed illegal context bug with "contents" directive (topics
+    allowed within sidebars; not within body elements).
 
 * docutils/parsers/rst/directives/tables.py:
 
@@ -134,6 +141,7 @@ Changes Since 0.3.7
 
   - Added ``stub`` attribute to ``colspec`` element via the
     ``tbl.colspec.att`` parameter entity.
+  - Allowed topic elements within sidebars
 
 
 Release 0.3.7 (2004-12-24)
