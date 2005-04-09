@@ -980,6 +980,20 @@ the top of the generated web page or at the top of every printed page.
 These directives may be used multiple times, cumulatively.  There is
 currently support for only one header and footer.
 
+.. note::
+
+   While it is possible to use the "header" and "footer" directives to
+   create navigational elements for web pages, you should be aware
+   that Docutils is meant to be used for *document* processing, and
+   that a navigation bar is not typically part of a document.
+
+   Thus, you may soon find Docutils' abilities to be insufficient for
+   these purposes.  At that time, you should consider using a
+   templating system (like ht2html_) rather than the "header" and
+   "footer" directives.
+
+   .. _ht2html: http://ht2html.sourceforge.net/
+
 In addition to the use of these directives to populate header and
 footer content, content may also be added automatically by the
 processing system.  For example, if certain runtime settings are
