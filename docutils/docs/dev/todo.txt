@@ -1767,10 +1767,13 @@ monitor (e.g., a projector).
 
 Ideas:
 
-* Base the output on `S5 <http://www.meyerweb.com/eric/tools/s5/>`_.
+* Base the output on |S5|_.
 
   Chris Liechti has `integrated S5 with the HTML writer
   <http://homepage.hispeed.ch/py430/python/index.html#rst2s5>`__.
+
+  .. |S5| replace:: S\ :sup:`5`
+  .. _S5: http://www.meyerweb.com/eric/tools/s5/
 
 Below, "[S5?]" indicates that S5 already implements (or may implement)
 part of the feature.
