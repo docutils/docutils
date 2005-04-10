@@ -1775,8 +1775,8 @@ Ideas:
   .. |S5| replace:: S\ :sup:`5`
   .. _S5: http://www.meyerweb.com/eric/tools/s5/
 
-Below, "[S5?]" indicates that S5 already implements (or may implement)
-part of the feature.
+Below, "[S5?]" indicates that |S5| already implements (or may
+implement) part of the feature.
 
 Features & issues:
 
