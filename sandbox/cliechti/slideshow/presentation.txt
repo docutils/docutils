@@ -1,0 +1,188 @@
+S5 Slideshows using reST
+========================
+
+.. The main title above is used as slideshow title, but each slide has to
+   start with a subtitle, including the very first slide. The title of
+   the first slide will be the same as the main title above in most cases.
+   
+   There must not be any visible text between the main title and the first
+   subtitle. It would be visible on all slides.
+
+.. See below for an explanation for the following substitution
+.. |s5 location| replace::
+        The contents of the ``|s5 location|`` substitution is shown here.
+
+
+S5 Slideshows using reST
+------------------------
+:Author: Chris Liechti <cliechti@gmx.net>
+:Version: 1
+
+Short introduction to the S5 converter for Docutils
+
+Introduction
+------------
+``rst2s5`` is a Docutils__ writer for S5__, a Simple Standards-based Slide
+Show System.
+
+*   A simple text file with ``reST`` compatible text, serves as input.
+
+*   Presentations can be viewed using any modern webbrowser
+    (CSS, JavaScript, XHTML).
+
+*   Several themes are available on the Internet, easy to adapt.
+
+*   Slides and handout can be combined in one document.
+
+__ http://docutils.sourceforge.net/
+__ http://meyerweb.com/eric/tools/s5/
+
+
+Usage
+-----
+Based on Docutils, normal ``reST`` documents are supported. Each section is
+converted to a single slide.
+
+.. handout::
+    
+    *Installation*
+    
+    Install ``s5.py`` in docutils/writers, ``rst2s5`` to a directory in the
+    ``$PATH``. (Or copy both files to the same folder. e.g. ``/usr/local/bin``
+    on un*x)
+
+A slideshow is simply made by the following command::
+
+    rst2s5 presentation.txt presentation.html
+
+Some additional files are needed to view a presentation. These
+go into the same directory as the ``presentation.html``
+
+*   The standard ``default.css``. This is not needed when the
+    ``--embed-stylesheet`` option is used  when converting the slideshow.
+    
+    .. handout::
+        The ``default.css`` is included in the standard docutils distribution.
+        One can also be downloaded from here:
+        http://docutils.sf.net/tools/stylesheets/default.css
+
+*   A subdirectory with the S5 theme. The default slideshow parameters
+    use the ``ui`` theme.
+    
+    .. handout::
+        The default theme from the S5 tutorial can be used. Get it here:
+        http://meyerweb.com/eric/tools/s5/s5blank.zip
+        
+        Most of these themes are available under the `Creative Commons Share
+        Alike`__ license. This means the themes can be used for commercial and
+        non-commercial purposes. But the rst2s5 converter has a different
+        license. Therefore no theme is distributed along with the converter.
+        
+        __ http://creativecommons.org/licenses/by-sa/2.0/
+
+.. class:: handout
+.. hint::
+    Basic steps to create a slideshow:
+    
+    1. run ``rst2s5 presentation.txt presentation.html``
+    2. copy a ``default.css`` from docutils to the same directory
+    3. extract the sample theme from ``s5blank.zip``, mentioned above,
+       to the same directory (this should create a ``ui`` folder).
+    4. open ``presentation.html`` in your webbrowser.
+
+
+Features
+--------
+``rst2s5`` is based on ``rst2html``, it basicaly supports all of its features.
+
+Additions:
+
+*   ``.. handout::`` directive: These blocks are only visible when the
+    presentation is printed and in raw view mode. They are hidden in the
+    screen presentation.
+  
+    .. handout::
+        Text in ``.. handout::`` block is only visible in the printed material
+        and not in the slideshow on the screen. This can be used to be more
+        detailed in a handout.
+        
+        ``.. handout::`` directives can appear anywhere in the Text, as
+        often as needed.
+
+*   The ``|s5 theme|`` substitution can define a different S5 theme.
+
+    .. handout::
+        The substitution changes the default theme that is used. 
+        For example, use the "pixel" theme::
+        
+        .. |s5 theme| replace:: pixel
+        
+        The default theme is "ui". The command line switch ``--theme``,
+        described below, overrides the default as well as the ``|s5 theme|``
+        substitution.
+
+*   The ``--theme`` command line option is used to specify a different directory
+    with the S5 stylesheets/design files.
+
+    .. handout::
+        Example::
+        
+            rst2s5 --theme pixel presentation.txt presentation.html
+
+*   The ``|s5 location|`` substitution defines additional text in the S5 footer.
+
+    .. handout::
+        The extra information in the slideshows footer can be set by this
+        substitution. It makes sense to use a ``replace`` directive to
+        assign some text like the date of the presentation and/or the
+        location.
+        
+        The field in the footer is left blank if the substitution is missing.
+        
+        Example::
+        
+            .. |s5 location| replace:: Location/Date of presentation
+
+
+Samples: Tables, Directives, Images
+-----------------------------------
+
+.. sidebar:: Images are OK
+
+    .. image:: ui/bodybg.gif
+        :scale: 30
+        :alt: sample image
+
+=====  =====  ======
+   Inputs     Output
+------------  ------
+  A      B    A or B
+=====  =====  ======
+False  False  False
+True   False  True
+False  True   True
+True   True   True
+=====  =====  ======
+
+.. hint::
+    Admonitions, tables, sidebars can all be used on the screen and in
+    the handout.
+    
+.. sidebar::     Handout only
+    :class: handout
+
+    Elements only visible in the handout can also be generated using the
+    :class: attribute on sidebars, compounds and other elements.
+
+.. compound:: :class: handout
+    
+    An other text, only on the handout.
+
+
+Caveats
+-------
+*   The ``.. contents::`` directive must not be used. It changes the CSS class
+    of headings and they won't show up correctly in the screen presentation.
+
+*   ``.. handout::`` directives generate an error if other ``rst2XXX``
+    convertors are used, instead of the S5 converter.
