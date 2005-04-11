@@ -57,6 +57,11 @@ topic.content = 1
 
 def sidebar(name, arguments, options, content, lineno,
             content_offset, block_text, state, state_machine):
+    if isinstance(state_machine.node, nodes.sidebar):
+        error = state_machine.reporter.error(
+              'The "%s" directive may not be used within a sidebar element.'
+              % name, nodes.literal_block(block_text, block_text), line=lineno)
+        return [error]
     return topic(name, arguments, options, content, lineno,
                  content_offset, block_text, state, state_machine,
                  node_class=nodes.sidebar)
