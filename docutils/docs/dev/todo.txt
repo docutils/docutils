@@ -1767,7 +1767,9 @@ monitor (e.g., a projector).
 
 Ideas:
 
-* Base the output on |S5|_.
+* Base the output on |S5|_.  I discovered |S5| a few weeks before it
+  appeared on Slashdot, after writing most of this section.  It turns
+  out that |S5| does most of what I wanted.
 
   Chris Liechti has `integrated S5 with the HTML writer
   <http://homepage.hispeed.ch/py430/python/index.html#rst2s5>`__.
@@ -1775,30 +1777,47 @@ Ideas:
   .. |S5| replace:: S\ :sup:`5`
   .. _S5: http://www.meyerweb.com/eric/tools/s5/
 
-Below, "[S5?]" indicates that |S5| already implements (or may
-implement) part of the feature.
+Below, "[S5]" indicates that |S5| already implements the feature or
+may implement all or part of the feature.  "[S5 1.1]" indicates that
+|S5| version 1.1 implements the feature (a preview of the 1.1 beta is
+available in the `S5 testbed`_).
+
+.. _S5 testbed: http://meyerweb.com/eric/tools/s5/testbed/
 
 Features & issues:
 
-* [S5?]  Incremental slides, where each slide adds to the one before
+* [S5 1.1] Incremental slides, where each slide adds to the one before
   (ticking off items in a list, delaying display of later items).  The
   speaker's master document would list each transition in the TOC and
   provide links in the content.
 
-  Have special support for this, or just copy slide text?  Could use
-  transitions to separate stages, or a special directive.  Problem
-  with transitions is that they can't be used everywhere -- not, for
-  example, within a list (see the example below).  A directive
-  (possible names: pause, delay, break, cut, continue, suspend, hold,
-  stay, stop) seems like a better solution.  Should the directive be
-  available in all contexts (and ineffectual in all but SlideShow
-  context), or added at runtime by the SlideShow Writer?
+  * Use transitions to separate stages.  Problem with transitions is
+    that they can't be used everywhere -- not, for example, within a
+    list (see the example below).
 
-  The directive could accept text content, which would be rendered
-  while paused but would disappear when the slide is continued (the
-  text could also be a link to the next slide).  In the speaker's
-  master document, the text "paused:" could appear, prefixed to the
-  directive text.
+  * Use a special directive to separate stages.  Possible names:
+    pause, delay, break, cut, continue, suspend, hold, stay, stop.
+    Should the directive be available in all contexts (and ineffectual
+    in all but SlideShow context), or added at runtime by the
+    SlideShow Writer?
+
+    The directive could accept text content, which would be rendered
+    while paused but would disappear when the slide is continued (the
+    text could also be a link to the next slide).  In the speaker's
+    master document, the text "paused:" could appear, prefixed to the
+    directive text.
+
+  * Use a special directive or class to declare incremental content.
+    This works best with the S5 ideas.  For example::
+
+        Slide Title
+        ===========
+
+        .. incremental::
+
+           * item one
+           * item two
+           * item three
 
 * Speaker's notes -- how to intersperse?  Could use reST comments
   (".."), but make them visible in the speaker's master document.  If
@@ -1806,10 +1825,11 @@ Features & issues:
   nonsensical DTD changes, the "comment" directive could produce an
   untitled topic element).
 
-  The speaker's notes would be separate from S5's handout content.
+  The speaker's notes could (should?) be separate from S5's handout
+  content.
 
-* Speaker's master document could use frames for easy navigation: TOC
-  on the left, content on the right.
+* The speaker's master document could use frames for easy navigation:
+  TOC on the left, content on the right.
 
   - It would be nice if clicking in the TOC frame simultaneously
     linked to both the speaker's notes frame and to the slide window,
@@ -1826,18 +1846,27 @@ Features & issues:
     the beginning of the next/current parent section?  First/Last
     also?  Tape-player-style buttons like ``|<<  <<  <  >  >>  >>|``?
 
-* [S5?]  Need to support templating of some kind, for uniform slide
-  layout.  Or build in support for limited features?  E.g., top/bottom
-  or left/right banners, images on each page, background color and/or
+* [S5]  Need to support templating of some kind, for uniform slide
+  layout.  S5 handles this via CSS.
+
+  Build in support for limited features?  E.g., top/bottom or
+  left/right banners, images on each page, background color and/or
   image, etc.
 
 * [S5?]  One layout for all slides, or allow some variation?
+
+      While S5 seems to support only one style per HTML file, it's
+      pretty easy to split a presentation in different files and
+      insert a hyperlink to the last slide of the first part and load
+      the second part by a click on it.
+
+      -- Chris Liechti
 
 * For nested sections, do we show the section's ancestry on each
   slide?  Optional?  No -- leave the implementation to someone who
   wants it.
 
-* [S5?]  Stylesheets for slides:
+* [S5]  Stylesheets for slides:
 
   - Tweaked for different resolutions, 1024x768 etc.
   - Some layout elements have fixed positions.
@@ -1845,13 +1874,13 @@ Features & issues:
   - Allow 10 lines of text per slide?  15?
   - Title styles vary by level, but not so much?
 
-* [S5?]  Need a transform to number slides for output filenames?, and
-  for hyperlinks?
+* [not required with S5.]  Need a transform to number slides for
+  output filenames?, and for hyperlinks?
 
 * Directive to begin a new, untitled (blank) slide?
 
 * Directive to begin a new slide, continuation, using the same title
-  as the previous slide?
+  as the previous slide?  (Unnecessary?)
 
 Here's an example that I was hoping to show at PyCon DC 2005::
 
