@@ -1798,7 +1798,10 @@ Features & issues:
     pause, delay, break, cut, continue, suspend, hold, stay, stop.
     Should the directive be available in all contexts (and ineffectual
     in all but SlideShow context), or added at runtime by the
-    SlideShow Writer?
+    SlideShow Writer?  Probably such a "pause" directive should only
+    be available for slide shows; slide shows are too much of a
+    special case to justify adding a directive (and node?) to the
+    core.
 
     The directive could accept text content, which would be rendered
     while paused but would disappear when the slide is continued (the
@@ -1817,6 +1820,8 @@ Features & issues:
            * item one
            * item two
            * item three
+
+    Add an option to make all bullet lists implicitly incremental?
 
 * Speaker's notes -- how to intersperse?  Could use reST comments
   (".."), but make them visible in the speaker's master document.  If
