@@ -160,8 +160,14 @@ if ! mkdir $sshdir/lock; then
 fi
 trap "rm -rf $sshdir/lock" 0 1 2 3 15
 
-chmod ug+rwx $sshdir/lock
+# Make sure the lock directory is deletable (i.e. rwx) by other group
+# members (in case this script crashes after copying files into the
+# directory) and un-readable by world (because we're storing the key
+# in it).
+chmod 0770 $sshdir/lock
+# Copy the key.
 cp $sshdir/id_dsa $sshdir/lock/id_dsa
+# SSH wants this.
 chmod 0600 $sshdir/lock/id_dsa
 
 rm -f $htdocs_patchfile
