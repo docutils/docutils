@@ -34,7 +34,6 @@ htdocsdest=$auxdir/htdocs
 snapshotdir=$auxdir/snapshots
 # Where to publish the snapshots (public).
 snapshotdest=/home/groups/ftp/pub/docutils
-sshdir=$auxdir/.ssh
 bindir=$auxdir/bin
 htdocs_patchfile=$auxdir/htdocs.patch
 htdocs_tarball=$auxdir/htdocs.tar
@@ -43,6 +42,13 @@ htdocs_new_tarball=$auxdir/htdocs.new.tar
 remotehtdocs=/home/groups/d/do/docutils/htdocs
 pylib=$auxdir/lib/python
 lib=$pylib/$project
+# Lock directory.
+lockdir=$auxdir/lock
+# SSH stuff.
+sshdir=$auxdir/.ssh
+sshhost=docutilsupdate@shell.sourceforge.net
+sshcommand="ssh -i $lockdir/id_dsa
+            -o UserKnownHostsFile=$sshdir/known_hosts $sshhost"
 
 export PYTHONPATH=$pylib:$lib:$lib/extras
 
@@ -68,6 +74,24 @@ test $feedback && echo 'Starting docutils-update run...' || true
 if [ $trace -eq 1 -o $verbose -eq 1 ] ; then
     set -o xtrace
 fi
+
+# Acquire lock.
+if ! mkdir $lockdir; then
+    echo
+    echo Could not create lock directory at
+    echo $lockdir
+    echo
+    echo Please ensure no other user is running this script
+    echo and delete the directory.
+    exit 1
+fi
+trap "rm -rf $lockdir" 0 1 2 3 15
+# Make sure the lock directory is deletable (i.e. rwx) by other group
+# members (in case this script crashes after copying files into the
+# directory) and un-readable by world (because we'll be storing the
+# key in it).
+chmod 0770 $lockdir
+
 
 # update library area
 cd $lib
@@ -140,50 +164,43 @@ done
 
 # SSH doesn't want to read id_dsa files which don't have 0600
 # permissions.  This is getting into our way here, but we work around
-# this by creating a lock directory (we need that anyway) and copying
-# id_dsa to lock/id_dsa and setting the permissions of the resulting
-# id_dsa file to 0600.
+# this by copying id_dsa to $lockdir/id_dsa and setting the
+# permissions of the resulting id_dsa file to 0600.
 
-# Acquire lock.
-if ! mkdir $sshdir/lock; then
-    test $feedback && echo Waiting for lock. || true
-    sleep 60
-    if ! mkdir $sshdir/lock; then
-        echo
-        echo Could not create lock directory at
-        echo $sshdir/lock
-        echo
-        echo Please ensure no other user is running this script
-        echo and delete the directory.
-        exit 1
-    fi
-fi
-trap "rm -rf $sshdir/lock" 0 1 2 3 15
-
-# Make sure the lock directory is deletable (i.e. rwx) by other group
-# members (in case this script crashes after copying files into the
-# directory) and un-readable by world (because we're storing the key
-# in it).
-chmod 0770 $sshdir/lock
 # Copy the key.
-cp $sshdir/id_dsa $sshdir/lock/id_dsa
+cp $sshdir/id_dsa $lockdir/id_dsa
 # SSH wants this.
-chmod 0600 $sshdir/lock/id_dsa
+chmod 0600 $lockdir/id_dsa
 
 rm -f $htdocs_patchfile
 # Create new tarball.
 cd $htdocsdest
 tar cf $htdocs_new_tarball .
 
-# If the current and the new tarball differ...
-if ! diff -q $htdocs_tarball $htdocs_new_tarball > /dev/null; then
+# If there is no old tarball, we have to transmit the whole tarball.
+if test ! -f $htdocs_tarball; then
+    test $feedback && echo Transmitting entire tarball. || true
+    gzip -c $htdocs_new_tarball | $sshcommand \
+        "
+        set -e
+        umask 002
+        gunzip -c > ~/htdocs.tar
+        cd $remotehtdocs
+        tar xmf ~/htdocs.tar
+        "
+# If the current and the new tarball differ, transmit patch file.
+elif ! diff -q $htdocs_tarball $htdocs_new_tarball > /dev/null; then
     # Create patch.
     $bindir/bsdiff $htdocs_tarball $htdocs_new_tarball $htdocs_patchfile
     test $feedback && echo Patch size: `du -h $htdocs_patchfile | sed 's/\t.*//'` || true
+    # Delete current tarball.  If something goes wrong with uploading
+    # and applying the patch file, docutils-update will notice that
+    # the tarball isn't present at the next run and transfer the whole
+    # tarball, because we're left in an undefined state (the servers
+    # are out of sync).
+    rm -f $htdocs_tarball
     # Upload patch file.
-    ssh -i $sshdir/lock/id_dsa \
-        -o UserKnownHostsFile=$sshdir/known_hosts \
-        docutilsupdate@shell.sourceforge.net \
+    $sshcommand \
         "
         set -e
         umask 002
@@ -191,18 +208,16 @@ if ! diff -q $htdocs_tarball $htdocs_new_tarball > /dev/null; then
         ~/bin/bspatch ~/htdocs.tar ~/htdocs.new.tar ~/htdocs.patch
         cd $remotehtdocs
         tar xmf ~/htdocs.new.tar
-        rm -f ~/htdocs.tar
         mv ~/htdocs.new.tar ~/htdocs.tar
         rm -f ~/htdocs.patch
         " \
             < $htdocs_patchfile
-    rm -f $htdocs_tarball
-    mv $htdocs_new_tarball $htdocs_tarball
 fi
+mv $htdocs_new_tarball $htdocs_tarball
 
 # Tidy up.
 rm -f $htdocs_patchfile
-rm -rf $sshdir/lock
+rm -rf $lockdir
 test $feedback && echo '...docutils-update done.' || true
 
 # Local Variables:
