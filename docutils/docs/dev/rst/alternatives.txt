@@ -2764,6 +2764,18 @@ text, analogous to function calls.  Ideas:
    Do angle brackets connote URLs too much for this to be acceptable?
    How about the "tag" connotation -- does it save them or doom them?
 
+3. `Nested inline markup`_ could prove useful here::
+
+       `CSS :def:`Cascading Style Sheets``:acronym: is used for HTML,
+       and `CSS :def:`Content Scrambling System``:acronym: is used for
+       DVDs.
+
+   Inline markup roles could even define the default roles of nested
+   inline markup, allowing this cleaner syntax::
+
+       `CSS `Cascading Style Sheets``:acronym: is used for HTML, and
+       `CSS `Content Scrambling System``:acronym: is used for DVDs.
+
 Does this push inline markup too far?  Readability becomes a serious
 issue.  Substitutions may provide a better alternative (at the expense
 of verbosity and duplication) by pulling the details out of the text
