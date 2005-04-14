@@ -142,9 +142,9 @@ General
   top-level modules if the module name is not in docutils/readers.
   Potential nastiness.)
 
-* @@@ Perhaps store a _`name-to-id mapping file`?  This could be
-  stored permanently, read by subsequent processing runs, and updated
-  with new entries.  ("Persistent ID mapping"?)
+* Perhaps store a _`name-to-id mapping file`?  This could be stored
+  permanently, read by subsequent processing runs, and updated with
+  new entries.  ("Persistent ID mapping"?)
 
 * Perhaps the ``Component.supports`` method should deal with
   individual features ("meta" etc.) instead of formats ("html" etc.)?
@@ -496,8 +496,8 @@ Developer Docs
 
 * Complete `Docutils Runtime Settings <../api/runtime-settings.html>`_.
 
-* @@@ Improve the internal module documentation (docstrings in the
-  code).  Specific deficiencies listed below.
+* Improve the internal module documentation (docstrings in the code).
+  Specific deficiencies listed below.
 
   - docutils.parsers.rst.states.State.build_table: data structure
     required (including StringList).
@@ -743,11 +743,11 @@ __ rst/alternatives.html#or-not-to-do
   exposition in the spec, to make clear what is going on for people
   with head colds.
 
-* @@ Fix the parser's indentation handling to conform with the
-  stricter definition in the spec.  (Explicit markup blocks should be
-  strict or forgiving?)
+* Fix the parser's indentation handling to conform with the stricter
+  definition in the spec.  (Explicit markup blocks should be strict or
+  forgiving?)
 
-* @@ Tighten up the spec for indentation of "constructs using complex
+* Tighten up the spec for indentation of "constructs using complex
   markers": field lists and option lists?  Bodies may begin on the
   same line as the marker or on a subsequent line (with blank lines
   optional).  Require that for bodies beginning on the same line as
@@ -2030,9 +2030,6 @@ Front-End Tools
 * Disable common options that don't apply?
 
 * Implement the "sectnum" directive as a command-line option also?
-
-* @@@ Come up with better names for the most-used tools, and install
-  them as scripts.
 
 * Create a single dynamic_ or unqualified_ front end that can be
   installed?
