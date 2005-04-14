@@ -704,21 +704,35 @@ __ rst/alternatives.html#or-not-to-do
   In target URLs, it would be useful to not explicitly specify the
   file extension.  If we're generating HTML, then ".html" is
   appropriate; if PDF, then ".pdf"; etc.  How about using ".*" to
-  indicate "choose the most appropriate filename extension?  For
+  indicate "choose the most appropriate filename extension"?  For
   example::
 
       .. _Another Document: another.*
 
-  Should the choice be from among existing files only?  Documents
-  only, or objects (images, etc.) also?  (How to differentiate?
-  Element context [within "image"]?)
+  What is to be done for output formats that don't *have* hyperlinks?
+  For example, LaTeX targeted at print.  Hyperlinks may be "called
+  out", as footnotes with explicit URLs.
 
-  This may not be just a parser issue though; it may need framework
-  support.
+  But then there's also LaTeX targeted at PDFs, which *can* have
+  links.  Perhaps a runtime setting for "*" could explicitly provide
+  the extension, defaulting to the output file's extension.
 
-  Mailing list thread: `Images in both HTML and LaTeX`__
+  Should the system check for existing files?  No, not practical.
+
+  Handle documents only, or objects (images, etc.) also?
+
+  If this handles images also, how to differentiate between document
+  and image links?  Element context (within "image")?  Which image
+  extension to use for which document format?  Again, a runtime
+  setting would suffice.
+
+  This may not be just a parser issue; it may need framework support.
+
+  Mailing list threads: `Images in both HTML and LaTeX`__,
+  `more-universal links?`__
 
   __ http://thread.gmane.org/gmane.text.docutils.user/1239
+  __ http://thread.gmane.org/gmane.text.docutils.user/1915
 
 * Implement the header row separator modification to table.el.  (Wrote
   to Takaaki Ota & the table.el mailing list on 2001-08-12, suggesting
