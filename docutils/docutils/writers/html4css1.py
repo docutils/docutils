@@ -443,14 +443,9 @@ class HTMLTranslator(nodes.NodeVisitor):
                          '</tbody>\n</table>\n')
 
     def visit_citation_reference(self, node):
-        href = ''
-        if node.has_key('refid'):
-            href = '#' + node['refid']
-        elif node.has_key('refname'):
-            href = '#' + self.document.nameids[node['refname']]
-        self.body.append(self.starttag(node, 'a', '[',
-                                       CLASS='citation-reference',
-                                       **(href and {'href': href} or {})))
+        href = '#' + node['refid']
+        self.body.append(self.starttag(
+            node, 'a', '[', CLASS='citation-reference', href=href))
 
     def depart_citation_reference(self, node):
         self.body.append(']</a>')
@@ -780,11 +775,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                          '</tbody>\n</table>\n')
 
     def visit_footnote_reference(self, node):
-        href = ''
-        if node.has_key('refid'):
-            href = '#' + node['refid']
-        elif node.has_key('refname'):
-            href = '#' + self.document.nameids[node['refname']]
+        href = '#' + node['refid']
         format = self.settings.footnote_references
         if format == 'brackets':
             suffix = '['
@@ -1091,15 +1082,14 @@ class HTMLTranslator(nodes.NodeVisitor):
             div_atts['class'] += ' image-reference'
             self.body.append(self.starttag({}, 'div', '', **div_atts))
             self.context.append('</div>\n')
-        href = ''
         if node.has_key('refuri'):
             href = node['refuri']
-        elif node.has_key('refid'):
+        else:
+            assert node.has_key('refid'), \
+                   'References must have "refuri" or "refid" attribute.'
             href = '#' + node['refid']
-        elif node.has_key('refname'):
-            href = '#' + self.document.nameids[node['refname']]
         self.body.append(self.starttag(node, 'a', '', CLASS='reference',
-                                       **(href and {'href': href} or {})))
+                                       href=href))
 
     def depart_reference(self, node):
         self.body.append('</a>')
