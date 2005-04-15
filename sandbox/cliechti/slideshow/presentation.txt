@@ -1,22 +1,26 @@
-S5 Slideshows using reST
-========================
-
-.. The main title above is used as slideshow title, but each slide has to
-   start with a subtitle, including the very first slide. The title of
-   the first slide will be the same as the main title above in most cases.
+.. This document serves as manual and example of the rst2S5 converter at
+   the same time. See hint below on how to create the slideshow.
    
-   There must not be any visible text between the main title and the first
+.. There must not be any visible text between the main title and the first
    subtitle. It would be visible on all slides.
 
-.. See below for an explanation for the following substitution
+.. See below for an explanation for the following substitutions.
+
+.. |s5 title| replace::
+        S5 Slideshows using reST
+        
 .. |s5 location| replace::
         The contents of the ``|s5 location|`` substitution is shown here.
+
+.. Uncomment the following line to use a online theme instead of a local one
+.. .. |s5 theme| replace:: http://meyerweb.com/eric/tools/s5/ui
 
 
 S5 Slideshows using reST
 ------------------------
-:Author: Chris Liechti <cliechti@gmx.net>
-:Version: 1
+:Author:        Chris Liechti <cliechti@gmx.net>
+:Version:       1.1
+:Date:          Today
 
 Short introduction to the S5 converter for Docutils
 
@@ -32,7 +36,17 @@ Show System.
 
 *   Several themes are available on the Internet, easy to adapt.
 
+    .. handout::
+        | Some sites with S5 slideshows or themes:
+        |
+        | http://meyerweb.com/eric/tools/s5/themes/
+        | http://mozilla.wikicities.com/wiki/Firefox_S5:Designs
+        | 
+        | And a short tutorial on how to create themes:
+        | http://yatil.de/s5/dokumentation/9/ (german text)
+
 *   Slides and handout can be combined in one document.
+    The handout does not just contain the silly framed slides.
 
 __ http://docutils.sourceforge.net/
 __ http://meyerweb.com/eric/tools/s5/
@@ -43,39 +57,41 @@ Usage
 Based on Docutils, normal ``reST`` documents are supported. Each section is
 converted to a single slide.
 
-.. handout::
+.. sidebar:: Installation
+    :class: handout
     
-    *Installation*
+    Prerequisites: Python and the docutils package have to be installed.
     
-    Install ``s5.py`` in docutils/writers, ``rst2s5`` to a directory in the
+    Install ``s5.py`` in docutils/writers, ``rst2s5.py`` to a directory in the
     ``$PATH``. (Or copy both files to the same folder. e.g. ``/usr/local/bin``
-    on un*x)
+    on un*x). 
 
 A slideshow is simply made by the following command::
 
-    rst2s5 presentation.txt presentation.html
+    rst2s5.py presentation.txt presentation.html
 
 Some additional files are needed to view a presentation. These
 go into the same directory as the ``presentation.html``
 
-*   The standard ``default.css``. This is not needed when the
-    ``--embed-stylesheet`` option is used  when converting the slideshow.
+*   A ``default.css`` containing the Docutils styles.
     
     .. handout::
         The ``default.css`` is included in the standard docutils distribution.
         One can also be downloaded from here:
         http://docutils.sf.net/tools/stylesheets/default.css
 
-*   A subdirectory with the S5 theme. The default slideshow parameters
-    use the ``ui`` theme.
+*   A subdirectory ``ui`` with the S5 theme (CSS and JavaScript).
     
     .. handout::
-        The default theme from the S5 tutorial can be used. Get it here:
+        The default slideshow parameters use the ``ui`` theme, but that can
+        be overriden by a substitution or a command line option, see below.
+        
+        The theme from the S5 tutorial can be used. Get it here:
         http://meyerweb.com/eric/tools/s5/s5blank.zip
         
         Most of these themes are available under the `Creative Commons Share
         Alike`__ license. This means the themes can be used for commercial and
-        non-commercial purposes. But the rst2s5 converter has a different
+        non-commercial purposes. But the ``rst2s5`` converter has a different
         license. Therefore no theme is distributed along with the converter.
         
         __ http://creativecommons.org/licenses/by-sa/2.0/
@@ -84,11 +100,15 @@ go into the same directory as the ``presentation.html``
 .. hint::
     Basic steps to create a slideshow:
     
-    1. run ``rst2s5 presentation.txt presentation.html``
-    2. copy a ``default.css`` from docutils to the same directory
-    3. extract the sample theme from ``s5blank.zip``, mentioned above,
-       to the same directory (this should create a ``ui`` folder).
-    4. open ``presentation.html`` in your webbrowser.
+    1. open a console, go to the folder containing ``presentation.txt``
+    2. run ``rst2s5.py presentation.txt presentation.html``
+    3. get ``default.css`` from 
+       http://docutils.sf.net/tools/stylesheets/default.css, put it in the same
+       folder.
+    4. extract the sample theme from
+       http://meyerweb.com/eric/tools/s5/s5blank.zip
+       to the same folder (this should create a ``ui`` subfolder).
+    5. open ``presentation.html`` in the webbrowser.
 
 
 Features
@@ -98,13 +118,16 @@ Features
 Additions:
 
 *   ``.. handout::`` directive: These blocks are only visible when the
-    presentation is printed and in raw view mode. They are hidden in the
+    presentation is printed. They are hidden in the
     screen presentation.
   
     .. handout::
-        Text in ``.. handout::`` block is only visible in the printed material
-        and not in the slideshow on the screen. This can be used to be more
-        detailed in a handout.
+        These blocks are also visible on the screen if the "raw view mode"
+        is active.
+        
+        The text in a ``.. handout::`` block or elements with the ``.. class::
+        handout`` are hidden in the slideshow on the screen. This can be used
+        to be more detailed in a handout.
         
         ``.. handout::`` directives can appear anywhere in the Text, as
         often as needed.
@@ -112,29 +135,39 @@ Additions:
 *   The ``|s5 theme|`` substitution can define a different S5 theme.
 
     .. handout::
-        The substitution changes the default theme that is used. 
+        The substitution changes the place where the theme is loaded from.
         For example, use the "pixel" theme::
         
         .. |s5 theme| replace:: pixel
         
-        The default theme is "ui". The command line switch ``--theme``,
-        described below, overrides the default as well as the ``|s5 theme|``
-        substitution.
-
-*   The ``--theme`` command line option is used to specify a different directory
-    with the S5 stylesheets/design files.
-
-    .. handout::
+        The default theme is "ui". The command line switch ``--theme``
+        overrides the default as well as the ``|s5 theme|`` substitution.
+        The command line option is dominant over the substitution.
+        
         Example::
         
             rst2s5 --theme pixel presentation.txt presentation.html
+        
+        Usualy, themes are placed in a subfolder with the specified name, in
+        the same folder as the presentation. But it is also possible to use
+        URLs and grab the design from an other website.
 
-*   The ``|s5 location|`` substitution defines additional text in the S5 footer.
+*   The ``|s5 title|`` substitution defines additional text in the S5 footer.
 
     .. handout::
-        The extra information in the slideshows footer can be set by this
-        substitution. It makes sense to use a ``replace`` directive to
-        assign some text like the date of the presentation and/or the
+        This substitution defines the first text in the footer of the slides.
+
+        Example::
+        
+            .. |s5 title| replace:: Presentation title
+
+*   The ``|s5 location|`` substitution defines additional text in the S5
+    footer.
+
+    .. handout::
+        More extra information in the slideshows footer can be set by this
+        substitution. It only makes sense to use a ``replace`` directive to
+        assign some text like the date of the presentation and/or the 
         location.
         
         The field in the footer is left blank if the substitution is missing.
@@ -165,7 +198,7 @@ True   True   True
 =====  =====  ======
 
 .. hint::
-    Admonitions, tables, sidebars can all be used on the screen and in
+    Admonitions, tables, sidebars and others can be used on the screen and in
     the handout.
     
 .. sidebar::     Handout only
@@ -174,9 +207,10 @@ True   True   True
     Elements only visible in the handout can also be generated using the
     :class: attribute on sidebars, compounds and other elements.
 
-.. compound:: :class: handout
-    
-    An other text, only on the handout.
+.. class:: handout
+
+An other text, only on the handout. The ``.. class:: handout`` directive 
+can be used to tag single paragraphs or other elements.
 
 
 Caveats
@@ -185,4 +219,6 @@ Caveats
     of headings and they won't show up correctly in the screen presentation.
 
 *   ``.. handout::`` directives generate an error if other ``rst2XXX``
-    convertors are used, instead of the S5 converter.
+    converters are used, instead of the S5 converter.
+
+*   There must be only one level of titles.

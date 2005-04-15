@@ -1,13 +1,5 @@
-Slideshow Title
-===============
-
-.. The main title above is used as slideshow title, but each slide has to
-   start with a subtitle, including the very first slide. The title of
-   the first slide will be the same as the main title above in most cases.
-   
-   There must not be any visible text between the main title and the first
-   subtitle. It would be visible on all slides.
-
+.. |s5 title| replace::
+        The contents of the ``|s5 title|`` substitution is shown here.
 .. |s5 location| replace::
         The contents of the ``|s5 location|`` substitution is shown here.
 
@@ -15,6 +7,7 @@ Slideshow Title
 Slideshow Title
 ---------------
 :Author: ...
+:Date:   Today
 
 Short introduction
 
