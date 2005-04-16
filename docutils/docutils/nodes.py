@@ -597,6 +597,7 @@ class Element(Node):
 
     def set_class(self, name):
         """Add a new class to the "classes" attribute."""
+        assert ' ' not in name
         self['classes'].append(name.lower())
 
     def note_referenced_by(self, name=None, id=None):
