@@ -122,7 +122,7 @@ def handout_directive(name, arguments, options, content, lineno,
     node = nodes.section(text)
     #~ if options.has_key('class'):
         #~ node.set_class(options['class'])
-    node['classes'].append('handout')
+    node.set_class('handout')
     state.nested_parse(content, content_offset, node)
     return [node]
 
