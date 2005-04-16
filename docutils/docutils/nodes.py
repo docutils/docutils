@@ -346,8 +346,7 @@ class Element(Node):
 
         self.extend(children)           # maintain parent info
 
-        self.attributes = {'ids': [], 'classes': [], 'names': [],
-                           'dupnames': [], 'backrefs': []}
+        self.attributes = self.attr_defaults.copy()
         """Dictionary of attribute {name: value}."""
 
         for att, value in attributes.items():
@@ -594,6 +593,10 @@ class Element(Node):
 
     def copy(self):
         return self.__class__(**self.attributes)
+
+    def set_class(self, name):
+        """Add a new class to the "classes" attribute."""
+        self['classes'].append(name.lower())
 
     def note_referenced_by(self, name=None, id=None):
         """Note that this Element has been referenced by its name
