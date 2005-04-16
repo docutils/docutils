@@ -11,36 +11,23 @@ S5/HTML Slideshow Writer.
 __docformat__ = 'reStructuredText'
 
 
-import random
 import sys
-import docutils
-from docutils import frontend, nodes, utils
+from docutils import nodes
 from docutils.writers import html4css1
 from docutils.parsers.rst import directives
-from docutils.transforms import Transform
-try:
-    import optparse
-except ImportError:
-    import optik as optparse
 
 
 class Writer(html4css1.Writer):
 
     settings_spec = html4css1.Writer.settings_spec + (
         'S5 Slideshow Specific Options',
-        """The HTML --footnote-references option's default is set to """
-        '"brackets".',
-        (('Specify a S5 design directory. Overrides the theme selected'
-          'by the document. Default is "ui" if thisoption is absent and the'
-          'document does not redefine it.',
+        None,
+        (('Specify an S5 theme directory.  Overrides the theme selected '
+          'by the document.  The default is "ui" if this option is absent '
+          'and the document does not redefine it.',
           ['--theme'],
           {'default': None, 'metavar': '<file>'}),
     ))
-
-    settings_default_overrides = {'footnote_references': 'brackets'}
-
-    relative_path_settings = (html4css1.Writer.relative_path_settings
-                              + ('template',))
 
     config_section = 's5 writer'
     config_section_dependencies = ('writers', 'html4css1 writer')
@@ -51,6 +38,7 @@ class Writer(html4css1.Writer):
 
 
 class HTMLTranslator(html4css1.HTMLTranslator):
+
     def __init__(self, *args):
         html4css1.HTMLTranslator.__init__(self, *args)
         #get theme from document substitutions, or use the default
@@ -76,7 +64,7 @@ class HTMLTranslator(html4css1.HTMLTranslator):
         #~ if not len(node) or not isinstance(node[0], nodes.title):
             #~ # for XHTML conformance, modulo IE6 appeasement:
             #~ self.head.insert(0, '<title></title>\n')
-        
+
         #try to use substitution to set title
         title = ''
         if self.document.substitution_defs.has_key('s5 title'):
@@ -105,19 +93,20 @@ class HTMLTranslator(html4css1.HTMLTranslator):
         #as we would get two of these in the HTML headers...
         self.head.append('<title>%s</title>\n' % title)
 
-
     def depart_document(self, node):
         self.fragment.extend(self.body)
-        self.body_prefix.append(self.starttag(node, 'div', CLASS='presentation'))
+        self.body_prefix.append(
+            self.starttag(node, 'div', CLASS='presentation'))
         self.body_suffix.insert(0, '</div>\n')
-
 
     def visit_section(self, node):
         self.section_level += 1
         if self.section_level > 1:
-            self.body.append(self.starttag(node, 'div', CLASS='section')) #dummy for matching div's
+            # dummy for matching div's
+            self.body.append(self.starttag(node, 'div', CLASS='section'))
         else:
             self.body.append(self.starttag(node, 'div', CLASS='slide'))
+
 
 #extra directive for handouts
 
@@ -133,7 +122,7 @@ def handout_directive(name, arguments, options, content, lineno,
     node = nodes.section(text)
     #~ if options.has_key('class'):
         #~ node.set_class(options['class'])
-    node.set_class('handout')
+    node['classes'].append('handout')
     state.nested_parse(content, content_offset, node)
     return [node]
 
