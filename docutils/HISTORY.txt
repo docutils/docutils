@@ -45,6 +45,12 @@ Changes Since 0.3.7
     ``document.get_decoration`` method, and ``decoration.get_header``
     & ``.get_footer`` methods.
 
+* docutils/utils.py:
+
+  - Removed ``docutils.utils.Reporter.categories``,
+    ``docutils.utils.ConditionSet``, and all references to them, to
+    simplify error reporting.
+
 * docutils/languages/nl.py: Added to project; Dutch mappings by
   Martijn Pieters.
 
