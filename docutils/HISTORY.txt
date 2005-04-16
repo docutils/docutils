@@ -41,7 +41,6 @@ Changes Since 0.3.7
   - Added ``attr_defaults`` dictionary for default attribute values.
   - Added empty list as default value for the following attributes:
     ``ids``, ``names``, ``dupnames``, ``classes``, and ``backrefs``.
-  - Removed ``Element.set_class()`` method.
   - Added ``document.decoration`` attribute,
     ``document.get_decoration`` method, and ``decoration.get_header``
     & ``.get_footer`` methods.
