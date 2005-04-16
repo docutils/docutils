@@ -26,6 +26,7 @@ __docformat__ = 'reStructuredText'
 import sys
 import os
 import re
+import copy
 import xml.dom.minidom
 from types import IntType, SliceType, StringType, UnicodeType, \
      TupleType, ListType
@@ -346,7 +347,7 @@ class Element(Node):
 
         self.extend(children)           # maintain parent info
 
-        self.attributes = self.attr_defaults.copy()
+        self.attributes = copy.deepcopy(self.attr_defaults)
         """Dictionary of attribute {name: value}."""
 
         for att, value in attributes.items():
