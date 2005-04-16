@@ -13,6 +13,7 @@ __docformat__ = 'reStructuredText'
 import sys
 import os
 import os.path
+import warnings
 from types import StringType, UnicodeType
 from docutils import ApplicationError, DataError
 from docutils import frontend, nodes
@@ -118,6 +119,17 @@ class Reporter:
 
         self.max_level = -1
         """The highest level system message generated so far."""
+
+    def set_conditions(self, category, report_level, halt_level,
+                       stream=None, debug=0):
+        warnings.warn('set attributes via configuration settings or directly',
+                      DeprecationWarning, stacklevel=2)
+        self.report_level = report_level
+        self.halt_level = halt_level
+        if stream is None:
+            stream = sys.stderr
+        self.stream = stream
+        self.debug = debug
 
     def attach_observer(self, observer):
         """
