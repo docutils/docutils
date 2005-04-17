@@ -122,7 +122,8 @@ class Reporter:
 
     def set_conditions(self, category, report_level, halt_level,
                        stream=None, debug=0):
-        warnings.warn('set attributes via configuration settings or directly',
+        warnings.warn('docutils.utils.Reporter.set_condition deprecated; '
+                      'set attributes via configuration settings or directly',
                       DeprecationWarning, stacklevel=2)
         self.report_level = report_level
         self.halt_level = halt_level
