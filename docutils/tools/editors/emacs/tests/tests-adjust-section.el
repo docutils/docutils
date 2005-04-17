@@ -111,6 +111,30 @@ Subtitle
 
 ")
 
+    (with-suggested-new-text
+"
+Some Title
+==========
+
+Subtitle
+--------
+
+Subtitle2@
+
+"
+"
+Some Title
+==========
+
+Subtitle
+--------
+
+Subtitle2
+~~~~~~~~~
+
+"
+2)
+
     (with-previous-text-rotating
 "
 Some Title
@@ -133,7 +157,7 @@ Subtitle2
 =========
 
 "
-2)
+3)
 
   )
   
@@ -173,9 +197,3 @@ Subtitle2
  rest-adjust-section-tests
  (lambda ()
    (call-interactively 'rest-adjust-section-title)))
-
-
-
-
-
-

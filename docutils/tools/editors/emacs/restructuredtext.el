@@ -88,6 +88,13 @@ This is useful for filling list item paragraphs."
 ;;   If the function is invoked on a section that is complete, the character
 ;;   is rotated among the existing ones.
 ;;
+;;   Note that when rotating the underlining characters, if we come to the end
+;;   of the hierarchy of characters, the variable rest-preferred-characters
+;;   is consulted to propose a new underline char, and if continued, we cycle
+;;   the underline characters all over again.  Set this variable to nil if 
+;;   you want to limit the underlining character propositions to the existing
+;;   underlines in the file.
+;;
 ;; - prefix argument is used to alternate the sectioning style.
 ;;
 ;; Examples:
@@ -211,6 +218,16 @@ This is useful for filling list item paragraphs."
 	))
     chars))
 
+(defun rest-suggest-new-char (allchars)
+  "Given the last char that has been seen, suggest a new,
+  different character, different from all that have been seen."
+  (let ((potentials (copy-sequence rest-preferred-characters)))
+    (dolist (x allchars)
+      (setq potentials (delq x potentials))
+      )
+    (car potentials)
+    ))
+
 (defun rest-update-section (underlinechar style &optional indent)
   "Unconditionally updates the overline/underline of a section
   title using the given character CHAR, with STYLE 'simple or
@@ -275,10 +292,10 @@ This is useful for filling list item paragraphs."
       (goto-char marker)
       ))
 
-
-(defvar rest-default-section-char ?=
-  "Default section underlining character to use when there aren't
-  any others to be used in the file.")
+(defvar rest-preferred-characters '(?= ?- ?~ ?+ ?` ?# ?@)
+  "Preferred ordering of underline characters.  This sequence is
+  consulted to offer a new underline character when we rotate the 
+  underlines at the end of the existing hierarchy of characters.")
 
 (defvar rest-default-under-and-over-indent 1
   "Number of characters to indent the section title when toggling
@@ -312,10 +329,10 @@ This is useful for filling list item paragraphs."
     and underline the current line as a section title (also see
     prefix argument below).
 
-    If no pre-existing underlining character is found in the
-    file, we use the last seen underline char or
-    rest-default-section-char if this is the first title in the
-    entire file.
+    If no pre-existing underlining character is found in the on
+    the line, we use the last seen underline char or consult the
+    first element of rest-preferred-characters if this is the
+    first title in the entire file.
 
   - If the current line does have an underline or overline, and
     if
@@ -393,18 +410,20 @@ This is useful for filling list item paragraphs."
     (if (or (and current-prefix-arg
 		 (not (< (prefix-numeric-value current-prefix-arg) 0)))
 	    (eq curchar nil))
-
+	
 	;; we're switching characters or there is currently no sectioning
 	(progn
 	  (setq curchar 
 		(or curchar
 		    (rest-find-last-section-char)
 		    (car (rest-all-section-chars))
-		    rest-default-section-char))
-	  
+		    (car rest-preferred-characters)
+		    ?=))
+
 	  (rest-update-section
-	   (or curchar rest-default-section-char)
-	   (if current-prefix-arg
+	   curchar
+	   (if (and current-prefix-arg
+		    (not (< (prefix-numeric-value current-prefix-arg) 0)))
 	       (if (eq init-style 'over-and-under) 'simple 'over-and-under)
 	     init-style)
 	   rest-default-under-and-over-indent)
@@ -434,13 +453,22 @@ This is useful for filling list item paragraphs."
 			      (if (bolp) 1 0)))
 		  (allchars (rest-all-section-chars 
 			     (list (- curline 1) curline (+ curline 1))))
-		  (rotchars (append allchars (list (car allchars))))
+
+		  (rotchars 
+		   (append allchars 
+			   (filter 'identity
+				   (list 
+				    ;; suggest a new char
+				    (rest-suggest-new-char allchars)
+				    ;; rotate to first char
+				    (car allchars)))))
 		  (nextchar 
 		   (or (cadr (memq curchar 
 				   (if (< (prefix-numeric-value 
 					   current-prefix-arg) 0)
 				       (reverse rotchars) rotchars)))
 		       (car allchars)) ) )
+
 
 	    (if nextchar
 		(rest-update-section nextchar init-style curindent))
