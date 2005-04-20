@@ -9,6 +9,10 @@
 ;; Installation instructions
 ;; -------------------------
 ;;
+;; Add this line to your .emacs file::
+;;
+;;   (require 'restructuredtext)
+;;
 ;; You should bind the versatile sectioning command to some key in the text-mode
 ;; hook. Something like this::
 ;;
@@ -18,8 +22,8 @@
 ;;   (add-hook 'text-mode-hook 'user-rst-mode-hook)
 ;;
 ;; Other specialized and more generic functions are also available.
-;; Note that C-= is a good binding, since it allows you to specif a negative arg
-;; easily with C-- C-= (easy to type), as well as ordinary prefix arg with
+;; Note that C-= is a good binding, since it allows you to specify a negative
+;; arg easily with C-- C-= (easy to type), as well as ordinary prefix arg with
 ;; C-u C-=.
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
