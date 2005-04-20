@@ -6,6 +6,36 @@
 
 :Date: $Date$
 
+
+Directory Contents
+==================
+
+This directory contains the following Emacs lisp package files:
+
+* restructuredtext.el by Martin Blais and David Goodger
+
+  Support code for editing reStructuredText with Emacs indented-text
+  mode.
+
+* rst-mode.el by Stefan Merten
+
+  Provides support for documents marked up using the reStructuredText
+  format, including font locking as well as some convenience functions
+  for editing.
+
+* rst-html.el by Martin Blais
+
+  Provides a few functions and variables that can help in automating
+  the conversion of reST documents to HTML from within Emacs.
+
+Each file includes specific usage instructions.  To install a package,
+put a copy of the package file in a directory on your ``load-path``
+(use ``C-h v load-path`` to check).
+
+
+Character Processing Notes
+==========================
+
 Since reStructuredText punts on the issue of character processing,
 here are some useful resources for Emacs users in the Unicode world:
 
