@@ -605,6 +605,16 @@ example::
 In the example above, a literal block is "embedded" within a sentence
 that begins in one physical paragraph and ends in another.
 
+.. note::
+
+   The "compound" directive is *not* a generic block-level container
+   like HTML's ``<div>`` element.  Do not use it only to group a
+   sequence of elements, or you may get unexpected results.
+
+   If you happen to need a generic block-level container, please
+   describe your use-case in an email to
+   docutils-users@lists.sourceforge.net.
+
 Compound paragraphs are typically rendered as multiple distinct text
 blocks, with the possibility of variations to emphasize their logical
 unity:
