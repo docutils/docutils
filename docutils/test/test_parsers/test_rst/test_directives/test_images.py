@@ -293,6 +293,55 @@ totest['images'] = [
             .. image:: picture.png
                :target:
 """],
+["""\
+.. image:: picture.png
+   :align: left
+""",
+"""\
+<document source="test data">
+    <image align="left" uri="picture.png">
+"""],
+["""\
+.. image:: picture.png
+   :align: top
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Error in "image" directive: "top" is not a valid value for the "align" option.  Valid values for "align" are: "left", "center", "right".
+        <literal_block xml:space="preserve">
+            .. image:: picture.png
+               :align: top
+"""],
+["""\
+.. |img| image:: picture.png
+   :align: top
+""",
+"""\
+<document source="test data">
+    <substitution_definition names="img">
+        <image align="top" alt="img" uri="picture.png">
+"""],
+["""\
+.. |img| image:: picture.png
+   :align: left
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Error in "image" directive: "left" is not a valid value for the "align" option within a substitution definition.  Valid values for "align" are: "top", "middle", "bottom".
+        <literal_block xml:space="preserve">
+            image:: picture.png
+               :align: left
+    <system_message level="2" line="1" source="test data" type="WARNING">
+        <paragraph>
+            Substitution definition "img" empty or invalid.
+        <literal_block xml:space="preserve">
+            .. |img| image:: picture.png
+               :align: left
+"""],
 ]
 
 

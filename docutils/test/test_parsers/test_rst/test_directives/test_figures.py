@@ -119,6 +119,25 @@ totest['figures'] = [
             A figure with explicit alignment.
 """],
 ["""\
+.. figure:: picture.png
+   :align: top
+
+   A figure with wrong alignment.
+""",
+"""\
+<document source="<stdin>">
+    <system_message level="3" line="1" source="<stdin>" type="ERROR">
+        <paragraph>
+            Error in "figure" directive:
+            invalid option value: (option: "align"; value: u'top')
+            "top" unknown; choose from "left", "center", or "right".
+        <literal_block xml:space="preserve">
+            .. figure:: picture.png
+               :align: top
+            
+               A figure with wrong alignment.
+"""],
+["""\
 This figure lacks a caption. It may still have a
 "Figure 1."-style caption appended in the output.
 
