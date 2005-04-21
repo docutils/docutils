@@ -125,11 +125,11 @@ totest['figures'] = [
    A figure with wrong alignment.
 """,
 """\
-<document source="<stdin>">
-    <system_message level="3" line="1" source="<stdin>" type="ERROR">
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Error in "figure" directive:
-            invalid option value: (option: "align"; value: u'top')
+            invalid option value: (option: "align"; value: 'top')
             "top" unknown; choose from "left", "center", or "right".
         <literal_block xml:space="preserve">
             .. figure:: picture.png
