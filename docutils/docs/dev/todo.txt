@@ -728,10 +728,11 @@ __ rst/alternatives.html#or-not-to-do
 
   This may not be just a parser issue; it may need framework support.
 
-  Mailing list threads: `Images in both HTML and LaTeX`__,
-  `more-universal links?`__
+  Mailing list threads: `Images in both HTML and LaTeX`__ (especially
+  `this summary of Felix's objections`__), `more-universal links?`__
 
   __ http://thread.gmane.org/gmane.text.docutils.user/1239
+  __ http://article.gmane.org/gmane.text.docutils.user/1278
   __ http://thread.gmane.org/gmane.text.docutils.user/1915
 
 * Implement the header row separator modification to table.el.  (Wrote
