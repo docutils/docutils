@@ -22,13 +22,33 @@ try:
 except ImportError:
     Image = None
 
-align_values = ('top', 'middle', 'bottom', 'left', 'center', 'right')
+align_h_values = ('left', 'center', 'right')
+align_v_values = ('top', 'middle', 'bottom')
+align_values = align_v_values + align_h_values
 
 def align(argument):
     return directives.choice(argument, align_values)
 
 def image(name, arguments, options, content, lineno,
           content_offset, block_text, state, state_machine):
+    if options.has_key('align'):
+        # check for align_v values only
+        if isinstance(state, states.SubstitutionDef):
+            if options['align'] not in align_v_values:
+                error = state_machine.reporter.error(
+                    'Error in "%s" directive: "%s" is not a valid value for '
+                    'the "align" option within a substitution definition.  '
+                    'Valid values for "align" are: "%s".'
+                    % (name, options['align'], '", "'.join(align_v_values)),
+                    nodes.literal_block(block_text, block_text), line=lineno)
+                return [error]
+        elif options['align'] not in align_h_values:
+            error = state_machine.reporter.error(
+                'Error in "%s" directive: "%s" is not a valid value for '
+                'the "align" option.  Valid values for "align" are: "%s".'
+                % (name, options['align'], '", "'.join(align_h_values)),
+                nodes.literal_block(block_text, block_text), line=lineno)
+            return [error]
     messages = []
     reference = directives.uri(arguments[0])
     options['uri'] = reference
@@ -63,12 +83,17 @@ image.options = {'alt': directives.unchanged,
                  'target': directives.unchanged_required,
                  'class': directives.class_option}
 
+def figure_align(argument):
+    return directives.choice(argument, align_h_values)
+
 def figure(name, arguments, options, content, lineno,
            content_offset, block_text, state, state_machine):
     figwidth = options.setdefault('figwidth')
     figclasses = options.setdefault('figclass')
+    align = options.setdefault('align')
     del options['figwidth']
     del options['figclass']
+    del options['align']
     (image_node,) = image(name, arguments, options, content, lineno,
                          content_offset, block_text, state, state_machine)
     if isinstance(image_node, nodes.system_message):
@@ -88,6 +113,8 @@ def figure(name, arguments, options, content, lineno,
         figure_node['width'] = figwidth
     if figclasses:
         figure_node['classes'] += figclasses
+    if align:
+        figure_node['align'] = align
     if content:
         node = nodes.Element()          # anonymous container for parsing
         state.nested_parse(content, content_offset, node)
@@ -116,4 +143,5 @@ figure.arguments = (1, 0, 1)
 figure.options = {'figwidth': figwidth_value,
                   'figclass': directives.class_option}
 figure.options.update(image.options)
+figure.options['align'] = figure_align
 figure.content = 1

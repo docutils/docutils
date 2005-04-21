@@ -106,6 +106,19 @@ totest['figures'] = [
             A picture with image options on individual lines, and this caption.
 """],
 ["""\
+.. figure:: picture.png
+   :align: center
+
+   A figure with explicit alignment.
+""",
+"""\
+<document source="test data">
+    <figure align="center">
+        <image uri="picture.png">
+        <caption>
+            A figure with explicit alignment.
+"""],
+["""\
 This figure lacks a caption. It may still have a
 "Figure 1."-style caption appended in the output.
 

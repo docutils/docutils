@@ -429,6 +429,7 @@ A figure directive:
    :figclass: figclass1 figclass2
    :class: class1 class2
    :alt: reStructuredText, the markup syntax
+   :align: left
 
    A figure is an image with a caption and/or a legend:
 

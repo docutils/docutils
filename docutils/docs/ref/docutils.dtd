@@ -97,6 +97,12 @@ resolve to either an internal or external reference.
 <!ENTITY % fixedspace.att
   " xml:space (default | preserve) #FIXED 'preserve' ">
 
+<!ENTITY % align-h.att
+  " align     (left | center | right) #IMPLIED ">
+
+<!ENTITY % align-hv.att
+  " align     (top | middle | bottom | left | center | right) #IMPLIED ">
+
 
 <!-- Element OR-Lists
 ============================================================= -->
@@ -465,12 +471,14 @@ or " ") or the text between option arguments (typically either "," or
 <!ELEMENT figure (image, ((caption, legend?) | legend)) >
 <!ATTLIST figure
     %basic.atts;
+    %align-h.att;
     width     %number;  #IMPLIED>
 
 <!-- Also an inline element. -->
 <!ELEMENT image EMPTY>
 <!ATTLIST image
     %basic.atts;
+    %align-hv.att;
     uri       CDATA     #REQUIRED
     alt       CDATA     #IMPLIED
     height    %number;  #IMPLIED

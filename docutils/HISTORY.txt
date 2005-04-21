@@ -84,6 +84,9 @@ Changes Since 0.3.7
   - Allowed whitespace (stripped) in "image" & "figure" directive URLs.
   - Added support for the ``file_insertion_enabled`` setting in the
     "figure" directive (disables "figwidth" option).
+  - "image" directive: added checks for valid values of "align" option,
+    depending on context.  "figure" directive: added specialized
+    "align" option and attribute on "figure" element.
 
 * docutils/parsers/rst/directives/misc.py:
 
@@ -131,6 +134,7 @@ Changes Since 0.3.7
   - Added the ``field_name_limit`` & ``option_limit`` settings &
     support.
   - Added support for table stub columns.
+  - Added support for ``align`` attribute on ``figure`` elements.
 
 * docutils/writers/latex2e.py:
 
@@ -147,6 +151,7 @@ Changes Since 0.3.7
   - Added ``stub`` attribute to ``colspec`` element via the
     ``tbl.colspec.att`` parameter entity.
   - Allowed topic elements within sidebars
+  - Added ``align`` attribute to ``figure`` element.
 
 
 Release 0.3.7 (2004-12-24)
