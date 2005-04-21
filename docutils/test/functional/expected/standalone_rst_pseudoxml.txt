@@ -969,7 +969,8 @@
                     [nonexistent]_
                 
                 citation.
-        <section ids="targets" names="targets">
+            <target refid="another-target">
+        <section ids="targets another-target" names="targets another target">
             <title auto="1" refid="id43">
                 <generated classes="sectnum">
                     2.13   
@@ -1692,9 +1693,9 @@
         <system_message backrefs="id72" ids="id71" level="3" line="361" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Unknown target name: "nonexistent".
-        <system_message backrefs="id74" ids="id73" level="3" line="386" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id74" ids="id73" level="3" line="388" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Unknown target name: "hyperlink reference without a target".
-        <system_message backrefs="id76" ids="id75" level="3" line="399" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id76" ids="id75" level="3" line="401" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Duplicate target name, cannot be used as a unique reference: "duplicate target names".

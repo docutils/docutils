@@ -359,6 +359,8 @@ Citations
 Here's a reference to the above, [CIT2002]_, and a [nonexistent]_
 citation.
 
+.. _Another Target:
+
 Targets
 -------
 
