@@ -1,4 +1,4 @@
--*- coding: utf-8 -*-
+.. -*- coding: utf-8 -*-
 
 Acknowledgements
 ================
@@ -92,6 +92,7 @@ donations, tasty treats, and related projects:
 * Nigel W. Moriarty
 * Mark Nodine
 * Patrick K. O'Brien
+* Omidyar Network (Pierre Omidyar & Doug Solomon)
 * Michel Pelletier
 * Sam Penrose
 * Tim Peters
