@@ -1974,7 +1974,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_topic(self, node):
         self.topic_classes = node['classes']
-        if self.use_latex_toc:
+        if 'contents' in node['classes'] and self.use_latex_toc:
             self.body.append('\\tableofcontents\n\n\\bigskip\n')
             self.topic_classes = []
             raise nodes.SkipNode
