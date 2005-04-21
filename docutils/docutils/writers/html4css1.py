@@ -715,6 +715,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         atts = {'class': 'figure'}
         if node.get('width'):
             atts['style'] = 'width: %spx' % node['width']
+        if node.get('align'):
+            atts['align'] = node['align']
         self.body.append(self.starttag(node, 'div', **atts))
 
     def depart_figure(self, node):

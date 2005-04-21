@@ -1121,7 +1121,7 @@
                     <image classes="class1 class2" uri="../../../docs/user/rst/images/title.png">
                 <paragraph>
                     A figure directive:
-                <figure classes="figclass1 figclass2">
+                <figure align="left" classes="figclass1 figclass2">
                     <image alt="reStructuredText, the markup syntax" classes="class1 class2" uri="../../../docs/user/rst/images/title.png">
                     <caption>
                         A figure is an image with a caption and/or a legend:
