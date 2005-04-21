@@ -599,8 +599,8 @@ class Element(Node):
     def set_class(self, name):
         """Add a new class to the "classes" attribute."""
         warnings.warn('docutils.nodes.Element.set_class deprecated; '
-                      "append to Element.attributes['classes'] list "
-                      'attribute directly', DeprecationWarning, stacklevel=2)
+                      "append to Element['classes'] list attribute directly",
+                      DeprecationWarning, stacklevel=2)
         assert ' ' not in name
         self['classes'].append(name.lower())
 
