@@ -14,10 +14,19 @@ Post-History: 13-Jun-2001
 Abstract
 ========
 
-Just a test.
+This is just a test [#]_.  See the `PEP repository`_ for the real
+thing.
+
+.. _PEP repository: http://www.python.org/peps/
 
 
 Copyright
 =========
 
 This document has been placed in the public domain.
+
+
+References and Footnotes
+========================
+
+.. [#] PEP editors: peps@python.org

@@ -527,6 +527,19 @@ attribution
 
     __ `attribution [latex2e writer]`_
 
+_`cloak_email_addresses`
+    Scramble email addresses to confuse harvesters.  In the visible
+    text of an email address, the "@" will be replaced by "at", and
+    all periods (".") will be replaced by "dot", with spaces added.
+    In the reference URI, the address will be replaced by %-escapes.
+    For example, "abc@example.org" will be output as::
+
+        <a class="reference"
+         href="mailto:%61%62%63%40%65%78%61%6D%70%6C%65%2E%6F%72%67">
+        abc at example dot org</a>
+
+    Default: don't cloak (None).  Option: ``--cloak-email``.
+
 _`compact_lists`
     Remove extra vertical whitespace between items of bullet lists and
     enumerated lists, when list items are "simple" (i.e., all items

@@ -101,7 +101,12 @@ class Writer(writers.Writer):
          ('Omit the XML declaration.  Use with caution.',
           ['--no-xml-declaration'],
           {'dest': 'xml_declaration', 'default': 1, 'action': 'store_false',
-           'validator': frontend.validate_boolean}),))
+           'validator': frontend.validate_boolean}),
+         ('Scramble email addresses to confuse harvesters.  '
+          'For example, "abc@example.org" will become '
+          '``<a href="mailto:%61%62%63%40...">abc at example dot org</a>``.',
+          ['--cloak-email-addresses'],
+          {'action': 'store_true', 'validator': frontend.validate_boolean}),))
 
     relative_path_settings = ('stylesheet_path',)
 
@@ -240,6 +245,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.header = []
         self.footer = []
         self.in_document_title = 0
+        self.in_mailto = 0
 
     def astext(self):
         return ''.join(self.head_prefix + self.head
@@ -258,6 +264,20 @@ class HTMLTranslator(nodes.NodeVisitor):
         # Replace the non-breaking space character with the HTML entity:
         text = text.replace(u'\u00a0', "&nbsp;")
         return text
+
+    def cloak_mailto(self, uri):
+        """Try to hide a mailto: URL from harvesters."""
+        addr = uri.split(':', 1)[1]
+        if '?' in addr:
+            addr, query = addr.split('?', 1)
+            query = '?' + query
+        else:
+            query = ''
+        escaped = ['%%%02X' % ord(c) for c in addr]
+        return 'mailto:%s%s' % (''.join(escaped), query)
+
+    def cloak_email(self, addr):
+        return addr.replace('@', ' at ').replace('.', ' dot ')
 
     def attval(self, text,
                whitespace=re.compile('[\n\r\t\v\f]')):
@@ -315,7 +335,10 @@ class HTMLTranslator(nodes.NodeVisitor):
             node[-1]['classes'].append('last')
 
     def visit_Text(self, node):
-        self.body.append(self.encode(node.astext()))
+        text = node.astext()
+        if self.in_mailto and self.settings.cloak_email_addresses:
+            text = self.cloak_email(text)
+        self.body.append(self.encode(text))
 
     def depart_Text(self, node):
         pass
@@ -1086,6 +1109,10 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.context.append('</div>\n')
         if node.has_key('refuri'):
             href = node['refuri']
+            if ( self.settings.cloak_email_addresses
+                 and href.startswith('mailto:')):
+                href = self.cloak_mailto(href)
+                self.in_mailto = 1
         else:
             assert node.has_key('refid'), \
                    'References must have "refuri" or "refid" attribute.'
@@ -1096,6 +1123,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_reference(self, node):
         self.body.append('</a>')
         self.body.append(self.context.pop())
+        self.in_mailto = 0
 
     def visit_revision(self, node):
         self.visit_docinfo_item(node, 'revision', meta=None)
