@@ -135,6 +135,7 @@ Changes Since 0.3.7
     support.
   - Added support for table stub columns.
   - Added support for ``align`` attribute on ``figure`` elements.
+  - Added the ``cloak_email_addresses`` setting & support.
 
 * docutils/writers/latex2e.py:
 

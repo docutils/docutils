@@ -14,3 +14,4 @@ settings_overrides['template'] = "../tools/pep-html-template"
 settings_overrides['python_home'] = "http://www.python.org"
 settings_overrides['pep_home'] = "http://www.python.org/peps"
 settings_overrides['no_random'] = 1
+settings_overrides['cloak_email_addresses'] = 1
