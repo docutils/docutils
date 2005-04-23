@@ -26,6 +26,10 @@ Changes Since 0.3.7
   - Enabled ``--dump-*`` options when ``--traceback`` specified,
     allowing for easier debugging.
 
+* docutils/examples.py:
+
+  - Added ``internals`` function for exploration.
+
 * docutils/io.py:
 
   - Fixed ``Input.decode`` method to apply heuristics only if no
@@ -146,6 +150,8 @@ Changes Since 0.3.7
     even if the document has no title.
   - Made sure that latex doesn't fill in today's date if no date field
     was given.
+
+* docutils/writers/null.py: Added to project; a do-nothing Writer.
 
 * docs/ref/docutils.dtd:
 
