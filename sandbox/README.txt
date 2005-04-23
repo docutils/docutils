@@ -25,11 +25,31 @@ Sandbox Projects
 
 .. contents:: :local:
 
+
 Project Infrastructure
 ----------------------
 
-`docutils-update <davidg/infrastructure/docutils-update>`_ is
-a script that is installed as a cron job on SourceForge to
-automatically update the Docutils_ web site whenever the CVS files
-change.  Any .html document with a corresponding .txt file is
-regenerated whenever the .txt file changes.
+`docutils-update <davidg/infrastructure/docutils-update>`_ is a script
+that is installed as a cron job on BerliOS.de to automatically update
+the Docutils_ web site whenever the SVN files change.  Any .html
+document with a corresponding .txt file is regenerated whenever the
+.txt file changes.
+
+
+Documenting Python
+------------------
+
+Some work has been done on enabling Docutils to write the
+`"Documenting Python" variant of LaTeX`__, which we're calling
+"DocPy".
+
+__ http://docs.python.org/doc/doc.html
+
+* `Edward Loper's sandbox
+  <http://docutils.sf.net/sandbox/edloper/docpy/>`__.  The example 
+  "asyncore.rst" file was originally adapted by Steve Holden and Bill
+  Sconce.
+
+* `Dave Kuhlman's sandbox
+  <http://docutils.sf.net/sandbox/dkuhlman/>`__ and `his homepage
+  <http://www.rexx.com/~dkuhlman/rstpythonlatex_intro.html>`__.
