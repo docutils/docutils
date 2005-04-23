@@ -76,7 +76,8 @@ for inclusion in the Python standard library.
   of the resulting documents is more easily customizable.  (Similar to
   what you wrote about a new HTML Writer.)
 
-* Suitability for Python module documentation.
+* Suitability for `Python module documentation
+  <http://docutils.sf.net/sandbox/README.html#documenting-python>`_.
 
 
 General
