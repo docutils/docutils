@@ -807,7 +807,7 @@ def _format_str(*args):
                 r = r[1:]
             # quote_char = "'" or '"'
             quote_char = r[0]
-            assert quote_char in ("'", "'")
+            assert quote_char in ("'", '"')
             assert r[0] == r[-1]
             r = r[1:-1]
             r = (stripped + 3 * quote_char + '\\\n' +
