@@ -1233,9 +1233,7 @@ context.
 
 The ``decoration`` element is a container for header_ and footer_
 elements and potential future extensions.  These elements are used for
-page navigation, notes, time/datestamp, etc.  Currently only the
-footer_ element is implemented, populated with processing information
-(datestamp, a link to Docutils_, etc.).
+notes, time/datestamp, processing information, etc.
 
 
 Details
@@ -2242,8 +2240,9 @@ See the examples for the field_list_ and docinfo_ elements.
 
 The ``footer`` element is a container element whose contents are meant
 to appear at the bottom of a web page, or repeated at the bottom of
-every printed page.  Currently the ``footer`` element may contain
-processing information (datestamp, a link to Docutils_, etc.).
+every printed page.  The ``footer`` element may contain processing
+information (datestamp, a link to Docutils_, etc.) as well as custom
+content.
 
 
 Details
