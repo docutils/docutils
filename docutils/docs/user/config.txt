@@ -538,7 +538,7 @@ _`cloak_email_addresses`
          href="mailto:%61%62%63%40%65%78%61%6D%70%6C%65%2E%6F%72%67">
         abc at example dot org</a>
 
-    Default: don't cloak (None).  Option: ``--cloak-email``.
+    Default: don't cloak (None).  Option: ``--cloak-email-addresses``.
 
 _`compact_lists`
     Remove extra vertical whitespace between items of bullet lists and
