@@ -130,7 +130,8 @@ class Writer(writers.Writer):
     def assemble_parts(self):
         writers.Writer.assemble_parts(self)
         for part in ('title', 'subtitle', 'docinfo', 'body', 'header',
-                     'footer', 'meta', 'stylesheet', 'fragment'):
+                     'footer', 'meta', 'stylesheet', 'fragment',
+                     'html_title', 'html_subtitle', 'html_body'):
             self.parts[part] = ''.join(getattr(self.visitor, part))
 
 
@@ -244,6 +245,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.subtitle = []
         self.header = []
         self.footer = []
+        self.html_title = []
+        self.html_subtitle = []
+        self.html_body = []
         self.in_document_title = 0
         self.in_mailto = 0
 
@@ -623,6 +627,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.fragment.extend(self.body)
         self.body_prefix.append(self.starttag(node, 'div', CLASS='document'))
         self.body_suffix.insert(0, '</div>\n')
+        self.html_body.extend(self.body_prefix[1:] + self.body_pre_docinfo
+                              + self.docinfo + self.body
+                              + self.body_suffix[:-1])
 
     def visit_emphasis(self, node):
         self.body.append('<em>')
@@ -1202,6 +1209,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.subtitle = self.body[self.in_document_title:-1]
             self.in_document_title = 0
             self.body_pre_docinfo.extend(self.body)
+            self.html_subtitle.extend(self.body)
             del self.body[:]
 
     def visit_superscript(self, node):
@@ -1366,6 +1374,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.title = self.body[self.in_document_title:-1]
             self.in_document_title = 0
             self.body_pre_docinfo.extend(self.body)
+            self.html_title.extend(self.body)
             del self.body[:]
 
     def visit_title_reference(self, node):

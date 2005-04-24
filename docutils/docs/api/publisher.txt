@@ -35,9 +35,9 @@ handles everything else.  There are five convenience functions in the
   dictionary of document parts.  Dictionary keys are the names of
   parts, and values are Unicode strings; encoding is up to the client.
   Useful when only portions of the processed document are desired.
-  Currently only implemented for the HTML Writer.
+  See `publish_parts Details`_ below.
 
-  There are examples in the `docutils/examples.py`_ module.
+  There are usage examples in the `docutils/examples.py`_ module.
 
 * ``publish_programmatically``: for custom programmatic use.  This
   function implements common code and is used by ``publish_file``,
@@ -74,7 +74,82 @@ Encodings
 The default output encoding of Docutils is UTF-8.  If you have any
 non-ASCII in your input text, you may have to do a bit more setup.
 Docutils may introduce some non-ASCII text if you use
-symbol-footnotes_.
+`auto-symbol footnotes`_ or the `"contents" directive`_.
 
-.. _symbol-footnotes:
+.. _auto-symbol footnotes:
    ../ref/rst/restructuredtext.html#auto-symbol-footnotes
+.. _"contents" directive:
+   ../ref/rst/directives.html#table-of-contents
+
+
+``publish_parts`` Details
+=========================
+
+The ``docutils.core.publish_parts`` convenience function returns a
+dictionary of document parts.  Dictionary keys are the names of parts,
+and values are Unicode strings.
+
+Each Writer component may publish a different set of document parts,
+described below.  Currently only the HTML Writer implements more than
+the "whole" part.
+
+
+Parts Provided By All Writers
+-----------------------------
+
+whole
+    ``parts['whole']`` contains the entire formatted document.
+
+
+Parts Provided By the HTML Writer
+---------------------------------
+
+body
+    ``parts['body']`` is equivalent to ``parts['fragment']``.
+
+docinfo
+    ``parts['docinfo']`` contains the document bibliographic data.
+
+footer
+    ``parts['footer']`` contains the document footer content, meant to
+    appear at the bottom of a web page, or repeated at the bottom of
+    every printed page.
+
+fragment
+    ``parts['fragment']`` contains the document body (*not* the HTML
+    ``<body>``).  In other words, it contains the entire document,
+    less the document title, subtitle, docinfo, header, and footer.
+
+header
+    ``parts['header']`` contains the document header content, meant to
+    appear at the top of a web page, or repeated at the top of every
+    printed page.
+
+html_body
+    ``parts['html_body']`` contains the HTML ``<body>`` content, less
+    the ``<body>`` and ``</body>`` tags themselves.
+
+html_subtitle
+    ``parts['html_subtitle']`` contains the document subtitle,
+    including the enclosing ``<h2 class="subtitle">`` & ``</h2>``
+    tags.
+
+html_title
+    ``parts['html_title']`` contains the document title, including the
+    enclosing ``<h1 class="title">`` & ``</h1>`` tags.
+
+meta
+    ``parts['meta']`` contains all ``<meta ... />`` tags.
+
+stylesheet
+    ``parts['stylesheet']`` contains the document stylesheet link.
+
+subtitle
+    ``parts['subtitle']`` contains the document subtitle text and any
+    inline markup.  It does not include the enclosing ``<h2>`` &
+    ``</h2>`` tags.
+
+title
+    ``parts['title']`` contains the document title text and any inline
+    markup.  It does not include the enclosing ``<h1>`` & ``</h1>``
+    tags.
