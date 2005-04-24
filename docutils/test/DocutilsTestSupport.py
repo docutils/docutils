@@ -742,6 +742,7 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
         """Minimize & standardize the output."""
         # remove redundant bits:
         del parts['whole']
+        assert parts['body'] == parts['fragment']
         del parts['body']
         # remove standard bits:
         parts['meta'] = parts['meta'].replace(self.standard_meta_value, '')
