@@ -222,6 +222,39 @@ Also see the `SourceForge Bug Tracker`_.
               <paragraph>
                   four
 
+* IDs are based on names.  Explicit hyperlink targets have priority
+  over implicit targets.  But if an explicit target comes after an
+  implicit target with the same name, the ID of the first (implicit)
+  target remains based on the implicit name.  Since HTML fragment
+  identifiers based on the IDs, the first target keeps the name.  For
+  example::
+
+      .. contents::
+
+      Section
+      =======
+
+      .. _contents:
+
+      Subsection
+      ----------
+
+      text with a reference to contents_ and section_
+
+      .. _section:
+
+      This paragraph is explicitly targeted with the name "section".
+      
+  When processed to HTML, the 2 internal hyperlinks (to "contents" &
+  "section") will work fine, but hyperlinks from outside the document
+  using ``href="...#contents"`` and ``href="...#section"`` won't work.
+  Such external links will connect to the implicit targets (table of
+  contents and "Section" title) instead of the explicit targets
+  ("Subsection" title and last paragraph).
+
+  Hyperlink targets with duplicate names should be assigned new IDs
+  unrelated to the target names (i.e., "id"-prefix serial IDs).
+
 
 ..
    Local Variables:
