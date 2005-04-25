@@ -445,10 +445,11 @@ General
 
   .. _discussion: http://thread.gmane.org/gmane.text.docutils.user/1319
 
-* The docutils.nodes.Element APIs could use some simplification.  For
-  example, ``node[x]`` is ambiguous (different results if x is a
-  string or an integer).  Replace with ``node[int]`` and
-  ``node.attributes[string]``?
+* Simplify the docutils.nodes.Element implementation?  ``node[x]`` is
+  convenient but can be considered ambiguous (different results if
+  ``x`` is a string or an integer).  Replace with ``node[int]`` and
+  ``node.attributes[string]``?  See
+  <http://thread.gmane.org/gmane.text.docutils.devel/2844>.
 
 * Add file-specific settings support to config files, like::
 
