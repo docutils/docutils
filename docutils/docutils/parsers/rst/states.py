@@ -1565,7 +1565,8 @@ class Body(RSTState):
                 table = self.build_table(tabledata, tableline)
                 nodelist = [table] + messages
             except tableparser.TableMarkupError, detail:
-                nodelist = self.malformed_table(block, str(detail)) + messages
+                nodelist = self.malformed_table(
+                    block, ' '.join(detail.args)) + messages
         else:
             nodelist = messages
         return nodelist, blank_finish
@@ -1982,7 +1983,8 @@ class Body(RSTState):
                                            directive_fn, option_presets))
         except MarkupError, detail:
             error = self.reporter.error(
-                'Error in "%s" directive:\n%s.' % (type_name, detail),
+                'Error in "%s" directive:\n%s.' % (type_name,
+                                                   ' '.join(detail.args)),
                 nodes.literal_block(block_text, block_text), line=lineno)
             return [error], blank_finish
         result = directive_fn(type_name, arguments, options, content, lineno,
@@ -2093,9 +2095,9 @@ class Body(RSTState):
         except KeyError, detail:
             return 0, ('unknown option: "%s"' % detail.args[0])
         except (ValueError, TypeError), detail:
-            return 0, ('invalid option value: %s' % detail)
+            return 0, ('invalid option value: %s' % ' '.join(detail.args))
         except utils.ExtensionOptionError, detail:
-            return 0, ('invalid option data: %s' % detail)
+            return 0, ('invalid option data: %s' % ' '.join(detail.args))
         if blank_finish:
             return 1, options
         else:

@@ -306,7 +306,7 @@ def assemble_option_dict(option_list, options_spec):
             options[name] = convertor(value)
         except (ValueError, TypeError), detail:
             raise detail.__class__('(option: "%s"; value: %r)\n%s'
-                                   % (name, value, detail))
+                                   % (name, value, ' '.join(detail.args)))
     return options
 
 
