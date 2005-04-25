@@ -21,7 +21,18 @@ start = time.time()
 
 import sys
 import os
+from types import UnicodeType
 import docutils
+
+
+def new_exception_str(self):
+    for i in self.args:
+        if isinstance(i, UnicodeType):
+            raise RuntimeError('Error (unicode): %r' % (self.args,))
+    return old_exception_str(self)
+
+old_exception_str = Exception.__str__
+Exception.__str__ = new_exception_str
 
 
 class Tee:
