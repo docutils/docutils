@@ -1,0 +1,731 @@
+\providecommand{\Ddocumentclass}{scrartcl}
+\providecommand{\Ddocumentoptions}{a4paper}
+
+\documentclass[\Ddocumentoptions]{\Ddocumentclass}
+
+
+\providecommand{\DSpackages}{%
+  % All kinds of useful packages.
+  \usepackage{ifthen}
+}
+
+
+\providecommand{\DSfontencoding}{
+  % T1-emulation.  Provides most characters and features we're used
+  % from T1-encoded fonts but doesn't use bitmap fonts.
+  \usepackage{ae}
+  % Provide the characters not contained in AE from EC bitmap fonts.
+  \usepackage{aecompl}
+  % Guillemets ("<<", ">>") in AE.
+  \usepackage{aeguill}
+}
+
+
+% Taken from
+% <http://groups.google.de/groups?selm=1i0n5tgtplti420e1omp4pctlv19jpuhbb%404ax.com>
+% and modified.  Used with permission.
+\makeatletter
+\providecommand{\Dprovidelength}[2]{%
+  \begingroup%
+    \escapechar\m@ne%
+    \xdef\@gtempa{{\string#1}}%
+  \endgroup%
+  \expandafter\@ifundefined\@gtempa%
+  {\newlength{#1}\setlength{#1}{#2}}%
+  {}%
+}
+\makeatother
+
+\makeatletter
+\providecommand{\Dprovidecounter}[1]{%
+  % Like \newcounter except that it doesn't crash if the counter
+  % already exists.
+  \@ifundefined{c@#1}{\newcounter{#1}}{}
+}
+\makeatother
+
+\providecommand{\DSboxcommands}{
+  \Dprovidelength{\Dboxparindent}{\parindent}
+  \providecommand{\Dmakeboxminipage}[1]{%
+    % Make minipage for use in a box created by \Dmakefbox.
+    \begin{minipage}[t]{0.9\linewidth}%
+      \setlength{\parindent}{\Dboxparindent}%
+      ##1%
+    \end{minipage}%
+  }
+  \providecommand{\Dmakefbox}[1]{%
+    % Make a centered, framed box.  Useful e.g. for admonitions.
+    \vspace{0.4\baselineskip}%
+    \begin{center}%
+      \fbox{\Dmakeboxminipage{##1}}%
+    \end{center}%
+    \vspace{0.4\baselineskip}%
+  }
+  \providecommand{\Dmakebox}[1]{%
+    % Make a centered, frameless box.  Useful e.g. for block quotes.
+    % Do not use minipages here, but create pseudo-lists to allow
+    % page-breaking.  (Don't uses KOMA-script's addmargin environment
+    % because it messes up bullet lists.)
+    \Dmakelistenvironment{}{}{%
+      \setlength{\parskip}{0pt}%
+      \setlength{\parindent}{\Dboxparindent}%
+      \item{##1}%
+    }%
+  }
+}
+
+
+\providecommand{\DSfrenchspacing}{
+  \frenchspacing
+}
+
+
+\providecommand{\DSauxiliaryspace}{
+  \providecommand{\Dblocklevelvspace}{%
+    % Space between block-level elements other than paragraphs.
+    0.7\baselineskip plus 0.3\baselineskip minus 0.2\baselineskip%
+  }
+  \providecommand{\Dauxiliaryspace}{%
+    \ifthenelse{\equal{\Dneedvspace}{yes}}{\vspace{\Dblocklevelvspace}}{}%
+    \Dpar%
+  }
+  \providecommand{\Dparagraphspace}{\Dpar}
+  \providecommand{\Dneedvspace}{yes}
+}
+
+
+\providecommand{\DSparagraphs}{
+  \providecommand{\Dnextparindent}{}
+  \providecommand{\Dnextpar}{\par}
+  %\newcommand{\Dnextpar}{\par\Dnextparindent}
+  \providecommand{\Dpar}{%
+    \Dnextpar%
+    \Dnextparindent%
+    \protect\renewcommand{\Dnextpar}{\par}%
+    \protect\renewcommand{\Dnextparindent}{}%
+  }
+  \providecommand{\Dnopar}{%
+    \protect\renewcommand{\Dnextpar}{\par}%
+    \protect\renewcommand{\Dnextparindent}{}%
+  }
+}
+
+\makeatletter
+\providecommand{\DSlinks}{
+  % Targets and references.
+  \usepackage[colorlinks=false,pdfborder={0 0 0}]{hyperref}
+
+  \providecommand{\Draisedlink}[1]{\Hy@raisedlink{##1}}
+  
+  % References.
+  % We're assuming here that the "refid" and "refuri" attributes occur
+  % only in inline context (in TextElements).
+  \providecommand{\DArefid}[5]{%
+    \ifthenelse{\equal{##4}{reference}}{%
+      \Dexplicitreference{\###3}{##5}%
+    }{%
+      % If this is not a target node (targets with refids are
+      % uninteresting and should be silently dropped).
+      \ifthenelse{\not\equal{##4}{target}}{%
+        % If this is a footnote reference, call special macro.
+        \ifthenelse{\equal{##4}{footnotereference}}{%
+          \Dimplicitfootnotereference{\###3}{##5}%
+        }{%
+          \ifthenelse{\equal{##4}{citationreference}}{%
+            \Dimplicitcitationreference{\###3}{##5}%
+          }{%
+            \Dimplicitreference{\###3}{##5}%
+          }%
+        }%
+      }{}%
+    }%
+  }
+  \providecommand{\DArefuri}[5]{%
+    % We only have explicit URI references, so one macro suffices.
+    \Durireference{##3}{##5}%
+  }
+  % Targets.
+  \Dprovidelength{\Dorgbaselineskip}{0pt}
+  \providecommand{\DAids}[5]{%
+    \ifthenelse{\equal{##4}{footnotereference}}{%
+      {%
+        \renewcommand{\HyperRaiseLinkDefault}{%
+          % Dirty hack to make backrefs to footnote references work.
+          % For some reason, \baselineskip is 0pt in fn references.
+          0.5\Dorgbaselineskip%
+        }%
+        \Draisedlink{\hypertarget{##3}{}}##5%
+      }%
+    }{%
+      \Draisedlink{\hypertarget{##3}{}}##5%
+    }%
+  }
+  % Color in references.
+  \usepackage{color}
+  \providecommand{\Dimplicitreference}[2]{%
+    % Create implicit reference to ID.  Implicit references occur
+    % e.g. in TOC-backlinks of section titles.  Parameters:
+    % 1. Target.
+    % 2. Link text.
+    {%
+      \protect\href{##1}{##2}%
+    }%
+  }
+  \providecommand{\Dimplicitfootnotereference}[2]{%
+    % Ditto, but for the special case of footnotes.
+    % We want them to be rendered like explicit references.
+    \Dexplicitreference{##1}{##2}%
+  }
+  \providecommand{\Dimplicitcitationreference}[2]{%
+    % Ditto for citation references.
+    \Dimplicitfootnotereference{##1}{##2}%
+  }
+  \providecommand{\Dexplicitreference}[2]{%
+    % Create explicit reference to ID, e.g. created with "foo_".
+    % Parameters:
+    % 1. Target.
+    % 2. Link text.
+    {%
+      \color{blue}\protect%
+      \href{##1}{##2}%
+    }%
+  }
+  \providecommand{\Durireference}[2]{%
+    % Create reference to URI.  Parameters:
+    % 1. Target.
+    % 2. Link text.
+    {%
+      \color{blue}
+      \protect\href{##1}{##2}%
+    }%
+  }
+}
+\makeatother
+
+
+\providecommand{\DAclasses}[5]{%
+  #5%
+}
+
+\makeatletter
+\providecommand{\Dattr}[5]{%
+  % Global attribute dispatcher.
+  % Parameters:
+  % 1. Attribute number.
+  % 2. Attribute name.
+  % 3. Attribute value.
+  % 4. Node name.
+  % 5. Node contents.
+  \@ifundefined{DA#2}{#5}{\csname DA#2\endcsname{#1}{#2}{#3}{#4}{#5}}%
+}
+\makeatother
+
+\providecommand{\DNparagraph}[1]{#1}
+\providecommand{\Dformatboxtitle}[1]{{\Large\textbf{#1}}}
+\providecommand{\Dformatboxsubtitle}[1]{{\large\textbf{#1}}}
+\providecommand{\Dtopictitle}[1]{%
+  \noindent\Dformatboxtitle{#1}%
+  \ifthenelse{\equal{\Dhassubtitle}{false}}{\vspace{1em}}{\vspace{0.5em}}%
+  \Dpar\noindent%
+}
+\providecommand{\Dtopicsubtitle}[1]{%
+  \noindent\Dformatboxsubtitle{#1}%
+  \vspace{1em}%
+  \Dpar\noindent%
+}
+\providecommand{\Dsidebartitle}[1]{\Dtopictitle{#1}}
+\providecommand{\Dsidebarsubtitle}[1]{\Dtopicsubtitle{#1}}
+\providecommand{\Ddocumenttitle}[1]{%
+  \begin{center}{\Huge#1}\end{center}%
+  \ifthenelse{\equal{\Dhassubtitle}{true}}{\vspace{0.1cm}}{\vspace{1cm}}%
+}
+\providecommand{\Ddocumentsubtitle}[1]{%
+  \begin{center}{\huge#1}\end{center}%
+  \vspace{1cm}%
+}
+\providecommand{\Dsectiontitle}[1]{\section*{#1}}
+\providecommand{\Dsubsectiontitle}[1]{\subsection*{#1}}
+\providecommand{\Dsubsubsectiontitle}[1]{\subsubsection*{#1}}
+\providecommand{\Dsubsubsubsectiontitle}[1]{%
+  \par\textbf{\vspace{1.5em}#1\vspace{1em}}}
+\providecommand{\Dmakesectiontitletext}[1]{%
+  % Return text suitable for use in \section*, \subsection*, etc.
+  % Parameter:  The title (as node tree).
+  \Draisedlink{\Dpdfbookmark{\Dtitleastext}}%
+  #1%
+}
+\providecommand{\Ddispatchsectiontitle}[1]{%
+  \ifthenelse{\value{Dsectionlevel}=1}{\Dsectiontitle{#1}}{}%
+  \ifthenelse{\value{Dsectionlevel}=2}{\Dsubsectiontitle{#1}}{}%
+  \ifthenelse{\value{Dsectionlevel}=3}{\Dsubsubsectiontitle{#1}}{}%
+  \ifthenelse{\value{Dsectionlevel}>3}{\Dsubsubsubsectiontitle{#1}}{}%
+}
+% Boolean variable.
+\providecommand{\Dhassubtitle}{}
+\makeatother
+\providecommand{\DNtitle}[1]{%
+  \ifthenelse{\equal{\Dparent}{topic}}{\Dtopictitle{#1}}{%
+    \ifthenelse{\equal{\Dparent}{document}}{\Ddocumenttitle{#1}}{%
+      \ifthenelse{\equal{\Dparent}{section}}{%
+        \Ddispatchsectiontitle{\Dmakesectiontitletext{#1}}%
+      }{%
+        \ifthenelse{\equal{\Dparent}{sidebar}}{\Dsidebartitle{#1}}{}%
+      }%
+    }%
+  }%
+}
+\providecommand{\DNsubtitle}[1]{%
+  \ifthenelse{\equal{\Dparent}{topic}}{\Dtopicsubtitle{#1}}{%
+    \ifthenelse{\equal{\Dparent}{document}}{\Ddocumentsubtitle{#1}}{%
+      \ifthenelse{\equal{\Dparent}{sidebar}}{\Dsidebarsubtitle{#1}}{}%
+    }%
+  }%
+}
+\newcounter{Dpdfbookmarkid}
+\setcounter{Dpdfbookmarkid}{0}
+\providecommand{\Dpdfbookmark}[1]{%
+  % Temporarily decrement Desctionlevel counter.
+  \addtocounter{Dsectionlevel}{-1}%
+  %\typeout{\arabic{Dsectionlevel}}%
+  %\typeout{#1}%
+  %\typeout{docutils\roman{Dpdfbookmarkid}}%
+  %\typeout{}%
+  \pdfbookmark[\arabic{Dsectionlevel}]{#1}{docutils\arabic{Dpdfbookmarkid}}%
+  \addtocounter{Dsectionlevel}{1}%
+  \addtocounter{Dpdfbookmarkid}{1}%
+}
+
+%\providecommand{\DNliteralblock}[1]{\begin{quote}\ttfamily\raggedright#1\end{quote}}
+\providecommand{\DNliteralblock}[1]{%
+  \Dmakelistenvironment{}{}{%
+    \raggedright\item\noindent\nohyphens{\textnhtt{#1}}%
+  }%
+}
+\providecommand{\DNdoctestblock}[1]{%
+  % Treat doctest blocks the same as literal blocks.
+  \DNliteralblock{#1}%
+}
+\usepackage{hyphenat}
+\providecommand{\DNliteral}[1]{\textnhtt{#1}}
+\providecommand{\DNemphasis}[1]{\emph{#1}}
+\providecommand{\DNstrong}[1]{\textbf{#1}}
+\providecommand{\DNdocument}[1]{\begin{document}\protect\renewcommand{\Dnextparindent}{\noindent}#1\end{document}}
+\providecommand{\DNtopic}[1]{%
+  \par%
+  \Dmakebox{%
+    %%  % Close with \par because otherwise LaTeX wouldn't notice the
+    %%  % changed \baselineskip (due to the font size change).
+    %%  {\small#1\par}%
+    #1%
+  }%
+}
+\providecommand{\Dformatrubric}[1]{{\large\textbf{#1}}}
+\providecommand{\DNrubric}[1]{\begin{center}\Dformatrubric{#1}\end{center}}
+
+\providecommand{\Dbullet}{}
+\providecommand{\Dsetbullet}[1]{\renewcommand{\Dbullet}{#1}}
+\providecommand{\DNbulletlist}[1]{\Dmakelistenvironment{\Dbullet}{}{#1}}
+
+\providecommand{\DNlistitem}[1]{\item{#1}}
+\providecommand{\DNenumeratedlist}[1]{#1}
+\newcounter{Dsectionlevel}
+\providecommand{\DNsection}[1]{\addtocounter{Dsectionlevel}{1}#1\addtocounter{Dsectionlevel}{-1}}
+
+% Using \_ will cause hyphenation after _ even in \textnhtt-typewriter
+% because the hyphenat package redefines \_.  So we use
+% \textunderscore here.
+\providecommand{\Dtextunderscore}{\textunderscore}
+
+\providecommand{\Dtextinlineliteralfirstspace}{{ }}
+\providecommand{\Dtextinlineliteralsecondspace}{{~}}
+
+\Dprovidelength{\Dlistspacing}{0.8\baselineskip}
+
+% Current hardcoded.
+\usepackage[latin1]{inputenc}
+
+\providecommand{\Dresetlistdepth}{false}
+\makeatletter
+\providecommand{\Dmakelistenvironment}[3]{%
+  % Make list environment with support for unlimited nesting and with
+  % reasonable default lengths.  Parameters:
+  % 1. Label (same as in list environment).
+  % 2. Spacing (same as in list environment).
+  % 3. List contents (contents of list environment).
+  {%
+    \renewcommand{\Dneedvspace}{no}%
+    % \parsep0.5\baselineskip
+    \renewcommand{\Dresetlistdepth}{false}%
+    \ifnum \@listdepth>5%
+    \protect\renewcommand{\Dresetlistdepth}{true}%
+    \@listdepth=5%
+    \fi%
+    \begin{list}{%
+        #1%
+      }{%
+        \setlength{\itemsep}{0pt}%
+        \setlength{\partopsep}{0pt}%
+        \setlength{\topsep}{0pt}%
+                                % List should take 90% of total width.
+        \setlength{\leftmargin}{0.05\linewidth}%
+                                % Equal margins.
+        \setlength{\rightmargin}{\leftmargin}%
+        #2%
+      }{%
+        #3%
+      }%
+    \end{list}%
+    \ifthenelse{\equal{\Dresetlistdepth}{true}}{\@listdepth=5}{}%
+  }%
+}
+\makeatother
+
+\providecommand{\Dmakeenumeratedlist}[6]{%
+  % Make enumerated list.
+  % Parameters:
+  % - prefix
+  % - type (\arabic, \roman, ...)
+  % - suffix
+  % - suggested counter name
+  % - start number - 1
+  % - list contents
+  \newcounter{#4}%
+  \Dmakelistenvironment{#1#2{#4}#3}{%
+    % Use as much space as needed for the label.
+    \setlength{\labelwidth}{10em}%
+    % Reserve enough space so that the label doesn't go beyond the
+    % left margin of preceding paragraphs.  Like that:
+    %
+    %    A paragraph.
+    %
+    %   1. First item.
+    \setlength{\leftmargin}{2.5em}%
+    % Equal margins.
+    \setlength{\rightmargin}{\leftmargin}%
+    % Use counter recommended by Python module.
+    \usecounter{#4}%
+    % Set start value.
+    \addtocounter{#4}{#5}%
+  }{%
+    % The list contents.
+    #6}%
+}
+
+
+\providecommand{\Dlanguage}{english}
+\usepackage[\Dlanguage]{babel}
+
+% Single quote in literal mode.  \textquotesingle from package
+% textcomp has wrong width when using package ae, so we use a normal
+% single curly quote here.
+\providecommand{\Dtextliteralsinglequote}{'}
+
+
+\providecommand{\Dtwocolumntable}[1]{%
+  % Create a simple borderless two-column table, the right column of
+  % which has a variable width.
+  \begin{tabularx}{\linewidth}{@{}lX@{}}#1\end{tabularx}%
+}
+
+
+\usepackage{tabularx}
+\providecommand{\Dformatfieldname}[1]{\bfseries{#1:}}
+\providecommand{\DNfieldlist}[1]{%
+  \noindent\Dtwocolumntable{#1}%
+}
+\providecommand{\DNfieldname}[1]{\Dformatfieldname{#1}{}&{}}
+\providecommand{\DNfieldbody}[1]{{#1}{}\tabularnewline}
+
+
+\providecommand{\DNdefinitionlist}[1]{%
+  \noindent\begin{description}#1\end{description}%
+}
+\providecommand{\DNdefinitionlistitem}[1]{%
+  % LaTeX expects the label in square brackets; we provide an empty
+  % label.
+  \item[]#1%
+}
+\providecommand{\DNterm}[1]{#1}
+% I'm still not sure what's the best rendering for classifiers.  The
+% colon syntax is used by reStructuredText, so it's at least WYSIWYG.
+% Use slanted text because italic would cause too much emphasis.
+\providecommand{\DNclassifier}[1]{~:~\textsl{#1}}
+\providecommand{\DNdefinition}[1]{\Dpar#1}
+
+
+\providecommand{\Dformatoptiongroup}[1]{%
+  % Format option group, e.g. "-f file, --input file".
+  \texttt{#1}%
+}
+\providecommand{\Dformatoption}[1]{%
+  % Format option, e.g. "-f file".
+  % Put into mbox to avoid line-breaking at spaces.
+  \mbox{#1}%
+}
+\providecommand{\Dformatoptionstring}[1]{%
+  % Format option string, e.g. "-f".
+  #1%
+}
+\providecommand{\Dformatoptionargument}[1]{%
+  % Format option argument, e.g. "file".
+  \textsl{#1}%
+}
+\providecommand{\Dformatoptiondescription}[1]{%
+  % Format option description, e.g.
+  % "\DNparagraph{Read input data from file.}"
+  #1%
+}
+\providecommand{\DNoptionlist}[1]{%
+  \noindent\Dtwocolumntable{#1}%
+}
+\providecommand{\Doptiongroupjoiner}{,{ }}
+\providecommand{\Disfirstoption}{%
+  % Auxiliary macro indicating if a given option is the first child
+  % of its option group (if it's not, it has to preceded by
+  % \Doptiongroupjoiner).
+  false%
+}
+\providecommand{\DNoptiongroup}[1]{%
+  \renewcommand{\Disfirstoption}{true}%
+  \Dformatoptiongroup{#1}{}&{}%
+}
+\providecommand{\DNoption}[1]{%
+  % If this is not the first option in this option group, add a
+  % joiner.
+  \ifthenelse{\equal{\Disfirstoption}{true}}{%
+    \renewcommand{\Disfirstoption}{false}%
+  }{%
+    \Doptiongroupjoiner%
+  }%
+  \Dformatoption{#1}%
+}
+\providecommand{\DNoptionstring}[1]{\Dformatoptionstring{#1}}
+\providecommand{\DNoptionargument}[1]{{ }\Dformatoptionargument{#1}}
+\providecommand{\DNdescription}[1]{%
+  \Dformatoptiondescription{#1}%
+  \tabularnewline%
+}
+
+\providecommand{\Dlineblockindentation}{2.5em}
+\providecommand{\DNlineblock}[1]{%
+  \Dmakelistenvironment{}{%
+    \ifthenelse{\equal{\Dparent}{lineblock}}{%
+      % Parent is a line block, so indent.
+      \setlength{\leftmargin}{\Dlineblockindentation}%
+    }{%
+      % At top level; don't indent.
+      \setlength{\leftmargin}{0pt}%
+    }%
+    \setlength{\parsep}{0pt}
+  }%
+  {%
+    #1%
+  }%
+}
+\providecommand{\DNline}[1]{\item#1}
+
+
+\providecommand{\DNtransition}{%
+  \Dpar\noindent{}\hspace*{\fill}\hrulefill\hrulefill\hspace*{\fill}%
+}
+
+
+\providecommand{\Dformatblockquote}[1]{%
+  % Format contents of block quote.
+  % This occurs in block-level context, so we cannot use \textsl.
+  {\slshape#1}%
+}
+\providecommand{\Dformatattribution}[1]{---\textup{#1}}
+\providecommand{\DNblockquote}[1]{%
+  \renewcommand{\Dnextparindent}{\noindent}%
+  \renewcommand{\Dnextpar}{}%
+  \Dmakebox{%
+    \Dformatblockquote{#1}
+  }%
+}
+\providecommand{\DNattribution}[1]{%
+  \Dpar%
+  \begin{flushright}\Dformatattribution{#1}\end{flushright}%
+}
+
+
+% Sidebars:
+\usepackage{picins}
+% Vertical and horizontal margins.
+\Dprovidelength{\Dsidebarvmargin}{0.5em}
+\Dprovidelength{\Dsidebarhmargin}{1em}
+% Padding (space between contents and frame).
+\Dprovidelength{\Dsidebarpadding}{1em}
+% Frame width.
+\Dprovidelength{\Dsidebarframewidth}{2\fboxrule}
+% Position ("l" or "r").
+\providecommand{\Dsidebarposition}{r}
+% Width.
+\Dprovidelength{\Dsidebarwidth}{0.45\linewidth}
+\providecommand{\DNsidebar}[1]{\parpic[\Dsidebarposition]{%
+    \Dpar%
+    \begin{minipage}[t]{\Dsidebarwidth}
+      % Doing this with nested minipages is ugly, but I haven't found
+      % another way to place vertical space before and after the fbox.
+      \vspace{\Dsidebarvmargin}
+      {%
+        \setlength{\fboxrule}{\Dsidebarframewidth}%
+        \setlength{\fboxsep}{\Dsidebarpadding}%
+        \fbox{%
+          \begin{minipage}[t]{\linewidth}%
+            \setlength{\parindent}{\Dboxparindent}%
+            #1%
+          \end{minipage}%
+        }%
+      }%
+      \vspace{\Dsidebarvmargin}
+    \end{minipage}%
+  }%
+}
+
+
+% Citations and footnotes.
+\providecommand{\Dformatfootnote}[1]{%
+  % Format footnote.
+  {%
+    \footnotesize#1%
+    % \par is necessary for LaTeX to adjust baselineskip to the
+    % changed font size.
+    \par%
+  }%
+}
+\providecommand{\Dformatcitation}[1]{\Dformatfootnote{#1}}
+\providecommand{\DNfootnotereference}[1]{%
+  {%
+    % \baselineskip is 0pt in \textsuperscript, so we save it here.
+    \setlength{\Dorgbaselineskip}{\baselineskip}%
+    \textsuperscript{#1}%
+  }%
+}
+\providecommand{\DNcitationreference}[1]{{[}#1{]}}
+\Dprovidelength{\Dfootnotesep}{5pt}
+\providecommand{\Dfootnotespacing}{%
+  % Spacing commands executed at the beginning of footnotes.
+  \setlength{\parindent}{0pt}%
+  \hspace{1em}%
+}
+\providecommand{\DNfootnote}[1]{%
+  % See ltfloat.dtx for details.
+  {%
+    \insert\footins{%
+      \Dnopar\vspace{\Dfootnotesep}\Dfootnotespacing%
+      \Dformatfootnote{#1}%
+    }%
+  }%
+}
+\providecommand{\DNcitation}[1]{\DNfootnote{#1}}
+\providecommand{\Dformatfootnotelabel}[1]{%
+  % Keep \footnotesize in footnote labels (\textsuperscript would
+  % reduce the font size even more).
+  \textsuperscript{\footnotesize#1{ }}%
+}
+\providecommand{\Dformatcitationlabel}[1]{{[}#1{]}{ }}
+\providecommand{\Dformatmultiplebackrefs}[1]{\textsl{#1}}
+\providecommand{\Dthislabel}{}
+\providecommand{\DNlabel}[1]{%
+  \renewcommand{\Dthislabel}{#1}
+  \ifthenelse{\not\equal{\Dsinglebackref}{}}{%
+    \let\Doriginallabel=\Dthislabel%
+    \def\Dthislabel{%
+      \Dsinglefootnotebacklink{\Dsinglebackref}{\Doriginallabel}%
+    }%
+  }{}%
+  \ifthenelse{\equal{\Dparent}{footnote}}{%
+    % Footnote label.
+    \Dformatfootnotelabel{\Dthislabel}%
+  }{%
+    \ifthenelse{\equal{\Dparent}{citation}}{%
+      % Citation label.
+      \Dformatcitationlabel{\Dthislabel}%
+    }{}%
+  }%
+  % If there are multiple backrefs, add them now.
+  \Dformatmultiplebackrefs{\Dmultiplebackrefs}%
+  % Supress next paragraph change.
+  \renewcommand{\Dnextpar}{}%
+}
+\providecommand{\Dsinglefootnotebacklink}[2]{%
+  % Create normal backlink of a footnote label.  Parameters:
+  % 1. ID.
+  % 2. Link text.
+  % Treat like a footnote reference.
+  \Dimplicitfootnotereference{\##1}{#2}%
+}
+\providecommand{\Dmultifootnotebacklink}[2]{%
+  % Create generated backlink, as in (1, 2).  Parameters:
+  % 1. ID.
+  % 2. Link text.
+  % Treat like a footnote reference.
+  \Dimplicitfootnotereference{\##1}{#2}%
+}
+\providecommand{\Dsinglecitationbacklink}[2]{\Dsinglefootnotebacklink{#1}{#2}}
+\providecommand{\Dmulticitationbacklink}[2]{\Dmultifootnotebacklink{#1}{#2}}
+
+
+\usepackage{longtable}
+\providecommand{\Dmaketable}[2]{%
+  % Make table.  Parameters:
+  % 1. Table spec (like "|p|p|").
+  % 2. Table contents.
+  \begin{longtable}{#1}%
+    \hline%
+    #2%
+  \end{longtable}
+}
+\providecommand{\DNthead}[1]{%
+  #1%
+  \endhead%
+}
+\providecommand{\DNrow}[1]{%
+  #1\tabularnewline%
+  \hline%
+}
+\providecommand{\Dcolspan}[2]{%
+  % Take care of the morecols attribute (but incremented by 1).
+  &\multicolumn{#1}{l|}{#2}%
+}
+\providecommand{\Dcolspanleft}[2]{%
+  % Like \Dmorecols, but called for the leftmost entries in a table
+  % row.
+  \multicolumn{#1}{|l|}{#2}%
+}
+\providecommand{\Dsubsequententry}[1]{%
+  &#1%
+}
+% \DNentry is not used because we set the ampersand ("&") in the
+% \DAcolspan... macros.
+\providecommand{\DAtableheaderentry}[5]{\Dformattableheaderentry{#5}}
+\providecommand{\Dformattableheaderentry}[1]{{\bfseries#1}}
+
+
+\providecommand{\DNsystemmessage}[1]{%
+  {%
+    \noindent%
+    \color{red}%
+    \bfseries%
+    #1%
+  }%
+}
+
+
+% Need to replace by language-specific stuff.
+\providecommand{\Dtextleftdblquote}{``}
+\providecommand{\Dtextrightdblquote}{''}
+
+
+%\usepackage{fixmath}
+%\usepackage{amsmath}
+
+
+\DSpackages
+\DSfontencoding
+\DSboxcommands
+\DSfrenchspacing
+\DSauxiliaryspace
+\DSparagraphs
+\DSlinks
