@@ -32,7 +32,8 @@ Simple String
 {'fragment': '''<p>Simple String</p>\\n''',
  'html_body': '''<div class="document">
 <p>Simple String</p>
-</div>\\n'''}
+</div>\\n''',
+ 'html_head': '''...<title></title>\\n'''}
 """],
 ["""\
 Simple String with *markup*
@@ -41,7 +42,8 @@ Simple String with *markup*
 {'fragment': '''<p>Simple String with <em>markup</em></p>\\n''',
  'html_body': '''<div class="document">
 <p>Simple String with <em>markup</em></p>
-</div>\\n'''}
+</div>\\n''',
+ 'html_head': '''...<title></title>\\n'''}
 """],
 ["""\
 Simple String with an even simpler ``inline literal``
@@ -50,7 +52,8 @@ Simple String with an even simpler ``inline literal``
 {'fragment': '''<p>Simple String with an even simpler <tt class="docutils literal"><span class="pre">inline</span> <span class="pre">literal</span></tt></p>\\n''',
  'html_body': '''<div class="document">
 <p>Simple String with an even simpler <tt class="docutils literal"><span class="pre">inline</span> <span class="pre">literal</span></tt></p>
-</div>\\n'''}
+</div>\\n''',
+ 'html_head': '''...<title></title>\\n'''}
 """],
 ["""\
 A simple `anonymous reference`__
@@ -61,7 +64,8 @@ __ http://www.test.com/test_url
 {'fragment': '''<p>A simple <a class="reference" href="http://www.test.com/test_url">anonymous reference</a></p>\\n''',
  'html_body': '''<div class="document">
 <p>A simple <a class="reference" href="http://www.test.com/test_url">anonymous reference</a></p>
-</div>\\n'''}
+</div>\\n''',
+ 'html_head': '''...<title></title>\\n'''}
 """],
 ["""\
 One paragraph.
@@ -74,7 +78,8 @@ Two paragraphs.
  'html_body': '''<div class="document">
 <p>One paragraph.</p>
 <p>Two paragraphs.</p>
-</div>\\n'''}
+</div>\\n''',
+ 'html_head': '''...<title></title>\\n'''}
 """],
 ["""\
 A simple `named reference`_ with stuff in between the
@@ -88,7 +93,8 @@ reference and the target.</p>\\n''',
  'html_body': '''<div class="document">
 <p>A simple <a class="reference" href="http://www.test.com/test_url">named reference</a> with stuff in between the
 reference and the target.</p>
-</div>\\n'''}
+</div>\\n''',
+ 'html_head': '''...<title></title>\\n'''}
 """],
 ["""\
 +++++
@@ -133,6 +139,7 @@ And even more stuff
 </div>
 </div>
 </div>\\n''',
+ 'html_head': '''...<title>Title</title>\\n''',
  'html_subtitle': '''<h2 class="subtitle" id="subtitle">Subtitle</h2>\\n''',
  'html_title': '''<h1 class="title">Title</h1>\\n''',
  'subtitle': '''Subtitle''',
@@ -169,6 +176,8 @@ Some stuff
 </table>
 <p>Some stuff</p>
 </div>\\n''',
+ 'html_head': '''...<title>Title</title>
+<meta name="author" content="me" />\\n''',
  'html_title': '''<h1 class="title">Title</h1>\\n''',
  'meta': '''<meta name="author" content="me" />\\n''',
  'title': '''Title'''}
@@ -183,7 +192,8 @@ Simple String
 {'fragment': '''<p>Simple String</p>\\n''',
  'html_body': '''<div class="document">
 <p>Simple String</p>
-</div>\\n'''}
+</div>\\n''',
+ 'html_head': '''...<title></title>\\n'''}
 """],
 ["""\
 Simple String with *markup*
@@ -192,7 +202,8 @@ Simple String with *markup*
 {'fragment': '''<p>Simple String with <em>markup</em></p>\\n''',
  'html_body': '''<div class="document">
 <p>Simple String with <em>markup</em></p>
-</div>\\n'''}
+</div>\\n''',
+ 'html_head': '''...<title></title>\\n'''}
 """],
 ["""\
 Simple String with an even simpler ``inline literal``
@@ -201,7 +212,8 @@ Simple String with an even simpler ``inline literal``
 {'fragment': '''<p>Simple String with an even simpler <tt class="docutils literal"><span class="pre">inline</span> <span class="pre">literal</span></tt></p>\\n''',
  'html_body': '''<div class="document">
 <p>Simple String with an even simpler <tt class="docutils literal"><span class="pre">inline</span> <span class="pre">literal</span></tt></p>
-</div>\\n'''}
+</div>\\n''',
+ 'html_head': '''...<title></title>\\n'''}
 """],
 ["""\
 A simple `anonymous reference`__
@@ -212,7 +224,8 @@ __ http://www.test.com/test_url
 {'fragment': '''<p>A simple <a class="reference" href="http://www.test.com/test_url">anonymous reference</a></p>\\n''',
  'html_body': '''<div class="document">
 <p>A simple <a class="reference" href="http://www.test.com/test_url">anonymous reference</a></p>
-</div>\\n'''}
+</div>\\n''',
+ 'html_head': '''...<title></title>\\n'''}
 """],
 ["""\
 A simple `named reference`_ with stuff in between the
@@ -226,7 +239,8 @@ reference and the target.</p>\\n''',
  'html_body': '''<div class="document">
 <p>A simple <a class="reference" href="http://www.test.com/test_url">named reference</a> with stuff in between the
 reference and the target.</p>
-</div>\\n'''}
+</div>\\n''',
+ 'html_head': '''...<title></title>\\n'''}
 """],
 ["""\
 +++++
@@ -280,7 +294,8 @@ And even more stuff
 </div>
 </div>
 </div>
-</div>\\n'''}
+</div>\\n''',
+ 'html_head': '''...<title></title>\\n'''}
 """],
 ["""\
 * bullet
@@ -296,7 +311,8 @@ And even more stuff
 <li>bullet</li>
 <li>list</li>
 </ul>
-</div>\\n'''}
+</div>\\n''',
+ 'html_head': '''...<title></title>\\n'''}
 """],
 ])
 

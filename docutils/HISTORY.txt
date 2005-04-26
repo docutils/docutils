@@ -140,8 +140,9 @@ Changes Since 0.3.7
   - Added support for table stub columns.
   - Added support for ``align`` attribute on ``figure`` elements.
   - Added the ``cloak_email_addresses`` setting & support.
-  - Added ``html_body``, ``html_title``, & ``html_subtitle`` to parts
-    dictionary exposed by ``docutils.core.publish_parts``.
+  - Added ``html_prolog``, ``html_head``, ``html_body``,
+    ``html_title``, & ``html_subtitle`` to parts dictionary exposed by
+    ``docutils.core.publish_parts``.
 
 * docutils/writers/latex2e.py:
 

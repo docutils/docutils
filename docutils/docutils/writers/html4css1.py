@@ -131,7 +131,8 @@ class Writer(writers.Writer):
         writers.Writer.assemble_parts(self)
         for part in ('title', 'subtitle', 'docinfo', 'body', 'header',
                      'footer', 'meta', 'stylesheet', 'fragment',
-                     'html_title', 'html_subtitle', 'html_body'):
+                     'html_prolog', 'html_head', 'html_title', 'html_subtitle',
+                     'html_body'):
             self.parts[part] = ''.join(getattr(self.visitor, part))
 
 
@@ -183,8 +184,8 @@ class HTMLTranslator(nodes.NodeVisitor):
                ' PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"'
                ' "http://www.w3.org/TR/xhtml1/DTD/'
                'xhtml1-transitional.dtd">\n')
-    html_head = ('<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="%s" '
-                 'lang="%s">\n<head>\n')
+    head_prefix_template = ('<html xmlns="http://www.w3.org/1999/xhtml"'
+                            ' xml:lang="%s" lang="%s">\n<head>\n')
     content_type = ('<meta http-equiv="Content-Type" content="text/html; '
                     'charset=%s" />\n')
     generator = ('<meta name="generator" content="Docutils %s: '
@@ -201,14 +202,16 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.language = languages.get_language(lcode)
         self.meta = [self.content_type % settings.output_encoding,
                      self.generator % docutils.__version__]
-        self.head_prefix = [
-              self.doctype,
-              self.html_head % (lcode, lcode)]
-        self.head_prefix.extend(self.meta)
+        self.head_prefix = []
+        self.html_prolog = []
         if settings.xml_declaration:
-            self.head_prefix.insert(0, self.xml_declaration
+            self.head_prefix.append(self.xml_declaration
                                     % settings.output_encoding)
-        self.head = []
+            self.html_prolog.append(self.xml_declaration) # not interpolated
+        self.head_prefix.extend([self.doctype,
+                                 self.head_prefix_template % (lcode, lcode)])
+        self.html_prolog.append(self.doctype)
+        self.head = self.meta[:]
         if settings.embed_stylesheet:
             stylesheet = utils.get_stylesheet_reference(settings,
                 os.path.join(os.getcwd(), 'dummy'))
@@ -245,6 +248,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.subtitle = []
         self.header = []
         self.footer = []
+        self.html_head = []
         self.html_title = []
         self.html_subtitle = []
         self.html_body = []
@@ -621,12 +625,13 @@ class HTMLTranslator(nodes.NodeVisitor):
         # empty or untitled document?
         if not len(node) or not isinstance(node[0], nodes.title):
             # for XHTML conformance, modulo IE6 appeasement:
-            self.head.insert(0, '<title></title>\n')
+            self.head.append('<title></title>\n')
 
     def depart_document(self, node):
         self.fragment.extend(self.body)
         self.body_prefix.append(self.starttag(node, 'div', CLASS='document'))
         self.body_suffix.insert(0, '</div>\n')
+        self.html_head.extend(self.head)
         self.html_body.extend(self.body_prefix[1:] + self.body_pre_docinfo
                               + self.docinfo + self.body
                               + self.body_suffix[:-1])
