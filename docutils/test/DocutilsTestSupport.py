@@ -731,12 +731,17 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
         expected = self.expected % {'version': docutils.__version__}
         self.compare_output(self.input, output, expected)
 
-    standard_meta_value = """\
+    standard_meta_value_template = """\
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="Docutils %s: http://docutils.sourceforge.net/" />
-""" % docutils.__version__
+"""
+    standard_meta_value = standard_meta_value_template % docutils.__version__
     standard_stylesheet_value = ('<link rel="stylesheet" href="default.css" '
                                  'type="text/css" />\n')
+    standard_html_prolog = """\
+<?xml version="1.0" encoding="%s" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+"""
 
     def format_output(self, parts):
         """Minimize & standardize the output."""
@@ -748,6 +753,10 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
         parts['meta'] = parts['meta'].replace(self.standard_meta_value, '')
         if parts['stylesheet'] == self.standard_stylesheet_value:
             del parts['stylesheet']
+        parts['html_head'] = parts['html_head'].replace(
+            self.standard_meta_value, '...')
+        parts['html_prolog'] = parts['html_prolog'].replace(
+            self.standard_html_prolog, '')
         # remove empty values:
         for key in parts.keys():
             if not parts[key]:
