@@ -85,7 +85,8 @@ if ! mkdir $lockdir; then
     echo and delete the directory.
     exit 1
 fi
-trap "rm -rf $lockdir" 0 1 2 3 15
+# Always clean up on exit.
+trap "rm -rf $lockdir; exit 1" 0 1 2 3 15
 # Make sure the lock directory is deletable (i.e. rwx) by other group
 # members (in case this script crashes after copying files into the
 # directory) and un-readable by world (because we'll be storing the
@@ -217,6 +218,7 @@ mv $htdocs_new_tarball $htdocs_tarball
 
 # Tidy up.
 rm -f $htdocs_patchfile
+trap - 0 1 2 3 15
 rm -rf $lockdir
 test $feedback && echo '...docutils-update done.' || true
 
