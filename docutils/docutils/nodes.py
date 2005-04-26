@@ -165,9 +165,6 @@ class Node:
 
     def traverse(self, condition=None,
                  include_self=1, descend=1, siblings=0, ascend=0):
-        # condition is the first parameter to allow the same parameter
-        # list for next_node (for which it's convenient to have
-        # condition as first parameter).
         """
         Return an iterable containing
 
