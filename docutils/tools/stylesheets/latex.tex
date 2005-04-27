@@ -87,6 +87,10 @@
   }
   \providecommand{\Dauxiliaryspace}{%
     \ifthenelse{\equal{\Dneedvspace}{yes}}{\vspace{\Dblocklevelvspace}}{}%
+    \Dpar\noindent%
+  }
+  \providecommand{\Dauxiliaryparspace}{%
+    \ifthenelse{\equal{\Dneedvspace}{yes}}{\vspace{\Dblocklevelvspace}}{}%
     \Dpar%
   }
   \providecommand{\Dparagraphspace}{\Dpar}
@@ -216,7 +220,11 @@
   % 3. Attribute value.
   % 4. Node name.
   % 5. Node contents.
-  \@ifundefined{DA#2}{#5}{\csname DA#2\endcsname{#1}{#2}{#3}{#4}{#5}}%
+  \@ifundefined{DN#4A#2}{%
+    \@ifundefined{DA#2}{#5}{\csname DA#2\endcsname{#1}{#2}{#3}{#4}{#5}}%
+  }{%
+    \csname DN#4A#2\endcsname{#1}{#2}{#3}{#4}{#5}%
+  }%
 }
 \makeatother
 
@@ -713,7 +721,23 @@
 }
 
 
-% Need to replace by language-specific stuff.
+\usepackage{graphicx}
+\Dprovidelength{\Dimagewidth}{0pt}
+\newsavebox{\Dimagesavebox}
+\providecommand{\DNimageAuri}[5]{%
+  % Insert image.  We treat the URI like a path here.
+%  \
+  \settowidth{\Dimagewidth}{\includegraphics{#3}}%
+  \ifthenelse{\Dimagewidth>\linewidth}{%
+    \includegraphics[width=\linewidth]{#3}%
+  }{%
+    \includegraphics{#3}%
+  }%
+}
+
+
+% Need to replace with language-specific stuff.  Maybe look at
+% csquotes.sty and ask the author for permission to use parts of it.
 \providecommand{\Dtextleftdblquote}{``}
 \providecommand{\Dtextrightdblquote}{''}
 
