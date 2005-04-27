@@ -12,7 +12,7 @@
 
 set -e
 
-trap "echo; echo Exiting with error." 0 1 2 3 15
+trap "echo; echo Exiting with error.; exit 1" 0 1 2 3 15
 
 test "$1" == -f && printfeedback= || printfeedback=1
 
