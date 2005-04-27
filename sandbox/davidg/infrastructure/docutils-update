@@ -86,7 +86,7 @@ if ! mkdir $lockdir; then
     exit 1
 fi
 # Always clean up on exit.
-trap "rm -rf $lockdir; exit 1" 0 1 2 3 15
+trap "rm -rf $lockdir; trap - 0; exit 1" 0 1 2 3 15
 # Make sure the lock directory is deletable (i.e. rwx) by other group
 # members (in case this script crashes after copying files into the
 # directory) and un-readable by world (because we'll be storing the
