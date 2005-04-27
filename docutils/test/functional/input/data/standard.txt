@@ -477,6 +477,8 @@ Admonitions
 
    You can make up your own admonition too.
 
+   .. _Docutils: http://docutils.sourceforge.net/
+
 Topics, Sidebars, and Rubrics
 `````````````````````````````
 
