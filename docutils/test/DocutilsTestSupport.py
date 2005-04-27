@@ -731,11 +731,16 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
         expected = self.expected % {'version': docutils.__version__}
         self.compare_output(self.input, output, expected)
 
-    standard_meta_value_template = """\
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils %s: http://docutils.sourceforge.net/" />
-"""
-    standard_meta_value = standard_meta_value_template % docutils.__version__
+    
+    standard_content_type_template = ('<meta http-equiv="Content-Type"'
+                                      ' content="text/html; charset=%s" />\n')
+    standard_generator_template = (
+        '<meta name="generator"'
+        ' content="Docutils %s: http://docutils.sourceforge.net/" />\n')
+    standard_html_meta_value = (
+        standard_content_type_template
+        + standard_generator_template % docutils.__version__)
+    standard_meta_value = standard_html_meta_value % 'utf-8'
     standard_stylesheet_value = ('<link rel="stylesheet" href="default.css" '
                                  'type="text/css" />\n')
     standard_html_prolog = """\
@@ -745,16 +750,16 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
 
     def format_output(self, parts):
         """Minimize & standardize the output."""
-        # remove redundant bits:
+        # remove redundant parts:
         del parts['whole']
         assert parts['body'] == parts['fragment']
         del parts['body']
-        # remove standard bits:
+        # remove standard portions:
         parts['meta'] = parts['meta'].replace(self.standard_meta_value, '')
         if parts['stylesheet'] == self.standard_stylesheet_value:
             del parts['stylesheet']
         parts['html_head'] = parts['html_head'].replace(
-            self.standard_meta_value, '...')
+            self.standard_html_meta_value, '...')
         parts['html_prolog'] = parts['html_prolog'].replace(
             self.standard_html_prolog, '')
         # remove empty values:

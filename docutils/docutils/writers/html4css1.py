@@ -186,8 +186,8 @@ class HTMLTranslator(nodes.NodeVisitor):
                'xhtml1-transitional.dtd">\n')
     head_prefix_template = ('<html xmlns="http://www.w3.org/1999/xhtml"'
                             ' xml:lang="%s" lang="%s">\n<head>\n')
-    content_type = ('<meta http-equiv="Content-Type" content="text/html; '
-                    'charset=%s" />\n')
+    content_type = ('<meta http-equiv="Content-Type"'
+                    ' content="text/html; charset=%s" />\n')
     generator = ('<meta name="generator" content="Docutils %s: '
                  'http://docutils.sourceforge.net/" />\n')
     stylesheet_link = '<link rel="stylesheet" href="%s" type="text/css" />\n'
@@ -207,7 +207,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         if settings.xml_declaration:
             self.head_prefix.append(self.xml_declaration
                                     % settings.output_encoding)
-            self.html_prolog.append(self.xml_declaration) # not interpolated
+            # encoding not interpolated:
+            self.html_prolog.append(self.xml_declaration)
         self.head_prefix.extend([self.doctype,
                                  self.head_prefix_template % (lcode, lcode)])
         self.html_prolog.append(self.doctype)
@@ -248,7 +249,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.subtitle = []
         self.header = []
         self.footer = []
-        self.html_head = []
+        self.html_head = [self.content_type] # charset not interpolated
         self.html_title = []
         self.html_subtitle = []
         self.html_body = []
@@ -632,7 +633,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.fragment.extend(self.body)
         self.body_prefix.append(self.starttag(node, 'div', CLASS='document'))
         self.body_suffix.insert(0, '</div>\n')
-        self.html_head.extend(self.head)
+        # skip content-type meta tag with interpolated charset value:
+        self.html_head.extend(self.head[1:])
         self.html_body.extend(self.body_prefix[1:] + self.body_pre_docinfo
                               + self.docinfo + self.body
                               + self.body_suffix[:-1])
