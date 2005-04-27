@@ -1204,6 +1204,7 @@
                         And, by the way...
                     <paragraph>
                         You can make up your own admonition too.
+                    <target ids="docutils" names="docutils" refuri="http://docutils.sourceforge.net/">
             <section ids="topics-sidebars-and-rubrics" names="topics, sidebars, and rubrics">
                 <title auto="1" refid="id65">
                     <generated classes="sectnum">
