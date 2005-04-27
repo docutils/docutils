@@ -338,9 +338,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         return self.starttag(node, tagname, suffix, infix=' /', **attributes)
 
     def set_first_last(self, node):
-        if len(node):
-            node[0]['classes'].append('first')
-            node[-1]['classes'].append('last')
+        children = [n for n in node if not isinstance(n, nodes.Invisible)]
+        if children:
+            children[0]['classes'].append('first')
+            children[-1]['classes'].append('last')
 
     def visit_Text(self, node):
         text = node.astext()
