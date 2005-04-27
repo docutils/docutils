@@ -18,7 +18,6 @@ __docformat__ = 'reStructuredText'
 import re
 import os.path
 from types import ListType
-import roman
 
 import docutils
 from docutils import nodes, writers, utils
@@ -294,16 +293,29 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
     character_map.update(unicode_map)
     #character_map.update(special_map)
 
-    def encode(self, text, preserve=0):
+    def encode(self, text, attval=0):
         """
         Encode special characters in ``text`` and return it.
 
-        If preserve is true, preserve as much as possible (used in
+        If attval is true, preserve as much as possible verbatim (used in
         attribute value encoding).
         """
-        get = self.character_map.get
+        if not attval:
+            get = self.character_map.get
+        else:
+            # According to
+            # <http://www-h.eng.cam.ac.uk/help/tpl/textprocessing/teTeX/latex/latex2e-html/ltx-164.html>,
+            # the following characters are special: # $ % & ~ _ ^ \ { }
+            # These work without special treatment in macro parameters:
+            # $, &, ~, _, ^
+            get = {'#': '\\#',
+                   '%': '\\%',
+                   # We cannot do anything about backslashes.
+                   '\\': '',
+                   '{': '\\{',
+                   '}': '\\}'}.get
         text = ''.join([get(c, c) for c in text])
-        if (self.literal_block or self.inline_literal) and not preserve:
+        if (self.literal_block or self.inline_literal) and not attval:
             # NB: We can have inline literals within literal blocks.
             # Shrink '\r\n'.
             text = text.replace('\r\n', '\n')
@@ -328,7 +340,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
             text = text.replace("'", r'{\Dtextliteralsinglequote}')
             return text
         else:
-            if not preserve:
+            if not attval:
                 # Replace space with single protected space.
                 text = re.sub(r'\s+', '{ }', text)
                 # Replace double quotes with macro calls.
@@ -556,12 +568,12 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
                 self.append(r'\renewcommand{\Dattrlen}{%s}' % len(value))
                 for i in range(len(value)):
                     self.append(r'\Dattr{%s}{%s}{%s}{%s}{' %
-                                (i+1, key, self.encode(value[i], preserve=1),
+                                (i+1, key, self.encode(value[i], attval=1),
                                  node_name))  # for Emacs: }
                 numatts += len(value)
             else:
                 self.append(r'\Dattr{}{%s}{%s}{%s}{' %
-                            (key, self.encode(unicode(value), preserve=1),
+                            (key, self.encode(unicode(value), attval=1),
                              node_name))
                             # for Emacs: }
                 numatts += 1
@@ -639,13 +651,14 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
                 isinstance(node, nodes.footnote) or
                 isinstance(node, nodes.citation))
 
-    def needs_auxiliary_space(self, node):
-        # Return true if node is a visible Body element or topic or
-        # transition and it occurs in block-level context.
+    def needs_space(self, node):
+        # Return true if node is a visible block-level element.
         return ((isinstance(node, nodes.Body) or
                  isinstance(node, nodes.topic) or
                  #isinstance(node, nodes.rubric) or
-                 isinstance(node, nodes.transition)) and
+                 isinstance(node, nodes.transition) or
+                 isinstance(node, nodes.caption) or
+                 isinstance(node, nodes.legend)) and
                 not (self.is_invisible(node) or
                      isinstance(node.parent, nodes.TextElement)))
 
@@ -658,16 +671,21 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
             self.indentation_level -= 1
             self.append(self.context.pop() + self.context.pop())
 
-            # Insert auxiliary space.
-            if self.needs_auxiliary_space(node):
+            # Insert space.
+            if self.needs_space(node):
                 # Next sibling.
                 next_node = node.next_node(
                     ascend=0, siblings=1, descend=0,
                     condition=lambda n: not self.is_invisible(n))
-                if self.needs_auxiliary_space(next_node):
-                    if not (isinstance(node, nodes.paragraph) and
-                            isinstance(next_node, nodes.paragraph)):
-                        # Insert space.
-                        self.append(r'\Dauxiliaryspace')
+                if self.needs_space(next_node):
+                    # Insert space.
+                    if isinstance(next_node, nodes.paragraph):
+                        if isinstance(node, nodes.paragraph):
+                            # Space between paragraphs.
+                            self.append(r'\Dparagraphspace')
+                        else:
+                            # Space in front of a paragraph.
+                            self.append(r'\Dauxiliaryparspace')
                     else:
-                        self.append(r'\Dparagraphspace')
+                        # Space in front of something else than a paragraph.
+                        self.append(r'\Dauxiliaryspace')
