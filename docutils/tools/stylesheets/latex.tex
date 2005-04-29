@@ -1,3 +1,5 @@
+\makeatletter
+
 \providecommand{\Ddocumentclass}{scrartcl}
 \providecommand{\Ddocumentoptions}{a4paper}
 
@@ -24,7 +26,6 @@
 % Taken from
 % <http://groups.google.de/groups?selm=1i0n5tgtplti420e1omp4pctlv19jpuhbb%404ax.com>
 % and modified.  Used with permission.
-\makeatletter
 \providecommand{\Dprovidelength}[2]{%
   \begingroup%
     \escapechar\m@ne%
@@ -34,15 +35,12 @@
   {\newlength{#1}\setlength{#1}{#2}}%
   {}%
 }
-\makeatother
 
-\makeatletter
 \providecommand{\Dprovidecounter}[1]{%
   % Like \newcounter except that it doesn't crash if the counter
   % already exists.
   \@ifundefined{c@#1}{\newcounter{#1}}{}
 }
-\makeatother
 
 \providecommand{\DSboxcommands}{
   \Dprovidelength{\Dboxparindent}{\parindent}
@@ -114,7 +112,6 @@
   }
 }
 
-\makeatletter
 \providecommand{\DSlinks}{
   % Targets and references.
   \usepackage[colorlinks=false,pdfborder={0 0 0}]{hyperref}
@@ -201,14 +198,12 @@
     \href{##1}{{\color{blue}##2}}%
   }
 }
-\makeatother
 
 
 \providecommand{\DAclasses}[5]{%
   #5%
 }
 
-\makeatletter
 \providecommand{\Dattr}[5]{%
   % Global attribute dispatcher.
   % Parameters:
@@ -223,7 +218,6 @@
     \csname DN#4A#2\endcsname{#1}{#2}{#3}{#4}{#5}%
   }%
 }
-\makeatother
 
 \providecommand{\DNparagraph}[1]{#1}
 \providecommand{\Dformatboxtitle}[1]{{\Large\textbf{#1}}}
@@ -267,7 +261,6 @@
 }
 % Boolean variable.
 \providecommand{\Dhassubtitle}{}
-\makeatother
 \providecommand{\DNtitle}[1]{%
   \ifthenelse{\equal{\Dparent}{topic}}{\Dtopictitle{#1}}{%
     \ifthenelse{\equal{\Dparent}{document}}{\Ddocumenttitle{#1}}{%
@@ -355,7 +348,6 @@
 \usepackage[latin1]{inputenc}
 
 \providecommand{\Dresetlistdepth}{false}
-\makeatletter
 \providecommand{\Dmakelistenvironment}[3]{%
   % Make list environment with support for unlimited nesting and with
   % reasonable default lengths.  Parameters:
@@ -394,7 +386,7 @@
     }%
   \ifthenelse{\equal{\Dinsidetabular}{true}}{\end{minipage}}{}%
 }
-\makeatother
+\providecommand{\DAlastitem}[5]{#5\@finalstrut\@arstrutbox}
 
 \providecommand{\Dmakeenumeratedlist}[6]{%
   % Make enumerated list.
@@ -762,3 +754,5 @@
 \DSauxiliaryspace
 \DSparagraphs
 \DSlinks
+
+%\makeatother
