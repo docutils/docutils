@@ -12,3 +12,5 @@ Regarding UTF-8:
   > Unicode characters I used.
   > However the DeclareUnicodeCharacter directive was to work around a
   > missing or misnamed character in the UCS database.
+
+Long field lists with ltxtable?

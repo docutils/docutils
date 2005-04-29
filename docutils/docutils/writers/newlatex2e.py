@@ -32,8 +32,8 @@ class Writer(writers.Writer):
         'LaTeX-Specific Options',
         'The LaTeX "--output-encoding" default is "latin-1:strict". '
         'Note that this LaTeX writer is still EXPERIMENTAL.',
-        (('Specify a stylesheet file. The file will be "input" by latex in '
-          'the document header.  Overrides --stylesheet-path.',
+        (('Specify a stylesheet file.  The path is used verbatim to include '
+          'the file.  Overrides --stylesheet-path.',
           ['--stylesheet'],
           {'default': '', 'metavar': '<file>',
            'overrides': 'stylesheet_path'}),
@@ -435,6 +435,15 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
 
     def depart_enumerated_list(self, node):
         self.append('}')  # for Emacs: {
+
+    def before_list_item(self, node):
+        # XXX needs cleanup.
+        if (len(node) and (isinstance(node[-1], nodes.TextElement) or
+                           isinstance(node[-1], nodes.Text)) and
+            node.parent.index(node) == len(node.parent) - 1):
+            node['lastitem'] = 'true'
+
+    before_line = before_list_item
 
     def visit_raw(self, node):
         if 'latex' in node.get('format', '').split():
