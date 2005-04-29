@@ -86,15 +86,15 @@
     0.7\baselineskip plus 0.3\baselineskip minus 0.2\baselineskip%
   }
   \providecommand{\Dauxiliaryspace}{%
-    \ifthenelse{\equal{\Dneedvspace}{yes}}{\vspace{\Dblocklevelvspace}}{}%
+    \ifthenelse{\equal{\Dneedvspace}{true}}{\vspace{\Dblocklevelvspace}}{}%
     \Dpar\noindent%
   }
   \providecommand{\Dauxiliaryparspace}{%
-    \ifthenelse{\equal{\Dneedvspace}{yes}}{\vspace{\Dblocklevelvspace}}{}%
+    \ifthenelse{\equal{\Dneedvspace}{true}}{\vspace{\Dblocklevelvspace}}{}%
     \Dpar%
   }
   \providecommand{\Dparagraphspace}{\Dpar}
-  \providecommand{\Dneedvspace}{yes}
+  \providecommand{\Dneedvspace}{true}
 }
 
 
@@ -145,8 +145,13 @@
     }%
   }
   \providecommand{\DArefuri}[5]{%
-    % We only have explicit URI references, so one macro suffices.
-    \Durireference{##3}{##5}%
+    \ifthenelse{\equal{##4}{target}}{%
+      % Hyperlink targets can (and should be) ignored because they are
+      % invisible.
+    }{%
+      % We only have explicit URI references, so one macro suffices.
+      \Durireference{##3}{##5}%
+    }%
   }
   % Targets.
   \Dprovidelength{\Dorgbaselineskip}{0pt}
@@ -229,7 +234,7 @@
   \Dpar\noindent%
 }
 \providecommand{\Dtopicsubtitle}[1]{%
-  \noindent\Dformatboxsubtitle{#1}%
+  \Dformatboxsubtitle{#1}%
   \vspace{1em}%
   \Dpar\noindent%
 }
@@ -309,7 +314,12 @@
 \providecommand{\DNliteral}[1]{\textnhtt{#1}}
 \providecommand{\DNemphasis}[1]{\emph{#1}}
 \providecommand{\DNstrong}[1]{\textbf{#1}}
-\providecommand{\DNdocument}[1]{\begin{document}\protect\renewcommand{\Dnextparindent}{\noindent}#1\end{document}}
+\providecommand{\DNdocument}[1]{%
+  \begin{document}%
+    \noindent%
+    #1%
+  \end{document}%
+}
 \providecommand{\DNtopic}[1]{%
   \par%
   \Dmakebox{%
@@ -352,31 +362,37 @@
   % 1. Label (same as in list environment).
   % 2. Spacing (same as in list environment).
   % 3. List contents (contents of list environment).
-  {%
-    \renewcommand{\Dneedvspace}{no}%
-    % \parsep0.5\baselineskip
-    \renewcommand{\Dresetlistdepth}{false}%
-    \ifnum \@listdepth>5%
-    \protect\renewcommand{\Dresetlistdepth}{true}%
-    \@listdepth=5%
-    \fi%
-    \begin{list}{%
-        #1%
-      }{%
-        \setlength{\itemsep}{0pt}%
-        \setlength{\partopsep}{0pt}%
-        \setlength{\topsep}{0pt}%
-                                % List should take 90% of total width.
-        \setlength{\leftmargin}{0.05\linewidth}%
-                                % Equal margins.
-        \setlength{\rightmargin}{\leftmargin}%
-        #2%
-      }{%
-        #3%
-      }%
-    \end{list}%
-    \ifthenelse{\equal{\Dresetlistdepth}{true}}{\@listdepth=5}{}%
-  }%
+  \ifthenelse{\equal{\Dinsidetabular}{true}}{%
+    % Unfortunately, vertical spacing doesn't work correctly when
+    % using lists inside tabular environments, so we use a minipage.
+    \begin{minipage}[t]{\linewidth}%
+  }{}%
+    {%
+      \renewcommand{\Dneedvspace}{false}%
+      % \parsep0.5\baselineskip
+      \renewcommand{\Dresetlistdepth}{false}%
+      \ifnum \@listdepth>5%
+      \protect\renewcommand{\Dresetlistdepth}{true}%
+      \@listdepth=5%
+      \fi%
+      \begin{list}{%
+          #1%
+        }{%
+          \setlength{\itemsep}{0pt}%
+          \setlength{\partopsep}{0pt}%
+          \setlength{\topsep}{0pt}%
+                                  % List should take 90% of total width.
+          \setlength{\leftmargin}{0.05\linewidth}%
+                                  % Equal margins.
+          \setlength{\rightmargin}{\leftmargin}%
+          #2%
+        }{%
+          #3%
+        }%
+      \end{list}%
+      \ifthenelse{\equal{\Dresetlistdepth}{true}}{\@listdepth=5}{}%
+    }%
+  \ifthenelse{\equal{\Dinsidetabular}{true}}{\end{minipage}}{}%
 }
 \makeatother
 
@@ -421,20 +437,25 @@
 \providecommand{\Dtextliteralsinglequote}{'}
 
 
+\providecommand{\Dinsidetabular}{false}
 \providecommand{\Dtwocolumntable}[1]{%
   % Create a simple borderless two-column table, the right column of
   % which has a variable width.
-  \begin{tabularx}{\linewidth}{@{}lX@{}}#1\end{tabularx}%
+  {%
+    \protect\renewcommand{\Dinsidetabular}{true}%
+    \begin{tabularx}{\linewidth}{@{}lX@{}}%
+      #1%
+    \end{tabularx}%
+  }%
 }
-
 
 \usepackage{tabularx}
 \providecommand{\Dformatfieldname}[1]{\bfseries{#1:}}
 \providecommand{\DNfieldlist}[1]{%
-  \noindent\Dtwocolumntable{#1}%
+  \Dtwocolumntable{#1}%
 }
-\providecommand{\DNfieldname}[1]{\Dformatfieldname{#1}{}&{}}
-\providecommand{\DNfieldbody}[1]{{#1}{}\tabularnewline}
+\providecommand{\DNfieldname}[1]{\Dformatfieldname{#1}&}
+\providecommand{\DNfieldbody}[1]{#1\tabularnewline}
 
 
 \providecommand{\DNdefinitionlist}[1]{%
@@ -476,7 +497,7 @@
   #1%
 }
 \providecommand{\DNoptionlist}[1]{%
-  \noindent\Dtwocolumntable{#1}%
+  \Dtwocolumntable{#1}%
 }
 \providecommand{\Doptiongroupjoiner}{,{ }}
 \providecommand{\Disfirstoption}{%
@@ -516,9 +537,8 @@
       % At top level; don't indent.
       \setlength{\leftmargin}{0pt}%
     }%
-    \setlength{\parsep}{0pt}
-  }%
-  {%
+    \setlength{\parsep}{0pt}%
+  }{%
     #1%
   }%
 }
