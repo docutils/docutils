@@ -409,14 +409,21 @@
     %   1. First item.
     \setlength{\leftmargin}{2.5em}%
     % Equal margins.
-    \setlength{\rightmargin}{\leftmargin}%
+    \ifthenelse{\lengthtest{\linewidth>10em}}{%
+      \setlength{\rightmargin}{\leftmargin}%
+    }{%
+      % If the line is narrower than 10em, we don't remove any further
+      % space from the right.
+      \setlength{\rightmargin}{0pt}%
+    }%
     % Use counter recommended by Python module.
     \usecounter{#4}%
     % Set start value.
     \addtocounter{#4}{#5}%
   }{%
     % The list contents.
-    #6}%
+    #6%
+  }%
 }
 
 
@@ -758,4 +765,4 @@
 \DSparagraphs
 \DSlinks
 
-%\makeatother
+\makeatother
