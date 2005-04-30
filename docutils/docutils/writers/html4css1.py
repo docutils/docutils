@@ -820,15 +820,12 @@ class HTMLTranslator(nodes.NodeVisitor):
         if format == 'brackets':
             suffix = '['
             self.context.append(']')
-        elif format == 'superscript':
+        else:
+            assert format == 'superscript'
             suffix = '<sup>'
             self.context.append('</sup>')
-        else:                           # shouldn't happen
-            suffix = '???'
-            self.content.append('???')
         self.body.append(self.starttag(node, 'a', suffix,
-                                       CLASS='footnote-reference',
-                                       **(href and {'href': href} or {})))
+                                       CLASS='footnote-reference', href=href))
 
     def depart_footnote_reference(self, node):
         self.body.append(self.context.pop() + '</a>')
