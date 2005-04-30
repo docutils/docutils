@@ -458,12 +458,15 @@
   % label.
   \item[]#1%
 }
-\providecommand{\DNterm}[1]{#1}
+\providecommand{\Dformatterm}[1]{#1}
+\providecommand{\DNterm}[1]{\Dformatterm{#1}}
 % I'm still not sure what's the best rendering for classifiers.  The
 % colon syntax is used by reStructuredText, so it's at least WYSIWYG.
 % Use slanted text because italic would cause too much emphasis.
-\providecommand{\DNclassifier}[1]{~:~\textsl{#1}}
-\providecommand{\DNdefinition}[1]{\Dpar#1}
+\providecommand{\Dformatclassifier}[1]{\textsl{#1}}
+\providecommand{\DNclassifier}[1]{~:~\Dformatclassifier{#1}}
+\providecommand{\Dformatdefinition}[1]{#1}
+\providecommand{\DNdefinition}[1]{\Dpar\Dformatdefinition{#1}}
 
 
 \providecommand{\Dformatoptiongroup}[1]{%
