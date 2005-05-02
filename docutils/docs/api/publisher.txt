@@ -132,8 +132,9 @@ html_body
 html_head
     ``parts['html_head']`` contains the HTML ``<head>`` content, less
     the stylesheet link and the ``<head>`` and ``</head>`` tags
-    themselves.  The "Content-Type" meta tag's "charset" value is left
-    unresolved, as "%s"::
+    themselves.  Since ``publish_parts`` returns Unicode strings and
+    does not know about the output encoding, the "Content-Type" meta
+    tag's "charset" value is left unresolved, as "%s"::
 
         <meta http-equiv="Content-Type" content="text/html; charset=%s" />
 
