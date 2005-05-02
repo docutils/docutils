@@ -1192,7 +1192,7 @@ class doctest_block(General, FixedTextElement): pass
 class line_block(General, Element): pass
 
 
-class line(General, TextElement):
+class line(Part, TextElement):
 
     indent = None
 
