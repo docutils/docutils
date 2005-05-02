@@ -161,9 +161,8 @@ Simple body elements are empty or directly contain text data.  Those
 that contain text data may also contain inline elements.  Such
 elements therefore have a "mixed content model".
 
-Category members: comment_, doctest_block_, image_, line_block_,
-literal_block_, paragraph_, pending_, raw_, rubric_,
-substitution_definition_, target_
+Category members: comment_, doctest_block_, image_, literal_block_,
+paragraph_, pending_, raw_, rubric_, substitution_definition_, target_
 
 
 Compound Body Elements
@@ -175,8 +174,8 @@ and further body elements.  They do not directly contain text data.
 Category members: admonition_, attention_, block_quote_, bullet_list_,
 caution_, citation_, compound_, danger_, definition_list_,
 enumerated_list_, error_, field_list_, figure_, footnote_, hint_,
-important_, note_, option_list_, system_message_, table_, tip_,
-warning_
+important_, line_block, note_, option_list_, system_message_, table_,
+tip_, warning_
 
 
 Body Subelements
@@ -190,7 +189,8 @@ always occur within specific parent elements, never at the body
 element level (beside paragraphs, etc.).
 
 Category members (simple): attribution_, caption_, classifier_,
-colspec_, field_name_, label_, option_argument_, option_string_, term_
+colspec_, field_name_, label_, line_, option_argument_,
+option_string_, term_
 
 Category members (compound): definition_, definition_list_item_,
 description_, entry_, field_, field_body_, legend_, list_item_,
@@ -305,7 +305,8 @@ its writing.
 The ``address`` element holds the surface mailing address information
 for the author (individual or group) of the document, or a third-party
 contact address.  Its structure is identical to that of the
-line_block_ element: whitespace is significant, especially newlines.
+literal_block_ element: whitespace is significant, especially
+newlines.
 
 
 Details
@@ -324,9 +325,9 @@ Details
     ``address`` is analogous to the DocBook "address" element.
 
 :Processing:
-    As with the line_block_ element, newlines and other whitespace is
-    significant and must be preserved.  However, a monospaced typeface
-    need not be used.
+    As with the literal_block_ element, newlines and other whitespace
+    is significant and must be preserved.  However, a monospaced
+    typeface need not be used.
 
     See also docinfo_.
 
@@ -2538,40 +2539,31 @@ Pseudo-XML_ fragment from simple parsing::
 `To be completed`_.
 
 
-``line_block``
-==============
+``line``
+========
 
-The ``line_block`` element contains a block of text where line breaks
-and whitespace are significant and must be preserved.  ``line_block``
-elements are commonly used for verse and addresses.  See `line_block`_
-for an alternative useful for program listings and interactive
-computer sessions.
+The ``line`` element contains a single line of text, part of a
+`line_block`_.
 
 
 Details
 -------
 
 :Category:
-    `Simple Body Elements`_
+    `Body Subelements`_ (simple)
 
 :Parents:
-    All elements employing the `%body.elements;`_ or
-    `%structure.model;`_ parameter entities in their content models
-    may contain ``line_block``.
+    Only the `line_block`_ element contains ``line``.
 
 :Children:
-    ``line_block`` elements may contain text data plus `inline
-    elements`_.
+    ``line`` elements may contain text data plus `inline elements`_.
 
 :Analogues:
-    ``line_block`` is analogous to the DocBook "literallayout" element
-    and to the HTML "pre" element (with modifications to typeface
-    styles).
+    ``line`` has no direct analogues in common DTDs.  It can be
+    emulated with primitives or type effects.
 
 :Processing:
-    Unline ``literal_block``, ``line_block`` elements are typically
-    rendered in an ordinary text typeface.  It is crucial that all
-    whitespace and line breaks are preserved in the rendered form.
+    See `line_block`_.
 
 
 Content Model
@@ -2580,6 +2572,61 @@ Content Model
 .. parsed-literal::
 
    `%text.model;`_
+
+:Attributes:
+    The ``line`` element contains the `common attributes`_ (id_,
+    name_, dupname_, source_, and class_), plus `xml:space`_.
+
+
+Examples
+--------
+
+See `line_block`_.
+
+
+``line_block``
+==============
+
+The ``line_block`` element contains a sequence of lines and nested
+line blocks.  Line breaks (implied between elements) and leading
+whitespace (indicated by nesting) is significant and must be
+preserved.  ``line_block`` elements are commonly used for verse and
+addresses.  See `literal_block`_ for an alternative useful for program
+listings and interactive computer sessions.
+
+
+Details
+-------
+
+:Category:
+    `Compound Body Elements`_
+
+:Parents:
+    All elements employing the `%body.elements;`_ or
+    `%structure.model;`_ parameter entities in their content models
+    may contain ``line_block``.
+
+:Children:
+    ``line_block`` elements may contain line_ elements and nested
+    ``line_block`` elements.
+
+:Analogues:
+    ``line_block`` is analogous to the DocBook "literallayout" element
+    and to the HTML "pre" element (with modifications to typeface
+    styles).
+
+:Processing:
+    Unline ``literal_block``, ``line_block`` elements are typically
+    rendered in an ordinary text typeface.  It is crucial that leading
+    whitespace and line breaks are preserved in the rendered form.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+   (line_ | line_block_)+
 
 :Attributes:
     The ``line_block`` element contains the `common attributes`_ (id_,
@@ -2599,40 +2646,58 @@ Example source::
 
     Take it away, Eric the Orchestra Leader!
 
-    .. line-block::
-
-       A one, two, a one two three four
-
-       Half a bee, philosophically,
-           must, *ipso facto*, half not be.
-       But half the bee has got to be,
-           *vis a vis* its entity.  D'you see?
-
-       But can a bee be said to be
-           or not to be an entire bee,
-               when half the bee is not a bee,
-                   due to some ancient injury?
-
-       Singing...
+    | A one, two, a one two three four
+    |
+    | Half a bee, philosophically,
+    |     must, *ipso facto*, half not be.
+    | But half the bee has got to be,
+    |     *vis a vis* its entity.  D'you see?
+    |
+    | But can a bee be said to be
+    |     or not to be an entire bee,
+    |         when half the bee is not a bee,
+    |             due to some ancient injury?
+    |
+    | Singing...
 
 Pseudo-XML_ fragment from simple parsing::
 
     <paragraph>
         Take it away, Eric the Orchestra Leader!
-    <line_block xml:space="preserve">
-        A one, two, a one two three four
-
-        Half a bee, philosophically,
-            must, <emphasis>ipso facto</emphasis>, half not be.
-        But half the bee has got to be,
-            <emphasis>vis a vis</emphasis>its entity.  D'you see?
-
-        But can a bee be said to be
-            or not to be an entire bee,
-                when half the bee is not a bee,
-                    due to some ancient injury?
-
-        Singing...
+    <line_block>
+        <line>
+            A one, two, a one two three four
+        <line>
+        <line>
+            Half a bee, philosophically,
+        <line_block>
+            <line>
+                must, 
+                <emphasis>
+                    ipso facto
+                , half not be.
+        <line>
+            But half the bee has got to be,
+        <line_block>
+            <line>
+                <emphasis>
+                    vis a vis
+                 its entity.  D'you see?
+            <line>
+        <line>
+            But can a bee be said to be
+        <line_block>
+            <line>
+                or not to be an entire bee,
+            <line_block>
+                <line>
+                    when half the bee is not a bee,
+                <line_block>
+                    <line>
+                        due to some ancient injury?
+                    <line>
+        <line>
+            Singing...
 
 
 ``list_item``
