@@ -450,7 +450,18 @@
 \providecommand{\DNfieldlist}[1]{%
   \Dtwocolumntable{#1}%
 }
-\providecommand{\DNfieldname}[1]{\Dformatfieldname{#1}&}
+\Dprovidelength{\Dmaxfieldnamewidth}{8em}%
+\Dprovidelength{\Dplaceholderfieldnamewidth}{2em}%
+\Dprovidelength{\Dfieldnamewidth}{0pt}%
+\providecommand{\DNfieldname}[1]{%
+  \settowidth{\Dfieldnamewidth}{\Dformatfieldname{#1}}%
+  \ifthenelse{\lengthtest{\Dfieldnamewidth>\Dmaxfieldnamewidth}}{%
+    \makebox[\Dplaceholderfieldnamewidth][l]{\Dformatfieldname{#1}}%
+    &\tabularnewline~&%
+  }{%
+    \Dformatfieldname{#1}&%
+  }%
+}
 \providecommand{\DNfieldbody}[1]{#1\tabularnewline}
 
 
