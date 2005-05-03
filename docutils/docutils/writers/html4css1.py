@@ -118,10 +118,9 @@ class Writer(writers.Writer):
         self.translator_class = HTMLTranslator
 
     def translate(self):
-        visitor = self.translator_class(self.document)
+        self.visitor = visitor = self.translator_class(self.document)
         self.document.walkabout(visitor)
         self.output = visitor.astext()
-        self.visitor = visitor
         for attr in ('head_prefix', 'stylesheet', 'head', 'body_prefix',
                      'body_pre_docinfo', 'docinfo', 'body', 'fragment',
                      'body_suffix'):
@@ -1347,6 +1346,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             check_id = 1
             close_tag = '</caption>\n'
         elif self.section_level == 0:
+            assert node.parent is self.document
             # document title
             self.head.append('<title>%s</title>\n'
                              % self.encode(node.astext()))
