@@ -318,8 +318,10 @@
     #1%
   }%
 }
-\providecommand{\Dformatrubric}[1]{{\large\textbf{#1}}}
-\providecommand{\DNrubric}[1]{\begin{center}\Dformatrubric{#1}\end{center}}
+\providecommand{\Dformatrubric}[1]{\textbf{#1}}
+\providecommand{\DNrubric}[1]{%
+  \vspace{0.3em}\Dpar\noindent\Dformatrubric{#1}\Dpar\noindent%
+}
 
 \providecommand{\Dbullet}{}
 \providecommand{\Dsetbullet}[1]{\renewcommand{\Dbullet}{#1}}
