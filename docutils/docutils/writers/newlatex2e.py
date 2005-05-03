@@ -59,7 +59,7 @@ class Writer(writers.Writer):
 
     relative_path_settings = ('stylesheet_path',)
 
-    config_section = 'latex2e writer'
+    config_section = 'newlatex2e writer'
     config_section_dependencies = ('writers',)
 
     output = None
