@@ -307,12 +307,8 @@
 \providecommand{\DNliteral}[1]{\textnhtt{#1}}
 \providecommand{\DNemphasis}[1]{\emph{#1}}
 \providecommand{\DNstrong}[1]{\textbf{#1}}
-\providecommand{\DNdocument}[1]{%
-  \begin{document}%
-    \noindent%
-    #1%
-  \end{document}%
-}
+\providecommand{\Dvisitdocument}{\begin{document}\noindent}
+\providecommand{\Ddepartdocument}{\end{document}}
 \providecommand{\DNtopic}[1]{%
   \par%
   \Dmakebox{%
@@ -332,7 +328,8 @@
 \providecommand{\DNlistitem}[1]{\item{#1}}
 \providecommand{\DNenumeratedlist}[1]{#1}
 \newcounter{Dsectionlevel}
-\providecommand{\DNsection}[1]{\addtocounter{Dsectionlevel}{1}#1\addtocounter{Dsectionlevel}{-1}}
+\providecommand{\Dvisitsection}{\addtocounter{Dsectionlevel}{1}}
+\providecommand{\Ddepartsection}{\addtocounter{Dsectionlevel}{-1}}
 
 % Using \_ will cause hyphenation after _ even in \textnhtt-typewriter
 % because the hyphenat package redefines \_.  So we use

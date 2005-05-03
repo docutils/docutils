@@ -588,21 +588,28 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         if isinstance(node, nodes.Element):
             attlist = node.attlist()
         numatts = 0
+        pass_contents = self.pass_contents(node)
         for key, value in attlist:
             if isinstance(value, ListType):
                 self.append(r'\renewcommand{\Dattrlen}{%s}' % len(value))
                 for i in range(len(value)):
                     self.append(r'\Dattr{%s}{%s}{%s}{%s}{' %
                                 (i+1, key, self.encode(value[i], attval=1),
-                                 node_name))  # for Emacs: }
+                                 node_name))
+                    if not pass_contents:
+                        self.append('}')
                 numatts += len(value)
             else:
                 self.append(r'\Dattr{}{%s}{%s}{%s}{' %
                             (key, self.encode(unicode(value), attval=1),
                              node_name))
-                            # for Emacs: }
+                if not pass_contents:
+                    self.append('}')
                 numatts += 1
-        self.context.append('}' * numatts)  # for Emacs: {
+        if pass_contents:
+            self.context.append('}' * numatts)  # for Emacs: {
+        else:
+            self.context.append('')
 
     def visit_docinfo(self, node):
         raise NotImplementedError('Docinfo not yet implemented.')
@@ -619,6 +626,13 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
                 if next_text_element:
                     next_text_element['ids'].extend(node['ids'])
                     node['ids'] = []
+
+    def pass_contents(self, node):
+        r"""
+        Return true if the node contents should be passed in
+        parameters of \DN... and \Dattr.
+        """
+        return not isinstance(node, (nodes.document, nodes.section))
 
     def dispatch_visit(self, node):
         skip_attr = skip_parent = 0
@@ -642,11 +656,15 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
 
         if not isinstance(node, nodes.Text):
             node_name = self.node_name(node)
-            if not skip_parent:
+            if not skip_parent and not isinstance(node, nodes.document):
                 self.append(r'\renewcommand{\Dparent}{%s}'
                             % self.node_name(node.parent))
-            self.append(r'\DN%s{' % node_name)
-            self.context.append('}')
+            if self.pass_contents(node):
+                self.append(r'\DN%s{' % node_name)
+                self.context.append('}')
+            else:
+                self.append(r'\Dvisit%s' % node_name)
+                self.context.append(r'\Ddepart%s' % node_name)
             self.indentation_level += 1
             if not skip_attr:
                 self.propagate_attributes(node)
