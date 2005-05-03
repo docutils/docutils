@@ -286,6 +286,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
 
     unicode_map = {
         u'\u00A0': '~',
+        u'\u2009': '{\\,}',
         u'\u2013': '{--}',
         u'\u2014': '{---}',
         u'\u2018': '`',
