@@ -438,6 +438,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
     def visit_enumerated_list(self, node):
         # We create our own enumeration list environment.  This allows
         # to set the style and starting value and unlimited nesting.
+        # Maybe this can be moved to the stylesheet?
         self.enum_counter += 1
         enum_prefix = self.encode(node['prefix'])
         enum_suffix = self.encode(node['suffix'])
