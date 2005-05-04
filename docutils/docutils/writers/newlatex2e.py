@@ -696,7 +696,11 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         # rendering.
         return (isinstance(node, nodes.Invisible) or
                 isinstance(node, nodes.footnote) or
-                isinstance(node, nodes.citation))
+                isinstance(node, nodes.citation) or
+                # We never know what's inside raw nodes, and often
+                # they *are* invisible.  So let's have the user take
+                # care of them.
+                isinstance(node, nodes.raw))
 
     def needs_space(self, node):
         # Return true if node is a visible block-level element.
