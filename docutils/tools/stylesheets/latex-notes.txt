@@ -14,3 +14,24 @@ Regarding UTF-8:
   > missing or misnamed character in the UCS database.
 
 Long field lists with ltxtable?
+
+
+<http://www.tug.org/applications/pdftex/pdfTeX-FAQ.pdf>::
+
+    3.1.6. How can I make a document portable to both latex and pdflatex
+    Contributed by: Christian Kumpf
+    Check for the existence of the variable \pdfoutput:
+    \newif\ifpdf
+    \ifx\pdfoutput\undefined
+    \pdffalse % we are not running PDFLaTeX
+    \else
+    \pdfoutput=1 % we are running PDFLaTeX
+    \pdftrue
+    \fi
+    Then use your new variable \ifpdf
+    \ifpdf
+    \usepackage[pdftex]{graphicx}
+    \pdfcompresslevel=9
+    \else
+    \usepackage{graphicx}
+    \fi
