@@ -246,10 +246,10 @@
   \begin{center}{\huge#1}\end{center}%
   \vspace{1cm}%
 }
-\providecommand{\Dsectiontitle}[1]{\section*{#1}}
-\providecommand{\Dsubsectiontitle}[1]{\subsection*{#1}}
-\providecommand{\Dsubsubsectiontitle}[1]{\subsubsection*{#1}}
-\providecommand{\Dsubsubsubsectiontitle}[1]{%
+\providecommand{\Dsectiontitlei}[1]{\section*{#1}}
+\providecommand{\Dsectiontitleii}[1]{\subsection*{#1}}
+\providecommand{\Dsectiontitleiii}[1]{\subsubsection*{#1}}
+\providecommand{\Dsectiontitleiv}[1]{%
   \par\textbf{\vspace{1.5em}#1\vspace{1em}}}
 \providecommand{\Dmakesectiontitletext}[1]{%
   % Return text suitable for use in \section*, \subsection*, etc.
@@ -257,11 +257,13 @@
   \Draisedlink{\Dpdfbookmark{\Dtitleastext}}%
   #1%
 }
+% Can be overwritten by user stylesheet.
+\providecommand{\Dsectiontitle}[1]{\Ddispatchsectiontitle{#1}}
 \providecommand{\Ddispatchsectiontitle}[1]{%
-  \ifthenelse{\value{Dsectionlevel}=1}{\Dsectiontitle{#1}}{}%
-  \ifthenelse{\value{Dsectionlevel}=2}{\Dsubsectiontitle{#1}}{}%
-  \ifthenelse{\value{Dsectionlevel}=3}{\Dsubsubsectiontitle{#1}}{}%
-  \ifthenelse{\value{Dsectionlevel}>3}{\Dsubsubsubsectiontitle{#1}}{}%
+  \ifthenelse{\value{Dsectionlevel}=1}{\Dsectiontitlei{#1}}{}%
+  \ifthenelse{\value{Dsectionlevel}=2}{\Dsectiontitleii{#1}}{}%
+  \ifthenelse{\value{Dsectionlevel}=3}{\Dsectiontitleiii{#1}}{}%
+  \ifthenelse{\value{Dsectionlevel}>3}{\Dsectiontitleiv{#1}}{}%
 }
 % Boolean variable.
 \providecommand{\Dhassubtitle}{}
@@ -269,7 +271,7 @@
   \ifthenelse{\equal{\Dparent}{topic}}{\Dtopictitle{#1}}{%
     \ifthenelse{\equal{\Dparent}{document}}{\Ddocumenttitle{#1}}{%
       \ifthenelse{\equal{\Dparent}{section}}{%
-        \Ddispatchsectiontitle{\Dmakesectiontitletext{#1}}%
+        \Dsectiontitle{\Dmakesectiontitletext{#1}}%
       }{%
         \ifthenelse{\equal{\Dparent}{sidebar}}{\Dsidebartitle{#1}}{}%
       }%
@@ -323,8 +325,9 @@
   }%
 }
 \providecommand{\Dformatrubric}[1]{\textbf{#1}}
+\Dprovidelength{\Dprerubricspace}{0.3em}
 \providecommand{\DNrubric}[1]{%
-  \vspace{0.3em}\Dpar\noindent\Dformatrubric{#1}\Dpar\noindent%
+  \vspace{\Dprerubricspace}\Dpar\noindent\Dformatrubric{#1}\Dpar\noindent%
 }
 
 \providecommand{\Dbullet}{}
@@ -334,8 +337,16 @@
 \providecommand{\DNlistitem}[1]{\item{#1}}
 \providecommand{\DNenumeratedlist}[1]{#1}
 \newcounter{Dsectionlevel}
-\providecommand{\Dvisitsection}{\addtocounter{Dsectionlevel}{1}}
-\providecommand{\Ddepartsection}{\addtocounter{Dsectionlevel}{-1}}
+\providecommand{\Dvisitsectionhook}{}
+\providecommand{\Ddepartsectionhook}{}
+\providecommand{\Dvisitsection}{%
+  \addtocounter{Dsectionlevel}{1}%
+  \Dvisitsectionhook%
+}
+\providecommand{\Ddepartsection}{%
+  \Ddepartsectionhook%
+  \addtocounter{Dsectionlevel}{-1}%
+}
 
 % Using \_ will cause hyphenation after _ even in \textnhtt-typewriter
 % because the hyphenat package redefines \_.  So we use
