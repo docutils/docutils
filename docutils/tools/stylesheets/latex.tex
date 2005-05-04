@@ -1,15 +1,5 @@
 \makeatletter
 
-\providecommand{\DSearly}{}
-\providecommand{\DSlate}{}
-
-\providecommand{\Ddocumentclass}{scrartcl}
-\providecommand{\Ddocumentoptions}{a4paper}
-
-\documentclass[\Ddocumentoptions]{\Ddocumentclass}
-
-\DSearly
-
 \providecommand{\DSpackages}{%
   % All kinds of useful packages.
   \usepackage{ifthen}
@@ -202,6 +192,17 @@
     \href{##1}{{\color{blue}##2}}%
   }
 }
+
+
+\providecommand{\DSearly}{}
+\providecommand{\DSlate}{}
+
+\providecommand{\Ddocumentclass}{scrartcl}
+\providecommand{\Ddocumentoptions}{a4paper}
+
+\documentclass[\Ddocumentoptions]{\Ddocumentclass}
+
+\DSearly
 
 
 \providecommand{\DAclasses}[5]{%
@@ -449,57 +450,74 @@
 % single curly quote here.
 \providecommand{\Dtextliteralsinglequote}{'}
 
-
-\providecommand{\Dinsidetabular}{false}
-\providecommand{\Dtwocolumntable}[1]{%
-  % Create a simple borderless two-column table, the right column of
-  % which has a variable width.
-  {%
-    \protect\renewcommand{\Dinsidetabular}{true}%
-    \begin{tabularx}{\linewidth}{@{}lX@{}}%
-      #1%
-    \end{tabularx}%
-  }%
-}
-
 \usepackage{tabularx}
-\providecommand{\Dformatfieldname}[1]{\bfseries{#1:}}
-\providecommand{\DNfieldlist}[1]{%
-  \Dtwocolumntable{#1}%
-}
-\Dprovidelength{\Dmaxfieldnamewidth}{8em}%
-\Dprovidelength{\Dplaceholderfieldnamewidth}{2em}%
-\Dprovidelength{\Dfieldnamewidth}{0pt}%
-\providecommand{\DNfieldname}[1]{%
-  \settowidth{\Dfieldnamewidth}{\Dformatfieldname{#1}}%
-  \ifthenelse{\lengthtest{\Dfieldnamewidth>\Dmaxfieldnamewidth}}{%
-    \makebox[\Dplaceholderfieldnamewidth][l]{\Dformatfieldname{#1}}%
-    &\tabularnewline&%
-  }{%
-    \Dformatfieldname{#1}&%
+% "Tabular lists" are field lists and options lists (not definition
+% lists because there the term always appears on its own line).  We'll
+% use the terminology of field lists now ("field", "field name",
+% "field body"), but the same is also analogously applicable to option
+% lists.
+%
+% We want these lists to be breakable across pages.  We cannot
+% automatically get the narrowest possible size for the left column
+% (i.e. the field names or option groups) because tabularx does not
+% support multi-page tables, ltxtable needs to have the table in an
+% external file and we don't want to clutter the user's directories
+% with auxiliary files created by the filecontents environment, and
+% ltablex is not included in teTeX.
+%
+% Thus we set a fixed length for the left column and use list
+% environments.  This also has the nice side effect that breaking is
+% now possible anywhere, not just between fields.
+%
+% Note that we are creating a distinct list environment for each
+% field.  There is no macro for a whole tabular list!
+\Dprovidelength{\Dtabularlistfieldnamewidth}{6em}
+\Dprovidelength{\Dtabularlistfieldnamesep}{0.5em}
+\providecommand{\Dinsidetabular}{false}
+\providecommand{\Dsavefieldname}{}
+\providecommand{\Dsavefieldbody}{}
+\Dprovidelength{\Dusedfieldnamewidth}{0pt}
+\Dprovidelength{\Drealfieldnamewidth}{0pt}
+\providecommand{\Dtabularlistfieldname}[1]{\renewcommand{\Dsavefieldname}{#1}}
+\providecommand{\Dtabularlistfieldbody}[1]{\renewcommand{\Dsavefieldbody}{#1}}
+\providecommand{\Dtabularlistfield}[1]{%
+  {%
+    % This only saves field name and field body in \Dsavefieldname and
+    % \Dsavefieldbody, resp.  It does not insert any text into the
+    % document.
+    #1%
+    % Recalculate the real field name width everytime we encounter a
+    % tabular list field because it may have been changed using a
+    % "raw" node.
+    \setlength{\Drealfieldnamewidth}{\Dtabularlistfieldnamewidth}%
+    \addtolength{\Drealfieldnamewidth}{\Dtabularlistfieldnamesep}%
+    \Dmakelistenvironment{%
+      \makebox[\Drealfieldnamewidth][l]{\Dsavefieldname}%
+    }{%
+      \setlength{\labelwidth}{\Drealfieldnamewidth}%
+      \setlength{\leftmargin}{\Drealfieldnamewidth}%
+      \setlength{\rightmargin}{0pt}%
+      \setlength{\labelsep}{0pt}%
+    }{%
+      \item%
+      \settowidth{\Dusedfieldnamewidth}{\Dsavefieldname}%
+      \ifthenelse{%
+        \lengthtest{\Dusedfieldnamewidth>\Dtabularlistfieldnamewidth}%
+      }{~\newline}{}%
+      \Dsavefieldbody%
+    }%
   }%
 }
-\providecommand{\DNfieldbody}[1]{#1\tabularnewline}
 
-
-\providecommand{\DNdefinitionlist}[1]{%
-  \noindent\begin{description}#1\end{description}%
+\providecommand{\Dformatfieldname}[1]{\bfseries{#1:}}
+\providecommand{\DNfieldlist}[1]{#1}
+\providecommand{\DNfield}[1]{\Dtabularlistfield{#1}}
+\providecommand{\DNfieldname}[1]{%
+  \Dtabularlistfieldname{%
+    \Dformatfieldname{#1}%
+  }%
 }
-\providecommand{\DNdefinitionlistitem}[1]{%
-  % LaTeX expects the label in square brackets; we provide an empty
-  % label.
-  \item[]#1%
-}
-\providecommand{\Dformatterm}[1]{#1}
-\providecommand{\DNterm}[1]{\Dformatterm{#1}}
-% I'm still not sure what's the best rendering for classifiers.  The
-% colon syntax is used by reStructuredText, so it's at least WYSIWYG.
-% Use slanted text because italic would cause too much emphasis.
-\providecommand{\Dformatclassifier}[1]{\textsl{#1}}
-\providecommand{\DNclassifier}[1]{~:~\Dformatclassifier{#1}}
-\providecommand{\Dformatdefinition}[1]{#1}
-\providecommand{\DNdefinition}[1]{\Dpar\Dformatdefinition{#1}}
-
+\providecommand{\DNfieldbody}[1]{\Dtabularlistfieldbody{#1}}
 
 \providecommand{\Dformatoptiongroup}[1]{%
   % Format option group, e.g. "-f file, --input file".
@@ -523,9 +541,7 @@
   % "\DNparagraph{Read input data from file.}"
   #1%
 }
-\providecommand{\DNoptionlist}[1]{%
-  \Dtwocolumntable{#1}%
-}
+\providecommand{\DNoptionlist}[1]{#1}
 \providecommand{\Doptiongroupjoiner}{,{ }}
 \providecommand{\Disfirstoption}{%
   % Auxiliary macro indicating if a given option is the first child
@@ -533,9 +549,12 @@
   % \Doptiongroupjoiner).
   false%
 }
+\providecommand{\DNoptionlistitem}[1]{%
+  \Dtabularlistfield{#1}%
+}
 \providecommand{\DNoptiongroup}[1]{%
   \renewcommand{\Disfirstoption}{true}%
-  \Dformatoptiongroup{#1}{}&{}%
+  \Dtabularlistfieldname{\Dformatoptiongroup{#1}}%
 }
 \providecommand{\DNoption}[1]{%
   % If this is not the first option in this option group, add a
@@ -550,9 +569,26 @@
 \providecommand{\DNoptionstring}[1]{\Dformatoptionstring{#1}}
 \providecommand{\DNoptionargument}[1]{{ }\Dformatoptionargument{#1}}
 \providecommand{\DNdescription}[1]{%
-  \Dformatoptiondescription{#1}%
-  \tabularnewline%
+  \Dtabularlistfieldbody{\Dformatoptiondescription{#1}}%
 }
+
+\providecommand{\DNdefinitionlist}[1]{%
+  \noindent\begin{description}#1\end{description}%
+}
+\providecommand{\DNdefinitionlistitem}[1]{%
+  % LaTeX expects the label in square brackets; we provide an empty
+  % label.
+  \item[]#1%
+}
+\providecommand{\Dformatterm}[1]{#1}
+\providecommand{\DNterm}[1]{\Dformatterm{#1}}
+% I'm still not sure what's the best rendering for classifiers.  The
+% colon syntax is used by reStructuredText, so it's at least WYSIWYG.
+% Use slanted text because italic would cause too much emphasis.
+\providecommand{\Dformatclassifier}[1]{\textsl{#1}}
+\providecommand{\DNclassifier}[1]{~:~\Dformatclassifier{#1}}
+\providecommand{\Dformatdefinition}[1]{#1}
+\providecommand{\DNdefinition}[1]{\Dpar\Dformatdefinition{#1}}
 
 \providecommand{\Dlineblockindentation}{2.5em}
 \providecommand{\DNlineblock}[1]{%
