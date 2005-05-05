@@ -249,6 +249,7 @@
 }
 % Can be overwritten by user stylesheet.
 \providecommand{\Dformatsectiontitle}[1]{#1}
+\providecommand{\Dformatsectionsubtitle}[1]{\Dformatsectiontitle{#1}}
 \providecommand{\Dbookmarksectiontitle}[1]{%
   % Return text suitable for use in \section*, \subsection*, etc.,
   % containing a PDF bookmark.  Parameter:  The title (as node tree).
@@ -273,6 +274,10 @@
   % (visually) distinguish such deeply nested sections is to use
   % section numbering.
   \subsubsection*{#1}%
+}
+\providecommand{\Dsectionsubtitle}[1]{%
+  % Don't create a PDF bookmark.
+  \Ddispatchsectiontitle{\scalebox{.8}{\Dformatsectionsubtitle{#1}}}%
 }
 % Boolean variable.
 \providecommand{\Dhassubtitle}{false}
