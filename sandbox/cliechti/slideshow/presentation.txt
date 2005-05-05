@@ -1,25 +1,25 @@
+S5 Slideshows using reST
+========================
+
 .. This document serves as manual and example of the rst2s5.py
    converter at the same time.  See the hint below on how to create
    the slideshow.
-
-.. There must not be any visible text between the main title and the
-   first subtitle.  It would be visible on all slides.
-
-.. See below for an explanation for the following substitutions.
-
-
-.. |bullet| unicode:: U+02022
-.. footer:: Location |bullet| Today
-
-
-S5 Slideshows using reST
-========================
 
 :Author:        Chris Liechti <cliechti@gmx.net>
 :Version:       1.1
 :Date:          Today
 
 A short introduction to the S5 converter for Docutils
+
+.. The first slide consists of all visible text between the document
+   title and the first subtitle.  The document title is also added to
+   the footer of all slides.
+
+.. The "footer" directive is used to specify part of the slide footer
+   text.  It is currently limited to one short line (one paragraph).
+
+.. |bullet| unicode:: U+02022
+.. footer:: Location |bullet| Today
 
 
 Introduction
