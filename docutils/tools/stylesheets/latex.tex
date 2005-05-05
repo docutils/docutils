@@ -247,11 +247,6 @@
   \begin{center}{\huge#1}\end{center}%
   \vspace{1cm}%
 }
-\providecommand{\Dsectiontitlei}[1]{\section*{#1}}
-\providecommand{\Dsectiontitleii}[1]{\subsection*{#1}}
-\providecommand{\Dsectiontitleiii}[1]{\subsubsection*{#1}}
-\providecommand{\Dsectiontitleiv}[1]{%
-  \par\textbf{\vspace{1.5em}#1\vspace{1em}}}
 \providecommand{\Dmakesectiontitletext}[1]{%
   % Return text suitable for use in \section*, \subsection*, etc.
   % Parameter:  The title (as node tree).
@@ -262,10 +257,18 @@
   \Ddispatchsectiontitle{\Dmakesectiontitletext{#1}}%
 }
 \providecommand{\Ddispatchsectiontitle}[1]{%
-  \ifthenelse{\value{Dsectionlevel}=1}{\Dsectiontitlei{#1}}{}%
-  \ifthenelse{\value{Dsectionlevel}=2}{\Dsectiontitleii{#1}}{}%
-  \ifthenelse{\value{Dsectionlevel}=3}{\Dsectiontitleiii{#1}}{}%
-  \ifthenelse{\value{Dsectionlevel}>3}{\Dsectiontitleiv{#1}}{}%
+  \@ifundefined{Dsectiontitle\roman{Dsectionlevel}}{%
+    \Ddeepsectionlevel{#1}%
+  }{%
+    \csname Dsectiontitle\roman{Dsectionlevel}\endcsname{#1}%
+  }%
+}
+\providecommand{\Dsectiontitlei}[1]{\section*{#1}}
+\providecommand{\Dsectiontitleii}[1]{\subsection*{#1}}
+\providecommand{\Dsectiontitleiii}[1]{\subsubsection*{#1}}
+\providecommand{\Ddeepsectionlevel}[1]{%
+  % Unsufficiently tested.
+  \par\textbf{\vspace{1.5em}#1\vspace{1em}}%
 }
 % Boolean variable.
 \providecommand{\Dhassubtitle}{false}
