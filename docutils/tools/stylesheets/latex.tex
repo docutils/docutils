@@ -256,8 +256,11 @@
   \Draisedlink{\Dpdfbookmark{\Dtitleastext}}%
   #1%
 }
+\providecommand{\Dsectiontitlehook}[1]{#1}
 \providecommand{\Dsectiontitle}[1]{%
-  \Ddispatchsectiontitle{\Dbookmarksectiontitle{\Dformatsectiontitle{#1}}}%
+  \Dsectiontitlehook{%
+    \Ddispatchsectiontitle{\Dbookmarksectiontitle{\Dformatsectiontitle{#1}}}%
+  }%
 }
 \providecommand{\Ddispatchsectiontitle}[1]{%
   \@ifundefined{Dsectiontitle\roman{Dsectionlevel}}{%
@@ -265,6 +268,9 @@
   }{%
     \csname Dsectiontitle\roman{Dsectionlevel}\endcsname{#1}%
   }%
+}
+\providecommand{\Ddispatchsectionsubtitle}[1]{%
+  \Ddispatchsectiontitle{#1}%
 }
 \providecommand{\Dsectiontitlei}[1]{\section*{#1}}
 \providecommand{\Dsectiontitleii}[1]{\subsection*{#1}}
@@ -275,12 +281,15 @@
   % section numbering.
   \subsubsection*{#1}%
 }
+\providecommand{\Dsectionsubtitlehook}[1]{#1}
 \Dprovidelength{\Dsectionsubtitleraisedistance}{0.7em}
 \providecommand{\Dsectionsubtitle}[1]{%
-  % Move the subtitle nearer to the title.
-  \vspace{-\Dsectionsubtitleraisedistance}%
-  % Don't create a PDF bookmark.
-  \Ddispatchsectiontitle{\scalebox{.8}{\Dformatsectionsubtitle{#1}}}%
+  \Dsectionsubtitlehook{%
+    % Move the subtitle nearer to the title.
+    \vspace{-\Dsectionsubtitleraisedistance}%
+    % Don't create a PDF bookmark.
+    \Ddispatchsectionsubtitle{\scalebox{.8}{\Dformatsectionsubtitle{#1}}}%
+  }%
 }
 % Boolean variable.
 \providecommand{\Dhassubtitle}{false}

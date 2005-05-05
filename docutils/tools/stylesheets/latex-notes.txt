@@ -1,6 +1,7 @@
 Try the commands mentioned in
 <http://groups.google.de/groups?selm=c7opho%248ts%241%40wsc10.lrz-muenchen.de>.
 
+
 Regarding UTF-8:
 
 * Read <http://article.gmane.org/gmane.text.docutils.user/1863>.
@@ -12,8 +13,6 @@ Regarding UTF-8:
   > Unicode characters I used.
   > However the DeclareUnicodeCharacter directive was to work around a
   > missing or misnamed character in the UCS database.
-
-Long field lists with ltxtable?
 
 
 <http://www.tug.org/applications/pdftex/pdfTeX-FAQ.pdf>::
