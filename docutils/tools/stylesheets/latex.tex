@@ -247,14 +247,16 @@
   \begin{center}{\huge#1}\end{center}%
   \vspace{1cm}%
 }
-\providecommand{\Dmakesectiontitletext}[1]{%
-  % Return text suitable for use in \section*, \subsection*, etc.
-  % Parameter:  The title (as node tree).
+% Can be overwritten by user stylesheet.
+\providecommand{\Dformatsectiontitle}[1]{#1}
+\providecommand{\Dbookmarksectiontitle}[1]{%
+  % Return text suitable for use in \section*, \subsection*, etc.,
+  % containing a PDF bookmark.  Parameter:  The title (as node tree).
   \Draisedlink{\Dpdfbookmark{\Dtitleastext}}%
   #1%
 }
 \providecommand{\Dsectiontitle}[1]{%
-  \Ddispatchsectiontitle{\Dmakesectiontitletext{#1}}%
+  \Ddispatchsectiontitle{\Dbookmarksectiontitle{\Dformatsectiontitle{#1}}}%
 }
 \providecommand{\Ddispatchsectiontitle}[1]{%
   \@ifundefined{Dsectiontitle\roman{Dsectionlevel}}{%
