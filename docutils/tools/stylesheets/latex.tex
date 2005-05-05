@@ -258,8 +258,9 @@
   \Draisedlink{\Dpdfbookmark{\Dtitleastext}}%
   #1%
 }
-% Can be overwritten by user stylesheet.
-\providecommand{\Dsectiontitle}[1]{\Ddispatchsectiontitle{#1}}
+\providecommand{\Dsectiontitle}[1]{%
+  \Ddispatchsectiontitle{\Dmakesectiontitletext{#1}}%
+}
 \providecommand{\Ddispatchsectiontitle}[1]{%
   \ifthenelse{\value{Dsectionlevel}=1}{\Dsectiontitlei{#1}}{}%
   \ifthenelse{\value{Dsectionlevel}=2}{\Dsectiontitleii{#1}}{}%
@@ -267,24 +268,12 @@
   \ifthenelse{\value{Dsectionlevel}>3}{\Dsectiontitleiv{#1}}{}%
 }
 % Boolean variable.
-\providecommand{\Dhassubtitle}{}
+\providecommand{\Dhassubtitle}{false}
 \providecommand{\DNtitle}[1]{%
-  \ifthenelse{\equal{\Dparent}{topic}}{\Dtopictitle{#1}}{%
-    \ifthenelse{\equal{\Dparent}{document}}{\Ddocumenttitle{#1}}{%
-      \ifthenelse{\equal{\Dparent}{section}}{%
-        \Dsectiontitle{\Dmakesectiontitletext{#1}}%
-      }{%
-        \ifthenelse{\equal{\Dparent}{sidebar}}{\Dsidebartitle{#1}}{}%
-      }%
-    }%
-  }%
+  \csname D\Dparent title\endcsname{#1}%
 }
 \providecommand{\DNsubtitle}[1]{%
-  \ifthenelse{\equal{\Dparent}{topic}}{\Dtopicsubtitle{#1}}{%
-    \ifthenelse{\equal{\Dparent}{document}}{\Ddocumentsubtitle{#1}}{%
-      \ifthenelse{\equal{\Dparent}{sidebar}}{\Dsidebarsubtitle{#1}}{}%
-    }%
-  }%
+  \csname D\Dparent subtitle\endcsname{#1}%
 }
 \newcounter{Dpdfbookmarkid}
 \setcounter{Dpdfbookmarkid}{0}
