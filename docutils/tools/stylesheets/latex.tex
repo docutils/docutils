@@ -275,7 +275,10 @@
   % section numbering.
   \subsubsection*{#1}%
 }
+\Dprovidelength{\Dsectionsubtitleraisedistance}{0.7em}
 \providecommand{\Dsectionsubtitle}[1]{%
+  % Move the subtitle nearer to the title.
+  \vspace{-\Dsectionsubtitleraisedistance}%
   % Don't create a PDF bookmark.
   \Ddispatchsectiontitle{\scalebox{.8}{\Dformatsectionsubtitle{#1}}}%
 }
