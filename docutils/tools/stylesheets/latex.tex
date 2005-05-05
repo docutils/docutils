@@ -258,17 +258,19 @@
 }
 \providecommand{\Ddispatchsectiontitle}[1]{%
   \@ifundefined{Dsectiontitle\roman{Dsectionlevel}}{%
-    \Ddeepsectionlevel{#1}%
+    \Ddeepsectiontitle{#1}%
   }{%
     \csname Dsectiontitle\roman{Dsectionlevel}\endcsname{#1}%
   }%
 }
 \providecommand{\Dsectiontitlei}[1]{\section*{#1}}
 \providecommand{\Dsectiontitleii}[1]{\subsection*{#1}}
-\providecommand{\Dsectiontitleiii}[1]{\subsubsection*{#1}}
-\providecommand{\Ddeepsectionlevel}[1]{%
-  % Unsufficiently tested.
-  \par\textbf{\vspace{1.5em}#1\vspace{1em}}%
+\providecommand{\Ddeepsectiontitle}[1]{%
+  % Anything below \subsubsection (like \paragraph or \subparagraph)
+  % is useless because it uses the same font.  The only way to
+  % (visually) distinguish such deeply nested sections is to use
+  % section numbering.
+  \subsubsection*{#1}%
 }
 % Boolean variable.
 \providecommand{\Dhassubtitle}{false}
