@@ -206,7 +206,16 @@
 
 
 \providecommand{\DAclasses}[5]{%
-  #5%
+  \Difdefined{DN#4C#3}{%
+    % Pass only contents, nothing else!
+    \csname DN#4C#3\endcsname{#5}%
+  }{%
+    \Difdefined{DC#3}{%
+      \csname DC#3\endcsname{#5}%
+    }{%
+      #5%
+    }%
+  }%
 }
 
 \providecommand{\Difdefined}[3]{\@ifundefined{#1}{#3}{#2}}
