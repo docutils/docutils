@@ -666,6 +666,12 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
             if not skip_parent and not isinstance(node, nodes.document):
                 self.append(r'\renewcommand{\Dparent}{%s}'
                             % self.node_name(node.parent))
+                for name, value in node.attlist():
+                    # @@@ Evaluate if this is really needed and refactor.
+                    if not isinstance(value, ListType) and not ':' in name:
+                        self.append(r'\def\DcurrentN%sA%s{%s}'
+                                    % (node_name, name,
+                                       self.encode(unicode(value), attval=1)))
             if self.pass_contents(node):
                 self.append(r'\DN%s{' % node_name)
                 self.context.append('}')
