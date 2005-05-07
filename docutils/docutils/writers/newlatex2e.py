@@ -329,7 +329,10 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
                    # We cannot do anything about backslashes.
                    '\\': '',
                    '{': '\\{',
-                   '}': '\\}'}.get
+                   '}': '\\}',
+                   # The quotation mark may be redefined by babel.
+                   '"': '"{}',
+                   }.get
         text = ''.join([get(c, c) for c in text])
         if (self.literal_block or self.inline_literal) and not attval:
             # NB: We can have inline literals within literal blocks.
