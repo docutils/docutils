@@ -817,12 +817,15 @@
 
 
 \usepackage{graphicx}
-\Dprovidelength{\Dimagewidth}{0pt}
+% Maximum width of an image.
+\providecommand{\Dimagemaxwidth}{\linewidth}
+% Auxiliary variable.
+\Dprovidelength{\Dcurrentimagewidth}{0pt}
 \providecommand{\DNimageAuri}[5]{%
   % Insert image.  We treat the URI like a path here.
-  \settowidth{\Dimagewidth}{\includegraphics{#3}}%
-  \ifthenelse{\Dimagewidth>\linewidth}{%
-    \includegraphics[width=\linewidth]{#3}%
+  \settowidth{\Dcurrentimagewidth}{\includegraphics{#3}}%
+  \ifthenelse{\lengthtest{\Dcurrentimagewidth>\Dimagemaxwidth}}{%
+    \includegraphics[width=\Dimagemaxwidth]{#3}%
   }{%
     \includegraphics{#3}%
   }%
