@@ -709,7 +709,9 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
                 # We never know what's inside raw nodes, and often
                 # they *are* invisible.  So let's have the user take
                 # care of them.
-                isinstance(node, nodes.raw))
+                isinstance(node, nodes.raw) or
+                # Horizontally aligned image or figure.
+                node.get('align', None) in ('left', 'center', 'right'))
 
     def needs_space(self, node):
         # Return true if node is a visible block-level element.

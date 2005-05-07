@@ -816,11 +816,40 @@
 }
 
 
+\providecommand{\Dhalign}[2]{%
+  % Horizontally align the contents to the left or right so that the
+  % text flows around it.
+  % Parameters:
+  % 1. l or r
+  % 2. Contents.
+  \parpic[#1]{#2}%
+}
+
+
 \usepackage{graphicx}
 % Maximum width of an image.
 \providecommand{\Dimagemaxwidth}{\linewidth}
 % Auxiliary variable.
 \Dprovidelength{\Dcurrentimagewidth}{0pt}
+\providecommand{\DNimageAalign}[5]{%
+  \ifthenelse{\equal{#3}{left}}{%
+    \Dhalign{l}{#5}%
+  }{%
+    \ifthenelse{\equal{#3}{right}}{%
+      \Dhalign{r}{#5}%
+    }{%
+      \ifthenelse{\equal{#3}{center}}{%
+        % Text floating around centered figures is brain damage.
+        % Thus we use a center environment.  Note that no extra space
+        % is added by the writer, so the space added by the center
+        % environment is fine.
+        \begin{center}#5\end{center}%
+      }{%
+        #5%
+      }%
+    }%
+  }%
+}
 \providecommand{\DNimageAuri}[5]{%
   % Insert image.  We treat the URI like a path here.
   \settowidth{\Dcurrentimagewidth}{\includegraphics{#3}}%
