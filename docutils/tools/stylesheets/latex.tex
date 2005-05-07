@@ -852,11 +852,15 @@
 }
 \providecommand{\DNimageAuri}[5]{%
   % Insert image.  We treat the URI like a path here.
-  \settowidth{\Dcurrentimagewidth}{\includegraphics{#3}}%
+  \Dsimpleimage{#3}%
+}
+\providecommand{\Dsimpleimage}[1]{%
+  % Insert image, without much parametrization.
+  \settowidth{\Dcurrentimagewidth}{\includegraphics{#1}}%
   \ifthenelse{\lengthtest{\Dcurrentimagewidth>\Dimagemaxwidth}}{%
-    \includegraphics[width=\Dimagemaxwidth]{#3}%
+    \includegraphics[width=\Dimagemaxwidth]{#1}%
   }{%
-    \includegraphics{#3}%
+    \includegraphics{#1}%
   }%
 }
 
