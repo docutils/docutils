@@ -209,6 +209,8 @@
   #5%
 }
 
+\providecommand{\Difdefined}[3]{\@ifundefined{#1}{#3}{#2}}
+
 \providecommand{\Dattr}[5]{%
   % Global attribute dispatcher.
   % Parameters:
@@ -217,10 +219,16 @@
   % 3. Attribute value.
   % 4. Node name.
   % 5. Node contents.
-  \@ifundefined{DN#4A#2}{%
-    \@ifundefined{DA#2}{#5}{\csname DA#2\endcsname{#1}{#2}{#3}{#4}{#5}}%
-  }{%
+  \Difdefined{DN#4A#2V#3}{%
+    \csname DN#4A#2V#3\endcsname{#1}{#2}{#3}{#4}{#5}%
+  }\Difdefined{DN#4A#2}{%
     \csname DN#4A#2\endcsname{#1}{#2}{#3}{#4}{#5}%
+  }\Difdefined{DA#2V#3}{%
+    \csname DA#2V#3\endcsname{#1}{#2}{#3}{#4}{#5}%
+  }\Difdefined{DA#2}{%
+    \csname DA#2\endcsname{#1}{#2}{#3}{#4}{#5}%
+  }{%
+    #5%
   }%
 }
 
@@ -658,7 +666,8 @@
 \providecommand{\Dsidebarposition}{r}
 % Width.
 \Dprovidelength{\Dsidebarwidth}{0.45\linewidth}
-\providecommand{\DNsidebar}[1]{\parpic[\Dsidebarposition]{%
+\providecommand{\DNsidebar}[1]{
+  \parpic[\Dsidebarposition]{%
     \Dpar%
     \begin{minipage}[t]{\Dsidebarwidth}
       % Doing this with nested minipages is ugly, but I haven't found
