@@ -24,7 +24,7 @@ class Writer(html4css1.Writer):
         None,
         (('Specify an S5 theme directory.  The default is "ui".',
           ['--theme'],
-          {'default': 'ui', 'metavar': '<file>'})))
+          {'default': 'ui', 'metavar': '<path>'}),))
 
     config_section = 's5 writer'
     config_section_dependencies = ('writers', 'html4css1 writer')
@@ -120,7 +120,7 @@ def handout_directive(name, arguments, options, content, lineno,
             'The handout block is empty; content required.',
             nodes.literal_block(block_text, block_text), line=lineno)
         return [warning]
-    node = nodes.section(text)
+    node = nodes.block_quote(text)
     node['classes'] += options.get('class', [])
     node['classes'].append('handout')
     state.nested_parse(content, content_offset, node)
