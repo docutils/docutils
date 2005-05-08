@@ -36,6 +36,7 @@ compatible with S5__, a Simple Standards-based Slide Show System.
 * Several themes are available on the Internet, easy to adapt.
 
   .. handout::
+
      Some sites with S5 slideshows or themes:
 
      * http://meyerweb.com/eric/tools/s5/themes/
@@ -77,6 +78,7 @@ the same directory as ``presentation.html``
 * The Docutils stylesheet ``default.css``.
 
   .. handout::
+
      The ``default.css`` stylesheet is included in the standard
      docutils distribution.  One can also be downloaded from here:
      http://docutils.sf.net/tools/stylesheets/default.css
@@ -84,6 +86,7 @@ the same directory as ``presentation.html``
 * A subdirectory ``ui`` with the S5 theme (CSS and JavaScript).
 
   .. handout::
+
      By default, the slideshow uses the ``ui`` theme, but that can be
      overriden by a command line option; see below.
 
@@ -126,6 +129,7 @@ Specifics:
   the S5 footer, limited to one paragraph.
 
   .. handout::
+
      This is useful for information such as the date of the
      presentation and/or the location.
 
@@ -143,6 +147,7 @@ Additions:
   screen presentation.
 
   .. handout::
+
      Handout contents are also visible on the screen if the S5 "raw
      view mode" is active.
 
@@ -158,6 +163,7 @@ Additions:
   command-line option or "theme" configuration file setting.
 
   .. handout::
+
      Example::
 
          rst2s5 --theme pixel presentation.txt presentation.html
