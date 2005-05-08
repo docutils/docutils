@@ -2,8 +2,8 @@
 
 # Author: Chris Liechti
 # Contact: cliechti@gmx.net
-# Revision: $Revision: $
-# Date: $Date: $
+# Revision: $Revision$
+# Date: $Date$
 # Copyright: This module has been placed in the public domain.
 
 """
