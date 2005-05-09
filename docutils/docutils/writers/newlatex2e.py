@@ -72,6 +72,7 @@ class Writer(writers.Writer):
     def translate(self):
         visitor = self.translator_class(self.document)
         self.document.walkabout(visitor)
+        assert not visitor.context, 'context not empty: %s' % visitor.context
         self.output = visitor.astext()
         self.head = visitor.header
         self.body = visitor.body
@@ -573,8 +574,8 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         if isinstance(node.parent.parent, nodes.thead):
             node['tableheaderentry'] = 'true'
 
-        # Don't add \renewcommand{\Dparent}{...} because there may not
-        # be any non-expandable commands in front of \multicolumn.
+        # Don't add \renewcommand{\Dparent}{...} because there must
+        # not be any non-expandable commands in front of \multicolumn.
         raise SkipParentLaTeX
 
     def depart_entry(self, node):
@@ -663,15 +664,19 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
 
         if not isinstance(node, nodes.Text):
             node_name = self.node_name(node)
+            # attribute_deleters will be appended to self.context.
+            attribute_deleters = []
             if not skip_parent and not isinstance(node, nodes.document):
                 self.append(r'\renewcommand{\Dparent}{%s}'
                             % self.node_name(node.parent))
                 for name, value in node.attlist():
                     # @@@ Evaluate if this is really needed and refactor.
                     if not isinstance(value, ListType) and not ':' in name:
-                        self.append(r'\def\DcurrentN%sA%s{%s}'
-                                    % (node_name, name,
-                                       self.encode(unicode(value), attval=1)))
+                        macro = r'\DcurrentN%sA%s' % (node_name, name)
+                        self.append(r'\def%s{%s}' % (
+                            macro, self.encode(unicode(value), attval=1)))
+                        attribute_deleters.append(r'\let%s=\relax' % macro)
+            self.context.append('\n'.join(attribute_deleters))
             if self.pass_contents(node):
                 self.append(r'\DN%s{' % node_name)
                 self.context.append('}')
@@ -732,7 +737,8 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
             # Close attribute and node handler call (\DN...{...}).
             self.indentation_level -= 1
             self.append(self.context.pop() + self.context.pop())
-
+            # Delete \Dcurrent... attribute macros.
+            self.append(self.context.pop())
             # Insert space.
             if self.needs_space(node):
                 # Next sibling.
