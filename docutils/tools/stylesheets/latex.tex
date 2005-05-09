@@ -859,9 +859,14 @@
     }%
   }%
 }
+\providecommand{\DcurrentNimageAwidth}{}
 \providecommand{\DNimageAuri}[5]{%
   % Insert image.  We treat the URI like a path here.
-  \Dsimpleimage{#3}%
+  \ifthenelse{\equal{\DcurrentNimageAwidth}{}}{%
+    \Dsimpleimage{#3}%
+  }{%
+    \Dpercentwidthimage{\DcurrentNimageAwidth}{#3}%
+  }%
 }
 \providecommand{\Dsimpleimage}[1]{%
   % Insert image, without much parametrization.
@@ -871,6 +876,16 @@
   }{%
     \includegraphics{#1}%
   }%
+}
+% Auxiliary length.  One percent of \linewidth.
+\Dprovidelength{\Dlinewidthpercent}{0pt}
+\providecommand{\Dpercentwidthimage}[2]{%
+  % Image with specified width.
+  % Parameters:
+  % 1. Image width in percent of \linewidth (1 to 100).
+  % 2. Image path.
+  \setlength{\Dlinewidthpercent}{0.01\linewidth}%
+  \includegraphics[width=#1\Dlinewidthpercent]{#2}%
 }
 
 
