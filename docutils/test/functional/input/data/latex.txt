@@ -100,3 +100,16 @@ Nested Elements
 |     Literal   |
 |     block     |
 +---------------+
+
+
+Images
+======
+
+Image with 20% width:
+
+.. image:: ../../../docs/user/rst/images/title.png
+   :width: 20
+
+Image with 100% width:
+
+.. image:: ../../../docs/user/rst/images/title.png
