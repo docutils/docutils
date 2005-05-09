@@ -625,6 +625,7 @@
     \ifthenelse{\equal{\Dparent}{lineblock}}{%
       % Parent is a line block, so indent.
       \setlength{\leftmargin}{\Dlineblockindentation}%
+      \setlength{\rightmargin}{0pt}%
     }{%
       % At top level; don't indent.
       \setlength{\leftmargin}{0pt}%
