@@ -859,13 +859,17 @@
     }%
   }%
 }
-\providecommand{\DcurrentNimageAwidth}{}
+% Base path for images.
+\providecommand{\Dimagebase}{}
+% Auxiliary command.  Current image path.
+\providecommand{\Dimagepath}{}
 \providecommand{\DNimageAuri}[5]{%
   % Insert image.  We treat the URI like a path here.
-  \ifthenelse{\equal{\DcurrentNimageAwidth}{}}{%
-    \Dsimpleimage{#3}%
+  \renewcommand{\Dimagepath}{\Dimagebase#3}
+  \Difdefined{DcurrentNimageAwidth}{%
+    \Dpercentwidthimage{\DcurrentNimageAwidth}{\Dimagepath}%
   }{%
-    \Dpercentwidthimage{\DcurrentNimageAwidth}{#3}%
+    \Dsimpleimage{\Dimagepath}%
   }%
 }
 \providecommand{\Dsimpleimage}[1]{%
