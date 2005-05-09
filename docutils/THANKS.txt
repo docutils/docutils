@@ -133,6 +133,7 @@ donations, tasty treats, and related projects:
 * Edward Welbourne
 * Felix Wiemann
 * Ka-Ping Yee
+* George Yoshida
 * Moshe Zadka
 
 Thank you!
