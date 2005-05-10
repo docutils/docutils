@@ -534,7 +534,9 @@
         \lengthtest{\Dusedfieldnamewidth>\Dtabularlistfieldnamewidth}%
       }{~\newline}{}%
       \Dsavefieldbody%
+      \@finalstrut\@arstrutbox%
     }%
+    \par%
   }%
 }
 
@@ -786,10 +788,13 @@
   % Make table.  Parameters:
   % 1. Table spec (like "|p|p|").
   % 2. Table contents.
-  \begin{longtable}{#1}%
-    \hline%
-    #2%
-  \end{longtable}
+  {%
+    \renewcommand{\Dinsidetabular}{true}%
+    \begin{longtable}{#1}%
+      \hline%
+      #2%
+    \end{longtable}%
+  }%
 }
 \providecommand{\DNthead}[1]{%
   #1%
