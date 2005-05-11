@@ -604,7 +604,13 @@
 }
 
 \providecommand{\DNdefinitionlist}[1]{%
-  \noindent\begin{description}#1\end{description}%
+  % XXX Replace with a generic list, so we don't have to hack around
+  % spacing problems with \vspace and \hspace.
+  \vspace{-2em}%
+  \begin{description}%
+    \parskip0pt%
+    #1%
+  \end{description}%
 }
 \providecommand{\DNdefinitionlistitem}[1]{%
   % LaTeX expects the label in square brackets; we provide an empty
@@ -612,7 +618,7 @@
   \item[]#1%
 }
 \providecommand{\Dformatterm}[1]{#1}
-\providecommand{\DNterm}[1]{\Dformatterm{#1}}
+\providecommand{\DNterm}[1]{\hspace{-5pt}\Dformatterm{#1}}
 % I'm still not sure what's the best rendering for classifiers.  The
 % colon syntax is used by reStructuredText, so it's at least WYSIWYG.
 % Use slanted text because italic would cause too much emphasis.
