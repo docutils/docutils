@@ -837,19 +837,25 @@
 }
 
 
+\providecommand{\Dinsidehalign}{false}
 \providecommand{\Dhalign}[2]{%
   % Horizontally align the contents to the left or right so that the
   % text flows around it.
   % Parameters:
   % 1. l or r
   % 2. Contents.
+  \renewcommand{\Dinsidehalign}{true}%
+  % For some obscure reason \parpic consumes some vertical space.
+  \vspace{-3pt}%
   \parpic[#1]{#2}%
+  \renewcommand{\Dinsidehalign}{false}%
 }
 
 
 \usepackage{graphicx}
 % Maximum width of an image.
 \providecommand{\Dimagemaxwidth}{\linewidth}
+\providecommand{\Dfloatimagemaxwidth}{0.5\linewidth}
 % Auxiliary variable.
 \Dprovidelength{\Dcurrentimagewidth}{0pt}
 \providecommand{\DNimageAalign}[5]{%
@@ -877,18 +883,27 @@
 \providecommand{\Dimagepath}{}
 \providecommand{\DNimageAuri}[5]{%
   % Insert image.  We treat the URI like a path here.
-  \renewcommand{\Dimagepath}{\Dimagebase#3}
+  \renewcommand{\Dimagepath}{\Dimagebase#3}%
   \Difdefined{DcurrentNimageAwidth}{%
     \Dpercentwidthimage{\DcurrentNimageAwidth}{\Dimagepath}%
   }{%
     \Dsimpleimage{\Dimagepath}%
   }%
 }
+\providecommand{\Dcurrentimagemaxwidth}{}
 \providecommand{\Dsimpleimage}[1]{%
   % Insert image, without much parametrization.
   \settowidth{\Dcurrentimagewidth}{\includegraphics{#1}}%
-  \ifthenelse{\lengthtest{\Dcurrentimagewidth>\Dimagemaxwidth}}{%
-    \includegraphics[width=\Dimagemaxwidth]{#1}%
+  \ifthenelse{\equal{\Dinsidehalign}{true}}{%
+    \renewcommand{\Dcurrentimagemaxwidth}{\Dfloatimagemaxwidth}%
+  }{%
+    \renewcommand{\Dcurrentimagemaxwidth}{\Dimagemaxwidth}%
+  }%
+  \ifthenelse{\lengthtest{\Dcurrentimagewidth>\Dcurrentimagemaxwidth}}{%
+    \begin{minipage}{\Dcurrentimagemaxwidth}%
+      \ifthenelse{\equal{\Dinsidehalign}{true}}{\vspace{3.5pt}}{}%
+      \includegraphics[width=\linewidth]{#1}%
+    \end{minipage}%
   }{%
     \includegraphics{#1}%
   }%
