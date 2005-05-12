@@ -494,10 +494,6 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
     def visit_citation(self, node):
         self.process_backlinks(node, 'citation')
 
-    def visit_table(self, node):
-        # Everything's handled in tgroup.
-        pass
-
     def before_table(self, node):
         # A tables contains exactly one tgroup.  See before_tgroup.
         pass
@@ -512,6 +508,8 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         del node[:len(widths)]
         tablespec = '|'
         for w in widths:
+            # 0.93 is probably wrong in many cases.  XXX Find a
+            # solution which works *always*.
             tablespec += r'p{%s\linewidth}|' % (0.93 * w /
                                                 max(total_width, 60))
         self.append(r'\Dmaketable{%s}{' % tablespec)
