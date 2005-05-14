@@ -542,7 +542,7 @@
   }%
 }
 
-\providecommand{\Dformatfieldname}[1]{\bfseries{#1:}}
+\providecommand{\Dformatfieldname}[1]{\textbf{#1:}}
 \providecommand{\DNfieldlist}[1]{#1}
 \providecommand{\DNfield}[1]{\Dtabularlistfield{#1}}
 \providecommand{\DNfieldname}[1]{%
@@ -905,7 +905,7 @@
       \vspace*{2.5pt}%
       \vspace*{\Dfloatimagevmargin}%
     }{}%
-    \includegraphics[width=\linewidth]{#2}%
+    \includegraphics[width=\linewidth,height=\textheight,keepaspectratio]{#2}%
     \ifthenelse{\equal{\Dinsidehalign}{true}}{%
       \vspace*{1.5pt}%
       \vspace*{\Dfloatimagevmargin}%
