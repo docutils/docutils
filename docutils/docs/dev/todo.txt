@@ -1121,7 +1121,7 @@ when used in a document.
     .. _unicode:
        http://docutils.sf.net/docs/ref/rst/directives.html#unicode-character-codes
 
-  - _`images.image`: "border"?
+  - _`images.image`: "border"?  No, bad idea; use CSS instead.
 
     _`Units of measure`?  (See `docutils-users, 2003-03-02
     <http://article.gmane.org/gmane.text.docutils.user/154>`__, and
