@@ -1119,7 +1119,7 @@
                 <paragraph>
                     An image directive (also clickable -- a hyperlink reference):
                 <reference name="directives_" refid="directives">
-                    <image border="0" classes="class1 class2" uri="../../../docs/user/rst/images/title.png">
+                    <image classes="class1 class2" uri="../../../docs/user/rst/images/title.png">
                 <paragraph>
                     A figure directive:
                 <figure align="left" classes="figclass1 figclass2">
