@@ -138,7 +138,7 @@ Changes Since 0.3.7
   - Added the ``field_name_limit`` & ``option_limit`` settings &
     support.
   - Added support for table stub columns.
-  - Added support for ``align`` attribute on ``figure`` elements.
+  - Added support for the ``align`` attribute on ``figure`` elements.
   - Added the ``cloak_email_addresses`` setting & support.
   - Added ``html_prolog``, ``html_head``, ``html_body``,
     ``html_title``, & ``html_subtitle`` to parts dictionary exposed by
@@ -162,10 +162,10 @@ Changes Since 0.3.7
 
 * docs/ref/docutils.dtd:
 
-  - Added ``stub`` attribute to ``colspec`` element via the
+  - Added a ``stub`` attribute to the ``colspec`` element via the
     ``tbl.colspec.att`` parameter entity.
   - Allowed topic elements within sidebars
-  - Added ``align`` attribute to ``figure`` element.
+  - Added an ``align`` attribute to the ``figure`` element.
 
 
 Release 0.3.7 (2004-12-24)
