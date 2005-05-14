@@ -424,7 +424,6 @@ An image directive (also clickable -- a hyperlink reference):
 .. image:: ../../../docs/user/rst/images/title.png
    :class: class1 class2
    :target: directives_
-   :border: 0
 
 A figure directive:
 

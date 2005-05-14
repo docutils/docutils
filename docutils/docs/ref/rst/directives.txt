@@ -226,12 +226,6 @@ The following options are recognized:
     text flow around it.  The specific behavior depends upon the
     browser or rendering software used.
 
-``border`` : integer
-    The width of the image border, in pixels.  For images that are
-    also hyperlink references (see the ``target`` option, below),
-    browsers often draw a border by default.  Set ``:border: 0`` to
-    disable this default.
-
 ``target`` : text (URI or reference name)
     Makes the image into a hyperlink reference ("clickable").  The
     option argument may be a URI (relative or absolute), or a

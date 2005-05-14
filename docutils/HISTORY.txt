@@ -91,7 +91,6 @@ Changes Since 0.3.7
   - "image" directive: added checks for valid values of "align" option,
     depending on context.  "figure" directive: added specialized
     "align" option and attribute on "figure" element.
-  - Added a "border" option to the "image" directive.
 
 * docutils/parsers/rst/directives/misc.py:
 
@@ -166,8 +165,7 @@ Changes Since 0.3.7
   - Added ``stub`` attribute to ``colspec`` element via the
     ``tbl.colspec.att`` parameter entity.
   - Allowed topic elements within sidebars
-  - Added the ``align`` attribute to ``figure`` element.
-  - Added the ``border`` option to the ``image`` element.
+  - Added ``align`` attribute to ``figure`` element.
 
 
 Release 0.3.7 (2004-12-24)
