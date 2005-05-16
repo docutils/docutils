@@ -895,6 +895,8 @@
   }%
 }
 \Dprovidelength{\Dfloatimagevmargin}{0pt}
+\providecommand{\Dfloatimagetopmargin}{\Dfloatimagevmargin}
+\providecommand{\Dfloatimagebottommargin}{\Dfloatimagevmargin}
 \providecommand{\Dwidthimage}[2]{%
   % Image with specified width.
   % Parameters:
@@ -907,12 +909,12 @@
       % Compensate for space previously added in \Dhalign, but not
       % entirely.
       \vspace*{2.5pt}%
-      \vspace*{\Dfloatimagevmargin}%
+      \vspace*{\Dfloatimagetopmargin}%
     }{}%
     \includegraphics[width=\linewidth,height=\textheight,keepaspectratio]{#2}%
     \ifthenelse{\equal{\Dinsidehalign}{true}}{%
       \vspace*{1.5pt}%
-      \vspace*{\Dfloatimagevmargin}%
+      \vspace*{\Dfloatimagebottommargin}%
     }{}%
   \end{minipage}%
 }  
