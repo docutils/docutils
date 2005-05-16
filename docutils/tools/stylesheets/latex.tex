@@ -391,6 +391,16 @@
 % Current hardcoded.
 \usepackage[latin1]{inputenc}
 
+\providecommand{\Dsetlistrightmargin}{%
+  \ifthenelse{\lengthtest{\linewidth>10em}}{%
+    % Equal margins.
+    \setlength{\rightmargin}{\leftmargin}%
+  }{%
+    % If the line is narrower than 10em, we don't remove any further
+    % space from the right.
+    \setlength{\rightmargin}{0pt}%
+  }%
+}
 \providecommand{\Dresetlistdepth}{false}
 \providecommand{\Dmakelistenvironment}[3]{%
   % Make list environment with support for unlimited nesting and with
@@ -419,8 +429,7 @@
           \setlength{\topsep}{0pt}%
                                   % List should take 90% of total width.
           \setlength{\leftmargin}{0.05\linewidth}%
-                                  % Equal margins.
-          \setlength{\rightmargin}{\leftmargin}%
+          \Dsetlistrightmargin%
           #2%
         }{%
           #3%
@@ -453,14 +462,7 @@
     %
     %   1. First item.
     \setlength{\leftmargin}{2.5em}%
-    % Equal margins.
-    \ifthenelse{\lengthtest{\linewidth>10em}}{%
-      \setlength{\rightmargin}{\leftmargin}%
-    }{%
-      % If the line is narrower than 10em, we don't remove any further
-      % space from the right.
-      \setlength{\rightmargin}{0pt}%
-    }%
+    \Dsetlistrightmargin%
     \setlength{\itemsep}{\Ditemsep}%
     % Use counter recommended by Python module.
     \usecounter{#4}%
@@ -898,7 +900,9 @@
   % Parameters:
   % 1. Image width.
   % 2. Image path.
-  \begin{minipage}{#1}%
+  % Need to make bottom-alignment dependent on align attribute (add
+  % functional test first).
+  \begin{minipage}[b]{#1}%
     \ifthenelse{\equal{\Dinsidehalign}{true}}{
       % Compensate for space previously added in \Dhalign, but not
       % entirely.
