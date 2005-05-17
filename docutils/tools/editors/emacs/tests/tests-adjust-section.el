@@ -5,7 +5,7 @@
 ;; Regression tests for rest-adjust-section-title.
 ;;
 
-(defvar rest-adjust-section-tests 
+(setq rest-adjust-section-tests 
   '(
     (simple
 "
@@ -133,7 +133,7 @@ Subtitle2
 ~~~~~~~~~
 
 "
-2)
+(nil nil))
 
     (with-previous-text-rotating
 "
@@ -157,12 +157,49 @@ Subtitle2
 =========
 
 "
-3)
+(nil nil nil))
 
-  )
+      (start-indented
+"
+   Some Title@
+
+"
+"
+================
+   Some Title
+================
+
+")
+
+      (switch-from-nothing
+"
+Some Title@
+
+"
+"
+============
+ Some Title
+============
+
+" (t))
+
+      (switch-from-over-and-under
+"
+============
+ Some Title@
+============
+"
+"
+Some Title
+==========
+
+" (t))
+
+))
   
   "A list of regression tests for the section update method.")
-   
+
+
 
 (defun regression-test-compare-expect-buffer (testlist fun)
   "Run the regression tests for the section adjusting method."
@@ -171,6 +208,9 @@ Subtitle2
 	(specchar "@")
 	)
     (dolist (curtest testlist)
+      ;; print current text
+      (message (format "========= %s" (prin1-to-string (car curtest))))
+
       ;; prepare a buffer with the starting text, and move the cursor where
       ;; the special character is located
       (switch-to-buffer buf)
@@ -180,8 +220,9 @@ Subtitle2
       (delete-char 1)
       
       ;; run the section title update command n times
-      (dotimes (x (or (cadddr curtest) 1))
-	(funcall fun))
+      (dolist (x (or (cadddr curtest) (list nil)))
+	(let ((current-prefix-arg x))
+	  (funcall fun)))
       
       ;; compare the buffer output with the expected text
       (or (string=

@@ -424,13 +424,17 @@ This is useful for filling list item paragraphs."
 		    (car rest-preferred-characters)
 		    ?=))
 
+	  ;; if there is a current indent, reuse it, otherwise use default
+	  (if (= curindent 0)
+	      (setq curindent rest-default-under-and-over-indent))
+
 	  (rest-update-section
 	   curchar
 	   (if (and current-prefix-arg
 		    (not (< (prefix-numeric-value current-prefix-arg) 0)))
 	       (if (eq init-style 'over-and-under) 'simple 'over-and-under)
 	     init-style)
-	   rest-default-under-and-over-indent)
+	   curindent)
 	  )
 
       ;; else we're not switching characters, and there is some sectioning
