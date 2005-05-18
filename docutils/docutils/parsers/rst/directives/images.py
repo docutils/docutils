@@ -107,7 +107,7 @@ def figure(name, arguments, options, content, lineno,
             except (IOError, UnicodeError):
                 pass
             else:
-                state.document.settings.record_dependencies.add(reference)
+                state.document.settings.record_dependencies.add(image_node['uri'])
                 figure_node['width'] = i.size[0]
     elif figwidth is not None:
         figure_node['width'] = figwidth
