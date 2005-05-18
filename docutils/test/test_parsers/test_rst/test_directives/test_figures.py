@@ -10,16 +10,12 @@
 Tests for images.py figure directives.
 """
 
-import os.path
 from __init__ import DocutilsTestSupport
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
     s.generateTests(totest)
     return s
-
-mydir = 'test_parsers/test_rst/test_directives/'
-biohazard = os.path.join(mydir, '../../../../docs/user/rst/images/biohazard.png')
 
 totest = {}
 
@@ -289,15 +285,6 @@ Testing for line-leaks:
             A picture with a caption.
     <figure>
         <image uri="picture.png">
-"""],
-["""\
-.. figure:: %s
-   :figwidth: image
-""" % biohazard,
-"""\
-<document source="test data">
-    <figure width="16">
-        <image uri="test_parsers/test_rst/test_directives/../../../../docs/user/rst/images/biohazard.png">
 """],
 ]
 
