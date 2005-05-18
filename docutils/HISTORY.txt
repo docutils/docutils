@@ -91,6 +91,9 @@ Changes Since 0.3.7
   - "image" directive: added checks for valid values of "align" option,
     depending on context.  "figure" directive: added specialized
     "align" option and attribute on "figure" element.
+  - Made ":figwidth: image" option of "figure" directive work again.
+  - Fixed bug with reference names containing uppercase letters
+    (e.g. "Name_") in "target" option of "image" directive.
 
 * docutils/parsers/rst/directives/misc.py:
 
