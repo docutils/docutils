@@ -357,6 +357,18 @@ u"""\
             .. image:: picture.png
                :align: \xe4
 """],
+["""
+.. image:: test.png
+   :target: Uppercase_
+
+.. _Uppercase: http://docutils.sourceforge.net/
+""",
+"""\
+<document source="test data">
+    <reference name="uppercase_" refname="Uppercase">
+        <image uri="test.png">
+    <target ids="uppercase" names="uppercase" refuri="http://docutils.sourceforge.net/">
+"""],
 ]
 
 
