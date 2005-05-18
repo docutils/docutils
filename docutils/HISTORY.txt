@@ -121,6 +121,16 @@ Changes Since 0.3.7
 * docutils/parsers/rst/languages/nl.py: Added to project; Dutch
   mappings by Martijn Pieters.
 
+* docutils/readers/standalone.py:
+
+  - Added ``--section-subtitle`` and ``--no-section-subtitle`` options
+    to activate or deactivate the SectSubTitle transform.
+
+* docutils/transforms/frontmatter.py:
+
+  - Added SectSubTitle transform to promote titles of lone
+    subsections to subtitles.
+
 * docutils/transforms/references.py:
 
   - Fixed mislocated internal targets bug, by propagating internal

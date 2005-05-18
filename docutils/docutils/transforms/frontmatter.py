@@ -5,12 +5,14 @@
 # Copyright: This module has been placed in the public domain.
 
 """
-Transforms related to the front matter of a document (information
-found before the main text):
+Transforms related to the front matter of a document or a section
+(information found before the main text):
 
 - `DocTitle`: Used to transform a lone top level section's title to
   the document title, and promote a remaining lone top-level section's
   title to the document subtitle.
+
+- `SectionTitle`: Used to transform a lone subsection into a subtitle.
 
 - `DocInfo`: Used to transform a bibliographic field list into docinfo
   elements.
@@ -23,7 +25,100 @@ from docutils import nodes, utils
 from docutils.transforms import TransformError, Transform
 
 
-class DocTitle(Transform):
+class TitlePromoter(Transform):
+
+    """
+    Abstract base class for DocTitle and SectionSubTitle transforms.
+    """
+
+    def promote_title(self, node):
+        """
+        Transform the following tree::
+
+            <node>
+                <section>
+                    <title>
+                    ...
+
+        into ::
+
+            <node>
+                <title>
+                ...
+
+        `node` is normally a document.
+        """
+        # `node` must not have a title yet.
+        assert not (len(node) and isinstance(node[0], nodes.title))
+        section, index = self.candidate_index(node)
+        if index is None:
+            return None
+        # Transfer the section's attributes to the node:
+        node.attributes.update(section.attributes)
+        # setup_child is called automatically for all nodes.
+        node[:] = (section[:1]        # section title
+                   + node[:index]     # everything that was in the
+                                      # node before the section
+                   + section[1:])     # everything that was in the section
+        assert isinstance(node[0], nodes.title)
+        return 1
+
+    def promote_subtitle(self, node):
+        """
+        Transform the following node tree::
+
+            <node>
+                <title>
+                <section>
+                    <title>
+                    ...
+
+        into ::
+
+            <node>
+                <title>
+                <subtitle>
+                ...
+        """
+        subsection, index = self.candidate_index(node)
+        if index is None:
+            return None
+        subtitle = nodes.subtitle()
+        # Transfer the subsection's attributes to the new subtitle:
+        # This causes trouble with list attributes!  To do: Write a
+        # test case which catches direct access to the `attributes`
+        # dictionary and/or write a test case which shows problems in
+        # this particular case.
+        subtitle.attributes.update(subsection.attributes)
+        # We're losing the subtitle's attributes here!  To do: Write a
+        # test case which shows this behavior.
+        # Transfer the contents of the subsection's title to the
+        # subtitle:
+        subtitle[:] = subsection[0][:]
+        node[:] = (node[:1]       # title
+                   + [subtitle]
+                   # everything that was before the section:
+                   + node[1:index]
+                   # everything that was in the subsection:
+                   + subsection[1:])
+        return 1
+
+    def candidate_index(self, node):
+        """
+        Find and return the promotion candidate and its index.
+
+        Return (None, None) if no valid candidate was found.
+        """
+        index = node.first_child_not_matching_class(
+            nodes.PreBibliographic)
+        if index is None or len(node) > (index + 1) or \
+               not isinstance(node[index], nodes.section):
+            return None, None
+        else:
+            return node[index], index
+
+
+class DocTitle(TitlePromoter):
 
     """
     In reStructuredText_, there is no way to specify a document title
@@ -107,54 +202,47 @@ class DocTitle(Transform):
     def apply(self):
         if not getattr(self.document.settings, 'doctitle_xform', 1):
             return
-        if self.promote_document_title():
-            self.promote_document_subtitle()
+        if self.promote_title(self.document):
+            self.promote_subtitle(self.document)
 
-    def promote_document_title(self):
-        section, index = self.candidate_index()
-        if index is None:
-            return None
-        document = self.document
-        # Transfer the section's attributes to the document element (at root):
-        document.attributes.update(section.attributes)
-        document[:] = (section[:1]        # section title
-                       + document[:index] # everything that was in the
-                                          # document before the section
-                       + section[1:])     # everything that was in the section
-        return 1
 
-    def promote_document_subtitle(self):
-        subsection, index = self.candidate_index()
-        if index is None:
-            return None
-        subtitle = nodes.subtitle()
-        # Transfer the subsection's attributes to the new subtitle:
-        subtitle.attributes.update(subsection.attributes)
-        # Transfer the contents of the subsection's title to the subtitle:
-        subtitle[:] = subsection[0][:]
-        document = self.document
-        document[:] = (document[:1]       # document title
-                       + [subtitle]
-                       # everything that was before the section:
-                       + document[1:index]
-                       # everything that was in the subsection:
-                       + subsection[1:])
-        return 1
+class SectionSubTitle(TitlePromoter):
 
-    def candidate_index(self):
-        """
-        Find and return the promotion candidate and its index.
+    """
+    This works like document subtitles, but for sections.  For example, ::
 
-        Return (None, None) if no valid candidate was found.
-        """
-        document = self.document
-        index = document.first_child_not_matching_class(
-              nodes.PreBibliographic)
-        if index is None or len(document) > (index + 1) or \
-              not isinstance(document[index], nodes.section):
-            return None, None
-        else:
-            return document[index], index
+        <section>
+            <title>
+                Title
+            <section>
+                <title>
+                    Subtitle
+                ...
+
+    is transformed into ::
+
+        <section>
+            <title>
+                Title
+            <subtitle>
+                Subtitle
+            ...
+
+    For details refer to the docstring of DocTitle.
+    """
+
+    default_priority = 350
+
+    def apply(self):
+        if not getattr(self.document.settings, 'sectsubtitle_xform', 1):
+            return
+        for section in self.document.traverse(lambda n:
+                                              isinstance(n, nodes.section)):
+            # On our way through the node tree, we are deleting
+            # sections, but we call self.promote_subtitle for those
+            # sections nonetheless.  To do: Write a test case which
+            # shows the problem and discuss on Docutils-develop.
+            self.promote_subtitle(section)
 
 
 class DocInfo(Transform):
