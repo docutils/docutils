@@ -93,7 +93,7 @@ Changes Since 0.3.7
     "align" option and attribute on "figure" element.
   - Made ":figwidth: image" option of "figure" directive work again.
   - Fixed bug with reference names containing uppercase letters
-    (e.g. "Name_") in "target" option of "image" directive.
+    (e.g. ``Name_``) in "target" option of "image" directive.
 
 * docutils/parsers/rst/directives/misc.py:
 
