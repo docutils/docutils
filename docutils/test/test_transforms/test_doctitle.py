@@ -11,7 +11,7 @@ Tests for docutils.transforms.frontmatter.DocTitle.
 """
 
 from __init__ import DocutilsTestSupport
-from docutils.transforms.frontmatter import DocTitle
+from docutils.transforms.frontmatter import DocTitle, SectionSubTitle
 from docutils.parsers.rst import Parser
 
 
@@ -23,7 +23,7 @@ def suite():
 
 totest = {}
 
-totest['section_headers'] = ((DocTitle,), [
+totest['section_headers'] = ((DocTitle, SectionSubTitle), [
 ["""\
 .. test title promotion
 
@@ -187,6 +187,39 @@ substitution_definition.
     <paragraph>
         This title should be the document title despite the
         substitution_definition.
+"""],
+["""\
+This is no doc title.
+
+===============
+ Section Title
+===============
+
+Subtitle
+========
+
+-----------------
+ Another Section
+-----------------
+
+Another Subtitle
+----------------
+
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        This is no doc title.
+    <section ids="section-title" names="section title">
+        <title>
+            Section Title
+        <subtitle ids="subtitle" names="subtitle">
+            Subtitle
+        <section ids="another-section" names="another section">
+            <title>
+                Another Section
+            <subtitle ids="another-subtitle" names="another subtitle">
+                Another Subtitle
 """],
 ])
 

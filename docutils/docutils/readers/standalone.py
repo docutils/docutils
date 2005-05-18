@@ -37,7 +37,17 @@ class Reader(readers.Reader):
           'default).',
           ['--no-doc-info'],
           {'dest': 'docinfo_xform', 'action': 'store_false', 'default': 1,
-           'validator': frontend.validate_boolean}),))
+           'validator': frontend.validate_boolean}),
+         ('Activate the promotion of the title of a lone subsection to '
+          'a section subtitle (disabled by default).',
+          ['--section-subtitle'],
+          {'dest': 'sectsubtitle_xform', 'action': 'store_true', 'default': 0,
+           'validator': frontend.validate_boolean}),
+         ('Deactivate the promotion of lone subsection titles.',
+          ['--no-section-subtitle'],
+          {'dest': 'sectsubtitle_xform', 'action': 'store_false',
+           'validator': frontend.validate_boolean}),
+         ))
 
     config_section = 'standalone reader'
     config_section_dependencies = ('readers',)
@@ -45,6 +55,7 @@ class Reader(readers.Reader):
     default_transforms = (references.Substitutions,
                           references.PropagateTargets,
                           frontmatter.DocTitle,
+                          frontmatter.SectionSubTitle,
                           frontmatter.DocInfo,
                           references.AnonymousHyperlinks,
                           references.IndirectHyperlinks,
