@@ -189,7 +189,7 @@ substitution_definition.
         substitution_definition.
 """],
 ["""\
-This is no doc title.
+(Because of this paragraph, the following is not a doc title.)
 
 ===============
  Section Title
@@ -209,7 +209,7 @@ Another Subtitle
 """\
 <document source="test data">
     <paragraph>
-        This is no doc title.
+        (Because of this paragraph, the following is not a doc title.)
     <section ids="section-title" names="section title">
         <title>
             Section Title
