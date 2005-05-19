@@ -123,8 +123,8 @@ Changes Since 0.3.7
 
 * docutils/readers/standalone.py:
 
-  - Added ``--section-subtitle`` and ``--no-section-subtitle`` options
-    to activate or deactivate the SectSubTitle transform.
+  - Added ``--section-subtitles`` and ``--no-section-subtitles``
+    options to activate or deactivate the SectSubTitle transform.
 
 * docutils/transforms/frontmatter.py:
 

@@ -468,8 +468,8 @@ _`sectsubtitle_xform`
     Enable or disable the promotion of the title of a lone subsection
     to a subtitle (docutils.transforms.frontmatter.SectSubTitle).
 
-    Default: disabled (0).  Options: ``--section-subtitle,
-    --no-section-subtitle``.
+    Default: disabled (0).  Options: ``--section-subtitles,
+    --no-section-subtitles``.
 
 
 [pep reader]
