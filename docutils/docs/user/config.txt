@@ -309,6 +309,18 @@ _`output_encoding_error_handler`
     Default: "strict".  Options: ``--output-encoding-error-handler,
     --output-encoding, -o``.
 
+_`record_dependencies`
+
+    Path to a file to which Docutils writes a list of files the input
+    file(s) depends on [#dependencies]_, e.g. due to file
+    inclusion. [#pwd]_ The format is one filename per line.  This
+    option is particularly useful in conjunction with programs like
+    ``make``.
+
+    Set to ``-`` in order to write dependencies to stdout.
+
+    Default: None.  Option: ``--record-dependencies``.
+
 _`report_level`
     Verbosity threshold at or above which system messages are
     reported.
@@ -367,18 +379,6 @@ _`warning_stream`
     [#pwd]_.
 
     Default: stderr (None).  Options: ``--warnings``.
-
-_`record_dependencies`
-
-    Path to a file to which Docutils writes a list of files the input
-    file(s) depends on [#dependencies]_, e.g. due to file
-    inclusion. [#pwd]_ The format is one filename per line.  This
-    option is particularly useful in conjunction with programs like
-    ``make``.
-
-    Set to ``-`` in order to write dependencies to stdout.
-
-    Default: None.  Option: ``--record-dependencies``.
 
 
 [parsers]
