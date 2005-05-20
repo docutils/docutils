@@ -356,8 +356,11 @@ _`traceback`
     reports.  Exceptions are allowed to propagate, instead of being
     caught and reported (in a user-friendly way) by Docutils.
 
-    Default: disabled (None).  Options: ``--traceback,
+    Default: disabled (None) unless Docutils is run programmatically
+    using the `Publisher Interface`_.  Options: ``--traceback,
     --no-traceback``.
+
+    .. _Publisher Interface: ../api/publisher.html
 
 _`warning_stream`
     Path to a file for the output of system messages (warnings)
