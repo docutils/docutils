@@ -427,11 +427,12 @@ An image directive (also clickable -- a hyperlink reference):
 
 A figure directive:
 
-.. figure:: ../../../docs/user/rst/images/title.png
+.. figure:: ../../../docs/user/rst/images/biohazard.png
    :figclass: figclass1 figclass2
    :class: class1 class2
    :alt: reStructuredText, the markup syntax
-   :align: left
+   :align: right
+   :width: 50
 
    A figure is an image with a caption and/or a legend:
 
@@ -444,6 +445,36 @@ A figure directive:
    +------------+-----------------------------------------------+
 
    This paragraph is also part of the legend.
+
+This paragraph might flow around the figure...
+
+A centered figure:
+
+.. figure:: ../../../docs/user/rst/images/biohazard.png
+   :align: center
+   :width: 50
+
+   This is the caption.
+
+   This is the legend.
+
+   The legend may consist of several paragraphs.
+
+This paragraph might flow around the figure...
+
+A left-aligned figure:
+
+.. figure:: ../../../docs/user/rst/images/biohazard.png
+   :align: left
+   :width: 50
+
+   This is the caption.
+
+   This is the legend.
+
+   The legend may consist of several paragraphs.
+
+This paragraph might flow around the figure...
 
 Admonitions
 ```````````
