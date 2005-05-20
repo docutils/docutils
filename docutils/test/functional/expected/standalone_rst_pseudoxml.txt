@@ -1122,8 +1122,8 @@
                     <image classes="class1 class2" uri="../../../docs/user/rst/images/title.png">
                 <paragraph>
                     A figure directive:
-                <figure align="left" classes="figclass1 figclass2">
-                    <image alt="reStructuredText, the markup syntax" classes="class1 class2" uri="../../../docs/user/rst/images/title.png">
+                <figure align="right" classes="figclass1 figclass2">
+                    <image alt="reStructuredText, the markup syntax" classes="class1 class2" uri="../../../docs/user/rst/images/biohazard.png" width="50">
                     <caption>
                         A figure is an image with a caption and/or a legend:
                     <legend>
@@ -1155,6 +1155,34 @@
                                                 Well it is, isn't it?
                         <paragraph>
                             This paragraph is also part of the legend.
+                <paragraph>
+                    This paragraph might flow around the figure...
+                <paragraph>
+                    A centered figure:
+                <figure align="center">
+                    <image uri="../../../docs/user/rst/images/biohazard.png" width="50">
+                    <caption>
+                        This is the caption.
+                    <legend>
+                        <paragraph>
+                            This is the legend.
+                        <paragraph>
+                            The legend may consist of several paragraphs.
+                <paragraph>
+                    This paragraph might flow around the figure...
+                <paragraph>
+                    A left-aligned figure:
+                <figure align="left">
+                    <image uri="../../../docs/user/rst/images/biohazard.png" width="50">
+                    <caption>
+                        This is the caption.
+                    <legend>
+                        <paragraph>
+                            This is the legend.
+                        <paragraph>
+                            The legend may consist of several paragraphs.
+                <paragraph>
+                    This paragraph might flow around the figure...
             <section ids="admonitions" names="admonitions">
                 <title auto="1" refid="id64">
                     <generated classes="sectnum">
