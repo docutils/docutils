@@ -143,6 +143,13 @@ Some knowledge of Python_ is assumed for some attributes.
 
 Settings in the "[general]" section are always applied.
 
+_`auto_id_prefix`
+    Prefix prepended to all auto-generated IDs generated within the
+    document, after id_prefix_.
+
+    Default: "id".  Options: ``--auto-id-prefix`` (hidden, intended
+    mainly for programmatic use).
+    
 _`datestamp`
     Include a time/datestamp in the document footer.  Contains a
     format string for Python's ``time.strftime``.  See the `time
@@ -249,6 +256,13 @@ _`halt_level`
 
     Default: severe (4).  Options: ``--halt, --strict``.
 
+_`id_prefix`
+    Prefix prepended to all IDs generated within the document.  See
+    also auto_id_prefix_.
+
+    Default: "" (empty).  Options: ``--id-prefix`` (hidden, intended
+    mainly for programmatic use).
+    
 _`input_encoding`
     The text encoding for input.
 

@@ -230,6 +230,33 @@ class MiscFunctionTests(unittest.TestCase):
             normed = nodes.fully_normalize_name(input)
             self.assertEquals(normed, output)
 
+    def test_set_id_default(self):
+        # Default prefixes.
+        document = utils.new_document('test')
+        # From name.
+        element = nodes.Element(names=['test'])
+        document.set_id(element)
+        self.assertEquals(element['ids'], ['test'])
+        # Auto-generated.
+        element = nodes.Element()
+        document.set_id(element)
+        self.assertEquals(element['ids'], ['id1'])
+
+    def test_set_id_custom(self):
+        # Custom prefixes.
+        document = utils.new_document('test')
+        # Change settings.
+        document.settings.id_prefix = 'prefix'
+        document.settings.auto_id_prefix = 'auto'
+        # From name.
+        element = nodes.Element(names=['test'])
+        document.set_id(element)
+        self.assertEquals(element['ids'], ['prefixtest'])
+        # Auto-generated.
+        element = nodes.Element()
+        document.set_id(element)
+        self.assertEquals(element['ids'], ['prefixauto1'])
+        
 
 if __name__ == '__main__':
     unittest.main()
