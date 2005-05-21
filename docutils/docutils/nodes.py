@@ -841,13 +841,14 @@ class document(Root, Structural, Element):
                     msgnode += msg
         if not node['ids']:
             for name in node['names']:
-                id = make_id(name)
+                id = self.settings.id_prefix + make_id(name)
                 if id and not self.ids.has_key(id):
                     break
             else:
                 id = ''
                 while not id or self.ids.has_key(id):
-                    id = 'id%s' % self.id_start
+                    id = (self.settings.id_prefix +
+                          self.settings.auto_id_prefix + str(self.id_start))
                     self.id_start += 1
             node['ids'].append(id)
         self.ids[id] = node
