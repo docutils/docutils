@@ -591,3 +591,6 @@ column is used (fill-column vs. end of previous/next line)."
 (defalias 'reST-title-char-p 'rest-title-char-p)
 (defalias 'reST-forward-title 'rest-forward-section)
 (defalias 'reST-backward-title 'rest-backward-section)
+
+
+(provide 'restructuredtext)
