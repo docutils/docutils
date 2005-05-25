@@ -119,7 +119,8 @@ The Testing Process
 
 When running ``test_functional.py``, all config files in
 ``functional/tests/`` are processed.  (Config files whose names begin
-with an underscore are ignored.)
+with an underscore are ignored.)  The current working directory is
+always Docutils' main test directory (``test/``).
 
 For example, ``functional/tests/some_test.py`` could read like this::
 
@@ -132,6 +133,8 @@ For example, ``functional/tests/some_test.py`` could read like this::
     parser_name = "rst"
     writer_name = "html"
     settings_overrides['output-encoding'] = 'utf-8'
+    # Relative to main ``test/`` directory.
+    settings_overrides['stylesheet_path'] = '../tools/stylesheets/default.css'
 
 The two variables ``test_source`` and ``test_destination`` contain the
 input file name (relative to ``functional/input/``) and the output
