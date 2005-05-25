@@ -118,7 +118,8 @@ The Testing Process
 -------------------
 
 When running ``test_functional.py``, all config files in
-``functional/tests/`` are processed.
+``functional/tests/`` are processed.  (Config files whose names begin
+with an underscore are ignored.)
 
 For example, ``functional/tests/some_test.py`` could read like this::
 
