@@ -159,6 +159,7 @@ Changes Since 0.3.7
 
 * docutils/writers/latex2e.py:
 
+  - Fixed tables starting with more than one multirow cell.
   - Improved --use-latex-docinfo so that organization/contact/address
     fields are lumped with the last author field and appear on the
     titlepage.
