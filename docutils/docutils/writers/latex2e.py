@@ -1216,7 +1216,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # if the firstrow is a multirow, this actually is the second row.
             # this gets hairy if rowspans follow each other.
             if self.active_table.get_rowspan(0):
-                self.body.append(' & ')
+                count = 0
+                while self.active_table.get_rowspan(count):
+                    count += 1
+                    self.body.append(' & ')
                 self.active_table.visit_entry() # increment cell count
         else:
             self.body.append(' & ')
