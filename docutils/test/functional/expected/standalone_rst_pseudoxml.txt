@@ -1542,16 +1542,10 @@
                                     Cells may
                                     span rows.
                             <entry morerows="1">
-                                <bullet_list bullet="-">
-                                    <list_item>
-                                        <paragraph>
-                                            Table cells
-                                    <list_item>
-                                        <paragraph>
-                                            contain
-                                    <list_item>
-                                        <paragraph>
-                                            body elements.
+                                <paragraph>
+                                    Another
+                                    rowspanning
+                                    cell.
                         <row>
                             <entry>
                                 <paragraph>
