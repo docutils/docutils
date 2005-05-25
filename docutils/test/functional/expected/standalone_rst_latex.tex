@@ -208,6 +208,8 @@ reStructuredText construct.
 
 \item {} \href{\#colspanning-tables}{2.18~~~Colspanning tables}
 
+\item {} \href{\#rowspanning-tables}{2.19~~~Rowspanning tables}
+
 \end{list}
 
 \item {} \href{\#tests-for-the-latex-writer}{3~~~Tests for the LaTeX writer}
@@ -1250,6 +1252,52 @@ True
  & 
 True
  \\
+\hline
+\end{longtable}
+
+
+%___________________________________________________________________________
+
+\hypertarget{rowspanning-tables}{}
+\pdfbookmark[1]{2.19~~~Rowspanning tables}{rowspanning-tables}
+\subsection*{2.19~~~Rowspanning tables}
+
+Here's a table with cells spanning several rows:
+
+\begin{longtable}[c]{|p{0.30\locallinewidth}|p{0.16\locallinewidth}|p{0.23\locallinewidth}|}
+\hline
+\textbf{
+Header row, column 1
+(header rows optional)
+} & \textbf{
+Header 2
+} & \textbf{
+Header 3
+} \\
+\hline
+\endhead
+
+body row 1, column 1
+ & 
+column 2
+ & 
+column 3
+ \\
+\hline
+
+body row 2
+ & \multirow{2}{0.16\locallinewidth}{
+Cells may
+span rows.
+} & \multirow{2}{0.23\locallinewidth}{
+Another
+rowspanning
+cell.
+} \\
+\cline{1-1}
+
+body row 3
+ &  \\
 \hline
 \end{longtable}
 
