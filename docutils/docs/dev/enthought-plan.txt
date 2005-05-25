@@ -91,12 +91,13 @@ Repository
 ==========
 
 If possible, all software and documentation files will be stored in
-the CVS repository of Docutils and/or the base project, which are all
-publicly-available via anonymous pserver access.
+the Subversion repository of Docutils and/or the base project, which
+are all publicly-available via anonymous pserver access.
 
-The Docutils project is very open about granting CVS write access; so
-far, everyone who asked has been given access.  Any Enthought staff
-member who would like CVS write access will get it.
+The Docutils project is very open about granting Subversion write
+access; so far, everyone who asked has been given access.  Any
+Enthought staff member who would like Subversion write access will get
+it.
 
 If either Epydoc or HappyDoc is chosen as the base platform, I will
 ask the project's administrator for CVS access for myself and any

@@ -169,7 +169,7 @@ match the expected output anymore, the test will fail.
 If this is the case and you made an intentional change, check the
 actual output for validity and correctness, copy it to
 ``functional/expected/`` (overwriting the old expected output), and
-commit the change to CVS.
+commit the change.
 
 
 .. _default configuration file:
