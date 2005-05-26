@@ -15,6 +15,8 @@ LaTeX2e document tree Writer.
 __docformat__ = 'reStructuredText'
 
 
+from __future__ import nested_scopes
+
 import re
 import os.path
 from types import ListType
