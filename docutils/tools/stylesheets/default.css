@@ -224,6 +224,7 @@ span.problematic {
   color: red }
 
 span.section-subtitle {
+  /* font-size relative to parent (<h#> element) */
   font-size: 80% }
 
 table.citation {
