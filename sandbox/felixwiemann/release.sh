@@ -128,6 +128,8 @@ function initialize()
     echo "New version number (for releasing): $new_ver"
     svn_ver="$2"
     echo "New Subversion version number (after releasing): $svn_ver"
+    tarball=docutils-"$new_ver".tar.gz
+    echo "Tarball name: $tarball"
     echo 'Initialization completed.'
     echo
 }
@@ -137,8 +139,8 @@ function test_tarball()
     # Assume we have the tarball in the current directory.
     # Pass test number as first parameter.
     echo 'Testing the release tarball.'
-    run mkdir test$1/
-    run cd test$1/
+    run mkdir tarball_test/
+    run cd tarball_test/
     confirm tar xzvf "../$tarball"
     echo
     run cd docutils-"$new_ver"
@@ -165,6 +167,8 @@ function test_tarball()
         done
     fi
     run cd ../..
+    echo "Cleaning up..."
+    run rm -rf tarball_test
     echo
 }
 
@@ -196,14 +200,15 @@ function upload_htdocs()
         -o -name \*.html -print0 -o -name \*.txt -print0 \
         | tar -cjvf docutils-docs.tar.bz2 -T - --null
     echo 'Upload the tarball to your home directory on SF.net...'
-    confirm scp docutils-docs.tar.bz2 "$username"@shell.sourceforge.net:
+    confirm scp docutils-docs.tar.bz2 shell.sourceforge.net:
     echo
     echo 'Unpack the tarball on SF.net...'
     echo 'Press enter (or enter anything to skip).'
     read
     if [ ! "$REPLY" ]; then
-        ssh "$username"@shell.sourceforge.net<<-EOF
+        ssh shell.sourceforge.net<<-EOF
             set -x
+            umask 002
             cd /home/groups/d/do/docutils/htdocs/
             mkdir -m g+rwxs $new_ver
             cd $new_ver
@@ -272,30 +277,32 @@ function stage_2()
     run mkdir -p "$working_area"
     echo
     echo 'Getting a fresh export.'
-    run cd "$working_area"
-    confirm svn export "$svnroot"
-    echo
-    echo 'Building the release tarball.'
-    run cd docutils
-    confirm ./setup.py sdist
-    run cd ..
-    echo 'Tarball built.'
-    tarball=docutils-"$new_ver".tar.gz
-    run cp docutils/dist/"$tarball" .
-    confirm test_tarball 1
-    echo "Testing documentation and uploading htdocs of version $new_ver..."
-    confirm upload_htdocs
-    echo "Uploading $tarball to SF.net."
-    confirm upload_tarball
-    echo 'Now go to https://sourceforge.net/project/admin/editpackages.php?group_id=38414'
-    echo 'and follow the instructions at'
-    echo 'http://docutils.sf.net/docs/dev/release.html#file-release-system'
-    echo
-    echo 'Then press enter.'
+    echo 'Press enter to proceed (or enter anything to skip)...'
     read
-    echo 'Rebuilding the working area.'
-    confirm su -c "rm -rf $working_area"
-    run mkdir $working_area
+    if [ ! "$REPLY" ]; then
+        run cd "$working_area"
+        confirm svn export "$svnroot"
+        echo
+        echo 'Building the release tarball.'
+        run cd docutils
+        confirm ./setup.py sdist
+        run cd ..
+        echo 'Tarball built.'
+        run cp docutils/dist/"$tarball" .
+        confirm test_tarball
+        echo "Testing documentation and uploading htdocs of version $new_ver..."
+        confirm upload_htdocs
+        echo "Tagging current revision..."
+        confirm svn cp "${svnroot%/trunk*}/trunk/" "${svnroot%/trunk*}/tags/docutils-$new_ver/" -m "$log_prefix tagging released revision"
+        echo "Uploading $tarball to SF.net."
+        confirm upload_tarball
+        echo 'Now go to https://sourceforge.net/project/admin/editpackages.php?group_id=38414'
+        echo 'and follow the instructions at'
+        echo 'http://docutils.sf.net/docs/dev/release.html#file-release-system'
+        echo
+        echo 'Then press enter.'
+        read
+    fi
     run cd $working_area
     echo 'Downloading the tarball to verify its integrity.'
     while true; do
@@ -306,12 +313,18 @@ function stage_2()
         read
         test "$REPLY" || break
     done
-    confirm test_tarball 2
-    echo
+    confirm test_tarball
     echo 'Registering at PyPI...'
-    run cd $working_area
-    run cd test2
-    confirm ./setup.py register
+    echo 'Press enter to proceed (or enter anything to skip)...'
+    read
+    if [ ! "$REPLY" ]; then
+        echo "Unpacking tarball..."
+        ls -l
+        pwd
+        run tar xzvf "$tarball"
+        run cd docutils-"$new_ver"
+        confirm ./setup.py register
+    fi
 }
 
 function stage_3()
@@ -323,7 +336,7 @@ function stage_3()
     echo 'Now updating HISTORY.txt...'
     add_string="Changes Since $new_ver"
     before="Release "
-    echo 'Press enter to replace "'"$add_string"'" section,'
+    echo 'Press enter to add "'"$add_string"'" section,'
     echo 'or enter anything to skip.'
     read
     test "$REPLY" || python -c "if 1: # for indentation
@@ -337,18 +350,9 @@ function stage_3()
     echo 'Please update the web page now (web/index.txt).'
     echo "Press enter when you're done."
     read
-    echo 'Press enter to run docutils-update on SF.net (or enter anything to skip):'
-    read
-    if [ ! "$REPLY" ]; then
-        echo 'Running docutils-update on the server...'
-        echo 'This may take some time.'
-        echo
-        echo '$ echo /home/groups/d/do/docutils/snapshots/sandbox/davidg/infrastructure/docutils-update -p | \' #'
-        echo "    ssh $username@shell.sourceforge.net"
-        test "$REPLY" || echo /home/groups/d/do/docutils/snapshots/sandbox/davidg/infrastructure/docutils-update -p | ssh $username@shell.sourceforge.net
-        echo
-        echo 'docutils-update completed.'
-    fi
+    echo 'Running docutils-update on the server...'
+    echo 'This may take some time.'
+    confirm ssh shell.berlios.de docutils-update
     echo 
 }
 
