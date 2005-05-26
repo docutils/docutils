@@ -1815,14 +1815,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if isinstance(node.parent, nodes.sidebar):
             self.body.append('~\\\\\n\\textbf{')
             self.context.append('}\n\\smallskip\n')
-        else:
+        elif isinstance(node.parent, nodes.document):
             self.title = self.title + \
                 '\\\\\n\\large{%s}\n' % self.encode(node.astext())
             raise nodes.SkipNode
+        elif isinstance(node.parent, nodes.section):
+            self.body.append('\\textbf{')
+            self.context.append('}\\vspace{0.2cm}\n\n\\noindent ')
 
     def depart_subtitle(self, node):
-        if isinstance(node.parent, nodes.sidebar):
-            self.body.append(self.context.pop())
+        self.body.append(self.context.pop())
 
     def visit_system_message(self, node):
         if node['level'] < self.document.reporter.report_level:

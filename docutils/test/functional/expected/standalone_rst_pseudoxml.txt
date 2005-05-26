@@ -326,6 +326,8 @@
                 <generated classes="sectnum">
                     1.1   
                 Section Title
+            <subtitle ids="section-subtitle" names="section subtitle">
+                Section Subtitle
             <paragraph>
                 That's it, the text just above this line.
         <section ids="empty-section" names="empty section">
@@ -1707,18 +1709,18 @@
     <section classes="system-messages">
         <title>
             Docutils System Messages
-        <system_message backrefs="id20" ids="id19" level="3" line="98" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id20" ids="id19" level="3" line="100" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Undefined substitution referenced: "problematic".
-        <system_message backrefs="id70" ids="id69" level="3" line="352" source="functional/input/standalone_rst_html4css1.txt" type="ERROR">
+        <system_message backrefs="id70" ids="id69" level="3" line="354" source="functional/input/standalone_rst_html4css1.txt" type="ERROR">
             <paragraph>
                 Unknown target name: "5".
-        <system_message backrefs="id72" ids="id71" level="3" line="361" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id72" ids="id71" level="3" line="363" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Unknown target name: "nonexistent".
-        <system_message backrefs="id74" ids="id73" level="3" line="388" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id74" ids="id73" level="3" line="390" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Unknown target name: "hyperlink reference without a target".
-        <system_message backrefs="id76" ids="id75" level="3" line="401" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id76" ids="id75" level="3" line="403" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Duplicate target name, cannot be used as a unique reference: "duplicate target names".

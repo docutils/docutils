@@ -1206,6 +1206,12 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.body.append(self.starttag(node, 'h2', '', CLASS='subtitle'))
             self.context.append('</h2>\n')
             self.in_document_title = len(self.body)
+        elif isinstance(node.parent, nodes.section):
+            tag = 'h%s' % (self.section_level + self.initial_header_level - 1)
+            self.body.append(
+                self.starttag(node, tag, '', CLASS='section-subtitle') +
+                self.starttag({}, 'span', '', CLASS='section-subtitle'))
+            self.context.append('</span></%s>\n' % tag)
 
     def depart_subtitle(self, node):
         self.body.append(self.context.pop())
@@ -1354,9 +1360,14 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.context.append('</h1>\n')
             self.in_document_title = len(self.body)
         else:
+            assert isinstance(node.parent, nodes.section)
             h_level = self.section_level + self.initial_header_level - 1
+            atts = {}
+            if (len(node.parent) >= 2 and
+                isinstance(node.parent[1], nodes.subtitle)):
+                atts['CLASS'] = 'with-subtitle'
             self.body.append(
-                  self.starttag(node, 'h%s' % h_level, ''))
+                  self.starttag(node, 'h%s' % h_level, '', **atts))
             atts = {}
             if node.parent['ids']:
                 atts['name'] = node.parent['ids'][0]
