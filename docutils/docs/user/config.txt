@@ -407,7 +407,8 @@ Docutils currently supports only one parser, for reStructuredText.
 _`file_insertion_enabled`
     Enable or disable directives that insert the contents of external
     files, such as the "include_" & "raw_".  A "warning" system
-    message (including the directive text) is inserted instead.
+    message (including the directive text) is inserted instead.  (See
+    also raw_enabled_ for another security-relevant setting.)
 
     Default: enabled (1).  Options: ``--file-insertion-enabled,
     --no-file-insertion``.
@@ -429,7 +430,9 @@ _`pep_base_url`
 
 _`raw_enabled`
     Enable or disable the "raw_" directive.  A "warning" system
-    message (including the directive text) is inserted instead.
+    message (including the directive text) is inserted instead.  (See
+    also file_insertion_enabled_ for another security-relevant
+    setting.)
 
     Default: enabled (1).  Options: ``--raw-enabled, --no-raw``.
 
@@ -583,7 +586,8 @@ _`embed_stylesheet`
 _`field_name_limit`
     The maximum width (in characters) for one-column field names.
     Longer field names will span an entire row of the table used to
-    render the field list.  0 indicates "no limit".
+    render the field list.  0 indicates "no limit".  See also
+    option_limit_.
 
     Default: 14 characters.  Option: ``--field-name-limit``.
 
@@ -611,7 +615,8 @@ _`initial_header_level`
 _`option_limit`
     The maximum width (in characters) for options in option lists.
     Longer options will span an entire row of the table used to render
-    the option list.  0 indicates "no limit".
+    the option list.  0 indicates "no limit".  See also
+    field_name_limit_.
 
     Default: 14 characters.  Option: ``--option-limit``.
 
