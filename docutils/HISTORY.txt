@@ -156,6 +156,7 @@ Changes Since 0.3.7
   - Added ``html_prolog``, ``html_head``, ``html_body``,
     ``html_title``, & ``html_subtitle`` to parts dictionary exposed by
     ``docutils.core.publish_parts``.
+  - Added support for section subtitles.
 
 * docutils/writers/latex2e.py:
 
@@ -167,6 +168,7 @@ Changes Since 0.3.7
     even if the document has no title.
   - Made sure that latex doesn't fill in today's date if no date field
     was given.
+  - Added support for section subtitles.
 
 * docutils/writers/null.py: Added to project; a do-nothing Writer.
 
