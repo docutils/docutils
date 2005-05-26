@@ -48,7 +48,7 @@ function set_ver()
     # Parameters: old_version new_version
     shopt -s extglob
     echo Determining list of files to be changed...
-    files="docutils/__init__.py setup.py `svn ls test/functional/expected/`"
+    files="docutils/__init__.py setup.py `svn ls test/functional/expected/ | sed 's|^|test/functional/expected/|'`"
     echo "Now I'll change the version number to $2 in the following files:"
     echo $files
     echo
