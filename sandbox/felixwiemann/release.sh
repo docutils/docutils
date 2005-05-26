@@ -31,11 +31,7 @@ function confirm()
     echo 'Press enter to run (or enter anything to skip):'
     print_command "$@"
     read
-    # "cvs diff" returns an error code if there is a change, so we
-    # temporarily deactivate exit-on-error.
-    test "$1 $2" = 'cvs diff' && set +e || true
     test "$REPLY" && echo Skipped. || "$@"
-    test "$1 $2" = 'cvs diff' && set -e || true
 }
 
 function checkin()
@@ -43,15 +39,15 @@ function checkin()
     # Parameters: log_message, file, file, file ...
     log_message="$1"
     shift
-    confirm cvs diff "$@"
-    confirm cvs ci -m "$log_prefix $log_message" "$@"
+    confirm svn diff "$@"
+    confirm svn ci -m "$log_prefix $log_message" "$@"
 }
 
 function set_ver()
 {
     # Parameters: old_version new_version
     shopt -s extglob
-    files="`ls docutils/__init__.py setup.py test/functional/expected/!(CVS)`"
+    files="`ls docutils/__init__.py setup.py test/functional/expected/!(.svn)`"
     echo "Now I'll change the version number to $2 in the following files:"
     echo "$files"
     echo
@@ -76,13 +72,13 @@ function usage()
 {
     echo 'Usage:'
     echo
-    echo '    release.sh new_version cvs_version [stage]'
+    echo '    release.sh new_version svn_version [stage]'
     echo
     echo 'The following things will be done:'
     echo
     echo '* Change version number to new_version.  (stage 1)'
-    echo '* CVS-export, test and release Docutils version new_version.  (stage 2)'
-    echo '* Change version number to cvs_version.  (stage 3)'
+    echo '* SVN-export, test and release Docutils version new_version.  (stage 2)'
+    echo '* Change version number to svn_version.  (stage 3)'
     echo
     echo 'If stage is supplied (1, 2 or 3), only the specified stage will'
     echo 'be executed.  Otherwise, it defaults to executing all stages.'
@@ -119,22 +115,18 @@ function initialize()
         exit 1
     fi
     working_copy="`pwd`"
-    echo -n 'Detecting CVS root... '
-    cvsroot="`cat CVS/Root`"
-    echo "$cvsroot"
-    echo -n 'Guessing username on SF.net... '
-    username=${cvsroot#:ext:}
-    username=${username%@*}
-    echo "$username"
+    echo -n 'Detecting Subversion root... '
+    svnroot="`svn info . | grep ^URL: | sed 's/URL: //'`"
+    echo "$svnroot"
     echo -n 'Detecting current Docutils version... '
     old_ver="`python -c 'import docutils; print docutils.__version__'`"
     echo "$old_ver"
     new_ver="$1"
-    # log_prefix is for CVS logs.
+    # log_prefix is for SVN logs.
     log_prefix="Release $1:"
     echo "New version number (for releasing): $new_ver"
-    cvs_ver="$2"
-    echo "New CVS version number (after releasing): $cvs_ver"
+    svn_ver="$2"
+    echo "New Subversion version number (after releasing): $svn_ver"
     echo 'Initialization completed.'
     echo
 }
@@ -254,7 +246,7 @@ function run_stage()
 
 function stage_1()
 {
-    confirm cvs up
+    confirm svn up
     echo
     set_ver "$old_ver" "$new_ver"
     echo
@@ -280,7 +272,7 @@ function stage_2()
     echo
     echo 'Getting a fresh export.'
     run cd "$working_area"
-    confirm cvs -d"$cvsroot" export -rHEAD docutils
+    confirm svn export "$svnroot"
     echo
     echo 'Building the release tarball.'
     run cd docutils
@@ -323,9 +315,9 @@ function stage_2()
 
 function stage_3()
 {
-    confirm cvs up
+    confirm svn up
     echo
-    set_ver "$new_ver" "$cvs_ver"
+    set_ver "$new_ver" "$svn_ver"
     echo
     echo 'Now updating HISTORY.txt...'
     add_string="Changes Since $new_ver"
