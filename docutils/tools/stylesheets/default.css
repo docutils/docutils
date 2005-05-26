@@ -14,7 +14,7 @@ Default cascading style sheet for the HTML output of Docutils.
 .first {
   margin-top: 0 ! important }
 
-.last {
+.last, .with-subtitle {
   margin-bottom: 0 ! important }
 
 .hidden {
@@ -125,6 +125,10 @@ div.system-message p.system-message-title {
 div.topic {
   margin: 2em }
 
+h1.section-subtitle, h2.section-subtitle, h3.section-subtitle,
+h4.section-subtitle, h5.section-subtitle, h6.section-subtitle {
+  margin-top: 0.4em }
+
 h1.title {
   text-align: center }
 
@@ -218,6 +222,9 @@ span.pre {
 
 span.problematic {
   color: red }
+
+span.section-subtitle {
+  font-size: 80% }
 
 table.citation {
   border-left: solid thin gray }
