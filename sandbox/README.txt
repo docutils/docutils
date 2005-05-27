@@ -53,3 +53,68 @@ __ http://docs.python.org/doc/doc.html
 * `Dave Kuhlman's sandbox
   <http://docutils.sf.net/sandbox/dkuhlman/>`__ and `his homepage
   <http://www.rexx.com/~dkuhlman/rstpythonlatex_intro.html>`__.
+
+
+----------------------------------------------------------------------
+
+
+**To-do:** The following list must be updated.
+
+Other Sandbox Projects
+----------------------
+
+Anyone is welcome to contribute to any of these projects.  Interested
+developers are welcome to take on any projects which appear to be
+dormant.  Please direct any email to
+docutils-develop@lists.sourceforge.net.
+
+* ZReST_, by Richard Jones, is a "ReStructuredText Document for Zope"
+  application that is complete and ready to install.
+
+* PySource_, by Tony Ibbs, is an experimental Python source Reader.
+  In some form, it will soon become part of core Docutils.  There is
+  some related code in David Goodger's sandbox (pysource_reader_) and
+  a `Python Source Reader <docs/dev/pysource.html>`__ document.
+
+* Docutils interface to PythonPoint_, also by Richard Jones, produces
+  PDF presentations using ReportLabs.
+
+* Engelbert Gruber has begun `LaTeX Writer`_ and `ManPage Writer`_ components.
+
+* ? has taken over `ReportLabs/PDF Writer`_ components.
+
+* Oliver Rutherfurd has begun a `DocBook Writer`_ component and
+  `HT2HTML integration`_ component.
+
+* Gunnar Schwant's DocFactory_ is a wxPython GUI application for
+  Docutils.
+
+* Aahz has begun an `OpenOffice.org Writer`_.
+
+* Ian Bicking is working on code for a Wiki_.
+
+* Bill Bumgarner has written a `simple HTML writer`_ that doesn't rely
+  on CSS (stylesheets).
+
+* Beni Cherniavsky has written a generic `preprocessing module`_ for
+  roles and/or directives and built preprocessors for TeX math for
+  both LaTeX and HTML output on top of it.
+
+* Beni Cherniavsky maintains a Makefile_ for driving Docutils, hoping
+  to handle everything one might do with docutils.
+
+.. _ZReST: richard/ZReST/
+.. _PySource: tibs/pysource/
+.. _pysource_reader: davidg/pysource_reader/
+.. _PythonPoint: richard/pythonpoint/
+.. _LaTeX Writer: grubert/latex/
+.. _Manpage Writer: grubert/man/
+.. _ReportLabs/PDF Writer: dreamcatcher/rlpdf/
+.. _DocBook Writer: oliverr/docbook/
+.. _HT2HTML integration: oliverr/ht/
+.. _DocFactory: gschwant/docfactory/doc/
+.. _OpenOffice.org Writer: aahz/OO/
+.. _Wiki: ianb/wiki/
+.. _simple HTML writer: bbum/DocArticle/
+.. _preprocessing module: cben/rolehack/
+.. _Makefile: cben/make/
