@@ -23,6 +23,13 @@ Subversion is exhaustively documented in the `Subversion Book`_
 Accessing the Repository
 ========================
 
+Web Access
+----------
+
+The repository can be browsed and examined via the web at
+http://svn.berlios.de/viewcvs/docutils/.
+
+
 Anonymous Access
 ----------------
 
@@ -141,13 +148,6 @@ your shell account.
 
   Now you should be able to start an SSH session without needing your
   password.
-
-
-Web Access
-----------
-
-The repository can be browsed and examined via the web at
-http://svn.berlios.de/viewcvs/docutils/.
 
 
 Repository Layout
