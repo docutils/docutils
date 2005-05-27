@@ -90,9 +90,9 @@ Google should index the mailing lists: `Docutils-user
    http://docutils.sourceforge.net/docfactory-snapshot.tgz
 .. _bug report: http://sourceforge.net/tracker/?group_id=38414&atid=422030
 .. _patch tracker: http://sourceforge.net/tracker/?group_id=38414&atid=422032
-.. _mailing lists: mailing-lists.html
-.. _Docutils-users: mailing-lists.html#docutils-users
-.. _Docutils-develop: mailing-lists.html#docutils-develop
+.. _mailing lists: docs/user/mailing-lists.html
+.. _Docutils-users: docs/user/mailing-lists.html#docutils-users
+.. _Docutils-develop: docs/user/mailing-lists.html#docutils-develop
 .. _sandbox: sandbox/README.html
 .. _reStructuredText: rst.html
 .. _project files page:

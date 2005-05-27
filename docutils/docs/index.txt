@@ -82,6 +82,7 @@ Docutils-general:
 * `Docutils Front-End Tools <user/tools.html>`__
 * `Docutils Configuration Files <user/config.html>`__
 * `Docutils LaTeX Writer <user/latex.html>`__
+* `Docutils Mailing Lists <user/mailing-lists.html>`__
 
 `reStructuredText <http://docutils.sourceforge.net/rst.html>`_:
 
