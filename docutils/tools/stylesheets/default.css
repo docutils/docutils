@@ -138,6 +138,9 @@ h2.subtitle {
 hr.docutils {
   width: 75% }
 
+img.borderless {
+  border: 0 }
+
 ol.simple, ul.simple {
   margin-bottom: 1em }
 
@@ -224,7 +227,7 @@ span.problematic {
   color: red }
 
 span.section-subtitle {
-  /* font-size relative to parent (<h#> element) */
+  /* font-size relative to parent (h1..h6 element) */
   font-size: 80% }
 
 table.citation {
