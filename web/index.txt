@@ -5,397 +5,120 @@
  Written in Python, for General- and Special-Purpose Use
 ---------------------------------------------------------
 
-:Date: $Date$
+Docutils is an open-source text processing system for processing
+plaintext documentation into useful formats, such as HTML or LaTeX.
+It includes reStructuredText_, the easy to read, easy to use,
+what-you-see-is-what-you-get plaintext markup language.
 
-.. This document is *not* meant to be a model for good
-   reStructuredText usage.  It is full of external hyperlinks, and
-   makes extensive use of anonymous hyperlink syntax, which is not
-   easy to follow from the source text.  Please refer to the processed
-   HTML instead: http://docutils.sourceforge.net/index.html
+----------------------------------------------------------------------
 
-The purpose of the Docutils project is to create a set of tools for
-processing plaintext documentation into useful formats, such as HTML,
-XML, and LaTeX.  Includes reStructuredText_, the easy to read, easy to
-use, what-you-see-is-what-you-get plaintext markup language.  Several
-sources are or will be supported:
-
-- Standalone files (implemented).
-- Inline documentation from Python modules and packages, extracted
-  with namespace context.
-- `PEPs (Python Enhancement Proposals)`_ (implemented).
-- And others as discovered.
-
-Please consider donating to Docutils: |donate|
-
-.. |donate| image:: http://images.sourceforge.net/images/project-support.jpg
-   :target: http://sourceforge.net/donate/index.php?group_id=38414
-   :width: 88
-   :height: 32
-   :alt: Support the Docutils project!
-
-.. contents::
-
-
-Getting Started
-===============
-
-To get up & running quickly, see the Quick-Start_ section of the
+To **get up & running quickly**, see the Quick-Start_ section of the
 README_ file.
 
-.. _Quick-Start: README.html#quick-start
+All **documentation** can be reached from the `Docutils Project
+Documentation Overview`_.
 
+To the developers of an open source project, **feedback** is a great
+motivator and very welcome.  We also rely on feedback for determining
+what features to implement.  Thus, if you tell us what you need, you
+may just get it!  Please post any feedback to the Docutils-users_
+mailing list.
 
-Documentation
-=============
+All **discussion** about Docutils takes place on the `mailing lists`_.
 
-Please see the `Docutils Project Documentation Overview
-<docs/index.html>`_.
+If you found a **bug**, please file a `bug report`_ or send an email
+to the Docutils-users_ mailing list.  **Patch** submissions should be
+filed in the `patch tracker`_ or sent to Docutils-develop_.
 
+We're welcoming all kinds of **contributions**.  There's a `To Do
+list`_ full of interesting ideas awaiting a champion.  If you have any
+questions regarding how to extend Docutils, please feel free to ask on
+the Docutils-develop_ mailing list.
 
-Feedback
-========
+The only **requirement** for running Docutils is Python_ 2.2 or later.
+(Python 2.1 may be used providing the compiler package is installed.
+The compiler package can be found in the Tools/ directory of Python's
+source distribution.)
 
-To the developers of an open source project, feedback is a great
-motivator and very welcome.  We're working on Docutils in our own way,
-pushing it along a more-or-less linear path that makes sense to us,
-but may not necessarily be useful to everyone else.  Community
-feedback helps steer development in immediately useful directions.
-
-In other words: if you tell us what you need, you may just get it!  If
-you really need something, please consider contributing_ to Docutils
-in some way.
-
-Please post any feedback to the appropriate `mailing list`_.
-
-.. _contributing: `Please Contribute!`_
-
-
-Project Status
-==============
-
-The Docutils project began with the merging of the reStructuredText__
-parser and the `Python Docstring Processing System`__ projects.  The
-merge has been completed, and those projects are now inactive.
-
-__ http://structuredtext.sourceforge.net/
-__ http://docstring.sourceforge.net/
-
-Docutils currently consists of a reStructuredText_ parser, readers for
-standalone files and PEPs_, and writers for HTML, LaTeX,
-Docutils-native XML, plus pseudo-XML for testing purposes.  Writers
-for DocBook XML and PDF have been started, and a Python source reader
-(docstring extraction with context) is also under way.  There is a lot
-of design and implementation work to do, which could greatly benefit
-from a joint effort with existing projects.  The project `To Do list`_
-is brimming over with ideas.
-
-Docutils is in active development and should be considered highly
-experimental.  We're learning as we go.  APIs are subject to change at
-any time.
-
-
-Requirements
-============
-
-- Python 2.2 or later [#py21]_ must already be installed to run the
-  code and the test suite.  The latest release is recommended.  Python
-  is available from http://www.python.org/.
-
-- Docutils uses Greg Ward's Optik_/optparse option processing package.
-  It is included in the Docutils distribution.
-
-- The `Python Imaging Library`, or PIL, is used for some image
-  manipulation operations if it is installed.
-
-.. [#py21] Python 2.1 may be used providing the compiler package is
-   installed.  The compiler package can be found in the Tools/
-   directory of Python's source distribution.
-
-.. _Optik: http://optik.sourceforge.net/
-.. _Python Imaging Library: http://www.pythonware.com/products/pil/
+Docutils is in active development and should be considered **highly
+experimental**.  APIs are subject to change at any time.
 
 
 Download
 ========
 
-Development Snapshots
----------------------
+We recommend that you use the latest **snapshot**,
+`<docutils-snapshot.tgz>`_.  The snapshots usually contain *more
+features* and *less bugs* than the "official" releases |---| they're
+not only for developers!
 
-Development snapshots of the project files are available as .tgz
-tarballs.  They are generated automatically from the Subversion
-repository, usually within an hour of a change being checked in.  The
-snapshots are highly recommended over the "official" releases, as they
-contain the latest features and bug fixes.  However, they may contain
-transient bugs or incompatibilities.
+The latest **release package** is `docutils-0.3.9.tgz`__.  It is
+mostly intended for distributors.  See the `announcement posting`_ for
+a list of changes since the previous release (0.3.7).
 
-- `Snapshot of Docutils code, tests, documentation, and
-  specifications`__
-- `Snapshot of the Sandbox`__ (experimental, contributed code; see
-  `The Sandbox`_ below for details)
-- `Snapshot of DocFactory project files`__ (this is a subset of the
+__ http://prdownloads.sourceforge.net/docutils/docutils-0.3.9.tar.gz?download
+.. _announcement posting:
+   http://article.gmane.org/gmane.text.docutils.user/2054
+
+More snapshots:
+
+- `Snapshot of the Sandbox`_ (experimental, contributed code; see the
+  Sandbox_ for details)
+- `Snapshot of DocFactory project files`_ (this is a subset of the
   Sandbox snapshot above; you don't need both)
-- `Snapshot of web files`__ (the files that generate this web site)
 
-__ http://docutils.sourceforge.net/docutils-snapshot.tgz
-__ http://docutils.sourceforge.net/docutils-sandbox-snapshot.tgz
-__ http://docutils.sourceforge.net/docfactory-snapshot.tgz
-__ http://docutils.sourceforge.net/docutils-web-snapshot.tgz
-
-`Anonymous Subversion access`_ is available.  You can also `browse the
-Subversion repository`_ and read the latest README_, HISTORY_,
-COPYING_, FAQ_ and BUGS_ files.
-
-
-Project Releases
-----------------
-
-The `latest project release package`_ (Docutils 0.3.9, 2005-05-26) and
-past project releases can be downloaded from the `project files
-page`_.
-
-Major changes since Docutils 0.3.7:
-
-* Added file_insertion_enabled__ and raw_enabled__ settings.
-
-  __ docs/user/config.html#file-insertion-enabled
-  __ docs/user/config.html#raw-enabled
-
-* Added `auto-enumerated lists`__.
-
-  __ docs/ref/rst/restructuredtext.html#enumerated-lists
-
-* Added `header and footer`__ directives.
-
-  __ docs/ref/rst/directives.html#document-header-footer
-
-* Added list-table__ directive.
-
-  __ docs/ref/rst/directives.html#list-table
-
-* Added support for `section subtitles`__.
-
-  __ docs/user/config.html#sectsubtitle-xform
-
-* Added field_name_limit__ and option_limit__ settings to HTML writer.
-
-  __ docs/user/config.html#field-name-limit
-  __ docs/user/config.html#option-limit
-
-* Added cloak_email_addresses__ setting to HTML writer.
-
-  __ docs/user/config.html#cloak-email-addresses
-
-* UTF-8 BOMs (byte order marks) are now removed from the input stream.
-
-* Many other improvements and bug fixes; see the `history file`__.
-  
-  __ HISTORY.html#release-0-3-9-2005-05-26
-
-
-.. _mailing list:
-
-Mailing Lists
-=============
-
-Users who have questions or need assistance with Docutils or
-reStructuredText should first check the `Docutils FAQ`_.  If the
-question or problem is not answered there, please `post a message`__
-to the `Docutils-users mailing list`__ [#docutils-users]_.
-
-Developers can keep up to date and help out by joining the mailing
-lists.
-
-High-level discussions take place on the `Python Documentation Special
-Interest Group (Doc-SIG) mailing list`__ (email to
-Doc-SIG@python.org).
-
-Two lists have been set up specifically for developers of the Docutils
-project:
-
-- Docutils-develop__, for implementation discussions
-  (email to docutils-develop@lists.sourceforge.net).
-- Docutils-checkins__, to monitor change/checkin messages
-  (automatically generated; normally read-only).
-
-The Doc-SIG_ has greater exposure and is therefore a better forum for
-general discussions (such as reStructuredText syntax or the high-level
-Docutils project model), whereas the Docutils-specific lists are more
-focused on the implementation.
-
-You can also access the mailing lists via the web (at Gmane):
-Docutils-users__, Docutils-develop__, Docutils-checkins__ and
-Doc-SIG__.
-
-.. [#docutils-users] Due to overwhelming amounts of spam, the
-   docutils-users@lists.sourceforge.net mailing list has been set up
-   for subscriber posting only.  Non-subscribers who post to
-   docutils-users will receive a message with "Subject: Your message
-   to Docutils-users awaits moderator approval".  Legitimate messages
-   are accepted and posted as soon as possible (a list administrator
-   must verify the message manually).  If you'd like to subscribe to
-   docutils-users, please visit
-   <http://lists.sourceforge.net/lists/listinfo/docutils-users>.
-
-.. _FAQ:
-.. _Docutils FAQ: FAQ.html
-__ mailto:docutils-users@lists.sourceforge.net
-__ http://lists.sourceforge.net/lists/listinfo/docutils-users
-__ http://mail.python.org/mailman/listinfo/doc-sig
-__ http://lists.sourceforge.net/lists/listinfo/docutils-develop
-__ http://lists.sourceforge.net/lists/listinfo/docutils-checkins
-__ http://news.gmane.org/gmane.text.docutils.user
-__ http://news.gmane.org/gmane.text.docutils.devel
-__ http://news.gmane.org/gmane.text.docutils.cvs
-__ http://news.gmane.org/gmane.comp.python.documentation
-
-
-The Sandbox
-===========
-
-The Sandbox__ is a place to play around, to try out and share ideas.
-It's a part of the Subversion repository but it isn't distributed as
-part of Docutils releases (you can get a recent tarball from the
-`development snapshots`_).  Each developer who wants to play in it
-should create their own subdirectory (suggested name: SourceForge ID,
-or given name + family initial).
-
-Please feel free to `visit the sandbox`__.
-
-It's OK to make a mess in the Sandbox!  But please, play nice.
-
-__
-__ sandbox/
-
-
-Sandbox Projects
-----------------
-
-Anyone is welcome to contribute to any of these projects.  Interested
-developers are welcome to take on any projects which appear to be
-dormant.  Please direct any email to
-docutils-develop@lists.sourceforge.net.
-
-* ZReST_, by Richard Jones, is a "ReStructuredText Document for Zope"
-  application that is complete and ready to install.
-
-* PySource_, by Tony Ibbs, is an experimental Python source Reader.
-  In some form, it will soon become part of core Docutils.  There is
-  some related code in David Goodger's sandbox (pysource_reader_) and
-  a `Python Source Reader <docs/dev/pysource.html>`__ document.
-
-* Docutils interface to PythonPoint_, also by Richard Jones, produces
-  PDF presentations using ReportLabs.
-
-* Engelbert Gruber has begun `LaTeX Writer`_ and `ManPage Writer`_ components.
-
-* ? has taken over `ReportLabs/PDF Writer`_ components.
-
-* Oliver Rutherfurd has begun a `DocBook Writer`_ component and
-  `HT2HTML integration`_ component.
-
-* Gunnar Schwant's DocFactory_ is a wxPython GUI application for
-  Docutils.
-
-* Aahz has begun an `OpenOffice.org Writer`_.
-
-* Ian Bicking is working on code for a Wiki_.
-
-* Bill Bumgarner has written a `simple HTML writer`_ that doesn't rely
-  on CSS (stylesheets).
-
-* Beni Cherniavsky has written a generic `preprocessing module`_ for
-  roles and/or directives and built preprocessors for TeX math for
-  both LaTeX and HTML output on top of it.
-
-* Beni Cherniavsky maintains a Makefile_ for driving Docutils, hoping
-  to handle everything one might do with docutils.
-
-.. _ZReST: sandbox/richard/ZReST/
-.. _PySource: sandbox/tibs/pysource/
-.. _pysource_reader: sandbox/davidg/pysource_reader/
-.. _PythonPoint: sandbox/richard/pythonpoint/
-.. _LaTeX Writer: sandbox/grubert/latex/
-.. _Manpage Writer: sandbox/grubert/man/
-.. _ReportLabs/PDF Writer: sandbox/dreamcatcher/rlpdf/
-.. _DocBook Writer: sandbox/oliverr/docbook/
-.. _HT2HTML integration: sandbox/oliverr/ht/
-.. _DocFactory: sandbox/gschwant/docfactory/doc/
-.. _OpenOffice.org Writer: sandbox/aahz/OO/
-.. _Wiki: sandbox/ianb/wiki/
-.. _simple HTML writer: sandbox/bbum/DocArticle/
-.. _preprocessing module: sandbox/cben/rolehack/
-.. _Makefile: sandbox/cben/make/
-
-
-Please Contribute!
-==================
-
-Please help this project succeed by contributing.  We're looking for
-all kinds of contributions: testing, ideas, code, bug reports,
-administration, tasty snacks, computer equipment, and large sums of
-money.  There's a `To Do list`_ full of interesting ideas awaiting a
-champion.  If you're interested in participating in any way, please
-`contact the project coordinator`__.
-
-Please consider donating to Docutils: |donate|
-
-__ mailto_
-
-
-Project Links
-=============
-
-- `Project Summary page`__: `released files`__, `bug reports`__,
-  patches__, `mailing lists`__, and news__.
-- `Docutils Subversion repository`__
-- Project coordinator and architect: `David Goodger`_
-- Please direct discussions to the `Python Documentation Special
-  Interest Group (Doc-SIG)`__: doc-sig@python.org.
-- Powered by |Python|__
-- Hosted by |SourceForge|__
-
-  __ http://sourceforge.net/projects/docutils/
-  __ `project files page`_
-  __ http://sourceforge.net/tracker/?group_id=38414&atid=422030
-  __ http://sourceforge.net/tracker/?group_id=38414&atid=422032
-  __ http://sourceforge.net/mail/?group_id=38414
-  __ http://sourceforge.net/news/?group_id=38414
-
-  __ Subversion_
-
-  __ Doc-SIG_
-
-  __ http://www.python.org/
-  .. |Python| image:: PyBanner016.png
-  .. :border: 0
-
-  __ http://sourceforge.net/
-  .. |SourceForge| image::
-     http://sourceforge.net/sflogo.php?group_id=38414
-     :alt: SourceForge Logo
-  .. :border: 0
-
+.. class:: credits
+
+Web site, tracker and mailing lists hosted by |SourceForge|_.
+Subversion repository hosted by |BerliOS|_.
+
+.. class:: hidden
+
+Google should index the mailing lists: `Docutils-user
+<http://news.gmane.org/group/gmane.text.docutils.user>`__,
+`Docutils-devel
+<http://news.gmane.org/group/gmane.text.docutils.devel>`__, and
+`Docutils-checkins
+<http://news.gmane.org/group/gmane.text.docutils.cvs>`__.
+
+.. |---| unicode:: U+02014 .. em dash
+   :trim:
+.. _latest snapshot: http://docutils.sourceforge.net/docutils-snapshot.tgz
+.. _Snapshot of the Sandbox:
+   http://docutils.sourceforge.net/docutils-sandbox-snapshot.tgz
+.. _Snapshot of DocFactory project files:
+   http://docutils.sourceforge.net/docfactory-snapshot.tgz
+.. _bug report: http://sourceforge.net/tracker/?group_id=38414&atid=422030
+.. _patch tracker: http://sourceforge.net/tracker/?group_id=38414&atid=422032
+.. _mailing lists: mailing-lists.html
+.. _Docutils-users: mailing-lists.html#docutils-users
+.. _Docutils-develop: mailing-lists.html#docutils-develop
+.. _sandbox: sandbox/README.html
 .. _reStructuredText: rst.html
 .. _project files page:
    http://sourceforge.net/project/showfiles.php?group_id=38414
-.. _Anonymous Subversion access: docs/dev/repository.html
-.. _Subversion:
-.. _browse the Subversion repository:
-   http://svn.berlios.de/viewcvs/docutils/
 .. _To Do list: docs/dev/todo.html
 .. _README: README.html
-.. _HISTORY: HISTORY.html
-.. _COPYING: COPYING.html
-.. _BUGS: BUGS.html
-.. _mailto:
-.. _David Goodger: mailto:goodger@users.sourceforge.net
-.. _Doc-SIG: http://www.python.org/sigs/doc-sig/
+.. _Quick-Start: README.html#quick-start
+.. _Docutils Project Documentation Overview: docs/index.html
+.. |SourceForge| image::
+   http://sourceforge.net/sflogo.php?group_id=38414
+   :alt: SourceForge Logo
+   :align: middle
+   :class: borderless
+   :width: 88
+   :height: 31
+.. |BerliOS| image::
+   http://developer.berlios.de/sflogo.php?group_id=2920
+   :alt: BerliOS Logo
+   :align: middle
+   :class: borderless
+   :width: 124
+   :height: 32
+.. _BerliOS: http://developer.berlios.de/
+.. _SourceForge: http://sourceforge.net/
+.. _Python: http://www.python.org/
 
-.. _PEPs:
-.. _PEPs (Python Enhancement Proposals): http://www.python.org/peps/
-
-.. _latest project release package:
-   http://prdownloads.sourceforge.net/docutils/docutils-0.3.9.tar.gz?download
 
 
 ..
