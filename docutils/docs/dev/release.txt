@@ -15,7 +15,7 @@ sandbox/felixwiemann/release.sh.  "Not covered" means that you aren't
 even reminded of them.  Note: The release.sh script needs to be
 updated to reflect the recent move to Subversion!)
 
-* **Announce a checkin freeze on Docutils-develop.  Post a list of
+* **Announce a check-in freeze on Docutils-develop.  Post a list of
   major changes since the last release and ask for additions.**
 
   .. _CHANGES.txt:
@@ -137,7 +137,7 @@ updated to reflect the recent move to Subversion!)
 * **Send announcement email to:**
 
   * docutils-develop@lists.sourceforge.net (also announcing the end
-    of the checkin freeze)
+    of the check-in freeze)
   * docutils-users@lists.sourceforge.net
   * doc-sig@python.org
   * python-announce@python.org

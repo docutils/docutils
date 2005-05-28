@@ -176,7 +176,7 @@ application calls one of ``publish_file``, ``publish_string``, or
 which implements a generic programmatic interface.  Although an
 application may also call ``publish_programmatically`` directly, it is
 not recommended (if it does seem to be necessary, please write to the
-`Docutils-Develop mailing list`_).
+Docutils-develop_ mailing list).
 
 ``publish_programmatically`` accepts the same `convenience function
 parameters`_ as ``publish_cmdline``.  Where things differ is that
@@ -189,4 +189,4 @@ up the runtime settings.
 .. copy & modify the list from command-line tools?
 
 
-.. _Docutils-Develop mailing list: docutils-develop@lists.sf.net
+.. _Docutils-develop: ../users/mailing-lists.html#docutils-develop

@@ -612,8 +612,10 @@ that begins in one physical paragraph and ends in another.
    sequence of elements, or you may get unexpected results.
 
    If you happen to need a generic block-level container, please
-   describe your use-case in an email to
-   docutils-users@lists.sourceforge.net.
+   describe your use-case in an email to the Docutils-users_ mailing
+   list.
+
+   .. _Docutils-users: ../../user/mailing-lists.html#docutils-users
 
 Compound paragraphs are typically rendered as multiple distinct text
 blocks, with the possibility of variations to emphasize their logical
@@ -1224,8 +1226,8 @@ Raw Data Pass-Through
    If you often need to use the "raw" directive or a "raw"-derived
    interpreted text role, that is a sign either of overuse/abuse or
    that functionality may be missing from reStructuredText.  Please
-   describe your situation in email to
-   docutils-users@lists.sourceforge.net.
+   describe your situation in an email to the Docutils-users_ mailing
+   list.
 
 The "raw" directive indicates non-reStructuredText data that is to be
 passed untouched to the Writer.  The names of the output formats are
