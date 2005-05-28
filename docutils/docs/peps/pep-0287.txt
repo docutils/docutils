@@ -757,7 +757,7 @@ __ http://www.python.org/doc/Humor.html#zen
 
 .. _TeX: http://www.tug.org/interest.html
 
-.. _Perl POD: http://www.perldoc.com/perl5.6/pod/perlpod.html
+.. _Perl POD: http://perldoc.perl.org/perlpod.html
 
 .. _JavaDoc: http://java.sun.com/j2se/javadoc/
 

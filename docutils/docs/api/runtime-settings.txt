@@ -189,4 +189,4 @@ up the runtime settings.
 .. copy & modify the list from command-line tools?
 
 
-.. _Docutils-develop: ../users/mailing-lists.html#docutils-develop
+.. _Docutils-develop: ../user/mailing-lists.html#docutils-develop

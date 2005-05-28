@@ -246,7 +246,7 @@ References and Footnotes
 
 .. _Literate Programming: http://www.literateprogramming.com/
 
-.. _POD: http://www.perldoc.com/perl5.6/pod/perlpod.html
+.. _POD: http://perldoc.perl.org/perlpod.html
 
 .. _Javadoc: http://java.sun.com/j2se/javadoc/
 
