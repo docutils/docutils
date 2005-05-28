@@ -2,8 +2,8 @@
  Docutils_ Links
 =================
 
-:Revision: $Revision $
-:Date: $Date $
+:Revision: $Revision$
+:Date: $Date$
 :Copyright: This document has been placed in the public domain.
 
 .. _Docutils: http://docutils.sourceforge.net/
