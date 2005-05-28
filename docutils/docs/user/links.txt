@@ -1,0 +1,18 @@
+=================
+ Docutils_ Links
+=================
+
+:Revision: $Revision $
+:Date: $Date $
+:Copyright: This document has been placed in the public domain.
+
+.. _Docutils: http://docutils.sourceforge.net/
+
+The most current version of this document can always be found at
+http://docutils.sourceforge.net/docs/user/links.html.
+
+* rest2web__ is a tool for creating web sites with reStructuredText.
+
+  __ http://article.gmane.org/gmane.text.docutils.user/2006
+
+* to be continued...
