@@ -12,28 +12,30 @@ what-you-see-is-what-you-get plaintext markup language.
 
 ----------------------------------------------------------------------
 
-To **get up & running quickly**, see the Quick-Start_ section of the
+**To get up & running quickly**, see the Quick-Start_ section of the
 README_ file.
 
 All **documentation** can be reached from the `Docutils Project
 Documentation Overview`_.
 
 To the developers of an open source project, **feedback** is a great
-motivator and very welcome.  We also rely on feedback for determining
-what features to implement.  Thus, if you tell us what you need, you
-may just get it!  Please post any feedback to the Docutils-users_
-mailing list.
+motivator and is very welcome.  We also rely on feedback for
+determining what features to implement.  Thus, if you tell us what you
+need, you may just get it!  Please post any feedback to the
+Docutils-users_ mailing list.
 
 All **discussion** about Docutils takes place on the `mailing lists`_.
 
-If you found a **bug**, please file a `bug report`_ or send an email
-to the Docutils-users_ mailing list.  **Patch** submissions should be
+If you find a **bug**, please file a `bug report`_ or send email to
+the Docutils-users_ mailing list.  **Patch** submissions should be
 filed in the `patch tracker`_ or sent to Docutils-develop_.
 
-We're welcoming all kinds of **contributions**.  There's a `To Do
-list`_ full of interesting ideas awaiting a champion.  If you have any
-questions regarding how to extend Docutils, please feel free to ask on
-the Docutils-develop_ mailing list.
+We welcome all kinds of **contributions**.  There's a `To Do list`_
+full of interesting ideas awaiting a champion.  Please consider
+**donating** to Docutils: |donate|.
+
+If you have any questions regarding how to extend Docutils, please
+feel free to ask on the Docutils-develop_ mailing list.
 
 The only **requirement** for running Docutils is Python_ 2.2 or later.
 (Python 2.1 may be used providing the compiler package is installed.
@@ -49,7 +51,7 @@ Download
 
 We recommend that you use the latest **snapshot**,
 `<docutils-snapshot.tgz>`_.  The snapshots usually contain *more
-features* and *less bugs* than the "official" releases |---| they're
+features* and *fewer bugs* than the "official" releases |---| they're
 not only for developers!
 
 The latest **release package** is `docutils-0.3.9.tgz`__.  It is
@@ -67,10 +69,14 @@ More snapshots:
 - `Snapshot of DocFactory project files`_ (this is a subset of the
   Sandbox snapshot above; you don't need both)
 
+You can also access the `Docutils repository
+<docs/dev/repository.html>`__.
+
 .. class:: credits
 
 Web site, tracker and mailing lists hosted by |SourceForge|_.
 Subversion repository hosted by |BerliOS|_.
+Powered by |Python|_.
 
 .. class:: hidden
 
@@ -101,6 +107,12 @@ Google should index the mailing lists: `Docutils-user
 .. _README: README.html
 .. _Quick-Start: README.html#quick-start
 .. _Docutils Project Documentation Overview: docs/index.html
+.. |donate| image:: http://images.sourceforge.net/images/project-support.jpg
+   :target: http://sourceforge.net/donate/index.php?group_id=38414
+   :align: middle
+   :width: 88
+   :height: 32
+   :alt: Support the Docutils project!
 .. |SourceForge| image::
    http://sourceforge.net/sflogo.php?group_id=38414
    :alt: SourceForge Logo
@@ -115,6 +127,12 @@ Google should index the mailing lists: `Docutils-user
    :class: borderless
    :width: 124
    :height: 32
+.. |Python| image:: PyBanner016.png
+   :alt: Python Logo
+   :align: middle
+   :class: borderless
+   :width: 150
+   :height: 35
 .. _BerliOS: http://developer.berlios.de/
 .. _SourceForge: http://sourceforge.net/
 .. _Python: http://www.python.org/
