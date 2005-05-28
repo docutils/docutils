@@ -276,8 +276,10 @@ must be used to obtain a ``title_reference`` element.
    If you often need to use "raw"-derived interpreted text roles or
    the "raw" directive, that is a sign either of overuse/abuse or that
    functionality may be missing from reStructuredText.  Please
-   describe your situation in email to
-   docutils-users@lists.sourceforge.net.
+   describe your situation in an email to the Docutils-users_ mailing
+   list.
+
+   .. _Docutils-users: ../../user/mailing-lists.html#docutils-user
 
 The "raw" role indicates non-reStructuredText data that is to be
 passed untouched to the Writer.  It is the inline equivalent of the

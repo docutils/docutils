@@ -320,10 +320,11 @@ depend on the computer running the tests.  The difference between the
 two times represents the time required to set up the tests (import
 modules, create data structures, etc.).
 
-If any of the tests fail, please `open a bug report`_ or `send email`_
-[2]_.  Please include all relevant output, information about your
-operating system, Python version, and Docutils version.  To see the
-Docutils version, use these commands in the shell::
+If any of the tests fail, please `open a bug report`_, `send email`_,
+or post a message via the `web interface`_.  Please include all
+relevant output, information about your operating system, Python
+version, and Docutils version.  To see the Docutils version, use these
+commands in the shell::
 
     cd ../tools
     ./quicktest.py --version
@@ -336,29 +337,19 @@ Windows users type these commands::
 .. _open a bug report:
    http://sourceforge.net/tracker/?group_id=38414&atid=422030
 .. _send email: mailto:docutils-users@lists.sourceforge.net
-   ?subject=Docutils%20test%20suite%20failure
+   ?subject=Test%20suite%20failure
+.. _web interface: http://post.gmane.org/post.php
+   ?group=gmane.text.docutils.user&subject=Test+suite+failure
 
 
 Getting Help
 ============
 
 If you have questions or need assistance with Docutils or
-reStructuredText, please `post a message`_ to the `Docutils-Users
-mailing list`_ [2]_.
+reStructuredText, please post a message to the Docutils-users_ mailing
+list.
 
-.. [2] Due to overwhelming amounts of spam, the
-   docutils-users@lists.sourceforge.net mailing list has been set up
-   for subscriber posting only.  Non-subscribers who post to
-   docutils-users will receive a message with "Subject: Your message
-   to Docutils-users awaits moderator approval".  Legitimate messages
-   are accepted and posted as soon as possible (a list administrator
-   must verify the message manually).  If you'd like to subscribe to
-   docutils-users, please visit
-   <http://lists.sourceforge.net/lists/listinfo/docutils-users>.
-
-.. _post a message: mailto:docutils-users@lists.sourceforge.net
-.. _Docutils-Users mailing list:
-   http://lists.sourceforge.net/lists/listinfo/docutils-users
+.. _Docutils-users: docs/user/mailing-lists.html#docutils-users
 
 
 ..

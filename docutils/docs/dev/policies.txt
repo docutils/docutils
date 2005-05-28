@@ -306,22 +306,9 @@ meaning.  There are two ways to keep the Docutils code accessible:
 Mailing Lists
 =============
 
-Developers should subscribe to the mailing lists:
+Developers are recommended to subscribe to all `mailing lists`_.
 
-* The `Python Documentation Special Interest Group (Doc-SIG) mailing
-  list`__ for high-level discussions on syntax, strategy, and design
-  (email to Doc-SIG@python.org).
-* Docutils-develop__, for implementation discussions
-  (email to docutils-develop@lists.sourceforge.net).
-* Docutils-checkins__, to monitor Subversion check-in messages
-  (automatically generated; normally read-only).
-* Docutils-users__, to monitor and help out with usage issues and bug
-  reports.
-
-__ http://mail.python.org/mailman/listinfo/doc-sig
-__ http://lists.sourceforge.net/lists/listinfo/docutils-develop
-__ http://lists.sourceforge.net/lists/listinfo/docutils-checkins
-__ http://lists.sourceforge.net/lists/listinfo/docutils-users
+.. _mailing lists:: ../user/mailing-lists.html
 
 
 The Sandbox

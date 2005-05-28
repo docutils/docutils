@@ -421,7 +421,8 @@ def publish_programmatically(source_class, source, source_path,
 
     Applications should not need to call this function directly.  If it does
     seem to be necessary to call this function directly, please write to the
-    docutils-develop@lists.sourceforge.net mailing list.
+    Docutils-develop mailing list
+    <http://docutils.sf.net/docs/user/mailing-lists.html#docutils-develop>.
 
     Parameters:
 

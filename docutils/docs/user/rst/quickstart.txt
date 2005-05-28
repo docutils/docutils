@@ -375,16 +375,13 @@ user reference is a good place to go next.  For complete details, the
 `reStructuredText Markup Specification`_ is the place to go [#]_.
 
 Users who have questions or need assistance with Docutils or
-reStructuredText should `post a message`_ to the `Docutils-Users
-mailing list`_.  The `Docutils project web site`_ has more
-information.
+reStructuredText should post a message to the Docutils-users_ mailing
+list.
 
 .. [#] If that relative link doesn't work, try the master document:
    http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html.
 
 .. _reStructuredText Markup Specification:
    ../../ref/rst/restructuredtext.html
-.. _post a message: mailto:docutils-users@lists.sourceforge.net
-.. _Docutils-Users mailing list:
-   http://lists.sourceforge.net/lists/listinfo/docutils-users
+.. _Docutils-users: ../mailing-lists.html#docutils-users
 .. _Docutils project web site: http://docutils.sourceforge.net/
