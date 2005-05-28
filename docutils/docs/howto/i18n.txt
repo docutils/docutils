@@ -59,7 +59,7 @@ is "en" for English.  Examples of module names include ``en.py``,
    of hyphens, to conform to Python naming rules.
 
 .. _RFC 1766: http://www.faqs.org/rfcs/rfc1766.html
-.. _ISO 639: http://lcweb.loc.gov/standards/iso639-2/englangn.html
+.. _ISO 639: http://www.loc.gov/standards/iso639-2/englangn.html
 .. _ISO 3166: http://www.iso.ch/iso/en/prods-services/iso3166ma/
    02iso-3166-code-lists/index.html
 

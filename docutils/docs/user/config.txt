@@ -903,7 +903,7 @@ _`_source`
     Default: stdin (None).  No command-line options.
 
 
-.. _ISO 639: http://lcweb.loc.gov/standards/iso639-2/englangn.html
+.. _ISO 639: http://www.loc.gov/standards/iso639-2/englangn.html
 
 .. [#pwd] Path relative to the working directory of the process at
    launch.
