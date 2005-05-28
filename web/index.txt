@@ -70,7 +70,7 @@ More snapshots:
   Sandbox snapshot above; you don't need both)
 
 You can also access the `Docutils repository
-<docs/dev/repository.html>`__.
+<docs/dev/repository.html>`__ directly.
 
 .. class:: credits
 
@@ -127,12 +127,12 @@ Google should index the mailing lists: `Docutils-user
    :class: borderless
    :width: 124
    :height: 32
-.. |Python| image:: PyBanner016.png
+.. |Python| image:: python.png
    :alt: Python Logo
    :align: middle
    :class: borderless
-   :width: 150
-   :height: 35
+   :width: 290
+   :height: 48
 .. _BerliOS: http://developer.berlios.de/
 .. _SourceForge: http://sourceforge.net/
 .. _Python: http://www.python.org/
