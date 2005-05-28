@@ -74,7 +74,7 @@ docutils-develop@lists.sourceforge.net.
 * PySource_, by Tony Ibbs, is an experimental Python source Reader.
   In some form, it will soon become part of core Docutils.  There is
   some related code in David Goodger's sandbox (pysource_reader_) and
-  a `Python Source Reader <docs/dev/pysource.html>`__ document.
+  a `Python Source Reader`_ document.
 
 * Docutils interface to PythonPoint_, also by Richard Jones, produces
   PDF presentations using ReportLabs.
@@ -106,6 +106,7 @@ docutils-develop@lists.sourceforge.net.
 .. _ZReST: richard/ZReST/
 .. _PySource: tibs/pysource/
 .. _pysource_reader: davidg/pysource_reader/
+.. _Python Source Reader: http://docutils.sf.net/docs/dev/pysource.html
 .. _PythonPoint: richard/pythonpoint/
 .. _LaTeX Writer: grubert/latex/
 .. _Manpage Writer: grubert/man/
