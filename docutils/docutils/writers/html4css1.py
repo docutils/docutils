@@ -7,10 +7,10 @@
 """
 Simple HyperText Markup Language document tree Writer.
 
-The output conforms to the HTML 4.01 Transitional DTD and to the Extensible
-HTML version 1.0 Transitional DTD (*almost* strict).  The output contains a
-minimum of formatting information.  A cascading style sheet ("default.css" by
-default) is required for proper viewing with a modern graphical browser.
+The output conforms to the XHTML version 1.0 Transitional DTD
+(*almost* strict).  The output contains a minimum of formatting
+information.  A cascading style sheet ("default.css" by default) is
+required for proper viewing with a modern graphical browser.
 """
 
 __docformat__ = 'reStructuredText'
@@ -311,7 +311,13 @@ class HTMLTranslator(nodes.NodeVisitor):
         if node.get('ids'):
             atts['id'] = node['ids'][0]
             for id in node['ids'][1:]:
-                prefix.append('<span id="%s"></span>' % id)
+                if infix:
+                    # Empty tag.
+                    prefix.append('<span id="%s"></span>' % id)
+                else:
+                    # Non-empty tag.  We place the auxiliary <span>
+                    # tag *inside* the element.
+                    suffix += '<span id="%s"></span>' % id
         if atts.has_key('id') and tagname in self.named_tags:
             atts['name'] = atts['id']   # for compatibility with old browsers
         attlist = atts.items()
