@@ -131,8 +131,8 @@ Google should index the mailing lists: `Docutils-user
    :alt: Python Logo
    :align: middle
    :class: borderless
-   :width: 290
-   :height: 48
+   :width: 193
+   :height: 32
 .. _BerliOS: http://developer.berlios.de/
 .. _SourceForge: http://sourceforge.net/
 .. _Python: http://www.python.org/
