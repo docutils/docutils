@@ -1123,6 +1123,12 @@
                 <reference name="directives_" refid="directives">
                     <image classes="class1 class2" uri="../../../docs/user/rst/images/title.png">
                 <paragraph>
+                    Image with multiple IDs:
+                <target refid="image-target-1">
+                <target refid="image-target-2">
+                <target refid="image-target-3">
+                <image refid="image-target-3" uri="../../../docs/user/rst/images/title.png">
+                <paragraph ids="image-target-3 image-target-2 image-target-1" names="image target 3 image target 2 image target 1">
                     A figure directive:
                 <figure align="right" classes="figclass1 figclass2">
                     <image alt="reStructuredText, the markup syntax" classes="class1 class2" uri="../../../docs/user/rst/images/biohazard.png" width="50">
