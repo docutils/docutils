@@ -9,13 +9,10 @@
 :Copyright: This document has been placed in the public domain.
 
 The latest working documents may be accessed individually below, or
-from the ``docs`` directory of the `development snapshots`__.  They
-are also distributed with the `latest project release package`__, but
-those may not be completely up to date.
+from the ``docs`` directory of the `Docutils distribution`_.
 
-__ http://docutils.sourceforge.net/#development-snapshots
-__ http://docutils.sourceforge.net/#project-releases
 .. _Docutils: http://docutils.sourceforge.net/
+.. _Docutils distribution: http://docutils.sourceforge.net/#download
 
 .. contents::
 
