@@ -102,7 +102,7 @@ Although useful and relatively stable, Docutils is experimental code,
 with APIs and architecture subject to change.
 
 Our highest priority is to fix bugs as they are reported.  So the
-latest code from CVS (or `development snapshots`_) is almost always
+latest code from the repository_ (or the snapshots_) is almost always
 the most stable (bug-free) as well as the most featureful.
 
 
@@ -110,13 +110,13 @@ What is the Docutils project release policy?
 --------------------------------------------
 
 It's "release early & often".  We also have automatically-generated
-`development snapshots`_ which always contain the latest code from
-CVS.  As the project matures, we may formalize on a
+snapshots_ which always contain the latest code from the repository_.
+As the project matures, we may formalize on a
 stable/development-branch scheme, but we're not using anything like
 that yet.
 
-.. _development snapshots:
-   http://docutils.sourceforge.net/#development-snapshots
+.. _repository: docs/dev/repository.html
+.. _snapshots: http://docutils.sourceforge.net/#download
 
 
 reStructuredText
