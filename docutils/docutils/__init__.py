@@ -58,6 +58,8 @@ number is bumped whenever there is a significant project release.  The major
 number will be bumped when the project is feature-complete, and perhaps if
 there is a major change in the design."""
 
+__version_suffix__ = ''
+"""Version suffix for snapshots (e.g. ', 2005-05-29, r3410')."""
 
 class ApplicationError(StandardError): pass
 class DataError(ApplicationError): pass
