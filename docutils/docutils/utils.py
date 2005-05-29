@@ -130,7 +130,7 @@ class Reporter:
         if stream is None:
             stream = sys.stderr
         self.stream = stream
-        self.debug = debug
+        self.debug_flag = debug
 
     def attach_observer(self, observer):
         """
