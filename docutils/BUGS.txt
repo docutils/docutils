@@ -34,9 +34,9 @@ First, make sure it's a new bug:
 
 * Are you using the very latest version of Docutils?  The bug may have
   already been fixed.  Please get the latest version of Docutils from
-  CVS_ or from the `development snapshot`_ and check again.  Even if
-  your bug has not been fixed, others probably have, and you're better
-  off with the most up-to-date code.
+  the repository_ or from the current snapshot_ and check again.  Even
+  if your bug has not been fixed, others probably have, and you're
+  better off with the most up-to-date code.
 
   If you don't have time to check the latest snapshot, please report
   the bug anyway.  We'd rather tell you that it's already fixed than
@@ -96,7 +96,8 @@ __ http://subversion.tigris.org/
 __ http://svn.collab.net/viewcvs/svn/trunk/BUGS?view=markup
 
 .. _CVS: http://sourceforge.net/cvs/?group_id=38414
-.. _development snapshot: http://docutils.sf.net/#development-snapshot
+.. _repository: docs/dev/repository.html
+.. _snapshot: http://docutils.sourceforge.net/#download
 .. _documentation: docs/
 .. _FAQ: FAQ.html
 .. _mailing list archives: http://docutils.sf.net/#mailing-lists

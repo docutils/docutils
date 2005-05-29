@@ -69,8 +69,7 @@ More snapshots:
 - `Snapshot of DocFactory project files`_ (this is a subset of the
   Sandbox snapshot above; you don't need both)
 
-You can also access the `Docutils repository
-<docs/dev/repository.html>`__ directly.
+You can also access `Docutils' Subversion repository`_ directly.
 
 .. class:: credits
 
@@ -107,6 +106,7 @@ Google should index the mailing lists: `Docutils-user
 .. _README: README.html
 .. _Quick-Start: README.html#quick-start
 .. _Docutils Project Documentation Overview: docs/index.html
+.. _Docutils' Subversion repository: docs/dev/repository.html
 .. |donate| image:: http://images.sourceforge.net/images/project-support.jpg
    :target: http://sourceforge.net/donate/index.php?group_id=38414
    :align: middle
