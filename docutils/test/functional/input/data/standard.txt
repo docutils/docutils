@@ -427,6 +427,13 @@ An image directive (also clickable -- a hyperlink reference):
    :class: class1 class2
    :target: directives_
 
+Image with multiple IDs:
+
+.. _image target 1:
+.. _image target 2:
+.. _image target 3:
+.. image:: ../../../docs/user/rst/images/title.png
+
 A figure directive:
 
 .. figure:: ../../../docs/user/rst/images/biohazard.png
