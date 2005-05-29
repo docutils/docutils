@@ -87,11 +87,11 @@ Support for the following sources is planned:
 Releases & Snapshots
 ====================
 
-Putting together an official "Release" of Docutils is a significant
-effort, so it isn't done that often.  In the meantime, the Subversion
-snapshots always contain the latest code and documentation, usually
-updated within an hour of changes being committed to the repository,
-and usually bug-free:
+While we are trying to follow a "release early & often" policy,
+features are added very frequently.  Since the code in the Subversion
+repository is usually in a bug-free state, we recommend that you use
+the current snapshot (which is usually updated within an hour of
+changes being committed to the repository):
 
 * Snapshot of Docutils code, documentation, front-end tools, and
   tests: http://docutils.sf.net/docutils-snapshot.tgz
@@ -99,14 +99,11 @@ and usually bug-free:
 * Snapshot of the Sandbox (experimental, contributed code):
   http://docutils.sf.net/docutils-sandbox-snapshot.tgz
 
-* Snapshot of web files (the files that generate the web site):
-  http://docutils.sf.net/docutils-web-snapshot.tgz
-
 To keep up to date on the latest developments, download fresh copies
 of the snapshots regularly.  New functionality is being added weekly,
-sometimes daily.  (There's also the Subversion repository, and a
-mailing list for check-in messages.  See the web site [address above]
-or docs/dev/policies.txt for details.)
+sometimes daily.  (There's also the `Subversion repository`_.)
+
+.. _Subversion repository: docs/dev/repository.html
 
 
 Requirements
@@ -118,11 +115,6 @@ http://www.python.org/.
 
 The `Python Imaging Library`, or PIL, is used for some image
 manipulation operations if it is installed.
-
-Docutils uses Greg Ward's Optik_/optparse option processing package.
-It is included in the Docutils distribution.  Python 2.3 and later
-come with optparse in the standard library; in this case, the Docutils
-copy is not installed.
 
 .. [1] Python 2.1 may be used providing the compiler package is
    installed.  The compiler package can be found in the Tools/
@@ -185,10 +177,10 @@ Project Files & Directories
 Installation
 ============
 
-The first step is to expand the ``.tar.gz`` or ``.tgz`` archive in a
-temporary directory (**not** directly in Python's ``site-packages``).
-It contains a distutils setup file "setup.py".  OS-specific
-installation instructions follow.
+The first step is to expand the ``.tgz`` archive in a temporary
+directory (**not** directly in Python's ``site-packages``).  It
+contains a distutils setup file "setup.py".  OS-specific installation
+instructions follow.
 
 
 GNU/Linux, BSDs, Unix, Mac OS X, etc.
@@ -208,13 +200,16 @@ GNU/Linux, BSDs, Unix, Mac OS X, etc.
    the complete path, such as /usr/local/bin/python.  You may need
    root permissions to complete this step.
 
-You can also just run install.py; it does the same thing.
+   You can also just run install.py; it does the same thing.
 
 
 Windows
 -------
 
-1. Open a DOS box (Command Shell, MSDOS Prompt, or whatever they're
+Just double-click ``install.py``.  If this doesn't work, try the
+following:
+
+1. Open a DOS Box (Command Shell, MS-DOS Prompt, or whatever they're
    calling it these days).
 
 2. Go to the directory created by expanding the archive::
@@ -224,32 +219,6 @@ Windows
 3. Install the package::
 
        <path_to_python.exe>\python setup.py install
-
-If your system is set up to run Python when you double-click on .py
-files, you can run install.py to do the same as the above.
-
-
-Mac OS 8/9
-----------
-
-1. Open the folder containing the expanded archive.
-
-2. Double-click on the file "setup.py", which should be a "Python
-   module" file.
-
-   If the file isn't a "Python module", the line endings are probably
-   also wrong, and you will need to set up your system to recognize
-   ".py" file extensions as Python files.  See
-   http://gotools.sourceforge.net/mac/python.html for detailed
-   instructions.  Once set up, it's easiest to start over by expanding
-   the archive again.
-
-3. The distutils options window will appear.  From the "Command" popup
-   list choose "install", click "Add", then click "OK".
-
-If install.py is a "Python module" (see step 2 above if it isn't), you
-can run it (double-click) instead of the above.  The distutils options
-window will not appear.
 
 
 Usage
