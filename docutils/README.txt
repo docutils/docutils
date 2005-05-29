@@ -11,12 +11,6 @@
 .. contents::
 
 
-Thank you for downloading the Python Docutils project archive.  As
-this is a work in progress, please check the project website for
-updated working files (snapshots).  This project should be considered
-highly experimental; APIs are subject to change at any time.
-
-
 Quick-Start
 ===========
 
@@ -38,9 +32,7 @@ complete details.
    See `Releases & Snapshots`_ below for details.
 
 3. Unpack the tarball in a temporary directory (**not** directly in
-   Python's ``site-packages``) and install with the standard ::
-
-       python setup.py install
+   Python's ``site-packages``) and run ``install.py``.
 
    See Installation_ below for details.
 
@@ -59,7 +51,8 @@ Purpose
 
 The purpose of the Docutils project is to create a set of tools for
 processing plaintext documentation into useful formats, such as HTML,
-XML, and TeX.  Support for the following sources has been implemented:
+XML, and LaTeX.  Support for the following sources has been
+implemented:
 
 * Standalone files.
 
@@ -68,8 +61,7 @@ XML, and TeX.  Support for the following sources has been implemented:
 Support for the following sources is planned:
 
 * Inline documentation from Python modules and packages, extracted
-  with namespace context.  **This is the focus of the current
-  development effort.**
+  with namespace context.
 
 * Email (RFC-822 headers, quoted excerpts, signatures, MIME parts).
 
