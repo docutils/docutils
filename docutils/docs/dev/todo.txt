@@ -680,9 +680,9 @@ __ rst/alternatives.html#or-not-to-do
 * Add test for ":figwidth: image" option of "figure" directive.  (Test
   code needs to check if PIL is available on the system.)
 
-* The parser doesn't know anything about double-width characters such
-  as Chinese hanza & Japanese kanji/kana.  Also, it's dependent on
-  whitespace and punctuation as markup delimiters, which may not be
+* The parser doesn't know anything about _`double-width characters`
+  such as Chinese hanza & Japanese kanji/kana.  Also, it's dependent
+  on whitespace and punctuation as markup delimiters, which may not be
   applicable in these languages.
 
   Python 2.4 introduces the function ``unicodedata.east_asian_width``,
