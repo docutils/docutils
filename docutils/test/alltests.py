@@ -74,8 +74,9 @@ sys.stdout = sys.stderr = Tee('alltests.out')
 
 import package_unittest
 
-print ('Testing Docutils %s with Python %s on %s at %s'
-       % (docutils.__version__, sys.version.split()[0],
+print ('Testing Docutils %s %s with Python %s on %s at %s'
+       % (docutils.__version__, docutils.__version_details__,
+          sys.version.split()[0],
           time.strftime('%Y-%m-%d'), time.strftime('%H:%M:%S')))
 sys.stdout.flush()
 
