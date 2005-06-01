@@ -250,7 +250,7 @@ General
 * Think about _`large documents` made up of multiple subdocument
   files.  Issues: continuity (`persistent sequences`_ above),
   cross-references (`name-to-id mapping file`_ above and `targets in
-  other documents`_ below).
+  other documents`_ below), splitting (`document splitting`_ below).
 
   When writing a book, the author probably wants to split it up into
   files, perhaps one per chapter (but perhaps even more detailed).
@@ -1683,11 +1683,36 @@ Unimplemented Transforms
   (HTML only?  Initially, yes.  Eventually, anything should be
   splittable.)
 
-  Idea: insert a "destination" attribute into the root element of each
-  split-out document, containing the path/filename.  The Output object
-  or Writer will recognize this attribute and split out the files
-  accordingly.  Must allow for common headers & footers, prev/next,
-  breadcrumbs, etc.
+  Ideas:
+
+  - Insert a "destination" attribute into the root element of each
+    split-out document, containing the path/filename.  The Output
+    object or Writer will recognize this attribute and split out the
+    files accordingly.  Must allow for common headers & footers,
+    prev/next, breadcrumbs, etc.
+
+  - Transform a single-root document into a document containing
+    multiple subdocuments, recursively.  The content model of the
+    "document" element would have to change to::
+
+        <!ELEMENT document
+            ( (title, subtitle?)?,
+              decoration?,
+              (docinfo, transition?)?,
+              %structure.model;,
+              document* )>
+
+    (I.e., add the last line -- 0 or more document elements.)
+
+    Let's look at the case of hierarchical (directories and files)
+    HTML output.  Each document element containing further document
+    elements would correspond to a directory (with an index.html file
+    for the content preceding the subdocuments).  Each document
+    element containing no subdocuments (i.e., structure model elements
+    only) corresponds to a concrete file with no directory.
+
+    The natural transform would be to map sections to subdocuments,
+    but possibly only a given number of levels deep.
 
 * _`Navigation`
 
