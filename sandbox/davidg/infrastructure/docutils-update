@@ -102,6 +102,7 @@ svn up --quiet
 
 # gather the materials
 cd $snapshotdir
+svn revert $project/$project/__init__.py
 svn up --quiet
 
 # update __version_details__ string
