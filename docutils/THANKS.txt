@@ -130,6 +130,7 @@ donations, tasty treats, and related projects:
 * Martin von Loewis
 * Greg Ward
 * Barry Warsaw
+* Wu Wei
 * Edward Welbourne
 * Felix Wiemann
 * Ka-Ping Yee

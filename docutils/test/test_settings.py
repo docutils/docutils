@@ -57,6 +57,7 @@ class ConfigFileTests(unittest.TestCase):
                 'source_link': 1,
                 'stylesheet': None,
                 'stylesheet_path': fixpath('data/stylesheets/pep.css'),
+                'tab_width': 8,
                 'template': fixpath('data/pep-html-template'),
                 'trim_footnote_reference_space': 1},
         'two': {'footnote_references': 'superscript',
