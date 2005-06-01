@@ -63,7 +63,7 @@ function set_ver()
         for F in $files; do
             (echo ",s/$old_ver_regex/$2/g"; echo 'wq') | ed "$F"
         done
-        set -e
+		set -e
     fi
     echo
     checkin "set version number to $2" $files
@@ -254,6 +254,9 @@ function stage_1()
 {
     confirm svn up
     echo
+    # update __version_details__ string
+	(echo ",s/^__version_details__ = .*\$/__version_details__ = 'release'/";
+		echo wq) | ed docutils/__init__.py 2> /dev/null
     set_ver "$old_ver" "$new_ver"
     echo
     echo 'Now updating HISTORY.txt...'
@@ -331,6 +334,9 @@ function stage_3()
 {
     confirm svn up
     echo
+    # update __version_details__ string
+	(echo ",s/^__version_details__ = .*\$/__version_details__ = 'repository'/";
+		echo wq) | ed docutils/__init__.py 2> /dev/null
     set_ver "$new_ver" "$svn_ver"
     echo
     echo 'Now updating HISTORY.txt...'

@@ -104,9 +104,9 @@ svn up --quiet
 cd $snapshotdir
 svn up --quiet
 
-# update __version_suffix__ string
-version_suffix=", `date --utc --iso`, r`svn info | grep ^Revision: | sed 's/^Revision: //'`"
-(echo ",s/^__version_suffix__ = .*\$/__version_suffix__ = '$version_suffix'/";
+# update __version_details__ string
+version_details="snapshot `date --utc --iso`, r`svn info | grep ^Revision: | sed 's/^Revision: //'`"
+(echo ",s/^__version_details__ = .*\$/__version_details__ = '$version_details'/";
     echo wq) | ed $project/$project/__init__.py 2> /dev/null
 
 # Ensure proper directory permissions are set so that the files can be
