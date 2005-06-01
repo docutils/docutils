@@ -24,6 +24,9 @@ updated to reflect the recent move to Subversion!)
   (e.g. CHANGES.txt) to have it at hand when you need it for posting
   announcements or pasting it into forms.**
 
+* Change ``__version_details__`` in docutils/docutils/__init__.py to
+  "release" (from "repository").
+
 * Bump the _`version number` in the following files:
 
   + docutils/setup.py
@@ -125,6 +128,9 @@ updated to reflect the recent move to Subversion!)
   re-run the `test suite`_.
 
 * Register with PyPI (``python setup.py register``).
+
+* Restore ``__version_details__`` in docutils/docutils/__init__.py to
+  "repository" (from "release").
 
 * Bump the `version number`_ again.
 

@@ -18,7 +18,7 @@ __docformat__ = 'reStructuredText'
 
 import sys
 import pprint
-from docutils import __version__, SettingsSpec
+from docutils import __version__, __version_details__, SettingsSpec
 from docutils import frontend, io, utils, readers, writers
 from docutils.frontend import OptionParser
 
@@ -237,9 +237,10 @@ class Publisher:
             print >>sys.stderr, ("""\
 Exiting due to error.  Use "--traceback" to diagnose.
 Please report errors to <docutils-users@lists.sf.net>.
-Include "--traceback" output, Docutils version (%s),
+Include "--traceback" output, Docutils version (%s [%s]),
 Python version (%s), your OS type & version, and the
-command line used.""" % (__version__, sys.version.split()[0]))
+command line used.""" % (__version__, __version_details__,
+                         sys.version.split()[0]))
 
     def report_SystemMessage(self, error):
         print >>sys.stderr, ('Exiting due to level-%s (%s) system message.'

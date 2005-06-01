@@ -13,7 +13,7 @@ Package Structure
 Modules:
 
 - __init__.py: Contains component base classes, exception classes, and
-  Docutils `__version__`.
+  Docutils version information.
 
 - core.py: Contains the ``Publisher`` class and ``publish_*()`` convenience
   functions.
@@ -58,8 +58,9 @@ number is bumped whenever there is a significant project release.  The major
 number will be bumped when the project is feature-complete, and perhaps if
 there is a major change in the design."""
 
-__version_suffix__ = ''
-"""Version suffix for snapshots (e.g. ', 2005-05-29, r3410')."""
+__version_details__ = 'repository'
+"""Extra version details (e.g. 'snapshot 2005-05-29, r3410' or 'release'),
+modified automatically."""
 
 class ApplicationError(StandardError): pass
 class DataError(ApplicationError): pass
