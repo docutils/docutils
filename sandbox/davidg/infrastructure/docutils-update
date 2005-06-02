@@ -129,6 +129,13 @@ tar -cz $exclude -f $project-web-snapshot.tgz web
 # plant the snapshots
 mv -f *snapshot.tgz $snapshotdest
 
+# revert and touch (to avoid updating the web site only because of the
+# changed timestamp)
+svn -q revert $project/$project/__init__.py
+touch $project/$project/__init__.py --date \
+    "`svn info $project/$project/__init__.py | \
+    grep 'Last Changed Date:' | sed 's/[^:]*: //'`"
+
 # -------------------- htdocs: --------------------
 
 cd $snapshotdir
