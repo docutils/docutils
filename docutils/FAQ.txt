@@ -668,6 +668,10 @@ you like.  If you adapt it to use Docutils/reStructuredText, please
 consider contributing the code to Docutils or `let us know`_ and we'll
 keep a list here.
 
+One reST-specific web templating system is `rest2web
+<http://www.voidspace.org.uk/python/rest2web>`_, a tool for
+automatically building websites, or parts of websites.
+
 .. _ht2html: http://ht2html.sourceforge.net/
 .. _YAPTU:
    http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/52305
