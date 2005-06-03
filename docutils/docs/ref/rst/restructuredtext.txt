@@ -2213,6 +2213,8 @@ Replacement text
         __ http://developer.java.sun.com/developer/earlyAccess/
            j2eecas/
 
+    The "replace_" directive has been implemented.
+
 
 Comments
 ````````
@@ -2815,6 +2817,7 @@ Markup errors are handled according to the specification in `PEP
 .. _HTML Techniques for Web Content Accessibility Guidelines:
    http://www.w3.org/TR/WCAG10-HTML-TECHS/#link-text
 .. _image: directives.html#image
+.. _replace: directives.html#replace
 .. _meta: directives.html#meta
 .. _figure: directives.html#figure
 .. _admonition: directives.html#admonitions
