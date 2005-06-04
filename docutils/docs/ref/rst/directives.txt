@@ -1553,7 +1553,7 @@ Setting the Default Interpreted Text Role
 :Directive Options: None.
 :Directive Content: None.
 
-(New in Docutils 0.3.8)
+(New in Docutils 0.3.10)
 
 The "default-role" directive sets the default interpreted text role,
 the role that is used for interpreted text without an explicit role.
