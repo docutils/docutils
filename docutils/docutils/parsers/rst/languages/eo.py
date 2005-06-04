@@ -60,6 +60,7 @@ directives = {
       u'unicode': 'unicode',
       u'klaso': 'class',
       u'rolo': 'role',
+      u'default-role (translation required)': 'default-role',
       u'enhavo': 'contents',
       u'seknum': 'sectnum',
       u'sekcia-numerado': 'sectnum',

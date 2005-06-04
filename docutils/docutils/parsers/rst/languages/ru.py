@@ -45,6 +45,7 @@ directives = {
  u'image',
  u'\u043a\u043b\u0430\u0441\u0441': u'class',
  u'role (translation required)': 'role',
+ u'default-role (translation required)': 'default-role',
  u'\u043d\u043e\u043c\u0435\u0440-\u0440\u0430\u0437\u0434\u0435\u043b\u0430':
  u'sectnum',
  u'\u043d\u0443\u043c\u0435\u0440\u0430\u0446\u0438\u044f-\u0440\u0430\u0437'

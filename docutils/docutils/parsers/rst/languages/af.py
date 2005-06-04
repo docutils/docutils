@@ -53,6 +53,7 @@ directives = {
       'unicode': 'unicode', # should this be translated? unikode
       'klas': 'class',
       'role (translation required)': 'role',
+      'default-role (translation required)': 'default-role',
       'inhoud': 'contents',
       'sectnum': 'sectnum',
       'section-numbering': 'sectnum',
