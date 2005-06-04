@@ -1508,8 +1508,8 @@ Others are merely convenience features, like "RFC".
 All supported interpreted text roles must already be known to the
 Parser when they are encountered in a document.  Whether pre-defined
 in core/client code, or in the document, doesn't matter; the roles
-just need to have already been declared.  Adding a new role often
-involves adding a new element to the DTD and may require extensive
+just need to have already been declared.  Adding a new role may
+involve adding a new element to the DTD and may require extensive
 support, therefore such additions should be well thought-out.  There
 should be a limited number of roles.
 
@@ -1530,7 +1530,7 @@ any knowledge of the Python-Reader origin of these elements.
 * Alan Jaffray suggested (and I agree) that it would be sensible to:
 
   - have a directive and/or command-line option to specify a default
-    role for interpreted text
+    role for interpreted text (done)
   - allow the reST processor to take an argument for the default role
     (this will be subsumed by the above via the runtime settings
     mechanism)
