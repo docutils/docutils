@@ -20,8 +20,8 @@ except:
 from docutils.core import publish_cmdline, default_description
 
 
-description = ('Generates (X)HTML documents from standalone reStructuredText '
-               'sources.  ' + default_description)
+description = ('Generates S5 (X)HTML slideshow documents from standalone '
+               'reStructuredText sources.  ' + default_description)
 
 publish_cmdline(
 #    reader_name='s5reader',
