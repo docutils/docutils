@@ -55,6 +55,7 @@ directives = {
       'unicode': 'unicode',
       'klasse': 'class',
       'rol': 'role',
+      u'default-role (translation required)': 'default-role',
       'inhoud': 'contents',
       'sectnum': 'sectnum',
       'sectie-nummering': 'sectnum',

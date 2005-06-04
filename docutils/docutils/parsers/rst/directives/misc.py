@@ -329,6 +329,28 @@ def role(name, arguments, options, content, lineno,
 
 role.content = 1
 
+def default_role(name, arguments, options, content, lineno,
+                 content_offset, block_text, state, state_machine):
+    """Set the default interpreted text role."""
+    if not arguments:
+        if roles._roles.has_key(''):
+            # restore the "default" default role
+            del roles._roles['']
+        return []
+    role_name = arguments[0]
+    role, messages = roles.role(
+        role_name, state_machine.language, lineno, state.reporter)
+    if role is None:
+        error = state.reporter.error(
+            'Unknown interpreted text role "%s".' % role_name,
+            nodes.literal_block(block_text, block_text), line=lineno)
+        return messages + [error]
+    roles._roles[''] = role
+    # @@@ should this be local to the document, not the parser?
+    return messages
+
+default_role.arguments = (0, 1, 0)
+
 def directive_test_function(name, arguments, options, content, lineno,
                             content_offset, block_text, state, state_machine):
     """This directive is useful only for testing purposes."""

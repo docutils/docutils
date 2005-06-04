@@ -1542,6 +1542,49 @@ details.
 .. _reStructuredText Interpreted Text Roles: roles.html
 
 
+.. _default-role:
+
+Setting the Default Interpreted Text Role
+=========================================
+
+:Directive Type: "default-role"
+:Doctree Element: None; affects subsequent parsing.
+:Directive Arguments: One, optional (new default role name).
+:Directive Options: None.
+:Directive Content: None.
+
+(New in Docutils 0.3.8)
+
+The "default-role" directive sets the default interpreted text role,
+the role that is used for interpreted text without an explicit role.
+For example, after setting the default role like this::
+
+    .. default-role:: subscript
+
+any subsequent use of implicit-role interpreted text in the document
+will use the "subscript" role::
+
+    An example of a `default` role.
+
+This will be parsed into the following document tree fragment::
+
+    <paragraph>
+        An example of a
+        <subscript>
+            default
+         role.
+
+Custom roles may be used (see the "role_" directive above), but it
+must have been declared in a document before it can be set as the
+default role.  See the `reStructuredText Interpreted Text Roles`_
+document for details of built-in roles.
+
+The directive may be used without an argument to restore the initial
+default interpreted text role, which is application-dependent.  The
+initial default interpreted text role of the standard reStructuredText
+parser is "title-reference".
+
+
 Restructuredtext-Test-Directive
 ===============================
 

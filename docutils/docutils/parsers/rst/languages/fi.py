@@ -52,6 +52,7 @@ directives = {
       u'unicode': u'unicode',
       u'luokka': u'class',
       u'rooli': u'role',
+      u'default-role (translation required)': 'default-role',
       u'sis\u00e4llys': u'contents',
       u'kappale': u'sectnum',
       u'header (translation required)': 'header',

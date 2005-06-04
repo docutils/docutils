@@ -24,6 +24,10 @@ Changes Since 0.3.9
   - Added validator to tab_width setting, with test.  Closes SF bug
     #1212515, report from Wu Wei.
 
+* docutils/parsers/rst/directives/misc.py:
+
+  - Added the "default-role" directive.
+
 
 Release 0.3.9 (2005-05-26)
 ==========================
