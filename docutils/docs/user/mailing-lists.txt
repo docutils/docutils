@@ -18,6 +18,18 @@ unsure, use the **Docutils-users** mailing list:
 Docutils-users
 --------------
 
+.. image:: http://gmane.org/plot-rate.php?width=300&height=150&
+    group=gmane.text.docutils.user&
+    title=Posting+rate+for+Docutils-users
+   :target: http://gmane.org/plot-rate.php?width=600&height=300&
+    group=gmane.text.docutils.user&
+    title=Posting+rate+for+Docutils-users
+   :alt: Posting rate for Docutils-users
+   :width: 300
+   :height: 150
+   :align: right
+   :class: borderless
+
 The Docutils-users mailing list is a place to discuss any issues
 related to the usage of Docutils and reStructuredText.  (Please be
 sure to check the FAQ_ first.)
@@ -56,6 +68,18 @@ resend your message using a different email address.
 Doc-SIG
 -------
 
+.. image:: http://gmane.org/plot-rate.php?width=300&height=150&
+    group=gmane.comp.python.documentation&
+    title=Posting+rate+for+Doc-SIG
+   :target: http://gmane.org/plot-rate.php?width=600&height=300&
+    group=gmane.comp.python.documentation&
+    title=Posting+rate+for+Doc-SIG
+   :alt: Posting rate for Doc-SIG
+   :width: 300
+   :height: 150
+   :align: right
+   :class: borderless
+
 The "Python Documentation Special Interest Group" (Doc-SIG) mailing
 list is occasionally used to discuss the usage of Docutils for Python
 documentation.
@@ -72,6 +96,18 @@ __ nntp://news.gmane.org/gmane.comp.python.documentation
 Docutils-develop
 ----------------
 
+.. image:: http://gmane.org/plot-rate.php?width=300&height=150&
+    group=gmane.text.docutils.devel&
+    title=Posting+rate+for+Docutils-develop
+   :target: http://gmane.org/plot-rate.php?width=600&height=300&
+    group=gmane.text.docutils.devel&
+    title=Posting+rate+for+Docutils-develop
+   :alt: Posting rate for Docutils-develop
+   :width: 300
+   :height: 150
+   :align: right
+   :class: borderless
+
 Discussions about developing and extending Docutils take place on the
 Docutils-develop mailing list.
 
@@ -83,8 +119,21 @@ __ http://lists.sourceforge.net/lists/listinfo/docutils-develop
 __ http://news.gmane.org/gmane.text.docutils.devel
 __ nntp://news.gmane.org/gmane.text.docutils.devel
 
+
 Docutils-checkins
 -----------------
+
+.. image:: http://gmane.org/plot-rate.php?width=300&height=150&
+    group=gmane.text.docutils.cvs&
+    title=Posting+rate+for+Docutils-checkins
+   :target: http://gmane.org/plot-rate.php?width=600&height=300&
+    group=gmane.text.docutils.cvs&
+    title=Posting+rate+for+Docutils-checkins
+   :alt: Posting rate for Docutils-checkins
+   :width: 300
+   :height: 150
+   :align: right
+   :class: borderless
 
 All check-ins to the `Subversion repository`_ cause a "check-in email"
 to the Docutils-checkins list.  In order to stay informed about
