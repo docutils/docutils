@@ -83,6 +83,7 @@ div.figure {
   margin-left: 2em }
 
 div.footer, div.header {
+  clear: both;
   font-size: smaller }
 
 div.line-block {
@@ -137,6 +138,9 @@ h2.subtitle {
 
 hr.docutils {
   width: 75% }
+
+img[align] {
+  clear: both }
 
 img.borderless {
   border: 0 }
