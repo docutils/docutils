@@ -89,8 +89,7 @@ Docutils-checkins
 All check-ins to the `Subversion repository`_ cause a "check-in email"
 to the Docutils-checkins list.  In order to stay informed about
 current development, developers are advised to monitor this mailing
-list as well.
-
+list.
 
 This mailing list is for reading only; please direct any discussion
 about the check-ins to Docutils-develop.  (For your convenience, the
