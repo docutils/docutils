@@ -179,6 +179,7 @@ __ http://www.python.org/peps/pep-0287.html
 
 Docutils-general:
 
+* `Docutils Hacker's Guide <dev/hacking.html>`__
 * `Docutils To Do List <dev/todo.html>`__
 * `Docutils Project Policies <dev/policies.html>`__
 * `Docutils Web Site <dev/website.html>`__
