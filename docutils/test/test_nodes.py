@@ -163,6 +163,7 @@ class MiscTests(unittest.TestCase):
         self.testlist.append(e[0][1][0])
         self.assertEquals(list(e[0].traverse(condition=self.not_in_testlist)),
                                [e[0]])
+        self.assertEquals(list(e.traverse(nodes.TextElement)), [e[0][1]])
 
     def test_next_node(self):
         e = nodes.Element()
