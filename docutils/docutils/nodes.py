@@ -23,11 +23,14 @@ hierarchy.
 
 __docformat__ = 'reStructuredText'
 
+from __future__ import nested_scopes
+
 import sys
 import os
 import re
 import copy
 import warnings
+import inspect
 import xml.dom.minidom
 from types import IntType, SliceType, StringType, UnicodeType, \
      TupleType, ListType
@@ -175,6 +178,11 @@ class Node:
         * the siblings of the parent (if ascend is true) and their
           descendants (if also descend is true), and so on
 
+        If `condition` is not None, the iterable contains only nodes
+        for which ``condition(node)`` is true.  If `condition` is a
+        node class ``cls``, it is equivalent to ``lambda n:
+        isinstance(n, cls)``.
+
         If ascend is true, assume siblings to be true as well.
 
         For example, given the following tree::
@@ -198,6 +206,9 @@ class Node:
         r = []
         if ascend:
             siblings=1
+        if inspect.isclass(condition) and issubclass(condition, Node):
+            node_class = condition
+            condition = lambda n: isinstance(n, node_class)
         if include_self and (condition is None or condition(self)):
             r.append(self)
         if descend and len(self.children):
