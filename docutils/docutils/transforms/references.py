@@ -84,7 +84,8 @@ class PropagateTargets(Transform):
                 target['ids'] = []
                 target['names'] = []
                 self.document.note_refid(target)
-                self.document.note_internal_target(next_node)
+                if isinstance(next_node, nodes.target):
+                    self.document.note_internal_target(next_node)
 
 
 class AnonymousHyperlinks(Transform):
