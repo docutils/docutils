@@ -3,6 +3,7 @@
 ==========================
 
 :Author: Felix Wiemann
+:Contact: Felix.Wiemann@ososo.de
 :Revision: $Revision$
 :Date: $Date$
 :Copyright: This document has been placed in the public domain.
@@ -59,6 +60,12 @@ type ::
 
 Developer Access
 ----------------
+
+(Developers who had write-access for Docutils' CVS repository on
+SourceForge.net should `register at BerliOS`__ and send an email with
+their BerliOS user name to `Felix Wiemann <Felix.Wiemann@ososo.de>`_.)
+
+__ https://developer.berlios.de/account/register.php
 
 If you are a developer, you get read-write access via
 ``svn+ssh://username@svn.berlios.de/svnroot/repos/docutils/``, where
