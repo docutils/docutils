@@ -258,7 +258,7 @@ Paragraph 4.
     <section ids="title-1" names="title 1">
         <title>
             Title 1
-        <topic classes="contents" ids="contents" names="contents">
+        <topic classes="contents local" ids="contents" names="contents">
             <bullet_list>
                 <list_item>
                     <paragraph>
@@ -303,7 +303,7 @@ Paragraph.
 """,
 """\
 <document source="test data">
-    <topic classes="contents" ids="contents" names="contents">
+    <topic classes="contents local" ids="contents" names="contents">
         <bullet_list>
             <list_item>
                 <paragraph>
@@ -404,7 +404,7 @@ Paragraph 3.
         <sidebar>
             <title>
                 Contents
-            <topic classes="contents" ids="contents" names="contents">
+            <topic classes="contents local" ids="contents" names="contents">
                 <bullet_list>
                     <list_item>
                         <paragraph>

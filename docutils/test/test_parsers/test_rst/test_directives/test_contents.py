@@ -101,7 +101,7 @@ totest['contents'] = [
 """,
 """\
 <document source="test data">
-    <topic classes="contents" ids="contents" names="contents">
+    <topic classes="contents local" ids="contents" names="contents">
         <pending>
             .. internal attributes:
                  .transform: docutils.transforms.parts.Contents
@@ -132,7 +132,7 @@ totest['contents'] = [
 """,
 """\
 <document source="test data">
-    <topic classes="contents" ids="table-of-contents" names="table of contents">
+    <topic classes="contents local" ids="table-of-contents" names="table of contents">
         <title>
             Table of Contents
         <pending>

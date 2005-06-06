@@ -946,14 +946,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append( '\\end{quote}\n')
 
     def visit_bullet_list(self, node):
-        if self.topic_classes == ['contents']:
+        if 'contents' in self.topic_classes:
             if not self.use_latex_toc:
                 self.body.append( '\\begin{list}{}{}\n' )
         else:
             self.body.append( '\\begin{itemize}\n' )
 
     def depart_bullet_list(self, node):
-        if self.topic_classes == ['contents']:
+        if 'contents' in self.topic_classes:
             if not self.use_latex_toc:
                 self.body.append( '\\end{list}\n' )
         else:
@@ -1708,7 +1708,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_paragraph(self, node):
         index = node.parent.index(node)
-        if not (self.topic_classes == ['contents'] or
+        if not ('contents' in self.topic_classes or
                 (isinstance(node.parent, nodes.compound) and
                  index > 0 and
                  not isinstance(node.parent[index - 1], nodes.paragraph) and
