@@ -352,6 +352,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
             if self.literal_block:
                 # Replace newlines with real newlines.
                 text = text.replace('\n', '\mbox{}\\\\')
+                text += r'\Dfinalstrut'
                 firstspace = '~'
             else:
                 firstspace = '{ }'

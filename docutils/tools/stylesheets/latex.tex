@@ -457,6 +457,9 @@
           \setlength{\topsep}{0pt}%
                                   % List should take 90% of total width.
           \setlength{\leftmargin}{0.05\linewidth}%
+          \ifthenelse{\lengthtest{\leftmargin<1.8em}}{%
+            \setlength{\leftmargin}{1.8em}%
+          }{}%
           \setlength{\labelsep}{\Doriginallabelsep}%
           \Dsetlistrightmargin%
           #2%
@@ -468,7 +471,8 @@
     }%
   \ifthenelse{\equal{\Dinsidetabular}{true}}{\end{minipage}}{}%
 }
-\providecommand{\DAlastitem}[5]{#5\@finalstrut\@arstrutbox}
+\providecommand{\Dfinalstrut}{\@finalstrut\@arstrutbox}
+\providecommand{\DAlastitem}[5]{#5\Dfinalstrut}
 
 \Dprovidelength{\Ditemsep}{0pt}
 \providecommand{\Dmakeenumeratedlist}[6]{%
