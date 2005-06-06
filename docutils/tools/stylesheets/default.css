@@ -139,8 +139,11 @@ h2.subtitle {
 hr.docutils {
   width: 75% }
 
-img[align] {
-  clear: both }
+img.align-left {
+  clear: left }
+
+img.align-right {
+  clear: right }
 
 img.borderless {
   border: 0 }
