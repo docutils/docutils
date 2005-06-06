@@ -332,7 +332,12 @@
 
 %\providecommand{\DNliteralblock}[1]{\begin{quote}\ttfamily\raggedright#1\end{quote}}
 \providecommand{\DNliteralblock}[1]{%
-  \Dmakelistenvironment{}{}{%
+  \Dmakelistenvironment{}{%
+    \ifthenelse{\equal{\Dinsidetabular}{true}}{%
+      \setlength{\leftmargin}{0pt}%
+    }{}%
+    \setlength{\rightmargin}{0pt}%
+  }{%
     \raggedright\item\noindent\nohyphens{\textnhtt{#1}}%
   }%
 }
