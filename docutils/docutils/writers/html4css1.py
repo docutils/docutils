@@ -860,14 +860,15 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_image(self, node):
-        atts = node.non_default_attributes()
-        if atts.has_key('classes'):
-            del atts['classes']         # prevent duplication with node attrs
-        atts['src'] = atts['uri']
-        del atts['uri']
-        if atts.has_key('scale'):
-            if Image and not (atts.has_key('width')
-                              and atts.has_key('height')):
+        atts = {}
+        atts['src'] = node['uri']
+        if node.has_key('width'):
+            atts['width'] = node['width']
+        if node.has_key('height'):
+            atts['height'] = node['height']
+        if node.has_key('scale'):
+            if Image and not (node.has_key('width')
+                              and node.has_key('height')):
                 try:
                     im = Image.open(str(atts['src']))
                 except (IOError, # Source image can't be found or opened
@@ -880,16 +881,14 @@ class HTMLTranslator(nodes.NodeVisitor):
                         atts['height'] = im.size[1]
                     del im
             if atts.has_key('width'):
-                atts['width'] = int(round(atts['width']
-                                          * (float(atts['scale']) / 100)))
+                atts['width'] = int(round(node['width']
+                                          * (float(node['scale']) / 100)))
             if atts.has_key('height'):
-                atts['height'] = int(round(atts['height']
-                                           * (float(atts['scale']) / 100)))
-            del atts['scale']
-        if not atts.has_key('alt'):
-            atts['alt'] = atts['src']
-        if atts.has_key('align'):
-            atts['align'] = self.attval(atts['align'])
+                atts['height'] = int(round(node['height']
+                                           * (float(node['scale']) / 100)))
+        atts['alt'] = node.get('alt', atts['src'])
+        if node.has_key('align'):
+            atts['align'] = self.attval(node['align'])
             atts['class'] = 'align-%s' % atts['align']
         if (isinstance(node.parent, nodes.TextElement) or
             (isinstance(node.parent, nodes.reference) and
