@@ -369,13 +369,7 @@
 \providecommand{\Dsetbullet}[1]{\renewcommand{\Dbullet}{#1}}
 \providecommand{\DNbulletlist}[1]{%
   \Difinsidetoc{%
-    \addtocounter{Dtoclevel}{1}%
-    \addtolength{\Dtocindent}{\Dtocsectnumwidth}%
-    \addtolength{\Dtocsectnumwidth}{\Dtocadditionalsectnumwidth}%
-    #1%
-    \addtolength{\Dtocsectnumwidth}{-\Dtocadditionalsectnumwidth}%
-    \addtolength{\Dtocindent}{-\Dtocsectnumwidth}%
-    \addtocounter{Dtoclevel}{-1}%
+    \Dtocbulletlist{#1}%
   }{%
     \Dmakelistenvironment{\Dbullet}{}{#1}%
   }%
@@ -435,6 +429,7 @@
   }%
 }
 \providecommand{\Dresetlistdepth}{false}
+\Dprovidelength{\Doriginallabelsep}{\labelsep}
 \providecommand{\Dmakelistenvironment}[3]{%
   % Make list environment with support for unlimited nesting and with
   % reasonable default lengths.  Parameters:
@@ -462,6 +457,7 @@
           \setlength{\topsep}{0pt}%
                                   % List should take 90% of total width.
           \setlength{\leftmargin}{0.05\linewidth}%
+          \setlength{\labelsep}{\Doriginallabelsep}%
           \Dsetlistrightmargin%
           #2%
         }{%
@@ -546,6 +542,7 @@
 \Dprovidelength{\Drealfieldnamewidth}{0pt}
 \providecommand{\Dtabularlistfieldname}[1]{\renewcommand{\Dsavefieldname}{#1}}
 \providecommand{\Dtabularlistfieldbody}[1]{\renewcommand{\Dsavefieldbody}{#1}}
+\Dprovidelength{\Dparskiptemp}{0pt}
 \providecommand{\Dtabularlistfield}[1]{%
   {%
     % This only saves field name and field body in \Dsavefieldname and
@@ -567,11 +564,17 @@
     }{%
       \item%
       \settowidth{\Dusedfieldnamewidth}{\Dsavefieldname}%
+      \setlength{\Dparskiptemp}{\parskip}%
       \ifthenelse{%
         \lengthtest{\Dusedfieldnamewidth>\Dtabularlistfieldnamewidth}%
-      }{~\newline}{}%
+      }{%
+        \mbox{}\par%
+        \setlength{\parskip}{0pt}%
+      }{}%
       \Dsavefieldbody%
-      \@finalstrut\@arstrutbox%
+      \setlength{\parskip}{\Dparskiptemp}%
+      %XXX Why did we need this?
+      %\@finalstrut\@arstrutbox%
     }%
     \par%
   }%
@@ -641,9 +644,6 @@
 }
 
 \providecommand{\DNdefinitionlist}[1]{%
-  % XXX Replace with a generic list, so we don't have to hack around
-  % spacing problems with \vspace and \hspace.
-  \vspace{-2em}%
   \begin{description}%
     \parskip0pt%
     #1%
@@ -1020,6 +1020,15 @@
     % Section number inside section title.
     #1\quad%
   }%
+}
+\providecommand{\Dtocbulletlist}[1]{%
+  \addtocounter{Dtoclevel}{1}%
+  \addtolength{\Dtocindent}{\Dtocsectnumwidth}%
+  \addtolength{\Dtocsectnumwidth}{\Dtocadditionalsectnumwidth}%
+  #1%
+  \addtolength{\Dtocsectnumwidth}{-\Dtocadditionalsectnumwidth}%
+  \addtolength{\Dtocindent}{-\Dtocsectnumwidth}%
+  \addtocounter{Dtoclevel}{-1}%
 }
 
 %\usepackage{fixmath}
