@@ -888,24 +888,20 @@ class HTMLTranslator(nodes.NodeVisitor):
             del atts['scale']
         if not atts.has_key('alt'):
             atts['alt'] = atts['src']
-        if isinstance(node.parent, nodes.TextElement):
-            self.context.append('')
+        if atts.has_key('align'):
+            atts['align'] = self.attval(atts['align'])
+            atts['class'] = 'align-%s' % atts['align']
+        if (isinstance(node.parent, nodes.TextElement) or
+            (isinstance(node.parent, nodes.reference) and
+             not isinstance(node.parent.parent, nodes.TextElement))):
+            # Inline context or surrounded by <a>...</a>.
+            suffix = ''
         else:
-            div_atts = self.image_div_atts(node)
-            self.body.append(self.starttag({}, 'div', '', **div_atts))
-            self.context.append('</div>\n')
-        self.body.append(self.emptytag(node, 'img', '', **atts))
-
-    def image_div_atts(self, image_node):
-        div_atts = {}
-        div_atts['class'] = ' '.join(['image'] + image_node['classes'])
-        if image_node.attributes.has_key('align'):
-            div_atts['align'] = self.attval(image_node.attributes['align'])
-            div_atts['class'] += ' align-%s' % div_atts['align']
-        return div_atts
+            suffix = '\n'
+        self.body.append(self.emptytag(node, 'img', suffix, **atts))
 
     def depart_image(self, node):
-        self.body.append(self.context.pop())
+        pass
 
     def visit_important(self, node):
         self.visit_admonition(node, 'important')
@@ -1116,14 +1112,6 @@ class HTMLTranslator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def visit_reference(self, node):
-        if isinstance(node.parent, nodes.TextElement):
-            self.context.append('')
-        else:                           # contains an image
-            assert len(node) == 1 and isinstance(node[0], nodes.image)
-            div_atts = self.image_div_atts(node[0])
-            div_atts['class'] += ' image-reference'
-            self.body.append(self.starttag({}, 'div', '', **div_atts))
-            self.context.append('</div>\n')
         if node.has_key('refuri'):
             href = node['refuri']
             if ( self.settings.cloak_email_addresses
@@ -1134,12 +1122,16 @@ class HTMLTranslator(nodes.NodeVisitor):
             assert node.has_key('refid'), \
                    'References must have "refuri" or "refid" attribute.'
             href = '#' + node['refid']
-        self.body.append(self.starttag(node, 'a', '', CLASS='reference',
-                                       href=href))
+        atts = {'href': href, 'class': 'reference'}
+        if not isinstance(node.parent, nodes.TextElement):
+            assert len(node) == 1 and isinstance(node[0], nodes.image)
+            atts['class'] += ' image-reference'
+        self.body.append(self.starttag(node, 'a', '', **atts))
 
     def depart_reference(self, node):
         self.body.append('</a>')
-        self.body.append(self.context.pop())
+        if not isinstance(node.parent, nodes.TextElement):
+            self.body.append('\n')
         self.in_mailto = 0
 
     def visit_revision(self, node):
