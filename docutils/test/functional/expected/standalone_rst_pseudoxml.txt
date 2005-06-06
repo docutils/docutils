@@ -1048,7 +1048,7 @@
                 <generated classes="sectnum">
                     2.14   
                 Directives
-            <topic classes="contents" ids="contents" names="contents">
+            <topic classes="contents local" ids="contents" names="contents">
                 <bullet_list classes="auto-toc">
                     <list_item>
                         <paragraph>
