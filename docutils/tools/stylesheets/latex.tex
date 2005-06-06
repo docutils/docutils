@@ -56,7 +56,7 @@
   \providecommand{\Dmakebox}[1]{%
     % Make a centered, frameless box.  Useful e.g. for block quotes.
     % Do not use minipages here, but create pseudo-lists to allow
-    % page-breaking.  (Don't uses KOMA-script's addmargin environment
+    % page-breaking.  (Don't use KOMA-script's addmargin environment
     % because it messes up bullet lists.)
     \Dmakelistenvironment{}{}{%
       \setlength{\parskip}{0pt}%
@@ -147,6 +147,7 @@
   % Targets.
   \Dprovidelength{\Dorgbaselineskip}{0pt}
   \providecommand{\DAids}[5]{%
+    \label{##3}%
     \ifthenelse{\equal{##4}{footnotereference}}{%
       {%
         \renewcommand{\HyperRaiseLinkDefault}{%
@@ -346,12 +347,16 @@
 \providecommand{\Dvisitdocument}{\begin{document}\noindent}
 \providecommand{\Ddepartdocument}{\end{document}}
 \providecommand{\DNtopic}[1]{%
-  \par%
-  \Dmakebox{%
-    %%  % Close with \par because otherwise LaTeX wouldn't notice the
-    %%  % changed \baselineskip (due to the font size change).
-    %%  {\small#1\par}%
+  \ifthenelse{\equal{\DcurrentNtopicAcontents}{1}}{%
+    \addtocounter{Dtoclevel}{1}%
+    \vspace{1em}%
+    \par\noindent%
     #1%
+    \addtocounter{Dtoclevel}{-1}%
+    \renewcommand{\Dnextparindent}{\noindent}%
+  }{%
+    \par\noindent%
+    \Dmakebox{#1}%
   }%
 }
 \providecommand{\Dformatrubric}[1]{\textbf{#1}}
@@ -362,9 +367,45 @@
 
 \providecommand{\Dbullet}{}
 \providecommand{\Dsetbullet}[1]{\renewcommand{\Dbullet}{#1}}
-\providecommand{\DNbulletlist}[1]{\Dmakelistenvironment{\Dbullet}{}{#1}}
-
-\providecommand{\DNlistitem}[1]{\item{#1}}
+\providecommand{\DNbulletlist}[1]{%
+  \Difinsidetoc{%
+    \addtocounter{Dtoclevel}{1}%
+    \addtolength{\Dtocindent}{\Dtocsectnumwidth}%
+    \addtolength{\Dtocsectnumwidth}{\Dtocadditionalsectnumwidth}%
+    #1%
+    \addtolength{\Dtocsectnumwidth}{-\Dtocadditionalsectnumwidth}%
+    \addtolength{\Dtocindent}{-\Dtocsectnumwidth}%
+    \addtocounter{Dtoclevel}{-1}%
+  }{%
+    \Dmakelistenvironment{\Dbullet}{}{#1}%
+  }%
+}
+\renewcommand{\@pnumwidth}{2.2em}
+\providecommand{\DNlistitem}[1]{%
+  \Difinsidetoc{%
+    \ifthenelse{\equal{\theDtoclevel}{1}\and\equal{\Dlocaltoc}{false}}{%
+      \par\addvspace{1em}%
+      % Group taken from scrartcl.cls and modified:
+      \begingroup%
+        \parindent0pt%
+        \rightskip\@pnumwidth%
+        \parfillskip-\@pnumwidth%
+        \leavevmode\sectfont%
+        \advance\leftskip\@tempdima%
+        \hskip-\leftskip%
+        {#1}\nobreak\hfil\nobreak\hb@xt@\@pnumwidth{\hss%
+          \pageref{\DcurrentNlistitemAtocrefid}%
+        }\par%
+      \endgroup%
+    }{%
+      \@dottedtocline{0}{\Dtocindent}{0em}{#1}{%
+        \pageref{\DcurrentNlistitemAtocrefid}%
+      }%
+    }%
+  }{%
+    \item{#1}%
+  }%
+}
 \providecommand{\DNenumeratedlist}[1]{#1}
 \newcounter{Dsectionlevel}
 \providecommand{\Dvisitsectionhook}{}
@@ -953,6 +994,41 @@
 \providecommand{\Dtextleftdblquote}{``}
 \providecommand{\Dtextrightdblquote}{''}
 
+% Table of contents:
+\Dprovidelength{\Dtocininitialsectnumwidth}{2.4em}
+\Dprovidelength{\Dtocadditionalsectnumwidth}{0.7em}
+% Level inside a table of contents.  While this is at -1, we are not
+% inside a TOC.
+\Dprovidecounter{Dtoclevel}%
+\setcounter{Dtoclevel}{-1}
+\providecommand{\Dlocaltoc}{false}%
+\providecommand{\DNtopicClocal}[1]{%
+  \renewcommand{\Dlocaltoc}{true}%
+  \addtolength{\Dtocsectnumwidth}{2\Dtocadditionalsectnumwidth}%
+  \addtolength{\Dtocindent}{-2\Dtocadditionalsectnumwidth}%
+  #1%
+  \addtolength{\Dtocindent}{2\Dtocadditionalsectnumwidth}%
+  \addtolength{\Dtocsectnumwidth}{-2\Dtocadditionalsectnumwidth}%
+  \renewcommand{\Dlocaltoc}{false}%
+}
+\Dprovidelength{\Dtocindent}{0pt}%
+\Dprovidelength{\Dtocsectnumwidth}{\Dtocininitialsectnumwidth}
+% Compensate for one additional TOC indentation space so that the
+% top-level is unindented.
+\addtolength{\Dtocsectnumwidth}{-\Dtocadditionalsectnumwidth}
+\addtolength{\Dtocindent}{-\Dtocsectnumwidth}
+\providecommand{\Difinsidetoc}[2]{%
+  \ifthenelse{\not\equal{\theDtoclevel}{-1}}{#1}{#2}%
+}
+\providecommand{\DNgeneratedCsectnum}[1]{%
+  \Difinsidetoc{%
+    % Section number inside TOC.
+    \makebox[\Dtocsectnumwidth][l]{#1}%
+  }{%
+    % Section number inside section title.
+    #1\quad%
+  }%
+}
 
 %\usepackage{fixmath}
 %\usepackage{amsmath}

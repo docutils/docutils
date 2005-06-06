@@ -405,6 +405,10 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
                         isinstance(node.parent[1], nodes.subtitle))
                        and 'true' or 'false'))
 
+    def before_generated(self, node):
+        if 'sectnum' in node['classes']:
+            node[0] = node[0].strip()
+
     literal_block = 0
 
     def visit_literal_block(self, node):
@@ -428,6 +432,21 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         self.append('\n'.join(['% ' + line for line
                                in node.astext().splitlines(0)]), newline='\n')
         raise nodes.SkipChildren
+
+    def before_topic(self, node):
+        if 'contents' in node['classes']:
+            for bullet_list in list(node.traverse(nodes.bullet_list)):
+                p = bullet_list.parent
+                if isinstance(p, nodes.list_item):
+                    p.parent.insert(p.parent.index(p) + 1, bullet_list)
+                    del p[1]
+            for paragraph in node.traverse(nodes.paragraph):
+                paragraph.attributes.update(paragraph[0].attributes)
+                paragraph[:] = paragraph[0]
+                paragraph.parent['tocrefid'] = paragraph['refid']
+            node['contents'] = 1
+        else:
+            node['contents'] = 0
 
     bullet_list_level = 0
 
