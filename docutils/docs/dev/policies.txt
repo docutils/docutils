@@ -84,11 +84,16 @@ Conventions`_ PEPs, with the following clarifications and extensions:
   "note_explicit_target", "explicit_target").  If in doubt, use
   underscores.
 
-* Avoid functional constructs (lambda, filter, map, etc.).  Use list
+* Avoid lambda expressions, which are inherently difficult to
+  understand.  Named functions are preferable and superior: they're
+  faster (no run-time compilation), and well-chosen names serve to
+  document and aid understanding.
+
+* Avoid functional constructs (filter, map, etc.).  Use list
   comprehensions instead.
 
-* Avoid ``from __future__ import`` constructs; we don't want them in
-  production code.
+* Avoid ``from __future__ import`` constructs.  They are inappropriate
+  for production code.
 
 * Use 'single quotes' for string literals, and """triple double
   quotes""" for docstrings.
