@@ -121,8 +121,8 @@ class Contents(Transform):
             ref_id = self.document.set_id(reference)
             entry = nodes.paragraph('', '', reference)
             item = nodes.list_item('', entry)
-            if (self.backlinks in ('entry', 'top') and title.next_node(
-                lambda n: isinstance(n, nodes.reference)) is None):
+            if ( self.backlinks in ('entry', 'top')
+                 and title.next_node(nodes.reference) is None):
                 if self.backlinks == 'entry':
                     title['refid'] = ref_id
                 elif self.backlinks == 'top':

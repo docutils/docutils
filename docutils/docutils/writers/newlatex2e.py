@@ -15,8 +15,6 @@ LaTeX2e document tree Writer.
 __docformat__ = 'reStructuredText'
 
 
-from __future__ import nested_scopes
-
 import re
 import os.path
 from types import ListType
@@ -352,11 +350,10 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
             if self.literal_block:
                 # Replace newlines with real newlines.
                 text = text.replace('\n', '\mbox{}\\\\')
-                firstspace = '~'
+                replace_fn = self.encode_replace_for_literal_block_spaces
             else:
-                firstspace = '{ }'
-            text = re.sub(r'\s+', lambda m: firstspace +
-                          '~' * (len(m.group()) - 1), text)
+                replace_fn = self.encode_replace_for_inline_literal_spaces
+            text = re.sub(r'\s+', replace_fn, text)
             # Protect hyphens; if we don't, line breaks will be
             # possible at the hyphens and even the \textnhtt macro
             # from the hyphenat package won't change that.
@@ -379,6 +376,12 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
                 return ''.join(L)
             else:
                 return text
+
+    def encode_replace_for_literal_block_spaces(self, match):
+        return '~' * len(match.group())
+
+    def encode_replace_for_inline_literal_spaces(self, match):
+        return '{ }' + '~' * len(match.group() - 1)
 
     def astext(self):
         return '\n'.join(self.header) + (''.join(self.body))
@@ -647,11 +650,10 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         document = node
         # Move IDs into TextElements.  This won't work for images.
         # Need to review this.
-        for node in document.traverse(lambda n: isinstance(n, nodes.Element)):
+        for node in document.traverse(nodes.Element):
             if node.has_key('ids') and not isinstance(node,
                                                       nodes.TextElement):
-                next_text_element = node.next_node(
-                    lambda n: isinstance(n, nodes.TextElement))
+                next_text_element = node.next_node(nodes.TextElement)
                 if next_text_element:
                     next_text_element['ids'].extend(node['ids'])
                     node['ids'] = []
@@ -739,6 +741,9 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
                 # Horizontally aligned image or figure.
                 node.get('align', None) in ('left', 'center', 'right'))
 
+    def is_visible(self, node):
+        return not self.is_invisible(node)
+
     def needs_space(self, node):
         # Return true if node is a visible block-level element.
         return ((isinstance(node, nodes.Body) or
@@ -765,7 +770,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
                 # Next sibling.
                 next_node = node.next_node(
                     ascend=0, siblings=1, descend=0,
-                    condition=lambda n: not self.is_invisible(n))
+                    condition=self.is_visible)
                 if self.needs_space(next_node):
                     # Insert space.
                     if isinstance(next_node, nodes.paragraph):

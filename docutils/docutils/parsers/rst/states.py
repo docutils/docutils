@@ -984,6 +984,16 @@ class Inliner:
                 '__': anonymous_reference}
 
 
+def _loweralpha_to_int(s, _zero=(ord('a')-1)):
+    return ord(s) - _zero
+
+def _upperalpha_to_int(s, _zero=(ord('A')-1)):
+    return ord(s) - _zero
+
+def _lowerroman_to_int(s):
+    return roman.fromRoman(s.upper())
+
+
 class Body(RSTState):
 
     """
@@ -1006,12 +1016,9 @@ class Body(RSTState):
                          'lowerroman': '[ivxlcdm]+',
                          'upperroman': '[IVXLCDM]+',}
     enum.converters = {'arabic': int,
-                       'loweralpha':
-                       lambda s, zero=(ord('a')-1): ord(s) - zero,
-                       'upperalpha':
-                       lambda s, zero=(ord('A')-1): ord(s) - zero,
-                       'lowerroman':
-                       lambda s: roman.fromRoman(s.upper()),
+                       'loweralpha': _loweralpha_to_int,
+                       'upperalpha': _upperalpha_to_int,
+                       'lowerroman': _lowerroman_to_int,
                        'upperroman': roman.fromRoman}
 
     enum.sequenceregexps = {}
