@@ -403,6 +403,7 @@ Are there any Weblog (Blog) projects that use reStructuredText syntax?
 With no implied endorsement or recommendation, and in no particular
 order:
 
+* `Firedrop <http://www.voidspace.org.uk/python/firedrop2/>`__
 * `Python Desktop Server <http://pyds.muensterland.org/>`__
 * `PyBloxsom <http://roughingit.subtlehints.net/pyblosxom/>`__
 * `rst2ht <http://www.rutherfurd.net/articles/rst-ht2html.html>`__
