@@ -23,8 +23,6 @@ hierarchy.
 
 __docformat__ = 'reStructuredText'
 
-from __future__ import nested_scopes
-
 import sys
 import os
 import re
@@ -180,8 +178,8 @@ class Node:
 
         If `condition` is not None, the iterable contains only nodes
         for which ``condition(node)`` is true.  If `condition` is a
-        node class ``cls``, it is equivalent to ``lambda n:
-        isinstance(n, cls)``.
+        node class ``cls``, it is equivalent to a function consisting
+        of ``return isinstance(node, cls)``.
 
         If ascend is true, assume siblings to be true as well.
 
@@ -208,7 +206,8 @@ class Node:
             siblings=1
         if inspect.isclass(condition) and issubclass(condition, Node):
             node_class = condition
-            condition = lambda n: isinstance(n, node_class)
+            def condition(node, node_class=node_class):
+                return isinstance(node, node_class)
         if include_self and (condition is None or condition(self)):
             r.append(self)
         if descend and len(self.children):
@@ -229,7 +228,6 @@ class Node:
                 else:
                     node = node.parent
         return r
-
 
     def next_node(self, condition=None,
                   include_self=0, descend=1, siblings=0, ascend=0):

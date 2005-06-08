@@ -236,8 +236,7 @@ class SectionSubTitle(TitlePromoter):
     def apply(self):
         if not getattr(self.document.settings, 'sectsubtitle_xform', 1):
             return
-        for section in self.document.traverse(lambda n:
-                                              isinstance(n, nodes.section)):
+        for section in self.document.traverse(nodes.section):
             # On our way through the node tree, we are deleting
             # sections, but we call self.promote_subtitle for those
             # sections nonetheless.  To do: Write a test case which
