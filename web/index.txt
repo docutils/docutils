@@ -79,12 +79,12 @@ Powered by |Python|_.
 
 .. class:: hidden
 
-Google should index the mailing lists: `Docutils-user
-<http://news.gmane.org/group/gmane.text.docutils.user>`__,
-`Docutils-devel
-<http://news.gmane.org/group/gmane.text.docutils.devel>`__, and
-`Docutils-checkins
-<http://news.gmane.org/group/gmane.text.docutils.cvs>`__.
+Google should index the mailing lists: `Docutils-users
+<http://news.gmane.org/group/gmane.text.docutils.user/last=/force_load=t>`__,
+`Docutils-develop
+<http://news.gmane.org/group/gmane.text.docutils.devel/last=/force_load=t>`__,
+and `Docutils-checkins
+<http://news.gmane.org/group/gmane.text.docutils.cvs/last=/force_load=t>`__.
 
 .. |---| unicode:: U+02014 .. em dash
    :trim:
