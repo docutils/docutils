@@ -101,6 +101,7 @@ unicode           Unicode character code conversion for substitution defs
 class             Set a "class" attribute on the next element
 role              Create a custom interpreted text role [0.3.2]
 default-role      Set the default interpreted text role [0.3.10]
+title             Set the metadata document title [0.3.10]
 ================  ============================================================
 
 Interpreted Text Role Quick Reference

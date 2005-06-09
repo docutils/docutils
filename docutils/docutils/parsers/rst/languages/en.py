@@ -55,6 +55,7 @@ directives = {
       'class': 'class',
       'role': 'role',
       'default-role': 'default-role',
+      'title': 'title',
       'contents': 'contents',
       'sectnum': 'sectnum',
       'section-numbering': 'sectnum',
