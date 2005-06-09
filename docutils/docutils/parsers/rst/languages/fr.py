@@ -57,6 +57,7 @@ directives = {
       u'classe': 'class',
       u'role (translation required)': 'role',
       u'default-role (translation required)': 'default-role',
+      u'title (translation required)': 'title',
       u'sommaire': 'contents',
       u'table-des-mati\u00E8res': 'contents',
       u'sectnum': 'sectnum',

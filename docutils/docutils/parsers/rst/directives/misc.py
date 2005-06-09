@@ -351,6 +351,13 @@ def default_role(name, arguments, options, content, lineno,
 
 default_role.arguments = (0, 1, 0)
 
+def title(name, arguments, options, content, lineno,
+          content_offset, block_text, state, state_machine):
+    state_machine.document.settings.title = arguments[0]
+    return []
+
+title.arguments = (1, 0, 1)
+
 def directive_test_function(name, arguments, options, content, lineno,
                             content_offset, block_text, state, state_machine):
     """This directive is useful only for testing purposes."""

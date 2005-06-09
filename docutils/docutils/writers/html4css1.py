@@ -631,8 +631,12 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_document(self, node):
         # empty or untitled document?
         if not len(node) or not isinstance(node[0], nodes.title):
-            # for XHTML conformance, modulo IE6 appeasement:
-            self.head.append('<title></title>\n')
+            if self.settings.title:
+                self.head.append('<title>%s</title>\n'
+                                 % self.encode(self.settings.title))
+            else:
+                # for XHTML conformance, modulo IE6 appeasement:
+                self.head.append('<title></title>\n')
 
     def depart_document(self, node):
         self.fragment.extend(self.body)
@@ -1348,11 +1352,13 @@ class HTMLTranslator(nodes.NodeVisitor):
                   self.starttag(node, 'caption', ''))
             check_id = 1
             close_tag = '</caption>\n'
-        elif self.section_level == 0:
+        elif self.section_level == 0:   # document title
             assert node.parent is self.document
-            # document title
-            self.head.append('<title>%s</title>\n'
-                             % self.encode(node.astext()))
+            if self.settings.title:
+                title = self.settings.title
+            else:
+                title = node.astext()
+            self.head.append('<title>%s</title>\n' % self.encode(title))
             self.body.append(self.starttag(node, 'h1', '', CLASS='title'))
             self.context.append('</h1>\n')
             self.in_document_title = len(self.body)

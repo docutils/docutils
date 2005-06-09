@@ -54,6 +54,7 @@ directives = {
       u'class (translation required)': 'class',
       u'role (translation required)': 'role',
       u'default-role (translation required)': 'default-role',
+      u'title (translation required)': 'title',
       u'inneh\u00e5ll': 'contents',
       u'sektionsnumrering': 'sectnum',
       u'target-notes (translation required)': 'target-notes',
