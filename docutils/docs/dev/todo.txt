@@ -1774,9 +1774,6 @@ HTML Writer
 * Add a tool tip ("title" attribute?) to footnote back-links
   identifying them as such.  Text in Docutils language module.
 
-* Add an option to restrict the document title to <head><title> only,
-  and not include it in the document body.  Subtitle?
-
 * Insert a comment at the top of HTML files that describes how to deal
   with the broken servers w.r.t. encodings?  Perhaps something like
   this:
