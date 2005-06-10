@@ -261,7 +261,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
     #special_map = {'\n': ' ', '\r': ' ', '\t': ' ', '\v': ' ', '\f': ' '}
 
     # Get comprehensive Unicode map.
-    from unimap import map as unicode_map
+    from unicode_latex import unicode_map
     # Fix problems with unimap.py.
     unicode_map.update({
         # We have AE or T1 encoding, so "``" etc. work.  The macros
