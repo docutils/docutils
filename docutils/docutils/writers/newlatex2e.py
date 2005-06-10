@@ -258,59 +258,59 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
     def language_label(self, docutil_label):
         return self.language.labels[docutil_label]
 
-    # To do: Use unimap.py from TeXML instead.  Have to deal with
-    # legal cruft before, because it's LPGL.
-    character_map_string = r"""
-        \ \textbackslash
-        { \{
-        } \}
-        $ \$
-        & \&
-        % \%
-        # \#
-        [ [
-        ] ]
-        - -
-        ` `
-        ' '
-        , ,
-        " "
-        | \textbar
-        < \textless
-        > \textgreater
-        ^ \textasciicircum
-        ~ \textasciitilde
-        _ \Dtextunderscore
-        """
-
     #special_map = {'\n': ' ', '\r': ' ', '\t': ' ', '\v': ' ', '\f': ' '}
 
-    unicode_map = {
-        u'\u00A0': '~',
-        u'\u00B2': '$^2$',
-        u'\u00B3': '$^3$',
-        u'\u2009': '{\\,}',
-        u'\u2013': '{--}',
-        u'\u2014': '{---}',
-        u'\u2018': '`',
-        u'\u2019': '\'',
-        u'\u201A': ',',
-        u'\u201C': '``',
-        u'\u201D': "''",
-        u'\u201E': ',,',
-        u'\u2020': '{\\dag}',
-        u'\u2021': '{\\ddag}',
-        u'\u2026': '{\\dots}',
-        u'\u2122': '{\\texttrademark}',
-        u'\u21d4': '{$\\Leftrightarrow$}',
-        }
+    # Get comprehensive Unicode map.
+    from unimap import map as unicode_map
+    # Fix problems with unimap.py.
+    unicode_map.update({
+        # We have AE or T1 encoding, so "``" etc. work.  The macros
+        # from unimap.py may *not* work.
+        u'\u201C': '{``}',
+        u'\u201D': "{''}",
+        u'\u201E': '{,,}',
+        })
 
-    character_map = {}
-    for pair in character_map_string.strip().split('\n'):
-        char, replacement = pair.split()
-        character_map[char] = replacement
+    character_map = {
+        '\\': r'{\textbackslash}',
+        '{': r'{\{}',
+        '}': r'{\}}',
+        '$': r'{\$}',
+        '&': r'{\&}',
+        '%': r'{\%}',
+        '#': r'{\#}',
+        '[': r'{[}',
+        ']': r'{]}',
+        '-': r'{-}',
+        '`': r'{`}',
+        "'": r"{'}",
+        ',': r'{,}',
+        '"': r'{"}',
+        '|': r'{\textbar}',
+        '<': r'{\textless}',
+        '>': r'{\textgreater}',
+        '^': r'{\textasciicircum}',
+        '~': r'{\textasciitilde}',
+        '_': r'{\Dtextunderscore}',
+        }
     character_map.update(unicode_map)
     #character_map.update(special_map)
+    
+    # `att_map` is for encoding attributes.  According to
+    # <http://www-h.eng.cam.ac.uk/help/tpl/textprocessing/teTeX/latex/latex2e-html/ltx-164.html>,
+    # the following characters are special: # $ % & ~ _ ^ \ { }
+    # These work without special treatment in macro parameters:
+    # $, &, ~, _, ^
+    att_map = {'#': '\\#',
+               '%': '\\%',
+               # We cannot do anything about backslashes.
+               '\\': '',
+               '{': '\\{',
+               '}': '\\}',
+               # The quotation mark may be redefined by babel.
+               '"': '"{}',
+               }
+    att_map.update(unicode_map)
 
     def encode(self, text, attval=0):
         """
@@ -319,23 +319,10 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         If attval is true, preserve as much as possible verbatim (used in
         attribute value encoding).
         """
-        if not attval:
-            get = self.character_map.get
+        if attval:
+            get = self.att_map.get
         else:
-            # According to
-            # <http://www-h.eng.cam.ac.uk/help/tpl/textprocessing/teTeX/latex/latex2e-html/ltx-164.html>,
-            # the following characters are special: # $ % & ~ _ ^ \ { }
-            # These work without special treatment in macro parameters:
-            # $, &, ~, _, ^
-            get = {'#': '\\#',
-                   '%': '\\%',
-                   # We cannot do anything about backslashes.
-                   '\\': '',
-                   '{': '\\{',
-                   '}': '\\}',
-                   # The quotation mark may be redefined by babel.
-                   '"': '"{}',
-                   }.get
+            get = self.character_map.get
         text = ''.join([get(c, c) for c in text])
         if (self.literal_block or self.inline_literal) and not attval:
             # NB: We can have inline literals within literal blocks.
@@ -366,11 +353,11 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
                 text = re.sub(r'\s+', '{ }', text)
                 # Replace double quotes with macro calls.
                 L = []
-                for part in text.split('"'):
+                for part in text.split(self.character_map['"']):
                     if L:
                         # Insert quote.
-                        L.append(self.left_quote and r'\Dtextleftdblquote' or
-                                 r'\Dtextrightdblquote')
+                        L.append(self.left_quote and r'{\Dtextleftdblquote}'
+                                 or r'{\Dtextrightdblquote}')
                         self.left_quote = not self.left_quote
                     L.append(part)
                 return ''.join(L)
