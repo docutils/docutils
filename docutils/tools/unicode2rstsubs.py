@@ -19,7 +19,7 @@ wide-Unicode characters in the set.
 
 The input file, unicode.xml, is maintained as part of the MathML 2
 Recommentation XML source, and is available at
-<http://www.w3.org/Math/characters/unicode.xml> (as of 2003-06-22).
+<http://www.w3.org/2003/entities/xml/unicode.xml>.
 """
 
 import sys
