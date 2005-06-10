@@ -14,7 +14,7 @@
 # Original copyright notice of unicode.xml follows:
 #
 #
-# $Id$
+# $Id: unicode.xml,v 1.5 2003/12/08 15:02:15 davidc Exp $
 # 
 # Copyright David Carlisle, Sebastian Rahtz  1998-2003
 # 
