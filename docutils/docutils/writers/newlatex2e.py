@@ -30,7 +30,6 @@ class Writer(writers.Writer):
 
     settings_spec = (
         'LaTeX-Specific Options',
-        'The LaTeX "--output-encoding" default is "latin-1:strict". '
         'Note that this LaTeX writer is still EXPERIMENTAL.',
         (('Specify a stylesheet file.  The path is used verbatim to include '
           'the file.  Overrides --stylesheet-path.',
@@ -50,12 +49,18 @@ class Writer(writers.Writer):
           {'metavar': '<file>', 'overrides': 'user_stylesheet'})
          ),)
 
-    settings_defaults = {'output_encoding': 'latin-1',
-                         'trim_footnote_reference_space': 1,
-                         # Currently unsupported:
-                         'docinfo_xform': 0,
-                         # During development:
-                         'traceback': 1}
+    settings_defaults = {
+        # Many Unicode characters are provided by unicode_latex.py.
+        'output_encoding': 'ascii',
+        'output_encoding_error_handler': 'strict',
+        # Since we are using superscript footnotes, it is necessary to
+        # trim whitespace in front of footnote references.
+        'trim_footnote_reference_space': 1,
+        # Currently unsupported:
+        'docinfo_xform': 0,
+        # During development:
+        'traceback': 1
+        }
 
     relative_path_settings = ('stylesheet_path',)
 
