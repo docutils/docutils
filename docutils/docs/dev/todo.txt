@@ -1192,9 +1192,6 @@ when used in a document.
 
   - _`misc.include`:
 
-    - "encoding" option?  Take default from runtime settings.  Use
-      Input component to read it in?
-
     - Option to select a range of lines?
 
     - Option to label lines?
