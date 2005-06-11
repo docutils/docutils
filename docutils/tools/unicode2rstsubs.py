@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 # Author: David Goodger
-# Contact: goodger@users.sourceforge.net
+# Contact: goodger@python.org
 # Revision: $Revision$
 # Date: $Date$
 # Copyright: This program has been placed in the public domain.
@@ -67,6 +67,14 @@ class CharacterEntitySetExtractor:
 
     unwanted_entity_sets = ['stix',     # unknown, buggy set
                             'predefined']
+
+    header = """\
+.. This data file has been placed in the public domain.
+.. Derived from the Unicode character mappings available at
+   <http://www.w3.org/2003/entities/xml/unicode.xml>.
+   Processed by unicode2rstsubs.py
+   (part of Docutils, http://docutils.sourceforge.net).
+"""
 
     def __init__(self, infile):
         self.infile = infile
@@ -165,6 +173,7 @@ class CharacterEntitySetExtractor:
             outname = set_name + '.txt'
         outfile = open(outname, 'w')
         print 'writing file "%s"' % outname
+        print >>outfile, self.header
         set = self.sets[set_name]
         entities = [(e.lower(), e) for e in set.keys()]
         entities.sort()
