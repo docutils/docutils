@@ -881,6 +881,8 @@
 
 
 \providecommand{\Dinsidehalign}{false}
+\newsavebox{\Dalignedimagebox}
+\Dprovidelength{\Dalignedimagewidth}{0pt}
 \providecommand{\Dhalign}[2]{%
   % Horizontally align the contents to the left or right so that the
   % text flows around it.
@@ -890,7 +892,22 @@
   \renewcommand{\Dinsidehalign}{true}%
   % For some obscure reason \parpic consumes some vertical space.
   \vspace{-3pt}%
-  \parpic[#1]{#2}%
+  % Now we do something *really* ugly, but this enables us to wrap the
+  % image in a minipage while still allowing tight frames when
+  % class=border (see \DNimageCborder).
+  \sbox{\Dalignedimagebox}{#2}%
+  \settowidth{\Dalignedimagewidth}{\usebox{\Dalignedimagebox}}%
+  % Now we do something *really* ugly.
+  \parpic[#1]{%
+    \begin{minipage}[b]{\Dalignedimagewidth}%
+    % Compensate for previously added space, but not entirely.
+    \vspace*{2.0pt}%
+    \vspace*{\Dfloatimagetopmargin}%
+    \usebox{\Dalignedimagebox}%
+    \vspace*{1.5pt}%
+    \vspace*{\Dfloatimagebottommargin}%
+    \end{minipage}%
+  }%
   \renewcommand{\Dinsidehalign}{false}%
 }
 
@@ -944,16 +961,8 @@
   % Need to make bottom-alignment dependent on align attribute (add
   % functional test first).
   \begin{minipage}[b]{#1}%
-    \ifthenelse{\equal{\Dinsidehalign}{true}}{
-      % Compensate for space previously added in \Dhalign, but not
-      % entirely.
-      \vspace*{2.5pt}%
-      \vspace*{\Dfloatimagetopmargin}%
-    }{}%
     \includegraphics[width=\linewidth,height=\textheight,keepaspectratio]{#2}%
     \ifthenelse{\equal{\Dinsidehalign}{true}}{%
-      \vspace*{1.5pt}%
-      \vspace*{\Dfloatimagebottommargin}%
     }{}%
   \end{minipage}%
 }  
@@ -985,6 +994,8 @@
 
 
 \providecommand{\DCborder}[1]{\fbox{#1}}
+% No padding between image and border.
+\providecommand{\DNimageCborder}[1]{\frame{#1}}
 
 
 % Need to replace with language-specific stuff.  Maybe look at
