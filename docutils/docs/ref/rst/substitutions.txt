@@ -80,7 +80,7 @@ Recommentation XML source.
 __ http://www.w3.org/2003/entities/xml/
 
 ==================  ==================================================
-Entity Set File    Description
+Entity Set File     Description
 ==================  ==================================================
 isoamsa.txt         Added Mathematical Symbols: Arrows
 isoamsb.txt         Added Mathematical Symbols: Binary Operators
