@@ -2,10 +2,6 @@
  ``docutils/parsers/rst/include`` Directory
 ============================================
 
-The individual data files are stored with the Docutils source code in
-the "docutils" package, in the ``docutils/parsers/rst/include``
-directory.
-
 This directory contains standard data files intended for inclusion in
 reStructuredText documents.  To access these files, use the "include"
 directive with the special syntax for standard "include" data files,
