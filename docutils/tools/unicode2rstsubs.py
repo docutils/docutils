@@ -8,7 +8,7 @@
 
 """
 unicode2subfiles.py -- produce character entity files (reSructuredText
-substitutions) from the MathML master unicode.xml file.
+substitutions) from the W3C master unicode.xml file.
 
 This program extracts character entity and entity set information from a
 unicode.xml file and produces multiple reStructuredText files (in the current
@@ -18,8 +18,8 @@ entity set; a second file with a "-wide.txt" suffix is produced if there are
 wide-Unicode characters in the set.
 
 The input file, unicode.xml, is maintained as part of the MathML 2
-Recommentation XML source, and is available at
-<http://www.w3.org/2003/entities/xml/unicode.xml>.
+Recommentation XML source, and is available from
+<http://www.w3.org/2003/entities/xml/>.
 """
 
 import sys
@@ -70,10 +70,10 @@ class CharacterEntitySetExtractor:
 
     header = """\
 .. This data file has been placed in the public domain.
-.. Derived from the Unicode character mappings available at
-   <http://www.w3.org/2003/entities/xml/unicode.xml>.
-   Processed by unicode2rstsubs.py
-   (part of Docutils, http://docutils.sourceforge.net).
+.. Derived from the Unicode character mappings available from
+   <http://www.w3.org/2003/entities/xml/>.
+   Processed by unicode2rstsubs.py, part of Docutils:
+   <http://docutils.sourceforge.net>.
 """
 
     def __init__(self, infile):
