@@ -21,7 +21,8 @@ except ImportError:
     urllib2 = None
 
 
-standard_include_path = os.path.join(os.path.dirname(states.__file__), 'data')
+standard_include_path = os.path.join(os.path.dirname(states.__file__),
+                                     'include')
 
 def include(name, arguments, options, content, lineno,
             content_offset, block_text, state, state_machine):
