@@ -1197,9 +1197,6 @@ example::
 If an included document fragment contains section structure, the title
 adornments must match those of the master document.
 
-The text encoding of the master input source is used for included
-files.
-
 The following options are recognized:
 
 ``literal`` : flag (empty)
