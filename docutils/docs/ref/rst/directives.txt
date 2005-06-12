@@ -634,21 +634,6 @@ The following option is recognized:
     class_ directive below.
 
 
-Title
-=====
-
-:Directive Type: "title"
-:Doctree Element: None.
-:Directive Arguments: 1, required (the title text).
-:Directive Options: None.
-:Directive Content: None.
-
-The "title" directive specifies the document title as metadata, which
-does not become part of the document body.  It overrides a
-document-supplied title.  For example, in HTML output the metadata
-document title appears in the title bar of the browser window.
-
-
 --------
  Tables
 --------
@@ -1595,6 +1580,23 @@ The directive may be used without an argument to restore the initial
 default interpreted text role, which is application-dependent.  The
 initial default interpreted text role of the standard reStructuredText
 parser is "title-reference".
+
+
+.. _title:
+
+Metadata Document Title
+=======================
+
+:Directive Type: "title"
+:Doctree Element: None.
+:Directive Arguments: 1, required (the title text).
+:Directive Options: None.
+:Directive Content: None.
+
+The "title" directive specifies the document title as metadata, which
+does not become part of the document body.  It overrides a
+document-supplied title.  For example, in HTML output the metadata
+document title appears in the title bar of the browser window.
 
 
 Restructuredtext-Test-Directive
