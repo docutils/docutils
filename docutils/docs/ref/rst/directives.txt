@@ -1149,7 +1149,7 @@ Including an External Document Fragment
 
 :Directive Type: "include"
 :Doctree Elements: depend on data being included
-:Directive Arguments: One, required.
+:Directive Arguments: One, required (path to the file to include).
 :Directive Options: Possible.
 :Directive Content: None.
 
@@ -1181,6 +1181,20 @@ example::
 
 If an included document fragment contains section structure, the title
 adornments must match those of the master document.
+
+Standard data files intended for inclusion in reStructuredText
+documents are distributed with the Docutils source code, located in
+the "docutils" package in the ``docutils/parsers/rst/include``
+directory.  To access these files, use the special syntax for standard
+"include" data files, angle brackets around the file name::
+
+    .. include:: <isonum.txt>
+
+The current set of standard "include" data files consists of sets of
+substitution definitions.  See `reStructuredText Standard Substitution
+Definition Sets`__ for details of the available standard data files.
+
+__ substitutions.html
 
 The following options are recognized:
 

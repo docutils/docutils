@@ -905,11 +905,6 @@ __ rst/alternatives.html#or-not-to-do
 * Generalize the "target-notes" directive into a command-line option
   somehow?  See docutils-develop 2003-02-13.
 
-* Include the _`character entity substitution definition files`
-  `temporarily stored here <http://docutils.sf.net/tmp/charents/>`__,
-  perhaps in a ``docutils/parsers/rst/includes/`` directory.  See
-  `misc.include`_ below.
-
 * Should ^L (or something else in reST) be defined to mean
   force/suggest page breaks in whatever output we have?
 
@@ -1196,38 +1191,12 @@ when used in a document.
 
     - Option to label lines?
 
-    - Default directory for "built-in includes", using the C syntax
-      ``<name>`` (as in ``#include <name>``)?
-
-          Use C-preprocessor semantics for locating include files?
-          E.g., ``.. include:: file.txt`` will read another file into
-          the current one, relative to the current file's directory,
-          and ``.. include:: <standard>`` will read a standard include
-          file from ``docutils/include/``.  (Should "quotes" be
-          required around non-standard include files?)
-
-          -- http://sf.net/mailarchive/message.php?msg_id=1938401
-
-      I now think that ``docutils/parsers/rst/include/`` is a better
-      place for these files, since they're reStructuredText-specific.
-
-      Keeping standard data files together with the package code makes
-      sense to me.  It seems much less complex to implement than a
-      separate system data directory, such as ``/usr/share/docutils``.
-      Any reason a system data directory should be used?  How does
-      Distutils handle data files?
-
-      How about an environment variable, say RSTINCLUDEPATH or
-      RSTPATH?  This could be combined with a setting/option to allow
+    - How about an environment variable, say RSTINCLUDEPATH or
+      RSTPATH, for standard includes (as in ``.. include:: <name>``)?
+      This could be combined with a setting/option to allow
       user-defined include directories.
 
-      For a specific application, see the discussion of `character
-      entity substitution definition files`_ above.
-
-      Instead of C-include "<syntax>", perhaps a new "include-sys"
-      directive?
-
-    - Add support for inclusion by URL::
+    - Add support for inclusion by URL? ::
 
           .. include::
              :url: http://www.example.org/inclusion.txt

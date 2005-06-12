@@ -119,6 +119,8 @@ reStructuredText_:
 * `reStructuredText Markup Specification <ref/rst/restructuredtext.html>`__
 * `reStructuredText Directives <ref/rst/directives.html>`__
 * `reStructuredText Interpreted Text Roles <ref/rst/roles.html>`__
+* `reStructuredText Standard Substitution Definition Sets
+  <ref/rst/substitutions.html>`_
 
 Prehistoric:
 
