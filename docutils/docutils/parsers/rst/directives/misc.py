@@ -21,6 +21,8 @@ except ImportError:
     urllib2 = None
 
 
+standard_include_path = os.path.join(os.path.dirname(states.__file__), 'data')
+
 def include(name, arguments, options, content, lineno,
             content_offset, block_text, state, state_machine):
     """Include a reST file as part of the content of this reST file."""
@@ -33,6 +35,8 @@ def include(name, arguments, options, content, lineno,
         lineno - state_machine.input_offset - 1)
     source_dir = os.path.dirname(os.path.abspath(source))
     path = directives.path(arguments[0])
+    if path.startswith('<') and  path.endswith('>'):
+        path = os.path.join(standard_include_path, path[1:-1])
     path = os.path.normpath(os.path.join(source_dir, path))
     path = utils.relative_path(None, path)
     encoding = options.get('encoding', state.document.settings.input_encoding)

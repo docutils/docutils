@@ -4,8 +4,22 @@
 
 import sys
 import os
+import glob
 from distutils.core import setup
 from distutils.command.build_py import build_py
+from distutils.command.install_data import install_data
+
+
+class smart_install_data(install_data):
+
+    # From <http://wiki.python.org/moin/DistutilsInstallDataScattered>,
+    # by Pete Shinners.
+
+    def run(self):
+        #need to change self.install_dir to the library dir
+        install_cmd = self.get_finalized_command('install')
+        self.install_dir = getattr(install_cmd, 'install_lib')
+        return install_data.run(self)
 
 
 def do_setup():
@@ -34,6 +48,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
     'author_email': 'goodger@users.sourceforge.net',
     'license': 'public domain, Python, BSD, GPL (see COPYING.txt)',
     'platforms': 'OS-independent',
+    'cmdclass': {'install_data': smart_install_data},
     'package_dir': {'docutils': 'docutils', '': 'extras'},
     'packages': ['docutils', 'docutils.languages',
                  'docutils.parsers', 'docutils.parsers.rst',
@@ -42,6 +57,8 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                  'docutils.readers', 'docutils.readers.python',
                  'docutils.transforms',
                  'docutils.writers',],
+    'data_files': [('docutils/parsers/rst/data',
+                    glob.glob('docutils/parsers/rst/data/*.txt'))],
     'scripts' : ['tools/rst2html.py','tools/rst2latex.py'],}
 """Distutils setup parameters."""
 

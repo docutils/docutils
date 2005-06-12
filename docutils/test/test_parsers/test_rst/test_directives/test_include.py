@@ -32,7 +32,8 @@ include11 = os.path.join(mydir, 'include 11.txt')
 include11rel = DocutilsTestSupport.utils.relative_path(None, include11)
 utf_16_file = os.path.join(mydir, 'utf-16.csv')
 utf_16_file_rel = DocutilsTestSupport.utils.relative_path(None, utf_16_file)
-
+nonexistant_rel = DocutilsTestSupport.utils.relative_path(
+    None, '../docutils/parsers/rst/data/nonexistant')
 
 totest = {}
 
@@ -350,6 +351,43 @@ Include file with whitespace in the path:
         Include file with whitespace in the path:
     <paragraph>
         some text
+"""],
+["""\
+Standard include data file:
+
+.. include:: <isogrk4.txt>
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Standard include data file:
+    <comment xml:space="preserve">
+        This data file has been placed in the public domain.
+    <comment xml:space="preserve">
+        Derived from the Unicode character mappings available from
+        <http://www.w3.org/2003/entities/xml/>.
+        Processed by unicode2rstsubs.py, part of Docutils:
+        <http://docutils.sourceforge.net>.
+    <substitution_definition names="b.Gammad">
+        \\u03dc
+    <substitution_definition names="b.gammad">
+        \\u03dd
+"""],
+["""\
+Nonexistant standard include data file:
+
+.. include:: <nonexistant>
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Nonexistant standard include data file:
+    <system_message level="4" line="3" source="test data" type="SEVERE">
+        <paragraph>
+            Problems with "include" directive path:
+            IOError: [Errno 2] No such file or directory: '../docutils/parsers/rst/data/nonexistant'.
+        <literal_block xml:space="preserve">
+            .. include:: <nonexistant>
 """],
 ]
 
