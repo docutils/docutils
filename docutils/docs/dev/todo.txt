@@ -33,10 +33,6 @@ Priorities
 
   __ ../../BUGS.html
 
-* Include substitution files for character entities, produced by the
-  tools/unicode2rstsubs.py.  As static data, these files could go
-  inside the docutils package somewhere.
-
 * A Python Source Reader component (Python auto-documentation) will be
   added.  See the document `"Plan for Enthought API Documentation
   Tool"`__ for details.  If you'd like to help, let me know!
