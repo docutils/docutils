@@ -32,8 +32,8 @@ include11 = os.path.join(mydir, 'include 11.txt')
 include11rel = DocutilsTestSupport.utils.relative_path(None, include11)
 utf_16_file = os.path.join(mydir, 'utf-16.csv')
 utf_16_file_rel = DocutilsTestSupport.utils.relative_path(None, utf_16_file)
-nonexistant_rel = DocutilsTestSupport.utils.relative_path(
-    None, '../docutils/parsers/rst/include/nonexistant')
+nonexistent_rel = DocutilsTestSupport.utils.relative_path(
+    None, '../docutils/parsers/rst/include/nonexistent')
 
 totest = {}
 
@@ -374,20 +374,20 @@ Standard include data file:
         \\u03dd
 """],
 ["""\
-Nonexistant standard include data file:
+Nonexistent standard include data file:
 
-.. include:: <nonexistant>
+.. include:: <nonexistent>
 """,
 """\
 <document source="test data">
     <paragraph>
-        Nonexistant standard include data file:
+        Nonexistent standard include data file:
     <system_message level="4" line="3" source="test data" type="SEVERE">
         <paragraph>
             Problems with "include" directive path:
-            IOError: [Errno 2] No such file or directory: '../docutils/parsers/rst/include/nonexistant'.
+            IOError: [Errno 2] No such file or directory: '../docutils/parsers/rst/include/nonexistent'.
         <literal_block xml:space="preserve">
-            .. include:: <nonexistant>
+            .. include:: <nonexistent>
 """],
 ]
 
