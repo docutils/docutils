@@ -37,15 +37,14 @@ User Documentation
   page directive & role reference)
 
 Users who have questions or need assistance with Docutils or
-reStructuredText should `post a message`__ to the `Docutils-Users
-mailing list`__.
+reStructuredText should post a message to the Docutils-users_ mailing
+list.
 
 __ docs/user/rst/quickstart.html
 __ docs/user/rst/quickstart.txt
 __ docs/user/rst/quickref.html
 __ docs/user/rst/cheatsheet.txt
-__ mailto:docutils-users@lists.sourceforge.net
-__ http://lists.sourceforge.net/lists/listinfo/docutils-users
+.. _Docutils-users: docs/user/mailing-lists.html#docutils-users
 
 
 Reference Documentation
