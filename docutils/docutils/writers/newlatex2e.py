@@ -605,12 +605,35 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
     def node_name(self, node):
         return node.__class__.__name__.replace('_', '')
 
+    # Attribute propagation order.
+    attribute_order = ['align', 'classes', 'ids']
+
+    def attribute_cmp(self, a1, a2):
+        """
+        Compare attribute names `a1` and `a2`.  Used in
+        propagate_attributes to determine propagation order.
+
+        See built-in function `cmp` for return value.
+        """
+        if a1 in self.attribute_order and a2 in self.attribute_order:
+            return cmp(self.attribute_order.index(a1),
+                       self.attribute_order.index(a2))
+        if (a1 in self.attribute_order) != (a2 in self.attribute_order):
+            # Attributes not in self.attribute_order come last.
+            return a1 in self.attribute_order and -1 or 1
+        else:
+            return cmp(a1, a2)
+
     def propagate_attributes(self, node):
         # Propagate attributes using \Dattr macros.
         node_name = self.node_name(node)
         attlist = []
         if isinstance(node, nodes.Element):
             attlist = node.attlist()
+        attlist.sort(lambda pair1, pair2: self.attribute_cmp(pair1[0],
+                                                             pair2[0]))
+        # `numatts` may be greater than len(attlist) due to list
+        # attributes.
         numatts = 0
         pass_contents = self.pass_contents(node)
         for key, value in attlist:
@@ -742,7 +765,6 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
                  isinstance(node, nodes.topic) or
                  #isinstance(node, nodes.rubric) or
                  isinstance(node, nodes.transition) or
-                 isinstance(node, nodes.caption) or
                  isinstance(node, nodes.legend)) and
                 not (self.is_invisible(node) or
                      isinstance(node.parent, nodes.TextElement)))
