@@ -27,11 +27,11 @@ Usage
 
 See the docutils user documentation section:
 
-   http://docutils.sourceforge.net/#user-documentation
+   http://docutils.sourceforge.net/docs/index.html#user
 
 I recommend starting with the ReST "primer":
 
-   http://docutils.sourceforge.net/docs/rst/quickstart.html
+   http://docutils.sourceforge.net/docs/user/rst/quickstart.html
 
 
 Footnotes
@@ -39,7 +39,10 @@ Footnotes
 
 This product was written by Richard Jones, rjones@ekit-inc.com.
 
-Please direct questions about ReStructureText to the docutils mailing lists.
+Please direct questions about ReStructureText to the `Docutils mailing
+lists`_.
+
+.. _Docutils mailing lists:
+   http://docutils.sourceforge.net/docs/user/mailing-lists.html
 
 This package is placed in the Public Domain.
-
