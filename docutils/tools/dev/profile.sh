@@ -1,5 +1,11 @@
 #!/usr/bin/python -i
 
+# Author: Felix Wiemann
+# Contact: Felix_Wiemann@ososo.de
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This script has been placed in the public domain.
+
 import os.path
 import docutils.core
 import hotshot.stats

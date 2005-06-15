@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Author: Felix Wiemann
+# Contact: Felix_Wiemann@ososo.de
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This script has been placed in the public domain.
+
 set -e
 proj="${PWD##*/}"
 if test "$proj" == test; then
