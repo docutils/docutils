@@ -65,8 +65,11 @@ Other Sandbox Projects
 
 Anyone is welcome to contribute to any of these projects.  Interested
 developers are welcome to take on any projects which appear to be
-dormant.  Please direct any email to
-docutils-develop@lists.sourceforge.net.
+dormant.  Please direct any email to the Docutils-develop_ mailing
+list.
+
+.. _Docutils-develop:
+   http://docutils.sf.net/docs/user/mailing-lists.html#docutils-develop
 
 * ZReST_, by Richard Jones, is a "ReStructuredText Document for Zope"
   application that is complete and ready to install.
