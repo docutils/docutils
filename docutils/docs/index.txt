@@ -71,6 +71,8 @@ top level of the Docutils project directory.
 .. _THANKS.txt: ../THANKS.html
 
 
+.. _user:
+
 ``user/``: Introductory & Tutorial Material for End-Users
 =========================================================
 
@@ -92,6 +94,8 @@ Docutils-general:
   demonstration of most reStructuredText features; you can also have a
   look at the `text source <user/rst/demo.txt>`__)
 
+
+.. _ref:
 
 ``ref/``: Reference Material for All Groups
 ===========================================
@@ -128,6 +132,8 @@ Prehistoric:
   <http://docutils.sourceforge.net/mirror/setext.html>`__
 
 
+.. _peps:
+
 ``peps/``: Python Enhancement Proposals
 =======================================
 
@@ -156,6 +162,8 @@ __ http://www.python.org/peps/pep-0287.html
 .. _master repository: http://www.python.org/peps/
 
 
+.. _api:
+
 ``api/``: API Reference Material for Client-Developers
 ======================================================
 
@@ -167,6 +175,8 @@ __ http://www.python.org/peps/pep-0287.html
 `PEP 258`_ is an overview of the architecture of Docutils.
 
 
+.. _howto:
+
 ``howto/``: Instructions for Developers
 =======================================
 
@@ -175,6 +185,8 @@ __ http://www.python.org/peps/pep-0287.html
 * `Creating reStructuredText Interpreted Text Roles
   <howto/rst-roles.html>`__
 
+
+.. _dev:
 
 ``dev/``: Development Notes and Plans for Core-Developers
 =========================================================
