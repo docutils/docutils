@@ -2,6 +2,8 @@
  Docutils_ Links
 =================
 
+:Author: Felix Wiemann
+:Contact: Felix.Wiemann@ososo.de
 :Revision: $Revision$
 :Date: $Date$
 :Copyright: This document has been placed in the public domain.
@@ -11,8 +13,76 @@
 The most current version of this document can always be found at
 http://docutils.sourceforge.net/docs/user/links.html.
 
-* rest2web__ is a tool for creating web sites with reStructuredText.
 
-  __ http://article.gmane.org/gmane.text.docutils.user/2006
+Related Projects
+================
 
-* to be continued...
+These are projects users of Docutils and reStructuredText may find
+useful.  Many of them projects are hosted in the `Docutils Sandbox`_.
+All projects are usable by end users in some way, however do not
+expect all of them to run out of the box.
+
+* rest2web_, by Michael Foord, is a tool for creating web sites with
+  reStructuredText.
+
+* ZReST_, by Richard Jones, is a "ReStructuredText Document for Zope"
+  application that is complete and ready to install.
+
+* PySource_, by Tony Ibbs, is an experimental Python source Reader.
+  In some form, it will soon become part of core Docutils.  There is
+  some related code in David Goodger's sandbox (pysource_reader_) and
+  a `Python Source Reader`_ document.
+
+  .. Is this usable for end users?  Maybe move to a "Developers"
+     section?
+
+* The Docutils interface to PythonPoint_, also by Richard Jones,
+  produces PDF presentations using ReportLabs.
+
+* Engelbert Gruber has begun a `ManPage Writer`_.
+
+* Sidnei da Silva has taken over `ReportLabs/PDF Writer`_ components.
+
+  .. Can anyone confirm that this works and maybe provide installation
+     instructions?  (Emailed Sidnei about that.)
+
+* Oliver Rutherfurd has begun a `DocBook Writer`_ component and
+  `HT2HTML integration`_ component.
+
+* Gunnar Schwant's DocFactory_ is a wxPython GUI application for
+  Docutils.
+
+* Aahz has begun an `OpenOffice.org Writer`_.
+
+  .. Can anyone confirm that this works and maybe provide installation
+     instructions?  (Emailed Aahz about that.)
+
+* For Wikis, please see the `FAQ entry about Wikis`_.
+
+* Bill Bumgarner has written a `simple HTML writer`_ that doesn't rely
+  on CSS (stylesheets).
+
+* Beni Cherniavsky has written a generic `preprocessing module`_ for
+  roles and/or directives and built preprocessors for TeX math for
+  both LaTeX and HTML output on top of it.
+
+* Beni Cherniavsky maintains a Makefile_ for driving Docutils, hoping
+  to handle everything one might do with docutils.
+
+.. _rest2web: http://www.voidspace.org.uk/python/rest2web/
+.. _Docutils Sandbox: http://docutils.sf.net/sandbox/README.html
+.. _ZReST: http://docutils.sf.net/sandbox/richard/ZReST/
+.. _PySource: http://docutils.sf.net/sandbox/tibs/pysource/
+.. _pysource_reader: http://docutils.sf.net/sandbox/davidg/pysource_reader/
+.. _Python Source Reader: http://docutils.sf.net/docs/dev/pysource.html
+.. _PythonPoint: http://docutils.sf.net/sandbox/richard/pythonpoint/
+.. _Manpage Writer: http://docutils.sf.net/sandbox/grubert/man/
+.. _ReportLabs/PDF Writer: http://docutils.sf.net/sandbox/dreamcatcher/rlpdf/
+.. _DocBook Writer: http://docutils.sf.net/sandbox/oliverr/docbook/
+.. _HT2HTML integration: http://docutils.sf.net/sandbox/oliverr/ht/
+.. _DocFactory: http://docutils.sf.net/sandbox/gschwant/docfactory/doc/
+.. _OpenOffice.org Writer: http://docutils.sf.net/sandbox/aahz/OO/
+.. _FAQ entry about Wikis: http://docutils.sf.net/FAQ.html#are-there-any-wikis-that-use-restructuredtext-syntax
+.. _simple HTML writer: http://docutils.sf.net/sandbox/bbum/DocArticle/
+.. _preprocessing module: http://docutils.sf.net/sandbox/cben/rolehack/
+.. _Makefile: http://docutils.sf.net/sandbox/cben/make/
