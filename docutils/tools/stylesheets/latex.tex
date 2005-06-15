@@ -17,6 +17,14 @@
 }
 
 
+\providecommand{\DSsymbols}{%
+  % The Euro symbol in Computer Modern looks, um, funny.  Let's get a
+  % proper Euro symbol.
+  \usepackage{eurosym}%
+  \renewcommand{\texteuro}{\euro}%
+}
+
+
 % Taken from
 % <http://groups.google.de/groups?selm=1i0n5tgtplti420e1omp4pctlv19jpuhbb%404ax.com>
 % and modified.  Used with permission.
@@ -897,15 +905,14 @@
   % class=border (see \DNimageCborder).
   \sbox{\Dalignedimagebox}{#2}%
   \settowidth{\Dalignedimagewidth}{\usebox{\Dalignedimagebox}}%
-  % Now we do something *really* ugly.
   \parpic[#1]{%
     \begin{minipage}[b]{\Dalignedimagewidth}%
-    % Compensate for previously added space, but not entirely.
-    \vspace*{2.0pt}%
-    \vspace*{\Dfloatimagetopmargin}%
-    \usebox{\Dalignedimagebox}%
-    \vspace*{1.5pt}%
-    \vspace*{\Dfloatimagebottommargin}%
+      % Compensate for previously added space, but not entirely.
+      \vspace*{2.0pt}%
+      \vspace*{\Dfloatimagetopmargin}%
+      \usebox{\Dalignedimagebox}%
+      \vspace*{1.5pt}%
+      \vspace*{\Dfloatimagebottommargin}%
     \end{minipage}%
   }%
   \renewcommand{\Dinsidehalign}{false}%
@@ -926,9 +933,9 @@
       \Dhalign{r}{#5}%
     }{%
       \ifthenelse{\equal{#3}{center}}{%
-        % Text floating around centered figures is brain damage.
-        % Thus we use a center environment.  Note that no extra space
-        % is added by the writer, so the space added by the center
+        % Text floating around centered figures is a bad idea.  Thus
+        % we use a center environment.  Note that no extra space is
+        % added by the writer, so the space added by the center
         % environment is fine.
         \begin{center}#5\end{center}%
       }{%
@@ -959,12 +966,10 @@
   % 1. Image width.
   % 2. Image path.
   % Need to make bottom-alignment dependent on align attribute (add
-  % functional test first).
-  \begin{minipage}[b]{#1}%
-    \includegraphics[width=\linewidth,height=\textheight,keepaspectratio]{#2}%
-    \ifthenelse{\equal{\Dinsidehalign}{true}}{%
-    }{}%
-  \end{minipage}%
+  % functional test first).  Need to observe height attribute.
+  %\begin{minipage}[b]{#1}%
+    \includegraphics[width=#1,height=\textheight,keepaspectratio]{#2}%
+  %\end{minipage}%
 }  
 \providecommand{\Dcurrentimagemaxwidth}{}
 \providecommand{\Dsimpleimage}[1]{%
@@ -992,6 +997,19 @@
   \Dwidthimage{#1\Dlinewidthpercent}{#2}%
 }
 
+% Figures.
+\providecommand{\DNfigureAalign}[5]{%
+  % Hack to make it work Right Now.
+  %\def\DcurrentNimageAwidth{\DcurrentNfigureAwidth}%
+  %
+    %\def\DcurrentNimageAwidth{\linewidth}%
+    \DNimageAalign{#1}{#2}{#3}{#4}{%
+      \begin{minipage}[b]{0.4\linewidth}#5\end{minipage}}%
+    %\let\DcurrentNimageAwidth=\relax%
+  %
+  %\let\DcurrentNimageAwidth=\relax%
+}
+\providecommand{\DNcaption}[1]{\par\noindent{\slshape#1}}
 
 \providecommand{\DCborder}[1]{\fbox{#1}}
 % No padding between image and border.
@@ -1048,6 +1066,9 @@
   \addtocounter{Dtoclevel}{-1}%
 }
 
+
+
+
 %\usepackage{fixmath}
 %\usepackage{amsmath}
 
@@ -1059,6 +1080,7 @@
 \DSauxiliaryspace
 \DSparagraphs
 \DSlinks
+\DSsymbols
 \DSlate
 
 \makeatother
