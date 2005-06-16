@@ -386,7 +386,7 @@ class RSTState(StateWS):
         Return a list (paragraph & messages) & a boolean: literal_block next?
         """
         data = '\n'.join(lines).rstrip()
-        if data[-2:] == '::':
+        if re.search(r'(?<!\\)(\\\\)*::$', data):
             if len(data) == 2:
                 return [], 1
             elif data[-3] in ' \n':
