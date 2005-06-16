@@ -485,6 +485,30 @@ A left-aligned figure:
 
 This paragraph might flow around the figure...
 
+Now widths:
+
+An image 2 em wide:
+
+.. image:: ../../../docs/user/rst/images/biohazard.png
+   :width: 2 em
+
+An image 2 em wide and 30 pixel high:
+
+.. image:: ../../../docs/user/rst/images/biohazard.png
+   :width: 2em
+   :height: 30 px
+
+An image occupying 70% of the line width:
+
+.. image:: ../../../docs/user/rst/images/biohazard.png
+   :width: 70%
+
+An image 3 cm high:
+
+.. image:: ../../../docs/user/rst/images/biohazard.png
+   :height: 3 cm
+
+
 Admonitions
 ```````````
 

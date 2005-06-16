@@ -36,9 +36,17 @@ Changes Since 0.3.9
   - Added the "default-role" and "title" directives.
   - Added standard data file syntax to the "include" directive.
 
+* docutils/parsers/rst/directives/images.py:
+
+  - Added support for image width and height units.
+
 * docutils/parsers/rst/include/: Directory added to project; contains
   standard data files for the "include" directive.  Initial contents:
   character entity substitution definition sets.
+
+* docutils/writers/html4css1.py:
+
+  - Added support for image width and height units.
 
 * docs/user/links.txt: Added to project; link list.
 

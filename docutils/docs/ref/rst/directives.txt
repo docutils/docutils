@@ -202,10 +202,18 @@ The following options are recognized:
     specified, they are combined.  For example, a height of 200 and a
     scale of 50 is equivalent to a height of 100 with no scale.
 
+    It is also possible to specify a `length value`_.
+
 ``width`` : integer
     The width of the image in pixels, used to reserve space or scale
     the image horizontally.  As with "height" above, when the "scale"
     option is also specified, they are combined.
+
+    It is also possible to specify a length_ or `percentage value`_.
+
+    .. _length:
+    .. _length value: restructuredtext.html#length-units
+    .. _percentage value: restructuredtext.html#percentage-units
 
 ``scale`` : integer
     The uniform scaling factor of the image, a percentage (but no "%"

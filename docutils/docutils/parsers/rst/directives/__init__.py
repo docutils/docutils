@@ -286,6 +286,32 @@ def nonnegative_int(argument):
         raise ValueError('negative value; must be positive or zero')
     return value
 
+length_units = ['em', 'ex', 'px', 'in', 'cm', 'mm', 'pt', 'pc']
+
+def get_measure(argument, units):
+    """
+    Check for a positive argument of one of the units and return a
+    normalized string of the form "<value><unit>" (without space in
+    between).
+    
+    To be called from directive option conversion functions.
+    """
+    match = re.match(r'^([0-9.]+) *(%s)$' % '|'.join(units), argument)
+    try:
+        assert match is not None
+        float(match.group(1))
+    except (AssertionError, ValueError):
+        raise ValueError(
+            'not a positive measure of one of the following units:\n%s'
+            % ' '.join(['"%s"' % i for i in units]))
+    return match.group(1) + match.group(2)
+
+def length_or_unitless(argument):
+    return get_measure(argument, length_units + [''])
+
+def length_or_percentage_or_unitless(argument):
+    return get_measure(argument, length_units + ['%', ''])
+
 def class_option(argument):
     """
     Convert the argument into a list of ID-compatible strings and return it.

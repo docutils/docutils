@@ -98,6 +98,42 @@ totest['images'] = [
 """],
 ["""\
 .. image:: picture.png
+   :width: 200px
+   :height: 100 em
+""",
+"""\
+<document source="test data">
+    <image height="100em" uri="picture.png" width="200px">
+"""],
+["""\
+.. image:: picture.png
+   :width: 50%
+   :height: 10mm
+""",
+"""\
+<document source="test data">
+    <image height="10mm" uri="picture.png" width="50%">
+"""],
+["""\
+.. image:: picture.png
+   :width: 50%
+   :height: 40%
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Error in "image" directive:
+            invalid option value: (option: "height"; value: \'40%\')
+            not a positive measure of one of the following units:
+            "em" "ex" "px" "in" "cm" "mm" "pt" "pc" "".
+        <literal_block xml:space="preserve">
+            .. image:: picture.png
+               :width: 50%
+               :height: 40%
+"""],
+["""\
+.. image:: picture.png
    :height: 100
    :width: 200
    :scale: 50
