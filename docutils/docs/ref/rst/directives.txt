@@ -209,7 +209,8 @@ The following options are recognized:
     the image horizontally.  As with "height" above, when the "scale"
     option is also specified, they are combined.
 
-    It is also possible to specify a length_ or `percentage value`_.
+    It is also possible to specify a length_ or `percentage value`_
+    (which is relative to the current line width).
 
     .. _length:
     .. _length value: restructuredtext.html#length-units
