@@ -397,7 +397,12 @@ This is useful for filling list item paragraphs."
 		     (current-column)))
 
 	;; ending column
-	(endcol (- (line-end-position) (line-beginning-position)))
+	(endcol (- (save-excursion
+		     (end-of-line)
+		     (current-column))
+                   (save-excursion
+		     (back-to-indentation)
+                     (current-column))))
 	)
 
     ;; if there is no current style found...
