@@ -12,7 +12,8 @@
 # <http://www.w3.org/2003/entities/xml/unicode.xml>.
 
 from xml.dom import minidom
-import sys, re, textwrap
+import sys
+import pprint
 
 def w(s):
     if isinstance(s, unicode):
@@ -44,28 +45,6 @@ class Visitor:
                 else:
                     text_map[unichr(int(code))] = '{%s}' % latex_code
 
-    def visit__comment(self, node):
-        if node.nodeValue.find('icense') != -1:
-            print '# Revision: $%s$' % 'Revision'
-            print '# Date: $%s$' % 'Date'
-            print '#'
-            print '# This is a mapping of Unicode characters to LaTeX'
-            print '# equivalents.  The information has been extracted from'
-            print '# <http://www.w3.org/2003/entities/xml/unicode.xml>.'
-            print '# The extraction has been done by the "create_unimap.py"'
-            print '# script written by Felix Wiemann.'
-            print '#'
-            print '# This file may be used and distributed under the terms'
-            print '# set forth in the original copyright notice of'
-            print '# unicode.xml.'
-            print '#'
-            print '# Original copyright notice of unicode.xml follows:'
-            print '#'
-            print '#'
-            for line in node.nodeValue.strip().splitlines():
-                print '# ' + line
-            print
-
 def call_visitor(node, visitor=Visitor()):
     if isinstance(node, minidom.Text):
         name = 'Text'
@@ -85,4 +64,17 @@ unicode_map = math_map
 unicode_map.update(text_map)
 # Now unicode_map contains the text entries plus dollar-enclosed math
 # entries for those chars for which no text entry exists.
-print 'unicode_map = %r' % unicode_map
+
+print '# Author: Felix Wiemann'
+print '# Contact: Felix_Wiemann@ososo.de'
+print '# Revision: $%s$' % 'Revision'
+print '# Date: $%s$' % 'Date'
+print '# Copyright: This file has been placed in the public domain.'
+print '#'
+print '# This is a mapping of Unicode characters to LaTeX'
+print '# equivalents.  The information has been extracted from'
+print '# <http://www.w3.org/2003/entities/xml/unicode.xml>.'
+print '# The extraction has been done by the "create_unimap.py"'
+print '# script written by Felix Wiemann.'
+print
+print 'unicode_map = %s' % pprint.pformat(unicode_map, indent=0)
