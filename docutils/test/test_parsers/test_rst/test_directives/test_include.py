@@ -11,6 +11,7 @@ Tests for misc.py "include" directive.
 """
 
 import os.path
+import re
 import sys
 from __init__ import DocutilsTestSupport
 
@@ -18,6 +19,9 @@ from __init__ import DocutilsTestSupport
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
     s.generateTests(totest)
+    s.addTestCase(
+        SpecialIncludeTestCase, 'test_parser',
+        SpecialIncludeTestCase.input, SpecialIncludeTestCase.expected_regex)
     return s
 
 mydir = 'test_parsers/test_rst/test_directives/'
@@ -373,23 +377,39 @@ Standard include data file:
     <substitution_definition names="b.gammad">
         \\u03dd
 """],
-["""\
+]
+
+
+class SpecialIncludeTestCase(DocutilsTestSupport.ParserTestCase):
+    
+    def test_parser(self):
+        if self.run_in_debugger:
+            pdb.set_trace()
+        document = DocutilsTestSupport.utils.new_document(
+            'test data', self.settings)
+        # Remove any additions made by "role" directives:
+        DocutilsTestSupport.roles._roles = {}
+        self.parser.parse(self.input, document)
+        output = document.pformat()
+        self.assert_(re.match(self.expected_regex, output), "Real output:\n" +
+                     output + "\nExpected output:\n" + self.expected_regex)
+
+    input = """\
 Nonexistent standard include data file:
 
 .. include:: <nonexistent>
-""",
-"""\
-<document source="test data">
+"""
+    expected_regex = \
+r"""^<document source="test data">
     <paragraph>
         Nonexistent standard include data file:
     <system_message level="4" line="3" source="test data" type="SEVERE">
         <paragraph>
             Problems with "include" directive path:
-            IOError: [Errno 2] No such file or directory: '../docutils/parsers/rst/include/nonexistent'.
+            IOError: \[Errno 2\] No such file or directory: .*\.
         <literal_block xml:space="preserve">
-            .. include:: <nonexistent>
-"""],
-]
+            \.\. include:: <nonexistent>
+$"""
 
 
 # Skip tests whose output contains "UnicodeDecodeError" if we are not
