@@ -890,6 +890,16 @@ class HTMLTranslator(nodes.NodeVisitor):
             if atts.has_key('height'):
                 atts['height'] = int(round(node['height']
                                            * (float(node['scale']) / 100)))
+        style = []
+        for att_name in 'width', 'height':
+            if atts.has_key(att_name):
+                if re.match(r'^[0-9.]+$', atts[att_name]):
+                    # Interpret unitless values as pixels.
+                    atts[att_name] += 'px'
+                style.append('%s: %s;' % (att_name, atts[att_name]))
+                del atts[att_name]
+        if style:
+            atts['style'] = ' '.join(style)
         atts['alt'] = node.get('alt', atts['src'])
         if node.has_key('align'):
             atts['align'] = self.attval(node['align'])

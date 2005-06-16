@@ -76,8 +76,8 @@ def image(name, arguments, options, content, lineno,
 
 image.arguments = (1, 0, 1)
 image.options = {'alt': directives.unchanged,
-                 'height': directives.nonnegative_int,
-                 'width': directives.nonnegative_int,
+                 'height': directives.length_or_unitless,
+                 'width': directives.length_or_percentage_or_unitless,
                  'scale': directives.nonnegative_int,
                  'align': align,
                  'target': directives.unchanged_required,

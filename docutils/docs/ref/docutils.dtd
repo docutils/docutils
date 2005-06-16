@@ -39,6 +39,9 @@ by wrapper DTDs.
 <!-- Emphasize that the attribute value must be a number. -->
 <!ENTITY % number  "NMTOKEN">
 
+<!-- A number which may be immediately followed by a unit. -->
+<!ENTITY % measure "NMTOKEN">
+
 <!ENTITY % additional.basic.atts "">
 <!--
 Attributes shared by all elements in this DTD:
@@ -481,8 +484,8 @@ or " ") or the text between option arguments (typically either "," or
     %align-hv.att;
     uri       CDATA     #REQUIRED
     alt       CDATA     #IMPLIED
-    height    %number;  #IMPLIED
-    width     %number;  #IMPLIED
+    height    %measure; #IMPLIED
+    width     %measure; #IMPLIED
     scale     %number;  #IMPLIED>
 
 <!ELEMENT caption %text.model;>

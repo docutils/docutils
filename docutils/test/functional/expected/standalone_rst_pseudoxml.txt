@@ -1191,6 +1191,20 @@
                             The legend may consist of several paragraphs.
                 <paragraph>
                     This paragraph might flow around the figure...
+                <paragraph>
+                    Now widths:
+                <paragraph>
+                    An image 2 em wide:
+                <image uri="../../../docs/user/rst/images/biohazard.png" width="2em">
+                <paragraph>
+                    An image 2 em wide and 30 pixel high:
+                <image height="30px" uri="../../../docs/user/rst/images/biohazard.png" width="2em">
+                <paragraph>
+                    An image occupying 70% of the line width:
+                <image uri="../../../docs/user/rst/images/biohazard.png" width="70%">
+                <paragraph>
+                    An image 3 cm high:
+                <image height="3cm" uri="../../../docs/user/rst/images/biohazard.png">
             <section ids="admonitions" names="admonitions">
                 <title auto="1" refid="id64">
                     <generated classes="sectnum">
