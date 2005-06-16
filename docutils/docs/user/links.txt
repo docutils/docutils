@@ -41,11 +41,6 @@ expect all of them to run out of the box.
 
 * Engelbert Gruber has begun a `ManPage Writer`_.
 
-* Sidnei da Silva has taken over `ReportLabs/PDF Writer`_ components.
-
-  .. Can anyone confirm that this works and maybe provide installation
-     instructions?  (Emailed Sidnei about that.)
-
 * Oliver Rutherfurd has begun a `DocBook Writer`_ component and
   `HT2HTML integration`_ component.
 
