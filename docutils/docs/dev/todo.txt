@@ -949,7 +949,7 @@ __ rst/alternatives.html#or-not-to-do
   commonly used for line endings.
 
 * Allow a "::"-only paragraph (first line, actually) to introduce a
-  literal block without a blank line?  (Idea from Paul Moore.) ::
+  _`literal block without a blank line`?  (Idea from Paul Moore.) ::
 
       ::
           This is a literal block
@@ -958,24 +958,15 @@ __ rst/alternatives.html#or-not-to-do
   which contains just a ``::`` and the literal text unambiguous?
   There's one problem with this concession.  What if one wants a
   definition list item which defines the term "::"?  We'd have to
-  escape it.  Currenty, ``\::`` doesn't work (although it should;
-  **bug**), and ``:\:`` is misinterpreted as a field name (name ``\``;
-  also a **bug**).  Assuming these bugs are squashed, I suppose it's a
-  useful special case.  It would only be reasonable to apply it to
-  "::"-only paragraphs though.  I think the blank line is visually
+  escape it.  Currenty, ``:\:`` is misinterpreted as a field name
+  (name ``\``; **bug**).  Assuming this bug is squashed, I suppose
+  it's a useful special case.  It would only be reasonable to apply it
+  to "::"-only paragraphs though.  I think the blank line is visually
   necessary if there's text before the "::"::
 
       The text in this paragraph needs separation
       from the literal block following::
           This doesn't look right.
-
-  Another idea.  Would it be worthwhile to allow literal blocks to
-  begin without a newline after the "::"?  Example::
-
-      ::  while True:
-              print 'hello world'
-
-  Perhaps.  Perhaps not.
 
 * Add new syntax for _`nested inline markup`?  Or extend the parser to
   parse nested inline markup somehow?  See the `collected notes
