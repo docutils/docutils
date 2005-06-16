@@ -125,6 +125,46 @@ no blank line
     <paragraph>
         no blank line
 """],
+[r"""
+A paragraph\\::
+
+    A literal block.
+
+A paragraph\::
+
+    Not a literal block.
+""",
+r"""<document source="test data">
+    <paragraph>
+        A paragraph\:
+    <literal_block xml:space="preserve">
+        A literal block.
+    <paragraph>
+        A paragraph::
+    <block_quote>
+        <paragraph>
+            Not a literal block.
+"""],
+[r"""
+\\::
+
+    A literal block.
+
+\::
+
+    Not a literal block.
+""",
+r"""<document source="test data">
+    <paragraph>
+        \:
+    <literal_block xml:space="preserve">
+        A literal block.
+    <paragraph>
+        ::
+    <block_quote>
+        <paragraph>
+            Not a literal block.
+"""],
 ["""\
 A paragraph: ::
 
