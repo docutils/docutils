@@ -1,6 +1,7 @@
 =========================================
  reStructuredText Interpreted Text Roles
 =========================================
+
 :Author: David Goodger
 :Contact: goodger@users.sourceforge.net
 :Revision: $Revision$
@@ -20,7 +21,8 @@ with colons.  For example::
 
 A default role may be defined by applications of reStructuredText; it
 is used if no explicit ``:role:`` prefix or suffix is given.  The
-"default default role" is `:title-reference:`_.
+"default default role" is `:title-reference:`_.  It can be changed
+using the default-role_ directive.
 
 See the `Interpreted Text`_ section in the `reStructuredText Markup
 Specification`_ for syntax details.  For details on the hierarchy of
@@ -30,6 +32,7 @@ implementation details, see `Creating reStructuredText Interpreted
 Text Roles`_.
 
 .. _"role" directive: directives.html#role
+.. _default-role: directives.html#default-role
 .. _Interpreted Text: restructuredtext.html#interpreted-text
 .. _reStructuredText Markup Specification: restructuredtext.html
 .. _The Docutils Document Tree: ../doctree.html
