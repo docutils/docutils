@@ -11,17 +11,14 @@ Tests for misc.py "include" directive.
 """
 
 import os.path
-import re
 import sys
+from docutils.parsers.rst import states
 from __init__ import DocutilsTestSupport
 
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
     s.generateTests(totest)
-    s.addTestCase(
-        SpecialIncludeTestCase, 'test_parser',
-        SpecialIncludeTestCase.input, SpecialIncludeTestCase.expected_regex)
     return s
 
 mydir = 'test_parsers/test_rst/test_directives/'
@@ -36,8 +33,10 @@ include11 = os.path.join(mydir, 'include 11.txt')
 include11rel = DocutilsTestSupport.utils.relative_path(None, include11)
 utf_16_file = os.path.join(mydir, 'utf-16.csv')
 utf_16_file_rel = DocutilsTestSupport.utils.relative_path(None, utf_16_file)
+nonexistent = os.path.join(os.path.dirname(states.__file__),
+                           'include', 'nonexistent')
 nonexistent_rel = DocutilsTestSupport.utils.relative_path(
-    None, '../docutils/parsers/rst/include/nonexistent')
+    os.path.join(DocutilsTestSupport.testroot, 'dummy'), nonexistent)
 
 totest = {}
 
@@ -377,39 +376,23 @@ Standard include data file:
     <substitution_definition names="b.gammad">
         \\u03dd
 """],
-]
-
-
-class SpecialIncludeTestCase(DocutilsTestSupport.ParserTestCase):
-    
-    def test_parser(self):
-        if self.run_in_debugger:
-            pdb.set_trace()
-        document = DocutilsTestSupport.utils.new_document(
-            'test data', self.settings)
-        # Remove any additions made by "role" directives:
-        DocutilsTestSupport.roles._roles = {}
-        self.parser.parse(self.input, document)
-        output = document.pformat()
-        self.assert_(re.match(self.expected_regex, output), "Real output:\n" +
-                     output + "\nExpected output:\n" + self.expected_regex)
-
-    input = """\
+["""\
 Nonexistent standard include data file:
 
 .. include:: <nonexistent>
-"""
-    expected_regex = \
-r"""^<document source="test data">
+""",
+"""\
+<document source="test data">
     <paragraph>
         Nonexistent standard include data file:
     <system_message level="4" line="3" source="test data" type="SEVERE">
         <paragraph>
             Problems with "include" directive path:
-            IOError: \[Errno 2\] No such file or directory: .*\.
+            IOError: [Errno 2] No such file or directory: '%s'.
         <literal_block xml:space="preserve">
-            \.\. include:: <nonexistent>
-$"""
+            .. include:: <nonexistent>
+""" % nonexistent_rel],
+]
 
 
 # Skip tests whose output contains "UnicodeDecodeError" if we are not
