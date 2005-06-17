@@ -47,10 +47,7 @@ expect all of them to run out of the box.
 * Gunnar Schwant's DocFactory_ is a wxPython GUI application for
   Docutils.
 
-* Aahz has begun an `OpenOffice.org Writer`_.
-
-  .. Can anyone confirm that this works and maybe provide installation
-     instructions?  (Emailed Aahz about that.)
+* Patrick O'Brien has taken over the `OpenOffice.org Writer`_.
 
 * For Wikis, please see the `FAQ entry about Wikis`_.
 
@@ -76,7 +73,7 @@ expect all of them to run out of the box.
 .. _DocBook Writer: http://docutils.sf.net/sandbox/oliverr/docbook/
 .. _HT2HTML integration: http://docutils.sf.net/sandbox/oliverr/ht/
 .. _DocFactory: http://docutils.sf.net/sandbox/gschwant/docfactory/doc/
-.. _OpenOffice.org Writer: http://docutils.sf.net/sandbox/aahz/OO/
+.. _OpenOffice.org Writer: http://docutils.sf.net/sandbox/pobrien/OpenOffice/
 .. _FAQ entry about Wikis: http://docutils.sf.net/FAQ.html#are-there-any-wikis-that-use-restructuredtext-syntax
 .. _simple HTML writer: http://docutils.sf.net/sandbox/bbum/DocArticle/
 .. _preprocessing module: http://docutils.sf.net/sandbox/cben/rolehack/
