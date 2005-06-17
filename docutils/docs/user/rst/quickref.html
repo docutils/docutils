@@ -123,14 +123,14 @@
       <td nowrap><samp>reference_</samp>
       <td><a href="#hyperlink-targets">reference</a>
       <td>A simple, one-word hyperlink reference.  See <a
-      href="#hyperlinks" >Hyperlinks</a>.
+      href="#hyperlink-targets">Hyperlink Targets</a>.
 
     <tr valign="top">
       <td nowrap><samp>`phrase reference`_</samp>
       <td><a href="#hyperlink-targets">phrase reference</a>
       <td>A hyperlink reference with spaces or punctuation needs to be
       quoted with backquotes.  See <a
-      href="#hyperlink-targets">Hyperlinks</a>.
+      href="#hyperlink-targets">Hyperlink Targets</a>.
 
     <tr valign="top">
       <td nowrap><samp>anonymous__</samp>
@@ -138,13 +138,13 @@
       <td>With two underscores instead of one, both simple and phrase
       references may be anonymous (the reference text is not repeated
       at the target).  See <a
-      href="#hyperlink-targets">Hyperlinks</a>.
+      href="#hyperlink-targets">Hyperlink Targets</a>.
 
     <tr valign="top">
       <td nowrap><samp>_`inline internal target`</samp>
       <td><a name="inline-internal-target">inline internal target</a>
       <td>A crossreference target within text.
-      See <a href="#hyperlink-targets">Hyperlinks</a>.
+      See <a href="#hyperlink-targets">Hyperlink Targets</a>.
 
     <tr valign="top">
       <td nowrap><samp>|substitution reference|</samp>
@@ -1063,7 +1063,7 @@ A&nbsp;transition&nbsp;marker&nbsp;is&nbsp;a&nbsp;horizontal&nbsp;line
       <tbody>
 
     <tr valign="top">
-      <td>
+      <td rowspan="2">
         <samp>External&nbsp;hyperlinks,&nbsp;like&nbsp;Python_.</samp>
 
         <p><samp>..&nbsp;_Python:&nbsp;http://www.python.org/</samp>
@@ -1072,6 +1072,10 @@ A&nbsp;transition&nbsp;marker&nbsp;is&nbsp;a&nbsp;horizontal&nbsp;line
           <tr bgcolor="#99CCFF"><td><em>Fold-in form</em>
           <tr><td>Indirect hyperlinks, like
           <a href="http://www.python.org">Python</a>.
+        </table>
+    <tr valign="top">
+      <td>
+        <table width="100%">
           <tr bgcolor="#99CCFF"><td><em>Call-out form</em>
           <tr><td>External hyperlinks, like
           <a href="#labPython"><i>Python</i></a>.
@@ -1102,7 +1106,7 @@ A&nbsp;transition&nbsp;marker&nbsp;is&nbsp;a&nbsp;horizontal&nbsp;line
       <tbody>
 
     <tr valign="top">
-      <td><samp>Internal&nbsp;crossreferences,&nbsp;like&nbsp;example_.</samp>
+      <td rowspan="2"><samp>Internal&nbsp;crossreferences,&nbsp;like&nbsp;example_.</samp>
 
         <p><samp>..&nbsp;_example:</samp>
 
@@ -1117,6 +1121,10 @@ A&nbsp;transition&nbsp;marker&nbsp;is&nbsp;a&nbsp;horizontal&nbsp;line
           <tr><td>Internal crossreferences, like <a href="#example-foldin">example</a>
           <p><a name="example-foldin">This</a> is an example
             crossreference target.
+        </table>
+    <tr valign="top">
+      <td>
+        <table width="100%">
           <tr><td bgcolor="#99CCFF"><em>Call-out form</em>
           <tr><td>Internal crossreferences, like <a href="#example-callout">example</a>
 
