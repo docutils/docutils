@@ -202,15 +202,17 @@ The following options are recognized:
     specified, they are combined.  For example, a height of 200 and a
     scale of 50 is equivalent to a height of 100 with no scale.
 
-    It is also possible to specify a `length value`_.
+    New in Docutils 3.4.10: It is also possible to specify a `length
+    value`_.
 
 ``width`` : integer
     The width of the image in pixels, used to reserve space or scale
     the image horizontally.  As with "height" above, when the "scale"
     option is also specified, they are combined.
 
-    It is also possible to specify a length_ or `percentage value`_
-    (which is relative to the current line width).
+    New in Docutils 3.4.10: It is also possible to specify a length_
+    or `percentage value`_ (which is relative to the current line
+    width).
 
     .. _length:
     .. _length value: restructuredtext.html#length-units
