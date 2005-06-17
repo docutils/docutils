@@ -1070,8 +1070,8 @@ A&nbsp;transition&nbsp;marker&nbsp;is&nbsp;a&nbsp;horizontal&nbsp;line
       <td>
         <table width="100%">
           <tr bgcolor="#99CCFF"><td><em>Fold-in form</em>
-          <tr><td>Indirect hyperlinks, like
-          <a href="http://www.python.org">Python</a>.
+          <tr><td>External hyperlinks, like
+          <a href="http://www.python.org/">Python</a>.
         </table>
     <tr valign="top">
       <td>
@@ -1093,6 +1093,28 @@ A&nbsp;transition&nbsp;marker&nbsp;is&nbsp;a&nbsp;horizontal&nbsp;line
       ingredients into a cake), and "<em>call-out</em>" is more suitable for
       printed documents, where the link needs to be presented explicitly, for
       example as a footnote.
+
+    <p>reStructuredText also provides for <b>embedded URIs</b> (<a
+      href="../../ref/rst/restructuredtext.html#embedded-uris">details</a>),
+      a convenience at the expense of readability.  A hyperlink
+      reference may directly embed a target URI inline, within angle
+      brackets.  The following is exactly equivalent to the example above:
+
+    <p><table border="1" width="100%" bgcolor="#ffffcc" cellpadding="3">
+      <thead>
+    <tr align="left" bgcolor="#99CCFF">
+      <th width="50%">Plain text
+      <th width="50%">Typical result
+      </thead>
+      <tbody>
+
+    <tr valign="top">
+      <td rowspan="2">
+        <samp>External&nbsp;hyperlinks,&nbsp;like&nbsp;`Python
+<br>&lt;http://www.python.org/&gt;`_.</samp>
+      <td>External hyperlinks, like
+          <a href="http://www.python.org/">Python</a>.
+    </table>
 
     <h4><a href="#contents" name="internal-hyperlink-targets" class="backref"
         >Internal Hyperlink Targets</a></h4>
