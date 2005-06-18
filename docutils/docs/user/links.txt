@@ -18,9 +18,13 @@ Related Projects
 ================
 
 These are projects users of Docutils and reStructuredText may find
-useful.  Many of them projects are hosted in the `Docutils Sandbox`_.
-All projects are usable by end users in some way, however do not
-expect all of them to run out of the box.
+useful, listed in no particular order.  Many of them projects are
+hosted in the `Docutils Sandbox`_.  All projects are usable by end
+users in some way, however do not expect all of them to run out of the
+box.
+
+* rst2chm_, written by Oliver Rutherfurd, generates Microsoft HTML
+  Help files from reStructuredText files.
 
 * rest2web_, by Michael Foord, is a tool for creating web sites with
   reStructuredText.
@@ -61,6 +65,7 @@ expect all of them to run out of the box.
 * Beni Cherniavsky maintains a Makefile_ for driving Docutils, hoping
   to handle everything one might do with docutils.
 
+.. _rst2chm: http://www.rutherfurd.net/software/rst2chm/
 .. _rest2web: http://www.voidspace.org.uk/python/rest2web/
 .. _Docutils Sandbox: http://docutils.sf.net/sandbox/README.html
 .. _ZReST: http://docutils.sf.net/sandbox/richard/ZReST/
