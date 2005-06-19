@@ -108,6 +108,8 @@ class Writer(writers.Writer):
           ['--cloak-email-addresses'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),))
 
+    settings_defaults = {'output_encoding_error_handler': 'xmlcharrefreplace'}
+
     relative_path_settings = ('stylesheet_path',)
 
     config_section = 'html4css1 writer'

@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # Author: reggie dugard
 # Contact: reggie@users.sourceforge.net
@@ -14,11 +15,16 @@ dictionaries (redundant), along with 'meta' and 'stylesheet' entries with
 standard values, and any entries with empty values.
 """
 
+from docutils import core
+
+import unittest
 from __init__ import DocutilsTestSupport
 
 def suite():
     s = DocutilsTestSupport.HtmlPublishPartsTestSuite()
     s.generateTests(totest)
+    import test_html4css1
+    s.addTest(unittest.defaultTestLoader.loadTestsFromModule(test_html4css1))
     return s
 
 
@@ -315,6 +321,16 @@ And even more stuff
  'html_head': '''...<title></title>\\n'''}
 """],
 ])
+
+
+class EncodingTestCase(DocutilsTestSupport.StandardTestCase):
+
+    def test_xmlcharrefreplace(self):
+        # Test that xmlcharrefreplace is the default output encoding
+        # error handler.
+        self.assert_('\xe4\xf6\xfc&#8364;' in core.publish_string(
+            'äöü€', writer_name='html4css1',
+            settings_overrides={'output_encoding': 'latin1'}))
 
 
 if __name__ == '__main__':

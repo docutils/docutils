@@ -122,10 +122,6 @@ General
   from "--generator", "--source-link", and "--date" etc.), allowing
   translations.
 
-* Need a Unicode to HTML entities codec for HTML writer?  No, the
-  "xmlcharrefreplace" output error handler is sufficient.
-  Make it the default for HTML & XML writers?
-
 * Add validation?  See http://pytrex.sourceforge.net, RELAX NG, pyRXP.
 
 * Ask Python-dev for opinions (GvR for a pronouncement) on special
