@@ -629,17 +629,19 @@ class PythonModuleParserTestSuite(CustomTestSuite):
                       run_in_debugger=run_in_debugger)
 
 
-class WriterPublishTestCase(CustomTestCase):
+class WriterPublishTestCase(CustomTestCase, docutils.SettingsSpec):
 
     """
     Test case for publish.
     """
 
-    writer_name = '' # override in subclasses
+    settings_default_overrides = {'strict_visitor': 1}
+    writer_name = '' # set in subclasses or constructor
 
     def __init__(self, *args, **kwargs):
-        self.writer_name = kwargs['writer_name']
-        del kwargs['writer_name']
+        if kwargs.has_key('writer_name'):
+            self.writer_name = kwargs['writer_name']
+            del kwargs['writer_name']
         CustomTestCase.__init__(self, *args, **kwargs)
 
     def test_publish(self):
@@ -650,7 +652,7 @@ class WriterPublishTestCase(CustomTestCase):
               reader_name='standalone',
               parser_name='restructuredtext',
               writer_name=self.writer_name,
-              settings_overrides={'strict_visitor': 1})
+              settings_spec=self)
         self.compare_output(self.input, output, self.expected)
 
 
