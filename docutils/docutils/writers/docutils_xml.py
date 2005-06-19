@@ -39,6 +39,8 @@ class Writer(writers.Writer):
           {'dest': 'doctype_declaration', 'default': 1,
            'action': 'store_false', 'validator': frontend.validate_boolean}),))
 
+    settings_defaults = {'output_encoding_error_handler': 'xmlcharrefreplace'}
+
     config_section = 'docutils_xml writer'
     config_section_dependencies = ('writers',)
 
