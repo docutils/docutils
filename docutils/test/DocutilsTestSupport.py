@@ -17,6 +17,7 @@ Exports the following:
     - `tableparser` is 'docutils.parsers.rst.tableparser'
 
 :Classes:
+    - `StandardTestCase`
     - `CustomTestCase`
     - `CustomTestSuite`
     - `TransformTestCase`
@@ -88,16 +89,29 @@ class DevNull:
         pass
 
 
-class CustomTestCase(unittest.TestCase):
+class StandardTestCase(unittest.TestCase):
+
+    """
+    Helper class, providing the same interface as unittest.TestCase,
+    but with useful setUp and tearDown methods.
+    """
+
+    def setUp(self):
+        os.chdir(testroot)
+        frontend._globally_deactivate_config_files = 1
+
+    def tearDown(self):
+        frontend._globally_deactivate_config_files = 0
+
+
+class CustomTestCase(StandardTestCase):
     
     """
     Helper class, providing extended functionality over unittest.TestCase.
 
-    This isn't specific to Docutils but of general use when dealing
-    with large amounts of text.  The methods failUnlessEqual and
-    failIfEqual have been overwritten to provide better support for
-    multi-line strings.  Furthermore, see the compare_output method
-    and the parameter list of __init__.
+    The methods failUnlessEqual and failIfEqual have been overwritten
+    to provide better support for multi-line strings.  Furthermore,
+    see the compare_output method and the parameter list of __init__.
     """
 
     compare = docutils_difflib.Differ().compare
@@ -135,11 +149,11 @@ class CustomTestCase(unittest.TestCase):
 
     def compare_output(self, input, output, expected):
         """`input`, `output`, and `expected` should all be strings."""
-        if type(input) == UnicodeType:
+        if isinstance(input, UnicodeType):
             input = input.encode('raw_unicode_escape')
-        if type(output) == UnicodeType:
+        if isinstance(output, UnicodeType):
             output = output.encode('raw_unicode_escape')
-        if type(expected) == UnicodeType:
+        if isinstance(expected, UnicodeType):
             expected = expected.encode('raw_unicode_escape')
         try:
             self.assertEquals(output, expected)
@@ -166,9 +180,6 @@ class CustomTestCase(unittest.TestCase):
         if first == second:
             raise self.failureException, \
                   (msg or '%s == %s' % _format_str(first, second))
-
-    def setUp(self):
-        os.chdir(testroot)
 
     # Synonyms for assertion methods
 
