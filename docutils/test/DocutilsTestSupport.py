@@ -629,14 +629,18 @@ class PythonModuleParserTestSuite(CustomTestSuite):
                       run_in_debugger=run_in_debugger)
 
 
-class WriterPublishTestCase(CustomTestCase, docutils.SettingsSpec):
+class WriterPublishTestCase(CustomTestCase):
 
     """
     Test case for publish.
     """
 
-    settings_default_overrides = {'_disable_config': 1, 'strict_visitor': 1}
     writer_name = '' # override in subclasses
+
+    def __init__(self, *args, **kwargs):
+        self.writer_name = kwargs['writer_name']
+        del kwargs['writer_name']
+        CustomTestCase.__init__(self, *args, **kwargs)
 
     def test_publish(self):
         if self.run_in_debugger:
@@ -646,34 +650,19 @@ class WriterPublishTestCase(CustomTestCase, docutils.SettingsSpec):
               reader_name='standalone',
               parser_name='restructuredtext',
               writer_name=self.writer_name,
-              settings_spec=self)
+              settings_overrides={'strict_visitor': 1})
         self.compare_output(self.input, output, self.expected)
-
-
-class LatexWriterPublishTestCase(WriterPublishTestCase):
-    """Test case for Latex writer."""
-    writer_name = 'latex'
-
-
-class PseudoXMLWriterPublishTestCase(WriterPublishTestCase):
-    """Test case for pseudo-XML writer."""
-    writer_name = 'pseudoxml'
 
 
 class PublishTestSuite(CustomTestSuite):
 
-    TEST_CLASSES = {
-        'latex': LatexWriterPublishTestCase,
-        'pseudoxml': PseudoXMLWriterPublishTestCase,
-    }
-
     def __init__(self, writer_name):
         """
-        `writer_name` is the name of the writer
-        to use.  It must be a key in `TEST_CLASSES`.
+        `writer_name` is the name of the writer to use.
         """
         CustomTestSuite.__init__(self)
-        self.test_class = self.TEST_CLASSES[writer_name]
+        self.test_class = WriterPublishTestCase
+        self.writer_name = writer_name
 
     def generateTests(self, dict, dictname='totest'):
         for name, cases in dict.items():
@@ -689,7 +678,9 @@ class PublishTestSuite(CustomTestSuite):
                       self.test_class, 'test_publish',
                       input=case[0], expected=case[1],
                       id='%s[%r][%s]' % (dictname, name, casenum),
-                      run_in_debugger=run_in_debugger)
+                      run_in_debugger=run_in_debugger,
+                      # Passed to constructor of self.test_class:
+                      writer_name=self.writer_name)
 
 
 class HtmlPublishPartsTestSuite(CustomTestSuite):
