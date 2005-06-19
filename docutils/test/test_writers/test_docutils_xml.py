@@ -11,12 +11,13 @@ Test for docutils XML writer.
 """
 
 import unittest
+from __init__ import DocutilsTestSupport
 
 import docutils
 import docutils.core
 
 
-class DocutilsXMLTestCase(unittest.TestCase, docutils.SettingsSpec):
+class DocutilsXMLTestCase(DocutilsTestSupport.StandardTestCase):
 
     input = 'Test\n====\n\nSubsection\n----------\n\nTest\n\n----------\n\nTest.'
     xmldecl = '<?xml version="1.0" encoding="iso-8859-1"?>\n'
@@ -26,8 +27,6 @@ class DocutilsXMLTestCase(unittest.TestCase, docutils.SettingsSpec):
     bodynormal = '<document ids="test" names="test" source="&lt;string&gt;"><title>Test</title><subtitle ids="subsection" names="subsection">Subsection</subtitle><paragraph>Test</paragraph><transition/><paragraph>Test.</paragraph></document>'
     bodynewlines = '<document ids="test" names="test" source="&lt;string&gt;">\n<title>\nTest\n</title>\n<subtitle ids="subsection" names="subsection">\nSubsection\n</subtitle>\n<paragraph>\nTest\n</paragraph>\n<transition/>\n<paragraph>\nTest.\n</paragraph>\n</document>\n'
     bodyindents = '<document ids="test" names="test" source="&lt;string&gt;">\n    <title>\n        Test\n    </title>\n    <subtitle ids="subsection" names="subsection">\n        Subsection\n    </subtitle>\n    <paragraph>\n        Test\n    </paragraph>\n    <transition/>\n    <paragraph>\n        Test.\n    </paragraph>\n</document>\n'
-
-    settings_default_overrides = {'_disable_config': 1}
 
     def test_publish(self):
         settings = {'output_encoding': 'iso-8859-1'}
@@ -53,7 +52,6 @@ class DocutilsXMLTestCase(unittest.TestCase, docutils.SettingsSpec):
                                          (source=self.input,
                                           reader_name='standalone',
                                           writer_name='docutils_xml',
-                                          settings_spec=self,
                                           settings_overrides=settings),
                                          expected)
 
