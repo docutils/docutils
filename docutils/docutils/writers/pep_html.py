@@ -25,9 +25,9 @@ class Writer(html4css1.Writer):
         (('Specify a template file.  Default is "pep-html-template".',
           ['--template'],
           {'default': 'pep-html-template', 'metavar': '<file>'}),
-         ('Python\'s home URL.  Default is ".." (parent directory).',
+         ('Python\'s home URL.  Default is "http://www.python.org".',
           ['--python-home'],
-          {'default': '..', 'metavar': '<URL>'}),
+          {'default': 'http://www.python.org', 'metavar': '<URL>'}),
          ('Home URL prefix for PEPs.  Default is "." (current directory).',
           ['--pep-home'],
           {'default': '.', 'metavar': '<URL>'}),
@@ -61,7 +61,7 @@ class Writer(html4css1.Writer):
         if pyhome == '..':
             subs['pepindex'] = '.'
         else:
-            subs['pepindex'] = pyhome + '/peps/'
+            subs['pepindex'] = pyhome + '/peps'
         index = self.document.first_child_matching_class(nodes.field_list)
         header = self.document[index]
         pepnum = header[0][1].astext()
