@@ -91,7 +91,7 @@ however you like to call the documentation directory):
 * All ``.html`` and ``.txt`` files in the base directory.
 * The ``docs/`` directory.  (Do not install the contents of the
   ``docs/`` directory directory directly to
-  ``/usr/share/doc/docutils/``—it's incomplete and would contain
+  ``/usr/share/doc/docutils/``\ —it's incomplete and would contain
   invalid references!)
 * The ``licenses/`` directory.
 * ``tools/stylesheets/default.css``, creating the ``tools/`` and
