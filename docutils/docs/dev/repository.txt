@@ -1,6 +1,6 @@
-==========================
- The Docutils_ Repository
-==========================
+=====================================
+ The Docutils_ Subversion Repository
+=====================================
 
 :Author: Felix Wiemann
 :Contact: Felix.Wiemann@ososo.de
