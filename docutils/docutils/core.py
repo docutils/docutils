@@ -39,6 +39,9 @@ class Publisher:
         a component name (`set_reader` sets the parser as well).
         """
 
+        self.document = None
+        """The document tree (`docutils.nodes` objects)."""
+
         self.reader = reader
         """A `docutils.readers.Reader` instance."""
 
@@ -168,11 +171,11 @@ class Publisher:
             encoding=self.settings.output_encoding,
             error_handler=self.settings.output_encoding_error_handler)
 
-    def apply_transforms(self, document):
-        document.transformer.populate_from_components(
+    def apply_transforms(self):
+        self.document.transformer.populate_from_components(
             (self.source, self.reader, self.reader.parser, self.writer,
              self.destination))
-        document.transformer.apply_transforms()
+        self.document.transformer.apply_transforms()
 
     def publish(self, argv=None, usage=None, description=None,
                 settings_spec=None, settings_overrides=None,
@@ -188,43 +191,43 @@ class Publisher:
                 **(settings_overrides or {}))
         self.set_io()
         exit = None
-        document = None
         try:
-            document = self.reader.read(self.source, self.parser,
-                                        self.settings)
-            self.apply_transforms(document)
-            output = self.writer.write(document, self.destination)
+            self.document = self.reader.read(self.source, self.parser,
+                                             self.settings)
+            self.apply_transforms()
+            output = self.writer.write(self.document, self.destination)
             self.writer.assemble_parts()
         except Exception, error:
             if self.settings.traceback: # propagate exceptions?
-                self.debugging_dumps(document)                
+                self.debugging_dumps()                
                 raise
             self.report_Exception(error)
             exit = 1
-        self.debugging_dumps(document)
-        if (enable_exit_status and document
-            and (document.reporter.max_level
+        self.debugging_dumps()
+        if (enable_exit_status and self.document
+            and (self.document.reporter.max_level
                  >= self.settings.exit_status_level)):
-            sys.exit(document.reporter.max_level + 10)
+            sys.exit(self.document.reporter.max_level + 10)
         elif exit:
             sys.exit(1)
         return output
 
-    def debugging_dumps(self, document):
-        if not document:
+    def debugging_dumps(self):
+        if not self.document:
             return
         if self.settings.dump_settings:
             print >>sys.stderr, '\n::: Runtime settings:'
             print >>sys.stderr, pprint.pformat(self.settings.__dict__)
-        if self.settings.dump_internals and document:
+        if self.settings.dump_internals:
             print >>sys.stderr, '\n::: Document internals:'
-            print >>sys.stderr, pprint.pformat(document.__dict__)
-        if self.settings.dump_transforms and document:
+            print >>sys.stderr, pprint.pformat(self.document.__dict__)
+        if self.settings.dump_transforms:
             print >>sys.stderr, '\n::: Transforms applied:'
-            print >>sys.stderr, pprint.pformat(document.transformer.applied)
-        if self.settings.dump_pseudo_xml and document:
+            print >>sys.stderr, pprint.pformat(
+                self.document.transformer.applied)
+        if self.settings.dump_pseudo_xml:
             print >>sys.stderr, '\n::: Pseudo-XML:'
-            print >>sys.stderr, document.pformat().encode(
+            print >>sys.stderr, self.document.pformat().encode(
                 'raw_unicode_escape')
 
     def report_Exception(self, error):
