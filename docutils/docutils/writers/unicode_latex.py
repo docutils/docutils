@@ -3,12 +3,14 @@
 # Revision: $Revision$
 # Date: $Date$
 # Copyright: This file has been placed in the public domain.
+
+# This is a mapping of Unicode characters to LaTeX equivalents.
+# The information has been extracted from
+# <http://www.w3.org/2003/entities/xml/unicode.xml>, written by
+# David Carlisle and Sebastian Rahtz.
 #
-# This is a mapping of Unicode characters to LaTeX
-# equivalents.  The information has been extracted from
-# <http://www.w3.org/2003/entities/xml/unicode.xml>.
-# The extraction has been done by the "create_unimap.py"
-# script written by Felix Wiemann.
+# The extraction has been done by the "create_unimap.py" script
+# located at <http://docutils.sf.net/tools/dev/create_unimap.py>.
 
 unicode_map = {u'\xa0': '$~$',
 u'\xa1': '{\\textexclamdown}',

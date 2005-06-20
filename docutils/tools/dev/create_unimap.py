@@ -70,11 +70,13 @@ print '# Contact: Felix_Wiemann@ososo.de'
 print '# Revision: $%s$' % 'Revision'
 print '# Date: $%s$' % 'Date'
 print '# Copyright: This file has been placed in the public domain.'
+print
+print '# This is a mapping of Unicode characters to LaTeX equivalents.'
+print '# The information has been extracted from'
+print '# <http://www.w3.org/2003/entities/xml/unicode.xml>, written by'
+print '# David Carlisle and Sebastian Rahtz.'
 print '#'
-print '# This is a mapping of Unicode characters to LaTeX'
-print '# equivalents.  The information has been extracted from'
-print '# <http://www.w3.org/2003/entities/xml/unicode.xml>.'
-print '# The extraction has been done by the "create_unimap.py"'
-print '# script written by Felix Wiemann.'
+print '# The extraction has been done by the "create_unimap.py" script'
+print '# located at <http://docutils.sf.net/tools/dev/create_unimap.py>.'
 print
 print 'unicode_map = %s' % pprint.pformat(unicode_map, indent=0)
