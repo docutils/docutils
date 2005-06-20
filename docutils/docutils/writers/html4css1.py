@@ -38,10 +38,11 @@ class Writer(writers.Writer):
     settings_spec = (
         'HTML-Specific Options',
         None,
-        (('Specify a stylesheet URL, used verbatim.  Default is '
-          '"default.css".  Overrides --stylesheet-path.',
+        (('Specify a stylesheet URL, used verbatim.  Overrides '
+          '--stylesheet-path.  Either --stylesheet or --stylesheet-path '
+          'must be specified.',
           ['--stylesheet'],
-          {'default': 'default.css', 'metavar': '<URL>',
+          {'default': -1, 'metavar': '<URL>',
            'overrides': 'stylesheet_path'}),
          ('Specify a stylesheet file, relative to the current working '
           'directory.  The path is adjusted relative to the output HTML '
@@ -222,7 +223,14 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.stylesheet = [self.embedded_stylesheet % stylesheet_text]
         else:
             stylesheet = utils.get_stylesheet_reference(settings)
-            if stylesheet:
+            if stylesheet == -1:
+                raise ValueError(
+                    'No stylesheet path or URI given.\nUse the --stylesheet '
+                    'or --stylesheet-path option to specify the location of\n'
+                    'default.css (in the tools/stylesheets/ directory '
+                    'of the Docutils distribution).')
+                self.stylesheet = []
+            elif stylesheet:
                 self.stylesheet = [self.stylesheet_link
                                    % self.encode(stylesheet)]
             else:
