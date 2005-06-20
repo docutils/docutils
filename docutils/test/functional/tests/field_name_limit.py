@@ -10,3 +10,5 @@ writer_name = "html"
 # Settings
 settings_overrides['field_name_limit'] = 0 # no limit
 settings_overrides['docinfo_xform'] = 0
+settings_overrides['stylesheet'] = None
+settings_overrides['stylesheet_path'] = "../tools/stylesheets/default.css"

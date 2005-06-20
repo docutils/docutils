@@ -10,3 +10,5 @@ writer_name = "html"
 # Settings
 settings_overrides['file_insertion_enabled'] = 0
 settings_overrides['raw_enabled'] = 0
+settings_overrides['stylesheet'] = None
+settings_overrides['stylesheet_path'] = "../tools/stylesheets/default.css"
