@@ -42,7 +42,9 @@ from optparse import SUPPRESS_HELP
 
 
 _globally_deactivate_config_files = 0
-"""Deactivate reading of config files; for testing purposes."""
+"""Deactivate reading of config files globally; for testing purposes.
+Use _disable_config instead when calling Docutils programatically:
+<http://docutils.sf.net/docs/user/config.html#disable-config>"""
 
 def store_multiple(option, opt, value, parser, *args, **kwargs):
     """
