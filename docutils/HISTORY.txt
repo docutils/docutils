@@ -59,6 +59,8 @@ Changes Since 0.3.9
 
   - The Null Writer now returns an empty string instead of None.
 
+* docs/dev/distributing.txt: Added to project; guide for distributors.
+
 * docs/user/links.txt: Added to project; link list.
 
 * docs/ref/rst/substitutions.txt: "reStructuredText Standard
