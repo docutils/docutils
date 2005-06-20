@@ -56,10 +56,10 @@ class RecordDependenciesTests(unittest.TestCase):
             pass
 
     def test_stylesheet_dependencies(self):
-        
         # Parameters to publish_file.
         s = {'settings_overrides': {}}
         so = s['settings_overrides']
+        so['embed_stylesheet'] = 0
         so['stylesheet_path'] = 'stylesheet.txt'
         so['stylesheet'] = None
         s['writer_name'] = 'html'
