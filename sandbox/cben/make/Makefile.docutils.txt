@@ -108,8 +108,9 @@ than their current names.
 	$(docutils.)RST2LATEX ?= rst2latex.py
 	
 
-``pep.py`` is the RST PEP -> HTML converter tool; ``pep2html.py`` also
-supports old PEP format and does extra PEP services.
+``rstpep2html.py`` is the RST PEP -> HTML converter tool;
+``pep2html.py`` also supports old PEP format and does extra PEP
+services.
 
 ::
 

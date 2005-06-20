@@ -141,20 +141,20 @@ stylesheets override styles in imported stylesheets, enabling
 incremental experimentation.
 
 
-pep.py
-------
+rstpep2html.py
+--------------
 
 :Reader: PEP
 :Parser: reStructuredText
 :Writer: PEP/HTML
 
-``pep.py`` reads a new-style PEP (marked up with reStructuredText) and
-produces HTML.  It requires a template file and a stylesheet.  By
-default, it makes use of a "``pep-html-template``" file and a
-"``default.css``" stylesheet in the current directory, but these can
-be overridden by command-line options or configuration files.  The
-"``tools/stylesheets/pep.css``" stylesheet is intended specifically
-for PEP use.
+``rstpep2html.py`` reads a new-style PEP (marked up with
+reStructuredText) and produces HTML.  It requires a template file and
+a stylesheet.  By default, it makes use of a "``pep-html-template``"
+file and a "``default.css``" stylesheet in the current directory, but
+these can be overridden by command-line options or configuration
+files.  The "``tools/stylesheets/pep.css``" stylesheet is intended
+specifically for PEP use.
 
 The "``docutils.conf``" `configuration file`_ in the "``tools``"
 directory of Docutils contains a default setup for use in processing
@@ -163,17 +163,17 @@ default template (``tools/pep-html-template``) and a default
 stylesheet (``tools/stylesheets/pep.css``).  See Stylesheets_ above
 for more information.
 
-``pep.py`` can be run from the ``tools`` directory or from the
+``rstpep2html.py`` can be run from the ``tools`` directory or from the
 ``docs/peps/`` directory, by adjusting the settings.  These two sets
 of commands are equivalent::
 
     cd <path-to-docutils>/tools
     # This will pick up the "docutils.conf" file automatically:
-    pep.py ../docs/peps/pep-0287.txt ../docs/peps/pep-0287.html
+    rstpep2html.py ../docs/peps/pep-0287.txt ../docs/peps/pep-0287.html
 
     cd <path-to-docutils>/docs/peps
     # Must tell the tool where to find the config file:
-    ../../tools/pep.py --config ../../tools/docutils.conf \
+    ../../tools/rstpep2html.py --config ../../tools/docutils.conf \
         pep-0287.txt pep-0287.html
 
 
@@ -191,8 +191,8 @@ indented or new-style reStructuredText) and processes accordingly.
 Since it does not use the Docutils front end mechanism (the common
 command-line options are not supported), it can only be configured
 using `configuration files`_.  The template and stylesheet
-requirements of ``pep2html.py`` are the same as those of `pep.py`_
-above.
+requirements of ``pep2html.py`` are the same as those of
+`rstpep2html.py`_ above.
 
 Arguments to ``pep2html.py`` may be a list of PEP numbers or .txt
 files.  If no arguments are given, all files of the form

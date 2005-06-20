@@ -96,9 +96,10 @@ endif
 
 $(docutils.)RST2LATEX ?= rst2latex.py
 
-# ``pep.py`` is the RST PEP -> HTML converter tool; ``pep2html.py`` also
-# supports old PEP format and does extra PEP services.
-$(docutils.)RSTPEP2HTML ?= rep.py
+# ``rstpep2html.py`` is the RST PEP -> HTML converter tool;
+# ``pep2html.py`` also supports old PEP format and does extra PEP
+# services.
+$(docutils.)RSTPEP2HTML ?= rstpep2html.py
 
 $(docutils.)PEPTOOL ?= pep2html.py
 
