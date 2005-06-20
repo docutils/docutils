@@ -328,9 +328,10 @@ class EncodingTestCase(DocutilsTestSupport.StandardTestCase):
     def test_xmlcharrefreplace(self):
         # Test that xmlcharrefreplace is the default output encoding
         # error handler.
-        self.assert_('\xe4\xf6\xfc&#8364;' in core.publish_string(
-            'äöü€', writer_name='html4css1',
-            settings_overrides={'output_encoding': 'latin1'}))
+        self.assert_(core.publish_string(
+            'äöü€', writer_name='html4css1', settings_overrides={
+            'output_encoding': 'latin1', 'stylesheet': None}).find(
+            '\xe4\xf6\xfc&#8364;') != -1)
 
 
 if __name__ == '__main__':
