@@ -58,7 +58,8 @@ class Writer(writers.Writer):
           'file must be accessible during processing (--stylesheet-path is '
           'recommended).  Default: link the stylesheet, do not embed it.',
           ['--embed-stylesheet'],
-          {'action': 'store_true', 'validator': frontend.validate_boolean}),
+          {'default': 0, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
          ('Specify the initial header level.  Default is 1 for "<h1>".  '
           'Does not affect document title & subtitle (see --no-doc-title).',
           ['--initial-header-level'],
@@ -215,22 +216,21 @@ class HTMLTranslator(nodes.NodeVisitor):
                                  self.head_prefix_template % (lcode, lcode)])
         self.html_prolog.append(self.doctype)
         self.head = self.meta[:]
-        if settings.embed_stylesheet:
+        stylesheet = utils.get_stylesheet_reference(settings)
+        if stylesheet == -1:
+            raise ValueError(
+                'No stylesheet path or URI given.\nUse the --stylesheet '
+                'or --stylesheet-path option to specify the location of\n'
+                'default.css (in the tools/stylesheets/ directory '
+                'of the Docutils distribution).')
+        if settings.embed_stylesheet and stylesheet:
             stylesheet = utils.get_stylesheet_reference(settings,
                 os.path.join(os.getcwd(), 'dummy'))
             settings.record_dependencies.add(stylesheet)
             stylesheet_text = open(stylesheet).read()
             self.stylesheet = [self.embedded_stylesheet % stylesheet_text]
         else:
-            stylesheet = utils.get_stylesheet_reference(settings)
-            if stylesheet == -1:
-                raise ValueError(
-                    'No stylesheet path or URI given.\nUse the --stylesheet '
-                    'or --stylesheet-path option to specify the location of\n'
-                    'default.css (in the tools/stylesheets/ directory '
-                    'of the Docutils distribution).')
-                self.stylesheet = []
-            elif stylesheet:
+            if stylesheet:
                 self.stylesheet = [self.stylesheet_link
                                    % self.encode(stylesheet)]
             else:
