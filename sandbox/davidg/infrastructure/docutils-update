@@ -165,7 +165,7 @@ for htmlfile in `find .. -name '*.html'` ; do
         if [ $unconditional -eq 1 -o $txtfile -nt $htmlfile ] ; then
             if [ "${base:0:4}" == "pep-" ] ; then
                 test $feedback && echo "$txtfile (PEP)" || true
-                python $lib/tools/pep.py --config=$dir/docutils.conf $txtfile $htmlfile
+                python $lib/tools/rstpep2html.py --config=$dir/docutils.conf $txtfile $htmlfile
             else
                 test $feedback && echo $txtfile || true
                 python $lib/tools/rst2html.py --config=$dir/docutils.conf $txtfile $htmlfile

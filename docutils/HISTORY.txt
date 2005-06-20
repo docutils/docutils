@@ -68,6 +68,8 @@ Changes Since 0.3.9
 
 * test/coverage.sh: Added to project; test coverage script.
 
+* tools/rstpep2html.py: Renamed from pep.py.
+
 * tools/dev/profile_docutils.py: Added to project; profiler script.
 
 
