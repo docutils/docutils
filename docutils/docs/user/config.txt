@@ -896,7 +896,7 @@ _`_directories`
 
 _`_disable_config`
     Prevent standard configuration files from being read.  For
-    internal use only.
+    programmatic use only.
 
     Default: config files enabled (None).  No command-line options.
 
