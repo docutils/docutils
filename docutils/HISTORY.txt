@@ -51,6 +51,8 @@ Changes Since 0.3.9
     handler.
   - Specifying either ``--stylesheet`` or ``--stylesheet-path`` is
     mandatory now.
+  - Made ``--embed-stylesheet`` the default rather than
+    ``--link-stylesheet``.
 
 * docutils/writers/docutils_xml.py:
 
