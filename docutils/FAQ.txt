@@ -257,12 +257,20 @@ inside or outside inline literals or literal blocks -- there's no
 character entity interpretation in either case.
 
 If you can't use a Unicode-compatible encoding and must rely on 7-bit
-ASCII, there is a workaround.  Files containing character entity set
-substitution definitions using the "unicode_" directive `are
-available`_ (tarball_).  Please read the `description and
+ASCII, there is a workaround.  New in Docutils 0.3.10 is a set of
+`Standard Substitution Definition Sets`_, which provide equivalents of
+XML & HTML character entity sets as substitution definitions.  For
+example, the Japanese yen currency symbol can be used as follows::
+
+    .. include:: <xhtml1-lat1.txt>
+
+    |yen| 600 for a complete meal?  That's cheap!
+
+For earlier versions of Docutils, equivalent files containing
+character entity set substitution definitions using the "unicode_"
+directive `are available`_.  Please read the `description and
 instructions`_ for use.  Thanks to David Priest for the original idea.
-Incorporating these files into Docutils is on the `to-do list`_.
-   
+
 If you insist on using XML-style charents, you'll have to implement a
 pre-processing system to convert to UTF-8 or something.  That
 introduces complications though; you can no longer *write* about
@@ -286,9 +294,10 @@ bar``", rendered as "foo |--| bar; foo |---| bar".  (Note that Mozilla
 and Firefox may render this incorrectly.)  The ``:trim:`` option for
 the em dash is necessary because you cannot write "``foo|---|bar``";
 thus you need to add spaces ("``foo |---| bar``") and advise the
-reStructuredText parser to trim the spaces using the ``:trim:``
-option.
+reStructuredText parser to trim the spaces.
 
+.. _Standard Substitution Definition Sets:
+   http://docutils.sf.net/docs/ref/rst/substitutions.html
 .. _unicode:
    http://docutils.sf.net/docs/ref/rst/directives.html#unicode-character-codes
 .. _are available: http://docutils.sourceforge.net/tmp/charents/
@@ -344,8 +353,6 @@ Possible solutions include
     characters for easy input.  Open System Preferences,
     International, Input Menu tab, enable "Show input menu in menu
     bar", and be sure that Character Palette is enabled in the list.
-
-  Other options are welcome.
 
 If anyone knows of other/better solutions, please `let us know`_.
 
@@ -469,7 +476,7 @@ They all presently use LaTeX syntax or dialects of it.
       .. raw:: latex
 
           \[ x^3 + 3x^2a + 3xa^2 + a^3, \]
-          
+
   For inline math you could use substitutions of the raw directive but
   the recently added `raw role`_ is more convenient.  You must define a
   custom role based on it once in your document::
@@ -579,17 +586,17 @@ literal blocks, the typeface is not changed, and inline markup is
 recognized.  For example::
 
     | A one, two, a one two three four
-    | 
+    |
     | Half a bee, philosophically,
     |     must, *ipso facto*, half not be.
     | But half the bee has got to be,
     |     *vis a vis* its entity.  D'you see?
-    | 
+    |
     | But can a bee be said to be
     |     or not to be an entire bee,
     |         when half the bee is not a bee,
     |             due to some ancient injury?
-    | 
+    |
     | Singing...
 
 __ http://docutils.sf.net/docs/ref/rst/restructuredtext.html#line-blocks
