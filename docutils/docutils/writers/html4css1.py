@@ -49,16 +49,16 @@ class Writer(writers.Writer):
           'file.  Overrides --stylesheet.',
           ['--stylesheet-path'],
           {'metavar': '<file>', 'overrides': 'stylesheet'}),
-         ('Link to the stylesheet in the output HTML file.  This is the '
-          'default.',
+         ('Link to the stylesheet in the output HTML file.  Default: '
+          'embed the stylesheet, do not link to it.',
           ['--link-stylesheet'],
           {'dest': 'embed_stylesheet', 'action': 'store_false',
            'validator': frontend.validate_boolean}),
          ('Embed the stylesheet in the output HTML file.  The stylesheet '
           'file must be accessible during processing (--stylesheet-path is '
-          'recommended).  Default: link the stylesheet, do not embed it.',
+          'recommended).  This is the default.',
           ['--embed-stylesheet'],
-          {'default': 0, 'action': 'store_true',
+          {'default': 1, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
          ('Specify the initial header level.  Default is 1 for "<h1>".  '
           'Does not affect document title & subtitle (see --no-doc-title).',

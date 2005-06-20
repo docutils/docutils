@@ -588,7 +588,7 @@ _`embed_stylesheet`
     Embed the stylesheet in the output HTML file.  The stylesheet file
     must be accessible during processing.
 
-    Default: link, don't embed (None).  Options: ``--embed-stylesheet,
+    Default: enabled.  Options: ``--embed-stylesheet,
     --link-stylesheet``.
 
 _`field_name_limit`
