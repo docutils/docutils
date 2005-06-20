@@ -49,6 +49,8 @@ Changes Since 0.3.9
   - Added support for image width and height units.
   - Made ``xmlcharrefreplace`` the default output encoding error
     handler.
+  - Specifying either ``--stylesheet`` or ``--stylesheet-path`` is
+    mandatory now.
 
 * docutils/writers/docutils_xml.py:
 
