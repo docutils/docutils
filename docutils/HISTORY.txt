@@ -49,8 +49,8 @@ Changes Since 0.3.9
   - Added support for image width and height units.
   - Made ``xmlcharrefreplace`` the default output encoding error
     handler.
-  - Specifying either ``--stylesheet`` or ``--stylesheet-path`` is
-    mandatory now.
+  - A warning is now issued if neither ``--stylesheet`` nor
+    ``--stylesheet-path`` is specified.
   - Made ``--embed-stylesheet`` the default rather than
     ``--link-stylesheet``.
 
