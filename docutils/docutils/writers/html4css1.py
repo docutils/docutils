@@ -42,8 +42,7 @@ class Writer(writers.Writer):
           '--stylesheet-path.  Either --stylesheet or --stylesheet-path '
           'must be specified.',
           ['--stylesheet'],
-          {'default': -1, 'metavar': '<URL>',
-           'overrides': 'stylesheet_path'}),
+          {'metavar': '<URL>', 'overrides': 'stylesheet_path'}),
          ('Specify a stylesheet file, relative to the current working '
           'directory.  The path is adjusted relative to the output HTML '
           'file.  Overrides --stylesheet.',
@@ -217,24 +216,22 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.html_prolog.append(self.doctype)
         self.head = self.meta[:]
         stylesheet = utils.get_stylesheet_reference(settings)
-        if stylesheet == -1:
-            raise ValueError(
+        self.stylesheet = []
+        if stylesheet is None:
+            self.document.reporter.warning(
                 'No stylesheet path or URI given.\nUse the --stylesheet '
                 'or --stylesheet-path option to specify the location of\n'
                 'default.css (in the tools/stylesheets/ directory '
-                'of the Docutils distribution).')
-        if settings.embed_stylesheet and stylesheet:
+                'of the Docutils distribution).\n')
+        elif settings.embed_stylesheet and stylesheet:
             stylesheet = utils.get_stylesheet_reference(settings,
                 os.path.join(os.getcwd(), 'dummy'))
             settings.record_dependencies.add(stylesheet)
             stylesheet_text = open(stylesheet).read()
             self.stylesheet = [self.embedded_stylesheet % stylesheet_text]
-        else:
-            if stylesheet:
+        elif stylesheet:
                 self.stylesheet = [self.stylesheet_link
                                    % self.encode(stylesheet)]
-            else:
-                self.stylesheet = []
         self.body_prefix = ['</head>\n<body>\n']
         # document title, subtitle display
         self.body_pre_docinfo = []

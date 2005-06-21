@@ -715,7 +715,7 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
 
     settings_default_overrides = \
         WriterPublishTestCase.settings_default_overrides.copy()
-    settings_default_overrides['stylesheet'] = None
+    settings_default_overrides['stylesheet'] = ''
 
     def __init__(self, *args, **kwargs):
         self.settings_overrides = kwargs['settings_overrides']

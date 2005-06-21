@@ -618,8 +618,6 @@ _`initial_header_level`
 
     Default: 1 (for "<h1>").  Option: ``--initial-header-level``.
 
-.. _stylesheet [html4css1 writer]:
-
 _`option_limit`
     The maximum width (in characters) for options in option lists.
     Longer options will span an entire row of the table used to render
@@ -628,11 +626,14 @@ _`option_limit`
 
     Default: 14 characters.  Option: ``--option-limit``.
 
+.. _stylesheet [html4css1 writer]:
+
 stylesheet
     CSS stylesheet URL, used verbatim.  Overrides stylesheet_path
-    [#override]_.
+    [#override]_.  Pass an empty string to deactivate stylesheet
+    inclusion.
 
-    Default: "default.css".  Options: ``--stylesheet``.
+    Default: None.  Options: ``--stylesheet``.
 
     (Setting also defined for the `LaTeX Writer`__.)
 
