@@ -330,7 +330,7 @@ class EncodingTestCase(DocutilsTestSupport.StandardTestCase):
         # error handler.
         self.assert_(core.publish_string(
             'äöü€', writer_name='html4css1', settings_overrides={
-            'output_encoding': 'latin1', 'stylesheet': None}).find(
+            'output_encoding': 'latin1', 'stylesheet': ''}).find(
             '\xe4\xf6\xfc&#8364;') != -1)
 
 
