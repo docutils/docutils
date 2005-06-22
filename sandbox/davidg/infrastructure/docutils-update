@@ -49,6 +49,8 @@ sshdir=$auxdir/.ssh
 sshhost=docutilsupdate@shell.sourceforge.net
 sshcommand="ssh -i $lockdir/id_dsa
             -o UserKnownHostsFile=$sshdir/known_hosts $sshhost"
+# Project base URL (for sitemap) without trailing slash.
+baseurl="http://docutils.sourceforge.net"
 
 export PYTHONPATH=$pylib:$lib:$lib/extras
 
@@ -174,6 +176,46 @@ for htmlfile in `find .. -name '*.html'` ; do
     fi
 done
 
+# -------------------- XML sitemap for search engines: --------------------
+
+cd $htdocsdest
+
+(
+    echo '<?xml version="1.0" encoding="UTF-8"?>'
+    echo '<urlset xmlns="http://www.google.com/schemas/sitemap/0.84">'
+    find . -name '.[^.]*' -prune -o -type d -printf '%p/\n' -o -type f -print | \
+        while read i; do
+            # i is the file name.
+            if test "$i" == ./; then
+                # Homepage.
+                i=index.html
+                url="$baseurl/"
+            elif test "$i" == ./sitemap -o "${i: -1}" == / -a -f "${i}index.html"; then
+                # This is a directory and it has an index.html, so we
+                # don't need to include it.
+                continue
+            else
+                url="$baseurl${i:1}"
+                url="${url// /%20}"
+            fi
+            lastmod="`date --iso-8601=seconds -u -r "$i"`"
+            if test "${i: -5}" == .html; then
+                # HTML files (including the home page) have highest priority.
+                priority=1.0
+            elif test "${i: -4}" == .txt; then
+                # Text files have medium priority.
+                priority=0.5
+            else
+                # Everything else (source files etc.) has low priority.
+                priority=0.2
+            fi
+            echo "<url><loc>$url</loc><lastmod>$lastmod</lastmod><priority>$priority</priority></url>"
+        done
+    echo '</urlset>'
+) > sitemap
+# sitemap is compressed on the remote site for smaller patch sizes.
+
+
 # -------------------- Push changes to remote server. --------------------
 
 # SSH doesn't want to read id_dsa files which don't have 0600
@@ -201,6 +243,7 @@ if test ! -f $htdocs_tarball; then
         gunzip -c > ~/htdocs.tar
         cd $remotehtdocs
         tar xmf ~/htdocs.tar
+        gzip -f sitemap
         "
 # If the current and the new tarball differ, transmit patch file.
 elif ! diff -q $htdocs_tarball $htdocs_new_tarball > /dev/null; then
@@ -222,6 +265,7 @@ elif ! diff -q $htdocs_tarball $htdocs_new_tarball > /dev/null; then
         ~/bin/bspatch ~/htdocs.tar ~/htdocs.new.tar ~/htdocs.patch
         cd $remotehtdocs
         tar xmf ~/htdocs.new.tar
+        gzip -f sitemap
         mv ~/htdocs.new.tar ~/htdocs.tar
         rm -f ~/htdocs.patch
         " \
