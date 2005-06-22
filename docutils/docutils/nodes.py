@@ -29,7 +29,6 @@ import re
 import copy
 import warnings
 import inspect
-import xml.dom.minidom
 from types import IntType, SliceType, StringType, UnicodeType, \
      TupleType, ListType
 from UserString import UserString
@@ -66,8 +65,10 @@ class Node:
         """
         return 1
 
-    def asdom(self, dom=xml.dom.minidom):
+    def asdom(self, dom=None):
         """Return a DOM **fragment** representation of this Node."""
+        if dom is None:
+            import xml.dom.minidom as dom
         domroot = dom.Document()
         return self._dom_node(domroot)
 
@@ -836,8 +837,10 @@ class document(Root, Structural, Element):
 
         self.document = self
 
-    def asdom(self, dom=xml.dom.minidom):
+    def asdom(self, dom=None):
         """Return a DOM representation of this document."""
+        if dom is None:
+            import xml.dom.minidom as dom
         domroot = dom.Document()
         domroot.appendChild(self._dom_node(domroot))
         return domroot
