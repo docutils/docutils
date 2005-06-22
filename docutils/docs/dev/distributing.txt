@@ -38,7 +38,7 @@ Docutils has the following dependencies:
   dependencies.
 
 * Docutils may optionally make use of the PIL (`Python Imaging
-  Library`).  If PIL is present, it is automatically detected by
+  Library`_).  If PIL is present, it is automatically detected by
   Docutils.
 
 * There are three files in the ``extras/`` directory of the Docutils
@@ -97,7 +97,7 @@ wherever you install documentation):
 * The ``docs/`` directory.
 
   Do not install the contents of the ``docs/`` directory directly to
-  ``/usr/share/doc/docutils/`` —- it's incomplete and would contain
+  ``/usr/share/doc/docutils/``\—it's incomplete and would contain
   invalid references!
 
 * The ``licenses/`` directory.
