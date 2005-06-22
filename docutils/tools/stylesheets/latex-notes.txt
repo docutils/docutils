@@ -35,6 +35,5 @@ Regarding UTF-8:
     \usepackage{graphicx}
     \fi
 
-Width of images needs cleanup, in the framework.  Integers aren't
-sufficient (virtually unusable in typeset documents).  Need to discuss
-on Docutils-develop and come up with a set of standard units.
+
+Need to handle paragraph indenting manually (in the writer).
