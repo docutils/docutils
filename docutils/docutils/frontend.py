@@ -32,7 +32,6 @@ import os
 import os.path
 import sys
 import types
-import copy
 import warnings
 import ConfigParser as CP
 import codecs

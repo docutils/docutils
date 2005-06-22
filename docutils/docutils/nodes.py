@@ -26,7 +26,6 @@ __docformat__ = 'reStructuredText'
 import sys
 import os
 import re
-import copy
 import warnings
 from types import IntType, SliceType, StringType, UnicodeType, \
      TupleType, ListType, ClassType
@@ -354,8 +353,13 @@ class Element(Node):
 
         self.extend(children)           # maintain parent info
 
-        self.attributes = copy.deepcopy(self.attr_defaults)
+        self.attributes = {}
         """Dictionary of attribute {name: value}."""
+
+        # Copy default values.
+        for att, value in self.attr_defaults.items():
+            # Default values are always lists (at the moment).
+            self.attributes[att] = value[:]
 
         for att, value in attributes.items():
             self.attributes[att.lower()] = value
