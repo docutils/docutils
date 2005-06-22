@@ -28,9 +28,8 @@ import os
 import re
 import copy
 import warnings
-import inspect
 from types import IntType, SliceType, StringType, UnicodeType, \
-     TupleType, ListType
+     TupleType, ListType, ClassType
 from UserString import UserString
 
 
@@ -205,7 +204,7 @@ class Node:
         r = []
         if ascend:
             siblings=1
-        if inspect.isclass(condition) and issubclass(condition, Node):
+        if isinstance(condition, ClassType) and issubclass(condition, Node):
             node_class = condition
             def condition(node, node_class=node_class):
                 return isinstance(node, node_class)
