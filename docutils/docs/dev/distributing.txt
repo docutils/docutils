@@ -97,7 +97,7 @@ wherever you install documentation):
 * The ``docs/`` directory.
 
   Do not install the contents of the ``docs/`` directory directly to
-  ``/usr/share/doc/docutils/``\—it's incomplete and would contain
+  ``/usr/share/doc/docutils/``; it's incomplete and would contain
   invalid references!
 
 * The ``licenses/`` directory.
