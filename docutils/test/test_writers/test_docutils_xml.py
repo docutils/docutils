@@ -29,7 +29,9 @@ class DocutilsXMLTestCase(DocutilsTestSupport.StandardTestCase):
     bodyindents = '<document ids="test" names="test" source="&lt;string&gt;">\n    <title>\n        Test\n    </title>\n    <subtitle ids="subsection" names="subsection">\n        Subsection\n    </subtitle>\n    <paragraph>\n        Test\n    </paragraph>\n    <transition/>\n    <paragraph>\n        Test. \xe4\xf6\xfc&#8364;\n    </paragraph>\n</document>\n'
 
     def test_publish(self):
-        settings = {'input_encoding': 'utf8', 'output_encoding': 'iso-8859-1'}
+        settings = {'input_encoding': 'utf8',
+                    'output_encoding': 'iso-8859-1',
+                    '_disable_config': 1}
         for settings['newlines'] in 0, 1:
             for settings['indents'] in 0, 1:
                 for settings['xml_declaration'] in 0, 1:

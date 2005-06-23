@@ -98,10 +98,6 @@ class StandardTestCase(unittest.TestCase):
 
     def setUp(self):
         os.chdir(testroot)
-        frontend._globally_deactivate_config_files = 1
-
-    def tearDown(self):
-        frontend._globally_deactivate_config_files = 0
 
 
 class CustomTestCase(StandardTestCase):
@@ -635,7 +631,8 @@ class WriterPublishTestCase(CustomTestCase, docutils.SettingsSpec):
     Test case for publish.
     """
 
-    settings_default_overrides = {'strict_visitor': 1}
+    settings_default_overrides = {'_disable_config': 1,
+                                  'strict_visitor': 1}
     writer_name = '' # set in subclasses or constructor
 
     def __init__(self, *args, **kwargs):
