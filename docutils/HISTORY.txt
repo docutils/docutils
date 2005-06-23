@@ -65,7 +65,8 @@ Changes Since 0.3.9
 
 * docs/dev/distributing.txt: Added to project; guide for distributors.
 
-* docs/user/links.txt: Added to project; link list.
+* docs/user/links.txt: Added to project; lists of Docutils-related
+  links.
 
 * docs/ref/rst/substitutions.txt: "reStructuredText Standard
   Substitution Definition Sets", added to project.
