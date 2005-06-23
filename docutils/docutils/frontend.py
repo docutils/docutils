@@ -36,8 +36,12 @@ import warnings
 import ConfigParser as CP
 import codecs
 import docutils
-import optparse
-from optparse import SUPPRESS_HELP
+try:
+    import optparse
+    from optparse import SUPPRESS_HELP
+except ImportError:
+    import optik as optparse
+    from optik import SUPPRESS_HELP
 
 
 _globally_deactivate_config_files = 0
