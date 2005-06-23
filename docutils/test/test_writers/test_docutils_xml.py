@@ -11,7 +11,6 @@
 Test for docutils XML writer.
 """
 
-import unittest
 from __init__ import DocutilsTestSupport
 
 import docutils
@@ -59,4 +58,5 @@ class DocutilsXMLTestCase(DocutilsTestSupport.StandardTestCase):
 
 
 if __name__ == '__main__':
+    import unittest
     unittest.main()
