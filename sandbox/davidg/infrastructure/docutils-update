@@ -105,7 +105,7 @@ svn up --quiet
 # gather the materials
 cd $snapshotdir
 svn -q revert $project/$project/__init__.py
-haschanges="`svn up | grep -v '^At revision '`"
+haschanges="`svn up | grep -v '^At revision '; true`"
 
 # update __version_details__ string
 version_details="snapshot `date --utc --iso`, r`svn info | grep ^Revision: | sed 's/^Revision: //'`"
