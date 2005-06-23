@@ -46,10 +46,10 @@ class DumbPythonPointFormatter(nodes.NodeVisitor):
         '</presentation>\n')
 
     def visit_section(self, node):
-        if node.attributes.has_key('dupname'):
-            name = node.attributes['dupname']
+        if node['names']:
+            name = node.attributes['names'][0]
         else:
-            name = node.attributes['name']
+            name = node.attributes['dupnames'][0]
         self.slidenum += 1
         self.w('<slide id="Slide%03d" title="%s">\n'
                '<frame x="90" y="72" width="600" height="432" leftmargin="12"'
