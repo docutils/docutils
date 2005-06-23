@@ -44,11 +44,6 @@ except ImportError:
     from optik import SUPPRESS_HELP
 
 
-_globally_deactivate_config_files = 0
-"""Deactivate reading of config files globally; for testing purposes.
-Use _disable_config instead when calling Docutils programatically:
-<http://docutils.sf.net/docs/user/config.html#disable-config>"""
-
 def store_multiple(option, opt, value, parser, *args, **kwargs):
     """
     Store multiple values in `parser.values`.  (Option callback.)
@@ -539,8 +534,6 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
 
     def get_standard_config_files(self):
         """Return list of config files, from environment or standard."""
-        if _globally_deactivate_config_files:
-            return []
         try:
             config_files = os.environ['DOCUTILSCONFIG'].split(os.pathsep)
         except KeyError:
