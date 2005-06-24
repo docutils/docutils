@@ -114,6 +114,7 @@ donations, tasty treats, and related projects:
 * Bill Sconce
 * Frank Siebenlist
 * Bruce Smith
+* Nir Soffer
 * Asko Soukka
 * Darek Suchojad
 * Roman Suzi
