@@ -57,8 +57,8 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                  'docutils.readers', 'docutils.readers.python',
                  'docutils.transforms',
                  'docutils.writers',],
-    'data_files': [('docutils/parsers/rst/data',
-                    glob.glob('docutils/parsers/rst/data/*.txt'))],
+    'data_files': [('docutils/parsers/rst/include',
+                    glob.glob('docutils/parsers/rst/include/*.txt'))],
     'scripts' : ['tools/rst2html.py','tools/rst2latex.py'],}
 """Distutils setup parameters."""
 
