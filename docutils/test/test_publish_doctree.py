@@ -27,7 +27,7 @@ This is a test document.
 class PublishDoctreeTestCase(unittest.TestCase):
 
     def test_publish_doctree(self):
-        """Test publish_doctree and publish_doctree."""
+        """Test `publish_doctree` and `publish_from_doctree`."""
         # Produce the document tree.
         doctree, parts = docutils.core.publish_doctree(
             source=test_document,
@@ -39,7 +39,7 @@ class PublishDoctreeTestCase(unittest.TestCase):
         self.assert_(isinstance(parts, DictType))
 
         # Write out the document.
-        output, parts = docutils.core.publish_doctree(
+        output, parts = docutils.core.publish_from_doctree(
             doctree, writer_name='pseudoxml')
 
         self.assert_(isinstance(output, StringType))

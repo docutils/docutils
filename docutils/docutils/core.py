@@ -412,6 +412,49 @@ def publish_parts(source, source_path=None, destination_path=None,
         enable_exit_status=enable_exit_status)
     return pub.writer.parts
 
+def publish_doctree(source, source_path=None,
+                    source_class=io.StringInput,
+                    reader=None, reader_name='standalone',
+                    parser=None, parser_name='restructuredtext',
+                    settings=None, settings_spec=None,
+                    settings_overrides=None, config_section=None,
+                    enable_exit_status=None):
+    """
+    Set up & run a `Publisher` for programmatic use with string I/O.  Return
+    a pair of the encoded string or Unicode string output, and the parts.
+
+    For encoded string output, be sure to set the 'output_encoding' setting to
+    the desired encoding.  Set it to 'unicode' for unencoded Unicode string
+    output.  Here's one way::
+
+        publish_string(..., settings_overrides={'output_encoding': 'unicode'})
+
+    Similarly for Unicode string input (`source`)::
+
+        publish_string(..., settings_overrides={'input_encoding': 'unicode'})
+
+    Parameters: see `publish_programmatically`.
+    """
+    output, pub = publish_programmatically(
+        source_class=source_class, source=source, source_path=source_path,
+        destination_class=io.NullOutput,
+        destination=None, destination_path=None,
+        reader=reader, reader_name=reader_name,
+        parser=parser, parser_name=parser_name,
+        writer=None, writer_name='null',
+        settings=settings, settings_spec=settings_spec,
+        settings_overrides=settings_overrides,
+        config_section=config_section,
+        enable_exit_status=enable_exit_status)
+
+    # Note: clean up the document tree object by removing some things that are
+    # not needed anymore and that would not pickled well (this is the primary
+    # intended use of this publish method).
+    pub.document.transformer = None
+    pub.document.reporter = None
+
+    return pub.document, pub.writer.parts
+
 
 class DummyParser(parsers.Parser):
 
@@ -429,7 +472,7 @@ class DummyReader(readers.Reader):
     Its 'reading' consists in preparing and fixing up the document
     tree for the writing phase.
 
-    Used by `publish_doctree`.
+    Used by `publish_from_doctree`.
     """
 
     supported = ('dummy',)
@@ -450,11 +493,11 @@ class DummyReader(readers.Reader):
         return self.doctree
 
 
-def publish_doctree(doctree, source_path=None, destination_path=None,
-                    writer=None, writer_name='pseudoxml',
-                    settings=None, settings_spec=None,
-                    settings_overrides=None, config_section=None,
-                    enable_exit_status=None):
+def publish_from_doctree(doctree, source_path=None, destination_path=None,
+                         writer=None, writer_name='pseudoxml',
+                         settings=None, settings_spec=None,
+                         settings_overrides=None, config_section=None,
+                         enable_exit_status=None):
     """
     Set up & run a `Publisher` to render from an existing document tree data
     structure, for programmatic use with string I/O.  Return a pair of encoded
