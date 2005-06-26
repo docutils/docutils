@@ -1,32 +1,26 @@
 ;;; rst-mode.el --- Goodies to automate converting reST documents to HTML.
-
-;; Copyright 2003 Martin Blais <blais@iro.umontreal.ca>
-;; 
-;; This program is free software; you can redistribute it and/or modify
-;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation; either version 2 of the License, or
-;; (at your option) any later version.
-;; 
-;; This program is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU General Public License for more details.
-;; 
-;; You should have received a copy of the GNU General Public License
-;; along with this program; if not, write to the Free Software
-;; Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
+;;;
+;;; Author: Martin Blais
+;;; Contact: blais@furius.ca
+;;; Revision: $Revision$
+;;; Date: $Date$
+;;; Copyright: This module has been placed in the public domain.
+;;;
+;;; This package provides a few functions and variables that can help in
+;;; automating converting reST documents to HTML from within Emacs.  You could
+;;; use a makefile to do this, of use the compile command that this package
+;;; provides.
+;;;
+;;; You can also bind a command to automate converting to HTML::
+;;;
+;;;   (defun user-rst-mode-hook ()
+;;;     (local-set-key [(control c)(?9)] 'rst-html-compile))
+;;;   (add-hook 'rst-mode-hook 'user-rst-mode-hook)
+;;;
 ;;; Commentary:
-
-;; This package provides a few functions and variables that can help in
-;; automating converting reST documents to HTML from within emacs.  You could
-;; use a makefile to do this, of use the compile command that this package
-;; provides.
-
-;; You can also bind a command to automate converting to HTML:
-;; (defun user-rst-mode-hook ()
-;;   (local-set-key [(control c)(?9)] 'rst-html-compile))
-;; (add-hook 'rst-mode-hook 'user-rst-mode-hook)
+;;;
+;;; History:
+;;; 
 
 ;;; Code:
 
@@ -35,7 +29,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defgroup rst-html nil 
+(defgroup rst-html nil
   "Settings for conversion to HTML available by \\[rst-html-compile]. Use of
 this functionality is discouraged. Get a proper `Makefile' instead."
   :group 'rst
@@ -47,7 +41,7 @@ this functionality is discouraged. Get a proper `Makefile' instead."
   :type '(string))
 
 (defcustom rst-html-stylesheet ""
-  "Stylesheet for reST to HTML conversion. Empty for no special stylesheet."
+  "Stylesheet for reST to HTML conversion.  Empty for no special stylesheet."
   :group 'rst-html
   :type '(string))
 
@@ -86,8 +80,8 @@ Stylesheets are set by an own option."
     ))
 
 (defun rst-html-compile-with-conf ()
-  "Compile command to convert reST document into HTML. Attempts to find
-configuration file, if it can, overrides the options."
+  "Compile command to convert reST document into HTML.
+Attempts to find configuration file, if it can, overrides the options."
   (interactive)
   (let ((conffile (rst-html-find-conf)))
     (if conffile
@@ -118,7 +112,7 @@ configuration file, if it can, overrides the options."
       (while (and (or (not (string= "/" dir)) (setq dir nil) nil)
 		  (not (file-exists-p (concat dir file-name))))
 	;; Move up to the parent dir and try again.
-	(setq dir (expand-file-name (file-name-directory 
+	(setq dir (expand-file-name (file-name-directory
 				     (directory-file-name
 				     (file-name-directory dir))))) )
       (or (and dir (concat dir file-name)) nil)
@@ -126,4 +120,6 @@ configuration file, if it can, overrides the options."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;; rst-mode.el ends here
+(provide 'rst-html)
+
+;;; rst-html.el ends here

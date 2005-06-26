@@ -19,7 +19,7 @@ __docformat__ = 'reStructuredText'
 import sys
 import pprint
 from docutils import __version__, __version_details__, SettingsSpec
-from docutils import frontend, io, utils, readers, writers
+from docutils import frontend, io, utils, readers, writers, parsers
 from docutils.frontend import OptionParser
 
 
@@ -411,6 +411,135 @@ def publish_parts(source, source_path=None, destination_path=None,
         enable_exit_status=enable_exit_status)
     return pub.writer.parts
 
+def publish_doctree(source, source_path=None,
+                    source_class=io.StringInput,
+                    reader=None, reader_name='standalone',
+                    parser=None, parser_name='restructuredtext',
+                    settings=None, settings_spec=None,
+                    settings_overrides=None, config_section=None,
+                    enable_exit_status=None):
+    """
+    Set up & run a `Publisher` for programmatic use with string I/O.  Return
+    a pair of the encoded string or Unicode string output, and the parts.
+
+    For encoded string output, be sure to set the 'output_encoding' setting to
+    the desired encoding.  Set it to 'unicode' for unencoded Unicode string
+    output.  Here's one way::
+
+        publish_string(..., settings_overrides={'output_encoding': 'unicode'})
+
+    Similarly for Unicode string input (`source`)::
+
+        publish_string(..., settings_overrides={'input_encoding': 'unicode'})
+
+    Parameters: see `publish_programmatically`.
+    """
+    output, pub = publish_programmatically(
+        source_class=source_class, source=source, source_path=source_path,
+        destination_class=io.NullOutput,
+        destination=None, destination_path=None,
+        reader=reader, reader_name=reader_name,
+        parser=parser, parser_name=parser_name,
+        writer=None, writer_name='null',
+        settings=settings, settings_spec=settings_spec,
+        settings_overrides=settings_overrides,
+        config_section=config_section,
+        enable_exit_status=enable_exit_status)
+
+    # Note: clean up the document tree object by removing some things that are
+    # not needed anymore and that would not pickled well (this is the primary
+    # intended use of this publish method).
+    pub.document.transformer = None
+    pub.document.reporter = None
+
+    return pub.document, pub.writer.parts
+
+
+class DummyParser(parsers.Parser):
+    """
+    Dummy parser that does nothing.
+    """
+    supported = ('dummy',)
+
+    settings_spec = ('Dummy Parser Options', None, ())
+
+    config_section = 'dummy parser'
+    config_section_dependencies = ('parsers',)
+
+    def parse(self, inputstring, document):
+        "No-op"
+
+class DummyReader(readers.Reader):
+    """
+    Dummy reader that is initialized with an existing document tree.
+    Its 'reading' consists in preparing and fixing up the document tree for the
+    writing phase.
+    """
+    supported = ('dummy',)
+
+    document = None
+
+    settings_spec = ('Dummy Reader', None, (),)
+
+    config_section = 'dummy reader'
+    config_section_dependencies = ('readers',)
+
+    default_transforms = ()
+
+    def __init__( self, doctree ):
+        readers.Reader.__init__(self, parser=DummyParser())
+        self._doctree = doctree
+
+    def read(self, source, parser, settings):
+        # Fixup the document tree with a transformer and a reporter if it does
+        # not have them yet.
+        if self._doctree.transformer is None:
+            import docutils.transforms
+            self._doctree.transformer = docutils.transforms.Transformer(
+                self._doctree)
+
+        if self._doctree.reporter is None:
+            self._doctree.reporter = utils.new_reporter(
+                source.source_path, settings)
+
+        self._doctree.settings = settings
+        
+        return self._doctree
+
+
+def publish_from_doctree(doctree, source_path=None, destination_path=None,
+                         writer=None, writer_name='pseudoxml',
+                         settings=None, settings_spec=None,
+                         settings_overrides=None, config_section=None,
+                         enable_exit_status=None):
+    """
+
+    Set up & run a `Publisher` to render from an existing document tree data
+    structure, for programmatic use with string I/O.  Return a pair of encoded
+    string output and document parts.
+
+    For encoded string output, be sure to set the 'output_encoding' setting to
+    the desired encoding.  Set it to 'unicode' for unencoded Unicode string
+    output.  Here's one way::
+
+        publish_string(..., settings_overrides={'output_encoding': 'unicode'})
+
+    Parameters: see `publish_programmatically`.
+    """
+    output, pub = publish_programmatically(
+        source_class=io.NullInput, source='', source_path=source_path,
+        destination_class=io.StringOutput,
+        destination=None, destination_path=destination_path,
+        reader=DummyReader(doctree), reader_name=None,
+        parser=None, parser_name=None,
+        writer=writer, writer_name=writer_name,
+        settings=settings, settings_spec=settings_spec,
+        settings_overrides=settings_overrides,
+        config_section=config_section,
+        enable_exit_status=enable_exit_status)
+
+    return output, pub.writer.parts
+
 def publish_programmatically(source_class, source, source_path,
                             destination_class, destination, destination_path,
                             reader, reader_name,
@@ -520,3 +649,4 @@ def publish_programmatically(source_class, source, source_path,
     pub.set_destination(destination, destination_path)
     output = pub.publish(enable_exit_status=enable_exit_status)
     return output, pub
+

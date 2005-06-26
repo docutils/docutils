@@ -80,6 +80,7 @@ class Reporter:
             - `encoding`: The encoding for stderr output.
             - `error_handler`: The error handler for stderr output encoding.
         """
+
         self.source = source
         """The path to or description of the source data."""
 
@@ -357,7 +358,24 @@ def extract_name_value(line):
         attlist.append((attname.lower(), data))
     return attlist
 
-def new_document(source, settings=None):
+def new_reporter(source_path, settings):
+    """
+    Return a new Reporter object.
+
+    :Parameters:
+        `source` : string
+            The path to or description of the source text of the document.
+        `settings` : optparse.Values object
+            Runtime settings.  If none provided, a default set will be used.
+    """
+    reporter = Reporter(
+        source_path, settings.report_level, settings.halt_level,
+        stream=settings.warning_stream, debug=settings.debug,
+        encoding=settings.error_encoding,
+        error_handler=settings.error_encoding_error_handler)
+    return reporter
+
+def new_document(source_path, settings=None):
     """
     Return a new empty document object.
 
@@ -369,12 +387,9 @@ def new_document(source, settings=None):
     """
     if settings is None:
         settings = frontend.OptionParser().get_default_values()
-    reporter = Reporter(source, settings.report_level, settings.halt_level,
-                        stream=settings.warning_stream, debug=settings.debug,
-                        encoding=settings.error_encoding,
-                        error_handler=settings.error_encoding_error_handler)
-    document = nodes.document(settings, reporter, source=source)
-    document.note_source(source, -1)
+    reporter = new_reporter(source_path, settings)
+    document = nodes.document(settings, reporter, source=source_path)
+    document.note_source(source_path, -1)
     return document
 
 def clean_rcs_keywords(paragraph, keyword_substitutions):
