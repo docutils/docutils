@@ -29,14 +29,13 @@ class PublishDoctreeTestCase(unittest.TestCase):
     def test_publish_doctree(self):
         """Test `publish_doctree` and `publish_from_doctree`."""
         # Produce the document tree.
-        doctree, parts = docutils.core.publish_doctree(
+        doctree = docutils.core.publish_doctree(
             source=test_document,
             reader_name='standalone',
             parser_name='restructuredtext',
             settings_overrides={'_disable_config': 1})
 
         self.assert_(isinstance(doctree, docutils.nodes.document))
-        self.assert_(isinstance(parts, DictType))
 
         # Write out the document.
         output, parts = docutils.core.publish_from_doctree(
