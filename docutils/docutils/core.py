@@ -475,8 +475,6 @@ class DummyReader(readers.Reader):
 
     supported = ('dummy',)
 
-    document = None
-
     def __init__(self, doctree):
         readers.Reader.__init__(self, parser=DummyParser())
         self.doctree = doctree
