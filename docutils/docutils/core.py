@@ -420,18 +420,14 @@ def publish_doctree(source, source_path=None,
                     settings_overrides=None, config_section=None,
                     enable_exit_status=None):
     """
-    Set up & run a `Publisher` for programmatic use with string I/O.  Return
-    a pair of the encoded string or Unicode string output, and the parts.
+    Set up & run a `Publisher` for programmatic use with string I/O.
+    Return the document tree.
 
-    For encoded string output, be sure to set the 'output_encoding' setting to
+    For encoded string input, be sure to set the 'input_encoding' setting to
     the desired encoding.  Set it to 'unicode' for unencoded Unicode string
-    output.  Here's one way::
+    input.  Here's one way::
 
-        publish_string(..., settings_overrides={'output_encoding': 'unicode'})
-
-    Similarly for Unicode string input (`source`)::
-
-        publish_string(..., settings_overrides={'input_encoding': 'unicode'})
+       publish_doctree(..., settings_overrides={'input_encoding': 'unicode'})
 
     Parameters: see `publish_programmatically`.
     """
@@ -453,45 +449,7 @@ def publish_doctree(source, source_path=None,
     pub.document.transformer = None
     pub.document.reporter = None
 
-    return pub.document, pub.writer.parts
-
-
-class DummyParser(parsers.Parser):
-
-    """Dummy parser that does nothing.  Used by `DummyReader`."""
-
-    supported = ('dummy',)
-
-    def parse(self, inputstring, document):
-        pass
-
-class DummyReader(readers.Reader):
-
-    """
-    Dummy reader that is initialized with an existing document tree.
-    Its 'reading' consists in preparing and fixing up the document
-    tree for the writing phase.
-
-    Used by `publish_from_doctree`.
-    """
-
-    supported = ('dummy',)
-
-    def __init__(self, doctree):
-        readers.Reader.__init__(self, parser=DummyParser())
-        self.doctree = doctree
-
-    def read(self, source, parser, settings):
-        # Fixup the document tree with a transformer and a reporter if it does
-        # not have them yet.
-        if self.doctree.transformer is None:
-            self.doctree.transformer = Transformer(self.doctree)
-        if self.doctree.reporter is None:
-            self.doctree.reporter = utils.new_reporter(
-                source.source_path, settings)
-        self.doctree.settings = settings
-        return self.doctree
-
+    return pub.document
 
 def publish_from_doctree(doctree, source_path=None, destination_path=None,
                          writer=None, writer_name='pseudoxml',
@@ -507,7 +465,8 @@ def publish_from_doctree(doctree, source_path=None, destination_path=None,
     the desired encoding.  Set it to 'unicode' for unencoded Unicode string
     output.  Here's one way::
 
-       publish_doctree(..., settings_overrides={'output_encoding': 'unicode'})
+        publish_from_doctree(
+            ..., settings_overrides={'output_encoding': 'unicode'})
 
     Parameters: see `publish_programmatically`.
     """
@@ -633,3 +592,40 @@ def publish_programmatically(source_class, source, source_path,
     pub.set_destination(destination, destination_path)
     output = pub.publish(enable_exit_status=enable_exit_status)
     return output, pub
+
+
+class DummyParser(parsers.Parser):
+
+    """Dummy parser that does nothing.  Used by `DummyReader`."""
+
+    supported = ('dummy',)
+
+    def parse(self, inputstring, document):
+        pass
+
+class DummyReader(readers.Reader):
+
+    """
+    Dummy reader that is initialized with an existing document tree.
+    Its 'reading' consists in preparing and fixing up the document
+    tree for the writing phase.
+
+    Used by `publish_from_doctree`.
+    """
+
+    supported = ('dummy',)
+
+    def __init__(self, doctree):
+        readers.Reader.__init__(self, parser=DummyParser())
+        self.doctree = doctree
+
+    def read(self, source, parser, settings):
+        # Fixup the document tree with a transformer and a reporter if it does
+        # not have them yet.
+        if self.doctree.transformer is None:
+            self.doctree.transformer = Transformer(self.doctree)
+        if self.doctree.reporter is None:
+            self.doctree.reporter = utils.new_reporter(
+                source.source_path, settings)
+        self.doctree.settings = settings
+        return self.doctree
