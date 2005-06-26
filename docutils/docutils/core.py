@@ -21,6 +21,7 @@ import pprint
 from docutils import __version__, __version_details__, SettingsSpec
 from docutils import frontend, io, utils, readers, writers, parsers
 from docutils.frontend import OptionParser
+from docutils.transforms import Transformer
 
 
 class Publisher:
@@ -456,55 +457,40 @@ def publish_doctree(source, source_path=None,
 
 
 class DummyParser(parsers.Parser):
-    """
-    Dummy parser that does nothing.
-    """
+
+    """Dummy parser that does nothing.  Used by `DummyReader`."""
+
     supported = ('dummy',)
 
-    settings_spec = ('Dummy Parser Options', None, ())
-
-    config_section = 'dummy parser'
-    config_section_dependencies = ('parsers',)
-
     def parse(self, inputstring, document):
-        "No-op"
+        pass
 
 class DummyReader(readers.Reader):
+
     """
     Dummy reader that is initialized with an existing document tree.
     Its 'reading' consists in preparing and fixing up the document tree for the
     writing phase.
     """
+
     supported = ('dummy',)
 
     document = None
 
-    settings_spec = ('Dummy Reader', None, (),)
-
-    config_section = 'dummy reader'
-    config_section_dependencies = ('readers',)
-
-    default_transforms = ()
-
-    def __init__( self, doctree ):
+    def __init__(self, doctree):
         readers.Reader.__init__(self, parser=DummyParser())
-        self._doctree = doctree
+        self.doctree = doctree
 
     def read(self, source, parser, settings):
         # Fixup the document tree with a transformer and a reporter if it does
         # not have them yet.
-        if self._doctree.transformer is None:
-            import docutils.transforms
-            self._doctree.transformer = docutils.transforms.Transformer(
-                self._doctree)
-
-        if self._doctree.reporter is None:
-            self._doctree.reporter = utils.new_reporter(
+        if self.doctree.transformer is None:
+            self.doctree.transformer = Transformer(self.doctree)
+        if self.doctree.reporter is None:
+            self.doctree.reporter = utils.new_reporter(
                 source.source_path, settings)
-
-        self._doctree.settings = settings
-        
-        return self._doctree
+        self.doctree.settings = settings
+        return self.doctree
 
 
 def publish_from_doctree(doctree, source_path=None, destination_path=None,
