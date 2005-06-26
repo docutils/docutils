@@ -11,9 +11,7 @@ This package contains Docutils Reader modules.
 __docformat__ = 'reStructuredText'
 
 
-import sys
 from docutils import utils, parsers, Component
-from docutils.transforms import universal
 
 
 class Reader(Component):
