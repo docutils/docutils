@@ -173,7 +173,7 @@ The abbreviations "reSTX" and "rSTX"/"rstx" should **not** be used;
 they overemphasize reStructuredText's precedessor, Zope's
 StructuredText.
 
-__ http://www.xml.com/pub/a/2002/02/06/rest.html
+__ http://en.wikipedia.org/wiki/Representational_State_Transfer
 
 
 What's the standard filename extension for a reStructuredText file?
@@ -706,14 +706,12 @@ web templating).  Alternate implementations are welcome.
 What kind of HTML does it produce?
 ----------------------------------
 
-It produces XHTML compatible with the `HTML 4.01`_ and `XHTML 1.0`_
-specifications (within reason; there are some incompatibilities
-between the specs).  A cascading style sheet ("default.css" by
-default) is required for proper viewing with a modern graphical
-browser.  Correct rendering of the HTML produced depends on the CSS
-support of the browser.
+It produces XHTML compatible with the `XHTML 1.0`_ specification.  A
+cascading style sheet (provided as "tools/stylesheets/default.css") is
+required for proper viewing with a modern graphical browser.  Correct
+rendering of the HTML produced depends on the CSS support of the
+browser.
 
-.. _HTML 4.01: http://www.w3.org/TR/html4/
 .. _XHTML 1.0: http://www.w3.org/TR/xhtml1/
 
 
@@ -896,7 +894,7 @@ You can use the `docutils.core.publish_parts()`_ function, which
 returns a dictionary containing an 'html_body_' entry.
 
 .. _docutils.core.publish_parts():
-   docs/api/publisher.html#publisher-convenience-functions
+   docs/api/publisher.html#publish-parts
 .. _html_body:
    docs/api/publisher.html#html-body
 
