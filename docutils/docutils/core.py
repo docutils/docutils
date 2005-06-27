@@ -620,6 +620,10 @@ class DummyReader(readers.Reader):
         self.doctree = doctree
 
     def read(self, source, parser, settings):
+        # Useful for pickling, where the reporter is destroyed.
+        if self.doctree.reporter is None:
+            self.doctree.reporter = utils.new_reporter(
+                source.source_path, settings)
         # Override document settings with new settings.
         self.doctree.settings = settings
         return self.doctree
