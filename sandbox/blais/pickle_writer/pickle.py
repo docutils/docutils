@@ -26,8 +26,6 @@ class Writer(writers.Writer):
 
     def translate(self):
         # Remove stuff that cannot be pickled.
-        # Note: the method that restores this might need to recreate those
-        # structures.
         self.document.transformer = None
         self.document.reporter = None
 
