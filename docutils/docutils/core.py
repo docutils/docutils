@@ -482,6 +482,8 @@ def publish_from_doctree(doctree, destination_path=None,
     """
     # Create fresh Transformer object, to be populated from Writer component.
     doctree.transformer = Transformer(doctree)
+    # Don't double apply default transforms.
+    doctree.transformer.default_transforms = ()
     # Create reader with existing doctree.
     from docutils.readers import dummy
     reader = dummy.Reader(doctree)
