@@ -225,7 +225,7 @@ class Publisher:
         if self.settings.dump_transforms:
             print >>sys.stderr, '\n::: Transforms applied:'
             print >>sys.stderr, pprint.pformat(
-                self.document.transformer.applied)
+                [a[1:] for a in self.document.transformer.applied])
         if self.settings.dump_pseudo_xml:
             print >>sys.stderr, '\n::: Pseudo-XML:'
             print >>sys.stderr, self.document.pformat().encode(
