@@ -15,7 +15,10 @@ fi
 if test "$1"; then
     proj="$1"
 fi
-echo Performing code coverage test for project \""$proj"\"...
+echo "Performing code coverage test for project \"$proj\"..."
+echo
+echo "Please be patient; coverage tracking slows test execution down by more"
+echo "than factor 10."
 echo
 cd test
 rm -rf cover
