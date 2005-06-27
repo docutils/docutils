@@ -43,7 +43,7 @@ class Transform:
     default_priority = None
     """Numerical priority of this transform, 0 through 999 (override)."""
 
-    def __init__(self, document, startnode=None, data=None):
+    def __init__(self, document, startnode=None, **kwargs):
         """
         Initial setup for in-place document transforms.
         """
@@ -60,7 +60,7 @@ class Transform:
             document.settings.language_code)
         """Language module local to this document."""
 
-        self.data = data
+        self.data = kwargs
         """Data specific to this transform instance.  You can use this
         to parameterize the transform instance."""
 
@@ -109,18 +109,17 @@ class Transformer(TransformSpec):
         """Internal serial number to keep track of the add order of
         transforms."""
 
-    def add_transform(self, transform_class, priority=None, data=None):
+    def add_transform(self, transform_class, priority=None, **kwargs):
         """
         Store a single transform.  Use `priority` to override the default.
-        `data` is passed to the constructor as a keyword argument.
-        This can be used to pass application-specific data to the transformer
-        instance.
+        `kwargs` are passed on to the constructor of the transform.  This can
+        be used to pass application-specific data to the transform instance.
         """
         if priority is None:
             priority = transform_class.default_priority
         priority_string = self.get_priority_string(priority)
         self.transforms.append(
-            (priority_string, transform_class, None, data))
+            (priority_string, transform_class, None, kwargs))
         self.sorted = 0
 
     def add_transforms(self, transform_list):
@@ -129,7 +128,7 @@ class Transformer(TransformSpec):
             priority_string = self.get_priority_string(
                 transform_class.default_priority)
             self.transforms.append(
-                (priority_string, transform_class, None, None))
+                (priority_string, transform_class, None, {}))
         self.sorted = 0
 
     def add_pending(self, pending, priority=None):
@@ -139,7 +138,7 @@ class Transformer(TransformSpec):
             priority = transform_class.default_priority
         priority_string = self.get_priority_string(priority)
         self.transforms.append(
-            (priority_string, transform_class, pending, None))
+            (priority_string, transform_class, pending, {}))
         self.sorted = 0
 
     def get_priority_string(self, priority):
@@ -183,8 +182,8 @@ class Transformer(TransformSpec):
                 self.transforms.sort()
                 self.transforms.reverse()
                 self.sorted = 1
-            priority, transform_class, pending, data = self.transforms.pop()
-            transform = transform_class(self.document,
-                                        startnode=pending, data=data)
+            priority, transform_class, pending, kwargs = self.transforms.pop()
+            transform = transform_class(self.document, startnode=pending,
+                                        **kwargs)
             transform.apply()
-            self.applied.append((priority, transform_class, pending))
+            self.applied.append((transform, priority, transform_class, pending))
