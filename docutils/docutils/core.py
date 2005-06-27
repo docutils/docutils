@@ -442,15 +442,9 @@ def publish_doctree(source, source_path=None,
         settings_overrides=settings_overrides,
         config_section=config_section,
         enable_exit_status=enable_exit_status)
-
-    # The transformer is not needed anymore.
+    # The transformer is not needed anymore.  (A new transformer will
+    # be created in `publish_from_doctree`.)
     del pub.document.transformer
-
-    # Note: clean up the document tree object by removing some things that are
-    # not needed anymore and that would not pickled well (this is the primary
-    # intended use of this publish method).
-    pub.document.reporter = None
-
     return pub.document
 
 def publish_from_doctree(doctree, destination_path=None,
@@ -463,6 +457,9 @@ def publish_from_doctree(doctree, destination_path=None,
     structure, for programmatic use with string I/O.  Return a pair of encoded
     string output and document parts.
 
+    Note that doctree.settings is overridden; if you want to use the settings
+    of the original `doctree` document, pass settings=doctree.settings.
+
     For encoded string output, be sure to set the 'output_encoding' setting to
     the desired encoding.  Set it to 'unicode' for unencoded Unicode string
     output.  Here's one way::
@@ -472,7 +469,7 @@ def publish_from_doctree(doctree, destination_path=None,
 
     Parameters: see `publish_programmatically`.
     """
-    # Create fresh Transformer object.
+    # Create fresh Transformer object, to be populated from Writer component.
     doctree.transformer = Transformer(doctree)
     # Create Publisher.
     pub = Publisher(DummyReader(doctree), None, writer, settings=settings,
@@ -484,8 +481,6 @@ def publish_from_doctree(doctree, destination_path=None,
     # Set settings.
     pub.process_programmatic_settings(
         settings_spec, settings_overrides, config_section)
-    # Override document settings with new settings.
-    doctree.settings = pub.settings
     # Set destination path and run.
     pub.set_destination(None, destination_path)
     output = pub.publish(enable_exit_status=enable_exit_status)
@@ -615,9 +610,6 @@ class DummyReader(readers.Reader):
 
     """
     Dummy reader that is initialized with an existing document tree.
-    Its 'reading' consists in preparing and fixing up the document
-    tree for the writing phase.
-
     Used by `publish_from_doctree`.
     """
 
@@ -628,9 +620,6 @@ class DummyReader(readers.Reader):
         self.doctree = doctree
 
     def read(self, source, parser, settings):
-        # Fixup the document tree with a reporter if it does not have it yet.
-        if self.doctree.reporter is None:
-            self.doctree.reporter = utils.new_reporter(
-                source.source_path, settings)
+        # Override document settings with new settings.
         self.doctree.settings = settings
         return self.doctree
