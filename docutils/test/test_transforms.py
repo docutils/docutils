@@ -14,6 +14,7 @@ from docutils import transforms, utils
 
 import unittest
 
+
 class TestTransform(transforms.Transform):
 
     default_priority = 100
@@ -23,6 +24,7 @@ class TestTransform(transforms.Transform):
     def apply(self, **kwargs):
         self.applied += 1
         self.kwargs = kwargs
+
 
 class KwargsTestCase(unittest.TestCase):
 
