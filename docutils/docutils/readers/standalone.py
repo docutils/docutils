@@ -21,6 +21,9 @@ class Reader(readers.Reader):
     supported = ('standalone',)
     """Contexts this reader supports."""
 
+    document = None
+    """A single document tree."""
+
     settings_spec = (
         'Standalone Reader',
         None,
