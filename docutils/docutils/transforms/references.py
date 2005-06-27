@@ -43,10 +43,10 @@ class PropagateTargets(Transform):
 
     def apply(self):
         for target in self.document.internal_targets:
-            if not (len(target) == 0 and
-                    not (target.attributes.has_key('refid') or
-                         target.attributes.has_key('refuri') or
-                         target.attributes.has_key('refname'))):
+            assert len(target) == 0, ('only block-level targets expected in '
+                                      'document.internal_targets')
+            if (target.hasattr('refid') or target.hasattr('refuri') or
+                target.hasattr('refname')):
                 continue
             next_node = target.next_node(ascend=1)
             # Do not move names and ids into Invisibles (we'd lose the
