@@ -18,6 +18,7 @@ __docformat__ = 'reStructuredText'
 
 import sys
 import pprint
+from types import StringType
 from docutils import __version__, __version_details__, SettingsSpec
 from docutils import frontend, io, utils, readers, writers
 from docutils.frontend import OptionParser
@@ -51,6 +52,11 @@ class Publisher:
 
         self.writer = writer
         """A `docutils.writers.Writer` instance."""
+
+        for component in 'reader', 'parser', 'writer':
+            assert not isinstance(getattr(self, component), StringType), \
+                   ('passed string as "%s" parameter; use "%s_name" instead'
+                    % (getattr(self, component), component, component))
 
         self.source = source
         """The source of input data, a `docutils.io.Input` instance."""
