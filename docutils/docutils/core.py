@@ -230,8 +230,13 @@ class Publisher:
             print >>sys.stderr, pprint.pformat(self.document.__dict__)
         if self.settings.dump_transforms:
             print >>sys.stderr, '\n::: Transforms applied:'
+            print >>sys.stderr, (' (priority, transform class, '
+                                 'pending node details, keyword args)')
             print >>sys.stderr, pprint.pformat(
-                [a[1:] for a in self.document.transformer.applied])
+                [(priority, '%s.%s' % (xclass.__module__, xclass.__name__),
+                  pending and pending.details, kwargs)
+                 for priority, xclass, pending, kwargs
+                 in self.document.transformer.applied])
         if self.settings.dump_pseudo_xml:
             print >>sys.stderr, '\n::: Pseudo-XML:'
             print >>sys.stderr, self.document.pformat().encode(
