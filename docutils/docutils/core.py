@@ -395,7 +395,7 @@ def publish_parts(source, source_path=None, destination_path=None,
     the desired encoding.  Set it to 'unicode' for unencoded Unicode string
     input.  Here's how::
 
-        publish_string(..., settings_overrides={'input_encoding': 'unicode'})
+        publish_parts(..., settings_overrides={'input_encoding': 'unicode'})
 
     Parameters: see `publish_programmatically`.
     """
@@ -427,7 +427,7 @@ def publish_doctree(source, source_path=None,
     the desired encoding.  Set it to 'unicode' for unencoded Unicode string
     input.  Here's one way::
 
-       publish_doctree(..., settings_overrides={'input_encoding': 'unicode'})
+        publish_doctree(..., settings_overrides={'input_encoding': 'unicode'})
 
     Parameters: see `publish_programmatically`.
     """

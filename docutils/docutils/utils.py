@@ -366,7 +366,7 @@ def new_reporter(source_path, settings):
         `source` : string
             The path to or description of the source text of the document.
         `settings` : optparse.Values object
-            Runtime settings.  If none provided, a default set will be used.
+            Runtime settings.
     """
     reporter = Reporter(
         source_path, settings.report_level, settings.halt_level,
