@@ -43,7 +43,7 @@ class Transform:
     default_priority = None
     """Numerical priority of this transform, 0 through 999 (override)."""
 
-    def __init__(self, document, startnode=None, **kwargs):
+    def __init__(self, document, startnode=None):
         """
         Initial setup for in-place document transforms.
         """
@@ -60,11 +60,7 @@ class Transform:
             document.settings.language_code)
         """Language module local to this document."""
 
-        self.data = kwargs
-        """Data specific to this transform instance.  You can use this
-        to parameterize the transform instance."""
-
-    def apply(self):
+    def apply(self, **kwargs):
         """Override to apply the transform to the document tree."""
         raise NotImplementedError('subclass must override this method')
 
@@ -109,11 +105,12 @@ class Transformer(TransformSpec):
         """Internal serial number to keep track of the add order of
         transforms."""
 
-    def add_transform(self, transform_class, priority=None, **kwargs):
+    def add_transform(self, transform_class, priority=None, kwargs={}):
         """
         Store a single transform.  Use `priority` to override the default.
-        `kwargs` are passed on to the constructor of the transform.  This can
-        be used to pass application-specific data to the transform instance.
+        `kwargs` is a dictionary whose contents are passed as keyword
+        arguments to the `apply` method of the transform.  This can be used to
+        pass application-specific data to the transform instance.
         """
         if priority is None:
             priority = transform_class.default_priority
@@ -183,7 +180,6 @@ class Transformer(TransformSpec):
                 self.transforms.reverse()
                 self.sorted = 1
             priority, transform_class, pending, kwargs = self.transforms.pop()
-            transform = transform_class(self.document, startnode=pending,
-                                        **kwargs)
-            transform.apply()
+            transform = transform_class(self.document, startnode=pending)
+            transform.apply(**kwargs)
             self.applied.append((transform, priority, transform_class, pending))
