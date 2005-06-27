@@ -886,6 +886,21 @@ of the output.  It must also match the document encoding.  For UTF-8::
    http://docutils.sourceforge.net/docs/ref/rst/directives.html#sectnum
 
 
+How can I retrieve the body of the HTML document?
+-------------------------------------------------
+
+(This is usually needed when using Docutils in conjunction with a
+templating system.)
+
+You can use the `docutils.core.publish_parts()`_ function, which
+returns a dictionary containing an 'html_body_' entry.
+
+.. _docutils.core.publish_parts():
+   docs/api/publisher.html#publisher-convenience-functions
+.. _html_body:
+   docs/api/publisher.html#html-body
+
+
 Python Source Reader
 ====================
 
