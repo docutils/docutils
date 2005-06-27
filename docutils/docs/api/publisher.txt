@@ -19,19 +19,19 @@ then call its ``publish`` method.  ``docutils.core.Publisher.publish``
 handles everything else.  There are five convenience functions in the
 ``docutils.core`` module:
 
-* ``publish_cmdline``: for command-line front-end tools, like
+:_`publish_cmdline`: for command-line front-end tools, like
   ``rst2html.py``.  There are several examples in the ``tools/``
   directory.  A detailed analysis of one such tool is in `Inside A
   Docutils Command-Line Front-End Tool`_
 
-* ``publish_file``: for programmatic use with file-like I/O.  In
+:_`publish_file`: for programmatic use with file-like I/O.  In
   addition to writing the encoded output to a file, also returns the
   encoded output as a string.
 
-* ``publish_string``: for programmatic use with string I/O.  Returns
+:_`publish_string`: for programmatic use with string I/O.  Returns
   the encoded output as a string.
 
-* ``publish_parts``: for programmatic use with string input; returns a
+:_`publish_parts`: for programmatic use with string input; returns a
   dictionary of document parts.  Dictionary keys are the names of
   parts, and values are Unicode strings; encoding is up to the client.
   Useful when only portions of the processed document are desired.
@@ -39,7 +39,7 @@ handles everything else.  There are five convenience functions in the
 
   There are usage examples in the `docutils/examples.py`_ module.
 
-* ``publish_programmatically``: for custom programmatic use.  This
+:_`publish_programmatically`: for custom programmatic use.  This
   function implements common code and is used by ``publish_file``,
   ``publish_string``, and ``publish_parts``.  It returns a 2-tuple:
   the encoded string output and the Publisher object.
@@ -105,7 +105,8 @@ Parts Provided By the HTML Writer
 ---------------------------------
 
 _`body`
-    ``parts['body']`` is equivalent to ``parts['fragment']``.
+    ``parts['body']`` is equivalent to parts['fragment_'].  It is
+    *not* equivalent to parts['html_body_'].
 
 _`docinfo`
     ``parts['docinfo']`` contains the document bibliographic data.
