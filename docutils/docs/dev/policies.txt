@@ -104,6 +104,44 @@ Conventions`_ PEPs, with the following clarifications and extensions:
 .. _Docutils Internationalization: ../howto/i18n.html#python-code
 
 
+Documentation Conventions
+=========================
+
+* Docutils documentation is written using reStructuredText, of course.
+
+* Use 7-bit ASCII if at all possible.
+
+* Use the following section title adornment styles::
+
+      ================
+       Document Title
+      ================
+
+      ------------------------------
+       Document Subtitle (optional)
+      ------------------------------
+
+      Section
+      =======
+
+      Subsection
+      ----------
+
+  If you need subsubsections and further, these characters are
+  recommended for title underlines::
+
+      ` .
+
+* Use two blank lines before each section/subsection/etc. title.  One
+  blank line is sufficient between immediately adjacent titles.
+
+* Add a bibliographic field list immediately after the document
+  title/subtitle.  See the beginning of this document for an example.
+
+* Add an Emacs local variables block in a comment at the end of the
+  document.  See the end of this document for an example.
+
+
 Copyrights and Licensing
 ========================
 
