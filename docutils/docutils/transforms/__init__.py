@@ -105,7 +105,7 @@ class Transformer(TransformSpec):
         """Internal serial number to keep track of the add order of
         transforms."""
 
-    def add_transform(self, transform_class, priority=None, kwargs={}):
+    def add_transform(self, transform_class, priority=None, **kwargs):
         """
         Store a single transform.  Use `priority` to override the default.
         `kwargs` is a dictionary whose contents are passed as keyword
@@ -159,7 +159,7 @@ class Transformer(TransformSpec):
             self.add_transforms(component.default_transforms)
             self.components[component.component_type] = component
         self.sorted = 0
-        # Setup all of the reference resolvers for this transformer. Each
+        # Set up all of the reference resolvers for this transformer. Each
         # component of this transformer is able to register its own helper
         # functions to help resolve references.
         unknown_reference_resolvers = []
@@ -182,5 +182,4 @@ class Transformer(TransformSpec):
             priority, transform_class, pending, kwargs = self.transforms.pop()
             transform = transform_class(self.document, startnode=pending)
             transform.apply(**kwargs)
-            self.applied.append((transform, priority,
-                                 transform_class.__name__, pending))
+            self.applied.append((priority, transform_class, pending, kwargs))
