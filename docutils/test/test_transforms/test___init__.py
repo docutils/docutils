@@ -22,7 +22,7 @@ class TestTransform(transforms.Transform):
     
     def apply(self, **kwargs):
         self.applied += 1
-        self.kwargs = kwargs
+        assert kwargs == {'foo': 42}
 
 
 class KwargsTestCase(unittest.TestCase):
