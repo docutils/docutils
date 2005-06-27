@@ -443,15 +443,17 @@ def publish_doctree(source, source_path=None,
         config_section=config_section,
         enable_exit_status=enable_exit_status)
 
+    # The transformer is not needed anymore.
+    del pub.document.transformer
+
     # Note: clean up the document tree object by removing some things that are
     # not needed anymore and that would not pickled well (this is the primary
     # intended use of this publish method).
-    pub.document.transformer = None
     pub.document.reporter = None
 
     return pub.document
 
-def publish_from_doctree(doctree, source_path=None, destination_path=None,
+def publish_from_doctree(doctree, destination_path=None,
                          writer=None, writer_name='pseudoxml',
                          settings=None, settings_spec=None,
                          settings_overrides=None, config_section=None,
@@ -470,17 +472,23 @@ def publish_from_doctree(doctree, source_path=None, destination_path=None,
 
     Parameters: see `publish_programmatically`.
     """
-    output, pub = publish_programmatically(
-        source_class=io.NullInput, source='', source_path=source_path,
-        destination_class=io.StringOutput,
-        destination=None, destination_path=destination_path,
-        reader=DummyReader(doctree), reader_name=None,
-        parser=None, parser_name=None,
-        writer=writer, writer_name=writer_name,
-        settings=settings, settings_spec=settings_spec,
-        settings_overrides=settings_overrides,
-        config_section=config_section,
-        enable_exit_status=enable_exit_status)
+    # Create fresh Transformer object.
+    doctree.transformer = Transformer(doctree)
+    # Create Publisher.
+    pub = Publisher(DummyReader(doctree), None, writer, settings=settings,
+                    source_class=io.NullInput,
+                    destination_class=io.StringOutput)
+    # Set Writer.  There's no Reader and Parser because the document
+    # is already parsed.
+    pub.set_components(None, None, writer_name)
+    # Set settings.
+    pub.process_programmatic_settings(
+        settings_spec, settings_overrides, config_section)
+    # Override document settings with new settings.
+    doctree.settings = pub.settings
+    # Set destination path and run.
+    pub.set_destination(None, destination_path)
+    output = pub.publish(enable_exit_status=enable_exit_status)
     return output, pub.writer.parts
 
 def publish_programmatically(source_class, source, source_path,
@@ -620,10 +628,7 @@ class DummyReader(readers.Reader):
         self.doctree = doctree
 
     def read(self, source, parser, settings):
-        # Fixup the document tree with a transformer and a reporter if it does
-        # not have them yet.
-        if self.doctree.transformer is None:
-            self.doctree.transformer = Transformer(self.doctree)
+        # Fixup the document tree with a reporter if it does not have it yet.
         if self.doctree.reporter is None:
             self.doctree.reporter = utils.new_reporter(
                 source.source_path, settings)
