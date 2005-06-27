@@ -20,8 +20,12 @@ Related Projects
 These are projects users of Docutils and reStructuredText may find
 useful, listed in no particular order.  Many of them projects are
 hosted in the `Docutils Sandbox`_.  All projects are usable by end
-users in some way, however do not expect all of them to run out of the
-box.
+users in some way, however please do not expect all of them to run
+straight out of the box.
+
+* For Wikis, please see the `FAQ entry about Wikis`_.
+
+* For Blogs (Weblogs), please see the `FAQ entry about Blogs`_.
 
 * rst2chm_, written by Oliver Rutherfurd, generates Microsoft HTML
   Help files from reStructuredText files.
@@ -53,8 +57,6 @@ box.
 
 * Patrick O'Brien has taken over the `OpenOffice.org Writer`_.
 
-* For Wikis, please see the `FAQ entry about Wikis`_.
-
 * Bill Bumgarner has written a `simple HTML writer`_ that doesn't rely
   on CSS (stylesheets).
 
@@ -63,8 +65,10 @@ box.
   both LaTeX and HTML output on top of it.
 
 * Beni Cherniavsky maintains a Makefile_ for driving Docutils, hoping
-  to handle everything one might do with docutils.
+  to handle everything one might do with Docutils.
 
+.. _FAQ entry about Wikis: http://docutils.sf.net/FAQ.html#are-there-any-wikis-that-use-restructuredtext-syntax
+.. _FAQ entry about Blogs: http://docutils.sf.net/FAQ.html#are-there-any-weblog-blog-projects-that-use-restructuredtext-syntax
 .. _rst2chm: http://www.rutherfurd.net/software/rst2chm/
 .. _rest2web: http://www.voidspace.org.uk/python/rest2web/
 .. _Docutils Sandbox: http://docutils.sf.net/sandbox/README.html
@@ -79,7 +83,6 @@ box.
 .. _HT2HTML integration: http://docutils.sf.net/sandbox/oliverr/ht/
 .. _DocFactory: http://docutils.sf.net/sandbox/gschwant/docfactory/doc/
 .. _OpenOffice.org Writer: http://docutils.sf.net/sandbox/pobrien/OpenOffice/
-.. _FAQ entry about Wikis: http://docutils.sf.net/FAQ.html#are-there-any-wikis-that-use-restructuredtext-syntax
 .. _simple HTML writer: http://docutils.sf.net/sandbox/bbum/DocArticle/
 .. _preprocessing module: http://docutils.sf.net/sandbox/cben/rolehack/
 .. _Makefile: http://docutils.sf.net/sandbox/cben/make/
