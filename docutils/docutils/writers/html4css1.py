@@ -218,11 +218,14 @@ class HTMLTranslator(nodes.NodeVisitor):
         stylesheet = utils.get_stylesheet_reference(settings)
         self.stylesheet = []
         if stylesheet is None:
-            self.document.reporter.warning(
-                'No stylesheet path or URI given.\nUse the --stylesheet '
-                'or --stylesheet-path option to specify the location of\n'
-                'default.css (in the tools/stylesheets/ directory '
-                'of the Docutils distribution).\n')
+            # Creating a warning is a bad idea as long as it breaks
+            # existing scripts which use Docutils programmatically.
+            #self.document.reporter.warning(
+            #    'No stylesheet path or URI given.\nUse the --stylesheet '
+            #    'or --stylesheet-path option to specify the location of\n'
+            #    'default.css (in the tools/stylesheets/ directory '
+            #    'of the Docutils distribution).\n')
+            pass
         elif settings.embed_stylesheet and stylesheet:
             stylesheet = utils.get_stylesheet_reference(settings,
                 os.path.join(os.getcwd(), 'dummy'))
