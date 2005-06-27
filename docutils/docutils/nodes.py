@@ -751,10 +751,10 @@ class document(Root, Structural, Element):
         """System message generator."""
 
         self.external_targets = []
-        """List of external target nodes."""
+        """List of external named target nodes."""
 
         self.internal_targets = []
-        """List of internal target nodes."""
+        """List of internal block-level target nodes."""
 
         self.indirect_targets = []
         """List of indirect target nodes."""
