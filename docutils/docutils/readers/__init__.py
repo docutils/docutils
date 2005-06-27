@@ -28,7 +28,7 @@ class Reader(Component):
     component_type = 'reader'
     config_section = 'readers'
 
-    def __init__(self, parser=None, parser_name='restructuredtext'):
+    def __init__(self, parser=None, parser_name=None):
         """
         Initialize the Reader instance.
 

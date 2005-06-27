@@ -19,7 +19,7 @@ __docformat__ = 'reStructuredText'
 import sys
 import pprint
 from docutils import __version__, __version_details__, SettingsSpec
-from docutils import frontend, io, utils, readers, writers, parsers
+from docutils import frontend, io, utils, readers, writers
 from docutils.frontend import OptionParser
 from docutils.transforms import Transformer
 
@@ -471,13 +471,15 @@ def publish_from_doctree(doctree, destination_path=None,
     """
     # Create fresh Transformer object, to be populated from Writer component.
     doctree.transformer = Transformer(doctree)
+    # Create reader with existing doctree.
+    from docutils.readers import dummy
+    reader = dummy.Reader(doctree)
     # Create Publisher.
-    pub = Publisher(DummyReader(doctree), None, writer, settings=settings,
-                    source_class=io.NullInput,
+    pub = Publisher(reader, None, writer,
+                    settings=settings, source_class=io.NullInput,
                     destination_class=io.StringOutput)
-    # Set Writer.  There's no Reader and Parser because the document
-    # is already parsed.
-    pub.set_components(None, None, writer_name)
+    # Set parser and writer name.
+    pub.set_components(None, 'dummy', writer_name)
     # Set settings.
     pub.process_programmatic_settings(
         settings_spec, settings_overrides, config_section)
@@ -595,35 +597,3 @@ def publish_programmatically(source_class, source, source_path,
     pub.set_destination(destination, destination_path)
     output = pub.publish(enable_exit_status=enable_exit_status)
     return output, pub
-
-
-class DummyParser(parsers.Parser):
-
-    """Dummy parser that does nothing.  Used by `DummyReader`."""
-
-    supported = ('dummy',)
-
-    def parse(self, inputstring, document):
-        pass
-
-class DummyReader(readers.Reader):
-
-    """
-    Dummy reader that is initialized with an existing document tree.
-    Used by `publish_from_doctree`.
-    """
-
-    supported = ('dummy',)
-
-    def __init__(self, doctree):
-        readers.Reader.__init__(self, parser=DummyParser())
-        self.doctree = doctree
-
-    def read(self, source, parser, settings):
-        # Useful for pickling, where the reporter is destroyed.
-        if self.doctree.reporter is None:
-            self.doctree.reporter = utils.new_reporter(
-                source.source_path, settings)
-        # Override document settings with new settings.
-        self.doctree.settings = settings
-        return self.doctree
