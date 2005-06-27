@@ -50,14 +50,13 @@ def html_parts(input_string, source_path=None, destination_path=None,
         writer_name='html', settings_overrides=overrides)
     return parts
 
-def html_fragment(input_string, source_path=None, destination_path=None,
-                  input_encoding='unicode', output_encoding='unicode',
-                  doctitle=1, initial_header_level=1):
+def html_body(input_string, source_path=None, destination_path=None,
+              input_encoding='unicode', output_encoding='unicode',
+              doctitle=1, initial_header_level=1):
     """
     Given an input string, returns an HTML fragment as a string.
 
-    The return value is the contents of the <body> tag, less the title,
-    subtitle, and docinfo.
+    The return value is the contents of the <body> element.
 
     Parameters (see `html_parts()` for the remainder):
 
@@ -69,7 +68,7 @@ def html_fragment(input_string, source_path=None, destination_path=None,
         destination_path=destination_path,
         input_encoding=input_encoding, doctitle=doctitle,
         initial_header_level=initial_header_level)
-    fragment = parts['fragment']
+    fragment = parts['html_body']
     if output_encoding != 'unicode':
         fragment = fragment.encode(output_encoding)
     return fragment
