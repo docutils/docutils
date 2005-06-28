@@ -665,6 +665,10 @@ Also see the `... Or Not To Do?`__ list.
 
 __ rst/alternatives.html#or-not-to-do
 
+* Change the specification so that more punctuation is allowed
+  before/after inline markup start/end string
+  (http://article.gmane.org/gmane.text.docutils.cvs/3824).
+
 * Complain about bad URI characters
   (http://article.gmane.org/gmane.text.docutils.user/2046).
 
