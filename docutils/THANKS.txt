@@ -88,6 +88,7 @@ donations, tasty treats, and related projects:
 * Mark McEahern
 * Vincent McIntyre
 * John F Meinel Jr
+* Günter Milde
 * Skip Montanaro
 * Paul Moore
 * Nigel W. Moriarty
