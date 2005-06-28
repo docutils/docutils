@@ -1078,6 +1078,12 @@ Directives below are often referred to as "module.directive", the
 directive function.  The "module." is not part of the directive name
 when used in a document.
 
+* Make the directive interface object-oriented
+  (http://article.gmane.org/gmane.text.docutils.user/1871).
+
+* Unify table implementations and unify options of table directives
+  (http://article.gmane.org/gmane.text.docutils.user/1857).
+
 * Allow directives to be added at run-time?
 
 * Use the language module for directive option names?
