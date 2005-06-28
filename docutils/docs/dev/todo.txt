@@ -484,6 +484,9 @@ User Docs
   server and that it's terribly slow.  See the first paragraphs in
   <http://article.gmane.org/gmane.text.docutils.user/1584>.
 
+* Add document about what Docutils has previously been used for
+  (web/use-cases.txt?).
+
 
 Developer Docs
 --------------
@@ -661,6 +664,9 @@ reStructuredText Parser
 Also see the `... Or Not To Do?`__ list.
 
 __ rst/alternatives.html#or-not-to-do
+
+* Complain about bad URI characters
+  (http://article.gmane.org/gmane.text.docutils.user/2046).
 
 * Create ``info``-level system messages for unnecessarily
   backslash-escaped characters (as in ``"\something"``, rendered as
