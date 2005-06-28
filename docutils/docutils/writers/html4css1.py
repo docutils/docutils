@@ -28,6 +28,7 @@ except ImportError:
     Image = None
 import docutils
 from docutils import frontend, nodes, utils, writers, languages
+from docutils.transforms import html
 
 
 class Writer(writers.Writer):
@@ -115,6 +116,8 @@ class Writer(writers.Writer):
 
     config_section = 'html4css1 writer'
     config_section_dependencies = ('writers',)
+
+    default_transforms = (html.StylesheetCheck,)
 
     def __init__(self):
         writers.Writer.__init__(self)
@@ -217,22 +220,14 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.head = self.meta[:]
         stylesheet = utils.get_stylesheet_reference(settings)
         self.stylesheet = []
-        if stylesheet is None:
-            # Creating a warning is a bad idea as long as it breaks
-            # existing scripts which use Docutils programmatically.
-            #self.document.reporter.warning(
-            #    'No stylesheet path or URI given.\nUse the --stylesheet '
-            #    'or --stylesheet-path option to specify the location of\n'
-            #    'default.css (in the tools/stylesheets/ directory '
-            #    'of the Docutils distribution).\n')
-            pass
-        elif settings.embed_stylesheet and stylesheet:
-            stylesheet = utils.get_stylesheet_reference(settings,
-                os.path.join(os.getcwd(), 'dummy'))
-            settings.record_dependencies.add(stylesheet)
-            stylesheet_text = open(stylesheet).read()
-            self.stylesheet = [self.embedded_stylesheet % stylesheet_text]
-        elif stylesheet:
+        if stylesheet:
+            if settings.embed_stylesheet:
+                stylesheet = utils.get_stylesheet_reference(
+                    settings, os.path.join(os.getcwd(), 'dummy'))
+                settings.record_dependencies.add(stylesheet)
+                stylesheet_text = open(stylesheet).read()
+                self.stylesheet = [self.embedded_stylesheet % stylesheet_text]
+            else:
                 self.stylesheet = [self.stylesheet_link
                                    % self.encode(stylesheet)]
         self.body_prefix = ['</head>\n<body>\n']

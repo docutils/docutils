@@ -22,6 +22,10 @@ Changes Since 0.3.9
   - Added ``__version_details__`` attribute to describe code source
     (repository/snapshot/release).
 
+* docutils/frontend.py:
+
+  - Added ``_stylesheet_required`` internal setting.
+
 * docutils/parsers/rst/__init__.py:
 
   - Added validator to tab_width setting, with test.  Closes SF bug
@@ -44,6 +48,9 @@ Changes Since 0.3.9
   standard data files for the "include" directive.  Initial contents:
   character entity substitution definition sets.
 
+* docutils/transforms/html.py: Added to project; transforms specific
+  to the html4css1 Writer.
+
 * docutils/writers/html4css1.py:
 
   - Added support for image width and height units.
@@ -53,6 +60,7 @@ Changes Since 0.3.9
     ``--stylesheet-path`` is specified.
   - Made ``--embed-stylesheet`` the default rather than
     ``--link-stylesheet``.
+  - Added writer-specific transform to check the stylesheet setting.
 
 * docutils/writers/docutils_xml.py:
 
