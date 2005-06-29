@@ -203,6 +203,16 @@
 }
 
 
+\providecommand{\DSlanguage}{%
+  % Set up babel.
+  \ifthenelse{\equal{\Dlanguagebabel}{}}{}{%
+    \usepackage[\Dlanguagebabel]{babel}%
+  }
+}
+  
+
+
+
 \providecommand{\DSearly}{}
 \providecommand{\DSlate}{}
 
@@ -517,9 +527,6 @@
   }%
 }
 
-
-\providecommand{\Dlanguage}{english}
-\usepackage[\Dlanguage]{babel}
 
 % Single quote in literal mode.  \textquotesingle from package
 % textcomp has wrong width when using package ae, so we use a normal
@@ -952,7 +959,7 @@
   % Insert image.  We treat the URI like a path here.
   \renewcommand{\Dimagepath}{\Dimagebase#3}%
   \Difdefined{DcurrentNimageAwidth}{%
-    \Dpercentwidthimage{\DcurrentNimageAwidth}{\Dimagepath}%
+    \Dwidthimage{\DcurrentNimageAwidth}{\Dimagepath}%
   }{%
     \Dsimpleimage{\Dimagepath}%
   }%
@@ -986,15 +993,12 @@
     \Dwidthimage{\Dcurrentimagewidth}{#1}%
   }%
 }
-% Auxiliary length.  One percent of \linewidth.
-\Dprovidelength{\Dlinewidthpercent}{0pt}
-\providecommand{\Dpercentwidthimage}[2]{%
+\providecommand{\Dwidthimage}[2]{%
   % Image with specified width.
   % Parameters:
-  % 1. Image width in percent of \linewidth (1 to 100).
+  % 1. Image width.
   % 2. Image path.
-  \setlength{\Dlinewidthpercent}{0.01\linewidth}%
-  \Dwidthimage{#1\Dlinewidthpercent}{#2}%
+  \Dwidthimage{#1}{#2}%
 }
 
 % Figures.
@@ -1010,6 +1014,7 @@
   %\let\DcurrentNimageAwidth=\relax%
 }
 \providecommand{\DNcaption}[1]{\par\noindent{\slshape#1}}
+\providecommand{\DNlegend}[1]{\Dauxiliaryspace#1}
 
 \providecommand{\DCborder}[1]{\fbox{#1}}
 % No padding between image and border.
@@ -1067,6 +1072,11 @@
 }
 
 
+% For \Dpixelunit, the length value is pre-multiplied with 0.75, so by
+% specifying "pt" we get the same notion of "pixel" as graphicx.
+\providecommand{\Dpixelunit}{pt}
+% Normally lengths are relative to the current linewidth.
+\providecommand{\Drelativeunit}{\linewidth}
 
 
 %\usepackage{fixmath}
