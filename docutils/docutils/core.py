@@ -470,7 +470,7 @@ def publish_from_doctree(document, destination_path=None,
     string output and document parts.
 
     Note that document.settings is overridden; if you want to use the settings
-    of the original `document` document, pass settings=document.settings.
+    of the original `document`, pass settings=document.settings.
 
     For encoded string output, be sure to set the 'output_encoding' setting to
     the desired encoding.  Set it to 'unicode' for unencoded Unicode string
@@ -479,7 +479,10 @@ def publish_from_doctree(document, destination_path=None,
         publish_from_doctree(
             ..., settings_overrides={'output_encoding': 'unicode'})
 
-    Parameters: see `publish_programmatically`.
+    Parameters: `document` is a `docutils.nodes.document` object, an existing
+    document tree.
+
+    Other parameters: see `publish_programmatically`.
     """
     # Create fresh Transformer object, to be populated from Writer component.
     document.transformer = Transformer(document)
@@ -498,13 +501,13 @@ def publish_from_doctree(document, destination_path=None,
     return output, pub.writer.parts
 
 def publish_programmatically(source_class, source, source_path,
-                            destination_class, destination, destination_path,
-                            reader, reader_name,
-                            parser, parser_name,
-                            writer, writer_name,
-                            settings, settings_spec,
-                            settings_overrides, config_section,
-                            enable_exit_status):
+                             destination_class, destination, destination_path,
+                             reader, reader_name,
+                             parser, parser_name,
+                             writer, writer_name,
+                             settings, settings_spec,
+                             settings_overrides, config_section,
+                             enable_exit_status):
     """
     Set up & run a `Publisher` for custom programmatic use.  Return the
     encoded string output and the Publisher object.
