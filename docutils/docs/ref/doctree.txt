@@ -1785,8 +1785,11 @@ See the `%structure.model;`_ parameter entity for details of the body
 of a ``document``.
 
 :Attributes:
-    The ``document`` element contains only the `common attributes`_:
-    id_, name_, dupname_, source_, and class_.
+    The ``document`` element contains the `common attributes`_ (id_,
+    name_, dupname_, source_, and class_), plus an optional title__
+    attribute which stores the document title metadata.
+
+    __ `title (attribute)`_
 
 
 Examples
@@ -3975,6 +3978,8 @@ Pseudo-XML_ fragment from simple parsing::
             15% if the service is good.
 
 
+.. _title:
+
 ``title``
 =========
 
@@ -4575,6 +4580,18 @@ line_block_, doctest_block_, comment_, and raw_ elements (via the
 to communicate to an XML parser that the element contains significant
 whitespace.  The attribute value should not be set in a document
 instance.
+
+
+.. _title (attribute):
+
+``title``
+=========
+
+`Attribute type`_: ``CDATA``.  Default value: none.
+
+The ``title`` attribute stores the title metadata of a document.  This
+title is typically not part of the rendered document.  It may for
+example be used in HTML's ``title`` element.
 
 
 ----------------------------
