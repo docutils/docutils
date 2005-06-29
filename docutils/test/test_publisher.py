@@ -22,6 +22,14 @@ Test Document
 This is a test document.
 """
 
+pseudoxml_output = """\
+<document ids="test-document" names="test document" source="<string>" title="Test Document">
+    <title>
+        Test Document
+    <paragraph>
+        This is a test document.
+"""
+
 
 class PublishDoctreeTestCase(unittest.TestCase):
 
@@ -42,9 +50,10 @@ class PublishDoctreeTestCase(unittest.TestCase):
 
         # Write out the document.
         output, parts = core.publish_from_doctree(
-            doctree, writer_name='pseudoxml')
+            doctree, writer_name='pseudoxml',
+            settings_overrides={'_disable_config': 1})
 
-        self.assert_(isinstance(output, StringType))
+        self.assertEquals(output, pseudoxml_output)
         assert isinstance(parts, DictType)
 
 
