@@ -6,7 +6,7 @@
 
 """Dummy reader that is initialized with an existing document tree."""
 
-from docutils import readers
+from docutils import readers, utils
 
 class Reader(readers.Reader):
 
@@ -16,14 +16,14 @@ class Reader(readers.Reader):
 
     def __init__(self, doctree):
         readers.Reader.__init__(self)
-        self.doctree = doctree
+        self.document = doctree
 
     def read(self, source, parser, settings):
         # Useful for document serialization, where the reporter is destroyed.
-        if self.doctree.reporter is None:
-            self.doctree.reporter = utils.new_reporter(
+        if self.document.reporter is None:
+            self.document.reporter = utils.new_reporter(
                 source.source_path, settings)
         # Override document settings with new settings.
-        self.doctree.settings = settings
-        # Call base-class method and return document tree.
-        return readers.Reader.read(self, source, parser, settings)
+        self.document.settings = settings
+        # Return document tree.  No parsing necessary.
+        return self.document
