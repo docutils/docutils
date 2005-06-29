@@ -788,7 +788,6 @@ class Inliner:
             if target:
                 reference['refuri'] = uri
                 target['names'].append(refname)
-                self.document.note_external_target(target)
                 self.document.note_explicit_target(target, self.parent)
                 node_list.append(target)
             else:
@@ -1870,17 +1869,12 @@ class Body(RSTState):
                 uri = self.inliner.adjust_uri(refuri)
                 if uri:
                     target['refuri'] = uri
-                    self.document.note_external_target(target)
                 else:
                     raise ApplicationError('problem with URI: %r' % refuri)
-            else:
-                self.document.note_internal_target(target)
             self.document.note_explicit_target(target, self.parent)
         else:                       # anonymous target
             if refuri:
                 target['refuri'] = refuri
-            else:
-                self.document.note_internal_target(target)
             target['anonymous'] = 1
             self.document.note_anonymous_target(target)
 

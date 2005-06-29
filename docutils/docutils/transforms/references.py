@@ -42,12 +42,13 @@ class PropagateTargets(Transform):
     default_priority = 260
 
     def apply(self):
-        for target in self.document.internal_targets:
-            assert len(target) == 0, ('only block-level targets expected in '
-                                      'document.internal_targets')
-            if (target.hasattr('refid') or target.hasattr('refuri') or
-                target.hasattr('refname')):
+        for target in self.document.traverse(nodes.target):
+            # Only block-level targets without reference (like ".. target:"):
+            if (isinstance(target.parent, nodes.TextElement) or
+                (target.hasattr('refid') or target.hasattr('refuri') or
+                 target.hasattr('refname'))):
                 continue
+            assert len(target) == 0, 'error: block-level target has children'
             next_node = target.next_node(ascend=1)
             # Do not move names and ids into Invisibles (we'd lose the
             # attributes) or different Targetables (e.g. footnotes).
@@ -84,8 +85,6 @@ class PropagateTargets(Transform):
                 target['ids'] = []
                 target['names'] = []
                 self.document.note_refid(target)
-                if isinstance(next_node, nodes.target):
-                    self.document.note_internal_target(next_node)
 
 
 class AnonymousHyperlinks(Transform):
@@ -242,8 +241,6 @@ class IndirectHyperlinks(Transform):
             del target.multiply_indirect
         if reftarget.hasattr('refuri'):
             target['refuri'] = reftarget['refuri']
-            if target['names']:
-                self.document.note_external_target(target)
             if target.has_key('refid'):
                 del target['refid']
         elif reftarget.hasattr('refid'):
@@ -295,12 +292,10 @@ class IndirectHyperlinks(Transform):
     def resolve_indirect_references(self, target):
         if target.hasattr('refid'):
             attname = 'refid'
-            call_if_named = 0
             call_method = self.document.note_refid
         elif target.hasattr('refuri'):
             attname = 'refuri'
-            call_if_named = 1
-            call_method = self.document.note_external_target
+            call_method = None
         else:
             return
         attval = target[attname]
@@ -313,7 +308,7 @@ class IndirectHyperlinks(Transform):
                     continue
                 del ref['refname']
                 ref[attname] = attval
-                if not call_if_named or ref['names']:
+                if call_method:
                     call_method(ref)
                 ref.resolved = 1
                 if isinstance(ref, nodes.target):
@@ -327,7 +322,7 @@ class IndirectHyperlinks(Transform):
                     continue
                 del ref['refid']
                 ref[attname] = attval
-                if not call_if_named or ref['names']:
+                if call_method:
                     call_method(ref)
                 ref.resolved = 1
                 if isinstance(ref, nodes.target):
@@ -355,7 +350,7 @@ class ExternalTargets(Transform):
     default_priority = 640
 
     def apply(self):
-        for target in self.document.external_targets:
+        for target in self.document.traverse(nodes.target):
             if target.hasattr('refuri'):
                 refuri = target['refuri']
                 for name in target['names']:
@@ -375,8 +370,9 @@ class InternalTargets(Transform):
     default_priority = 660
 
     def apply(self):
-        for target in self.document.internal_targets:
-            self.resolve_reference_ids(target)
+        for target in self.document.traverse(nodes.target):
+            if not target.hasattr('refuri') and not target.hasattr('refid'):
+                self.resolve_reference_ids(target)
 
     def resolve_reference_ids(self, target):
         """
@@ -395,9 +391,6 @@ class InternalTargets(Transform):
                     direct internal
             <target id="id1" name="direct internal">
         """
-        if target.hasattr('refuri') or target.hasattr('refid') \
-              or not target['names']:
-            return
         for name in target['names']:
             refid = self.document.nameids[name]
             reflist = self.document.refnames.get(name, [])
@@ -721,10 +714,11 @@ class TargetNotes(Transform):
     def apply(self):
         notes = {}
         nodelist = []
-        for target in self.document.external_targets:
+        for target in self.document.traverse(nodes.target):
+            # Only external targets.
+            if not target.hasattr('refuri'):
+                continue
             names = target['names']
-            # Only named targets.
-            assert names
             refs = []
             for name in names:
                 refs.extend(self.document.refnames.get(name, []))

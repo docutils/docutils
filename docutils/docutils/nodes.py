@@ -750,12 +750,6 @@ class document(Root, Structural, Element):
         self.reporter = reporter
         """System message generator."""
 
-        self.external_targets = []
-        """List of external named target nodes."""
-
-        self.internal_targets = []
-        """List of internal block-level target nodes."""
-
         self.indirect_targets = []
         """List of indirect target nodes."""
 
@@ -966,12 +960,6 @@ class document(Root, Structural, Element):
 
     def note_refid(self, node):
         self.refids.setdefault(node['refid'], []).append(node)
-
-    def note_external_target(self, target):
-        self.external_targets.append(target)
-
-    def note_internal_target(self, target):
-        self.internal_targets.append(target)
 
     def note_indirect_target(self, target):
         self.indirect_targets.append(target)
