@@ -139,6 +139,10 @@ class TransformSpec:
 
     default_transforms = ()
     """Transforms required by this class.  Override in subclasses."""
+
+    reprocess_transforms = ()
+    """Transforms suggested as replacements for `default_transforms` when
+    reprocessing a document tree."""
     
     unknown_reference_resolvers = ()
     """List of functions to try to resolve unknown references.  Unknown
