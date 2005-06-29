@@ -80,6 +80,12 @@ class Transformer(TransformSpec):
                           universal.FilterMessages)
     """These transforms are applied to all document trees."""
 
+    reprocess_transforms = (universal.FinalChecks,
+                            universal.Messages,
+                            universal.FilterMessages)
+    """This set of transforms is a suggested replacement for
+    `default_transforms` when reprocessing a document tree."""
+
     def __init__(self, document):
         self.transforms = []
         """List of transforms to apply.  Each item is a 3-tuple:
