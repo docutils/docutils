@@ -33,7 +33,7 @@ Title
 Paragraph.
 """,
 """\
-<document ids="title" names="title" source="test data">
+<document ids="title" names="title" source="test data" title="Title">
     <title>
         Title
     <comment xml:space="preserve">
@@ -47,7 +47,7 @@ Title
 Paragraph (no blank line).
 """,
 """\
-<document ids="title" names="title" source="test data">
+<document ids="title" names="title" source="test data" title="Title">
     <title>
         Title
     <paragraph>
@@ -78,16 +78,18 @@ Title
 Subtitle
 --------
 
-Test title & subtitle.
+.. title:: Another Title
+
+Test title, subtitle, and title metadata.
 """,
 """\
-<document ids="title" names="title" source="test data">
+<document ids="title" names="title" source="test data" title="Another Title">
     <title>
         Title
     <subtitle ids="subtitle" names="subtitle">
         Subtitle
     <paragraph>
-        Test title & subtitle.
+        Test title, subtitle, and title metadata.
 """],
 ["""\
 Title
@@ -96,7 +98,7 @@ Title
 Test short underline.
 """,
 """\
-<document ids="title" names="title" source="test data">
+<document ids="title" names="title" source="test data" title="Title">
     <title>
         Title
     <system_message level="2" line="2" source="test data" type="WARNING">
@@ -118,7 +120,7 @@ The system_message should move after the document title
 (it was before the beginning of the section).
 """,
 """\
-<document ids="long-title" names="long title" source="test data">
+<document ids="long-title" names="long title" source="test data" title="Long    Title">
     <title>
         Long    Title
     <system_message level="2" line="1" source="test data" type="WARNING">
@@ -149,7 +151,7 @@ Title 3
 Paragraph 3.
 """,
 """\
-<document ids="title-1" names="title 1" source="test data">
+<document ids="title-1" names="title 1" source="test data" title="Title 1">
     <title>
         Title 1
     <comment xml:space="preserve">
@@ -178,7 +180,7 @@ This title should be the document title despite the
 substitution_definition.
 """,
 """\
-<document ids="title" names="title" source="test data">
+<document ids="title" names="title" source="test data" title="Title">
     <title>
         Title
     <substitution_definition names="foo">

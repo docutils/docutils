@@ -22,33 +22,28 @@ totest = {}
 totest['basic'] = [
 # input
 ["""\
-This is the title
-=================
-
 This is a paragraph.
 
 ----------
 
 This is another paragraph.
 
-A subsection
-------------
+A Section
+---------
 
 Foo.
 """,
 # output
 """\
-<document ids="this-is-the-title" names="this is the title" source="<string>">
-    <title>
-        This is the title
+<document source="<string>">
     <paragraph>
         This is a paragraph.
     <transition>
     <paragraph>
         This is another paragraph.
-    <section ids="a-subsection" names="a subsection">
+    <section ids="a-section" names="a section">
         <title>
-            A subsection
+            A Section
         <paragraph>
             Foo.
 """]
