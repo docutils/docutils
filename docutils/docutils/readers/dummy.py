@@ -4,26 +4,42 @@
 # Date: $Date$
 # Copyright: This module has been placed in the public domain.
 
-"""Dummy reader that is initialized with an existing document tree."""
+"""Reader for existing document trees."""
 
 from docutils import readers, utils
 
+
 class Reader(readers.Reader):
 
-    """Dummy reader that is initialized with an existing document tree."""
+    """
+    Adapt the Reader API for an existing document tree.
 
-    supported = ('dummy',)
+    The existing document tree must be passed as the ``source`` parameter to
+    the `docutils.core.Publisher` initializer, wrapped in a
+    `docutils.io.DoctreeInput` object::
 
-    def __init__(self, doctree):
-        readers.Reader.__init__(self)
-        self.document = doctree
+        pub = docutils.core.Publisher(
+            ..., source=docutils.io.DoctreeInput(document), ...)
 
-    def read(self, source, parser, settings):
-        # Useful for document serialization, where the reporter is destroyed.
+    The original document settings are overridden; if you want to use the
+    settings of the original document, pass ``settings=document.settings`` to
+    the Publisher call above.
+    """
+
+    supported = ('doctree',)
+
+    config_section = 'doctree reader'
+    config_section_dependencies = ('readers',)
+
+    def parse(self):
+        """
+        No parsing to do; refurbish the document tree instead.
+        Overrides the inherited method.
+        """
+        self.document = self.input
+        # Restore the reporter after document serialization:
         if self.document.reporter is None:
             self.document.reporter = utils.new_reporter(
-                source.source_path, settings)
-        # Override document settings with new settings.
-        self.document.settings = settings
-        # Return document tree.  No parsing necessary.
-        return self.document
+                self.document.source_path, self.settings)
+        # Override document settings with new settings:
+        self.document.settings = self.settings
