@@ -196,7 +196,9 @@ http://www.oasis-open.org/html/tm9901.htm).
       decoration?,
       (docinfo, transition?)?,
       %structure.model; )>
-<!ATTLIST document %basic.atts;>
+<!ATTLIST document
+    %basic.atts;
+    title     CDATA     #IMPLIED>
 
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
