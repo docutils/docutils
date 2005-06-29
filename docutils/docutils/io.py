@@ -345,3 +345,18 @@ class NullOutput(Output):
     def write(self, data):
         """Do nothing ([don't even] send data to the bit bucket)."""
         pass
+
+
+class DocTreeInput(Input):
+
+    """
+    Adapter for document tree input.
+
+    The document tree must be passed in the ``source`` parameter.
+    """
+
+    default_source_path = 'doctree input'
+
+    def read(self):
+        """Return the document tree."""
+        return self.source
