@@ -83,15 +83,37 @@ class Writer(writers.Writer):
         self.body = visitor.body
 
 
-class Babel:
-    """Language specifics for LaTeX."""
-    # country code by a.schlock.
-    # partly manually converted from iso and babel stuff, dialects and some
-    _ISO639_TO_BABEL = {
-        'no': 'norsk',     # added by hand ( forget about nynorsk?)
+class LaTeXException(Exception):
+    """
+    Exception base class to for exceptions which influence the
+    automatic generation of LaTeX code.
+    """
+
+
+class SkipAttrParentLaTeX(LaTeXException):
+    """
+    Do not generate \Dattr and \renewcommand{\Dparent}{...} for this
+    node.
+
+    To be raised from before_... methods.
+    """
+
+
+class SkipParentLaTeX(LaTeXException):
+    """
+    Do not generate \renewcommand{\DNparent}{...} for this node.
+
+    To be raised from before_... methods.
+    """
+
+
+class LaTeXTranslator(nodes.SparseNodeVisitor):
+
+    # Country code by a.schlock.
+    # Partly manually converted from iso and babel stuff.
+    iso639_to_babel = {
+        'no': 'norsk',     # added by hand
         'gd': 'scottish',  # added by hand
-        'hu': 'magyar',    # added by hand
-        'pt': 'portuguese',# added by hand
         'sl': 'slovenian',
         'af': 'afrikaans',
         'bg': 'bulgarian',
@@ -102,7 +124,7 @@ class Babel:
         'da': 'danish',
         'fr': 'french',
         # french, francais, canadien, acadian
-        'de': 'ngerman',  # rather than german
+        'de': 'ngerman',
         # ngerman, naustrian, german, germanb, austrian
         'el': 'greek',
         'en': 'english',
@@ -132,46 +154,6 @@ class Babel:
         'uk': 'ukrainian'
     }
 
-    def __init__(self, lang):
-        self.language = lang
-
-    def get_language(self):
-        if self._ISO639_TO_BABEL.has_key(self.language):
-            return self._ISO639_TO_BABEL[self.language]
-        else:
-            # Support dialects.
-            l = self.language.split("_")[0]
-            if self._ISO639_TO_BABEL.has_key(l):
-                return self._ISO639_TO_BABEL[l]
-        return None
-
-
-class LaTeXException(Exception):
-    """
-    Exception base class to for exceptions which influence the
-    automatic generation of LaTeX code.
-    """
-
-
-class SkipAttrParentLaTeX(LaTeXException):
-    """
-    Do not generate \Dattr and \renewcommand{\Dparent}{...} for this
-    node.
-
-    To be raised from before_... methods.
-    """
-
-
-class SkipParentLaTeX(LaTeXException):
-    """
-    Do not generate \renewcommand{\DNparent}{...} for this node.
-
-    To be raised from before_... methods.
-    """
-
-
-class LaTeXTranslator(nodes.SparseNodeVisitor):
-
     # Start with left double quote.
     left_quote = 1
 
@@ -194,8 +176,6 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         if self.user_stylesheet_path:
             self.settings.record_dependencies.add(self.user_stylesheet_path)
         self.write_header()
-        for key, value in self.character_map.items():
-            self.character_map[key] = '{%s}' % value
 
     def write_header(self):
         a = self.header.append
@@ -207,7 +187,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         a('% Docutils stylesheet:')
         a(r'\input{%s}' % self.stylesheet_path)
         a('')
-        a('% Definitions for Docutils Nodes:')
+        a('% Default definitions for Docutils nodes:')
         for node_name in nodes.node_class_names:
             a(r'\providecommand{\DN%s}[1]{#1}' % node_name.replace('_', ''))
         a('')
@@ -219,51 +199,13 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         a(r'\providecommand{\Dtitleastext}{x}')
         a(r'\providecommand{\Dsinglebackref}{} % variable')
         a(r'\providecommand{\Dmultiplebackrefs}{} % variable')
+        a('')
+        a('% Docutils settings:')
+        lang = self.settings.language_code or ''
+        a(r'\providecommand{\Dlanguageiso}{%s}' % lang)
+        a(r'\providecommand{\Dlanguagebabel}{%s}' % self.iso639_to_babel.get(
+            lang, self.iso639_to_babel.get(lang.split('_')[0], '')))
         a('\n\n')
-
-    def to_latex_encoding(self,docutils_encoding):
-        """
-        Translate docutils encoding name into latex's.
-
-        Default fallback method is remove "-" and "_" chars from
-        docutils_encoding.
-        """
-        tr = {  "iso-8859-1": "latin1",     # west european
-                "iso-8859-2": "latin2",     # east european
-                "iso-8859-3": "latin3",     # esperanto, maltese
-                "iso-8859-4": "latin4",     # north european,scandinavian, baltic
-                "iso-8859-5": "iso88595",   # cyrillic (ISO)
-                "iso-8859-9": "latin5",     # turkish
-                "iso-8859-15": "latin9",    # latin9, update to latin1.
-                "mac_cyrillic": "maccyr",   # cyrillic (on Mac)
-                "windows-1251": "cp1251",   # cyrillic (on Windows)
-                "koi8-r": "koi8-r",         # cyrillic (Russian)
-                "koi8-u": "koi8-u",         # cyrillic (Ukrainian)
-                "windows-1250": "cp1250",   #
-                "windows-1252": "cp1252",   #
-                "us-ascii": "ascii",        # ASCII (US)
-                # unmatched encodings
-                #"": "applemac",
-                #"": "ansinew",  # windows 3.1 ansi
-                #"": "ascii",    # ASCII encoding for the range 32--127.
-                #"": "cp437",    # dos latine us
-                #"": "cp850",    # dos latin 1
-                #"": "cp852",    # dos latin 2
-                #"": "decmulti",
-                #"": "latin10",
-                #"iso-8859-6": ""   # arabic
-                #"iso-8859-7": ""   # greek
-                #"iso-8859-8": ""   # hebrew
-                #"iso-8859-10": ""   # latin6, more complete iso-8859-4
-             }
-        if tr.has_key(docutils_encoding.lower()):
-            return tr[docutils_encoding.lower()]
-        return docutils_encoding.translate(string.maketrans("",""),"_-").lower()
-
-    def language_label(self, docutil_label):
-        return self.language.labels[docutil_label]
-
-    #special_map = {'\n': ' ', '\r': ' ', '\t': ' ', '\v': ' ', '\f': ' '}
 
     # Get comprehensive Unicode map.
     from unicode_latex import unicode_map
@@ -317,13 +259,27 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
                }
     att_map.update(unicode_map)
 
-    def encode(self, text, attval=0):
+    def encode(self, text, attval=None):
         """
         Encode special characters in ``text`` and return it.
 
-        If attval is true, preserve as much as possible verbatim (used in
-        attribute value encoding).
+        If attval is true, preserve as much as possible verbatim (used
+        in attribute value encoding).  If attval is 'width' or
+        'height', `text` is interpreted as a length value.
         """
+        if attval in ('width', 'height'):
+            match = re.match(r'([0-9.]+)(\S*)$', text)
+            assert match, '%s="%s" must be a length' % (attval, text)
+            value, unit = match.groups()
+            if unit == '%':
+                value = str(float(value) / 100)
+                unit = r'\Drelativeunit'
+            elif unit in ('', 'px'):
+                # If \Dpixelunit is "pt", this gives the same notion
+                # of pixels as graphicx.
+                value = str(float(value) * 0.75)
+                unit = '\Dpixelunit'
+            return '%s%s' % (value, unit)
         if attval:
             get = self.att_map.get
         else:
@@ -373,7 +329,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         return '~' * len(match.group())
 
     def encode_replace_for_inline_literal_spaces(self, match):
-        return '{ }' + '~' * len(match.group() - 1)
+        return '{ }' + '~' * (len(match.group()) - 1)
 
     def astext(self):
         return '\n'.join(self.header) + (''.join(self.body))
@@ -641,14 +597,14 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
                 self.append(r'\renewcommand{\Dattrlen}{%s}' % len(value))
                 for i in range(len(value)):
                     self.append(r'\Dattr{%s}{%s}{%s}{%s}{' %
-                                (i+1, key, self.encode(value[i], attval=1),
+                                (i+1, key, self.encode(value[i], attval=key),
                                  node_name))
                     if not pass_contents:
                         self.append('}')
                 numatts += len(value)
             else:
                 self.append(r'\Dattr{}{%s}{%s}{%s}{' %
-                            (key, self.encode(unicode(value), attval=1),
+                            (key, self.encode(unicode(value), attval=key),
                              node_name))
                 if not pass_contents:
                     self.append('}')
@@ -708,11 +664,10 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
                 self.append(r'\renewcommand{\Dparent}{%s}'
                             % self.node_name(node.parent))
                 for name, value in node.attlist():
-                    # @@@ Evaluate if this is really needed and refactor.
                     if not isinstance(value, ListType) and not ':' in name:
                         macro = r'\DcurrentN%sA%s' % (node_name, name)
                         self.append(r'\def%s{%s}' % (
-                            macro, self.encode(unicode(value), attval=1)))
+                            macro, self.encode(unicode(value), attval=name)))
                         attribute_deleters.append(r'\let%s=\relax' % macro)
             self.context.append('\n'.join(attribute_deleters))
             if self.pass_contents(node):
@@ -764,8 +719,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         return ((isinstance(node, nodes.Body) or
                  isinstance(node, nodes.topic) or
                  #isinstance(node, nodes.rubric) or
-                 isinstance(node, nodes.transition) or
-                 isinstance(node, nodes.legend)) and
+                 isinstance(node, nodes.transition)) and
                 not (self.is_invisible(node) or
                      isinstance(node.parent, nodes.TextElement)))
 
