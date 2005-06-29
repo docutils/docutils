@@ -885,7 +885,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                     del im
             for att_name in 'width', 'height':
                 if atts.has_key(att_name):
-                    match = re.match(r'([0-9.]+)(.*)', atts[att_name])
+                    match = re.match(r'([0-9.]+)(\S*)$', atts[att_name])
                     assert match
                     atts[att_name] = '%s%s' % (
                         float(match.group(1)) * (float(node['scale']) / 100),
