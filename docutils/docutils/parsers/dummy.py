@@ -4,17 +4,18 @@
 # Date: $Date$
 # Copyright: This module has been placed in the public domain.
 
-"""Dummy parser that does nothing."""
+"""A do-nothing parser."""
 
 from docutils import parsers
 
+
 class Parser(parsers.Parser):
 
-    """Dummy parser that does nothing."""
+    """A do-nothing parser."""
 
-    supported = ('dummy',)
+    supported = ('null',)
 
-    config_section = 'dummy parser'
+    config_section = 'null parser'
     config_section_dependencies = ('parsers',)
 
     def parse(self, inputstring, document):
