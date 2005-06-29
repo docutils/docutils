@@ -23,6 +23,7 @@ from docutils import __version__, __version_details__, SettingsSpec
 from docutils import frontend, io, utils, readers, writers
 from docutils.frontend import OptionParser
 from docutils.transforms import Transformer
+import docutils.readers.doctree
 
 
 class Publisher:
@@ -453,12 +454,12 @@ def publish_doctree(source, source_path=None,
         settings_overrides=settings_overrides,
         config_section=config_section,
         enable_exit_status=enable_exit_status)
-    # The transformer is not needed anymore.  (A new transformer will
-    # be created in `publish_from_doctree`.)
+    # The transformer is not needed any more
+    # (a new transformer will be created in `publish_from_doctree`):
     del pub.document.transformer
     return pub.document
 
-def publish_from_doctree(doctree, destination_path=None,
+def publish_from_doctree(document, destination_path=None,
                          writer=None, writer_name='pseudoxml',
                          settings=None, settings_spec=None,
                          settings_overrides=None, config_section=None,
@@ -468,8 +469,8 @@ def publish_from_doctree(doctree, destination_path=None,
     structure, for programmatic use with string I/O.  Return a pair of encoded
     string output and document parts.
 
-    Note that doctree.settings is overridden; if you want to use the settings
-    of the original `doctree` document, pass settings=doctree.settings.
+    Note that document.settings is overridden; if you want to use the settings
+    of the original `document` document, pass settings=document.settings.
 
     For encoded string output, be sure to set the 'output_encoding' setting to
     the desired encoding.  Set it to 'unicode' for unencoded Unicode string
@@ -481,22 +482,17 @@ def publish_from_doctree(doctree, destination_path=None,
     Parameters: see `publish_programmatically`.
     """
     # Create fresh Transformer object, to be populated from Writer component.
-    doctree.transformer = Transformer(doctree)
-    # Don't double apply default transforms.
-    doctree.transformer.default_transforms = ()
-    # Create reader with existing doctree.
-    from docutils.readers import dummy
-    reader = dummy.Reader(doctree)
-    # Create Publisher.
+    document.transformer = Transformer(document)
+    # Don't apply default transforms twice:
+    document.transformer.default_transforms = (document.transformer
+                                               .reprocess_transforms)
+    reader = docutils.readers.doctree.Reader(parser_name='null')
     pub = Publisher(reader, None, writer,
-                    settings=settings, source_class=io.NullInput,
-                    destination_class=io.StringOutput)
-    # Set parser and writer name.
-    pub.set_components(None, 'dummy', writer_name)
-    # Set settings.
+                    source=io.DocTreeInput(document),
+                    destination_class=io.StringOutput, settings=settings)
+    pub.set_writer(writer_name)
     pub.process_programmatic_settings(
         settings_spec, settings_overrides, config_section)
-    # Set destination path and run.
     pub.set_destination(None, destination_path)
     output = pub.publish(enable_exit_status=enable_exit_status)
     return output, pub.writer.parts
