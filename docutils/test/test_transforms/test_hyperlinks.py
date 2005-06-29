@@ -396,6 +396,24 @@ The results of the transform are not visible at the XML level.
         The results of the transform are not visible at the XML level.
 """],
 ["""\
+.. _chained:
+__ http://anonymous
+
+Anonymous__ and chained_ both refer to the same URI.
+""",
+"""\
+<document source="test data">
+    <target refid="chained">
+    <target anonymous="1" ids="id1 chained" names="chained" refuri="http://anonymous">
+    <paragraph>
+        <reference anonymous="1" name="Anonymous" refuri="http://anonymous">
+            Anonymous
+         and \n\
+        <reference name="chained" refuri="http://anonymous">
+            chained
+         both refer to the same URI.
+"""],
+["""\
 .. _a:
 .. _b:
 
