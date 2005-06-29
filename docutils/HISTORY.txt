@@ -21,10 +21,22 @@ Changes Since 0.3.9
 
   - Added ``__version_details__`` attribute to describe code source
     (repository/snapshot/release).
+  - Added ``TransformSpec.reprocess_transforms`` attribute.
+
+* docutils/core.py:
+
+  - Added ``publish_doctree`` and ``publish_from_doctree`` convenience
+    functions, for document tree extraction and reprocessing.
 
 * docutils/frontend.py:
 
   - Added ``_stylesheet_required`` internal setting.
+
+* docutils/io.py:
+
+  - Added ``DocTreeInput`` class, for reprocessing existing documents.
+
+* docutils/parsers/null.py: Added to project; a do-nothing parser.
 
 * docutils/parsers/rst/__init__.py:
 
@@ -47,6 +59,13 @@ Changes Since 0.3.9
 * docutils/parsers/rst/include/: Directory added to project; contains
   standard data files for the "include" directive.  Initial contents:
   character entity substitution definition sets.
+
+* docutils/readers/doctree.py: Added to project; a reader for existing
+  document trees.
+
+* docutils/transforms/__init__.py:
+
+  - Added ``Transformer.reprocess_transforms`` attribute.
 
 * docutils/transforms/html.py: Added to project; transforms specific
   to the html4css1 Writer.
