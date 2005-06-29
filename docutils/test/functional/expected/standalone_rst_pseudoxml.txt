@@ -1,4 +1,4 @@
-<document ids="restructuredtext-test-document doctitle" names="restructuredtext test document doctitle" source="functional/input/standalone_rst_html4css1.txt">
+<document ids="restructuredtext-test-document doctitle" names="restructuredtext test document doctitle" source="functional/input/standalone_rst_html4css1.txt" title="reStructuredText Test Document">
     <title>
         reStructuredText Test Document
     <subtitle ids="examples-of-syntax-constructs subtitle" names="examples of syntax constructs subtitle">

@@ -9,10 +9,13 @@ Transforms related to the front matter of a document or a section
 (information found before the main text):
 
 - `DocTitle`: Used to transform a lone top level section's title to
-  the document title, and promote a remaining lone top-level section's
-  title to the document subtitle.
+  the document title, promote a remaining lone top-level section's
+  title to the document subtitle, and determine the document's title
+  metadata (document['title']) based on the document title and/or the
+  "title" setting.
 
-- `SectionTitle`: Used to transform a lone subsection into a subtitle.
+- `SectionSubTitle`: Used to transform a lone subsection into a
+  subtitle.
 
 - `DocInfo`: Used to transform a bibliographic field list into docinfo
   elements.
@@ -195,15 +198,37 @@ class DocTitle(TitlePromoter):
     Any comment elements occurring before the document title or
     subtitle are accumulated and inserted as the first body elements
     after the title(s).
+
+    This transform also sets the document's metadata title
+    (document['title']).
     """
 
     default_priority = 320
 
+    def set_metadata(self):
+        """
+        Set document['title'] metadata title from the following
+        sources, listed in order of priority:
+
+        * Existing document['title'] attribute.
+        * "title" setting.
+        * Document title node (as promoted by promote_title).
+        """
+        if not self.document.hasattr('title'):
+            if self.document.settings.title is not None:
+                self.document['title'] = self.document.settings.title
+            elif len(self.document) and isinstance(self.document[0], nodes.title):
+                self.document['title'] = self.document[0].astext()
+
     def apply(self):
-        if not getattr(self.document.settings, 'doctitle_xform', 1):
-            return
-        if self.promote_title(self.document):
-            self.promote_subtitle(self.document)
+        if getattr(self.document.settings, 'doctitle_xform', 1):
+            # promote_(sub)title defined in TitlePromoter base class.
+            if self.promote_title(self.document):
+                # If a title has been promoted, also try to promote a
+                # subtitle.
+                self.promote_subtitle(self.document)
+        # Set document['title'].
+        self.set_metadata()
 
 
 class SectionSubTitle(TitlePromoter):
