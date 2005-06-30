@@ -493,7 +493,8 @@ def publish_from_doctree(document, destination_path=None,
     pub = Publisher(reader, None, writer,
                     source=io.DocTreeInput(document),
                     destination_class=io.StringOutput, settings=settings)
-    pub.set_writer(writer_name)
+    if not writer and writer_name:
+        pub.set_writer(writer_name)
     pub.process_programmatic_settings(
         settings_spec, settings_overrides, config_section)
     pub.set_destination(None, destination_path)
