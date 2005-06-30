@@ -21,8 +21,8 @@ class StylesheetCheck(Transform):
     default_priority = 420
 
     def apply(self):
-        if ( self.document.settings._stylesheet_required
-             and not utils.get_stylesheet_reference(self.document.settings)):
+        if ( self.document.settings._stylesheet_required and
+             utils.get_stylesheet_reference(self.document.settings) is None):
             self.document.reporter.warning(
                 'No stylesheet path or URI given.  Use the --stylesheet '
                 'or --stylesheet-path option to specify the location of '
