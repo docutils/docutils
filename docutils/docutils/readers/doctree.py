@@ -40,6 +40,6 @@ class Reader(readers.Reader):
         # Restore the reporter after document serialization:
         if self.document.reporter is None:
             self.document.reporter = utils.new_reporter(
-                self.document.source_path, self.settings)
+                self.source.source_path, self.settings) 
         # Override document settings with new settings:
         self.document.settings = self.settings
