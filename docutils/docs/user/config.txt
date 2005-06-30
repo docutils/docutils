@@ -912,8 +912,8 @@ _`_source`
     Default: stdin (None).  No command-line options.
 
 _`_stylesheet_required`
-    Used to disable stylesheet checking in writers that use
-    stylesheets.  For programmatic use only.
+    Used to disable stylesheet checking in writers that require a
+    stylesheet for correct rendering.  For programmatic use only.
 
     Default: required (1).  No command-line options.
 
