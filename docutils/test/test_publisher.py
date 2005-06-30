@@ -66,21 +66,16 @@ class PublishDoctreeTestCase(unittest.TestCase):
             parser_name='restructuredtext',
             settings_overrides={'_disable_config': 1})
         self.assert_(isinstance(doctree, nodes.document))
-        
-        # Confirm that transforms have been applied (in this case, the
-        # DocTitle transform):
-        self.assert_(isinstance(doctree[0], nodes.title))
-        self.assert_(isinstance(doctree[1], nodes.paragraph))
 
-        # Pickle the document.  Note: if this fails, some unpickleable reference
-        # has been added somewhere within the document tree.  If so, you need to
-        # fix that.
+        # Pickle the document.  Note: if this fails, some unpickleable
+        # reference has been added somewhere within the document tree.
+        # If so, you need to fix that.
         #
         # Note: Please do not remove this test, this is an important
-        # requirement, applications will be built on the assumption that we can
-        # pickle the document.
+        # requirement, applications will be built on the assumption
+        # that we can pickle the document.
 
-        # remove the reporter before pickling.
+        # Remove the reporter before pickling.
         doctree.reporter = None
 
         doctree_pickled = pickle.dumps(doctree)
