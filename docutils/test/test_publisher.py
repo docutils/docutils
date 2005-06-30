@@ -11,7 +11,7 @@ Test the `Publisher` facade and the ``publish_*`` convenience functions.
 """
 
 import unittest
-from types import DictType
+from types import DictType, StringType
 from docutils import core, nodes
 import pickle
 
@@ -84,7 +84,7 @@ class PublishDoctreeTestCase(unittest.TestCase):
         doctree.reporter = None
 
         doctree_pickled = pickle.dumps(doctree)
-        self.assert_(isinstance(doctree_pickled, str))
+        self.assert_(isinstance(doctree_pickled, StringType))
         del doctree
 
         # Unpickle the document.
