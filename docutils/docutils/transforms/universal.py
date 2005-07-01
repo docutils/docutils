@@ -164,8 +164,8 @@ class FinalChecks(Transform):
             self.document.walk(visitor)
         # *After* resolving all references, check for unreferenced
         # targets:
-        for target in self.document.traverse():
-            if isinstance(target, nodes.target) and not target.referenced:
+        for target in self.document.traverse(nodes.target):
+            if not target.referenced:
                 if target['names']:
                     naming = target['names'][0]
                 elif target['ids']:

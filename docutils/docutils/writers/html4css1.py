@@ -106,7 +106,8 @@ class Writer(writers.Writer):
            'validator': frontend.validate_boolean}),
          ('Scramble email addresses to confuse harvesters.  '
           'For example, "abc@example.org" will become '
-          '``<a href="mailto:%61%62%63%40...">abc at example dot org</a>``.',
+          '``<a href="mailto:%61%62%63%40...">abc<span>&#64;</span>'
+          'example<span>&#46;</span>org</a>``.',
           ['--cloak-email-addresses'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),))
 
@@ -286,11 +287,14 @@ class HTMLTranslator(nodes.NodeVisitor):
             query = '?' + query
         else:
             query = ''
+        # Bug: This destroys percent signs in email addresses.
         escaped = ['%%%02X' % ord(c) for c in addr]
         return 'mailto:%s%s' % (''.join(escaped), query)
 
     def cloak_email(self, addr):
-        return addr.replace('@', ' at ').replace('.', ' dot ')
+        addr = addr.replace('&#64;', '<span>&#64;</span>')
+        addr = addr.replace('.', '<span>&#46;</span>')
+        return addr
 
     def attval(self, text,
                whitespace=re.compile('[\n\r\t\v\f]')):
@@ -356,9 +360,10 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_Text(self, node):
         text = node.astext()
+        encoded = self.encode(text)
         if self.in_mailto and self.settings.cloak_email_addresses:
-            text = self.cloak_email(text)
-        self.body.append(self.encode(text))
+            encoded = self.cloak_email(encoded)
+        self.body.append(encoded)
 
     def depart_Text(self, node):
         pass
