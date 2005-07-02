@@ -153,13 +153,19 @@ class CustomTestCase(StandardTestCase):
             expected = expected.encode('raw_unicode_escape')
         try:
             self.assertEquals(output, expected)
-        except AssertionError:
+        except AssertionError, error:
             print >>sys.stderr, '\n%s\ninput:' % (self,)
             print >>sys.stderr, input
-            print >>sys.stderr, '-: expected\n+: output'
-            print >>sys.stderr, ''.join(self.compare(expected.splitlines(1),
-                                                     output.splitlines(1)))
-            raise
+            try:
+                comparison = ''.join(self.compare(expected.splitlines(1),
+                                                  output.splitlines(1)))
+                print >>sys.stderr, '-: expected\n+: output'
+                print >>sys.stderr, comparison
+            except AttributeError:      # expected or output not a string
+                # alternative output for non-strings:
+                print >>sys.stderr, 'expected: %r' % expected
+                print >>sys.stderr, 'output:   %r' % output
+            raise error
 
     def failUnlessEqual(self, first, second, msg=None):
         """Fail if the two objects are unequal as determined by the '=='
@@ -819,8 +825,8 @@ def _format_str(*args):
     return_tuple = []
     for i in args:
         r = repr(i)
-        if '\n' in i and (isinstance(i, StringType) or
-                          isinstance(i, UnicodeType)):
+        if ( (isinstance(i, StringType) or isinstance(i, UnicodeType))
+             and '\n' in i):
             stripped = ''
             if isinstance(i, UnicodeType):
                 # stripped = 'u' or 'U'
