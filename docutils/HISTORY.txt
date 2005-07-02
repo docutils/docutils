@@ -86,10 +86,6 @@ Changes Since 0.3.9
   - Made ``xmlcharrefreplace`` the default output encoding error
     handler.
 
-* docutils/writers/null.py:
-
-  - The Null Writer now returns an empty string instead of None.
-
 * docutils/writers/unicode_latex.py: Added to project; mapping of
   Unicode characters to LaTeX equivalents.
 
