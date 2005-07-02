@@ -20,4 +20,4 @@ class Writer(writers.Writer):
     config_section_dependencies = ('writers',)
 
     def translate(self):
-        self.output = u''
+        pass

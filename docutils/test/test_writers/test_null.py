@@ -23,8 +23,7 @@ totest['basic'] = [
 ["""\
 This is a paragraph.
 """,
-"""\
-"""]
+None]
 ]
 
 if __name__ == '__main__':
