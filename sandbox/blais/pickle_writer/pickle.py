@@ -31,11 +31,4 @@ class Writer(writers.Writer):
 
         # Note: we use the highest protocol, it has some binary in it.
         # - we don't want to return the pickled contents in the output.
-        self.pickled = pickle.dumps(self.document)
-        
-        # Pickle the document to a string.
-        self.output = pickled.decode('latin-1')
-
-    def supports(self, format):
-        """This writer supports all format-specific elements."""
-        return 1
+        self.output = pickle.dumps(self.document)
