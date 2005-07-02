@@ -144,7 +144,8 @@ class Output(TransformSpec):
         raise NotImplementedError
 
     def encode(self, data):
-        if self.encoding and self.encoding.lower() == 'unicode':
+        if ( self.encoding and self.encoding.lower() == 'unicode'
+             or not isinstance(data, UnicodeType)):
             return data
         else:
             try:
@@ -156,7 +157,8 @@ class Output(TransformSpec):
                     # We are using xmlcharrefreplace with a Python
                     # version that doesn't support it (2.1 or 2.2), so
                     # we emulate its behavior.
-                    return ''.join([self.xmlcharref_encode(char) for char in data])
+                    return ''.join([self.xmlcharref_encode(char)
+                                    for char in data])
                 else:
                     raise
 
