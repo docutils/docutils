@@ -493,8 +493,8 @@ def publish_from_doctree(document, destination_path=None,
     # Create fresh Transformer object, to be populated from Writer component.
     document.transformer = Transformer(document)
     # Don't apply default transforms twice:
-    document.transformer.default_transforms = (document.transformer
-                                               .reprocess_transforms)
+    document.transformer.default_transforms = (
+        document.transformer.reprocess_transforms)
     reader = docutils.readers.doctree.Reader(parser_name='null')
     pub = Publisher(reader, None, writer,
                     source=io.DocTreeInput(document),
