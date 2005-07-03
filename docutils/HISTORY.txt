@@ -35,6 +35,7 @@ Changes Since 0.3.9
 * docutils/io.py:
 
   - Added ``DocTreeInput`` class, for reprocessing existing documents.
+  - Added support for non-Unicode (e.g. binary) writer output.
 
 * docutils/parsers/null.py: Added to project; a do-nothing parser.
 
