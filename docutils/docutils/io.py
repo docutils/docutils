@@ -149,7 +149,9 @@ class Output(TransformSpec):
 
     def encode(self, data):
         if self.encoding and self.encoding.lower() == 'unicode':
-            assert isinstance(data, UnicodeType), 'no unicode output'
+            assert isinstance(data, UnicodeType), (
+                'the encoding given is "unicode" but the output is not '
+                'a Unicode string')
             return data
         if not isinstance(data, UnicodeType):
             # Non-unicode (e.g. binary) output.
