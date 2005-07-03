@@ -5,7 +5,7 @@
 # Copyright: This module has been placed in the public domain.
 
 """
-A writer that pickles the document tree to a string.
+A writer that pickles the document tree to a binary string.
 Later unpickling will allow you to publish with other Writers.
 """
 
@@ -25,10 +25,8 @@ class Writer(writers.Writer):
     """Final translated form of `document`."""
 
     def translate(self):
-        # Remove stuff that cannot be pickled.
+        # Remove stuff that cannot be pickled:
         self.document.transformer = None
         self.document.reporter = None
-
-        # Note: we use the highest protocol, it has some binary in it.
-        # - we don't want to return the pickled contents in the output.
+        # Note: we use the highest protocol, it has some binary in it:
         self.output = pickle.dumps(self.document)
