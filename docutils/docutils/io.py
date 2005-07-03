@@ -67,8 +67,12 @@ class Input(TransformSpec):
 
             locale.setlocale(locale.LC_ALL, '')
         """
-        if (self.encoding and self.encoding.lower() == 'unicode'
-            or isinstance(data, UnicodeType)):
+        if self.encoding and self.encoding.lower() == 'unicode':
+            assert isinstance(data, UnicodeType), (
+                'input encoding is "unicode" '
+                'but input is not a unicode object')
+        if isinstance(data, UnicodeType):
+            # Accept unicode even if self.encoding != 'unicode'.
             return data
         encodings = [self.encoding]
         if not self.encoding:
