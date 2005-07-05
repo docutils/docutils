@@ -71,6 +71,8 @@ components.Filter               "meta" (d/p)                  780
 
 universal.Decorations           Transformer                   820
 
+misc.Transitions                standalone (r)                830
+
 universal.FinalChecks           Transformer                   840
 
 universal.Messages              Transformer                   860

@@ -13,7 +13,7 @@ __docformat__ = 'reStructuredText'
 
 import sys
 from docutils import frontend, readers
-from docutils.transforms import frontmatter, references
+from docutils.transforms import frontmatter, references, misc
 
 
 class Reader(readers.Reader):
@@ -61,4 +61,6 @@ class Reader(readers.Reader):
                           references.IndirectHyperlinks,
                           references.Footnotes,
                           references.ExternalTargets,
-                          references.InternalTargets,)
+                          references.InternalTargets,
+                          misc.Transitions,
+                          )
