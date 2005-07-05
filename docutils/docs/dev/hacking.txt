@@ -1,5 +1,3 @@
-.. -*- coding: utf-8 -*-
-
 ==========================
  Docutils_ Hacker's Guide
 ==========================
@@ -51,6 +49,7 @@ While this looks very simple, it's enough to illustrate all internal
 processing stages of Docutils.  Let's see how this document is
 processed from the reStructuredText source to the final HTML output:
 
+
 Reading the Document
 --------------------
 
@@ -62,6 +61,7 @@ things, there is no need to change that.
 
 Since you probably won't need to touch readers, we will just move on
 to the next stage:
+
 
 Parsing the Document
 --------------------
@@ -101,6 +101,7 @@ arranged as a class hierarchy (for example, both ``emphasis`` and
 overview of the node class hierarchy, use epydoc (type ``epydoc
 nodes.py``) and look at the class hierarchy tree.
 
+
 Transforming the Document
 -------------------------
 
@@ -139,13 +140,14 @@ has changed after applying the Transforms, we use the
 
 For our small test document, the only change is that the ``refname``
 attribute of the reference has been replaced by a ``refuri``
-attribute—the reference has been resolved.
+attribute |---| the reference has been resolved.
 
 While this does not look very exciting, transforms are a powerful tool
 to apply any kind of transformation on the node tree.
 
 By the way, you can also get a "real" XML representation of the node
 tree by using ``rst2xml.py`` instead of ``rst2pseudoxml.py``.
+
 
 Writing the Document
 --------------------
@@ -175,8 +177,8 @@ For HTML output, we can test this using the ``rst2html.py`` tool::
 
 So here we finally have our HTML output.  The actual document contents
 are in the fourth-last line.  Note, by the way, that the HTML writer
-did not render the (invisible) ``target`` node—only the ``paragraph``
-node and its children appear in the HTML output.
+did not render the (invisible) ``target`` node |---| only the
+``paragraph`` node and its children appear in the HTML output.
 
 
 Extending Docutils
@@ -185,17 +187,56 @@ Extending Docutils
 Now you'll ask, "how do I actually extend Docutils?"
 
 First of all, once you are clear about *what* you want to achieve, you
-have to decide *where* to implement it—in the Parser (e.g. by adding a
-directive or role to the reStructuredText parser), as a Transform, or
-in the Writer.  There is often one obvious choice among those three
-(Parser, Transform, Writer).  If you are unsure, ask on the
-Docutils-develop_ mailing list.
+have to decide *where* to implement it |---| in the Parser (e.g. by
+adding a directive or role to the reStructuredText parser), as a
+Transform, or in the Writer.  There is often one obvious choice among
+those three (Parser, Transform, Writer).  If you are unsure, ask on
+the Docutils-develop_ mailing list.
 
 In order to find out how to start, it is often helpful to look at
 similar features which are already implemented.  For example, if you
 want to add a new directive to the reStructuredText parser, look at
 the implementation of a similar directive in
 ``docutils/parsers/rst/directives/``.
+
+
+Modifying the Document Tree Before It Is Written
+------------------------------------------------
+
+You can modify the document tree right before the writer is called.
+One possibility is to use the publish_doctree_ and
+publish_from_doctree_ functions.
+
+To retrieve the document tree, call::
+
+    document = docutils.core.publish_doctree(...)
+
+Please see the docstring of publish_doctree for a list of parameters.
+
+.. XXX Need to write a well-readable list of (commonly used) options
+   of the publish_* functions.  Probably in api/publisher.txt.
+
+``document`` is the root node of the document tree.  You can now
+change the document by accessing the ``document`` node and its
+children |---| see `The Node Interface`_ below.
+
+When you're done with modifying the document tree, you can write it
+out by calling::
+
+    output = docutils.core.publish_from_doctree(document, ...)
+
+.. _publish_doctree: ../api/publisher.html#publish_doctree
+.. _publish_from_doctree: ../api/publisher.html#publish_from_doctree
+
+
+The Node Interface
+------------------
+
+As described in the overview above, Docutils' internal representation
+of a document is a tree of nodes.  We'll now have a look at the
+interface of these nodes.
+
+(To be completed.)
 
 
 What Now?
@@ -208,3 +249,16 @@ on the Docutils-develop_ mailing list.
 
 
 .. _Docutils-develop: ../user/mailing-lists.html#docutils-develop
+
+
+.. |---| unicode:: 8212 .. em-dash
+   :trim:
+
+
+..
+   Local Variables:
+   mode: indented-text
+   indent-tabs-mode: nil
+   sentence-end-double-space: t
+   fill-column: 70
+   End:
