@@ -143,6 +143,23 @@ class TestMessages(Transform):
                 self.document += msg
 
 
+class ExposeInternals(Transform):
+
+    """
+    Expose internal attributes if ``expose_internals`` setting is set.
+    """
+
+    default_priority = 840
+
+    def apply(self): 
+        if self.document.settings.expose_internals:
+            for node in self.document.traverse():
+                for att in self.document.settings.expose_internals:
+                    value = getattr(node, att, None)
+                    if value is not None:
+                        node['internal:' + att] = value
+
+
 class FinalChecks(Transform):
 
     """
@@ -152,19 +169,13 @@ class FinalChecks(Transform):
     - Check for illegal transitions, move transitions.
     """
 
-    default_priority = 840
+    default_priority = 850
 
     def apply(self):
         visitor = FinalCheckVisitor(
             self.document,
             self.document.transformer.unknown_reference_resolvers)
         self.document.walk(visitor)
-        if self.document.settings.expose_internals:
-            for node in self.document.traverse():
-                for att in self.document.settings.expose_internals:
-                    value = getattr(node, att, None)
-                    if value is not None:
-                        node['internal:' + att] = value
         # *After* resolving all references, check for unreferenced
         # targets:
         for target in self.document.traverse(nodes.target):

@@ -75,6 +75,7 @@ class Transformer(TransformSpec):
     from docutils.transforms import universal
 
     default_transforms = (universal.Decorations,
+                          universal.ExposeInternals,
                           universal.FinalChecks,
                           universal.Messages,
                           universal.FilterMessages)

@@ -71,6 +71,28 @@ class ClassAttribute(Transform):
 
 class Transitions(Transform):
 
+    """
+    Move transitions at the end of sections up the tree.  Complain
+    on transitions after a title, at the beginning or end of the
+    document, and after another transition.
+
+    For example, transform this::
+
+        <section>
+            ...
+            <transition>
+        <section>
+            ...
+
+    into this::
+
+        <section>
+            ...
+        <transition>
+        <section>
+            ...
+    """
+
     default_priority = 830
 
     def apply(self):
@@ -78,27 +100,6 @@ class Transitions(Transform):
             self.visit_transition(node)
 
     def visit_transition(self, node):
-        """
-        Move transitions at the end of sections up the tree.  Complain
-        on transitions after a title, at the beginning or end of the
-        document, and after another transition.
-
-        For example, transform this::
-
-            <section>
-                ...
-                <transition>
-            <section>
-                ...
-
-        into this::
-
-            <section>
-                ...
-            <transition>
-            <section>
-                ...
-        """
         index = node.parent.index(node)
         error = None
         if (index == 0 or
