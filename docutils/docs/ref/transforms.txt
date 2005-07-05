@@ -60,6 +60,8 @@ references.ExternalTargets      standalone (r), pep (r)       640
 
 references.InternalTargets      standalone (r), pep (r)       660
 
+references.DanglingReferences   standalone (r), pep (r)       680
+
 parts.SectNum                   "sectnum" (d/p)               710
 
 parts.Contents                  "contents" (d/p),             720
@@ -71,11 +73,9 @@ components.Filter               "meta" (d/p)                  780
 
 universal.Decorations           Transformer                   820
 
-misc.Transitions                standalone (r)                830
+misc.Transitions                standalone (r), pep (r)       830
 
 universal.ExposeInternals       Transformer                   840
-
-universal.FinalChecks           Transformer                   850
 
 universal.Messages              Transformer                   860
 

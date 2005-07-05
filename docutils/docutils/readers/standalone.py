@@ -62,5 +62,6 @@ class Reader(readers.Reader):
                           references.Footnotes,
                           references.ExternalTargets,
                           references.InternalTargets,
+                          references.DanglingReferences,
                           misc.Transitions,
                           )
