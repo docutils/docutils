@@ -13,9 +13,8 @@ Tests for docutils.transforms.references.Hyperlinks.
 from __init__ import DocutilsTestSupport
 from docutils.transforms.references import PropagateTargets, \
      AnonymousHyperlinks, IndirectHyperlinks, ExternalTargets, \
-     InternalTargets
+     InternalTargets, DanglingReferences
 
-from docutils.transforms.universal import FinalChecks
 from docutils.parsers.rst import Parser
 
 
@@ -33,7 +32,7 @@ totest = {}
 totest['exhaustive_hyperlinks'] = ((PropagateTargets, AnonymousHyperlinks,
                                     IndirectHyperlinks,
                                     ExternalTargets, InternalTargets,
-                                    FinalChecks), [
+                                    DanglingReferences), [
 ["""\
 direct_ external
 
@@ -347,7 +346,7 @@ An `anonymous embedded uri <http://direct>`__.
 
 totest['hyperlinks'] = ((PropagateTargets, AnonymousHyperlinks,
                          IndirectHyperlinks, ExternalTargets,
-                         InternalTargets, FinalChecks), [
+                         InternalTargets, DanglingReferences), [
 ["""\
 .. _internal hyperlink:
 
@@ -762,6 +761,51 @@ Title
     <section ids="title" names="title">
         <title>
             Title
+"""],
+["""\
+Unknown reference_.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Unknown \n\
+        <problematic ids="id2" refid="id1">
+            reference_
+        .
+    <system_message backrefs="id2" ids="id1" level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Unknown target name: "reference".
+"""],
+["""\
+Duplicate manual footnote labels, with reference ([1]_):
+
+.. [1] Footnote.
+
+.. [1] Footnote.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Duplicate manual footnote labels, with reference (
+        <problematic ids="id5" refid="id4">
+            [1]_
+        ):
+    <footnote dupnames="1" ids="id2">
+        <label>
+            1
+        <paragraph>
+            Footnote.
+    <footnote dupnames="1" ids="id3">
+        <label>
+            1
+        <system_message backrefs="id3" level="2" line="5" source="test data" type="WARNING">
+            <paragraph>
+                Duplicate explicit target name: "1".
+        <paragraph>
+            Footnote.
+    <system_message backrefs="id5" ids="id4" level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Duplicate target name, cannot be used as a unique reference: "1".
 """],
 ])
 

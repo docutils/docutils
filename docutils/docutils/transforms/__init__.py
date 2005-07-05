@@ -76,13 +76,11 @@ class Transformer(TransformSpec):
 
     default_transforms = (universal.Decorations,
                           universal.ExposeInternals,
-                          universal.FinalChecks,
                           universal.Messages,
                           universal.FilterMessages)
     """These transforms are applied to all document trees."""
 
-    reprocess_transforms = (universal.FinalChecks,
-                            universal.Messages,
+    reprocess_transforms = (universal.Messages,
                             universal.FilterMessages)
     """This set of transforms is a suggested replacement for
     `default_transforms` when reprocessing a document tree."""

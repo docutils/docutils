@@ -12,7 +12,7 @@ __docformat__ = 'reStructuredText'
 
 
 from docutils.readers import standalone
-from docutils.transforms import peps, references
+from docutils.transforms import peps, references, misc
 from docutils.parsers import rst
 
 
@@ -39,7 +39,10 @@ class Reader(standalone.Reader):
                           peps.TargetNotes,
                           references.Footnotes,
                           references.ExternalTargets,
-                          references.InternalTargets,)
+                          references.InternalTargets,
+                          references.DanglingReferences,
+                          misc.Transitions,
+                          )
 
     settings_default_overrides = {'pep_references': 1, 'rfc_references': 1}
 
