@@ -73,7 +73,9 @@ universal.Decorations           Transformer                   820
 
 misc.Transitions                standalone (r)                830
 
-universal.FinalChecks           Transformer                   840
+universal.ExposeInternals       Transformer                   840
+
+universal.FinalChecks           Transformer                   850
 
 universal.Messages              Transformer                   860
 

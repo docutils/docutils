@@ -7,7 +7,7 @@
 # Copyright: This module has been placed in the public domain.
 
 """
-Test module for transforms/__init__.py.
+Test module for misc.Transitions transform.
 """
 
 from docutils.transforms.misc import Transitions
