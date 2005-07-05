@@ -160,8 +160,11 @@ class FinalChecks(Transform):
             self.document.transformer.unknown_reference_resolvers)
         self.document.walk(visitor)
         if self.document.settings.expose_internals:
-            visitor = InternalAttributeExposer(self.document)
-            self.document.walk(visitor)
+            for node in self.document.traverse():
+                for att in self.document.settings.expose_internals:
+                    value = getattr(node, att, None)
+                    if value is not None:
+                        node['internal:' + att] = value
         # *After* resolving all references, check for unreferenced
         # targets:
         for target in self.document.traverse(nodes.target):
@@ -220,82 +223,3 @@ class FinalCheckVisitor(nodes.SparseNodeVisitor):
             node.resolved = 1
 
     visit_footnote_reference = visit_citation_reference = visit_reference
-
-    def visit_transition(self, node):
-        """
-        Move transitions at the end of sections up the tree.  Complain
-        on transitions after a title, at the beginning or end of the
-        document, and after another transition.
-
-        For example, transform this::
-
-            <section>
-                ...
-                <transition>
-            <section>
-                ...
-
-        into this::
-
-            <section>
-                ...
-            <transition>
-            <section>
-                ...
-        """
-        index = node.parent.index(node)
-        error = None
-        if (index == 0 or
-            isinstance(node.parent[0], nodes.title) and
-            (index == 1 or
-             isinstance(node.parent[1], nodes.subtitle) and
-             index == 2)):
-            assert (isinstance(node.parent, nodes.document) or
-                    isinstance(node.parent, nodes.section))
-            error = self.document.reporter.error(
-                'Document or section may not begin with a transition.',
-                line=node.line)
-        elif isinstance(node.parent[index - 1], nodes.transition):
-            error = self.document.reporter.error(
-                'At least one body element must separate transitions; '
-                'adjacent transitions are not allowed.', line=node.line)
-        if error:
-            # Insert before node and update index.
-            node.parent.insert(index, error)
-            index += 1
-        assert index < len(node.parent)
-        if index != len(node.parent) - 1:
-            # No need to move the node.
-            return
-        # Node behind which the transition is to be moved.
-        sibling = node
-        # While sibling is the last node of its parent.
-        while index == len(sibling.parent) - 1:
-            sibling = sibling.parent
-            # If sibling is the whole document (i.e. it has no parent).
-            if sibling.parent is None:
-                # Transition at the end of document.  Do not move the
-                # transition up, and place an error behind.
-                error = self.document.reporter.error(
-                    'Document may not end with a transition.',
-                    line=node.line)
-                node.parent.insert(node.parent.index(node) + 1, error)
-                return
-            index = sibling.parent.index(sibling)
-        # Remove the original transition node.
-        node.parent.remove(node)
-        # Insert the transition after the sibling.
-        sibling.parent.insert(index + 1, node)
-
-
-class InternalAttributeExposer(nodes.GenericNodeVisitor):
-
-    def __init__(self, document):
-        nodes.GenericNodeVisitor.__init__(self, document)
-        self.internal_attributes = document.settings.expose_internals
-
-    def default_visit(self, node):
-        for att in self.internal_attributes:
-            value = getattr(node, att, None)
-            if value is not None:
-                node['internal:' + att] = value
