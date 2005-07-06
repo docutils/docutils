@@ -81,6 +81,23 @@ class Decorations(Transform):
             return None
 
 
+class ExposeInternals(Transform):
+
+    """
+    Expose internal attributes if ``expose_internals`` setting is set.
+    """
+
+    default_priority = 840
+
+    def apply(self): 
+        if self.document.settings.expose_internals:
+            for node in self.document.traverse():
+                for att in self.document.settings.expose_internals:
+                    value = getattr(node, att, None)
+                    if value is not None:
+                        node['internal:' + att] = value
+
+
 class Messages(Transform):
 
     """
@@ -143,20 +160,3 @@ class TestMessages(Transform):
         for msg in self.document.transform_messages:
             if not msg.parent:
                 self.document += msg
-
-
-class ExposeInternals(Transform):
-
-    """
-    Expose internal attributes if ``expose_internals`` setting is set.
-    """
-
-    default_priority = 840
-
-    def apply(self): 
-        if self.document.settings.expose_internals:
-            for node in self.document.traverse():
-                for att in self.document.settings.expose_internals:
-                    value = getattr(node, att, None)
-                    if value is not None:
-                        node['internal:' + att] = value
