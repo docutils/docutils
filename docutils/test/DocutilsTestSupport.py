@@ -93,11 +93,33 @@ class StandardTestCase(unittest.TestCase):
 
     """
     Helper class, providing the same interface as unittest.TestCase,
-    but with useful setUp and tearDown methods.
+    but with useful setUp and comparison methods.
     """
 
     def setUp(self):
         os.chdir(testroot)
+
+    def failUnlessEqual(self, first, second, msg=None):
+        """Fail if the two objects are unequal as determined by the '=='
+           operator.
+        """
+        if not first == second:
+            raise self.failureException, \
+                  (msg or '%s != %s' % _format_str(first, second))
+
+    def failIfEqual(self, first, second, msg=None):
+        """Fail if the two objects are equal as determined by the '=='
+           operator.
+        """
+        if first == second:
+            raise self.failureException, \
+                  (msg or '%s == %s' % _format_str(first, second))
+
+    # Synonyms for assertion methods
+
+    assertEqual = assertEquals = failUnlessEqual
+
+    assertNotEqual = assertNotEquals = failIfEqual
 
 
 class CustomTestCase(StandardTestCase):
@@ -166,28 +188,6 @@ class CustomTestCase(StandardTestCase):
                 print >>sys.stderr, 'expected: %r' % expected
                 print >>sys.stderr, 'output:   %r' % output
             raise error
-
-    def failUnlessEqual(self, first, second, msg=None):
-        """Fail if the two objects are unequal as determined by the '=='
-           operator.
-        """
-        if not first == second:
-            raise self.failureException, \
-                  (msg or '%s != %s' % _format_str(first, second))
-
-    def failIfEqual(self, first, second, msg=None):
-        """Fail if the two objects are equal as determined by the '=='
-           operator.
-        """
-        if first == second:
-            raise self.failureException, \
-                  (msg or '%s == %s' % _format_str(first, second))
-
-    # Synonyms for assertion methods
-
-    assertEqual = assertEquals = failUnlessEqual
-
-    assertNotEqual = assertNotEquals = failIfEqual
 
 
 class CustomTestSuite(unittest.TestSuite):
