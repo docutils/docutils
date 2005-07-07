@@ -71,6 +71,23 @@ Changes Since 0.3.9
 * docutils/transforms/html.py: Added to project; transforms specific
   to the html4css1 Writer.
 
+* docutils/transforms/misc.py:
+
+  - Added misc.Transitions transform, extracted from
+    universal.FinalChecks.
+
+* docutils/transforms/references.py:
+
+  - Added references.DanglingReferences transform, extracted from
+    universal.FinalChecks.
+
+* docutils/transforms/universal.py:
+
+  - Added universal.ExposeInternals transform, extracted from
+    universal.FinalChecks.
+  - Removed universal.FinalChecks transform (logic has been moved to
+    several new transforms).
+
 * docutils/writers/html4css1.py:
 
   - Added support for image width and height units.
