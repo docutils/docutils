@@ -735,6 +735,13 @@ class Labeled:
 
 class document(Root, Structural, Element):
 
+    """
+    The document root element.
+
+    Do not instantiate this class directly; use
+    `docutils.utils.new_document()` instead.
+    """
+
     def __init__(self, settings, reporter, *args, **kwargs):
         Element.__init__(self, *args, **kwargs)
 
