@@ -10,61 +10,101 @@
 Test the `Publisher` facade and the ``publish_*`` convenience functions.
 """
 
-import unittest
-from types import DictType, StringType
-from docutils import core, nodes
 import pickle
+from types import DictType, StringType
+
+import docutils
+from docutils import core, nodes, io
+
+import DocutilsTestSupport
 
 
 test_document = """\
 Test Document
 =============
 
-This is a test document.
+This is a test document with a broken reference: nonexistent_
 """
 pseudoxml_output = """\
 <document ids="test-document" names="test document" source="<string>" title="Test Document">
     <title>
         Test Document
     <paragraph>
-        This is a test document.
+        This is a test document with a broken reference: \n\
+        <problematic ids="id2" refid="id1">
+            nonexistent_
+    <section classes="system-messages">
+        <title>
+            Docutils System Messages
+        <system_message backrefs="id2" ids="id1" level="3" line="4" source="<string>" type="ERROR">
+            <paragraph>
+                Unknown target name: "nonexistent".
+"""
+exposed_pseudoxml_output = """\
+<document ids="test-document" internal:refnames="{u\'nonexistent\': [<reference: <#text: u\'nonexistent\'>>]}" names="test document" source="<string>" title="Test Document">
+    <title>
+        Test Document
+    <paragraph>
+        This is a test document with a broken reference: \n\
+        <problematic ids="id2" refid="id1">
+            nonexistent_
+    <section classes="system-messages">
+        <title>
+            Docutils System Messages
+        <system_message backrefs="id2" ids="id1" level="3" line="4" source="<string>" type="ERROR">
+            <paragraph>
+                Unknown target name: "nonexistent".
 """
 
 
-class PublishDoctreeTestCase(unittest.TestCase):
+class PublishDoctreeTestCase(DocutilsTestSupport.StandardTestCase, docutils.SettingsSpec):
+
+    settings_default_overrides = {
+        '_disable_config': 1,
+        'warning_stream': io.NullOutput()}
 
     def test_publish_doctree(self):
-        """Test `publish_doctree` and `publish_from_doctree`."""
+        # Test `publish_doctree` and `publish_from_doctree`.
 
         # Produce the document tree.
         doctree = core.publish_doctree(
-            source=test_document,
-            reader_name='standalone',
-            parser_name='restructuredtext',
-            settings_overrides={'_disable_config': 1})
+            source=test_document, reader_name='standalone',
+            parser_name='restructuredtext', settings_spec=self,
+            settings_overrides={'expose_internals':
+                                ['refnames', 'do_not_expose'],
+                                'report_level': 5})
         self.assert_(isinstance(doctree, nodes.document))
-        
+
         # Confirm that transforms have been applied (in this case, the
         # DocTitle transform):
         self.assert_(isinstance(doctree[0], nodes.title))
         self.assert_(isinstance(doctree[1], nodes.paragraph))
+        # Confirm that the Messages transform has not yet been applied:
+        self.assertEquals(len(doctree), 2)
 
+        # The `do_not_expose` attribute may not show up in the
+        # pseudoxml output because the expose_internals transform may
+        # not be applied twice.
+        doctree.do_not_expose = 'test'
         # Write out the document:
         output, parts = core.publish_from_doctree(
             doctree, writer_name='pseudoxml',
-            settings_overrides={'_disable_config': 1})
-        self.assertEquals(output, pseudoxml_output)
+            settings_spec=self,
+            settings_overrides={'expose_internals':
+                                ['refnames', 'do_not_expose'],
+                                'report_level': 1})
+        self.assertEquals(output, exposed_pseudoxml_output)
         self.assert_(isinstance(parts, DictType))
 
     def test_publish_pickle(self):
-        """Test publishing a document tree with pickling and unpickling."""
+        # Test publishing a document tree with pickling and unpickling.
         
         # Produce the document tree.
         doctree = core.publish_doctree(
             source=test_document,
             reader_name='standalone',
             parser_name='restructuredtext',
-            settings_overrides={'_disable_config': 1})
+            settings_spec=self)
         self.assert_(isinstance(doctree, nodes.document))
 
         # Pickle the document.  Note: if this fails, some unpickleable
@@ -75,8 +115,9 @@ class PublishDoctreeTestCase(unittest.TestCase):
         # requirement, applications will be built on the assumption
         # that we can pickle the document.
 
-        # Remove the reporter before pickling.
+        # Remove the reporter and the transformer before pickling.
         doctree.reporter = None
+        doctree.transformer = None
 
         doctree_pickled = pickle.dumps(doctree)
         self.assert_(isinstance(doctree_pickled, StringType))
@@ -89,10 +130,11 @@ class PublishDoctreeTestCase(unittest.TestCase):
         # Write out the document:
         output, parts = core.publish_from_doctree(
             doctree_zombie, writer_name='pseudoxml',
-            settings_overrides={'_disable_config': 1})
+            settings_spec=self)
         self.assertEquals(output, pseudoxml_output)
         self.assert_(isinstance(parts, DictType))
 
 
 if __name__ == '__main__':
+    import unittest
     unittest.main()

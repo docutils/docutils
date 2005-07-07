@@ -74,16 +74,19 @@ class Transformer(TransformSpec):
 
     from docutils.transforms import universal
 
-    default_transforms = (universal.Decorations,
-                          universal.ExposeInternals,
-                          universal.Messages,
-                          universal.FilterMessages)
-    """These transforms are applied to all document trees."""
+    stage1_transforms = (universal.Decorations,
+                         universal.ExposeInternals)
+    """Suggested replacement for `default_transforms` when generating
+    a document tree without writing it."""
 
-    reprocess_transforms = (universal.Messages,
-                            universal.FilterMessages)
-    """This set of transforms is a suggested replacement for
-    `default_transforms` when reprocessing a document tree."""
+    stage2_transforms = (universal.Messages,
+                         universal.FilterMessages)
+    """Suggested replacement for `default_transforms` when writing a
+    previously-parsed document tree.  Only transforms which *must* be applied
+    after writer-specific transforms should be added to this list."""
+
+    default_transforms = stage1_transforms + stage2_transforms
+    """These transforms are applied to all document trees."""
 
     def __init__(self, document):
         self.transforms = []
