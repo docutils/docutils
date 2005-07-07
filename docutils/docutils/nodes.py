@@ -1240,6 +1240,13 @@ class entry(Part, Element): pass
 
 class system_message(Special, BackLinkable, PreBibliographic, Element):
 
+    """
+    System message element.
+
+    Do not instantiate this class directly; use
+    ``document.reporter.info/warning/error/severe()`` instead.
+    """
+
     def __init__(self, message=None, *children, **attributes):
         if message:
             p = paragraph('', message)
