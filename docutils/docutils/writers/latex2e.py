@@ -1827,8 +1827,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append(self.context.pop())
 
     def visit_system_message(self, node):
-        if node['level'] < self.document.reporter.report_level:
-            raise nodes.SkipNode
+        pass
 
     def depart_system_message(self, node):
         self.body.append('\n')
