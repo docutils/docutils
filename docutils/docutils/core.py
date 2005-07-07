@@ -193,11 +193,16 @@ class Publisher:
 
     def publish(self, argv=None, usage=None, description=None,
                 settings_spec=None, settings_overrides=None,
-                config_section=None, enable_exit_status=None):
+                config_section=None, enable_exit_status=None, stage=None):
         """
         Process command line options and arguments (if `self.settings` not
         already set), run `self.reader` and then `self.writer`.  Return
         `self.writer`'s output.
+
+        Pass ``stage=1`` to set transformer.default_transforms to the
+        stage-1 transforms; dito for ``stage=2`` and stage-2
+        transforms, resp.  See the documentation in the
+        `transforms.Transformer` class.
         """
         if self.settings is None:
             self.process_command_line(
@@ -208,6 +213,13 @@ class Publisher:
         try:
             self.document = self.reader.read(self.source, self.parser,
                                              self.settings)
+            assert stage in (1, 2, None)
+            if stage == 1:
+                self.document.transformer.default_transforms = (
+                    self.document.transformer.stage1_transforms)
+            elif stage == 2:
+                self.document.transformer.default_transforms = (
+                    self.document.transformer.stage2_transforms)
             self.apply_transforms()
             output = self.writer.write(self.document, self.destination)
             self.writer.assemble_parts()
@@ -449,20 +461,16 @@ def publish_doctree(source, source_path=None,
 
     Parameters: see `publish_programmatically`.
     """
-    output, pub = publish_programmatically(
-        source_class=source_class, source=source, source_path=source_path,
-        destination_class=io.NullOutput,
-        destination=None, destination_path=None,
-        reader=reader, reader_name=reader_name,
-        parser=parser, parser_name=parser_name,
-        writer=None, writer_name='null',
-        settings=settings, settings_spec=settings_spec,
-        settings_overrides=settings_overrides,
-        config_section=config_section,
-        enable_exit_status=enable_exit_status)
-    # The transformer is not needed any more
-    # (a new transformer will be created in `publish_from_doctree`):
-    del pub.document.transformer
+    pub = Publisher(reader=reader, parser=parser, writer=None,
+                    settings=settings,
+                    source_class=source_class,
+                    destination_class=io.NullOutput)
+    pub.set_components(reader_name, parser_name, 'null')
+    pub.process_programmatic_settings(
+        settings_spec, settings_overrides, config_section)
+    pub.set_source(source, source_path)
+    pub.set_destination(None, None)
+    output = pub.publish(enable_exit_status=enable_exit_status, stage=1)
     return pub.document
 
 def publish_from_doctree(document, destination_path=None,
@@ -478,6 +486,9 @@ def publish_from_doctree(document, destination_path=None,
     Note that document.settings is overridden; if you want to use the settings
     of the original `document`, pass settings=document.settings.
 
+    Also, new document.transformer and document.reporter objects are
+    generated.
+
     For encoded string output, be sure to set the 'output_encoding' setting to
     the desired encoding.  Set it to 'unicode' for unencoded Unicode string
     output.  Here's one way::
@@ -490,11 +501,6 @@ def publish_from_doctree(document, destination_path=None,
 
     Other parameters: see `publish_programmatically`.
     """
-    # Create fresh Transformer object, to be populated from Writer component.
-    document.transformer = Transformer(document)
-    # Don't apply default transforms twice:
-    document.transformer.default_transforms = (
-        document.transformer.reprocess_transforms)
     reader = docutils.readers.doctree.Reader(parser_name='null')
     pub = Publisher(reader, None, writer,
                     source=io.DocTreeInput(document),
@@ -503,8 +509,15 @@ def publish_from_doctree(document, destination_path=None,
         pub.set_writer(writer_name)
     pub.process_programmatic_settings(
         settings_spec, settings_overrides, config_section)
+    # Create fresh Transformer object, to be populated from Writer component.
+    document.transformer = Transformer(document)
+    # Create fresh Reporter object because it is dependent on (new) settings.
+    document.reporter = utils.new_reporter(document.get('source', ''),
+                                           pub.settings)
+    # Replace existing settings object with new one.
+    document.settings = pub.settings
     pub.set_destination(None, destination_path)
-    output = pub.publish(enable_exit_status=enable_exit_status)
+    output = pub.publish(enable_exit_status=enable_exit_status, stage=2)
     return output, pub.writer.parts
 
 def publish_programmatically(source_class, source, source_path,

@@ -37,9 +37,3 @@ class Reader(readers.Reader):
         Overrides the inherited method.
         """
         self.document = self.input
-        # Restore the reporter after document serialization:
-        if self.document.reporter is None:
-            self.document.reporter = utils.new_reporter(
-                self.source.source_path, self.settings) 
-        # Override document settings with new settings:
-        self.document.settings = self.settings
