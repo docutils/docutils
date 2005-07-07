@@ -1299,6 +1299,8 @@ when used in a document.
     The ideas in `adaptable file extensions`_ above may also be
     applicable here.
 
+    SVG's "switch" statement may provide inspiration.
+
     Here's an example of a directive that could produce multiple
     outputs (*both* raw troff pass-through *and* a GIF, for example)
     and allow the Writer to select. ::
