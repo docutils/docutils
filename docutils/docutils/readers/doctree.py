@@ -6,7 +6,7 @@
 
 """Reader for existing document trees."""
 
-from docutils import readers, utils
+from docutils import readers, utils, transforms
 
 
 class Reader(readers.Reader):
@@ -37,3 +37,12 @@ class Reader(readers.Reader):
         Overrides the inherited method.
         """
         self.document = self.input
+        # Create fresh Transformer object, to be populated from Writer
+        # component.
+        self.document.transformer = transforms.Transformer(self.document)
+        # Replace existing settings object with new one.
+        self.document.settings = self.settings
+        # Create fresh Reporter object because it is dependent on
+        # (new) settings.
+        self.document.reporter = utils.new_reporter(
+            self.document.get('source', ''), self.document.settings)

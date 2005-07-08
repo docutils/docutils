@@ -409,7 +409,8 @@ def publish_string(source, source_path=None, destination_path=None,
         enable_exit_status=enable_exit_status)
     return output
 
-def publish_parts(source, source_path=None, destination_path=None,
+def publish_parts(source, source_path=None, source_class=io.StringInput,
+                  destination_path=None,
                   reader=None, reader_name='standalone',
                   parser=None, parser_name='restructuredtext',
                   writer=None, writer_name='pseudoxml',
@@ -430,7 +431,7 @@ def publish_parts(source, source_path=None, destination_path=None,
     Parameters: see `publish_programmatically`.
     """
     output, pub = publish_programmatically(
-        source_class=io.StringInput, source=source, source_path=source_path,
+        source=source, source_path=source_path, source_class=source_class,
         destination_class=io.StringOutput,
         destination=None, destination_path=destination_path,
         reader=reader, reader_name=reader_name,
@@ -509,13 +510,6 @@ def publish_from_doctree(document, destination_path=None,
         pub.set_writer(writer_name)
     pub.process_programmatic_settings(
         settings_spec, settings_overrides, config_section)
-    # Create fresh Transformer object, to be populated from Writer component.
-    document.transformer = Transformer(document)
-    # Create fresh Reporter object because it is dependent on (new) settings.
-    document.reporter = utils.new_reporter(document.get('source', ''),
-                                           pub.settings)
-    # Replace existing settings object with new one.
-    document.settings = pub.settings
     pub.set_destination(None, destination_path)
     return pub.publish(enable_exit_status=enable_exit_status, stage=2)
 
@@ -543,14 +537,15 @@ def publish_programmatically(source_class, source, source_path,
 
     * `source`: Type depends on `source_class`:
 
-      - `io.FileInput`: Either a file-like object (must have 'read' and
-        'close' methods), or ``None`` (`source_path` is opened).  If neither
-        `source` nor `source_path` are supplied, `sys.stdin` is used.
+      - If `source_class` is `io.FileInput`: Either a file-like object
+        (must have 'read' and 'close' methods), or ``None``
+        (`source_path` is opened).  If neither `source` nor
+        `source_path` are supplied, `sys.stdin` is used.
 
-      - `io.StringInput` **required**: The input string, either an encoded
-        8-bit string (set the 'input_encoding' setting to the correct
-        encoding) or a Unicode string (set the 'input_encoding' setting to
-        'unicode').
+      - If `source_class` is `io.StringInput` **required**: The input
+        string, either an encoded 8-bit string (set the
+        'input_encoding' setting to the correct encoding) or a Unicode
+        string (set the 'input_encoding' setting to 'unicode').
 
     * `source_path`: Type depends on `source_class`:
 
