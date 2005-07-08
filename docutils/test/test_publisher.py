@@ -11,7 +11,7 @@ Test the `Publisher` facade and the ``publish_*`` convenience functions.
 """
 
 import pickle
-from types import StringType
+from types import StringType, DictType
 
 import docutils
 from docutils import core, nodes, io
@@ -94,6 +94,12 @@ class PublishDoctreeTestCase(DocutilsTestSupport.StandardTestCase, docutils.Sett
                                 ['refnames', 'do_not_expose'],
                                 'report_level': 1})
         self.assertEquals(output, exposed_pseudoxml_output)
+
+        # Test publishing parts using document as the source.
+        parts = core.publish_parts(
+           reader_name='doctree', source_class=io.DocTreeInput, source=doctree,
+           source_path='test', writer_name='html')
+        self.assert_(isinstance(parts, DictType))
 
     def test_publish_pickle(self):
         # Test publishing a document tree with pickling and unpickling.
