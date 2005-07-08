@@ -8,20 +8,24 @@
 :Date: $Date$
 :Copyright: This document has been placed in the public domain.
 
-.. _Docutils: http://docutils.sourceforge.net/
+.. contents::
+
+This document contains links users of Docutils and reStructuredText
+may find useful, listed in no particular order.  Many of the project
+listed here are hosted in the `Docutils Sandbox`_.  If you have
+something to publish, you can get write access, too!
 
 The most current version of this document can always be found at
 http://docutils.sourceforge.net/docs/user/links.html.
 
 
-Related Projects
-================
+Users
+-----
 
-These are projects users of Docutils and reStructuredText may find
-useful, listed in no particular order.  Many of them projects are
-hosted in the `Docutils Sandbox`_.  All projects are usable by end
-users in some way, however please do not expect all of them to run
-straight out of the box.
+This section contains links which are interesting for all users of
+Docutils.  All projects listed here are usable by end users in some
+way, however please do not expect all of them to run straight out of
+the box.
 
 * For Wikis, please see the `FAQ entry about Wikis`_.
 
@@ -35,14 +39,6 @@ straight out of the box.
 
 * ZReST_, by Richard Jones, is a "ReStructuredText Document for Zope"
   application that is complete and ready to install.
-
-* PySource_, by Tony Ibbs, is an experimental Python source Reader.
-  In some form, it will soon become part of core Docutils.  There is
-  some related code in David Goodger's sandbox (pysource_reader_) and
-  a `Python Source Reader`_ document.
-
-  .. Is this usable for end users?  Maybe move to a "Developers"
-     section?
 
 * The Docutils interface to PythonPoint_, also by Richard Jones,
   produces PDF presentations using ReportLabs.
@@ -67,6 +63,21 @@ straight out of the box.
 * Beni Cherniavsky maintains a Makefile_ for driving Docutils, hoping
   to handle everything one might do with Docutils.
 
+
+Developers
+----------
+
+This section contains links which are primarily interesting for
+developers.
+
+* PySource_, by Tony Ibbs, is an experimental Python source Reader.
+  There is some related code in David Goodger's sandbox
+  (pysource_reader_) and a `Python Source Reader`_ document.
+
+* There is a `pickle writer`_, written by Martin Blais.
+
+
+.. _Docutils: http://docutils.sourceforge.net/
 .. _FAQ entry about Wikis: http://docutils.sf.net/FAQ.html#are-there-any-wikis-that-use-restructuredtext-syntax
 .. _FAQ entry about Blogs: http://docutils.sf.net/FAQ.html#are-there-any-weblog-blog-projects-that-use-restructuredtext-syntax
 .. _rst2chm: http://www.rutherfurd.net/software/rst2chm/
@@ -86,3 +97,4 @@ straight out of the box.
 .. _simple HTML writer: http://docutils.sf.net/sandbox/bbum/DocArticle/
 .. _preprocessing module: http://docutils.sf.net/sandbox/cben/rolehack/
 .. _Makefile: http://docutils.sf.net/sandbox/cben/make/
+.. _pickle writer: http://docutils.sf.net/sandbox/blais/pickle_writer/
