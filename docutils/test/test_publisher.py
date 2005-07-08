@@ -11,7 +11,7 @@ Test the `Publisher` facade and the ``publish_*`` convenience functions.
 """
 
 import pickle
-from types import DictType, StringType
+from types import StringType
 
 import docutils
 from docutils import core, nodes, io
@@ -87,14 +87,13 @@ class PublishDoctreeTestCase(DocutilsTestSupport.StandardTestCase, docutils.Sett
         # not be applied twice.
         doctree.do_not_expose = 'test'
         # Write out the document:
-        output, parts = core.publish_from_doctree(
+        output = core.publish_from_doctree(
             doctree, writer_name='pseudoxml',
             settings_spec=self,
             settings_overrides={'expose_internals':
                                 ['refnames', 'do_not_expose'],
                                 'report_level': 1})
         self.assertEquals(output, exposed_pseudoxml_output)
-        self.assert_(isinstance(parts, DictType))
 
     def test_publish_pickle(self):
         # Test publishing a document tree with pickling and unpickling.
@@ -128,11 +127,10 @@ class PublishDoctreeTestCase(DocutilsTestSupport.StandardTestCase, docutils.Sett
         self.assert_(isinstance(doctree_zombie, nodes.document))
 
         # Write out the document:
-        output, parts = core.publish_from_doctree(
+        output = core.publish_from_doctree(
             doctree_zombie, writer_name='pseudoxml',
             settings_spec=self)
         self.assertEquals(output, pseudoxml_output)
-        self.assert_(isinstance(parts, DictType))
 
 
 if __name__ == '__main__':

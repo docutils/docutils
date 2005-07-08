@@ -517,8 +517,7 @@ def publish_from_doctree(document, destination_path=None,
     # Replace existing settings object with new one.
     document.settings = pub.settings
     pub.set_destination(None, destination_path)
-    output = pub.publish(enable_exit_status=enable_exit_status, stage=2)
-    return output, pub.writer.parts
+    return pub.publish(enable_exit_status=enable_exit_status, stage=2)
 
 def publish_programmatically(source_class, source, source_path,
                              destination_class, destination, destination_path,
