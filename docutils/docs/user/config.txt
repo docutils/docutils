@@ -369,7 +369,7 @@ _`strict_visitor`
     Default: disabled (None).  Option: ``--strict-visitor`` (hidden,
     for development use only).
 
--`title`
+_`title`
     The document title as metadata, which does not become part of the
     document body.  It overrides a document-supplied title.  For
     example, in HTML output the metadata document title appears in the
