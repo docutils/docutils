@@ -31,6 +31,12 @@ the box.
 
 * For Blogs (Weblogs), please see the `FAQ entry about Blogs`_.
 
+* rst2ht_, by Oliver Rutherfurd, converts reStructuredText to an .ht
+  template, for use with ht2html_.
+
+* htmlnav_, by Gunnar Schwant, is an HTML writer which supports
+  navigation bars.
+
 * xhtml2rest_, written by Antonios Christofides, is a simple utility
   to convert XHTML to reStructuredText.
 
@@ -48,8 +54,7 @@ the box.
 
 * Engelbert Gruber has begun a `ManPage Writer`_.
 
-* Oliver Rutherfurd has begun a `DocBook Writer`_ component and
-  `HT2HTML integration`_ component.
+* Oliver Rutherfurd has begun a `DocBook Writer`_.
 
 * Gunnar Schwant's DocFactory_ is a wxPython GUI application for
   Docutils.
@@ -83,6 +88,9 @@ developers.
 .. _Docutils: http://docutils.sourceforge.net/
 .. _FAQ entry about Wikis: http://docutils.sf.net/FAQ.html#are-there-any-wikis-that-use-restructuredtext-syntax
 .. _FAQ entry about Blogs: http://docutils.sf.net/FAQ.html#are-there-any-weblog-blog-projects-that-use-restructuredtext-syntax
+.. _rst2ht: http://www.rutherfurd.net/articles/rst-ht2html.html
+.. _ht2html: http://ht2html.sourceforge.net/
+.. _htmlnav: http://docutils.sf.net/sandbox/gschwant/htmlnav/
 .. _xhtml2rest: http://docutils.sf.net/sandbox/felixwiemann/xhtml2rest/
 .. _rst2chm: http://www.rutherfurd.net/software/rst2chm/
 .. _rest2web: http://www.voidspace.org.uk/python/rest2web/
@@ -95,7 +103,6 @@ developers.
 .. _Manpage Writer: http://docutils.sf.net/sandbox/grubert/man/
 .. _ReportLabs/PDF Writer: http://docutils.sf.net/sandbox/dreamcatcher/rlpdf/
 .. _DocBook Writer: http://docutils.sf.net/sandbox/oliverr/docbook/
-.. _HT2HTML integration: http://docutils.sf.net/sandbox/oliverr/ht/
 .. _DocFactory: http://docutils.sf.net/sandbox/gschwant/docfactory/doc/
 .. _OpenOffice.org Writer: http://docutils.sf.net/sandbox/pobrien/OpenOffice/
 .. _simple HTML writer: http://docutils.sf.net/sandbox/bbum/DocArticle/
