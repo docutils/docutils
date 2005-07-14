@@ -267,9 +267,9 @@ class ListItemDitem(BlockDitem):
     def format(self, width):
         global unindent
         if self.type == 'li' and self.listtype == 'ol':
-            unindent = '%2d. '% (self.order)
+            unindent = ('%d. ' % (self.order)).ljust(4)
         elif self.type == 'li' and self.listtype == 'ul':
-            unindent = '  * '
+            unindent = '*   '
         return BlockDitem.format(self, width)
 
 class RenderedColumn:
