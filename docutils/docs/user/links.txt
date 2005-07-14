@@ -31,6 +31,9 @@ the box.
 
 * For Blogs (Weblogs), please see the `FAQ entry about Blogs`_.
 
+* xhtml2rest_, written by Antonios Christofides, is a simple utility
+  to convert XHTML to reStructuredText.
+
 * rst2chm_, written by Oliver Rutherfurd, generates Microsoft HTML
   Help files from reStructuredText files.
 
@@ -80,6 +83,7 @@ developers.
 .. _Docutils: http://docutils.sourceforge.net/
 .. _FAQ entry about Wikis: http://docutils.sf.net/FAQ.html#are-there-any-wikis-that-use-restructuredtext-syntax
 .. _FAQ entry about Blogs: http://docutils.sf.net/FAQ.html#are-there-any-weblog-blog-projects-that-use-restructuredtext-syntax
+.. _xhtml2rest: http://docutils.sf.net/sandbox/felixwiemann/xhtml2rest/
 .. _rst2chm: http://www.rutherfurd.net/software/rst2chm/
 .. _rest2web: http://www.voidspace.org.uk/python/rest2web/
 .. _Docutils Sandbox: http://docutils.sf.net/sandbox/README.html
