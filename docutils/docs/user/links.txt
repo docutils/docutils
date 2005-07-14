@@ -15,7 +15,7 @@ may find useful, listed in no particular order.  Many of the project
 listed here are hosted in the `Docutils Sandbox`_.  If you have
 something to publish, you can get write access, too!
 
-The most current version of this document can always be found at
+The most current version of this link list can always be found at
 http://docutils.sourceforge.net/docs/user/links.html.
 
 
