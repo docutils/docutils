@@ -71,6 +71,8 @@ META
 ``xhtml2rest`` was created by Antonios Christofides,
 anthony@itia.ntua.gr, May-June 2005.
 
+Revision: $Revision$
+
 The code and this text is hereby placed in the public domain.
 """
 
