@@ -31,11 +31,10 @@ the Docutils-users_ mailing list.  **Patch** submissions should be
 filed in the `patch tracker`_ or sent to Docutils-develop_.
 
 We welcome all kinds of **contributions**.  There's a `To Do list`_
-full of interesting ideas awaiting a champion.  Please consider
-**donating** to Docutils: |donate|.
-
-If you have any questions regarding how to extend Docutils, please
-feel free to ask on the Docutils-develop_ mailing list.
+full of interesting ideas awaiting a champion.  If you have any
+questions regarding how to extend Docutils, please feel free to ask on
+the Docutils-develop_ mailing list.  Please also consider **donating**
+to Docutils: |donate|.
 
 The only **requirement** for running Docutils is Python_ 2.2 or later.
 (Python 2.1 may be used providing the compiler package is installed.
