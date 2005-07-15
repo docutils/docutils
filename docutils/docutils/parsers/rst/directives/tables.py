@@ -117,8 +117,8 @@ def csv_table(name, arguments, options, content, lineno,
         if ( not state.document.settings.file_insertion_enabled
              and (options.has_key('file') or options.has_key('url')) ):
             warning = state_machine.reporter.warning(
-                '"%s" directive disabled.' % name,
-                nodes.literal_block(block_text, block_text), line=lineno)
+                'File and URL access deactivated; ignoring "%s" directive.' %
+                name, nodes.literal_block(block_text,block_text), line=lineno)
             return [warning]
         check_requirements(name, lineno, block_text, state_machine)
         title, messages = make_title(arguments, state, lineno)
