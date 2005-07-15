@@ -97,8 +97,9 @@ class PublishDoctreeTestCase(DocutilsTestSupport.StandardTestCase, docutils.Sett
 
         # Test publishing parts using document as the source.
         parts = core.publish_parts(
-           reader_name='doctree', source_class=io.DocTreeInput, source=doctree,
-           source_path='test', writer_name='html')
+           reader_name='doctree', source_class=io.DocTreeInput,
+           source=doctree, source_path='test', writer_name='html',
+           settings_spec=self)
         self.assert_(isinstance(parts, DictType))
 
     def test_publish_pickle(self):
