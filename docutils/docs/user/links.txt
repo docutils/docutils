@@ -72,17 +72,30 @@ the box.
   to handle everything one might do with Docutils.
 
 
-Developers
-----------
+API Developers
+--------------
 
 This section contains links which are primarily interesting for
-developers.
+developers who use the Docutils API from within their own
+applications.
+
+* nabu_, written by Martin Blais, is a publishing system which
+  extracts information from reStructuredText documents and stores it
+  in a database.  Python knowledge is required to write extractor
+  functions (see `Writing an Extractor`_ for an example).
+
+* There is a `pickle writer`_, written by Martin Blais.
+
+
+Core Developers
+---------------
+
+Links primarily interesting for developers who work with the Docutils
+code base.
 
 * PySource_, by Tony Ibbs, is an experimental Python source Reader.
   There is some related code in David Goodger's sandbox
   (pysource_reader_) and a `Python Source Reader`_ document.
-
-* There is a `pickle writer`_, written by Martin Blais.
 
 
 .. _Docutils: http://docutils.sourceforge.net/
@@ -108,4 +121,6 @@ developers.
 .. _simple HTML writer: http://docutils.sf.net/sandbox/bbum/DocArticle/
 .. _preprocessing module: http://docutils.sf.net/sandbox/cben/rolehack/
 .. _Makefile: http://docutils.sf.net/sandbox/cben/make/
+.. _nabu: http://furius.ca/nabu/
+.. _Writing an Extractor: http://furius.ca/nabu/doc/nabu-extractor.html
 .. _pickle writer: http://docutils.sf.net/sandbox/blais/pickle_writer/
