@@ -701,27 +701,37 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
     def is_invisible(self, node):
         # Return true if node is invisible or moved away in the LaTeX
         # rendering.
-        return (isinstance(node, nodes.Invisible) or
-                isinstance(node, nodes.footnote) or
-                isinstance(node, nodes.citation) or
-                # We never know what's inside raw nodes, and often
-                # they *are* invisible.  So let's have the user take
-                # care of them.
-                isinstance(node, nodes.raw) or
-                # Horizontally aligned image or figure.
-                node.get('align', None) in ('left', 'center', 'right'))
+        return (not isinstance(node, nodes.Text) and
+                (isinstance(node, nodes.Invisible) or
+                 isinstance(node, nodes.footnote) or
+                 isinstance(node, nodes.citation) or
+                 # We never know what's inside raw nodes, and often
+                 # they *are* invisible.  So let's have the user take
+                 # care of them.
+                 isinstance(node, nodes.raw) or
+                 # Horizontally aligned image or figure.
+                 node.get('align', None) in ('left', 'center', 'right')))
 
     def is_visible(self, node):
         return not self.is_invisible(node)
 
     def needs_space(self, node):
+        """
+        Two nodes for which `needs_space` is true need auxiliary space.
+        """
         # Return true if node is a visible block-level element.
         return ((isinstance(node, nodes.Body) or
-                 isinstance(node, nodes.topic) or
-                 #isinstance(node, nodes.rubric) or
-                 isinstance(node, nodes.transition)) and
+                 isinstance(node, nodes.topic)) and
                 not (self.is_invisible(node) or
                      isinstance(node.parent, nodes.TextElement)))
+
+    def always_needs_space(self, node):
+        """
+        Always add space around nodes for which `always_needs_space`
+        is true, regardless of whether the other node needs space as
+        well.  (E.g. transition next to section.)
+        """
+        return isinstance(node, nodes.transition)
 
     def dispatch_departure(self, node):
         # Call departure method.
@@ -733,21 +743,21 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
             self.append(self.context.pop() + self.context.pop())
             # Delete \Dcurrent... attribute macros.
             self.append(self.context.pop())
-            # Insert space.
-            if self.needs_space(node):
-                # Next sibling.
-                next_node = node.next_node(
-                    ascend=0, siblings=1, descend=0,
-                    condition=self.is_visible)
-                if self.needs_space(next_node):
-                    # Insert space.
-                    if isinstance(next_node, nodes.paragraph):
-                        if isinstance(node, nodes.paragraph):
-                            # Space between paragraphs.
-                            self.append(r'\Dparagraphspace')
-                        else:
-                            # Space in front of a paragraph.
-                            self.append(r'\Dauxiliaryparspace')
+            # Get next sibling.
+            next_node = node.next_node(
+                ascend=0, siblings=1, descend=0,
+                condition=self.is_visible)
+            # Insert space if necessary.
+            if  (self.always_needs_space(node) or
+                 self.always_needs_space(next_node) or
+                 self.needs_space(node) and self.needs_space(next_node)):
+                if isinstance(next_node, nodes.paragraph):
+                    if isinstance(node, nodes.paragraph):
+                        # Space between paragraphs.
+                        self.append(r'\Dparagraphspace')
                     else:
-                        # Space in front of something else than a paragraph.
-                        self.append(r'\Dauxiliaryspace')
+                        # Space in front of a paragraph.
+                        self.append(r'\Dauxiliaryparspace')
+                else:
+                    # Space in front of something else than a paragraph.
+                    self.append(r'\Dauxiliaryspace')
