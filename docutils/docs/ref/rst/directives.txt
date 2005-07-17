@@ -744,12 +744,6 @@ Working limitations:
 
   .. Add "strict" option to verify input?
 
-* Due to limitations of the CSV parser, this directive is not Unicode
-  compatible.  It may also have problems with ASCII NUL characters.
-  Accordingly, CSV tables should be ASCII-printable safe.
-
-  .. Test with Unicode; see if that's really so.  "encoding" option?
-
 The following options are recognized:
 
 ``class`` : text
