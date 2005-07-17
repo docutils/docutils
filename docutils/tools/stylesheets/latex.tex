@@ -87,32 +87,16 @@
   }
   \providecommand{\Dauxiliaryspace}{%
     \ifthenelse{\equal{\Dneedvspace}{true}}{\vspace{\Dblocklevelvspace}}{}%
-    \Dpar\noindent%
+    \par\noindent%
   }
   \providecommand{\Dauxiliaryparspace}{%
     \ifthenelse{\equal{\Dneedvspace}{true}}{\vspace{\Dblocklevelvspace}}{}%
-    \Dpar%
+    \par%
   }
-  \providecommand{\Dparagraphspace}{\Dpar}
+  \providecommand{\Dparagraphspace}{\par}
   \providecommand{\Dneedvspace}{true}
 }
 
-
-\providecommand{\DSparagraphs}{
-  \providecommand{\Dnextparindent}{}
-  \providecommand{\Dnextpar}{\par}
-  %\newcommand{\Dnextpar}{\par\Dnextparindent}
-  \providecommand{\Dpar}{%
-    \Dnextpar%
-    \Dnextparindent%
-    \protect\renewcommand{\Dnextpar}{\par}%
-    \protect\renewcommand{\Dnextparindent}{}%
-  }
-  \providecommand{\Dnopar}{%
-    \protect\renewcommand{\Dnextpar}{\par}%
-    \protect\renewcommand{\Dnextparindent}{}%
-  }
-}
 
 \providecommand{\DSlinks}{
   % Targets and references.
@@ -265,12 +249,12 @@
 \providecommand{\Dtopictitle}[1]{%
   \noindent\Dformatboxtitle{#1}%
   \ifthenelse{\equal{\Dhassubtitle}{false}}{\vspace{1em}}{\vspace{0.5em}}%
-  \Dpar\noindent%
+  \par%
 }
 \providecommand{\Dtopicsubtitle}[1]{%
-  \Dformatboxsubtitle{#1}%
+  \noindent\Dformatboxsubtitle{#1}%
   \vspace{1em}%
-  \Dpar\noindent%
+  \par%
 }
 \providecommand{\Dsidebartitle}[1]{\Dtopictitle{#1}}
 \providecommand{\Dsidebarsubtitle}[1]{\Dtopicsubtitle{#1}}
@@ -376,7 +360,6 @@
     \par\noindent%
     #1%
     \addtocounter{Dtoclevel}{-1}%
-    \renewcommand{\Dnextparindent}{\noindent}%
   }{%
     \par\noindent%
     \Dmakebox{#1}%
@@ -385,7 +368,7 @@
 \providecommand{\Dformatrubric}[1]{\textbf{#1}}
 \Dprovidelength{\Dprerubricspace}{0.3em}
 \providecommand{\DNrubric}[1]{%
-  \vspace{\Dprerubricspace}\Dpar\noindent\Dformatrubric{#1}\Dpar\noindent%
+  \vspace{\Dprerubricspace}\par\noindent\Dformatrubric{#1}\par%
 }
 
 \providecommand{\Dbullet}{}
@@ -683,7 +666,7 @@
 \providecommand{\Dformatclassifier}[1]{\textsl{#1}}
 \providecommand{\DNclassifier}[1]{~:~\Dformatclassifier{#1}}
 \providecommand{\Dformatdefinition}[1]{#1}
-\providecommand{\DNdefinition}[1]{\Dpar\Dformatdefinition{#1}}
+\providecommand{\DNdefinition}[1]{\par\Dformatdefinition{#1}}
 
 \providecommand{\Dlineblockindentation}{2.5em}
 \providecommand{\DNlineblock}[1]{%
@@ -705,7 +688,7 @@
 
 
 \providecommand{\DNtransition}{%
-  \Dpar\noindent{}\hspace*{\fill}\hrulefill\hrulefill\hspace*{\fill}%
+  \hspace*{\fill}\hrulefill\hrulefill\hspace*{\fill}%
 }
 
 
@@ -716,14 +699,12 @@
 }
 \providecommand{\Dformatattribution}[1]{---\textup{#1}}
 \providecommand{\DNblockquote}[1]{%
-  \renewcommand{\Dnextparindent}{\noindent}%
-  \renewcommand{\Dnextpar}{}%
   \Dmakebox{%
     \Dformatblockquote{#1}
   }%
 }
 \providecommand{\DNattribution}[1]{%
-  \Dpar%
+  \par%
   \begin{flushright}\Dformatattribution{#1}\end{flushright}%
 }
 
@@ -743,11 +724,10 @@
 \Dprovidelength{\Dsidebarwidth}{0.45\linewidth}
 \providecommand{\DNsidebar}[1]{
   \parpic[\Dsidebarposition]{%
-    \Dpar%
-    \begin{minipage}[t]{\Dsidebarwidth}
+    \begin{minipage}[t]{\Dsidebarwidth}%
       % Doing this with nested minipages is ugly, but I haven't found
       % another way to place vertical space before and after the fbox.
-      \vspace{\Dsidebarvmargin}
+      \vspace{\Dsidebarvmargin}%
       {%
         \setlength{\fboxrule}{\Dsidebarframewidth}%
         \setlength{\fboxsep}{\Dsidebarpadding}%
@@ -758,7 +738,7 @@
           \end{minipage}%
         }%
       }%
-      \vspace{\Dsidebarvmargin}
+      \vspace{\Dsidebarvmargin}%
     \end{minipage}%
   }%
 }
@@ -783,8 +763,8 @@
   }%
 }
 \providecommand{\DNcitationreference}[1]{{[}#1{]}}
-\Dprovidelength{\Dfootnotesep}{5pt}
-\providecommand{\Dfootnotespacing}{%
+\Dprovidelength{\Dfootnotesep}{3.5pt}
+\providecommand{\Dsetfootnotespacing}{%
   % Spacing commands executed at the beginning of footnotes.
   \setlength{\parindent}{0pt}%
   \hspace{1em}%
@@ -793,7 +773,8 @@
   % See ltfloat.dtx for details.
   {%
     \insert\footins{%
-      \Dnopar\vspace{\Dfootnotesep}\Dfootnotespacing%
+      \vspace{\Dfootnotesep}%
+      \Dsetfootnotespacing%
       \Dformatfootnote{#1}%
     }%
   }%
@@ -826,8 +807,6 @@
   }%
   % If there are multiple backrefs, add them now.
   \Dformatmultiplebackrefs{\Dmultiplebackrefs}%
-  % Supress next paragraph change.
-  \renewcommand{\Dnextpar}{}%
 }
 \providecommand{\Dsinglefootnotebacklink}[2]{%
   % Create normal backlink of a footnote label.  Parameters:
@@ -1088,7 +1067,6 @@
 \DSboxcommands
 \DSfrenchspacing
 \DSauxiliaryspace
-\DSparagraphs
 \DSlinks
 \DSsymbols
 \DSlate
