@@ -82,7 +82,8 @@ applications.
 * nabu_, written by Martin Blais, is a publishing system which
   extracts information from reStructuredText documents and stores it
   in a database.  Python knowledge is required to write extractor
-  functions (see `Writing an Extractor`_ for an example).
+  functions (see `Writing an Extractor`_) and to retrieve the data
+  from the database again.
 
 * There is a `pickle writer`_, written by Martin Blais.
 
