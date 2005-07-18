@@ -351,7 +351,15 @@ Mailing Lists
 
 Developers are recommended to subscribe to all `mailing lists`_.
 
-.. _mailing lists:: ../user/mailing-lists.html
+.. _mailing lists: ../user/mailing-lists.html
+
+
+The Wiki
+========
+
+There is a development wiki at http://docutils.python-hosting.com/ as
+a scratchpad for transient notes.  Please use the repository for
+permament document storage.
 
 
 The Sandbox
