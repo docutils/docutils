@@ -1,14 +1,27 @@
 \makeatletter
 
-\providecommand{\DSpackages}{%
-  % All kinds of useful packages.
-  \usepackage{ifthen}
-}
+% Development notes at
+% http://docutils.python-hosting.com/wiki/NewLatex
+
+
+\providecommand{\Dprinting}{false}
+
+
+\providecommand{\DSearly}{}
+\providecommand{\DSlate}{}
+
+\providecommand{\Ddocumentclass}{scrartcl}
+\providecommand{\Ddocumentoptions}{a4paper}
+
+\documentclass[\Ddocumentoptions]{\Ddocumentclass}
+
+\DSearly
 
 
 \providecommand{\DSfontencoding}{
-  % T1-emulation.  Provides most characters and features we're used
-  % from T1-encoded fonts but doesn't use bitmap fonts.
+  % Set up font encoding.
+  % AE is a T1-emulation.  It provides most characters and features
+  % as T1-encoded fonts but doesn't use ugly bitmap fonts.
   \usepackage{ae}
   % Provide the characters not contained in AE from EC bitmap fonts.
   \usepackage{aecompl}
@@ -18,9 +31,10 @@
 
 
 \providecommand{\DSsymbols}{%
+  % Fix up symbols.
   % The Euro symbol in Computer Modern looks, um, funny.  Let's get a
   % proper Euro symbol.
-  \usepackage{eurosym}%
+  \RequirePackage{eurosym}%
   \renewcommand{\texteuro}{\euro}%
 }
 
@@ -44,63 +58,59 @@
   \@ifundefined{c@#1}{\newcounter{#1}}{}
 }
 
-\providecommand{\DSboxcommands}{
-  \Dprovidelength{\Dboxparindent}{\parindent}
-  \providecommand{\Dmakeboxminipage}[1]{%
-    % Make minipage for use in a box created by \Dmakefbox.
-    \begin{minipage}[t]{0.9\linewidth}%
-      \setlength{\parindent}{\Dboxparindent}%
-      ##1%
-    \end{minipage}%
-  }
-  \providecommand{\Dmakefbox}[1]{%
-    % Make a centered, framed box.  Useful e.g. for admonitions.
-    \vspace{0.4\baselineskip}%
-    \begin{center}%
-      \fbox{\Dmakeboxminipage{##1}}%
-    \end{center}%
-    \vspace{0.4\baselineskip}%
-  }
-  \providecommand{\Dmakebox}[1]{%
-    % Make a centered, frameless box.  Useful e.g. for block quotes.
-    % Do not use minipages here, but create pseudo-lists to allow
-    % page-breaking.  (Don't use KOMA-script's addmargin environment
-    % because it messes up bullet lists.)
-    \Dmakelistenvironment{}{}{%
-      \setlength{\parskip}{0pt}%
-      \setlength{\parindent}{\Dboxparindent}%
-      \item{##1}%
-    }%
-  }
+\Dprovidelength{\Dboxparindent}{\parindent}
+\providecommand{\Dmakeboxminipage}[1]{%
+  % Make minipage for use in a box created by \Dmakefbox.
+  \begin{minipage}[t]{0.9\linewidth}%
+    \setlength{\parindent}{\Dboxparindent}%
+    #1%
+  \end{minipage}%
+}
+\providecommand{\Dmakefbox}[1]{%
+  % Make a centered, framed box.  Useful e.g. for admonitions.
+  \vspace{0.4\baselineskip}%
+  \begin{center}%
+    \fbox{\Dmakeboxminipage{#1}}%
+  \end{center}%
+  \vspace{0.4\baselineskip}%
+}
+\providecommand{\Dmakebox}[1]{%
+  % Make a centered, frameless box.  Useful e.g. for block quotes.
+  % Do not use minipages here, but create pseudo-lists to allow
+  % page-breaking.  (Don't use KOMA-script's addmargin environment
+  % because it messes up bullet lists.)
+  \Dmakelistenvironment{}{}{%
+    \setlength{\parskip}{0pt}%
+    \setlength{\parindent}{\Dboxparindent}%
+    \item{#1}%
+  }%
 }
 
 
-\providecommand{\DSfrenchspacing}{
-  \frenchspacing
-}
+\RequirePackage{ifthen}
+\providecommand{\Dfrenchspacing}{true}
+\ifthenelse{\equal{\Dfrenchspacing}{true}}{\frenchspacing}{}
 
 
-\providecommand{\DSauxiliaryspace}{
-  \Dprovidelength{\Dblocklevelvspace}{%
-    % Space between block-level elements other than paragraphs.
-    0.7\baselineskip plus 0.3\baselineskip minus 0.2\baselineskip%
-  }
-  \providecommand{\Dauxiliaryspace}{%
-    \ifthenelse{\equal{\Dneedvspace}{true}}{\vspace{\Dblocklevelvspace}}{}%
-    \par\noindent%
-  }
-  \providecommand{\Dauxiliaryparspace}{%
-    \ifthenelse{\equal{\Dneedvspace}{true}}{\vspace{\Dblocklevelvspace}}{}%
-    \par%
-  }
-  \providecommand{\Dparagraphspace}{\par}
-  \providecommand{\Dneedvspace}{true}
+\Dprovidelength{\Dblocklevelvspace}{%
+  % Space between block-level elements other than paragraphs.
+  0.7\baselineskip plus 0.3\baselineskip minus 0.2\baselineskip%
 }
+\providecommand{\Dauxiliaryspace}{%
+  \ifthenelse{\equal{\Dneedvspace}{true}}{\vspace{\Dblocklevelvspace}}{}%
+  \par\noindent%
+}
+\providecommand{\Dauxiliaryparspace}{%
+  \ifthenelse{\equal{\Dneedvspace}{true}}{\vspace{\Dblocklevelvspace}}{}%
+  \par%
+}
+\providecommand{\Dparagraphspace}{\par}
+\providecommand{\Dneedvspace}{true}
 
 
 \providecommand{\DSlinks}{
   % Targets and references.
-  \usepackage[colorlinks=false,pdfborder={0 0 0}]{hyperref}
+  \RequirePackage[colorlinks=false,pdfborder={0 0 0}]{hyperref}
 
   \providecommand{\Draisedlink}[1]{\Hy@raisedlink{##1}}
   
@@ -137,7 +147,6 @@
     }%
   }
   % Targets.
-  \Dprovidelength{\Dorgbaselineskip}{0pt}
   \providecommand{\DAids}[5]{%
     \label{##3}%
     \ifthenelse{\equal{##4}{footnotereference}}{%
@@ -145,7 +154,7 @@
         \renewcommand{\HyperRaiseLinkDefault}{%
           % Dirty hack to make backrefs to footnote references work.
           % For some reason, \baselineskip is 0pt in fn references.
-          0.5\Dorgbaselineskip%
+          0.5\Doriginalbaselineskip%
         }%
         \Draisedlink{\hypertarget{##3}{}}##5%
       }%
@@ -154,7 +163,7 @@
     }%
   }
   % Color in references.
-  \usepackage{color}
+  \RequirePackage{color}
   \providecommand{\Dimplicitreference}[2]{%
     % Create implicit reference to ID.  Implicit references occur
     % e.g. in TOC-backlinks of section titles.  Parameters:
@@ -171,18 +180,24 @@
     % Ditto for citation references.
     \Dimplicitfootnotereference{##1}{##2}%
   }
+  \ifthenelse{\equal{\Dprinting}{true}}{
+    \providecommand{\Dexplicitreferencecolor}{black}
+  }{
+    \providecommand{\Dexplicitreferencecolor}{blue}
+  }
   \providecommand{\Dexplicitreference}[2]{%
     % Create explicit reference to ID, e.g. created with "foo_".
     % Parameters:
     % 1. Target.
     % 2. Link text.
-    \href{##1}{{\color{blue}##2}}%
+    \href{##1}{{\color{\Dexplicitreferencecolor}##2}}%
   }
+  \providecommand{\Durireferencecolor}{\Dexplicitreferencecolor}
   \providecommand{\Durireference}[2]{%
     % Create reference to URI.  Parameters:
     % 1. Target.
     % 2. Link text.
-    \href{##1}{{\color{blue}##2}}%
+    \href{##1}{{\color{\Durireferencecolor}##2}}%
   }
 }
 
@@ -190,22 +205,11 @@
 \providecommand{\DSlanguage}{%
   % Set up babel.
   \ifthenelse{\equal{\Dlanguagebabel}{}}{}{
-    \usepackage[\Dlanguagebabel]{babel}
+    \RequirePackage[\Dlanguagebabel]{babel}
   }
 }
 
 
-
-
-\providecommand{\DSearly}{}
-\providecommand{\DSlate}{}
-
-\providecommand{\Ddocumentclass}{scrartcl}
-\providecommand{\Ddocumentoptions}{a4paper}
-
-\documentclass[\Ddocumentoptions]{\Ddocumentclass}
-
-\DSearly
 
 
 \providecommand{\DAclasses}[5]{%
@@ -247,6 +251,7 @@
 \providecommand{\Dformatboxtitle}[1]{{\Large\textbf{#1}}}
 \providecommand{\Dformatboxsubtitle}[1]{{\large\textbf{#1}}}
 \providecommand{\Dtopictitle}[1]{%
+  \Difinsidetoc{\vspace{1em}\par}{}%
   \noindent\Dformatboxtitle{#1}%
   \ifthenelse{\equal{\Dhassubtitle}{false}}{\vspace{1em}}{\vspace{0.5em}}%
   \par%
@@ -302,12 +307,15 @@
 }
 \providecommand{\Dsectionsubtitlehook}[1]{#1}
 \Dprovidelength{\Dsectionsubtitleraisedistance}{0.7em}
+\providecommand{\Dsectionsubtitlescaling}{0.85}
 \providecommand{\Dsectionsubtitle}[1]{%
   \Dsectionsubtitlehook{%
     % Move the subtitle nearer to the title.
     \vspace{-\Dsectionsubtitleraisedistance}%
     % Don't create a PDF bookmark.
-    \Ddispatchsectionsubtitle{\Dformatsectionsubtitle{\scalebox{.8}{#1}}}%
+    \Ddispatchsectionsubtitle{%
+      \Dformatsectionsubtitle{\scalebox{\Dsectionsubtitlescaling}{#1}}%
+    }%
   }%
 }
 % Boolean variable.
@@ -347,7 +355,7 @@
   % Treat doctest blocks the same as literal blocks.
   \DNliteralblock{#1}%
 }
-\usepackage{hyphenat}
+\RequirePackage{hyphenat}
 \providecommand{\DNliteral}[1]{\textnhtt{#1}}
 \providecommand{\DNemphasis}[1]{\emph{#1}}
 \providecommand{\DNstrong}[1]{\textbf{#1}}
@@ -356,7 +364,6 @@
 \providecommand{\DNtopic}[1]{%
   \ifthenelse{\equal{\DcurrentNtopicAcontents}{1}}{%
     \addtocounter{Dtoclevel}{1}%
-    \vspace{1em}%
     \par\noindent%
     #1%
     \addtocounter{Dtoclevel}{-1}%
@@ -688,7 +695,7 @@
 
 
 \providecommand{\DNtransition}{%
-  \hspace*{\fill}\hrulefill\hrulefill\hspace*{\fill}%
+  \raisebox{0.25em}{\parbox{\linewidth}{\hspace*{\fill}\hrulefill\hrulefill\hspace*{\fill}}}%
 }
 
 
@@ -710,7 +717,7 @@
 
 
 % Sidebars:
-\usepackage{picins}
+\RequirePackage{picins}
 % Vertical and horizontal margins.
 \Dprovidelength{\Dsidebarvmargin}{0.5em}
 \Dprovidelength{\Dsidebarhmargin}{1em}
@@ -755,10 +762,11 @@
   }%
 }
 \providecommand{\Dformatcitation}[1]{\Dformatfootnote{#1}}
+\Dprovidelength{\Doriginalbaselineskip}{0pt}
 \providecommand{\DNfootnotereference}[1]{%
   {%
     % \baselineskip is 0pt in \textsuperscript, so we save it here.
-    \setlength{\Dorgbaselineskip}{\baselineskip}%
+    \setlength{\Doriginalbaselineskip}{\baselineskip}%
     \textsuperscript{#1}%
   }%
 }
@@ -786,7 +794,10 @@
   \textsuperscript{\footnotesize#1{ }}%
 }
 \providecommand{\Dformatcitationlabel}[1]{{[}#1{]}{ }}
-\providecommand{\Dformatmultiplebackrefs}[1]{\textsl{#1}}
+\providecommand{\Dformatmultiplebackrefs}[1]{%
+  % If in printing mode, do not write out multiple backrefs.
+  \ifthenelse{\equal{\Dprinting}{true}}{}{\textsl{#1}}%
+}
 \providecommand{\Dthislabel}{}
 \providecommand{\DNlabel}[1]{%
   \renewcommand{\Dthislabel}{#1}
@@ -826,7 +837,7 @@
 \providecommand{\Dmulticitationbacklink}[2]{\Dmultifootnotebacklink{#1}{#2}}
 
 
-\usepackage{longtable}
+\RequirePackage{longtable}
 \providecommand{\Dmaketable}[2]{%
   % Make table.  Parameters:
   % 1. Table spec (like "|p|p|").
@@ -867,7 +878,7 @@
 
 \providecommand{\DNsystemmessage}[1]{%
   {%
-    \color{red}%
+    \ifthenelse{\equal{\Dprinting}{false}}{\color{red}}{}%
     \bfseries%
     #1%
   }%
@@ -905,7 +916,7 @@
 }
 
 
-\usepackage{graphicx}
+\RequirePackage{graphicx}
 % Maximum width of an image.
 \providecommand{\Dimagemaxwidth}{\linewidth}
 \providecommand{\Dfloatimagemaxwidth}{0.5\linewidth}
@@ -1058,15 +1069,12 @@
 \providecommand{\Drelativeunit}{\linewidth}
 
 
-%\usepackage{fixmath}
-%\usepackage{amsmath}
+%\RequirePackage{fixmath}
+%\RequirePackage{amsmath}
 
 
-\DSpackages
 \DSfontencoding
-\DSboxcommands
-\DSfrenchspacing
-\DSauxiliaryspace
+\DSlanguage
 \DSlinks
 \DSsymbols
 \DSlate
