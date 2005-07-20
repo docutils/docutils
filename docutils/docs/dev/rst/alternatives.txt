@@ -3035,7 +3035,9 @@ Add the following directives?
 
 - "eval": Evaluate an expression & insert the text.  At parse
   time or at substitution time?  Dangerous?  Perhaps limit to canned
-  macros; see text.date_ below.
+  macros; see text.date_.
+
+  .. _text.date: ../todo.html#text-date
 
 It's too dangerous (or too complicated in the case of "eval").  We do
 not want to have such things in the core.
