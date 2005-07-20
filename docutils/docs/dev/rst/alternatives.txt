@@ -1,6 +1,7 @@
 ==================================================
  A Record of reStructuredText Syntax Alternatives
 ==================================================
+
 :Author: David Goodger
 :Contact: goodger@users.sourceforge.net
 :Revision: $Revision$
@@ -2563,6 +2564,53 @@ Allow for compound enumerators, such as "1.1." or "1.a." or "1(a)", to
 allow for nested enumerated lists without indentation?
 
 
+Indented Lists
+==============
+
+Allow for variant styles by interpreting indented lists as if they
+weren't indented?  For example, currently the list below will be
+parsed as a list within a block quote::
+
+    paragraph
+
+      * list item 1
+      * list item 2
+
+But a lot of people seem to write that way, and HTML browsers make it
+look as if that's the way it should be.  The parser could check the
+contents of block quotes, and if they contain only a single list,
+remove the block quote wrapper.  There would be two problems:
+
+1. What if we actually *do* want a list inside a block quote?
+
+2. What if such a list comes immediately after an indented construct,
+   such as a literal block?
+
+Both could be solved using empty comments (problem 2 already exists
+for a block quote after a literal block).  But that's a hack.
+
+Perhaps a runtime setting, allowing or disabling this convenience,
+would be appropriate.  But that raises issues too:
+
+    User A, who writes lists indented (and their config file is set up
+    to allow it), sends a file to user B, who doesn't (and their
+    config file disables indented lists).  The result of processing by
+    the two users will be different.
+
+It may seem minor, but it adds ambiguity to the parser, which is bad.
+
+See the `Doc-SIG discussion starting 2001-04-18`__ with Ed Loper's
+"Structuring: a summary; and an attempt at EBNF", item 4 (and
+follow-ups, here__ and here__).  Also `docutils-users, 2003-02-17`__
+and `beginning 2003-08-04`__.
+
+__ http://mail.python.org/pipermail/doc-sig/2001-April/001776.html
+__ http://mail.python.org/pipermail/doc-sig/2001-April/001789.html
+__ http://mail.python.org/pipermail/doc-sig/2001-April/001793.html
+__ http://sourceforge.net/mailarchive/message.php?msg_id=3838913
+__ http://sf.net/mailarchive/forum.php?thread_id=2957175&forum_id=11444
+
+
 Sloppy Indentation of List Items
 ================================
 
@@ -2891,6 +2939,141 @@ than of the character-encoding type.
   - Flags for regexps; ":flags:" option, or individuals.
   - Specifically, should the default be case-sensistive or
     -insensitive?
+
+
+Page Or Line Breaks
+===================
+
+* Should ^L (or something else in reST) be defined to mean
+  force/suggest page breaks in whatever output we have?
+
+  A "break" or "page-break" directive would be easy to add.  A new
+  doctree element would be required though (perhaps "break").  The
+  final behavior would be up to the Writer.  The directive argument
+  could be one of page/column/recto/verso for added flexibility.
+
+  Currently ^L (Python's ``\f``) characters are treated as whitespace.
+  They're converted to single spaces, actually, as are vertical tabs
+  (^K, Python's ``\v``).  It would be possible to recognize form feeds
+  as markup, but it requires some thought and discussion first.  Are
+  there any downsides?  Many editing environments do not allow the
+  insertion of control characters.  Will it cause any harm?  It would
+  be useful as a shorthand for the directive.
+
+  It's common practice to use ^L before Emacs "Local Variables"
+  lists::
+
+      ^L
+      ..
+         Local Variables:
+         mode: indented-text
+         indent-tabs-mode: nil
+         sentence-end-double-space: t
+         fill-column: 70
+         End:
+
+  These are already present in many PEPs and Docutils project
+  documents.  From the Emacs manual (info):
+
+      A "local variables list" goes near the end of the file, in the
+      last page.  (It is often best to put it on a page by itself.)
+
+  It would be unfortunate if this construct caused a final blank page
+  to be generated (for those Writers that recognize the page breaks).
+  We'll have to add a transform that looks for a "break" plus zero or
+  more comments at the end of a document, and removes them.
+
+  Probably a bad idea because there is no such thing as a page in a
+  generic document format.
+
+* Could the "break" concept above be extended to inline forms?
+  E.g. "^L" in the middle of a sentence could cause a line break.
+  Only recognize it at the end of a line (i.e., ``\f\n``)?
+
+  Or is formfeed inappropriate?  Perhaps vertical tab (``\v``), but
+  even that's a stretch.  Can't use carriage returns, since they're
+  commonly used for line endings.
+
+  Probably a bad idea as well because we do not want to use control
+  characters for well-readable and well-writable markup, and after all
+  we have the line block syntax for line breaks.
+
+
+Superscript Markup
+==================
+
+Add ``^superscript^`` inline markup?  The only common non-markup uses
+of "^" I can think of are as short hand for "superscript" itself and
+for describing control characters ("^C to cancel").  The former
+supports the proposed syntax, and it could be argued that the latter
+ought to be literal text anyhow (e.g. "``^C`` to cancel").
+
+However, superscripts are seldom needed, and new syntax would break
+existing documents.  When it's needed, the ``:superscript:``
+(``:sup:``) role can we used as well.
+
+
+Code Execution
+==============
+
+Add the following directives?
+
+- "exec": Execute Python code & insert the results.  Call it
+  "python" to allow for other languages?
+
+- "system": Execute an ``os.system()`` call, and insert the results
+  (possibly as a literal block).  Definitely dangerous!  How to make
+  it safe?  Perhaps such processing should be left outside of the
+  document, in the user's production system (a makefile or a script or
+  whatever).  Or, the directive could be disabled by default and only
+  enabled with an explicit command-line option or config file setting.
+  Even then, an interactive prompt may be useful, such as:
+
+      The file.txt document you are processing contains a "system"
+      directive requesting that the ``sudo rm -rf /`` command be
+      executed.  Allow it to execute?  (y/N)
+
+- "eval": Evaluate an expression & insert the text.  At parse
+  time or at substitution time?  Dangerous?  Perhaps limit to canned
+  macros; see text.date_ below.
+
+It's too dangerous (or too complicated in the case of "eval").  We do
+not want to have such things in the core.
+
+
+``encoding`` Directive
+======================
+
+Add an "encoding" directive to specify the character encoding of the
+input data?  Not a good idea for the following reasons:
+
+- When it sees the directive, the parser will already have read the
+  input data, and encoding determination will already have been done.
+
+- If a file with an "encoding" directive is edited and saved with
+  a different encoding, the directive may cause data corruption.
+
+
+Support for Annotations
+=======================
+
+Add an "annotation" role, as the equivalent of the HTML "title"
+attribute?  This is secondary information that may "pop up" when the
+pointer hovers over the main text.  A corresponding directive would be
+required to associate annotations with the original text (by name, or
+positionally as in anonymous targets?).
+
+There have not been many requests for such feature, though.  Also,
+cluttering WYSIWYG plaintext with annotations may not seem like a good
+idea, and there is no "tool tip" in formats other than HTML.
+
+
+``term`` Role
+=============
+
+Add a "term" role for unfamiliar or specialized terminology?  Probably
+not; there is no real use case, and emphasis is enough for most cases.
+
 
 
 ..

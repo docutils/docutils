@@ -20,26 +20,19 @@ require more thought and debate; they are potential to-do's.
 
 Many of these items are awaiting champions.  If you see something
 you'd like to tackle, please do!  If there's something you'd like to
-see done but are unable to implement it yourself, `please consider
-contributing`__ in other ways.
+see done but are unable to implement it yourself, please consider
+donating to Docutils: |donate|
 
-__ http://docutils.sf.net/#please-contribute
+.. |donate| image:: http://images.sourceforge.net/images/project-support.jpg
+   :target: http://sourceforge.net/donate/index.php?group_id=38414
+   :align: middle
+   :width: 88
+   :height: 32
+   :alt: Support the Docutils project!
 
+Please see also the Bugs_ document for a list of bugs in Docutils.
 
-Priorities
-==========
-
-* Always high priority: `FIX BUGS!`__
-
-  __ ../../BUGS.html
-
-* A Python Source Reader component (Python auto-documentation) will be
-  added.  See the document `"Plan for Enthought API Documentation
-  Tool"`__ for details.  If you'd like to help, let me know!
-
-  __ enthought-plan.html
-
-* `Nested inline markup`_.
+.. _bugs: ../../BUGS.html
 
 
 Minimum Requirements for Python Standard Library Candidacy
@@ -86,15 +79,6 @@ General
   settings.  These partially solve the problem, allowing or disabling
   **all** file accesses, but not limited access.
 
-* Refactor
-
-  - Rename methods & variables according to the `Python coding
-    conventions <policies.html#python-coding-conventions>`_.
-
-  - The name-to-id conversion and hyperlink resolution code needs to be
-    checked for correctness and refactored.  I'm afraid it's a bit of
-    a spaghetti mess now.
-
 * Configuration file handling needs discussion:
 
   - There should be some error checking on the contents of config
@@ -105,29 +89,23 @@ General
     file supplied with the ``--config`` option.  Should it?  (If yes,
     error or warning?)
 
-  - Is a system-wide configuration file (in ``/etc/docutils.conf``) a
-    good idea?
+* Internationalization:
 
-  - Is a user-specific configuration file (``~/.docutils``) really
-    necessary?  Maybe the name (``.docutils``) needs discussion, too.
+  - I18n needs refactoring, the language dictionaries are difficult to
+    maintain.  Maybe have a look at gettext or similar tools.
 
-* Language modules: in accented languages it may be useful to have
-  both accented and unaccented entries in the ``bibliographic_fields``
-  mapping for versatility.
+  - Language modules: in accented languages it may be useful to have
+    both accented and unaccented entries in the
+    ``bibliographic_fields`` mapping for versatility.
 
-* Add a "--strict-language" option & setting: no English fallback for
-  language-dependent features.
+  - Add a "--strict-language" option & setting: no English fallback
+    for language-dependent features.
 
-* Add internationalization to _`footer boilerplate text` (resulting
-  from "--generator", "--source-link", and "--date" etc.), allowing
-  translations.
+  - Add internationalization to _`footer boilerplate text` (resulting
+    from "--generator", "--source-link", and "--date" etc.), allowing
+    translations.
 
 * Add validation?  See http://pytrex.sourceforge.net, RELAX NG, pyRXP.
-
-* Ask Python-dev for opinions (GvR for a pronouncement) on special
-  variables (__author__, __version__, etc.): convenience vs. namespace
-  pollution.  Ask opinions on whether or not Docutils should recognize
-  & use them.
 
 * In ``docutils.readers.get_reader_class`` (& ``parsers`` &
   ``writers`` too), should we be importing "standalone" or
@@ -323,17 +301,9 @@ General
       As I said earlier in chapter :chapter:`objects`, the
       reference count gets increased every time a binding is made.
 
+* Add support for _`multiple output files`.
+
 * Add testing for Docutils' front end tools?
-
-* Changes to sandbox/davidg/infrastructure/docutils-update?
-
-  - Modify the script to only update the snapshots if files have
-    actually changed in CVS (saving some SourceForge server cycles).
-
-  - Make passing the test suite a prerequisite to snapshot update,
-    but only if the process is completely automatic.
-
-  - Rewrite in Python?
 
 * Publisher: "Ordinary setup" shouldn't requre specific ordering; at
   the very least, there ought to be error checking higher up in the
@@ -373,10 +343,6 @@ General
   System message?  Simple stderr output?
 
 * Rationalize Writer settings (HTML/LaTeX/PEP) -- share settings.
-
-* The "docutils.conf" included with Docutils should become complete,
-  with examples of every setting (many/most commented out).  It's
-  currently sparse, requiring doc lookups.
 
 * Merge docs/user/latex.txt info into tools.txt and config.txt.
 
@@ -431,17 +397,6 @@ General
   Probably per-table directive options are best.  The "class" values
   could be used by any writer, and applying such classes to all tables
   in a document with writer options is too broad.
-
-* Make the csv-table directive work with Python 2.1/2.2.  (See the
-  discussion_ on the mailing list.)
-
-  .. _discussion: http://thread.gmane.org/gmane.text.docutils.user/1319
-
-* Simplify the docutils.nodes.Element implementation?  ``node[x]`` is
-  convenient but can be considered ambiguous (different results if
-  ``x`` is a string or an integer).  Replace with ``node[int]`` and
-  ``node.attributes[string]``?  See
-  <http://thread.gmane.org/gmane.text.docutils.devel/2844>.
 
 * Add file-specific settings support to config files, like::
 
@@ -572,6 +527,11 @@ General:
 
 Miscellaneous ideas:
 
+* Ask Python-dev for opinions (GvR for a pronouncement) on special
+  variables (__author__, __version__, etc.): convenience vs. namespace
+  pollution.  Ask opinions on whether or not Docutils should recognize
+  & use them.
+
 * If we can detect that a comment block begins with ``##``, a la
   JavaDoc, it might be useful to indicate interspersed section headers
   & explanatory text in a module.  For example::
@@ -687,18 +647,12 @@ __ rst/alternatives.html#or-not-to-do
   on whitespace and punctuation as markup delimiters, which may not be
   applicable in these languages.
 
-  Python 2.4 introduces the function ``unicodedata.east_asian_width``,
-  so this problem will be resolved later, when Python 2.4 is in a
-  reasonably stable state and being used more widely.
+  Especially the table parsers suffer from this problem.
 
-* Clean up the code; refactor as required.
+  We need to use the ``unicodedata.east_asian_width`` function,
+  introduced in Python 2.4.
 
 * Add motivation sections for constructs in spec.
-
-* Allow very long titles (on two or more lines)?
-
-* And for the sake of completeness, should definition list terms be
-  allowed to be very long (two or more lines) also?
 
 * Support generic hyperlink references to _`targets in other
   documents`?  Not in an HTML-centric way, though (it's trivial to say
@@ -747,93 +701,15 @@ __ rst/alternatives.html#or-not-to-do
   support for "=====" header rows.  On 2001-08-17 he replied, saying
   he'd put it on his to-do list, but "don't hold your breath".)
 
-* Tony says inline markup rule 7 could do with a *little* more
-  exposition in the spec, to make clear what is going on for people
-  with head colds.
-
 * Fix the parser's indentation handling to conform with the stricter
   definition in the spec.  (Explicit markup blocks should be strict or
   forgiving?)
 
-* Tighten up the spec for indentation of "constructs using complex
-  markers": field lists and option lists?  Bodies may begin on the
-  same line as the marker or on a subsequent line (with blank lines
-  optional).  Require that for bodies beginning on the same line as
-  the marker, all lines be in strict alignment.  Currently, this is
-  acceptable::
-
-      :Field-name-of-medium-length: Field body beginning on the same
-          line as the field name.
-
-  This proposal would make the above example illegal, instead
-  requiring strict alignment.  A field body may either begin on the
-  same line::
-
-      :Field-name-of-medium-length: Field body beginning on the same
-                                    line as the field name.
-
-  Or it may begin on a subsequent line::
-
-      :Field-name-of-medium-length:
-          Field body beginning on a line subsequent to that of the
-          field name.
-
-  This would be especially relevant in degenerate cases like this::
-
-      :Number-of-African-swallows-requried-to-carry-a-coconut:
-          It would be very difficult to align the field body with
-          the left edge of the first line if it began on the same
-          line as the field name.
-
-* Allow for variant styles by interpreting _`indented lists` as if
-  they weren't indented?  For example, currently the list below will
-  be parsed as a list within a block quote::
-
-      paragraph
-
-        * list item 1
-        * list item 2
-
-  But a lot of people seem to write that way, and HTML browsers make
-  it look as if that's the way it should be.  The parser could check
-  the contents of block quotes, and if they contain only a single
-  list, remove the block quote wrapper.  There would be two problems:
-
-  1. What if we actually *do* want a list inside a block quote?
-
-  2. What if such a list comes immediately after an indented
-     construct, such as a literal block?
-
-  Both could be solved using empty comments (problem 2 already exists
-  for a block quote after a literal block).  But that's a hack.
-
-  Perhaps a runtime setting, allowing or disabling this convenience,
-  would be appropriate.  But that raises issues too:
-
-      User A, who writes lists indented (and their config file is set
-      up to allow it), sends a file to user B, who doesn't (and their
-      config file disables indented lists).  The result of processing
-      by the two users will be different.
-
-  It may seem minor, but it adds ambiguity to the parser, which is
-  bad.
-
-  See the `Doc-SIG discussion starting 2001-04-18`__ with Ed Loper's
-  "Structuring: a summary; and an attempt at EBNF", item 4 (and
-  follow-ups, here__ and here__).  Also `docutils-users,
-  2003-02-17`__ and `beginning 2003-08-04`__.
-
-  __ http://mail.python.org/pipermail/doc-sig/2001-April/001776.html
-  __ http://mail.python.org/pipermail/doc-sig/2001-April/001789.html
-  __ http://mail.python.org/pipermail/doc-sig/2001-April/001793.html
-  __ http://sourceforge.net/mailarchive/message.php?msg_id=3838913
-  __ http://sf.net/mailarchive/forum.php?thread_id=2957175&forum_id=11444
+  .. XXX What does this mean?  Can you elaborate, David?
 
 * Make the parser modular.  Allow syntax constructs to be added or
-  disabled at run-time.  Or is subclassing enough?
-
-* Continue to report (info, level 1) enumerated lists whose start
-  value is not ordinal-1?
+  disabled at run-time.  Subclassing is probably not enough because it
+  makes it difficult to apply multiple extensions.
 
 * Generalize the "doctest block" construct (which is overly
   Python-centric) to other interactive sessions?  "Doctest block"
@@ -869,10 +745,6 @@ __ rst/alternatives.html#or-not-to-do
   Some pragma directives could be local-scope unless explicitly
   specified as global/pragma using ":global:" options.
 
-* Remove leading numbers from section titles for implicit link names?
-  A section titled "3. Conclusion" could then be referred to by
-  "``Conclusion_``" (i.e., without the "3.").
-
 * Support whitespace in angle-bracketed standalone URLs according to
   Appendix E ("Recommendations for Delimiting URI in Context") of `RFC
   2396`_.
@@ -898,61 +770,24 @@ __ rst/alternatives.html#or-not-to-do
 
   Decimal justification?
 
-* Make enumerated list parsing more strict, so that this would parse
-  as a paragraph with an info message::
+  All this shouldn't be done automatically.  Only when it's requested
+  by the user, e.g. with something like this::
+
+      .. table::
+         :auto-indent:
+
+         (Table goes here.)
+
+  Otherwise it will break existing documents.
+
+* Generate a warning or info message for paragraphs which should have
+  been lists, like this one::
 
       1. line one
       3. line two
 
 * Generalize the "target-notes" directive into a command-line option
   somehow?  See docutils-develop 2003-02-13.
-
-* Should ^L (or something else in reST) be defined to mean
-  force/suggest page breaks in whatever output we have?
-
-  A "break" or "page-break" directive would be easy to add.  A new
-  doctree element would be required though (perhaps "break").  The
-  final behavior would be up to the Writer.  The directive argument
-  could be one of page/column/recto/verso for added flexibility.
-
-  Currently ^L (Python's ``\f``) characters are treated as whitespace.
-  They're converted to single spaces, actually, as are vertical tabs
-  (^K, Python's ``\v``).  It would be possible to recognize form feeds
-  as markup, but it requires some thought and discussion first.  Are
-  there any downsides?  Many editing environments do not allow the
-  insertion of control characters.  Will it cause any harm?  It would
-  be useful as a shorthand for the directive.
-
-  It's common practice to use ^L before Emacs "Local Variables"
-  lists::
-
-      ^L
-      ..
-         Local Variables:
-         mode: indented-text
-         indent-tabs-mode: nil
-         sentence-end-double-space: t
-         fill-column: 70
-         End:
-
-  These are already present in many PEPs and Docutils project
-  documents.  From the Emacs manual (info):
-
-      A "local variables list" goes near the end of the file, in the
-      last page.  (It is often best to put it on a page by itself.)
-
-  It would be unfortunate if this construct caused a final blank page
-  to be generated (for those Writers that recognize the page breaks).
-  We'll have to add a transform that looks for a "break" plus zero or
-  more comments at the end of a document, and removes them.
-
-* Could the "break" concept above be extended to inline forms?
-  E.g. "^L" in the middle of a sentence could cause a line break.
-  Only recognize it at the end of a line (i.e., ``\f\n``)?
-
-  Or is formfeed inappropriate?  Perhaps vertical tab (``\v``), but
-  even that's a stretch.  Can't use carriage returns, since they're
-  commonly used for line endings.
 
 * Allow a "::"-only paragraph (first line, actually) to introduce a
   _`literal block without a blank line`?  (Idea from Paul Moore.) ::
@@ -984,12 +819,6 @@ __ rst/alternatives.html#or-not-to-do
       <file_name>_
 
   Probably not worth the trouble.
-
-* Add ``^superscript^`` inline markup?  The only common non-markup
-  uses of "^" I can think of are as short hand for "superscript"
-  itself and for describing control characters ("^C to cancel").  The
-  former supports the proposed syntax, and it could be argued that the
-  latter ought to be literal text anyhow (e.g. "``^C`` to cancel").
 
 * Add _`math markup`.  We should try for a general solution, that's
   applicable to any output format.  Using a standard, such as MathML_,
@@ -1027,9 +856,8 @@ __ rst/alternatives.html#or-not-to-do
 
       .. _name: ^url
 
-* Add an option to allow arbitrary URI schemes (not just those in
-  urischemes.py)?  This would make text like "signal:noise" into a
-  URI.
+  This may be too specific to HTML.  It hasn't been requested very
+  often either.
 
 * Add an option to add URI schemes at runtime.
 
@@ -1062,8 +890,8 @@ __ rst/alternatives.html#or-not-to-do
   LaTeX writer (which might very well happen when using configuration
   files), the spaces in front of footnote references aren't trimmed.
 
-* Enable _`tables inside XML comments`, where "--" ends comments.  I
-  see three implementation possibilities:
+* Enable grid _`tables inside XML comments`, where "--" ends comments.
+  I see three implementation possibilities:
 
   1. Make the table syntax characters into "table" directive options.
      This is the most flexible but most difficult, and we probably
@@ -1079,6 +907,11 @@ __ rst/alternatives.html#or-not-to-do
   Directive options are preferable to configuration settings, because
   tables are document-specific.  A pragma directive would be another
   approach, to set the syntax once for a whole document.
+
+  In the meantime, the list-table_ directive is a good replacement for
+  grid tables inside XML comments.
+
+  .. _list-table: ../ref/rst/directives.html#list-table
 
 
 Directives
@@ -1115,13 +948,12 @@ when used in a document.
   - Allow the _`:trim:` option for all directives when they occur in a
     substitution definition, not only the unicode_ directive.
 
-    .. _unicode:
-       http://docutils.sf.net/docs/ref/rst/directives.html#unicode-character-codes
+    .. _unicode: ../ref/rst/directives.html#unicode-character-codes
 
   - _`images.figure`: "title" and "number", to indicate a formal
     figure?
 
-  - _`parts.sectnum`: "local"?, "start", "refnum"
+  - _`parts.sectnum`: "local"?, "refnum"
 
     A "local" option could enable numbering for sections from a
     certain point down, and sections in the rest of the document are
@@ -1129,32 +961,12 @@ when used in a document.
     be numbered, but not the rest.  OTOH, an all-or-nothing approach
     would probably be enough.
 
-    The "start" option will specify the sequence set to use at the
-    same time as the starting value, for the first part of the section
-    number (i.e., section, not subsection).  For example::
-
-        .. sectnum: :start: 1
-
-        .. sectnum: :start: A
-
-        .. sectnum: :start: 5
-
-        .. sectnum: :start: I
-
-    The first one is the default: start at 1, numbered.  The second
-    one specifies letters, and start at "A".  The third specifies
-    numbers, start at 5.  The last example could signal Roman
-    numerals, although I don't know if they'd be applicable here.
-    Enumerated lists already do all this; perhaps that code could be
-    reused.
-
-    Here comes the tricky part.  The "sectnum" directive should be
-    usable multiple times in a single document.  For example, in a
-    long document with "chapter" and "appendix" sections, there could
-    be a second "sectnum" before the first appendix, changing the
-    sequence used (from 1,2,3... to A,B,C...).  This is where the
-    "local" concept comes in.  This part of the implementation can be
-    left for later.
+    The "sectnum" directive should be usable multiple times in a
+    single document.  For example, in a long document with "chapter"
+    and "appendix" sections, there could be a second "sectnum" before
+    the first appendix, changing the sequence used (from 1,2,3... to
+    A,B,C...).  This is where the "local" concept comes in.  This part
+    of the implementation can be left for later.
 
     A "refnum" option (better name?) would insert reference names
     (targets) consisting of the reference number.  Then a URL could be
@@ -1176,6 +988,9 @@ when used in a document.
   - _`parts.header` & _`parts.footer`: Support multiple, named headers
     & footers?  For example, separate headers & footers for odd, even,
     and the first page of a document.
+
+    This may be too specific to output formats which have a notion of
+    "pages".
 
   - _`misc.include`:
 
@@ -1203,61 +1018,37 @@ when used in a document.
     It needs thought & discussion though, to come up with a consistent
     set of destination labels and consistent behavior.
 
+    And placing HTML code inside the <head> element of an HTML
+    document is rather the job of a templating system.
+
   - _`body.sidebar`: Allow internal section structure?  Adornment
     styles would be independent of the main document.
+
+    That is really complicated, however, and the document model
+    greatly benefits from its simplicity.
 
 * Implement directives.  Each of the list items below begins with an
   identifier of the form, "module_name.directive_function_name".  The
   directive name itself could be the same as the
   directive_function_name, or it could differ.
 
-  - _`html.imagemap` (Useful outside of HTML?  If not, replace with
-    image only in non-HTML writers?)
+  - _`html.imagemap`
+
+    It has the disadvantage that it's only easily implementable for
+    HTML, so it's specific to one output format.
+
+    (For non-HTML writers, the imagemap would have to be replaced with
+    the image only.)
 
   - _`parts.endnotes` (or "footnotes"): See `Footnote & Citation Gathering`_.
 
   - _`parts.citations`: See `Footnote & Citation Gathering`_.
 
-  - _`misc.exec`: Execute Python code & insert the results.  Perhaps
-    dangerous?  Call it "python" to allow for other languages?
+  - _`misc.language`: Specify (= change) the language of a document at
+    parse time.
 
-  - _`misc.system`?: Execute an ``os.system()`` call, and insert the
-    results (possibly as a literal block).  Definitely dangerous!  How
-    to make it safe?  Perhaps such processing  should be left outside
-    of the document, in the user's production system (a makefile or a
-    script or whatever).  Or, the directive could be disabled by
-    default and only enabled with an explicit command-line option or
-    config file setting.  Even then, an interactive prompt may be
-    useful, such as:
-
-        The file.txt document you are processing contains a "system"
-        directive requesting that the ``sudo rm -rf /`` command be
-        executed.  Allow it to execute?  (y/N)
-
-  - _`misc.eval`: Evaluate an expression & insert the text.  At parse
-    time or at substitution time?  Dangerous?  Perhaps limit to canned
-    macros; see text.date_ below.
-
-  - _`misc.encoding`: Specify the character encoding of the input
-    data.  But there are problems:
-
-    - When it sees the directive, the parser will already have read
-      the input data, and encoding determination will already have
-      been done.
-
-    - If a file with an "encoding" directive is edited and saved with
-      a different encoding, the directive may cause data corruption.
-
-  - _`misc.language`: Specify the language of a document.  There is a
-    problem similar to the first problem listed for misc.encoding_,
-    although to a lesser degree.
-
-  - _`misc.settings`: Set any Docutils runtime setting from within a
-    document?
-
-  - _`misc.charents`: Equivalent to::
-
-        .. include:: {includepath}/charents.txt
+  - _`misc.settings`: Set any(?) Docutils runtime setting from within
+    a document?  Needs much thought and discussion.
 
   - .. _conditional directives:
 
@@ -1487,17 +1278,6 @@ which will be transformed into standard hyperlink references, which
 will be processed by the various Writers.  No Writer will need to have
 any knowledge of the Python-Reader origin of these elements.
 
-* Alan Jaffray suggested (and I agree) that it would be sensible to:
-
-  - have a directive and/or command-line option to specify a default
-    role for interpreted text (done)
-  - allow the reST processor to take an argument for the default role
-    (this will be subsumed by the above via the runtime settings
-    mechanism)
-  - issue a warning when processing documents with no default role
-    which contain interpreted text with no explicitly specified role
-    (there will always be a default role, so this won't happen)
-
 * Add explicit interpreted text roles for the rest of the implicit
   inline markup constructs: named-reference, anonymous-reference,
   footnote-reference, citation-reference, substitution-reference,
@@ -1580,16 +1360,16 @@ any knowledge of the Python-Reader origin of these elements.
 
        __ ../ref/rst/restructuredtext.html#implicit-hyperlink-targets
 
-  - "annotation": The equivalent of the HTML "title" attribute.  This
-    is secondary information that may "pop up" when the pointer hovers
-    over the main text.  A corresponding directive would be required
-    to associate annotations with the original text (by name, or
-    positionally as in anonymous targets?).
+    4. Using substitutions? ::
+
+           .. |reST| acronym:: reST
+              :text: reStructuredText
+
+    What do we do for other formats than HTML which do not support
+    tool tips?  Put the full text in parentheses?
 
   - "figure", "table", "listing", "chapter", "page", etc: See `object
     numbering and object references`_ above.
-
-  - "term"?: Unfamiliar or specialized terminology.
 
   - "glossary-term": This would establish a link to a glossary.  It
     would require an associated "glossary-entry" directive, whose
@@ -1613,13 +1393,6 @@ Unimplemented Transforms
 
   Collect and move footnotes & citations to the end of a document.
   (Separate transforms.)
-
-* _`Hyperlink Target Gathering`
-
-  It probably comes in two phases, because in a Python context we need
-  to *resolve* them on a per-docstring basis [do we? --DG], but if the
-  user is trying to do the callout form of presentation, they would
-  then want to group them all at the end of the document.
 
 * _`Reference Merging`
 
@@ -1713,37 +1486,23 @@ Unimplemented Transforms
 HTML Writer
 ===========
 
-* Test with modern browsers if it's possible to remove the "name"
-  attributes, which currently serve only for backwards-compatibility
-  to browsers which aren't XHTML compliant.  For a starting point, see
-  http://www.python.org/dev/doc/idtest.html.
-
-  If enough browsers support the "id" attribute, remove the "name"
-  attributes.
-
 * Add more support for <link> elements, especially for navigation
   bars.
 
-* Make the admonitions more distinctive and varied.
+  The framework does not have a notion of document relationships, so
+  probably raw.destination_ should be used.
 
-* Make the "class" attributes optional?  Implies no stylesheet?
+  We'll have framework support for document relationships when support
+  for `multiple output files`_ is added.  The HTML writer could
+  automatically generate <link> elements then.
+
+  .. _raw.destination: misc.raw_
 
 * Base list compaction on the spacing of source list?  Would require
   parser support.  (Idea: fantasai, 16 Dec 2002, doc-sig.)
 
 * Add a tool tip ("title" attribute?) to footnote back-links
   identifying them as such.  Text in Docutils language module.
-
-* Insert a comment at the top of HTML files that describes how to deal
-  with the broken servers w.r.t. encodings?  Perhaps something like
-  this:
-
-      <!--
-      If your browser is showing gibberish, the server may be broken.
-      Try manually setting the character coding to "UTF-8".  In
-      Mozilla/Firefox, do ...  In Internet Explorer, do ...
-      For details, see <URL>.
-      -->
 
 
 LaTeX writer
@@ -2017,7 +1776,9 @@ Front-End Tools
 
 * Disable common options that don't apply?
 
-* Implement the "sectnum" directive as a command-line option also?
+* Add ``--section-numbering`` command line option.  The "sectnum"
+  directive should override the ``--no-section-numbering`` command
+  line option then.
 
 * Create a single dynamic_ or unqualified_ front end that can be
   installed?
