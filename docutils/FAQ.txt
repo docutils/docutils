@@ -383,6 +383,8 @@ Are there any Wikis that use reStructuredText syntax?
 There are several, with various degrees of completeness.  With no
 implied endorsement or recommendation, and in no particular order:
 
+* `Webware for Python wiki
+  <http://wiki.webwareforpython.org/thiswiki.html>`__
 * `Ian Bicking's experimental code
   <http://docutils.sf.net/sandbox/ianb/wiki/WikiPage.py>`__
 * `MoinMoin <http://moin.sf.net>`__ has some support; `here's a sample
