@@ -652,6 +652,13 @@ __ rst/alternatives.html#or-not-to-do
   We need to use the ``unicodedata.east_asian_width`` function,
   introduced in Python 2.4.
 
+  From `Unicode Standard Annex #11: East Asian Width
+  <http://www.unicode.org/reports/tr11/>`_:
+
+      In a broad sense, wide characters include W, F, and A (when in
+      EA context), while narrow characters include N, Na, H, and A
+      (when not in EA context).
+
 * Add motivation sections for constructs in spec.
 
 * Support generic hyperlink references to _`targets in other
