@@ -64,6 +64,7 @@ donations, tasty treats, and related projects:
 * Ludger Humbert
 * Jeremy Hylton
 * Tony Ibbs
+* Alan G. Isaac
 * Alan Jaffray
 * Joe YS Jaw
 * Dmitry Jemerov
