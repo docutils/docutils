@@ -111,6 +111,12 @@ Known Bugs
 
 Also see the `SourceForge Bug Tracker`_.
 
+* The "stylesheet" setting (a URL, to be used verbatim) should be
+  allowed to be combined with "embed_stylesheet".  The stylesheet data
+  should be read in using urllib.  There was an assumption that a
+  stylesheet to be embedded should exist as a file on the local
+  system, and only the "stylesheet_path" setting should be used.
+
 * ``utils.relative_path()`` sometimes returns absolute _`paths on
   Windows` (like ``C:/test/foo.css``) where it could have chosen a
   relative path.
