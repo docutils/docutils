@@ -178,6 +178,10 @@ for htmlfile in `find .. -name '*.html'` ; do
     fi
 done
 
+if [ $trace -eq 1 -o $verbose -eq 1 ] ; then
+    set -o xtrace
+fi
+
 # -------------------- XML sitemap for search engines: --------------------
 
 cd $htdocsdest
