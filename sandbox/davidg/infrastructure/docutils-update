@@ -192,6 +192,9 @@ if test -n "$haschanges"; then
     (
         echo '<?xml version="1.0" encoding="UTF-8"?>'
         echo '<urlset xmlns="http://www.google.com/schemas/sitemap/0.84">'
+        if [ $trace -eq 0 ] ; then
+            set +o xtrace
+        fi
         find . -name '.[^.]*' -prune -o -type d -printf '%p/\n' -o -type f -print | \
             while read i; do
                 # i is the file name.
@@ -222,6 +225,9 @@ if test -n "$haschanges"; then
                 fi
                 echo "<url><loc>$url</loc><lastmod>$lastmod</lastmod><priority>$priority</priority></url>"
             done
+        if [ $trace -eq 1 -o $verbose -eq 1 ] ; then
+            set -o xtrace
+        fi
         echo '</urlset>'
     ) > sitemap
     # sitemap is compressed on the remote site for smaller patch sizes.
