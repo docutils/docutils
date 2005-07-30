@@ -1176,6 +1176,9 @@ when used in a document.
 
     See docutils-users 2003-03-03.
 
+  - _`body.listing`: Code listing with title (to be numbered
+    eventually), equivalent of "figure" and "table" directives.
+
   - _`colorize.python`: Colorize Python code.  Fine for HTML output,
     but what about other formats?  Revert to a literal block?  Do we
     need some kind of "alternate" mechanism?  Perhaps use a "pending"
