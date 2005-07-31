@@ -175,6 +175,36 @@ Also see the `SourceForge Bug Tracker`_.
   all IDs from definitions after the first substitution reference is
   processed.
 
+* There's a bug with _`inline literals in substitutions`::
+
+      .. |x| replace:: ``x``
+
+      x |x|
+
+  Parsing, the inline literal context disappears::
+
+      <document source="<stdin>">
+          <substitution_definition names="x">
+              x
+          <paragraph>
+              x 
+              x
+
+  Here's a probably related bug::
+
+      .. |x| replace:: ``.``
+
+  Parsing this results in::
+
+      <system_message level="3" line="1" source="<stdin>" type="ERROR">
+          <paragraph>
+              Error in "replace" directive: may contain a single paragraph only.
+      <system_message level="2" line="1" source="<stdin>" type="WARNING">
+          <paragraph>
+              Substitution definition "x" empty or invalid.
+          <literal_block xml:space="preserve">
+              .. |x| replace:: .
+
 * Footnote label "5" should be "4"::
 
       $ rst2pseudoxml.py <<EOF
