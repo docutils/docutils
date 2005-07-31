@@ -187,7 +187,7 @@ Also see the `SourceForge Bug Tracker`_.
           <substitution_definition names="x">
               x
           <paragraph>
-              x 
+              x
               x
 
   Here's a probably related bug::
@@ -209,7 +209,7 @@ Also see the `SourceForge Bug Tracker`_.
 
       $ rst2pseudoxml.py <<EOF
       > ref [#abc]_ [#]_ [1]_ [#4]_
-      > 
+      >
       > .. [#abc] footnote
       > .. [#] two
       > .. [1] one
@@ -272,7 +272,7 @@ Also see the `SourceForge Bug Tracker`_.
       .. _section:
 
       This paragraph is explicitly targeted with the name "section".
-      
+
   When processed to HTML, the 2 internal hyperlinks (to "contents" &
   "section") will work fine, but hyperlinks from outside the document
   using ``href="...#contents"`` and ``href="...#section"`` won't work.
