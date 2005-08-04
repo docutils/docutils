@@ -673,7 +673,8 @@ The following enumeration sequences are recognized:
 In addition, the auto-enumerator, "#", may be used to automatically
 enumerate a list.  Auto-enumerated lists may begin with explicit
 enumeration, which sets the sequence.  Fully auto-enumerated lists use
-arabic numerals and begin with 1.
+arabic numerals and begin with 1.  (Auto-enumerated lists are new in
+Docutils 0.3.8.)
 
 The following formatting types are recognized:
 
@@ -1165,7 +1166,7 @@ Syntax diagram::
 Line Blocks
 -----------
 
-Doctree elements: line_block, line.  New in Docutils 0.3.5.
+Doctree elements: line_block, line.  (New in Docutils 0.3.5.)
 
 Line blocks are useful for address blocks, verse (poetry, song
 lyrics), and unadorned lists, where the structure of lines is
