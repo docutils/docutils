@@ -27,6 +27,20 @@
 ;; C-u C-=.
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Generic Filter function.
+
+(if (not (fboundp 'filter))
+    (defun filter (pred list)
+      "Returns a list of all the elements fulfilling the pred requirement (that
+is for which (pred elem) is true)"
+      (if list
+          (let ((head (car list))
+                (tail (filter pred (cdr list))))
+            (if (funcall pred head)
+                (cons head tail)
+              tail)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Generic text functions that are more convenient than the defaults.
 ;;
