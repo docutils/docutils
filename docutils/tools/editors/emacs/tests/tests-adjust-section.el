@@ -196,8 +196,8 @@ Some Title
 " (t))
 
 ))
-  
-  "A list of regression tests for the section update method.")
+
+;; "A list of regression tests for the section update method."
 
 
 

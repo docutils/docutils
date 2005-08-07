@@ -390,34 +390,36 @@ This is useful for filling list item paragraphs."
 
   (interactive)
 
-  ;; check if we're on an underline under a title line, and move the cursor up
-  ;; if it is so.
-  (if (and (or (rest-line-single-char-p 1) 
-	       (looking-at "^\\s-*$"))
-	   (save-excursion
-	     (forward-line -1)
-	     (beginning-of-line)
-	     (looking-at "^.+$")))
-      (forward-line -1))
+  (let* (
+	 ;; check if we're on an underline under a title line, and move the
+	 ;; cursor up if it is so.
+	 (moved
+	  (if (and (or (rest-line-single-char-p 1) 
+		       (looking-at "^\\s-*$"))
+		   (save-excursion
+		     (forward-line -1)
+		     (beginning-of-line)
+		     (looking-at "^.+$")))
+	      (progn (forward-line -1) t)
+	    ))
 
-  (let (
-	;; find current sectioning character
-	(curchar (rest-current-section-char))
-	;; find current sectioning style
-	(init-style (rest-initial-sectioning-style))
-	;; find current indentation of title line
-	(curindent (save-excursion
-		     (back-to-indentation)
-		     (current-column)))
+	 ;; find current sectioning character
+	 (curchar (rest-current-section-char))
+	 ;; find current sectioning style
+	 (init-style (rest-initial-sectioning-style))
+	 ;; find current indentation of title line
+	 (curindent (save-excursion
+		      (back-to-indentation)
+		      (current-column)))
 
-	;; ending column
+	 ;; ending column
 	(endcol (- (save-excursion
 		     (end-of-line)
 		     (current-column))
                    (save-excursion
 		     (back-to-indentation)
                      (current-column))))
-	)
+	 )
 
     ;; if there is no current style found...
     (if (eq init-style nil)
@@ -500,7 +502,11 @@ This is useful for filling list item paragraphs."
 	    (if nextchar
 		(rest-update-section nextchar init-style curindent))
 	    )))
-      )))
+      )
+
+    (if moved 
+	(progn (forward-line 1) (end-of-line)))
+    ))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
