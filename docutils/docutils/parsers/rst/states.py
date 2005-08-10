@@ -1289,14 +1289,15 @@ class Body(RSTState):
             self.state_machine.previous_line()
         if not next_line[:1].strip():   # blank or indented
             return 1
-        next_enumerator, auto_enumerator = self.make_enumerator(
-            ordinal + 1, sequence, format)
-        try:
-            if ( next_line.startswith(next_enumerator) or
-                 next_line.startswith(auto_enumerator) ):
-                return 1
-        except TypeError:
-            pass
+        result = self.make_enumerator(ordinal + 1, sequence, format)
+        if result:
+            next_enumerator, auto_enumerator = result
+            try:
+                if ( next_line.startswith(next_enumerator) or
+                     next_line.startswith(auto_enumerator) ):
+                    return 1
+            except TypeError:
+                pass
         return None
 
     def make_enumerator(self, ordinal, sequence, format):

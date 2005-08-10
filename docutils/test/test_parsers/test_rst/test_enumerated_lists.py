@@ -811,6 +811,16 @@ ii. Item two.
         #. Item two.
         3. Item three.
 """],
+["""\
+z.
+x
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        z.
+        x
+"""],
 ]
 
 
