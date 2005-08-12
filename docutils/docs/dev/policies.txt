@@ -237,8 +237,10 @@ applicable), with particular emphasis as follows:
   mess up anything else, go right ahead and check it in directly.
 
 * For larger changes, use your best judgement.  If you're unsure of
-  the impact, or feel that you require advice or approval, patches or
-  `the sandbox`_ are the way to go.
+  the impact, or feel that you require advice or approval, branches,
+  patches, or `the sandbox`_ are the way to go.
+
+* You must be prepared to fix any code you have committed.
 
 Docutils will pursue an open and trusting policy for as long as
 possible, and deal with any aberrations if (and hopefully not when)
