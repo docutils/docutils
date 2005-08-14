@@ -205,16 +205,18 @@ Also see the `SourceForge Bug Tracker`_.
           <literal_block xml:space="preserve">
               .. |x| replace:: .
 
-* Footnote label "5" should be "4"::
+* Footnote label "5" should be "4" when processing the following
+  input::
 
-      $ rst2pseudoxml.py <<EOF
-      > ref [#abc]_ [#]_ [1]_ [#4]_
-      >
-      > .. [#abc] footnote
-      > .. [#] two
-      > .. [1] one
-      > .. [#4] four
-      > EOF
+      ref [#abc]_ [#]_ [1]_ [#4]_
+
+      .. [#abc] footnote
+      .. [#] two
+      .. [1] one
+      .. [#4] four
+
+  Output::
+
       <document source="<stdin>">
           <paragraph>
               ref
