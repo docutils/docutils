@@ -30,7 +30,10 @@ class Writer(writers.Writer):
 
     settings_spec = (
         'LaTeX-Specific Options',
-        'Note that this LaTeX writer is still EXPERIMENTAL.',
+        'Note that this LaTeX writer is still EXPERIMENTAL. '
+        'You must specify the location of the tools/stylesheets/latex.tex '
+        'stylesheet file contained in the Docutils distribution tarball to '
+        'make the LaTeX output work.',
         (('Specify a stylesheet file.  The path is used verbatim to include '
           'the file.  Overrides --stylesheet-path.',
           ['--stylesheet'],
@@ -40,7 +43,7 @@ class Writer(writers.Writer):
           'directory.  Overrides --stylesheet.',
           ['--stylesheet-path'],
           {'metavar': '<file>', 'overrides': 'stylesheet'}),
-         ('Specify a uesr stylesheet file.  See --stylesheet.',
+         ('Specify a user stylesheet file.  See --stylesheet.',
           ['--user-stylesheet'],
           {'default': '', 'metavar': '<file>',
            'overrides': 'user_stylesheet_path'}),
