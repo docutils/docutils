@@ -1,6 +1,6 @@
-=================
- Docutils_ Links
-=================
+=====================
+ Docutils_ Link List
+=====================
 
 :Author: Felix Wiemann
 :Contact: Felix.Wiemann@ososo.de
