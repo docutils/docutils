@@ -45,18 +45,18 @@ labels = {
 
 bibliographic_fields = {
       # language-dependent: fixed
-      'author': 'author',
-      'authors': 'authors',
-      'organization': 'organization',
-      'address': 'address',
-      'contact': 'contact',
-      'version': 'version',
-      'revision': 'revision',
-      'status': 'status',
-      'date': 'date',
-      'copyright': 'copyright',
-      'dedication': 'dedication',
-      'abstract': 'abstract'}
+      'author (translation required)': 'author',
+      'authors (translation required)': 'authors',
+      'organization (translation required)': 'organization',
+      'address (translation required)': 'address',
+      'contact (translation required)': 'contact',
+      'version (translation required)': 'version',
+      'revision (translation required)': 'revision',
+      'status (translation required)': 'status',
+      'date (translation required)': 'date',
+      'copyright (translation required)': 'copyright',
+      'dedication (translation required)': 'dedication',
+      'abstract (translation required)': 'abstract'}
 """Traditional Chinese to canonical name mapping for bibliographic fields."""
 
 author_separators = [';', ',',
