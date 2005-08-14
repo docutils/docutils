@@ -202,7 +202,7 @@ The following options are recognized:
     specified, they are combined.  For example, a height of 200 and a
     scale of 50 is equivalent to a height of 100 with no scale.
 
-    New in Docutils 3.4.10: It is also possible to specify a `length
+    New in Docutils 0.3.10: It is also possible to specify a `length
     value`_.
 
 ``width`` : integer
@@ -210,7 +210,7 @@ The following options are recognized:
     the image horizontally.  As with "height" above, when the "scale"
     option is also specified, they are combined.
 
-    New in Docutils 3.4.10: It is also possible to specify a length_
+    New in Docutils 0.3.10: It is also possible to specify a length_
     or `percentage value`_ (which is relative to the current line
     width).
 
