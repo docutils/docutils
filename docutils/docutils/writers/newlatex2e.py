@@ -70,6 +70,8 @@ class Writer(writers.Writer):
     output = None
     """Final translated form of `document`."""
 
+    default_transforms = ()
+
     def __init__(self):
         writers.Writer.__init__(self)
         self.translator_class = LaTeXTranslator
@@ -203,7 +205,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         a(r'\providecommand{\Dparent}{} % variable')
         a(r'\providecommand{\Dattr}[5]{#5}')
         a(r'\providecommand{\Dattrlen}{} % variable')
-        a(r'\providecommand{\Dtitleastext}{x}')
+        a(r'\providecommand{\Dtitleastext}{x} % variable')
         a(r'\providecommand{\Dsinglebackref}{} % variable')
         a(r'\providecommand{\Dmultiplebackrefs}{} % variable')
         a('\n\n')
@@ -706,12 +708,10 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
                 (isinstance(node, nodes.Invisible) or
                  isinstance(node, nodes.footnote) or
                  isinstance(node, nodes.citation) or
-                 # We never know what's inside raw nodes, and often
-                 # they *are* invisible.  So let's have the user take
-                 # care of them.
+                 # Assume raw nodes to be invisible.
                  isinstance(node, nodes.raw) or
-                 # Horizontally aligned image or figure.
-                 node.get('align', None) in ('left', 'center', 'right')))
+                 # Floating image or figure.
+                 node.get('align', None) in ('left', 'right')))
 
     def is_visible(self, node):
         return not self.is_invisible(node)
