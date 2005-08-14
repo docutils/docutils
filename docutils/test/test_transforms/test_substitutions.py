@@ -76,6 +76,31 @@ u"""\
         \u00C9
         .
 """],
+[u"""\
+Indirect substitution definitions with multiple references:
+
+|substitute| my coke for gin
+|substitute| you for my mum
+at least I'll get my washing done
+
+.. |substitute| replace:: |replace|
+.. |replace| replace:: swap
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        Indirect substitution definitions with multiple references:
+    <paragraph>
+        swap
+         my coke for gin
+        swap
+         you for my mum
+        at least I'll get my washing done
+    <substitution_definition names="substitute">
+        swap
+    <substitution_definition names="replace">
+        swap
+"""],
 ])
 
 totest['unicode'] = ((Substitutions,), [

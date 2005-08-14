@@ -146,18 +146,6 @@ Also see the `SourceForge Bug Tracker`_.
   Quite a few nodes are getting a "None" source attribute as well.  In
   particular, see the bodies of definition lists.
 
-* David Abrahams pointed out that _`doubly-indirect substitutions`
-  have a bug, but only when there's multiple references::
-
-      |substitute| my coke for gin
-      |substitute| you for my mum
-      at least I'll get my washing done
-
-      .. |substitute| replace:: |replace|
-      .. |replace| replace:: swap
-
-  This is tricky.  Substitutions have to propagate back completely.
-
 * .. _substitutions and references:
 
   Another bug from David Abrahams (run with ``rst2html.py --traceback``)::
