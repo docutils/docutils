@@ -65,7 +65,7 @@ class Writer(writers.Writer):
         'traceback': 1
         }
 
-    relative_path_settings = ('stylesheet_path',)
+    relative_path_settings = ('stylesheet_path', 'user_stylesheet_path')
 
     config_section = 'newlatex2e writer'
     config_section_dependencies = ('writers',)
