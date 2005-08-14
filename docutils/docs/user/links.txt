@@ -31,6 +31,10 @@ the box.
 
 * For Blogs (Weblogs), please see the `FAQ entry about Blogs`_.
 
+* xml2rst_, an XSLT stylesheet written by Stefan Merten, converts XML
+  dumps of the document tree (e.g. created with rst2xml.py) back to
+  reStructuredText.
+
 * rst2ht_, by Oliver Rutherfurd, converts reStructuredText to an .ht
   template, for use with ht2html_.
 
@@ -102,6 +106,7 @@ code base.
 .. _Docutils: http://docutils.sourceforge.net/
 .. _FAQ entry about Wikis: http://docutils.sf.net/FAQ.html#are-there-any-wikis-that-use-restructuredtext-syntax
 .. _FAQ entry about Blogs: http://docutils.sf.net/FAQ.html#are-there-any-weblog-blog-projects-that-use-restructuredtext-syntax
+.. _xml2rst: http://www.merten-home.de/FreeSoftware/xml2rst/index.html
 .. _rst2ht: http://www.rutherfurd.net/articles/rst-ht2html.html
 .. _ht2html: http://ht2html.sourceforge.net/
 .. _htmlnav: http://docutils.sf.net/sandbox/gschwant/htmlnav/
