@@ -1699,7 +1699,7 @@ Issues:
              - If we took the bones out, it wouldn't be
                crunchy, now would it?
 
-* A syntax for stubs in ASCII-art tables is easy to imagine::
+* A syntax for _`stubs in grid tables` is easy to imagine::
 
       +------------------------++------------+----------+
       | Header row, column 1   || Header 2   | Header 3 |
