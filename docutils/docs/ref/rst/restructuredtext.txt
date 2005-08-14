@@ -2787,7 +2787,7 @@ characters (see `Escaping Mechanism`_ above).
 Units
 =====
 
-(New in Docutils 3.4.10.)
+(New in Docutils 0.3.10.)
 
 All measures consist of a positive floating point number in standard
 (non-scientific) notation and a unit, possibly separated by one or
