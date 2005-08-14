@@ -630,7 +630,9 @@ __ rst/alternatives.html#or-not-to-do
   (http://article.gmane.org/gmane.text.docutils.cvs/3824).
 
 * Complain about bad URI characters
-  (http://article.gmane.org/gmane.text.docutils.user/2046).
+  (http://article.gmane.org/gmane.text.docutils.user/2046) and
+  disallow internal whitespace
+  (http://article.gmane.org/gmane.text.docutils.user/2214).
 
 * Create ``info``-level system messages for unnecessarily
   backslash-escaped characters (as in ``"\something"``, rendered as
