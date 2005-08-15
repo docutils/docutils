@@ -20,6 +20,12 @@ Subversion is exhaustively documented in the `Subversion Book`_
 .. _Subversion: http://subversion.tigris.org/
 .. _Subversion Book: http://svnbook.red-bean.com/
 
+.. Note::
+
+   While the repository resides at BerliOS, all other project data
+   (web site, snapshots, releases, mailing lists, trackers) is hosted
+   at SourceForge.
+
 
 Accessing the Repository
 ========================
