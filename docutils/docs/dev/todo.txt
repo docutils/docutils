@@ -625,6 +625,17 @@ Also see the `... Or Not To Do?`__ list.
 
 __ rst/alternatives.html#or-not-to-do
 
+* Allow multiple block quotes, only separated by attributions
+  (http://article.gmane.org/gmane.text.docutils.devel/2985), e.g.::
+
+      quote 1
+
+      ---Attrib 1
+
+      quote 2
+
+      ---Attrib 2  
+
 * Change the specification so that more punctuation is allowed
   before/after inline markup start/end string
   (http://article.gmane.org/gmane.text.docutils.cvs/3824).
