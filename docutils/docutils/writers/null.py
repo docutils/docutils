@@ -21,7 +21,3 @@ class Writer(writers.Writer):
 
     def translate(self):
         pass
-
-    def supports(self, format):
-        """This writer supports all format-specific elements."""
-        return 1
