@@ -146,6 +146,14 @@ Also see the `SourceForge Bug Tracker`_.
   Quite a few nodes are getting a "None" source attribute as well.  In
   particular, see the bodies of definition lists.
 
+* There's a bug with _`doubly-indirect substitutions` but only when
+  there's multiple references and in certain cases.  See the
+  commented-out test case in test_transforms/test_substitutions.py
+  (line 104 on, in revision 3808) which fails.
+
+  This is tricky.  Substitution definitions have to propagate back
+  completely, through multiple levels of references.
+
 * .. _substitutions and references:
 
   Another bug from David Abrahams (run with ``rst2html.py --traceback``)::
@@ -162,36 +170,6 @@ Also see the `SourceForge Bug Tracker`_.
   with multiple IDs.  Perhaps the Substitution transform should remove
   all IDs from definitions after the first substitution reference is
   processed.
-
-* There's a bug with _`inline literals in substitutions`::
-
-      .. |x| replace:: ``x``
-
-      x |x|
-
-  Parsing, the inline literal context disappears::
-
-      <document source="<stdin>">
-          <substitution_definition names="x">
-              x
-          <paragraph>
-              x
-              x
-
-  Here's a probably related bug::
-
-      .. |x| replace:: ``.``
-
-  Parsing this results in::
-
-      <system_message level="3" line="1" source="<stdin>" type="ERROR">
-          <paragraph>
-              Error in "replace" directive: may contain a single paragraph only.
-      <system_message level="2" line="1" source="<stdin>" type="WARNING">
-          <paragraph>
-              Substitution definition "x" empty or invalid.
-          <literal_block xml:space="preserve">
-              .. |x| replace:: .
 
 * Footnote label "5" should be "4" when processing the following
   input::
