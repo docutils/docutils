@@ -225,9 +225,6 @@ No blank line after.
             Trying "directive" as canonical directive name.
     <system_message level="3" line="8" source="test data" type="ERROR">
         <paragraph>
-            Directive "directive" not registered (canonical name "directive").
-    <system_message level="3" line="8" source="test data" type="ERROR">
-        <paragraph>
             Unknown directive type "directive".
         <literal_block xml:space="preserve">
             directive:: symbol.png
