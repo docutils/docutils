@@ -181,9 +181,7 @@ def directive(directive_name, language_module, document):
     try:
         modulename, functionname = _directive_registry[canonicalname]
     except KeyError:
-        messages.append(document.reporter.error(
-            'Directive "%s" not registered (canonical name "%s").'
-            % (directive_name, canonicalname), line=document.current_line))
+        # Error handling done by caller.
         return None, messages
     if _modules.has_key(modulename):
         module = _modules[modulename]
