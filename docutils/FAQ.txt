@@ -387,8 +387,8 @@ implied endorsement or recommendation, and in no particular order:
   <http://wiki.webwareforpython.org/thiswiki.html>`__
 * `Ian Bicking's experimental code
   <http://docutils.sf.net/sandbox/ianb/wiki/Wiki.py>`__
-* `MoinMoin <http://moin.sf.net>`__ has some support; `here's a sample
-  <http://twistedmatrix.com/users/jh.twistd/moin/moin.cgi/RestSample>`__
+* `MoinMoin <http://moinmoin.wikiwikiweb.de/>`__ has some support;
+  `here's a sample <http://moinmoin.wikiwikiweb.de/RestSample>`__
 * Zope-based `Zwiki <http://zwiki.org/>`__
 * Zope3-based Zwiki (in the Zope 3 source tree as ``zope.products.zwiki``)
 * `StikiWiki <http://mithrandr.moria.org/code/stikiwiki/>`__
