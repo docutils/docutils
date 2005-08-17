@@ -386,7 +386,7 @@ implied endorsement or recommendation, and in no particular order:
 * `Webware for Python wiki
   <http://wiki.webwareforpython.org/thiswiki.html>`__
 * `Ian Bicking's experimental code
-  <http://docutils.sf.net/sandbox/ianb/wiki/WikiPage.py>`__
+  <http://docutils.sf.net/sandbox/ianb/wiki/Wiki.py>`__
 * `MoinMoin <http://moin.sf.net>`__ has some support; `here's a sample
   <http://twistedmatrix.com/users/jh.twistd/moin/moin.cgi/RestSample>`__
 * Zope-based `Zwiki <http://zwiki.org/>`__
