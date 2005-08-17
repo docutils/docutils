@@ -361,20 +361,25 @@ If anyone knows of other/better solutions, please `let us know`_.
 Are there any tools for HTML/XML-to-reStructuredText?  (Round-tripping)
 -----------------------------------------------------------------------
 
-People have tossed the idea around, but little if any actual work has
-ever been done.  There's no reason why reStructuredText should not be
-round-trippable to/from XML; any technicalities which prevent
-round-tripping would be considered bugs.  Whitespace would not be
-identical, but paragraphs shouldn't suffer.  The tricky parts would be
-the smaller details, like links and IDs and other bookkeeping.
+People have tossed the idea around, and some implementations of
+reStructuredText-generating tools can be found in the `Docutils Link
+List`_.
+
+There's no reason why reStructuredText should not be round-trippable
+to/from XML; any technicalities which prevent round-tripping would be
+considered bugs.  Whitespace would not be identical, but paragraphs
+shouldn't suffer.  The tricky parts would be the smaller details, like
+links and IDs and other bookkeeping.
 
 For HTML, true round-tripping may not be possible.  Even adding lots
 of extra "class" attributes may not be enough.  A "simple HTML" to RST
 filter is possible -- for some definition of "simple HTML" -- but HTML
 is used as dumb formatting so much that such a filter may not be
-particularly useful.  No general-purpose filter exists.  An 80/20
-approach should work though: build a tool that does 80% of the work
-automatically, leaving the other 20% for manual tweaks.
+particularly useful.  An 80/20 approach should work though: build a
+tool that does 80% of the work automatically, leaving the other 20%
+for manual tweaks.
+
+.. _Docutils Link List: docs/user/links.html
 
 
 Are there any Wikis that use reStructuredText syntax?
