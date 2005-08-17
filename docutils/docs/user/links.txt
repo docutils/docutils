@@ -35,14 +35,14 @@ the box.
   dumps of the document tree (e.g. created with rst2xml.py) back to
   reStructuredText.
 
+* xhtml2rest_, written by Antonios Christofides, is a simple utility
+  to convert XHTML to reStructuredText.
+
 * rst2ht_, by Oliver Rutherfurd, converts reStructuredText to an .ht
   template, for use with ht2html_.
 
 * htmlnav_, by Gunnar Schwant, is an HTML writer which supports
   navigation bars.
-
-* xhtml2rest_, written by Antonios Christofides, is a simple utility
-  to convert XHTML to reStructuredText.
 
 * rst2chm_, written by Oliver Rutherfurd, generates Microsoft HTML
   Help files from reStructuredText files.
