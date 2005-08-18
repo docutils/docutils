@@ -1851,7 +1851,7 @@ indirect.
        .. _split: `A
           Hyperlink`_
 
-If a reference name contains a colon followed by whitespace, either:
+If the reference name contains any colons, either:
 
 - the phrase must be enclosed in backquotes::
 
