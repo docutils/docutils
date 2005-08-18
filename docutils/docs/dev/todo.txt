@@ -72,6 +72,9 @@ for inclusion in the Python standard library.
 General
 =======
 
+* Move some general-interest sandboxes out of individuals'
+  directories, into subprojects?
+
 * Add option for file (and URL) access restriction to make Docutils
   usable in Wikis and similar applications.
 
