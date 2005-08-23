@@ -371,7 +371,9 @@ General
   & XMLs.  Aahz implemented something like this in
   sandbox/aahz/Effective/EffMap.py.
 
-* William Dode suggested that table cells be assigned "class"
+* .. _classes for table cells:
+
+  William Dode suggested that table cells be assigned "class"
   attributes by columns, so that stylesheets can affect text
   alignment.  Unfortunately, there doesn't seem to be a way (in HTML
   at least) to leverage the "colspec" elements (HTML "col" tags) by
