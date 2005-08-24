@@ -135,12 +135,6 @@ class Publisher:
             defaults = (settings_overrides or {}).copy()
             # Propagate exceptions by default when used programmatically:
             defaults.setdefault('traceback', 1)
-            # Do not complain on missing stylesheet when used
-            # programmatically.  A stylesheet is often not necessary
-            # because the application uses only snippets of the
-            # output, and requiring a stylesheet would break existing
-            # applications which use Docutils programmatically.
-            defaults.setdefault('_stylesheet_required', 0)
             self.get_settings(settings_spec=settings_spec,
                               config_section=config_section,
                               **defaults)

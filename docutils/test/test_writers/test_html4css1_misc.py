@@ -23,8 +23,7 @@ class EncodingTestCase(DocutilsTestSupport.StandardTestCase):
         settings_overrides={
             'output_encoding': 'latin1',
             'stylesheet': '',
-            '_disable_config': 1,
-            '_stylesheet_required': 0,}
+            '_disable_config': 1,}
         result = core.publish_string(
             'äöü€', writer_name='html4css1',
             settings_overrides=settings_overrides)

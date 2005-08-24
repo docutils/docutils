@@ -638,7 +638,6 @@ class WriterPublishTestCase(CustomTestCase, docutils.SettingsSpec):
     """
 
     settings_default_overrides = {'_disable_config': 1,
-                                  '_stylesheet_required': 0,
                                   'strict_visitor': 1}
     writer_name = '' # set in subclasses or constructor
 
