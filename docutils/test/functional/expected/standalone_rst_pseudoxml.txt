@@ -1120,7 +1120,7 @@
                     Images
                 <paragraph>
                     An image directive (also clickable -- a hyperlink reference):
-                <reference name="directives_" refid="directives">
+                <reference name="directives" refid="directives">
                     <image classes="class1 class2" uri="../../../docs/user/rst/images/title.png">
                 <paragraph>
                     Image with multiple IDs:
