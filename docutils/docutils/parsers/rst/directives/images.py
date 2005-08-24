@@ -14,7 +14,7 @@ __docformat__ = 'reStructuredText'
 import sys
 from docutils import nodes, utils
 from docutils.parsers.rst import directives, states
-from docutils.nodes import fully_normalize_name
+from docutils.nodes import fully_normalize_name, whitespace_normalize_name
 from docutils.parsers.rst.roles import set_classes
 
 try:
@@ -60,8 +60,9 @@ def image(name, arguments, options, content, lineno,
         if target_type == 'refuri':
             reference_node = nodes.reference(refuri=data)
         elif target_type == 'refname':
-            reference_node = nodes.reference(refname=data,
-                name=fully_normalize_name(options['target']))
+            reference_node = nodes.reference(
+                refname=fully_normalize_name(data),
+                name=whitespace_normalize_name(data))
             state.document.note_refname(reference_node)
         else:                           # malformed target
             messages.append(data)       # data is a system message

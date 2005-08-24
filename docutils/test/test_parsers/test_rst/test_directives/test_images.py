@@ -295,7 +295,7 @@ totest['images'] = [
 """,
 """\
 <document source="test data">
-    <reference name="indirect_" refname="indirect">
+    <reference name="indirect" refname="indirect">
         <image uri="picture.png">
 """],
 ["""\
@@ -311,7 +311,7 @@ totest['images'] = [
 <document source="test data">
     <reference refuri="a/multi/line/uri">
         <image uri="picture.png">
-    <reference name="`a multi line internal reference`_" refname="a multi line internal reference">
+    <reference name="a multi line internal reference" refname="a multi line internal reference">
         <image uri="picture.png">
 """],
 ["""\
@@ -401,7 +401,7 @@ u"""\
 """,
 """\
 <document source="test data">
-    <reference name="uppercase_" refname="Uppercase">
+    <reference name="Uppercase" refname="uppercase">
         <image uri="test.png">
     <target ids="uppercase" names="uppercase" refuri="http://docutils.sourceforge.net/">
 """],
