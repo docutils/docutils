@@ -461,8 +461,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
 
     settings_defaults = {'_disable_config': None,
                          '_source': None,
-                         '_destination': None,
-                         '_stylesheet_required': 1,}
+                         '_destination': None,}
     """Defaults for settings that don't have command-line option equivalents."""
 
     relative_path_settings = ('warning_stream',)

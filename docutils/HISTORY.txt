@@ -28,10 +28,6 @@ Changes Since 0.3.9
   - Added ``publish_doctree`` and ``publish_from_doctree`` convenience
     functions, for document tree extraction and reprocessing.
 
-* docutils/frontend.py:
-
-  - Added ``_stylesheet_required`` internal setting.
-
 * docutils/io.py:
 
   - Added ``DocTreeInput`` class, for reprocessing existing documents.
@@ -100,6 +96,7 @@ Changes Since 0.3.9
   - Made ``--embed-stylesheet`` the default rather than
     ``--link-stylesheet``.
   - Added writer-specific transform to check the stylesheet setting.
+  - Added ``_stylesheet_required`` internal setting, defaulting to 0.
 
 * docutils/writers/docutils_xml.py:
 
@@ -124,6 +121,9 @@ Changes Since 0.3.9
   Substitution Definition Sets", added to project.
 
 * test/coverage.sh: Added to project; test coverage script.
+
+* tools/rst2html.py: Made stylesheet requirement explicit (via
+  ``_stylesheet_required`` setting).
 
 * tools/rstpep2html.py: Renamed from pep.py.
 

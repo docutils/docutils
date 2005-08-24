@@ -651,6 +651,14 @@ stylesheet_path
 
     __ `stylesheet_path [latex2e writer]`_
 
+_`_stylesheet_required`
+    Warn if valid stylesheet settings are absent.  For programmatic
+    use only.
+
+    Default: not required (0), except when using the ``rst2html.py``
+    front-end tool.  No command-line options; pass ``--stylesheet=``
+    (i.e., with no argument) to disable the stylesheet explicitly.
+
 .. _xml_declaration [html4css1 writer]:
 
 xml_declaration
@@ -910,15 +918,6 @@ _`_source`
     Path to input source, set from positional arguments.
 
     Default: stdin (None).  No command-line options.
-
-_`_stylesheet_required`
-    Writers that require stylesheets for correct rendering will check
-    and warn if valid stylesheet settings are absent.  This setting is
-    used to enable stylesheet checking in writers and applications
-    that require a stylesheet, and disable checking in writers and
-    applications that don't.  For programmatic use only.
-
-    Default: required (1).  No command-line options.
 
 .. _ISO 639: http://www.loc.gov/standards/iso639-2/englangn.html
 

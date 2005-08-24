@@ -30,7 +30,6 @@ class RecordDependenciesTests(unittest.TestCase):
         settings.setdefault('settings_overrides', {})
         settings['settings_overrides'] = settings['settings_overrides'].copy()
         settings['settings_overrides']['_disable_config'] = 1
-        settings['settings_overrides']['_stylesheet_required'] = 0
         if not settings['settings_overrides'].has_key('record_dependencies'):
             settings['settings_overrides']['record_dependencies'] = \
                 docutils.utils.DependencyList(recordfile)
