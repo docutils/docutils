@@ -682,11 +682,11 @@ __ http://example.org
     <target ids="external" names="external" refuri="http://uri">
     <target ids="indirect" names="indirect" refuri="http://uri">
     <target refid="internal">
-    <reference ids="internal" name="external_" names="internal" refuri="http://uri">
+    <reference ids="internal" name="external" names="internal" refuri="http://uri">
         <image uri="picture.png">
-    <reference name="indirect_" refuri="http://uri">
+    <reference name="indirect" refuri="http://uri">
         <image uri="picture.png">
-    <reference name="internal_" refid="internal">
+    <reference name="internal" refid="internal">
         <image uri="picture.png">
 """],
 ["""\
