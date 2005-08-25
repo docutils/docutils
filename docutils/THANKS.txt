@@ -105,6 +105,7 @@ donations, tasty treats, and related projects:
 * Brett g Porter
 * David Priest
 * Jens Quade
+* Edward K. Ream
 * Andy Robinson
 * Tavis Rudd
 * Tracy Ruggles
@@ -136,6 +137,7 @@ donations, tasty treats, and related projects:
 * Wu Wei
 * Edward Welbourne
 * Felix Wiemann
+* Anthony Williams
 * Ka-Ping Yee
 * Moshe Zadka
 
