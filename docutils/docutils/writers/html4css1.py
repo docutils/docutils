@@ -310,6 +310,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         tagname = tagname.lower()
         prefix = []
         atts = {}
+        ids = []
         for (name, value) in attributes.items():
             atts[name.lower()] = value
         classes = node.get('classes', [])
@@ -318,9 +319,13 @@ class HTMLTranslator(nodes.NodeVisitor):
         if classes:
             atts['class'] = ' '.join(classes)
         assert not atts.has_key('id')
-        if node.get('ids'):
-            atts['id'] = node['ids'][0]
-            for id in node['ids'][1:]:
+        ids.extend(node.get('ids', []))
+        if atts.has_key('ids'):
+            ids.extend(atts['ids'])
+            del atts['ids']
+        if ids:
+            atts['id'] = ids[0]
+            for id in ids[1:]:
                 if infix:
                     # Empty tag.
                     prefix.append('<span id="%s"></span>' % id)
@@ -328,6 +333,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                     # Non-empty tag.  We place the auxiliary <span>
                     # tag *inside* the element.
                     suffix += '<span id="%s"></span>' % id
+        # !!! next 2 lines to be removed in Docutils 0.5:
         if atts.has_key('id') and tagname in self.named_tags:
             atts['name'] = atts['id']   # for compatibility with old browsers
         attlist = atts.items()
@@ -352,6 +358,12 @@ class HTMLTranslator(nodes.NodeVisitor):
     def emptytag(self, node, tagname, suffix='\n', **attributes):
         """Construct and return an XML-compatible empty tag."""
         return self.starttag(node, tagname, suffix, infix=' /', **attributes)
+
+    # !!! to be removed in Docutils 0.5 (change calls to use "starttag"):
+    def start_tag_with_title(self, node, tagname, **atts):
+        """ID and NAME attributes will be handled in the title."""
+        node = {'classes': node.get('classes', [])}
+        return self.starttag(node, tagname, **atts)
 
     def set_first_last(self, node):
         children = [n for n in node if not isinstance(n, nodes.Invisible)]
@@ -392,8 +404,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item()
 
     def visit_admonition(self, node, name=''):
-        self.body.append(self.starttag(node, 'div',
-                                        CLASS=(name or 'admonition')))
+        self.body.append(self.start_tag_with_title(
+            node, 'div', CLASS=(name or 'admonition')))
         if name:
             node.insert(0, nodes.title(name, self.language.labels[name]))
         self.set_first_last(node)
@@ -1174,14 +1186,16 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_section(self, node):
         self.section_level += 1
-        self.body.append(self.starttag(node, 'div', CLASS='section'))
+        self.body.append(
+            self.start_tag_with_title(node, 'div', CLASS='section'))
 
     def depart_section(self, node):
         self.section_level -= 1
         self.body.append('</div>\n')
 
     def visit_sidebar(self, node):
-        self.body.append(self.starttag(node, 'div', CLASS='sidebar'))
+        self.body.append(
+            self.start_tag_with_title(node, 'div', CLASS='sidebar'))
         self.set_first_last(node)
         self.in_sidebar = 1
 
@@ -1379,17 +1393,20 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.body.append(
                   self.starttag(node, 'h%s' % h_level, '', **atts))
             atts = {}
+            # !!! next 2 lines to be removed in Docutils 0.5:
             if node.parent['ids']:
-                atts['name'] = node.parent['ids'][0]
+                atts['ids'] = node.parent['ids']
             if node.hasattr('refid'):
                 atts['class'] = 'toc-backref'
                 atts['href'] = '#' + node['refid']
             self.body.append(self.starttag({}, 'a', '', **atts))
             self.context.append('</a></h%s>\n' % (h_level))
+        # !!! conditional to be removed in Docutils 0.5:
         if check_id:
             if node.parent['ids']:
+                atts={'ids': node.parent['ids']}
                 self.body.append(
-                    self.starttag({}, 'a', '', name=node.parent['ids'][0]))
+                    self.starttag({}, 'a', '', **atts))
                 self.context.append('</a>' + close_tag)
             else:
                 self.context.append(close_tag)
@@ -1410,7 +1427,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</cite>')
 
     def visit_topic(self, node):
-        self.body.append(self.starttag(node, 'div', CLASS='topic'))
+        self.body.append(self.start_tag_with_title(node, 'div', CLASS='topic'))
         self.topic_classes = node['classes']
 
     def depart_topic(self, node):
