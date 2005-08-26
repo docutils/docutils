@@ -1723,6 +1723,7 @@ class Body(RSTState):
                               %(non_whitespace_escape_before)s
                               (?P=quote)      # close quote if open quote used
                             )
+                            (?<![^\x00]:)   # no unescaped colon at end
                             %(non_whitespace_escape_before)s
                             [ ]?            # optional space
                             :               # end of reference name

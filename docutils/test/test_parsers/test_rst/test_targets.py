@@ -298,6 +298,23 @@ Explicit internal target.
                 Duplicate explicit target name: "target".
         <target dupnames="target" ids="id4" refuri="Explicit_external_target">
 """],
+["""\
+.. _unescaped colon at end:: no good
+
+.. _escaped colon\:: OK
+
+.. _`unescaped colon, quoted:`: OK
+""",
+"""\
+<document source="test data">
+    <comment xml:space="preserve">
+        _unescaped colon at end:: no good
+    <system_message level="2" line="1" source="test data" type="WARNING">
+        <paragraph>
+            malformed hyperlink target.
+    <target ids="escaped-colon" names="escaped colon:" refuri="OK">
+    <target ids="unescaped-colon-quoted" names="unescaped colon, quoted:" refuri="OK">
+"""],
 ]
 
 totest['anonymous_targets'] = [
