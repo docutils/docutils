@@ -1019,6 +1019,11 @@ when used in a document.
     This may be too specific to output formats which have a notion of
     "pages".
 
+  - _`misc.class`:
+
+    - Add a ``:parent:`` option for setting the parent's class
+      (http://article.gmane.org/gmane.text.docutils.devel/3165).
+
   - _`misc.include`:
 
     - Option to select a range of lines?
