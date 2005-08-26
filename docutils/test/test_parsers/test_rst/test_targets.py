@@ -301,6 +301,8 @@ Explicit internal target.
 ["""\
 .. _unescaped colon at end:: no good
 
+.. _:: no good either
+
 .. _escaped colon\:: OK
 
 .. _`unescaped colon, quoted:`: OK
@@ -310,6 +312,11 @@ Explicit internal target.
     <comment xml:space="preserve">
         _unescaped colon at end:: no good
     <system_message level="2" line="1" source="test data" type="WARNING">
+        <paragraph>
+            malformed hyperlink target.
+    <comment xml:space="preserve">
+        _:: no good either
+    <system_message level="2" line="3" source="test data" type="WARNING">
         <paragraph>
             malformed hyperlink target.
     <target ids="escaped-colon" names="escaped colon:" refuri="OK">
