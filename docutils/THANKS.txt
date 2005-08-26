@@ -45,6 +45,7 @@ donations, tasty treats, and related projects:
 * Benja Fallenstein
 * fantasai
 * Stefane Fermigier
+* Michael Foord
 * Jim Fulton
 * Peter Funk
 * Lele Gaifax
@@ -70,10 +71,12 @@ donations, tasty treats, and related projects:
 * Dmitry Jemerov
 * Richard Jones
 * Andreas Jung
+* Robert Kern
 * Garth Kidd
 * Philipp Knüsel
 * Axel Kollmorgen
 * Jeff Kowalczyk
+* Martin F. Krafft
 * Dave Kuhlman
 * Lloyd Kvam
 * Kirill Lapshin
