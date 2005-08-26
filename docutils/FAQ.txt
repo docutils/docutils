@@ -902,6 +902,38 @@ returns a dictionary containing an 'html_body_' entry.
    docs/api/publisher.html#html-body
 
 
+Why is the Docutils XHTML served as "Content-type: text/html"?
+--------------------------------------------------------------
+
+Full question:
+
+    Docutils' HTML output looks like XHTML and is advertised as such::
+
+      <?xml version="1.0" encoding="utf-8" ?>
+      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xht ml1/DTD/xhtml1-transitional.dtd">
+
+    But this is followed by::
+
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    Shouldn't this be "application/xhtml+xml" instead of "text/html"?
+
+In a perfect web, the Docutils XHTML output would be 100% strict
+XHTML.  But it's not a perfect web, and a major source of imperfection
+is Internet Explorer.  Despite it's drawbacks, IE still represents the
+majority of web browsers, and cannot be ignored.
+
+Short answer: if we didn't serve XHTML as "text/html" (which is a
+perfectly valid thing to do), it couldn't be viewed in Internet
+Explorer.  
+
+Long answer: see the `"Criticisms of Internet Explorer" Wikipedia
+entry <http://en.wikipedia.org/wiki/Criticisms_of_Internet_Explorer#XHTML>`__.
+
+(Thanks to Martin F. Krafft, Robert Kern and Michael Foord.)
+
+
 Python Source Reader
 ====================
 
