@@ -114,31 +114,18 @@ of processing, and links to the Docutils projects, add some options::
 Stylesheets
 ```````````
 
-``rst2html.py`` inserts into the generated HTML a link to a cascading
-stylesheet, defaulting to "``default.css``" (override with a
-"``--stylesheet``" or "``--stylesheet-path``" command-line option or
-with configuration file settings).  The
-"``tools/stylesheets/default.css``" stylesheet is provided for basic
-use.  To experiment with styles, rather than editing the default
-stylesheet (which will be updated as the project evolves), it is
-recommended to use an "``@import``" statement to create a "wrapper"
-stylesheet.  For example, a "``my.css``" stylesheet could contain the
-following::
+``rst2html.py`` inserts into the generated HTML a cascading stylesheet
+(or a link to a stylesheet, when passing the "``--link-stylesheet``"
+option).  You must specify the location of the stylesheet (normally
+``tools/stylesheets/default.css`` in the Docutils distribution
+tarball) with a "``--stylesheet``" or "``--stylesheet-path``"
+command-line option unless a configuration file
+(e.g. ``/etc/docutils.conf`` or ``~/.docutils.conf``) does so for you.
+The "``tools/stylesheets/default.css``" stylesheet is provided for
+basic use.  To experiment with styles, please see the `guide to
+writing HTML (CSS) stylesheets for Docutils`__.
 
-    @import url(default.css);
-
-    h1, h2, h3, h4, h5, h6, p.topic-title {
-      font-family: sans-serif }
-
-Generate HTML with the following command::
-
-    rst2html.py -stg --stylesheet my.css test.txt test.html
-
-When viewed in a browser, the new "wrapper" stylesheet will change the
-typeface family of titles to "sans serif", typically Helvetica or
-Arial.  Other styles will not be affected.  Styles in wrapper
-stylesheets override styles in imported stylesheets, enabling
-incremental experimentation.
+__ ../howto/html-stylesheets.html
 
 
 rstpep2html.py
