@@ -17,8 +17,8 @@ be found in the ``tools/stylesheets/`` directory of the Docutils
 distribution tarball.
 
 To customize the stylesheet, place a new file (e.g. called
-``docutils.css``) in the same directory as ``default.css`` and use the
-following template::
+``my-docutils.css``) in the same directory as ``default.css`` and use
+the following template::
 
     /*
     :Author: Your Name
