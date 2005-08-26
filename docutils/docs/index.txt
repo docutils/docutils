@@ -181,6 +181,8 @@ __ http://www.python.org/peps/pep-0287.html
 ``howto/``: Instructions for Developers
 =======================================
 
+* `Writing HTML (CSS) Stylesheets for Docutils
+  <howto/html-stylesheets.html>`__
 * `Docutils Internationalization <howto/i18n.html>`__
 * `Creating reStructuredText Directives <howto/rst-directives.html>`__
 * `Creating reStructuredText Interpreted Text Roles
