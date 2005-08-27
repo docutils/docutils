@@ -867,8 +867,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 closings = ""
                 openings = ""
             text = text.replace("\n", "%s}\\\\\n\\mbox{%s" % (closings,openings))
-        # lines starting with "[" give errors.
-        text = text.replace('[', '{[}')
+        text = text.replace('[', '{[}').replace(']', '{]}')
         if self.insert_none_breaking_blanks:
             text = text.replace(' ', '~')
         if self.latex_encoding != 'utf8':
