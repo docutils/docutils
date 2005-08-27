@@ -332,7 +332,7 @@ something~before~to~get~a~end~of~line.~\\\\
 {[}~\\\\
 ~\\\\
 the~empty~line~gets~tested~too~\\\\
-]
+{]}
 }\\end{quote}
 
 \\end{document}
