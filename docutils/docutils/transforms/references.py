@@ -128,11 +128,6 @@ class AnonymousHyperlinks(Transform):
                 prbid = self.document.set_id(prb)
                 msg.add_backref(prbid)
                 ref.parent.replace(ref, prb)
-            for target in self.document.anonymous_targets:
-                # Assume that all anonymous targets have been
-                # referenced to avoid generating lots of
-                # system_messages.
-                target.referenced = 1
             return
         for ref, target in zip(self.document.anonymous_refs,
                                self.document.anonymous_targets):
@@ -791,6 +786,12 @@ class DanglingReferences(Transform):
         # targets:
         for target in self.document.traverse(nodes.target):
             if not target.referenced:
+                if target.get('anonymous'):
+                    # If we have unreferenced anonymous targets, there
+                    # is already an error message about anonymous
+                    # hyperlink mismatch; no need to generate another
+                    # message.
+                    continue
                 if target['names']:
                     naming = target['names'][0]
                 elif target['ids']:
