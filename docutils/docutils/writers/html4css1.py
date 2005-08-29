@@ -100,6 +100,14 @@ class Writer(writers.Writer):
          ('Disable compact simple bullet and enumerated lists.',
           ['--no-compact-lists'],
           {'dest': 'compact_lists', 'action': 'store_false'}),
+         ('Remove extra vertical whitespace between items of simple field '
+          'lists. Default: enabled.',
+          ['--compact-field-lists'],
+          {'default': 1, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Disable compact simple field lists.',
+          ['--no-compact-field-lists'],
+          {'dest': 'compact_field_lists', 'action': 'store_false'}),
          ('Omit the XML declaration.  Use with caution.',
           ['--no-xml-declaration'],
           {'dest': 'xml_declaration', 'default': 1, 'action': 'store_false',
@@ -249,6 +257,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.colspecs = []
         self.compact_p = 1
         self.compact_simple = None
+        self.compact_field_list = None
         self.in_docinfo = None
         self.in_sidebar = None
         self.title = []
@@ -365,11 +374,21 @@ class HTMLTranslator(nodes.NodeVisitor):
         node = {'classes': node.get('classes', [])}
         return self.starttag(node, tagname, **atts)
 
-    def set_first_last(self, node):
+    def set_class_on_child(self, node, class_, index=0):
+        """
+        Set class `class_` on the visible child no. index of `node`.
+        Do nothing if node has fewer children than `index`.
+        """
         children = [n for n in node if not isinstance(n, nodes.Invisible)]
-        if children:
-            children[0]['classes'].append('first')
-            children[-1]['classes'].append('last')
+        try:
+            child = children[index]
+        except IndexError:
+            return
+        child['classes'].append(class_)
+
+    def set_first_last(self, node):
+        self.set_class_on_child(node, 'first', 0)
+        self.set_class_on_child(node, 'last', -1)
 
     def visit_Text(self, node):
         text = node.astext()
@@ -741,12 +760,33 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_field_body(self, node):
         self.body.append(self.starttag(node, 'td', '', CLASS='field-body'))
-        self.set_first_last(node)
+        self.set_class_on_child(node, 'first', 0)
+        field = node.parent
+        if (self.compact_field_list or
+            isinstance(field.parent, nodes.docinfo) or
+            field.parent.index(field) == len(field.parent) - 1):
+            # If we are in a compact list, the docinfo, or if this is
+            # the last field of the field list, do not add vertical
+            # space after last element.
+            self.set_class_on_child(node, 'last', -1)
 
     def depart_field_body(self, node):
         self.body.append('</td>\n')
 
     def visit_field_list(self, node):
+        self.context.append((self.compact_field_list, self.compact_p))
+        self.compact_p = None
+        if self.settings.compact_field_lists:
+            self.compact_field_list = 1
+            for field in node:
+                field_body = field[-1]
+                assert isinstance(field_body, nodes.field_body)
+                children = [n for n in field_body
+                            if not isinstance(n, nodes.Invisible)]
+                if not (len(children) == 1 and
+                        isinstance(children[0], nodes.paragraph)):
+                    self.compact_field_list = 0
+                    break
         self.body.append(self.starttag(node, 'table', frame='void',
                                        rules='none',
                                        CLASS='docutils field-list'))
@@ -756,6 +796,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_field_list(self, node):
         self.body.append('</tbody>\n</table>\n')
+        self.compact_field_list, self.compact_p = self.context.pop()
 
     def visit_field_name(self, node):
         atts = {}
@@ -1102,6 +1143,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                 # Attribute which needs to survive.
                 return 0
         if (self.compact_simple or
+            self.compact_field_list or
             self.compact_p and (len(node.parent) == 1 or
                                 len(node.parent) == 2 and
                                 isinstance(node.parent[0], nodes.label))):
