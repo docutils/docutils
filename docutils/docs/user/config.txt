@@ -584,6 +584,15 @@ _`compact_lists`
     Default: enabled (1).  Options: ``--compact-lists,
     --no-compact-lists``.
 
+_`compact_field_lists`
+
+    Remove extra vertical whitespace between items of field lists that
+    are "simple" (i.e., all field bodies each contain at most one
+    paragraph).
+
+    Default: enabled (1).  Options: ``--compact-field-lists,
+    --no-compact-field-lists``.
+
 _`embed_stylesheet`
     Embed the stylesheet in the output HTML file.  The stylesheet file
     must be accessible during processing.

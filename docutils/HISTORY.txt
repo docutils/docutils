@@ -100,6 +100,9 @@ Changes Since 0.3.9
   - Moved "id" attribute from container (section etc.) to title's <a>
     tag, to be on the same tag as "name".
     (!!! To be reverted in Docutils 0.5.)
+  - Added vertical space between fields of field lists.
+  - Added ``--compact-field-lists`` option to remove vertical space in
+    simple field lists.
 
 * docutils/writers/docutils_xml.py:
 
