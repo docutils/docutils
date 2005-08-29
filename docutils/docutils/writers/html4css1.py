@@ -783,7 +783,8 @@ class HTMLTranslator(nodes.NodeVisitor):
                 assert isinstance(field_body, nodes.field_body)
                 children = [n for n in field_body
                             if not isinstance(n, nodes.Invisible)]
-                if not (len(children) == 1 and
+                if not (len(children) == 0 or
+                        len(children) == 1 and
                         isinstance(children[0], nodes.paragraph)):
                     self.compact_field_list = 0
                     break
