@@ -316,6 +316,53 @@ And even more stuff
 </div>\\n''',
  'html_head': '''...<title></title>\\n'''}
 """],
+["""\
+Not a docinfo.
+
+:This: .. _target:
+
+       is
+:a:
+:simple:
+:field: list
+""",
+"""\
+{'fragment': '''<p>Not a docinfo.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">This:</th><td class="field-body"><p class="first last" id="target">is</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">a:</th><td class="field-body"></td>
+</tr>
+<tr class="field"><th class="field-name">simple:</th><td class="field-body"></td>
+</tr>
+<tr class="field"><th class="field-name">field:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>\\n''',
+ 'html_body': '''<div class="document">
+<p>Not a docinfo.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">This:</th><td class="field-body"><p class="first last" id="target">is</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">a:</th><td class="field-body"></td>
+</tr>
+<tr class="field"><th class="field-name">simple:</th><td class="field-body"></td>
+</tr>
+<tr class="field"><th class="field-name">field:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</div>\\n''',
+ 'html_head': '''...<title></title>\\n'''}
+"""],
 ])
 
 
