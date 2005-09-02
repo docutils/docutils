@@ -311,7 +311,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         """Cleanse, HTML encode, and return attribute value text."""
         return self.encode(whitespace.sub(' ', text))
 
-    def starttag(self, node, tagname, suffix='\n', infix='', **attributes):
+    def starttag(self, node, tagname, suffix='\n', empty=0, **attributes):
         """
         Construct and return a start tag given a node (id & class attributes
         are extracted), tag name, and optional attributes.
@@ -335,12 +335,17 @@ class HTMLTranslator(nodes.NodeVisitor):
         if ids:
             atts['id'] = ids[0]
             for id in ids[1:]:
-                if infix:
-                    # Empty tag.
+                # Add empty "span" elements for additional IDs.  Note
+                # that we cannot use empty "a" elements because there
+                # may be targets inside of references, but nested "a"
+                # elements aren't allowed in XHTML (even if they do
+                # not all have a "href" attribute).
+                if empty:
+                    # Empty tag.  Insert target right in front of element.
                     prefix.append('<span id="%s"></span>' % id)
                 else:
-                    # Non-empty tag.  We place the auxiliary <span>
-                    # tag *inside* the element.
+                    # Non-empty tag.  Place the auxiliary <span> tag
+                    # *inside* the element, as the first child.
                     suffix += '<span id="%s"></span>' % id
         # !!! next 2 lines to be removed in Docutils 0.5:
         if atts.has_key('id') and tagname in self.named_tags:
@@ -362,11 +367,15 @@ class HTMLTranslator(nodes.NodeVisitor):
                 except TypeError:       # for Python 2.1 compatibility:
                     uval = unicode(str(value))
                 parts.append('%s="%s"' % (name.lower(), self.attval(uval)))
+        if empty:
+            infix = ' /'
+        else:
+            infix = ''
         return ''.join(prefix) + '<%s%s>' % (' '.join(parts), infix) + suffix
 
     def emptytag(self, node, tagname, suffix='\n', **attributes):
         """Construct and return an XML-compatible empty tag."""
-        return self.starttag(node, tagname, suffix, infix=' /', **attributes)
+        return self.starttag(node, tagname, suffix, empty=1, **attributes)
 
     # !!! to be removed in Docutils 0.5 (change calls to use "starttag"):
     def start_tag_with_title(self, node, tagname, **atts):
