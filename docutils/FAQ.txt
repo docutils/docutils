@@ -931,7 +931,16 @@ Explorer.
 Long answer: see the `"Criticisms of Internet Explorer" Wikipedia
 entry <http://en.wikipedia.org/wiki/Criticisms_of_Internet_Explorer#XHTML>`__.
 
-(Thanks to Martin F. Krafft, Robert Kern and Michael Foord.)
+However, there's also `Sending XHTML as text/html Considered
+Harmful`__.  What to do, what to do?  We're damned no matter what we
+do.  So we'll continue to do the practical instead of the pure:
+support the browsers that are actually out there, and not fight for
+strict standards compliance.
+
+__ http://hixie.ch/advocacy/xhtml
+
+(Thanks to Martin F. Krafft, Robert Kern, Michael Foord, and Alan
+G. Isaac.)
 
 
 Python Source Reader
