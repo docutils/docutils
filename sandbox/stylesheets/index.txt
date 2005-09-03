@@ -1,0 +1,48 @@
+=======================
+ Docutils_ Stylesheets
+=======================
+
+:Author: Felix Wiemann
+:Contact: Felix.Wiemann@ososo.de
+:Revision: $Revision$
+:Date: $Date$
+:Copyright: This document has been placed in the public domain.
+
+
+This is a list of stylesheets, which can be used to customize the look
+of the documents created by Docutils, contributed by various users and
+developers.
+
+If you have a stylesheet to contribute, please send it to the
+Docutils-users_ mailing list.  (If you have write-access to the
+repository, you can also upload it to the ``sandbox/stylesheets/`` and
+add it in the list below.)
+
+.. TODO: Add previews of the stylesheets.  Either using PHP or with
+   screenshots.
+
+
+HTML (CSS) Stylesheets
+======================
+
+Please see "`Writing HTML (CSS) Stylesheets for Docutils`__" on how to
+write your own CSS stylesheet for use with Docutils' HTML writer.
+
+__ http://docutils.sf.net/docs/howto/html-stylesheets.html
+
+* `<voidspace.css>`_: Blue boxes around section headings, more
+  borders, and somewhat more colorful than the default stylesheet.
+
+.. _Docutils: http://docutils.sourceforge.net/
+.. _Docutils-users:
+   http://docutils.sf.net/docs/user/mailing-lists.html#docutils-users
+
+
+
+..
+   Local Variables:
+   mode: indented-text
+   indent-tabs-mode: nil
+   sentence-end-double-space: t
+   fill-column: 70
+   End:
