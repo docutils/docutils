@@ -89,12 +89,15 @@ def figure_align(argument):
 
 def figure(name, arguments, options, content, lineno,
            content_offset, block_text, state, state_machine):
-    figwidth = options.setdefault('figwidth')
-    figclasses = options.setdefault('figclass')
-    align = options.setdefault('align')
-    del options['figwidth']
-    del options['figclass']
-    del options['align']
+    figwidth = options.get('figwidth')
+    if figwidth:
+        del options['figwidth']
+    figclasses = options.get('figclass')
+    if figclasses:
+        del options['figclass']
+    align = options.get('align')
+    if align:
+        del options['align']
     (image_node,) = image(name, arguments, options, content, lineno,
                          content_offset, block_text, state, state_machine)
     if isinstance(image_node, nodes.system_message):
