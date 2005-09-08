@@ -710,7 +710,7 @@ What kind of HTML does it produce?
 ----------------------------------
 
 It produces XHTML compatible with the `XHTML 1.0`_ specification.  A
-cascading style sheet (provided as "tools/stylesheets/default.css") is
+cascading stylesheet (provided as "tools/stylesheets/default.css") is
 required for proper viewing with a modern graphical browser.  Correct
 rendering of the HTML produced depends on the CSS support of the
 browser.
@@ -795,8 +795,8 @@ single document title.
 
 HTML is being used for dumb formatting for nothing but final display.
 A stylesheet *is required*, and one is provided:
-tools/stylesheets/default.css.  Of course, you're welcome to roll your
-own.  The default stylesheet provides rules to format ``<h1
+``tools/stylesheets/default.css``.  Of course, you're welcome to roll
+your own.  The default stylesheet provides rules to format ``<h1
 class="title">`` and ``<h2 class="subtitle">`` differently from
 ordinary ``<h1>`` and ``<h2>``::
 
