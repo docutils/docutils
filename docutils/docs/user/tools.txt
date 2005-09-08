@@ -99,16 +99,20 @@ rst2html.py
 
 The ``rst2html.py`` front end reads standalone reStructuredText source
 files and produces HTML 4 (XHTML 1) output compatible with modern
-browsers.  For example, to process a reStructuredText file
-"``test.txt``" into HTML::
+browsers that support cascading stylesheets (CSS).  A stylesheet is
+required for proper rendering; an example is provided in
+``tools/stylesheets/default.css`` (see Stylesheets_ below).
 
-    rst2html.py test.txt test.html
+For example, to process a reStructuredText file "``test.txt``" into
+HTML::
+
+    rst2html.py --stylesheet=mystyles.css test.txt test.html
 
 Now open the "``test.html``" file in your favorite browser to see the
 results.  To get a footer with a link to the source file, date & time
 of processing, and links to the Docutils projects, add some options::
 
-    rst2html.py -stg test.txt test.html
+    rst2html.py --stylesheet=mystyles.css -stg test.txt test.html
 
 
 Stylesheets
