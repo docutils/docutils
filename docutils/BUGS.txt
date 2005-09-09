@@ -251,6 +251,25 @@ Also see the `SourceForge Bug Tracker`_.
   Hyperlink targets with duplicate names should be assigned new IDs
   unrelated to the target names (i.e., "id"-prefix serial IDs).
 
+* _`expose_internals` is (partially) broken::
+
+      $ echo x | rst2pseudoxml.py --expose-internal-attribute rawsource
+      Traceback (most recent call last):
+        File "/home/felix/bin/rst2pseudoxml.py", line 25, in ?
+          publish_cmdline(description=description)
+        File "/home/felix/.python/lib/docutils/core.py", line 341, in publish_cmdline
+          config_section=config_section, enable_exit_status=enable_exit_status)
+        File "/home/felix/.python/lib/docutils/core.py", line 217, in publish
+          self.apply_transforms()
+        File "/home/felix/.python/lib/docutils/core.py", line 186, in apply_transforms
+          self.document.transformer.apply_transforms()
+        File "/home/felix/.python/lib/docutils/transforms/__init__.py", line 192, in apply_transforms
+          transform.apply(**kwargs)
+        File "/home/felix/.python/lib/docutils/transforms/universal.py", line 98, in apply
+          node['internal:' + att] = value
+      AttributeError: Text instance has no attribute '__setitem__'
+
+
 
 ..
    Local Variables:
