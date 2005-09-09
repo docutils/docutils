@@ -3,175 +3,17 @@
 ;; Copyright: This module has been placed in the public domain.
 ;;
 ;; Regression tests for rest-adjust-section-title.
+;; 
+;; Run this with::
+;;
+;;    emacs --script tests-adjust-section.el
 ;;
 
-(setq rest-adjust-section-tests 
+;; Define tests.
+(setq rest-adjust-decoration-tests
   '(
-    (simple
-"
-Some Title@
-
-"
-"
-Some Title
-==========
-
-")
-
-    (simple-cursor-in-line
-"
-Some Tit@le
-
-"
-"
-Some Title
-==========
-
-")
-
-    (simple-cursor-beginning
-"
-@Some Title
-
-"
-"
-Some Title
-==========
-
-")
-
-    (simple-at-end-of-buffer
-"
-Some Title@"
-"
-Some Title
-==========
-")
-
-    (cursor-on-empty-line-under
-"
-Some Title
-@
-"
-"
-Some Title
-==========
-
-")
-
-
-
-    (partial
-"
-Some Title@
----
-"
-"
-Some Title
-----------
-
-")
-
-    (cursor-on-underline
-"
-Some Title
----@
-"
-"
-Some Title
-----------
-
-")
-
-    (cursor-on-underline-one-char
-"
-Some Title
-~@
-"
-"
-Some Title
-~~~~~~~~~~
-
-")
-
-    (with-previous-text
-"
-Some Title
-**********
-
-Subtitle@
-
-"
-"
-Some Title
-**********
-
-Subtitle
-********
-
-")
-
-    (with-suggested-new-text
-"
-Some Title
-==========
-
-Subtitle
---------
-
-Subtitle2@
-
-"
-"
-Some Title
-==========
-
-Subtitle
---------
-
-Subtitle2
-~~~~~~~~~
-
-"
-(nil nil))
-
-    (with-previous-text-rotating
-"
-Some Title
-==========
-
-Subtitle
---------
-
-Subtitle2@
-
-"
-"
-Some Title
-==========
-
-Subtitle
---------
-
-Subtitle2
-=========
-
-"
-(nil nil nil))
-
-      (start-indented
-"
-   Some Title@
-
-"
-"
-================
-   Some Title
-================
-
-")
-
-      (switch-from-nothing
+;;------------------------------------------------------------------------------
+(nodec-first-simple-1
 "
 Some Title@
 
@@ -181,60 +23,758 @@ Some Title@
  Some Title
 ============
 
-" (t))
+"
+)
 
-      (switch-from-over-and-under
+;;------------------------------------------------------------------------------
+(nodec-first-simple-2
+"
+Some Title
+@
+"
 "
 ============
- Some Title@
+ Some Title
 ============
+
+"
+)
+
+;;------------------------------------------------------------------------------
+(nodec-first-simple-3
+"
+Some Tit@le
+
+"
+"
+============
+ Some Title
+============
+
+"
+)
+
+;;------------------------------------------------------------------------------
+(nodec-first-simple-4
+"
+@Some Title
+
+"
+"
+============
+ Some Title
+============
+
+")
+
+
+;;------------------------------------------------------------------------------
+(nodec-first-simple-others
+"
+Some Title@
+
+Other Title
+-----------
+
+Other Title2
+~~~~~~~~~~~~
+
+"
+"
+============
+ Some Title
+============
+
+Other Title
+-----------
+
+Other Title2
+~~~~~~~~~~~~
+
+"
+)
+
+
+;;------------------------------------------------------------------------------
+(nodec-first-toggle
+"
+Some Title@
+
 "
 "
 Some Title
 ==========
 
-" (t))
+"
+(t))
+
+;;------------------------------------------------------------------------------
+(nodec-first-forced
+"
+   Some Title@
+
+"
+"
+================
+   Some Title
+================
+
+"
+)
+
+;;------------------------------------------------------------------------------
+(nodec-first-forced-2
+"
+   Some Title@
+
+"
+"
+Some Title
+==========
+
+"
+(t))
+
+;;------------------------------------------------------------------------------
+(nodec-simple
+"
+Previous Title
+--------------
+
+Some Title@
+
+"
+"
+Previous Title
+--------------
+
+Some Title
+~~~~~~~~~~
+
+"
+)
+
+;;------------------------------------------------------------------------------
+(nodec-simple-neg
+"
+Previous Title
+--------------
+
+Some Title@
+
+Next Title
+~~~~~~~~~~
+
+"
+"
+Previous Title
+--------------
+
+Some Title
+~~~~~~~~~~
+
+Next Title
+~~~~~~~~~~
+
+"
+)
+
+;;------------------------------------------------------------------------------
+(nodec-simple-toggle
+"
+Previous Title
+--------------
+
+Some Title@
+
+"
+"
+Previous Title
+--------------
+
+~~~~~~~~~~
+Some Title
+~~~~~~~~~~
+
+"
+(t))
+
+;;------------------------------------------------------------------------------
+(nodec-simple-force-toggle
+"
+Previous Title
+--------------
+
+  Some Title@
+
+"
+"
+Previous Title
+--------------
+
+~~~~~~~~~~~~~~
+  Some Title
+~~~~~~~~~~~~~~
+
+"
+(t))
+
+
+;;------------------------------------------------------------------------------
+(nodec-simple-forced
+"
+Previous Title
+--------------
+
+   Some Title@
+
+"
+"
+Previous Title
+--------------
+
+Some Title
+~~~~~~~~~~
+
+"
+)
+
+;;------------------------------------------------------------------------------
+(nodec-neg
+"
+Previous Title
+--------------
+
+Some Title@
+
+Next Title
+~~~~~~~~~~
+"
+"
+Previous Title
+--------------
+
+Some Title
+----------
+
+Next Title
+~~~~~~~~~~
+"
+(-1))
+
+;;------------------------------------------------------------------------------
+(incomplete-simple-1
+"
+Previous Title@
+----------
+"
+"
+Previous Title
+--------------
+
+"
+)
+
+;;------------------------------------------------------------------------------
+(incomplete-simple-2
+"
+Previous Title
+----------@
+"
+"
+Previous Title
+--------------
+
+"
+)
+
+;;------------------------------------------------------------------------------
+(incomplete-simple-3
+"
+Previous Title
+-@
+"
+"
+================
+ Previous Title
+================
+
+"
+)
+
+;;------------------------------------------------------------------------------
+(incomplete-simple-too-long
+"
+Previous Title
+------------------@
+"
+"
+Previous Title
+--------------
+
+"
+)
+
+;;------------------------------------------------------------------------------
+(incomplete-simple-uo
+"
+----------------
+ Previous Title
+----------@
+"
+"
+----------------
+ Previous Title
+----------------
+
+"
+)
+
+;;------------------------------------------------------------------------------
+(incomplete-partial-overline
+"
+----------@
+ Previous Title
+----------------
+"
+"
+----------------
+ Previous Title
+----------------
+
+"
+)
+
+;;------------------------------------------------------------------------------
+(incomplete-both
+"
+----------
+ Previous Title@
+-----
+"
+"
+----------------
+ Previous Title
+----------------
+
+"
+)
+
+;;------------------------------------------------------------------------------
+(incomplete-toggle
+"
+Previous Title
+----------@
+"
+"
+--------------
+Previous Title
+--------------
+
+"
+(t))
+
+;;------------------------------------------------------------------------------
+(incomplete-toggle-2
+"
+----------------
+ Previous Title@
+--------
+"
+"
+Previous Title
+--------------
+
+"
+(t))
+
+;;------------------------------------------------------------------------------
+(incomplete-toggle-overline
+"
+--------@
+ Previous Title
+----------------
+"
+"
+Previous Title
+--------------
+
+"
+(t))
+
+;;------------------------------------------------------------------------------
+(incomplete-top
+"--------@
+ Previous Title
+----------------
+"
+"----------------
+ Previous Title
+----------------
+
+"
+)
+
+;;------------------------------------------------------------------------------
+(incomplete-top-2
+"=======
+Document Title@
+==============
+"
+"==============
+Document Title
+==============
+
+"
+)
+
+;;------------------------------------------------------------------------------
+(complete-simple
+"
+================
+ Document Title
+================
+
+SubTitle
+--------
+
+My Title@
+--------
+
+After Title
+~~~~~~~~~~~
+
+"
+"
+================
+ Document Title
+================
+
+SubTitle
+--------
+
+==========
+ My Title
+==========
+
+After Title
+~~~~~~~~~~~
+
+"
+)
+
+;;------------------------------------------------------------------------------
+(complete-simple-neg
+"
+================
+ Document Title
+================
+
+SubTitle
+--------
+
+My Title@
+--------
+
+After Title
+~~~~~~~~~~~
+
+"
+"
+================
+ Document Title
+================
+
+SubTitle
+--------
+
+My Title
+~~~~~~~~
+
+After Title
+~~~~~~~~~~~
+
+"
+(-1))
+
+;;------------------------------------------------------------------------------
+(complete-simple-suggestion-down
+"
+================
+ Document Title
+================
+
+SubTitle
+========
+
+My Title@
+========
+
+"
+"
+================
+ Document Title
+================
+
+SubTitle
+========
+
+My Title
+--------
+
+"
+(-1))
+
+;;------------------------------------------------------------------------------
+(complete-simple-boundary-down
+"
+================
+ Document Title
+================
+
+SubTitle
+========
+
+My Title@
+--------
+
+"
+"
+================
+ Document Title
+================
+
+SubTitle
+========
+
+==========
+ My Title
+==========
+
+"
+(-1))
+
+;;------------------------------------------------------------------------------
+(complete-simple-suggestion-up
+"
+================
+ Document Title
+================
+
+SubTitle
+========
+
+==========
+ My Title@
+==========
+
+"
+"
+================
+ Document Title
+================
+
+SubTitle
+========
+
+My Title
+--------
+
+"
+)
+
+;;------------------------------------------------------------------------------
+(complete-simple-boundary-up ;; Note: boundary-up does not exist.
+"
+================
+ Document Title
+================
+
+SubTitle
+========
+
+My Title@
+--------
+"
+"
+================
+ Document Title
+================
+
+SubTitle
+========
+
+My Title
+========
+
+"
+)
+
+;;------------------------------------------------------------------------------
+(complete-toggle-1
+"
+SubTitle@
+~~~~~~~~
+
+"
+"
+~~~~~~~~~~
+ SubTitle
+~~~~~~~~~~
+
+"
+(t))
+
+;;------------------------------------------------------------------------------
+(complete-toggle-2
+"
+~~~~~~~~~~
+ SubTitle@
+~~~~~~~~~~
+
+"
+"
+SubTitle
+~~~~~~~~
+
+"
+(t))
+
+;;------------------------------------------------------------------------------
+(at-file-beginning
+"
+Document Title@
+
+"
+"
+================
+ Document Title@
+================
+
+"
+)
+
+
+;;------------------------------------------------------------------------------
+(at-file-ending
+"
+
+Document Title@
+"
+"
+
+================
+ Document Title@
+================
+
+"
+)
+
+;;------------------------------------------------------------------------------
+(at-file-ending-2
+"
+
+Document Title@"
+"
+
+================
+ Document Title@
+================
+"
+)
+
+;;------------------------------------------------------------------------------
+(conjoint
+"
+Document Title
+==============
+Subtitle@
+
+"
+"
+Document Title
+==============
+Subtitle@
+--------
+
+"
+)
+
+;;------------------------------------------------------------------------------
+(same-conjoint-2
+"==============
+Document Title@
+==============
+Subtitle
+========
+
+"
+"Document Title@
+==============
+Subtitle
+========
+
+"
+)
+
+;;------------------------------------------------------------------------------
+(same-conjoint-2b
+"
+==============
+Document Title@
+==============
+Subtitle
+========
+
+"
+"
+Document Title@
+==============
+Subtitle
+========
+
+"
+)
+
+
+;;------------------------------------------------------------------------------
+(same-conjoint-2
+"
+==============
+Document Title
+==============
+===============
+Document Title2@
+===============
+
+"
+"
+==============
+Document Title
+==============
+Document Title2
+===============
+
+"
+)
 
 ))
 
-;; "A list of regression tests for the section update method."
 
+;; Main program.  Evaluate this to run the tests.
+;; (setq debug-on-error t)
 
+;; Import the module from the file in the parent directory directly.
+(add-to-list 'load-path ".")
+(load "tests-runner.el")
+(add-to-list 'load-path "..")
+(load "restructuredtext.el")
 
-(defun regression-test-compare-expect-buffer (testlist fun)
-  "Run the regression tests for the section adjusting method."
-  
-  (let ((buf (get-buffer-create "restructuredtext-regression-tests"))
-	(specchar "@")
-	)
-    (dolist (curtest testlist)
-      ;; print current text
-      (message (format "========= %s" (prin1-to-string (car curtest))))
+(progn
+  (regression-test-compare-expect-buffer
+   "Test interactive adjustment of sections."
+   rest-adjust-decoration-tests
+   (lambda ()
+     (call-interactively 'rest-adjust))
+   nil))
 
-      ;; prepare a buffer with the starting text, and move the cursor where
-      ;; the special character is located
-      (switch-to-buffer buf)
-      (erase-buffer)
-      (insert (cadr curtest))
-      (search-backward specchar)
-      (delete-char 1)
-      
-      ;; run the section title update command n times
-      (dolist (x (or (cadddr curtest) (list nil)))
-	(let ((current-prefix-arg x))
-	  (funcall fun)))
-      
-      ;; compare the buffer output with the expected text
-      (or (string=
-	   (buffer-string)
-	   (caddr curtest))
-	  (progn
-	    (error "Test %s failed." (car curtest))))
-      )
-    ))
-
-;; evaluate this to run the tests, either interactively or in batch
-(regression-test-compare-expect-buffer
- rest-adjust-section-tests
- (lambda ()
-   (call-interactively 'rest-adjust-section-title)))
