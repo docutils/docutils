@@ -33,6 +33,11 @@
 ;; code).  The most important function provided by this file for section title
 ;; adjustments is rest-adjust.
 ;;
+;; You should consider customizing the following variables:
+;;
+;; - rest-default-indent
+;; - rest-preferred-decorations
+;;
 ;; TODO: 
 ;; - Add an option to forego using the file structure in order to make
 ;;   suggestion, and to always use the preferred decorations to do that.
@@ -53,6 +58,21 @@ is for which (pred elem) is true)"
               tail)))))
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; From emacs-22
+
+(if (not (fboundp 'line-number-at-pos))
+    (defun line-number-at-pos (&optional pos)
+      "Return (narrowed) buffer line number at position POS.
+    If POS is nil, use current buffer location."
+      (let ((opoint (or pos (point))) start)
+        (save-excursion
+          (goto-char (point-min))
+          (setq start (point))
+          (goto-char opoint)
+          (forward-line 0)
+          (1+ (count-lines start (point)))))) )
+    
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; The following functions implement a smart automatic title sectioning feature.
@@ -154,7 +174,7 @@ is for which (pred elem) is true)"
   decoration style to a over-and-under decoration style.")
 
 
-(defcustom rest-section-text-regexp "^[ \t]*\\S-*[a-zA-Z0-9]\\S-*"
+(defvar rest-section-text-regexp "^[ \t]*\\S-*[a-zA-Z0-9]\\S-*"
   "Regular expression for valid section title text.")
 
 
