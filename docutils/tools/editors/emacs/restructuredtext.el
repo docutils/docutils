@@ -1,5 +1,5 @@
-;; Authors: David Goodger <goodger@python.org>,
-;;          Martin Blais <blais@furius.ca>
+;; Authors: Martin Blais <blais@furius.ca>,
+;;          David Goodger <goodger@python.org>
 ;; Date: $Date$
 ;; Copyright: This module has been placed in the public domain.
 ;;
