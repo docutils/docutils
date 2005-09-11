@@ -21,6 +21,7 @@ from types import ListType
 
 import docutils
 from docutils import nodes, writers, utils
+from docutils.transforms import writer_aux
 
 
 class Writer(writers.Writer):
@@ -73,7 +74,7 @@ class Writer(writers.Writer):
     output = None
     """Final translated form of `document`."""
 
-    default_transforms = ()
+    default_transforms = (writer_aux.Compound,)
 
     def __init__(self):
         writers.Writer.__init__(self)
@@ -211,6 +212,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         a(r'\providecommand{\Dtitleastext}{x} % variable')
         a(r'\providecommand{\Dsinglebackref}{} % variable')
         a(r'\providecommand{\Dmultiplebackrefs}{} % variable')
+        a(r'\providecommand{\Dparagraphindented}{false} % variable')
         a('\n\n')
 
     # Get comprehensive Unicode map.
@@ -353,6 +355,29 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
 
     def depart_Text(self, node):
         pass
+
+    def is_indented(self, paragraph):
+        """Return true if `paragraph` should be first-line-indented."""
+        assert isinstance(paragraph, nodes.paragraph)
+        siblings = [n for n in paragraph.parent if
+                    self.is_visible(n) and not isinstance(n, nodes.Titular)]
+        index = siblings.index(paragraph)
+        # Special handling for children of compound paragraphs:
+        if isinstance(paragraph.parent, nodes.compound):
+            # Indent only the first paragraph in a `compound` node.
+            if index > 0:
+                return 0
+            else:
+                return self.is_indented(node.parent)
+        # Indent all but the first paragraphs.
+        return index > 1
+
+    def visit_compound(self, node):
+        impossible
+
+    def before_paragraph(self, node):
+        self.append(r'\renewcommand{\Dparagraphindented}{%s}'
+                    % (self.is_indented(node) and 'true' or 'false'))
 
     def before_title(self, node):
         self.append(r'\renewcommand{\Dtitleastext}{%s}'
@@ -714,15 +739,13 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
                  # Assume raw nodes to be invisible.
                  isinstance(node, nodes.raw) or
                  # Floating image or figure.
-                 node.get('align', None) in ('left', 'right')))
+                 node.get('align') in ('left', 'right')))
 
     def is_visible(self, node):
         return not self.is_invisible(node)
 
     def needs_space(self, node):
-        """
-        Two nodes for which `needs_space` is true need auxiliary space.
-        """
+        """Two nodes for which `needs_space` is true need auxiliary space."""
         # Return true if node is a visible block-level element.
         return ((isinstance(node, nodes.Body) or
                  isinstance(node, nodes.topic)) and
@@ -731,7 +754,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
 
     def always_needs_space(self, node):
         """
-        Always add space around nodes for which `always_needs_space`
+        Always add space around nodes for which `always_needs_space()`
         is true, regardless of whether the other node needs space as
         well.  (E.g. transition next to section.)
         """
@@ -752,16 +775,12 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
                 ascend=0, siblings=1, descend=0,
                 condition=self.is_visible)
             # Insert space if necessary.
-            if  (self.always_needs_space(node) or
-                 self.always_needs_space(next_node) or
-                 self.needs_space(node) and self.needs_space(next_node)):
-                if isinstance(next_node, nodes.paragraph):
-                    if isinstance(node, nodes.paragraph):
-                        # Space between paragraphs.
-                        self.append(r'\Dparagraphspace')
-                    else:
-                        # Space in front of a paragraph.
-                        self.append(r'\Dauxiliaryparspace')
+            if  (self.needs_space(node) and self.needs_space(next_node) or
+                 self.always_needs_space(node) or
+                 self.always_needs_space(next_node)):
+                if isinstance(node, nodes.paragraph) and isinstance(next_node, nodes.paragraph):
+                    # Space between paragraphs.
+                    self.append(r'\Dparagraphspace')
                 else:
-                    # Space in front of something else than a paragraph.
+                    # One of the elements is not a paragraph.
                     self.append(r'\Dauxiliaryspace')

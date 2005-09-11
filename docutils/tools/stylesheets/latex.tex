@@ -100,7 +100,7 @@
   \ifthenelse{\equal{\Dneedvspace}{true}}{\vspace{\Dblocklevelvspace}}{}%
   \par\noindent%
 }
-\providecommand{\Dauxiliaryparspace}{%
+\providecommand{\Dauxiliaryparspace}{%  XXX REMOVEME
   \ifthenelse{\equal{\Dneedvspace}{true}}{\vspace{\Dblocklevelvspace}}{}%
   \par%
 }
@@ -247,7 +247,10 @@
   }}}}%
 }
 
-\providecommand{\DNparagraph}[1]{#1}
+\providecommand{\DNparagraph}[1]{%
+  \ifthenelse{\equal{\Dparagraphindented}{true}}{\indent}{\noindent}%
+  #1%
+}
 \providecommand{\Dformatboxtitle}[1]{{\Large\textbf{#1}}}
 \providecommand{\Dformatboxsubtitle}[1]{{\large\textbf{#1}}}
 \providecommand{\Dtopictitle}[1]{%

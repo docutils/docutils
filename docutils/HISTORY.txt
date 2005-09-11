@@ -86,6 +86,11 @@ Changes Since 0.3.9
   - Removed universal.FinalChecks transform (logic has been moved to
     several new transforms).
 
+* docutils/transforms/writer_aux.py: Added to project; auxiliary
+  transforms for writers.
+
+  - Added ``Compound`` transform, which flattens compound paragraphs.
+
 * docutils/writers/html4css1.py:
 
   - Added support for image width and height units.
