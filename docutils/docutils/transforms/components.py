@@ -49,6 +49,6 @@ class Filter(Transform):
         format = pending.details['format']
         component = self.document.transformer.components[component_type]
         if component.supports(format):
-            pending.parent.replace(pending, pending.details['nodes'])
+            pending.substitute(pending.details['nodes'])
         else:
             pending.parent.remove(pending)

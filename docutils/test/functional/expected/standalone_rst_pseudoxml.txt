@@ -948,7 +948,7 @@
                 <paragraph>
                     Here's an unreferenced footnote, with a reference to a
                     nonexistent footnote: 
-                    <problematic ids="id26" refid="id25">
+                    <problematic ids="id26 id14" refid="id25">
                         [5]_
                     .
         <section ids="citations" names="citations">
@@ -967,7 +967,7 @@
                 <citation_reference ids="id15" refid="cit2002">
                     CIT2002
                 , and a 
-                <problematic ids="id28" refid="id27">
+                <problematic ids="id28 id16" refid="id27">
                     [nonexistent]_
                 
                 citation.

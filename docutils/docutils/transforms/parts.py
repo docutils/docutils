@@ -97,7 +97,7 @@ class Contents(Transform):
             self.backlinks = self.document.settings.toc_backlinks
         contents = self.build_contents(startnode)
         if len(contents):
-            self.startnode.parent.replace(self.startnode, contents)
+            self.startnode.substitute(contents)
         else:
             self.startnode.parent.parent.remove(self.startnode.parent)
 

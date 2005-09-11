@@ -107,11 +107,11 @@ class Headers(Transform):
             if name == 'author':
                 for node in para:
                     if isinstance(node, nodes.reference):
-                        node.parent.replace(node, mask_email(node))
+                        node.substitute(mask_email(node))
             elif name == 'discussions-to':
                 for node in para:
                     if isinstance(node, nodes.reference):
-                        node.parent.replace(node, mask_email(node, pep))
+                        node.substitute(mask_email(node, pep))
             elif name in ('replaces', 'replaced-by', 'requires'):
                 newbody = []
                 space = nodes.Text(' ')
@@ -241,7 +241,7 @@ class PEPZeroSpecial(nodes.SparseNodeVisitor):
         pass
 
     def visit_reference(self, node):
-        node.parent.replace(node, mask_email(node))
+        node.substitute(mask_email(node))
 
     def visit_field_list(self, node):
         if 'rfc2822' in node['classes']:

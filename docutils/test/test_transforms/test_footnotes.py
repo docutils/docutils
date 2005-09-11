@@ -182,7 +182,7 @@ Mixed anonymous and labelled auto-numbered footnotes:
         <footnote_reference auto="1" ids="id3" refid="id8">
             3
          should be 3, \n\
-        <problematic ids="id11" refid="id10">
+        <problematic ids="id11 id4" refid="id10">
             [#]_
          is one too many,
         <footnote_reference auto="1" ids="id5" refid="two">
@@ -327,7 +327,7 @@ and labelled auto-numbered footnotes:
         <footnote_reference auto="1" ids="id5" refid="id12">
             6
          should be 6, \n\
-        <problematic ids="id15" refid="id14">
+        <problematic ids="id15 id6" refid="id14">
             [#]_
          is one too many,
         <footnote_reference auto="1" ids="id7" refname="five">
