@@ -544,18 +544,15 @@ class Element(Node):
         else:
             return 1
 
-    def update(self, dict):
+    def update_basic_atts(self, dict):
         """
-        Update attributes from node or dictionary `dict`, extending
-        (instead of overwriting) list attributes.
+        Update basic attributes ('ids', 'names', 'classes',
+        'dupnames', but not 'source') from node or dictionary `dict`.
         """
         if isinstance(dict, Node):
             dict = dict.attributes
-        for att, value in dict.items():
-            if att in self.list_attributes:
-                self[att].extend(value)
-            else:
-                self[att] = value
+        for att in ('ids', 'classes', 'names', 'dupnames'):
+            self[att].extend(dict.get(att, []))
 
     def clear(self):
         self.children = []
@@ -575,9 +572,9 @@ class Element(Node):
         list of nodes.
         """
         if isinstance(new, Node):
-            new.update(self)
+            new.update_basic_atts(self)
         else:
-            new[0].update(self)
+            new[0].update_basic_atts(self)
         self.parent.replace(self, new)
 
     def first_child_matching_class(self, childclass, start=0, end=sys.maxint):

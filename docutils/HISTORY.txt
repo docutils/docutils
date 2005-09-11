@@ -178,6 +178,8 @@ Release 0.3.9 (2005-05-26)
   - Added ``document.decoration`` attribute,
     ``document.get_decoration`` method, and ``decoration.get_header``
     & ``.get_footer`` methods.
+  - Added ``Element.update_basic_atts()`` and ``Element.substitute()``
+    methods.
 
 * docutils/utils.py:
 
