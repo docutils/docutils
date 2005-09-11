@@ -269,6 +269,11 @@ Also see the `SourceForge Bug Tracker`_.
           node['internal:' + att] = value
       AttributeError: Text instance has no attribute '__setitem__'
 
+* The "contents" ID of the local table of contents in
+  ``test/functional/expected/standalone_rst_pseudoxml.txt`` is lost in
+  the HTML output at
+  ``test/functional/expected/standalone_rst_html4css1.html``.
+
 
 
 ..
