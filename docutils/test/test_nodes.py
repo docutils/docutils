@@ -106,17 +106,50 @@ class ElementTests(unittest.TestCase):
         self.assert_(element.is_not_default('ids'))
 
     def test_update(self):
-        element1 = nodes.Element()
-        element2 = nodes.Element()
-        element1['ids'] = ['foo', 'bar']
-        element1['test'] = ['this is not a known list attribute']
-        element2['ids'] = ['baz', 'qux']
-        element2['test'] = ['overwrite']
+        element1 = nodes.Element(ids=['foo', 'bar'], test=['a', 'list'])
+        element2 = nodes.Element(ids=['baz', 'qux'], test=['overwrite'])
         element1.update(element2)
-        # 'ids' are appended.
+        # 'ids' are appended because 'ids' is a known list attribute.
         self.assertEquals(element1['ids'], ['foo', 'bar', 'baz', 'qux'])
         # 'test' is overwritten.
         self.assertEquals(element1['test'], ['overwrite'])
+
+    def test_substitute(self):
+        parent = nodes.Element(ids=['parent'])
+        child1 = nodes.Element(ids=['child1'])
+        grandchild = nodes.Element(ids=['grandchild'])
+        child1 += grandchild
+        child2 = nodes.Element(ids=['child2'])
+        twins = [nodes.Element(ids=['twin%s' % i]) for i in (1, 2)]
+        child2 += twins
+        child3 = nodes.Element(ids=['child3'])
+        parent += [child1, child2, child3]
+        self.assertEquals(parent.pformat(), """\
+<Element ids="parent">
+    <Element ids="child1">
+        <Element ids="grandchild">
+    <Element ids="child2">
+        <Element ids="twin1">
+        <Element ids="twin2">
+    <Element ids="child3">
+""")
+        # Replace child1 with the grandchild.
+        child1.substitute(child1[0])
+        self.assertEquals(parent[0], grandchild)
+        # Assert that 'ids' have been updated.
+        self.assertEquals(grandchild['ids'], ['grandchild', 'child1'])
+        # Replace child2 with its children.
+        child2.substitute(child2[:])
+        self.assertEquals(parent[1:3], twins)
+        # Assert that 'ids' have been propagated to first child.
+        self.assertEquals(twins[0]['ids'], ['twin1', 'child2'])
+        self.assertEquals(twins[1]['ids'], ['twin2'])
+        # Replace child3 with new child.
+        newchild = nodes.Element(ids=['newchild'])
+        child3.substitute(newchild)
+        self.assertEquals(parent[3], newchild)
+        self.assertEquals(len(parent), 4)
+        self.assertEquals(newchild['ids'], ['newchild', 'child3'])
 
 
 class MiscTests(unittest.TestCase):
