@@ -105,14 +105,14 @@ class ElementTests(unittest.TestCase):
                           {'ids': ['someid']})
         self.assert_(element.is_not_default('ids'))
 
-    def test_update(self):
-        element1 = nodes.Element(ids=['foo', 'bar'], test=['a', 'list'])
-        element2 = nodes.Element(ids=['baz', 'qux'], test=['overwrite'])
-        element1.update(element2)
-        # 'ids' are appended because 'ids' is a known list attribute.
+    def test_update_basic_atts(self):
+        element1 = nodes.Element(ids=['foo', 'bar'], test=['test1'])
+        element2 = nodes.Element(ids=['baz', 'qux'], test=['test2'])
+        element1.update_basic_atts(element2)
+        # 'ids' are appended because 'ids' is a basic attribute.
         self.assertEquals(element1['ids'], ['foo', 'bar', 'baz', 'qux'])
-        # 'test' is overwritten.
-        self.assertEquals(element1['test'], ['overwrite'])
+        # 'test' is not overwritten because it is not a basic attribute.
+        self.assertEquals(element1['test'], ['test1'])
 
     def test_substitute(self):
         parent = nodes.Element(ids=['parent'])
