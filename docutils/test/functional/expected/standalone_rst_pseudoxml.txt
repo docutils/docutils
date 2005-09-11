@@ -1351,8 +1351,9 @@
                     Now something 
                     <emphasis>
                         really
-                     perverted -- a nested compound block.  In
-                    LaTeX, the following paragraphs should all be first-line indented:
+                     perverted -- a nested compound block.  This is
+                    just to test that it works at all; the results don't have to be
+                    meaningful.
                 <compound>
                     <paragraph>
                         Compound 5, block 1 (a paragraph).

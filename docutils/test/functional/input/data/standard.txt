@@ -612,8 +612,9 @@ Another compound statement:
 
    Compound 4, a paragraph.
 
-Now something *really* perverted -- a nested compound block.  In
-LaTeX, the following paragraphs should all be first-line indented:
+Now something *really* perverted -- a nested compound block.  This is
+just to test that it works at all; the results don't have to be
+meaningful.
 
 .. compound::
 
