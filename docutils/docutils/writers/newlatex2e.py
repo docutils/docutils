@@ -362,18 +362,10 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         siblings = [n for n in paragraph.parent if
                     self.is_visible(n) and not isinstance(n, nodes.Titular)]
         index = siblings.index(paragraph)
-        # Special handling for children of compound paragraphs:
-        if isinstance(paragraph.parent, nodes.compound):
-            # Indent only the first paragraph in a `compound` node.
-            if index > 0:
-                return 0
-            else:
-                return self.is_indented(node.parent)
+        if 'continued' in paragraph['classes']:
+            return 0
         # Indent all but the first paragraphs.
         return index > 1
-
-    def visit_compound(self, node):
-        impossible
 
     def before_paragraph(self, node):
         self.append(r'\renewcommand{\Dparagraphindented}{%s}'
