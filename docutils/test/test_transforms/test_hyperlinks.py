@@ -145,7 +145,7 @@ circular_ indirect reference
             circular_
          indirect reference
     <target ids="circular" names="circular" refid="circular">
-    <problematic ids="id3" refid="id1">
+    <problematic ids="id3 indirect" names="indirect" refid="id1">
         .. _indirect: circular_
     <system_message backrefs="id2 id3" ids="id1" level="3" line="3" source="test data" type="ERROR">
         <paragraph>
@@ -787,7 +787,7 @@ Duplicate manual footnote labels, with reference ([1]_):
 <document source="test data">
     <paragraph>
         Duplicate manual footnote labels, with reference (
-        <problematic ids="id5" refid="id4">
+        <problematic ids="id5 id1" refid="id4">
             [1]_
         ):
     <footnote dupnames="1" ids="id2">
