@@ -105,6 +105,19 @@ class ElementTests(unittest.TestCase):
                           {'ids': ['someid']})
         self.assert_(element.is_not_default('ids'))
 
+    def test_update(self):
+        element1 = nodes.Element()
+        element2 = nodes.Element()
+        element1['ids'] = ['foo', 'bar']
+        element1['test'] = ['this is not a known list attribute']
+        element2['ids'] = ['baz', 'qux']
+        element2['test'] = ['overwrite']
+        element1.update(element2)
+        # 'ids' are appended.
+        self.assertEquals(element1['ids'], ['foo', 'bar', 'baz', 'qux'])
+        # 'test' is overwritten.
+        self.assertEquals(element1['test'], ['overwrite'])
+
 
 class MiscTests(unittest.TestCase):
 

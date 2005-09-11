@@ -333,9 +333,9 @@ class Element(Node):
     This is equivalent to ``element.extend([node1, node2])``.
     """
 
-    attr_defaults = {'ids': [], 'classes': [], 'names': [],
-                     'dupnames': [], 'backrefs': []}
-    """Default attributes."""
+    list_attributes = ('ids', 'classes', 'names', 'dupnames', 'backrefs')
+    """List attributes, automatically initialized to empty lists for
+    all nodes."""
 
     tagname = None
     """The element generic identifier. If None, it is set as an instance
@@ -356,10 +356,9 @@ class Element(Node):
         self.attributes = {}
         """Dictionary of attribute {name: value}."""
 
-        # Copy default values.
-        for att, value in self.attr_defaults.items():
-            # Default values are always lists (at the moment).
-            self.attributes[att] = value[:]
+        # Initialize list attributes.
+        for att in self.list_attributes:
+            self.attributes[att] = []
 
         for att, value in attributes.items():
             self.attributes[att.lower()] = value
@@ -540,10 +539,23 @@ class Element(Node):
         return self.children.index(item)
 
     def is_not_default(self, key):
-        try:
-            return self[key] != self.attr_defaults[key]
-        except KeyError:
+        if self[key] == [] and key in self.list_attributes:
+            return 0
+        else:
             return 1
+
+    def update(self, dict):
+        """
+        Update attributes from node or dictionary `dict`, extending
+        (instead of overwriting) list attributes.
+        """
+        if isinstance(dict, Node):
+            dict = dict.attributes
+        for att, value in dict.items():
+            if att in self.list_attributes:
+                self[att].extend(value)
+            else:
+                self[att] = value
 
     def clear(self):
         self.children = []
