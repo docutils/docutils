@@ -569,6 +569,17 @@ class Element(Node):
         elif new is not None:
             self[index:index+1] = new
 
+    def substitute(self, new):
+        """
+        Substitute `new` for `self` node, where `new` is a node or
+        list of nodes.
+        """
+        if isinstance(new, Node):
+            new.update(self)
+        else:
+            new[0].update(self)
+        self.parent.replace(self, new)
+
     def first_child_matching_class(self, childclass, start=0, end=sys.maxint):
         """
         Return the index of the first child whose class exactly matches.
