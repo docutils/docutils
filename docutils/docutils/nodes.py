@@ -552,7 +552,9 @@ class Element(Node):
         if isinstance(dict, Node):
             dict = dict.attributes
         for att in ('ids', 'classes', 'names', 'dupnames'):
-            self[att].extend(dict.get(att, []))
+            for value in dict.get(att, []):
+                if not value in self[att]:
+                    self[att].append(value)
 
     def clear(self):
         self.children = []
@@ -571,10 +573,21 @@ class Element(Node):
         Substitute `new` for `self` node, where `new` is a node or
         list of nodes.
         """
-        if isinstance(new, Node):
-            new.update_basic_atts(self)
+        update = new
+        if not isinstance(new, Node):
+            # `new` is a list; update first child.
+            try:
+                update = new[0]
+            except IndexError:
+                update = None
+        if isinstance(update, Element):
+            update.update_basic_atts(self)
         else:
-            new[0].update_basic_atts(self)
+            # `update` is a Text node or `new` is an empty list.
+            # Assert that we aren't losing any attributes.
+            for att in ('ids', 'names', 'classes', 'dupnames'):
+                assert not self[att], \
+                       'Losing "%s" attribute: %s' % (att, self[att])
         self.parent.replace(self, new)
 
     def first_child_matching_class(self, childclass, start=0, end=sys.maxint):

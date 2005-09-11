@@ -123,7 +123,8 @@ class ElementTests(unittest.TestCase):
         twins = [nodes.Element(ids=['twin%s' % i]) for i in (1, 2)]
         child2 += twins
         child3 = nodes.Element(ids=['child3'])
-        parent += [child1, child2, child3]
+        child4 = nodes.Element(ids=['child4'])
+        parent += [child1, child2, child3, child4]
         self.assertEquals(parent.pformat(), """\
 <Element ids="parent">
     <Element ids="child1">
@@ -132,6 +133,7 @@ class ElementTests(unittest.TestCase):
         <Element ids="twin1">
         <Element ids="twin2">
     <Element ids="child3">
+    <Element ids="child4">
 """)
         # Replace child1 with the grandchild.
         child1.substitute(child1[0])
@@ -148,8 +150,12 @@ class ElementTests(unittest.TestCase):
         newchild = nodes.Element(ids=['newchild'])
         child3.substitute(newchild)
         self.assertEquals(parent[3], newchild)
-        self.assertEquals(len(parent), 4)
         self.assertEquals(newchild['ids'], ['newchild', 'child3'])
+        # Crazy but possible case: Substitute child4 for itself.
+        child4.substitute(child4)
+        # Make sure the 'child4' ID hasn't been duplicated.
+        self.assertEquals(child4['ids'], ['child4'])
+        self.assertEquals(len(parent), 5)
 
 
 class MiscTests(unittest.TestCase):
