@@ -71,6 +71,8 @@ peps.PEPZero                    peps.Headers (t/p)            760
 
 components.Filter               "meta" (d/p)                  780
 
+writer_aux.Compound             newlatex2e (w)                810
+
 universal.Decorations           Transformer                   820
 
 misc.Transitions                standalone (r), pep (r)       830
