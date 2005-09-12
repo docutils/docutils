@@ -362,10 +362,11 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         siblings = [n for n in paragraph.parent if
                     self.is_visible(n) and not isinstance(n, nodes.Titular)]
         index = siblings.index(paragraph)
-        if 'continued' in paragraph['classes']:
+        if ('continued' in paragraph['classes'] or
+            index > 0 and isinstance(siblings[index-1], nodes.transition)):
             return 0
         # Indent all but the first paragraphs.
-        return index > 1
+        return index > 0
 
     def before_paragraph(self, node):
         self.append(r'\renewcommand{\Dparagraphindented}{%s}'
@@ -492,7 +493,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         self.process_backlinks(node, 'citation')
 
     def before_table(self, node):
-        # A tables contains exactly one tgroup.  See before_tgroup.
+        # A table contains exactly one tgroup.  See before_tgroup.
         pass
 
     def before_tgroup(self, node):
@@ -507,7 +508,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         for w in widths:
             # 0.93 is probably wrong in many cases.  XXX Find a
             # solution which works *always*.
-            tablespec += r'p{%s\linewidth}|' % (0.93 * w /
+            tablespec += r'p{%s\textwidth}|' % (0.93 * w /
                                                 max(total_width, 60))
         self.append(r'\Dmaketable{%s}{' % tablespec)
         self.context.append('}')
