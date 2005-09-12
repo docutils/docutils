@@ -83,28 +83,108 @@ Nested Elements
 
 :Field list: | Line
              | Block
-:Another field: * Bullet
-                * list
+:Field 2: * Bullet
+          * list
+:Another (longer) field: * Bullet
+                         * list
+:Yet another long field:
+          * .. comment
+
+            Bullet
+
+            .. comment
+
+          * .. comment
+
+            list
+
+            .. comment
+
+:Field: * This
+
+          is
+
+          a
+
+        * bullet
+
+          list
+
+:Field: * | This is
+          | a bullet
+        * | list with
+          | line blocks
+:Last field: Last field.
 
 * * * * * * * * Deeply nested list.
 
 1. 2. 3. 4. 5. 6. 7. 8. Deeply nested list.
 
-+---------------+
-| | Line block  |
-|               |
-| * Bullet list |
-|               |
-| ::            |
-|               |
-|     Literal   |
-|     block     |
-+---------------+
-| :Field 1:     |
-|  Text.        |
-| :Field 2:     |
-|  More text.   |
-+---------------+
++-----------------+
+| | Line block    |
+|                 |
+| * Bullet list   |
+|                 |
+| ::              |
+|                 |
+|     Literal     |
+|     block       |
++-----------------+
+| :Field 1:       |
+|  Text.          |
+| :Field 2:       |
+|  More text.     |
++-----------------+
+| +-------+-----+ |
+| | A     |* foo| |
+| | nested|     | |
+| | table.|* bar| |
+| +-------+-----+ |
++-----------------+
+| This is a       |
+| paragraph.      |
+|                 |
+| +-------+-----+ |
+| | A     |* foo| |
+| | nested|     | |
+| | table.|* bar| |
+| +-------+-----+ |
+|                 |
+| Another longer  |
+| paragraph.      |
++-----------------+
+| * A list.       |
+| * A list.       |
+|                 |
+| +-------+-----+ |
+| | A     |* foo| |
+| | nested|     | |
+| | table.|* bar| |
+| +-------+-----+ |
+|                 |
+| * Another list. |
+| * Another list. |
++-----------------+
+| Foo             |
+|                 |
+| Bar             |
++-----------------+
+| * Foo           |
+|                 |
+| * Bar           |
++-----------------+
+| * This is a     |
+|   paragraph.    |
+|                 |
+|   This is a     |
+|   paragraph.    |
+|                 |
+| * This is a     |
+|   paragraph.    |
+|                 |
+|   This is a     |
+|   paragraph.    |
++-----------------+
 
 
 Images

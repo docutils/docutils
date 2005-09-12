@@ -428,7 +428,7 @@
 \Dprovidelength{\Dlistspacing}{0.8\baselineskip}
 
 \providecommand{\Dsetlistrightmargin}{%
-  \ifthenelse{\lengthtest{\linewidth>10em}}{%
+  \ifthenelse{\lengthtest{\linewidth>12em}}{%
     % Equal margins.
     \setlength{\rightmargin}{\leftmargin}%
   }{%
@@ -842,11 +842,23 @@
   % 1. Table spec (like "|p|p|").
   % 2. Table contents.
   {%
-    \renewcommand{\Dinsidetabular}{true}%
-    \begin{longtable}{#1}%
-      \hline%
-      #2%
-    \end{longtable}%
+    \ifthenelse{\equal{\Dinsidetabular}{true}}{%
+      % Inside longtable; we cannot have nested longtables.
+      % The following \vspace *adds* vertical space.  I have no idea
+      % how to do this in a cleaner way.
+      %\mbox{}\par\vspace{-0.5em}%
+      \begin{tabular}{#1}%
+        \hline%
+        #2%
+      \end{tabular}%
+      %\par\noindent\vspace{-0.5em}%
+    }{%
+      \renewcommand{\Dinsidetabular}{true}%
+      \begin{longtable}{#1}%
+        \hline%
+        #2%
+      \end{longtable}%
+    }%
   }%
 }
 \providecommand{\DNthead}[1]{%
@@ -857,20 +869,38 @@
   #1\tabularnewline%
   \hline%
 }
+\providecommand{\Dinsidemulticolumn}{false}
+\providecommand{\Dcompensatingmulticol}[3]{%
+  \multicolumn{#1}{#2}{%
+    {%
+      \renewcommand{\Dinsidemulticolumn}{true}%
+      % Compensate for weird missing vertical space at top of paragraph.
+      \raisebox{-2.5pt}{#3}%
+    }%
+  }%
+}
 \providecommand{\Dcolspan}[2]{%
   % Take care of the morecols attribute (but incremented by 1).
-  &\multicolumn{#1}{l|}{#2}%
+  &%
+  \Dcompensatingmulticol{#1}{l|}{#2}%
 }
 \providecommand{\Dcolspanleft}[2]{%
   % Like \Dmorecols, but called for the leftmost entries in a table
   % row.
-  \multicolumn{#1}{|l|}{#2}%
+  \Dcompensatingmulticol{#1}{|l|}{#2}%
 }
 \providecommand{\Dsubsequententry}[1]{%
   &#1%
 }
-% \DNentry is not used because we set the ampersand ("&") in the
-% \DAcolspan... macros.
+\providecommand{\DNentry}[1]{%
+  % The following sequence adds minimal vertical space above the top
+  % lines of the first cell paragraph, so that vertical space is
+  % balanced at the top and bottom of table cells.
+  \ifthenelse{\equal{\Dinsidemulticolumn}{false}}{%
+    \vspace{-1em}\vspace{-\parskip}\par%
+  }{}%
+  #1%
+}
 \providecommand{\DAtableheaderentry}[5]{\Dformattableheaderentry{#5}}
 \providecommand{\Dformattableheaderentry}[1]{{\bfseries#1}}
 
