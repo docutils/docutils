@@ -135,7 +135,8 @@ class CustomTestCase(StandardTestCase):
     compare = docutils_difflib.Differ().compare
     """Comparison method shared by all subclasses."""
 
-    def __init__(self, method_name, input, expected, id, run_in_debugger=0):
+    def __init__(self, method_name, input, expected, id, run_in_debugger=0,
+                 suite_settings=None):
         """
         Initialise the CustomTestCase.
 
@@ -146,11 +147,13 @@ class CustomTestCase(StandardTestCase):
         expected -- expected output from the parser.
         id -- unique test identifier, used by the test framework.
         run_in_debugger -- if true, run this test under the pdb debugger.
+        suite_settings -- settings overrides for this test suite.
         """
         self.id = id
         self.input = input
         self.expected = expected
         self.run_in_debugger = run_in_debugger
+        self.suite_settings = suite_settings or {}
         
         # Ring your mother.
         unittest.TestCase.__init__(self, method_name)
@@ -205,15 +208,17 @@ class CustomTestSuite(unittest.TestSuite):
     next_test_case_id = 0
     """The next identifier to use for non-identified test cases."""
 
-    def __init__(self, tests=(), id=None):
+    def __init__(self, tests=(), id=None, suite_settings=None):
         """
         Initialize the CustomTestSuite.
 
         Arguments:
 
         id -- identifier for the suite, prepended to test cases.
+        suite_settings -- settings overrides for this test suite.
         """
         unittest.TestSuite.__init__(self, tests)
+        self.suite_settings = suite_settings or {}
         if id is None:
             mypath = os.path.abspath(
                 sys.modules[CustomTestSuite.__module__].__file__)
@@ -256,6 +261,9 @@ class CustomTestSuite(unittest.TestSuite):
             self.next_test_case_id += 1
         # test identifier will become suiteid.testid
         tcid = '%s: %s' % (self.id, id)
+        # suite_settings may be passed as a parameter;
+        # if not, set from attribute:
+        kwargs.setdefault('suite_settings', self.suite_settings)
         # generate and add test case
         tc = test_case_class(method_name, input, expected, tcid,
                              run_in_debugger=run_in_debugger, **kwargs)
@@ -300,7 +308,9 @@ class TransformTestCase(CustomTestCase):
     def test_transforms(self):
         if self.run_in_debugger:
             pdb.set_trace()
-        document = utils.new_document('test data', self.settings)
+        settings = self.settings.copy()
+        settings.__dict__.update(self.suite_settings)
+        document = utils.new_document('test data', settings)
         self.parser.parse(self.input, document)
         # Don't do a ``populate_from_components()`` because that would
         # enable the Transformer's default transforms.
@@ -317,7 +327,9 @@ class TransformTestCase(CustomTestCase):
         print '\n', self.id
         print '-' * 70
         print self.input
-        document = utils.new_document('test data', self.settings)
+        settings = self.settings.copy()
+        settings.__dict__.update(self.suite_settings)
+        document = utils.new_document('test data', settings)
         self.parser.parse(self.input, document)
         print '-' * 70
         print document.pformat()
@@ -339,11 +351,11 @@ class TransformTestSuite(CustomTestSuite):
     setUp and tearDown).
     """
 
-    def __init__(self, parser):
+    def __init__(self, parser, suite_settings=None):
         self.parser = parser
         """Parser shared by all test cases."""
 
-        CustomTestSuite.__init__(self)
+        CustomTestSuite.__init__(self, suite_settings=suite_settings)
 
     def generateTests(self, dict, dictname='totest',
                       testmethod='test_transforms'):
@@ -363,6 +375,11 @@ class TransformTestSuite(CustomTestSuite):
                 case = cases[casenum]
                 run_in_debugger = 0
                 if len(case)==3:
+                    # TODO: (maybe) change the 3rd argument to a dict, so it
+                    # can handle more cases by keyword ('disable', 'debug',
+                    # 'settings'), here and in other generateTests methods.
+                    # But there's also the method that
+                    # HtmlPublishPartsTestSuite uses <DJG>
                     if case[2]:
                         run_in_debugger = 1
                     else:
@@ -397,7 +414,9 @@ class ParserTestCase(CustomTestCase):
     def test_parser(self):
         if self.run_in_debugger:
             pdb.set_trace()
-        document = utils.new_document('test data', self.settings)
+        settings = self.settings.copy()
+        settings.__dict__.update(self.suite_settings)
+        document = utils.new_document('test data', settings)
         # Remove any additions made by "role" directives:
         roles._roles = {}
         self.parser.parse(self.input, document)
@@ -655,17 +674,18 @@ class WriterPublishTestCase(CustomTestCase, docutils.SettingsSpec):
               reader_name='standalone',
               parser_name='restructuredtext',
               writer_name=self.writer_name,
-              settings_spec=self)
+              settings_spec=self,
+              settings_overrides=self.suite_settings)
         self.compare_output(self.input, output, self.expected)
 
 
 class PublishTestSuite(CustomTestSuite):
 
-    def __init__(self, writer_name):
+    def __init__(self, writer_name, suite_settings=None):
         """
         `writer_name` is the name of the writer to use.
         """
-        CustomTestSuite.__init__(self)
+        CustomTestSuite.__init__(self, suite_settings=suite_settings)
         self.test_class = WriterPublishTestCase
         self.writer_name = writer_name
 
@@ -692,6 +712,8 @@ class HtmlPublishPartsTestSuite(CustomTestSuite):
 
     def generateTests(self, dict, dictname='totest'):
         for name, (settings_overrides, cases) in dict.items():
+            settings = self.suite_settings.copy()
+            settings.update(settings_overrides)
             for casenum in range(len(cases)):
                 case = cases[casenum]
                 run_in_debugger = 0
@@ -702,10 +724,10 @@ class HtmlPublishPartsTestSuite(CustomTestSuite):
                         continue
                 self.addTestCase(
                       HtmlWriterPublishPartsTestCase, 'test_publish',
-                      settings_overrides=settings_overrides,
                       input=case[0], expected=case[1],
                       id='%s[%r][%s]' % (dictname, name, casenum),
-                      run_in_debugger=run_in_debugger)
+                      run_in_debugger=run_in_debugger,
+                      suite_settings=settings)
 
 
 class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
@@ -720,13 +742,6 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
         WriterPublishTestCase.settings_default_overrides.copy()
     settings_default_overrides['stylesheet'] = ''
 
-    def __init__(self, *args, **kwargs):
-        self.settings_overrides = kwargs['settings_overrides']
-        """Settings overrides to use for this test case."""
-
-        del kwargs['settings_overrides'] # only wanted here
-        CustomTestCase.__init__(self, *args, **kwargs)
-
     def test_publish(self):
         if self.run_in_debugger:
             pdb.set_trace()
@@ -736,7 +751,7 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
             parser_name='restructuredtext',
             writer_name=self.writer_name,
             settings_spec=self,
-            settings_overrides=self.settings_overrides)
+            settings_overrides=self.suite_settings)
         output = self.format_output(parts)
         # interpolate standard variables:
         expected = self.expected % {'version': docutils.__version__}

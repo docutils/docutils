@@ -17,7 +17,8 @@ from docutils.parsers.rst import Parser
 
 def suite():
     parser = Parser()
-    s = DocutilsTestSupport.TransformTestSuite(parser)
+    s = DocutilsTestSupport.TransformTestSuite(
+        parser, suite_settings={'expose_internals': ['rawsource', 'source']})
     s.generateTests(totest)
     return s
 
@@ -29,10 +30,10 @@ totest['transitions'] = ((ExposeInternals,), [
 This is a test.
 """,
 """\
-[Test disabled at the moment.  How do we activate the expose_internals
-setting for this test suite?]
-""",
-0],
+<document internal:rawsource="" source="test data">
+    <paragraph internal:rawsource="This is a test." internal:source="test data">
+        This is a test.
+"""],
 ])
 
 
