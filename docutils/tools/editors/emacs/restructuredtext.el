@@ -205,6 +205,14 @@ is for which (pred elem) is true)"
           ))
     ))
 
+(defun rest-line-homogeneous-nodent-p (&optional accept-special)
+  (save-excursion
+    (beginning-of-line)
+    (if (looking-at "^[ \t]+")
+	nil
+      (rest-line-homogeneous-p accept-special)
+      )))
+
 
 (defun rest-compare-decorations (deco1 deco2)
   "Compare decorations.  Returns true if both are equal,
@@ -367,7 +375,7 @@ have been seen.
     (save-excursion
       (beginning-of-buffer)
       (while (< (point) (buffer-end 1))
-        (if (rest-line-homogeneous-p)
+        (if (rest-line-homogeneous-nodent-p)
             (progn
               (setq curline (+ curline (rest-normalize-cursor-position)))
 
@@ -450,11 +458,11 @@ have been seen.
       (if (looking-at rest-section-text-regexp)
           (let* ((over (save-excursion
 			 (forward-line -1)
-			 (rest-line-homogeneous-p)))
+			 (rest-line-homogeneous-nodent-p)))
 
 		(under (save-excursion
 			 (forward-line +1)
-			 (rest-line-homogeneous-p)))
+			 (rest-line-homogeneous-nodent-p)))
 	        )
 
 	    ;; Check that the line above the overline is not part of a title

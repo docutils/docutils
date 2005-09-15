@@ -24,7 +24,7 @@
 (simple "Blablabla bla@" nil)
 (true "-----------@" ?-)
 (indented "   -----------@" ?-)
-(letter "   aaaa@aaa" ?a)
+(letter "aaaa@aaa" ?a)
 (true2 "uuuuuuuuuuuuuuuuu@" ?u)
 (misleading "--=---------@" nil)
 (notstrip " uuuuuuuuuuuuuuuuu@" ?u)
@@ -37,6 +37,26 @@
   (regression-test-compare-expect-values
    "Tests for predicate for one char line."
    rest-line-homogeneous-p-tests 'rest-line-homogeneous-p nil))
+
+(setq rest-line-homogeneous-nodent-p-tests
+  '(
+;;------------------------------------------------------------------------------
+(simple "Blablabla bla@" nil)
+(true "-----------@" ?-)
+(indented "   -----------@" nil)
+(letter "aaaa@aaa" ?a)
+(true2 "uuuuuuuuuuuuuuuuu@" ?u)
+(misleading "--=---------@" nil)
+(notstrip " uuuuuuuuuuuuuuuuu@" nil)
+(notstrip2 " uuuuuuuuuuuuuuuuu @" nil)
+(position "-------@----" ?-)
+(one-char "-@" nil)
+))
+
+(progn
+  (regression-test-compare-expect-values
+   "Tests for predicate for one char line."
+   rest-line-homogeneous-nodent-p-tests 'rest-line-homogeneous-nodent-p nil))
 
 
 
@@ -398,6 +418,16 @@ Du bon vin tous les jours
 "
 (45 over-and-under 2))
 
+;;------------------------------------------------------------------------------
+(indented-1
+"
+
+  Du bon vin tous les jours@
+  =========================
+
+"
+(nil nil 2))
+
 ))
 
 
@@ -472,6 +502,20 @@ Next
 
 ")
 
+(setq text-3
+"
+
+Previous
+--------
+
+Current@
+~~~~~~~
+
+  Next
+  ++++
+
+")
+
 ;; ~~~~~~~~~~~~~~~~~~
 ;;  Buggy Decoration
 ;; ~~~~~~
@@ -499,6 +543,11 @@ Next
 		 ((3 45 simple 0)
 		  (6 126 simple 0)
 		  (9 43 simple 0))
+		 )
+
+	(basic-3 ,text-3
+		 ((3 45 simple 0)
+		  (6 126 simple 0))
 		 )
 
 	))
