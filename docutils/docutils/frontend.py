@@ -219,6 +219,10 @@ class Values(optparse.Values):
                     del other_dict[setting]
         self._update_loose(other_dict)
 
+    def copy(self):
+        """Return a shallow copy of `self`."""
+        return self.__class__(defaults=self.__dict__)
+
 
 class Option(optparse.Option):
 
