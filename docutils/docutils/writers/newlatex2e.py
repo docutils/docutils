@@ -21,6 +21,7 @@ from types import ListType
 
 import docutils
 from docutils import nodes, writers, utils
+from docutils.writers.support import unicode_latex
 from docutils.transforms import writer_aux
 
 
@@ -215,8 +216,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         a(r'\providecommand{\Dparagraphindented}{false} % variable')
         a('\n\n')
 
-    # Get comprehensive Unicode map.
-    from unicode_latex import unicode_map
+    unicode_map = unicode_latex.unicode_map # comprehensive Unicode map
     # Fix problems with unimap.py.
     unicode_map.update({
         # We have AE or T1 encoding, so "``" etc. work.  The macros
