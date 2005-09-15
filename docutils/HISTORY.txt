@@ -85,6 +85,8 @@ Changes Since 0.3.9
     universal.FinalChecks.
   - Removed universal.FinalChecks transform (logic has been moved to
     several new transforms).
+  - Fixed bug with the "expose_internals" setting and Text nodes
+    (exposed by the "rawsource" internal attribute).
 
 * docutils/transforms/writer_aux.py: Added to project; auxiliary
   transforms for writers.
@@ -132,6 +134,10 @@ Changes Since 0.3.9
   Substitution Definition Sets", added to project.
 
 * test/coverage.sh: Added to project; test coverage script.
+
+* test/DocutilsTestSupport.py:
+
+  - Added support for specifying runtime settings at the suite level.
 
 * tools/rst2html.py: Made stylesheet requirement explicit (via
   ``_stylesheet_required`` setting).

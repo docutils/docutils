@@ -1191,6 +1191,8 @@ when used in a document.
 
     - "highlight" a range of lines
 
+    - include only a specified range of lines
+
     - "number" or "line-numbers"
 
     - "styled" could indicate that the directive should check for
