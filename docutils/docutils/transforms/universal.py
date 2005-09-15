@@ -88,10 +88,13 @@ class ExposeInternals(Transform):
     """
 
     default_priority = 840
+    
+    def not_Text(self, node):
+        return not isinstance(node, nodes.Text)
 
     def apply(self): 
         if self.document.settings.expose_internals:
-            for node in self.document.traverse():
+            for node in self.document.traverse(self.not_Text):
                 for att in self.document.settings.expose_internals:
                     value = getattr(node, att, None)
                     if value is not None:
