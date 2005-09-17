@@ -112,10 +112,8 @@ class Writer(writers.Writer):
           ['--no-xml-declaration'],
           {'dest': 'xml_declaration', 'default': 1, 'action': 'store_false',
            'validator': frontend.validate_boolean}),
-         ('Scramble email addresses to confuse harvesters.  '
-          'For example, "abc@example.org" will become '
-          '``<a href="mailto:%61%62%63%40...">abc<span>&#64;</span>'
-          'example<span>&#46;</span>org</a>``.',
+         ('Obfuscate email addresses to confuse harvesters while still '
+          'keeping email links usable with standards-compliant browsers.',
           ['--cloak-email-addresses'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),))
 
@@ -291,17 +289,15 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def cloak_mailto(self, uri):
         """Try to hide a mailto: URL from harvesters."""
-        addr = uri.split(':', 1)[1]
-        if '?' in addr:
-            addr, query = addr.split('?', 1)
-            query = '?' + query
-        else:
-            query = ''
-        # Bug: This destroys percent signs in email addresses.
-        escaped = ['%%%02X' % ord(c) for c in addr]
-        return 'mailto:%s%s' % (''.join(escaped), query)
+        # Encode "@" using a URL octet reference (see RFC 1738).
+        # Further cloaking with HTML entities will be done in the
+        # `attval` function.
+        return uri.replace('@', '%40')
 
     def cloak_email(self, addr):
+        """Try to hide the link text of a email link from harversters."""
+        # Surround at-signs and periods with <span> tags.  ("@" has
+        # already been encoded to "&#64;" by the `encode` method.)
         addr = addr.replace('&#64;', '<span>&#64;</span>')
         addr = addr.replace('.', '<span>&#46;</span>')
         return addr
@@ -309,7 +305,12 @@ class HTMLTranslator(nodes.NodeVisitor):
     def attval(self, text,
                whitespace=re.compile('[\n\r\t\v\f]')):
         """Cleanse, HTML encode, and return attribute value text."""
-        return self.encode(whitespace.sub(' ', text))
+        encoded = self.encode(whitespace.sub(' ', text))
+        if self.in_mailto and self.settings.cloak_email_addresses:
+            # Cloak at-signs ("%40") and periods with HTML entities.
+            encoded = encoded.replace('%40', '&#37;&#52;&#48;')
+            encoded = encoded.replace('.', '&#46;')
+        return encoded
 
     def starttag(self, node, tagname, suffix='\n', empty=0, **attributes):
         """
