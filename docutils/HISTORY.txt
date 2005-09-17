@@ -110,6 +110,8 @@ Changes Since 0.3.9
   - Added vertical space between fields of field lists.
   - Added ``--compact-field-lists`` option to remove vertical space in
     simple field lists.
+  - Made cloaking of email addresses with ``--cloak-email-addresses``
+    less obtrusive.
 
 * docutils/writers/docutils_xml.py:
 

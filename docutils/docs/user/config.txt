@@ -564,15 +564,21 @@ attribution
     __ `attribution [latex2e writer]`_
 
 _`cloak_email_addresses`
-    Scramble email addresses to confuse harvesters.  In the visible
-    text of an email address, the "@" and all periods (".") will be
-    surrounded by ``<span>`` tags.  In the reference URI, the address
-    will be replaced by %-escapes.  For example, "abc@example.org"
-    will be output as::
+    Scramble email addresses to confuse harvesters.  In the reference
+    URI, the "@" will be replaced by %-escapes (as of RFC 1738).  In
+    the visible text (link text) of an email reference, the "@" and
+    all periods (".") will be surrounded by ``<span>`` tags.
+    Furthermore, HTML entities are used to encode these characters in
+    order to further complicate decoding the email address.  For
+    example, "abc@example.org" will be output as::
 
-        <a class="reference"
-         href="mailto:%61%62%63%40%65%78%61%6D%70%6C%65%2E%6F%72%67">
+        <a class="reference" href="mailto:abc&#37;&#52;&#48;example&#46;org">
         abc<span>&#64;</span>example<span>&#46;</span>org</a>
+
+    .. Note:: While cloaking email addresses will have little to no
+       impact on the rendering and usability of email links in most
+       browsers, some browsers (e.g. the ``links`` browser) may decode
+       cloaked email addresses incorrectly.
 
     Default: don't cloak (None).  Option: ``--cloak-email-addresses``.
 
