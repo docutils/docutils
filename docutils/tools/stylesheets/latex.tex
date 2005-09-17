@@ -844,14 +844,10 @@
   {%
     \ifthenelse{\equal{\Dinsidetabular}{true}}{%
       % Inside longtable; we cannot have nested longtables.
-      % The following \vspace *adds* vertical space.  I have no idea
-      % how to do this in a cleaner way.
-      %\mbox{}\par\vspace{-0.5em}%
       \begin{tabular}{#1}%
         \hline%
         #2%
       \end{tabular}%
-      %\par\noindent\vspace{-0.5em}%
     }{%
       \renewcommand{\Dinsidetabular}{true}%
       \begin{longtable}{#1}%
@@ -900,6 +896,7 @@
     \vspace{-1em}\vspace{-\parskip}\par%
   }{}%
   #1%
+  % No need to add an ampersand ("&"); that's done by \Dsubsequententry.
 }
 \providecommand{\DAtableheaderentry}[5]{\Dformattableheaderentry{#5}}
 \providecommand{\Dformattableheaderentry}[1]{{\bfseries#1}}
