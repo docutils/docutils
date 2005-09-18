@@ -23,5 +23,6 @@ to templates.  DO NOT USE THIS HTML FILE AS YOUR TEMPLATE!
 [<b><a href="%(pepindex)s/">PEP Index</a></b>]
 [<b><a href="%(pephome)s/pep-%(pepnum)s.txt">PEP Source</a></b>]
 </td></tr></table>
+<div class="document">
 %(body)s
 %(body_suffix)s
