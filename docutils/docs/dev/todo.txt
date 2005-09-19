@@ -74,14 +74,14 @@ General
 
 * Move the following _`support files` to docutils/writers/support:
 
-  - tools/stylesheets/pep.css & default.css (renamed to html4css1.css)
+  - tools/stylesheets/pep.css (renamed to pep_html/pep.css)
+  - tools/stylesheets/default.css (renamed to html4css1.css)
   - tools/stylesheets/style.tex (renamed to latex2e.tex) & latex.tex
-    (renamed to newlatex2e.tex or newlatex2e/style.tex).
-  - tools/pep-html-template (renamed to pep_html.template or
-    pep_html/template.txt)
+    (renamed or newlatex2e/base.tex).
+  - tools/pep-html-template (renamed pep_html/template.txt)
 
-  The docutils/writers/support/unicode_latex.py module should probably
-  be moved to newlatex2e/unicode_map.py.
+  Rename docutils/writers/support/unicode_latex.py to
+  newlatex2e/unicode_map.py.
 
   Add to docs:
 
