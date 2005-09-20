@@ -32,6 +32,12 @@ class Writer(Component):
     component_type = 'writer'
     config_section = 'writers'
 
+    def get_transforms(self):
+        return Component.get_transforms(self) + [
+            universal.Messages,
+            universal.FilterMessages,
+            ]
+
     document = None
     """The document to write (Docutils doctree); set by `write`."""
 
@@ -90,6 +96,23 @@ class Writer(Component):
     def assemble_parts(self):
         """Assemble the `self.parts` dictionary.  Extend in subclasses."""
         self.parts['whole'] = self.output
+
+
+class UnfilteredWriter(Writer):
+
+    """
+    A writer that passes the document tree on unchanged (e.g. a
+    serializer.)
+
+    Documents written by UnfilteredWriters are typically reused at a
+    later date using a subclass of `readers.ReReader`.
+    """
+
+    def get_transforms(self):
+        # Do not add any transforms.  When the document is reused
+        # later, the then-used writer will add the appropriate
+        # transforms.
+        return Component.get_transforms(self)
 
 
 _writer_aliases = {

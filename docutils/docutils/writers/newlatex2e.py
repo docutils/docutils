@@ -75,7 +75,8 @@ class Writer(writers.Writer):
     output = None
     """Final translated form of `document`."""
 
-    default_transforms = (writer_aux.Compound,)
+    def get_transforms(self):
+        return writers.Writer.get_transforms(self) + [writer_aux.Compound]
 
     def __init__(self):
         writers.Writer.__init__(self)

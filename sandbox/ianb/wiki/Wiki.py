@@ -246,6 +246,5 @@ class Reader(standalone.Reader):
 
     supported = standalone.Reader.supported + ('wiki',)
 
-    default_transforms = standalone.Reader.default_transforms \
-                         + (WikiLink,)
-
+    def get_transforms(self):
+        return standalone.Reader.get_transforms(self) + [WikiLink]

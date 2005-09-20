@@ -73,15 +73,15 @@ components.Filter               "meta" (d/p)                  780
 
 writer_aux.Compound             newlatex2e (w)                810
 
-universal.Decorations           Transformer                   820
+universal.Decorations           Reader (r)                    820
 
 misc.Transitions                standalone (r), pep (r)       830
 
-universal.ExposeInternals       Transformer                   840
+universal.ExposeInternals       Reader (r)                    840
 
-universal.Messages              Transformer                   860
+universal.Messages              Writer (w)                    860
 
-universal.FilterMessages        Transformer                   870
+universal.FilterMessages        Writer (w)                    870
 
 universal.TestMessages          DocutilsTestSupport           880
 

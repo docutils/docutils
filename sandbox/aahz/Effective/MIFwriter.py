@@ -55,7 +55,8 @@ class Writer(writers.Writer):
     supported = ('MIF')
     """Formats this writer supports."""
 
-    default_transforms = [makeFrameIDs]
+    def get_transforms(self):
+        return writers.Writer.get_transforms(self) + [makeFrameIDs]
 
     def __init__(self, style_map):
         writers.Writer.__init__(self)

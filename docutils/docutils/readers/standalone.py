@@ -52,16 +52,18 @@ class Reader(readers.Reader):
     config_section = 'standalone reader'
     config_section_dependencies = ('readers',)
 
-    default_transforms = (references.Substitutions,
-                          references.PropagateTargets,
-                          frontmatter.DocTitle,
-                          frontmatter.SectionSubTitle,
-                          frontmatter.DocInfo,
-                          references.AnonymousHyperlinks,
-                          references.IndirectHyperlinks,
-                          references.Footnotes,
-                          references.ExternalTargets,
-                          references.InternalTargets,
-                          references.DanglingReferences,
-                          misc.Transitions,
-                          )
+    def get_transforms(self):
+        return readers.Reader.get_transforms(self) + [
+            references.Substitutions,
+            references.PropagateTargets,
+            frontmatter.DocTitle,
+            frontmatter.SectionSubTitle,
+            frontmatter.DocInfo,
+            references.AnonymousHyperlinks,
+            references.IndirectHyperlinks,
+            references.Footnotes,
+            references.ExternalTargets,
+            references.InternalTargets,
+            references.DanglingReferences,
+            misc.Transitions,
+            ]
