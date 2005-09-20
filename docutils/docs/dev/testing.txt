@@ -79,7 +79,7 @@ For more details on how to write tests, please refer to the
 documentation of the ``unittest`` module.
 
 
-.. _functional::
+.. _functional:
 
 Functional Tests
 ================
