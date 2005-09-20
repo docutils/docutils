@@ -12,7 +12,7 @@ __docformat__ = 'reStructuredText'
 
 
 from docutils.readers import standalone
-from docutils.transforms import peps, references, misc
+from docutils.transforms import peps, references, misc, frontmatter
 from docutils.parsers import rst
 
 
@@ -30,19 +30,14 @@ class Reader(standalone.Reader):
     config_section = 'pep reader'
     config_section_dependencies = ('readers', 'standalone reader')
 
-    default_transforms = (references.Substitutions,
-                          references.PropagateTargets,
-                          peps.Headers,
-                          peps.Contents,
-                          references.AnonymousHyperlinks,
-                          references.IndirectHyperlinks,
-                          peps.TargetNotes,
-                          references.Footnotes,
-                          references.ExternalTargets,
-                          references.InternalTargets,
-                          references.DanglingReferences,
-                          misc.Transitions,
-                          )
+    def get_transforms(self):
+        transforms = standalone.Reader.get_transforms(self)
+        # We have PEP-specific frontmatter handling.
+        transforms.remove(frontmatter.DocTitle)
+        transforms.remove(frontmatter.SectionSubTitle)
+        transforms.remove(frontmatter.DocInfo)
+        transforms.extend([peps.Headers, peps.Contents, peps.TargetNotes])
+        return transforms
 
     settings_default_overrides = {'pep_references': 1, 'rfc_references': 1}
 

@@ -72,22 +72,6 @@ class Transformer(TransformSpec):
     trees.  Also keeps track of components by component type name.
     """
 
-    from docutils.transforms import universal
-
-    stage1_transforms = (universal.Decorations,
-                         universal.ExposeInternals)
-    """Suggested replacement for `default_transforms` when generating
-    a document tree without writing it."""
-
-    stage2_transforms = (universal.Messages,
-                         universal.FilterMessages)
-    """Suggested replacement for `default_transforms` when writing a
-    previously-parsed document tree.  Only transforms which *must* be applied
-    after writer-specific transforms should be added to this list."""
-
-    default_transforms = stage1_transforms + stage2_transforms
-    """These transforms are applied to all document trees."""
-
     def __init__(self, document):
         self.transforms = []
         """List of transforms to apply.  Each item is a 3-tuple:
@@ -160,11 +144,10 @@ class Transformer(TransformSpec):
         Store each component's default transforms, with default priorities.
         Also, store components by type name in a mapping for later lookup.
         """
-        self.add_transforms(self.default_transforms)
         for component in components:
             if component is None:
                 continue
-            self.add_transforms(component.default_transforms)
+            self.add_transforms(component.get_transforms())
             self.components[component.component_type] = component
         self.sorted = 0
         # Set up all of the reference resolvers for this transformer. Each

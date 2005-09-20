@@ -13,7 +13,7 @@ from docutils import writers
 import cPickle as pickle
 
 
-class Writer(writers.Writer):
+class Writer(writers.UnfilteredWriter):
 
     supported = ('pickle')
     """Formats this writer supports."""

@@ -12,6 +12,7 @@ __docformat__ = 'reStructuredText'
 
 
 from docutils import utils, parsers, Component
+from docutils.transforms import universal
 
 
 class Reader(Component):
@@ -27,6 +28,12 @@ class Reader(Component):
 
     component_type = 'reader'
     config_section = 'readers'
+
+    def get_transforms(self):
+        return Component.get_transforms(self) + [
+            universal.Decorations,
+            universal.ExposeInternals,
+            ]
 
     def __init__(self, parser=None, parser_name=None):
         """
@@ -74,6 +81,21 @@ class Reader(Component):
         """Create and return a new empty document tree (root node)."""
         document = utils.new_document(self.source.source_path, self.settings)
         return document
+
+
+class ReReader(Reader):
+
+    """
+    A reader which rereads an existing document tree (e.g. a
+    deserializer).
+
+    Often used in conjunction with `writers.UnfilteredWriter`.
+    """
+
+    def get_transforms(self):
+        # Do not add any transforms.  They have already been applied
+        # by the reader which originally created the document.
+        return Component.get_transforms(self)
 
 
 _reader_aliases = {}

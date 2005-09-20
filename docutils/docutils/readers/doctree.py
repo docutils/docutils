@@ -9,7 +9,7 @@
 from docutils import readers, utils, transforms
 
 
-class Reader(readers.Reader):
+class Reader(readers.ReReader):
 
     """
     Adapt the Reader API for an existing document tree.

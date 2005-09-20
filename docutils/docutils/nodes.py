@@ -203,7 +203,7 @@ class Node:
         r = []
         if ascend:
             siblings=1
-        if isinstance(condition, ClassType) and issubclass(condition, Node):
+        if isinstance(condition, ClassType):
             node_class = condition
             def condition(node, node_class=node_class):
                 return isinstance(node, node_class)

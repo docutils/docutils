@@ -187,16 +187,11 @@ class Publisher:
 
     def publish(self, argv=None, usage=None, description=None,
                 settings_spec=None, settings_overrides=None,
-                config_section=None, enable_exit_status=None, stage=None):
+                config_section=None, enable_exit_status=None):
         """
         Process command line options and arguments (if `self.settings` not
         already set), run `self.reader` and then `self.writer`.  Return
         `self.writer`'s output.
-
-        Pass ``stage=1`` to set transformer.default_transforms to the
-        stage-1 transforms; dito for ``stage=2`` and stage-2
-        transforms, resp.  See the documentation in the
-        `transforms.Transformer` class.
         """
         if self.settings is None:
             self.process_command_line(
@@ -207,13 +202,6 @@ class Publisher:
         try:
             self.document = self.reader.read(self.source, self.parser,
                                              self.settings)
-            assert stage in (1, 2, None)
-            if stage == 1:
-                self.document.transformer.default_transforms = (
-                    self.document.transformer.stage1_transforms)
-            elif stage == 2:
-                self.document.transformer.default_transforms = (
-                    self.document.transformer.stage2_transforms)
             self.apply_transforms()
             output = self.writer.write(self.document, self.destination)
             self.writer.assemble_parts()
@@ -465,7 +453,7 @@ def publish_doctree(source, source_path=None,
         settings_spec, settings_overrides, config_section)
     pub.set_source(source, source_path)
     pub.set_destination(None, None)
-    output = pub.publish(enable_exit_status=enable_exit_status, stage=1)
+    output = pub.publish(enable_exit_status=enable_exit_status)
     return pub.document
 
 def publish_from_doctree(document, destination_path=None,
@@ -505,7 +493,7 @@ def publish_from_doctree(document, destination_path=None,
     pub.process_programmatic_settings(
         settings_spec, settings_overrides, config_section)
     pub.set_destination(None, destination_path)
-    return pub.publish(enable_exit_status=enable_exit_status, stage=2)
+    return pub.publish(enable_exit_status=enable_exit_status)
 
 def publish_programmatically(source_class, source, source_path,
                              destination_class, destination, destination_path,

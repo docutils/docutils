@@ -137,13 +137,19 @@ class TransformSpec:
     TransformSpec subclass objects used by `docutils.transforms.Transformer`.
     """
 
-    default_transforms = ()
-    """Transforms required by this class.  Override in subclasses."""
+    def get_transforms(self):
+        """Transforms required by this class.  Override in subclasses."""
+        if self.default_transforms != ():
+            import warnings
+            warnings.warn('default_transforms attribute deprecated.\n'
+                          'Use get_transforms() method instead.',
+                          DeprecationWarning)
+            return list(self.default_transforms)
+        return []
 
-    reprocess_transforms = ()
-    """Transforms suggested as replacements for `default_transforms` when
-    reprocessing a document tree."""
-    
+    # Deprecated; for compatibility.
+    default_transforms = ()
+
     unknown_reference_resolvers = ()
     """List of functions to try to resolve unknown references.  Unknown
     references have a 'refname' attribute which doesn't correspond to any

@@ -125,7 +125,8 @@ class Writer(writers.Writer):
     config_section = 'html4css1 writer'
     config_section_dependencies = ('writers',)
 
-    default_transforms = (html.StylesheetCheck,)
+    def get_transforms(self):
+        return writers.Writer.get_transforms(self) + [html.StylesheetCheck]
 
     def __init__(self):
         writers.Writer.__init__(self)

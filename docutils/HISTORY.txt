@@ -21,7 +21,8 @@ Changes Since 0.3.9
 
   - Added ``__version_details__`` attribute to describe code source
     (repository/snapshot/release).
-  - Added ``TransformSpec.reprocess_transforms`` attribute.
+  - Replaced ``default_transforms`` attribute of TransformSpec with
+    ``get_transforms()`` method.
 
 * docutils/core.py:
 
@@ -59,12 +60,15 @@ Changes Since 0.3.9
   standard data files for the "include" directive.  Initial contents:
   character entity substitution definition sets.
 
+* docutils/readers/__init__.py:
+
+  - Added universal.Decorations and universal.ExposeInternals
+    transforms as default transforms for all readers.
+  - Added ``ReReader`` base class for readers that reread an existing
+    document tree.
+
 * docutils/readers/doctree.py: Added to project; a reader for existing
   document trees.
-
-* docutils/transforms/__init__.py:
-
-  - Added ``Transformer.reprocess_transforms`` attribute.
 
 * docutils/transforms/html.py: Added to project; transforms specific
   to the html4css1 Writer.
@@ -92,6 +96,13 @@ Changes Since 0.3.9
   transforms for writers.
 
   - Added ``Compound`` transform, which flattens compound paragraphs.
+
+* docutils/writers/__init__.py:
+
+  - Added universal.Messages and universal.FilterMessages transforms
+    as default transforms for all writers.
+  - Added ``UnfilteredWriter`` base class for writers that pass the
+    document tree on unchanged.
 
 * docutils/writers/html4css1.py:
 
