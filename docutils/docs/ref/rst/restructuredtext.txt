@@ -939,14 +939,9 @@ Processed, the "status" element's text will become simply "expansion
 text".  The dollar sign delimiters and leading RCS keyword name are
 removed.
 
-The RCS keyword processing only kicks in when both of these conditions
-hold:
-
-1. The field list is in bibliographic context (first non-comment
-   construct in the document, after a document title if there is
-   one).
-
-2. The field name is a recognized bibliographic field name.
+The RCS keyword processing only kicks in when the field list is in
+bibliographic context (first non-comment construct in the document,
+after a document title if there is one).
 
 
 Option Lists
