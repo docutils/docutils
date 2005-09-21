@@ -8,6 +8,8 @@
 ;;
 ;;    emacs --script tests-adjust-section.el
 ;;
+;; See test-runner.el for documentation on how the format of tests.
+
 
 ;; Define tests.
 (setq rest-adjust-decoration-tests
