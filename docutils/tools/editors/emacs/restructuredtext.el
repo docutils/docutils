@@ -632,7 +632,7 @@ b. a negative numerical argument, which generally inverts the
 	 (toggle-style
 	  (and current-prefix-arg (not reverse-direction))))
 
-    (if mark-active
+    (if (and transient-mark-mode mark-active)
 	;; Adjust decorations within region.
 	(rest-promote-region current-prefix-arg)
       ;; Adjust decoration around point.
