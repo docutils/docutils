@@ -8,6 +8,8 @@
 ;;
 ;;    emacs --script tests-adjust-section.el
 ;;
+;; See test-runner.el for documentation on how the format of tests.
+
 
 ;; Import the module from the file in the parent directory directly.
 (add-to-list 'load-path ".")

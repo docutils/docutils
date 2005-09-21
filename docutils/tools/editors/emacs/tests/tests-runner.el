@@ -8,6 +8,51 @@
 ;;
 ;;    emacs --script <file>.el
 ;;
+;;
+;; There are mainly two useful functions from this pacakge:
+;;
+;; 1. regression-test-compare-expect-values : used to compare expected output
+;;    values from running a function;
+;;
+;; 2. regression-test-compare-expect-buffer : used to compare expected output
+;;    buffer contents after running the function.
+;;
+;; regression-test-compare-expect-values test format
+;; -------------------------------------------------
+;;
+;; The tests are a list of tuples, with the following entries:
+;;
+;; - a SYMBOL that uniquely identifies the test.
+;;
+;; - the input buffer CONTENTS to prepare and run the test on.  If char @ is
+;;   present in the buffer, it is removed and the cursor is placed at that
+;;   position before running the tested function.
+;;
+;; - the expected OUTPUT value that the function should return.  If the actual
+;;   output is different from this, the test will fail.
+;;
+;; - an optional list of INPUT ARGUMENTS that the test function is called with
+;;   for this test.
+;; 
+;; regression-test-compare-expect-buffer test format
+;; -------------------------------------------------
+;;
+;; - a SYMBOL that uniquely identifies the test.
+;;
+;; - the input buffer CONTENTS to prepare and run the test on.  Here too, char @
+;;   is present in the buffer, it is removed and the cursor is placed at that
+;;   position before running the tested function.
+;;
+;; - the EXPECTED buffer contents after the function has been run.
+;;   Additionally, if char @ is present, it is checked that the cursor is
+;;   located at that position in the buffer after the function is run (this is
+;;   optional).
+;;
+;; - an optional list of PREFIX ARGUMENTS, which indicates to the test program
+;;   to set those prefix arguments before running the given function.  If there
+;;   are multiple prefix args, the function is invoked many times.
+;;
+
 
 (require 'cl)
 

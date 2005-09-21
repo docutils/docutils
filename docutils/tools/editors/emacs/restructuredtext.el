@@ -43,6 +43,9 @@
 ;;   suggestion, and to always use the preferred decorations to do that.
 ;;
 
+
+(require 'cl)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Generic Filter function.
 
@@ -91,6 +94,9 @@ is for which (pred elem) is true)"
 ;;   - an INDENT (meaningful for the over-and-under style only) which determines
 ;;     how many characters and over-and-under style is hanging outside of the
 ;;     title at the beginning and ending.
+;;
+;; Important note: an existing decoration must be formed by at least two
+;; characters to be recognized.
 ;;
 ;; Here are two examples of decorations (| represents the window border, column
 ;; 0):
