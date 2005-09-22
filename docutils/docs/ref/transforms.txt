@@ -60,8 +60,6 @@ references.ExternalTargets      standalone (r), pep (r)       640
 
 references.InternalTargets      standalone (r), pep (r)       660
 
-references.DanglingReferences   standalone (r), pep (r)       680
-
 parts.SectNum                   "sectnum" (d/p)               710
 
 parts.Contents                  "contents" (d/p),             720
@@ -78,6 +76,8 @@ universal.Decorations           Reader (r)                    820
 misc.Transitions                standalone (r), pep (r)       830
 
 universal.ExposeInternals       Reader (r)                    840
+
+references.DanglingReferences   standalone (r), pep (r)       850
 
 universal.Messages              Writer (w)                    860
 
