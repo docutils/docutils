@@ -146,30 +146,35 @@ Also see the `SourceForge Bug Tracker`_.
   Quite a few nodes are getting a "None" source attribute as well.  In
   particular, see the bodies of definition lists.
 
-* There's a bug with _`doubly-indirect substitutions` but only when
-  there's multiple references and in certain cases.  See the
-  commented-out test case in test_transforms/test_substitutions.py
-  (line 104 on, in revision 3808) which fails.
+* .. _substitutions:
 
-  This is tricky.  Substitution definitions have to propagate back
-  completely, through multiple levels of references.
+  "Active" content inside of substitution definitions does not work.
+  This bug becomes manifest in the following cases:
 
-* .. _substitutions and references:
+  * There's a bug with _`doubly-indirect substitutions` but only when
+    there's multiple references and in certain cases.  See the
+    commented-out test case in test_transforms/test_substitutions.py
+    (line 104 on, in revision 3808) which fails.
 
-  Another bug from David Abrahams (run with ``rst2html.py --traceback``)::
+    This is tricky.  Substitution definitions have to propagate back
+    completely, through multiple levels of references.
 
-      |substitution| and again a |substitution|.
+  * .. _substitutions and references:
 
-      .. |substitution| replace:: ref__
+    Another bug from David Abrahams (run with ``rst2html.py --traceback``)::
 
-      __ a.html
-      __ b.html
+        |substitution| and again a |substitution|.
 
-  Change the references.Substitutions tranform's priority from 220 to
-  680, so it happens after reference resolution?  Then we have to deal
-  with multiple IDs.  Perhaps the Substitution transform should remove
-  all IDs from definitions after the first substitution reference is
-  processed.
+        .. |substitution| replace:: ref__
+
+        __ a.html
+        __ b.html
+
+    Change the references.Substitutions tranform's priority from 220 to
+    680, so it happens after reference resolution?  Then we have to deal
+    with multiple IDs.  Perhaps the Substitution transform should remove
+    all IDs from definitions after the first substitution reference is
+    processed.
 
 * Footnote label "5" should be "4" when processing the following
   input::
