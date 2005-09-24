@@ -392,6 +392,9 @@ def check_list_content(node, name, options, content, lineno, block_text,
                 nodes.literal_block(block_text, block_text), line=lineno)
             raise SystemMessagePropagation(error)
         elif item_index:
+            # ATTN pychecker users: num_cols is guaranteed to be set in the
+            # "else" clause below for item_index==0, before this branch is
+            # triggered.
             if len(item[0]) != num_cols:
                 error = state_machine.reporter.error(
                     'Error parsing content block for the "%s" directive: '

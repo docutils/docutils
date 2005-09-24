@@ -19,6 +19,7 @@ donations, tasty treats, and related projects:
 * David Ascher
 * Ned Batchelder
 * Heiko Baumann
+* Anthony Baxter
 * Eric Bellot
 * Ian Bicking
 * Marek Blaha
