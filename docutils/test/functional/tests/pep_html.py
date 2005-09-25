@@ -8,9 +8,10 @@ parser_name = "rst"
 writer_name = "pep_html"
 
 # Settings
-settings_overrides['stylesheet'] = None
-settings_overrides['stylesheet_path'] = "../tools/stylesheets/pep.css"
-settings_overrides['template'] = "../tools/pep-html-template"
+# settings_overrides['stylesheet'] = None
+settings_overrides['stylesheet_path'] = (
+    "../docutils/writers/support/pep_html/pep.css")
+# settings_overrides['template'] = "../tools/pep-html-template"
 settings_overrides['python_home'] = "http://www.python.org"
 settings_overrides['pep_home'] = "http://www.python.org/peps"
 settings_overrides['no_random'] = 1

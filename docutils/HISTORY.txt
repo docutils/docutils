@@ -70,9 +70,6 @@ Changes Since 0.3.9
 * docutils/readers/doctree.py: Added to project; a reader for existing
   document trees.
 
-* docutils/transforms/html.py: Added to project; transforms specific
-  to the html4css1 Writer.
-
 * docutils/transforms/misc.py:
 
   - Added misc.Transitions transform, extracted from
@@ -104,6 +101,11 @@ Changes Since 0.3.9
   - Added ``UnfilteredWriter`` base class for writers that pass the
     document tree on unchanged.
 
+* docutils/writers/docutils_xml.py:
+
+  - Made ``xmlcharrefreplace`` the default output encoding error
+    handler.
+
 * docutils/writers/html4css1.py:
 
   - Added support for image width and height units.
@@ -114,7 +116,6 @@ Changes Since 0.3.9
   - Made ``--embed-stylesheet`` the default rather than
     ``--link-stylesheet``.
   - Added writer-specific transform to check the stylesheet setting.
-  - Added ``_stylesheet_required`` internal setting, defaulting to 0.
   - Moved "id" attribute from container (section etc.) to title's <a>
     tag, to be on the same tag as "name".
     (!!! To be reverted in Docutils 0.5.)
@@ -124,13 +125,11 @@ Changes Since 0.3.9
   - Made cloaking of email addresses with ``--cloak-email-addresses``
     less obtrusive.
 
-* docutils/writers/docutils_xml.py:
+* docutils/writers/support/: Directory added to project.  Modules and
+  data files that support writers have been moved here.
 
-  - Made ``xmlcharrefreplace`` the default output encoding error
-    handler.
-
-* docutils/writers/unicode_latex.py: Added to project; mapping of
-  Unicode characters to LaTeX equivalents.
+* docutils/writers/support/newlatex2e/unicode_map.py: Added to
+  project; mapping of Unicode characters to LaTeX equivalents.
 
 * docs/dev/distributing.txt: Added to project; guide for distributors
   (package maintainers).
@@ -152,9 +151,6 @@ Changes Since 0.3.9
 
   - Added support for specifying runtime settings at the suite level.
 
-* tools/rst2html.py: Made stylesheet requirement explicit (via
-  ``_stylesheet_required`` setting).
-
 * tools/rstpep2html.py: Renamed from pep.py.
 
 * tools/dev/create_unimap.py: Added to project; script to create the
@@ -163,6 +159,10 @@ Changes Since 0.3.9
 * tools/dev/profile_docutils.py: Added to project; profiler script.
 
 * tools/dev/unicode2rstsubs.py: Moved from tools/unicode2rstsubs.py.
+
+* tools/stylesheets: Removed from project.  Stylesheets have been
+  renamed and moved to docutils/writers/support/ or its
+  subdirectories.
 
 
 Release 0.3.9 (2005-05-26)

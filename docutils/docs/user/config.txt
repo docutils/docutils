@@ -662,17 +662,11 @@ stylesheet_path
     relative to the output HTML file.  Also defined for the `LaTeX
     Writer`__.
 
-    Default: None.  Options: ``--stylesheet-path``.
+    Default: "html4css1.css" in the docutils/writers/support directory
+    (installed automatically; for the exact machine-specific path, use
+    the ``--help`` option).  Options: ``--stylesheet-path``.
 
     __ `stylesheet_path [latex2e writer]`_
-
-_`_stylesheet_required`
-    Warn if valid stylesheet settings are absent.  For programmatic
-    use only.
-
-    Default: not required (0), except when using the ``rst2html.py``
-    front-end tool.  No command-line options; pass ``--stylesheet=``
-    (i.e., with no argument) to disable the stylesheet explicitly.
 
 .. _xml_declaration [html4css1 writer]:
 
@@ -694,7 +688,14 @@ xml_declaration
 
 The PEP/HTML Writer derives from the standard HTML Writer, and shares
 all settings defined in the `[html4css1 writer]`_ section.  The
-"[html4css1 writer]" section is processed before "[pep_html writer]".
+"[html4css1 writer]" section of configuration files is processed
+before the "[pep_html writer]" section.
+
+The PEP/HTML Writer's default for the ``stylesheet_path`` setting
+differs from that of the standard HTML Writer:
+``docutils/writers/support/pep_html/pep.css`` in the installation
+directory is used.  For the exact machine-specific path, use the
+``--help`` option.
 
 _`no_random`
     Do not use a random banner image.  Mainly used to get predictable

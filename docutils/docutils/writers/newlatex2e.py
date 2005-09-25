@@ -21,7 +21,7 @@ from types import ListType
 
 import docutils
 from docutils import nodes, writers, utils
-from docutils.writers.support import unicode_latex
+from docutils.writers.support.newlatex2e import unicode_map
 from docutils.transforms import writer_aux
 
 
@@ -55,7 +55,7 @@ class Writer(writers.Writer):
          ),)
 
     settings_defaults = {
-        # Many Unicode characters are provided by unicode_latex.py.
+        # Many Unicode characters are provided by unicode_map.py.
         'output_encoding': 'ascii',
         'output_encoding_error_handler': 'strict',
         # Since we are using superscript footnotes, it is necessary to
@@ -217,7 +217,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         a(r'\providecommand{\Dparagraphindented}{false} % variable')
         a('\n\n')
 
-    unicode_map = unicode_latex.unicode_map # comprehensive Unicode map
+    unicode_map = unicode_map.unicode_map # comprehensive Unicode map
     # Fix problems with unimap.py.
     unicode_map.update({
         # We have AE or T1 encoding, so "``" etc. work.  The macros

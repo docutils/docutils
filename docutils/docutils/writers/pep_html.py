@@ -12,19 +12,35 @@ __docformat__ = 'reStructuredText'
 
 
 import sys
+import os
+import os.path
 import docutils
-from docutils import frontend, nodes, utils
+from docutils import frontend, nodes, utils, writers
 from docutils.writers import html4css1
 
 
 class Writer(html4css1.Writer):
 
+    default_stylesheet = 'pep_html/pep.css'
+
+    default_stylesheet_path = utils.relative_path(
+        os.path.join(os.getcwd(), 'dummy'),
+        os.path.join(writers.support_path, default_stylesheet))
+
+    default_template = 'pep_html/template.txt'
+
+    default_template_path = utils.relative_path(
+        os.path.join(os.getcwd(), 'dummy'),
+        os.path.join(writers.support_path, default_template))
+
     settings_spec = html4css1.Writer.settings_spec + (
         'PEP/HTML-Specific Options',
-        None,
-        (('Specify a template file.  Default is "pep-html-template".',
+        'The default value for the --stylesheet-path option (defined in '
+        'HTML-Specific Options above) is %r for the PEP/HTML writer.'
+        % default_stylesheet_path,
+        (('Specify a template file.  Default is %r.' % default_template_path,
           ['--template'],
-          {'default': 'pep-html-template', 'metavar': '<file>'}),
+          {'default': default_template_path, 'metavar': '<file>'}),
          ('Python\'s home URL.  Default is "http://www.python.org".',
           ['--python-home'],
           {'default': 'http://www.python.org', 'metavar': '<URL>'}),
@@ -35,6 +51,8 @@ class Writer(html4css1.Writer):
          (frontend.SUPPRESS_HELP,
           ['--no-random'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),))
+
+    settings_default_overrides = {'stylesheet_path': default_stylesheet_path}
 
     relative_path_settings = (html4css1.Writer.relative_path_settings
                               + ('template',))

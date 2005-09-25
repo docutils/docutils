@@ -22,6 +22,7 @@ import string
 from types import ListType
 from docutils import frontend, nodes, languages, writers, utils
 
+
 class Writer(writers.Writer):
 
     supported = ('latex','latex2e')

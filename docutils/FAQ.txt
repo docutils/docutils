@@ -710,10 +710,13 @@ What kind of HTML does it produce?
 ----------------------------------
 
 It produces XHTML compatible with the `XHTML 1.0`_ specification.  A
-cascading stylesheet (provided as "tools/stylesheets/default.css") is
-required for proper viewing with a modern graphical browser.  Correct
-rendering of the HTML produced depends on the CSS support of the
-browser.
+cascading stylesheet is required for proper viewing with a modern
+graphical browser.  Correct rendering of the HTML produced depends on
+the CSS support of the browser.  A general-purpose stylesheet,
+``html4css1.css`` is provided with the code, and is embedded by
+default.  It is installed in the "writers/support/" subdirectory
+within the Docutils package.  Use the ``--help`` command-line option
+to see the specific location on your machine.
 
 .. _XHTML 1.0: http://www.w3.org/TR/xhtml1/
 
@@ -794,9 +797,9 @@ effectively reserve these tags to provide 6 levels of heading beyond the
 single document title.
 
 HTML is being used for dumb formatting for nothing but final display.
-A stylesheet *is required*, and one is provided:
-``tools/stylesheets/default.css``.  Of course, you're welcome to roll
-your own.  The default stylesheet provides rules to format ``<h1
+A stylesheet *is required*, and one is provided; see `What kind of
+HTML does it produce?`_ above.  Of course, you're welcome to roll your
+own.  The default stylesheet provides rules to format ``<h1
 class="title">`` and ``<h2 class="subtitle">`` differently from
 ordinary ``<h1>`` and ``<h2>``::
 

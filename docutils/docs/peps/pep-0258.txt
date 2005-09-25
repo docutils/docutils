@@ -402,6 +402,9 @@ Docutils Package Structure
     - Module "docutils.readers.pep" reads PEPs (Python Enhancement
       Proposals).
 
+    - Module "docutils.readers.doctree" is used to re-read a
+      previously stored document tree for reprocessing.
+
     - Readers to be added for: Python source code (structure &
       docstrings), email, FAQ, and perhaps Wiki and others.
 
@@ -416,17 +419,31 @@ Docutils Package Structure
     - Module "docutils.writers.html4css1" is a simple HyperText Markup
       Language document tree writer for HTML 4.01 and CSS1.
 
+    - Module "docutils.writers.latex2e" writes LaTeX.
+
+    - Module "docutils.writers.newlatex2e" also writes LaTeX; it is a
+      new implementation.
+
     - Module "docutils.writers.docutils_xml" writes the internal
       document tree in XML form.
 
     - Module "docutils.writers.pseudoxml" is a simple internal
       document tree writer; it writes indented pseudo-XML.
 
+    - Module "docutils.writers.null" is a do-nothing writer; it is
+      used for specialized purposes such as storing the internal
+      document tree.
+
     - Writers to be added: HTML 3.2 or 4.01-loose, XML (various forms,
-      such as DocBook), PDF, TeX, plaintext, reStructuredText, and
-      perhaps others.
+      such as DocBook), PDF, plaintext, reStructuredText, and perhaps
+      others.
 
     See `Writers`_ above.
+
+  - Package "docutils.writers.support": modules and data files that
+    support the various writers.  The names of subdirectories and
+    basenames of files immediately within the support/ directory must
+    match the corresponding writer module names.
 
   - Package "docutils.transforms": tree transform classes.
 
