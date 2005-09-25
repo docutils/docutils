@@ -40,8 +40,6 @@ peps.Headers                    pep (r)                       360
 
 peps.Contents                   pep (r)                       380
 
-html.StylesheetCheck            html4css1 (w)                 420
-
 references.AnonymousHyperlinks  standalone (r), pep (r)       440
 
 references.IndirectHyperlinks   standalone (r), pep (r)       460

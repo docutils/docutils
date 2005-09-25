@@ -84,10 +84,10 @@ The current directory (and all subdirectories) is chosen by default if
 no directory is named.  Some files may generate system messages
 (docs/user/rst/demo.txt contains intentional errors); use the
 ``--quiet`` option to suppress all warnings.  The ``--config`` option
-ensures that the correct stylesheets, templates, and settings are in
-place (a ``docutils.conf`` configuration file in the current directory
-is picked up automatically).  Command-line options may be used to
-override config file settings or replace them altogether.
+ensures that the correct settings are in place (a ``docutils.conf``
+`configuration file`_ in the current directory is picked up
+automatically).  Command-line options may be used to override config
+file settings or replace them altogether.
 
 
 rst2html.py
@@ -100,8 +100,8 @@ rst2html.py
 The ``rst2html.py`` front end reads standalone reStructuredText source
 files and produces HTML 4 (XHTML 1) output compatible with modern
 browsers that support cascading stylesheets (CSS).  A stylesheet is
-required for proper rendering; an example is provided in
-``tools/stylesheets/default.css`` (see Stylesheets_ below).
+required for proper rendering; a simple but complete stylesheet is
+installed and used by default (see Stylesheets_ below).
 
 For example, to process a reStructuredText file "``test.txt``" into
 HTML::
@@ -110,7 +110,7 @@ HTML::
 
 Now open the "``test.html``" file in your favorite browser to see the
 results.  To get a footer with a link to the source file, date & time
-of processing, and links to the Docutils projects, add some options::
+of processing, and links to the Docutils project, add some options::
 
     rst2html.py --stylesheet=mystyles.css -stg test.txt test.html
 
@@ -120,14 +120,15 @@ Stylesheets
 
 ``rst2html.py`` inserts into the generated HTML a cascading stylesheet
 (or a link to a stylesheet, when passing the "``--link-stylesheet``"
-option).  You must specify the location of the stylesheet (normally
-``tools/stylesheets/default.css`` in the Docutils distribution
-tarball) with a "``--stylesheet``" or "``--stylesheet-path``"
-command-line option unless a configuration file
-(e.g. ``/etc/docutils.conf`` or ``~/.docutils.conf``) does so for you.
-The "``tools/stylesheets/default.css``" stylesheet is provided for
-basic use.  To experiment with styles, please see the `guide to
-writing HTML (CSS) stylesheets for Docutils`__.
+option).  A stylesheet is required for proper rendering.  The default
+stylesheet (``docutils/writers/support/html4css1.css``, located in the
+installation directory) is provided for basic use.  To use a different
+stylesheet, you must specify the stylesheet's location with a
+"``--stylesheet``" (for a URL) or "``--stylesheet-path``" (for a local
+file) command-line option, or with `configuration file`_ settings
+(e.g. ``./docutils.conf`` or ``~/.docutils.conf``).  To experiment
+with styles, please see the `guide to writing HTML (CSS) stylesheets
+for Docutils`__.
 
 __ ../howto/html-stylesheets.html
 

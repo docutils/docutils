@@ -28,13 +28,18 @@ except ImportError:
     Image = None
 import docutils
 from docutils import frontend, nodes, utils, writers, languages
-from docutils.transforms import html
 
 
 class Writer(writers.Writer):
 
     supported = ('html', 'html4css1', 'xhtml')
     """Formats this writer supports."""
+
+    default_stylesheet = 'html4css1.css'
+
+    default_stylesheet_path = utils.relative_path(
+        os.path.join(os.getcwd(), 'dummy'),
+        os.path.join(writers.support_path, default_stylesheet))
 
     settings_spec = (
         'HTML-Specific Options',
@@ -46,19 +51,21 @@ class Writer(writers.Writer):
           {'metavar': '<URL>', 'overrides': 'stylesheet_path'}),
          ('Specify a stylesheet file, relative to the current working '
           'directory.  The path is adjusted relative to the output HTML '
-          'file.  Overrides --stylesheet.',
+          'file.  Overrides --stylesheet.  Default: %r'
+          % default_stylesheet_path,
           ['--stylesheet-path'],
-          {'metavar': '<file>', 'overrides': 'stylesheet'}),
-         ('Link to the stylesheet in the output HTML file.  Default: '
-          'embed the stylesheet, do not link to it.',
-          ['--link-stylesheet'],
-          {'dest': 'embed_stylesheet', 'action': 'store_false',
-           'validator': frontend.validate_boolean}),
+          {'metavar': '<file>', 'overrides': 'stylesheet',
+           'default': default_stylesheet_path}),
          ('Embed the stylesheet in the output HTML file.  The stylesheet '
           'file must be accessible during processing (--stylesheet-path is '
           'recommended).  This is the default.',
           ['--embed-stylesheet'],
           {'default': 1, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Link to the stylesheet in the output HTML file.  Default: '
+          'embed the stylesheet, do not link to it.',
+          ['--link-stylesheet'],
+          {'dest': 'embed_stylesheet', 'action': 'store_false',
            'validator': frontend.validate_boolean}),
          ('Specify the initial header level.  Default is 1 for "<h1>".  '
           'Does not affect document title & subtitle (see --no-doc-title).',
@@ -117,16 +124,12 @@ class Writer(writers.Writer):
           ['--cloak-email-addresses'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),))
 
-    settings_defaults = {'output_encoding_error_handler': 'xmlcharrefreplace',
-                         '_stylesheet_required': 0}
+    settings_defaults = {'output_encoding_error_handler': 'xmlcharrefreplace'}
 
     relative_path_settings = ('stylesheet_path',)
 
     config_section = 'html4css1 writer'
     config_section_dependencies = ('writers',)
-
-    def get_transforms(self):
-        return writers.Writer.get_transforms(self) + [html.StylesheetCheck]
 
     def __init__(self):
         writers.Writer.__init__(self)

@@ -11,10 +11,14 @@ This package contains Docutils Writer modules.
 __docformat__ = 'reStructuredText'
 
 
-import sys
+import os.path
 import docutils
 from docutils import languages, Component
 from docutils.transforms import universal
+from docutils.writers import support
+
+
+support_path = os.path.dirname(support.__file__)
 
 
 class Writer(Component):
