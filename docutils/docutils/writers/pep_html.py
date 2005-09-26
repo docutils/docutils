@@ -36,9 +36,9 @@ class Writer(html4css1.Writer):
     settings_spec = html4css1.Writer.settings_spec + (
         'PEP/HTML-Specific Options',
         'The default value for the --stylesheet-path option (defined in '
-        'HTML-Specific Options above) is %r for the PEP/HTML writer.'
+        'HTML-Specific Options above) is "%s" for the PEP/HTML writer.'
         % default_stylesheet_path,
-        (('Specify a template file.  Default is %r.' % default_template_path,
+        (('Specify a template file.  Default is "%s".' % default_template_path,
           ['--template'],
           {'default': default_template_path, 'metavar': '<file>'}),
          ('Python\'s home URL.  Default is "http://www.python.org".',

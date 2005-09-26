@@ -51,7 +51,7 @@ class Writer(writers.Writer):
           {'metavar': '<URL>', 'overrides': 'stylesheet_path'}),
          ('Specify a stylesheet file, relative to the current working '
           'directory.  The path is adjusted relative to the output HTML '
-          'file.  Overrides --stylesheet.  Default: %r'
+          'file.  Overrides --stylesheet.  Default: "%s"'
           % default_stylesheet_path,
           ['--stylesheet-path'],
           {'metavar': '<file>', 'overrides': 'stylesheet',
