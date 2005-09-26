@@ -568,9 +568,9 @@ class Element(Node):
         elif new is not None:
             self[index:index+1] = new
 
-    def substitute(self, new):
+    def replace_self(self, new):
         """
-        Substitute `new` for `self` node, where `new` is a node or
+        Replace `self` node with `new`, where `new` is a node or a
         list of nodes.
         """
         update = new

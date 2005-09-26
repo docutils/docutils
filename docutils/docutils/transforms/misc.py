@@ -66,7 +66,7 @@ class ClassAttribute(Transform):
             % pending.details['directive'],
             nodes.literal_block(pending.rawsource, pending.rawsource),
             line=pending.line)
-        pending.substitute(error)
+        pending.replace_self(error)
 
 
 class Transitions(Transform):
