@@ -72,23 +72,6 @@ for inclusion in the Python standard library.
 General
 =======
 
-* Move the following _`support files` to docutils/writers/support:
-
-  - tools/stylesheets/pep.css (renamed to pep_html/pep.css)
-  - tools/stylesheets/default.css (renamed to html4css1.css)
-  - tools/stylesheets/style.tex (renamed to latex2e.tex) & latex.tex
-    (renamed or newlatex2e/base.tex).
-  - tools/pep-html-template (renamed pep_html/template.txt)
-
-  Rename docutils/writers/support/unicode_latex.py to
-  newlatex2e/unicode_map.py.
-
-  Add to docs:
-
-      Keep the basenames (e.g. "pep_html") of support files consistent
-      with the writer names.  If there are multiple support files,
-      create a subdirectory whose name matches the writer.
-
 * Move some general-interest sandboxes out of individuals'
   directories, into subprojects?
 
