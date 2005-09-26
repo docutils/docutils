@@ -114,7 +114,7 @@ class ElementTests(unittest.TestCase):
         # 'test' is not overwritten because it is not a basic attribute.
         self.assertEquals(element1['test'], ['test1'])
 
-    def test_substitute(self):
+    def test_replace_self(self):
         parent = nodes.Element(ids=['parent'])
         child1 = nodes.Element(ids=['child1'])
         grandchild = nodes.Element(ids=['grandchild'])
@@ -136,23 +136,23 @@ class ElementTests(unittest.TestCase):
     <Element ids="child4">
 """)
         # Replace child1 with the grandchild.
-        child1.substitute(child1[0])
+        child1.replace_self(child1[0])
         self.assertEquals(parent[0], grandchild)
         # Assert that 'ids' have been updated.
         self.assertEquals(grandchild['ids'], ['grandchild', 'child1'])
         # Replace child2 with its children.
-        child2.substitute(child2[:])
+        child2.replace_self(child2[:])
         self.assertEquals(parent[1:3], twins)
         # Assert that 'ids' have been propagated to first child.
         self.assertEquals(twins[0]['ids'], ['twin1', 'child2'])
         self.assertEquals(twins[1]['ids'], ['twin2'])
         # Replace child3 with new child.
         newchild = nodes.Element(ids=['newchild'])
-        child3.substitute(newchild)
+        child3.replace_self(newchild)
         self.assertEquals(parent[3], newchild)
         self.assertEquals(newchild['ids'], ['newchild', 'child3'])
         # Crazy but possible case: Substitute child4 for itself.
-        child4.substitute(child4)
+        child4.replace_self(child4)
         # Make sure the 'child4' ID hasn't been duplicated.
         self.assertEquals(child4['ids'], ['child4'])
         self.assertEquals(len(parent), 5)

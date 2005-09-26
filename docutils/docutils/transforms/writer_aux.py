@@ -49,4 +49,4 @@ class Compound(Transform):
                 else:
                     child['classes'].append('continued')
             # Substitute children for compound.
-            compound.substitute(compound[:])
+            compound.replace_self(compound[:])

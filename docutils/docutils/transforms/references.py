@@ -127,7 +127,7 @@ class AnonymousHyperlinks(Transform):
                       ref.rawsource, ref.rawsource, refid=msgid)
                 prbid = self.document.set_id(prb)
                 msg.add_backref(prbid)
-                ref.substitute(prb)
+                ref.replace_self(prb)
             return
         for ref, target in zip(self.document.anonymous_refs,
                                self.document.anonymous_targets):
@@ -281,7 +281,7 @@ class IndirectHyperlinks(Transform):
                   ref.rawsource, ref.rawsource, refid=msgid)
             prbid = self.document.set_id(prb)
             msg.add_backref(prbid)
-            ref.substitute(prb)
+            ref.replace_self(prb)
         target.resolved = 1
 
     def resolve_indirect_references(self, target):
@@ -540,7 +540,7 @@ class Footnotes(Transform):
                           ref.rawsource, ref.rawsource, refid=msgid)
                     prbid = self.document.set_id(prb)
                     msg.add_backref(prbid)
-                    ref.substitute(prb)
+                    ref.replace_self(prb)
                 break
             ref += nodes.Text(label)
             id = self.document.nameids[label]
@@ -580,7 +580,7 @@ class Footnotes(Transform):
                           ref.rawsource, ref.rawsource, refid=msgid)
                     prbid = self.document.set_id(prb)
                     msg.add_backref(prbid)
-                    ref.substitute(prb)
+                    ref.replace_self(prb)
                 break
             footnote = self.document.symbol_footnotes[i]
             assert len(footnote['ids']) == 1
@@ -674,7 +674,7 @@ class Substitutions(Transform):
                           ref.rawsource, ref.rawsource, refid=msgid)
                     prbid = self.document.set_id(prb)
                     msg.add_backref(prbid)
-                    ref.substitute(prb)
+                    ref.replace_self(prb)
                 else:
                     subdef = defs[key]
                     parent = ref.parent
@@ -691,7 +691,7 @@ class Substitutions(Transform):
                              and isinstance(parent[index + 1], nodes.Text)):
                             parent.replace(parent[index + 1],
                                            parent[index + 1].lstrip())
-                    ref.substitute(subdef.children)
+                    ref.replace_self(subdef.children)
         self.document.substitution_refs = None  # release replaced references
 
 
@@ -732,7 +732,7 @@ class TargetNotes(Transform):
                     if not notes.has_key(target['refuri']):
                         notes[target['refuri']] = footnote
                         nodelist.append(footnote)
-        self.startnode.substitute(nodelist)
+        self.startnode.replace_self(nodelist)
 
     def make_target_footnote(self, target, refs, notes):
         refuri = target['refuri']
@@ -838,7 +838,7 @@ class DanglingReferencesVisitor(nodes.SparseNodeVisitor):
                       node.rawsource, node.rawsource, refid=msgid)
                 prbid = self.document.set_id(prb)
                 msg.add_backref(prbid)
-                node.substitute(prb)
+                node.replace_self(prb)
         else:
             del node['refname']
             node['refid'] = id
