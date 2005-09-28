@@ -1551,9 +1551,9 @@ base roles:
     specified, a "class" option with the directive argument (role
     name) as the value is implied.  See the class_ directive above.
 
-Specific roles may support other options and/or directive content.
-See the `reStructuredText Interpreted Text Roles`_ document for
-details.
+Specific base roles may support other options and/or directive
+content.  See the `reStructuredText Interpreted Text Roles`_ document
+for details.
 
 .. _reStructuredText Interpreted Text Roles: roles.html
 
