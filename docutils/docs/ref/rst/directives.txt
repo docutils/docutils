@@ -1391,14 +1391,16 @@ Class
 :Directive Arguments: One or more, required (class names / attribute
                       values).
 :Directive Options: None.
-:Directive Content: None.
+:Directive Content: Optional.  If present, it is interpreted as body
+                    elements.
 
-The "class" directive sets a "class" attribute value on the first
-immediately following non-comment element [#]_.  For details of the
-"class" attribute, see `its entry`__ in `The Docutils Document Tree`_.
-The directive argument consists of one or more space-separated class
-names, which are converted to lowercase and all non-alphanumeric
-characters are converted to hyphens.  (For the rationale, see below.)
+The "class" directive sets the "class" attribute value on its content
+or on the first immediately following non-comment element [#]_.  For
+details of the "class" attribute, see `its entry`__ in `The Docutils
+Document Tree`_.  The directive argument consists of one or more
+space-separated class names, which are converted to lowercase and all
+non-alphanumeric characters are converted to hyphens.  (For the
+rationale, see below.)
 
 __ ../doctree.html#class
 
@@ -1415,6 +1417,12 @@ Examples::
 
     This is an ordinary paragraph.
 
+    .. class:: multiple
+
+       First paragraph.
+
+       Second paragraph.
+
 The text above is parsed and transformed into this doctree fragment::
 
     <paragraph class="special">
@@ -1424,6 +1432,10 @@ The text above is parsed and transformed into this doctree fragment::
             An Exceptional Section
         <paragraph>
             This is an ordinary paragraph.
+        <paragraph class="multiple">
+            First paragraph.
+        <paragraph class="multiple">
+            Second paragraph.
 
 .. [#] To set a "class" attribute value on a block quote, the "class"
    directive must be followed by an empty comment::

@@ -50,6 +50,7 @@ Changes Since 0.3.9
 
   - Added the "default-role" and "title" directives.
   - Added standard data file syntax to the "include" directive.
+  - Added support for "class" directive content.
 
 * docutils/parsers/rst/directives/images.py:
 
