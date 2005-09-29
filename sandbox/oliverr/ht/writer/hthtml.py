@@ -21,7 +21,7 @@ __docformat__ = 'reStructuredText'
 import os
 from docutils import nodes
 from docutils import writers
-from docutils.writers.html4css1 import HTMLTranslator, utils
+from docutils.writers.html4css1 import frontend, HTMLTranslator, utils
 
 
 class Writer(writers.Writer):
@@ -68,7 +68,12 @@ class Writer(writers.Writer):
           {'dest': 'compact_lists', 'action': 'store_false'}),
           ('Omit the XML declaration.  Use with caution.',
           ['--no-xml-declaration'], {'dest': 'xml_declaration', 'default': 1,
-                                     'action': 'store_false'}),))
+                                     'action': 'store_false'}),
+         ('Scramble email addresses to confuse harvesters.  '
+          'For example, "abc@example.org" will become '
+          '``<a href="mailto:%61%62%63%40...">abc at example dot org</a>``.',
+          ['--cloak-email-addresses'],
+          {'action': 'store_true', 'validator': frontend.validate_boolean}),))
 
     relative_path_settings = ('stylesheet_path',)
 
