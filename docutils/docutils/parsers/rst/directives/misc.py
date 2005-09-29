@@ -256,8 +256,9 @@ unicode_comment_pattern = re.compile(r'( |\n|^)\.\. ')
 def class_directive(name, arguments, options, content, lineno,
                        content_offset, block_text, state, state_machine):
     """
-    Set a "class" attribute on the next element.
-    A "pending" element is inserted, and a transform does the work later.
+    Set a "class" attribute on the directive content or the next element.
+    When applied to the next element, a "pending" element is inserted, and a
+    transform does the work later.
     """
     try:
         class_value = directives.class_option(arguments[0])
@@ -267,11 +268,20 @@ def class_directive(name, arguments, options, content, lineno,
             % (name, arguments[0]),
             nodes.literal_block(block_text, block_text), line=lineno)
         return [error]
-    pending = nodes.pending(misc.ClassAttribute,
-                            {'class': class_value, 'directive': name},
-                            block_text)
-    state_machine.document.note_pending(pending)
-    return [pending]
+    node_list = []
+    if content:
+        container = nodes.Element()
+        state.nested_parse(content, content_offset, container)
+        for node in container:
+            node['classes'].extend(class_value)
+        node_list.extend(container.children)
+    else:
+        pending = nodes.pending(misc.ClassAttribute,
+                                {'class': class_value, 'directive': name},
+                                block_text)
+        state_machine.document.note_pending(pending)
+        node_list.append(pending)
+    return node_list
 
 class_directive.arguments = (1, 0, 1)
 class_directive.content = 1

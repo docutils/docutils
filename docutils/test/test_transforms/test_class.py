@@ -78,6 +78,30 @@ Paragraph
             Paragraph
 """],
 ["""\
+.. class:: multiple
+
+   paragraph 1
+
+   paragraph 2
+""",
+"""\
+<document source="test data">
+    <paragraph classes="multiple">
+        paragraph 1
+    <paragraph classes="multiple">
+        paragraph 2
+"""],
+["""\
+.. class:: multiple
+
+   .. Just a comment.  It's silly, but possible
+""",
+"""\
+<document source="test data">
+    <comment classes="multiple" xml:space="preserve">
+        Just a comment.  It's silly, but possible
+"""],
+["""\
 .. class::
 
 .. class:: 99
