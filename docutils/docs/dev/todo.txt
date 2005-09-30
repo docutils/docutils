@@ -92,6 +92,10 @@ for inclusion in the Python standard library.
 General
 =======
 
+* Add a generic "container" element, equivalent to "inline", to which
+  a "class" attribute can be attached.  Will require a reST directive
+  also.
+
 * Move some general-interest sandboxes out of individuals'
   directories, into subprojects?
 
