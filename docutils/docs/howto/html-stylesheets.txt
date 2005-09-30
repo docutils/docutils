@@ -12,13 +12,16 @@
 
 
 The look of Docutils' HTML output is customizable via a CSS
-stylesheet.  The default stylesheet is called ``default.css`` and can
-be found in the ``tools/stylesheets/`` directory of the Docutils
-distribution tarball.
+stylesheet.  The default stylesheet is called ``html4css1.css`` and
+can be found in the ``writers/support/`` directory of the Docutils
+installation.  Use the command ``rst2html.py --help`` and look at the
+description of the ``--stylesheet-path`` command-line option for the
+exact machine-specific location.
 
-To customize the stylesheet, place a new file (e.g. called
-``my-docutils.css``) in the same directory as ``default.css`` and use
-the following template::
+To customize the stylesheet, first copy ``html4css1.css`` to the same
+place as your output HTML files will go.  Next, place a new file
+(e.g. called ``my-docutils.css``) in the same directory and use the
+following template::
 
     /*
     :Author: Your Name
@@ -29,7 +32,7 @@ the following template::
     detailed description here.]
     */
 
-    @import url(default.css);
+    @import url(html4css1.css);
 
     /* Your customizations go here.  For example: */
 
@@ -42,26 +45,26 @@ Style Sheets`__ and, in particular, their `list of CSS1 properties`__.
 __ http://www.htmlhelp.com/reference/css/
 __ http://www.htmlhelp.com/reference/css/all-properties.html
 
-It is important that you do not edit a copy of ``default.css``
-directly because ``default.css`` is frequently updated with each new
+It is important that you do not edit a copy of ``html4css1.css``
+directly because ``html4css1.css`` is frequently updated with each new
 release of Docutils.
 
-Also make sure that you import ``default.css`` (using "``@import
-url(default.css);``") because the definitions contained in the default
-stylesheet are required for correct rendering (margins, alignment,
-etc.).
+Also make sure that you import ``html4css1.css`` (using "``@import
+url(html4css1.css);``") because the definitions contained in the
+default stylesheet are required for correct rendering (margins,
+alignment, etc.).
 
 If you think your stylesheet is fancy and you would like to let others
 benefit from your efforts, you are encouraged to post the stylesheet
-to the Docutils-users_ mailing list.  We can upload it to the Docutils
-repository if you would like us to do so.
+to the Docutils-users_ mailing list.  We can upload it to the
+`Docutils repository`__ if you would like us to do so.
 
 If you decide to share you stylesheet with other users of Docutils,
 please keep website-specific customizations not applicable to
 Docutils' HTML code in a separate stylesheet.
 
 .. _Docutils-users: ../user/mailing-lists.html#docutils-users
-
+__ http://docutils.sourceforge.net/sandbox/stylesheets/
 
 
 ..
