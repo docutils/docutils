@@ -36,7 +36,7 @@ totest['targets'] = [
 """,
 """\
 <document source="test data">
-    <target ids="optional-space-before-colon" names="optional space before colon">
+    <target ids="optional-space-before-colon" names="optional\ space\ before\ colon">
 """],
 ["""\
 External hyperlink targets:
@@ -85,9 +85,9 @@ Indirect hyperlink targets:
 """,
 """\
 <document source="test data">
-    <target ids="a-long-target-name" names="a long target name">
-    <target ids="a-target-name-including-a-colon-quoted" names="a target name: including a colon (quoted)">
-    <target ids="a-target-name-including-a-colon-escaped" names="a target name: including a colon (escaped)">
+    <target ids="a-long-target-name" names="a\ long\ target\ name">
+    <target ids="a-target-name-including-a-colon-quoted" names="a\ target\ name:\ including\ a\ colon\ (quoted)">
+    <target ids="a-target-name-including-a-colon-escaped" names="a\ target\ name:\ including\ a\ colon\ (escaped)">
 """],
 ["""\
 .. _a very long target name,
@@ -97,8 +97,8 @@ Indirect hyperlink targets:
 """,
 """\
 <document source="test data">
-    <target ids="a-very-long-target-name-split-across-lines" names="a very long target name, split across lines">
-    <target ids="and-another-with-backquotes" names="and another, with backquotes">
+    <target ids="a-very-long-target-name-split-across-lines" names="a\ very\ long\ target\ name,\ split\ across\ lines">
+    <target ids="and-another-with-backquotes" names="and\ another,\ with\ backquotes">
 """],
 ["""\
 External hyperlink:
@@ -120,7 +120,7 @@ External hyperlink:
 """\
 <document source="test data">
     <target ids="email" names="email" refuri="mailto:jdoe@example.com">
-    <target ids="multi-line-email" names="multi-line email" refuri="mailto:jdoe@example.com">
+    <target ids="multi-line-email" names="multi-line\ email" refuri="mailto:jdoe@example.com">
 """],
 ["""\
 Duplicate external targets (different URIs):
@@ -319,8 +319,8 @@ Explicit internal target.
     <system_message level="2" line="3" source="test data" type="WARNING">
         <paragraph>
             malformed hyperlink target.
-    <target ids="escaped-colon" names="escaped colon:" refuri="OK">
-    <target ids="unescaped-colon-quoted" names="unescaped colon, quoted:" refuri="OK">
+    <target ids="escaped-colon" names="escaped\ colon:" refuri="OK">
+    <target ids="unescaped-colon-quoted" names="unescaped\ colon,\ quoted:" refuri="OK">
 """],
 ]
 

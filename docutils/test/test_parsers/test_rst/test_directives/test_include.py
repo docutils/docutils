@@ -51,10 +51,10 @@ A paragraph.
 """ % include1,
 """\
 <document source="test data">
-    <section ids="include-test" names="include test">
+    <section ids="include-test" names="include\ test">
         <title>
             Include Test
-        <section ids="inclusion-1" names="inclusion 1">
+        <section ids="inclusion-1" names="inclusion\ 1">
             <title>
                 Inclusion 1
             <paragraph>
@@ -76,7 +76,7 @@ A paragraph.
 """ % include1,
 """\
 <document source="test data">
-    <section ids="include-test" names="include test">
+    <section ids="include-test" names="include\ test">
         <title>
             Include Test
         <literal_block source="%s" xml:space="preserve">
@@ -124,7 +124,7 @@ A paragraph.
 """,
 """\
 <document source="test data">
-    <section ids="include-test" names="include test">
+    <section ids="include-test" names="include\ test">
         <title>
             Include Test
         <system_message level="4" line="4" source="test data" type="SEVERE">
@@ -148,10 +148,10 @@ A paragraph.
 """ % (include1, include1),
 """\
 <document source="test data">
-    <section ids="include-test" names="include test">
+    <section ids="include-test" names="include\ test">
         <title>
             Include Test
-        <section dupnames="inclusion 1" ids="inclusion-1">
+        <section dupnames="inclusion\ 1" ids="inclusion-1">
             <title>
                 Inclusion 1
             <paragraph>
@@ -159,7 +159,7 @@ A paragraph.
                 <literal>
                     test_include.py
                 .
-        <section dupnames="inclusion 1" ids="id1">
+        <section dupnames="inclusion\ 1" ids="id1">
             <title>
                 Inclusion 1
             <system_message backrefs="id1" level="1" line="2" source="%s" type="INFO">
@@ -187,10 +187,10 @@ A paragraph.
 """ % (include1, include1),
 """\
 <document source="test data">
-    <section ids="include-test" names="include test">
+    <section ids="include-test" names="include\ test">
         <title>
             Include Test
-        <section dupnames="inclusion 1" ids="inclusion-1">
+        <section dupnames="inclusion\ 1" ids="inclusion-1">
             <title>
                 Inclusion 1
             <paragraph>
@@ -199,7 +199,7 @@ A paragraph.
                     test_include.py
                 .
             <transition>
-        <section dupnames="inclusion 1" ids="id1">
+        <section dupnames="inclusion\ 1" ids="id1">
             <title>
                 Inclusion 1
             <system_message backrefs="id1" level="1" line="2" source="%s" type="INFO">
