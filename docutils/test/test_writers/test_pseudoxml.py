@@ -41,7 +41,7 @@ Foo.
     <transition>
     <paragraph>
         This is another paragraph.
-    <section ids="a-section" names="a section">
+    <section ids="a-section" names="a\ section">
         <title>
             A Section
         <paragraph>

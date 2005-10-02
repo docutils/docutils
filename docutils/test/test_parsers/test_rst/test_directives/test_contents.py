@@ -38,7 +38,7 @@ totest['contents'] = [
 """,
 """\
 <document source="test data">
-    <topic classes="contents" ids="table-of-contents" names="table of contents">
+    <topic classes="contents" ids="table-of-contents" names="table\ of\ contents">
         <title>
             Table of Contents
         <pending>
@@ -52,7 +52,7 @@ totest['contents'] = [
 """,
 """\
 <document source="test data">
-    <topic classes="contents" ids="table-of-contents" names="table of contents">
+    <topic classes="contents" ids="table-of-contents" names="table\ of\ contents">
         <title>
             Table of Contents
         <pending>
@@ -67,7 +67,7 @@ totest['contents'] = [
 """,
 """\
 <document source="test data">
-    <topic classes="contents" ids="table-of-contents" names="table of contents">
+    <topic classes="contents" ids="table-of-contents" names="table\ of\ contents">
         <title>
             Table
             of
@@ -82,7 +82,7 @@ totest['contents'] = [
 """,
 """\
 <document source="test data">
-    <topic classes="contents" ids="table-of-contents" names="table of contents">
+    <topic classes="contents" ids="table-of-contents" names="table\ of\ contents">
         <title>
             <emphasis>
                 Table
@@ -132,7 +132,7 @@ totest['contents'] = [
 """,
 """\
 <document source="test data">
-    <topic classes="contents local" ids="table-of-contents" names="table of contents">
+    <topic classes="contents local" ids="table-of-contents" names="table\ of\ contents">
         <title>
             Table of Contents
         <pending>

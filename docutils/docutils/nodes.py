@@ -370,7 +370,7 @@ class Element(Node):
         element = domroot.createElement(self.tagname)
         for attribute, value in self.attlist():
             if isinstance(value, ListType):
-                value = ' '.join(['%s' % v for v in value])
+                value = ' '.join([serial_escape('%s' % v) for v in value])
             element.setAttribute(attribute, '%s' % value)
         for child in self.children:
             element.appendChild(child._dom_node(domroot))
@@ -413,7 +413,7 @@ class Element(Node):
             if value is None:           # boolean attribute
                 parts.append(name)
             elif isinstance(value, ListType):
-                values = ['%s' % v for v in value]
+                values = [serial_escape('%s' % v) for v in value]
                 parts.append('%s="%s"' % (name, ' '.join(values)))
             else:
                 parts.append('%s="%s"' % (name, value))
@@ -1732,3 +1732,7 @@ def fully_normalize_name(name):
 def whitespace_normalize_name(name):
     """Return a whitespace-normalized name."""
     return ' '.join(name.split())
+
+def serial_escape(value):
+    """Escape string values that are elements of a list, for serialization."""
+    return value.replace('\\', r'\\').replace(' ', r'\ ')

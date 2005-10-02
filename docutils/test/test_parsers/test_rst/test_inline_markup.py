@@ -432,7 +432,7 @@ totest['embedded_URIs'] = [
     <paragraph>
         <reference name="phrase reference" refuri="http://example.com">
             phrase reference
-        <target ids="phrase-reference" names="phrase reference" refuri="http://example.com">
+        <target ids="phrase-reference" names="phrase\ reference" refuri="http://example.com">
 """],
 ["""\
 `anonymous reference <http://example.com>`__
@@ -560,15 +560,15 @@ _`Here is  a    TaRgeT` with case and spacial difficulties.
             target
     <paragraph>
         Here is \n\
-        <target ids="another-target" names="another target">
+        <target ids="another-target" names="another\ target">
             another target
          in some text. And \n\
-        <target ids="yet-another-target" names="yet another target">
+        <target ids="yet-another-target" names="yet\ another\ target">
             yet
             another target
         , spanning lines.
     <paragraph>
-        <target ids="here-is-a-target" names="here is a target">
+        <target ids="here-is-a-target" names="here\ is\ a\ target">
             Here is  a    TaRgeT
          with case and spacial difficulties.
 """],

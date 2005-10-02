@@ -209,7 +209,7 @@ u"""\
         .
     <substitution_definition names="copy">
         \u00a9
-    <substitution_definition names="BogusMegaCorp (TM)">
+    <substitution_definition names="BogusMegaCorp\ (TM)">
         BogusMegaCorp
         \u2122
 """],

@@ -1,7 +1,7 @@
-<document ids="restructuredtext-test-document doctitle" names="restructuredtext test document doctitle" source="functional/input/standalone_rst_html4css1.txt" title="reStructuredText Test Document">
+<document ids="restructuredtext-test-document doctitle" names="restructuredtext\ test\ document doctitle" source="functional/input/standalone_rst_html4css1.txt" title="reStructuredText Test Document">
     <title>
         reStructuredText Test Document
-    <subtitle ids="examples-of-syntax-constructs subtitle" names="examples of syntax constructs subtitle">
+    <subtitle ids="examples-of-syntax-constructs subtitle" names="examples\ of\ syntax\ constructs subtitle">
         Examples of Syntax Constructs
     <decoration>
         <header>
@@ -85,7 +85,7 @@
         bibliographic fields (which also require a transform):
     <meta content="reStructuredText, test, parser" name="keywords">
     <meta content="A test document, containing at least one example of each reStructuredText construct." lang="en" name="description">
-    <topic classes="contents" ids="table-of-contents" names="table of contents">
+    <topic classes="contents" ids="table-of-contents" names="table\ of\ contents">
         <title>
             Table of Contents
         <bullet_list classes="auto-toc">
@@ -316,21 +316,21 @@
                         <generated classes="sectnum">
                             3   
                         Error Handling
-    <section ids="structural-elements" names="structural elements">
+    <section ids="structural-elements" names="structural\ elements">
         <title auto="1" refid="id25">
             <generated classes="sectnum">
                 1   
             Structural Elements
-        <section ids="section-title" names="section title">
+        <section ids="section-title" names="section\ title">
             <title auto="1" refid="id26">
                 <generated classes="sectnum">
                     1.1   
                 Section Title
-            <subtitle ids="section-subtitle" names="section subtitle">
+            <subtitle ids="section-subtitle" names="section\ subtitle">
                 Section Subtitle
             <paragraph>
                 That's it, the text just above this line.
-        <section ids="empty-section" names="empty section">
+        <section ids="empty-section" names="empty\ section">
             <title auto="1" refid="id27">
                 <generated classes="sectnum">
                     1.2   
@@ -346,7 +346,7 @@
             <paragraph>
                 It divides the section.  Transitions may also occur between sections:
     <transition>
-    <section ids="body-elements" names="body elements">
+    <section ids="body-elements" names="body\ elements">
         <title auto="1" refid="id29">
             <generated classes="sectnum">
                 2   
@@ -358,7 +358,7 @@
                 Paragraphs
             <paragraph>
                 A paragraph.
-            <section ids="inline-markup" names="inline markup">
+            <section ids="inline-markup" names="inline\ markup">
                 <title auto="1" refid="id31">
                     <generated classes="sectnum">
                         2.1.1   
@@ -412,7 +412,7 @@
                     ), substitution references (
                     <image alt="EXAMPLE" uri="../../../docs/user/rst/images/biohazard.png">
                     ), and 
-                    <target ids="inline-hyperlink-targets" names="inline hyperlink targets">
+                    <target ids="inline-hyperlink-targets" names="inline\ hyperlink\ targets">
                         inline
                         hyperlink targets
                      (see 
@@ -483,7 +483,7 @@
                         --pep-references
                      option was supplied, there should be a
                     live link to PEP 258 here.
-        <section ids="bullet-lists" names="bullet lists">
+        <section ids="bullet-lists" names="bullet\ lists">
             <title auto="1" refid="id32">
                 <generated classes="sectnum">
                     2.2   
@@ -527,7 +527,7 @@
                             <target ids="target" names="target">
                             <comment xml:space="preserve">
                                 Even if this item contains a target and a comment.
-        <section ids="enumerated-lists" names="enumerated lists">
+        <section ids="enumerated-lists" names="enumerated\ lists">
             <title auto="1" refid="id33">
                 <generated classes="sectnum">
                     2.3   
@@ -576,7 +576,7 @@
                         <list_item>
                             <paragraph>
                                 iv
-        <section ids="definition-lists" names="definition lists">
+        <section ids="definition-lists" names="definition\ lists">
             <title auto="1" refid="id34">
                 <generated classes="sectnum">
                     2.4   
@@ -614,7 +614,7 @@
                     <definition>
                         <paragraph>
                             Definition
-        <section ids="field-lists" names="field lists">
+        <section ids="field-lists" names="field\ lists">
             <title auto="1" refid="id35">
                 <generated classes="sectnum">
                     2.5   
@@ -648,7 +648,7 @@
                              class set.  (This is actually not
                             about credits but just for ensuring that the class attribute
                             doesn't get stripped away.)
-        <section ids="option-lists" names="option lists">
+        <section ids="option-lists" names="option\ lists">
             <title auto="1" refid="id36">
                 <generated classes="sectnum">
                     2.6   
@@ -761,7 +761,7 @@
             <paragraph>
                 There must be at least two spaces between the option and the
                 description.
-        <section ids="literal-blocks" names="literal blocks">
+        <section ids="literal-blocks" names="literal\ blocks">
             <title auto="1" refid="id37">
                 <generated classes="sectnum">
                     2.7   
@@ -783,7 +783,7 @@
                 >> Great idea!
                 >
                 > Why didn't I think of that?
-        <section ids="line-blocks" names="line blocks">
+        <section ids="line-blocks" names="line\ blocks">
             <title auto="1" refid="id38">
                 <generated classes="sectnum">
                     2.8   
@@ -861,7 +861,7 @@
                                 <line>
                     <line>
                         Singing...
-        <section ids="block-quotes" names="block quotes">
+        <section ids="block-quotes" names="block\ quotes">
             <title auto="1" refid="id39">
                 <generated classes="sectnum">
                     2.9   
@@ -877,7 +877,7 @@
                     own it, and what it is too.
                 <attribution>
                     Anne Elk (Miss)
-        <section ids="doctest-blocks" names="doctest blocks">
+        <section ids="doctest-blocks" names="doctest\ blocks">
             <title auto="1" refid="id40">
                 <generated classes="sectnum">
                     2.10   
@@ -972,7 +972,7 @@
                 
                 citation.
             <target refid="another-target">
-        <section ids="targets another-target" names="targets another target">
+        <section ids="targets another-target" names="targets another\ target">
             <title auto="1" refid="id43">
                 <generated classes="sectnum">
                     2.13   
@@ -1022,7 +1022,7 @@
                     `hyperlink reference without a target`_
                 , which generates an
                 error.
-            <section dupnames="duplicate target names" ids="duplicate-target-names">
+            <section dupnames="duplicate\ target\ names" ids="duplicate-target-names">
                 <title auto="1" refid="id44">
                     <generated classes="sectnum">
                         2.13.1   
@@ -1031,7 +1031,7 @@
                     Duplicate names in section headers or other implicit targets will
                     generate "info" (level-1) system messages.  Duplicate names in
                     explicit targets will generate "warning" (level-2) system messages.
-            <section dupnames="duplicate target names" ids="id18">
+            <section dupnames="duplicate\ target\ names" ids="id18">
                 <title auto="1" refid="id45">
                     <generated classes="sectnum">
                         2.13.2   
@@ -1098,7 +1098,7 @@
                 <reference refuri="http://docutils.sourceforge.net/docs/ref/rst/directives.html">
                     http://docutils.sourceforge.net/docs/ref/rst/directives.html
                 .
-            <section ids="document-parts" names="document parts">
+            <section ids="document-parts" names="document\ parts">
                 <title auto="1" refid="id62">
                     <generated classes="sectnum">
                         2.14.1   
@@ -1127,7 +1127,7 @@
                 <target refid="image-target-1">
                 <target refid="image-target-2">
                 <target refid="image-target-3">
-                <image ids="image-target-3 image-target-2 image-target-1" names="image target 3 image target 2 image target 1" uri="../../../docs/user/rst/images/title.png">
+                <image ids="image-target-3 image-target-2 image-target-1" names="image\ target\ 3 image\ target\ 2 image\ target\ 1" uri="../../../docs/user/rst/images/title.png">
                 <paragraph>
                     A figure directive:
                 <figure align="right" classes="figclass1 figclass2">
@@ -1255,7 +1255,7 @@
                     <paragraph>
                         You can make up your own admonition too.
                     <target ids="docutils" names="docutils" refuri="http://docutils.sourceforge.net/">
-            <section ids="topics-sidebars-and-rubrics" names="topics, sidebars, and rubrics">
+            <section ids="topics-sidebars-and-rubrics" names="topics,\ sidebars,\ and\ rubrics">
                 <title auto="1" refid="id65">
                     <generated classes="sectnum">
                         2.14.4   
@@ -1280,18 +1280,18 @@
                         This is a topic.
                 <rubric>
                     This is a rubric
-            <section ids="target-footnotes" names="target footnotes">
+            <section ids="target-footnotes" names="target\ footnotes">
                 <title auto="1" refid="id66">
                     <generated classes="sectnum">
                         2.14.5   
                     Target Footnotes
-                <footnote auto="1" backrefs="id22 id23 id24" ids="id21" names="TARGET_NOTE: id21">
+                <footnote auto="1" backrefs="id22 id23 id24" ids="id21" names="TARGET_NOTE:\ id21">
                     <label>
                         5
                     <paragraph>
                         <reference refuri="http://www.python.org/">
                             http://www.python.org/
-            <section ids="replacement-text" names="replacement text">
+            <section ids="replacement-text" names="replacement\ text">
                 <title auto="1" refid="id67">
                     <generated classes="sectnum">
                         2.14.6   
@@ -1312,7 +1312,7 @@
                     <emphasis>
                         the
                      best language around
-            <section ids="compound-paragraph" names="compound paragraph">
+            <section ids="compound-paragraph" names="compound\ paragraph">
                 <title auto="1" refid="id68">
                     <generated classes="sectnum">
                         2.14.7   
@@ -1398,7 +1398,7 @@
                         Compound 7, a paragraph after the table.
                     <paragraph>
                         Compound 7, another paragraph.
-        <section ids="substitution-definitions" names="substitution definitions">
+        <section ids="substitution-definitions" names="substitution\ definitions">
             <title auto="1" refid="id54">
                 <generated classes="sectnum">
                     2.15   
@@ -1426,7 +1426,7 @@
                 Double-dashes -- "--" -- must be escaped somehow in HTML output.
             <paragraph>
                 (View the HTML source to see the comment.)
-        <section ids="raw-text" names="raw text">
+        <section ids="raw-text" names="raw\ text">
             <title auto="1" refid="id56">
                 <generated classes="sectnum">
                     2.17   
@@ -1450,7 +1450,7 @@
                 Fifth test in HTML.<br />Line two.
             <raw format="latex" xml:space="preserve">
                 Fifth test in LaTeX.\\Line two.
-        <section ids="colspanning-tables" names="colspanning tables">
+        <section ids="colspanning-tables" names="colspanning\ tables">
             <title auto="1" refid="id57">
                 <generated classes="sectnum">
                     2.18   
@@ -1521,7 +1521,7 @@
                             <entry>
                                 <paragraph>
                                     True
-        <section ids="rowspanning-tables" names="rowspanning tables">
+        <section ids="rowspanning-tables" names="rowspanning\ tables">
             <title auto="1" refid="id58">
                 <generated classes="sectnum">
                     2.19   
@@ -1573,7 +1573,7 @@
                             <entry>
                                 <paragraph>
                                     body row 3
-        <section ids="complex-tables" names="complex tables">
+        <section ids="complex-tables" names="complex\ tables">
             <title auto="1" refid="id59">
                 <generated classes="sectnum">
                     2.20   
@@ -1658,7 +1658,7 @@
                                     <literal>
                                         -->
                             <entry>
-        <section ids="list-tables" names="list tables">
+        <section ids="list-tables" names="list\ tables">
             <title auto="1" refid="id60">
                 <generated classes="sectnum">
                     2.21   
@@ -1715,7 +1715,7 @@
                             <entry>
                                 <paragraph>
                                     On a stick!
-    <section ids="error-handling" names="error handling">
+    <section ids="error-handling" names="error\ handling">
         <title auto="1" refid="id61">
             <generated classes="sectnum">
                 3   

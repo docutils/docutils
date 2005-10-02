@@ -26,7 +26,7 @@ Test Document
 This is a test document with a broken reference: nonexistent_
 """
 pseudoxml_output = """\
-<document ids="test-document" names="test document" source="<string>" title="Test Document">
+<document ids="test-document" names="test\ document" source="<string>" title="Test Document">
     <title>
         Test Document
     <paragraph>
@@ -41,7 +41,7 @@ pseudoxml_output = """\
                 Unknown target name: "nonexistent".
 """
 exposed_pseudoxml_output = """\
-<document ids="test-document" internal:refnames="{u\'nonexistent\': [<reference: <#text: u\'nonexistent\'>>]}" names="test document" source="<string>" title="Test Document">
+<document ids="test-document" internal:refnames="{u\'nonexistent\': [<reference: <#text: u\'nonexistent\'>>]}" names="test\ document" source="<string>" title="Test Document">
     <title>
         Test Document
     <paragraph>

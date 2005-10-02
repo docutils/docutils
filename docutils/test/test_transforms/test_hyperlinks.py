@@ -291,7 +291,7 @@ Another reference to the same `embedded URI`_.
         An \n\
         <reference name="embedded uri" refuri="http://direct">
             embedded uri
-        <target ids="embedded-uri" names="embedded uri" refuri="http://direct">
+        <target ids="embedded-uri" names="embedded\ uri" refuri="http://direct">
         .
     <paragraph>
         Another reference to the same \n\
@@ -357,7 +357,7 @@ By this `internal hyperlink`_ reference.
 """\
 <document source="test data">
     <target refid="internal-hyperlink">
-    <paragraph ids="internal-hyperlink" names="internal hyperlink">
+    <paragraph ids="internal-hyperlink" names="internal\ hyperlink">
         This paragraph referenced.
     <paragraph>
         By this \n\
@@ -380,7 +380,7 @@ The results of the transform are not visible at the XML level.
 <document source="test data">
     <target refid="chained">
     <target refid="internal-hyperlink">
-    <paragraph ids="internal-hyperlink chained" names="internal hyperlink chained">
+    <paragraph ids="internal-hyperlink chained" names="internal\ hyperlink chained">
         This paragraph referenced.
     <paragraph>
         By this \n\
@@ -488,7 +488,7 @@ a_\ b_
 """,
 """\
 <document source="test data">
-    <target ids="external-hyperlink" names="external hyperlink" refuri="http://uri">
+    <target ids="external-hyperlink" names="external\ hyperlink" refuri="http://uri">
     <paragraph>
         <reference name="External hyperlink" refuri="http://uri">
             External hyperlink
@@ -500,8 +500,8 @@ a_\ b_
 """,
 """\
 <document source="test data">
-    <target ids="external-hyperlink" names="external hyperlink" refuri="http://uri">
-    <target ids="indirect-target" names="indirect target" refuri="http://uri">
+    <target ids="external-hyperlink" names="external\ hyperlink" refuri="http://uri">
+    <target ids="indirect-target" names="indirect\ target" refuri="http://uri">
     <system_message level="1" line="2" source="test data" type="INFO">
         <paragraph>
             Hyperlink target "indirect target" is not referenced.
@@ -516,7 +516,7 @@ and a chained_ reference too.
 """\
 <document source="test data">
     <target refid="chained">
-    <target ids="external-hyperlink chained" names="external hyperlink chained" refuri="http://uri">
+    <target ids="external-hyperlink chained" names="external\ hyperlink chained" refuri="http://uri">
     <paragraph>
         <reference name="External hyperlink" refuri="http://uri">
             External hyperlink
@@ -534,8 +534,8 @@ and a chained_ reference too.
 """,
 """\
 <document source="test data">
-    <target ids="external-hyperlink" names="external hyperlink" refuri="http://uri">
-    <target ids="indirect-hyperlink" names="indirect hyperlink" refuri="http://uri">
+    <target ids="external-hyperlink" names="external\ hyperlink" refuri="http://uri">
+    <target ids="indirect-hyperlink" names="indirect\ hyperlink" refuri="http://uri">
     <paragraph>
         <reference name="Indirect hyperlink" refuri="http://uri">
             Indirect hyperlink
@@ -550,9 +550,9 @@ Chained_ `indirect hyperlink`_ reference.
 """,
 """\
 <document source="test data">
-    <target ids="external-hyperlink" names="external hyperlink" refuri="http://uri">
+    <target ids="external-hyperlink" names="external\ hyperlink" refuri="http://uri">
     <target refuri="http://uri">
-    <target ids="indirect-hyperlink chained" names="indirect hyperlink chained" refuri="http://uri">
+    <target ids="indirect-hyperlink chained" names="indirect\ hyperlink chained" refuri="http://uri">
     <paragraph>
         <reference name="Chained" refuri="http://uri">
             Chained
@@ -700,7 +700,7 @@ Testing an `indirect reference to the table of contents`_.
 """,
 """\
 <document source="test data">
-    <topic classes="contents" ids="table-of-contents" names="table of contents">
+    <topic classes="contents" ids="table-of-contents" names="table\ of\ contents">
         <title>
             Table of Contents
         <bullet_list>
@@ -708,7 +708,7 @@ Testing an `indirect reference to the table of contents`_.
                 <paragraph>
                     <reference ids="id1" refid="section">
                         Section
-    <target ids="indirect-reference-to-the-table-of-contents" names="indirect reference to the table of contents" refid="table-of-contents">
+    <target ids="indirect-reference-to-the-table-of-contents" names="indirect\ reference\ to\ the\ table\ of\ contents" refid="table-of-contents">
     <section ids="section" names="section">
         <title refid="id1">
             Section
@@ -729,7 +729,7 @@ Let's reference it (`explicit target`_) to avoid an irrelevant error.
 """\
 <document source="test data">
     <target refid="explicit-target">
-    <section ids="title explicit-target" names="title explicit target">
+    <section ids="title explicit-target" names="title explicit\ target">
         <title>
             Title
         <paragraph>

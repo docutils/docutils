@@ -34,6 +34,13 @@ Changes Since 0.3.9
   - Added ``DocTreeInput`` class, for reprocessing existing documents.
   - Added support for non-Unicode (e.g. binary) writer output.
 
+* docutils/nodes.py:
+
+  - Added ``serial_escape`` function; escapes string values that are
+    elements of a list, for serialization.  Modified Docutils-XML
+    writing (``Element._dom_node``) and pseudo-XML writing
+    (``Element.starttag``) to use ``serial_escape``.
+
 * docutils/parsers/null.py: Added to project; a do-nothing parser.
 
 * docutils/parsers/rst/__init__.py:
