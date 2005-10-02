@@ -4421,25 +4421,25 @@ system_message_ elements (via the `%backrefs.att;`_ parameter entity).
 The ``bullet`` attribute is used in the bullet_list_ element.
 
 
-``class``
-=========
+``classes``
+===========
 
 `Attribute type`_: ``NMTOKENS``.  Default value: none.
 
-The ``class`` attribute contains one or more names used to classify an
-element.  The purpose of the attribute is to indicate an "is-a"
-variant relationship, to allow an extensible way of defining
+The ``classes`` attribute is a list containing one or more names used
+to classify an element.  The purpose of the attribute is to indicate
+an "is-a" variant relationship, to allow an extensible way of defining
 sub-classes of existing elements.  It can be used to carry context
 forward between a Docutils Reader and Writer, when a custom structure
 is reduced to a standardized document tree.  One common use is in
 conjunction with stylesheets, to add selection criteria.  It should
 not be used to carry formatting instructions or arbitrary content.
 
-The ``class`` attribute's contents should be ignorable.  Writers that
+The ``classes`` attribute's contents should be ignorable.  Writers that
 are not familiar with the variant expressed should be able to ignore
 the attribute.
 
-``class`` is one of the `common attributes`_, shared by all Docutils
+``classes`` is one of the `common attributes`_, shared by all Docutils
 elements.
 
 
@@ -4451,17 +4451,17 @@ elements.
 The ``delimiter`` attribute is used in the option_argument_ element.
 
 
-``dupname``
-===========
+``dupnames``
+============
 
-`Attribute type`_: ``NMTOKENS``.  Default value: none.
+`Attribute type`_: ``CDATA``.  Default value: none.
 
-The ``dupname`` attribute contains the name of an element when there
-has been a naming conflict.  The contents of the ``dupname`` attribute
-would have been transferred from the `name`_ attribute.  An element
-may have at most one of the ``name`` or ``dupname`` attributes, but
-not both.  ``dupname`` is one of the `common attributes`_, shared by
-all Docutils elements.
+The ``dupnames`` attribute is a list containing the names of an
+element when there has been a naming conflict.  The contents of the
+``dupnames`` attribute would have been transferred from the `names`_
+attribute.  An element may have at most one of the ``names`` or
+``dupnames`` attributes, but not both.  ``dupnames`` is one of the
+`common attributes`_, shared by all Docutils elements.
 
 
 ``enumtype``
@@ -4473,27 +4473,29 @@ all Docutils elements.
 The ``enumtype`` attribute is used in the enumerated_list_ element.
 
 
-``id``
-======
-
-`Attribute type`_: ``ID``.  Default value: none.
-
-The ``id`` attribute contains a unique identifier key.  ``id`` is one
-of the `common attributes`_, shared by all Docutils elements.
-
-
-``name``
-========
+``ids``
+=======
 
 `Attribute type`_: ``NMTOKENS``.  Default value: none.
 
-The ``name`` attribute contains the name of an element, typically
-originating from the element's title or content.  ``name`` must be
-unique; if there are name conflicts (two or more elements want to the
-same name), the contents will be transferred to the `dupname`_
-attribute on the duplicate elements.  An element may have at most one
-of the ``name`` or ``dupname`` attributes, but not both.  ``name`` is
-one of the `common attributes`_, shared by all Docutils elements.
+The ``ids`` attribute is a list containing one or more unique
+identifier keys.  ``ids`` is one of the `common attributes`_, shared
+by all Docutils elements.
+
+
+``names``
+=========
+
+`Attribute type`_: ``CDATA``.  Default value: none.
+
+The ``names`` attribute is a list containing the names of an element,
+typically originating from the element's title or content.  Each name
+in ``names`` must be unique; if there are name conflicts (two or more
+elements want to the same name), the contents will be transferred to
+the `dupnames`_ attribute on the duplicate elements.  An element may
+have at most one of the ``names`` or ``dupnames`` attributes, but not
+both.  ``names`` is one of the `common attributes`_, shared by all
+Docutils elements.
 
 
 ``prefix``
@@ -4668,11 +4670,11 @@ Entity definition:
 
 .. parsed-literal::
 
-    id_       ID        #IMPLIED
-    name_     NMTOKENS  #IMPLIED
-    dupname_  NMTOKENS  #IMPLIED
+    ids_      NMTOKENS  #IMPLIED
+    names_    CDATA     #IMPLIED
+    dupnames_ CDATA     #IMPLIED
     source_   CDATA     #IMPLIED
-    class_    NMTOKENS  #IMPLIED
+    classes_  NMTOKENS  #IMPLIED
     %additional.basic.atts;
 
 The ``%additional.basic.atts;`` parameter entity can be used by

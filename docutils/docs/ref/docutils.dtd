@@ -53,11 +53,11 @@ Attributes shared by all elements in this DTD:
 - `class` is used to transmit individuality information forward.
 -->
 <!ENTITY % basic.atts
-  " id        ID        #IMPLIED
-    name      CDATA     #IMPLIED
-    dupname   CDATA     #IMPLIED
+  " ids       NMTOKENS  #IMPLIED
+    names     CDATA     #IMPLIED
+    dupnames  CDATA     #IMPLIED
     source    CDATA     #IMPLIED
-    class     NMTOKENS  #IMPLIED
+    classes   NMTOKENS  #IMPLIED
     %additional.basic.atts; ">
 
 <!-- External reference to a URI/URL. -->
