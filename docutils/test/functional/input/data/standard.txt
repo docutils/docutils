@@ -434,6 +434,21 @@ Image with multiple IDs:
 .. _image target 3:
 .. image:: ../../../docs/user/rst/images/title.png
 
+A centered image:
+
+.. image:: ../../../docs/user/rst/images/biohazard.png
+   :align: center
+
+A left-aligned image:
+
+.. image:: ../../../docs/user/rst/images/biohazard.png
+   :align: left
+
+A right-aligned image:
+
+.. image:: ../../../docs/user/rst/images/biohazard.png
+   :align: right
+
 A figure directive:
 
 .. figure:: ../../../docs/user/rst/images/biohazard.png

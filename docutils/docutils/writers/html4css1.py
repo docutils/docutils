@@ -975,9 +975,6 @@ class HTMLTranslator(nodes.NodeVisitor):
         if style:
             atts['style'] = ' '.join(style)
         atts['alt'] = node.get('alt', atts['src'])
-        if node.has_key('align'):
-            atts['align'] = self.attval(node['align'])
-            atts['class'] = 'align-%s' % atts['align']
         if (isinstance(node.parent, nodes.TextElement) or
             (isinstance(node.parent, nodes.reference) and
              not isinstance(node.parent.parent, nodes.TextElement))):
@@ -985,10 +982,23 @@ class HTMLTranslator(nodes.NodeVisitor):
             suffix = ''
         else:
             suffix = '\n'
+        if node.has_key('align'):
+            if node['align'] == 'center':
+                # "align" attribute is set in surrounding "div" element.
+                self.body.append('<div align="center" class="align-center">')
+                self.context.append('</div>\n')
+                suffix = ''
+            else:
+                # "align" attribute is set in "img" element.
+                atts['align'] = node['align']
+                self.context.append('')
+            atts['class'] = 'align-%s' % node['align']
+        else:
+            self.context.append('')
         self.body.append(self.emptytag(node, 'img', suffix, **atts))
 
     def depart_image(self, node):
-        pass
+        self.body.append(self.context.pop())
 
     def visit_important(self, node):
         self.visit_admonition(node, 'important')
