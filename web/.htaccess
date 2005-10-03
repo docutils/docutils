@@ -3,7 +3,7 @@
 # Redirect snapshots to BerliOS.  The target URL may change in the
 # future, so use a temporary redirect (status 302).
 
-RedirectMatch temp /([^#]*-snapshot.tgz) ftp://ftp.berlios.de/pub/docutils/$1
+RedirectMatch temp /(.*-snapshot.tgz) ftp://ftp.berlios.de/pub/docutils/$1
 
 # Redirection from old URLs to new URLs after a site reorganization.
 
@@ -14,15 +14,9 @@ Redirect permanent /docs/latex.txt   http://docutils.sourceforge.net/docs/user/l
 Redirect permanent /docs/tools.html  http://docutils.sourceforge.net/docs/user/tools.html
 Redirect permanent /docs/tools.txt   http://docutils.sourceforge.net/docs/user/tools.txt
 
-RedirectMatch permanent /docs/rst/([^#]*) http://docutils.sourceforge.net/docs/user/rst/$1
-# instead of:
-# Redirect permanent /docs/rst/quickref.html   http://docutils.sourceforge.net/docs/user/rst/quickref.html
-# Redirect permanent /docs/rst/quickstart.html http://docutils.sourceforge.net/docs/user/rst/quickstart.html
-# Redirect permanent /docs/rst/quickstart.txt  http://docutils.sourceforge.net/docs/user/rst/quickstart.txt
-# Redirect permanent /docs/rst/cheatsheet.txt  http://docutils.sourceforge.net/docs/user/rst/cheatsheet.txt
-# Redirect permanent /docs/rst/quickref.html   http://docutils.sourceforge.net/docs/user/rst/quickref.html
+Redirect permanent /docs/rst/ http://docutils.sourceforge.net/docs/user/rst/
 
-RedirectMatch permanent /spec/howto/([^#]*) http://docutils.sourceforge.net/docs/howto/$1
+Redirect permanent /spec/howto/ http://docutils.sourceforge.net/docs/howto/
 
 Redirect permanent /spec/pysource.dtd   http://docutils.sourceforge.net/docs/dev/pysource.dtd
 Redirect permanent /spec/pysource.txt   http://docutils.sourceforge.net/docs/dev/pysource.txt
@@ -56,7 +50,7 @@ Redirect permanent /spec/rst/interpreted.html      http://docutils.sourceforge.n
 Redirect permanent /spec/rst/introduction.txt      http://docutils.sourceforge.net/docs/ref/rst/introduction.txt
 Redirect permanent /spec/rst/introduction.html     http://docutils.sourceforge.net/docs/ref/rst/introduction.html
 
-RedirectMatch permanent /spec/pep-([^#]*) http://docutils.sourceforge.net/docs/peps/pep-$1
+RedirectMatch permanent /spec/pep-(.*) http://docutils.sourceforge.net/docs/peps/pep-$1
 
 Redirect permanent /tools/test.txt  http://docutils.sourceforge.net/docs/user/rst/demo.txt
 Redirect permanent /tools/test.html http://docutils.sourceforge.net/docs/user/rst/demo.html
