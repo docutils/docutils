@@ -659,6 +659,18 @@ meaningful.
 
    Compound 7, another paragraph.
 
+Parsed Literal Blocks
+`````````````````````
+
+.. parsed-literal::
+
+   This is a parsed literal block.
+       This line is indented.  The next line is blank.
+
+   Inline markup is supported, e.g. *emphasis*, **strong**, ``literal
+   text``, footnotes [1]_, _`targets`, and `references
+   <http://www.python.org/>`_.
+
 Substitution Definitions
 ------------------------
 
