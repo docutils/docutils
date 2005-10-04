@@ -1357,6 +1357,36 @@ any knowledge of the Python-Reader origin of these elements.
 
 * Implement roles:
 
+  - "_`raw-wrapped`" (or "_`raw-wrap`"): Base role to wrap raw text
+    around role contents.
+
+    For example, the following reStructuredText source ... ::
+
+        .. role:: red(raw-formatting)
+           :prefix:
+               :html: <font color="red">
+               :latex: {\color{red}
+           :suffix:
+               :html: </font>
+               :latex: }
+
+        colored :red:`text`
+
+    ... will yield the following document fragment::
+
+        <paragraph>
+            colored
+            <inline classes="red">
+                <raw format="html">
+                    <font color="red">
+                <raw format="latex">
+                    {\color{red}
+                text
+                <raw format="html">
+                    </font>
+                <raw format="latex">
+                    }
+
   - "acronym" and "abbreviation": Associate the full text with a short
     form.  Jason Diamond's description:
 
