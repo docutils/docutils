@@ -92,6 +92,12 @@ for inclusion in the Python standard library.
 General
 =======
 
+* Add a --strip-comments command-line option (& strip_comments runtime
+  setting), declared in docutils/frontend.py, and implemented as a
+  transform.  This feature isn't specific to rst2html.py, or to the
+  HTML Writer, or to the reST parser; it applies to Docutils as a
+  whole.  See <http://thread.gmane.org/gmane.text.docutils.devel/3216>.
+
 * Add a generic "container" element, equivalent to "inline", to which
   a "class" attribute can be attached.  Will require a reST directive
   also.
