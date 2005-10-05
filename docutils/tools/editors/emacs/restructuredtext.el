@@ -249,7 +249,8 @@ have been seen.
 
   ;; For all the preferred decorations...
   (let* (
-	 ;; If 'prev' is given, reorder the list to start searching after the match.
+	 ;; If 'prev' is given, reorder the list to start searching after the
+	 ;; match.
 	 (fplist
 	  (cdr (rest-get-decoration-match rest-preferred-decorations prev)))
 
@@ -270,6 +271,9 @@ have been seen.
 
     (copy-list (car curpotential)) ))
 
+(defun rest-delete-line ()
+  "A version of kill-line that does not use the kill-ring."
+  (delete-region (line-beginning-position) (+ 1 (line-end-position))))
 
 (defun rest-update-section (char style &optional indent)
   "Unconditionally updates the style of a section decoration
@@ -311,14 +315,14 @@ have been seen.
 	     ;; Avoid removing the underline of a title right above us.
 	     (save-excursion (forward-line -1)
 			     (not (looking-at rest-section-text-regexp)))
-             (kill-line 1)))
+             (rest-delete-line)))
 
       ;; Remove following line if it consists only of a single repeated
       ;; character
       (save-excursion
         (forward-line +1)
         (and (rest-line-homogeneous-p 1)
-             (kill-line 1))
+             (rest-delete-line))
         ;; Add a newline if we're at the end of the buffer, for the subsequence
         ;; inserting of the underline
         (if (= (point) (buffer-end 1))
@@ -1088,7 +1092,7 @@ cand replace with char: ")
             (setq p (1+ (point)))
             (beginning-of-line)
             (setq l (- p (point)))
-            (kill-line)
+            (rest-delete-line)
             (insert-char tochar l))
         (search-failed
          (message (format "%d lines replaced." found)))))))
