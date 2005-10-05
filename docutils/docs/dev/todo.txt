@@ -660,6 +660,16 @@ Also see the `... Or Not To Do?`__ list.
 
 __ rst/alternatives.html#or-not-to-do
 
+* Add indirect links via citation references & footnote references.
+  Example::
+
+      `Goodger (2005)`_ is helpful.
+
+      .. _Goodger (2005): [goodger2005]_
+      .. [goodger2005] citation text
+
+  See <http://thread.gmane.org/gmane.text.docutils.user/2499>.
+
 * Allow multiple block quotes, only separated by attributions
   (http://article.gmane.org/gmane.text.docutils.devel/2985), e.g.::
 
