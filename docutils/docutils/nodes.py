@@ -1736,3 +1736,10 @@ def whitespace_normalize_name(name):
 def serial_escape(value):
     """Escape string values that are elements of a list, for serialization."""
     return value.replace('\\', r'\\').replace(' ', r'\ ')
+
+# 
+#
+# Local Variables:
+# indent-tabs-mode: nil
+# sentence-end-double-space: t
+# fill-column: 78
