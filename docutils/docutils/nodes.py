@@ -911,7 +911,8 @@ class document(Root, Structural, Element):
 
         The following state transition table shows how `self.nameids` ("ids")
         and `self.nametypes` ("types") change with new input (a call to this
-        method), and what actions are performed:
+        method), and what actions are performed ("implicit"-type system
+        messages are INFO/1, and "explicit"-type system messages are ERROR/3):
 
         ====  =====  ========  ========  =======  ====  =====  =====
          Old State    Input          Action        New State   Notes
