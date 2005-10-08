@@ -30,6 +30,12 @@ class Writer(writers.Writer):
     supported = ('newlatex', 'newlatex2e')
     """Formats this writer supports."""
 
+    default_stylesheet = 'base.tex'
+
+    default_stylesheet_path = utils.relative_path(
+        os.path.join(os.getcwd(), 'dummy'),
+        os.path.join(writers.support_path, 'newlatex2e', default_stylesheet))
+
     settings_spec = (
         'LaTeX-Specific Options',
         'Note that this LaTeX writer is still EXPERIMENTAL. '
@@ -42,9 +48,11 @@ class Writer(writers.Writer):
           {'default': '', 'metavar': '<file>',
            'overrides': 'stylesheet_path'}),
          ('Specify a stylesheet file, relative to the current working '
-          'directory.  Overrides --stylesheet.',
+          'directory.  Overrides --stylesheet.  Default: "%s"'
+          % default_stylesheet_path,
           ['--stylesheet-path'],
-          {'metavar': '<file>', 'overrides': 'stylesheet'}),
+          {'metavar': '<file>', 'overrides': 'stylesheet',
+           'default': default_stylesheet_path}),
          ('Specify a user stylesheet file.  See --stylesheet.',
           ['--user-stylesheet'],
           {'default': '', 'metavar': '<file>',
