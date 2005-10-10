@@ -1196,7 +1196,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     widest_label = bi[0]
             self.body.append('\n\\begin{thebibliography}{%s}\n'%widest_label)
             for bi in self._bibitems:
-                self.body.append('\\bibitem[%s]{%s}{%s}\n' % (bi[0], bi[0], bi[1]))
+                # cite_key: underscores must not be escaped
+                cite_key = bi[0].replace(r"{\_}","_")
+                self.body.append('\\bibitem[%s]{%s}{%s}\n' % (bi[0], cite_key, bi[1]))
             self.body.append('\\end{thebibliography}\n')
 
         self.body_suffix.append('\\end{document}\n')
