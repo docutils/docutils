@@ -79,13 +79,18 @@ here are some useful resources for Emacs users in the Unicode world:
 
         (set-frame-font "fontset-monaco")
 
+  - To enable cooperation between the system clipboard and the Emacs
+    kill ring, add this line::
+
+        (set-clipboard-coding-system 'mac-roman)
+
   Other useful resources are in `Andrew Choi's Emacs 21 for Mac OS X
   FAQ <http://members.shaw.ca/akochoi-emacs/stories/faq.html>`__.
 
 No matter what platform (or editor) you're using, I recommend the
 ProFont__ programmer's font.  It's monospaced, small but readable,
-similar characters are visually distinctive (like "1lI|", "0O", "ao",
-and ".,"), and free.
+similar characters are visually distinctive (like "I1l|", "0O", "ao",
+and ".,:;"), and free.
 
 __ http://www.tobias-jung.de/seekingprofont/
 .. _reStructuredText: http://docutils.sf.net/rst.html
