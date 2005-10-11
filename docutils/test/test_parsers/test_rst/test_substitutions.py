@@ -255,6 +255,21 @@ No blank line after.
     <comment xml:space="preserve">
         |
 """],
+["""\
+Substitution definition with a target:
+
+.. |target| replace:: _`target`
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Substitution definition with a target:
+    <system_message level="2" line="3" source="test data" type="WARNING">
+        <paragraph>
+            Substitution definitions may not contain targets.
+        <literal_block xml:space="preserve">
+            .. |target| replace:: _`target`
+"""],
 ]
 
 

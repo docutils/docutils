@@ -1910,34 +1910,41 @@ class Body(RSTState):
         subname = subdefmatch.group('name')
         substitution_node = nodes.substitution_definition(blocktext)
         substitution_node.line = lineno
-        self.document.note_substitution_def(
-            substitution_node,subname, self.parent)
-        if block:
-            block[0] = block[0].strip()
-            new_abs_offset, blank_finish = self.nested_list_parse(
-                  block, input_offset=offset, node=substitution_node,
-                  initial_state='SubstitutionDef', blank_finish=blank_finish)
-            i = 0
-            for node in substitution_node[:]:
-                if not (isinstance(node, nodes.Inline) or
-                        isinstance(node, nodes.Text)):
-                    self.parent += substitution_node[i]
-                    del substitution_node[i]
-                else:
-                    i += 1
-            if len(substitution_node) == 0:
-                msg = self.reporter.warning(
-                      'Substitution definition "%s" empty or invalid.'
-                      % subname,
-                      nodes.literal_block(blocktext, blocktext), line=lineno)
-                return [msg], blank_finish
-            else:
-                return [substitution_node], blank_finish
-        else:
+        if not block:
             msg = self.reporter.warning(
-                  'Substitution definition "%s" missing contents.' % subname,
+                'Substitution definition "%s" missing contents.' % subname,
+                nodes.literal_block(blocktext, blocktext), line=lineno)
+            return [msg], blank_finish
+        block[0] = block[0].strip()
+        substitution_node['names'].append(
+            nodes.whitespace_normalize_name(subname))
+        new_abs_offset, blank_finish = self.nested_list_parse(
+              block, input_offset=offset, node=substitution_node,
+              initial_state='SubstitutionDef', blank_finish=blank_finish)
+        i = 0
+        for node in substitution_node[:]:
+            if not (isinstance(node, nodes.Inline) or
+                    isinstance(node, nodes.Text)):
+                self.parent += substitution_node[i]
+                del substitution_node[i]
+            else:
+                i += 1
+        for node in substitution_node.traverse(nodes.Element):
+            if node['ids']:
+                msg = self.reporter.warning(
+                    'Substitution definitions may not contain targets.',
+                    nodes.literal_block(blocktext, blocktext),
+                    line=lineno)
+                return [msg], blank_finish
+        if len(substitution_node) == 0:
+            msg = self.reporter.warning(
+                  'Substitution definition "%s" empty or invalid.'
+                  % subname,
                   nodes.literal_block(blocktext, blocktext), line=lineno)
             return [msg], blank_finish
+        self.document.note_substitution_def(
+            substitution_node, subname, self.parent)
+        return [substitution_node], blank_finish
 
     def directive(self, match, **option_presets):
         """Returns a 2-tuple: list of nodes, and a "blank finish" boolean."""

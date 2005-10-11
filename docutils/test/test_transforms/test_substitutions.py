@@ -236,6 +236,30 @@ u"""\
     <substitution_definition ltrim="1" names="TM">
         \u2122
 """],
+["""\
+Substitution definition with a target:
+
+.. |target| replace:: _`target`
+
+Make sure this substitution definition is not registered: |target|
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Substitution definition with a target:
+    <system_message level="2" line="3" source="test data" type="WARNING">
+        <paragraph>
+            Substitution definitions may not contain targets.
+        <literal_block xml:space="preserve">
+            .. |target| replace:: _`target`
+    <paragraph>
+        Make sure this substitution definition is not registered: \n\
+        <problematic ids="id2" refid="id1">
+            |target|
+    <system_message backrefs="id2" ids="id1" level="3" line="5" source="test data" type="ERROR">
+        <paragraph>
+            Undefined substitution referenced: "target".
+"""],
 ])
 
 
