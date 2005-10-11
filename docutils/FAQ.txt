@@ -764,7 +764,6 @@ Here's the question in full:
         <head>
         ...
         <title>Heading 1</title>
-        <link rel="stylesheet" href="default.css" type="text/css" />
         </head>
         <body>
         <div class="document" id="heading-1">

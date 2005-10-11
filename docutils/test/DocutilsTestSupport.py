@@ -767,8 +767,6 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
         standard_content_type_template
         + standard_generator_template % docutils.__version__)
     standard_meta_value = standard_html_meta_value % 'utf-8'
-    standard_stylesheet_value = ('<link rel="stylesheet" href="default.css" '
-                                 'type="text/css" />\n')
     standard_html_prolog = """\
 <?xml version="1.0" encoding="%s" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -782,8 +780,6 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
         del parts['body']
         # remove standard portions:
         parts['meta'] = parts['meta'].replace(self.standard_meta_value, '')
-        if parts['stylesheet'] == self.standard_stylesheet_value:
-            del parts['stylesheet']
         parts['html_head'] = parts['html_head'].replace(
             self.standard_html_meta_value, '...')
         parts['html_prolog'] = parts['html_prolog'].replace(

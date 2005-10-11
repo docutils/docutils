@@ -87,7 +87,9 @@ The documentation should be generated using ``buildhtml.py``.  To
 generate HTML for all documentation files, go to the ``tools/``
 directory and run::
 
-    ./buildhtml.py ..
+    # Place html4css1.css in base directory.
+    cp ../docutils/writers/support/html4css1.css ..
+    ./buildhtml.py --stylesheet-path=../html4css1.css ..
 
 Then install the following files to ``/usr/share/doc/docutils/`` (or
 wherever you install documentation):
@@ -102,15 +104,7 @@ wherever you install documentation):
 
 * The ``licenses/`` directory.
 
-* ``tools/stylesheets/default.css``, creating the ``tools/`` and
-  ``tools/stylesheets/`` directory beforehand.  This file is needed
-  for correct viewing of the HTML files.  The remaining contents of
-  the ``tools/`` and ``tools/stylesheets/`` directories are not
-  needed.
-
-  Be sure not to install ``default.css`` into the root of the
-  documentation directory, or the relative references to the
-  stylesheet will not work.
+* ``html4css1.css`` in the base directory.
 
 
 Removing the ``.txt`` Files
@@ -126,40 +120,23 @@ the tree except for:
   be readable in source form.
 
 Before you remove the ``.txt`` files you should rerun ``buildhtml.py``
-as ``./buildhtml.py .. --no-source-link`` to avoid broken references
-to the source files.
+with the ``--no-source-link`` switch to avoid broken references to the
+source files.
 
 
 Other Files
 ===========
 
-Install ``tools/stylesheets/`` to ``/usr/lib/docutils/stylesheets/``
-and ``tools/pep-html-template`` to
-``/usr/lib/docutils/pep-html-template``.
-
-You may also want to install the Emacs-Lisp files
+You may want to install the Emacs-Lisp files
 ``tools/editors/emacs/*.el`` into the appropriate directory.
 
 
 Configuration File
 ==================
 
-The system-wide configuration file is located in
-``/etc/docutils.conf``.  You should *not* install
-``tools/docutils.conf`` into ``/etc/``.  Instead, we recommend that
-you create a new ``/etc/docutils.conf`` file containing references to
-the appropriate files on your system::
-
-    [html4css1 writer]
-    # These entries affect HTML output:
-    stylesheet-path: /usr/lib/docutils/stylesheets/default.css
-
-    [pep_html writer]
-    # These entries affect reStructuredText-style PEPs:
-    template: /usr/lib/docutils/pep-html-template
-    stylesheet-path: /usr/lib/docutils/stylesheets/pep.css
-
-(Adjust the paths as necessary.)
+It is possible to have a system-wide configuration file at
+``/etc/docutils.conf``.  However, this is usually not necessary.  You
+should *not* install ``tools/docutils.conf`` into ``/etc/``.
 
 
 Tests
