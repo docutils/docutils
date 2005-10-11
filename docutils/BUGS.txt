@@ -168,6 +168,10 @@ Also see the `SourceForge Bug Tracker`_.
     all IDs from definitions after the first substitution reference is
     processed.
 
+* _`Circular substitutions` cause Docutils to hang::
+
+      .. |sub| replace:: |sub|
+
 * Footnote label "5" should be "4" when processing the following
   input::
 
