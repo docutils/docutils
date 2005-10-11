@@ -82,6 +82,10 @@ class Node:
         """Return a copy of self."""
         raise NotImplementedError
 
+    def deepcopy(self):
+        """Return a deep copy of self (also copying children)."""
+        raise NotImplementedError
+
     def setup_child(self, child):
         child.parent = self
         if self.document:
@@ -287,6 +291,9 @@ class Text(Node, UserString):
 
     def copy(self):
         return self.__class__(self.data)
+
+    def deepcopy(self):
+        return self.copy()
 
     def pformat(self, indent='    ', level=0):
         result = []
@@ -639,6 +646,11 @@ class Element(Node):
     def copy(self):
         return self.__class__(**self.attributes)
 
+    def deepcopy(self):
+        copy = self.copy()
+        copy.extend([child.deepcopy() for child in self.children])
+        return copy
+
     def set_class(self, name):
         """Add a new class to the "classes" attribute."""
         warnings.warn('docutils.nodes.Element.set_class deprecated; '
@@ -815,10 +827,6 @@ class document(Root, Structural, Element):
 
         self.ids = {}
         """Mapping of ids to nodes."""
-
-        self.substitution_refs = {}
-        """Mapping of substitution names to lists of substitution_reference
-        nodes."""
 
         self.footnote_refs = {}
         """Mapping of footnote labels to lists of footnote_reference nodes."""
@@ -1063,8 +1071,7 @@ class document(Root, Structural, Element):
         self.substitution_names[fully_normalize_name(name)] = name
 
     def note_substitution_ref(self, subref, refname):
-        name = subref['refname'] = whitespace_normalize_name(refname)
-        self.substitution_refs.setdefault(name, []).append(subref)
+        subref['refname'] = whitespace_normalize_name(refname)
 
     def note_pending(self, pending, priority=None):
         self.transformer.add_pending(pending, priority)

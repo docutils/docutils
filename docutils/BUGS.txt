@@ -151,14 +151,6 @@ Also see the `SourceForge Bug Tracker`_.
   "Active" content inside of substitution definitions does not work.
   This bug becomes manifest in the following cases:
 
-  * There's a bug with _`doubly-indirect substitutions` but only when
-    there's multiple references and in certain cases.  See the
-    commented-out test case in test_transforms/test_substitutions.py
-    (line 104 on, in revision 3808) which fails.
-
-    This is tricky.  Substitution definitions have to propagate back
-    completely, through multiple levels of references.
-
   * .. _substitutions and references:
 
     Another bug from David Abrahams (run with ``rst2html.py --traceback``)::

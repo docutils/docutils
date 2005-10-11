@@ -654,45 +654,46 @@ class Substitutions(Transform):
     def apply(self):
         defs = self.document.substitution_defs
         normed = self.document.substitution_names
-        subreflist = self.document.substitution_refs.items()
-        subreflist.sort()
-        for refname, refs in subreflist:
-            for ref in refs:
-                key = None
-                if defs.has_key(refname):
-                    key = refname
-                else:
-                    normed_name = refname.lower()
-                    if normed.has_key(normed_name):
-                        key = normed[normed_name]
-                if key is None:
-                    msg = self.document.reporter.error(
-                          'Undefined substitution referenced: "%s".'
-                          % refname, base_node=ref)
-                    msgid = self.document.set_id(msg)
-                    prb = nodes.problematic(
-                          ref.rawsource, ref.rawsource, refid=msgid)
-                    prbid = self.document.set_id(prb)
-                    msg.add_backref(prbid)
-                    ref.replace_self(prb)
-                else:
-                    subdef = defs[key]
-                    parent = ref.parent
-                    index = parent.index(ref)
-                    if  (subdef.attributes.has_key('ltrim')
-                         or subdef.attributes.has_key('trim')):
-                        if index > 0 and isinstance(parent[index - 1],
-                                                    nodes.Text):
-                            parent.replace(parent[index - 1],
-                                           parent[index - 1].rstrip())
-                    if  (subdef.attributes.has_key('rtrim')
-                         or subdef.attributes.has_key('trim')):
-                        if  (len(parent) > index + 1
-                             and isinstance(parent[index + 1], nodes.Text)):
-                            parent.replace(parent[index + 1],
-                                           parent[index + 1].lstrip())
-                    ref.replace_self(subdef.children)
-        self.document.substitution_refs = None  # release replaced references
+        subreflist = self.document.traverse(nodes.substitution_reference)
+        for ref in subreflist:
+            refname = ref['refname']
+            key = None
+            if defs.has_key(refname):
+                key = refname
+            else:
+                normed_name = refname.lower()
+                if normed.has_key(normed_name):
+                    key = normed[normed_name]
+            if key is None:
+                msg = self.document.reporter.error(
+                      'Undefined substitution referenced: "%s".'
+                      % refname, base_node=ref)
+                msgid = self.document.set_id(msg)
+                prb = nodes.problematic(
+                      ref.rawsource, ref.rawsource, refid=msgid)
+                prbid = self.document.set_id(prb)
+                msg.add_backref(prbid)
+                ref.replace_self(prb)
+            else:
+                subdef = defs[key]
+                parent = ref.parent
+                index = parent.index(ref)
+                if  (subdef.attributes.has_key('ltrim')
+                     or subdef.attributes.has_key('trim')):
+                    if index > 0 and isinstance(parent[index - 1],
+                                                nodes.Text):
+                        parent.replace(parent[index - 1],
+                                       parent[index - 1].rstrip())
+                if  (subdef.attributes.has_key('rtrim')
+                     or subdef.attributes.has_key('trim')):
+                    if  (len(parent) > index + 1
+                         and isinstance(parent[index + 1], nodes.Text)):
+                        parent.replace(parent[index + 1],
+                                       parent[index + 1].lstrip())
+                subdef_copy = subdef.deepcopy()
+                # Take care of nested substitution references.
+                subreflist.extend(subdef_copy.traverse(nodes.substitution_reference))
+                ref.replace_self(subdef_copy.children)
 
 
 class TargetNotes(Transform):
