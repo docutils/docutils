@@ -834,12 +834,6 @@ class document(Root, Structural, Element):
         self.citation_refs = {}
         """Mapping of citation labels to lists of citation_reference nodes."""
 
-        self.anonymous_targets = []
-        """List of anonymous target nodes."""
-
-        self.anonymous_refs = []
-        """List of anonymous reference nodes."""
-
         self.autofootnotes = []
         """List of auto-numbered footnote nodes."""
 
@@ -1017,10 +1011,6 @@ class document(Root, Structural, Element):
 
     def note_anonymous_target(self, target):
         self.set_id(target)
-        self.anonymous_targets.append(target)
-
-    def note_anonymous_ref(self, ref):
-        self.anonymous_refs.append(ref)
 
     def note_autofootnote(self, footnote):
         self.set_id(footnote)

@@ -41,6 +41,8 @@ Changes Since 0.3.9
     writing (``Element._dom_node``) and pseudo-XML writing
     (``Element.starttag``) to use ``serial_escape``.
   - Added ``Node.deepcopy()`` method.
+  - Removed the internal lists ``document.substitution_refs``,
+    ``document.anonymous_refs``, and ``document.anonymous_targets``.
 
 * docutils/parsers/null.py: Added to project; a do-nothing parser.
 

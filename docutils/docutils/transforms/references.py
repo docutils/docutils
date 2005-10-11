@@ -114,23 +114,29 @@ class AnonymousHyperlinks(Transform):
     default_priority = 440
 
     def apply(self):
-        if len(self.document.anonymous_refs) \
-              != len(self.document.anonymous_targets):
+        anonymous_refs = []
+        anonymous_targets = []
+        for node in self.document.traverse(nodes.reference):
+            if node.get('anonymous'):
+                anonymous_refs.append(node)
+        for node in self.document.traverse(nodes.target):
+            if node.get('anonymous'):
+                anonymous_targets.append(node)
+        if len(anonymous_refs) \
+              != len(anonymous_targets):
             msg = self.document.reporter.error(
                   'Anonymous hyperlink mismatch: %s references but %s '
                   'targets.\nSee "backrefs" attribute for IDs.'
-                  % (len(self.document.anonymous_refs),
-                     len(self.document.anonymous_targets)))
+                  % (len(anonymous_refs), len(anonymous_targets)))
             msgid = self.document.set_id(msg)
-            for ref in self.document.anonymous_refs:
+            for ref in anonymous_refs:
                 prb = nodes.problematic(
                       ref.rawsource, ref.rawsource, refid=msgid)
                 prbid = self.document.set_id(prb)
                 msg.add_backref(prbid)
                 ref.replace_self(prb)
             return
-        for ref, target in zip(self.document.anonymous_refs,
-                               self.document.anonymous_targets):
+        for ref, target in zip(anonymous_refs, anonymous_targets):
             target.referenced = 1
             while 1:
                 if target.hasattr('refuri'):
@@ -720,23 +726,23 @@ class TargetNotes(Transform):
                 refs.extend(self.document.refnames.get(name, []))
             if not refs:
                 continue
-            footnote = self.make_target_footnote(target, refs, notes)
+            footnote = self.make_target_footnote(target['refuri'], refs,
+                                                 notes)
             if not notes.has_key(target['refuri']):
                 notes[target['refuri']] = footnote
                 nodelist.append(footnote)
-        if len(self.document.anonymous_targets) \
-               == len(self.document.anonymous_refs):
-            for target, ref in zip(self.document.anonymous_targets,
-                                   self.document.anonymous_refs):
-                if target.hasattr('refuri'):
-                    footnote = self.make_target_footnote(target, [ref], notes)
-                    if not notes.has_key(target['refuri']):
-                        notes[target['refuri']] = footnote
-                        nodelist.append(footnote)
+        # Take care of anonymous references.
+        for ref in self.document.traverse(nodes.reference):
+            if not ref.get('anonymous'):
+                continue
+            if ref.hasattr('refuri'):
+                footnote = self.make_target_footnote(ref['refuri'], [ref], notes)
+                if not notes.has_key(ref['refuri']):
+                    notes[ref['refuri']] = footnote
+                    nodelist.append(footnote)
         self.startnode.replace_self(nodelist)
 
-    def make_target_footnote(self, target, refs, notes):
-        refuri = target['refuri']
+    def make_target_footnote(self, refuri, refs, notes):
         if notes.has_key(refuri):  # duplicate?
             footnote = notes[refuri]
             assert len(footnote['names']) == 1

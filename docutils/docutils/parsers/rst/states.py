@@ -783,7 +783,6 @@ class Inliner:
                 reference['refuri'] = uri
             else:
                 reference['anonymous'] = 1
-                self.document.note_anonymous_ref(reference)
         else:
             if target:
                 reference['refuri'] = uri
@@ -846,8 +845,6 @@ class Inliner:
                         '|%s%s' % (subref_text, endstring), '')
                     if endstring[-2:] == '__':
                         reference_node['anonymous'] = 1
-                        self.document.note_anonymous_ref(
-                              reference_node)
                     else:
                         reference_node['refname'] = normalize_name(subref_text)
                         self.document.note_refname(reference_node)
@@ -898,7 +895,6 @@ class Inliner:
             name=whitespace_normalize_name(referencename))
         if anonymous:
             referencenode['anonymous'] = 1
-            self.document.note_anonymous_ref(referencenode)
         else:
             referencenode['refname'] = refname
             self.document.note_refname(referencenode)
