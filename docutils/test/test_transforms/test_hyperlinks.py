@@ -281,6 +281,36 @@ __ ztarget_
             Indirect hyperlink target (id="id2") refers to target "ztarget", which is a duplicate, and cannot be used as a unique reference.
 """],
 ["""\
+The next anonymous hyperlink reference is parsed (and discarded) at
+some point, but nonetheless anonymous hyperlink references and targets
+match in this snippet.
+
+.. |invalid| replace:: anonymous__
+
+hyperlink__
+
+__ URL
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        The next anonymous hyperlink reference is parsed (and discarded) at
+        some point, but nonetheless anonymous hyperlink references and targets
+        match in this snippet.
+    <system_message level="3" line="5" source="test data" type="ERROR">
+        <paragraph>
+            Substitution definition contains illegal element:
+        <literal_block xml:space="preserve">
+            <reference anonymous="1" name="anonymous">
+                anonymous
+        <literal_block xml:space="preserve">
+            .. |invalid| replace:: anonymous__
+    <paragraph>
+        <reference anonymous="1" name="hyperlink" refuri="URL">
+            hyperlink
+    <target anonymous="1" ids="id1" refuri="URL">
+"""],
+["""\
 An `embedded uri <http://direct>`_.
 
 Another reference to the same `embedded URI`_.
