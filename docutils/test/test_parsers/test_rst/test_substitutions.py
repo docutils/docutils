@@ -256,19 +256,39 @@ No blank line after.
         |
 """],
 ["""\
-Substitution definition with a target:
+Elements that are prohibited inside of substitution definitions:
 
 .. |target| replace:: _`target`
+.. |reference| replace:: anonymous__
+.. |auto-numbered footnote| replace:: [#]_
 """,
 """\
 <document source="test data">
     <paragraph>
-        Substitution definition with a target:
-    <system_message level="2" line="3" source="test data" type="WARNING">
+        Elements that are prohibited inside of substitution definitions:
+    <system_message level="3" line="3" source="test data" type="ERROR">
         <paragraph>
-            Substitution definitions may not contain targets.
+            Substitution definition contains illegal element:
+        <literal_block xml:space="preserve">
+            <target ids="target" names="target">
+                target
         <literal_block xml:space="preserve">
             .. |target| replace:: _`target`
+    <system_message level="3" line="4" source="test data" type="ERROR">
+        <paragraph>
+            Substitution definition contains illegal element:
+        <literal_block xml:space="preserve">
+            <reference anonymous="1" name="anonymous">
+                anonymous
+        <literal_block xml:space="preserve">
+            .. |reference| replace:: anonymous__
+    <system_message level="3" line="5" source="test data" type="ERROR">
+        <paragraph>
+            Substitution definition contains illegal element:
+        <literal_block xml:space="preserve">
+            <footnote_reference auto="1" ids="id1">
+        <literal_block xml:space="preserve">
+            .. |auto-numbered footnote| replace:: [#]_
 """],
 ]
 

@@ -235,7 +235,7 @@ u"""\
         \u2122
 """],
 ["""\
-Substitution definition with a target:
+Substitution definition with an illegal element:
 
 .. |target| replace:: _`target`
 
@@ -244,10 +244,13 @@ Make sure this substitution definition is not registered: |target|
 """\
 <document source="test data">
     <paragraph>
-        Substitution definition with a target:
-    <system_message level="2" line="3" source="test data" type="WARNING">
+        Substitution definition with an illegal element:
+    <system_message level="3" line="3" source="test data" type="ERROR">
         <paragraph>
-            Substitution definitions may not contain targets.
+            Substitution definition contains illegal element:
+        <literal_block xml:space="preserve">
+            <target ids="target" names="target">
+                target
         <literal_block xml:space="preserve">
             .. |target| replace:: _`target`
     <paragraph>

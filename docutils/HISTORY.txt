@@ -14,10 +14,6 @@
 Changes Since 0.3.9
 ===================
 
-* docutils/writers/latex2e-py:
-
-  Fix underscores in citekeys must not be escaped.
-
 * setup.py: Added installation of data files in
   ``docutils/parsers/rst/include/``.
 
@@ -57,8 +53,9 @@ Changes Since 0.3.9
 
   - Fixed bug with escaped colons indicating a literal block.
   - Fixed bug with enumerated lists (SF#1254145).
-  - Targets (implicit and explicit) inside of substitution definitions
-    are now disallowed.
+  - Targets (implicit and explicit), anonymous hyperlink references
+    and auto-numbered footnote references inside of substitution
+    definitions are now disallowed.
 
 * docutils/parsers/rst/directives/misc.py:
 
@@ -140,6 +137,10 @@ Changes Since 0.3.9
     simple field lists.
   - Made cloaking of email addresses with ``--cloak-email-addresses``
     less obtrusive.
+
+* docutils/writers/latex2e.py:
+
+  - Underscores in citekeys are no longer escaped.
 
 * docutils/writers/support/: Directory added to project.  Modules and
   data files that support writers have been moved here.

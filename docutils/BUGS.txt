@@ -146,28 +146,6 @@ Also see the `SourceForge Bug Tracker`_.
   Quite a few nodes are getting a "None" source attribute as well.  In
   particular, see the bodies of definition lists.
 
-* .. _substitutions:
-
-  "Active" content inside of substitution definitions does not work.
-  This bug becomes manifest in the following cases:
-
-  * .. _substitutions and references:
-
-    Another bug from David Abrahams (run with ``rst2html.py --traceback``)::
-
-        |substitution| and again a |substitution|.
-
-        .. |substitution| replace:: ref__
-
-        __ a.html
-        __ b.html
-
-    Change the references.Substitutions tranform's priority from 220 to
-    680, so it happens after reference resolution?  Then we have to deal
-    with multiple IDs.  Perhaps the Substitution transform should remove
-    all IDs from definitions after the first substitution reference is
-    processed.
-
 * _`Circular substitutions` cause Docutils to hang::
 
       .. |sub| replace:: |sub|
