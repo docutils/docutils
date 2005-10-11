@@ -1390,7 +1390,8 @@ Simple tables are described with horizontal borders made up of "=" and
 "-" characters.  The equals sign ("=") is used for top and bottom
 table borders, and to separate optional header rows from the table
 body.  The hyphen ("-") is used to indicate column spans in a single
-row by underlining the joined columns.
+row by underlining the joined columns, and may optionally be used to
+explicitly and/or visually separate rows.
 
 A simple table begins with a top border of equals signs with one or
 more spaces at each column boundary (two or more spaces recommended).
