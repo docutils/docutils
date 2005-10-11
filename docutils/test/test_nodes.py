@@ -242,6 +242,28 @@ class MiscTests(unittest.TestCase):
     def not_in_testlist(self, x):
         return x not in self.testlist
 
+    def test_copy(self):
+        grandchild = nodes.Text('rawsource')
+        child = nodes.emphasis('rawsource', grandchild, att='child')
+        e = nodes.Element('rawsource', child, att='e')
+        # Shallow copy:
+        e_copy = e.copy()
+        self.assert_(e is not e_copy)
+        # Internal attributes (like `rawsource`) are not copied.
+        self.assertEquals(e.rawsource, 'rawsource')
+        self.assertEquals(e_copy.rawsource, '')
+        self.assertEquals(e_copy['att'], 'e')
+        # Children are not copied.
+        self.assertEquals(len(e_copy), 0)
+        # Deep copy:
+        e_deepcopy = e.deepcopy()
+        self.assertEquals(e_deepcopy.rawsource, '')
+        self.assertEquals(e_deepcopy['att'], 'e')
+        # Children are copied recursively.
+        self.assertEquals(e_deepcopy[0][0], grandchild)
+        self.assert_(e_deepcopy[0][0] is not grandchild)
+        self.assertEquals(e_deepcopy[0]['att'], 'child')
+
 
 class TreeCopyVisitorTests(unittest.TestCase):
 

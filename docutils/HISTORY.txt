@@ -44,6 +44,7 @@ Changes Since 0.3.9
     elements of a list, for serialization.  Modified Docutils-XML
     writing (``Element._dom_node``) and pseudo-XML writing
     (``Element.starttag``) to use ``serial_escape``.
+  - Added ``Node.deepcopy()`` method.
 
 * docutils/parsers/null.py: Added to project; a do-nothing parser.
 
@@ -93,6 +94,7 @@ Changes Since 0.3.9
 
   - Added references.DanglingReferences transform, extracted from
     universal.FinalChecks.
+  - Fixed bug with doubly-indirect substitutions.
 
 * docutils/transforms/universal.py:
 

@@ -101,51 +101,49 @@ u"""\
     <substitution_definition names="replace">
         swap
 """],
-#["""\
-#.. |l| unicode:: U+00AB .. left chevron
-#.. |r| unicode:: U+00BB .. right chevron
-#.. |.| replace:: |l|\ ``.``\ |r|
-#
-#.. Delete either of the following lines, and there is no error.
-#
-#Regular expression |.| will match any character
-#
-#.. Note:: Note that |.| matches *exactly* one character
-#""",
-#u"""\
-#<document source="test data">
-#    <substitution_definition names="l">
-#        \xab
-#    <substitution_definition names="r">
-#        \xbb
-#    <substitution_definition names=".">
-#        <substitution_reference refname="l">
-#            l
-#        <literal>
-#            .
-#        <substitution_reference refname="r">
-#            r
-#    <comment xml:space="preserve">
-#        Delete either of the following lines, and there is no error.
-#    <paragraph>
-#        Regular expression \n\
-#        \xab
-#        <literal>
-#            .
-#        \xbb
-#         will match any character
-#    <note>
-#        <paragraph>
-#            Note that \n\
-#            \xab
-#            <literal>
-#                .
-#            \xbb
-#             matches \n\
-#            <emphasis>
-#                exactly
-#             one character
-#"""],
+["""\
+.. |l| unicode:: U+00AB .. left chevron
+.. |r| unicode:: U+00BB .. right chevron
+.. |.| replace:: |l|\ ``.``\ |r|
+
+.. Delete either of the following lines, and there is no error.
+
+Regular expression |.| will match any character
+
+.. Note:: Note that |.| matches *exactly* one character
+""",
+u"""\
+<document source="test data">
+    <substitution_definition names="l">
+        \xab
+    <substitution_definition names="r">
+        \xbb
+    <substitution_definition names=".">
+        \xab
+        <literal>
+            .
+        \xbb
+    <comment xml:space="preserve">
+        Delete either of the following lines, and there is no error.
+    <paragraph>
+        Regular expression \n\
+        \xab
+        <literal>
+            .
+        \xbb
+         will match any character
+    <note>
+        <paragraph>
+            Note that \n\
+            \xab
+            <literal>
+                .
+            \xbb
+             matches \n\
+            <emphasis>
+                exactly
+             one character
+"""],
 ])
 
 totest['unicode'] = ((Substitutions,), [
