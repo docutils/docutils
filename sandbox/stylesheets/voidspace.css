@@ -7,10 +7,10 @@
 
 Stylesheet for Docutils.
 Based on ``blue_box.css`` by Ian Bicking
-and ``default.css`` revision 1.46
+and ``html4css1.css`` revision 1.46.
 */
 
-@import url(default.css);
+@import url(html4css1.css);
 
 body {
   font-family: Arial, sans-serif;
