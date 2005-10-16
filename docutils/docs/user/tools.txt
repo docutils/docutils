@@ -27,10 +27,11 @@ pattern::
 
     toolname [options] [<source> [<destination]]
 
-(The exceptions are buildhtml.py_ and pep2html.py_.)  See rst2html.py_
-for concrete examples.  Each tool has a "``--help``" option which
-lists the `command-line options`_ and arguments it supports.
-Processing can also be customized with `configuration files`_.
+(The exceptions are buildhtml.py_ and rstpep2html.py_.)  See
+rst2html.py_ for concrete examples.  Each tool has a "``--help``"
+option which lists the `command-line options`_ and arguments it
+supports.  Processing can also be customized with `configuration
+files`_.
 
 The two arguments, "source" and "destination", are optional.  If only
 one argument (source) is specified, the standard output (stdout) is
