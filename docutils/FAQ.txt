@@ -1,3 +1,5 @@
+.. -*- coding: utf-8 -*-
+
 ===========================================
  Docutils FAQ (Frequently Asked Questions)
 ===========================================
@@ -495,6 +497,11 @@ They all presently use LaTeX syntax or dialects of it.
   .. _raw directive: http://docutils.sourceforge.net/docs/ref/rst/
                      directives.html#raw-data-pass-through
   .. _raw role: http://docutils.sourceforge.net/docs/ref/rst/roles.html#raw
+
+* Jens Jørgen Mortensen has implemented a "latex-math" role and
+  directive, available from `his sandbox`__.
+
+  __ http://docutils.sourceforge.net/sandbox/jensj/latex_math/
 
 * For HTML the "Right" w3c-standard way to include math is MathML_.
   Unfortunately its rendering is still quite broken (or absent) on many
