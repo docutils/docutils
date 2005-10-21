@@ -235,7 +235,7 @@ Also see the `SourceForge Bug Tracker`_.
   the HTML output at
   ``test/functional/expected/standalone_rst_html4css1.html``.
 
-* Blank first columns in simple tables with explicit row separators
+* _`Blank first columns` in simple tables with explicit row separators
   silently swallow their input.  They should at least produce system
   error messages.  But, with explicit row separators, the meaning is
   unambiguous and ought to be supported::
