@@ -20,12 +20,15 @@
 ;;    C-= : updates or rotates the section title around point or
 ;;          promotes/demotes the decorations within the region (see full details
 ;;          below).
-;;
+;;	        
 ;;          Note that C-= is a good binding, since it allows you to specify a
 ;;          negative arg easily with C-- C-= (easy to type), as well as ordinary
 ;;          prefix arg with C-u C-=.
 ;;
-;;    C-x C-= : displays the hierarchy of title decorations from this file.
+;;    C-x C-= : displays the hierarchical table-of-contents of the document and
+;;              allows you to jump to any section from it.
+;;
+;;    C-u C-x C-= : displays the title decorations from this file.
 ;;
 ;;    C-M-{, C-M-} : navigate between section titles.
 ;;
@@ -38,7 +41,7 @@
 ;; - rest-default-indent
 ;; - rest-preferred-decorations
 ;;
-;; TODO: 
+;; TODO:
 ;; - Add an option to forego using the file structure in order to make
 ;;   suggestion, and to always use the preferred decorations to do that.
 ;;
@@ -75,7 +78,7 @@ is for which (pred elem) is true)"
           (goto-char opoint)
           (forward-line 0)
           (1+ (count-lines start (point)))))) )
-    
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; The following functions implement a smart automatic title sectioning feature.
@@ -151,10 +154,17 @@ is for which (pred elem) is true)"
 ;; adjustment (unless we cycle, in which case we use the indent that has been
 ;; found previously).
 
+(defun rest-toc-or-hierarchy ()
+  "Binding for either TOC or decorations hierarchy."
+  (interactive)
+  (if (not current-prefix-arg)
+      (rest-toc)
+    (rest-display-decorations-hierarchy)))
+
 (defun rest-text-mode-hook ()
   "Default text mode hook for rest."
   (local-set-key [(control ?=)] 'rest-adjust)
-  (local-set-key [(control x)(control ?=)] 'rest-display-sections-hierarchy)
+  (local-set-key [(control x)(control ?=)] 'rest-toc-or-hierarchy)
   (local-set-key [(control meta ?{)] 'rest-backward-section)
   (local-set-key [(control meta ?})] 'rest-forward-section)
   )
@@ -563,7 +573,7 @@ A list of the previous and next decorations is returned."
     ))
 
 
-(defun rest-get-next-decoration 
+(defun rest-get-next-decoration
   (curdeco hier &optional suggestion reverse-direction)
   "Get the next decoration for CURDECO, in given hierarchy HIER,
 and suggesting for new decoration SUGGESTION."
@@ -590,7 +600,7 @@ and suggesting for new decoration SUGGESTION."
 			      (eq style (cadar cur)))))
 	  (setq cur (cdr cur)))
 	cur))
-		    
+
      ;; If not found, take the first of all decorations.
      suggestion
      )))
@@ -904,7 +914,7 @@ of the right hand fingers and the binding is unused in text-mode."
 				  hier
 				  (car (rest-get-decorations-around alldecos))))
 
-		     (nextdeco (rest-get-next-decoration 
+		     (nextdeco (rest-get-next-decoration
 				curdeco hier suggestion reverse-direction))
 
 		     )
@@ -948,7 +958,7 @@ the hierarchy is similar to that used by rest-adjust-decoration."
   (let* ((demote (or current-prefix-arg demote))
 	 (alldecos (rest-find-all-decorations))
 	 (cur alldecos)
-	 
+
 	 (hier (rest-get-hierarchy alldecos))
 	 (suggestion (rest-suggest-new-decoration hier))
 
@@ -961,7 +971,7 @@ the hierarchy is similar to that used by rest-adjust-decoration."
     ;; Skip the markers that come before the region beginning
     (while (and cur (< (caar cur) region-begin-line))
       (setq cur (cdr cur)))
-    
+
     ;; Create a list of markers for all the decorations which are found within
     ;; the region.
     (save-excursion
@@ -977,23 +987,23 @@ the hierarchy is similar to that used by rest-adjust-decoration."
 	(dolist (p marker-list)
 	  ;; Go to the decoration to promote.
 	  (goto-char (car p))
-	  
+
 	  ;; Rotate the next decoration.
-	  (setq nextdeco (rest-get-next-decoration 
+	  (setq nextdeco (rest-get-next-decoration
 			  (cadr p) hier suggestion demote))
-	  
+
 	  ;; Update the decoration.
 	  (apply 'rest-update-section nextdeco)
-	  
+
 	  ;; Clear marker to avoid slowing down the editing after we're done.
 	  (set-marker (car p) nil)
 	  ))
-      (setq deactivate-mark nil) 
+      (setq deactivate-mark nil)
     )))
 
 
 
-(defun rest-display-sections-hierarchy (&optional decorations)
+(defun rest-display-decorations-hierarchy (&optional decorations)
   "Display the current file's section title decorations hierarchy.
   This function expects a list of (char, style, indent) triples."
   (interactive)
@@ -1011,6 +1021,149 @@ the hierarchy is similar to that used by rest-adjust-decoration."
           (incf level)
           ))
     )))
+
+
+(defun rest-get-stripped-line ()
+  "Returns the line at cursor, stripped from whitespace."
+  (re-search-forward "\\S-.*\\S-" (line-end-position))
+  (buffer-substring-no-properties (match-beginning 0)
+				  (match-end 0)) )
+
+
+(defvar rest-toc-indent 4
+  "Indentation for table-of-contents display.")
+
+(defun rest-toc ()
+  "Finds all the section titles and their decorations in the
+  file, and displays a hierarchically-organized list of the
+  titles, which is essentially a table-of-contents of the
+  document.
+
+  The emacs buffer can be navigated, and selecting a section
+  brings the cursor in that section."
+  (interactive)
+  (let* ((curpoint (point))
+	 foundline
+	  (alldecos (rest-find-all-decorations))
+	 (hier (rest-get-hierarchy alldecos))
+	 (levels (make-hash-table :test 'equal :size 10))
+	 (buf (get-buffer-create rest-toc-buffer-name))
+	 lines)
+    (let ((lev 0))
+      (dolist (deco hier)
+	(puthash deco lev levels)
+	(incf lev)))
+
+    (let ((curline 1))
+      (save-excursion
+	(setq lines
+	      (mapcar (lambda (deco)
+			(goto-line (car deco))
+			(if (and (not foundline) (> (point) curpoint))
+			    (setq foundline curline))
+			(incf curline)
+			(list (rest-get-stripped-line)
+			      (gethash (cdr deco) levels)
+			      (let ((m (make-marker)))
+				(beginning-of-line 1)
+				(set-marker m (point)))
+			      ))
+		      alldecos))))
+
+    (with-current-buffer buf
+      (let ((inhibit-read-only t))
+	(rest-toc-mode)
+	(delete-region (point-min) (point-max))
+	(insert (format "Table of Contents: %s\n" (caar lines)))
+	(put-text-property (point-min) (point) 
+			   'face (list '(background-color . "lightgray")))
+	(dolist (x lines)
+	  (let* (
+		 ;; Compute line text to be inserted.
+		 (ins (concat (make-string (* rest-toc-indent (cadr x)) ? )
+			      (car x)))
+
+		 ;; Compute boundaries of this text.
+		 (beg (point))
+		 (end (+ beg (length ins)))
+		 )
+	    ;; Insert line.
+	    (insert ins "\n")
+
+	    ;; Highlight lines.
+	    (put-text-property beg end 'mouse-face 'highlight)
+
+	    ;; Add link on lines.
+	    (put-text-property beg end 'rest-toc-target (caddr x))
+	    ))
+	))
+    (display-buffer buf)
+    (pop-to-buffer buf)
+    (goto-line foundline)
+    ))
+
+
+(defun rest-toc-mode-find-section ()
+  (let ((pos (get-text-property (point) 'rest-toc-target)))
+    (unless pos
+      (error "No section on this line"))
+    (unless (buffer-live-p (marker-buffer pos))
+      (error "Buffer for this section was killed"))
+    pos))
+
+(defvar rest-toc-buffer-name "*Table of Contents*"
+  "Name of the Table of Contents buffer.")
+
+(defun rest-toc-mode-goto-section ()
+  "Go to the section the current line describes."
+  (interactive)
+  (let ((pos (rest-toc-mode-find-section)))
+    (kill-buffer (get-buffer rest-toc-buffer-name))
+    (pop-to-buffer (marker-buffer pos))
+    (goto-char pos)
+    (recenter 5)))
+
+(defun rest-toc-mode-mouse-goto (event)
+  "In Rest-Toc mode, go to the occurrence whose line you click on."
+  (interactive "e")
+  (let (pos)
+    (save-excursion
+      (set-buffer (window-buffer (posn-window (event-end event))))
+      (save-excursion
+	(goto-char (posn-point (event-end event)))
+	(setq pos (rest-toc-mode-find-section))))
+    (pop-to-buffer (marker-buffer pos))
+    (goto-char pos)))
+
+(defun rest-toc-mode-mouse-goto-kill (event)
+  (interactive "e")
+  (call-interactively 'rest-toc-mode-mouse-goto event)
+  (kill-buffer (get-buffer rest-toc-buffer-name)))
+    
+(defvar rest-toc-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map [mouse-1] 'rest-toc-mode-mouse-goto-kill)
+    (define-key map [mouse-2] 'rest-toc-mode-mouse-goto)
+    (define-key map "\C-m" 'rest-toc-mode-goto-section)
+    (define-key map "f" 'rest-toc-mode-goto-section)
+    (define-key map "q" 'quit-window)
+    (define-key map "z" 'kill-this-buffer)
+    map)
+  "Keymap for `rest-toc-mode'.")
+
+(put 'rest-toc-mode 'mode-class 'special)
+(defun rest-toc-mode ()
+  "Major mode for output from \\[rest-toc]."
+  (interactive)
+  (kill-all-local-variables)
+  (use-local-map rest-toc-mode-map)
+  (setq major-mode 'rest-toc-mode)
+  (setq mode-name "Rest-TOC")
+  (setq buffer-read-only t)
+  )
+
+;; Note: use occur-mode (replace.el) as a good example to complete missing
+;; features.
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
