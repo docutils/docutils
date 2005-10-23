@@ -660,6 +660,19 @@ Also see the `... Or Not To Do?`__ list.
 
 __ rst/alternatives.html#or-not-to-do
 
+* The current list-recognition logic has too many false positives, as
+  in ::
+
+      * Aorta
+      * V. cava superior
+      * V. cava inferior
+
+  Here ``V.`` is recognized as an enumerator, which leads to
+  confusion.  We need to find a solution that resolves such problems
+  without complicating the spec to much.
+
+  See <http://thread.gmane.org/gmane.text.docutils.user/2524>.
+
 * Add indirect links via citation references & footnote references.
   Example::
 
