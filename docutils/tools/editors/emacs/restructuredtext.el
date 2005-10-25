@@ -1068,7 +1068,10 @@ the hierarchy is similar to that used by rest-adjust-decoration."
 				(beginning-of-line 1)
 				(set-marker m (point)))
 			      ))
-		      alldecos))))
+		      alldecos)))
+      (if (not foundline)
+	  (setq foundline curline))
+      )
 
     (with-current-buffer buf
       (let ((inhibit-read-only t))

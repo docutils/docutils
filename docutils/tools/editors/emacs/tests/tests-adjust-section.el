@@ -760,6 +760,53 @@ Document Title2
 "
 )
 
+;;------------------------------------------------------------------------------
+(cycle-previous-only
+"
+==================
+  Document Title
+==================
+
+Document Title2
+===============
+
+=======
+  Bli@
+=======
+
+Document Title2
+===============
+
+Document Title3
+---------------
+
+Document Title4
+~~~~~~~~~~~~~~~
+
+"
+"
+==================
+  Document Title
+==================
+
+Document Title2
+===============
+
+Bli@
+---
+
+Document Title2
+===============
+
+Document Title3
+---------------
+
+Document Title4
+~~~~~~~~~~~~~~~
+
+"
+)
+
 ))
 
 
