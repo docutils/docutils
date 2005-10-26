@@ -38,7 +38,7 @@ Please see also the Bugs_ document for a list of bugs in Docutils.
 Release 0.4
 ===========
 
-We should get Docutils 0.4 out soon.  But we shouldn't just cut a
+We should get Docutils 0.4 out soon, but we shouldn't just cut a
 "frozen snapshot" release.  Here's a list of features (achievable in
 the short term) to include:
 
@@ -53,6 +53,18 @@ the short term) to include:
 * Fix East-Asian `double-width characters`_ issue.  [DavidG]
 
 Anything else?
+
+Once released,
+
+* Tag it and create a maintenance branch (perhaps "maint-0-4").
+
+* Declare that:
+
+  - Docutils 0.4.x is the last version that will support Python 2.1
+    (and perhaps higher?)
+
+  - Docutils 0.4.x is the last version that will support (make
+    compromises for) Netscape Navigator 4
 
 
 Minimum Requirements for Python Standard Library Candidacy
@@ -91,6 +103,9 @@ for inclusion in the Python standard library.
 
 General
 =======
+
+* Change the docutils-update script (in sandbox/infrastructure), to
+  support arbitrary branch snapshots.
 
 * Add a --strip-comments command-line option (& strip_comments runtime
   setting), declared in docutils/frontend.py, and implemented as a
@@ -817,8 +832,12 @@ __ rst/alternatives.html#or-not-to-do
   Tony Ibbs spoke out against this idea (2002-06-14 Doc-SIG thread
   "docutils feedback").
 
-* Should the "doctest" element go away, and the construct simply be a
-  front-end to generic literal blocks?
+* The "doctest" element should go away.  The construct could simply be
+  a front-end to generic literal blocks.  We could immediately (in
+  0.4, or 0.5) remove the doctest node from the doctree, but leave the
+  syntax in reST.  The reST parser could represent doctest blocks as
+  literal blocks with a class attribute.  The syntax could be left in
+  reST for a set period of time.
 
 * Add support for pragma (syntax-altering) directives.
 
@@ -1136,6 +1155,11 @@ when used in a document.
 
   - _`misc.settings`: Set any(?) Docutils runtime setting from within
     a document?  Needs much thought and discussion.
+
+  - _`misc.gather`: Gather (move, or copy) all instances of a specific
+    element.  A generalization of the "endnotes" & "citations" ideas.
+
+  - Add a "directive" directive, equivalent to "role"?
 
   - .. _conditional directives:
 
