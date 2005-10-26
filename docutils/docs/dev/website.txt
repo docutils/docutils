@@ -31,10 +31,10 @@ After adding directories to SVN, allow the script to run once to
 create the directories in the filesystem before preparing for HTML
 processing as described above.
 
-The docutils-update__ script is located as
-``sandbox/davidg/infrastructure/docutils-update``.
+The docutils-update__ script is located at
+``sandbox/infrastructure/docutils-update``.
 
-__ http://docutils.sf.net/sandbox/davidg/infrastructure/docutils-update
+__ http://docutils.sf.net/sandbox/infrastructure/docutils-update
 
 
 ..
