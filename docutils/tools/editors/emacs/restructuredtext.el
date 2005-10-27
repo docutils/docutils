@@ -20,7 +20,7 @@
 ;;    C-= : updates or rotates the section title around point or
 ;;          promotes/demotes the decorations within the region (see full details
 ;;          below).
-;;	        
+;;
 ;;          Note that C-= is a good binding, since it allows you to specify a
 ;;          negative arg easily with C-- C-= (easy to type), as well as ordinary
 ;;          prefix arg with C-u C-=.
@@ -29,6 +29,9 @@
 ;;              allows you to jump to any section from it.
 ;;
 ;;    C-u C-x C-= : displays the title decorations from this file.
+;;
+;;    C-x + : insert the table of contents in the text.  See the many options
+;;            for customizing how it will look.
 ;;
 ;;    C-M-{, C-M-} : navigate between section titles.
 ;;
@@ -165,6 +168,7 @@ is for which (pred elem) is true)"
   "Default text mode hook for rest."
   (local-set-key [(control ?=)] 'rest-adjust)
   (local-set-key [(control x)(control ?=)] 'rest-toc-or-hierarchy)
+  (local-set-key [(control x)(?+)] 'rest-toc-insert)
   (local-set-key [(control meta ?{)] 'rest-backward-section)
   (local-set-key [(control meta ?})] 'rest-forward-section)
   )
@@ -1022,6 +1026,15 @@ the hierarchy is similar to that used by rest-adjust-decoration."
           ))
     )))
 
+(if (not (fboundp 'strip-whitespace))
+    (defun strip-whitespace (str)
+      "Strips the whitespace around a string."
+      (let ((tmp))
+	(string-match "\\`[ \t\n]*" str)
+	(setq tmp (substring str (match-end 0)))
+	(string-match "[ \t\n]*\\'" tmp)
+	(substring tmp 0 (match-beginning 0))
+	)))
 
 (defun rest-get-stripped-line ()
   "Returns the line at cursor, stripped from whitespace."
@@ -1033,6 +1046,194 @@ the hierarchy is similar to that used by rest-adjust-decoration."
 (defvar rest-toc-indent 4
   "Indentation for table-of-contents display.")
 
+
+(defun rest-section-tree (alldecos)
+  "Returns a pair of a hierarchical tree of the sections titles
+in the document, and a reference to the node where the cursor
+lives. This can be used to generate a table of contents for the
+document.
+
+Each section title consists in a cons of the stripped title
+string and a marker to the section in the original text document.
+
+If there are missing section levels, the section titles are
+inserted automatically, and are set to nil."
+
+  (let* (thelist
+	 (hier (rest-get-hierarchy alldecos))
+	 (levels (make-hash-table :test 'equal :size 10))
+	 lines)
+
+    (let ((lev 0))
+      (dolist (deco hier)
+	(puthash deco lev levels)
+	(incf lev)))
+
+    ;; Create a list of lines that contains (text, level, marker) for each
+    ;; decoration.
+    (save-excursion
+      (setq lines
+	    (mapcar (lambda (deco)
+		      (goto-line (car deco))
+		      (list (gethash (cdr deco) levels)
+			    (rest-get-stripped-line)
+			    (let ((m (make-marker)))
+			      (beginning-of-line 1)
+			      (set-marker m (point)))
+			    ))
+		    alldecos)))
+
+    (let ((lcontnr (cons nil lines)))
+      (rest-section-tree-rec lcontnr -1))))
+
+
+(defun rest-section-tree-rec (decos lev)
+  "Recursive function for the implementation of the section tree
+  building. DECOS is a cons cell whose cdr is the remaining list
+  of decorations, and we change it as we consume them.  LEV is
+  the current level of that node.  This function returns a pair
+  of the subtree that was built.  This treats the decos list
+  destructively."
+  
+  (let ((ndeco (cadr decos))
+	node
+	children)
+    ;; If the next decoration matches our level
+    (if (= (car ndeco) lev)
+	(progn
+	  ;; Pop the next decoration and create the current node with it
+	  (setcdr decos (cddr decos))
+	  (setq node (cdr ndeco)) ))
+      ;; Else we let the node title/marker be unset.
+
+    ;; Build the child nodes
+    (while (and (cdr decos) (> (caadr decos) lev))
+      (setq children 
+	    (cons (rest-section-tree-rec decos (1+ lev))
+		  children)))
+
+    ;; Return this node with its children.
+    (cons node (reverse children))
+    ))
+
+(defun rest-toc-insert (&optional pfxarg)
+  "Insert a simple text rendering of the table of contents.
+By default the top level is ignored if there is only one, because
+we assume that the document will have a single title.  
+
+If a numeric prefix argument is given, 
+- if it is zero or generic, include the top level titles;
+- otherwise insert the TOC up to the specified level."
+  (interactive "P")
+
+  (let* (;; Check maximum level override
+	 (rest-toc-insert-max-level
+	  (if (and (integerp pfxarg) (> (prefix-numeric-value pfxarg) 0))
+	      (prefix-numeric-value pfxarg) rest-toc-insert-max-level))
+	 
+	 ;; Get the section tree.
+	 (sectree (rest-section-tree (rest-find-all-decorations)))
+		   
+	 ;; If there is only one top-level title, remove it by starting to print
+	 ;; one index lower (revert this behaviour with the prefix arg),
+	 ;; otherwise print all.
+	 (gen-pfx-arg (or (and pfxarg (listp pfxarg))
+			  (and (integerp pfxarg) 
+			       (= (prefix-numeric-value pfxarg) 0))))
+	 (start-lev (if (and (not rest-toc-insert-always-include-top)
+			     (= (length (cdr sectree)) 1)
+			     (not gen-pfx-arg))  -1 0)))
+
+  (rest-toc-insert-node sectree start-lev "")))
+
+(defvar rest-toc-insert-always-include-top nil
+  "Set this to 't if you want to always include top-level titles,
+  even when there is only one.")
+
+(defvar rest-toc-insert-numbering t
+  "Set this to 't if you want to always include top-level titles,
+  even when there is only one.")
+
+(defvar rest-toc-insert-initial-indent "   "
+  "Initial string that is inserted to the left of the inserted TOC.
+You will want to make this match the block indent where you mean to insert it.")
+
+(defvar rest-toc-insert-max-level nil
+  "If non-nil, maximum depth of the inserted TOC.")
+
+(defun rest-toc-insert-node (node level pfx)
+  "Recursive function that does the print of the inserted
+toc. PFX is the prefix numbering, that includes the alignment
+necessary for all the children of this level to align."
+  (let ((do-print (> level 0))
+	(count 1)
+	b)
+    (if do-print
+	(progn
+	  (if (car node)
+	      (progn
+		(insert rest-toc-insert-initial-indent)
+		(insert (make-string (* rest-toc-indent (1- level)) ? ))
+		(let ((b (point)))
+		  (if rest-toc-insert-numbering
+		      (insert pfx "  "))
+		  (insert (caar node))
+		  ;; Add properties to the text, even though in normal text mode
+		  ;; it won't be doing anything for now.  Not sure that I want
+		  ;; to change mode stuff.  At least the highlighting gives the
+		  ;; idea that this is generated automatically.
+		  (put-text-property b (point) 'mouse-face 'highlight)
+		  (put-text-property b (point) 'rest-toc-target (cadar node))
+		  )
+		(insert "\n")))
+	  ))
+
+    (if (or (eq rest-toc-insert-max-level nil) (< level rest-toc-insert-max-level))
+	(let ((do-child-numbering (>= level 0))
+	      fmt)
+	  (if do-child-numbering
+	      (progn
+		;; Add a separating dot if there is already a prefix
+		(if (> (length pfx) 0)
+		    (setq pfx (concat (strip-whitespace pfx) ".")))
+
+		;; Calculate the amount of space that the prefix will require for
+		;; the numbers.
+		(if (cdr node)
+		    (setq fmt (format "%%-%dd" (1+ (floor (log10 (length (cdr node))))))))
+		))
+
+	  (dolist (child (cdr node))
+	    (rest-toc-insert-node child 
+				  (1+ level) 
+				  (if do-child-numbering 
+				      (concat pfx (format fmt count)) pfx))
+	    (incf count)))
+
+      )))
+
+
+(defun rest-toc-node (node level)
+  "Recursive function that does the print of the TOC in rest-toc-mode."
+
+  (if (> level 0)
+      (let ((b (point)))
+	;; Insert line text.
+	(insert (make-string (* rest-toc-indent (1- level)) ? ))
+	(insert (if (car node) (caar node) "(missing node)"))
+
+	;; Highlight lines.
+	(put-text-property b (point) 'mouse-face 'highlight)
+    
+	;; Add link on lines.
+	(put-text-property b (point) 'rest-toc-target (cadar node))
+
+	(insert "\n")))
+
+  (dolist (child (cdr node))
+    (rest-toc-node child (1+ level))))
+
+
 (defun rest-toc ()
   "Finds all the section titles and their decorations in the
   file, and displays a hierarchically-organized list of the
@@ -1042,67 +1243,47 @@ the hierarchy is similar to that used by rest-adjust-decoration."
   The emacs buffer can be navigated, and selecting a section
   brings the cursor in that section."
   (interactive)
-  (let* ((curpoint (point))
-	 foundline
-	  (alldecos (rest-find-all-decorations))
-	 (hier (rest-get-hierarchy alldecos))
-	 (levels (make-hash-table :test 'equal :size 10))
-	 (buf (get-buffer-create rest-toc-buffer-name))
-	 lines)
-    (let ((lev 0))
-      (dolist (deco hier)
-	(puthash deco lev levels)
-	(incf lev)))
+  (let* ((curbuf (current-buffer))
+	 outline
 
-    (let ((curline 1))
-      (save-excursion
-	(setq lines
-	      (mapcar (lambda (deco)
-			(goto-line (car deco))
-			(if (and (not foundline) (> (point) curpoint))
-			    (setq foundline curline))
-			(incf curline)
-			(list (rest-get-stripped-line)
-			      (gethash (cdr deco) levels)
-			      (let ((m (make-marker)))
-				(beginning-of-line 1)
-				(set-marker m (point)))
-			      ))
-		      alldecos)))
-      (if (not foundline)
-	  (setq foundline curline))
-      )
+	 ;; Get the section tree
+	 (alldecos (rest-find-all-decorations))
+	 (sectree (rest-section-tree alldecos))
+
+	 ;; Create a temporary buffer.
+	 (buf (get-buffer-create rest-toc-buffer-name))
+	 )
+
+    ;; Find the index of the section where the cursor currently is.
+    (setq outline (let ((idx 1)
+			(curline (line-number-at-pos (point)))
+			(decos alldecos))
+		    (while (and decos (<= (caar decos) curline))
+		      (setq decos (cdr decos))
+		      (incf idx))
+		    idx))
+    ;; FIXME: if there is a missing node inserted, the calculation of the
+    ;; current line will be off. You need to fix this by moving the finding of
+    ;; the current line somewhere else.
+
 
     (with-current-buffer buf
       (let ((inhibit-read-only t))
 	(rest-toc-mode)
 	(delete-region (point-min) (point-max))
-	(insert (format "Table of Contents: %s\n" (caar lines)))
-	(put-text-property (point-min) (point) 
+	(insert (format "Table of Contents: %s\n" (or (caar sectree) "")))
+	(put-text-property (point-min) (point)
 			   'face (list '(background-color . "lightgray")))
-	(dolist (x lines)
-	  (let* (
-		 ;; Compute line text to be inserted.
-		 (ins (concat (make-string (* rest-toc-indent (cadr x)) ? )
-			      (car x)))
-
-		 ;; Compute boundaries of this text.
-		 (beg (point))
-		 (end (+ beg (length ins)))
-		 )
-	    ;; Insert line.
-	    (insert ins "\n")
-
-	    ;; Highlight lines.
-	    (put-text-property beg end 'mouse-face 'highlight)
-
-	    ;; Add link on lines.
-	    (put-text-property beg end 'rest-toc-target (caddr x))
-	    ))
+	(rest-toc-node sectree 0)
 	))
     (display-buffer buf)
     (pop-to-buffer buf)
-    (goto-line foundline)
+
+    ;; Save the buffer to return to.
+    (set (make-local-variable 'rest-toc-return-buffer) curbuf)
+
+    ;; Move the cursor near the right section in the TOC.
+    (goto-line outline)
     ))
 
 
@@ -1142,19 +1323,29 @@ the hierarchy is similar to that used by rest-adjust-decoration."
   (interactive "e")
   (call-interactively 'rest-toc-mode-mouse-goto event)
   (kill-buffer (get-buffer rest-toc-buffer-name)))
-    
+
+(defvar rest-toc-return-buffer nil
+  "Buffer local variable that is used to return to the original
+  buffer from the TOC.")
+
+(defun rest-toc-quit-window ()
+  (interactive)
+  (quit-window)
+  (pop-to-buffer rest-toc-return-buffer))
+
 (defvar rest-toc-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map [mouse-1] 'rest-toc-mode-mouse-goto-kill)
     (define-key map [mouse-2] 'rest-toc-mode-mouse-goto)
     (define-key map "\C-m" 'rest-toc-mode-goto-section)
     (define-key map "f" 'rest-toc-mode-goto-section)
-    (define-key map "q" 'quit-window)
+    (define-key map "q" 'rest-toc-quit-window)
     (define-key map "z" 'kill-this-buffer)
     map)
   "Keymap for `rest-toc-mode'.")
 
 (put 'rest-toc-mode 'mode-class 'special)
+
 (defun rest-toc-mode ()
   "Major mode for output from \\[rest-toc]."
   (interactive)
