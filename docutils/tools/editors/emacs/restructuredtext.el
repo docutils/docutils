@@ -1026,15 +1026,13 @@ the hierarchy is similar to that used by rest-adjust-decoration."
           ))
     )))
 
-(if (not (fboundp 'strip-whitespace))
-    (defun strip-whitespace (str)
-      "Strips the whitespace around a string."
-      (let ((tmp))
-	(string-match "\\`[ \t\n]*" str)
-	(setq tmp (substring str (match-end 0)))
-	(string-match "[ \t\n]*\\'" tmp)
-	(substring tmp 0 (match-beginning 0))
-	)))
+
+(defun rest-rstrip (str)
+  "Strips the whitespace at the end of a string."
+  (let ((tmp))
+    (string-match "[ \t\n]*\\'" str)
+    (substring str 0 (match-beginning 0))
+    ))
 
 (defun rest-get-stripped-line ()
   "Returns the line at cursor, stripped from whitespace."
@@ -1044,7 +1042,8 @@ the hierarchy is similar to that used by rest-adjust-decoration."
 
 
 (defvar rest-toc-indent 4
-  "Indentation for table-of-contents display.")
+  "Indentation for table-of-contents display (also used for
+  formatting insertion, when numbering is disabled).")
 
 
 (defun rest-section-tree (alldecos)
@@ -1123,7 +1122,10 @@ we assume that the document will have a single title.
 
 If a numeric prefix argument is given, 
 - if it is zero or generic, include the top level titles;
-- otherwise insert the TOC up to the specified level."
+- otherwise insert the TOC up to the specified level.
+
+The TOC is inserted indented at the current column."
+
   (interactive "P")
 
   (let* (;; Check maximum level override
@@ -1142,9 +1144,17 @@ If a numeric prefix argument is given,
 			       (= (prefix-numeric-value pfxarg) 0))))
 	 (start-lev (if (and (not rest-toc-insert-always-include-top)
 			     (= (length (cdr sectree)) 1)
-			     (not gen-pfx-arg))  -1 0)))
+			     (not gen-pfx-arg))  -1 0))
 
-  (rest-toc-insert-node sectree start-lev "")))
+	 ;; Figure out initial indent.
+	 (initial-indent (make-string (current-column) ? ))
+	 (init-point (point)))
+
+    (rest-toc-insert-node sectree start-lev initial-indent "")
+
+    ;; Fixup for the first line.
+    (delete-region init-point (+ init-point (length initial-indent)))
+    ))
 
 (defvar rest-toc-insert-always-include-top nil
   "Set this to 't if you want to always include top-level titles,
@@ -1154,38 +1164,49 @@ If a numeric prefix argument is given,
   "Set this to 't if you want to always include top-level titles,
   even when there is only one.")
 
-(defvar rest-toc-insert-initial-indent "   "
-  "Initial string that is inserted to the left of the inserted TOC.
-You will want to make this match the block indent where you mean to insert it.")
-
 (defvar rest-toc-insert-max-level nil
   "If non-nil, maximum depth of the inserted TOC.")
 
-(defun rest-toc-insert-node (node level pfx)
+(defun rest-toc-insert-node (node level indent pfx)
   "Recursive function that does the print of the inserted
 toc. PFX is the prefix numbering, that includes the alignment
 necessary for all the children of this level to align."
   (let ((do-print (> level 0))
 	(count 1)
+	(numbered-indent-style 'aligned)
 	b)
     (if do-print
 	(progn
-	  (if (car node)
-	      (progn
-		(insert rest-toc-insert-initial-indent)
-		(insert (make-string (* rest-toc-indent (1- level)) ? ))
-		(let ((b (point)))
-		  (if rest-toc-insert-numbering
-		      (insert pfx "  "))
-		  (insert (caar node))
-		  ;; Add properties to the text, even though in normal text mode
-		  ;; it won't be doing anything for now.  Not sure that I want
-		  ;; to change mode stuff.  At least the highlighting gives the
-		  ;; idea that this is generated automatically.
-		  (put-text-property b (point) 'mouse-face 'highlight)
-		  (put-text-property b (point) 'rest-toc-target (cadar node))
-		  )
-		(insert "\n")))
+	  (insert indent)
+	  (let ((b (point)))
+	    (if rest-toc-insert-numbering
+		(insert pfx "  "))
+	    (insert (or (caar node) "[missing node]"))
+	    ;; Add properties to the text, even though in normal text mode it
+	    ;; won't be doing anything for now.  Not sure that I want to change
+	    ;; mode stuff.  At least the highlighting gives the idea that this
+	    ;; is generated automatically.
+	    (put-text-property b (point) 'mouse-face 'highlight)
+	    (put-text-property b (point) 'rest-toc-target (cadar node))
+	    )
+	  (insert "\n")
+
+	  ;; Prepare indent for children.
+	  (setq indent 
+		(if (not rest-toc-insert-numbering)
+		    (concat indent rest-toc-indent)
+		  (cond 
+		   ((eq numbered-indent-style 'fixed)
+		    (concat indent (make-string rest-toc-indent ? )))
+		   
+		   ((eq numbered-indent-style 'aligned)
+		    (concat indent (make-string (+ (length pfx) 2) ? )))
+		   
+		   ((eq numbered-indent-style 'listed)
+		    (concat (substring indent 0 -3) 
+			    (concat (make-string (+ (length pfx) 2) ? ) " - ")))
+		   )))
+
 	  ))
 
     (if (or (eq rest-toc-insert-max-level nil) (< level rest-toc-insert-max-level))
@@ -1195,7 +1216,7 @@ necessary for all the children of this level to align."
 	      (progn
 		;; Add a separating dot if there is already a prefix
 		(if (> (length pfx) 0)
-		    (setq pfx (concat (strip-whitespace pfx) ".")))
+		    (setq pfx (concat (rest-rstrip pfx) ".")))
 
 		;; Calculate the amount of space that the prefix will require for
 		;; the numbers.
@@ -1205,7 +1226,8 @@ necessary for all the children of this level to align."
 
 	  (dolist (child (cdr node))
 	    (rest-toc-insert-node child 
-				  (1+ level) 
+				  (1+ level)
+				  indent
 				  (if do-child-numbering 
 				      (concat pfx (format fmt count)) pfx))
 	    (incf count)))
@@ -1220,7 +1242,7 @@ necessary for all the children of this level to align."
       (let ((b (point)))
 	;; Insert line text.
 	(insert (make-string (* rest-toc-indent (1- level)) ? ))
-	(insert (if (car node) (caar node) "(missing node)"))
+	(insert (if (car node) (caar node) "[missing node]"))
 
 	;; Highlight lines.
 	(put-text-property b (point) 'mouse-face 'highlight)
