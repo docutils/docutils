@@ -1012,6 +1012,9 @@ __ rst/alternatives.html#or-not-to-do
 
   .. _list-table: ../ref/rst/directives.html#list-table
 
+* Generalize docinfo contents (bibliographic fields): remove specific
+  fields, and have only a single generic "field"?
+
 
 Directives
 ----------
