@@ -622,11 +622,8 @@ that begins in one physical paragraph and ends in another.
    like HTML's ``<div>`` element.  Do not use it only to group a
    sequence of elements, or you may get unexpected results.
 
-   If you happen to need a generic block-level container, please
-   describe your use-case in an email to the Docutils-users_ mailing
-   list.
-
-   .. _Docutils-users: ../../user/mailing-lists.html#docutils-users
+   If you need a generic block-level container, please use the
+   container_ directive, described below.
 
 Compound paragraphs are typically rendered as multiple distinct text
 blocks, with the possibility of variations to emphasize their logical
@@ -643,6 +640,37 @@ The following option is recognized:
 ``class`` : text
     Set a "class" attribute value on the compound element.  See the
     class_ directive below.
+
+
+Container
+=========
+
+:Directive Type: "container"
+:Doctree Element: container
+:Directive Arguments: One or more, optional (class names).
+:Directive Options: None.
+:Directive Content: Interpreted as body elements.
+
+(New in Docutils 0.3.10)
+
+The "container" directive surrounds its contents (arbitrary body
+elements) with a generic block-level "container" element.  Combined
+with the optional "class_" attribute argument(s), this is an extension
+mechanism for users & applications.  For example::
+
+    .. container:: custom
+
+       This paragraph might be rendered in a custom way.
+
+Parsing the above results in the following pseudo-XML::
+
+    <container classes="custom">
+        <paragraph>
+            This paragraph might be rendered in a custom way.
+
+The "container" directive is the equivalent of HTML's ``<div>``
+element.  It may be used to group a sequence of elements for user- or
+application-specific purposes.
 
 
 --------

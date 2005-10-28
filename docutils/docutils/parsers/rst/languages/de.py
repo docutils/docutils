@@ -39,6 +39,7 @@ directives = {
       'pull-quote (translation required)': 'pull-quote', # kasten too ?
       'zusammengesetzt': 'compound',
       'verbund': 'compound',
+      u'container (translation required)': 'container',
       #'fragen': 'questions',
       'tabelle': 'table',
       'csv-tabelle': 'csv-table',

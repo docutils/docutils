@@ -24,6 +24,7 @@ directives = {
  u'\u0432\u044b\u0434\u0435\u043b\u0435\u043d\u043d\u0430\u044f-\u0446\u0438\u0442\u0430\u0442\u0430':
  u'pull-quote',
  u'compound (translation required)': 'compound',
+ u'container (translation required)': 'container',
  u'table (translation required)': 'table',
  u'csv-table (translation required)': 'csv-table',
  u'list-table (translation required)': 'list-table',

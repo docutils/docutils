@@ -42,6 +42,7 @@ directives = {
       u'ekstera-cita\u0135o': 'pull-quote',
       u'kombinajxo': 'compound',
       u'kombina\u0135o': 'compound',
+      u'container (translation required)': 'container',
       #'questions': 'questions',
       #'qa': 'questions',
       #'faq': 'questions',

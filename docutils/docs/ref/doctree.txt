@@ -146,12 +146,12 @@ body elements.  There are two subcategories of body elements: simple
 and compound.
 
 Category members: admonition_, attention_, block_quote_, bullet_list_,
-caution_, citation_, comment_, compound_, danger_, definition_list_,
-doctest_block_, enumerated_list_, error_, field_list_, figure_,
-footnote_, hint_, image_, important_, line_block_, literal_block_,
-note_, option_list_, paragraph_, pending_, raw_, rubric_,
-substitution_definition_, system_message_, table_, target_, tip_,
-warning_
+caution_, citation_, comment_, compound_, container_, danger_,
+definition_list_, doctest_block_, enumerated_list_, error_,
+field_list_, figure_, footnote_, hint_, image_, important_,
+line_block_, literal_block_, note_, option_list_, paragraph_,
+pending_, raw_, rubric_, substitution_definition_, system_message_,
+table_, target_, tip_, warning_
 
 
 Simple Body Elements
@@ -172,7 +172,7 @@ Compound body elements contain local substructure (body subelements)
 and further body elements.  They do not directly contain text data.
 
 Category members: admonition_, attention_, block_quote_, bullet_list_,
-caution_, citation_, compound_, danger_, definition_list_,
+caution_, citation_, compound_, container_, danger_, definition_list_,
 enumerated_list_, error_, field_list_, figure_, footnote_, hint_,
 important_, line_block, note_, option_list_, system_message_, table_,
 tip_, warning_
@@ -1034,6 +1034,12 @@ Complete pseudo-XML_ result after parsing and applying transforms::
 
 See docinfo_ for a more complete example, including processing
 context.
+
+
+``container``
+=============
+
+`To be completed`_.
 
 
 ``copyright``
@@ -4714,7 +4720,7 @@ Entity definition:
 
 .. parsed-literal::
 
-    paragraph_ | compound_ | literal_block_ | doctest_block_
+    paragraph_ | compound_ | container_ | literal_block_ | doctest_block_
     | line_block_ | block_quote_
     | table_ | figure_ | image_ | footnote_ | citation_ | rubric_
     | bullet_list_ | enumerated_list_ | definition_list_ | field_list_

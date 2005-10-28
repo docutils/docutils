@@ -39,6 +39,7 @@ directives = {
       'pull-quote': 'pull-quote', # Dutch printers use the english term
       'samenstelling': 'compound',
       'verbinding': 'compound',
+      u'container (translation required)': 'container',
       #'vragen': 'questions',
       'tabel': 'table',
       'csv-tabel': 'csv-table',

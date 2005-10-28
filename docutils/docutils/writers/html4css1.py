@@ -587,6 +587,12 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_compound(self, node):
         self.body.append('</div>\n')
 
+    def visit_container(self, node):
+        self.body.append(self.starttag(node, 'div', CLASS='container'))
+
+    def depart_container(self, node):
+        self.body.append('</div>\n')
+
     def visit_contact(self, node):
         self.visit_docinfo_item(node, 'contact', meta=None)
 

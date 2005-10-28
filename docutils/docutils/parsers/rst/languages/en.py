@@ -38,6 +38,7 @@ directives = {
       'highlights': 'highlights',
       'pull-quote': 'pull-quote',
       'compound': 'compound',
+      'container': 'container',
       #'questions': 'questions',
       'table': 'table',
       'csv-table': 'csv-table',
