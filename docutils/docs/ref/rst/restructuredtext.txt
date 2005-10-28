@@ -241,15 +241,14 @@ line of a document is treated as if it is followed by a blank line.
 Indentation
 -----------
 
-Indentation is used to indicate, and is only significant in
-indicating:
+Indentation is used to indicate -- and is only significant in
+indicating -- block quotes, definitions (in definition list items),
+and local nested content:
 
-- multi-line contents of list items,
-- multiple body elements within a list item (including nested lists),
-- the definition part of a definition list item,
-- block quotes,
-- the extent of literal blocks, and
-- the extent of explicit markup blocks.
+- list item content (multi-line contents of list items, and multiple
+  body elements within a list item, including nested lists),
+- the content of literal blocks, and
+- the content of explicit markup blocks.
 
 Any text whose indentation is less than that of the current level
 (i.e., unindented text or "dedents") ends the current level of
