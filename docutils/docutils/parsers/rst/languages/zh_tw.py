@@ -38,6 +38,7 @@ directives = {
       'highlights (translation required)': 'highlights',
       'pull-quote (translation required)': 'pull-quote',
       'compound (translation required)': 'compound',
+      u'container (translation required)': 'container',
       #'questions (translation required)': 'questions',
       'table (translation required)': 'table',
       'csv-table (translation required)': 'csv-table',

@@ -1798,6 +1798,11 @@
             section, "Docutils System Messages":
         <comment xml:space="preserve">
             section should be added by Docutils automatically
+        <container classes="custom">
+            <paragraph>
+                paragraph 1
+            <paragraph>
+                paragraph 2
     <section classes="system-messages">
         <title>
             Docutils System Messages

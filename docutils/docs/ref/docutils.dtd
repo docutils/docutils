@@ -124,7 +124,7 @@ resolve to either an internal or external reference.
 
 <!ENTITY % additional.body.elements "">
 <!ENTITY % body.elements
-  " paragraph | compound | literal_block | doctest_block
+  " paragraph | compound | container | literal_block | doctest_block
     | line_block | block_quote
     | table | figure | image | footnote | citation | rubric
     | bullet_list | enumerated_list | definition_list | field_list
@@ -307,6 +307,9 @@ Eventual replacement for docinfo? -->
 
 <!ELEMENT compound (%body.elements;)+>
 <!ATTLIST compound %basic.atts;>
+
+<!ELEMENT container (%body.elements;)+>
+<!ATTLIST container %basic.atts;>
 
 <!ELEMENT bullet_list (list_item+)>
 <!ATTLIST bullet_list

@@ -37,6 +37,7 @@ directives = {
       'punti-salienti': 'highlights',
       'estratto-evidenziato': 'pull-quote',
       'composito': 'compound',
+      u'container (translation required)': 'container',
       #'questions': 'questions',
       #'qa': 'questions',
       #'faq': 'questions',

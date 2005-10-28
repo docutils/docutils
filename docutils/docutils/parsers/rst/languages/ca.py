@@ -40,6 +40,7 @@ directives = {
       u'sumari': 'highlights',
       u'cita-destacada': 'pull-quote',
       u'compost': 'compound',
+      u'container (translation required)': 'container',
       #'questions': 'questions',
       u'taula': 'table',
       u'taula-csv': 'csv-table',

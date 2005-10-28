@@ -5,3 +5,9 @@
 .. include:: data/table_complex.txt
 .. include:: data/list_table.txt
 .. include:: data/errors.txt
+
+.. container:: custom
+
+   paragraph 1
+
+   paragraph 2

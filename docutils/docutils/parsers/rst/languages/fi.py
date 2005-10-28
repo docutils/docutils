@@ -41,6 +41,7 @@ directives = {
       u'csv-taulukko': u'csv-table',
       u'list-table (translation required)': 'list-table',
       u'compound (translation required)': 'compound',
+      u'container (translation required)': 'container',
       #u'kysymykset': u'questions',
       u'meta': u'meta',
       #u'kuvakartta': u'imagemap',

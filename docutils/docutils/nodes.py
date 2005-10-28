@@ -1188,6 +1188,7 @@ class transition(Structural, Element): pass
 
 class paragraph(General, TextElement): pass
 class compound(General, Element): pass
+class container(General, Element): pass
 class bullet_list(Sequential, Element): pass
 class enumerated_list(Sequential, Element): pass
 class list_item(Part, Element): pass
@@ -1410,7 +1411,7 @@ node_class_names = """
         authors
     block_quote bullet_list
     caption caution citation citation_reference classifier colspec comment
-        compound contact copyright
+        compound contact container copyright
     danger date decoration definition definition_list definition_list_item
         description docinfo doctest_block document
     emphasis entry enumerated_list error
