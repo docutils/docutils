@@ -1,43 +1,53 @@
-S5 Slideshows using reST
-========================
+=======================================
+ S5 Slide Shows Using reStructuredText
+=======================================
 
 .. This document serves as manual and example of the rst2s5.py
-   converter at the same time.  See the hint below on how to create
-   the slideshow.
+   converter at the same time.
 
-:Author:        Chris Liechti <cliechti@gmx.net>
+A short introduction to generating S5 slide shows with Docutils and
+reStructuredText.
+
+:Authors:       Chris Liechti <cliechti@gmx.net>,
+                David Goodger <goodger@python.org>
 :Version:       1.1
-:Date:          Today
+:Date:          $Date$
 
-A short introduction to the S5 converter for Docutils
+Click the "|mode|" button to switch between presentation & handout
+modes.  In presentation mode, mouse over to the lower right-hand
+corner to display the controls.
 
-.. The first slide consists of all visible text between the document
-   title and the first subtitle.  The document title is also added to
-   the footer of all slides.
+.. |mode| unicode:: U+00D8 .. capital o with stroke
 
-.. The "footer" directive is used to specify part of the slide footer
+.. container:: handout
+
+   The first slide consists of all visible text between the document
+   title and the first section title.  The document title is also
+   added to the footer of all slides.
+
+   The "footer" directive is used to specify part of the slide footer
    text.  It is currently limited to one short line (one paragraph).
 
 .. |bullet| unicode:: U+02022
-.. footer:: Location |bullet| Today
+.. footer:: Location |bullet| Date
 
 
 Introduction
-------------
+============
 
-``rst2s5.py`` is a Docutils__ front-end tool that outputs HTML
-compatible with S5__, a Simple Standards-based Slide Show System.
+``rst2s5.py`` is a Docutils_ front end that outputs HTML for use with
+S5_, a "Simple Standards-based Slide Show System" by Eric Meyer.
 
 * A simple reStructuredText-format text file serves as input.
 
-* Presentations can be viewed using any modern web browser (CSS,
-  JavaScript, XHTML).
+* Presentations can be viewed using any modern web browser that
+  supports CSS, JavaScript, and XHTML.  (It even works with IE!)
 
-* Several themes are available on the Internet, easy to adapt.
+* Several themes are available, and they're easy to adapt.
 
-  .. handout::
+  .. container:: handout
 
-     Some sites with S5 slideshows or themes:
+     Some sites with S5 slide shows or themes:
 
      * http://meyerweb.com/eric/tools/s5/themes/
      * http://mozilla.wikicities.com/wiki/Firefox_S5:Designs
@@ -45,18 +55,19 @@ compatible with S5__, a Simple Standards-based Slide Show System.
      And a short tutorial on how to create themes:
      http://yatil.de/s5/dokumentation/9/ (german text)
 
-* The slides and handout can be combined in one document.  The handout
-  will not just contain the silly framed slides.
+* The slides and extra handout material can be combined in one
+  document.  The handout can be printed directly from the browser, and
+  it will contain more than just silly framed slides.
 
-__ http://docutils.sourceforge.net/
-__ http://meyerweb.com/eric/tools/s5/
+.. _Docutils: http://docutils.sourceforge.net/
+.. _S5: http://meyerweb.com/eric/tools/s5/
 
 
-Usage
------
+Basic Usage
+===========
 
-Based on Docutils, normal ``reST`` documents are supported.  Each
-section is converted to a single slide.
+Based on Docutils, normal reStructuredText documents are supported.
+Each first-level section is converted to a single slide.
 
 .. sidebar:: Installation
    :class: handout
@@ -68,120 +79,102 @@ section is converted to a single slide.
    in the ``$PATH``.  (Or copy both files to the same folder,
    e.g. ``/usr/local/bin`` on un*x).
 
-A slideshow is simply made by the following command::
+An S5 slide show HTML file is generated with the following command::
 
     rst2s5.py presentation.txt presentation.html
 
-Some additional files are needed to view a presentation. These go into
-the same directory as ``presentation.html``
 
-* The Docutils stylesheet ``default.css``.
+Themes
+======
 
-  .. handout::
+The presentation theme consists of additional files: stylesheets,
+JavaScript, and graphics.  These go into a subdirectory of the ``ui``
+directory beside ``presentation.html``.
 
-     The ``default.css`` stylesheet is included in the standard
-     docutils distribution.  One can also be downloaded from here:
-     http://docutils.sf.net/tools/stylesheets/default.css
+.. container:: handout
 
-* A subdirectory ``ui`` with the S5 theme (CSS and JavaScript).
+   By default, slide shows use the ``default`` theme, but that can be
+   overriden by a command line option; see below.
 
-  .. handout::
+   The theme from the S5 tutorial can be used.  Get it here:
+   http://meyerweb.com/eric/tools/s5/s5blank.zip.
 
-     By default, the slideshow uses the ``ui`` theme, but that can be
-     overriden by a command line option; see below.
+   These themes are in the public domain and may be redistributed
+   freely.
 
-     The theme from the S5 tutorial can be used.  Get it here:
-     http://meyerweb.com/eric/tools/s5/s5blank.zip
+The S5 theme (subdirectory name) can be specified with the ``--theme``
+command-line option or the ``theme`` configuration file setting.
 
-     Most of these themes are available under a `Creative Commons
-     Share Alike`__ license.  This means the themes can be used for
-     commercial and non-commercial purposes.  But the ``rst2s5``
-     converter has a different license.  Therefore no theme is
-     distributed along with the converter.
-
-     __ http://creativecommons.org/licenses/by-sa/2.0/
-
-.. class:: handout
-.. hint:: Basic steps to create a slideshow:
-
-   1. Open a console (terminal, command shell) go to the folder
-      containing ``presentation.txt``.
-   2. Run ``rst2s5.py presentation.txt presentation.html``.
-   3. Put ``default.css`` in the same folder.  (Get it from
-      http://docutils.sf.net/tools/stylesheets/default.css.)
-   4. Extract the sample theme from
-      http://meyerweb.com/eric/tools/s5/s5blank.zip in the same folder
-      (this should create a ``ui`` subfolder).
-   5. Open ``presentation.html`` in a web browser.
-
-
-Features
---------
-
-``rst2s5`` is based on ``rst2html``, and it basically supports all of
-its features.
-
-Specifics:
-
-* The document title is duplicated on each slide in the S5 footer.
-
-* The ``footer`` directive may be used to define additional text in
-  the S5 footer, limited to one paragraph.
-
-  .. handout::
-
-     This is useful for information such as the date of the
-     presentation and/or the location.
-
-     The field in the footer is left blank if the directive is not
-     used.
-
-     Example::
-
-         .. footer:: Location - Date
-
-Additions:
-
-* ``.. handout::``: The contents of the "handout" directive are only
-  visible when the presentation is printed.  They are hidden in the
-  screen presentation.
-
-  .. handout::
-
-     Handout contents are also visible on the screen if the S5 "raw
-     view mode" is active.
-
-     The text in a "handout" directive block or elements with a
-     "class" attribute of "handout" are hidden in the slideshow on the
-     screen.  This can be used to provide more detailed information in
-     a handout.
-
-     "Handout" directives can appear anywhere in the text, as often as
-     needed.
-
-* The S5 theme (directory name) can be specified with the ``--theme``
-  command-line option or "theme" configuration file setting.
-
-  .. handout::
+  .. container:: handout
 
      Example::
 
          rst2s5 --theme pixel presentation.txt presentation.html
 
-     The default theme is "ui".
+     The default theme is "default".
 
-     Usualy, themes are placed in a subfolder with the specified name,
-     in the same folder as the presentation.  But it is also possible
-     to use URLs and grab the design from another website.
+     Usualy, themes are placed in a folder with the specified name,
+     inside a "ui" folder inside the folder containing the
+     presentation.  But it is also possible to use URLs and grab the
+     design from another website.
+
+
+Features
+========
+
+The ``rst2s5.py`` front-end tool is based on ``rst2html.py``, and it
+supports all the standard features.  S5-specific features:
+
+.. class:: incremental
+
+* The document title is duplicated on each slide in the S5 footer.
+
+* The ``footer`` directive may be used to define additional text in
+  the S5 footer, but it is limited to one short paragraph.
+
+  .. container:: handout
+
+     This is useful for information such as the date of the
+     presentation and/or the location.  The field in the footer is
+     left blank if no ``footer`` directive is used.
+
+     Example::
+
+         .. footer:: Location - Date
+
+* The contents of any element with a "class" attribute value of
+  "handout" are only visible when the presentation is printed.
+  "Handout"-class contents are hidden in the screen presentation.
+
+  .. container:: handout
+
+     Handout contents are also visible on the screen if the S5 "raw
+     view mode" is active.
+
+     The text in "handout"-class elements are hidden in the slide show
+     on the screen.  This can be used to provide more detailed
+     information in a handout.
+
+     "Handout"-class elements can appear anywhere in the text, as
+     often as needed.
+
+     Arbitrary handout blocks can be created using the ``container``
+     directive::
+
+         .. container:: handout
+
+            Put anything you like here...
+
+* An "incremental" class can be assigned to lists and other elements
+  to get one-item-at-a-time behavior (like this list).
 
 
 Samples: Tables, Directives, Images
------------------------------------
+===================================
 
-.. sidebar:: Images are OK
+.. sidebar:: Images too!
 
-    .. image:: ui/bodybg.gif
-       :scale: 30
+    .. image:: happy_monkey.png
        :alt: sample image
 
 =====  =====  ======
@@ -195,14 +188,14 @@ False  True   True
 True   True   True
 =====  =====  ======
 
-.. hint:: Admonitions, tables, sidebars and others can be used on the
-   screen and in the handout.
+.. Hint:: Admonitions, tables, sidebars, and other elements can be
+   used in on-screen presentations in handouts.
 
-.. sidebar:: Handout only
+.. topic:: Handout only
    :class: handout
 
    Elements only visible in the handout can also be generated using a
-   ":class: handout" option with "sidebar", "compound" and other
+   ``:class: handout`` option with ``sidebar``, ``compound`` and other
    directives.
 
 .. class:: handout
@@ -212,16 +205,39 @@ paragraphs and other elements.
 
 
 Caveats
--------
+=======
 
-* The ``.. contents::`` directive must not be used.  It changes the
-  CSS class of headings and they won't show up correctly in the screen
-  presentation.
+1. The ``contents`` (table of contents) directive must not be used.
+   It changes the CSS class of headings and they won't show up
+   correctly in the screen presentation.
 
-  [Add a "disable table of contents" setting to the parser?  The S5
-  writer could set it as a default.]
+   .. container:: handout
 
-* ``.. handout::`` directives generate an error if other ``rst2...``
-  converters are used, instead of the S5 converter.
+      TODO: Add a "disable table of contents" setting to the parser?
+      The S5 writer could set it as a default.
 
-  [How to avoid this?]
+
+2. Subsections ...
+------------------
+
+... may be used, but you will have to provide your own stylesheet
+support.  Subsections work just fine in handouts though.
+
+
+Steps to Generate a Slide Show
+==============================
+
+1. Open a console (terminal, command shell) and go to the folder
+   containing your ``presentation.txt``.
+
+2. Run ``rst2s5.py presentation.txt presentation.html``.
+
+3. Normally the Docutils default stylesheet, ``html4css1.css``, will
+   be embedded in the output HTML.  If you choose to link to a
+   stylesheet instead of embedding, you must include it.
+
+4. Extract the sample theme from
+   http://meyerweb.com/eric/tools/s5/s5blank.zip in the same folder
+   (this should create a ``ui`` folder).
+
+5. Open ``presentation.html`` in a web browser.
