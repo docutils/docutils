@@ -27,3 +27,8 @@ From an email on the list::
   using shell-command-on-region in emacs (i still need to write a hook
   to do that).
 
+
+.. important::  
+
+   You can now do that within emacs using rest-adjust with an active region, see
+   restructuredtext.el for details.
