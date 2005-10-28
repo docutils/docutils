@@ -12,7 +12,6 @@
 
 .. contents::
 
-
 Docutils uses a Subversion_ repository located at ``svn.berlios.de``.
 Subversion is exhaustively documented in the `Subversion Book`_
 (svnbook).
@@ -25,6 +24,11 @@ Subversion is exhaustively documented in the `Subversion Book`_
    While the repository resides at BerliOS, all other project data
    (web site, snapshots, releases, mailing lists, trackers) is hosted
    at SourceForge.
+
+For the project policy on repository use (check-in requirements,
+branching, etc.), please see the `Docutils Project Policies`__.
+
+__ policies.html#subversion-repository
 
 
 Accessing the Repository
@@ -74,20 +78,21 @@ their BerliOS user name to `Felix Wiemann <Felix.Wiemann@ososo.de>`_.)
 __ https://developer.berlios.de/account/register.php
 
 If you are a developer, you get read-write access via
-``svn+ssh://username@svn.berlios.de/svnroot/repos/docutils/``, where
-``username`` is your BerliOS user name.  So to retrieve a working
-copy, type ::
+``svn+ssh://<user>@svn.berlios.de/svnroot/repos/docutils/``, where
+``<user>`` is your BerliOS user account name.  So to retrieve a
+working copy, type ::
 
-    svn checkout svn+ssh://username@svn.berlios.de/svnroot/repos/docutils/trunk docutils
+    svn checkout svn+ssh://<user>@svn.berlios.de/svnroot/repos/docutils/trunk \
+        docutils
 
 If you previously had an anonymous working copy and gained developer
 access, you can switch the URL associated with your working copy by
 typing ::
 
     svn switch --relocate svn://svn.berlios.de/docutils/trunk/docutils \
-        svn+ssh://username@svn.berlios.de/svnroot/repos/docutils
+        svn+ssh://<user>@svn.berlios.de/svnroot/repos/docutils
 
-(``username`` is again your BerliOS user name.)
+(Again, ``<user>`` is your BerliOS user account name.)
 
 
 Setting Up Your Subversion Client For Development
@@ -142,7 +147,7 @@ your shell account.
 
   1. Log in to the BerliOS shell server::
 
-         ssh username@shell.berlios.de
+         ssh <user>@shell.berlios.de
 
      You'll be asked for your password, which you set when you created
      your account.
@@ -157,7 +162,7 @@ your shell account.
 
   3. Copy your public key to the .ssh directory on BerliOS::
 
-         scp .ssh/id_dsa.pub username@shell.berlios.de:.ssh/authorized_keys
+         scp .ssh/id_dsa.pub <user>@shell.berlios.de:.ssh/authorized_keys
 
   Now you should be able to start an SSH session without needing your
   password.
