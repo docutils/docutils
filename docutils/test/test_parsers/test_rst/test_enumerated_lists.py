@@ -650,13 +650,19 @@ Nested enumerated lists:
             <paragraph>
                 Item 3.
 """],
-["""\
+[u"""\
 A. Einstein was a great influence on
 B. Physicist, who was a colleague of
 C. Chemist.  They all worked in
 Princeton, NJ.
+
+Using a non-breaking space as a workaround:
+
+A.\u00a0Einstein was a great influence on
+B. Physicist, who was a colleague of
+C. Chemist.  They all worked in
+Princeton, NJ.
 """,
-# @@@ I think this is the correct result, but I'm not certain:
 """\
 <document source="test data">
     <enumerated_list enumtype="upperalpha" prefix="" suffix=".">
@@ -670,6 +676,13 @@ Princeton, NJ.
         <paragraph>
             Enumerated list ends without a blank line; unexpected unindent.
     <paragraph>
+        C. Chemist.  They all worked in
+        Princeton, NJ.
+    <paragraph>
+        Using a non-breaking space as a workaround:
+    <paragraph>
+        A.\xa0Einstein was a great influence on
+        B. Physicist, who was a colleague of
         C. Chemist.  They all worked in
         Princeton, NJ.
 """],
