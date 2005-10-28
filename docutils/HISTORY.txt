@@ -14,6 +14,11 @@
 Changes Since 0.3.9
 ===================
 
+* General:
+
+  - Updated the project policies for trunk/branch development &
+    version numbering.
+
 * setup.py: Added installation of data files in
   ``docutils/parsers/rst/include/``.
 
@@ -43,6 +48,7 @@ Changes Since 0.3.9
   - Added ``Node.deepcopy()`` method.
   - Removed the internal lists ``document.substitution_refs``,
     ``document.anonymous_refs``, and ``document.anonymous_targets``.
+  - Added a "container" element.
 
 * docutils/parsers/null.py: Added to project; a do-nothing parser.
 
@@ -58,6 +64,10 @@ Changes Since 0.3.9
   - Targets (implicit and explicit), anonymous hyperlink references
     and auto-numbered footnote references inside of substitution
     definitions are now disallowed.
+
+* docutils/parsers/rst/directives/body.py:
+
+  - Added the "container" directive.
 
 * docutils/parsers/rst/directives/misc.py:
 
@@ -166,6 +176,7 @@ Changes Since 0.3.9
 
   - Updated for plural attributes "classes", "ids", "names",
     "dupnames".
+  - Added the "container" element.
 
 * docs/ref/docutils.dtd:
 
