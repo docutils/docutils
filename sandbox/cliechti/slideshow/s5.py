@@ -22,9 +22,10 @@ class Writer(html4css1.Writer):
     settings_spec = html4css1.Writer.settings_spec + (
         'S5 Slideshow Specific Options',
         None,
-        (('Specify an S5 theme directory.  The default is "ui".',
+        (('Specify an S5 theme directory (typically a subdirectory of "ui") '
+          'or URL (if it contains a slash).  The default is "default".',
           ['--theme'],
-          {'default': 'ui', 'metavar': '<path>'}),))
+          {'default': 'default', 'metavar': '<path>'}),))
 
     config_section = 's5 writer'
     config_section_dependencies = ('writers', 'html4css1 writer')
@@ -36,30 +37,44 @@ class Writer(html4css1.Writer):
 
 class HTMLTranslator(html4css1.HTMLTranslator):
 
+    doctype = (
+        '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"'
+        ' "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n')
     s5_stylesheet_template = '''\
-<link rel="stylesheet" href="%(s5_theme_dir)s/slides.css" type="text/css" media="projection" id="slideProj" />
-<link rel="stylesheet" href="%(s5_theme_dir)s/opera.css" type="text/css" media="projection" id="operaFix" />
-<link rel="stylesheet" href="%(s5_theme_dir)s/print.css" type="text/css" media="print" id="slidePrint" />
-<script src="%(s5_theme_dir)s/slides.js" type="text/javascript"></script>\n'''
+<!-- configuration parameters -->
+<meta name="defaultView" content="slideshow" />
+<meta name="controlVis" content="hidden" />
+<!-- style sheet links -->
+<link rel="stylesheet" href="%(s5_theme_url)s/slides.css" type="text/css" media="projection" id="slideProj" />
+<link rel="stylesheet" href="%(s5_theme_url)s/outline.css" type="text/css" media="screen" id="outlineStyle" />
+<link rel="stylesheet" href="%(s5_theme_url)s/print.css" type="text/css" media="print" id="slidePrint" />
+<link rel="stylesheet" href="%(s5_theme_url)s/opera.css" type="text/css" media="projection" id="operaFix" />
+<script src="%(s5_theme_url)s/slides.js" type="text/javascript"></script>\n'''
     layout_template = '''\
 <div class="layout">
+<div id="controls"></div>
 <div id="currentSlide"></div>
 <div id="header">
-%s
+%(header)s
 </div>
 <div id="footer">
-%s%s
-<div id="controls"></div>
+%(title)s%(footer)s
 </div>
+<div class="topleft"></div>
+<div class="topright"></div>
+<div class="bottomleft"></div>
+<div class="bottomright"></div>
 </div>\n'''
         
     def __init__(self, *args):
         html4css1.HTMLTranslator.__init__(self, *args)
         #insert S5-specific stylesheet and script stuff:
         theme = self.document.settings.theme
+        if '/' not in theme:
+            theme = 'ui/' + theme
         self.stylesheet.append(self.s5_stylesheet_template
-                               % {'s5_theme_dir': theme})
-        self.add_meta('<meta name="version" content="S5 1.0" />\n')
+                               % {'s5_theme_url': theme})
+        self.add_meta('<meta name="version" content="S5 1.1" />\n')
         self.s5_footer = []
         self.s5_header = []
         self.section_count = 0
@@ -68,7 +83,9 @@ class HTMLTranslator(html4css1.HTMLTranslator):
         header = ''.join(self.s5_header)
         footer = ''.join(self.s5_footer)
         title = ''.join(self.html_title).replace('<h1 class="title">', '<h1>')
-        layout = self.layout_template % (header, title, footer)
+        layout = self.layout_template % {'header': header,
+                                         'title': title,
+                                         'footer': footer}
         self.fragment.extend(self.body)
         self.body_prefix.extend(layout)
         self.body_prefix.append('<div class="presentation">\n')
@@ -105,27 +122,8 @@ class HTMLTranslator(html4css1.HTMLTranslator):
         self.section_level += 1
         if self.section_level > 1:
             # dummy for matching div's
-            self.body.append(self.starttag(node, 'div', CLASS='section'))
+            self.body.append(self.start_tag_with_title(
+                node, 'div', CLASS='section'))
         else:
-            self.body.append(self.starttag(node, 'div', CLASS='slide'))
-
-
-#extra directive for handouts
-
-def handout_directive(name, arguments, options, content, lineno,
-                      content_offset, block_text, state, state_machine):
-    text = '\n'.join(content)
-    if not text:
-        warning = state_machine.reporter.warning(
-            'The handout block is empty; content required.',
-            nodes.literal_block(block_text, block_text), line=lineno)
-        return [warning]
-    node = nodes.block_quote(text)
-    node['classes'] += options.get('class', [])
-    node['classes'].append('handout')
-    state.nested_parse(content, content_offset, node)
-    return [node]
-
-handout_directive.content = 1
-handout_directive.options = {'class': directives.class_option}
-directives.register_directive('handout', handout_directive)
+            self.body.append(self.start_tag_with_title(
+                node, 'div', CLASS='slide'))

@@ -1,24 +1,33 @@
-.. |s5 title| replace::
-        The contents of the ``|s5 title|`` substitution is shown here.
-.. |s5 location| replace::
-        The contents of the ``|s5 location|`` substitution is shown here.
+=================
+ Slideshow Title
+=================
 
-
-Slideshow Title
----------------
-:Author: ...
+:Author: me
 :Date:   Today
 
 Short introduction
 
 Slide 1
--------
+=======
 
 *   point 1
 *   point 2
 
 
 Slide 2
--------
+=======
 
 etc etc
+
+
+Slide 3
+=======
+
+Incremental list:
+
+.. class:: incremental
+
+* one
+* two
+* three
+* four
