@@ -3,6 +3,7 @@
 ===================
 
 :Author: Felix Wiemann
+:Author: David Goodger
 :Revision: $Revision$
 :Date: $Date$
 :Copyright: This document has been placed in the public domain.
@@ -11,8 +12,57 @@
 
 .. contents::
 
-This document describes how the tests are organized and how to add new
-tests or modify existing tests.
+When adding new functionality (or fixing bugs), be sure to add test
+cases to the test suite.  Practise test-first programming; it's fun,
+it's addictive, and it works!
+
+This document describes how to run the Docutils test suite, how the
+tests are organized and how to add new tests or modify existing tests.
+
+
+Running the Test Suite
+======================
+
+Before checking in any changes, run the entire Docutils test suite to
+be sure that you haven't broken anything.  From a shell::
+
+    cd docutils/test
+    ./alltests.py
+
+
+Python Versions
+===============
+
+The Docutils 0.4 release supports Python 2.1 [#py21]_ or later, with
+some features only working (and being tested) with Python 2.3+.
+Therefore, you should actually have Pythons 2.1 [#py21]_, 2.2, 2.3, as
+well as the latest Python installed and always run the tests on all of
+them.  (A good way to do that is to always run the test suite through
+a short script that runs ``alltests.py`` under each version of
+Python.)  If you can't afford intalling 3 or more Python versions, the
+edge cases (2.1 and 2.3) should cover most of it.
+
+.. [#py21] Python 2.1 may be used providing the compiler package is
+   installed.  The compiler package can be found in the Tools/
+   directory of Python 2.1's source distribution.
+
+Good resources covering the differences between Python versions:
+
+* `What's New in Python 2.2`__
+* `What's New in Python 2.3`__
+* `What's New in Python 2.4`__
+* `PEP 290 - Code Migration and Modernization`__
+
+__ http://www.python.org/doc/2.2.3/whatsnew/whatsnew22.html
+__ http://www.python.org/doc/2.3.5/whatsnew/whatsnew23.html
+__ http://www.python.org/doc/2.4.1/whatsnew/whatsnew24.html
+__ http://www.python.org/peps/pep-0290.html
+
+.. _Python Check-in Policies: http://www.python.org/dev/tools.html
+.. _sandbox directory:
+   http://svn.berlios.de/viewcvs/docutils/trunk/sandbox/
+.. _nightly repository tarball:
+   http://svn.berlios.de/svndumps/docutils-repos.gz
 
 
 Unit Tests
