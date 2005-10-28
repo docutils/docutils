@@ -39,18 +39,65 @@
 ;; code).  The most important function provided by this file for section title
 ;; adjustments is rest-adjust.
 ;;
-;; You should consider customizing the following variables:
+;; There are many variables that can be customized, look for defcustom and
+;; defvar in this file.
 ;;
-;; - rest-default-indent
-;; - rest-preferred-decorations
+;; If you use the table-of-contents feature, you may want to add a hook to
+;; update the TOC automatically everytime you adjust a section title::
 ;;
-;; TODO:
+;;   (add-hook 'rest-adjust-hook 'rest-toc-insert-update)
+;;
+;;
+;; TODO
+;; ====
+;;
+;; rest-toc-insert features
+;; ------------------------
+;; - Support local table of contents, like in doctree.txt.
+;; - On load, detect any existing TOCs and set the properties for links.
+;; - TOC insertion should have an option to add empty lines.
+;; - TOC insertion should deal with multiple lines
+;;
+;; - There is a bug on redo after undo of adjust when rest-adjust-hook uses the
+;;   automatic toc update. The cursor ends up in the TOC and this is
+;;   annoying. Gotta fix that.
+;;
+;; Other
+;; -----
 ;; - Add an option to forego using the file structure in order to make
 ;;   suggestion, and to always use the preferred decorations to do that.
 ;;
 
 
 (require 'cl)
+
+(defun rest-toc-or-hierarchy ()
+  "Binding for either TOC or decorations hierarchy."
+  (interactive)
+  (if (not current-prefix-arg)
+      (rest-toc)
+    (rest-display-decorations-hierarchy)))
+
+(defun rest-text-mode-hook ()
+  "Default text mode hook for rest."
+  (local-set-key [(control ?=)] 'rest-adjust)
+  (local-set-key [(control x)(control ?=)] 'rest-toc-or-hierarchy)
+  (local-set-key [(control x)(?+)] 'rest-toc-insert)
+  (local-set-key [(control meta ?{)] 'rest-backward-section)
+  (local-set-key [(control meta ?})] 'rest-forward-section)
+  )
+
+;; Note: we cannot do this because it messes with undo.  If we disable undo,
+;; since it adds and removes characters, the positions in the undo list are not
+;; making sense anymore.  Dunno what to do with this, it would be nice to update
+;; when saving.
+;;
+;; (add-hook 'write-contents-hooks 'rest-toc-insert-update-fun)
+;; (defun rest-toc-insert-update-fun ()
+;;   ;; Disable undo for the write file hook.
+;;   (let ((buffer-undo-list t)) (rest-toc-insert-update) ))
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Generic Filter function.
@@ -156,22 +203,6 @@ is for which (pred elem) is true)"
 ;; default, we rather use the current indent that is already there for
 ;; adjustment (unless we cycle, in which case we use the indent that has been
 ;; found previously).
-
-(defun rest-toc-or-hierarchy ()
-  "Binding for either TOC or decorations hierarchy."
-  (interactive)
-  (if (not current-prefix-arg)
-      (rest-toc)
-    (rest-display-decorations-hierarchy)))
-
-(defun rest-text-mode-hook ()
-  "Default text mode hook for rest."
-  (local-set-key [(control ?=)] 'rest-adjust)
-  (local-set-key [(control x)(control ?=)] 'rest-toc-or-hierarchy)
-  (local-set-key [(control x)(?+)] 'rest-toc-insert)
-  (local-set-key [(control meta ?{)] 'rest-backward-section)
-  (local-set-key [(control meta ?})] 'rest-forward-section)
-  )
 
 (defcustom rest-preferred-decorations '( (?= over-and-under 1)
 					 (?= simple 0)
@@ -655,8 +686,14 @@ b. a negative numerical argument, which generally inverts the
 	(rest-promote-region current-prefix-arg)
       ;; Adjust decoration around point.
       (rest-adjust-decoration toggle-style reverse-direction))
+    
+    ;; Run the hooks to run after adjusting.
+    (run-hooks 'rest-adjust-hook)
+
     ))
 
+(defvar rest-adjust-hook nil
+  "Hooks to be run after running rest-adjust.")
 
 (defun rest-adjust-decoration (&optional toggle-style reverse-direction)
 "Adjust/rotate the section decoration for the section title around point.
@@ -1041,7 +1078,7 @@ the hierarchy is similar to that used by rest-adjust-decoration."
 				  (match-end 0)) )
 
 
-(defvar rest-toc-indent 4
+(defcustom rest-toc-indent 2
   "Indentation for table-of-contents display (also used for
   formatting insertion, when numbering is disabled).")
 
@@ -1093,7 +1130,7 @@ inserted automatically, and are set to nil."
   the current level of that node.  This function returns a pair
   of the subtree that was built.  This treats the decos list
   destructively."
-  
+
   (let ((ndeco (cadr decos))
 	node
 	children)
@@ -1107,7 +1144,7 @@ inserted automatically, and are set to nil."
 
     ;; Build the child nodes
     (while (and (cdr decos) (> (caadr decos) lev))
-      (setq children 
+      (setq children
 	    (cons (rest-section-tree-rec decos (1+ lev))
 		  children)))
 
@@ -1115,12 +1152,13 @@ inserted automatically, and are set to nil."
     (cons node (reverse children))
     ))
 
+
 (defun rest-toc-insert (&optional pfxarg)
   "Insert a simple text rendering of the table of contents.
 By default the top level is ignored if there is only one, because
-we assume that the document will have a single title.  
+we assume that the document will have a single title.
 
-If a numeric prefix argument is given, 
+If a numeric prefix argument is given,
 - if it is zero or generic, include the top level titles;
 - otherwise insert the TOC up to the specified level.
 
@@ -1132,15 +1170,15 @@ The TOC is inserted indented at the current column."
 	 (rest-toc-insert-max-level
 	  (if (and (integerp pfxarg) (> (prefix-numeric-value pfxarg) 0))
 	      (prefix-numeric-value pfxarg) rest-toc-insert-max-level))
-	 
+
 	 ;; Get the section tree.
 	 (sectree (rest-section-tree (rest-find-all-decorations)))
-		   
+
 	 ;; If there is only one top-level title, remove it by starting to print
 	 ;; one index lower (revert this behaviour with the prefix arg),
 	 ;; otherwise print all.
 	 (gen-pfx-arg (or (and pfxarg (listp pfxarg))
-			  (and (integerp pfxarg) 
+			  (and (integerp pfxarg)
 			       (= (prefix-numeric-value pfxarg) 0))))
 	 (start-lev (if (and (not rest-toc-insert-always-include-top)
 			     (= (length (cdr sectree)) 1)
@@ -1154,17 +1192,36 @@ The TOC is inserted indented at the current column."
 
     ;; Fixup for the first line.
     (delete-region init-point (+ init-point (length initial-indent)))
+    
+    ;; Delete the last newline added.
+    (delete-backward-char 1)
     ))
 
-(defvar rest-toc-insert-always-include-top nil
+
+(defcustom rest-toc-insert-always-include-top nil
   "Set this to 't if you want to always include top-level titles,
   even when there is only one.")
 
-(defvar rest-toc-insert-numbering t
-  "Set this to 't if you want to always include top-level titles,
-  even when there is only one.")
+(defcustom rest-toc-insert-style 'fixed
+  "Set this to one of the following values to determine numbering and
+indentation style:
+- plain: no numbering (fixed indentation)
+- fixed: numbering, but fixed indentation
+- aligned: numbering, titles aligned under each other
+- listed: numbering, with dashes like list items (EXPERIMENTAL)
+")
 
-(defvar rest-toc-insert-max-level nil
+(defcustom rest-toc-insert-number-separator "  "
+  "Separator that goes between the TOC number and the title.")
+
+;; This is used to avoid having to change the user's mode.
+(defvar rest-toc-insert-click-keymap
+  (let ((map (make-sparse-keymap)))
+       (define-key map [mouse-1] 'rest-toc-mode-mouse-goto)
+       map)
+  "(Internal) What happens when you click on propertized text in the TOC.")
+
+(defcustom rest-toc-insert-max-level nil
   "If non-nil, maximum depth of the inserted TOC.")
 
 (defun rest-toc-insert-node (node level indent pfx)
@@ -1173,14 +1230,13 @@ toc. PFX is the prefix numbering, that includes the alignment
 necessary for all the children of this level to align."
   (let ((do-print (> level 0))
 	(count 1)
-	(numbered-indent-style 'aligned)
 	b)
     (if do-print
 	(progn
 	  (insert indent)
 	  (let ((b (point)))
-	    (if rest-toc-insert-numbering
-		(insert pfx "  "))
+	    (if (not (equal rest-toc-insert-style 'plain))
+		(insert pfx rest-toc-insert-number-separator))
 	    (insert (or (caar node) "[missing node]"))
 	    ;; Add properties to the text, even though in normal text mode it
 	    ;; won't be doing anything for now.  Not sure that I want to change
@@ -1188,28 +1244,32 @@ necessary for all the children of this level to align."
 	    ;; is generated automatically.
 	    (put-text-property b (point) 'mouse-face 'highlight)
 	    (put-text-property b (point) 'rest-toc-target (cadar node))
+	    (put-text-property b (point) 'keymap rest-toc-insert-click-keymap)
+
 	    )
 	  (insert "\n")
 
 	  ;; Prepare indent for children.
-	  (setq indent 
-		(if (not rest-toc-insert-numbering)
-		    (concat indent rest-toc-indent)
-		  (cond 
-		   ((eq numbered-indent-style 'fixed)
-		    (concat indent (make-string rest-toc-indent ? )))
-		   
-		   ((eq numbered-indent-style 'aligned)
-		    (concat indent (make-string (+ (length pfx) 2) ? )))
-		   
-		   ((eq numbered-indent-style 'listed)
-		    (concat (substring indent 0 -3) 
-			    (concat (make-string (+ (length pfx) 2) ? ) " - ")))
-		   )))
+	  (setq indent
+		(cond
+		 ((eq rest-toc-insert-style 'plain)
+		  (concat indent rest-toc-indent))
+
+		 ((eq rest-toc-insert-style 'fixed)
+		  (concat indent (make-string rest-toc-indent ? )))
+
+		 ((eq rest-toc-insert-style 'aligned)
+		  (concat indent (make-string (+ (length pfx) 2) ? )))
+
+		 ((eq rest-toc-insert-style 'listed)
+		  (concat (substring indent 0 -3)
+			  (concat (make-string (+ (length pfx) 2) ? ) " - ")))
+		 ))
 
 	  ))
 
-    (if (or (eq rest-toc-insert-max-level nil) (< level rest-toc-insert-max-level))
+    (if (or (eq rest-toc-insert-max-level nil)
+	    (< level rest-toc-insert-max-level))
 	(let ((do-child-numbering (>= level 0))
 	      fmt)
 	  (if do-child-numbering
@@ -1221,19 +1281,72 @@ necessary for all the children of this level to align."
 		;; Calculate the amount of space that the prefix will require for
 		;; the numbers.
 		(if (cdr node)
-		    (setq fmt (format "%%-%dd" (1+ (floor (log10 (length (cdr node))))))))
+		    (setq fmt (format "%%-%dd"
+				      (1+ (floor (log10 (length (cdr node))))))))
 		))
 
 	  (dolist (child (cdr node))
-	    (rest-toc-insert-node child 
+	    (rest-toc-insert-node child
 				  (1+ level)
 				  indent
-				  (if do-child-numbering 
+				  (if do-child-numbering
 				      (concat pfx (format fmt count)) pfx))
 	    (incf count)))
 
       )))
 
+
+(defun rest-toc-insert-find-delete-contents ()
+  "Finds and deletes an existing comment after the first contents directive and
+delete that region. Return t if found and the cursor is left after the comment."
+  (goto-char (point-min))
+  ;; We look for the following and the following only (in other words, if your
+  ;; syntax differs, this won't work.  If you would like a more flexible thing,
+  ;; contact the author, I just can't imagine that this requirement is
+  ;; unreasonable for now).
+  ;;
+  ;;   .. contents:: [...anything here...]
+  ;;   ..
+  ;;      XXXXXXXX
+  ;;      XXXXXXXX
+  ;;      [more lines]
+  ;;
+  (let ((beg
+	 (re-search-forward "^\\.\\. contents[ \t]*::\\(.*\\)\n\\.\\."
+			    nil t))
+	last-real)
+    (when beg
+      ;; Look for the first line that starts at the first column.
+      (forward-line 1)
+      (beginning-of-line)
+      (while (or (and (looking-at "[ \t]+[^ \t]")
+		      (setq last-real (point)) t)
+		 (looking-at "\\s-*$"))
+	(forward-line 1)
+	)
+      (if last-real
+	  (progn
+	    (goto-char last-real)
+	    (end-of-line)
+	    (delete-region beg (point)))
+	(goto-char beg))
+      t
+      )))
+  
+(defun rest-toc-insert-update ()
+  "Automatically find the .. contents:: section of a document and update the
+inserted TOC if present.  You can use this in your file-write hook to always
+make it up-to-date automatically."
+  (interactive)
+  (save-excursion
+    (if (rest-toc-insert-find-delete-contents)
+	(progn (insert "\n    ")
+	       (rest-toc-insert))) )
+  ;; Note: always return nil, because this may be used as a hook.
+  )
+
+
+;;------------------------------------------------------------------------------
 
 (defun rest-toc-node (node level)
   "Recursive function that does the print of the TOC in rest-toc-mode."
@@ -1246,7 +1359,7 @@ necessary for all the children of this level to align."
 
 	;; Highlight lines.
 	(put-text-property b (point) 'mouse-face 'highlight)
-    
+
 	;; Add link on lines.
 	(put-text-property b (point) 'rest-toc-target (cadar node))
 
