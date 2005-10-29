@@ -255,6 +255,19 @@ Also see the `SourceForge Bug Tracker`_.
   Added a commented-out test case to
   test/test_parsers/test_rst/test_SimpleTableParser.py.
 
+* _`Footnote references with hyperlink targets` cause a possibly
+  invalid node tree and make the HTML writer crash::
+
+      $ rst2pseudoxml.py
+      [1]_
+
+      .. _1: URI
+      <document source="<stdin>">
+          <paragraph>
+              <footnote_reference ids="id1" refuri="URI">
+                  1
+          <target ids="id2" names="1" refuri="URI">
+
 
 ..
    Local Variables:
