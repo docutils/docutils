@@ -1,5 +1,5 @@
-# -*- coding: iso-8859-1 -*-
-# Author: Marcelo Huerta San Martín
+# -*- coding: utf-8 -*-
+# Author: Marcelo Huerta San MartÃ­n
 # Contact: richieadler@users.sourceforge.net
 # Revision: $Revision$
 # Date: $Date$
