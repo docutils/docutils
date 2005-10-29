@@ -72,7 +72,7 @@ Developer Access
 ----------------
 
 (Developers who had write-access for Docutils' CVS repository on
-SourceForge.net should `register at BerliOS`__ and send an email with
+SourceForge.net should `register at BerliOS`__ and send a message with
 their BerliOS user name to `Felix Wiemann <Felix.Wiemann@ososo.de>`_.)
 
 __ https://developer.berlios.de/account/register.php
