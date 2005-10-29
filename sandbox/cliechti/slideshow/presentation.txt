@@ -2,22 +2,19 @@
  S5 Slide Shows Using reStructuredText
 =======================================
 
+:Authors:       Chris Liechti <cliechti@gmx.net>,
+                David Goodger <goodger@python.org>
+:Version:       1.1
+:Date:          $Date$
+
 .. This document serves as manual and example of the rst2s5.py
    converter at the same time.
 
 A short introduction to generating S5 slide shows with Docutils and
 reStructuredText.
 
-:Authors:       Chris Liechti <cliechti@gmx.net>,
-                David Goodger <goodger@python.org>
-:Version:       1.1
-:Date:          $Date$
-
-Click the "|mode|" button to switch between presentation & handout
-modes.  In presentation mode, mouse over to the lower right-hand
-corner to display the controls.
-
-.. |mode| unicode:: U+00D8 .. capital o with stroke
+*(Hit the right- or down-arrow key or click the mouse button to
+proceed.)*
 
 .. container:: handout
 
@@ -69,7 +66,7 @@ Basic Usage
 Based on Docutils, normal reStructuredText documents are supported.
 Each first-level section is converted to a single slide.
 
-.. sidebar:: Installation
+.. topic:: Installation
    :class: handout
 
    Prerequisites: Python and the docutils package have to be
@@ -83,13 +80,28 @@ An S5 slide show HTML file is generated with the following command::
 
     rst2s5.py presentation.txt presentation.html
 
+Open ``presentation.html`` in any modern graphical browser.
+
+Click the "|mode|" button to switch between presentation & handout
+modes.  In presentation mode, mouse over to the lower right-hand
+corner to display the controls.
+
+.. topic:: UI Details
+   :class: handout
+
+   Details of the S5 user interface can be found at `Eric Meyer's S5
+   page`__.
+
+.. |mode| unicode:: U+00D8 .. capital o with stroke
+__ S5_
+
 
 Themes
 ======
 
-The presentation theme consists of additional files: stylesheets,
-JavaScript, and graphics.  These go into a subdirectory of the ``ui``
-directory beside ``presentation.html``.
+The presentation theme consists of several additional files:
+stylesheets, JavaScript, and graphics.  These go into a subdirectory
+of the ``ui`` directory beside ``presentation.html``.
 
 .. container:: handout
 
@@ -123,7 +135,8 @@ Features
 ========
 
 The ``rst2s5.py`` front-end tool is based on ``rst2html.py``, and it
-supports all the standard features.  S5-specific features:
+supports all the standard Docutils HTML features.  S5-specific
+features:
 
 .. class:: incremental
 
@@ -234,10 +247,13 @@ Steps to Generate a Slide Show
 
 3. Normally the Docutils default stylesheet, ``html4css1.css``, will
    be embedded in the output HTML.  If you choose to link to a
-   stylesheet instead of embedding, you must include it.
+   stylesheet instead of embedding, you must include a copy.
 
-4. Extract the sample theme from
-   http://meyerweb.com/eric/tools/s5/s5blank.zip in the same folder
-   (this should create a ``ui`` folder).
+4. In the same folder, extract the sample theme from
+   http://meyerweb.com/eric/tools/s5/s5blank.zip (this should create a
+   ``ui`` folder).
 
 5. Open ``presentation.html`` in a web browser.
+
+6. Make the browser window full-screen and speak.  Fame and fortune
+   will surely follow!
