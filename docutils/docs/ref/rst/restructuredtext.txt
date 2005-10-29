@@ -2239,7 +2239,7 @@ constructs is recognized, leave the ".." on a line by itself::
     ..
        |even| this:: !
 
-A explicit markup start followed by a blank line and nothing else
+An explicit markup start followed by a blank line and nothing else
 (apart from whitespace) is an "empty comment".  It serves to terminate
 a preceding construct, and does **not** consume any indented text
 following.  To have a block quote follow a list or any indented

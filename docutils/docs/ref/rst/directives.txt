@@ -1273,6 +1273,8 @@ Raw Data Pass-Through
    describe your situation in an email to the Docutils-users_ mailing
    list.
 
+.. _Docutils-users: ../../user/mailing-lists.html#docutils-users
+
 The "raw" directive indicates non-reStructuredText data that is to be
 passed untouched to the Writer.  The names of the output formats are
 given in the directive arguments.  The interpretation of the raw data
