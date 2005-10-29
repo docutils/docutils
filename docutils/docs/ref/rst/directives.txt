@@ -1270,7 +1270,7 @@ Raw Data Pass-Through
    If you often need to use the "raw" directive or a "raw"-derived
    interpreted text role, that is a sign either of overuse/abuse or
    that functionality may be missing from reStructuredText.  Please
-   describe your situation in an email to the Docutils-users_ mailing
+   describe your situation in a message to the Docutils-users_ mailing
    list.
 
 .. _Docutils-users: ../../user/mailing-lists.html#docutils-users
