@@ -1,4 +1,4 @@
-.. -*- coding: iso-8859-1 -*-
+.. -*- coding: utf-8 -*-
 
 =====================================
  Emacs Support for reStructuredText_
@@ -49,7 +49,7 @@ here are some useful resources for Emacs users in the Unicode world:
   to your .emacs file.
 
   - To get direct keyboard input of non-ASCII characters (like
-    "option-e e" resulting in "é" [eacute]), first enable the option
+    "option-e e" resulting in "Ã©" [eacute]), first enable the option
     key by setting the command key as your meta key::
 
         (setq mac-command-key-is-meta t) ;; nil for option key

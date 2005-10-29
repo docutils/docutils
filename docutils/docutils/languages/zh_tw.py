@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 # Author: Joe YS Jaw
 # Contact: joeysj@users.sourceforge.net
 # Revision: $Revision$

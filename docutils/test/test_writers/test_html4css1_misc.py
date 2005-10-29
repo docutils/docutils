@@ -1,5 +1,4 @@
 #! /usr/bin/env python
-# -*- coding: utf-8 -*-
 
 # Author: Felix Wiemann
 # Contact: Felix_Wiemann@ososo.de
@@ -25,9 +24,11 @@ class EncodingTestCase(DocutilsTestSupport.StandardTestCase):
             'stylesheet': '',
             '_disable_config': 1,}
         result = core.publish_string(
-            'äöü€', writer_name='html4css1',
+            'EUR = \xe2\x82\xac', writer_name='html4css1',
             settings_overrides=settings_overrides)
-        self.assert_(result.find('\xe4\xf6\xfc&#8364;') != -1)
+        # Encoding a euro sign with latin1 doesn't work, so the
+        # xmlcharrefreplcae handler is used.
+        self.assert_(result.find('EUR = &#8364;') != -1)
 
 
 if __name__ == '__main__':
