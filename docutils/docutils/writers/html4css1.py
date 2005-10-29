@@ -272,6 +272,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.html_body = []
         self.in_document_title = 0
         self.in_mailto = 0
+        self.author_in_authors = None
 
     def astext(self):
         return ''.join(self.head_prefix + self.head
@@ -467,16 +468,25 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append(self.context.pop() + '</p>\n')
 
     def visit_author(self, node):
-        self.visit_docinfo_item(node, 'author')
+        if isinstance(node.parent, nodes.authors):
+            if self.author_in_authors:
+                self.body.append('\n<br />')
+        else:
+            self.visit_docinfo_item(node, 'author')
 
     def depart_author(self, node):
-        self.depart_docinfo_item()
+        if isinstance(node.parent, nodes.authors):
+            self.author_in_authors += 1
+        else:
+            self.depart_docinfo_item()
 
     def visit_authors(self, node):
-        pass
+        self.visit_docinfo_item(node, 'authors')
+        self.author_in_authors = 0
 
     def depart_authors(self, node):
-        pass
+        self.depart_docinfo_item()
+        self.author_in_authors = None
 
     def visit_block_quote(self, node):
         self.body.append(self.starttag(node, 'blockquote'))
