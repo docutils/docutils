@@ -29,8 +29,8 @@ his essay `The Magic Cauldron`_:
     correlated with the number of hoops each project makes a user go
     through to contribute.
 
-    .. _The Magic Cauldron:
-       http://www.catb.org/~esr/writings/magic-cauldron/
+.. _The Magic Cauldron:
+   http://www.catb.org/~esr/writings/magic-cauldron/
 
 We will endeavour to keep the barrier to entry as low as possible.
 The policies below should not be thought of as barriers, but merely as
@@ -63,9 +63,6 @@ Conventions`_ PEPs, with the following clarifications and extensions:
 
 * 4 spaces per indentation level.  No hard tabs.
 
-* Use only 7-bit ASCII, no 8-bit strings.  See `Docutils
-  Internationalization`_.
-
 * No one-liner compound statements (i.e., no ``if x: return``: use two
   lines & indentation), except for degenerate class or method
   definitions (i.e., ``class X: pass`` is OK.).
@@ -74,14 +71,6 @@ Conventions`_ PEPs, with the following clarifications and extensions:
 
 * Use "StudlyCaps" for class names (except for element classes in
   docutils.nodes).
-
-* Use "lowercase" or "lowercase_with_underscores" for function,
-  method, and variable names.  For short names, maximum two words,
-  joined lowercase may be used (e.g. "tagname").  For long names with
-  three or more words, or where it's hard to parse the split between
-  two words, use lowercase_with_underscores (e.g.,
-  "note_explicit_target", "explicit_target").  If in doubt, use
-  underscores.
 
 * Avoid lambda expressions, which are inherently difficult to
   understand.  Named functions are preferable and superior: they're
@@ -120,9 +109,6 @@ Documentation Conventions
       ------------------------------
        Document Subtitle (optional)
       ------------------------------
-
-      (The doc. subtitle adornment style can also be used for major
-      top-level sections.)
 
       Section
       =======
@@ -187,14 +173,9 @@ repository anonymously.  Only project developers can make changes.
 (If you would like to become a project developer, just ask!)  Also see
 `Setting Up For Docutils Development`_ below for some useful info.
 
-.. Caution::
-
-   Unless you really *really* know what you're doing, please do
-   **NOT** use ``svn import``.  Only use ``svn import`` if you're
-   **absolutely sure you know what you're doing**.  Even then, first
-   grab a copy of the `nightly repository tarball`_, set it up on your
-   own machine, remove ``hooks/post-commit``, and experiment *there*.
-   It's quite easy to mess up the repository with an import.
+Unless you really *really* know what you're doing, please do *not* use
+``svn import``.  It's quite easy to mess up the repository with an
+import.
 
 .. _repository documentation: repository.html
 
@@ -257,10 +238,6 @@ above, the general `Check-ins`_ policy (below) also applies.
 Check-ins
 ---------
 
-In general, the Docutils project follows the `Python Check-in
-Policies`_ as applicable.  There are some differences (e.g., we use
-Subversion now, not CVS), and we place particular emphasis as follows.
-
 Changes or additions to the Docutils core and maintenance branches
 carry a commitment to the Docutils user community.  Developers must be
 prepared to fix and maintain any code they have committed.
@@ -320,8 +297,6 @@ mistake is easy to fix.  That's what Subversion is for!
 
 .. _Docutils Front-End Tools: ../user/tools.html
 .. _Docutils Configuration Files: ../user/config.html
-.. _Python Check-in Policies:
-   http://www.python.org/dev/tools.html#check-in-policies
 .. _nightly repository tarball:
    http://svn.berlios.de/svndumps/docutils-repos.gz
 
