@@ -41,16 +41,16 @@ mailing lists; use the one you feel most comfortable with.
   __ nntp://news.gmane.org/gmane.text.docutils.user.
 
 **If you do not wish to subscribe,** you can also just send an email
-to Docutils-users@lists.sourceforge.net.  Please note in your email
-that you are not subscribed (to make sure that you receive copies
-[CCs] of any replies).
+message to Docutils-users@lists.sourceforge.net.  Please note in your
+message that you are not subscribed (to make sure that you receive
+copies [CCs] of any replies).
 
 The first time you post a message without being subscribed (also when
-posting via Gmane), you will receive an email with the subject "Your
-message to Docutils-users awaits moderator approval"; this is done to
-prevent spam to the mailing lists.  Your message will usually be
-approved within a few hours.  To avoid duplicates, please do not
-resend your message using a different email address.
+posting via Gmane), you will receive an automatic response with the
+subject "Your message to Docutils-users awaits moderator approval";
+this is done to prevent spam to the mailing lists.  Your message will
+usually be approved within a few hours.  To avoid duplicates, please
+do not resend your message using a different email address.
 
 
 Doc-SIG
