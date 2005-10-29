@@ -844,7 +844,7 @@ List Table
 (New in Docutils 0.3.8.  This is an initial implementation; `further
 ideas`__ may be implemented in the future.)
 
-__ http://docutils.sf.net/docs/dev/rst/alternatives.html#list-driven-tables
+__ ../../dev/rst/alternatives.html#list-driven-tables
 
 The "list-table" directive is used to create a table from data in a
 uniform two-level bullet list.  "Uniform" means that each sublist
@@ -1512,7 +1512,7 @@ The text above is parsed and transformed into this doctree fragment::
     character must be a letter; no "unicode", "latin1", or "escape"
     characters), this results in the ``[a-z](-?[a-z0-9]+)*`` pattern.
 
-    .. _HTML 4.01 spec: http://www.w3.org/TR/html401
+    .. _HTML 4.01 spec: http://www.w3.org/TR/html401/
     .. _CSS1 spec: http://www.w3.org/TR/REC-CSS1
 
 

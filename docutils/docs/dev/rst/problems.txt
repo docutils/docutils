@@ -114,7 +114,8 @@ markup-significant characters as the characters themselves.  Currently
 there is no such mechanism (although ZWiki uses '!').  What are the
 candidates?
 
-1. ``!`` (http://dev.zope.org/Members/jim/StructuredTextWiki/NGEscaping)
+1. ``!``
+   (http://www.zope.org/DevHome/Members/jim/StructuredTextWiki/NGEscaping)
 2. ``\``
 3. ``~``
 4. doubling of characters
@@ -847,14 +848,14 @@ text is separated from the link URI and the footnote, resulting in
 cleanly readable text.
 
 .. _StructuredText:
-   http://dev.zope.org/Members/jim/StructuredTextWiki/FrontPage
+   http://www.zope.org/DevHome/Members/jim/StructuredTextWiki/FrontPage
 .. _Setext: http://docutils.sourceforge.net/mirror/setext.html
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _detailed description:
    http://homepage.ntlworld.com/tibsnjoan/docutils/STNG-format.html
 .. _STMinus: http://www.cis.upenn.edu/~edloper/pydoc/stminus.html
 .. _StructuredTextNG:
-   http://dev.zope.org/Members/jim/StructuredTextWiki/StructuredTextNG
+   http://www.zope.org/DevHome/Members/jim/StructuredTextWiki/StructuredTextNG
 .. _README: http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/~checkout~/
    python/python/dist/src/README
 .. _Emacs table mode: http://table.sourceforge.net/

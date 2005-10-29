@@ -29,9 +29,9 @@ Sandbox Projects
 Project Infrastructure
 ----------------------
 
-`docutils-update <davidg/infrastructure/docutils-update>`_ is a script
-that is installed as a cron job on BerliOS.de to automatically update
-the Docutils `web site`_ whenever the SVN files change.  Any .html
+`docutils-update <infrastructure/docutils-update>`_ is a script that
+is installed as a cron job on BerliOS.de to automatically update the
+Docutils `web site`_ whenever the SVN files change.  Any .html
 document with a corresponding .txt file is regenerated whenever the
 .txt file changes.
 

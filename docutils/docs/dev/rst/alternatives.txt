@@ -32,7 +32,7 @@ The ideas are divided into sections:
 
 .. _Setext: http://docutils.sourceforge.net/mirror/setext.html
 .. _StructuredText:
-   http://dev.zope.org/Members/jim/StructuredTextWiki/FrontPage
+   http://www.zope.org/DevHome/Members/jim/StructuredTextWiki/FrontPage
 .. _Problems with StructuredText: problems.html
 .. _reStructuredText Markup Specification:
    ../../ref/rst/restructuredtext.html
