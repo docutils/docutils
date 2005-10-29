@@ -31,7 +31,7 @@ http://docutils.sourceforge.net/rst.html.
 
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _StructuredText:
-    http://dev.zope.org/Members/jim/StructuredTextWiki/FrontPage
+    http://www.zope.org/DevHome/Members/jim/StructuredTextWiki/FrontPage
 .. _Setext: http://docutils.sourceforge.net/mirror/setext.html
 .. _Docutils: http://docutils.sourceforge.net/
 .. _A ReStructuredText Primer: ../../user/rst/quickstart.html
@@ -295,7 +295,7 @@ followed.
    http://structuredtext.sourceforge.net/
 .. _pythondoc: http://starship.python.net/crew/danilo/pythondoc/
 .. _StructuredTextNG:
-   http://dev.zope.org/Members/jim/StructuredTextWiki/StructuredTextNG
+   http://www.zope.org/DevHome/Members/jim/StructuredTextWiki/StructuredTextNG
 .. _project history file: ../../../HISTORY.html
 .. _PEP 287: ../../peps/pep-0287.html
 .. _Docstring Processing System framework: ../../peps/pep-0256.html

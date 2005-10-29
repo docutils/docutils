@@ -30,7 +30,7 @@ his essay `The Magic Cauldron`_:
     through to contribute.
 
     .. _The Magic Cauldron:
-       http://www.tuxedo.org/~esr/writings/magic-cauldron/
+       http://www.catb.org/~esr/writings/magic-cauldron/
 
 We will endeavour to keep the barrier to entry as low as possible.
 The policies below should not be thought of as barriers, but merely as
@@ -319,7 +319,7 @@ just a trickle of perfect-as-they-stand changes.  The occasional
 mistake is easy to fix.  That's what Subversion is for!
 
 .. _Docutils Front-End Tools: ../user/tools.html
-.. _Docutils Configuration Files: ../user/config.htm
+.. _Docutils Configuration Files: ../user/config.html
 .. _Python Check-in Policies:
    http://www.python.org/dev/tools.html#check-in-policies
 .. _nightly repository tarball:

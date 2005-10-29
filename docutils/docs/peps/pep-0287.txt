@@ -764,7 +764,7 @@ __ http://www.python.org/doc/Humor.html#zen
 .. _Setext: http://docutils.sourceforge.net/mirror/setext.html
 
 .. _StructuredText:
-   http://dev.zope.org/Members/jim/StructuredTextWiki/FrontPage
+   http://www.zope.org/DevHome/Members/jim/StructuredTextWiki/FrontPage
 
 .. _A ReStructuredText Primer:
    http://docutils.sourceforge.net/docs/user/rst/quickstart.html
