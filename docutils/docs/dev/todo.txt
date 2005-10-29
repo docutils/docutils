@@ -461,7 +461,7 @@ General
   (Had I known about traits when I was implementing docutils.frontend,
   I may have used them instead of rolling my own.)
 
-  .. _traits: http://old.scipy.org/site_content/traits
+  .. _traits: http://www.enthought.com/traits/
   .. _SciPy: http://www.scipy.org/
 
 * tools/buildhtml.py: Extend the --prune option ("prune" config
