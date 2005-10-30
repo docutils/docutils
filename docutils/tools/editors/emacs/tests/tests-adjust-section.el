@@ -2,7 +2,7 @@
 ;; Date: $Date: 2005/04/01 23:19:41 $
 ;; Copyright: This module has been placed in the public domain.
 ;;
-;; Regression tests for rest-adjust-section-title.
+;; Regression tests for rst-adjust-section-title.
 ;; 
 ;; Run this with::
 ;;
@@ -12,7 +12,7 @@
 
 
 ;; Define tests.
-(setq rest-adjust-decoration-tests
+(setq rst-adjust-decoration-tests
   '(
 ;;------------------------------------------------------------------------------
 (nodec-first-simple-1
@@ -818,13 +818,13 @@ Document Title2
 (add-to-list 'load-path ".")
 (load "tests-runner.el")
 (add-to-list 'load-path "..")
-(load "restructuredtext.el")
+(load "rst.el")
 
 (progn
   (regression-test-compare-expect-buffer
    "Test interactive adjustment of sections."
-   rest-adjust-decoration-tests
+   rst-adjust-decoration-tests
    (lambda ()
-     (call-interactively 'rest-adjust))
+     (call-interactively 'rst-adjust))
    nil))
 
