@@ -63,7 +63,7 @@ Then you will want to bind keys to the most common commands it provides.  A
 standard text-mode hook function is maintained and provided by the package for
 this use, set it up like this::
 
-  (add-hook 'text-mode-hook 'rst-text-mode-hook)
+  (add-hook 'text-mode-hook 'rst-text-mode-bindings)
 
 
 Section Decoration Adjustment
