@@ -2,7 +2,7 @@
 ;; Date: $Date: 2005/04/01 23:19:41 $
 ;; Copyright: This module has been placed in the public domain.
 ;;
-;; Regression tests for rest-adjust-section-title.
+;; Regression tests for rst-adjust-section-title.
 ;;
 ;; Run this with::
 ;;
@@ -15,12 +15,12 @@
 (add-to-list 'load-path ".")
 (load "tests-runner.el")
 (add-to-list 'load-path "..")
-(load "restructuredtext.el")
+(load "rst.el")
 
 ;; (setq debug-on-error t)
 
 
-(setq rest-line-homogeneous-p-tests
+(setq rst-line-homogeneous-p-tests
   '(
 ;;------------------------------------------------------------------------------
 (simple "Blablabla bla@" nil)
@@ -38,9 +38,9 @@
 (progn
   (regression-test-compare-expect-values
    "Tests for predicate for one char line."
-   rest-line-homogeneous-p-tests 'rest-line-homogeneous-p nil))
+   rst-line-homogeneous-p-tests 'rst-line-homogeneous-p nil))
 
-(setq rest-line-homogeneous-nodent-p-tests
+(setq rst-line-homogeneous-nodent-p-tests
   '(
 ;;------------------------------------------------------------------------------
 (simple "Blablabla bla@" nil)
@@ -58,12 +58,12 @@
 (progn
   (regression-test-compare-expect-values
    "Tests for predicate for one char line."
-   rest-line-homogeneous-nodent-p-tests 'rest-line-homogeneous-nodent-p nil))
+   rst-line-homogeneous-nodent-p-tests 'rst-line-homogeneous-nodent-p nil))
 
 
 
 
-(setq rest-normalize-cursor-position-tests
+(setq rst-normalize-cursor-position-tests
       '(
 ;;------------------------------------------------------------------------------
 (under
@@ -215,7 +215,7 @@ Another Title
 (progn
   (regression-test-compare-expect-buffer
    "Test preparation of cursor position."
-   rest-normalize-cursor-position-tests 'rest-normalize-cursor-position nil))
+   rst-normalize-cursor-position-tests 'rst-normalize-cursor-position nil))
 
 
 
@@ -223,7 +223,7 @@ Another Title
 
 
 
-(setq rest-get-decoration-tests
+(setq rst-get-decoration-tests
       '(
 ;;------------------------------------------------------------------------------
 (nodec-1
@@ -436,7 +436,7 @@ Du bon vin tous les jours
 (progn
   (regression-test-compare-expect-values
    "Test getting the decoration."
-   rest-get-decoration-tests 'rest-get-decoration nil))
+   rst-get-decoration-tests 'rst-get-decoration nil))
 
 
 
@@ -528,7 +528,7 @@ Current@
 ;;
 ;; ==========
 
-(setq rest-find-all-decorations-tests
+(setq rst-find-all-decorations-tests
       `(
  ;;------------------------------------------------------------------------------
 	(basic-1 ,text-1
@@ -558,12 +558,12 @@ Current@
 (progn
   (regression-test-compare-expect-values
    "Test finding all the decorations in a file."
-   rest-find-all-decorations-tests 'rest-find-all-decorations nil))
+   rst-find-all-decorations-tests 'rst-find-all-decorations nil))
 
 
 
 
-(setq rest-get-hierarchy-tests
+(setq rst-get-hierarchy-tests
       `(
  ;;------------------------------------------------------------------------------
 	(basic-1 ,text-1
@@ -577,12 +577,12 @@ Current@
 (progn
   (regression-test-compare-expect-values
    "Test finding the hierarchy of sections in a file."
-   rest-get-hierarchy-tests 'rest-get-hierarchy nil))
+   rst-get-hierarchy-tests 'rst-get-hierarchy nil))
 
 
 
 
-(setq rest-get-hierarchy-ignore-tests
+(setq rst-get-hierarchy-ignore-tests
       `(
  ;;------------------------------------------------------------------------------
 	(basic-1 ,text-1
@@ -595,8 +595,8 @@ Current@
 (progn
   (regression-test-compare-expect-values
    "Test finding the hierarchy of sections in a file, ignoring lines."
-   rest-get-hierarchy-ignore-tests
-   (lambda () (rest-get-hierarchy nil (line-number-at-pos))) nil))
+   rst-get-hierarchy-ignore-tests
+   (lambda () (rst-get-hierarchy nil (line-number-at-pos))) nil))
 
 
 
@@ -604,7 +604,7 @@ Current@
 
 
 
-(setq rest-decoration-complete-p-tests
+(setq rst-decoration-complete-p-tests
   '(
 ;;------------------------------------------------------------------------------
 (nodec
@@ -759,7 +759,7 @@ Current@
 (progn
   (regression-test-compare-expect-values
    "Tests for completeness predicate."
-   rest-decoration-complete-p-tests 'rest-decoration-complete-p nil))
+   rst-decoration-complete-p-tests 'rst-decoration-complete-p nil))
 
 
 
@@ -773,7 +773,7 @@ Current@
 
 
 
-(setq rest-get-decorations-around-tests
+(setq rst-get-decorations-around-tests
   '(
 ;;------------------------------------------------------------------------------
 (simple
@@ -809,5 +809,5 @@ Next
 (progn
   (regression-test-compare-expect-values
    "Tests getting the decorations around a point."
-   rest-get-decorations-around-tests 'rest-get-decorations-around nil))
+   rst-get-decorations-around-tests 'rst-get-decorations-around nil))
 

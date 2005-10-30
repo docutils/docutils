@@ -95,6 +95,10 @@ Docutils-general:
   demonstration of most reStructuredText features; you can also have a
   look at the `text source <user/rst/demo.txt>`__)
 
+Editor support:
+
+* `Emacs support for reStructuredText <user/emacs.html>`_
+
 
 .. _ref:
 
