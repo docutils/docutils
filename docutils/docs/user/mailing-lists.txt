@@ -50,7 +50,10 @@ posting via Gmane), you will receive an automatic response with the
 subject "Your message to Docutils-users awaits moderator approval";
 this is done to prevent spam to the mailing lists.  Your message will
 usually be approved within a few hours.  To avoid duplicates, please
-do not resend your message using a different email address.
+do not resend your message using a different email address.  After
+your first message has been approved, your email address will be added
+to the whitelist and future messages will be posted to the mailing
+list without moderation.
 
 
 Doc-SIG
