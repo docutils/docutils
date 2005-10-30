@@ -6,6 +6,8 @@
 
 :Date: $Date$
 
+.. _reStructuredText: http://docutils.sourceforge.net/rst.html
+
 
 Directory Contents
 ==================
@@ -26,4 +28,3 @@ This directory contains the following Emacs lisp package files:
 
 To install the package, put a copy of the package file in a directory on your
 ``load-path`` (use ``C-h v load-path`` to check).
-
