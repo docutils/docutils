@@ -1,26 +1,46 @@
-;; Authors: Martin Blais <blais@furius.ca>,
-;;          Stefan Merten <smerten@oekonux.de>
-;;          David Goodger <goodger@python.org>
-;; Date: $Date$
-;; Copyright: This module has been placed in the public domain.
-;;  
-;; Support code for editing reStructuredText with Emacs.  Basically, this
-;; package contains:
-;; 
-;; - Functions to automatically adjust and cycle the section underline
-;;   decorations;
-;; - A mode that displays the table of contents and allows you to jump anywhere
-;;   from it;
-;; - Functions to insert and automatically update a TOC in your source document;
-;; - A mode which supports font-lock highlighting of reStructuredText
-;;   structures;
-;; - Some other convenience functions.
-;; 
-;; See the accompanying document in the docutils documentation about
-;; the contents of this package and how to use it.
-;; 
-;; For more information about reStructuredText, see
-;; http://docutils.sourceforge.net/rst.html
+;;; ================================================
+;;;   rst.el -- ReStructuredText Support for Emacs
+;;; ================================================
+;;;
+;;; :Authors: Martin Blais <blais@furius.ca>,
+;;;           Stefan Merten <smerten@oekonux.de>,
+;;;           David Goodger <goodger@python.org>
+;;; :Date: $Date$
+;;; :Copyright: This module has been placed in the public domain.
+;;; :Abstract:
+;;;
+;;;    Support code for editing reStructuredText with Emacs.  The latest version
+;;;    of this file lies in the docutils source code repository.
+;;;  
+;;; Description
+;;; ===========
+;;;
+;;; Basically, this package contains:
+;;; 
+;;; - Functions to automatically adjust and cycle the section underline
+;;;   decorations;
+;;; - A mode that displays the table of contents and allows you to jump anywhere
+;;;   from it;
+;;; - Functions to insert and automatically update a TOC in your source document;
+;;; - A mode which supports font-lock highlighting of reStructuredText
+;;;   structures;
+;;; - Some other convenience functions.
+;;; 
+;;; See the accompanying document in the docutils documentation about
+;;; the contents of this package and how to use it.
+;;; 
+;;; For more information about reStructuredText, see
+;;; http://docutils.sourceforge.net/rst.html
+;;;
+;;; For full details on how to use the contents of this file, see
+;;; http://docutils.sourceforge.net/docs/user/emacs.html
+;;;
+;;; Download
+;;; ========
+;;;
+;;; Click `Here <rst.el>`_ for download.
+;;;
+;;; END
 ;;
 ;; **IMPORTANT NOTE TO PACKAGERS**: this package is the result of merging:
 ;;
@@ -120,6 +140,8 @@
 ;;
 ;; Other
 ;; -----
+;; - We should rename "adornment" to "decoration" or vice-versa in this
+;;   document.
 ;; - Add an option to forego using the file structure in order to make
 ;;   suggestion, and to always use the preferred decorations to do that.
 ;;
