@@ -286,17 +286,21 @@ customizable faces).
 Converting Documents from Emacs
 ===============================
 
-At the moment there is minimal support for calling ``rst2html.py`` from within
-Emacs.  You can add a key binding like this to invoke it::
+At the moment there is minimal support for calling the conversion tools from
+within Emacs.  You can add a key binding like this to invoke it::
 
-  (local-set-key [(control c)(?9)] 'rst-html-compile)
+  (local-set-key [(control c)(?9)] 'rst-compile)
 
-This function basically creates a compilation command with the correct HTML
-output name for the current buffer and then invokes Emacs' compile function.  It
-also looks for the presence of a ``docutils.conf`` configuration file in the
-parent directories and adds it to the cmdline options.  You can customize which
-tool is used to perform the conversion and some standard options to always be
-added as well.
+This function basically creates a compilation command with the correct output
+name for the current buffer and then invokes Emacs' compile function.  It also
+looks for the presence of a ``docutils.conf`` configuration file in the parent
+directories and adds it to the cmdline options.  You can customize which tool is
+used to perform the conversion and some standard options to always be added as
+well.
+
+Invocation uses the toolset indicated by ``rst-compile-primary-toolset``
+(default is ``'html``).  Invocation with a prefix argument uses
+``rst-compile-secondary-toolset``.
 
 .. note:: 
 
