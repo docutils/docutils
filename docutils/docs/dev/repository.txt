@@ -115,8 +115,12 @@ correct properties set::
     *.html = svn:eol-style=native;svn:keywords=Author Date Id Revision
     *.xml = svn:eol-style=native;svn:keywords=Author Date Id Revision
     *.tex = svn:eol-style=native;svn:keywords=Author Date Id Revision
+    *.css = svn:eol-style=native;svn:keywords=Author Date Id Revision
+    *.patch = svn:eol-style=native
     *.sh = svn:eol-style=native;svn:executable;svn:keywords=Author Date Id Revision
     *.png = svn:mime-type=image/png
+    *.jpg = svn:mime-type=image/jpeg
+    *.gif = svn:mime-type=image/gif
 
 
 Setting Up SSH Access
