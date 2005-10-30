@@ -1,11 +1,11 @@
 =======================
-   Using rest-adjust
+   Using rst-adjust
 =======================
 
 :Abstract: 
 
    This is a short interactive demonstration to show-off some of
-   the features of the emacs support in restructuredtext.el
+   the features of the emacs support in rst.el
 
 
 
@@ -623,9 +623,9 @@ Another useful binding exists on C-x C-=
 
 
 [J] You can maintain this up-to-date automatically by binding a
-    special function to rest-adjust-hook::
+    special function to rst-adjust-hook::
 
-      (add-hook 'rest-adjust-hook 'rest-toc-insert-update)
+      (add-hook 'rst-adjust-hook 'rst-toc-insert-update)
 
     [eval, then above]
 
@@ -735,6 +735,6 @@ Another useful binding exists on C-x C-=
 
 
 
-[END] Visit restructuredtext.el for details about how to customize
+[END] Visit rst.el for details about how to customize
       various aspects of these functions.  Thanks for your attention!
 
