@@ -49,8 +49,9 @@ Source Format
 
 2. The tool must support the use of Traits.  Special comment syntax
    for Traits may be necessary.  Information about the Traits package
-   is available at http://www.enthought.com/traits/.  In the following
-   example, each trait definition is prefaced by a plain comment::
+   is available at http://code.enthought.com/traits/.  In the
+   following example, each trait definition is prefaced by a plain
+   comment::
 
        __traits__ = {
 
