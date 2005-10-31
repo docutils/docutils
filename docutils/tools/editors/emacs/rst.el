@@ -418,7 +418,8 @@ have been seen.
 
 (defun rst-delete-line ()
   "A version of kill-line that does not use the kill-ring."
-  (delete-region (line-beginning-position) (+ 1 (line-end-position))))
+  (delete-region (line-beginning-position) (min (+ 1 (line-end-position))
+						(point-max))))
 
 (defun rst-update-section (char style &optional indent)
   "Unconditionally updates the style of a section decoration
