@@ -1,20 +1,14 @@
 .. -*- coding: utf-8 -*-
 
-=====================================
- Emacs Support for reStructuredText_
-=====================================
+=====================
+ Emacs Support Files
+=====================
 
 :Date: $Date$
 
-.. _reStructuredText: http://docutils.sourceforge.net/rst.html
-
-
-Directory Contents
-==================
-
 This directory contains the following Emacs lisp package files:
 
-* rst.el : Emacs support for ReStructuredText. This file contains
+* rst.el: Emacs support for reStructuredText_.  This file contains
 
   * Section decoration/adornment creation and updating (M. Blais);
   * Table-of-contents mode and insertion (M. Blais);
@@ -28,3 +22,8 @@ This directory contains the following Emacs lisp package files:
 
 To install the package, put a copy of the package file in a directory on your
 ``load-path`` (use ``C-h v load-path`` to check).
+
+For setup and usage details, see `Emacs Support for reStructuredText
+<../../../docs/user/emacs.html>`_.
+
+.. _reStructuredText: http://docutils.sourceforge.net/rst.html
