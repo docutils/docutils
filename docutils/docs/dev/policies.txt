@@ -29,9 +29,6 @@ his essay `The Magic Cauldron`_:
     correlated with the number of hoops each project makes a user go
     through to contribute.
 
-.. _The Magic Cauldron:
-   http://www.catb.org/~esr/writings/magic-cauldron/
-
 We will endeavour to keep the barrier to entry as low as possible.
 The policies below should not be thought of as barriers, but merely as
 a codification of experience to date.  These are "best practices";
@@ -47,6 +44,9 @@ originators of Ogg Vorbis) put it well when he said:
 .. [#bcs] Phrase borrowed from `Ben Collins-Sussman of the Subversion
    project <http://www.red-bean.com/sussman/svn-anti-fud.html>`__.
 
+.. _The Magic Cauldron:
+   http://www.catb.org/~esr/writings/magic-cauldron/
+
 
 Python Coding Conventions
 =========================
@@ -59,9 +59,12 @@ conform to these conventions.
 
 The Docutils project shall follow the generic coding conventions as
 specified in the `Style Guide for Python Code`_ and `Docstring
-Conventions`_ PEPs, with the following clarifications and extensions:
+Conventions`_ PEPs, summarized, clarified, and extended as follows:
 
 * 4 spaces per indentation level.  No hard tabs.
+
+* Use only 7-bit ASCII, no 8-bit strings.  See `Docutils
+  Internationalization`_.
 
 * No one-liner compound statements (i.e., no ``if x: return``: use two
   lines & indentation), except for degenerate class or method
@@ -71,6 +74,14 @@ Conventions`_ PEPs, with the following clarifications and extensions:
 
 * Use "StudlyCaps" for class names (except for element classes in
   docutils.nodes).
+
+* Use "lowercase" or "lowercase_with_underscores" for function,
+  method, and variable names.  For short names, maximum two words,
+  joined lowercase may be used (e.g. "tagname").  For long names with
+  three or more words, or where it's hard to parse the split between
+  two words, use lowercase_with_underscores (e.g.,
+  "note_explicit_target", "explicit_target").  If in doubt, use
+  underscores.
 
 * Avoid lambda expressions, which are inherently difficult to
   understand.  Named functions are preferable and superior: they're
@@ -106,9 +117,9 @@ Documentation Conventions
        Document Title
       ================
 
-      ------------------------------
-       Document Subtitle (optional)
-      ------------------------------
+      --------------------------------------------
+       Document Subtitle, or Major Division Title
+      --------------------------------------------
 
       Section
       =======
@@ -182,6 +193,8 @@ import.
 
 Branches
 --------
+
+(These branch policies go into effect with Docutils 0.4.)
 
 The "docutils" directory of the **trunk** (a.k.a. the **Docutils
 core**) is used for active -- but stable, fully tested, and reviewed
@@ -258,7 +271,8 @@ tested_, and `reasonably complete`_.
   Modules & files must be at least minimally documented internally.
   `Docutils Front-End Tools`_ should have a new section for any
   front-end tool that is added.  `Docutils Configuration Files`_
-  should be modified with any settings/options defined.
+  should be modified with any settings/options defined.  For any
+  non-trivial change, the `HISTORY.txt`_ file should be updated.
 
 * _`Tested` means that unit and/or functional tests, that catch all
   bugs fixed and/or cover all new functionality, have been added to
