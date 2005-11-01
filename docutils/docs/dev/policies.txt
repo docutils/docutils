@@ -272,7 +272,7 @@ tested_, and `reasonably complete`_.
   `Docutils Front-End Tools`_ should have a new section for any
   front-end tool that is added.  `Docutils Configuration Files`_
   should be modified with any settings/options defined.  For any
-  non-trivial change, the `HISTORY.txt`_ file should be updated.
+  non-trivial change, the HISTORY.txt_ file should be updated.
 
 * _`Tested` means that unit and/or functional tests, that catch all
   bugs fixed and/or cover all new functionality, have been added to
@@ -311,8 +311,7 @@ mistake is easy to fix.  That's what Subversion is for!
 
 .. _Docutils Front-End Tools: ../user/tools.html
 .. _Docutils Configuration Files: ../user/config.html
-.. _nightly repository tarball:
-   http://svn.berlios.de/svndumps/docutils-repos.gz
+.. _HISTORY.txt: ../../HISTORY.txt
 
 
 Version Numbering
