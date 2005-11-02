@@ -275,7 +275,7 @@ rst-mode::
 
    .. -*- mode: rst -*-
 
-Or add this at the end of your documents:
+Or add this at the end of your documents::
 
    ..
       Local Variables:
