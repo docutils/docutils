@@ -280,6 +280,7 @@ Or add this at the end of your documents:
    ..
       Local Variables:
       mode: rst
+      End:
 
 By default, the font-lock colouring is performed lazily.  If you don't like
 this, you can turn this off by setting the value of ``rst-mode-lazy``.  You can
@@ -481,3 +482,12 @@ sink of editors:
 
 .. _Emacs: http://www.gnu.org/emacs FIXME check
 .. _reStructuredText: http://docutils.sf.net/rst.html
+
+
+..
+   Local Variables:
+   mode: indented-text
+   indent-tabs-mode: nil
+   sentence-end-double-space: t
+   fill-column: 70
+   End:
