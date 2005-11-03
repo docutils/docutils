@@ -106,9 +106,9 @@ isopub.txt_          Publishing
 isotech.txt_         General Technical
 mmlalias.txt_        MathML aliases for entities from other sets
 mmlextra.txt_ [1]_   Extra names added by MathML
-xhtml4-lat1.txt_     XHTML Latin 1
-xhtml4-special.txt_  XHTML Special Characters
-xhtml4-symbol.txt_   XHTML Mathematical, Greek and Symbolic Characters
+xhtml1-lat1.txt_     XHTML Latin 1
+xhtml1-special.txt_  XHTML Special Characters
+xhtml1-symbol.txt_   XHTML Mathematical, Greek and Symbolic Characters
 ===================  =================================================
 
 .. [1] There are ``*-wide.txt`` variants for each of these character
@@ -148,9 +148,9 @@ reference (defined in both ``isonum.txt`` and ``xhtml1-lat1.txt``) is
 .. _isotech.txt:        ../../../docutils/parsers/rst/include/isotech.txt
 .. _mmlalias.txt:       ../../../docutils/parsers/rst/include/mmlalias.txt
 .. _mmlextra.txt:       ../../../docutils/parsers/rst/include/mmlextra.txt
-.. _xhtml4-lat1.txt:    ../../../docutils/parsers/rst/include/xhtml4-lat1.txt
-.. _xhtml4-special.txt: ../../../docutils/parsers/rst/include/xhtml4-special.txt
-.. _xhtml4-symbol.txt:  ../../../docutils/parsers/rst/include/xhtml4-symbol.txt
+.. _xhtml1-lat1.txt:    ../../../docutils/parsers/rst/include/xhtml1-lat1.txt
+.. _xhtml1-special.txt: ../../../docutils/parsers/rst/include/xhtml1-special.txt
+.. _xhtml1-symbol.txt:  ../../../docutils/parsers/rst/include/xhtml1-symbol.txt
 
 
 ..
