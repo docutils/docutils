@@ -32,7 +32,13 @@ complete details.
    See `Releases & Snapshots`_ below for details.
 
 3. Unpack the tarball in a temporary directory (**not** directly in
-   Python's ``site-packages``) and run ``install.py``.
+   Python's ``site-packages``) and run ``install.py`` with admin
+   rights.  On Windows systems it may be sufficient to double-click
+   ``install.py``.  On Unix or Mac OS X, type::
+
+        su
+        (enter admin password)
+        ./install.py
 
    See Installation_ below for details.
 
