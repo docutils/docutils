@@ -480,7 +480,7 @@ sink of editors:
   that.
 
 
-.. _Emacs: http://www.gnu.org/emacs FIXME check
+.. _Emacs: http://www.gnu.org/software/emacs/emacs.html
 .. _reStructuredText: http://docutils.sf.net/rst.html
 
 
