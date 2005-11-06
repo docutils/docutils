@@ -57,10 +57,14 @@ To check out everything (main tree, sandboxes, and web site), type ::
 This will create a working copy of the whole trunk in a new directory
 called ``docutils``.
 
-Note that you should *never* check out
-``svn://svn.berlios.de/docutils`` (without "trunk"), because then
-you'd end up fetching the whole Docutils tree for every branch and tag
-over and over again, wasting your and BerliOS's bandwidth.
+If you cannot use the ``svn`` port, you can also use the HTTP access
+method by substituting "http://svn.berlios.de/svnroot/repos" for
+"svn://svn.berlios.de".
+
+Note that you should *not* check out ``svn://svn.berlios.de/docutils``
+(without "trunk"), because then you'd end up fetching the whole
+Docutils tree for every branch and tag over and over again, wasting
+your and BerliOS's bandwidth.
 
 To update your working copy later on, cd into the working copy and
 type ::
@@ -93,6 +97,10 @@ typing ::
         svn+ssh://<user>@svn.berlios.de/svnroot/repos/docutils
 
 (Again, ``<user>`` is your BerliOS user account name.)
+
+If you cannot use the ``ssh`` port, you can also use the HTTPS access
+method by substituting "https://svn.berlios.de" for
+"svn+ssh://svn.berlios.de".
 
 
 Setting Up Your Subversion Client For Development
