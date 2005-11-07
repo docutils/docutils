@@ -60,25 +60,47 @@
 ;;   (require 'rst)
 ;;   (add-hook 'text-mode-hook 'rst-text-mode-bindings)
 ;;
-;; The keys it defines are:
+;; rst-prefix-map is the prefix map for all the functionality provide by this
+;; module.  In addition, other shorter bindings are also provided on the
+;; mode-specific-map prefix (i.e C-c).
 ;;
-;;    C-= : updates or rotates the section title around point or
-;;          promotes/demotes the decorations within the region (see full details
-;;          below).
 ;;
-;;          Note that C-= is a good binding, since it allows you to specify a
-;;          negative arg easily with C-- C-= (easy to type), as well as ordinary
-;;          prefix arg with C-u C-=.
+;;    C-c p a (also C-=): rst-adjust 
 ;;
-;;    C-x C-= : displays the hierarchical table-of-contents of the document and
-;;              allows you to jump to any section from it.
+;;       Updates or rotates the section title around point or promotes/demotes
+;;       the decorations within the region (see full details below).
 ;;
-;;    C-u C-x C-= : displays the title decorations from this file.
+;;       Note that C-= is a good binding, since it allows you to specify a
+;;       negative arg easily with C-- C-= (easy to type), as well as ordinary
+;;       prefix arg with C-u C-=.
 ;;
-;;    C-x + : insert the table of contents in the text.  See the many options
-;;            for customizing how it will look.
+;;    C-c p h: rst-display-decorations-hierarchy
 ;;
-;;    C-M-{, C-M-} : navigate between section titles.
+;;       Displays the level decorations that are available in the file.
+;;
+;;    C-c p t: rst-toc
+;;
+;;       Displays the hierarchical table-of-contents of the document and allows
+;;       you to jump to any section from it.
+;;
+;;    C-c p i: rst-toc-insert
+;;
+;;       Inserts a table-of-contents in the document at the column where the
+;;       cursor is.
+;;
+;;    C-c p u: rst-toc-insert-update
+;;
+;;       Find an existing inserted table-of-contents in the document an updates it.
+;;
+;;    C-c p p, C-c p n  (C-c C-p, C-c C-n): rst-backward-section, rst-forward-section
+;;
+;;       Navigate between section titles.
+;;
+;;    C-c p l, C-c p r  (C-c C-l, C-c C-r): rst-shift-region-left, rst-shift-region-right
+;;
+;;       Shift the region left or right by two-char increments, which is perfect
+;;       for bulleted lists.
+;;
 ;;
 ;; Other specialized and more generic functions are also available (see source
 ;; code).  The most important function provided by this file for section title
@@ -129,7 +151,8 @@
 ;;
 ;; rst-toc-insert features
 ;; ------------------------
-;; - Support local table of contents, like in doctree.txt.
+;; - rst-toc-insert: We should parse the contents:: options to figure out how
+;;   deep to render the inserted TOC.
 ;; - On load, detect any existing TOCs and set the properties for links.
 ;; - TOC insertion should have an option to add empty lines.
 ;; - TOC insertion should deal with multiple lines
@@ -167,16 +190,36 @@
       (rst-toc)
     (rst-display-decorations-hierarchy)))
 
+;; Define a prefix map for the long form of key combinations.
+(defvar rst-prefix-map (make-sparse-keymap) 
+  "Keymap for rst commands.")
+(define-key rst-prefix-map "a" 'rst-adjust)
+(define-key rst-prefix-map "=" 'rst-adjust)
+(define-key rst-prefix-map "t" 'rst-toc)
+(define-key rst-prefix-map "h" 'rst-display-decorations-hierarchy)
+(define-key rst-prefix-map "i" 'rst-toc-insert)
+(define-key rst-prefix-map "+" 'rst-toc-insert)
+(define-key rst-prefix-map "p" 'rst-backward-section)
+(define-key rst-prefix-map "n" 'rst-forward-section)
+(define-key rst-prefix-map "r" 'rst-shift-region-right)
+(define-key rst-prefix-map "l" 'rst-shift-region-left)
+(define-key rst-prefix-map "u" 'rst-toc-insert-update)
+
 (defun rst-text-mode-bindings ()
   "Default text mode hook for rest."
+
+  ;; Direct command (somehow this one does not work on the Mac).
   (local-set-key [(control ?=)] 'rst-adjust)
-  (local-set-key [(control x)(control ?=)] 'rst-toc-or-hierarchy)
-  (local-set-key [(control x)(?+)] 'rst-toc-insert)
-  (local-set-key [(control meta ?{)] 'rst-backward-section)
-  (local-set-key [(control meta ?})] 'rst-forward-section)
-  (local-set-key [(control c)(control r)] 'rst-shift-region-right)
-  (local-set-key [(control c)(control l)] 'rst-shift-region-left)
+
+  (define-key mode-specific-map [(control p)] 'rst-backward-section)
+  (define-key mode-specific-map [(control n)] 'rst-forward-section)
+  (define-key mode-specific-map [(control r)] 'rst-shift-region-right)
+  (define-key mode-specific-map [(control l)] 'rst-shift-region-left)
+
+  ;; Bind the rst commands on the C-c p prefix.
+  (define-key mode-specific-map [(p)] rst-prefix-map)
   )
+
 
 ;; Note: we cannot bind the TOC update on file write because it messes with
 ;; undo.  If we disable undo, since it adds and removes characters, the
@@ -189,6 +232,11 @@
 ;;   (let ((buffer-undo-list t)) (rst-toc-insert-update) ))
 
 
+;; Additional abbreviations for text-mode.
+(define-abbrev text-mode-abbrev-table
+  "con" ".. contents::\n..\n   " nil 0)
+
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -197,30 +245,30 @@
 (require 'cl)
 
 ;; Generic Filter function.
-(if (not (fboundp 'filter))
-    (defun filter (pred list)
-      "Returns a list of all the elements fulfilling the pred requirement (that
+(unless (fboundp 'filter)
+  (defun filter (pred list)
+    "Returns a list of all the elements fulfilling the pred requirement (that
 is for which (pred elem) is true)"
-      (if list
-          (let ((head (car list))
-                (tail (filter pred (cdr list))))
-            (if (funcall pred head)
-                (cons head tail)
-              tail)))))
+    (if list
+	(let ((head (car list))
+	      (tail (filter pred (cdr list))))
+	  (if (funcall pred head)
+	      (cons head tail)
+	    tail)))))
 
 
 ;; From emacs-22
-(if (not (fboundp 'line-number-at-pos))
-    (defun line-number-at-pos (&optional pos)
-      "Return (narrowed) buffer line number at position POS.
+(unless (fboundp 'line-number-at-pos)
+  (defun line-number-at-pos (&optional pos)
+    "Return (narrowed) buffer line number at position POS.
     If POS is nil, use current buffer location."
-      (let ((opoint (or pos (point))) start)
-        (save-excursion
-          (goto-char (point-min))
-          (setq start (point))
-          (goto-char opoint)
-          (forward-line 0)
-          (1+ (count-lines start (point)))))) )
+    (let ((opoint (or pos (point))) start)
+      (save-excursion
+	(goto-char (point-min))
+	(setq start (point))
+	(goto-char opoint)
+	(forward-line 0)
+	(1+ (count-lines start (point)))))) )
 
 
 
@@ -346,19 +394,19 @@ decorations."
   patterns, such as :: or ...;  with the flag do not ignore them."
   (save-excursion
     (back-to-indentation)
-    (if (not (looking-at "\n"))
-        (let ((c (thing-at-point 'char)))
-          (if (and (looking-at (format "[%s]+[ \t]*$" c))
-                   (or accept-special
-                       (and
-                        ;; Common patterns.
-                        (not (looking-at "::[ \t]*$"))
-                        (not (looking-at "\\.\\.\\.[ \t]*$"))
-                        ;; Discard one char line
-                        (not (looking-at ".[ \t]*$"))
-                        )))
-              (string-to-char c))
-          ))
+    (unless (looking-at "\n")
+      (let ((c (thing-at-point 'char)))
+	(if (and (looking-at (format "[%s]+[ \t]*$" c))
+		 (or accept-special
+		     (and
+		      ;; Common patterns.
+		      (not (looking-at "::[ \t]*$"))
+		      (not (looking-at "\\.\\.\\.[ \t]*$"))
+		      ;; Discard one char line
+		      (not (looking-at ".[ \t]*$"))
+		      )))
+	    (string-to-char c))
+	))
     ))
 
 (defun rst-line-homogeneous-nodent-p (&optional accept-special)
@@ -575,12 +623,10 @@ have been seen.
       (let ((char (car x))
             (style (cadr x))
             (indent (caddr x)))
-        (if (not (assoc (cons char style) hierarchy-alist))
-            (progn
-              (setq hierarchy-alist
-                    (append hierarchy-alist
-                            (list (cons (cons char style) x))))
-              ))
+        (unless (assoc (cons char style) hierarchy-alist)
+	  (setq hierarchy-alist
+		(append hierarchy-alist
+			(list (cons (cons char style) x)))) )
         ))
     (mapcar 'cdr hierarchy-alist)
     ))
@@ -1084,9 +1130,9 @@ of the right hand fingers and the binding is unused in text-mode."
 
     ;; Correct the position of the cursor to more accurately reflect where it
     ;; was located when the function was invoked.
-    (if (not (= moved 0))
-        (progn (forward-line (- moved))
-               (end-of-line)))
+    (unless (= moved 0)
+      (forward-line (- moved))
+      (end-of-line))
 
     ))
 
@@ -1184,16 +1230,21 @@ the hierarchy is similar to that used by rst-adjust-decoration."
                                   (match-end 0)) )
 
 (defun rst-section-tree (alldecos)
-  "Returns a pair of a hierarchical tree of the sections titles
-in the document, and a reference to the node where the cursor
-lives. This can be used to generate a table of contents for the
-document.
+  "Returns a hierarchical tree of the sections titles in the
+document.  This can be used to generate a table of contents for
+the document.  The top node will always be a nil node, with the
+top-level titles as children (there may potentially be more than
+one).
 
 Each section title consists in a cons of the stripped title
 string and a marker to the section in the original text document.
 
 If there are missing section levels, the section titles are
-inserted automatically, and are set to nil."
+inserted automatically, and the title string is set to nil, and
+the marker set to the first non-nil child of itself.
+Conceptually, the nil nodes--i.e. those which have no title--are
+to be considered as being the same line as their first non-nil
+child.  This has advantages later in processing the graph."
 
   (let* (thelist
          (hier (rst-get-hierarchy alldecos))
@@ -1235,21 +1286,62 @@ inserted automatically, and are set to nil."
         node
         children)
     ;; If the next decoration matches our level
-    (if (= (car ndeco) lev)
-        (progn
-          ;; Pop the next decoration and create the current node with it
-          (setcdr decos (cddr decos))
-          (setq node (cdr ndeco)) ))
-      ;; Else we let the node title/marker be unset.
+    (when (= (car ndeco) lev)
+      ;; Pop the next decoration and create the current node with it
+      (setcdr decos (cddr decos))
+      (setq node (cdr ndeco)) )
+    ;; Else we let the node title/marker be unset.
 
     ;; Build the child nodes
     (while (and (cdr decos) (> (caadr decos) lev))
       (setq children
             (cons (rst-section-tree-rec decos (1+ lev))
                   children)))
+    (setq children (reverse children))
 
+    ;; If node is still unset, we use the marker of the first child.
+    (when (eq node nil)
+      (setq node (cons nil (cdaar children))))
+	
     ;; Return this node with its children.
-    (cons node (reverse children))
+    (cons node children)
+    ))
+
+
+(defun rst-section-tree-point (node &optional point)
+  "Given a computed and valid section tree SECTREE and a point
+  POINT (default being the current point in the current buffer),
+  find and return the node within the sectree where the cursor
+  lives.  
+
+  Return values: a pair of (parent path, container subtree).  The
+  parent path is simply a list of the nodes above the container
+  subtree node that we're returning."
+  
+  (let (path outtree)
+    
+    (let* ((curpoint (or point (point))))
+	  
+      ;; Check if we are before the current node.
+      (if (> curpoint (cadar node))
+	      
+	  ;; Iterate all the children, looking for one that might contain the
+	  ;; current section.
+	  (let ((curnode (cdr node))
+		last)
+		
+	    (while (and curnode (> curpoint (cadaar curnode)))
+	      (setq last curnode
+		    curnode (cdr curnode)))
+	  
+	    (if last 
+		(let ((sub (rst-section-tree-point (car last) curpoint)))
+		  (setq path (car sub)
+			outtree (cdr sub)))
+	      (setq outtree node))
+	    
+	    )))
+    (cons (cons (car node) path) outtree)
     ))
 
 
@@ -1258,9 +1350,8 @@ inserted automatically, and are set to nil."
 By default the top level is ignored if there is only one, because
 we assume that the document will have a single title.
 
-If a numeric prefix argument is given,
-- if it is zero or generic, include the top level titles;
-- otherwise insert the TOC up to the specified level.
+If a numeric prefix argument is given, insert the TOC up to the
+specified level.  
 
 The TOC is inserted indented at the current column."
 
@@ -1271,31 +1362,24 @@ The TOC is inserted indented at the current column."
           (if (and (integerp pfxarg) (> (prefix-numeric-value pfxarg) 0))
               (prefix-numeric-value pfxarg) rst-toc-insert-max-level))
 
-         ;; Get the section tree.
-         (sectree (rst-section-tree (rst-find-all-decorations)))
-
-         ;; If there is only one top-level title, remove it by starting to print
-         ;; one index lower (revert this behaviour with the prefix arg),
-         ;; otherwise print all.
-         (gen-pfx-arg (or (and pfxarg (listp pfxarg))
-                          (and (integerp pfxarg)
-                               (= (prefix-numeric-value pfxarg) 0))))
-         (start-lev (if (and (not rst-toc-insert-always-include-top)
-                             (= (length (cdr sectree)) 1)
-                             (not gen-pfx-arg))  -1 0))
+         ;; Get the section tree for the current cursor point.
+         (sectree-pair
+	  (rst-section-tree-point
+	   (rst-section-tree (rst-find-all-decorations))))
 
          ;; Figure out initial indent.
          (initial-indent (make-string (current-column) ? ))
          (init-point (point)))
 
-    (rst-toc-insert-node sectree start-lev initial-indent "")
+    (when (cddr sectree-pair)
+      (rst-toc-insert-node (cdr sectree-pair) 0 initial-indent "")
 
-    ;; Fixup for the first line.
-    (delete-region init-point (+ init-point (length initial-indent)))
-
-    ;; Delete the last newline added.
-    (delete-backward-char 1)
-    ))
+      ;; Fixup for the first line.
+      (delete-region init-point (+ init-point (length initial-indent)))
+   
+      ;; Delete the last newline added.
+      (delete-backward-char 1)
+    )))
 
 
 (defgroup rst-toc nil
@@ -1306,11 +1390,6 @@ The TOC is inserted indented at the current column."
 (defcustom rst-toc-indent 2
   "Indentation for table-of-contents display (also used for
   formatting insertion, when numbering is disabled)."
-  :group 'rst-toc)
-
-(defcustom rst-toc-insert-always-include-top nil
-  "Set this to 't if you want to always include top-level titles,
-  even when there is only one."
   :group 'rst-toc)
 
 (defcustom rst-toc-insert-style 'fixed
@@ -1342,45 +1421,46 @@ indentation style:
   "Recursive function that does the print of the inserted
 toc. PFX is the prefix numbering, that includes the alignment
 necessary for all the children of this level to align."
+
+  ;; Note: we do child numbering from the parent, so we start number the
+  ;; children one level before we print them.
   (let ((do-print (> level 0))
         (count 1)
         b)
-    (if do-print
-        (progn
-          (insert indent)
-          (let ((b (point)))
-            (if (not (equal rst-toc-insert-style 'plain))
-                (insert pfx rst-toc-insert-number-separator))
-            (insert (or (caar node) "[missing node]"))
-            ;; Add properties to the text, even though in normal text mode it
-            ;; won't be doing anything for now.  Not sure that I want to change
-            ;; mode stuff.  At least the highlighting gives the idea that this
-            ;; is generated automatically.
-            (put-text-property b (point) 'mouse-face 'highlight)
-            (put-text-property b (point) 'rst-toc-target (cadar node))
-            (put-text-property b (point) 'keymap rst-toc-insert-click-keymap)
+    (when do-print
+      (insert indent)
+      (let ((b (point)))
+	(unless (equal rst-toc-insert-style 'plain)
+	  (insert pfx rst-toc-insert-number-separator))
+	(insert (or (caar node) "[missing node]"))
+	;; Add properties to the text, even though in normal text mode it
+	;; won't be doing anything for now.  Not sure that I want to change
+	;; mode stuff.  At least the highlighting gives the idea that this
+	;; is generated automatically.
+	(put-text-property b (point) 'mouse-face 'highlight)
+	(put-text-property b (point) 'rst-toc-target (cadar node))
+	(put-text-property b (point) 'keymap rst-toc-insert-click-keymap)
 
-            )
-          (insert "\n")
+	)
+      (insert "\n")
 
-          ;; Prepare indent for children.
-          (setq indent
-                (cond
-                 ((eq rst-toc-insert-style 'plain)
-                  (concat indent rst-toc-indent))
+      ;; Prepare indent for children.
+      (setq indent
+	    (cond
+	     ((eq rst-toc-insert-style 'plain)
+	      (concat indent rst-toc-indent))
 
-                 ((eq rst-toc-insert-style 'fixed)
-                  (concat indent (make-string rst-toc-indent ? )))
+	     ((eq rst-toc-insert-style 'fixed)
+	      (concat indent (make-string rst-toc-indent ? )))
 
-                 ((eq rst-toc-insert-style 'aligned)
-                  (concat indent (make-string (+ (length pfx) 2) ? )))
+	     ((eq rst-toc-insert-style 'aligned)
+	      (concat indent (make-string (+ (length pfx) 2) ? )))
 
-                 ((eq rst-toc-insert-style 'listed)
-                  (concat (substring indent 0 -3)
-                          (concat (make-string (+ (length pfx) 2) ? ) " - ")))
-                 ))
-
-          ))
+	     ((eq rst-toc-insert-style 'listed)
+	      (concat (substring indent 0 -3)
+		      (concat (make-string (+ (length pfx) 2) ? ) " - ")))
+	     )) 
+      )
 
     (if (or (eq rst-toc-insert-max-level nil)
             (< level rst-toc-insert-max-level))
@@ -1401,12 +1481,12 @@ necessary for all the children of this level to align."
 
           (dolist (child (cdr node))
             (rst-toc-insert-node child
-                                  (1+ level)
-                                  indent
-                                  (if do-child-numbering
-                                      (concat pfx (format fmt count)) pfx))
+				 (1+ level)
+				 indent
+				 (if do-child-numbering
+				     (concat pfx (format fmt count)) pfx))
             (incf count)))
-
+      
       )))
 
 
@@ -1469,7 +1549,7 @@ make it up-to-date automatically."
       (let ((b (point)))
         ;; Insert line text.
         (insert (make-string (* rst-toc-indent (1- level)) ? ))
-        (insert (if (car node) (caar node) "[missing node]"))
+        (insert (or (caar node) "[missing node]"))
 
         ;; Highlight lines.
         (put-text-property b (point) 'mouse-face 'highlight)
@@ -1477,10 +1557,29 @@ make it up-to-date automatically."
         ;; Add link on lines.
         (put-text-property b (point) 'rst-toc-target (cadar node))
 
-        (insert "\n")))
+        (insert "\n")
+	))
 
   (dolist (child (cdr node))
     (rst-toc-node child (1+ level))))
+
+(defun rst-toc-count-lines (node target-node)
+  "Count the number of lines to the TARGET-NODE node.  This
+recursive function returns a cons of the number of additional
+lines that have been counted for its node and children and 't if
+the node has been found."
+
+  (let ((count 1)
+	found)
+    (if (eq node target-node)
+	(setq found t)
+      (let ((child (cdr node)))
+	(while (and child (not found))
+	  (let ((cl (rst-toc-count-lines (car child) target-node)))
+	    (setq count (+ count (car cl))
+		  found (cdr cl)
+		  child (cdr child))))))
+    (cons count found)))
 
 
 (defun rst-toc ()
@@ -1493,28 +1592,17 @@ make it up-to-date automatically."
   brings the cursor in that section."
   (interactive)
   (let* ((curbuf (current-buffer))
-         outline
-
+	 
          ;; Get the section tree
          (alldecos (rst-find-all-decorations))
          (sectree (rst-section-tree alldecos))
 
+ 	 (our-node (cdr (rst-section-tree-point sectree)))
+	 line
+	 
          ;; Create a temporary buffer.
          (buf (get-buffer-create rst-toc-buffer-name))
          )
-
-    ;; Find the index of the section where the cursor currently is.
-    (setq outline (let ((idx 1)
-                        (curline (line-number-at-pos (point)))
-                        (decos alldecos))
-                    (while (and decos (<= (caar decos) curline))
-                      (setq decos (cdr decos))
-                      (incf idx))
-                    idx))
-    ;; FIXME: if there is a missing node inserted, the calculation of the
-    ;; current line will be off. You need to fix this by moving the finding of
-    ;; the current line somewhere else.
-
 
     (with-current-buffer buf
       (let ((inhibit-read-only t))
@@ -1524,6 +1612,9 @@ make it up-to-date automatically."
         (put-text-property (point-min) (point)
                            'face (list '(background-color . "lightgray")))
         (rst-toc-node sectree 0)
+
+	;; Count the lines to our found node.
+	(setq line (car (rst-toc-count-lines sectree our-node)))
         ))
     (display-buffer buf)
     (pop-to-buffer buf)
@@ -1532,7 +1623,7 @@ make it up-to-date automatically."
     (set (make-local-variable 'rst-toc-return-buffer) curbuf)
 
     ;; Move the cursor near the right section in the TOC.
-    (goto-line outline)
+    (goto-line line)
     ))
 
 
@@ -1660,15 +1751,26 @@ make it up-to-date automatically."
 
 
 
-
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Functions to indent/dedent item lists, which are always two-characters apart
 ;; horizontally with rest.
 
+(defvar rst-shift-fill-region nil
+  "Set to true if you want to automatically re-fill the region that is being
+shifted.")
+;; FIXME: need to finish this feature properly.
+
+
 (defun rst-shift-region-right ()
   "Indent region ridigly, by two characters to the right."
   (interactive)
-  (indent-rigidly (region-beginning) (region-end) 2))
+  (let ((mbeg (set-marker (make-marker) (region-beginning)))
+	(mend (set-marker (make-marker) (region-end))))
+    (indent-rigidly mbeg mend 2)
+    (when rst-shift-fill-region
+      (fill-region mbeg mend))
+    ))
 
 (defun rst-find-leftmost-column (beg end)
   "Finds the leftmost column in the region."
@@ -1677,8 +1779,8 @@ make it up-to-date automatically."
       (goto-char beg)
       (while (< (point) end)
         (back-to-indentation)
-        (if (not (looking-at "[ \t]*$"))
-            (setq mincol (min mincol (current-column))))
+        (unless (looking-at "[ \t]*$")
+	  (setq mincol (min mincol (current-column))))
         (forward-line 1)
         ))
     mincol))
@@ -1691,8 +1793,14 @@ up to the leftmost character in the region."
   (let ((chars
          (if pfxarg
              (- (rst-find-leftmost-column (region-beginning) (region-end)))
-           -2)))
-    (indent-rigidly (region-beginning) (region-end) chars)))
+           -2))
+	(mbeg (set-marker (make-marker) (region-beginning)))
+	(mend (set-marker (make-marker) (region-end)))
+	)
+    (indent-rigidly mbeg mend chars)
+    (when rst-shift-fill-region
+      (fill-region mbeg mend))
+    ))
 
 
 
