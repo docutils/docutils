@@ -10,12 +10,12 @@
 
 The Docutils web site, <http://docutils.sourceforge.net/>, is
 maintained automatically by the ``docutils-update`` script, run as an
-hourly cron job on shell.berlios.de (by user "felixwiemann").  The
-script will process any .txt file which is newer than the
-corresponding .html file in the project's web directory on
-shell.berlios.de (``/home/groups/docutils/htdocs/aux/htdocs/``) and
-upload the changes to the web site at SourceForge.  For a new .txt
-file, just SSH to ``<username>@shell.berlios.de`` and ::
+hourly cron job on shell.berlios.de (by user "fwiemann").  The script
+will process any .txt file which is newer than the corresponding .html
+file in the project's web directory on shell.berlios.de
+(``/home/groups/docutils/htdocs/aux/htdocs/``) and upload the changes
+to the web site at SourceForge.  For a new .txt file, just SSH to
+``<username>@shell.berlios.de`` and ::
 
     cd /home/groups/docutils/htdocs/aux/htdocs/
     touch filename.html
