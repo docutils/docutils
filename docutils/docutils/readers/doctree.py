@@ -16,10 +16,10 @@ class Reader(readers.ReReader):
 
     The existing document tree must be passed as the ``source`` parameter to
     the `docutils.core.Publisher` initializer, wrapped in a
-    `docutils.io.DoctreeInput` object::
+    `docutils.io.DocTreeInput` object::
 
         pub = docutils.core.Publisher(
-            ..., source=docutils.io.DoctreeInput(document), ...)
+            ..., source=docutils.io.DocTreeInput(document), ...)
 
     The original document settings are overridden; if you want to use the
     settings of the original document, pass ``settings=document.settings`` to
