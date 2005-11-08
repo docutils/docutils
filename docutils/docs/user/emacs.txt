@@ -268,7 +268,7 @@ Major Mode for Editing reStructuredText Documents
 =================================================
 
 There is a major mode available for editing and syntax highlighting
-reStructuredText_ constructs.  This mode was written by Stefan Merten [#].  It
+reStructuredText_ constructs.  This mode was written by Stefan Merten [#]_.  It
 mostly provides lazy syntax coloring for many of the constructs that
 reStructuredText_ prescribes.
 
