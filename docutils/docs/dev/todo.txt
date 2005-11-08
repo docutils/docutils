@@ -1657,6 +1657,15 @@ HTML Writer
   identifying them as such.  Text in Docutils language module.
 
 
+PEP/HTML Writer
+===============
+
+* ``@import`` html4css1.css instead of duplicating it in ``pep.css``.
+
+  Problem: If the stylesheet is embedded, the reference to
+  html4css1.css will break.
+
+
 LaTeX writer
 ============
 
