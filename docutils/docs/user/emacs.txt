@@ -482,8 +482,6 @@ sink of editors:
   We could perform this guessing by searching for a valid decoration at the top
   of the document or searching for reStructuredText_ directives further on.
 
-- We would like to support local table of contents insertion.
-
 - The suggested decorations when adjusting should not have to cycle below one
   below the last section decoration level preceding the cursor.  We need to fix
   that.
