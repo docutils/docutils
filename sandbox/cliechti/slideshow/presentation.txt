@@ -2,19 +2,19 @@
  S5 Slide Shows Using reStructuredText
 =======================================
 
-:Authors:       Chris Liechti <cliechti@gmx.net>,
-                David Goodger <goodger@python.org>
-:Version:       1.1
-:Date:          $Date$
+:Authors: David Goodger <goodger@python.org>,
+          Chris Liechti <cliechti@gmx.net>,
+:Date:    $Date$
 
-.. This document serves as manual and example of the rst2s5.py
-   converter at the same time.
+.. class:: handout
 
-A short introduction to generating S5 slide shows with Docutils and
+   This document serves as both manual and example of the s5.py writer
+   and rst2s5.py front end.
+
+An introduction to generating S5 slide shows with Docutils and
 reStructuredText.
 
-*(Hit the right- or down-arrow key or click the mouse button to
-proceed.)*
+*(Hit the space bar or click the mouse button to proceed.)*
 
 .. container:: handout
 
@@ -96,54 +96,18 @@ corner to display the controls.
 __ S5_
 
 
-Themes
-======
-
-The presentation theme consists of several additional files:
-stylesheets, JavaScript, and graphics.  These go into a subdirectory
-of the ``ui`` directory beside ``presentation.html``.
-
-.. container:: handout
-
-   By default, slide shows use the ``default`` theme, but that can be
-   overriden by a command line option; see below.
-
-   The theme from the S5 tutorial can be used.  Get it here:
-   http://meyerweb.com/eric/tools/s5/s5blank.zip.
-
-   These themes are in the public domain and may be redistributed
-   freely.
-
-The S5 theme (subdirectory name) can be specified with the ``--theme``
-command-line option or the ``theme`` configuration file setting.
-
-  .. container:: handout
-
-     Example::
-
-         rst2s5 --theme pixel presentation.txt presentation.html
-
-     The default theme is "default".
-
-     Usualy, themes are placed in a folder with the specified name,
-     inside a "ui" folder inside the folder containing the
-     presentation.  But it is also possible to use URLs and grab the
-     design from another website.
-
-
 Features
 ========
 
-The ``rst2s5.py`` front-end tool is based on ``rst2html.py``, and it
-supports all the standard Docutils HTML features.  S5-specific
-features:
+The S5 Writer supports all the standard Docutils HTML features.
+S5-specific features:
 
 .. class:: incremental
 
 * The document title is duplicated on each slide in the S5 footer.
 
 * The ``footer`` directive may be used to define additional text in
-  the S5 footer, but it is limited to one short paragraph.
+  the S5 footer, but it is limited to one line of text.
 
   .. container:: handout
 
@@ -182,8 +146,8 @@ features:
   to get one-item-at-a-time behavior (like this list).
 
 
-Samples: Tables, Directives, Images
-===================================
+Feature Examples
+================
 
 .. sidebar:: Images too!
 
@@ -191,8 +155,6 @@ Samples: Tables, Directives, Images
        :alt: sample image
 
 =====  =====  ======
-   Inputs     Output
-------------  ------
   A      B    A or B
 =====  =====  ======
 False  False  False
@@ -217,6 +179,82 @@ The ``.. class:: handout`` directive can be used to tag single
 paragraphs and other elements.
 
 
+Incremental Examples (1)
+========================
+
+*(Press the space bar to proceed.)*
+
+.. class:: incremental
+
+   Paragraphs can be displayed one at a time...
+
+   .. container::
+
+      ... or a bunch at a time.
+
+      This second paragraph is displayed together with the previous
+      one by grouping them with the "container" directive.
+
+.. role:: incremental
+.. default-role:: incremental
+
+| `We can also display` `one` `word` `at` `a` `time,`
+| `or a phrase` `at a time,`
+| `or even` `o`\ `n`\ `e` `l`\ `e`\ `t`\ `t`\ `e`\ `r` `at a time!`
+|
+| `(But it ain't pretty.)`
+
+
+Incremental Examples (2)
+========================
+
+(TODO: insert an example of animation here)
+
+
+Themes
+======
+
+The presentation theme consists of several additional files:
+stylesheets, JavaScript, and graphics.  These go into a subdirectory
+of the ``ui`` directory beside ``presentation.html``.
+
+.. container:: handout
+
+   The themes from the S5 tutorial can be used.  Get it here:
+   http://meyerweb.com/eric/tools/s5/s5blank.zip.
+
+   These themes are in the public domain and may be redistributed
+   freely.
+
+The S5 theme (``ui/`` subdirectory name) can be specified with the
+``--theme`` command-line option or the ``theme`` configuration file
+setting.
+
+.. container:: handout
+
+   Example::
+
+       rst2s5 --theme pixel presentation.txt presentation.html
+
+   The default theme is "default".
+
+   Usualy, themes are placed in a folder with the specified name,
+   inside a ``ui`` folder inside the folder containing the
+   presentation.  But it is also possible to use URLs and grab the
+   design from another website.
+
+
+Example Themes
+==============
+
+(TODO: insert some screenshots here)
+
+* default (simplified version of S5's default theme)
+* inverse (white text on a black background)
+* big (very large text, no footers)
+* big_inverse
+
+
 Caveats
 =======
 
@@ -224,36 +262,59 @@ Caveats
    It changes the CSS class of headings and they won't show up
    correctly in the screen presentation.
 
-   .. container:: handout
-
-      TODO: Add a "disable table of contents" setting to the parser?
+   .. TODO: Add a "disable table of contents" setting to the parser?
       The S5 writer could set it as a default.
 
 
 2. Subsections ...
 ------------------
 
-... may be used, but you will have to provide your own stylesheet
+... may be used, but you may have to provide your own stylesheet
 support.  Subsections work just fine in handouts though.
 
 
-Steps to Generate a Slide Show
-==============================
+Generating a Slide Show (1)
+===========================
+
+.. class:: incremental
 
 1. Open a console (terminal, command shell) and go to the folder
-   containing your ``presentation.txt``.
+   containing your file, say ``presentation.txt``.
 
-2. Run ``rst2s5.py presentation.txt presentation.html``.
+2. Run the command::
+
+       rst2s5.py presentation.txt presentation.html
 
 3. Normally the Docutils default stylesheet, ``html4css1.css``, will
    be embedded in the output HTML.  If you choose to link to a
    stylesheet instead of embedding, you must include a copy.
 
-4. In the same folder, extract the sample theme from
-   http://meyerweb.com/eric/tools/s5/s5blank.zip (this should create a
-   ``ui`` folder).
+
+Generating a Slide Show (2)
+===========================
+
+.. class:: incremental
+
+4. In the same folder as ``presentation.txt``, extract the sample
+   theme from http://meyerweb.com/eric/tools/s5/s5blank.zip (this
+   should create a ``ui`` folder).
 
 5. Open ``presentation.html`` in a web browser.
 
-6. Make the browser window full-screen and speak.  Fame and fortune
-   will surely follow!
+6. Make the browser window full-screen and speak.
+
+7. Profit!
+
+
+To Do
+=====
+
+S5 files
+
+Customizing CSS
+
+Chaining slide shows (different themes)
+
+    block quote
+
+    text here
