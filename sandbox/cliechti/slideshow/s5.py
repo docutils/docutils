@@ -21,11 +21,14 @@ class Writer(html4css1.Writer):
 
     settings_spec = html4css1.Writer.settings_spec + (
         'S5 Slideshow Specific Options',
-        None,
+        'The --compact-lists option (defined in HTML-Specific Options above) '
+        'is disabled by default for the S5/HTML writer.',
         (('Specify an S5 theme directory (typically a subdirectory of "ui") '
           'or URL (if it contains a slash).  The default is "default".',
           ['--theme'],
           {'default': 'default', 'metavar': '<path>'}),))
+
+    settings_default_overrides = {'compact_lists': 0}
 
     config_section = 's5 writer'
     config_section_dependencies = ('writers', 'html4css1 writer')
