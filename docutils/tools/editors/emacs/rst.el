@@ -1323,14 +1323,14 @@ child.  This has advantages later in processing the graph."
     (let* ((curpoint (or point (point))))
 	  
       ;; Check if we are before the current node.
-      (if (> curpoint (cadar node))
+      (if (>= curpoint (cadar node))
 	      
 	  ;; Iterate all the children, looking for one that might contain the
 	  ;; current section.
 	  (let ((curnode (cdr node))
 		last)
 		
-	    (while (and curnode (> curpoint (cadaar curnode)))
+	    (while (and curnode (>= curpoint (cadaar curnode)))
 	      (setq last curnode
 		    curnode (cdr curnode)))
 	  
@@ -1614,7 +1614,8 @@ the node has been found."
         (rst-toc-node sectree 0)
 
 	;; Count the lines to our found node.
-	(setq line (car (rst-toc-count-lines sectree our-node)))
+	(let ((linefound (rst-toc-count-lines sectree our-node)))
+	  (setq line (if (cdr linefound) (car linefound) 0)))
         ))
     (display-buffer buf)
     (pop-to-buffer buf)
