@@ -1,5 +1,9 @@
 # Do not edit arbitrarily.  Check with docutils-develop@lists.sf.net first.
 
+# Moved files and directories.
+
+Redirect permanent /sandbox/felixwiemann http://docutils.sourceforge.net/sandbox/fwiemann
+
 # Redirect snapshots to BerliOS.  The target URL may change in the
 # future, so use a temporary redirect (status 302).
 
