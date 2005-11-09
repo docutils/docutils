@@ -5,6 +5,7 @@
 ;;; :Authors: Martin Blais <blais@furius.ca>,
 ;;;           Stefan Merten <smerten@oekonux.de>,
 ;;;           David Goodger <goodger@python.org>
+;;; :Revision: $Revision$
 ;;; :Date: $Date$
 ;;; :Copyright: This module has been placed in the public domain.
 ;;; :Abstract:
