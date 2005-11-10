@@ -1674,12 +1674,21 @@ PEP/HTML Writer
 * ``@import`` html4css1.css instead of duplicating it in ``pep.css``?
 
   Problem: If the stylesheet is embedded, the reference to
-  html4css1.css will break.
+  html4css1.css will break.  So it might be better to use a secondary
+  stylesheet for the PEP writer.  I.e., the PEP writer uses the HTML
+  writer's standard stylesheet *plus* the ``pep.css`` stylesheet.
+  (Driving this concept even further, we could allow for three
+  stylesheets [HTML writer, PEP writer, user] or any number of
+  stylesheets.  It's just a bit difficult to come up with a proper
+  option syntax for that.)
 
   Also, ``pep.css`` really has only one major customer: python.org.
   The PEP stylesheet serves its purpose well for them.  They have no
   use for modular, imported stylesheets, which would only increase
   bandwidth and add complexity.
+
+  On the other hand, we don't really want to maintain two stylesheets
+  in parallel.  The redundancy inevitably causes errors.
 
 
 LaTeX writer
