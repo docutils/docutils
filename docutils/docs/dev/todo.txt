@@ -483,12 +483,6 @@ General
   specific source files, such as running rst2s5.py instead of
   rst2html.py.
 
-* Improve handing of RCS/CVS/SVN keywords, especially "Date".  Under
-  SVN, the "Date" keyword expands to a huge string: ``2005-11-08
-  00:22:00 -0500 (Tue, 08 Nov 2005)``.  This should be reduced to the
-  IS0 8601 standard ``2005-11-08``, or (perhaps optionally) some other
-  short form.
-
 
 Documentation
 =============

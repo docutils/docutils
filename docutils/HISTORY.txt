@@ -94,6 +94,11 @@ Changes Since 0.3.9
 * docutils/readers/doctree.py: Added to project; a reader for existing
   document trees.
 
+* docutils/transforms/frontmatter.py:
+
+  - Fixed the DocInfo transform to handle SVN-style expansion of the
+    "Date" keyword.
+
 * docutils/transforms/misc.py:
 
   - Added misc.Transitions transform, extracted from
