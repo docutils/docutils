@@ -307,6 +307,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
 
 :Status: (some text) $""" + """RCSfile: test_docinfo.py,v $ (more text) 
 :Date: (some text) $""" + """Date: 2002/10/08 01:34:23 $ (more text)
+:Date: (some text) $""" + """Date: 2005-03-26T16:21:28.693201Z $ (more text)
 :Version: (some text) $""" + """Revision: 1.1 $ (more text)
 """,
 """\
@@ -316,6 +317,8 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
             (some text) test_docinfo.py (more text)
         <date>
             (some text) 2002-10-08 (more text)
+        <date>
+            (some text) 2005-03-26 (more text)
         <version>
             (some text) 1.1 (more text)
     <comment xml:space="preserve">

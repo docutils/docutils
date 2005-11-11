@@ -445,7 +445,7 @@ class DocInfo(Transform):
         return 1
 
     rcs_keyword_substitutions = [
-          (re.compile(r'\$' r'Date: (\d\d\d\d)[-/](\d\d)[-/](\d\d) [\d:]+'
+          (re.compile(r'\$' r'Date: (\d\d\d\d)[-/](\d\d)[-/](\d\d)[ T][\d:]+'
                       r'[^$]* \$', re.IGNORECASE), r'\1-\2-\3'),
           (re.compile(r'\$' r'RCSfile: (.+),v \$', re.IGNORECASE), r'\1'),
           (re.compile(r'\$[a-zA-Z]+: (.+) \$'), r'\1'),]
