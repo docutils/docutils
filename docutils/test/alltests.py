@@ -68,25 +68,27 @@ def pformat(suite):
                 indent -= step
     return '\n'.join(output)
 
+def suite():
+    path, script = os.path.split(sys.argv[0])
+    suite = package_unittest.loadTestModules(path, 'test_', packages=1)
+    sys.stdout.flush()
+    return suite
 
 # must redirect stderr *before* first import of unittest
 sys.stdout = sys.stderr = Tee('alltests.out')
 
 import package_unittest
 
-print ('Testing Docutils %s [%s] with Python %s on %s at %s'
-       % (docutils.__version__, docutils.__version_details__,
-          sys.version.split()[0],
-          time.strftime('%Y-%m-%d'), time.strftime('%H:%M:%S')))
-sys.stdout.flush()
 
-path, script = os.path.split(sys.argv[0])
-suite = package_unittest.loadTestModules(path, 'test_', packages=1)
-sys.stdout.flush()
-
-package_unittest.main(suite)
-#if package_unittest.verbosity > 1:
-#    print >>sys.stderr, pformat(suite) # check the test suite
-finish = time.time()
-
-print 'Elapsed time: %.3f seconds' % (finish - start)
+if __name__ == '__main__':
+    suite = suite()
+    print ('Testing Docutils %s [%s] with Python %s on %s at %s'
+           % (docutils.__version__, docutils.__version_details__,
+              sys.version.split()[0],
+              time.strftime('%Y-%m-%d'), time.strftime('%H:%M:%S')))
+    sys.stdout.flush()
+    package_unittest.main(suite)
+    #if package_unittest.verbosity > 1:
+    #    print >>sys.stderr, pformat(suite) # check the test suite
+    finish = time.time()
+    print 'Elapsed time: %.3f seconds' % (finish - start)
