@@ -111,6 +111,35 @@ Known Bugs
 
 Also see the `SourceForge Bug Tracker`_.
 
+* .. _non-existent working directory:
+
+  Running Docutils in a no-longer existent working directory causes a
+  crash::
+
+      $ rst2pseudoxml.py
+      Traceback (most recent call last):
+        File "/home/felix/bin/rst2pseudoxml.py", line 25, in ?
+          publish_cmdline(description=description)
+        File "/home/felix/.python/lib/docutils/core.py", line 329, in publish_cmdline
+          config_section=config_section, enable_exit_status=enable_exit_status)
+        File "/home/felix/.python/lib/docutils/core.py", line 197, in publish
+          self.process_command_line(
+        File "/home/felix/.python/lib/docutils/core.py", line 155, in process_command_line
+          self.settings = option_parser.parse_args(argv)
+        File "/usr/lib/python2.4/optparse.py", line 1280, in parse_args
+          return self.check_values(values, args)
+        File "/home/felix/.python/lib/docutils/frontend.py", line 577, in check_values
+          os.getcwd())
+      OSError: [Errno 2] No such file or directory
+
+  Reproduce by creating a directory, cd'ing into it, rd'ing the
+  directory in a separate shell and running "rst2pseudoxml.py" in the
+  original shell.
+
+  To fix this, we'd need to fix all occurences of os.getcwd().  Maybe
+  add a docutils.utils.getcwd() function which returns an empty string
+  on OSError?
+
 * The "stylesheet" setting (a URL, to be used verbatim) should be
   allowed to be combined with "embed_stylesheet".  The stylesheet data
   should be read in using urllib.  There was an assumption that a
