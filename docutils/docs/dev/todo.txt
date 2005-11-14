@@ -47,7 +47,7 @@ the short term) to include:
 * [DONE in rev. 3901] Remove docutils.transforms.html.StylesheetCheck
   (no longer needed because of the above change).
 
-* Incorporate new branch policy into the docs.  [DavidG]
+* [DONE in rev. 3962] Incorporate new branch policy into the docs.
   ("Development strategy" thread on Docutils-develop)
 
 * Fix East-Asian `double-width characters`_ issue.  [DavidG]
@@ -679,6 +679,9 @@ reStructuredText Parser
 Also see the `... Or Not To Do?`__ list.
 
 __ rst/alternatives.html#or-not-to-do
+
+* The citation syntax could use some enhancements.  See
+  <http://thread.gmane.org/gmane.text.docutils.user/2499>.
 
 * The current list-recognition logic has too many false positives, as
   in ::
