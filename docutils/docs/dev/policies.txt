@@ -415,6 +415,21 @@ ways to keep the Docutils code accessible during development:
       reinstall the "docutils" package, Python won't see your latest
       changes.
 
+A useful addition to the ``docutils`` top-level directory in branches
+and alternate copies of the code is a ``set-PATHS`` file
+containing the following lines::
+
+    # source this file
+    export PYTHONPATH=$PWD:$PWD/extras
+    export PATH=$PWD/tools:$PATH
+
+Open a shell for this branch, ``cd`` to the ``docutils`` top-level
+directory, and "source" this file.  For example, using the bash
+shell::
+
+    $ cd some-branch/docutils
+    $ . set-PATHS
+
 
 Mailing Lists
 =============
