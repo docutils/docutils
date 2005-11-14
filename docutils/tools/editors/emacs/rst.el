@@ -205,6 +205,8 @@
 (define-key rst-prefix-map "r" 'rst-shift-region-right)
 (define-key rst-prefix-map "l" 'rst-shift-region-left)
 (define-key rst-prefix-map "u" 'rst-toc-insert-update)
+(define-key rst-prefix-map "c" 'rst-compile)
+(define-key rst-prefix-map "C" (lambda () (interactive) (rst-compile t)))
 
 (defun rst-text-mode-bindings ()
   "Default text mode hook for rest."
@@ -237,6 +239,20 @@
 (define-abbrev text-mode-abbrev-table
   "con" ".. contents::\n..\n   " nil 0)
 
+
+;; Paragraph separation customization.  Set those to replace the default values
+;; of text-mode. These will work better in restructuredtext documents and should
+;; not affect filling for other documents too much.  Set it up like this:
+;;
+;; (setq paragraph-start rst-paragraph-start
+;;       paragraph-separate rst-paragraph-separate)
+(defvar rst-paragraph-separate 
+  "\f\\|>*[ \t]*$"
+  "Extra parapraph-separate patterns to add for text-mode.")
+
+(defvar rst-paragraph-start 
+  "\f\\|>*[ \t]*$\\|>*[ \t]*[-+*] \\|>*[ \t]*[0-9]+\\. "
+  "Extra parapraph-start patterns to add for text-mode.")
 
 
 
@@ -1286,8 +1302,9 @@ child.  This has advantages later in processing the graph."
   (let ((ndeco (cadr decos))
         node
         children)
+
     ;; If the next decoration matches our level
-    (when (= (car ndeco) lev)
+    (when (and ndeco (= (car ndeco) lev))
       ;; Pop the next decoration and create the current node with it
       (setcdr decos (cddr decos))
       (setq node (cdr ndeco)) )
@@ -1324,7 +1341,7 @@ child.  This has advantages later in processing the graph."
     (let* ((curpoint (or point (point))))
 	  
       ;; Check if we are before the current node.
-      (if (>= curpoint (cadar node))
+      (if (and (cadar node) (>= curpoint (cadar node)))
 	      
 	  ;; Iterate all the children, looking for one that might contain the
 	  ;; current section.
