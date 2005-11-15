@@ -324,9 +324,8 @@ _`output_encoding_error_handler`
     --output-encoding, -o``.
 
 _`record_dependencies`
-
-    Path to a file to which Docutils writes a list of files the input
-    file(s) depends on [#dependencies]_, e.g. due to file
+    Path to a file where Docutils will write a list of files that the
+    input and output depend on [#dependencies]_, e.g. due to file
     inclusion. [#pwd]_ The format is one filename per line.  This
     option is particularly useful in conjunction with programs like
     ``make``.

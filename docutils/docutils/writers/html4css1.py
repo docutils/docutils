@@ -45,8 +45,7 @@ class Writer(writers.Writer):
         'HTML-Specific Options',
         None,
         (('Specify a stylesheet URL, used verbatim.  Overrides '
-          '--stylesheet-path.  Either --stylesheet or --stylesheet-path '
-          'must be specified.',
+          '--stylesheet-path.',
           ['--stylesheet'],
           {'metavar': '<URL>', 'overrides': 'stylesheet_path'}),
          ('Specify a stylesheet file, relative to the current working '
