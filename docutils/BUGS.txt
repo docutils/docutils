@@ -111,6 +111,31 @@ Known Bugs
 
 Also see the `SourceForge Bug Tracker`_.
 
+* _`List items with an empty first line` don't work as expected::
+
+      1.
+         foo
+
+  places "foo" inside a block quote, whereas ::
+
+      1.
+        foo
+
+  (which should normally be invalid) causes the "foo" paragraph to
+  wind up inside the list item.
+
+  The behavior also depends on whether there is a space after the list
+  marker::
+
+      1.<space>
+         foo
+
+  works as expected.  With multiple spaces after the marker, the list
+  item contents must be indented with mutiple spaces.
+
+  This is bad.  Invisible white space at the end of a line shouldn't
+  impact the parsing results.
+
 * .. _non-existent working directory:
 
   Running Docutils in a no-longer existent working directory causes a
