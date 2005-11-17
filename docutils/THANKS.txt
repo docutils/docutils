@@ -98,8 +98,9 @@ donations, tasty treats, and related projects:
 * Paul Moore
 * Nigel W. Moriarty
 * Mark Nodine
-* Patrick K. O'Brien
 * Omidyar Network (Pierre Omidyar & Doug Solomon)
+* Panjunyong
+* Patrick K. O'Brien
 * Michel Pelletier
 * Sam Penrose
 * Tim Peters
