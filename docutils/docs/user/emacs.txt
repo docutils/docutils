@@ -329,7 +329,7 @@ Settings for Filling Lists
 --------------------------
 
 One problem with the default text-mode settings is that *filling* long
-lines in bullet and enumeration lists that do not have an empty line
+lines in bulleted and enumeration lists that do not have an empty line
 between them merges them together, e.g.::
 
      - Bananas;
@@ -351,10 +351,10 @@ This is usually not what you want. What you want is this::
 The problem is that emacs does not recognize the various consecutive
 items as forming paragraph boundaries.  You can fix this easily by
 changing the global value of the parapraph boundary detection to
-recognize such lists, like this::
+recognize such lists, using the ``rst-set-paragraph-separation``
+function::
 
-   (add-hook 'text-mode-hook
-     (lambda () (setq paragraph-start rst-paragraph-start)))
+   (add-hook 'text-mode-hook 'rst-set-paragraph-separation)
 
 
 ``text-mode`` Settings
