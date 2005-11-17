@@ -240,19 +240,14 @@
   "con" ".. contents::\n..\n   " nil 0)
 
 
-;; Paragraph separation customization.  Set those to replace the default values
-;; of text-mode. These will work better in restructuredtext documents and should
-;; not affect filling for other documents too much.  Set it up like this:
+;; Paragraph separation customization.  This will work better for
+;; bulleted and enumerated lists in restructuredtext documents and
+;; should not affect filling for other documents too much.  Set it up
+;; like this:
 ;;
-;; (setq paragraph-start rst-paragraph-start
-;;       paragraph-separate rst-paragraph-separate)
-(defvar rst-paragraph-separate 
-  "\f\\|>*[ \t]*$"
-  "Extra parapraph-separate patterns to add for text-mode.")
-
-(defvar rst-paragraph-start 
-  "\f\\|>*[ \t]*$\\|>*[ \t]*[-+*] \\|>*[ \t]*[0-9]+\\. "
-  "Extra parapraph-start patterns to add for text-mode.")
+;; (add-hook 'text-mode-hook 'rst-set-paragraph-separation)
+(defun rst-set-paragraph-separation ()
+  (setq paragraph-start (concat paragraph-start "\\|[ \t]*[-+*] ")))
 
 
 
