@@ -327,7 +327,8 @@ conversion and some standard options to always be added as well.
 
 Invocation uses the toolset indicated by
 ``rst-compile-primary-toolset`` (default is ``'html``).  Invocation
-with a prefix argument uses ``rst-compile-secondary-toolset``.
+with a prefix argument uses ``rst-compile-secondary-toolset`` (default
+is ``'latex``).
 
 .. note:: 
 
