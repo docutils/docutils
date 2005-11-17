@@ -13,28 +13,6 @@
     instructions are provided.
 
 .. contents::
-..
-    1   Introduction
-    2   Basic Setup
-    3   Section Decoration Adjustment
-      3.1  Promoting and Demoting Many Sections
-      3.2  Customizations
-    4   Viewing the Hierarchy of Section Decorations
-    5   Table of Contents
-      5.1  Inserting a Table of Contents
-      5.2  Maintaining the Table of Contents Up-to-date
-    6   Navigating Between the Section Titles
-    7   Shifting Bulleted List Levels
-    8   Major Mode for Editing reStructuredText Documents
-    9   Converting Documents from Emacs
-    10  Other / External Useful Emacs Settings
-      10.1  Settings for Filling Bulleted Lists
-      10.2  ``text-mode`` Settings
-      10.3  Editing Tables: Emacs table mode
-      10.4  Character Processing
-    11  Credits
-    12  Obsolete Files
-    13  Future Work
 
 
 Introduction
@@ -347,12 +325,12 @@ provided by ``rst.el`` but you may find them useful specifically for
 reStructuredText_ documents.
 
 
-Settings for Filling Bulleted Lists
------------------------------------
+Settings for Filling Lists
+--------------------------
 
 One problem with the default text-mode settings is that *filling* long
-lines in bulleted lists that do not have an empty line between them
-merges them together, e.g.::
+lines in bullet and enumeration lists that do not have an empty line
+between them merges them together, e.g.::
 
      - Bananas;
      - One Apple a day keeps the doctor away, and eating more keeps the pirates at bay;
@@ -375,7 +353,8 @@ items as forming paragraph boundaries.  You can fix this easily by
 changing the global value of the parapraph boundary detection to
 recognize such lists, like this::
 
-   (setq paragraph-start (concat paragraph-start "\\|[ \t]*[-+*] "))
+   (add-hook 'text-mode-hook
+     (lambda () (setq paragraph-start rst-paragraph-start)))
 
 
 ``text-mode`` Settings
