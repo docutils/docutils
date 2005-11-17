@@ -97,6 +97,7 @@ donations, tasty treats, and related projects:
 * Skip Montanaro
 * Paul Moore
 * Nigel W. Moriarty
+* Hisashi Morita
 * Mark Nodine
 * Omidyar Network (Pierre Omidyar & Doug Solomon)
 * Panjunyong
