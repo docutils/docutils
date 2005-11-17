@@ -681,7 +681,8 @@ Also see the `... Or Not To Do?`__ list.
 __ rst/alternatives.html#or-not-to-do
 
 * The citation syntax could use some enhancements.  See
-  <http://thread.gmane.org/gmane.text.docutils.user/2499>.
+  <http://thread.gmane.org/gmane.text.docutils.user/2499> and
+  <http://thread.gmane.org/gmane.text.docutils.user/2443>.
 
 * The current list-recognition logic has too many false positives, as
   in ::
