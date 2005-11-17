@@ -58,7 +58,7 @@ bibliographic_fields = {
       '版权': 'copyright',
       '献辞': 'dedication',
       '摘要': 'abstract'}
-"""Traditional Chinese to canonical name mapping for bibliographic fields."""
+"""Simplified Chinese to canonical name mapping for bibliographic fields."""
 
 author_separators = [';', ',',
                      u'\uff1b', # '；'

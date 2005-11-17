@@ -66,7 +66,7 @@ directives = {
       #'citations (translation required)': 'citations',
       'target-notes (translation required)': 'target-notes',
       'restructuredtext-test-directive': 'restructuredtext-test-directive'}
-"""Traditional Chinese name to registered (in directives/__init__.py)
+"""Simplified Chinese name to registered (in directives/__init__.py)
 directive name mapping."""
 
 roles = {
@@ -97,8 +97,8 @@ roles = {
     'uri (translation required)': 'uri-reference',
     'url (translation required)': 'uri-reference',
     'raw (translation required)': 'raw',}
-"""Mapping of Traditional Chinese role names to canonical role names for
-interpreted text."""
+"""Mapping of Simplified Chinese role names to canonical role names
+for interpreted text."""
 
 # Decode UTF-8 strings.  (We cannot use unicode literals directly for
 # Python 2.1 compatibility.)
