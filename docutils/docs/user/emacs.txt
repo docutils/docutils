@@ -226,10 +226,10 @@ default bound to the ``C-c p p`` and ``C-c p n`` keys (also ``C-c
 C-p`` and ``C-c C-n``).
 
 
-Shifting Bulleted List Levels
-=============================
+Shifting Bullet List Levels
+===========================
 
-Due to the nature of reStructuredText_, bulleted lists are always
+Due to the nature of reStructuredText_, bullet lists are always
 indented by two characters (unless they are part of a blockquote),
 e.g. ::
 
@@ -244,7 +244,7 @@ e.g. ::
      - Zucchini
      - Chick Peas
 
-To this effect, when re-organizing bulleted lists, it can be useful to
+To this effect, when re-organizing bullet lists, it can be useful to
 shift regions of text by indents of two characters.  You can use the
 ``C-c C-r`` and ``C-c C-l`` to shift the current region.  These
 bindings are similar to the ones provided by python-mode for editing
@@ -329,7 +329,7 @@ Settings for Filling Lists
 --------------------------
 
 One problem with the default text-mode settings is that *filling* long
-lines in bulleted and enumeration lists that do not have an empty line
+lines in bullet and enumerated lists that do not have an empty line
 between them merges them together, e.g.::
 
      - Bananas;
