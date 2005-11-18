@@ -250,9 +250,13 @@
 ;; like this:
 ;;
 ;; (add-hook 'text-mode-hook 'rst-set-paragraph-separation)
+(defvar rst-extra-paragraph-separate
+  "\\|[ \t]*\\([-+*]\\|[0-9]+\\.\\) "
+  "Extra parapraph-separate patterns to add for text-mode.")
+
 (defun rst-set-paragraph-separation ()
-  (setq paragraph-start (concat paragraph-start
-				"\\|[ \t]*[-+*] \\|[ \t]*[0-9]+\\. ")))
+  (make-local-variable 'paragraph-start) ; prevent it growing every time
+  (setq paragraph-start (concat paragraph-start rst-extra-paragraph-separate)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
