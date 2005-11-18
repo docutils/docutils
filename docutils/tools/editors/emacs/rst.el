@@ -22,7 +22,8 @@
 ;;;   decorations;
 ;;; - A mode that displays the table of contents and allows you to jump anywhere
 ;;;   from it;
-;;; - Functions to insert and automatically update a TOC in your source document;
+;;; - Functions to insert and automatically update a TOC in your source
+;;;   document;
 ;;; - A mode which supports font-lock highlighting of reStructuredText
 ;;;   structures;
 ;;; - Some other convenience functions.
@@ -91,13 +92,16 @@
 ;;
 ;;    C-c p u: rst-toc-insert-update
 ;;
-;;       Find an existing inserted table-of-contents in the document an updates it.
+;;       Find an existing inserted table-of-contents in the document an
+;;       updates it.
 ;;
-;;    C-c p p, C-c p n  (C-c C-p, C-c C-n): rst-backward-section, rst-forward-section
+;;    C-c p p, C-c p n (C-c C-p, C-c C-n): rst-backward-section,
+;;    rst-forward-section
 ;;
 ;;       Navigate between section titles.
 ;;
-;;    C-c p l, C-c p r  (C-c C-l, C-c C-r): rst-shift-region-left, rst-shift-region-right
+;;    C-c p l, C-c p r (C-c C-l, C-c C-r): rst-shift-region-left,
+;;    rst-shift-region-right
 ;;
 ;;       Shift the region left or right by two-char increments, which is perfect
 ;;       for bulleted lists.
@@ -698,8 +702,8 @@ have been seen.
 
              ;; Overline only, leave all return values nil.
              ;;
-             ;; Note: we don't return the overline character, but it could perhaps
-             ;; in some cases be used to do something.
+             ;; Note: we don't return the overline character, but it could
+             ;; perhaps in some cases be used to do something.
              ((and over (eq under nil)))
 
              ;; Underline only.
@@ -1052,7 +1056,7 @@ of the right hand fingers and the binding is unused in text-mode."
                         (looking-at rst-section-text-regexp))
         (progn
           (cond
-           ;;---------------------------------------------------------------------
+           ;;-------------------------------------------------------------------
            ;; Case 1: No Decoration
            ((and (eq char nil) (eq style nil))
 
@@ -1085,7 +1089,7 @@ of the right hand fingers and the binding is unused in text-mode."
                     indent-new (caddr cur))
               ))
 
-           ;;---------------------------------------------------------------------
+           ;;-------------------------------------------------------------------
            ;; Case 2: Incomplete Decoration
            ((not (rst-decoration-complete-p curdeco))
 
@@ -1097,7 +1101,7 @@ of the right hand fingers and the binding is unused in text-mode."
                   style-new style
                   indent-new indent))
 
-           ;;---------------------------------------------------------------------
+           ;;-------------------------------------------------------------------
            ;; Case 3: Complete Existing Decoration
            (t
             (if toggle-style
@@ -1485,11 +1489,12 @@ necessary for all the children of this level to align."
                 (if (> (length pfx) 0)
                     (setq pfx (concat (rst-rstrip pfx) ".")))
 
-                ;; Calculate the amount of space that the prefix will require for
-                ;; the numbers.
+                ;; Calculate the amount of space that the prefix will require
+                ;; for the numbers.
                 (if (cdr node)
                     (setq fmt (format "%%-%dd"
-                                      (1+ (floor (log10 (length (cdr node))))))))
+                                      (1+ (floor (log10 (length
+							 (cdr node))))))))
                 ))
 
           (dolist (child (cdr node))
@@ -2060,7 +2065,10 @@ This value is expanded by `format' with an integer."
       7
     -7)
   "The step width to use for the next color. The formula
-`rst-level-face-base-light' + (`rst-level-face-max' - 1) * `rst-level-face-step-light'
+
+    `rst-level-face-base-light'
+    + (`rst-level-face-max' - 1) * `rst-level-face-step-light'
+
 must result in a color level which appended to `rst-level-face-base-color'
 using `rst-level-face-format-light' results in a valid color such as `grey50'.
 This color is used as background for section title text on level
@@ -2083,9 +2091,14 @@ title adornment). If you generally do not like how section title text faces are
 set up tweak here. If the general idea is ok for you but you do not like the
 details check the Rst Faces Defaults group."
   :group 'rst-faces
-  :type '(alist :key-type (choice (integer :tag "Section level (may not be bigger than `rst-level-face-max')")
-				  (boolean :tag "transitions (on) / section title adornment (off)"))
-		:value-type (face))
+  :type '(alist
+	  :key-type
+	  (choice
+	   (integer 
+	    :tag
+	    "Section level (may not be bigger than `rst-level-face-max')")
+	   (boolean :tag "transitions (on) / section title adornment (off)"))
+	  :value-type (face))
   :set-after '(rst-level-face-max))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2256,7 +2269,8 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
       1 rst-block-face)
      ;; `Enumerated Lists`_
      (list
-      (concat re-bol "\\((?\\([0-9]+\\|[A-Za-z]\\|[IVXLCMivxlcm]+\\)[.)]" re-blksep1 "\\)")
+      (concat re-bol "\\((?\\([0-9]+\\|[A-Za-z]\\|[IVXLCMivxlcm]+\\)[.)]" 
+	      re-blksep1 "\\)")
       1 rst-block-face)
      ;; `Definition Lists`_ FIXME: missing
      ;; `Field Lists`_
@@ -2265,7 +2279,8 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
       1 rst-external-face)
      ;; `Option Lists`_
      (list
-      (concat re-bol "\\(\\(\\(\\([-+/]\\|--\\)\\sw\\(-\\|\\sw\\)*\\([ =]\\S +\\)?\\)\\(,[\t ]\\)?\\)+\\)\\($\\|[\t ]\\{2\\}\\)")
+      (concat re-bol "\\(\\(\\(\\([-+/]\\|--\\)\\sw\\(-\\|\\sw\\)*"
+	      "\\([ =]\\S +\\)?\\)\\(,[\t ]\\)?\\)+\\)\\($\\|[\t ]\\{2\\}\\)")
       1 rst-block-face)
 
      ;; `Tables`_ FIXME: missing
@@ -2277,13 +2292,15 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
       1 rst-definition-face)
      ;; `Directives`_ / `Substitution Definitions`_
      (list
-      (concat re-bol "\\(" re-ems "\\)\\(\\(|[^|]+|[\t ]+\\)?\\)\\(" re-sym1 "+::\\)" re-blksep1)
+      (concat re-bol "\\(" re-ems "\\)\\(\\(|[^|]+|[\t ]+\\)?\\)\\(" 
+	      re-sym1 "+::\\)" re-blksep1)
       (list 1 rst-directive-face)
       (list 2 rst-definition-face)
       (list 4 rst-directive-face))
      ;; `Hyperlink Targets`_
      (list
-      (concat re-bol "\\(" re-ems "_\\([^:\\`]\\|\\\\.\\|`[^`]+`\\)+:\\)" re-blksep1)
+      (concat re-bol "\\(" re-ems "_\\([^:\\`]\\|\\\\.\\|`[^`]+`\\)+:\\)" 
+	      re-blksep1)
       1 rst-definition-face)
      (list
       (concat re-bol "\\(__\\)" re-blksep1)
@@ -2314,7 +2331,8 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
       2 rst-reference-face)
      ;; `Interpreted Text`_
      (list
-      (concat re-imp1 "\\(\\(:" re-sym1 "+:\\)?\\)\\(`" re-imb2 "`\\)\\(\\(:" re-sym1 "+:\\)?\\)" re-ims1)
+      (concat re-imp1 "\\(\\(:" re-sym1 "+:\\)?\\)\\(`" re-imb2 "`\\)\\(\\(:" 
+	      re-sym1 "+:\\)?\\)" re-ims1)
       (list 2 rst-directive-face)
       (list 5 rst-external-face)
       (list 8 rst-directive-face))
@@ -2351,7 +2369,8 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
 	       nil
 	       (list 1 '(cdr (assoc nil rst-adornment-faces-alist))
 		     'append t)
-	       (list 2 '(cdr (assoc rst-font-lock-level rst-adornment-faces-alist))
+	       (list 2 '(cdr (assoc rst-font-lock-level
+				    rst-adornment-faces-alist))
 		     'append t)
 	       (list 3 '(cdr (assoc nil rst-adornment-faces-alist))
 		     'append t)))))
@@ -2782,4 +2801,3 @@ column is used (fill-column vs. end of previous/next line)."
 
 (provide 'rst)
 ;;; rst.el ends here
-
