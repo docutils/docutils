@@ -1035,6 +1035,9 @@ when used in a document.
 * Make the _`directive interface` object-oriented
   (http://article.gmane.org/gmane.text.docutils.user/1871).
 
+* Allow for field lists in list tables.  See
+  <http://thread.gmane.org/gmane.text.docutils.devel/3392>.
+  
 * .. _unify tables:
 
   Unify table implementations and unify options of table directives
