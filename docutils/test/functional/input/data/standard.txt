@@ -731,3 +731,12 @@ This is the :raw-role:`fourth test` with myrawroleclass set.
 .. raw:: latex
 
    Fifth test in LaTeX.\\Line two.
+
+Container
+---------
+
+.. container:: custom
+
+   paragraph 1
+
+   paragraph 2
