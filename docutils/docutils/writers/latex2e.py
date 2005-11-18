@@ -1378,10 +1378,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append(':]')
 
     def visit_figure(self, node):
-        self.body.append( '\\begin{figure}[htbp]\\begin{center}\n' )
+        if not node.attributes.has_key('align'):
+            align = 'center'
+        else:
+            align = 'flush'+node.attributes['align']
+        self.body.append( '\\begin{figure}[htbp]\\begin{%s}\n' % align )
+        self.context.append( '\\end{%s}\\end{figure}\n' % align )
 
     def depart_figure(self, node):
-        self.body.append( '\\end{center}\\end{figure}\n' )
+        self.body.append( self.context.pop() )
 
     def visit_footer(self, node):
         self.context.append(len(self.body))
@@ -1484,13 +1489,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # referring to a local file.
         self.settings.record_dependencies.add(attrs['uri'])
         pre = []                        # in reverse order
-        post = ['\\includegraphics{%s}' % attrs['uri']]
+        post = []
+        include_graphics_options = ""
         inline = isinstance(node.parent, nodes.TextElement)
         if attrs.has_key('scale'):
             # Could also be done with ``scale`` option to
             # ``\includegraphics``; doing it this way for consistency.
             pre.append('\\scalebox{%f}{' % (attrs['scale'] / 100.0,))
             post.append('}')
+        if attrs.has_key('width'):
+            include_graphics_options = '[width=%s]' % attrs['width']
         if attrs.has_key('align'):
             align_prepost = {
                 # By default latex aligns the top of an image.
@@ -1512,7 +1520,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
             pre.append('\n')
             post.append('\n')
         pre.reverse()
-        self.body.extend(pre + post)
+        self.body.extend( pre )
+        self.body.append( '\\includegraphics%s{%s}' % (
+                include_graphics_options, attrs['uri'] ) )
+        self.body.extend( post )
 
     def depart_image(self, node):
         pass
