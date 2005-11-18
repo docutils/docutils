@@ -1060,6 +1060,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_contact(self, node):
         self.depart_docinfo_item(node)
 
+    def visit_container(self, node):
+        pass
+
+    def depart_container(self, node):
+        pass
+
     def visit_copyright(self, node):
         self.visit_docinfo_item(node, 'copyright')
 

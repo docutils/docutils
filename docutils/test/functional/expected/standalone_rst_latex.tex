@@ -208,9 +208,11 @@ reStructuredText construct.
 
 \item {} \href{\#raw-text}{2.17~~~Raw text}
 
-\item {} \href{\#colspanning-tables}{2.18~~~Colspanning tables}
+\item {} \href{\#container}{2.18~~~Container}
 
-\item {} \href{\#rowspanning-tables}{2.19~~~Rowspanning tables}
+\item {} \href{\#colspanning-tables}{2.19~~~Colspanning tables}
+
+\item {} \href{\#rowspanning-tables}{2.20~~~Rowspanning tables}
 
 \end{list}
 
@@ -885,9 +887,9 @@ A right-aligned image:
 {\hfill\includegraphics{../../../docs/user/rst/images/biohazard.png}}
 
 A figure directive:
-\begin{figure}[htbp]\begin{center}
+\begin{figure}[htbp]\begin{flushright}
 
-\includegraphics{../../../docs/user/rst/images/biohazard.png}
+\includegraphics[width=50]{../../../docs/user/rst/images/biohazard.png}
 \caption{A figure is an image with a caption and/or a legend:}{\small 
 \begin{longtable}[c]{|p{0.16\locallinewidth}|p{0.56\locallinewidth}|}
 \hline
@@ -912,31 +914,31 @@ Well it is, isn't it?
 \end{longtable}
 
 This paragraph is also part of the legend.
-}\end{center}\end{figure}
+}\end{flushright}\end{figure}
 
 This paragraph might flow around the figure...
 
 A centered figure:
-\begin{figure}[htbp]\begin{center}
+\begin{figure}[htbp]\begin{flushcenter}
 
-\includegraphics{../../../docs/user/rst/images/biohazard.png}
+\includegraphics[width=50]{../../../docs/user/rst/images/biohazard.png}
 \caption{This is the caption.}{\small 
 This is the legend.
 
 The legend may consist of several paragraphs.
-}\end{center}\end{figure}
+}\end{flushcenter}\end{figure}
 
 This paragraph might flow around the figure...
 
 A left-aligned figure:
-\begin{figure}[htbp]\begin{center}
+\begin{figure}[htbp]\begin{flushleft}
 
-\includegraphics{../../../docs/user/rst/images/biohazard.png}
+\includegraphics[width=50]{../../../docs/user/rst/images/biohazard.png}
 \caption{This is the caption.}{\small 
 This is the legend.
 
 The legend may consist of several paragraphs.
-}\end{center}\end{figure}
+}\end{flushleft}\end{figure}
 
 This paragraph might flow around the figure...
 
@@ -944,15 +946,15 @@ Now widths:
 
 An image 2 em wide:
 
-\includegraphics{../../../docs/user/rst/images/biohazard.png}
+\includegraphics[width=2em]{../../../docs/user/rst/images/biohazard.png}
 
 An image 2 em wide and 30 pixel high:
 
-\includegraphics{../../../docs/user/rst/images/biohazard.png}
+\includegraphics[width=2em]{../../../docs/user/rst/images/biohazard.png}
 
 An image occupying 70{\%} of the line width:
 
-\includegraphics{../../../docs/user/rst/images/biohazard.png}
+\includegraphics[width=70%]{../../../docs/user/rst/images/biohazard.png}
 
 An image 3 cm high:
 
@@ -1255,9 +1257,20 @@ Fifth test in LaTeX.\\Line two.
 
 %___________________________________________________________________________
 
+\hypertarget{container}{}
+\pdfbookmark[1]{2.18~~~Container}{container}
+\subsection*{2.18~~~Container}
+
+paragraph 1
+
+paragraph 2
+
+
+%___________________________________________________________________________
+
 \hypertarget{colspanning-tables}{}
-\pdfbookmark[1]{2.18~~~Colspanning tables}{colspanning-tables}
-\subsection*{2.18~~~Colspanning tables}
+\pdfbookmark[1]{2.19~~~Colspanning tables}{colspanning-tables}
+\subsection*{2.19~~~Colspanning tables}
 
 This table has a cell spanning two columns:
 
@@ -1316,8 +1329,8 @@ True
 %___________________________________________________________________________
 
 \hypertarget{rowspanning-tables}{}
-\pdfbookmark[1]{2.19~~~Rowspanning tables}{rowspanning-tables}
-\subsection*{2.19~~~Rowspanning tables}
+\pdfbookmark[1]{2.20~~~Rowspanning tables}{rowspanning-tables}
+\subsection*{2.20~~~Rowspanning tables}
 
 Here's a table with cells spanning several rows:
 
