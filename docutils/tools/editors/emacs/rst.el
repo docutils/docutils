@@ -241,14 +241,14 @@
 
 
 ;; Paragraph separation customization.  This will work better for
-;; bulleted and enumerated lists in restructuredtext documents and
+;; bullet and enumerated lists in restructuredtext documents and
 ;; should not affect filling for other documents too much.  Set it up
 ;; like this:
 ;;
 ;; (add-hook 'text-mode-hook 'rst-set-paragraph-separation)
 (defun rst-set-paragraph-separation ()
-  (setq paragraph-start (concat paragraph-start "\\|[ \t]*[-+*] ")))
-
+  (setq paragraph-start (concat paragraph-start
+				"\\|[ \t]*[-+*] \\|[ \t]*[0-9]+\\. ")))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
