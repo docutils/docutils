@@ -104,6 +104,9 @@ for inclusion in the Python standard library.
 General
 =======
 
+* Allow different report levels for STDERR and system_messages inside
+  the document?
+
 * Change the docutils-update script (in sandbox/infrastructure), to
   support arbitrary branch snapshots.
 
