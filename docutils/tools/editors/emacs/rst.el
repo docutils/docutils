@@ -67,7 +67,7 @@
 ;; mode-specific-map prefix (i.e C-c).
 ;;
 ;;
-;;    C-c p a (also C-=): rst-adjust 
+;;    C-c p a (also C-=): rst-adjust
 ;;
 ;;       Updates or rotates the section title around point or promotes/demotes
 ;;       the decorations within the region (see full details below).
@@ -196,7 +196,7 @@
     (rst-display-decorations-hierarchy)))
 
 ;; Define a prefix map for the long form of key combinations.
-(defvar rst-prefix-map (make-sparse-keymap) 
+(defvar rst-prefix-map (make-sparse-keymap)
   "Keymap for rst commands.")
 (define-key rst-prefix-map "a" 'rst-adjust)
 (define-key rst-prefix-map "=" 'rst-adjust)
@@ -253,10 +253,22 @@
 (defvar rst-extra-paragraph-separate
   "\\|[ \t]*\\([-+*]\\|[0-9]+\\.\\) "
   "Extra parapraph-separate patterns to add for text-mode.")
+;; FIXME: What about the missing >?
+;; The author uses a hardcoded for paragraph-separate: "\f\\|>*[ \t]*$"
 
 (defun rst-set-paragraph-separation ()
+  "Sets the paragraph separation for restructuredtext."
+  ;; FIXME: the variable should be made automatically buffer local rather than
+  ;; using a function here, this function is unnecessary.
   (make-local-variable 'paragraph-start) ; prevent it growing every time
   (setq paragraph-start (concat paragraph-start rst-extra-paragraph-separate)))
+
+;; FIXME: What about paragraph-separate?  paragraph-start and paragraph-separate
+;; are different.  The author hardcodes the value to
+;; "\f\\|>*[ \t]*$\\|>*[ \t]*[-+*] \\|>*[ \t]*[0-9#]+\\. "
+
+;; FIXME: the variables above are in limbo and need some fixing.
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1273,7 +1285,8 @@ child.  This has advantages later in processing the graph."
 
     (let ((lev 0))
       (dolist (deco hier)
-        (puthash deco lev levels)
+	;; Compare just the character and indent in the hash table.
+        (puthash (cons (car deco) (cadr deco)) lev levels)
         (incf lev)))
 
     ;; Create a list of lines that contains (text, level, marker) for each
@@ -1282,7 +1295,7 @@ child.  This has advantages later in processing the graph."
       (setq lines
             (mapcar (lambda (deco)
                       (goto-line (car deco))
-                      (list (gethash (cdr deco) levels)
+                      (list (gethash (cons (cadr deco) (caddr deco)) levels)
                             (rst-get-stripped-line)
                             (let ((m (make-marker)))
                               (beginning-of-line 1)
@@ -1323,7 +1336,7 @@ child.  This has advantages later in processing the graph."
     ;; If node is still unset, we use the marker of the first child.
     (when (eq node nil)
       (setq node (cons nil (cdaar children))))
-	
+
     ;; Return this node with its children.
     (cons node children)
     ))
@@ -1333,34 +1346,34 @@ child.  This has advantages later in processing the graph."
   "Given a computed and valid section tree SECTREE and a point
   POINT (default being the current point in the current buffer),
   find and return the node within the sectree where the cursor
-  lives.  
+  lives.
 
   Return values: a pair of (parent path, container subtree).  The
   parent path is simply a list of the nodes above the container
   subtree node that we're returning."
-  
+
   (let (path outtree)
-    
+
     (let* ((curpoint (or point (point))))
-	  
+
       ;; Check if we are before the current node.
       (if (and (cadar node) (>= curpoint (cadar node)))
-	      
+
 	  ;; Iterate all the children, looking for one that might contain the
 	  ;; current section.
 	  (let ((curnode (cdr node))
 		last)
-		
+
 	    (while (and curnode (>= curpoint (cadaar curnode)))
 	      (setq last curnode
 		    curnode (cdr curnode)))
-	  
-	    (if last 
+
+	    (if last
 		(let ((sub (rst-section-tree-point (car last) curpoint)))
 		  (setq path (car sub)
 			outtree (cdr sub)))
 	      (setq outtree node))
-	    
+
 	    )))
     (cons (cons (car node) path) outtree)
     ))
@@ -1372,7 +1385,7 @@ By default the top level is ignored if there is only one, because
 we assume that the document will have a single title.
 
 If a numeric prefix argument is given, insert the TOC up to the
-specified level.  
+specified level.
 
 The TOC is inserted indented at the current column."
 
@@ -1397,7 +1410,7 @@ The TOC is inserted indented at the current column."
 
       ;; Fixup for the first line.
       (delete-region init-point (+ init-point (length initial-indent)))
-   
+
       ;; Delete the last newline added.
       (delete-backward-char 1)
     )))
@@ -1480,7 +1493,7 @@ necessary for all the children of this level to align."
 	     ((eq rst-toc-insert-style 'listed)
 	      (concat (substring indent 0 -3)
 		      (concat (make-string (+ (length pfx) 2) ? ) " - ")))
-	     )) 
+	     ))
       )
 
     (if (or (eq rst-toc-insert-max-level nil)
@@ -1508,7 +1521,7 @@ necessary for all the children of this level to align."
 				 (if do-child-numbering
 				     (concat pfx (format fmt count)) pfx))
             (incf count)))
-      
+
       )))
 
 
@@ -1614,14 +1627,14 @@ the node has been found."
   brings the cursor in that section."
   (interactive)
   (let* ((curbuf (current-buffer))
-	 
+
          ;; Get the section tree
          (alldecos (rst-find-all-decorations))
          (sectree (rst-section-tree alldecos))
 
  	 (our-node (cdr (rst-section-tree-point sectree)))
 	 line
-	 
+
          ;; Create a temporary buffer.
          (buf (get-buffer-create rst-toc-buffer-name))
          )
@@ -1840,7 +1853,7 @@ up to the leftmost character in the region."
 ;; reStructuredText format. Support includes font locking as well as some
 ;; convenience functions for editing. It does this by defining a Emacs major
 ;; mode.
-;; 
+;;
 ;; The package is based on text-mode and inherits some things from it.
 ;; Particularly text-mode-hook is run before rst-mode-hook.
 ;;
@@ -2098,7 +2111,7 @@ details check the Rst Faces Defaults group."
   :type '(alist
 	  :key-type
 	  (choice
-	   (integer 
+	   (integer
 	    :tag
 	    "Section level (may not be bigger than `rst-level-face-max')")
 	   (boolean :tag "transitions (on) / section title adornment (off)"))
@@ -2273,7 +2286,7 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
       1 rst-block-face)
      ;; `Enumerated Lists`_
      (list
-      (concat re-bol "\\((?\\([0-9]+\\|[A-Za-z]\\|[IVXLCMivxlcm]+\\)[.)]" 
+      (concat re-bol "\\((?\\([0-9]+\\|[A-Za-z]\\|[IVXLCMivxlcm]+\\)[.)]"
 	      re-blksep1 "\\)")
       1 rst-block-face)
      ;; `Definition Lists`_ FIXME: missing
@@ -2296,14 +2309,14 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
       1 rst-definition-face)
      ;; `Directives`_ / `Substitution Definitions`_
      (list
-      (concat re-bol "\\(" re-ems "\\)\\(\\(|[^|]+|[\t ]+\\)?\\)\\(" 
+      (concat re-bol "\\(" re-ems "\\)\\(\\(|[^|]+|[\t ]+\\)?\\)\\("
 	      re-sym1 "+::\\)" re-blksep1)
       (list 1 rst-directive-face)
       (list 2 rst-definition-face)
       (list 4 rst-directive-face))
      ;; `Hyperlink Targets`_
      (list
-      (concat re-bol "\\(" re-ems "_\\([^:\\`]\\|\\\\.\\|`[^`]+`\\)+:\\)" 
+      (concat re-bol "\\(" re-ems "_\\([^:\\`]\\|\\\\.\\|`[^`]+`\\)+:\\)"
 	      re-blksep1)
       1 rst-definition-face)
      (list
@@ -2335,7 +2348,7 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
       2 rst-reference-face)
      ;; `Interpreted Text`_
      (list
-      (concat re-imp1 "\\(\\(:" re-sym1 "+:\\)?\\)\\(`" re-imb2 "`\\)\\(\\(:" 
+      (concat re-imp1 "\\(\\(:" re-sym1 "+:\\)?\\)\\(`" re-imb2 "`\\)\\(\\(:"
 	      re-sym1 "+:\\)?\\)" re-ims1)
       (list 2 rst-directive-face)
       (list 5 rst-external-face)
