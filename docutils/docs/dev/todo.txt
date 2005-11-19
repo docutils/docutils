@@ -683,6 +683,10 @@ Also see the `... Or Not To Do?`__ list.
 
 __ rst/alternatives.html#or-not-to-do
 
+* Treat enumerated lists that are not arabic and consist of only one
+  item in a single line as ordinary paragraphs.  See
+  <http://article.gmane.org/gmane.text.docutils.user/2635>.
+
 * The citation syntax could use some enhancements.  See
   <http://thread.gmane.org/gmane.text.docutils.user/2499> and
   <http://thread.gmane.org/gmane.text.docutils.user/2443>.
