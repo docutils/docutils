@@ -912,13 +912,11 @@ __ rst/alternatives.html#or-not-to-do
 
   Is indentation enough to make the separation between a paragraph
   which contains just a ``::`` and the literal text unambiguous?
-  There's one problem with this concession.  What if one wants a
-  definition list item which defines the term "::"?  We'd have to
-  escape it.  Currenty, ``:\:`` is misinterpreted as a field name
-  (name ``\``; **bug**).  Assuming this bug is squashed, I suppose
-  it's a useful special case.  It would only be reasonable to apply it
-  to "::"-only paragraphs though.  I think the blank line is visually
-  necessary if there's text before the "::"::
+  (There's one problem with this concession: If one wants a definition
+  list item which defines the term "::", we'd have to escape it.)  It
+  would only be reasonable to apply it to "::"-only paragraphs though.
+  I think the blank line is visually necessary if there's text before
+  the "::"::
 
       The text in this paragraph needs separation
       from the literal block following::
