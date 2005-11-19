@@ -454,8 +454,7 @@ Nested field lists on one line:
                 <paragraph>
                     should generate warning.
 """],
-["""\
-Some edge cases:
+[r"""Some edge cases:
 
 :Empty:
 :Author: Me
@@ -468,6 +467,21 @@ No blank line before this paragraph.
 Field: marker is missing its open-colon.
 
 :Field marker is missing its close-colon.
+
+:Field\: names\: with\: colons\:: are possible.
+
+:\\Field\  names with backslashes\\: are possible, too.
+
+:\\: A backslash.
+
+:Not a\\\: field list.
+
+:Not a \: field list either.
+
+:\: Not a field list either.
+
+:\:
+    A definition list, not a field list.
 """,
 """\
 <document source="test data">
@@ -497,6 +511,38 @@ Field: marker is missing its open-colon.
         Field: marker is missing its open-colon.
     <paragraph>
         :Field marker is missing its close-colon.
+    <field_list>
+        <field>
+            <field_name>
+                Field: names: with: colons:
+            <field_body>
+                <paragraph>
+                    are possible.
+        <field>
+            <field_name>
+                \\Field names with backslashes\\
+            <field_body>
+                <paragraph>
+                    are possible, too.
+        <field>
+            <field_name>
+                \\
+            <field_body>
+                <paragraph>
+                    A backslash.
+    <paragraph>
+        :Not a\\: field list.
+    <paragraph>
+        :Not a : field list either.
+    <paragraph>
+        :: Not a field list either.
+    <definition_list>
+        <definition_list_item>
+            <term>
+                ::
+            <definition>
+                <paragraph>
+                    A definition list, not a field list.
 """],
 ]
 

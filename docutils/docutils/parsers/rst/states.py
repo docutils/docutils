@@ -1054,7 +1054,7 @@ class Body(RSTState):
     patterns = {
           'bullet': r'[-+*]( +|$)',
           'enumerator': r'(%(parens)s|%(rparen)s|%(period)s)( +|$)' % pats,
-          'field_marker': r':[^: ]([^:]*[^: ])?:( +|$)',
+          'field_marker': r':(?![: ])([^:\\]|\\.)*(?<! ):( +|$)',
           'option_marker': r'%(option)s(, %(option)s)*(  +| ?$)' % pats,
           'doctest': r'>>>( +|$)',
           'line_block': r'\|( +|$)',
@@ -1367,8 +1367,8 @@ class Body(RSTState):
 
     def parse_field_marker(self, match):
         """Extract & return field name from a field marker match."""
-        field = match.string[1:]        # strip off leading ':'
-        field = field[:field.find(':')] # strip off trailing ':' etc.
+        field = match.group()[1:]        # strip off leading ':'
+        field = field[:field.rfind(':')] # strip off trailing ':' etc.
         return field
 
     def parse_field_body(self, indented, offset, node):
