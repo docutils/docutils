@@ -311,7 +311,8 @@ span.section-subtitle {
   font-size: 80% }
 
 table.citation {
-  border-left: solid thin gray }
+  border-left: solid 1px gray;
+  margin-left: 1px }
 
 table.docinfo {
   margin: 2em 4em }
@@ -321,7 +322,8 @@ table.docutils {
   margin-bottom: 0.5em }
 
 table.footnote {
-  border-left: solid thin black }
+  border-left: solid 1px black;
+  margin-left: 1px }
 
 table.docutils td, table.docutils th,
 table.docinfo td, table.docinfo th {
