@@ -275,10 +275,6 @@ pre.address {
   font-family: serif ;
   font-size: 100% }
 
-pre.line-block {
-  font-family: serif ;
-  font-size: 100% }
-
 pre.literal-block, pre.doctest-block {
   margin-left: 2em ;
   margin-right: 2em ;
