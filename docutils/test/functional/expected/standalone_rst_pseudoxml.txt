@@ -1204,6 +1204,13 @@
                                                 Well it is, isn't it?
                         <paragraph>
                             This paragraph is also part of the legend.
+                <figure align="left" classes="figclass1 figclass2">
+                    <image alt="reStructuredText, the markup syntax" classes="class1 class2" uri="../../../docs/user/rst/images/biohazard.png" width="50">
+                    <caption>
+                        A left-aligned figure.
+                    <legend>
+                        <paragraph>
+                            This is the legend.
                 <paragraph>
                     This paragraph might flow around the figure...
                 <paragraph>

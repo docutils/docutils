@@ -474,6 +474,17 @@ A figure directive:
 
    This paragraph is also part of the legend.
 
+.. figure:: ../../../docs/user/rst/images/biohazard.png
+   :figclass: figclass1 figclass2
+   :class: class1 class2
+   :alt: reStructuredText, the markup syntax
+   :align: left
+   :width: 50
+
+   A left-aligned figure.
+
+   This is the legend.
+
 This paragraph might flow around the figure...
 
 A centered figure:
