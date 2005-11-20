@@ -486,6 +486,9 @@ General
   specific source files, such as running rst2s5.py instead of
   rst2html.py.
 
+* Add a "disable table of contents" setting?  The S5 writer could set
+  it as a default.
+
 
 Documentation
 =============
