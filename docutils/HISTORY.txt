@@ -50,6 +50,12 @@ Changes Since 0.3.9
     ``document.anonymous_refs``, and ``document.anonymous_targets``.
   - Added a "container" element.
 
+* docutils/languages/ja.py: Added to project: Japanese mappings by
+  Hisashi Morita.
+
+* docutils/languages/zh_cn.py: Added to project: Simplified Chinese
+  mappings by Panjunyong.
+
 * docutils/parsers/null.py: Added to project; a do-nothing parser.
 
 * docutils/parsers/rst/__init__.py:
@@ -84,6 +90,12 @@ Changes Since 0.3.9
 * docutils/parsers/rst/include/: Directory added to project; contains
   standard data files for the "include" directive.  Initial contents:
   character entity substitution definition sets.
+
+* docutils/parsers/rst/languages/ja.py: Added to project: Japanese
+  mappings by Hisashi Morita.
+  
+* docutils/parsers/rst/languages/zh_cn.py: Added to project:
+  Simplified Chinese mappings by Panjunyong.
 
 * docutils/readers/__init__.py:
 
