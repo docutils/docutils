@@ -813,15 +813,16 @@ see `Bibliographic Fields`_ below, or the "image_" and "meta_"
 directives in `reStructuredText Directives`_.
 
 Field lists are mappings from field names to field bodies, modeled on
-RFC822_ headers.  A field name is made up of one or more letters,
-numbers, whitespace, and punctuation, except colons (":").  Inline
-markup is parsed in field names.  Field names are case-insensitive
-when further processed or transformed.  The field name, along with a
-single colon prefix and suffix, together form the field marker.  The
-field marker is followed by whitespace and the field body.  The field
-body may contain multiple body elements, indented relative to the
-field marker.  The first line after the field name marker determines
-the indentation of the field body.  For example::
+RFC822_ headers.  A field name may consist of any characters, but
+colons (":") inside of field names must be escaped with a backslash.
+Inline markup is parsed in field names.  Field names are
+case-insensitive when further processed or transformed.  The field
+name, along with a single colon prefix and suffix, together form the
+field marker.  The field marker is followed by whitespace and the
+field body.  The field body may contain multiple body elements,
+indented relative to the field marker.  The first line after the field
+name marker determines the indentation of the field body.  For
+example::
 
     :Date: 2001-08-16
     :Version: 1

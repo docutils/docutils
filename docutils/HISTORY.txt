@@ -61,6 +61,7 @@ Changes Since 0.3.9
 
   - Fixed bug with escaped colons indicating a literal block.
   - Fixed bug with enumerated lists (SF#1254145).
+  - Backslash-escaped colons inside of field names are now allowed.
   - Targets (implicit and explicit), anonymous hyperlink references
     and auto-numbered footnote references inside of substitution
     definitions are now disallowed.
