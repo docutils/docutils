@@ -1548,10 +1548,11 @@ delete that region. Return t if found and the cursor is left after the comment."
       ;; Look for the first line that starts at the first column.
       (forward-line 1)
       (beginning-of-line)
-      (while (or (and (looking-at "[ \t]+[^ \t]")
-                      (setq last-real (point)) t)
-                 (looking-at "\\s-*$"))
-        (forward-line 1)
+      (while (and
+	      (< (point) (point-max))
+	      (or (and (looking-at "[ \t]+[^ \t]") (setq last-real (point)) t)
+		  (looking-at "\\s-*$")))
+	(forward-line 1)
         )
       (if last-real
           (progn
