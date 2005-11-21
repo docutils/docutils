@@ -1658,6 +1658,9 @@ Unimplemented Transforms
 HTML Writer
 ===========
 
+* Add support for _`multiple stylesheets`.  See
+  <http://thread.gmane.org/gmane.text.docutils.cvs/4336>.
+
 * Add more support for <link> elements, especially for navigation
   bars.
 
@@ -1675,6 +1678,15 @@ HTML Writer
 
 * Add a tool tip ("title" attribute?) to footnote back-links
   identifying them as such.  Text in Docutils language module.
+
+
+PEP/HTML Writer
+===============
+
+* Remove the generic style information (duplicated from html4css1.css)
+  from pep.css to avoid redundancy.
+
+  We need support for `multiple stylesheets`_ before, though.
 
 
 LaTeX writer
