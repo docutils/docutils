@@ -474,6 +474,13 @@ General
 
 * Add support for _`plugins`.
 
+* _`Config directories`: Currently, ~/.docutils, ./docutils.conf/, &
+  /etc/docutils.conf are read as configuration files.  Proposal: make
+  ~/.docutils/ into a configuration *directory*, along with
+  /etc/docutils/ and ./docutils.conf/.  Within these directories,
+  check for config.txt files.  We can also have subdirectories here,
+  for plugins, S5 themes, components (readers/writers/parsers) etc.
+
 * Add support for document decorations other than headers & footers?
   For example, top/bottom/side navigation bars for web pages.  Generic
   decorations?
@@ -487,7 +494,14 @@ General
   rst2html.py.
 
 * Add a "disable table of contents" setting?  The S5 writer could set
-  it as a default.
+  it as a default.  Rationale:
+
+      The ``contents`` (table of contents) directive must not be used
+      [in S5/HTML documents].  It changes the CSS class of headings
+      and they won't show up correctly in the screen presentation.
+
+      -- `Easy Slide Shows With reStructuredText & S5
+         <../user/slide-shows.html>`_
 
 
 Documentation
