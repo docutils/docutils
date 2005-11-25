@@ -250,8 +250,8 @@
 ;; like this:
 ;;
 ;; (add-hook 'text-mode-hook 'rst-set-paragraph-separation)
-(defvar rst-extra-paragraph-separate
-  "\\|[ \t]*\\([-+*]\\|[0-9]+\\.\\) "
+(defvar rst-extra-paragraph-start
+  "\\|[ \t]*\\([-+*] \\|[0-9]+\\. \\)"
   "Extra parapraph-separate patterns to add for text-mode.")
 ;; FIXME: What about the missing >?
 ;; The author uses a hardcoded for paragraph-separate: "\f\\|>*[ \t]*$"
@@ -261,7 +261,7 @@
   ;; FIXME: the variable should be made automatically buffer local rather than
   ;; using a function here, this function is unnecessary.
   (make-local-variable 'paragraph-start) ; prevent it growing every time
-  (setq paragraph-start (concat paragraph-start rst-extra-paragraph-separate)))
+  (setq paragraph-start (concat paragraph-start rst-extra-paragraph-start)))
 
 ;; FIXME: What about paragraph-separate?  paragraph-start and paragraph-separate
 ;; are different.  The author hardcodes the value to
