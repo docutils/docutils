@@ -111,6 +111,37 @@ Known Bugs
 
 Also see the `SourceForge Bug Tracker`_.
 
+* The reST parser does not recognize _`block quote attributions` that
+  have an indented second line, but only if there is any text after
+  the block quote::
+
+      $ rst2pseudoxml.py
+          Block quote.
+
+          -- This is
+             the attribution.
+
+      Normal text.
+      <document source="<stdin>">
+          <block_quote>
+              <paragraph>
+                  Block quote.
+              <definition_list>
+                  <definition_list_item>
+                      <term>
+                          -- This is
+                      <definition>
+                          <paragraph>
+                              the attribution.
+          <paragraph>
+              Normal text.
+
+  According to `the spec`__, it should work: "If the attribution
+  consists of multiple lines, the left edges of the second and
+  subsequent lines must align."
+
+  __ docs/ref/rst/restructuredtext.html#block-quotes
+
 * _`List items with an empty first line` don't work as expected::
 
       1.
