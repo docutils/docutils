@@ -501,7 +501,7 @@ General
       and they won't show up correctly in the screen presentation.
 
       -- `Easy Slide Shows With reStructuredText & S5
-         <../user/slide-shows.html>`_
+      <../user/slide-shows.html>`_
 
 
 Documentation
