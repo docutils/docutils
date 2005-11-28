@@ -475,11 +475,14 @@ General
 * Add support for _`plugins`.
 
 * _`Config directories`: Currently, ~/.docutils, ./docutils.conf/, &
-  /etc/docutils.conf are read as configuration files.  Proposal: make
-  ~/.docutils/ into a configuration *directory*, along with
+  /etc/docutils.conf are read as configuration files.  Proposal: allow
+  ~/.docutils to be a a configuration *directory*, along with
   /etc/docutils/ and ./docutils.conf/.  Within these directories,
   check for config.txt files.  We can also have subdirectories here,
   for plugins, S5 themes, components (readers/writers/parsers) etc.
+
+  Docutils will continue to support configuration files for backwards
+  compatibility.
 
 * Add support for document decorations other than headers & footers?
   For example, top/bottom/side navigation bars for web pages.  Generic
@@ -740,7 +743,7 @@ __ rst/alternatives.html#or-not-to-do
 
       quote 2
 
-      ---Attrib 2  
+      ---Attrib 2
 
 * Change the specification so that more punctuation is allowed
   before/after inline markup start/end string
@@ -1059,7 +1062,7 @@ when used in a document.
 
 * Allow for field lists in list tables.  See
   <http://thread.gmane.org/gmane.text.docutils.devel/3392>.
-  
+
 * .. _unify tables:
 
   Unify table implementations and unify options of table directives
@@ -1196,7 +1199,33 @@ when used in a document.
   - _`misc.gather`: Gather (move, or copy) all instances of a specific
     element.  A generalization of the "endnotes" & "citations" ideas.
 
-  - Add a "directive" directive, equivalent to "role"?
+  - Add a custom "directive" directive, equivalent to "role"?  For
+    example::
+
+        .. directive:: incr
+
+           .. class:: incremental
+
+        .. incr::
+
+        "``.. incr::``" above is equivalent to "``.. class:: incremental``".
+
+    Another example::
+
+        .. directive:: printed-links
+
+           .. topic:: Links
+              :class: print-block
+
+              .. target-notes::
+                 :class: print-inline
+
+    This acts like macros.  The directive contents will have to be
+    evaluated when referenced, not when defined.  
+
+    * Call the directive "macro"?
+    * What to do with directive arguments & options when the
+      macro/directive is referenced?
 
   - .. _conditional directives:
 
