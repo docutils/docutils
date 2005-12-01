@@ -9,12 +9,6 @@
 :Web site: http://docutils.sourceforge.net/
 :Copyright: This document has been placed in the public domain.
 
-.. Please note that until there's a Q&A-specific construct available,
-   this FAQ will use section titles for questions.  Therefore
-   questions must fit on one line.  The title may be a summary of the
-   question, with the full question in the section body.
-
-
 .. contents::
 .. sectnum::
 
@@ -698,6 +692,57 @@ automatically building websites, or parts of websites.
 .. _Cheetah: http://www.cheetahtemplate.org/
 .. _some other templating systems:
    http://webware.sourceforge.net/Papers/Templates/
+
+
+How can I mark up a FAQ or other list of questions & answers?
+-------------------------------------------------------------
+
+There is no specific syntax for FAQs and Q&A lists.  Here are two
+options:
+
+1. For a FAQ (Frequently Asked Questions, usually with answers), a
+   convenient way to mark up the questions is as section titles, with
+   the answer(s) as section content.  This document is marked up in
+   this way.
+
+   The advantages of using section titles for questions are: sections
+   can be numbered automatically, and a table of contents can be
+   generated automatically.  One limitation of this format is that
+   questions must fit on one line (section titles may not wrap, in the
+   source text).  For very long questions, the title may be a summary
+   of the question, with the full question in the section body.
+
+2. Field lists work well as Q&A lists::
+
+       :Q: What kind of questions can we
+           put here?
+
+       :A: Any kind we like!
+
+   In order to separate questions, lists can be used:
+
+       1. :Q: What kind of question can we
+              put here?
+          :A: Any kind we like!
+
+       2. :Q: How many answers can a question have?
+          :A: It can have one,
+          :A: or more.
+          :A3: Answers can be numbered like this.
+          :A: 1. Or like this.
+              2. We're flexible!
+
+   If you don't want to number or otherwise mark questions, you can
+   use an empty comment between individual field lists to separate
+   them::
+
+       :Q: First question?
+       :A: Answer.
+
+       ..
+
+       :Q: Second question?
+       :A: Answer.
 
 
 HTML Writer

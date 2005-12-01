@@ -2095,6 +2095,49 @@ the "auto-symbol footnote" concept, which has been added.  Citations
 and citation references have also been added.
 
 
+Syntax for Questions & Answers
+==============================
+
+Implement as a generic two-column marked list?  As a standalone
+(non-directive) construct?  (Is the markup ambiguous?)  Add support to
+parts.contents?
+
+New elements would be required.  Perhaps::
+
+    <!ELEMENT question_list (question_list_item+)>
+    <!ATTLIST question_list
+        numbering  (none | local | global)
+                            #IMPLIED
+        start     NUMBER    #IMPLIED>
+    <!ELEMENT question_list_item (question, answer*)>
+    <!ELEMENT question %text.model;>
+    <!ELEMENT answer (%body.elements;)+>
+
+Originally I thought of implementing a Q&A list with special syntax::
+
+    Q: What am I?
+
+    A: You are a question-and-answer
+       list.
+
+    Q: What are you?
+
+    A: I am the omniscient "we".
+
+Where each "Q" and "A" could also be numbered (e.g., "Q1").  However,
+a simple enumerated or bulleted list will do just fine for syntax.  A
+directive could treat the list specially; e.g. the first paragraph
+could be treated as a question, the remainder as the answer (multiple
+answers could be represented by nested lists).  Without special
+syntax, this directive becomes low priority.
+
+As described in the FAQ__, no special syntax or directive is needed
+for this application.
+
+__ http://docutils.sf.net/FAQ.html
+   #how-can-i-mark-up-a-faq-or-other-list-of-questions-answers
+
+
 --------
  Tabled
 --------
@@ -3075,7 +3118,6 @@ idea, and there is no "tool tip" in formats other than HTML.
 
 Add a "term" role for unfamiliar or specialized terminology?  Probably
 not; there is no real use case, and emphasis is enough for most cases.
-
 
 
 ..
