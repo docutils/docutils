@@ -1284,42 +1284,6 @@ when used in a document.
            delim off
            .EN
 
-  - _`body.qa` (directive a.k.a. "faq", "questions"): Questions &
-    Answers.  Implement as a generic two-column marked list?  As a
-    standalone (non-directive) construct?  (Is the markup ambiguous?)
-    Add support to parts.contents.
-
-    New elements would be required.  Perhaps::
-
-        <!ELEMENT question_list (question_list_item+)>
-        <!ATTLIST question_list
-            numbering  (none | local | global)
-                                #IMPLIED
-            start     NUMBER    #IMPLIED>
-        <!ELEMENT question_list_item (question, answer*)>
-        <!ELEMENT question %text.model;>
-        <!ELEMENT answer (%body.elements;)+>
-
-    Originally I thought of implementing a Q&A list with special
-    syntax::
-
-        Q: What am I?
-
-        A: You are a question-and-answer
-           list.
-
-        Q: What are you?
-
-        A: I am the omniscient "we".
-
-    Where each "Q" and "A" could also be numbered (e.g., "Q1").
-    However, a simple enumerated or bulleted list will do just fine
-    for syntax.  A directive could treat the list specially; e.g. the
-    first paragraph could be treated as a question, the remainder as
-    the answer (multiple answers could be represented by nested
-    lists).  Without special syntax, this directive becomes low
-    priority.
-
   - _`body.example`: Examples; suggested by Simon Hefti.  Semantics as
     per Docbook's "example"; admonition-style, numbered, reference,
     with a caption/title.
@@ -1703,6 +1667,14 @@ HTML Writer
 
 * Add support for _`multiple stylesheets`.  See
   <http://thread.gmane.org/gmane.text.docutils.cvs/4336>.
+
+* Idea for field-list rendering: hanging indent::
+
+      Field name (bold): First paragraph of field body begins
+          with the field name inline.
+
+          If the first item of a field body is not a paragraph,
+          it would begin on the following line.
 
 * Add more support for <link> elements, especially for navigation
   bars.
