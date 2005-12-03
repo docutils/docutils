@@ -10,8 +10,8 @@
 Test module for misc.Transitions transform.
 """
 
+from __init__ import DocutilsTestSupport # must be imported before docutils
 from docutils.transforms.misc import Transitions
-from __init__ import DocutilsTestSupport
 from docutils.parsers.rst import Parser
 
 def suite():

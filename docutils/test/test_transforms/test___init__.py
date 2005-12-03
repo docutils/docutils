@@ -10,6 +10,7 @@
 Test module for transforms/__init__.py.
 """
 
+from __init__ import DocutilsTestSupport # must be imported before docutils
 from docutils import transforms, utils
 import unittest
 

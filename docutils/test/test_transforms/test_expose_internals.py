@@ -11,8 +11,8 @@ Test module for universal.ExposeInternals transform.
 """
 
 
+from __init__ import DocutilsTestSupport # must be imported before docutils
 from docutils.transforms.universal import ExposeInternals
-from __init__ import DocutilsTestSupport
 from docutils.parsers.rst import Parser
 
 def suite():

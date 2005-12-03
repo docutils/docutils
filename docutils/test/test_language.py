@@ -17,20 +17,21 @@ import sys
 import os
 import re
 from types import UnicodeType
+import DocutilsTestSupport              # must be imported before docutils
 import docutils.languages
 import docutils.parsers.rst.languages
 from docutils.parsers.rst import states, directives, roles
-from DocutilsTestSupport import CustomTestSuite, CustomTestCase
+
 
 reference_language = 'en'
 
 
-class LanguageTestSuite(CustomTestSuite):
+class LanguageTestSuite(DocutilsTestSupport.CustomTestSuite):
 
     language_module_pattern = re.compile('^([a-z]{2,3}(_[a-z]{2,8})*)\.py$')
 
     def __init__(self, languages=None):
-        CustomTestSuite.__init__(self)
+        DocutilsTestSupport.CustomTestSuite.__init__(self)
         if languages:
             self.languages = languages
         else:
@@ -56,7 +57,7 @@ class LanguageTestSuite(CustomTestSuite):
                                  id=language+'.py', language=language)
 
 
-class LanguageTestCase(CustomTestCase):
+class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
 
     test_methods = ['test_labels', 'test_bibliographic_fields',
                     'test_directives', 'test_roles']
@@ -66,7 +67,7 @@ class LanguageTestCase(CustomTestCase):
         self.ref = docutils.languages.get_language(reference_language)
         self.language = kwargs['language']
         del kwargs['language']          # only wanted here
-        CustomTestCase.__init__(self, *args, **kwargs)
+        DocutilsTestSupport.CustomTestCase.__init__(self, *args, **kwargs)
 
     def _xor(self, ref_dict, l_dict):
         """

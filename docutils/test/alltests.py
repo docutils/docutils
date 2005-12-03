@@ -22,6 +22,7 @@ start = time.time()
 import sys
 import os
 from types import UnicodeType
+import DocutilsTestSupport              # must be imported before docutils
 import docutils
 
 

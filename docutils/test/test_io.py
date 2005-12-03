@@ -11,6 +11,7 @@ Test module for io.py.
 """
 
 import unittest
+import DocutilsTestSupport              # must be imported before docutils
 from docutils import io
 
 
