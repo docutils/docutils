@@ -13,9 +13,9 @@ Test module for the --record-dependencies option.
 import os.path
 import unittest
 import sys
+import DocutilsTestSupport              # must be imported before docutils
 import docutils.core
 import docutils.utils
-import DocutilsTestSupport
 
 
 class RecordDependenciesTests(unittest.TestCase):

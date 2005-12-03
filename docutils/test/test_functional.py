@@ -17,9 +17,9 @@ import os
 import os.path
 import unittest
 import difflib
+import DocutilsTestSupport              # must be imported before docutils
 import docutils
 import docutils.core
-import DocutilsTestSupport
 
 
 datadir = 'functional'

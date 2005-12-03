@@ -12,11 +12,9 @@ Test the `Publisher` facade and the ``publish_*`` convenience functions.
 
 import pickle
 from types import StringType, DictType
-
+import DocutilsTestSupport              # must be imported before docutils
 import docutils
 from docutils import core, nodes, io
-
-import DocutilsTestSupport
 
 
 test_document = """\

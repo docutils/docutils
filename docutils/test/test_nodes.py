@@ -12,6 +12,7 @@ Test module for nodes.py.
 
 import unittest
 from types import ClassType
+import DocutilsTestSupport              # must be imported before docutils
 from DocutilsTestSupport import nodes, utils
 
 debug = 0
