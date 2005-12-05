@@ -182,11 +182,8 @@ Changes Since 0.3.9
   - Added support for image width and height units.
   - Made ``xmlcharrefreplace`` the default output encoding error
     handler.
-  - A warning is now issued if neither ``--stylesheet`` nor
-    ``--stylesheet-path`` is specified.
   - Made ``--embed-stylesheet`` the default rather than
     ``--link-stylesheet``.
-  - Added writer-specific transform to check the stylesheet setting.
   - Moved "id" attribute from container (section etc.) to title's <a>
     tag, to be on the same tag as "name".
     (!!! To be reverted in Docutils 0.5.)
