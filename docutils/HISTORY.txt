@@ -22,8 +22,33 @@ Changes Since 0.3.9
 * setup.py: Added installation of data files in
   ``docutils/parsers/rst/include/``.
 
+* docs/dev/distributing.txt: Added to project; guide for distributors
+  (package maintainers).
+
+* docs/dev/hacking.txt: Added to project; guide for developers.
+
+* docs/ref/doctree.txt:
+
+  - Updated for plural attributes "classes", "ids", "names",
+    "dupnames".
+  - Added the "container" element.
+
+* docs/ref/docutils.dtd:
+
+  - Updated for plural attributes "classes", "ids", "names",
+    "dupnames".
+
 * docs/user/emacs.txt: Added to project; a document about Emacs
   support for reStructuredText and Docutils.
+
+* docs/user/links.txt: Added to project; lists of Docutils-related
+  links.
+
+* docs/user/mailing-lists.txt: Added to project; information about
+  Docutils-related mailing lists and how to access them.
+
+* docs/ref/rst/substitutions.txt: "reStructuredText Standard
+  Substitution Definition Sets", added to project.
 
 * docutils/__init__.py:
 
@@ -188,31 +213,6 @@ Changes Since 0.3.9
 
 * docutils/writers/support/newlatex2e/unicode_map.py: Added to
   project; mapping of Unicode characters to LaTeX equivalents.
-
-* docs/dev/distributing.txt: Added to project; guide for distributors
-  (package maintainers).
-
-* docs/dev/hacking.txt: Added to project; guide for developers.
-
-* docs/ref/doctree.txt:
-
-  - Updated for plural attributes "classes", "ids", "names",
-    "dupnames".
-  - Added the "container" element.
-
-* docs/ref/docutils.dtd:
-
-  - Updated for plural attributes "classes", "ids", "names",
-    "dupnames".
-
-* docs/user/links.txt: Added to project; lists of Docutils-related
-  links.
-
-* docs/user/mailing-lists.txt: Added to project; information about
-  Docutils-related mailing lists and how to access them.
-
-* docs/ref/rst/substitutions.txt: "reStructuredText Standard
-  Substitution Definition Sets", added to project.
 
 * test/coverage.sh: Added to project; test coverage script.
 
