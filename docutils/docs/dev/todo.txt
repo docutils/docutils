@@ -1223,7 +1223,7 @@ when used in a document.
     This acts like macros.  The directive contents will have to be
     evaluated when referenced, not when defined.  
 
-    * Call the directive "macro"?
+    * Needs a better name?  "Macro", "substitution"?
     * What to do with directive arguments & options when the
       macro/directive is referenced?
 
