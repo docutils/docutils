@@ -19,9 +19,6 @@ Changes Since 0.3.9
   - Updated the project policies for trunk/branch development &
     version numbering.
 
-* setup.py: Added installation of data files in
-  ``docutils/parsers/rst/include/``.
-
 * docutils/__init__.py:
 
   - Added ``__version_details__`` attribute to describe code source
@@ -50,6 +47,10 @@ Changes Since 0.3.9
     ``document.anonymous_refs``, and ``document.anonymous_targets``.
   - Added a "container" element.
 
+* docutils/statemachine.py:
+
+  - Added trailing whitespace stripping to ``string2lines()``.
+
 * docutils/languages/ja.py: Added to project: Japanese mappings by
   Hisashi Morita.
 
@@ -71,6 +72,8 @@ Changes Since 0.3.9
   - Targets (implicit and explicit), anonymous hyperlink references
     and auto-numbered footnote references inside of substitution
     definitions are now disallowed.
+  - Fixed bug: list items with blank first lines.
+  - Fixed bug: block quote attributions with indented second lines.
 
 * docutils/parsers/rst/directives/body.py:
 
@@ -252,6 +255,8 @@ Release 0.3.9 (2005-05-26)
 
   - Enabled ``--dump-*`` options when ``--traceback`` specified,
     allowing for easier debugging.
+  - In ``Publisher.publish()``, expanded the generic top-level
+    exception catching.
 
 * docutils/examples.py:
 
