@@ -1114,6 +1114,7 @@ class Body(RSTState):
         Return a 3-tuple: (block quote lines, attribution lines,
         attribution offset).
         """
+        #import pdb ; pdb.set_trace()
         blank = None
         nonblank_seen = None
         indent = 0
@@ -1130,8 +1131,10 @@ class Body(RSTState):
             indent = (len(indented[blank + 2])
                       - len(indented[blank + 2].lstrip()))
             for j in range(blank + 3, len(indented)):
-                if indent != (len(indented[j])
-                              - len(indented[j].lstrip())): # bad shape
+                if ( indented[j]        # may be blank last line
+                     and indent != (len(indented[j])
+                                    - len(indented[j].lstrip()))):
+                    # bad shape
                     blank = None
                     break
         if blank:
@@ -1169,8 +1172,12 @@ class Body(RSTState):
         return [], next_state, []
 
     def list_item(self, indent):
-        indented, line_offset, blank_finish = \
-              self.state_machine.get_known_indented(indent)
+        if self.state_machine.line[indent:]:
+            indented, line_offset, blank_finish = (
+                self.state_machine.get_known_indented(indent))
+        else:
+            indented, indent, line_offset, blank_finish = (
+                self.state_machine.get_first_known_indented(indent))
         listitem = nodes.list_item('\n'.join(indented))
         if indented:
             self.nested_parse(indented, input_offset=line_offset,

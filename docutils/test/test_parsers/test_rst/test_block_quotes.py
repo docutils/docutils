@@ -191,6 +191,8 @@ Paragraph.
 
    -- Attribution line one
       and line two
+
+Paragraph.
 """,
 """\
 <document source="test data">
@@ -210,6 +212,8 @@ Paragraph.
         <attribution>
             Attribution line one
             and line two
+    <paragraph>
+        Paragraph.
 """],
 ["""\
 Paragraph.

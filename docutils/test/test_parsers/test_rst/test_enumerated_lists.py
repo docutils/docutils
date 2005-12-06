@@ -834,6 +834,72 @@ x
         z.
         x
 """],
+["""\
+3-space indent, with a trailing space:
+
+1. \n\
+   foo
+
+3-space indent, no trailing space:
+
+1.
+   foo
+
+2-space indent:
+
+1.
+  foo
+
+1-space indent:
+
+1.
+ foo
+
+0-space indent, not a list item:
+
+1.
+foo
+
+No item content:
+
+1.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        3-space indent, with a trailing space:
+    <enumerated_list enumtype="arabic" prefix="" suffix=".">
+        <list_item>
+            <paragraph>
+                foo
+    <paragraph>
+        3-space indent, no trailing space:
+    <enumerated_list enumtype="arabic" prefix="" suffix=".">
+        <list_item>
+            <paragraph>
+                foo
+    <paragraph>
+        2-space indent:
+    <enumerated_list enumtype="arabic" prefix="" suffix=".">
+        <list_item>
+            <paragraph>
+                foo
+    <paragraph>
+        1-space indent:
+    <enumerated_list enumtype="arabic" prefix="" suffix=".">
+        <list_item>
+            <paragraph>
+                foo
+    <paragraph>
+        0-space indent, not a list item:
+    <paragraph>
+        1.
+        foo
+    <paragraph>
+        No item content:
+    <enumerated_list enumtype="arabic" prefix="" suffix=".">
+        <list_item>
+"""],
 ]
 
 
