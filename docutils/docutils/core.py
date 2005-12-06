@@ -193,20 +193,21 @@ class Publisher:
         already set), run `self.reader` and then `self.writer`.  Return
         `self.writer`'s output.
         """
-        if self.settings is None:
-            self.process_command_line(
-                argv, usage, description, settings_spec, config_section,
-                **(settings_overrides or {}))
-        self.set_io()
         exit = None
         try:
+            if self.settings is None:
+                self.process_command_line(
+                    argv, usage, description, settings_spec, config_section,
+                    **(settings_overrides or {}))
+            self.set_io()
             self.document = self.reader.read(self.source, self.parser,
                                              self.settings)
             self.apply_transforms()
             output = self.writer.write(self.document, self.destination)
             self.writer.assemble_parts()
         except Exception, error:
-            if self.settings.traceback: # propagate exceptions?
+            if self.settings and self.settings.traceback:
+                # propagate exceptions?
                 self.debugging_dumps()                
                 raise
             self.report_Exception(error)
