@@ -114,7 +114,7 @@ from docutils import ApplicationError, DataError
 from docutils.statemachine import StateMachineWS, StateWS
 from docutils.nodes import fully_normalize_name as normalize_name
 from docutils.nodes import whitespace_normalize_name
-from docutils.utils import escape2null, unescape
+from docutils.utils import escape2null, unescape, column_width
 from docutils.parsers.rst import directives, languages, tableparser, roles
 from docutils.parsers.rst.languages import en as _fallback_language_module
 
@@ -995,6 +995,9 @@ class Body(RSTState):
     Generic classifier of the first line of a block.
     """
 
+    double_width_pad_char = tableparser.TableParser.double_width_pad_char
+    """Padding character for East Asian double-width text."""
+
     enum = Struct()
     """Enumerated list parsing information."""
 
@@ -1592,6 +1595,8 @@ class Body(RSTState):
                                                 source=source, line=lineno))
             blank_finish = 0
         block.disconnect()
+        # for East Asian chars:
+        block.pad_double_width(self.double_width_pad_char)
         width = len(block[0].strip())
         for i in range(len(block)):
             block[i] = block[i].strip()
@@ -1656,9 +1661,12 @@ class Body(RSTState):
             return [], messages, not extra
         self.state_machine.next_line(end - start)
         block = lines[start:end+1]
+        # for East Asian chars:
+        block.pad_double_width(self.double_width_pad_char)
         return block, [], end == limit or not lines[end+1].strip()
 
     def malformed_table(self, block, detail=''):
+        block.replace(self.double_width_pad_char, '')
         data = '\n'.join(block)
         message = 'Malformed table.'
         lineno = self.state_machine.abs_line_number() - len(block) + 1
@@ -2586,7 +2594,7 @@ class Text(RSTState):
         underline = match.string.rstrip()
         source = title + '\n' + underline
         messages = []
-        if len(title) > len(underline):
+        if column_width(title) > len(underline):
             if len(underline) < 4:
                 if self.state_machine.match_titles:
                     msg = self.reporter.info(
@@ -2825,7 +2833,7 @@ class Line(SpecializedText):
                 return [], 'Body', []
         title = title.rstrip()
         messages = []
-        if len(title) > len(overline):
+        if column_width(title) > len(overline):
             blocktext = overline + '\n' + title + '\n' + underline
             if len(overline.rstrip()) < 4:
                 self.short_overline(context, blocktext, lineno, 2)

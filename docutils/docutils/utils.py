@@ -13,7 +13,9 @@ __docformat__ = 'reStructuredText'
 import sys
 import os
 import os.path
+import types
 import warnings
+import unicodedata
 from types import StringType, UnicodeType
 from docutils import ApplicationError, DataError
 from docutils import frontend, nodes
@@ -488,6 +490,30 @@ def unescape(text, restore_backslashes=0):
         for sep in ['\x00 ', '\x00\n', '\x00']:
             text = ''.join(text.split(sep))
         return text
+
+east_asian_widths = {'W': 2,   # Wide
+                     'F': 2,   # Full-width (wide)
+                     'Na': 1,  # Narrow
+                     'H': 1,   # Half-width (narrow)
+                     'N': 1,   # Neutral (not East Asian, treated as narrow)
+                     'A': 1}   # Ambiguous (s/b wide in East Asian context,
+                               # narrow otherwise, but that doesn't work)
+"""Mapping of result codes from `unicodedata.east_asian_width()` to character
+column widths."""
+
+def east_asian_column_width(text):
+    if isinstance(text, types.UnicodeType):
+        total = 0
+        for c in text:
+            total += east_asian_widths[unicodedata.east_asian_width(c)]
+        return total
+    else:
+        return len(text)
+
+if hasattr(unicodedata, 'east_asian_width'):
+    column_width = east_asian_column_width
+else:
+    column_width = len
 
 
 class DependencyList:

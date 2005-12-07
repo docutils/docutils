@@ -21,6 +21,7 @@ donations, tasty treats, and related projects:
 * Heiko Baumann
 * Anthony Baxter
 * Eric Bellot
+* Frank Bennett
 * Ian Bicking
 * Marek Blaha
 * Martin Blais

@@ -39,6 +39,9 @@ class TableParser:
     head_body_separator_pat = None
     """Matches the row separator between head rows and body rows."""
 
+    double_width_pad_char = '\x00'
+    """Padding character for East Asian double-width text."""
+
     def parse(self, block):
         """
         Analyze the text `block` and return a table data structure.
@@ -169,6 +172,7 @@ class GridTableParser(TableParser):
             cellblock = self.block.get_2D_block(top + 1, left + 1,
                                                 bottom, right)
             cellblock.disconnect()      # lines in cell can't sync with parent
+            cellblock.replace(self.double_width_pad_char, '')
             self.cells.append((top, left, bottom, right, cellblock))
             corners.extend([(top, right), (bottom, left)])
             corners.sort()
@@ -469,6 +473,7 @@ class SimpleTableParser(TableParser):
             start, end = columns[i]
             cellblock = lines.get_2D_block(0, start, len(lines), end)
             cellblock.disconnect()      # lines in cell can't sync with parent
+            cellblock.replace(self.double_width_pad_char, '')
             row[i][3] = cellblock
         self.table.append(row)
 
