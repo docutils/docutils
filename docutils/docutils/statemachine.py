@@ -110,7 +110,8 @@ __docformat__ = 'restructuredtext'
 
 import sys
 import re
-from types import SliceType as _SliceType
+import types
+import unicodedata
 
 
 class StateMachine:
@@ -1116,7 +1117,7 @@ class ViewList:
     # indexing a list with a slice object; they just work).
 
     def __getitem__(self, i):
-        if isinstance(i, _SliceType):
+        if isinstance(i, types.SliceType):
             assert i.step in (None, 1),  'cannot handle slice with stride'
             return self.__class__(self.data[i.start:i.stop],
                                   items=self.items[i.start:i.stop],
@@ -1125,7 +1126,7 @@ class ViewList:
             return self.data[i]
 
     def __setitem__(self, i, item):
-        if isinstance(i, _SliceType):
+        if isinstance(i, types.SliceType):
             assert i.step in (None, 1), 'cannot handle slice with stride'
             if not isinstance(item, ViewList):
                 raise TypeError('assigning non-ViewList to ViewList slice')
@@ -1399,6 +1400,30 @@ class StringList(ViewList):
         if strip_indent and 0 < indent < right:
             block.data = [line[indent:] for line in block.data]
         return block
+
+    def pad_double_width(self, pad_char):
+        """
+        Pad all double-width characters in self by appending `pad_char` to each.
+        For East Asian language support.
+        """
+        if hasattr(unicodedata, 'east_asian_width'):
+            east_asian_width = unicodedata.east_asian_width
+        else:
+            return                      # new in Python 2.4
+        for i in range(len(self.data)):
+            line = self.data[i]
+            if isinstance(line, types.UnicodeType):
+                new = []
+                for char in line:
+                    new.append(char)
+                    if east_asian_width(char) in 'WF': # 'W'ide & 'F'ull-width
+                        new.append(pad_char)
+                self.data[i] = ''.join(new)
+
+    def replace(self, old, new):
+        """Replace all occurrences of substring `old` with `new`."""
+        for i in range(len(self.data)):
+            self.data[i] = self.data[i].replace(old, new)
 
 
 class StateMachineError(Exception): pass
