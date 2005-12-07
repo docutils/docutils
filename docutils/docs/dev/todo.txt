@@ -50,7 +50,12 @@ the short term) to include:
 * [DONE in rev. 3962] Incorporate new branch policy into the docs.
   ("Development strategy" thread on Docutils-develop)
 
-* Fix East-Asian `double-width characters`_ issue.  [DavidG]
+* [DONE in rev. 4152] Added East-Asian double-width character support.
+
+* Merge the S5 branch.
+
+* Convert ``docutils/writers/support/*`` to individual writer
+  packages.
 
 Anything else?
 
@@ -764,22 +769,8 @@ __ rst/alternatives.html#or-not-to-do
 * Add test for ":figwidth: image" option of "figure" directive.  (Test
   code needs to check if PIL is available on the system.)
 
-* The parser doesn't know anything about _`double-width characters`
-  such as Chinese hanza & Japanese kanji/kana.  Also, it's dependent
-  on whitespace and punctuation as markup delimiters, which may not be
-  applicable in these languages.
-
-  Especially the table parsers suffer from this problem.
-
-  We need to use the ``unicodedata.east_asian_width`` function,
-  introduced in Python 2.4.
-
-  From `Unicode Standard Annex #11: East Asian Width
-  <http://www.unicode.org/reports/tr11/>`_:
-
-      In a broad sense, wide characters include W, F, and A (when in
-      EA context), while narrow characters include N, Na, H, and A
-      (when not in EA context).
+* Add support for CJK double-width whitespace & punctuation
+  characters?
 
 * Add motivation sections for constructs in spec.
 
@@ -1701,7 +1692,7 @@ PEP/HTML Writer
 * Remove the generic style information (duplicated from html4css1.css)
   from pep.css to avoid redundancy.
 
-  We need support for `multiple stylesheets`_ before, though.
+  We need support for `multiple stylesheets`_ first, though.
 
 
 LaTeX writer
