@@ -194,6 +194,7 @@ class Publisher:
         `self.writer`'s output.
         """
         exit = None
+        exit_status = 0
         try:
             if self.settings is None:
                 self.process_command_line(
@@ -205,6 +206,8 @@ class Publisher:
             self.apply_transforms()
             output = self.writer.write(self.document, self.destination)
             self.writer.assemble_parts()
+        except SystemExit:
+            exit = 1
         except Exception, error:
             if self.settings and self.settings.traceback:
                 # propagate exceptions?
@@ -212,13 +215,14 @@ class Publisher:
                 raise
             self.report_Exception(error)
             exit = 1
+            exit_status = 1
         self.debugging_dumps()
         if (enable_exit_status and self.document
             and (self.document.reporter.max_level
                  >= self.settings.exit_status_level)):
             sys.exit(self.document.reporter.max_level + 10)
         elif exit:
-            sys.exit(1)
+            sys.exit(exit_status)
         return output
 
     def debugging_dumps(self):
