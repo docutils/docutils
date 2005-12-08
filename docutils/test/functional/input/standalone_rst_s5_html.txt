@@ -117,8 +117,8 @@ Checklist
 
 * The footer also contains a second line, "Location |bullet| Date"
 
-* There's no table of contents on the first slide (the directive is
-  disabled).
+* There's no table of contents on the first slide, although it does
+  appear in the handout/outline.
 
 * Handout material is not displayed in presentation mode.
 
