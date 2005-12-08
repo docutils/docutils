@@ -1,6 +1,6 @@
 // S5 v1.1 slides.js -- released into the Public Domain
 // Modified for Docutils (http://docutils.sf.net) by David Goodger
-// $Revision: 4117 $
+// $Revision: 4156 $
 //
 // Please see http://www.meyerweb.com/eric/tools/s5/credits.html for
 // information about all the wonderful and talented contributors to this code!
