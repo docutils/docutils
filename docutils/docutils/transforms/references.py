@@ -713,6 +713,12 @@ class TargetNotes(Transform):
     """The TargetNotes transform has to be applied after `IndirectHyperlinks`
     but before `Footnotes`."""
 
+
+    def __init__(self, document, startnode):
+        Transform.__init__(self, document, startnode=startnode)
+
+        self.classes = startnode.details.get('class', [])
+
     def apply(self):
         notes = {}
         nodelist = []
@@ -736,7 +742,8 @@ class TargetNotes(Transform):
             if not ref.get('anonymous'):
                 continue
             if ref.hasattr('refuri'):
-                footnote = self.make_target_footnote(ref['refuri'], [ref], notes)
+                footnote = self.make_target_footnote(ref['refuri'], [ref],
+                                                     notes)
                 if not notes.has_key(ref['refuri']):
                     notes[ref['refuri']] = footnote
                     nodelist.append(footnote)
@@ -765,12 +772,16 @@ class TargetNotes(Transform):
                 continue
             refnode = nodes.footnote_reference(
                 refname=footnote_name, auto=1)
+            refnode['classes'] += self.classes
             self.document.note_autofootnote_ref(refnode)
             self.document.note_footnote_ref(refnode)
             index = ref.parent.index(ref) + 1
             reflist = [refnode]
             if not utils.get_trim_footnote_ref_space(self.document.settings):
-                reflist.insert(0, nodes.Text(' '))
+                if self.classes:
+                    reflist.insert(0, nodes.inline(text=' ', Classes=self.classes))
+                else:
+                    reflist.insert(0, nodes.Text(' '))
             ref.parent.insert(index, reflist)
         return footnote
 

@@ -193,12 +193,21 @@ file name (relative to ``functional/output/`` and
 arbitrarily.  However, the file names in ``functional/output/`` *must*
 match the file names in ``functional/expected/``.
 
-All other variables are passed as keyword arguments to
-``docutils.core.publish_file``, so you can set reader, parser,
-writer and anything else you want to configure.
+If defined, ``_test_more`` must be a function with the following
+signature::
 
-Note that ``settings_overrides`` is already initialized as a
-dictionary *before* the execution of the config file.
+    def _test_more(expected_dir, output_dir, test_case, parameters):
+
+This function is called from the test case to perform tests beyond the
+simple comparison of expected and actual output files.
+
+``test_source`` and ``test_destination`` are removed from the
+namespace, as are all variables whose names begin with an underscore
+("_").  The remaining names are passed as keyword arguments to
+``docutils.core.publish_file``, so you can set reader, parser, writer
+and anything else you want to configure.  Note that
+``settings_overrides`` is already initialized as a dictionary *before*
+the execution of the config file.
 
 
 Creating New Tests

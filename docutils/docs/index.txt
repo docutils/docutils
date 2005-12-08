@@ -79,6 +79,7 @@ top level of the Docutils project directory.
 Docutils-general:
 
 * `Docutils Front-End Tools <user/tools.html>`__
+* `Easy Slide Shows With reStructuredText & S5 <user/slide-shows.html>`__
 * `Docutils Configuration Files <user/config.html>`__
 * `Docutils LaTeX Writer <user/latex.html>`__
 * `Docutils Mailing Lists <user/mailing-lists.html>`__
@@ -128,8 +129,8 @@ reStructuredText_:
 * `reStructuredText Markup Specification <ref/rst/restructuredtext.html>`__
 * `reStructuredText Directives <ref/rst/directives.html>`__
 * `reStructuredText Interpreted Text Roles <ref/rst/roles.html>`__
-* `reStructuredText Standard Substitution Definition Sets
-  <ref/rst/substitutions.html>`_
+* `reStructuredText Standard Definition Files
+  <ref/rst/definitions.html>`_
 
 Prehistoric:
 

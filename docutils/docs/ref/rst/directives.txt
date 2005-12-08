@@ -1065,7 +1065,7 @@ Target Footnotes
 :Directive Type: "target-notes"
 :Doctree Elements: pending, footnote, footnote_reference
 :Directive Arguments: None.
-:Directive Options: None.
+:Directive Options: Possible.
 :Directive Content: None.
 
 The "target-notes" directive creates a footnote for each external
@@ -1073,6 +1073,12 @@ target in the text, and corresponding footnote references after each
 reference.  For every explicit target (of the form, ``.. _target name:
 URL``) in the text, a footnote will be generated containing the
 visible URL as content.
+
+The following option is recognized:
+
+``class`` : text
+    Set a "class" attribute value on all footnote_reference elements.
+    See the class_ directive below.
 
 
 Footnotes

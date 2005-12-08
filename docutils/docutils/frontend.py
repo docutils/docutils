@@ -338,10 +338,14 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
          ('Disable backlinks from footnotes and citations.',
           ['--no-footnote-backlinks'],
           {'dest': 'footnote_backlinks', 'action': 'store_false'}),
-         ('Disable Docutils section numbering',
+         ('Enable Docutils section numbering (default: enabled).',
+          ['--section-numbering'],
+          {'action': 'store_true', 'dest': 'sectnum_xform',
+           'default': 1, 'validator': validate_boolean}),
+         ('Disable Docutils section numbering (default: enabled).',
           ['--no-section-numbering'],
           {'action': 'store_false', 'dest': 'sectnum_xform',
-           'default': 1, 'validator': validate_boolean}),
+           'validator': validate_boolean}),
          ('Set verbosity threshold; report system messages at or higher than '
           '<level> (by name or number: "info" or "1", warning/2, error/3, '
           'severe/4; also, "none" or "5").  Default is 2 (warning).',

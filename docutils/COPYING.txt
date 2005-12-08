@@ -65,6 +65,12 @@ Exceptions
 
 The exceptions to the `Public Domain Dedication`_ above are:
 
+* docutils/writers/support/s5_html/default/iepngfix.htc:
+
+      IE5.5+ PNG Alpha Fix v1.0 by Angus Turnbull
+      <http://www.twinhelix.com>.  Free usage permitted as long as
+      this notice remains intact.
+
 * extras/optparse.py, copyright by Gregory P. Ward, released under a
   BSD-style license (which can be found in the module's source code).
 

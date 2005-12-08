@@ -15,6 +15,7 @@ Read README.txt for details on how this is done.
 import sys
 import os
 import os.path
+import shutil
 import unittest
 import difflib
 import DocutilsTestSupport              # must be imported before docutils
@@ -38,9 +39,21 @@ class FunctionalTestSuite(DocutilsTestSupport.CustomTestSuite):
         """Process all config files in functional/tests/."""
         DocutilsTestSupport.CustomTestSuite.__init__(self)
         os.chdir(DocutilsTestSupport.testroot)
+        self.clear_output_directory()
         self.added = 0
         os.path.walk(join_path(datadir, 'tests'), self.walker, None)
         assert self.added, 'No functional tests found.'
+
+    def clear_output_directory(self):
+        files = os.listdir(os.path.join('functional', 'output'))
+        for f in files:
+            if f in ('README.txt', '.svn', 'CVS'):
+                continue                # don't touch the infrastructure
+            path = os.path.join('functional', 'output', f)
+            if os.path.isdir(path):
+                shutil.rmtree(path)
+            else:
+                os.remove(path)
 
     def walker(self, dummy, dirname, names):
         """
@@ -75,31 +88,33 @@ class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
         """Process self.configfile."""
         os.chdir(DocutilsTestSupport.testroot)
         # Keyword parameters for publish_file:
-        params = {}
+        namespace = {}
         # Initialize 'settings_overrides' for test settings scripts,
         # and disable configuration files:
-        params['settings_overrides'] = {'_disable_config': 1}
+        namespace['settings_overrides'] = {'_disable_config': 1}
         # Read the variables set in the default config file and in
-        # the current config file into params:
-        execfile(join_path(datadir, 'tests', '_default.py'), params)
-        execfile(self.configfile, params)
+        # the current config file into namespace:
+        execfile(join_path(datadir, 'tests', '_default.py'), namespace)
+        execfile(self.configfile, namespace)
         # Check for required settings:
-        assert params.has_key('test_source'),\
+        assert namespace.has_key('test_source'),\
                "No 'test_source' supplied in " + self.configfile
-        assert params.has_key('test_destination'),\
+        assert namespace.has_key('test_destination'),\
                "No 'test_destination' supplied in " + self.configfile
         # Set source_path and destination_path if not given:
-        params.setdefault('source_path',
-                          join_path(datadir, 'input',
-                                       params['test_source']))
+        namespace.setdefault('source_path',
+                             join_path(datadir, 'input',
+                                       namespace['test_source']))
         # Path for actual output:
-        params.setdefault('destination_path',
-                          join_path(datadir, 'output',
-                                       params['test_destination']))
+        namespace.setdefault('destination_path',
+                             join_path(datadir, 'output',
+                                       namespace['test_destination']))
         # Path for expected output:
         expected_path = join_path(datadir, 'expected',
-                                     params['test_destination'])
-        # test_source and test_destination aren't needed any more:
+                                  namespace['test_destination'])
+        # shallow copy of namespace to minimize:
+        params = namespace.copy()
+        # remove unneeded parameters:
         del params['test_source']
         del params['test_destination']
         # Delete private stuff like params['__builtins__']:
@@ -137,6 +152,11 @@ class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
             print >>sys.stderr, '\n%s:' % (self,)
             print >>sys.stderr, diff
             raise
+        # Execute optional function containing extra tests:
+        if namespace.has_key('_test_more'):
+            namespace['_test_more'](join_path(datadir, 'expected'),
+                                    join_path(datadir, 'output'),
+                                    self, namespace)
 
 
 def suite():
