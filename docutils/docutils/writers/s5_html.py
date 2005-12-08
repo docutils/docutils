@@ -15,6 +15,7 @@ __docformat__ = 'reStructuredText'
 
 import sys
 import os
+import re
 import docutils
 from docutils import frontend, nodes, utils, writers
 from docutils.writers import html4css1
@@ -81,8 +82,8 @@ class Writer(html4css1.Writer):
 class S5HTMLTranslator(html4css1.HTMLTranslator):
 
     doctype = (
-        '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"'
-        ' "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n')
+        '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"'
+        ' "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n')
 
     s5_stylesheet_template = """\
 <!-- configuration parameters -->
@@ -174,7 +175,7 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
         path = find_theme(settings.theme)
         theme_paths = [path]
         self.theme_files_copied = {}
-        copied = {}
+        required_files_copied = {}
         # This is a link (URL) in HTML, so we use "/", not os.sep:
         self.theme_file_path = '%s/%s' % ('ui', settings.theme)
         if settings._destination:
@@ -192,7 +193,7 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
                     continue            # ... except the "__base__" file
                 if ( self.copy_file(f, path, dest)
                      and f in self.required_theme_files):
-                    copied[f] = 1
+                    required_files_copied[f] = 1
             if default:
                 break                   # "default" theme has no base theme
             # Find the "__base__" file in theme directory:
@@ -217,14 +218,16 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
                 path = find_theme(self.default_theme)
                 theme_paths.append(path)
                 default = 1
-        if len(copied) != len(self.required_theme_files):
-            # Some all required files weren't found & couldn't be copied.
+        if len(required_files_copied) != len(self.required_theme_files):
+            # Some required files weren't found & couldn't be copied.
             required = list(self.required_theme_files)
-            for f in copied.keys():
+            for f in required_files_copied.keys():
                 required.remove(f)
             raise docutils.ApplicationError(
                 'Theme files not found: %s'
                 % ', '.join(['%r' % f for f in required]))
+
+    files_to_skip_pattern = re.compile(r'~$|\.bak$|#$|\.cvsignore$')
 
     def copy_file(self, name, source_dir, dest_dir):
         """
@@ -238,6 +241,8 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
         else:
             self.theme_files_copied[dest] = 1
         if os.path.isfile(source):
+            if self.files_to_skip_pattern.search(source):
+                return None
             settings = self.document.settings
             if os.path.exists(dest) and not settings.overwrite_theme_files:
                 settings.record_dependencies.add(dest)
@@ -266,6 +271,8 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
         self.body_prefix.append('<div class="presentation">\n')
         self.body_prefix.append(
             self.starttag({'classes': ['slide'], 'ids': ['slide0']}, 'div'))
+        if not self.section_count:
+            self.body.append('</div>\n')
         self.body_suffix.insert(0, '</div>\n')
         # skip content-type meta tag with interpolated charset value:
         self.html_head.extend(self.head[1:])
