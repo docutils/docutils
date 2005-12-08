@@ -758,7 +758,7 @@ _`theme`
 
     Default: "default".  Option: ``--theme``.
 
-_`theme-url`
+_`theme_url`
     The URL of an S5 theme directory.  The destination file (output
     HTML) will link to this theme; nothing will be copied.  Overrides
     the "theme_" setting [#override]_.
