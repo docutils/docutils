@@ -3,7 +3,7 @@
 ==========================
 
 :Author: David Goodger
-:Contact: goodger@users.sourceforge.net
+:Contact: goodger@python.org
 :Revision: $Revision$
 :Date: $Date$
 :Copyright: This document has been placed in the public domain.
@@ -11,8 +11,9 @@
 .. contents::
 
 
-Introduction
-============
+--------------
+ Introduction
+--------------
 
 Once the Docutils package is unpacked, you will discover a "``tools``"
 directory containing several front ends for common Docutils
@@ -40,7 +41,7 @@ input (stdin) is used for the source as well.
 
 
 Getting Help
-------------
+============
 
 First, try the "``--help``" option each front-end tool has.
 
@@ -51,8 +52,12 @@ list.
 .. _Docutils-users: mailing-lists.html#docutils-users
 
 
-The Tools
-=========
+-----------
+ The Tools
+-----------
+
+HTML-Generating Tools
+=====================
 
 buildhtml.py
 ------------
@@ -154,6 +159,116 @@ For example, to process a PEP into HTML::
     rstpep2html.py pep-0287.txt pep-0287.html
 
 
+rst2s5.py
+---------
+
+:Reader: Standalone
+:Parser: reStructuredText
+:Writer: S5/HTML
+
+The ``rst2s5.py`` front end reads standalone reStructuredText source
+files and produces (X)HTML output compatible with S5_, the "Simple
+Standards-based Slide Show System" by Eric Meyer.  A theme is required
+for proper rendering; several are distributed with Docutils and others
+are available; see Themes_ below.
+
+For example, to process a reStructuredText file "``slides.txt``" into
+S5/HTML::
+
+    rst2s5.py slides.txt slides.html
+
+Now open the "``slides.html``" file in your favorite browser, switch
+to full-screen mode, and enjoy the results.
+
+.. _S5: http://meyerweb.com/eric/tools/s5/
+
+
+Themes
+``````
+
+Each S5 theme consists of a directory containing several files:
+stylesheets, JavaScript, and graphics.  These are copied into a
+``ui/<theme>`` directory beside the generated HTML.  A theme is chosen
+using the "``--theme``" option (for themes that come with Docutils) or
+the "``--theme-url``" option (for themes anywhere).  For example, the
+"medium-black" theme can be specified as follows::
+
+    rst2s5.py --theme medium-black slides.txt slides.html
+
+The theme will be copied to the ``ui/medium-black`` directory.
+
+Several themes are included with Docutils:
+
+``default``
+    This is a simplified version of S5's default theme.
+
+    :Main content: black serif text on a white background
+    :Text capacity: about 13 lines
+    :Headers: light blue, bold sans-serif text on a dark blue
+              background; titles are limited to one line
+    :Footers: small, gray, bold sans-serif text on a dark blue
+              background
+
+``small-white``
+    (Small text on a white background.)
+
+    :Main content: black serif text on a white background
+    :Text capacity: about 15 lines
+    :Headers: black, bold sans-serif text on a white background;
+              titles wrap
+    :Footers: small, dark gray, bold sans-serif text on a white
+              background
+
+``small-black``
+    :Main content: white serif text on a black background
+    :Text capacity: about 15 lines
+    :Headers: white, bold sans-serif text on a black background;
+              titles wrap
+    :Footers: small, light gray, bold sans-serif text on a black
+              background
+
+``medium-white``
+    :Main content: black serif text on a white background
+    :Text capacity: about 9 lines
+    :Headers: black, bold sans-serif text on a white background;
+              titles wrap
+    :Footers: small, dark gray, bold sans-serif text on a white
+              background
+
+``medium-black``
+    :Main content: white serif text on a black background
+    :Text capacity: about 9 lines
+    :Headers: white, bold sans-serif text on a black background;
+              titles wrap
+    :Footers: small, light gray, bold sans-serif text on a black
+              background
+
+``big-white``
+    :Main content: black, bold sans-serif text on a white background
+    :Text capacity: about 5 lines
+    :Headers: black, bold sans-serif text on a white background;
+              titles wrap
+    :Footers: not displayed
+
+``big-black``
+    :Main content: white, bold sans-serif text on a black background
+    :Text capacity: about 5 lines
+    :Headers: white, bold sans-serif text on a black background;
+              titles wrap
+    :Footers: not displayed
+
+If a theme directory contains a file named ``__base__``, the name of
+the theme's base theme will be read from it.  Files are accumulated
+from the named theme, any base themes, and the "default" theme (which
+is the implicit base of all themes).
+
+For details, please see `Easy Slide Shows With reStructuredText &
+S5 <slide-shows.html>`_.
+
+
+LaTeX-Generating Tools
+======================
+
 rst2latex.py
 ------------
 
@@ -181,6 +296,9 @@ Some limitations and difference apply:
 - Not all constructs are possible, see `Generating LaTeX with Docutils`_.
 
 
+XML-Generating Tools
+====================
+
 rst2xml.py
 ----------
 
@@ -192,6 +310,9 @@ The ``rst2xml.py`` front end produces Docutils-native XML output.
 This can be transformed with standard XML tools such as XSLT
 processors into arbitrary final forms.
 
+
+Testing/Debugging Tools
+=======================
 
 rst2pseudoxml.py
 ----------------
@@ -228,11 +349,12 @@ document.  Various forms output are possible:
 
 
 
-Customization
-=============
+---------------
+ Customization
+---------------
 
 Command-Line Options
---------------------
+====================
 
 Each front-end tool supports command-line options for one-off
 customization.  For persistent customization, use `configuration
@@ -248,7 +370,7 @@ corresponding configuration file entry names are listed in the
 .. _configuration file:
 
 Configuration Files
--------------------
+===================
 
 Configuration files are used for persistent customization; they can be
 set once and take effect every time you use a front-end tool.

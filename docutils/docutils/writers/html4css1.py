@@ -99,19 +99,23 @@ class Writer(writers.Writer):
          ('Remove extra vertical whitespace between items of bullet lists '
           'and enumerated lists, when list items are "simple" (i.e., all '
           'items each contain one paragraph and/or one "simple" sublist '
-          'only).  Default: enabled.',
+          'only).  Default: enabled.  Can be specified directly via "class" '
+          'attributes (values "compact" and "open") in the document.',
           ['--compact-lists'],
           {'default': 1, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Disable compact simple bullet and enumerated lists.',
+         ('Disable compact simple bullet and enumerated lists (except where '
+          'specified directly via "class" attributes; see --compact-lists).',
           ['--no-compact-lists'],
           {'dest': 'compact_lists', 'action': 'store_false'}),
          ('Remove extra vertical whitespace between items of simple field '
-          'lists. Default: enabled.',
+          'lists. Default: enabled.  Can be specified directly via "class" '
+          'attributes (values "compact" and "open") in the document.',
           ['--compact-field-lists'],
           {'default': 1, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Disable compact simple field lists.',
+         ('Disable compact simple field lists (except where specified '
+          'directly via "class" attributes; see --compact-field-lists).',
           ['--no-compact-field-lists'],
           {'dest': 'compact_field_lists', 'action': 'store_false'}),
          ('Omit the XML declaration.  Use with caution.',
@@ -508,10 +512,12 @@ class HTMLTranslator(nodes.NodeVisitor):
         old_compact_simple = self.compact_simple
         self.context.append((self.compact_simple, self.compact_p))
         self.compact_p = None
-        self.compact_simple = (self.settings.compact_lists and
-                               (self.compact_simple
-                                or self.topic_classes == ['contents']
-                                or self.check_simple_list(node)))
+        self.compact_simple = ('compact' in node['classes']
+                               or (self.settings.compact_lists
+                                   and 'open' not in node['classes']
+                                   and (self.compact_simple
+                                        or self.topic_classes == ['contents']
+                                        or self.check_simple_list(node))))
         if self.compact_simple and not old_compact_simple:
             atts['class'] = 'simple'
         self.body.append(self.starttag(node, 'ul', **atts))
@@ -763,10 +769,12 @@ class HTMLTranslator(nodes.NodeVisitor):
         old_compact_simple = self.compact_simple
         self.context.append((self.compact_simple, self.compact_p))
         self.compact_p = None
-        self.compact_simple = (self.settings.compact_lists and
-                               (self.compact_simple
-                                or self.topic_classes == ['contents']
-                                or self.check_simple_list(node)))
+        self.compact_simple = ('compact' in node['classes']
+                               or (self.settings.compact_lists
+                                   and 'open' not in node['classes']
+                                   and (self.compact_simple
+                                        or self.topic_classes == ['contents']
+                                        or self.check_simple_list(node))))
         if self.compact_simple and not old_compact_simple:
             atts['class'] = (atts.get('class', '') + ' simple').strip()
         self.body.append(self.starttag(node, 'ol', **atts))
@@ -805,7 +813,10 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_field_list(self, node):
         self.context.append((self.compact_field_list, self.compact_p))
         self.compact_p = None
-        if self.settings.compact_field_lists:
+        if 'compact' in node['classes']:
+            self.compact_field_list = 1
+        elif (self.settings.compact_field_lists
+              and 'open' not in node['classes']):
             self.compact_field_list = 1
             for field in node:
                 field_body = field[-1]
@@ -1440,7 +1451,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_tip(self, node):
         self.depart_admonition()
 
-    def visit_title(self, node):
+    def visit_title(self, node, move_ids=1):
         """Only 6 section levels are supported by HTML."""
         check_id = 0
         close_tag = '</p>\n'
@@ -1475,14 +1486,18 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.body.append(
                   self.starttag(node, 'h%s' % h_level, '', **atts))
             atts = {}
-            # !!! next 2 lines to be removed in Docutils 0.5:
-            if node.parent['ids']:
-                atts['ids'] = node.parent['ids']
+            # !!! conditional to be removed in Docutils 0.5:
+            if move_ids:
+                if node.parent['ids']:
+                    atts['ids'] = node.parent['ids']
             if node.hasattr('refid'):
                 atts['class'] = 'toc-backref'
                 atts['href'] = '#' + node['refid']
-            self.body.append(self.starttag({}, 'a', '', **atts))
-            self.context.append('</a></h%s>\n' % (h_level))
+            if atts:
+                self.body.append(self.starttag({}, 'a', '', **atts))
+                self.context.append('</a></h%s>\n' % (h_level))
+            else:
+                self.context.append('</h%s>\n' % (h_level))
         # !!! conditional to be removed in Docutils 0.5:
         if check_id:
             if node.parent['ids']:

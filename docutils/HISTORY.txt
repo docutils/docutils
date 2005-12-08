@@ -102,9 +102,15 @@ Changes Since 0.3.9
   - Added support for image width and height units.
   - Fixed bug with image "target" options.
 
+* docutils/parsers/rst/directives/references.py:
+
+  - Added "class" attribute to "target-notes" directive, for
+    footnote_reference classes.
+
 * docutils/parsers/rst/include/: Directory added to project; contains
   standard data files for the "include" directive.  Initial contents:
-  character entity substitution definition sets.
+  character entity substitution definition sets, and a set of
+  definitions for S5/HTML presentations.
 
 * docutils/parsers/rst/languages/ja.py: Added to project: Japanese
   mappings by Hisashi Morita.
@@ -137,6 +143,7 @@ Changes Since 0.3.9
   - Added references.DanglingReferences transform, extracted from
     universal.FinalChecks.
   - Fixed bug with doubly-indirect substitutions.
+  - Added footnote_reference classes attribute to "TargetNotes".
 
 * docutils/transforms/universal.py:
 
@@ -180,20 +187,23 @@ Changes Since 0.3.9
   - Made cloaking of email addresses with ``--cloak-email-addresses``
     less obtrusive.
   - Fixed support for centered images.
+  - Added support for class="compact" & class="open" lists.
 
 * docutils/writers/latex2e.py:
 
   - Underscores in citekeys are no longer escaped.
 
+* docutils/writers/s5_html.py: Added to project; writer for S5-format
+  slide shows.
+
 * docutils/writers/support/: Directory added to project.  Modules and
   data files that support writers have been moved here.
 
-  * The stylesheets are now installed along with the code, the code
-    now knows where to find them, and the default is now to use
-    (actually, to embed) the built-in stylesheets.  Some adjustments
-    to configuration files may be necessary.  The easiest way to
-    obtain the new default behavior is to remove all settings whose
-    name includes "stylesheet".
+  The stylesheets are now installed along with the code, the code
+  knows where to find them, and the default is to use (actually, to
+  embed) the built-in stylesheets.  Some adjustments to configuration
+  files may be necessary.  The easiest way to obtain the new default
+  behavior is to remove all settings whose name includes "stylesheet".
 
 * docutils/writers/support/newlatex2e/unicode_map.py: Added to
   project; mapping of Unicode characters to LaTeX equivalents.
@@ -223,14 +233,25 @@ Changes Since 0.3.9
 * docs/user/mailing-lists.txt: Added to project; information about
   Docutils-related mailing lists and how to access them.
 
-* docs/ref/rst/substitutions.txt: "reStructuredText Standard
-  Substitution Definition Sets", added to project.
+* docs/user/slide-shows.txt: Added to project; example of and docs for
+  the S5/HTML writer (``rst2s5.py`` front end).
+
+* docs/ref/rst/definitions.txt: "reStructuredText Standard Definition
+  Files", added to project.
 
 * test/coverage.sh: Added to project; test coverage script.
 
 * test/DocutilsTestSupport.py:
 
   - Added support for specifying runtime settings at the suite level.
+
+* test/test_functional.py:
+
+  - Added the ``clear_output_directory`` function.
+  - Added support for ``_test_more`` functions in functional test
+    config files.
+
+* tools/rst2s5.py: Added to project; front end for the S5/HTML writer.
 
 * tools/rstpep2html.py: Renamed from pep.py.
 

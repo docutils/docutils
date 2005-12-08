@@ -125,7 +125,8 @@ _writer_aliases = {
       'pprint': 'pseudoxml',
       'pformat': 'pseudoxml',
       'pdf': 'rlpdf',
-      'xml': 'docutils_xml',}
+      'xml': 'docutils_xml',
+      's5': 's5_html'}
 
 def get_writer_class(writer_name):
     """Return the Writer class from the `writer_name` module."""

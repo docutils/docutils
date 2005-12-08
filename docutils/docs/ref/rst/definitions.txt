@@ -1,6 +1,6 @@
-========================================================
- reStructuredText Standard Substitution Definition Sets
-========================================================
+============================================
+ reStructuredText Standard Definition Files
+============================================
 :Author: David Goodger
 :Contact: goodger@python.org
 :Revision: $Revision$
@@ -10,17 +10,26 @@
 .. contents::
 
 
-The data files described below contain sets of reStructuredText
-`substitution definitions`__.  They can be included in documents using
-the `"include" directive's`__ special syntax for standard data files,
-angle brackets around the file name::
+This document describes standard definition files, such as sets of
+substitution definitions and interpreted text roles, that can be
+included in reStructuredText documents.  The `"include" directive`__
+has a special syntax for these standard definition files, angle
+brackets around the file name::
 
     .. include:: <filename.txt>
 
-__ restructuredtext.html#substitution-definitions
 __ directives.html#include
 
-The definitions can then be used in documents using `substitution
+The individual data files are stored with the Docutils source code in
+the "docutils" package, in the ``docutils/parsers/rst/include``
+directory.
+
+
+Substitution Definitions
+========================
+
+Many of the standard definition files contain sets of `substitution
+definitions`__, which can be used in documents via `substitution
 references`__.  For example, the copyright symbol is defined in
 ``isonum.txt`` as "copy"::
 
@@ -28,10 +37,11 @@ references`__.  For example, the copyright symbol is defined in
 
     Copyright |copy| 2003 by John Q. Public, all rights reserved.
 
+__ restructuredtext.html#substitution-definitions
 __ restructuredtext.html#substitution-references
 
-Individual definitions can also be copied from these data files and
-pasted into documents.  This has two advantages: it removes
+Individual substitution definitions can also be copied from definition
+files and pasted into documents.  This has two advantages: it removes
 dependencies, and it saves processing of unused definitions.  However,
 multiple substitution definitions add clutter to the document.
 
@@ -44,8 +54,9 @@ sequence, backslash-space::
 
     Copyright |copy| 2003, BogusMegaCorp\ |trade|.
 
-Custom definitions may use the `"unicode" directive`__.  Whitespace is
-ignored and removed, effectively sqeezing together the text::
+Custom substitution definitions may use the `"unicode" directive`__.
+Whitespace is ignored and removed, effectively sqeezing together the
+text::
 
     .. |copy|   unicode:: U+000A9 .. COPYRIGHT SIGN
     .. |BogusMegaCorp (TM)| unicode:: BogusMegaCorp U+2122
@@ -62,13 +73,9 @@ right, or both sides (respectively) of substitution references::
     .. |---| unicode:: U+02014 .. em dash
        :trim:
 
-The individual data files are stored with the Docutils source code in
-the "docutils" package, in the ``docutils/parsers/rst/include``
-directory.
-
 
 Character Entity Sets
-=====================
+---------------------
 
 The following files contain substitution definitions corresponding to
 XML character entity sets, from the following standards: ISO 8879 &
@@ -151,6 +158,17 @@ reference (defined in both ``isonum.txt`` and ``xhtml1-lat1.txt``) is
 .. _xhtml1-lat1.txt:    ../../../docutils/parsers/rst/include/xhtml1-lat1.txt
 .. _xhtml1-special.txt: ../../../docutils/parsers/rst/include/xhtml1-special.txt
 .. _xhtml1-symbol.txt:  ../../../docutils/parsers/rst/include/xhtml1-symbol.txt
+
+
+S5/HTML Definitions
+===================
+
+The "s5defs.txt_" standard definition file contains interpreted text
+roles (classes) and other definitions for documents destined to become
+`S5/HTML slide shows`_.  
+
+.. _s5defs.txt: ../../../docutils/parsers/rst/include/s5defs.txt
+.. _S5/HTML slide shows: ../../user/slide-shows.html
 
 
 ..

@@ -345,7 +345,8 @@ _`sectnum_xform`
     Enable or disable the section numbering transform
     (docutils.transforms.parts.SectNum).
 
-    Default: enabled (1).  Options: ``--no-section-numbering``.
+    Default: enabled (1).  Options: ``--section-numbering``,
+    ``--no-section-numbering``.
 
 _`source_link`
     Include a "View document source" link in the document footer.  URL
@@ -584,16 +585,18 @@ _`cloak_email_addresses`
 _`compact_lists`
     Remove extra vertical whitespace between items of bullet lists and
     enumerated lists, when list items are "simple" (i.e., all items
-    each contain one paragraph and/or one "simple" sublist only).
+    each contain one paragraph and/or one "simple" sublist only).  The
+    behaviour can be specified directly via "class" attributes (values
+    "compact" and "open") in the document.
 
     Default: enabled (1).  Options: ``--compact-lists,
     --no-compact-lists``.
 
 _`compact_field_lists`
-
     Remove extra vertical whitespace between items of field lists that
     are "simple" (i.e., all field bodies each contain at most one
-    paragraph).
+    paragraph).  The behaviour can be specified directly via "class"
+    attributes (values "compact" and "open") in the document.
 
     Default: enabled (1).  Options: ``--compact-field-lists,
     --no-compact-field-lists``.
@@ -643,9 +646,9 @@ _`option_limit`
 .. _stylesheet [html4css1 writer]:
 
 stylesheet
-    CSS stylesheet URL, used verbatim.  Overrides stylesheet_path
-    [#override]_.  Pass an empty string to deactivate stylesheet
-    inclusion.
+    CSS stylesheet URL, used verbatim.  Overrides the
+    "stylesheet_path" setting [#override]_.  Pass an empty string to
+    deactivate stylesheet inclusion.
 
     Default: None.  Options: ``--stylesheet``.
 
@@ -656,10 +659,9 @@ stylesheet
 .. _stylesheet_path [html4css1 writer]:
 
 stylesheet_path
-    Path to CSS stylesheet [#pwd]_.  Overrides "stylesheet" URL
-    setting (``--stylesheet``) [#override]_.  Path is adjusted
-    relative to the output HTML file.  Also defined for the `LaTeX
-    Writer`__.
+    Path to CSS stylesheet [#pwd]_.  Overrides the "stylesheet" URL
+    setting [#override]_.  Path is adjusted relative to the output
+    HTML file.  Also defined for the `LaTeX Writer`__.
 
     Default: "html4css1.css" in the docutils/writers/support directory
     (installed automatically; for the exact machine-specific path, use
@@ -718,6 +720,50 @@ _`python_home`
     Python's home URL.
 
     Default: parent directory ("..").  Options: ``--python-home``.
+
+
+[s5_html writer]
+.................
+
+The S5/HTML Writer derives from the standard HTML Writer, and shares
+all settings defined in the `[html4css1 writer]`_ section.  The
+"[html4css1 writer]" section of configuration files is processed
+before the "[s5_html writer]" section.
+
+The S5/HTML Writer's default for the ``compact_lists`` setting differs
+from that of the standard HTML Writer: the default here is to disable
+compact lists.
+
+_`current_slide`
+
+    Enable or disable the current slide indicator ("1/15").
+
+    Default: disabled (None).  Options: ``--current-slide``,
+    ``--no-current-slide``.
+
+_`overwrite_theme_files`
+    Allow or prevent the overwriting of existing theme files in the
+    ``ui/<theme>`` directory.  This has no effect if "theme_url_" is
+    used.
+
+    Default: keep existing theme files (None).  Options:
+    ``--keep-theme-files``, ``--overwrite-theme-files``.
+
+_`theme`
+    Name of an installed S5 theme, to be copied into a ``ui/<theme>``
+    subdirectory, beside the destination file (output HTML).  Note
+    that existing theme files will not be overwritten; the existing
+    theme directory you must be deleted manually.  Overrides the
+    "theme_url_" setting [#override]_.
+
+    Default: "default".  Option: ``--theme``.
+
+_`theme-url`
+    The URL of an S5 theme directory.  The destination file (output
+    HTML) will link to this theme; nothing will be copied.  Overrides
+    the "theme_" setting [#override]_.
+
+    Default: None.  Option: ``--theme-url``.
 
 
 [latex2e writer]

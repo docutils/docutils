@@ -71,8 +71,12 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                     ['docutils/writers/support/newlatex2e/base.tex']),
                    ('docutils/writers/support/pep_html',
                     ['docutils/writers/support/pep_html/pep.css',
-                     'docutils/writers/support/pep_html/template.txt']),],
+                     'docutils/writers/support/pep_html/template.txt']),
+                   ('docutils/writers/support/s5_html',
+                    (['docutils/writers/support/s5_html/README.txt'] 
+                     + glob.glob('docutils/writers/support/s5_html/*/*')))],
     'scripts' : ['tools/rst2html.py',
+                 'tools/rst2s5.py',
                  'tools/rst2latex.py',
                  'tools/rst2newlatex.py',
                  'tools/rst2xml.py',

@@ -86,6 +86,7 @@ donations, tasty treats, and related projects:
 * Daniel Larsson
 * Marc-Andre Lemburg
 * Julien Letessier
+* Chris Liechti
 * Wolfgang Lipp
 * Edward Loper
 * Dallas Mahrt
