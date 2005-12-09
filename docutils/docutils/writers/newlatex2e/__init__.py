@@ -21,7 +21,7 @@ from types import ListType
 
 import docutils
 from docutils import nodes, writers, utils
-from docutils.writers.support.newlatex2e import unicode_map
+from docutils.writers.newlatex2e import unicode_map
 from docutils.transforms import writer_aux
 
 
@@ -34,7 +34,7 @@ class Writer(writers.Writer):
 
     default_stylesheet_path = utils.relative_path(
         os.path.join(os.getcwd(), 'dummy'),
-        os.path.join(writers.support_path, 'newlatex2e', default_stylesheet))
+        os.path.join(os.path.dirname(__file__), default_stylesheet))
 
     settings_spec = (
         'LaTeX-Specific Options',

@@ -416,12 +416,18 @@ Docutils Package Structure
       by name.  Class "Writer" is the base class of specific writers.
       (``docutils/writers/__init__.py``)
 
-    - Module "docutils.writers.html4css1" is a simple HyperText Markup
-      Language document tree writer for HTML 4.01 and CSS1.
+    - Package "docutils.writers.html4css1" is a simple HyperText
+      Markup Language document tree writer for HTML 4.01 and CSS1.
 
-    - Module "docutils.writers.latex2e" writes LaTeX.
+    - Package "docutils.writers.pep_html" generates HTML from
+      reStructuredText PEPs.
 
-    - Module "docutils.writers.newlatex2e" also writes LaTeX; it is a
+    - Package "docutils.writers.s5_html" generates S5/HTML slide
+      shows.
+
+    - Package "docutils.writers.latex2e" writes LaTeX.
+
+    - Package "docutils.writers.newlatex2e" also writes LaTeX; it is a
       new implementation.
 
     - Module "docutils.writers.docutils_xml" writes the internal
@@ -438,12 +444,10 @@ Docutils Package Structure
       such as DocBook), PDF, plaintext, reStructuredText, and perhaps
       others.
 
-    See `Writers`_ above.
+    Subpackages of "docutils.writers" contain modules and data files
+    (such as stylesheets) that support the individual writers.
 
-  - Package "docutils.writers.support": modules and data files that
-    support the various writers.  The names of subdirectories and
-    basenames of files immediately within the support/ directory must
-    match the corresponding writer module names.
+    See `Writers`_ above.
 
   - Package "docutils.transforms": tree transform classes.
 

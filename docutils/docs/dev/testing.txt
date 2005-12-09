@@ -184,7 +184,7 @@ For example, ``functional/tests/some_test.py`` could read like this::
     writer_name = "html"
     settings_overrides['output-encoding'] = 'utf-8'
     # Relative to main ``test/`` directory.
-    settings_overrides['stylesheet_path'] = '../docutils/writers/support/html4css1.css'
+    settings_overrides['stylesheet_path'] = '../docutils/writers/html4css1/html4css1.css'
 
 The two variables ``test_source`` and ``test_destination`` contain the
 input file name (relative to ``functional/input/``) and the output

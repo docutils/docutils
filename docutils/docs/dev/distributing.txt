@@ -86,7 +86,7 @@ generate HTML for all documentation files, go to the ``tools/``
 directory and run::
 
     # Place html4css1.css in base directory.
-    cp ../docutils/writers/support/html4css1.css ..
+    cp ../docutils/writers/html4css1/html4css1.css ..
     ./buildhtml.py --stylesheet-path=../html4css1.css ..
 
 Then install the following files to ``/usr/share/doc/docutils/`` (or

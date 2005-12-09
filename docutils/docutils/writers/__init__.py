@@ -15,10 +15,6 @@ import os.path
 import docutils
 from docutils import languages, Component
 from docutils.transforms import universal
-from docutils.writers import support
-
-
-support_path = os.path.dirname(support.__file__)
 
 
 class Writer(Component):

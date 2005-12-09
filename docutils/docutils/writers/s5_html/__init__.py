@@ -17,20 +17,21 @@ import sys
 import os
 import re
 import docutils
-from docutils import frontend, nodes, utils, writers
+from docutils import frontend, nodes, utils
 from docutils.writers import html4css1
 from docutils.parsers.rst import directives
 
-support_path = utils.relative_path(
+themes_dir_path = utils.relative_path(
     os.path.join(os.getcwd(), 'dummy'),
-    os.path.join(writers.support_path, 's5_html'))
+    os.path.join(os.path.dirname(__file__), 'themes'))
 
 def find_theme(name):
     # Where else to look for a theme?
     # Check working dir?  Destination dir?  Config dir?  Plugins dir?
-    path = os.path.join(support_path, name)
+    path = os.path.join(themes_dir_path, name)
     if not os.path.isdir(path):
-        raise docutils.ApplicationError('Theme directory not found: %r' % name)
+        raise docutils.ApplicationError('Theme directory not found: %r (path: %r)'
+                                        % (name, path))
     return path
 
 
