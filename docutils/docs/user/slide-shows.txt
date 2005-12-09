@@ -655,7 +655,7 @@ Making a Custom Theme
    * create a personal reusable theme (plugin)
    * submit the new theme to Docutils
 
-  ``docutils/writers/support/s5_html/<theme>``
+  ``docutils/writers/s5_html/themes/<theme>``
 
 .. container:: handout
 

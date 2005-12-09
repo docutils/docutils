@@ -13,7 +13,7 @@
 
 The look of Docutils' HTML output is customizable via a CSS
 stylesheet.  The default stylesheet is called ``html4css1.css`` and
-can be found in the ``writers/support/`` directory of the Docutils
+can be found in the ``writers/html4css1/`` directory of the Docutils
 installation.  Use the command ``rst2html.py --help`` and look at the
 description of the ``--stylesheet-path`` command-line option for the
 exact machine-specific location.

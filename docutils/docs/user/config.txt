@@ -663,9 +663,9 @@ stylesheet_path
     setting [#override]_.  Path is adjusted relative to the output
     HTML file.  Also defined for the `LaTeX Writer`__.
 
-    Default: "html4css1.css" in the docutils/writers/support directory
-    (installed automatically; for the exact machine-specific path, use
-    the ``--help`` option).  Options: ``--stylesheet-path``.
+    Default: "html4css1.css" in the docutils/writers/html4css1/
+    directory (installed automatically; for the exact machine-specific
+    path, use the ``--help`` option).  Options: ``--stylesheet-path``.
 
     __ `stylesheet_path [latex2e writer]`_
 
@@ -694,9 +694,8 @@ before the "[pep_html writer]" section.
 
 The PEP/HTML Writer's default for the ``stylesheet_path`` setting
 differs from that of the standard HTML Writer:
-``docutils/writers/support/pep_html/pep.css`` in the installation
-directory is used.  For the exact machine-specific path, use the
-``--help`` option.
+``docutils/writers/pep_html/pep.css`` in the installation directory is
+used.  For the exact machine-specific path, use the ``--help`` option.
 
 _`no_random`
     Do not use a random banner image.  Mainly used to get predictable

@@ -21,17 +21,17 @@ from docutils.writers import html4css1
 
 class Writer(html4css1.Writer):
 
-    default_stylesheet = 'pep_html/pep.css'
+    default_stylesheet = 'pep.css'
 
     default_stylesheet_path = utils.relative_path(
         os.path.join(os.getcwd(), 'dummy'),
-        os.path.join(writers.support_path, default_stylesheet))
+        os.path.join(os.path.dirname(__file__), default_stylesheet))
 
-    default_template = 'pep_html/template.txt'
+    default_template = 'template.txt'
 
     default_template_path = utils.relative_path(
         os.path.join(os.getcwd(), 'dummy'),
-        os.path.join(writers.support_path, default_template))
+        os.path.join(os.path.dirname(__file__), default_template))
 
     settings_spec = html4css1.Writer.settings_spec + (
         'PEP/HTML-Specific Options',

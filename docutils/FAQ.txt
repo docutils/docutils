@@ -766,7 +766,7 @@ cascading stylesheet is required for proper viewing with a modern
 graphical browser.  Correct rendering of the HTML produced depends on
 the CSS support of the browser.  A general-purpose stylesheet,
 ``html4css1.css`` is provided with the code, and is embedded by
-default.  It is installed in the "writers/support/" subdirectory
+default.  It is installed in the "writers/html4css1/" subdirectory
 within the Docutils package.  Use the ``--help`` command-line option
 to see the specific location on your machine.
 
