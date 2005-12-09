@@ -70,7 +70,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                    ('docutils/writers/html4css1',
                     ['docutils/writers/html4css1/html4css1.css']),
                    ('docutils/writers/latex2e',
-                    'docutils/writers/latex2e/latex2e.tex']),
+                    ['docutils/writers/latex2e/latex2e.tex']),
                    ('docutils/writers/newlatex2e',
                     ['docutils/writers/newlatex2e/base.tex']),
                    ('docutils/writers/pep_html',
