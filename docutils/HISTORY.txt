@@ -113,7 +113,7 @@ Changes Since 0.3.9
   definitions for S5/HTML presentations.
 
 * docutils/parsers/rst/languages/ja.py: Added to project: Japanese
-  mappings by Hisashi Morita.
+  mappings by David Goodger.
   
 * docutils/parsers/rst/languages/zh_cn.py: Added to project:
   Simplified Chinese mappings by Panjunyong.
