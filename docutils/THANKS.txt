@@ -95,6 +95,7 @@ donations, tasty treats, and related projects:
 * Mark McEahern
 * Vincent McIntyre
 * John F Meinel Jr
+* Eric Meyer
 * Günter Milde
 * Skip Montanaro
 * Paul Moore

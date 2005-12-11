@@ -132,6 +132,8 @@ Changes Since 0.3.9
 
   - Fixed the DocInfo transform to handle SVN-style expansion of the
     "Date" keyword.
+  - In ``DocInfo.extract_authors``, treat the contents of "authors"
+    fields uniformly.
 
 * docutils/transforms/misc.py:
 
