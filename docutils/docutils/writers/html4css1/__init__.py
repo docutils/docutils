@@ -485,7 +485,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_authors(self, node):
         self.visit_docinfo_item(node, 'authors')
-        self.author_in_authors = 0
+        self.author_in_authors = 0      # initialize counter
 
     def depart_authors(self, node):
         self.depart_docinfo_item()
