@@ -216,10 +216,12 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
 """\
 <document source="test data">
     <docinfo>
-        <author>
-            Only One
-        <author>
-            One, Only
+        <authors>
+            <author>
+                Only One
+        <authors>
+            <author>
+                One, Only
 """],
 ["""\
 :Authors:
