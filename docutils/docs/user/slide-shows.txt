@@ -1,15 +1,18 @@
 .. include:: <s5defs.txt>
 
-=============================================
- Easy Slide Shows With reStructuredText & S5
-=============================================
+=================================
+ Easy Slide Shows With reST & S5
+=================================
 
-:Authors:   David Goodger & Chris Liechti
-:Date:      $Date$
+:Authors: David Goodger & Chris Liechti
+:Date:    $Date$
 
 .. This document has been placed in the public domain.
 
-.. class:: handout
+.. container:: handout
+
+   How to create quick, good-looking presentation slide shows with
+   Docutils_/reStructuredText_ and S5_.
 
    This document serves both as a user manual and as a usage example
    of the s5_html.py writer and the rst2s5.py front end.
@@ -17,20 +20,19 @@
 .. contents::
    :class: handout
 
-How to create quick, good-looking presentation slide shows with
-Docutils_/reStructuredText_ and S5_.
+.. class:: tiny
 
-.. class:: small
+* Use the space bar to advance, Page Up/Down & arrow keys to navigate.
 
-* Use the arrow keys to navigate.
+* Best viewed in Firefox, Safari, Konqueror.  Click the "|mode|"
+  button to switch between presentation & handout/outline modes.  Hit
+  the "C" key to display the navigation controls, or mouse over the
+  lower right-hand corner.
 
-* Click the "|mode|" button to switch between presentation &
-  handout/outline modes.
+* Functionality is limited in Opera.  Switch to full-screen mode (F11
+  key) to activate Opera Show.
 
 .. container:: handout
-
-   In presentation mode, mouse over to the lower right-hand corner to
-   display the controls.
 
    The first slide of a presentation consists of all visible text up
    to the first section title.  The document title is also added to
@@ -47,6 +49,7 @@ Docutils_/reStructuredText_ and S5_.
 .. _S5: http://meyerweb.com/eric/tools/s5/
 .. |bullet| unicode:: U+02022
 .. |mode| unicode:: U+00D8 .. capital o with stroke
+
 .. footer:: Location |bullet| Date
 
 
@@ -80,13 +83,20 @@ Introduction
 
   Each first-level section is converted into a single slide.
 
-* (X)HTML output
+* XHTML output
 
-  .. class:: handout
+  .. container:: handout
 
-  Presentations can be viewed using any modern graphical web browser.
-  The browser must support CSS, JavaScript, and XHTML.  S5 even works
-  with IE!
+     Presentations can be viewed using most modern graphical web
+     browsers.  The browser must support CSS, JavaScript, and XHTML.
+     S5 even works with IE!
+
+     S5 was designed to add the functionality of the `Opera Show`_
+     standard (without Opera Show's limitations) to non-Opera
+     browsers.  Unfortunately, most of S5's CSS and JavaScript
+     extensions don't function in the Opera browser.
+
+  .. _Opera Show: http://www.opera.com/support/tutorials/operashow/
 
 * Themes
 
@@ -155,7 +165,7 @@ Features (1)
 .. container:: handout
 
    The S5/HTML Writer supports all the standard Docutils HTML
-   features.
+   features.  S5 has been released to the Public Domain.
 
 S5-specific features:
 
@@ -178,12 +188,25 @@ S5-specific features:
 
          .. footer:: Location - Date
 
+     There is also a progress indicator (slide counter) in the footer
+     that can be enabled.  It's disabled by default.
+
 * Incremental display.
 
   .. class:: handout
 
   An "incremental" class can be assigned to lists and other elements
-  to get one-item-at-a-time behavior (like this list).
+  to get one-item-at-a-time behavior (like this list).  Incremental
+  display does not work in the Opera browser.
+
+* Text auto-scaling.
+
+  .. class:: handout
+
+  The text size adjusts relative to the size of your browser window
+  automatically.  You may need to reload the document after resizing
+  the window.  The browser and platform affect the font used; be sure
+  to test the slide show on the presentation system.
 
 
 Features (2): Handouts
@@ -219,7 +242,8 @@ Features (2): Handouts
 
          .. class:: handout
 
-         This paragraph will get a ``class="handout"`` attribute.
+         This paragraph will get a
+         ``class="handout"`` attribute.
 
          This paragraph will not be affected.
 
@@ -227,8 +251,8 @@ Features (2): Handouts
 
          .. class:: handout
 
-            These paragraphs are the content of the "class" directive.
-            And as such...
+            These paragraphs are the content
+            of the "class" directive.  And as such...
 
             Both paragraphs will *individually* receive
             ``class="handout"`` attributes.
@@ -910,7 +934,7 @@ Chained Presentations
 
 From one theme, `to another...`__
 
-__ slide-shows-alt.html#chained-presentations-2
+__ slide-shows-alt.s5.html#chained-presentations-2
 
 
 Chained Presentations (2)
@@ -918,7 +942,7 @@ Chained Presentations (2)
 
 ... and `back again...`__
 
-__ slide-shows.html#chained-presentations-3
+__ slide-shows.s5.html#chained-presentations-3
 
 
 Chained Presentations (3)
@@ -940,6 +964,18 @@ Chained Presentations (3)
    Just prepare the browser in advance, with all the slide show files
    set up at the right slide in separate tabs in your browser, in the
    right order.  Closing one tab will reveal the next.
+
+
+Useful Extensions For Firefox
+=============================
+
+* `Autohide`__
+
+  __ http://www.krickelkrackel.de/autohide/autohide.htm
+
+* `Web Developer`__
+
+  __ http://chrispederick.com/work/webdeveloper/
 
 
 To Do
