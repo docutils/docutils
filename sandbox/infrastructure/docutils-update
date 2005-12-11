@@ -53,6 +53,7 @@ sshcommand="ssh -i $lockdir/id_dsa
 baseurl="http://docutils.sourceforge.net"
 
 export PYTHONPATH=$pylib:$lib:$lib/extras
+export PATH=$lib/tools:$PATH
 
 trace=0
 unconditional=0
@@ -158,6 +159,11 @@ cd $htdocsdest/tools
 if [ $trace -eq 0 ] ; then
     set +o xtrace
 fi
+
+for makefile in `find .. -name Makefile ; do
+    dir=`dirname $htmlfile`
+    ( cd $dir ; make )
+done
 
 for htmlfile in `find .. -name '*.html'` ; do
     dir=`dirname $htmlfile`
