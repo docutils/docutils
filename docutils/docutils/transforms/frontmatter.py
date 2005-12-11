@@ -463,10 +463,8 @@ class DocInfo(Transform):
                 authors = self.authors_from_paragraphs(field)
             authornodes = [nodes.author('', '', *author)
                            for author in authors if author]
-            if len(authornodes) > 1:
+            if len(authornodes) >= 1:
                 docinfo.append(nodes.authors('', *authornodes))
-            elif len(authornodes) == 1:
-                docinfo.append(authornodes[0])
             else:
                 raise TransformError
         except TransformError:
