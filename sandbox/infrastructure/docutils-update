@@ -160,7 +160,7 @@ if [ $trace -eq 0 ] ; then
     set +o xtrace
 fi
 
-for makefile in `find .. -name Makefile.docutils` ; do
+for makefile in `find .. -name Makefile.docutils-update` ; do
     dir=`dirname $makefile`
     ( cd $dir ; make )
 done
