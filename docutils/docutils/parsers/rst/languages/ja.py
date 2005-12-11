@@ -17,6 +17,8 @@ reStructuredText.
 
 __docformat__ = 'reStructuredText'
 
+# Corrections to these translations are welcome!
+# 間違いがあれば、どうぞ正しい翻訳を教えて下さい。
 
 directives = {
     # language-dependent: fixed
