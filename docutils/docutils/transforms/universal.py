@@ -154,3 +154,18 @@ class TestMessages(Transform):
         for msg in self.document.transform_messages:
             if not msg.parent:
                 self.document += msg
+
+
+class StripComments(Transform):
+
+    """
+    Remove comment elements from the document tree (only if the
+    ``strip_comments`` setting is enabled).
+    """
+
+    default_priority = 740
+
+    def apply(self):
+        if self.document.settings.strip_comments:
+            for node in self.document.traverse(nodes.comment):
+                node.parent.remove(node)

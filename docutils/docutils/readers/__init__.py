@@ -33,7 +33,7 @@ class Reader(Component):
         return Component.get_transforms(self) + [
             universal.Decorations,
             universal.ExposeInternals,
-            ]
+            universal.StripComments,]
 
     def __init__(self, parser=None, parser_name=None):
         """

@@ -346,6 +346,15 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
           ['--no-section-numbering'],
           {'action': 'store_false', 'dest': 'sectnum_xform',
            'validator': validate_boolean}),
+         ('Remove comment elements from the document tree '
+          '(default: leave them).',
+          ['--strip-comments'],
+          {'action': 'store_true', 'validator': validate_boolean}),
+         ('Leave comment elements in the document tree '
+          '(this is the default).',
+          ['--leave-comments'],
+          {'action': 'store_false', 'dest': 'strip_comments',
+           'validator': validate_boolean}),
          ('Set verbosity threshold; report system messages at or higher than '
           '<level> (by name or number: "info" or "1", warning/2, error/3, '
           'severe/4; also, "none" or "5").  Default is 2 (warning).',
