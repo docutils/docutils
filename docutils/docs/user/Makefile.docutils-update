@@ -1,13 +1,15 @@
 all: slide-shows.s5.html slide-shows-alt.s5.html
 
 slide-shows.s5.html: slide-shows.txt
-	rst2s5.py slide-shows.txt slide-shows.s5.html \
+	@echo docs/user/slide-shows.s5.html
+	@rst2s5.py slide-shows.txt slide-shows.s5.html \
 		--config ../../tools/docutils.conf \
 		--overwrite-theme-files \
 		--link-stylesheet
 
 slide-shows-alt.s5.html: slide-shows.txt
-	rst2s5.py slide-shows.txt slide-shows-alt.s5.html \
+	@echo docs/user/slide-shows-alt.s5.html
+	@rst2s5.py slide-shows.txt slide-shows-alt.s5.html \
 		--config ../../tools/docutils.conf \
 		--theme small-black \
 		--overwrite-theme-files \
