@@ -162,7 +162,7 @@ fi
 
 for makefile in `find .. -name Makefile.docutils-update` ; do
     dir=`dirname $makefile`
-    ( cd $dir ; make -f Makefile.docutils-update )
+    ( cd $dir ; make -f Makefile.docutils-update -s )
 done
 
 for htmlfile in `find .. -name '*.html'` ; do
