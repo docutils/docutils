@@ -369,6 +369,12 @@ _`strict_visitor`
     Default: disabled (None).  Option: ``--strict-visitor`` (hidden,
     for development use only).
 
+_`strip_comments`
+    Enable the removal of comment elements from the document tree.
+
+    Default: disabled (None).  Options: ``--strip-comment``,
+    ``--leave-comments``.
+
 _`title`
     The document title as metadata, which does not become part of the
     document body.  It overrides a document-supplied title.  For

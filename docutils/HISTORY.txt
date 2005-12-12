@@ -155,6 +155,8 @@ Changes Since 0.3.9
     several new transforms).
   - Fixed bug with the "expose_internals" setting and Text nodes
     (exposed by the "rawsource" internal attribute).
+  - Added the universal.StripComments transform, implementation of the
+    "strip_comments" setting.
 
 * docutils/transforms/writer_aux.py: Added to project; auxiliary
   transforms for writers.
