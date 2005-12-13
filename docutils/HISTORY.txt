@@ -209,11 +209,8 @@ Changes Since 0.3.9
 
   - Underscores in citekeys are no longer escaped.
 
-* docutils/writers/newlatex2e/: Added to project; a new LaTeX writer
-  (under development).
-
-  - docutils/writers/newlatex2e/unicode_map.py: Added to project;
-    mapping of Unicode characters to LaTeX equivalents.
+* docutils/writers/newlatex2e/unicode_map.py: Added to project;
+  mapping of Unicode characters to LaTeX equivalents.
 
 * docutils/writers/s5_html/: Package added to project; writer for
   S5/HTML slide shows.
@@ -260,9 +257,6 @@ Changes Since 0.3.9
   - Added the ``clear_output_directory`` function.
   - Added support for ``_test_more`` functions in functional test
     config files.
-
-* tools/rst2newlatex.py: Added to project; front end for the new LaTeX
-  writer writer.
 
 * tools/rst2s5.py: Added to project; front end for the S5/HTML writer.
 
@@ -449,6 +443,9 @@ Release 0.3.9 (2005-05-26)
     was given.
   - Added support for section subtitles.
 
+* docutils/writers/newlatex2e.py: Added to project; a new LaTeX writer
+  (under development).
+
 * docutils/writers/null.py: Added to project; a do-nothing Writer.
 
 * docs/api/publisher.txt:
@@ -464,6 +461,9 @@ Release 0.3.9 (2005-05-26)
     ``tbl.colspec.att`` parameter entity.
   - Allowed topic elements within sidebars
   - Added an ``align`` attribute to the ``figure`` element.
+
+* tools/rst2newlatex.py: Added to project; front end for the new LaTeX
+  writer writer.
 
 
 Release 0.3.7 (2004-12-24)
