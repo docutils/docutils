@@ -17,9 +17,6 @@ body {font-size: 12pt; background: white;}
   font-style: italic;}
 #footer h2, #controls {display: none;}
 
-.handout {border-left: solid thin #BBB;
-  padding-left: 0.5em; margin-left: -0.5em;}
-
 .print {display: inline ! important;}
 
 /* The following rule keeps the layout stuff out of print.
