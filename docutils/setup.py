@@ -34,6 +34,12 @@ def do_setup():
     dist = setup(**kwargs)
     return dist
 
+s5_theme_files = []
+for dir in glob.glob('docutils/writers/s5_html/themes/*'):
+    if os.path.isdir(dir):
+        theme_files = glob.glob('%s/*' % dir)
+        s5_theme_files.append((dir, theme_files))
+
 package_data = {
     'name': 'docutils',
     'description': 'Docutils -- Python Documentation Utilities',
@@ -65,20 +71,20 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                  'docutils.writers.s5_html',
                  'docutils.writers.latex2e',
                  'docutils.writers.newlatex2e'],
-    'data_files': [('docutils/parsers/rst/include',
-                    glob.glob('docutils/parsers/rst/include/*.txt')),
-                   ('docutils/writers/html4css1',
-                    ['docutils/writers/html4css1/html4css1.css']),
-                   ('docutils/writers/latex2e',
-                    ['docutils/writers/latex2e/latex2e.tex']),
-                   ('docutils/writers/newlatex2e',
-                    ['docutils/writers/newlatex2e/base.tex']),
-                   ('docutils/writers/pep_html',
-                    ['docutils/writers/pep_html/pep.css',
-                     'docutils/writers/pep_html/template.txt']),
-                   ('docutils/writers/s5_html',
-                    (['docutils/writers/s5_html/README.txt'] 
-                     + glob.glob('docutils/writers/s5_html/*/*')))],
+    'data_files': ([('docutils/parsers/rst/include',
+                     glob.glob('docutils/parsers/rst/include/*.txt')),
+                    ('docutils/writers/html4css1',
+                     ['docutils/writers/html4css1/html4css1.css']),
+                    ('docutils/writers/latex2e',
+                     ['docutils/writers/latex2e/latex2e.tex']),
+                    ('docutils/writers/newlatex2e',
+                     ['docutils/writers/newlatex2e/base.tex']),
+                    ('docutils/writers/pep_html',
+                     ['docutils/writers/pep_html/pep.css',
+                      'docutils/writers/pep_html/template.txt']),
+                    ('docutils/writers/s5_html/themes',
+                     ['docutils/writers/s5_html/themes/README.txt']),]
+                   + s5_theme_files),
     'scripts' : ['tools/rst2html.py',
                  'tools/rst2s5.py',
                  'tools/rst2latex.py',
