@@ -18,8 +18,8 @@
    of the s5_html.py writer and the rst2s5.py front end.
 
    To view this document as a slide show see
-   http://docutils.sf.net/docs/user/slide-shows.s5.html (absolute URL;
-   or `local <slide-shows.s5.html>`__).
+   http://docutils.sf.net/docs/user/slide-shows.s5.html (or `your
+   local copy <slide-shows.s5.html>`__).
 
 .. contents::
    :class: handout
@@ -28,7 +28,11 @@
 
 * Use the space bar to advance, Page Up/Down & arrow keys to navigate.
 
-* Best viewed in Firefox, Safari, Konqueror.  Click the "|mode|"
+* S5 themes are designed for full-screen display areas with a 4:3
+  aspect ratio.  If the slide text doesn't fit in your browser window,
+  try decreasing the text size.
+
+* Best viewed in Firefox, Safari, and Konqueror.  Click the "|mode|"
   button to switch between presentation & handout/outline modes.  Hit
   the "C" key to display the navigation controls, or mouse over the
   lower right-hand corner.
