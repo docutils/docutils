@@ -209,8 +209,8 @@ class Publisher:
         except SystemExit:
             exit = 1
         except Exception, error:
-            if self.settings and self.settings.traceback:
-                # propagate exceptions?
+            if not self.settings or self.settings.traceback:
+                # Propagate exceptions.
                 self.debugging_dumps()                
                 raise
             self.report_Exception(error)
