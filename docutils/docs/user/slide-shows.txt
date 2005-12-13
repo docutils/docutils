@@ -216,8 +216,6 @@ S5-specific features:
 Features (2): Handouts
 ======================
 
-``<element class="handout">``
-
 .. container:: handout
 
    The contents of any element with a "class" attribute value of
@@ -270,7 +268,7 @@ Features (2): Handouts
      Arbitrary handout blocks can be created using the ``container``
      directive.  The content is treated as one.
 
-* Add a "class" option to certain directives::
+* Use the "class" option of directives that support it::
 
       .. topic:: Extra Material For Handouts
          :class: handout
@@ -433,11 +431,11 @@ Examples (2): Incremental Text
       This second paragraph is displayed together with the previous
       one by grouping them with the "container" directive.
 
-| `We can also display` `one` `word` `at` `a` `time,`
-| `or a phrase` `at a time,`
-| `or even` `o`\ `n`\ `e` `l`\ `e`\ `t`\ `t`\ `e`\ `r` `at a time!`
-|
-| `(But the markup ain't pretty.)`
+`We can also display` `one` `word` `at` `a` `time,`
+`or a phrase` `at a time,`
+`or even` `o`\ `n`\ `e` `l`\ `e`\ `t`\ `t`\ `e`\ `r` `at a time!`
+
+`(But the markup ain't pretty.)`
 
 
 Examples (3): Incr. Graphics
@@ -448,14 +446,17 @@ Let's play... Rock, Scissors, Paper
 .. container:: animation
 
    .. image:: images/rsp-empty.png
+      :class: hidden slide-display
 
-   .. class:: incremental
+   .. class:: incremental hidden slide-display
 
       .. image:: images/rsp-objects.png
       .. image:: images/rsp-cuts.png
       .. image:: images/rsp-covers.png
       .. image:: images/rsp-breaks.png
-      .. image:: images/rsp-all.png
+
+   .. image:: images/rsp-all.png
+      :class: incremental
 
 
 Themes
@@ -561,8 +562,7 @@ Example Themes: Large Text
 .. class:: handout
 
    The "big-white" and "big-black" themes feature very large, bold
-   text, with no footers.  Only five short lines of large text fits
-   per slide.
+   text, with no footers.  Only five short lines fit in a slide.
 
 .. list-table::
    :class: borderless
@@ -752,27 +752,26 @@ The "incremental" interpreted text role is also supported:
 Classes: Incremental (3)
 ========================
 
-.. class:: handout
-
-   The "animation" class is provided to support incremental graphics.
-   This is how the example earlier was done:
+.. class:: small
 
 ::
 
     .. container:: animation
 
-       .. image:: images/rsp-empty.png
+       .. image:: images/empty.png
+          :class: hidden slide-display
 
-       .. class:: incremental
+       .. class:: incremental hidden slide-display
 
-          .. image:: images/rsp-objects.png
-          .. image:: images/rsp-cuts.png
-          .. image:: images/rsp-covers.png
-          .. image:: images/rsp-breaks.png
-          .. image:: images/rsp-all.png
+          .. image:: images/1.png
+          .. image:: images/2.png
 
-.. admonition:: Caveat
-   :class: handout
+       .. image:: images/3.png
+          :class: incremental
+
+.. container:: handout
+
+   This is how the example works.
 
    The animation effects are caused by placing successive images at
    the same location, laying each image over the last.  For best
@@ -782,8 +781,30 @@ Classes: Incremental (3)
 
    Absolute positioning is used, which means that the images take up
    no space in the flow.  If you want text to follow the images, you
-   have to specify the image sizes.  Otherwise, the images and any
-   following text will overlap.
+   have to specify the total size of the container via a style.
+   Otherwise, the images and any following text will overlap.
+
+   These class values do the work:
+
+   animation
+       This wraps the container with styles that position the images
+       absolutely, overlaying them over each other.  Only useful on a
+       container.
+
+   hidden
+       Unless overridden (by "slide-display", for example), these
+       elements will not be displayed.  Only the last image will be
+       displayed in handout mode, when print, or when processed to
+       ordinary HTML, because it does *not* carry a "hidden" class.
+
+   slide-display
+       In conjunction with "hidden", these elements will only appear
+       on the slide, preventing clutter in the handout.
+
+   incremental
+       The second and subsequent images will appear one at a time.
+       The first image will already be present when the slide is
+       displayed, because it does *not* carry an "incremental" class.
 
 
 Classes: Text Size
@@ -880,23 +901,18 @@ Classes: Print-Only
 
 .. class:: handout
 
-   Two classes are provided that only display their contents in
-   hardcopy.  The "print-block" class applies to block-level elements
-   (like paragraphs, lists, and topics).  The "print-inline" class
-   applies to text within paragraphs.
+   Elements with ``class="print"`` attributes display their contents
+   when printed, overriding ``class="hidden"``.
 
 .. class:: incremental
-
-   | "print-block" for block elements
-   | "print-inline" for inline text
 
    Example: the "target-notes" directive::
 
        .. topic:: Links
-          :class: print-block
+          :class: hidden print
 
           .. target-notes::
-             :class: print-inline
+             :class: hidden print
 
 .. container:: handout
 
@@ -906,11 +922,12 @@ Classes: Print-Only
    content.  Footnote references are placed after each hyperlink
    reference.
 
-   The "topic" directive is given a "class" attribute with value
-   "print-block"; the entire topic will only be displayed when
-   printed.  The "target-notes" assigns a "class" attribute with value
-   "print-inline" to each of the footnote references it inserts
-   throughout the text; they will only show up when printed.
+   The "topic" directive is given a "class" attribute with values
+   "hidden" and "print", so the entire topic will only be displayed
+   when printed.  The "target-notes" directive also assigns a "class"
+   attributes with values "hidden" and "print" to each of the footnote
+   references it inserts throughout the text; they will only show up
+   when printed.
 
 .. class:: incremental
 
@@ -975,9 +992,19 @@ Useful Extensions For Firefox
 
 * `Autohide`__
 
+  .. class:: handout
+
+  Automatically hides toolbars in full-screen mode.
+
   __ http://www.krickelkrackel.de/autohide/autohide.htm
 
 * `Web Developer`__
+
+  .. class:: handout
+
+  Adds a context submenu and a toolbar with a lot of useful
+  functionality, including the viewing and live editing of
+  stylesheets, and sizing the browser window.
 
   __ http://chrispederick.com/work/webdeveloper/
 
@@ -1019,6 +1046,6 @@ That's All, Folks!
 
 
 .. topic:: Links
-   :class: print-block
+   :class: hidden print
 
-   .. target-notes:: :class: print-inline
+   .. target-notes:: :class: hidden print
