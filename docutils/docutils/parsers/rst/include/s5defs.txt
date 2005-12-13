@@ -36,10 +36,23 @@
 .. role:: tiny
 
 
-.. Print-Only
-   ==========
+.. Display in Slides (Presentation Mode) Only
+   ==========================================
 
-.. role:: print-inline
+.. role:: slide
+   :class: slide-display
+
+
+.. Display in Outline Mode Only
+   ============================
+
+.. role:: outline
+
+
+.. Display in Print Only
+   =====================
+
+.. role:: print
 
 
 .. Incremental Display
