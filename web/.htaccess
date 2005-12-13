@@ -2,6 +2,8 @@
 
 # Moved files and directories.
 
+Redirect permanent docs/ref/rst/substitutions.html http://docutils.sourceforge.net/docs/ref/rst/definitions.html
+Redirect permanent docs/ref/rst/substitutions.txt http://docutils.sourceforge.net/docs/ref/rst/definitions.txt
 Redirect permanent /sandbox/felixwiemann http://docutils.sourceforge.net/sandbox/fwiemann
 
 # Redirect snapshots to BerliOS.  The target URL may change in the
