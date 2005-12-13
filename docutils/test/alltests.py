@@ -87,6 +87,8 @@ if __name__ == '__main__':
            % (docutils.__version__, docutils.__version_details__,
               sys.version.split()[0],
               time.strftime('%Y-%m-%d'), time.strftime('%H:%M:%S')))
+    print 'Working directory: %s' % os.getcwd()
+    print 'Docutils package: %s' % os.path.dirname(docutils.__file__)
     sys.stdout.flush()
     package_unittest.main(suite)
     #if package_unittest.verbosity > 1:
