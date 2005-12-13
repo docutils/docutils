@@ -11,6 +11,9 @@ See http://docutils.sf.net/docs/howto/html-stylesheets.html for how to
 customize this style sheet.
 */
 
+/* used to remove borders from tables and images */
+.borderless, .borderless td {border: 0;}
+
 /* "! important" is used here to override other ``margin-top`` and
    ``margin-bottom`` styles that are later in the stylesheet or 
    more specific.  See http://www.w3.org/TR/CSS1#the-cascade */
@@ -148,9 +151,6 @@ img.align-left {
 
 img.align-right {
   clear: right }
-
-img.borderless {
-  border: 0 }
 
 ol.simple, ul.simple {
   margin-bottom: 1em }
