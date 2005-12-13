@@ -26,6 +26,18 @@ def _test_more(expected_dir, output_dir, test_case, parameters):
     if differences:
         parts.append('The following files differ from the expected output:')
         parts.extend(differences)
+        expected = [path.replace('functional/output/', 'functional/expected/')
+                    for path in differences]
+        parts.append('Please compare the expected and actual output files:')
+        parts.extend(['  diff %s %s' % tup
+                      for tup in zip(expected, differences)])
+        parts.append('If the actual output is correct, please replace the '
+                     'expected output files:')
+        parts.extend(['  mv %s %s' % tup
+                      for tup in zip(differences, expected)])
+        parts.append('and check them in to Subversion:')
+        parts.extend(['  svn commit -m "<comment>" %s' % path
+                      for path in expected])
     if uniques:
         parts.append('The following paths are unique:')
         parts.extend(uniques)
