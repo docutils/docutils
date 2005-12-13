@@ -11,11 +11,9 @@ html>body #toggle {position: fixed; top: 0; right: 0;}
 /* making the outline look pretty-ish */
 
 #slide0 h1, #slide0 h2, #slide0 h3, #slide0 h4 {border: none; margin: 0;}
-#slide0 h1 {padding-top: 1.5em;}
-.slide h1 {margin: 1.5em 0 0.75em; padding-top: 0.25em;
-  border-top: 1px solid #888; border-bottom: 1px solid #AAA;}
 #toggle {border: 1px solid; border-width: 0 0 1px 1px; background: #FFF;}
 
-.handout {border-left: solid #BBB; padding-left: 0.5em;}
+.handout {border-left: solid thin #BBB;
+  padding-left: 0.5em; margin-left: -0.5em;}
 
-.print-block, .print-inline {display: none;}
+.outline {display: inline ! important;}
