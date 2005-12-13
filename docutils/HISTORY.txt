@@ -463,7 +463,7 @@ Release 0.3.9 (2005-05-26)
   - Added an ``align`` attribute to the ``figure`` element.
 
 * tools/rst2newlatex.py: Added to project; front end for the new LaTeX
-  writer writer.
+  writer.
 
 
 Release 0.3.7 (2004-12-24)
