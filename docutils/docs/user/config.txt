@@ -590,7 +590,7 @@ _`cloak_email_addresses`
 
 _`compact_lists`
     Remove extra vertical whitespace between items of bullet lists and
-    enumerated lists, when list items are "simple" (i.e., all items
+    enumerated lists, when list items are all "simple" (i.e., items
     each contain one paragraph and/or one "simple" sublist only).  The
     behaviour can be specified directly via "class" attributes (values
     "compact" and "open") in the document.

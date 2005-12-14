@@ -96,26 +96,20 @@ class Writer(writers.Writer):
           ['--attribution'],
           {'choices': ['dash', 'parentheses', 'parens', 'none'],
            'default': 'dash', 'metavar': '<format>'}),
-         ('Remove extra vertical whitespace between items of bullet lists '
-          'and enumerated lists, when list items are "simple" (i.e., all '
-          'items each contain one paragraph and/or one "simple" sublist '
-          'only).  Default: enabled.  Can be specified directly via "class" '
-          'attributes (values "compact" and "open") in the document.',
+         ('Remove extra vertical whitespace between items of "simple" bullet '
+          'lists and enumerated lists.  Default: enabled.',
           ['--compact-lists'],
           {'default': 1, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Disable compact simple bullet and enumerated lists (except where '
-          'specified directly via "class" attributes; see --compact-lists).',
+         ('Disable compact simple bullet and enumerated lists.',
           ['--no-compact-lists'],
           {'dest': 'compact_lists', 'action': 'store_false'}),
          ('Remove extra vertical whitespace between items of simple field '
-          'lists. Default: enabled.  Can be specified directly via "class" '
-          'attributes (values "compact" and "open") in the document.',
+          'lists.  Default: enabled.',
           ['--compact-field-lists'],
           {'default': 1, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Disable compact simple field lists (except where specified '
-          'directly via "class" attributes; see --compact-field-lists).',
+         ('Disable compact simple field lists.',
           ['--no-compact-field-lists'],
           {'dest': 'compact_field_lists', 'action': 'store_false'}),
          ('Omit the XML declaration.  Use with caution.',
