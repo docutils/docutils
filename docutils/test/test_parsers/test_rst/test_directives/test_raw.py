@@ -20,7 +20,7 @@ def suite():
     s.generateTests(totest)
     return s
 
-mydir = os.path.dirname(suite.func_code.co_filename)
+mydir = 'test_parsers/test_rst/test_directives/'
 raw1 = os.path.join(mydir, 'raw1.txt')
 utf_16_file = os.path.join(mydir, 'utf-16.csv')
 utf_16_file_rel = DocutilsTestSupport.utils.relative_path(None, utf_16_file)
