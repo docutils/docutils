@@ -130,10 +130,16 @@ Project Files & Directories
 * COPYING.txt: Public Domain Dedication and copyright details for
   non-public-domain files (most are PD).
 
-* FAQ.txt: Docutils Frequently Asked Questions.
+* FAQ.txt: Frequently Asked Questions (with answers!).
 
-* HISTORY.txt: Release notes for the current and previous project
-  releases.
+* RELEASE-NOTES.txt: Summary of the major changes in recent releases.
+
+* HISTORY.txt: A detailed change log, for the current and all previous
+  project releases.
+
+* BUGS.txt: Known bugs, and how to report a bug.
+
+* THANKS.txt: List of contributors.
 
 * setup.py: Installation script.  See "Installation" below.
 
@@ -147,7 +153,7 @@ Project Files & Directories
   These are only installed if they're not already present.
 
 * docs: The project documentation directory.  Read ``docs/index.txt``
-  for an overview, which is especially interesting for developers.
+  for an overview.
 
 * docs/user: The project user documentation directory.  Contains the
   following documents, among others:
