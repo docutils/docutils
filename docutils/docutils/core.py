@@ -194,7 +194,6 @@ class Publisher:
         `self.writer`'s output.
         """
         exit = None
-        exit_status = 0
         try:
             if self.settings is None:
                 self.process_command_line(
@@ -206,12 +205,14 @@ class Publisher:
             self.apply_transforms()
             output = self.writer.write(self.document, self.destination)
             self.writer.assemble_parts()
-        except SystemExit:
+        except SystemExit, error:
             exit = 1
+            exit_status = error.code
         except Exception, error:
-            if not self.settings or self.settings.traceback:
-                # Propagate exceptions.
-                self.debugging_dumps()                
+            if not self.settings:       # exception too early to report nicely
+                raise
+            if self.settings.traceback: # Propagate exceptions?
+                self.debugging_dumps()
                 raise
             self.report_Exception(error)
             exit = 1
