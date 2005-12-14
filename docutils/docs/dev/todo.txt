@@ -763,8 +763,8 @@ __ rst/alternatives.html#or-not-to-do
 * Add test for ":figwidth: image" option of "figure" directive.  (Test
   code needs to check if PIL is available on the system.)
 
-* Add support for CJK double-width whitespace & punctuation
-  characters?
+* Add support for CJK double-width whitespace (indentation) &
+  punctuation characters (markup; e.g. double-width "*", "-", "+")?
 
 * Add motivation sections for constructs in spec.
 
