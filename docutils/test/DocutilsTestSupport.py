@@ -46,6 +46,7 @@ import os
 
 testroot = os.path.abspath(os.path.dirname(__file__) or os.curdir)
 sys.path.insert(1, os.path.normpath(os.path.join(testroot, '..')))
+sys.path.append(os.path.normpath(os.path.join(testroot, '..', 'extras')))
 
 import unittest
 import docutils_difflib
