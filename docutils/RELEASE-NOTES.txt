@@ -10,9 +10,8 @@
 :Copyright: This document has been placed in the public domain.
 
 
-This document summarized the most important changes for all recent
-releases.  For a more detailed list of changes, please see the
-`Docutils History`_.
+This document summarizes the major changes in recent releases.  For a
+more detailed list of changes, please see the `Docutils History`_.
 
 .. _Docutils History: HISTORY.html
 
@@ -21,6 +20,22 @@ releases.  For a more detailed list of changes, please see the
 
 Release 0.4 (to be released)
 ============================
+
+Components:
+
+* Added an `S5/HTML writer`__ and the rst2s5.py__ front end:
+  multi-platform, multi-browser HTML slide shows.
+
+  __ docs/user/slide-shows.html
+  __ docs/user/tools.html#rst2s5-py
+
+* The newlatex2e writer is nearing completion.
+
+* Added a DocTree reader, ``publish_doctree`` and
+  ``publish_from_doctree`` convenience functions, for document tree
+  extraction and reprocessing.
+
+reStructuredText:
 
 * Added directives: "container__" (generic block-level container),
   "default-role__" (role used for \`backtick\` syntax), and "title__"
@@ -34,44 +49,37 @@ Release 0.4 (to be released)
 
   __ docs/ref/rst/directives.html#image
 
-* Added `standard substitution definitions`__.
+* Added `standard definition files`__ for special characters etc.
 
   __ docs/ref/rst/definitions.html
 
-* Added Japanese and Simplified Chinese language mappings.  Added
-  support for double-width CJK-characters in `grid tables`__.
+Internationalization:
 
-  __ docs/ref/rst/restructuredtext.html#grid-tables
+* Added Japanese and Simplified Chinese language mappings, and support
+  for double-width CJK-characters in tables and section titles.
 
-* `--embed-stylesheet`__ is now the default for the HTML writer
-  (rather than --link-stylesheet).
+Documentation:
 
-  __ docs/user/config.html#embed-stylesheet
-
-* Added an `S5/HTML writer`__ and the rst2s5.py__ front end:
-  multi-platform, multi-browser HTML slide shows.
-
-  __ docs/user/slide-shows.html
-  __ docs/user/tools.html#rst2s5-py
-
-* Added a `guide for distributors`__ (package maintainers).
+* Added a `guide for distributors`__ (package maintainers) and a
+  `guide for developers`__.
 
   __ docs/dev/distributing.html
-
-* Added a `guide for developers`__.
-
   __ docs/dev/hacking.html
+
+General:
 
 * Added significant `Emacs support for reST`__.
 
   __ docs/user/emacs.html
 
-* Added `--strip-comments`__ option.
+* Added a `--strip-comments`__ option.
 
   __ docs/user/config.html#strip-comments
 
-* Added newlatex2e writer (under development; nearing completion in
-  release 0.4).
+* `--embed-stylesheet`__ is now the default for the HTML writer
+  (rather than --link-stylesheet).
+
+  __ docs/user/config.html#embed-stylesheet
 
 
 Release 0.3.9 (2005-05-26)
