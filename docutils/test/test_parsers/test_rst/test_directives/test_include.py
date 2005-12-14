@@ -12,8 +12,8 @@ Tests for misc.py "include" directive.
 
 import os.path
 import sys
-from docutils.parsers.rst import states
 from __init__ import DocutilsTestSupport
+from docutils.parsers.rst import states
 
 
 def suite():
