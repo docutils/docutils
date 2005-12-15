@@ -252,7 +252,7 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
                 src_data = src_file.read()
                 src_file.close()
                 dest_file = open(dest, 'wb')
-                dest_dir = dest_dir.replace(os.path.sep, '/')
+                dest_dir = dest_dir.replace(os.sep, '/')
                 dest_file.write(src_data.replace(
                     'ui/default', dest_dir[dest_dir.rfind('ui/'):]))
                 dest_file.close()
