@@ -26,19 +26,21 @@
 
 .. class:: tiny
 
-* Use the space bar to advance, Page Up/Down & arrow keys to navigate.
-
 * S5 themes are designed for full-screen display areas with a 4:3
   aspect ratio.  If the slide text doesn't fit in your browser window,
   try decreasing the text size.
 
-* Best viewed in Firefox, Safari, and Konqueror.  Click the "|mode|"
+* Use the space bar to advance, Page Up/Down & arrow keys to navigate.
+
+* Best viewed in Firefox_, Safari, and Konqueror.  Click the "|mode|"
   button to switch between presentation & handout/outline modes.  Hit
   the "C" key to display the navigation controls, or mouse over the
   lower right-hand corner.
 
 * Functionality is limited in Opera.  Switch to full-screen mode (F11
   key) to activate Opera Show.
+
+* S5 works in Internet Explorer, but it may look ugly.
 
 .. container:: handout
 
@@ -55,6 +57,7 @@
 .. _Docutils: http://docutils.sourceforge.net/
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _S5: http://meyerweb.com/eric/tools/s5/
+.. _Firefox: http://www.mozilla.com/firefox/
 .. |bullet| unicode:: U+02022
 .. |mode| unicode:: U+00D8 .. capital o with stroke
 
@@ -354,12 +357,11 @@ Generating a Slide Show (1)
 .. class:: incremental
 
 1. Open a console (terminal, command shell) and go to the folder
-   containing your file, ``presentation.txt``.
+   containing your file, ``slides.txt``.
 
 2. Run the command::
 
-       rst2s5.py presentation.txt \
-                 presentation.html
+       rst2s5.py slides.txt slides.html
 
 3. Specify an S5 theme with the ``--theme`` option.
 
@@ -384,7 +386,7 @@ Generating a Slide Show (2)
    stylesheet instead of embedding, you must include a copy (suggested
    location: in the ``ui/`` directory).
 
-5. Open ``presentation.html`` in a web browser.
+5. Open ``slides.html`` in a web browser.
 
 6. Expand the browser window to full-screen mode, and speak.
 
@@ -495,7 +497,7 @@ Themes
 
      Example::
 
-         rst2s5 --theme big-black presentation.txt presentation.html
+         rst2s5 --theme big-black slides.txt slides.html
 
      The default theme is "default".
 
