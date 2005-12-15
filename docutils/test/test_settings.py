@@ -27,9 +27,7 @@ warnings.filterwarnings(action='ignore',
                         category=frontend.ConfigDeprecationWarning)
 
 def fixpath(path):
-    return os.path.abspath(os.path.join(mydir, *(path.split('/'))))
-
-mydir = os.path.dirname(fixpath.func_code.co_filename)
+    return os.path.abspath(os.path.join(*(path.split('/'))))
 
 
 class ConfigFileTests(unittest.TestCase):
