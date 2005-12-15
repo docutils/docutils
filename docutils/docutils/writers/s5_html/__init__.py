@@ -30,8 +30,8 @@ def find_theme(name):
     # Check working dir?  Destination dir?  Config dir?  Plugins dir?
     path = os.path.join(themes_dir_path, name)
     if not os.path.isdir(path):
-        raise docutils.ApplicationError('Theme directory not found: %r (path: %r)'
-                                        % (name, path))
+        raise docutils.ApplicationError(
+            'Theme directory not found: %r (path: %r)' % (name, path))
     return path
 
 
@@ -252,6 +252,7 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
                 src_data = src_file.read()
                 src_file.close()
                 dest_file = open(dest, 'wb')
+                dest_dir = dest_dir.replace(os.path.sep, '/')
                 dest_file.write(src_data.replace(
                     'ui/default', dest_dir[dest_dir.rfind('ui/'):]))
                 dest_file.close()
