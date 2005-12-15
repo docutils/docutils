@@ -501,17 +501,20 @@ class HTMLTranslator(nodes.NodeVisitor):
         else:
             return 1
 
+    def is_compactable(self, node):
+        return ('compact' in node['classes']
+                or (self.settings.compact_lists
+                    and 'open' not in node['classes']
+                    and (self.compact_simple
+                         or self.topic_classes == ['contents']
+                         or self.check_simple_list(node))))
+
     def visit_bullet_list(self, node):
         atts = {}
         old_compact_simple = self.compact_simple
         self.context.append((self.compact_simple, self.compact_p))
         self.compact_p = None
-        self.compact_simple = ('compact' in node['classes']
-                               or (self.settings.compact_lists
-                                   and 'open' not in node['classes']
-                                   and (self.compact_simple
-                                        or self.topic_classes == ['contents']
-                                        or self.check_simple_list(node))))
+        self.compact_simple = self.is_compactable(node)
         if self.compact_simple and not old_compact_simple:
             atts['class'] = 'simple'
         self.body.append(self.starttag(node, 'ul', **atts))
@@ -763,12 +766,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         old_compact_simple = self.compact_simple
         self.context.append((self.compact_simple, self.compact_p))
         self.compact_p = None
-        self.compact_simple = ('compact' in node['classes']
-                               or (self.settings.compact_lists
-                                   and 'open' not in node['classes']
-                                   and (self.compact_simple
-                                        or self.topic_classes == ['contents']
-                                        or self.check_simple_list(node))))
+        self.compact_simple = self.is_compactable(node)
         if self.compact_simple and not old_compact_simple:
             atts['class'] = (atts.get('class', '') + ' simple').strip()
         self.body.append(self.starttag(node, 'ol', **atts))
@@ -812,6 +810,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         elif (self.settings.compact_field_lists
               and 'open' not in node['classes']):
             self.compact_field_list = 1
+        if self.compact_field_list:
             for field in node:
                 field_body = field[-1]
                 assert isinstance(field_body, nodes.field_body)
@@ -1187,11 +1186,20 @@ class HTMLTranslator(nodes.NodeVisitor):
                      ([], ['first'], ['last'], ['first', 'last']))):
                 # Attribute which needs to survive.
                 return 0
-        if (self.compact_simple or
-            self.compact_field_list or
-            self.compact_p and (len(node.parent) == 1 or
-                                len(node.parent) == 2 and
-                                isinstance(node.parent[0], nodes.label))):
+        first = isinstance(node.parent[0], nodes.label) # skip label
+        for child in node.parent.children[first:]:
+            # only first paragraph can be compact
+            if isinstance(child, nodes.Invisible):
+                continue
+            if child is node:
+                break
+            return 0
+        if ( self.compact_simple
+             or self.compact_field_list
+             or (self.compact_p
+                 and (len(node.parent) == 1
+                      or len(node.parent) == 2
+                      and isinstance(node.parent[0], nodes.label)))):
             return 1
         return 0
 
