@@ -46,7 +46,8 @@ import os
 
 testroot = os.path.abspath(os.path.dirname(__file__) or os.curdir)
 os.chdir(testroot)
-sys.path.insert(1, os.path.normpath(os.path.join(testroot, '..')))
+sys.path.insert(0, os.path.normpath(os.path.join(testroot, '..')))
+sys.path.insert(0, testroot)
 sys.path.append(os.path.normpath(os.path.join(testroot, '..', 'extras')))
 
 import unittest
