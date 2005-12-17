@@ -91,6 +91,7 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
 <meta name="defaultView" content="slideshow" />
 <meta name="controlVis" content="hidden" />
 <!-- style sheet links -->
+<script src="%(path)s/slides.js" type="text/javascript"></script>
 <link rel="stylesheet" href="%(path)s/slides.css"
       type="text/css" media="projection" id="slideProj" />
 <link rel="stylesheet" href="%(path)s/outline.css"
@@ -98,8 +99,10 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
 <link rel="stylesheet" href="%(path)s/print.css"
       type="text/css" media="print" id="slidePrint" />
 <link rel="stylesheet" href="%(path)s/opera.css"
-      type="text/css" media="projection" id="operaFix" />
-<script src="%(path)s/slides.js" type="text/javascript"></script>\n"""
+      type="text/css" media="projection" id="operaFix" />\n"""
+    # The script element must go in front of the link elements to
+    # avoid a flash of unstyled content (FOUC), reproducible with
+    # Firefox.
 
     disable_current_slide = """
 <style type="text/css">
