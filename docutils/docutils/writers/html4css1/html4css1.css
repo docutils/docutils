@@ -12,12 +12,16 @@ customize this style sheet.
 */
 
 /* used to remove borders from tables and images */
-.borderless, .borderless td {border: 0;}
+.borderless, table.borderless td, table.borderless th {
+  border: 0 }
 
-/* "! important" is used here to override other ``margin-top`` and
-   ``margin-bottom`` styles that are later in the stylesheet or 
-   more specific.  See http://www.w3.org/TR/CSS1#the-cascade */
+table.borderless td, table.borderless th {
+  /* Override padding for "table.docutils td" with "! important".
+     The right padding separates the table cells. */
+  padding: 0 0.5em 0 0 ! important }
+
 .first {
+  /* Override more specific margin styles with "! important". */
   margin-top: 0 ! important }
 
 .last, .with-subtitle {
