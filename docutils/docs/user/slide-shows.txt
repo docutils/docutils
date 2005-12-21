@@ -940,59 +940,6 @@ Classes: Print-Only
    Other uses may require "``.. include:: <s5defs.txt>``".
 
 
-Chained Presentations
-=====================
-
-.. class:: handout
-
-   Presentation slide shows can be chained together.  This is useful
-   for including all or part of one presentation in another, and for
-   changing themes.  Slide numbers are not carried over, unless you
-   fake a continuous multi-themed presentation:
-
-   1. Generate slide show HTML files with two different names from
-      different themes but from the same source text.
-
-   2. Include a link to the **next** slide, in the **second** theme's
-      file.
-
-   3. To return to the first theme, include a link to the **next**
-      slide, in the **first** theme.
-
-From one theme, `to another...`__
-
-__ slide-shows-alt.s5.html#chained-presentations-2
-
-
-Chained Presentations (2)
-=========================
-
-... and `back again...`__
-
-__ slide-shows.s5.html#chained-presentations-3
-
-
-Chained Presentations (3)
-=========================
-
-... back to the first theme.
-
-.. container:: handout
-
-   Now we're back where we started from, back in the first theme, but
-   two slides further on.
-
-   In this way, any number of themes can be chained together.
-
-`Or you could cheat.`
-
-.. container:: handout
-
-   Just prepare the browser in advance, with all the slide show files
-   set up at the right slide in separate tabs in your browser, in the
-   right order.  Closing one tab will reveal the next.
-
-
 Useful Extensions For Firefox
 =============================
 
