@@ -268,6 +268,12 @@ Also see the `SourceForge Bug Tracker`_.
                   1
           <target ids="id2" names="1" refuri="URI">
 
+* Anonymous references have "name" attributes.  Should they?  Are they
+  used?  See ``test/test_parsers/test_rst/test_inline_markup.py``.
+
+* <reference> elements have a "name" attribute, not "names".  The
+  attribute should be "names"; this is an inconsistency.
+
 
 ..
    Local Variables:
