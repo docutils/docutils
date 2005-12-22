@@ -61,6 +61,7 @@ directives = {
       u'sin-an\u00e1lisis': 'raw',
       u'reemplazar': 'replace',
       u'unicode': 'unicode',
+      u'fecha': 'date',
       u'clase': 'class',
       u'rol': 'role',
       u'rol-por-omision': 'default-role',

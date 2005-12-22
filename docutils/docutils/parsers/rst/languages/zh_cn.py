@@ -54,6 +54,7 @@ directives = {
       u'原文': 'raw',
       u'代替': 'replace',
       u'统一码': 'unicode',
+      u'日期': 'date',
       u'类型': 'class',
       u'角色': 'role',
       u'默认角色': 'default-role',

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Author: David Goodger
 # Contact: goodger@users.sourceforge.net
 # Revision: $Revision$
@@ -53,6 +54,7 @@ directives = {
       'raw (translation required)': 'raw',
       'replace (translation required)': 'replace',
       'unicode (translation required)': 'unicode',
+      u'日期': 'date',
       'class (translation required)': 'class',
       'role (translation required)': 'role',
       u'default-role (translation required)': 'default-role',

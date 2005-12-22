@@ -52,6 +52,7 @@ directives = {
       u'raw (translation required)': 'raw',
       u'nahradi\x9d': 'replace',
       u'unicode': 'unicode',
+      u'd\u00E1tum': 'date',
       u'class (translation required)': 'class',
       u'role (translation required)': 'role',
       u'default-role (translation required)': 'default-role',

@@ -52,6 +52,7 @@ directives = {
       'rou': 'raw',
       'vervang': 'replace',
       'unicode': 'unicode', # should this be translated? unikode
+      'datum': 'date',
       'klas': 'class',
       'role (translation required)': 'role',
       'default-role (translation required)': 'default-role',

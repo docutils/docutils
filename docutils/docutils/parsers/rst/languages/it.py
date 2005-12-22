@@ -52,6 +52,7 @@ directives = {
       'grezzo': 'raw',
       'sostituisci': 'replace',
       'unicode': 'unicode',
+      'data': 'date',
       'classe': 'class',
       'ruolo': 'role',
       'ruolo-predefinito': 'default-role',

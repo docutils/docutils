@@ -52,6 +52,7 @@ directives = {
       u'r\u00e5': 'raw',            # FIXME: Translation might be too literal.
       u'ers\u00e4tt': 'replace', 
       u'unicode': 'unicode',
+      u'datum': 'date',
       u'class (translation required)': 'class',
       u'role (translation required)': 'role',
       u'default-role (translation required)': 'default-role',

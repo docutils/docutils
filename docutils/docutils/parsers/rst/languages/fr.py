@@ -55,6 +55,7 @@ directives = {
       u'remplacer': 'replace',
       u'remplace': 'replace',
       u'unicode': 'unicode',
+      u'date': 'date',
       u'classe': 'class',
       u'role (translation required)': 'role',
       u'default-role (translation required)': 'default-role',

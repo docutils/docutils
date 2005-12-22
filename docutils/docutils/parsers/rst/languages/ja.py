@@ -66,6 +66,7 @@ directives = {
     u'取り換える': 'replace',
     u'掛け替える': 'replace',
     u'ユニコード': 'unicode',
+    u'日付': 'date',
     u'クラス': 'class',
     u'ロール': 'role',
     u'役': 'role',

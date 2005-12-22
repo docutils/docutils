@@ -53,6 +53,7 @@ directives = {
       'raw': 'raw',
       'replace': 'replace',
       'unicode': 'unicode',
+      'date': 'date',
       'class': 'class',
       'role': 'role',
       'default-role': 'default-role',

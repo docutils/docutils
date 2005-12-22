@@ -94,7 +94,7 @@ Changes Since 0.3.9
 
 * docutils/parsers/rst/directives/misc.py:
 
-  - Added the "default-role" and "title" directives.
+  - Added the "default-role", "title", and "date" directives.
   - Added standard data file syntax to the "include" directive.
   - Added support for "class" directive content.
 

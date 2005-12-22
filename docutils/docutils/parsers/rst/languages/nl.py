@@ -54,6 +54,7 @@ directives = {
       'vervang': 'replace',
       'vervanging': 'replace',
       'unicode': 'unicode',
+      'datum': 'date',
       'klasse': 'class',
       'rol': 'role',
       u'default-role (translation required)': 'default-role',
