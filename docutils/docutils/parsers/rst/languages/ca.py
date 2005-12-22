@@ -57,6 +57,7 @@ directives = {
       u'reempla\u00E7a': 'replace',
       u'reempla\u00E7ar': 'replace',
       u'unicode': 'unicode',
+      u'data': 'date',
       u'classe': 'class',
       u'rol': 'role',
       u'default-role (translation required)': 'default-role',

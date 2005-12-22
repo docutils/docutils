@@ -11,6 +11,7 @@ __docformat__ = 'reStructuredText'
 import sys
 import os.path
 import re
+import time
 from docutils import io, nodes, statemachine, utils
 from docutils.parsers.rst import directives, roles, states
 from docutils.transforms import misc
@@ -372,6 +373,20 @@ def title(name, arguments, options, content, lineno,
     return []
 
 title.arguments = (1, 0, 1)
+
+def date(name, arguments, options, content, lineno,
+         content_offset, block_text, state, state_machine):
+    if not isinstance(state, states.SubstitutionDef):
+        error = state_machine.reporter.error(
+            'Invalid context: the "%s" directive can only be used within a '
+            'substitution definition.' % (name),
+            nodes.literal_block(block_text, block_text), line=lineno)
+        return [error]
+    format = '\n'.join(content) or '%Y-%m-%d'
+    text = time.strftime(format)
+    return [nodes.Text(text)]
+
+date.content = 1
 
 def directive_test_function(name, arguments, options, content, lineno,
                             content_offset, block_text, state, state_machine):

@@ -38,12 +38,14 @@ Components:
 reStructuredText:
 
 * Added directives: "container__" (generic block-level container),
-  "default-role__" (role used for \`backtick\` syntax), and "title__"
-  (document title metadata).
+  "default-role__" (role used for \`backtick\` syntax), "title__"
+  (document title metadata), and "date__" (generate the current local
+  date, for substitution definitions).
 
   __ docs/ref/rst/directives.html#container
   __ docs/ref/rst/directives.html#default-role
   __ docs/ref/rst/directives.html#title
+  __ docs/ref/rst/directives.html#date
 
 * Length units are now supported for image__ sizes.
 

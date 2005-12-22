@@ -51,6 +51,7 @@ directives = {
       u'raaka': u'raw',
       u'korvaa': u'replace',
       u'unicode': u'unicode',
+      u'p\u00e4iv\u00e4ys': u'date',
       u'luokka': u'class',
       u'rooli': u'role',
       u'default-role (translation required)': 'default-role',

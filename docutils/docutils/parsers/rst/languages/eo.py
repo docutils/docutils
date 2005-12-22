@@ -59,6 +59,7 @@ directives = {
       u'anstatauxi': 'replace',
       u'anstata\u016di': 'replace',
       u'unicode': 'unicode',
+      u'dato': 'date',
       u'klaso': 'class',
       u'rolo': 'role',
       u'preterlasita-rolo': 'default-role',
