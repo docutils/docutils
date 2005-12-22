@@ -99,6 +99,7 @@ include           Read an external reST file as if it were inline
 raw               Non-reST data passed untouched to the Writer
 replace           Replacement text for substitution definitions
 unicode           Unicode character code conversion for substitution defs
+date              Generates today's date; for substitution defs
 class             Set a "class" attribute on the next element
 role              Create a custom interpreted text role [0.3.2]
 default-role      Set the default interpreted text role [0.3.10]
