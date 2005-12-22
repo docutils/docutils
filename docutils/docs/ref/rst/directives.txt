@@ -1177,6 +1177,140 @@ Imagemap
 Non-standard element: imagemap.
 
 
+-----------------------------------------
+ Directives for Substitution Definitions
+-----------------------------------------
+
+The directives in this section may only be used in substitution
+definitions.  They may not be used directly, in standalone context.
+The `image`_ directive may be used both in substitution definitions
+and in the standalone context.
+
+
+.. _replace:
+
+Replacement Text
+================
+
+:Directive Type: "replace"
+:Doctree Element: Text & inline elements
+:Directive Arguments: None.
+:Directive Options: None.
+:Directive Content: A single paragraph; may contain inline markup.
+
+The "replace" directive is used to indicate replacement text for a
+substitution reference.  It may be used within substitution
+definitions only.  For example, this directive can be used to expand
+abbreviations::
+
+    .. |reST| replace:: reStructuredText
+
+    Yes, |reST| is a long word, so I can't blame anyone for wanting to
+    abbreviate it.
+
+As reStructuredText doesn't support nested inline markup, the only way
+to create a reference with styled text is to use substitutions with
+the "replace" directive::
+
+    I recommend you try |Python|_.
+
+    .. |Python| replace:: Python, *the* best language around
+    .. _Python: http://www.python.org/
+
+
+.. _unicode:
+
+Unicode Character Codes
+=======================
+
+:Directive Type: "unicode"
+:Doctree Element: Text
+:Directive Arguments: One or more, required (Unicode character codes,
+                      optional text, and comments).
+:Directive Options: Possible.
+:Directive Content: None.
+
+The "unicode" directive converts Unicode character codes (numerical
+values) to characters, and may be used in substitution definitions
+only.
+
+The arguments, separated by spaces, can be:
+
+* **character codes** as
+
+  - decimal numbers or
+
+  - hexadecimal numbers, prefixed by ``0x``, ``x``, ``\x``, ``U+``,
+    ``u``, or ``\u`` or as XML-style hexadecimal character entities,
+    e.g. ``&#x1a2b;``
+
+* **text**, which is used as-is.
+
+Text following " .. " is a comment and is ignored.  The spaces between
+the arguments are ignored and thus do not appear in the output.
+Hexadecimal codes are case-insensitive.
+
+For example, the following text::
+
+    Copyright |copy| 2003, |BogusMegaCorp (TM)| |---|
+    all rights reserved.
+
+    .. |copy| unicode:: 0xA9 .. copyright sign
+    .. |BogusMegaCorp (TM)| unicode:: BogusMegaCorp U+2122
+       .. with trademark sign
+    .. |---| unicode:: U+02014 .. em dash
+       :trim:
+
+results in:
+
+    Copyright |copy| 2003, |BogusMegaCorp (TM)| |---|
+    all rights reserved.
+
+    .. |copy| unicode:: 0xA9 .. copyright sign
+    .. |BogusMegaCorp (TM)| unicode:: BogusMegaCorp U+2122
+       .. with trademark sign
+    .. |---| unicode:: U+02014 .. em dash
+       :trim:
+
+The following options are recognized:
+
+``ltrim`` : flag
+    Whitespace to the left of the substitution reference is removed.
+
+``rtrim`` : flag
+    Whitespace to the right of the substitution reference is removed.
+
+``trim`` : flag
+    Equivalent to ``ltrim`` plus ``rtrim``; whitespace on both sides
+    of the substitution reference is removed.
+
+
+Date
+====
+
+:Directive Type: "date"
+:Doctree Element: Text
+:Directive Arguments: One, optional (date format).
+:Directive Options: None.
+:Directive Content: None.
+
+The "date" directive generates the current local date and inserts it
+into the document as text.  This directive may be used in substitution
+definitions only.
+
+The optional directive content is interpreted as the desired date
+format, using the same codes as Python's time.strftime function.  The
+default format is "%Y-%m-%d" (ISO 8601 date), but time fields can also
+be used.  Examples::
+
+    .. |date| date::
+    .. |time| date:: %H:%M
+
+    Today's date is |date|.
+
+    This document was generated on |date| at |time|.
+
+
 ---------------
  Miscellaneous
 ---------------
@@ -1319,104 +1453,6 @@ The following options are recognized:
 ``encoding`` : name of text encoding
     The text encoding of the external raw data (file or URL).
     Defaults to the document's encoding (if specified).
-
-
-.. _replace:
-
-Replacement Text
-================
-
-:Directive Type: "replace"
-:Doctree Element: Text & inline elements
-:Directive Arguments: None.
-:Directive Options: None.
-:Directive Content: A single paragraph; may contain inline markup.
-
-The "replace" directive is used to indicate replacement text for a
-substitution reference.  It may be used within substitution
-definitions only.  For example, this directive can be used to expand
-abbreviations::
-
-    .. |reST| replace:: reStructuredText
-
-    Yes, |reST| is a long word, so I can't blame anyone for wanting to
-    abbreviate it.
-
-As reStructuredText doesn't support nested inline markup, the only way
-to create a reference with styled text is to use substitutions with
-the "replace" directive::
-
-    I recommend you try |Python|_.
-
-    .. |Python| replace:: Python, *the* best language around
-    .. _Python: http://www.python.org/
-
-
-.. _unicode:
-
-Unicode Character Codes
-=======================
-
-:Directive Type: "unicode"
-:Doctree Element: Text
-:Directive Arguments: One or more, required (Unicode character codes,
-                      optional text, and comments).
-:Directive Options: Possible.
-:Directive Content: None.
-
-The "unicode" directive converts Unicode character codes (numerical
-values) to characters, and may be used in substitution definitions
-only.
-
-The arguments, separated by spaces, can be:
-
-* **character codes** as
-
-  - decimal numbers or
-
-  - hexadecimal numbers, prefixed by ``0x``, ``x``, ``\x``, ``U+``,
-    ``u``, or ``\u`` or as XML-style hexadecimal character entities,
-    e.g. ``&#x1a2b;``
-
-* **text**, which is used as-is.
-
-Text following " .. " is a comment and is ignored.  The spaces between
-the arguments are ignored and thus do not appear in the output.
-Hexadecimal codes are case-insensitive.
-
-For example, the following text::
-
-    Copyright |copy| 2003, |BogusMegaCorp (TM)| |---|
-    all rights reserved.
-
-    .. |copy| unicode:: 0xA9 .. copyright sign
-    .. |BogusMegaCorp (TM)| unicode:: BogusMegaCorp U+2122
-       .. with trademark sign
-    .. |---| unicode:: U+02014 .. em dash
-       :trim:
-
-results in:
-
-    Copyright |copy| 2003, |BogusMegaCorp (TM)| |---|
-    all rights reserved.
-
-    .. |copy| unicode:: 0xA9 .. copyright sign
-    .. |BogusMegaCorp (TM)| unicode:: BogusMegaCorp U+2122
-       .. with trademark sign
-    .. |---| unicode:: U+02014 .. em dash
-       :trim:
-
-The following options are recognized:
-
-``ltrim`` : flag
-    Whitespace to the left of the substitution reference is removed.
-
-``rtrim`` : flag
-    Whitespace to the right of the substitution reference is removed.
-
-``trim`` : flag
-    Equivalent to ``ltrim`` plus ``rtrim``; whitespace on both sides
-    of the substitution reference is removed.
 
 
 Class
