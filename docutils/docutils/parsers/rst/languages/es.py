@@ -44,7 +44,7 @@ directives = {
       u'cita-destacada': 'pull-quote',
       u'combinacion': 'compound',
       u'combinaci\u00f3n': 'compound',
-      u'container (translation required)': 'container',
+      u'contenedor': 'container',
       #'questions': 'questions',
       #'qa': 'questions',
       #'faq': 'questions',
