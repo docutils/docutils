@@ -147,6 +147,8 @@ Changes Since 0.3.9
     universal.FinalChecks.
   - Fixed bug with doubly-indirect substitutions.
   - Added footnote_reference classes attribute to "TargetNotes".
+  - Fixed bug with circular substitution definitions that put Docutils
+    into an infinite loop.
 
 * docutils/transforms/universal.py:
 

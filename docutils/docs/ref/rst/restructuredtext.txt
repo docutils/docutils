@@ -2027,7 +2027,7 @@ Substitution definitions are indicated by an explicit markup start
 vertical bar, whitespace, and the definition block.  Substitution text
 may not begin or end with whitespace.  A substitution definition block
 contains an embedded inline-compatible directive (without the leading
-".. "), such as an image_.  For example::
+".. "), such as "image_" or "replace_".  For example::
 
     The |biohazard| symbol must be used on containers used to
     dispose of medical waste.

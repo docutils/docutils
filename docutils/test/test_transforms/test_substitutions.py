@@ -144,6 +144,90 @@ u"""\
                 exactly
              one character
 """],
+["""\
+.. |sub| replace:: |sub|
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" names="sub" source="test data" type="ERROR">
+        <paragraph>
+            Circular substitution definition detected:
+        <literal_block xml:space="preserve">
+            .. |sub| replace:: |sub|
+"""],
+["""\
+.. |sub| replace:: |indirect1|
+.. |indirect1| replace:: |indirect2|
+.. |indirect2| replace:: |Sub|
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" names="sub" source="test data" type="ERROR">
+        <paragraph>
+            Circular substitution definition detected:
+        <literal_block xml:space="preserve">
+            .. |sub| replace:: |indirect1|
+    <system_message level="3" line="2" names="indirect1" source="test data" type="ERROR">
+        <paragraph>
+            Circular substitution definition detected:
+        <literal_block xml:space="preserve">
+            .. |indirect1| replace:: |indirect2|
+    <system_message level="3" line="3" names="indirect2" source="test data" type="ERROR">
+        <paragraph>
+            Circular substitution definition detected:
+        <literal_block xml:space="preserve">
+            .. |indirect2| replace:: |Sub|
+"""],
+["""\
+.. |indirect1| replace:: |indirect2|
+.. |indirect2| replace:: |Sub|
+.. |sub| replace:: |indirect1|
+
+Use |sub| and |indirect1| and |sub| again (and |sub| one more time).
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" names="indirect1" source="test data" type="ERROR">
+        <paragraph>
+            Circular substitution definition detected:
+        <literal_block xml:space="preserve">
+            .. |indirect1| replace:: |indirect2|
+    <system_message level="3" line="2" names="indirect2" source="test data" type="ERROR">
+        <paragraph>
+            Circular substitution definition detected:
+        <literal_block xml:space="preserve">
+            .. |indirect2| replace:: |Sub|
+    <system_message level="3" line="3" names="sub" source="test data" type="ERROR">
+        <paragraph>
+            Circular substitution definition detected:
+        <literal_block xml:space="preserve">
+            .. |sub| replace:: |indirect1|
+    <paragraph>
+        Use \n\
+        <problematic ids="id8" refid="id7">
+         and \n\
+        <problematic ids="id2" refid="id1">
+            |indirect1|
+         and \n\
+        <problematic ids="id4" refid="id3">
+            |sub|
+         again (and \n\
+        <problematic ids="id6" refid="id5">
+            |sub|
+         one more time).
+    <system_message backrefs="id2" ids="id1" level="3" line="5" source="test data" type="ERROR">
+        <paragraph>
+            Circular substitution definition referenced: "indirect1".
+    <system_message backrefs="id4" ids="id3" level="3" line="5" source="test data" type="ERROR">
+        <paragraph>
+            Circular substitution definition referenced: "sub".
+    <system_message backrefs="id6" ids="id5" level="3" line="5" source="test data" type="ERROR">
+        <paragraph>
+            Circular substitution definition referenced: "sub".
+    <system_message backrefs="id8" ids="id7" level="3" source="test data" type="ERROR">
+        <paragraph>
+            Circular substitution definition referenced: "Sub".
+"""],
 ])
 
 totest['unicode'] = ((Substitutions,), [
