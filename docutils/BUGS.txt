@@ -146,10 +146,6 @@ Also see the `SourceForge Bug Tracker`_.
   Quite a few nodes are getting a "None" source attribute as well.  In
   particular, see the bodies of definition lists.
 
-* _`Circular substitutions` cause Docutils to hang::
-
-      .. |sub| replace:: |sub|
-
 * Footnote label "5" should be "4" when processing the following
   input::
 

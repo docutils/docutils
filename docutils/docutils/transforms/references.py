@@ -625,6 +625,9 @@ class Footnotes(Transform):
         note.resolved = 1
 
 
+class CircularSubstitutionDefinitionError(Exception): pass
+
+
 class Substitutions(Transform):
 
     """
@@ -661,6 +664,7 @@ class Substitutions(Transform):
         defs = self.document.substitution_defs
         normed = self.document.substitution_names
         subreflist = self.document.traverse(nodes.substitution_reference)
+        nested = {}
         for ref in subreflist:
             refname = ref['refname']
             key = None
@@ -697,9 +701,37 @@ class Substitutions(Transform):
                         parent.replace(parent[index + 1],
                                        parent[index + 1].lstrip())
                 subdef_copy = subdef.deepcopy()
-                # Take care of nested substitution references.
-                subreflist.extend(subdef_copy.traverse(nodes.substitution_reference))
-                ref.replace_self(subdef_copy.children)
+                try:
+                    # Take care of nested substitution references:
+                    for nested_ref in subdef_copy.traverse(
+                          nodes.substitution_reference):
+                        nested_name = normed[nested_ref['refname'].lower()]
+                        if nested_name in nested.setdefault(nested_name, []):
+                            raise CircularSubstitutionDefinitionError
+                        else:
+                            nested[nested_name].append(key)
+                            subreflist.append(nested_ref)
+                except CircularSubstitutionDefinitionError:
+                    parent = ref.parent
+                    if isinstance(parent, nodes.substitution_definition):
+                        msg = self.document.reporter.error(
+                            'Circular substitution definition detected:',
+                            nodes.literal_block(parent.rawsource,
+                                                parent.rawsource),
+                            line=parent.line, base_node=parent)
+                        parent.replace_self(msg)
+                    else:
+                        msg = self.document.reporter.error(
+                            'Circular substitution definition referenced: "%s".'
+                            % refname, base_node=ref)
+                        msgid = self.document.set_id(msg)
+                        prb = nodes.problematic(
+                            ref.rawsource, ref.rawsource, refid=msgid)
+                        prbid = self.document.set_id(prb)
+                        msg.add_backref(prbid)
+                        ref.replace_self(prb)
+                else:
+                    ref.replace_self(subdef_copy.children)
 
 
 class TargetNotes(Transform):
