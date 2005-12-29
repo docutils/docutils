@@ -1838,6 +1838,7 @@ class Body(RSTState):
         target_type, data = self.parse_target(block, block_text, lineno)
         if target_type == 'refname':
             target = nodes.target(block_text, '', refname=normalize_name(data))
+            target.indirect_reference_name = data
             self.add_target(target_name, '', target, lineno)
             self.document.note_indirect_target(target)
             return target

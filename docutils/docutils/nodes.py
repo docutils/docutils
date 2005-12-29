@@ -766,9 +766,15 @@ class Inline: pass
 
 class Referential(Resolvable): pass
 
+
 class Targetable(Resolvable):
 
     referenced = 0
+
+    indirect_reference_name = None
+    """Holds the whitespace_normalized_name (contains mixed case) of a target.
+    Required for MoinMoin/reST compatibility."""
+
 
 class Labeled:
     """Contains a `label` as its first element."""

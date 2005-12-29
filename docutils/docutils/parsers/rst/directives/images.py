@@ -63,6 +63,7 @@ def image(name, arguments, options, content, lineno,
             reference_node = nodes.reference(
                 refname=fully_normalize_name(data),
                 name=whitespace_normalize_name(data))
+            reference_node.indirect_reference_name = data
             state.document.note_refname(reference_node)
         else:                           # malformed target
             messages.append(data)       # data is a system message
