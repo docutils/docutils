@@ -368,7 +368,12 @@ class Element(Node):
             self.attributes[att] = []
 
         for att, value in attributes.items():
-            self.attributes[att.lower()] = value
+            att = att.lower()
+            if att in self.list_attributes:
+                # mutable list; make a copy for this node
+                self.attributes[att] = value[:]
+            else:
+                self.attributes[att] = value
 
         if self.tagname is None:
             self.tagname = self.__class__.__name__
