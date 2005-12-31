@@ -1,4 +1,4 @@
-<document ids="restructuredtext-test-document doctitle" names="restructuredtext\ test\ document doctitle" source="functional/input/standalone_rst_html4css1.txt" title="reStructuredText Test Document">
+<document ids="restructuredtext-test-document doctitle" names="restructuredtext\ test\ document doctitle" source="functional/input/standalone_rst_pseudoxml.txt" title="reStructuredText Test Document">
     <title>
         reStructuredText Test Document
     <subtitle ids="examples-of-syntax-constructs subtitle" names="examples\ of\ syntax\ constructs subtitle">
@@ -1827,7 +1827,7 @@
         <system_message backrefs="id24" ids="id23" level="3" line="100" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Undefined substitution referenced: "problematic".
-        <system_message backrefs="id80" ids="id79" level="3" line="358" source="functional/input/standalone_rst_html4css1.txt" type="ERROR">
+        <system_message backrefs="id80" ids="id79" level="3" line="358" source="functional/input/standalone_rst_pseudoxml.txt" type="ERROR">
             <paragraph>
                 Unknown target name: "5".
         <system_message backrefs="id82" ids="id81" level="3" line="367" source="functional/input/data/standard.txt" type="ERROR">

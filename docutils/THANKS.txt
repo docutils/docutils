@@ -149,6 +149,7 @@ donations, tasty treats, and related projects:
 * Anthony Williams
 * Ka-Ping Yee
 * Moshe Zadka
+* Shmuel Zeigerman
 
 Thank you!
 

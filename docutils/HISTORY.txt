@@ -49,6 +49,10 @@ Changes Since 0.3.9
   - Removed the internal lists ``document.substitution_refs``,
     ``document.anonymous_refs``, and ``document.anonymous_targets``.
   - Added a "container" element.
+  - Fixed bug where values of list-valued attributes of elements
+    originating from custom interpreted text roles (i.e., with custom
+    classes) were being shared between element instances.  Reported by
+    Shmuel Zeigerman.
 
 * docutils/statemachine.py:
 
