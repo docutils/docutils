@@ -48,7 +48,7 @@ directives = {
       #u'faq (translation required)': 'questions',
       u'元数据': 'meta',
       #u'imagemap (translation required)': 'imagemap',
-      u'图象': 'image',
+      u'图片': 'image',
       u'图例': 'figure',
       u'包含': 'include',
       u'原文': 'raw',
