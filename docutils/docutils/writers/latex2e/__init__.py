@@ -1,10 +1,10 @@
-"""
-:Author: Engelbert Gruber
-:Contact: grubert@users.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Author: Engelbert Gruber
+# Contact: grubert@users.sourceforge.net
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
+"""
 LaTeX2e document tree Writer.
 """
 
@@ -787,15 +787,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def encode(self, text):
         """
-        Encode special characters in `text` & return.
-            # $ % & ~ _ ^ \ { }
-        Escaping with a backslash does not help with backslashes, ~ and ^.
-
-            < > are only available in math-mode or tt font. (really ?)
-            $ starts math- mode.
-        AND quotes:
-
+        Encode special characters (``# $ % & ~ _ ^ \ { }``) in `text` & return
         """
+        # Escaping with a backslash does not help with backslashes, ~ and ^.
+
+        #     < > are only available in math-mode or tt font. (really ?)
+        #     $ starts math- mode.
+        # AND quotes
         if self.verbatim:
             return text
         # compile the regexps once. do it here so one can see them.

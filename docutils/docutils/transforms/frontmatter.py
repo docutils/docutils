@@ -201,6 +201,8 @@ class DocTitle(TitlePromoter):
 
     This transform also sets the document's metadata title
     (document['title']).
+
+    .. _reStructuredText: http://docutils.sf.net/rst.html
     """
 
     default_priority = 320
@@ -339,6 +341,10 @@ class DocInfo(Transform):
       can't prevent any RCS keywords used in this explanation from
       being expanded. Only the "RCSfile" keyword is stable; its
       expansion text changes only if the file name changes.)
+
+    .. _reStructuredText: http://docutils.sf.net/rst.html
+    .. _reStructuredText Markup Specification:
+       http://docutils.sf.net/docs/ref/rst/restructuredtext.html
     """
 
     default_priority = 340

@@ -932,9 +932,9 @@ class document(Root, Structural, Element):
         -----------  --------  -----------------  -----------  -----
         ids   types  new type  sys.msg.  dupname  ids   types
         ====  =====  ========  ========  =======  ====  =====  =====
-        --    --     explicit  --        --       new   True
-        --    --     implicit  --        --       new   False
-        None  False  explicit  --        --       new   True
+        -     -      explicit  -         -        new   True
+        -     -      implicit  -         -        new   False
+        None  False  explicit  -         -        new   True
         old   False  explicit  implicit  old      new   True
         None  True   explicit  explicit  new      None  True
         old   True   explicit  explicit  new,old  None  True   [#]_
