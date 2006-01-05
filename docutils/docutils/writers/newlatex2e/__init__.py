@@ -1,10 +1,10 @@
-"""
-:Author: Felix Wiemann
-:Contact: Felix_Wiemann@ososo.de
-:Revision: $Revision$
-:Date: $Date$
-:Copyright: This module has been placed in the public domain.
+# Author: Felix Wiemann
+# Contact: Felix_Wiemann@ososo.de
+# Revision: $Revision$
+# Date: $Date$
+# Copyright: This module has been placed in the public domain.
 
+"""
 LaTeX2e document tree Writer.
 """
 
@@ -108,18 +108,18 @@ class LaTeXException(Exception):
 
 class SkipAttrParentLaTeX(LaTeXException):
     """
-    Do not generate \Dattr and \renewcommand{\Dparent}{...} for this
+    Do not generate ``\Dattr`` and ``\renewcommand{\Dparent}{...}`` for this
     node.
 
-    To be raised from before_... methods.
+    To be raised from ``before_...`` methods.
     """
 
 
 class SkipParentLaTeX(LaTeXException):
     """
-    Do not generate \renewcommand{\DNparent}{...} for this node.
+    Do not generate ``\renewcommand{\DNparent}{...}`` for this node.
 
-    To be raised from before_... methods.
+    To be raised from ``before_...`` methods.
     """
 
 

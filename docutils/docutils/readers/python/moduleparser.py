@@ -140,13 +140,15 @@ number from the compiler.parse() AST, and the TokenParser.rhs(lineno)
 method provides the rest.
 
 The Docutils Python reader component will transform this module doctree into a
-Python-specific Docutils doctree, and then a `stylist transform`_ will
+Python-specific Docutils doctree, and then a "stylist transform" will
 further transform it into a generic doctree.  Namespaces will have to be
 compiled for each of the scopes, but I'm not certain at what stage of
 processing.
 
 It's very important to keep all docstring processing out of this, so that it's
 a completely generic and not tool-specific.
+
+::
 
 > Why perform all of those transformations?  Why not go from the AST to a
 > generic doctree?  Or, even from the AST to the final output?
@@ -176,7 +178,7 @@ from the Reader component itself.  One stylist transform could produce
 HappyDoc-like output, another could produce output similar to module docs in
 the Python library reference manual, and so on.
 
-It's for exactly this reason:
+It's for exactly this reason::
 
 >> It's very important to keep all docstring processing out of this, so that
 >> it's a completely generic and not tool-specific.
