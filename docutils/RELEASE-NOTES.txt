@@ -18,8 +18,8 @@ more detailed list of changes, please see the `Docutils History`_.
 .. contents::
 
 
-Release 0.4 (to be released)
-============================
+Release 0.4 (2006-01-07)
+========================
 
 Components:
 
