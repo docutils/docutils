@@ -7,7 +7,11 @@ import os
 import glob
 from distutils.core import setup
 from distutils.command.build_py import build_py
-from distutils.command.install_data import install_data
+
+# From <http://groups.google.de/groups?as_umsgid=f70e3538.0404141327.6cea58ca@posting.google.com>.
+from distutils.command.install import INSTALL_SCHEMES
+for scheme in INSTALL_SCHEMES.values():
+    scheme['data'] = scheme['purelib']
 
 
 def do_setup():
@@ -149,11 +153,6 @@ class dual_build_py(build_py):
             self.build_packages()
         self.byte_compile(self.get_outputs(include_bytecode=0))
 
-
-# From <http://groups.google.de/groups?as_umsgid=f70e3538.0404141327.6cea58ca@posting.google.com>.
-from distutils.command.install import INSTALL_SCHEMES
-for scheme in INSTALL_SCHEMES.values():
-    scheme['data'] = scheme['purelib']
 
 if __name__ == '__main__' :
     do_setup()
