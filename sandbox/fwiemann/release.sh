@@ -34,13 +34,21 @@ function confirm()
     test "$REPLY" && echo Skipped. || "$@"
 }
 
+function svn_up()
+{
+    if test $svn == svk; then
+        confirm svk sync "$depot"
+    fi
+    confirm $svn up
+}
+
 function checkin()
 {
     # Parameters: log_message, file, file, file ...
     log_message="$1"
     shift
-    confirm svn diff "$@"
-    confirm svn ci -m "$log_prefix $log_message" "$@"
+    confirm $svn diff "$@"
+    confirm $svn ci -m "$log_prefix $log_message" "$@"
 }
 
 function set_ver()
@@ -48,7 +56,7 @@ function set_ver()
     # Parameters: old_version new_version
     shopt -s extglob
     echo Determining list of files to be changed...
-    files="docutils/__init__.py setup.py `svn ls test/functional/expected/ | sed 's|^|test/functional/expected/|'`"
+    files="docutils/__init__.py setup.py `$svn ls test/functional/expected/ | sed 's|^|test/functional/expected/|'`"
     echo "Now I'll change the version number to $2 in the following files:"
     echo $files
     echo
@@ -73,18 +81,22 @@ function usage()
 {
     echo 'Usage:'
     echo
-    echo '    release.sh new_version svn_version [stage]'
+    echo '    release.sh new_version svn_version[:branch_version] [stage]'
     echo
     echo 'The following things will be done:'
     echo
     echo '* Change version number to new_version.  (stage 1)'
-    echo '* SVN-export, test and release Docutils version new_version.  (stage 2)'
+    echo '* SVN-export, test, and release Docutils version new_version.  (stage 2)'
     echo '* Change version number to svn_version.  (stage 3)'
     echo
     echo 'If stage is supplied (1, 2 or 3), only the specified stage will'
     echo 'be executed.  Otherwise, it defaults to executing all stages.'
     echo
     echo 'Before doing dangerous things, you will be asked to press enter.'
+    echo
+    echo 'A maintenance branch called docutils-new_version will be created'
+    echo 'if branch_version is given.  The version number inside the'
+    echo 'maintenance branch will be set to branch_version.'
     exit 1
 }
 
@@ -98,7 +110,7 @@ function initialize()
     for py_ver in $python_versions; do
         echo -n "Checking for Python $py_ver (python$py_ver)... "
         if ! echo 'print "OK"' | python$py_ver; then
-            echo "Python $py_ver not found."
+            echo "Python $py_ver (python$py_ver) not found."
             echo Aborting.
             exit 1
         fi
@@ -115,19 +127,77 @@ function initialize()
         echo 'Please cd to a working copy before running this script.'
         exit 1
     fi
-    working_copy="`pwd`"
-    echo -n 'Detecting Subversion root... '
-    svnroot="`svn info . | grep ^URL: | sed 's/URL: //'`"
-    echo "$svnroot"
+    echo -n 'Subversion binary to use: '
+    if [ -d .svn ]; then
+        svn=svn
+    else
+        svn=svk
+    fi
+    echo $svn
+    working_copy="`pwd -P`"
+    echo "Working copy: $working_copy"
+    if test $svn = svk; then
+        depot_path="`svk info . | grep ^Depot\ Path: | sed 's/Depot Path: //'`"
+        depot="`echo "$depot_path" | sed 's|\(//[^/]\+/[^/]\+\).*|\1|'`"
+        echo "SVK depot: $depot"
+        mirrored_from="`svk info . | grep ^Mirrored\ From: | sed 's/Mirrored From: //;s/, Rev\. .*//'`"
+        svnurl="$mirrored_from`echo "$depot_path" | sed 's|//[^/]\+/[^/]\+||'`"
+    else
+        svnurl="`$svn info . | grep ^URL: | sed 's/URL: //'`"
+    fi
+    if test -z "$svnurl"; then
+        echo 'Unable to detect Subversion URL.  Aborting.'
+        exit 1
+    fi
+    echo "Subversion URL: $svnurl"
+    if ! echo "$svnurl" | grep -q 'branches\|trunk'; then
+        echo 'Subversion URL contains neither "branches" nor "trunk".'
+        echo 'Aborting.'
+        exit 1
+    fi
+    svnroot="`echo "$svnurl" | sed 's/\/\(branches\|trunk\).*//'`"
+    echo "Subversion root URL: $svnroot"
+    if test "$svnurl" = "$svnroot"; then
+        echo 'Error: Subversion URL and Subversion root URL are the same.'
+        exit 1
+    fi
     echo -n 'Detecting current Docutils version... '
     old_ver="`python -c 'import docutils; print docutils.__version__'`"
     echo "$old_ver"
     new_ver="$1"
     # log_prefix is for SVN logs.
-    log_prefix="Release $1:"
+    log_prefix="Release $new_ver:"
     echo "New version number (for releasing): $new_ver"
     svn_ver="$2"
+    if echo "$svn_ver" | grep -q :; then
+        # Split at colon: svn_ver:branch_ver
+        branch_ver="${svn_ver#*:}"
+        svn_ver="${svn_ver%:*}"
+    else
+        branch_ver=
+    fi
     echo "New Subversion version number (after releasing): $svn_ver"
+    echo -n 'Create maintenance branch: '
+    if test "$branch_ver"; then
+        echo yes
+        echo "New version number on maintenance branch: $branch_ver"
+    else
+        echo no
+    fi
+    if test "$branch_ver"; then
+        echo -n 'Checking that we have a full checkout... '
+        if echo "$working_copy" | grep -q 'branches\|trunk'; then
+            echo OK
+        else
+            echo 'no'
+            echo 'Working copy path contains neither "branches" nor "trunk".'
+            echo 'You need a full checkout in order to branch.'
+            echo 'Aborting.'
+            exit 1
+        fi
+        wcroot="`echo "$working_copy" | sed 's/\/\(branches\|trunk\).*//'`"
+        echo "Working copy root: $wcroot"
+    fi
     tarball=docutils-"$new_ver".tar.gz
     echo "Tarball name: $tarball"
     echo 'Initialization completed.'
@@ -149,26 +219,52 @@ function test_tarball()
     extras="`cd extras; for extrafile in *.py; do echo -n ",$extrafile{,c,o}"; done`"
     confirm su -c '
         for py_ver in '"$python_versions"'; do
-            echo "Deleting and installing Docutils on Python $py_ver.  Press enter."
+            echo "Deleting and installing Docutils and its test suite on Python $py_ver."
+            echo "Press enter."
             read
+            site_packages="/usr/local/lib/python$py_ver/site-packages"
+            if test ! -d "$site_packages"; then
+                site_packages="/usr/lib/python$py_ver/site-packages"
+            fi
+            if test ! -d "$site_packages"; then
+                echo "Error: \"$site_packages\" does not exist."
+                exit 1
+            fi
+            if -e "$site_packages/test"; then
+                echo "Error: \"$site_packages/test\" exists."
+                exit 1
+            fi
             rm -rfv /usr/{local,}lib/python$py_ver/site-packages/{docutils'"$extras"'}
             python$py_ver setup.py install
+            echo
+            cp -rv test "$site_packages/"
             echo "Press enter to continue."
             read
         done'
-    run cd test
     echo 'Running the test suite with all Python versions.'
     echo 'Press enter (or enter anything to skip):'
     read
     if [ ! "$REPLY" ]; then
         for py_ver in $python_versions; do
-            run python$py_ver -u alltests.py
+            site_packages="/usr/local/lib/python$py_ver/site-packages"
+            if test ! -d "$site_packages"; then
+                site_packages="/usr/lib/python$py_ver/site-packages"
+            fi
+            if test ! -d "$site_packages"; then
+                echo "Error: \"$site_packages\" does not exist."
+                exit 1
+            fi
+            run python$py_ver -u "$site_packages/test/alltests.py"
             run find -name \*.pyc -exec rm {} \;
         done
     fi
-    run cd ../..
+    run cd ..
     echo "Cleaning up..."
     run rm -rf tarball_test
+    confirm su -c '
+        for py_ver in '"$python_versions"'; do
+            rm -rfv /usr{/local,}/lib/python$py_ver/site-packages/test
+        done'
     echo
 }
 
@@ -218,6 +314,21 @@ EOF
     fi
 }
 
+function create_maintenance_branch()
+{
+    echo 'Creating maintenance branch.'
+    branch_name="docutils-$new_ver"
+    echo "Branch name: $branch_name"
+    branch_url="$svnroot/branches/$branch_name"
+    echo "Branch URL: $branch_url"
+    confirm svn cp "$svnurl" "$branch_url" -m \
+        "$log_prefix creating maintenance branch for version $new_ver"
+    cd "$wcroot"
+    svn_up
+    cd branches/"$branch_name"
+    set_ver "$new_ver" "$branch_ver"
+}
+
 function run_stage()
 {
     if [ ! "$1" ]; then
@@ -252,25 +363,26 @@ function run_stage()
 
 function stage_1()
 {
-    confirm svn up
+    svn_up
     echo
     # update __version_details__ string
     (echo ",s/^__version_details__ = .*\$/__version_details__ = 'release'/";
         echo wq) | ed docutils/__init__.py 2> /dev/null
     set_ver "$old_ver" "$new_ver"
     echo
-    echo 'Now updating HISTORY.txt...'
+    history_files='HISTORY.txt RELEASE-NOTES.txt'
+    echo "Now updating the following files: $history_files"
     old_string="Changes Since [0-9.]+"
     new_string="Release $new_ver (`date --utc --iso-8601`)"
-    echo 'Press enter to replace "'"$old_string"'" by "'"$new_string"\",
+    echo 'Press enter to replace "'"$old_string"'" with "'"$new_string"\",
     echo 'or enter anything to skip.'
     read
-    test "$REPLY" || python -c "if 1: # for indentation
+    test "$REPLY" || python -c "for filename in '$history_files'.split():
         import re
-        h = file('HISTORY.txt').read()
+        h = file(filename).read()
         h = re.sub('$old_string\\n=+', '$new_string\\n' + '=' * len('$new_string'), h, count=1)
-        file('HISTORY.txt', 'w').write(h)"
-    checkin 'closed "Changes Since ..." section' HISTORY.txt
+        file(filename, 'w').write(h)"
+    checkin 'closed "Changes Since ..." section' $history_files
 }
 
 function stage_2()
@@ -284,7 +396,7 @@ function stage_2()
     read
     if [ ! "$REPLY" ]; then
         run cd "$working_area"
-        confirm svn export "$svnroot"
+        confirm svn export "$svnurl"
         echo
         echo 'Building the release tarball.'
         run cd docutils
@@ -296,7 +408,7 @@ function stage_2()
         echo "Testing documentation and uploading htdocs of version $new_ver..."
         confirm upload_htdocs
         echo "Tagging current revision..."
-        confirm svn cp "${svnroot%/trunk*}/trunk/" "${svnroot%/trunk*}/tags/docutils-$new_ver/" -m "$log_prefix tagging released revision"
+        confirm $svn cp "${svnurl%/trunk*}/trunk/" "${svnurl%/trunk*}/tags/docutils-$new_ver/" -m "$log_prefix tagging released revision"
         echo "Uploading $tarball to SF.net."
         confirm upload_tarball
         echo 'Now go to https://sourceforge.net/project/admin/editpackages.php?group_id=38414'
@@ -332,26 +444,33 @@ function stage_2()
 
 function stage_3()
 {
-    confirm svn up
+    svn_up
     echo
     # update __version_details__ string
     (echo ",s/^__version_details__ = .*\$/__version_details__ = 'repository'/";
         echo wq) | ed docutils/__init__.py 2> /dev/null
-    set_ver "$new_ver" "$svn_ver"
+    checkin 'set __version_details__ to "repository"'
     echo
-    echo 'Now updating HISTORY.txt...'
+    history_files='HISTORY.txt RELEASE-NOTES.txt'
+    echo "Now updating the following files: $history_files"
     add_string="Changes Since $new_ver"
     before="Release "
     echo 'Press enter to add "'"$add_string"'" section,'
     echo 'or enter anything to skip.'
     read
-    test "$REPLY" || python -c "if 1: # for indentation
+    test "$REPLY" || python -c "for filename in '$history_files'.split():
         import re
-        h = file('HISTORY.txt').read()
+        h = file(filename).read()
         h = re.sub('$before', '$add_string\\n' + '=' * len('$add_string') +
                    '\\n\\n\\n$before', h, count=1)
-        file('HISTORY.txt', 'w').write(h)"
-    checkin "added empty \"Changes Since $new_ver\" section" HISTORY.txt
+        file(filename, 'w').write(h)"
+    checkin "added empty \"Changes Since $new_ver\" section" $history_files
+    echo
+    if test "$branch_ver"; then
+        create_maintenance_branch
+        cd "$working_copy"
+    fi
+    set_ver "$new_ver" "$svn_ver"
     echo
     echo 'Please update the web page now (web/index.txt).'
     echo "Press enter when you're done."
@@ -359,7 +478,6 @@ function stage_3()
     echo 'Running docutils-update on the server...'
     echo 'This may take some time.'
     confirm ssh shell.berlios.de docutils-update
-    echo 
 }
 
 initialize "$@"
