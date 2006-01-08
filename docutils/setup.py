@@ -150,9 +150,10 @@ class dual_build_py(build_py):
         self.byte_compile(self.get_outputs(include_bytecode=0))
 
 
+# From <http://groups.google.de/groups?as_umsgid=f70e3538.0404141327.6cea58ca@posting.google.com>.
+from distutils.command.install import INSTALL_SCHEMES
+for scheme in INSTALL_SCHEMES.values():
+    scheme['data'] = scheme['purelib']
+
 if __name__ == '__main__' :
-    # From <http://groups.google.de/groups?as_umsgid=f70e3538.0404141327.6cea58ca@posting.google.com>.
-    from distutils.command.install import INSTALL_SCHEMES
-    for scheme in INSTALL_SCHEMES.values():
-        scheme['data'] = scheme['purelib']
     do_setup()
