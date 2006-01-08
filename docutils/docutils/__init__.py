@@ -58,9 +58,9 @@ number is bumped whenever there is a significant project release.  The major
 number will be bumped when the project is feature-complete, and perhaps if
 there is a major change in the design."""
 
-__version_details__ = 'release'
-"""Extra version details (e.g. 'snapshot 2005-05-29, r3410' or 'release'),
-modified automatically."""
+__version_details__ = 'pre-release'
+"""Extra version details (e.g. 'snapshot 2005-05-29, r3410', 'repository',
+'release'), modified automatically & manually."""
 
 class ApplicationError(StandardError): pass
 class DataError(ApplicationError): pass
