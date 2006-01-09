@@ -53,14 +53,13 @@ We recommend that you use the latest **snapshot**,
 features* and *fewer bugs* than the "official" releases |---| they're
 not only for developers!
 
-The latest **release package** is `docutils-0.3.9.tgz`__.  It has been
-released on 2005-05-26 and is mostly intended for distributors.  See
-the `announcement posting`_ for a list of changes since the previous
-release (0.3.7).
+The latest **release package** is `docutils-0.4.tgz`__.  It has been
+released on 2006-01-09 and is mostly intended for distributors.  See
+the `release notes`_ for a list of changes since the previous release
+(0.3.9).
 
-__ http://prdownloads.sourceforge.net/docutils/docutils-0.3.9.tar.gz?download
-.. _announcement posting:
-   http://article.gmane.org/gmane.text.docutils.user/2054
+__ http://prdownloads.sourceforge.net/docutils/docutils-0.4.tar.gz?download
+.. _release notes: RELEASE-NOTES.html#release-0-4-2006-01-07
 
 More snapshots:
 
