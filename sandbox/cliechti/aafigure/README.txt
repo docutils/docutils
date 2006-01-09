@@ -65,9 +65,15 @@ Tests
 
 Simple tests
 ~~~~~~~~~~~~
+Different arrow types:
+
 .. aafigure::
 
-    -->
+    <-->
+    >--<
+    o--o
+
+Boxes and shapes:
 
 .. aafigure::
 
@@ -133,12 +139,12 @@ It would be cool if it could display simple schematics.
 .. aafigure::
 
            R1    
-    o------XXXX----+-----o
+    o------XXXX----o-----o
            100k    |
                   -+- C1
                   -+- 100n
                    |
-    o--------------+-----o
+    o--------------o-----o
 
 - Resistor should not be filled -> can be solved by symbol detection
 - Capacitor not good, would prefer --||--  -> symbol detection

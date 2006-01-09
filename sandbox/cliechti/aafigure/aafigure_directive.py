@@ -21,12 +21,13 @@ def AAFigureDrective(name, arguments, options, content, lineno,
     aaimg = aafigure.AsciiArtImage(text)
     #~ print text
     aaimg.recognize()
-    if not options.has_key('scale'):
-        options['scale'] = 1
+    if not options.has_key('scale'): options['scale'] = 1
+    if not options.has_key('line_width'): options['line_width'] = 2
     
     svgout = svg.SVGOutputVisitor(
         file(output_name, 'w'),
         scale = options['scale']*10,
+        line_width = options['line_width'],
         debug = True
     )
     svgout.visit(aaimg)
@@ -36,14 +37,17 @@ def AAFigureDrective(name, arguments, options, content, lineno,
     #~ return [nodes.image(output_name, **options)]
     
     attributes = {'format': 'html'}
-    return [nodes.raw('', '<embed src="%s" %s/>' % (
+    return [nodes.raw('', '<embed src="%s" %s type="image/svg+xml"/>' % (
             output_name,
             svgout.get_size_attrs()
         ), **attributes)]
 
 AAFigureDrective.content = True
 #~ AAFigureDrective.arguments = (1, 1, 1)
-AAFigureDrective.options = {'scale': float}
+AAFigureDrective.options = {
+    'scale': float,
+    'line_width': float,
+}
 
 def register():
     register_directive('aafigure', AAFigureDrective)

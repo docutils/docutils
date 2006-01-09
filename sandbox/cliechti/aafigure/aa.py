@@ -41,7 +41,7 @@ class AsciiOutputVisitor:
                 m = float(dy)/dx
             else:
                 m = 0
-            for x in range(x1, x2+1):
+            for x in range(int(x1), int(x2+1)):
                 self.image[x,int(y)] = '#'
             y += m
         else:
@@ -50,13 +50,9 @@ class AsciiOutputVisitor:
                 m = float(dx)/dy
             else:
                 m = 0
-            for y in range(y1, y2+1):
+            for y in range(int(y1), int(y2+1)):
                 self.image[int(x),y] = '#'
             x += m
-        if line.start_style:
-            self.image[line.start.x*self.scale,line.start.y*self.scale] = 'O'
-        if line.end_style:
-            self.image[line.end.x*self.scale,line.end.y*self.scale] = 'O'
 
     def visit_rectangle(self, rectangle):
         x1, x2 = rectangle.p1.x*self.scale, rectangle.p2.x*self.scale
