@@ -172,6 +172,21 @@ class CustomTestCase(StandardTestCase):
     def __repr__(self):
         return "<%s %s>" % (self.id, unittest.TestCase.__repr__(self))
 
+    def clear_roles(self):
+        # Language-specific roles and roles added by the
+        # "default-role" and "role" directives are currently stored
+        # globally in the roles._roles dictionary.  This workaround
+        # empties that dictionary.
+        roles._roles = {}
+
+    def setUp(self):
+        StandardTestCase.setUp(self)
+        self.clear_roles()
+
+    def tearDown(self):
+        StandardTestCase.tearDown(self)
+        self.clear_roles()
+
     def compare_output(self, input, output, expected):
         """`input`, `output`, and `expected` should all be strings."""
         if isinstance(input, UnicodeType):
@@ -421,8 +436,6 @@ class ParserTestCase(CustomTestCase):
         settings = self.settings.copy()
         settings.__dict__.update(self.suite_settings)
         document = utils.new_document('test data', settings)
-        # Remove any additions made by "role" directives:
-        roles._roles = {}
         self.parser.parse(self.input, document)
         output = document.pformat()
         self.compare_output(self.input, output, self.expected)

@@ -81,15 +81,6 @@ class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
         del kwargs['configfile']
         DocutilsTestSupport.CustomTestCase.__init__(self, *args, **kwargs)
 
-    def clear_roles(self):
-        # Language-specific roles and the default role of the reST
-        # parser are currently set globally in the roles._roles
-        # dictionary.  This workaround empties that dictionary.
-        from docutils.parsers.rst import roles
-        roles._roles = {}
-
-    setUp = tearDown = clear_roles
-
     def shortDescription(self):
         return 'test_functional.py: ' + self.configfile
 
