@@ -30,6 +30,8 @@ svn revert . -R
 svn up
 svn merge -r"$[$r-1]:$r" ../../trunk/docutils .
 svn diff
+# Python 2.4 is faster and outputs unified diffs for the functional
+# tests, so it comes first.
 nice python2.4 test/alltests.py
 nice python2.1 test/alltests.py
 nice python2.2 test/alltests.py
