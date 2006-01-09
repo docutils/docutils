@@ -45,8 +45,8 @@ TODO
 - the way the image is embedded is a hack (inserting an ``<embed ..>`` tag
   trough a raw node...
 - search for ways to bring in color
-- aafigure probably need arguments like ``scale``, ``font-family``, ...
-- the svg is sometimes cropped / too small
+- aafigure probably need arguments like ``font-family``, ...
+- punctuation not included in strings
 
 License
 -------
@@ -81,6 +81,7 @@ Simple tests
 A flow chart
 ~~~~~~~~~~~~
 .. aafigure::
+    :scale: 0.6
 
         +---------+
         | State 1 |
@@ -120,7 +121,7 @@ No not realy, yet. But you get the idea.
 
 Electronics
 ~~~~~~~~~~~
-It would be cool if if could display simple schematics.
+It would be cool if it could display simple schematics.
 
 .. aafigure::
 
@@ -132,9 +133,13 @@ It would be cool if if could display simple schematics.
                    |
     o--------------+-----o
 
+.. Resistor should not be filled -> can be solved by symbol detection
+.. Capacitor not good, would prefer --||--  -> symbol detection
+
 Timing diagrams
 ~~~~~~~~~~~~~~~
 .. aafigure::
+    :scale: 0.4
 
         ___     ___
     ___|   |___|   |_____________________
@@ -144,6 +149,7 @@ Timing diagrams
 Or one with descriptions:
 
 .. aafigure::
+    :scale: 0.8
 
                         sda_edge
          start                              stop

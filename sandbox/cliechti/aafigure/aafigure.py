@@ -20,7 +20,11 @@ CLASS_LINE = 'line'
 CLASS_STRING = 'str'
 CLASS_RECTANGLE = 'rect'
 
+# - - - - - - - - - - - - - - Shapes - - - - - - - - - - - - - - -
 class Point:
+    """A single point. This class is primary use is to represent coordinates
+       for the other shapes.
+    """
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -29,6 +33,7 @@ class Point:
         return 'Point(%r, %r)' % (self.x, self.y)
 
 class Line:
+    """Line with starting and ending point. Both ends can have arrows"""
     def __init__(self, start, end, start_style=None, end_style=None):
         self.start = start
         self.end = end
@@ -44,6 +49,7 @@ class Line:
         )
 
 class Rectangle:
+    """Rectangle with to edge coordiantes."""
     def __init__(self, p1, p2):
         self.p1 = p1
         self.p2 = p2
@@ -51,6 +57,7 @@ class Rectangle:
         return 'Rectangle(%r, %r)' % (self.p1, self.p2)
 
 class Label:
+    """A label at a position"""
     def __init__(self, position, text):
         self.position = position
         self.text = text
@@ -58,10 +65,18 @@ class Label:
         return 'Label(%r, %r)' % (self.position, self.text)
 
 
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 class AsciiArtImage:
+    """This class hold a ASCII art figure and has methods to parse it.
+       The resaulting list of shapes is also stored here.
+    """
     ARROW_HEADS = list('<>Vv^')
     
     def __init__(self, text):
+        """Take a ASCII art figure and store it, prepare for ``recognize``"""
+        #XXX TODO tab expansion
         #detect size of input image
         self.image = []
         max_x = 0
@@ -88,21 +103,26 @@ class AsciiArtImage:
         )
         
     def __str__(self):
+        """Return the original image"""
         return '\n'.join([self.image[y] for y in range(self.height)])
     
     def get(self, x, y):
-        """get character from image. gives no error for access out of
-           bounds, just returns a space"""
+        """Get character from image. Gives no error for access out of
+           bounds, just returns a space. This simplifies the scanner
+           functions.
+        """
         try:
             return self.image[y][x]
         except IndexError:
             return ' '
 
     def tag(self, coordinates, classification):
+        """Tag coordinates as used, store classification"""
         for x, y in coordinates:
             self.classification[y][x] = classification
 
     def recognize(self):
+        """Try to convert ASCII are to vector graphics."""
         #XXX search for symbols
         #search for standard shapes
         for y in range(self.height):
@@ -130,12 +150,15 @@ class AsciiArtImage:
         _, end_y, line_end_style = self._follow_line(x, y, dy=1, line_character='|')
         #follow line to the top
         _, start_y, line_start_style = self._follow_line(x, y, dy=-1, line_character='|')
+        #if a '+' follows a line, then the line is streched to hit the '+' center
         start_y_fix = end_y_fix = 0
         if self.get(x, start_y-1) == '+':
             start_y_fix = -NOMINAL_SIZE+CENTER
         if self.get(x, end_y+1) == '+':
             end_y_fix = CENTER
+        #tag characters as used
         self.tag([(x, y) for y in range(start_y, end_y+1)], CLASS_LINE)
+        #return the new shape object
         return Line(
             Point(x*NOMINAL_SIZE+CENTER, start_y*NOMINAL_SIZE+TOP+start_y_fix),
             Point(x*NOMINAL_SIZE+CENTER, end_y*NOMINAL_SIZE+BOTTOM+end_y_fix),
@@ -266,20 +289,20 @@ def render(text):
     svgout.visit(aaimg)
 
 
-#~ if __name__ == '__main__':
-    #~ aaimg = AsciiArtImage("""
-        #~ ---> | ^|   |
-        #~ <--- | || --+--
-        #~ <--> | |V   |
-     #~ __             __
-    #~ |  |__  +---+  |__|
-            #~ |box|   ..
-            #~ +---+  Xenophon
-    #~ """)
-    #~ print aaimg
-    #~ aaimg.recognize()
-    #~ print "%r" % aaimg
-    #~ aav = aa.AsciiOutputVisitor()
-    #~ aav.visit(aaimg)
-    #~ print aav
+if __name__ == '__main__':
+    aaimg = AsciiArtImage("""
+        ---> | ^|   |
+        <--- | || --+--
+        <--> | |V   |
+     __             __
+    |  |__  +---+  |__|
+            |box|   ..
+            +---+  Xenophon
+    """)
+    print aaimg
+    aaimg.recognize()
+    print "%r" % aaimg
+    aav = aa.AsciiOutputVisitor()
+    aav.visit(aaimg)
+    print aav
 
