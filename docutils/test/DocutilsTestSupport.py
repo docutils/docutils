@@ -183,10 +183,6 @@ class CustomTestCase(StandardTestCase):
         StandardTestCase.setUp(self)
         self.clear_roles()
 
-    def tearDown(self):
-        StandardTestCase.tearDown(self)
-        self.clear_roles()
-
     def compare_output(self, input, output, expected):
         """`input`, `output`, and `expected` should all be strings."""
         if isinstance(input, UnicodeType):

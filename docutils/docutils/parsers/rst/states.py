@@ -443,12 +443,7 @@ class Inliner:
     Parse inline markup; call the `parse()` method.
     """
 
-    def __init__(self, roles=None):
-        """
-        `roles` is a mapping of canonical role name to role function or bound
-        method, which enables additional interpreted text roles.
-        """
-
+    def __init__(self):
         self.implicit_dispatch = [(self.patterns.uri, self.standalone_uri),]
         """List of (pattern, bound method) tuples, used by
         `self.implicit_inline`."""
