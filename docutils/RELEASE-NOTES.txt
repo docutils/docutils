@@ -21,6 +21,17 @@ more detailed list of changes, please see the `Docutils History`_.
 Release 0.4 (2006-01-07)
 ========================
 
+.. Note::
+
+   Docutils 0.4.x is the last version that will support Python 2.1.
+   Docutils 0.5 will *not* be compatible with Python 2.1; Python 2.2
+   or later will be required.
+
+   Docutils 0.4.x is the last version that will make compromises in
+   its HTML output for Netscape Navigator 4.  Docutils 0.5 will
+   require more up-to-date browsers (the exact definition is to be
+   determined).
+
 Components:
 
 * Added an `S5/HTML writer`__ and the rst2s5.py__ front end:
