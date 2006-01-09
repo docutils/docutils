@@ -219,7 +219,7 @@ function test_tarball()
     extras="`cd extras; for extrafile in *.py; do echo -n ",$extrafile{,c,o}"; done`"
     confirm su -c '
         for py_ver in '"$python_versions"'; do
-            echo "Deleting and installing Docutils and its test suite on Python $py_ver."
+            echo "Deleting and installing Docutils on Python $py_ver."
             echo "Press enter."
             read
             site_packages="/usr/local/lib/python$py_ver/site-packages"
@@ -230,40 +230,37 @@ function test_tarball()
                 echo "Error: \"$site_packages\" does not exist."
                 exit 1
             fi
-            if -e "$site_packages/test"; then
-                echo "Error: \"$site_packages/test\" exists."
+            if -e "$site_packages/docutils-test"; then
+                echo "Error: \"$site_packages/docutils-test\" exists."
                 exit 1
             fi
             rm -rfv /usr/{local,}lib/python$py_ver/site-packages/{docutils'"$extras"'}
             python$py_ver setup.py install
             echo
-            cp -rv test "$site_packages/"
-            echo "Press enter to continue."
+            echo "Copying the test suite to the site-packages directory of Python $py_ver."
+            echo "Press enter."
             read
+            cp -rv test "$site_packages/docutils-test"
         done'
-    echo 'Running the test suite with all Python versions.'
-    echo 'Press enter (or enter anything to skip):'
-    read
-    if [ ! "$REPLY" ]; then
-        for py_ver in $python_versions; do
-            site_packages="/usr/local/lib/python$py_ver/site-packages"
-            if test ! -d "$site_packages"; then
-                site_packages="/usr/lib/python$py_ver/site-packages"
-            fi
-            if test ! -d "$site_packages"; then
-                echo "Error: \"$site_packages\" does not exist."
-                exit 1
-            fi
-            run python$py_ver -u "$site_packages/test/alltests.py"
-            run find -name \*.pyc -exec rm {} \;
-        done
-    fi
-    run cd ..
+    echo
+    echo 'Running the test suite as root with all Python versions.'
+    for py_ver in $python_versions; do
+        site_packages="/usr/local/lib/python$py_ver/site-packages"
+        if test ! -d "$site_packages"; then
+            site_packages="/usr/lib/python$py_ver/site-packages"
+        fi
+        if test ! -d "$site_packages"; then
+            echo "Error: \"$site_packages\" does not exist."
+            exit 1
+        fi
+        confirm su -c "python$py_ver -u \"$site_packages/docutils-test/alltests.py\""
+    done
+    run cd ../..
     echo "Cleaning up..."
     run rm -rf tarball_test
     confirm su -c '
         for py_ver in '"$python_versions"'; do
-            rm -rfv /usr{/local,}/lib/python$py_ver/site-packages/test
+            rm -rfv /usr{/local,}/lib/python$py_ver/site-packages/docutils{-test,}
         done'
     echo
 }
@@ -322,7 +319,7 @@ function create_maintenance_branch()
     branch_url="$svnroot/branches/$branch_name"
     echo "Branch URL: $branch_url"
     confirm svn cp "$svnurl" "$branch_url" -m \
-        "$log_prefix creating maintenance branch for version $new_ver"
+        "$log_prefix created maintenance branch for version $new_ver"
     cd "$wcroot"
     svn_up
     cd branches/"$branch_name"
@@ -408,7 +405,7 @@ function stage_2()
         echo "Testing documentation and uploading htdocs of version $new_ver..."
         confirm upload_htdocs
         echo "Tagging current revision..."
-        confirm $svn cp "${svnurl%/trunk*}/trunk/" "${svnurl%/trunk*}/tags/docutils-$new_ver/" -m "$log_prefix tagging released revision"
+        confirm svn cp "$svnurl" "$svnroot/tags/docutils-$new_ver/" -m "$log_prefix tagging released revision"
         echo "Uploading $tarball to SF.net."
         confirm upload_tarball
         echo 'Now go to https://sourceforge.net/project/admin/editpackages.php?group_id=38414'
@@ -429,7 +426,7 @@ function stage_2()
         test "$REPLY" || break
     done
     confirm test_tarball
-    echo 'Registering at PyPI...'
+    echo 'Registering with PyPI...'
     echo 'Press enter to proceed (or enter anything to skip)...'
     read
     if [ ! "$REPLY" ]; then
@@ -461,7 +458,7 @@ function stage_3()
     test "$REPLY" || python -c "for filename in '$history_files'.split():
         import re
         h = file(filename).read()
-        h = re.sub('$before', '$add_string\\n' + '=' * len('$add_string') +
+        h = re.sub('\n$before', '\\n$add_string\\n' + '=' * len('$add_string') +
                    '\\n\\n\\n$before', h, count=1)
         file(filename, 'w').write(h)"
     checkin "added empty \"Changes Since $new_ver\" section" $history_files
