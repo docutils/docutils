@@ -18,7 +18,7 @@ more detailed list of changes, please see the `Docutils History`_.
 .. contents::
 
 
-Release 0.4 (2006-01-07)
+Release 0.4 (2006-01-09)
 ========================
 
 .. Note::
