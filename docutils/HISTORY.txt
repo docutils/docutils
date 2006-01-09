@@ -176,14 +176,12 @@ Release 0.4 (2006-01-09)
 
 * docutils/writers/: Several writer modules (html4css1.py) were
   converted into packages.  Support modules and data files have been
-  moved into the packages.
-
-  The stylesheets for the HTML writers are now installed along with
-  the code, the code knows where to find them, and the default is to
-  use them (actually, to embed them).  Some adjustments to
-  configuration files may be necessary.  The easiest way to obtain the
-  new default behavior is to remove all settings whose name includes
-  "stylesheet".
+  moved into the packages.  The stylesheets for the HTML writers are
+  now installed along with the code, the code knows where to find
+  them, and the default is to use them (actually, to embed them).
+  Some adjustments to configuration files may be necessary.  The
+  easiest way to obtain the new default behavior is to remove all
+  settings whose name includes "stylesheet".
 
 * docutils/writers/__init__.py:
 
