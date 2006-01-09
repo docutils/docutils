@@ -23,9 +23,11 @@ def AAFigureDrective (name, arguments, options, content, lineno,
     aaimg = aafigure.AsciiArtImage(text)
     #~ print text
     aaimg.recognize()
+    if not options.has_key('scale'):
+        options['scale'] = 1
     svgout = svg.SVGOutputVisitor(
         file(output_name, 'w'),
-        scale = 10,
+        scale = options['scale']*10,
         debug = True
     )
     svgout.visit(aaimg)
@@ -41,6 +43,8 @@ def AAFigureDrective (name, arguments, options, content, lineno,
         ), **attributes)]
 
 AAFigureDrective.content = True
+#~ AAFigureDrective.arguments = (1, 1, 1)
+AAFigureDrective.options = {'scale': float}
 
 def register():
     register_directive('aafigure', AAFigureDrective)
