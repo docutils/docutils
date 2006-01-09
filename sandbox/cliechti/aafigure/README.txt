@@ -16,9 +16,16 @@ Files:
 aafigure.py
     ASCII art parser. This is the main module.
 
+aafigure_directive.py
+    Implmements the ``aafigure`` Docutils directive that takes these
+    ASCII art figures ang generates SVG.
+
 aa.py
     ASCII art output backend. Intended for tests, not for the end user.
 
+rst2html.py
+    Patched version that adds the ``aafigure`` Docutils directive.
+    
 svg.py
     SVG output backend.
 
@@ -133,8 +140,8 @@ It would be cool if it could display simple schematics.
                    |
     o--------------+-----o
 
-.. Resistor should not be filled -> can be solved by symbol detection
-.. Capacitor not good, would prefer --||--  -> symbol detection
+- Resistor should not be filled -> can be solved by symbol detection
+- Capacitor not good, would prefer --||--  -> symbol detection
 
 Timing diagrams
 ~~~~~~~~~~~~~~~
