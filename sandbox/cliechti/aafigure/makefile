@@ -1,5 +1,5 @@
-# this makefile is my my convenience beacu my editor allows easily to runn make
-# to run the tests
+# this makefile is for my convenience beacuse my editor has a handy shortcut to
+# run make
 
 all:
 	python rst2html.py --traceback README.txt >readme.html
