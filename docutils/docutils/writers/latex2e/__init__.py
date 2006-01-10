@@ -1382,7 +1382,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append(':]')
 
     def visit_figure(self, node):
-        if not node.attributes.has_key('align'):
+        if (not node.attributes.has_key('align') or
+            node.attributes['align'] == 'center'):
             align = 'center'
         else:
             align = 'flush'+node.attributes['align']
