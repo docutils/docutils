@@ -285,27 +285,30 @@ class AsciiArtImage:
            __|   |___
         """
         #follow line to the right
-        end_x, _, line_end_style = self._follow_line(x, y, dx=1, line_character='_')
+        end_x, _, line_end_style = self._follow_line(x, y, dx=1, line_character='_', arrows=False)
         #follow line to the left
-        start_x, _, line_start_style = self._follow_line(x, y, dx=-1, line_character='_')
+        start_x, _, line_start_style = self._follow_line(x, y, dx=-1, line_character='_', arrows=False)
         self.tag([(x, y) for x in range(start_x, end_x+1)], CLASS_LINE)
         #return the new shape object with arrows etc
         p1 = complex(start_x*NOMINAL_SIZE+LEFT-CENTER, y*NOMINAL_SIZE+BOTTOM)
         p2 = complex(end_x*NOMINAL_SIZE+RIGHT+CENTER, y*NOMINAL_SIZE+BOTTOM)
         return [Line(p1, p2)]
 
-    def _follow_line(self, x, y, dx=0, dy=0, line_character=None):
+    def _follow_line(self, x, y, dx=0, dy=0, line_character=None, arrows=True):
         """helper function for all the line functions"""
         #follow line in the given direction
         while 0 <= x < self.width and 0<= y < self.height and self.get(x+dx, y+dy) == line_character:
             x += dx
             y += dy
-        #check for arrow head
-        following_character = self.get(x+dx, y+dy)
-        if following_character in self.ARROW_HEADS:
-            line_end_style = self.get_arrow(following_character, dx, dy)
-            x += dx
-            y += dy
+        if arrows:
+            #check for arrow head
+            following_character = self.get(x+dx, y+dy)
+            if following_character in self.ARROW_HEADS:
+                line_end_style = self.get_arrow(following_character, dx, dy)
+                x += dx
+                y += dy
+            else:
+                line_end_style = None
         else:
             line_end_style = None
         return x, y, line_end_style
