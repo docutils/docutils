@@ -42,10 +42,11 @@ class SVGOutputVisitor:
         self.width = (aa_image.width+1)*aa_image.nominal_size
         self.height = (aa_image.height+1)*aa_image.nominal_size
         self.file_like.write("""\
-<?xml version="1.0" standalone="no" ?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
-  "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-<svg width="%s" height="%s" xmlns="http://www.w3.org/2000/svg"
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" 
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+<svg width="%s" height="%s" version="1.1" xmlns="http://www.w3.org/2000/svg"
   xmlns:xlink="http://www.w3.org/1999/xlink">
 """ % (
             self._num(self.width),

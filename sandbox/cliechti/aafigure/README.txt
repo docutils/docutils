@@ -164,8 +164,8 @@ Different arrow types:
 
 .. aafigure::
 
-    <-->  >->
-    >--<  o-->
+    <-->  >->   --> <--
+    >--<  o-->  -->+<--
     o--o
 
 Boxes and shapes:
