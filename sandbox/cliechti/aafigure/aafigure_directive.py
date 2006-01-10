@@ -41,7 +41,8 @@ def AAFigureDrective(name, arguments, options, content, lineno,
         )
         svgout.visit(aaimg)
         attributes = {'format': 'html'}
-        result = [nodes.raw('', '<embed src="%s" %s type="image/svg+xml"/>' % (
+        #~ result = [nodes.raw('', '<embed src="%s" %s type="image/svg+xml"/>' % (
+        result = [nodes.raw('', '<object type="image/svg+xml" data="%s" %s></object>' % (
             output_name,
             svgout.get_size_attrs()
         ), **attributes)]
