@@ -12,14 +12,12 @@ import svg
 import aa
 
 NOMINAL_SIZE = 2
-LEFT = TOP = 0
-CENTER = NOMINAL_SIZE/2
-RIGHT = BOTTOM = NOMINAL_SIZE
 
 CLASS_LINE = 'line'
 CLASS_STRING = 'str'
 CLASS_RECTANGLE = 'rect'
 CLASS_JOIN = 'join'
+
 
 # - - - - - - - - - - - - - - Shapes - - - - - - - - - - - - - - -
 class Point:
@@ -90,8 +88,9 @@ class AsciiArtImage:
     """
     ARROW_HEADS = list('<>Vv^oO#')
     
-    def __init__(self, text):
+    def __init__(self, text, aspect_ratio=1):
         """Take a ASCII art figure and store it, prepare for ``recognize``"""
+        self.aspect_ratio = float(aspect_ratio)
         #XXX TODO tab expansion
         #detect size of input image
         self.image = []
@@ -137,6 +136,14 @@ class AsciiArtImage:
         for x, y in coordinates:
             self.classification[y][x] = classification
 
+    # Coordinate converison
+    def left(self, x):          return x*NOMINAL_SIZE*self.aspect_ratio
+    def hcenter(self, x):       return (x+0.5)*NOMINAL_SIZE*self.aspect_ratio
+    def right(self, x):         return (x+1)*NOMINAL_SIZE*self.aspect_ratio
+    def top(self, y):           return y*NOMINAL_SIZE
+    def vcenter(self, y):       return (y+0.5)*NOMINAL_SIZE
+    def bottom(self, y):        return (y+1)*NOMINAL_SIZE
+
     def recognize(self):
         """Try to convert ASCII are to vector graphics."""
         #XXX search for symbols
@@ -169,11 +176,11 @@ class AsciiArtImage:
                     #~ elif character.isalnum():
                         #~ self.shapes.extend(self._follow_horizontal_string(x, y))
                     #~ elif character == '.':
-                        #~ self.shapes.append(Point(x*NOMINAL_SIZE+CENTER,y*NOMINAL_SIZE+CENTER)) #XXX
+                        #~ self.shapes.append(Point(self.hcenter(x),self.vcenter(y))) #XXX
                     elif character == '*':
-                        self.shapes.append(Circle(Point(x*NOMINAL_SIZE+CENTER,y*NOMINAL_SIZE+CENTER), NOMINAL_SIZE/2.0)) #XXX
-                    elif character in '\\/':
-                        self.shapes.extend(self._follow_rounded_edge(x, y))
+                        self.shapes.append(Circle(Point(self.hcenter(x),self.vcenter(y)), NOMINAL_SIZE/2.0)) #XXX
+                if character in '\\/':
+                    self.shapes.extend(self._follow_rounded_edge(x, y))
         #search for short strings too
         for y in range(self.height):
             for x in range(self.width):
@@ -202,8 +209,8 @@ class AsciiArtImage:
         direction_vector = p1 - p2
         direction_vector /= abs(direction_vector)
         return p1-direction_vector*1.5, [
-            Line(p1-direction_vector*1.5, p1-direction_vector*0.5j),
-            Line(p1-direction_vector*1.5, p1-direction_vector*-0.5j)
+            Line(p1-direction_vector*1.5, p1+direction_vector*0.5j),
+            Line(p1-direction_vector*1.5, p1+direction_vector*-0.5j)
         ]
 
     def _circle_head(self, p1, p2, radius=0.5):
@@ -265,14 +272,14 @@ class AsciiArtImage:
         #if a '+' follows a line, then the line is streched to hit the '+' center
         start_y_fix = end_y_fix = 0
         if self.get(x, start_y-1) == '+':
-            start_y_fix = -NOMINAL_SIZE+CENTER
+            start_y_fix = -0.5
         if self.get(x, end_y+1) == '+':
-            end_y_fix = CENTER
-        #tag characters as used
+            end_y_fix = 0.5
+        #tag characters as used (not the arrow heads)
         self.tag([(x, y) for y in range(start_y, end_y+1)], CLASS_LINE)
         #return the new shape object with arrows etc
-        p1 = complex(x*NOMINAL_SIZE+CENTER, start_y*NOMINAL_SIZE+TOP+start_y_fix)
-        p2 = complex(x*NOMINAL_SIZE+CENTER, end_y*NOMINAL_SIZE+BOTTOM+end_y_fix)
+        p1 = complex(self.hcenter(x), self.top(start_y+start_y_fix))
+        p2 = complex(self.hcenter(x), self.bottom(end_y+end_y_fix))
         shapes = []
         if line_start_style:
             p1, arrow_shapes = line_start_style(p1, p2)
@@ -295,13 +302,13 @@ class AsciiArtImage:
         start_x, _, line_start_style = self._follow_line(x, y, dx=-1, line_character=line_character)
         start_x_fix = end_x_fix = 0
         if self.get(start_x-1, y) == '+':
-            start_x_fix = -NOMINAL_SIZE+CENTER
+            start_x_fix = -0.5
         if self.get(end_x+1, y) == '+':
-            end_x_fix = CENTER
+            end_x_fix = 0.5
         self.tag([(x, y) for x in range(start_x, end_x+1)], CLASS_LINE)
         #return the new shape object with arrows etc
-        p1 = complex(start_x*NOMINAL_SIZE+LEFT+start_x_fix, y*NOMINAL_SIZE+CENTER)
-        p2 = complex(end_x*NOMINAL_SIZE+RIGHT+end_x_fix, y*NOMINAL_SIZE+CENTER)
+        p1 = complex(self.left(start_x+start_x_fix), self.vcenter(y))
+        p2 = complex(self.right(end_x+end_x_fix), self.vcenter(y))
         shapes = []
         if line_start_style:
             p1, arrow_shapes = line_start_style(p1, p2)
@@ -324,8 +331,8 @@ class AsciiArtImage:
         start_x, _, line_start_style = self._follow_line(x, y, dx=-1, line_character='_', arrows=False)
         self.tag([(x, y) for x in range(start_x, end_x+1)], CLASS_LINE)
         #return the new shape object with arrows etc
-        p1 = complex(start_x*NOMINAL_SIZE+LEFT-CENTER, y*NOMINAL_SIZE+BOTTOM)
-        p2 = complex(end_x*NOMINAL_SIZE+RIGHT+CENTER, y*NOMINAL_SIZE+BOTTOM)
+        p1 = complex(self.hcenter(start_x-1), self.bottom(y))
+        p2 = complex(self.hcenter(end_x+1), self.bottom(y))
         return [Line(p1, p2)]
 
     def _follow_line(self, x, y, dx=0, dy=0, line_character=None, arrows=True):
@@ -352,7 +359,7 @@ class AsciiArtImage:
            required for images like these:
           
               +---+         The box should be closed on all sides
-              |   +--->     and the arrows start should touch the box
+              |   +--->     and the arrow start should touch the box
               +---+
         """
         result = []
@@ -362,8 +369,8 @@ class AsciiArtImage:
         for dx, dy in ((1,0), (0,1)):
             if self.get(x+dx, y+dy) == '+':
                 result.append(Line(
-                    Point(x*NOMINAL_SIZE+CENTER, y*NOMINAL_SIZE+CENTER),
-                    Point((x+dx)*NOMINAL_SIZE+CENTER, (y+dy)*NOMINAL_SIZE+CENTER)
+                    Point(self.hcenter(x), self.vcenter(y)),
+                    Point(self.hcenter(x+dx), self.vcenter(y+dy))
                 ))
         self.tag([(x,y)], CLASS_JOIN)
         return result
@@ -389,8 +396,8 @@ class AsciiArtImage:
         for i in range(start_y, y+1):
             self.tag([(x, i) for x in range(start_x, x+1)], CLASS_RECTANGLE)
         return [Rectangle(
-            Point(start_x*NOMINAL_SIZE+LEFT, start_y*NOMINAL_SIZE+TOP),
-            Point(x*NOMINAL_SIZE+RIGHT, y*NOMINAL_SIZE+BOTTOM),
+            Point(self.left(start_x), self.top(start_y)),
+            Point(self.right(x), self.bottom(y)),
         )]
         
     def _follow_horizontal_string(self, start_x, y, min_length=0, accept_anything=False):
@@ -426,7 +433,7 @@ class AsciiArtImage:
         if len(text) > min_length:
             self.tag([(x, y) for x in range(start_x, x+1)], CLASS_STRING)
             return [Label(
-                Point(start_x*NOMINAL_SIZE+LEFT, y*NOMINAL_SIZE+BOTTOM),
+                Point(self.left(start_x), self.bottom(y)),
                 ''.join(text)
             )]
         else:
@@ -443,86 +450,96 @@ class AsciiArtImage:
             # rounded rectangles
             if (self.get(x+1, y) == '-' and self.get(x, y+1) == '|'):
                 result.append(Line(
-                    Point(x*NOMINAL_SIZE+CENTER, y*NOMINAL_SIZE+BOTTOM),
-                    Point(x*NOMINAL_SIZE+RIGHT, y*NOMINAL_SIZE+CENTER)
+                    Point(self.hcenter(x), self.bottom(y)),
+                    Point(self.right(x), self.vcenter(y))
                 ))
             if (self.get(x-1, y) == '-' and self.get(x, y-1) == '|'):
                 result.append(Line(
-                    Point(x*NOMINAL_SIZE+CENTER, y*NOMINAL_SIZE+TOP),
-                    Point(x*NOMINAL_SIZE+LEFT, y*NOMINAL_SIZE+CENTER)
+                    Point(self.hcenter(x), self.top(y)),
+                    Point(self.left(x), self.vcenter(y))
                 ))
-            # if used as diagonal line
-            p1 = p2 = None
-            if self.get(x+1, y-1) == '|':
-                p1 = Point((x+1)*NOMINAL_SIZE+CENTER, y*NOMINAL_SIZE+TOP)
-            elif self.get(x+1, y-1) == '+':
-                p1 = Point((x+1)*NOMINAL_SIZE+CENTER, (y-1)*NOMINAL_SIZE+CENTER)
-            elif self.get(x+1, y-1) == '-':
-                p1 = Point(x*NOMINAL_SIZE+RIGHT, (y-1)*NOMINAL_SIZE+CENTER)
-            elif self.get(x+1, y-1) == '/':
-                p1 = Point(x*NOMINAL_SIZE+RIGHT, y*NOMINAL_SIZE+TOP)
-            elif self.get(x+1, y) == '|':
-                p1 = Point(x*NOMINAL_SIZE+RIGHT+CENTER, y*NOMINAL_SIZE+TOP)
-            elif self.get(x, y-1) == '-':
-                p1 = Point(x*NOMINAL_SIZE+RIGHT, y*NOMINAL_SIZE+TOP-CENTER)
+            if not result:
+                # if used as diagonal line
+                p1 = p2 = None
+                if self.get(x+1, y-1) == '|':
+                    p1 = Point(self.hcenter(x+1), self.top(y))
+                elif self.get(x+1, y-1) == '+':
+                    p1 = Point(self.hcenter(x+1), self.vcenter(y-1))
+                elif self.get(x+1, y-1) == '-':
+                    p1 = Point(self.right(x), self.vcenter(y-1))
+                elif self.get(x+1, y-1) == '/':
+                    p1 = Point(self.right(x), self.top(y))
+                elif self.get(x+1, y) == '|':
+                    p1 = Point(self.hcenter(x+1), self.top(y))
+                elif self.get(x, y-1) == '-':
+                    p1 = Point(self.right(x), self.vcenter(y-1))
+                    
+                if self.get(x-1, y+1) == '|':
+                    p2 = Point(self.hcenter(x-1), self.top(y+1))
+                elif self.get(x-1, y+1) == '+':
+                    p2 = Point(self.hcenter(x-1), self.vcenter(y+1))
+                elif self.get(x-1, y+1) == '-':
+                    p2 = Point(self.left(x), self.vcenter(y+1))
+                elif self.get(x-1, y+1) == '/':
+                    p2 = Point(self.left(x), self.bottom(y))
+                elif self.get(x-1, y) == '|':
+                    p2 = Point(self.hcenter(x-1), self.bottom(y))
+                elif self.get(x, y+1) == '-':
+                    p2 = Point(self.left(x), self.vcenter(y+1))
                 
-            if self.get(x-1, y+1) == '|':
-                p2 = Point(x*NOMINAL_SIZE+LEFT-CENTER, (y+1)*NOMINAL_SIZE+TOP)
-            elif self.get(x-1, y+1) == '+':
-                p2 = Point(x*NOMINAL_SIZE+LEFT-CENTER, (y+1)*NOMINAL_SIZE+CENTER)
-            elif self.get(x-1, y+1) == '-':
-                p2 = Point(x*NOMINAL_SIZE, (y+1)*NOMINAL_SIZE+CENTER)
-            elif self.get(x-1, y+1) == '/':
-                p2 = Point(x*NOMINAL_SIZE+LEFT, y*NOMINAL_SIZE+BOTTOM)
-            elif self.get(x-1, y) == '|':
-                p2 = Point(x*NOMINAL_SIZE-CENTER, y*NOMINAL_SIZE+BOTTOM)
-            elif self.get(x, y+1) == '-':
-                p2 = Point(x*NOMINAL_SIZE+LEFT, y*NOMINAL_SIZE+BOTTOM+CENTER)
-            
-            if p1 and p2:
-                result.append(Line(p1, p2))
+                if p1 or p2:
+                    if not p1:
+                        p1 = Point(self.right(x), self.top(y))
+                    if not p2:
+                        p2 = Point(self.left(x), self.bottom(y))
+                    result.append(Line(p1, p2))
         else: # '\'
             # rounded rectangles
             if (self.get(x-1, y) == '-' and self.get(x, y+1) == '|'):
                 result.append(Line(
-                    Point(x*NOMINAL_SIZE+CENTER, y*NOMINAL_SIZE+BOTTOM),
-                    Point(x*NOMINAL_SIZE+LEFT, y*NOMINAL_SIZE+CENTER)
+                    Point(self.hcenter(x), self.bottom(y)),
+                    Point(self.left(x), self.vcenter(y))
                 ))
             if (self.get(x+1, y) == '-' and self.get(x, y-1) == '|'):
                 result.append(Line(
-                    Point(x*NOMINAL_SIZE+CENTER, y*NOMINAL_SIZE+TOP),
-                    Point(x*NOMINAL_SIZE+RIGHT, y*NOMINAL_SIZE+CENTER)
+                    Point(self.hcenter(x), self.top(y)),
+                    Point(self.right(x), self.vcenter(y))
                 ))
-            # if used as diagonal line
-            p1 = p2 = None
-            if self.get(x-1, y-1) == '|':
-                p1 = Point((x-1)*NOMINAL_SIZE+CENTER, y*NOMINAL_SIZE+TOP)
-            elif self.get(x-1, y-1) == '+':
-                p1 = Point((x-1)*NOMINAL_SIZE+CENTER, y*NOMINAL_SIZE-CENTER)
-            elif self.get(x-1, y-1) == '-':
-                p1 = Point(x*NOMINAL_SIZE+LEFT, (y-1)*NOMINAL_SIZE+CENTER)
-            elif self.get(x-1, y-1) == '\\':
-                p1 = Point(x*NOMINAL_SIZE+LEFT, y*NOMINAL_SIZE+TOP)
-            elif self.get(x-1, y) == '|':
-                p1 = Point(x*NOMINAL_SIZE-CENTER, y*NOMINAL_SIZE+TOP)
-            elif self.get(x, y-1) == '-':
-                p1 = Point(x*NOMINAL_SIZE+LEFT, y*NOMINAL_SIZE+TOP-CENTER)
+            if not result:
+                # if used as diagonal line
+                p1 = p2 = None
+                if self.get(x-1, y-1) == '|':
+                    p1 = Point(self.hcenter(x-1), self.top(y))
+                elif self.get(x-1, y-1) == '+':
+                    p1 = Point(self.hcenter(x-1), self.vcenter(y-1))
+                elif self.get(x-1, y-1) == '-':
+                    p1 = Point(self.left(x), self.vcenter(y-1))
+                elif self.get(x-1, y-1) == '\\':
+                    p1 = Point(self.left(x), self.top(y))
+                elif self.get(x-1, y) == '|':
+                    p1 = Point(self.hcenter(x-1), self.top(y))
+                elif self.get(x, y-1) == '-':
+                    p1 = Point(self.left(x), self.hcenter(y-1))
+                    
+                if self.get(x+1, y+1) == '|':
+                    p2 = Point(self.hcenter(x+1), self.top(y+1))
+                elif self.get(x+1, y+1) == '+':
+                    p2 = Point(self.hcenter(x+1), self.vcenter(y+1))
+                elif self.get(x+1, y+1) == '-':
+                    p2 = Point(self.right(x), self.vcenter(y+1))
+                elif self.get(x+1, y+1) == '\\':
+                    p2 = Point(self.right(x), self.bottom(y))
+                elif self.get(x+1, y) == '|':
+                    p2 = Point(self.hcenter(x+1), self.bottom(y))
+                elif self.get(x, y+1) == '-':
+                    p2 = Point(self.right(x), self.vcenter(y+1))
                 
-            if self.get(x+1, y+1) == '|':
-                p2 = Point(x*NOMINAL_SIZE+RIGHT+CENTER, (y+1)*NOMINAL_SIZE+TOP)
-            elif self.get(x+1, y+1) == '+':
-                p2 = Point(x*NOMINAL_SIZE+RIGHT+CENTER, (y+1)*NOMINAL_SIZE+CENTER)
-            elif self.get(x+1, y+1) == '-':
-                p2 = Point(x*NOMINAL_SIZE+RIGHT, (y+1)*NOMINAL_SIZE+CENTER)
-            elif self.get(x+1, y+1) == '\\':
-                p2 = Point(x*NOMINAL_SIZE+RIGHT, y*NOMINAL_SIZE+BOTTOM)
-            elif self.get(x+1, y) == '|':
-                p2 = Point(x*NOMINAL_SIZE+RIGHT+CENTER, y*NOMINAL_SIZE+BOTTOM)
-            elif self.get(x, y+1) == '-':
-                p2 = Point(x*NOMINAL_SIZE+RIGHT, y*NOMINAL_SIZE+BOTTOM+CENTER)
-            
-            if p1 and p2:
-                result.append(Line(p1, p2))
+                if p1 or p2:
+                    if not p1:
+                        p1 = Point(self.left(x), self.top(y))
+                    if not p2:
+                        p2 = Point(self.right(x), self.bottom(y))
+                    result.append(Line(p1, p2))
         if result:
             self.tag([(x,y)], CLASS_JOIN)
         return result

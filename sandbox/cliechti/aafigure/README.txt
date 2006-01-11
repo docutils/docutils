@@ -20,7 +20,7 @@ aafigure.py
 
 aafigure_directive.py
     Implmements the ``aafigure`` Docutils directive that takes these
-    ASCII art figures ang generates SVG.
+    ASCII art figures and generates a drawing.
 
 aa.py
     ASCII art output backend. Intended for tests, not for the end user.
@@ -77,7 +77,7 @@ The ``aafigure`` directive has the following options:
 
 - ``:line_format: <str>`` choose backend/output format: 'svg', 'png', all
   bitmap formats that PIL supports can be used but only few make sense. Line
-  drawings have a good compression and better qualify when saved as PNG
+  drawings have a good compression and better quality when saved as PNG
   rather than a JPEG. The best quality will be achieved with SVG, tough not
   all browsers support this vector image format at this time.
 
@@ -91,12 +91,22 @@ The ``aafigure`` directive has the following options:
 - ``:name: <str>``   use this as filename instead of the automatic generated
   name
 
+- ``:aspect: <float>``  change aspect ratio. Effectively it is the width of the
+  image that is multiplied by this factor. The default setting ``1`` is useful
+  when shapes must have the same look when drawn horizontaly or verticaly.
+  However, ``:aspect: 0.5`` looks more like the original ASCII and even smaller
+  factors may be useful for timing diagrams and such. But there is a risk that
+  text is cropped or is draw over an object beside it.
+  
+  The stretching is done before drawing arrows or circles, so that they are
+  still good looking.
+
 
 Lines
 -----
-The ``-`` and ``|`` are normaly used for lines. ``_`` can also be used. it is a
+The ``-`` and ``|`` are normaly used for lines. ``_`` can also be used. It is a
 slightly longer line than the ``-`` and it's is drawn a bit lower. ``=`` gives
-a thicker line. The later two line types can only be draw horizontaly.
+a thicker line. The later two line types can only be drawn horizontaly.
 ::
 
   ---- |         ___ 
@@ -117,11 +127,11 @@ tough. Not all cases work as expected.
                                      +       
       |  -  +   |  -  +   |  -  +   /               -
      /  /  /   /  /  /   /  /  /   /     --     |/| /
-    |  |  |   +  +  +   -  -  -   /     /  \        -
-                                 +     +    +
-    |  -  +   |  -  +   |  -  +   \     \  /        -
+    |  |  |   +  +  +   -  -  -   /     /  \        -   \|/
+                                 +     +    +           -+-
+    |  |  |   +  +  +   -  -  -   \     \  /        -   /|\
      \  \  \   \  \  \   \  \  \   \     --     |\| \
-      |  |  |   +  +  +   -  -  -   \               -
+      |  -  +   |  -  +   |  -  +   \               -
                                      +         
 
 And drawing longer diagonal lines with different angles looks ugly...
@@ -155,8 +165,8 @@ Arrow styles are::
 Boxes
 -----
 Boxes are automaticaly draw when the edges are made with ``+``, filled
-boxes are made with ``X``. It is also possibe to make rounded edges in two
-ways::
+boxes are made with ``X`` (must be at least two units high or wide).
+It is also possibe to make rounded edges in two ways::
 
     +-----+   XXX  /--\     --   |
     |     |   XXX  |  |    /    /
@@ -211,8 +221,12 @@ TODO
             :colortag: 1:red, 2:blue
             
             1--->  --->2
-    
+        
     - ``:color: x,y,color`` but counting coordinates is no so fun
+    
+    drawback: both are complex to implement, searching for shapes that belong
+    together. it's also not always wanted that e.g. when a line touches a
+    box, both have the same color
 
 - aafigure probably needs arguments like ``font-family``, ...
 
@@ -220,11 +234,10 @@ TODO
   graphical meaning , then that is chooses, even if it makes no sense),
   underlines in strings are tricky to detect...
 
-- Maybe scale the output image to the half width. It would match better to
-  the original ascii art then. But a major drawback is that symbols do not look
-  the same when drawed horizontaly or verticaly (which they do now).
-
 - Dotted lines? ``...``
+
+- Group shapes that belong to an object, so that it's easier to import and
+  change the graphics in a vector drawing program.
 
 
 License
@@ -441,6 +454,7 @@ Here is a complete circuit with different parts:
 Timing diagrams
 ---------------
 .. aafigure::
+    :aspect: 0.5
 
       ^    ___     ___           ____
     A |___|   |___|   |_________|    |______
@@ -481,6 +495,7 @@ Benfords_ distribution of the sizes of files on my harddrive:
 .. aafigure::
     :name: benford
     :foreground: #ff1050
+    :aspect: 0.7
 
       |
     1 +------------------------------------------------------------> 31.59%
