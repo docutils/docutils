@@ -95,15 +95,44 @@ The ``aafigure`` directive has the following options:
 Lines
 -----
 The ``-`` and ``|`` are normaly used for lines. ``_`` can also be used. it is a
-slightly longer line than the ``-`` and it's is drawn a bit lower::
+slightly longer line than the ``-`` and it's is drawn a bit lower. ``=`` gives
+a thicker line. The later two line types can only be draw horizontaly.
+::
 
-  ---- |         ___
-       | --  ___|
+  ---- |         ___ 
+       | --  ___|     ===
+                     
 
 .. aafigure::
 
-  ---- |         ___
-       | --  ___|
+  ---- |         ___ 
+       | --  ___|     ===
+                     
+
+It is also possible to draw diagonal lines. Their use is somewhat restricted
+tough. Not all cases work as expected.
+
+.. aafigure::
+
+                                     +       
+      |  -  +   |  -  +   |  -  +   /               -
+     /  /  /   /  /  /   /  /  /   /     --     |/| /
+    |  |  |   +  +  +   -  -  -   /     /  \        -
+                                 +     +    +
+    |  -  +   |  -  +   |  -  +   \     \  /        -
+     \  \  \   \  \  \   \  \  \   \     --     |\| \
+      |  |  |   +  +  +   -  -  -   \               -
+                                     +         
+
+And drawing longer diagonal lines with different angles looks ugly...
+
+.. aafigure::
+
+    +      |
+     \    /
+      \  /
+       --
+
 
 Arrows
 ------
@@ -126,17 +155,18 @@ Arrow styles are::
 Boxes
 -----
 Boxes are automaticaly draw when the edges are made with ``+``, filled
-boxes are made with ``X``::
+boxes are made with ``X``. It is also possibe to make rounded edges in two
+ways::
 
-    +-----+   XXX  /--\
-    |     |   XXX  |  |
-    +-----+   XXX  \--/
+    +-----+   XXX  /--\     --   |
+    |     |   XXX  |  |    /    /
+    +-----+   XXX  \--/   |   --
 
 .. aafigure::
 
-    +-----+   XXX  /--\
-    |     |   XXX  |  |
-    +-----+   XXX  \--/
+    +-----+   XXX  /--\     --   |
+    |     |   XXX  |  |    /    /
+    +-----+   XXX  \--/   |   --
 
 Text
 ----
@@ -167,12 +197,34 @@ TODO
 
 - Symbol detection: scan for predefined shapes in the ASCII image
   and output them as symbol from a library
+  
 - Symbol libraries for UML, flowchart, electronic schematics, ...
+
 - The way the image is embedded is a hack (inserting a tag trough a raw node...)
-- Search for ways to bring in color.
+
+- Search for ways to bring in color. Ideas:
+    
+    - have an :option: to set color tags. Shapes that touch such a tag
+      inhertit it's color. The tag would be visible in the ASCII source tough::
+        
+        .. aafigure::
+            :colortag: 1:red, 2:blue
+            
+            1--->  --->2
+    
+    - ``:color: x,y,color`` but counting coordinates is no so fun
+
 - aafigure probably needs arguments like ``font-family``, ...
-- Punctuation not included in strings, underlines in strings are tricky to
-  detect...
+
+- Punctuation not included in strings (now a bit improved but if it has a
+  graphical meaning , then that is chooses, even if it makes no sense),
+  underlines in strings are tricky to detect...
+
+- Maybe scale the output image to the half width. It would match better to
+  the original ascii art then. But a major drawback is that symbols do not look
+  the same when drawed horizontaly or verticaly (which they do now).
+
+- Dotted lines? ``...``
 
 
 License
@@ -182,6 +234,11 @@ BSD
 
 Tests
 =====
+
+To compare input and output, look at the sources of this file_.
+
+.. _file: README.txt
+
 
 Simple tests
 ------------
@@ -250,26 +307,26 @@ No not realy, yet. But you get the idea.
 .. aafigure::
     :scale: 0.8
 
-    +---------+ +---------+ +---------+
-    |object 1 | |object 2 | |object 3 |
-    +----+----+ +----+----+ +----+----+
-         |           |           |
-         |           |           |
-         X           |           |
-         X---------->X           |
-         X           X           |
-         X<----------X           |
-         X           |           |
-         X           |           |
-         X---------------------->X
-         |           |           X
-         X---------->X           X--+
-         X           X           X  |
-         |           |           X<-+
-         X<----------------------X
-         X           |           |
-         |           |           |
-         |           |           |
+    +---------+  +---------+  +---------+
+    |Object 1 |  |Object 2 |  |Object 3 |
+    +----+----+  +----+----+  +----+----+
+         |            |            |
+         |            |            |
+         X            |            |
+         X----------->X            |
+         X            X            |
+         X<-----------X            |
+         X            |            |
+         X            |            |
+         X------------------------>X
+         |            |            X
+         X----------->X            X---+
+         X            X            X   |
+         |            |            X<--+
+         X<------------------------X
+         X            |            |
+         |            |            |
+         |            |            |
 
 .. aafigure::
     :scale: 0.8
@@ -278,11 +335,11 @@ No not realy, yet. But you get the idea.
     |  Shape  |         |  Line   |     |  Point  |
     +---------+         +---------+   2 +---------+
     | draw    +<--------+ start   +----O+ x       |
-    | move    +<---+    | end     |     | y       |
-    +---------+    |    +---------+     +---------+
-                   |                  
-                   |    +---------+
-                   +----+ Circle  |
+    | move    +<-+      | end     |     | y       |
+    +---------+   \     +---------+     +---------+
+                   \                  
+                    \   +---------+
+                     +--+ Circle  |
                         +---------+
                         | center  |
                         | radius  |
@@ -290,14 +347,16 @@ No not realy, yet. But you get the idea.
 
 .. aafigure::
 
-                            /-----------\     yes /-----------\
-                      +  +->| then this |--->*--->| then this |
-     /------------\   +--+  \-----------/    |no  \-----------/
-     | First this |-->+                      |
-     \------------/   +--+  /---------\      V               /----- \
-                      +  +->| or that |------*-------------->| Done |
-                            \---------/                      \------/
-                                                         
+                             /-----------\     yes /----------\
+                          -->| then this |--->*--->| and this |
+                      +  /   \-----------/    |no  \----------/
+     /------------\   +--                     |
+     | First this |-->+                       |
+     \------------/   +--                     |
+                      +  \   /---------\      V        /------\
+                          -->| or that |----->*------->| Done |
+                             \---------/               \------/
+
 Electronics
 -----------
 It would be cool if it could display simple schematics.
@@ -305,18 +364,79 @@ It would be cool if it could display simple schematics.
 .. aafigure::
     :fill: #fff
 
-           R1    
-    O------XXXX----o-----O
-           100k    |
-                  --- C1
-                  --- 100n
-                   |
-    O--------------o-----O
+          Iin +-----+      Iout
+        O->---+ R1  +---o-->-----O 
+       |      +-----+   |         | 
+    Vin|       100k   ----- C1    | Vout
+       |              ----- 100n  | 
+       v                |         v 
+        O---------------o--------O
 
 .. - Resistor should not be filled -> can be solved by symbol detection
 
 - Capacitor not good, would prefer ``--||--``  -> symbol detection
 
+
+.. aafigure::
+
+       |/|       |\|       | |
+    ---+ +---  --+ +--   --+ +--
+       |\|       |/|       | |
+                      
+       |        |           |
+      -+-      -+-         -+-
+      / \      \ /          
+      -+-      -+-         -+- 
+       |        |           |  
+
+- Diodes OK
+
+- Caps not optimal. Too far appart in image, not very good recognisable in
+  ASCII. Space cannot be removed as the two ``+`` signs would be connected
+  otherwise. The schematic below uses an other style.
+
+- Arrows in transistor symbols can not be drawn
+
+Here is a complete circuit with different parts:
+
+.. aafigure::
+    :fill: #fff
+    :scale: 0.8
+    
+                           Q1  _    8MHz
+                             || ||
+                        +----+| |+----+
+                        |    ||_||    |
+                        |             |
+                  +-----+-------------+-----+
+                  |    XIN           XOUT   |
+                  |                         |
+                  |                    P3.3 +--------------+
+      SDA/I2C #---+ P2.0                    |              |
+                  |                         |             e|
+                  |        MSP430F123       |     R1   b |/  V1
+      SCL/I2C #---+ P2.1               P3.4 +----XXXX----+   PNP
+                  |                         |     1k     |\
+                  |           IC1           |             c|
+                  |                         |              o-------------O TXD/RS232
+                  |    VCC             GND  |              |  
+                  +-----+---------------+---+              |     R2
+                        |               |                  +----XXXX-----O RXD/RS232
+                        |               |                        10k
+                        |               |                      
+                        |               |
+      GND/I2C #---o-----+----o----------o-----------o--------------------O GND/RS232
+                  |     |    |   C1     |           |   C2
+                 =+=    |  ----- 1u     |         ----- 10u
+                        |  ----- 5V +---+---+     ----- 16V
+                        |    |      |  GND  |       |            D1|/|   
+                        +----o------+out  in+-------o----------o---+ +---O RTS/RS232
+                                    |  3V   |                  |   |\|
+                                    +-------+                  | 
+                                     IC2                       | D2|/|   
+                                                               +---+ +---O DTR/RS232
+                                                                   |\|   
+                                                           
 
 Timing diagrams
 ---------------
