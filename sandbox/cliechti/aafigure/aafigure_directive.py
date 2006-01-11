@@ -34,9 +34,6 @@ def AAFigureDrective(name, arguments, options, content, lineno,
     
     global aafigure_counter
     
-    aaimg = aafigure.AsciiArtImage(text)
-    #~ print text
-    aaimg.recognize()
     #ensure that options are present and initialized with defaults if not given
     if not options.has_key('background'): options['background'] = '#ffffff'
     if not options.has_key('foreground'): options['foreground'] = '#000000'
@@ -44,9 +41,13 @@ def AAFigureDrective(name, arguments, options, content, lineno,
     if not options.has_key('scale'): options['scale'] = 1
     if not options.has_key('line_width'): options['line_width'] = 2
     if not options.has_key('format'): options['format'] = 'svg'
+    if not options.has_key('aspect'): options['aspect'] = 1
     if not options.has_key('name'):
         options['name'] = 'aafigure-%i' % aafigure_counter
         aafigure_counter += 1
+    
+    aaimg = aafigure.AsciiArtImage(text, aspect_ratio = options['aspect'])
+    aaimg.recognize()
     
     if options['format'] == 'svg':
         output_name = options['name'] + '.svg'
@@ -110,6 +111,7 @@ AAFigureDrective.options = {
     'background': str,
     'foreground': str,
     'fill': str,
+    'aspect': float,
 }
 
 def register():
