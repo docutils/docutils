@@ -10,13 +10,17 @@ class PILOutputVisitor:
     """Render a list of shapes as ASCII art.
     """
     
-    def __init__(self, file_like, scale = 1, line_width=1, debug=False, file_type='png'):
+    def __init__(self, file_like, scale = 1, line_width=1, debug=False, file_type='png',
+                 foreground=(0,0,0), background=(255,255,255), fillcolor=(0,0,0),
+    ):
         self.file_like = file_like
         self.scale = scale
         self.debug = debug
         self.line_width = line_width
         self.file_type = file_type
-        self.color = (0,0,0)
+        self.foreground = foreground
+        self.background = background
+        self.fillcolor = fillcolor
     
     def visit(self, aa_image):
         """Process the gived ASCIIArtFigure and output the shapes in
@@ -29,7 +33,7 @@ class PILOutputVisitor:
         image = Image.new(
             'RGB',
             (int(self.width*self.scale), int(self.height*self.scale)),
-            (255,255,255)
+            self.background
         )
         self.draw = ImageDraw.Draw(image)
   
@@ -55,13 +59,13 @@ class PILOutputVisitor:
     # - - - - - - SVG drawing helpers - - - - - - -
     def _line(self, x1, y1, x2, y2):
         """Draw a line, coordinates given as four decimal numbers"""
-        self.draw.line((x1, y1, x2, y2), fill=self.color) #self.line_width
+        self.draw.line((x1, y1, x2, y2), fill=self.foreground) #self.line_width
 
     def _rectangle(self, x1, y1, x2, y2):
         """Draw a rectange, coordinates given as four decimal numbers.
            ``style`` is inserted in the SVG. It could be e.g. "fill:yellow"
         """
-        self.draw.rectangle((x1, y1, x2, y2), fill=self.color, outline=self.color) #self.line_width
+        self.draw.rectangle((x1, y1, x2, y2), fill=self.fillcolor, outline=self.foreground) #self.line_width
 
     # - - - - - - visitor function for the different shape types - - - - - - -
     
@@ -72,7 +76,7 @@ class PILOutputVisitor:
                 point.x*self.scale-dotsize, point.y*self.scale-dotsize,
                 point.x*self.scale+dotsize, point.y*self.scale+dotsize
             ),
-            fill=self.color
+            fill=self.foreground
         )
     
     def visit_line(self, line):
@@ -84,7 +88,6 @@ class PILOutputVisitor:
         self._rectangle(
             rectangle.p1.x*self.scale, rectangle.p1.y*self.scale,
             rectangle.p2.x*self.scale, rectangle.p2.y*self.scale,
-            fill=self.color
         )
         
     
@@ -94,7 +97,8 @@ class PILOutputVisitor:
                 (circle.center.x-circle.radius)*self.scale, (circle.center.y-circle.radius)*self.scale,
                 (circle.center.x+circle.radius)*self.scale, (circle.center.y+circle.radius)*self.scale
             ),
-            fill=self.color
+            outline=self.foreground,
+            fill=self.fillcolor
         )
 
     def visit_label(self, label):
@@ -102,7 +106,7 @@ class PILOutputVisitor:
         self.draw.text(
             (label.position.x*self.scale, (label.position.y-self.aa_image.nominal_size*1.1)*self.scale),
             label.text,
-            fill=self.color,
+            fill=self.foreground,
             font=ImageFont.truetype('arial.ttf', int(self.aa_image.nominal_size*self.scale))
         )
 
