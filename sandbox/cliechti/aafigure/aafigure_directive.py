@@ -16,27 +16,47 @@ from docutils.parsers.rst.directives import register_directive
 
 aafigure_counter = 0
 
+def decode_color(color_string):
+    if color_string[0] == '#':          #HTML like color syntax
+        if len(color_string) == 4:      # #rgb format
+            r,g,b = [int(c+c, 16) for c in color_string[1:]]
+        elif len(color_string) == 7:      # #rrggbb format
+            r,g,b = [int(color_string[n:n+2], 16) for n in range(1, len(color_string), 2)]
+        else:
+            raise ValueError('not a valid color: %r' % color_string)
+    #XXX add a list of named colors
+    return r,g,b
+
+
 def AAFigureDrective(name, arguments, options, content, lineno,
                   content_offset, block_text, state, state_machine):
     text = '\n'.join(content)
     
     global aafigure_counter
-    aafigure_counter += 1
     
     aaimg = aafigure.AsciiArtImage(text)
     #~ print text
     aaimg.recognize()
-    #ensure that options are present
+    #ensure that options are present and initialized with defaults if not given
+    if not options.has_key('background'): options['background'] = '#ffffff'
+    if not options.has_key('foreground'): options['foreground'] = '#000000'
+    if not options.has_key('fill'): options['fill'] = options['foreground'] #fill = fore by default
     if not options.has_key('scale'): options['scale'] = 1
     if not options.has_key('line_width'): options['line_width'] = 2
     if not options.has_key('format'): options['format'] = 'svg'
+    if not options.has_key('name'):
+        options['name'] = 'aafigure-%i' % aafigure_counter
+        aafigure_counter += 1
     
     if options['format'] == 'svg':
-        output_name = 'aafigure-%i.svg' % aafigure_counter
+        output_name = options['name'] + '.svg'
         svgout = svg.SVGOutputVisitor(
             file(output_name, 'w'),
-            scale = options['scale']*10,
+            scale = options['scale']*6,
             line_width = options['line_width'],
+            foreground = decode_color(options['foreground']),
+            background = decode_color(options['background']),
+            fillcolor = decode_color(options['fill']),
             debug = True
         )
         svgout.visit(aaimg)
@@ -47,13 +67,16 @@ def AAFigureDrective(name, arguments, options, content, lineno,
             svgout.get_size_attrs()
         ), **attributes)]
     elif pil is not None:
-        output_name = 'aafigure-%i.%s' % (aafigure_counter, options['format'])
+        output_name = '%s.%s' % (options['name'], options['format'])
         pilout = pil.PILOutputVisitor(
             file(output_name, 'wb'),
             scale = options['scale']*10,
             line_width = options['line_width'],
             debug = True,
-            file_type = options['format']
+            file_type = options['format'],
+            foreground = decode_color(options['foreground']),
+            background = decode_color(options['background']),
+            fillcolor = decode_color(options['fill']),
         )
         try:
             pilout.visit(aaimg)
@@ -83,6 +106,10 @@ AAFigureDrective.options = {
     'scale': float,
     'line_width': float,
     'format': str,
+    'name': str,
+    'background': str,
+    'foreground': str,
+    'fill': str,
 }
 
 def register():
