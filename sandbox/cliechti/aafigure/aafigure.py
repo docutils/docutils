@@ -2,14 +2,10 @@
 ASCII art to image converter.
 
 This is the main modlue that contains the parser.
-See svg.py and aa.py for output modules, that can reder the parsed structure.
+See svg.py and aa.py for output modules, that can render the parsed structure.
 
 (C) 2006 Chris Liechti <cliechti@gmx.net>
 """
-
-import pprint
-import svg
-import aa
 
 NOMINAL_SIZE = 2
 
@@ -20,8 +16,24 @@ CLASS_JOIN = 'join'
 
 
 # - - - - - - - - - - - - - - Shapes - - - - - - - - - - - - - - -
+def point(object):
+    """return a Point instance.
+       - if object is already a Point instance it's returned as is
+       - complex numbers are converted to Points
+       - a tuple with two elements (x,y)
+    """
+    if isinstance(object, Point):
+        return object
+    #~ print type(object), object.__class__
+    if type(object) is complex:
+        return Point(object.real, object.imag)
+    if type(object) is tuple and len(object) == 2:
+        return Point(object[0], object[1])
+    raise ValueError('can not convert %r to a Point')
+
+
 class Point:
-    """A single point. This class is primary use is to represent coordinates
+    """A single point. This class primary use is to represent coordinates
        for the other shapes.
     """
     def __init__(self, x, y):
@@ -35,14 +47,8 @@ class Line:
     """Line with starting and ending point. Both ends can have arrows"""
     def __init__(self, start, end, thick=False):
         self.thick = thick
-        #accept complex numbers as coordinates too, but convert them to Point instaces
-        if not isinstance(start, Point):
-            start = Point(start.real, start.imag)
-        if not isinstance(end, Point):
-            end = Point(end.real, end.imag)
-        #now save the points
-        self.start = start
-        self.end = end
+        self.start = point(start)
+        self.end = point(end)
     
     def __repr__(self):
         return 'Line(%r, %r)' % (self.start, self.end)
@@ -50,21 +56,15 @@ class Line:
 class Rectangle:
     """Rectangle with to edge coordiantes."""
     def __init__(self, p1, p2):
-        if not isinstance(p1, Point):
-            p1 = Point(p1.real, p1.imag)
-        if not isinstance(p2, Point):
-            p2 = Point(p2.real, p2.imag)
-        self.p1 = p1
-        self.p2 = p2
+        self.p1 = point(p1)
+        self.p2 = point(p2)
     def __repr__(self):
         return 'Rectangle(%r, %r)' % (self.p1, self.p2)
 
 class Circle:
     """Rectangle with to edge coordiantes."""
     def __init__(self, center, radius):
-        if not isinstance(center, Point):
-            center = Point(center.real, center.imag)
-        self.center = center
+        self.center = point(center)
         self.radius = radius
         
     def __repr__(self):
@@ -109,14 +109,6 @@ class AsciiArtImage:
         self.shapes = []
         self.nominal_size = NOMINAL_SIZE
         
-    def __repr__(self):
-        return '%s\n%s' % (
-            '\n'.join([','.join([str(self.classification[y][x])
-                for x in range(self.width)])
-                    for y in range(self.height)]),
-            pprint.pformat(self.shapes)
-        )
-        
     def __str__(self):
         """Return the original image"""
         return '\n'.join([self.image[y] for y in range(self.height)])
@@ -136,7 +128,7 @@ class AsciiArtImage:
         for x, y in coordinates:
             self.classification[y][x] = classification
 
-    # Coordinate converison
+    # Coordinate converison and shifting
     def left(self, x):          return x*NOMINAL_SIZE*self.aspect_ratio
     def hcenter(self, x):       return (x+0.5)*NOMINAL_SIZE*self.aspect_ratio
     def right(self, x):         return (x+1)*NOMINAL_SIZE*self.aspect_ratio
@@ -145,7 +137,7 @@ class AsciiArtImage:
     def bottom(self, y):        return (y+1)*NOMINAL_SIZE
 
     def recognize(self):
-        """Try to convert ASCII are to vector graphics."""
+        """Try to convert ASCII art to vector graphics."""
         #XXX search for symbols
         #~ #search for long strings
         #~ for y in range(self.height):
@@ -220,16 +212,21 @@ class AsciiArtImage:
         return p1-direction_vector, [Circle(p1-direction_vector, radius)]
 
     def _large_circle_head(self, p1, p2):
+        """--O"""
         return self._circle_head(p1, p2, radius=0.9)
 
     def _rectangular_head(self, p1, p2):
+        """--#"""
         direction_vector = p1 - p2
         direction_vector /= abs(direction_vector)
         return p1-direction_vector*1.414, [
             Rectangle(p1-direction_vector-direction_vector*(0.707+0.707j),
                       p1-direction_vector+direction_vector*(0.707+0.707j))
         ]
-        
+    
+    #the same character can mean a different thing, depending from where
+    #the line is coming. this table maps line direction (dx,dy) and the
+    #arrow character to a arrow drawing function
     ARROW_TYPES = [
         #chr  dx  dy  arrow type
         ('>',  1,  0, '_standard_arrow'),
@@ -441,13 +438,13 @@ class AsciiArtImage:
 
     def _follow_rounded_edge(self, x, y):
         """check for rounded edges:
-            /-    |     -\-    |
-            |    -/      |     \-
+            /-    |     -\-    |   and also \    /  etc
+            |    -/      |     \-            -  |
         """            
-        #XXX return Arc shapes, not lines
         result = []
         if self.get(x, y) == '/':
             # rounded rectangles
+            #XXX return Arc shapes, not Lines
             if (self.get(x+1, y) == '-' and self.get(x, y+1) == '|'):
                 result.append(Line(
                     Point(self.hcenter(x), self.bottom(y)),
@@ -544,23 +541,27 @@ class AsciiArtImage:
             self.tag([(x,y)], CLASS_JOIN)
         return result
 
-def render(text):
-    """helper function for tests. scan the given image and create svg output"""
-    aaimg = AsciiArtImage(text)
-    print text
-    aaimg.recognize()
-    aav = aa.AsciiOutputVisitor()
-    pprint.pprint(aaimg.shapes)
-    aav.visit(aaimg)
-    print aav
-    svgout = svg.SVGOutputVisitor(
-        file('aafigure_%x.svg' % (long(hash(text)) & 0xffffffffL,), 'w'),
-        scale = 10
-    )
-    svgout.visit(aaimg)
-
 
 if __name__ == '__main__':
+    import pprint
+    import svg
+    import aa
+
+    def render(text):
+        """helper function for tests. scan the given image and create svg output"""
+        aaimg = AsciiArtImage(text)
+        print text
+        aaimg.recognize()
+        aav = aa.AsciiOutputVisitor()
+        pprint.pprint(aaimg.shapes)
+        aav.visit(aaimg)
+        print aav
+        svgout = svg.SVGOutputVisitor(
+            file('aafigure_%x.svg' % (long(hash(text)) & 0xffffffffL,), 'w'),
+            scale = 10
+        )
+        svgout.visit(aaimg)
+
     aaimg = AsciiArtImage("""
         ---> | ^|   |
         <--- | || --+--

@@ -47,7 +47,7 @@ class SVGOutputVisitor:
         """Process the gived ASCIIArtFigure and output the shapes in
            the SVG file
         """
-        self.aa_image = aa_image        #save fore later XXX not optimal to do it here
+        self.aa_image = aa_image        #save for later XXX not optimal to do it here
         self.width = (aa_image.width+1)*aa_image.nominal_size*aa_image.aspect_ratio
         self.height = (aa_image.height+1)*aa_image.nominal_size
         self.file_like.write("""\
