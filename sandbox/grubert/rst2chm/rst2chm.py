@@ -232,7 +232,6 @@ class HTMLHelpContentsTranslator(nodes.NodeVisitor):
 
     def visit_title(self, node):
         name,href = self.encode(node.astext()),''
-
         # only want to collection document and section titles
         if isinstance(node.parent, nodes.document):
             pass
@@ -246,12 +245,10 @@ class HTMLHelpContentsTranslator(nodes.NodeVisitor):
         else:
             # only add this to contents if we can link to it
             # and to link to it, 'id' is needed
-            parent_id = node.parent.get('id',None)
-            if parent_id:
-                href = self.section_filename + '#' + node.parent['id']
+            if len(node.parent['ids'])>0:
+                href = self.section_filename + '#' + node.parent['ids'][0]
             else:
                 return
-
         self.content.append(HHC_ITEM  % {'name': name, 'href': href})
 
     def depart_title(self, node):
@@ -310,9 +307,10 @@ def write_contents_file(filenames, options):
                                            encoding=settings.input_encoding)
         pub.destination = docutils.io.StringOutput(
                                 encoding=settings.output_encoding)
-        document = pub.reader.read(pub.source, pub.parser, pub.settings)
-        pub.apply_transforms(document)
-        output = pub.writer.write(document, pub.destination)
+        pub.document = pub.reader.read(pub.source, pub.parser, pub.settings)
+        pub.apply_transforms()
+        output = pub.writer.write(pub.document, pub.destination)
+        pub.writer.assemble_parts()
         contents.append(output)
 
         status('OK\n', options)
