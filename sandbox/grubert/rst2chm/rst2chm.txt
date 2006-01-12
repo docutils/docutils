@@ -1,0 +1,158 @@
+=======
+rst2chm
+=======
+
+:Author: Ollie Rutherfurd <oliver@rutherfurd.net>
+:Date: 2003-08-14
+:Version: 0.3
+
+
+Introduction
+============
+
+rst2chm generates Microsoft (TM) HTML Help files from one or more 
+`reStructuredText`_ source files.
+
+
+Usage
+=====
+
+::
+
+	rst2chm.py OUTFILE INFILE [INFILE...]
+
+Examples
+--------
+
+1. CHM for rst2chm
+
+::
+
+	rst2chm.py --title=rst2chm rst2chm.chm rst2chm.txt
+
+2. CHM for Docutils
+
+::
+
+	rst2chm.py --title=Docutils 
+		--default-topic=spec\rst\introduction.html 
+		--stylesheet=tools\stylesheets\default.css 
+		docutils.chm spec\rst\*.txt docs\*.txt *.txt
+
+**Note that text is wrapped for display purposes only.**
+
+
+How it Works
+============
+
+When you run rst2chm, it does the following:
+
+1. Reads through reST source files, and generates an HTML Help Contents 
+   file (.hhc).
+
+   Each reST source file is treated as a `topic` and each section
+   within the file is treated as a section within that topic.
+
+   Topics are ordered in the order they were given on the command line,
+   however you may specify a default `topic` using the ``--default-topic``
+   command-line option.  If no default topic is specified, the first
+   is used.
+
+2. Converts reStructuredText files to HTML (*optional*).
+
+   rst2chm uses Docutil's HTML writer to generate HTML.  If you wish
+   to use change the options, use a different writer, etc... you
+   may disable HTML generate using the ``--no-html`` command-line option.
+
+3. Creates an HTML Help Project file (.hhp).
+
+   
+4. Uses HTML Help Compiler (hhc.exe), to create a CHM file.
+
+   rst2chm searches for "hhc.exe" using ``%PATH%`` environment variable
+   and lastly in ``C:\Program Files\HTML Help Workshop\hhc.exe``, which was
+   the default installation location on my machine.  Alternatively, you may
+   use the ``--compiler`` command-line option to tell rst2chm where to find 
+   "hhc.exe".
+
+5. Removes .hhc, .hhp, and HTML files (if rst2chm generated the HTML files).
+
+   To disable removal of these files, for debugging purposes, customization, 
+   etc... use the ``--no-clean`` command-line option.
+
+
+Todo
+====
+
+* Finish & test support for languages other than English.
+* Allow a template to be used for project.hhp?
+* Index (.hhk) support.
+* Option to include extra HTML files?
+
+
+License
+=======
+
+`Python License <http://www.python.org/doc/Copyright.html>`_
+
+
+Requirements
+============
+
+* `Microsoft (TM) HTML Help Workshop`_
+* `Docutils`_, version 0.3 or higher suggested
+
+
+Known Issues & Bugs
+===================
+
+* Images sometimes aren't included (for example, tools\test.txt)
+* Section links don't work for::
+
+	C:\sandbox\rst2chm>rst2chm.py --no-clean --stylesheet=rst2chm.css 
+	sendkeys.chm ..\projects\SendKeys\trunk\doc\SendKeys.txt
+  
+* If input file is an absolute path, hhc compilation fails.  This may be a 
+  limitation of hhc.
+
+
+Version History
+===============
+
+0.3
+---
+
+Released 2003-08-14
+
+* Using Latin-1 (ISO-8859-1) for output encoding.
+
+  This fixes ``A^`` thingies appearing between section numbers 
+  and titles in Docutils FAQ.
+
+0.2
+---
+
+Released 2003-07-25
+
+* Fixed StringIO hack in TOC generation.
+
+0.1
+---
+
+Released 2003-07-10
+
+* First release
+
+
+Feedback
+========
+
+Please send feedback to the author, Ollie Rutherfurd <oliver@rutherfurd.net> or 
+to the docutils-users lists <docutils-users@lists.sourceforge.net>.
+
+
+.. _Microsoft (TM) HTML Help Workshop: http://msdn.microsoft.com/library/default.asp?url=/library/en-us/htmlhelp/html/vsconHH1Start.asp
+.. _reStructuredText: http://docutils.sourceforge.net/rst.html
+.. _Docutils: http://docutils.sf.net/
+
+.. :lineSeparator=\r\n:maxLineLen=80:mode=rest:noTabs=false:tabSize=4:wrap=none:
