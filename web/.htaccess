@@ -1,12 +1,3 @@
-# Server Configuration
-# ====================
-
-# SourceForge.net returns image/svg-xml by default, but Firefox and
-# the W3C dictate image/svg+xml.
-
-AddType image/svg+xml .svg
-
-
 # Redirects
 # =========
 
