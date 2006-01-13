@@ -128,6 +128,12 @@ class AsciiArtImage:
         for x, y in coordinates:
             self.classification[y][x] = classification
 
+    def cls(self, x, y):
+        try:
+            return self.classification[y][x]
+        except IndexError:
+            return 'outside'
+        
     # Coordinate converison and shifting
     def left(self, x):          return x*NOMINAL_SIZE*self.aspect_ratio
     def hcenter(self, x):       return (x+0.5)*NOMINAL_SIZE*self.aspect_ratio
@@ -163,8 +169,11 @@ class AsciiArtImage:
                 if character == '+':
                     self.shapes.extend(self._plus_joiner(x, y))
                 if self.classification[y][x] is None:
-                    if character == 'X' and (self.get(x+1,y) == 'X' or self.get(x,y+1) == 'X'):
-                        self.shapes.extend(self._follow_filled_rectangle(x, y))
+                    #~ if character in self.FILL_CHARACTERS \
+                        #~ and ((self.get(x+1,y) == character and self.get(x+2,y) == character) \
+                             #~ or self.get(x,y+1) == character):
+                    if character in self.FILL_CHARACTERS and (self.get(x+1,y) == character or self.get(x,y+1) == character):
+                        self.shapes.extend(self._follow_fill(character, x, y))
                     #~ elif character.isalnum():
                         #~ self.shapes.extend(self._follow_horizontal_string(x, y))
                     #~ elif character == '.':
@@ -219,9 +228,19 @@ class AsciiArtImage:
         """--#"""
         direction_vector = p1 - p2
         direction_vector /= abs(direction_vector)
-        return p1-direction_vector*1.414, [
-            Rectangle(p1-direction_vector-direction_vector*(0.707+0.707j),
-                      p1-direction_vector+direction_vector*(0.707+0.707j))
+        #~ return p1-direction_vector*1.414, [
+            #~ Rectangle(p1-direction_vector-direction_vector*(0.707+0.707j),
+                      #~ p1-direction_vector+direction_vector*(0.707+0.707j))
+        #~ ]
+        return p1-direction_vector*1.707, [
+            Line(p1-direction_vector-direction_vector*(0.707+0.707j),
+                 p1-direction_vector-direction_vector*(0.707-0.707j)),
+            Line(p1-direction_vector+direction_vector*(0.707+0.707j),
+                 p1-direction_vector+direction_vector*(0.707-0.707j)),
+            Line(p1-direction_vector-direction_vector*(0.707+0.707j),
+                 p1-direction_vector+direction_vector*(0.707-0.707j)),
+            Line(p1-direction_vector-direction_vector*(0.707-0.707j),
+                 p1-direction_vector+direction_vector*(0.707+0.707j)),
         ]
     
     #the same character can mean a different thing, depending from where
@@ -254,10 +273,141 @@ class AsciiArtImage:
     ]
 
     def get_arrow(self, character, dx, dy):
+        """return arrow drawing function or None"""
         for head, ddx, ddy, function_name in self.ARROW_TYPES:
             if character == head and dx == ddx and dy == ddy:
                 return getattr(self, function_name)
-                
+    
+    def _hatch_left(self, x, y): return self._n_hatch_diagonal(x,y,1,True)
+    def _hatch_right(self, x, y): return self._n_hatch_diagonal(x,y,1,False)
+    def _cross_hatch(self, x, y): return self._n_hatch_diagonal(x,y,1,True) + self._n_hatch_diagonal(x,y,1,False)
+    def _double_hatch_left(self, x, y): return self._n_hatch_diagonal(x,y,2,True)
+    def _double_hatch_right(self, x, y): return self._n_hatch_diagonal(x,y,2,False)
+    def _double_cross_hatch(self, x, y): return self._n_hatch_diagonal(x,y,2,True) + self._n_hatch_diagonal(x,y,2,False)
+    def _triple_hatch_left(self, x, y): return self._n_hatch_diagonal(x,y,3,True)
+    def _triple_hatch_right(self, x, y): return self._n_hatch_diagonal(x,y,3,False)
+    def _triple_cross_hatch(self, x, y): return self._n_hatch_diagonal(x,y,3,True) + self._n_hatch_diagonal(x,y,3,False)
+        
+    def _n_hatch_diagonal(self, x, y, n, left=False):
+        """hatch generator function"""
+        d = 1/float(n)
+        result = []
+        if left:
+            for i in range(n):
+                result.append(Line(Point(self.left(x), self.top(y+d*i)), Point(self.right(x-d*i), self.bottom(y))))
+                if n:
+                    result.append(Line(Point(self.right(x-d*i), self.top(y)), Point(self.right(x), self.top(y+d*i))))
+        else:
+            for i in range(n):
+                result.append(Line(Point(self.left(x), self.top(y+d*i)), Point(self.left(x+d*i), self.top(y))))
+                if n:
+                    result.append(Line(Point(self.left(x+d*i), self.bottom(y)), Point(self.right(x), self.top(y+d*i))))
+        return result
+
+    def _hatch_v(self, x, y): return self._n_hatch_straight(x,y,1,True)
+    def _hatch_h(self, x, y): return self._n_hatch_straight(x,y,1,False)
+    def _hv_hatch(self, x, y): return self._n_hatch_straight(x,y,1,True) + self._n_hatch_straight(x,y,1,False)
+    def _double_hatch_v(self, x, y): return self._n_hatch_straight(x,y,2,True)
+    def _double_hatch_h(self, x, y): return self._n_hatch_straight(x,y,2,False)
+    def _double_hv_hatch(self, x, y): return self._n_hatch_straight(x,y,2,True) + self._n_hatch_straight(x,y,2,False)
+    def _triple_hatch_v(self, x, y): return self._n_hatch_straight(x,y,3,True)
+    def _triple_hatch_h(self, x, y): return self._n_hatch_straight(x,y,3,False)
+    def _triple_hv_hatch(self, x, y): return self._n_hatch_straight(x,y,3,True) + self._n_hatch_straight(x,y,3,False)
+
+    def _n_hatch_straight(self, x, y, n, vertical=False):
+        """hatch generator function"""
+        d = 1/float(n)
+        offset = 1.0/(n+1)
+        result = []
+        if vertical:
+            for i in range(n):
+                i = i + offset
+                result.append(Line(Point(self.left(x+d*i), self.top(y)), Point(self.left(x+d*i), self.bottom(y))))
+                #~ if n:
+                    #~ result.append(Line(Point(self.right(x-d*i), self.top(y)), Point(self.right(x), self.top(y+d*i))))
+        else:
+            for i in range(n):
+                i = i + offset
+                result.append(Line(Point(self.left(x), self.top(y+d*i)), Point(self.right(x), self.top(y+d*i))))
+                #~ if n:
+                    #~ result.append(Line(Point(self.left(x+d*i), self.bottom(y)), Point(self.right(x), self.top(y+d*i))))
+        return result
+
+    def _fill_trail(self, x, y):
+        return [
+            Line(Point(self.left(x+0.707), self.top(y)), Point(self.right(x), self.bottom(y-0.707))),
+            Line(Point(self.left(x), self.top(y+0.707)), Point(self.right(x-0.707), self.bottom(y)))
+        ]
+
+    def _fill_foreground(self, x, y):
+        return [
+            Rectangle(Point(self.left(x), self.top(y)), Point(self.right(x), self.bottom(y)))
+        ]
+    def _fill_background(self, x, y): return []
+
+    def _fill_small_circle(self, x, y):
+        return [
+            Circle(Point(self.left(x+0.5), self.top(y+0.5)), 0.2)
+        ]
+    def _fill_medium_circle(self, x, y):
+        return [
+            Circle(Point(self.left(x+0.5), self.top(y+0.5)), 0.4)
+        ]
+        
+    def _fill_large_circle(self, x, y):
+        return [
+            Circle(Point(self.left(x+0.5), self.top(y+0.5)), 0.9)
+        ]
+
+    def _fill_qmark(self, x, y):
+        return [
+            Label(Point(self.left(x), self.bottom(y)), '?')
+        ]
+        
+    def _fill_triangles(self, x, y):
+        return [
+            Line(Point(self.left(x+0.5), self.top(y+0.2)), Point(self.left(x+0.75), self.top(y+0.807))),
+            Line(Point(self.left(x+0.7), self.top(y+0.807)), Point(self.left(x+0.25), self.top(y+0.807))),
+            Line(Point(self.left(x+0.25), self.top(y+0.807)), Point(self.left(x+0.5), self.top(y+0.2))),
+        ]
+    
+    FILL_TYPES = [
+        ('A', '_hatch_left'),
+        ('B', '_hatch_right'),
+        ('C', '_cross_hatch'),
+        ('D', '_double_hatch_left'),
+        ('E', '_double_hatch_right'),
+        ('F', '_double_cross_hatch'),
+        ('G', '_triple_hatch_left'),
+        ('H', '_triple_hatch_right'),
+        ('I', '_triple_cross_hatch'),
+        ('J', '_hatch_v'),
+        ('K', '_hatch_h'),
+        ('L', '_hv_hatch'),
+        ('M', '_double_hatch_v'),
+        ('N', '_double_hatch_h'),
+        ('O', '_double_hv_hatch'),
+        ('P', '_triple_hatch_v'),
+        ('Q', '_triple_hatch_h'),
+        ('R', '_triple_hv_hatch'),
+        ('S', '_fill_qmark'),
+        ('T', '_fill_trail'),
+        ('U', '_fill_small_circle'),
+        ('V', '_fill_medium_circle'),
+        ('W', '_fill_large_circle'),
+        ('X', '_fill_foreground'),
+        ('Y', '_fill_triangles'),
+        ('Z', '_fill_background'),
+    ]
+    FILL_CHARACTERS = ''.join([t+t.lower() for (t,f) in FILL_TYPES])
+    
+    def get_fill(self, character):
+        """return fill function"""
+        for head, function_name in self.FILL_TYPES:
+            if character == head:
+                return getattr(self, function_name)
+        raise ValueError('no such fill type')
+    
     # - - - - - - - - - helper function for shape recognition - - - - - - - - -
     
     def _follow_vertical_line(self, x, y):
@@ -343,8 +493,9 @@ class AsciiArtImage:
             following_character = self.get(x+dx, y+dy)
             if following_character in self.ARROW_HEADS:
                 line_end_style = self.get_arrow(following_character, dx, dy)
-                x += dx
-                y += dy
+                if line_end_style:
+                    x += dx
+                    y += dy
             else:
                 line_end_style = None
         else:
@@ -373,29 +524,53 @@ class AsciiArtImage:
         return result
 
 
-    def _follow_filled_rectangle(self, start_x, start_y):
-        """detect the size of a filled rectangle. width is scanned first.
-           shapes like these:
+    def _follow_fill(self, character, start_x, start_y):
+        """fill shapes like the ones below with a pattern. when the character is
+           upper case, draw a border too.
            
-               XXXX
-               XX
-           
-           are detected as two rectangles.
+            XXX  aaa  BB
+           XXX    a
         """
-        x = start_x
-        y = start_y
-        #expand as fas as possible to the right
-        while x < self.width and self.get(x+1, y) == 'X':
-            x += 1
-        #expand height as long as the width stays the same
-        while y < self.height and False not in [self.get(i,y+1) == 'X' for i in range(start_x, x+1)]:
-            y += 1
-        for i in range(start_y, y+1):
-            self.tag([(x, i) for x in range(start_x, x+1)], CLASS_RECTANGLE)
-        return [Rectangle(
-            Point(self.left(start_x), self.top(start_y)),
-            Point(self.right(x), self.bottom(y)),
-        )]
+        fill = self.get_fill(character.upper())
+        border = character.isupper()
+        result = []
+        #flood fill algorithm, searching for similar characters
+        coordinates = []
+        to_scan = [(start_x, start_y)]
+        while to_scan:
+            x,y = to_scan.pop()
+            if self.cls(x, y) is None:
+                if self.get(x, y) == character:
+                    result.extend(fill(x, y))
+                    self.tag([(x,y)], CLASS_RECTANGLE)
+                if self.get(x+1, y) == character:
+                    if self.cls(x+1, y) is None: to_scan.append((x+1, y))
+                elif border:
+                    result.append(Line(Point(self.right(x), self.top(y)), Point(self.right(x), self.bottom(y))))
+                if self.get(x-1, y) == character:
+                    if self.cls(x-1, y) is None: to_scan.append((x-1, y))
+                elif border:
+                    result.append(Line(Point(self.left(x), self.top(y)), Point(self.left(x), self.bottom(y))))
+                if self.get(x, y+1) == character:
+                    if self.cls(x, y+1) is None: to_scan.append((x, y+1))
+                elif border:
+                    result.append(Line(Point(self.left(x), self.bottom(y)), Point(self.right(x), self.bottom(y))))
+                if self.get(x, y-1) == character:
+                    if self.cls(x, y-1) is None: to_scan.append((x, y-1))
+                elif border:
+                    result.append(Line(Point(self.left(x), self.top(y)), Point(self.right(x), self.top(y))))
+        return result
+            #~ for x in range(start_x, x+1):
+                #~ result.extend(fill(x,i))
+        #~ # [Rectangle(
+            #~ # Point(self.left(start_x), self.top(start_y)),
+            #~ # Point(self.right(x), self.bottom(y)),
+        #~ # )]
+        #~ for i in range(start_y, y+1):
+            #~ self.tag([(x, i) for x in range(start_x, x+1)], CLASS_RECTANGLE)
+            #~ for x in range(start_x, x+1):
+                #~ result.extend(fill(x,i))
+        #~ return result
         
     def _follow_horizontal_string(self, start_x, y, min_length=0, accept_anything=False):
         """find a string. may contain single spaces, but the detection is
@@ -412,7 +587,7 @@ class AsciiArtImage:
         text.append(self.get(x, y))
         is_first_space = True
         while 0 <= x+1 < self.width \
-          and self.classification[y][x+1] is None \
+          and self.cls(x+1, y) is None \
           and ((accept_anything and (self.get(x+1, y) != ' ' \
                                      or (self.get(x+1, y) == ' ' and is_first_space)))
             or (self.get(x+1, y).isalnum() \

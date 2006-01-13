@@ -105,7 +105,8 @@ class SVGOutputVisitor:
 """ % (
             self._num(x1), self._num(y1),
             self._num(x2-x1), self._num(y2-y1),
-            self._color(self.foreground),
+            #~ self._color(self.foreground), #stroke:%s;
+            self._color(self.fillcolor), #stroke:%s;
             self._color(self.fillcolor),
             self._unit(self.line_width),
             style
