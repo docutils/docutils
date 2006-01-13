@@ -178,6 +178,37 @@ It is also possibe to make rounded edges in two ways::
     |     |   XXX  |  |    /    /
     +-----+   XXX  \--/   |   --
 
+Fills
+-----
+
+Upper case characters generate shapes with borders, lower case without border.
+Fills must be at least two characters wide or high. (This reduces the chance
+that it is detected as Fill instead of a string)
+
+.. aafigure::
+    
+    A   B   C   D   E   F   G   H   I   J   K   L   M   
+     AA  BB  CC  DD  EE  FF  GG  HH  II  JJ  KK  LL  MM 
+     AA  BB  CC  DD  EE  FF  GG  HH  II  JJ  KK  LL  MM 
+                                                        
+     aa  bb  cc  dd  ee  ff  gg  hh  ii  jj  kk  ll  mm 
+     aa  bb  cc  dd  ee  ff  gg  hh  ii  jj  kk  ll  mm 
+                                                        
+    N   O   P   Q   R   S   T   U   V   W   X   Y   Z   
+     NN  OO  PP  QQ  RR  SS  TT  UU  VV  WW  XX  YY  ZZ 
+     NN  OO  PP  QQ  RR  SS  TT  UU  VV  WW  XX  YY  ZZ 
+                                                        
+     nn  oo  pp  qq  rr  ss  tt  uu  vv  ww  xx  yy  zz 
+     nn  oo  pp  qq  rr  ss  tt  uu  vv  ww  xx  yy  zz 
+
+Complex shapes can be filled:
+
+.. aafigure::
+
+    CCCCC     C         dededede
+     C  CCCC  CC        dededede
+     CC    CCCCC        dededede
+                          
 Text
 ----
 The images may contain text too. Currently only alphanumeric characters are
@@ -238,6 +269,9 @@ TODO
 
 - Group shapes that belong to an object, so that it's easier to import and
   change the graphics in a vector drawing program.
+
+- Path optimizer, it happens that many small lines are output where a long
+  line could be used.
 
 
 License
@@ -392,15 +426,16 @@ It would be cool if it could display simple schematics.
 
 .. aafigure::
 
-       |/|       |\|       | |
-    ---+ +---  --+ +--   --+ +--
-       |\|       |/|       | |
+       |/|       |\|       | |     +---+
+    ---+ +---  --+ +--   --+ +--  -+   +-
+       |\|       |/|       | |     +---+
                       
-       |        |           |
-      -+-      -+-         -+-
-      / \      \ /          
-      -+-      -+-         -+- 
-       |        |           |  
+       |        |           |        | 
+      -+-      -+-         -+-      +++
+      / \      \ /                  | |
+      -+-      -+-         -+-      | |
+       |        |           |       +++
+                                     | 
 
 - Diodes OK
 
@@ -518,9 +553,9 @@ Just some bars:
     :fill: #00b
 
     ^     2
-    |    XX
-    | 1  XX       4
-    |XX  XX   3  XX
-    |XX  XX  XX  XX
-    |XX  XX  XX  XX
+    |    EE
+    | 1  EE       4
+    |DD  EE   3  HH
+    |DD  EE  GG  HH
+    |DD  EE  GG  HH
     +------------------>
