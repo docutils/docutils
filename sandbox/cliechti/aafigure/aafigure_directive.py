@@ -12,7 +12,7 @@ except ImportError:
     pil = None
 
 from docutils import nodes
-from docutils.parsers.rst.directives import register_directive
+from docutils.parsers.rst.directives import register_directive, flag
 
 aafigure_counter = 0
 
@@ -46,7 +46,11 @@ def AAFigureDrective(name, arguments, options, content, lineno,
         options['name'] = 'aafigure-%i' % aafigure_counter
         aafigure_counter += 1
     
-    aaimg = aafigure.AsciiArtImage(text, aspect_ratio = options['aspect'])
+    aaimg = aafigure.AsciiArtImage(
+        text,
+        aspect_ratio = options['aspect'],
+        textual = options.has_key('textual')
+    )
     aaimg.recognize()
     
     if options['format'] == 'svg':
@@ -112,6 +116,7 @@ AAFigureDrective.options = {
     'foreground': str,
     'fill': str,
     'aspect': float,
+    'textual': flag,
 }
 
 def register():

@@ -211,14 +211,50 @@ Complex shapes can be filled:
                           
 Text
 ----
-The images may contain text too. Currently only alphanumeric characters are
-allowed::
+The images may contain text too. There are different styles to enter text:
 
-    Hello World
+*direct*
+
+Bby default are repeated characters detected as fill::
+
+    Hello World  dd d
+                    d
 
 .. aafigure::
 
-    Hello World
+    Hello World  dd d
+                    d
+
+*quoted*
+
+Text between quotes has piority over any graphical meaning::
+
+    "Hello World"  dd d
+                      d
+
+.. aafigure::
+
+    "Hello World"  dd d
+                      d
+
+``"``, ``'`` and ``\``` are all valid quotation marks. The quotes are not
+visible in the resulting image. This not only disables fills (see below), it
+also treats ``-``, ``|`` etc as text.
+
+*textual option*
+
+The ``:textual:`` option disables horizontal fill detection. Fills are only
+detected when they are verticaly at least 2 charcacters high::
+
+    Hello World  dd d
+                    d
+
+.. aafigure::
+    :textual:
+
+    Hello World  dd d
+                    d
+
 
 Other
 -----
@@ -450,6 +486,7 @@ Here is a complete circuit with different parts:
 .. aafigure::
     :fill: #fff
     :scale: 0.8
+    :textual:
     
                            Q1  _    8MHz
                              || ||
@@ -462,16 +499,16 @@ Here is a complete circuit with different parts:
                   |                    P3.3 +--------------+
       SDA/I2C #---+ P2.0                    |              |
                   |                         |             e|
-                  |        MSP430F123       |     R1   b |/  V1
-      SCL/I2C #---+ P2.1               P3.4 +----XXXX----+   PNP
-                  |                         |     1k     |\
-                  |           IC1           |             c|
+                  |        MSP430F123       |    +----+ b|/  V1
+      SCL/I2C #---+ P2.1               P3.4 +----+ R1 +--+   PNP
+                  |                         |    +----+  |\
+                  |           IC1           |      1k     c|
                   |                         |              o-------------O TXD/RS232
                   |    VCC             GND  |              |  
-                  +-----+---------------+---+              |     R2
-                        |               |                  +----XXXX-----O RXD/RS232
-                        |               |                        10k
-                        |               |                      
+                  +-----+---------------+---+              |     +----+
+                        |               |                  +-----+ R2 +--O RXD/RS232
+                        |               |                        +----+ 
+                        |               |                         10k
                         |               |
       GND/I2C #---o-----+----o----------o-----------o--------------------O GND/RS232
                   |     |    |   C1     |           |   C2
@@ -515,8 +552,8 @@ Here is one with descriptions:
                                             
               ^    ^     ^     ^     ^     ^
               |    |     |     |     |     |  
-              |  sh_in   |   sh_in   |   sh_in
-            sh_out     sh_out      sh_out   
+              | 'sh_in'  |  'sh_in   |  'sh_in
+           'sh_out'   'sh_out'    'sh_out'  
                                             
                         SCL edge
 
