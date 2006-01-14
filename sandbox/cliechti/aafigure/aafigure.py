@@ -86,11 +86,12 @@ class AsciiArtImage:
     """This class hold a ASCII art figure and has methods to parse it.
        The resaulting list of shapes is also stored here.
     """
-    ARROW_HEADS = list('<>Vv^oO#')
+    QUOTATION_CHARACTERS = list('"\'`')
     
-    def __init__(self, text, aspect_ratio=1):
+    def __init__(self, text, aspect_ratio=1, textual=False):
         """Take a ASCII art figure and store it, prepare for ``recognize``"""
         self.aspect_ratio = float(aspect_ratio)
+        self.textual = textual
         #XXX TODO tab expansion
         #detect size of input image
         self.image = []
@@ -151,13 +152,21 @@ class AsciiArtImage:
                 #~ character = self.image[y][x]
                 #~ if self.classification[y][x] is None:
                     #~ if character.isalnum():
-                        #~ self.shapes.extend(self._follow_horizontal_string(x, y, min_length=1))
+                        #~ self.shapes.extend(self._follow_horizontal_string(x, y))
+        #search for quoted texts
+        for y in range(self.height):
+            for x in range(self.width):
+                #if not yet classified, check for a line
+                character = self.image[y][x]
+                if character in self.QUOTATION_CHARACTERS:
+                    self.shapes.extend(self._follow_horizontal_string(x, y, quoted=True))
+        
         #search for standard shapes
         for y in range(self.height):
             for x in range(self.width):
                 #if not yet classified, check for a line
                 character = self.image[y][x]
-                if self.classification[y][x] != CLASS_LINE:
+                if self.classification[y][x] is None:
                     if character == '-':
                         self.shapes.extend(self._follow_horizontal_line(x, y))
                     elif character == '|':
@@ -166,14 +175,18 @@ class AsciiArtImage:
                         self.shapes.extend(self._follow_lower_horizontal_line(x, y))
                     elif character == '=':
                         self.shapes.extend(self._follow_horizontal_line(x, y, thick=True))
-                if character == '+':
-                    self.shapes.extend(self._plus_joiner(x, y))
-                if self.classification[y][x] is None:
+                    if character == '+':
+                        self.shapes.extend(self._plus_joiner(x, y))
                     #~ if character in self.FILL_CHARACTERS \
                         #~ and ((self.get(x+1,y) == character and self.get(x+2,y) == character) \
                              #~ or self.get(x,y+1) == character):
-                    if character in self.FILL_CHARACTERS and (self.get(x+1,y) == character or self.get(x,y+1) == character):
-                        self.shapes.extend(self._follow_fill(character, x, y))
+                    if character in self.FILL_CHARACTERS:
+                        if self.textual:
+                            if self.get(x,y+1) == character:
+                                self.shapes.extend(self._follow_fill(character, x, y))
+                        else:
+                            if (self.get(x+1,y) == character or self.get(x,y+1) == character):
+                                self.shapes.extend(self._follow_fill(character, x, y))
                     #~ elif character.isalnum():
                         #~ self.shapes.extend(self._follow_horizontal_string(x, y))
                     #~ elif character == '.':
@@ -182,6 +195,7 @@ class AsciiArtImage:
                         self.shapes.append(Circle(Point(self.hcenter(x),self.vcenter(y)), NOMINAL_SIZE/2.0)) #XXX
                 if character in '\\/':
                     self.shapes.extend(self._follow_rounded_edge(x, y))
+        
         #search for short strings too
         for y in range(self.height):
             for x in range(self.width):
@@ -271,6 +285,7 @@ class AsciiArtImage:
         ('#',  0, -1, '_rectangular_head'),
         ('#',  0,  1, '_rectangular_head'),
     ]
+    ARROW_HEADS = list('<>Vv^oO#')
 
     def get_arrow(self, character, dx, dy):
         """return arrow drawing function or None"""
@@ -572,37 +587,45 @@ class AsciiArtImage:
                 #~ result.extend(fill(x,i))
         #~ return result
         
-    def _follow_horizontal_string(self, start_x, y, min_length=0, accept_anything=False):
+    def _follow_horizontal_string(self, start_x, y, accept_anything=False, quoted=False):
         """find a string. may contain single spaces, but the detection is
            aborted after more than one space.
            
-              Text one   Text two
+              Text one   "Text two"
            
-           texts are skipped if text is shorter than min_length (used for two pass scan)
            accept_anything means that all non space characters are interpreted as text
         """
-        #follow line in the given direction
-        x = start_x
+        #follow line from left to right
+        if quoted:
+            quotation_character = self.get(start_x, y)
+            x = start_x+1
+        else:
+            quotation_character = None
+            x = start_x
         text = []
-        text.append(self.get(x, y))
-        is_first_space = True
-        while 0 <= x+1 < self.width \
-          and self.cls(x+1, y) is None \
-          and ((accept_anything and (self.get(x+1, y) != ' ' \
-                                     or (self.get(x+1, y) == ' ' and is_first_space)))
-            or (self.get(x+1, y).isalnum() \
-                or (self.get(x+1, y) == ' ' and is_first_space))) \
-        :
-            x += 1
+        if self.get(x, y) != ' ':
             text.append(self.get(x, y))
-            if self.get(x, y) == ' ':
-                is_first_space = False
-            else:
-                is_first_space = True
-        if text[-1] == ' ':
-            del text[-1]
-            x -= 1
-        if len(text) > min_length:
+            self.tag([(x, y)], CLASS_STRING)
+            is_first_space = True
+            while 0 <= x+1 < self.width \
+              and self.cls(x+1, y) is None:
+                if not quoted:
+                    if self.get(x+1, y) == ' ' and not is_first_space:
+                        break
+                    if not accept_anything and not self.get(x+1, y).isalnum():
+                        break
+                x += 1
+                character = self.get(x, y)
+                if character == quotation_character:
+                    break
+                text.append(character)
+                if character == ' ':
+                    is_first_space = False
+                else:
+                    is_first_space = True
+            if text[-1] == ' ':
+                del text[-1]
+                x -= 1
             self.tag([(x, y) for x in range(start_x, x+1)], CLASS_STRING)
             return [Label(
                 Point(self.left(start_x), self.bottom(y)),
