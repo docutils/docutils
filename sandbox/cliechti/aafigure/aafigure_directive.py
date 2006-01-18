@@ -3,6 +3,7 @@ implement aafigure directive
 """
 
 import os, sys, tempfile, popen2
+#~ import cStringIO
 import aafigure
 import svg
 try:
@@ -13,6 +14,9 @@ except ImportError:
 
 from docutils import nodes
 from docutils.parsers.rst.directives import register_directive, flag
+
+DEFAULT_FORMAT = 'svg'
+#~ DEFAULT_FORMAT = 'png'
 
 aafigure_counter = 0
 
@@ -40,7 +44,7 @@ def AAFigureDrective(name, arguments, options, content, lineno,
     if not options.has_key('fill'): options['fill'] = options['foreground'] #fill = fore by default
     if not options.has_key('scale'): options['scale'] = 1
     if not options.has_key('line_width'): options['line_width'] = 2
-    if not options.has_key('format'): options['format'] = 'svg'
+    if not options.has_key('format'): options['format'] = DEFAULT_FORMAT
     if not options.has_key('aspect'): options['aspect'] = 1
     if not options.has_key('name'):
         options['name'] = 'aafigure-%i' % aafigure_counter
@@ -55,27 +59,31 @@ def AAFigureDrective(name, arguments, options, content, lineno,
     
     if options['format'] == 'svg':
         output_name = options['name'] + '.svg'
+        #~ io = cStringIO.StringIO()
         svgout = svg.SVGOutputVisitor(
             file(output_name, 'w'),
+            #~ io,
             scale = options['scale']*6,
             line_width = options['line_width'],
             foreground = decode_color(options['foreground']),
             background = decode_color(options['background']),
-            fillcolor = decode_color(options['fill']),
-            debug = True
+            fillcolor = decode_color(options['fill'])
         )
-        svgout.visit(aaimg)
+        svgout.visit_image(aaimg)
+        #~ svgout.visit(aaimg, xml_header = False)
+        #insert data into html using a raw node
         attributes = {'format': 'html'}
-        #~ result = [nodes.raw('', '<embed src="%s" %s type="image/svg+xml"/>' % (
+        #~ # result = [nodes.raw('', '<embed src="%s" %s type="image/svg+xml"/>' % (
         result = [nodes.raw('', '<object type="image/svg+xml" data="%s" %s></object>' % (
             output_name,
             svgout.get_size_attrs()
         ), **attributes)]
+        #~ result = [nodes.raw('', io.getvalue(), **attributes)]
     elif pil is not None:
         output_name = '%s.%s' % (options['name'], options['format'])
         pilout = pil.PILOutputVisitor(
             file(output_name, 'wb'),
-            scale = options['scale']*10,
+            scale = options['scale']*7,
             line_width = options['line_width'],
             debug = True,
             file_type = options['format'],
@@ -84,7 +92,7 @@ def AAFigureDrective(name, arguments, options, content, lineno,
             fillcolor = decode_color(options['fill']),
         )
         try:
-            pilout.visit(aaimg)
+            pilout.visit_image(aaimg)
         except KeyError:
             result = [state_machine.reporter.error(
                 'No support for image format %r' % (options['format']),

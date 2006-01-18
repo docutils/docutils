@@ -15,23 +15,23 @@ Implementation
 
 Files:
 
-aafigure.py
+``aafigure.py``
     ASCII art parser. This is the main module.
 
-aafigure_directive.py
+``aafigure_directive.py``
     Implmements the ``aafigure`` Docutils directive that takes these
     ASCII art figures and generates a drawing.
 
-aa.py
+``aa.py``
     ASCII art output backend. Intended for tests, not for the end user.
 
-pil.py
+``pil.py``
     Bitmap output backend. Using PIL, it can write PNG, JPEG and more formats.
 
-rst2html.py
+``rst2html.py``
     Patched version that adds the ``aafigure`` Docutils directive.
-    
-svg.py
+
+``svg.py``
     SVG output backend.
 
 
@@ -261,11 +261,11 @@ Other
 
 ::
 
-    A big dot:  *
+    * { }
 
 .. aafigure::
 
-    A big dot:  *
+    * { }
 
 
 
@@ -355,7 +355,8 @@ Boxes and shapes:
 Flow chart
 ----------
 .. aafigure::
-
+    :textual:
+    
         /---------\
         |  Start  |
         \----+----/
@@ -462,16 +463,16 @@ It would be cool if it could display simple schematics.
 
 .. aafigure::
 
-       |/|       |\|       | |     +---+
-    ---+ +---  --+ +--   --+ +--  -+   +-
-       |\|       |/|       | |     +---+
-                      
-       |        |           |        | 
-      -+-      -+-         -+-      +++
-      / \      \ /                  | |
-      -+-      -+-         -+-      | |
-       |        |           |       +++
-                                     | 
+       |/|       |\|       | |     +---+       e|
+    ---+ +---  --+ +--   --+ +--  -+   +-    b|/ 
+       |\|       |/|       | |     +---+    --+  
+                                              |\
+       |        |           |        |         c|
+      -+-      -+-         -+-      +++     
+      / \      \ /                  | |    -   -
+      -+-      -+-         -+-      | |    c\ /e
+       |        |           |       +++     -+-
+                                     |       |b
 
 - Diodes OK
 
@@ -488,40 +489,40 @@ Here is a complete circuit with different parts:
     :scale: 0.8
     :textual:
     
-                           Q1  _    8MHz
-                             || ||
-                        +----+| |+----+
-                        |    ||_||    |
-                        |             |
-                  +-----+-------------+-----+
-                  |    XIN           XOUT   |
-                  |                         |
-                  |                    P3.3 +--------------+
-      SDA/I2C #---+ P2.0                    |              |
-                  |                         |             e|
-                  |        MSP430F123       |    +----+ b|/  V1
-      SCL/I2C #---+ P2.1               P3.4 +----+ R1 +--+   PNP
-                  |                         |    +----+  |\
-                  |           IC1           |      1k     c|
-                  |                         |              o-------------O TXD/RS232
-                  |    VCC             GND  |              |  
-                  +-----+---------------+---+              |     +----+
-                        |               |                  +-----+ R2 +--O RXD/RS232
-                        |               |                        +----+ 
-                        |               |                         10k
-                        |               |
-      GND/I2C #---o-----+----o----------o-----------o--------------------O GND/RS232
-                  |     |    |   C1     |           |   C2
-                 =+=    |  ----- 1u     |         ----- 10u
-                        |  ----- 5V +---+---+     ----- 16V
-                        |    |      |  GND  |       |            D1|/|   
-                        +----o------+out  in+-------o----------o---+ +---O RTS/RS232
-                                    |  3V   |                  |   |\|
-                                    +-------+                  | 
-                                     IC2                       | D2|/|   
-                                                               +---+ +---O DTR/RS232
-                                                                   |\|   
-                                                           
+                         Q1  _  8MHz
+                           || ||
+                      +----+| |+----+
+                      |    ||_||    |
+                      |             |
+                +-----+-------------+-----+
+                |    XIN           XOUT   |
+                |                         |
+                |                    P3.3 +--------------+
+    SDA/I2C O---+ P2.0                    |              |
+                |                         |             e|
+                |        MSP430F123       |   +----+  b|/  V1
+    SCL/I2C O---+ P2.1               P3.4 +---+ R1 +---+   PNP
+                |                         |   +----+   |\
+                |           IC1           |      1k     c|    +----+
+                |                         |              o----+ R3 +---O TXD/RS232
+                |    VCC             GND  |              |    +----+
+                +-----+---------------+---+              |      1k
+                      |               |                  |    +----+
+                      |               |                  +----+ R2 +---O RXD/RS232
+                      |               |                       +----+
+                      |               |                         10k
+    GND/I2C O---o-----+----o----------o-----------o--------------------O GND/RS232
+                |     |    |   C1     |           |   C2
+               =+=    |  ----- 1u     |         ----- 10u
+                      |  ----- 5V +---+---+     ----- 16V
+                      |    |      |  GND  |       |            D1|/|   
+                      +----o------+out  in+-------o----------o---+ +---O RTS/RS232
+                                  |  3V   |                  |   |\|
+                                  +-------+                  | 
+                                   IC2                       | D2|/|   
+                                                             +---+ +---O DTR/RS232
+                                                                 |\|   
+
 
 Timing diagrams
 ---------------
@@ -534,7 +535,7 @@ Timing diagrams
     B |_____|   |______|   |________XX  XX__
       |
       +-------------------------------------> t
-      
+
 Here is one with descriptions:
 
 .. aafigure::
@@ -552,7 +553,7 @@ Here is one with descriptions:
                                             
               ^    ^     ^     ^     ^     ^
               |    |     |     |     |     |  
-              | 'sh_in'  |  'sh_in   |  'sh_in
+              | 'sh_in'  |  'sh_in'  |  'sh_in
            'sh_out'   'sh_out'    'sh_out'  
                                             
                         SCL edge
@@ -596,3 +597,16 @@ Just some bars:
     |DD  EE  GG  HH
     |DD  EE  GG  HH
     +------------------>
+
+
+Schedules
+---------
+
+.. aafigure::
+
+    "Week"      |  1    |  2    |  3    |  4    |  5    |
+    ------------+----------------------------------------
+    "Task 1"    |HHHH
+    "Task 2"    |    EEEEEEEEEEEE
+    "Task 3"    |                GGGGGGGGZZZZZZZZZZ
+    "Task 4"    |DD      DD          DD          DD

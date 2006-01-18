@@ -22,8 +22,8 @@ class PILOutputVisitor:
         self.background = background
         self.fillcolor = fillcolor
     
-    def visit(self, aa_image):
-        """Process the gived ASCIIArtFigure and output the shapes in
+    def visit_image(self, aa_image):
+        """Process the given ASCIIArtFigure and output the shapes in
            the SVG file
         """
         self.aa_image = aa_image        #save for later XXX not optimal to do it here
@@ -45,18 +45,23 @@ class PILOutputVisitor:
                 #~ style = 'fill:none;',
             #~ )
         
-        for shape in aa_image.shapes:
+        self.visit_shapes(aa_image.shapes)
+        del self.draw
+        image.save(self.file_like, self.file_type)
+
+    def visit_shapes(self, shapes):
+        for shape in shapes:
             shape_name = shape.__class__.__name__.lower()
             visitor_name = 'visit_%s' % shape_name
             if hasattr(self, visitor_name):
                 getattr(self, visitor_name)(shape)
             else:
                 print "WARNING: don't know how to handle shape %r" % shape
-        
-        del self.draw
-        image.save(self.file_like, self.file_type)
 
-    # - - - - - - SVG drawing helpers - - - - - - -
+    def visit_group(self, group):
+        self.visit_shapes(group.shapes)
+
+    # - - - - - - drawing helpers - - - - - - -
     def _line(self, x1, y1, x2, y2):
         """Draw a line, coordinates given as four decimal numbers"""
         self.draw.line((x1, y1, x2, y2), fill=self.foreground) #self.line_width
@@ -97,8 +102,8 @@ class PILOutputVisitor:
                 (circle.center.x-circle.radius)*self.scale, (circle.center.y-circle.radius)*self.scale,
                 (circle.center.x+circle.radius)*self.scale, (circle.center.y+circle.radius)*self.scale
             ),
+            fill=self.fillcolor,
             outline=self.foreground,
-            fill=self.fillcolor
         )
 
     def visit_label(self, label):
@@ -107,6 +112,6 @@ class PILOutputVisitor:
             (label.position.x*self.scale, (label.position.y-self.aa_image.nominal_size*1.1)*self.scale),
             label.text,
             fill=self.foreground,
-            font=ImageFont.truetype('arial.ttf', int(self.aa_image.nominal_size*self.scale))
+            font=ImageFont.truetype('arial.ttf', int(self.aa_image.nominal_size*1.1*self.scale))
         )
 
