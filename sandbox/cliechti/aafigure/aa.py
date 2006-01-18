@@ -16,14 +16,20 @@ class AsciiOutputVisitor:
         self.image = {}
         self.scale = scale
     
-    def visit(self, aa_image):
-        for shape in aa_image.shapes:
+    def visit_image(self, aa_image):
+        self.visit_shapes(aa_image.shapes)
+    
+    def visit_shapes(self, shapes):
+        for shape in shapes:
             shape_name = shape.__class__.__name__.lower()
             visitor_name = 'visit_%s' % shape_name
             if hasattr(self, visitor_name):
                 getattr(self, visitor_name)(shape)
             else:
-                print "don't know how to handle shape %r" % shape
+                print "WARNING: don't know how to handle shape %r" % shape
+
+    def visit_group(self, group):
+        self.visit_shapes(group.shapes)
 
     def visit_point(self, point):
         self.image[point.x*self.scale, point.y*self.scale] = '#'

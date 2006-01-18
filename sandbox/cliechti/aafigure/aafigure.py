@@ -13,7 +13,7 @@ CLASS_LINE = 'line'
 CLASS_STRING = 'str'
 CLASS_RECTANGLE = 'rect'
 CLASS_JOIN = 'join'
-
+CLASS_FIXED = 'fixed'
 
 # - - - - - - - - - - - - - - Shapes - - - - - - - - - - - - - - -
 def point(object):
@@ -31,6 +31,12 @@ def point(object):
         return Point(object[0], object[1])
     raise ValueError('can not convert %r to a Point')
 
+def group(list_of_shapes):
+    """return a group if the number of shapes is greater than one"""
+    if len(list_of_shapes) > 1:
+        return [Group(list_of_shapes)]
+    else:
+        return list_of_shapes
 
 class Point:
     """A single point. This class primary use is to represent coordinates
@@ -78,6 +84,13 @@ class Label:
     def __repr__(self):
         return 'Label(%r, %r)' % (self.position, self.text)
 
+class Group:
+    """A group of shapes"""
+    def __init__(self, shapes=None):
+        if shapes is None: shapes = []
+        self.shapes = shapes
+    def __repr__(self):
+        return 'Group(%r)' % (self.shapes,)
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -130,6 +143,7 @@ class AsciiArtImage:
             self.classification[y][x] = classification
 
     def cls(self, x, y):
+        """get tag at coordinate"""
         try:
             return self.classification[y][x]
         except IndexError:
@@ -180,19 +194,16 @@ class AsciiArtImage:
                     #~ if character in self.FILL_CHARACTERS \
                         #~ and ((self.get(x+1,y) == character and self.get(x+2,y) == character) \
                              #~ or self.get(x,y+1) == character):
-                    if character in self.FILL_CHARACTERS:
+                    elif character in self.FIXED_CHARACTERS:
+                        self.shapes.extend(self.get_fixed_character(character)(x, y))
+                        self.tag([(x,y)], CLASS_FIXED)
+                    elif character in self.FILL_CHARACTERS:
                         if self.textual:
                             if self.get(x,y+1) == character:
                                 self.shapes.extend(self._follow_fill(character, x, y))
                         else:
                             if (self.get(x+1,y) == character or self.get(x,y+1) == character):
                                 self.shapes.extend(self._follow_fill(character, x, y))
-                    #~ elif character.isalnum():
-                        #~ self.shapes.extend(self._follow_horizontal_string(x, y))
-                    #~ elif character == '.':
-                        #~ self.shapes.append(Point(self.hcenter(x),self.vcenter(y))) #XXX
-                    elif character == '*':
-                        self.shapes.append(Circle(Point(self.hcenter(x),self.vcenter(y)), NOMINAL_SIZE/2.0)) #XXX
                 if character in '\\/':
                     self.shapes.extend(self._follow_rounded_edge(x, y))
         
@@ -208,6 +219,7 @@ class AsciiArtImage:
     # use complex numbers as 2D vectors as that means easy transformations like
     # scaling, rotation and translation
     
+    # - - - - - - - - - arrows - - - - - - - - -
     def _standard_arrow(self, p1, p2):
         """-->
            return a possibly modified starting point and a list of shapes
@@ -223,9 +235,9 @@ class AsciiArtImage:
         """--<"""
         direction_vector = p1 - p2
         direction_vector /= abs(direction_vector)
-        return p1-direction_vector*1.5, [
-            Line(p1-direction_vector*1.5, p1+direction_vector*0.5j),
-            Line(p1-direction_vector*1.5, p1+direction_vector*-0.5j)
+        return p1-direction_vector*2, [
+            Line(p1-direction_vector*2.0, p1+direction_vector*(-0.5+0.5j)),
+            Line(p1-direction_vector*2.0, p1+direction_vector*(-0.5-0.5j))
         ]
 
     def _circle_head(self, p1, p2, radius=0.5):
@@ -293,6 +305,8 @@ class AsciiArtImage:
             if character == head and dx == ddx and dy == ddy:
                 return getattr(self, function_name)
     
+    # - - - - - - - - - fills - - - - - - - - -
+    
     def _hatch_left(self, x, y): return self._n_hatch_diagonal(x,y,1,True)
     def _hatch_right(self, x, y): return self._n_hatch_diagonal(x,y,1,False)
     def _cross_hatch(self, x, y): return self._n_hatch_diagonal(x,y,1,True) + self._n_hatch_diagonal(x,y,1,False)
@@ -358,6 +372,7 @@ class AsciiArtImage:
         return [
             Rectangle(Point(self.left(x), self.top(y)), Point(self.right(x), self.bottom(y)))
         ]
+    
     def _fill_background(self, x, y): return []
 
     def _fill_small_circle(self, x, y):
@@ -423,8 +438,41 @@ class AsciiArtImage:
                 return getattr(self, function_name)
         raise ValueError('no such fill type')
     
-    # - - - - - - - - - helper function for shape recognition - - - - - - - - -
+    # - - - - - - - - - fixed characters and theis shapes - - - - - - - - -
     
+    def _open_triangle_left(self, x, y):
+        return [
+            Line(Point(self.left(x), self.vcenter(y)), Point(self.right(x), self.top(y))),
+            Line(Point(self.left(x), self.vcenter(y)), Point(self.right(x), self.bottom(y)))
+        ]
+    def _open_triangle_right(self, x, y):
+        return [
+            Line(Point(self.right(x), self.vcenter(y)), Point(self.left(x), self.top(y))),
+            Line(Point(self.right(x), self.vcenter(y)), Point(self.left(x), self.bottom(y)))
+        ]
+
+    def _circle(self, x, y):
+        return [
+            Circle(Point(self.hcenter(x), self.vcenter(y)), NOMINAL_SIZE/2.0)
+        ]
+
+
+    FIXED_TYPES = [
+        ('{', '_open_triangle_left'),
+        ('}', '_open_triangle_right'),
+        ('*', '_circle'),
+    ]
+    FIXED_CHARACTERS = ''.join([t for (t,f) in FIXED_TYPES])
+    
+    def get_fixed_character(self, character):
+        """return fill function"""
+        for head, function_name in self.FIXED_TYPES:
+            if character == head:
+                return getattr(self, function_name)
+        raise ValueError('no such character')
+    
+    # - - - - - - - - - helper function for shape recognition - - - - - - - - -
+
     def _follow_vertical_line(self, x, y):
         """find a vertical line with optional arrow heads"""
         #follow line to the bottom
@@ -450,7 +498,7 @@ class AsciiArtImage:
             p2, arrow_shapes = line_end_style(p2, p1)
             shapes.extend(arrow_shapes)
         shapes.append(Line(p1, p2))
-        return shapes
+        return group(shapes)
     
     def _follow_horizontal_line(self, x, y, thick=False):
         """find a horizontal line with optional arrow heads"""
@@ -479,7 +527,7 @@ class AsciiArtImage:
             p2, arrow_shapes = line_end_style(p2, p1)
             shapes.extend(arrow_shapes)
         shapes.append(Line(p1, p2, thick=thick))
-        return shapes
+        return group(shapes)
 
     def _follow_lower_horizontal_line(self, x, y):
         """find a horizontal line, the line is aligned to the bottom and a bit
@@ -574,7 +622,7 @@ class AsciiArtImage:
                     if self.cls(x, y-1) is None: to_scan.append((x, y-1))
                 elif border:
                     result.append(Line(Point(self.left(x), self.top(y)), Point(self.right(x), self.top(y))))
-        return result
+        return group(result)
             #~ for x in range(start_x, x+1):
                 #~ result.extend(fill(x,i))
         #~ # [Rectangle(
@@ -593,7 +641,8 @@ class AsciiArtImage:
            
               Text one   "Text two"
            
-           accept_anything means that all non space characters are interpreted as text
+           accept_anything means that all non space characters are interpreted
+           as text.
         """
         #follow line from left to right
         if quoted:
@@ -737,7 +786,7 @@ class AsciiArtImage:
                     result.append(Line(p1, p2))
         if result:
             self.tag([(x,y)], CLASS_JOIN)
-        return result
+        return group(result)
 
 
 if __name__ == '__main__':
