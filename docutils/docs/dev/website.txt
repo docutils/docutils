@@ -36,6 +36,11 @@ The docutils-update__ script is located at
 
 __ http://docutils.sf.net/sandbox/infrastructure/docutils-update
 
+If you want to share files via the web, you can upload them using the
+uploaddocutils.sh__ script (``sandbox/fwiemann/uploaddocutils.sh``).
+
+__ http://docutils.sf.net/sandbox/fwiemann/uploaddocutils.sh
+
 
 ..
    Local Variables:
