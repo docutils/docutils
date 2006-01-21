@@ -17,6 +17,9 @@ Overview:
 
 :`<release.sh>`_: The script I'm using to make releases of Docutils.
 
+:`<uploaddocutils.sh>`_: Upload files to http://docutils.sf.net/tmp/
+    using ``scp``, inserting the current date in the file name.
+
 :`<xhtml2rest>`_: An XHTML to reST conversion script by Antonios
     Christofides I once received via the mailing list.
 
