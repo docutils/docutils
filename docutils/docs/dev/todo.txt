@@ -314,7 +314,27 @@ General
       As I said earlier in chapter :chapter:`objects`, the
       reference count gets increased every time a binding is made.
 
-* Add support for _`multiple output files`.
+* Add support for _`multiple output files` and _`generic data
+  handling`:
+
+  It should be possible for a component to **emit or reference** data
+  to be either **included or referenced** in the output document.
+  Examples of such data are stylesheets or images.
+
+  For this, we need a "data" object which stores the data either
+  inline or by referring to a file.  The Docutils framework is
+  responsible for either:
+
+  * storing the data in the appropriate location (e.g. in the
+    directory of the output file, or in a user-specified directory)
+    and providing the paths of the stored files to the writer, *or*
+
+  * providing the data itself to the writer so that it can be embedded
+    in the output document.
+
+  This approach decouples data handling from the data source (which
+  can either be embedded or referenced) and the destination (which can
+  either be embedded or referenced as well).
 
 * Add testing for Docutils' front end tools?
 
