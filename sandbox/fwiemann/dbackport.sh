@@ -36,4 +36,5 @@ nice python2.4 -u test/alltests.py
 nice python2.1 -u test/alltests.py
 nice python2.2 -u test/alltests.py
 nice python2.3 -u test/alltests.py
-svn ci -m "merged r$r to maintenance branch"
+svn ci -m "--- MERGE: merged r$r to maintenance branch; original log message:
+`svn pg svn:log --revprop -r "$r"`"
