@@ -35,43 +35,6 @@ Please see also the Bugs_ document for a list of bugs in Docutils.
 .. _bugs: ../../BUGS.html
 
 
-Release 0.4
-===========
-
-We should get Docutils 0.4 out soon, but we shouldn't just cut a
-"frozen snapshot" release.  Here's a list of features (achievable in
-the short term) to include:
-
-* [DONE in rev. 3901] Move support files to docutils/writers/support.
-
-* [DONE in rev. 4163] Convert ``docutils/writers/support/*`` into
-  individual writer packages.
-
-* [DONE in rev. 3901] Remove docutils.transforms.html.StylesheetCheck
-  (no longer needed because of the above change).
-
-* [DONE in rev. 3962] Incorporate new branch policy into the docs.
-  ("Development strategy" thread on Docutils-develop)
-
-* [DONE in rev. 4152] Added East-Asian double-width character support.
-
-* [DONE in rev. 4156] Merge the S5 branch.
-
-Anything else?
-
-Once released,
-
-* Tag it and create a maintenance branch (perhaps "maint-0-4").
-
-* Declare that:
-
-  - Docutils 0.4.x is the last version that will support Python 2.1
-    (and perhaps higher?)
-
-  - Docutils 0.4.x is the last version that will support (make
-    compromises for) Netscape Navigator 4
-
-
 Minimum Requirements for Python Standard Library Candidacy
 ==========================================================
 
