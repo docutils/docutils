@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 """
 rst2chm.py - Converts reStructuredText into Microsoft (TM) HTML Help.
 
