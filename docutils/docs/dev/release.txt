@@ -1,6 +1,7 @@
 =============================
  Docutils_ Release Procedure
 =============================
+
 :Author: David Goodger; Felix Wiemann; open to all Docutils developers
 :Contact: goodger@python.org
 :Date: $Date$
@@ -14,8 +15,9 @@ Steps in boldface text are *not* covered by the release script at
 sandbox/fwiemann/release.sh.  "Not covered" means that you aren't even
 reminded of them.
 
-.. note:: This document does not cover branching and tagging, but the
+.. Note:: This document does not cover branching and tagging, but the
    release script does.
+
 
 * **Announce that the release is going to be made, update the release
   notes and ask for additions.**
@@ -138,8 +140,7 @@ reminded of them.
     
 * **Send announcement email to:**
 
-  * docutils-develop@lists.sourceforge.net (also announcing the end
-    of the check-in freeze)
+  * docutils-develop@lists.sourceforge.net
   * docutils-users@lists.sourceforge.net
   * doc-sig@python.org
   * python-announce@python.org
@@ -153,7 +154,7 @@ reminded of them.
   __ http://freshmeat.net/add-release/48702/
   __ http://freshmeat.net/projects/docutils/
 
-    
+
 
 ..
    Local Variables:
