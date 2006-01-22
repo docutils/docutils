@@ -10,19 +10,15 @@
 .. _Docutils: http://docutils.sourceforge.net/
 
 
-(Steps in boldface text are *not* covered by the release script at
+Steps in boldface text are *not* covered by the release script at
 sandbox/fwiemann/release.sh.  "Not covered" means that you aren't even
-reminded of them.  Note: The release.sh script needs to be updated to
-reflect the recent move to Subversion!)
+reminded of them.
 
-* **Announce a check-in freeze on Docutils-develop.  Post a list of
-  major changes since the last release and ask for additions.**
+.. note:: This document does not cover branching and tagging, but the
+   release script does.
 
-  .. _CHANGES.txt:
-
-  **You may want to save this list of changes in a file
-  (e.g. CHANGES.txt) to have it at hand when you need it for posting
-  announcements or pasting it into forms.**
+* **Announce that the release is going to be made, update the release
+  notes and ask for additions.**
 
 * Change ``__version_details__`` in docutils/docutils/__init__.py to
   "release" (from "repository").
@@ -119,7 +115,7 @@ reflect the recent move to Subversion!)
       :File Type:       Source .gz
       :Processor Type:  Platform-Independent
       :Release Notes:   <insert README.txt file here>
-      :Change Log:      <insert summary from CHANGES.txt_>
+      :Change Log:      <insert current release notes here>
 
       Also check the "Preserve my pre-formatted text" box.
 
