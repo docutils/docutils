@@ -1720,6 +1720,7 @@ class Body(RSTState):
                             (
                               _               # anonymous target
                             |               # *OR*
+                              (?!_)           # no underscore at the beginning
                               (?P<quote>`?)   # optional open quote
                               (?![ `])        # first char. not space or
                                               # backquote

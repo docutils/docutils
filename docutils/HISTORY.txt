@@ -15,6 +15,11 @@
 Changes Since 0.4
 =================
 
+* docutils/parsers/rst/states.py:
+
+  - Unquoted targets beginning with an underscore (``.. __target:
+    URI``) are no longer accepted.
+
 
 Release 0.4 (2006-01-09)
 ========================
