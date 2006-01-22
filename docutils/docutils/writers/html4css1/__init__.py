@@ -407,16 +407,6 @@ class HTMLTranslator(nodes.NodeVisitor):
         encoded = self.encode(text)
         if self.in_mailto and self.settings.cloak_email_addresses:
             encoded = self.cloak_email(encoded)
-        preserve_space = 0
-        parent = node.parent
-        while parent:
-            if parent.get('xml:space') == 'preserve':
-                preserve_space = 1
-                break
-            parent = parent.parent
-        if preserve_space:
-            encoded = encoded.replace('\n', '<br />')
-            encoded = encoded.replace('  ', ' &nbsp;')
         self.body.append(encoded)
 
     def depart_Text(self, node):
@@ -438,8 +428,10 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_address(self, node):
         self.visit_docinfo_item(node, 'address', meta=None)
+        self.body.append(self.starttag(node, 'pre', CLASS='address'))
 
     def depart_address(self, node):
+        self.body.append('\n</pre>\n')
         self.depart_docinfo_item()
 
     def visit_admonition(self, node, name=''):

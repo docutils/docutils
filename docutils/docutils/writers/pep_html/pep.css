@@ -269,6 +269,12 @@ p.topic-title {
   font-family: sans-serif ;
   font-weight: bold }
 
+pre.address {
+  margin-bottom: 0 ;
+  margin-top: 0 ;
+  font-family: serif ;
+  font-size: 100% }
+
 pre.literal-block, pre.doctest-block {
   margin-left: 2em ;
   margin-right: 2em ;
