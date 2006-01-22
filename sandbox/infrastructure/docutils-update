@@ -144,8 +144,9 @@ touch $project/$project/__init__.py --date \
 cd $snapshotdir
 
 function copy_to_htdocsdest() {
-    find "$@" -type d -name .svn -prune -o -type f -print0 | \
-        xargs -0 cp --update --parents --target-directory=$htdocsdest
+    find "$@" -type d -name .svn -prune -o \( -type f -o -type l \) -print0 | \
+        xargs -0 cp --no-dereference --update --parents \
+            --target-directory=$htdocsdest
 }
 
 # update htdocs
@@ -201,7 +202,8 @@ if test -n "$haschanges"; then
         if [ $trace -eq 0 ] ; then
             set +o xtrace
         fi
-        find . -name '.[^.]*' -prune -o -type d -printf '%p/\n' -o -type f -print | \
+        find . -name '.[^.]*' -prune -o -type d -printf '%p/\n' \
+                -o \( -type f -o -type l \) -print | \
             while read i; do
                 # i is the file name.
                 if test "$i" == ./; then
