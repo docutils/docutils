@@ -15,6 +15,11 @@
 Changes Since 0.4
 =================
 
+* docutils/writers/html4css1/__init__.py:
+
+  - Addresses are no longer enclosed in ``<pre>`` tags.
+  - Literal blocks are now rendered in a single line of HTML code.
+
 
 Release 0.4 (2006-01-09)
 ========================
