@@ -111,6 +111,12 @@ Known Bugs
 
 Also see the `SourceForge Bug Tracker`_.
 
+* .. _target with underscore:
+
+  The reStructuredText parser recognizes ``.. __foo: bar`` as a target
+  with the name ``_foo``.  That's most probably not intended by the
+  user, so the parser should generate an error message instead.
+
 * The "stylesheet" setting (a URL, to be used verbatim) should be
   allowed to be combined with "embed_stylesheet".  The stylesheet data
   should be read in using urllib.  There was an assumption that a
