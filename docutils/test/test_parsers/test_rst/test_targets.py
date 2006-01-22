@@ -90,6 +90,23 @@ Indirect hyperlink targets:
     <target ids="a-target-name-including-a-colon-escaped" names="a\ target\ name:\ including\ a\ colon\ (escaped)">
 """],
 ["""\
+.. _`target: No matching backquote.
+.. _`: No matching backquote either.
+""",
+"""\
+<document source="test data">
+    <comment xml:space="preserve">
+        _`target: No matching backquote.
+    <system_message level="2" line="1" source="test data" type="WARNING">
+        <paragraph>
+            malformed hyperlink target.
+    <comment xml:space="preserve">
+        _`: No matching backquote either.
+    <system_message level="2" line="2" source="test data" type="WARNING">
+        <paragraph>
+            malformed hyperlink target.
+"""],
+["""\
 .. _a very long target name,
    split across lines:
 .. _`and another,
@@ -121,6 +138,28 @@ External hyperlink:
 <document source="test data">
     <target ids="email" names="email" refuri="mailto:jdoe@example.com">
     <target ids="multi-line-email" names="multi-line\ email" refuri="mailto:jdoe@example.com">
+"""],
+["""\
+Malformed target:
+
+.. __malformed: no good
+
+Target beginning with an underscore:
+
+.. _`_target`: OK
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Malformed target:
+    <comment xml:space="preserve">
+        __malformed: no good
+    <system_message level="2" line="3" source="test data" type="WARNING">
+        <paragraph>
+            malformed hyperlink target.
+    <paragraph>
+        Target beginning with an underscore:
+    <target ids="target" names="_target" refuri="OK">
 """],
 ["""\
 Duplicate external targets (different URIs):
