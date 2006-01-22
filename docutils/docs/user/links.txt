@@ -33,6 +33,9 @@ the box.
 
 * For Blogs (Weblogs), please see the `FAQ entry about Blogs`_.
 
+* There is an `ASCII art to SVG converter`_ (aafigure), developed by
+  Chris Liechti.
+
 * Alberto Berti is developing an `OpenDocument writer`_.
 
 * xml2rst_, an XSLT stylesheet written by Stefan Merten, converts XML
@@ -110,7 +113,8 @@ code base.
 .. _Docutils: http://docutils.sourceforge.net/
 .. _FAQ entry about Wikis: http://docutils.sf.net/FAQ.html#are-there-any-wikis-that-use-restructuredtext-syntax
 .. _FAQ entry about Blogs: http://docutils.sf.net/FAQ.html#are-there-any-weblog-blog-projects-that-use-restructuredtext-syntax
-.. _OpenDocument writer: http://thread.gmane.org/gmane.text.docutils.devel/3388
+.. _ASCII art to SVG converter: http://docutils.sf.net/sandbox/cliechti/aafigure/
+.. _OpenDocument writer: http://thread.gmane.org/gmane.text.docutils.devel/3613
 .. _xml2rst: http://www.merten-home.de/FreeSoftware/xml2rst/index.html
 .. _rst2ht: http://www.rutherfurd.net/articles/rst-ht2html.html
 .. _ht2html: http://ht2html.sourceforge.net/
