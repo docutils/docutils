@@ -3,6 +3,6 @@
 
 # clean up generated images, but only when the text file has been changed
 
-readme.html: README.txt *.py
+README.html: README.txt *.py
 	rm -f aafigure-*.svg benford.svg
-	python rst2html.py --traceback README.txt >readme.html
+	python rst2html.py --traceback README.txt README.html
