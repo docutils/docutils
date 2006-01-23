@@ -95,18 +95,9 @@ The exceptions to the `Public Domain Dedication`_ above are:
 
   __ licenses/python-2-2.txt
 
-* tools/pep2html.py, copyright by the Python Software Foundation,
-  released under the `Python 2.2 license`_ (`local copy`__).
-
-  __ licenses/python-2-2.txt
-
-* tools/editors/emacs/rst-html.el, copyright by Martin Blais, released
-  under the `GNU General Public License`_ (`local copy`__).
-
-  __ licenses/gpl.txt
-
-* tools/editors/emacs/rst-mode.el, copyright by Stefan Merten,
-  released under the `GNU General Public License`_ (`local copy`__).
+* tools/editors/emacs/rst.el, by Martin Blais, Stefan Merten, and
+  David Goodger, released under the `GNU General Public License`_
+  (`local copy`__).
 
   __ licenses/gpl.txt
 
