@@ -56,6 +56,8 @@ Anonymous Target  __ http://docutils.sf.net/docs/ref/rst/restructuredtext.html
 Directive ("::")  .. image:: images/biohazard.png
 Substitution Def  .. |substitution| replace:: like an inline directive
 Comment           .. is anything else
+Empty Comment     (".." on a line by itself, with blank lines before & after,
+                  used to separate indentation contexts)
 ================  ============================================================
 
 Inline Markup
