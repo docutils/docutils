@@ -549,6 +549,7 @@ following caveats:
 <!-- Can also be a body element, when it contains an "image" element. -->
 <!ELEMENT reference %text.model;>
 <!ATTLIST reference
+    name      CDATA     #IMPLIED
     %basic.atts;
     %reference.atts;
     %anonymous.att;>
