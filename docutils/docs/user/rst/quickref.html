@@ -697,6 +697,9 @@ unindented literal blocks:
         </blockquote>
     </table>
 
+    <p>Use <a href="#comments">empty comments</a> to separate indentation
+    contexts, such as block quotes and directive contents.</p>
+
     <h2><a href="#contents" name="doctest-blocks" class="backref"
         >Doctest Blocks</a></h2>
 
@@ -1313,14 +1316,18 @@ dispose&nbsp;of&nbsp;medical&nbsp;waste.</samp>
 
     <tr valign="top">
       <td>
-        <samp>An&nbsp;empty&nbsp;"comment"&nbsp;does&nbsp;not</samp>
-        <br><samp>"consume"&nbsp;following&nbsp;blocks.</samp>
+        <samp>An&nbsp;"empty&nbsp;comment"&nbsp;does&nbsp;not</samp>
+        <br><samp>consume&nbsp;following&nbsp;blocks.</samp>
+        <br><samp>(An&nbsp;empty&nbsp;comment&nbsp;is&nbsp;".."&nbsp;with</samp>
+        <br><samp>blank&nbsp;lines&nbsp;before&nbsp;and&nbsp;after.)</samp>
         <p><samp>..</samp>
         <p><samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;So&nbsp;this&nbsp;block&nbsp;is&nbsp;not&nbsp;"lost",</samp>
           <br><samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;despite&nbsp;its&nbsp;indentation.</samp>
       <td>
-        An empty "comment" does not
-        "consume" following blocks.
+        An "empty comment" does not
+        consume following blocks.
+        (An empty comment is ".." with
+        blank lines before and after.)
         <blockquote>
           So this block is not "lost",
           despite its indentation.
