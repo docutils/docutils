@@ -19,8 +19,10 @@ reminded of them.
    release script does.
 
 
-* **Announce that the release is going to be made, update the release
-  notes and ask for additions.**
+* **On the Docutils-develop mailing list, announce that the release is
+  going to be made, update the release notes and ask for additions.**
+
+* **Announce a check-in freeze on Docutils-develop.**
 
 * Change ``__version_details__`` in docutils/docutils/__init__.py to
   "release" (from "repository").
@@ -140,7 +142,8 @@ reminded of them.
     
 * **Send announcement email to:**
 
-  * docutils-develop@lists.sourceforge.net
+  * docutils-develop@lists.sourceforge.net (also announcing the end of
+    the check-in freeze)
   * docutils-users@lists.sourceforge.net
   * doc-sig@python.org
   * python-announce@python.org
