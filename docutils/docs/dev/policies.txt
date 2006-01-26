@@ -456,11 +456,11 @@ share ideas.  It's a part of the Subversion repository but it isn't
 distributed as part of Docutils releases.  Feel free to check in code
 to the sandbox; that way people can try it out but you won't have to
 worry about it working 100% error-free, as is the goal of the Docutils
-core.  Each developer who wants to play in the sandbox should create
-either a project-specific subdirectory or personal subdirectory
-(suggested name: SourceForge ID, nickname, or given name + family
-initial).  It's OK to make a mess in your personal space!  But please,
-play nice.
+core.  A project-specific subdirectory should be created for each new
+project.  Any developer who wants to play in the sandbox may do so,
+but project directories are recommended over personal directories,
+which discourage collaboration.  It's OK to make a mess in the
+sandbox!  But please, play nice.
 
 Please update the `sandbox README`_ file with links and a brief
 description of your work.
@@ -471,31 +471,29 @@ structure is recommended::
 
     sandbox/
         project_name/ # For a collaborative project.
-                      # Structure as in userid/component_name below.
-        userid/       # For personal space.
-            component_name/ # A verbose name is best.
-                README.txt  # Please explain the requirements,
-                            # purpose/goals, and usage.
-                docs/
-                    ...
-                component.py    # The component is a single module.
+            README.txt  # Describe the requirements, purpose/goals, usage,
+                        # and list the maintainers.
+            docs/
+                ...
+            component.py    # The component is a single module.
                             # *OR* (but *not* both)
-                component/  # The component is a package.
-                    __init__.py  # Contains the Reader/Writer class.
-                    other1.py    # Other modules and data files used
-                    data.txt     # by this component.
-                    ...
-                test/       # Test suite.
-                    ...
-                tools/      # For front ends etc.
-                    ...
-                setup.py    # Use Distutils to install the component
-                            # code and tools/ files into the right
-                            # places in Docutils.
+            component/      # The component is a package.
+                __init__.py  # Contains the Reader/Writer class.
+                other1.py    # Other modules and data files used
+                data.txt     # by this component.
+                ...
+            test/       # Test suite.
+                ...
+            tools/      # For front ends etc.
+                ...
+            setup.py    # Use Distutils to install the component
+                        # code and tools/ files into the right
+                        # places in Docutils.
+        userid/       # For *temporary* personal space.
 
-Some sandbox projects are destined to become Docutils components once
+Some sandbox projects are destined to move to the Docutils core once
 completed.  Others, such as add-ons to Docutils or applications of
-Docutils, graduate to become `parallel projects`_.
+Docutils, may graduate to become `parallel projects`_.
 
 .. _sandbox README: http://docutils.sf.net/sandbox/README.html
 .. _sandbox directory:
