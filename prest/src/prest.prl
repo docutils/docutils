@@ -1,6 +1,6 @@
 #!/usr/local/bin/perl -w
 
-# $Id: prest.prl 772 2006-01-29 22:15:11Z marknodine $
+# $Id$
 
 =pod
 =begin reST
@@ -86,7 +86,7 @@ use vars qw(%HANDLER @PHASES $PHASE);
 main();
 
 BEGIN {
-    $SVNID = '$Id: prest.prl 772 2006-01-29 22:15:11Z marknodine $ ';
+    $SVNID = '$Id$ ';
     $SVNNAME = '$URL: file:///proj/svn/doctools/prest/tags/prest-00.03.10/src/prest.prl $ ';
     $VERSION = ($SVNNAME =~ s|.*/tags/||) ?
 	join('.', map ($_+0, $SVNNAME =~ /(\d+)/g)) : '-unreleased-';

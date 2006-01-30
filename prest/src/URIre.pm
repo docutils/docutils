@@ -1,4 +1,4 @@
-# $Id: URIre.pm 768 2006-01-28 03:33:28Z marknodine $
+# $Id$
 # Copyright (C) 2002-2005 Freescale Semiconductor, Inc.
 # Distributed under terms of the GNU General Public License (GPL).
 
