@@ -87,7 +87,7 @@ main();
 
 BEGIN {
     $SVNID = '$Id$ ';
-    $SVNNAME = '$URL: file:///proj/svn/doctools/prest/tags/prest-00.03.10/src/prest.prl $ ';
+    $SVNNAME = '$URL$ ';
     $VERSION = ($SVNNAME =~ s|.*/tags/||) ?
 	join('.', map ($_+0, $SVNNAME =~ /(\d+)/g)) : '-unreleased-';
     $SVNID =~ /Id: (\S+?) \S+ (\d+)/;
