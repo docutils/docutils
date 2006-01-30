@@ -1,0 +1,1836 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.3.10: http://docutils.sourceforge.net/" />
+<title>reStructuredText Directives</title>
+<meta name="author" content="David Goodger" />
+<meta name="date" content="2005-08-14 22:24:03 +0200 (Sun, 14 Aug 2005)" />
+<meta name="copyright" content="This document has been placed in the public domain." />
+<link rel="stylesheet" href="../../../tools/stylesheets/default.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="restructuredtext-directives">
+<h1 class="title">reStructuredText Directives</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr><th class="docinfo-name">Author:</th>
+<td>David Goodger</td></tr>
+<tr><th class="docinfo-name">Contact:</th>
+<td><a class="first last reference" href="mailto:goodger&#64;python.org">goodger&#64;python.org</a></td></tr>
+<tr><th class="docinfo-name">Revision:</th>
+<td>3805</td></tr>
+<tr><th class="docinfo-name">Date:</th>
+<td>2005-08-14 22:24:03 +0200 (Sun, 14 Aug 2005)</td></tr>
+<tr><th class="docinfo-name">Copyright:</th>
+<td>This document has been placed in the public domain.</td></tr>
+</tbody>
+</table>
+<div class="contents topic" id="contents">
+<p class="topic-title first"><a name="contents">Contents</a></p>
+<ul class="simple">
+<li><a class="reference" href="#admonitions" id="id10" name="id10">Admonitions</a><ul>
+<li><a class="reference" href="#specific-admonitions" id="id11" name="id11">Specific Admonitions</a></li>
+<li><a class="reference" href="#generic-admonition" id="id12" name="id12">Generic Admonition</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#images" id="id13" name="id13">Images</a><ul>
+<li><a class="reference" href="#image" id="id14" name="id14">Image</a></li>
+<li><a class="reference" href="#figure" id="id15" name="id15">Figure</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#body-elements" id="id16" name="id16">Body Elements</a><ul>
+<li><a class="reference" href="#topic" id="id17" name="id17">Topic</a></li>
+<li><a class="reference" href="#sidebar" id="id18" name="id18">Sidebar</a></li>
+<li><a class="reference" href="#line-block" id="id19" name="id19">Line Block</a></li>
+<li><a class="reference" href="#parsed-literal-block" id="id20" name="id20">Parsed Literal Block</a></li>
+<li><a class="reference" href="#rubric" id="id21" name="id21">Rubric</a></li>
+<li><a class="reference" href="#epigraph" id="id22" name="id22">Epigraph</a></li>
+<li><a class="reference" href="#highlights" id="id23" name="id23">Highlights</a></li>
+<li><a class="reference" href="#pull-quote" id="id24" name="id24">Pull-Quote</a></li>
+<li><a class="reference" href="#compound-paragraph" id="id25" name="id25">Compound Paragraph</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#tables" id="id26" name="id26">Tables</a><ul>
+<li><a class="reference" href="#table" id="id27" name="id27">Table</a></li>
+<li><a class="reference" href="#id3" id="id28" name="id28">CSV Table</a></li>
+<li><a class="reference" href="#list-table" id="id29" name="id29">List Table</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#document-parts" id="id30" name="id30">Document Parts</a><ul>
+<li><a class="reference" href="#table-of-contents" id="id31" name="id31">Table of Contents</a></li>
+<li><a class="reference" href="#automatic-section-numbering" id="id32" name="id32">Automatic Section Numbering</a></li>
+<li><a class="reference" href="#document-header-footer" id="id33" name="id33">Document Header &amp; Footer</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#references" id="id34" name="id34">References</a><ul>
+<li><a class="reference" href="#target-footnotes" id="id35" name="id35">Target Footnotes</a></li>
+<li><a class="reference" href="#footnotes" id="id36" name="id36">Footnotes</a></li>
+<li><a class="reference" href="#citations" id="id37" name="id37">Citations</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#html-specific" id="id38" name="id38">HTML-Specific</a><ul>
+<li><a class="reference" href="#meta" id="id39" name="id39">Meta</a></li>
+<li><a class="reference" href="#imagemap" id="id40" name="id40">Imagemap</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#miscellaneous" id="id41" name="id41">Miscellaneous</a><ul>
+<li><a class="reference" href="#including-an-external-document-fragment" id="id42" name="id42">Including an External Document Fragment</a></li>
+<li><a class="reference" href="#raw-data-pass-through" id="id43" name="id43">Raw Data Pass-Through</a></li>
+<li><a class="reference" href="#replacement-text" id="id44" name="id44">Replacement Text</a></li>
+<li><a class="reference" href="#unicode-character-codes" id="id45" name="id45">Unicode Character Codes</a></li>
+<li><a class="reference" href="#class" id="id46" name="id46">Class</a></li>
+<li><a class="reference" href="#custom-interpreted-text-roles" id="id47" name="id47">Custom Interpreted Text Roles</a></li>
+<li><a class="reference" href="#setting-the-default-interpreted-text-role" id="id48" name="id48">Setting the Default Interpreted Text Role</a></li>
+<li><a class="reference" href="#metadata-document-title" id="id49" name="id49">Metadata Document Title</a></li>
+<li><a class="reference" href="#restructuredtext-test-directive" id="id50" name="id50">Restructuredtext-Test-Directive</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>This document describes the directives implemented in the reference
+reStructuredText parser.</p>
+<p>Directives have the following syntax:</p>
+<pre class="literal-block">
++-------+-------------------------------+
+| &quot;.. &quot; | directive type &quot;::&quot; directive |
++-------+ block                         |
+        |                               |
+        +-------------------------------+
+</pre>
+<p>Directives begin with an explicit markup start (two periods and a
+space), followed by the directive type and two colons (collectively,
+the &quot;directive marker&quot;).  The directive block begins immediately after
+the directive marker, and includes all subsequent indented lines.  The
+directive block is divided into arguments, options (a field list), and
+content (in that order), any of which may appear.  See the <a class="reference" href="restructuredtext.html#directives">Directives</a>
+section in the <a class="reference" href="restructuredtext.html">reStructuredText Markup Specification</a> for syntax
+details.</p>
+<p>Descriptions below list &quot;doctree elements&quot; (document tree element
+names; XML DTD generic identifiers) corresponding to individual
+directives.  For details on the hierarchy of elements, please see <a class="reference" href="../doctree.html">The
+Docutils Document Tree</a> and the <a class="reference" href="../docutils.dtd">Docutils Generic DTD</a> XML document
+type definition.  For directive implementation details, see <a class="reference" href="../../howto/rst-directives.html">Creating
+reStructuredText Directives</a>.</p>
+<div class="section" id="admonitions">
+<h1><a class="toc-backref" href="#id10" name="admonitions">Admonitions</a></h1>
+<div class="section" id="specific-admonitions">
+<span id="warning"></span><span id="tip"></span><span id="note"></span><span id="important"></span><span id="hint"></span><span id="error"></span><span id="danger"></span><span id="caution"></span><span id="attention"></span><h2><a class="toc-backref" href="#id11" name="specific-admonitions">Specific Admonitions</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Types:</th><td class="field-body">&quot;attention&quot;, &quot;caution&quot;, &quot;danger&quot;, &quot;error&quot;, &quot;hint&quot;,
+&quot;important&quot;, &quot;note&quot;, &quot;tip&quot;, &quot;warning&quot;, &quot;admonition&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Elements:</th><td class="field-body">attention, caution, danger, error, hint, important,
+note, tip, warning, admonition, title</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">Interpreted as body elements.</td>
+</tr>
+</tbody>
+</table>
+<p>Admonitions are specially marked &quot;topics&quot; that can appear anywhere an
+ordinary body element can.  They contain arbitrary body elements.
+Typically, an admonition is rendered as an offset block in a document,
+sometimes outlined or shaded, with a title matching the admonition
+type.  For example:</p>
+<pre class="literal-block">
+.. DANGER::
+   Beware killer rabbits!
+</pre>
+<p>This directive might be rendered something like this:</p>
+<pre class="literal-block">
++------------------------+
+|        !DANGER!        |
+|                        |
+| Beware killer rabbits! |
++------------------------+
+</pre>
+<p>The following admonition directives have been implemented:</p>
+<ul class="simple">
+<li>attention</li>
+<li>caution</li>
+<li>danger</li>
+<li>error</li>
+<li>hint</li>
+<li>important</li>
+<li>note</li>
+<li>tip</li>
+<li>warning</li>
+</ul>
+<p>Any text immediately following the directive indicator (on the same
+line and/or indented on following lines) is interpreted as a directive
+block and is parsed for normal body elements.  For example, the
+following &quot;note&quot; admonition directive contains one paragraph and a
+bullet list consisting of two list items:</p>
+<pre class="literal-block">
+.. note:: This is a note admonition.
+   This is the second line of the first paragraph.
+
+   - The note contains all indented body elements
+     following.
+   - It includes this bullet list.
+</pre>
+</div>
+<div class="section" id="generic-admonition">
+<span id="admonition"></span><h2><a class="toc-backref" href="#id12" name="generic-admonition">Generic Admonition</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;admonition&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Elements:</th><td class="field-body">admonition, title</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">One, required (admonition title)</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">Possible.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">Interpreted as body elements.</td>
+</tr>
+</tbody>
+</table>
+<p>This is a generic, titled admonition.  The title may be anything the
+author desires.</p>
+<p>The author-supplied title is also used as a &quot;class&quot; attribute value
+after being converted into a valid identifier form (down-cased;
+non-alphanumeric characters converted to single hyphens; &quot;admonition-&quot;
+prefixed).  For example, this admonition:</p>
+<pre class="literal-block">
+.. admonition:: And, by the way...
+
+   You can make up your own admonition too.
+</pre>
+<p>becomes the following document tree (pseudo-XML):</p>
+<pre class="literal-block">
+&lt;document source=&quot;test data&quot;&gt;
+    &lt;admonition class=&quot;admonition-and-by-the-way&quot;&gt;
+        &lt;title&gt;
+            And, by the way...
+        &lt;paragraph&gt;
+            You can make up your own admonition too.
+</pre>
+<p>The following option is recognized:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">class</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">text</span></dt>
+<dd>Override the computed &quot;class&quot; attribute value.  See the <a class="reference" href="#class">class</a>
+directive below.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="images">
+<h1><a class="toc-backref" href="#id13" name="images">Images</a></h1>
+<p>There are two image directives: &quot;image&quot; and &quot;figure&quot;.</p>
+<div class="section" id="image">
+<h2><a class="toc-backref" href="#id14" name="image">Image</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;image&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Element:</th><td class="field-body">image</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">One, required (image URI).</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">Possible.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">None.</td>
+</tr>
+</tbody>
+</table>
+<p>An &quot;image&quot; is a simple picture:</p>
+<pre class="literal-block">
+.. image:: picture.png
+</pre>
+<p>The URI for the image source file is specified in the directive
+argument.  As with hyperlink targets, the image URI may begin on the
+same line as the explicit markup start and target name, or it may
+begin in an indented text block immediately following, with no
+intervening blank lines.  If there are multiple lines in the link
+block, they are stripped of leading and trailing whitespace and joined
+together.</p>
+<p>Optionally, the image link block may contain a flat field list, the
+<span class="target" id="image-options">image options</span>.  For example:</p>
+<pre class="literal-block">
+.. image:: picture.jpeg
+   :height: 100
+   :width: 200
+   :scale: 50
+   :alt: alternate text
+   :align: right
+</pre>
+<p>The following options are recognized:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">alt</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">text</span></dt>
+<dd>Alternate text: a short description of the image, displayed by
+applications that cannot display images, or spoken by applications
+for visually impaired users.</dd>
+<dt><tt class="docutils literal"><span class="pre">height</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">integer</span></dt>
+<dd><p class="first">The desired height of the image in pixels, used to reserve space
+or scale the image vertically.  When the &quot;scale&quot; option is also
+specified, they are combined.  For example, a height of 200 and a
+scale of 50 is equivalent to a height of 100 with no scale.</p>
+<p class="last">New in Docutils 0.3.10: It is also possible to specify a <a class="reference" href="restructuredtext.html#length-units">length
+value</a>.</p>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">width</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">integer</span></dt>
+<dd><p class="first">The width of the image in pixels, used to reserve space or scale
+the image horizontally.  As with &quot;height&quot; above, when the &quot;scale&quot;
+option is also specified, they are combined.</p>
+<p class="last">New in Docutils 0.3.10: It is also possible to specify a <a class="reference" href="restructuredtext.html#length-units">length</a>
+or <a class="reference" href="restructuredtext.html#percentage-units">percentage value</a> (which is relative to the current line
+width).</p>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">scale</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">integer</span></dt>
+<dd><p class="first">The uniform scaling factor of the image, a percentage (but no &quot;%&quot;
+symbol is required or allowed).  &quot;100&quot; means full-size, and is
+equivalent to omitting a &quot;scale&quot; option.</p>
+<p class="last">If no &quot;height&quot; or &quot;width&quot; options are specified, PIL <a class="footnote-reference" href="#pil" id="id1" name="id1">[1]</a> may
+be used to determine them, if PIL is installed and the image file
+is available.</p>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">align</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">&quot;top&quot;, &quot;middle&quot;, &quot;bottom&quot;, &quot;left&quot;, &quot;center&quot;, or &quot;right&quot;</span></dt>
+<dd>The alignment of the image, equivalent to the HTML <tt class="docutils literal"><span class="pre">&lt;img&gt;</span></tt> tag's
+&quot;align&quot; attribute.  The values &quot;top&quot;, &quot;middle&quot;, and &quot;bottom&quot;
+control an image's vertical alignment (relative to the text
+baseline); they are only useful for inline images (substitutions).
+The values &quot;left&quot;, &quot;center&quot;, and &quot;right&quot; control an image's
+horizontal alignment, allowing the image to float and have the
+text flow around it.  The specific behavior depends upon the
+browser or rendering software used.</dd>
+<dt><tt class="docutils literal"><span class="pre">target</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">text (URI or reference name)</span></dt>
+<dd>Makes the image into a hyperlink reference (&quot;clickable&quot;).  The
+option argument may be a URI (relative or absolute), or a
+reference name with underscore suffix (e.g. <tt class="docutils literal"><span class="pre">name_</span></tt>).</dd>
+<dt><tt class="docutils literal"><span class="pre">class</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">text</span></dt>
+<dd>Set a &quot;class&quot; attribute value on the image element.  See the
+<a class="reference" href="#class">class</a> directive below.</dd>
+</dl>
+</div>
+<div class="section" id="figure">
+<h2><a class="toc-backref" href="#id15" name="figure">Figure</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;figure&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Elements:</th><td class="field-body">figure, image, caption, legend</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">One, required (image URI).</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">Possible.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">Interpreted as the figure caption and an optional
+legend.</td>
+</tr>
+</tbody>
+</table>
+<p>A &quot;figure&quot; consists of <a class="reference" href="#image">image</a> data (including <a class="reference" href="#image-options">image options</a>), an
+optional caption (a single paragraph), and an optional legend
+(arbitrary body elements):</p>
+<pre class="literal-block">
+.. figure:: picture.png
+   :scale: 50
+   :alt: map to buried treasure
+
+   This is the caption of the figure (a simple paragraph).
+
+   The legend consists of all elements after the caption.  In this
+   case, the legend consists of this paragraph and the following
+   table:
+
+   +-----------------------+-----------------------+
+   | Symbol                | Meaning               |
+   +=======================+=======================+
+   | .. image:: tent.png   | Campground            |
+   +-----------------------+-----------------------+
+   | .. image:: waves.png  | Lake                  |
+   +-----------------------+-----------------------+
+   | .. image:: peak.png   | Mountain              |
+   +-----------------------+-----------------------+
+</pre>
+<p>There must be blank lines before the caption paragraph and before the
+legend.  To specify a legend without a caption, use an empty comment
+(&quot;..&quot;) in place of the caption.</p>
+<p>The &quot;figure&quot; directive supports all of the options of the &quot;image&quot;
+directive (see <a class="reference" href="#image-options">image options</a> above).  In addition, the following
+options are recognized:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">figwidth</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">integer or &quot;image&quot;</span></dt>
+<dd><p class="first">The width of the figure in pixels, to limit the horizontal space
+used.  A special value of &quot;image&quot; is allowed, in which case the
+included image's actual width is used (requires PIL <a class="footnote-reference" href="#pil" id="id2" name="id2">[1]</a>).  If
+the image file is not found or the required software is
+unavailable, this option is ignored.</p>
+<p>Sets the &quot;width&quot; attribute of the &quot;figure&quot; doctree element.</p>
+<p>This option does not scale the included image; use the &quot;width&quot;
+<a class="reference" href="#image">image</a> option for that.</p>
+<pre class="last literal-block">
++---------------------------+
+|        figure             |
+|                           |
+|&lt;------ figwidth ---------&gt;|
+|                           |
+|  +---------------------+  |
+|  |     image           |  |
+|  |                     |  |
+|  |&lt;--- width ---------&gt;|  |
+|  +---------------------+  |
+|                           |
+|The figure's caption should|
+|wrap at this width.        |
++---------------------------+
+</pre>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">figclass</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">text</span></dt>
+<dd>Set a &quot;class&quot; attribute value on the figure element.  See the
+<a class="reference" href="#class">class</a> directive below.</dd>
+<dt><tt class="docutils literal"><span class="pre">align</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">&quot;left&quot;, &quot;center&quot;, or &quot;right&quot;</span></dt>
+<dd>The horizontal alignment of the figure, allowing the image to
+float and have the text flow around it.  The specific behavior
+depends upon the browser or rendering software used.</dd>
+</dl>
+<table class="docutils footnote" frame="void" id="pil" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a name="pil">[1]</a></td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>)</em> <a class="reference" href="http://www.pythonware.com/products/pil/">Python Imaging Library</a>.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="body-elements">
+<h1><a class="toc-backref" href="#id16" name="body-elements">Body Elements</a></h1>
+<div class="section" id="topic">
+<h2><a class="toc-backref" href="#id17" name="topic">Topic</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;topic&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Element:</th><td class="field-body">topic</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">1, required (topic title).</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">Possible.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">Interpreted as the topic body.</td>
+</tr>
+</tbody>
+</table>
+<p>A topic is like a block quote with a title, or a self-contained
+section with no subsections.  Use the &quot;topic&quot; directive to indicate a
+self-contained idea that is separate from the flow of the document.
+Topics may occur anywhere a section or transition may occur.  Body
+elements and topics may not contain nested topics.</p>
+<p>The directive's sole argument is interpreted as the topic title; the
+next line must be blank.  All subsequent lines make up the topic body,
+interpreted as body elements.  For example:</p>
+<pre class="literal-block">
+.. topic:: Topic Title
+
+    Subsequent indented lines comprise
+    the body of the topic, and are
+    interpreted as body elements.
+</pre>
+<p>The following option is recognized:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">class</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">text</span></dt>
+<dd>Set a &quot;class&quot; attribute value on the topic element.  See the
+<a class="reference" href="#class">class</a> directive below.</dd>
+</dl>
+</div>
+<div class="section" id="sidebar">
+<h2><a class="toc-backref" href="#id18" name="sidebar">Sidebar</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;sidebar&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Element:</th><td class="field-body">sidebar</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">One, required (sidebar title).</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">Possible.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">Interpreted as the sidebar body.</td>
+</tr>
+</tbody>
+</table>
+<p>Sidebars are like miniature, parallel documents that occur inside
+other documents, providing related or reference material.  A sidebar
+is typically offset by a border and &quot;floats&quot; to the side of the page;
+the document's main text may flow around it.  Sidebars can also be
+likened to super-footnotes; their content is outside of the flow of
+the document's main text.</p>
+<p>Sidebars may occur anywhere a section or transition may occur.  Body
+elements (including sidebars) may not contain nested sidebars.</p>
+<p>The directive's sole argument is interpreted as the sidebar title,
+which may be followed by a subtitle option (see below); the next line
+must be blank.  All subsequent lines make up the sidebar body,
+interpreted as body elements.  For example:</p>
+<pre class="literal-block">
+.. sidebar:: Sidebar Title
+   :subtitle: Optional Sidebar Subtitle
+
+   Subsequent indented lines comprise
+   the body of the sidebar, and are
+   interpreted as body elements.
+</pre>
+<p>The following options are recognized:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">subtitle</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">text</span></dt>
+<dd>The sidebar's subtitle.</dd>
+<dt><tt class="docutils literal"><span class="pre">class</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">text</span></dt>
+<dd>Set a &quot;class&quot; attribute value on the sidebar element.  See the
+<a class="reference" href="#class">class</a> directive below.</dd>
+</dl>
+</div>
+<div class="section" id="line-block">
+<h2><a class="toc-backref" href="#id19" name="line-block">Line Block</a></h2>
+<div class="admonition-deprecated admonition">
+<p class="first admonition-title">Deprecated</p>
+<p class="last">The &quot;line-block&quot; directive is deprecated.  Use the <a class="reference" href="restructuredtext.html#line-blocks">line block
+syntax</a> instead.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;line-block&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Element:</th><td class="field-body">line_block</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">Possible.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">Becomes the body of the line block.</td>
+</tr>
+</tbody>
+</table>
+<p>The &quot;line-block&quot; directive constructs an element where line breaks and
+initial indentation is significant and inline markup is supported.  It
+is equivalent to a <a class="reference" href="#parsed-literal-block">parsed literal block</a> with different rendering:
+typically in an ordinary serif typeface instead of a
+typewriter/monospaced face, and not automatically indented.  (Have the
+line-block directive begin a block quote to get an indented line
+block.)  Line blocks are useful for address blocks and verse (poetry,
+song lyrics), where the structure of lines is significant.  For
+example, here's a classic:</p>
+<pre class="literal-block">
+&quot;To Ma Own Beloved Lassie: A Poem on her 17th Birthday&quot;, by
+Ewan McTeagle (for Lassie O'Shea):
+
+    .. line-block::
+
+        Lend us a couple of bob till Thursday.
+        I'm absolutely skint.
+        But I'm expecting a postal order and I can pay you back
+            as soon as it comes.
+        Love, Ewan.
+</pre>
+<p>The following option is recognized:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">class</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">text</span></dt>
+<dd>Set a &quot;class&quot; attribute value on the line_block element.  See the
+<a class="reference" href="#class">class</a> directive below.</dd>
+</dl>
+</div>
+<div class="section" id="parsed-literal-block">
+<span id="parsed-literal"></span><h2><a class="toc-backref" href="#id20" name="parsed-literal-block">Parsed Literal Block</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;parsed-literal&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Element:</th><td class="field-body">literal_block</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">Possible.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">Becomes the body of the literal block.</td>
+</tr>
+</tbody>
+</table>
+<p>Unlike an ordinary literal block, the &quot;parsed-literal&quot; directive
+constructs a literal block where the text is parsed for inline markup.
+It is equivalent to a <a class="reference" href="#line-block">line block</a> with different rendering:
+typically in a typewriter/monospaced typeface, like an ordinary
+literal block.  Parsed literal blocks are useful for adding hyperlinks
+to code examples.</p>
+<p>However, care must be taken with the text, because inline markup is
+recognized and there is no protection from parsing.  Backslash-escapes
+may be necessary to prevent unintended parsing.  And because the
+markup characters are removed by the parser, care must also be taken
+with vertical alignment.  Parsed &quot;ASCII art&quot; is tricky, and extra
+whitespace may be necessary.</p>
+<p>For example, all the element names in this content model are links:</p>
+<pre class="literal-block">
+.. parsed-literal::
+
+   ( (title_, subtitle_?)?,
+     decoration_?,
+     (docinfo_, transition_?)?,
+     `%structure.model;`_ )
+</pre>
+<p>The following option is recognized:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">class</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">text</span></dt>
+<dd>Set a &quot;class&quot; attribute value on the literal_block element.  See
+the <a class="reference" href="#class">class</a> directive below.</dd>
+</dl>
+</div>
+<div class="section" id="rubric">
+<h2><a class="toc-backref" href="#id21" name="rubric">Rubric</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;rubric&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Element:</th><td class="field-body">rubric</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">1, required (rubric text).</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">Possible.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">None.</td>
+</tr>
+</tbody>
+</table>
+<!--  -->
+<blockquote>
+<p>rubric n. 1. a title, heading, or the like, in a manuscript,
+book, statute, etc., written or printed in red or otherwise
+distinguished from the rest of the text. ...</p>
+<p class="attribution">&mdash;Random House Webster's College Dictionary, 1991</p>
+</blockquote>
+<p>The &quot;rubric&quot; directive inserts a &quot;rubric&quot; element into the document
+tree.  A rubric is like an informal heading that doesn't correspond to
+the document's structure.</p>
+<p>The following option is recognized:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">class</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">text</span></dt>
+<dd>Set a &quot;class&quot; attribute value on the rubric element.  See the
+<a class="reference" href="#class">class</a> directive below.</dd>
+</dl>
+</div>
+<div class="section" id="epigraph">
+<h2><a class="toc-backref" href="#id22" name="epigraph">Epigraph</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;epigraph&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Element:</th><td class="field-body">block_quote</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">Interpreted as the body of the block quote.</td>
+</tr>
+</tbody>
+</table>
+<p>An epigraph is an apposite (suitable, apt, or pertinent) short
+inscription, often a quotation or poem, at the beginning of a document
+or section.</p>
+<p>The &quot;epigraph&quot; directive produces an &quot;epigraph&quot;-class block quote.
+For example, this input:</p>
+<pre class="literal-block">
+.. epigraph::
+
+   No matter where you go, there you are.
+
+   -- Buckaroo Banzai
+</pre>
+<p>becomes this document tree fragment:</p>
+<pre class="literal-block">
+&lt;block_quote class=&quot;epigraph&quot;&gt;
+    &lt;paragraph&gt;
+        No matter where you go, there you are.
+    &lt;attribution&gt;
+        Buckaroo Banzai
+</pre>
+</div>
+<div class="section" id="highlights">
+<h2><a class="toc-backref" href="#id23" name="highlights">Highlights</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;highlights&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Element:</th><td class="field-body">block_quote</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">Interpreted as the body of the block quote.</td>
+</tr>
+</tbody>
+</table>
+<p>Highlights summarize the main points of a document or section, often
+consisting of a list.</p>
+<p>The &quot;highlights&quot; directive produces a &quot;highlights&quot;-class block quote.
+See <a class="reference" href="#epigraph">Epigraph</a> above for an analogous example.</p>
+</div>
+<div class="section" id="pull-quote">
+<h2><a class="toc-backref" href="#id24" name="pull-quote">Pull-Quote</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;pull-quote&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Element:</th><td class="field-body">block_quote</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">Interpreted as the body of the block quote.</td>
+</tr>
+</tbody>
+</table>
+<p>A pull-quote is a small selection of text &quot;pulled out and quoted&quot;,
+typically in a larger typeface.  Pull-quotes are used to attract
+attention, especially in long articles.</p>
+<p>The &quot;pull-quote&quot; directive produces a &quot;pull-quote&quot;-class block quote.
+See <a class="reference" href="#epigraph">Epigraph</a> above for an analogous example.</p>
+</div>
+<div class="section" id="compound-paragraph">
+<span id="compound"></span><h2><a class="toc-backref" href="#id25" name="compound-paragraph">Compound Paragraph</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;compound&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Element:</th><td class="field-body">compound</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">Possible.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">Interpreted as body elements.</td>
+</tr>
+</tbody>
+</table>
+<p>(New in Docutils 0.3.6)</p>
+<p>The &quot;compound&quot; directive is used to create a compound paragraph, which
+is a single logical paragraph containing multiple physical body
+elements such as simple paragraphs, literal blocks, tables, lists,
+etc., instead of directly containing text and inline elements.  For
+example:</p>
+<pre class="literal-block">
+.. compound::
+
+   The 'rm' command is very dangerous.  If you are logged
+   in as root and enter ::
+
+       cd /
+       rm -rf *
+
+   you will erase the entire contents of your file system.
+</pre>
+<p>In the example above, a literal block is &quot;embedded&quot; within a sentence
+that begins in one physical paragraph and ends in another.</p>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p>The &quot;compound&quot; directive is <em>not</em> a generic block-level container
+like HTML's <tt class="docutils literal"><span class="pre">&lt;div&gt;</span></tt> element.  Do not use it only to group a
+sequence of elements, or you may get unexpected results.</p>
+<p class="last">If you happen to need a generic block-level container, please
+describe your use-case in an email to the <a class="reference" href="../../user/mailing-lists.html#docutils-users">Docutils-users</a> mailing
+list.</p>
+</div>
+<p>Compound paragraphs are typically rendered as multiple distinct text
+blocks, with the possibility of variations to emphasize their logical
+unity:</p>
+<ul class="simple">
+<li>If paragraphs are rendered with a first-line indent, only the first
+physical paragraph of a compound paragraph should have that indent
+-- second and further physical paragraphs should omit the indents;</li>
+<li>vertical spacing between physical elements may be reduced;</li>
+<li>and so on.</li>
+</ul>
+<p>The following option is recognized:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">class</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">text</span></dt>
+<dd>Set a &quot;class&quot; attribute value on the compound element.  See the
+<a class="reference" href="#class">class</a> directive below.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="tables">
+<h1><a class="toc-backref" href="#id26" name="tables">Tables</a></h1>
+<p>Formal tables need more structure than the reStructuredText syntax
+supplies.  Tables may be given titles with the <a class="reference" href="#table">table</a> directive.
+Sometimes reStructuredText tables are inconvenient to write, or table
+data in a standard format is readily available.  The <a class="reference" href="#csv-table">csv-table</a>
+directive supports CSV data.</p>
+<div class="section" id="table">
+<h2><a class="toc-backref" href="#id27" name="table">Table</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;table&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Element:</th><td class="field-body">table</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">1, optional (table title).</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">Possible.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">A normal reStructuredText table.</td>
+</tr>
+</tbody>
+</table>
+<p>(New in Docutils 0.3.1)</p>
+<p>The &quot;table&quot; directive is used to create a titled table, to associate a
+title with a table:</p>
+<pre class="literal-block">
+.. table:: Truth table for &quot;not&quot;
+
+   =====  =====
+     A    not A
+   =====  =====
+   False  True
+   True   False
+   =====  =====
+</pre>
+<p>The following option is recognized:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">class</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">text</span></dt>
+<dd>Set a &quot;class&quot; attribute value on the table element.  See the
+<a class="reference" href="#class">class</a> directive below.</dd>
+</dl>
+</div>
+<div class="section" id="id3">
+<span id="csv-table"></span><h2><a class="toc-backref" href="#id28" name="id3">CSV Table</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;csv-table&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Element:</th><td class="field-body">table</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">1, optional (table title).</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">Possible.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">A CSV (comma-separated values) table.</td>
+</tr>
+</tbody>
+</table>
+<div class="warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The &quot;csv-table&quot; directive's &quot;:file:&quot; and &quot;:url:&quot; options represent
+a potential security holes.  They can be disabled with the
+&quot;<a class="reference" href="../../user/config.html#file-insertion-enabled">file_insertion_enabled</a>&quot; runtime setting.</p>
+</div>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">The &quot;csv-table&quot; directive requires the <tt class="docutils literal"><span class="pre">csv.py</span></tt> module of the
+Python standard library, which was added in Python 2.3.  It will
+not work with earlier versions of Python.  Using the &quot;csv-table&quot;
+directive in a document will make the document <strong>incompatible</strong>
+with systems using Python 2.1 or 2.2.</p>
+</div>
+<p>(New in Docutils 0.3.4)</p>
+<p>The &quot;csv-table&quot; directive is used to create a table from CSV
+(comma-separated values) data.  CSV is a common data format generated
+by spreadsheet applications and commercial databases.  The data may be
+internal (an integral part of the document) or external (a separate
+file).</p>
+<p>Example:</p>
+<pre class="literal-block">
+.. csv-table:: Frozen Delights!
+   :header: &quot;Treat&quot;, &quot;Quantity&quot;, &quot;Description&quot;
+   :widths: 15, 10, 30
+
+   &quot;Albatross&quot;, 2.99, &quot;On a stick!&quot;
+   &quot;Crunchy Frog&quot;, 1.49, &quot;If we took the bones out, it wouldn't be
+   crunchy, now would it?&quot;
+   &quot;Gannet Ripple&quot;, 1.99, &quot;On a stick!&quot;
+</pre>
+<p>Block markup and inline markup within cells is supported.  Line ends
+are recognized within cells.</p>
+<p>Working limitations:</p>
+<ul class="simple">
+<li>Whitespace delimiters are supported only for external CSV files.</li>
+<li>There is no support for checking that the number of columns in each
+row is the same.  However, this directive supports CSV generators
+that do not insert &quot;empty&quot; entries at the end of short rows, by
+automatically adding empty entries.<!-- Add "strict" option to verify input? -->
+</li>
+</ul>
+<p>The following options are recognized:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">class</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">text</span></dt>
+<dd>Set a &quot;class&quot; attribute value on the table element.  See the
+<a class="reference" href="#class">class</a> directive below.</dd>
+<dt><tt class="docutils literal"><span class="pre">widths</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">integer [, integer...]</span></dt>
+<dd>A comma- or space-separated list of relative column widths.  The
+default is equal-width columns (100%/#columns).</dd>
+<dt><tt class="docutils literal"><span class="pre">header-rows</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">integer</span></dt>
+<dd>The number of rows of CSV data to use in the table header.
+Defaults to 0.</dd>
+<dt><tt class="docutils literal"><span class="pre">stub-columns</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">integer</span></dt>
+<dd>The number of table columns to use as stubs (row titles, on the
+left).  Defaults to 0.</dd>
+<dt><tt class="docutils literal"><span class="pre">header</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">CSV data</span></dt>
+<dd>Supplemental data for the table header, added independently of and
+before any <tt class="docutils literal"><span class="pre">header-rows</span></tt> from the main CSV data.  Must use the
+same CSV format as the main CSV data.</dd>
+<dt><tt class="docutils literal"><span class="pre">file</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">string (newlines removed)</span></dt>
+<dd>The local filesystem path to a CSV data file.</dd>
+<dt><tt class="docutils literal"><span class="pre">url</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">string (whitespace removed)</span></dt>
+<dd>An Internet URL reference to a CSV data file.</dd>
+<dt><tt class="docutils literal"><span class="pre">encoding</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">name of text encoding</span></dt>
+<dd>The text encoding of the external CSV data (file or URL).
+Defaults to the document's encoding (if specified).</dd>
+<dt><tt class="docutils literal"><span class="pre">delim</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">char | &quot;tab&quot; | &quot;space&quot;</span></dt>
+<dd>A one-character string used to separate fields.  Defaults to <tt class="docutils literal"><span class="pre">,</span></tt>
+(comma).  May be specified as a Unicode code point; see the
+<a class="reference" href="#unicode">unicode</a> directive for syntax details.</dd>
+<dt><tt class="docutils literal"><span class="pre">quote</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">char</span></dt>
+<dd>A one-character string used to quote elements containing the
+delimiter or which start with the quote character.  Defaults to
+<tt class="docutils literal"><span class="pre">&quot;</span></tt> (quote).  May be specified as a Unicode code point; see the
+<a class="reference" href="#unicode">unicode</a> directive for syntax details.</dd>
+<dt><tt class="docutils literal"><span class="pre">keepspace</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">flag</span></dt>
+<dd>Treat whitespace immediately following the delimiter as
+significant.  The default is to ignore such whitespace.</dd>
+<dt><tt class="docutils literal"><span class="pre">escape</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">char</span></dt>
+<dd><p class="first last">A one-character string used to escape the delimiter or quote
+characters.  May be specified as a Unicode code point; see the
+<a class="reference" href="#unicode">unicode</a> directive for syntax details.  Used when the delimiter is
+used in an unquoted field, or when quote characters are used
+within a field.  The default is to double-up the character,
+e.g. &quot;He said, &quot;&quot;Hi!&quot;&quot;&quot;</p>
+<!-- Add another possible value, "double", to explicitly indicate
+the default case? -->
+</dd>
+</dl>
+</div>
+<div class="section" id="list-table">
+<h2><a class="toc-backref" href="#id29" name="list-table">List Table</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;list-table&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Element:</th><td class="field-body">table</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">1, optional (table title).</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">Possible.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">A uniform two-level bullet list.</td>
+</tr>
+</tbody>
+</table>
+<p>(New in Docutils 0.3.8.  This is an initial implementation; <a class="reference" href="http://docutils.sf.net/docs/dev/rst/alternatives.html#list-driven-tables">further
+ideas</a> may be implemented in the future.)</p>
+<p>The &quot;list-table&quot; directive is used to create a table from data in a
+uniform two-level bullet list.  &quot;Uniform&quot; means that each sublist
+(second-level list) must contain the same number of list items.</p>
+<p>Example:</p>
+<pre class="literal-block">
+.. list-table:: Frozen Delights!
+   :widths: 15 10 30
+   :header-rows: 1
+
+   * - Treat
+     - Quantity
+     - Description
+   * - Albatross
+     - 2.99
+     - On a stick!
+   * - Crunchy Frog
+     - 1.49
+     - If we took the bones out, it wouldn't be
+       crunchy, now would it?
+   * - Gannet Ripple
+     - 1.99
+     - On a stick!
+</pre>
+<p>The following options are recognized:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">class</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">text</span></dt>
+<dd>Set a &quot;class&quot; attribute value on the table element.  See the
+<a class="reference" href="#class">class</a> directive below.</dd>
+<dt><tt class="docutils literal"><span class="pre">widths</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">integer [integer...]</span></dt>
+<dd>A comma- or space-separated list of relative column widths.  The
+default is equal-width columns (100%/#columns).</dd>
+<dt><tt class="docutils literal"><span class="pre">header-rows</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">integer</span></dt>
+<dd>The number of rows of list data to use in the table header.
+Defaults to 0.</dd>
+<dt><tt class="docutils literal"><span class="pre">stub-columns</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">integer</span></dt>
+<dd>The number of table columns to use as stubs (row titles, on the
+left).  Defaults to 0.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="document-parts">
+<h1><a class="toc-backref" href="#id30" name="document-parts">Document Parts</a></h1>
+<div class="section" id="table-of-contents">
+<span id="id5"></span><h2><a class="toc-backref" href="#id31" name="table-of-contents">Table of Contents</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;contents&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Elements:</th><td class="field-body">pending, topic</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">One, optional: title.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">Possible.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">None.</td>
+</tr>
+</tbody>
+</table>
+<p>The &quot;contents&quot; directive generates a table of contents (TOC) in a
+<a class="reference" href="#topic">topic</a>.  Topics, and therefore tables of contents, may occur anywhere
+a section or transition may occur.  Body elements and topics may not
+contain tables of contents.</p>
+<p>Here's the directive in its simplest form:</p>
+<pre class="literal-block">
+.. contents::
+</pre>
+<p>Language-dependent boilerplate text will be used for the title.  The
+English default title text is &quot;Contents&quot;.</p>
+<p>An explicit title may be specified:</p>
+<pre class="literal-block">
+.. contents:: Table of Contents
+</pre>
+<p>The title may span lines, although it is not recommended:</p>
+<pre class="literal-block">
+.. contents:: Here's a very long Table of
+   Contents title
+</pre>
+<p>Options may be specified for the directive, using a field list:</p>
+<pre class="literal-block">
+.. contents:: Table of Contents
+   :depth: 2
+</pre>
+<p>If the default title is to be used, the options field list may begin
+on the same line as the directive marker:</p>
+<pre class="literal-block">
+.. contents:: :depth: 2
+</pre>
+<p>The following options are recognized:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">depth</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">integer</span></dt>
+<dd>The number of section levels that are collected in the table of
+contents.  The default is unlimited depth.</dd>
+<dt><tt class="docutils literal"><span class="pre">local</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">flag (empty)</span></dt>
+<dd>Generate a local table of contents.  Entries will only include
+subsections of the section in which the directive is given.  If no
+explicit title is given, the table of contents will not be titled.</dd>
+<dt><tt class="docutils literal"><span class="pre">backlinks</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">&quot;entry&quot; or &quot;top&quot; or &quot;none&quot;</span></dt>
+<dd>Generate links from section headers back to the table of contents
+entries, the table of contents itself, or generate no backlinks.</dd>
+<dt><tt class="docutils literal"><span class="pre">class</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">text</span></dt>
+<dd>Set a &quot;class&quot; attribute value on the topic element.  See the
+<a class="reference" href="#class">class</a> directive below.</dd>
+</dl>
+</div>
+<div class="section" id="automatic-section-numbering">
+<span id="section-autonumbering"></span><span id="sectnum"></span><h2><a class="toc-backref" href="#id32" name="automatic-section-numbering">Automatic Section Numbering</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;sectnum&quot; or &quot;section-autonumbering&quot; (synonyms)</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Elements:</th><td class="field-body">pending, generated</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">Possible.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">None.</td>
+</tr>
+</tbody>
+</table>
+<p>The &quot;sectnum&quot; (or &quot;section-autonumbering&quot;) directive automatically
+numbers sections and subsections in a document.  Section numbers are
+of the &quot;multiple enumeration&quot; form, where each level has a number,
+separated by periods.  For example, the title of section 1, subsection
+2, subsubsection 3 would have &quot;1.2.3&quot; prefixed.</p>
+<p>The &quot;sectnum&quot; directive does its work in two passes: the initial parse
+and a transform.  During the initial parse, a &quot;pending&quot; element is
+generated which acts as a placeholder, storing any options internally.
+At a later stage in the processing, the &quot;pending&quot; element triggers a
+transform, which adds section numbers to titles.  Section numbers are
+enclosed in a &quot;generated&quot; element, and titles have their &quot;auto&quot;
+attribute set to &quot;1&quot;.</p>
+<p>The following options are recognized:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">depth</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">integer</span></dt>
+<dd>The number of section levels that are numbered by this directive.
+The default is unlimited depth.</dd>
+<dt><tt class="docutils literal"><span class="pre">prefix</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd>An arbitrary string that is prefixed to the automatically
+generated section numbers.  It may be something like &quot;3.2.&quot;, which
+will produce &quot;3.2.1&quot;, &quot;3.2.2&quot;, &quot;3.2.2.1&quot;, and so on.  Note that
+any separating punctuation (in the example, a period, &quot;.&quot;) must be
+explicitly provided.  The default is no prefix.</dd>
+<dt><tt class="docutils literal"><span class="pre">suffix</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd>An arbitrary string that is appended to the automatically
+generated section numbers.  The default is no suffix.</dd>
+<dt><tt class="docutils literal"><span class="pre">start</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">integer</span></dt>
+<dd>The value that will be used for the first section number.
+Combined with <tt class="docutils literal"><span class="pre">prefix</span></tt>, this may be used to force the right
+numbering for a document split over several source files.  The
+default is 1.</dd>
+</dl>
+</div>
+<div class="section" id="document-header-footer">
+<span id="footer"></span><span id="header"></span><h2><a class="toc-backref" href="#id33" name="document-header-footer">Document Header &amp; Footer</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Types:</th><td class="field-body">&quot;header&quot; and &quot;footer&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Elements:</th><td class="field-body">decoration, header, footer</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">Interpreted as body elements.</td>
+</tr>
+</tbody>
+</table>
+<p>(New in Docutils 0.3.8)</p>
+<p>The &quot;header&quot; and &quot;footer&quot; directives create document decorations,
+useful for page navigation, notes, time/datestamp, etc.  For example:</p>
+<pre class="literal-block">
+.. header:: This space for rent.
+</pre>
+<p>This will add a paragraph to the document header, which will appear at
+the top of the generated web page or at the top of every printed page.</p>
+<p>These directives may be used multiple times, cumulatively.  There is
+currently support for only one header and footer.</p>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p>While it is possible to use the &quot;header&quot; and &quot;footer&quot; directives to
+create navigational elements for web pages, you should be aware
+that Docutils is meant to be used for <em>document</em> processing, and
+that a navigation bar is not typically part of a document.</p>
+<p class="last">Thus, you may soon find Docutils' abilities to be insufficient for
+these purposes.  At that time, you should consider using a
+templating system (like <a class="reference" href="http://ht2html.sourceforge.net/">ht2html</a>) rather than the &quot;header&quot; and
+&quot;footer&quot; directives.</p>
+</div>
+<p>In addition to the use of these directives to populate header and
+footer content, content may also be added automatically by the
+processing system.  For example, if certain runtime settings are
+enabled, the document footer is populated with processing information
+such as a datestamp, a link to <a class="reference" href="http://docutils.sourceforge.net">the Docutils website</a>, etc.</p>
+</div>
+</div>
+<div class="section" id="references">
+<h1><a class="toc-backref" href="#id34" name="references">References</a></h1>
+<div class="section" id="target-footnotes">
+<span id="target-notes"></span><h2><a class="toc-backref" href="#id35" name="target-footnotes">Target Footnotes</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;target-notes&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Elements:</th><td class="field-body">pending, footnote, footnote_reference</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">None.</td>
+</tr>
+</tbody>
+</table>
+<p>The &quot;target-notes&quot; directive creates a footnote for each external
+target in the text, and corresponding footnote references after each
+reference.  For every explicit target (of the form, <tt class="docutils literal"><span class="pre">..</span> <span class="pre">_target</span> <span class="pre">name:</span>
+<span class="pre">URL</span></tt>) in the text, a footnote will be generated containing the
+visible URL as content.</p>
+</div>
+<div class="section" id="footnotes">
+<h2><a class="toc-backref" href="#id36" name="footnotes">Footnotes</a></h2>
+<p><strong>NOT IMPLEMENTED YET</strong></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;footnotes&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Elements:</th><td class="field-body">pending, topic</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">None?</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">Possible?</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">None.</td>
+</tr>
+</tbody>
+</table>
+<p>&#64;&#64;&#64;</p>
+</div>
+<div class="section" id="citations">
+<h2><a class="toc-backref" href="#id37" name="citations">Citations</a></h2>
+<p><strong>NOT IMPLEMENTED YET</strong></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;citations&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Elements:</th><td class="field-body">pending, topic</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">None?</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">Possible?</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">None.</td>
+</tr>
+</tbody>
+</table>
+<p>&#64;&#64;&#64;</p>
+</div>
+</div>
+<div class="section" id="html-specific">
+<h1><a class="toc-backref" href="#id38" name="html-specific">HTML-Specific</a></h1>
+<div class="section" id="meta">
+<h2><a class="toc-backref" href="#id39" name="meta">Meta</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;meta&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Element:</th><td class="field-body">meta (non-standard)</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">Must contain a flat field list.</td>
+</tr>
+</tbody>
+</table>
+<p>The &quot;meta&quot; directive is used to specify HTML metadata stored in HTML
+META tags.  &quot;Metadata&quot; is data about data, in this case data about web
+pages.  Metadata is used to describe and classify web pages in the
+World Wide Web, in a form that is easy for search engines to extract
+and collate.</p>
+<p>Within the directive block, a flat field list provides the syntax for
+metadata.  The field name becomes the contents of the &quot;name&quot; attribute
+of the META tag, and the field body (interpreted as a single string
+without inline markup) becomes the contents of the &quot;content&quot;
+attribute.  For example:</p>
+<pre class="literal-block">
+.. meta::
+   :description: The reStructuredText plaintext markup language
+   :keywords: plaintext, markup language
+</pre>
+<p>This would be converted to the following HTML:</p>
+<pre class="literal-block">
+&lt;meta name=&quot;description&quot;
+    content=&quot;The reStructuredText plaintext markup language&quot;&gt;
+&lt;meta name=&quot;keywords&quot; content=&quot;plaintext, markup language&quot;&gt;
+</pre>
+<p>Support for other META attributes (&quot;http-equiv&quot;, &quot;scheme&quot;, &quot;lang&quot;,
+&quot;dir&quot;) are provided through field arguments, which must be of the form
+&quot;attr=value&quot;:</p>
+<pre class="literal-block">
+.. meta::
+   :description lang=en: An amusing story
+   :description lang=fr: Un histoire amusant
+</pre>
+<p>And their HTML equivalents:</p>
+<pre class="literal-block">
+&lt;meta name=&quot;description&quot; lang=&quot;en&quot; content=&quot;An amusing story&quot;&gt;
+&lt;meta name=&quot;description&quot; lang=&quot;fr&quot; content=&quot;Un histoire amusant&quot;&gt;
+</pre>
+<p>Some META tags use an &quot;http-equiv&quot; attribute instead of the &quot;name&quot;
+attribute.  To specify &quot;http-equiv&quot; META tags, simply omit the name:</p>
+<pre class="literal-block">
+.. meta::
+   :http-equiv=Content-Type: text/html; charset=ISO-8859-1
+</pre>
+<p>HTML equivalent:</p>
+<pre class="literal-block">
+&lt;meta http-equiv=&quot;Content-Type&quot;
+     content=&quot;text/html; charset=ISO-8859-1&quot;&gt;
+</pre>
+</div>
+<div class="section" id="imagemap">
+<h2><a class="toc-backref" href="#id40" name="imagemap">Imagemap</a></h2>
+<p><strong>NOT IMPLEMENTED YET</strong></p>
+<p>Non-standard element: imagemap.</p>
+</div>
+</div>
+<div class="section" id="miscellaneous">
+<h1><a class="toc-backref" href="#id41" name="miscellaneous">Miscellaneous</a></h1>
+<div class="section" id="including-an-external-document-fragment">
+<span id="include"></span><h2><a class="toc-backref" href="#id42" name="including-an-external-document-fragment">Including an External Document Fragment</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;include&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Elements:</th><td class="field-body">depend on data being included</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">One, required (path to the file to include).</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">Possible.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">None.</td>
+</tr>
+</tbody>
+</table>
+<div class="warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The &quot;include&quot; directive represents a potential security hole.  It
+can be disabled with the &quot;<a class="reference" href="../../user/config.html#file-insertion-enabled">file_insertion_enabled</a>&quot; runtime setting.</p>
+</div>
+<p>The &quot;include&quot; directive reads a reStructuredText-formatted text file
+and parses it in the current document's context at the point of the
+directive.  The directive argument is the path to the file to be
+included, relative to the document containing the directive.  For
+example:</p>
+<pre class="literal-block">
+This first example will be parsed at the document level, and can
+thus contain any construct, including section headers.
+
+.. include:: inclusion.txt
+
+Back in the main document.
+
+    This second example will be parsed in a block quote context.
+    Therefore it may only contain body elements.  It may not
+    contain section headers.
+
+    .. include:: inclusion.txt
+</pre>
+<p>If an included document fragment contains section structure, the title
+adornments must match those of the master document.</p>
+<p>Standard data files intended for inclusion in reStructuredText
+documents are distributed with the Docutils source code, located in
+the &quot;docutils&quot; package in the <tt class="docutils literal"><span class="pre">docutils/parsers/rst/include</span></tt>
+directory.  To access these files, use the special syntax for standard
+&quot;include&quot; data files, angle brackets around the file name:</p>
+<pre class="literal-block">
+.. include:: &lt;isonum.txt&gt;
+</pre>
+<p>The current set of standard &quot;include&quot; data files consists of sets of
+substitution definitions.  See <a class="reference" href="substitutions.html">reStructuredText Standard Substitution
+Definition Sets</a> for details of the available standard data files.</p>
+<p>The following options are recognized:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">literal</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">flag (empty)</span></dt>
+<dd>The entire included text is inserted into the document as a single
+literal block (useful for program listings).</dd>
+<dt><tt class="docutils literal"><span class="pre">encoding</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">name of text encoding</span></dt>
+<dd>The text encoding of the external data file.  Defaults to the
+document's encoding (if specified).</dd>
+</dl>
+</div>
+<div class="section" id="raw-data-pass-through">
+<span id="raw"></span><h2><a class="toc-backref" href="#id43" name="raw-data-pass-through">Raw Data Pass-Through</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;raw&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Element:</th><td class="field-body">raw</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">One or more, required (output format types).</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">Possible.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">Stored verbatim, uninterpreted.  None (empty) if a
+&quot;file&quot; or &quot;url&quot; option given.</td>
+</tr>
+</tbody>
+</table>
+<div class="warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The &quot;raw&quot; directive represents a potential security hole.  It can
+be disabled with the &quot;<a class="reference" href="../../user/config.html#raw-enabled">raw_enabled</a>&quot; or &quot;<a class="reference" href="../../user/config.html#file-insertion-enabled">file_insertion_enabled</a>&quot;
+runtime settings.</p>
+</div>
+<div class="caution">
+<p class="first admonition-title">Caution!</p>
+<p>The &quot;raw&quot; directive is a stop-gap measure allowing the author to
+bypass reStructuredText's markup.  It is a &quot;power-user&quot; feature
+that should not be overused or abused.  The use of &quot;raw&quot; ties
+documents to specific output formats and makes them less portable.</p>
+<p class="last">If you often need to use the &quot;raw&quot; directive or a &quot;raw&quot;-derived
+interpreted text role, that is a sign either of overuse/abuse or
+that functionality may be missing from reStructuredText.  Please
+describe your situation in an email to the <a class="reference" href="../../user/mailing-lists.html#docutils-users">Docutils-users</a> mailing
+list.</p>
+</div>
+<p>The &quot;raw&quot; directive indicates non-reStructuredText data that is to be
+passed untouched to the Writer.  The names of the output formats are
+given in the directive arguments.  The interpretation of the raw data
+is up to the Writer.  A Writer may ignore any raw output not matching
+its format.</p>
+<p>For example, the following input would be passed untouched by an HTML
+Writer:</p>
+<pre class="literal-block">
+.. raw:: html
+
+   &lt;hr width=50 size=10&gt;
+</pre>
+<p>A LaTeX Writer could insert the following raw content into its
+output stream:</p>
+<pre class="literal-block">
+.. raw:: latex
+
+   \setlength{\parindent}{0pt}
+</pre>
+<p>Raw data can also be read from an external file, specified in a
+directive option.  In this case, the content block must be empty.  For
+example:</p>
+<pre class="literal-block">
+.. raw:: html
+   :file: inclusion.html
+</pre>
+<p>The following options are recognized:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">file</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">string (newlines removed)</span></dt>
+<dd>The local filesystem path of a raw data file to be included.</dd>
+<dt><tt class="docutils literal"><span class="pre">url</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">string (whitespace removed)</span></dt>
+<dd>An Internet URL reference to a raw data file to be included.</dd>
+<dt><tt class="docutils literal"><span class="pre">encoding</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">name of text encoding</span></dt>
+<dd>The text encoding of the external raw data (file or URL).
+Defaults to the document's encoding (if specified).</dd>
+</dl>
+</div>
+<div class="section" id="replacement-text">
+<span id="replace"></span><h2><a class="toc-backref" href="#id44" name="replacement-text">Replacement Text</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;replace&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Element:</th><td class="field-body">Text &amp; inline elements</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">A single paragraph; may contain inline markup.</td>
+</tr>
+</tbody>
+</table>
+<p>The &quot;replace&quot; directive is used to indicate replacement text for a
+substitution reference.  It may be used within substitution
+definitions only.  For example, this directive can be used to expand
+abbreviations:</p>
+<pre class="literal-block">
+.. |reST| replace:: reStructuredText
+
+Yes, |reST| is a long word, so I can't blame anyone for wanting to
+abbreviate it.
+</pre>
+<p>As reStructuredText doesn't support nested inline markup, the only way
+to create a reference with styled text is to use substitutions with
+the &quot;replace&quot; directive:</p>
+<pre class="literal-block">
+I recommend you try |Python|_.
+
+.. |Python| replace:: Python, *the* best language around
+.. _Python: http://www.python.org/
+</pre>
+</div>
+<div class="section" id="unicode-character-codes">
+<span id="unicode"></span><h2><a class="toc-backref" href="#id45" name="unicode-character-codes">Unicode Character Codes</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;unicode&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Element:</th><td class="field-body">Text</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">One or more, required (Unicode character codes,
+optional text, and comments).</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">Possible.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">None.</td>
+</tr>
+</tbody>
+</table>
+<p>The &quot;unicode&quot; directive converts Unicode character codes (numerical
+values) to characters, and may be used in substitution definitions
+only.</p>
+<p>The arguments, separated by spaces, can be:</p>
+<ul class="simple">
+<li><strong>character codes</strong> as<ul>
+<li>decimal numbers or</li>
+<li>hexadecimal numbers, prefixed by <tt class="docutils literal"><span class="pre">0x</span></tt>, <tt class="docutils literal"><span class="pre">x</span></tt>, <tt class="docutils literal"><span class="pre">\x</span></tt>, <tt class="docutils literal"><span class="pre">U+</span></tt>,
+<tt class="docutils literal"><span class="pre">u</span></tt>, or <tt class="docutils literal"><span class="pre">\u</span></tt> or as XML-style hexadecimal character entities,
+e.g. <tt class="docutils literal"><span class="pre">&amp;#x1a2b;</span></tt></li>
+</ul>
+</li>
+<li><strong>text</strong>, which is used as-is.</li>
+</ul>
+<p>Text following &quot; .. &quot; is a comment and is ignored.  The spaces between
+the arguments are ignored and thus do not appear in the output.
+Hexadecimal codes are case-insensitive.</p>
+<p>For example, the following text:</p>
+<pre class="literal-block">
+Copyright |copy| 2003, |BogusMegaCorp (TM)| |---|
+all rights reserved.
+
+.. |copy| unicode:: 0xA9 .. copyright sign
+.. |BogusMegaCorp (TM)| unicode:: BogusMegaCorp U+2122
+   .. with trademark sign
+.. |---| unicode:: U+02014 .. em dash
+   :trim:
+</pre>
+<p>results in:</p>
+<blockquote>
+<p>Copyright © 2003, BogusMegaCorp™—all rights reserved.</p>
+</blockquote>
+<p>The following options are recognized:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">ltrim</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">flag</span></dt>
+<dd>Whitespace to the left of the substitution reference is removed.</dd>
+<dt><tt class="docutils literal"><span class="pre">rtrim</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">flag</span></dt>
+<dd>Whitespace to the right of the substitution reference is removed.</dd>
+<dt><tt class="docutils literal"><span class="pre">trim</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">flag</span></dt>
+<dd>Equivalent to <tt class="docutils literal"><span class="pre">ltrim</span></tt> plus <tt class="docutils literal"><span class="pre">rtrim</span></tt>; whitespace on both sides
+of the substitution reference is removed.</dd>
+</dl>
+</div>
+<div class="section" id="class">
+<h2><a class="toc-backref" href="#id46" name="class">Class</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;class&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Element:</th><td class="field-body">pending</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">One or more, required (class names / attribute
+values).</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">None.</td>
+</tr>
+</tbody>
+</table>
+<p>The &quot;class&quot; directive sets a &quot;class&quot; attribute value on the first
+immediately following non-comment element <a class="footnote-reference" href="#id9" id="id7" name="id7">[2]</a>.  For details of the
+&quot;class&quot; attribute, see <a class="reference" href="../doctree.html#class">its entry</a> in <a class="reference" href="../doctree.html">The Docutils Document Tree</a>.
+The directive argument consists of one or more space-separated class
+names, which are converted to lowercase and all non-alphanumeric
+characters are converted to hyphens.  (For the rationale, see below.)</p>
+<p>Examples:</p>
+<pre class="literal-block">
+.. class:: special
+
+This is a &quot;special&quot; paragraph.
+
+.. class:: exceptional remarkable
+
+An Exceptional Section
+======================
+
+This is an ordinary paragraph.
+</pre>
+<p>The text above is parsed and transformed into this doctree fragment:</p>
+<pre class="literal-block">
+&lt;paragraph class=&quot;special&quot;&gt;
+    This is a &quot;special&quot; paragraph.
+&lt;section class=&quot;exceptional remarkable&quot;&gt;
+    &lt;title&gt;
+        An Exceptional Section
+    &lt;paragraph&gt;
+        This is an ordinary paragraph.
+</pre>
+<table class="docutils footnote" frame="void" id="id9" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id7" name="id9">[2]</a></td><td><p class="first">To set a &quot;class&quot; attribute value on a block quote, the &quot;class&quot;
+directive must be followed by an empty comment:</p>
+<pre class="literal-block">
+.. class:: highlights
+..
+
+    Block quote text.
+</pre>
+<p class="last">The directive doesn't allow content, therefore an empty comment is
+required to terminate the directive.  Without the empty comment,
+the block quote text would be interpreted as the &quot;class&quot;
+directive's content, and the parser would complain.</p>
+</td></tr>
+</tbody>
+</table>
+<div class="topic">
+<p class="topic-title first">Rationale for Class Attribute Value Conversion</p>
+<p>Docutils identifiers are converted to conform to the regular
+expression <tt class="docutils literal"><span class="pre">[a-z](-?[a-z0-9]+)*</span></tt>.  For CSS compatibility,
+identifiers (the &quot;class&quot; and &quot;id&quot; attributes) should have no
+underscores, colons, or periods.  Hyphens may be used.</p>
+<ul>
+<li><p class="first">The <a class="reference" href="http://www.w3.org/TR/html401">HTML 4.01 spec</a> defines identifiers based on SGML tokens:</p>
+<blockquote>
+<p>ID and NAME tokens must begin with a letter ([A-Za-z]) and
+may be followed by any number of letters, digits ([0-9]),
+hyphens (&quot;-&quot;), underscores (&quot;_&quot;), colons (&quot;:&quot;), and periods
+(&quot;.&quot;).</p>
+</blockquote>
+</li>
+<li><p class="first">However the <a class="reference" href="http://www.w3.org/TR/REC-CSS1">CSS1 spec</a> defines identifiers based on the &quot;name&quot;
+token, a tighter interpretation (&quot;flex&quot; tokenizer notation
+below; &quot;latin1&quot; and &quot;escape&quot; 8-bit characters have been replaced
+with entities):</p>
+<pre class="literal-block">
+unicode     \\[0-9a-f]{1,4}
+latin1      [&amp;iexcl;-&amp;yuml;]
+escape      {unicode}|\\[ -~&amp;iexcl;-&amp;yuml;]
+nmchar      [-a-z0-9]|{latin1}|{escape}
+name        {nmchar}+
+</pre>
+</li>
+</ul>
+<p>The CSS1 &quot;nmchar&quot; rule does not include underscores (&quot;_&quot;), colons
+(&quot;:&quot;), or periods (&quot;.&quot;), therefore &quot;class&quot; and &quot;id&quot; attributes
+should not contain these characters.  They should be replaced with
+hyphens (&quot;-&quot;).  Combined with HTML's requirements (the first
+character must be a letter; no &quot;unicode&quot;, &quot;latin1&quot;, or &quot;escape&quot;
+characters), this results in the <tt class="docutils literal"><span class="pre">[a-z](-?[a-z0-9]+)*</span></tt> pattern.</p>
+</div>
+</div>
+<div class="section" id="custom-interpreted-text-roles">
+<span id="role"></span><h2><a class="toc-backref" href="#id47" name="custom-interpreted-text-roles">Custom Interpreted Text Roles</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;role&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Element:</th><td class="field-body">None; affects subsequent parsing.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">Two; one required (new role name), one optional
+(base role name, in parentheses).</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">Possible (depends on base role).</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">depends on base role.</td>
+</tr>
+</tbody>
+</table>
+<p>(New in Docutils 0.3.2)</p>
+<p>The &quot;role&quot; directive dynamically creates a custom interpreted text
+role and registers it with the parser.  This means that after
+declaring a role like this:</p>
+<pre class="literal-block">
+.. role:: custom
+</pre>
+<p>the document may use the new &quot;custom&quot; role:</p>
+<pre class="literal-block">
+An example of using :custom:`interpreted text`
+</pre>
+<p>This will be parsed into the following document tree fragment:</p>
+<pre class="literal-block">
+&lt;paragraph&gt;
+    An example of using
+    &lt;inline class=&quot;custom&quot;&gt;
+        interpreted text
+</pre>
+<p>The role must be declared in a document before it can be used.</p>
+<p>The new role may be based on an existing role, specified as a second
+argument in parentheses (whitespace optional):</p>
+<pre class="literal-block">
+.. role:: custom(emphasis)
+
+:custom:`text`
+</pre>
+<p>The parsed result is as follows:</p>
+<pre class="literal-block">
+&lt;paragraph&gt;
+    &lt;emphasis class=&quot;custom&quot;&gt;
+        text
+</pre>
+<p>If no base role is explicitly specified, a generic custom role is
+automatically used.  Subsequent interpreted text will produce an
+&quot;inline&quot; element with a &quot;class&quot; attribute, as in the first example
+above.</p>
+<p>With most roles, the &quot;:class:&quot; option can be used to set a &quot;class&quot;
+attribute that is different from the role name.  For example:</p>
+<pre class="literal-block">
+.. role:: custom
+   :class: special
+
+:custom:`interpreted text`
+</pre>
+<p>This is the parsed result:</p>
+<pre class="literal-block">
+&lt;paragraph&gt;
+    &lt;inline class=&quot;special&quot;&gt;
+        interpreted text
+</pre>
+<p id="role-class">The following option is recognized by the &quot;role&quot; directive for most
+base roles:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">class</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">text</span></dt>
+<dd>Set a &quot;class&quot; attribute value on the element produced (<tt class="docutils literal"><span class="pre">inline</span></tt>,
+or element associated with a base class) when the custom
+interpreted text role is used.  If no directive options are
+specified, a &quot;class&quot; option with the directive argument (role
+name) as the value is implied.  See the <a class="reference" href="#class">class</a> directive above.</dd>
+</dl>
+<p>Specific roles may support other options and/or directive content.
+See the <a class="reference" href="roles.html">reStructuredText Interpreted Text Roles</a> document for
+details.</p>
+</div>
+<div class="section" id="setting-the-default-interpreted-text-role">
+<span id="default-role"></span><h2><a class="toc-backref" href="#id48" name="setting-the-default-interpreted-text-role">Setting the Default Interpreted Text Role</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;default-role&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Element:</th><td class="field-body">None; affects subsequent parsing.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">One, optional (new default role name).</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">None.</td>
+</tr>
+</tbody>
+</table>
+<p>(New in Docutils 0.3.10)</p>
+<p>The &quot;default-role&quot; directive sets the default interpreted text role,
+the role that is used for interpreted text without an explicit role.
+For example, after setting the default role like this:</p>
+<pre class="literal-block">
+.. default-role:: subscript
+</pre>
+<p>any subsequent use of implicit-role interpreted text in the document
+will use the &quot;subscript&quot; role:</p>
+<pre class="literal-block">
+An example of a `default` role.
+</pre>
+<p>This will be parsed into the following document tree fragment:</p>
+<pre class="literal-block">
+&lt;paragraph&gt;
+    An example of a
+    &lt;subscript&gt;
+        default
+     role.
+</pre>
+<p>Custom roles may be used (see the &quot;<a class="reference" href="#role">role</a>&quot; directive above), but it
+must have been declared in a document before it can be set as the
+default role.  See the <a class="reference" href="roles.html">reStructuredText Interpreted Text Roles</a>
+document for details of built-in roles.</p>
+<p>The directive may be used without an argument to restore the initial
+default interpreted text role, which is application-dependent.  The
+initial default interpreted text role of the standard reStructuredText
+parser is &quot;title-reference&quot;.</p>
+</div>
+<div class="section" id="metadata-document-title">
+<span id="title"></span><h2><a class="toc-backref" href="#id49" name="metadata-document-title">Metadata Document Title</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;title&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Element:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">1, required (the title text).</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">None.</td>
+</tr>
+</tbody>
+</table>
+<p>The &quot;title&quot; directive specifies the document title as metadata, which
+does not become part of the document body.  It overrides a
+document-supplied title.  For example, in HTML output the metadata
+document title appears in the title bar of the browser window.</p>
+</div>
+<div class="section" id="restructuredtext-test-directive">
+<h2><a class="toc-backref" href="#id50" name="restructuredtext-test-directive">Restructuredtext-Test-Directive</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;restructuredtext-test-directive&quot;</td>
+</tr>
+<tr class="field"><th class="field-name">Doctree Element:</th><td class="field-body">system_warning</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Arguments:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Options:</th><td class="field-body">None.</td>
+</tr>
+<tr class="field"><th class="field-name">Directive Content:</th><td class="field-body">Interpreted as a literal block.</td>
+</tr>
+</tbody>
+</table>
+<p>This directive is provided for test purposes only.  (Nobody is
+expected to type in a name <em>that</em> long!)  It is converted into a
+level-1 (info) system message showing the directive data, possibly
+followed by a literal block containing the rest of the directive
+block.</p>
+<!-- Local Variables:
+mode: indented-text
+indent-tabs-mode: nil
+sentence-end-double-space: t
+fill-column: 70
+End: -->
+</div>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<a class="reference" href="directives.txt">View document source</a>.
+Generated on: 2005-08-14 20:44 UTC.
+Generated by <a class="reference" href="http://docutils.sourceforge.net/">Docutils</a> from <a class="reference" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a> source.
+
+</div>
+</body>
+</html>

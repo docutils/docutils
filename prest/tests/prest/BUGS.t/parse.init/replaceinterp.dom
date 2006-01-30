@@ -1,0 +1,4 @@
+<document source="replaceinterp.rst">
+    <substitution_definition names="str">
+        <literal>
+            text

@@ -1,0 +1,11 @@
+#!/usr/local/bin/perl -p
+
+# $Id: retex 757 2006-01-26 16:53:09Z marknodine $
+
+# Converts an HTML file to a regular-expression HTML
+
+# Protect regular expression characters (do this FIRST)
+s/([\(\)\[\]\{\}\.\+\*\?\|\\\^\$\@\%])/\\$1/g;
+
+# Don't require match on date
+s/(\\date\\\{)(.*)(\\\})/$1($2|.*)$3/;

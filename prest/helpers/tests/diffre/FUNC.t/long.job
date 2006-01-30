@@ -1,0 +1,7 @@
+= Test functional features with long tests
++ Long text difference
+  diffre -t html.[ab] > html.diffre
+  echo `./diffdist.prl html.diffre` = `diff html.[ab] | ./diffdist.prl`
++ Improvement with -r on long text difference
+  echo `diffre -r 'id\d+' html.[ab] | ./diffdist.prl` '<' \
+  `diff html.[ab] | ./diffdist.prl`

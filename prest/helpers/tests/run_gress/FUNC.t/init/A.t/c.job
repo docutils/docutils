@@ -1,0 +1,5 @@
+= A.t c tests
++ Mismatch 1
+  echo There will be a mismatch on this line.
++ Mismatch 2
+  echo There will also be a mismatch on this line.

@@ -1,0 +1,158 @@
+#!/usr/local/bin/perl
+
+=pod
+=for reST
+=begin Id
+$Id: run_gress.prl.root,v 1.7 2005/04/08 19:36:02 nodine Exp $
+Copyright (C) 2002-2005 Freescale Semiconductor, Inc.
+Distributed under terms of the GNU General Public License (GPL).
+=end Id
+
+=begin Description
+Description: This program runs a set of gress tests in
+subdirectories.  The arguments are either the names of
+subdirectories or of .re files within the subdirectory.  Any
+argument that is neither is silently ignored.  For every argument
+that is a single <name>.re file, the program looks for an executable
+file <name>.sh in the subdirectory.  If it does not find one, it
+prints a warning; otherwise it runs the .sh file, putting the output
+into <name>.out within the subdirectory, and compares the output to
+that expected by the regular expressions in the <name>.re file using
+a regular expression diff (diffre) program.  If an argument is a
+subdirectory name, then every .re file within the subdirectory is
+processed as above.  For every directory <dir> in which a file is
+processed, the output of diffre is placed in the current directory
+in the file <dir>.log, after having copyied the previous <dir>.log
+file to <dir>.plog.  Summaries are printed after every .sh file,
+after every directory, and at the end.  If, for any reason, no tests
+are run, the summary reports a FAILURE with no tests having been
+run; this feature is to prevent the tool's reporting PASSED when in
+fact you mistyped the directory name and nothing actually ran.
+
+=end Description
+=begin Usage
+Usage: ${main::TOOL_NAME} [options] file1|dir1 ...
+
+Options:
+  -h           Print help
+  -s <string>  Pass <string> as arguments when running the .sh file
+               (default "")
+  -V           Print version
+=end Usage
+=cut
+
+use FindBin;
+$MY_DIR = $FindBin::RealBin;
+
+$0 =~ m|([^\/]+)$|;
+$main::TOOL_NAME = $1;
+
+use Getopt::Std;
+Usage() unless getopts("hs:V");
+Usage('Id') if $opt_V;
+Usage('Description') if $opt_h;
+
+$errs = 0;
+$tests = 0;
+@dirs = sort (@ARGV ? @ARGV : ("*"));
+
+print "Test Run By $ENV{'USER'} on ",`date`;
+
+foreach $dir_wc (@dirs) {
+    my $last_dir;
+    my $d_errs = 0;
+    my $d_files = 0;
+    my $res = `echo $dir_wc $dir_wc/*.re`;
+    my @res = sort split /\s+/,$res;
+    foreach $re (@res) {
+	next unless -f $re && $re =~ m|(.*)/(.*)\.re$| ;
+	my ($dir, $base_file) = ($1, $2);
+	if ($dir ne $last_dir) {
+	    report_dir($last_dir, $d_errs) if $d_files > 0;
+	    close LOG if defined $last_dir;
+	    rename "$dir.log", "$dir.plog" or do {
+		$| = 1; print; # Force STDOUT to be flushed
+		die "ERROR: Cannot rename $dir.log" }
+		if -f "$dir.log";
+	    open LOG, ">$dir.log" or do {
+		$| = 1; print; # Force STDOUT to be flushed
+		die "ERROR: Cannot open $dir.log for write" };
+	    $d_errs = $d_files = 0;
+	    $last_dir = $dir;
+	}
+	(my $sh_file = $re) =~ s/re$/sh/;
+	if (! -x $sh_file) {
+	    my $message = "# WARNING: There is no executable $sh_file corresponding to $re\n\n";
+	    print $message;
+	    print LOG $message;
+	    next;
+	}
+	my $f_errs = 0;
+	$d_files++;
+	$tests++;
+	my $banner = "# Beginning $dir/$base_file tests";
+	print "$banner\n";
+	print LOG "$banner\n";
+	open REPORT, "$sh_file $opt_s 2>& 1 | $TEE_PATH/tee $dir/$base_file.out | $MY_DIR/diffre $re -|";
+	while (<REPORT>) {
+	    print;
+	    print LOG;
+
+	    $f_errs++ if /^\d+(,\d+)?[adc]\d+(,\d+)?$/;
+	}
+	if ($f_errs) {
+	    $message = "FAILURE: $dir/$base_file had $f_errs error" . ($f_errs > 1 ? 's' : '');
+	}
+	else {
+	    $message = "No errors";
+	}
+	print LOG "$message\n\n";
+	print "$message\n\n";
+	close REPORT;
+	$errs += $f_errs;
+	$d_errs += $f_errs;
+    }
+    report_dir($last_dir, $d_errs) if $d_files > 0;
+    close LOG if defined $last_dir;
+}
+
+if ($errs) {
+    $message = "FAILURE: total of $errs error" . ($errs > 1 ? 's' : '');
+}
+elsif ($tests == 0) {
+    $message = "FAILURE: total of 0 tests run";
+}
+else {
+    $message = "PASSED: No errors";
+}
+print "$message\n";
+
+sub report_dir {
+    my ($dirname, $errs) = @_;
+    my $message = $errs ? ("FAILURE: directory $dirname had a total of $errs error" .
+			   ($errs > 1 ? 's' : '')) :
+			   "PASSED: directory $dirname had no errors";
+    print "$message\n\n";
+    print LOG "$message\n";
+}
+
+# This subroutine extracts and prints usage information
+sub Usage {
+    my ($what) = @_;
+    $what = "Usage" if ! $what;
+    my $mark = $what eq 'Description' ? "($what|Usage)" : $what;
+    if (open(ME,$0) == 1) {
+	while (<ME>) {
+	    if ((/^=begin $mark/ .. /^=end $mark/) &&
+		! /^=(begin|end) $mark/) {
+		s/(\$\{[^\}]+\})/eval($1)/ge;
+		print;
+	    }
+	}
+	close(ME);
+    }
+    else {
+	print STDERR "Usage not available.\n";
+    }
+    exit (1);
+}

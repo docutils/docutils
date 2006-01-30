@@ -1,0 +1,11 @@
+.. -*-rst-*-
+
+Release History
+===============
+
+.. contents::
+
+Release 0.3.10
+--------------
+First public release, which corresponds most closely to the 0.3.10
+release of docutils.
