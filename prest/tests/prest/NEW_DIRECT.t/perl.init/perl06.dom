@@ -1,0 +1,14 @@
+<document source="test data">
+    <section ids="perl-test" names="perl test">
+        <title>
+            Perl Test
+        <paragraph>
+            A perl directive that returns a perl directive.
+        <system_message level="1" line="6" source="test data" type="INFO">
+            <paragraph>
+                No directive entry for "perl" in module "RST::Directive".
+                Trying "perl" as canonical directive name.
+        <paragraph>
+            It works.
+        <paragraph>
+            A paragraph.

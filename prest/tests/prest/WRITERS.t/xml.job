@@ -1,0 +1,5 @@
+= Test XML writer
+  ln -s ../data .
++ All tests
+  make -s test
+  echo 'Passing tests: '`ls -l *.chk | grep ' 0 ' | wc -l` /`ls *.chk | wc -l`

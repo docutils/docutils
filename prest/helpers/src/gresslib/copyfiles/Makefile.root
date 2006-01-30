@@ -1,0 +1,30 @@
+# -*-makefile-*-
+# Use the following to customize flags to gen_gress to include executables
+# on EXECS line
+# EXECS = diff head cat
+# GEN_GRESS_FLAGS = -p $(subst $(subst X,,X X),:,$(sort $(dir $(shell which $(EXECS)))))
+
+# gress.mak has the following useful targets
+#   default:
+#         Runs run_gress with argument $(DIR), which defaults to '*'.
+#         Run make with DIR='arg(s)' to change what run_gress does.
+#         Makes sure the .sh files associated with all the .re files
+#         for the run_gress arguments are up to date.
+#   <dir>/<file>.sh:
+#         Builds <dir>/<file>.sh from <dir>/<file>.job
+#   <dir>/<file>.out:
+#         Builds <dir>/<file>.out by running <dir>/<file>.sh if there are
+#         changes to <dir>/<file>.sh, or any files in the <dir>/init,
+#         <dir>/<file>.init, or ../../bin directories.
+#   <dir>/<file>.re:
+#         Builds <dir>/<file>.re from <dir>/<file>.out and either
+#         ./elide.prl or ../elide.prl (if they exist).
+#   clean:
+#         Deletes .log, .plog, <dir>/<file>.out and depends.mak files
+#         and everything under <dir>/<file>.dir.
+#   realclean:
+#         Deletes everything clean does plus any <dir>/*.sh files.
+
+GRESS_LIB = $(GRESS_DIR)/lib
+GRESS_BIN = $(GRESS_DIR)/bin
+include $(GRESS_LIB)/gress.mak

@@ -1,0 +1,28 @@
+= Functional tests for run_gress
+  gen_gress A.t/a.job > A.t/a.sh
+  gen_gress A.t/b.job > A.t/b.sh
+  gen_gress A.t/c.job > A.t/c.sh
+  gen_gress B.t/a.job > B.t/a.sh
+  gen_gress B.t/b.job > B.t/b.sh
+  gen_gress C.t/a.job > C.t/a.sh
+  chmod +x */*.sh
+- Run a directory that contains errors
+  run_gress A.t 2>&1 | tee A.t.log1.check
++ Log file
+  perl -e '@A = <>; shift @A; pop @A; pop @A; print @A' A.t.log1.check | diff A.t.log -
++ Run a file with no errors
+  run_gress A.t/a.re 2>&1 | tee A.t.log2.check
++ New log file
+  perl -e '@A = <>; shift @A; pop @A; pop @A; print @A' A.t.log2.check | diff A.t.log -
++ Previous log file
+  perl -e '@A = <>; shift @A; pop @A; pop @A; print @A' A.t.log1.check | diff A.t.plog -
+- Run with no tests
+  run_gress A.t/a.sh
+- Run two directories containing errors
+  run_gress A.t B.t
+- Run all directories
+  run_gress
++ Run passing tests from multiple directories
+  run_gress */a.re
++ Wildcard argument
+  run_gress '*/a.re'

@@ -1,0 +1,12 @@
+1. Run ::
+
+     perl config.prl
+
+   and answer the questions.
+
+2. Follow the instructions given by config.prl.
+
+     make all
+     make testall
+     make doc
+     make install

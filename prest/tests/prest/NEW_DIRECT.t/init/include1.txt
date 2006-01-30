@@ -1,0 +1,3 @@
+In include1.txt
+
+.. include:: includes/include1.txt

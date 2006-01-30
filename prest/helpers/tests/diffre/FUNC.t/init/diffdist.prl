@@ -1,0 +1,32 @@
+#!/usr/bin/perl
+
+# This program computes the distance metric for a diff output.
+
+$sum = 0;
+while (<>) {
+    if (/^(\d+)(?:,(\d+))?([acd])(\d+)(?:,(\d+))?/) {
+	my ($lstart,$lend,$type,$rstart,$rend) = ($1, $2, $3, $4, $5);
+	$lend = $lstart unless defined $lend;
+	$rend = $rstart unless defined $rend;
+#print "($lstart,$lend,$type,$rstart,$rend)\n";
+	if ($type eq 'c') {
+	    $sum += $lend-$lstart + $rend-$rstart + 2;
+	}
+	elsif ($type eq 'd') {
+	    $sum += $lend - $lstart + 1;
+	}
+	else {
+	    $sum += $rend - $rstart + 1;
+	}
+    }
+}
+
+print "$sum\n";
+
+sub max {
+    my $val = $_[0];
+    foreach (@_) {
+	$val = $_ if $_ > $val;
+    }
+    return $val;
+}

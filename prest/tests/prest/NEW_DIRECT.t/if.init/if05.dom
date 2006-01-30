@@ -1,0 +1,22 @@
+<document source="test data">
+    <section ids="if-test" names="if test">
+        <title>
+            If Test
+        <paragraph>
+            Check for errors when passing in variables using \n\
+            <literal>
+                -D perl='expression'
+            .
+            The following should both fail because of such errors.
+        <system_message level="1" line="7" source="test data" type="INFO">
+            <paragraph>
+                No directive entry for "if" in module "RST::Directive".
+                Trying "if" as canonical directive name.
+        <system_message level="4" line="7" source="test data" type="SEVERE">
+            <paragraph>
+                Error executing "-D perl" option: Illegal division by zero at (eval 19) line 2.
+                .
+            <literal_block xml:space="preserve">
+                4/0
+        <paragraph>
+            A paragraph.

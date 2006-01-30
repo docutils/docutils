@@ -1,0 +1,12 @@
+<document source="test data">
+    <section ids="if-test" names="if test">
+        <title>
+            If Test
+        <system_message level="1" line="4" source="test data" type="INFO">
+            <paragraph>
+                No directive entry for "if" in module "RST::Directive".
+                Trying "if" as canonical directive name.
+        <paragraph>
+            This text should appear.
+        <paragraph>
+            A paragraph.

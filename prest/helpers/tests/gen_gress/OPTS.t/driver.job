@@ -1,0 +1,24 @@
+= Test command-line options
++ -h flag
+  gen_gress -h | head -1
++ No -i flag
+  gen_gress /dev/null | fgrep .init | tee noinitdir.txt | head -1
++ No -i flag but with -s flag
+  gen_gress -s myrundir /dev/null | fgrep .init | tee noinitrundir.txt | head -1
+  perl -pe 's/rundir/myrundir/g' noinitdir.txt | diff - noinitrundir.txt
++ -i flag
+  gen_gress -i initdir -s myrundir /dev/null | fgrep initdir | tee initrundir.txt | head -1
+  perl -pe 's/myrundir\.init/initdir/g' noinitrundir.txt | diff - initrundir.txt
++ No -p flag
+  gen_gress /dev/null | grep PATH=
++ With -p flag
+  gen_gress -p mydir1:mydir2 /dev/null | grep PATH=
++ No -s flag
+  gen_gress /dev/null | grep rundir | tee rundir.txt | tail -1
++ -s flag
+  gen_gress -s myrundir /dev/null | grep myrundir | tee myrundir.txt | tail -1
+  perl -pe 's/rundir/myrundir/g' rundir.txt | diff - myrundir.txt
++ -V flag
+  gen_gress -V | head -1
+- Undefined flag
+  gen_gress -Q | head -1

@@ -1,0 +1,11 @@
+<document names="the document title" source="test data" title="The Document Title">
+    <title>
+        The Document Title
+    <paragraph>
+        The following should become the document title, even though there is a
+        paragraph here.
+    <section ids="the-document-title" names="the document title">
+        <title>
+            The Document Title
+        <paragraph>
+            The above document title should remain as a section in the dom.

@@ -1,0 +1,25 @@
+= Test functional features with short tests
++ Simple re difference
+  diffre re.[ab]
++ Simple text difference
+  diffre -t file.[ab] > file.diffre
+  diff file.[ab] | diff file.diffre -
++ Simple text difference with -D FOO
+  diffre -t -D FOO file.[ab] | \
+  perl -pe 's/([.])/\\$1/g;s/^(#(?:endif|else))(.*)/$1($2|.*)/' \
+  > fileD.diffre
+  diff -D FOO file.[ab] | diffre fileD.diffre -
++ Simple difference with -r
+  diffre -r '(not )?' file.[ab]
++ Get minimal difference when quick+dirty method does not work
+  diffre -t noq+d.[ab] > noq+d.diffre
+  diff noq+d.[ab] | diff noq+d.diffre -
++ Many lines deleted from first file
+  diffre -t off_end.[ab] > off_end.diffre
+  diff off_end.[ab] | diff off_end.diffre -
++ Totally different files
+  diffre -t nomatch.[ab] > nomatch.diffre
+  diff nomatch.[ab] | diff nomatch.diffre -
++ File a is prefix of file b
+  diffre -t prefix.[ab] > prefix.diffre
+  diff prefix.[ab] | diff prefix.diffre -

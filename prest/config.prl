@@ -1,0 +1,245 @@
+#!/usr/bin/perl
+
+=pod
+=begin reST
+=begin Id
+$Id: config.prl 768 2006-01-28 03:33:28Z marknodine $
+Copyright (C) 2002-2005 Freescale Semiconductor
+Distributed under terms of the GNU General Public License (GPL).
+=end Id
+
+=begin Description
+Description: This program is a generic script to query the user for
+information related to the system configuration that needs to be taken
+into account in building or installing a software project.  The
+configuration is data-driven, using data from a separate perl module
+``swconfig.pm`` which must be written by the software developer.  This
+perl module should have the following outline::
+
+  module swconfig;
+
+  @ENVS = ( ... );
+  %FILE = ( ... );
+  @INSTRUCTIONS = ( ... );
+
+  sub WRAPUP { # Optional
+    ...
+  }
+
+These variables are as follows::
+
+  @ENVS          Array of key/value pairs representing configuration
+                 parameters, where the key is a name chosen for the
+                 configuration parameter and the value is a reference
+                 to a hash with the following keys::
+
+                   default:   The default value for the parameter
+                   desc:      A description to be printed while prompting
+                   exec:      1 if the represents a path to an executable
+                              with the parameter name.  Optional.
+                   checkfail: Reference to a subroutine to check for
+			      validity of a response.  It receives the
+                              response as its argument and should return 1
+                              if the response is invalid.  Optional.
+
+  %FILE          Hash of key/value pairs representing files that will
+                 undergo configuration.  The key is the name of the
+                 file (relative to the configuring directory) and the
+                 value is a reference to a hash with the following
+                 keys::
+
+                   init:     Code to call to initialize text at the top
+                             of the file.  The values of configuration
+                             parameters can be accessed via %CFGS, using
+                             the configuration parameter name as key.
+                   warn:     The prefix to use on lines containing a
+                             generated warning after the configuration
+                             initialization text.  The warning is 
+                             suppressed if the string is "<NONE>".
+                             Optional. Defaults to "#### ".
+                   exec:     If true, sets the generated file to be
+                             executable. Optional.
+
+                 The contents of the generated file will be::
+
+                   Initialization text
+                   Warning (unless warn element is "<NONE>")
+                   Contents of <filename>.root (if it exists)
+
+  sub WRAPUP     Generates any additional files not fitting the schema
+                 accommodated by %FILES.
+                 
+  @INSTRUCTIONS  A list of the commands that should be run subsequent to
+                 configuration to build and install the project.
+
+=end Description
+=begin Usage
+Usage: perl config.prl [options]
+
+Options:
+  -f file   Keep same values as <file> (in config.log format)
+  -h        Print help
+  -i        Print installation instructions (no configuration done)
+  -k        Keep same values as config.log
+  -u        Print list of files to configure (no configuration done)
+  -v        Print current configuration values (no configuration done)
+=end Usage
+=end reST
+=cut
+
+use Getopt::Std;
+Usage() if ! getopts("f:hikuv") || $opt_h;
+
+# All the configuration is data-driven using config.pm
+use swconfig;
+
+#### Here ends the configuration information for the config.prl file. ####
+
+print "\nTo build, do \n", map("\t$_\n", @swconfig::INSTRUCTIONS) if $opt_i;
+print "\nFiles to configure:\n",map("\t$_\n",sort keys %swconfig::FILE)
+    if $opt_u;
+exit if ($opt_i || $opt_u) && ! $opt_v;
+
+$opt_k = 1 if $opt_v || defined $opt_f;
+
+# Ask a couple of questions about the environment.
+
+%ENVS = @swconfig::ENVS;
+my $nenvs = keys %ENVS;
+@envs = @swconfig::ENVS[map(2*$_, 0 .. ($nenvs-1))];
+@defaults{@envs} = map($ENVS{$_}{default}, @envs);
+
+$DEFAULT_CFG_FILE = "config.log";
+$CFG_FILE = defined $opt_f ? $opt_f : $DEFAULT_CFG_FILE;
+# Default to the current values if there is a config file
+if (defined $opt_f || -f $CFG_FILE) {
+    open CF, $CFG_FILE or die "Cannot open $CFG_FILE.";
+    my %cfg = eval(join('',<CF>));
+    @defaults{keys %cfg} = values %cfg;
+    close CF;
+}
+else {
+    # Default to values on the path
+    foreach $exec (@envs) {
+	next unless $ENVS{$exec}{exec};
+	my $bin = `which $exec`;
+	$defaults{$exec} = $1 if $bin =~ m|(.*)/|;
+    }
+}
+
+%swconfig::CFGS = %defaults if $opt_k;
+
+while (! $opt_k) {
+    print "Please tell us about your environment by answering the following \n";
+    print "questions. The value in the parentheses is the default value. \n";
+    print "Hit the <return> key to accept the default. Otherwise type a \n";
+    print "different value and hit <return> \n\n";
+
+    my $env;
+    foreach $env (@envs) {
+	while (1) {
+	    my $def = " ($defaults{$env})" if $defaults{$env} ne '';
+	    print "$ENVS{$env}{desc}$def: ";
+	    $swconfig::CFGS{$env} = <STDIN>;
+	    chomp $swconfig::CFGS{$env};
+	    $swconfig::CFGS{$env} = $defaults{$env}
+	    if $swconfig::CFGS{$env} eq '';
+	    last unless 
+		defined $ENVS{$env}{checkfail} &&
+		&{$ENVS{$env}{checkfail}}($swconfig::CFGS{$env}) ||
+		$ENVS{$env}{exec} &&
+		! -x "$swconfig::CFGS{$env}/$env" && do {
+		    print "There is no executable $swconfig::CFGS{$env}/$env\n"; 1 };
+	}
+	$defaults{$env} = $swconfig::CFGS{$env};
+    }
+
+    foreach (keys %swconfig::CFGS) {
+	$value = $swconfig::CFGS{$_};
+	chomp $value;
+	$value =~ s/^\s*(\S*)\s*/$1/;
+	$value = $defaults{$_} unless $value;
+	$swconfig::CFGS{$_} = $value;
+	$defaults{$_} = $value;
+    }
+
+    printsummary();
+
+    print "\nDoes this look right? [y|n] ";
+    my $okay = <STDIN>;
+    chomp($okay);
+    last if ($okay =~ m/^[y1]/i);
+}
+if ($opt_k) {
+    printsummary();
+}
+
+exit if $opt_v;
+
+# Dump the configurations into a Config.log file
+rename "$DEFAULT_CFG_FILE", "$DEFAULT_CFG_FILE.bak";
+open (CL, ">$DEFAULT_CFG_FILE") or die "Cannot write to $DEFAULT_CFG_FILE.";
+print CL map(qq('$_'=>'$swconfig::CFGS{$_}',\n), sort keys %swconfig::CFGS);
+close CL;
+
+@files = sort keys %swconfig::FILE;
+
+foreach $file (@files) {
+    print "Configuring $file\n";
+    open (RF, "$file.root") if -r "$file.root";
+    open (MF, ">$file") 
+	or die "Failed to modify $file. Please correct the error and try again.";
+
+    my $routine = $swconfig::FILE{$file}{init};
+    print MF eval("package config; \${\\&\$routine()}");
+    die "Error evaluating initialization for $file: $@" if $@;
+    if ($swconfig::FILE{$file}{warn} ne '<NONE>') {
+	my $warn = $swconfig::FILE{$file}{warn} || "#### ";
+	print MF "${warn}Text above here was automatically generated during the configuration.\n";
+	print MF "${warn}Modifications to this file will be lost during configuration.\n";
+	print MF "\n";
+    }
+    die "Failed to configure $file: $@" if $@;
+    if (-r "$file.root") {
+	print MF "\n";
+	print MF <RF>;
+	close RF;
+    }
+    close MF;
+    chmod 0775, $file if $swconfig::FILE{$file}{exec};
+}
+
+swconfig::WRAPUP() if defined &swconfig::WRAPUP;
+
+print "\nEverything has been configured. To build, do \n";
+print map("\t$_\n", @swconfig::INSTRUCTIONS);
+
+sub printsummary {
+    print "\nHere is the summary of the configuration:\n";
+    foreach $env (@envs) {
+	print "  $ENVS{$env}{desc}: $swconfig::CFGS{$env}\n";
+    }
+}
+
+# This subroutine extracts and prints usage information
+sub Usage {
+    my ($what) = @_;
+    $what = "Usage" if ! $what;
+    my $mark = $what eq 'Description' ? "($what|Usage)" : $what;
+    if (open(ME,$0) == 1) {
+	while (<ME>) {
+	    if ((/^=begin $mark/ .. /^=end $mark/) &&
+		! /^=(begin|end) $mark/) {
+		s/(\$\{[^\}]+\})/eval($1)/ge;
+		print;
+	    }
+	}
+	close(ME);
+    }
+    else {
+	print STDERR "Usage not available.\n";
+    }
+    exit (1);
+}
+
+1;

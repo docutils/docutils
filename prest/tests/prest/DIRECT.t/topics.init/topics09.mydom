@@ -1,0 +1,13 @@
+<document source="test data">
+    <topic>
+        <title>
+            Title
+        <topic>
+            <title>
+                Nested
+            <paragraph>
+                Body.
+        <paragraph>
+            More.
+    <paragraph>
+        More.
