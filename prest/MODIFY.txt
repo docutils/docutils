@@ -41,7 +41,7 @@ To create a new release:
 (7) Change to the subdirectory <tag> and make sure the
     following variable ::
 
-      $URL: file:///proj/svn/doctools/prest/tags/prest-00.03.10/MODIFY.txt $
+      $URL$
 
     in RELEASE has been updated to reflect to reflect the tags/<tag> 
     directory.
