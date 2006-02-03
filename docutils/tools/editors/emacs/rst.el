@@ -7,11 +7,25 @@
 ;;;           David Goodger <goodger@python.org>
 ;;; :Revision: $Revision$
 ;;; :Date: $Date$
-;;; :Copyright: This module has been placed in the public domain.
-;;; :Abstract:
+;;; :Copyright: 2003-2006 by Martin Blais, Stefan Merten, and David Goodger.
+;;; :License:
+;;;     This program is free software; you can redistribute it and/or modify
+;;;     it under the terms of the GNU General Public License version 2,
+;;;     as published by the Free Software Foundation.
+;;; 
+;;;     This program is distributed in the hope that it will be useful,
+;;;     but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;;     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;;     GNU General Public License for more details.
+;;; 
+;;;     You should have received a copy of the GNU General Public License
+;;;     version 2 along with this program (../../../licenses/gpl.txt) and
+;;;     available at http://docutils.sf.net/licenses/gpl.txt
+;;;     and at http://www.gnu.org/licenses/gpl.txt.
 ;;;
-;;;    Support code for editing reStructuredText with Emacs.  The latest version
-;;;    of this file lies in the docutils source code repository.
+;;; :Abstract:
+;;;     Support code for editing reStructuredText with Emacs.  The latest
+;;;     version of this file lies in the docutils source code repository.
 ;;;
 ;;; Description
 ;;; ===========
@@ -1902,29 +1916,6 @@ up to the leftmost character in the region."
 ;;
 ;; All customizable features have a comment explaining their meaning. Refer to
 ;; the customization of your Emacs (try ``M-x customize``).
-
-;; SEE ALSO
-;;
-;; http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
-
-;; AUTHOR
-;;
-;; Stefan Merten <smerten AT oekonux.de>
-
-;; LICENSE
-;;
-;; This program is licensed under the terms of the GPL. See
-;;
-;;   http://www.gnu.org/licenses/gpl.txt
-
-;; AVAILABILITY
-;;
-;; See
-;;
-;;   http://www.merten-home.de/FreeSoftware/rst-mode/
-
-
-;;; Code:
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Customization:
