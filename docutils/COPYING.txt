@@ -95,18 +95,18 @@ The exceptions to the `Public Domain Dedication`_ above are:
 
   __ licenses/python-2-2.txt
 
-* tools/editors/emacs/rst.el, by Martin Blais, Stefan Merten, and
-  David Goodger, released under the `GNU General Public License`_
-  (`local copy`__).
+* tools/editors/emacs/rst.el, copyright by Martin Blais, Stefan
+  Merten, and David Goodger, released under the `GNU General Public
+  License`_ (`local copy`__).
 
   __ licenses/gpl.txt
 
 (Disclaimer: I am not a lawyer.)  The BSD license and the Python
-licenses are OSI-approved_ and GPL-compatible_.  Although complicated
-by multiple owners and lots of legalese, the Python license basically
-lets you copy, use, modify, and redistribute files as long as you keep
-the copyright attribution intact, note any changes you make, and don't
-use the owner's name in vain.  The BSD license is similar.
+licenses are OSI-approved_ and GPL-compatible_.  The BSD license
+basically lets you copy, use, modify, and redistribute files as long
+as you keep the copyright attribution intact, note any changes you
+make, and don't use the owner's name in vain.  Although complicated by
+multiple owners and lots of legalese, the Python license is similar.
 
 Plaintext versions of all the linked-to licenses are provided in the
 licenses_ directory.
