@@ -38,6 +38,9 @@ the box.
 
 * Alberto Berti is developing an `OpenDocument writer`_.
 
+* Jens J. Mortensen developed `LaTeX math for reST`_, which writes to
+  LaTeX or to MathML.
+
 * xml2rst_, an XSLT stylesheet written by Stefan Merten, converts XML
   dumps of the document tree (e.g. created with rst2xml.py) back to
   reStructuredText.
@@ -115,6 +118,8 @@ code base.
 .. _FAQ entry about Blogs: http://docutils.sf.net/FAQ.html#are-there-any-weblog-blog-projects-that-use-restructuredtext-syntax
 .. _ASCII art to SVG converter: http://docutils.sf.net/sandbox/cliechti/aafigure/
 .. _OpenDocument writer: http://thread.gmane.org/gmane.text.docutils.devel/3613
+.. _LaTeX math for reST:
+   http://docutils.sourceforge.net/sandbox/jensj/latex_math/
 .. _xml2rst: http://www.merten-home.de/FreeSoftware/xml2rst/index.html
 .. _rst2ht: http://www.rutherfurd.net/articles/rst-ht2html.html
 .. _ht2html: http://ht2html.sourceforge.net/
