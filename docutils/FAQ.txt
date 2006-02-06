@@ -923,8 +923,10 @@ The encoding of the output is set to "utf-8", but your browswer isn't
 recognizing that.  You can either try to fix your browser (enable
 "UTF-8 character set", sometimes called "Unicode"), or choose a
 different encoding for the HTML output.  You can also try
-``--output-encoding=ascii:xmlcharrefreplace`` for HTML (not applicable
-to non-XMLish outputs).
+``--output-encoding=ascii:xmlcharrefreplace`` for HTML or XML, but not
+applicable to non-XMLish outputs (if using runtime
+settings/configuration files, use ``output_encoding=ascii`` and
+``output_encoding_error_handler=xmlcharrefreplace``).
 
 If you're generating document fragments, the "Content-Type" metadata
 (between the HTML ``<head>`` and ``</head>`` tags) must agree with the
