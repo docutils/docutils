@@ -484,6 +484,7 @@ Themes
      * http://meyerweb.com/eric/tools/s5/themes/
      * http://mozilla.wikicities.com/wiki/Firefox_S5:Designs
      * http://lachy.id.au/dev/mozilla/firefox/s5/
+     * http://www.openlight.com/Python-S5-Theme.tar.gz
 
      S5 is becoming more popular every day.  Do a web search for "S5
      theme" and you're bound to find plenty of choices.
