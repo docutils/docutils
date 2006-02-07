@@ -12,6 +12,15 @@ what-you-see-is-what-you-get plaintext markup language.
 
 ----------------------------------------------------------------------
 
+News
+====
+
+We will hold a `Docutils sprint`_ from February 27 through March 2 at
+`PyCon 2006`_ in Addison, Texas.  You are invited to attend!
+
+Overview
+========
+
 **To get up & running quickly**, see the Quick-Start_ section of the
 README_ file.
 
@@ -87,6 +96,9 @@ and `Docutils-checkins
 
 .. |---| unicode:: U+02014 .. em dash
    :trim:
+.. _Docutils sprint:
+   http://wiki.python.org/moin/PyCon2006/Sprints/DocutilsSprint
+.. _PyCon 2006: http://us.pycon.org/TX2006/HomePage
 .. _latest snapshot: http://docutils.sourceforge.net/docutils-snapshot.tgz
 .. _Snapshot of the Sandbox:
    http://docutils.sourceforge.net/docutils-sandbox-snapshot.tgz
