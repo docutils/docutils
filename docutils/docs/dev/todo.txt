@@ -685,6 +685,15 @@ Also see the `... Or Not To Do?`__ list.
 
 __ rst/alternatives.html#or-not-to-do
 
+* This case is probably meant to be a nested list, but it ends up as a
+  list inside a block-quote without an error message::
+
+      - foo
+
+       - bar
+
+  It should probably just be an error.
+
 * Treat enumerated lists that are not arabic and consist of only one
   item in a single line as ordinary paragraphs.  See
   <http://article.gmane.org/gmane.text.docutils.user/2635>.
