@@ -26,6 +26,7 @@ main();
 
 #use strict;
 use integer;
+if ($[ > 5.008) { eval "use bytes"; }
 use Getopt::Std;
 
 sub main {

@@ -15,10 +15,10 @@ helpers:
 testall: testhelpers test
 
 test:
-	cd tests; make realclean; make
+	cd tests; make -s realclean; make -s
 
 testhelpers:
-	cd helpers/tests; make
+	cd helpers/tests; make -s
 
 doc:
 	cd doc/src; make

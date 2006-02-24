@@ -96,7 +96,7 @@ BEGIN {
     ($TOOL_NAME = $1) =~ s/\..*//;
     use FindBin;
     $MY_DIR = $1 if $FindBin::RealBin =~ m|^(/.*)$|;
-    push @INC, $MY_DIR;
+    unshift @INC, $MY_DIR;
 }
 
 # The main entry point.  Parses command-line options, preprocesses the
