@@ -694,6 +694,10 @@ __ rst/alternatives.html#or-not-to-do
 
   It should probably just be an error.
 
+  The problem with this is that you don't notice easily in HTML that
+  it's not a nested list but a block-quote -- there's not much of a
+  visual difference.
+
 * Treat enumerated lists that are not arabic and consist of only one
   item in a single line as ordinary paragraphs.  See
   <http://article.gmane.org/gmane.text.docutils.user/2635>.
