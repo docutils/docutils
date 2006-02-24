@@ -1617,6 +1617,12 @@ Unimplemented Transforms
 HTML Writer
 ===========
 
+* Make the _`list compacting` logic more generic: For example, allow
+  for literal blocks or line blocks inside of compact list items.
+
+  This is not implementable as long as list compacting is done by
+  omitting ``<p>`` tags.
+
 * Add support for _`multiple stylesheets`.  See
   <http://thread.gmane.org/gmane.text.docutils.cvs/4336>.
 
