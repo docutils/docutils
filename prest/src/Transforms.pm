@@ -329,7 +329,10 @@ sub create_title {
 	    else {
 		# Check for a subtitle
 		my @sections = grep($_->{tag} eq 'section', $dom->contents());
-		if (@sections == 1) {
+		if (@sections == 1 &&
+		    !grep($_->{tag} !~
+			  /^(section|comment|system_message|target|substitution_definition|title|decoration)$/,
+				 $dom->contents())) {
 		    my $sec = $sections[0];
 		    my $title = $sec->splice(0, 1);
 		    my @non_sections = grep($_->{tag} !~ /^(section|title)$/,
