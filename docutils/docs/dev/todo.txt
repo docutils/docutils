@@ -685,6 +685,14 @@ Also see the `... Or Not To Do?`__ list.
 
 __ rst/alternatives.html#or-not-to-do
 
+* Another list problem::
+
+      * foo
+            * bar
+            * baz
+
+  This ends up as a definition list.
+
 * This case is probably meant to be a nested list, but it ends up as a
   list inside a block-quote without an error message::
 
