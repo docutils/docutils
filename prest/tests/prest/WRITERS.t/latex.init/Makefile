@@ -28,8 +28,8 @@ test:	$(CHKs)
 #%.texc:	%.mytex $(RETEX)
 #	@perl $(RETEX) $< > $@
 
-%.texc:	%.cmptex $(RETEX)
-	@perl $(RETEX) $< > $@
+#%.texc:	%.cmptex $(RETEX)
+#	@perl $(RETEX) $< > $@
 
 %.out:	%.rst $(RST2DOC) $(WRT) $(RSTDIR)/*.pm
 	@$(RSTCMD) $(RST_FLAG_$(*)) $*.rst
@@ -39,6 +39,9 @@ test:	$(CHKs)
 
 %.chk:	%.rst %.texc $(RST2DOC) $(WRT) $(RSTDIR)/*.pm
 	@$(RSTCMD) $(RST_FLAG_$(*)) $*.rst | $(DIFFRE) $*.texc - | tee $@ | perl -e '@IN = <>; print "$*: ",@IN==0 ? "OK" : "FAIL","\n"'
+
+%.chk:	%.rst %.cmptex $(RST2DOC) $(WRT) $(RSTDIR)/*.pm
+	@$(RSTCMD) $(RST_FLAG_$(*)) $*.rst | diff $*.cmptex - | tee $@ | perl -e '@IN = <>; print "$*: ",@IN==0 ? "OK" : "FAIL","\n"'
 
 %.tex:	%.rst $(RST2DOC) $(WRT) $(RSTDIR)/*.pm
 	@$(RSTCMD) $(RST_FLAG_$(*)) $*.rst > $@

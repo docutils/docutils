@@ -29,7 +29,7 @@ default:	runtest
 
 .PHONY:	runtest clean realclean
 
-include depends.mak
+-include depends.mak
 
 depends.mak:	$(GRESS_LIB)/gress.mak $(wildcard */*init)
 	@echo Building depends.mak
