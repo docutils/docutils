@@ -1121,6 +1121,8 @@ when used in a document.
 
     .. _unicode: ../ref/rst/directives.html#unicode-character-codes
 
+  - Add the "class" option to the unicode directive.
+
   - _`images.figure`: "title" and "number", to indicate a formal
     figure?
 
