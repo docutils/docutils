@@ -72,6 +72,47 @@ for inclusion in the Python standard library.
 General
 =======
 
+* .. _GUI:
+
+  The user interface is very difficult to use for Windows users; you
+  can't really expect them to use the command line.  We need some kind
+  of GUI that can launch rst2html.py, and save the HTML output to a
+  file, and launch a browser.  What's important is that we get
+  settings to work with the GUI.  So we need some way to dynamically
+  generate a list of settings for the GUI.  The current settings_spec
+  for OptionParser doesn't seem to be usable for this for the
+  following reasons:
+
+  - It's biased toward the command line -- there are *two* options for
+    one boolean setting.
+
+  - You cannot have both a one-line description and a longer
+    description for tooltips/help-texts.
+
+  - It doesn't provide hints for the input type.  You cannot easily
+    infer the type of a setting from its validator, because any
+    component can add new validators.  In fact, it may be necessary to
+    have both a hint about the input type (e.g. string) and a
+    validator (valid ID), or it may be necessary to have a different
+    set of choices for the CLI (1, INFO, 2, ...) and for the GUI
+    (INFO, WARNING, ...).
+
+  - It's coupled to the OptionParser.  We want to be able to change
+    the underlying system without breaking everything.
+
+  - It's a bunch of primitive structures.  We want an extensible (thus
+    object-oriented) interface.
+
+  So we probably need to create a class for storing all the settings,
+  and auto-generate the OptionParser data from that.
+
+  I talked to Stephan Deibel about getting Docutils integrated into
+  Wing IDE.  He said it's possible, and he'd be willing to help.
+  There's a scripting interface to Wing, which we'd use.  We can
+  dynamically generate a list of preferences and not worry too much
+  about the rendering (from what I understood); Wing's whole GUI is
+  dynamic anyway.  // FW
+
 * Allow different report levels for STDERR and system_messages inside
   the document?
 
