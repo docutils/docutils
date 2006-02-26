@@ -54,6 +54,7 @@ Results in:
 
 __ quickref.html#paragraphs
 
+
 Text styles
 -----------
 
@@ -81,6 +82,7 @@ by enclosing it in double back-quotes (inline literals), like this::
     ``\*``
 
 __ quickref.html#escaping
+
 
 Lists
 -----
@@ -193,6 +195,7 @@ after a blank line.
     paragraphs or body elements, indented relative to the term.
     Blank lines are not allowed between term and definition.
 
+
 Preformatting (code samples)
 ----------------------------
 (quickref__)
@@ -238,6 +241,7 @@ Results in:
 
     This is preformatted text, and the
     last "::" paragraph is removed
+
 
 Sections
 --------
