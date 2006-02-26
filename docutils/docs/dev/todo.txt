@@ -1259,6 +1259,9 @@ when used in a document.
     * What to do with directive arguments & options when the
       macro/directive is referenced?
 
+  - Make the meaning of block quotes overridable?  Only a 1-shot
+    though; doesn't solve the general problem.
+
   - .. _conditional directives:
 
     Docutils already has the ability to say "use this content for
