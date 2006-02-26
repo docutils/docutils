@@ -55,6 +55,12 @@
 .. role:: print
 
 
+.. Display in Handout Mode Only
+   ============================
+
+.. role:: handout
+
+
 .. Incremental Display
    ===================
 
