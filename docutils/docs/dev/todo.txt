@@ -74,10 +74,10 @@ General
 
 * .. _GUI:
 
-  The user interface is very difficult to use for Windows users; you
-  can't really expect them to use the command line.  We need some kind
-  of GUI that can launch rst2html.py, and save the HTML output to a
-  file, and launch a browser.  What's important is that we get
+  The user interface is very difficult to use for most Windows users;
+  you can't really expect them to use the command line.  We need some
+  kind of GUI that can launch rst2html.py, and save the HTML output to
+  a file, and launch a browser.  What's important is that we get
   settings to work with the GUI.  So we need some way to dynamically
   generate a list of settings for the GUI.  The current settings_spec
   for OptionParser doesn't seem to be usable for this for the
@@ -111,7 +111,9 @@ General
   There's a scripting interface to Wing, which we'd use.  We can
   dynamically generate a list of preferences and not worry too much
   about the rendering (from what I understood); Wing's whole GUI is
-  dynamic anyway.  // FW
+  dynamic anyway.  The interface could be made usable for other GUIs.
+  For example, we could try to get option support for DocFactory.  //
+  FW
 
 * Allow different report levels for STDERR and system_messages inside
   the document?
