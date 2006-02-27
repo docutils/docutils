@@ -1121,7 +1121,8 @@ when used in a document.
 
     .. _unicode: ../ref/rst/directives.html#unicode-character-codes
 
-  - Add the "class" option to the unicode directive.
+  - Add the "class" option to the unicode directive.  For example, you
+    might want to get characters or strings with borders around them.
 
   - _`images.figure`: "title" and "number", to indicate a formal
     figure?
