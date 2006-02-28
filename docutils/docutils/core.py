@@ -306,7 +306,9 @@ command line used.""" % (__version__, __version_details__,
 
 default_usage = '%prog [options] [<source> [<destination>]]'
 default_description = ('Reads from <source> (default is stdin) and writes to '
-                       '<destination> (default is stdout).')
+                       '<destination> (default is stdout).  See '
+                       '<http://docutils.sf.net/docs/user/config.html> for '
+                       'the full reference.')
 
 def publish_cmdline(reader=None, reader_name='standalone',
                     parser=None, parser_name='restructuredtext',
