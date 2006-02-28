@@ -379,6 +379,8 @@ General
   can either be embedded or referenced) and the destination (which can
   either be embedded or referenced as well).
 
+  See <http://article.gmane.org/gmane.text.docutils.devel/3631>.
+
 * Add testing for Docutils' front end tools?
 
 * Publisher: "Ordinary setup" shouldn't requre specific ordering; at
