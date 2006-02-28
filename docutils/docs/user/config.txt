@@ -1,6 +1,6 @@
-==============================
- Docutils Configuration Files
-==============================
+========================
+ Docutils Configuration
+========================
 
 :Author: David Goodger
 :Contact: goodger@python.org
@@ -10,8 +10,309 @@
 
 .. contents::
 
-.. Cross-reference command-line options with configuration file
-   settings?  Make alphabetical indexes of both.
+
+--------------------
+Command-line Options
+--------------------
+
+The command-line options you can pass to the `Docutils front-end
+tools`_ are described in the section `Configuration File Sections &
+Entries`_ below.  Following is an index of all command-line options.
+
+.. _Docutils front-end tools: tools.html
+
+* General Docutils Options
+
+  - `--title=TITLE`__
+
+    __ title_
+
+  - `--generator, -g`__
+
+    __ generator_
+
+  - `--no-generator`__
+
+    __ generator_
+
+  - `--date, -d`__
+
+    __ datestamp_
+
+  - `--time, -t`__
+
+    __ datestamp_
+
+  - `--no-datestamp`__
+
+    __ datestamp_
+
+  - `--source-link, -s`__
+
+    __ source_link_
+
+  - `--source-url=<URL>`__
+
+    __ source_url_
+
+  - `--no-source-link`__
+
+    __ source_link_
+
+  - `--toc-entry-backlinks`__
+
+    __ toc_backlinks_
+
+  - `--toc-top-backlinks`__
+
+    __ toc_backlinks_
+
+  - `--no-toc-backlinks`__
+
+    __ toc_backlinks_
+
+  - `--footnote-backlinks`__
+
+    __ footnote_backlinks_
+
+  - `--footnote-backlinks`__
+
+    __ footnote_backlinks_
+
+  - `--section-numbering`__
+
+    __ sectnum_xform_
+
+  - `--no-section-numbering`__
+
+    __ sectnum_xform_
+
+  - `--strip-comments`__
+
+    __ strip_comments_
+
+  - `--leave-comments`__
+
+    __ strip_comments_
+
+  - `--report=<level>, -r<level>`__
+
+    __ report_level_
+
+  - `--verbose, -v`__
+
+    __ report_level_
+
+  - `--quiet, -q`__
+
+    __ report_level_
+
+  - `--halt=<level>`__
+
+    __ halt_level_
+
+  - `--strict`__
+
+    __ halt_level_
+
+  - `--exit-status=<level>`__
+
+    __ exit_status_level_
+
+  - `--debug`__
+
+    __ debug_
+
+  - `--no-debug`__
+
+    __ debug_
+
+  - `--warnings=<file>`__
+
+    __ warning_stream_
+
+  - `--traceback`__
+
+    __ traceback_
+
+  - `--no-traceback`__
+
+    __ traceback_
+
+  - `--input-encoding=<name[:handler]>, -i<name[:handler]>`__
+
+    __ input_encoding_
+
+  - `--input-encoding-error-handler=INPUT_ENCODING_ERROR_HANDLER`__
+
+    __ input_encoding_error_handler_
+
+  - `--output-encoding=<name[:handler]>, -o<name[:handler]>`__
+
+    __ output_encoding_
+
+  - `--output-encoding-error-handler=OUTPUT_ENCODING_ERROR_HANDLER`__
+
+    __ output_encoding_error_handler_
+
+  - `--error-encoding=<name[:handler]>, -e<name[:handler]>`__
+
+    __ error_encoding_
+
+  - `--error-encoding-error-handler=ERROR_ENCODING_ERROR_HANDLER`__
+
+    __ error_encoding_error_handler_
+
+  - `--language=<name>, -l<name>`__
+
+    __ language_code_
+
+  - `--record-dependencies=<file>`__
+
+    __ record_dependencies_
+
+  - `--config=<file>`__
+
+    __ config_
+
+  - --version, -V
+
+  - --help, -h
+
+* to be completed ...
+
+.. * reStructuredText Parser Options
+
+     - `--pep-references`__
+
+       __ pep_references_
+
+     - `--pep-base-url=<URL>`__
+
+       __ pep_base_url_
+
+     - `--rfc-references`__
+
+       __ rfc_references_
+
+     - `--rfc-base-url=<URL>`__
+
+       __ rfc_base_url_
+
+     - `--tab-width=<width>`__
+
+       __ tab_width_
+
+     - `--trim-footnote-reference-space`__
+
+       __ trim_footnote_reference_space_
+
+     - `--leave-footnote-reference-space`__
+
+       __ leave_footnote_reference_space_
+
+     - `--no-file-insertion`__
+
+       __ no_file_insertion_
+
+     - `--file-insertion-enabled`__
+
+       __ file_insertion_enabled_
+
+     - `--no-raw`__
+
+       __ no_raw_
+
+     - `--raw-enabled`__
+
+       __ raw_enabled_
+
+
+   * Standalone Reader
+
+     - `--no-doc-title`__
+
+       __ no_doc_title_
+
+     - `--no-doc-info`__
+
+       __ no_doc_info_
+
+     - `--section-subtitles`__
+
+       __ section_subtitles_
+
+     - `--no-section-subtitles`__
+
+       __ no_section_subtitles_
+
+
+   * HTML-Specific Options
+
+     - `--stylesheet=<URL>`__
+
+       __ stylesheet_
+
+     - `--stylesheet-path=<file>`__
+
+       __ stylesheet_path_
+
+     - `--embed-stylesheet`__
+
+       __ embed_stylesheet_
+
+     - `--link-stylesheet`__
+
+       __ link_stylesheet_
+
+     - `--initial-header-level=<level>`__
+
+       __ initial_header_level_
+
+     - `--field-name-limit=<level>`__
+
+       __ field_name_limit_
+
+     - `--option-limit=<level>`__
+
+       __ option_limit_
+
+     - `--footnote-references=<format>`__
+
+       __ footnote_references_
+
+     - `--attribution=<format>`__
+
+       __ attribution_
+
+     - `--compact-lists`__
+
+       __ compact_lists_
+
+     - `--no-compact-lists`__
+
+       __ no_compact_lists_
+
+     - `--compact-field-lists`__
+
+       __ compact_field_lists_
+
+     - `--no-compact-field-lists`__
+
+       __ no_compact_field_lists_
+
+     - `--no-xml-declaration`__
+
+       __ no_xml_declaration_
+
+     - `--cloak-email-addresses`__
+
+       __ cloak_email_addresses_
+
+
+-------------------
+Configuration Files
+-------------------
 
 Configuration files are used for persistent customization; they can be
 set once and take effect every time you use a front-end tool.
