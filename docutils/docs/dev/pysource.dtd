@@ -60,6 +60,7 @@ http://docutils.sourceforge.net/docs/ref/docutils.dtd.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -->
 
+<!-- package's namespace == __init__.py module's namespace -->
 <!ELEMENT package_section
     (package, fullname?, import_list?, %structure.model;)>
 <!ATTLIST package_section %basic.atts;>
