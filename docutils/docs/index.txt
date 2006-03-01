@@ -81,7 +81,7 @@ top level of the Docutils project directory.
 Docutils-general:
 
 * `Docutils Front-End Tools <user/tools.html>`__
-* `Docutils Configuration Files <user/config.html>`__
+* `Docutils Configuration <user/config.html>`__
 * `Docutils Mailing Lists <user/mailing-lists.html>`__
 * `Docutils Link List <user/links.html>`__
 
