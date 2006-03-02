@@ -1749,6 +1749,11 @@ S5/HTML Writer
   Maybe either this item or the previous one can be realized using
   transitions.
 
+* Add an empty, black last slide (optionally).  Currently the handling
+  of the last slide is not very nice, it re-cycles through the
+  incremental items on the last slide if you hit space-bar after the
+  last item.
+
 
 LaTeX writer
 ============
