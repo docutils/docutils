@@ -1738,6 +1738,18 @@ PEP/HTML Writer
   We need support for `multiple stylesheets`_ first, though.
 
 
+S5/HTML Writer
+==============
+
+* Add a way to get a title-less slide.
+
+* Add a way to repeat a section title?  You need that if you have a
+  lot of items in one section which don't fit on one slide.
+
+  Maybe either this item or the previous one can be realized using
+  transitions.
+
+
 LaTeX writer
 ============
 
