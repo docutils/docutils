@@ -1754,6 +1754,8 @@ S5/HTML Writer
   incremental items on the last slide if you hit space-bar after the
   last item.
 
+* Add a command-line option to disable advance-on-click.
+
 
 LaTeX writer
 ============
