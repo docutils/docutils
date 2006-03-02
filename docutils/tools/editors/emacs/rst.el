@@ -2678,6 +2678,9 @@ string)) to be used for converting the document.")
       (or (and dir (concat dir file-name)) nil)
     )))
 
+
+(require 'compile)
+
 (defun rst-compile (&optional pfxarg)
   "Compile command to convert reST document into some output file.
 Attempts to find configuration file, if it can, overrides the
