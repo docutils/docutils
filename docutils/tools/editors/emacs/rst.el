@@ -12,12 +12,12 @@
 ;;;     This program is free software; you can redistribute it and/or modify
 ;;;     it under the terms of the GNU General Public License version 2,
 ;;;     as published by the Free Software Foundation.
-;;; 
+;;;
 ;;;     This program is distributed in the hope that it will be useful,
 ;;;     but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;;;     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;;;     GNU General Public License for more details.
-;;; 
+;;;
 ;;;     You should have received a copy of the GNU General Public License
 ;;;     version 2 along with this program (../../../licenses/gpl.txt) and
 ;;;     available at http://docutils.sf.net/licenses/gpl.txt
@@ -191,6 +191,9 @@
 ;;   document.
 ;; - Add an option to forego using the file structure in order to make
 ;;   suggestion, and to always use the preferred decorations to do that.
+;; - The shifting functions should look at what is before the region, to try to
+;;   automatically guess whether we need to shift by 2 or 3 or 4 characters
+;; - Finish enumeration removal code
 ;;
 
 
@@ -222,6 +225,7 @@
 (define-key rst-prefix-map "n" 'rst-forward-section)
 (define-key rst-prefix-map "r" 'rst-shift-region-right)
 (define-key rst-prefix-map "l" 'rst-shift-region-left)
+(define-key rst-prefix-map "e" 'rst-enumerate-region)
 (define-key rst-prefix-map "u" 'rst-toc-insert-update)
 (define-key rst-prefix-map "c" 'rst-compile)
 (define-key rst-prefix-map "C" (lambda () (interactive) (rst-compile t)))
@@ -1804,14 +1808,13 @@ the node has been found."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Functions to indent/dedent item lists, which are always two-characters apart
-;; horizontally with rest.
+;; Functions to work on item lists (e.g. indent/dedent, enumerate), which are
+;; always 2 or 3 characters apart horizontally with rest.
 
 (defvar rst-shift-fill-region nil
   "Set to true if you want to automatically re-fill the region that is being
 shifted.")
 ;; FIXME: need to finish this feature properly.
-
 
 (defun rst-shift-region-right ()
   "Indent region ridigly, by two characters to the right."
@@ -1852,6 +1855,38 @@ up to the leftmost character in the region."
     (when rst-shift-fill-region
       (fill-region mbeg mend))
     ))
+
+(defun rst-enumerate-region (rbeg rend)
+  "Insert numbered enumeration list prefixes to the currently
+selected region.  With prefix argument, remove the enumeration.
+(Note: the removal part of not implemented yet.)"
+  (interactive "r")
+  (save-excursion
+    (goto-char rend)
+    (beginning-of-line)
+
+    (let (tight-rbeg
+	  tight-rend
+	  ;; Count the number of lines in the region
+	  (nlines (count-lines rbeg rend))
+	  ;; Find the minimum column in all the lines in the region
+	  (lcol (rst-find-leftmost-column rbeg rend))
+	  (curnum 1))
+
+      (let ((curindex 1))
+	(operate-on-rectangle 'rst-enumerate-insert-enum rbeg rend t)))
+    ))
+
+(defun rst-enumerate-insert-enum (startpos begextra endextra)
+  (back-to-indentation)
+  (if (= (current-column) lcol)
+      (progn 
+	(insert (int-to-string curnum))
+	(insert ". ")
+	(incf curnum))
+    (indent-line-to (+ lcol 3))))
+
+;; FIXME: TODO we need to do the enumeration removal as well.
 
 
 
