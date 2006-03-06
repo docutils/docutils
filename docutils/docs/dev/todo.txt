@@ -1693,11 +1693,28 @@ Unimplemented Transforms
 HTML Writer
 ===========
 
+* Make it easier to find out fragment names (#foo-bar) of ``_`inline
+  targets```.  Currently you have to either look at the source or
+  guess the fragment.
+
+  For example, we could add support for self-referencing targets
+  (i.e. inline targets would [unobtrusively] link to themselves, so
+  that you can just click them and then copy the address).  Or we
+  could add support for titles that display the fragment name (as in
+  <http://subversion.tigris.org/mailing-list-guidelines.html>; just
+  hover the paragraphs).
+
+  Either way it should be optional and deactivated by default.
+
+  This would be useful for documents like Docutils' bug list or to-do
+  list.
+
 * Make the _`list compacting` logic more generic: For example, allow
   for literal blocks or line blocks inside of compact list items.
 
   This is not implementable as long as list compacting is done by
-  omitting ``<p>`` tags.
+  omitting ``<p>`` tags.  List compacting would need to be done by
+  adjusting CSS margins instead.
 
 * Add support for _`multiple stylesheets`.  See
   <http://thread.gmane.org/gmane.text.docutils.cvs/4336>.
