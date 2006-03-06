@@ -8,6 +8,7 @@
 Redirect permanent docs/ref/rst/substitutions.html http://docutils.sourceforge.net/docs/ref/rst/definitions.html
 Redirect permanent docs/ref/rst/substitutions.txt http://docutils.sourceforge.net/docs/ref/rst/definitions.txt
 Redirect permanent /sandbox/felixwiemann http://docutils.sourceforge.net/sandbox/fwiemann
+Redirect permanent /sandbox/fwiemann/xhtml2rest http://docutils.sourceforge.net/sandbox/xhtml2rest
 
 # Redirect snapshots to BerliOS.  The target URL may change in the
 # future, so use a temporary redirect (status 302).
