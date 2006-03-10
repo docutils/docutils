@@ -35,6 +35,15 @@ documentation from Python modules and packages (under development),
 `PEPs (Python Enhancement Proposals)`_ (implemented), and others as
 discovered.
 
+The Docutils distribution consists of:
+
+* a library (the "docutils" package), which `can be used by client
+  code`_;
+* several `front-end tools`_ (such as ``rst2html.py``, which converts
+  reStructuredText input into HTML output);
+* a `test suite`_; and
+* extensive documentation_.
+
 For an overview of the Docutils project implementation, see `PEP
 258`_, "Docutils Design Specification".
 
@@ -43,6 +52,11 @@ Docutils is implemented in Python_.
 .. _Docutils: http://docutils.sourceforge.net/
 .. _PEPs (Python Enhancement Proposals):
    http://www.python.org/peps/pep-0012.html
+.. _can be used by client code:
+   http://docutils.sourceforge.net/docs/api/publisher.html
+.. _front-end tools: http://docutils.sourceforge.net/docs/user/tools.html
+.. _test suite: http://docutils.sourceforge.net/docs/dev/testing.html
+.. _documentation: http://docutils.sourceforge.net/docs/
 .. _PEP 258: http://www.python.org/peps/pep-0258.html
 .. _Python: http://www.python.org/
 
@@ -72,7 +86,8 @@ For more history of reStructuredText and the Docutils project, see `An
 Introduction to reStructuredText`_.
 
 Please note that the name is "Docutils", not "DocUtils" or "Doc-Utils"
-or any other variation.
+or any other variation.  It is pronounced as in "DOCumentation
+UTILitieS", with emphasis on the first syllable.
 
 .. _An Introduction to reStructuredText:
    http://docutils.sourceforge.net/docs/ref/rst/introduction.html
