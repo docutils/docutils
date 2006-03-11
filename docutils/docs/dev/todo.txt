@@ -839,7 +839,7 @@ __ rst/alternatives.html#or-not-to-do
 
   What is to be done for output formats that don't *have* hyperlinks?
   For example, LaTeX targeted at print.  Hyperlinks may be "called
-  out", as footnotes with explicit URLs.
+  out", as footnotes with explicit URLs.  (Don't convert the links.)
 
   But then there's also LaTeX targeted at PDFs, which *can* have
   links.  Perhaps a runtime setting for "*" could explicitly provide
@@ -864,6 +864,49 @@ __ rst/alternatives.html#or-not-to-do
   __ http://article.gmane.org/gmane.text.docutils.user/1278
   __ http://thread.gmane.org/gmane.text.docutils.user/1915
   __ http://thread.gmane.org/gmane.text.docutils.user/2438
+
+  Idea from Jim Fulton: an external lookup table of targets:
+
+      I would like to specify the extension (e.g. .txt) [in the
+      source, rather than ``filename.*``], but tell the converter to
+      change references to the files anticipating that the files will
+      be converted too.
+
+      For example::
+
+        .. _Another Document: another.txt
+
+        rst2html.py --convert-links "another.txt bar.txt" foo.txt
+
+      That is, name the files for which extensions should be converted.
+
+      Note that I want to refer to original files in the original text
+      (another.txt rather than another.txt) because I want the
+      unconverted text to stand on its own.
+
+      Note that in most cases, people will be able to use globs::
+
+        rst2html.py --convert-link-extensions-for "`echo *.txt`" foo.txt
+
+      It might be nice to be able to use multiple arguments, as in::
+
+        rst2html.py --convert-link-extensions-for *.txt -- foo.txt
+
+      ::
+
+      > What is to be done for output formats
+      > that don't have hyperlinks?
+
+      Don't convert the links.
+
+      ::
+
+      > Handle documents only, or objects
+      > (images, etc.) also?
+
+      No, documents only, but there really is no need for gueswork.
+      Just get the file names as command-line arguments.  EIBTI
+      [explicit is better than implicit].
 
 * Implement the header row separator modification to table.el.  (Wrote
   to Takaaki Ota & the table.el mailing list on 2001-08-12, suggesting
