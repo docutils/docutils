@@ -908,6 +908,13 @@ __ rst/alternatives.html#or-not-to-do
       Just get the file names as command-line arguments.  EIBTI
       [explicit is better than implicit].
 
+  For images, we probably need separate solution (which is being
+  worked on), whereas for documents, the issue is basically
+  interlinking between reStructuredText documents.  IMO, this cries
+  for support for multiple input and output files, i.e. support for
+  documents which comprise multiple files.  Adding adaptable file
+  extensions seems like a kludge.  // FW
+
 * Implement the header row separator modification to table.el.  (Wrote
   to Takaaki Ota & the table.el mailing list on 2001-08-12, suggesting
   support for "=====" header rows.  On 2001-08-17 he replied, saying
