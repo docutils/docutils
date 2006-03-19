@@ -29,6 +29,13 @@ utf_16_csv = os.path.join(mydir, 'utf-16.csv')
 utf_16_csv_rel = DocutilsTestSupport.utils.relative_path(None, utf_16_csv)
 empty_txt = os.path.join(mydir, 'empty.txt')
 
+unichr_exception = DocutilsTestSupport.exception_data(
+    'unichr(int("9999999999999", 16))')[0]
+if isinstance(unichr_exception, OverflowError):
+    unichr_exception_string = 'code too large (%s)' % unichr_exception
+else:
+    unichr_exception_string = str(unichr_exception)
+
 totest = {}
 
 totest['table'] = [
@@ -678,11 +685,11 @@ u"""\
         <paragraph>
             Error in "csv-table" directive:
             invalid option value: (option: "delim"; value: 'U+9999999999999')
-            code too large (long int too large to convert to int).
+            %s.
         <literal_block xml:space="preserve">
             .. csv-table:: bad delimiter
                :delim: U+9999999999999
-"""],
+""" % unichr_exception_string],
 ["""\
 .. csv-table:: bad CSV data
 
