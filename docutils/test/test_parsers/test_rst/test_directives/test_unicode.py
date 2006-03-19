@@ -18,6 +18,13 @@ def suite():
     s.generateTests(totest)
     return s
 
+unichr_exception = DocutilsTestSupport.exception_data(
+    'unichr(int("111111111111111111", 16))')[0]
+if isinstance(unichr_exception, OverflowError):
+    unichr_exception_string = 'code too large (%s)' % unichr_exception
+else:
+    unichr_exception_string = str(unichr_exception)
+
 totest = {}
 
 totest['unicode'] = [
@@ -157,12 +164,7 @@ u"""\
             Substitution definition "too big for unicode" empty or invalid.
         <literal_block xml:space="preserve">
             .. |too big for unicode| unicode:: 0x11111111
-""" % ([DocutilsTestSupport.exception_data(
-            'unichr(int("111111111111111111", 16))')[0],
-        'code too large (%s)' % DocutilsTestSupport.exception_data(
-    'unichr(int("111111111111111111", 16))')[0]]
-       [isinstance(DocutilsTestSupport.exception_data(
-    'unichr(int("111111111111111111", 16))')[0], OverflowError)],
+""" % (unichr_exception_string,
        DocutilsTestSupport.exception_data('unichr(int("11111111", 16))')[2])]
 ]
 
