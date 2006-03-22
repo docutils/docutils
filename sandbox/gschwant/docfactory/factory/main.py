@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
-"""
+"""conf.pth
 :author:  Dr. Gunnar Schwant
 :contact: g.schwant@gmx.de
 :version: 0.3
 """
 
-import browser, images, re, sys, os, time, ConfigParser
+import browser, images, re, sys, os, time, ConfigParser, wx
 from   wxPython.wx               import *
 from   wxPython.lib.dialogs      import wxMultipleChoiceDialog, \
      wxScrolledMessageDialog
@@ -38,7 +38,8 @@ if not os.path.isdir(factory_path):
     factory_path = os.path.abspath(sys.path[0])
 
 try: 
-    f = open(os.path.join(factory_path, 'conf.pth'))
+    #f = open(os.path.join(factory_path, 'conf.pth'))
+    f = open(r'C:\conf.pth')
     DATA = f.readline().splitlines()[0]
     f.close()
 except:
@@ -126,7 +127,7 @@ class DocFactoryFrame(wxFrame):
 
         # Application-Icon
         bmp = images.getLogoSmallBitmap()
-        mask = wxMaskColour(bmp, wxWHITE)
+        mask = wx.Mask(bmp, wx.WHITE)
         bmp.SetMask(mask)
         logoicon = wxEmptyIcon()
         logoicon.CopyFromBitmap(bmp)
@@ -399,19 +400,19 @@ class DocFactoryFrame(wxFrame):
     def init_toolbar(self):
         self.toolbar = tb = self.CreateToolBar(wxTB_HORIZONTAL|wxTB_FLAT|wxNO_BORDER)
         bmp = images.getNewBitmap()
-        mask = wxMaskColour(bmp, wxBLUE)
+        mask = wx.Mask(bmp, wxBLUE)
         bmp.SetMask(mask)
         tb.AddLabelTool(wxID_WXBTNNEW, 'New', bmp, shortHelp='New',
                         longHelp='Create a new file')
         EVT_TOOL(tb, wxID_WXBTNNEW, self.on_file_new)
         bmp = images.getOpenBitmap()
-        mask = wxMaskColour(bmp, wxWHITE)
+        mask = wx.Mask(bmp, wxWHITE)
         bmp.SetMask(mask)
         tb.AddLabelTool(wxID_WXBTNOPEN, 'Open', bmp, shortHelp='Open',
                         longHelp='Open an existing file')
         EVT_TOOL(tb, wxID_WXBTNOPEN, self.on_file_open)
         bmp = images.getSaveBitmap()
-        mask = wxMaskColour(bmp, wxWHITE)
+        mask = wx.Mask(bmp, wxWHITE)
         bmp.SetMask(mask)
         tb.AddLabelTool(wxID_WXBTNSAVE, 'Save', bmp, shortHelp='Save',
                         longHelp='Save the active file')
@@ -419,21 +420,21 @@ class DocFactoryFrame(wxFrame):
         tb.EnableTool(wxID_WXBTNSAVE, 0)
         tb.AddSeparator()
         bmp = images.getCutBitmap()
-        mask = wxMaskColour(bmp, wxWHITE)
+        mask = wx.Mask(bmp, wxWHITE)
         bmp.SetMask(mask)
         tb.AddLabelTool(wxID_WXBTNCUT, 'Cut', bmp, shortHelp='Cut',
                         longHelp='Cut the selection and put it on the Clipboard')
         EVT_TOOL(tb, wxID_WXBTNCUT, self.on_cut)
         tb.EnableTool(wxID_WXBTNCUT, 0)
         bmp = images.getCopyBitmap()
-        mask = wxMaskColour(bmp, wxBLUE)
+        mask = wx.Mask(bmp, wxBLUE)
         bmp.SetMask(mask)
         tb.AddLabelTool(wxID_WXBTNCOPY, 'Copy', bmp, shortHelp='Copy',
                         longHelp='Copy the selection and put it on the Clipboard')
         EVT_TOOL(tb, wxID_WXBTNCOPY, self.on_copy)
         tb.EnableTool(wxID_WXBTNCOPY, 0)
         bmp = images.getPasteBitmap()
-        mask = wxMaskColour(bmp, wxBLUE)
+        mask = wx.Mask(bmp, wxBLUE)
         bmp.SetMask(mask)
         tb.AddLabelTool(wxID_WXBTNPASTE, 'Paste', bmp, shortHelp='Paste',
                         longHelp='Insert Clipboard contents')
@@ -441,14 +442,14 @@ class DocFactoryFrame(wxFrame):
         tb.EnableTool(wxID_WXBTNPASTE, 0)
         tb.AddSeparator()
         bmp = images.getUndoBitmap()
-        mask = wxMaskColour(bmp, wxWHITE)
+        mask = wx.Mask(bmp, wxWHITE)
         bmp.SetMask(mask)
         tb.AddLabelTool(wxID_WXBTNUNDO, 'Undo', bmp, shortHelp='Undo',
                         longHelp='Undo the last action')
         EVT_TOOL(tb, wxID_WXBTNUNDO, self.on_undo)
         tb.EnableTool(wxID_WXBTNUNDO, 0)
         bmp = images.getRedoBitmap()
-        mask = wxMaskColour(bmp, wxWHITE)
+        mask = wx.Mask(bmp, wxWHITE)
         bmp.SetMask(mask)
         tb.AddLabelTool(wxID_WXBTNREDO, 'Redo', bmp, shortHelp='Redo',
                         longHelp='Redo the previously undone action')
@@ -456,7 +457,7 @@ class DocFactoryFrame(wxFrame):
         tb.EnableTool(wxID_WXBTNREDO, 0)
         tb.AddSeparator()
         bmp = images.getLinkBitmap()
-        mask = wxMaskColour(bmp, wxBLUE)
+        mask = wx.Mask(bmp, wxBLUE)
         bmp.SetMask(mask)
         tb.AddLabelTool(wxID_WXBTNLINK, 'Hyperlink', bmp,
                         shortHelp='Insert hyperlink',
@@ -464,7 +465,7 @@ class DocFactoryFrame(wxFrame):
         EVT_TOOL(tb, wxID_WXBTNLINK, self.on_btn_hyperlink)
         tb.EnableTool(wxID_WXBTNLINK, 0)
         bmp = images.getImageBitmap()
-        mask = wxMaskColour(bmp, wxBLUE)
+        mask = wx.Mask(bmp, wxBLUE)
         bmp.SetMask(mask)
         tb.AddLabelTool(wxID_WXBTNIMAGE, 'Image', bmp,
                         shortHelp='Insert image',
@@ -473,7 +474,7 @@ class DocFactoryFrame(wxFrame):
         tb.EnableTool(wxID_WXBTNIMAGE, 0)
         tb.AddSeparator()
         bmp = images.getPublishBitmap()
-        mask = wxMaskColour(bmp, wxRED)
+        mask = wx.Mask(bmp, wxRED)
         bmp.SetMask(mask)
         tb.AddLabelTool(wxID_WXBTNPUBLISH, 'Publish', bmp, shortHelp='Publish file',
                         longHelp='Publish file')
@@ -481,26 +482,26 @@ class DocFactoryFrame(wxFrame):
         tb.EnableTool(wxID_WXBTNPUBLISH, 0)
         tb.AddSeparator()
         bmp = images.getToolBitmap()
-        mask = wxMaskColour(bmp, wxBLUE)
+        mask = wx.Mask(bmp, wxBLUE)
         bmp.SetMask(mask)
         tb.AddLabelTool(wxID_WXBTNTOOL, 'Toolbox', bmp, shortHelp='Open toolbox',
                         longHelp='Open toolbox')
         EVT_TOOL(tb, wxID_WXBTNTOOL, self.on_run_tool)
         tb.AddSeparator()
         bmp = images.getBoldBitmap()
-        mask = wxMaskColour(bmp, wxWHITE)
+        mask = wx.Mask(bmp, wxWHITE)
         bmp.SetMask(mask)
         tb.AddLabelTool(wxID_WXBTNBOLD, 'Bold', bmp, shortHelp='Bold', longHelp='Bold')
         EVT_TOOL(tb, wxID_WXBTNBOLD, self.on_format_word)
         tb.EnableTool(wxID_WXBTNBOLD, 0)
         bmp = images.getItalicBitmap()
-        mask = wxMaskColour(bmp, wxWHITE)
+        mask = wx.Mask(bmp, wxWHITE)
         bmp.SetMask(mask)
         tb.AddLabelTool(wxID_WXBTNITALIC, 'Italic', bmp, shortHelp='Italic', longHelp='Italic')
         EVT_TOOL(tb, wxID_WXBTNITALIC, self.on_format_word)
         tb.EnableTool(wxID_WXBTNITALIC, 0)
         bmp = images.getPreBitmap()
-        mask = wxMaskColour(bmp, wxWHITE)
+        mask = wx.Mask(bmp, wxWHITE)
         bmp.SetMask(mask)
         tb.AddLabelTool(wxID_WXBTNLITERAL, 'literal', bmp, shortHelp='Literal', longHelp='Literal')
         EVT_TOOL(tb, wxID_WXBTNLITERAL, self.on_format_word)
@@ -520,7 +521,7 @@ class DocFactoryFrame(wxFrame):
             EVT_COMBOBOX(tb, exitID, self.on_format_paragraph)
         tb.AddSeparator()
         bmp = images.getAboutBitmap()
-        mask = wxMaskColour(bmp, wxWHITE)
+        mask = wx.Mask(bmp, wxWHITE)
         bmp.SetMask(mask)
         tb.AddLabelTool(wxID_WXBTNABOUT, 'About', bmp, shortHelp='About',
                         longHelp='Display program information')

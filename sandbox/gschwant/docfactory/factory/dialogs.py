@@ -11,7 +11,7 @@ from   wxPython.lib.filebrowsebutton import DirBrowseButton
 from   docutils.utils                import relative_path
 from   urllib                        import quote
 from   docutilsadapter               import language_codes, publishers
-import images, os, string, ConfigParser, stylesheets, throbimages
+import images, os, string, ConfigParser, stylesheets, throbimages, wx
 
 NAME = 'DocFactory'
 
@@ -42,7 +42,7 @@ class aboutDlg(wxDialog):
         self.SetFont(wxFont(10, wxMODERN, wxNORMAL, wxNORMAL, false))
 
         bmp = images.getLogoBigBitmap()
-        mask = wxMaskColour(bmp, wxWHITE)
+        mask = wx.Mask(bmp, wxWHITE)
         bmp.SetMask(mask)
         wxStaticBitmap(self, -1, bmp, wxPoint(42, 8))
         wxStaticBitmap(self, -1, bmp, wxPoint(274, 8))
@@ -161,7 +161,7 @@ class projectSettingsDlg(wxDialog):
         dir = self.dirCtrl.GetValue()
         if not os.path.isdir(dir):
             dir = ''
-        dlg = wxDirDialog(self, 'Choose a directory for output files', dir)
+        dlg = wxDirDialog(self, 'Choose a directory for output files', dir, style=wx.DD_DEFAULT_STYLE|wx.DD_NEW_DIR_BUTTON)
         if dlg.ShowModal() == wxID_OK:
             directory = dlg.GetPath()
             self.project.directory = directory
@@ -348,7 +348,7 @@ class toolsDlg(wxDialog):
         btn_size = wxSize(75, 23)
         self.il = wxImageList(16, 16)
         bmp = images.getToolBitmap()
-        mask = wxMaskColour(bmp, wxBLUE)
+        mask = wx.Mask(bmp, wxBLUE)
         bmp.SetMask(mask)
         self.idx1 = self.il.Add(bmp)
         exitID = wxNewId()
@@ -368,7 +368,7 @@ class toolsDlg(wxDialog):
                                    size = btn_size)
         exitID = wxNewId()
         bmp = images.getPlusBitmap()
-        mask = wxMaskColour(bmp, wxBLUE)
+        mask = wx.Mask(bmp, wxBLUE)
         bmp.SetMask(mask)
         b = wxBitmapButton(self, exitID, bmp, wxDLG_PNT(self, 5, 10),
                            wxSize(23, 23))
@@ -376,7 +376,7 @@ class toolsDlg(wxDialog):
         EVT_BUTTON(self, exitID, self.on_plus_btn)
         exitID = wxNewId()
         bmp = images.getPenBitmap()
-        mask = wxMaskColour(bmp, wxBLUE)
+        mask = wx.Mask(bmp, wxBLUE)
         bmp.SetMask(mask)
         b = wxBitmapButton(self, exitID, bmp, wxDLG_PNT(self, 5, 26),
                            wxSize(23, 23))
@@ -384,7 +384,7 @@ class toolsDlg(wxDialog):
         EVT_BUTTON(self, exitID, self.on_edit_btn)
         exitID = wxNewId()
         bmp = images.getMinusBitmap()
-        mask = wxMaskColour(bmp, wxBLUE)
+        mask = wx.Mask(bmp, wxBLUE)
         bmp.SetMask(mask)
         b = wxBitmapButton(self, exitID, bmp, wxDLG_PNT(self, 5, 42),
                            wxSize(23, 23))
@@ -528,7 +528,7 @@ class configEditDlg(wxDialog):
                                    size = btn_size)
         exitID = wxNewId()
         bmp = images.getPlusBitmap()
-        mask = wxMaskColour(bmp, wxBLUE)
+        mask = wx.Mask(bmp, wxBLUE)
         bmp.SetMask(mask)
         b = wxBitmapButton(self, exitID, bmp, wxDLG_PNT(self, 5, 10),
                            wxSize(23, 23))
@@ -536,7 +536,7 @@ class configEditDlg(wxDialog):
         EVT_BUTTON(self, exitID, self.on_plus_btn)
         exitID = wxNewId()
         bmp = images.getPenBitmap()
-        mask = wxMaskColour(bmp, wxBLUE)
+        mask = wx.Mask(bmp, wxBLUE)
         bmp.SetMask(mask)
         b = wxBitmapButton(self, exitID, bmp, wxDLG_PNT(self, 5, 26),
                            wxSize(23, 23))
@@ -544,7 +544,7 @@ class configEditDlg(wxDialog):
         EVT_BUTTON(self, exitID, self.on_edit_btn)
         exitID = wxNewId()
         bmp = images.getMinusBitmap()
-        mask = wxMaskColour(bmp, wxBLUE)
+        mask = wx.Mask(bmp, wxBLUE)
         bmp.SetMask(mask)
         b = wxBitmapButton(self, exitID, bmp, wxDLG_PNT(self, 5, 42),
                            wxSize(23, 23))
