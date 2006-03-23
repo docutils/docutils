@@ -266,7 +266,8 @@ def pep_reference_role(role, rawtext, text, lineno, inliner,
         prb = inliner.problematic(rawtext, rawtext, msg)
         return [prb], [msg]
     # Base URL mainly used by inliner.pep_reference; so this is correct:
-    ref = inliner.document.settings.pep_base_url + inliner.pep_url % pepnum
+    ref = (inliner.document.settings.pep_base_url
+           + inliner.document.settings.pep_file_url_template % pepnum)
     set_classes(options)
     return [nodes.reference(rawtext, 'PEP ' + utils.unescape(text), refuri=ref,
                             **options)], []

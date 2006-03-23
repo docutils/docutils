@@ -743,6 +743,12 @@ _`pep_base_url`
     Default: "http://www.python.org/peps/".  Option:
     ``--pep-base-url``.
 
+_`pep_file_url_template`
+    Template for PEP file part of URL, interpolated with the PEP
+    number and appended to pep_base_url_.
+
+    Default: "pep-%04d".  Option: ``--pep-file-url``.
+
 _`raw_enabled`
     Enable or disable the "raw_" directive.  A "warning" system
     message (including the directive text) is inserted instead.  (See
