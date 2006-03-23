@@ -182,7 +182,7 @@ totest['references'] = [
 """\
 <document source="test data">
     <paragraph>
-        <reference refuri="http://www.python.org/peps/pep-0000.html">
+        <reference refuri="http://www.python.org/dev/peps/pep-0000.html">
             PEP 0
 """],
 ["""\

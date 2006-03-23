@@ -470,7 +470,7 @@
                         Title Reference
                     .  Here are
                     some explicit interpreted text roles: a PEP reference (
-                    <reference refuri="http://www.python.org/peps/pep-0287.html">
+                    <reference refuri="http://www.python.org/dev/peps/pep-0287.html">
                         PEP 287
                     ); an
                     RFC reference (
