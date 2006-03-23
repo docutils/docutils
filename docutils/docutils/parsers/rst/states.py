@@ -915,8 +915,6 @@ class Inliner:
         else:                   # not a valid scheme
             raise MarkupMismatch
 
-    pep_url = 'pep-%04d.html'
-
     def pep_reference(self, match, lineno):
         text = match.group(0)
         if text.startswith('pep-'):
@@ -925,7 +923,8 @@ class Inliner:
             pepnum = int(match.group('pepnum2'))
         else:
             raise MarkupMismatch
-        ref = self.document.settings.pep_base_url + self.pep_url % pepnum
+        ref = (self.document.settings.pep_base_url
+               + self.document.settings.pep_file_url_template % pepnum)
         unescaped = unescape(text, 0)
         return [nodes.reference(unescape(text, 1), unescaped, refuri=ref)]
 
