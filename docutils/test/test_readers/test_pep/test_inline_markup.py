@@ -30,10 +30,10 @@ and RFC 2822 (which obsoletes RFC822 and RFC-733).
 <document source="test data">
     <paragraph>
         See \n\
-        <reference refuri="http://www.python.org/peps/pep-0287.html">
+        <reference refuri="http://www.python.org/dev/peps/pep-0287.html">
             PEP 287
          (
-        <reference refuri="http://www.python.org/peps/pep-0287.html">
+        <reference refuri="http://www.python.org/dev/peps/pep-0287.html">
             pep-0287.txt
         ),
         and \n\
@@ -61,7 +61,7 @@ RFC
     <paragraph>
         References split across lines:
     <paragraph>
-        <reference refuri="http://www.python.org/peps/pep-0287.html">
+        <reference refuri="http://www.python.org/dev/peps/pep-0287.html">
             PEP
             287
     <paragraph>
@@ -72,18 +72,18 @@ RFC
 ["""\
 Test PEP-specific implicit references before a URL:
 
-PEP 287 (http://www.python.org/peps/pep-0287.html), RFC 2822.
+PEP 287 (http://www.python.org/dev/peps/pep-0287.html), RFC 2822.
 """,
 """\
 <document source="test data">
     <paragraph>
         Test PEP-specific implicit references before a URL:
     <paragraph>
-        <reference refuri="http://www.python.org/peps/pep-0287.html">
+        <reference refuri="http://www.python.org/dev/peps/pep-0287.html">
             PEP 287
          (
-        <reference refuri="http://www.python.org/peps/pep-0287.html">
-            http://www.python.org/peps/pep-0287.html
+        <reference refuri="http://www.python.org/dev/peps/pep-0287.html">
+            http://www.python.org/dev/peps/pep-0287.html
         ), \n\
         <reference refuri="http://www.faqs.org/rfcs/rfc2822.html">
             RFC 2822
