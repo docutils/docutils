@@ -20,13 +20,10 @@ import docutils.utils
 
 class RecordDependenciesTests(unittest.TestCase):
 
-    def setUp(self):
-        os.chdir(os.path.join(DocutilsTestSupport.testroot, 'data'))
-
-    def get_record(self, inputfile=None, **settings):
-
+    def get_record(self, **settings):
         recordfile = 'record.txt'
-        settings.setdefault('source_path', 'dependencies.txt')
+        settings.setdefault('source_path',
+                            os.path.join('data', 'dependencies.txt'))
         settings.setdefault('settings_overrides', {})
         settings['settings_overrides'] = settings['settings_overrides'].copy()
         settings['settings_overrides']['_disable_config'] = 1
@@ -40,18 +37,21 @@ class RecordDependenciesTests(unittest.TestCase):
 
     def test_dependencies(self):
         self.assertEqual(self.get_record(),
-                         ['include.txt',
-                          'raw.txt'])
+                         [os.path.join('data', 'include.txt'),
+                          os.path.join('data', 'raw.txt')])
         self.assertEqual(self.get_record(writer_name='latex'),
-                         ['include.txt',
-                          'raw.txt',
+                         [os.path.join('data', 'include.txt'),
+                          os.path.join('data', 'raw.txt'),
+                          # !!! should be os.path.join('data', 'some_image.png')
                           'some_image.png'])
 
     def test_csv_dependencies(self):
         try:
             import csv
-            self.assertEqual(self.get_record(source_path='csv_dep.txt'),
-                             ['csv_data.txt'])
+            self.assertEqual(
+                self.get_record(source_path=os.path.join('data',
+                                                         'csv_dep.txt')),
+                ['data/csv_data.txt'])
         except ImportError:
             pass
 
@@ -60,17 +60,17 @@ class RecordDependenciesTests(unittest.TestCase):
         s = {'settings_overrides': {}}
         so = s['settings_overrides']
         so['embed_stylesheet'] = 0
-        so['stylesheet_path'] = 'stylesheet.txt'
+        so['stylesheet_path'] = os.path.join('data', 'stylesheet.txt')
         so['stylesheet'] = None
         s['writer_name'] = 'html'
-        self.assert_('stylesheet.txt' not in
+        self.assert_(os.path.join('data', 'stylesheet.txt') not in
                      self.get_record(**s))
         so['embed_stylesheet'] = 1
-        self.assert_('stylesheet.txt' in
+        self.assert_(os.path.join('data', 'stylesheet.txt') in
                      self.get_record(**s))
         del so['embed_stylesheet']
         s['writer_name'] = 'latex'
-        self.assert_('stylesheet.txt' in
+        self.assert_(os.path.join('data', 'stylesheet.txt') in
                      self.get_record(**s))
 
 
