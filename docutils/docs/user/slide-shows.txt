@@ -672,11 +672,12 @@ Making a Custom Theme
    Start with ``pretty.css``; edit ``framing.css`` if you need to make
    layout changes.
 
-4. Run "``rst2s5.py --theme <new-theme> <doc>.txt <doc>.html``".
+4. Run "``rst2s5.py --theme-url ui/<new-theme> <doc>.txt <doc>.html``".
 
    .. class:: handout
 
-   Open your ``<doc>.html`` in a browser to test the new theme.
+   We use the ``--theme-url`` option to refer to the new theme.  Open
+   your ``<doc>.html`` in a browser to test the new theme.
 
 5. Rinse & repeat.
 
