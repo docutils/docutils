@@ -42,7 +42,7 @@ class RecordDependenciesTests(unittest.TestCase):
         self.assertEqual(self.get_record(writer_name='latex'),
                          [os.path.join('data', 'include.txt'),
                           os.path.join('data', 'raw.txt'),
-                          # !!! should be os.path.join('data', 'some_image.png')
+                          # this is a URL, not a path:
                           'some_image.png'])
 
     def test_csv_dependencies(self):
