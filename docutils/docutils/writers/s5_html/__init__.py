@@ -82,10 +82,6 @@ class Writer(html4css1.Writer):
 
 class S5HTMLTranslator(html4css1.HTMLTranslator):
 
-    doctype = (
-        '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"'
-        ' "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n')
-
     s5_stylesheet_template = """\
 <!-- configuration parameters -->
 <meta name="defaultView" content="slideshow" />
