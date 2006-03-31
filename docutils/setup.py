@@ -5,8 +5,15 @@
 import sys
 import os
 import glob
-from distutils.core import setup
-from distutils.command.build_py import build_py
+try:
+    from distutils.core import setup
+    from distutils.command.build_py import build_py
+except ImportError:
+    print 'Error: The "distutils" standard module, which is required for the '
+    print 'installation of Docutils, could not be found.  You may need to '
+    print 'install a package called "python-devel" (or similar) on your '
+    print 'system using your package manager.'
+    sys.exit(1)
 
 # From <http://groups.google.de/groups?as_umsgid=f70e3538.0404141327.6cea58ca@posting.google.com>.
 from distutils.command.install import INSTALL_SCHEMES
