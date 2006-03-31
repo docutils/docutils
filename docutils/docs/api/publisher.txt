@@ -97,9 +97,17 @@ the "whole" part.
 Parts Provided By All Writers
 -----------------------------
 
+_`encoding`
+    The output encoding setting.
+
+_`version`
+    The version of Docutils used.
+
 _`whole`
     ``parts['whole']`` contains the entire formatted document.
 
+
+.. _HTML writer:
 
 Parts Provided By the HTML Writer
 ---------------------------------
@@ -108,8 +116,45 @@ _`body`
     ``parts['body']`` is equivalent to parts['fragment_'].  It is
     *not* equivalent to parts['html_body_'].
 
+_`body_prefix`
+    ``parts['body_prefix']`` contains::
+
+        </head>
+        <body>
+        <div class="document" ...>
+
+    and, if applicable::
+
+        <div class="header">
+        ...
+        </div>
+
+_`body_pre_docinfo`
+    ``parts['body_pre_docinfo]`` contains (as applicable)::
+
+        <h1 class="title">...</h1>
+        <h2 class="subtitle" id="...">...</h2>
+
+_`body_suffix`
+    ``parts['body_suffix']`` contains::
+
+        </div>
+
+    (the end-tag for ``<div class="document">``), the footer division
+    if applicable::
+
+        <div class="footer">
+        ...
+        </div>
+
+    and::
+
+        </body>
+        </html>
+
 _`docinfo`
-    ``parts['docinfo']`` contains the document bibliographic data.
+    ``parts['docinfo']`` contains the document bibliographic data, the
+    docinfo field list rendered as a table.
 
 _`footer`
     ``parts['footer']`` contains the document footer content, meant to
@@ -120,6 +165,15 @@ _`fragment`
     ``parts['fragment']`` contains the document body (*not* the HTML
     ``<body>``).  In other words, it contains the entire document,
     less the document title, subtitle, docinfo, header, and footer.
+
+_`head`
+    ``parts['head']`` contains ``<meta ... />`` tags and the document
+    ``<title>...</title>``.
+
+_`head_prefix`
+    ``parts['head_prefix']`` contains the XML declaration, the DOCTYPE
+    declaration, the ``<html ...>`` start tag and the ``<head>`` start
+    tag.
 
 _`header`
     ``parts['header']`` contains the document header content, meant to
@@ -163,7 +217,8 @@ _`meta`
     ``parts['meta']`` contains all ``<meta ... />`` tags.
 
 _`stylesheet`
-    ``parts['stylesheet']`` contains the document stylesheet link.
+    ``parts['stylesheet']`` contains the embedded stylesheet or
+    stylesheet link.
 
 _`subtitle`
     ``parts['subtitle']`` contains the document subtitle text and any
@@ -174,3 +229,19 @@ _`title`
     ``parts['title']`` contains the document title text and any inline
     markup.  It does not include the enclosing ``<h1>`` & ``</h1>``
     tags.
+
+
+Parts Provided by the PEP/HTML Writer
+`````````````````````````````````````
+
+The PEP/HTML writer provides the same parts as the `HTML writer`_,
+plus the following:
+
+_`pepnum`
+    ``parts['pepnum']`` contains
+
+
+Parts Provided by the S5/HTML Writer
+````````````````````````````````````
+
+The S5/HTML writer provides the same parts as the `HTML writer`_.

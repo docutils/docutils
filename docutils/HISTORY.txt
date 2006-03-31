@@ -20,6 +20,17 @@ Changes Since 0.4
   - Unquoted targets beginning with an underscore (``.. __target:
     URI``) are no longer accepted.
 
+* docutils/writers/html4css1/__init__.py:
+
+  - Moved template functionality from the PEP/HTML writer here.
+  - Expanded the fragments available in the ``parts`` attribute.
+
+* docutils/writers/html4css1/template.txt: Added to project.
+
+* docutils/writers/pep_html/:
+
+  - Moved template functionality to the HTML writer.
+
 
 Release 0.4 (2006-01-09)
 ========================

@@ -19,6 +19,7 @@ __docformat__ = 'reStructuredText'
 import sys
 import os
 import os.path
+import codecs
 import time
 import re
 from types import ListType
@@ -41,10 +42,20 @@ class Writer(writers.Writer):
         os.path.join(os.getcwd(), 'dummy'),
         os.path.join(os.path.dirname(__file__), default_stylesheet))
 
+    default_template = 'template.txt'
+
+    default_template_path = utils.relative_path(
+        os.path.join(os.getcwd(), 'dummy'),
+        os.path.join(os.path.dirname(__file__), default_template))
+
     settings_spec = (
         'HTML-Specific Options',
         None,
-        (('Specify a stylesheet URL, used verbatim.  Overrides '
+        (('Specify the template file (UTF-8 encoded).  Default is "%s".'
+          % default_template_path,
+          ['--template'],
+          {'default': default_template_path, 'metavar': '<file>'}),
+        ('Specify a stylesheet URL, used verbatim.  Overrides '
           '--stylesheet-path.',
           ['--stylesheet'],
           {'metavar': '<URL>', 'overrides': 'stylesheet_path'}),
@@ -128,6 +139,13 @@ class Writer(writers.Writer):
     config_section = 'html4css1 writer'
     config_section_dependencies = ('writers',)
 
+    visitor_attributes = (
+        'head_prefix', 'head', 'stylesheet', 'body_prefix',
+        'body_pre_docinfo', 'docinfo', 'body', 'body_suffix',
+        'title', 'subtitle', 'header', 'footer', 'meta', 'fragment',
+        'html_prolog', 'html_head', 'html_title', 'html_subtitle',
+        'html_body')
+
     def __init__(self):
         writers.Writer.__init__(self)
         self.translator_class = HTMLTranslator
@@ -135,19 +153,31 @@ class Writer(writers.Writer):
     def translate(self):
         self.visitor = visitor = self.translator_class(self.document)
         self.document.walkabout(visitor)
-        self.output = visitor.astext()
-        for attr in ('head_prefix', 'stylesheet', 'head', 'body_prefix',
-                     'body_pre_docinfo', 'docinfo', 'body', 'fragment',
-                     'body_suffix'):
+        for attr in self.visitor_attributes:
             setattr(self, attr, getattr(visitor, attr))
+        self.output = self.apply_template()
+
+    def apply_template(self):
+        template_file = codecs.open(
+            self.document.settings.template, 'r', 'utf-8')
+        template = template_file.read()
+        template_file.close()
+        subs = self.interpolation_dict()
+        return template % subs
+
+    def interpolation_dict(self):
+        subs = {}
+        settings = self.document.settings
+        for attr in self.visitor_attributes:
+            subs[attr] = ''.join(getattr(self, attr)).rstrip('\n')
+        subs['encoding'] = settings.output_encoding
+        subs['version'] = docutils.__version__
+        return subs
 
     def assemble_parts(self):
         writers.Writer.assemble_parts(self)
-        for part in ('title', 'subtitle', 'docinfo', 'body', 'header',
-                     'footer', 'meta', 'stylesheet', 'fragment',
-                     'html_prolog', 'html_head', 'html_title', 'html_subtitle',
-                     'html_body'):
-            self.parts[part] = ''.join(getattr(self.visitor, part))
+        for part in self.visitor_attributes:
+            self.parts[part] = ''.join(getattr(self, part))
 
 
 class HTMLTranslator(nodes.NodeVisitor):
@@ -194,10 +224,9 @@ class HTMLTranslator(nodes.NodeVisitor):
     """
 
     xml_declaration = '<?xml version="1.0" encoding="%s" ?>\n'
-    doctype = ('<!DOCTYPE html'
-               ' PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"'
-               ' "http://www.w3.org/TR/xhtml1/DTD/'
-               'xhtml1-transitional.dtd">\n')
+    doctype = (
+        '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"'
+        ' "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n')
     head_prefix_template = ('<html xmlns="http://www.w3.org/1999/xhtml"'
                             ' xml:lang="%s" lang="%s">\n<head>\n')
     content_type = ('<meta http-equiv="Content-Type"'

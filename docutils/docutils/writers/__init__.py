@@ -96,6 +96,8 @@ class Writer(Component):
     def assemble_parts(self):
         """Assemble the `self.parts` dictionary.  Extend in subclasses."""
         self.parts['whole'] = self.output
+        self.parts['encoding'] = self.document.settings.output_encoding
+        self.parts['version'] = docutils.__version__
 
 
 class UnfilteredWriter(Writer):

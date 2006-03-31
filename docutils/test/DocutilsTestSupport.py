@@ -769,7 +769,6 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
         # interpolate standard variables:
         expected = self.expected % {'version': docutils.__version__}
         self.compare_output(self.input, output, expected)
-
     
     standard_content_type_template = ('<meta http-equiv="Content-Type"'
                                       ' content="text/html; charset=%s" />\n')
@@ -787,10 +786,17 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
 
     def format_output(self, parts):
         """Minimize & standardize the output."""
-        # remove redundant parts:
+        # remove redundant parts & uninteresting parts:
         del parts['whole']
         assert parts['body'] == parts['fragment']
         del parts['body']
+        del parts['body_pre_docinfo']
+        del parts['body_prefix']
+        del parts['body_suffix']
+        del parts['head']
+        del parts['head_prefix']
+        del parts['encoding']
+        del parts['version']
         # remove standard portions:
         parts['meta'] = parts['meta'].replace(self.standard_meta_value, '')
         parts['html_head'] = parts['html_head'].replace(

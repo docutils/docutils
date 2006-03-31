@@ -982,6 +982,13 @@ stylesheet_path
 
     __ `stylesheet_path [latex2e writer]`_
 
+_`template`
+    Path to template file, which must be encoded in UTF-8 [#pwd]_.
+
+    Default: "template.txt" in the docutils/writers/html4css1/
+    directory (installed automatically; for the exact machine-specific
+    path, use the ``--help`` option).  Options: ``--template``.
+
 .. _xml_declaration [html4css1 writer]:
 
 xml_declaration
@@ -1005,10 +1012,17 @@ all settings defined in the `[html4css1 writer]`_ section.  The
 "[html4css1 writer]" section of configuration files is processed
 before the "[pep_html writer]" section.
 
-The PEP/HTML Writer's default for the ``stylesheet_path`` setting
-differs from that of the standard HTML Writer:
-``docutils/writers/pep_html/pep.css`` in the installation directory is
-used.  For the exact machine-specific path, use the ``--help`` option.
+The PEP/HTML Writer's default for the following settings differ from
+those of the standard HTML Writer:
+
+* ``stylesheet_path``: The default is
+  ``docutils/writers/pep_html/pep.css`` in the installation directory.
+  For the exact machine-specific path, use the ``--help`` option.
+
+* ``template``: The default is
+  ``docutils/writers/pep_html/template.txt`` in the installation
+  directory.  For the exact machine-specific path, use the ``--help``
+  option.
 
 _`no_random`
     Do not use a random banner image.  Mainly used to get predictable
@@ -1021,12 +1035,6 @@ _`pep_home`
     Home URL prefix for PEPs.
 
     Default: current directory (".").  Options: ``--pep-home``.
-
-_`template`
-    Path to PEP template file [#pwd]_.
-
-    Default: "pep-html-template" (in current directory).  Options:
-    ``--template``.
 
 _`python_home`
     Python's home URL.
@@ -1042,9 +1050,15 @@ all settings defined in the `[html4css1 writer]`_ section.  The
 "[html4css1 writer]" section of configuration files is processed
 before the "[s5_html writer]" section.
 
-The S5/HTML Writer's default for the ``compact_lists`` setting differs
-from that of the standard HTML Writer: the default here is to disable
-compact lists.
+The S5/HTML Writer's default for the following settings differ
+from those of the standard HTML Writer
+
+* ``compact_lists``: The default here is to disable compact lists.
+
+* ``template``: The default is
+  ``docutils/writers/s5_html/template.txt`` in the installation
+  directory.  For the exact machine-specific path, use the ``--help``
+  option.
 
 _`current_slide`
 
