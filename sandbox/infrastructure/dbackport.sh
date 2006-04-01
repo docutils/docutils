@@ -34,8 +34,8 @@ while test -n "$1"; do
     # tests, so it comes first.
     nice python2.4 -u test/alltests.py
     nice python2.1 -u test/alltests.py
-    nice python2.2 -u test/alltests.py
-    nice python2.3 -u test/alltests.py
+    #nice python2.2 -u test/alltests.py
+    #nice python2.3 -u test/alltests.py
     echo
     echo Press enter to commit or Ctrl+C to abort.
     read
