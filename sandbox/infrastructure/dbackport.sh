@@ -30,12 +30,15 @@ while test -n "$1"; do
     svn up
     svn merge -r"$[$r-1]:$r" ../../trunk/docutils .
     svn diff
-    # Python 2.4 is faster and outputs unified diffs for the functional
-    # tests, so it comes first.
-    nice python2.4 -u test/alltests.py
-    nice python2.1 -u test/alltests.py
-    #nice python2.2 -u test/alltests.py
-    #nice python2.3 -u test/alltests.py
+    if test "`svn st docutils test *.py -q`"; then
+        # Some code has changed.
+        # Python 2.4 is faster and outputs unified diffs for the functional
+        # tests, so it comes first.
+        nice python2.4 -u test/alltests.py
+        nice python2.1 -u test/alltests.py
+        nice python2.2 -u test/alltests.py
+        nice python2.3 -u test/alltests.py
+    fi
     echo
     echo Press enter to commit or Ctrl+C to abort.
     read
