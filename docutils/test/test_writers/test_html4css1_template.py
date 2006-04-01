@@ -7,7 +7,7 @@
 # Copyright: This module has been placed in the public domain.
 
 """
-Test for HTML writer.
+Tests for the HTML writer.
 """
 
 import os
