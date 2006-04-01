@@ -157,7 +157,7 @@ class CustomTestCase(StandardTestCase):
         self.input = input
         self.expected = expected
         self.run_in_debugger = run_in_debugger
-        self.suite_settings = suite_settings or {}
+        self.suite_settings = suite_settings.copy() or {}
         
         # Ring your mother.
         unittest.TestCase.__init__(self, method_name)
