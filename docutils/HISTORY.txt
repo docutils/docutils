@@ -31,6 +31,12 @@ Changes Since 0.4
 
   - Moved template functionality to the HTML writer.
 
+* docutils/writers/s5_html/__init__.py:
+
+  - Added ``view_mode`` & ``hidden_controls`` settings
+    (``--view-mode`` & ``--hidden-controls/--visible-controls``
+    options).
+
 
 Release 0.4 (2006-01-09)
 ========================

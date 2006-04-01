@@ -115,6 +115,7 @@ donations, tasty treats, and related projects:
 * Brett g Porter
 * David Priest
 * Jens Quade
+* Stefan Rank
 * Edward K. Ream
 * Andy Robinson
 * Tavis Rudd

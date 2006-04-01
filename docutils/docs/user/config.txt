@@ -450,7 +450,7 @@ _`auto_id_prefix`
 
     Default: "id".  Options: ``--auto-id-prefix`` (hidden, intended
     mainly for programmatic use).
-    
+
 _`datestamp`
     Include a time/datestamp in the document footer.  Contains a
     format string for Python's ``time.strftime``.  See the `time
@@ -563,7 +563,7 @@ _`id_prefix`
 
     Default: "" (empty).  Options: ``--id-prefix`` (hidden, intended
     mainly for programmatic use).
-    
+
 _`input_encoding`
     The text encoding for input.
 
@@ -738,7 +738,7 @@ _`pep_references`
     ``--pep-references``.
 
 _`pep_base_url`
-    Base URL for PEP references.  
+    Base URL for PEP references.
 
     Default: "http://www.python.org/peps/".  Option:
     ``--pep-base-url``.
@@ -764,7 +764,7 @@ _`rfc_references`
     ``--rfc-references``.
 
 _`rfc_base_url`
-    Base URL for RFC references.  
+    Base URL for RFC references.
 
     Default: "http://www.faqs.org/rfcs/".  Option: ``--rfc-base-url``.
 
@@ -816,7 +816,7 @@ _`sectsubtitle_xform`
 [pep reader]
 ````````````
 
-The `pep_references`_ and `rfc_references`_ options
+The `pep_references`_ and `rfc_references`_ settings
 (`[restructuredtext parser]`_) are set on by default.
 
 
@@ -1012,18 +1012,6 @@ all settings defined in the `[html4css1 writer]`_ section.  The
 "[html4css1 writer]" section of configuration files is processed
 before the "[pep_html writer]" section.
 
-The PEP/HTML Writer's default for the following settings differ from
-those of the standard HTML Writer:
-
-* ``stylesheet_path``: The default is
-  ``docutils/writers/pep_html/pep.css`` in the installation directory.
-  For the exact machine-specific path, use the ``--help`` option.
-
-* ``template``: The default is
-  ``docutils/writers/pep_html/template.txt`` in the installation
-  directory.  For the exact machine-specific path, use the ``--help``
-  option.
-
 _`no_random`
     Do not use a random banner image.  Mainly used to get predictable
     results when testing.
@@ -1041,6 +1029,18 @@ _`python_home`
 
     Default: parent directory ("..").  Options: ``--python-home``.
 
+The PEP/HTML Writer's default for the following settings differ from
+those of the standard HTML Writer:
+
+* ``stylesheet_path``: The default is
+  ``docutils/writers/pep_html/pep.css`` in the installation directory.
+  For the exact machine-specific path, use the ``--help`` option.
+
+* ``template``: The default is
+  ``docutils/writers/pep_html/template.txt`` in the installation
+  directory.  For the exact machine-specific path, use the ``--help``
+  option.
+
 
 [s5_html writer]
 .................
@@ -1050,18 +1050,14 @@ all settings defined in the `[html4css1 writer]`_ section.  The
 "[html4css1 writer]" section of configuration files is processed
 before the "[s5_html writer]" section.
 
-The S5/HTML Writer's default for the following settings differ
-from those of the standard HTML Writer
+_`hidden_controls`
+    Auto-hide the presentation controls in slideshow mode, or or keep
+    them visible at all times.
 
-* ``compact_lists``: The default here is to disable compact lists.
-
-* ``template``: The default is
-  ``docutils/writers/s5_html/template.txt`` in the installation
-  directory.  For the exact machine-specific path, use the ``--help``
-  option.
+    Default: auto-hide (1).  Options: ``--hidden-controls``,
+    ``--visible-controls``.
 
 _`current_slide`
-
     Enable or disable the current slide indicator ("1/15").
 
     Default: disabled (None).  Options: ``--current-slide``,
@@ -1090,6 +1086,21 @@ _`theme_url`
     the "theme_" setting [#override]_.
 
     Default: None.  Option: ``--theme-url``.
+
+_`view_mode`
+    The initial view mode, either "slideshow" or "outline".
+
+    Default: "slidewhow".  Option: ``--view-mode``.
+
+The S5/HTML Writer's default for the following settings differ
+from those of the standard HTML Writer:
+
+* ``compact_lists``: The default here is to disable compact lists.
+
+* ``template``: The default is
+  ``docutils/writers/s5_html/template.txt`` in the installation
+  directory.  For the exact machine-specific path, use the ``--help``
+  option.
 
 
 [latex2e writer]
@@ -1197,7 +1208,7 @@ _`section_prefix_for_enumerators`
     Enable or disable section ("." subsection ...) prefixes for
     compound enumerators.  This has no effect unless
     `compound_enumerators`_ are enabled.
-    
+
     Default: disabled (None).  Options:
     ``--section-prefix-for-enumerators``,
     ``--no-section-prefix-for-enumerators``.
@@ -1330,7 +1341,7 @@ _`_source`
      (e.g. in PDF or DVI format) depends on.  Thus, images and
      stylesheets are both unconditionally recorded as dependencies
      when using the LaTeX writer.
-   
+
 .. [#footnote_space] The footnote space is trimmed if the reference
    style is "superscript", and it is left if the reference style is
    "brackets".
