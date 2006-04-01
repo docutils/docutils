@@ -62,6 +62,18 @@ class Writer(html4css1.Writer):
           'overwrite any.  This is the default.',
           ['--keep-theme-files'],
           {'dest': 'overwrite_theme_files', 'action': 'store_false'}),
+         ('Set the initial view mode to "slideshow" [default] or "outline".',
+          ['--view-mode'],
+          {'choices': ['slideshow', 'outline'], 'default': 'slideshow',
+           'metavar': '<mode>'}),
+         ('Normally hide the presentation controls in slideshow mode. '
+          'This is the default.',
+          ['--hidden-controls'],
+          {'action': 'store_true', 'default': True}),
+         ('Always show the presentation controls in slideshow mode.  '
+          'The default is to hide the controls.',
+          ['--visible-controls'],
+          {'dest': 'hidden_controls', 'action': 'store_false'}),
          ('Enable the current slide indicator ("1 / 15").  '
           'The default is to disable it.',
           ['--current-slide'],
@@ -84,8 +96,8 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
 
     s5_stylesheet_template = """\
 <!-- configuration parameters -->
-<meta name="defaultView" content="slideshow" />
-<meta name="controlVis" content="hidden" />
+<meta name="defaultView" content="%(view_mode)s" />
+<meta name="controlVis" content="%(control_visibility)s" />
 <!-- style sheet links -->
 <script src="%(path)s/slides.js" type="text/javascript"></script>
 <link rel="stylesheet" href="%(path)s/slides.css"
@@ -144,8 +156,13 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
         #insert S5-specific stylesheet and script stuff:
         self.theme_file_path = None
         self.setup_theme()
+        view_mode = self.document.settings.view_mode
+        control_visibility = ('visible', 'hidden')[self.document.settings
+                                                   .hidden_controls]
         self.stylesheet.append(self.s5_stylesheet_template
-                               % {'path': self.theme_file_path})
+                               % {'path': self.theme_file_path,
+                                  'view_mode': view_mode,
+                                  'control_visibility': control_visibility})
         if not self.document.settings.current_slide:
             self.stylesheet.append(self.disable_current_slide)
         self.add_meta('<meta name="version" content="S5 1.1" />\n')
