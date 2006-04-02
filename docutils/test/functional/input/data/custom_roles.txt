@@ -1,6 +1,16 @@
 Custom Roles
 ------------
 
-.. role:: custom(literal)
+* A role based on an existing role.
 
-:custom:`one` :custom:`two` :custom:`three`
+  .. role:: custom(literal)
+
+  :custom:`one` :custom:`two` :custom:`three`
+
+* A role with class attribute.
+
+  .. role:: customclass
+     :class: special
+
+  :customclass:`interpreted text`
+   
