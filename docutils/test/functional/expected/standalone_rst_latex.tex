@@ -222,6 +222,8 @@ reStructuredText construct.
 
 \item {} \href{\#various-non-ascii-characters}{3.2~~~Various non-ASCII characters}
 
+\item {} \href{\#custom-roles}{3.3~~~Custom Roles}
+
 \end{list}
 
 \item {} \href{\#error-handling}{4~~~Error Handling}
@@ -1519,6 +1521,30 @@ The following line should not be wrapped, because it uses
 non-breakable spaces:
 
 X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X
+
+
+%___________________________________________________________________________
+
+\hypertarget{custom-roles}{}
+\pdfbookmark[1]{3.3~~~Custom Roles}{custom-roles}
+\subsection*{3.3~~~Custom Roles}
+\begin{itemize}
+\item {} 
+A role based on an existing role.
+
+\texttt{one} \texttt{two} \texttt{three}
+
+\item {} 
+A new role.
+
+\docutilsrolecustomnew{one two three}
+
+\item {} 
+A role with class attribute.
+
+\docutilsrolespecial{interpreted text}
+
+\end{itemize}
 
 
 %___________________________________________________________________________
