@@ -7,6 +7,12 @@ Custom Roles
 
   :custom:`one` :custom:`two` :custom:`three`
 
+* A new role.
+
+  .. role:: customnew
+
+  :customnew:`one two three`
+
 * A role with class attribute.
 
   .. role:: customclass
