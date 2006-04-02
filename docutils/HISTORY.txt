@@ -15,6 +15,10 @@
 Changes Since 0.4
 =================
 
+* docutils/nodes.py:
+
+  - Added ``document.__getstate__`` method, for pickling.
+
 * docutils/parsers/rst/states.py:
 
   - Unquoted targets beginning with an underscore (``.. __target:

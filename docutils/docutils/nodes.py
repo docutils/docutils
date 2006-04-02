@@ -887,6 +887,15 @@ class document(Root, Structural, Element):
 
         self.document = self
 
+    def __getstate__(self):
+        """
+        Return dict with unpicklable references removed.
+        """
+        state = self.__dict__.copy()
+        state['reporter'] = None
+        state['transformer'] = None
+        return state
+
     def asdom(self, dom=None):
         """Return a DOM representation of this document."""
         if dom is None:
