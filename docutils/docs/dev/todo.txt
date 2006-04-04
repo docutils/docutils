@@ -1804,13 +1804,17 @@ PEP/HTML Writer
 S5/HTML Writer
 ==============
 
-* Add a way to get a title-less slide.
+* Add a way to begin an untitled slide.
 
-* Add a way to repeat a section title?  You need that if you have a
+* Add a way to begin a new slide, continuation, using the same title
+  as the previous slide?  (Unnecessary?)  You need that if you have a
   lot of items in one section which don't fit on one slide.
 
   Maybe either this item or the previous one can be realized using
   transitions.
+
+* Have a timeout on incremental items, so the colour goes away after 1
+  second.
 
 * Add an empty, black last slide (optionally).  Currently the handling
   of the last slide is not very nice, it re-cycles through the
@@ -1819,85 +1823,14 @@ S5/HTML Writer
 
 * Add a command-line option to disable advance-on-click.
 
+* Add a speaker's master document, which would contain a small version
+  of the slide text with speaker's notes interspersed.  The master
+  document could use ``target="whatever"`` to direct links to a
+  separate window on a second monitor (e.g., a projector).
 
-LaTeX writer
-============
-
-* Add an ``--embed-stylesheet`` (and ``--link-stylesheet``) option.
-
-
-HTML SlideShow Writer
-=====================
-
-Add a Writer for presentations, derivative of the HTML Writer.  Given
-an input document containing one section per slide, the output would
-consist of a master document for the speaker, and a slide file (or set
-of filess, one (or more) for each slide).  Each slide would contain
-the slide text (large, stylesheet-controlled) and images, plus "next"
-and "previous" links in consistent places.  The speaker's master
-document would contain a small version of the slide text with
-speaker's notes interspersed.  The master document could use
-``target="whatever"`` to direct links to a separate window on a second
-monitor (e.g., a projector).
-
-Ideas:
-
-* Base the output on |S5|_.  I discovered |S5| a few weeks before it
-  appeared on Slashdot, after writing most of this section.  It turns
-  out that |S5| does most of what I wanted.
-
-  Chris Liechti has `integrated S5 with the HTML writer
-  <http://homepage.hispeed.ch/py430/python/index.html#rst2s5>`__.
-
-  .. |S5| replace:: S\ :sup:`5`
-  .. _S5: http://www.meyerweb.com/eric/tools/s5/
-
-Below, "[S5]" indicates that |S5| already implements the feature or
-may implement all or part of the feature.  "[S5 1.1]" indicates that
-|S5| version 1.1 implements the feature (a preview of the 1.1 beta is
-available in the `S5 testbed`_).
-
-.. _S5 testbed: http://meyerweb.com/eric/tools/s5/testbed/
-
-Features & issues:
-
-* [S5 1.1] Incremental slides, where each slide adds to the one before
-  (ticking off items in a list, delaying display of later items).  The
-  speaker's master document would list each transition in the TOC and
-  provide links in the content.
-
-  * Use transitions to separate stages.  Problem with transitions is
-    that they can't be used everywhere -- not, for example, within a
-    list (see the example below).
-
-  * Use a special directive to separate stages.  Possible names:
-    pause, delay, break, cut, continue, suspend, hold, stay, stop.
-    Should the directive be available in all contexts (and ineffectual
-    in all but SlideShow context), or added at runtime by the
-    SlideShow Writer?  Probably such a "pause" directive should only
-    be available for slide shows; slide shows are too much of a
-    special case to justify adding a directive (and node?) to the
-    core.
-
-    The directive could accept text content, which would be rendered
-    while paused but would disappear when the slide is continued (the
-    text could also be a link to the next slide).  In the speaker's
-    master document, the text "paused:" could appear, prefixed to the
-    directive text.
-
-  * Use a special directive or class to declare incremental content.
-    This works best with the S5 ideas.  For example::
-
-        Slide Title
-        ===========
-
-        .. incremental::
-
-           * item one
-           * item two
-           * item three
-
-    Add an option to make all bullet lists implicitly incremental?
+  .. Note:: This item and the following items are partially
+     accomplished by the S5 1.2 code (currently in alpha), which has
+     not yet been integrated into Docutils.
 
 * Speaker's notes -- how to intersperse?  Could use reST comments
   (".."), but make them visible in the speaker's master document.  If
@@ -1926,127 +1859,11 @@ Features & issues:
     the beginning of the next/current parent section?  First/Last
     also?  Tape-player-style buttons like ``|<<  <<  <  >  >>  >>|``?
 
-* [S5]  Need to support templating of some kind, for uniform slide
-  layout.  S5 handles this via CSS.
 
-  Build in support for limited features?  E.g., top/bottom or
-  left/right banners, images on each page, background color and/or
-  image, etc.
+LaTeX writer
+============
 
-* [S5?]  One layout for all slides, or allow some variation?
-
-      While S5 seems to support only one style per HTML file, it's
-      pretty easy to split a presentation in different files and
-      insert a hyperlink to the last slide of the first part and load
-      the second part by a click on it.
-
-      -- Chris Liechti
-
-* For nested sections, do we show the section's ancestry on each
-  slide?  Optional?  No -- leave the implementation to someone who
-  wants it.
-
-* [S5]  Stylesheets for slides:
-
-  - Tweaked for different resolutions, 1024x768 etc.
-  - Some layout elements have fixed positions.
-  - Text must be quite large.
-  - Allow 10 lines of text per slide?  15?
-  - Title styles vary by level, but not so much?
-
-* [not required with S5.]  Need a transform to number slides for
-  output filenames?, and for hyperlinks?
-
-* Directive to begin a new, untitled (blank) slide?
-
-* Directive to begin a new slide, continuation, using the same title
-  as the previous slide?  (Unnecessary?)
-
-* Have a timeout on incremental items, so the colour goes away after 1
-  second.
-
-Here's an example that I was hoping to show at PyCon DC 2005::
-
-    ========================
-     The Docutils SlideShow
-    ========================
-
-    Welcome To The Docutils SlideShow!
-    ==================================
-
-    .. pause::
-
-    David Goodger
-
-    goodger@python.org
-
-    http://python.net/~goodger
-
-    .. (introduce yourself)
-
-       Hi, I'm David Goodger from Montreal, Canada.
-
-       I've been working on Docutils since 2000.
-       Time flies!
-
-    .. pause::
-
-    Docutils
-
-    http://docutils.sourceforge.net
-
-    .. I also volunteer as a Python Enhancement Proposal (or PEP)
-       editor.
-
-    .. SlideShow is a new feature of Docutils.  This presentation was
-       written using the Docutils SlideShow system.  The slides you
-       are seeing are HTML, rendered by a standard Mozilla Firefox
-       browser.
-
-
-    The Docutils SlideShow System
-    =============================
-
-    .. The Docutils SlideShow System provides
-
-    Easy and open presentations.
-
-
-    Features
-    ========
-
-    * reStructuredText-based input files.
-
-      .. reStructuredText is a what-you-see-is-what-you-get
-         plaintext format.  Easy to read & write, non-proprietary,
-         editable in your favourite text editor.
-
-      .. Parsers for other markup languages can be added to Docutils.
-         In the future, I hope some are.
-
-      .. pause:: ...
-
-    * Stylesheet-driven HTML output.
-
-      .. The format of all elements of the output slides are
-         controlled by CSS (cascading stylesheets).
-
-      .. pause:: ...
-
-    * Works with any modern browser.
-
-      .. that supports CSS, frames, and JavaScript.
-         Tested with Mozilla Firefox.
-
-      .. pause:: ...
-
-    * Works on any OS.
-
-
-    Etc.
-    ====
-
-    That's as far as I got, but you get the idea...
+* Add an ``--embed-stylesheet`` (and ``--link-stylesheet``) option.
 
 
 Front-End Tools
