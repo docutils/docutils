@@ -90,10 +90,10 @@ working copy, type ::
         docutils
 
 If you previously had an anonymous working copy and gained developer
-access, you can switch the URL associated with your working copy by
-typing ::
+access, you can switch the URL associated with your working copy with
+this command (executed in the root of your working copy) ::
 
-    svn switch --relocate svn://svn.berlios.de/docutils/trunk/docutils \
+    svn switch --relocate svn://svn.berlios.de/docutils \
         svn+ssh://<user>@svn.berlios.de/svnroot/repos/docutils
 
 (Again, ``<user>`` is your BerliOS user account name.)
