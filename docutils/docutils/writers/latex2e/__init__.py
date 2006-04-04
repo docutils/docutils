@@ -2002,16 +2002,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
             raise nodes.SkipNode
 
     def visit_inline(self, node): # titlereference
-        if node.get('class'):
-            cls = node['class']
-        elif node.get('classes'):
-            cls = node['classes'][0]
-        else:
-            cls = 'Unknown'
-        self.body.append( '\\docutilsrole%s{' % cls)
+        classes = node.get('classes', ['Unknown', ])
+        for cls in classes:
+            self.body.append( '\\docutilsrole%s{' % cls)
+        self.context.append('}'*len(classes))
 
     def depart_inline(self, node):
-        self.body.append( '}' )
+        self.body.append(self.context.pop())
 
     def depart_topic(self, node):
         self.topic_classes = []
