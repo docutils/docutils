@@ -39,6 +39,15 @@ handles everything else.  There are five convenience functions in the
 
   There are usage examples in the `docutils/examples.py`_ module.
 
+:_`publish_doctree`: for programmatic use with string input; returns a
+  Docutils document tree data structure (doctree).  The doctree can be
+  modified, pickled & unpickled, etc., and then reprocessed with
+  `publish_from_doctree`_.
+
+:_`publish_from_doctree`: for programmatic use to render from an
+  existing document tree data structure (doctree); returns a pair of
+  encoded string output and document parts.
+
 :_`publish_programmatically`: for custom programmatic use.  This
   function implements common code and is used by ``publish_file``,
   ``publish_string``, and ``publish_parts``.  It returns a 2-tuple:
