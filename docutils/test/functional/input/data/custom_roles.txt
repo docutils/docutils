@@ -20,3 +20,10 @@ Custom Roles
 
   :customclass:`interpreted text`
    
+* A role with class attribute.
+
+  .. role:: customx
+     :class: very special 
+
+  :customx:`interpreted text`
+   
