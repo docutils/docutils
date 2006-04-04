@@ -126,7 +126,7 @@ Generic Admonition
 This is a generic, titled admonition.  The title may be anything the
 author desires.
 
-The author-supplied title is also used as a "class" attribute value
+The author-supplied title is also used as a "classes" attribute value
 after being converted into a valid identifier form (down-cased;
 non-alphanumeric characters converted to single hyphens; "admonition-"
 prefixed).  For example, this admonition::
@@ -138,7 +138,7 @@ prefixed).  For example, this admonition::
 becomes the following document tree (pseudo-XML)::
 
     <document source="test data">
-        <admonition class="admonition-and-by-the-way">
+        <admonition classes="admonition-and-by-the-way">
             <title>
                 And, by the way...
             <paragraph>
@@ -147,7 +147,7 @@ becomes the following document tree (pseudo-XML)::
 The following option is recognized:
 
 ``class`` : text
-    Override the computed "class" attribute value.  See the class_
+    Override the computed "classes" attribute value.  See the class_
     directive below.
 
 
@@ -243,7 +243,7 @@ The following options are recognized:
     reference name with underscore suffix (e.g. ``name_``).
 
 ``class`` : text
-    Set a "class" attribute value on the image element.  See the
+    Set a "classes" attribute value on the image element.  See the
     class_ directive below.
 
 
@@ -317,7 +317,7 @@ options are recognized:
         +---------------------------+
 
 ``figclass`` : text
-    Set a "class" attribute value on the figure element.  See the
+    Set a "classes" attribute value on the figure element.  See the
     class_ directive below.
 
 ``align`` : "left", "center", or "right"
@@ -362,7 +362,7 @@ interpreted as body elements.  For example::
 The following option is recognized:
 
 ``class`` : text
-    Set a "class" attribute value on the topic element.  See the
+    Set a "classes" attribute value on the topic element.  See the
     class_ directive below.
 
 
@@ -403,7 +403,7 @@ The following options are recognized:
     The sidebar's subtitle.
 
 ``class`` : text
-    Set a "class" attribute value on the sidebar element.  See the
+    Set a "classes" attribute value on the sidebar element.  See the
     class_ directive below.
 
 
@@ -447,7 +447,7 @@ example, here's a classic::
 The following option is recognized:
 
 ``class`` : text
-    Set a "class" attribute value on the line_block element.  See the
+    Set a "classes" attribute value on the line_block element.  See the
     class_ directive below.
 
 
@@ -488,7 +488,7 @@ For example, all the element names in this content model are links::
 The following option is recognized:
 
 ``class`` : text
-    Set a "class" attribute value on the literal_block element.  See
+    Set a "classes" attribute value on the literal_block element.  See
     the class_ directive below.
 
 
@@ -516,7 +516,7 @@ the document's structure.
 The following option is recognized:
 
 ``class`` : text
-    Set a "class" attribute value on the rubric element.  See the
+    Set a "classes" attribute value on the rubric element.  See the
     class_ directive below.
 
 
@@ -544,7 +544,7 @@ For example, this input::
 
 becomes this document tree fragment::
 
-    <block_quote class="epigraph">
+    <block_quote classes="epigraph">
         <paragraph>
             No matter where you go, there you are.
         <attribution>
@@ -638,7 +638,7 @@ unity:
 The following option is recognized:
 
 ``class`` : text
-    Set a "class" attribute value on the compound element.  See the
+    Set a "classes" attribute value on the compound element.  See the
     class_ directive below.
 
 
@@ -655,8 +655,8 @@ Container
 
 The "container" directive surrounds its contents (arbitrary body
 elements) with a generic block-level "container" element.  Combined
-with the optional "class_" attribute argument(s), this is an extension
-mechanism for users & applications.  For example::
+with the optional "classes_" attribute argument(s), this is an
+extension mechanism for users & applications.  For example::
 
     .. container:: custom
 
@@ -710,7 +710,7 @@ title with a table::
 The following option is recognized:
 
 ``class`` : text
-    Set a "class" attribute value on the table element.  See the
+    Set a "classes" attribute value on the table element.  See the
     class_ directive below.
 
 
@@ -775,7 +775,7 @@ Working limitations:
 The following options are recognized:
 
 ``class`` : text
-    Set a "class" attribute value on the table element.  See the
+    Set a "classes" attribute value on the table element.  See the
     class_ directive below.
 
 ``widths`` : integer [, integer...]
@@ -873,7 +873,7 @@ Example::
 The following options are recognized:
 
 ``class`` : text
-    Set a "class" attribute value on the table element.  See the
+    Set a "classes" attribute value on the table element.  See the
     class_ directive below.
 
 ``widths`` : integer [integer...]
@@ -951,7 +951,7 @@ The following options are recognized:
     entries, the table of contents itself, or generate no backlinks.
 
 ``class`` : text
-    Set a "class" attribute value on the topic element.  See the
+    Set a "classes" attribute value on the topic element.  See the
     class_ directive below.
 
 
@@ -1077,7 +1077,7 @@ visible URL as content.
 The following option is recognized:
 
 ``class`` : text
-    Set a "class" attribute value on all footnote_reference elements.
+    Set a "classes" attribute value on all footnote_reference elements.
     See the class_ directive below.
 
 
@@ -1455,6 +1455,8 @@ The following options are recognized:
     Defaults to the document's encoding (if specified).
 
 
+.. _classes:
+
 Class
 =====
 
@@ -1466,15 +1468,15 @@ Class
 :Directive Content: Optional.  If present, it is interpreted as body
                     elements.
 
-The "class" directive sets the "class" attribute value on its content
+The "class" directive sets the "classes" attribute value on its content
 or on the first immediately following non-comment element [#]_.  For
-details of the "class" attribute, see `its entry`__ in `The Docutils
+details of the "classes" attribute, see `its entry`__ in `The Docutils
 Document Tree`_.  The directive argument consists of one or more
 space-separated class names, which are converted to lowercase and all
 non-alphanumeric characters are converted to hyphens.  (For the
 rationale, see below.)
 
-__ ../doctree.html#class
+__ ../doctree.html#classes
 
 Examples::
 
@@ -1497,36 +1499,38 @@ Examples::
 
 The text above is parsed and transformed into this doctree fragment::
 
-    <paragraph class="special">
+    <paragraph classes="special">
         This is a "special" paragraph.
-    <section class="exceptional remarkable">
+    <section classes="exceptional remarkable">
         <title>
             An Exceptional Section
         <paragraph>
             This is an ordinary paragraph.
-        <paragraph class="multiple">
+        <paragraph classes="multiple">
             First paragraph.
-        <paragraph class="multiple">
+        <paragraph classes="multiple">
             Second paragraph.
 
-.. [#] To set a "class" attribute value on a block quote, the "class"
-   directive must be followed by an empty comment::
+.. [#] To set a "classes" attribute value on a block quote, the
+   "class" directive must be followed by an empty comment::
 
        .. class:: highlights
        ..
 
            Block quote text.
 
-   The directive doesn't allow content, therefore an empty comment is
-   required to terminate the directive.  Without the empty comment,
-   the block quote text would be interpreted as the "class"
-   directive's content, and the parser would complain.
+   An empty comment is required to terminate the directive to allow
+   the indented text to be parsed as a block quote.  Without the empty
+   comment, the indented text would be interpreted as the "class"
+   directive's content, and the classes would be applied to each
+   element (paragraphi, in this case) individually, instead of to the
+   block quote as a whole.
 
-.. topic:: Rationale for Class Attribute Value Conversion
+.. topic:: Rationale for "classes" Attribute Value Conversion
 
     Docutils identifiers are converted to conform to the regular
     expression ``[a-z](-?[a-z0-9]+)*``.  For CSS compatibility,
-    identifiers (the "class" and "id" attributes) should have no
+    identifiers (the "classes" and "id" attributes) should have no
     underscores, colons, or periods.  Hyphens may be used.
 
     - The `HTML 4.01 spec`_ defines identifiers based on SGML tokens:
@@ -1539,7 +1543,7 @@ The text above is parsed and transformed into this doctree fragment::
     - However the `CSS1 spec`_ defines identifiers based on the "name"
       token, a tighter interpretation ("flex" tokenizer notation
       below; "latin1" and "escape" 8-bit characters have been replaced
-      with entities)::
+      with XML entities)::
 
           unicode     \\[0-9a-f]{1,4}
           latin1      [&iexcl;-&yuml;]
@@ -1548,7 +1552,7 @@ The text above is parsed and transformed into this doctree fragment::
           name        {nmchar}+
 
     The CSS1 "nmchar" rule does not include underscores ("_"), colons
-    (":"), or periods ("."), therefore "class" and "id" attributes
+    (":"), or periods ("."), therefore "classes" and "id" attributes
     should not contain these characters.  They should be replaced with
     hyphens ("-").  Combined with HTML's requirements (the first
     character must be a letter; no "unicode", "latin1", or "escape"
@@ -1586,7 +1590,7 @@ This will be parsed into the following document tree fragment::
 
     <paragraph>
         An example of using
-        <inline class="custom">
+        <inline classes="custom">
             interpreted text
 
 The role must be declared in a document before it can be used.
@@ -1601,15 +1605,15 @@ argument in parentheses (whitespace optional)::
 The parsed result is as follows::
 
     <paragraph>
-        <emphasis class="custom">
+        <emphasis classes="custom">
             text
 
 If no base role is explicitly specified, a generic custom role is
 automatically used.  Subsequent interpreted text will produce an
-"inline" element with a "class" attribute, as in the first example
+"inline" element with a "classes" attribute, as in the first example
 above.
 
-With most roles, the ":class:" option can be used to set a "class"
+With most roles, the ":class:" option can be used to set a "classes"
 attribute that is different from the role name.  For example::
 
     .. role:: custom
@@ -1620,7 +1624,7 @@ attribute that is different from the role name.  For example::
 This is the parsed result::
 
     <paragraph>
-        <inline class="special">
+        <inline classes="special">
             interpreted text
 
 .. _role class:
@@ -1629,9 +1633,9 @@ The following option is recognized by the "role" directive for most
 base roles:
 
 ``class`` : text
-    Set a "class" attribute value on the element produced (``inline``,
-    or element associated with a base class) when the custom
-    interpreted text role is used.  If no directive options are
+    Set the "classes" attribute value on the element produced
+    (``inline``, or element associated with a base class) when the
+    custom interpreted text role is used.  If no directive options are
     specified, a "class" option with the directive argument (role
     name) as the value is implied.  See the class_ directive above.
 
