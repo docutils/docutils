@@ -4432,7 +4432,7 @@ The ``bullet`` attribute is used in the bullet_list_ element.
 
 `Attribute type`_: ``NMTOKENS``.  Default value: none.
 
-The ``classes`` attribute is a list containing one or more names used
+The ``classes`` attribute is a list containing zero or more names used
 to classify an element.  The purpose of the attribute is to indicate
 an "is-a" variant relationship, to allow an extensible way of defining
 sub-classes of existing elements.  It can be used to carry context
