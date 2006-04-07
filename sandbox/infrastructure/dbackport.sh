@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Author: Felix Wiemann
 # Contact: Felix_Wiemann@ososo.de
@@ -6,18 +6,27 @@
 # Date: $Date$
 # Copyright: This script has been placed in the public domain.
 
-# Usage: dbackport <revision>
-#
-# Backports <revision> from the trunk to the maintenance branch.
-
 set -e
 
-if test -z "$1"; then
-    echo Usage: "`basename "$0"` <revision> [<revision> ...]"
+if test -z "$1" -o "$1" == "-h" -o "$1" == "--help"; then
+    echo Usage: "`basename "$0"` [-c] <revision> [[-c] <revision> ...]"
+    echo
+    echo 'Any revision number that is prepended with "-c" is only checked in;'
+    echo 'no actual merging is done.  (Useful for resuming aborted backports,'
+    echo 'for example after manually resolving conflicts.)'
     exit 1
 fi
 
 while test -n "$1"; do
+    commit_only=
+    if test "$1" == "-c"; then
+        commit_only=1
+        if test -z "$2"; then
+            echo 'Error: Expected revision number after "-c".'
+            exit 1
+        fi
+        shift
+    fi
     r="$1"
     if test ! "$DOCUTILS_MAINT_BRANCH"; then
         echo '$DOCUTILS_MAINT_BRANCH must point to the directory of the'
@@ -26,9 +35,11 @@ while test -n "$1"; do
     fi
 
     cd "$DOCUTILS_MAINT_BRANCH"
-    svn revert . -R
-    svn up
-    svn merge -r"$[$r-1]:$r" ../../trunk/docutils .
+    if test -z "$commit_only"; then
+        svn revert . -R
+        svn up
+        svn merge -r"$[$r-1]:$r" ../../trunk/docutils .
+    fi
     svn diff
     if test "`svn st docutils test *.py -q`"; then
         # Some code has changed.
