@@ -15,6 +15,11 @@
 Changes Since 0.4
 =================
 
+* docutils/io.py:
+
+  - Added code to determine the input encoding from data: encoding
+    declarations or the presence of byte order marks (UTF-8 & UTF-16).
+
 * docutils/nodes.py:
 
   - Added ``document.__getstate__`` method, for pickling.
