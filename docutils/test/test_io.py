@@ -27,6 +27,42 @@ class InputTests(unittest.TestCase):
         # Assert BOMs are still there.
         self.assertEquals(input.read(), u'\ufeff foo \ufeff bar')
 
+    def test_coding_slug(self):
+        input = io.StringInput(source="""\
+.. -*- coding: ascii -*-
+data
+blah
+""")
+        data = input.read()
+        self.assertEquals(input.successful_encoding, 'ascii')
+        input = io.StringInput(source="""\
+#! python
+# -*- coding: ascii -*-
+print "hello world"
+""")
+        data = input.read()
+        self.assertEquals(input.successful_encoding, 'ascii')
+        input = io.StringInput(source="""\
+#! python
+# extraneous comment; prevents coding slug from being read
+# -*- coding: ascii -*-
+print "hello world"
+""")
+        data = input.read()
+        self.assertNotEquals(input.successful_encoding, 'ascii')
+
+    def test_bom_detection(self):
+        source = u'\ufeffdata\nblah\n'
+        input = io.StringInput(source=source.encode('utf-16-be'))
+        data = input.read()
+        self.assertEquals(input.successful_encoding, 'utf-16-be')
+        input = io.StringInput(source=source.encode('utf-16-le'))
+        data = input.read()
+        self.assertEquals(input.successful_encoding, 'utf-16-le')
+        input = io.StringInput(source=source.encode('utf-8'))
+        data = input.read()
+        self.assertEquals(input.successful_encoding, 'utf-8')
+
 
 if __name__ == '__main__':
     unittest.main()

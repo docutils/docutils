@@ -16,6 +16,7 @@ try:
     import locale
 except:
     pass
+import re
 from types import UnicodeType
 from docutils import TransformSpec
 
@@ -74,23 +75,35 @@ class Input(TransformSpec):
         if isinstance(data, UnicodeType):
             # Accept unicode even if self.encoding != 'unicode'.
             return data
-        encodings = [self.encoding]
-        if not self.encoding:
-            # Apply heuristics only if no encoding is explicitly given.
-            encodings.append('utf-8')
-            try:
-                encodings.append(locale.nl_langinfo(locale.CODESET))
-            except:
-                pass
-            try:
-                encodings.append(locale.getlocale()[1])
-            except:
-                pass
-            try:
-                encodings.append(locale.getdefaultlocale()[1])
-            except:
-                pass
-            encodings.append('latin-1')
+        if self.encoding:
+            # We believe the user/application when the encoding is
+            # explicitly given.
+            encodings = [self.encoding]
+        else:
+            data_encoding = self.determine_encoding_from_data(data)
+            if data_encoding:
+                # If the data declares its encoding (explicitly or via a BOM),
+                # we believe it.
+                encodings = [data_encoding]
+            else:
+                # Apply heuristics only if no encoding is explicitly given and
+                # no BOM found.  Start with UTF-8, because that only matches
+                # data that *IS* UTF-8:
+                encodings = ['utf-8']
+                try:
+                    encodings.append(locale.nl_langinfo(locale.CODESET))
+                except:
+                    pass
+                try:
+                    encodings.append(locale.getlocale()[1])
+                except:
+                    pass
+                try:
+                    encodings.append(locale.getdefaultlocale()[1])
+                except:
+                    pass
+                # fallback encoding:
+                encodings.append('latin-1')
         error = None
         error_details = ''
         for enc in encodings:
@@ -110,6 +123,32 @@ class Input(TransformSpec):
             '%s.%s'
             % (', '.join([repr(enc) for enc in encodings if enc]),
                error_details))
+
+    coding_slug = re.compile("coding[:=]\s*([-\w.]+)")
+    """Encoding declaration pattern."""
+
+    byte_order_marks = (('\xef\xbb\xbf', 'utf-8'),
+                        ('\xfe\xff', 'utf-16-be'),
+                        ('\xff\xfe', 'utf-16-le'),)
+    """Sequence of (start_bytes, encoding) tuples to for encoding detection.
+    The first bytes of input data are checked against the start_bytes strings.
+    A match indicates the given encoding."""
+
+    def determine_encoding_from_data(self, data):
+        """
+        Try to determine the encoding of `data` by looking *in* `data`.
+        Check for a byte order mark (BOM) or an encoding declaration.
+        """
+        # check for a byte order mark:
+        for start_bytes, encoding in self.byte_order_marks:
+            if data.startswith(start_bytes):
+                return encoding
+        # check for an encoding declaration pattern in first 2 lines of file:
+        for line in data.splitlines()[:2]:
+            match = self.coding_slug.search(line)
+            if match:
+                return match.group(1)
+        return None
 
 
 class Output(TransformSpec):
