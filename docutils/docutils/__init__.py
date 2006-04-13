@@ -153,9 +153,10 @@ class TransformSpec:
     unknown_reference_resolvers = ()
     """List of functions to try to resolve unknown references.  Unknown
     references have a 'refname' attribute which doesn't correspond to any
-    target in the document.  Called when FinalCheckVisitor is unable to find a
-    correct target.  The list should contain functions which will try to
-    resolve unknown references, with the following signature::
+    target in the document.  Called when the transforms in
+    `docutils.tranforms.references` are unable to find a correct target.  The
+    list should contain functions which will try to resolve unknown
+    references, with the following signature::
 
         def reference_resolver(node):
             '''Returns boolean: true if resolved, false if not.'''
