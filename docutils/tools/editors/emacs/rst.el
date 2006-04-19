@@ -215,20 +215,25 @@
 ;; Define a prefix map for the long form of key combinations.
 (defvar rst-prefix-map (make-sparse-keymap)
   "Keymap for rst commands.")
-(define-key rst-prefix-map "a" 'rst-adjust)
-(define-key rst-prefix-map "=" 'rst-adjust)
-(define-key rst-prefix-map "t" 'rst-toc)
-(define-key rst-prefix-map "h" 'rst-display-decorations-hierarchy)
-(define-key rst-prefix-map "i" 'rst-toc-insert)
-(define-key rst-prefix-map "+" 'rst-toc-insert)
-(define-key rst-prefix-map "p" 'rst-backward-section)
-(define-key rst-prefix-map "n" 'rst-forward-section)
-(define-key rst-prefix-map "r" 'rst-shift-region-right)
-(define-key rst-prefix-map "l" 'rst-shift-region-left)
-(define-key rst-prefix-map "e" 'rst-enumerate-region)
-(define-key rst-prefix-map "u" 'rst-toc-insert-update)
-(define-key rst-prefix-map "c" 'rst-compile)
-(define-key rst-prefix-map "C" (lambda () (interactive) (rst-compile t)))
+
+(dolist (m `(("a" . rst-adjust)
+	     ("=" . rst-adjust)
+	     ("t" . rst-toc)
+	     ("h" . rst-display-decorations-hierarchy)
+	     ("s" . rst-straighten-decorations)
+	     ("i" . rst-toc-insert)
+	     ("+" . rst-toc-insert)
+	     ("p" . rst-backward-section)
+	     ("n" . rst-forward-section)
+	     ("r" . rst-shift-region-right)
+	     ("l" . rst-shift-region-left)
+	     ("e" . rst-enumerate-region)
+	     ("u" . rst-toc-insert-update)
+	     ("c" . rst-compile)
+	     ("C" . ,(lambda () (interactive) (rst-compile t)))))
+  (define-key rst-prefix-map (car m) (cdr m)))
+
+
 
 (defun rst-text-mode-bindings ()
   "Default text mode hook for rest."
@@ -1263,6 +1268,39 @@ the hierarchy is similar to that used by rst-adjust-decoration."
           (insert "\n")
           (incf level)
           ))
+    )))
+
+(defun rst-straighten-decorations (&optional buffer)
+  "Redo all the decorations in the given buffer, using our
+  preferred set of decorations.  This can be used, for example,
+  when using somebody else's copy of a document, in order to
+  adapt it to our preferred style.
+  If no buffer is specified, the default buffer is used."
+  (interactive)
+  (save-excursion
+    (let* ((alldecos (rst-find-all-decorations))
+	   (hier (rst-get-hierarchy alldecos))
+	   
+	   ;; Get a list of pairs of (level . marker)
+	   (levels-and-markers (mapcar 
+				(lambda (deco) 
+				  (cons (position (cdr deco) hier :test 'equal)
+					(let ((m (make-marker)))
+					  (goto-line (car deco))
+					  (set-marker m (point))
+					  m)))
+				alldecos))
+	   )
+      (dolist (lm levels-and-markers)
+	;; Go to the appropriate position
+	(goto-char (cdr lm))
+	
+	;; Apply the new styule
+	(apply 'rst-update-section (nth (car lm) rst-preferred-decorations))
+
+	;; Reset the market to avoid slowing down editing until it gets GC'ed
+	(set-marker (cdr lm) nil)
+	)
     )))
 
 
