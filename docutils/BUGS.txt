@@ -270,6 +270,14 @@ Also see the `SourceForge Bug Tracker`_.
 * <reference> elements have a "name" attribute, not "names".  The
   attribute should be "names"; this is an inconsistency.
 
+* Setting the _`halt level` should implicitly set the report level to
+  at most the halt level; otherwise Docutils might halt without
+  providing a descriptive error message::
+
+      ~ $ rst2pseudoxml.py --halt=1 --no-traceback
+      2. foo
+      Exiting due to level-1 (INFO) system message.
+
 
 ..
    Local Variables:
