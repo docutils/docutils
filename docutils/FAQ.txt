@@ -13,13 +13,18 @@
 .. sectnum::
 
 
-This is a work in progress.  Please feel free to ask questions and/or
-provide answers; send email to the `Docutils-users`_ mailing list.
-Project members should feel free to edit the source text file
-directly.
+This is a work in progress.  If you are reading a local copy, the `master
+copy`_ might be newer.  This document uses are relative links; if they don't
+work, please also use the `master copy`_.
 
+Please feel free to ask questions and/or provide answers; send email to the
+`Docutils-users`_ mailing list.  Project members should feel free to edit the
+source text file directly.
+
+.. _master copy: http://docutils.sourceforge.net/FAQ.html
 .. _let us know:
 .. _Docutils-users: docs/user/mailing-lists.html#docutils-users
+
 
 
 Docutils
@@ -50,13 +55,11 @@ For an overview of the Docutils project implementation, see `PEP
 Docutils is implemented in Python_.
 
 .. _Docutils: http://docutils.sourceforge.net/
-.. _PEPs (Python Enhancement Proposals):
-   http://www.python.org/peps/pep-0012.html
-.. _can be used by client code:
-   http://docutils.sourceforge.net/docs/api/publisher.html
-.. _front-end tools: http://docutils.sourceforge.net/docs/user/tools.html
-.. _test suite: http://docutils.sourceforge.net/docs/dev/testing.html
-.. _documentation: http://docutils.sourceforge.net/docs/
+.. _PEPs (Python Enhancement Proposals): http://www.python.org/peps/pep-0012.html
+.. _can be used by client code: docs/api/publisher.html
+.. _front-end tools: docs/user/tools.html
+.. _test suite: docs/dev/testing.html
+.. _documentation: docs/index.html
 .. _PEP 258: http://www.python.org/peps/pep-0258.html
 .. _Python: http://www.python.org/
 
@@ -89,8 +92,7 @@ Please note that the name is "Docutils", not "DocUtils" or "Doc-Utils"
 or any other variation.  It is pronounced as in "DOCumentation
 UTILitieS", with emphasis on the first syllable.
 
-.. _An Introduction to reStructuredText:
-   http://docutils.sourceforge.net/docs/ref/rst/introduction.html
+.. _An Introduction to reStructuredText: docs/ref/rst/introduction.html
 __ http://mail.python.org/pipermail/doc-sig/1999-December/000878.html
 __ http://mail.python.org/pipermail/doc-sig/2000-November/001252.html
 __ http://mail.python.org/pipermail/doc-sig/2000-November/001239.html
@@ -151,12 +153,10 @@ it in another window and compare them side by side.
 reference are a good place to start.  The `reStructuredText Markup
 Specification`_ is a detailed technical specification.
 
-.. _A ReStructuredText Primer:
-   http://docutils.sourceforge.net/docs/user/rst/quickstart.html
-.. _Quick reStructuredText:
-   http://docutils.sourceforge.net/docs/user/rst/quickref.html
+.. _A ReStructuredText Primer: docs/user/rst/quickstart.html
+.. _Quick reStructuredText: docs/user/rst/quickref.html
 .. _reStructuredText Markup Specification:
-   http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
+   docs/ref/rst/restructuredtext.html
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _StructuredText:
    http://dev.zope.org/Members/jim/StructuredTextWiki/FrontPage/
@@ -203,7 +203,7 @@ Are there any reStructuredText editor extensions?
 
 See `Editor Support for reStructuredText`__.
 
-__ http://docutils.sf.net/tools/editors/README.html
+__ tools/editors/README.html
 
 
 How can I indicate the document title?  Subtitle?
@@ -308,15 +308,13 @@ the em dash is necessary because you cannot write "``foo|---|bar``";
 thus you need to add spaces ("``foo |---| bar``") and advise the
 reStructuredText parser to trim the spaces.
 
-.. _Standard Substitution Definition Sets:
-   http://docutils.sf.net/docs/ref/rst/substitutions.html
-.. _unicode:
-   http://docutils.sf.net/docs/ref/rst/directives.html#unicode-character-codes
+.. _Standard Substitution Definition Sets: docs/ref/rst/substitutions.html
+.. _unicode: docs/ref/rst/directives.html#unicode-character-codes
 .. _are available: http://docutils.sourceforge.net/tmp/charents/
 .. _tarball: http://docutils.sourceforge.net/tmp/charents.tgz
 .. _description and instructions:
    http://docutils.sourceforge.net/tmp/charents/README.html
-.. _to-do list: http://docutils.sourceforge.net/docs/dev/todo.html
+.. _to-do list: docs/dev/todo.html
 
 
 How can I generate backticks using a Scandinavian keyboard?
@@ -437,23 +435,59 @@ order:
 Please `let us know`_ of any other reStructuredText Blogs.
 
 
-Can lists be indented without generating block quotes?
-------------------------------------------------------
+How should I mark up lists?
+---------------------------
 
-Some people like to write lists with indentation, without intending a
-block quote context, like this::
+Bullet_ / enumerated_ list markup is very intuitive but there are 2 points
+that must be noticed:
 
-    paragraph
+.. _bullet: docs/ref/rst/restructuredtext.html#bullet-lists
+.. _enumerated: docs/ref/rst/restructuredtext.html#enumerated-lists
 
-      * list item 1
-      * list item 2
+1. Lists should **not** be indented.  This is good::
 
-There has been a lot of discussion about this, but there are some
-issues that would need to be resolved before it could be implemented.
-There is a summary of the issues and pointers to the discussions in
-`the to-do list`__.
+       paragraph
 
-__ http://docutils.sourceforge.net/docs/dev/todo.html#indented-lists
+       * list item 1
+
+         * nested item 1.1
+         * nested item 1.2
+
+       * list item 2
+
+   while this is bad::
+
+       paragraph
+
+         * list item 1
+
+             * nested item 1.1
+             * nested item 1.2
+
+         * list item 2
+
+   The extra indentation is recognized as a block quote containing a list.
+   This is usually not what you mean and it causes the list in the output to
+   be indented too much.
+
+2. There **must** be blank lines around list items, except between items of
+   the same level where they are optional.  The example above shows this.
+   
+Note that formatting of the *output* is a quite independent matter, decided by
+the writer and the stylesheet.  For instance, lists *are* indentated in HTML
+output by default.  See `How are lists formatted in HTML?`_ for details.
+
+
+Could lists be indented without generating block quotes?
+--------------------------------------------------------
+
+Some people like to write lists with indentation but don't intend a blockquote
+context.  There has been a lot of discussion about allowing this in
+reStructuredText, but there are some issues that would need to be resolved
+before it could be implemented.  There is a summary of the issues and pointers
+to the discussions in `the to-do list`__.
+
+__ docs/dev/todo.html#indented-lists
 
 
 Could the requirement for blank lines around lists be relaxed?
@@ -480,7 +514,7 @@ no obvious winner.  This issue requires a champion to solve the
 technical and aesthetic issues and implement a generic solution.
 Here's the `to-do list entry`__.
 
-__ http://docutils.sourceforge.net/docs/dev/todo.html#math-markup
+__ docs/dev/todo.html#math-markup
 
 There are several quick & dirty ways to include equations in documents.
 They all presently use LaTeX syntax or dialects of it.
@@ -503,9 +537,8 @@ They all presently use LaTeX syntax or dialects of it.
 
       the binomial expansion of :raw-latex:`$(x+a)^3$` is
 
-  .. _raw directive: http://docutils.sourceforge.net/docs/ref/rst/
-                     directives.html#raw-data-pass-through
-  .. _raw role: http://docutils.sourceforge.net/docs/ref/rst/roles.html#raw
+  .. _raw directive: docs/ref/rst/directives.html#raw-data-pass-through
+  .. _raw role: docs/ref/rst/roles.html#raw
 
 * Jens Jørgen Mortensen has implemented a "latex-math" role and
   directive, available from `his sandbox`__.
@@ -559,8 +592,8 @@ time, markup like this will become possible::
     Here is some *emphasized text containing a `hyperlink`_ and
     ``inline literals``*.
 
-__ http://docutils.sf.net/docs/dev/todo.html#nested-inline-markup
-__ http://docutils.sf.net/docs/dev/rst/alternatives.html#nested-inline-markup
+__ docs/dev/todo.html#nested-inline-markup
+__ docs/dev/rst/alternatives.html#nested-inline-markup
 
 There are workarounds, but they are either convoluted or ugly or both.
 They are not recommended.
@@ -577,9 +610,9 @@ They are not recommended.
   It is not possible for just a portion of the replacement text to be
   a hyperlink; it's the entire replacement text or nothing.
 
-  __ http://docutils.sf.net/docs/ref/rst/restructuredtext.html#substitution-definitions
-  __ http://docutils.sf.net/docs/ref/rst/restructuredtext.html#substitution-references
-  __ http://docutils.sf.net/docs/ref/rst/directives.html#replace
+  __ docs/ref/rst/restructuredtext.html#substitution-definitions
+  __ docs/ref/rst/restructuredtext.html#substitution-references
+  __ docs/ref/rst/directives.html#replace
 
 * The `"raw" directive`__ can be used to insert raw HTML into HTML
   output::
@@ -594,7 +627,7 @@ They are not recommended.
 
   Raw LaTeX is supported for LaTeX output, etc.
 
-  __ http://docutils.sf.net/docs/ref/rst/directives.html#raw
+  __ docs/ref/rst/directives.html#raw
 
 
 How to indicate a line break or a significant newline?
@@ -619,7 +652,7 @@ recognized.  For example::
     |
     | Singing...
 
-__ http://docutils.sf.net/docs/ref/rst/restructuredtext.html#line-blocks
+__ docs/ref/rst/restructuredtext.html#line-blocks
 
 Here's a workaround for manually inserting explicit line breaks in
 HTML output::
@@ -885,24 +918,76 @@ can tweak the `initial_header_level`_ setting
 to your specific document, you might end up with bad HTML (e.g. H3
 without H2).
 
-.. _doctitle_xform:
-   http://docutils.sourceforge.net/docs/user/config.html#doctitle-xform
-.. _initial_header_level:
-   http://docutils.sourceforge.net/docs/user/config.html#initial-header-level
+.. _doctitle_xform: docs/user/config.html#doctitle-xform
+.. _initial_header_level: docs/user/config.html#initial-header-level
 
 (Thanks to Mark McEahern for the question and much of the answer.)
 
 
+How are lists formatted in HTML?
+--------------------------------
+
+If list formatting looks strange, first check that you understand `list
+markup`__.
+
+__ `How should I mark up lists?`_
+
+* The default stylesheet indents lists relative to their context.  This
+  follows a long tradition in browsers (but isn't so established in print).
+  If you don't like it, change the stylesheet.
+
+  This is different from how lists look in reStructuredText source.  Indenting
+  lists in the source too would create a blockquote, resulting in too much
+  indentation in the browser.
+ 
+* A list item can contain multiple paragraphs.  So in complex cases list items
+  are separated vertical space.  By default this spacing is omitted in
+  "simple" lists.  A list is simple if every item is a simple paragraph and/or
+  a "simple" nested list.  For example:
+
+      * text
+
+        * simple
+
+          * simple
+          * simple
+
+        * simple
+
+        text after a nested list
+        
+      * multiple
+
+        paragraphs
+
+  In this example the nested lists are simple (and should appear compacted)
+  but the outer list is not.
+
+  If you want all lists to have equal spacing, disable the `compact_lists`_
+  setting (``--no-compact-lists`` option).  The precise spacing can be
+  controlled by the stylesheet.
+
+.. _compact_lists: docs/user/config.html#compact-lists
+  
+  Note again that this is not exactly WISYWIG: it partially resembles the
+  rules about blank lines between list items in reStructuredText - but
+  adding/removing optional blank lines will not affect spacing in the output!
+  It's a feature, not a bug: you write it as you like but the output is styled
+  consistently.
+   
+
 Why do enumerated lists only use numbers (no letters or roman numerals)?
 ------------------------------------------------------------------------
 
-The rendering of enumerators (the numbers or letters acting as list
-markers) is completely governed by the stylesheet, so either the
-browser can't find the stylesheet (try using the "--embed-stylesheet"
-option), or the browser can't understand it (try a recent Firefox,
-Mozilla, Konqueror, Opera, Safari, or even MSIE).
+The rendering of enumerators (the numbers or letters acting as list markers)
+is completely governed by the stylesheet, so either the browser can't find the
+stylesheet (try enabling the `embed_stylesheet`_ setting (``--embed-stylesheet``
+option)), or the browser can't understand it (try a recent Firefox, Mozilla,
+Konqueror, Opera, Safari, or even MSIE).
 
+.. _embed_stylesheet: docs/user/config.html#embed-stylesheet
 
+   
 There appear to be garbage characters in the HTML.  What's up?
 --------------------------------------------------------------
 
@@ -954,8 +1039,7 @@ of the output.  It must also match the document encoding.  For UTF-8::
 
     <?xml version="1.0" encoding="utf-8" ?>
 
-.. _sectnum:
-   http://docutils.sourceforge.net/docs/ref/rst/directives.html#sectnum
+.. _sectnum: docs/ref/rst/directives.html#sectnum
 
 
 How can I retrieve the body of the HTML document?
@@ -967,10 +1051,8 @@ templating system.)
 You can use the `docutils.core.publish_parts()`_ function, which
 returns a dictionary containing an 'html_body_' entry.
 
-.. _docutils.core.publish_parts():
-   docs/api/publisher.html#publish-parts
-.. _html_body:
-   docs/api/publisher.html#html-body
+.. _docutils.core.publish_parts(): docs/api/publisher.html#publish-parts
+.. _html_body: docs/api/publisher.html#html-body
 
 
 Why is the Docutils XHTML served as "Content-type: text/html"?
