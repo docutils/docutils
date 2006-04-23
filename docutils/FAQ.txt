@@ -15,7 +15,7 @@
 
 This is a work in progress.  If you are reading a local copy, the `master
 copy`_ might be newer.  This document uses are relative links; if they don't
-work, please also use the `master copy`_.
+work, please use the `master copy`_.
 
 Please feel free to ask questions and/or provide answers; send email to the
 `Docutils-users`_ mailing list.  Project members should feel free to edit the
@@ -438,13 +438,13 @@ Please `let us know`_ of any other reStructuredText Blogs.
 How should I mark up lists?
 ---------------------------
 
-Bullet_ / enumerated_ list markup is very intuitive but there are 2 points
-that must be noticed:
+Bullet_ & enumerated_ list markup is very intuitive but there are 2 points
+that must be noted:
 
 .. _bullet: docs/ref/rst/restructuredtext.html#bullet-lists
 .. _enumerated: docs/ref/rst/restructuredtext.html#enumerated-lists
 
-1. Lists should **not** be indented.  This is good::
+1. Lists should **not** be indented.  This is correct::
 
        paragraph
 
@@ -455,7 +455,7 @@ that must be noticed:
 
        * list item 2
 
-   while this is bad::
+   while this is probably incorrect::
 
        paragraph
 
@@ -466,15 +466,16 @@ that must be noticed:
 
          * list item 2
 
-   The extra indentation is recognized as a block quote containing a list.
-   This is usually not what you mean and it causes the list in the output to
-   be indented too much.
+   The extra indentation (of the list containing items 1.1 and 1.2) is
+   recognized as a block quote.  This is usually not what you mean and
+   it causes the list in the output to be indented too much.
 
-2. There **must** be blank lines around list items, except between items of
-   the same level where they are optional.  The example above shows this.
-   
-Note that formatting of the *output* is a quite independent matter, decided by
-the writer and the stylesheet.  For instance, lists *are* indentated in HTML
+2. There **must** be blank lines around list items, except between
+   items of the same level, where blank lines are optional.  The
+   example above shows this.
+
+Note that formatting of the *output* is independent of the input, decided by
+the writer and the stylesheet.  For instance, lists *are* indented in HTML
 output by default.  See `How are lists formatted in HTML?`_ for details.
 
 
@@ -932,18 +933,19 @@ markup`__.
 
 __ `How should I mark up lists?`_
 
-* The default stylesheet indents lists relative to their context.  This
+* By default, HTML browsers indent lists relative to their context.  This
   follows a long tradition in browsers (but isn't so established in print).
-  If you don't like it, change the stylesheet.
+  If you don't like it, you should change the stylesheet.
 
-  This is different from how lists look in reStructuredText source.  Indenting
-  lists in the source too would create a blockquote, resulting in too much
-  indentation in the browser.
- 
-* A list item can contain multiple paragraphs.  So in complex cases list items
-  are separated vertical space.  By default this spacing is omitted in
-  "simple" lists.  A list is simple if every item is a simple paragraph and/or
-  a "simple" nested list.  For example:
+  This is different from how lists look in reStructuredText source.
+  Extra indentation in the source indicates a blockquote, resulting in
+  too much indentation in the browser.
+
+* A list item can contain multiple paragraphs etc.  In complex cases
+  list items are separated by vertical space.  By default this spacing
+  is omitted in "simple" lists.  A list is simple if every item
+  contains a simple paragraph and/or a "simple" nested list.  For
+  example:
 
       * text
 
@@ -955,7 +957,7 @@ __ `How should I mark up lists?`_
         * simple
 
         text after a nested list
-        
+
       * multiple
 
         paragraphs
@@ -965,29 +967,29 @@ __ `How should I mark up lists?`_
 
   If you want all lists to have equal spacing, disable the `compact_lists`_
   setting (``--no-compact-lists`` option).  The precise spacing can be
-  controlled by the stylesheet.
+  controlled in the stylesheet.
 
-.. _compact_lists: docs/user/config.html#compact-lists
-  
-  Note again that this is not exactly WISYWIG: it partially resembles the
-  rules about blank lines between list items in reStructuredText - but
-  adding/removing optional blank lines will not affect spacing in the output!
-  It's a feature, not a bug: you write it as you like but the output is styled
-  consistently.
-   
+  Note again that this is not exactly WYSIWYG: it partially resembles
+  the rules about blank lines being optional between list items in
+  reStructuredText -- but adding/removing optional blank lines does
+  not affect spacing in the output!  It's a feature, not a bug: you
+  write it as you like but the output is styled consistently.
+
+  .. _compact_lists: docs/user/config.html#compact-lists
+
 
 Why do enumerated lists only use numbers (no letters or roman numerals)?
 ------------------------------------------------------------------------
 
 The rendering of enumerators (the numbers or letters acting as list markers)
 is completely governed by the stylesheet, so either the browser can't find the
-stylesheet (try enabling the `embed_stylesheet`_ setting (``--embed-stylesheet``
-option)), or the browser can't understand it (try a recent Firefox, Mozilla,
+stylesheet (try enabling the `embed_stylesheet`_ setting [``--embed-stylesheet``
+option]), or the browser can't understand it (try a recent Firefox, Mozilla,
 Konqueror, Opera, Safari, or even MSIE).
 
 .. _embed_stylesheet: docs/user/config.html#embed-stylesheet
 
-   
+
 There appear to be garbage characters in the HTML.  What's up?
 --------------------------------------------------------------
 
@@ -1079,7 +1081,7 @@ majority of web browsers, and cannot be ignored.
 
 Short answer: if we didn't serve XHTML as "text/html" (which is a
 perfectly valid thing to do), it couldn't be viewed in Internet
-Explorer.  
+Explorer.
 
 Long answer: see the `"Criticisms of Internet Explorer" Wikipedia
 entry <http://en.wikipedia.org/wiki/Criticisms_of_Internet_Explorer#XHTML>`__.
