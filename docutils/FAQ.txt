@@ -259,7 +259,7 @@ em-dash character is a real em-dash internally.
 Emacs users should refer to the `Emacs Support for reStructuredText`__
 document.  Tips for other editors are welcome.
 
-__ http://docutils.sourceforge.net/tools/editors/emacs/README.html
+__ tools/editors/emacs/README.html
 
 ReStructuredText has no character entity subsystem; it doesn't know
 anything about XML charents.  To Docutils, "&mdash;" in input text is
