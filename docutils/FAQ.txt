@@ -445,6 +445,8 @@ order:
 Please `let us know`_ of any other reStructuredText Blogs.
 
 
+.. _Can lists be indented without generating block quotes?:
+
 How should I mark up lists?
 ---------------------------
 
