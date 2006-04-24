@@ -384,42 +384,42 @@ This nested list should be compacted by the HTML writer.
 \hypertarget{enumerated-lists}{}
 \pdfbookmark[1]{2.3~~~Enumerated Lists}{enumerated-lists}
 \subsection*{2.3~~~Enumerated Lists}
+\newcounter{listcnt0}
+\begin{list}{\arabic{listcnt0}.}
+{
+\usecounter{listcnt0}
+\setlength{\rightmargin}{\leftmargin}
+}
+\item {} 
+Arabic numerals.
 \newcounter{listcnt1}
-\begin{list}{\arabic{listcnt1}.}
+\begin{list}{\alph{listcnt1})}
 {
 \usecounter{listcnt1}
 \setlength{\rightmargin}{\leftmargin}
 }
 \item {} 
-Arabic numerals.
+lower alpha)
 \newcounter{listcnt2}
-\begin{list}{\alph{listcnt2})}
+\begin{list}{(\roman{listcnt2})}
 {
 \usecounter{listcnt2}
 \setlength{\rightmargin}{\leftmargin}
 }
 \item {} 
-lower alpha)
+(lower roman)
 \newcounter{listcnt3}
-\begin{list}{(\roman{listcnt3})}
+\begin{list}{\Alph{listcnt3}.}
 {
 \usecounter{listcnt3}
 \setlength{\rightmargin}{\leftmargin}
 }
 \item {} 
-(lower roman)
+upper alpha.
 \newcounter{listcnt4}
-\begin{list}{\Alph{listcnt4}.}
+\begin{list}{\Roman{listcnt4})}
 {
 \usecounter{listcnt4}
-\setlength{\rightmargin}{\leftmargin}
-}
-\item {} 
-upper alpha.
-\newcounter{listcnt5}
-\begin{list}{\Roman{listcnt5})}
-{
-\usecounter{listcnt5}
 \setlength{\rightmargin}{\leftmargin}
 }
 \item {} 
@@ -435,11 +435,11 @@ upper roman)
 
 \item {} 
 Lists that don't start at 1:
-\newcounter{listcnt6}
-\begin{list}{\arabic{listcnt6}.}
+\setcounter{listcnt1}{0}
+\begin{list}{\arabic{listcnt1}.}
 {
-\usecounter{listcnt6}
-\addtocounter{listcnt6}{2}
+\usecounter{listcnt1}
+\addtocounter{listcnt1}{2}
 \setlength{\rightmargin}{\leftmargin}
 }
 \item {} 
@@ -449,11 +449,11 @@ Three
 Four
 
 \end{list}
-\newcounter{listcnt7}
-\begin{list}{\Alph{listcnt7}.}
+\setcounter{listcnt1}{0}
+\begin{list}{\Alph{listcnt1}.}
 {
-\usecounter{listcnt7}
-\addtocounter{listcnt7}{2}
+\usecounter{listcnt1}
+\addtocounter{listcnt1}{2}
 \setlength{\rightmargin}{\leftmargin}
 }
 \item {} 
@@ -463,11 +463,11 @@ C
 D
 
 \end{list}
-\newcounter{listcnt8}
-\begin{list}{\roman{listcnt8}.}
+\setcounter{listcnt1}{0}
+\begin{list}{\roman{listcnt1}.}
 {
-\usecounter{listcnt8}
-\addtocounter{listcnt8}{2}
+\usecounter{listcnt1}
+\addtocounter{listcnt1}{2}
 \setlength{\rightmargin}{\leftmargin}
 }
 \item {} 

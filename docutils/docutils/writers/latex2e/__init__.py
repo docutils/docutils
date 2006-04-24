@@ -694,17 +694,19 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # mbox_newline: to tell encode to add mbox and newline.
         self.mbox_newline = 0
 
-        # enumeration is done by list environment.
-        self._enum_cnt = 0
-
         # Stack of section counters so that we don't have to use_latex_toc.
         # This will grow and shrink as processing occurs.
         # Initialized for potential first-level sections.
         self._section_number = [0]
 
         # The current stack of enumerations so that we can expand
-        # them into a compound enumeration
+        # them into a compound enumeration.  
         self._enumeration_counters = []
+
+        # The maximum number of enumeration counters we've used.
+        # If we go beyond this number, we need to create a new
+        # counter; otherwise, just reuse an old one.
+        self._max_enumeration_counters = 0
 
         self._bibitems = []
 
@@ -1283,8 +1285,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # We create our own enumeration list environment.
         # This allows to set the style and starting value
         # and unlimited nesting.
-        self._enum_cnt += 1
-
         enum_style = {'arabic':'arabic',
                 'loweralpha':'alph',
                 'upperalpha':'Alph',
@@ -1303,16 +1303,24 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     pref += '%d.' % self._section_number[i]
                 pref = pref[:-1] + self.section_enumerator_separator
                 enum_prefix += pref
-            for counter in self._enumeration_counters:
-                enum_prefix += counter + '.'
+            for ctype, cname in self._enumeration_counters:
+                enum_prefix += '\\%s{%s}.' % (ctype, cname)
         enum_type = "arabic"
         if node.has_key('enumtype'):
             enum_type = node['enumtype']
         if enum_style.has_key(enum_type):
             enum_type = enum_style[enum_type]
-        counter_name = "listcnt%d" % self._enum_cnt;
-        self._enumeration_counters.append("\\%s{%s}" % (enum_type,counter_name))
-        self.body.append('\\newcounter{%s}\n' % counter_name)
+
+        counter_name = "listcnt%d" % len(self._enumeration_counters)
+        self._enumeration_counters.append((enum_type, counter_name))
+        # If we haven't used this counter name before, then create a
+        # new counter; otherwise, reset & reuse the old counter.
+        if len(self._enumeration_counters) > self._max_enumeration_counters:
+            self._max_enumeration_counters = len(self._enumeration_counters)
+            self.body.append('\\newcounter{%s}\n' % counter_name)
+        else:
+            self.body.append('\\setcounter{%s}{0}\n' % counter_name)
+            
         self.body.append('\\begin{list}{%s\\%s{%s}%s}\n' % \
             (enum_prefix,enum_type,counter_name,enum_suffix))
         self.body.append('{\n')

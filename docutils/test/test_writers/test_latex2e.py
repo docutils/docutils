@@ -162,10 +162,10 @@ latex_head + """\
 \\begin{document}
 
 \\setlength{\\locallinewidth}{\\linewidth}
-\\newcounter{listcnt1}
-\\begin{list}{\\arabic{listcnt1}.}
+\\newcounter{listcnt0}
+\\begin{list}{\\arabic{listcnt0}.}
 {
-\\usecounter{listcnt1}
+\\usecounter{listcnt0}
 \\setlength{\\rightmargin}{\\leftmargin}
 }
 \\item {} 
@@ -176,10 +176,10 @@ Second to the previous item this one will explain
 
 \\end{list}
 \\begin{quote}
-\\newcounter{listcnt2}
-\\begin{list}{\\alph{listcnt2})}
+\\setcounter{listcnt0}{0}
+\\begin{list}{\\alph{listcnt0})}
 {
-\\usecounter{listcnt2}
+\\usecounter{listcnt0}
 \\setlength{\\rightmargin}{\\leftmargin}
 }
 \\item {} 
@@ -190,11 +190,11 @@ or some other.
 
 \\end{list}
 \\end{quote}
-\\newcounter{listcnt3}
-\\begin{list}{\\arabic{listcnt3}.}
+\\setcounter{listcnt0}{0}
+\\begin{list}{\\arabic{listcnt0}.}
 {
-\\usecounter{listcnt3}
-\\addtocounter{listcnt3}{2}
+\\usecounter{listcnt0}
+\\addtocounter{listcnt0}{2}
 \\setlength{\\rightmargin}{\\leftmargin}
 }
 \\item {} 
@@ -202,10 +202,10 @@ Third is
 
 \\end{list}
 \\begin{quote}
-\\newcounter{listcnt4}
-\\begin{list}{(\\Roman{listcnt4})}
+\\setcounter{listcnt0}{0}
+\\begin{list}{(\\Roman{listcnt0})}
 {
-\\usecounter{listcnt4}
+\\usecounter{listcnt0}
 \\setlength{\\rightmargin}{\\leftmargin}
 }
 \\item {} 
