@@ -13,6 +13,29 @@
     instructions are provided.
 
 .. contents::
+..
+    1   Introduction
+    2   Basic Setup
+    3   Section Decoration Adjustment
+      3.1  Promoting and Demoting Many Sections
+      3.2  Redoing all the Decorations to your Taste
+      3.3  Customizations
+    4   Viewing the Hierarchy of Section Decorations
+    5   Table of Contents
+      5.1  Inserting a Table of Contents
+      5.2  Maintaining the Table of Contents Up-to-date
+    6   Navigating Between the Section Titles
+    7   Shifting Bullet List Levels
+    8   Major Mode for Editing reStructuredText Documents
+    9   Converting Documents from Emacs
+    10  Other / External Useful Emacs Settings
+      10.1  Settings for Filling Lists
+      10.2  ``text-mode`` Settings
+      10.3  Editing Tables: Emacs table mode
+      10.4  Character Processing
+    11  Credits
+    12  Obsolete Files
+    13  Future Work
 
 
 Introduction
@@ -97,6 +120,17 @@ useful to change the level of a number of section titles.  The same
 key binding can be used to do that: if the region is active when the
 binding is invoked, all the section titles that are within the region
 are promoted accordingly (or demoted, with negative prefix arg).
+
+
+Redoing All the Decorations to Your Taste
+-----------------------------------------
+
+If you open someone else's file and the decorations it contains are
+unfamiliar, you may want to readjust them to fit your own preferred
+hierarchy of decorations.  This can be difficult to perform by hand.
+However, you can do this easily by invokeing
+``rst-straighten-decorations`` (C-c p s), which operates on the entire
+buffer.
 
 
 Customizations
