@@ -143,7 +143,7 @@ def posixGetArgs(argv):
             usage()
             sys.exit()
         elif o in ['-V', '--version']:
-            print >>sys.stderr, ('quicktest.py (Docutils %s [%])'
+            print >>sys.stderr, ('quicktest.py (Docutils %s [%s])'
                                  % (docutils.__version__,
                                     docutils.__version_details__))
             sys.exit()
