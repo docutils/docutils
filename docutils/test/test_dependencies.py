@@ -20,6 +20,9 @@ import docutils.utils
 
 class RecordDependenciesTests(unittest.TestCase):
 
+    # docutils.utils.DependencyList records relative URLs, not platform paths,
+    # so use "/" as a path separator even on Windows (not os.path.join).
+
     def get_record(self, **settings):
         recordfile = 'record.txt'
         settings.setdefault('source_path',
@@ -37,11 +40,10 @@ class RecordDependenciesTests(unittest.TestCase):
 
     def test_dependencies(self):
         self.assertEqual(self.get_record(),
-                         [os.path.join('data', 'include.txt'),
-                          os.path.join('data', 'raw.txt')])
+                         ['data/include.txt', 'data/raw.txt'])
         self.assertEqual(self.get_record(writer_name='latex'),
-                         [os.path.join('data', 'include.txt'),
-                          os.path.join('data', 'raw.txt'),
+                         ['data/include.txt',
+                          'data/raw.txt',
                           # this is a URL, not a path:
                           'some_image.png'])
 
@@ -66,12 +68,10 @@ class RecordDependenciesTests(unittest.TestCase):
         self.assert_(os.path.join('data', 'stylesheet.txt') not in
                      self.get_record(**s))
         so['embed_stylesheet'] = 1
-        self.assert_(os.path.join('data', 'stylesheet.txt') in
-                     self.get_record(**s))
+        self.assert_('data/stylesheet.txt' in self.get_record(**s))
         del so['embed_stylesheet']
         s['writer_name'] = 'latex'
-        self.assert_(os.path.join('data', 'stylesheet.txt') in
-                     self.get_record(**s))
+        self.assert_('data/stylesheet.txt' in self.get_record(**s))
 
 
 if __name__ == '__main__':
