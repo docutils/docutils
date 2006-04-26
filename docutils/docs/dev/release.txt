@@ -68,7 +68,10 @@ reminded of them.
   (c) Repeat step b) for all supported Python versions.
 
 * Run the _`test suite` from the expanded archive directory with all
-  supported Python versions: ``cd test ; python -u alltests.py``.
+  supported Python versions on all available platforms (GNU/Linux, Mac
+  OS X, Windows)::
+
+      cd test ; python -u alltests.py
 
 * Add a directory X.Y.Z (where X.Y.Z is the current version number
   of Docutils) in the webroot (i.e. the ``htdocs/`` directory).
