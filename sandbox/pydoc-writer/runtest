@@ -1,0 +1,7 @@
+#!/bin/sh
+
+python mkpydoc.py input/libctypes.txt output/libctypes.tex
+
+diff -s -u expected/libctypes.tex output/libctypes.tex
+diff -s -u expected/missing.py missing.py
+
