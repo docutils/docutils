@@ -1,0 +1,4 @@
+Blah blah short overview of ctypes.
+
+.. include:: tutorial.txt
+.. include:: reference.txt
