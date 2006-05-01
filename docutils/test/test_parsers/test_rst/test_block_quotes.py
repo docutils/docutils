@@ -218,6 +218,84 @@ Paragraph.
 ["""\
 Paragraph.
 
+   Block quote 1.
+
+   -- Attribution 1
+
+   Block quote 2.
+
+   --Attribution 2
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Paragraph.
+    <block_quote>
+        <paragraph>
+            Block quote 1.
+        <attribution>
+            Attribution 1
+    <block_quote>
+        <paragraph>
+            Block quote 2.
+        <attribution>
+            Attribution 2
+"""],
+["""\
+Paragraph.
+
+   Block quote 1.
+
+   -- Attribution 1
+
+   Block quote 2.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Paragraph.
+    <block_quote>
+        <paragraph>
+            Block quote 1.
+        <attribution>
+            Attribution 1
+    <block_quote>
+        <paragraph>
+            Block quote 2.
+"""],
+["""\
+Unindented paragraph.
+
+    Block quote 1.
+
+    -- Attribution 1
+
+    Block quote 2.
+
+..
+
+    Block quote 3.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Unindented paragraph.
+    <block_quote>
+        <paragraph>
+            Block quote 1.
+        <attribution>
+            Attribution 1
+    <block_quote>
+        <paragraph>
+            Block quote 2.
+    <comment xml:space="preserve">
+    <block_quote>
+        <paragraph>
+            Block quote 3.
+"""],
+["""\
+Paragraph.
+
    -- Not an attribution
 
 Paragraph.
@@ -266,7 +344,42 @@ Paragraph.
                                 <paragraph>
                                     and line three
 """],
+["""\
+Paragraph.
+
+   -- Not a valid attribution
+
+   Block quote 1.
+
+   --Attribution 1
+
+   --Invalid attribution
+
+   Block quote 2.
+
+   --Attribution 2
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Paragraph.
+    <block_quote>
+        <paragraph>
+            -- Not a valid attribution
+        <paragraph>
+            Block quote 1.
+        <attribution>
+            Attribution 1
+    <block_quote>
+        <paragraph>
+            --Invalid attribution
+        <paragraph>
+            Block quote 2.
+        <attribution>
+            Attribution 2
+"""],
 ]
+
 
 if __name__ == '__main__':
     import unittest

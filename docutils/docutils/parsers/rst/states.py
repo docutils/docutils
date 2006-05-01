@@ -1079,68 +1079,86 @@ class Body(RSTState):
         """Block quote."""
         indented, indent, line_offset, blank_finish = \
               self.state_machine.get_indented()
-        blockquote, messages = self.block_quote(indented, line_offset)
-        self.parent += blockquote
-        self.parent += messages
+        elements = self.block_quote(indented, line_offset)
+        self.parent += elements
         if not blank_finish:
             self.parent += self.unindent_warning('Block quote')
         return context, next_state, []
 
     def block_quote(self, indented, line_offset):
-        blockquote_lines, attribution_lines, attribution_offset = \
-              self.check_attribution(indented, line_offset)
-        blockquote = nodes.block_quote()
-        self.nested_parse(blockquote_lines, line_offset, blockquote)
-        messages = []
-        if attribution_lines:
-            attribution, messages = self.parse_attribution(attribution_lines,
-                                                           attribution_offset)
-            blockquote += attribution
-        return blockquote, messages
+        elements = []
+        while indented:
+            (blockquote_lines,
+             attribution_lines,
+             attribution_offset,
+             indented,
+             new_line_offset) = self.split_attribution(indented, line_offset)
+            blockquote = nodes.block_quote()
+            self.nested_parse(blockquote_lines, line_offset, blockquote)
+            elements.append(blockquote)
+            if attribution_lines:
+                attribution, messages = self.parse_attribution(
+                    attribution_lines, attribution_offset)
+                blockquote += attribution
+                elements += messages
+            line_offset = new_line_offset
+            while indented and not indented[0]:
+                indented = indented[1:]
+                line_offset += 1
+        return elements
 
-    # u'\u2014' is an em-dash:
+    # U+2014 is an em-dash:
     attribution_pattern = re.compile(ur'(---?(?!-)|\u2014) *(?=[^ \n])')
 
-    def check_attribution(self, indented, line_offset):
+    def split_attribution(self, indented, line_offset):
         """
-        Check for an attribution in the last contiguous block of `indented`.
+        Check for a block quote attribution and split it off:
 
-        * First line after last blank line must begin with "--" (etc.).
+        * First line after a blank line must begin with a dash ("--", "---",
+          em-dash; matches `self.attribution_pattern`).
         * Every line after that must have consistent indentation.
+        * Attributions must be preceded by block quote content.
 
-        Return a 3-tuple: (block quote lines, attribution lines,
-        attribution offset).
+        Return a tuple of: (block quote content lines, content offset,
+        attribution lines, attribution offset, remaining indented lines).
         """
-        #import pdb ; pdb.set_trace()
         blank = None
-        nonblank_seen = None
-        indent = 0
-        for i in range(len(indented) - 1, 0, -1): # don't check first line
-            this_line_blank = not indented[i].strip()
-            if nonblank_seen and this_line_blank:
-                match = self.attribution_pattern.match(indented[i + 1])
-                if match:
-                    blank = i
-                break
-            elif not this_line_blank:
-                nonblank_seen = 1
-        if blank and len(indented) - blank > 2: # multi-line attribution
-            indent = (len(indented[blank + 2])
-                      - len(indented[blank + 2].lstrip()))
-            for j in range(blank + 3, len(indented)):
-                if ( indented[j]        # may be blank last line
-                     and indent != (len(indented[j])
-                                    - len(indented[j].lstrip()))):
-                    # bad shape
-                    blank = None
-                    break
-        if blank:
-            a_lines = indented[blank + 1:]
-            a_lines.trim_left(match.end(), end=1)
-            a_lines.trim_left(indent, start=1)
-            return (indented[:blank], a_lines, line_offset + blank + 1)
+        nonblank_seen = False
+        for i in range(len(indented)):
+            line = indented[i].rstrip()
+            if line:
+                if nonblank_seen and blank == i - 1: # last line blank
+                    match = self.attribution_pattern.match(line)
+                    if match:
+                        attribution_end, indent = self.check_attribution(
+                            indented, i)
+                        if attribution_end:
+                            a_lines = indented[i:attribution_end]
+                            a_lines.trim_left(match.end(), end=1)
+                            a_lines.trim_left(indent, start=1)
+                            return (indented[:i], a_lines,
+                                    i, indented[attribution_end:],
+                                    line_offset + attribution_end)
+                nonblank_seen = True
+            else:
+                blank = i
         else:
-            return (indented, None, None)
+            return (indented, None, None, None, None)
+
+    def check_attribution(self, indented, attribution_start):
+        """Check attribution shape
+        """
+        indent = None
+        i = attribution_start + 1
+        for i in range(attribution_start + 1, len(indented)):
+            line = indented[i].rstrip()
+            if not line:
+                break
+            if indent is None:
+                indent = len(line) - len(line.lstrip())
+            elif len(line) - len(line.lstrip()) != indent:
+                return None, None       # bad shape; not an attribution
+        return i, (indent or 0)
 
     def parse_attribution(self, indented, line_offset):
         text = '\n'.join(indented).rstrip()

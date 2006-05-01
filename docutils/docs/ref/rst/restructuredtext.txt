@@ -1215,9 +1215,9 @@ Block Quotes
 Doctree element: block_quote, attribution.
 
 A text block that is indented relative to the preceding text, without
-markup indicating it to be a literal block, is a block quote.  All
-markup processing (for body elements and inline markup) continues
-within the block quote::
+preceding markup indicating it to be a literal block or other content,
+is a block quote.  All markup processing (for body elements and inline
+markup) continues within the block quote::
 
     This is an ordinary paragraph, introducing a block quote.
 
@@ -1225,10 +1225,38 @@ within the block quote::
 
         -- Sherlock Holmes
 
-If the final block of a block quote begins with "--", "---", or a true
-em-dash (flush left within the block quote), it is interpreted as an
-attribution.  If the attribution consists of multiple lines, the left
-edges of the second and subsequent lines must align.
+A block quote may end with an attribution: a text block beginning with
+"--", "---", or a true em-dash, flush left within the block quote.  If
+the attribution consists of multiple lines, the left edges of the
+second and subsequent lines must align.
+
+Multiple block quotes may occur consecutively if terminated with
+attributions.
+
+    Unindented paragraph.
+
+        Block quote 1.
+
+        -- Attribution 1
+
+        Block quote 2.
+
+`Empty comments`_ may be used to explicitly terminate preceding
+constructs that would otherwise consume a block quote::
+
+    * List item.
+
+    ..
+
+        Block quote 3.
+
+Empty comments may also be used to separate block quotes::
+
+        Block quote 4.
+
+    ..
+
+        Block quote 5.
 
 Blank lines are required before and after a block quote, but these
 blank lines are not included as part of the block quote.
@@ -2240,10 +2268,12 @@ constructs is recognized, leave the ".." on a line by itself::
     ..
        |even| this:: !
 
+.. _empty comments:
+
 An explicit markup start followed by a blank line and nothing else
-(apart from whitespace) is an "empty comment".  It serves to terminate
-a preceding construct, and does **not** consume any indented text
-following.  To have a block quote follow a list or any indented
+(apart from whitespace) is an "_`empty comment`".  It serves to
+terminate a preceding construct, and does **not** consume any indented
+text following.  To have a block quote follow a list or any indented
 construct, insert an unindented empty comment in-between.
 
 Syntax diagram::
