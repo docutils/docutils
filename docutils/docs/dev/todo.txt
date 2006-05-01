@@ -782,17 +782,6 @@ __ rst/alternatives.html#or-not-to-do
 
   See <http://thread.gmane.org/gmane.text.docutils.user/2499>.
 
-* Allow multiple block quotes, only separated by attributions
-  (http://article.gmane.org/gmane.text.docutils.devel/2985), e.g.::
-
-      quote 1
-
-      ---Attrib 1
-
-      quote 2
-
-      ---Attrib 2
-
 * Change the specification so that more punctuation is allowed
   before/after inline markup start/end string
   (http://article.gmane.org/gmane.text.docutils.cvs/3824).
