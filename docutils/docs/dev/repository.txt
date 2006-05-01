@@ -72,6 +72,32 @@ type ::
     svn update
 
 
+Workaround for Localized Dates
+------------------------------
+
+If you have a non-english locale, you should perform all check-out and update 
+operations with ``LC_TIME=C`` in the environment.  Either set it in your shell 
+init file, or (if you like localized dates in other programs) always do ::
+
+    env LC_TIME=C svn checkout ...
+    env LC_TIME=C svn update ...
+    
+This applies both to anonymous and developer access.
+
+The reason is that subversion localizes its expansion of the ``Date``
+keyword, which may result in non-ASCII characters in other locales.
+Non-ASCII characters upset Python, even if they only appear in comments.
+Adding an encoding declaration to all Python sources doesn't help because
+the declaration would be a fixed part of the file, while the date encoding
+could be different for every person checking out the code...
+
+Arguably, the Right Thing would be for subversion to understand file
+encodings: convert file contents, localize keywords and expand an Encoding
+keyword to reflect the encoding used.  But for now, ``LC_TIME=C`` fixes this
+by disabling the translation of the date (the current time zone is still
+respected).
+
+
 Developer Access
 ----------------
 
@@ -88,6 +114,8 @@ working copy, type ::
 
     svn checkout svn+ssh://<user>@svn.berlios.de/svnroot/repos/docutils/trunk \
         docutils
+
+If you have a non-english locale, set ``LC_TIME=C`` as described above.
 
 If you previously had an anonymous working copy and gained developer
 access, you can switch the URL associated with your working copy with
