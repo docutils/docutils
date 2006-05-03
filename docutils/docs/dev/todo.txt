@@ -72,6 +72,11 @@ for inclusion in the Python standard library.
 General
 =======
 
+* Improve handling on Windows:
+
+  - Get graphical installer.
+  - Make rst2html.py an .exe file using py2exe.
+
 * .. _GUI:
 
   The user interface is very difficult to use for most Windows users;
