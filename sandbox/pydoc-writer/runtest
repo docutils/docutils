@@ -1,7 +1,17 @@
 #!/bin/sh
 
-python mkpydoc.py input/libctypes.txt output/libctypes.tex
+IN_DIR=input
+OUT_DIR=output
+EXP_DIR=expected
 
-diff -s -u expected/libctypes.tex output/libctypes.tex
-diff -s -u expected/missing.py missing.py
+for IN_F in $IN_DIR/*.txt ; do
+  BASE=`basename $IN_F`
+  if [ $BASE == "tutorial.txt" -o $BASE == "reference.txt" ] ; then
+    continue
+  fi
+  F_BASE=${BASE/.txt}
+  python mkpydoc.py $IN_F $OUT_DIR/$F_BASE.tex
+  diff -s -u $EXP_DIR/$F_BASE.tex $OUT_DIR/$F_BASE.tex
+done
+
 

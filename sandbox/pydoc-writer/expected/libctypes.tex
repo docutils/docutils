@@ -164,154 +164,168 @@ have to learn more about \code{ctypes} data types.
 
 \code{ctypes} defines a number of primitive C compatible data types :
 \begin{quote}
-
-\begin{longtable}[c]{|p{0.19\locallinewidth}|p{0.28\locallinewidth}|p{0.14\locallinewidth}|}
-\hline
-\textbf{
+\begin{tableiii}{l|l|l}{textrm}
+{
 ctypes type
-} & \textbf{
+}
+{
 C type
-} & \textbf{
+}
+{
 Python type
-} \\
-\hline
-\endhead
-
+}
+\lineiii{
 \class{c{\_}char}
- & 
+}
+{
 \code{char}
- & 
+}
+{
 character
- \\
-\hline
-
+}
+\lineiii{
 \class{c{\_}byte}
- & 
+}
+{
 \code{char}
- & 
+}
+{
 integer
- \\
-\hline
-
+}
+\lineiii{
 \class{c{\_}ubyte}
- & 
+}
+{
 \code{unsigned char}
- & 
+}
+{
 integer
- \\
-\hline
-
+}
+\lineiii{
 \class{c{\_}short}
- & 
+}
+{
 \code{short}
- & 
+}
+{
 integer
- \\
-\hline
-
+}
+\lineiii{
 \class{c{\_}ushort}
- & 
+}
+{
 \code{unsigned short}
- & 
+}
+{
 integer
- \\
-\hline
-
+}
+\lineiii{
 \class{c{\_}int}
- & 
+}
+{
 \code{int}
- & 
+}
+{
 integer
- \\
-\hline
-
+}
+\lineiii{
 \class{c{\_}uint}
- & 
+}
+{
 \code{unsigned int}
- & 
+}
+{
 integer
- \\
-\hline
-
+}
+\lineiii{
 \class{c{\_}long}
- & 
+}
+{
 \code{long}
- & 
+}
+{
 integer
- \\
-\hline
-
+}
+\lineiii{
 \class{c{\_}ulong}
- & 
+}
+{
 \code{unsigned long}
- & 
+}
+{
 long
- \\
-\hline
-
+}
+\lineiii{
 \class{c{\_}longlong}
- & 
+}
+{
 \code{{\_}{\_}int64} or
 \code{long long}
- & 
+}
+{
 long
- \\
-\hline
-
+}
+\lineiii{
 \class{c{\_}ulonglong}
- & 
+}
+{
 \code{unsigned {\_}{\_}int64} or
 \code{unsigned long long}
- & 
+}
+{
 long
- \\
-\hline
-
+}
+\lineiii{
 \class{c{\_}float}
- & 
+}
+{
 \code{float}
- & 
+}
+{
 float
- \\
-\hline
-
+}
+\lineiii{
 \class{c{\_}double}
- & 
+}
+{
 \code{double}
- & 
+}
+{
 float
- \\
-\hline
-
+}
+\lineiii{
 \class{c{\_}char{\_}p}
- & 
+}
+{
 \code{char *}
 (NUL terminated)
- & 
+}
+{
 string or
 \code{None}
- \\
-\hline
-
+}
+\lineiii{
 \class{c{\_}wchar{\_}p}
- & 
+}
+{
 \code{wchar{\_}t *}
 (NUL terminated)
- & 
+}
+{
 unicode or
 \code{None}
- \\
-\hline
-
+}
+\lineiii{
 \class{c{\_}void{\_}p}
- & 
+}
+{
 \code{void *}
- & 
+}
+{
 integer or
 \code{None}
- \\
-\hline
-\end{longtable}
+}
+\end{tableiii}
 \end{quote}
 
 All these types can be created by calling them with an optional
