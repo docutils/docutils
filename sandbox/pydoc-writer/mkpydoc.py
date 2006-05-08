@@ -43,7 +43,7 @@ class PyLaTeXWriter(LaTeXWriter):
 class PyLaTeXTranslator(LaTeXTranslator):
     remap_title = {
         }
-
+    roman = (None,None,"ii","iii","iv","v")
     # XXX need to factor this out
     module_name = "ctypes"
     module_summary = "A foreign function library for Python."
@@ -73,7 +73,7 @@ class PyLaTeXTranslator(LaTeXTranslator):
                          'field_name'):
             setattr(self, 'visit_' + nodetype, empty_method)
             setattr(self, 'depart_' + nodetype, empty_method)
-
+        # TODO document properties from document 
         self.head_prefix = [
             "\\section{\\module{%(module_name)s} --- %(module_summary)s}\n"
             "\\declaremodule{%(module_type)s}{%(module_name)s}\n"
@@ -82,9 +82,7 @@ class PyLaTeXTranslator(LaTeXTranslator):
             "\\versionadded{%(version_added)s}\n"
             % vars(self.__class__)
             ]
-        # TODO definitions get from latexwriter
-        # TODO definitions must be guarded if multiple modules are included
-        # e.g. "\\ifx\\locallinewidth\\undefined\\newlength{\\locallinewidth}\\fi\n"
+        # definitions must be guarded if multiple modules are included
         self.definitions = [
                 "\\ifx\\locallinewidth\\undefined\\newlength{\\locallinewidth}\\fi\n"
                 "\\setlength{\\locallinewidth}{\\linewidth}\n"
@@ -262,24 +260,44 @@ class PyLaTeXTranslator(LaTeXTranslator):
     def depart_Text(self, node):
         pass
 
+    # table handling
+    # TODO move table handling into latex2e writer Table class.
+    def visit_table(self, node):
+        self.active_table.open()
+    def depart_table(self, node):
+        self.body.append('\\end{table%s}\n' %
+                        (self.roman[len(self.active_table._col_specs)]) )
+        # TODO use roman to map name ? only i ... iv is supported
+        self.active_table.close()
+    def visit_thead(self, node):
+        self.body.append('\\begin{table%s}{l%s}{textrm}\n' %
+                        (self.roman[len(self.active_table._col_specs)],
+                         '|l'*(len(self.active_table._col_specs)-1)
+                        ) )
+        self.active_table.set('preamble written',1)
+    def depart_thead(self, node):
+        pass
+    def visit_row(self, node):
+        if not isinstance(node.parent, nodes.thead):
+            self.body.append('\\line%s' %
+                        (self.roman[len(self.active_table._col_specs)], )
+                                )
+    def depart_row(self, node):
+        # CAUTION: latex2html stuffs content outside of {} into paragraphs
+        # before the table.
+        pass
+    def visit_entry(self, node):
+        if node.has_key('morerows') or node.has_key('morecols'):
+            raise NotImplementedError('Cells spanning rows or columns are not'
+                                    ' supported.')
+        # CAUTION: latex2html needs ``\lineii{`` the brace must follow
+        # immediately
+        self.body.append('{')
+    def depart_entry(self, node):
+        self.body.append('}\n')
 
 
-def concatenate_sources(sources, target):
-    print "concatenating source files to %s" % target
-    outdir = os.path.dirname(target)
-    if not os.path.isdir(outdir):
-        os.makedirs(outdir)
-    outfile = open(target, "wt")
-    for filename in sources:
-        file = open(filename, "rt")
-        for line in file:
-            outfile.write(line)
-        outfile.write("\n\n")
-        file.close()
-    outfile.close()
-    
 def convert(infilename, outfilename):
-
     print "converting %s to %s" % (infilename, outfilename)
     pub = Publisher()
     pub.set_components('standalone',        # reader

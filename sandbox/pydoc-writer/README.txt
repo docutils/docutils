@@ -28,13 +28,19 @@ There is also
 Problems
 --------
 
-* An unpatched latex2html is unable to handle ``longtable`` options.
-  Maybe remove the ``[c]`` and put the longtable into a center environment,
-  but python doc uses ``tablei`` and `` longtablei``.
-* (th) the table in the ctypes tutorial has a totally different look than the other
-  tables in the docs.  Compare 
-  `ctypes <http://docs.python.org/dev/lib/ctypes-simple-data-types.html>`_
-  with `std pydoc <http://docs.python.org/dev/lib/module-struct.html>`__ .
+* Tables 
+
+  - For python documentation are typeset using ``\tableiii`` or
+    ``\longtableiii``. 
+    
+    a. Only tables with two to five columns are supported.
+    b. longtables should only be used for longer tables.
+    c. Neither multicolumn nor multirow seam to be possible.
+    d. All contents are left aligned.
+    e. Which options for colfont are there: textrm, exception .
+ 
+  - An unpatched latex2html might be unable to handle ``longtable`` options.
+    Maybe remove the ``[c]`` and put the longtable into a center environment.
 * (th) feature request: it would be very nice if it were possible to generate links
   into the index for functions and types from the rest sources.
 * Document ``markup.py`` and ``missing.py``.
@@ -42,6 +48,12 @@ Problems
 
 Change log
 ----------
+
+2006-05-08
+
+* mkpydoc.py:
+
+  - Change to generate pydoc tableii.
 
 2006-04-28 
 
