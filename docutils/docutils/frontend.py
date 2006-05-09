@@ -479,13 +479,13 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
         self.relative_path_settings = list(self.relative_path_settings)
         self.components = (self,) + tuple(components)
         self.populate_from_components(self.components)
-        self.set_defaults(**(defaults or {}))
+        self.set_defaults_from_dict(defaults or {})
         if read_config_files and not self.defaults['_disable_config']:
             try:
                 config_settings = self.get_standard_config_settings()
             except ValueError, error:
                 self.error(error)
-            self.set_defaults(**config_settings.__dict__)
+            self.set_defaults_from_dict(config_settings.__dict__)
 
     def populate_from_components(self, components):
         """
@@ -575,6 +575,9 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
             self.error('Do not specify the same file for both source and '
                        'destination.  It will clobber the source file.')
         return source, destination
+
+    def set_defaults_from_dict(self, defaults):
+        self.defaults.update(defaults)
 
     def get_default_values(self):
         """Needed to get custom `Values` instances."""
