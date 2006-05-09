@@ -428,7 +428,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
           ['--version', '-V'], {'action': 'version'}),
          ('Show this help message and exit.',
           ['--help', '-h'], {'action': 'help'}),
-         # Typically not useful for non-programmatical use.
+         # Typically not useful for non-programmatical use:
          (SUPPRESS_HELP, ['--id-prefix'], {'default': ''}),
          (SUPPRESS_HELP, ['--auto-id-prefix'], {'default': 'id'}),
          # Hidden options, for development use only:
@@ -613,11 +613,26 @@ configuration files.  See <http://docutils.sf.net/docs/user/config.html>,
 section "Old-Format Configuration Files".
 """
 
+    not_utf8_error = """\
+Unable to read configuration file "%s": content not encoded as UTF-8.
+Skipping "%s" configuration file.
+"""
+
     def read(self, filenames, option_parser):
         if type(filenames) in (types.StringType, types.UnicodeType):
             filenames = [filenames]
         for filename in filenames:
-            CP.ConfigParser.read(self, filename)
+            try:
+                # Config files must be UTF-8-encoded:
+                fp = codecs.open(filename, 'r', 'utf-8')
+            except IOError:
+                continue
+            try:
+                CP.ConfigParser.readfp(self, fp, filename)
+            except UnicodeDecodeError:
+                sys.stderr.write(self.not_utf8_error % (filename, filename))
+                continue
+            fp.close()
             if self.has_section('options'):
                 self.handle_old_config(filename)
             self.validate_settings(filename, option_parser)

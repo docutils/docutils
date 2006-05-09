@@ -362,8 +362,9 @@ priority.
 Configuration File Syntax
 -------------------------
 
-Configuration files use the standard ConfigParser.py_ Python_ module.
-From its documentation:
+Configuration files are UTF-8-encoded text files.  The
+ConfigParser.py_ module from Python_'s standard library is used to
+read them.  From its documentation:
 
     The configuration file consists of sections, lead by a "[section]"
     header and followed by "name: value" entries, with continuations
@@ -1278,9 +1279,11 @@ _`silent`
 Other Settings
 ==============
 
-These settings are only effective as command-line options, positional
-arguments, or for internal use; setting them in configuration files
-has no effect.
+Command-Line Only
+-----------------
+
+These settings are only effective as command-line options; setting
+them in configuration files has no effect.
 
 _`config`
     Path to a configuration file to read (if it exists) [#pwd]_.
@@ -1293,6 +1296,14 @@ _`config`
     to the current working directory).
 
     Default: None.  Options: ``--config``.
+
+
+Internal Settings
+-----------------
+
+These settings are for internal use only; setting them in
+configuration files has no effect, and there are no corresponding
+command-line options.
 
 _`_directories`
     (``buildhtml.py`` front end.)  List of paths to source
@@ -1316,6 +1327,7 @@ _`_source`
     Path to input source, set from positional arguments.
 
     Default: stdin (None).  No command-line options.
+
 
 .. _ISO 639: http://www.loc.gov/standards/iso639-2/englangn.html
 
