@@ -119,7 +119,7 @@ def validate_encoding_and_error_handler(
 
 def validate_boolean(setting, value, option_parser,
                      config_parser=None, config_section=None):
-    if isinstance(value, types.StringType):
+    if isinstance(value, types.UnicodeType):
         try:
             return option_parser.booleans[value.strip().lower()]
         except KeyError:
@@ -147,7 +147,7 @@ def validate_threshold(setting, value, option_parser,
 
 def validate_colon_separated_string_list(
     setting, value, option_parser, config_parser=None, config_section=None):
-    if isinstance(value, types.StringType):
+    if isinstance(value, types.UnicodeType):
         value = value.split(':')
     else:
         last = value.pop()
