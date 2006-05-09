@@ -382,7 +382,7 @@ def new_document(source_path, settings=None):
     Return a new empty document object.
 
     :Parameters:
-        `source` : string
+        `source_path` : string
             The path to or description of the source text of the document.
         `settings` : optparse.Values object
             Runtime settings.  If none provided, a default set will be used.
