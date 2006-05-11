@@ -4,7 +4,13 @@ IN_DIR=input
 OUT_DIR=output
 EXP_DIR=expected
 
-for IN_F in $IN_DIR/*.txt ; do
+if [ -z "$1" ] ; then
+  FILES=*.txt
+else
+  FILES=$1
+fi
+
+for IN_F in $IN_DIR/$FILES ; do
   BASE=`basename $IN_F`
   if [ $BASE == "tutorial.txt" -o $BASE == "reference.txt" ] ; then
     continue
