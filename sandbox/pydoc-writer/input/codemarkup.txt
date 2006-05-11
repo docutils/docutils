@@ -1,0 +1,81 @@
+Pydoc writer codemarkups
+========================
+
+literals
+--------
+
+Recognized in a text specific markup.py
+
+customroles
+-----------
+
+.. role:: funcdesc
+
+:funcdesc:`sizeof(type_or_object)`
+
+    Returns the size in bytes of a ctypes type or instance memory
+    buffer.  Does the same as the C sizeof() function.
+
+But the block after funcdesc should be inside funcdesc not in a separate 
+block quote.
+
+admonitions
+-----------
+
+Have a text block and a title.
+
+.. admonition:: sizeof(type_or_object)
+   :class: funcdesc
+
+   Returns the size in bytes of a ctypes type or instance memory
+   buffer.  Does the same as the C sizeof() function.
+
+using topics
+------------
+
+Have a text block and a title.
+
+.. topic:: c_char
+   :class: datadesc
+
+   the ...
+
+::
+
+  \begin{datadesc} {name} 
+  \begin{datadescni} {name} 
+  \begin{excdesc} {name} 
+  \begin{classdesc*} {name} 
+  \begin{csimplemacrodesc} {name} 
+  
+.. topic:: ctype with_tag and_name
+   :class: ctypedesc
+
+   Dont know how this should be set correct.
+
+::
+
+  \begin{ctypedesc} [tag]{name} 
+  \begin{memberdesc} [type name]{name} 
+  \begin{memberdescni} [type name]{name} 
+
+.. topic:: sizeof(type_or_object)
+   :class: funcdesc
+
+   Returns the size in bytes of a ctypes type or instance memory
+   buffer.  Does the same as the C sizeof() function.
+
+::
+
+  \begin{cvardesc} {type}{name} 
+  \begin{excclassdesc} {name}{constructor parameters} 
+  \begin{funcdesc} {name}{parameters} 
+  \begin{funcdescni} {name}{parameters} 
+
+  \begin{methoddesc} [type name]{name}{parameters} 
+  \begin{methoddescni} [type name]{name}{parameters}
+  
+  \begin{cmemberdesc} {container}{type}{name}
+  \begin{classdesc} {name}{constructor parameters} 
+  \begin{cfuncdesc} {type}{name}{args}
+
