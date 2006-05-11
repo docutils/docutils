@@ -174,9 +174,14 @@ class PyLaTeXTranslator(LaTeXTranslator):
 
     def visit_topic(self, node):
         classes = node.get('classes', ['topic', ])
-        if classes[0] in ('classdesc','funcdesc'):
-            self.body.append('\\begin{%s}' % classes[0])
-            self.context.append('\\end{%s}' % classes[0])
+        if classes[0] in ('datadesc', 'datadescni', 'excdesc', 'classdesc*',
+                        'csimplemacrodesc', 'ctypedesc', 'memberdesc',
+                        'memberdescni', 'cvardesc', 'excclassdesc',
+                        'funcdesc', 'funcdescni', 'methoddesc', 
+                        'methoddescni', 'cmemberdesc', 'classdesc',
+                        'cfuncdesc'):
+            self.body.append('\n\\begin{%s}' % classes[0])
+            self.context.append('\\end{%s}\n' % classes[0])
             self.in_anydesc = classes[0]
         else:
             self.context.append('')
@@ -200,9 +205,14 @@ class PyLaTeXTranslator(LaTeXTranslator):
 
     def anydesc_title(self, title):
         """Returns the title for xxxdesc environments."""
-        if self.in_anydesc == "funcdesc":
+        if self.in_anydesc in ('ctypedesc','memberdesc','memberdescni',):
+            # TODO [tag_or_type] {name}
+            return '%s' % title
+        elif self.in_anydesc in ('cvardesc','excclassdesc',
+                                'funcdesc','funcdescni'):
             # "funcname(arguments)" to "{funcname}{arguments}"
             return '{'+title.replace('(','}{').replace(')','}')
+        # 'datadesc','datadescni', 'excdesc','classdesc*','csimplemacrodesc'
         return "{%s}" % title
 
     def visit_title(self, node):
