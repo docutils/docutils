@@ -64,6 +64,7 @@ class PyLaTeXTranslator(LaTeXTranslator):
         self.head = []
         self.body_prefix = []
         self.in_title = False
+        self.in_anydesc = False  # _title is different if it is a funcdesc
 
         # Disable a bunch of methods from the base class.
         empty_method = lambda self: None
@@ -171,6 +172,19 @@ class PyLaTeXTranslator(LaTeXTranslator):
         if cmd is not None:
             self.body.append('\\%s{' % cmd)
 
+    def visit_topic(self, node):
+        classes = node.get('classes', ['topic', ])
+        if classes[0] in ('classdesc','funcdesc'):
+            self.body.append('\\begin{%s}' % classes[0])
+            self.context.append('\\end{%s}' % classes[0])
+            self.in_anydesc = classes[0]
+        else:
+            self.context.append('')
+
+    def depart_topic(self, node):
+        self.in_anydesc = False
+        self.body.append(self.context.pop())
+
     def depart_literal(self, node):
         if not self.in_title:
             self.body.append('}')
@@ -184,8 +198,18 @@ class PyLaTeXTranslator(LaTeXTranslator):
         self.verbatim = 0
         self.body.append("\n\\end{verbatim}\n")
 
+    def anydesc_title(self, title):
+        """Returns the title for xxxdesc environments."""
+        if self.in_anydesc == "funcdesc":
+            # "funcname(arguments)" to "{funcname}{arguments}"
+            return '{'+title.replace('(','}{').replace(')','}')
+        return "{%s}" % title
+
     def visit_title(self, node):
         title = node.astext()
+        if self.in_anydesc:
+            self.body.append(self.anydesc_title(title))
+            raise nodes.SkipNode
         title = self.remap_title.get(title, title)
         label = self.generate_section_label(title)
         #print "%s -> %s" % (title, label)
