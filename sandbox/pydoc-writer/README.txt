@@ -26,7 +26,7 @@ There is also
 
 
 Problems
---------
+''''''''
 
 * Tables 
 
@@ -46,8 +46,30 @@ Problems
 * Document ``markup.py`` and ``missing.py``.
 * Title, author, ... are hardcoded.
 
+Link to Indexes
+---------------
+
+::
+
+  :funcdesc: sizeof(type_or_object)
+
+      Returns the size in bytes of a ctypes type or instance memory
+	  buffer.  Does the same as the C sizeof() function.
+
+should become ::
+
+  \begin{funcdesc}{sizeof}{type_or_object}
+      Returns the size in bytes of a ctypes type or instance memory
+	  buffer.  Does the same as the C sizeof() function.
+  \end{funcdesc}
+
+the easy way is ::
+
+  .. topic:: sizeof(type_or_object)
+     :class: funcdesc
+
 Change log
-----------
+''''''''''
 
 2006-05-08
 
