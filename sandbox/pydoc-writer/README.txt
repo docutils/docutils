@@ -68,6 +68,35 @@ the easy way is ::
   .. topic:: sizeof(type_or_object)
      :class: funcdesc
 
+Environments (sorted by parameters)::
+
+  \begin{datadesc} {name} 
+  \begin{datadescni} {name} 
+  \begin{excdesc} {name} 
+  \begin{classdesc*} {name} 
+  \begin{csimplemacrodesc} {name} 
+
+  \begin{ctypedesc} [tag]{name} 
+  \begin{memberdesc} [type name]{name} 
+  \begin{memberdescni} [type name]{name} 
+  
+  \begin{cvardesc} {type}{name} 
+  \begin{funcdesc} {name}{parameters} 
+  \begin{funcdescni} {name}{parameters} 
+  \begin{classdesc} {name}{constructor parameters} 
+
+  \begin{methoddesc} [type name]{name}{parameters} 
+  \begin{methoddescni} [type name]{name}{parameters} 
+
+  \begin{cmemberdesc} {container}{type}{name}
+  \begin{excclassdesc} {name}{constructor parameters} 
+  \begin{cfuncdesc} {type}{name}{args}
+
+The ``ni``-variants do not create index entries.
+
+``classdesc*`` describes a class without describing the constructor.
+
+
 Change log
 ''''''''''
 
