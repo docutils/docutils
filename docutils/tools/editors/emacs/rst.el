@@ -180,6 +180,11 @@
 ;;   automatic toc update. The cursor ends up in the TOC and this is
 ;;   annoying. Gotta fix that.
 ;;
+;; bulleted and enumerated list items
+;; ----------------------------------
+;; - We need to provide way to rebullet bulleted lists, and that would include
+;;   automatic enumeration as well.
+;;
 ;; rst-mode
 ;; --------
 ;; - Look at the possibility of converting rst-mode from a Major mode to a Minor
@@ -191,9 +196,7 @@
 ;;   document.
 ;; - Add an option to forego using the file structure in order to make
 ;;   suggestion, and to always use the preferred decorations to do that.
-;; - The shifting functions should look at what is before the region, to try to
-;;   automatically guess whether we need to shift by 2 or 3 or 4 characters
-;; - Finish enumeration removal code
+;; - We need to automatically recenter on rst-forward-section movment commands.
 ;;
 
 
@@ -1280,10 +1283,10 @@ the hierarchy is similar to that used by rst-adjust-decoration."
   (save-excursion
     (let* ((alldecos (rst-find-all-decorations))
 	   (hier (rst-get-hierarchy alldecos))
-	   
+
 	   ;; Get a list of pairs of (level . marker)
-	   (levels-and-markers (mapcar 
-				(lambda (deco) 
+	   (levels-and-markers (mapcar
+				(lambda (deco)
 				  (cons (position (cdr deco) hier :test 'equal)
 					(let ((m (make-marker)))
 					  (goto-line (car deco))
@@ -1294,7 +1297,7 @@ the hierarchy is similar to that used by rst-adjust-decoration."
       (dolist (lm levels-and-markers)
 	;; Go to the appropriate position
 	(goto-char (cdr lm))
-	
+
 	;; Apply the new styule
 	(apply 'rst-update-section (nth (car lm) rst-preferred-decorations))
 
@@ -1738,6 +1741,7 @@ the node has been found."
     (kill-buffer (get-buffer rst-toc-buffer-name))
     (pop-to-buffer (marker-buffer pos))
     (goto-char pos)
+    ;; FIMXE: make the recentering conditional on scroll.
     (recenter 5)))
 
 (defun rst-toc-mode-mouse-goto (event)
@@ -1750,7 +1754,8 @@ the node has been found."
         (goto-char (posn-point (event-end event)))
         (setq pos (rst-toc-mode-find-section))))
     (pop-to-buffer (marker-buffer pos))
-    (goto-char pos)))
+    (goto-char pos)
+    (recenter 5)))
 
 (defun rst-toc-mode-mouse-goto-kill (event)
   (interactive "e")
@@ -1854,16 +1859,6 @@ the node has been found."
 shifted.")
 ;; FIXME: need to finish this feature properly.
 
-(defun rst-shift-region-right ()
-  "Indent region ridigly, by two characters to the right."
-  (interactive)
-  (let ((mbeg (set-marker (make-marker) (region-beginning)))
-	(mend (set-marker (make-marker) (region-end))))
-    (indent-rigidly mbeg mend 2)
-    (when rst-shift-fill-region
-      (fill-region mbeg mend))
-    ))
-
 (defun rst-find-leftmost-column (beg end)
   "Finds the leftmost column in the region."
   (let ((mincol 1000))
@@ -1877,22 +1872,208 @@ shifted.")
         ))
     mincol))
 
-(defun rst-shift-region-left (pfxarg)
-  "Indent region ridigly, by two characters to the left.
-If invoked with a prefix arg, the entire indentation is removed,
-up to the leftmost character in the region."
-  (interactive "P")
-  (let ((chars
-         (if pfxarg
-             (- (rst-find-leftmost-column (region-beginning) (region-end)))
-           -2))
-	(mbeg (set-marker (make-marker) (region-beginning)))
-	(mend (set-marker (make-marker) (region-end)))
-	)
-    (indent-rigidly mbeg mend chars)
+
+;; What we really need to do is compute all the possible alignment possibilities
+;; and then select one.
+;;
+;; .. line-block::
+;;
+;;    a) sdjsds
+;;
+;;       - sdjsd jsjds
+;;
+;;           sdsdsjdsj
+;;
+;;               11. sjdss jddjs
+;;
+;; *  *  * * *   *   *
+;;
+;; Move backwards, accumulate the beginning positions, and also the second
+;; positions, in case the line matches the bullet pattern, and then sort.
+
+(defun rst-compute-bullet-tabs (&optional pt)
+  "Search backwards from point to build the list of possible
+horizontal alignment points that includes the beginning and
+contents of a restructuredtext bulleted or enumerated list item.
+Return a sorted list of (column-number . line) pairs."
+  (save-excursion
+    (when pt (goto-char pt))
+
+    ;; We work our way backwards and towards the left.
+    (let ((leftcol 100000) ;; Current column.
+	  (tablist nil) ;; List of tab positions.
+	  )
+
+      ;; Start by skipping the current line.
+      (beginning-of-line 0)
+
+      ;; Search backwards for each line.
+      (while (and (> (point) (point-min))
+		  (> leftcol 0))
+	;; Skip empty lines.
+	(unless (looking-at "^[ \t]*$")
+	  ;; Inspect the current non-empty line
+	  (back-to-indentation)
+
+	  ;; Skip lines that are beyond the current column (we want to move
+	  ;; towards the left).
+	  (let ((col (current-column)))
+	    (when (< col leftcol)
+	      
+	      ;; Add the beginning of the line as a tabbing point.
+	      (unless (memq col (mapcar 'car tablist))
+		(setq tablist (cons (cons col (point)) tablist)))
+
+	      ;; Look at the line to figure out if it is a bulleted or enumerate
+	      ;; list item.
+	      (when (looking-at 
+		      (concat
+  		       "\\(?:"
+		       "\\(\\(?:[0-9a-zA-Z#]+[.):-]\\|[*+-]\\)\\s-+\\)"
+   		       "\\|"
+		       (format "\\(%s%s+[ \t]+\\)[^ \t]"
+			       (regexp-quote (thing-at-point 'char))
+			       (regexp-quote (thing-at-point 'char)))
+  		       "\\)"
+		       ))
+		;; Add the column of the contained item.
+		(let* ((matchlen (length (or (match-string 1) (match-string 2))))
+		       (newcol (+ col matchlen)))
+		  (unless (or (>= newcol leftcol)
+			      (memq (+ col matchlen) (mapcar 'car tablist)))
+		    (setq tablist (cons 
+				   (cons (+ col matchlen) (+ (point) matchlen))
+				   tablist))))
+		)
+
+	      (setq leftcol col)
+	      )))
+
+	;; Move backwards one line.
+	(beginning-of-line 0))
+
+      (sort tablist (lambda (x y) (< (car x) (car y)))))))
+
+(defun rst-debug-print-tabs (tablist)
+  "A routine that inserts a line and places special characters at
+the tab points in the given tablist."
+  (print tablist)
+  (beginning-of-line)
+  (insert (concat "\n" (make-string 1000 ? ) "\n"))
+  (beginning-of-line 0)
+  (dolist (col tablist)
+    (beginning-of-line)
+    (forward-char (car col))
+    (delete-char 1)
+    (insert "@")
+    ))
+
+
+(defvar rst-shift-basic-offset 2
+  "Basic horizontal shift distance when there is no preceding alignment tabs.")
+
+(defun rst-shift-region-guts (find-next-fun offset-fun)
+  "(See rst-shift-region-right for a description.)"
+  (let* ((mbeg (set-marker (make-marker) (region-beginning)))
+	 (mend (set-marker (make-marker) (region-end)))
+	 (tabs (rst-compute-bullet-tabs mbeg))
+	 (leftmostcol (rst-find-leftmost-column (region-beginning) (region-end)))
+	 )
+    ;; Add basic offset tabs at the end of the list.  This is a better
+    ;; implementation technique than hysteresis and a basic offset because it
+    ;; insures that movement in both directions is consistently using the same
+    ;; column positions.  This makes it more predictable.
+    (setq tabs
+	  (append tabs
+		  (mapcar (lambda (x) (cons x nil))
+			  (let ((maxcol 120)
+				(max-lisp-eval-depth 2000))
+			    (flet ((addnum (x)
+					   (if (> x maxcol)
+					       nil
+					     (cons x (addnum 
+						      (+ x rst-shift-basic-offset))))))
+			      (addnum (caar (last tabs)))))
+			  )))
+
+    ;; (For debugging.)
+    ;;; (print tabs)
+    ;;; (save-excursion (goto-char mbeg) (forward-char -1) (rst-debug-print-tabs tabs))
+
+    ;; Apply the indent.
+    (indent-rigidly 
+     mbeg mend 
+     
+     ;; Find the next tab after the leftmost columnt.
+     (let ((tab (funcall find-next-fun tabs leftmostcol)))
+
+       (if tab
+	   (progn
+	     (when (cdar tab)
+	       (message (format "Aligned on '%s'" 
+				(save-excursion
+				  (goto-char (cdar tab))
+				  (buffer-substring-no-properties 
+				   (line-beginning-position)
+				   (line-end-position)))
+				))
+	       )
+	     (- (caar tab) leftmostcol)) ;; Num chars.
+	 
+	 ;; Otherwise use the basic offset
+	 (funcall offset-fun rst-shift-basic-offset)
+	 )))
+
+    ;; Optionally reindent.
     (when rst-shift-fill-region
       (fill-region mbeg mend))
     ))
+
+(defun rst-shift-region-right ()
+  "Indent region ridigly, by a few characters to the right.  This
+function first computes all possible alignment columns by
+inspecting the lines preceding the region for bulleted or
+enumerated list items.  If the leftmost column is beyond the
+preceding lines, the region is moved to the right by
+rst-shift-basic-offset."
+  (interactive)
+  (rst-shift-region-guts (lambda (tabs leftmostcol)
+			   (let ((cur tabs))
+			     (while (and cur (<= (caar cur) leftmostcol))
+			       (setq cur (cdr cur)))
+			     cur)) 
+			 'identity
+			 ))
+
+(defun rst-shift-region-left (pfxarg)
+  "Like rst-shift-region-right, except we move to the left.
+Also, if invoked with a prefix arg, the entire indentation is
+removed, up to the leftmost character in the region."
+  (interactive "P")
+  (let ((leftmostcol (rst-find-leftmost-column (region-beginning) (region-end))))
+    (when (> leftmostcol 0)
+      (if pfxarg
+	  (progn
+	    (indent-rigidly (region-beginning) (region-end) (- leftmostcol))
+	    (when rst-shift-fill-region
+	      (fill-region mbeg mend))
+	    )
+	(rst-shift-region-guts (lambda (tabs leftmostcol)
+				 (let ((cur (reverse tabs)))
+				   (while (and cur (>= (caar cur) leftmostcol))
+				     (setq cur (cdr cur)))
+				   cur)) 
+			       '-
+			       ))
+      )))
+
+
+
+;; FIXME: these next functions should become part of a larger effort to redo the
+;; bullets in bulletted lists.  The enumerate would just be one of the possible
+;; outputs.
+;;
+;; FIXME: TODO we need to do the enumeration removal as well.
 
 (defun rst-enumerate-region (rbeg rend)
   "Insert numbered enumeration list prefixes to the currently
@@ -1918,13 +2099,12 @@ selected region.  With prefix argument, remove the enumeration.
 (defun rst-enumerate-insert-enum (startpos begextra endextra)
   (back-to-indentation)
   (if (= (current-column) lcol)
-      (progn 
+      (progn
 	(insert (int-to-string curnum))
 	(insert ". ")
 	(incf curnum))
     (indent-line-to (+ lcol 3))))
 
-;; FIXME: TODO we need to do the enumeration removal as well.
 
 
 

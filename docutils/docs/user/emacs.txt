@@ -263,9 +263,8 @@ C-p`` and ``C-c C-n``).
 Shifting Bullet List Levels
 ===========================
 
-Due to the nature of reStructuredText_, bullet lists are always
-indented by two characters (unless they are part of a blockquote),
-e.g. ::
+Due to the nature of reStructuredText_, bulleted lists are indented by
+two characters (unless they are part of a blockquote), e.g. ::
 
    - Fruits
 
@@ -278,11 +277,27 @@ e.g. ::
      - Zucchini
      - Chick Peas
 
+Enumerated lists, however, as indented by 3 or more characters ::
+
+   9. Apples
+
+      Oranges are tasty.
+
+   10. Oranges
+
+       Oranges are zesty.
+
+
 To this effect, when re-organizing bullet lists, it can be useful to
-shift regions of text by indents of two characters.  You can use the
-``C-c C-r`` and ``C-c C-l`` to shift the current region.  These
+have functions to shift regions of text by appropriate indents, which
+are figured out automatically by emacs.  
+
+You can use ``C-c C-r`` and ``C-c C-l`` to shift the current region
+(``rst-shift-region-right`` and ``rst-shift-region-left``).  These
 bindings are similar to the ones provided by python-mode for editing
-python code and behave similarly.
+python code and behave similarly.   They inspect the lines of text
+before the currently selected region to determine what the appropriate
+column positions are.
 
 
 Major Mode for Editing reStructuredText Documents
