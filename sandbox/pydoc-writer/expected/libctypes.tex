@@ -6,7 +6,9 @@
 \modulesynopsis{A foreign function library for Python.}
 \versionadded{2.5}
 
-Blah blah short overview of ctypes.
+
+\section{ctypes\label{ctypes-ctypes}}
+% maybe make title "ctypes --- A foreign function library for Python" 
 
 
 \subsection{ctypes tutorial\label{ctypes-ctypes-tutorial}}
@@ -1203,9 +1205,7 @@ predefined loaders should be used.
 
 Libraryloaders have the following methods:
 
-\code{find(name, mode=None)}
-\begin{quote}
-
+\begin{funcdesc}{find}{name, mode=None}
 Try to find a library, load and return it.  \var{name} is the
 library name without any prefix like \var{lib}, suffix like \code{.so},
 \code{.dylib} or version number (this is the form used for the posix
@@ -1221,11 +1221,9 @@ On other platforms, this function might call other programs like
 the compiler to find the library.  When using ctypes to write a
 shared library wrapping, consider using \method{load{\_}version} or
 \method{load} instead.
-\end{quote}
+\end{funcdesc}
 
-\code{load{\_}version(name, version=None, mode=None)}
-\begin{quote}
-
+\begin{funcdesc}{load_version}{name, version=None, mode=None}
 Build a system dependent filename from \var{name} and optionally
 \var{version}, then load and return it.  \var{name} is the library
 name without any prefix like \var{lib} and suffix like \code{.so} or
@@ -1239,11 +1237,9 @@ each platform.
 Example: calling \code{loader.load{\_}version('z', '1.1.3')} would
 possibly load \code{/usr/lib/libz.1.1.3.dylib} on Mac OS X, or
 \code{/lib/libz.so.1.1.3} on a Linux system.
-\end{quote}
+\end{funcdesc}
 
-\code{load(libname, mode=None)}
-\begin{quote}
-
+\begin{funcdesc}{load}{libname, mode=None}
 Load and return the library with the given libname.  On most
 systems \var{libname} is the filename of the shared library; when
 it's not a pathname it will be searched in a system dependent list
@@ -1254,11 +1250,9 @@ extension (like \code{.dll} on Windows) can be omitted.
 \var{mode} allows to override the default flags passed to the
 \code{dlopen()} function.  \var{RTLD{\_}LOCAL} and \var{RTLD{\_}GLOBAL} are
 typical values.  On Windows, \var{mode} is ignored.
-\end{quote}
+\end{funcdesc}
 
-\code{load{\_}library(pathname, mode=None}
-\begin{quote}
-
+\begin{funcdesc}{load_library}{pathname, mode=None}
 Load and return the library with the given pathname.  This method
 passes the \code{pathname} directly to the underlying \code{dlopen} or
 \method{LoadLibrary} function.
@@ -1266,14 +1260,12 @@ passes the \code{pathname} directly to the underlying \code{dlopen} or
 \var{mode} allows to override the default flags passed to the
 \code{dlopen()} function.  \var{RTLD{\_}LOCAL} and \var{RTLD{\_}GLOBAL} are
 typical values.  On Windows, \var{mode} is ignored.
-\end{quote}
+\end{funcdesc}
 
-\code{LoadLibrary(pathname, mode=None)}
-\begin{quote}
-
+\begin{funcdesc}{LoadLibrary}{pathname, mode=None}
 This is an alias for the \method{load{\_}library} method documented above,
 maintained for backwards comatibility only.
-\end{quote}
+\end{funcdesc}
 
 Libaries can also be loaded by accessing them as attributes of the
 loader instance, internally this calls \method{load{\_}version} without

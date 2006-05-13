@@ -26,7 +26,8 @@ predefined loaders should be used.
 
 Libraryloaders have the following methods:
 
-``find(name, mode=None)``
+.. topic:: find(name, mode=None)
+    :class: funcdesc
 
     Try to find a library, load and return it.  ``name`` is the
     library name without any prefix like ``lib``, suffix like ``.so``,
@@ -44,7 +45,8 @@ Libraryloaders have the following methods:
     shared library wrapping, consider using ``load_version`` or
     ``load`` instead.
 
-``load_version(name, version=None, mode=None)``
+.. topic:: load_version(name, version=None, mode=None)
+    :class: funcdesc
 
     Build a system dependent filename from ``name`` and optionally
     ``version``, then load and return it.  ``name`` is the library
@@ -60,7 +62,8 @@ Libraryloaders have the following methods:
     possibly load ``/usr/lib/libz.1.1.3.dylib`` on Mac OS X, or
     ``/lib/libz.so.1.1.3`` on a Linux system.
 
-``load(libname, mode=None)``
+.. topic:: load(libname, mode=None)
+    :class: funcdesc
 
     Load and return the library with the given libname.  On most
     systems ``libname`` is the filename of the shared library; when
@@ -73,7 +76,8 @@ Libraryloaders have the following methods:
     ``dlopen()`` function.  ``RTLD_LOCAL`` and ``RTLD_GLOBAL`` are
     typical values.  On Windows, ``mode`` is ignored.
 
-``load_library(pathname, mode=None``
+.. topic:: load_library(pathname, mode=None)
+    :class: funcdesc
 
     Load and return the library with the given pathname.  This method
     passes the ``pathname`` directly to the underlying ``dlopen`` or
@@ -83,7 +87,8 @@ Libraryloaders have the following methods:
     ``dlopen()`` function.  ``RTLD_LOCAL`` and ``RTLD_GLOBAL`` are
     typical values.  On Windows, ``mode`` is ignored.
 
-``LoadLibrary(pathname, mode=None)``
+.. topic:: LoadLibrary(pathname, mode=None)
+    :class: funcdesc
 
     This is an alias for the ``load_library`` method documented above,
     maintained for backwards comatibility only.
