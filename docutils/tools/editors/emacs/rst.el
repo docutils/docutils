@@ -180,6 +180,9 @@
 ;;   automatic toc update. The cursor ends up in the TOC and this is
 ;;   annoying. Gotta fix that.
 ;;
+;; - numbering: automatically detect if we have a section-numbering directive in
+;;   the corresponding section, to render the toc
+;;
 ;; bulleted and enumerated list items
 ;; ----------------------------------
 ;; - We need to provide way to rebullet bulleted lists, and that would include
@@ -198,6 +201,7 @@
 ;;   suggestion, and to always use the preferred decorations to do that.
 ;; - We need to automatically recenter on rst-forward-section movment commands.
 ;;
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -222,16 +226,17 @@
 (dolist (m `(("a" . rst-adjust)
 	     ("=" . rst-adjust)
 	     ("t" . rst-toc)
-	     ("h" . rst-display-decorations-hierarchy)
-	     ("s" . rst-straighten-decorations)
 	     ("i" . rst-toc-insert)
 	     ("+" . rst-toc-insert)
+	     ("u" . rst-toc-insert-update)
+	     ("h" . rst-display-decorations-hierarchy)
+	     ("s" . rst-straighten-decorations)
 	     ("p" . rst-backward-section)
 	     ("n" . rst-forward-section)
 	     ("r" . rst-shift-region-right)
 	     ("l" . rst-shift-region-left)
 	     ("e" . rst-enumerate-region)
-	     ("u" . rst-toc-insert-update)
+	     ("b" . rst-line-block-region)
 	     ("c" . rst-compile)
 	     ("C" . ,(lambda () (interactive) (rst-compile t)))))
   (define-key rst-prefix-map (car m) (cdr m)))
@@ -2105,6 +2110,17 @@ selected region.  With prefix argument, remove the enumeration.
 	(incf curnum))
     (indent-line-to (+ lcol 3))))
 
+
+(defun rst-line-block-region (rbeg rend &optional pfxarg)
+  "Toggle line block prefixes for a region."
+  (interactive "r\nP")
+  (let ((comment-start "| ")
+	(comment-end "")
+	(comment-start-skip "| ")
+	(comment-style 'indent)
+	(comment-multi-line nil))
+    (funcall (if pfxarg 'uncomment-region 'comment-region)
+	     rbeg rend)))
 
 
 
