@@ -44,7 +44,6 @@ Problems
 * (th) feature request: it would be very nice if it were possible to generate links
   into the index for functions and types from the rest sources.
 * Document ``markup.py`` and ``missing.py``.
-* Title, author, ... are hardcoded.
 
 Link to Indexes
 ---------------
@@ -99,6 +98,12 @@ The ``ni``-variants do not create index entries.
 
 Change log
 ''''''''''
+
+2006-05-13
+
+* mkpydoc.py:
+
+  - Take moduleinfo from docinfo fields.
 
 2006-05-08
 
