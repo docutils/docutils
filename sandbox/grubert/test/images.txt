@@ -16,10 +16,25 @@ center and scale
    :scale: 200
    :align: center
 
+.. image:: biohazard.png
+   :rotate: 90
 
 an image with a web target
 
 .. image:: debian.png
    :target: http://www.debian.org
 
+..
+
+and for figure too
+
+.. figure:: biohazard.png
+   :width: 5cm
+   :align: right
+
+figure and scale
+
+.. figure:: biohazard.png
+   :scale: 300
+   :align: left
 
