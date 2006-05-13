@@ -18,7 +18,7 @@
     2   Basic Setup
     3   Section Decoration Adjustment
       3.1  Promoting and Demoting Many Sections
-      3.2  Redoing all the Decorations to your Taste
+      3.2  Redoing All the Decorations to Your Taste
       3.3  Customizations
     4   Viewing the Hierarchy of Section Decorations
     5   Table of Contents
@@ -26,16 +26,18 @@
       5.2  Maintaining the Table of Contents Up-to-date
     6   Navigating Between the Section Titles
     7   Shifting Bullet List Levels
-    8   Major Mode for Editing reStructuredText Documents
-    9   Converting Documents from Emacs
-    10  Other / External Useful Emacs Settings
-      10.1  Settings for Filling Lists
-      10.2  ``text-mode`` Settings
-      10.3  Editing Tables: Emacs table mode
-      10.4  Character Processing
-    11  Credits
-    12  Obsolete Files
-    13  Future Work
+    8   Enumerating Lists
+    9   Creating and Remove Line Blocks
+    10  Major Mode for Editing reStructuredText Documents
+    11  Converting Documents from Emacs
+    12  Other / External Useful Emacs Settings
+      12.1  Settings for Filling Lists
+      12.2  ``text-mode`` Settings
+      12.3  Editing Tables: Emacs table mode
+      12.4  Character Processing
+    13  Credits
+    14  Obsolete Files
+    15  Future Work
 
 
 Introduction
@@ -298,6 +300,50 @@ bindings are similar to the ones provided by python-mode for editing
 python code and behave similarly.   They inspect the lines of text
 before the currently selected region to determine what the appropriate
 column positions are.
+
+
+Enumerating Lists
+=================
+
+Sometimes it can be useful to insert enumeration markers before list
+items.  You can do this easily by invoking ``rst-enumerate-region``
+with ``C-c p e``, for example, the following::
+
+  Apples
+  Oranges
+  Bananas
+
+becomes::
+
+  1. Apples
+  2. Oranges
+  3. Bananas
+
+.. note::  This will be improved in the future, as we will eventually
+           provide a function to “straighten” bulleted lists to use
+           the same bullet character, as well as to enumerate lists or
+           add bullets automatically if they are not present
+           (--blais).
+
+Creating and Remove Line Blocks
+===============================
+
+To create line blocks, first select the region to convert and invoke
+``rst-toggle-line-block`` with ``C-c p b``, for example, the
+following::
+
+  Apples
+  Oranges
+  Bananas
+
+becomes::
+
+  | Apples
+  | Oranges
+  | Bananas
+
+This works even if the region is indented.  To remove line blocks,
+select a region and invoke with a prefix argument.
 
 
 Major Mode for Editing reStructuredText Documents
