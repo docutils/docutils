@@ -75,7 +75,8 @@ class PyLaTeXTranslator(LaTeXTranslator):
             setattr(self, 'visit_' + nodetype, empty_method)
             setattr(self, 'depart_' + nodetype, empty_method)
         # TODO document properties from document 
-        self.head_prefix = [
+        self.head_prefix = []
+        dummy = [
             "\\section{\\module{%(module_name)s} --- %(module_summary)s}\n"
             "\\declaremodule{%(module_type)s}{%(module_name)s}\n"
             "\\moduleauthor{%(module_author)s}{%(module_author_email)s}\n"
@@ -112,16 +113,27 @@ class PyLaTeXTranslator(LaTeXTranslator):
         pass
 
     def visit_docinfo(self, node):
-        #print "visit_docinfo: %r" % node
-        self.docinfo = []
+        self.docinfo = {"module":"",
+                        "summary":"", 
+                        "module type":"",
+                        "module author":"",
+                        "module author email":"",
+                        "module synopsis":"",
+                        "version added":""}
 
     def depart_docinfo(self, node):
-        #print "depart_docinfo: %r" % node
-        self.body = self.docinfo + self.body
+        #self.body = self.docinfo + self.body
+        self.body.append(''.join(
+            "\\section{\\module{%(module name)s} --- %(module summary)s}\n"
+            "\\declaremodule{%(module type)s}{%(module name)s}\n"
+            "\\moduleauthor{%(module author)s}{%(module author email)s}\n"
+            "\\modulesynopsis{%(module synopsis)s}\n"
+            "\\versionadded{%(version added)s}\n"
+            % self.docinfo))
         self.docinfo = None
 
     def visit_docinfo_item(self, node, name):
-        #print "visit_docinfo_item: node=%r, name=%r" % (node, name)
+        print "visit_docinfo_item: node=%r, name=%r" % (node, name)
         if name == "author":
             (name, email) = rfc822.parseaddr(node.astext())
             self.docinfo.append("\\sectionauthor{%s}{%s}\n" % (name, email))
@@ -130,14 +142,12 @@ class PyLaTeXTranslator(LaTeXTranslator):
     def depart_docinfo_item(self, node):
         pass
 
-    #def visit_field(self, node):
-    #    (name, value) = (node[0].astext(), node[1].astext())
-    #    print "visit_field: node=%r (name=%r, value=%r)" % (node, name, value)
-    #    if self.docinfo is not None:
-    #        if name == "VersionAdded":
-    #            self.docinfo.append("\\versionadded{%s}\n" % value)
-    #            raise nodes.SkipNode
-
+    def visit_field(self, node):
+        (name, value) = (node[0].astext(), node[1].astext())
+        if self.docinfo is not None:
+            self.docinfo[node[0].astext().lower()] = node[1].astext()
+            raise nodes.SkipNode
+        
     _quoted_string_re = re.compile(r'\"[^\"]*\"')
     _short_opt_string_re = re.compile(r'-[a-zA-Z]')
     _long_opt_string_re = re.compile(r'--[a-zA-Z-]+')

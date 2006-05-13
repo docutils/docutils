@@ -1,4 +1,14 @@
-Blah blah short overview of ctypes.
+.. maybe make title "ctypes --- A foreign function library for Python"
+
+.. or use pep reader and 
+
+:Module Name: ctypes
+:Module Summary: A foreign function library for Python.
+:Module Type: standard
+:Module Author: Thomas Heller
+:Module Author Email: theller@python.net
+:Module Synopsis: A foreign function library for Python.
+:Version Added: 2.5
 
 .. include:: tutorial.txt
 .. include:: reference.txt
