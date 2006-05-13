@@ -26,9 +26,9 @@ function report() {
   fi
 }
 
-BASE_CMD="../../tools/rst2latex.py"
+BASE_CMD="../../docutils/tools/rst2latex.py --traceback --stylesheet= "
 
-CMD="../../tools/rst2latex.py"
+CMD=$BASE_CMD
 if [ -z "$1" ] ; then
   FM="*.txt"
 else
@@ -57,7 +57,6 @@ for GO in "" auto pdftex dvips,300dpi ; do
 done
 
 # font encoding
-CMD="../../tools/rst2latex.py"
 for FONTENC in "" T1 OT1 ; do
   for INF in `ls test/characters.txt` ; do
     OUTF="$INF-$FONTENC.tex"
@@ -72,7 +71,6 @@ for FONTENC in "" T1 OT1 ; do
 done
 
 # table-style
-CMD="../../tools/rst2latex.py"
 
 for TABSTYLE in "" standard booktabs nolines ; do
   for INF in `ls test/tables.txt` ; do
@@ -88,7 +86,6 @@ for TABSTYLE in "" standard booktabs nolines ; do
 done
 
 # rowspan tables
-CMD="../../tools/rst2latex.py"
 INF=test/tables-multirow.txt
 OUTF="$INF.tex"
 REFF="$OUTF.ref"
@@ -96,36 +93,34 @@ $CMD $INF > $OUTF
 do_diff $REFF $OUTF 
 
 # with generated footer
-CMD="../../tools/rst2latex.py -gs"
 INF=test/docinfo.txt
 OUTF="$INF-gs.tex"
 REFF="$OUTF.ref"
 $CMD $INF > $OUTF
 do_diff $REFF $OUTF 
 
-CMD="../../tools/rst2latex.py --documentclass=book"
+CMD="$BASE_CMD --documentclass=book"
 INF=test/docinfo.txt
 OUTF="$INF-book.tex"
 REFF="$OUTF.ref"
 $CMD $INF > $OUTF
 do_diff $REFF $OUTF 
 
-#CMD="../../tools/rst2latex.py --dump-settings"
-CMD="../../tools/rst2latex.py --no-doc-info"
+CMD="$BASE_CMD --no-doc-info"
 INF=test/docinfo.txt
 OUTF="$INF-no-info.tex"
 REFF="$OUTF.ref"
 $CMD $INF > $OUTF
 do_diff $REFF $OUTF 
 
-CMD="../../tools/rst2latex.py --no-doc-title"
+CMD="$BASE_CMD --no-doc-title"
 INF=test/docinfo.txt
 OUTF="$INF-no-title.tex"
 REFF="$OUTF.ref"
 $CMD $INF > $OUTF
 do_diff $REFF $OUTF 
 
-CMD="../../tools/rst2latex.py --no-doc-title --no-doc-info"
+CMD="$BASE_CMD --no-doc-title --no-doc-info"
 INF=test/docinfo.txt
 OUTF="$INF-no-title-info.tex"
 REFF="$OUTF.ref"
@@ -141,7 +136,7 @@ for F in docinfo docinfo-2 ; do
   do_diff $REFF $OUTF 
 done
 
-CMD="../../tools/rst2latex.py"
+CMD="$BASE_CMD"
 # with latex toc
 for F in toc ; do
   INF=test/$F.txt
@@ -170,7 +165,7 @@ for F in toc ; do
 done
 
 # use latex footnotes
-CMD="../../tools/rst2latex.py --use-latex-footnotes"
+CMD="$BASE_CMD --use-latex-footnotes"
 INF=test/footnotes.txt
 OUTF="$INF-use-latex-footnotes.tex"
 REFF="$OUTF.ref"
@@ -178,7 +173,7 @@ $CMD $INF > $OUTF
 do_diff $REFF $OUTF 
 
 # use latex citations
-CMD="../../tools/rst2latex.py --use-latex-citations"
+CMD="$BASE_CMD --use-latex-citations"
 INF=test/footnotes.txt
 OUTF="$INF-use-latex-citations.tex"
 REFF="$OUTF.ref"
@@ -191,7 +186,7 @@ REFF="$OUTF.ref"
 $CMD $INF > $OUTF
 do_diff $REFF $OUTF 
 
-CMD="../../tools/rst2latex.py --use-verbatim-when-possible"
+CMD="$BASE_CMD --use-verbatim-when-possible"
 INF=test/literal.txt
 OUTF="$INF-use-verbatim-when-possible.tex"
 REFF="$OUTF.ref"
@@ -211,7 +206,7 @@ REFF="$OUTF.ref"
 $CMD -l de $INF > $OUTF
 do_diff $REFF $OUTF 
 
-CMD="../../tools/rst2latex.py --attribution=parens"
+CMD="$BASE_CMD --attribution=parens"
 INF=test/attribution.txt
 OUTF="$INF-parens-attribution.tex"
 REFF="$OUTF.ref"
