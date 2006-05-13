@@ -46,6 +46,16 @@ Here's a reference to the above, [CIT2002]_ citation.
 .. [5] We need a lot to trigger the "too many floats".
 
 
+::
+
+  \bibitem[like{\_}this]{like{\_}this} 
+  That places forbidden characters in the citekey. 
+  It should produce 
+  \bibitem[like{\_}this]{like_this} 
+
+.. [like_this] a citation with underscore
+   
+
 Footnote with bullet list
 -------------------------
 
