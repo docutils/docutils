@@ -13,8 +13,11 @@ Tests for latex2e writer.
 from __init__ import DocutilsTestSupport
 
 def suite():
-    s = DocutilsTestSupport.PublishTestSuite('latex')
+    settings = {'use_latex_toc': 0}
+    s = DocutilsTestSupport.PublishTestSuite('latex', suite_settings=settings)
     s.generateTests(totest)
+    settings['use_latex_toc'] = 1
+    s.generateTests(totest_latex_toc)
     return s
 
 
@@ -79,6 +82,7 @@ latex_head = """\
 """
 
 totest = {}
+totest_latex_toc = {}
 
 totest['table_of_contents'] = [
 # input
@@ -130,6 +134,55 @@ Paragraph 1.
 \\hypertarget{title-2}{}
 \\pdfbookmark[1]{Title 2}{title-2}
 \\subsection*{Title 2}
+
+Paragraph 2.
+
+\\end{document}
+"""],
+
+]
+
+totest_latex_toc['table_of_contents'] = [
+# input
+["""\
+.. contents:: Table of Contents
+
+Title 1
+=======
+Paragraph 1.
+
+Title 2
+-------
+Paragraph 2.
+""",
+## # expected output
+latex_head + """\
+\\title{}
+\\author{}
+\\date{}
+\\raggedbottom
+\\begin{document}
+
+\\setlength{\\locallinewidth}{\\linewidth}
+\\hypertarget{table-of-contents}{}
+\\renewcommand{\contentsname}{Table of Contents}
+\\tableofcontents
+
+\\bigskip
+
+
+%___________________________________________________________________________
+
+\\hypertarget{title-1}{}
+\\section{Title 1}
+
+Paragraph 1.
+
+
+%___________________________________________________________________________
+
+\\hypertarget{title-2}{}
+\\subsection{Title 2}
 
 Paragraph 2.
 
