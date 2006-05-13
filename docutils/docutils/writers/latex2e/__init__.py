@@ -947,15 +947,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_bullet_list(self, node):
         if 'contents' in self.topic_classes:
-            if not self.use_latex_toc:
-                self.body.append( '\\begin{list}{}{}\n' )
+            if self.use_latex_toc:
+                raise nodes.SkipNode
+            self.body.append( '\\begin{list}{}{}\n' )
         else:
             self.body.append( '\\begin{itemize}\n' )
 
     def depart_bullet_list(self, node):
         if 'contents' in self.topic_classes:
-            if not self.use_latex_toc:
-                self.body.append( '\\end{list}\n' )
+            self.body.append( '\\end{list}\n' )
         else:
             self.body.append( '\\end{itemize}\n' )
 
@@ -1960,13 +1960,18 @@ class LaTeXTranslator(nodes.NodeVisitor):
         """Only 3 section levels are supported by LaTeX article (AFAIR)."""
 
         if isinstance(node.parent, nodes.topic):
-            # section titles before the table of contents.
+            # the table of contents.
             self.bookmark(node)
-            # BUG: latex chokes on center environment with "perhaps a missing item".
-            # so we use hfill.
-            self.body.append('\\subsubsection*{~\\hfill ')
-            # the closing brace for subsection.
-            self.context.append('\\hfill ~}\n')
+            if ('contents' in self.topic_classes
+            and self.use_latex_toc):
+                self.body.append('\\renewcommand{\\contentsname}{')
+                self.context.append('}\n\\tableofcontents\n\n\\bigskip\n')
+            else: # or section titles before the table of contents.
+                # BUG: latex chokes on center environment with 
+                # "perhaps a missing item", therefore we use hfill.
+                self.body.append('\\subsubsection*{~\\hfill ')
+                # the closing brace for subsection.
+                self.context.append('\\hfill ~}\n')
         # TODO: for admonition titles before the first section
         # either specify every possible node or ... ?
         elif isinstance(node.parent, nodes.sidebar) \
@@ -2004,10 +2009,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_topic(self, node):
         self.topic_classes = node['classes']
+
+    def depart_topic(self, node):
+        self.topic_classes = []
         if 'contents' in node['classes'] and self.use_latex_toc:
-            self.body.append('\\tableofcontents\n\n\\bigskip\n')
-            self.topic_classes = []
-            raise nodes.SkipNode
+            pass
+        else:
+            self.body.append('\n')
 
     def visit_inline(self, node): # titlereference
         classes = node.get('classes', ['Unknown', ])
@@ -2017,10 +2025,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_inline(self, node):
         self.body.append(self.context.pop())
-
-    def depart_topic(self, node):
-        self.topic_classes = []
-        self.body.append('\n')
 
     def visit_rubric(self, node):
         self.body.append('\\rubric{')
