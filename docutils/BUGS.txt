@@ -111,6 +111,12 @@ Known Bugs
 
 Also see the `SourceForge Bug Tracker`_.
 
+* .. _error reporting:
+
+  Calling rst2s5.py with a non-existent theme (``--theme
+  does_not_exist``) or a non-existent language (``--language zz``)
+  causes exceptions.  Such errors should be handled more gracefully.
+
 * There's a problem with _`hyperlink references in substitutions`::
 
       |rst| is cool!
