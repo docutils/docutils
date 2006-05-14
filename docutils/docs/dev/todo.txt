@@ -760,9 +760,10 @@ __ rst/alternatives.html#or-not-to-do
   item in a single line as ordinary paragraphs.  See
   <http://article.gmane.org/gmane.text.docutils.user/2635>.
 
-* The citation syntax could use some enhancements.  See
-  <http://thread.gmane.org/gmane.text.docutils.user/2499> and
-  <http://thread.gmane.org/gmane.text.docutils.user/2443>.
+* The citation syntax could use some improvements.  See
+  <http://thread.gmane.org/gmane.text.docutils.user/2499>,
+  <http://thread.gmane.org/gmane.text.docutils.user/2443>,
+  <http://thread.gmane.org/gmane.text.docutils.user/2715>.
 
 * The current list-recognition logic has too many false positives, as
   in ::
