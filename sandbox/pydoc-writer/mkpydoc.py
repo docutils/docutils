@@ -1,13 +1,11 @@
 #!/usr/bin/python
 
-# Convert the ctypes docs to LaTeX for use in Python docs
+# Convert the reStructuredText docs to LaTeX for use in Python docs
 
 # This script is a hacked version taken from the Optik SVN repository.
 
 import sys, os
 import re
-from popen2 import popen2
-from glob import glob
 import rfc822
 from distutils.dep_util import newer_group, newer
 from docutils.core import Publisher
@@ -44,14 +42,6 @@ class PyLaTeXTranslator(LaTeXTranslator):
     remap_title = {
         }
     roman = (None,None,"ii","iii","iv","v")
-    # XXX need to factor this out
-    module_name = "ctypes"
-    module_summary = "A foreign function library for Python."
-    module_type = "standard"
-    module_author = "Thomas Heller"
-    module_author_email = "theller@python.net"
-    module_synopsis = ("A foreign function library for Python.")
-    version_added = "2.5"
 
     refuri_override = {
         "reference" : "reference-guide",
@@ -60,6 +50,8 @@ class PyLaTeXTranslator(LaTeXTranslator):
 
     def __init__(self, document):
         LaTeXTranslator.__init__(self, document)
+        self.label_prefix = ""
+        self.docinfo = {}
         self.head_prefix = []
         self.head = []
         self.body_prefix = []
@@ -74,16 +66,7 @@ class PyLaTeXTranslator(LaTeXTranslator):
                          'field_name'):
             setattr(self, 'visit_' + nodetype, empty_method)
             setattr(self, 'depart_' + nodetype, empty_method)
-        # TODO document properties from document 
         self.head_prefix = []
-        dummy = [
-            "\\section{\\module{%(module_name)s} --- %(module_summary)s}\n"
-            "\\declaremodule{%(module_type)s}{%(module_name)s}\n"
-            "\\moduleauthor{%(module_author)s}{%(module_author_email)s}\n"
-            "\\modulesynopsis{%(module_synopsis)s}\n"
-            "\\versionadded{%(version_added)s}\n"
-            % vars(self.__class__)
-            ]
         # definitions must be guarded if multiple modules are included
         self.definitions = [
                 "\\ifx\\locallinewidth\\undefined\\newlength{\\locallinewidth}\\fi\n"
@@ -97,14 +80,16 @@ class PyLaTeXTranslator(LaTeXTranslator):
                        self.body +
                        self.body_suffix)
 
+    def set_label_prefix(self, text):
+        self.label_prefix = text.replace(" ","-")
+
     def generate_section_label(self, title):
         title = title.lower()
         title = re.sub(r'\([^\)]*\)', '', title)
         title = re.sub(r'[^\w\s\-]', '', title)
         title = re.sub(r'\b(the|an?|and|your|are)\b', '', title)
         title = re.sub(r'(example \d+).*', r'\1', title)
-##        title = title.replace("optik", "optparse")
-        return "ctypes-" + "-".join(title.split())
+        return self.label_prefix + "-" + "-".join(title.split())
 
     def visit_document(self, node):
         pass
@@ -113,39 +98,55 @@ class PyLaTeXTranslator(LaTeXTranslator):
         pass
 
     def visit_docinfo(self, node):
-        self.docinfo = {"module":"",
-                        "summary":"", 
-                        "module type":"",
-                        "module author":"",
-                        "module author email":"",
-                        "module synopsis":"",
-                        "version added":""}
+        pass
 
     def depart_docinfo(self, node):
-        #self.body = self.docinfo + self.body
-        self.body.append(''.join(
-            "\\section{\\module{%(module name)s} --- %(module summary)s}\n"
-            "\\declaremodule{%(module type)s}{%(module name)s}\n"
-            "\\moduleauthor{%(module author)s}{%(module author email)s}\n"
-            "\\modulesynopsis{%(module synopsis)s}\n"
-            "\\versionadded{%(version added)s}\n"
-            % self.docinfo))
-        self.docinfo = None
+        # module and summary are mandatory
+        self.body.append(
+                "\\section{\\module{%(module)s} --- %(summary)s}\n"
+                % self.docinfo )
+        if self.docinfo.has_key("moduletype"):
+            self.body.append(
+                    "\\declaremodule{%(moduletype)s}{%(module)s}\n"
+                    % self.docinfo )
+        if self.docinfo.has_key("moduleauthor"):
+            self.body.append(
+                    "\\moduleauthor{%(moduleauthor)s}{%(moduleauthoremail)s}\n"
+                    % self.docinfo )
+        if self.docinfo.has_key("synopsis"):
+            self.body.append(
+                    "\\modulesynopsis{%(synopsis)s}\n"
+                    % self.docinfo )
+        if self.docinfo.has_key("versionadded"):
+            self.body.append(
+                    "\\versionadded{%(versionadded)s}\n"
+                    % self.docinfo )
 
     def visit_docinfo_item(self, node, name):
-        print "visit_docinfo_item: node=%r, name=%r" % (node, name)
         if name == "author":
-            (name, email) = rfc822.parseaddr(node.astext())
-            self.docinfo.append("\\sectionauthor{%s}{%s}\n" % (name, email))
+            (ename, email) = rfc822.parseaddr(node.astext())
+            self.docinfo["moduleauthor"] = ename
+            self.docinfo["moduleauthoremail"] = email
             raise nodes.SkipNode
 
     def depart_docinfo_item(self, node):
         pass
 
     def visit_field(self, node):
-        (name, value) = (node[0].astext(), node[1].astext())
-        if self.docinfo is not None:
-            self.docinfo[node[0].astext().lower()] = node[1].astext()
+        if isinstance(node.parent, nodes.docinfo):
+            name = node[0].astext().lower().replace(" ","")
+            if name == "moduleauthor":
+                (ename, email) = rfc822.parseaddr(node[1].astext())
+                self.docinfo["moduleauthor"] = ename
+                self.docinfo["moduleauthoremail"] = email
+            elif name in ("author", "sectionauthor") :
+                (ename, email) = rfc822.parseaddr(node.astext())
+                self.docinfo["sectionauthor"] = ename
+                self.docinfo["sectionauthoremail"] = email
+            else:
+                if name == "module":
+                    self.set_label_prefix(node[1].astext())
+                self.docinfo[name] = node[1].astext()
             raise nodes.SkipNode
         
     _quoted_string_re = re.compile(r'\"[^\"]*\"')
@@ -158,7 +159,6 @@ class PyLaTeXTranslator(LaTeXTranslator):
     def visit_literal(self, node):
         assert isinstance(node[0], nodes.Text)
         text = node[0].data
-####        text = re.sub(r'optik(\.[a-z]+)?\.', 'optparse.', text)
         if self.in_title:
             cmd = None
         elif self._quoted_string_re.match(text):
@@ -231,8 +231,8 @@ class PyLaTeXTranslator(LaTeXTranslator):
             self.body.append(self.anydesc_title(title))
             raise nodes.SkipNode
         title = self.remap_title.get(title, title)
+        # TODO label_prefix might not be set yet.
         label = self.generate_section_label(title)
-        #print "%s -> %s" % (title, label)
         section_name = self.d_class.section(self.section_level + 1)
         self.body.append("\n\n\\%s{" % section_name)
         self.context.append("\\label{%s}}\n" % label)
@@ -267,7 +267,7 @@ class PyLaTeXTranslator(LaTeXTranslator):
         if node.has_key('refuri'):
             refuri = node['refuri']
             basename = os.path.splitext(refuri)[0]
-            label = "optparse-" + self.refuri_override.get(basename, basename)
+            label = self.label_prefix + "-" + self.refuri_override.get(basename, basename)
             print "got refuri=%r, label=%r" % (refuri, label)
         elif node.has_key('refid'):
             label = self.generate_section_label(node['refid'])
@@ -291,12 +291,10 @@ class PyLaTeXTranslator(LaTeXTranslator):
             text = self._em_dash_re.sub(u"\u2014", text)
             text = self._quoted_phrase_re.sub(u"\u201C\\1\u201D", text)
             text = re.sub(r'\bdocument\b', "section", text)
-####        text = re.sub(r'optik(\.[a-z]+)?', 'optparse', text)
         text = self.encode(text)
 
         # A couple of transformations are easiest if they go direct
         # to LaTeX, so do them *after* encode().
-##        text = text.replace("Optik", "\\module{optparse}")
         text = text.replace("UNIX", "\\UNIX{}")
 
         self.body.append(text)

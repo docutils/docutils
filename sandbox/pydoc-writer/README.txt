@@ -25,6 +25,24 @@ There is also
   <http://www.rexx.com/~dkuhlman/rstpythonlatex_intro.html>`__.
 
 
+Module information
+''''''''''''''''''
+
+Maybe make title "ctypes --- A foreign function library for Python"
+or use pep reader ?
+
+For example ::
+
+  :Module: ctypes
+  :Summary: A foreign function library for Python.
+  :Module Type: standard
+  :Author: Thomas Heller <theller@python.net>
+  :Synopsis: A foreign function library for Python.
+  :Version Added: 2.5
+
+
+Module and Summary are mandatory.
+
 Problems
 ''''''''
 
