@@ -349,7 +349,11 @@ select a region and invoke with a prefix argument.
 Major Mode for Editing reStructuredText Documents
 =================================================
 
-There is a major mode available for editing and syntax highlighting
+The great majority of the functionality for supporting
+reStructuredText_ can be invoked directly from Emacs' vanilla
+text-mode.
+
+However, there is also a major mode that adds syntax highlighting to
 reStructuredText_ constructs.  This mode was written by Stefan Merten
 [#]_.  It mostly provides lazy syntax coloring for many of the
 constructs that reStructuredText_ prescribes.
@@ -385,11 +389,8 @@ source file for the whole list of customizable faces).
 Converting Documents from Emacs
 ===============================
 
-At the moment there is minimal support for calling the conversion
-tools from within Emacs.  You can add a key binding like this to
-invoke it::
-
-  (local-set-key [(control c)(?9)] 'rst-compile)
+We provide a function (``rst-compile``) for invoking the document
+converters from within emacs.  It is bound on ``C-c p c``.
 
 This function basically creates a compilation command with the correct
 output name for the current buffer and then invokes Emacs' compile
