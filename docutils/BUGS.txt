@@ -111,6 +111,14 @@ Known Bugs
 
 Also see the `SourceForge Bug Tracker`_.
 
+* There's a problem with _`hyperlink references in substitutions`::
+
+      |rst| is cool!
+
+      .. |rst| replace:: reStructuredText_
+
+      .. _reStructuredText: http://docutils.sourceforge.net/rst.html
+
 * The "stylesheet" setting (a URL, to be used verbatim) should be
   allowed to be combined with "embed_stylesheet".  The stylesheet data
   should be read in using urllib.  There was an assumption that a
