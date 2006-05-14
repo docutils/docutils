@@ -117,6 +117,15 @@ class PyLaTeXTranslator(LaTeXTranslator):
             self.body.append(
                     "\\modulesynopsis{%(synopsis)s}\n"
                     % self.docinfo )
+        if self.docinfo.has_key("release"):
+            self.body.append( "\\release{%(release)s}\n" % self.docinfo )
+        if self.docinfo.has_key("shortversion"):
+            self.body.append( "\\setshortversion{%(shortversion)s}\n" 
+                              % self.docinfo )
+        if self.docinfo.has_key("sectionauthor"):
+            self.body.append(
+                    "\\sectionauthor{%(sectionauthor)s}{%(sectionauthoremail)s}\n"
+                    % self.docinfo )
         if self.docinfo.has_key("versionadded"):
             self.body.append(
                     "\\versionadded{%(versionadded)s}\n"
@@ -140,7 +149,7 @@ class PyLaTeXTranslator(LaTeXTranslator):
                 self.docinfo["moduleauthor"] = ename
                 self.docinfo["moduleauthoremail"] = email
             elif name in ("author", "sectionauthor") :
-                (ename, email) = rfc822.parseaddr(node.astext())
+                (ename, email) = rfc822.parseaddr(node[1].astext())
                 self.docinfo["sectionauthor"] = ename
                 self.docinfo["sectionauthoremail"] = email
             else:
