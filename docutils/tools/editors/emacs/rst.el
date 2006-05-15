@@ -195,6 +195,8 @@
 ;;
 ;; Other
 ;; -----
+;; - lazy-lock is obsolete, we should look at placing the require conditionally
+;;   and doing the appropriate setup for font-lock.
 ;; - We should rename "adornment" to "decoration" or vice-versa in this
 ;;   document.
 ;; - Add an option to forego using the file structure in order to make
@@ -1615,7 +1617,7 @@ delete that region. Return t if found and the cursor is left after the comment."
       (while (and
 	      (< (point) (point-max))
 	      (or (and (looking-at "[ \t]+[^ \t]") (setq last-real (point)) t)
-		  (looking-at "\\s-*$")))
+		  (looking-at "[ \t]*$")))
 	(forward-line 1)
         )
       (if last-real
@@ -1862,7 +1864,6 @@ the node has been found."
 (defvar rst-shift-fill-region nil
   "Set to true if you want to automatically re-fill the region that is being
 shifted.")
-;; FIXME: need to finish this feature properly.
 
 (defun rst-find-leftmost-column (beg end)
   "Finds the leftmost column in the region."
@@ -1915,6 +1916,7 @@ Return a sorted list of (column-number . line) pairs."
       ;; Search backwards for each line.
       (while (and (> (point) (point-min))
 		  (> leftcol 0))
+
 	;; Skip empty lines.
 	(unless (looking-at "^[ \t]*$")
 	  ;; Inspect the current non-empty line
@@ -1934,9 +1936,9 @@ Return a sorted list of (column-number . line) pairs."
 	      (when (looking-at 
 		      (concat
   		       "\\(?:"
-		       "\\(\\(?:[0-9a-zA-Z#]+[.):-]\\|[*+-]\\)\\s-+\\)"
+		       "\\(\\(?:[0-9a-zA-Z#]+[.):-]\\|[*+-]\\)[ \t]+\\)[^ \t\n]"
    		       "\\|"
-		       (format "\\(%s%s+[ \t]+\\)[^ \t]"
+		       (format "\\(%s%s+[ \t]+\\)[^ \t\n]"
 			       (regexp-quote (thing-at-point 'char))
 			       (regexp-quote (thing-at-point 'char)))
   		       "\\)"
@@ -1957,12 +1959,12 @@ Return a sorted list of (column-number . line) pairs."
 	;; Move backwards one line.
 	(beginning-of-line 0))
 
-      (sort tablist (lambda (x y) (< (car x) (car y)))))))
+      (sort tablist (lambda (x y) (<= (car x) (car y))))
+      )))
 
 (defun rst-debug-print-tabs (tablist)
   "A routine that inserts a line and places special characters at
 the tab points in the given tablist."
-  (print tablist)
   (beginning-of-line)
   (insert (concat "\n" (make-string 1000 ? ) "\n"))
   (beginning-of-line 0)
@@ -1972,6 +1974,14 @@ the tab points in the given tablist."
     (delete-char 1)
     (insert "@")
     ))
+
+(defun rst-debug-mark-found (tablist)
+  "A routine that inserts a line and places special characters at
+the tab points in the given tablist."
+  (dolist (col tablist)
+    (when (cdr col)
+      (goto-char (cdr col))
+      (insert "@"))))
 
 
 (defvar rst-shift-basic-offset 2
@@ -2002,8 +2012,9 @@ the tab points in the given tablist."
 			  )))
 
     ;; (For debugging.)
+    ;;; (save-excursion (goto-char mbeg) (forward-char -1) (rst-debug-print-tabs tabs))))
     ;;; (print tabs)
-    ;;; (save-excursion (goto-char mbeg) (forward-char -1) (rst-debug-print-tabs tabs))
+    ;;; (save-excursion (rst-debug-mark-found tabs))
 
     ;; Apply the indent.
     (indent-rigidly 
@@ -2015,13 +2026,12 @@ the tab points in the given tablist."
        (if tab
 	   (progn
 	     (when (cdar tab)
-	       (message (format "Aligned on '%s'" 
-				(save-excursion
-				  (goto-char (cdar tab))
-				  (buffer-substring-no-properties 
-				   (line-beginning-position)
-				   (line-end-position)))
-				))
+	       (message "Aligned on '%s'"
+			(save-excursion
+			  (goto-char (cdar tab))
+			  (buffer-substring-no-properties 
+			   (line-beginning-position)
+			   (line-end-position))))
 	       )
 	     (- (caar tab) leftmostcol)) ;; Num chars.
 	 
@@ -2121,6 +2131,18 @@ selected region.  With prefix argument, remove the enumeration.
 	(comment-multi-line nil))
     (funcall (if pfxarg 'uncomment-region 'comment-region)
 	     rbeg rend)))
+
+;; FIXME todo: we need to provide the option of adding the line block chars for
+;; empty lines as well.  Sometimes this has to be decided by the user, but in
+;; certain cases it could be detected automatically, e.g.
+;; 
+;;   Foo
+;;
+;;      Bar
+;;
+;;   Foo2
+;;
+
 
 
 
