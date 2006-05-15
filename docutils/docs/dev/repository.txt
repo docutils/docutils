@@ -87,9 +87,9 @@ This applies both to anonymous and developer access.
 The reason is that subversion localizes its expansion of the ``Date``
 keyword, which may result in non-ASCII characters in other locales.
 Non-ASCII characters upset Python, even if they only appear in comments.
-Adding an encoding declaration to all Python sources doesn't help because
-the declaration would be a fixed part of the file, while the date encoding
-could be different for every person checking out the code...
+Strangely, Subversion always uses UTF-8 to format the date, ignoring 
+locale settings.  So adding a UTF-8 encoding declaration to all Python
+sources would help.  However, we are not sure we want to do this.
 
 Arguably, the Right Thing would be for subversion to understand file
 encodings: convert file contents, localize keywords and expand an Encoding
