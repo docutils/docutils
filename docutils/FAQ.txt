@@ -1,5 +1,10 @@
 .. -*- coding: utf-8 -*-
 
+
+.. NOTE TO MAINTAINERS: Please add new questions to the end of their
+   sections, so section/question numbers remain stable.
+
+
 ===========================================
  Docutils FAQ (Frequently Asked Questions)
 ===========================================
