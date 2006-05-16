@@ -1058,6 +1058,80 @@ of the output.  It must also match the document encoding.  For UTF-8::
 .. _sectnum: docs/ref/rst/directives.html#sectnum
 
 
+Can I produce documents in right-to-left languages?
+---------------------------------------------------
+
+Languages written from right to left, such as Arabic and Hebrew, must
+be reordered according to the `Unicode Bidi Algorithm`_.  This
+requires support from the editor and special markup in the output
+format.
+
+The source format of reStructuredText is relatively bidi-friendly:
+most constructs are denoted by punctuation without intrusion of
+English and when you must write in English, it's usually on a separate
+line.  So any editor that auto-detects direction per-line (like gedit
+or geresh_) will suffice.
+
+Moreover, it's possible to translate_ all reStructuredText keywords.
+This was not yet done for any RTL language, but when it is, it will be
+possible to write an RTL document with vitually no English.  This will
+allow reasonable use of editors that show the whole document as either
+LTR or RTL (like Notepad, Vim and text boxes in Firefox).
+
+The second problem is bidi markup of the output.  Here is an explicit
+solution for HTML:
+
+Copy ``default.css`` to a new file and add relevant parts of the
+following::
+
+    /* Use these two if the main document direction is RTL */
+    body { direction: rtl; }
+    div.sidebar { float: left !important; }
+
+    /* The next 3 rules are very useful in documents containing pieces
+    of code in english */
+    /* Use this if you all your literal blocks (::) are LTR */
+    pre {direction: ltr; unicode-bidi: embed; }
+    /* Use this if you all your inline literals (``) are LTR */
+    tt {direction: ltr; unicode-bidi: embed; }
+    /* Use this if you all your interpretted text (`) is LTR */
+    cite {direction: ltr; unicode-bidi: embed; }
+
+    /* Allow manual direction override by class directive and roles */
+    .rtl { direction: rtl; }
+    .ltr { direction: ltr; }
+
+Select this new stylesheet with ``--stylesheet=<file>`` or the
+stylesheet_ setting.  Now if you need to override the direction of
+some element (from a paragraph to a whole section), write::
+
+    .. class:: rtl
+
+or::
+
+    .. class:: ltr
+
+before it (see the class_ directive for details).  To change the
+direction of some inline text fragment, you can use RLE/LRE/PDF
+control characters, or write ``:rtl:`RTL text``` / ``:ltr:`RTL
+text```.  To use the latter syntax, you must write this once at the
+beginning of your document::
+
+    .. role:: ltr
+    .. role:: rtl
+
+LaTeX is quite hard to implement (it doesn't support the bidi
+algorithm, so all direction changes - even numbers in RTL text - must
+be explicitly marked).  Other formats are more-or-less easy - ask on
+the `Docutils-users`_ mailing list.
+
+.. _Unicode Bidi Algorithm: http://www.unicode.org/reports/tr9/
+.. _geresh: http://www.typo.co.il/~mooffie/geresh/
+.. _translate: docs/howto/i18n.html
+.. _stylesheet: docs/user/config.html#stylesheet
+.. _class: docs/ref/rst/directives.txt#class
+
+
 How can I retrieve the body of the HTML document?
 -------------------------------------------------
 
