@@ -2044,30 +2044,40 @@ the tab points in the given tablist."
       (fill-region mbeg mend))
     ))
 
-(defun rst-shift-region-right ()
+(defun rst-shift-region-right (pfxarg)
   "Indent region ridigly, by a few characters to the right.  This
 function first computes all possible alignment columns by
 inspecting the lines preceding the region for bulleted or
 enumerated list items.  If the leftmost column is beyond the
 preceding lines, the region is moved to the right by
-rst-shift-basic-offset."
-  (interactive)
-  (rst-shift-region-guts (lambda (tabs leftmostcol)
-			   (let ((cur tabs))
-			     (while (and cur (<= (caar cur) leftmostcol))
-			       (setq cur (cdr cur)))
-			     cur)) 
-			 'identity
-			 ))
+rst-shift-basic-offset.  With a prefix argument, do not
+automatically fill the region."
+  (interactive "P")
+  (let ((rst-shift-fill-region 
+	 (if (not pfxarg) rst-shift-fill-region)))
+    (rst-shift-region-guts (lambda (tabs leftmostcol)
+			     (let ((cur tabs))
+			       (while (and cur (<= (caar cur) leftmostcol))
+				 (setq cur (cdr cur)))
+			       cur)) 
+			   'identity
+			   )))
 
 (defun rst-shift-region-left (pfxarg)
   "Like rst-shift-region-right, except we move to the left.
-Also, if invoked with a prefix arg, the entire indentation is
-removed, up to the leftmost character in the region."
+Also, if invoked with a negative prefix arg, the entire
+indentation is removed, up to the leftmost character in the
+region, and automatic filling is disabled."
   (interactive "P")
-  (let ((leftmostcol (rst-find-leftmost-column (region-beginning) (region-end))))
+  (let ((mbeg (set-marker (make-marker) (region-beginning)))
+	(mend (set-marker (make-marker) (region-end)))
+	(leftmostcol (rst-find-leftmost-column 
+		      (region-beginning) (region-end)))
+	(rst-shift-fill-region 
+	 (if (not pfxarg) rst-shift-fill-region)))
+
     (when (> leftmostcol 0)
-      (if pfxarg
+      (if (and pfxarg (< (prefix-numeric-value pfxarg) 0))
 	  (progn
 	    (indent-rigidly (region-beginning) (region-end) (- leftmostcol))
 	    (when rst-shift-fill-region
