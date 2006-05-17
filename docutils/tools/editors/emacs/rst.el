@@ -1936,7 +1936,7 @@ Return a sorted list of (column-number . line) pairs."
 	      (when (looking-at 
 		      (concat
   		       "\\(?:"
-		       "\\(\\(?:[0-9a-zA-Z#]+[.):-]\\|[*+-]\\)[ \t]+\\)[^ \t\n]"
+		       "\\(\\(?:[0-9a-zA-Z#]\\{1,3\\}[.):-]\\|[*+-]\\)[ \t]+\\)[^ \t\n]"
    		       "\\|"
 		       (format "\\(%s%s+[ \t]+\\)[^ \t\n]"
 			       (regexp-quote (thing-at-point 'char))
