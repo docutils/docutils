@@ -126,10 +126,6 @@ General
 * Change the docutils-update script (in sandbox/infrastructure), to
   support arbitrary branch snapshots.
 
-* Add a generic "container" element, equivalent to "inline", to which
-  a "class" attribute can be attached.  Will require a reST directive
-  also.
-
 * Move some general-interest sandboxes out of individuals'
   directories, into subprojects?
 
