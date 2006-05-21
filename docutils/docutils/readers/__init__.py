@@ -1,7 +1,5 @@
-# Authors: David Goodger; Ueli Schlaepfer
-# Contact: goodger@users.sourceforge.net
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Authors: David Goodger <goodger@python.org>; Ueli Schlaepfer
 # Copyright: This module has been placed in the public domain.
 
 """

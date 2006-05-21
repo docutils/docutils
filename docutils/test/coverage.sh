@@ -1,9 +1,7 @@
 #!/bin/bash
 
-# Author: Felix Wiemann
-# Contact: Felix_Wiemann@ososo.de
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Author: Felix Wiemann <Felix.Wiemann@ososo.de>
 # Copyright: This script has been placed in the public domain.
 
 set -e

@@ -1,7 +1,5 @@
-# Author: Martin Blais
-# Contact: blais@furius.ca
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Author: Martin Blais <blais@furius.ca>
 # Copyright: This module has been placed in the public domain.
 
 """A do-nothing parser."""

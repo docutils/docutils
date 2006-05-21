@@ -50,7 +50,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
     'url': 'http://docutils.sourceforge.net/',
     'version': '0.5',
     'author': 'David Goodger',
-    'author_email': 'goodger@users.sourceforge.net',
+    'author_email': 'goodger@python.org',
     'license': 'public domain, Python, BSD, GPL (see COPYING.txt)',
     'platforms': 'OS-independent',
     'package_dir': {'docutils': 'docutils', '': 'extras'},

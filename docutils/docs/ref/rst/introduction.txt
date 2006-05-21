@@ -2,7 +2,7 @@
  An Introduction to reStructuredText
 =====================================
 :Author: David Goodger
-:Contact: goodger@users.sourceforge.net
+:Contact: goodger@python.org
 :Revision: $Revision$
 :Date: $Date$
 :Copyright: This document has been placed in the public domain.
@@ -142,7 +142,7 @@ Author's note:
     reasonably simple form, that should satisfy a reasonably large
     group of reasonable people.
 
-    David Goodger (goodger@users.sourceforge.net), 2001-04-20
+    David Goodger (goodger@python.org), 2001-04-20
 
 .. _Doc-SIG: http://www.python.org/sigs/doc-sig/
 

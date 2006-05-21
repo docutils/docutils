@@ -1,7 +1,6 @@
-# Authors:  David Goodger; Garth Kidd
-# Contact: goodger@users.sourceforge.net
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Authors: David Goodger <goodger@python.org>;
+#          Garth Kidd <garth@deadlybloodyserious.com>
 # Copyright: This module has been placed in the public domain.
 
 """

@@ -1,7 +1,5 @@
-# Author: Ivan Vilata i Balaguer
-# Contact: ivan@selidor.net
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Author: Ivan Vilata i Balaguer <ivan@selidor.net>
 # Copyright: This module has been placed in the public domain.
 
 # New language mappings are welcome.  Before doing a new translation, please

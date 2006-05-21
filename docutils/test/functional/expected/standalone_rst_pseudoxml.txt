@@ -18,8 +18,8 @@
             Example, EX  Canada
             A1B 2C3
         <contact>
-            <reference refuri="mailto:goodger@users.sourceforge.net">
-                goodger@users.sourceforge.net
+            <reference refuri="mailto:goodger@python.org">
+                goodger@python.org
         <authors>
             <author>
                 Me

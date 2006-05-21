@@ -1,7 +1,5 @@
-# Author: Marek Blaha
-# Contact: mb@dat.cz
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Author: Marek Blaha <mb@dat.cz>
 # Copyright: This module has been placed in the public domain.
 
 # New language mappings are welcome.  Before doing a new translation, please

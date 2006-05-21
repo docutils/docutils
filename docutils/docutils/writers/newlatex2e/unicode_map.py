@@ -1,7 +1,5 @@
-# Author: Felix Wiemann
-# Contact: Felix_Wiemann@ososo.de
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Author: Felix Wiemann <Felix.Wiemann@ososo.de>
 # Copyright: This file has been placed in the public domain.
 
 # This is a mapping of Unicode characters to LaTeX equivalents.

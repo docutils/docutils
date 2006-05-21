@@ -1,9 +1,7 @@
 #! /usr/bin/env python
 
-# Author: reggie dugard
-# Contact: reggie@users.sourceforge.net
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Author: reggie dugard <reggie@users.sourceforge.net>
 # Copyright: This module has been placed in the public domain.
 
 """

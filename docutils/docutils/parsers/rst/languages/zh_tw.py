@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
-# Author: David Goodger
-# Contact: goodger@users.sourceforge.net
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Author: David Goodger <goodger@python.org>
 # Copyright: This module has been placed in the public domain.
 
 # New language mappings are welcome.  Before doing a new translation, please

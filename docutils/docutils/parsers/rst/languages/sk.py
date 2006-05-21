@@ -1,7 +1,5 @@
-# Author: Miroslav Vasko
-# Contact: zemiak@zoznam.sk
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Author: Miroslav Vasko <zemiak@zoznam.sk>
 # Copyright: This module has been placed in the public domain.
 
 # New language mappings are welcome.  Before doing a new translation, please

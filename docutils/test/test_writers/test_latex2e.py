@@ -1,9 +1,7 @@
 #! /usr/bin/env python
 
-# Author: engelbert gruber
-# Contact: grubert@users.sourceforge.net
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Author: engelbert gruber <grubert@users.sourceforge.net>
 # Copyright: This module has been placed in the public domain.
 
 """

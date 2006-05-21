@@ -1,10 +1,8 @@
 #!/bin/sh
 ''''exec python -u "$0" "$@" #'''
 
-# Author: David Goodger
-# Contact: goodger@users.sourceforge.net
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Author: David Goodger <goodger@python.org>
 # Copyright: This module has been placed in the public domain.
 
 __doc__ = \

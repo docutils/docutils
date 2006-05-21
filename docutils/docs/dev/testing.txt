@@ -2,8 +2,8 @@
  Docutils_ Testing
 ===================
 
-:Author: Felix Wiemann
-:Author: David Goodger
+:Authors: Felix Wiemann <Felix.Wiemann@ososo.de>;
+          David Goodger <goodger@python.org>
 :Revision: $Revision$
 :Date: $Date$
 :Copyright: This document has been placed in the public domain.
@@ -94,10 +94,8 @@ look at the following imaginary ``test_square.py``::
 
     #! /usr/bin/env python
 
-    # Author: your name
-    # Contact: your email address
-    # Revision: $Revision$
-    # Date: $Date$
+    # $Id$
+    # Author: Your Name <your_email_address@example.org>
     # Copyright: This module has been placed in the public domain.
 
     """

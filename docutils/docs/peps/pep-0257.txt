@@ -2,8 +2,8 @@ PEP: 257
 Title: Docstring Conventions
 Version: $Revision$
 Last-Modified: $Date$
-Author: David Goodger <goodger@users.sourceforge.net>,
-        Guido van Rossum <guido@python.org>
+Authors: David Goodger <goodger@python.org>,
+         Guido van Rossum <guido@python.org>
 Discussions-To: doc-sig@python.org
 Status: Active
 Type: Informational

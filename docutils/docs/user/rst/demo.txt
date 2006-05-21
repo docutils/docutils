@@ -18,7 +18,7 @@
 :Address: 123 Example Street
           Example, EX  Canada
           A1B 2C3
-:Contact: goodger@users.sourceforge.net
+:Contact: goodger@python.org
 :Authors: Me; Myself; I
 :organization: humankind
 :date: $Date$

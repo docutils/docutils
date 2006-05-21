@@ -1,7 +1,5 @@
-# Authors:   David Goodger; Gunnar Schwant
-# Contact:   goodger@users.sourceforge.net
-# Revision:  $Revision$
-# Date:      $Date$
+# $Id$
+# Author: Gunnar Schwant <g.schwant@gmx.de>
 # Copyright: This module has been placed in the public domain.
 
 # New language mappings are welcome.  Before doing a new translation, please

@@ -1,9 +1,6 @@
-# Author: Chris Liechti
-# Contact: cliechti@gmx.net
-# Author: David Goodger
-# Contact: goodger@python.org
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Authors: Chris Liechti <cliechti@gmx.net>;
+#          David Goodger <goodger@python.org>
 # Copyright: This module has been placed in the public domain.
 
 """

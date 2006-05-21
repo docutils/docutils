@@ -1,9 +1,7 @@
 #! /usr/bin/env python
 
-# Author: Garth Kidd
-# Contact: garth@deadlybloodyserious.com
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Author: Garth Kidd <garth@deadlybloodyserious.com>
 # Copyright: This module has been placed in the public domain.
 
 """

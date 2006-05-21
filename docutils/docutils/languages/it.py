@@ -1,7 +1,5 @@
-# Author: Nicola Larosa
-# Contact: docutils@tekNico.net
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Author: Nicola Larosa <docutils@tekNico.net>
 # Copyright: This module has been placed in the public domain.
 
 # New language mappings are welcome.  Before doing a new translation, please

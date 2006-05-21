@@ -1,7 +1,6 @@
-# Authors: Engelbert Gruber; Felix Wiemann
-# Contact: grubert@users.sourceforge.net
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Authors: Engelbert Gruber <grubert@users.sourceforge.net>;
+#          Felix Wiemann <Felix.Wiemann@ososo.de>
 # Copyright: This module has been placed in the public domain.
 
 # New language mappings are welcome.  Before doing a new translation, please
