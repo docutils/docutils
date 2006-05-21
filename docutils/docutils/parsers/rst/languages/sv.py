@@ -1,7 +1,5 @@
-# Author:    Adam Chodorowski
-# Contact:   chodorowski@users.sourceforge.net
-# Revision:  $Revision$
-# Date:      $Date$
+# $Id$
+# Author: Adam Chodorowski <chodorowski@users.sourceforge.net>
 # Copyright: This module has been placed in the public domain.
 
 # New language mappings are welcome.  Before doing a new translation, please

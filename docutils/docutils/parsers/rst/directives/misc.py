@@ -1,7 +1,5 @@
-# Authors: David Goodger, Dethe Elza
-# Contact: goodger@users.sourceforge.net
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Authors: David Goodger <goodger@python.org>; Dethe Elza
 # Copyright: This module has been placed in the public domain.
 
 """Miscellaneous directives."""

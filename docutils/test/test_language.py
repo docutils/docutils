@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 
-# Authors:   Engelbert Gruber; David Goodger
-# Contact:   grubert@users.sourceforge.net
-# Revision:  $Revision$
-# Date:      $Date$
+# $Id$
+# Authors: Engelbert Gruber <grubert@users.sourceforge.net>;
+#          David Goodger <goodger@python.org>
 # Copyright: This module has been placed in the public domain.
 
 """

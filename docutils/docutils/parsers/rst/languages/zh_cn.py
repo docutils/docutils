@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
-# Author: Panjunyong
-# Contact: panjy@zopechina.com
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Author: Panjunyong <panjy@zopechina.com>
 # Copyright: This module has been placed in the public domain.
 
 # New language mappings are welcome.  Before doing a new translation, please

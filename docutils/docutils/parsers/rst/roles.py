@@ -1,7 +1,5 @@
-# Author: Edward Loper
-# Contact: edloper@gradient.cis.upenn.edu
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Author: Edward Loper <edloper@gradient.cis.upenn.edu>
 # Copyright: This module has been placed in the public domain.
 
 """

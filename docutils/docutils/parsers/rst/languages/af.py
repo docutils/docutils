@@ -1,7 +1,5 @@
-# Author: Jannie Hofmeyr
-# Contact: jhsh@sun.ac.za
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Author: Jannie Hofmeyr <jhsh@sun.ac.za>
 # Copyright: This module has been placed in the public domain.
 
 # New language mappings are welcome.  Before doing a new translation, please

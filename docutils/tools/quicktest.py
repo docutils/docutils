@@ -1,11 +1,8 @@
 #!/usr/bin/env python
 
-# Author: Garth Kidd
-# Contact: garth@deadlybloodyserious.com
-# Author: David Goodger
-# Contact: goodger@users.sourceforge.net
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Authors: Garth Kidd <garth@deadlybloodyserious.com>;
+#          David Goodger <goodger@python.org>
 # Copyright: This module has been placed in the public domain.
 
 try:

@@ -1,8 +1,6 @@
-# :Author: Miroslav Vasko
-# :Contact: zemiak@zoznam.sk
-# :Revision: $Revision$
-# :Date: $Date$
-# :Copyright: This module has been placed in the public domain.
+# $Id$
+# Author: Miroslav Vasko <zemiak@zoznam.sk>
+# Copyright: This module has been placed in the public domain.
 
 # New language mappings are welcome.  Before doing a new translation, please
 # read <http://docutils.sf.net/docs/howto/i18n.html>.  Two files must be

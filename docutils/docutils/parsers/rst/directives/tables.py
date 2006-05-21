@@ -1,7 +1,5 @@
-# Authors: David Goodger, David Priest
-# Contact: goodger@python.org
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Authors: David Goodger <goodger@python.org>; David Priest
 # Copyright: This module has been placed in the public domain.
 
 """

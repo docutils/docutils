@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
-# Author: Joe YS Jaw
-# Contact: joeysj@users.sourceforge.net
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Author: Joe YS Jaw <joeysj@users.sourceforge.net>
 # Copyright: This module has been placed in the public domain.
 
 # New language mappings are welcome.  Before doing a new translation, please

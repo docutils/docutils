@@ -2,7 +2,7 @@
  Docutils_ Release Procedure
 =============================
 
-:Author: David Goodger; Felix Wiemann; open to all Docutils developers
+:Authors: David Goodger; Felix Wiemann; open to all Docutils developers
 :Contact: goodger@python.org
 :Date: $Date$
 :Revision: $Revision$

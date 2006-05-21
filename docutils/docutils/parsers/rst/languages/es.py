@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
-# Author: Marcelo Huerta San Martín
-# Contact: richieadler@users.sourceforge.net
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Author: Marcelo Huerta San Martín <richieadler@users.sourceforge.net>
 # Copyright: This module has been placed in the public domain.
 
 # New language mappings are welcome.  Before doing a new translation, please

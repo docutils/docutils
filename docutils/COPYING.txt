@@ -3,7 +3,7 @@
 ==================
 
 :Author: David Goodger
-:Contact: goodger@users.sourceforge.net
+:Contact: goodger@python.org
 :Date: $Date$
 :Web site: http://docutils.sourceforge.net/
 :Copyright: This document has been placed in the public domain.

@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 
-# Author: Chris Liechti
-# Contact: cliechti@gmx.net
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Author: Chris Liechti <cliechti@gmx.net>
 # Copyright: This module has been placed in the public domain.
 
 """

@@ -1,7 +1,5 @@
-# Author: Engelbert Gruber
-# Contact: grubert@users.sourceforge.net
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Author: Engelbert Gruber <grubert@users.sourceforge.net>
 # Copyright: This module has been placed in the public domain.
 
 """

@@ -1,9 +1,7 @@
 #! /usr/bin/env python
 
-# Author: David Goodger
-# Contact: goodger@python.org
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Author: David Goodger <goodger@python.org>
 # Copyright: This program has been placed in the public domain.
 
 """

@@ -1,7 +1,5 @@
-# Author: Roman Suzi
-# Contact: rnd@onego.ru
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Author: Roman Suzi <rnd@onego.ru>
 # Copyright: This module has been placed in the public domain.
 
 # New language mappings are welcome.  Before doing a new translation, please

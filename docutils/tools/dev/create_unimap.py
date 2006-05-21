@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 
-# Author: Felix Wiemann
-# Contact: Felix_Wiemann@ososo.de
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Author: Felix Wiemann <Felix.Wiemann@ososo.de>
 # Copyright: This file has been placed in the public domain.
 
 # Call: create_unimap.py < unicode.xml > unicode_latex.py
@@ -65,10 +63,8 @@ unicode_map.update(text_map)
 # Now unicode_map contains the text entries plus dollar-enclosed math
 # entries for those chars for which no text entry exists.
 
-print '# Author: Felix Wiemann'
-print '# Contact: Felix_Wiemann@ososo.de'
-print '# Revision: $%s$' % 'Revision'
-print '# Date: $%s$' % 'Date'
+print '# $%s$' % 'Id'
+print '# Author: Felix Wiemann <Felix.Wiemann@ososo.de>'
 print '# Copyright: This file has been placed in the public domain.'
 print
 print '# This is a mapping of Unicode characters to LaTeX equivalents.'
