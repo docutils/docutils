@@ -1,5 +1,5 @@
 ;; Authors: Martin Blais <blais@furius.ca>
-;; Date: $Date: 2005/04/01 23:19:41 $
+;; Date: $Date$
 ;; Copyright: This module has been placed in the public domain.
 ;;
 ;; Simple generic test runner for test scripts.
