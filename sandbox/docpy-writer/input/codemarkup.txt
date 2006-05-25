@@ -30,10 +30,29 @@ Have a text block and a title.
    Returns the size in bytes of a ctypes type or instance memory
    buffer.  Does the same as the C sizeof() function.
 
-using topics
-------------
+definition lists
+----------------
 
-Have a text block and a title.
+with classifier ::
+
+   sizeof(type_or_object) : function
+       Returns the size in bytes of a ctypes type or instance memory
+	   buffer.  Does the same as the C sizeof() function.
+
+
+sizeof(type_or_object) : function
+    Returns the size in bytes of a ctypes type or instance memory
+    buffer.  Does the same as the C sizeof() function.
+
+directives
+----------
+
+see sandbox/edloper/docpy/asyncore.rst.
+
+topics
+------
+
+Have a text block and a title and are already useable.
 
 .. topic:: c_char
    :class: datadesc
