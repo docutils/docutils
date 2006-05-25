@@ -89,6 +89,7 @@ class Input(TransformSpec):
                 # data that *IS* UTF-8:
                 encodings = ['utf-8']
                 try:
+                    # for Python 2.2 compatibility
                     encodings.append(locale.nl_langinfo(locale.CODESET))
                 except:
                     pass
