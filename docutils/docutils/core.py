@@ -468,9 +468,9 @@ def publish_from_doctree(document, destination_path=None,
                          settings_overrides=None, config_section=None,
                          enable_exit_status=None):
     """
-    Set up & run a `Publisher` to render from an existing document tree data
-    structure, for programmatic use with string I/O.  Return a pair of encoded
-    string output and document parts.
+    Set up & run a `Publisher` to render from an existing document
+    tree data structure, for programmatic use with string I/O.  Return
+    the encoded string output.
 
     Note that document.settings is overridden; if you want to use the settings
     of the original `document`, pass settings=document.settings.
