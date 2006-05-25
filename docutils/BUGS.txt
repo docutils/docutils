@@ -155,6 +155,33 @@ Also see the `SourceForge Bug Tracker`_.
     (explicitly), just implicitly/automatically.  See rev. 1.74 of
     docutils/parsers/rst/states.py for an example of how to set.
 
+  - The line numbers of definition list items are wrong::
+
+        $ rst2pseudoxml.py --expose-internal-attribute line
+        1
+          2
+          3
+
+        5
+          6
+          7
+        <document source="<stdin>">
+            <definition_list>
+                <definition_list_item internal:line="3">
+                    <term>
+                        1
+                    <definition>
+                        <paragraph internal:line="2">
+                            2
+                            3
+                <definition_list_item internal:line="6">
+                    <term>
+                        5
+                    <definition>
+                        <paragraph internal:line="6">
+                            6
+                            7
+
 * .. _none source:
 
   Quite a few nodes are getting a "None" source attribute as well.  In
