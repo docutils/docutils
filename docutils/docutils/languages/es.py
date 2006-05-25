@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # $Id$
-# Author: Marcelo Huerta San Martín <mghsm@uol.com.ar>
+# Author: Marcelo Huerta San Martín <richieadler@users.sourceforge.net>
 # Copyright: This module has been placed in the public domain.
 
 # New language mappings are welcome.  Before doing a new translation, please
