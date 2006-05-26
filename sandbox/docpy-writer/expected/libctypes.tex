@@ -1161,15 +1161,16 @@ object accessing the root-object's underlying buffer.
 
 
 \subsubsection{Bugs, ToDo and non-implemented things\label{ctypes-bugs-todo-non-implemented-things}}
-\begin{description}
-\item[{XXX Wrong}] 
+
+\begin{datadescni}{XXX Wrong}
 Bitfields are not implemented.
 
 Enumeration types are not implemented. You can do it easily
 yourself, using \class{c{\_}int} as the base class.
 
 \code{long double} is not implemented.
-\end{description}
+
+\end{datadescni}
 % no longer true:  You cannot pass structures to functions as arguments, and you
 % cannot set them as return type (only pointers). 
 % no longer true?   Callback functions implemented in Python can *only* return integers. 

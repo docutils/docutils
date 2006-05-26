@@ -191,6 +191,7 @@ class PyLaTeXTranslator(LaTeXTranslator):
         if cmd is not None:
             self.body.append('\\%s{' % cmd)
 
+    # use topics for special environments
     def visit_topic(self, node):
         classes = node.get('classes', ['topic', ])
         if classes[0] in ('datadesc', 'datadescni', 'excdesc', 'classdesc*',
@@ -208,6 +209,74 @@ class PyLaTeXTranslator(LaTeXTranslator):
     def depart_topic(self, node):
         self.in_anydesc = False
         self.body.append(self.context.pop())
+
+    # use definition lists for special environments
+    #
+    # definition_list
+    #   defintion_list_item
+    #     term
+    #     classifier
+    #     definition
+    #       paragraph ?
+    def visit_definition_list(self, node):
+        pass
+
+    def depart_definition_list(self, node):
+        pass
+
+    def visit_definition_list_item(self, node):
+        self._dl_term = []
+
+    def depart_definition_list_item(self, node):
+        try:
+            self.body.append(self.context.pop())
+        except:
+            self.body.append("% WARN definition list without classifier\n")
+            
+
+    def visit_term(self, node):
+        self._dl_term.append(node.astext())
+        raise nodes.SkipNode
+
+    def depart_term(self, node):
+        pass
+    
+    def visit_classifier(self, node):
+        # TODO here it should be decided if it is latex or python
+        classifier = node.astext()
+        
+        if classifier in ('datadesc', 'datadescni', 'excdesc', 'classdesc*',
+                        'csimplemacrodesc', 'ctypedesc', 'memberdesc',
+                        'memberdescni', 'cvardesc', 'excclassdesc',
+                        'funcdesc', 'funcdescni', 'methoddesc', 
+                        'methoddescni', 'cmemberdesc', 'classdesc',
+                        'cfuncdesc'):
+            pass
+        else:
+            classifier = 'datadescni'
+        self.body.append('\n\\begin{%s}' % classifier)
+        self.in_anydesc = classifier
+        self.body.append(self.anydesc_title(self._dl_term.pop()))
+        self.context.append('\\end{%s}\n' % classifier)
+        self.in_anydesc = None
+        raise nodes.SkipNode
+
+    def depart_classifier(self, node):
+        pass
+
+    def visit_definition(self, node):
+        if len(self._dl_term)>0:
+            # no classifier, fake it (maybe make a plain latex description).
+            classifier = 'datadescni'
+            self.body.append('\n\\begin{%s}' % classifier)
+            self.in_anydesc = classifier
+            self.body.append(self.anydesc_title(self._dl_term.pop()))
+            self.context.append('\\end{%s}\n' % classifier)
+            self.in_anydesc = None
+
+    def depart_definition(self, node):
+        self.body.append('\n')
+
 
     def depart_literal(self, node):
         if not self.in_title:
@@ -258,18 +327,6 @@ class PyLaTeXTranslator(LaTeXTranslator):
         pass
 
     def bookmark(self, node):
-        pass
-
-    def visit_definition(self, node):
-        pass
-
-    def depart_definition(self, node):
-        pass
-    
-    def visit_definition_list_item(self, node):
-        pass
-
-    def depart_definition_list_item(self, node):
         pass
 
     def visit_reference(self, node):
