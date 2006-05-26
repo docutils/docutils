@@ -80,10 +80,17 @@ should become ::
 	  buffer.  Does the same as the C sizeof() function.
   \end{funcdesc}
 
-the easy way is ::
+the easy way is (supported) ::
 
   .. topic:: sizeof(type_or_object)
      :class: funcdesc
+
+other definition lists (supported). Plain definition lists dont work, but are
+written as datadescni, this might result in too much white space. ::
+
+  sizeof(type_or_object) : funcdesc
+      Returns the size in bytes of a ctypes type or instance memory
+	  buffer.  Does the same as the C sizeof() function.
 
 Environments (sorted by parameters)::
 

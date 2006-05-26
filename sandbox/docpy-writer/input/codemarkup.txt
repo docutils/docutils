@@ -35,14 +35,24 @@ definition lists
 
 with classifier ::
 
-   sizeof(type_or_object) : function
+   sizeof(type_or_object) : funcdesc
        Returns the size in bytes of a ctypes type or instance memory
 	   buffer.  Does the same as the C sizeof() function.
 
 
-sizeof(type_or_object) : function
+sizeof(type_or_object) : funcdesc
     Returns the size in bytes of a ctypes type or instance memory
     buffer.  Does the same as the C sizeof() function.
+
+But what happens to plain definitions::
+
+  standalone :
+     is marked as datadescni
+
+standalone :
+   is marked as datadescni
+this :
+   might be a not so optimal solution.
 
 directives
 ----------
