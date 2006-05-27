@@ -26,9 +26,7 @@ predefined loaders should be used.
 
 Libraryloaders have the following methods:
 
-.. topic:: find(name, mode=None)
-    :class: funcdesc
-
+find(name, mode=None) : funcdesc
     Try to find a library, load and return it.  ``name`` is the
     library name without any prefix like ``lib``, suffix like ``.so``,
     ``.dylib`` or version number (this is the form used for the posix
