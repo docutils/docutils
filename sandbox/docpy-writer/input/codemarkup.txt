@@ -60,10 +60,6 @@ with classifier ::
 	   buffer.  Does the same as the C sizeof() function.
 
 
-sizeof(type_or_object) : funcdesc
-    Returns the size in bytes of a ctypes type or instance memory
-    buffer.  Does the same as the C sizeof() function.
-
 plain definitions are set as datadescni, maybe latex description would 
 be better ::
 
@@ -75,11 +71,22 @@ test samples
 
 standalone :
    is marked as datadescni
-this :
+which :
    might be a not so optimal solution.
+
+Real informational units
 
 Class : classdesc*
    without constructor documentation.
+
+sizeof(type_or_object) : funcdesc
+    Returns the size in bytes of a ctypes type or instance memory
+    buffer.  Does the same as the C sizeof() function.
+
+with optional parameter
+
+create_string_buffer(init[, size]) : funcdesc
+    does this or that
 
 
 alternatives
