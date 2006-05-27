@@ -72,7 +72,7 @@ This is done by *informational units*.
   sizeof(type_or_object)
 
       Returns the size in bytes of a ctypes type or instance memory
-	  buffer.  Does the same as the C sizeof() function.
+      buffer.  Does the same as the C sizeof() function.
 
 should become ::
 
@@ -87,7 +87,10 @@ Plain definition lists are only supported by transaltion to
 
   sizeof(type_or_object) : funcdesc
       Returns the size in bytes of a ctypes type or instance memory
-	  buffer.  Does the same as the C sizeof() function.
+      buffer.  Does the same as the C sizeof() function.
+
+Note: the classifier must be preceeded by blank colon blank (`` : ``)
+  and no blank line before the descriptional text.
 
 Environments (sorted by parameters)::
 
@@ -125,7 +128,10 @@ Change log
 
 * mkpydoc.py:
 
-  - 2006-05-27: definition lists with classifiers for information units.
+  - 2006-05-27: 
+  
+    - parameters in ``[]`` are marked optional.
+    - definition lists with classifiers for information units.
   - 2006-05-13: Take moduleinfo from docinfo fields.
   - 2006-05-08: Change to generate pydoc tableii.
   - 2006-04-28:

@@ -275,7 +275,7 @@ class PyLaTeXTranslator(LaTeXTranslator):
             self.in_anydesc = None
 
     def depart_definition(self, node):
-        self.body.append('\n')
+        pass
 
 
     def depart_literal(self, node):
@@ -299,7 +299,9 @@ class PyLaTeXTranslator(LaTeXTranslator):
         elif self.in_anydesc in ('cvardesc','excclassdesc',
                                 'funcdesc','funcdescni'):
             # "funcname(arguments)" to "{funcname}{arguments}"
-            return '{'+title.replace('(','}{').replace(')','}')
+            # "funcname([arguments])" to "{funcname}{\optional{arguments}}"
+            t = '{'+title.replace('(','}{').replace(')','}')
+            return t.replace('[','\\optional{').replace(']','}')
         # 'datadesc','datadescni', 'excdesc','classdesc*','csimplemacrodesc'
         return "{%s}" % title
 
