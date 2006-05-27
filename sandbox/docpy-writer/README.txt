@@ -66,9 +66,10 @@ Problems
 Link to Indexes
 ---------------
 
+This is done by *informational units*.
 ::
 
-  :funcdesc: sizeof(type_or_object)
+  sizeof(type_or_object)
 
       Returns the size in bytes of a ctypes type or instance memory
 	  buffer.  Does the same as the C sizeof() function.
@@ -80,13 +81,9 @@ should become ::
 	  buffer.  Does the same as the C sizeof() function.
   \end{funcdesc}
 
-the easy way is (supported) ::
-
-  .. topic:: sizeof(type_or_object)
-     :class: funcdesc
-
-other definition lists (supported). Plain definition lists dont work, but are
-written as datadescni, this might result in too much white space. ::
+this is done with definition lists with classifiers.
+Plain definition lists are only supported by transaltion to 
+``datadescni``, this might result in too much white space. ::
 
   sizeof(type_or_object) : funcdesc
       Returns the size in bytes of a ctypes type or instance memory
@@ -124,32 +121,20 @@ The ``ni``-variants do not create index entries.
 Change log
 ''''''''''
 
-2006-05-13
+
 
 * mkpydoc.py:
 
-  - Take moduleinfo from docinfo fields.
+  - 2006-05-27: definition lists with classifiers for information units.
+  - 2006-05-13: Take moduleinfo from docinfo fields.
+  - 2006-05-08: Change to generate pydoc tableii.
+  - 2006-04-28:
 
-2006-05-08
+    - Patch for python 2.3.
+    - Filenames from command line.
+    - Guard definition of ``locallinewidth`` against redefinition.
+    - latex needs definition of ``locallinewidth``.
 
-* mkpydoc.py:
-
-  - Change to generate pydoc tableii.
-
-2006-04-28 
-
-* mkpydoc.py:
-
-  - Patch for python 2.3.
-  - Filenames from command line.
-  - Guard definition of ``locallinewidth`` against redefinition.
-  - latex needs definition of ``locallinewidth``.
-
-2006-04-xx  
-
-* mkpydoc.py - from theller, ctypes repository.
-
-
-
+  - 2006-04-xx: from theller, ctypes repository.
 
 .. _Docutils: http://docutils.sourceforge.net/
