@@ -4,70 +4,12 @@ Pydoc writer codemarkups
 literals
 --------
 
-Recognized in a text specific markup.py
+Literal are recognized by a text specific markup.py
 
-customroles
------------
+informational units
+-------------------
 
-.. role:: funcdesc
-
-:funcdesc:`sizeof(type_or_object)`
-
-    Returns the size in bytes of a ctypes type or instance memory
-    buffer.  Does the same as the C sizeof() function.
-
-But the block after funcdesc should be inside funcdesc not in a separate 
-block quote.
-
-admonitions
------------
-
-Have a text block and a title.
-
-.. admonition:: sizeof(type_or_object)
-   :class: funcdesc
-
-   Returns the size in bytes of a ctypes type or instance memory
-   buffer.  Does the same as the C sizeof() function.
-
-definition lists
-----------------
-
-with classifier ::
-
-   sizeof(type_or_object) : funcdesc
-       Returns the size in bytes of a ctypes type or instance memory
-	   buffer.  Does the same as the C sizeof() function.
-
-
-sizeof(type_or_object) : funcdesc
-    Returns the size in bytes of a ctypes type or instance memory
-    buffer.  Does the same as the C sizeof() function.
-
-But what happens to plain definitions::
-
-  standalone :
-     is marked as datadescni
-
-standalone :
-   is marked as datadescni
-this :
-   might be a not so optimal solution.
-
-directives
-----------
-
-see sandbox/edloper/docpy/asyncore.rst.
-
-topics
-------
-
-Have a text block and a title and are already useable.
-
-.. topic:: c_char
-   :class: datadesc
-
-   the ...
+these are markups to allow index creation.
 
 ::
 
@@ -107,4 +49,73 @@ Have a text block and a title and are already useable.
   \begin{cmemberdesc} {container}{type}{name}
   \begin{classdesc} {name}{constructor parameters} 
   \begin{cfuncdesc} {type}{name}{args}
+
+definition lists
+''''''''''''''''
+
+with classifier ::
+
+   sizeof(type_or_object) : funcdesc
+       Returns the size in bytes of a ctypes type or instance memory
+	   buffer.  Does the same as the C sizeof() function.
+
+
+sizeof(type_or_object) : funcdesc
+    Returns the size in bytes of a ctypes type or instance memory
+    buffer.  Does the same as the C sizeof() function.
+
+plain definitions are set as datadescni, maybe latex description would 
+be better ::
+
+  standalone :
+     is marked as datadescni
+
+test samples
+''''''''''''
+
+standalone :
+   is marked as datadescni
+this :
+   might be a not so optimal solution.
+
+Class : classdesc*
+   without constructor documentation.
+
+
+alternatives
+''''''''''''
+
+* customroles ::
+
+    .. role:: funcdesc
+
+    :funcdesc:`sizeof(type_or_object)`
+
+        Returns the size in bytes of a ctypes type or instance memory
+        buffer.  Does the same as the C sizeof() function.
+
+  But the block after funcdesc should be inside funcdesc not in a separate 
+  block quote.
+
+* admonitions : 
+  Have a text block and a title. ::
+
+    .. admonition:: sizeof(type_or_object)
+       :class: funcdesc
+
+       Returns the size in bytes of a ctypes type or instance memory
+       buffer.  Does the same as the C sizeof() function.
+
+* directives
+
+  see sandbox/edloper/docpy/asyncore.rst.
+
+* topics
+
+  Have a text block and a title::
+
+    .. topic:: c_char
+       :class: datadesc
+
+       the ...
 
