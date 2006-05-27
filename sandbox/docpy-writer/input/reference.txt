@@ -43,9 +43,7 @@ find(name, mode=None) : funcdesc
     shared library wrapping, consider using ``load_version`` or
     ``load`` instead.
 
-.. topic:: load_version(name, version=None, mode=None)
-    :class: funcdesc
-
+load_version(name, version=None, mode=None) : funcdesc
     Build a system dependent filename from ``name`` and optionally
     ``version``, then load and return it.  ``name`` is the library
     name without any prefix like ``lib`` and suffix like ``.so`` or
@@ -60,9 +58,7 @@ find(name, mode=None) : funcdesc
     possibly load ``/usr/lib/libz.1.1.3.dylib`` on Mac OS X, or
     ``/lib/libz.so.1.1.3`` on a Linux system.
 
-.. topic:: load(libname, mode=None)
-    :class: funcdesc
-
+load(libname, mode=None) : funcdesc
     Load and return the library with the given libname.  On most
     systems ``libname`` is the filename of the shared library; when
     it's not a pathname it will be searched in a system dependent list
@@ -74,9 +70,7 @@ find(name, mode=None) : funcdesc
     ``dlopen()`` function.  ``RTLD_LOCAL`` and ``RTLD_GLOBAL`` are
     typical values.  On Windows, ``mode`` is ignored.
 
-.. topic:: load_library(pathname, mode=None)
-    :class: funcdesc
-
+load_library(pathname, mode=None) : funcdesc
     Load and return the library with the given pathname.  This method
     passes the ``pathname`` directly to the underlying ``dlopen`` or
     ``LoadLibrary`` function.
@@ -85,9 +79,7 @@ find(name, mode=None) : funcdesc
     ``dlopen()`` function.  ``RTLD_LOCAL`` and ``RTLD_GLOBAL`` are
     typical values.  On Windows, ``mode`` is ignored.
 
-.. topic:: LoadLibrary(pathname, mode=None)
-    :class: funcdesc
-
+LoadLibrary(pathname, mode=None) : funcdesc
     This is an alias for the ``load_library`` method documented above,
     maintained for backwards comatibility only.
 
