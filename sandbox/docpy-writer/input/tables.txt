@@ -1,0 +1,35 @@
+Testing tables
+--------------
+
+:Module: pydoctest
+:Summary: test table conversion
+:Author: engelbert gruber <grubert@users.sourceforge.net>
+:Section Author: GruBert <grubert@users.sourceforge.net>
+
+--------------
+
+* Spanning cells are not supported.
+* Two to five columns only AFAIK.
+
+=====  =====  ======
+  A      B    A or B
+=====  =====  ======
+False  False  False
+True   False  True
+False  True   True
+True   True   True
+=====  =====  ======
+
+=== === === ===
+ A   B   C   D 
+=== === === ===
+ 1   2   3   4
+ 1   2   3   4
+=== === === ===
+
+=== === === === ===
+ A   B   C   D   E
+=== === === === ===
+ 1   2   3   4   5
+ 1   2   3   4   5
+=== === === === ===

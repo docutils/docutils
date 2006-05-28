@@ -1,0 +1,28 @@
+\ifx\locallinewidth\undefined\newlength{\locallinewidth}\fi
+\setlength{\locallinewidth}{\linewidth}
+
+
+\section{General text markup for rst to docpy\label{-general-text-markup-for-rst-to-docpy}}
+
+reST supports: attention, caution, danger, error, hint, important,
+note, tip, warning.
+
+docpy has a notice environment in two variants, note and warning.
+\begin{notice}[note]
+admonitions should become a \code{note notice}
+\end{notice}
+\begin{notice}[warning]
+danger is everywhere.
+}}
+\end{sffamily}
+\end{center}
+\begin{center}\begin{sffamily}
+\fbox{\parbox{\admonitionwidth}{
+\textbf{\large Error}
+\vspace{2mm}
+
+other admonitions will/might not work properly.
+}}
+\end{sffamily}
+\end{center}
+

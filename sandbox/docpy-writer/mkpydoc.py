@@ -57,6 +57,7 @@ class PyLaTeXTranslator(LaTeXTranslator):
         self.body_prefix = []
         self.in_title = False
         self.in_anydesc = False  # _title is different if it is a funcdesc
+        self.admonition_stack = []
 
         # Disable a bunch of methods from the base class.
         empty_method = lambda self: None
@@ -327,6 +328,19 @@ class PyLaTeXTranslator(LaTeXTranslator):
 
     def depart_target(self, node):
         pass
+
+    def visit_admonition(self, node, name=''):
+        self.admonition_stack.append(name)
+        if name in ('note', 'warning'):
+            self.body.append('\\begin{notice}[%s]' % name)
+        else:
+            LaTeXTranslator.visit_admonition(self, node, name)
+    def depart_admonition(self, node=None):
+        name = self.admonition_stack.pop()
+        if name=="note":
+            self.body.append('\\end{notice}\n')
+        else:
+            LaTeXTranslator.depart_admonition(self, node)
 
     def bookmark(self, node):
         pass

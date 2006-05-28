@@ -59,12 +59,16 @@ Problems
  
   - An unpatched latex2html might be unable to handle ``longtable`` options.
     Maybe remove the ``[c]`` and put the longtable into a center environment.
-* (th) feature request: it would be very nice if it were possible to generate links
-  into the index for functions and types from the rest sources.
 * Document ``markup.py`` and ``missing.py``.
 
+* Inline markup: email, note, pep, rfc, strong, ulink, url, warning
+  might be already possible others require manual markup ?
+  Or maybe seepep, ...
+  
+* seealso environment.
+
 Link to Indexes
----------------
+'''''''''''''''
 
 This is done by *informational units*.
 ::
@@ -124,10 +128,9 @@ The ``ni``-variants do not create index entries.
 Change log
 ''''''''''
 
-
-
 * mkpydoc.py:
 
+  - 2006-05-25: notice environment.
   - 2006-05-27: 
   
     - parameters in ``[]`` are marked optional.

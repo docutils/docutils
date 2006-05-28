@@ -1,0 +1,17 @@
+General text markup for rst to docpy
+====================================
+
+admonitions
+'''''''''''
+
+reST supports: attention, caution, danger, error, hint, important,
+note, tip, warning.
+
+docpy has a notice environment in two variants, note and warning.
+
+.. note:: admonitions should become a ``note notice``
+
+.. warning:: danger is everywhere.
+
+.. error:: other admonitions will/might not work properly.
+

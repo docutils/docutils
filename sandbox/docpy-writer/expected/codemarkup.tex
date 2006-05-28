@@ -1,0 +1,141 @@
+\ifx\locallinewidth\undefined\newlength{\locallinewidth}\fi
+\setlength{\locallinewidth}{\linewidth}
+
+
+\section{Pydoc writer codemarkups\label{-pydoc-writer-codemarkups}}
+
+
+\subsection{literals\label{-literals}}
+
+Literal are recognized by a text specific markup.py
+
+
+\subsection{informational units\label{-informational-units}}
+
+these are markups to allow index creation.
+\begin{verbatim}
+\begin{datadesc} {name}
+\begin{datadescni} {name}
+\begin{excdesc} {name}
+\begin{classdesc*} {name}
+\begin{csimplemacrodesc} {name}
+\end{verbatim}
+
+\begin{ctypedesc}ctype with_tag and_name
+Dont know how this should be set correct.
+\end{ctypedesc}
+\begin{verbatim}
+\begin{ctypedesc} [tag]{name}
+\begin{memberdesc} [type name]{name}
+\begin{memberdescni} [type name]{name}
+\end{verbatim}
+
+\begin{funcdesc}{sizeof}{type_or_object}
+Returns the size in bytes of a ctypes type or instance memory
+buffer.  Does the same as the C sizeof() function.
+\end{funcdesc}
+\begin{verbatim}
+\begin{cvardesc} {type}{name}
+\begin{excclassdesc} {name}{constructor parameters}
+\begin{funcdesc} {name}{parameters}
+\begin{funcdescni} {name}{parameters}
+
+\begin{methoddesc} [type name]{name}{parameters}
+\begin{methoddescni} [type name]{name}{parameters}
+
+\begin{cmemberdesc} {container}{type}{name}
+\begin{classdesc} {name}{constructor parameters}
+\begin{cfuncdesc} {type}{name}{args}
+\end{verbatim}
+
+
+\subsubsection{definition lists\label{-definition-lists}}
+
+with classifier
+\begin{verbatim}
+sizeof(type_or_object) : funcdesc
+    Returns the size in bytes of a ctypes type or instance memory
+        buffer.  Does the same as the C sizeof() function.
+\end{verbatim}
+
+plain definitions are set as datadescni, maybe latex description would
+be better
+\begin{verbatim}
+standalone :
+   is marked as datadescni
+\end{verbatim}
+
+
+\subsubsection{test samples\label{-test-samples}}
+
+\begin{datadescni}{standalone :}
+is marked as datadescni
+\end{datadescni}
+
+\begin{datadescni}{which :}
+might be a not so optimal solution.
+\end{datadescni}
+
+Real informational units
+
+\begin{classdesc*}{Class}
+without constructor documentation.
+\end{classdesc*}
+
+\begin{funcdesc}{sizeof}{type_or_object}
+Returns the size in bytes of a ctypes type or instance memory
+buffer.  Does the same as the C sizeof() function.
+\end{funcdesc}
+
+with optional parameter
+
+\begin{funcdesc}{create_string_buffer}{init\optional{, size}}
+does this or that
+\end{funcdesc}
+
+
+\subsubsection{alternatives\label{-alternatives}}
+\begin{itemize}
+\item {} 
+customroles
+\begin{verbatim}
+.. role:: funcdesc
+
+:funcdesc:`sizeof(type_or_object)`
+
+    Returns the size in bytes of a ctypes type or instance memory
+    buffer.  Does the same as the C sizeof() function.
+\end{verbatim}
+
+But the block after funcdesc should be inside funcdesc not in a separate
+block quote.
+
+\item {} 
+admonitions :
+Have a text block and a title.
+\begin{verbatim}
+.. admonition:: sizeof(type_or_object)
+   :class: funcdesc
+
+   Returns the size in bytes of a ctypes type or instance memory
+   buffer.  Does the same as the C sizeof() function.
+\end{verbatim}
+
+\item {} 
+directives
+
+see sandbox/edloper/docpy/asyncore.rst.
+
+\item {} 
+topics
+
+Have a text block and a title:
+\begin{verbatim}
+.. topic:: c_char
+   :class: datadesc
+
+   the ...
+\end{verbatim}
+
+\end{itemize}
+
