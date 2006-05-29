@@ -124,6 +124,15 @@ The ``ni``-variants do not create index entries.
 
 ``classdesc*`` describes a class without describing the constructor.
 
+More beautiful would be to add some translation from rst-classifier 
+to docpy markup. The desc can be skipped, "ni" should be written as 
+"noindex" and the ``*`` variant should be detected as it has no 
+parameter. e.g. ::
+
+  SerialAvail : function noindex
+    this ...
+
+This requires some thought interrest and feedback.
 
 Change log
 ''''''''''
