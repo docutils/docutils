@@ -1,12 +1,4 @@
 COPYING.txt
-GPL.txt
-MANIFEST			This list of files
-MANIFEST.SKIP
-MODIFY.txt
-Makefile.PL
-README
-ReleaseNotes.txt
-doc/src/Makefile
 doc/src/alternatives.rst
 doc/src/directives.rst
 doc/src/introduction.rst
@@ -14,6 +6,7 @@ doc/src/latest/directives.html
 doc/src/latest/introduction.html
 doc/src/latest/reStructuredText.html
 doc/src/latest/roles.html
+doc/src/Makefile
 doc/src/prest_extend.rst
 doc/src/prest_internals.rst
 doc/src/prest_intro.rst
@@ -24,14 +17,16 @@ doc/src/reStructuredText.rst
 doc/src/roles.rst
 doc/tools/htmldiff.prl
 doc/tools/perlsynopsis.prl
+GPL.txt
 insertperl.pl
 lib/Text/Restructured.pm
-lib/Text/Restructured/DOM.pm
+lib/Text/Restructured/default.css
 lib/Text/Restructured/Directive/code_block.pm
 lib/Text/Restructured/Directive/if.pm
 lib/Text/Restructured/Directive/perl.pm
 lib/Text/Restructured/Directive/rst.st
 lib/Text/Restructured/Directive/system.pm
+lib/Text/Restructured/DOM.pm
 lib/Text/Restructured/Graph.pm
 lib/Text/Restructured/PrestConfig.pm.PL
 lib/Text/Restructured/Transforms.pm
@@ -43,8 +38,12 @@ lib/Text/Restructured/Writer/latex.wrt
 lib/Text/Restructured/Writer/toc.wrt
 lib/Text/Restructured/Writer/xml.wrt
 lib/Text/Restructured/Writer/xref.wrt
-lib/Text/Restructured/default.css
+Makefile.PL
+MANIFEST			This list of files
+MODIFY.txt
 prest
+README
+ReleaseNotes.txt
 t/10_parse/block_quotes.init/test_block_quotes.py
 t/10_parse/bullet_lists.init/test_bullet_lists.py
 t/10_parse/citations.init/test_citations.py
@@ -113,8 +112,8 @@ t/20_directive/replace.init/test_replace.py
 t/20_directive/role.init/test_role.py
 t/20_directive/rubrics.init/test_rubrics.py
 t/20_directive/sidebars.init/test_sidebars.py
-t/20_directive/tables.init/ExtractTests.pm
 t/20_directive/tables.init/empty.txt
+t/20_directive/tables.init/ExtractTests.pm
 t/20_directive/tables.init/tables24.skip.pl
 t/20_directive/tables.init/test_tables.py
 t/20_directive/tables.init/utf-16.csv
@@ -129,12 +128,11 @@ t/20_directive/unicode.init/unicode01.mydom
 t/20_directive/unicode.init/unicode03.mydom
 t/20_directive/unknown.init/test_unknown.py
 t/20_directive/unknown.init/unknown01.mydom
-t/30_xform/Suite.mak
 t/30_xform/class.init/test_class.py
 t/30_xform/contents.init/Dir.mak
 t/30_xform/contents.init/test_contents.py
-t/30_xform/docinfo.init/ExtractTests.pm
 t/30_xform/docinfo.init/docinfo07.r
+t/30_xform/docinfo.init/ExtractTests.pm
 t/30_xform/docinfo.init/test_docinfo.py
 t/30_xform/doctitle.init/Dir.mak
 t/30_xform/doctitle.init/test_doctitle.py
@@ -154,9 +152,9 @@ t/30_xform/messages.init/test_messages.py
 t/30_xform/sectnum.init/test_sectnum.py
 t/30_xform/substitutions.init/Dir.mak
 t/30_xform/substitutions.init/test_substitutions.py
+t/30_xform/Suite.mak
 t/30_xform/transitions.init/Dir.mak
 t/30_xform/transitions.init/test_transitions.py
-t/40_writers/Suite.mak
 t/40_writers/data/errors.txt
 t/40_writers/data/header_footer.txt
 t/40_writers/data/latex.txt
@@ -170,10 +168,10 @@ t/40_writers/data/unicode.txt
 t/40_writers/dom.init/standalone.dom
 t/40_writers/dom.init/standalone.rst
 t/40_writers/dom.init/standalone.stderr
-t/40_writers/html.init/Dir.mak
 t/40_writers/html.init/alternatives.html
 t/40_writers/html.init/alternatives.myhtml
 t/40_writers/html.init/alternatives.rst
+t/40_writers/html.init/Dir.mak
 t/40_writers/html.init/directives.html
 t/40_writers/html.init/directives.r
 t/40_writers/html.init/directives.rst
@@ -187,8 +185,8 @@ t/40_writers/html.init/standalone.html
 t/40_writers/html.init/standalone.myhtml
 t/40_writers/html.init/standalone.rst
 t/40_writers/html.init/standalone.stderr
-t/40_writers/latex.init/Dir.mak
 t/40_writers/latex.init/biohazard.eps
+t/40_writers/latex.init/Dir.mak
 t/40_writers/latex.init/docsize.tex
 t/40_writers/latex.init/simple.mytex
 t/40_writers/latex.init/simple.rst
@@ -197,6 +195,7 @@ t/40_writers/latex.init/test.rst
 t/40_writers/latex.init/test.skip.pl
 t/40_writers/latex.init/test.stderr
 t/40_writers/latex.init/title.eps
+t/40_writers/Suite.mak
 t/40_writers/xml.init/standalone.myxml
 t/40_writers/xml.init/standalone.rst
 t/40_writers/xml.init/standalone.stderr
@@ -246,7 +245,6 @@ t/60_new/parse.init/tabs1.dom
 t/60_new/parse.init/tabs1.rst
 t/60_new/parse.init/tabs2.dom
 t/60_new/parse.init/tabs2.rst
-t/70_plugins/code_block.init/Dir.mak
 t/70_plugins/code_block.init/code01.dom
 t/70_plugins/code_block.init/code01.rst
 t/70_plugins/code_block.init/code02.dom
@@ -261,6 +259,7 @@ t/70_plugins/code_block.init/code06.dom
 t/70_plugins/code_block.init/code06.rst
 t/70_plugins/code_block.init/code07.dom
 t/70_plugins/code_block.init/code07.rst
+t/70_plugins/code_block.init/Dir.mak
 t/70_plugins/code_block.init/foo.sh
 t/70_plugins/code_block.init/skip.pl
 t/70_plugins/data/include1.txt
@@ -373,7 +372,6 @@ t/90_bugs/html.init/raw.rst
 t/90_bugs/html.init/refininterp.myhtml
 t/90_bugs/html.init/refininterp.r
 t/90_bugs/html.init/refininterp.rst
-t/90_bugs/parse.init/Dir.mak
 t/90_bugs/parse.init/analogy.dom
 t/90_bugs/parse.init/analogy.rst
 t/90_bugs/parse.init/autofootnote.dom
@@ -387,6 +385,7 @@ t/90_bugs/parse.init/defafteroptlist.dom
 t/90_bugs/parse.init/defafteroptlist.rst
 t/90_bugs/parse.init/defotherlist.dom
 t/90_bugs/parse.init/defotherlist.rst
+t/90_bugs/parse.init/Dir.mak
 t/90_bugs/parse.init/fakerefinref.dom
 t/90_bugs/parse.init/fakerefinref.rst
 t/90_bugs/parse.init/fakerefintrp.dom
@@ -445,12 +444,12 @@ t/90_bugs/parse.init/tgtwhitespace.dom
 t/90_bugs/parse.init/tgtwhitespace.rst
 t/90_bugs/parse.init/trailingspace.dom
 t/90_bugs/parse.init/trailingspace.rst
-t/90_bugs/xform.init/Dir.mak
 t/90_bugs/xform.init/badsubtitle.mydom
 t/90_bugs/xform.init/badsubtitle.rst
-t/90_bugs/xref.init/Dir.mak
+t/90_bugs/xform.init/Dir.mak
 t/90_bugs/xref.init/capsubst.rst
 t/90_bugs/xref.init/capsubst.xrefc
+t/90_bugs/xref.init/Dir.mak
 tbin/diffre
 tbin/extract_tests
 tbin/redom
