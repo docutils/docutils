@@ -7,7 +7,10 @@ Usage of Prest
 :Date: $Date: 2006-01-27 11:47:47 -0600 (Fri, 27 Jan 2006) $
 :Copyright: This document has been placed in the public domain.
 
-.. perl:: $ENV{PATH} = '/bin';  # Make path safe for -T
+.. perl::
+   # Make path safe for -T
+   my $perl_dir = $1 if $^X =~ m|^(.*)/|;
+   $ENV{PATH} = "$perl_dir:/bin";
 
 .. contents::
 
@@ -16,7 +19,7 @@ is compiled by running ``prest -h`` using a ``system::`` directive.
 
 -------------
 
-.. system:: .\./.\./bin/prest -h 2>&1 | cat
+.. system:: perl -I .\./.\./blib/lib .\./.\./blib/script/prest -h 2>&1 | cat
 
 
 ..

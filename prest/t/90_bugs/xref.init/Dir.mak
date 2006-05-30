@@ -1,0 +1,2 @@
+# -*-makefile-*-
+GLOBAL_FLAGS =

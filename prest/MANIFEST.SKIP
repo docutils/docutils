@@ -1,0 +1,32 @@
+# Generic files
+\#.*
+.*\.old
+.*\.bak$
+.*\.t$
+.*\.root$
+^doc/src/.*\.xref$
+.*~$
+.*\#$
+
+# Specific files
+^annotations$
+^config\.log$
+^config\.prl$
+^Makefile$
+^pm_to_blib$
+^t/Common\.mk$
+^lib/Text/Restructured/PrestConfig\.pm$
+
+# Generic directories
+/CVS/
+\.svn/
+.*\.dir
+
+# Specific directories
+^doc/html
+^bin
+^blib
+^helpers/
+^src/
+^tests
+^Text-Restructured.*

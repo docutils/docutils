@@ -5,6 +5,56 @@ Release History
 
 .. contents::
 
+Release 0.3.11
+--------------
+General changes:
+
+* Restructured to be compatible with CPAN and to use the
+  officially-designated Text::Restructured namespace.
+* Released under Perl license (combination of GPL and Artistic
+  License) instead of GPL alone.
+* Removed all run-time globals from Text::Restructured.pm and placed
+  them in a parser object.
+* Reworked the tests to use the perl test harness.
+
+``prest`` script:
+
+* Fixed a problem that occurred when running with ``-T`` (taint) flag.
+* Added section headers to usage help for plug-in directives and writers.
+
+reStructuredText parser:
+
+* Changed to an object-oriented implementation.
+* Made package-global constant strings unmodifiable.
+* Transforms now take the parser object as a second argument.
+* Now infers alignment in simple tables for multi-line entries based on
+  the first row's alignment (unless ``-D align=0``).
+
+reStructuredText transforms:
+
+* Transforms now take the parser object as a second argument.
+
+Plug-in directives 'if', 'perl', and 'system':
+
+* Code now has access to the ``$^A`` to ``$^Z`` variables in the safe box.
+
+Writers were all modified to use private space within the DOM objects
+for their particular annotations.
+
+Writer 'html':
+
+* Changed stylesheet embedding so that URL and embedded stylesheets
+  can be specified independently for the same document.  It also now
+  automatically embeds the stylesheet from the distribution if no URL
+  is specified.
+* Added the ``-W colspecs`` option.
+
+Writer 'latex':
+
+* Fixed a problem with multiple initializations.
+* Fixed quoting in parsed literals.
+* Fixed problem with footer sometimes returning an undefined string.
+
 Release 0.3.10
 --------------
 First public release, which corresponds most closely to the 0.3.10

@@ -1,4 +1,0 @@
-SUBDIR=`perl -e '$A = qx(pwd); $A =~ m|([^/]+)/[^/]+.dir$|; print $1'`
-= Run $SUBDIR tests
-+ All tests
-  (cd ..;make DIR='*') 2>&1 | perl -ne 'print if /^Test Run By/ .. /^(PASSED: No errors|FAILURE: total of )/'

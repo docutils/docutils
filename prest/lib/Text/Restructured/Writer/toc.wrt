@@ -1,0 +1,199 @@
+# -*-perl-*-
+# $Id: toc.wrt 768 2006-01-28 03:33:28Z marknodine $
+# Copyright (C) 2002-2005 Freescale Semiconductor, Inc.
+# Distributed under terms of the Perl license, which is the disjunction of
+# the GNU General Public License (GPL) and the Artistic License.
+
+=pod
+=begin reST
+=begin Description
+This writer creates table of content (TOC) for one or more
+reStructuredText documents. The output includes section headers
+from the source files organized into lists, one per top level
+section. The TOC entries are references to the corresponding
+sections in the source documents.
+
+This writer uses the following output defines:
+
+-W file_suffix=<suffix>
+                  Specify a file suffix to be used as the 
+                  targets of TOC entries (default is "html").
+-W filename_ext=<ext>
+                  Specify an extension to the filename,
+                  (e.g. "_main") so the file location of
+                  targets becomes <file><ext>.<suffix>
+                  (default is "").
+-W depth=<positive_integer>
+                  Specify the depth of TOC, with 1 corresponding to
+                  the top level sections (default is 99).
+-W symbol=<header_marking_character>
+                  If specified, the writer uses the symbol to create
+                  additional headers for the document titles.
+                  (default is "", no headers created).
+                  This output define overwrites ``-W exclude_top=1``. 
+                  If a document does not have a title, use the
+                  document source bare name instead.
+-W include_noheader=<0|1>
+                  If set to 1, the writer includes in the TOC 
+                  the document source bare name for any document 
+                  that does not have a header
+                  (default is 0, do not include).
+-W exclude_top=<0|1>
+                  Specify whether the top level section headers 
+                  should be excluded from the TOC (default is 0,
+                  do not exclude). This has no effect if 
+                  ``-W symbol='<char>'`` is present.
+-W top_in_list=<0|1>
+                  Specify whether the top level section headers
+                  should be part of the list with other section 
+                  headers (default is 0, top level header being 
+                  outside of the list). This has no effect if 
+                  the top level headers are excluded.
+=end Description
+=end reST
+=cut
+
+sub package = {
+    # My -W flags
+    use vars qw($file_suffix $filename_ext $depth $symbol
+		$include_noheader $exclude_top $top_in_list);
+
+    # Run-time globals
+    use vars qw($TOCSTR $TGTSTR $INCLUDE_TOP @FINAL_TOP_SECS);
+
+    # Defaults for -W flags
+    BEGIN {
+	$file_suffix = 'html' unless defined $file_suffix;
+	$filename_ext = '' unless defined $filename_ext;
+	$depth = 99 unless defined $depth && $depth > 0;
+	$symbol = "" unless defined $symbol;
+	$include_noheader = 0 unless defined $include_noheader;
+	$exclude_top = 0 unless defined $exclude_top;
+	$top_in_list = 0 unless defined $top_in_list;
+
+	($TOCSTR, $TGTSTR) = ('') x 2;
+    }
+}
+
+phase PROCESS = {
+    sub \#PCDATA = {
+	my ($dom, $str) = @_;
+	return $dom->{text};
+    }
+
+    # Return the generated section number, without the garbage 
+    # characters generated at the end.
+    sub generated = {
+	my ($dom, $str) = @_;
+	if ($dom->{attr}{classes} && $dom->{attr}{classes}[0] eq "sectnum") {
+	    $str =~ s/^(\d(\.\d)*).*/$1 /;
+	    return $str;
+	}
+    }
+
+    # Return the title.
+    sub title = {
+	my ($dom, $str) = @_;
+	chomp($str);
+	return $str;
+    }
+    
+    sub section = {
+	my ($dom, $str) = @_;
+
+	my $parent = $dom->parent();
+#	$dom->{_toc}{titleStr} = $str;
+	push(@{$parent->{_toc}{subSections}}, 
+	     [$str, $dom->{attr}{ids}[0], $dom->{_toc}{subSections}])
+	    if $dom->{attr}{ids};
+	return;
+    }
+
+    sub document = {
+	my ($dom, $str) = @_;
+	my $fileName = $dom->{attr}{source};
+	$fileName .= "$filename_ext.$file_suffix"
+	    if (!($fileName =~ s/\.[^\.\/]*$/$filename_ext\.$file_suffix/o));
+	my $firstHeader = defined $dom->{_toc}{subSections} ?
+	    ${${$dom->{_toc}{subSections}}[0]}[0] : '';
+	if ($str && ($str ne $firstHeader)) {
+	    # If the top-level section has been removed (due to
+	    # transformation) restore it in the TOC.
+	    $dom->{_toc}{subSections} = [[$str, undef,
+					  \@{$dom->{_toc}{subSections}}]];
+	}
+	elsif ($str) {
+	    # If the top-level section header is the same as document
+	    # title, make the top-level TOC entry point to the
+	    # document itself.
+	    ${${$dom->{_toc}{subSections}}[0]}[1] = undef;
+	}
+	else {
+	    # Document doesn't have a title. Use bare source name.
+	    ($str = $fileName) =~ s/$filename_ext\.$file_suffix$//o;
+	}
+ 	if ($include_noheader 
+ 	    && ($#{$dom->{_toc}{subSections}} < 0
+ 		|| $firstHeader eq "Docutils System Messages")) {
+ 	    $dom->{_toc}{subSections} = [[$str, undef,
+					  \@{$dom->{_toc}{subSections}}]]
+ 	}
+	if (defined $dom->{_toc}{subSections}) {
+	    push @FINAL_TOP_SECS, {filename => $fileName,
+				 title => $str,
+				 sections => $dom->{_toc}{subSections}};
+	}
+	return undef;
+
+	END {
+	    $INCLUDE_TOP = 1 unless ($exclude_top && !$symbol);
+	    for (my $i = 0; $i <= $#FINAL_TOP_SECS; $i++) {
+		my %topSecs = %{$FINAL_TOP_SECS[$i]};
+		my $title = $topSecs{title};
+		if ($symbol) {
+		    $title =~ s/([\`\_\*\|\\])/\\$1/go;
+		    $TOCSTR .= "$title\n" . $symbol x length($title) . "\n\n";
+		}
+		foreach (@{$topSecs{sections}}) {
+		    writeTOC($_, 0, $topSecs{filename});
+		    $TOCSTR .= "\n";
+		}
+	    }
+	    print $TOCSTR, "\n", $TGTSTR;
+	}
+	
+	sub writeTOC {
+	    my ($secref, $level, $source) = @_;
+	    return if ($level >= $depth);
+	    my ($name, $id, $subref) = @$secref;
+	    $name =~ s/</\\\</go;
+	    $name =~ s/>/\\\>/go;
+	    if ($level == 0) {
+		# Write the top level section as header if required by user
+		if ($INCLUDE_TOP && $top_in_list) {
+		    # Top level entry is part of the list
+		    $TOCSTR .= "* `$name`__\n";
+		    $TGTSTR .= $id? "__ $source#$id\n" : "__ $source\n";
+		}
+		elsif ($INCLUDE_TOP) {
+		    # Top level entry is part of a separate paragraph
+		    $TOCSTR .= "`$name`__\n\n";
+		    $TGTSTR .= $id? "__ $source#$id\n" : "__ $source\n";
+		}
+	    }
+	    else {
+		my $indent = ($INCLUDE_TOP && $top_in_list)? $level : $level - 1;
+	        $indent = "  " x $indent;
+		$TOCSTR .= $indent . "* `$name`__\n";
+		$TGTSTR .= "__ $source#$id\n";
+	    }
+	    if (defined $subref && @$subref && $level < $depth - 1 && 
+		($level > 0 || ($INCLUDE_TOP && $top_in_list))) {
+		$TOCSTR .= "\n";
+	    }
+ 	    foreach (@$subref) {
+ 		writeTOC($_, $level + 1, $source);
+ 	    }
+	}
+    }
+}

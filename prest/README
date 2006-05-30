@@ -1,12 +1,17 @@
 1. Run ::
 
-     perl config.prl
+     perl Makefile.PL
 
    and answer the questions.
 
-2. Follow the instructions given by config.prl.
+2. Then do
 
-     make all
-     make testall
+     make
+     make test
      make doc
      make install
+
+3. Help for the prest program can be gotten by doing "prest -h".  The
+   complete documentation for reStructuredText and what prest supports
+   gets built in the doc/html subdirectory, but is not installed
+   automatically.

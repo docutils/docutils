@@ -9,8 +9,7 @@ How to Extend Prest
 
 .. perl::
    # Make path safe for -T
-   use PrestConfig;
-   my $perl_dir = $1 if $PrestConfig::SAFE_PERL =~ m|^(.*)/perl|;
+   my $perl_dir = $1 if $^X =~ m|^(.*)/|;
    $ENV{PATH} = "$perl_dir:/bin";
 
 .. contents::
@@ -21,38 +20,36 @@ plug-in directives and adding new writers.  For either of these tasks,
 the programmer should be familiar with the DOM_ data structure and the
 `DOM.pm`_ subroutines.
 
-.. _`DOM`: prest_internals.html#dom
+.. _`DOM`: `Text::Restructured::DOM`_
 .. _`DOM.pm`: prest_internals.html#dom-pm
 
 Adding New Directives
 ---------------------
 
 To add a plug-in directive, the programmer should be familiar with the
-RST::Directive:: routines starting with `RST::Directive::arg_check`_,
-as well as the RST:: routines `RST::system_message`_ and
-`RST::Paragraph`_.
-
-.. _`RST::Directive::arg_check`: prest_internals.html#rstdirectivearg-check
-.. _`RST::system_message`: prest_internals.html#rstsystem-message
-.. _`RST::Paragraph`: prest_internals.html#rstparagraph
+Text::Restructured::Directive:: routines.  The `parser`_ objects are
+those of type `Text::Restructured`_.  Important routines are
+`Text::Restructured::Directive::arg_check`_, as well as the
+Text::Restructured:: routines `Text::Restructured::system_message`_
+and `Text::Restructured::Paragraphs`_.
 
 A plug-in directive can be added by creating a Perl module with the
 same name as the directive (with a ".pm" extension, of course).  The
 Perl module must have a BEGIN block which registers the routine to
 call to process the directive using
-`RST::Directive::handle_directive`_.
-
-.. _`RST::Directive::handle_directive`: 
-   prest_internals.html#rstdirectivehandle-directive
+`Text::Restructured::Directive::handle_directive`_.
 
 As an example from the ``if`` plug-in directive,
 
-.. system:: perl -ne 'print if /^BEGIN/ .. /^\}/' .\./.\./bin/Directive/if.pm
+.. system:: perl -ne 'print if /^BEGIN/ .. /^\}/' .\./.\./blib/lib/Text/Restructured/Directive/if.pm
    :literal:
 
 Whatever routine you designate will get called with the following
 arguments:
 
+  *``$parser``*:
+    The `Text::Restructured`_ object holding the state of the current
+    parser.
   *``$name``*:
     The directive name.  This argument is useful if you use the same
     routine to process more than one directive with different names.
@@ -61,41 +58,36 @@ arguments:
     to the parent's contents.
   *``$source``*:
     A string indicating the source for the directive.  If you call
-    `RST::Paragraphs`_ to parse reStructuredText recursively, you
-    should supply it a source like "$name directive at $source, line $lineno".
+    `Text::Restructured::Paragraphs`_ to parse reStructuredText
+    recursively, you should supply it a source like "$name directive
+    at $source, line $lineno".
   *``$lineno``*:
     The line number indicating where in the source this directive
     appears. 
   *``$dtext``*:
     The directive text in a format suitable for parsing by
-    `RST::Directive::parse_directive`_.  It consists of only the
-    arguments, options, and content sections.
+    `Text::Restructured::Directive::parse_directive`_.  It consists of
+    only the arguments, options, and content sections.
   *``$lit``*:
     The complete literal text of the explicit markup containing the
     directive.  Used for generating error messages.
 
-.. _`RST::Paragraphs`: prest_internals.html#rstparagraphs
-.. _`RST::Directive::parse_directive`:
-   prest_internals.html#rstdirectiveparse-directive 
-
 The directive's routine will return any DOM objects representing system
 messages.  It will also likely produce side-effects by appending new
-DOM objects to the parent object's contents.
+DOM objects to the parent object's contents, at least if there were no
+errors detected by the directive.
 
 The first thing the directive's routine will usually do is to call
-`RST::Directive::parse_directive`_ as follows:
+`Text::Restructured::Directive::parse_directive`_ as follows:
 
-.. system:: grep parse_directive .\./.\./bin/Directive/if.pm
+.. system:: grep parse_directive .\./.\./blib/lib/Text/Restructured/Directive/if.pm
    :literal:
 
 It is recommended that if the directive encounters any parse errors
 (wrong number of arguments, does/does not contain content, etc.), that
-it return a system_message DOM object formatted with
-`RST::Directive::system_message`_ to label the message as having come
-from the specific directive.
-
-.. _`RST::Directive::system_message`: 
-   prest_internals.html#rstdirectivesystem-message
+it return a ``system_message`` DOM object formatted with
+`Text::Restructured::Directive::system_msg`_ to label the message as
+having come from the specific directive.
 
 It is also up to the package to provide the documentation that appears
 when the user runs ``prest -h``.  Any comment in the perl module within
@@ -103,7 +95,7 @@ a ``=begin Description`` .. ``=end Description`` section of a Perl POD
 section is printed for the module's help.  For example, here is the
 help documentation from the ``if`` directive:
 
-.. system:: perl -ne 'print if /^=pod/ .. /^=cut/' .\./.\./bin/Directive/if.pm
+.. system:: perl -ne 'print if /^=pod/ .. /^=cut/' .\./.\./blib/lib/Text/Restructured/Directive/if.pm
    :literal:
 
 .. note::
@@ -162,17 +154,18 @@ cached in the ``val`` field of the DOM object for future use, as well
 as being propagated as part of the ``$str`` argument of the parent's
 handler routine.
 
-Options to the writer can be specified using a -W define, which has
+Options to the writer can be specified using a ``-W`` define, which has
 the format ::
 
   -W var[=val]
 
 If no value is supplied, then the value defaults to 1.  Any such
-defines become available to the writer directly in a variable ``$var``.
+defines become available to the writer directly in a variable ``$var``
+which should be declared in a ``use vars qw($var)`` statement.
 
 As an example, here is the code for the dom writer:
 
-.. system:: perl -ne 'print if /^phase/ .. 0' .\./.\./bin/dom.wrt
+.. system:: perl -ne 'print if /^phase/ .. 0' .\./.\./blib/lib/Text/Restructured/Writer/dom.wrt
    :literal:
 
 This example is perhaps not typical, since it needs to call the
@@ -180,15 +173,13 @@ internal `main::ProcessDOM`_ routine in order to process the DOM
 objects in the internal ``.details`` field of the DOM; most writers
 should have no need to do so.
 
-.. _`main::ProcessDom`: prest_internals.html#mainprocessdom
-
 It is also up to the writer to provide the documentation that appears
 when the user runs ``prest -h``.  Any comment in the writer appearing
 in a POD (Perl's Plain-Old-Documentation) Description section is
 printed for the writer's help.  For example, here is the help
 documentation from the ``dom`` writer:
 
-.. system:: perl -ne 'print if /^=pod/ .. /^=cut/' .\./.\./bin/dom.wrt
+.. system:: perl -ne 'print if /^=pod/ .. /^=cut/' .\./.\./blib/lib/Text/Restructured/Writer/dom.wrt
    :literal:
 
 .. note::
@@ -202,6 +193,9 @@ Footnotes
 .. [#] If the same phase name is repeated later in the file, its
    subroutine definitions are appended to those of the phase and
    run at the earlier position.
+
+.. include:: prest_internals.xref
+
 
 ..
    Local Variables:
