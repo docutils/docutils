@@ -1,6 +1,0 @@
-FUNCTION=`perl -e '$A = qx(pwd); ($F) = $A =~ m|[^/]+/([^/]+).dir$|; $F =~ s/_/ /g; print $F'`
-= Parsing of $FUNCTION
-  make -s rsts
-+ All tests
-  make -s test
-  echo 'Passing tests: '`ls -l *.chk | grep ' 0 ' | wc -l` /`ls *.chk | wc -l`

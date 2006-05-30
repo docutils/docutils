@@ -102,6 +102,12 @@ Options:
 =end reST
 =cut
 
+use strict;
+
+use vars qw($PROG_NAME $FILE $LAST_FILE);
+use vars qw($opt_c $opt_d $opt_h $opt_l $opt_m $opt_p $opt_s
+	    $opt_A $opt_Q @opt_Q $opt_R $opt_T $opt_V);
+
 $0 =~ m|([^/]+)$|;
 $PROG_NAME = $1;
 
@@ -119,7 +125,8 @@ if ($opt_Q =~ /(.+?)=(.*)/) {
     @opt_Q = ($1, $2);
 }
 
-$package = 'main';
+my $package = 'main';
+my ($comments, $method, $subline, $subname, $substart);
 while (<>) {
     close ARGV if (eof);
     if (defined $opt_c) {
@@ -139,11 +146,13 @@ while (<>) {
 	/^\# ?(.*)/;
 	$comments .= "$1\n";
     }
-    elsif (/sub\s+(\w+)/) {
-	$subname = $1;
+    elsif (/sub\s+(\w+)((?:\s*:\s*\S+)+)?/) {
+	my $attr;
+	($subname, $attr) = ($1, $2);
 	$substart = 1;
 	$FILE = $ARGV =~ m|.*/(.*)| ? $1 : $ARGV;
 	$subline = "$FILE, $.";
+	$method = $attr =~ /\bmethod\b/;
     }
     else {
 	if ($substart) {
@@ -157,11 +166,12 @@ while (<>) {
 	    my $lit = $comments ne '' && ! $opt_p ? ' ::' : '';
 	    my $nl = $opt_m ? "$lit\n\n" : "\n";
 	    $args = sprintf $opt_A, $args if $opt_m;
-	    if (defined $opt_s && $FILE ne $last_FILE) {
+	    if (defined $opt_s && $FILE ne $LAST_FILE) {
 		print "$FILE\n",($opt_s x length($FILE)),"\n\n" ;
-		$last_FILE = $FILE;
+		$LAST_FILE = $FILE;
 	    }
 	    print "$routine$args:$line$nl";
+	    $comments = "INSTANCE METHOD.\n$comments" if $method;
 	    $comments = ParseComments($comments) if $opt_p;
 	    print map("  $_\n",split(/\n/,$comments)),"\n";
 	}

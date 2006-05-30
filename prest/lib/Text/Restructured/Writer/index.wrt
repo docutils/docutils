@@ -1,0 +1,308 @@
+# -*-perl-*-
+# $Id: index.wrt 768 2006-01-28 03:33:28Z marknodine $
+# Copyright (C) 2002-2005 Freescale Semiconductor, Inc.
+# Distributed under terms of the Perl license, which is the disjunction of
+# the GNU General Public License (GPL) and the Artistic License.
+
+=pod
+=begin reST
+=begin Description
+This writer dumps index entries from one or more input files out
+in reST format. An index is either an inline internal target or an
+indirect target that points to an inline internal target.  The
+index writer sorts indices from all input files and put them into
+a table. Each row of the table contains an index entry and the
+location of the entry in the html version of the source file. An
+entry is also a reference to the definition in the corresponding
+html file.
+
+This writer uses the following output defines:
+
+-W file_suffix=<suffix>  Specify a file suffix to be used for
+                         the html version of the source files
+                         (default is "html").
+-W filename_ext=<ext>    Specify an extension to the filename,
+                         (e.g. "_main") so the location of
+                         targets becomes <file><ext>.<suffix>
+                         (default is "").
+-W short_titles=<0|1>    Specify that short titles should be used
+                         in the index (default is 1).
+=end Description
+=end reST
+=cut
+
+# Details about the location of the entry.  The location is either
+# "<source>: <section>" if the rst file has sections, or "<source>"
+# otherwise. 
+# The DOM tree processed here has been transformed. If the rst file
+# has one top level section only, this section is moved to the
+# document level and the section title is made into the document title
+# during the transformation. In this case, <source> would be the title
+# of the document (which is also the title for the single top level
+# section). Otherwise <source> is the html file name.
+
+sub package = {
+    # My -W flags
+    use vars qw($file_suffix $filename_ext $short_titles);
+
+    # Static globals
+    use vars qw(%START);
+
+    # Run-time globals
+    use vars qw($MAX_NAME $MAX_SEC @ALL_TARGETS	%INLINE_TARGETS
+		@INDIRECT_TARGETS);
+
+    BEGIN {
+	$MAX_NAME = $MAX_SEC = 1;
+    }
+}
+
+phase PROCESS = {
+    sub \#PCDATA = {
+	my ($dom, $str) = @_;
+	return $dom->{text};
+
+	sub byUncasedRefName {
+	    # Compare the reference name, which is the first element in
+	    # each array.
+	    my ($x, $y) = (lc($$a[0]), lc($$b[0]));
+	    # Skip over any non-alphabetic and non-numeric characters
+	    # at the start
+	    $x =~ s/^[^a-zA-Z0-9]*//;
+	    $y =~ s/^[^a-zA-Z0-9]*//;
+	    return $x cmp $y;
+	}
+    }
+    
+
+    # Return the generated section number, without the garbage 
+    # characters generated at the end.
+    sub generated = {
+	my ($dom, $str) = @_;
+	if ($dom->{attr}{classes} && $dom->{attr}{classes}[0] eq "sectnum") {
+	    $str =~ s/^(\d(\.\d)*).*/$1 /;
+	    return $str;
+	}
+    }
+
+    # Return the title.
+    sub title = {
+	my ($dom, $str) = @_;
+	chomp($str);
+	return $str;
+    }
+
+    # Store the section title in the dom.
+    sub section = {
+	my ($dom, $str) = @_;
+	$dom->{_index}{sectionTitle} = $str;
+	return undef;
+    }
+
+    # Mark the target to be inline and store refname if it is an
+    # inline target. Get rid of "\n" from the refname.
+    sub target = {
+	my ($dom, $str) = @_;
+	# inline target if $str is defined
+	if ($str) {
+	    $dom->{_index}{inline} = 1;
+	    $str =~ s/ </ \\</g;
+	    $dom->{_index}{refname} = $str;
+	}
+	$dom->{_index}{refname} =~ s/\n/ /mg if $dom->{_index}{refname};
+    }
+
+    sub literal = {
+	my ($dom, $str) = @_;
+	return QuoteStart($dom, "``$str``");
+
+	BEGIN {
+	    %START = ('literal'=>'`', 'reference'=>'`', 'target'=>'`',
+		      'emphasis'=>'*', 'strong'=>'*',
+		      'interpreted'=>'`');
+	}
+
+	sub QuoteStart {
+	    # Quotes the start of markup with "\ " if it might not be
+	    # interpreted as starting markup within its context.
+	    # Also quotes the end with "\ " if it is not followed by
+	    # an appropriate end-of-markup character.
+	    my ($dom, $str) = @_;
+
+	    my $parent = $dom->parent();
+	    my $index = $parent->index($dom);
+	    my $prevdom = $parent->{content}[$index-1] if $index > 0;
+	    my $prev = substr($prevdom->{val}, -1)
+		if $prevdom && defined $prevdom->{val};
+	    my $quote = ((! defined $prevdom->{tag} ||
+			  ! defined $START{$prevdom->{tag}}) &&
+			 substr($str,0,2) ne '\ ' &&
+			 (defined $prev &&
+			  $prev !~ /[$Text::Restructured::MARK_START]/o || 
+			  (! defined $prev &&
+			  ($START{$parent->{tag}} || '')
+			   eq substr($str,0,1)))) ?
+			 '\ ' : '';
+	    # We have to force the next DOM to be processed before we can
+	    # use its 'val' entry.
+	    my $endquote = '';
+	    if ($index < $parent->num_contents()-1) {
+		my $nextdom = $parent->{content}[$index+1];
+		my $nextval = main::ProcessDOMPhase($nextdom);
+		$endquote = '\ '
+		    if $nextval !~
+		    /^(:?$Text::Restructured::MARK_END_TRAILER)/o;
+	    }
+	    return "$quote$str$endquote";
+	}
+    }
+
+    sub emphasis = {
+	my ($dom, $str) = @_;
+	return QuoteStart($dom, "*$str*");
+    }
+
+    sub strong = {
+	my ($dom, $str) = @_;
+	return QuoteStart($dom, "**$str**");
+    }
+
+    sub interpreted|subscript|superscript = {
+	my ($dom, $str) = @_;
+	if ($dom->{tag} =~ /su[bp]/) {
+	    $dom->{attr}{role} = substr($dom->{tag}, 0, 3);
+	    $dom->{attr}{position} = 'prefix';
+	}
+	my $attr = $dom->{attr};
+	my ($prefix, $suffix) = ('') x 2;
+	if (defined $attr->{role} && defined $attr->{position}) {
+	    $prefix = ":$attr->{role}:" if $attr->{position} eq 'prefix';
+	    $suffix = ":$attr->{role}:" if $attr->{position} eq 'suffix';
+	}
+	return QuoteStart($dom, "$prefix`$str`$suffix");
+    }
+
+    sub footnote_reference = {
+	my ($dom, $str) = @_;
+	return QuoteStart($dom, "[$str]");
+    }
+
+    sub reference = {
+	my ($dom, $str) = @_;
+	return QuoteStart($dom, "`$str`");
+    }
+
+    sub target = {
+	my ($dom, $str) = @_;
+	return QuoteStart($dom, "_`$str`");
+    }
+
+    # Store all index entries in the global array.
+    sub document = {
+	my ($dom, $str) = @_;
+	collectTargets($dom, "");
+	$file_suffix = 'html' unless defined $file_suffix;
+	$filename_ext = '' unless defined $filename_ext;
+	$short_titles = 1 unless defined $short_titles;
+	my $fileName = $dom->{attr}{source};
+	$fileName .= "$filename_ext.$file_suffix"
+	    if (!($fileName =~ s/\.[^\.\/]*$/$filename_ext\.$file_suffix/o));
+	my $title = $str ? $str : $fileName;
+	$title =~ s/^\S*(\d+\.)+\s+// if $short_titles;
+	my ($tname, $tdom);
+	foreach (keys %INLINE_TARGETS) {
+	    my $tdom = $INLINE_TARGETS{$_};
+	    my $loc = ($tdom->{section} && $title ne $tdom->{section})?
+		"$title: $tdom->{section}" : $title;
+	    $loc =~ s/(:.*(\d+\.)*\d+\.?).*/$1/ if $short_titles;
+	    $loc =~ s/([\`\_\*\|\\])/\\$1/go;
+	    push @ALL_TARGETS, [$tdom->{_index}{refname},
+			       "$fileName#$tdom->{attr}{ids}[0]", $loc];
+	    # The refname will show up in the final index table as 
+	    # `refname`__
+	    $MAX_NAME = length($tdom->{_index}{refname}) + 4
+		if ($MAX_NAME < length($tdom->{_index}{refname}) + 4);
+	    # The section identifier will show up as it is.
+	    $MAX_SEC = length($loc) if ($MAX_SEC < length($loc));
+	}
+
+	# Only indirect targets that point to inline targets are indices.
+	foreach my $tdom (@INDIRECT_TARGETS) {
+	    my $target = $INLINE_TARGETS{$tdom->{attr}{refid}};
+	    next if ! defined $target;
+	    my $loc = (defined $target->{section} && $target->{section} ne ''
+		       && $title ne $target->{section})? 
+		"$title: $target->{section}" : $title;
+	    $loc =~ s/(:.*(\d+\.)*\d+\.?).*/$1/ if $short_titles;
+	    $loc =~ s/([\`\_\*\|\\])/\\$1/go;
+	    # Have to reparse the 'lit' in order to get the name with
+	    # the proper capitalization!
+	    $tdom->{lit} =~ /_(\`?)(.*?)\1:/;
+	    my $refname = $2;
+	    push @ALL_TARGETS, [$refname,
+			       "$fileName#$target->{attr}{ids}[0]", $loc];
+	    $MAX_NAME = length($refname) + 4
+		if $MAX_NAME < length($refname) + 4;
+	    $MAX_SEC = length($loc) if $MAX_SEC < length($loc);
+	}
+	%INLINE_TARGETS = ();
+	undef;
+
+	# A recursive subroutine to collect all inline internal targets 
+	# and indirect targets.
+	sub collectTargets {
+	    my ($dom, $section) = @_;
+	    if ($dom->{tag} eq 'target' && !$dom->{attr}{anonymous}
+		&& !$dom->{attr}{refuri}) {
+		if ($dom->{_index}{inline}) {
+		    $dom->{section} = $section;
+		    $INLINE_TARGETS{$dom->{attr}{ids}[0]} = $dom;
+		}
+		elsif ($dom->{attr}{refid}) {
+		    push @INDIRECT_TARGETS, $dom;
+		}
+	    }
+	    if ($dom->{tag} eq 'section') {
+		$section = $dom->{_index}{sectionTitle};
+	    }
+	    foreach ($dom->contents()) {
+		collectTargets($_, $section);
+	    }
+	}
+
+	# Final step of sorting indices from multiple files and
+	# generating the output.
+	END {
+	    # Sort the indices according to the refname of targets
+	    my @sorted = sort byUncasedRefName @ALL_TARGETS;
+	    my $format = "%-4s %-${MAX_NAME}s %s\n";
+	    my $table = sprintf($format,
+				("=" x 4, "=" x $MAX_NAME, "=" x $MAX_SEC));
+	    my ($targets, $header);
+	    my @anchors;
+	    foreach (@sorted) {
+		my ($refname, $target, $section) = @$_;
+		$refname =~ /^[^0-9a-zA-Z]*(.)/;
+		my $c1 = uc($1);
+		if (! @anchors || $c1 ne $anchors[-1]) {
+		    push @anchors, $c1;
+		    $c1 = "_`$c1`";
+		}
+		else {
+		    $c1 = "..";
+		}
+		$table .= sprintf($format, ($c1, "`$refname`__", $section));
+		$targets .= "__ $target\n";
+	    }
+	    $table .= sprintf($format, ("=" x 4, "=" x $MAX_NAME, "=" x $MAX_SEC));
+	    $header = "Index\n*****\n\n" .
+		".. raw:: html\n\n   <DIV class=\"contents\">\n\n" .
+		"**Contents:**\n\n";
+	    foreach (@anchors) {
+		$header .= "    `$_`_\n";
+	    }
+	    $header .= "\n.. raw:: html\n\n   </DIV><hr><p></p>\n\n";
+	    print $header, $table, "\n", $targets;
+	}
+    }
+}

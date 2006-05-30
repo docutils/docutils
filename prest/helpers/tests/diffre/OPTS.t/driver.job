@@ -1,9 +1,0 @@
-= Test command-line options
-+ -h flag
-  diffre -h | head -1
-+ -V flag
-  diffre -V | head -1
-- Insufficient arguments
-  diffre | head -1
-- Undefined flag
-  diffre -Q | head -1

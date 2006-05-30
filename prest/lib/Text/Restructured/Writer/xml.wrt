@@ -1,0 +1,48 @@
+# -*-perl-*-
+# $Id: xml.wrt 591 2005-06-28 20:21:28Z nodine $
+# Copyright (C) 2002-2005 Freescale Semiconductor, Inc.
+# Distributed under terms of the Perl license, which is the disjunction of
+# the GNU General Public License (GPL) and the Artistic License.
+
+# Writer of internal docutils doctree structure (DOM) into XML.
+
+=pod
+=begin reST
+=begin Description
+This writer dumps out the internal Document Object Model (DOM, also
+known as a doctree) as an XML file.  It is useful for checking the
+results of the parser or transformations.  It recognizes no defines.
+=end Description
+=end reST
+=cut
+
+sub package {
+    # My -W flags
+    use vars qw();
+
+    # Defaults for -W flags
+}
+
+phase PROCESS {
+    sub \#PCDATA = {
+	my ($dom, $str) = @_;
+	my $text = $dom->{text};
+	$text =~ s/([\x00-\x09\x0b-\x1f\x7f-\xff\x{0100}-\x{ffff}])/sprintf '\u%04x', ord $1/ge;
+	return $text;
+    }
+
+    sub .* = {
+	my ($dom, $str) = @_;
+	my $attr = defined $dom->{attr} ?
+	    join('',map(qq( $_) .
+			(! defined $dom->{attr}{$_} ? '' :
+			 ref($dom->{attr}{$_}) eq 'ARRAY' ?
+#				   qq(="@{$dom->{attr}{$_}}") :
+			 "=\"" . join(' ', map(do{s/ /\\ /g; $_},
+					       @{$dom->{attr}{$_}})) . "\"" :
+			 qq(="$dom->{attr}{$_}")),
+			sort keys %{$dom->{attr}})) : '';
+	my $tag = $dom->{tag};
+	return $str eq '' ? "<$tag$attr/>\n" : "<$tag$attr>\n$str</$tag>\n";
+    }
+}

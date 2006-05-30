@@ -1,1 +1,0 @@
-print if /^cd rundir/ .. 0

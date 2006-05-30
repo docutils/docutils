@@ -1,0 +1,631 @@
+\documentclass[times,10pt,twocolumn]{article}
+\usepackage{latexsym}
+% Style definitions that can be overridden in a user
+% input file
+\def\ifEq#1#2{\def\testa{#1}\def\testb{#2}\ifx\testa\testb}
+\newcommand{\styleadmonitiontitle}[1]{\centerline{\bf #1:}}
+\newcommand{\styleauthor}[1]{{\em #1}}
+\newcommand{\styledocinfo}[1]{\setbox0\hbox{\parbox{.7\textwidth}{\global\dimen255=\baselineskip #1}}\ifdim \ht0 < \dimen255 \centerline{\hbox{#1}}\else\copy0 \fi }
+\newcommand{\stylefieldname}[1]{{\bf #1:}}
+\newcommand{\stylelegendtitle}[1]{{\bf #1:}}
+\newcommand{\styleoption}[2]{{\tt #1}\ifEq{#2}{}\else ~{\it #2}\fi}
+\newcommand{\stylesidebartitles}[2]{\begin{center}{\bf #1}\end{center}\ifEq{#2}{}\else\begin{center}{\it #2}\end{center}}
+\newcommand{\styleterm}[2]{{\it #1\ifEq{#2}{}\else: #2\fi}}
+\newcommand{\styletitle}[2]{#1\ifEq{#2}{}\else:\\ {\Large #2}\fi}
+\newcommand{\styletopictitle}[1]{{\bf #1}}
+\input{docsize}
+\usepackage{graphicx}
+\title{\styletitle{reStructuredText Test Document}{Examples of Syntax Constructs}}
+\author{\styleauthor{David Goodger} \hfill \styleauthor{Me} \hfill \styleauthor{Myself} \hfill \styleauthor{I}\\[12pt]
+humankind\\
+123 Example Street\\
+Example, EX  Canada\\
+A1B 2C3\\
+goodger@users.sourceforge.net\\[12pt]
+\styledocinfo{This document has been placed in the public domain. You
+may do with it as you wish. You may copy, modify,
+redistribute, reattribute, sell, buy, rent, lease,
+destroy, or improve it, quote it at length, excerpt,
+incorporate, collate, fold, staple, or mutilate it, or do
+anything else to it that your or anyone else's heart
+desires.}\\[0pt]
+\styledocinfo{\stylefieldname{Status} This is a ``work in progress''}\\[0pt]
+\styledocinfo{\stylefieldname{Revision} 1.1}\\[0pt]
+\styledocinfo{\stylefieldname{Version} 1}\\[0pt]
+\styledocinfo{\stylefieldname{Field name} This is a generic bibliographic field.}\\[0pt]
+\styledocinfo{\stylefieldname{Field name 2} Generic bibliographic fields may contain multiple body elements.\\
+Like this.}}
+\date{2005-10-06}
+\frenchspacing
+\makeindex
+\begin{document}
+\maketitle
+\newsavebox{\liti}\begin{lrbox}{\liti}\verbÙinline literalsÙ\end{lrbox}
+\newsavebox{\litii}\begin{lrbox}{\litii}\verbÙThis is an example of --inline-literal --text, --including some--Ù\end{lrbox}
+\newsavebox{\litiii}\begin{lrbox}{\litiii}\verbÙstrangely--hyphenated-words.  Adjust-the-width-of-your-browser-windowÙ\end{lrbox}
+\newsavebox{\litiv}\begin{lrbox}{\litiv}\verbÙto see how the text is wrapped.  -- ---- --------  Now note    theÙ\end{lrbox}
+\newsavebox{\litv}\begin{lrbox}{\litv}\verbÙspacing    between the    words of    this sentence    (wordsÙ\end{lrbox}
+\newsavebox{\litvi}\begin{lrbox}{\litvi}\verbÙshould    be grouped    in pairs).Ù\end{lrbox}
+\newsavebox{\litvii}\begin{lrbox}{\litvii}\verbÙ--pep-referencesÙ\end{lrbox}
+\newsavebox{\litviii}\begin{lrbox}{\litviii}\verbÙ-->Ù\end{lrbox}
+\section*{Dedication}
+For Docutils users \& co-developers.
+\begin{abstract}
+This is a test document, containing at least one example of each
+reStructuredText construct.
+\end{abstract}
+% This is a comment. Note how any initial comments are moved by
+% transforms to after the document title, subtitle, and docinfo.
+% Above is the document title, and below is the subtitle.
+% They are transformed from section titles after parsing.
+% bibliographic fields (which also require a transform):
+\tableofcontents
+
+\section{Structural Elements}
+
+\subsection{Section Title}
+
+That's it, the text just above this line.
+
+\subsection{Transitions}
+
+Here's a transition:
+\vspace{1em}\hrule\vspace{1em}
+\par\noindent
+It divides the section.
+
+\section{Body Elements}
+
+\subsection{Paragraphs}
+
+A paragraph.
+
+\subsubsection{Inline Markup}
+
+Paragraphs contain text and may contain inline markup: {\em emphasis},
+{\bf strong emphasis}, \usebox{\liti}, standalone hyperlinks
+(http://www.python.org), external hyperlinks (Python\footnote[6]{
+http://www.python.org/}), internal
+cross-references (example), external hyperlinks with embedded URIs
+(Python web site), footnote references
+(manually numbered\footnote[1]{
+A footnote contains body elements, consistently indented by at
+least 3 spaces.
+
+This is the footnote's second paragraph.
+}, anonymous auto-numbered\footnote[3]{
+This footnote is numbered automatically and anonymously using a
+label of ``\#'' only.
+}, labeled
+auto-numbered\footnote[2]{
+Footnotes may be numbered, either manually (as in \footnotemark[1]) or
+automatically using a ``\#''-prefixed label.  This footnote has a
+label so it can be referred to from multiple places, both as a
+footnore reference (\footnotemark[2]) and as a hyperlink reference
+(label).
+}, or symbolic\renewcommand{\thefootnote}{\fnsymbol{footnote}}\footnote[1]{
+Footnotes may also use symbols, specified with a ``*'' label.
+Here's a reference to the next footnote: \renewcommand{\thefootnote}{\fnsymbol{footnote}}\footnotemark[2]\renewcommand{\thefootnote}{\arabic{footnote}}.
+}\renewcommand{\thefootnote}{\arabic{footnote}}), citation references
+(\cite{CIT2002}), substitution references (\includegraphics{biohazard.eps}), and \index{inline
+hyperlink targets}inline
+hyperlink targets (see Targets below for a reference back to here).
+Problems are indicated by {\tt |problematic|}\renewcommand{\thefootnote}{\alph{footnote}}\footnote{ERROR: Undefined substitution referenced: ``problematic''.
+}\renewcommand{\thefootnote}{\arabic{footnote}} text (generated by processing
+errors; this one is intentional).
+
+The default role for interpreted text is {\em Title Reference}.  Here's a
+PEP reference (PEP 287) and an RFC reference (RFC 2822).
+% DO NOT RE-WRAP THE FOLLOWING PARAGRAPH!
+
+Let's test wrapping and whitespace significance in inline literals:
+\usebox{\litii}\\
+\usebox{\litiii}\\
+\usebox{\litiv}\\
+\usebox{\litv}\\
+\usebox{\litvi}
+If the \usebox{\litvii} option was supplied, there should be a
+live link to PEP 258 here.
+
+\subsection{Bullet Lists}
+\begin{itemize}
+\item 
+A bullet list
+\begin{itemize}
+\item 
+Nested bullet list.
+\item 
+Nested item 2.
+\end{itemize}
+\item 
+Item 2.
+
+Paragraph 2 of item 2.
+\begin{itemize}
+\item 
+Nested bullet list.
+\item 
+Nested item 2.
+\begin{itemize}
+\item 
+Third level.
+\item 
+Item 2.
+\end{itemize}
+\item 
+Nested item 3.
+\end{itemize}
+\end{itemize}
+
+\subsection{Enumerated Lists}
+\renewcommand{\theenumi}{\arabic{enumi}}\begin{list}{\theenumi.}{\usecounter{enumi}}
+\item 
+Arabic numerals.
+\renewcommand{\theenumii}{\alph{enumii}}\begin{list}{\theenumii)}{\usecounter{enumii}}
+\item 
+lower alpha)
+\renewcommand{\theenumiii}{\roman{enumiii}}\begin{list}{(\theenumiii)}{\usecounter{enumiii}}
+\item 
+(lower roman)
+\renewcommand{\theenumiv}{\Alph{enumiv}}\begin{list}{\theenumiv.}{\usecounter{enumiv}}
+\item 
+upper alpha.
+\newcounter{enumv}\renewcommand{\theenumv}{\Roman{enumv}}\begin{list}{\theenumv)}{\usecounter{enumv}}
+\item 
+upper roman)
+\end{list}
+\end{list}
+\end{list}
+\end{list}
+\item 
+Lists that don't start at 1:
+\renewcommand{\theenumii}{\arabic{enumii}}\begin{list}{\theenumii.}{\usecounter{enumii}}\setcounter{enumii}{2}
+\item 
+Three
+\item 
+Four
+\end{list}
+\renewcommand{\theenumii}{\Alph{enumii}}\begin{list}{\theenumii.}{\usecounter{enumii}}\setcounter{enumii}{2}
+\item 
+C
+\item 
+D
+\end{list}
+\renewcommand{\theenumii}{\roman{enumii}}\begin{list}{\theenumii.}{\usecounter{enumii}}\setcounter{enumii}{2}
+\item 
+iii
+\item 
+iv
+\end{list}
+\end{list}
+
+\subsection{Definition Lists}
+\begin{description}
+\item \styleterm{Term}{} \\ 
+Definition
+\item \styleterm{Term}{classifier} \\ 
+Definition paragraph 1.
+
+Definition paragraph 2.
+\item \styleterm{Term}{} \\ 
+Definition
+\end{description}
+
+\subsection{Field Lists}
+\begin{description}
+\item[\stylefieldname{What}] Field lists map field names to field bodies, like database
+records.  They are often part of an extension syntax.  They are
+an unambiguous variant of RFC 2822 fields.\item[\stylefieldname{How arg1 arg2}] The field marker is a colon, the field name, and a colon.\\
+The field body may contain one or more body elements, indented
+relative to the field marker.\end{description}
+
+\subsection{Option Lists}
+
+For listing command-line options:
+\begin{description}
+\item \styleoption{-a}{} \\ 
+command-line option ``a''
+\item \styleoption{-b}{file} \\ 
+options can have arguments
+and long descriptions
+\item \styleoption{--long}{} \\ 
+options can be long also
+\item \styleoption{--input}{file} \\ 
+long options can also have
+arguments
+\item \styleoption{--very-long-option}{} \\ 
+The description can also start on the next line.
+
+The description may contain multiple body elements,
+regardless of where it starts.
+\item \hspace{-\tabcolsep}\begin{tabular}[t]{l}\styleoption{-x}{}\\\styleoption{-y}{}\\\styleoption{-z}{}\end{tabular} \\ 
+Multiple options are an ``option group''.
+\item \hspace{-\tabcolsep}\begin{tabular}[t]{l}\styleoption{-v}{}\\\styleoption{--verbose}{}\end{tabular} \\ 
+Commonly-seen: short \& long options.
+\item \hspace{-\tabcolsep}\begin{tabular}[t]{l}\styleoption{-1}{file}\\\styleoption{--one}{file}\\\styleoption{--two}{file}\end{tabular} \\ 
+Multiple options with arguments.
+\item \styleoption{/V}{} \\ 
+DOS/VMS-style options too
+\end{description}
+
+
+There must be at least two spaces between the option and the
+description.
+
+\subsection{Literal Blocks}
+
+Literal blocks are indented, and indicated with a double-colon (''::'')
+at the end of the preceding paragraph (right here \usebox{\litviii}):
+\begin{verbatim}
+if literal_block:
+    text = 'is left as-is'
+    spaces_and_linebreaks = 'are preserved'
+    markup_processing = None
+\end{verbatim}
+
+\subsection{Block Quotes}
+
+Block quotes consist of indented body elements:
+\begin{quote}
+
+This theory, that is mine, is mine.
+\begin{flushright}
+---Anne Elk (Miss)
+\end{flushright}
+
+\end{quote}
+
+\subsection{Doctest Blocks}
+\begin{verbatim}
+>>> print 'Python-specific usage examples; begun with ">>>"'
+Python-specific usage examples; begun with ">>>"
+>>> print '(cut and pasted from interactive Python sessions)'
+(cut and pasted from interactive Python sessions)
+\end{verbatim}
+
+\subsection{Tables}
+
+Here's a grid table followed by a simple table:
+\par\noindent\dimen1=\columnwidth
+\advance\dimen1 -8\tabcolsep
+\begin{tabular}{|l|l|l|l|}
+\hline
+\multicolumn{1}{|p{0.4286\dimen1}|}{
+Header row, column 1
+(header rows optional)
+} & 
+Header 2
+ & 
+Header 3
+ & 
+Header 4
+ \\ \hline
+\hline
+\multicolumn{1}{|p{0.4286\dimen1}|}{
+body row 1, column 1
+} & 
+column 2
+ & 
+column 3
+ & 
+column 4
+ \\ \hline
+\multicolumn{1}{|p{0.4286\dimen1}|}{
+body row 2
+} & \multicolumn{3}{p{0.5714\dimen1}|}{
+Cells may span columns.
+} \\ \hline
+\multicolumn{1}{|p{0.4286\dimen1}|}{
+body row 3
+} & \multicolumn{1}{p{0.2143\dimen1}|}{
+Cells may
+span rows.
+} & \multicolumn{2}{p{0.3571\dimen1}|}{\begin{itemize}
+\item 
+Table cells
+\item 
+contain
+\item 
+body elements.
+\end{itemize}
+} \\ \cline{1-1}
+\multicolumn{1}{|p{0.4286\dimen1}|}{
+body row 4
+} &  & \multicolumn{2}{l|}{} \\ \hline
+\multicolumn{1}{|p{0.4286\dimen1}|}{
+body row 5
+} & \multicolumn{2}{p{0.3929\dimen1}|}{
+Cells may also be
+empty: \usebox{\litviii}} &  \\ \hline
+\end{tabular}
+\par\noindent\dimen1=\columnwidth
+\advance\dimen1 -6\tabcolsep
+\begin{tabular}{|l|l|l|}
+\hline
+\multicolumn{2}{|c|}{
+Inputs
+} & 
+Output
+ \\ \hline
+\multicolumn{1}{|c|}{
+A
+} & \multicolumn{1}{c|}{
+B
+} & 
+A or B
+ \\ \hline
+\hline
+
+False
+ & 
+False
+ & 
+False
+ \\ \hline
+
+True
+ & 
+False
+ & 
+True
+ \\ \hline
+
+False
+ & 
+True
+ & 
+True
+ \\ \hline
+
+True
+ & 
+True
+ & 
+True
+ \\ \hline
+\end{tabular}
+
+\subsection{Footnotes}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}\footnotetext[2]{
+This footnote shows the next symbol in the sequence.
+}\renewcommand{\thefootnote}{\arabic{footnote}}\footnotetext[4]{
+Here's an unreferenced footnote, with a reference to a
+nonexistent footnote: \footnotemark[5].
+}\footnotetext[5]{
+Here's a footnote with the ten deadly characters \#\$\%\&\_\{\}\symbol{126}\symbol{94}{\tt\symbol{92}} in it.
+}
+\subsection{Citations}
+\begin{thebibliography}{1}
+\bibitem{CIT2002} 
+Citations are text-labeled footnotes. They may be
+rendered separately and differently from footnotes.
+\end{thebibliography}
+
+Here's a reference to the above, \cite{CIT2002}, and a {\tt [nonexistent]\_}\renewcommand{\thefootnote}{\alph{footnote}}\footnote{ERROR: Unknown target name: ``nonexistent''.
+}\renewcommand{\thefootnote}{\arabic{footnote}}
+citation.
+
+\subsection{Targets}
+
+This paragraph is pointed to by the explicit ``example'' target. A
+reference can be found under Inline Markup, above. Inline
+hyperlink targets are also possible.
+
+Section headers are implicit targets, referred to by name. See
+Targets, which is a subsection of Body Elements.
+
+Explicit external targets are interpolated into references such as
+"Python\footnotemark[6]``.
+
+Targets may be indirect and anonymous.  Thus this phrase may also
+refer to the Targets section.
+
+Here's a {\tt `hyperlink reference without a target`\_}\renewcommand{\thefootnote}{\alph{footnote}}\footnote{ERROR: Unknown target name: ``hyperlink reference without a target''.
+}\renewcommand{\thefootnote}{\arabic{footnote}}, which generates an
+error.
+
+\subsubsection{Duplicate Target Names}
+
+Duplicate names in section headers or other implicit targets will
+generate ``info'' (level\ensuremath{-1}) system messages.  Duplicate names in
+explicit targets will generate ``warning'' (level\ensuremath{-2}) system messages.
+
+\subsubsection{Duplicate Target Names}
+
+Since there are two ``Duplicate Target Names'' section headers, we
+cannot uniquely refer to either of them by name.  If we try to (like
+this: {\tt `Duplicate Target Names`\_}\renewcommand{\thefootnote}{\alph{footnote}}\footnote{ERROR: Duplicate target name, cannot be used as a unique reference: ``duplicate target names''.
+}\renewcommand{\thefootnote}{\arabic{footnote}}), an error is generated.
+
+\subsection{Directives}
+\tableofcontents
+
+These are just a sample of the many reStructuredText Directives.  For
+others, please see http://docutils.sf.net/spec/rst/directives.html.
+
+\subsubsection{Document Parts}
+
+An example of the ``contents'' directive can be seen above this section
+(a local, untitled table of contents) and at the beginning of the
+document (a document-wide table of contents).
+
+\subsubsection{Images}
+
+An image directive:
+\includegraphics[scale=0.4]{title.eps}
+A figure directive:
+\begin{figure}
+\caption{A figure is an image with a caption and/or a legend:
+}
+\centerline{\includegraphics{title.eps}}
+\stylelegendtitle{Legend}
+\par\noindent\dimen1=\columnwidth
+\advance\dimen1 -4\tabcolsep
+\begin{tabular}{|l|l|}
+\hline
+
+re
+ & \multicolumn{1}{p{0.7966\dimen1}|}{
+Revised, revisited, based on 're' module.
+} \\ \hline
+\multicolumn{1}{|p{0.2034\dimen1}|}{
+Structured
+} & \multicolumn{1}{p{0.7966\dimen1}|}{
+Structure-enhanced text, structuredtext.
+} \\ \hline
+
+Text
+ & \multicolumn{1}{p{0.7966\dimen1}|}{
+Well it is, isn't it?
+} \\ \hline
+\end{tabular}
+
+This paragraph is also part of the legend.
+\end{figure}
+
+\subsubsection{Admonitions}
+\fbox{\parbox{\columnwidth}{
+\styleadmonitiontitle{Attention}
+
+Directives at large.
+}}
+\fbox{\parbox{\columnwidth}{
+\styleadmonitiontitle{Caution}
+
+Don't take any wooden nickels.
+}}
+\fbox{\parbox{\columnwidth}{
+\styleadmonitiontitle{Danger}
+
+Mad scientist at work!
+}}
+\fbox{\parbox{\columnwidth}{
+\styleadmonitiontitle{Error}
+
+Does not compute.
+}}
+\fbox{\parbox{\columnwidth}{
+\styleadmonitiontitle{Hint}
+
+It's bigger than a bread box.
+}}
+\fbox{\parbox{\columnwidth}{
+\styleadmonitiontitle{Important}
+\begin{itemize}
+\item 
+Wash behind your ears.
+\item 
+Clean up your room.
+\item 
+Call your mother.
+\item 
+Back up your data.
+\end{itemize}
+}}
+\fbox{\parbox{\columnwidth}{
+\styleadmonitiontitle{Note}
+
+This is a note.
+}}
+\fbox{\parbox{\columnwidth}{
+\styleadmonitiontitle{Tip}
+
+15\% if the service is good.
+}}
+\fbox{\parbox{\columnwidth}{
+\styleadmonitiontitle{Warning}
+
+Strong prose may provoke extreme mental exertion.
+Reader discretion is strongly advised.
+}}
+
+\subsubsection{Topics and Sidebars}
+\begin{figure}\begin{center}\fbox{\fbox{\parbox{.8\columnwidth}{
+\stylesidebartitles{Sidebar Title}{Optional Subtitle\fi}
+
+This is a sidebar.  It is for text outside the flow of the main
+text.  It often appears beside the main text with a border and
+background color.
+}}}\end{center}\end{figure}
+\styletopictitle{Topic Title} This is a topic.
+
+\subsubsection{Target Footnotes}
+
+\subsubsection{Line Blocks}
+
+Take it away, Eric the Orchestra Leader!
+\begin{verse}
+A one, two, a one two three four\\
+~\\
+Half a bee, philosophically,\\
+\begin{verse}
+must, {\em ipso facto}, half not be.\\
+\end{verse}
+But half the bee has got to be,\\
+\begin{verse}
+{\em vis a vis} its entity.  D'you see?\\
+~\\
+\end{verse}
+But can a bee be said to be\\
+\begin{verse}
+or not to be an entire bee,\\
+\begin{verse}
+when half the bee is not a bee,\\
+\begin{verse}
+due to some ancient injury?\\
+~\\
+\end{verse}
+\end{verse}
+\end{verse}
+Singing...\\
+\end{verse}
+
+\subsubsection{Parsed Literal}
+
+Play it again, Eric the Orchestra Leader!
+\begin{verse}{\tt 
+A one, two, a one two three four
+
+Half a bee, philosophically,
+~~~~must, {\em ipso facto}, half not be.
+But half the bee has got to be,
+~~~~{\em vis a vis} its entity.  D'you see?
+
+But can a bee be said to be
+~~~~or not to be an entire bee,
+~~~~~~~~when half the bee is not a bee,
+~~~~~~~~~~~~due to some ancient injury?
+
+Singing...
+}\end{verse}
+
+\subsubsection{Replacement Text}
+
+I recommend you try Python, {\em the} best language around\footnotemark[6].
+
+\subsection{Substitution Definitions}
+
+An inline image (\includegraphics{biohazard.eps}) example:
+
+(Substitution definitions are not visible in the HTML source.)
+
+\subsection{Comments}
+
+Here's one:
+% Comments begin with two dots and a space. Anything may
+% follow, except for the syntax of footnotes, hyperlink
+% targets, directives, or substitution definitions.
+% 
+% Double-dashes -- ``--'' -- must be escaped somehow in HTML output.
+
+(View the HTML source to see the comment.)
+
+\section{Error Handling}
+
+Any errors caught during processing will generate system messages.
+
+There should be five messages in the following, auto-generated
+section, ``Docutils System Messages'':
+% section should be added by Docutils automatically
+\input{test.idx}
+\end{document}
