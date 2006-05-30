@@ -13,6 +13,7 @@
 ^config\.log$
 ^config\.prl$
 ^Makefile$
+^MANIFEST\.SKIP$
 ^pm_to_blib$
 ^t/Common\.mk$
 ^lib/Text/Restructured/PrestConfig\.pm$
