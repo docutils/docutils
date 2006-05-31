@@ -265,8 +265,9 @@ WriteMakefile(
 		       %pm_files},
 #    FIXIN          => 'cp',
     test           => { TESTS => q($(shell find t -name '*.t' -type f)) },
-    clean          => { FILES => q[$(shell find t -name '*.t' -type f) $(shell find t -name '*.dir' -type d) t/Common.mk lib/Text/Restructured/PrestConfig.pm] },
+    clean          => { FILES => q[$(TEST_FILES) $(TEST_FILES:.t=.dir) t/Common.mk lib/Text/Restructured/PrestConfig.pm] },
     dist           => { COMPRESS => 'gzip', SUFFIX => '.gz' },
+    realclean      => { FILES => q(config.log config.log.bak) },
 );
 
 sub MY::libscan {
