@@ -24,9 +24,9 @@ s!(\d{4})([-/])(\d{2})\2(\d{2})$timere!\\d{4}[-/\]\\d{2}\[-/\]\\d{2}$time!go;
 # Handle the docutils string
 s/"Docutils[^\"]+"/".*"/g;
 # Handle the prest string
-s/"prest\\.prl[^\"]+"/".*"/g;
+s/"prest(\\.prl)?[^\"]+"/".*"/g;
 # Handle the prest version
-s/(prest\\.prl release )\S+/${1}\\S+/g;
+s/(prest)(\\.prl)?( release )\S+/${1}(${2})?${3}\\S+/g;
 # Accommodate different stylesheets
 s|(<link rel="stylesheet" href=")[^\"]*(" type="text/css" />)|$1.*$2|;
 # Get rid of junque characters in generated section numbers
