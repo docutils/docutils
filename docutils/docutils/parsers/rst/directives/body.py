@@ -128,25 +128,31 @@ rubric.options = {'class': directives.class_option}
 
 def epigraph(name, arguments, options, content, lineno,
              content_offset, block_text, state, state_machine):
-    block_quote, messages = state.block_quote(content, content_offset)
-    block_quote['classes'].append('epigraph')
-    return [block_quote] + messages
+    elements = state.block_quote(content, content_offset)
+    for element in elements:
+        if isinstance(element, nodes.block_quote):
+            element['classes'].append('epigraph')
+    return elements
 
 epigraph.content = 1
 
 def highlights(name, arguments, options, content, lineno,
              content_offset, block_text, state, state_machine):
-    block_quote, messages = state.block_quote(content, content_offset)
-    block_quote['classes'].append('highlights')
-    return [block_quote] + messages
+    elements = state.block_quote(content, content_offset)
+    for element in elements:
+        if isinstance(element, nodes.block_quote):
+            element['classes'].append('highlights')
+    return elements
 
 highlights.content = 1
 
 def pull_quote(name, arguments, options, content, lineno,
              content_offset, block_text, state, state_machine):
-    block_quote, messages = state.block_quote(content, content_offset)
-    block_quote['classes'].append('pull-quote')
-    return [block_quote] + messages
+    elements = state.block_quote(content, content_offset)
+    for element in elements:
+        if isinstance(element, nodes.block_quote):
+            element['classes'].append('pull-quote')
+    return elements
 
 pull_quote.content = 1
 

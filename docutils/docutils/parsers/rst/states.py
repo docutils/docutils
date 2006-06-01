@@ -1406,9 +1406,8 @@ class Body(RSTState):
             self.parent += msg
             indented, indent, line_offset, blank_finish = \
                   self.state_machine.get_first_known_indented(match.end())
-            blockquote, messages = self.block_quote(indented, line_offset)
-            self.parent += blockquote
-            self.parent += messages
+            elements = self.block_quote(indented, line_offset)
+            self.parent += elements
             if not blank_finish:
                 self.parent += self.unindent_warning('Option list')
             return [], next_state, []
