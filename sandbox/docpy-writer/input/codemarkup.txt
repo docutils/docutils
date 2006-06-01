@@ -95,6 +95,10 @@ only the text version.
     Returns the size in bytes of a ctypes type or instance memory
     buffer.  Does the same as the C sizeof() function.
 
+``from_address(address)`` : methoddesc
+   This method returns a ctypes type instance using the memory
+   specified by address.
+
 
 alternatives
 ''''''''''''
