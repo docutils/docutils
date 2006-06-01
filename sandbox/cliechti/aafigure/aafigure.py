@@ -792,36 +792,113 @@ class AsciiArtImage:
 if __name__ == '__main__':
     import pprint
     import svg
+    import pil
     import aa
+    import optparse
 
-    def render(text):
-        """helper function for tests. scan the given image and create svg output"""
-        aaimg = AsciiArtImage(text)
-        print text
+    def decode_color(color_string):
+        if color_string[0] == '#':          #HTML like color syntax
+            if len(color_string) == 4:      # #rgb format
+                r,g,b = [int(c+c, 16) for c in color_string[1:]]
+            elif len(color_string) == 7:      # #rrggbb format
+                r,g,b = [int(color_string[n:n+2], 16) for n in range(1, len(color_string), 2)]
+            else:
+                raise ValueError('not a valid color: %r' % color_string)
+        #XXX add a list of named colors
+        return r,g,b
+
+    parser = optparse.OptionParser(
+        usage="%prog [options] file1 [file2 ...]"
+    )
+    
+    parser.add_option("-t", "--type", dest="type",
+        help="filetype: png, jpg, svg", default='svg')
+
+    parser.add_option("-D", "--debug", dest="debug", action="store_true",
+        help="enable debug outputs", default=False)
+
+    parser.add_option("-s", "--scale", dest="scale", action="store", type='float',
+        help="set scale", default=1)
+
+    parser.add_option("-a", "--aspect", dest="aspect", action="store", type='float',
+        help="set aspect ratio", default=1)
+
+    parser.add_option("-l", "--linewidth", dest="linewidth", action="store", type='float',
+        help="set width, svg only", default=2)
+
+    parser.add_option("-f", "--foreground", dest="foreground", action="store",
+        help="foreground color default=#000000", default='#000000')
+
+    parser.add_option("-x", "--fill", dest="fill", action="store",
+        help="foreground color default=#000000", default='#000000')
+
+    parser.add_option("-b", "--background", dest="background", action="store",
+        help="foreground color default=#ffffff", default='#ffffff')
+
+    (options, args) = parser.parse_args()
+
+    if len(args) < 1:
+        parser.error("filename required")
+
+
+    #~ def render(text):
+        #~ """helper function for tests. scan the given image and create svg output"""
+        #~ aaimg = AsciiArtImage(text)
+        #~ print text
+        #~ aaimg.recognize()
+        #~ aav = aa.AsciiOutputVisitor()
+        #~ pprint.pprint(aaimg.shapes)
+        #~ aav.visit(aaimg)
+        #~ print aav
+        #~ svgout = svg.SVGOutputVisitor(
+            #~ file('aafigure_%x.svg' % (long(hash(text)) & 0xffffffffL,), 'w'),
+            #~ scale = 10
+        #~ )
+        #~ svgout.visit(aaimg)
+
+    #~ aaimg = AsciiArtImage("""
+        #~ ---> | ^|   |
+        #~ <--- | || --+--
+        #~ <--> | |V   |
+     #~ __             __
+    #~ |  |__  +---+  |__|
+            #~ |box|   ..
+            #~ +---+  Xenophon
+    #~ """)
+    #~ print aaimg
+    #~ aaimg.recognize()
+    #~ print "%r" % aaimg
+    #~ aav = aa.AsciiOutputVisitor()
+    #~ aav.visit(aaimg)
+    #~ print aav
+
+    for filename in args:
+        aaimg = AsciiArtImage(file(filename).read())
+        print aaimg
         aaimg.recognize()
-        aav = aa.AsciiOutputVisitor()
-        pprint.pprint(aaimg.shapes)
-        aav.visit(aaimg)
-        print aav
-        svgout = svg.SVGOutputVisitor(
-            file('aafigure_%x.svg' % (long(hash(text)) & 0xffffffffL,), 'w'),
-            scale = 10
-        )
-        svgout.visit(aaimg)
 
-    aaimg = AsciiArtImage("""
-        ---> | ^|   |
-        <--- | || --+--
-        <--> | |V   |
-     __             __
-    |  |__  +---+  |__|
-            |box|   ..
-            +---+  Xenophon
-    """)
-    print aaimg
-    aaimg.recognize()
-    print "%r" % aaimg
-    aav = aa.AsciiOutputVisitor()
-    aav.visit(aaimg)
-    print aav
+        output_name = filename + '.' + options.type
+        if options.type.lower() == 'svg':
+            pilout = svg.SVGOutputVisitor(
+                file(output_name, 'w'),
+                scale = options.scale*7,
+                line_width = options.linewidth,
+                #~ debug = options.debug,
+                foreground = decode_color(options.foreground),
+                background = decode_color(options.background),
+                fillcolor = decode_color(options.fill),
+            )
+            pilout.visit_image(aaimg)
+        else:
+            pilout = pil.PILOutputVisitor(
+                file(output_name, 'wb'),
+                scale = options.scale*7,
+                line_width = options.linewidth,
+                debug = options.debug,
+                file_type = options.type,
+                foreground = options.foreground,
+                background = options.background,
+                fillcolor = options.fill,
+            )
+            pilout.visit_image(aaimg)
 
