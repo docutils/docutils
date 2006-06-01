@@ -297,12 +297,21 @@ class PyLaTeXTranslator(LaTeXTranslator):
         if self.in_anydesc in ('ctypedesc','memberdesc','memberdescni',):
             # TODO [tag_or_type] {name}
             return '%s' % title
-        elif self.in_anydesc in ('cvardesc','excclassdesc',
+        elif self.in_anydesc in ('classdesc', 'cvardesc','excclassdesc',
                                 'funcdesc','funcdescni'):
             # "funcname(arguments)" to "{funcname}{arguments}"
             # "funcname([arguments])" to "{funcname}{\optional{arguments}}"
             t = '{'+title.replace('(','}{').replace(')','}')
             return t.replace('[','\\optional{').replace(']','}')
+        elif self.in_anydesc in ('methoddesc','methoddescni'):
+            # TODO what to do with tags
+            # "funcname(arguments)" to "{funcname}{arguments}"
+            # "funcname([arguments])" to "{funcname}{\optional{arguments}}"
+            t = '{'+title.replace('(','}{').replace(')','}')
+            return t.replace('[','\\optional{').replace(']','}')
+        # TODO cmemberdesc cfuncdesc
+        # 'datadesc','datadescni', 'excdesc','classdesc*','csimplemacrodesc'
+        return "{%s}" % title
         # 'datadesc','datadescni', 'excdesc','classdesc*','csimplemacrodesc'
         return "{%s}" % title
 
