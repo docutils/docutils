@@ -83,10 +83,17 @@ sizeof(type_or_object) : funcdesc
     Returns the size in bytes of a ctypes type or instance memory
     buffer.  Does the same as the C sizeof() function.
 
-with optional parameter
+a function with optional parameter
 
 create_string_buffer(init[, size]) : funcdesc
     does this or that
+
+extra markup to the definition does not change anything as the writer processes
+only the text version.
+
+``sizeof(type_or_object)`` : funcdesc
+    Returns the size in bytes of a ctypes type or instance memory
+    buffer.  Does the same as the C sizeof() function.
 
 
 alternatives

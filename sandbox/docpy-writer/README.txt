@@ -8,8 +8,7 @@
 :Copyright: This document has been placed in the public domain.
 
 This tries to explore the posibilities to use docutils as format for python
-library documentation as specified in 
-`Documenting Python <http://docs.python.org/dev/doc/doc.html>`_.
+library documentation as specified in `Documenting Python`_ .
 
 This version is based on a script from Greg Ward, hacked by Thomas Heller.
 
@@ -65,12 +64,12 @@ Problems
   might be already possible others require manual markup ?
   Or maybe seepep, ...
   
-* seealso environment.
+* seei also environment.
 
 Link to Indexes
 '''''''''''''''
 
-This is done by *informational units*.
+This is done by *informational units* (see `Documenting Python`_).
 ::
 
   sizeof(type_or_object)
@@ -95,6 +94,9 @@ Plain definition lists are only supported by transaltion to
 
 Note: the classifier must be preceeded by blank colon blank (`` : ``)
   and no blank line before the descriptional text.
+
+  And the definition, e.g. ``sizeof(...)`` is processed as text only, 
+  any markup like bold or literal is lost.
 
 Environments (sorted by parameters)::
 
@@ -156,3 +158,4 @@ Change log
   - 2006-04-xx: from theller, ctypes repository.
 
 .. _Docutils: http://docutils.sourceforge.net/
+.. _Documenting Python: <http://docs.python.org/dev/doc/doc.html>
