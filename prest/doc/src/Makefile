@@ -40,6 +40,8 @@ targets:	$(DEST_DIR) $(DEST_HTMLS) $(OTHER_TARGETS) $(DIFF_TARGETS)
 debug:
 	@echo '$(HTML_ALTS)'
 
+.PRECIOUS:	$(DEST_DIR)/%.html
+
 %.xref:	%.rst $(PREST_SRC) $(XREF_WRITER)
 	$(PREST_CMD) $(XREF_FLAGS) $(PREST_FLAGS_$(notdir $*)) $< > $@ 
 
