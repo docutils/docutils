@@ -114,12 +114,12 @@ Environments (sorted by parameters)::
   \begin{funcdesc} {name}{parameters} 
   \begin{funcdescni} {name}{parameters} 
   \begin{classdesc} {name}{constructor parameters} 
+  \begin{excclassdesc} {name}{constructor parameters} 
 
   \begin{methoddesc} [type name]{name}{parameters} 
   \begin{methoddescni} [type name]{name}{parameters} 
 
   \begin{cmemberdesc} {container}{type}{name}
-  \begin{excclassdesc} {name}{constructor parameters} 
   \begin{cfuncdesc} {type}{name}{args}
 
 The ``ni``-variants do not create index entries.
@@ -141,6 +141,7 @@ Change log
 
 * mkpydoc.py:
 
+  - 2006-06-02: support more informational units (cmemberdesc missing)
   - 2006-05-25: notice environment.
   - 2006-05-27: 
   

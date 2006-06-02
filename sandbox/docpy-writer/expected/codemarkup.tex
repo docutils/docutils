@@ -21,8 +21,8 @@ these are markups to allow index creation.
 \begin{csimplemacrodesc} {name}
 \end{verbatim}
 
-\begin{ctypedesc}ctype with_tag and_name
-Dont know how this should be set correct.
+\begin{ctypedesc}[ctype]{with_tag and_name}
+bla bla
 \end{ctypedesc}
 \begin{verbatim}
 \begin{ctypedesc} [tag]{name}
@@ -92,6 +92,41 @@ a function with optional parameter
 \begin{funcdesc}{create_string_buffer}{init\optional{, size}}
 does this or that
 \end{funcdesc}
+
+\begin{datadesc}{file}
+also datadescni, excdesc, classdesc*, csimplemacrodesc
+\end{datadesc}
+
+\begin{ctypedesc}{FileRO}
+without tag
+\end{ctypedesc}
+
+\begin{ctypedesc}[ftag]{FileRW}
+with tag
+also memberdesc, memberdescni
+\end{ctypedesc}
+
+\begin{funcdescni}{read}{int bytes \optional{, bool flush \optional{, bool after}}}
+two optional parameter.
+also cvardesc, funcdesc, funcdescni, classdesc, excclassdesc
+\end{funcdescni}
+
+\begin{methoddesc}{force_it}{string s}
+without return type
+\end{methoddesc}
+
+\begin{methoddescni}[bool]{write}{string s}
+with return type
+\end{methoddescni}
+
+\begin{cfuncdesc}{int}{read}{File}
+not a tag but a type
+\end{cfuncdesc}
+
+how to put this in rst:
+\begin{verbatim}
+\begin{cmemberdesc} {container}{type}{name}
+\end{verbatim}
 
 extra markup to the definition does not change anything as the writer processes
 only the text version.

@@ -294,25 +294,40 @@ class PyLaTeXTranslator(LaTeXTranslator):
 
     def anydesc_title(self, title):
         """Returns the title for xxxdesc environments."""
-        if self.in_anydesc in ('ctypedesc','memberdesc','memberdescni',):
-            # TODO [tag_or_type] {name}
-            return '%s' % title
+        def markup_optional_parameters(s):
+            return s.replace('[','\\optional{').replace(']','}')
+        def with_params(s):
+            return markup_optional_parameters(
+                        '{%s}' % s.replace('(','}{').replace(')',''))
+        def with_tag_or_typename(s, braces):
+            # "name", "tag name", "name(params)", "type name(params)"
+            param_pos = s.find("(")
+            blank_pos = s.find(" ")
+            if ((blank_pos>0 and param_pos<0)
+            or (blank_pos>0 and blank_pos<param_pos)):
+                (tag,rest) = s.split(None,1)
+                return braces[0] + tag + braces[1] + with_params(rest)
+            return with_params(s)
+        # 
+        if self.in_anydesc in ('datadesc','datadescni','excdesc','classdesc*',
+                                'csimplemacrodesc'):
+            # \begin{xdesc}{name}
+            return '{%s}' % title
+        elif self.in_anydesc in ('ctypedesc','memberdesc','memberdescni',):
+            # \begin{ctypedesc} [tag]{name}
+            return with_tag_or_typename(title, '[]')
         elif self.in_anydesc in ('classdesc', 'cvardesc','excclassdesc',
                                 'funcdesc','funcdescni'):
             # "funcname(arguments)" to "{funcname}{arguments}"
             # "funcname([arguments])" to "{funcname}{\optional{arguments}}"
-            t = '{'+title.replace('(','}{').replace(')','}')
-            return t.replace('[','\\optional{').replace(']','}')
+            return with_params(title)
         elif self.in_anydesc in ('methoddesc','methoddescni'):
-            # TODO what to do with tags
-            # "funcname(arguments)" to "{funcname}{arguments}"
-            # "funcname([arguments])" to "{funcname}{\optional{arguments}}"
-            t = '{'+title.replace('(','}{').replace(')','}')
-            return t.replace('[','\\optional{').replace(']','}')
-        # TODO cmemberdesc cfuncdesc
-        # 'datadesc','datadescni', 'excdesc','classdesc*','csimplemacrodesc'
-        return "{%s}" % title
-        # 'datadesc','datadescni', 'excdesc','classdesc*','csimplemacrodesc'
+            # \begin{methoddesc} [type name]{name}{parameters}
+            return with_tag_or_typename(title, '[]')
+        elif self.in_anydesc in ('cmemberdesc','cfuncdesc'):
+            # \begin{cmemberdesc} {container}{type}{name}
+            return with_tag_or_typename(title, '{}')
+        # fallback
         return "{%s}" % title
 
     def visit_title(self, node):

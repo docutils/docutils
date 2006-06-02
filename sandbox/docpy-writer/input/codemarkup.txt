@@ -22,7 +22,7 @@ these are markups to allow index creation.
 .. topic:: ctype with_tag and_name
    :class: ctypedesc
 
-   Dont know how this should be set correct.
+   bla bla
 
 ::
 
@@ -87,6 +87,33 @@ a function with optional parameter
 
 create_string_buffer(init[, size]) : funcdesc
     does this or that
+
+file : datadesc 
+  also datadescni, excdesc, classdesc*, csimplemacrodesc
+
+FileRO : ctypedesc
+  without tag
+
+ftag FileRW : ctypedesc
+  with tag
+  also memberdesc, memberdescni
+
+read(int bytes [, bool flush [, bool after]]) : funcdescni 
+  two optional parameter.
+  also cvardesc, funcdesc, funcdescni, classdesc, excclassdesc
+
+force_it(string s) : methoddesc
+  without return type
+
+bool write(string s) : methoddescni
+  with return type
+
+int read(File) : cfuncdesc
+  not a tag but a type
+
+how to put this in rst::
+
+  \begin{cmemberdesc} {container}{type}{name}
 
 extra markup to the definition does not change anything as the writer processes
 only the text version.
