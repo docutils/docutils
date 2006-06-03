@@ -141,6 +141,7 @@ Change log
 
 * mkpydoc.py:
 
+  - 2006-06-03: add cmemberdesc.
   - 2006-06-02: support more informational units (cmemberdesc missing)
   - 2006-05-25: notice environment.
   - 2006-05-27: 

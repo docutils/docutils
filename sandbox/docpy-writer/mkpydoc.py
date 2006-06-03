@@ -299,15 +299,19 @@ class PyLaTeXTranslator(LaTeXTranslator):
         def with_params(s):
             return markup_optional_parameters(
                         '{%s}' % s.replace('(','}{').replace(')',''))
-        def with_tag_or_typename(s, braces):
+        def split_tag_or_typename(s, braces):
             # "name", "tag name", "name(params)", "type name(params)"
             param_pos = s.find("(")
             blank_pos = s.find(" ")
             if ((blank_pos>0 and param_pos<0)
             or (blank_pos>0 and blank_pos<param_pos)):
                 (tag,rest) = s.split(None,1)
-                return braces[0] + tag + braces[1] + with_params(rest)
-            return with_params(s)
+                return (braces[0] + tag + braces[1], rest)
+            return ('', s)
+        def with_tag_or_typename(s, braces):
+            # "name", "tag name", "name(params)", "type name(params)"
+            (tag, rest) = split_tag_or_typename(s, braces)
+            return tag + with_params(rest)
         # 
         if self.in_anydesc in ('datadesc','datadescni','excdesc','classdesc*',
                                 'csimplemacrodesc'):
@@ -324,9 +328,12 @@ class PyLaTeXTranslator(LaTeXTranslator):
         elif self.in_anydesc in ('methoddesc','methoddescni'):
             # \begin{methoddesc} [type name]{name}{parameters}
             return with_tag_or_typename(title, '[]')
-        elif self.in_anydesc in ('cmemberdesc','cfuncdesc'):
-            # \begin{cmemberdesc} {container}{type}{name}
+        elif self.in_anydesc in ('cfuncdesc',):
             return with_tag_or_typename(title, '{}')
+        elif self.in_anydesc in ('cmemberdesc',):
+            # \begin{cmemberdesc} {container}{type}{name}
+            (tag, rest) = split_tag_or_typename(title, '{}')
+            return tag + with_tag_or_typename(rest, '{}')
         # fallback
         return "{%s}" % title
 
