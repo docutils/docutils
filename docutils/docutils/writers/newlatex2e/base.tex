@@ -231,16 +231,12 @@
   % 3. Attribute value.
   % 4. Node name.
   % 5. Node contents.
-  \Difdefined{DN#4A#2V#3}{%
-    \csname DN#4A#2V#3\endcsname{#1}{#2}{#3}{#4}{#5}%
-  }{\Difdefined{DN#4A#2}{%
+  \Difdefined{DN#4A#2}{%
     \csname DN#4A#2\endcsname{#1}{#2}{#3}{#4}{#5}%
-  }{\Difdefined{DA#2V#3}{%
-    \csname DA#2V#3\endcsname{#1}{#2}{#3}{#4}{#5}%
   }{\Difdefined{DA#2}{%
     \csname DA#2\endcsname{#1}{#2}{#3}{#4}{#5}%
   }{#5%
-  }}}}%
+  }}%
 }
 
 \providecommand{\DNparagraph}[1]{%
