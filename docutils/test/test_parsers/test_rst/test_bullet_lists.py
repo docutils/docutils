@@ -172,6 +172,32 @@ empty item above, no blank line
     <paragraph>
         empty item above, no blank line
 """],
+[u"""\
+Unicode bullets:
+
+\u2022 BULLET
+
+\u2023 TRIANGULAR BULLET
+
+\u2043 HYPHEN BULLET
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        Unicode bullets:
+    <bullet_list bullet="\u2022">
+        <list_item>
+            <paragraph>
+                BULLET
+    <bullet_list bullet="\u2023">
+        <list_item>
+            <paragraph>
+                TRIANGULAR BULLET
+    <bullet_list bullet="\u2043">
+        <list_item>
+            <paragraph>
+                HYPHEN BULLET
+"""],
 ]
 
 if __name__ == '__main__':
