@@ -111,6 +111,15 @@ Known Bugs
 
 Also see the `SourceForge Bug Tracker`_.
 
+* The HTML writer generates invalid XHTML for _`centered images with
+  targets`::
+
+      .. image:: example.png
+         :align: center
+         :target: http://docutils.sourceforge.net/
+
+  This results in ``<a><div><img /></div></a>``, which is invalid.
+
 * .. _error reporting:
 
   Calling rst2s5.py with a non-existent theme (``--theme
