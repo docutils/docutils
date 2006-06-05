@@ -55,9 +55,14 @@ Changes Since 0.4
 
 * docutils/writers/latex2e/__init__.py:
 
-  - Fix: Renaming contents section does not work with latex writer. 
-    sourceforge bug 1487405
-  - Apply patch for custom roles with classes from Edward Loper.
+  - Fix: Renaming contents section does not work with latex writer; SF
+    bug #1487405.
+  - Applied patch for custom roles with classes from Edward Loper.
+
+* setup.py:
+
+  - Provide descriptive error message if distutils is missing.
+
 
 Release 0.4 (2006-01-09)
 ========================
