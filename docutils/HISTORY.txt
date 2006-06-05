@@ -17,6 +17,11 @@
 Changes Since 0.4
 =================
 
+* docutils/frontend.py:
+
+  - Configuration files are now assumed and required to be
+    UTF-8-encoded.
+
 * docutils/io.py:
 
   - Added code to determine the input encoding from data: encoding
