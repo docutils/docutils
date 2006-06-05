@@ -67,6 +67,8 @@ Changes Since 0.4
 * tools/editors/emacs/rst.el:
 
   - Changed license to "GPL".
+  - Added ``rst-straighten-decorations`` function.
+  - The 'compile module is now always loaded.
 
 * setup.py:
 
