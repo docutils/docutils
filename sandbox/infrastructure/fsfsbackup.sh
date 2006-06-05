@@ -1,9 +1,7 @@
 #!/bin/bash
 
-# Author: Felix Wiemann
-# Contact: Felix_Wiemann@ososo.de
-# Revision: $Revision$
-# Date: $Date$
+# $Id$
+# Author: Felix Wiemann <Felix.Wiemann@ososo.de>
 # Copyright: This file has been placed in the public domain.
 
 # Options:
@@ -22,6 +20,7 @@ function feedback() {
 
 function do_backup() {
     # If any of the tests fails, the script terminates silently.
+    feedback "--- Backing up svn+ssh://$HOST$REMOTEDIR ---"
     feedback "Checking that all necessary variables are set."
     test -n "$BACKUPDIR"
     test -n "$HOST"
@@ -69,6 +68,7 @@ function do_backup() {
         feedback "Removing 'current.new'."
         rm current.new
         feedback "Done."
+        feedback ""
         return
     fi
     LOCALREVNUM="$[$LOCALREVNUM+1]"
