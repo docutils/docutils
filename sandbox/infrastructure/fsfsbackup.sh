@@ -67,21 +67,20 @@ function do_backup() {
         feedback "No backup needed; at revision $LOCALREVNUM."
         feedback "Removing 'current.new'."
         rm current.new
-        feedback "Done."
-        feedback ""
-        return
+    else
+        LOCALREVNUM="$[$LOCALREVNUM+1]"
+        feedback "Backing up from revision $LOCALREVNUM to revision $REMOTEREVNUM."
+        test "$printfeedback" && verbose=-v || verbose=
+        ssh "$HOST" "
+            set -e;
+            cd $REMOTEDIR/db/;
+            nice -n 10 tar cf - \`seq -f revs/%g $LOCALREVNUM $REMOTEREVNUM\` \`seq -f revprops/%g $LOCALREVNUM $REMOTEREVNUM\` | nice -n 10 bzip2 -c" \
+            | tar $verbose -xjf -
+        feedback "Renaming 'current.new' to 'current'."
+        mv current.new current
     fi
-    LOCALREVNUM="$[$LOCALREVNUM+1]"
-    feedback "Backing up from revision $LOCALREVNUM to revision $REMOTEREVNUM."
-    test "$printfeedback" && verbose=-v || verbose=
-    ssh "$HOST" "
-        set -e;
-        cd $REMOTEDIR/db/;
-        nice -n 10 tar cf - \`seq -f revs/%g $LOCALREVNUM $REMOTEREVNUM\` \`seq -f revprops/%g $LOCALREVNUM $REMOTEREVNUM\` | nice -n 10 bzip2 -c" \
-        | tar $verbose -xjf -
-    feedback "Renaming 'current.new' to 'current'."
-    mv current.new current
     feedback "Done."
+    feedback ""
 }
 
 feedback 'Reading ~/.fsfsbackup.'
