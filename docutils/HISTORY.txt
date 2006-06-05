@@ -74,7 +74,8 @@ Changes Since 0.4
 
   - Changed license to "GPL".
   - Added ``rst-straighten-decorations`` function.
-  - The 'compile module is now always loaded.
+  - The ``compile`` module is now always loaded.
+  - Added ``rst-toggle-line-block`` function.
 
 * setup.py:
 
