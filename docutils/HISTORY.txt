@@ -61,7 +61,8 @@ Changes Since 0.4
 
 * docutils/writers/pep_html/__init__.py:
 
-  - Changed to support new python.org website structure.
+  - Changed to support new python.org website structure and
+    pep2pyramid.py.
 
 * tools/editors/emacs/rst.el:
 
