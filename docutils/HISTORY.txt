@@ -59,6 +59,10 @@ Changes Since 0.4
     bug #1487405.
   - Applied patch for custom roles with classes from Edward Loper.
 
+* tools/editors/emacs/rst.el:
+
+  - Changed license to "GPL".
+
 * setup.py:
 
   - Provide descriptive error message if distutils is missing.
