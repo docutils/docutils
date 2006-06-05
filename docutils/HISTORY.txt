@@ -59,6 +59,10 @@ Changes Since 0.4
     bug #1487405.
   - Applied patch for custom roles with classes from Edward Loper.
 
+* docutils/writers/pep_html/__init__.py:
+
+  - Changed to support new python.org website structure.
+
 * tools/editors/emacs/rst.el:
 
   - Changed license to "GPL".
