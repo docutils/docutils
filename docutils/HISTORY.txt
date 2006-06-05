@@ -58,6 +58,7 @@ Changes Since 0.4
   - Fix: Renaming contents section does not work with latex writer; SF
     bug #1487405.
   - Applied patch for custom roles with classes from Edward Loper.
+  - Fixed bug that caused crashes with more than 256 lists.
 
 * docutils/writers/pep_html/__init__.py:
 
