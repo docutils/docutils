@@ -85,6 +85,7 @@ function do_backup() {
 }
 
 feedback 'Reading ~/.fsfsbackup.'
+feedback ''
 source ~/.fsfsbackup
 feedback 'Finished.'
 trap - 0 1 2 3 15
