@@ -16,7 +16,7 @@ for IN_F in $IN_DIR/$FILES ; do
     continue
   fi
   F_BASE=${BASE/.txt}
-  python mkpydoc.py $IN_F $OUT_DIR/$F_BASE.tex
+  python rst2docpy.py $IN_F $OUT_DIR/$F_BASE.tex
   diff -s -u $EXP_DIR/$F_BASE.tex $OUT_DIR/$F_BASE.tex
 done
 
