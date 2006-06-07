@@ -192,25 +192,6 @@ class PyLaTeXTranslator(LaTeXTranslator):
         if cmd is not None:
             self.body.append('\\%s{' % cmd)
 
-    # use topics for special environments
-    def visit_topic(self, node):
-        classes = node.get('classes', ['topic', ])
-        if classes[0] in ('datadesc', 'datadescni', 'excdesc', 'classdesc*',
-                        'csimplemacrodesc', 'ctypedesc', 'memberdesc',
-                        'memberdescni', 'cvardesc', 'excclassdesc',
-                        'funcdesc', 'funcdescni', 'methoddesc', 
-                        'methoddescni', 'cmemberdesc', 'classdesc',
-                        'cfuncdesc'):
-            self.body.append('\n\\begin{%s}' % classes[0])
-            self.context.append('\\end{%s}\n' % classes[0])
-            self.in_anydesc = classes[0]
-        else:
-            self.context.append('')
-
-    def depart_topic(self, node):
-        self.in_anydesc = False
-        self.body.append(self.context.pop())
-
     # use definition lists for special environments
     #
     # definition_list

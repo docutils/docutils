@@ -58,13 +58,14 @@ Problems
  
   - An unpatched latex2html might be unable to handle ``longtable`` options.
     Maybe remove the ``[c]`` and put the longtable into a center environment.
+
 * Document ``markup.py`` and ``missing.py``.
 
 * Inline markup: email, note, pep, rfc, strong, ulink, url, warning
   might be already possible others require manual markup ?
   Or maybe seepep, ...
   
-* seei also environment.
+* see also environment.
 
 Link to Indexes
 '''''''''''''''
@@ -141,6 +142,8 @@ Change log
 
 * mkpydoc.py:
 
+  - 2006-06-07: rename mkpydoc.py to rst2docpy.py and
+                remove informational units via topics.
   - 2006-06-03: add cmemberdesc.
   - 2006-06-02: support more informational units (cmemberdesc missing)
   - 2006-05-25: notice environment.
