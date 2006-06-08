@@ -392,11 +392,8 @@ class HTMLTranslator(nodes.NodeVisitor):
                 parts.append('%s="%s"' % (name.lower(),
                                           self.attval(' '.join(values))))
             else:
-                try:
-                    uval = unicode(value)
-                except TypeError:       # for Python 2.1 compatibility:
-                    uval = unicode(str(value))
-                parts.append('%s="%s"' % (name.lower(), self.attval(uval)))
+                parts.append('%s="%s"' % (name.lower(),
+                                          self.attval(unicode(value))))
         if empty:
             infix = ' /'
         else:
