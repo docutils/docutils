@@ -731,13 +731,18 @@ Also see the `... Or Not To Do?`__ list.
 
 __ rst/alternatives.html#or-not-to-do
 
+* Allow embedded references and not only embedded URIs: ```link text
+  <reference_>`_``; see the second half of
+  <http://article.gmane.org/gmane.text.docutils.devel/3738>.
+
 * Another list problem::
 
       * foo
             * bar
             * baz
 
-  This ends up as a definition list.
+  This ends up as a definition list.  This is more of a usability
+  issue.
 
 * This case is probably meant to be a nested list, but it ends up as a
   list inside a block-quote without an error message::
