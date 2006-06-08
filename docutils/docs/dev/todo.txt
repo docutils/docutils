@@ -548,6 +548,8 @@ User Docs
 * Add document about what Docutils has previously been used for
   (web/use-cases.txt?).
 
+* Improve index in docs/user/config.txt.
+
 
 Developer Docs
 --------------
