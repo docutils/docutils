@@ -67,6 +67,19 @@ Problems
   
 * see also environment.
 
+* standard definition lists for or something else ?::
+
+    Arguments:
+      file: a file name
+
+      encoding: a encoding
+
+* if a definition has no classifier and starts with ``class`` use classdesc ?
+
+* funcdesc arguments with default values should be marked as optional.
+
+  
+
 Link to Indexes
 '''''''''''''''
 
