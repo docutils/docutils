@@ -54,6 +54,6 @@ while test -n "$1"; do
     echo Press enter to commit or Ctrl+C to abort.
     read
     svn ci -m "--- MERGE: merged r$r to maintenance branch; original log message:
-    `svn pg svn:log --revprop -r "$r"`"
+`svn pg svn:log --revprop -r "$r"`"
     shift
 done
