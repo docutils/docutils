@@ -1,0 +1,173 @@
+#!/usr/bin/env python
+
+"""elisp2rst [<options>] <file.el>
+
+Emacs-LISP to reStructuredText converter.
+"""
+
+import sys, re, os
+
+
+
+
+hierarchy = ('=', '-', '~', '+', '^')
+
+def underline(title, char, outfile):
+    """
+    Outputs 'title' with underline character 'char' to file 'outfile'
+    """
+    print >> outfile, title
+    print >> outfile, char * len(title)
+
+def printpar(paragraph, outfile, indent=None):
+    """
+    Output a paragraph's lines to 'outfile'.
+    """
+    write = outfile.write
+    write(os.linesep)
+    for line in map(str.rstrip, paragraph):
+        if indent:
+            write(indent)
+        write(line)
+        write(os.linesep)
+
+        
+class ElispFormatError(Exception):
+    """
+    Error raised during the parsing of Emacs-LISP code.
+    """
+
+
+def elisp2rst(infile, outfile):
+    """
+    Reads Emacs-LISP text and converts it in to reStructuredText.  'infile' and
+    'outfile' are expected to be open file objects for input and output.
+
+    This code does the following transformations:
+
+    FIXME TODO:
+    - create a title and subtitle
+    - converts the RFC822 headers into bibliographic fields
+    - converts the copyright line at the top into a biblio field
+    - places the copyright notice in a bibliographic field
+    - converts the ;;; section titles to include underlines
+    - adds an extra colon at the end of appropriate lines for creating literal
+      blocks
+
+    """
+    hidx = 0 # index in the hierarchy
+
+    # Get the title and subtitle lines.
+    titleline = infile.next()
+    mo = re.match('^;;; (.*) --- (.*)$', titleline)
+    if mo:
+        title, subtitle = mo.group(1, 2)
+    else:
+        title, subtitle = titleline[4:], None
+    if title:
+        underline(title, hierarchy[hidx], outfile)
+        hidx += 1
+    if subtitle:
+        underline(subtitle, hierarchy[hidx], outfile)
+        hidx += 1
+
+    # Process the rest of the lines until we hit a ';;; Code:' section.
+    precommentary, done_pre = [], False
+    "List of paragraphs that appear before the commentary."
+
+    copyright_years, fields = None, None
+    "Copyright years and RFC822 field list, if present in the pre-commentary."
+    
+    parnum = 0
+    paragraph = []
+    for line in infile:
+        # Section title.
+        mo = re.match(';;; (.*)', line)
+        if mo:
+            title = mo.group(1)
+            # If we reached the code marker, stop processing.
+            if title.startswith('Code:'):
+                break
+            
+            if title.startswith('Commentary:'):
+                done_pre = True
+
+                # Output the pre-commentary stuff.
+                if fields:
+                    for line in fields:
+                        print >> outfile, ':%s' % line
+                    outfile.write(os.linesep)
+
+                prepars = [copyright_years] + precommentary
+                if prepars:
+                    print >> outfile, '.. note::'
+                    print >> outfile
+                    for par in [copyright_years] + precommentary:
+                        printpar(par, outfile, indent='   ')
+
+
+            if title.endswith(':'):
+                title = title[:-1]
+
+            outfile.write('\n')
+            underline(title, hierarchy[hidx], outfile)
+            continue
+        
+        # Detect LISP code and exit if we find some.
+        if re.match('\([a-zA-Z-]+( |$)', line):
+            break
+
+        # Normal text contents.
+        mo = re.match(';;? ?(.*)$', line)
+        if mo:
+            paragraph.append(mo.group(1))
+        else:
+            if not re.match('^[ \t\f]*$', line):
+                raise ElispFormatError("Unknown line format")
+            elif paragraph:
+                if not done_pre:
+                    if parnum == 0 and paragraph[0].startswith('Copyright'):
+                        copyright_years = paragraph
+                    elif parnum == 1 and re.match('[A-Za-z]+: ', paragraph[0]):
+                        fields = paragraph
+                    else:
+                        precommentary.append(paragraph)
+                else:
+                    printpar(paragraph, outfile)
+
+                paragraph = []
+                parnum += 1
+
+
+    if paragraph:
+        printpar(paragraph, outfile)
+        paragraph = []
+        parnum += 1
+                    
+                            
+        
+
+
+
+
+def main():
+    import optparse
+    parser = optparse.OptionParser(__doc__.strip())
+    opts, args = parser.parse_args()
+
+    if len(args) != 1:
+        parser.error("You must specify a single Emacs-LISP file as input.")
+    elispfn = args[0]
+
+    elispf = open(elispfn, 'r')
+
+    elisp2rst(elispf, sys.stdout)
+
+
+
+
+
+
+if __name__ == '__main__':
+    main()
+

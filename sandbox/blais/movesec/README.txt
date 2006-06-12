@@ -10,6 +10,12 @@ docutils-movesec
 A script that can raise or lower (shift) the levels of the underline characters
 defining the sections of a file.
 
+.. important::
+
+   This script is useless if you're using emacs with rst.el.  The current
+   (2006) rst.el does this job pretty well already.
+
+
 From an email on the list::
 
   > > i want to contribute my movesec script that rotates the section
