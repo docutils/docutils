@@ -754,7 +754,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
              }
         if tr.has_key(docutils_encoding.lower()):
             return tr[docutils_encoding.lower()]
-        return docutils_encoding.translate(string.maketrans("",""),"_-").lower()
+        return docutils_encoding.replace("_", "").replace("-", "").lower()
 
     def language_label(self, docutil_label):
         return self.language.labels[docutil_label]
