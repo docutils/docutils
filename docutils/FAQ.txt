@@ -427,8 +427,6 @@ implied endorsement or recommendation, and in no particular order:
   RST text via a custom RST reference-directive or, even easier, an
   interpreted text role 'trac'
 
-* `Vogontia <http://www.ososo.de/vogontia/>`__, a Wiki-like FAQ system
-
 Please `let us know`_ of any other reStructuredText Wikis.
 
 The example application for the `Web Framework Shootout
