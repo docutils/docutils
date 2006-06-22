@@ -259,7 +259,8 @@ def process_header_option(options, state_machine, lineno):
 
 def parse_csv_data_into_rows(csv_data, dialect, source, options):
     # csv.py doesn't do Unicode; encode temporarily as UTF-8
-    csv_reader = csv.reader([line.encode('utf-8') for line in csv_data],
+    csv_reader = csv.reader([(line.encode('utf-8') + '\n')
+                             for line in csv_data],
                             dialect=dialect)
     rows = []
     max_cols = 0
