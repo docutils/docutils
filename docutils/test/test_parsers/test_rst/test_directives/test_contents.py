@@ -151,11 +151,11 @@ totest['contents'] = [
         <paragraph>
             Error in "contents" directive:
             invalid option value: (option: "depth"; value: 'two')
-            invalid literal for int(): two.
+            %s.
         <literal_block xml:space="preserve">
             .. contents::
                :depth: two
-"""],
+""" % DocutilsTestSupport.exception_data('int("two")')[1][0]],
 ["""\
 .. contents::
    :width: 2

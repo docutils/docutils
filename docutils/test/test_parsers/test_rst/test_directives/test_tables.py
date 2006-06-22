@@ -34,6 +34,16 @@ if isinstance(unichr_exception, OverflowError):
 else:
     unichr_exception_string = str(unichr_exception)
 
+null_bytes_code = """
+import csv
+import cStringIO
+csv_data = open('%s', 'rb').read().decode('latin-1')
+csv_file = cStringIO.StringIO(csv_data)
+reader = csv.reader(csv_file)
+reader.next()
+""" % utf_16_csv
+null_bytes_exception = DocutilsTestSupport.exception_data(null_bytes_code)[1][0]
+
 totest = {}
 
 totest['table'] = [
@@ -549,7 +559,7 @@ u"""\
         <paragraph>
             Error in "csv-table" directive:
             invalid option value: (option: "widths"; value: '10,y,z')
-            invalid literal for int(): y.
+            %s.
         <literal_block xml:space="preserve">
             .. csv-table:: bad column widths
                :widths: 10,y,z
@@ -565,7 +575,7 @@ u"""\
                :widths: 0 0 0
             \n\
                some, csv, data
-"""],
+""" % DocutilsTestSupport.exception_data('int("y")')[1][0]],
 ["""\
 .. csv-table:: good delimiter
    :delim: /
@@ -734,14 +744,14 @@ u"""\
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Error with CSV data in "csv-table" directive:
-            string with NUL bytes
+            %s
         <literal_block xml:space="preserve">
             .. csv-table:: bad encoding
                :file: %s
                :encoding: latin-1
     <paragraph>
         (7- and 8-bit text encoded as UTF-16 has lots of null/zero bytes.)
-""" % utf_16_csv],
+""" % (null_bytes_exception, utf_16_csv)],
 ["""\
 .. csv-table:: good encoding
    :file: %s
