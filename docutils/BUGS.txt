@@ -134,6 +134,23 @@ Also see the `SourceForge Bug Tracker`_.
 
       .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 
+  There is a preferred alternative::
+
+     |rst|_ is cool!
+
+      .. |rst| replace:: reStructuredText
+      .. _rst: http://docutils.sourceforge.net/rst.html
+
+  This only works for the case where the entire substitution is a
+  reference, not when the reference is embedded as part of the
+  substitution.
+
+  The problem pattern has never been tested for, perhaps because of
+  the alternative.  Unit tests should be added.
+
+  This was not a bug in Docutils 0.3.7 (`reference
+  <http://thread.gmane.org/gmane.text.docutils.user/2997/focus=2997>`__).
+
 * The "stylesheet" setting (a URL, to be used verbatim) should be
   allowed to be combined with "embed_stylesheet".  The stylesheet data
   should be read in using urllib.  There was an assumption that a
