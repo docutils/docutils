@@ -339,7 +339,7 @@ RE${Writer} = $(TESTBIN)/re${suffix}
 
 # Checking ${writer} with regular expression comparison
 %.chk:	%.rst %.${suffix}re $(PREST) $(${Writer}WRT) $(PMFILES)
-	@$(PERL) $(PERL_FLAGS) ${prest_cmd} | $(DIFFRE) $*.${suffix}re - > $@
+	@$(PERL) $(PERL_FLAGS) ${prest_cmd} | $(PERL) $(DIFFRE) $*.${suffix}re - > $@
 
 # Checking ${writer} with straight diff
 %.chk:	%.rst %.${suffix}c $(PREST) $(${Writer}WRT) $(PMFILES)
