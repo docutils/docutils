@@ -13,7 +13,7 @@ use ExtUtils::MakeMaker;
 
 ## Note: The version number for the entire release is specified here and
 ## propagated.  Be sure to edit for every release.
-my $Version = "0.003_011";
+my $Version = "0.003_013";
 
 use vars qw($opt_f $opt_h $opt_k);
 my $OUTPUT_CFG_FILE = $opt_f = 'config.log';
@@ -58,11 +58,14 @@ if (-f $opt_f) {
     @DEFAULTS{keys %cfg} = values %cfg;
     close CF;
 }
+else {
+    # Set the defaults from %CFG_LIST
+    @DEFAULTS{keys %CFG_LIST} = map($_->{default}, values %CFG_LIST);
+}
 
 # Do the user prompts
 while (! $opt_k) {
-    my $cfg_item;
-    foreach $cfg_item (@CFG_LIST) {
+    foreach my $cfg_item (@CFG_LIST) {
 	my $message = $CFG_LIST{$cfg_item}{desc};
 	$message = "$CFG_LIST{$cfg_item}{explain}\n$message"
 	    if defined $CFG_LIST{$cfg_item}{explain};
@@ -82,7 +85,7 @@ while (! $opt_k) {
     printsummary();
 
     my $okay = prompt("Does this look right?");
-    last if ($okay =~ m/^[y1]/i);
+    last if ($okay !~ m/^[n0]/i);
 }
 if ($opt_k) {
     @CONFIG{@CFG_LIST} = @DEFAULTS{@CFG_LIST};
