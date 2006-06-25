@@ -522,7 +522,19 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
             config_files = os.environ['DOCUTILSCONFIG'].split(os.pathsep)
         except KeyError:
             config_files = self.standard_config_files
-        return [os.path.expanduser(f) for f in config_files if f.strip()]
+
+        # If 'HOME' is not set, expandvars() requires the 'pwd' module which is
+        # not available under certain environments, for example, within
+        # mod_python.  The publisher ends up in here, and we need to publish
+        # from within mod_python.  Therefore we need to avoid expanding when we
+        # are in those environments.
+        expand = os.path.expanduser
+        if 'HOME' not in os.environ:
+            try:
+                import pwd
+            except ImportError:
+                expand = lambda x: x
+        return [expand(f) for f in config_files if f.strip()]
 
     def get_standard_config_settings(self):
         settings = Values()
