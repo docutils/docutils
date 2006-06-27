@@ -296,7 +296,7 @@ elif ! diff -q $htdocs_tarball $htdocs_new_tarball > /dev/null; then
         gzip -f sitemap
         cd $remoteproject
         mv htdocs.new.tar htdocs.tar
-        rm -f ~/htdocs.patch
+        rm -f htdocs.patch
         " \
             < $htdocs_patchfile
 fi
