@@ -39,7 +39,8 @@ htdocs_patchfile=$auxdir/htdocs.patch
 htdocs_tarball=$auxdir/htdocs.tar
 htdocs_new_tarball=$auxdir/htdocs.new.tar
 # htdocs directory on SF.net
-remotehtdocs=/home/groups/d/do/docutils/htdocs
+remoteproject=/home/groups/d/do/docutils
+remotehtdocs=$remoteproject/htdocs
 pylib=$auxdir/lib/python
 lib=$pylib/$project
 # Lock directory.
@@ -265,9 +266,10 @@ if test ! -f $htdocs_tarball; then
         "
         set -e
         umask 002
-        gunzip -c > ~/htdocs.tar
+        cd $remoteproject
+        gunzip -c > htdocs.tar
         cd $remotehtdocs
-        tar xmf ~/htdocs.tar
+        tar xmf $remoteproject/htdocs.tar
         gzip -f sitemap
         "
 # If the current and the new tarball differ, transmit patch file.
@@ -286,12 +288,14 @@ elif ! diff -q $htdocs_tarball $htdocs_new_tarball > /dev/null; then
         "
         set -e
         umask 002
-        cat > ~/htdocs.patch
-        ~/bin/bspatch ~/htdocs.tar ~/htdocs.new.tar ~/htdocs.patch
+        cd $remoteproject
+        cat > htdocs.patch
+        ~/bin/bspatch htdocs.tar htdocs.new.tar htdocs.patch
         cd $remotehtdocs
-        tar xmf ~/htdocs.new.tar
+        tar xmf $remoteproject/htdocs.new.tar
         gzip -f sitemap
-        mv ~/htdocs.new.tar ~/htdocs.tar
+        cd $remoteproject
+        mv htdocs.new.tar htdocs.tar
         rm -f ~/htdocs.patch
         " \
             < $htdocs_patchfile
