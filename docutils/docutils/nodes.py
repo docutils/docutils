@@ -113,22 +113,31 @@ class Node:
 
         Parameter `visitor`: A `NodeVisitor` object, containing a
         ``visit`` implementation for each `Node` subclass encountered.
+
+        Return true if we should stop the traversal.
         """
+        stop = 0
         visitor.document.reporter.debug(
             'docutils.nodes.Node.walk calling dispatch_visit for %s'
             % self.__class__.__name__)
         try:
-            visitor.dispatch_visit(self)
-        except (SkipChildren, SkipNode):
-            return
-        except SkipDeparture:           # not applicable; ignore
-            pass
-        children = self.children
-        try:
-            for child in children[:]:
-                child.walk(visitor)
-        except SkipSiblings:
-            pass
+            try:
+                visitor.dispatch_visit(self)
+            except (SkipChildren, SkipNode):
+                return stop
+            except SkipDeparture:           # not applicable; ignore
+                pass
+            children = self.children
+            try:
+                for child in children[:]:
+                    if child.walk(visitor):
+                        stop = 1
+                        break
+            except SkipSiblings:
+                pass
+        except StopTraversal:
+            stop = 1
+        return stop
 
     def walkabout(self, visitor):
         """
@@ -139,8 +148,11 @@ class Node:
         Parameter `visitor`: A `NodeVisitor` object, containing a
         ``visit`` and ``depart`` implementation for each `Node`
         subclass encountered.
+
+        Return true if we should stop the traversal.
         """
         call_depart = 1
+        stop = 0
         visitor.document.reporter.debug(
             'docutils.nodes.Node.walkabout calling dispatch_visit for %s'
             % self.__class__.__name__)
@@ -148,22 +160,27 @@ class Node:
             try:
                 visitor.dispatch_visit(self)
             except SkipNode:
-                return
+                return stop
             except SkipDeparture:
                 call_depart = 0
             children = self.children
             try:
                 for child in children[:]:
-                    child.walkabout(visitor)
+                    if child.walkabout(visitor):
+                        stop = 1
+                        break
             except SkipSiblings:
                 pass
         except SkipChildren:
             pass
+        except StopTraversal:
+            stop = 1
         if call_depart:
             visitor.document.reporter.debug(
                 'docutils.nodes.Node.walkabout calling dispatch_departure '
                 'for %s' % self.__class__.__name__)
             visitor.dispatch_departure(self)
+        return stop
 
     def traverse(self, condition=None,
                  include_self=1, descend=1, siblings=0, ascend=0):
@@ -1687,6 +1704,19 @@ class NodeFound(TreePruningException):
     Raise to indicate that the target of a search has been found.  This
     exception must be caught by the client; it is not caught by the traversal
     code.
+    """
+
+    pass
+
+
+class StopTraversal(TreePruningException):
+
+    """
+    Stop the traversal alltogether.  The current node's ``depart_...`` method
+    is not affected.  The parent nodes ``depart_...`` methods are also called
+    as usual.  No other nodes are visited.  This is an alternative to
+    NodeFound that does not cause exception handling to trickle up to the
+    caller.
     """
 
     pass
