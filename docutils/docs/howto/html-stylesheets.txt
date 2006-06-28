@@ -59,7 +59,7 @@ benefit from your efforts, you are encouraged to post the stylesheet
 to the Docutils-users_ mailing list.  We can upload it to the
 `Docutils repository`__ if you would like us to do so.
 
-If you decide to share you stylesheet with other users of Docutils,
+If you decide to share your stylesheet with other users of Docutils,
 please keep website-specific customizations not applicable to
 Docutils' HTML code in a separate stylesheet.
 
