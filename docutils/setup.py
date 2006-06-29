@@ -8,6 +8,7 @@ import glob
 try:
     from distutils.core import setup
     from distutils.command.build_py import build_py
+    from distutils.command.install_data import install_data
 except ImportError:
     print 'Error: The "distutils" standard module, which is required for the '
     print 'installation of Docutils, could not be found.  You may need to '
@@ -15,10 +16,25 @@ except ImportError:
     print 'system using your package manager.'
     sys.exit(1)
 
-# From <http://groups.google.de/groups?as_umsgid=f70e3538.0404141327.6cea58ca@posting.google.com>.
-from distutils.command.install import INSTALL_SCHEMES
-for scheme in INSTALL_SCHEMES.values():
-    scheme['data'] = scheme['purelib']
+if sys.hexversion < 0x02030000:
+    # Hack for Python < 2.3.
+    # From <http://groups.google.de/groups?as_umsgid=f70e3538.0404141327.6cea58ca@posting.google.com>.
+    from distutils.command.install import INSTALL_SCHEMES
+    for scheme in INSTALL_SCHEMES.values():
+        scheme['data'] = scheme['purelib']
+
+
+class smart_install_data(install_data):
+
+    # Hack for Python > 2.3.
+    # From <http://wiki.python.org/moin/DistutilsInstallDataScattered>,
+    # by Pete Shinners.
+
+    def run(self):
+        #need to change self.install_dir to the library dir
+        install_cmd = self.get_finalized_command('install')
+        self.install_dir = getattr(install_cmd, 'install_lib')
+        return install_data.run(self)
 
 
 def do_setup():
@@ -28,7 +44,15 @@ def do_setup():
         kwargs['py_modules'] = extras
     if sys.hexversion >= 0x02030000:    # Python 2.3
         kwargs['classifiers'] = classifiers
+        # Install data files properly.  Note that we use a different
+        # hack for Python 2.2, which does not *always* work, though;
+        # see
+        # <http://article.gmane.org/gmane.text.docutils.user/2867>.
+        # So for Python 2.3+, we prefer this hack.
+        kwargs['cmdclass'] = {'install_data': smart_install_data}
     else:
+        # Install data files properly.  (Another hack for Python 2.2
+        # is at the top of this file.)
         kwargs['cmdclass'] = {'build_py': dual_build_py}
     dist = setup(**kwargs)
     return dist
