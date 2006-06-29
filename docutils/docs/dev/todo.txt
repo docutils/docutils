@@ -72,6 +72,10 @@ for inclusion in the Python standard library.
 General
 =======
 
+* We don't have consistent (or no) encoding handling for command line
+  arguments.  See
+  <http://thread.gmane.org/gmane.text.docutils.user/2890/focus=2957>.
+
 * Improve handling on Windows:
 
   - Get graphical installer.
