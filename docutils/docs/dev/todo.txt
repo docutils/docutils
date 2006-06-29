@@ -737,6 +737,9 @@ Also see the `... Or Not To Do?`__ list.
 
 __ rst/alternatives.html#or-not-to-do
 
+* Recognize unicode whitespace and punctuation.  See
+  <http://thread.gmane.org/gmane.text.docutils.user/2765>.
+
 * Allow embedded references and not only embedded URIs: ```link text
   <reference_>`_``; see the second half of
   <http://article.gmane.org/gmane.text.docutils.devel/3738>.
