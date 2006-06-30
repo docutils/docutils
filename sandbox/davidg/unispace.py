@@ -10,7 +10,7 @@ Regular expressions:
 
 1. '\\s'
 2. '\\s', re.UNICODE
-3. u'(?![\xa0\u202f])[\\s\u200c]', re.UNICODE
+3. u'(?![\xa0\u202f])\\s', re.UNICODE
 
 ===  =========  =======  =========================  =======
 Cat  Codepoint  Decimal  Name/Description           Regexps
@@ -40,7 +40,6 @@ Zs    U+2008      8200   PUNCTUATION SPACE            2 3
 Zs    U+2009      8201   THIN SPACE                   2 3
 Zs    U+200a      8202   HAIR SPACE                   2 3
 Zs    U+200b      8203   ZERO WIDTH SPACE             2 3
-Cf    U+200c      8204   ZERO WIDTH NON-JOINER          3
 Zl    U+2028      8232   LINE SEPARATOR               2 3
 Zp    U+2029      8233   PARAGRAPH SEPARATOR          2 3
 Zs    U+202f      8239   NARROW NO-BREAK SPACE        2  
@@ -79,7 +78,7 @@ charnames = {9: '(HT) TAB \\t',
 
 pats = [re.compile(r'\s'),
         re.compile(r'\s', re.UNICODE),
-        re.compile(u'(?![\u00a0\u202f])[\\s\u200c]', re.UNICODE),]
+        re.compile(u'(?![\u00a0\u202f])\\s', re.UNICODE),]
 
 border = '===  =========  =======  =========================  ======='
 header = 'Cat  Codepoint  Decimal  Name/Description           Regexps'
