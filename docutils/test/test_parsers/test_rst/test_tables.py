@@ -568,7 +568,7 @@ No blank line after table.
 | to accommodate long filesystem paths.)                                       |
 +------------------------------------------------------------------------------+
 """) % ('\n'.join(['|    %-70s    |' % include2[part * 70 : (part + 1) * 70]
-                   for part in range(len(include2) / 70 + 1)])),
+                   for part in range(len(include2) // 70 + 1)])),
 """\
 <document source="test data">
     <table>
@@ -603,7 +603,7 @@ Something afterwards.
 
 And more.
 """) % ('\n'.join(['|    %-70s    |' % include2[part * 70 : (part + 1) * 70]
-                   for part in range(len(include2) / 70 + 1)])),
+                   for part in range(len(include2) // 70 + 1)])),
 """\
 <document source="test data">
     <paragraph>
@@ -1221,7 +1221,7 @@ Note       The first row of this table may expand
            to accommodate long filesystem paths.
 =========  =====================================================================
 """ % ('\n'.join(['              %-65s' % include2[part * 65 : (part + 1) * 65]
-                  for part in range(len(include2) / 65 + 1)])),
+                  for part in range(len(include2) // 65 + 1)])),
 """\
 <document source="test data">
     <table>
