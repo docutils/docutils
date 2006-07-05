@@ -91,7 +91,7 @@ BEGIN {
     $SVNID = '$Id$ ';
     $SVNNAME = '$URL$ ';
     my $version = $Text::Restructured::PrestConfig::VERSION;
-    $version =~ s/_/./g;
+    $version =~ s/(\d\d\d)/$1./g;
     $version =~ s/(\d+)/$1+0/ge;
     $VERSION = $version;
     $SVNID =~ /Id: (\S+?) \S+ (\d+)/;
