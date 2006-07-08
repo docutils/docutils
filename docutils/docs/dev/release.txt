@@ -18,6 +18,11 @@ reminded of them.
 .. Note:: This document does not cover branching and tagging, but the
    release script does.
 
+.. Note:: You may want to use ReleaseForge_ instead of using
+   SourceForge's file release system.
+
+   .. _ReleaseForge: http://releaseforge.sourceforge.net/
+
 
 * **On the Docutils-develop mailing list, announce that the release is
   going to be made, update the release notes and ask for additions.**
