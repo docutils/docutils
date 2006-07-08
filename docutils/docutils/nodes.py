@@ -26,7 +26,7 @@ import os
 import re
 import warnings
 from types import IntType, SliceType, StringType, UnicodeType, \
-     TupleType, ListType, ClassType
+     TupleType, ListType, ClassType, TypeType
 from UserString import UserString
 
 
@@ -222,7 +222,9 @@ class Node:
         r = []
         if ascend:
             siblings=1
-        if isinstance(condition, ClassType):
+        # Check if `condition` is a class (check for TypeType for Python
+        # implementations that use only new-style classes, like PyPy).
+        if isinstance(condition, (ClassType, TypeType)):
             node_class = condition
             def condition(node, node_class=node_class):
                 return isinstance(node, node_class)
