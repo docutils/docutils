@@ -1,63 +1,62 @@
-;;; ================================================
-;;;   rst.el -- ReStructuredText Support for Emacs
-;;; ================================================
-;;;
-;;; :Authors: Martin Blais <blais@furius.ca>,
-;;;           Stefan Merten <smerten@oekonux.de>,
-;;;           David Goodger <goodger@python.org>
-;;; :Revision: $Revision$
-;;; :Date: $Date$
-;;; :Copyright: 2003-2006 by Martin Blais, Stefan Merten, and David Goodger.
-;;; :License:
-;;;     This program is free software; you can redistribute it and/or modify
-;;;     it under the terms of the GNU General Public License version 2,
-;;;     as published by the Free Software Foundation.
-;;;
-;;;     This program is distributed in the hope that it will be useful,
-;;;     but WITHOUT ANY WARRANTY; without even the implied warranty of
-;;;     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;;;     GNU General Public License for more details.
-;;;
-;;;     You should have received a copy of the GNU General Public License
-;;;     version 2 along with this program (../../../licenses/gpl.txt) and
-;;;     available at http://docutils.sf.net/licenses/gpl.txt
-;;;     and at http://www.gnu.org/licenses/gpl.txt.
-;;;
-;;; :Abstract:
-;;;     Support code for editing reStructuredText with Emacs.  The latest
-;;;     version of this file lies in the docutils source code repository.
-;;;
-;;; Description
-;;; ===========
-;;;
-;;; Basically, this package contains:
-;;;
-;;; - Functions to automatically adjust and cycle the section underline
-;;;   decorations;
-;;; - A mode that displays the table of contents and allows you to jump anywhere
-;;;   from it;
-;;; - Functions to insert and automatically update a TOC in your source
-;;;   document;
-;;; - A mode which supports font-lock highlighting of reStructuredText
-;;;   structures;
-;;; - Some other convenience functions.
-;;;
-;;; See the accompanying document in the docutils documentation about
-;;; the contents of this package and how to use it.
-;;;
-;;; For more information about reStructuredText, see
-;;; http://docutils.sourceforge.net/rst.html
-;;;
-;;; For full details on how to use the contents of this file, see
-;;; http://docutils.sourceforge.net/docs/user/emacs.html
-;;;
-;;; Download
-;;; ========
-;;;
-;;; Click `Here <rst.el>`_ for download.
-;;;
-;;; END
+;;; rst.el --- ReStructuredText Support for Emacs
+
+;; Copyright 2003-2006 by Martin Blais, Stefan Merten, and David Goodger.
+
+;; Authors: Martin Blais <blais@furius.ca>,
+;;          Stefan Merten <smerten@oekonux.de>,
+;;          David Goodger <goodger@python.org>
+;; Revision: $Revision$
+;; Date: $Date$
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License version 2,
+;; as published by the Free Software Foundation.
 ;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License version 2
+;; along with this program and available at
+;; http://docutils.sf.net/licenses/gpl.txt and at
+;; http://www.gnu.org/licenses/gpl.txt.
+
+;;; Commentary:
+
+;; Support code for editing reStructuredText with Emacs.  The latest
+;; version of this file lies in the docutils source code repository.
+;;
+
+;;; Description
+
+;; Basically, this package contains:
+;;
+;; - Functions to automatically adjust and cycle the section underline
+;;   decorations;
+;; - A mode that displays the table of contents and allows you to jump anywhere
+;;   from it;
+;; - Functions to insert and automatically update a TOC in your source
+;;   document;
+;; - A mode which supports font-lock highlighting of reStructuredText
+;;   structures;
+;; - Some other convenience functions.
+;;
+;; See the accompanying document in the docutils documentation about
+;; the contents of this package and how to use it.
+;;
+;; For more information about reStructuredText, see
+;; http://docutils.sourceforge.net/rst.html
+;;
+;; For full details on how to use the contents of this file, see
+;; http://docutils.sourceforge.net/docs/user/emacs.html
+
+;;; Download
+
+;; Click `Here <rst.el>`_ for download.
+
+;;; Packaging
+
 ;; **IMPORTANT NOTE TO PACKAGERS**: this package is the result of merging:
 ;;
 ;; - restructuredtext.el
@@ -66,10 +65,9 @@
 ;;
 ;; Those files are now OBSOLETE and have been replaced by this single package
 ;; file (2005-10-30).
-;;
-;; Installation instructions
-;; -------------------------
-;;
+
+;;; Installation instructions
+
 ;; Add this line to your .emacs file and bind the versatile sectioning commands
 ;; in text mode, like this::
 ;;
@@ -149,19 +147,17 @@
 ;; If you are using `.txt' as a standard extension for reST files as
 ;; http://docutils.sourceforge.net/FAQ.html#what-s-the-standard-filename-extension-for-a-restructuredtext-file
 ;; suggests you may use one of the `Local Variables in Files' mechanism Emacs
-;; provides to set the major mode automatically. For instance you may use
+;; provides to set the major mode automatically.  For instance you may use::
 ;;
-;; .. -*- mode: rst -*-
+;;    .. -*- mode: rst -*-
 ;;
-;; in the very first line of your file. However, because this is a major
+;; in the very first line of your file.  However, because this is a major
 ;; security breach you or your administrator may have chosen to switch that
-;; feature off. See `Local Variables in Files' in the Emacs documentation for a
+;; feature off.  See `Local Variables in Files' in the Emacs documentation for a
 ;; more complete discussion.
-;;
-;;
-;; TODO list
-;; =========
-;;
+
+;;; TODO list
+
 ;; Bindings
 ;; --------
 ;; - We need to automatically add the rst-text-mode-bindings to rst-mode
@@ -177,8 +173,8 @@
 ;; - TOC insertion should deal with multiple lines
 ;;
 ;; - There is a bug on redo after undo of adjust when rst-adjust-hook uses the
-;;   automatic toc update. The cursor ends up in the TOC and this is
-;;   annoying. Gotta fix that.
+;;   automatic toc update.  The cursor ends up in the TOC and this is
+;;   annoying.  Gotta fix that.
 ;;
 ;; - numbering: automatically detect if we have a section-numbering directive in
 ;;   the corresponding section, to render the toc
@@ -202,8 +198,12 @@
 ;; - Add an option to forego using the file structure in order to make
 ;;   suggestion, and to always use the preferred decorations to do that.
 ;; - We need to automatically recenter on rst-forward-section movment commands.
-;;
 
+
+;;; History:
+;; 
+
+;;; Code:
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -225,7 +225,7 @@
 (defvar rst-prefix-map (make-sparse-keymap)
   "Keymap for rst commands.")
 
-(dolist (m `(("a" . rst-adjust)
+(dolist (m '(("a" . rst-adjust)
 	     ("=" . rst-adjust)
 	     ("t" . rst-toc)
 	     ("i" . rst-toc-insert)
@@ -233,14 +233,20 @@
 	     ("u" . rst-toc-insert-update)
 	     ("h" . rst-display-decorations-hierarchy)
 	     ("s" . rst-straighten-decorations)
+	     ("w" . rst-straighten-bullets-region)
 	     ("p" . rst-backward-section)
 	     ("n" . rst-forward-section)
+	     ("m" . rst-mark-section)
 	     ("r" . rst-shift-region-right)
 	     ("l" . rst-shift-region-left)
 	     ("e" . rst-enumerate-region)
+	     ("E" . rst-enumerate-region-bullets)
 	     ("b" . rst-line-block-region)
 	     ("c" . rst-compile)
-	     ("C" . ,(lambda () (interactive) (rst-compile t)))))
+	     ("C" . rst-compile-alt-toolset)
+	     ("x" . rst-compile-pseudo-region)
+	     ("q" . rst-compile-pdf-preview)
+	     ))
   (define-key rst-prefix-map (car m) (cdr m)))
 
 
@@ -258,6 +264,11 @@
 
   ;; Bind the rst commands on the C-c p prefix.
   (define-key mode-specific-map [(p)] rst-prefix-map)
+
+  ;; Set comment syntax in text-mode to a ReST comment.
+  (when (or (eq major-mode 'text-mode)
+	    (eq major-mode 'rst-mode))
+    (set (make-local-variable 'comment-start) ".. "))
   )
 
 
@@ -277,6 +288,11 @@
   "con" ".. contents::\n..\n   " nil 0)
 
 
+;; Bulleted item lists.
+(defvar rst-bullets
+  '(?- ?* ?+)
+  "List of all possible bullet characters for bulleted lists.")
+
 ;; Paragraph separation customization.  This will work better for
 ;; bullet and enumerated lists in restructuredtext documents and
 ;; should not affect filling for other documents too much.  Set it up
@@ -284,13 +300,14 @@
 ;;
 ;; (add-hook 'text-mode-hook 'rst-set-paragraph-separation)
 (defvar rst-extra-paragraph-start
-  "\\|[ \t]*\\([-+*] \\|[0-9]+\\. \\)"
-  "Extra parapraph-separate patterns to add for text-mode.")
+  (format "\\|[ \t]*\\(%s \\|[0-9]+\\. \\)"
+	  (regexp-opt (mapcar 'char-to-string rst-bullets)))
+  "Extra parapraph-separate patterns to add for `text-mode'.")
 ;; FIXME: What about the missing >?
 ;; The author uses a hardcoded for paragraph-separate: "\f\\|>*[ \t]*$"
 
 (defun rst-set-paragraph-separation ()
-  "Sets the paragraph separation for restructuredtext."
+  "Set the paragraph separation for restructuredtext."
   ;; FIXME: the variable should be made automatically buffer local rather than
   ;; using a function here, this function is unnecessary.
   (make-local-variable 'paragraph-start) ; prevent it growing every time
@@ -428,18 +445,21 @@ decorations."
                                          (?` simple 0)
                                          (?# simple 0)
                                          (?@ simple 0) )
-  "Preferred ordering of section title decorations.  This
-  sequence is consulted to offer a new decoration suggestion when
-  we rotate the underlines at the end of the existing hierarchy
-  of characters, or when there is no existing section title in
-  the file."
+  "Preferred ordering of section title decorations.
+
+This sequence is consulted to offer a new decoration suggestion
+when we rotate the underlines at the end of the existing
+hierarchy of characters, or when there is no existing section
+title in the file."
   :group 'rst-adjust)
 
 
 (defcustom rst-default-indent 1
-  "Number of characters to indent the section title when toggling
-  decoration styles.  This is used when switching from a simple
-  decoration style to a over-and-under decoration style."
+  "Number of characters to indent the section title.
+
+THis is used for when toggling decoration styles, when switching
+from a simple decoration style to a over-and-under decoration
+style."
   :group 'rst-adjust)
 
 
@@ -448,15 +468,17 @@ decorations."
 
 
 (defun rst-line-homogeneous-p (&optional accept-special)
-  "Predicate return the unique char if the current line is
-  composed only of a single repeated non-whitespace
-  character. This returns the char even if there is whitespace at
-  the beginning of the line.
+  "Return true if the line is homogeneous.
 
-  If ACCEPT-SPECIAL is specified we do not ignore special sequences
-  which normally we would ignore when doing a search on many lines.
-  For example, normally we have cases to ignore commonly occuring
-  patterns, such as :: or ...;  with the flag do not ignore them."
+Predicate that returns the unique char if the current line is
+composed only of a single repeated non-whitespace character.  This
+returns the char even if there is whitespace at the beginning of
+the line.
+
+If ACCEPT-SPECIAL is specified we do not ignore special sequences
+which normally we would ignore when doing a search on many lines.
+For example, normally we have cases to ignore commonly occuring
+patterns, such as :: or ...; with the flag do not ignore them."
   (save-excursion
     (back-to-indentation)
     (unless (looking-at "\n")
@@ -475,6 +497,8 @@ decorations."
     ))
 
 (defun rst-line-homogeneous-nodent-p (&optional accept-special)
+  "Return true if the line is homogeneous with no indent.
+See `rst-line-homogeneous-p' about ACCEPT-SPECIAL."
   (save-excursion
     (beginning-of-line)
     (if (looking-at "^[ \t]+")
@@ -484,7 +508,8 @@ decorations."
 
 
 (defun rst-compare-decorations (deco1 deco2)
-  "Compare decorations.  Returns true if both are equal,
+  "Compare decorations.
+Returns true if both DECO1 and DECO2 decorations are equal,
 according to restructured text semantics (only the character and
 the style are compared, the indentation does not matter."
   (and (eq (car deco1) (car deco2))
@@ -492,7 +517,7 @@ the style are compared, the indentation does not matter."
 
 
 (defun rst-get-decoration-match (hier deco)
-  "Returns the index (level) of the decoration in the given hierarchy.
+  "Return the index (level) in hierarchy HIER of decoration DECO.
 This basically just searches for the item using the appropriate
 comparison and returns the index.  We return nil if the item is
 not found."
@@ -503,12 +528,11 @@ not found."
 
 
 (defun rst-suggest-new-decoration (alldecos &optional prev)
-  "Suggest a new, different decoration, different from all that
-have been seen.
+  "Suggest a new, different decoration from all that have been seen.
 
-  ALLDECOS is the set of all decorations, including the line
-  numbers.  PREV is the optional previous decoration, in order to
-  suggest a better match."
+ALLDECOS is the set of all decorations, including the line
+numbers.  PREV is the optional previous decoration, in order to
+suggest a better match."
 
   ;; For all the preferred decorations...
   (let* (
@@ -535,20 +559,21 @@ have been seen.
     (copy-list (car curpotential)) ))
 
 (defun rst-delete-line ()
-  "A version of kill-line that does not use the kill-ring."
+  "A version of `kill-line' that does not use the `kill-ring'."
   (delete-region (line-beginning-position) (min (+ 1 (line-end-position))
 						(point-max))))
 
 (defun rst-update-section (char style &optional indent)
-  "Unconditionally updates the style of a section decoration
-  using the given character CHAR, with STYLE 'simple or
-  'over-and-under, and with indent INDENT.  If the STYLE is
-  'simple, whitespace before the title is removed (indent is
-  always assume to be 0).
+  "Unconditionally update the style of a section decoration.
 
-  If there are existing overline and/or underline from the
-  existing decoration, they are removed before adding the
-  requested decoration."
+Do this using the given character CHAR, with STYLE 'simple or
+'over-and-under, and with indent INDENT.  If the STYLE is
+'simple, whitespace before the title is removed (indent is always
+assume to be 0).
+
+If there are existing overline and/or underline from the
+existing decoration, they are removed before adding the
+requested decoration."
 
   (interactive)
   (let (marker
@@ -610,10 +635,11 @@ have been seen.
 
 
 (defun rst-normalize-cursor-position ()
-  "If the cursor is on a decoration line or an empty line , place
-  it on the section title line (at the end).  Returns the line
-  offset by which the cursor was moved. This works both over or
-  under a line."
+  "Normalize the cursor position.
+If the cursor is on a decoration line or an empty line , place it
+on the section title line (at the end).  Returns the line offset
+by which the cursor was moved.  This works both over or under a
+line."
   (if (save-excursion (beginning-of-line)
                       (or (rst-line-homogeneous-p 1)
                           (looking-at "^[ \t]*$")))
@@ -635,13 +661,13 @@ have been seen.
 
 
 (defun rst-find-all-decorations ()
-  "Finds all the decorations in the file, and returns a list of
-  (line, decoration) pairs.  Each decoration consists in a (char,
-  style, indent) triple.
+  "Find all the decorations in the file.
+Return a list of (line, decoration) pairs.  Each decoration
+consists in a (char, style, indent) triple.
 
-  This function does not detect the hierarchy of decorations, it
-  just finds all of them in a file.  You can then invoke another
-  function to remove redundancies and inconsistencies."
+This function does not detect the hierarchy of decorations, it
+just finds all of them in a file.  You can then invoke another
+function to remove redundancies and inconsistencies."
 
   (let (positions
         (curline 1))
@@ -672,16 +698,16 @@ have been seen.
 
 
 (defun rst-infer-hierarchy (decorations)
-  "Build a hierarchy of decorations using the list of given decorations.
+  "Build a hierarchy of decorations using the list of given DECORATIONS.
 
-  This function expects a list of (char, style, indent)
-  decoration specifications, in order that they appear in a file,
-  and will infer a hierarchy of section levels by removing
-  decorations that have already been seen in a forward traversal of the
-  decorations, comparing just the character and style.
+This function expects a list of (char, style, indent) decoration
+specifications, in order that they appear in a file, and will
+infer a hierarchy of section levels by removing decorations that
+have already been seen in a forward traversal of the decorations,
+comparing just the character and style.
 
-  Similarly returns a list of (char, style, indent), where each
-  list element should be unique."
+Similarly returns a list of (char, style, indent), where each
+list element should be unique."
 
   (let ((hierarchy-alist (list)))
     (dolist (x decorations)
@@ -698,30 +724,33 @@ have been seen.
 
 
 (defun rst-get-hierarchy (&optional alldecos ignore)
-  "Returns a list of decorations that represents the hierarchy of
-  section titles in the file.
+  "Return the hierarchy of section titles in the file.
 
-  If the line number in IGNORE is specified, the decoration found
-  on that line (if there is one) is not taken into account when
-  building the hierarchy."
+Return a list of decorations that represents the hierarchy of
+section titles in the file.  Reuse the list of decorations
+already computed in ALLDECOS if present.  If the line number in
+IGNORE is specified, the decoration found on that line (if there
+is one) is not taken into account when building the hierarchy."
   (let ((all (or alldecos (rst-find-all-decorations))))
     (setq all (assq-delete-all ignore all))
     (rst-infer-hierarchy (mapcar 'cdr all))))
 
 
 (defun rst-get-decoration (&optional point)
-  "Looks around point and finds the characteristics of the
-  decoration that is found there.  We assume that the cursor is
-  already placed on the title line (and not on the overline or
-  underline).
+  "Get the decoration at POINT.
 
-  This function returns a (char, style, indent) triple.  If the
-  characters of overline and underline are different, we return
-  the underline character.  The indent is always calculated.  A
-  decoration can be said to exist if the style is not nil.
+Looks around point and finds the characteristics of the
+decoration that is found there.  We assume that the cursor is
+already placed on the title line (and not on the overline or
+underline).
 
-  A point can be specified to go to the given location before
-  extracting the decoration."
+This function returns a (char, style, indent) triple.  If the
+characters of overline and underline are different, we return
+the underline character.  The indent is always calculated.  A
+decoration can be said to exist if the style is not nil.
+
+A point can be specified to go to the given location before
+extracting the decoration."
 
   (let (char style indent)
     (save-excursion
@@ -775,9 +804,11 @@ have been seen.
 
 
 (defun rst-get-decorations-around (&optional alldecos)
-  "Given the list of all decorations (with positions),
-find the decorations before and after the given point.
-A list of the previous and next decorations is returned."
+  "Return the decorations around point.
+
+Given the list of all decorations ALLDECOS (with positions), find
+the decorations before and after the given point.  A list of the
+previous and next decorations is returned."
   (let* ((all (or alldecos (rst-find-all-decorations)))
          (curline (line-number-at-pos))
          prev next
@@ -827,8 +858,9 @@ A list of the previous and next decorations is returned."
 
 (defun rst-get-next-decoration
   (curdeco hier &optional suggestion reverse-direction)
-  "Get the next decoration for CURDECO, in given hierarchy HIER,
-and suggesting for new decoration SUGGESTION."
+  "Get the next decoration for CURDECO, in given hierarchy HIER.
+If suggesting, suggest for new decoration SUGGESTION.
+REVERSE-DIRECTION is used to reverse the cycling order."
 
   (let* (
          (char (car curdeco))
@@ -859,7 +891,9 @@ and suggesting for new decoration SUGGESTION."
 
 
 (defun rst-adjust ()
-  "Adjust/rotate the section decoration for the section title
+  "Auto-adjust the decoration around point.
+
+Adjust/rotate the section decoration for the section title
 around point or promote/demote the decorations inside the region,
 depending on if the region is active.  This function is meant to
 be invoked possibly multiple times, and can vary its behaviour
@@ -873,8 +907,8 @@ title in restructuredtext.  It tries to deal with all the
 possible cases gracefully and to do `the right thing' in all
 cases.
 
-See the documentations of rst-adjust-decoration and
-rst-promote-region for full details.
+See the documentations of `rst-adjust-decoration' and
+`rst-promote-region' for full details.
 
 Prefix Arguments
 ================
@@ -882,13 +916,11 @@ Prefix Arguments
 The method can take either (but not both) of
 
 a. a (non-negative) prefix argument, which means to toggle the
-   decoration style.  Invoke with C-u prefix for example;
+   decoration style.  Invoke with a prefix arg for example;
 
 b. a negative numerical argument, which generally inverts the
    direction of search in the file or hierarchy.  Invoke with C--
-   prefix for example.
-
-"
+   prefix for example."
   (interactive)
 
   (let* ( ;; Parse the positive and negative prefix arguments.
@@ -910,7 +942,7 @@ b. a negative numerical argument, which generally inverts the
     ))
 
 (defvar rst-adjust-hook nil
-  "Hooks to be run after running rst-adjust.")
+  "Hooks to be run after running `rst-adjust'.")
 
 (defun rst-adjust-decoration (&optional toggle-style reverse-direction)
 "Adjust/rotate the section decoration for the section title around point.
@@ -924,7 +956,7 @@ General Behaviour
 
 The next action it takes depends on context around the point, and
 it is meant to be invoked possibly more than once to rotate among
-the various possibilities. Basically, this function deals with:
+the various possibilities.  Basically, this function deals with:
 
 - adding a decoration if the title does not have one;
 
@@ -976,13 +1008,13 @@ If the current line has no decoration around it,
 - search backwards for the last previous decoration, and apply
   the decoration one level lower to the current line.  If there
   is no defined level below this previous decoration, we suggest
-  the most appropriate of the rst-preferred-decorations.
+  the most appropriate of the `rst-preferred-decorations'.
 
   If REVERSE-DIRECTION is true, we simply use the previous
   decoration found directly.
 
 - if there is no decoration found in the given direction, we use
-  the first of rst-preferred-decorations.
+  the first of `rst-preferred-decorations'.
 
 The prefix argument forces a toggle of the prescribed decoration
 style.
@@ -1072,7 +1104,7 @@ Suggested Binding
 
 We suggest that you bind this function on C-=.  It is close to
 C-- so a negative argument can be easily specified with a flick
-of the right hand fingers and the binding is unused in text-mode."
+of the right hand fingers and the binding is unused in `text-mode'."
   (interactive)
 
   ;; If we were invoked directly, parse the prefix arguments into the
@@ -1210,7 +1242,7 @@ of the right hand fingers and the binding is unused in text-mode."
 
 With argument DEMOTE or a prefix argument, demote the
 section titles instead.  The algorithm used at the boundaries of
-the hierarchy is similar to that used by rst-adjust-decoration."
+the hierarchy is similar to that used by `rst-adjust-decoration'."
   (interactive)
 
   (let* ((demote (or current-prefix-arg demote))
@@ -1263,7 +1295,8 @@ the hierarchy is similar to that used by rst-adjust-decoration."
 
 (defun rst-display-decorations-hierarchy (&optional decorations)
   "Display the current file's section title decorations hierarchy.
-  This function expects a list of (char, style, indent) triples."
+This function expects a list of (char, style, indent) triples in
+DECORATIONS."
   (interactive)
 
   (if (not decorations)
@@ -1281,11 +1314,11 @@ the hierarchy is similar to that used by rst-adjust-decoration."
     )))
 
 (defun rst-straighten-decorations (&optional buffer)
-  "Redo all the decorations in the given buffer, using our
-  preferred set of decorations.  This can be used, for example,
-  when using somebody else's copy of a document, in order to
-  adapt it to our preferred style.
-  If no buffer is specified, the default buffer is used."
+  "Redo all the decorations in the given buffer BUFFER.
+This is done using our preferred set of decorations.  This can be
+used, for example, when using somebody else's copy of a document,
+in order to adapt it to our preferred style.  If no buffer is
+specified, the default buffer is used."
   (interactive)
   (save-excursion
     (let* ((alldecos (rst-find-all-decorations))
@@ -1313,26 +1346,111 @@ the hierarchy is similar to that used by rst-adjust-decoration."
 	)
     )))
 
+(defun rst-find-pfx-in-region (beg end pfx-re)
+  "Find all the positions of prefixes in region between BEG and END.
+This is used to find bullets and enumerated list items.  PFX-RE
+is a regular expression for matching the lines with items."
+  (let (pfx)
+    (save-excursion
+      (goto-char beg)
+      (while (< (point) end)
+	(back-to-indentation)
+	(when (and
+	       (looking-at pfx-re)
+	       (let ((pfx-col (current-column)))
+		 (save-excursion
+		   (forward-line -1)
+		   (back-to-indentation)
+		   (or (looking-at "^[ \t]*$")
+		       (> (current-column) pfx-col)
+		       (and (= (current-column) pfx-col)
+			    (looking-at pfx-re))))))
+	  (setq pfx (cons (cons (point) (current-column))
+			  pfx)))
+	(forward-line 1)) )
+    (nreverse pfx)))
+
+(defvar rst-re-bullets
+  (format "\\([%s][ \t]\\)[^ \t]" (regexp-quote (concat rst-bullets)))
+  "Regexp for finding bullets.")
+
+(defvar rst-re-enumerations
+  "\\(\\(#\\|[0-9]+\\)\\.[ \t]\\)[^ \t]"
+  "Regexp for finding bullets.")
+
+(defvar rst-re-items
+  (format "\\(%s\\|%s\\)[^ \t]"
+	  (format "[%s][ \t]" (regexp-quote (concat rst-bullets)))
+	  "\\(#\\|[0-9]+\\)\\.[ \t]")
+  "Regexp for finding bullets.")
+
+(defvar rst-preferred-bullets
+  '(?- ?* ?+)
+  "List of favourite bullets to set for straightening bullets.")
+
+(defun rst-straighten-bullets-region (beg end)
+  "Make all the bulleted list items in the region consistent.
+The region is specified between BEG and END.  You can use this
+after you have merged multiple bulleted lists to make them use
+the same/correct/consistent bullet characters.
+
+See variable `rst-preferred-bullets' for the list of bullets to
+adjust.  If bullets are found on levels beyond the
+`rst-preferred-bullets' list, they are not modified."
+  (interactive "r")
+
+  (let ((bullets (rst-find-pfx-in-region beg end
+					 rst-re-bullets))
+	(levtable (make-hash-table :size 4)))
+
+    ;; Create a map of levels to list of positions.
+    (dolist (x bullets)
+      (let ((key (cdr x)))
+	(puthash key
+		  (append (gethash key levtable (list))
+			  (list (car x)))
+		  levtable)))
+
+    ;; Sort this map and create a new map of prefix char and list of positions.
+    (let (poslist)
+      (maphash (lambda (x y) (setq poslist (cons (cons x y) poslist))) levtable)
+
+      (mapcar* (lambda (x char)
+		 ;; Apply the characters.
+		 (dolist (pos (cdr x))
+		   (goto-char pos)
+		   (delete-char 1)
+		   (insert (char-to-string char))))
+	       
+	       ;; Sorted list of indent . positions
+	       (sort poslist (lambda (x y) (<= (car x) (car y))))
+
+	       ;; List of preferred bullets.
+	       rst-preferred-bullets)
+      
+      )))
 
 (defun rst-rstrip (str)
-  "Strips the whitespace at the end of a string."
+  "Strips the whitespace at the end of string STR."
   (let ((tmp))
     (string-match "[ \t\n]*\\'" str)
     (substring str 0 (match-beginning 0))
     ))
 
 (defun rst-get-stripped-line ()
-  "Returns the line at cursor, stripped from whitespace."
+  "Return the line at cursor, stripped from whitespace."
   (re-search-forward "\\S-.*\\S-" (line-end-position))
   (buffer-substring-no-properties (match-beginning 0)
                                   (match-end 0)) )
 
 (defun rst-section-tree (alldecos)
-  "Returns a hierarchical tree of the sections titles in the
-document.  This can be used to generate a table of contents for
-the document.  The top node will always be a nil node, with the
-top-level titles as children (there may potentially be more than
-one).
+  "Get the hierarchical tree of section titles.
+
+Returns a hierarchical tree of the sections titles in the
+document, for decorations ALLDECOS.  This can be used to generate
+a table of contents for the document.  The top node will always
+be a nil node, with the top level titles as children (there may
+potentially be more than one).
 
 Each section title consists in a cons of the stripped title
 string and a marker to the section in the original text document.
@@ -1340,7 +1458,7 @@ string and a marker to the section in the original text document.
 If there are missing section levels, the section titles are
 inserted automatically, and the title string is set to nil, and
 the marker set to the first non-nil child of itself.
-Conceptually, the nil nodes--i.e. those which have no title--are
+Conceptually, the nil nodes--i.e.  those which have no title--are
 to be considered as being the same line as their first non-nil
 child.  This has advantages later in processing the graph."
 
@@ -1374,12 +1492,12 @@ child.  This has advantages later in processing the graph."
 
 
 (defun rst-section-tree-rec (decos lev)
-  "Recursive function for the implementation of the section tree
-  building. DECOS is a cons cell whose cdr is the remaining list
-  of decorations, and we change it as we consume them.  LEV is
-  the current level of that node.  This function returns a pair
-  of the subtree that was built.  This treats the decos list
-  destructively."
+  "Recursive guts of the section tree construction.
+DECOS is a cons cell whose cdr is the remaining list of
+decorations, and we change it as we consume them.  LEV is the
+current level of that node.  This function returns a pair of the
+subtree that was built.  This treats the decos list
+destructively."
 
   (let ((ndeco (cadr decos))
         node
@@ -1409,14 +1527,15 @@ child.  This has advantages later in processing the graph."
 
 
 (defun rst-section-tree-point (node &optional point)
-  "Given a computed and valid section tree SECTREE and a point
-  POINT (default being the current point in the current buffer),
-  find and return the node within the sectree where the cursor
-  lives.
+  "Find tree node at point.
+Given a computed and valid section tree in NODE and a point
+POINT (default being the current point in the current buffer),
+find and return the node within the sectree where the cursor
+lives.
 
-  Return values: a pair of (parent path, container subtree).  The
-  parent path is simply a list of the nodes above the container
-  subtree node that we're returning."
+Return values: a pair of (parent path, container subtree).  The
+parent path is simply a list of the nodes above the container
+subtree node that we're returning."
 
   (let (path outtree)
 
@@ -1450,8 +1569,8 @@ child.  This has advantages later in processing the graph."
 By default the top level is ignored if there is only one, because
 we assume that the document will have a single title.
 
-If a numeric prefix argument is given, insert the TOC up to the
-specified level.
+If a numeric prefix argument PFXARG is given, insert the TOC up
+to the specified level.
 
 The TOC is inserted indented at the current column."
 
@@ -1488,18 +1607,18 @@ The TOC is inserted indented at the current column."
   :version "21.1")
 
 (defcustom rst-toc-indent 2
-  "Indentation for table-of-contents display (also used for
-  formatting insertion, when numbering is disabled)."
+  "Indentation for table-of-contents display.
+Also used for formatting insertion, when numbering is disabled."
   :group 'rst-toc)
 
 (defcustom rst-toc-insert-style 'fixed
-  "Set this to one of the following values to determine numbering and
+  "Insertion style for table-of-contents.
+Set this to one of the following values to determine numbering and
 indentation style:
 - plain: no numbering (fixed indentation)
 - fixed: numbering, but fixed indentation
 - aligned: numbering, titles aligned under each other
-- listed: numbering, with dashes like list items (EXPERIMENTAL)
-"
+- listed: numbering, with dashes like list items (EXPERIMENTAL)"
   :group 'rst-toc)
 
 (defcustom rst-toc-insert-number-separator "  "
@@ -1518,9 +1637,12 @@ indentation style:
   :group 'rst-toc)
 
 (defun rst-toc-insert-node (node level indent pfx)
-  "Recursive function that does the print of the inserted
-toc. PFX is the prefix numbering, that includes the alignment
-necessary for all the children of this level to align."
+  "Insert tree node NODE in table-of-contents.
+Recursive function that does printing of the inserted toc.  LEVEL
+is the depth level of the sections in the tree.  INDENT bis the
+indentation string.  PFX is the prefix numbering, that includes
+the alignment necessary for all the children of level to
+align."
 
   ;; Note: we do child numbering from the parent, so we start number the
   ;; children one level before we print them.
@@ -1592,8 +1714,8 @@ necessary for all the children of this level to align."
 
 
 (defun rst-toc-insert-find-delete-contents ()
-  "Finds and deletes an existing comment after the first contents directive and
-delete that region. Return t if found and the cursor is left after the comment."
+  "Find and deletes an existing comment after the first contents directive.
+Delete that region.  Return t if found and the cursor is left after the comment."
   (goto-char (point-min))
   ;; We look for the following and the following only (in other words, if your
   ;; syntax differs, this won't work.  If you would like a more flexible thing,
@@ -1630,9 +1752,9 @@ delete that region. Return t if found and the cursor is left after the comment."
       )))
 
 (defun rst-toc-insert-update ()
-  "Automatically find the .. contents:: section of a document and update the
-inserted TOC if present.  You can use this in your file-write hook to always
-make it up-to-date automatically."
+  "Automatically find the contents section of a document and update.
+Updates the inserted TOC if present.  You can use this in your
+file-write hook to always make it up-to-date automatically."
   (interactive)
   (save-excursion
     (if (rst-toc-insert-find-delete-contents)
@@ -1645,7 +1767,7 @@ make it up-to-date automatically."
 ;;------------------------------------------------------------------------------
 
 (defun rst-toc-node (node level)
-  "Recursive function that does the print of the TOC in rst-toc-mode."
+  "Recursive function that does insert NODE at LEVEL in the table-of-contents."
 
   (if (> level 0)
       (let ((b (point)))
@@ -1666,10 +1788,10 @@ make it up-to-date automatically."
     (rst-toc-node child (1+ level))))
 
 (defun rst-toc-count-lines (node target-node)
-  "Count the number of lines to the TARGET-NODE node.  This
-recursive function returns a cons of the number of additional
-lines that have been counted for its node and children and 't if
-the node has been found."
+  "Count the number of lines from NODE to the TARGET-NODE node.
+This recursive function returns a cons of the number of
+additional lines that have been counted for its node and children
+and 't if the node has been found."
 
   (let ((count 1)
 	found)
@@ -1685,13 +1807,14 @@ the node has been found."
 
 
 (defun rst-toc ()
-  "Finds all the section titles and their decorations in the
-  file, and displays a hierarchically-organized list of the
-  titles, which is essentially a table-of-contents of the
-  document.
+  "Display a table-of-contents.
+Finds all the section titles and their decorations in the
+file, and displays a hierarchically-organized list of the
+titles, which is essentially a table-of-contents of the
+document.
 
-  The emacs buffer can be navigated, and selecting a section
-  brings the cursor in that section."
+The Emacs buffer can be navigated, and selecting a section
+brings the cursor in that section."
   (interactive)
   (let* ((curbuf (current-buffer))
 
@@ -1712,7 +1835,7 @@ the node has been found."
         (delete-region (point-min) (point-max))
         (insert (format "Table of Contents: %s\n" (or (caar sectree) "")))
         (put-text-property (point-min) (point)
-                           'face (list '(background-color . "lightgray")))
+                           'face (list '(background-color . "gray")))
         (rst-toc-node sectree 0)
 
 	;; Count the lines to our found node.
@@ -1731,6 +1854,7 @@ the node has been found."
 
 
 (defun rst-toc-mode-find-section ()
+  "Get the section from text property at point."
   (let ((pos (get-text-property (point) 'rst-toc-target)))
     (unless pos
       (error "No section on this line"))
@@ -1748,11 +1872,12 @@ the node has been found."
     (kill-buffer (get-buffer rst-toc-buffer-name))
     (pop-to-buffer (marker-buffer pos))
     (goto-char pos)
-    ;; FIMXE: make the recentering conditional on scroll.
+    ;; FIXME: make the recentering conditional on scroll.
     (recenter 5)))
 
 (defun rst-toc-mode-mouse-goto (event)
-  "In Rst-Toc mode, go to the occurrence whose line you click on."
+  "In `rst-toc' mode, go to the occurrence whose line you click on.
+EVENT is the input event."
   (interactive "e")
   (let (pos)
     (save-excursion
@@ -1854,6 +1979,28 @@ the node has been found."
   (interactive)
   (rst-forward-section -1))
 
+(defun rst-mark-section (&optional arg allow-extend)
+  "Select the section that point is currently in."
+  ;; Cloned from mark-paragraph.
+  (interactive "p\np")
+  (unless arg (setq arg 1))
+  (when (zerop arg)
+    (error "Cannot mark zero sections"))
+  (cond ((and allow-extend
+	      (or (and (eq last-command this-command) (mark t))
+		  (and transient-mark-mode mark-active)))
+	 (set-mark
+	  (save-excursion
+	    (goto-char (mark))
+	    (rst-forward-section arg)
+	    (point))))
+	(t
+	 (rst-forward-section arg)
+	 (push-mark nil t t)
+	 (rst-forward-section (- arg)))))
+
+
+
 
 
 
@@ -1898,10 +2045,11 @@ shifted.")
 ;; positions, in case the line matches the bullet pattern, and then sort.
 
 (defun rst-compute-bullet-tabs (&optional pt)
-  "Search backwards from point to build the list of possible
-horizontal alignment points that includes the beginning and
-contents of a restructuredtext bulleted or enumerated list item.
-Return a sorted list of (column-number . line) pairs."
+  "Search backwards from point (or point PT if specified) to
+build the list of possible horizontal alignment points that
+includes the beginning and contents of a restructuredtext
+bulleted or enumerated list item.  Return a sorted list
+of (column-number . line) pairs."
   (save-excursion
     (when pt (goto-char pt))
 
@@ -1933,7 +2081,7 @@ Return a sorted list of (column-number . line) pairs."
 
 	      ;; Look at the line to figure out if it is a bulleted or enumerate
 	      ;; list item.
-	      (when (looking-at 
+	      (when (looking-at
 		      (concat
   		       "\\(?:"
 		       "\\(\\(?:[0-9a-zA-Z#]\\{1,3\\}[.):-]\\|[*+-]\\)[ \t]+\\)[^ \t\n]"
@@ -1948,7 +2096,7 @@ Return a sorted list of (column-number . line) pairs."
 		       (newcol (+ col matchlen)))
 		  (unless (or (>= newcol leftcol)
 			      (memq (+ col matchlen) (mapcar 'car tablist)))
-		    (setq tablist (cons 
+		    (setq tablist (cons
 				   (cons (+ col matchlen) (+ (point) matchlen))
 				   tablist))))
 		)
@@ -2006,9 +2154,9 @@ the tab points in the given tablist."
 			    (flet ((addnum (x)
 					   (if (> x maxcol)
 					       nil
-					     (cons x (addnum 
+					     (cons x (addnum
 						      (+ x rst-shift-basic-offset))))))
-			      (addnum (caar (last tabs)))))
+			      (addnum (or (caar (last tabs)) 0))))
 			  )))
 
     ;; (For debugging.)
@@ -2017,8 +2165,8 @@ the tab points in the given tablist."
     ;;; (save-excursion (rst-debug-mark-found tabs))
 
     ;; Apply the indent.
-    (indent-rigidly 
-     mbeg mend 
+    (indent-rigidly
+     mbeg mend
      
      ;; Find the next tab after the leftmost columnt.
      (let ((tab (funcall find-next-fun tabs leftmostcol)))
@@ -2029,7 +2177,7 @@ the tab points in the given tablist."
 	       (message "Aligned on '%s'"
 			(save-excursion
 			  (goto-char (cdar tab))
-			  (buffer-substring-no-properties 
+			  (buffer-substring-no-properties
 			   (line-beginning-position)
 			   (line-end-position))))
 	       )
@@ -2053,13 +2201,13 @@ preceding lines, the region is moved to the right by
 rst-shift-basic-offset.  With a prefix argument, do not
 automatically fill the region."
   (interactive "P")
-  (let ((rst-shift-fill-region 
+  (let ((rst-shift-fill-region
 	 (if (not pfxarg) rst-shift-fill-region)))
     (rst-shift-region-guts (lambda (tabs leftmostcol)
 			     (let ((cur tabs))
 			       (while (and cur (<= (caar cur) leftmostcol))
 				 (setq cur (cdr cur)))
-			       cur)) 
+			       cur))
 			   'identity
 			   )))
 
@@ -2071,9 +2219,9 @@ region, and automatic filling is disabled."
   (interactive "P")
   (let ((mbeg (set-marker (make-marker) (region-beginning)))
 	(mend (set-marker (make-marker) (region-end)))
-	(leftmostcol (rst-find-leftmost-column 
+	(leftmostcol (rst-find-leftmost-column
 		      (region-beginning) (region-end)))
-	(rst-shift-fill-region 
+	(rst-shift-fill-region
 	 (if (not pfxarg) rst-shift-fill-region)))
 
     (when (> leftmostcol 0)
@@ -2087,12 +2235,13 @@ region, and automatic filling is disabled."
 				 (let ((cur (reverse tabs)))
 				   (while (and cur (>= (caar cur) leftmostcol))
 				     (setq cur (cdr cur)))
-				   cur)) 
+				   cur))
 			       '-
 			       ))
       )))
 
 
+;;------------------------------------------------------------------------------
 
 ;; FIXME: these next functions should become part of a larger effort to redo the
 ;; bullets in bulletted lists.  The enumerate would just be one of the possible
@@ -2130,6 +2279,40 @@ selected region.  With prefix argument, remove the enumeration.
 	(incf curnum))
     (indent-line-to (+ lcol 3))))
 
+
+;; FIXME: there are some problems left with the following function
+;; implementation:
+;;
+;; * It does not deal with a varying number of digits appropriately
+;; * It does not deal with multiple levels independently, and it should.
+;;
+;; I suppose it does 90% of the job for now.
+
+(defun rst-enumerate-region-bullets (beg end)
+  "Convert all the bulleted items and enumerated items in the
+  region to enumerated lists, renumbering as necessary."
+  (interactive "r")
+  (let* (;; Find items and convert the positions to markers.
+	 (items (mapcar
+		 (lambda (x)
+		   (cons (let ((m (make-marker)))
+			   (set-marker m (car x))
+			   m)
+			 (cdr x)))
+		 (rst-find-pfx-in-region beg end rst-re-items)))
+	 (count 1)
+	 )
+    (save-excursion
+      (dolist (x items)
+	(goto-char (car x))
+	(looking-at rst-re-items)
+	(replace-match (format "%d. " count) nil nil nil 1)
+	(incf count)
+	))
+    ))
+
+
+;;------------------------------------------------------------------------------
 
 (defun rst-line-block-region (rbeg rend &optional pfxarg)
   "Toggle line block prefixes for a region."
@@ -2477,7 +2660,6 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
   (set (make-local-variable 'paragraph-separate) paragraph-start)
   (set (make-local-variable 'indent-line-function) 'indent-relative-maybe)
   (set (make-local-variable 'adaptive-fill-mode) t)
-  (set (make-local-variable 'comment-start) ".. ")
 
   ;; Special variables
   (make-local-variable 'rst-adornment-level-alist)
@@ -2985,7 +3167,8 @@ string)) to be used for converting the document.")
 (defun rst-compile (&optional pfxarg)
   "Compile command to convert reST document into some output file.
 Attempts to find configuration file, if it can, overrides the
-options."
+options.  There are two commands to choose from, with a prefix
+argument, select the alternative toolset."
   (interactive "P")
   ;; Note: maybe we want to check if there is a Makefile too and not do anything
   ;; if that is the case.  I dunno.
@@ -3016,6 +3199,37 @@ options."
     (if (or compilation-read-command current-prefix-arg)
         (call-interactively 'compile)
       (compile compile-command))
+    ))
+
+(defun rst-compile-alt-toolset ()
+  "Compile command with the alternative toolset."
+  (interactive)
+  (rst-compile 't))
+
+(defun rst-compile-pseudo-region ()
+  "Show the pseudo-XML rendering of the current active region, or
+of the entire buffer, if the region is not selected."
+  (interactive)
+  (with-output-to-temp-buffer "*pseudoxml*"
+    (shell-command-on-region
+     (if mark-active (region-beginning) (point-min))
+     (if mark-active (region-end) (point-max))
+     "rst2pseudoxml.py"
+     standard-output)))
+
+(defvar rst-pdf-program "xpdf"
+  "Program used to preview PDF files.")
+
+(defun rst-compile-pdf-preview ()
+  "Convert the document to a PDF file and launch a preview program."
+  (interactive)
+  (let* ((tmp-filename "/tmp/out.pdf")
+	 (command (format "rst2pdf.py %s %s && %s %s" 
+			  buffer-file-name tmp-filename
+			  rst-pdf-program tmp-filename)))
+    (start-process-shell-command "rst-pdf-preview" nil command)
+    ;; Note: you could also use (compile command) to view the compilation
+    ;; output.
     ))
 
 
