@@ -13,7 +13,7 @@ use ExtUtils::MakeMaker;
 
 ## Note: The version number for the entire release is specified here and
 ## propagated.  Be sure to edit for every release.
-my $Version = "0.003014";
+my $Version = "0.003015";
 
 use vars qw($opt_f $opt_h $opt_k);
 my $OUTPUT_CFG_FILE = $opt_f = 'config.log';
@@ -128,7 +128,7 @@ TESTBIN = ${base}/tbin
 EXTRACT_TESTS = $(TESTBIN)/extract_tests
 DIFFRE = $(TESTBIN)/diffre
 PERL = ${Perl}
-PERL_FLAGS = -I${base}/blib/lib${taint_flag}
+PERL_FLAGS = -I${base}/blib/lib${taint_flag} $(COVER)
 
 # If the suite has makefile definitions, use them
 -include ../Suite.mak
@@ -193,6 +193,11 @@ if (-f "skip.pl") {
     plan(skip_all => "because $error") if $?;
 }
 
+# Check to see if we want a coverage database
+use vars qw($cover);
+$cover = $ENV{COVER} ?
+    "-MDevel::Cover=-db,../../cover_db,-silent,1,-summary,0" : '';
+
 # Now unpack the tests if needed
 if (<test_*.py>) {
     system "make -s -f ../../Common.mk rsts";
@@ -216,7 +221,7 @@ foreach my $test (@tests) {
 	next TEST if $?
     }
     delete $ENV{PERL5LIB};
-    my $make_errs = `make -s -f ../../Common.mk $base.chk 2>&1`;
+    my $make_errs = `make -s -f ../../Common.mk COVER=$cover $base.chk 2>&1`;
     # Fake around perl 5.8.8 non-disablable warning
     $make_errs =~ s/^Wide character in print.*\n//m;
     my $errs = -f "$base.stderr" ? `cat $base.stderr` : '';
