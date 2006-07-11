@@ -95,14 +95,20 @@ def elisp2rst(infile, outfile):
                 # Output the pre-commentary stuff.
                 if fields:
                     for line in fields:
-                        print >> outfile, ':%s' % line
+                        if line.startswith(' ') or line.startswith('\t'):
+                            print >> outfile, ' %s' % line
+                        else:
+                            print >> outfile, ':%s' % line
                     outfile.write(os.linesep)
 
-                prepars = [copyright_years] + precommentary
+                prepars = []
+                if copyright_years:
+                    prepars.append(copyright_years)
+                prepars.extend(precommentary)
                 if prepars:
                     print >> outfile, '.. note::'
                     print >> outfile
-                    for par in [copyright_years] + precommentary:
+                    for par in prepars:
                         printpar(par, outfile, indent='   ')
 
 
@@ -120,7 +126,9 @@ def elisp2rst(infile, outfile):
         # Normal text contents.
         mo = re.match(';;? ?(.*)$', line)
         if mo:
-            paragraph.append(mo.group(1))
+            line_contents = mo.group(1)
+            line_contents = re.sub("`(.*?)'", "``\\1``", line_contents)
+            paragraph.append(line_contents)
         else:
             if not re.match('^[ \t\f]*$', line):
                 raise ElispFormatError("Unknown line format")
