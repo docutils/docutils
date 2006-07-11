@@ -29,16 +29,15 @@
 <p>This document describes the directives implemented in the reference
 reStructuredText parser.</p>
 <p>Directives have the following syntax:</p>
-<pre class="literal-block">
-+-------+-------------------------------+
-| &quot;.. &quot; | directive type &quot;::&quot; directive |
+<pre class="literal-block">+-------+-------------------------------+
+| ".. " | directive type "::" directive |
 +-------+ block                         |
         |                               |
         +-------------------------------+
 </pre>
 <p>Directives begin with an explicit markup start (two periods and a
 space), followed by the directive type and two colons (collectively,
-the &quot;directive marker&quot;).  The directive block begins immediately after
+the "directive marker").  The directive block begins immediately after
 the directive marker, and includes all subsequent indented lines.  The
 directive block is divided into arguments, options (a field list), and
 content (in that order), any of which may appear.  See the <a class="reference" href="./reStructuredText.html#directives">Directives</a>
@@ -91,8 +90,8 @@ details.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field"><th class="field-name" colspan="2">Directive Types:</th></tr>
-<tr><td>&nbsp;</td><td class="field-body">&quot;attention&quot;, &quot;caution&quot;, &quot;danger&quot;, &quot;error&quot;, &quot;hint&quot;,
-&quot;important&quot;, &quot;note&quot;, &quot;tip&quot;, &quot;warning&quot;</td>
+<tr><td>&nbsp;</td><td class="field-body">"attention", "caution", "danger", "error", "hint",
+"important", "note", "tip", "warning"</td>
 </tr>
 <tr class="field"><th class="field-name">DTD Elements:</th><td class="field-body">attention, caution, danger, error, hint, important,
 note, tip, warning</td>
@@ -108,18 +107,16 @@ note, tip, warning</td>
 </tr>
 </tbody>
 </table>
-<p>Admonitions are specially marked &quot;topics&quot; that can appear anywhere an
+<p>Admonitions are specially marked "topics" that can appear anywhere an
 ordinary body element can.  They contain arbitrary body elements.
 Typically, an admonition is rendered as an offset block in a document,
 sometimes outlined or shaded, with a title matching the admonition
 type.  For example:</p>
-<pre class="literal-block">
-.. DANGER::
+<pre class="literal-block">.. DANGER::
    Beware killer rabbits!
 </pre>
 <p>This directive might be rendered something like this:</p>
-<pre class="literal-block">
-+------------------------+
+<pre class="literal-block">+------------------------+
 |        !DANGER!        |
 |                        |
 | Beware killer rabbits! |
@@ -140,10 +137,9 @@ type.  For example:</p>
 <p>Any text immediately following the directive indicator (on the same
 line and/or indented on following lines) is interpreted as a directive
 block and is parsed for normal body elements.  For example, the
-following &quot;note&quot; admonition directive contains one paragraph and a
+following "note" admonition directive contains one paragraph and a
 bullet list consisting of two list items:</p>
-<pre class="literal-block">
-.. note:: This is a note admonition.
+<pre class="literal-block">.. note:: This is a note admonition.
    This is the second line of the first paragraph.
 
    - The note contains all indented body elements
@@ -153,14 +149,14 @@ bullet list consisting of two list items:</p>
 </div>
 <div class="section" id="images">
 <h1><a class="toc-backref" href="#id2" name="images">Images</a></h1>
-<p>There are two image directives: &quot;image&quot; and &quot;figure&quot;.</p>
+<p>There are two image directives: "image" and "figure".</p>
 <div class="section" id="image">
 <h2><a class="toc-backref" href="#id3" name="image">Image</a></h2>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;image&quot;</td>
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">"image"</td>
 </tr>
 <tr class="field"><th class="field-name">DTD Element:</th><td class="field-body">image</td>
 </tr>
@@ -175,9 +171,8 @@ bullet list consisting of two list items:</p>
 </tr>
 </tbody>
 </table>
-<p>An &quot;image&quot; is a simple picture:</p>
-<pre class="literal-block">
-.. image:: picture.png
+<p>An "image" is a simple picture:</p>
+<pre class="literal-block">.. image:: picture.png
 </pre>
 <p>The URI for the image source file is specified in the directive
 argument.  As with hyperlink targets, the image URI may begin on the
@@ -188,8 +183,7 @@ block, they are stripped of leading and trailing whitespace and joined
 together.</p>
 <p>Optionally, the image link block may end with a flat field list, the
 <span class="target" id="image-options">image options</span>.  For example:</p>
-<pre class="literal-block">
-.. image:: picture.jpeg
+<pre class="literal-block">.. image:: picture.jpeg
    :height: 100
    :width: 200
    :scale: 50
@@ -209,14 +203,14 @@ the image vertically.</dd>
 <dd>The width of the image in pixels, used to reserve space or scale
 the image horizontally.</dd>
 <dt><tt class="docutils literal"><span class="pre">scale</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">integer</span></dt>
-<dd>The uniform scaling factor of the image, a percentage (but no &quot;%&quot;
-symbol is required or allowed).  &quot;100&quot; means full-size.</dd>
-<dt><tt class="docutils literal"><span class="pre">align</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">&quot;top&quot;, &quot;middle&quot;, &quot;bottom&quot;, &quot;left&quot;, &quot;center&quot;, or &quot;right&quot;</span></dt>
+<dd>The uniform scaling factor of the image, a percentage (but no "%"
+symbol is required or allowed).  "100" means full-size.</dd>
+<dt><tt class="docutils literal"><span class="pre">align</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">"top", "middle", "bottom", "left", "center", or "right"</span></dt>
 <dd>The alignment of the image, equivalent to the HTML <tt class="docutils literal"><span class="pre">&lt;img&gt;</span></tt> tag's
-&quot;align&quot; attribute.  The values &quot;top&quot;, &quot;middle&quot;, and &quot;bottom&quot;
+"align" attribute.  The values "top", "middle", and "bottom"
 control an image's vertical alignment (relative to the text
 baseline); they are only useful for inline images (substitutions).
-The values &quot;left&quot;, &quot;center&quot;, and &quot;right&quot; control an image's
+The values "left", "center", and "right" control an image's
 horizontal alignment, allowing the image to float and have the
 text flow around it.  The specific behavior depends upon the
 browser or rendering software used.</dd>
@@ -228,7 +222,7 @@ browser or rendering software used.</dd>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;figure&quot;</td>
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">"figure"</td>
 </tr>
 <tr class="field"><th class="field-name">DTD Elements:</th><td class="field-body">figure, image, caption, legend</td>
 </tr>
@@ -244,11 +238,10 @@ legend.</td>
 </tr>
 </tbody>
 </table>
-<p>A &quot;figure&quot; consists of <a class="reference" href="#image">image</a> data (including <a class="reference" href="#image-options">image options</a>), an
+<p>A "figure" consists of <a class="reference" href="#image">image</a> data (including <a class="reference" href="#image-options">image options</a>), an
 optional caption (a single paragraph), and an optional legend
 (arbitrary body elements):</p>
-<pre class="literal-block">
-.. figure:: picture.png
+<pre class="literal-block">.. figure:: picture.png
    :scale: 50
    :alt: map to buried treasure
 
@@ -270,7 +263,7 @@ optional caption (a single paragraph), and an optional legend
 </pre>
 <p>There must be blank lines before the caption paragraph and before the
 legend.  To specify a legend without a caption, use an empty comment
-(&quot;..&quot;) in place of the caption.</p>
+("..") in place of the caption.</p>
 </div>
 </div>
 <div class="section" id="body-elements">
@@ -281,7 +274,7 @@ legend.  To specify a legend without a caption, use an empty comment
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;topic&quot;</td>
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">"topic"</td>
 </tr>
 <tr class="field"><th class="field-name">DTD Element:</th><td class="field-body">topic</td>
 </tr>
@@ -297,15 +290,14 @@ legend.  To specify a legend without a caption, use an empty comment
 </tbody>
 </table>
 <p>A topic is like a block quote with a title, or a self-contained
-section with no subsections.  Use the &quot;topic&quot; directive to indicate a
+section with no subsections.  Use the "topic" directive to indicate a
 self-contained idea that is separate from the flow of the document.
 Topics may occur anywhere a section or transition may occur.  Body
 elements (including topics) may not contain nested topics.</p>
 <p>The directive's sole argument is interpreted as the topic title; the
 next line must be blank.  All subsequent lines make up the topic body,
 interpreted as body elements.  For example:</p>
-<pre class="literal-block">
-topic:: Topic Title
+<pre class="literal-block">topic:: Topic Title
 
     Subsequent indented lines comprise
     the body of the topic, and are
@@ -318,7 +310,7 @@ topic:: Topic Title
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;line-block&quot;</td>
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">"line-block"</td>
 </tr>
 <tr class="field"><th class="field-name">DTD Element:</th><td class="field-body">line_block</td>
 </tr>
@@ -333,7 +325,7 @@ topic:: Topic Title
 </tr>
 </tbody>
 </table>
-<p>The &quot;line-block&quot; directive constructs an element where whitespace
+<p>The "line-block" directive constructs an element where whitespace
 (including linebreaks) is significant and inline markup is supported.
 It is equivalent to a <a class="reference" href="#parsed-literal-block">parsed literal block</a> with different
 rendering: typically in an ordinary serif typeface instead of a
@@ -342,8 +334,7 @@ line-block directive begin a block quote to get an indented line
 block.)  Line blocks are useful for address blocks and verse (poetry,
 song lyrics), where the structure of lines is significant.  For
 example, here's a classic:</p>
-<pre class="literal-block">
-&quot;To Ma Own Beloved Lassie: A Poem on her 17th Birthday&quot;, by
+<pre class="literal-block">"To Ma Own Beloved Lassie: A Poem on her 17th Birthday", by
 Ewan McTeagle (for Lassie O'Shea):
 
     .. line-block::
@@ -361,7 +352,7 @@ Ewan McTeagle (for Lassie O'Shea):
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;parsed-literal&quot;</td>
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">"parsed-literal"</td>
 </tr>
 <tr class="field"><th class="field-name">DTD Element:</th><td class="field-body">literal_block</td>
 </tr>
@@ -376,7 +367,7 @@ Ewan McTeagle (for Lassie O'Shea):
 </tr>
 </tbody>
 </table>
-<p>Unlike an ordinary literal block, the &quot;parsed-literal&quot; directive
+<p>Unlike an ordinary literal block, the "parsed-literal" directive
 constructs a literal block where the text is parsed for inline markup.
 It is equivalent to a <a class="reference" href="#line-block">line block</a> with different rendering:
 typically in a typewriter/monospaced typeface, like an ordinary
@@ -385,8 +376,7 @@ to code examples.  However, care must be taken with the text, because
 inline markup is recognized; there is no protection from parsing.
 Backslash-escapes may be necessary in places.</p>
 <p>For example, all the element names in this content model are links:</p>
-<pre class="literal-block">
-.. parsed-literal::
+<pre class="literal-block">.. parsed-literal::
 
     ((title_,
       subtitle_?)?,
@@ -404,7 +394,7 @@ Backslash-escapes may be necessary in places.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;contents&quot;</td>
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">"contents"</td>
 </tr>
 <tr class="field"><th class="field-name">DTD Elements:</th><td class="field-body">pending, topic</td>
 </tr>
@@ -419,36 +409,31 @@ Backslash-escapes may be necessary in places.</p>
 </tr>
 </tbody>
 </table>
-<p>The &quot;contents&quot; directive inserts a table of contents (TOC) in two
+<p>The "contents" directive inserts a table of contents (TOC) in two
 passes: initial parse and transform.  During the initial parse, a
-&quot;pending&quot; element is generated which acts as a placeholder, storing
+"pending" element is generated which acts as a placeholder, storing
 the TOC title and any options internally.  At a later stage in the
-processing, the &quot;pending&quot; element is replaced by a &quot;topic&quot; element, a
+processing, the "pending" element is replaced by a "topic" element, a
 title and the table of contents proper.</p>
 <p>The directive in its simplest form:</p>
-<pre class="literal-block">
-.. contents::
+<pre class="literal-block">.. contents::
 </pre>
 <p>Language-dependent boilerplate text will be used for the title.  The
-English default title text is &quot;Contents&quot;.</p>
+English default title text is "Contents".</p>
 <p>An explicit title, may be specified:</p>
-<pre class="literal-block">
-.. contents:: Table of Contents
+<pre class="literal-block">.. contents:: Table of Contents
 </pre>
 <p>The title may span lines, although it is not recommended:</p>
-<pre class="literal-block">
-.. contents:: Here's a very long Table of
+<pre class="literal-block">.. contents:: Here's a very long Table of
    Contents title
 </pre>
 <p>Options may be specified for the directive, using a field list:</p>
-<pre class="literal-block">
-.. contents:: Table of Contents
+<pre class="literal-block">.. contents:: Table of Contents
    :depth: 2
 </pre>
 <p>If the default title is to be used, the options field list may begin
 on the same line as the directive marker:</p>
-<pre class="literal-block">
-.. contents:: :depth: 2
+<pre class="literal-block">.. contents:: :depth: 2
 </pre>
 <p>The following options are recognized:</p>
 <dl class="docutils">
@@ -459,7 +444,7 @@ contents.  The default is unlimited depth.</dd>
 <dd>Generate a local table of contents.  Entries will only include
 subsections of the section in which the directive is given.  If no
 explicit title is given, the table of contents will not be titled.</dd>
-<dt><tt class="docutils literal"><span class="pre">backlinks</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">&quot;entry&quot; or &quot;top&quot; or &quot;none&quot;</span></dt>
+<dt><tt class="docutils literal"><span class="pre">backlinks</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">"entry" or "top" or "none"</span></dt>
 <dd>Generate links from section headers back to the table of contents
 entries, the table of contents itself, or generate no backlinks.</dd>
 </dl>
@@ -470,7 +455,7 @@ entries, the table of contents itself, or generate no backlinks.</dd>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;sectnum&quot; or &quot;section-autonumbering&quot; (synonyms)</td>
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">"sectnum" or "section-autonumbering" (synonyms)</td>
 </tr>
 <tr class="field"><th class="field-name">DTD Elements:</th><td class="field-body">pending, generated</td>
 </tr>
@@ -485,18 +470,18 @@ entries, the table of contents itself, or generate no backlinks.</dd>
 </tr>
 </tbody>
 </table>
-<p>The &quot;sectnum&quot; (or &quot;section-autonumbering&quot;) directive automatically
+<p>The "sectnum" (or "section-autonumbering") directive automatically
 numbers sections and subsections in a document.  Section numbers are
-of the &quot;multiple enumeration&quot; form, where each level has a number,
+of the "multiple enumeration" form, where each level has a number,
 separated by periods.  For example, the title of section 1, subsection
-2, subsubsection 3 would have &quot;1.2.3&quot; prefixed.</p>
-<p>The &quot;sectnum&quot; directive does its work in two passes: the initial parse
-and a transform.  During the initial parse, a &quot;pending&quot; element is
+2, subsubsection 3 would have "1.2.3" prefixed.</p>
+<p>The "sectnum" directive does its work in two passes: the initial parse
+and a transform.  During the initial parse, a "pending" element is
 generated which acts as a placeholder, storing any options internally.
-At a later stage in the processing, the &quot;pending&quot; element triggers a
+At a later stage in the processing, the "pending" element triggers a
 transform, which adds section numbers to titles.  Section numbers are
-enclosed in a &quot;generated&quot; element, and titles have their &quot;auto&quot;
-attribute set to &quot;1&quot;.</p>
+enclosed in a "generated" element, and titles have their "auto"
+attribute set to "1".</p>
 <p>The following options are recognized:</p>
 <dl class="docutils">
 <dt><tt class="docutils literal"><span class="pre">depth</span></tt> <span class="classifier-delimiter">:</span> <span class="classifier">integer</span></dt>
@@ -513,7 +498,7 @@ The default is unlimited depth.</dd>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;target-notes&quot;</td>
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">"target-notes"</td>
 </tr>
 <tr class="field"><th class="field-name">DTD Elements:</th><td class="field-body">pending, footnote, footnote_reference</td>
 </tr>
@@ -528,7 +513,7 @@ The default is unlimited depth.</dd>
 </tr>
 </tbody>
 </table>
-<p>The &quot;target-notes&quot; directive creates a footnote for each external
+<p>The "target-notes" directive creates a footnote for each external
 target in the text, and corresponding footnote references after each
 reference.  For every explicit target (of the form, <tt class="docutils literal"><span class="pre">..</span> <span class="pre">_target</span> <span class="pre">name:</span>
 <span class="pre">URL</span></tt>) in the text, a footnote will be generated containing the
@@ -541,7 +526,7 @@ visible URL as content.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;footnotes&quot;</td>
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">"footnotes"</td>
 </tr>
 <tr class="field"><th class="field-name">DTD Elements:</th><td class="field-body">pending, topic</td>
 </tr>
@@ -565,7 +550,7 @@ visible URL as content.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;citations&quot;</td>
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">"citations"</td>
 </tr>
 <tr class="field"><th class="field-name">DTD Elements:</th><td class="field-body">pending, topic</td>
 </tr>
@@ -591,7 +576,7 @@ visible URL as content.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;meta&quot;</td>
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">"meta"</td>
 </tr>
 <tr class="field"><th class="field-name">DTD Element:</th><td class="field-body">meta (non-standard)</td>
 </tr>
@@ -606,50 +591,44 @@ visible URL as content.</p>
 </tr>
 </tbody>
 </table>
-<p>The &quot;meta&quot; directive is used to specify HTML metadata stored in HTML
-META tags.  &quot;Metadata&quot; is data about data, in this case data about web
+<p>The "meta" directive is used to specify HTML metadata stored in HTML
+META tags.  "Metadata" is data about data, in this case data about web
 pages.  Metadata is used to describe and classify web pages in the
 World Wide Web, in a form that is easy for search engines to extract
 and collate.</p>
 <p>Within the directive block, a flat field list provides the syntax for
-metadata.  The field name becomes the contents of the &quot;name&quot; attribute
+metadata.  The field name becomes the contents of the "name" attribute
 of the META tag, and the field body (interpreted as a single string
-without inline markup) becomes the contents of the &quot;content&quot;
+without inline markup) becomes the contents of the "content"
 attribute.  For example:</p>
-<pre class="literal-block">
-.. meta::
+<pre class="literal-block">.. meta::
    :description: The reStructuredText plaintext markup language
    :keywords: plaintext, markup language
 </pre>
 <p>This would be converted to the following HTML:</p>
-<pre class="literal-block">
-&lt;meta name=&quot;description&quot;
-    content=&quot;The reStructuredText plaintext markup language&quot;&gt;
-&lt;meta name=&quot;keywords&quot; content=&quot;plaintext, markup language&quot;&gt;
+<pre class="literal-block">&lt;meta name="description"
+    content="The reStructuredText plaintext markup language"&gt;
+&lt;meta name="keywords" content="plaintext, markup language"&gt;
 </pre>
-<p>Support for other META attributes (&quot;http-equiv&quot;, &quot;scheme&quot;, &quot;lang&quot;,
-&quot;dir&quot;) are provided through field arguments, which must be of the form
-&quot;attr=value&quot;:</p>
-<pre class="literal-block">
-.. meta::
+<p>Support for other META attributes ("http-equiv", "scheme", "lang",
+"dir") are provided through field arguments, which must be of the form
+"attr=value":</p>
+<pre class="literal-block">.. meta::
    :description lang=en: An amusing story
    :description lang=fr: Un histoire amusant
 </pre>
 <p>And their HTML equivalents:</p>
-<pre class="literal-block">
-&lt;meta name=&quot;description&quot; lang=&quot;en&quot; content=&quot;An amusing story&quot;&gt;
-&lt;meta name=&quot;description&quot; lang=&quot;fr&quot; content=&quot;Un histoire amusant&quot;&gt;
+<pre class="literal-block">&lt;meta name="description" lang="en" content="An amusing story"&gt;
+&lt;meta name="description" lang="fr" content="Un histoire amusant"&gt;
 </pre>
-<p>Some META tags use an &quot;http-equiv&quot; attribute instead of the &quot;name&quot;
-attribute.  To specify &quot;http-equiv&quot; META tags, simply omit the name:</p>
-<pre class="literal-block">
-.. meta::
+<p>Some META tags use an "http-equiv" attribute instead of the "name"
+attribute.  To specify "http-equiv" META tags, simply omit the name:</p>
+<pre class="literal-block">.. meta::
    :http-equiv=Content-Type: text/html; charset=ISO-8859-1
 </pre>
 <p>HTML equivalent:</p>
-<pre class="literal-block">
-&lt;meta http-equiv=&quot;Content-Type&quot;
-     content=&quot;text/html; charset=ISO-8859-1&quot;&gt;
+<pre class="literal-block">&lt;meta http-equiv="Content-Type"
+     content="text/html; charset=ISO-8859-1"&gt;
 </pre>
 </div>
 <div class="section" id="imagemap">
@@ -666,7 +645,7 @@ attribute.  To specify &quot;http-equiv&quot; META tags, simply omit the name:</
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;include&quot;</td>
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">"include"</td>
 </tr>
 <tr class="field"><th class="field-name">DTD Elements:</th><td class="field-body">depend on data being included</td>
 </tr>
@@ -681,11 +660,10 @@ attribute.  To specify &quot;http-equiv&quot; META tags, simply omit the name:</
 </tr>
 </tbody>
 </table>
-<p>The &quot;include&quot; directive reads a reStructuredText-formatted text file
+<p>The "include" directive reads a reStructuredText-formatted text file
 and parses it in the current document's context at the point of the
 directive.  For example:</p>
-<pre class="literal-block">
-This first example will be parsed at the document level, and can
+<pre class="literal-block">This first example will be parsed at the document level, and can
 thus contain any construct, including section headers.
 
 .. include:: inclusion.txt
@@ -711,7 +689,7 @@ literal block (useful for program listings).</dd>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;raw&quot;</td>
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">"raw"</td>
 </tr>
 <tr class="field"><th class="field-name">DTD Element:</th><td class="field-body">pending</td>
 </tr>
@@ -723,35 +701,32 @@ literal block (useful for program listings).</dd>
 </tr>
 <tr class="field"><th class="field-name" colspan="2">Directive Content:</th></tr>
 <tr><td>&nbsp;</td><td class="field-body">Stored verbatim, uninterpreted.  None (empty) if a
-&quot;file&quot; or &quot;url&quot; option given.</td>
+"file" or "url" option given.</td>
 </tr>
 </tbody>
 </table>
-<p>The &quot;raw&quot; directive indicates non-reStructuredText data that is to be
+<p>The "raw" directive indicates non-reStructuredText data that is to be
 passed untouched to the Writer.  The name of the output format is
-given in the first argument.  During the initial parse, a &quot;pending&quot;
+given in the first argument.  During the initial parse, a "pending"
 element is generated which acts as a placeholder, storing the format
 and raw data internally.  The interpretation of the code is up to the
 Writer.  A Writer may ignore any raw output not matching its format.</p>
 <p>For example, the following input would be passed untouched by an HTML
 Writer:</p>
-<pre class="literal-block">
-.. raw:: html
+<pre class="literal-block">.. raw:: html
 
    &lt;hr width=50 size=10&gt;
 </pre>
 <p>A LaTeX Writer could insert the following raw content into its
 output stream:</p>
-<pre class="literal-block">
-.. raw:: latex
+<pre class="literal-block">.. raw:: latex
 
    \documentclass[twocolumn]{article}
 </pre>
 <p>Raw data can also be read from an external file, specified in a
 directive option.  In this case, the content block must be empty.  For
 example:</p>
-<pre class="literal-block">
-.. raw:: html
+<pre class="literal-block">.. raw:: html
    :file: inclusion.html
 </pre>
 <p>The following options are recognized:</p>
@@ -768,7 +743,7 @@ example:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;replace&quot;</td>
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">"replace"</td>
 </tr>
 <tr class="field"><th class="field-name">DTD Element:</th><td class="field-body">pending</td>
 </tr>
@@ -783,21 +758,19 @@ example:</p>
 </tr>
 </tbody>
 </table>
-<p>The &quot;replace&quot; directive is used to indicate replacement text for a
+<p>The "replace" directive is used to indicate replacement text for a
 substitution reference.  It may be used within substitution
 definitions only.  For example, this directive can be used to expand
 abbreviations:</p>
-<pre class="literal-block">
-.. |reST| replace:: reStructuredText
+<pre class="literal-block">.. |reST| replace:: reStructuredText
 
 Yes, |reST| is a long word, so I can't blame anyone for wanting to
 abbreviate it.
 </pre>
 <p>As reStructuredText doesn't support nested inline markup, the only way
 to create a reference with styled text is to use substitutions with
-the &quot;replace&quot; directive:</p>
-<pre class="literal-block">
-I recommend you try |Python|_.
+the "replace" directive:</p>
+<pre class="literal-block">I recommend you try |Python|_.
 
 .. |Python| replace:: Python, *the* best language around
 .. _Python: http://www.python.org/
@@ -809,7 +782,7 @@ I recommend you try |Python|_.
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">&quot;restructuredtext-test-directive&quot;</td>
+<tr class="field"><th class="field-name">Directive Type:</th><td class="field-body">"restructuredtext-test-directive"</td>
 </tr>
 <tr class="field"><th class="field-name">DTD Element:</th><td class="field-body">system_warning</td>
 </tr>

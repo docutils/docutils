@@ -45,7 +45,7 @@ for full details of the established syntax.</p>
 </ul>
 </li>
 <li><a class="reference" href="#field-lists" id="id11" name="id11">Field Lists</a></li>
-<li><a class="reference" href="#interpreted-text-roles" id="id12" name="id12">Interpreted Text &quot;Roles&quot;</a></li>
+<li><a class="reference" href="#interpreted-text-roles" id="id12" name="id12">Interpreted Text "Roles"</a></li>
 <li><a class="reference" href="#comments" id="id13" name="id13">Comments</a></li>
 <li><a class="reference" href="#anonymous-hyperlinks" id="id14" name="id14">Anonymous Hyperlinks</a></li>
 <li><a class="reference" href="#reworking-explicit-markup" id="id15" name="id15">Reworking Explicit Markup</a></li>
@@ -64,7 +64,7 @@ ideas are kept here as a record of what has been proposed, for
 posterity and in case any of them prove to be useful.</p>
 <div class="section" id="compound-enumerated-lists">
 <h2><a class="toc-backref" href="#id7" name="compound-enumerated-lists">Compound Enumerated Lists</a></h2>
-<p>Allow for compound enumerators, such as &quot;1.1.&quot; or &quot;1.a.&quot; or &quot;1(a)&quot;, to
+<p>Allow for compound enumerators, such as "1.1." or "1.a." or "1(a)", to
 allow for nested enumerated lists without indentation?</p>
 </div>
 <div class="section" id="sloppy-indentation-of-list-items">
@@ -107,7 +107,7 @@ The second line of this item is not indented relative to the
 bullet, which precludes it from having a second paragraph.
 </pre>
 <p>Change that to <em>require</em> a blank line above and below, to reduce
-ambiguity.  This &quot;loosening&quot; may be added later, once the parser's
+ambiguity.  This "loosening" may be added later, once the parser's
 been nailed down.  However, a serious drawback of this approach is to
 limit the content of each list item to a single paragraph.</p>
 <div class="section" id="david-s-idea-for-lazy-indentation">
@@ -119,7 +119,7 @@ paragraph in the same way, as a single logical line of text, ending
 with two newlines (a blank line) instead of one, and which may contain
 arbitrary line breaks (newlines) where it was accidentally
 hard-wrapped by an application.  We can compensate for the accidental
-hard-wrapping by &quot;unwrapping&quot; every unindented second and subsequent
+hard-wrapping by "unwrapping" every unindented second and subsequent
 line.  The indentation of the first line of a paragraph or list item
 would determine the indentation for the entire element.  Blank lines
 would be required between list items when using lazy indentation.</p>
@@ -220,22 +220,22 @@ ambiguous (these paragraphs are a prime example).</p>
 <li><p class="first">Special case: use unadorned <a class="reference" href="http://www.rfc-editor.org/rfc/rfc822.txt">RFC822</a> for the very first or very last
 text block of a document:</p>
 <pre class="literal-block">
-&quot;&quot;&quot;
+"""
 Author: Me
 Version: 1
 
 The rest of the document...
-&quot;&quot;&quot;
+"""
 </pre>
 <p>Advantages: clean, precedent (RFC822-compliant).  Disadvantages:
 special case, flat (unnested) field lists only, still ambiguous:</p>
 <pre class="literal-block">
-&quot;&quot;&quot;
+"""
 Usage: cmdname [options] arg1 arg2 ...
 
 We obviously *don't* want the like above to be interpreted as a
 field list item.  Or do we?
-&quot;&quot;&quot;
+"""
 </pre>
 <p>Conclusion: rejected for the general case, accepted for specific
 contexts (PEPs, email).</p>
@@ -296,7 +296,7 @@ ambiguous.  It is very common in ordinary text.  To implement field
 lists unambiguously, we need explicit syntax.</p>
 <p>The following question was posed in a footnote:</p>
 <blockquote>
-Should &quot;bibliographic field lists&quot; be defined at the parser level,
+Should "bibliographic field lists" be defined at the parser level,
 or at the DPS transformation level?  In other words, are they
 reStructuredText-specific, or would they also be applicable to
 another (many/every other?) syntax?</blockquote>
@@ -307,11 +307,11 @@ would be no need for such a transformation for an XML-based markup
 syntax.</p>
 </div>
 <div class="section" id="interpreted-text-roles">
-<h1><a class="toc-backref" href="#id12" name="interpreted-text-roles">Interpreted Text &quot;Roles&quot;</a></h1>
+<h1><a class="toc-backref" href="#id12" name="interpreted-text-roles">Interpreted Text "Roles"</a></h1>
 <p>The original purpose of interpreted text was as a mechanism for
 descriptive markup, to describe the nature or role of a word or
-phrase.  For example, in XML we could say &quot;&lt;function&gt;len&lt;/function&gt;&quot;
-to mark up &quot;len&quot; as a function.  It is envisaged that within Python
+phrase.  For example, in XML we could say "&lt;function&gt;len&lt;/function&gt;"
+to mark up "len" as a function.  It is envisaged that within Python
 docstrings (inline documentation in Python module source files, the
 primary market for reStructuredText) the role of a piece of
 interpreted text can be inferred implicitly from the context of the
@@ -336,7 +336,7 @@ as a word or phrase within the enclosing backquotes:</p>
 <p>There are problems with the initial approach:</p>
 <ul class="simple">
 <li>There could be ambiguity with interpreted text containing colons.
-For example, an index entry of &quot;Mission: Impossible&quot; would
+For example, an index entry of "Mission: Impossible" would
 require a backslash-escaped colon.</li>
 <li>The explicit role is descriptive markup, not content, and will
 not be visible in the processed output.  Putting it inside the
@@ -353,12 +353,12 @@ identifier to be a single word (whitespace would be illegal).
 Since roles are not meant to be visible after processing, the lack
 of whitespace support is not important.</p>
 <p>The suggested syntax remains ambiguous with respect to ratios and
-some writing styles.  For example, suppose there is a &quot;signal&quot;
+some writing styles.  For example, suppose there is a "signal"
 identifier, and we write:</p>
 <pre class="literal-block">
 ...calculate the `signal`:noise ratio.
 </pre>
-<p>&quot;noise&quot; looks like a role.</p>
+<p>"noise" looks like a role.</p>
 </li>
 <li><p class="first">As an improvement on #2, we can bracket the role with colons:</p>
 <pre class="literal-block">
@@ -372,8 +372,8 @@ both are doing similar things: describing.</p>
 <pre class="literal-block">
 role::`prefix` or `suffix`::role
 </pre>
-<p>But this is used for analogies (&quot;A:B::C:D&quot;: &quot;A is to B as C is to
-D&quot;).</p>
+<p>But this is used for analogies ("A:B::C:D": "A is to B as C is to
+D").</p>
 <p>Both alternative #2 and #4 lack delimiters on both sides of the
 role, making it difficult to parse (by the reader).</p>
 </li>
@@ -414,17 +414,17 @@ without swallowing it up.</p>
 <p>I thought that perhaps comments should be one-liners only.  But would
 this mean that footnotes, hyperlink targets, and directives must then
 also be one-liners?  Not a good solution.</p>
-<p>Tony Ibbs suggested a &quot;comment&quot; directive.  I added that we could
-limit a comment to a single text block, and that a &quot;multi-block
-comment&quot; could use &quot;comment-start&quot; and &quot;comment-end&quot; directives.  This
-would remove the indentation incompatibility.  A &quot;comment&quot; directive
-automatically suggests &quot;footnote&quot; and (hyperlink) &quot;target&quot; directives
+<p>Tony Ibbs suggested a "comment" directive.  I added that we could
+limit a comment to a single text block, and that a "multi-block
+comment" could use "comment-start" and "comment-end" directives.  This
+would remove the indentation incompatibility.  A "comment" directive
+automatically suggests "footnote" and (hyperlink) "target" directives
 as well.  This could go on forever!  Bad choice.</p>
-<p>Garth Kidd suggested that an &quot;empty comment&quot;, a &quot;..&quot; explicit markup
+<p>Garth Kidd suggested that an "empty comment", a ".." explicit markup
 start with nothing on the first line (except possibly whitespace) and
-a blank line immediately following, could serve as an &quot;unindent&quot;.  An
+a blank line immediately following, could serve as an "unindent".  An
 empty comment does <strong>not</strong> swallow up indented blocks following it,
-so block quotes are safe.  &quot;A tiny but practical wart.&quot;  Accepted.</p>
+so block quotes are safe.  "A tiny but practical wart."  Accepted.</p>
 </div>
 <div class="section" id="anonymous-hyperlinks">
 <h1><a class="toc-backref" href="#id14" name="anonymous-hyperlinks">Anonymous Hyperlinks</a></h1>
@@ -434,7 +434,7 @@ Search the `Python DOC-SIG mailing list archives`{}_.
 
 .. _: http://mail.python.org/pipermail/doc-sig/
 </pre>
-<p>The idea is sound and useful.  I suggested a &quot;double underscore&quot;
+<p>The idea is sound and useful.  I suggested a "double underscore"
 syntax:</p>
 <pre class="literal-block">
 Search the `Python DOC-SIG mailing list archives`__.
@@ -442,7 +442,7 @@ Search the `Python DOC-SIG mailing list archives`__.
 .. __: http://mail.python.org/pipermail/doc-sig/
 </pre>
 <p>But perhaps single underscores are okay?  The syntax looks better, but
-the hyperlink itself doesn't explicitly say &quot;anonymous&quot;:</p>
+the hyperlink itself doesn't explicitly say "anonymous":</p>
 <pre class="literal-block">
 Search the `Python DOC-SIG mailing list archives`_.
 
@@ -465,7 +465,7 @@ those up with anonymous targets.  Keeping to a simple consistent
 ordering (as with auto-numbered footnotes) seems simplest.</p>
 <p>reStructuredText will use the explicit double-underscore syntax for
 anonymous hyperlinks.  An alternative (see <a class="reference" href="#reworking-explicit-markup">Reworking Explicit
-Markup</a> below) for the somewhat awkward &quot;.. __:&quot; syntax is &quot;__&quot;:</p>
+Markup</a> below) for the somewhat awkward ".. __:" syntax is "__":</p>
 <pre class="literal-block">
 An anonymous__ reference.
 
@@ -504,18 +504,18 @@ target.</p>
 <li>Except for the colon (a delimiter necessary to allow for
 phrase-links), hyperlink target <tt class="docutils literal"><span class="pre">..</span> <span class="pre">_blah:</span></tt> comes from Setext.</li>
 <li>Comment syntax from Setext.</li>
-<li>Footnote syntax from StructuredText (&quot;named links&quot;).</li>
+<li>Footnote syntax from StructuredText ("named links").</li>
 <li>Directives and anonymous hyperlinks original to reStructuredText.</li>
 </ul>
 <p>Advantages:</p>
 <ul class="simple">
-<li>Consistent explicit markup indicator: &quot;..&quot;.</li>
-<li>Consistent hyperlink syntax: &quot;.. _&quot; &amp; &quot;:&quot;.</li>
+<li>Consistent explicit markup indicator: "..".</li>
+<li>Consistent hyperlink syntax: ".. _" &amp; ":".</li>
 </ul>
 <p>Disadvantages:</p>
 <ul class="simple">
-<li>Anonymous target markup is awkward: &quot;.. __:&quot;.</li>
-<li>The explicit markup indicator (&quot;..&quot;) is excessively overloaded?</li>
+<li>Anonymous target markup is awkward: ".. __:".</li>
+<li>The explicit markup indicator ("..") is excessively overloaded?</li>
 <li>Comment text is limited (can't look like a footnote, hyperlink,
 or directive).  But this is probably not important.</li>
 </ul>
@@ -542,7 +542,7 @@ __ [blah] http://somewhere    footnote
 <ul>
 <li><p class="first">Inconsistent internal hyperlink targets.  Unlike all other named
 hyperlink targets, there's no colon.  There's an extra leading
-underscore, but we can't drop it because without it, &quot;blah&quot; looks
+underscore, but we can't drop it because without it, "blah" looks
 like a relative URI.  Unless we restore the colon:</p>
 <pre class="literal-block">
 __ blah:                      internal hyperlink target
@@ -564,14 +564,14 @@ __ blah:                      internal hyperlink target
 !! blah: http://somewhere     directive
 ## blah: http://somewhere     comment
 </pre>
-<p>Leading underscores have been (almost) replaced by &quot;..&quot;, while
+<p>Leading underscores have been (almost) replaced by "..", while
 comments and directives have gained their own syntax.</p>
 <p>Advantages:</p>
 <ul class="simple">
 <li>Anonymous hyperlinks are simpler.</li>
-<li>Unique syntax for comments.  Connotation of &quot;comment&quot; from
+<li>Unique syntax for comments.  Connotation of "comment" from
 some programming languages (including our favorite).</li>
-<li>Unique syntax for directives.  Connotation of &quot;action!&quot;.</li>
+<li>Unique syntax for directives.  Connotation of "action!".</li>
 </ul>
 <p>Disadvantages:</p>
 <ul>
@@ -579,21 +579,21 @@ some programming languages (including our favorite).</li>
 named hyperlink targets, there's no colon.  There's a leading
 underscore, matching the trailing underscores of references,
 which no other hyperlink targets have.  We can't drop that one
-leading underscore though: without it, &quot;blah&quot; looks like a
+leading underscore though: without it, "blah" looks like a
 relative URI.  Again, unless we restore the colon:</p>
 <pre class="literal-block">
 .. blah:                      internal hyperlink target
 </pre>
 </li>
 <li><p class="first">All (except for internal) hyperlink targets lack their leading
-underscores, losing the &quot;hyperlink&quot; connotation.</p>
+underscores, losing the "hyperlink" connotation.</p>
 </li>
 <li><p class="first">Obtrusive syntax for comments.  Alternatives:</p>
 <pre class="literal-block">
 ;; blah: http://somewhere
    (also comment syntax in Lisp &amp; others)
 ,, blah: http://somewhere
-   (&quot;comma comma&quot;: sounds like &quot;comment&quot;!)
+   ("comma comma": sounds like "comment"!)
 </pre>
 </li>
 <li><p class="first">Iffy syntax for directives.  Alternatives?</p>
@@ -613,7 +613,7 @@ underscores, losing the &quot;hyperlink&quot; connotation.</p>
 .. blah: http://somewhere     comment
 </pre>
 <p>This is the same as the current syntax, except for anonymous
-targets which drop their &quot;__: &quot;.</p>
+targets which drop their "__: ".</p>
 <p>Advantage:</p>
 <ul class="simple">
 <li>Anonymous targets are simpler.</li>
@@ -621,14 +621,14 @@ targets which drop their &quot;__: &quot;.</p>
 <p>Disadvantages:</p>
 <ul class="simple">
 <li>Anonymous targets lack their leading underscores, losing the
-&quot;hyperlink&quot; connotation.</li>
+"hyperlink" connotation.</li>
 <li>Anonymous targets are almost indistinguishable from comments.
-(Better to know &quot;up front&quot;.)</li>
+(Better to know "up front".)</li>
 </ul>
 </li>
 <li><p class="first">David Goodger's proposed syntax: Perhaps going back to one of
 Alan's earlier suggestions might be the best solution.  How about
-simply adding &quot;__ &quot; as a synonym for &quot;.. __: &quot; in the original
+simply adding "__ " as a synonym for ".. __: " in the original
 syntax?  These would become equivalent:</p>
 <pre class="literal-block">
 .. __:                        anonymous internal target
@@ -660,8 +660,8 @@ etc. names) into hyperlinks is a useful feature.  PyDoc recognizes
 identifiers heuristically, but it doesn't take much imagination to
 come up with counter-examples where PyDoc's heuristics would result
 in embarassing failure.  I wanted to do it deterministically, and
-that called for syntax.  I called this construct &quot;interpreted
-text&quot;.</li>
+that called for syntax.  I called this construct "interpreted
+text".</li>
 <li>Leveraging off the <tt class="docutils literal"><span class="pre">*emphasis*/**strong**</span></tt> syntax, lead to the
 idea of using double-backquotes as syntax.</li>
 <li>I worked out some rules for inline markup recognition.</li>
@@ -686,9 +686,9 @@ was Setext.  But for phrases Setext used a very cumbersome
 <div class="section" id="substitution-mechanism">
 <h1><a class="toc-backref" href="#id17" name="substitution-mechanism">Substitution Mechanism</a></h1>
 <p>Substitutions arose out of a Doc-SIG thread begun on 2001-10-28 by
-Alan Jaffray, &quot;reStructuredText inline markup&quot;.  It reminded me of a
+Alan Jaffray, "reStructuredText inline markup".  It reminded me of a
 missing piece of the reStructuredText puzzle, first referred to in my
-contribution to &quot;Documentation markup &amp; processing / PEPs&quot; (Doc-SIG
+contribution to "Documentation markup &amp; processing / PEPs" (Doc-SIG
 2001-06-21).</p>
 <p>Substitutions allow the power and flexibility of directives to be
 shared by inline text.  They are a way to allow arbitrarily complex
@@ -708,12 +708,12 @@ of medical waste.
 whatever the <tt class="docutils literal"><span class="pre">..</span> <span class="pre">|biohazard|</span></tt> substitution definition generates (in
 this case, an image).  A substitution definition contains the
 substitution text bracketed with vertical bars, followed by a an
-embedded inline-compatible directive, such as &quot;image&quot;.  A transform is
+embedded inline-compatible directive, such as "image".  A transform is
 required to complete the substitution.</p>
 <p>Syntax alternatives for the reference:</p>
 <ol class="arabic">
 <li><p class="first">Use the existing interpreted text syntax, with a predefined role
-such as &quot;sub&quot;:</p>
+such as "sub":</p>
 <pre class="literal-block">
 The `biohazard`:sub: symbol...
 </pre>
@@ -753,7 +753,7 @@ usage, (f) and (g) are not possible.</p>
 <p>To avoid ML confusion (k) and (l) are definitely out.  Square
 brackets (j) won't work in the target (the substitution definition
 would be indistinguishable from a footnote).</p>
-<p>The <tt class="docutils literal"><span class="pre">`/name/`</span></tt> syntax (g) is reminiscent of &quot;s/find/sub&quot;
+<p>The <tt class="docutils literal"><span class="pre">`/name/`</span></tt> syntax (g) is reminiscent of "s/find/sub"
 substitution syntax in ed-like languages.  However, it may have a
 misleading association with regexps, and looks like an absolute
 POSIX path.  (i) is visually equivalent and lacking the
@@ -778,10 +778,10 @@ albeit only slightly.</p>
 (m) ?name?
 (n) &gt;name&lt;
 </pre>
-<p>&quot;#&quot; (a) and &quot;&#64;&quot; (b) are obtrusive.  &quot;/&quot; (c) without backquotes
+<p>"#" (a) and "&#64;" (b) are obtrusive.  "/" (c) without backquotes
 looks just like a POSIX path; it is likely for such usage to appear
 in text.</p>
-<p>&quot;|&quot; (d) and &quot;^&quot; (h) are feasible.</p>
+<p>"|" (d) and "^" (h) are feasible.</p>
 </li>
 <li><p class="first">Redefine the trailing underscore syntax.  See definition syntax
 alternative 4, below.</p>
@@ -790,7 +790,7 @@ alternative 4, below.</p>
 <p>Syntax alternatives for the definition:</p>
 <ol class="arabic">
 <li><p class="first">Use the existing directive syntax, with a predefined directive such
-as &quot;sub&quot;.  It contains a further embedded directive resolving to an
+as "sub".  It contains a further embedded directive resolving to an
 inline-compatible object:</p>
 <pre class="literal-block">
 .. sub:: biohazard
@@ -812,7 +812,7 @@ alternative 1.</p>
 <p>This is a bit better than alternative 1, but still too much.</p>
 </li>
 <li><p class="first">Use a variant of directive syntax, incorporating the substitution
-text, obviating the need for a special &quot;sub&quot; directive name.  If we
+text, obviating the need for a special "sub" directive name.  If we
 assume reference alternative 4d (vertical bars), the matching
 definition would look like this:</p>
 <pre class="literal-block">
@@ -822,8 +822,8 @@ definition would look like this:</p>
 </li>
 <li><p class="first">(Suggested by Alan Jaffray on Doc-SIG from 2001-11-06.)</p>
 <p>Instead of adding new syntax, redefine the trailing underscore
-syntax to mean &quot;substitution reference&quot; instead of &quot;hyperlink
-reference&quot;.  Alan's example:</p>
+syntax to mean "substitution reference" instead of "hyperlink
+reference".  Alan's example:</p>
 <pre class="literal-block">
 I had lunch with Jonathan_ today.  We talked about Zope_.
 
@@ -831,7 +831,7 @@ I had lunch with Jonathan_ today.  We talked about Zope_.
 .. _Zope: http://www.zope.org/
 </pre>
 <p>A problem with the proposed syntax is that URIs which look like
-simple reference names (alphanum plus &quot;.&quot;, &quot;-&quot;, &quot;_&quot;) would be
+simple reference names (alphanum plus ".", "-", "_") would be
 indistinguishable from substitution directive names.  A more
 consistent syntax would be:</p>
 <pre class="literal-block">
@@ -841,10 +841,10 @@ I had lunch with Jonathan_ today.  We talked about Zope_.
 .. _Zope: http://www.zope.org/
 </pre>
 <p>(<tt class="docutils literal"><span class="pre">::</span></tt> after <tt class="docutils literal"><span class="pre">..</span> <span class="pre">_Jonathan:</span> <span class="pre">lj</span></tt>.)</p>
-<p>The &quot;Zope&quot; target is a simple external hyperlink, but the
-&quot;Jonathan&quot; target contains a directive.  Alan proposed is that the
+<p>The "Zope" target is a simple external hyperlink, but the
+"Jonathan" target contains a directive.  Alan proposed is that the
 reference text be replaced by whatever the referenced directive
-(the &quot;directive target&quot;) produces.  A directive reference becomes a
+(the "directive target") produces.  A directive reference becomes a
 hyperlink reference if the contents of the directive target resolve
 to a hyperlink.  If the directive target resolves to an icon, the
 reference is replaced by an inline icon.  If the directive target
@@ -870,7 +870,7 @@ The |biohazard| symbol...
    [height=20 width=20]
 </pre>
 <p>We can also combine substitution references with hyperlink references,
-by appending a &quot;_&quot; (named hyperlink reference) or &quot;__&quot; (anonymous
+by appending a "_" (named hyperlink reference) or "__" (anonymous
 hyperlink reference) suffix to the substitution reference.  This
 allows us to click on an image-link:</p>
 <pre class="literal-block">
@@ -881,8 +881,8 @@ The |biohazard|_ symbol...
 .. _biohazard: http://www.cdc.gov/
 </pre>
 <p>There have been several suggestions for the naming of these
-constructs, originally called &quot;substitution references&quot; and
-&quot;substitutions&quot;.</p>
+constructs, originally called "substitution references" and
+"substitutions".</p>
 <ol class="arabic simple">
 <li>Candidate names for the reference construct:<ol class="loweralpha">
 <li>substitution reference</li>
@@ -925,23 +925,23 @@ constructs, originally called &quot;substitution references&quot; and
 </ol>
 </li>
 </ol>
-<p>&quot;Inline directive reference&quot; (1c) seems to be an appropriate term at
-first, but the term &quot;inline&quot; is redundant in the case of the
-reference.  Its counterpart &quot;inline directive definition&quot; (2g) is
+<p>"Inline directive reference" (1c) seems to be an appropriate term at
+first, but the term "inline" is redundant in the case of the
+reference.  Its counterpart "inline directive definition" (2g) is
 awkward, because the directive definition itself is not inline.</p>
-<p>&quot;Directive reference&quot; (1d) and &quot;directive definition&quot; (2k) are too
-vague.  &quot;Directive definition&quot; could be used to refer to any
+<p>"Directive reference" (1d) and "directive definition" (2k) are too
+vague.  "Directive definition" could be used to refer to any
 directive, not just those used for inline substitutions.</p>
-<p>One meaning of the term &quot;macro&quot; (1k, 2s, 2t) is too
+<p>One meaning of the term "macro" (1k, 2s, 2t) is too
 programming-language-specific.  Also, macros are typically simple text
 substitution mechanisms: the text is substituted first and evaluated
 later.  reStructuredText substitution definitions are evaluated in
 place at parse time and substituted afterwards.</p>
-<p>&quot;Insertion&quot; (1h, 1i, 2n-2q) is almost right, but it implies that
+<p>"Insertion" (1h, 1i, 2n-2q) is almost right, but it implies that
 something new is getting added rather than one construct being
 replaced by another.</p>
-<p>Which brings us back to &quot;substitution&quot;.  The overall best names are
-&quot;substitution reference&quot; (1a) and &quot;substitution definition&quot; (2v).  A
+<p>Which brings us back to "substitution".  The overall best names are
+"substitution reference" (1a) and "substitution definition" (2v).  A
 long way to go to add one word!</p>
 </div>
 <div class="section" id="reworking-footnotes">
@@ -952,9 +952,9 @@ syntax:</p>
 <blockquote>
 <ul class="simple">
 <li>Change footnote syntax from <tt class="docutils literal"><span class="pre">..</span> <span class="pre">[1]</span></tt> to <tt class="docutils literal"><span class="pre">_[1]</span></tt>? ...</li>
-<li>Differentiate (with new DTD elements) author-date &quot;citations&quot;
+<li>Differentiate (with new DTD elements) author-date "citations"
 (<tt class="docutils literal"><span class="pre">[GVR2002]</span></tt>) from numbered footnotes? ...</li>
-<li>Render footnote references as superscripts without &quot;[]&quot;? ...</li>
+<li>Render footnote references as superscripts without "[]"? ...</li>
 </ul>
 </blockquote>
 <p>These ideas are all related, and suggest changes in the
@@ -965,26 +965,26 @@ works).  Rather than dealing with one amalgam construct, we could
 separate the current footnote concept into strict footnotes and
 citations.  Citations could be interpreted and treated differently
 from footnotes.  Footnotes would be limited to numerical labels:
-manual (&quot;1&quot;) and auto-numbered (anonymous &quot;#&quot;, named &quot;#label&quot;).</p>
-<p>The footnote is the only explicit markup construct (starts with &quot;.. &quot;)
+manual ("1") and auto-numbered (anonymous "#", named "#label").</p>
+<p>The footnote is the only explicit markup construct (starts with ".. ")
 that directly translates to a visible body element.  I've always been
-a little bit uncomfortable with the &quot;.. &quot; marker for footnotes because
-of this; &quot;.. &quot; has a connotation of &quot;special&quot;, but footnotes aren't
-especially &quot;special&quot;.  Printed texts often put footnotes at the bottom
-of the page where the reference occurs (thus &quot;foot note&quot;).  Some HTML
+a little bit uncomfortable with the ".. " marker for footnotes because
+of this; ".. " has a connotation of "special", but footnotes aren't
+especially "special".  Printed texts often put footnotes at the bottom
+of the page where the reference occurs (thus "foot note").  Some HTML
 designs would leave footnotes to be rendered the same positions where
 they're defined.  Other online and printed designs will gather
 footnotes into a section near the end of the document, converting them
-to &quot;endnotes&quot; (perhaps using a directive in our case); but this
-&quot;special processing&quot; is not an intrinsic property of the footnote
+to "endnotes" (perhaps using a directive in our case); but this
+"special processing" is not an intrinsic property of the footnote
 itself, but a decision made by the document author or processing
 system.</p>
 <p>Citations are almost invariably collected in a section at the end of a
-document or section.  Citations &quot;disappear&quot; from where they are
+document or section.  Citations "disappear" from where they are
 defined and are magically reinserted at some well-defined point.
-There's more of a connection to the &quot;special&quot; connotation of the &quot;.. &quot;
+There's more of a connection to the "special" connotation of the ".. "
 syntax.  The point at which the list of citations is inserted could be
-defined manually by a directive (e.g., &quot;.. citations::&quot;), and/or have
+defined manually by a directive (e.g., ".. citations::"), and/or have
 default behavior (e.g., a section automatically inserted at the end of
 the document) that might be influenced by options to the Writer.</p>
 <p>Syntax proposals:</p>
@@ -999,7 +999,7 @@ the document) that might be influenced by options to the Writer.</p>
 </pre>
 </li>
 <li><p class="first">The syntax proposed in the original 2002-02-28 Doc-SIG post:
-remove the &quot;.. &quot;, prefix a &quot;_&quot;:</p>
+remove the ".. ", prefix a "_":</p>
 <pre class="literal-block">
 _[1] Footnote 1
 _[#] Auto-numbered footnote.
@@ -1009,8 +1009,8 @@ _[#label] Auto-labeled footnote.
 <tt class="docutils literal"><span class="pre">..</span> <span class="pre">_[1]:</span></tt> was too verbose) is a useful reminder that footnotes
 are hyperlink targets.</p>
 </li>
-<li><p class="first">Minimal syntax: remove the &quot;.. [&quot; and &quot;]&quot;, prefix a &quot;_&quot;, and
-suffix a &quot;.&quot;:</p>
+<li><p class="first">Minimal syntax: remove the ".. [" and "]", prefix a "_", and
+suffix a ".":</p>
 <pre class="literal-block">
 _1. Footnote 1.
 _#. Auto-numbered footnote.
@@ -1025,7 +1025,7 @@ _#label. Auto-labeled footnote.
 |    from the label, and a vertical bar could set them
 |    off from the rest of the document in the HTML.</p>
 </blockquote>
-<p>Two-way hyperlinks on the footnote marker (&quot;1.&quot; above) would also
+<p>Two-way hyperlinks on the footnote marker ("1." above) would also
 help to differentiate footnotes from enumerated lists.</p>
 <p>If converted to endnotes (by a directive/transform), a horizontal
 half-line might be used instead.  Page-oriented output formats
@@ -1072,7 +1072,7 @@ _[DJG2002]
     Docutils: Python Documentation Utilities project; Goodger
     et al.; http://docutils.sourceforge.net/
 </pre>
-<p>Without the &quot;.. &quot; marker, subsequent lines would either have to
+<p>Without the ".. " marker, subsequent lines would either have to
 align as in one of the above, or we'd have to allow loose
 alignment (I'd rather not):</p>
 <pre class="literal-block">
@@ -1083,7 +1083,7 @@ _[GVR2001] Python Documentation; van Rossum, Drake, et al.;
 </ul>
 </li>
 </ul>
-<p>I proposed adopting the &quot;minimal&quot; syntax for footnotes and footnote
+<p>I proposed adopting the "minimal" syntax for footnotes and footnote
 references, and adding citations and citation references to
 reStructuredText's repertoire.  The current footnote syntax for
 citations is better than the alternatives given.</p>
@@ -1156,7 +1156,7 @@ problem with the body text, in that I don't naturally separate out
 the footnotes as different than the rest of the text - instead I
 keep wondering why there are numbers interspered in the text.  The
 use of brackets around the numbers ([ and ]) made me somehow parse
-the footnote references as &quot;odd&quot; - i.e., not part of the body text
+the footnote references as "odd" - i.e., not part of the body text
 - and thus both easier to skip, and also (paradoxically) easier to
 pick out so that I could follow them.</p>
 <p>Thus, for the moment (and as always susceptable to argument), I'd
@@ -1176,12 +1176,12 @@ definitely don't think this should change.</p>
 <p>On the target change, it doesn't matter much to me.</p>
 </blockquote>
 <p>From a further reply by Tony Ibbs on 2002-03-01, referring to the
-&quot;[1]&quot; form and actual usage in email:</p>
+"[1]" form and actual usage in email:</p>
 <blockquote>
 <p>Clearly this is a form people are used to, and thus we should
 consider it strongly (in the same way that the usage of <tt class="docutils literal"><span class="pre">*..*</span></tt>
 to mean emphasis was taken partly from email practise).</p>
-<p>Equally clearly, there is something &quot;magical&quot; for people in the
+<p>Equally clearly, there is something "magical" for people in the
 use of a similar form (i.e., <tt class="docutils literal"><span class="pre">[1]</span></tt>) for both footnote reference
 and footnote target - it seems natural to keep them similar.</p>
 <p>...</p>
@@ -1190,16 +1190,16 @@ believe we should retain square brackets at both ends of a
 footnote.  The markup of the reference end (a single trailing
 underscore) seems about as minimal as we can get away with.  The
 markup of the target end depends on how one envisages the thing -
-if &quot;..&quot; means &quot;I am a target&quot; (as I tend to see it), then that's
-good, but one can also argue that the &quot;_[1]&quot; syntax has a neat
+if ".." means "I am a target" (as I tend to see it), then that's
+good, but one can also argue that the "_[1]" syntax has a neat
 symmetry with the footnote reference itself, if one wishes (in
-which case &quot;..&quot; presumably means &quot;hidden/special&quot; as David seems
-to think, which is why one needs a &quot;..&quot; <em>and</em> a leading underline
+which case ".." presumably means "hidden/special" as David seems
+to think, which is why one needs a ".." <em>and</em> a leading underline
 for hyperlink targets.</p>
 </blockquote>
 <p>Given the persuading arguments voiced, we'll leave footnote &amp; footnote
 reference syntax alone.  Except that these discussions gave rise to
-the &quot;auto-symbol footnote&quot; concept, which has been added.  Citations
+the "auto-symbol footnote" concept, which has been added.  Citations
 and citation references have also been added.</p>
 </div>
 <div class="section" id="auto-enumerated-lists">
@@ -1210,7 +1210,7 @@ without having to manually renumber them.  The disadvantages are also
 the same: input and output wouldn't match exactly; the markup may be
 ugly or confusing (depending on which alternative is chosen).</p>
 <ol class="arabic">
-<li><p class="first">Use the &quot;#&quot; symbol.  Example:</p>
+<li><p class="first">Use the "#" symbol.  Example:</p>
 <pre class="literal-block">
 #. Item 1.
 #. Item 2.
@@ -1237,8 +1237,8 @@ enumerators.</p>
 1. Item 3.
 </pre>
 <p>Advantages: enumeration sequence is explicit (could be multiple
-&quot;a.&quot; or &quot;(I)&quot; tokens).  Disadvantages: perhaps confusing; otherwise
-erroneous input (e.g., a duplicate item &quot;1.&quot;) would pass silently,
+"a." or "(I)" tokens).  Disadvantages: perhaps confusing; otherwise
+erroneous input (e.g., a duplicate item "1.") would pass silently,
 either causing a problem later in the list (if no blank lines
 between items) or creating two lists (with blanks).</p>
 <p>Take this input for example:</p>
@@ -1249,10 +1249,10 @@ between items) or creating two lists (with blanks).</p>
 
 2. Item 2.
 </pre>
-<p>Currently the parser will produce two list, &quot;1&quot; and &quot;1,2&quot; (no
+<p>Currently the parser will produce two list, "1" and "1,2" (no
 warnings, because of the presence of blank lines).  Using Fred's
-notation, the current behavior is &quot;1,1,2 -&gt; 1 1,2&quot; (without blank
-lines between items, it would be &quot;1,1,2 -&gt; 1 [WARNING] 1,2&quot;).  What
+notation, the current behavior is "1,1,2 -&gt; 1 1,2" (without blank
+lines between items, it would be "1,1,2 -&gt; 1 [WARNING] 1,2").  What
 should the behavior be with auto-numbering?</p>
 <p>Fred has produced a <a class="reference" href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=548802&amp;group_id=38414&amp;atid=422032">patch</a>, whose initial behavior is as follows:</p>
 <pre class="literal-block">
@@ -1262,17 +1262,17 @@ should the behavior be with auto-numbering?</p>
 1,2,2,3 -&gt; 1,2,3 [WARNING] 3
 1,1,2   -&gt; 1,2 [WARNING] 2
 </pre>
-<p>(After the &quot;[WARNING]&quot;, the &quot;3&quot; would begin a new list.)</p>
+<p>(After the "[WARNING]", the "3" would begin a new list.)</p>
 <p>I have mixed feelings about adding this functionality to the spec &amp;
 parser.  It would certainly be useful to some users (myself
 included; I often have to renumber lists).  Perhaps it's too
 clever, asking the parser to guess too much.  What if you <em>do</em> want
-three one-item lists in a row, each beginning with &quot;1.&quot;?  You'd
+three one-item lists in a row, each beginning with "1."?  You'd
 have to use empty comments to force breaks.  Also, I question
-whether &quot;1,2,2 -&gt; 1,2,3&quot; is optimal behavior.</p>
-<p>In response, Fred came up with &quot;a stricter and more explicit rule
+whether "1,2,2 -&gt; 1,2,3" is optimal behavior.</p>
+<p>In response, Fred came up with "a stricter and more explicit rule
 [which] would be to only auto-number silently if <em>all</em> the
-enumerators of a list were identical&quot;.  In that case:</p>
+enumerators of a list were identical".  In that case:</p>
 <pre class="literal-block">
 1,1,1   -&gt; 1,2,3
 1,2,2   -&gt; 1,2 [WARNING] 2
@@ -1280,9 +1280,9 @@ enumerators of a list were identical&quot;.  In that case:</p>
 1,2,2,3 -&gt; 1,2 [WARNING] 2,3
 1,1,2   -&gt; 1,2 [WARNING] 2
 </pre>
-<p>Should any start-value be allowed (&quot;3,3,3&quot;), or should
-auto-numbered lists be limited to begin with ordinal-1 (&quot;1&quot;, &quot;A&quot;,
-&quot;a&quot;, &quot;I&quot;, or &quot;i&quot;)?</p>
+<p>Should any start-value be allowed ("3,3,3"), or should
+auto-numbered lists be limited to begin with ordinal-1 ("1", "A",
+"a", "I", or "i")?</p>
 </li>
 <li><p class="first">Alternative proposed by Tony Ibbs:</p>
 <pre class="literal-block">
@@ -1293,7 +1293,7 @@ auto-numbered lists be limited to begin with ordinal-1 (&quot;1&quot;, &quot;A&q
 <p>The initial proposal required unique enumerators within a list, but
 this limits the convenience of a feature of already limited
 applicability and convenience.  Not a useful requirement; dropped.</p>
-<p>Instead, simply prepend a &quot;#&quot; to a standard list enumerator to
+<p>Instead, simply prepend a "#" to a standard list enumerator to
 indicate auto-enumeration.  The numbers (or letters) of the
 enumerators themselves are not significant, except:</p>
 <ul class="simple">
@@ -1311,7 +1311,7 @@ Disadvantages: a bit ugly.</p>
 <ul>
 <li><p class="first">Named hyperlinks:</p>
 <pre class="literal-block">
-This is a named reference_ of one word (&quot;reference&quot;).  Here is
+This is a named reference_ of one word ("reference").  Here is
 a `phrase reference`_.  Phrase references may even cross `line
 boundaries`_.
 
@@ -1323,7 +1323,7 @@ boundaries`_.
 <li>Advantages:<ul>
 <li>The plaintext is readable.</li>
 <li>Each target may be reused multiple times (e.g., just write
-<tt class="docutils literal"><span class="pre">&quot;reference_&quot;</span></tt> again).</li>
+<tt class="docutils literal"><span class="pre">"reference_"</span></tt> again).</li>
 <li>No syncronized ordering of references and targets is necessary.</li>
 </ul>
 </li>
@@ -1364,17 +1364,17 @@ __ http://www.example.org/line_boundaries/
 <p>For comparison and historical background, StructuredText also has two
 syntaxes for hyperlinks:</p>
 <ul>
-<li><p class="first">First, <tt class="docutils literal"><span class="pre">&quot;reference</span> <span class="pre">text&quot;:URL</span></tt>:</p>
+<li><p class="first">First, <tt class="docutils literal"><span class="pre">"reference</span> <span class="pre">text":URL</span></tt>:</p>
 <pre class="literal-block">
-This is a &quot;reference&quot;:http://www.example.org/reference/
-of one word (&quot;reference&quot;).  Here is a &quot;phrase
-reference&quot;:http://www.example.org/phrase_reference/.
+This is a "reference":http://www.example.org/reference/
+of one word ("reference").  Here is a "phrase
+reference":http://www.example.org/phrase_reference/.
 </pre>
 </li>
-<li><p class="first">Second, <tt class="docutils literal"><span class="pre">&quot;reference</span> <span class="pre">text&quot;,</span> <span class="pre">http://example.com/absolute_URL</span></tt>:</p>
+<li><p class="first">Second, <tt class="docutils literal"><span class="pre">"reference</span> <span class="pre">text",</span> <span class="pre">http://example.com/absolute_URL</span></tt>:</p>
 <pre class="literal-block">
-This is a &quot;reference&quot;, http://www.example.org/reference/
-of one word (&quot;reference&quot;).  Here is a &quot;phrase reference&quot;,
+This is a "reference", http://www.example.org/reference/
+of one word ("reference").  Here is a "phrase reference",
 http://www.example.org/phrase_reference/.
 </pre>
 </li>
@@ -1397,13 +1397,13 @@ here, perhaps because of the potential for ambiguity).</li>
 </ul>
 </li>
 </ul>
-<p>A new type of &quot;inline external hyperlink&quot; has been proposed.</p>
+<p>A new type of "inline external hyperlink" has been proposed.</p>
 <ol class="arabic">
 <li><p class="first">On 2002-06-28, Simon Budig <a class="reference" href="http://mail.python.org/pipermail/doc-sig/2002-June/002648.html">proposed</a> a new syntax for
 reStructuredText hyperlinks:</p>
 <pre class="literal-block">
 This is a reference_(http://www.example.org/reference/) of one
-word (&quot;reference&quot;).  Here is a `phrase
+word ("reference").  Here is a `phrase
 reference`_(http://www.example.org/phrase_reference/).  Are
 these examples, (single-underscore), named?  If so, `anonymous
 references`__(http://www.example.org/anonymous/) using two
@@ -1423,7 +1423,7 @@ unclear).</li>
 </ul>
 </li>
 <li>Problems:<ul>
-<li>The <tt class="docutils literal"><span class="pre">&quot;`ref`_(URL)&quot;</span></tt> syntax forces the last word of the
+<li>The <tt class="docutils literal"><span class="pre">"`ref`_(URL)"</span></tt> syntax forces the last word of the
 reference text to be joined to the URL, making a potentially
 very long word that can't be wrapped (URLs can be very long). 
 The reference and the URL should be separate.  This is a
@@ -1432,7 +1432,7 @@ symptom of the following point:</li>
 equally important parts, <em>with syntax in the middle</em>, <em>between</em>
 the reference and the target.  This is unprecedented in
 reStructuredText.</li>
-<li>The &quot;inline hyperlink&quot; text is <em>not</em> a named reference (there's
+<li>The "inline hyperlink" text is <em>not</em> a named reference (there's
 no lookup by name), so it shouldn't look like one.</li>
 <li>According to the IETF standards RFC 2396 and RFC 2732,
 parentheses are legal URI characters and curly braces are legal
@@ -1447,13 +1447,13 @@ following compromise syntax:</p>
 <pre class="literal-block">
 This is an anonymous reference__
 __&lt;http://www.example.org/reference/&gt; of one word
-(&quot;reference&quot;).  Here is a `phrase reference`__
+("reference").  Here is a `phrase reference`__
 __&lt;http://www.example.org/phrase_reference/&gt;.  `Named
 references`_ _&lt;http://www.example.org/anonymous/&gt; use single
 underscores.
 </pre>
-<p>The syntax builds on that of the existing &quot;inline internal
-targets&quot;: <tt class="docutils literal"><span class="pre">an</span> <span class="pre">_`inline</span> <span class="pre">internal</span> <span class="pre">target`.</span></tt></p>
+<p>The syntax builds on that of the existing "inline internal
+targets": <tt class="docutils literal"><span class="pre">an</span> <span class="pre">_`inline</span> <span class="pre">internal</span> <span class="pre">target`.</span></tt></p>
 <ul class="simple">
 <li>Advantages:<ul>
 <li>The target is specified immediately adjacent to the reference,
@@ -1471,7 +1471,7 @@ brackets<a class="footnote-reference" href="#id5" id="id4" name="id4"><sup>1</su
 </li>
 <li>Disadvantages:<ul>
 <li>Poor plaintext readability.</li>
-<li>Lots of &quot;line noise&quot;.</li>
+<li>Lots of "line noise".</li>
 <li>Targets cannot be reused (unless named; see below).</li>
 </ul>
 </li>
@@ -1479,7 +1479,7 @@ brackets<a class="footnote-reference" href="#id5" id="id4" name="id4"><sup>1</su
 <p>To alleviate the readability issue slightly, we could allow the
 target to appear later, such as after the end of the sentence:</p>
 <pre class="literal-block">
-This is a named reference__ of one word (&quot;reference&quot;).
+This is a named reference__ of one word ("reference").
 __&lt;http://www.example.org/reference/&gt;  Here is a `phrase
 reference`__.  __&lt;http://www.example.org/phrase_reference/&gt;
 </pre>
@@ -1489,18 +1489,18 @@ not interleaved [refA refB trgA trgB] or nested [refA refB trgB
 trgA]).  This variation is too problematic; references and inline
 external targets will have to be kept imediately adjacent (see (3)
 below).</p>
-<p>The <tt class="docutils literal"><span class="pre">&quot;reference__</span> <span class="pre">__&lt;target&gt;&quot;</span></tt> syntax is actually for &quot;anonymous
-inline external targets&quot;, emphasized by the double underscores.  It
+<p>The <tt class="docutils literal"><span class="pre">"reference__</span> <span class="pre">__&lt;target&gt;"</span></tt> syntax is actually for "anonymous
+inline external targets", emphasized by the double underscores.  It
 follows that single trailing and leading underscores would lead to
 <em>implicitly named</em> inline external targets.  This would allow the
-reuse of targets by name.  So after <tt class="docutils literal"><span class="pre">&quot;reference_</span> <span class="pre">_&lt;target&gt;&quot;</span></tt>,
-another <tt class="docutils literal"><span class="pre">&quot;reference_&quot;</span></tt> would point to the same target.</p>
+reuse of targets by name.  So after <tt class="docutils literal"><span class="pre">"reference_</span> <span class="pre">_&lt;target&gt;"</span></tt>,
+another <tt class="docutils literal"><span class="pre">"reference_"</span></tt> would point to the same target.</p>
 <table class="docutils footnote" frame="void" id="id5" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id4" name="id5">[1]</a></td><td><p class="first">From RFC 2396 (URI syntax):</p>
 <blockquote>
-<p>The angle-bracket &quot;&lt;&quot; and &quot;&gt;&quot; and double-quote (&quot;)
+<p>The angle-bracket "&lt;" and "&gt;" and double-quote (")
 characters are excluded [from URIs] because they are often
 used as the delimiters around URI in text documents and
 protocol fields.</p>
@@ -1510,7 +1510,7 @@ whitespace.</p>
 </blockquote>
 <p>From RFC 822 (email headers):</p>
 <blockquote class="last">
-<p>Angle brackets (&quot;&lt;&quot; and &quot;&gt;&quot;) are generally used to indicate
+<p>Angle brackets ("&lt;" and "&gt;") are generally used to indicate
 the presence of a one machine-usable reference (e.g.,
 delimiting mailboxes), possibly including source-routing to
 the machine.</p>
@@ -1525,7 +1525,7 @@ Here's an alternative syntax embedding the target URL in the
 reference:</p>
 <pre class="literal-block">
 This is an anonymous `reference &lt;http://www.example.org
-/reference/&gt;`__ of one word (&quot;reference&quot;).  Here is a `phrase
+/reference/&gt;`__ of one word ("reference").  Here is a `phrase
 reference &lt;http://www.example.org/phrase_reference/&gt;`__.
 </pre>
 <p>Advantages and disadvantages are similar to those in (2).
@@ -1533,12 +1533,12 @@ Readability is still an issue, but the syntax is a bit less
 heavyweight (reduced line noise).  Backquotes are required, even
 for one-word references; the target URL is included within the
 reference text, forcing a phrase context.</p>
-<p>We'll call this variant &quot;embedded URIs&quot;.</p>
-<p>Problem: how to refer to a title like &quot;HTML Anchors: &lt;a&gt;&quot; (which
+<p>We'll call this variant "embedded URIs".</p>
+<p>Problem: how to refer to a title like "HTML Anchors: &lt;a&gt;" (which
 ends with an HTML/SGML/XML tag)?  We could either require more
-syntax on the target (like <tt class="docutils literal"><span class="pre">&quot;`reference</span> <span class="pre">text</span>
-<span class="pre">__&lt;http://example.com/&gt;`__&quot;</span></tt>), or require the odd conflicting
-title to be escaped (like <tt class="docutils literal"><span class="pre">&quot;`HTML</span> <span class="pre">Anchors:</span> <span class="pre">\&lt;a&gt;`__&quot;</span></tt>).  The
+syntax on the target (like <tt class="docutils literal"><span class="pre">"`reference</span> <span class="pre">text</span>
+<span class="pre">__&lt;http://example.com/&gt;`__"</span></tt>), or require the odd conflicting
+title to be escaped (like <tt class="docutils literal"><span class="pre">"`HTML</span> <span class="pre">Anchors:</span> <span class="pre">\&lt;a&gt;`__"</span></tt>).  The
 latter seems preferable, and not too onerous.</p>
 <p>Similarly to (2) above, a single trailing underscore would convert
 the reference &amp; inline external target from anonymous to implicitly
@@ -1566,51 +1566,51 @@ problems that exclude their use.</p>
 <p>With any kind of inline external target syntax it comes down to the
 conflict between maintainability and plaintext readability.  I don't
 see a major problem with reStructuredText's maintainability, and I
-don't want to sacrifice plaintext readability to &quot;improve&quot; it.</p>
+don't want to sacrifice plaintext readability to "improve" it.</p>
 <p>The proponents of inline external targets want them for easily
 maintainable web pages.  The arguments go something like this:</p>
 <ul>
 <li><p class="first">Named hyperlinks are difficult to maintain because the reference
 text is duplicated as the target name.</p>
-<p>To which I said, &quot;So use anonymous hyperlinks.&quot;</p>
+<p>To which I said, "So use anonymous hyperlinks."</p>
 </li>
 <li><p class="first">Anonymous hyperlinks are difficult to maintain becuase the
 references and targets have to be kept in sync.</p>
-<p>&quot;So keep the targets close to the references, grouped after each
-paragraph.  Maintenance is trivial.&quot;</p>
+<p>"So keep the targets close to the references, grouped after each
+paragraph.  Maintenance is trivial."</p>
 </li>
 <li><p class="first">But targets grouped after paragraphs break the flow of text.</p>
-<p>&quot;Surely less than URLs embedded in the text!  And if the intent is
+<p>"Surely less than URLs embedded in the text!  And if the intent is
 to produce web pages, not readable plaintext, then who cares about
-the flow of text?&quot;</p>
+the flow of text?"</p>
 </li>
 </ul>
 <p>Many participants have voiced their objections to the proposed syntax:</p>
 <blockquote>
-<p>Garth Kidd: &quot;I strongly prefer the current way of doing it.
-Inline is spectactularly messy, IMHO.&quot;</p>
-<p>Tony Ibbs: &quot;I vehemently agree... that the inline alternatives
+<p>Garth Kidd: "I strongly prefer the current way of doing it.
+Inline is spectactularly messy, IMHO."</p>
+<p>Tony Ibbs: "I vehemently agree... that the inline alternatives
 being suggested look messy - there are/were good reasons they've
 been taken out...  I don't believe I would gain from the new
-syntaxes.&quot;</p>
-<p>Paul Moore: &quot;I agree as well.  The proposed syntax is far too
+syntaxes."</p>
+<p>Paul Moore: "I agree as well.  The proposed syntax is far too
 punctuation-heavy, and any of the alternatives discussed are
-ambiguous or too subtle.&quot;</p>
+ambiguous or too subtle."</p>
 </blockquote>
 <p>Others have voiced their support:</p>
 <blockquote>
-<p>fantasai: &quot;I agree with Simon.  In many cases, though certainly
+<p>fantasai: "I agree with Simon.  In many cases, though certainly
 not in all, I find parenthesizing the url in plain text flows
-better than relegating it to a footnote.&quot;</p>
-<p>Ken Manheimer: &quot;I'd like to weigh in requesting some kind of easy,
-direct inline reference link.&quot;</p>
+better than relegating it to a footnote."</p>
+<p>Ken Manheimer: "I'd like to weigh in requesting some kind of easy,
+direct inline reference link."</p>
 </blockquote>
 <p>(Interesting that those <em>against</em> the proposal have been using
 reStructuredText for a while, and those <em>for</em> the proposal are either
-new to the list [&quot;fantasai&quot;, background unknown] or longtime
+new to the list ["fantasai", background unknown] or longtime
 StructuredText users [Ken Manheimer].)</p>
-<p>I was initially ambivalent/against the proposed &quot;inline external
-targets&quot;.  I value reStructuredText's readability very highly, and
+<p>I was initially ambivalent/against the proposed "inline external
+targets".  I value reStructuredText's readability very highly, and
 although the proposed syntax offers convenience, I don't know if the
 convenience is worth the cost in ugliness.  Does the proposed syntax
 compromise readability too much, or should the choice be left up to
@@ -1620,13 +1620,13 @@ the author?  Perhaps if the syntax is <em>allowed</em> but its use strongly
 that there are reasonable use cases for this construct.  The
 documentation should strongly caution against its use in most
 situations, recommending independent block-level targets instead.
-Syntax #3 above (&quot;embedded URIs&quot;) will be used.</p>
+Syntax #3 above ("embedded URIs") will be used.</p>
 </div>
 <div class="section" id="doctree-representation-of-transitions">
 <h1><a class="toc-backref" href="#id21" name="doctree-representation-of-transitions">Doctree Representation of Transitions</a></h1>
 <p>(Although not reStructuredText-specific, this section fits best in
 this document.)</p>
-<p>Having added the &quot;horizontal rule&quot; construct to the <a class="reference" href="reStructuredText.html">reStructuredText
+<p>Having added the "horizontal rule" construct to the <a class="reference" href="reStructuredText.html">reStructuredText
 Markup Specification</a>, a decision had to be made as to how to reflect
 the construct in the implementation of the document tree.  Given this
 source:</p>
@@ -1640,12 +1640,12 @@ Paragraph 1
 
 Paragraph 2
 </pre>
-<p>The horizontal rule indicates a &quot;transition&quot; (in prose terms) or the
-start of a new &quot;division&quot;.  Before implementation, the parsed document
+<p>The horizontal rule indicates a "transition" (in prose terms) or the
+start of a new "division".  Before implementation, the parsed document
 tree would be:</p>
 <pre class="literal-block">
 &lt;document&gt;
-    &lt;section name=&quot;document&quot;&gt;
+    &lt;section name="document"&gt;
         &lt;title&gt;
             Document
         &lt;paragraph&gt;
@@ -1656,12 +1656,12 @@ tree would be:</p>
 </pre>
 <p>There are several possibilities for the implementation:</p>
 <ol class="arabic">
-<li><p class="first">Implement horizontal rules as &quot;divisions&quot; or segments.  A
-&quot;division&quot; is a title-less, non-hierarchical section.  The first
+<li><p class="first">Implement horizontal rules as "divisions" or segments.  A
+"division" is a title-less, non-hierarchical section.  The first
 try at an implementation looked like this:</p>
 <pre class="literal-block">
 &lt;document&gt;
-    &lt;section name=&quot;document&quot;&gt;
+    &lt;section name="document"&gt;
         &lt;title&gt;
             Document
         &lt;paragraph&gt;
@@ -1672,14 +1672,14 @@ try at an implementation looked like this:</p>
 </pre>
 <p>But the two paragraphs are really at the same level; they shouldn't
 appear to be at different levels.  There's really an invisible
-&quot;first division&quot;.  The horizontal rule splits the document body
+"first division".  The horizontal rule splits the document body
 into two segments, which should be treated uniformly.</p>
 </li>
-<li><p class="first">Treating &quot;divisions&quot; uniformly brings us to the second
+<li><p class="first">Treating "divisions" uniformly brings us to the second
 possibility:</p>
 <pre class="literal-block">
 &lt;document&gt;
-    &lt;section name=&quot;document&quot;&gt;
+    &lt;section name="document"&gt;
         &lt;title&gt;
             Document
         &lt;division&gt;
@@ -1697,10 +1697,10 @@ contained within a division element.  This makes the document tree
 deeper.  This is similar to the way <a class="reference" href="http://www.w3.org/MarkUp/">HTML</a> treats document contents:
 grouped within a <tt class="docutils literal"><span class="pre">&lt;body&gt;</span></tt> element.</p>
 </li>
-<li><p class="first">Implement them as &quot;transitions&quot;, empty elements:</p>
+<li><p class="first">Implement them as "transitions", empty elements:</p>
 <pre class="literal-block">
 &lt;document&gt;
-    &lt;section name=&quot;document&quot;&gt;
+    &lt;section name="document"&gt;
         &lt;title&gt;
             Document
         &lt;paragraph&gt;
@@ -1709,10 +1709,10 @@ grouped within a <tt class="docutils literal"><span class="pre">&lt;body&gt;</sp
         &lt;paragraph&gt;
             Paragraph 2
 </pre>
-<p>A transition would be a &quot;point element&quot;, not containing anything,
+<p>A transition would be a "point element", not containing anything,
 only identifying a point within the document structure.  This keeps
-the document tree flatter, but the idea of a &quot;point element&quot; like
-&quot;transition&quot; smells bad.  A transition isn't a thing itself, it's
+the document tree flatter, but the idea of a "point element" like
+"transition" smells bad.  A transition isn't a thing itself, it's
 the space between two divisions.  However, transitions are a
 practical solution.</p>
 </li>

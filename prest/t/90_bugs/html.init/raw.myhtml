@@ -9,7 +9,7 @@
 <body>
 <div class="document">
 <p>This is some text with a <span class="raw"> span of raw text </span> directive.</p>
-<div class="raw"><p>This text is in a division with class &quot;raw&quot;.</p>
+<div class="raw"><p>This text is in a division with class "raw".</p>
 </div><p>This is text after the raw division.</p>
 </div>
 <div class="footer">
