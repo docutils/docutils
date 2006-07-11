@@ -41,7 +41,7 @@ This writer uses the following output defines:
 # of the document (which is also the title for the single top level
 # section). Otherwise <source> is the html file name.
 
-sub package = {
+sub BEGIN = {
     # My -W flags
     use vars qw($file_suffix $filename_ext $short_titles);
 
@@ -52,9 +52,7 @@ sub package = {
     use vars qw($MAX_NAME $MAX_SEC @ALL_TARGETS	%INLINE_TARGETS
 		@INDIRECT_TARGETS);
 
-    BEGIN {
-	$MAX_NAME = $MAX_SEC = 1;
-    }
+    $MAX_NAME = $MAX_SEC = 1;
 }
 
 phase PROCESS = {

@@ -99,7 +99,7 @@ the definition.
 =end reST
 =cut
 
-sub package {
+sub BEGIN {
     # My -W flags
     use vars qw($caption $documentclass $documentclass_opts $footer
 		$footnote_links $image_ext $index $inputs
@@ -114,25 +114,20 @@ sub package {
 		%PACKAGES $BEGIN_DONE); 
 
     # Defaults for -W arguments
-    BEGIN {
-	if (! defined $BEGIN_DONE) {
-	    $documentclass = 'article' unless defined $documentclass;
-	    $documentclass_opts = '' unless defined $documentclass_opts;
-	    $max_unwrapped_colsize = 8 unless defined $max_unwrapped_colsize;
-	    $caption = 'after' unless defined $caption;
-	    $sidebar = 'float' unless defined $sidebar;
-	    $footer = 0 unless defined $footer;
-	    $footnote_links = 0 unless defined $footnote_links;
-	    $index = 0 unless defined $index;
-	    $inputs = '' unless defined $inputs;
-	    $image_ext = "eps" unless defined $image_ext;
+    $documentclass = 'article' unless defined $documentclass;
+    $documentclass_opts = '' unless defined $documentclass_opts;
+    $max_unwrapped_colsize = 8 unless defined $max_unwrapped_colsize;
+    $caption = 'after' unless defined $caption;
+    $sidebar = 'float' unless defined $sidebar;
+    $footer = 0 unless defined $footer;
+    $footnote_links = 0 unless defined $footnote_links;
+    $index = 0 unless defined $index;
+    $inputs = '' unless defined $inputs;
+    $image_ext = "eps" unless defined $image_ext;
 
-	    my @footnote_symbols =
-		@docutils::transforms::references::FOOTNOTE_SYMBOLS;
-	    @FOOTNOTE_SYMBOLS{@footnote_symbols} = (1 .. @footnote_symbols);
-	}
-	$BEGIN_DONE = 1;
-    }
+    my @footnote_symbols =
+	@docutils::transforms::references::FOOTNOTE_SYMBOLS;
+    @FOOTNOTE_SYMBOLS{@footnote_symbols} = (1 .. @footnote_symbols);
 }
 
 # This phase marks elements as being contained within footnotes or literals

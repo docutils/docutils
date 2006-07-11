@@ -16,7 +16,7 @@ results of the parser or transformations.  It recognizes no defines.
 =end reST
 =cut
 
-sub package {
+sub BEGIN {
     # My -W flags
     use vars qw();
 
