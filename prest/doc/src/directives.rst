@@ -127,7 +127,7 @@ Generic Admonition
 This is a generic, titled admonition.  The title may be anything the
 author desires.
 
-The author-supplied title is also used as a "class" attribute value
+The author-supplied title is also used as a "classes" attribute value
 after being converted into a valid identifier form (down-cased;
 non-alphanumeric characters converted to single hyphens; "admonition-"
 prefixed).  For example, this admonition::
@@ -139,7 +139,7 @@ prefixed).  For example, this admonition::
 becomes the following document tree (pseudo-XML)::
 
     <document source="test data">
-        <admonition class="admonition-and-by-the-way">
+        <admonition classes="admonition-and-by-the-way">
             <title>
                 And, by the way...
             <paragraph>
@@ -148,7 +148,7 @@ becomes the following document tree (pseudo-XML)::
 The following option is recognized:
 
 ``class`` : text
-    Override the computed "class" attribute value.  See the class_
+    Override the computed "classes" attribute value.  See the class_
     directive below.
 
 
@@ -225,7 +225,7 @@ The following options are recognized:
     reference name with underscore suffix (e.g. ``name_``).
 
 ``class`` : text
-    Set a "class" attribute value on the image element.  See the
+    Set a "classes" attribute value on the image element.  See the
     class_ directive below.
 
 ``usemap`` : text
@@ -302,7 +302,7 @@ options are recognized:
         +---------------------------+
 
 ``figclass`` : text
-    Set a "class" attribute value on the figure element.  See the
+    Set a "classes" attribute value on the figure element.  See the
     class_ directive below.
 
 ``align`` : "left", "center", or "right"
@@ -347,7 +347,7 @@ interpreted as body elements.  For example::
 The following option is recognized:
 
 ``class`` : text
-    Set a "class" attribute value on the topic element.  See the
+    Set a "classes" attribute value on the topic element.  See the
     class_ directive below.
 
 
@@ -388,7 +388,7 @@ The following options are recognized:
     The sidebar's subtitle.
 
 ``class`` : text
-    Set a "class" attribute value on the sidebar element.  See the
+    Set a "classes" attribute value on the sidebar element.  See the
     class_ directive below.
 
 
@@ -432,7 +432,7 @@ example, here's a classic::
 The following option is recognized:
 
 ``class`` : text
-    Set a "class" attribute value on the line_block element.  See the
+    Set a "classes" attribute value on the line_block element.  See the
     class_ directive below.
 
 
@@ -473,7 +473,7 @@ For example, all the element names in this content model are links::
 The following option is recognized:
 
 ``class`` : text
-    Set a "class" attribute value on the literal_block element.  See
+    Set a "classes" attribute value on the literal_block element.  See
     the class_ directive below.
 
 
@@ -501,7 +501,7 @@ the document's structure.
 The following option is recognized:
 
 ``class`` : text
-    Set a "class" attribute value on the rubric element.  See the
+    Set a "classes" attribute value on the rubric element.  See the
     class_ directive below.
 
 .. _compound:
@@ -561,7 +561,7 @@ unity:
 The following option is recognized:
 
 ``class`` : text
-    Set a "class" attribute value on the compound element.  See the
+    Set a "classes" attribute value on the compound element.  See the
     class_ directive below.
 
 
@@ -602,7 +602,7 @@ title with a table::
 The following option is recognized:
 
 ``class`` : text
-    Set a "class" attribute value on the table element.  See the
+    Set a "classes" attribute value on the table element.  See the
     class_ directive below.
 
 
@@ -653,7 +653,7 @@ Working limitations:
 The following options are recognized:
 
 ``class`` : text
-    Set a "class" attribute value on the table element.  See the
+    Set a "classes" attribute value on the table element.  See the
     class_ directive below.
 
 ``widths`` : integer [, integer...]
@@ -751,7 +751,7 @@ Example::
 The following options are recognized:
 
 ``class`` : text
-    Set a "class" attribute value on the table element.  See the
+    Set a "classes" attribute value on the table element.  See the
     class_ directive below.
 
 ``widths`` : integer [integer...]
@@ -829,7 +829,7 @@ The following options are recognized:
     entries, the table of contents itself, or generate no backlinks.
 
 ``class`` : text
-    Set a "class" attribute value on the topic element.  See the
+    Set a "classes" attribute value on the topic element.  See the
     class_ directive below.
 
 
@@ -1047,6 +1047,115 @@ Imagemap
 **NOT IMPLEMENTED YET**
 
 Non-standard element: imagemap.
+
+
+-----------------------------------------
+ Directives for Substitution Definitions
+-----------------------------------------
+
+The directives in this section may only be used in substitution
+definitions.  They may not be used directly, in standalone context.
+The `image`_ directive may be used both in substitution definitions
+and in the standalone context.
+
+
+.. _replace:
+
+Replacement Text
+================
+
+:Directive Type: "replace"
+:Doctree Element: Text & inline elements
+:Directive Arguments: None.
+:Directive Options: None.
+:Directive Content: A single paragraph; may contain inline markup.
+
+The "replace" directive is used to indicate replacement text for a
+substitution reference.  It may be used within substitution
+definitions only.  For example, this directive can be used to expand
+abbreviations::
+
+    .. |reST| replace:: reStructuredText
+
+    Yes, |reST| is a long word, so I can't blame anyone for wanting to
+    abbreviate it.
+
+As reStructuredText doesn't support nested inline markup, the only way
+to create a reference with styled text is to use substitutions with
+the "replace" directive::
+
+    I recommend you try |Python|_.
+
+    .. |Python| replace:: Python, *the* best language around
+    .. _Python: http://www.python.org/
+
+
+.. _unicode:
+
+Unicode Character Codes
+=======================
+
+:Directive Type: "unicode"
+:Doctree Element: Text
+:Directive Arguments: One or more, required (Unicode character codes,
+                      optional text, and comments).
+:Directive Options: Possible.
+:Directive Content: None.
+
+The "unicode" directive converts Unicode character codes (numerical
+values) to characters, and may be used in substitution definitions
+only.
+
+The arguments, separated by spaces, can be:
+
+* **character codes** as
+
+  - decimal numbers or
+
+  - hexadecimal numbers, prefixed by ``0x``, ``x``, ``\x``, ``U+``,
+    ``u``, or ``\u`` or as XML-style hexadecimal character entities,
+    e.g. ``&#x1a2b;``
+
+* **text**, which is used as-is.
+
+Text following " .. " is a comment and is ignored.  The spaces between
+the arguments are ignored and thus do not appear in the output.
+Hexadecimal codes are case-insensitive.
+
+For example, the following text::
+
+    Copyright |copy| 2003, |BogusMegaCorp (TM)| |---|
+    all rights reserved.
+
+    .. |copy| unicode:: 0xA9 .. copyright sign
+    .. |BogusMegaCorp (TM)| unicode:: BogusMegaCorp U+2122
+       .. with trademark sign
+    .. |---| unicode:: U+02014 .. em dash
+       :trim:
+
+results in:
+
+    Copyright |copy| 2003, |BogusMegaCorp (TM)| |---|
+    all rights reserved.
+
+    .. |copy| unicode:: 0xA9 .. copyright sign
+    .. |BogusMegaCorp (TM)| unicode:: BogusMegaCorp U+2122
+       .. with trademark sign
+    .. |---| unicode:: U+02014 .. em dash
+       :trim:
+
+The following options are recognized:
+
+``ltrim`` : flag
+    Whitespace to the left of the substitution reference is removed.
+
+``rtrim`` : flag
+    Whitespace to the right of the substitution reference is removed.
+
+``trim`` : flag
+    Equivalent to ``ltrim`` plus ``rtrim``; whitespace on both sides
+    of the substitution reference is removed.
+
 
 -----------------------
  Executable Directives
@@ -1281,7 +1390,7 @@ Raw Data Pass-Through
    If you often need to use the "raw" directive or a "raw"-derived
    interpreted text role, that is a sign either of overuse/abuse or
    that functionality may be missing from reStructuredText.  Please
-   describe your situation in an email to the Docutils-users_ mailing
+   describe your situation in a message to the Docutils-users_ mailing
    list.
 
 The "raw" directive indicates non-reStructuredText data that is to be
@@ -1324,103 +1433,7 @@ The following options are recognized:
     Defaults to the document's encoding (if specified).
 
 
-.. _replace:
-
-Replacement Text
-================
-
-:Directive Type: "replace"
-:Doctree Element: Text & inline elements
-:Directive Arguments: None.
-:Directive Options: None.
-:Directive Content: A single paragraph; may contain inline markup.
-
-The "replace" directive is used to indicate replacement text for a
-substitution reference.  It may be used within substitution
-definitions only.  For example, this directive can be used to expand
-abbreviations::
-
-    .. |reST| replace:: reStructuredText
-
-    Yes, |reST| is a long word, so I can't blame anyone for wanting to
-    abbreviate it.
-
-As reStructuredText doesn't support nested inline markup, the only way
-to create a reference with styled text is to use substitutions with
-the "replace" directive::
-
-    I recommend you try |Python|_.
-
-    .. |Python| replace:: Python, *the* best language around
-    .. _Python: http://www.python.org/
-
-
-.. _unicode:
-
-Unicode Character Codes
-=======================
-
-:Directive Type: "unicode"
-:Doctree Element: Text
-:Directive Arguments: One or more, required (Unicode character codes,
-                      optional text, and comments).
-:Directive Options: Possible.
-:Directive Content: None.
-
-The "unicode" directive converts Unicode character codes (numerical
-values) to characters, and may be used in substitution definitions
-only.
-
-The arguments, separated by spaces, can be:
-
-* **character codes** as
-
-  - decimal numbers or
-
-  - hexadecimal numbers, prefixed by ``0x``, ``x``, ``\x``, ``U+``,
-    ``u``, or ``\u`` or as XML-style hexadecimal character entities,
-    e.g. ``&#x1a2b;``
-
-* **text**, which is used as-is.
-
-Text following " .. " is a comment and is ignored.  The spaces between
-the arguments are ignored and thus do not appear in the output.
-Hexadecimal codes are case-insensitive.
-
-For example, the following text::
-
-    Copyright |copy| 2003, |BogusMegaCorp (TM)| |---|
-    all rights reserved.
-
-    .. |copy| unicode:: 0xA9 .. copyright sign
-    .. |BogusMegaCorp (TM)| unicode:: BogusMegaCorp U+2122
-       .. with trademark sign
-    .. |---| unicode:: U+02014 .. em dash
-       :trim:
-
-results in:
-
-    Copyright |copy| 2003, |BogusMegaCorp (TM)| |---|
-    all rights reserved.
-
-    .. |copy| unicode:: 0xA9 .. copyright sign
-    .. |BogusMegaCorp (TM)| unicode:: BogusMegaCorp U+2122
-       .. with trademark sign
-    .. |---| unicode:: U+02014 .. em dash
-       :trim:
-
-The following options are recognized:
-
-``ltrim`` : flag
-    Whitespace to the left of the substitution reference is removed.
-
-``rtrim`` : flag
-    Whitespace to the right of the substitution reference is removed.
-
-``trim`` : flag
-    Equivalent to ``ltrim`` plus ``rtrim``; whitespace on both sides
-    of the substitution reference is removed.
-
+.. _classes:
 
 Class
 =====
@@ -1432,14 +1445,15 @@ Class
 :Directive Options: None.
 :Directive Content: None.
 
-The "class" directive sets a "class" attribute value on the first
-immediately following non-comment element [#]_.  For details of the
-"class" attribute, see `its entry`__ in `The Docutils Document Tree`_.
-The directive argument consists of one or more space-separated class
-names, which are converted to lowercase and all non-alphanumeric
-characters are converted to hyphens.  (For the rationale, see below.)
+The "class" directive sets the "classes" attribute value on
+the first immediately following non-comment element [#]_.  For
+details of the "classes" attribute, see `its entry`__ in `The Docutils
+Document Tree`_.  The directive argument consists of one or more
+space-separated class names, which are converted to lowercase and all
+non-alphanumeric characters are converted to hyphens.  (For the
+rationale, see below.)
 
-__ ../doctree.html#class
+__ ../doctree.html#classes
 
 Examples::
 
@@ -1456,16 +1470,16 @@ Examples::
 
 The text above is parsed and transformed into this doctree fragment::
 
-    <paragraph class="special">
+    <paragraph classes="special">
         This is a "special" paragraph.
-    <section class="exceptional remarkable">
+    <section classes="exceptional remarkable">
         <title>
             An Exceptional Section
         <paragraph>
             This is an ordinary paragraph.
 
-.. [#] To set a "class" attribute value on a block quote, the "class"
-   directive must be followed by an empty comment::
+.. [#] To set a "classes" attribute value on a block quote, the
+   "class" directive must be followed by an empty comment::
 
        .. class:: highlights
        ..
@@ -1477,11 +1491,11 @@ The text above is parsed and transformed into this doctree fragment::
    the block quote text would be interpreted as the "class"
    directive's content, and the parser would complain.
 
-.. topic:: Rationale for Class Attribute Value Conversion
+.. topic:: Rationale for "classes" Attribute Value Conversion
 
     Docutils identifiers are converted to conform to the regular
     expression ``[a-z](-?[a-z0-9]+)*``.  For CSS compatibility,
-    identifiers (the "class" and "id" attributes) should have no
+    identifiers (the "classes" and "id" attributes) should have no
     underscores, colons, or periods.  Hyphens may be used.
 
     - The `HTML 4.01 spec`_ defines identifiers based on SGML tokens:
@@ -1494,7 +1508,7 @@ The text above is parsed and transformed into this doctree fragment::
     - However the `CSS1 spec`_ defines identifiers based on the "name"
       token, a tighter interpretation ("flex" tokenizer notation
       below; "latin1" and "escape" 8-bit characters have been replaced
-      with entities)::
+      with XML entities)::
 
           unicode     \\[0-9a-f]{1,4}
           latin1      [&iexcl;-&yuml;]
@@ -1503,13 +1517,13 @@ The text above is parsed and transformed into this doctree fragment::
           name        {nmchar}+
 
     The CSS1 "nmchar" rule does not include underscores ("_"), colons
-    (":"), or periods ("."), therefore "class" and "id" attributes
+    (":"), or periods ("."), therefore "classes" and "id" attributes
     should not contain these characters.  They should be replaced with
     hyphens ("-").  Combined with HTML's requirements (the first
     character must be a letter; no "unicode", "latin1", or "escape"
     characters), this results in the ``[a-z](-?[a-z0-9]+)*`` pattern.
 
-    .. _HTML 4.01 spec: http://www.w3.org/TR/html401
+    .. _HTML 4.01 spec: http://www.w3.org/TR/html401/
     .. _CSS1 spec: http://www.w3.org/TR/REC-CSS1
 
 
@@ -1541,7 +1555,7 @@ This will be parsed into the following document tree fragment::
 
     <paragraph>
         An example of using
-        <inline class="custom">
+        <inline classes="custom">
             interpreted text
 
 The role must be declared in a document before it can be used.
@@ -1556,15 +1570,15 @@ argument in parentheses (whitespace optional)::
 The parsed result is as follows::
 
     <paragraph>
-        <emphasis class="custom">
+        <emphasis classes="custom">
             text
 
 If no base role is explicitly specified, a generic custom role is
 automatically used.  Subsequent interpreted text will produce an
-"inline" element with a "class" attribute, as in the first example
+"inline" element with a "classes" attribute, as in the first example
 above.
 
-With most roles, the ":class:" option can be used to set a "class"
+With most roles, the ":class:" option can be used to set a "classes"
 attribute that is different from the role name.  For example::
 
     .. role:: custom
@@ -1575,7 +1589,7 @@ attribute that is different from the role name.  For example::
 This is the parsed result::
 
     <paragraph>
-        <inline class="special">
+        <inline classes="special">
             interpreted text
 
 .. _role class:
