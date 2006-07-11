@@ -1,6 +1,7 @@
 =======================================
  reStructuredText Markup Specification
 =======================================
+
 :Author: David Goodger
 :Author: Mark Nodine (for prest-specific implementation)
 :Contact: goodger@users.sourceforge.net, mnodine@alum.mit.edu
@@ -79,7 +80,7 @@ Here are examples of `body elements`_:
 
          - This is a bullet list.
 
-         - Bullets can be "-", "*", or "+".
+         - Bullets can be "*", "+", or "-".
 
   2. `Enumerated lists`_::
 
@@ -242,15 +243,14 @@ line of a document is treated as if it is followed by a blank line.
 Indentation
 -----------
 
-Indentation is used to indicate, and is only significant in
-indicating:
+Indentation is used to indicate -- and is only significant in
+indicating -- block quotes, definitions (in definition list items),
+and local nested content:
 
-- multi-line contents of list items,
-- multiple body elements within a list item (including nested lists),
-- the definition part of a definition list item,
-- block quotes,
-- the extent of literal blocks, and
-- the extent of explicit markup blocks.
+- list item content (multi-line contents of list items, and multiple
+  body elements within a list item, including nested lists),
+- the content of literal blocks, and
+- the content of explicit markup blocks.
 
 Any text whose indentation is less than that of the current level
 (i.e., unindented text or "dedents") ends the current level of
@@ -1221,9 +1221,9 @@ Block Quotes
 Doctree element: block_quote, attribution.
 
 A text block that is indented relative to the preceding text, without
-markup indicating it to be a literal block, is a block quote.  All
-markup processing (for body elements and inline markup) continues
-within the block quote::
+preceding markup indicating it to be a literal block or other content,
+is a block quote.  All markup processing (for body elements and inline
+markup) continues within the block quote::
 
     This is an ordinary paragraph, introducing a block quote.
 
@@ -1396,7 +1396,8 @@ Simple tables are described with horizontal borders made up of "=" and
 "-" characters.  The equals sign ("=") is used for top and bottom
 table borders, and to separate optional header rows from the table
 body.  The hyphen ("-") is used to indicate column spans in a single
-row by underlining the joined columns.
+row by underlining the joined columns, and may optionally be used to
+explicitly and/or visually separate rows.
 
 A simple table begins with a top border of equals signs with one or
 more spaces at each column boundary (two or more spaces recommended).
@@ -2023,7 +2024,7 @@ Substitution definitions are indicated by an explicit markup start
 vertical bar, whitespace, and the definition block.  Substitution text
 may not begin or end with whitespace.  A substitution definition block
 contains an embedded inline-compatible directive (without the leading
-".. "), such as an image_.  For example::
+".. "), such as "image_" or "replace_".  For example::
 
     The |biohazard| symbol must be used on containers used to
     dispose of medical waste.
@@ -2236,10 +2237,12 @@ constructs is recognized, leave the ".." on a line by itself::
     ..
        |even| this:: !
 
-A explicit markup start followed by a blank line and nothing else
-(apart from whitespace) is an "empty comment".  It serves to terminate
-a preceding construct, and does **not** consume any indented text
-following.  To have a block quote follow a list or any indented
+.. _empty comments:
+
+An explicit markup start followed by a blank line and nothing else
+(apart from whitespace) is an "_`empty comment`".  It serves to
+terminate a preceding construct, and does **not** consume any indented
+text following.  To have a block quote follow a list or any indented
 construct, insert an unindented empty comment in-between.
 
 Syntax diagram::

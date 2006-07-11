@@ -60,19 +60,19 @@ __ http://docutils.sourceforge.net/docs/rst/quickstart.html
 __ http://docutils.sourceforge.net/docs/rst/quickref.html
 
 __ introduction.html
-__ http://docutils.sourceforge.net/spec/rst/introduction.html
+__ http://docutils.sourceforge.net/docs/ref/rst/introduction.html
 __ introduction_diff.html
 
 __ reStructuredText.html
-__ http://docutils.sourceforge.net/spec/rst/reStructuredText.html
+__ http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
 __ reStructuredText_diff.html
 
 __ directives.html
-__ http://docutils.sourceforge.net/spec/rst/directives.html
+__ http://docutils.sourceforge.net/docs/ref/rst/directives.html
 __ directives_diff.html
 
 __ roles.html
-__ http://docutils.sourceforge.net/spec/rst/roles.html
+__ http://docutils.sourceforge.net/docs/ref/rst/roles.html
 __ roles_diff.html
 
 __ prest_usage.html
