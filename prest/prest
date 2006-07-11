@@ -147,6 +147,7 @@ sub main {
     # Precompile the handler routines
     my $phase;
     foreach $phase (keys %HANDLER) {
+	next if $phase eq '';
 	my $handler;
 	foreach $handler (@{$HANDLER{$phase}}) {
 	    # Need to untaint the text for the subroutine.
@@ -189,10 +190,13 @@ sub DoEval {
     my ($file, $lineno) = $line =~ /(.*), line (\d+)/;
     print STDERR "$line\n" if $opt_d >= 1;
     # N.B. Don't just set to $line because it may be tainted
-    $subname = "$file, line $lineno" unless $subname;
+    if (! $subname) {
+	my ($f) = $file =~ m!([^/]+)$!;
+	$subname = "$f, line $lineno";
+    }
     $subname =~ s/\W/_/g;
     my $sub = "sub Eval_::$subname {package Eval_; $str}";
-    my $val = eval(qq(\# @{[$lineno+1]} "$file"\n$sub));
+    my $val = eval(qq(\#line @{[$lineno+1]} "$file"\n$sub));
     die "Error: $line: $@" if $@;
     return \&{$Eval_::{$subname}};
 }
@@ -321,7 +325,7 @@ sub ParseSchema {
 		else {
 		    my $tag = $2;
 		    push(@{$HANDLER{$phase}},
-			 {tag=>$tag, line=>"$newfile.wrt, line $."});
+			 {tag=>$tag, line=>"$file, line $."});
 		    $in_sub = $nest+1;
 		}
 		$nest++;
