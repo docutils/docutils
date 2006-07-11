@@ -67,7 +67,7 @@ It uses the following output defines:
 =end reST
 =cut
 
-sub package = {
+sub BEGIN = {
     # My -W flags
     use vars qw($attribution $bodyattr $cloak_email_addresses $colspecs
 		$embed_stylesheet $field_limit $footnote_backlinks
@@ -76,38 +76,34 @@ sub package = {
 
     # Static globals
     use vars qw($DOM);
-    BEGIN {
-	*DOM = \'Text::Restructured::DOM'; #';
-    }
+    *DOM = \'Text::Restructured::DOM'; #';
 
     # Run-time globals
     use vars qw($HAS_CONTENTS $TARGET_FRAME $FOOTER $HEADER @HEAD_INFO
 		%USED_DEFAULT);
 
-    BEGIN {
-	# Defaults for -W flags
-	$attribution = 'dash' unless defined $attribution;
-	$bodyattr = '' unless defined $bodyattr;
-	$cloak_email_addresses = '' unless defined $cloak_email_addresses;
-	$colspecs = 1 unless defined $colspecs;
-	$embed_stylesheet = defined $embed_stylesheet ? $embed_stylesheet :
-	    $Text::Restructured::PrestConfig::DEFAULTCSS =~ /none/i &&
-	    ! defined $stylesheet ? 1 : 0;
-	$field_limit = 15 unless defined $field_limit;
-	$footnote_backlinks = 1 unless defined $footnote_backlinks;
-	$footnote_references = 'superscript'
-	    unless defined $footnote_references;
-	$html_prolog = 0 unless defined $html_prolog;
-	$link_target = "''" unless defined $link_target;
-	$option_limit = 14 unless defined $option_limit;
-	$stylesheet =
-	    ($embed_stylesheet eq 1 && (!defined $stylesheet ||
-					$stylesheet =~ /^none$/i) ? 0
-	     : (!defined $stylesheet ||
-		$embed_stylesheet eq 1 && $stylesheet eq 1) ?
-	     $Text::Restructured::PrestConfig::DEFAULTCSS : $stylesheet);
-	$target_tag = "a" unless defined $target_tag;
-    }
+     # Defaults for -W flags
+     $attribution = 'dash' unless defined $attribution;
+     $bodyattr = '' unless defined $bodyattr;
+     $cloak_email_addresses = '' unless defined $cloak_email_addresses;
+     $colspecs = 1 unless defined $colspecs;
+     $embed_stylesheet = defined $embed_stylesheet ? $embed_stylesheet :
+	 $Text::Restructured::PrestConfig::DEFAULTCSS =~ /none/i &&
+	 ! defined $stylesheet ? 1 : 0;
+     $field_limit = 15 unless defined $field_limit;
+     $footnote_backlinks = 1 unless defined $footnote_backlinks;
+     $footnote_references = 'superscript'
+	 unless defined $footnote_references;
+     $html_prolog = 0 unless defined $html_prolog;
+     $link_target = "''" unless defined $link_target;
+     $option_limit = 14 unless defined $option_limit;
+     $stylesheet =
+	 ($embed_stylesheet eq 1 && (!defined $stylesheet ||
+				     $stylesheet =~ /^none$/i) ? 0
+	  : (!defined $stylesheet ||
+	     $embed_stylesheet eq 1 && $stylesheet eq 1) ?
+	  $Text::Restructured::PrestConfig::DEFAULTCSS : $stylesheet);
+     $target_tag = "a" unless defined $target_tag;
 }
 
 # Creates a string from a reference to an attribute hash.  Attribute
@@ -161,7 +157,7 @@ sub EncodeHTML {
     $s =~ s/</&lt;/g;
     $s =~ s/>/&gt;/g;
     $s =~ s/\xa0/&nbsp;/g;
-    $s =~ s/\"/&quot;/g;   ######## FIX
+#    $s =~ s/\"/&quot;/g;   ######## FIX
     $s =~ s/\@/&\#64;/g;   ######## FIX
     return $s;
 }
@@ -554,7 +550,7 @@ phase PREPROCESS {
 	    my ($dom, $str) = @_;
 	    my $attr = MakeAttrList($dom->{attr});
 	    if (($dom->{attr}{'xml:space'} || '') eq 'preserve') {
-		$str = qq(<pre class="$dom->{tag}">\n$str</pre>\n\n);
+		$str = qq(<pre class="$dom->{tag}">$str</pre>\n\n);
 	    }
 	    my $newstr = "<$dom->{tag}$attr>$str</$dom->{tag}>";
 	    # Annotate the DOM with our content string
@@ -608,7 +604,7 @@ phase PROCESS {
 	$class =~ s/_/-/;
 	push(@class, $class);
 	my $attr = qq( class=") . join(' ',@class) . qq(");
-	return qq(<pre$attr>\n$dom->{val}</pre>\n);
+	return qq(<pre$attr>$dom->{val}</pre>\n);
     }
 
     sub attention|caution|danger|error|hint|important|note|tip|warning = { # PROCESS
@@ -1137,7 +1133,7 @@ EOS
 
     sub parsed_literal = { # PROCESS
 	my ($dom, $str) = @_;
-	return qq(<pre class="parsed-literal">\n$str</pre>\n);
+	return qq(<pre class="parsed-literal">$str</pre>\n);
     }
 
     sub system_message = { # PROCESS
