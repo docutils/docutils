@@ -53,7 +53,7 @@ This writer uses the following output defines:
 =end reST
 =cut
 
-sub package = {
+sub BEGIN = {
     # My -W flags
     use vars qw($file_suffix $filename_ext $depth $symbol
 		$include_noheader $exclude_top $top_in_list);
@@ -62,17 +62,15 @@ sub package = {
     use vars qw($TOCSTR $TGTSTR $INCLUDE_TOP @FINAL_TOP_SECS);
 
     # Defaults for -W flags
-    BEGIN {
-	$file_suffix = 'html' unless defined $file_suffix;
-	$filename_ext = '' unless defined $filename_ext;
-	$depth = 99 unless defined $depth && $depth > 0;
-	$symbol = "" unless defined $symbol;
-	$include_noheader = 0 unless defined $include_noheader;
-	$exclude_top = 0 unless defined $exclude_top;
-	$top_in_list = 0 unless defined $top_in_list;
+    $file_suffix = 'html' unless defined $file_suffix;
+    $filename_ext = '' unless defined $filename_ext;
+    $depth = 99 unless defined $depth && $depth > 0;
+    $symbol = "" unless defined $symbol;
+    $include_noheader = 0 unless defined $include_noheader;
+    $exclude_top = 0 unless defined $exclude_top;
+    $top_in_list = 0 unless defined $top_in_list;
 
-	($TOCSTR, $TGTSTR) = ('') x 2;
-    }
+    ($TOCSTR, $TGTSTR) = ('') x 2;
 }
 
 phase PROCESS = {

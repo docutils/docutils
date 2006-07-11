@@ -47,7 +47,7 @@ This writer uses the following output definitions:
 =end reST
 =cut
 
-sub package = {
+sub BEGIN = {
     # My -W flags
     use vars qw($file_suffix $filename_ext $file_path $sprintf);
 
@@ -55,13 +55,11 @@ sub package = {
     use vars qw($XREF_STRS %TARGET_NAMES @TARGETS);
 
     # Defaults for -W flags
-    BEGIN {
-	$file_suffix = 'html' unless defined $file_suffix;
-	$filename_ext = '' unless defined $filename_ext;
-	$file_path = "" unless defined $file_path;
-	$file_path .= "/" if ($file_path && $file_path !~ /\/$/);
-	$sprintf = "%s" unless defined $sprintf;
-    }
+    $file_suffix = 'html' unless defined $file_suffix;
+    $filename_ext = '' unless defined $filename_ext;
+    $file_path = "" unless defined $file_path;
+    $file_path .= "/" if ($file_path && $file_path !~ /\/$/);
+    $sprintf = "%s" unless defined $sprintf;
 }
 
 # During the first pass, write all non-anonymous internal targets and

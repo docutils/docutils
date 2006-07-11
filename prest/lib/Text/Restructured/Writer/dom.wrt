@@ -20,7 +20,7 @@ It recognizes the following defines:
 =end reST
 =cut
 
-sub package {
+sub BEGIN {
     # My -W flags
     use vars qw($nobackn);
 
