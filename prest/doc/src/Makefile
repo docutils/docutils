@@ -22,7 +22,7 @@ HTML_FLAGS = -D source-link=0 \
 XREF_FLAGS = -w xref
 PREST_CMD = $(PERL) -I ../../blib/lib $(PREST_BIN)/prest
 HTMLDIFF = $(TOOLS_DIR)/htmldiff.prl
-HTMLDIFF_CMD = $(PERL) $(HTMLDIFF) -p '$(DIFFRE_DIR)/diffre -r "id\d+"' \
+HTMLDIFF_CMD = $(PERL) $(HTMLDIFF) -p '$(PERL) $(DIFFRE_DIR)/diffre -r "id\d+"' \
 	-i '<U><FONT COLOR=\#008000>$$_</FONT></U>' -k -l
 PERLSYNOPSIS = $(TOOLS_DIR)/perlsynopsis.prl
 PERLSYNOPSIS_CMD = $(PERL) $(PERLSYNOPSIS)
