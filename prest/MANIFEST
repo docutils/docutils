@@ -98,7 +98,9 @@ t/20_directive/images.init/images30.mydom
 t/20_directive/images.init/test_images.py
 t/20_directive/include.init/Dir.mak
 t/20_directive/include.init/ExtractTests.pm
+t/20_directive/include.init/include04.r
 t/20_directive/include.init/include11.mydom
+t/20_directive/include.init/include14.r
 t/20_directive/include.init/includes.tar
 t/20_directive/include.init/test_include.py
 t/20_directive/include.init/utf-16.csv
@@ -114,6 +116,7 @@ t/20_directive/rubrics.init/test_rubrics.py
 t/20_directive/sidebars.init/test_sidebars.py
 t/20_directive/tables.init/empty.txt
 t/20_directive/tables.init/ExtractTests.pm
+t/20_directive/tables.init/tables15.r
 t/20_directive/tables.init/tables24.skip.pl
 t/20_directive/tables.init/test_tables.py
 t/20_directive/tables.init/utf-16.csv
@@ -290,6 +293,7 @@ t/70_plugins/include.init/Dir.mak
 t/70_plugins/include.init/include01.dom
 t/70_plugins/include.init/include01.rst
 t/70_plugins/include.init/include02.dom
+t/70_plugins/include.init/include02.r
 t/70_plugins/include.init/include02.rst
 t/70_plugins/include.init/include03.dom
 t/70_plugins/include.init/include03.rst
