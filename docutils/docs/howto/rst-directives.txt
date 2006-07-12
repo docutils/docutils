@@ -1,12 +1,16 @@
-======================================
- Creating reStructuredText Directives
-======================================
+=======================================
+ Creating reStructuredText_ Directives
+=======================================
 
-:Authors: Dethe Elza, David Goodger
-:Contact: delza@enfoldingsystems.com
+:Authors: Dethe Elza, David Goodger, Felix Wiemann
+:Contact: delza@enfoldingsystems.com, goodger@python.org,
+          Felix.Wiemann@ososo.de
 :Date: $Date$
 :Revision: $Revision$
 :Copyright: This document has been placed in the public domain.
+
+.. _reStructuredText: http://docutils.sourceforge.net/rst.html
+
 
 Directives are the primary extension mechanism of reStructuredText.
 This document aims to make the creation of new directives as easy and
@@ -19,12 +23,12 @@ Specification`_, and standard directives are described in
 `reStructuredText Directives`_.
 
 Directives are a reStructuredText markup/parser concept.  There is no
-"directive" element, no single element that corresponds exactly to the
-concept of directives.  Instead, choose the most appropriate elements
-from the existing Docutils elements.  Directives build structures
-using the existing building blocks.  See `The Docutils Document Tree`_
-and the ``docutils.nodes`` module for more about the building blocks
-of Docutils documents.
+"directive" document tree element, no single element that corresponds
+exactly to the concept of directives.  Instead, choose the most
+appropriate elements from the existing Docutils elements.  Directives
+build structures using the existing building blocks.  See `The
+Docutils Document Tree`_ and the ``docutils.nodes`` module for more
+about the building blocks of Docutils documents.
 
 .. _reStructuredText Markup Specification:
    ../ref/rst/restructuredtext.html#directives
@@ -35,208 +39,243 @@ of Docutils documents.
 .. contents:: Table of Contents
 
 
-Define the Directive Function
-=============================
+The Directive Class
+===================
 
-The directive function does any processing that the directive
-requires.  This may require the use of other parts of the
-reStructuredText parser.  This is where the directive actually *does*
-something.
+Directives are created by defining a directive class that inherits
+from ``docutils.parsers.rst.Directive``::
 
-The directive implementation itself is a callback function whose
-signature is as follows::
+    from docutils.parsers import rst
 
-    def directive_fn(name, arguments, options, content, lineno,
-                     content_offset, block_text, state, state_machine):
-        code...
+    class MyDirective(rst.Directive):
 
-    # Set function attributes:
-    directive_fn.arguments = ...
-    directive_fn.options = ...
-    direcitve_fn.content = ...
+        ...
 
-Function attributes are described below (see `Specify Directive
-Arguments, Options, and Content`_).  The directive function parameters
-are as follows:
+To understand how to implement the directive, let's have a look at the
+docstring of the ``Directive`` base class::
 
-- ``name`` is the directive type or name.
+    >>> from docutils.parsers import rst
+    >>> print rst.Directive.__doc__
 
-- ``arguments`` is a list of positional arguments, as specified in the
-  ``arguments`` function attribute.
+        Base class for reStructuredText directives.
 
-- ``options`` is a dictionary mapping option names to values.  The
-  options handled by a directive function are specified in the
-  ``options`` function attribute.
+        The following attributes may be set by subclasses.  They are
+        interpreted by the directive parser (which runs the directive
+        class):
 
-- ``content`` is a list of strings, the directive content.  Use the
-  ``content`` function attribute to allow directive content.
+        - `required_arguments`: The number of required arguments (default:
+          0).
 
-- ``lineno`` is the line number of the first line of the directive.
+        - `optional_arguments`: The number of optional arguments (default:
+          0).
 
-- ``content_offset`` is the line offset of the first line of the
-  content from the beginning of the current input.  Used when
-  initiating a nested parse.
+        - `final_argument_whitespace`: A boolean, indicating if the final
+          argument may contain whitespace (default: False).
 
-- ``block_text`` is a string containing the entire directive.  Include
-  it as the content of a literal block in a system message if there is
-  a problem.
+        - `option_spec`: A dictionary, mapping known option names to
+          conversion functions such as `int` or `float` (default: {}, no
+          options).  Several conversion functions are defined in the
+          directives/__init__.py module.
 
-- ``state`` is the state which called the directive function.
+          Option conversion functions take a single parameter, the option
+          argument (a string or ``None``), validate it and/or convert it
+          to the appropriate form.  Conversion functions may raise
+          `ValueError` and `TypeError` exceptions.
 
-- ``state_machine`` is the state machine which controls the state
-  which called the directive function.
+        - `has_content`: A boolean; True if content is allowed.  Client
+          code must handle the case where content is required but not
+          supplied (an empty content list will be supplied).
 
-Directive functions return a list of nodes which will be inserted into
-the document tree at the point where the directive was encountered.
-This can be an empty list if there is nothing to insert.  For ordinary
-directives, the list must contain body elements or structural
-elements.  Some directives are intended specifically for substitution
-definitions, and must return a list of ``Text`` nodes and/or inline
-elements (suitable for inline insertion, in place of the substitution
-reference).  Such directives must verify substitution definition
-context, typically using code like this::
+        Arguments are normally single whitespace-separated words.  The
+        final argument may contain whitespace and/or newlines if
+        `final_argument_whitespace` is True.
 
-    if not isinstance(state, states.SubstitutionDef):
-        error = state_machine.reporter.error(
-            'Invalid context: the "%s" directive can only be used '
-            'within a substitution definition.' % (name),
-            nodes.literal_block(block_text, block_text), line=lineno)
-        return [error]
+        If the form of the arguments is more complex, specify only one
+        argument (either required or optional) and set
+        `final_argument_whitespace` to True; the client code must do any
+        context-sensitive parsing.
+
+        When a directive implementation is being run, the directive class
+        is instantiated, and the `run()` method is executed.  During
+        instantiation, the following instance variables are set:
+
+        - ``name`` is the directive type or name (string).
+
+        - ``arguments`` is the list of positional arguments (strings).
+
+        - ``options`` is a dictionary mapping option names (strings) to
+          values (type depends on option conversion functions; see
+          `option_spec` above).
+
+        - ``content`` is a list of strings, the directive content line by line.
+
+        - ``lineno`` is the line number of the first line of the directive.
+
+        - ``content_offset`` is the line offset of the first line of the content from
+          the beginning of the current input.  Used when initiating a nested parse.
+
+        - ``block_text`` is a string containing the entire directive.
+
+        - ``state`` is the state which called the directive function.
+
+        - ``state_machine`` is the state machine which controls the state which called
+          the directive function.
+
+        Directive functions return a list of nodes which will be inserted
+        into the document tree at the point where the directive was
+        encountered.  This can be an empty list if there is nothing to
+        insert.
+
+        For ordinary directives, the list must contain body elements or
+        structural elements.  Some directives are intended specifically
+        for substitution definitions, and must return a list of `Text`
+        nodes and/or inline elements (suitable for inline insertion, in
+        place of the substitution reference).  Such directives must verify
+        substitution definition context, typically using code like this::
+
+            if not isinstance(state, states.SubstitutionDef):
+                error = state_machine.reporter.error(
+                    'Invalid context: the "%s" directive can only be used '
+                    'within a substitution definition.' % (name),
+                    nodes.literal_block(block_text, block_text), line=lineno)
+                return [error]
+
+    >>>
 
 
-Specify Directive Arguments, Options, and Content
-=================================================
+Option Conversion Functions
+===========================
 
-Function attributes are interpreted by the directive parser (from the
-``docutils.parsers.rst.states.Body.run_directive()`` method).  If
-unspecified, directive function attributes are assumed to have the
-value ``None``.  Three directive function attributes are recognized:
+An option specification (``Directive.option_spec``) must be defined
+detailing the options available to the directive.  An option spec is a
+mapping of option name to conversion function; conversion functions
+are applied to each option value to check validity and convert them to
+the expected type.  Python's built-in conversion functions are often
+usable for this, such as ``int``, ``float``.  Other useful conversion
+functions are included in the ``docutils.parsers.rst.directives``
+package (in the ``__init__.py`` module):
 
-- ``arguments``: A 3-tuple specifying the expected positional
-  arguments, or ``None`` if the directive has no arguments.  The 3
-  items in the tuple are:
+- ``flag``: For options with no option arguments.  Checks for an
+  argument (raises ``ValueError`` if found), returns ``None`` for
+  valid flag options.
 
-  1. The number of required arguments.
-  2. The number of optional arguments.
-  3. A boolean, indicating if the final argument may contain whitespace.
+- ``unchanged_required``: Returns the text argument, unchanged.
+  Raises ``ValueError`` if no argument is found.
 
-  Arguments are normally single whitespace-separated words.  The final
-  argument may contain whitespace when indicated by the value 1 (True)
-  for the third item in the argument spec tuple.  In this case, the
-  final argument in the ``arguments`` parameter to the directive
-  function will contain spaces and/or newlines, preserved from the
-  input text.
+- ``unchanged``: Returns the text argument, unchanged.  Returns an
+  empty string ("") if no argument is found.
 
-  If the form of the arguments is more complex, specify only one
-  argument (either required or optional) and indicate that final
-  whitespace is OK (1/True); the client code must do any
-  context-sensitive parsing.
+- ``path``: Returns the path argument unwrapped (with newlines
+  removed).  Raises ``ValueError`` if no argument is found.
 
-- ``options``: The option specification.  ``None`` or an empty dict
-  implies no options to parse.
+- ``uri``: Returns the URI argument with whitespace removed.  Raises
+  ``ValueError`` if no argument is found.
 
-  An option specification must be defined detailing the options
-  available to the directive.  An option spec is a mapping of option
-  name to conversion function; conversion functions are applied to
-  each option value to check validity and convert them to the expected
-  type.  Python's built-in conversion functions are often usable for
-  this, such as ``int``, ``float``, and ``bool`` (included in Python
-  from version 2.2.1).  Other useful conversion functions are included
-  in the ``docutils.parsers.rst.directives`` package (in the
-  ``__init__.py`` module):
+- ``nonnegative_int``: Checks for a nonnegative integer argument,
+  and raises ``ValueError`` if not.
 
-  - ``flag``: For options with no option arguments.  Checks for an
-    argument (raises ``ValueError`` if found), returns ``None`` for
-    valid flag options.
+- ``class_option``: Converts the argument into an ID-compatible
+  string and returns it.  Raises ``ValueError`` if no argument is
+  found.
 
-  - ``unchanged_required``: Returns the text argument, unchanged.
-    Raises ``ValueError`` if no argument is found.
+- ``unicode_code``: Convert a Unicode character code to a Unicode
+  character.
 
-  - ``unchanged``: Returns the text argument, unchanged.  Returns an
-    empty string ("") if no argument is found.
+- ``single_char_or_unicode``: A single character is returned as-is.
+  Unicode characters codes are converted as in ``unicode_code``.
 
-  - ``path``: Returns the path argument unwrapped (with newlines
-    removed).  Raises ``ValueError`` if no argument is found.
+- ``single_char_or_whitespace_or_unicode``: As with
+  ``single_char_or_unicode``, but "tab" and "space" are also
+  supported.
 
-  - ``uri``: Returns the URI argument with whitespace removed.  Raises
-    ``ValueError`` if no argument is found.
+- ``positive_int``: Converts the argument into an integer.  Raises
+  ValueError for negative, zero, or non-integer values.
 
-  - ``nonnegative_int``: Checks for a nonnegative integer argument,
-    and raises ``ValueError`` if not.
+- ``positive_int_list``: Converts a space- or comma-separated list
+  of integers into a Python list of integers.  Raises ValueError for
+  non-positive-integer values.
 
-  - ``class_option``: Converts the argument into an ID-compatible
-    string and returns it.  Raises ``ValueError`` if no argument is
-    found.
+- ``encoding``: Verfies the encoding argument by lookup.  Raises
+  ValueError for unknown encodings.
 
-  - ``unicode_code``: Convert a Unicode character code to a Unicode
-    character.
+A further utility function, ``choice``, is supplied to enable
+options whose argument must be a member of a finite set of possible
+values.  A custom conversion function must be written to use it.
+For example::
 
-  - ``single_char_or_unicode``: A single character is returned as-is.
-    Unicode characters codes are converted as in ``unicode_code``.
+    from docutils.parsers.rst import directives
 
-  - ``single_char_or_whitespace_or_unicode``: As with
-    ``single_char_or_unicode``, but "tab" and "space" are also
-    supported.
+    def yesno(argument):
+        return directives.choice(argument, ('yes', 'no'))
 
-  - ``positive_int``: Converts the argument into an integer.  Raises
-    ValueError for negative, zero, or non-integer values.
+For example, here is an option spec for a directive which allows two
+options, "name" and "value", each with an option argument::
 
-  - ``positive_int_list``: Converts a space- or comma-separated list
-    of integers into a Python list of integers.  Raises ValueError for
-    non-positive-integer values.
+    option_spec = {'name': unchanged, 'value': int}
 
-  - ``encoding``: Verfies the encoding argument by lookup.  Raises
-    ValueError for unknown encodings.
 
-  A further utility function, ``choice``, is supplied to enable
-  options whose argument must be a member of a finite set of possible
-  values.  A custom conversion function must be written to use it.
-  For example::
+Error Handling
+==============
 
-      from docutils.parsers.rst import directives
+If your directive implementation encounters an error during
+processing, you should call ``self.error()`` inside the ``run()``
+method::
 
-      def yesno(argument):
-          return directives.choice(argument, ('yes', 'no'))
+    if error_condition:
+        raise self.error('Error message.')
 
-  For example, here is an option spec for a directive which allows two
-  options, "name" and "value", each with an option argument::
+The ``self.error()`` method will immediately raise an exception that
+will be caught by the reStructuredText directive handler.  The
+directive handler will then insert an error-level system message in
+the document at the place where the directive occurred.
 
-      directive_fn.options = {'name': unchanged, 'value': int}
+Instead of ``self.error``, you can also use ``self.severe`` and
+``self.warning`` for more or less severe problems.
 
-- ``content``: A boolean; true if content is allowed.  Directive
-  functions must handle the case where content is required but not
-  present in the input text (an empty content list will be supplied).
+If you want to return a system message *and* document contents, you need to
+create the system message yourself instead of using the ``self.error``
+convenience method::
 
-The final step of the ``run_directive()`` method is to call the
-directive function itself.
+    def run(self):
+        # Create node(s).
+        node = nodes.paragraph(...)
+        # Node list to return.
+        node_list = [node]
+        if error_condition:
+             # Create system message.
+             error = self.reporter.error(
+                 'Error in "%s" directive: Your error message.' % self.name,
+                 nodes.literal_block(block_text, block_text), line=lineno)
+             node_list.append(error)
+        return node_list
 
 
 Register the Directive
 ======================
 
-If the directive is a general-use addition to the Docutils core, it
-must be registered with the parser and language mappings added:
+* If the directive is a general-use **addition to the Docutils core**,
+  it must be registered with the parser and language mappings added:
 
-1. Register the new directive using its canonical name in
-   ``docutils/parsers/rst/directives/__init__.py``, in the
-   ``_directive_registry`` dictionary.  This allows the
-   reStructuredText parser to find and use the directive.
+  1. Register the new directive using its canonical name in
+     ``docutils/parsers/rst/directives/__init__.py``, in the
+     ``_directive_registry`` dictionary.  This allows the
+     reStructuredText parser to find and use the directive.
 
-2. Add an entry to the ``directives`` dictionary in
-   ``docutils/parsers/rst/languages/en.py`` for the directive, mapping
-   the English name to the canonical name (both lowercase).  Usually
-   the English name and the canonical name are the same.
+  2. Add an entry to the ``directives`` dictionary in
+     ``docutils/parsers/rst/languages/en.py`` for the directive, mapping
+     the English name to the canonical name (both lowercase).  Usually
+     the English name and the canonical name are the same.
 
-3. Update all the other language modules as well.  For languages in
-   which you are proficient, please add translations.  For other
-   languages, add the English directive name plus "(translation
-   required)".
+  3. Update all the other language modules as well.  For languages in
+     which you are proficient, please add translations.  For other
+     languages, add the English directive name plus "(translation
+     required)".
 
-If the directive is application-specific, use the
-``register_directive`` function::
+* If the directive is **application-specific**, use the
+  ``register_directive`` function::
 
-    from docutils.parsers.rst import directives
-    directives.register_directive(directive_name, directive_function)
+      from docutils.parsers.rst import directives
+      directives.register_directive(directive_name, directive_class)
 
 
 Examples
@@ -246,8 +285,8 @@ For the most direct and accurate information, "Use the Source, Luke!".
 All standard directives are documented in `reStructuredText
 Directives`_, and the source code implementing them is located in the
 ``docutils/parsers/rst/directives`` package.  The ``__init__.py``
-module contains a mapping of directive name to module & function name.
-Several representative directives are described below.
+module contains a mapping of directive name to module and function
+name.  Several representative directives are described below.
 
 
 Admonitions
@@ -255,145 +294,136 @@ Admonitions
 
 Admonition directives, such as "note" and "caution", are quite simple.
 They have no directive arguments or options.  Admonition directive
-content is interpreted as ordinary reStructuredText.  The directive
-function simply hands off control to a generic directive function::
+content is interpreted as ordinary reStructuredText.
 
-   def note(*args):
-       return admonition(nodes.note, *args)
+The resulting document tree for a simple reStructuredText line
+"``.. note:: This is a note.``" looks as follows:
 
-   attention.content = 1
+    <note>
+        <paragraph>
+            This is a note.
+
+The directive class for the "note" directive simply derives from a
+generic admonition directive class::
+
+    class Note(BaseAdmonition):
+
+        node_class = nodes.note
 
 Note that the only thing distinguishing the various admonition
 directives is the element (node class) generated.  In the code above,
-the node class is passed as the first argument to the generic
-directive function (early version), where the actual processing takes
-place::
+the node class is set as a class attribute and is read by the
+``run()`` method of ``BaseAdmonition``, where the actual processing
+takes place::
 
-   def admonition(node_class, name, arguments, options, content, lineno,
-                  content_offset, block_text, state, state_machine):
-       text = '\n'.join(content)
-       admonition_node = node_class(text)
-       if text:
-           state.nested_parse(content, content_offset, admonition_node)
-           return [admonition_node]
-       else:
-           warning = state_machine.reporter.warning(
-               'The "%s" admonition is empty; content required.'
-               % (name), '',
-               nodes.literal_block(block_text, block_text), line=lineno)
-           return [warning]
+    # Import Docutils document tree nodes module.
+    from docutils import nodes
+    # Import Directive base class.
+    from docutils.parsers.rst import Directive
 
-Three things are noteworthy in the function above:
+    class BaseAdmonition(Directive):
 
-1. The ``admonition_node = node_class(text)`` line creates the wrapper
-   element, using the class passed in from the initial (stub)
-   directive function.
+        required_arguments = 0
+        optional_arguments = 0
+        final_argument_whitespace = True
+        option_spec = {}
+        has_content = True
 
-2. The call to ``state.nested_parse()`` is what does the actual
-   processing.  It parses the directive content and adds any generated
-   elements as child elements of ``admonition_node``.
+        node_class = None
+        """Subclasses must set this to the appropriate admonition node class."""
 
-3. If there was no directive content, a warning is generated and
-   returned.  The call to ``state_machine.reporter.warning()``
-   includes a literal block containing the entire directive text
-   (``block_text``) and the line (``lineno``) of the top of the
-   directive.
+        def run(self):
+            # Raise an error if the directive does not have contents.
+            self.assert_has_content()
+            text = '\n'.join(self.content)
+            # Create the admonition node, to be populated by `nested_parse`.
+            admonition_node = self.node_class(rawsource=text)
+            # Parse the directive contents.
+            self.state.nested_parse(self.content, self.content_offset,
+                                    admonition_node)
+            return [admonition_node]
+
+Three things are noteworthy in the ``run()`` method above:
+
+* The ``admonition_node = self.node_class(text)`` line creates the
+  wrapper element, using the class set by the specific admonition
+  subclasses (as in note, ``node_class = nodes.note``).
+
+* The call to ``state.nested_parse()`` is what does the actual
+  processing.  It parses the directive content and adds any generated
+  elements as child elements of ``admonition_node``.
+
+* If there was no directive content, the ``assert_has_content()``
+  convenience method raises an error exception by calling
+  ``self.error()`` (see `Error Handling`_ above).
 
 
 "image"
 -------
 
-The "image" directive is used to insert a picture into a document.
+.. _image: ../ref/rst/directives.html#image
+
+The "image_" directive is used to insert a picture into a document.
 This directive has one argument, the path to the image file, and
 supports several options.  There is no directive content.  Here's an
-early version of the image directive function::
+early version of the image directive class::
 
-    def image(name, arguments, options, content, lineno,
-              content_offset, block_text, state, state_machine):
-        reference = directives.uri(arguments[0])
-        options['uri'] = reference
-        image_node = nodes.image(block_text, **options)
-        return [image_node]
+    # Import Docutils document tree nodes module.
+    from docutils import nodes
+    # Import ``directives`` module (contains conversion functions).
+    from docutils.parsers.rst import directives
+    # Import Directive base class.
+    from docutils.parsers.rst import Directive
 
-    image.arguments = (1, 0, 1)
-    image.options = {'alt': directives.unchanged,
-                     'height': directives.nonnegative_int,
-                     'width': directives.nonnegative_int,
-                     'scale': directives.nonnegative_int,
-                     'align': align}
+    def align(argument):
+        """Conversion function for the "align" option.""" 
+        return directives.choice(argument, ('left', 'center', 'right'))
+
+    class Image(Directive):
+
+        required_arguments = 1
+        optional_arguments = 0
+        final_argument_whitespace = True
+        option_spec = {'alt': directives.unchanged,
+                       'height': directives.nonnegative_int,
+                       'width': directives.nonnegative_int,
+                       'scale': directives.nonnegative_int,
+                       'align': align,
+                       }
+        has_content = False
+
+        def run(self):
+            reference = directives.uri(arguments[0])
+            self.options['uri'] = reference
+            image_node = nodes.image(rawsource=self.block_text,
+                                     **self.options)
+            return [image_node]
 
 Several things are noteworthy in the code above:
 
-1. The "image" directive requires a single argument, which is allowed
-   to contain whitespace (see the argument spec above,
-   ``image.arguments = (1, 0, 1)``).  This is to allow for long URLs
-   which may span multiple lines.  The first line of the ``image``
-   function joins the URL, discarding any embedded whitespace.
+* The "image" directive requires a single argument, which is allowed
+  to contain whitespace (``final_argument_whitespace = True``).  This
+  is to allow for long URLs which may span multiple lines.  The first
+  line of the ``run()`` method joins the URL, discarding any embedded
+  whitespace.
 
-2. The reference is added to the ``options`` dictionary under the
-   "uri" key; this becomes an attribute of the ``nodes.image`` element
-   object.  Any other attributes have already been set explicitly in
-   the source text.
-
-3. The "align" option depends on the following definitions (which
-   actually occur earlier in the source code)::
-
-       align_values = ('top', 'middle', 'bottom', 'left', 'center',
-                       'right')
-
-       def align(argument):
-           return directives.choice(argument, align_values)
+* The reference is added to the ``options`` dictionary under the
+  "uri" key; this becomes an attribute of the ``nodes.image`` element
+  object.  Any other attributes have already been set explicitly in
+  the reStructuredText source text.
 
 
-"contents"
-----------
+The Pending Element
+-------------------
 
-The "contents" directive is used to insert an auto-generated table of
-contents (TOC) into a document.  It takes one optional argument, a
-title for the TOC.  If no title is specified, a default title is used
-instead.  The directive also handles several options.  Here's an early
-version of the code::
+Directives that cause actions to be performed *after* the complete
+document tree has been generated can be implemented using a
+``pending`` node.  The ``pending`` node causes a transform_ to be run
+after the document has been parsed.
 
-    def contents(name, arguments, options, content, lineno,
-                 content_offset, block_text, state, state_machine):
-        """Table of contents."""
-        if arguments:
-            title_text = arguments[0]
-            text_nodes, messages = state.inline_text(title_text, lineno)
-            title = nodes.title(title_text, '', *text_nodes)
-        else:
-            messages = []
-            title = None
-        pending = nodes.pending(parts.Contents, {'title': title},
-                                block_text)
-        pending.details.update(options)
-        state_machine.document.note_pending(pending)
-        return [pending] + messages
+For an example usage of the ``pending`` node, see the implementation
+of the ``contents`` directive in
+docutils.parsers.rst.directives.parts__.
 
-    contents.arguments = (0, 1, 1)
-    contents.options = {'depth': directives.nonnegative_int,
-                        'local': directives.flag,
-                        'backlinks': backlinks}
-
-Aspects of note include:
-
-1. The ``contents.arguments = (0, 1, 1)`` function attribute specifies
-   a single, *optional* argument.  If no argument is present, the
-   ``arguments`` parameter to the directive function will be an empty
-   list.
-
-2. If an argument *is* present, its text is passed to
-   ``state.inline_text()`` for parsing.  Titles may contain inline
-   markup, such as emphasis or inline literals.
-
-3. The table of contents is not generated right away.  Typically, a
-   TOC is placed near the beginning of a document, and is a summary or
-   outline of the section structure of the document.  The entire
-   document must already be processed before a summary can be made.
-   This directive leaves a ``nodes.pending`` placeholder element in
-   the document tree, marking the position of the TOC and including a
-   ``details`` internal attribute containing all the directive
-   options, effectively communicating the options forward.  The actual
-   table of contents processing is performed by a transform,
-   ``docutils.transforms.parts.Contents``, after the rest of the
-   document has been parsed.
+.. _transform: ../ref/transforms.html
+__ http://docutils.sf.net/docutils/parsers/rst/directives/parts.py

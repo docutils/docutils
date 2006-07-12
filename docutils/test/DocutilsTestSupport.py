@@ -42,6 +42,12 @@ __docformat__ = 'reStructuredText'
 
 import sys
 import os
+import unittest
+import re
+import inspect
+import traceback
+from pprint import pformat
+from types import UnicodeType, StringType
 
 testroot = os.path.abspath(os.path.dirname(__file__) or os.curdir)
 os.chdir(testroot)
@@ -49,20 +55,25 @@ sys.path.insert(0, os.path.normpath(os.path.join(testroot, '..')))
 sys.path.insert(0, testroot)
 sys.path.append(os.path.normpath(os.path.join(testroot, '..', 'extras')))
 
-import unittest
-import docutils_difflib
-import inspect
-from pprint import pformat
-from types import UnicodeType, StringType
-import package_unittest
-import docutils
-import docutils.core
-from docutils import frontend, nodes, statemachine, urischemes, utils
-from docutils.transforms import universal
-from docutils.parsers import rst
-from docutils.parsers.rst import states, tableparser, roles, languages
-from docutils.readers import standalone, pep
-from docutils.statemachine import StringList, string2lines
+try:
+    import docutils_difflib
+    import package_unittest
+    import docutils
+    import docutils.core
+    from docutils import frontend, nodes, statemachine, urischemes, utils
+    from docutils.transforms import universal
+    from docutils.parsers import rst
+    from docutils.parsers.rst import states, tableparser, roles, languages
+    from docutils.readers import standalone, pep
+    from docutils.statemachine import StringList, string2lines
+except ImportError:
+    # The importing module (usually __init__.py in one of the
+    # subdirectories) may catch ImportErrors in order to detect the
+    # absence of DocutilsTestSupport in sys.path.  Thus, ImportErrors
+    # resulting from problems with importing Docutils modules must
+    # caught here.
+    traceback.print_exc()
+    sys.exit(1)
 
 try:
     from docutils.readers.python import moduleparser
@@ -849,7 +860,6 @@ def _format_str(*args):
 
     This is a helper function for CustomTestCase.
     """
-    import re
     return_tuple = []
     for i in args:
         r = repr(i)

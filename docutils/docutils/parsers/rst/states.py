@@ -106,13 +106,14 @@ __docformat__ = 'reStructuredText'
 import sys
 import re
 import roman
-from types import TupleType
+from types import TupleType, FunctionType
 from docutils import nodes, statemachine, utils, urischemes
 from docutils import ApplicationError, DataError
 from docutils.statemachine import StateMachineWS, StateWS
 from docutils.nodes import fully_normalize_name as normalize_name
 from docutils.nodes import whitespace_normalize_name
 from docutils.utils import escape2null, unescape, column_width
+import docutils.parsers.rst
 from docutils.parsers.rst import directives, languages, tableparser, roles
 from docutils.parsers.rst.languages import en as _fallback_language_module
 
@@ -1980,24 +1981,23 @@ class Body(RSTState):
     def directive(self, match, **option_presets):
         """Returns a 2-tuple: list of nodes, and a "blank finish" boolean."""
         type_name = match.group(1)
-        directive_function, messages = directives.directive(
+        directive_class, messages = directives.directive(
             type_name, self.memo.language, self.document)
         self.parent += messages
-        if directive_function:
+        if directive_class:
             return self.run_directive(
-                directive_function, match, type_name, option_presets)
+                directive_class, match, type_name, option_presets)
         else:
             return self.unknown_directive(type_name)
 
-    def run_directive(self, directive_fn, match, type_name, option_presets):
+    def run_directive(self, directive, match, type_name, option_presets):
         """
         Parse a directive then run its directive function.
 
         Parameters:
 
-        - `directive_fn`: The function implementing the directive.  Uses
-          function attributes ``arguments``, ``options``, and/or ``content``
-          if present.
+        - `directive`: The class implementing the directive.  Must be
+          a subclass of `rst.Directive`.
 
         - `match`: A regular expression match object which matched the first
           line of the directive.
@@ -2011,6 +2011,9 @@ class Body(RSTState):
 
         Returns a 2-tuple: list of nodes, and a "blank finish" boolean.
         """
+        if isinstance(directive, FunctionType):
+            from docutils.parsers.rst import convert_directive_function
+            directive = convert_directive_function(directive)
         lineno = self.state_machine.abs_line_number()
         initial_line_offset = self.state_machine.line_offset
         indented, indent, line_offset, blank_finish \
@@ -2021,34 +2024,45 @@ class Body(RSTState):
         try:
             arguments, options, content, content_offset = (
                 self.parse_directive_block(indented, line_offset,
-                                           directive_fn, option_presets))
+                                           directive, option_presets))
         except MarkupError, detail:
             error = self.reporter.error(
                 'Error in "%s" directive:\n%s.' % (type_name,
                                                    ' '.join(detail.args)),
                 nodes.literal_block(block_text, block_text), line=lineno)
             return [error], blank_finish
-        result = directive_fn(type_name, arguments, options, content, lineno,
-                              content_offset, block_text, self,
-                              self.state_machine)
+        directive_instance = directive(
+            type_name, arguments, options, content, lineno,
+            content_offset, block_text, self, self.state_machine)
+        try:
+            result = directive_instance.run()
+        except docutils.parsers.rst.DirectiveError, directive_error:
+            msg_node = self.reporter.system_message(directive_error.level,
+                                                    directive_error.message)
+            msg_node += nodes.literal_block(block_text, block_text)
+            msg_node['line'] = lineno
+            result = [msg_node]
+        assert isinstance(result, list), \
+               'Directive "%s" must return a list of nodes.' % type_name
+        for i in range(len(result)):
+            assert isinstance(result[i], nodes.Node), \
+                   ('Directive "%s" returned non-Node object (index %s): %r'
+                    % (type_name, i, result[i]))
         return (result,
                 blank_finish or self.state_machine.is_next_line_blank())
 
-    def parse_directive_block(self, indented, line_offset, directive_fn,
+    def parse_directive_block(self, indented, line_offset, directive,
                               option_presets):
-        arguments = []
-        options = {}
-        argument_spec = getattr(directive_fn, 'arguments', None)
-        if argument_spec and argument_spec[:2] == (0, 0):
-            argument_spec = None
-        option_spec = getattr(directive_fn, 'options', None)
-        content_spec = getattr(directive_fn, 'content', None)
+        option_spec = directive.option_spec
+        has_content = directive.has_content
         if indented and not indented[0].strip():
             indented.trim_start()
             line_offset += 1
         while indented and not indented[-1].strip():
             indented.trim_end()
-        if indented and (argument_spec or option_spec):
+        if indented and (directive.required_arguments
+                         or directive.optional_arguments
+                         or option_spec):
             for i in range(len(indented)):
                 if not indented[i].strip():
                     break
@@ -2067,13 +2081,18 @@ class Body(RSTState):
         if option_spec:
             options, arg_block = self.parse_directive_options(
                 option_presets, option_spec, arg_block)
-            if arg_block and not argument_spec:
+            if arg_block and not (directive.required_arguments
+                                  or directive.optional_arguments):
                 raise MarkupError('no arguments permitted; blank line '
                                   'required before content block')
-        if argument_spec:
+        else:
+            options = {}
+        if directive.required_arguments or directive.optional_arguments:
             arguments = self.parse_directive_arguments(
-                argument_spec, arg_block)
-        if content and not content_spec:
+                directive, arg_block)
+        else:
+            arguments = []
+        if content and not has_content:
             raise MarkupError('no content permitted')
         return (arguments, options, content, content_offset)
 
@@ -2095,15 +2114,16 @@ class Body(RSTState):
                 raise MarkupError(data)
         return options, arg_block
 
-    def parse_directive_arguments(self, argument_spec, arg_block):
-        required, optional, last_whitespace = argument_spec
+    def parse_directive_arguments(self, directive, arg_block):
+        required = directive.required_arguments
+        optional = directive.optional_arguments
         arg_text = '\n'.join(arg_block)
         arguments = arg_text.split()
         if len(arguments) < required:
             raise MarkupError('%s argument(s) required, %s supplied'
                               % (required, len(arguments)))
         elif len(arguments) > required + optional:
-            if last_whitespace:
+            if directive.final_argument_whitespace:
                 arguments = arg_text.split(None, required + optional - 1)
             else:
                 raise MarkupError(

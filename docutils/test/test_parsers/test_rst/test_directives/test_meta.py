@@ -123,7 +123,7 @@ Paragraph
 <document source="test data">
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Empty meta directive.
+            Content block expected for the "meta" directive; none found.
         <literal_block xml:space="preserve">
             .. meta::
 """],

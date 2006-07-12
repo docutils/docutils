@@ -35,7 +35,7 @@ totest['topics'] = [
 """,
 """\
 <document source="test data">
-    <system_message level="2" line="1" source="test data" type="WARNING">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Content block expected for the "topic" directive; none found.
         <literal_block xml:space="preserve">
@@ -80,7 +80,7 @@ totest['topics'] = [
 """,
 """\
 <document source="test data">
-    <system_message level="2" line="1" source="test data" type="WARNING">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Content block expected for the "topic" directive; none found.
         <literal_block xml:space="preserve">

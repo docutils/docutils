@@ -10,35 +10,9 @@ __docformat__ = 'reStructuredText'
 
 import sys
 from docutils import nodes, utils
+from docutils.parsers.rst import Directive
 from docutils.parsers.rst import states
 from docutils.transforms import components
-
-
-def meta(name, arguments, options, content, lineno,
-         content_offset, block_text, state, state_machine):
-    node = nodes.Element()
-    if content:
-        new_line_offset, blank_finish = state.nested_list_parse(
-              content, content_offset, node, initial_state='MetaBody',
-              blank_finish=1, state_machine_kwargs=metaSMkwargs)
-        if (new_line_offset - content_offset) != len(content):
-            # incomplete parse of block?
-            error = state_machine.reporter.error(
-                'Invalid meta directive.',
-                nodes.literal_block(block_text, block_text), line=lineno)
-            node += error
-    else:
-        error = state_machine.reporter.error(
-            'Empty meta directive.',
-            nodes.literal_block(block_text, block_text), line=lineno)
-        node += error
-    return node.children
-
-meta.content = 1
-
-def imagemap(name, arguments, options, content, lineno,
-             content_offset, block_text, state, state_machine):
-    return []
 
 
 class MetaBody(states.SpecializedBody):
@@ -91,4 +65,24 @@ class MetaBody(states.SpecializedBody):
         return pending, blank_finish
 
 
-metaSMkwargs = {'state_classes': (MetaBody,)}
+class Meta(Directive):
+
+    has_content = True
+
+    SMkwargs = {'state_classes': (MetaBody,)}
+
+    def run(self):
+        self.assert_has_content()
+        node = nodes.Element()
+        new_line_offset, blank_finish = self.state.nested_list_parse(
+            self.content, self.content_offset, node,
+            initial_state='MetaBody', blank_finish=1,
+            state_machine_kwargs=self.SMkwargs)
+        if (new_line_offset - self.content_offset) != len(self.content):
+            # incomplete parse of block?
+            error = self.state_machine.reporter.error(
+                'Invalid meta directive.',
+                nodes.literal_block(self.block_text, self.block_text),
+                line=self.lineno)
+            node += error
+        return node.children

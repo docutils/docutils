@@ -62,7 +62,9 @@ Test the |name| directive.
 <document source="test data">
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            The "replace" directive is empty; content required.
+            Content block expected for the "replace" directive; none found.
+        <literal_block xml:space="preserve">
+            replace::
     <system_message level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Substitution definition "name" empty or invalid.

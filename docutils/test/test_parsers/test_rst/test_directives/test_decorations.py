@@ -33,11 +33,7 @@ totest['headers'] = [
 """,
 """\
 <document source="test data">
-    <decoration>
-        <header>
-            <paragraph>
-                Problem with the "header" directive: no content supplied.
-    <system_message level="2" line="1" source="test data" type="WARNING">
+    <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Content block expected for the "header" directive; none found.
         <literal_block xml:space="preserve">

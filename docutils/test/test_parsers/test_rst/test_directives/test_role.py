@@ -155,6 +155,28 @@ Now that it's defined, :custom:`interpreted` works.
             .. role:: 1
 """],
 ["""\
+.. role:: (error)
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            "role" directive arguments not valid role names: "(error)".
+        <literal_block xml:space="preserve">
+            .. role:: (error)
+"""],
+["""\
+.. role::
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            "role" directive requires arguments on the first line.
+        <literal_block xml:space="preserve">
+            .. role::
+"""],
+["""\
 Test
 ----
 

@@ -13,188 +13,180 @@ __docformat__ = 'reStructuredText'
 
 import sys
 from docutils import nodes
+from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
 from docutils.parsers.rst.roles import set_classes
 
-              
-def topic(name, arguments, options, content, lineno,
-          content_offset, block_text, state, state_machine,
-          node_class=nodes.topic):
-    if not (state_machine.match_titles
-            or isinstance(state_machine.node, nodes.sidebar)):
-        error = state_machine.reporter.error(
-              'The "%s" directive may not be used within topics '
-              'or body elements.' % name,
-              nodes.literal_block(block_text, block_text), line=lineno)
-        return [error]
-    if not content:
-        warning = state_machine.reporter.warning(
-            'Content block expected for the "%s" directive; none found.'
-            % name, nodes.literal_block(block_text, block_text),
-            line=lineno)
-        return [warning]
-    title_text = arguments[0]
-    textnodes, messages = state.inline_text(title_text, lineno)
-    titles = [nodes.title(title_text, '', *textnodes)]
-    # sidebar uses this code
-    if options.has_key('subtitle'):
-        textnodes, more_messages = state.inline_text(options['subtitle'],
-                                                     lineno)
-        titles.append(nodes.subtitle(options['subtitle'], '', *textnodes))
-        messages.extend(more_messages)
-    text = '\n'.join(content)
-    node = node_class(text, *(titles + messages))
-    node['classes'] += options.get('class', [])
-    if text:
-        state.nested_parse(content, content_offset, node)
-    return [node]
 
-topic.arguments = (1, 0, 1)
-topic.options = {'class': directives.class_option}
-topic.content = 1
+class BasePseudoSection(Directive):
 
-def sidebar(name, arguments, options, content, lineno,
-            content_offset, block_text, state, state_machine):
-    if isinstance(state_machine.node, nodes.sidebar):
-        error = state_machine.reporter.error(
-              'The "%s" directive may not be used within a sidebar element.'
-              % name, nodes.literal_block(block_text, block_text), line=lineno)
-        return [error]
-    return topic(name, arguments, options, content, lineno,
-                 content_offset, block_text, state, state_machine,
-                 node_class=nodes.sidebar)
+    required_arguments = 1
+    optional_arguments = 0
+    final_argument_whitespace = True
+    option_spec = {'class': directives.class_option}
+    has_content = True
 
-sidebar.arguments = (1, 0, 1)
-sidebar.options = {'subtitle': directives.unchanged_required,
-                   'class': directives.class_option}
-sidebar.content = 1
+    node_class = None
+    """Node class to be used (must be set in subclasses)."""
 
-def line_block(name, arguments, options, content, lineno,
-               content_offset, block_text, state, state_machine):
-    if not content:
-        warning = state_machine.reporter.warning(
-            'Content block expected for the "%s" directive; none found.'
-            % name, nodes.literal_block(block_text, block_text), line=lineno)
-        return [warning]
-    block = nodes.line_block(classes=options.get('class', []))
-    node_list = [block]
-    for line_text in content:
-        text_nodes, messages = state.inline_text(line_text.strip(),
-                                                 lineno + content_offset)
-        line = nodes.line(line_text, '', *text_nodes)
-        if line_text.strip():
-            line.indent = len(line_text) - len(line_text.lstrip())
-        block += line
-        node_list.extend(messages)
-        content_offset += 1
-    state.nest_line_block_lines(block)
-    return node_list
+    def run(self):
+        if not (self.state_machine.match_titles
+                or isinstance(self.state_machine.node, nodes.sidebar)):
+            raise self.error('The "%s" directive may not be used within '
+                             'topics or body elements.' % self.name)
+        self.assert_has_content()
+        title_text = self.arguments[0]
+        textnodes, messages = self.state.inline_text(title_text, self.lineno)
+        titles = [nodes.title(title_text, '', *textnodes)]
+        # Sidebar uses this code.
+        if self.options.has_key('subtitle'):
+            textnodes, more_messages = self.state.inline_text(
+                self.options['subtitle'], self.lineno)
+            titles.append(nodes.subtitle(self.options['subtitle'], '',
+                                         *textnodes))
+            messages.extend(more_messages)
+        text = '\n'.join(self.content)
+        node = self.node_class(text, *(titles + messages))
+        node['classes'] += self.options.get('class', [])
+        if text:
+            self.state.nested_parse(self.content, self.content_offset, node)
+        return [node]
 
-line_block.options = {'class': directives.class_option}
-line_block.content = 1
 
-def parsed_literal(name, arguments, options, content, lineno,
-                   content_offset, block_text, state, state_machine):
-    set_classes(options)
-    return block(name, arguments, options, content, lineno,
-                 content_offset, block_text, state, state_machine,
-                 node_class=nodes.literal_block)
+class Topic(BasePseudoSection):
 
-parsed_literal.options = {'class': directives.class_option}
-parsed_literal.content = 1
+    node_class = nodes.topic
 
-def block(name, arguments, options, content, lineno,
-          content_offset, block_text, state, state_machine, node_class):
-    if not content:
-        warning = state_machine.reporter.warning(
-            'Content block expected for the "%s" directive; none found.'
-            % name, nodes.literal_block(block_text, block_text), line=lineno)
-        return [warning]
-    text = '\n'.join(content)
-    text_nodes, messages = state.inline_text(text, lineno)
-    node = node_class(text, '', *text_nodes, **options)
-    node.line = content_offset + 1
-    return [node] + messages
 
-def rubric(name, arguments, options, content, lineno,
-             content_offset, block_text, state, state_machine):
-    rubric_text = arguments[0]
-    textnodes, messages = state.inline_text(rubric_text, lineno)
-    rubric = nodes.rubric(rubric_text, '', *textnodes, **options)
-    return [rubric] + messages
+class Sidebar(BasePseudoSection):
 
-rubric.arguments = (1, 0, 1)
-rubric.options = {'class': directives.class_option}
+    node_class = nodes.sidebar
 
-def epigraph(name, arguments, options, content, lineno,
-             content_offset, block_text, state, state_machine):
-    elements = state.block_quote(content, content_offset)
-    for element in elements:
-        if isinstance(element, nodes.block_quote):
-            element['classes'].append('epigraph')
-    return elements
+    option_spec = BasePseudoSection.option_spec.copy()
+    option_spec['subtitle'] = directives.unchanged_required
 
-epigraph.content = 1
+    def run(self):
+        if isinstance(self.state_machine.node, nodes.sidebar):
+            raise self.error('The "%s" directive may not be used within a '
+                             'sidebar element.' % self.name)
+        return BasePseudoSection.run(self)
 
-def highlights(name, arguments, options, content, lineno,
-             content_offset, block_text, state, state_machine):
-    elements = state.block_quote(content, content_offset)
-    for element in elements:
-        if isinstance(element, nodes.block_quote):
-            element['classes'].append('highlights')
-    return elements
 
-highlights.content = 1
+class LineBlock(Directive):
 
-def pull_quote(name, arguments, options, content, lineno,
-             content_offset, block_text, state, state_machine):
-    elements = state.block_quote(content, content_offset)
-    for element in elements:
-        if isinstance(element, nodes.block_quote):
-            element['classes'].append('pull-quote')
-    return elements
+    option_spec = {'class': directives.class_option}
+    has_content = True
 
-pull_quote.content = 1
+    def run(self):
+        self.assert_has_content()
+        block = nodes.line_block(classes=self.options.get('class', []))
+        node_list = [block]
+        for line_text in self.content:
+            text_nodes, messages = self.state.inline_text(
+                line_text.strip(), self.lineno + self.content_offset)
+            line = nodes.line(line_text, '', *text_nodes)
+            if line_text.strip():
+                line.indent = len(line_text) - len(line_text.lstrip())
+            block += line
+            node_list.extend(messages)
+            self.content_offset += 1
+        self.state.nest_line_block_lines(block)
+        return node_list
 
-def compound(name, arguments, options, content, lineno,
-             content_offset, block_text, state, state_machine):
-    text = '\n'.join(content)
-    if not text:
-        error = state_machine.reporter.error(
-            'The "%s" directive is empty; content required.' % name,
-            nodes.literal_block(block_text, block_text), line=lineno)
-        return [error]
-    node = nodes.compound(text)
-    node['classes'] += options.get('class', [])
-    state.nested_parse(content, content_offset, node)
-    return [node]
 
-compound.options = {'class': directives.class_option}
-compound.content = 1
+class ParsedLiteral(Directive):
 
-def container(name, arguments, options, content, lineno,
-              content_offset, block_text, state, state_machine):
-    text = '\n'.join(content)
-    if not text:
-        error = state_machine.reporter.error(
-            'The "%s" directive is empty; content required.' % name,
-            nodes.literal_block(block_text, block_text), line=lineno)
-        return [error]
-    try:
-        if arguments:
-            classes = directives.class_option(arguments[0])
-        else:
-            classes = []
-    except ValueError:
-        error = state_machine.reporter.error(
-            'Invalid class attribute value for "%s" directive: "%s".'
-            % (name, arguments[0]),
-            nodes.literal_block(block_text, block_text), line=lineno)
-        return [error]
-    node = nodes.container(text)
-    node['classes'].extend(classes)
-    state.nested_parse(content, content_offset, node)
-    return [node]
+    option_spec = {'class': directives.class_option}
+    has_content = True
 
-container.arguments = (0, 1, 1)
-container.content = 1
+    def run(self):
+        set_classes(self.options)
+        self.assert_has_content()
+        text = '\n'.join(self.content)
+        text_nodes, messages = self.state.inline_text(text, self.lineno)
+        node = nodes.literal_block(text, '', *text_nodes, **self.options)
+        node.line = self.content_offset + 1
+        return [node] + messages
+
+
+class Rubric(Directive):
+
+    required_arguments = 1
+    optional_arguments = 0
+    final_argument_whitespace = True
+    option_spec = {'class': directives.class_option}
+
+    def run(self):
+        set_classes(self.options)
+        rubric_text = self.arguments[0]
+        textnodes, messages = self.state.inline_text(rubric_text, self.lineno)
+        rubric = nodes.rubric(rubric_text, '', *textnodes, **self.options)
+        return [rubric] + messages
+
+
+class BlockQuote(Directive):
+
+    has_content = True
+    classes = []
+
+    def run(self):
+        self.assert_has_content()
+        elements = self.state.block_quote(self.content, self.content_offset)
+        for element in elements:
+            if isinstance(element, nodes.block_quote):
+                element['classes'] += self.classes
+        return elements
+
+
+class Epigraph(BlockQuote):
+
+    classes = ['epigraph']
+
+
+class Highlights(BlockQuote):
+
+    classes = ['highlights']
+
+
+class PullQuote(BlockQuote):
+
+    classes = ['pull-quote']
+
+
+class Compound(Directive):
+
+    option_spec = {'class': directives.class_option}
+    has_content = True
+
+    def run(self):
+        self.assert_has_content()
+        text = '\n'.join(self.content)
+        node = nodes.compound(text)
+        node['classes'] += self.options.get('class', [])
+        self.state.nested_parse(self.content, self.content_offset, node)
+        return [node]
+
+
+class Container(Directive):
+
+    required_arguments = 0
+    optional_arguments = 1
+    final_argument_whitespace = True
+    has_content = True
+
+    def run(self):
+        self.assert_has_content()
+        text = '\n'.join(self.content)
+        try:
+            if self.arguments:
+                classes = directives.class_option(self.arguments[0])
+            else:
+                classes = []
+        except ValueError:
+            raise self.error(
+                'Invalid class attribute value for "%s" directive: "%s".'
+                % (self.name, self.arguments[0]))
+        node = nodes.container(text)
+        node['classes'].extend(classes)
+        self.state.nested_parse(self.content, self.content_offset, node)
+        return [node]
