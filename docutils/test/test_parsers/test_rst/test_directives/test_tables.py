@@ -91,6 +91,36 @@ totest['table'] = [
                             False
 """],
 ["""\
+.. table::
+
+   ========== ==========
+   Table      without
+   a          title
+   ========== ==========
+""",
+"""\
+<document source="test data">
+    <table>
+        <tgroup cols="2">
+            <colspec colwidth="10">
+            <colspec colwidth="10">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Table
+                    <entry>
+                        <paragraph>
+                            without
+                <row>
+                    <entry>
+                        <paragraph>
+                            a
+                    <entry>
+                        <paragraph>
+                            title
+"""],
+["""\
 .. table:: title with an *error
 
    ======  =====
@@ -119,6 +149,32 @@ totest['table'] = [
     <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline emphasis start-string without end-string.
+"""],
+["""\
+.. table:: Not a table.
+
+   This is a paragraph.
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Error parsing content block for the "table" directive: exactly one table expected.
+        <literal_block xml:space="preserve">
+            .. table:: Not a table.
+            \n\
+               This is a paragraph.
+"""],
+["""\
+.. table:: empty
+""",
+"""\
+<document source="test data">
+    <system_message level="2" line="1" source="test data" type="WARNING">
+        <paragraph>
+            Content block expected for the "table" directive; none found.
+        <literal_block xml:space="preserve">
+            .. table:: empty
 """],
 ]
 
@@ -1003,6 +1059,17 @@ totest['list-table'] = [
             \n\
                * - column 1
                  - column 2
+"""],
+["""\
+.. list-table:: empty
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            The "list-table" directive is empty; content required.
+        <literal_block xml:space="preserve">
+            .. list-table:: empty
 """],
 ]
 

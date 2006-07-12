@@ -295,12 +295,14 @@ u"""\
 """],
 ["""\
 Insert an em-dash |---| automatically trimming whitespace.
-Some substitutions |TM| only need trimming on one side.
+Some substitutions |TM| only need |rarrow| trimming on one side.
 
 .. |---| unicode:: U+02014
    :trim:
 .. |TM| unicode:: U+02122
    :ltrim:
+.. |rarrow| unicode:: U+2192
+   :rtrim:
 """,
 u"""\
 <document source="test data">
@@ -310,11 +312,15 @@ u"""\
         automatically trimming whitespace.
         Some substitutions
         \u2122
-         only need trimming on one side.
+         only need \n\
+        \u2192
+        trimming on one side.
     <substitution_definition ltrim="1" names="---" rtrim="1">
         \u2014
     <substitution_definition ltrim="1" names="TM">
         \u2122
+    <substitution_definition names="rarrow" rtrim="1">
+        \u2192
 """],
 ["""\
 Substitution definition with an illegal element:

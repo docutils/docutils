@@ -43,6 +43,17 @@ Today's date is |date|.
     <substitution_definition names="date">
         %s
 """ % time.strftime('%a, %d %b %Y')],
+["""\
+.. date::
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Invalid context: the "date" directive can only be used within a substitution definition.
+        <literal_block xml:space="preserve">
+            .. date::
+"""],
 ]
 
 

@@ -5,6 +5,8 @@
 # Copyright: This script has been placed in the public domain.
 
 set -e
+# Resolve all symlinks in current path.
+cd -P .
 proj="${PWD##*/}"
 if test "$proj" == test; then
     cd ..

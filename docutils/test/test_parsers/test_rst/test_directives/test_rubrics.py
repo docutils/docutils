@@ -64,6 +64,15 @@ totest['rubrics'] = [
         <paragraph>
             Block quote
 """],
+["""\
+.. rubric:: A Rubric
+   :class: foo bar
+""",
+"""\
+<document source="test data">
+    <rubric classes="foo bar">
+        A Rubric
+"""],
 ]
 
 
