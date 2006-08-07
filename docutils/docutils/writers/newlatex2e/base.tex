@@ -1,27 +1,56 @@
-\makeatletter
-
-% Development notes at
+% === Development Notes ===
+% - There were some \RequirePackage's.
+%   I think they are equivalent to \usepackage, so I've replaced them.
+%   Need to check this, though.
+% More development notes at
 % http://docutils.python-hosting.com/wiki/NewLatex
 
+% Naming conventions:
+% \D...: All macros introduced by the Docutils LaTeX writer.
+% \Dname: Generic variable or function.
+% \DSname: Setup function (called at the bottom of this stylesheet).
+% \DNnode{contents}: Handler for Docutils document tree node `node`.
 
+% Having to intersperse code with \makeatletter-\makeatother pairs is very
+% annoying, so we call \makeatletter at the top and \makeatother at the
+% bottom.   Just be aware that you cannot use "@" as a text character inside
+% this stylesheet.
+\makeatletter
+
+% Print-mode (as opposed to online mode e.g. with Adobe Reader).
+% This causes for example blue hyperlinks.
 \providecommand{\Dprinting}{false}
 
-
+% \DSearly is called right after \documentclass.
 \providecommand{\DSearly}{}
+% \DSlate is called at the end of the stylesheet (right before the document
+% tree).
 \providecommand{\DSlate}{}
 
+% Use the KOMA script article class.
 \providecommand{\Ddocumentclass}{scrartcl}
 \providecommand{\Ddocumentoptions}{a4paper}
+\providecommand{\DSdocumentclass}{
+  \documentclass[\Ddocumentoptions]{\Ddocumentclass} }
 
-\documentclass[\Ddocumentoptions]{\Ddocumentclass}
+% Todo: This should be movable to the bottom, but it isn't as long as
+% we use \usepackage commands at the top level of this stylesheet
+% (which we shouldn't).
+\DSdocumentclass
 
-\DSearly
-
+\providecommand{\DSpackages}{
+  % Load miscellaneous packages.  It would be better to load packages where
+  % they are used.  However, since using a wrong package loading order can
+  % lead to *very* subtle bugs, we centralize the loading of some packages
+  % here.
+  \usepackage{ifthen} % before hyperref, which is loaded later
+}
 
 \providecommand{\DSfontencoding}{
   % Set up font encoding.
-  % AE is a T1-emulation.  It provides most characters and features
-  % as T1-encoded fonts but doesn't use ugly bitmap fonts.
+  % AE is a T1 emulation.  It provides mostly the same characters and
+  % features as T1-encoded fonts but doesn't use bitmap fonts (which are
+  % unsuitable for online reading and subtle for printers).
   \usepackage{ae}
   % Provide the characters not contained in AE from EC bitmap fonts.
   \usepackage{aecompl}
@@ -29,15 +58,13 @@
   \usepackage{aeguill}
 }
 
-
 \providecommand{\DSsymbols}{%
   % Fix up symbols.
   % The Euro symbol in Computer Modern looks, um, funny.  Let's get a
   % proper Euro symbol.
-  \RequirePackage{eurosym}%
+  \usepackage{eurosym}%
   \renewcommand{\texteuro}{\euro}%
 }
-
 
 % Taken from
 % <http://groups.google.de/groups?selm=1i0n5tgtplti420e1omp4pctlv19jpuhbb%404ax.com>
@@ -59,21 +86,7 @@
 }
 
 \Dprovidelength{\Dboxparindent}{\parindent}
-\providecommand{\Dmakeboxminipage}[1]{%
-  % Make minipage for use in a box created by \Dmakefbox.
-  \begin{minipage}[t]{0.9\linewidth}%
-    \setlength{\parindent}{\Dboxparindent}%
-    #1%
-  \end{minipage}%
-}
-\providecommand{\Dmakefbox}[1]{%
-  % Make a centered, framed box.  Useful e.g. for admonitions.
-  \vspace{0.4\baselineskip}%
-  \begin{center}%
-    \fbox{\Dmakeboxminipage{#1}}%
-  \end{center}%
-  \vspace{0.4\baselineskip}%
-}
+
 \providecommand{\Dmakebox}[1]{%
   % Make a centered, frameless box.  Useful e.g. for block quotes.
   % Do not use minipages here, but create pseudo-lists to allow
@@ -86,10 +99,24 @@
   }%
 }
 
+\providecommand{\Dmakefbox}[1]{%
+  % Make a centered, framed box.  Useful e.g. for admonitions.
+  \vspace{0.4\baselineskip}%
+  \begin{center}%
+    \fbox{%
+      \begin{minipage}[t]{0.9\linewidth}%
+        \setlength{\parindent}{\Dboxparindent}%
+        #1%
+      \end{minipage}%
+    }%
+  \end{center}%
+  \vspace{0.4\baselineskip}%
+}
 
-\RequirePackage{ifthen}
-\providecommand{\Dfrenchspacing}{true}
-\ifthenelse{\equal{\Dfrenchspacing}{true}}{\frenchspacing}{}
+% We do not currently recognize the difference between an end-sentence and a
+% mid-sentence period (".  " vs. ". " in plain text).  So \frenchspacing is
+% appropriate.
+\providecommand{\DSfrenchspacing}{\frenchspacing}
 
 
 \Dprovidelength{\Dblocklevelvspace}{%
@@ -103,10 +130,9 @@
 \providecommand{\Dparagraphspace}{\par}
 \providecommand{\Dneedvspace}{true}
 
-
 \providecommand{\DSlinks}{
   % Targets and references.
-  \RequirePackage[colorlinks=false,pdfborder={0 0 0}]{hyperref}
+  \usepackage[colorlinks=false,pdfborder={0 0 0}]{hyperref}
 
   \providecommand{\Draisedlink}[1]{\Hy@raisedlink{##1}}
   
@@ -159,7 +185,7 @@
     }%
   }
   % Color in references.
-  \RequirePackage{color}
+  \usepackage{color}
   \providecommand{\Dimplicitreference}[2]{%
     % Create implicit reference to ID.  Implicit references occur
     % e.g. in TOC-backlinks of section titles.  Parameters:
@@ -201,7 +227,7 @@
 \providecommand{\DSlanguage}{%
   % Set up babel.
   \ifthenelse{\equal{\Dlanguagebabel}{}}{}{
-    \RequirePackage[\Dlanguagebabel]{babel}
+    \usepackage[\Dlanguagebabel]{babel}
   }
 }
 
@@ -350,7 +376,7 @@
   % Treat doctest blocks the same as literal blocks.
   \DNliteralblock{#1}%
 }
-\RequirePackage{hyphenat}
+\usepackage{hyphenat}
 \providecommand{\DNliteral}[1]{\textnhtt{#1}}
 \providecommand{\DNemphasis}[1]{\emph{#1}}
 \providecommand{\DNstrong}[1]{\textbf{#1}}
@@ -712,7 +738,7 @@
 
 
 % Sidebars:
-\RequirePackage{picins}
+\usepackage{picins}
 % Vertical and horizontal margins.
 \Dprovidelength{\Dsidebarvmargin}{0.5em}
 \Dprovidelength{\Dsidebarhmargin}{1em}
@@ -832,7 +858,7 @@
 \providecommand{\Dmulticitationbacklink}[2]{\Dmultifootnotebacklink{#1}{#2}}
 
 
-\RequirePackage{longtable}
+\usepackage{longtable}
 \providecommand{\Dmaketable}[2]{%
   % Make table.  Parameters:
   % 1. Table spec (like "|p|p|").
@@ -938,7 +964,7 @@
 }
 
 
-\RequirePackage{graphicx}
+\usepackage{graphicx}
 % Maximum width of an image.
 \providecommand{\Dimagemaxwidth}{\linewidth}
 \providecommand{\Dfloatimagemaxwidth}{0.5\linewidth}
@@ -1091,10 +1117,16 @@
 \providecommand{\Drelativeunit}{\linewidth}
 
 
-%\RequirePackage{fixmath}
-%\RequirePackage{amsmath}
+%\usepackage{fixmath}
+%\usepackage{amsmath}
 
 
+% ACTION: These commands actually *do* something.
+% Ultimately, everything should be done here, and no active content should be
+% above (not even \usepackage).
+
+\DSearly
+\DSpackages
 \DSfontencoding
 \DSlanguage
 \DSlinks
