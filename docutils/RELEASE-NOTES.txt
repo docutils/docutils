@@ -21,6 +21,15 @@ more detailed list of changes, please see the `Docutils History`_.
 Changes Since 0.4
 =================
 
+reStructuredText:
+
+* Changed the directive API to a new object-oriented system.
+  (Compatibility for the old, functional-style directive interface is
+  retained.)  See the updated `Creating reStructuredText Directives`__
+  how-to.
+
+  __ docs/howto/rst-directives.html
+
 
 Release 0.4 (2006-01-09)
 ========================
