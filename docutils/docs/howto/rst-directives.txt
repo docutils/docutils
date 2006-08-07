@@ -292,9 +292,11 @@ name.  Several representative directives are described below.
 Admonitions
 -----------
 
-Admonition directives, such as "note" and "caution", are quite simple.
-They have no directive arguments or options.  Admonition directive
-content is interpreted as ordinary reStructuredText.
+`Admonition directives`__, such as "note" and "caution", are quite
+simple.  They have no directive arguments or options.  Admonition
+directive content is interpreted as ordinary reStructuredText.
+
+__ ../ref/rst/directives.html#specific-admonitions
 
 The resulting document tree for a simple reStructuredText line
 "``.. note:: This is a note.``" looks as follows:
