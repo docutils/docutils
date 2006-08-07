@@ -40,6 +40,21 @@ Changes Since 0.4
     quotes.
   - Added support for unicode bullets in bullet lists: "•", "‣", and
     "⁃".
+  - Added support for new object-oriented directive interface,
+    retaining compatibility to the old functional interface.
+  - Added support for throwing ``DirectiveError``'s from within
+    directive code.
+
+* docutils/parsers/rst/__init__.py:
+
+  - Added ``Directive`` base class.
+  - Added ``DirectiveError`` base class.
+
+* docutils/parsers/directives/:
+
+  - Refactored all reStructuredText directives to use the new
+    object-oriented directive interface.  Errors are now (mostly)
+    thrown using the new ``DirectiveError`` class.
 
 * docutils/writers/html4css1/__init__.py:
 
