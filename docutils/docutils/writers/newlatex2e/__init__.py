@@ -61,8 +61,9 @@ class Writer(writers.Writer):
          ),)
 
     settings_defaults = {
-        # Many Unicode characters are provided by unicode_map.py.
-        'output_encoding': 'ascii',
+        # Many Unicode characters are provided by unicode_map.py, so
+        # we can default to latin-1.
+        'output_encoding': 'latin-1',
         'output_encoding_error_handler': 'strict',
         # Since we are using superscript footnotes, it is necessary to
         # trim whitespace in front of footnote references.
@@ -410,8 +411,25 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
     def depart_literal(self, node):
         self.inline_literal -= 1
 
+    def _make_encodable(self, text):
+        """
+        Return text (a unicode object) with all unencodable characters
+        replaced with '?'.
+
+        Thus, the returned unicode string is guaranteed to be encodable.
+        """
+        encoding = self.settings.output_encoding
+        return text.encode(encoding, 'replace').decode(encoding)
+
     def visit_comment(self, node):
-        self.append('\n'.join(['% ' + line for line
+        """
+        Insert the comment unchanged into the document, replacing
+        unencodable characters with '?'.
+
+        (This is done in order not to fail if comments contain unencodable
+        characters, because our default encoding is not UTF-8.)
+        """
+        self.append('\n'.join(['% ' + self._make_encodable(line) for line
                                in node.astext().splitlines(0)]), newline='\n')
         raise nodes.SkipChildren
 
