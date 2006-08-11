@@ -33,6 +33,9 @@ the box.
 
 * For Blogs (Weblogs), please see the `FAQ entry about Blogs`_.
 
+* rest2web_, by Michael Foord, is a tool for creating web sites with
+  reStructuredText.
+
 * ReSTedit_ by Bill Bumgarner is a Docutils GUI for Mac OS X.
 
 * There is an `ASCII art to SVG converter`_ (aafigure), developed by
@@ -61,9 +64,6 @@ the box.
 
 * rst2chm_, written by Oliver Rutherfurd, generates Microsoft HTML
   Help files from reStructuredText files.
-
-* rest2web_, by Michael Foord, is a tool for creating web sites with
-  reStructuredText.
 
 * ZReST_, by Richard Jones, is a "ReStructuredText Document for Zope"
   application that is complete and ready to install.
