@@ -36,6 +36,9 @@ the box.
 * rest2web_, by Michael Foord, is a tool for creating web sites with
   reStructuredText.
 
+* Ladislav Lhotka has written an `XSLT script`_ that enables
+  reStructuredText annotations to be included in RELAG NG XML.
+  
 * ReSTedit_ by Bill Bumgarner is a Docutils GUI for Mac OS X.
 
 * There is an `ASCII art to SVG converter`_ (aafigure), developed by
@@ -121,6 +124,7 @@ code base.
 .. _Docutils: http://docutils.sourceforge.net/
 .. _FAQ entry about Wikis: http://docutils.sf.net/FAQ.html#are-there-any-wikis-that-use-restructuredtext-syntax
 .. _FAQ entry about Blogs: http://docutils.sf.net/FAQ.html#are-there-any-weblog-blog-projects-that-use-restructuredtext-syntax
+.. _XSLT script: http://www.cesnet.cz/doc/techzpravy/2006/rngrest/
 .. _ReSTedit: http://www.friday.com/bbum/index.php?s=restedit
 .. _ASCII art to SVG converter: http://docutils.sf.net/sandbox/cliechti/aafigure/
 .. _OpenDocument writer: http://thread.gmane.org/gmane.text.docutils.devel/3613
