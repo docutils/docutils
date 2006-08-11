@@ -706,6 +706,8 @@ Here's one:
 
    Double-dashes -- "--" -- must be escaped somehow in HTML output.
 
+   Comments may contain non-ASCII characters: ä ö ü æ ø å
+
 (View the HTML source to see the comment.)
 
 Raw text
