@@ -37,7 +37,7 @@ the box.
   reStructuredText.
 
 * Ladislav Lhotka has written an `XSLT script`_ that enables
-  reStructuredText annotations to be included in RELAG NG XML.
+  reStructuredText annotations to be included in RELAG NG XML schemas.
   
 * ReSTedit_ by Bill Bumgarner is a Docutils GUI for Mac OS X.
 
