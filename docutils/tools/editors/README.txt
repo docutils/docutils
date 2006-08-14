@@ -7,7 +7,8 @@
 The files in this directory contain support code for reStructuredText
 editing for the following editors:
 
-* `Emacs <emacs>`__
+* `Emacs <emacs>`__: see the `README <emacs/README.html>`__ and `Emacs
+  Support for reStructuredText <../../docs/user/emacs.html>`_.
 
 External links:
 
