@@ -33,6 +33,10 @@ the box.
 
 * For Blogs (Weblogs), please see the `FAQ entry about Blogs`_.
 
+* restxsl_, by Michael Alyn Miller, lets you transform
+  reStructuredText documents into XML/XHTML files using XSLT
+  stylesheets.
+
 * rest2web_, by Michael Foord, is a tool for creating web sites with
   reStructuredText.
 
@@ -124,6 +128,7 @@ code base.
 .. _Docutils: http://docutils.sourceforge.net/
 .. _FAQ entry about Wikis: http://docutils.sf.net/FAQ.html#are-there-any-wikis-that-use-restructuredtext-syntax
 .. _FAQ entry about Blogs: http://docutils.sf.net/FAQ.html#are-there-any-weblog-blog-projects-that-use-restructuredtext-syntax
+.. _restxsl: http://www.strangeGizmo.com/products/restxsl/
 .. _XSLT script: http://www.cesnet.cz/doc/techzpravy/2006/rngrest/
 .. _ReSTedit: http://www.friday.com/bbum/index.php?s=restedit
 .. _ASCII art to SVG converter: http://docutils.sf.net/sandbox/cliechti/aafigure/
