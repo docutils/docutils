@@ -469,12 +469,6 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_admonition(self, node=None):
         self.body.append('</div>\n')
 
-    def visit_attention(self, node):
-        self.visit_admonition(node, 'attention')
-
-    def depart_attention(self, node):
-        self.depart_admonition()
-
     attribution_formats = {'dash': ('&mdash;', ''),
                            'parentheses': ('(', ')'),
                            'parens': ('(', ')'),
