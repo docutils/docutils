@@ -215,9 +215,13 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         a('')
         a('% Auxiliary definitions:')
         for attr in (r'\DEVparent \DEVattrlen \DEVtitleastext '
-                     r'\DEVsinglebackref \DEVmultiplebackrefs').split():
+                     r'\DEVsinglebackref \DEVmultiplebackrefs'
+                     ).split():
+            # Later set using \renewcommand.
             a(r'\providecommand{%s}{DOCUTILSUNINITIALIZEDVARIABLE}' % attr)
-        a(r'\providecommand{\DEVparagraphindented}{false}')
+        for attr in (r'\DEVparagraphindented \DEVhassubtitle').split():
+            # Initialize as boolean variables.
+            a(r'\providecommand{%s}{false}' % attr)
         a('\n\n')
 
     unicode_map = unicode_map.unicode_map # comprehensive Unicode map
@@ -250,7 +254,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         '>': r'{\textgreater}',
         '^': r'{\textasciicircum}',
         '~': r'{\textasciitilde}',
-        '_': r'{\Dtextunderscore}',
+        '_': r'{\DECtextunderscore}',
         }
     character_map.update(unicode_map)
     #character_map.update(special_map)
@@ -285,12 +289,12 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
             value, unit = match.groups()
             if unit == '%':
                 value = str(float(value) / 100)
-                unit = r'\Drelativeunit'
+                unit = r'\DECrelativeunit'
             elif unit in ('', 'px'):
-                # If \Dpixelunit is "pt", this gives the same notion
-                # of pixels as graphicx.
+                # If \DECpixelunit is "pt", this gives the same notion
+                # of pixels as graphicx.  This is a bit of a hack.
                 value = str(float(value) * 0.75)
-                unit = '\Dpixelunit'
+                unit = '\DECpixelunit'
             return '%s%s' % (value, unit)
         if attval:
             get = self.att_map.get
@@ -304,9 +308,9 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
             # Convert space.  If "{ }~~~~~" is wrapped (at the
             # brace-enclosed space "{ }"), the following non-breaking
             # spaces ("~~~~") do *not* wind up at the beginning of the
-            # next line.  Also note that, for some not-so-obvious
-            # reason, no hyphenation is done if the breaking space ("{
-            # }") comes *after* the non-breaking spaces.
+            # next line.  Also note that no hyphenation is done if the
+            # breaking space ("{ }") comes *after* the non-breaking
+            # spaces.
             if self.literal_block:
                 # Replace newlines with real newlines.
                 text = text.replace('\n', '\mbox{}\\\\')
@@ -318,7 +322,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
             # possible at the hyphens and even the \textnhtt macro
             # from the hyphenat package won't change that.
             text = text.replace('-', r'\mbox{-}')
-            text = text.replace("'", r'{\Dtextliteralsinglequote}')
+            text = text.replace("'", r'{\DECtextliteralsinglequote}')
             return text
         else:
             if not attval:
@@ -329,8 +333,8 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
                 for part in text.split(self.character_map['"']):
                     if L:
                         # Insert quote.
-                        L.append(self.left_quote and r'{\Dtextleftdblquote}'
-                                 or r'{\Dtextrightdblquote}')
+                        L.append(self.left_quote and r'{\DECtextleftdblquote}'
+                                 or r'{\DECtextrightdblquote}')
                         self.left_quote = not self.left_quote
                     L.append(part)
                 return ''.join(L)
@@ -379,7 +383,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
     def before_title(self, node):
         self.append(r'\renewcommand{\DEVtitleastext}{%s}'
                     % self.encode(node.astext()))
-        self.append(r'\renewcommand{\Dhassubtitle}{%s}'
+        self.append(r'\renewcommand{\DEVhassubtitle}{%s}'
                     % ((len(node.parent) > 2 and
                         isinstance(node.parent[1], nodes.subtitle))
                        and 'true' or 'false'))
@@ -447,7 +451,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
     bullet_list_level = 0
 
     def visit_bullet_list(self, node):
-        self.append(r'\Dsetbullet{\labelitem%s}' %
+        self.append(r'\DECsetbullet{\labelitem%s}' %
                     ['i', 'ii', 'iii', 'iv'][min(self.bullet_list_level, 3)])
         self.bullet_list_level += 1
 
@@ -469,7 +473,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         enum_type = '\\' + self.enum_styles.get(node['enumtype'], r'arabic')
         start = node.get('start', 1) - 1
         counter = 'Denumcounter%d' % self.enum_counter
-        self.append(r'\Dmakeenumeratedlist{%s}{%s}{%s}{%s}{%s}{'
+        self.append(r'\DECmakeenumeratedlist{%s}{%s}{%s}{%s}{%s}{'
                     % (enum_prefix, enum_type, enum_suffix, counter, start))
                     # for Emacs: }
 
@@ -494,12 +498,17 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         raise nodes.SkipChildren
 
     def process_backlinks(self, node, type):
+        """
+        Add LaTeX handling code for backlinks of footnote or citation
+        node `node`.  `type` is either 'footnote' or 'citation'.
+        """
         self.append(r'\renewcommand{\DEVsinglebackref}{}')
         self.append(r'\renewcommand{\DEVmultiplebackrefs}{}')
         if len(node['backrefs']) > 1:
             refs = []
             for i in range(len(node['backrefs'])):
-                refs.append(r'\Dmulti%sbacklink{%s}{%s}'
+                # \DECmulticitationbacklink or \DECmultifootnotebacklink.
+                refs.append(r'\DECmulti%sbacklink{%s}{%s}'
                             % (type, node['backrefs'][i], i + 1))
             self.append(r'\renewcommand{\DEVmultiplebackrefs}{(%s){ }}'
                         % ', '.join(refs))
@@ -531,7 +540,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
             # solution which works *always*.
             tablespec += r'p{%s\textwidth}|' % (0.93 * w /
                                                 max(total_width, 60))
-        self.append(r'\Dmaketable{%s}{' % tablespec)
+        self.append(r'\DECmaketable{%s}{' % tablespec)
         self.context.append('}')
         raise SkipAttrParentLaTeX
 
@@ -569,8 +578,8 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
             del node['morecols']
         else:
             colspan = 1
-        # Macro to call.
-        macro_name = r'\Dcolspan'
+        # Macro to call -- \DECcolspan or \DECcolspanleft.
+        macro_name = r'\DECcolspan'
         if node.parent.index(node) == 0:
             # Leftmost column.
             macro_name += 'left'
@@ -584,7 +593,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
             # desired column widths, and we can only do colspans with
             # cells consisting of only one paragraph.
             if not is_leftmost:
-                self.append(r'\Dsubsequententry{')
+                self.append(r'\DECsubsequententry{')
                 self.context.append('}')
             else:
                 self.context.append('')
@@ -676,9 +685,14 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
 
     def pass_contents(self, node):
         r"""
-        Return true if the node contents should be passed in
-        parameters of \DN... and \DECattr.
+        Return True if the node contents should be passed in
+        \DN<nodename>{<contents>} and \DECattr{}{}{}{}{<contents>}.
+        Return False if the node contents should be passed in
+        \DECvisit<nodename> <contents> \DECdepart<nodename>, and no
+        attribute handler should be called.
         """
+        # Passing the whole document or whole sections as parameters
+        # to \DN... or \DECattr causes LaTeX to run out of memory.
         return not isinstance(node, (nodes.document, nodes.section))
 
     def dispatch_visit(self, node):
@@ -710,17 +724,28 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
                             % self.node_name(node.parent))
                 for name, value in node.attlist():
                     if not isinstance(value, ListType) and not ':' in name:
-                        macro = r'\DcurrentN%sA%s' % (node_name, name)
+                        # For non-list and non-special (like
+                        # 'xml:preserve') attributes, set
+                        # \DEVcurrentN<nodename>A<attribute> to the
+                        # attribute value, so that the value of the
+                        # attribute is available in the node handler
+                        # and all children.
+                        macro = r'\DEVcurrentN%sA%s' % (node_name, name)
                         self.append(r'\def%s{%s}' % (
                             macro, self.encode(unicode(value), attval=name)))
+                        # Make the attribute undefined afterwards.
                         attribute_deleters.append(r'\let%s=\relax' % macro)
             self.context.append('\n'.join(attribute_deleters))
             if self.pass_contents(node):
+                # Call \DN<nodename>{<contents>}.
                 self.append(r'\DN%s{' % node_name)
                 self.context.append('}')
             else:
-                self.append(r'\Dvisit%s' % node_name)
-                self.context.append(r'\Ddepart%s' % node_name)
+                # Call \DECvisit<nodename> <contents>
+                # \DECdepart<nodename>.  (Maybe we should use LaTeX
+                # environments for this?)
+                self.append(r'\DECvisit%s' % node_name)
+                self.context.append(r'\DECdepart%s' % node_name)
             self.indentation_level += 1
             if not skip_attr:
                 self.propagate_attributes(node)
@@ -782,7 +807,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
             # Close attribute and node handler call (\DN...{...}).
             self.indentation_level -= 1
             self.append(self.context.pop() + self.context.pop())
-            # Delete \Dcurrent... attribute macros.
+            # Delete \DECcurrentN... attribute macros.
             self.append(self.context.pop())
             # Get next sibling.
             next_node = node.next_node(
@@ -794,7 +819,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
                  self.always_needs_space(next_node)):
                 if isinstance(node, nodes.paragraph) and isinstance(next_node, nodes.paragraph):
                     # Space between paragraphs.
-                    self.append(r'\Dparagraphspace')
+                    self.append(r'\DECparagraphspace')
                 else:
                     # One of the elements is not a paragraph.
-                    self.append(r'\Dauxiliaryspace')
+                    self.append(r'\DECauxiliaryspace')

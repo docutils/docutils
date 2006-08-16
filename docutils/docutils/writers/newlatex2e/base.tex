@@ -151,11 +151,11 @@
   % Space between block-level elements other than paragraphs.
   0.7\baselineskip plus 0.3\baselineskip minus 0.2\baselineskip%
 }
-\providecommand{\Dauxiliaryspace}{%
+\providecommand{\DECauxiliaryspace}{%
   \ifthenelse{\equal{\Dneedvspace}{true}}{\vspace{\Dblocklevelvspace}}{}%
   \par\noindent%
 }
-\providecommand{\Dparagraphspace}{\par}
+\providecommand{\DECparagraphspace}{\par}
 \providecommand{\Dneedvspace}{true}
 
 \providecommand{\DSlanguage}{%
@@ -313,7 +313,7 @@
 \providecommand{\Dtopictitle}[1]{%
   \Difinsidetoc{\vspace{1em}\par}{}%
   \noindent\Dformatboxtitle{#1}%
-  \ifthenelse{\equal{\Dhassubtitle}{false}}{\vspace{1em}}{\vspace{0.5em}}%
+  \ifthenelse{\equal{\DEVhassubtitle}{false}}{\vspace{1em}}{\vspace{0.5em}}%
   \par%
 }
 \providecommand{\Dtopicsubtitle}[1]{%
@@ -325,7 +325,7 @@
 \providecommand{\Dsidebarsubtitle}[1]{\Dtopicsubtitle{#1}}
 \providecommand{\Ddocumenttitle}[1]{%
   \begin{center}{\Huge#1}\end{center}%
-  \ifthenelse{\equal{\Dhassubtitle}{true}}{\vspace{0.1cm}}{\vspace{1cm}}%
+  \ifthenelse{\equal{\DEVhassubtitle}{true}}{\vspace{0.1cm}}{\vspace{1cm}}%
 }
 \providecommand{\Ddocumentsubtitle}[1]{%
   \begin{center}{\huge#1}\end{center}%
@@ -378,7 +378,6 @@
     }%
   }%
 }
-\providecommand{\Dhassubtitle}{false}
 \providecommand{\DNtitle}[1]{%
   % Dispatch to \D<parent>title.
   \csname D\DEVparent title\endcsname{#1}%
@@ -402,10 +401,10 @@
 \providecommand{\DNliteral}[1]{\textnhtt{#1}}
 \providecommand{\DNemphasis}[1]{\emph{#1}}
 \providecommand{\DNstrong}[1]{\textbf{#1}}
-\providecommand{\Dvisitdocument}{\begin{document}\noindent}
-\providecommand{\Ddepartdocument}{\end{document}}
+\providecommand{\DECvisitdocument}{\begin{document}\noindent}
+\providecommand{\DECdepartdocument}{\end{document}}
 \providecommand{\DNtopic}[1]{%
-  \ifthenelse{\equal{\DcurrentNtopicAcontents}{1}}{%
+  \ifthenelse{\equal{\DEVcurrentNtopicAcontents}{1}}{%
     \addtocounter{Dtoclevel}{1}%
     \par\noindent%
     #1%
@@ -422,7 +421,7 @@
 }
 
 \providecommand{\Dbullet}{}
-\providecommand{\Dsetbullet}[1]{\renewcommand{\Dbullet}{#1}}
+\providecommand{\DECsetbullet}[1]{\renewcommand{\Dbullet}{#1}}
 \providecommand{\DNbulletlist}[1]{%
   \Difinsidetoc{%
     \Dtocbulletlist{#1}%
@@ -438,11 +437,11 @@
       {%
         \par\addvspace{1em}\noindent%
         \sectfont%
-        #1\hfill\pageref{\DcurrentNlistitemAtocrefid}%
+        #1\hfill\pageref{\DEVcurrentNlistitemAtocrefid}%
       }%
     }{%
       \@dottedtocline{0}{\Dtocindent}{0em}{#1}{%
-        \pageref{\DcurrentNlistitemAtocrefid}%
+        \pageref{\DEVcurrentNlistitemAtocrefid}%
       }%
     }%
   }{%
@@ -453,11 +452,11 @@
 \Dprovidecounter{Dsectionlevel}{0}
 \providecommand{\Dvisitsectionhook}{}
 \providecommand{\Ddepartsectionhook}{}
-\providecommand{\Dvisitsection}{%
+\providecommand{\DECvisitsection}{%
   \addtocounter{Dsectionlevel}{1}%
   \Dvisitsectionhook%
 }
-\providecommand{\Ddepartsection}{%
+\providecommand{\DECdepartsection}{%
   \Ddepartsectionhook%
   \addtocounter{Dsectionlevel}{-1}%
 }
@@ -465,7 +464,7 @@
 % Using \_ will cause hyphenation after _ even in \textnhtt-typewriter
 % because the hyphenat package redefines \_.  So we use
 % \textunderscore here.
-\providecommand{\Dtextunderscore}{\textunderscore}
+\providecommand{\DECtextunderscore}{\textunderscore}
 
 \providecommand{\Dtextinlineliteralfirstspace}{{ }}
 \providecommand{\Dtextinlineliteralsecondspace}{{~}}
@@ -529,7 +528,7 @@
 \providecommand{\DAlastitem}[5]{#5\Dfinalstrut}
 
 \Dprovidelength{\Ditemsep}{0pt}
-\providecommand{\Dmakeenumeratedlist}[6]{%
+\providecommand{\DECmakeenumeratedlist}[6]{%
   % Make enumerated list.
   % Parameters:
   % - prefix
@@ -565,7 +564,7 @@
 % Single quote in literal mode.  \textquotesingle from package
 % textcomp has wrong width when using package ae, so we use a normal
 % single curly quote here.
-\providecommand{\Dtextliteralsinglequote}{'}
+\providecommand{\DECtextliteralsinglequote}{'}
 
 
 % "Tabular lists" are field lists and options lists (not definition
@@ -841,7 +840,8 @@
 }
 \providecommand{\Dthislabel}{}
 \providecommand{\DNlabel}[1]{%
-  \renewcommand{\Dthislabel}{#1}
+  % Footnote or citatation label.
+  \renewcommand{\Dthislabel}{#1}%
   \ifthenelse{\not\equal{\DEVsinglebackref}{}}{%
     \let\Doriginallabel=\Dthislabel%
     \def\Dthislabel{%
@@ -867,7 +867,7 @@
   % Treat like a footnote reference.
   \Dimplicitfootnotereference{\##1}{#2}%
 }
-\providecommand{\Dmultifootnotebacklink}[2]{%
+\providecommand{\DECmultifootnotebacklink}[2]{%
   % Create generated backlink, as in (1, 2).  Parameters:
   % 1. ID.
   % 2. Link text.
@@ -875,10 +875,10 @@
   \Dimplicitfootnotereference{\##1}{#2}%
 }
 \providecommand{\Dsinglecitationbacklink}[2]{\Dsinglefootnotebacklink{#1}{#2}}
-\providecommand{\Dmulticitationbacklink}[2]{\Dmultifootnotebacklink{#1}{#2}}
+\providecommand{\DECmulticitationbacklink}[2]{\DECmultifootnotebacklink{#1}{#2}}
 
 
-\providecommand{\Dmaketable}[2]{%
+\providecommand{\DECmaketable}[2]{%
   % Make table.  Parameters:
   % 1. Table spec (like "|p|p|").
   % 2. Table contents.
@@ -916,17 +916,17 @@
     }%
   }%
 }
-\providecommand{\Dcolspan}[2]{%
+\providecommand{\DECcolspan}[2]{%
   % Take care of the morecols attribute (but incremented by 1).
   &%
   \Dcompensatingmulticol{#1}{l|}{#2}%
 }
-\providecommand{\Dcolspanleft}[2]{%
+\providecommand{\DECcolspanleft}[2]{%
   % Like \Dmorecols, but called for the leftmost entries in a table
   % row.
   \Dcompensatingmulticol{#1}{|l|}{#2}%
 }
-\providecommand{\Dsubsequententry}[1]{%
+\providecommand{\DECsubsequententry}[1]{%
   &#1%
 }
 \providecommand{\DNentry}[1]{%
@@ -937,7 +937,7 @@
     \vspace{-1em}\vspace{-\parskip}\par%
   }{}%
   #1%
-  % No need to add an ampersand ("&"); that's done by \Dsubsequententry.
+  % No need to add an ampersand ("&"); that's done by \DECsubsequententry.
 }
 \providecommand{\DAtableheaderentry}[5]{\Dformattableheaderentry{#5}}
 \providecommand{\Dformattableheaderentry}[1]{{\bfseries#1}}
@@ -1015,7 +1015,7 @@
   % Insert image.  We treat the URI like a path here.
   \renewcommand{\Dimagepath}{\Dimagebase#3}%
   \Difdefined{DcurrentNimageAwidth}{%
-    \Dwidthimage{\DcurrentNimageAwidth}{\Dimagepath}%
+    \Dwidthimage{\DEVcurrentNimageAwidth}{\Dimagepath}%
   }{%
     \Dsimpleimage{\Dimagepath}%
   }%
@@ -1060,17 +1060,17 @@
 % Figures.
 \providecommand{\DNfigureAalign}[5]{%
   % Hack to make it work Right Now.
-  %\def\DcurrentNimageAwidth{\DcurrentNfigureAwidth}%
+  %\def\DEVcurrentNimageAwidth{\DEVcurrentNfigureAwidth}%
   %
-    %\def\DcurrentNimageAwidth{\linewidth}%
+    %\def\DEVcurrentNimageAwidth{\linewidth}%
     \DNimageAalign{#1}{#2}{#3}{#4}{%
       \begin{minipage}[b]{0.4\linewidth}#5\end{minipage}}%
-    %\let\DcurrentNimageAwidth=\relax%
+    %\let\DEVcurrentNimageAwidth=\relax%
   %
-  %\let\DcurrentNimageAwidth=\relax%
+  %\let\DEVcurrentNimageAwidth=\relax%
 }
 \providecommand{\DNcaption}[1]{\par\noindent{\slshape#1}}
-\providecommand{\DNlegend}[1]{\Dauxiliaryspace#1}
+\providecommand{\DNlegend}[1]{\DECauxiliaryspace#1}
 
 \providecommand{\DCborder}[1]{\fbox{#1}}
 % No padding between image and border.
@@ -1079,8 +1079,8 @@
 
 % Need to replace with language-specific stuff.  Maybe look at
 % csquotes.sty and ask the author for permission to use parts of it.
-\providecommand{\Dtextleftdblquote}{``}
-\providecommand{\Dtextrightdblquote}{''}
+\providecommand{\DECtextleftdblquote}{``}
+\providecommand{\DECtextrightdblquote}{''}
 
 % Table of contents:
 \Dprovidelength{\Dtocininitialsectnumwidth}{2.4em}
@@ -1127,11 +1127,11 @@
 }
 
 
-% For \Dpixelunit, the length value is pre-multiplied with 0.75, so by
+% For \DECpixelunit, the length value is pre-multiplied with 0.75, so by
 % specifying "pt" we get the same notion of "pixel" as graphicx.
-\providecommand{\Dpixelunit}{pt}
+\providecommand{\DECpixelunit}{pt}
 % Normally lengths are relative to the current linewidth.
-\providecommand{\Drelativeunit}{\linewidth}
+\providecommand{\DECrelativeunit}{\linewidth}
 
 
 % ACTION: These commands actually *do* something.
