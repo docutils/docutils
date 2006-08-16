@@ -49,6 +49,39 @@ totest['compound'] = ((writer_aux.Compound,), [
 """],
 ])
 
+totest['admonitions'] = ((writer_aux.Admonitions,), [
+["""\
+.. note::
+
+   These are the note contents.
+
+   Another paragraph.
+""",
+"""\
+<document source="test data">
+    <admonition classes="note">
+        <title>
+            Note
+        <paragraph>
+            These are the note contents.
+        <paragraph>
+            Another paragraph.
+"""],
+["""\
+.. admonition:: Generic
+
+   Admonitions contents...
+""",
+"""\
+<document source="test data">
+    <admonition classes="admonition-generic admonition">
+        <title>
+            Generic
+        <paragraph>
+            Admonitions contents...
+"""],
+])
+
 
 if __name__ == '__main__':
     import unittest

@@ -27,6 +27,7 @@ except ImportError:
     Image = None
 import docutils
 from docutils import frontend, nodes, utils, writers, languages
+from docutils.transforms import writer_aux
 
 
 class Writer(writers.Writer):
@@ -143,6 +144,9 @@ class Writer(writers.Writer):
         'title', 'subtitle', 'header', 'footer', 'meta', 'fragment',
         'html_prolog', 'html_head', 'html_title', 'html_subtitle',
         'html_body')
+
+    def get_transforms(self):
+        return writers.Writer.get_transforms(self) + [writer_aux.Admonitions]
 
     def __init__(self):
         writers.Writer.__init__(self)
@@ -458,11 +462,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('\n</pre>\n')
         self.depart_docinfo_item()
 
-    def visit_admonition(self, node, name=''):
-        self.body.append(self.start_tag_with_title(
-            node, 'div', CLASS=(name or 'admonition')))
-        if name:
-            node.insert(0, nodes.title(name, self.language.labels[name]))
+    def visit_admonition(self, node):
+        self.body.append(self.start_tag_with_title(node, 'div'))
         self.set_first_last(node)
 
     def depart_admonition(self, node=None):
@@ -553,12 +554,6 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_caption(self, node):
         self.body.append('</p>\n')
 
-    def visit_caution(self, node):
-        self.visit_admonition(node, 'caution')
-
-    def depart_caution(self, node):
-        self.depart_admonition()
-
     def visit_citation(self, node):
         self.body.append(self.starttag(node, 'table',
                                        CLASS='docutils citation',
@@ -640,12 +635,6 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_copyright(self, node):
         self.depart_docinfo_item()
-
-    def visit_danger(self, node):
-        self.visit_admonition(node, 'danger')
-
-    def depart_danger(self, node):
-        self.depart_admonition()
 
     def visit_date(self, node):
         self.visit_docinfo_item(node, 'date')
@@ -798,12 +787,6 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_enumerated_list(self, node):
         self.compact_simple, self.compact_p = self.context.pop()
         self.body.append('</ol>\n')
-
-    def visit_error(self, node):
-        self.visit_admonition(node, 'error')
-
-    def depart_error(self, node):
-        self.depart_admonition()
 
     def visit_field(self, node):
         self.body.append(self.starttag(node, 'tr', '', CLASS='field'))
@@ -973,12 +956,6 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.header.extend(header)
         del self.body[start:]
 
-    def visit_hint(self, node):
-        self.visit_admonition(node, 'hint')
-
-    def depart_hint(self, node):
-        self.depart_admonition()
-
     def visit_image(self, node):
         atts = {}
         atts['src'] = node['uri']
@@ -1042,12 +1019,6 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_image(self, node):
         self.body.append(self.context.pop())
-
-    def visit_important(self, node):
-        self.visit_admonition(node, 'important')
-
-    def depart_important(self, node):
-        self.depart_admonition()
 
     def visit_inline(self, node):
         self.body.append(self.starttag(node, 'span', ''))
@@ -1126,12 +1097,6 @@ class HTMLTranslator(nodes.NodeVisitor):
     def add_meta(self, tag):
         self.meta.append(tag)
         self.head.append(tag)
-
-    def visit_note(self, node):
-        self.visit_admonition(node, 'note')
-
-    def depart_note(self, node):
-        self.depart_admonition()
 
     def visit_option(self, node):
         if self.context[-1]:
@@ -1471,12 +1436,6 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_thead(self, node):
         self.body.append('</thead>\n')
 
-    def visit_tip(self, node):
-        self.visit_admonition(node, 'tip')
-
-    def depart_tip(self, node):
-        self.depart_admonition()
-
     def visit_title(self, node, move_ids=1):
         """Only 6 section levels are supported by HTML."""
         check_id = 0
@@ -1568,12 +1527,6 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_version(self, node):
         self.depart_docinfo_item()
-
-    def visit_warning(self, node):
-        self.visit_admonition(node, 'warning')
-
-    def depart_warning(self, node):
-        self.depart_admonition()
 
     def unimplemented_visit(self, node):
         raise NotImplementedError('visiting unimplemented node type: %s'

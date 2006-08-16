@@ -83,7 +83,8 @@ class Writer(writers.Writer):
     """Final translated form of `document`."""
 
     def get_transforms(self):
-        return writers.Writer.get_transforms(self) + [writer_aux.Compound]
+        return writers.Writer.get_transforms(self) + [
+            writer_aux.Compound, writer_aux.Admonitions]
 
     def __init__(self):
         writers.Writer.__init__(self)
