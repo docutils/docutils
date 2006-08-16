@@ -7,9 +7,13 @@
 
 % Naming conventions:
 % \D...: All macros introduced by the Docutils LaTeX writer.
-% \Dname: Generic variable or function.
 % \DSname: Setup function (called at the bottom of this stylesheet).
 % \DNnode{contents}: Handler for Docutils document tree node `node`.
+% \DEVname: External variable.  \providecommand and \renewcommand are called on
+%           this by the Python module.
+% \DECname: External command.  It is called by the Python module and must be
+%           defined in this stylesheet.
+% \Dname: Generic variable or function.
 
 % Having to intersperse code with \makeatletter-\makeatother pairs is very
 % annoying, so we call \makeatletter at the top and \makeatother at the
@@ -156,7 +160,7 @@
 
 \providecommand{\DSlanguage}{%
   % Set up babel.
-  \usepackage[\Dlanguagebabel]{babel}
+  \usepackage[\DEVlanguagebabel]{babel}
 }
 
 \providecommand{\Difdefined}[3]{\@ifundefined{#1}{#3}{#2}}
@@ -177,7 +181,7 @@
   }%
 }
 
-\providecommand{\Dattr}[5]{%
+\providecommand{\DECattr}[5]{%
   % Global attribute dispatcher, called inside the document tree.
   % Parameters:
   % 1. Attribute number.
@@ -301,7 +305,7 @@
 % ---------- End of Link Handling ----------
 
 \providecommand{\DNparagraph}[1]{%
-  \ifthenelse{\equal{\Dparagraphindented}{true}}{\indent}{\noindent}%
+  \ifthenelse{\equal{\DEVparagraphindented}{true}}{\indent}{\noindent}%
   #1%
 }
 \providecommand{\Dformatboxtitle}[1]{{\Large\textbf{#1}}}
@@ -333,7 +337,7 @@
 \providecommand{\Dbookmarksectiontitle}[1]{%
   % Return text suitable for use in \section*, \subsection*, etc.,
   % containing a PDF bookmark.  Parameter:  The title (as node tree).
-  \Draisedlink{\Dpdfbookmark{\Dtitleastext}}%
+  \Draisedlink{\Dpdfbookmark{\DEVtitleastext}}%
   #1%
 }
 \providecommand{\Dsectiontitlehook}[1]{#1}
@@ -376,10 +380,12 @@
 }
 \providecommand{\Dhassubtitle}{false}
 \providecommand{\DNtitle}[1]{%
-  \csname D\Dparent title\endcsname{#1}%
+  % Dispatch to \D<parent>title.
+  \csname D\DEVparent title\endcsname{#1}%
 }
 \providecommand{\DNsubtitle}[1]{%
-  \csname D\Dparent subtitle\endcsname{#1}%
+  % Dispatch to \D<parent>subtitle.
+  \csname D\DEVparent subtitle\endcsname{#1}%
 }
 
 \providecommand{\DNliteralblock}[1]{%
@@ -716,7 +722,7 @@
 \providecommand{\Dlineblockindentation}{2.5em}
 \providecommand{\DNlineblock}[1]{%
   \Dmakelistenvironment{}{%
-    \ifthenelse{\equal{\Dparent}{lineblock}}{%
+    \ifthenelse{\equal{\DEVparent}{lineblock}}{%
       % Parent is a line block, so indent.
       \setlength{\leftmargin}{\Dlineblockindentation}%
     }{%
@@ -836,23 +842,23 @@
 \providecommand{\Dthislabel}{}
 \providecommand{\DNlabel}[1]{%
   \renewcommand{\Dthislabel}{#1}
-  \ifthenelse{\not\equal{\Dsinglebackref}{}}{%
+  \ifthenelse{\not\equal{\DEVsinglebackref}{}}{%
     \let\Doriginallabel=\Dthislabel%
     \def\Dthislabel{%
-      \Dsinglefootnotebacklink{\Dsinglebackref}{\Doriginallabel}%
+      \Dsinglefootnotebacklink{\DEVsinglebackref}{\Doriginallabel}%
     }%
   }{}%
-  \ifthenelse{\equal{\Dparent}{footnote}}{%
+  \ifthenelse{\equal{\DEVparent}{footnote}}{%
     % Footnote label.
     \Dformatfootnotelabel{\Dthislabel}%
   }{%
-    \ifthenelse{\equal{\Dparent}{citation}}{%
+    \ifthenelse{\equal{\DEVparent}{citation}}{%
       % Citation label.
       \Dformatcitationlabel{\Dthislabel}%
     }{}%
   }%
   % If there are multiple backrefs, add them now.
-  \Dformatmultiplebackrefs{\Dmultiplebackrefs}%
+  \Dformatmultiplebackrefs{\DEVmultiplebackrefs}%
 }
 \providecommand{\Dsinglefootnotebacklink}[2]{%
   % Create normal backlink of a footnote label.  Parameters:
