@@ -107,7 +107,7 @@ class LaTeXException(Exception):
 
 class SkipAttrParentLaTeX(LaTeXException):
     """
-    Do not generate ``\Dattr`` and ``\renewcommand{\Dparent}{...}`` for this
+    Do not generate ``\DECattr`` and ``\renewcommand{\DEVparent}{...}`` for this
     node.
 
     To be raised from ``before_...`` methods.
@@ -116,7 +116,7 @@ class SkipAttrParentLaTeX(LaTeXException):
 
 class SkipParentLaTeX(LaTeXException):
     """
-    Do not generate ``\renewcommand{\DNparent}{...}`` for this node.
+    Do not generate ``\renewcommand{\DEVparent}{...}`` for this node.
 
     To be raised from ``before_...`` methods.
     """
@@ -199,8 +199,8 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         a('')
         a('% Docutils settings:')
         lang = self.settings.language_code or ''
-        a(r'\providecommand{\Dlanguageiso}{%s}' % lang)
-        a(r'\providecommand{\Dlanguagebabel}{%s}' % self.iso639_to_babel.get(
+        a(r'\providecommand{\DEVlanguageiso}{%s}' % lang)
+        a(r'\providecommand{\DEVlanguagebabel}{%s}' % self.iso639_to_babel.get(
             lang, self.iso639_to_babel.get(lang.split('_')[0], '')))
         a('')
         if self.user_stylesheet_path:
@@ -214,14 +214,10 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
             a(r'\providecommand{\DN%s}[1]{#1}' % node_name.replace('_', ''))
         a('')
         a('% Auxiliary definitions:')
-        a(r'\providecommand{\Dsetattr}[2]{}')
-        a(r'\providecommand{\Dparent}{} % variable')
-        a(r'\providecommand{\Dattr}[5]{#5}')
-        a(r'\providecommand{\Dattrlen}{} % variable')
-        a(r'\providecommand{\Dtitleastext}{x} % variable')
-        a(r'\providecommand{\Dsinglebackref}{} % variable')
-        a(r'\providecommand{\Dmultiplebackrefs}{} % variable')
-        a(r'\providecommand{\Dparagraphindented}{false} % variable')
+        for attr in (r'\DEVparent \DEVattrlen \DEVtitleastext '
+                     r'\DEVsinglebackref \DEVmultiplebackrefs').split():
+            a(r'\providecommand{%s}{DOCUTILSUNINITIALIZEDVARIABLE}' % attr)
+        a(r'\providecommand{\DEVparagraphindented}{false}')
         a('\n\n')
 
     unicode_map = unicode_map.unicode_map # comprehensive Unicode map
@@ -377,11 +373,11 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         return index > 0
 
     def before_paragraph(self, node):
-        self.append(r'\renewcommand{\Dparagraphindented}{%s}'
+        self.append(r'\renewcommand{\DEVparagraphindented}{%s}'
                     % (self.is_indented(node) and 'true' or 'false'))
 
     def before_title(self, node):
-        self.append(r'\renewcommand{\Dtitleastext}{%s}'
+        self.append(r'\renewcommand{\DEVtitleastext}{%s}'
                     % self.encode(node.astext()))
         self.append(r'\renewcommand{\Dhassubtitle}{%s}'
                     % ((len(node.parent) > 2 and
@@ -492,23 +488,23 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
     def before_raw(self, node):
         if 'latex' in node.get('format', '').split():
             # We're inserting the text in before_raw and thus outside
-            # of \DN... and \Dattr in order to make grouping with
+            # of \DN... and \DECattr in order to make grouping with
             # curly brackets work.
             self.append(node.astext())
         raise nodes.SkipChildren
 
     def process_backlinks(self, node, type):
-        self.append(r'\renewcommand{\Dsinglebackref}{}')
-        self.append(r'\renewcommand{\Dmultiplebackrefs}{}')
+        self.append(r'\renewcommand{\DEVsinglebackref}{}')
+        self.append(r'\renewcommand{\DEVmultiplebackrefs}{}')
         if len(node['backrefs']) > 1:
             refs = []
             for i in range(len(node['backrefs'])):
                 refs.append(r'\Dmulti%sbacklink{%s}{%s}'
                             % (type, node['backrefs'][i], i + 1))
-            self.append(r'\renewcommand{\Dmultiplebackrefs}{(%s){ }}'
+            self.append(r'\renewcommand{\DEVmultiplebackrefs}{(%s){ }}'
                         % ', '.join(refs))
         elif len(node['backrefs']) == 1:
-            self.append(r'\renewcommand{\Dsinglebackref}{%s}'
+            self.append(r'\renewcommand{\DEVsinglebackref}{%s}'
                         % node['backrefs'][0])
 
     def visit_footnote(self, node):
@@ -595,7 +591,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         if isinstance(node.parent.parent, nodes.thead):
             node['tableheaderentry'] = 'true'
 
-        # Don't add \renewcommand{\Dparent}{...} because there must
+        # Don't add \renewcommand{\DEVparent}{...} because there must
         # not be any non-expandable commands in front of \multicolumn.
         raise SkipParentLaTeX
 
@@ -630,7 +626,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
             return cmp(a1, a2)
 
     def propagate_attributes(self, node):
-        # Propagate attributes using \Dattr macros.
+        # Propagate attributes using \DECattr macros.
         node_name = self.node_name(node)
         attlist = []
         if isinstance(node, nodes.Element):
@@ -643,16 +639,16 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         pass_contents = self.pass_contents(node)
         for key, value in attlist:
             if isinstance(value, ListType):
-                self.append(r'\renewcommand{\Dattrlen}{%s}' % len(value))
+                self.append(r'\renewcommand{\DEVattrlen}{%s}' % len(value))
                 for i in range(len(value)):
-                    self.append(r'\Dattr{%s}{%s}{%s}{%s}{' %
+                    self.append(r'\DECattr{%s}{%s}{%s}{%s}{' %
                                 (i+1, key, self.encode(value[i], attval=key),
                                  node_name))
                     if not pass_contents:
                         self.append('}')
                 numatts += len(value)
             else:
-                self.append(r'\Dattr{}{%s}{%s}{%s}{' %
+                self.append(r'\DECattr{}{%s}{%s}{%s}{' %
                             (key, self.encode(unicode(value), attval=key),
                              node_name))
                 if not pass_contents:
@@ -681,7 +677,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
     def pass_contents(self, node):
         r"""
         Return true if the node contents should be passed in
-        parameters of \DN... and \Dattr.
+        parameters of \DN... and \DECattr.
         """
         return not isinstance(node, (nodes.document, nodes.section))
 
@@ -710,7 +706,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
             # attribute_deleters will be appended to self.context.
             attribute_deleters = []
             if not skip_parent and not isinstance(node, nodes.document):
-                self.append(r'\renewcommand{\Dparent}{%s}'
+                self.append(r'\renewcommand{\DEVparent}{%s}'
                             % self.node_name(node.parent))
                 for name, value in node.attlist():
                     if not isinstance(value, ListType) and not ':' in name:
