@@ -56,6 +56,12 @@ Changes Since 0.4
     object-oriented directive interface.  Errors are now (mostly)
     thrown using the new ``DirectiveError`` class.
 
+* docutils/transforms/writer_aux/:
+
+  - Added ``Admonitions`` transform to transform specific admonitions
+    (like ``note``, ``warning``, etc.) into generic admonitions with a
+    localized title.
+
 * docutils/writers/html4css1/__init__.py:
 
   - Moved template functionality from the PEP/HTML writer here.

@@ -69,8 +69,6 @@ peps.PEPZero                    peps.Headers (t/p)            760
 
 components.Filter               "meta" (d/p)                  780
 
-writer_aux.Compound             newlatex2e (w)                810
-
 universal.Decorations           Reader (r)                    820
 
 misc.Transitions                standalone (r), pep (r)       830
@@ -84,6 +82,11 @@ universal.Messages              Writer (w)                    860
 universal.FilterMessages        Writer (w)                    870
 
 universal.TestMessages          DocutilsTestSupport           880
+
+writer_aux.Compound             newlatex2e (w)                910
+
+writer_aux.Admonitions          html4css1 (w),                920
+                                newlatex2e (w)
 
 misc.CallBack                   n/a                           990
 ==============================  ============================  ========

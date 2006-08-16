@@ -339,6 +339,9 @@
   \ifthenelse{\equal{\DEVhassubtitle}{false}}{\vspace{1em}}{\vspace{0.5em}}%
   \par%
 }
+\providecommand{\Dadmonitiontitle}[1]{%
+  \Dtopictitle{#1}%
+}
 \providecommand{\Dtopicsubtitle}[1]{%
   \noindent\Dformatboxsubtitle{#1}%
   \vspace{1em}%
@@ -436,6 +439,9 @@
     \par\noindent%
     \Dmakebox{#1}%
   }%
+}
+\providecommand{\DNadmonition}[1]{%
+  \DNtopic{#1}%
 }
 \providecommand{\Dformatrubric}[1]{\textbf{#1}}
 \Dprovidelength{\Dprerubricspace}{0.3em}
