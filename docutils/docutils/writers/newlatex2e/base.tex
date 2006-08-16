@@ -6,14 +6,24 @@
 % http://docutils.python-hosting.com/wiki/NewLatex
 
 % Naming conventions:
-% \D...: All macros introduced by the Docutils LaTeX writer.
-% \DSname: Setup function (called at the bottom of this stylesheet).
-% \DNnode{contents}: Handler for Docutils document tree node `node`.
-% \DEVname: External variable.  \providecommand and \renewcommand are called on
-%           this by the Python module.
-% \DECname: External command.  It is called by the Python module and must be
-%           defined in this stylesheet.
-% \Dname: Generic variable or function.
+% All uppercase letters in macro names have a specific meaning.
+% \D...: All macros introduced by the Docutils LaTeX writer start with "D".
+% \DS<name>: Setup function (called at the bottom of this stylesheet).
+% \DN<nodename>{<contents>}: Handler for Docutils document tree node `node`; called by
+%                            the Python module.
+% \DEV<name>: External variable, set by the Python module.
+% \DEC<name>: External command.  It is called by the Python module and must be
+%             defined in this stylesheet.
+% \DN<nodename>A<attribute>{<number>}{<attribute>}{<value>}{<nodename>}{<contents>}:
+%     Attribute handler for `attribute` set on nodes of type `nodename`.
+%     See below for a discussion of attribute handlers.
+% \DA<attribute>{<number>}{<attribute>}{<value>}{<nodename>}{<contents>}:
+%     Attribute handler for all `attribute`.  Called only when no specific
+%     \DN<nodename>A<attribute> handler is defined.
+% \D<name>: Generic variable or function.
+
+% Attribute handlers:
+% TODO
 
 % Having to intersperse code with \makeatletter-\makeatother pairs is very
 % annoying, so we call \makeatletter at the top and \makeatother at the
@@ -190,10 +200,14 @@
   % 4. Node name.
   % 5. Node contents.
   \Difdefined{DN#4A#2}{%
+    % Dispatch to \DN<nodename>A<attribute>.
     \csname DN#4A#2\endcsname{#1}{#2}{#3}{#4}{#5}%
   }{\Difdefined{DA#2}{%
+    % Otherwise dispatch to \DA<attribute>.
     \csname DA#2\endcsname{#1}{#2}{#3}{#4}{#5}%
-  }{#5%
+  }{%
+    % Otherwise simply run the contents without calling a handler.
+    #5%
   }}%
 }
 
