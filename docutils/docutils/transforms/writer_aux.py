@@ -59,13 +59,13 @@ class Admonitions(Transform):
             <paragraph>
                  Note contents ...
 
-    into a generic admonition, like this::
+    into generic admonitions, like this::
 
-    <admonition classes="note">
-        <title>
-            Note
-        <paragraph>
-            Note contents...
+        <admonition classes="note">
+            <title>
+                Note
+            <paragraph>
+                Note contents ...
 
     The admonition title is localized.
     """
