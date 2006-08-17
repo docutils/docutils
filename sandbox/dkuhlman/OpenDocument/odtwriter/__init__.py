@@ -1,0 +1,843 @@
+
+"""
+Open Document Format (ODF) Writer.
+
+"""
+
+VERSION = '1.0a'
+
+__docformat__ = 'reStructuredText'
+
+
+import sys
+import os
+import os.path
+import tempfile
+import zipfile
+from xml.dom import minidom
+import codecs
+import time
+import re
+from types import ListType
+try:
+    import Image                        # check for the Python Imaging Library
+except ImportError:
+    Image = None
+import docutils
+from docutils import frontend, nodes, utils, writers, languages
+
+
+ElementTree = None
+try:
+    from lxml import etree
+    #print '*** using lxml'
+except ImportError, e:
+    try:
+        from elementtree import ElementTree as etree
+        #print '*** using ElementTree'
+    except ImportError, e:
+        print '***'
+        print '*** Error: Must install either ElementTree or lxml.'
+        print '***'
+        raise
+
+
+from IPython.Shell import IPShellEmbed
+args = ['-pdb', '-pi1', 'In <\\#>: ', '-pi2', '   .\\D.: ',
+    '-po', 'Out<\\#>: ', '-nosep']
+ipshell = IPShellEmbed(args,
+    banner = 'Entering IPython.  Press Ctrl-D to exit.',
+    exit_msg = 'Leaving Interpreter, back to program.')
+
+
+#
+# Constants and globals
+
+SPACES_PATTERN = re.compile(r'( +)')
+TABS_PATTERN = re.compile(r'(\t+)')
+
+
+CONTENT_NAMESPACE_DICT = {
+    'office:version': '1.0',
+    'xmlns:chart': 'urn:oasis:names:tc:opendocument:xmlns:chart:1.0',
+    'xmlns:dc': 'http://purl.org/dc/elements/1.1/',
+    'xmlns:dom': 'http://www.w3.org/2001/xml-events',
+    'xmlns:dr3d': 'urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0',
+    'xmlns:draw': 'urn:oasis:names:tc:opendocument:xmlns:drawing:1.0',
+    'xmlns:fo': 'urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0',
+    'xmlns:form': 'urn:oasis:names:tc:opendocument:xmlns:form:1.0',
+    'xmlns:math': 'http://www.w3.org/1998/Math/MathML',
+    'xmlns:meta': 'urn:oasis:names:tc:opendocument:xmlns:meta:1.0',
+    'xmlns:number': 'urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0',
+    'xmlns:office': 'urn:oasis:names:tc:opendocument:xmlns:office:1.0',
+    'xmlns:ooo': 'http://openoffice.org/2004/office',
+    'xmlns:oooc': 'http://openoffice.org/2004/calc',
+    'xmlns:ooow': 'http://openoffice.org/2004/writer',
+    'xmlns:script': 'urn:oasis:names:tc:opendocument:xmlns:script:1.0',
+    'xmlns:style': 'urn:oasis:names:tc:opendocument:xmlns:style:1.0',
+    'xmlns:svg': 'urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0',
+    'xmlns:table': 'urn:oasis:names:tc:opendocument:xmlns:table:1.0',
+    'xmlns:text': 'urn:oasis:names:tc:opendocument:xmlns:text:1.0',
+    'xmlns:xforms': 'http://www.w3.org/2002/xforms',
+    'xmlns:xlink': 'http://www.w3.org/1999/xlink',
+    'xmlns:xsd': 'http://www.w3.org/2001/XMLSchema',
+    'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+    }
+
+STYLES_NAMESPACE_DICT = {
+    'office:version': '1.0',
+    'xmlns:chart': 'urn:oasis:names:tc:opendocument:xmlns:chart:1.0',
+    'xmlns:dc': 'http://purl.org/dc/elements/1.1/',
+    'xmlns:dom': 'http://www.w3.org/2001/xml-events',
+    'xmlns:dr3d': 'urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0',
+    'xmlns:draw': 'urn:oasis:names:tc:opendocument:xmlns:drawing:1.0',
+    'xmlns:fo': 'urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0',
+    'xmlns:form': 'urn:oasis:names:tc:opendocument:xmlns:form:1.0',
+    'xmlns:math': 'http://www.w3.org/1998/Math/MathML',
+    'xmlns:meta': 'urn:oasis:names:tc:opendocument:xmlns:meta:1.0',
+    'xmlns:number': 'urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0',
+    'xmlns:office': 'urn:oasis:names:tc:opendocument:xmlns:office:1.0',
+    'xmlns:ooo': 'http://openoffice.org/2004/office',
+    'xmlns:oooc': 'http://openoffice.org/2004/calc',
+    'xmlns:ooow': 'http://openoffice.org/2004/writer',
+    'xmlns:script': 'urn:oasis:names:tc:opendocument:xmlns:script:1.0',
+    'xmlns:style': 'urn:oasis:names:tc:opendocument:xmlns:style:1.0',
+    'xmlns:svg': 'urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0',
+    'xmlns:table': 'urn:oasis:names:tc:opendocument:xmlns:table:1.0',
+    'xmlns:text': 'urn:oasis:names:tc:opendocument:xmlns:text:1.0',
+    'xmlns:xlink': 'http://www.w3.org/1999/xlink',
+    }
+
+MANIFEST_NAMESPACE_DICT = {
+    'xmlns:manifest': 'urn:oasis:names:tc:opendocument:xmlns:manifest:1.0',
+}
+
+META_NAMESPACE_DICT = {
+    'office:version': '1.0',
+    'xmlns:dc': 'http://purl.org/dc/elements/1.1/',
+    'xmlns:meta': 'urn:oasis:names:tc:opendocument:xmlns:meta:1.0',
+    'xmlns:office': 'urn:oasis:names:tc:opendocument:xmlns:office:1.0',
+    'xmlns:ooo': 'http://openoffice.org/2004/office',
+    'xmlns:xlink': 'http://www.w3.org/1999/xlink',
+}
+
+MIME_TYPE = 'application/vnd.oasis.opendocument.text'
+
+
+class Writer(writers.Writer):
+
+    supported = ('html', 'html4css1', 'xhtml')
+    """Formats this writer supports."""
+
+    default_stylesheet = 'styles.odt'
+
+    default_stylesheet_path = utils.relative_path(
+        os.path.join(os.getcwd(), 'dummy'),
+        os.path.join(os.path.dirname(__file__), default_stylesheet))
+
+    default_template = 'template.txt'
+
+    default_template_path = utils.relative_path(
+        os.path.join(os.getcwd(), 'dummy'),
+        os.path.join(os.path.dirname(__file__), default_template))
+
+    settings_spec = (
+        'ODF-Specific Options',
+        None,
+        (('Specify the template file (UTF-8 encoded).  Default is "%s".'
+          % default_template_path,
+          ['--template'],
+          {'default': default_template_path, 'metavar': '<file>'}),
+        ('Specify a stylesheet URL, used verbatim.  Overrides '
+          '--stylesheet-path.',
+          ['--stylesheet'],
+          {'metavar': '<URL>', 'overrides': 'stylesheet_path'}),
+         ('Specify a stylesheet file, relative to the current working '
+          'directory.  The path is adjusted relative to the output ODF '
+          'file.  Overrides --stylesheet.  Default: "%s"'
+          % default_stylesheet_path,
+          ['--stylesheet-path'],
+          {'metavar': '<file>', 'overrides': 'stylesheet',
+           'default': default_stylesheet_path}),
+##         ('Embed the stylesheet in the output HTML file.  The stylesheet '
+##          'file must be accessible during processing (--stylesheet-path is '
+##          'recommended).  This is the default.',
+##          ['--embed-stylesheet'],
+##          {'default': 1, 'action': 'store_true',
+##           'validator': frontend.validate_boolean}),
+##         ('Link to the stylesheet in the output HTML file.  Default: '
+##          'embed the stylesheet, do not link to it.',
+##          ['--link-stylesheet'],
+##          {'dest': 'embed_stylesheet', 'action': 'store_false',
+##           'validator': frontend.validate_boolean}),
+         ('Specify the initial header level.  Default is 1 for "<h1>".  '
+          'Does not affect document title & subtitle (see --no-doc-title).',
+          ['--initial-header-level'],
+          {'choices': '1 2 3 4 5 6'.split(), 'default': '1',
+           'metavar': '<level>'}),
+         ('Specify the maximum width (in characters) for one-column field '
+          'names.  Longer field names will span an entire row of the table '
+          'used to render the field list.  Default is 14 characters.  '
+          'Use 0 for "no limit".',
+          ['--field-name-limit'],
+          {'default': 14, 'metavar': '<level>',
+           'validator': frontend.validate_nonnegative_int}),
+         ('Specify the maximum width (in characters) for options in option '
+          'lists.  Longer options will span an entire row of the table used '
+          'to render the option list.  Default is 14 characters.  '
+          'Use 0 for "no limit".',
+          ['--option-limit'],
+          {'default': 14, 'metavar': '<level>',
+           'validator': frontend.validate_nonnegative_int}),
+         ('Format for footnote references: one of "superscript" or '
+          '"brackets".  Default is "brackets".',
+          ['--footnote-references'],
+          {'choices': ['superscript', 'brackets'], 'default': 'brackets',
+           'metavar': '<format>',
+           'overrides': 'trim_footnote_reference_space'}),
+         ('Format for block quote attributions: one of "dash" (em-dash '
+          'prefix), "parentheses"/"parens", or "none".  Default is "dash".',
+          ['--attribution'],
+          {'choices': ['dash', 'parentheses', 'parens', 'none'],
+           'default': 'dash', 'metavar': '<format>'}),
+         ('Remove extra vertical whitespace between items of "simple" bullet '
+          'lists and enumerated lists.  Default: enabled.',
+          ['--compact-lists'],
+          {'default': 1, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Disable compact simple bullet and enumerated lists.',
+          ['--no-compact-lists'],
+          {'dest': 'compact_lists', 'action': 'store_false'}),
+         ('Remove extra vertical whitespace between items of simple field '
+          'lists.  Default: enabled.',
+          ['--compact-field-lists'],
+          {'default': 1, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Disable compact simple field lists.',
+          ['--no-compact-field-lists'],
+          {'dest': 'compact_field_lists', 'action': 'store_false'}),
+         ('Omit the XML declaration.  Use with caution.',
+          ['--no-xml-declaration'],
+          {'dest': 'xml_declaration', 'default': 1, 'action': 'store_false',
+           'validator': frontend.validate_boolean}),
+         ('Obfuscate email addresses to confuse harvesters while still '
+          'keeping email links usable with standards-compliant browsers.',
+          ['--cloak-email-addresses'],
+          {'action': 'store_true', 'validator': frontend.validate_boolean}),
+         ('Specify transistion (separator) character string.  '
+          'Default: "**********"',
+          ['--transition-string'],
+          {'default': '**********', 'metavar': '<string>', }
+          ),
+        ))
+
+    settings_defaults = {
+        'output_encoding_error_handler': 'xmlcharrefreplace',
+        }
+
+    relative_path_settings = (
+        'stylesheet_path',
+        )
+
+    config_section = 'opendocument odf writer'
+    config_section_dependencies = (
+        'writers',
+        )
+
+    def __init__(self):
+        writers.Writer.__init__(self)
+        self.translator_class = ODFTranslator
+
+    def translate(self):
+        #import pdb; pdb.set_trace()
+        self.settings = self.document.settings
+        self.visitor = self.translator_class(self.document)
+        self.document.walkabout(self.visitor)
+        self.assemble_my_parts()
+        self.output = self.parts['whole']
+
+    def assemble_my_parts(self):
+        """Assemble the `self.parts` dictionary.  Extend in subclasses.
+        """
+        #ipshell('At assemble_parts')
+        writers.Writer.assemble_parts(self)
+        f = tempfile.NamedTemporaryFile()
+        zfile = zipfile.ZipFile(f, 'w', zipfile.ZIP_DEFLATED)
+        zfile.writestr('content.xml', self.visitor.content_astext())
+        #zfile.writestr('styles.xml', self.visitor.styles_astext())
+        zfile.writestr('mimetype', MIME_TYPE)
+        s1 = self.create_manifest()
+        zfile.writestr('META-INF/manifest.xml', s1)
+        s1 = self.create_meta()
+        zfile.writestr('meta.xml', s1)
+        s1 = self.get_stylesheet()
+        zfile.writestr('styles.xml', s1)
+        zfile.close()
+        f.seek(0)
+        whole = f.read()
+        f.close()
+        self.parts['whole'] = whole
+        self.parts['encoding'] = self.document.settings.output_encoding
+        self.parts['version'] = docutils.__version__
+
+    def get_stylesheet(self):
+        """Retrieve the stylesheet from either a .xml file or from
+        a .odt (zip) file.  Return the content as a string.
+        """
+        stylespath = utils.get_stylesheet_reference(self.settings)
+        ext = os.path.splitext(stylespath)[1]
+        if ext == '.xml':
+            stylesfile = open(stylespath, 'r')
+            s1 = stylesfile.read()
+            stylesfile.close()
+        elif ext == '.odt':
+            zfile = zipfile.ZipFile(stylespath, 'r')
+            s1 = zfile.read('styles.xml')
+            zfile.close()
+        else:
+            raise RuntimeError, 'stylesheet path must be .odt or .xml file.'
+        return s1
+
+    def assemble_parts(self):
+        pass
+
+    def create_manifest(self):
+        root = etree.Element('manifest:manifest',
+            attrib=MANIFEST_NAMESPACE_DICT)
+        doc = etree.ElementTree(root)
+        etree.SubElement(root, 'manifest:file-entry', attrib={
+            'manifest:media-type': 'application/vnd.oasis.opendocument.text',
+            'manifest:full-path': '/',
+            })
+        etree.SubElement(root, 'manifest:file-entry', attrib={
+            'manifest:media-type': 'text/xml',
+            'manifest:full-path': 'content.xml',
+            })
+        etree.SubElement(root, 'manifest:file-entry', attrib={
+            'manifest:media-type': 'text/xml',
+            'manifest:full-path': 'styles.xml',
+            })
+        etree.SubElement(root, 'manifest:file-entry', attrib={
+            'manifest:media-type': 'text/xml',
+            'manifest:full-path': 'meta.xml',
+            })
+        s1 = etree.tostring(doc)
+        doc = minidom.parseString(s1)
+        s1 = doc.toprettyxml('  ')
+        return s1
+
+    def create_meta(self):
+        root = etree.Element('office:document-meta', attrib=META_NAMESPACE_DICT)
+        doc = etree.ElementTree(root)
+        root = etree.SubElement(root, 'office:meta')
+        el1 = etree.SubElement(root, 'meta-generator')
+        el1.text = 'Docutils/rst2odf.py/%s' % (VERSION, )
+        s1 = os.environ.get('USER', '')
+        el1 = etree.SubElement(root, 'meta:initial-creator')
+        el1.text = s1
+        s2 = time.strftime('%Y-%m-%dT%H:%M:%S', time.localtime())
+        el1 = etree.SubElement(root, 'meta:creation-date')
+        el1.text = s2
+        el1 = etree.SubElement(root, 'dc:creator')
+        el1.text = s1
+        el1 = etree.SubElement(root, 'dc:date')
+        el1.text = s2
+        el1 = etree.SubElement(root, 'dc:language')
+        el1.text = 'en-US'
+        el1 = etree.SubElement(root, 'meta:editing-cycles')
+        el1.text = '1'
+        el1 = etree.SubElement(root, 'meta:editing-duration')
+        el1.text = 'PT00M01S'
+        s1 = etree.tostring(doc)
+        #doc = minidom.parseString(s1)
+        #s1 = doc.toprettyxml('  ')
+        return s1
+
+# class ODFTranslator(nodes.SparseNodeVisitor):
+
+class ODFTranslator(nodes.GenericNodeVisitor):
+
+    def __init__(self, document):
+        #nodes.SparseNodeVisitor.__init__(self, document)
+        nodes.GenericNodeVisitor.__init__(self, document)
+        self.settings = document.settings
+        self.section_level = 0
+        self.section_count = 0
+        # Create ElementTree content and styles documents.
+        root = etree.Element(
+            'office:document-content', CONTENT_NAMESPACE_DICT
+            )
+        self.content_tree = etree.ElementTree(element=root)
+        self.current_element = root
+        etree.SubElement(root, 'office:scripts')
+        etree.SubElement(root, 'office:font-face-decls')
+        elstyles = etree.SubElement(root, 'office:automatic-styles')
+        el = etree.SubElement(root, 'office:body')
+        el = etree.SubElement(el, 'office:text')
+        self.current_element = el
+        root = etree.Element(
+            'office:document-styles', STYLES_NAMESPACE_DICT
+            )
+        self.styles_tree = etree.ElementTree(element=root)
+        self.paragraph_style_stack = ['Text_20_body', ]
+        self.omit = False
+
+    def astext(self):
+        root = self.content_tree.getroot()
+        s1 = etree.tostring(root)
+        return s1
+
+    def content_astext(self):
+        return self.astext()
+
+    def styles_astext(self):
+        root = self.styles_tree.getroot()
+        s1 = etree.tostring(root)
+        return s1
+
+    #
+    # Utility methods
+
+    def append_child(self, tag, attrib=None):
+        if attrib is None:
+            attrib = {}
+        el = etree.SubElement(self.current_element, tag, attrib)
+        return el
+
+    def set_current_element(self, el):
+        self.current_element = el
+
+    def set_to_parent(self):
+        self.current_element = self.current_element.getparent()
+
+    def generate_labeled_block(self, node, label):
+        el = self.append_child('text:p', attrib={
+            'text:style-name': 'Text_20_body'})
+        el1 = etree.SubElement(el, 'text:span',
+            attrib={'text:style-name': 'rststyle-strong'})
+        el1.text = label
+        el = self.append_child('text:p', attrib={
+            'text:style-name': 'rststyle-blockindent'})
+        return el
+    
+    def encode(self, text):
+        text = text.replace(u'\u00a0', " ")
+        return text
+
+##    def add_automatic_styles(elstyles):
+##        el1 = etree.SubElement(elstyles, 'style:style', attrib={
+##            'style:class': 'text',
+##            'style:default-outline-level': '1',
+##            'style:display-name': 'Heading 1',
+##            'style:family': 'paragraph',
+##            'style:name': 'Heading_20_1',
+##            'style:next-style-name': 'Text_20_body',
+##            'style:parent-style-name': 'Heading',
+##            })
+##        etree.SubElement(el1, 'style:text-properties', attrib={
+##            'fo:font-size': '115%',
+##            'fo:font-weight': 'bold',
+##            'style:font-size-asian': '115%'.
+##            'style:font-size-complex': '115%',
+##            'style:font-weight-asian': 'bold',
+##            'style:font-weight-complex': 'bold',
+##            }
+##
+##        #
+##        # next add Heading_20_2, 3, 4, 5, 6 and 
+##        #   Text_20_body and Heading.
+##        #
+
+
+    #
+    # Visitor functions
+    #
+    # In alphabetic order.
+    #   See docutils.docutils.nodes.node_class_names.
+    #
+
+    def default_visit(self, node):
+        #ipshell('At default_visit')
+        print 'missing visit_%s' % (node.tagname, )
+
+    def default_departure(self, node):
+        print 'missing depart_%s' % (node.tagname, )
+
+    def visit_Text(self, node):
+        #ipshell('At visit_Text')
+        # Skip nodes whose text has been processed in parent nodes.
+        if isinstance(node.parent, docutils.nodes.title) or \
+            isinstance(node.parent, docutils.nodes.literal_block):
+            #isinstance(node.parent, docutils.nodes.term) or \
+            #isinstance(node.parent, docutils.nodes.definition):
+            return
+        text = node.astext()
+        #print '(visit_Text) text:', text.encode('utf-8'), node.parent.__class__
+        # Are we in mixed content?  If so, add the text to the
+        #   etree tail of the previous sibling element.
+        if len(self.current_element.getchildren()) > 0:
+            #print '*** (visit_Text) 1. text: %s' % text
+            self.current_element.getchildren()[-1].tail = text
+        else:
+            self.current_element.text = text
+
+    def depart_Text(self, node):
+        pass
+
+    def visit_address(self, node):
+        #ipshell('At visit_address')
+        el = self.generate_labeled_block(node, 'Address: ')
+        self.set_current_element(el)
+
+    def depart_address(self, node):
+        self.set_to_parent()
+
+    def visit_author(self, node):
+        el = self.generate_labeled_block(node, 'Author: ')
+        self.set_current_element(el)
+
+    def depart_author(self, node):
+        self.set_to_parent()
+
+    def visit_block_quote(self, node):
+        #ipshell('At visit_block_quote')
+        self.paragraph_style_stack.append('rststyle-blockquote')
+
+    def depart_block_quote(self, node):
+        self.paragraph_style_stack.pop()
+
+    def visit_bullet_list(self, node):
+        #import pdb; pdb.set_trace()
+        #ipshell('At visit_document')
+        #print '(visit_bullet_list) node: %s' % node.astext()
+        el = etree.SubElement(self.current_element, 'text:list', attrib={
+            'text:style-name': 'rststyle-bulletlist',
+            })
+        self.set_current_element(el)
+        self.paragraph_style_stack.append('rststyle-bulletitem')
+
+    def depart_bullet_list(self, node):
+        self.set_to_parent()
+        self.paragraph_style_stack.pop()
+
+    def visit_comment(self, node):
+        #ipshell('At visit_comment')
+        el = self.append_child('text:p',
+            attrib={'text:style-name': 'Text_20_body'})
+        el1 =  etree.SubElement(el, 'office:annotation', attrib={})
+        el2 =  etree.SubElement(el1, 'text:p', attrib={})
+        el2.text = self.encode(node.astext())
+
+    def depart_comment(self, node):
+        pass
+
+    def visit_copyright(self, node):
+        el = self.generate_labeled_block(node, 'Copyright: ')
+        self.set_current_element(el)
+
+    def depart_copyright(self, node):
+        self.set_to_parent()
+
+    def visit_date(self, node):
+        el = self.append_child('text:p', attrib={
+            'text:style-name': 'Text_20_body'})
+        el1 = etree.SubElement(el, 'text:span',
+            attrib={'text:style-name': 'rststyle-strong'})
+        el1.text = 'Date: '
+        el1.tail = node.astext()
+
+    def depart_date(self, node):
+        pass
+
+    def visit_docinfo(self, node):
+        self.section_level += 1
+        self.section_count += 1
+        el = self.append_child('text:section', attrib={
+            'text:name': 'Section%d' % self.section_count,
+            'text:style-name': 'Sect%d' % self.section_level,
+            })
+        self.set_current_element(el)
+
+    def depart_docinfo(self, node):
+        self.section_level -= 1
+        self.set_to_parent()
+
+    def visit_definition(self, node):
+##        el = self.append_child('text:p', attrib={
+##            'text:style-name': 'Text_20_body'})
+        el = self.append_child('text:p',
+            attrib={'text:style-name': 'rststyle-blockindent'})
+        #el1.text = node.astext()
+        self.set_current_element(el)
+        self.omit = True
+
+    def depart_definition(self, node):
+        #self.set_to_parent()
+        self.set_to_parent()
+        self.omit = False
+
+    def visit_definition_list(self, node):
+        pass
+
+    def depart_definition_list(self, node):
+        pass
+
+    def visit_definition_list_item(self, node):
+        pass
+
+    def depart_definition_list_item(self, node):
+        pass
+
+    def visit_term(self, node):
+        el = self.append_child('text:p', attrib={
+            'text:style-name': 'Text_20_body'})
+        el1 = etree.SubElement(el, 'text:span',
+            attrib={'text:style-name': 'rststyle-strong'})
+        #el1.text = node.astext()
+        self.set_current_element(el1)
+
+    def depart_term(self, node):
+        self.set_to_parent()
+        self.set_to_parent()
+
+    def visit_document(self, node):
+        #import pdb; pdb.set_trace()
+        #ipshell('At visit_document')
+        #self.set_current_element(self.content_tree.getroot())
+        pass
+
+    def depart_document(self, node):
+        pass
+
+    def visit_emphasis(self, node):
+        el = etree.SubElement(self.current_element, 'text:span',
+            attrib={'text:style-name': 'rststyle-emphasis'})
+        self.set_current_element(el)
+
+    def depart_emphasis(self, node):
+        self.set_to_parent()
+
+    def visit_enumerated_list(self, node):
+        #ipshell('At visit_enumerated_list')
+        #import pdb; pdb.set_trace()
+        #print '(visit_enumerated_list) node: %s' % node.astext()
+        el = etree.SubElement(self.current_element, 'text:list', attrib={
+            'text:style-name': 'rststyle-enumlist',
+            })
+        self.set_current_element(el)
+        self.paragraph_style_stack.append('rststyle-enumitem')
+
+    def depart_enumerated_list(self, node):
+        self.set_to_parent()
+        self.paragraph_style_stack.pop()
+
+    def visit_list_item(self, node):
+        #import pdb; pdb.set_trace()
+        #ipshell('At visit_document')
+        #print '(visit_list_item) node: %s' % node.astext()
+        el = etree.SubElement(self.current_element, 'text:list-item')
+##        el = etree.SubElement(el, 'text:p', attrib={
+##            'text:style-name': 'P1',
+##            })
+##        el.text = node.astext()
+        self.set_current_element(el)
+
+    def depart_list_item(self, node):
+        self.set_to_parent()
+
+    def visit_generated(self, node):
+        #print '(visit_generated) text:', self.encode(node.astext())
+        pass
+
+    def depart_generated(self, node):
+        pass
+
+    def visit_literal(self, node):
+        #ipshell('At visit_literal')
+        el = etree.SubElement(self.current_element, 'text:span',
+            attrib={'text:style-name': 'rststyle-inlineliteral'})
+        self.set_current_element(el)
+
+    def depart_literal(self, node):
+        self.set_to_parent()
+
+    def calculate_code_block_padding(self, line):
+        count = 0
+        matchobj = SPACES_PATTERN.match(line)
+        if matchobj:
+            pad = matchobj.group()
+            count = len(pad)
+        else:
+            matchobj = TABS_PATTERN.match(line)
+            if matchobj:
+                pad = matchobj.group()
+                count = len(pad) * 8
+        return count
+
+    def visit_literal_block(self, node):
+        #ipshell('At visit_literal_block')
+        lines = node.astext().split('\n')
+        for line in lines:
+            padcount = self.calculate_code_block_padding(line)
+            line = line.lstrip(' \t')
+            el = self.append_child('text:p', attrib={
+                'text:style-name': 'rststyle-codeblock',
+                })
+            if padcount > 0:
+                el1 = etree.SubElement(el, 'text:s', attrib={
+                    'text:c': '%d' % padcount, })
+                el1.tail = line
+            else:
+                el.text = line
+
+    def depart_literal_block(self, node):
+        pass
+
+    def visit_paragraph(self, node):
+        #ipshell('At visit_paragraph')
+        if self.omit:
+            return
+        style_name = self.paragraph_style_stack[-1]
+        el = self.append_child('text:p',
+            attrib={'text:style-name': style_name})
+        self.set_current_element(el)
+
+    def depart_paragraph(self, node):
+        if self.omit:
+            return
+        self.set_to_parent()
+
+    def visit_problematic(self, node):
+        print '(visit_problematic) node: %s' % (node.astext(), )
+
+    def depart_problematic(self, node):
+        pass
+
+    def visit_reference(self, node):
+        text = node.astext()
+        if node.has_key('refuri'):
+            href = node['refuri']
+            if ( self.settings.cloak_email_addresses
+                 and href.startswith('mailto:')):
+                href = self.cloak_mailto(href)
+        elif node.has_key('refid'):
+            href = '#' + node['refid']
+        else:
+            raise RuntimeError, 'References must have "refuri" or "refid" attribute.'
+        #print '(visit_reference) href: "%s"  text: "%s"' % (href, text, )
+        el = self.append_child('text:a', attrib={
+            'xlink:href': '%s' % href,
+            'xlink:type': 'simple',
+            })
+        self.set_current_element(el)
+
+    def depart_reference(self, node):
+        self.set_to_parent()
+
+    def visit_revision(self, node):
+        el = self.append_child('text:p', attrib={
+            'text:style-name': 'Text_20_body'})
+        el1 = etree.SubElement(el, 'text:span',
+            attrib={'text:style-name': 'rststyle-strong'})
+        el1.text = 'Revision: '
+        el1.tail = node.astext()
+
+    def depart_revision(self, node):
+        pass
+
+    def visit_section(self, node, move_ids=1):
+        #ipshell('At visit_section')
+        self.section_level += 1
+        self.section_count += 1
+        el = self.append_child('text:section', attrib={
+            'text:name': 'Section%d' % self.section_count,
+            'text:style-name': 'Sect%d' % self.section_level,
+            })
+        self.set_current_element(el)
+
+    def depart_section(self, node):
+        self.section_level -= 1
+        self.set_to_parent()
+
+    def visit_strong(self, node):
+        #ipshell('At visit_strong')
+        el = etree.SubElement(self.current_element, 'text:span',
+            attrib={'text:style-name': 'rststyle-strong'})
+        self.set_current_element(el)
+
+    def depart_strong(self, node):
+        self.set_to_parent()
+
+    def visit_system_message(self, node):
+        print '(visit_system_message) node: %s' % (node.astext(), )
+
+    def depart_system_message(self, node):
+        pass
+
+    def visit_target(self, node):
+        #
+        # I don't know how to implement targets in ODF.
+        # How do we create a target in oowriter?  A cross-reference?
+        if not (node.has_key('refuri') or node.has_key('refid')
+                or node.has_key('refname')):
+            pass
+        else:
+            pass
+
+    def depart_target(self, node):
+        pass
+
+    def visit_title(self, node, move_ids=1):
+        #ipshell('At visit_title')
+        if isinstance(node.parent, docutils.nodes.section):
+            section_level = self.section_level
+            if section_level > 5:
+                print 'Warning: Heading/section levels greater than 3 not supported.'
+                print '    Reducing to heading level 3 for heading:'
+                print '    "%s"' % node.astext()
+                section_level = 3
+            el1 = etree.SubElement(self.current_element, 'text:h', attrib = {
+                'text:outline-level': '%d' % section_level,
+                #'text:style-name': 'Heading_20_%d' % section_level,
+                'text:style-name': 'rststyle-heading%d' % section_level,
+                })
+            text = node.astext()
+            #el1.text = text.decode('latin-1').encode('utf-8')
+            el1.text = self.encode(text)
+        elif isinstance(node.parent, docutils.nodes.document):
+            el1 = etree.SubElement(self.current_element, 'text:h', attrib = {
+                'text:outline-level': '1',
+                'text:style-name': 'rststyle-heading1',
+                })
+            text = node.astext()
+            el1.text = text.decode('latin-1').encode('utf-8')
+
+    def depart_title(self, node):
+        pass
+
+    def visit_topic(self, node):
+        #ipshell('At visit_topic')
+        pass
+
+    def depart_topic(self, node):
+        pass
+
+##    def translate_escapes(self, mo):
+##        val = mo.group()
+##        if val == '\\n':
+##            result ='\n'
+##        elif val == '\\t':
+##            result = '\t'
+##        return result
+
+    def visit_transition(self, node):
+        self.append_child('text:p')
+        el = self.append_child('text:p')
+        transtring = self.settings.transition_string
+        el.text = transtring
+        #self.set_current_element(el)
+
+    def depart_transition(self, node):
+        pass
+
+
