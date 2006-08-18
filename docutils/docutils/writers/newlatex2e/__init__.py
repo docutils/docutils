@@ -36,10 +36,8 @@ class Writer(writers.Writer):
 
     settings_spec = (
         'LaTeX-Specific Options',
-        'Note that this LaTeX writer is still EXPERIMENTAL. '
-        'You must specify the location of the tools/stylesheets/latex.tex '
-        'stylesheet file contained in the Docutils distribution tarball to '
-        'make the LaTeX output work.',
+        'Note that this LaTeX writer is still EXPERIMENTAL and not '
+        'feature-complete. ',
         (('Specify a stylesheet file.  The path is used verbatim to include '
           'the file.  Overrides --stylesheet-path.',
           ['--stylesheet'],
@@ -467,7 +465,8 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
     def visit_enumerated_list(self, node):
         # We create our own enumeration list environment.  This allows
         # to set the style and starting value and unlimited nesting.
-        # Maybe this can be moved to the stylesheet?
+        # Maybe the actual creation (\DEC) can be moved to the
+        # stylesheet?
         self.enum_counter += 1
         enum_prefix = self.encode(node['prefix'])
         enum_suffix = self.encode(node['suffix'])
