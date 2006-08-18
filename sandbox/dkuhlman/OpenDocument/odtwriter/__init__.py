@@ -549,19 +549,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_date(self, node):
         pass
 
-    def visit_docinfo(self, node):
-        self.section_level += 1
-        self.section_count += 1
-        el = self.append_child('text:section', attrib={
-            'text:name': 'Section%d' % self.section_count,
-            'text:style-name': 'Sect%d' % self.section_level,
-            })
-        self.set_current_element(el)
-
-    def depart_docinfo(self, node):
-        self.section_level -= 1
-        self.set_to_parent()
-
     def visit_definition(self, node):
 ##        el = self.append_child('text:p', attrib={
 ##            'text:style-name': 'Text_20_body'})
@@ -572,7 +559,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.omit = True
 
     def depart_definition(self, node):
-        #self.set_to_parent()
         self.set_to_parent()
         self.omit = False
 
@@ -608,6 +594,19 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def depart_document(self, node):
         pass
+
+    def visit_docinfo(self, node):
+        self.section_level += 1
+        self.section_count += 1
+        el = self.append_child('text:section', attrib={
+            'text:name': 'Section%d' % self.section_count,
+            'text:style-name': 'Sect%d' % self.section_level,
+            })
+        self.set_current_element(el)
+
+    def depart_docinfo(self, node):
+        self.section_level -= 1
+        self.set_to_parent()
 
     def visit_emphasis(self, node):
         el = etree.SubElement(self.current_element, 'text:span',
@@ -692,6 +691,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def depart_literal_block(self, node):
         pass
+
+    visit_doctest_block = visit_literal_block
+    depart_doctest_block = depart_literal_block
 
     def visit_paragraph(self, node):
         #ipshell('At visit_paragraph')
