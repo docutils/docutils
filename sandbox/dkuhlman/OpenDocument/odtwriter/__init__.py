@@ -54,7 +54,7 @@ ipshell = IPShellEmbed(args,
 # Constants and globals
 
 # Turn tracing on/off.  See methods trace_visit_node/trace_depart_node.
-DEBUG = 1
+DEBUG = 0
 SPACES_PATTERN = re.compile(r'( +)')
 TABS_PATTERN = re.compile(r'(\t+)')
 
@@ -265,15 +265,19 @@ class Writer(writers.Writer):
         writers.Writer.assemble_parts(self)
         f = tempfile.NamedTemporaryFile()
         zfile = zipfile.ZipFile(f, 'w', zipfile.ZIP_DEFLATED)
-        zfile.writestr('content.xml', self.visitor.content_astext())
+        zinfo = zipfile.ZipInfo('content.xml')
+        zfile.writestr(zinfo, self.visitor.content_astext())
         #zfile.writestr('styles.xml', self.visitor.styles_astext())
         zfile.writestr('mimetype', MIME_TYPE)
         s1 = self.create_manifest()
-        zfile.writestr('META-INF/manifest.xml', s1)
+        zinfo = zipfile.ZipInfo('META-INF/manifest.xml')
+        zfile.writestr(zinfo, s1)
         s1 = self.create_meta()
-        zfile.writestr('meta.xml', s1)
+        zinfo = zipfile.ZipInfo('meta.xml')
+        zfile.writestr(zinfo, s1)
         s1 = self.get_stylesheet()
-        zfile.writestr('styles.xml', s1)
+        zinfo = zipfile.ZipInfo('styles.xml')
+        zfile.writestr(zinfo, s1)
         zfile.close()
         f.seek(0)
         whole = f.read()
@@ -385,7 +389,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.paragraph_style_stack = ['Text_20_body', ]
         self.omit = False
         self.table_count = 0
+        self.column_count = ord('A') - 1
         self.trace_level = -1
+        self.optiontablestyles_generated = False
 
     def astext(self):
         root = self.content_tree.getroot()
@@ -405,8 +411,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def append_child(self, tag, attrib=None):
         if attrib is None:
-            attrib = {}
-        el = etree.SubElement(self.current_element, tag, attrib)
+            el = etree.SubElement(self.current_element, tag)
+        else:
+            el = etree.SubElement(self.current_element, tag, attrib)
         return el
 
     def set_current_element(self, el):
@@ -430,47 +437,32 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         return text
 
     def trace_visit_node(self, node):
-        if not DEBUG:
-            return
-        self.trace_level += 1
-        self.trace_show_level(self.trace_level)
-        print '(visit_%s)' % node.tagname
+        if DEBUG >= 1:
+            self.trace_level += 1
+            self._trace_show_level(self.trace_level)
+            if DEBUG >= 2:
+                print '(visit_%s) node: %s' % (node.tagname, node.astext(), )
+            else:
+                print '(visit_%s)' % node.tagname
 
     def trace_depart_node(self, node):
         if not DEBUG:
             return
-        self.trace_show_level(self.trace_level)
+        self._trace_show_level(self.trace_level)
         print '(depart_%s)' % node.tagname
         self.trace_level -= 1
 
-    def trace_show_level(self, level):
+    def _trace_show_level(self, level):
         for idx in range(level):
             print '   ',
-        
 
-##    def add_automatic_styles(elstyles):
-##        el1 = etree.SubElement(elstyles, 'style:style', attrib={
-##            'style:class': 'text',
-##            'style:default-outline-level': '1',
-##            'style:display-name': 'Heading 1',
-##            'style:family': 'paragraph',
-##            'style:name': 'Heading_20_1',
-##            'style:next-style-name': 'Text_20_body',
-##            'style:parent-style-name': 'Heading',
-##            })
-##        etree.SubElement(el1, 'style:text-properties', attrib={
-##            'fo:font-size': '115%',
-##            'fo:font-weight': 'bold',
-##            'style:font-size-asian': '115%'.
-##            'style:font-size-complex': '115%',
-##            'style:font-weight-asian': 'bold',
-##            'style:font-weight-complex': 'bold',
-##            }
-##
-##        #
-##        # next add Heading_20_2, 3, 4, 5, 6 and 
-##        #   Text_20_body and Heading.
-##        #
+##    def translate_escapes(self, mo):
+##        val = mo.group()
+##        if val == '\\n':
+##            result ='\n'
+##        elif val == '\\t':
+##            result = '\t'
+##        return result
 
 
     #
@@ -574,8 +566,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         pass
 
     def visit_definition(self, node):
-##        el = self.append_child('text:p', attrib={
-##            'text:style-name': 'Text_20_body'})
         el = self.append_child('text:p',
             attrib={'text:style-name': 'rststyle-blockindent'})
         #el1.text = node.astext()
@@ -659,17 +649,12 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #ipshell('At visit_document')
         #print '(visit_list_item) node: %s' % node.astext()
         el = etree.SubElement(self.current_element, 'text:list-item')
-##        el = etree.SubElement(el, 'text:p', attrib={
-##            'text:style-name': 'P1',
-##            })
-##        el.text = node.astext()
         self.set_current_element(el)
 
     def depart_list_item(self, node):
         self.set_to_parent()
 
     def visit_generated(self, node):
-        #print '(visit_generated) text:', self.encode(node.astext())
         pass
 
     def depart_generated(self, node):
@@ -719,82 +704,71 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     visit_doctest_block = visit_literal_block
     depart_doctest_block = depart_literal_block
 
-##missing visit_option_list
-##missing visit_option_list_item
-##missing visit_option_group
-##missing visit_option
-##missing visit_option_string
-##missing visit_description
+    def show_message(self, msg):
+        #print '*** tagname: [[%s]] msg: %s' % (msg.starttag(), msg.astext(), )
+        #print '*** msg: %s' % (dir(msg), )
+        print '*** msg.asdom(): %s' % (msg.asdom(), )
 
     def visit_option_list(self, node):
-        self.trace_visit_node(node)
-        self.table_count += 1
-        table_name = 'Table%d' % self.table_count
+        #self.document.reporter.debug_flag = 1
+        #self.document.reporter.attach_observer(self.show_message)
+        table_name = 'rststyle-tableoption'
         #
         # Generate automatic styles
-        el = etree.SubElement(self.automatic_styles, 'style:style', attrib={
-            'style:name': table_name,
-            'style:family': 'table'})
-        el1 = etree.SubElement(el, 'style:table-properties', attrib={
-            'style:width': '17.59cm',
-            'table:align': 'left',
-            'style:shadow': 'none'})
-        el = etree.SubElement(self.automatic_styles, 'style:style', attrib={
-            'style:name': '%s.A' % table_name,
-            'style:family': 'table-column'})
-        el1 = etree.SubElement(el, 'style:table-column-properties', attrib={
-            'style:column-width': '4.999cm'})
-        el = etree.SubElement(self.automatic_styles, 'style:style', attrib={
-            'style:name': '%s.B' % table_name,
-            'style:family': 'table-column'})
-        el1 = etree.SubElement(el, 'style:table-column-properties', attrib={
-            'style:column-width': '12.587cm'})
-        el = etree.SubElement(self.automatic_styles, 'style:style', attrib={
-            'style:name': '%s.A1' % table_name,
-            'style:family': 'table-cell'})
-        el1 = etree.SubElement(el, 'style:table-cell-properties', attrib={
-            'fo:background-color': 'transparent',
-            'fo:padding': '0.097cm',
-            'fo:border-left': '0.002cm solid #000000',
-            'fo:border-right': 'none',
-            'fo:border-top': '0.002cm solid #000000',
-            'fo:border-bottom': '0.002cm solid #000000'})
-        el2 = etree.SubElement(el1, 'style:background-image')
-##        el = etree.SubElement(self.automatic_styles, 'style:style', attrib={
-##            'style:name': '%s.A1' % table_name,
-##            'style:family': 'table-cell'})
-##        el1 = etree.SubElement(el, 'style:table-cell-properties', attrib={
-##            'fo:background-color': 'transparent',
-##            'fo:padding': '0.097cm',
-##            'fo:border-left': '0.002cm solid #000000',
-##            'fo:border-right': 'none',
-##            'fo:border-top': '0.002cm solid #000000',
-##            'fo:border-bottom': '0.002cm solid #000000'})
-##        el2 = etree.SubElement(el1, 'style:background-image')
-        el = etree.SubElement(self.automatic_styles, 'style:style', attrib={
-            'style:name': '%s.B1' % table_name,
-            'style:family': 'table-cell'})
-        el1 = etree.SubElement(el, 'style:table-cell-properties', attrib={
-            'fo:padding': '0.097cm',
-            'fo:border': '0.002cm solid #000000'})
-        el = etree.SubElement(self.automatic_styles, 'style:style', attrib={
-            'style:name': '%s.A2' % table_name,
-            'style:family': 'table-cell'})
-        el1 = etree.SubElement(el, 'style:table-cell-properties', attrib={
-            'fo:padding': '0.097cm',
-            'fo:border-left': '0.002cm solid #000000',
-            'fo:border-right': 'none',
-            'fo:border-top': 'none',
-            'fo:border-bottom': '0.002cm solid #000000'})
-        el = etree.SubElement(self.automatic_styles, 'style:style', attrib={
-            'style:name': '%s.B2' % table_name,
-            'style:family': 'table-cell'})
-        el1 = etree.SubElement(el, 'style:table-cell-properties', attrib={
-            'fo:padding': '0.097cm',
-            'fo:border-left': '0.002cm solid #000000',
-            'fo:border-right': '0.002cm solid #000000',
-            'fo:border-top': 'none',
-            'fo:border-bottom': '0.002cm solid #000000'})
+        if not self.optiontablestyles_generated:
+            self.optiontablestyles_generated = True
+            el = etree.SubElement(self.automatic_styles, 'style:style', attrib={
+                'style:name': table_name,
+                'style:family': 'table'})
+            el1 = etree.SubElement(el, 'style:table-properties', attrib={
+                'style:width': '17.59cm',
+                'table:align': 'left',
+                'style:shadow': 'none'})
+            el = etree.SubElement(self.automatic_styles, 'style:style', attrib={
+                'style:name': '%s.A' % table_name,
+                'style:family': 'table-column'})
+            el1 = etree.SubElement(el, 'style:table-column-properties', attrib={
+                'style:column-width': '4.999cm'})
+            el = etree.SubElement(self.automatic_styles, 'style:style', attrib={
+                'style:name': '%s.B' % table_name,
+                'style:family': 'table-column'})
+            el1 = etree.SubElement(el, 'style:table-column-properties', attrib={
+                'style:column-width': '12.587cm'})
+            el = etree.SubElement(self.automatic_styles, 'style:style', attrib={
+                'style:name': '%s.A1' % table_name,
+                'style:family': 'table-cell'})
+            el1 = etree.SubElement(el, 'style:table-cell-properties', attrib={
+                'fo:background-color': 'transparent',
+                'fo:padding': '0.097cm',
+                'fo:border-left': '0.002cm solid #000000',
+                'fo:border-right': 'none',
+                'fo:border-top': '0.002cm solid #000000',
+                'fo:border-bottom': '0.002cm solid #000000'})
+            el2 = etree.SubElement(el1, 'style:background-image')
+            el = etree.SubElement(self.automatic_styles, 'style:style', attrib={
+                'style:name': '%s.B1' % table_name,
+                'style:family': 'table-cell'})
+            el1 = etree.SubElement(el, 'style:table-cell-properties', attrib={
+                'fo:padding': '0.097cm',
+                'fo:border': '0.002cm solid #000000'})
+            el = etree.SubElement(self.automatic_styles, 'style:style', attrib={
+                'style:name': '%s.A2' % table_name,
+                'style:family': 'table-cell'})
+            el1 = etree.SubElement(el, 'style:table-cell-properties', attrib={
+                'fo:padding': '0.097cm',
+                'fo:border-left': '0.002cm solid #000000',
+                'fo:border-right': 'none',
+                'fo:border-top': 'none',
+                'fo:border-bottom': '0.002cm solid #000000'})
+            el = etree.SubElement(self.automatic_styles, 'style:style', attrib={
+                'style:name': '%s.B2' % table_name,
+                'style:family': 'table-cell'})
+            el1 = etree.SubElement(el, 'style:table-cell-properties', attrib={
+                'fo:padding': '0.097cm',
+                'fo:border-left': '0.002cm solid #000000',
+                'fo:border-right': '0.002cm solid #000000',
+                'fo:border-top': 'none',
+                'fo:border-bottom': '0.002cm solid #000000'})
         #
         # Generate table data
         el = self.append_child('table:table', attrib={
@@ -802,19 +776,19 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'table:style-name': table_name,
             })
         el1 = etree.SubElement(el, 'table:table-column', attrib={
-            'table:style-name': 'Table1.A'})
+            'table:style-name': '%s.A' % table_name})
         el1 = etree.SubElement(el, 'table:table-column', attrib={
-            'table:style-name': 'Table1.B'})
+            'table:style-name': '%s.B' % table_name})
         el1 = etree.SubElement(el, 'table:table-header-rows')
         el2 = etree.SubElement(el1, 'table:table-row')
         el3 = etree.SubElement(el2, 'table:table-cell', attrib={
-            'table:style-name': 'Table1.A1',
+            'table:style-name': '%s.A1' % table_name,
             'office:value-type': 'string'})
         el4 = etree.SubElement(el3, 'text:p', attrib={
             'text:style-name': 'Table_20_Heading'})
         el4.text= 'Option'
         el3 = etree.SubElement(el2, 'table:table-cell', attrib={
-            'table:style-name': 'Table1.B1',
+            'table:style-name': '%s.B1' % table_name,
             'office:value-type': 'string'})
         el4 = etree.SubElement(el3, 'text:p', attrib={
             'text:style-name': 'Table_20_Heading'})
@@ -822,20 +796,17 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.set_current_element(el)
 
     def depart_option_list(self, node):
-        self.trace_depart_node(node)
+        #self.document.reporter.debug_flag = 0
         self.set_to_parent()
 
     def visit_option_list_item(self, node):
-        self.trace_visit_node(node)
         el = self.append_child('table:table-row')
         self.set_current_element(el)
 
     def depart_option_list_item(self, node):
-        self.trace_depart_node(node)
         self.set_to_parent()
 
     def visit_option_group(self, node):
-        self.trace_visit_node(node)
         el = self.append_child('table:table-cell', attrib={
             'table:style-name': 'Table%d.A2' % self.table_count,
             'office:value-type': 'string',
@@ -843,38 +814,30 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.set_current_element(el)
 
     def depart_option_group(self, node):
-        self.trace_depart_node(node)
         self.set_to_parent()
 
     def visit_option(self, node):
-        self.trace_visit_node(node)
         el = self.append_child('text:p', attrib={
             'text:style-name': 'Table_20_Contents'})
         el.text = self.encode(node.astext())
 
     def depart_option(self, node):
-        self.trace_depart_node(node)
         pass
 
     def visit_option_string(self, node):
-        self.trace_visit_node(node)
         pass
 
     def depart_option_string(self, node):
-        self.trace_depart_node(node)
         pass
 
     def visit_option_argument(self, node):
-        self.trace_visit_node(node)
         #ipshell('At visit_option_argument')
         pass
 
     def depart_option_argument(self, node):
-        self.trace_depart_node(node)
         pass
 
     def visit_description(self, node):
-        self.trace_visit_node(node)
         el = self.append_child('table:table-cell', attrib={
             'table:style-name': 'Table%d.B2' % self.table_count,
             'office:value-type': 'string',
@@ -885,7 +848,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         raise nodes.SkipChildren()
 
     def depart_description(self, node):
-        self.trace_depart_node(node)
         pass
 
     def visit_paragraph(self, node):
@@ -969,6 +931,118 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_system_message(self, node):
         pass
 
+    def visit_table(self, node):
+        self.trace_visit_node(node)
+        #ipshell('At visit_table')
+        self.table_count += 1
+        table_name = 'Table%d' % self.table_count
+        el1 = etree.SubElement(self.automatic_styles, 'style:style', attrib={
+            'style:name': '%s' % table_name,
+            'style:family': 'table',
+            })
+        el1_1 = etree.SubElement(el1, 'style:table-properties', attrib={
+            #'style:width': '17.59cm',
+            'table:align': 'margins',
+            })
+        el2 = etree.SubElement(self.current_element, 'table:table', attrib={
+            'table:name': '%s' % table_name,
+            'table:style-name': '%s' % table_name,
+            })
+        self.set_current_element(el2)
+        self.current_table_style = el1
+        self.table_width = 0
+
+    def depart_table(self, node):
+        self.trace_depart_node(node)
+        #ipshell('At depart_table')
+        self.current_table_style.attrib['style:width'] = \
+            '%dcm' % self.table_width
+        self.set_to_parent()
+
+    def visit_tgroup(self, node):
+        self.trace_visit_node(node)
+        #ipshell('At visit_tgroup')
+        self.column_count = ord('A') - 1
+
+    def depart_tgroup(self, node):
+        self.trace_depart_node(node)
+        pass
+
+    def visit_colspec(self, node):
+        self.trace_visit_node(node)
+        #ipshell('At visit_colspec')
+        self.column_count += 1
+        table_name = 'Table%d' % (self.table_count, )
+        colspec_name = 'Table%d.%s' % (self.table_count, chr(self.column_count),)
+        colwidth = node['colwidth']
+        el1 = etree.SubElement(self.automatic_styles, 'style:style', attrib={
+            'style:name': colspec_name,
+            'style:family': 'table-column' })
+        el1_1 = etree.SubElement(el1, 'style:table-column-properties', attrib={
+            'style:column-width': '%dcm' % colwidth })
+        el2 = self.append_child('table:table-column', attrib={
+            'table:style-name': colspec_name })
+        self.table_width += colwidth
+
+    def depart_colspec(self, node):
+        self.trace_depart_node(node)
+        pass
+
+    def visit_thead(self, node):
+        self.trace_visit_node(node)
+        #ipshell('At visit_thead')
+        el = self.append_child('table:table-header-rows')
+        self.set_current_element(el)
+        self.in_thead = True
+        self.paragraph_style_stack.append('Table_20_Heading')
+
+    def depart_thead(self, node):
+        self.trace_depart_node(node)
+        self.set_to_parent()
+        self.in_thead = False
+        self.paragraph_style_stack.pop()
+
+    def visit_row(self, node):
+        self.trace_visit_node(node)
+        #ipshell('At visit_row')
+        self.column_count = ord('A') - 1
+        el = self.append_child('table:table-row')
+        self.set_current_element(el)
+
+    def depart_row(self, node):
+        self.trace_depart_node(node)
+        self.set_to_parent()
+
+    def visit_entry(self, node):
+        self.trace_visit_node(node)
+        #ipshell('At visit_entry')
+        table_name = 'Table%d' % (self.table_count, )
+        self.column_count += 1
+        colspec_name = 'Table%d.%s' % (self.table_count, chr(self.column_count),)
+        el1 = self.append_child('table:table-cell', attrib={
+            'table:style-name': colspec_name,
+            'office:value-type': 'string'})
+        morecols = node.get('morecols', 0)
+        if morecols > 0:
+            el1.attrib['table:number-columns-spanned'] = '%d' % (morecols + 1,)
+            self.column_count += morecols
+        self.set_current_element(el1)
+
+    def depart_entry(self, node):
+        self.trace_depart_node(node)
+        self.set_to_parent()
+
+    def visit_tbody(self, node):
+        self.trace_visit_node(node)
+        #ipshell('At visit_')
+        pass
+
+    def depart_tbody(self, node):
+        self.trace_depart_node(node)
+        pass
+
+
+
     def visit_target(self, node):
         #
         # I don't know how to implement targets in ODF.
@@ -1017,20 +1091,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_topic(self, node):
         pass
 
-##    def translate_escapes(self, mo):
-##        val = mo.group()
-##        if val == '\\n':
-##            result ='\n'
-##        elif val == '\\t':
-##            result = '\t'
-##        return result
-
     def visit_transition(self, node):
-        self.append_child('text:p')
-        el = self.append_child('text:p')
-        transtring = self.settings.transition_string
-        el.text = transtring
-        #self.set_current_element(el)
+        el = self.append_child('text:p', attrib={
+            'text:style-name': 'rststyle-horizontalline'})
 
     def depart_transition(self, node):
         pass
