@@ -940,7 +940,7 @@ b. a negative numerical argument, which generally inverts the
          (toggle-style
           (and current-prefix-arg (not reverse-direction))))
 
-    (if (and transient-mark-mode mark-active)
+    (if (rst-portable-mark-active-p)
         ;; Adjust decorations within region.
         (rst-promote-region current-prefix-arg)
       ;; Adjust decoration around point.
@@ -2004,7 +2004,7 @@ EVENT is the input event."
     (error "Cannot mark zero sections"))
   (cond ((and allow-extend
 	      (or (and (eq last-command this-command) (mark t))
-		  (and transient-mark-mode mark-active)))
+		  (rst-portable-mark-active-p)))
 	 (set-mark
 	  (save-excursion
 	    (goto-char (mark))
@@ -3373,6 +3373,16 @@ column is used (fill-column vs. end of previous/next line)."
       (insert-char (preceding-char)
                    (- rightmost-column (current-column))))
     ))
+
+
+(defun rst-portable-mark-active-p ()
+  "A portable (GNU, Xemacs) function that returns true if the
+mark is active."
+  (or
+   (and (fboundp 'region-active-p)
+	(region-active-p) (region-exists-p))
+   (and (boundp 'transient-mark-mode)
+	transient-mark-mode mark-active)))
 
 
 
