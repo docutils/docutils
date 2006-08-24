@@ -156,6 +156,15 @@
 ;; feature off.  See `Local Variables in Files' in the Emacs documentation for a
 ;; more complete discussion.
 
+;;; BUGS
+
+;; David: If I try rst-toc-insert in docs/dev/rst/alternatives.txt, it skips the
+;; section 5 title, "... Or Not To Do?". Perhaps it mistakes it for a comment? A
+;; comment requires two periods and a space or newline; three periods is not a
+;; comment.
+
+;; Doing a line block creates two pipes, Wtf, should be one?
+
 ;;; TODO list
 
 ;; Bindings
@@ -201,7 +210,7 @@
 
 
 ;;; History:
-;; 
+;;
 
 ;;; Code:
 
@@ -231,25 +240,26 @@
 	     ("i" . rst-toc-insert)
 	     ("+" . rst-toc-insert)
 	     ("u" . rst-toc-insert-update)
+	     ("f" . rst-goto-section)
+	     ;;([return] . rst-goto-section)
 	     ("h" . rst-display-decorations-hierarchy)
 	     ("s" . rst-straighten-decorations)
 	     ("w" . rst-straighten-bullets-region)
+	     ("b" . rst-listify-region)
+	     ("e" . rst-enumerate-region)
 	     ("p" . rst-backward-section)
 	     ("n" . rst-forward-section)
 	     ("m" . rst-mark-section)
 	     ("r" . rst-shift-region-right)
 	     ("l" . rst-shift-region-left)
-	     ("e" . rst-enumerate-region)
-	     ("E" . rst-enumerate-region-bullets)
-	     ("b" . rst-line-block-region)
+	     ("v" . rst-convert-bullets-to-enumeration)
+	     ("B" . rst-line-block-region)
 	     ("c" . rst-compile)
 	     ("C" . rst-compile-alt-toolset)
 	     ("x" . rst-compile-pseudo-region)
 	     ("q" . rst-compile-pdf-preview)
 	     ))
   (define-key rst-prefix-map (car m) (cdr m)))
-
-
 
 (defun rst-text-mode-bindings ()
   "Default text mode hook for rest."
@@ -1421,13 +1431,13 @@ adjust.  If bullets are found on levels beyond the
 		   (goto-char pos)
 		   (delete-char 1)
 		   (insert (char-to-string char))))
-	       
+
 	       ;; Sorted list of indent . positions
 	       (sort poslist (lambda (x y) (<= (car x) (car y))))
 
 	       ;; List of preferred bullets.
 	       rst-preferred-bullets)
-      
+
       )))
 
 (defun rst-rstrip (str)
@@ -1865,15 +1875,21 @@ brings the cursor in that section."
 (defvar rst-toc-buffer-name "*Table of Contents*"
   "Name of the Table of Contents buffer.")
 
-(defun rst-toc-mode-goto-section ()
+(defun rst-goto-section (&optional kill)
   "Go to the section the current line describes."
   (interactive)
   (let ((pos (rst-toc-mode-find-section)))
-    (kill-buffer (get-buffer rst-toc-buffer-name))
+    (when kill
+      (kill-buffer (get-buffer rst-toc-buffer-name)))
     (pop-to-buffer (marker-buffer pos))
     (goto-char pos)
     ;; FIXME: make the recentering conditional on scroll.
     (recenter 5)))
+
+(defun rst-toc-mode-goto-section ()
+  "Go to the section the current line describes and kill the toc buffer."
+  (interactive)
+  (rst-goto-section t))
 
 (defun rst-toc-mode-mouse-goto (event)
   "In `rst-toc' mode, go to the occurrence whose line you click on.
@@ -2074,7 +2090,7 @@ of (column-number . line) pairs."
 	  ;; towards the left).
 	  (let ((col (current-column)))
 	    (when (< col leftcol)
-	      
+
 	      ;; Add the beginning of the line as a tabbing point.
 	      (unless (memq col (mapcar 'car tablist))
 		(setq tablist (cons (cons col (point)) tablist)))
@@ -2167,7 +2183,7 @@ the tab points in the given tablist."
     ;; Apply the indent.
     (indent-rigidly
      mbeg mend
-     
+
      ;; Find the next tab after the leftmost columnt.
      (let ((tab (funcall find-next-fun tabs leftmostcol)))
 
@@ -2182,7 +2198,7 @@ the tab points in the given tablist."
 			   (line-end-position))))
 	       )
 	     (- (caar tab) leftmostcol)) ;; Num chars.
-	 
+
 	 ;; Otherwise use the basic offset
 	 (funcall offset-fun rst-shift-basic-offset)
 	 )))
@@ -2249,35 +2265,68 @@ region, and automatic filling is disabled."
 ;;
 ;; FIXME: TODO we need to do the enumeration removal as well.
 
-(defun rst-enumerate-region (rbeg rend)
-  "Insert numbered enumeration list prefixes to the currently
-selected region.  With prefix argument, remove the enumeration.
-(Note: the removal part of not implemented yet.)"
+(defun rst-enumerate-region (beg end)
+  "Add enumeration to all the leftmost paragraphs in the given region.
+The region is specified between BEG and END.  With prefix argument,
+do all lines instead of just paragraphs."
   (interactive "r")
-  (save-excursion
-    (goto-char rend)
-    (beginning-of-line)
+  (let ((count 0)
+	(last-insert-len nil))
+    (rst-iterate-leftmost-paragraphs
+     beg end (not current-prefix-arg)
+     (let ((ins-string (format "%d. " (incf count))))
+       (setq last-insert-len (length ins-string))
+       (insert ins-string))
+     (insert (make-string last-insert-len ?\ ))
+     )))
 
-    (let (tight-rbeg
-	  tight-rend
-	  ;; Count the number of lines in the region
-	  (nlines (count-lines rbeg rend))
-	  ;; Find the minimum column in all the lines in the region
-	  (lcol (rst-find-leftmost-column rbeg rend))
-	  (curnum 1))
+(defun rst-listify-region (beg end)
+  "Add bullets to all the leftmost paragraphs in the given region.
+The region is specified between BEG and END.  With prefix argument,
+do all lines instead of just paragraphs."
+  (interactive "r")
+  (rst-iterate-leftmost-paragraphs
+   beg end (not current-prefix-arg)
+   (insert "- ")
+   (insert "  ")
+   ))
 
-      (let ((curindex 1))
-	(operate-on-rectangle 'rst-enumerate-insert-enum rbeg rend t)))
-    ))
+(defmacro rst-iterate-leftmost-paragraphs
+  (beg end first-only body-consequent body-alternative)
+  "Call FUN at the beginning of each line, with an argument that
+specifies whether we are at the first line of a paragraph that
+starts at the leftmost column of the given region BEG and END.
+Set FIRST-ONLY to true if you want to callback on the first line
+of each paragraph only."
+  `(save-excursion
+    (let ((leftcol (rst-find-leftmost-column beg end))
+	  (endm (set-marker (make-marker) end))
+	  ,(when first-only '(in-par nil))
+	  )
 
-(defun rst-enumerate-insert-enum (startpos begextra endextra)
-  (back-to-indentation)
-  (if (= (current-column) lcol)
-      (progn
-	(insert (int-to-string curnum))
-	(insert ". ")
-	(incf curnum))
-    (indent-line-to (+ lcol 3))))
+      (do* (;; Iterate lines
+	    (l (progn (goto-char beg) (back-to-indentation))
+	       (progn (forward-line 1) (back-to-indentation)))
+
+	    (previous nil valid)
+
+ 	    (curcol (current-column) 
+		    (current-column))
+
+	    (valid (and (= curcol leftcol)
+			(not (looking-at "[ \t]*$")))
+		   (and (= curcol leftcol)
+			(not (looking-at "[ \t]*$"))))
+	    )
+	  ((>= (point-marker) endm))
+
+	(if (if ,first-only
+		(and valid (not previous))
+	      valid)
+	    ,body-consequent 
+	  ,body-alternative)
+
+	))))
 
 
 ;; FIXME: there are some problems left with the following function
@@ -2288,7 +2337,7 @@ selected region.  With prefix argument, remove the enumeration.
 ;;
 ;; I suppose it does 90% of the job for now.
 
-(defun rst-enumerate-region-bullets (beg end)
+(defun rst-convert-bullets-to-enumeration (beg end)
   "Convert all the bulleted items and enumerated items in the
   region to enumerated lists, renumbering as necessary."
   (interactive "r")
@@ -2312,6 +2361,7 @@ selected region.  With prefix argument, remove the enumeration.
     ))
 
 
+
 ;;------------------------------------------------------------------------------
 
 (defun rst-line-block-region (rbeg rend &optional pfxarg)
@@ -2328,7 +2378,7 @@ selected region.  With prefix argument, remove the enumeration.
 ;; FIXME todo: we need to provide the option of adding the line block chars for
 ;; empty lines as well.  Sometimes this has to be decided by the user, but in
 ;; certain cases it could be detected automatically, e.g.
-;; 
+;;
 ;;   Foo
 ;;
 ;;      Bar
@@ -3224,7 +3274,7 @@ of the entire buffer, if the region is not selected."
   "Convert the document to a PDF file and launch a preview program."
   (interactive)
   (let* ((tmp-filename "/tmp/out.pdf")
-	 (command (format "rst2pdf.py %s %s && %s %s" 
+	 (command (format "rst2pdf.py %s %s && %s %s"
 			  buffer-file-name tmp-filename
 			  rst-pdf-program tmp-filename)))
     (start-process-shell-command "rst-pdf-preview" nil command)
