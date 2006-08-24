@@ -26,7 +26,8 @@
       5.2  Maintaining the Table of Contents Up-to-date
     6   Navigating Between the Section Titles
     7   Shifting Bullet List Levels
-    8   Enumerating Lists
+    8   Bulleting and Enumerating Lists
+      8.1  Straightening Existing Bullet List Hierarchies
     9   Creating and Remove Line Blocks
     10  Major Mode for Editing reStructuredText Documents
     11  Converting Documents from Emacs
@@ -302,12 +303,74 @@ before the currently selected region to determine what the appropriate
 column positions are.
 
 
-Enumerating Lists
-=================
+Bulleting and Enumerating Lists
+===============================
 
-Sometimes it can be useful to insert enumeration markers before list
-items.  You can do this easily by invoking ``rst-enumerate-region``
-with ``C-c p e``, for example, the following::
+Sometimes it can be useful to insert bullet list markers enumeration
+number before a number of lines or paragraphs.  You can do this easily
+by invoking ``rst-enumerate-region`` (``C-c p e``), for example, the
+following::
+
+  Apples
+
+  Oranges
+
+  Bananas
+
+becomes::
+
+  1. Apples
+
+  2. Oranges
+
+  3. Bananas
+
+``rst-listify-region`` (``C-c p b``) does the same, but only adds
+bullet list markers, e.g.::
+
+  Apples
+
+  Oranges
+
+  Bananas
+
+becomes::
+
+  - Apples
+  
+  - Oranges
+  
+  - Bananas
+
+
+By default, each paragraph starting on the leftmost line in the
+highlighted region will be taken to be a single list or enumeration
+item, for example, enumerating the following::
+
+   An apple a day 
+   keeps the doctor away.
+   
+   But oranges 
+   are tastier than apples.
+   
+   If you preferred bananas
+   you may be
+   a monkey.
+
+Will result in::
+
+   1. An apple a day 
+      keeps the doctor away.
+      
+   2. But oranges 
+      are tastier than apples.
+      
+   3. If you preferred bananas
+      you may be
+      a monkey.
+
+If you would like to enumerate each of the lines, use a prefix
+argument on the preceding commands, e.g.::
 
   Apples
   Oranges
@@ -315,21 +378,28 @@ with ``C-c p e``, for example, the following::
 
 becomes::
 
-  1. Apples
-  2. Oranges
-  3. Bananas
+  - Apples
+  - Oranges
+  - Bananas
 
-.. note::  This will be improved in the future, as we will eventually
-           provide a function to “straighten” bulleted lists to use
-           the same bullet character, as well as to enumerate lists or
-           add bullets automatically if they are not present
-           (--blais).
+
+
+Straightening Existing Bullet List Hierarchies
+----------------------------------------------
+
+If you invoke ``rst-straighten-bullets-region`` (C-c p w), the
+existing bullets in the highlighted region will be replaced to reflect
+their respective level.  This does not make a difference in the
+document structure that reStructuredText_ defines, but looks better in
+the input file, for example, if all of the top-level bullet items use
+the character ``-``, and all of the 2nd level items use ``*``, etc.
+
 
 Creating and Remove Line Blocks
 ===============================
 
 To create line blocks, first select the region to convert and invoke
-``rst-toggle-line-block`` with ``C-c p b``, for example, the
+``rst-toggle-line-block`` with ``C-c p B``, for example, the
 following::
 
   Apples
