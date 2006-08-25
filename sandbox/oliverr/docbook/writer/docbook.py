@@ -597,11 +597,11 @@ class DocBookTranslator(nodes.NodeVisitor):
         pass
 
     def visit_footnote(self, node):
-        self.footnotes[node['id']] = []
-        atts = {'id': node['id']}
+        self.footnotes[node['ids'][0]] = []
+        atts = {'id': node['ids'][0]}
         if isinstance(node[0], nodes.label):
             atts['label'] = node[0].astext()
-        self.footnotes[node['id']].append(
+        self.footnotes[node['ids'][0]].append(
             self.starttag(node, 'footnote', **atts))
 
         # replace body with this with a footnote collector list
@@ -610,12 +610,12 @@ class DocBookTranslator(nodes.NodeVisitor):
         # the first ``footnote_reference`` as DocBook defines 
         # ``footnote`` elements inline. 
         self._body = self.body
-        self.body = self.footnotes[node['id']]
+        self.body = self.footnotes[node['ids'][0]]
 
     def depart_footnote(self, node):
         # finish footnote and then replace footnote collector
         # with real body list.
-        self.footnotes[node['id']].append('</footnote>')
+        self.footnotes[node['ids'][0]].append('</footnote>')
         self.body = self._body
         self._body = None
 
@@ -633,7 +633,7 @@ class DocBookTranslator(nodes.NodeVisitor):
         # won't really be ``self.body`` but a footnote collector
         # list.
         refs = self.footnote_map.get(refid, [])
-        refs.append((node['id'], self.body, len(self.body),))
+        refs.append((node['ids'][0], self.body, len(self.body),))
         self.footnote_map[refid] = refs
 
         # add place holder list item which should later be 
@@ -965,11 +965,12 @@ class DocBookTranslator(nodes.NodeVisitor):
                     if isinstance(next,nodes.Text):
                         pass
                     elif not next.attributes.has_key('id'):
-                        next['id'] = node['id']
+                        next['id'] = node['ids'][0]
                         handled = 1
         if not handled:
             if not node.parent.attributes.has_key('id'):
-                node.parent.attributes['id'] = node['id']
+                # TODO node["ids"] 
+                node.parent.attributes['id'] = node['ids'][0]
                 handled = 1
         # might need to do more...
         # (if not handled, update the referrer to refer to the parent's id)
