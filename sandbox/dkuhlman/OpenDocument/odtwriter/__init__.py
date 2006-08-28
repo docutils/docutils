@@ -226,11 +226,6 @@ class Writer(writers.Writer):
           'keeping email links usable with standards-compliant browsers.',
           ['--cloak-email-addresses'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),
-         ('Specify transistion (separator) character string.  '
-          'Default: "**********"',
-          ['--transition-string'],
-          {'default': '**********', 'metavar': '<string>', }
-          ),
         ))
 
     settings_defaults = {
@@ -267,7 +262,6 @@ class Writer(writers.Writer):
         zfile = zipfile.ZipFile(f, 'w', zipfile.ZIP_DEFLATED)
         zinfo = zipfile.ZipInfo('content.xml')
         zfile.writestr(zinfo, self.visitor.content_astext())
-        #zfile.writestr('styles.xml', self.visitor.styles_astext())
         zfile.writestr('mimetype', MIME_TYPE)
         s1 = self.create_manifest()
         zinfo = zipfile.ZipInfo('META-INF/manifest.xml')
@@ -290,7 +284,8 @@ class Writer(writers.Writer):
         """Retrieve the stylesheet from either a .xml file or from
         a .odt (zip) file.  Return the content as a string.
         """
-        stylespath = utils.get_stylesheet_reference(self.settings)
+        stylespath = utils.get_stylesheet_reference(self.settings,
+            os.path.join(os.getcwd(), 'dummy'))
         ext = os.path.splitext(stylespath)[1]
         if ext == '.xml':
             stylesfile = open(stylespath, 'r')
@@ -392,6 +387,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.column_count = ord('A') - 1
         self.trace_level = -1
         self.optiontablestyles_generated = False
+        self.footer_element = None
 
     def astext(self):
         root = self.content_tree.getroot()
@@ -524,7 +520,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_bullet_list(self, node):
         #import pdb; pdb.set_trace()
-        #ipshell('At visit_document')
+        #ipshell('At visit_bullet_list')
         #print '(visit_bullet_list) node: %s' % node.astext()
         el = etree.SubElement(self.current_element, 'text:list', attrib={
             'text:style-name': 'rststyle-bulletlist',
@@ -553,6 +549,30 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def depart_copyright(self, node):
         self.set_to_parent()
+
+    def visit_decoration(self, node):
+        global DEBUG
+        #ipshell('At visit_decoration')
+        #DEBUG = 1
+        #self.trace_visit_node(node)
+
+    def depart_decoration(self, node):
+        #global DEBUG
+        #self.trace_depart_node(node)
+        #DEBUG = 0
+        #ipshell('At depart_decoration')
+        el = self.current_element.getchildren()[-1]
+        self.current_element.remove(el)
+        self.footer_element = el
+
+    def visit_footer(self, node):
+        #ipshell('At visit_footer')
+        #self.trace_visit_node(node)
+        pass
+
+    def depart_footer(self, node):
+        #self.trace_depart_node(node)
+        pass
 
     def visit_date(self, node):
         el = self.append_child('text:p', attrib={
@@ -607,6 +627,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         pass
 
     def depart_document(self, node):
+        if self.footer_element is not None:
+            self.current_element.append(self.footer_element)
         pass
 
     def visit_docinfo(self, node):
@@ -707,11 +729,12 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def show_message(self, msg):
         #print '*** tagname: [[%s]] msg: %s' % (msg.starttag(), msg.astext(), )
         #print '*** msg: %s' % (dir(msg), )
-        print '*** msg.asdom(): %s' % (msg.asdom(), )
+        #print '*** msg.asdom(): %s' % (msg.asdom(), )
+        print '*** msg.astext(): %s' % (msg.astext(), )
 
     def visit_option_list(self, node):
-        #self.document.reporter.debug_flag = 1
-        #self.document.reporter.attach_observer(self.show_message)
+        self.document.reporter.debug_flag = 1
+        self.document.reporter.attach_observer(self.show_message)
         table_name = 'rststyle-tableoption'
         #
         # Generate automatic styles
@@ -796,7 +819,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.set_current_element(el)
 
     def depart_option_list(self, node):
-        #self.document.reporter.debug_flag = 0
+        self.document.reporter.debug_flag = 0
         self.set_to_parent()
 
     def visit_option_list_item(self, node):
@@ -852,6 +875,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_paragraph(self, node):
         #ipshell('At visit_paragraph')
+        #self.trace_visit_node(node)
         if self.omit:
             return
         style_name = self.paragraph_style_stack[-1]
@@ -860,6 +884,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.set_current_element(el)
 
     def depart_paragraph(self, node):
+        #self.trace_depart_node(node)
         if self.omit:
             return
         self.set_to_parent()
@@ -871,6 +896,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         pass
 
     def visit_reference(self, node):
+        #self.trace_visit_node(node)
         text = node.astext()
         if node.has_key('refuri'):
             href = node['refuri']
@@ -889,6 +915,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.set_current_element(el)
 
     def depart_reference(self, node):
+        #self.trace_depart_node(node)
         self.set_to_parent()
 
     def visit_revision(self, node):
@@ -932,7 +959,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         pass
 
     def visit_table(self, node):
-        self.trace_visit_node(node)
+        #self.trace_visit_node(node)
         #ipshell('At visit_table')
         self.table_count += 1
         table_name = 'Table%d' % self.table_count
@@ -953,23 +980,23 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.table_width = 0
 
     def depart_table(self, node):
-        self.trace_depart_node(node)
+        #self.trace_depart_node(node)
         #ipshell('At depart_table')
         self.current_table_style.attrib['style:width'] = \
             '%dcm' % self.table_width
         self.set_to_parent()
 
     def visit_tgroup(self, node):
-        self.trace_visit_node(node)
+        #self.trace_visit_node(node)
         #ipshell('At visit_tgroup')
         self.column_count = ord('A') - 1
 
     def depart_tgroup(self, node):
-        self.trace_depart_node(node)
+        #self.trace_depart_node(node)
         pass
 
     def visit_colspec(self, node):
-        self.trace_visit_node(node)
+        #self.trace_visit_node(node)
         #ipshell('At visit_colspec')
         self.column_count += 1
         table_name = 'Table%d' % (self.table_count, )
@@ -985,11 +1012,11 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.table_width += colwidth
 
     def depart_colspec(self, node):
-        self.trace_depart_node(node)
+        #self.trace_depart_node(node)
         pass
 
     def visit_thead(self, node):
-        self.trace_visit_node(node)
+        #self.trace_visit_node(node)
         #ipshell('At visit_thead')
         el = self.append_child('table:table-header-rows')
         self.set_current_element(el)
@@ -997,24 +1024,24 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.paragraph_style_stack.append('Table_20_Heading')
 
     def depart_thead(self, node):
-        self.trace_depart_node(node)
+        #self.trace_depart_node(node)
         self.set_to_parent()
         self.in_thead = False
         self.paragraph_style_stack.pop()
 
     def visit_row(self, node):
-        self.trace_visit_node(node)
+        #self.trace_visit_node(node)
         #ipshell('At visit_row')
         self.column_count = ord('A') - 1
         el = self.append_child('table:table-row')
         self.set_current_element(el)
 
     def depart_row(self, node):
-        self.trace_depart_node(node)
+        #self.trace_depart_node(node)
         self.set_to_parent()
 
     def visit_entry(self, node):
-        self.trace_visit_node(node)
+        #self.trace_visit_node(node)
         #ipshell('At visit_entry')
         table_name = 'Table%d' % (self.table_count, )
         self.column_count += 1
@@ -1029,16 +1056,16 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.set_current_element(el1)
 
     def depart_entry(self, node):
-        self.trace_depart_node(node)
+        #self.trace_depart_node(node)
         self.set_to_parent()
 
     def visit_tbody(self, node):
-        self.trace_visit_node(node)
+        #self.trace_visit_node(node)
         #ipshell('At visit_')
         pass
 
     def depart_tbody(self, node):
-        self.trace_depart_node(node)
+        #self.trace_depart_node(node)
         pass
 
 
@@ -1097,5 +1124,4 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def depart_transition(self, node):
         pass
-
 
