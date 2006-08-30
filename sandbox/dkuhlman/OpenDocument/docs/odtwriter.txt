@@ -7,7 +7,7 @@ Odtwriter for Docutils
     http://www.rexx.com/~dkuhlman
 
 :revision: 1.0a
-:date: Aug. 29, 2006
+:date: Aug. 30, 2006
 
 :copyright: Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved.
     This software is subject to the provisions of the MIT License
@@ -57,6 +57,9 @@ commands::
 
     $ python setup.py build
     $ python setup.py install       # as root
+
+This will install the odtwriter under ``docutils/writers/odtwriter``
+within your Docutils installation.
 
 
 How to Use It
@@ -142,7 +145,8 @@ rststyle-blockquote
     A block quote.
 
 rststyle-codeblock
-    A block of example code.
+    A block of example code.  Derived from the ``Preformatted Text``
+    style in ``oowriter``.
 
 rststyle-heading{1|2|3|4|5}
     Headings (sub-titles).  Five levels of sub-headings are
