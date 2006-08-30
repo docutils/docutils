@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.5: http://docutils.sourceforge.net/" />
+<title>Odtwriter for Docutils</title>
+<meta name="author" content="Dave Kuhlman" />
+<meta name="date" content="Aug. 29, 2006" />
+<meta name="copyright" content="Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved. This software is subject to the provisions of the MIT License http://www.opensource.org/licenses/mit-license.php." />
+<style type="text/css">
+
+/* nuxeo doc css */
+/* $Id$ */
+
+body {
+  font: 90% 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: black;
+  margin: 2em;
+  padding: 2em;
+}
+
+a[href] {
+  color: #436976;
+  background-color: transparent;
+}
+
+a.toc-backref {
+  text-decoration: none;
+}
+
+h1 a[href] {
+  text-decoration: none;
+  color: #fcb100;
+  background-color: transparent;
+}
+
+a.strong {
+  font-weight: bold;
+}
+
+img {
+  margin: 0;
+  border: 0;
+}
+
+p {
+  margin: 0.5em 0 1em 0;
+  line-height: 1.5em;
+}
+p a {
+  text-decoration: underline;
+}
+p a:visited {
+  color: purple;
+  background-color: transparent;
+}
+p a:active {
+  color: red;
+  background-color: transparent;
+}
+a:hover {
+  text-decoration: none;
+}
+p img {
+  border: 0;
+  margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #003a6b;
+  background-color: transparent;
+  font: 100% 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding-top: 0.5em;
+}
+
+h1 {
+  font-size: 160%;
+  margin-bottom: 0.5em;
+  border-bottom: 1px solid #fcb100;
+}
+h2 {
+  font-size: 140%;
+  margin-bottom: 0.5em;
+  border-bottom: 1px solid #aaa;
+}
+h3 {
+  font-size: 130%;
+  margin-bottom: 0.5em;
+}
+h4 {
+  font-size: 110%;
+  font-weight: bold;
+}
+h5 {
+  font-size: 100%;
+  font-weight: bold;
+}
+h6 {
+  font-size: 80%;
+  font-weight: bold;
+}
+
+ul a, ol a {
+  text-decoration: underline;
+}
+
+dt {
+  font-weight: bold;
+}
+dt a {
+  text-decoration: none;
+}
+
+dd {
+  line-height: 1.5em;
+  margin-bottom: 1em;
+}
+
+legend {
+  background: #ffffff;
+  padding: 0.5em;
+}
+
+form {
+  margin: 0;
+}
+
+
+dl.form {
+  margin: 0;
+  padding: 1em;
+}
+
+dl.form dt {
+  width: 30%;
+  float: left;
+  margin: 0;
+  padding: 0 0.5em 0.5em 0;
+  text-align: right;
+}
+
+input {
+  font: 100% 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
+  color: black;
+  background-color: white;
+  vertical-align: middle;
+}
+
+abbr, acronym, .explain {
+  color: black;
+  background-color: transparent;
+}
+
+q, blockquote {
+}
+
+code, pre {
+  font-family: monospace;
+  font-size: 1.2em;
+  display: block;
+  padding: 10px;
+  border: 1px solid #838183;
+  background-color: #eee;
+  color: #000;
+  overflow: auto;
+  margin: 0.5em 1em;
+}
+
+tt.docutils {
+  background-color: #eeeeee;
+}
+
+</style>
+</head>
+<body>
+<div class="document" id="odtwriter-for-docutils">
+<h1 class="title">Odtwriter for Docutils</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr><th class="docinfo-name">Author:</th>
+<td>Dave Kuhlman</td></tr>
+<tr><th class="docinfo-name">Address:</th>
+<td><pre class="address">
+<a class="first reference" href="mailto:dkuhlman&#64;rexx.com">dkuhlman&#64;rexx.com</a>
+<a class="last reference" href="http://www.rexx.com/~dkuhlman">http://www.rexx.com/~dkuhlman</a>
+</pre>
+</td></tr>
+<tr><th class="docinfo-name">Revision:</th>
+<td>1.0a</td></tr>
+<tr><th class="docinfo-name">Date:</th>
+<td>Aug. 29, 2006</td></tr>
+<tr><th class="docinfo-name">Copyright:</th>
+<td>Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved.
+This software is subject to the provisions of the MIT License
+<a class="reference" href="http://www.opensource.org/licenses/mit-license.php">http://www.opensource.org/licenses/mit-license.php</a>.</td></tr>
+</tbody>
+</table>
+<div class="abstract topic">
+<p class="topic-title first">Abstract</p>
+<p>This document describes the Docutils odtwriter.</p>
+</div>
+<div class="contents topic">
+<p class="topic-title first"><a id="contents" name="contents">Contents</a></p>
+<ul class="auto-toc simple">
+<li><a class="reference" href="#introduction" id="id1" name="id1">1&nbsp;&nbsp;&nbsp;Introduction</a></li>
+<li><a class="reference" href="#how-to-install-it" id="id2" name="id2">2&nbsp;&nbsp;&nbsp;How to Install It</a></li>
+<li><a class="reference" href="#how-to-use-it" id="id3" name="id3">3&nbsp;&nbsp;&nbsp;How to Use It</a></li>
+<li><a class="reference" href="#styles" id="id4" name="id4">4&nbsp;&nbsp;&nbsp;Styles</a><ul class="auto-toc">
+<li><a class="reference" href="#styles-used-by-odtwriter" id="id5" name="id5">4.1&nbsp;&nbsp;&nbsp;Styles used by odtwriter</a><ul class="auto-toc">
+<li><a class="reference" href="#paragraph-styles" id="id6" name="id6">4.1.1&nbsp;&nbsp;&nbsp;Paragraph styles</a></li>
+<li><a class="reference" href="#character-styles" id="id7" name="id7">4.1.2&nbsp;&nbsp;&nbsp;Character styles</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section">
+<h1><a class="toc-backref" href="#id1" id="introduction" name="introduction">1&nbsp;&nbsp;&nbsp;Introduction</a></h1>
+<p>What it does -- <tt class="docutils literal"><span class="pre">rst2odt.py/odtwriter.py</span></tt> translate reST
+(reStructuredText) into a Open Document Format <tt class="docutils literal"><span class="pre">.odt</span></tt> file.  You
+can learn more about here:</p>
+<ul class="simple">
+<li><a class="reference" href="http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=office">OASIS Open Document Format for Office Applications
+(OpenDocument) TC</a></li>
+<li><a class="reference" href="http://en.wikipedia.org/wiki/OpenDocument">Open Document at Wikipedia</a></li>
+</ul>
+</div>
+<div class="section">
+<h1><a class="toc-backref" href="#id2" id="how-to-install-it" name="how-to-install-it">2&nbsp;&nbsp;&nbsp;How to Install It</a></h1>
+<p>Requirements -- <tt class="docutils literal"><span class="pre">odtwriter</span></tt> requires:</p>
+<ul>
+<li><p class="first">Python</p>
+</li>
+<li><p class="first">A sufficiently recent version of Docutils.</p>
+</li>
+<li><p class="first">Either of the following:</p>
+<ul class="simple">
+<li>ElementTree -- See: <a class="reference" href="http://effbot.org/zone/element-index.htm">http://effbot.org/zone/element-index.htm</a></li>
+<li>Lxml -- See: <a class="reference" href="http://codespeak.net/lxml/">http://codespeak.net/lxml/</a></li>
+</ul>
+<p><tt class="docutils literal"><span class="pre">odtwriter</span></tt> will try first to use Lxml, and if it is not
+installed will use ElementTree.</p>
+</li>
+</ul>
+<p>Install <tt class="docutils literal"><span class="pre">odtwriter</span></tt> with the standard Python installation
+commands:</p>
+<pre class="literal-block">
+$ python setup.py build
+$ python setup.py install       # as root
+</pre>
+</div>
+<div class="section">
+<h1><a class="toc-backref" href="#id3" id="how-to-use-it" name="how-to-use-it">3&nbsp;&nbsp;&nbsp;How to Use It</a></h1>
+<p>Run it from the command line as follows:</p>
+<pre class="literal-block">
+$ rst2odt.py myinput.txt myoutput.odt
+</pre>
+<p>To see usage information and to learn about command line flags
+that you can use, run the following:</p>
+<pre class="literal-block">
+$ rst2odt.py --help
+</pre>
+<p>Examples:</p>
+<pre class="literal-block">
+$ rst2odt.py -s -g python_comments.txt python_comments.odt
+
+$ rst2odt.py --source-url=odtwriter.txt --generator --stylesheet-path=/myconfigs/styles.odt odtwriter.txt odtwriter.odt
+</pre>
+</div>
+<div class="section">
+<h1><a class="toc-backref" href="#id4" id="styles" name="styles">4&nbsp;&nbsp;&nbsp;Styles</a></h1>
+<p><tt class="docutils literal"><span class="pre">odtwriter</span></tt> uses a number of styles that are defined in the
+default <tt class="docutils literal"><span class="pre">styles.xml</span></tt>.  This section describes those styles.</p>
+<p>You can modify the look of documents generated by <tt class="docutils literal"><span class="pre">odtwriter</span></tt> in
+several ways:</p>
+<ul class="simple">
+<li>Open (a copy of) <tt class="docutils literal"><span class="pre">styles.odt</span></tt> in <tt class="docutils literal"><span class="pre">oowriter</span></tt>, modify the
+style you wish to change (in my version of <tt class="docutils literal"><span class="pre">oowriter</span></tt>, do this
+with menu item <tt class="docutils literal"><span class="pre">Format/Styles</span> <span class="pre">and</span> <span class="pre">Formatting</span></tt>), save this
+document, then generate your documents using this modified copy
+of <tt class="docutils literal"><span class="pre">styles.odt</span></tt>.</li>
+<li>Open a document generated by <tt class="docutils literal"><span class="pre">odtwriter</span></tt> in <cite>oowriter`</cite>.  Now,
+edit the style you are interested in modifying.  To do so either
+(1) press F11 or (2) use menu item &quot;Format/Styles and
+Formatting&quot;, then right-click on the relevant style and select
+&quot;Modify&quot;.  Modify the style, then save your document.  Now, you
+can extract the styles.xml file from your document and either
+(1) use this as your default styles file or (2) copy and paste
+the relevant style definition into your styles.xml.</li>
+<li>Extract <tt class="docutils literal"><span class="pre">styles.xml</span></tt> from <tt class="docutils literal"><span class="pre">styles.odt</span></tt> using your favorite
+<tt class="docutils literal"><span class="pre">zip/unzip</span></tt> tool.  Then modify <tt class="docutils literal"><span class="pre">styles.xml</span></tt> with a text
+editor.  Now re-zip it back into your own <tt class="docutils literal"><span class="pre">styles.odt</span></tt>, or use
+it directly by specifying it with a command line flag.
+<strong>Hint:</strong> If you intend to extract <tt class="docutils literal"><span class="pre">styles.xml</span></tt> from an
+<tt class="docutils literal"><span class="pre">.odt</span></tt> file (and then &quot;re-zip&quot; it), you should turn off XML
+optimization/compression in <tt class="docutils literal"><span class="pre">oowriter</span></tt>.  In order to this in
+<tt class="docutils literal"><span class="pre">oowriter</span></tt>, use Tools --&gt; Options... --&gt; Load-Save --&gt; General
+and turn off &quot;Size optimization for XML format&quot;.</li>
+<li>Open an empty (or new) document in <tt class="docutils literal"><span class="pre">oowriter</span></tt>.  Define the
+styles described in this section.  Then, use that document (a
+.odt file) as your stylesheet.  <tt class="docutils literal"><span class="pre">odtwriter</span></tt> will extract the
+<tt class="docutils literal"><span class="pre">styles.xml</span></tt> file from that document and insert it into the
+output document.</li>
+<li>Some combination of the above.</li>
+</ul>
+<div class="section">
+<h2><a class="toc-backref" href="#id5" id="styles-used-by-odtwriter" name="styles-used-by-odtwriter">4.1&nbsp;&nbsp;&nbsp;Styles used by odtwriter</a></h2>
+<p>This section describes the styles used by <tt class="docutils literal"><span class="pre">odtwriter</span></tt>.</p>
+<p>Note that we do not describe the &quot;look&quot; of these styles.  That can
+be easily changed by using <tt class="docutils literal"><span class="pre">oowriter</span></tt> to edit the document
+<tt class="docutils literal"><span class="pre">styles.odt</span></tt> (or a copy of it), and modifying any of the styles
+described here.</p>
+<div class="section">
+<h3><a class="toc-backref" href="#id6" id="paragraph-styles" name="paragraph-styles">4.1.1&nbsp;&nbsp;&nbsp;Paragraph styles</a></h3>
+<dl class="docutils">
+<dt>rststyle-blockindent</dt>
+<dd>An indented block.</dd>
+<dt>rststyle-blockquote</dt>
+<dd>A block quote.</dd>
+<dt>rststyle-codeblock</dt>
+<dd>A block of example code.</dd>
+<dt>rststyle-heading{1|2|3|4|5}</dt>
+<dd>Headings (sub-titles).  Five levels of sub-headings are
+provided: rststyle-heading1 through rststyle-heading5.</dd>
+<dt>rststyle-bodyindent</dt>
+<dd>An indented block.</dd>
+<dt>rststyle-bulletitem</dt>
+<dd>An item in an bullet list.</dd>
+<dt>rststyle-enumitem</dt>
+<dd>An item in an enumerated list.</dd>
+<dt>rststyle-horizontalline</dt>
+<dd>A horizontal line, e.g. used for transitions.</dd>
+<dt>rststyle-textbody</dt>
+<dd>Normal text</dd>
+</dl>
+</div>
+<div class="section">
+<h3><a class="toc-backref" href="#id7" id="character-styles" name="character-styles">4.1.2&nbsp;&nbsp;&nbsp;Character styles</a></h3>
+<dl class="docutils">
+<dt>rststyle-emphasis</dt>
+<dd>Emphasis.  Normally rendered as italics.</dd>
+<dt>rststyle-inlineliteral</dt>
+<dd>An inline literal.</dd>
+<dt>rststyle-strong</dt>
+<dd>Strong emphasis.  Normally rendered as boldface.</dd>
+<dt>rststyle-quotation</dt>
+<dd>In-line quoted material.</dd>
+</dl>
+<!-- Configuration for Emacs -->
+<!-- Local Variables:
+mode: indented-text
+indent-tabs-mode: nil
+sentence-end-double-space: t
+fill-column: 68
+End: -->
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<a class="reference" href="odtwriter.txt">View document source</a>.
+Generated by <a class="reference" href="http://docutils.sourceforge.net/">Docutils</a> from <a class="reference" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a> source.
+
+</div>
+</body>
+</html>
