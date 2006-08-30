@@ -143,13 +143,84 @@ class Writer(writers.Writer):
         os.path.join(os.getcwd(), 'dummy'),
         os.path.join(os.path.dirname(__file__), default_template))
 
+##    settings_spec = (
+##        'ODF-Specific Options',
+##        None,
+##        (('Specify the template file (UTF-8 encoded).  Default is "%s".'
+##          % default_template_path,
+##          ['--template'],
+##          {'default': default_template_path, 'metavar': '<file>'}),
+##        ('Specify a stylesheet URL, used verbatim.  Overrides '
+##          '--stylesheet-path.',
+##          ['--stylesheet'],
+##          {'metavar': '<URL>', 'overrides': 'stylesheet_path'}),
+##         ('Specify a stylesheet file, relative to the current working '
+##          'directory.  The path is adjusted relative to the output ODF '
+##          'file.  Overrides --stylesheet.  Default: "%s"'
+##          % default_stylesheet_path,
+##          ['--stylesheet-path'],
+##          {'metavar': '<file>', 'overrides': 'stylesheet',
+##           'default': default_stylesheet_path}),
+##         ('Specify the initial header level.  Default is 1 for "<h1>".  '
+##          'Does not affect document title & subtitle (see --no-doc-title).',
+##          ['--initial-header-level'],
+##          {'choices': '1 2 3 4 5 6'.split(), 'default': '1',
+##           'metavar': '<level>'}),
+##         ('Specify the maximum width (in characters) for one-column field '
+##          'names.  Longer field names will span an entire row of the table '
+##          'used to render the field list.  Default is 14 characters.  '
+##          'Use 0 for "no limit".',
+##          ['--field-name-limit'],
+##          {'default': 14, 'metavar': '<level>',
+##           'validator': frontend.validate_nonnegative_int}),
+##         ('Specify the maximum width (in characters) for options in option '
+##          'lists.  Longer options will span an entire row of the table used '
+##          'to render the option list.  Default is 14 characters.  '
+##          'Use 0 for "no limit".',
+##          ['--option-limit'],
+##          {'default': 14, 'metavar': '<level>',
+##           'validator': frontend.validate_nonnegative_int}),
+##         ('Format for footnote references: one of "superscript" or '
+##          '"brackets".  Default is "brackets".',
+##          ['--footnote-references'],
+##          {'choices': ['superscript', 'brackets'], 'default': 'brackets',
+##           'metavar': '<format>',
+##           'overrides': 'trim_footnote_reference_space'}),
+##         ('Format for block quote attributions: one of "dash" (em-dash '
+##          'prefix), "parentheses"/"parens", or "none".  Default is "dash".',
+##          ['--attribution'],
+##          {'choices': ['dash', 'parentheses', 'parens', 'none'],
+##           'default': 'dash', 'metavar': '<format>'}),
+##         ('Remove extra vertical whitespace between items of "simple" bullet '
+##          'lists and enumerated lists.  Default: enabled.',
+##          ['--compact-lists'],
+##          {'default': 1, 'action': 'store_true',
+##           'validator': frontend.validate_boolean}),
+##         ('Disable compact simple bullet and enumerated lists.',
+##          ['--no-compact-lists'],
+##          {'dest': 'compact_lists', 'action': 'store_false'}),
+##         ('Remove extra vertical whitespace between items of simple field '
+##          'lists.  Default: enabled.',
+##          ['--compact-field-lists'],
+##          {'default': 1, 'action': 'store_true',
+##           'validator': frontend.validate_boolean}),
+##         ('Disable compact simple field lists.',
+##          ['--no-compact-field-lists'],
+##          {'dest': 'compact_field_lists', 'action': 'store_false'}),
+##         ('Omit the XML declaration.  Use with caution.',
+##          ['--no-xml-declaration'],
+##          {'dest': 'xml_declaration', 'default': 1, 'action': 'store_false',
+##           'validator': frontend.validate_boolean}),
+##         ('Obfuscate email addresses to confuse harvesters while still '
+##          'keeping email links usable with standards-compliant browsers.',
+##          ['--cloak-email-addresses'],
+##          {'action': 'store_true', 'validator': frontend.validate_boolean}),
+##        ))
+
     settings_spec = (
         'ODF-Specific Options',
         None,
-        (('Specify the template file (UTF-8 encoded).  Default is "%s".'
-          % default_template_path,
-          ['--template'],
-          {'default': default_template_path, 'metavar': '<file>'}),
+        (
         ('Specify a stylesheet URL, used verbatim.  Overrides '
           '--stylesheet-path.',
           ['--stylesheet'],
@@ -161,67 +232,6 @@ class Writer(writers.Writer):
           ['--stylesheet-path'],
           {'metavar': '<file>', 'overrides': 'stylesheet',
            'default': default_stylesheet_path}),
-##         ('Embed the stylesheet in the output HTML file.  The stylesheet '
-##          'file must be accessible during processing (--stylesheet-path is '
-##          'recommended).  This is the default.',
-##          ['--embed-stylesheet'],
-##          {'default': 1, 'action': 'store_true',
-##           'validator': frontend.validate_boolean}),
-##         ('Link to the stylesheet in the output HTML file.  Default: '
-##          'embed the stylesheet, do not link to it.',
-##          ['--link-stylesheet'],
-##          {'dest': 'embed_stylesheet', 'action': 'store_false',
-##           'validator': frontend.validate_boolean}),
-         ('Specify the initial header level.  Default is 1 for "<h1>".  '
-          'Does not affect document title & subtitle (see --no-doc-title).',
-          ['--initial-header-level'],
-          {'choices': '1 2 3 4 5 6'.split(), 'default': '1',
-           'metavar': '<level>'}),
-         ('Specify the maximum width (in characters) for one-column field '
-          'names.  Longer field names will span an entire row of the table '
-          'used to render the field list.  Default is 14 characters.  '
-          'Use 0 for "no limit".',
-          ['--field-name-limit'],
-          {'default': 14, 'metavar': '<level>',
-           'validator': frontend.validate_nonnegative_int}),
-         ('Specify the maximum width (in characters) for options in option '
-          'lists.  Longer options will span an entire row of the table used '
-          'to render the option list.  Default is 14 characters.  '
-          'Use 0 for "no limit".',
-          ['--option-limit'],
-          {'default': 14, 'metavar': '<level>',
-           'validator': frontend.validate_nonnegative_int}),
-         ('Format for footnote references: one of "superscript" or '
-          '"brackets".  Default is "brackets".',
-          ['--footnote-references'],
-          {'choices': ['superscript', 'brackets'], 'default': 'brackets',
-           'metavar': '<format>',
-           'overrides': 'trim_footnote_reference_space'}),
-         ('Format for block quote attributions: one of "dash" (em-dash '
-          'prefix), "parentheses"/"parens", or "none".  Default is "dash".',
-          ['--attribution'],
-          {'choices': ['dash', 'parentheses', 'parens', 'none'],
-           'default': 'dash', 'metavar': '<format>'}),
-         ('Remove extra vertical whitespace between items of "simple" bullet '
-          'lists and enumerated lists.  Default: enabled.',
-          ['--compact-lists'],
-          {'default': 1, 'action': 'store_true',
-           'validator': frontend.validate_boolean}),
-         ('Disable compact simple bullet and enumerated lists.',
-          ['--no-compact-lists'],
-          {'dest': 'compact_lists', 'action': 'store_false'}),
-         ('Remove extra vertical whitespace between items of simple field '
-          'lists.  Default: enabled.',
-          ['--compact-field-lists'],
-          {'default': 1, 'action': 'store_true',
-           'validator': frontend.validate_boolean}),
-         ('Disable compact simple field lists.',
-          ['--no-compact-field-lists'],
-          {'dest': 'compact_field_lists', 'action': 'store_false'}),
-         ('Omit the XML declaration.  Use with caution.',
-          ['--no-xml-declaration'],
-          {'dest': 'xml_declaration', 'default': 1, 'action': 'store_false',
-           'validator': frontend.validate_boolean}),
          ('Obfuscate email addresses to confuse harvesters while still '
           'keeping email links usable with standards-compliant browsers.',
           ['--cloak-email-addresses'],
@@ -381,7 +391,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'office:document-styles', STYLES_NAMESPACE_DICT
             )
         self.styles_tree = etree.ElementTree(element=root)
-        self.paragraph_style_stack = ['Text_20_body', ]
+        self.paragraph_style_stack = ['rststyle-textbody', ]
         self.omit = False
         self.table_count = 0
         self.column_count = ord('A') - 1
@@ -420,14 +430,14 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def generate_labeled_block(self, node, label):
         el = self.append_child('text:p', attrib={
-            'text:style-name': 'Text_20_body'})
+            'text:style-name': 'rststyle-textbody'})
         el1 = etree.SubElement(el, 'text:span',
             attrib={'text:style-name': 'rststyle-strong'})
         el1.text = label
         el = self.append_child('text:p', attrib={
             'text:style-name': 'rststyle-blockindent'})
         return el
-    
+
     def encode(self, text):
         text = text.replace(u'\u00a0', " ")
         return text
@@ -505,11 +515,31 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.set_to_parent()
 
     def visit_author(self, node):
-        el = self.generate_labeled_block(node, 'Author: ')
+        #self.trace_visit_node(node)
+        if isinstance(node.parent, nodes.authors):
+            el = self.append_child('text:p', attrib={
+                'text:style-name': 'rststyle-blockindent'})
+        else:
+            el = self.generate_labeled_block(node, 'Author: ')
         self.set_current_element(el)
 
     def depart_author(self, node):
+        #self.trace_depart_node(node)
         self.set_to_parent()
+
+    def visit_authors(self, node):
+        #ipshell('At visit_authors')
+        #self.trace_visit_node(node)
+        label = 'Authors:'
+        el = self.append_child('text:p', attrib={
+            'text:style-name': 'rststyle-textbody'})
+        el1 = etree.SubElement(el, 'text:span',
+            attrib={'text:style-name': 'rststyle-strong'})
+        el1.text = label
+
+    def depart_authors(self, node):
+        #self.trace_depart_node(node)
+        pass
 
     def visit_block_quote(self, node):
         #ipshell('At visit_block_quote')
@@ -535,7 +565,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def visit_comment(self, node):
         #ipshell('At visit_comment')
         el = self.append_child('text:p',
-            attrib={'text:style-name': 'Text_20_body'})
+            attrib={'text:style-name': 'rststyle-textbody'})
         el1 =  etree.SubElement(el, 'office:annotation', attrib={})
         el2 =  etree.SubElement(el1, 'text:p', attrib={})
         el2.text = self.encode(node.astext())
@@ -565,18 +595,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.current_element.remove(el)
         self.footer_element = el
 
-    def visit_footer(self, node):
-        #ipshell('At visit_footer')
-        #self.trace_visit_node(node)
-        pass
-
-    def depart_footer(self, node):
-        #self.trace_depart_node(node)
-        pass
-
     def visit_date(self, node):
         el = self.append_child('text:p', attrib={
-            'text:style-name': 'Text_20_body'})
+            'text:style-name': 'rststyle-textbody'})
         el1 = etree.SubElement(el, 'text:span',
             attrib={'text:style-name': 'rststyle-strong'})
         el1.text = 'Date: '
@@ -610,7 +631,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_term(self, node):
         el = self.append_child('text:p', attrib={
-            'text:style-name': 'Text_20_body'})
+            'text:style-name': 'rststyle-textbody'})
         el1 = etree.SubElement(el, 'text:span',
             attrib={'text:style-name': 'rststyle-strong'})
         #el1.text = node.astext()
@@ -632,6 +653,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         pass
 
     def visit_docinfo(self, node):
+        #self.document.reporter.debug_flag = 1
+        self.trace_visit_node(node)
         self.section_level += 1
         self.section_count += 1
         el = self.append_child('text:section', attrib={
@@ -641,6 +664,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.set_current_element(el)
 
     def depart_docinfo(self, node):
+        #self.document.reporter.debug_flag = 0
+        self.trace_depart_node(node)
         self.section_level -= 1
         self.set_to_parent()
 
@@ -665,6 +690,15 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_enumerated_list(self, node):
         self.set_to_parent()
         self.paragraph_style_stack.pop()
+
+    def visit_footer(self, node):
+        #ipshell('At visit_footer')
+        #self.trace_visit_node(node)
+        pass
+
+    def depart_footer(self, node):
+        #self.trace_depart_node(node)
+        pass
 
     def visit_list_item(self, node):
         #import pdb; pdb.set_trace()
@@ -733,8 +767,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         print '*** msg.astext(): %s' % (msg.astext(), )
 
     def visit_option_list(self, node):
-        self.document.reporter.debug_flag = 1
-        self.document.reporter.attach_observer(self.show_message)
+        #self.document.reporter.debug_flag = 1
+        #self.document.reporter.attach_observer(self.show_message)
         table_name = 'rststyle-tableoption'
         #
         # Generate automatic styles
@@ -819,7 +853,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.set_current_element(el)
 
     def depart_option_list(self, node):
-        self.document.reporter.debug_flag = 0
+        #self.document.reporter.debug_flag = 0
         self.set_to_parent()
 
     def visit_option_list_item(self, node):
@@ -920,7 +954,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_revision(self, node):
         el = self.append_child('text:p', attrib={
-            'text:style-name': 'Text_20_body'})
+            'text:style-name': 'rststyle-textbody'})
         el1 = etree.SubElement(el, 'text:span',
             attrib={'text:style-name': 'rststyle-strong'})
         el1.text = 'Revision: '
@@ -1109,6 +1143,15 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             el1.text = text.decode('latin-1').encode('utf-8')
 
     def depart_title(self, node):
+        pass
+
+    def visit_title_reference(self, node):
+        #ipshell('At visit_title_reference')
+        el = self.append_child('text:span', attrib={
+            'text:style-name': 'rststyle-quotation'})
+        el.text = self.encode(node.astext())
+
+    def depart_title_reference(self, node):
         pass
 
     def visit_topic(self, node):
