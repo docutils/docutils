@@ -398,6 +398,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.trace_level = -1
         self.optiontablestyles_generated = False
         self.footer_element = None
+        self.field_name = None
+        self.field_element = None
 
     def astext(self):
         root = self.content_tree.getroot()
@@ -568,7 +570,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             attrib={'text:style-name': 'rststyle-textbody'})
         el1 =  etree.SubElement(el, 'office:annotation', attrib={})
         el2 =  etree.SubElement(el1, 'text:p', attrib={})
-        el2.text = self.encode(node.astext())
+        el2.text = node.astext()
 
     def depart_comment(self, node):
         pass
@@ -580,21 +582,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_copyright(self, node):
         self.set_to_parent()
 
-    def visit_decoration(self, node):
-        global DEBUG
-        #ipshell('At visit_decoration')
-        #DEBUG = 1
-        #self.trace_visit_node(node)
-
-    def depart_decoration(self, node):
-        #global DEBUG
-        #self.trace_depart_node(node)
-        #DEBUG = 0
-        #ipshell('At depart_decoration')
-        el = self.current_element.getchildren()[-1]
-        self.current_element.remove(el)
-        self.footer_element = el
-
     def visit_date(self, node):
         el = self.append_child('text:p', attrib={
             'text:style-name': 'rststyle-textbody'})
@@ -605,6 +592,26 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def depart_date(self, node):
         pass
+
+    def visit_decoration(self, node):
+        #global DEBUG
+        #ipshell('At visit_decoration')
+        #DEBUG = 1
+        #self.trace_visit_node(node)
+        pass
+
+    def depart_decoration(self, node):
+        #global DEBUG
+        #self.trace_depart_node(node)
+        #DEBUG = 0
+        #ipshell('At depart_decoration')
+        el = self.current_element.getchildren()[-1]
+        self.current_element.remove(el)
+        el1 = etree.Element('text:section', attrib={
+            'text:name': '_rstFooterSection',
+            })
+        el1.append(el)
+        self.footer_element = el1
 
     def visit_definition(self, node):
         el = self.append_child('text:p',
@@ -691,15 +698,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.set_to_parent()
         self.paragraph_style_stack.pop()
 
-    def visit_footer(self, node):
-        #ipshell('At visit_footer')
-        #self.trace_visit_node(node)
-        pass
-
-    def depart_footer(self, node):
-        #self.trace_depart_node(node)
-        pass
-
     def visit_list_item(self, node):
         #import pdb; pdb.set_trace()
         #ipshell('At visit_document')
@@ -709,6 +707,50 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def depart_list_item(self, node):
         self.set_to_parent()
+
+    def visit_footer(self, node):
+        #ipshell('At visit_footer')
+        #self.trace_visit_node(node)
+        pass
+
+    def depart_footer(self, node):
+        #self.trace_depart_node(node)
+        pass
+
+    def visit_field(self, node):
+        #ipshell('At visit_field')
+        #self.trace_visit_node(node)
+        pass
+
+    def depart_field(self, node):
+        #self.trace_depart_node(node)
+        #self.current_element.append(self.field_element)
+        pass
+
+    def visit_field_name(self, node):
+        #ipshell('At visit_field_name')
+        #self.trace_visit_node(node)
+        el = self.append_child('text:p', attrib={
+            'text:style-name': 'rststyle-textbody'})
+        el1 = etree.SubElement(el, 'text:span',
+            attrib={'text:style-name': 'rststyle-strong'})
+        el1.text = node.astext()
+
+    def depart_field_name(self, node):
+        #self.trace_depart_node(node)
+        pass
+
+    def visit_field_body(self, node):
+        #ipshell('At visit_field_body')
+        #self.trace_visit_node(node)
+        el = self.append_child('text:p', attrib={
+            'text:style-name': 'rststyle-blockindent'})
+        el.text = node.astext()
+        raise nodes.SkipChildren()
+
+    def depart_field_body(self, node):
+        #self.trace_depart_node(node)
+        pass
 
     def visit_generated(self, node):
         pass
@@ -876,7 +918,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def visit_option(self, node):
         el = self.append_child('text:p', attrib={
             'text:style-name': 'Table_20_Contents'})
-        el.text = self.encode(node.astext())
+        el.text = node.astext()
 
     def depart_option(self, node):
         pass
@@ -901,7 +943,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         })
         el1 = etree.SubElement(el, 'text:p', attrib={
             'text:style-name': 'Table_20_Contents'})
-        el1.text = self.encode(node.astext())
+        el1.text = node.astext()
         raise nodes.SkipChildren()
 
     def depart_description(self, node):
