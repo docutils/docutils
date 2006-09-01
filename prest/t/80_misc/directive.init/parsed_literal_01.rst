@@ -1,0 +1,2 @@
+.. parsed-literal::
+   :: badoption

@@ -1,0 +1,2 @@
+.. reStructuredText-test-directive::
+   :: badoption

@@ -1,0 +1,42 @@
+/export/home/nodine/tools/prest/blib/lib/Text/Restructured/Writer/dom.wrt, line 23
+/export/home/nodine/tools/prest/blib/lib/Text/Restructured/Writer/dom.wrt, line 32
+/export/home/nodine/tools/prest/blib/lib/Text/Restructured/Writer/dom.wrt, line 44
+Debug: perl: test data, 1
+PROCESS: #PCDATA
+No directive entry for "perl" in module "Text::Restructured::Directive".
+Trying "perl" as canonical directive name.
+
+PROCESS: paragraph
+<paragraph>
+    No directive entry for "perl" in module "Text::Restructured::Directive".
+    Trying "perl" as canonical directive name.
+
+PROCESS: system_message
+<system_message level="1" line="1" source="test data" type="INFO">
+    <paragraph>
+        No directive entry for "perl" in module "Text::Restructured::Directive".
+        Trying "perl" as canonical directive name.
+
+PROCESS: #PCDATA
+5
+
+PROCESS: paragraph
+<paragraph>
+    5
+
+PROCESS: document
+<document source="test data">
+    <system_message level="1" line="1" source="test data" type="INFO">
+        <paragraph>
+            No directive entry for "perl" in module "Text::Restructured::Directive".
+            Trying "perl" as canonical directive name.
+    <paragraph>
+        5
+
+<document source="test data">
+    <system_message level="1" line="1" source="test data" type="INFO">
+        <paragraph>
+            No directive entry for "perl" in module "Text::Restructured::Directive".
+            Trying "perl" as canonical directive name.
+    <paragraph>
+        5

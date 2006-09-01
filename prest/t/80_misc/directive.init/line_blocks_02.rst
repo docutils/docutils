@@ -1,0 +1,2 @@
+.. line-block::
+   :: badoption

@@ -1,0 +1,3 @@
+.. sectnum::
+
+   Content forbidden.

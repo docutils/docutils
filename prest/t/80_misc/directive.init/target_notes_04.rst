@@ -1,0 +1,1 @@
+.. target-notes:: bad args

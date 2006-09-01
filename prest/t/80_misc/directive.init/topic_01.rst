@@ -1,0 +1,2 @@
+.. topic::
+   :: badoption

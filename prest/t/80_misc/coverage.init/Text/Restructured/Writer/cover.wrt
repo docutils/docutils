@@ -1,0 +1,41 @@
+# This writer has interleaved phases
+
+sub BEGIN {
+    use vars qw(@EVENTS);
+}
+
+sub nullroutine {
+}
+
+phase BAD {
+    sub (paragraph) {
+	push @EVENTS, "BAD paragraph";
+	return;
+    }
+
+    sub document {
+	push @EVENTS, "BAD document";
+	return;
+    }
+}
+
+phase PRE {
+    sub document {
+	push @EVENTS, "PRE document";
+	return;
+    }
+}
+
+phase POST {
+    sub document {
+	push @EVENTS, "POST document";
+	return join '', map "$_\n", @EVENTS;
+    }
+}
+
+phase PRE {
+    sub paragraph {
+	push @EVENTS, "PRE paragraph";
+    }
+}
+

@@ -283,7 +283,7 @@ an unambiguous variant of RFC 2822 fields.</td>
 relative to the field marker.</p>
 </td>
 </tr>
-<tr class="field"><th class="field-name">credits:</th><td class="field-body"><p class="credits first last">This paragraph has the <cite>credits</cite> class set.  (This is actually not
+<tr class="field"><th class="field-name">credits:</th><td class="field-body"><p class="credits">This paragraph has the <cite>credits</cite> class set.  (This is actually not
 about credits but just for ensuring that the class attribute
 doesn't get stripped away.)</p>
 </td>
@@ -357,12 +357,12 @@ the preceding paragraph (over there <tt class="docutils literal"><span class="pr
 <p>This section tests line blocks.  Line blocks are body elements which
 consist of lines and other line blocks.  Nested line blocks cause
 indentation.</p>
-<div>
+<div class="line-block">
 <div class="line">This is a line block.  It ends with a blank line.</div>
-<div>
+<div class="line-block">
 <div class="line">New lines begin with a vertical bar ("|").</div>
 <div class="line">Line breaks and initial indent are significant, and preserved.</div>
-<div>
+<div class="line-block">
 <div class="line">Continuation lines are also possible.  A long line that is intended
 to wrap should begin with a space in place of the vertical bar.</div>
 </div>
@@ -370,13 +370,13 @@ to wrap should begin with a space in place of the vertical bar.</div>
 the left edge of the text above it.</div>
 </div>
 </div>
-<div>
+<div class="line-block">
 <div class="line">This is a second line block.</div>
 <div class="line"><br /></div>
 <div class="line">Blank lines are permitted internally, but they must begin with a "|".</div>
 </div>
 <p>Another line block, surrounded by paragraphs:</p>
-<div>
+<div class="line-block">
 <div class="line">And it's no good waiting by the window</div>
 <div class="line">It's no good waiting for the sun</div>
 <div class="line">Please believe me, the things you dream of</div>
@@ -384,24 +384,24 @@ the left edge of the text above it.</div>
 </div>
 <p>Take it away, Eric the Orchestra Leader!</p>
 <blockquote>
-<div>
+<div class="line-block">
 <div class="line">A one, two, a one two three four</div>
 <div class="line"><br /></div>
 <div class="line">Half a bee, philosophically,</div>
-<div>
+<div class="line-block">
 <div class="line">must, <em>ipso facto</em>, half not be.</div>
 </div>
 <div class="line">But half the bee has got to be,</div>
-<div>
+<div class="line-block">
 <div class="line"><em>vis a vis</em> its entity.  D'you see?</div>
 <div class="line"><br /></div>
 </div>
 <div class="line">But can a bee be said to be</div>
-<div>
+<div class="line-block">
 <div class="line">or not to be an entire bee,</div>
-<div>
+<div class="line-block">
 <div class="line">when half the bee is not a bee,</div>
-<div>
+<div class="line-block">
 <div class="line">due to some ancient injury?</div>
 <div class="line"><br /></div>
 </div>
@@ -878,7 +878,7 @@ cell.</td>
 span rows.</p>
 <p class="last">Paragraph.</p>
 </td>
-<td colspan="2" rowspan="2"><ul class="first last simple">
+<td colspan="2" rowspan="2"><ul class="simple">
 <li>Table cells</li>
 <li>contain</li>
 <li>body elements.</li>

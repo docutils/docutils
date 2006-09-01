@@ -1,5 +1,7 @@
 Tests a basic code block with color markup.
 
+.. role:: comment(emphasis)
+
 .. code_block:: makefile
    :color:
 
