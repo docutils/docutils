@@ -34,9 +34,11 @@ if ($AFTER_DATE) {
     $AFTER_DATE = 0;
 }
 # Deal with perl eval numbers that may change in error messages
-s/(eval )(\d+)/$1\\d+.*/;
+s/\\\((eval )(\d+)\\\)(\\\[.+\\\])?/\\($1\\d+\\).*/;
 $AFTER_DATE = /<date>/;
 # Perl trapped error message changed between 5.8.0 and 5.8.6.
 s/(: )(.*)( trapped by operation mask)/$1($2|.*)$3/;
 # System messages may differ in different locales
 s/(\\\[Errno \d+\\\])(.*)/$1($2|.*)/;
+# Handle -d output
+s!^.*(/Text/Restructured/Writer/dom\\\.wrt, line )\d+!.*$1\\d+!;
