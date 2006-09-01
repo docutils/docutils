@@ -1,0 +1,8 @@
+#!/usr/local/bin/perl
+
+# This script simply runs the experimental version of prest in blib/scripts.
+
+use FindBin;
+eval "%CFG = (" . `cat $FindBin::RealBin/../config.log` . ")";
+
+exec $CFG{perl},"-I$FindBin::RealBin/../blib/lib", "$FindBin::RealBin/../blib/script/prest", @ARGV;
