@@ -58,6 +58,8 @@ DEBUG = 0
 SPACES_PATTERN = re.compile(r'( +)')
 TABS_PATTERN = re.compile(r'(\t+)')
 
+TableStylePrefix = 'rststyle-Table'
+
 
 CONTENT_NAMESPACE_DICT = {
     'office:version': '1.0',
@@ -236,6 +238,11 @@ class Writer(writers.Writer):
           'keeping email links usable with standards-compliant browsers.',
           ['--cloak-email-addresses'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),
+         ('Specify the thickness of table borders in thousands of a cm.  '
+           'Default is 35.',
+          ['--table-border-thickness'],
+          {'default': 35,
+           'validator': frontend.validate_nonnegative_int}),
         ))
 
     settings_defaults = {
@@ -839,35 +846,35 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             el1 = etree.SubElement(el, 'style:table-cell-properties', attrib={
                 'fo:background-color': 'transparent',
                 'fo:padding': '0.097cm',
-                'fo:border-left': '0.002cm solid #000000',
+                'fo:border-left': '0.035cm solid #000000',
                 'fo:border-right': 'none',
-                'fo:border-top': '0.002cm solid #000000',
-                'fo:border-bottom': '0.002cm solid #000000'})
+                'fo:border-top': '0.035cm solid #000000',
+                'fo:border-bottom': '0.035cm solid #000000'})
             el2 = etree.SubElement(el1, 'style:background-image')
             el = etree.SubElement(self.automatic_styles, 'style:style', attrib={
                 'style:name': '%s.B1' % table_name,
                 'style:family': 'table-cell'})
             el1 = etree.SubElement(el, 'style:table-cell-properties', attrib={
                 'fo:padding': '0.097cm',
-                'fo:border': '0.002cm solid #000000'})
+                'fo:border': '0.035cm solid #000000'})
             el = etree.SubElement(self.automatic_styles, 'style:style', attrib={
                 'style:name': '%s.A2' % table_name,
                 'style:family': 'table-cell'})
             el1 = etree.SubElement(el, 'style:table-cell-properties', attrib={
                 'fo:padding': '0.097cm',
-                'fo:border-left': '0.002cm solid #000000',
+                'fo:border-left': '0.035cm solid #000000',
                 'fo:border-right': 'none',
                 'fo:border-top': 'none',
-                'fo:border-bottom': '0.002cm solid #000000'})
+                'fo:border-bottom': '0.035cm solid #000000'})
             el = etree.SubElement(self.automatic_styles, 'style:style', attrib={
                 'style:name': '%s.B2' % table_name,
                 'style:family': 'table-cell'})
             el1 = etree.SubElement(el, 'style:table-cell-properties', attrib={
                 'fo:padding': '0.097cm',
-                'fo:border-left': '0.002cm solid #000000',
-                'fo:border-right': '0.002cm solid #000000',
+                'fo:border-left': '0.035cm solid #000000',
+                'fo:border-right': '0.035cm solid #000000',
                 'fo:border-top': 'none',
-                'fo:border-bottom': '0.002cm solid #000000'})
+                'fo:border-bottom': '0.035cm solid #000000'})
         #
         # Generate table data
         el = self.append_child('table:table', attrib={
@@ -1038,7 +1045,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #self.trace_visit_node(node)
         #ipshell('At visit_table')
         self.table_count += 1
-        table_name = 'Table%d' % self.table_count
+        table_name = '%s%d' % (TableStylePrefix, self.table_count, )
         el1 = etree.SubElement(self.automatic_styles, 'style:style', attrib={
             'style:name': '%s' % table_name,
             'style:family': 'table',
@@ -1047,11 +1054,25 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             #'style:width': '17.59cm',
             'table:align': 'margins',
             })
-        el2 = etree.SubElement(self.current_element, 'table:table', attrib={
+        # We use a single cell style for all cells in this table.
+        # That's probably not correct, but seems to work.
+        el2 = etree.SubElement(self.automatic_styles, 'style:style', attrib={
+            'style:name': '%s.A1' % table_name,
+            'style:family': 'table-cell',
+            })
+        line_style1 = '0.%03dcm solid #000000' % self.settings.table_border_thickness
+        el2_1 = etree.SubElement(el2, 'style:table-cell-properties', attrib={
+            'fo:padding': '0.049cm',
+            'fo:border-left': line_style1,
+            'fo:border-right': line_style1,
+            'fo:border-top': line_style1,
+            'fo:border-bottom': line_style1,
+            })
+        el3 = etree.SubElement(self.current_element, 'table:table', attrib={
             'table:name': '%s' % table_name,
             'table:style-name': '%s' % table_name,
             })
-        self.set_current_element(el2)
+        self.set_current_element(el3)
         self.current_table_style = el1
         self.table_width = 0
 
@@ -1075,16 +1096,19 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #self.trace_visit_node(node)
         #ipshell('At visit_colspec')
         self.column_count += 1
-        table_name = 'Table%d' % (self.table_count, )
-        colspec_name = 'Table%d.%s' % (self.table_count, chr(self.column_count),)
+        table_name = '%s%d' % (TableStylePrefix, self.table_count, )
+        colspec_name = '%s%d.%s' % (
+            TableStylePrefix, self.table_count, chr(self.column_count),)
         colwidth = node['colwidth']
         el1 = etree.SubElement(self.automatic_styles, 'style:style', attrib={
             'style:name': colspec_name,
-            'style:family': 'table-column' })
+            'style:family': 'table-column',
+            })
         el1_1 = etree.SubElement(el1, 'style:table-column-properties', attrib={
             'style:column-width': '%dcm' % colwidth })
         el2 = self.append_child('table:table-column', attrib={
-            'table:style-name': colspec_name })
+            'table:style-name': colspec_name,
+            })
         self.table_width += colwidth
 
     def depart_colspec(self, node):
@@ -1119,12 +1143,16 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def visit_entry(self, node):
         #self.trace_visit_node(node)
         #ipshell('At visit_entry')
-        table_name = 'Table%d' % (self.table_count, )
+        table_name = '%s%d' % (TableStylePrefix, self.table_count, )
         self.column_count += 1
-        colspec_name = 'Table%d.%s' % (self.table_count, chr(self.column_count),)
+        colspec_name = '%s%d.%s' % (
+            TableStylePrefix, self.table_count, chr(self.column_count),)
+        cellspec_name = '%s%d.A1' % (
+            TableStylePrefix, self.table_count,)
         el1 = self.append_child('table:table-cell', attrib={
-            'table:style-name': colspec_name,
-            'office:value-type': 'string'})
+            'table:style-name': cellspec_name,
+            'office:value-type': 'string',
+            })
         morecols = node.get('morecols', 0)
         if morecols > 0:
             el1.attrib['table:number-columns-spanned'] = '%d' % (morecols + 1,)
@@ -1143,8 +1171,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_tbody(self, node):
         #self.trace_depart_node(node)
         pass
-
-
 
     def visit_target(self, node):
         #
