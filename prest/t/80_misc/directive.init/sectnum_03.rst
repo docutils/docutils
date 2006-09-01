@@ -1,0 +1,1 @@
+.. sectnum:: args forbidden

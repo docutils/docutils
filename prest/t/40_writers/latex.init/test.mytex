@@ -40,14 +40,14 @@ Like this.}}
 \makeindex
 \begin{document}
 \maketitle
-\newsavebox{\liti}\begin{lrbox}{\liti}\verbÙinline literalsÙ\end{lrbox}
-\newsavebox{\litii}\begin{lrbox}{\litii}\verbÙThis is an example of --inline-literal --text, --including some--Ù\end{lrbox}
-\newsavebox{\litiii}\begin{lrbox}{\litiii}\verbÙstrangely--hyphenated-words.  Adjust-the-width-of-your-browser-windowÙ\end{lrbox}
-\newsavebox{\litiv}\begin{lrbox}{\litiv}\verbÙto see how the text is wrapped.  -- ---- --------  Now note    theÙ\end{lrbox}
-\newsavebox{\litv}\begin{lrbox}{\litv}\verbÙspacing    between the    words of    this sentence    (wordsÙ\end{lrbox}
-\newsavebox{\litvi}\begin{lrbox}{\litvi}\verbÙshould    be grouped    in pairs).Ù\end{lrbox}
-\newsavebox{\litvii}\begin{lrbox}{\litvii}\verbÙ--pep-referencesÙ\end{lrbox}
-\newsavebox{\litviii}\begin{lrbox}{\litviii}\verbÙ-->Ù\end{lrbox}
+\newsavebox{\liti}\begin{lrbox}{\liti}\verbÃ™inline literalsÃ™\end{lrbox}
+\newsavebox{\litii}\begin{lrbox}{\litii}\verbÃ™This is an example of --inline-literal --text, --including some--Ã™\end{lrbox}
+\newsavebox{\litiii}\begin{lrbox}{\litiii}\verbÃ™strangely--hyphenated-words.  Adjust-the-width-of-your-browser-windowÃ™\end{lrbox}
+\newsavebox{\litiv}\begin{lrbox}{\litiv}\verbÃ™to see how the text is wrapped.  -- ---- --------  Now note    theÃ™\end{lrbox}
+\newsavebox{\litv}\begin{lrbox}{\litv}\verbÃ™spacing    between the    words of    this sentence    (wordsÃ™\end{lrbox}
+\newsavebox{\litvi}\begin{lrbox}{\litvi}\verbÃ™should    be grouped    in pairs).Ã™\end{lrbox}
+\newsavebox{\litvii}\begin{lrbox}{\litvii}\verbÃ™--pep-referencesÃ™\end{lrbox}
+\newsavebox{\litviii}\begin{lrbox}{\litviii}\verbÃ™-->Ã™\end{lrbox}
 \section*{Dedication}
 For Docutils users \& co-developers.
 \begin{abstract}
@@ -103,10 +103,10 @@ automatically using a ``\#''-prefixed label.  This footnote has a
 label so it can be referred to from multiple places, both as a
 footnore reference (\footnotemark[2]) and as a hyperlink reference
 (label).
-}, or symbolic\renewcommand{\thefootnote}{\fnsymbol{footnote}}\footnote[1]{
+}, or symbolic\footnote[*]{
 Footnotes may also use symbols, specified with a ``*'' label.
-Here's a reference to the next footnote: \renewcommand{\thefootnote}{\fnsymbol{footnote}}\footnotemark[2]\renewcommand{\thefootnote}{\arabic{footnote}}.
-}\renewcommand{\thefootnote}{\arabic{footnote}}), citation references
+Here's a reference to the next footnote: \footnotemark[â€ ].
+}), citation references
 (\cite{CIT2002}), substitution references (\includegraphics{biohazard.eps}), and \index{inline
 hyperlink targets}inline
 hyperlink targets (see Targets below for a reference back to here).
@@ -342,16 +342,16 @@ empty: \usebox{\litviii}} &  \\ \hline
 \advance\dimen1 -6\tabcolsep
 \begin{tabular}{|l|l|l|}
 \hline
-\multicolumn{2}{|c|}{
+\multicolumn{2}{|p{0.625\dimen1}|}{
 Inputs
 } & 
 Output
  \\ \hline
-\multicolumn{1}{|c|}{
+
 A
-} & \multicolumn{1}{c|}{
+ & 
 B
-} & 
+ & 
 A or B
  \\ \hline
 \hline
@@ -386,9 +386,9 @@ True
 \end{tabular}
 
 \subsection{Footnotes}
-\renewcommand{\thefootnote}{\fnsymbol{footnote}}\footnotetext[2]{
+\footnotetext[â€ ]{
 This footnote shows the next symbol in the sequence.
-}\renewcommand{\thefootnote}{\arabic{footnote}}\footnotetext[4]{
+}\footnotetext[4]{
 Here's an unreferenced footnote, with a reference to a
 nonexistent footnote: \footnotemark[5].
 }\footnotetext[5]{
@@ -555,48 +555,48 @@ background color.
 
 Take it away, Eric the Orchestra Leader!
 \begin{verse}
-A one, two, a one two three four\\
-~\\
-Half a bee, philosophically,\\
-\begin{verse}
-must, {\em ipso facto}, half not be.\\
-\end{verse}
-But half the bee has got to be,\\
-\begin{verse}
-{\em vis a vis} its entity.  D'you see?\\
-~\\
-\end{verse}
-But can a bee be said to be\\
-\begin{verse}
-or not to be an entire bee,\\
-\begin{verse}
-when half the bee is not a bee,\\
-\begin{verse}
-due to some ancient injury?\\
-~\\
-\end{verse}
-\end{verse}
-\end{verse}
-Singing...\\
+A one, two, a one two three four\\\\
+~\\\\
+Half a bee, philosophically,\\\\
+\begin{verse}\\
+must, {\em ipso facto}, half not be.\\\\\\
+\end{verse}\\
+But half the bee has got to be,\\\\
+\begin{verse}\\
+{\em vis a vis} its entity.  D'you see?\\\\\\
+~\\\\\\
+\end{verse}\\
+But can a bee be said to be\\\\
+\begin{verse}\\
+or not to be an entire bee,\\\\\\
+\begin{verse}\\\\
+when half the bee is not a bee,\\\\\\\\
+\begin{verse}\\\\\\
+due to some ancient injury?\\\\\\\\\\
+~\\\\\\\\\\
+\end{verse}\\\\\\
+\end{verse}\\\\
+\end{verse}\\
+Singing...\\\\
 \end{verse}
 
 \subsubsection{Parsed Literal}
 
 Play it again, Eric the Orchestra Leader!
 \begin{verse}{\tt 
-A one, two, a one two three four
-
-Half a bee, philosophically,
-~~~~must, {\em ipso facto}, half not be.
-But half the bee has got to be,
-~~~~{\em vis a vis} its entity.  D'you see?
-
-But can a bee be said to be
-~~~~or not to be an entire bee,
-~~~~~~~~when half the bee is not a bee,
-~~~~~~~~~~~~due to some ancient injury?
-
-Singing...
+A one, two, a one two three four\\
+\\
+Half a bee, philosophically,\\
+~~~~must, {\em ipso facto}, half not be.\\
+But half the bee has got to be,\\
+~~~~{\em vis a vis} its entity.  D'you see?\\
+\\
+But can a bee be said to be\\
+~~~~or not to be an entire bee,\\
+~~~~~~~~when half the bee is not a bee,\\
+~~~~~~~~~~~~due to some ancient injury?\\
+\\
+Singing...\\
 }\end{verse}
 
 \subsubsection{Replacement Text}

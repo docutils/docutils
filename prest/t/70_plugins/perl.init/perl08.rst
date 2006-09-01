@@ -9,7 +9,7 @@ Test of Perl dom option
    return $dom;
    package test;
    sub mytransform {
-       my($dom, $topdom, $parent, $details) = @_;
+       my($dom, $parser, $details) = @_;
        return newPCDATA Text::Restructured::DOM("This string contains the global variable \$Global::VAR: '$Global::VAR'")
    }
 

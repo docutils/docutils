@@ -1,0 +1,3 @@
+.. target-notes::
+
+   bad content

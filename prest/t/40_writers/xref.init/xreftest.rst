@@ -4,7 +4,7 @@
 This is a simple test file for |xrefwrt|_. The |xrefwrt|_ is part of trip_,
 a parser and writer for |rst| written in Perl_.
 
-.. |xrefwrt| replace:: the xref writer
+.. |xrefwrt| replace:: the xref writer for |rst|
 .. _xrefwrt: ../../../../../src/writers/xref.wrt
 .. _trip: ../../../../../doc
 .. |rst| replace:: reStructuredText_

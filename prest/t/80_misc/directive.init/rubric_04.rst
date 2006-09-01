@@ -1,0 +1,3 @@
+.. rubric:: Args
+
+   Content forbidden.

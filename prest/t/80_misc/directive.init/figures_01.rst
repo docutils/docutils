@@ -1,0 +1,2 @@
+.. figure::
+   :: badoption

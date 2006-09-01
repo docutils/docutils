@@ -1,0 +1,2 @@
+.. image:: img.jpg
+   :width:

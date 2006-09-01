@@ -4,4 +4,6 @@ paragraph here.
 The Document Title
 ==================
 
-The above document title should remain as a section in the dom.
+A Subtitle
+----------
+The above document titles should remain as a section in the dom.

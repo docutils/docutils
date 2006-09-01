@@ -1,0 +1,2 @@
+.. default-role::
+   :: badoption

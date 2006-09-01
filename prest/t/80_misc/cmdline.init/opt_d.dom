@@ -1,0 +1,16 @@
+/export/home/nodine/tools/prest/blib/lib/Text/Restructured/Writer/dom.wrt, line 23
+/export/home/nodine/tools/prest/blib/lib/Text/Restructured/Writer/dom.wrt, line 32
+/export/home/nodine/tools/prest/blib/lib/Text/Restructured/Writer/dom.wrt, line 44
+PROCESS: #PCDATA
+PROCESS: paragraph
+PROCESS: #PCDATA
+PROCESS: paragraph
+PROCESS: block_quote
+PROCESS: document
+<document source="test data">
+    <paragraph>
+        Line 1.
+        Line 2.
+    <block_quote>
+        <paragraph>
+            Indented.

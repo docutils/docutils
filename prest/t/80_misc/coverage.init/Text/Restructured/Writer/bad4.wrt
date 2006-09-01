@@ -1,0 +1,4 @@
+sub foo {
+    # Subroutine fails to compile
+    1/0;
+}

@@ -7,5 +7,7 @@
     <section ids="the-document-title" names="the document title">
         <title>
             The Document Title
+        <subtitle ids="a-subtitle" names="a subtitle">
+            A Subtitle
         <paragraph>
-            The above document title should remain as a section in the dom.
+            The above document titles should remain as a section in the dom.

@@ -40,7 +40,7 @@ _`canonical`
 Terms starting with 'H'
 -----------------------
 
-_`hosed` *adj.*
+_`hosed` **adj.**
   You shouldn't miss `this one 
   <http://catb.org/esr/jargon/html/entry/hosed.html>`_.
 
@@ -51,7 +51,9 @@ _`hacker ethic`
 Terms starting with 'I'
 -----------------------
 
-_`I didn't change anything!` *interj.*
+.. _I only renamed a variable!: `I didn't change anything!`_
+  
+_`I didn't change anything!` :subscript:`interj`
 
   An aggrieved cry often heard as bugs manifest during a regression
   test. The `canonical`_ reply to this assertion is "Then it works just
@@ -67,7 +69,7 @@ _`I didn't change anything!` *interj.*
 Terms starting with 'O'
 -----------------------
 
-_`one-line fix` *n.*
+_`one-line fix` `n.`
   Used (often sarcastically) of a change to a program that is thought
   to be trivial or insignificant right up to the moment it crashes the
   system. Usually 'cured' by another one-line fix. See also `I didn't
@@ -76,11 +78,11 @@ _`one-line fix` *n.*
 Terms starting with 'R'
 -----------------------
 
-_`rabbit job` *n.*
+_`rabbit job` `n.`:sup:
   [Cambridge] A batch job that does little, if any, real work, but
   creates one or more copies of itself, breeding like rabbits.
 
-_`README file` *n*
+_`README file` [1]_
   Hacker's-eye introduction traditionally included in the top-level
   directory of a Unix source distribution, containing a pointer to
   more detailed documentation, credits, miscellaneous revision
@@ -94,11 +96,12 @@ _`README file` *n*
   Adventures In Wonderland" in which Alice confronts magic munchies
   labeled "Eat Me" and "Drink Me".
 
+.. [1] A footnote.
 
 Terms starting with 'S'
 -----------------------
 
-_`Share and enjoy!` *imp.*
+_`Share and enjoy!`
   1. Commonly found at the end of software release announcements and `README
      file`_\ s, this phrase indicates allegiance to the hacker ethic of free 
      information sharing (see `hacker ethic`_, sense 1). 
@@ -114,8 +117,5 @@ _`spam`
   The definition of this term is really long in the Jargon File. Please 
   see `here <http://catb.org/esr/jargon/html/entry/spam.html>`_.
 
-_`spamvertize` *v.*
+_`spamvertize` `v.`:inline:
   To advertise using `spam`_. Pejorative. 
-
-
-

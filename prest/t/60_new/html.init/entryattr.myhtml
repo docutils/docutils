@@ -68,7 +68,7 @@
 <tr valign="bottom"><td>body row 3</td>
 <td rowspan="2">Cells may
 span rows.</td>
-<td colspan="2" rowspan="2"><ul class="first last simple">
+<td colspan="2" rowspan="2"><ul class="simple">
 <li>Table cells</li>
 <li>contain</li>
 <li>body elements.</li>
