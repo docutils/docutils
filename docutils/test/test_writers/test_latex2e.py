@@ -358,6 +358,44 @@ latex_head + """\
 """],
 ]
 
+totest['table_class'] = [
+# input
+["""\
+.. table::
+   :class: borderless
+
+   +-----+-----+
+   |  1  |  2  |
+   +-----+-----+
+   |  3  |  4  |
+   +-----+-----+
+""",
+latex_head + """\
+\\title{}
+\\author{}
+\\date{}
+\\raggedbottom
+\\begin{document}
+
+\\setlength{\\locallinewidth}{\\linewidth}
+
+\\begin{longtable}[c]{p{0.07\locallinewidth}p{0.07\locallinewidth}}
+
+1
+ & 
+2
+ \\\\
+
+3
+ & 
+4
+ \\\\
+\\end{longtable}
+
+\\end{document}
+"""],
+]
+
 # In "\\\n[" the "[" needs to be protected (otherwise it will be seen as an option to "\\").
 totest['brackett_protection'] = [
 # input

@@ -340,6 +340,13 @@ Notes
 ~~~~~
 
 * table-style booktabs: booktabs.sty 1.00 does not work with longtable.
+* If default table-style is not booktabs, but the document contains a table 
+  with class booktabs, one has to add the latex package booktabs. That means
+  put the line ::
+
+    \usepackage{booktabs}
+
+  into your latex-style.
 
 Miscellaneous
 -------------
