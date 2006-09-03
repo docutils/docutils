@@ -351,6 +351,12 @@ class Table:
     """ Manage a table while traversing.
         Maybe change to a mixin defining the visit/departs, but then
         class Table internal variables are in the Translator.
+
+        Table style might be 
+        
+        * standard: horizontal and vertical lines
+        * booktabs (requires booktabs latex package): only horizontal lines
+        * nolines, borderless : no lines
     """
     def __init__(self,latex_type,table_style):
         self._latex_type = latex_type
@@ -374,6 +380,11 @@ class Table:
         self._attrs = {}
     def is_open(self):
         return self._open
+    def set_table_style(self, table_style):
+        if not table_style in ('standard','booktabs','borderless','nolines'):
+            return
+        self._table_style = table_style
+
     def used_packages(self):
         if self._table_style == 'booktabs':
             return '\\usepackage{booktabs}\n'
@@ -1620,7 +1631,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             if self.active_table.is_open():
                 self.body.append('\n{\\ttfamily \\raggedright \\noindent\n')
             else:
-                # no quote inside tables, to avoid vertical sppace between
+                # no quote inside tables, to avoid vertical space between
                 # table border and literal block.
                 # BUG: fails if normal text preceeds the literal block.
                 self.body.append('\\begin{quote}')
@@ -1861,11 +1872,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
             print 'nested tables are not supported'
             raise AssertionError
         self.active_table.open()
+        for cl in node['classes']:
+            self.active_table.set_table_style(cl)
         self.body.append('\n' + self.active_table.get_opening())
 
     def depart_table(self, node):
         self.body.append(self.active_table.get_closing() + '\n')
         self.active_table.close()
+        self.active_table.set_table_style(self.settings.table_style)
 
     def visit_target(self, node):
         # BUG: why not (refuri or refid or refname) means not footnote ?
