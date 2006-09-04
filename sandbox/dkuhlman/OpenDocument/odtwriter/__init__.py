@@ -617,6 +617,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         el1 = etree.Element('text:section', attrib={
             'text:name': '_rstFooterSection',
             })
+        el2 = etree.SubElement(el1, 'text:p', attrib={
+            'text:style-name': 'rststyle-horizontalline'})
         el1.append(el)
         self.footer_element = el1
 
@@ -1224,10 +1226,31 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_topic(self, node):
         #ipshell('At visit_topic')
-        pass
+        #import pdb; pdb.set_trace()
+        if 'classes' in node.attributes:
+            if 'contents' in node.attributes['classes']:
+                el = self.append_child('text:p', attrib={
+                    'text:style-name': 'rststyle-horizontalline'})
+                el = self.append_child('text:p', attrib={
+                    'text:style-name': 'rststyle-textbody'})
+                el1 = etree.SubElement(el, 'text:span',
+                    attrib={'text:style-name': 'rststyle-strong'})
+                el1.text = 'Contents'
+            elif 'abstract' in node.attributes['classes']:
+                el = self.append_child('text:p', attrib={
+                    'text:style-name': 'rststyle-horizontalline'})
+                el = self.append_child('text:p', attrib={
+                    'text:style-name': 'rststyle-centeredtextbody'})
+                el1 = etree.SubElement(el, 'text:span',
+                    attrib={'text:style-name': 'rststyle-strong'})
+                el1.text = 'Abstract'
 
     def depart_topic(self, node):
-        pass
+        #ipshell('At depart_topic')
+        if 'classes' in node.attributes:
+            if 'contents' in node.attributes['classes']:
+                el = self.append_child('text:p', attrib={
+                    'text:style-name': 'rststyle-horizontalline'})
 
     def visit_transition(self, node):
         el = self.append_child('text:p', attrib={
