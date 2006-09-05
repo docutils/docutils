@@ -27,7 +27,8 @@ option requires knowledge of trip internals, but is the only way
 to create a pending DOM object for execution at transformation
 time rather than parse time.)
 
-The perl directive defines the following global variables:
+The perl directive makes the following global variables available for
+use within the perl code:
 
 ``$SOURCE``
    The name of the source file containing the perl directive.
@@ -38,7 +39,7 @@ The perl directive defines the following global variables:
 ``$TOP_FILE``
    The name of the top-level file.
 ``$VERSION``
-   The version of trip.
+   The version of prest (${main::VERSION}).
 
 The following defines are processed by the perl directive:
 
@@ -80,8 +81,9 @@ BEGIN {
 sub main {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
     print STDERR "Debug: $name: $source, $lineno\n" if $main::opt_d >= 3;
+    my @optlist = qw(lenient literal);
     my $dhash = Text::Restructured::Directive::parse_directive
-	($parser, $dtext, $lit, $source, $lineno);
+	($parser, $dtext, $lit, $source, $lineno, \@optlist);
     return $dhash if ref($dhash) eq $DOM;
     my($args, $options, $content) = map($dhash->{$_}, qw(args options content));
     return Text::Restructured::Directive::system_msg
@@ -157,7 +159,7 @@ sub main {
 		$parser->Paragraphs($fake, $text[0], $newsource, 1);
 		my $last = $fake->last();
 		if (@{$fake->{content}} == 1 && $last->{tag} eq 'paragraph') {
-		    return () unless @{$last->{content}};
+		    # Devel::Cover branch 0 1 paragraph always has #PCDATA
 		    chomp $last->{content}[-1]{text}
 		    if defined $last->{content}[-1]{text};
 		    return  @{$last->{content}};
@@ -168,18 +170,15 @@ sub main {
 	    }
 	    else {
 		push @doms, $parser->system_message(3, $source, $lineno,
-						qq(Error in "$name" directive within substitution definition: may contain a single paragraph only.));
+						    qq(Error in "$name" directive within substitution definition: may contain a single paragraph only.),
+						    $lit);
 	    }
 	    return @doms;
 	}
 	else {
-	    my $unprocessed = '';
 	    foreach $text (@text) {
 		next unless defined $text;
 		if (ref($text) =~ /$DOM$/o) {
-		    $parser->Paragraphs($parent, "$unprocessed\n", $newsource, 1)
-			if $unprocessed ne '';
-		    $unprocessed = '';
 		    # Convert any internal transform reference to point
 		    # within the safe
 		    $text->{internal}{'.transform'} =
@@ -188,16 +187,11 @@ sub main {
 			    defined $text->{internal}{'.transform'});
 		    $parent->append($text);
 		}
-		elsif ($parent->{tag} eq 'substitution_definition') {
-		    chomp $text;
-		    $parent->append($DOM->newPCDATA($text));
-		}
 		else {
-		    $unprocessed .= $text;
+		    $parser->Paragraphs($parent, "$text\n", $newsource, 1)
+			if $text ne '';
 		}
 	    }
-	    $parser->Paragraphs($parent, "$unprocessed\n", $newsource, 1)
-		if $unprocessed ne '';
 	}
     }
 
