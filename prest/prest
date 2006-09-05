@@ -5,7 +5,7 @@
 =pod
 =begin reST
 =begin Id
-Id: ${TOOL_ID}
+Id: ${TOOL_ID}.
 Copyright (C) 2002-2005 Freescale Semiconductor
 Distributed under terms of the Perl license, which is the disjunction of
 the GNU General Public License (GPL) and the Artistic License.
@@ -59,10 +59,6 @@ Available writers: ${\WriterList()}.
 
 # Global variables:
 #   ``$main::TOP_FILE``: Name of the top-level file being processed.
-#   ``%main::HANDLER``:  Hash whose keys are process phases and whose
-#                        values are references to handler arrays.
-#   ``%main::PHASE``:    The writer phase currently being processed.
-#   ``@main::PHASES``:   Order in which process phases are evaluated.
 #   ``$main::opt_d``:    Debug mode
 #   ``$main::opt_w``:    The writer schema to be used.
 #   ``%main::opt_D``:    Hash whose keys are names of variables whose
@@ -81,8 +77,7 @@ use strict;
 
 use vars qw($opt_V $opt_h $opt_d $opt_w %opt_W %opt_D);
 use vars qw($TOOL_NAME $YEAR $TOP_FILE $SVNID $SVNNAME $VERSION
-	    $TOOL_ID $MY_DIR);
-use vars qw(%HANDLER @PHASES $PHASE);
+	    $TOOL_ID);
 
 main();
 
@@ -91,16 +86,13 @@ BEGIN {
     $SVNID = '$Id$ ';
     $SVNNAME = '$URL$ ';
     my $version = $Text::Restructured::PrestConfig::VERSION;
-    $version =~ s/(\d\d\d)/$1./g;
+    $version =~ s/(\d\d\d)(?=\d)/$1./g;
     $version =~ s/(\d+)/$1+0/ge;
     $VERSION = $version;
     $SVNID =~ /Id: (\S+?) \S+ (\d+)/;
     $TOOL_ID = "$1 release $VERSION";
     $YEAR = $2;
     ($TOOL_NAME = $1) =~ s/\..*//;
-    use FindBin;
-    $MY_DIR = $1 if $FindBin::RealBin =~ m|^(/.*)$|;
-    unshift @INC, $MY_DIR;
 }
 
 # The main entry point.  Parses command-line options, preprocesses the
@@ -124,9 +116,8 @@ sub main {
 	$opt_W{$_} = 1 if defined $opt_W{$_} && $opt_W{$_} eq '';
     }
     # Initialize defined variables
-    use Text::Restructured::PrestConfig;
     foreach my $key (keys %opt_W) {
-	(my $var = $key) =~ tr/a-zA-Z/_/c;
+	(my $var = $key) =~ tr/a-zA-Z0-9/_/c;
 	no strict 'refs';
 	${"Eval_::$var"} = $opt_W{$key};
     }
@@ -136,69 +127,28 @@ sub main {
 			 main::FirstDefined($report_levels{$opt_D{report}},
 					    $opt_D{report})} ;
 
-    ParseSchema($opt_w);
-
-    # Precompile bare "subroutines"
-    foreach my $handler (@{$HANDLER{''}}) {
-	# Need to untaint the text for the subroutine.
-	my $text = $1 if ($handler->{text} || '') =~ /(.*)/s;
-	DoEval($text, $handler->{line}, $handler->{tag});
-    }
-    # Precompile the handler routines
-    my $phase;
-    foreach $phase (keys %HANDLER) {
-	next if $phase eq '';
-	my $handler;
-	foreach $handler (@{$HANDLER{$phase}}) {
-	    # Need to untaint the text for the subroutine.
-	    my $text = $1 if ($handler->{text} || '') =~ /(.*)/s;
-	    $handler->{code} = DoEval($text, $handler->{line});
-	}
-    }
+    use Text::Restructured::Writer;
+    my $writer = new Text::Restructured::Writer($opt_w);
 
     my $first_line = <>;
     my $dom;
     $first_line = "" if ! defined $first_line;
     my $eof = eof;
+    use Text::Restructured::DOM;
     # Handle all the documents
     while (defined $first_line) {
 	$TOP_FILE = $ARGV;
 	if ($first_line =~ /^<document/) {
 	    # We have a DOM for input, rather than an rst file
-	    ($dom, $first_line) = ParseDOM($first_line);
+	    ($dom, $first_line) = Text::Restructured::DOM::Parse($first_line);
 	}
 	else {
 	    use Text::Restructured;
 	    ($dom, $first_line, $eof) = Text::Restructured::Parse($first_line, $eof);
 	}
 	# Now compute the output string
-	my $str = ProcessDOM($dom);
-	if (defined $str) {
-	    print $str;
-	}
+	print $writer->ProcessDOM($dom);
     }
-}
-
-# Precompiles a subroutine that evaluates an expression.
-# Arguments: string expression, line number, optional subroutine name
-# Returns: anonymous subroutine reference
-# Exceptions: Program termination if error in evaluation
-# Uses globals: None
-# Sets globals: ``Eval_::<subname>``
-sub DoEval {
-    my ($str, $line, $subname) = @_;
-    my ($file, $lineno) = $line =~ /(.*), line (\d+)/;
-    print STDERR "$line\n" if $opt_d >= 1;
-    # N.B. Don't just set to $line because it may be tainted
-    if (! $subname) {
-	my ($f) = $file =~ m!([^/]+)$!;
-	$subname = "$f, line $lineno";
-    }
-    $subname =~ s/\W/_/g;
-    my $sub = "sub Eval_::$subname {package Eval_; $str}";
-    my $val = eval(qq(\#line @{[$lineno+1]} "$file"\n$sub));
-    die "Error: $line: $@" if $@;
-    return \&{$Eval_::{$subname}};
 }
 
 # Returns the first defined value in an array.
@@ -209,204 +159,6 @@ sub FirstDefined {
 	return $_ if defined $_;
     }
     return;
-}
-
-# Parses a file in the DOM (pseudo-XML) format.
-# Arguments: First line of file
-# Returns: DOM object
-# Uses globals: <> file handle
-sub ParseDOM {
-    my ($first_line) = @_;
-    my $last_indent = -1;
-    my @stack;
-    my @indents;
-    my $tos;	# top of stack
-    my $main;
-    $_ = $first_line;
-    goto parse;
-    while (<>) {
-      parse:
-	/(\s*).*/;
-	my $spaces = $1;
-	my $indent = length($spaces);
-	if (@stack > 0) {
-	    my $i;
-	    for ($i=0; $i < @indents; $i++) {
-		last if $indent <= $indents[$i]+1;
-	    }
-	    splice(@stack, $i);
-	    splice(@indents, $i);
-	    $tos = $stack[-1];
-	}
-
-	if (/^(\s*)<(\w+)\s*([^>]*)>\s*$/) {
-	    my ($spaces, $tag, $attrlist) = ($1, $2, $3);
-	    my $entity = { tag=>$tag, parent=>$tos,
-			   text=>substr($_,$indent) };
-	    while ($attrlist ne '') {
-		if ($attrlist =~ s/^([\w:]+)="([^\"]*)"\s*// || 
-		    $attrlist =~ s/^([\w:]+)='([^\"]*)'\s*//) {
-		    $entity->{attr}{$1} = $2;
-		}
-		elsif ($attrlist =~ s/^(\w+)\s*//) {
-		    $entity->{attr}{$1} = undef;
-		}
-		else {
-		    goto pcdata;
-		}
-	    }
-	    if (@stack > 0) {
-		push @{$stack[-1]->{content}}, $entity;
-		$tos = $entity;
-	    }
-	    else {
-		$main = $entity;
-	    }
-	    push (@stack, $entity);
-	    push (@indents, $indent);
-	    $tos = $entity;
-	    $tos->{content} = [];
-	}
-	else {
-	  pcdata:
-	    substr($_,0,$indents[-1]+4) = "";
-	    chomp;
-	    my $text = $_;
-	    my $ncontent = @{$tos->{content}};
-	    if ($ncontent > 0 &&
-		$tos->{content}[$ncontent-1]{tag} eq '#PCDATA') {
-		$tos->{content}[$ncontent-1]{text} .= "$text\n";
-	    }
-	    else {
-		my $entity = { tag=>'#PCDATA', text=>"$text\n" };
-		push(@{$tos->{content}}, $entity);
-	    }
-	}
-    }
-
-    $main->{attr}{source} = $ARGV;
-    return $main;
-}
-
-# Parses the writer's schema file.
-# Arguments: file name
-# Returns: None
-# Modifies globals: %HANDLER
-sub ParseSchema {
-    my ($writer) = @_;
-
-    my $file = $writer;
-    use vars qw($newfile);
-    local $newfile = $file;
-    my @path = (".", $MY_DIR);
-    my @dirs = grep(-r "$_/Text/Restructured/Writer/$file.wrt", @INC);
-    die "Cannot find schema for writer $writer" unless @dirs;
-    $file = "$dirs[0]/Text/Restructured/Writer/$file.wrt" if defined $dirs[0];
-    no strict 'refs';
-    open $newfile,$file or die "Cannot open file $file";
-
-    my %phases;
-    my $phase = '';
-    my $nest = my $in_sub = 0;
-    # Note: Turn warnings off while reading from newfile since it will
-    # cause a "read of closed filehandle" warning with -w.
-    while (do { local $^W=0; $_ = <$newfile> }) {
-	next unless defined $_;
-	# Make sure $. is relative to the current file
-	close $newfile if eof;
-	if ($nest <= 1 && ! $in_sub) {
-	    next if /^=pod/ .. /^=cut/;
-	    next if /^\s*$/ || /^\s*\#/;
-	    if (/^\s*(?:(phase|sub)\s+)?(\S+)\s*(=\s*)?\{\s*(?:\#.*)?$/i) {
-		if ($nest == 0 && $1 eq 'phase') {
-		    $phase = $2;
-		    push @PHASES, $phase unless $phases{$phase}++;
-		}
-		else {
-		    my $tag = $2;
-		    push(@{$HANDLER{$phase}},
-			 {tag=>$tag, line=>"$file, line $."});
-		    $in_sub = $nest+1;
-		}
-		$nest++;
-	    }
-	    elsif (/^\s*\}\s*$/) {
-		$nest--;
-	    }
-	    else {
-		die "$file:$.: Parse error: $_";
-	    }
-	}
-	else {
-	    my $left = y/\{/\{/;
-	    my $right = y/\}/\}/;
-	    $nest += ($left - $right);
-	    $HANDLER{$phase}[-1]{text} .= $_ if $nest >= $in_sub;
-	    $in_sub = 0 if $nest < $in_sub;
-	}
-    }
-    close $newfile;
-}
-
-# Passes the DOM through all phases of the writer and returns the
-# output string.
-# Arguments: parsed DOM
-# Returns: string
-sub ProcessDOM {
-    my ($dom) = @_;
-    my $str = '';
-    foreach $PHASE (@PHASES) {
-	$str .= ProcessDOMPhase($dom);
-    }
-    return $str;
-}
-
-# Passes the DOM through a specific phase of the writer and returns 
-# the output string.  Uses the current phase if no phase is specified.
-# Arguments: parsed DOM, optional phase name
-# Returns: string returned from processing the phase
-sub ProcessDOMPhase {
-    my ($dom, $phase) = @_;
-    $phase = $PHASE unless defined $phase;
-    my $str = TraverseDOM($dom, $HANDLER{$phase});
-    return defined $str ? $str : '';
-}
-
-# Internal routine to traverse a parsed document object model (DOM)
-# object and applies all the handler routines to their tags.
-# Arguments: parsed DOM, ref to array of handler hash references.
-sub TraverseDOM {
-    my ($dom, $handarray) = @_;
-    my $searchstring = "^(?:" . join('|',map("($_->{tag})",@$handarray)) .
-	')$';
-    TraverseDOM_($dom, $handarray, $searchstring);
-}
-
-# Internal routine called by TraverseDOM to do recursive handling of DOM tree.
-# Arguments: parsed DOM, handler array reference, search string
-sub TraverseDOM_ {
-    my ($dom, $handarray, $searchstring) = @_;
-    my @matches = $dom->{tag} =~ /$searchstring/;
-    my @match = grep(defined $matches[$_], (0 .. $#{$handarray}));
-    my $match = $match[0];
-    my $str;
-    if (! defined $match || $match <= $#{$handarray}) {
-	my $content;
-	foreach $content (@{$dom->{content}}) {
-	    my $val = TraverseDOM_($content, $handarray, $searchstring);
-	    $content->{val} = $val;
-	}
-	my $substr = join('',map(defined $_->{val} ? $_->{val} : '',
-				 @{$dom->{content}}));
-	if (defined $match) {
-	    print STDERR "$PHASE: $dom->{tag}\n" if $opt_d >= 1;
-	    $str = eval { &{$handarray->[$match]{code}}($dom, $substr) };
-	    print STDERR "$str\n"
-		if $opt_d >= 2 && defined $str && $str ne '';
-	    die "Error: $handarray->[$match]{line}: $@" if $@;
-	}
-    }
-    return $str;
 }
 
 # Gets list of writers
@@ -427,7 +179,8 @@ sub Usage {
     my ($what) = @_;
     $what = "Usage" if ! $what;
     my $mark = $what eq 'Description' ? "($what|Usage)" : $what;
-    if (open(ME,$0) == 1) {
+    # Devel::Cover branch 0 1 Assert I can open myself
+    if (open(ME,$0)) {
 	while (<ME>) {
 	    if ((/^=begin $mark/ .. /^=end $mark/) &&
 		! /^=(begin|end) $mark/) {
@@ -444,9 +197,11 @@ sub Usage {
 	    my $use;
 	    foreach $use (@used) {
 		my @rst_dir = grep (-r "$_/$use.pm", @INC);
+		# Devel::Cover branch 0 1 Assert I can find my modules
 		if (@rst_dir) {
 		    my $newline_done;
 		    my $file = "$rst_dir[0]/$use.pm";
+		    # Devel::Cover branch 0 0 Assert I can open my modules
 		    open(USE, $file) or die "Cannot open $file";
 		    while (<USE>) {
 			print "\n" unless $newline_done++;
@@ -466,15 +221,19 @@ sub Usage {
 		     glob "$dir/Text/Restructured/Directive/*.pm");
 	    }
 	    @directives = map($directives{$_}, sort keys %directives);
+	    # Devel::Cover branch 0 1 Assert I have directives
 	    print << 'EOS' if @directives;
+
 Descriptions of Plug-in Directives
 ==================================
 EOS
 	    foreach my $directive (@directives) {
 		$directive =~ m|([^/]+)\.pm|;
 		my $fname = $1;
+		# Devel::Cover branch 0 0 Assert directive unique/readable
 		next if $used{$fname} || ! -r $directive;
 		my $output = 0;
+		# Devel::Cover branch 0 0 Assert I can open directives
 		open(DIRECTIVE, $directive) or die "Cannot open $directive";
 		while (<DIRECTIVE>) {
 		    if ((/^=begin $mark/ .. /^=end $mark/) &&
@@ -495,12 +254,15 @@ EOS
 		push(@writers, glob("$dir/Text/Restructured/Writer/*.wrt"));
 	    }
 	    my $writer;
+	    # Devel::Cover branch 0 1 Assert I have writers
 	    print << 'EOS' if @writers;
+
 Descriptions of Writers
 =======================
 EOS
 	    foreach $writer (@writers) {
 		my $output = 0;
+		# Devel::Cover branch 0 0 Assert I can open writers
 		open(WRITER, $writer) or die "Cannot open $writer";
 		while (<WRITER>) {
 		    if ((/^=begin $mark/ .. /^=end $mark/) &&
@@ -519,6 +281,7 @@ EOS
 	}
     }
     else {
+	# Devel::Cover statement 0 0 guards internal error
 	print STDERR "Usage not available.\n";
     }
     exit (1);
