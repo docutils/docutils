@@ -13,7 +13,7 @@ use ExtUtils::MakeMaker;
 
 ## Note: The version number for the entire release is specified here and
 ## propagated.  Be sure to edit for every release.
-my $Version = "0.003016";
+my $Version = "0.003018";
 
 use vars qw($opt_f $opt_h $opt_k);
 my $OUTPUT_CFG_FILE = $opt_f = 'config.log';
@@ -27,24 +27,24 @@ my %CFG_LIST =
 	       desc => 'Run perl tainted (not required for safe operation)',
 	       checkfail => \&yesno,
 	       ,},
-     defaultcss => 
-	      {default => 'None',
-	       desc => 'URL for default cascading style sheet (or "none")',
-	       explain => <<'EOS',
+     defaultcss => {
+	 default => 'None',
+	 desc => 'URL for default cascading style sheet (or "none")',
+	 explain => <<'EOS',
 Generated documents need a style sheet to look good.  It is recommended
 to serve a local copy of lib/Text/Restructured/default.css as an http URL.
 You can also specify 'None', in which case the default stylesheet will
 be embedded within every document.
 EOS
-	       checkfail => sub {
-		   my $fail = $_[0] !~ /^\w+:|none/i;
-		   print STDERR "Must be either a URL reference or 'None'\n"
-		       if $fail;
-		   return $fail;
-	       },
-	       ,},
-	      );
-my @CFG_LIST = qw(defaultcss taint);
+	 checkfail => \&isurl,
+         ,},
+     docurl => {
+	 default => 'None',
+	 desc => 'URL where documentation will be installed (or "none")',
+	 checkfail => \&isurl,
+         ,},
+     );
+my @CFG_LIST = qw(defaultcss taint docurl);
 warn "\@CFG_LIST and \%CFG_LIST have different number of elements"
     if @CFG_LIST != keys %CFG_LIST;
 
@@ -128,12 +128,17 @@ TESTBIN = ${base}/tbin
 EXTRACT_TESTS = $(TESTBIN)/extract_tests
 DIFFRE = $(TESTBIN)/diffre
 PERL = ${Perl}
-PERL_FLAGS = -I${base}/blib/lib${taint_flag} $(COVER)
+ifdef COVER
+  COVER_FLAG = -MDevel::Cover=-db,../../cover_db,-silent,1,-summary,0
+endif
+DEBUG_FLAGS = -D no_line_directives
 
 # If the suite has makefile definitions, use them
 -include ../Suite.mak
 # If the local directory has makefile definitions, use them
 -include Dir.mak
+
+PERL_FLAGS += -I${base}/blib/lib${taint_flag} $(COVER_FLAG)
 
 # Some global flags if not overridden
 GLOBAL_FLAGS ?= -D source="test data" -D xformoff='.*'
@@ -193,11 +198,6 @@ if (-f "skip.pl") {
     plan(skip_all => "because $error") if $?;
 }
 
-# Check to see if we want a coverage database
-use vars qw($cover);
-$cover = $ENV{COVER} ?
-    "-MDevel::Cover=-db,../../cover_db,-silent,1,-summary,0" : '';
-
 # Now unpack the tests if needed
 if (<test_*.py>) {
     system "make -s -f ../../Common.mk rsts";
@@ -213,7 +213,7 @@ foreach my $test (@tests) {
     my ($base) = $test =~ /(.*)\.rst/;
     if (-f "$base.skip.pl") {
 	# Check whether we need to skip this file
-	chomp (my $error = `$^X -I $base/blib/lib $base.skip.pl 2>&1`);
+	chomp (my $error = `$^X -I ../../../blib/lib $base.skip.pl 2>&1`);
       SKIP:
 	{
 	    skip("because $error", 1) if $?;
@@ -221,11 +221,24 @@ foreach my $test (@tests) {
 	next TEST if $?
     }
     delete $ENV{PERL5LIB};
-    my $make_errs = `make -s -f ../../Common.mk COVER=$cover $base.chk 2>&1`;
+    my $make_errs = `make -s -f ../../Common.mk $base.chk 2>&1`;
     # Fake around perl 5.8.8 non-disablable warning
-    $make_errs =~ s/^Wide character in print.*\n//m;
+    $make_errs =~ s/^Wide character in print.*\n//gm;
+    # Remove make messages
+    $make_errs =~ s/^make\[\d\]: (Enter|Leav)ing directory.*\n//gm;
     my $errs = -f "$base.stderr" ? `cat $base.stderr` : '';
-    is ($make_errs . `cat $base.chk 2>&1`, $errs, $test);
+    if ($errs) {
+	# Convert search characters
+	$errs =~ s/([.\\\[\]{}()+*$@])/\\$1/g;
+	# Fix line numbers,  paths
+	$errs =~ s/(\\\(eval \d+\\\))/$1(\\[.*\\])?/g;
+	$errs =~ s! /\S+/! /\\S+/!g;
+	$errs =~ s/(line|eval) (\d+)/$1 \\d+/g;
+	like ($make_errs . `cat $base.chk 2>&1`, qr/$errs/, $test);
+    }
+    else {
+	is ($make_errs . `cat $base.chk 2>&1`, $errs, $test);
+    }
 }
 ##^^^^^^^^^^^^^^^^^^ Generic .t file ^^^^^^^^^^^^^^^^^^##
 EOS
@@ -302,9 +315,10 @@ sub makerules {
 
     (my $Writer = $writer) =~ tr/a-z/A-Z/;
     $suffix = $writer unless defined $suffix;
-    my $prest_cmd = '$(PRESTCMD) $(${Writer}_FLAGS) $(SUITE_FLAGS) $(DIR_FLAGS) $(RST_FLAG_$(*)) $*.rst';
+    my $prest_cmd = '$(PRESTCMD) $(${Writer}_FLAGS) $(SUITE_FLAGS) $(DIR_FLAGS) $(RST_FLAG_$(*)) $*.rst $(POSTPROCESS_$(*))';
     # Substitute in for ${perlvar} references
     $prest_cmd =~ s/(\$ \{ [^\}]+ \})/eval $1/gex;
+    my $perl_flags = '$(PERL_FLAG_$(*)) $(PERL_FLAGS)';
     my $rules = << 'EOS';
 # Location of ${writer} writer
 ${Writer}WRT = $(LIBDIR)/Restructured/Writer/${writer}.wrt
@@ -332,26 +346,20 @@ RE${Writer} = $(TESTBIN)/re${suffix}
 	@perl $(RE${Writer}) $< > $@
 
 # Generate ${writer} output on STDOUT
-%.out:	%.rst %.${suffix}c $(PREST) $(${Writer}WRT) $(PMFILES)
-	@$(PERL) $(PERL_FLAGS) ${prest_cmd}
-
-%.out:	%.rst %.${suffix}re $(PREST) $(${Writer}WRT) $(PMFILES)
-	@$(PERL) $(PERL_FLAGS) ${prest_cmd}
+%.${suffix}o:	%.rst $(PREST) $(${Writer}WRT) $(PMFILES)
+	@$(PERL) ${perl_flags} ${prest_cmd}
 
 # Invoke perl with debugger for ${writer} generation
-%.dbg:	%.rst %.${suffix}c $(PREST) $(${Writer}WRT) $(PMFILES)
-	@$(PERL) $(PERL_FLAGS) -d ${prest_cmd}
-
-%.dbg:	%.rst %.${suffix}re $(PREST) $(${Writer}WRT) $(PMFILES)
-	@$(PERL) $(PERL_FLAGS) -d ${prest_cmd}
+%.${suffix}d:	%.rst $(PREST) $(${Writer}WRT) $(PMFILES)
+	@$(PERL) ${perl_flags} -d ${prest_cmd} $(DEBUG_FLAGS)
 
 # Checking ${writer} with regular expression comparison
 %.chk:	%.rst %.${suffix}re $(PREST) $(${Writer}WRT) $(PMFILES)
-	@$(PERL) $(PERL_FLAGS) ${prest_cmd} | $(PERL) $(DIFFRE) $*.${suffix}re - > $@
+	@$(PERL) ${perl_flags} ${prest_cmd} | $(PERL) $(DIFFRE) $*.${suffix}re - > $@
 
 # Checking ${writer} with straight diff
 %.chk:	%.rst %.${suffix}c $(PREST) $(${Writer}WRT) $(PMFILES)
-	@$(PERL) $(PERL_FLAGS) ${prest_cmd} | diff $*.${suffix}c - > $@
+	@$(PERL) ${perl_flags} ${prest_cmd} | diff $*.${suffix}c - > $@
 EOS
     # Substitute in for ${perlvar} references
     $rules =~ s/(\$ \{ [^\}]+ \})/eval $1/gex;
@@ -385,6 +393,15 @@ sub usage {
   exit;
 }
 
+# Checks for valid URL or "none"
+sub isurl {
+    my $fail = $_[0] !~ /^\w+:|none/i;
+    print STDERR "Must be either a URL reference or 'None'\n"
+	if $fail;
+    return $fail;
+}
+
+# Checks for yes or no answer
 sub yesno {
     my $fail = !($_[0] =~ s/^y.*/Yes/i || $_[0] =~ s/^n.*/No/i);
     print "Must be 'yes' or 'no'\n" if $fail;
