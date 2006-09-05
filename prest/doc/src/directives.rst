@@ -1248,6 +1248,10 @@ The following options are recognized:
     to create a pending DOM object for execution at transformation
     time rather than parse time.)
 
+``lenient`` : flag (empty)
+    Any errors encountered are returned as text instead of causing a
+    system message to be generated.
+
 System
 ======
 
@@ -1265,6 +1269,10 @@ The following options are recognized:
 ``literal`` : flag (empty)
     The entire returned text is inserted into the document as a single
     literal block (useful for debugging).
+
+``lenient`` : flag (empty)
+    Any errors encountered are returned as text instead of causing a
+    system message to be generated.
 
 ---------------
  Miscellaneous
