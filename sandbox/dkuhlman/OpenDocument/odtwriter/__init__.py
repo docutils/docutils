@@ -60,6 +60,8 @@ TABS_PATTERN = re.compile(r'(\t+)')
 
 TableStylePrefix = 'rststyle-Table'
 
+GENERATOR_DESC = 'Docutils.org/odtwriter'
+
 
 CONTENT_NAMESPACE_DICT = {
     'office:version': '1.0',
@@ -348,7 +350,7 @@ class Writer(writers.Writer):
         root = etree.Element('office:document-meta', attrib=META_NAMESPACE_DICT)
         doc = etree.ElementTree(root)
         root = etree.SubElement(root, 'office:meta')
-        el1 = etree.SubElement(root, 'meta-generator')
+        el1 = etree.SubElement(root, 'meta:generator')
         el1.text = 'Docutils/rst2odf.py/%s' % (VERSION, )
         s1 = os.environ.get('USER', '')
         el1 = etree.SubElement(root, 'meta:initial-creator')
@@ -366,6 +368,12 @@ class Writer(writers.Writer):
         el1.text = '1'
         el1 = etree.SubElement(root, 'meta:editing-duration')
         el1.text = 'PT00M01S'
+        title = self.visitor.get_title()
+        el1 = etree.SubElement(root, 'dc:title')
+        if title:
+            el1.text = title
+        else:
+            el1.text = '[no title]'
         s1 = etree.tostring(doc)
         #doc = minidom.parseString(s1)
         #s1 = doc.toprettyxml('  ')
@@ -407,6 +415,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.footer_element = None
         self.field_name = None
         self.field_element = None
+        self.title = None
 
     def astext(self):
         root = self.content_tree.getroot()
@@ -420,6 +429,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         root = self.styles_tree.getroot()
         s1 = etree.tostring(root)
         return s1
+
+    def set_title(self, title): self.title = title
+    def get_title(self): return self.title
 
     #
     # Utility methods
@@ -1210,7 +1222,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 'text:style-name': 'rststyle-heading1',
                 })
             text = node.astext()
-            el1.text = text.decode('latin-1').encode('utf-8')
+            text = text.decode('latin-1').encode('utf-8')
+            el1.text = text
+            self.title = text
 
     def depart_title(self, node):
         pass
@@ -1232,7 +1246,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 el = self.append_child('text:p', attrib={
                     'text:style-name': 'rststyle-horizontalline'})
                 el = self.append_child('text:p', attrib={
-                    'text:style-name': 'rststyle-textbody'})
+                    'text:style-name': 'rststyle-centeredtextbody'})
                 el1 = etree.SubElement(el, 'text:span',
                     attrib={'text:style-name': 'rststyle-strong'})
                 el1.text = 'Contents'
