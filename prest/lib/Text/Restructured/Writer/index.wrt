@@ -47,12 +47,82 @@ sub BEGIN = {
 
     # Static globals
     use vars qw(%START);
+    %START = ('literal'=>'`', 'reference'=>'`', 'target'=>'`',
+	      'emphasis'=>'*', 'strong'=>'*', 'interpreted'=>'`');
 
     # Run-time globals
     use vars qw($MAX_NAME $MAX_SEC @ALL_TARGETS	%INLINE_TARGETS
 		@INDIRECT_TARGETS);
 
     $MAX_NAME = $MAX_SEC = 1;
+}
+
+# Final step of sorting indices from multiple files and
+# generating the output.
+sub END {
+    # Sort the indices according to the refname of targets
+    my @sorted = sort byUncasedRefName @ALL_TARGETS;
+    my $format = "%-4s %-${MAX_NAME}s %s\n";
+    my $table = sprintf($format,
+			("=" x 4, "=" x $MAX_NAME, "=" x $MAX_SEC));
+    my ($targets, $header);
+    my @anchors;
+    foreach (@sorted) {
+	my ($refname, $target, $section) = @$_;
+	$refname =~ /^[^0-9a-zA-Z]*(.)/;
+	my $c1 = uc($1);
+	if (! @anchors || $c1 ne $anchors[-1]) {
+	    push @anchors, $c1;
+	    $c1 = "_`$c1`";
+	}
+	else {
+	    $c1 = "..";
+	}
+	$table .= sprintf($format, ($c1, "`$refname`__", $section));
+	$targets .= "__ $target\n";
+    }
+    $table .= sprintf($format, ("=" x 4, "=" x $MAX_NAME, "=" x $MAX_SEC));
+    $header = "Index\n*****\n\n" .
+	".. raw:: html\n\n   <DIV class=\"contents\">\n\n" .
+	"**Contents:**\n\n";
+    foreach (@anchors) {
+	$header .= "    `$_`_\n";
+    }
+    $header .= "\n.. raw:: html\n\n   </DIV><hr><p></p>\n\n";
+    print $header, $table, "\n", $targets;
+}
+
+sub QuoteStart {
+    # Quotes the start of markup with "\ " if it might not be
+    # interpreted as starting markup within its context.
+    # Also quotes the end with "\ " if it is not followed by
+    # an appropriate end-of-markup character.
+    my ($dom, $str, $writer) = @_;
+
+    my $parent = $dom->parent();
+    my $index = $parent->index($dom);
+    my $prevdom = $parent->{content}[$index-1] if $index > 0;
+    my $prev = substr($prevdom->{val}, -1)
+	if $prevdom && defined $prevdom->{val};
+    my $quote = ((! defined $prevdom->{tag} ||
+		  ! defined $START{$prevdom->{tag}}) &&
+		 substr($str,0,2) ne '\ ' &&
+		 (defined $prev ?
+		  $prev !~ /[$Text::Restructured::MARK_START]/o :
+		  ($START{$parent->{tag}} || '')
+		   eq substr($str,0,1))) ?
+		   '\ ' : '';
+    # We have to force the next DOM to be processed before we can
+    # use its 'val' entry.
+    my $endquote = '';
+    if ($index < $parent->num_contents()-1) {
+	my $nextdom = $parent->{content}[$index+1];
+	my $nextval = $writer->ProcessDOMPhase($nextdom, 'PROCESS');
+	$endquote = '\ '
+	    if $nextval !~
+	    /^(:?$Text::Restructured::MARK_END_TRAILER)/o;
+    }
+    return "$quote$str$endquote";
 }
 
 phase PROCESS = {
@@ -77,6 +147,9 @@ phase PROCESS = {
     # characters generated at the end.
     sub generated = {
 	my ($dom, $str) = @_;
+	# Devel::Cover condition 0 1 First "classes" always "sectnum"
+	# Devel::Cover condition 0 0 Always has "classes" attr
+	# Devel::Cover branch 0 1 Guards against internal errors
 	if ($dom->{attr}{classes} && $dom->{attr}{classes}[0] eq "sectnum") {
 	    $str =~ s/^(\d(\.\d)*).*/$1 /;
 	    return $str;
@@ -111,88 +184,28 @@ phase PROCESS = {
     }
 
     sub literal = {
-	my ($dom, $str) = @_;
-	return QuoteStart($dom, "``$str``");
-
-	BEGIN {
-	    %START = ('literal'=>'`', 'reference'=>'`', 'target'=>'`',
-		      'emphasis'=>'*', 'strong'=>'*',
-		      'interpreted'=>'`');
-	}
-
-	sub QuoteStart {
-	    # Quotes the start of markup with "\ " if it might not be
-	    # interpreted as starting markup within its context.
-	    # Also quotes the end with "\ " if it is not followed by
-	    # an appropriate end-of-markup character.
-	    my ($dom, $str) = @_;
-
-	    my $parent = $dom->parent();
-	    my $index = $parent->index($dom);
-	    my $prevdom = $parent->{content}[$index-1] if $index > 0;
-	    my $prev = substr($prevdom->{val}, -1)
-		if $prevdom && defined $prevdom->{val};
-	    my $quote = ((! defined $prevdom->{tag} ||
-			  ! defined $START{$prevdom->{tag}}) &&
-			 substr($str,0,2) ne '\ ' &&
-			 (defined $prev &&
-			  $prev !~ /[$Text::Restructured::MARK_START]/o || 
-			  (! defined $prev &&
-			  ($START{$parent->{tag}} || '')
-			   eq substr($str,0,1)))) ?
-			 '\ ' : '';
-	    # We have to force the next DOM to be processed before we can
-	    # use its 'val' entry.
-	    my $endquote = '';
-	    if ($index < $parent->num_contents()-1) {
-		my $nextdom = $parent->{content}[$index+1];
-		my $nextval = main::ProcessDOMPhase($nextdom);
-		$endquote = '\ '
-		    if $nextval !~
-		    /^(:?$Text::Restructured::MARK_END_TRAILER)/o;
-	    }
-	    return "$quote$str$endquote";
-	}
+	my ($dom, $str, $writer) = @_;
+	return QuoteStart($dom, "``$str``", $writer);
     }
 
     sub emphasis = {
-	my ($dom, $str) = @_;
-	return QuoteStart($dom, "*$str*");
+	my ($dom, $str, $writer) = @_;
+	return QuoteStart($dom, "*$str*", $writer);
     }
 
     sub strong = {
-	my ($dom, $str) = @_;
-	return QuoteStart($dom, "**$str**");
-    }
-
-    sub interpreted|subscript|superscript = {
-	my ($dom, $str) = @_;
-	if ($dom->{tag} =~ /su[bp]/) {
-	    $dom->{attr}{role} = substr($dom->{tag}, 0, 3);
-	    $dom->{attr}{position} = 'prefix';
-	}
-	my $attr = $dom->{attr};
-	my ($prefix, $suffix) = ('') x 2;
-	if (defined $attr->{role} && defined $attr->{position}) {
-	    $prefix = ":$attr->{role}:" if $attr->{position} eq 'prefix';
-	    $suffix = ":$attr->{role}:" if $attr->{position} eq 'suffix';
-	}
-	return QuoteStart($dom, "$prefix`$str`$suffix");
+	my ($dom, $str, $writer) = @_;
+	return QuoteStart($dom, "**$str**", $writer);
     }
 
     sub footnote_reference = {
-	my ($dom, $str) = @_;
-	return QuoteStart($dom, "[$str]");
+	my ($dom, $str, $writer) = @_;
+	return QuoteStart($dom, "[$str]", $writer);
     }
 
     sub reference = {
-	my ($dom, $str) = @_;
-	return QuoteStart($dom, "`$str`");
-    }
-
-    sub target = {
-	my ($dom, $str) = @_;
-	return QuoteStart($dom, "_`$str`");
+	my ($dom, $str, $writer) = @_;
+	return QuoteStart($dom, "`$str`", $writer);
     }
 
     # Store all index entries in the global array.
@@ -204,15 +217,14 @@ phase PROCESS = {
 	$short_titles = 1 unless defined $short_titles;
 	my $fileName = $dom->{attr}{source};
 	$fileName .= "$filename_ext.$file_suffix"
-	    if (!($fileName =~ s/\.[^\.\/]*$/$filename_ext\.$file_suffix/o));
+	    if $fileName !~ s/\.[^\.\/]*$/$filename_ext\.$file_suffix/o;
 	my $title = $str ? $str : $fileName;
-	$title =~ s/^\S*(\d+\.)+\s+// if $short_titles;
 	my ($tname, $tdom);
 	foreach (keys %INLINE_TARGETS) {
 	    my $tdom = $INLINE_TARGETS{$_};
 	    my $loc = ($tdom->{section} && $title ne $tdom->{section})?
 		"$title: $tdom->{section}" : $title;
-	    $loc =~ s/(:.*(\d+\.)*\d+\.?).*/$1/ if $short_titles;
+	    $loc =~ s/(:\s*(\d+\.)*\d+\.?).*/$1/ if $short_titles;
 	    $loc =~ s/([\`\_\*\|\\])/\\$1/go;
 	    push @ALL_TARGETS, [$tdom->{_index}{refname},
 			       "$fileName#$tdom->{attr}{ids}[0]", $loc];
@@ -231,7 +243,7 @@ phase PROCESS = {
 	    my $loc = (defined $target->{section} && $target->{section} ne ''
 		       && $title ne $target->{section})? 
 		"$title: $target->{section}" : $title;
-	    $loc =~ s/(:.*(\d+\.)*\d+\.?).*/$1/ if $short_titles;
+	    $loc =~ s/(:\s*(\d+\.)*\d+\.?).*/$1/ if $short_titles;
 	    $loc =~ s/([\`\_\*\|\\])/\\$1/go;
 	    # Have to reparse the 'lit' in order to get the name with
 	    # the proper capitalization!
@@ -241,8 +253,8 @@ phase PROCESS = {
 			       "$fileName#$target->{attr}{ids}[0]", $loc];
 	    $MAX_NAME = length($refname) + 4
 		if $MAX_NAME < length($refname) + 4;
-	    $MAX_SEC = length($loc) if $MAX_SEC < length($loc);
 	}
+	# Used in closure of collectTargets
 	%INLINE_TARGETS = ();
 	undef;
 
@@ -256,7 +268,7 @@ phase PROCESS = {
 		    $dom->{section} = $section;
 		    $INLINE_TARGETS{$dom->{attr}{ids}[0]} = $dom;
 		}
-		elsif ($dom->{attr}{refid}) {
+		else {
 		    push @INDIRECT_TARGETS, $dom;
 		}
 	    }
@@ -268,39 +280,12 @@ phase PROCESS = {
 	    }
 	}
 
-	# Final step of sorting indices from multiple files and
-	# generating the output.
-	END {
-	    # Sort the indices according to the refname of targets
-	    my @sorted = sort byUncasedRefName @ALL_TARGETS;
-	    my $format = "%-4s %-${MAX_NAME}s %s\n";
-	    my $table = sprintf($format,
-				("=" x 4, "=" x $MAX_NAME, "=" x $MAX_SEC));
-	    my ($targets, $header);
-	    my @anchors;
-	    foreach (@sorted) {
-		my ($refname, $target, $section) = @$_;
-		$refname =~ /^[^0-9a-zA-Z]*(.)/;
-		my $c1 = uc($1);
-		if (! @anchors || $c1 ne $anchors[-1]) {
-		    push @anchors, $c1;
-		    $c1 = "_`$c1`";
-		}
-		else {
-		    $c1 = "..";
-		}
-		$table .= sprintf($format, ($c1, "`$refname`__", $section));
-		$targets .= "__ $target\n";
-	    }
-	    $table .= sprintf($format, ("=" x 4, "=" x $MAX_NAME, "=" x $MAX_SEC));
-	    $header = "Index\n*****\n\n" .
-		".. raw:: html\n\n   <DIV class=\"contents\">\n\n" .
-		"**Contents:**\n\n";
-	    foreach (@anchors) {
-		$header .= "    `$_`_\n";
-	    }
-	    $header .= "\n.. raw:: html\n\n   </DIV><hr><p></p>\n\n";
-	    print $header, $table, "\n", $targets;
-	}
+    }
+
+    sub .* = {
+	my ($dom, $str, $writer) = @_;
+	# Handle all the interpreted roles
+	return unless exists $Text::Restructured::ROLES{$dom->{tag}};
+	return QuoteStart($dom, ":$dom->{tag}:`$str`");
     }
 }
