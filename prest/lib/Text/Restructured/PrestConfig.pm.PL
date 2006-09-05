@@ -18,6 +18,7 @@ $DEFAULTCSS = "${CONFIG{defaultcss}}";
 $SAFE_PERL = "${^X}";
 $TAINT = "${CONFIG{taint}}";
 $VERSION = "${CONFIG{version}}";
+$DOCURL = "${CONFIG{docurl}}";
 
 1;
 EOS
