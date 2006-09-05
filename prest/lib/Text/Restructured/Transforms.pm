@@ -44,8 +44,7 @@ Defines for reStructuredText transforms
                        document source" link; implies -D source_link=1.
 -D keep_title_section  Keeps the section intact from which the document
                        title is taken.
--D section_subtitles   Activate the promotion of lone subsection titles to
-                       section subtitles.
+-D section_subtitles   Promote lone subsection titles to section subtitles.
 =end Usage
 =end reST
 =cut
@@ -277,7 +276,6 @@ sub DocTitle {
 sub SectionSubTitle {
     my ($topdom, $parser) = @_;
     
-    # Link references to their definitions if they exist
     $topdom->Reshape
 	(sub {
 	     my($dom) = @_;
@@ -322,12 +320,7 @@ sub create_title {
 	}
 	if ($main::opt_D{keep_title_section} && ! defined $prev_title) {
 	    # Don't duplicate ids from the section if we keep the section
-	    if ($dom_ids) {
-		$dom->{attr}{ids} = $dom_ids;
-	    }
-	    else {
-		delete $dom->{attr}{ids};
-	    }
+	    delete $dom->{attr}{ids};
 	    my $title = $sec->{content}[0];
 	    $dom->prepend($title);
 	}
@@ -392,7 +385,12 @@ sub Pending {
 		 my $details = $dom->{internal}{'.details'};
 		 no strict 'refs';
 		 print STDERR "Debug: Transform $transform\n" if $main::opt_d;
-		 return &$t($dom, $parser, $details);
+		 my @result = eval { &$t($dom, $parser, $details) };
+		 return $parser->system_message(4, $dom->{source},
+						$dom->{lineno},
+						qq(Error in transform code "$transform": $@))
+		     if $@;
+		 return @result;
 	     }
 	     return $dom;
 	 });
@@ -435,6 +433,7 @@ sub Contents {
     my $backlinks =
 	defined $details->{backlinks} ? $details->{backlinks} : '';
     # First we compile the table of contents
+    # Devel::Cover branch 0 1 parent always has ids
     my $contid = $parent->{attr}{ids}[0] if defined $parent->{attr}{ids};
 
     my $bl = $DOM->new('bullet_list');
@@ -480,11 +479,9 @@ sub Contents {
 					  $when eq 'pre';
 				  }
 				  else {
-				      if ($when eq 'pre') {
-					  # Don't recurse
-					  push(@contents, $dom);
-					  return 1;
-				      }
+				      # Don't recurse
+				      push(@contents, $dom);
+				      return 1;
 				  }
 				  return 0;
 			      }
@@ -510,8 +507,9 @@ sub Contents {
 		     }
 		 }
 		 $depth++ if $when eq 'pre';
+		 return 0;
 	     }
-	     return 0;
+	     return $dom ne $start;
 	 }
 	 , 'both') ;
 
@@ -690,17 +688,18 @@ sub IndTargets {
 			(defined $next->{attr}{refname} ||
 			 ! grep(/ref(uri|id)/, keys %{$next->{attr}}))) {
 		     # This is either an indirect target or a bare target
+		     # Devel::Cover branch 0 0 Assert can't have badtarget
 		     return $dom if $next->{badtarget};
 		     
 		     if (defined $next->{attr}{refname}) {
 			 # This is an indirect target
-			 $next->{type} = "Indirect"
-			     unless defined $next->{type};
+			 $next->{type} = "Indirect";
 			 # Chain until we come to something not indirect
 			 while (defined (my $name = $next->{attr}{refname})
 				&& ! $seen{$next})
 			 {
 			     push @chain, $next;
+			     # Devel::Cover +2 branch 0 1 Defensive programming
 			     my @targets =
 				 @{$parser->{ALL_TARGET_NAMES}{$name}}
 			     if defined $parser->{ALL_TARGET_NAMES}{$name};
@@ -719,6 +718,7 @@ sub IndTargets {
 				 return $dom;
 			     }
 			     $next = $targets[0];
+			     # Devel::Cover branch 0 0 Defensive programming
 			     return $dom unless $next;
 			 }
 		     }
@@ -739,6 +739,7 @@ sub IndTargets {
 			     $seen{$next} = $next;
 			     push @chain, $next;
 			     unshift @ids, @{$next->{attr}{ids}};
+			     # Devel::Cover branch 0 1 Defensive programming
 			     unshift @names, @{$next->{attr}{names}}
 			     if defined $next->{attr}{names};
 			     $next = $next->next($ignores);
@@ -788,8 +789,7 @@ sub IndTargets {
 			 # Convert the last target to a problematic
 			 %$prev = %$prob;
 			 if ($ind{$dom}) {
-			     $dom->{attr}{refid} =
-				 $dom->{attr}{ids}[0];
+			     $dom->{attr}{refid} = $dom->{attr}{ids}[0];
 			     delete $dom->{attr}{refname};
 			     return $dom;
 			 }
@@ -811,8 +811,7 @@ sub IndTargets {
 			     $prevdom->{attr}{refuri} = $next->{attr}{refuri};
 			 }
 			 else {
-			     $prevdom->{attr}{refid} =
-				 $prevdom->{attr}{ids}[0];
+			     $prevdom->{attr}{refid} =$prevdom->{attr}{ids}[0];
 			     delete $prevdom->{attr}{ids};
 			     delete $prevdom->{attr}{names};
 			 }
@@ -834,10 +833,9 @@ sub IndTargets {
 			     delete $_->{attr}{refname};
 			 }
 			 else {
-			     my $refid = $_->{attr}{ids} &&
-				 $_->{attr}{ids}[0] ||
-				 $_->{attr}{names} &&
-				 $_->{attr}{names}[0];
+			     my $refid =
+				 ($_->{attr}{ids} && $_->{attr}{ids}[0] ||
+				  $_->{attr}{names} && $_->{attr}{names}[0]);
 			     $_->{attr}{refid} = $refid;
 			     delete $_->{attr}{ids};
 			     delete $_->{attr}{names};
@@ -1026,6 +1024,7 @@ sub References {
 		 ! defined $dom->{attr}{refid}) {
 		 my $target;
 		 my $name = $dom->{attr}{refname};
+		 # Devel::Cover branch 1 1 Defensive programming
 		 if (defined $name) {
 		     my @targets = @{$parser->{TARGET_NAME}{target}{$name}}
 		     if defined $parser->{TARGET_NAME}{target}{$name};
@@ -1075,6 +1074,7 @@ sub References {
 			 return $prob;
 		     }
 		     my $dest = $target->{forward} || $target;
+		     # Devel::Cover branch 3 1 Defensive programming
 		     if ($dest->{tag} eq 'target' &&
 			 defined $dest->{attr}{refuri}) {
 			 $target->{type} = "External"
@@ -1087,7 +1087,9 @@ sub References {
 			 $dom->{attr}{refid} = $target->{attr}{refid};
 		     }
 		     elsif (defined $target->{attr}{refid}) {
-			 $target->{type} = "Internal"
+			 # Anonymous target chained to external target
+			 # Devel::Cover branch 0 1 Defensive programming
+			 $target->{type} = "External"
 			     unless defined $target->{type};
 			 my @targets = @{$parser->{ALL_TARGET_IDS}
 					 {$target->{attr}{refid}}};
@@ -1100,8 +1102,6 @@ sub References {
 			 $dom->{attr}{refid} =
 			     grep($_ eq $refid, @{$target->{attr}{ids}}) ?
 			     $refid : $target->{attr}{ids}[0];
-# 			 $dom->{attr}{refid} =
-# 			     $parser->NormalizeId($dom->{attr}{refname});
 			 delete $dom->{attr}{refname};
 		     }
 		     undef $target;
@@ -1141,9 +1141,9 @@ sub Unreferenced {
 		 ! $dom->{attr}{anonymous} && ! $dom->{attr}{dupnames}) {
 		 my $name =
 		     defined $dom->{attr}{names} && $dom->{attr}{names}[0] ||
-		     defined $dom->{attr}{dupnames} &&
-		     $dom->{attr}{dupnames}[0] || $dom->{attr}{refid};
-		 my $id = defined $name ? qq("$name") :
+		     $dom->{attr}{refid};
+		 # Devel::Cover branch 0 1 Assert defined $name
+ 		 my $id = defined $name ? qq("$name") :
 		     qq(id="$dom->{attr}{ids}[0]");
 		 push @errs, $parser->system_message
 		     (1, $dom->{source}, $dom->{lineno},
@@ -1178,11 +1178,15 @@ sub TargetNotes {
     # Create the footnotes
     my @doms;
     my %footnotes;
+    my $options = $dom->{internal}{'.details'};
+
     foreach (@targets) {
 	my $id = $parser->Id();
 	$footnotes{$_->{attr}{names}[0]} = $id;
 	my $dom = $DOM->new('footnote', auto=>1, ids=>[ $id ],
 			  names=>[ "TARGET_NOTE: $id" ]);
+	push @{$dom->{attr}{classes}}, $options->{class}
+	    if defined $options && defined $options->{class};
 	my $para = $DOM->new('paragraph');
 	$dom->append($para);
 	my $ref = $DOM->new('reference', refuri=>$_->{attr}{refuri});
@@ -1250,10 +1254,23 @@ sub Decorations {
     }
     my $generator = main::FirstDefined($main::opt_D{generator}, 1);
     if ($generator) {
+	use Text::Restructured::PrestConfig;
+	my $tool_id = $main::TOOL_ID;
+	my $docurl = $Text::Restructured::PrestConfig::DOCURL;
+	$para->append($DOM->newPCDATA("Generated by "));
+	my $tool_dom = $DOM->newPCDATA($tool_id);
+	if ($docurl !~ /^none$/i) {
+	    my $docref = $DOM->new('reference', refuri=>$docurl);
+	    $docref->append($tool_dom);
+	    $para->append($docref);
+	}
+	else {
+	    $para->append($tool_dom);
+	}
 	my $ref = $DOM->new('reference', refuri=>
 			  'http://docutils.sourceforge.net/rst.html');
 	$ref->append($DOM->newPCDATA("reStructuredText"));
-	$para->append($DOM->newPCDATA("Generated by $main::TOOL_ID from "),
+	$para->append($DOM->newPCDATA(" from "),
 		      $ref,
 		      $DOM->newPCDATA(" source.\n"));
     }
