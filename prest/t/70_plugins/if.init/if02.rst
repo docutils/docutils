@@ -20,7 +20,7 @@ An if directive with no arguments is also an error.
 An if directive with an option is also a problem.
 
 .. if:: 1
-   :bogus-option:
+   :nosuchoption:
 
    Option causes an error.
 
